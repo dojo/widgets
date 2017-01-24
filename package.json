@@ -17,7 +17,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "@dojo/widget-core": "2.0.0-beta.20",
+    "@dojo/widget-core": "2.0.0-alpha.20",
     "@dojo/compose": "2.0.0-beta.21",
     "@dojo/core": "2.0.0-alpha.20",
     "@dojo/has": "2.0.0-alpha.7",
