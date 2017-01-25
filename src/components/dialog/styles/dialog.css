@@ -1,0 +1,19 @@
+.main {
+    background: green;
+}
+
+.underlay {
+    background: yellow;
+}
+
+.title {
+    background: orange;
+}
+
+.content {
+    background: blue;
+}
+
+.close {
+    background: red;
+}
