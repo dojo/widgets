@@ -14,12 +14,11 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('dev', grunt.config.get('devTasks').concat([
 		'copy:staticExampleFiles',
-		'postcss:modules-dev',
-		'postcss:variables-dev'
+		'postcss:modules-dev'
 	]));
 
 	grunt.registerTask('dist', grunt.config.get('distTasks').concat([
 		'postcss:modules-dist',
-		'postcss:variables-dist'
+		'postcss:variables'
 	]));
 };
