@@ -41,20 +41,24 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin
 		getChildrenNodes: function (this: Dialog): DNode[] {
 			const {
 				closeable = true,
-				enterAnimation = 'show',
-				exitAnimation = 'hide',
+				enterAnimation = 'dialogShow',
+				exitAnimation = 'dialogHide',
 				title = '',
 				open = false
 			} = this.properties;
 
+			let key = 0;
+
 			const children: DNode[] = [
 				v('div', {
+					key: key++,
 					classes: this.theme.underlay,
-					enterAnimation: 'show',
-					exitAnimation: 'hide',
+					enterAnimation: 'dialogShow',
+					exitAnimation: 'dialogHide',
 					onclick: this.onUnderlayClick
 				}),
 				v('div', {
+					key: key++,
 					classes: this.theme.main,
 					enterAnimation: enterAnimation,
 					exitAnimation: exitAnimation
@@ -69,15 +73,13 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin
 							onclick: this.onCloseClick
 						}) : null
 					]),
-					v('div', { classes: this.theme.content }, this.children)
+					v('div', {
+						classes: this.theme.content
+					}, this.children)
 				])
 			];
 
-			let childrenToRender = open ? children : [];
-
-			console.log('rendering ', childrenToRender);
-
-			return childrenToRender;
+			return open ? children : [];
 		},
 
 		nodeAttributes: [

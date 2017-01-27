@@ -1,19 +1,65 @@
 .main {
-    background: green;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #FFF;
+    width: 450px;
+    min-height: 250px;
+    box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 2px;
+    overflow: hidden;
+    font-family: sans-serif;
+    max-width: calc(100% - 30px);
 }
 
 .underlay {
-    background: yellow;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+[data-underlay="true"] .underlay {
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .title {
-    background: orange;
+    background-color: #34495e;
+    font-size: 20px;
+    color: #FFF;
+    padding: 14px 35px;
+    position: relative;
 }
 
 .content {
-    background: blue;
+    padding: 14px 35px;
 }
 
 .close {
-    background: red;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 35px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+:global .dialogShow {
+    transition: opacity .2s;
+    opacity: 0;
+}
+
+:global .dialogShow-active {
+    opacity: 1;
+}
+
+:global .dialogHide {
+    transition: opacity .2s;
+    opacity: 1;
+}
+
+:global .dialogHide-active {
+    opacity: 0;
 }

@@ -7,6 +7,33 @@
 	<script src="../../../../node_modules/@dojo/loader/loader.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/maquette/2.4.2/css-transitions.min.js"></script>
 	<link rel="stylesheet" href="../../components/dialog/styles/dialog.css">
+	<style>
+		.slideIn {
+			transition: top .2s;
+			top: -150px !important;
+		}
+
+		.slideIn-active {
+			top: 50% !important;
+		}
+
+		.slideOut {
+			transition: top .2s;
+			top: 50% !important;
+		}
+
+		.slideOut-active {
+			top: -150px !important;
+		}
+
+		button {
+			margin-bottom: 50px;
+		}
+
+		.option {
+			margin-bottom: 10px;
+		}
+	</style>
 	<script>
 		require.config({
 			baseUrl: '../../../../',
