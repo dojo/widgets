@@ -73,7 +73,11 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin
 				])
 			];
 
-			return open ? children : [];
+			let childrenToRender = open ? children : [];
+
+			console.log('rendering ', childrenToRender);
+
+			return childrenToRender;
 		},
 
 		nodeAttributes: [

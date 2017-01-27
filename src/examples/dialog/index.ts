@@ -7,6 +7,10 @@ import internalState, { InternalState } from '@dojo/widget-core/mixins/internalS
 
 type Root = Widget<WidgetProperties> & InternalState;
 
+function openDialog(this: Root) {
+	this.setState({ open: true });
+}
+
 function toggleModal(this: Root, event: Event) {
 	this.setState({ modal: (<HTMLInputElement> event.target).checked });
 }
@@ -51,10 +55,8 @@ const createApp = createWidgetBase.mixin(internalState).mixin({
 				]),
 				v('button', {
 					id: 'button',
-					label: 'open dialog',
-					onclick: () => {
-						this.setState({ open: true });
-					}
+					innerHTML: 'open dialog',
+					onclick: openDialog
 				}),
 				v('div', { classes: { option: true }}, [
 					v('input', {
