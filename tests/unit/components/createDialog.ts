@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import createDialog from '../../src/components/dialog/createDialog';
+import createDialog from '../../../src/components/dialog/createDialog';
 
 registerSuite({
 	name: 'createDialog',

@@ -1,1 +1,2 @@
-import './createDialog';
+import './main';
+import './components/createDialog';
