@@ -1,65 +1,49 @@
+@import '../../../styles/animations.css';
+@import '../../../styles/variables.css';
+
 .main {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #FFF;
-    width: 450px;
-    min-height: 250px;
-    box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.25);
-    border-radius: 2px;
-    overflow: hidden;
-    font-family: sans-serif;
-    max-width: calc(100% - 30px);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #FFF;
+	width: 450px;
+	min-height: 250px;
+	overflow: hidden;
+	max-width: calc(100% - 30px);
+	font: var(--base-font);
+	box-shadow: var(--subtle-shadow);
+	border-radius: var(--rounded-corners);
 }
 
 .underlay {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
 }
 
 [data-underlay="true"] .underlay {
-    background: rgba(0, 0, 0, 0.3);
+	background: var(--dojo-shade-gray);
 }
 
 .title {
-    background-color: #34495e;
-    font-size: 20px;
-    color: #FFF;
-    padding: 14px 35px;
-    position: relative;
+	position: relative;
+	background-color: var(--dojo-blue);
+	font-size: var(--title-font-size);
+	color: var(--dojo-white);
+	padding: var(--content-padding);
 }
 
 .content {
-    padding: 14px 35px;
+	padding: 14px 35px;
 }
 
 .close {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 35px;
-    cursor: pointer;
-    line-height: 1;
-}
-
-:global .dialogShow {
-    transition: opacity .2s;
-    opacity: 0;
-}
-
-:global .dialogShow-active {
-    opacity: 1;
-}
-
-:global .dialogHide {
-    transition: opacity .2s;
-    opacity: 1;
-}
-
-:global .dialogHide-active {
-    opacity: 0;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 35px;
+	cursor: pointer;
 }

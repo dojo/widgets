@@ -4,6 +4,7 @@ import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 
 import * as baseTheme from './styles/dialog';
+import * as animations from '../../styles/animations';
 import themeableMixin, { Themeable } from '@dojo/widget-core/mixins/themeable';
 
 export interface DialogProperties extends WidgetProperties {
@@ -41,8 +42,8 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin
 		getChildrenNodes: function (this: Dialog): DNode[] {
 			const {
 				closeable = true,
-				enterAnimation = 'dialogShow',
-				exitAnimation = 'dialogHide',
+				enterAnimation = animations.fadeIn,
+				exitAnimation = animations.fadeOut,
 				title = '',
 				open = false
 			} = this.properties;
@@ -53,8 +54,8 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin
 				v('div', {
 					key: key++,
 					classes: this.theme.underlay,
-					enterAnimation: 'dialogShow',
-					exitAnimation: 'dialogHide',
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut,
 					onclick: this.onUnderlayClick
 				}),
 				v('div', {
