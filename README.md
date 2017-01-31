@@ -6,7 +6,7 @@
 [![npm version](https://badge.fury.io/js/dojo-<< package-name >>.svg)](http://badge.fury.io/js/dojo-<< package-name >>)
 -->
 
-A suite of pre-built Dojo 2 widgets ready to use in your application. These widgets are built using [(@dojo/widget-core)](https://github.com/dojo/widgets).
+A suite of pre-built Dojo 2 widgets ready to use in your application. These widgets are built using [(@dojo/widget-core)](https://github.com/dojo/widget-core).
 
 **WARNING** This is *alpha* software. It is not yet production ready, so you should use at your own risk.
 
