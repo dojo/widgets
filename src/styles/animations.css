@@ -1,4 +1,6 @@
-@keyframes fade-in {
+@import 'variables.css';
+
+@keyframes fadeIn {
 	from {
 		opacity: 0;
 	}
@@ -7,13 +9,13 @@
 	}
 }
 
-.fade-in {
-	animation-duration: 0.2s;
+.fadeIn {
+	animation-duration: var(--short-animation-duration);
 	animation-fill-mode: both;
-	animation-name: fade-in;
+	animation-name: fadeIn;
 }
 
-@keyframes fade-out {
+@keyframes fadeOut {
 	from {
 		opacity: 1;
 	}
@@ -22,8 +24,8 @@
 	}
 }
 
-.fade-out {
-	animation-duration: 0.2s;
+.fadeOut {
+	animation-duration: var(--short-animation-duration);
 	animation-fill-mode: both;
-	animation-name: fade-out;
+	animation-name: fadeOut;
 }

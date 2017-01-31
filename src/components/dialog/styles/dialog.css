@@ -1,4 +1,3 @@
-@import '../../../styles/animations.css';
 @import '../../../styles/variables.css';
 
 .main {
@@ -25,19 +24,19 @@
 }
 
 [data-underlay="true"] .underlay {
-	background: var(--dojo-shade-gray);
+	background: var(--underlay-bg);
 }
 
 .title {
 	position: relative;
-	background-color: var(--dojo-blue);
+	background-color: var(--title-bar-bg);
 	font-size: var(--title-font-size);
-	color: var(--dojo-white);
+	color: var(--title-bar-color);
 	padding: var(--content-padding);
 }
 
 .content {
-	padding: 14px 35px;
+	padding: var(--content-padding);
 }
 
 .close {
