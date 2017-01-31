@@ -11,7 +11,7 @@ registerSuite({
 			properties: {
 				id: 'foo',
 				modal: true,
-				open: false,
+				open: true,
 				title: 'dialog',
 				underlay: true,
 				closeable: true
@@ -19,29 +19,31 @@ registerSuite({
 		});
 		assert.strictEqual(dialog.properties.id, 'foo');
 		assert.isTrue(dialog.properties.modal);
-		assert.isFalse(dialog.properties.open);
+		assert.isTrue(dialog.properties.open);
 		assert.strictEqual(dialog.properties.title, 'dialog');
 		assert.isTrue(dialog.properties.underlay);
 		assert.isTrue(dialog.properties.closeable);
 	},
 
-	render() {
+	nodeAttributes() {
 		const dialog = createDialog({
 			properties: {
-				id: 'foo',
-				open: true,
-				underlay: true,
 				enterAnimation: 'enter',
 				exitAnimation: 'exit'
 			}
 		});
-		const vnode = <VNode> dialog.__render__();
+		let vnode = <VNode> dialog.__render__();
 		assert.strictEqual(vnode.vnodeSelector, 'div');
-		assert.strictEqual(vnode.properties!['data-widget-id'], 'foo');
+		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
+		assert.strictEqual(vnode.properties!['data-open'], 'false');
+
+		dialog.setProperties({
+			open: true,
+			underlay: true
+		});
+		vnode = <VNode> dialog.__render__();
 		assert.strictEqual(vnode.properties!['data-underlay'], 'true');
 		assert.strictEqual(vnode.properties!['data-open'], 'true');
-		vnode.children && assert.strictEqual(vnode.children[1].properties!['enterAnimation'], 'enter');
-		vnode.children && assert.strictEqual(vnode.children[1].properties!['exitAnimation'], 'exit');
 		assert.lengthOf(vnode.children, 2);
 	},
 
@@ -59,6 +61,21 @@ registerSuite({
 		assert.isFalse(dialog.properties.open);
 	},
 
+	onOpen() {
+		let called = false;
+
+		const dialog = createDialog({
+			properties: {
+				open: true,
+				onOpen: () => {
+					called = true;
+				}
+			}
+		});
+		<VNode> dialog.__render__();
+		assert.isTrue(called);
+	},
+
 	modal() {
 		const dialog = createDialog({
 			properties: {
@@ -72,17 +89,25 @@ registerSuite({
 
 		dialog.onUnderlayClick && dialog.onUnderlayClick();
 		assert.isTrue(dialog.properties.open);
+
+		dialog.setProperties({ modal: false });
+		dialog.onUnderlayClick && dialog.onUnderlayClick();
+		assert.isUndefined(dialog.properties.open);
 	},
 
 	closeable() {
 		const dialog = createDialog({
 			properties: {
 				closeable: false,
-				open: true
+				open: true,
+				title: 'foo'
 			}
 		});
 
 		dialog.onCloseClick && dialog.onCloseClick();
 		assert.isTrue(dialog.properties.open);
+
+		const vnode = <VNode> dialog.__render__();
+		assert.isUndefined(vnode.children![1].children![0].children);
 	}
 });
