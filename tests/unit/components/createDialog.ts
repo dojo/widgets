@@ -6,7 +6,7 @@ import createDialog from '../../../src/components/dialog/createDialog';
 registerSuite({
 	name: 'createDialog',
 
-	construction() {
+	'Should construct dialog with passed properties'() {
 		const dialog = createDialog({
 			properties: {
 				id: 'foo',
@@ -25,7 +25,7 @@ registerSuite({
 		assert.isTrue(dialog.properties.closeable);
 	},
 
-	nodeAttributes() {
+	'Outer node should have correct attribues'() {
 		const dialog = createDialog({
 			properties: {
 				enterAnimation: 'enter',
@@ -33,7 +33,7 @@ registerSuite({
 			}
 		});
 		let vnode = <VNode> dialog.__render__();
-		assert.strictEqual(vnode.vnodeSelector, 'div');
+		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
 		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
 		assert.strictEqual(vnode.properties!['data-open'], 'false');
 
@@ -58,7 +58,7 @@ registerSuite({
 		});
 
 		dialog.onCloseClick && dialog.onCloseClick();
-		assert.isFalse(dialog.properties.open);
+		assert.isFalse(dialog.properties.open, 'onRequestClose should be called when close button is clicked');
 	},
 
 	onOpen() {
@@ -73,7 +73,7 @@ registerSuite({
 			}
 		});
 		<VNode> dialog.__render__();
-		assert.isTrue(called);
+		assert.isTrue(called, 'onOpen should be called');
 	},
 
 	modal() {
@@ -88,11 +88,11 @@ registerSuite({
 		});
 
 		dialog.onUnderlayClick && dialog.onUnderlayClick();
-		assert.isTrue(dialog.properties.open);
+		assert.isTrue(dialog.properties.open, 'dialog should stay open when underlay is clicked and modal is true');
 
 		dialog.setProperties({ modal: false });
 		dialog.onUnderlayClick && dialog.onUnderlayClick();
-		assert.isUndefined(dialog.properties.open);
+		assert.isUndefined(dialog.properties.open, 'dialog should close if underlay is clicked and modal is false');
 	},
 
 	closeable() {
@@ -105,9 +105,9 @@ registerSuite({
 		});
 
 		dialog.onCloseClick && dialog.onCloseClick();
-		assert.isTrue(dialog.properties.open);
+		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
 
 		const vnode = <VNode> dialog.__render__();
-		assert.isUndefined(vnode.children![1].children![0].children);
+		assert.isUndefined(vnode.children![1].children![0].children, 'close button should not render if closeable is false');
 	}
 });
