@@ -29,13 +29,14 @@ registerSuite({
 		const dialog = createDialog({
 			properties: {
 				enterAnimation: 'enter',
-				exitAnimation: 'exit'
+				exitAnimation: 'exit',
+				open: true
 			}
 		});
 		let vnode = <VNode> dialog.__render__();
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
 		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
-		assert.strictEqual(vnode.properties!['data-open'], 'false');
+		assert.strictEqual(vnode.properties!['data-open'], 'true');
 
 		dialog.setProperties({
 			open: true,
