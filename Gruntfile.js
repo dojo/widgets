@@ -8,17 +8,31 @@ module.exports = function (grunt) {
 				cwd: '.',
 				src: staticExampleFiles,
 				dest: '<%= devDirectory %>'
+			},
+			devStyles: {
+				expand: true,
+				cwd: '.',
+				src: 'src/styles/widgets.css',
+				dest: '<%= devDirectory %>'
+			},
+			distStyles: {
+				expand: true,
+				cwd: 'src',
+				src: 'styles/widgets.css',
+				dest: '<%= distDirectory %>'
 			}
 		}
 	});
 
 	grunt.registerTask('dev', grunt.config.get('devTasks').concat([
 		'copy:staticExampleFiles',
-		'postcss:modules-dev'
+		'postcss:modules-dev',
+		'copy:devStyles'
 	]));
 
 	grunt.registerTask('dist', grunt.config.get('distTasks').concat([
 		'postcss:modules-dist',
-		'postcss:variables'
+		'postcss:variables',
+		'copy:distStyles'
 	]));
 };

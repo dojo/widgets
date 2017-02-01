@@ -1,3 +1,5 @@
+import createDialog from './components/dialog/createDialog';
+
 export {
-	/* provide the public API here */
+	createDialog
 };

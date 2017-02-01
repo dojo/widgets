@@ -1,0 +1,16 @@
+:root {
+    --dojo-blue: #34495e;
+    --dojo-white: #FFFFFF;
+    --dojo-shade-gray: rgba(0, 0, 0, 0.3);
+
+    --base-font: 14px/1 sans-serif;
+    --content-padding: 14px 35px;
+    --title-font-size: 20px;
+    --subtle-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.25);
+    --rounded-corners: 2px;
+    --short-animation-duration: .2s;
+
+    --title-bar-bg: var(--dojo-blue);
+    --title-bar-color: var(--dojo-white);
+    --underlay-bg: var(--dojo-shade-gray);
+}

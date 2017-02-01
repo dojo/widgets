@@ -1,0 +1,48 @@
+@import '../../../styles/variables.css';
+
+.main {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #FFF;
+	width: 450px;
+	min-height: 250px;
+	overflow: hidden;
+	max-width: calc(100% - 30px);
+	font: var(--base-font);
+	box-shadow: var(--subtle-shadow);
+	border-radius: var(--rounded-corners);
+}
+
+.underlay {
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+}
+
+[data-underlay="true"] .underlay {
+	background: var(--underlay-bg);
+}
+
+.title {
+	position: relative;
+	background-color: var(--title-bar-bg);
+	font-size: var(--title-font-size);
+	color: var(--title-bar-color);
+	padding: var(--content-padding);
+}
+
+.content {
+	padding: var(--content-padding);
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 35px;
+	cursor: pointer;
+}
