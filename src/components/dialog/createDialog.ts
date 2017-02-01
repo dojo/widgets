@@ -63,12 +63,10 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 
 			open && onOpen && onOpen();
 
-			const outerNode: DNode =
-			v('div', {
-				classes: this.classes().fixed('animated').get(),
+			return v('div', {
 				'data-underlay': underlay ? 'true' : 'false',
 				'data-open': open ? 'true' : 'false'
-			}, [
+			}, open ? [
 				v('div', {
 					key: key++,
 					classes: this.classes(underlayClass).get(),
@@ -92,9 +90,7 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 					]),
 					v('div', { classes: this.classes(content).get() }, this.children)
 				])
-			]);
-
-			return open ? outerNode : null;
+			] : []);
 		}
 	}
 });
