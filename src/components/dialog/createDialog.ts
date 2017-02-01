@@ -1,7 +1,6 @@
-import { DNode, Widget, WidgetProperties, WidgetFactory, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { DNode, Widget, WidgetProperties, WidgetFactory } from '@dojo/widget-core/interfaces';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
-import { includes } from '@dojo/shim/array';
 
 import css from './styles/dialog';
 import * as animations from '../../styles/animations';
@@ -26,14 +25,6 @@ export type Dialog = Widget<DialogProperties> & Themeable & {
 
 export interface DialogFactory extends WidgetFactory<Dialog, DialogProperties> { };
 
-function onPropertiesChanged(instance: Dialog, { open = false, onOpen = null }: DialogProperties, changedPropertyKeys: string[]) {
-	const openChanged = includes(changedPropertyKeys, 'open');
-
-	if (openChanged && open && onOpen) {
-		onOpen();
-	}
-}
-
 const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
 		baseClasses: css,
@@ -56,6 +47,7 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 				exitAnimation = animations.fadeOut,
 				title = '',
 				open = false,
+				onOpen = null,
 				underlay
 			} = this.properties;
 
@@ -66,6 +58,8 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 				title: titleClass,
 				content
 			} = css.classes;
+
+			open && onOpen && onOpen();
 
 			const outerNode: DNode =
 			v('div', {
@@ -99,12 +93,6 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 
 			return open ? outerNode : null;
 		}
-	},
-	initialize(instance: any) {
-		instance.own(instance.on('properties:changed', (evt: PropertiesChangeEvent<Dialog, DialogProperties>) => {
-			onPropertiesChanged(instance, evt.properties, evt.changedPropertyKeys);
-		}));
-		onPropertiesChanged(instance, instance.properties, [ 'open' ]);
 	}
 });
 
