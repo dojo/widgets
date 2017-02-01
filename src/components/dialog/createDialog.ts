@@ -31,7 +31,7 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin
 		baseTheme,
 
 		onCloseClick: function (this: Dialog) {
-			const closeable = this.properties.closeable || typeof this.properties.closeable === 'undefined';
+			const { closeable = true } = this.properties;
 			closeable && this.properties.onRequestClose && this.properties.onRequestClose();
 		},
 
