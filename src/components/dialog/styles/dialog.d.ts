@@ -1,10 +1,5 @@
-export default {
-	classes: {
-		main: 'main',
-		underlay: 'underlay',
-		title: 'title',
-		content: 'content',
-		close: 'close'
-	},
-	key: 'dojo-dialog'
-};
+export const main: string;
+export const underlay: string;
+export const title: string;
+export const content: string;
+export const close: string;

@@ -1,7 +1,2 @@
-export default {
-	classes: {
-		fadeIn: 'fadeIn',
-		fadeOut: 'fadeOut'
-	},
-	key: 'dojo-animations'
-};
+export const fadeIn: string;
+export const fadeOut: string;
