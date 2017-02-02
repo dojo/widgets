@@ -44,6 +44,8 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeableMixi
 		baseTheme,
 
 		onSwipeStart: function (this: SlidePanel, event: TouchEvent & MouseEvent) {
+			event.stopPropagation();
+			event.preventDefault();
 			swiping = true;
 			initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
 			lastX = 0;
@@ -69,14 +71,16 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeableMixi
 			let currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
 			let delta = this.properties.align === 'right' ? currentX - initialX : initialX - currentX;
 			const content = <HTMLElement> document.querySelector(`.${ this.baseTheme.content }`);
-			console.log(delta, contentWidth / 2);
 			if (delta > contentWidth / 2) {
 				lastX = Number(content.style[this.properties.align === 'right' ? 'right' : 'left']!.replace(/px$/, ''));
 				lastX = lastX === 0 ? 1 : lastX;
 				this.properties.onRequestClose && this.properties.onRequestClose();
 			}
-			else {
-				delta > 0 && content.classList.add(this.baseTheme.slideIn);
+			else if (delta > -5 && delta < 5 && (<HTMLElement> event.target).classList.contains(this.baseTheme.underlay)) {
+				this.properties.onRequestClose && this.properties.onRequestClose();
+			}
+			else if (delta > 0) {
+				content.classList.add(this.baseTheme.slideIn);
 			}
 		},
 
