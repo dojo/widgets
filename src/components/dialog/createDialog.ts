@@ -2,8 +2,8 @@ import { DNode, Widget, WidgetProperties, WidgetFactory } from '@dojo/widget-cor
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 
-import * as css from './styles/dialog';
-import * as animations from '../../styles/animations';
+import * as css from './styles/dialog.css';
+import * as animations from '../../styles/animations.css';
 import themeable, { Themeable } from '@dojo/widget-core/mixins/themeable';
 
 export interface DialogProperties extends WidgetProperties {
