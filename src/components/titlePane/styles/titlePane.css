@@ -1,0 +1,12 @@
+@import '../../../styles/variables.css';
+
+.title {
+	background-color: var(--title-bar-bg);
+	color: var(--title-bar-color);
+	font-size: var(--title-font-size);
+	padding: 5px;
+}
+
+.content {
+	padding: var(--content-padding);
+}
