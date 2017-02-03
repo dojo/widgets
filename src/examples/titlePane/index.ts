@@ -7,22 +7,27 @@ import createTitlePane from '../../components/titlePane/createTitlePane';
 
 type Root = Widget<WidgetProperties> & InternalState;
 
-const createApp = createWidgetBase.mixin(internalState).mixin({
+const createApp = createWidgetBase
+.mixin(internalState)
+.mixin({
 	mixin: {
 		getChildrenNodes: function(this: Root): DNode[] {
 			return [
 				w(createTitlePane, {
 					id: 'titlePane',
 					title: 'Title Pane Widget Title',
-					onClickTitle: () => {
-						console.log('title clicked');
+					collapsed: true,
+					onCollapse() {
+						console.log('collapsed');
 					},
-					childNodes: [ v('div', {
-						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							Quisque id purus ipsum. Aenean ac purus purus.
-							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-					}) ]
-				})
+					onExpand() {
+						console.log('expanded');
+					}
+				}, [ v('div', {
+					innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Quisque id purus ipsum. Aenean ac purus purus.
+						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+				}) ])
 			];
 		},
 		classes: [ 'main-app' ],
