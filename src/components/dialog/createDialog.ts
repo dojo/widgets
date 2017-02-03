@@ -4,7 +4,7 @@ import { v } from '@dojo/widget-core/d';
 
 import * as css from './styles/dialog.css';
 import * as animations from '../../styles/animations.css';
-import themeable, { Themeable } from '@dojo/widget-core/mixins/themeable';
+import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
 export interface DialogProperties extends WidgetProperties {
 	closeable?: boolean;
@@ -18,7 +18,7 @@ export interface DialogProperties extends WidgetProperties {
 	onRequestClose?(): void;
 };
 
-export type Dialog = Widget<DialogProperties> & Themeable & {
+export type Dialog = Widget<DialogProperties> & ThemeableMixin & {
 	onCloseClick?(): void;
 	onUnderlayClick?(): void;
 };
