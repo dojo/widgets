@@ -23,7 +23,6 @@
     "@dojo/i18n": "2.0.0-alpha.5",
     "@dojo/shim": "2.0.0-beta.8",
     "@dojo/widget-core": "^2.0.0-alpha.23",
-    "grunt-dojo2": "^2.0.0-beta.29",
     "maquette": ">=2.3.7 <=2.4.1"
   },
   "devDependencies": {
@@ -36,6 +35,7 @@
     "@types/jsdom": "2.0.*",
     "@types/sinon": "^1.16.31",
     "grunt": "^1.0.1",
+    "grunt-dojo2": "^2.0.0-beta.29",
     "intern": "^3.4.1",
     "istanbul": "^0.4.5",
     "jsdom": "^9.5.0",
