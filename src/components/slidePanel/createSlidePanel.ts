@@ -76,7 +76,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 
 			let currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
 			let delta = this.properties.align === 'right' ? currentX - initialX : initialX - currentX;
-			console.log(event);
+
 			// If the panel was swiped far enough to close
 			if (delta > contentWidth / 2) {
 				lastX = Number(content.style[this.properties.align === 'right' ? 'right' : 'left']!.replace(/px$/, ''));
