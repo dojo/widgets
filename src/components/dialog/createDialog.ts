@@ -1,11 +1,10 @@
-import { VNodeProperties } from '@dojo/interfaces/vdom';
 import { DNode, Widget, WidgetProperties, WidgetFactory } from '@dojo/widget-core/interfaces';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 
-import * as baseTheme from './styles/dialog';
-import * as animations from '../../styles/animations';
-import themeableMixin, { Themeable } from '@dojo/widget-core/mixins/themeable';
+import * as css from './styles/dialog.css';
+import * as animations from '../../styles/animations.css';
+import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
 export interface DialogProperties extends WidgetProperties {
 	closeable?: boolean;
@@ -19,79 +18,74 @@ export interface DialogProperties extends WidgetProperties {
 	onRequestClose?(): void;
 };
 
-export type Dialog = Widget<DialogProperties> & Themeable<typeof baseTheme> & {
+export type Dialog = Widget<DialogProperties> & ThemeableMixin & {
 	onCloseClick?(): void;
 	onUnderlayClick?(): void;
 };
 
 export interface DialogFactory extends WidgetFactory<Dialog, DialogProperties> { };
 
-const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin({
+const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
-		baseTheme,
+		baseClasses: css,
 
-		onCloseClick: function (this: Dialog) {
+		onCloseClick(this: Dialog) {
 			const { closeable = true } = this.properties;
 			closeable && this.properties.onRequestClose && this.properties.onRequestClose();
 		},
 
-		onUnderlayClick: function (this: Dialog) {
+		onUnderlayClick(this: Dialog) {
 			!this.properties.modal && this.onCloseClick && this.onCloseClick();
 		},
 
-		getChildrenNodes: function (this: Dialog): DNode[] {
+		render(this: Dialog): DNode {
 			const {
 				closeable = true,
 				enterAnimation = animations.fadeIn,
 				exitAnimation = animations.fadeOut,
 				title = '',
-				open = false
+				open = false,
+				underlay = false,
+				onOpen
 			} = this.properties;
 
-			let key = 0;
+			open && onOpen && onOpen();
 
-			const children: DNode[] = [
+			return v('div', {
+				'data-underlay': underlay ? 'true' : 'false',
+				'data-open': open ? 'true' : 'false'
+			}, open ? [
 				v('div', {
-					key: key++,
-					classes: this.theme.underlay,
+					key: 'underlay',
+					classes: this.classes(css.underlay).get(),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					onclick: this.onUnderlayClick
 				}),
 				v('div', {
-					key: key++,
-					classes: this.theme.main,
+					key: 'main',
+					classes: this.classes(css.main).get(),
 					enterAnimation: enterAnimation,
 					exitAnimation: exitAnimation
 				}, [
 					v('div', {
-						classes: this.theme.title
+						key: 'title',
+						classes: this.classes(css.title).get()
 					}, [
 						title,
 						closeable ? v('div', {
-							classes: this.theme.close,
+							classes: this.classes(css.close).get(),
 							innerHTML: '✕',
 							onclick: this.onCloseClick
 						}) : null
 					]),
 					v('div', {
-						classes: this.theme.content
+						key: 'content',
+						classes: this.classes(css.content).get()
 					}, this.children)
 				])
-			];
-
-			return open ? children : [];
-		},
-
-		nodeAttributes: [
-			function(this: Dialog): VNodeProperties {
-				this.properties.open && this.properties.onOpen && this.properties.onOpen();
-				return {
-					'data-underlay': this.properties.underlay ? 'true' : 'false',
-					'data-open': this.properties.open ? 'true' : 'false'
-				};
-			}
-		]
+			] : []);
+		}
 	}
 });
 

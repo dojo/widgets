@@ -1,11 +1,10 @@
-import { VNodeProperties } from '@dojo/interfaces/vdom';
 import { DNode, Widget, WidgetProperties, WidgetFactory } from '@dojo/widget-core/interfaces';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 
-import * as baseTheme from './styles/slidePanel';
-import * as animations from '../../styles/animations';
-import themeableMixin, { Themeable } from '@dojo/widget-core/mixins/themeable';
+import * as css from './styles/slidePanel.css';
+import * as animations from '../../styles/animations.css';
+import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
 export interface SlidePanelProperties extends WidgetProperties {
 	align?: string;
@@ -15,7 +14,7 @@ export interface SlidePanelProperties extends WidgetProperties {
 	onRequestClose?(): void;
 };
 
-export type SlidePanel = Widget<SlidePanelProperties> & Themeable<typeof baseTheme> & {
+export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
 	onSwipeStart?(event: TouchEvent & MouseEvent): void;
 	onSwipeMove?(event: TouchEvent & MouseEvent): void;
 	onSwipeEnd?(event: TouchEvent & MouseEvent): void;
@@ -23,118 +22,128 @@ export type SlidePanel = Widget<SlidePanelProperties> & Themeable<typeof baseThe
 
 export interface SlidePanelFactory extends WidgetFactory<SlidePanel, SlidePanelProperties> { };
 
+let content: HTMLElement;
+let contentWidth = 0;
 let initialX = 0;
 let lastX = 0;
-let contentWidth = 0;
-let wasOpen = false;
 let swiping = false;
+let wasOpen = false;
+
+function afterCreate(this: SlidePanel, element: HTMLElement) {
+	element.addEventListener('transitionend', onTransitionEnd.bind(this));
+	content = element;
+}
 
 function onTransitionEnd(this: SlidePanel, event: TransitionEvent) {
 	const content = (<HTMLElement> event.target);
-	content.classList.remove(this.baseTheme.slideIn, this.baseTheme.slideOut);
+	content.classList.remove(css.slideIn, css.slideOut);
 	content.style[this.properties.align === 'right' ? 'right' : 'left'] = '';
 }
 
-function afterUpdate(this: SlidePanel, element: HTMLElement) {
-	element.addEventListener('transitionend', onTransitionEnd.bind(this));
-}
-
-const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeableMixin).mixin({
+const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
-		baseTheme,
+		baseClasses: css,
 
-		onSwipeStart: function (this: SlidePanel, event: TouchEvent & MouseEvent) {
+		onSwipeStart(this: SlidePanel, event: TouchEvent & MouseEvent) {
 			event.stopPropagation();
 			event.preventDefault();
-			swiping = true;
+
+			contentWidth = content.clientWidth;
 			initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
 			lastX = 0;
-			const content = <HTMLElement> document.querySelector(`.${ this.baseTheme.content }`);
-			content.style.transition = '';
-			contentWidth = content.clientWidth;
+			swiping = true;
 		},
 
-		onSwipeMove: function (this: SlidePanel, event: TouchEvent & MouseEvent) {
+		onSwipeMove(this: SlidePanel, event: TouchEvent & MouseEvent) {
+			// Ignore mouse movement when not clicking
 			if (!swiping) {
 				return;
 			}
+
 			let currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
 			let delta = this.properties.align === 'right' ? currentX - initialX : initialX - currentX;
-			const content = <HTMLElement> document.querySelector(`.${ this.baseTheme.content }`);
-			if (delta > 0) {
-				content.style[this.properties.align === 'right' ? 'right' : 'left'] = -delta + 'px';
+
+			// Prevent panel from sliding past screen edge
+			if (delta <= 0) {
+				return;
 			}
+
+			content.style[this.properties.align === 'right' ? 'right' : 'left'] = -delta + 'px';
 		},
 
-		onSwipeEnd: function (this: SlidePanel, event: TouchEvent & MouseEvent) {
+		onSwipeEnd(this: SlidePanel, event: TouchEvent & MouseEvent) {
 			swiping = false;
+
 			let currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
 			let delta = this.properties.align === 'right' ? currentX - initialX : initialX - currentX;
-			const content = <HTMLElement> document.querySelector(`.${ this.baseTheme.content }`);
+			console.log(event);
+			// If the panel was swiped far enough to close
 			if (delta > contentWidth / 2) {
 				lastX = Number(content.style[this.properties.align === 'right' ? 'right' : 'left']!.replace(/px$/, ''));
 				lastX = lastX === 0 ? 1 : lastX;
 				this.properties.onRequestClose && this.properties.onRequestClose();
 			}
-			else if (delta > -5 && delta < 5 && (<HTMLElement> event.target).classList.contains(this.baseTheme.underlay)) {
+			// If the underlay was clicked
+			else if (delta > -5 && delta < 5 && (<HTMLElement> event.target).classList.contains(css.underlay)) {
 				this.properties.onRequestClose && this.properties.onRequestClose();
 			}
+			// If panel was not swiped far enough to close
 			else if (delta > 0) {
-				content.classList.add(this.baseTheme.slideIn);
+				content.classList.add(css.slideIn);
 			}
 		},
 
-		getChildrenNodes: function (this: SlidePanel): DNode[] {
+		render(this: SlidePanel): DNode {
 			const {
 				open = false,
-				align = 'left'
+				align = 'left',
+				underlay = false,
+				onOpen
 			} = this.properties;
-
-			let key = 0;
-
-			const underlay = v('div', {
-				key: key++,
-				classes: this.theme.underlay,
-				enterAnimation: animations.fadeIn,
-				exitAnimation: animations.fadeOut
-			});
 
 			const classes: {[key: string]: any} = {};
 			const styles: {[key: string]: any} = {};
 
-			classes[this.baseTheme.content] = true;
-			classes[this.baseTheme.slideIn] = open && !wasOpen ? true : false;
-			classes[this.baseTheme.slideOut] = !open && wasOpen ? true : false;
+			classes[css.content] = true;
+			// If panel is opening
+			classes[css.slideIn] = open && !wasOpen ? true : false;
+			// If panel is closing
+			classes[css.slideOut] = !open && wasOpen ? true : false;
+			// If panel is closing because of swipe
 			styles[align] = !open && wasOpen && lastX !== 0 ? lastX + 'px' : '';
 
 			const content = v('div', {
-				key: key++,
+				key: 'content',
 				classes: classes,
 				styles: styles,
-				afterUpdate: afterUpdate
+				afterCreate: afterCreate
 			}, this.children);
 
+			open && onOpen && onOpen();
 			wasOpen = open;
 
-			return open ? [underlay, content] : [content];
-		},
-
-		nodeAttributes: [
-			function(this: SlidePanel): VNodeProperties {
-				this.properties.open && this.properties.onOpen && this.properties.onOpen();
-				return {
-					'data-open': this.properties.open ? 'true' : 'false',
-					'data-underlay': this.properties.underlay ? 'true' : 'false',
-					'data-align': this.properties.align || 'left',
-					ontouchstart: this.onSwipeStart,
-					ontouchmove: this.onSwipeMove,
-					ontouchend: this.onSwipeEnd,
-					onmousedown: this.onSwipeStart,
-					onmousemove: this.onSwipeMove,
-					onmouseup: this.onSwipeEnd
-				};
-			}
-		]
+			return v('div', {
+				'data-open': String(open),
+				'data-underlay': String(underlay),
+				'data-align': align,
+				ontouchstart: this.onSwipeStart,
+				ontouchmove: this.onSwipeMove,
+				ontouchend: this.onSwipeEnd,
+				onmousedown: this.onSwipeStart,
+				onmousemove: this.onSwipeMove,
+				onmouseup: this.onSwipeEnd
+			}, open ? [
+				v('div', {
+					key: 'underlay',
+					classes: this.classes(css.underlay).get(),
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut
+				}),
+				content
+			] : [
+				content
+			]);
+		}
 	}
 });
 

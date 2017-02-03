@@ -5,9 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 </head>
 <body>
-	<script src="../../../../node_modules/@dojo/loader/loader.min.js"></script>
+	<script src="../../../../../node_modules/@dojo/loader/loader.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/maquette/2.4.2/css-transitions.min.js"></script>
-	<link rel="stylesheet" href="../../styles/widgets.css">
+	<link rel="stylesheet" href="../../../../src/styles/widgets.css">
 	<style>
 		html,
 		body {
@@ -17,8 +17,9 @@
 	</style>
 	<script>
 		require.config({
-			baseUrl: '../../../../',
+			baseUrl: '../../../../../',
 			packages: [
+				{ name: 'tests', location: '_build/tests' },
 				{ name: 'src', location: '_build/src' },
 				{ name: '@dojo', location: 'node_modules/@dojo' },
 				{ name: 'maquette', location: 'node_modules/maquette/dist', main: 'maquette' }
@@ -26,7 +27,7 @@
 		});
 
 		/* Requiring in the main module */
-		require([ 'src/examples/slidePanel/index' ], function () {});
+		require([ 'tests/functional/components/slidePanel/index' ], function () {});
 	</script>
 </body>
 </html>

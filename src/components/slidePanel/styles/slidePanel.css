@@ -1,61 +1,61 @@
 @import '../../../styles/variables.css';
 
 .underlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 [data-underlay="true"] .underlay {
-    background: var(--underlay-bg);
+	background: var(--underlay-bg);
 }
 
 .content {
-    font: var(--base-font);
-    width: var(--slide-panel-width);
-    height: 100%;
-    position: fixed;
-    top: 0;
-    background-color: var(--title-bar-bg);
+	font: var(--base-font);
+	width: var(--slide-panel-width);
+	height: 100%;
+	position: fixed;
+	top: 0;
+	background-color: var(--title-bar-bg);
 	color: var(--title-bar-color);
-    padding: var(--content-padding);
-    box-sizing: border-box;
+	padding: var(--content-padding);
+	box-sizing: border-box;
 }
 
 [data-align="left"] .content {
-    left: -var(--slide-panel-width);
+	left: -var(--slide-panel-width);
 }
 
 [data-align="right"] .content {
-    right: -var(--slide-panel-width);
+	right: -var(--slide-panel-width);
 }
 
 [data-open="true"][data-align="left"] .content {
-    left: 0;
+	left: 0;
 }
 
 [data-open="true"][data-align="right"] .content {
-    right: 0;
+	right: 0;
 }
 
 [data-align="left"] .content.slideOut {
-    transition: left ease-in-out var(--short-animation-duration);
-    left: -var(--slide-panel-width) !important;
+	transition: left ease-in-out var(--short-animation-duration);
+	left: -var(--slide-panel-width) !important;
 }
 
 [data-align="right"] .content.slideOut {
-    transition: right ease-in-out var(--short-animation-duration);
-    right: -var(--slide-panel-width) !important;
+	transition: right ease-in-out var(--short-animation-duration);
+	right: -var(--slide-panel-width) !important;
 }
 
 [data-align="left"] .content.slideIn {
-    transition: left ease-in-out var(--short-animation-duration);
-    left: 0 !important;
+	transition: left ease-in-out var(--short-animation-duration);
+	left: 0 !important;
 }
 
 [data-align="right"] .content.slideIn {
-    transition: right ease-in-out var(--short-animation-duration);
-    right: 0 !important;
+	transition: right ease-in-out var(--short-animation-duration);
+	right: 0 !important;
 }
