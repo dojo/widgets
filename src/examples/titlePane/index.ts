@@ -14,20 +14,56 @@ const createApp = createWidgetBase
 		getChildrenNodes: function(this: Root): DNode[] {
 			return [
 				w(createTitlePane, {
-					id: 'titlePane',
-					title: 'Title Pane Widget Title',
-					collapsed: true,
-					onCollapse() {
-						console.log('collapsed');
+					id: 'titlePane1',
+					title: 'Title Pane Widget With collapsible=false',
+					collapsible: false,
+					onRequestCollapse: () => {
+						alert('onRequestCollapse should never get called');
 					},
-					onExpand() {
-						console.log('expanded');
+					onRequestExpand: () => {
+						alert('onRequestExpand should never get called');
 					}
-				}, [ v('div', {
-					innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Quisque id purus ipsum. Aenean ac purus purus.
-						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-				}) ])
+				}, [
+					v('div', {
+						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+					})
+				]),
+				w(createTitlePane, {
+					id: 'titlePane2',
+					title: 'Title Pane Widget (collapsible)',
+					collapsed: <boolean> this.state['t2collapsed'],
+					onRequestCollapse: () => {
+						this.setState({ t2collapsed: true });
+					},
+					onRequestExpand: () => {
+						this.setState({ t2collapsed: false });
+					}
+				}, [
+					v('div', {
+						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+					})
+				]),
+				w(createTitlePane, {
+					id: 'titlePane3',
+					title: 'Title Pane Widget with collapsed=true',
+					collapsed: <boolean> (this.state['t3collapsed'] === undefined ? true : this.state['t3collapsed']),
+					onRequestCollapse: () => {
+						this.setState({ t3collapsed: true });
+					},
+					onRequestExpand: () => {
+						this.setState({ t3collapsed: false });
+					}
+				}, [
+					v('div', {
+						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+					})
+				])
 			];
 		},
 		classes: [ 'main-app' ],

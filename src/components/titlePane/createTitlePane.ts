@@ -1,68 +1,73 @@
+import { VNodeProperties } from '@dojo/interfaces/vdom';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 import { DNode, Widget, WidgetFactory, WidgetProperties } from '@dojo/widget-core/interfaces';
-import internalStateFactory, { InternalState } from '@dojo/widget-core/mixins/internalState';
 import themeableMixin, { Themeable } from '@dojo/widget-core/mixins/themeable';
 
 import * as baseTheme from './styles/titlePane';
 
 export interface TitlePaneProperties extends WidgetProperties {
-	// TODO: set default state from properties
 	collapsed?: boolean;
-	// TODO: add logic for this
 	collapsible?: boolean;
 	// TODO: title should not be optional
 	title?: string;
 
-	onCollapse?(): void;
-	onExpand?(): void;
+	onRequestCollapse?(): void;
+	onRequestExpand?(): void;
 };
 
-export type TitlePane = Widget<TitlePaneProperties> & InternalState & Themeable<typeof baseTheme> & {
+export type TitlePane = Widget<TitlePaneProperties> & Themeable<typeof baseTheme> & {
 	onClickTitle?(): void;
 };
 
 export interface TitlePaneFactory extends WidgetFactory<TitlePane, TitlePaneProperties> { };
 
 const createTitlePane: TitlePaneFactory = createWidgetBase
-.mixin(internalStateFactory)
 .mixin(themeableMixin)
 .mixin({
 	mixin: {
-		// TODO: what is the right way to do this?
+		// FIXME
 		baseTheme: (<any> baseTheme).default.classes,
 
 		onClickTitle: function (this: TitlePane) {
-			// TODO: any
-			const collapsed = !(<any> this.state).collapsed;
+			const {
+				properties: {
+					collapsed = false
+				}
+			} = this;
 
 			if (collapsed) {
-				this.properties.onCollapse && this.properties.onCollapse();
+				this.properties.onRequestExpand && this.properties.onRequestExpand();
 			}
 			else {
-				this.properties.onExpand && this.properties.onExpand();
+				this.properties.onRequestCollapse && this.properties.onRequestCollapse();
 			}
-
-			this.setState({
-				collapsed
-			});
 		},
 
 		getChildrenNodes: function (this: TitlePane): DNode[] {
 			const {
+				collapsed = false,
+				collapsible = true,
 				title = ''
 			} = this.properties;
 
-			const {
-				collapsed
-			} = this.state;
+			const titleProperties: VNodeProperties = { classes: {} };
+
+			// FIXME
+			Object.keys(this.theme.title).forEach(function (className) {
+				(<any> titleProperties.classes)[className] = true;
+			});
+
+			if (collapsible) {
+				// FIXME
+				Object.keys(this.theme.collapsible).forEach(function (className) {
+					(<any> titleProperties.classes)[className] = true;
+				});
+				titleProperties.onclick = this.onClickTitle;
+			}
 
 			const children: DNode[] = [
-				v('div', {
-					// TODO: also apply 'collapsible' class if appropriate
-					classes: this.theme.title,
-					onclick: this.onClickTitle
-				}, [ title ])
+				v('div', titleProperties, [ title ])
 			];
 
 			if (!collapsed) {
