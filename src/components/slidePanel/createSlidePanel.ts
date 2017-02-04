@@ -1,6 +1,7 @@
 import { DNode, Widget, WidgetProperties, WidgetFactory } from '@dojo/widget-core/interfaces';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
+import WeakMap from '@dojo/shim/WeakMap';
 
 import * as css from './styles/slidePanel.css';
 import * as animations from '../../styles/animations.css';
