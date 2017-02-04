@@ -19,6 +19,8 @@ export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
 	onSwipeStart?(event: MouseEvent & TouchEvent): void;
 	onSwipeMove?(event: MouseEvent & TouchEvent): void;
 	onSwipeEnd?(event: MouseEvent & TouchEvent): void;
+	afterCreate?(element: HTMLElement): void;
+	onTransitionEnd?(event: TransitionEvent): void;
 };
 
 export interface SlidePanelFactory extends WidgetFactory<SlidePanel, SlidePanelProperties> { };
@@ -28,17 +30,6 @@ let initialX = 0;
 let transform = 0;
 let swiping = false;
 let wasOpen = false;
-
-function afterCreate(this: SlidePanel, element: HTMLElement) {
-	element.addEventListener('transitionend', onTransitionEnd.bind(this));
-	content = element;
-}
-
-function onTransitionEnd(this: SlidePanel, event: TransitionEvent) {
-	const content = (<HTMLElement> event.target);
-	content.classList.remove(css.slideIn, css.slideOut);
-	content.style.transform = '';
-}
 
 const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
@@ -105,6 +96,17 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			}
 		},
 
+		afterCreate(this: SlidePanel, element: HTMLElement) {
+			element.addEventListener('transitionend', this.onTransitionEnd!);
+			content = element;
+		},
+
+		onTransitionEnd(this: SlidePanel, event: TransitionEvent) {
+			const content = (<HTMLElement> event.target);
+			content.classList.remove(css.slideIn, css.slideOut);
+			content.style.transform = '';
+		},
+
 		render(this: SlidePanel): DNode {
 			const {
 				open = false,
@@ -130,7 +132,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				key: 'content',
 				classes: classes,
 				styles: styles,
-				afterCreate: afterCreate
+				afterCreate: this.afterCreate
 			}, this.children);
 
 			open && onOpen && onOpen();
