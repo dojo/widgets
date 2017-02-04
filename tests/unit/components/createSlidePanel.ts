@@ -146,6 +146,14 @@ registerSuite({
 			}
 		});
 
+		slidePanel.afterCreate!(<any> {
+			addEventListener() {},
+			classList: {
+				add() {}
+			},
+			style: {}
+		});
+
 		slidePanel.onSwipeMove!(createEvent('touchmove', 150));
 		slidePanel.onSwipeStart!(createEvent('touchstart', 300));
 		slidePanel.onSwipeMove!(createEvent('touchmove', 150));
@@ -191,6 +199,14 @@ registerSuite({
 					called = true;
 				}
 			}
+		});
+
+		slidePanel.afterCreate!(<any> {
+			addEventListener() {},
+			classList: {
+				add() {}
+			},
+			style: {}
 		});
 
 		slidePanel.onSwipeStart!(createEvent('touchstart', 300));
@@ -269,7 +285,6 @@ registerSuite({
 		slidePanel.onSwipeStart!(createEvent('touchstart', 300));
 		slidePanel.onSwipeMove!(createEvent('touchmove', 400));
 		slidePanel.onSwipeEnd!(createEvent('touchend', 500));
-
 		const vnode = <VNode> slidePanel.__render__();
 
 		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
