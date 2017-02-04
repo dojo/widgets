@@ -10,22 +10,22 @@ export interface SlidePanelProperties extends WidgetProperties {
 	align?: string;
 	open?: boolean;
 	underlay?: boolean;
+	width?: number;
 	onOpen?(): void;
 	onRequestClose?(): void;
 };
 
 export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
-	onSwipeStart?(event: TouchEvent & MouseEvent): void;
-	onSwipeMove?(event: TouchEvent & MouseEvent): void;
-	onSwipeEnd?(event: TouchEvent & MouseEvent): void;
+	onSwipeStart?(event: MouseEvent & TouchEvent): void;
+	onSwipeMove?(event: MouseEvent & TouchEvent): void;
+	onSwipeEnd?(event: MouseEvent & TouchEvent): void;
 };
 
 export interface SlidePanelFactory extends WidgetFactory<SlidePanel, SlidePanelProperties> { };
 
 let content: HTMLElement;
-let contentWidth = 0;
 let initialX = 0;
-let lastX = 0;
+let transform = 0;
 let swiping = false;
 let wasOpen = false;
 
@@ -37,59 +37,71 @@ function afterCreate(this: SlidePanel, element: HTMLElement) {
 function onTransitionEnd(this: SlidePanel, event: TransitionEvent) {
 	const content = (<HTMLElement> event.target);
 	content.classList.remove(css.slideIn, css.slideOut);
-	content.style[this.properties.align === 'right' ? 'right' : 'left'] = '';
+	content.style.transform = '';
 }
 
 const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
 		baseClasses: css,
 
-		onSwipeStart(this: SlidePanel, event: TouchEvent & MouseEvent) {
+		onSwipeStart(this: SlidePanel, event: MouseEvent & TouchEvent) {
 			event.stopPropagation();
 			event.preventDefault();
 
-			contentWidth = content.clientWidth;
 			initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
-			lastX = 0;
+			transform = 0;
 			swiping = true;
 		},
 
-		onSwipeMove(this: SlidePanel, event: TouchEvent & MouseEvent) {
+		onSwipeMove(this: SlidePanel, event: MouseEvent & TouchEvent) {
 			// Ignore mouse movement when not clicking
 			if (!swiping) {
 				return;
 			}
 
+			const {
+				width = 256,
+				align = 'left'
+			} = this.properties;
+
 			let currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
-			let delta = this.properties.align === 'right' ? currentX - initialX : initialX - currentX;
+			let delta = align === 'right' ? currentX - initialX : initialX - currentX;
+			transform = 100 * delta / width;
 
 			// Prevent panel from sliding past screen edge
 			if (delta <= 0) {
 				return;
 			}
 
-			content.style[this.properties.align === 'right' ? 'right' : 'left'] = -delta + 'px';
+			if (content) {
+				content.style.transform =  `translateX(${ align === 'left' ? '-' : '' }${ transform }%)`;
+			}
 		},
 
-		onSwipeEnd(this: SlidePanel, event: TouchEvent & MouseEvent) {
+		onSwipeEnd(this: SlidePanel, event: MouseEvent & TouchEvent) {
 			swiping = false;
 
+			const {
+				width = 256,
+				align = 'left',
+				onRequestClose
+			} = this.properties;
+
 			let currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
-			let delta = this.properties.align === 'right' ? currentX - initialX : initialX - currentX;
+			let delta = align === 'right' ? currentX - initialX : initialX - currentX;
 
 			// If the panel was swiped far enough to close
-			if (delta > contentWidth / 2) {
-				lastX = Number(content.style[this.properties.align === 'right' ? 'right' : 'left']!.replace(/px$/, ''));
-				lastX = lastX === 0 ? 1 : lastX;
-				this.properties.onRequestClose && this.properties.onRequestClose();
+			if (delta > width / 2) {
+				transform = 100 * delta / width;
+				onRequestClose && onRequestClose();
 			}
 			// If the underlay was clicked
 			else if (delta > -5 && delta < 5 && (<HTMLElement> event.target).classList.contains(css.underlay)) {
-				this.properties.onRequestClose && this.properties.onRequestClose();
+				onRequestClose && onRequestClose();
 			}
 			// If panel was not swiped far enough to close
 			else if (delta > 0) {
-				content.classList.add(css.slideIn);
+				content && content.classList.add(css.slideIn);
 			}
 		},
 
@@ -110,7 +122,9 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			// If panel is closing
 			classes[css.slideOut] = !open && wasOpen ? true : false;
 			// If panel is closing because of swipe
-			styles[align] = !open && wasOpen && lastX !== 0 ? lastX + 'px' : '';
+			if (!open && wasOpen && transform !== 0) {
+				styles['transform'] = `translateX(${ align === 'left' ? '-' : '' }${ transform }%)`;
+			}
 
 			const content = v('div', {
 				key: 'content',
@@ -140,9 +154,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 					exitAnimation: animations.fadeOut
 				}),
 				content
-			] : [
-				content
-			]);
+			] : [ content ]);
 		}
 	}
 });

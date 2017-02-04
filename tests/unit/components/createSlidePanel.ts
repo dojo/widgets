@@ -59,11 +59,5 @@ registerSuite({
 		});
 		<VNode> slidePanel.__render__();
 		assert.isTrue(called, 'onOpen should be called');
-	},
-
-	'click underlay to close'() {
-		const slidePanel = createSlidePanel({});
-		<VNode> slidePanel.__render__();
-		// assert.isTrue(called, 'onOpen should be called');
 	}
 });

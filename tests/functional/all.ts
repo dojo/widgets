@@ -1,1 +1,1 @@
-import './components/slidePanel/createSlidePanel';
+export const removeThis = 1;

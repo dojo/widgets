@@ -25,37 +25,39 @@
 }
 
 [data-align="left"] .content {
-	left: -var(--slide-panel-width);
+	left: 0;
+	transform: translateX(-100%)
 }
 
 [data-align="right"] .content {
-	right: -var(--slide-panel-width);
+	right: 0;
+	transform: translateX(100%);
 }
 
 [data-open="true"][data-align="left"] .content {
-	left: 0;
+	transform: translateX(0%);
 }
 
 [data-open="true"][data-align="right"] .content {
-	right: 0;
+	transform: translateX(0%)
 }
 
 [data-align="left"] .content.slideOut {
-	transition: left ease-in-out var(--short-animation-duration);
-	left: -var(--slide-panel-width) !important;
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(-100%) !important;
 }
 
 [data-align="right"] .content.slideOut {
-	transition: right ease-in-out var(--short-animation-duration);
-	right: -var(--slide-panel-width) !important;
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(100%) !important;
 }
 
 [data-align="left"] .content.slideIn {
-	transition: left ease-in-out var(--short-animation-duration);
-	left: 0 !important;
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(0%) !important;
 }
 
 [data-align="right"] .content.slideIn {
-	transition: right ease-in-out var(--short-animation-duration);
-	right: 0 !important;
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(0%) !important;
 }
