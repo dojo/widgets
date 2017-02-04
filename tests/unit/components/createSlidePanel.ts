@@ -203,7 +203,7 @@ registerSuite({
 	'panel cannot be moved past screen edge'() {
 		const slidePanel = createSlidePanel({});
 
-		let element: any = {
+		const element: any = {
 			addEventListener() {},
 			classList: {
 				add() {}
@@ -222,7 +222,7 @@ registerSuite({
 	'classes and transform removed after transition'() {
 		let called = false;
 
-		let event: any = {
+		const event: any = {
 			target: {
 				addEventListener() {},
 				classList: {
@@ -252,7 +252,7 @@ registerSuite({
 		slidePanel.onSwipeStart!(createEvent('touchstart', 300));
 		slidePanel.onSwipeMove!(createEvent('touchmove', 150));
 		slidePanel.onSwipeEnd!(createEvent('touchend', 50));
-		let vnode = <VNode> slidePanel.__render__();
+		const vnode = <VNode> slidePanel.__render__();
 
 		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
 	},
@@ -270,7 +270,7 @@ registerSuite({
 		slidePanel.onSwipeMove!(createEvent('touchmove', 400));
 		slidePanel.onSwipeEnd!(createEvent('touchend', 500));
 
-		let vnode = <VNode> slidePanel.__render__();
+		const vnode = <VNode> slidePanel.__render__();
 
 		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
 	}

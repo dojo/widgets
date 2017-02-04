@@ -108,13 +108,10 @@ registerSuite({
 				title: 'foo'
 			}
 		});
-
+		const vnode = <VNode> dialog.__render__();
 		dialog.onCloseClick && dialog.onCloseClick();
 
 		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
-
-		const vnode = <VNode> dialog.__render__();
-
 		assert.isUndefined(vnode.children![1].children![0].children, 'close button should not render if closeable is false');
 	}
 });
