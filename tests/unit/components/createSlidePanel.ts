@@ -33,6 +33,7 @@ registerSuite({
 				underlay: true
 			}
 		});
+
 		assert.strictEqual(slidePanel.properties.id, 'foo');
 		assert.strictEqual(slidePanel.properties.align, 'left');
 		assert.isTrue(slidePanel.properties.open);
@@ -47,6 +48,7 @@ registerSuite({
 			}
 		});
 		let vnode = <VNode> slidePanel.__render__();
+
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
 		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
 		assert.strictEqual(vnode.properties!['data-open'], 'false');
@@ -58,6 +60,7 @@ registerSuite({
 			align: 'right'
 		});
 		vnode = <VNode> slidePanel.__render__();
+
 		assert.strictEqual(vnode.properties!['data-underlay'], 'true');
 		assert.strictEqual(vnode.properties!['data-open'], 'true');
 		assert.strictEqual(vnode.properties!['data-align'], 'right');
@@ -76,9 +79,7 @@ registerSuite({
 			}
 		});
 		<VNode> slidePanel.__render__();
-		slidePanel.setProperties({ open: false });
 
-		<VNode> slidePanel.__render__();
 		assert.isTrue(called, 'onOpen should be called');
 	},
 
@@ -87,7 +88,9 @@ registerSuite({
 
 		const slidePanel = createSlidePanel({
 			properties: {
-				onRequestClose() { called = true; }
+				onRequestClose() {
+					called = true;
+				}
 			}
 		});
 
@@ -102,7 +105,9 @@ registerSuite({
 
 		const slidePanel = createSlidePanel({
 			properties: {
-				onRequestClose() { called = true; }
+				onRequestClose() {
+					called = true;
+				}
 			}
 		});
 
@@ -117,7 +122,9 @@ registerSuite({
 
 		const slidePanel = createSlidePanel({
 			properties: {
-				onRequestClose() { called = true; }
+				onRequestClose() {
+					called = true;
+				}
 			}
 		});
 
@@ -125,7 +132,7 @@ registerSuite({
 		slidePanel.onSwipeMove!(createEvent('mousemove', 150));
 		slidePanel.onSwipeEnd!(createEvent('mouseup', 50));
 
-		assert.isTrue(called, 'onRequestClose should be called if dragged far enough to close');
+		assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
 	},
 
 	'swipe to close'() {
@@ -133,14 +140,10 @@ registerSuite({
 
 		const slidePanel = createSlidePanel({
 			properties: {
-				onRequestClose() { called = true; }
+				onRequestClose() {
+					called = true;
+				}
 			}
-		});
-
-		slidePanel.afterCreate!(<any> {
-			addEventListener() {},
-			classList: { add() {} },
-			style: {}
 		});
 
 		slidePanel.onSwipeMove!(createEvent('touchmove', 150));
@@ -148,7 +151,7 @@ registerSuite({
 		slidePanel.onSwipeMove!(createEvent('touchmove', 150));
 		slidePanel.onSwipeEnd!(createEvent('touchend', 50));
 
-		assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close');
+		assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
 	},
 
 	'swipe to close right'() {
@@ -156,7 +159,9 @@ registerSuite({
 
 		const slidePanel = createSlidePanel({
 			properties: {
-				onRequestClose() { called = true; },
+				onRequestClose() {
+					called = true;
+				},
 				width: 256,
 				align: 'right'
 			}
@@ -164,7 +169,9 @@ registerSuite({
 
 		slidePanel.afterCreate!(<any> {
 			addEventListener() {},
-			classList: { add() {} },
+			classList: {
+				add() {}
+			},
 			style: {}
 		});
 
@@ -180,7 +187,9 @@ registerSuite({
 
 		const slidePanel = createSlidePanel({
 			properties: {
-				onRequestClose() { called = true; }
+				onRequestClose() {
+					called = true;
+				}
 			}
 		});
 
@@ -196,14 +205,16 @@ registerSuite({
 
 		let element: any = {
 			addEventListener() {},
-			classList: { add() {} },
+			classList: {
+				add() {}
+			},
 			style: { transform: '' }
 		};
 
 		slidePanel.afterCreate!(element);
-
 		slidePanel.onSwipeStart!(createEvent('touchstart', 300));
 		slidePanel.onSwipeMove!(createEvent('touchmove', 400));
+		slidePanel.onSwipeEnd!(createEvent('touchmove', 500));
 
 		assert.strictEqual(element.style.transform, '', 'trnasform should not be applied if panel is at screen edge');
 	},
@@ -221,9 +232,7 @@ registerSuite({
 						assert.strictEqual(arguments[1], css.slideOut, 'slideOut class should be removed after transition');
 					}
 				},
-				style: {
-					transform: 'foobar'
-				}
+				style: { transform: 'foobar' }
 			}
 		};
 
@@ -239,13 +248,30 @@ registerSuite({
 			properties: { open: true }
 		});
 		<VNode> slidePanel.__render__();
-
 		slidePanel.setProperties({ open: false });
 		slidePanel.onSwipeStart!(createEvent('touchstart', 300));
 		slidePanel.onSwipeMove!(createEvent('touchmove', 150));
 		slidePanel.onSwipeEnd!(createEvent('touchend', 50));
+		let vnode = <VNode> slidePanel.__render__();
+
+		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
+	},
+
+	'last transform is applied on next render if being swiped closed right'() {
+		const slidePanel = createSlidePanel({
+			properties: { open: true }
+		});
+		<VNode> slidePanel.__render__();
+		slidePanel.setProperties({
+			open: false,
+			align: 'right'
+		});
+		slidePanel.onSwipeStart!(createEvent('touchstart', 300));
+		slidePanel.onSwipeMove!(createEvent('touchmove', 400));
+		slidePanel.onSwipeEnd!(createEvent('touchend', 500));
 
 		let vnode = <VNode> slidePanel.__render__();
-		assert.isDefined(vnode.children![0].properties!.styles, 'transform should be applied');
+
+		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
 	}
 });
