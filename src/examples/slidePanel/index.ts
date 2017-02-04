@@ -30,7 +30,7 @@ const createApp = createWidgetBase.mixin(internalState).mixin({
 					underlay: <boolean> this.state['underlay'],
 					align: <string> this.state['align'],
 					onRequestClose: () => {
-						this.setState({ open: false });
+						this.setState({ open: true });
 					}
 				}, [
 					`Lorem ipsum dolor sit amet, consectetur adipiscing elit.

@@ -68,7 +68,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			if (delta <= 0) {
 				return;
 			}
-			
+
 			if (content) {
 				// Move the panel
 				content.style.transform =  `translateX(${ align === 'left' ? '-' : '' }${ transform }%)`;
