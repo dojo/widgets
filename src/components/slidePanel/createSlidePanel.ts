@@ -39,9 +39,11 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			event.stopPropagation();
 			event.preventDefault();
 
-			initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
-			transform = 0;
 			swiping = true;
+			// Cache initial pointer position
+			initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
+			// Clear out the last transform applied
+			transform = 0;
 		},
 
 		onSwipeMove(this: SlidePanel, event: MouseEvent & TouchEvent) {
@@ -55,16 +57,20 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				align = 'left'
 			} = this.properties;
 
+			// Current pointer position
 			let currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
+			// Difference between current and initial pointer position
 			let delta = align === 'right' ? currentX - initialX : initialX - currentX;
+			// Transform to apply
 			transform = 100 * delta / width;
 
 			// Prevent panel from sliding past screen edge
 			if (delta <= 0) {
 				return;
 			}
-
+			
 			if (content) {
+				// Move the panel
 				content.style.transform =  `translateX(${ align === 'left' ? '-' : '' }${ transform }%)`;
 			}
 		},
@@ -78,11 +84,14 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				onRequestClose
 			} = this.properties;
 
+			// Current pointer position
 			let currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
+			// Difference between current and initial pointer position
 			let delta = align === 'right' ? currentX - initialX : initialX - currentX;
 
 			// If the panel was swiped far enough to close
 			if (delta > width / 2) {
+				// Cache the transform to apply on next render
 				transform = 100 * delta / width;
 				onRequestClose && onRequestClose();
 			}
@@ -92,6 +101,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			}
 			// If panel was not swiped far enough to close
 			else if (delta > 0) {
+				// Animate the panel back open
 				content && content.classList.add(css.slideIn);
 			}
 		},
@@ -125,6 +135,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			classes[css.slideOut] = !open && wasOpen ? true : false;
 			// If panel is closing because of swipe
 			if (!open && wasOpen && transform !== 0) {
+				// Position panel using last cached transform
 				styles['transform'] = `translateX(${ align === 'left' ? '-' : '' }${ transform }%)`;
 			}
 
