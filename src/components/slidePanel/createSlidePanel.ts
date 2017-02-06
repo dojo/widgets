@@ -69,9 +69,9 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			} = this.properties;
 
 			// Current pointer position
-			let currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
+			const currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
 			// Difference between current and initial pointer position
-			let delta = align === 'right' ? currentX - state.initialX : state.initialX - currentX;
+			const delta = align === 'right' ? currentX - state.initialX : state.initialX - currentX;
 			// Transform to apply
 			state.transform = 100 * delta / width;
 
@@ -99,9 +99,9 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			} = this.properties;
 
 			// Current pointer position
-			let currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
+			const currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
 			// Difference between current and initial pointer position
-			let delta = align === 'right' ? currentX - state.initialX : state.initialX - currentX;
+			const delta = align === 'right' ? currentX - state.initialX : state.initialX - currentX;
 
 			// If the panel was swiped far enough to close
 			if (delta > width / 2) {
@@ -145,23 +145,25 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				onOpen
 			} = this.properties;
 
-			const classes: {[key: string]: any} = {};
 			const styles: {[key: string]: any} = {};
+			const classes = [css.content];
 
-			classes[css.content] = true;
 			// If panel is opening
-			classes[css.slideIn] = open && !state.wasOpen ? true : false;
+			if (open && !state.wasOpen) {
+				classes.push(css.slideIn);
+			}
 			// If panel is closing
-			classes[css.slideOut] = !open && state.wasOpen ? true : false;
-			// If panel is closing because of swipe
-			if (!open && state.wasOpen && state.transform !== 0) {
-				// Position panel using last cached transform
-				styles['transform'] = `translateX(${ align === 'left' ? '-' : '' }${ state.transform }%)`;
+			else if (!open && state.wasOpen) {
+				classes.push(css.slideOut);
+				// If panel is closing because of swipe
+				if (state.transform !== 0) {
+					styles['transform'] = `translateX(${ align === 'left' ? '-' : '' }${ state.transform }%)`;
+				}
 			}
 
 			const content = v('div', {
 				key: 'content',
-				classes: classes,
+				classes: this.classes(...classes).get(),
 				styles: styles,
 				afterCreate: this.afterCreate
 			}, this.children);

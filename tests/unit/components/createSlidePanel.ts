@@ -83,6 +83,17 @@ registerSuite({
 		assert.isTrue(called, 'onOpen should be called');
 	},
 
+	'change property to close'() {
+		const slidePanel = createSlidePanel({
+			properties: { open: true }
+		});
+		<VNode> slidePanel.__render__();
+		slidePanel.setProperties({ open: false });
+		<VNode> slidePanel.__render__();
+
+		assert.isFalse(slidePanel.properties.open, 'open property should be false when changed via `setProperties`');
+	},
+
 	'click underlay to close'() {
 		let called = false;
 
