@@ -6,6 +6,21 @@ import * as css from './styles/dialog.css';
 import * as animations from '../../styles/animations.css';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
+/**
+ * @type DialogProperties
+ *
+ * Properties that can be set on a Dialog component
+ *
+ * @property	{boolean?}		closeable		Determines whether the dialog can be closed
+ * @property	{string?}		enterAnimation	CSS class to apply to the dialog when opened
+ * @property	{string?}		exitAnimation	CSS class to apply to the dialog when closed
+ * @property	{boolean?}		modal			Determines whether the dialog can be closed by clicking outside its content
+ * @property	{boolean?}		open			Determines whether the dialog is open or closed
+ * @property	{string?}		title			Title to show in the dialog title bar
+ * @property	{boolean?}		underlay		Determines whether a semi-transparent background shows behind the dialog
+ * @property	{Function?}		onOpen			Called when the dialog opens
+ * @property	{Function?}		onRequestClose	Called when the dialog is closed
+ */
 export interface DialogProperties extends WidgetProperties {
 	closeable?: boolean;
 	enterAnimation?: string;
@@ -18,11 +33,24 @@ export interface DialogProperties extends WidgetProperties {
 	onRequestClose?(): void;
 };
 
+/**
+ * @type Dialog
+ *
+ * A Dialog component
+ *
+ * @property	{Function?}		onCloseClick		Event handler for when the close button is clicked
+ * @property	{Function?}		onUnderlayClick		Event handler for when a click occurs outside the dialog
+ */
 export type Dialog = Widget<DialogProperties> & ThemeableMixin & {
 	onCloseClick?(): void;
 	onUnderlayClick?(): void;
 };
 
+/**
+ * @type DialogFactory
+ *
+ * Widget factory that creates a Dialog component
+ */
 export interface DialogFactory extends WidgetFactory<Dialog, DialogProperties> { };
 
 const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({

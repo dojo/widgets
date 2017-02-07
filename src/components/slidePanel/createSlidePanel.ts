@@ -7,6 +7,18 @@ import * as css from './styles/slidePanel.css';
 import * as animations from '../../styles/animations.css';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
+/**
+ * @type SlidePanelProperties
+ *
+ * Properties that can be set on a SlidePanel component
+ *
+ * @property	{string?}		align			The position of the panel on the screen ('left' or 'right')
+ * @property	{boolean?}		open			Determines whether the panel is open or closed
+ * @property	{boolean?}		underlay		Determines whether a semi-transparent background shows behind the panel
+ * @property	{number?}		width			Width of the panel in pixels
+ * @property	{Function?}		onOpen			Called when the panel opens
+ * @property	{Function?}		onRequestClose	Called when the panel is swiped closed or the underlay is clicked or tapped
+ */
 export interface SlidePanelProperties extends WidgetProperties {
 	align?: string;
 	open?: boolean;
@@ -16,6 +28,17 @@ export interface SlidePanelProperties extends WidgetProperties {
 	onRequestClose?(): void;
 };
 
+/**
+ * @type SlidePanel
+ *
+ * A SlidePanel component
+ *
+ * @property	{Function?}		onSwipeStart		Event handler for when a touch or mouse press starts on the panel or underlay
+ * @property	{Function?}		onSwipeMove			Event handler for when the panel or underlay is dragged or swiped
+ * @property	{Function?}		onSwipeEnd			Event handler for when a touch or mouse press ends on the panel or underlay
+ * @property	{Function?}		afterCreate			Called after the panel is rendered as DOM
+ * @property	{Function?}		onTransitionEnd		Event handler for when the panel finishes any animation
+ */
 export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
 	onSwipeStart?(event: MouseEvent & TouchEvent): void;
 	onSwipeMove?(event: MouseEvent & TouchEvent): void;
@@ -24,6 +47,11 @@ export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
 	onTransitionEnd?(event: TransitionEvent): void;
 };
 
+/**
+ * @type SlidePanelFactory
+ *
+ * Widget factory that creates a SlidePanel component
+ */
 export interface SlidePanelFactory extends WidgetFactory<SlidePanel, SlidePanelProperties> { };
 
 interface InternalState {
@@ -168,7 +196,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				afterCreate: this.afterCreate
 			}, this.children);
 
-			open && onOpen && onOpen();
+			open && !state.wasOpen && onOpen && onOpen();
 			state.wasOpen = open;
 			internalStateMap.set(this, state);
 

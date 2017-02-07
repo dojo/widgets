@@ -1,9 +1,14 @@
 import { CustomElementDescriptor } from '@dojo/widget-core/customElements';
 import createSlidePanel from './createSlidePanel';
 
+/**
+ * Configures a SlidePanel web component
+ *
+ * @return	{CustomElementDescriptor?}
+ */
 export default function createSlidePanelElement(): CustomElementDescriptor {
 	return {
-		tagName: 'slide-panel',
+		tagName: 'dojo-slide-panel',
 		widgetFactory: createSlidePanel,
 		attributes: [
 			{

@@ -1,9 +1,14 @@
 import { CustomElementDescriptor } from '@dojo/widget-core/customElements';
 import createDialog from './createDialog';
 
+/**
+ * Configures a Dialog web component
+ *
+ * @return	{CustomElementDescriptor?}
+ */
 export default function createDialogElement(): CustomElementDescriptor {
 	return {
-		tagName: 'dialog-element',
+		tagName: 'dojo-dialog',
 		widgetFactory: createDialog,
 		attributes: [
 			{
