@@ -31,7 +31,7 @@
 }
 
 @keyframes pulse {
-	0% { 
+	0% {
 		transform: scale(0);
 	}
 	100% {
@@ -45,5 +45,34 @@
 	animation-fill-mode: both;
 	animation-name: fadeOut;
 	animation-iteration-count: infinite;
-	
+}
+
+@keyframes slideInDown {
+	from {
+		transform: translateY(-100%);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+.slideInDown {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: slideInDown;
+}
+
+@keyframes slideOutUp {
+	from {
+		transform: translateY(0);
+	}
+	to {
+		transform: translateY(-100%);
+	}
+}
+
+.slideOutUp {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: slideOutUp;
 }
