@@ -17,7 +17,7 @@ import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
  * @property	{string?}		exitAnimation	CSS class to apply to the dialog when closed
  * @property	{boolean?}		modal			Determines whether the dialog can be closed by clicking outside its content
  * @property	{boolean?}		open			Determines whether the dialog is open or closed
- * @property	{string?}		role			Role of this dialog for accessability, either 'alert' or 'dialog'
+ * @property	{string?}		role			Role of this dialog for accessibility, either 'alert' or 'dialog'
  * @property	{string?}		title			Title to show in the dialog title bar
  * @property	{boolean?}		underlay		Determines whether a semi-transparent background shows behind the dialog
  * @property	{Function?}		onOpen			Called when the dialog opens
