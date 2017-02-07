@@ -14,36 +14,44 @@ registerSuite({
 				open: true,
 				title: 'dialog',
 				underlay: true,
-				closeable: true
+				closeable: true,
+				role: 'dialog'
 			}
 		});
+
 		assert.strictEqual(dialog.properties.id, 'foo');
 		assert.isTrue(dialog.properties.modal);
 		assert.isTrue(dialog.properties.open);
 		assert.strictEqual(dialog.properties.title, 'dialog');
 		assert.isTrue(dialog.properties.underlay);
 		assert.isTrue(dialog.properties.closeable);
+		assert.strictEqual(dialog.properties.role, 'dialog');
 	},
 
 	'Outer node should have correct attribues'() {
 		const dialog = createDialog({
 			properties: {
 				enterAnimation: 'enter',
-				exitAnimation: 'exit'
+				exitAnimation: 'exit',
+				role: 'dialog'
 			}
 		});
 		let vnode = <VNode> dialog.__render__();
+
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
 		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
 		assert.strictEqual(vnode.properties!['data-open'], 'false');
 
 		dialog.setProperties({
 			open: true,
-			underlay: true
+			underlay: true,
+			role: 'alert'
 		});
 		vnode = <VNode> dialog.__render__();
+
 		assert.strictEqual(vnode.properties!['data-underlay'], 'true');
 		assert.strictEqual(vnode.properties!['data-open'], 'true');
+		assert.strictEqual(vnode.children![1].properties!['role'], 'alertdialog');
 		assert.lengthOf(vnode.children, 2);
 	},
 
@@ -56,8 +64,8 @@ registerSuite({
 				}
 			}
 		});
+		dialog.onCloseClick();
 
-		dialog.onCloseClick && dialog.onCloseClick();
 		assert.isFalse(dialog.properties.open, 'onRequestClose should be called when close button is clicked');
 	},
 
@@ -73,6 +81,7 @@ registerSuite({
 			}
 		});
 		<VNode> dialog.__render__();
+
 		assert.isTrue(called, 'onOpen should be called');
 	},
 
@@ -86,12 +95,13 @@ registerSuite({
 				}
 			}
 		});
+		dialog.onUnderlayClick();
 
-		dialog.onUnderlayClick && dialog.onUnderlayClick();
 		assert.isTrue(dialog.properties.open, 'dialog should stay open when underlay is clicked and modal is true');
 
 		dialog.setProperties({ modal: false });
-		dialog.onUnderlayClick && dialog.onUnderlayClick();
+		dialog.onUnderlayClick();
+
 		assert.isUndefined(dialog.properties.open, 'dialog should close if underlay is clicked and modal is false');
 	},
 
@@ -103,11 +113,10 @@ registerSuite({
 				title: 'foo'
 			}
 		});
-
-		dialog.onCloseClick && dialog.onCloseClick();
-		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
-
 		const vnode = <VNode> dialog.__render__();
+		dialog.onCloseClick();
+
+		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
 		assert.isUndefined(vnode.children![1].children![0].children, 'close button should not render if closeable is false');
 	}
 });

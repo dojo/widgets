@@ -1,97 +1,128 @@
-import { VNodeProperties } from '@dojo/interfaces/vdom';
 import { DNode, Widget, WidgetProperties, WidgetFactory } from '@dojo/widget-core/interfaces';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
+import uuid from '@dojo/core/uuid';
 
-import * as baseTheme from './styles/dialog';
-import * as animations from '../../styles/animations';
-import themeableMixin, { Themeable } from '@dojo/widget-core/mixins/themeable';
+import * as css from './styles/dialog.css';
+import * as animations from '../../styles/animations.css';
+import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
+/**
+ * @type DialogProperties
+ *
+ * Properties that can be set on a Dialog component
+ *
+ * @property	{boolean?}		closeable		Determines whether the dialog can be closed
+ * @property	{string?}		enterAnimation	CSS class to apply to the dialog when opened
+ * @property	{string?}		exitAnimation	CSS class to apply to the dialog when closed
+ * @property	{boolean?}		modal			Determines whether the dialog can be closed by clicking outside its content
+ * @property	{boolean?}		open			Determines whether the dialog is open or closed
+ * @property	{string?}		role			Role of this dialog for accessibility, either 'alert' or 'dialog'
+ * @property	{string?}		title			Title to show in the dialog title bar
+ * @property	{boolean?}		underlay		Determines whether a semi-transparent background shows behind the dialog
+ * @property	{Function?}		onOpen			Called when the dialog opens
+ * @property	{Function?}		onRequestClose	Called when the dialog is closed
+ */
 export interface DialogProperties extends WidgetProperties {
 	closeable?: boolean;
 	enterAnimation?: string;
 	exitAnimation?: string;
 	modal?: boolean;
 	open?: boolean;
+	role?: string;
 	title?: string;
 	underlay?: boolean;
 	onOpen?(): void;
 	onRequestClose?(): void;
 };
 
-export type Dialog = Widget<DialogProperties> & Themeable<typeof baseTheme> & {
-	onCloseClick?(): void;
-	onUnderlayClick?(): void;
+/**
+ * @type Dialog
+ *
+ * A Dialog component
+ *
+ * @property	{Function}		onCloseClick		Event handler for when the close button is clicked
+ * @property	{Function}		onUnderlayClick		Event handler for when a click occurs outside the dialog
+ */
+export type Dialog = Widget<DialogProperties> & ThemeableMixin & {
+	onCloseClick(): void;
+	onUnderlayClick(): void;
 };
 
+/**
+ * @type DialogFactory
+ *
+ * Widget factory that creates a Dialog component
+ */
 export interface DialogFactory extends WidgetFactory<Dialog, DialogProperties> { };
 
-const createDialog: DialogFactory = createWidgetBase.mixin(themeableMixin).mixin({
+const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
-		baseTheme,
+		baseClasses: css,
 
-		onCloseClick: function (this: Dialog) {
+		onCloseClick(this: Dialog) {
 			const { closeable = true } = this.properties;
 			closeable && this.properties.onRequestClose && this.properties.onRequestClose();
 		},
 
-		onUnderlayClick: function (this: Dialog) {
-			!this.properties.modal && this.onCloseClick && this.onCloseClick();
+		onUnderlayClick(this: Dialog) {
+			!this.properties.modal && this.onCloseClick();
 		},
 
-		getChildrenNodes: function (this: Dialog): DNode[] {
+		render(this: Dialog): DNode {
 			const {
 				closeable = true,
 				enterAnimation = animations.fadeIn,
 				exitAnimation = animations.fadeOut,
 				title = '',
-				open = false
+				open = false,
+				role = 'dialog',
+				underlay = false,
+				onOpen
 			} = this.properties;
 
-			let key = 0;
+			const titleId = uuid();
 
-			const children: DNode[] = [
+			open && onOpen && onOpen();
+
+			return v('div', {
+				'data-underlay': underlay ? 'true' : 'false',
+				'data-open': open ? 'true' : 'false'
+			}, open ? [
 				v('div', {
-					key: key++,
-					classes: this.theme.underlay,
+					key: 'underlay',
+					classes: this.classes(css.underlay).get(),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					onclick: this.onUnderlayClick
 				}),
 				v('div', {
-					key: key++,
-					classes: this.theme.main,
+					key: 'main',
+					classes: this.classes(css.main).get(),
 					enterAnimation: enterAnimation,
-					exitAnimation: exitAnimation
+					exitAnimation: exitAnimation,
+					'aria-labelledby': titleId,
+					role: role === 'dialog' ? 'dialog' : 'alertdialog'
 				}, [
 					v('div', {
-						classes: this.theme.title
+						key: 'title',
+						id: titleId,
+						classes: this.classes(css.title).get()
 					}, [
 						title,
-						closeable ? v('div', {
-							classes: this.theme.close,
-							innerHTML: '✕',
+						closeable ? v('button', {
+							classes: this.classes(css.close).get(),
+							innerHTML: 'close dialog',
 							onclick: this.onCloseClick
 						}) : null
 					]),
 					v('div', {
-						classes: this.theme.content
+						key: 'content',
+						classes: this.classes(css.content).get()
 					}, this.children)
 				])
-			];
-
-			return open ? children : [];
-		},
-
-		nodeAttributes: [
-			function(this: Dialog): VNodeProperties {
-				this.properties.open && this.properties.onOpen && this.properties.onOpen();
-				return {
-					'data-underlay': this.properties.underlay ? 'true' : 'false',
-					'data-open': this.properties.open ? 'true' : 'false'
-				};
-			}
-		]
+			] : []);
+		}
 	}
 });
 

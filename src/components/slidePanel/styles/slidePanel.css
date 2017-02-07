@@ -1,0 +1,63 @@
+@import '../../../styles/variables.css';
+
+.underlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+[data-underlay="true"] .underlay {
+	background: var(--underlay-bg);
+}
+
+.content {
+	font: var(--base-font);
+	width: var(--slide-panel-width);
+	height: 100%;
+	position: fixed;
+	top: 0;
+	background-color: var(--title-bar-bg);
+	color: var(--title-bar-color);
+	padding: var(--content-padding);
+	box-sizing: border-box;
+}
+
+[data-align="left"] .content {
+	left: 0;
+	transform: translateX(-100%)
+}
+
+[data-align="right"] .content {
+	right: 0;
+	transform: translateX(100%);
+}
+
+[data-open="true"][data-align="left"] .content {
+	transform: translateX(0%);
+}
+
+[data-open="true"][data-align="right"] .content {
+	transform: translateX(0%)
+}
+
+[data-align="left"] .content.slideOut {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(-100%) !important;
+}
+
+[data-align="right"] .content.slideOut {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(100%) !important;
+}
+
+[data-align="left"] .content.slideIn {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(0%) !important;
+}
+
+[data-align="right"] .content.slideIn {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(0%) !important;
+}
