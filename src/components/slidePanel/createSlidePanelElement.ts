@@ -16,11 +16,11 @@ export default function createSlidePanelElement(): CustomElementDescriptor {
 			},
 			{
 				attributeName: 'open',
-				value: value => Boolean(value)
+				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
 				attributeName: 'underlay',
-				value: value => Boolean(value)
+				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
 				attributeName: 'width',

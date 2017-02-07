@@ -13,7 +13,7 @@ export default function createDialogElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'closeable',
-				value: value => Boolean(value)
+				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
 				attributeName: 'enterAnimation'
@@ -23,11 +23,11 @@ export default function createDialogElement(): CustomElementDescriptor {
 			},
 			{
 				attributeName: 'modal',
-				value: value => Boolean(value)
+				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
 				attributeName: 'open',
-				value: value => Boolean(value)
+				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
 				attributeName: 'role'
@@ -37,7 +37,7 @@ export default function createDialogElement(): CustomElementDescriptor {
 			},
 			{
 				attributeName: 'underlay',
-				value: value => Boolean(value)
+				value: value => value === 'false' || value === '0' ? false : true
 			}
 		],
 		events: [
