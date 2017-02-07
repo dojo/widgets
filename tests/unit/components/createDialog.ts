@@ -64,7 +64,7 @@ registerSuite({
 				}
 			}
 		});
-		dialog.onCloseClick && dialog.onCloseClick();
+		dialog.onCloseClick();
 
 		assert.isFalse(dialog.properties.open, 'onRequestClose should be called when close button is clicked');
 	},
@@ -95,12 +95,12 @@ registerSuite({
 				}
 			}
 		});
-		dialog.onUnderlayClick && dialog.onUnderlayClick();
+		dialog.onUnderlayClick();
 
 		assert.isTrue(dialog.properties.open, 'dialog should stay open when underlay is clicked and modal is true');
 
 		dialog.setProperties({ modal: false });
-		dialog.onUnderlayClick && dialog.onUnderlayClick();
+		dialog.onUnderlayClick();
 
 		assert.isUndefined(dialog.properties.open, 'dialog should close if underlay is clicked and modal is false');
 	},
@@ -114,7 +114,7 @@ registerSuite({
 			}
 		});
 		const vnode = <VNode> dialog.__render__();
-		dialog.onCloseClick && dialog.onCloseClick();
+		dialog.onCloseClick();
 
 		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
 		assert.isUndefined(vnode.children![1].children![0].children, 'close button should not render if closeable is false');

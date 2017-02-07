@@ -41,12 +41,12 @@ export interface DialogProperties extends WidgetProperties {
  *
  * A Dialog component
  *
- * @property	{Function?}		onCloseClick		Event handler for when the close button is clicked
- * @property	{Function?}		onUnderlayClick		Event handler for when a click occurs outside the dialog
+ * @property	{Function}		onCloseClick		Event handler for when the close button is clicked
+ * @property	{Function}		onUnderlayClick		Event handler for when a click occurs outside the dialog
  */
 export type Dialog = Widget<DialogProperties> & ThemeableMixin & {
-	onCloseClick?(): void;
-	onUnderlayClick?(): void;
+	onCloseClick(): void;
+	onUnderlayClick(): void;
 };
 
 /**
@@ -66,7 +66,7 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 		},
 
 		onUnderlayClick(this: Dialog) {
-			!this.properties.modal && this.onCloseClick && this.onCloseClick();
+			!this.properties.modal && this.onCloseClick();
 		},
 
 		render(this: Dialog): DNode {

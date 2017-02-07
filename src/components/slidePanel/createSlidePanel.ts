@@ -33,18 +33,18 @@ export interface SlidePanelProperties extends WidgetProperties {
  *
  * A SlidePanel component
  *
- * @property	{Function?}		onSwipeStart		Event handler for when a touch or mouse press starts on the panel or underlay
- * @property	{Function?}		onSwipeMove			Event handler for when the panel or underlay is dragged or swiped
- * @property	{Function?}		onSwipeEnd			Event handler for when a touch or mouse press ends on the panel or underlay
- * @property	{Function?}		afterCreate			Called after the panel is rendered as DOM
- * @property	{Function?}		onTransitionEnd		Event handler for when the panel finishes any animation
+ * @property	{Function}		onSwipeStart		Event handler for when a touch or mouse press starts on the panel or underlay
+ * @property	{Function}		onSwipeMove			Event handler for when the panel or underlay is dragged or swiped
+ * @property	{Function}		onSwipeEnd			Event handler for when a touch or mouse press ends on the panel or underlay
+ * @property	{Function}		afterCreate			Called after the panel is rendered as DOM
+ * @property	{Function}		onTransitionEnd		Event handler for when the panel finishes any animation
  */
 export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
-	onSwipeStart?(event: MouseEvent & TouchEvent): void;
-	onSwipeMove?(event: MouseEvent & TouchEvent): void;
-	onSwipeEnd?(event: MouseEvent & TouchEvent): void;
-	afterCreate?(element: HTMLElement): void;
-	onTransitionEnd?(event: TransitionEvent): void;
+	onSwipeStart(event: MouseEvent & TouchEvent): void;
+	onSwipeMove(event: MouseEvent & TouchEvent): void;
+	onSwipeEnd(event: MouseEvent & TouchEvent): void;
+	afterCreate(element: HTMLElement): void;
+	onTransitionEnd(event: TransitionEvent): void;
 };
 
 /**
