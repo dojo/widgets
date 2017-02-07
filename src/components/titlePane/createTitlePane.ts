@@ -5,10 +5,13 @@ import { DNode, Widget, WidgetFactory, WidgetProperties } from '@dojo/widget-cor
 import themeableMixin, { Themeable } from '@dojo/widget-core/mixins/themeable';
 
 import * as baseTheme from './styles/titlePane';
+import * as animations from '../../styles/animations';
 
 export interface TitlePaneProperties extends WidgetProperties {
 	collapsed?: boolean;
 	collapsible?: boolean;
+	enterAnimation?: string;
+	exitAnimation?: string;
 	// TODO: title should not be optional
 	title?: string;
 
@@ -48,6 +51,8 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 			const {
 				collapsed = false,
 				collapsible = true,
+				enterAnimation = animations.slideInDown,
+				exitAnimation = animations.slideOutUp,
 				title = ''
 			} = this.properties;
 
@@ -72,7 +77,9 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 
 			if (!collapsed) {
 				children.push(v('div', {
-					classes: this.theme.content
+					classes: this.theme.content,
+					enterAnimation,
+					exitAnimation
 				}, this.children));
 			}
 
