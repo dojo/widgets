@@ -1,6 +1,7 @@
 import { DNode, Widget, WidgetProperties, WidgetFactory } from '@dojo/widget-core/interfaces';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
+import uuid from '@dojo/core/uuid';
 
 import * as css from './styles/dialog.css';
 import * as animations from '../../styles/animations.css';
@@ -16,6 +17,7 @@ import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
  * @property	{string?}		exitAnimation	CSS class to apply to the dialog when closed
  * @property	{boolean?}		modal			Determines whether the dialog can be closed by clicking outside its content
  * @property	{boolean?}		open			Determines whether the dialog is open or closed
+ * @property	{string?}		role			Role of this dialog for accessability, either 'alert' or 'dialog'
  * @property	{string?}		title			Title to show in the dialog title bar
  * @property	{boolean?}		underlay		Determines whether a semi-transparent background shows behind the dialog
  * @property	{Function?}		onOpen			Called when the dialog opens
@@ -27,6 +29,7 @@ export interface DialogProperties extends WidgetProperties {
 	exitAnimation?: string;
 	modal?: boolean;
 	open?: boolean;
+	role?: string;
 	title?: string;
 	underlay?: boolean;
 	onOpen?(): void;
@@ -73,9 +76,12 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 				exitAnimation = animations.fadeOut,
 				title = '',
 				open = false,
+				role = 'dialog',
 				underlay = false,
 				onOpen
 			} = this.properties;
+
+			const titleId = uuid();
 
 			open && onOpen && onOpen();
 
@@ -94,16 +100,19 @@ const createDialog: DialogFactory = createWidgetBase.mixin(themeable).mixin({
 					key: 'main',
 					classes: this.classes(css.main).get(),
 					enterAnimation: enterAnimation,
-					exitAnimation: exitAnimation
+					exitAnimation: exitAnimation,
+					'aria-labelledby': titleId,
+					role: role === 'dialog' ? 'dialog' : 'alertdialog'
 				}, [
 					v('div', {
 						key: 'title',
+						id: titleId,
 						classes: this.classes(css.title).get()
 					}, [
 						title,
-						closeable ? v('div', {
+						closeable ? v('button', {
 							classes: this.classes(css.close).get(),
-							innerHTML: '✕',
+							innerHTML: 'close dialog',
 							onclick: this.onCloseClick
 						}) : null
 					]),

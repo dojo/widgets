@@ -14,7 +14,8 @@ registerSuite({
 				open: true,
 				title: 'dialog',
 				underlay: true,
-				closeable: true
+				closeable: true,
+				role: 'dialog'
 			}
 		});
 
@@ -24,13 +25,15 @@ registerSuite({
 		assert.strictEqual(dialog.properties.title, 'dialog');
 		assert.isTrue(dialog.properties.underlay);
 		assert.isTrue(dialog.properties.closeable);
+		assert.strictEqual(dialog.properties.role, 'dialog');
 	},
 
 	'Outer node should have correct attribues'() {
 		const dialog = createDialog({
 			properties: {
 				enterAnimation: 'enter',
-				exitAnimation: 'exit'
+				exitAnimation: 'exit',
+				role: 'dialog'
 			}
 		});
 		let vnode = <VNode> dialog.__render__();
@@ -41,12 +44,14 @@ registerSuite({
 
 		dialog.setProperties({
 			open: true,
-			underlay: true
+			underlay: true,
+			role: 'alert'
 		});
 		vnode = <VNode> dialog.__render__();
 
 		assert.strictEqual(vnode.properties!['data-underlay'], 'true');
 		assert.strictEqual(vnode.properties!['data-open'], 'true');
+		assert.strictEqual(vnode.children![1].properties!['role'], 'alertdialog');
 		assert.lengthOf(vnode.children, 2);
 	},
 
