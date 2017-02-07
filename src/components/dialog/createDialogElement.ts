@@ -12,6 +12,10 @@ export default function createDialogElement(): CustomElementDescriptor {
 		widgetFactory: createDialog,
 		attributes: [
 			{
+				attributeName: 'closeable',
+				value: value => Boolean(value)
+			},
+			{
 				attributeName: 'enterAnimation'
 			},
 			{
@@ -24,6 +28,9 @@ export default function createDialogElement(): CustomElementDescriptor {
 			{
 				attributeName: 'open',
 				value: value => Boolean(value)
+			},
+			{
+				attributeName: 'role'
 			},
 			{
 				attributeName: 'title'
