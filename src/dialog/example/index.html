@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>SlidePanel Example</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<title>Dialog Example</title>
 </head>
 <body>
 	<script src="../../../../node_modules/@dojo/loader/loader.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/maquette/2.4.2/css-transitions.min.js"></script>
 	<link rel="stylesheet" href="../../styles/widgets.css">
 	<style>
-		html,
-		body {
-			padding: 0;
-			margin: 0;
+		.slideIn {
+			transition: top .2s;
+			top: -150px !important;
+		}
+
+		.slideIn-active {
+			top: 50% !important;
+		}
+
+		.slideOut {
+			transition: top .2s;
+			top: 50% !important;
+		}
+
+		.slideOut-active {
+			top: -150px !important;
+		}
+
+		button {
+			margin-bottom: 50px;
+		}
+
+		.option {
+			margin-bottom: 10px;
 		}
 	</style>
 	<script>
@@ -26,7 +45,7 @@
 		});
 
 		/* Requiring in the main module */
-		require([ 'src/examples/slidePanel/index' ], function () {});
+		require([ 'src/dialog/example/index' ], function () {});
 	</script>
 </body>
 </html>

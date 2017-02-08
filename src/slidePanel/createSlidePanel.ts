@@ -4,7 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import WeakMap from '@dojo/shim/WeakMap';
 
 import * as css from './styles/slidePanel.css';
-import * as animations from '../../styles/animations.css';
+import * as animations from '../styles/animations.css';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
 /**

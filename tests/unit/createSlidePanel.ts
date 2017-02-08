@@ -1,8 +1,8 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import createSlidePanel from '../../../src/components/slidePanel/createSlidePanel';
-import * as css from '../../../src/components/slidePanel/styles/slidePanel.css';
+import createSlidePanel from '../../src/slidePanel/createSlidePanel';
+import * as css from '../../src/slidePanel/styles/slidePanel.css';
 
 function createEvent(type: string, x: number): any {
 	return {
