@@ -1,5 +1,10 @@
 @import '../../../styles/variables.css';
 
+:root {
+	--title-panel-border-width: 1px;
+	--title-panel-padding: 5px;
+}
+
 .main {
 	overflow: hidden;
 }
@@ -8,10 +13,10 @@
 	background-color: var(--title-bar-bg);
 	border-color: var(--title-bar-bg);
 	border-style: solid;
-	border-width: 1px;
+	border-width: var(--title-panel-border-width);
 	color: var(--title-bar-color);
 	font-size: var(--title-font-size);
-	padding: 5px;
+	padding: var(--title-panel-padding);
 }
 
 .collapsible {
@@ -21,6 +26,6 @@
 .content {
 	border-color: var(--title-bar-bg);
 	border-style: solid;
-	border-width: 1px;
+	border-width: var(--title-panel-border-width);
 	padding: var(--content-padding);
 }
