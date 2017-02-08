@@ -31,6 +31,7 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 	mixin: {
 		// FIXME
 		baseTheme: (<any> baseTheme).default.classes,
+		classes: [ (<any> baseTheme).default.classes.main ],
 
 		onClickTitle: function (this: TitlePane) {
 			const {
@@ -51,8 +52,10 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 			const {
 				collapsed = false,
 				collapsible = true,
-				enterAnimation = animations.slideInDown,
-				exitAnimation = animations.slideOutUp,
+				// FIXME
+				enterAnimation = (<any> animations).default.classes.slideInDown,
+				// FIXME
+				exitAnimation = (<any> animations).default.classes.slideOutUp,
 				title = ''
 			} = this.properties;
 

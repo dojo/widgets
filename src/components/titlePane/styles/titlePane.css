@@ -1,5 +1,10 @@
 @import '../../../styles/variables.css';
 
+.main {
+	position: relative;
+	overflow: hidden;
+}
+
 .title {
 	background-color: var(--title-bar-bg);
 	border-color: var(--title-bar-bg);
@@ -8,6 +13,8 @@
 	color: var(--title-bar-color);
 	font-size: var(--title-font-size);
 	padding: 5px;
+	position: relative;
+	z-index: 2;
 }
 
 .collapsible {
@@ -19,4 +26,6 @@
 	border-style: solid;
 	border-width: 1px;
 	padding: var(--content-padding);
+	position: relative;
+	z-index: 1;
 }
