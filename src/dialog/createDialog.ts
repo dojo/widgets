@@ -4,7 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 
 import * as css from './styles/dialog.css';
-import * as animations from '../../styles/animations.css';
+import * as animations from '../styles/animations.css';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
 /**

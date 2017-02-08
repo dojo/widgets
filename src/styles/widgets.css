@@ -1,3 +1,3 @@
 @import 'animations.css';
-@import '../components/dialog/styles/dialog.css';
-@import '../components/slidePanel/styles/slidePanel.css';
+@import '../dialog/styles/dialog.css';
+@import '../slidePanel/styles/slidePanel.css';

@@ -2,7 +2,7 @@ import { DNode, Widget, WidgetProperties } from '@dojo/widget-core/interfaces';
 import { w, v } from '@dojo/widget-core/d';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import createProjectorMixin from '@dojo/widget-core/mixins/createProjectorMixin';
-import createSlidePanel from '../../components/slidePanel/createSlidePanel';
+import createSlidePanel from '../../slidePanel/createSlidePanel';
 import internalState, { InternalState } from '@dojo/widget-core/mixins/internalState';
 
 type Root = Widget<WidgetProperties> & InternalState;

@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-	var staticExampleFiles = [ 'src/examples/**', '!src/examples/**/*.js' ];
+	var staticExampleFiles = [ 'src/**/example/**', '!src/**/example/**/*.js' ];
 
 	require('grunt-dojo2').initConfig(grunt, {
 		copy: {

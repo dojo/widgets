@@ -1,5 +1,5 @@
-import createDialog from './components/dialog/createDialog';
-import createSlidePanel from './components/slidePanel/createSlidePanel';
+import createDialog from './dialog/createDialog';
+import createSlidePanel from './slidePanel/createSlidePanel';
 
 export {
 	createDialog,
