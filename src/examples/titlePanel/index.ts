@@ -3,7 +3,7 @@ import { w, v } from '@dojo/widget-core/d';
 import { DNode, Widget, WidgetProperties } from '@dojo/widget-core/interfaces';
 import createProjectorMixin from '@dojo/widget-core/mixins/createProjectorMixin';
 import internalState, { InternalState } from '@dojo/widget-core/mixins/internalState';
-import createTitlePane from '../../components/titlePane/createTitlePane';
+import createTitlePanel from '../../components/titlePanel/createTitlePanel';
 
 type Root = Widget<WidgetProperties> & InternalState;
 
@@ -13,9 +13,9 @@ const createApp = createWidgetBase
 		mixin: {
 			getChildrenNodes: function(this: Root): DNode[] {
 				return [
-					w(createTitlePane, {
-						id: 'titlePane1',
-						title: 'Title Pane Widget With collapsible=false',
+					w(createTitlePanel, {
+						id: 'titlePanel1',
+						title: 'TitlePanel Widget With collapsible=false',
 						collapsible: false,
 						onRequestCollapse: () => {
 							alert('onRequestCollapse should never get called');
@@ -30,9 +30,9 @@ const createApp = createWidgetBase
 								Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 						})
 					]),
-					w(createTitlePane, {
-						id: 'titlePane2',
-						title: 'Title Pane Widget (collapsible)',
+					w(createTitlePanel, {
+						id: 'titlePanel2',
+						title: 'TitlePanel Widget (collapsible)',
 						collapsed: <boolean> this.state['t2collapsed'],
 						onRequestCollapse: () => {
 							this.setState({ t2collapsed: true });
@@ -47,9 +47,9 @@ const createApp = createWidgetBase
 								Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 						})
 					]),
-					w(createTitlePane, {
-						id: 'titlePane3',
-						title: 'Title Pane Widget with collapsed=true',
+					w(createTitlePanel, {
+						id: 'titlePanel3',
+						title: 'TitlePanel Widget with collapsed=true',
 						collapsed: <boolean> (this.state['t3collapsed'] === undefined ? true : this.state['t3collapsed']),
 						onRequestCollapse: () => {
 							this.setState({ t3collapsed: true });
