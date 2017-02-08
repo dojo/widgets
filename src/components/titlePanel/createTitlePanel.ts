@@ -4,10 +4,10 @@ import { v } from '@dojo/widget-core/d';
 import { DNode, Widget, WidgetFactory, WidgetProperties } from '@dojo/widget-core/interfaces';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
-import * as css from './styles/titlePane.css';
+import * as css from './styles/titlePanel.css';
 import * as animations from '../../styles/animations.css';
 
-export interface TitlePaneProperties extends WidgetProperties {
+export interface TitlePanelProperties extends WidgetProperties {
 	collapsed?: boolean;
 	collapsible?: boolean;
 	enterAnimation?: string;
@@ -18,19 +18,19 @@ export interface TitlePaneProperties extends WidgetProperties {
 	onRequestExpand?(): void;
 };
 
-export type TitlePane = Widget<TitlePaneProperties> & ThemeableMixin & {
+export type TitlePanel = Widget<TitlePanelProperties> & ThemeableMixin & {
 	onClickTitle?(): void;
 };
 
-export interface TitlePaneFactory extends WidgetFactory<TitlePane, TitlePaneProperties> { };
+export interface TitlePanelFactory extends WidgetFactory<TitlePanel, TitlePanelProperties> { };
 
-const createTitlePane: TitlePaneFactory = createWidgetBase
+const createTitlePanel: TitlePanelFactory = createWidgetBase
 	.mixin(themeable)
 	.mixin({
 		mixin: {
 			baseClasses: css,
 
-			onClickTitle: function (this: TitlePane) {
+			onClickTitle: function (this: TitlePanel) {
 				const {
 					properties: {
 						collapsed = false
@@ -45,7 +45,7 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 				}
 			},
 
-			getChildrenNodes: function (this: TitlePane): DNode[] {
+			getChildrenNodes: function (this: TitlePanel): DNode[] {
 				const {
 					collapsed = false,
 					collapsible = true,
@@ -85,4 +85,4 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 		}
 	});
 
-export default createTitlePane;
+export default createTitlePanel;
