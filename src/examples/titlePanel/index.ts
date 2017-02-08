@@ -11,8 +11,12 @@ const createApp = createWidgetBase
 	.mixin(internalState)
 	.mixin({
 		mixin: {
-			getChildrenNodes: function(this: Root): DNode[] {
-				return [
+			render(this: Root): DNode {
+				return v('div', {
+					classes: {
+						'main-app': true
+					}
+				}, [
 					w(createTitlePanel, {
 						id: 'titlePanel1',
 						title: 'TitlePanel Widget With collapsible=false',
@@ -64,10 +68,8 @@ const createApp = createWidgetBase
 								Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 						})
 					])
-				];
-			},
-			// TODO: why doesn't this work? What is the recommended approach?
-			classes: [ 'main-app' ]
+				]);
+			}
 		}
 	});
 

@@ -19,7 +19,7 @@ export interface TitlePanelProperties extends WidgetProperties {
 };
 
 export type TitlePanel = Widget<TitlePanelProperties> & ThemeableMixin & {
-	onClickTitle?(): void;
+	onClickTitle(): void;
 };
 
 export interface TitlePanelFactory extends WidgetFactory<TitlePanel, TitlePanelProperties> { };
@@ -30,7 +30,7 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 		mixin: {
 			baseClasses: css,
 
-			onClickTitle: function (this: TitlePanel) {
+			onClickTitle(this: TitlePanel) {
 				const {
 					properties: {
 						collapsed = false
@@ -45,7 +45,7 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 				}
 			},
 
-			getChildrenNodes: function (this: TitlePanel): DNode[] {
+			render(this: TitlePanel): DNode {
 				const {
 					collapsed = false,
 					collapsible = true,
@@ -72,7 +72,7 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 					v('div', titleProperties, [ title ])
 				];
 
-				if (!collapsed) {
+				if (collapsible && !collapsed) {
 					children.push(v('div', {
 						classes: this.classes(css.content).get(),
 						enterAnimation,
@@ -80,7 +80,9 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 					}, this.children));
 				}
 
-				return children;
+				return v('div', {
+					classes: this.classes(css.main).get()
+				}, children);
 			}
 		}
 	});
