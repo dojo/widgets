@@ -2,7 +2,7 @@ import { DNode, Widget, WidgetProperties } from '@dojo/widget-core/interfaces';
 import { w, v } from '@dojo/widget-core/d';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import createProjectorMixin from '@dojo/widget-core/mixins/createProjectorMixin';
-import createSlidePanel from '../../slidePanel/createSlidePanel';
+import createSlidePanel, { Align } from '../../slidePanel/createSlidePanel';
 import internalState, { InternalState } from '@dojo/widget-core/mixins/internalState';
 
 type Root = Widget<WidgetProperties> & InternalState;
@@ -16,7 +16,7 @@ function toggleUnderlay(this: Root, event: Event) {
 }
 
 function toggleAlign(this: Root, event: Event) {
-	this.setState({ align: (<HTMLInputElement> event.target).checked ? 'right' : 'left' });
+	this.setState({ align: (<HTMLInputElement> event.target).checked ? Align.right : Align.left });
 }
 
 const createApp = createWidgetBase.mixin(internalState).mixin({
@@ -28,7 +28,7 @@ const createApp = createWidgetBase.mixin(internalState).mixin({
 					id: 'panel',
 					open: <boolean> this.state['open'],
 					underlay: <boolean> this.state['underlay'],
-					align: <string> this.state['align'],
+					align: <Align> this.state['align'],
 					onRequestClose: () => {
 						this.setState({ open: false });
 					}

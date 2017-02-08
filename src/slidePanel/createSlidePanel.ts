@@ -7,12 +7,17 @@ import * as css from './styles/slidePanel.css';
 import * as animations from '../styles/animations.css';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
+export const enum Align {
+	left,
+	right
+};
+
 /**
  * @type SlidePanelProperties
  *
  * Properties that can be set on a SlidePanel component
  *
- * @property	{string?}		align			The position of the panel on the screen ('left' or 'right')
+ * @property	align			The position of the panel on the screen (Align.left or Align.right)
  * @property	{boolean?}		open			Determines whether the panel is open or closed
  * @property	{boolean?}		underlay		Determines whether a semi-transparent background shows behind the panel
  * @property	{number?}		width			Width of the panel in pixels
@@ -20,7 +25,7 @@ import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
  * @property	{Function?}		onRequestClose	Called when the panel is swiped closed or the underlay is clicked or tapped
  */
 export interface SlidePanelProperties extends WidgetProperties {
-	align?: string;
+	align?: Align;
 	open?: boolean;
 	underlay?: boolean;
 	width?: number;
@@ -64,6 +69,12 @@ interface InternalState {
 
 const internalStateMap = new WeakMap<SlidePanel, InternalState>();
 
+const DEFAULT_WIDTH = 256;
+
+function includeWhen(predicate: boolean, truthy: any[], falsey: any[] = []) {
+	return predicate ? truthy : falsey;
+}
+
 const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
 		baseClasses: css,
@@ -92,14 +103,14 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			}
 
 			const {
-				width = 256,
-				align = 'left'
+				width = DEFAULT_WIDTH,
+				align = Align.left
 			} = this.properties;
 
 			// Current pointer position
 			const currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
 			// Difference between current and initial pointer position
-			const delta = align === 'right' ? currentX - state.initialX : state.initialX - currentX;
+			const delta = align === Align.right ? currentX - state.initialX : state.initialX - currentX;
 			// Transform to apply
 			state.transform = 100 * delta / width;
 
@@ -112,7 +123,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 
 			// Move the panel
 			if (state.content) {
-				state.content.style.transform =  `translateX(${ align === 'left' ? '-' : '' }${ state.transform }%)`;
+				state.content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ state.transform }%)`;
 			}
 		},
 
@@ -121,15 +132,15 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			state.swiping = false;
 
 			const {
-				width = 256,
-				align = 'left',
+				width = DEFAULT_WIDTH,
+				align = Align.left,
 				onRequestClose
 			} = this.properties;
 
 			// Current pointer position
 			const currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
 			// Difference between current and initial pointer position
-			const delta = align === 'right' ? currentX - state.initialX : state.initialX - currentX;
+			const delta = align === Align.right ? currentX - state.initialX : state.initialX - currentX;
 
 			// If the panel was swiped far enough to close
 			if (delta > width / 2) {
@@ -168,31 +179,35 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			const state = internalStateMap.get(this);
 			const {
 				open = false,
-				align = 'left',
+				align = Align.left,
 				underlay = false,
 				onOpen
 			} = this.properties;
 
-			const styles: {[key: string]: any} = {};
-			const classes = [css.content];
+			const contentStyles: {[key: string]: any} = {};
 
-			// If panel is opening
-			if (open && !state.wasOpen) {
-				classes.push(css.slideIn);
-			}
-			// If panel is closing
-			else if (!open && state.wasOpen) {
-				classes.push(css.slideOut);
+			const contentClasses = [
+				css.content,
+				...includeWhen(align === Align.left, [ css.left ], [css.right ]),
+				...includeWhen(open, [ css.open ]),
+				...includeWhen(open && !state.wasOpen, [ css.slideIn ]),
+				...includeWhen(!open && state.wasOpen, [ css.slideOut ])
+			];
+
+			const underlayClasses = [
+				css.underlay,
+				...includeWhen(underlay, [ css.underlayVisible ])
+			];
+
+			if (!open && state.wasOpen && state.transform !== 0) {
 				// If panel is closing because of swipe
-				if (state.transform !== 0) {
-					styles['transform'] = `translateX(${ align === 'left' ? '-' : '' }${ state.transform }%)`;
-				}
+				contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ state.transform }%)`;
 			}
 
 			const content = v('div', {
 				key: 'content',
-				classes: this.classes(...classes).get(),
-				styles: styles,
+				classes: this.classes(...contentClasses).get(),
+				styles: contentStyles,
 				afterCreate: this.afterCreate
 			}, this.children);
 
@@ -201,9 +216,6 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			internalStateMap.set(this, state);
 
 			return v('div', {
-				'data-open': String(open),
-				'data-underlay': String(underlay),
-				'data-align': align,
 				ontouchstart: this.onSwipeStart,
 				ontouchmove: this.onSwipeMove,
 				ontouchend: this.onSwipeEnd,
@@ -213,7 +225,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			}, open ? [
 				v('div', {
 					key: 'underlay',
-					classes: this.classes(css.underlay).get(),
+					classes: this.classes(...underlayClasses).get(),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut
 				}),

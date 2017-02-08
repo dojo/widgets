@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import createSlidePanel from '../../src/slidePanel/createSlidePanel';
+import createSlidePanel, { Align } from '../../src/slidePanel/createSlidePanel';
 import * as css from '../../src/slidePanel/styles/slidePanel.css';
 
 function createEvent(type: string, x: number): any {
@@ -28,14 +28,14 @@ registerSuite({
 		const slidePanel = createSlidePanel({
 			properties: {
 				id: 'foo',
-				align: 'left',
+				align: Align.left,
 				open: true,
 				underlay: true
 			}
 		});
 
 		assert.strictEqual(slidePanel.properties.id, 'foo');
-		assert.strictEqual(slidePanel.properties.align, 'left');
+		assert.strictEqual(slidePanel.properties.align, Align.left);
 		assert.isTrue(slidePanel.properties.open);
 		assert.isTrue(slidePanel.properties.underlay);
 	},
@@ -52,18 +52,18 @@ registerSuite({
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
 		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
 		assert.strictEqual(vnode.properties!['data-open'], 'false');
-		assert.strictEqual(vnode.properties!['data-align'], 'left');
+		assert.strictEqual(vnode.properties!['data-align'], Align.left);
 
 		slidePanel.setProperties({
 			open: true,
 			underlay: true,
-			align: 'right'
+			align: Align.right
 		});
 		vnode = <VNode> slidePanel.__render__();
 
 		assert.strictEqual(vnode.properties!['data-underlay'], 'true');
 		assert.strictEqual(vnode.properties!['data-open'], 'true');
-		assert.strictEqual(vnode.properties!['data-align'], 'right');
+		assert.strictEqual(vnode.properties!['data-align'], Align.right);
 		assert.lengthOf(vnode.children, 2);
 	},
 
@@ -182,7 +182,7 @@ registerSuite({
 					called = true;
 				},
 				width: 256,
-				align: 'right'
+				align: Align.right
 			}
 		});
 
@@ -291,7 +291,7 @@ registerSuite({
 		<VNode> slidePanel.__render__();
 		slidePanel.setProperties({
 			open: false,
-			align: 'right'
+			align: Align.right
 		});
 		slidePanel.onSwipeStart(createEvent('touchstart', 300));
 		slidePanel.onSwipeMove(createEvent('touchmove', 400));
