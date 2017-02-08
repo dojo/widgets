@@ -2,36 +2,33 @@ import { VNodeProperties } from '@dojo/interfaces/vdom';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 import { DNode, Widget, WidgetFactory, WidgetProperties } from '@dojo/widget-core/interfaces';
-import themeableMixin, { Themeable } from '@dojo/widget-core/mixins/themeable';
+import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
-import * as baseTheme from './styles/titlePane';
-import * as animations from '../../styles/animations';
+import * as css from './styles/titlePane.css';
+import * as animations from '../../styles/animations.css';
 
 export interface TitlePaneProperties extends WidgetProperties {
 	collapsed?: boolean;
 	collapsible?: boolean;
 	enterAnimation?: string;
 	exitAnimation?: string;
-	// TODO: title should not be optional
-	title?: string;
+	title: string;
 
 	onRequestCollapse?(): void;
 	onRequestExpand?(): void;
 };
 
-export type TitlePane = Widget<TitlePaneProperties> & Themeable<typeof baseTheme> & {
+export type TitlePane = Widget<TitlePaneProperties> & ThemeableMixin & {
 	onClickTitle?(): void;
 };
 
 export interface TitlePaneFactory extends WidgetFactory<TitlePane, TitlePaneProperties> { };
 
 const createTitlePane: TitlePaneFactory = createWidgetBase
-.mixin(themeableMixin)
+.mixin(themeable)
 .mixin({
 	mixin: {
-		// FIXME
-		baseTheme: (<any> baseTheme).default.classes,
-		classes: [ (<any> baseTheme).default.classes.main ],
+		baseClasses: css,
 
 		onClickTitle: function (this: TitlePane) {
 			const {
@@ -52,26 +49,23 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 			const {
 				collapsed = false,
 				collapsible = true,
-				// FIXME
-				enterAnimation = (<any> animations).default.classes.slideInDown,
-				// FIXME
-				exitAnimation = (<any> animations).default.classes.slideOutUp,
+				enterAnimation = animations.slideInDown,
+				exitAnimation = animations.slideOutUp,
 				title = ''
 			} = this.properties;
 
-			const titleProperties: VNodeProperties = { classes: {} };
-
-			// FIXME
-			Object.keys(this.theme.title).forEach(function (className) {
-				(<any> titleProperties.classes)[className] = true;
-			});
+			let titleProperties: VNodeProperties;
 
 			if (collapsible) {
-				// FIXME
-				Object.keys(this.theme.collapsible).forEach(function (className) {
-					(<any> titleProperties.classes)[className] = true;
-				});
-				titleProperties.onclick = this.onClickTitle;
+				titleProperties = {
+					classes: this.classes(css.title, css.collapsible).get(),
+					onclick: this.onClickTitle
+				};
+			}
+			else {
+				titleProperties = {
+					classes: this.classes(css.title).get()
+				};
 			}
 
 			const children: DNode[] = [
@@ -80,7 +74,7 @@ const createTitlePane: TitlePaneFactory = createWidgetBase
 
 			if (!collapsed) {
 				children.push(v('div', {
-					classes: this.theme.content,
+					classes: this.classes(css.content).get(),
 					enterAnimation,
 					exitAnimation
 				}, this.children));

@@ -66,8 +66,8 @@ const createApp = createWidgetBase
 				])
 			];
 		},
-		classes: [ 'main-app' ],
-		tagName: 'main'
+		// TODO: why doesn't this work? What is the recommended approach?
+		classes: [ 'main-app' ]
 	}
 });
 
