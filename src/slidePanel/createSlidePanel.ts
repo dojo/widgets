@@ -71,10 +71,6 @@ const internalStateMap = new WeakMap<SlidePanel, InternalState>();
 
 const DEFAULT_WIDTH = 256;
 
-function includeWhen(predicate: boolean, truthy: any[], falsey: any[] = []) {
-	return predicate ? truthy : falsey;
-}
-
 const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
 		baseClasses: css,
@@ -188,15 +184,15 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 
 			const contentClasses = [
 				css.content,
-				...includeWhen(align === Align.left, [ css.left ], [css.right ]),
-				...includeWhen(open, [ css.open ]),
-				...includeWhen(open && !state.wasOpen, [ css.slideIn ]),
-				...includeWhen(!open && state.wasOpen, [ css.slideOut ])
+				align === Align.left ? css.left : null,
+				open ? css.open : null,
+				open && !state.wasOpen ? css.slideIn : null,
+				!open && state.wasOpen ? css.slideOut : null
 			];
 
 			const underlayClasses = [
 				css.underlay,
-				...includeWhen(underlay, [ css.underlayVisible ])
+				underlay ? css.underlayVisible : null
 			];
 
 			if (!open && state.wasOpen && state.transform !== 0) {
