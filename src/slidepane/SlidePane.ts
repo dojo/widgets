@@ -139,10 +139,13 @@ export default class SlidePane extends ThemeableMixin(WidgetBase)<SlidePanePrope
 			open = false,
 			align = Align.left,
 			underlay = false,
+			width = DEFAULT_WIDTH,
 			onOpen
 		} = this.properties;
 
-		const contentStyles: {[key: string]: any} = {};
+		const contentStyles: {[key: string]: any} = {
+			width: width + 'px'
+		};
 
 		const contentClasses = [
 			css.content,
