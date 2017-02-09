@@ -29,4 +29,10 @@
 	--input-padding: 0.5em 1em;
 	--input-border-color: var(--dojo-shade-gray);
 	--input-highlight-color: var(--dojo-blue);
+
+	--button-bg: var(--dojo-blue);
+	--button-hover-bg: var(--dojo-light-blue);
+	--button-disabled-bg: var(--dojo-shade-gray);
+	--button-color: var(--dojo-white);
+	--button-icon-font: 'iconFont';
 }
