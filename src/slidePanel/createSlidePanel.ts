@@ -72,7 +72,15 @@ interface InternalState {
 
 const internalStateMap = new WeakMap<SlidePanel, InternalState>();
 
+/**
+ * The default width of the slide panel
+ */
 const DEFAULT_WIDTH = 256;
+
+/**
+ * The minimum swipe delta in px required to be counted as a swipe and not a touch / click
+ */
+const SWIPETHRESHOLD = 5;
 
 const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
@@ -149,7 +157,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				onRequestClose && onRequestClose();
 			}
 			// If the underlay was clicked
-			else if (delta > -5 && delta < 5 && (<HTMLElement> event.target).classList.contains(css.underlay)) {
+			else if (Math.abs(delta) > SWIPETHRESHOLD && (<HTMLElement> event.target).classList.contains(css.underlay)) {
 				internalStateMap.set(this, state);
 				onRequestClose && onRequestClose();
 			}
@@ -193,22 +201,10 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				!open && state.wasOpen ? css.slideOut : null
 			];
 
-			const underlayClasses = [
-				css.underlay,
-				underlay ? css.underlayVisible : null
-			];
-
 			if (!open && state.wasOpen && state.transform !== 0) {
 				// If panel is closing because of swipe
 				contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ state.transform }%)`;
 			}
-
-			const content = v('div', {
-				key: 'content',
-				classes: this.classes(...contentClasses).get(),
-				styles: contentStyles,
-				afterCreate: this.afterCreate
-			}, this.children);
 
 			open && !state.wasOpen && onOpen && onOpen();
 			state.wasOpen = open;
@@ -221,15 +217,20 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				onmousedown: this.onSwipeStart,
 				onmousemove: this.onSwipeMove,
 				onmouseup: this.onSwipeEnd
-			}, open ? [
-				v('div', {
+			}, [
+				open ? v('div', {
 					key: 'underlay',
-					classes: this.classes(...underlayClasses).get(),
+					classes: this.classes(css.underlay, underlay ? css.underlayVisible : null).get(),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut
-				}),
-				content
-			] : [ content ]);
+				}) : null,
+				v('div', {
+					key: 'content',
+					classes: this.classes(...contentClasses).get(),
+					styles: contentStyles,
+					afterCreate: this.afterCreate
+				}, this.children)
+			]);
 		}
 	},
 	initialize: function(instance) {
