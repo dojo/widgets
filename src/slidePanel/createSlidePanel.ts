@@ -80,7 +80,7 @@ const DEFAULT_WIDTH = 256;
 /**
  * The minimum swipe delta in px required to be counted as a swipe and not a touch / click
  */
-const SWIPETHRESHOLD = 5;
+const SWIPE_THRESHOLD = 5;
 
 const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
@@ -157,7 +157,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				onRequestClose && onRequestClose();
 			}
 			// If the underlay was clicked
-			else if (Math.abs(delta) > SWIPETHRESHOLD && (<HTMLElement> event.target).classList.contains(css.underlay)) {
+			else if (Math.abs(delta) > SWIPE_THRESHOLD && (<HTMLElement> event.target).classList.contains(css.underlay)) {
 				internalStateMap.set(this, state);
 				onRequestClose && onRequestClose();
 			}
