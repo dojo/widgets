@@ -3,7 +3,7 @@ import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 import WeakMap from '@dojo/shim/WeakMap';
 
-import * as css from './styles/slidePanel.css';
+import * as css from './styles/slidePane.css';
 import * as animations from '../styles/animations.css';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
@@ -16,18 +16,18 @@ export const enum Align {
 };
 
 /**
- * @type SlidePanelProperties
+ * @type SlidePaneProperties
  *
- * Properties that can be set on a SlidePanel component
+ * Properties that can be set on a SlidePane component
  *
- * @property align			The position of the panel on the screen (Align.left or Align.right)
- * @property open			Determines whether the panel is open or closed
- * @property underlay		Determines whether a semi-transparent background shows behind the panel
- * @property width			Width of the panel in pixels
- * @property onOpen			Called when the panel opens
- * @property onRequestClose	Called when the panel is swiped closed or the underlay is clicked or tapped
+ * @property align			The position of the pane on the screen (Align.left or Align.right)
+ * @property open			Determines whether the pane is open or closed
+ * @property underlay		Determines whether a semi-transparent background shows behind the pane
+ * @property width			Width of the pane in pixels
+ * @property onOpen			Called when the pane opens
+ * @property onRequestClose	Called when the pane is swiped closed or the underlay is clicked or tapped
  */
-export interface SlidePanelProperties extends WidgetProperties {
+export interface SlidePaneProperties extends WidgetProperties {
 	align?: Align;
 	open?: boolean;
 	underlay?: boolean;
@@ -37,17 +37,17 @@ export interface SlidePanelProperties extends WidgetProperties {
 };
 
 /**
- * @type SlidePanel
+ * @type SlidePane
  *
- * A SlidePanel component
+ * A SlidePane component
  *
- * @property onSwipeStart		Event handler for when a touch or mouse press starts on the panel or underlay
- * @property onSwipeMove		Event handler for when the panel or underlay is dragged or swiped
- * @property onSwipeEnd			Event handler for when a touch or mouse press ends on the panel or underlay
- * @property afterCreate		Called after the panel is rendered as DOM
- * @property onTransitionEnd	Event handler for when the panel finishes any animation
+ * @property onSwipeStart		Event handler for when a touch or mouse press starts on the pane or underlay
+ * @property onSwipeMove		Event handler for when the pane or underlay is dragged or swiped
+ * @property onSwipeEnd			Event handler for when a touch or mouse press ends on the pane or underlay
+ * @property afterCreate		Called after the pane is rendered as DOM
+ * @property onTransitionEnd	Event handler for when the pane finishes any animation
  */
-export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
+export type SlidePane = Widget<SlidePaneProperties> & ThemeableMixin & {
 	onSwipeStart(event: MouseEvent & TouchEvent): void;
 	onSwipeMove(event: MouseEvent & TouchEvent): void;
 	onSwipeEnd(event: MouseEvent & TouchEvent): void;
@@ -56,11 +56,11 @@ export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
 };
 
 /**
- * @type SlidePanelFactory
+ * @type SlidePaneFactory
  *
- * Widget factory that creates a SlidePanel component
+ * Widget factory that creates a SlidePane component
  */
-export interface SlidePanelFactory extends WidgetFactory<SlidePanel, SlidePanelProperties> { };
+export interface SlidePaneFactory extends WidgetFactory<SlidePane, SlidePaneProperties> { };
 
 interface InternalState {
 	content: HTMLElement | null;
@@ -70,10 +70,10 @@ interface InternalState {
 	wasOpen: boolean;
 };
 
-const internalStateMap = new WeakMap<SlidePanel, InternalState>();
+const internalStateMap = new WeakMap<SlidePane, InternalState>();
 
 /**
- * The default width of the slide panel
+ * The default width of the slide pane
  */
 const DEFAULT_WIDTH = 256;
 
@@ -82,11 +82,11 @@ const DEFAULT_WIDTH = 256;
  */
 const SWIPE_THRESHOLD = 5;
 
-const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mixin({
+const createSlidePane: SlidePaneFactory = createWidgetBase.mixin(themeable).mixin({
 	mixin: {
 		baseClasses: css,
 
-		onSwipeStart(this: SlidePanel, event: MouseEvent & TouchEvent) {
+		onSwipeStart(this: SlidePane, event: MouseEvent & TouchEvent) {
 			event.stopPropagation();
 			event.preventDefault();
 
@@ -101,7 +101,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			internalStateMap.set(this, state);
 		},
 
-		onSwipeMove(this: SlidePanel, event: MouseEvent & TouchEvent) {
+		onSwipeMove(this: SlidePane, event: MouseEvent & TouchEvent) {
 			const state = internalStateMap.get(this);
 
 			// Ignore mouse movement when not clicking
@@ -123,18 +123,18 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 
 			internalStateMap.set(this, state);
 
-			// Prevent panel from sliding past screen edge
+			// Prevent pane from sliding past screen edge
 			if (delta <= 0) {
 				return;
 			}
 
-			// Move the panel
+			// Move the pane
 			if (state.content) {
 				state.content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ state.transform }%)`;
 			}
 		},
 
-		onSwipeEnd(this: SlidePanel, event: MouseEvent & TouchEvent) {
+		onSwipeEnd(this: SlidePane, event: MouseEvent & TouchEvent) {
 			const state = internalStateMap.get(this);
 			state.swiping = false;
 
@@ -149,7 +149,7 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			// Difference between current and initial pointer position
 			const delta = align === Align.right ? currentX - state.initialX : state.initialX - currentX;
 
-			// If the panel was swiped far enough to close
+			// If the pane was swiped far enough to close
 			if (delta > width / 2) {
 				// Cache the transform to apply on next render
 				state.transform = 100 * delta / width;
@@ -161,28 +161,28 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 				internalStateMap.set(this, state);
 				onRequestClose && onRequestClose();
 			}
-			// If panel was not swiped far enough to close
+			// If pane was not swiped far enough to close
 			else if (delta > 0) {
-				// Animate the panel back open
+				// Animate the pane back open
 				state.content && state.content.classList.add(css.slideIn);
 				internalStateMap.set(this, state);
 			}
 		},
 
-		afterCreate(this: SlidePanel, element: HTMLElement) {
+		afterCreate(this: SlidePane, element: HTMLElement) {
 			const state = internalStateMap.get(this);
 			element.addEventListener('transitionend', this.onTransitionEnd!);
 			state.content = element;
 			internalStateMap.set(this, state);
 		},
 
-		onTransitionEnd(this: SlidePanel, event: TransitionEvent) {
+		onTransitionEnd(this: SlidePane, event: TransitionEvent) {
 			const content = (<HTMLElement> event.target);
 			content.classList.remove(css.slideIn, css.slideOut);
 			content.style.transform = '';
 		},
 
-		render(this: SlidePanel): DNode {
+		render(this: SlidePane): DNode {
 			const state = internalStateMap.get(this);
 			const {
 				open = false,
@@ -195,14 +195,17 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 
 			const contentClasses = [
 				css.content,
-				align === Align.left ? css.left : null,
-				open ? css.open : null,
 				open && !state.wasOpen ? css.slideIn : null,
 				!open && state.wasOpen ? css.slideOut : null
 			];
 
+			const fixedContentClasses = [
+				align === Align.left ? css.left : css.right,
+				open ? css.open : null
+			];
+
 			if (!open && state.wasOpen && state.transform !== 0) {
-				// If panel is closing because of swipe
+				// If pane is closing because of swipe
 				contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ state.transform }%)`;
 			}
 
@@ -220,13 +223,13 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 			}, [
 				open ? v('div', {
 					key: 'underlay',
-					classes: this.classes(css.underlay, underlay ? css.underlayVisible : null).get(),
+					classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null).get(),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut
 				}) : null,
 				v('div', {
 					key: 'content',
-					classes: this.classes(...contentClasses).get(),
+					classes: this.classes(...contentClasses).fixed(...fixedContentClasses).get(),
 					styles: contentStyles,
 					afterCreate: this.afterCreate
 				}, this.children)
@@ -244,4 +247,4 @@ const createSlidePanel: SlidePanelFactory = createWidgetBase.mixin(themeable).mi
 	}
 });
 
-export default createSlidePanel;
+export default createSlidePane;
