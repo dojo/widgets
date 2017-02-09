@@ -1,8 +1,8 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import createSlidePanel, { Align } from '../../src/slidepane/createSlidePane';
-import * as css from '../../src/slidepanel/styles/slidePane.css';
+import SlidePane, { Align } from '../../src/slidepane/SlidePane';
+import * as css from '../../src/slidepane/styles/slidePane.css';
 
 function createEvent(type: string, x: number): any {
 	return {
@@ -25,13 +25,11 @@ registerSuite({
 	name: 'createSlidePanel',
 
 	'Should construct SlidePanel with passed properties'() {
-		const slidePanel = createSlidePanel({
-			properties: {
-				id: 'foo',
-				align: Align.left,
-				open: true,
-				underlay: true
-			}
+		const slidePanel = new SlidePane({
+			id: 'foo',
+			align: Align.left,
+			open: true,
+			underlay: true
 		});
 
 		assert.strictEqual(slidePanel.properties.id, 'foo');
@@ -40,19 +38,14 @@ registerSuite({
 		assert.isTrue(slidePanel.properties.underlay);
 	},
 
-	'Outer node should have correct attributes'() {
-		const slidePanel = createSlidePanel({
-			properties: {
-				id: 'foo',
-				underlay: false
-			}
+	'Render correct children'() {
+		const slidePanel = new SlidePane({
+			id: 'foo',
+			underlay: false
 		});
 		let vnode = <VNode> slidePanel.__render__();
-
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
-		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
-		assert.strictEqual(vnode.properties!['data-open'], 'false');
-		assert.strictEqual(vnode.properties!['data-align'], Align.left);
+		assert.lengthOf(vnode.children, 1);
 
 		slidePanel.setProperties({
 			open: true,
@@ -60,22 +53,16 @@ registerSuite({
 			align: Align.right
 		});
 		vnode = <VNode> slidePanel.__render__();
-
-		assert.strictEqual(vnode.properties!['data-underlay'], 'true');
-		assert.strictEqual(vnode.properties!['data-open'], 'true');
-		assert.strictEqual(vnode.properties!['data-align'], Align.right);
 		assert.lengthOf(vnode.children, 2);
 	},
 
 	onOpen() {
 		let called = false;
 
-		const slidePanel = createSlidePanel({
-			properties: {
-				open: true,
-				onOpen: () => {
-					called = true;
-				}
+		const slidePanel = new SlidePane({
+			open: true,
+			onOpen: () => {
+				called = true;
 			}
 		});
 		<VNode> slidePanel.__render__();
@@ -84,8 +71,8 @@ registerSuite({
 	},
 
 	'change property to close'() {
-		const slidePanel = createSlidePanel({
-			properties: { open: true }
+		const slidePanel = new SlidePane({
+			open: true
 		});
 		<VNode> slidePanel.__render__();
 		slidePanel.setProperties({ open: false });
@@ -97,11 +84,9 @@ registerSuite({
 	'click underlay to close'() {
 		let called = false;
 
-		const slidePanel = createSlidePanel({
-			properties: {
-				onRequestClose() {
-					called = true;
-				}
+		const slidePanel = new SlidePane({
+			onRequestClose() {
+				called = true;
 			}
 		});
 
@@ -114,11 +99,9 @@ registerSuite({
 	'tap underlay to close'() {
 		let called = false;
 
-		const slidePanel = createSlidePanel({
-			properties: {
-				onRequestClose() {
-					called = true;
-				}
+		const slidePanel = new SlidePane({
+			onRequestClose() {
+				called = true;
 			}
 		});
 
@@ -131,11 +114,9 @@ registerSuite({
 	'drag to close'() {
 		let called = false;
 
-		const slidePanel = createSlidePanel({
-			properties: {
-				onRequestClose() {
-					called = true;
-				}
+		const slidePanel = new SlidePane({
+			onRequestClose() {
+				called = true;
 			}
 		});
 
@@ -149,11 +130,9 @@ registerSuite({
 	'swipe to close'() {
 		let called = false;
 
-		const slidePanel = createSlidePanel({
-			properties: {
-				onRequestClose() {
-					called = true;
-				}
+		const slidePanel = new SlidePane({
+			onRequestClose() {
+				called = true;
 			}
 		});
 
@@ -176,14 +155,12 @@ registerSuite({
 	'swipe to close right'() {
 		let called = false;
 
-		const slidePanel = createSlidePanel({
-			properties: {
-				onRequestClose() {
-					called = true;
-				},
-				width: 256,
-				align: Align.right
-			}
+		const slidePanel = new SlidePane({
+			onRequestClose() {
+				called = true;
+			},
+			width: 256,
+			align: Align.right
 		});
 
 		slidePanel.afterCreate(<any> {
@@ -204,11 +181,9 @@ registerSuite({
 	'not dragged far enough to close'() {
 		let called = false;
 
-		const slidePanel = createSlidePanel({
-			properties: {
-				onRequestClose() {
-					called = true;
-				}
+		const slidePanel = new SlidePane({
+			onRequestClose() {
+				called = true;
 			}
 		});
 
@@ -228,7 +203,7 @@ registerSuite({
 	},
 
 	'panel cannot be moved past screen edge'() {
-		const slidePanel = createSlidePanel({});
+		const slidePanel = new SlidePane({});
 
 		const element: any = {
 			addEventListener() {},
@@ -263,7 +238,7 @@ registerSuite({
 			}
 		};
 
-		const slidePanel = createSlidePanel({});
+		const slidePanel = new SlidePane({});
 		slidePanel.onTransitionEnd(event);
 
 		assert.strictEqual(event.target.style.transform, '');
@@ -271,8 +246,8 @@ registerSuite({
 	},
 
 	'last transform is applied on next render if being swiped closed'() {
-		const slidePanel = createSlidePanel({
-			properties: { open: true }
+		const slidePanel = new SlidePane({
+			open: true
 		});
 		<VNode> slidePanel.__render__();
 		slidePanel.setProperties({ open: false });
@@ -285,8 +260,8 @@ registerSuite({
 	},
 
 	'last transform is applied on next render if being swiped closed right'() {
-		const slidePanel = createSlidePanel({
-			properties: { open: true }
+		const slidePanel = new SlidePane({
+			open: true
 		});
 		<VNode> slidePanel.__render__();
 		slidePanel.setProperties({

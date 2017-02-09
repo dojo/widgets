@@ -1,7 +1,7 @@
-import createDialog from './dialog/createDialog';
-import createSlidePanel from './slidePanel/createSlidePanel';
+import Dialog from './dialog/Dialog';
+import SlidePane from './slidepane/SlidePane';
 
 export {
-	createDialog,
-	createSlidePanel
+	Dialog,
+	SlidePane
 };

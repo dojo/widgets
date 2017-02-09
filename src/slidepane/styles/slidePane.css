@@ -14,7 +14,7 @@
 
 .content {
 	font: var(--base-font);
-	width: var(--slide-panel-width);
+	width: var(--slide-pane-width);
 	height: 100%;
 	position: fixed;
 	top: 0;

@@ -1,3 +1,3 @@
 import './main';
-import './createDialog';
-import './createSlidePane';
+import './Dialog';
+import './SlidePane';

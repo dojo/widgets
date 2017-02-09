@@ -13,5 +13,5 @@
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
 	--underlay-bg: var(--dojo-shade-gray);
-	--slide-panel-width: 256px;
+	--slide-pane-width: 256px;
 }

@@ -1,22 +1,20 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import createDialog from '../../src/dialog/createDialog';
+import Dialog, { Role } from '../../src/dialog/Dialog';
 
 registerSuite({
-	name: 'createDialog',
+	name: 'Dialog',
 
 	'Should construct dialog with passed properties'() {
-		const dialog = createDialog({
-			properties: {
-				id: 'foo',
-				modal: true,
-				open: true,
-				title: 'dialog',
-				underlay: true,
-				closeable: true,
-				role: 'dialog'
-			}
+		const dialog = new Dialog({
+			id: 'foo',
+			modal: true,
+			open: true,
+			title: 'dialog',
+			underlay: true,
+			closeable: true,
+			role: Role.dialog
 		});
 
 		assert.strictEqual(dialog.properties.id, 'foo');
@@ -25,43 +23,33 @@ registerSuite({
 		assert.strictEqual(dialog.properties.title, 'dialog');
 		assert.isTrue(dialog.properties.underlay);
 		assert.isTrue(dialog.properties.closeable);
-		assert.strictEqual(dialog.properties.role, 'dialog');
+		assert.strictEqual(dialog.properties.role, Role.dialog);
 	},
 
-	'Outer node should have correct attribues'() {
-		const dialog = createDialog({
-			properties: {
-				enterAnimation: 'enter',
-				exitAnimation: 'exit',
-				role: 'dialog'
-			}
+	'Render correct children'() {
+		const dialog = new Dialog({
+			enterAnimation: 'enter',
+			exitAnimation: 'exit',
+			role: Role.dialog
 		});
 		let vnode = <VNode> dialog.__render__();
-
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
-		assert.strictEqual(vnode.properties!['data-underlay'], 'false');
-		assert.strictEqual(vnode.properties!['data-open'], 'false');
+		assert.lengthOf(vnode.children, 0);
 
 		dialog.setProperties({
 			open: true,
 			underlay: true,
-			role: 'alert'
+			role: Role.alertdialog
 		});
 		vnode = <VNode> dialog.__render__();
-
-		assert.strictEqual(vnode.properties!['data-underlay'], 'true');
-		assert.strictEqual(vnode.properties!['data-open'], 'true');
-		assert.strictEqual(vnode.children![1].properties!['role'], 'alertdialog');
 		assert.lengthOf(vnode.children, 2);
 	},
 
 	onRequestClose() {
-		const dialog = createDialog({
-			properties: {
-				open: true,
-				onRequestClose: () => {
-					dialog.setProperties({ open: false });
-				}
+		const dialog = new Dialog({
+			open: true,
+			onRequestClose: () => {
+				dialog.setProperties({ open: false });
 			}
 		});
 		dialog.onCloseClick();
@@ -72,12 +60,10 @@ registerSuite({
 	onOpen() {
 		let called = false;
 
-		const dialog = createDialog({
-			properties: {
-				open: true,
-				onOpen: () => {
-					called = true;
-				}
+		const dialog = new Dialog({
+			open: true,
+			onOpen: () => {
+				called = true;
 			}
 		});
 		<VNode> dialog.__render__();
@@ -86,13 +72,11 @@ registerSuite({
 	},
 
 	modal() {
-		const dialog = createDialog({
-			properties: {
-				open: true,
-				modal: true,
-				onRequestClose: () => {
-					dialog.setProperties({ open: false });
-				}
+		const dialog = new Dialog({
+			open: true,
+			modal: true,
+			onRequestClose: () => {
+				dialog.setProperties({ open: false });
 			}
 		});
 		dialog.onUnderlayClick();
@@ -106,12 +90,10 @@ registerSuite({
 	},
 
 	closeable() {
-		const dialog = createDialog({
-			properties: {
-				closeable: false,
-				open: true,
-				title: 'foo'
-			}
+		const dialog = new Dialog({
+			closeable: false,
+			open: true,
+			title: 'foo'
 		});
 		const vnode = <VNode> dialog.__render__();
 		dialog.onCloseClick();

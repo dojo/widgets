@@ -29,7 +29,6 @@
     "@dojo/interfaces": "2.0.0-alpha.11",
     "@dojo/loader": "2.0.0-beta.9",
     "@types/chai": "3.4.*",
-    "@types/es6-shim": "0.0.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
     "@types/jsdom": "2.0.*",
@@ -42,6 +41,6 @@
     "remap-istanbul": "^0.6.4",
     "sinon": "^1.17.6",
     "tslint": "^3.11.0",
-    "typescript": "~2.1.4"
+    "typescript": "rc"
   }
 }
