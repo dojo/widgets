@@ -7,6 +7,9 @@ import * as css from './styles/slidePanel.css';
 import * as animations from '../styles/animations.css';
 import themeable, { ThemeableMixin } from '@dojo/widget-core/mixins/themeable';
 
+/**
+ * Enum for left / right alignment
+ */
 export const enum Align {
 	left,
 	right
@@ -17,12 +20,12 @@ export const enum Align {
  *
  * Properties that can be set on a SlidePanel component
  *
- * @property	align			The position of the panel on the screen (Align.left or Align.right)
- * @property	{boolean?}		open			Determines whether the panel is open or closed
- * @property	{boolean?}		underlay		Determines whether a semi-transparent background shows behind the panel
- * @property	{number?}		width			Width of the panel in pixels
- * @property	{Function?}		onOpen			Called when the panel opens
- * @property	{Function?}		onRequestClose	Called when the panel is swiped closed or the underlay is clicked or tapped
+ * @property align			The position of the panel on the screen (Align.left or Align.right)
+ * @property open			Determines whether the panel is open or closed
+ * @property underlay		Determines whether a semi-transparent background shows behind the panel
+ * @property width			Width of the panel in pixels
+ * @property onOpen			Called when the panel opens
+ * @property onRequestClose	Called when the panel is swiped closed or the underlay is clicked or tapped
  */
 export interface SlidePanelProperties extends WidgetProperties {
 	align?: Align;
@@ -38,11 +41,11 @@ export interface SlidePanelProperties extends WidgetProperties {
  *
  * A SlidePanel component
  *
- * @property	{Function}		onSwipeStart		Event handler for when a touch or mouse press starts on the panel or underlay
- * @property	{Function}		onSwipeMove			Event handler for when the panel or underlay is dragged or swiped
- * @property	{Function}		onSwipeEnd			Event handler for when a touch or mouse press ends on the panel or underlay
- * @property	{Function}		afterCreate			Called after the panel is rendered as DOM
- * @property	{Function}		onTransitionEnd		Event handler for when the panel finishes any animation
+ * @property onSwipeStart		Event handler for when a touch or mouse press starts on the panel or underlay
+ * @property onSwipeMove		Event handler for when the panel or underlay is dragged or swiped
+ * @property onSwipeEnd			Event handler for when a touch or mouse press ends on the panel or underlay
+ * @property afterCreate		Called after the panel is rendered as DOM
+ * @property onTransitionEnd	Event handler for when the panel finishes any animation
  */
 export type SlidePanel = Widget<SlidePanelProperties> & ThemeableMixin & {
 	onSwipeStart(event: MouseEvent & TouchEvent): void;
