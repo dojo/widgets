@@ -6,6 +6,7 @@ registerSuite({
 	name: 'main',
 
 	api() {
+		assert.isDefined(widgets.createTitlePanel);
 		assert.isDefined(widgets.Dialog);
 		assert.isDefined(widgets.SlidePane);
 		assert.isDefined(widgets.TabPane);
