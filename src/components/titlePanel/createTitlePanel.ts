@@ -8,14 +8,14 @@ import * as css from './styles/titlePanel.css';
 import * as animations from '../../styles/animations.css';
 
 export interface TitlePanelProperties extends WidgetProperties {
-	collapsed?: boolean;
-	collapsible?: boolean;
+	open?: boolean;
+	closeable?: boolean;
 	enterAnimation?: string;
 	exitAnimation?: string;
 	title: string;
 
-	onRequestCollapse?(): void;
-	onRequestExpand?(): void;
+	onRequestClose?(): void;
+	onRequestOpen?(): void;
 };
 
 export type TitlePanel = Widget<TitlePanelProperties> & ThemeableMixin & {
@@ -33,32 +33,32 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 			onClickTitle(this: TitlePanel) {
 				const {
 					properties: {
-						collapsed = false
+						open = true
 					}
 				} = this;
 
-				if (collapsed) {
-					this.properties.onRequestExpand && this.properties.onRequestExpand();
+				if (open) {
+					this.properties.onRequestClose && this.properties.onRequestClose();
 				}
 				else {
-					this.properties.onRequestCollapse && this.properties.onRequestCollapse();
+					this.properties.onRequestOpen && this.properties.onRequestOpen();
 				}
 			},
 
 			render(this: TitlePanel): DNode {
 				const {
-					collapsed = false,
-					collapsible = true,
+					closeable = true,
 					enterAnimation = animations.slideInDown,
 					exitAnimation = animations.slideOutUp,
+					open = true,
 					title = ''
 				} = this.properties;
 
 				let titleProperties: VNodeProperties;
 
-				if (collapsible) {
+				if (closeable) {
 					titleProperties = {
-						classes: this.classes(css.title, css.collapsible).get(),
+						classes: this.classes(css.title, css.closeable).get(),
 						onclick: this.onClickTitle
 					};
 				}
@@ -72,7 +72,7 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 					v('div', titleProperties, [ title ])
 				];
 
-				if (collapsible && !collapsed) {
+				if (open) {
 					children.push(v('div', {
 						classes: this.classes(css.content).get(),
 						enterAnimation,
