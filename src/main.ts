@@ -1,3 +1,4 @@
+import createTitlePanel from './components/titlePanel/createTitlePanel';
 import Button from './button/Button';
 import Checkbox from './checkbox/Checkbox';
 import ComboBox from './combobox/ComboBox';
@@ -13,6 +14,7 @@ import Textarea from './textarea/Textarea';
 import TextInput from './textinput/TextInput';
 
 export {
+	createTitlePanel,
 	Button,
 	Checkbox,
 	ComboBox,
