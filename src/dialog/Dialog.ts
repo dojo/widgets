@@ -73,7 +73,7 @@ export default class Dialog extends ThemeableMixin(WidgetBase)<DialogProperties>
 		return v('div', {}, open ? [
 			v('div', {
 				key: 'underlay',
-				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null).get(),
+				classes: this.classes(css.underlayVisible).fixed(underlay ? css.underlay : null).get(),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
 				onclick: this.onUnderlayClick
