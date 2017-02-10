@@ -19,13 +19,13 @@ const createApp = createWidgetBase
 				}, [
 					w(createTitlePanel, {
 						id: 'titlePanel1',
-						title: 'TitlePanel Widget With collapsible=false',
-						collapsible: false,
-						onRequestCollapse: () => {
-							alert('onRequestCollapse should never get called');
+						title: 'TitlePanel Widget With closeable=false',
+						closeable: false,
+						onRequestClose: () => {
+							alert('onRequestClose should never get called');
 						},
-						onRequestExpand: () => {
-							alert('onRequestExpand should never get called');
+						onRequestOpen: () => {
+							alert('onRequestOpen should never get called');
 						}
 					}, [
 						v('div', {
@@ -36,13 +36,13 @@ const createApp = createWidgetBase
 					]),
 					w(createTitlePanel, {
 						id: 'titlePanel2',
-						title: 'TitlePanel Widget (collapsible)',
-						collapsed: <boolean> this.state['t2collapsed'],
-						onRequestCollapse: () => {
-							this.setState({ t2collapsed: true });
+						title: 'TitlePanel Widget (closeable)',
+						open: <boolean> this.state['t2open'],
+						onRequestClose: () => {
+							this.setState({ t2open: false });
 						},
-						onRequestExpand: () => {
-							this.setState({ t2collapsed: false });
+						onRequestOpen: () => {
+							this.setState({ t2open: true });
 						}
 					}, [
 						v('div', {
@@ -53,13 +53,13 @@ const createApp = createWidgetBase
 					]),
 					w(createTitlePanel, {
 						id: 'titlePanel3',
-						title: 'TitlePanel Widget with collapsed=true',
-						collapsed: <boolean> (this.state['t3collapsed'] === undefined ? true : this.state['t3collapsed']),
-						onRequestCollapse: () => {
-							this.setState({ t3collapsed: true });
+						title: 'TitlePanel Widget with open=false',
+						open: <boolean> (this.state['t3open'] === undefined ? false : this.state['t3open']),
+						onRequestClose: () => {
+							this.setState({ t3open: false });
 						},
-						onRequestExpand: () => {
-							this.setState({ t3collapsed: false });
+						onRequestOpen: () => {
+							this.setState({ t3open: true });
 						}
 					}, [
 						v('div', {

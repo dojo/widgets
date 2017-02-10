@@ -1,10 +1,5 @@
 @import '../../../styles/variables.css';
 
-:root {
-	--title-panel-border-width: 1px;
-	--title-panel-padding: 5px;
-}
-
 .main {
 	overflow: hidden;
 }
@@ -13,19 +8,19 @@
 	background-color: var(--title-bar-bg);
 	border-color: var(--title-bar-bg);
 	border-style: solid;
-	border-width: var(--title-panel-border-width);
+	border-width: var(--border-thin);
 	color: var(--title-bar-color);
-	font-size: var(--title-font-size);
-	padding: var(--title-panel-padding);
+	font-size: var(--title-bar-font-size);
+	padding: var(--title-padding);
 }
 
-.collapsible {
+.closeable {
 	cursor: pointer;
 }
 
 .content {
 	border-color: var(--title-bar-bg);
 	border-style: solid;
-	border-width: var(--title-panel-border-width);
-	padding: var(--content-padding);
+	border-width: var(--border-thin);
+	padding: var(--container-padding);
 }
