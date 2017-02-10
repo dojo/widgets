@@ -52,8 +52,6 @@ export interface ButtonProperties extends WidgetProperties {
 }
 
 export type Button = Widget<ButtonProperties> & ThemeableMixin & {
-	type?: string;
-
 	onClick(event?: MouseEvent): void;
 };
 
@@ -69,7 +67,6 @@ const createButton: ButtonFactory = createWidgetBase.mixin(themeable).mixin({
 			const {
 				content = '',
 				type,
-				onClick,
 				name,
 				icon,
 				disabled,
@@ -79,11 +76,11 @@ const createButton: ButtonFactory = createWidgetBase.mixin(themeable).mixin({
 			} = this.properties;
 			const buttonNodeAttributes: any = {
 				innerHTML: content,
-				classes: this.classes(css.button).get()
+				classes: this.classes(css.button).get(),
+				onclick: this.onClick
 			};
 
 			type ? buttonNodeAttributes.type = type : false;
-			onClick ? buttonNodeAttributes.onclick = onClick : false;
 			name ? buttonNodeAttributes.name = name : false;
 			icon ? buttonNodeAttributes['data-dojo-icon'] = icon : false;
 			disabled ? buttonNodeAttributes.disabled = disabled : false;

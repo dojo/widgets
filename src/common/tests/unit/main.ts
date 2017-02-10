@@ -9,6 +9,7 @@ registerSuite({
 		assert.isDefined(widgets.Dialog);
 		assert.isDefined(widgets.SlidePane);
 		assert.isDefined(widgets.Label);
+		assert.isDefined(widgets.Button);
 		assert.isDefined(widgets.TextInput);
 		assert.isDefined(widgets.Textarea);
 		assert.isDefined(widgets.Checkbox);
