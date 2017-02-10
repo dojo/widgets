@@ -1,4 +1,3 @@
-import { VNodeProperties } from '@dojo/interfaces/vdom';
 import createWidgetBase from '@dojo/widget-core/createWidgetBase';
 import { v } from '@dojo/widget-core/d';
 import { DNode, Widget, WidgetFactory, WidgetProperties } from '@dojo/widget-core/interfaces';
@@ -56,43 +55,22 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 					title = ''
 				} = this.properties;
 
-				// VNodeProperties, but its typing is too restrictive
-				let titleProperties: any;
-				// VNodeProperties, but its typing is too restrictive
-				let titleButtonProperties: any = {
-					'aria-disabled': String(!closeable),
-					'aria-expanded': String(open),
-					// FIXME - set unique id
-					id: 'titlebutton',
-					role: 'button'
-				};
-
-				if (closeable) {
-					titleProperties = {
-						classes: this.classes(css.title, css.closeable).get(),
-						onclick: this.onClickTitle
-					};
-				}
-				else {
-					titleProperties = {
-						classes: this.classes(css.title).get()
-					};
-				}
-
-				titleProperties.role = 'heading';
-
-				if (ariaHeadingLevel) {
-					titleProperties['aria-level'] = String(ariaHeadingLevel);
-				}
-
-				if (open) {
-					// FIXME - id of content node
-					titleButtonProperties['aria-controls'] = 'content';
-				}
-
 				const children: DNode[] = [
-					v('div', titleProperties, [
-						v('div', titleButtonProperties, [ title ])
+					v('div', {
+						'aria-level': ariaHeadingLevel ? String(ariaHeadingLevel) : '',
+						classes: this.classes(css.title, closeable ? css.closeable : null).get(),
+						onclick: closeable ? this.onClickTitle : undefined,
+						role: 'heading'
+					}, [
+						v('div', {
+							// FIXME - id of content
+							'aria-controls': open ? 'content' : '',
+							'aria-disabled': String(!closeable),
+							'aria-expanded': String(open),
+							// FIXME - set unique id
+							id: 'titlebutton',
+							role: 'button'
+						}, [ title ])
 					])
 				];
 
