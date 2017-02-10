@@ -8,10 +8,11 @@ import * as css from './styles/titlePanel.css';
 import * as animations from '../../styles/animations.css';
 
 export interface TitlePanelProperties extends WidgetProperties {
-	open?: boolean;
+	ariaHeadingLevel?: number;
 	closeable?: boolean;
 	enterAnimation?: string;
 	exitAnimation?: string;
+	open?: boolean;
 	title: string;
 
 	onRequestClose?(): void;
@@ -47,6 +48,7 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 
 			render(this: TitlePanel): DNode {
 				const {
+					ariaHeadingLevel,
 					closeable = true,
 					enterAnimation = animations.expandDown,
 					exitAnimation = animations.collapseUp,
@@ -54,7 +56,16 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 					title = ''
 				} = this.properties;
 
-				let titleProperties: VNodeProperties;
+				// VNodeProperties, but its typing is too restrictive
+				let titleProperties: any;
+				// VNodeProperties, but its typing is too restrictive
+				let titleButtonProperties: any = {
+					'aria-disabled': String(!closeable),
+					'aria-expanded': String(open),
+					// FIXME - set unique id
+					id: 'titlebutton',
+					role: 'button'
+				};
 
 				if (closeable) {
 					titleProperties = {
@@ -68,13 +79,30 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 					};
 				}
 
+				titleProperties.role = 'heading';
+
+				if (ariaHeadingLevel) {
+					titleProperties['aria-level'] = String(ariaHeadingLevel);
+				}
+
+				if (open) {
+					// FIXME - id of content node
+					titleButtonProperties['aria-controls'] = 'content';
+				}
+
 				const children: DNode[] = [
-					v('div', titleProperties, [ title ])
+					v('div', titleProperties, [
+						v('div', titleButtonProperties, [ title ])
+					])
 				];
 
 				if (open) {
 					children.push(v('div', {
+						// FIXME - id of title button
+						'aria-labelledby': 'titlebutton',
 						classes: this.classes(css.content).get(),
+						// FIXME - set unique id
+						id: 'content',
 						enterAnimation,
 						exitAnimation
 					}, this.children));

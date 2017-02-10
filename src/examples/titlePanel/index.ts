@@ -18,6 +18,7 @@ const createApp = createWidgetBase
 					}
 				}, [
 					w(createTitlePanel, {
+						ariaHeadingLevel: 1,
 						id: 'titlePanel1',
 						title: 'TitlePanel Widget With closeable=false',
 						closeable: false,
@@ -35,6 +36,7 @@ const createApp = createWidgetBase
 						})
 					]),
 					w(createTitlePanel, {
+						ariaHeadingLevel: 2,
 						id: 'titlePanel2',
 						title: 'TitlePanel Widget (closeable)',
 						open: <boolean> this.state['t2open'],
