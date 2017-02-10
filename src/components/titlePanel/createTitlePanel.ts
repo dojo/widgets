@@ -48,8 +48,8 @@ const createTitlePanel: TitlePanelFactory = createWidgetBase
 			render(this: TitlePanel): DNode {
 				const {
 					closeable = true,
-					enterAnimation = animations.slideInDown,
-					exitAnimation = animations.slideOutUp,
+					enterAnimation = animations.expandDown,
+					exitAnimation = animations.collapseUp,
 					open = true,
 					title = ''
 				} = this.properties;
