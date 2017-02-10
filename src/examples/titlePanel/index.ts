@@ -19,9 +19,10 @@ const createApp = createWidgetBase
 				}, [
 					w(createTitlePanel, {
 						ariaHeadingLevel: 1,
-						id: 'titlePanel1',
-						title: 'TitlePanel Widget With closeable=false',
 						closeable: false,
+						id: 'titlePanel1',
+						key: 'titlePanel1',
+						title: 'TitlePanel Widget With closeable=false',
 						onRequestClose: () => {
 							alert('onRequestClose should never get called');
 						},
@@ -38,8 +39,9 @@ const createApp = createWidgetBase
 					w(createTitlePanel, {
 						ariaHeadingLevel: 2,
 						id: 'titlePanel2',
-						title: 'TitlePanel Widget (closeable)',
+						key: 'titlePanel2',
 						open: <boolean> this.state['t2open'],
+						title: 'TitlePanel Widget (closeable)',
 						onRequestClose: () => {
 							this.setState({ t2open: false });
 						},
@@ -55,8 +57,9 @@ const createApp = createWidgetBase
 					]),
 					w(createTitlePanel, {
 						id: 'titlePanel3',
-						title: 'TitlePanel Widget with open=false',
+						key: 'titlePanel3',
 						open: <boolean> (this.state['t3open'] === undefined ? false : this.state['t3open']),
+						title: 'TitlePanel Widget with open=false',
 						onRequestClose: () => {
 							this.setState({ t3open: false });
 						},
