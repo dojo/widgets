@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<title>TitlePanel Example</title>
+	<title>TitlePane Example</title>
 	<link rel="stylesheet" href="../../styles/widgets.css">
 	<style>
 		body {
@@ -21,8 +21,7 @@
 
 <body>
 	<script src="../../../../node_modules/@dojo/loader/loader.min.js"></script>
-	<!-- TODO: should come from project dependency -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/maquette/2.4.2/css-transitions.min.js"></script>
+	<script src="../../../../node_modules/maquette/dist/css-transitions.min.js"></script>
 	<script>
 		require.config({
 			baseUrl: '../../../../',
@@ -33,7 +32,7 @@
 			]
 		});
 
-		require([ 'src/examples/titlePanel/index' ]);
+		require([ 'src/examples/titlepane/index' ]);
 	</script>
 </body>
 </html>

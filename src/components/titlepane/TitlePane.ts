@@ -3,10 +3,10 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 
-import * as css from './styles/titlePanel.css';
+import * as css from './styles/titlePane.css';
 import * as animations from '../../styles/animations.css';
 
-export interface TitlePanelProperties extends ThemeableProperties {
+export interface TitlePaneProperties extends ThemeableProperties {
 	ariaHeadingLevel?: number;
 	closeable?: boolean;
 	enterAnimation?: string;
@@ -19,7 +19,7 @@ export interface TitlePanelProperties extends ThemeableProperties {
 };
 
 @theme(css)
-export default class TitlePanel extends ThemeableMixin(WidgetBase)<TitlePanelProperties> {
+export default class TitlePane extends ThemeableMixin(WidgetBase)<TitlePaneProperties> {
 	onClickTitle(event: MouseEvent & TouchEvent) {
 		const {
 			open = true
