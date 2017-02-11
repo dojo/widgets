@@ -1,4 +1,3 @@
-import createTitlePanel from './components/titlePanel/createTitlePanel';
 import Button from './button/Button';
 import Checkbox from './checkbox/Checkbox';
 import ComboBox from './combobox/ComboBox';
@@ -9,11 +8,11 @@ import Select from './select/Select';
 import SlidePane from './slidepane/SlidePane';
 import Slider from './slider/Slider';
 import TabPane from './tabpane/TabPane';
-import Textarea from './textarea/Textarea';
 import TextInput from './textinput/TextInput';
+import Textarea from './textarea/Textarea';
+import TitlePane from './components/titlepane/TitlePane';
 
 export {
-	createTitlePanel,
 	Button,
 	Checkbox,
 	ComboBox,
@@ -24,6 +23,7 @@ export {
 	SlidePane,
 	Slider,
 	TabPane,
+	TextInput,
 	Textarea,
-	TextInput
+	TitlePane
 };
