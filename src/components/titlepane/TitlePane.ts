@@ -7,6 +7,20 @@ import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mi
 import * as css from './styles/titlePane.css';
 import * as animations from '../../styles/animations.css';
 
+/**
+ * @type TitlePaneProperties
+ *
+ * Properties that can be set on a TitlePane component
+ *
+ * @property ariaHeadingLevel	'aria-heading-level' for the title's DOM node
+ * @property closeable			If false the pane will not collapse in response to clicking the title
+ * @property enterAnimation		Animation to apply when the pane is opened
+ * @property exitAnimation		Animation to apply when the pane is closed
+ * @property open				If true the pane is opened and content is visible
+ * @property title				Title to display in above the content
+ * @property onRequestClose		Called when the title of an open pane is clicked
+ * @property onRequestOpen		Called when the title of a closed pane is clicked
+ */
 export interface TitlePaneProperties extends ThemeableProperties {
 	ariaHeadingLevel?: number;
 	closeable?: boolean;
