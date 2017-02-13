@@ -1,3 +1,4 @@
+import uuid from '@dojo/core/uuid';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
@@ -18,9 +19,11 @@ export interface TitlePaneProperties extends ThemeableProperties {
 	onRequestOpen?(): void;
 };
 
+export const TitlePaneBase = ThemeableMixin(WidgetBase);
+
 @theme(css)
-export default class TitlePane extends ThemeableMixin(WidgetBase)<TitlePaneProperties> {
-	onClickTitle(event: MouseEvent & TouchEvent) {
+export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
+	onClickTitle() {
 		const {
 			open = true
 		} = this.properties;
@@ -43,6 +46,9 @@ export default class TitlePane extends ThemeableMixin(WidgetBase)<TitlePanePrope
 			title = ''
 		} = this.properties;
 
+		const contentId = uuid();
+		const titleId = uuid();
+
 		const children: DNode[] = [
 			v('div', {
 				'aria-level': ariaHeadingLevel ? String(ariaHeadingLevel) : '',
@@ -51,12 +57,10 @@ export default class TitlePane extends ThemeableMixin(WidgetBase)<TitlePanePrope
 				role: 'heading'
 			}, [
 				v('div', {
-					// FIXME - id of content
-					'aria-controls': open ? 'content' : '',
+					'aria-controls': open ? contentId : '',
 					'aria-disabled': String(!closeable),
 					'aria-expanded': String(open),
-					// FIXME - set unique id
-					id: 'titlebutton',
+					id: titleId,
 					role: 'button'
 				}, [ title ])
 			])
@@ -64,11 +68,9 @@ export default class TitlePane extends ThemeableMixin(WidgetBase)<TitlePanePrope
 
 		if (open) {
 			children.push(v('div', {
-				// FIXME - id of title button
-				'aria-labelledby': 'titlebutton',
+				'aria-labelledby': titleId,
 				classes: this.classes(css.content).get(),
-				// FIXME - set unique id
-				id: 'content',
+				id: contentId,
 				enterAnimation,
 				exitAnimation
 			}, this.children));
