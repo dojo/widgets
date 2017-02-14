@@ -22,7 +22,7 @@
     "@dojo/has": "2.0.0-alpha.7",
     "@dojo/i18n": "2.0.0-alpha.5",
     "@dojo/shim": "2.0.0-beta.8",
-    "@dojo/widget-core": "2.0.0-alpha.23",
+    "@dojo/widget-core": "2.0.0-alpha.24",
     "maquette": ">=2.3.7 <=2.4.1"
   },
   "devDependencies": {

@@ -50,7 +50,8 @@ registerSuite({
 		slidePane.setProperties({
 			open: true,
 			underlay: true,
-			align: Align.right
+			align: Align.right,
+			width: 256
 		});
 		vnode = <VNode> slidePane.__render__();
 		assert.lengthOf(vnode.children, 2);
