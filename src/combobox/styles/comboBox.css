@@ -1,0 +1,43 @@
+@import '../../styles/variables.css';
+
+.combobox {
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;
+	font: var(--base-font);
+}
+
+.input {
+	border: var(--border-thin) solid var(--dojo-light-gray);
+	font: var(--base-font);
+	padding: var(--input-padding);
+	outline: none;
+}
+
+.results {
+	position: absolute;
+	width: 100%;
+	max-height: 500px;
+	overflow-y: auto;
+}
+
+.results div {
+	padding: var(--input-padding);
+	border-left: var(--border-thin) solid var(--dojo-light-gray);
+	border-right: var(--border-thin) solid var(--dojo-light-gray);
+	cursor: pointer;
+}
+
+.results div:last-child {
+	border-bottom: var(--border-thin) solid var(--dojo-light-gray);
+}
+
+.results div:hover {
+	background: var(--dojo-blue);
+	color: var(--dojo-white);
+}
+
+.selectedResult {
+	background: var(--dojo-blue);
+	color: var(--dojo-white);
+}
