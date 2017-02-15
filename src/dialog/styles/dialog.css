@@ -23,7 +23,7 @@
 	height: 100%;
 }
 
-[data-underlay="true"] .underlay {
+.underlayVisible {
 	background: var(--underlay-bg);
 }
 
