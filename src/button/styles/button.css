@@ -4,22 +4,33 @@
 	background-color: var(--button-bg);
 	border: 1px solid var(--button-bg);
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
-	border-radius: 5px;
+	border-radius: var(--rounded-corners);
 	color: var(--button-color);
 	cursor: pointer;
 	font: var(--base-font);
 	font-weight: bold;
 	display: inline-block;
-	padding: 0.75em 1.25em;
-	transition: all 0.3s ease;
+	padding: var(--button-padding);
+	transition: all var(--short-animation-duration) ease;
 }
 
 .button:hover,
-.button:focus,
-.button[aria-pressed="true"] {
+.button:focus {
 	background-color: var(--button-hover-bg);
 	border-color: var(--button-hover-bg);
 	outline: none;
+}
+
+.button[aria-pressed="true"]:before {
+	border-bottom: 2px solid var(--button-color);
+	border-right: 2px solid var(--button-color);
+	box-sizing: border-box;
+	content: '';
+	display: inline-block;
+	height: 1em;
+	margin: -1em 0.5em 0 0;
+	transform: rotate(45deg);
+	width: 0.5em;
 }
 
 .button[disabled],
@@ -34,7 +45,7 @@
 	display: inline-block;
 	font-family: var(--button-icon-font);
 	speak: none;
-	font-size: 1.4em;
+	font-size: var(--button-icon-size);
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;

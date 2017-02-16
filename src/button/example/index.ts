@@ -1,46 +1,58 @@
-import { DNode, Widget, WidgetProperties } from '@dojo/widget-core/interfaces';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
+import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
-import createWidgetBase from '@dojo/widget-core/createWidgetBase';
-import createProjectorMixin from '@dojo/widget-core/mixins/createProjectorMixin';
-import createButton from '../../button/createButton';
+import Button from '../../button/Button';
 
-type Root = Widget<WidgetProperties>;
-
-const createApp = createWidgetBase.mixin({
-	mixin: {
-		getChildrenNodes: function(this: Root): DNode[] {
-			return [
-				v('h2', {
-					innerHTML: 'Button Examples'
-				}),
-				v('p', {
-					innerHTML: 'Basic example:'
-				}),
-				w(createButton, {
-					content: 'Basic Button'
-				}),
-				v('p', {
-					innerHTML: 'Disabled submit button:'
-				}),
-				w(createButton, {
-					content: 'Submit',
-					disabled: true,
-					type: 'submit'
-				}),
-				v('p', {
-					innerHTML: 'Icon Button'
-				}),
-				w(createButton, {
-					content: 'Favorite',
-					icon: ''
-				})
-			];
-		},
-		classes: [ 'main-app' ],
-		tagName: 'main'
+export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+	toggleButton() {
+		this.setState({ buttonPressed: !this.state['buttonPressed'] });
 	}
-});
 
-createApp.mixin(createProjectorMixin)().append().then(() => {
-	console.log('projector is attached');
-});
+	render() {
+		return v('div', [
+			v('h2', {
+				innerHTML: 'Button Examples'
+			}),
+			v('p', {
+				innerHTML: 'Basic example:'
+			}),
+			w(Button, {
+				key: 'b1',
+				content: 'Basic Button'
+			}),
+			v('p', {
+				innerHTML: 'Disabled submit button:'
+			}),
+			w(Button, {
+				key: 'b2',
+				content: 'Submit',
+				disabled: true,
+				type: 'submit'
+			}),
+			v('p', {
+				innerHTML: 'Icon Button'
+			}),
+			w(Button, {
+				key: 'b3',
+				content: 'Favorite',
+				icon: ''
+			}),
+			v('p', {
+				innerHTML: 'Toggle Button'
+			}),
+			w(Button, {
+				key: 'b4',
+				content: 'Button state',
+				pressed: <boolean> this.state['buttonPressed'],
+				onClick: this.toggleButton
+			})
+		]);
+	}
+}
+
+const Projector = ProjectorMixin(App);
+const projector = new Projector({});
+
+projector.append();
