@@ -1,5 +1,6 @@
 :root {
 	--dojo-blue: #34495e;
+	--dojo-light-blue: #86BBD8;
 	--dojo-white: #FFFFFF;
 	--dojo-shade-gray: rgba(0, 0, 0, 0.3);
 
@@ -10,7 +11,13 @@
 	--rounded-corners: 2px;
 	--short-animation-duration: .2s;
 
+	--block-spacing: 25px;
+	--line-spacing: 5px;
+
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
 	--underlay-bg: var(--dojo-shade-gray);
+
+	--focus-highlight: 0 0 4px 1px var(--dojo-light-blue);
+	--input-padding: 0.5em 1em;
 }

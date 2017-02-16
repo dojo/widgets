@@ -1,28 +1,45 @@
-import { DNode, Widget, WidgetProperties } from '@dojo/widget-core/interfaces';
-import { w, v } from '@dojo/widget-core/d';
-import createWidgetBase from '@dojo/widget-core/createWidgetBase';
-import createProjectorMixin from '@dojo/widget-core/mixins/createProjectorMixin';
-import createTextInput from '../../textinput/createTextInput';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { v, w } from '@dojo/widget-core/d';
+import TextInput from '../../textinput/TextInput';
 
-type Root = Widget<WidgetProperties>;
-
-const createApp = createWidgetBase.mixin({
-	mixin: {
-		getChildrenNodes: function(this: Root): DNode[] {
-			return [
-				v('h2', {}, ['Text Input']),
-				w(createTextInput, {
-					type: 'text',
-					placeholder: 'Hello, World',
-					label: 'Type something'
-				})
-			];
-		},
-		classes: [ 'main-app' ],
-		tagName: 'main'
+export class App extends WidgetBase<WidgetProperties> {
+	render() {
+		return v('div', [
+			v('h1', {}, ['Text Input Examples']),
+			v('h3', {}, ['String label']),
+			w(TextInput, {
+				key: 't1',
+				type: 'text',
+				placeholder: 'Hello, World',
+				label: 'Name'
+			}),
+			v('h3', {}, ['Label before the input']),
+			w(TextInput, {
+				key: 't1',
+				type: 'email',
+				label: {
+					position: 'before',
+					content: 'Email'
+				}
+			}),
+			v('h3', {}, ['Hidden accessible label']),
+			w(TextInput, {
+				key: 't1',
+				type: 'text',
+				placeholder: 'Type something...',
+				label: {
+					content: 'Try listening to me!',
+					hidden: true
+				}
+			}),
+			v('p', {}, ['(TODO: decide how to handle generic styles like .visually-hidden)'])
+		]);
 	}
-});
+}
 
-createApp.mixin(createProjectorMixin)().append().then(() => {
-	console.log('projector is attached');
-});
+const Projector = ProjectorMixin(App);
+const projector = new Projector({});
+
+projector.append();

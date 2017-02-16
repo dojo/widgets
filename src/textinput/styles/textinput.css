@@ -1,6 +1,21 @@
 @import '../../styles/variables.css';
 
 .textinput {
+	font: var(--base-font);
+}
+
+.textinput input {
 	border: 1px solid var(--dojo-shade-gray);
-	padding: 0.5em 1em;
+	padding: var(--input-padding);
+}
+
+.textinput input:focus {
+	border-color: var(--dojo-light-blue);
+	box-shadow: var(--focus-highlight);
+	outline: none;
+}
+
+.textinput span {
+	display: block;
+	margin: var(--line-spacing) 0;
 }
