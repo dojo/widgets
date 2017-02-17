@@ -1,0 +1,22 @@
+@import '../../common/styles/variables.css';
+
+.textarea {
+	font: var(--base-font);
+}
+
+.textarea textarea {
+	border: 1px solid var(--dojo-shade-gray);
+	max-width: 100%;
+	padding: var(--input-padding);
+}
+
+.textarea textarea:focus {
+	border-color: var(--dojo-light-blue);
+	box-shadow: var(--input-focus-shadow);
+	outline: none;
+}
+
+.textarea span {
+	display: block;
+	margin: var(--line-spacing) 0;
+}
