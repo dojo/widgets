@@ -1,0 +1,6 @@
+@import '../../styles/variables.css';
+
+.radio {
+	font: var(--base-font);
+	margin-bottom: var(--line-spacing);
+}
