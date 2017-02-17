@@ -3,6 +3,7 @@
 	--dojo-light-blue: #86BBD8;
 	--dojo-white: #FFFFFF;
 	--dojo-off-white: #FBFBFB;
+	--dojo-light-gray: #DDD;
 	--dojo-shade-gray: rgba(0, 0, 0, 0.3);
 	--dojo-gray: #9E9E9E;
 	--dojo-light-gray: #F2F2F2;
@@ -22,6 +23,8 @@
 
 	--block-spacing: 25px;
 	--line-spacing: 5px;
+	--input-padding: 8px 10px;
+	--border-thin: 1px;
 
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);

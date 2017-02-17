@@ -134,7 +134,10 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 		const children = [
 			v('input', inputProperties),
 			// TODO: This will be a button when Sarah's stuff is merged
-			v('span', { onclick: this.onArrowClick }, [ '↓' ])
+			v('span', {
+				classes: this.classes(css.arrow).get(),
+				onclick: this.onArrowClick
+			}, [ '↓' ])
 		];
 
 		if (this.open) {

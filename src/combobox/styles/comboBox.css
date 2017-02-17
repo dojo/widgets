@@ -14,22 +14,22 @@
 	outline: none;
 }
 
+.arrow {
+	position: absolute;
+}
+
 .results {
 	position: absolute;
-	width: 100%;
+	width: calc(100% - 2px);
 	max-height: 500px;
 	overflow-y: auto;
+	background: var(--dojo-white);
+	border: var(--border-thin) solid var(--dojo-light-gray);
 }
 
 .results div {
 	padding: var(--input-padding);
-	border-left: var(--border-thin) solid var(--dojo-light-gray);
-	border-right: var(--border-thin) solid var(--dojo-light-gray);
 	cursor: pointer;
-}
-
-.results div:last-child {
-	border-bottom: var(--border-thin) solid var(--dojo-light-gray);
 }
 
 .results div:hover {
