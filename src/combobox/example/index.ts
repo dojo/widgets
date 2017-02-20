@@ -69,7 +69,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		});
 
 		queryResults.fetch().then(results => {
-			this.setState({ results: results });
+			this.setState({ results: results.sort((a, b) => a.value < b.value ? -1 : 1) });
 		});
 	}
 
@@ -80,7 +80,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				getResultValue: (result: any) => <string> result.value,
 				onChange: (value: string) => this.setState({ value: value }),
 				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results']
+				results: <any[]> this.state['results'],
+				inputProperties: { 'data-foo': 'bar' },
+				onMenuChange: (open: boolean) => console.log('open', open)
 			})
 		]);
 	}

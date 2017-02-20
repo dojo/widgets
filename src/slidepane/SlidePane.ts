@@ -49,26 +49,26 @@ export const SlidePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
-	private content: HTMLElement | null = null;
-	private initialX = 0;
-	private transform = 0;
-	private swiping = false;
-	private wasOpen = false;
+	private _content: HTMLElement | null = null;
+	private _initialX = 0;
+	private _transform = 0;
+	private _swiping = false;
+	private _wasOpen = false;
 
 	onSwipeStart(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
 		event.preventDefault();
 
-		this.swiping = true;
+		this._swiping = true;
 		// Cache initial pointer position
-		this.initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
+		this._initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
 		// Clear out the last transform applied
-		this.transform = 0;
+		this._transform = 0;
 	}
 
 	onSwipeMove(event: MouseEvent & TouchEvent) {
 		// Ignore mouse movement when not clicking
-		if (!this.swiping) {
+		if (!this._swiping) {
 			return;
 		}
 
@@ -80,9 +80,9 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		// Current pointer position
 		const currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
 		// Difference between current and initial pointer position
-		const delta = align === Align.right ? currentX - this.initialX : this.initialX - currentX;
+		const delta = align === Align.right ? currentX - this._initialX : this._initialX - currentX;
 		// Transform to apply
-		this.transform = 100 * delta / width;
+		this._transform = 100 * delta / width;
 
 		// Prevent pane from sliding past screen edge
 		if (delta <= 0) {
@@ -90,13 +90,13 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 
 		// Move the pane
-		if (this.content) {
-			this.content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this.transform }%)`;
+		if (this._content) {
+			this._content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
 		}
 	}
 
 	onSwipeEnd(event: MouseEvent & TouchEvent) {
-		this.swiping = false;
+		this._swiping = false;
 
 		const {
 			width = DEFAULT_WIDTH,
@@ -107,12 +107,12 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		// Current pointer position
 		const currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
 		// Difference between current and initial pointer position
-		const delta = align === Align.right ? currentX - this.initialX : this.initialX - currentX;
+		const delta = align === Align.right ? currentX - this._initialX : this._initialX - currentX;
 
 		// If the pane was swiped far enough to close
 		if (delta > width / 2) {
 			// Cache the transform to apply on next render
-			this.transform = 100 * delta / width;
+			this._transform = 100 * delta / width;
 			onRequestClose && onRequestClose();
 		}
 		// If the underlay was clicked
@@ -122,13 +122,13 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		// If pane was not swiped far enough to close
 		else if (delta > 0) {
 			// Animate the pane back open
-			this.content && this.content.classList.add(css.slideIn);
+			this._content && this._content.classList.add(css.slideIn);
 		}
 	}
 
 	afterCreate(element: HTMLElement) {
 		element.addEventListener('transitionend', this.onTransitionEnd!);
-		this.content = element;
+		this._content = element;
 	}
 
 	onTransitionEnd(event: TransitionEvent) {
@@ -152,8 +152,8 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 
 		const contentClasses = [
 			css.content,
-			open && !this.wasOpen ? css.slideIn : null,
-			!open && this.wasOpen ? css.slideOut : null
+			open && !this._wasOpen ? css.slideIn : null,
+			!open && this._wasOpen ? css.slideOut : null
 		];
 
 		const fixedContentClasses = [
@@ -161,13 +161,13 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			open ? css.open : null
 		];
 
-		if (!open && this.wasOpen && this.transform !== 0) {
+		if (!open && this._wasOpen && this._transform !== 0) {
 			// If pane is closing because of swipe
-			contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ this.transform }%)`;
+			contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
 		}
 
-		open && !this.wasOpen && onOpen && onOpen();
-		this.wasOpen = open;
+		open && !this._wasOpen && onOpen && onOpen();
+		this._wasOpen = open;
 
 		return v('div', {
 			ontouchstart: this.onSwipeStart,

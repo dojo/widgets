@@ -7,41 +7,44 @@ import { assign } from '@dojo/core/lang';
 import * as css from './styles/comboBox.css';
 
 export interface ComboBoxProperties extends ThemeableProperties {
-	value: string;
+	inputProperties?: {[key: string]: any};
 	results?: any[];
+	value: string;
 	getResultValue?(result: any): string;
-	renderMenu?(resultItems: any[]): DNode;
-	renderResult?(result: any): DNode;
 	onChange?(value: string): void;
 	onRequestResults?(value: string): void;
+	onMenuChange?(open: boolean): void;
+	renderMenu?(resultItems: any[]): DNode;
+	renderResult?(result: any): DNode;
 };
 
 @theme(css)
 export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxProperties> {
-	private ignoreBlur: boolean;
-	private inputElement: HTMLInputElement | null;
-	private focused: boolean;
-	private open: boolean;
-	private selectedIndex: number | undefined;
+	private _ignoreBlur: boolean;
+	private _inputElement: HTMLInputElement | null;
+	private _focused: boolean;
+	private _open: boolean;
+	private _selectedIndex: number | undefined;
+	private _wasOpen: boolean;
 
-	private handlers: {[key: string]: any} = {
+	private _handlers: {[key: string]: any} = {
 		ArrowDown(this: ComboBox, event: KeyboardEvent) {
 			const { results } = this.properties;
-			if (!this.open || !results || results.length === 0) {
+			if (!this._open || !results || results.length === 0) {
 				return;
 			}
 			event.preventDefault();
-			this.selectedIndex = this.selectedIndex === undefined || this.selectedIndex === results.length - 1 ? 0 : this.selectedIndex + 1;
+			this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === results.length - 1 ? 0 : this._selectedIndex + 1;
 			this.invalidate();
 		},
 
 		ArrowUp(this: ComboBox, event: KeyboardEvent) {
 			const { results } = this.properties;
-			if (!this.open || !results || results.length === 0) {
+			if (!this._open || !results || results.length === 0) {
 				return;
 			}
 			event.preventDefault();
-			this.selectedIndex = this.selectedIndex === undefined || this.selectedIndex === 0 ? results.length - 1 : this.selectedIndex - 1;
+			this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === 0 ? results.length - 1 : this._selectedIndex - 1;
 			this.invalidate();
 		},
 
@@ -52,35 +55,35 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 				getResultValue = this.getResultValue
 			} = this.properties;
 
-			if (!this.open || !results || results.length === 0) {
+			if (!this._open || !results || results.length === 0) {
 				return;
 			}
-			else if (this.selectedIndex === undefined) {
-				this.open = false;
+			else if (this._selectedIndex === undefined) {
+				this._open = false;
 				this.invalidate();
 			}
 			else {
-				const value = getResultValue(results[this.selectedIndex]);
-				this.open = false;
-				this.selectedIndex = undefined;
+				const value = getResultValue(results[this._selectedIndex]);
+				this._open = false;
+				this._selectedIndex = undefined;
 				onChange && onChange(value);
 			}
 		},
 
 		Escape(this: ComboBox) {
-			this.open = false;
-			this.selectedIndex = undefined;
+			this._open = false;
+			this._selectedIndex = undefined;
 			this.invalidate();
 		}
 	};
 
 	afterCreate(element: HTMLElement) {
-		this.inputElement = element.querySelector('input');
-		this.focused && this.inputElement!.focus();
+		this._inputElement = element.querySelector('input');
+		this._focused && this._inputElement!.focus();
 	}
 
 	afterUpdate(element: HTMLElement) {
-		this.focused && this.inputElement!.focus();
+		this._focused && this._inputElement!.focus();
 		const selectedResult = element.querySelector('[data-selected="true"]');
 		selectedResult && this.scrollIntoView(<HTMLElement> selectedResult);
 	}
@@ -100,47 +103,45 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 			onRequestResults,
 			onChange
 		} = this.properties;
-		this.selectedIndex = undefined;
-		this.open = true;
+		this._selectedIndex = undefined;
+		this._open = true;
 		onChange && onChange((<HTMLInputElement> event.target).value);
 		onRequestResults && onRequestResults((<HTMLInputElement> event.target).value);
 	}
 
 	onInputFocus(event: FocusEvent) {
-		this.ignoreBlur = false;
-		this.focused = true;
+		this._ignoreBlur = false;
+		this._focused = true;
 	}
 
 	onInputBlur(event: FocusEvent) {
-		if (this.ignoreBlur) {
+		if (this._ignoreBlur) {
 			return;
 		}
-		this.open = false;
-		this.focused = false;
-		this.selectedIndex = undefined;
+		this._open = false;
+		this._focused = false;
+		this._selectedIndex = undefined;
 		this.invalidate();
 	}
 
 	onInputKeyDown(event: KeyboardEvent) {
-		if (this.handlers[event.key]) {
-			this.handlers[event.key].call(this, event);
-		}
+		this._handlers[event.key] && this._handlers[event.key].call(this, event);
 	}
 
 	onArrowClick(event: MouseEvent) {
 		const { onRequestResults } = this.properties;
-		this.open = true;
-		this.focused = true;
-		onRequestResults && onRequestResults(this.inputElement!.value);
+		this._open = true;
+		this._focused = true;
+		onRequestResults && onRequestResults(this._inputElement!.value);
 	}
 
 	onResultMouseEnter(event: MouseEvent) {
-		this.selectedIndex = Number((<HTMLInputElement> event.target).getAttribute('data-index'));
+		this._selectedIndex = Number((<HTMLInputElement> event.target).getAttribute('data-index'));
 		this.invalidate();
 	}
 
 	onResultMouseDown() {
-		this.ignoreBlur = true;
+		this._ignoreBlur = true;
 	}
 
 	onResultMouseUp(event: MouseEvent) {
@@ -149,18 +150,18 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 			results,
 			getResultValue = this.getResultValue
 		} = this.properties;
-		if (this.selectedIndex === undefined || !results || results.length === 0) {
+		if (this._selectedIndex === undefined || !results || results.length === 0) {
 			return;
 		}
-		const value = getResultValue(results[this.selectedIndex]);
-		this.open = false;
-		this.focused = true;
-		this.selectedIndex = undefined;
+		const value = getResultValue(results[this._selectedIndex]);
+		this._open = false;
+		this._focused = true;
+		this._selectedIndex = undefined;
 		onChange && onChange(value);
 	}
 
 	onMenuMouseLeave() {
-		this.selectedIndex = undefined;
+		this._selectedIndex = undefined;
 		this.invalidate();
 	}
 
@@ -174,12 +175,12 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 		const resultItems = results.map((result, i) => {
 			const renderedResult = <HNode> renderResult(result);
 			assign(renderedResult!.properties, {
-				classes: this.classes(i === this.selectedIndex ? css.selectedResult : null).get(),
+				classes: this.classes(i === this._selectedIndex ? css.selectedResult : null).get(),
 				onmouseenter: this.onResultMouseEnter,
 				onmousedown: this.onResultMouseDown,
 				onmouseup: this.onResultMouseUp,
 				'data-index': String(i),
-				'data-selected': i === this.selectedIndex ? 'true' : 'false'
+				'data-selected': i === this._selectedIndex ? 'true' : 'false'
 			});
 			return renderedResult;
 		});
@@ -199,27 +200,39 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 	render() {
 		const {
 			value = '',
-			results = []
+			results = [],
+			inputProperties = {},
+			onMenuChange
 		} = this.properties;
+
+		const menu = this.renderMenu(results);
+
+		menu && this._open && !this._wasOpen && onMenuChange && onMenuChange(true);
+		menu && !this._open && this._wasOpen && onMenuChange && onMenuChange(false);
+
+		this._wasOpen = this._open;
 
 		return v('div', {
 			classes: this.classes(css.combobox).get(),
 			afterCreate: this.afterCreate,
 			afterUpdate: this.afterUpdate
 		}, [
+			// TODO: Use TextInput
 			v('input', {
 				classes: this.classes(css.input).get(),
 				onblur: this.onInputBlur,
 				onfocus: this.onInputFocus,
 				oninput: this.onInput,
 				onkeydown: this.onInputKeyDown,
-				value: value
+				value: value,
+				...inputProperties
 			}),
+			// TODO: Use button
 			v('span', {
 				classes: this.classes(css.arrow).get(),
 				onclick: this.onArrowClick
 			}, [ '↓' ]),
-			this.open ? this.renderMenu(results) : null
+			this._open ? menu : null
 		]);
 	}
 }
