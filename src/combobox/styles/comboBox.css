@@ -32,11 +32,6 @@
 	cursor: pointer;
 }
 
-.results div:hover {
-	background: var(--dojo-blue);
-	color: var(--dojo-white);
-}
-
 .selectedResult {
 	background: var(--dojo-blue);
 	color: var(--dojo-white);

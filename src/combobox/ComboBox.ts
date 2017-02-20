@@ -1,41 +1,78 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
+import { DNode, HNode } from '@dojo/widget-core/interfaces';
+import { assign } from '@dojo/core/lang';
 
 import * as css from './styles/comboBox.css';
 
-/**
- * @type ComboBoxProperties
- *
- * Properties that can be set on a ComboBox component
- *
- * @property initialValue		Initial value to set on the ComboBox
- * @property resultKey			Specifies property to use as a label if results are objects
- * @property results 			Array of results based on the current search term
- * @property onRequestResults	Called when new results should be queried and set
- * @property onValueChange 		Called when the value of this widget changes
- */
 export interface ComboBoxProperties extends ThemeableProperties {
-	initialValue?: string;
-	resultKey?: string;
+	value: string;
 	results?: any[];
+	getResultValue?(result: any): string;
+	renderMenu?(resultItems: any[]): DNode;
+	renderResult?(result: any): DNode;
+	onChange?(value: string): void;
 	onRequestResults?(value: string): void;
-	onValueChange?(value: string): void;
 };
-
-function isObject(value: any) {
-	return value !== null && !Array.isArray(value) && typeof value === 'object';
-}
 
 @theme(css)
 export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxProperties> {
+	private ignoreBlur: boolean;
 	private inputElement: HTMLInputElement | null;
-	private open: boolean;
 	private focused: boolean;
-	private rendered: boolean;
-	private selectedResult: string;
-	private index: number | null;
-	private lastResults: any[];
+	private open: boolean;
+	private selectedIndex: number | undefined;
+
+	private handlers: {[key: string]: any} = {
+		ArrowDown(this: ComboBox, event: KeyboardEvent) {
+			const { results } = this.properties;
+			if (!this.open || !results || results.length === 0) {
+				return;
+			}
+			event.preventDefault();
+			this.selectedIndex = this.selectedIndex === undefined || this.selectedIndex === results.length - 1 ? 0 : this.selectedIndex + 1;
+			this.invalidate();
+		},
+
+		ArrowUp(this: ComboBox, event: KeyboardEvent) {
+			const { results } = this.properties;
+			if (!this.open || !results || results.length === 0) {
+				return;
+			}
+			event.preventDefault();
+			this.selectedIndex = this.selectedIndex === undefined || this.selectedIndex === 0 ? results.length - 1 : this.selectedIndex - 1;
+			this.invalidate();
+		},
+
+		Enter(this: ComboBox) {
+			const {
+				results,
+				onChange,
+				getResultValue = this.getResultValue
+			} = this.properties;
+
+			if (!this.open || !results || results.length === 0) {
+				return;
+			}
+			else if (this.selectedIndex === undefined) {
+				this.open = false;
+				this.invalidate();
+			}
+			else {
+				const value = getResultValue(results[this.selectedIndex]);
+				this.open = false;
+				this.selectedIndex = undefined;
+				onChange && onChange(value);
+			}
+		},
+
+		Escape(this: ComboBox) {
+			this.open = false;
+			this.selectedIndex = undefined;
+			this.invalidate();
+		}
+	};
 
 	afterCreate(element: HTMLElement) {
 		this.inputElement = element.querySelector('input');
@@ -44,125 +81,145 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 
 	afterUpdate(element: HTMLElement) {
 		this.focused && this.inputElement!.focus();
+		const selectedResult = element.querySelector('[data-selected="true"]');
+		selectedResult && this.scrollIntoView(<HTMLElement> selectedResult);
+	}
+
+	scrollIntoView(element: HTMLElement) {
+		const menu = <HTMLElement> element.parentElement;
+		if (element.offsetTop - menu.scrollTop < 0) {
+			menu.scrollTop = element.offsetTop;
+		}
+		else if ((element.offsetTop - menu.scrollTop + element.offsetHeight) > menu.clientHeight) {
+			menu.scrollTop = element.offsetTop - menu.clientHeight + element.offsetHeight;
+		}
 	}
 
 	onInput(event: Event) {
 		const {
 			onRequestResults,
-			onValueChange
+			onChange
 		} = this.properties;
-
+		this.selectedIndex = undefined;
 		this.open = true;
-		this.focused = true;
-		this.index = null;
-
-		onValueChange && onValueChange(this.inputElement!.value);
-		onRequestResults && onRequestResults(this.inputElement!.value);
+		onChange && onChange((<HTMLInputElement> event.target).value);
+		onRequestResults && onRequestResults((<HTMLInputElement> event.target).value);
 	}
 
-	onArrowClick(event: MouseEvent) {
-		const { onRequestResults } = this.properties;
-
-		this.open = true;
+	onInputFocus(event: FocusEvent) {
+		this.ignoreBlur = false;
 		this.focused = true;
-		this.index = null;
-
-		onRequestResults && onRequestResults(this.inputElement!.value);
-	}
-
-	onResultMouseDown(event: MouseEvent) {
-		const { onValueChange } = this.properties;
-		const value = (<HTMLElement> event.target).innerHTML;
-
-		this.inputElement!.value = value;
-
-		onValueChange && onValueChange(value);
 	}
 
 	onInputBlur(event: FocusEvent) {
+		if (this.ignoreBlur) {
+			return;
+		}
 		this.open = false;
 		this.focused = false;
+		this.selectedIndex = undefined;
 		this.invalidate();
 	}
 
 	onInputKeyDown(event: KeyboardEvent) {
-		if (!this.open) {
+		if (this.handlers[event.key]) {
+			this.handlers[event.key].call(this, event);
+		}
+	}
+
+	onArrowClick(event: MouseEvent) {
+		const { onRequestResults } = this.properties;
+		this.open = true;
+		this.focused = true;
+		onRequestResults && onRequestResults(this.inputElement!.value);
+	}
+
+	onResultMouseEnter(event: MouseEvent) {
+		this.selectedIndex = Number((<HTMLInputElement> event.target).getAttribute('data-index'));
+		this.invalidate();
+	}
+
+	onResultMouseDown() {
+		this.ignoreBlur = true;
+	}
+
+	onResultMouseUp(event: MouseEvent) {
+		const {
+			onChange,
+			results,
+			getResultValue = this.getResultValue
+		} = this.properties;
+		if (this.selectedIndex === undefined || !results || results.length === 0) {
 			return;
 		}
+		const value = getResultValue(results[this.selectedIndex]);
+		this.open = false;
+		this.focused = true;
+		this.selectedIndex = undefined;
+		onChange && onChange(value);
+	}
 
-		const { onValueChange } = this.properties;
+	onMenuMouseLeave() {
+		this.selectedIndex = undefined;
+		this.invalidate();
+	}
 
-		switch (event.key) {
-			case 'ArrowDown':
-				this.index = this.index === null || this.index === this.lastResults.length - 1 ? 0 : this.index + 1;
-				this.invalidate();
-				break;
+	renderMenu(results: any[]): DNode {
+		const {
+			getResultValue = this.getResultValue,
+			renderResult = (result: any): DNode => v('div', [ getResultValue(result) ]),
+			renderMenu = (resultItems: any[]): DNode => v('div', { classes: this.classes(css.results).get() }, resultItems)
+		} = this.properties;
 
-			case 'ArrowUp':
-				this.index = !this.index ? this.lastResults.length - 1 : this.index - 1;
-				this.invalidate();
-				break;
+		const resultItems = results.map((result, i) => {
+			const renderedResult = <HNode> renderResult(result);
+			assign(renderedResult!.properties, {
+				classes: this.classes(i === this.selectedIndex ? css.selectedResult : null).get(),
+				onmouseenter: this.onResultMouseEnter,
+				onmousedown: this.onResultMouseDown,
+				onmouseup: this.onResultMouseUp,
+				'data-index': String(i),
+				'data-selected': i === this.selectedIndex ? 'true' : 'false'
+			});
+			return renderedResult;
+		});
 
-			case 'Enter':
-				this.inputElement!.value = this.selectedResult;
-				this.open = false;
-				this.invalidate();
-				onValueChange && onValueChange(this.selectedResult);
-				break;
-		}
+		const menu = <HNode> renderMenu(resultItems);
+		assign(menu!.properties, {
+			onmouseleave: this.onMenuMouseLeave
+		});
+
+		return resultItems.length > 0 ? menu : null;
+	}
+
+	getResultValue(result: any) {
+		return result.label;
 	}
 
 	render() {
 		const {
-			resultKey = 'name',
-			initialValue = '',
+			value = '',
 			results = []
 		} = this.properties;
-
-		const inputProperties: {[key: string]: any} = {
-			classes: this.classes(css.input).get(),
-			oninput: this.onInput,
-			onblur: this.onInputBlur,
-			onkeydown: this.onInputKeyDown
-		};
-
-		if (!this.rendered) {
-			inputProperties.value = initialValue;
-			this.rendered = true;
-		}
-
-		const children = [
-			v('input', inputProperties),
-			// TODO: This will be a button when Sarah's stuff is merged
-			v('span', {
-				classes: this.classes(css.arrow).get(),
-				onclick: this.onArrowClick
-			}, [ '↓' ])
-		];
-
-		if (this.open) {
-			const mappedResults = results.map((result: any, index: number) => {
-				result = isObject(result) ? result[resultKey] : result;
-				if (this.index === index) {
-					this.selectedResult = result;
-				}
-				return v('div', {
-					classes: this.classes(index === this.index! ? css.selectedResult : null).get()
-				}, [ result ]);
-			});
-
-			mappedResults.length > 0 && children.push(v('div', {
-				classes: this.classes(css.results).get(),
-				onmousedown: this.onResultMouseDown
-			}, mappedResults));
-
-			this.lastResults = results;
-		}
 
 		return v('div', {
 			classes: this.classes(css.combobox).get(),
 			afterCreate: this.afterCreate,
 			afterUpdate: this.afterUpdate
-		}, children);
+		}, [
+			v('input', {
+				classes: this.classes(css.input).get(),
+				onblur: this.onInputBlur,
+				onfocus: this.onInputFocus,
+				oninput: this.onInput,
+				onkeydown: this.onInputKeyDown,
+				value: value
+			}),
+			v('span', {
+				classes: this.classes(css.arrow).get(),
+				onclick: this.onArrowClick
+			}, [ '↓' ]),
+			this.open ? this.renderMenu(results) : null
+		]);
 	}
 }
