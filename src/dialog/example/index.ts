@@ -33,7 +33,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	render() {
 		return v('div', [
 			w(Dialog, {
-				id: 'dialog',
+				key: 'dialog',
 				title: 'Dialog',
 				open: <boolean> this.state['open'],
 				modal: <boolean> this.state['modal'],
@@ -115,6 +115,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();

@@ -7,8 +7,9 @@ registerSuite({
 	name: 'Dialog',
 
 	'Should construct dialog with passed properties'() {
-		const dialog = new Dialog({
-			id: 'foo',
+		const dialog = new Dialog();
+		dialog.setProperties({
+			key: 'foo',
 			modal: true,
 			open: true,
 			title: 'dialog',
@@ -17,7 +18,7 @@ registerSuite({
 			role: Role.dialog
 		});
 
-		assert.strictEqual(dialog.properties.id, 'foo');
+		assert.strictEqual(dialog.properties.key, 'foo');
 		assert.isTrue(dialog.properties.modal);
 		assert.isTrue(dialog.properties.open);
 		assert.strictEqual(dialog.properties.title, 'dialog');
@@ -27,7 +28,8 @@ registerSuite({
 	},
 
 	'Render correct children'() {
-		const dialog = new Dialog({
+		const dialog = new Dialog();
+		dialog.setProperties({
 			enterAnimation: 'enter',
 			exitAnimation: 'exit',
 			role: Role.dialog
@@ -46,7 +48,8 @@ registerSuite({
 	},
 
 	onRequestClose() {
-		const dialog = new Dialog({
+		const dialog = new Dialog();
+		dialog.setProperties({
 			open: true,
 			onRequestClose: () => {
 				dialog.setProperties({ open: false });
@@ -60,7 +63,8 @@ registerSuite({
 	onOpen() {
 		let called = false;
 
-		const dialog = new Dialog({
+		const dialog = new Dialog();
+		dialog.setProperties({
 			open: true,
 			onOpen: () => {
 				called = true;
@@ -72,7 +76,8 @@ registerSuite({
 	},
 
 	modal() {
-		const dialog = new Dialog({
+		const dialog = new Dialog();
+		dialog.setProperties({
 			open: true,
 			modal: true,
 			onRequestClose: () => {
@@ -90,7 +95,8 @@ registerSuite({
 	},
 
 	closeable() {
-		const dialog = new Dialog({
+		const dialog = new Dialog();
+		dialog.setProperties({
 			closeable: false,
 			open: true,
 			title: 'foo'
