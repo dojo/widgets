@@ -1,3 +1,4 @@
+import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
@@ -18,7 +19,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		this.setState({ align: (<HTMLInputElement> event.target).checked ? Align.right : Align.left });
 	}
 
-	render() {
+	render(): DNode {
 		return v('div', [
 			w(SlidePane, {
 				key: 'pane',

@@ -1,3 +1,4 @@
+import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
@@ -54,7 +55,7 @@ export default class Dialog extends ThemeableMixin(WidgetBase)<DialogProperties>
 		!this.properties.modal && this.onCloseClick();
 	}
 
-	render() {
+	render(): DNode {
 		const {
 			closeable = true,
 			enterAnimation = animations.fadeIn,
