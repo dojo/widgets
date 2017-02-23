@@ -3,7 +3,6 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import { createQueryStore } from '@dojo/stores/store/mixins/createQueryTransformMixin';
 import ComboBox from '../../combobox/ComboBox';
 
 const data = [
@@ -59,18 +58,14 @@ const data = [
 	{ value: 'West Virginia' }
 ];
 
-const store = createQueryStore({ data: data });
-
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	onRequestResults(value: string) {
-		const queryResults = store.filter(item => {
+		const results = data.filter(item => {
 			const match = item.value.toLowerCase().match(new RegExp('^' + value.toLowerCase()));
 			return Boolean(match && match.length > 0);
 		});
 
-		queryResults.fetch().then(results => {
-			this.setState({ results: results.sort((a, b) => a.value < b.value ? -1 : 1) });
-		});
+		this.setState({ results: results.sort((a, b) => a.value < b.value ? -1 : 1) });
 	}
 
 	render() {
