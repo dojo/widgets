@@ -47,6 +47,14 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				v('div', {
 					innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 						Quisque id purus ipsum. Aenean ac purus purus.
+						Nam sollicitudin varius augue, sed lacinia felis tempor in.
+						<br>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Quisque id purus ipsum. Aenean ac purus purus.
+						Nam sollicitudin varius augue, sed lacinia felis tempor in.
+						<br>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Quisque id purus ipsum. Aenean ac purus purus.
 						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 				})
 			]),
