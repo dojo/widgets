@@ -26,6 +26,7 @@
 	--input-padding: 8px 10px;
 	--border-thin: 1px;
 
+	--select-popup-height: 500px;
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
 	--underlay-bg: var(--dojo-shade-gray);

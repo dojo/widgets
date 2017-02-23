@@ -16,15 +16,17 @@
 
 .arrow {
 	position: absolute;
+	cursor: pointer;
 }
 
 .results {
 	position: absolute;
-	width: calc(100% - 2px);
-	max-height: 500px;
+	width: calc(100% - var(--border-thin) - var(--border-thin));
+	max-height: var(--select-popup-height);
 	overflow-y: auto;
 	background: var(--dojo-white);
 	border: var(--border-thin) solid var(--dojo-light-gray);
+	margin-top: -var(--border-thin);
 }
 
 .results div {
@@ -35,4 +37,8 @@
 .selectedResult {
 	background: var(--dojo-blue);
 	color: var(--dojo-white);
+}
+
+.clear {
+	cursor: pointer;
 }

@@ -76,13 +76,16 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	render() {
 		return v('div', [
 			w(ComboBox, {
-				value: <string> this.state['value'],
-				getResultValue: (result: any) => <string> result.value,
+				clearable: true,
+				openOnFocus: true,
 				onChange: (value: string) => this.setState({ value: value }),
+				getResultValue: (result: any) => <string> result.value,
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
-				inputProperties: { 'data-foo': 'bar' },
-				onMenuChange: (open: boolean) => console.log('open', open)
+				value: <string> this.state['value'],
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
 			})
 		]);
 	}
