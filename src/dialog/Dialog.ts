@@ -73,7 +73,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		return v('div', {}, open ? [
 			v('div', {
 				key: 'underlay',
-				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null).get(),
+				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay).get(),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
 				onclick: this.onUnderlayClick

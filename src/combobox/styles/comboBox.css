@@ -4,34 +4,45 @@
 	position: relative;
 	display: inline-block;
 	box-sizing: border-box;
-	font: var(--base-font);
+	width: var(--form-field-width);
+}
+
+.combobox * {
+	box-sizing: border-box;
 }
 
 .input {
-	border: var(--border-thin) solid var(--dojo-light-gray);
-	font: var(--base-font);
+	border: var(--border-thin) solid var(--dojo-shade-gray);
+	width: 100%;
+	font-size: var(--input-font-size);
+	font-family: var(--input-font-family);
 	padding: var(--input-padding);
-	outline: none;
+	padding-right: 25px;
 }
 
-.arrow {
-	position: absolute;
-	cursor: pointer;
+.input.clearable {
+	padding-right: 44px;
+}
+
+.input:focus {
+	border-color: var(--dojo-light-blue);
+	box-shadow: var(--focus-highlight);
+	outline: none;
 }
 
 .results {
 	position: absolute;
-	width: calc(100% - var(--border-thin) - var(--border-thin));
-	max-height: var(--select-popup-height);
+	width: 100%;
+	max-height: var(--select-menu-height);
 	overflow-y: auto;
 	background: var(--dojo-white);
-	border: var(--border-thin) solid var(--dojo-light-gray);
-	margin-top: -var(--border-thin);
+	border: var(--border-thin) solid var(--dojo-shade-gray);
+	z-index: 1;
 }
 
 .results div {
-	padding: var(--input-padding);
 	cursor: pointer;
+	padding: var(--input-padding);
 }
 
 .selectedResult {
@@ -39,6 +50,35 @@
 	color: var(--dojo-white);
 }
 
-.clear {
+.clear,
+.arrow {
+	position: absolute;
 	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+	outline: none;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0;
+}
+
+.arrow {
+	right: 7px;
+}
+
+.clear {
+	right: 27px;
+}
+
+.arrow:after {
+	content: '▼';
+	display: block;
+	font-size: var(--input-font-size);
+}
+
+.clear:after {
+	content: '✕';
+	display: block;
+	font-size: var(--input-font-size);
 }

@@ -14,10 +14,10 @@ import * as css from './styles/comboBox.css';
  *
  * @property autoBlur			Determines whether the input should blur after value selection
  * @property clearable			Determines whether the input should be able to be cleared
- * @property initialValue		Initial value to set on the input
  * @property inputProperties	HTML properties supported by FormLabelMixin to set on the underlying input
  * @property openOnFocus		Determines whether the result list should open when the input is focused
  * @property results			Results for the current search term; should be set in response to `onRequestResults`
+ * @property value				Initial value to set on the input
  * @property getResultValue		Can be used to get the text value of a result based on the underlying result object
  * @property onBlur				Called when the input is blurred
  * @property onChange			Called when the value changes
@@ -235,11 +235,6 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 		onChange && onChange(value);
 	}
 
-	onMenuMouseLeave() {
-		this._selectedIndex = undefined;
-		this.invalidate();
-	}
-
 	renderMenu(results: any[]): DNode {
 		const {
 			renderResult = (result: any): DNode => v('div', [ this.getResultValue(result) ]),
@@ -261,9 +256,6 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 		});
 
 		const menu = <HNode> renderMenu(resultItems);
-		assign(menu!.properties, {
-			onmouseleave: this.onMenuMouseLeave
-		});
 
 		return resultItems.length > 0 ? menu : null;
 	}
@@ -299,7 +291,7 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 		}, [
 			// TODO: Use TextInput once landed
 			v('input', {
-				classes: this.classes(css.input).get(),
+				classes: this.classes(css.input, clearable ? css.clearable : null).get(),
 				onblur: this.onInputBlur,
 				onfocus: this.onInputFocus,
 				oninput: this.onInput,
@@ -307,15 +299,16 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 				value: value,
 				...inputProperties
 			}),
-			clearable ? v('span', {
+			clearable ? v('button', {
 				classes: this.classes(css.clear).get(),
+				innerHTML: 'clear combo box',
 				onclick: this.onClearClick
-			}, [ 'X' ]) : null,
-			// TODO: Use Button once landed
-			v('span', {
+			}) : null,
+			v('button', {
 				classes: this.classes(css.arrow).get(),
+				innerHTML: 'open combo box',
 				onclick: this.onArrowClick
-			}, [ '↓' ]),
+			}),
 			this._open ? menu : null
 		]);
 	}

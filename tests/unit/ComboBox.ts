@@ -144,18 +144,6 @@ registerSuite({
 		assert.lengthOf(vnode.children, 2);
 	},
 
-	'Results should not be highlighted when mouse leaves menu'() {
-		const comboBox = new ComboBox({
-			results: ['1', '2']
-		});
-
-		comboBox.onArrowClick();
-		comboBox.onInputKeyDown(event('ArrowDown'));
-		comboBox.onMenuMouseLeave();
-		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![2].children![0].properties!['data-selected'], 'false');
-	},
-
 	'Input should blur if autoBlur is true'() {
 		let blurred = false;
 		const input = inputElement();

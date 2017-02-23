@@ -75,14 +75,52 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 
 	render() {
 		return v('div', [
+			v('h1', {}, ['ComboBox Examples']),
+			v('h3', {}, ['Open on focus']),
 			w(ComboBox, {
-				clearable: true,
 				openOnFocus: true,
-				onChange: (value: string) => this.setState({ value: value }),
+				onChange: (value: string) => this.setState({ 'value1': value }),
 				getResultValue: (result: any) => <string> result.value,
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
-				value: <string> this.state['value'],
+				value: <string> this.state['value1'],
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
+			}),
+			v('h3', {}, ['Clearable']),
+			w(ComboBox, {
+				clearable: true,
+				onChange: (value: string) => this.setState({ 'value2': value }),
+				getResultValue: (result: any) => <string> result.value,
+				onRequestResults: this.onRequestResults,
+				results: <any[]> this.state['results'],
+				value: <string> this.state['value2'],
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
+			}),
+			v('h3', {}, ['Custom result renderer']),
+			w(ComboBox, {
+				openOnFocus: true,
+				onChange: (value: string) => this.setState({ 'value3': value }),
+				getResultValue: (result: any) => <string> result.value,
+				onRequestResults: this.onRequestResults,
+				renderResult: (result: any) => {
+					return v('div', [
+						v('img', {
+							src: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/300px-Flag_of_the_United_States.svg.png',
+							styles: {
+								paddingRight: '8px',
+								width: '25px',
+								height: 'auto'
+							}
+						}),
+						result.value
+					]);
+				},
+				results: <any[]> this.state['results'],
+				value: <string> this.state['value3'],
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}
