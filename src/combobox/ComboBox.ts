@@ -17,7 +17,7 @@ import * as css from './styles/comboBox.css';
  * @property inputProperties	HTML properties supported by FormLabelMixin to set on the underlying input
  * @property openOnFocus		Determines whether the result list should open when the input is focused
  * @property results			Results for the current search term; should be set in response to `onRequestResults`
- * @property value				Initial value to set on the input
+ * @property value				Value to set on the input
  * @property getResultValue		Can be used to get the text value of a result based on the underlying result object
  * @property onBlur				Called when the input is blurred
  * @property onChange			Called when the value changes
