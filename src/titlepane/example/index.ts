@@ -1,8 +1,9 @@
 import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase, WidgetProperties } from '@dojo/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
-import TitlePane from '../../components/titlepane/TitlePane';
+import TitlePane from '../../titlepane/TitlePane';
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	render() {

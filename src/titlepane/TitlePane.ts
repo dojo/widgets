@@ -5,7 +5,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 
 import * as css from './styles/titlePane.css';
-import * as animations from '../../styles/animations.css';
+import * as animations from '../styles/animations.css';
 
 /**
  * @type TitlePaneProperties

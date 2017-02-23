@@ -11,7 +11,7 @@ import SplitPane from './splitpane/SplitPane';
 import TabPane from './tabpane/TabPane';
 import TextInput from './textinput/TextInput';
 import Textarea from './textarea/Textarea';
-import TitlePane from './components/titlepane/TitlePane';
+import TitlePane from './titlepane/TitlePane';
 
 export {
 	Button,
