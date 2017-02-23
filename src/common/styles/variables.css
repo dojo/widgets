@@ -38,12 +38,10 @@
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
 	--underlay-bg: var(--dojo-shade-gray);
-
 	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
 	--input-padding: 0.5em 1em;
 	--input-border-color: var(--dojo-gray);
 	--input-highlight-color: var(--dojo-blue);
-
 	--button-bg: var(--dojo-blue);
 	--button-hover-bg: var(--dojo-light-blue);
 	--button-disabled-bg: var(--dojo-shade-gray);
@@ -51,4 +49,5 @@
 	--button-icon-font: 'iconFont';
 	--button-icon-size: 1.4em;
 	--button-padding: 0.75em 1.25em;
+	--dojo-border-focus: var(--dojo-light-blue);
 }

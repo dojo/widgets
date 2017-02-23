@@ -25,7 +25,7 @@
 }
 
 .input:focus {
-	border-color: var(--dojo-light-blue);
+	border-color: var(--dojo-border-focus);
 	box-shadow: var(--focus-highlight);
 	outline: none;
 }
