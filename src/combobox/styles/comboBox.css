@@ -40,7 +40,7 @@
 	z-index: 1;
 }
 
-.results div {
+.result {
 	cursor: pointer;
 	padding: var(--input-padding);
 }

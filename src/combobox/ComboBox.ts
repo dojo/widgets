@@ -244,7 +244,7 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 		const resultItems = results.map((result, i) => {
 			const renderedResult = <HNode> renderResult(result);
 			assign(renderedResult!.properties, {
-				classes: this.classes(i === this._selectedIndex ? css.selectedResult : null).get(),
+				classes: this.classes(css.result, i === this._selectedIndex ? css.selectedResult : null).get(),
 				onmouseenter: this.onResultMouseEnter,
 				onmousedown: this.onResultMouseDown,
 				onmouseup: this.onResultMouseUp,

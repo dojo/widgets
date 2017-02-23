@@ -4,6 +4,7 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import ComboBox from '../../combobox/ComboBox';
+import { DNode, HNode } from '@dojo/widget-core/interfaces';
 
 const data = [
 	{ value: 'Maine' },
@@ -116,6 +117,37 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				},
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value3'],
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
+			}),
+			v('h3', {}, ['Custom menu renderer']),
+			w(ComboBox, {
+				onChange: (value: string) => this.setState({ 'value4': value }),
+				getResultValue: (result: any) => <string> result.value,
+				onRequestResults: this.onRequestResults,
+				results: <any[]> this.state['results'],
+				value: <string> this.state['value4'],
+				renderMenu: (resultItems: DNode[]) => {
+					const items = [
+						v('div', {
+							classes: { header: true }
+						}, [ 'A' ])
+					];
+					let lastLetter = 'a';
+					resultItems.forEach(item => {
+						let state = (<HNode> item).children[0]!;
+						let letter = (<string> state).charAt(0).toLowerCase();
+						if (letter !== lastLetter) {
+							items.push(v('div', {
+								classes: { header: true }
+							}, [ letter.toUpperCase() ]));
+							lastLetter = letter;
+						}
+						items.push(<HNode> item);
+					});
+					return v('div', { classes: { results: true } }, items);
+				},
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}
