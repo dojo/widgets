@@ -3,7 +3,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import TextInput from '../../textinput/TextInput';
+import TextInput, { TextInputType } from '../../textinput/TextInput';
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	onChange(event: Event) {
@@ -18,14 +18,14 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', {}, ['String label']),
 			w(TextInput, {
 				key: 't1',
-				type: 'text',
+				type: <TextInputType> 'text',
 				placeholder: 'Hello, World',
 				label: 'Name'
 			}),
 			v('h3', {}, ['Label before the input']),
 			w(TextInput, {
 				key: 't2',
-				type: 'email',
+				type: <TextInputType> 'email',
 				label: {
 					position: 'before',
 					content: 'Email (required)'
@@ -35,7 +35,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', {}, ['Hidden accessible label']),
 			w(TextInput, {
 				key: 't3',
-				type: 'text',
+				type: <TextInputType> 'text',
 				placeholder: 'Type something...',
 				label: {
 					content: 'Try listening to me!',
@@ -46,7 +46,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', {}, ['Disabled text input']),
 			w(TextInput, {
 				key: 't4',
-				type: 'text',
+				type: <TextInputType> 'text',
 				label: 'Can\'t type here',
 				value: 'Initial value',
 				disabled: true
@@ -54,7 +54,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', {}, ['Validated Input']),
 			w(TextInput, {
 				key: 't5',
-				type: 'text',
+				type: <TextInputType> 'text',
 				label: 'Type "foo" or "bar"',
 				value: <string> this.state.inputValue,
 				invalid: <boolean | undefined> this.state.invalid,

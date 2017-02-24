@@ -4,47 +4,66 @@ import { FormLabelMixin, FormLabelMixinProperties } from '@dojo/widget-core/mixi
 import { v } from '@dojo/widget-core/d';
 import * as css from './styles/textinput.css';
 
+export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
+
 /**
  * @type TextInputProperties
  *
  * Properties that can be set on a TextInput component
  *
- * @property type			Input type, e.g. text, email, tel, etc.
- * @property onInput	Called when the node's 'input' event is fired
- * @property onChange	Called when the node's 'change' event is fired
- * @property onFocus	Called when the input is focused
- * @property onBlur		Called when the input loses focus
+ * @property type					Input type, e.g. text, email, tel, etc.
+ * @property onBlur				Called when the input loses focus
+ * @property onChange			Called when the node's 'change' event is fired
+ * @property onClick			Called when the input is clicked
+ * @property onFocus			Called when the input is focused
+ * @property onInput			Called when the 'input' event is fired
+ * @property onKeyDown		Called on the input's keydown event
+ * @property onKeyPress		Called on the input's keypress event
+ * @property onKeyUp			Called on the input's keyup event
+ * @property onMouseDown	Called on the input's mousedown event
+ * @property onMouseUp		Called on the input's mouseup event
+ * @property onTouchStart	Called on the input's touchstart event
+ * @property onTouchEnd		Called on the input's touchend event
+ * @property onTouchCancel	Called on the input's touchcancel event
  */
 export interface TextInputProperties extends ThemeableProperties, FormLabelMixinProperties {
-	type?: string;
-	onInput?(event: Event): void;
+	type?: TextInputType;
+	onBlur?(event: FocusEvent): void;
 	onChange?(event: Event): void;
-	onFocus?(event: Event): void;
-	onBlur?(event: Event): void;
+	onClick?(event: MouseEvent): void;
+	onFocus?(event: FocusEvent): void;
+	onInput?(event: Event): void;
+	onKeyDown?(event: KeyboardEvent): void;
+	onKeyPress?(event: KeyboardEvent): void;
+	onKeyUp?(event: KeyboardEvent): void;
+	onMouseDown?(event: MouseEvent): void;
+	onMouseUp?(event: MouseEvent): void;
+	onTouchStart?(event: TouchEvent): void;
+	onTouchEnd?(event: TouchEvent): void;
+	onTouchCancel?(event: TouchEvent): void;
 }
 
+const TextInputBase = ThemeableMixin(FormLabelMixin(WidgetBase));
+
 @theme(css)
-export default class TextInput extends ThemeableMixin(FormLabelMixin(WidgetBase))<TextInputProperties> {
-	onInput(event: Event) {
-		this.properties.onInput && this.properties.onInput(event);
-	}
-
-	onChange(event: Event) {
-		this.properties.onChange && this.properties.onChange(event);
-	}
-
-	onFocus(event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus(event);
-	}
-
-	onBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur(event);
-	}
-
+export default class TextInput extends TextInputBase<TextInputProperties> {
 	render() {
 		const {
 			type = 'text',
-			invalid
+			invalid,
+			onBlur,
+			onChange,
+			onClick,
+			onFocus,
+			onInput,
+			onKeyDown,
+			onKeyPress,
+			onKeyUp,
+			onMouseDown,
+			onMouseUp,
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
 		} = this.properties;
 
 		const classes = [
@@ -55,10 +74,19 @@ export default class TextInput extends ThemeableMixin(FormLabelMixin(WidgetBase)
 		return v('input', {
 			classes: this.classes(...classes).get(),
 			type: type,
-			oninput: this.onInput,
-			onchange: this.onChange,
-			onfocus: this.onFocus,
-			onblur: this.onBlur
+			onblur: onBlur,
+			onchange: onChange,
+			onclick: onClick,
+			onfocus: onFocus,
+			oninput: onInput,
+			onkeydown: onKeyDown,
+			onkeypress: onKeyPress,
+			onkeyup: onKeyUp,
+			onmousedown: onMouseDown,
+			onmouseup: onMouseUp,
+			ontouchstart: onTouchStart,
+			ontouchend: onTouchEnd,
+			ontouchcancel: onTouchCancel
 		});
 	}
 }

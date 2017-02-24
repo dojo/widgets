@@ -15,7 +15,8 @@
 	outline: none;
 }
 
-.root input:disabled {
+.root input:disabled,
+.root input:read-only {
 	background-color: var(--dojo-off-white);
 	color: var(--dojo-shade-gray);
 }
@@ -27,11 +28,11 @@
 
 /* TODO: this needs non-color design as well */
 .invalid input {
-	border-color: var(--dojo-red);
+	border-color: var(--dojo-error-color);
 }
 
 .valid input {
-	border-color: var(--dojo-green);
+	border-color: var(--dojo-success-color);
 }
 
 .root span {

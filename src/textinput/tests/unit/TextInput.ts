@@ -9,12 +9,12 @@ registerSuite({
 
 	construction() {
 		const textinput = new TextInput({
-			type: 'foo',
+			type: 'text',
 			placeholder: 'bar',
 			value: 'baz'
 		});
 
-		assert.strictEqual(textinput.properties.type, 'foo');
+		assert.strictEqual(textinput.properties.type, 'text');
 		assert.strictEqual(textinput.properties.placeholder, 'bar');
 		assert.strictEqual(textinput.properties.value, 'baz');
 	},
@@ -52,58 +52,5 @@ registerSuite({
 		});
 		vnode = <VNode> textinput.__render__();
 		assert.isTrue(vnode.properties!.classes![css.valid]);
-	},
-
-	events: {
-		onInput() {
-			const textinput = new TextInput({
-				value: 'foo',
-				onInput: () => {
-					textinput.setProperties({ value: 'bar' });
-				}
-			});
-			let vnode = <VNode> textinput.__render__();
-
-			assert.strictEqual(vnode.properties!.value, 'foo');
-
-			textinput.onInput(<Event> {});
-			vnode = <VNode> textinput.__render__();
-			assert.strictEqual(vnode.properties!.value, 'bar');
-		},
-		onChange() {
-			const textinput = new TextInput({
-				value: 'foo',
-				onChange: () => {
-					textinput.setProperties({ value: 'bar' });
-				}
-			});
-			let vnode = <VNode> textinput.__render__();
-
-			assert.strictEqual(vnode.properties!.value, 'foo');
-
-			textinput.onChange(<Event> {});
-			vnode = <VNode> textinput.__render__();
-			assert.strictEqual(vnode.properties!.value, 'bar');
-		},
-		onFocus() {
-			let focused = false;
-			const textinput = new TextInput({
-				onFocus: () => {
-					focused = true;
-				}
-			});
-			textinput.onFocus(<FocusEvent> {});
-			assert.isTrue(focused, 'onFocus called');
-		},
-		onBlur() {
-			let blurred = false;
-			const textinput = new TextInput({
-				onBlur: () => {
-					blurred = true;
-				}
-			});
-			textinput.onBlur(<FocusEvent> {});
-			assert.isTrue(blurred, 'onFocus called');
-		}
 	}
 });

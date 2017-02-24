@@ -7,6 +7,9 @@
 	--dojo-red: #ED5153;
 	--dojo-green: #01D48E;
 
+	--dojo-error-color: var(--dojo-red);
+	--dojo-success-color: var(--dojo-green);
+
 	--base-font: 14px/1 sans-serif;
 	--content-padding: 14px 35px;
 	--title-font-size: 20px;
