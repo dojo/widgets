@@ -2,6 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import Textarea from '../../Textarea';
+import * as css from '../../styles/textarea.css';
 
 registerSuite({
 	name: 'Textarea',
@@ -47,15 +48,23 @@ registerSuite({
 		assert.strictEqual(vnode.properties!.value, 'bar');
 	},
 
-	onInput() {
-		let input = false;
-		const textarea = new Textarea({
-			onInput: () => {
-				input = true;
-			}
-		});
-		textarea.onInput(<Event> {});
+	'invalid state'() {
+		const textarea = new Textarea({});
+		let vnode = <VNode> textarea.__render__();
 
-		assert.isTrue(input, 'properties.onInput should be called');
+		assert.isFalse(vnode.properties!.classes![css.valid]);
+		assert.isFalse(vnode.properties!.classes![css.invalid]);
+
+		textarea.setProperties({
+			invalid: true
+		});
+		vnode = <VNode> textarea.__render__();
+		assert.isTrue(vnode.properties!.classes![css.invalid]);
+
+		textarea.setProperties({
+			invalid: false
+		});
+		vnode = <VNode> textarea.__render__();
+		assert.isTrue(vnode.properties!.classes![css.valid]);
 	}
 });

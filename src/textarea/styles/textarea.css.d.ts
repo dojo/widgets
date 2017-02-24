@@ -1,1 +1,3 @@
-export const textarea: string;
+export const root: string;
+export const invalid: string;
+export const valid: string;

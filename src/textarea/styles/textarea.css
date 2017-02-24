@@ -1,22 +1,42 @@
 @import '../../common/styles/variables.css';
 
-.textarea {
+.root {
 	font: var(--base-font);
 }
 
-.textarea textarea {
+.root textarea {
 	border: 1px solid var(--dojo-shade-gray);
 	max-width: 100%;
 	padding: var(--input-padding);
 }
 
-.textarea textarea:focus {
+.root textarea:focus {
 	border-color: var(--dojo-light-blue);
 	box-shadow: var(--input-focus-shadow);
 	outline: none;
 }
 
-.textarea span {
+.root textarea:disabled,
+.root textarea:read-only {
+	background-color: var(--dojo-off-white);
+	color: var(--dojo-shade-gray);
+}
+
+/* TODO: better required styles */
+.root textarea:required {
+	border-left-width: 8px;
+}
+
+/* TODO: this needs non-color design as well */
+.invalid textarea {
+	border-color: var(--dojo-error-color);
+}
+
+.valid textarea {
+	border-color: var(--dojo-success-color);
+}
+
+.root span {
 	display: block;
 	margin: var(--line-spacing) 0;
 }
