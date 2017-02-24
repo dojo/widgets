@@ -20,7 +20,7 @@ registerSuite({
 
 		assert.strictEqual(vnode.vnodeSelector, 'input');
 		assert.strictEqual(vnode.properties!.type, 'checkbox');
-		assert.isNull(vnode.properties!.checked);
+		assert.isFalse(vnode.properties!.checked);
 
 		checkbox.setProperties({ checked: true });
 		vnode = <VNode> checkbox.__render__();
@@ -28,18 +28,6 @@ registerSuite({
 
 		checkbox.setProperties({ checked: false });
 		vnode = <VNode> checkbox.__render__();
-		assert.isNull(vnode.properties!.checked);
-	},
-
-	onChange() {
-		let checked = false;
-		const checkbox = new Checkbox({
-			onChange: () => {
-				checked = true;
-			}
-		});
-		checkbox.onChange(<Event> {});
-
-		assert.isTrue(checked, 'properties.onInput should be called');
+		assert.isFalse(vnode.properties!.checked);
 	}
 });

@@ -1,1 +1,1 @@
-export const radio: string;
+export const root: string;

@@ -1,1 +1,1 @@
-export const checkbox: string;
+export const root: string;

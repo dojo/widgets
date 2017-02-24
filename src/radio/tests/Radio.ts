@@ -20,7 +20,7 @@ registerSuite({
 
 		assert.strictEqual(vnode.vnodeSelector, 'input');
 		assert.strictEqual(vnode.properties!.type, 'radio');
-		assert.isNull(vnode.properties!.checked);
+		assert.isFalse(vnode.properties!.checked);
 
 		radio.setProperties({ checked: true });
 		vnode = <VNode> radio.__render__();
@@ -28,18 +28,6 @@ registerSuite({
 
 		radio.setProperties({ checked: false });
 		vnode = <VNode> radio.__render__();
-		assert.isNull(vnode.properties!.checked);
-	},
-
-	onChange() {
-		let checked = false;
-		const radio = new Radio({
-			onChange: () => {
-				checked = true;
-			}
-		});
-		radio.onChange(<Event> {});
-
-		assert.isTrue(checked, 'properties.onInput should be called');
+		assert.isFalse(vnode.properties!.checked);
 	}
 });

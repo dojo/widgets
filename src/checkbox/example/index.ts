@@ -9,8 +9,21 @@ export class App extends WidgetBase<WidgetProperties> {
 		return v('div', [
 			v('h1', {}, ['Checkbox Example']),
 			w(Checkbox, {
+				key: 'c1',
+				label: 'Sample unchecked checkbox'
+			}),
+			v('br', {}),
+			w(Checkbox, {
+				key: 'c2',
 				checked: true,
-				label: 'Sample checked checkbox'
+				label: 'Sample checked &amp; disabled checkbox',
+				disabled: true
+			}),
+			v('br', {}),
+			w(Checkbox, {
+				key: 'c3',
+				label: 'Required checkbox',
+				required: true
 			})
 		]);
 	}

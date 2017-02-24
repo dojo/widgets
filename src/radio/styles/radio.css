@@ -1,6 +1,10 @@
 @import '../../styles/variables.css';
 
-.radio {
+.root {
 	font: var(--base-font);
 	margin-bottom: var(--line-spacing);
+}
+
+.root input:required ~ span::after {
+	content: "*";
 }
