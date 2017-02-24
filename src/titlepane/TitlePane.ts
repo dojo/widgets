@@ -57,7 +57,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			enterAnimation = animations.expandDown,
 			exitAnimation = animations.collapseUp,
 			open = true,
-			title = ''
+			title
 		} = this.properties;
 
 		const contentId = uuid();
