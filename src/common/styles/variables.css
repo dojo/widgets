@@ -2,7 +2,10 @@
 	--dojo-blue: #34495e;
 	--dojo-light-blue: #86BBD8;
 	--dojo-white: #FFFFFF;
+	--dojo-off-white: #FBFBFB;
 	--dojo-shade-gray: rgba(0, 0, 0, 0.3);
+	--dojo-red: #ED5153;
+	--dojo-green: #01D48E;
 
 	--base-font: 14px/1 sans-serif;
 	--content-padding: 14px 35px;
@@ -18,6 +21,6 @@
 	--title-bar-color: var(--dojo-white);
 	--underlay-bg: var(--dojo-shade-gray);
 
-	--focus-highlight: 0 0 4px 1px var(--dojo-light-blue);
+	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
 	--input-padding: 0.5em 1em;
 }

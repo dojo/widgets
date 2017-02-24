@@ -33,15 +33,56 @@ registerSuite({
 		assert.strictEqual(vnode.properties!.type, 'email');
 	},
 
-	onInput() {
-		let input = false;
-		const textinput = new TextInput({
-			onInput: () => {
-				input = true;
-			}
-		});
-		textinput.onInput(<Event> {});
+	events: {
+		onInput() {
+			const textinput = new TextInput({
+				value: 'foo',
+				onInput: () => {
+					textinput.setProperties({ value: 'bar' });
+				}
+			});
+			let vnode = <VNode> textinput.__render__();
 
-		assert.isTrue(input, 'properties.onInput should be called');
+			assert.strictEqual(vnode.properties!.value, 'foo');
+
+			textinput.onInput(<Event> {});
+			vnode = <VNode> textinput.__render__();
+			assert.strictEqual(vnode.properties!.value, 'bar');
+		},
+		onChange() {
+			const textinput = new TextInput({
+				value: 'foo',
+				onChange: () => {
+					textinput.setProperties({ value: 'bar' });
+				}
+			});
+			let vnode = <VNode> textinput.__render__();
+
+			assert.strictEqual(vnode.properties!.value, 'foo');
+
+			textinput.onChange(<Event> {});
+			vnode = <VNode> textinput.__render__();
+			assert.strictEqual(vnode.properties!.value, 'bar');
+		},
+		onFocus() {
+			let focused = false;
+			const textinput = new TextInput({
+				onFocus: () => {
+					focused = true;
+				}
+			});
+			textinput.onFocus(<FocusEvent> {});
+			assert.isTrue(focused, 'onFocus called');
+		},
+		onBlur() {
+			let blurred = false;
+			const textinput = new TextInput({
+				onBlur: () => {
+					blurred = true;
+				}
+			});
+			textinput.onBlur(<FocusEvent> {});
+			assert.isTrue(blurred, 'onFocus called');
+		}
 	}
 });

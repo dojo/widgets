@@ -1,21 +1,40 @@
 @import '../../styles/variables.css';
 
-.textinput {
+.root {
 	font: var(--base-font);
 }
 
-.textinput input {
+.root input {
 	border: 1px solid var(--dojo-shade-gray);
 	padding: var(--input-padding);
 }
 
-.textinput input:focus {
+.root input:focus {
 	border-color: var(--dojo-light-blue);
-	box-shadow: var(--focus-highlight);
+	box-shadow: var(--input-focus-shadow);
 	outline: none;
 }
 
-.textinput span {
+.root input:disabled {
+	background-color: var(--dojo-off-white);
+	color: var(--dojo-shade-gray);
+}
+
+/* TODO: better required styles */
+.root input:required {
+	border-left-width: 8px;
+}
+
+/* TODO: this needs non-color design as well */
+.invalid input {
+	border-color: var(--dojo-red);
+}
+
+.valid input {
+	border-color: var(--dojo-green);
+}
+
+.root span {
 	display: block;
 	margin: var(--line-spacing) 0;
 }
