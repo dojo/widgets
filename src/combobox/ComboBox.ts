@@ -219,9 +219,13 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	onResultMouseUp() {
-		const { results = [] } = this.properties;
+		const { results } = this.properties;
 
-		this._selectedIndex !== undefined && this.selectResult(this.getResultValue(results[this._selectedIndex]));
+		if (!results || this._selectedIndex === undefined) {
+			return;
+		}
+
+		this.selectResult(this.getResultValue(results[this._selectedIndex]));
 	}
 
 	selectResult(value: string) {

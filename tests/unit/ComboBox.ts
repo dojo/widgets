@@ -38,7 +38,8 @@ registerSuite({
 	name: 'ComboBox',
 
 	'Menu should open when arrow clicked'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['abc']
 		});
 
@@ -48,7 +49,8 @@ registerSuite({
 	},
 
 	'Menu should open on input'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['abc']
 		});
 
@@ -58,7 +60,8 @@ registerSuite({
 	},
 
 	'Menu should close when input blurred'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['abc']
 		});
 
@@ -69,24 +72,48 @@ registerSuite({
 	},
 
 	'Menu should close when result clicked'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['abc'],
-			getResultValue: value => value
+			getResultValue: (value: string) => value
 		});
 
 		comboBox.onArrowClick();
 		comboBox.onInputKeyDown(event('ArrowDown'));
-		comboBox.onInput(event());
-		comboBox.onResultMouseEnter(event());
-		comboBox.onResultMouseDown();
-		comboBox.onInputBlur(event());
 		comboBox.onResultMouseUp();
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
 	},
 
+	'Value should not change if no results exit'() {
+		const comboBox = new ComboBox();
+		let called = false;
+		comboBox.setProperties({
+			results: ['abc'],
+			getResultValue: (value: string) => value,
+			onChange: () => called = true
+		});
+
+		comboBox.onResultMouseUp();
+		assert.isFalse(called);
+	},
+
+	'Blur should be ignored when clicking result'() {
+		const comboBox = new ComboBox();
+		let called = false;
+		comboBox.setProperties({
+			onBlur: () => called = true
+		});
+
+		comboBox.onResultMouseEnter(event());
+		comboBox.onResultMouseDown();
+		comboBox.onInputBlur(event());
+		assert.isFalse(called);
+	},
+
 	'Down arrow should change selected result'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['1', '2']
 		});
 
@@ -102,7 +129,8 @@ registerSuite({
 	},
 
 	'Up arrow should change selected result'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['1', '2']
 		});
 
@@ -119,10 +147,11 @@ registerSuite({
 
 	'Enter should select a result'() {
 		let inputValue = 'foobar';
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['1', '2'],
 			onChange: (value: string) => inputValue = value,
-			getResultValue: value => value
+			getResultValue: (value: string) => value
 		});
 
 		comboBox.onInputKeyDown(event('Enter'));
@@ -138,7 +167,7 @@ registerSuite({
 	},
 
 	'Escape should close menu'() {
-		const comboBox = new ComboBox({});
+		const comboBox = new ComboBox();
 
 		comboBox.onArrowClick();
 		comboBox.onInputKeyDown(event('Escape'));
@@ -151,7 +180,8 @@ registerSuite({
 		const input = inputElement();
 		input.blur = () => blurred = true;
 		const parent = parentElement(input);
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['abc'],
 			autoBlur: true
 		});
@@ -165,7 +195,8 @@ registerSuite({
 
 	'Clearable should render clear button and allow input to be cleared'() {
 		let inputValue = 'foobar';
-		const comboBox: ComboBox = new ComboBox({
+		const comboBox: ComboBox = new ComboBox();
+		comboBox.setProperties({
 			clearable: true,
 			onChange: (value: string) => inputValue = value
 		});
@@ -178,7 +209,8 @@ registerSuite({
 	},
 
 	'Allowed inputProperties are transferred to child input'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			inputProperties: {
 				placeholder: 'foobar'
 			}
@@ -189,7 +221,8 @@ registerSuite({
 	},
 
 	'Input should open on focus if openOnFocus is true'() {
-		const comboBox: ComboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			openOnFocus: true,
 			results: ['abc']
 		});
@@ -200,7 +233,8 @@ registerSuite({
 	},
 
 	'value is set on underlying input'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			value: 'abc'
 		});
 
@@ -210,7 +244,8 @@ registerSuite({
 
 	'onBlur should be called'() {
 		let called = false;
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			onBlur: () => called = true
 		});
 
@@ -220,7 +255,8 @@ registerSuite({
 
 	'onChange should be called'() {
 		let called = 0;
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			onChange: () => called++
 		});
 
@@ -233,7 +269,8 @@ registerSuite({
 	'onFocus should be called'() {
 		let called = false;
 		const parent = parentElement();
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			onFocus: () => called = true
 		});
 
@@ -246,7 +283,8 @@ registerSuite({
 
 	'onRequestResults should be called'() {
 		let called = 0;
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			onRequestResults: () => called++,
 			openOnFocus: true
 		});
@@ -260,7 +298,8 @@ registerSuite({
 
 	'onMenuChange should be called'() {
 		let called = 0;
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			results: ['a'],
 			onMenuChange: () => called++
 		});
@@ -274,8 +313,9 @@ registerSuite({
 
 	'renderMenu should be called'() {
 		let called = false;
-		const comboBox = new ComboBox({
-			getResultValue: value => value,
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
+			getResultValue: (value: string) => value,
 			renderMenu: () => {
 				called = true;
 				return v('div');
@@ -288,7 +328,8 @@ registerSuite({
 
 	'renderResult should be called'() {
 		let called = false;
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			renderResult: () => {
 				called = true;
 				return v('div');
@@ -300,7 +341,8 @@ registerSuite({
 	},
 
 	'Clicking arrow should not open menu if disabled'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			inputProperties: {
 				disabled: true
 			}
@@ -312,7 +354,8 @@ registerSuite({
 	},
 
 	'Clicking arrow should not open menu if readonly'() {
-		const comboBox = new ComboBox({
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
 			inputProperties: {
 				readOnly: true
 			}
@@ -324,7 +367,7 @@ registerSuite({
 	},
 
 	'Selected element should stay visible when above viewport'() {
-		const comboBox = new ComboBox({});
+		const comboBox = new ComboBox();
 		const menu = {
 			scrollTop: 200
 		};
@@ -339,7 +382,7 @@ registerSuite({
 	},
 
 	'Selected element should stay visible when below viewport'() {
-		const comboBox = new ComboBox({});
+		const comboBox = new ComboBox();
 		const menu = {
 			scrollTop: 200,
 			clientHeight: 200
@@ -356,7 +399,7 @@ registerSuite({
 	},
 
 	'No scrolling should occur if result is in viewport'() {
-		const comboBox = new ComboBox({});
+		const comboBox = new ComboBox();
 		const menu = {
 			scrollTop: 50,
 			clientHeight: 200

@@ -157,6 +157,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();
