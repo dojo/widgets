@@ -127,7 +127,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	}
 
 	afterCreate(element: HTMLElement) {
-		element.addEventListener('transitionend', this.onTransitionEnd!);
+		element.addEventListener('transitionend', this.onTransitionEnd);
 		this._content = element;
 	}
 

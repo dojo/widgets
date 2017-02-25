@@ -44,8 +44,10 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	renderResult?(result: any): DNode;
 };
 
+const ComboBoxBase = ThemeableMixin(WidgetBase);
+
 @theme(css)
-export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxProperties> {
+export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _ignoreBlur: boolean;
 	private _ignoreFocus: boolean;
 	private _inputElement: HTMLInputElement | null;
@@ -109,12 +111,12 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 	afterCreate(element: HTMLElement) {
 		// Cache the input element and restore focus
 		this._inputElement = element.querySelector('input');
-		this._inputElement![this._focused ? 'focus' : 'blur']();
+		this._inputElement && this._inputElement[this._focused ? 'focus' : 'blur']();
 	}
 
 	afterUpdate(element: HTMLElement) {
 		// Cache the input element and restore focus
-		this._inputElement![this._focused ? 'focus' : 'blur']();
+		this._inputElement && this._inputElement[this._focused ? 'focus' : 'blur']();
 		const selectedResult = element.querySelector('[data-selected="true"]');
 		// Make sure highlighted result is visible after arrow up / arrow down
 		selectedResult && this.scrollIntoView(<HTMLElement> selectedResult);
@@ -196,7 +198,7 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 
 		this._open = true;
 		this._focused = true;
-		onRequestResults && onRequestResults(this._inputElement!.value);
+		this._inputElement && onRequestResults && onRequestResults(this._inputElement.value);
 	}
 
 	onClearClick() {
@@ -217,9 +219,9 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 	}
 
 	onResultMouseUp() {
-		const { results } = this.properties;
+		const { results = [] } = this.properties;
 
-		this.selectResult(this.getResultValue(results![this._selectedIndex!]));
+		this._selectedIndex !== undefined && this.selectResult(this.getResultValue(results[this._selectedIndex]));
 	}
 
 	selectResult(value: string) {
@@ -230,7 +232,7 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 
 		this._open = false;
 		this._selectedIndex = undefined;
-		this._focused = autoBlur ? false : true;
+		this._focused = !autoBlur;
 		this._ignoreFocus = true;
 		onChange && onChange(value);
 	}
@@ -243,7 +245,7 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 
 		const resultItems = results.map((result, i) => {
 			const renderedResult = <HNode> renderResult(result);
-			assign(renderedResult!.properties, {
+			assign(renderedResult.properties, {
 				classes: this.classes(css.result, i === this._selectedIndex ? css.selectedResult : null).get(),
 				onmouseenter: this.onResultMouseEnter,
 				onmousedown: this.onResultMouseDown,
@@ -268,7 +270,7 @@ export default class ComboBox extends ThemeableMixin(WidgetBase)<ComboBoxPropert
 		return getResultValue(result);
 	}
 
-	render() {
+	render(): DNode {
 		const {
 			clearable,
 			results = [],

@@ -69,7 +69,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		this.setState({ results: results.sort((a, b) => a.value < b.value ? -1 : 1) });
 	}
 
-	render() {
+	render(): DNode {
 		return v('div', [
 			v('h1', {}, ['ComboBox Examples']),
 			v('h3', {}, ['Open on focus']),

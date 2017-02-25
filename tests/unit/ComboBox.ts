@@ -74,6 +74,8 @@ registerSuite({
 			getResultValue: value => value
 		});
 
+		comboBox.onArrowClick();
+		comboBox.onInputKeyDown(event('ArrowDown'));
 		comboBox.onInput(event());
 		comboBox.onResultMouseEnter(event());
 		comboBox.onResultMouseDown();
