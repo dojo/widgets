@@ -17,13 +17,12 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "@dojo/compose": "2.0.0-beta.21",
-    "@dojo/core": "2.0.0-alpha.20",
+    "@dojo/core": "2.0.0-alpha.24",
     "@dojo/has": "2.0.0-alpha.7",
-    "@dojo/i18n": "2.0.0-alpha.5",
+    "@dojo/i18n": "2.0.0-alpha.6",
     "@dojo/shim": "2.0.0-beta.8",
-    "@dojo/widget-core": "2.0.0-alpha.24",
-    "maquette": ">=2.3.7 <=2.4.1"
+    "@dojo/widget-core": "2.0.0-alpha.25",
+    "maquette": "^2.4.3"
   },
   "devDependencies": {
     "@dojo/interfaces": "2.0.0-alpha.11",
@@ -36,9 +35,7 @@
     "grunt": "^1.0.1",
     "grunt-dojo2": "^2.0.0-beta.29",
     "intern": "^3.4.1",
-    "istanbul": "^0.4.5",
     "jsdom": "^9.5.0",
-    "remap-istanbul": "^0.6.4",
     "sinon": "^1.17.6",
     "tslint": "^3.11.0",
     "typescript": "rc"

@@ -1,3 +1,4 @@
+import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
@@ -18,10 +19,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		this.setState({ align: (<HTMLInputElement> event.target).checked ? Align.right : Align.left });
 	}
 
-	render() {
+	render(): DNode {
 		return v('div', [
 			w(SlidePane, {
-				id: 'pane',
+				key: 'pane',
 				open: <boolean> this.state['open'],
 				underlay: <boolean> this.state['underlay'],
 				align: <Align> this.state['align'],
@@ -65,6 +66,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();

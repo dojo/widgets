@@ -1,3 +1,4 @@
+import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
@@ -134,7 +135,7 @@ export default class SlidePane extends ThemeableMixin(WidgetBase)<SlidePanePrope
 		content.style.transform = '';
 	}
 
-	render() {
+	render(): DNode {
 		const {
 			open = false,
 			align = Align.left,
