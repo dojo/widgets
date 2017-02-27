@@ -1,15 +1,15 @@
 import { CustomElementDescriptor } from '@dojo/widget-core/customElements';
-import Datepicker from './Datepicker';
+import Calendar from './Calendar';
 
 /**
- * Configures a Datepicker web component
+ * Configures a Calendar web component
  *
  * @return	{CustomElementDescriptor?}
  */
-export default function createDatepickerElement(): CustomElementDescriptor {
+export default function createCalendarElement(): CustomElementDescriptor {
 	return {
-		tagName: 'dojo-datepicker',
-		widgetFactory: Datepicker,
+		tagName: 'dojo-calendar',
+		widgetFactory: Calendar,
 		attributes: [
 			{
 				attributeName: 'closeable',

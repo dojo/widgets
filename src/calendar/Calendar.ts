@@ -2,25 +2,25 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import * as css from './styles/datepicker.css';
+import * as css from './styles/calendar.css';
 
 /**
- * @type DatepickerProperties
+ * @type CalendarProperties
  *
- * Properties that can be set on a Datepicker component
+ * Properties that can be set on a Calendar component
  *
- * @property closeable			Determines whether the datepicker can be closed
- * @property enterAnimation		CSS class to apply to the datepicker when opened
- * @property exitAnimation		CSS class to apply to the datepicker when closed
- * @property modal				Determines whether the datepicker can be closed by clicking outside its content
- * @property open				Determines whether the datepicker is open or closed
- * @property role				Role of this datepicker for accessibility, either 'alert' or 'datepicker'
- * @property title				Title to show in the datepicker title bar
- * @property underlay			Determines whether a semi-transparent background shows behind the datepicker
- * @property onOpen				Called when the datepicker opens
- * @property onRequestClose		Called when the datepicker is closed
+ * @property closeable			Determines whether the calendar can be closed
+ * @property enterAnimation		CSS class to apply to the calendar when opened
+ * @property exitAnimation		CSS class to apply to the calendar when closed
+ * @property modal				Determines whether the calendar can be closed by clicking outside its content
+ * @property open				Determines whether the calendar is open or closed
+ * @property role				Role of this calendar for accessibility, either 'alert' or 'calendar'
+ * @property title				Title to show in the calendar title bar
+ * @property underlay			Determines whether a semi-transparent background shows behind the calendar
+ * @property onOpen				Called when the calendar opens
+ * @property onRequestClose		Called when the calendar is closed
  */
-export interface DatepickerProperties extends ThemeableProperties {
+export interface CalendarProperties extends ThemeableProperties {
 	selectedDate?: Date;
 	focusedDate?: Date;
 	onMonthChange?(): void;
@@ -77,7 +77,7 @@ const messages = {
 };
 
 @theme(css)
-export default class Datepicker extends ThemeableMixin(WidgetBase)<DatepickerProperties> {
+export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarProperties> {
 	private focusedDay: number;
 	private focusedMonth: number;
 	private focusedYear: number;
