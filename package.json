@@ -38,6 +38,6 @@
     "jsdom": "^9.5.0",
     "sinon": "^1.17.6",
     "tslint": "^3.11.0",
-    "typescript": "rc"
+    "typescript": "~2.2.1"
   }
 }
