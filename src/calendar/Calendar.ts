@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
+import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/calendar.css';
 
@@ -9,28 +10,26 @@ import * as css from './styles/calendar.css';
  *
  * Properties that can be set on a Calendar component
  *
- * @property closeable			Determines whether the calendar can be closed
- * @property enterAnimation		CSS class to apply to the calendar when opened
- * @property exitAnimation		CSS class to apply to the calendar when closed
- * @property modal				Determines whether the calendar can be closed by clicking outside its content
- * @property open				Determines whether the calendar is open or closed
- * @property role				Role of this calendar for accessibility, either 'alert' or 'calendar'
- * @property title				Title to show in the calendar title bar
- * @property underlay			Determines whether a semi-transparent background shows behind the calendar
- * @property onOpen				Called when the calendar opens
- * @property onRequestClose		Called when the calendar is closed
+ * @property selectedDate			The currently selected date
+ * @property focusedDate			Date that can receive keyboard focus. Used for a11y and to open the calendar on a specific month without selecting a date.
+ * @property renderDateCell		Custom date cell render function. Should return a DNode.
+ * @property onMonthChange		Function called when the month changes
+ * @property onYearChange			Function called when the year changes
+ * @property onDateSelect			Function called when the user selects a date
+ * @property onDateFocus			Function called when a new date receives focus
  */
 export interface CalendarProperties extends ThemeableProperties {
 	selectedDate?: Date;
 	focusedDate?: Date;
+	renderDateCell?(date: number): DNode;
 	onMonthChange?(): void;
 	onYearChange?(): void;
 	onDateSelect?(): void;
 	onDateFocus?(): void;
 };
 
-// should this be used/stored here?
-/* const keyCodes = {
+// TODO: this should probably be imported from somewhere else
+const keyCodes = {
 	enter: 13,
 	esc: 27,
 	space: 32,
@@ -40,9 +39,9 @@ export interface CalendarProperties extends ThemeableProperties {
 	down: 40,
 	pageUp: 33,
 	pageDown: 34
-}; */
+};
 
-// will need locale-specific month names
+// TODO: will need locale-specific month names and weekdays
 const monthNames = [
 	{short: 'Jan', long: 'January'},
 	{short: 'Feb', long: 'February'},
@@ -78,20 +77,26 @@ const messages = {
 
 @theme(css)
 export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarProperties> {
-	private focusedDay: number;
-	private focusedMonth: number;
-	private focusedYear: number;
-	private monthPopupOpen = false;
+	private _focusedDay: number;
+	private _focusedMonth: number;
+	private _focusedYear: number;
+	private _monthPopupOpen = false;
 
-	_getMonthLength(month: number, year = this.focusedYear) {
+	onMonthTriggerClick() {
+		// TODO: focus stuff
+		this._monthPopupOpen = !this._monthPopupOpen;
+		this.invalidate();
+	}
+
+	_getMonthLength(month: number, year = this._focusedYear) {
 		const d = new Date(year, month + 1, 0);
 		return d.getDate();
 	}
 
 	_renderDateGrid(selectedDate: Date | undefined) {
-		const currentMonthLength = this._getMonthLength(this.focusedMonth);
-		const previousMonthLength = this._getMonthLength(this.focusedMonth - 1);
-		const initialWeekday = new Date(this.focusedYear, this.focusedMonth, 1).getDay();
+		const currentMonthLength = this._getMonthLength(this._focusedMonth);
+		const previousMonthLength = this._getMonthLength(this._focusedMonth - 1);
+		const initialWeekday = new Date(this._focusedYear, this._focusedMonth, 1).getDay();
 
 		let dayIndex = 0,
 				date = initialWeekday > 0 ? previousMonthLength - initialWeekday : 0,
@@ -101,6 +106,8 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				days: any[],
 				dateCellClasses: (string | null)[],
 				i: number;
+
+		const { renderDateCell = this.renderDateCell } = this.properties;
 
 		for (let w = 0; w < 6; w++) {
 			days = [];
@@ -122,8 +129,10 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				}
 				dayIndex++;
 
-				if (isCurrentMonth && selectedDate && new Date(this.focusedYear, this.focusedMonth, date).toDateString() === selectedDate.toDateString()) {
+				if (isCurrentMonth && selectedDate && new Date(this._focusedYear, this._focusedMonth, date).toDateString() === selectedDate.toDateString()) {
 					isSelectedDay = true;
+				} else {
+					isSelectedDay = false;
 				}
 
 				dateCellClasses = [
@@ -134,16 +143,20 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 
 				days.push(v('td', {
 					role: 'gridcell',
-					'aria-selected': isSelectedDay,
-					'tabindex': isCurrentMonth && date === this.focusedDay ? '0' : '-1',
+					'aria-selected': String(isSelectedDay),
+					'tabindex': isCurrentMonth && date === this._focusedDay ? '0' : '-1',
 					classes: this.classes(...dateCellClasses).get()
-				}, [ v('span', {}, [ String(date) ]) ]));
+				}, [ renderDateCell(date) ]));
 			}
 
 			weeks.push(v('tr', {}, days));
 		}
 
 		return weeks;
+	}
+
+	renderDateCell(date: number) {
+		return v('span', {}, [ String(date) ]);
 	}
 
 	render() {
@@ -156,9 +169,9 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			focusedDate = selectedDate || new Date();
 		}
 
-		this.focusedDay = focusedDate.getDate();
-		this.focusedMonth = focusedDate.getMonth();
-		this.focusedYear = focusedDate.getFullYear();
+		this._focusedDay = focusedDate.getDate();
+		this._focusedMonth = focusedDate.getMonth();
+		this._focusedYear = focusedDate.getFullYear();
 
 		const monthButtonId = uuid();
 		const monthLabelId = uuid();
@@ -193,7 +206,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			]));
 		}
 
-		return v('div', {}, [
+		return v('div', { classes: this.classes(css.root).get() }, [
 			// calendar header and month nav
 			v('div', {
 				classes: this.classes(css.header).get(),
@@ -208,23 +221,29 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 						id: monthButtonId,
 						classes: this.classes(css.monthTrigger).get(),
 						'aria-describedby': monthLabelId,
-						'aria-haspopup': true
+						'aria-haspopup': true,
+						onclick: this.onMonthTriggerClick,
+						onkeydown: (event: KeyboardEvent) => {
+							if (event.which === keyCodes.enter || event.which === keyCodes.space) {
+								this.onMonthTriggerClick();
+							}
+						}
 					}, [
-						v('span', { classes: this.classes(css.visuallyHidden).get() }, [ messages.chooseMonth ])
+						v('span', { classes: this.classes().fixed(css.visuallyHidden).get() }, [ messages.chooseMonth ])
 					]),
 					v('label', {
 						id: monthLabelId,
 						classes: this.classes(css.currentMonthLabel).get(),
 						'aria-live': 'assertive',
 						'aria-atomic': true,
-						innerHTML: monthNames[this.focusedMonth].long + ' ' + this.focusedYear
+						innerHTML: monthNames[this._focusedMonth].long + ' ' + this._focusedYear
 					}),
 					// month popup
 					v('div', {
-						classes: this.classes(css.monthPopup).fixed(this.monthPopupOpen ? null : css.monthPopupHidden).get(),
+						classes: this.classes(css.monthPopup).fixed(this._monthPopupOpen ? null : css.monthPopupHidden).get(),
 						role: 'dialog',
 						'aria-labelledby': monthButtonId,
-						'aria-hidden': this.monthPopupOpen ? null : 'true'
+						'aria-hidden': this._monthPopupOpen ? null : 'true'
 					}, [
 						// year spinner
 						v('div', {}, [
@@ -236,21 +255,21 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 							v('span', {
 								role: 'button',
 								classes: this.classes(css.spinnerPrevious).get(),
-								innerHTML: String(this.focusedYear - 1)
+								innerHTML: String(this._focusedYear - 1)
 							}),
 							v('div', {
 								id: yearSpinnerId,
 								classes: this.classes(css.spinner).get(),
 								role: 'spinbutton',
 								'aria-valuemin': '1',
-								'aria-valuenow': this.focusedYear,
+								'aria-valuenow': this._focusedYear,
 								tabindex: '0',
-								innerHTML: String(this.focusedYear)
+								innerHTML: String(this._focusedYear)
 							}),
 							v('span', {
 								role: 'button',
 								classes: this.classes(css.spinnerNext).get(),
-								innerHTML: String(this.focusedYear + 1)
+								innerHTML: String(this._focusedYear + 1)
 							})
 						]),
 						// month picker

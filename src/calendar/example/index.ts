@@ -8,12 +8,14 @@ import Calendar from '../../calendar/Calendar';
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	render() {
 		return v('div', {}, [
-			w(Calendar, {})
+			w(Calendar, {
+				selectedDate: new Date()
+			})
 		]);
 	}
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();

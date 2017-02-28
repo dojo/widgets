@@ -13,6 +13,12 @@
 }
 
 .root {
+	box-sizing: border-box;
+	display: inline-block;
+}
+
+.root *, .root *:before, .root *:after {
+	box-sizing: inherit;
 }
 
 /* Calendar header styles */
@@ -70,7 +76,7 @@
 .previousMonth:focus,
 .nextMonth:hover,
 .nextMonth:focus {
-	border-color: var(--dojo-blue);
+	border-color: var(--dojo-light-blue);
 	outline: none;
 }
 
@@ -78,8 +84,8 @@
 .previousMonth:focus::before,
 .nextMonth:hover::before,
 .nextMonth:focus::before {
-	border-left-color: var(--dojo-blue);
-	border-right-color: var(--dojo-blue);
+	border-left-color: var(--dojo-light-blue);
+	border-right-color: var(--dojo-light-blue);
 }
 
 .currentMonthLabel {
@@ -115,9 +121,9 @@
 	outline: none;
 }
 
-.monthTrigger:hover .currentMonthLabel,
-.monthTrigger:focus .currentMonthLabel {
-	color: #fff;
+.monthTrigger:hover ~ .currentMonthLabel,
+.monthTrigger:focus ~ .currentMonthLabel {
+	color: var(--dojo-white);
 }
 
 /* Month popup */
@@ -276,6 +282,13 @@
 	transition: all 0.2s ease;
 }
 
+.date:hover,
+.date:focus {
+	background-color: var(--dojo-light-blue);
+	cursor: pointer;
+	outline: none;
+}
+
 .inactiveDate {
 	background-color: var(--dojo-off-white);
 	color: var(--dojo-shade-gray);
@@ -284,4 +297,20 @@
 .selectedDate {
 	background-color: var(--dojo-blue);
 	color: var(--dojo-off-white);
+}
+
+.selectedDate:focus {
+	background-color: var(--dojo-blue);
+	color: var(--dojo-off-white);
+	position: relative;
+}
+
+.selectedDate:focus:before {
+	border: 1px solid #fff;
+	bottom: 3px;
+	content: "";
+	left: 3px;
+	position: absolute;
+	right: 3px;
+	top: 3px;
 }
