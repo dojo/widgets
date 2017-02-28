@@ -77,7 +77,8 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 					'aria-disabled': String(!closeable),
 					'aria-expanded': String(open),
 					id: titleId,
-					role: 'button'
+					role: 'button',
+					tabIndex: closeable ? 0 : -1
 				}, [ title ])
 			]),
 			v('div', {
