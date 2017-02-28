@@ -73,14 +73,14 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		return v('div', {}, open ? [
 			v('div', {
 				key: 'underlay',
-				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay).get(),
+				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
 				onclick: this.onUnderlayClick
 			}),
 			v('div', {
 				key: 'main',
-				classes: this.classes(css.main).get(),
+				classes: this.classes(css.main),
 				enterAnimation: enterAnimation,
 				exitAnimation: exitAnimation,
 				'aria-labelledby': titleId,
@@ -89,18 +89,18 @@ export default class Dialog extends DialogBase<DialogProperties> {
 				v('div', {
 					key: 'title',
 					id: titleId,
-					classes: this.classes(css.title).get()
+					classes: this.classes(css.title)
 				}, [
 					title,
 					closeable ? v('button', {
-						classes: this.classes(css.close).get(),
+						classes: this.classes(css.close),
 						innerHTML: 'close dialog',
 						onclick: this.onCloseClick
 					}) : null
 				]),
 				v('div', {
 					key: 'content',
-					classes: this.classes(css.content).get()
+					classes: this.classes(css.content)
 				}, this.children)
 			])
 		] : []);

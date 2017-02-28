@@ -4,7 +4,7 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import ComboBox from '../../combobox/ComboBox';
-import { DNode, HNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 
 const data = [
 	{ value: 'Maine' },
@@ -74,9 +74,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h1', {}, ['ComboBox Examples']),
 			v('h3', {}, ['Open on focus']),
 			w(ComboBox, {
+				key: '1',
 				openOnFocus: true,
 				onChange: (value: string) => this.setState({ 'value1': value }),
-				getResultValue: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => <string> result.value,
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value1'],
@@ -86,9 +87,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			}),
 			v('h3', {}, ['Clearable']),
 			w(ComboBox, {
+				key: '2',
 				clearable: true,
 				onChange: (value: string) => this.setState({ 'value2': value }),
-				getResultValue: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => <string> result.value,
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value2'],
@@ -98,23 +100,24 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			}),
 			v('h3', {}, ['Custom result renderer']),
 			w(ComboBox, {
+				key: '3',
 				openOnFocus: true,
 				onChange: (value: string) => this.setState({ 'value3': value }),
-				getResultValue: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => <string> result.value,
 				onRequestResults: this.onRequestResults,
-				renderResult: (result: any) => {
-					return v('div', [
-						v('img', {
-							src: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/300px-Flag_of_the_United_States.svg.png',
-							styles: {
-								paddingRight: '8px',
-								width: '25px',
-								height: 'auto'
-							}
-						}),
-						result.value
-					]);
-				},
+				// renderResult: (result: any) => {
+				// 	return v('div', [
+				// 		v('img', {
+				// 			src: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/300px-Flag_of_the_United_States.svg.png',
+				// 			styles: {
+				// 				paddingRight: '8px',
+				// 				width: '25px',
+				// 				height: 'auto'
+				// 			}
+				// 		}),
+				// 		result.value
+				// 	]);
+				// },
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value3'],
 				inputProperties: {
@@ -123,31 +126,32 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			}),
 			v('h3', {}, ['Custom menu renderer']),
 			w(ComboBox, {
+				key: '4',
 				onChange: (value: string) => this.setState({ 'value4': value }),
-				getResultValue: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => <string> result.value,
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value4'],
-				renderMenu: (resultItems: DNode[]) => {
-					const items = [
-						v('div', {
-							classes: { header: true }
-						}, [ 'A' ])
-					];
-					let lastLetter = 'a';
-					resultItems.forEach(item => {
-						let state = (<HNode> item).children[0]!;
-						let letter = (<string> state).charAt(0).toLowerCase();
-						if (letter !== lastLetter) {
-							items.push(v('div', {
-								classes: { header: true }
-							}, [ letter.toUpperCase() ]));
-							lastLetter = letter;
-						}
-						items.push(<HNode> item);
-					});
-					return v('div', { classes: { results: true } }, items);
-				},
+				// renderMenu: (resultItems: DNode[]) => {
+				// 	const items = [
+				// 		v('div', {
+				// 			classes: { header: true }
+				// 		}, [ 'A' ])
+				// 	];
+				// 	let lastLetter = 'a';
+				// 	resultItems.forEach(item => {
+				// 		let state = (<HNode> item).children[0]!;
+				// 		let letter = (<string> state).charAt(0).toLowerCase();
+				// 		if (letter !== lastLetter) {
+				// 			items.push(v('div', {
+				// 				classes: { header: true }
+				// 			}, [ letter.toUpperCase() ]));
+				// 			lastLetter = letter;
+				// 		}
+				// 		items.push(<HNode> item);
+				// 	});
+				// 	return v('div', { classes: { results: true } }, items);
+				// },
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}

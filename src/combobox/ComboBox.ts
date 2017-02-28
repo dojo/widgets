@@ -1,11 +1,106 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { FormLabelMixinProperties } from '@dojo/widget-core/mixins/FormLabel';
-import { v } from '@dojo/widget-core/d';
-import { DNode, HNode } from '@dojo/widget-core/interfaces';
-import { assign } from '@dojo/core/lang';
+import { v, w } from '@dojo/widget-core/d';
+import { DNode, PropertiesChangeEvent, WidgetProperties } from '@dojo/widget-core/interfaces';
+import FactoryRegistry from '@dojo/widget-core/FactoryRegistry';
+import { includes } from '@dojo/shim/array';
 
 import * as css from './styles/comboBox.css';
+
+export interface ResultItemProperties extends ThemeableProperties {
+	index: number;
+	result: any;
+	selected: boolean;
+	getResultLabel(result: any): string;
+	skipResult(): void;
+	onMouseEnter(index: number): void;
+	onMouseDown(event: MouseEvent): void;
+	onMouseUp(event: MouseEvent): void;
+};
+
+const ResultItemBase = ThemeableMixin(WidgetBase);
+
+@theme(css)
+export class ResultItem extends ResultItemBase<ResultItemProperties> {
+	@onPropertiesChanged
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ResultItemProperties>) {
+		if (includes(evt.changedPropertyKeys, 'selected')) {
+			const {
+				result,
+				selected,
+				skipResult
+			} = this.properties;
+
+			if (selected === true && this.isDisabled(result)) {
+				skipResult();
+			}
+		}
+	}
+
+	isDisabled(result: any) {
+		return false;
+	}
+
+	renderLabel(result: any) {
+		const { getResultLabel } = this.properties;
+		return getResultLabel(result);
+	}
+
+	onMouseEnter() {
+		const {
+			index,
+			result,
+			onMouseEnter
+		} = this.properties;
+
+		!this.isDisabled(result) && onMouseEnter(index);
+	}
+
+	onMouseDown(event: MouseEvent) {
+		const {
+			result,
+			onMouseDown
+		} = this.properties;
+
+		!this.isDisabled(result) && onMouseDown(event);
+	}
+
+	onMouseUp(event: MouseEvent) {
+		const {
+			result,
+			onMouseUp
+		} = this.properties;
+
+		!this.isDisabled(result) && onMouseUp(event);
+	}
+
+	render(): DNode {
+		const {
+			selected,
+			result
+		} = this.properties;
+
+		return v('div', {
+			classes: this.classes(css.result, selected ? css.selectedResult : null),
+			onmouseenter: this.onMouseEnter,
+			onmousedown: this.onMouseDown,
+			onmouseup: this.onMouseUp,
+			'data-selected': selected ? 'true' : 'false'
+		}, [ this.renderLabel(result) ]);
+	}
+}
+
+const ResultMenuBase = ThemeableMixin(WidgetBase);
+
+@theme(css)
+export class ResultMenu extends ResultMenuBase<WidgetProperties> {
+	render(): DNode {
+		return v('div', {
+			classes: this.classes(css.results)
+		}, this.children);
+	}
+}
 
 /**
  * @type ComboBoxProperties
@@ -14,34 +109,40 @@ import * as css from './styles/comboBox.css';
  *
  * @property autoBlur			Determines whether the input should blur after value selection
  * @property clearable			Determines whether the input should be able to be cleared
+ * @property customResultItem	Can be used to render a custom result
  * @property inputProperties	HTML properties supported by FormLabelMixin to set on the underlying input
  * @property openOnFocus		Determines whether the result list should open when the input is focused
  * @property results			Results for the current search term; should be set in response to `onRequestResults`
  * @property value				Value to set on the input
- * @property getResultValue		Can be used to get the text value of a result based on the underlying result object
+ * @property getResultLabel		Can be used to get the text label of a result based on the underlying result object
  * @property onBlur				Called when the input is blurred
  * @property onChange			Called when the value changes
  * @property onFocus			Called when the input is focused
  * @property onRequestResults	Called when results are shown; should be used to set `results`
  * @property onMenuChange		Called when menu visibility changes
  * @property renderMenu			Can be used to render a custom result menu
- * @property renderResult		Can be used to render a custom result
  */
 export interface ComboBoxProperties extends ThemeableProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
+	customResultItem?: any;
 	inputProperties?: FormLabelMixinProperties;
 	openOnFocus?: boolean;
 	results?: any[];
 	value?: string;
-	getResultValue?(result: any): string;
+	getResultLabel?(result: any): string;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
 	onRequestResults?(value: string): void;
 	onMenuChange?(open: boolean): void;
 	renderMenu?(resultItems: any[]): DNode;
-	renderResult?(result: any): DNode;
+};
+
+const enum Operation {
+	increase,
+	decrease,
+	reset
 };
 
 const ComboBoxBase = ThemeableMixin(WidgetBase);
@@ -53,72 +154,104 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _inputElement: HTMLInputElement | null;
 	private _focused: boolean;
 	private _open: boolean;
+	private _direction: Operation;
 	private _selectedIndex: number | undefined;
 	private _wasOpen: boolean;
 
-	private _handlers: {[key: string]: any} = {
-		ArrowDown(this: ComboBox, event: KeyboardEvent) {
-			const { results } = this.properties;
-
-			if (!this._open || !results || results.length === 0) {
-				return;
-			}
-
-			// Increment highlighted result
+	protected _handlers: {[key: string]: any} = {
+		ArrowUp(this: ComboBox, event: KeyboardEvent) {
 			event.preventDefault();
-			this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === results.length - 1 ? 0 : this._selectedIndex + 1;
+			this.updateSelectedIndex(Operation.decrease);
 			this.invalidate();
 		},
 
-		ArrowUp(this: ComboBox, event: KeyboardEvent) {
-			const { results } = this.properties;
-
-			if (!this._open || !results || results.length === 0) {
-				return;
-			}
-
-			// Decrement highlighted result
+		ArrowDown(this: ComboBox, event: KeyboardEvent) {
 			event.preventDefault();
-			this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === 0 ? results.length - 1 : this._selectedIndex - 1;
+			this.updateSelectedIndex(Operation.increase);
 			this.invalidate();
 		},
 
 		Enter(this: ComboBox) {
 			const { results } = this.properties;
 
+			// If results already closed or no results, do nothing
 			if (!this._open || !results || results.length === 0) {
 				return;
 			}
-			// If no result is highlighted, close menu
+			// If no result selected, close
 			else if (this._selectedIndex === undefined) {
 				this._open = false;
 				this.invalidate();
 			}
-			// Select the highlighted result
 			else {
-				this.selectResult(this.getResultValue(results[this._selectedIndex]));
+				this.selectResult(results[this._selectedIndex]);
 			}
 		},
 
 		Escape(this: ComboBox) {
-			// Close menu
 			this._open = false;
-			this._selectedIndex = undefined;
+			this.updateSelectedIndex(Operation.reset);
 			this.invalidate();
 		}
 	};
 
+	protected updateSelectedIndex(operation?: Operation, index?: number) {
+		const { results } = this.properties;
+
+		if (!results || results.length === 0) {
+			return;
+		}
+
+		if (index !== undefined) {
+			this._selectedIndex = index;
+		}
+		else if (operation !== undefined) {
+			switch (operation) {
+				case Operation.decrease:
+					this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === 0 ? results.length - 1 : this._selectedIndex - 1;
+					break;
+				case Operation.increase:
+					this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === results.length - 1 ? 0 : this._selectedIndex + 1;
+					break;
+				case Operation.reset:
+					this._selectedIndex = undefined;
+					break;
+			}
+			this._direction = operation;
+		}
+	}
+
+	protected createRegistry() {
+		const { customResultItem = ResultItem } = this.properties;
+
+		const registry = new FactoryRegistry();
+		registry.define('result-item', customResultItem);
+		return registry;
+	}
+
+	@onPropertiesChanged
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
+		if (includes(evt.changedPropertyKeys, 'customResultItem')) {
+			this.registry = this.createRegistry();
+		}
+	}
+
+	constructor() {
+		super();
+		this.registry = this.createRegistry();
+	}
+
 	afterCreate(element: HTMLElement) {
-		// Cache the input element and restore focus
 		this._inputElement = element.querySelector('input');
+		// Maintain focused state
 		this._inputElement && this._inputElement[this._focused ? 'focus' : 'blur']();
 	}
 
 	afterUpdate(element: HTMLElement) {
-		// Cache the input element and restore focus
+		// Maintain focused state
 		this._inputElement && this._inputElement[this._focused ? 'focus' : 'blur']();
-		const selectedResult = element.querySelector('[data-selected="true"]');
 		// Make sure highlighted result is visible after arrow up / arrow down
+		const selectedResult = element.querySelector('[data-selected="true"]');
 		selectedResult && this.scrollIntoView(<HTMLElement> selectedResult);
 	}
 
@@ -140,8 +273,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			onChange
 		} = this.properties;
 
-		// Open the menu and request new results as typing occurs
-		this._selectedIndex = undefined;
+		this.updateSelectedIndex(Operation.reset);
 		this._open = true;
 		onChange && onChange((<HTMLInputElement> event.target).value);
 		onRequestResults && onRequestResults((<HTMLInputElement> event.target).value);
@@ -177,7 +309,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		this._open = false;
 		this._focused = false;
-		this._selectedIndex = undefined;
+		this.updateSelectedIndex(Operation.reset);
 		onBlur && onBlur((<HTMLInputElement> event.target).value);
 		this.invalidate();
 	}
@@ -207,10 +339,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		onChange && onChange('');
 	}
 
-	onResultMouseEnter(event: MouseEvent) {
-		// Update highlighted element; this is done via JS so mouse movement and arrow press
-		// both change the same highlighted element
-		this._selectedIndex = Number((<HTMLInputElement> event.target).getAttribute('data-index'));
+	onResultMouseEnter(index: number) {
+		this.updateSelectedIndex(undefined, index);
 		this.invalidate();
 	}
 
@@ -225,53 +355,50 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			return;
 		}
 
-		this.selectResult(this.getResultValue(results[this._selectedIndex]));
+		this.selectResult(results[this._selectedIndex]);
 	}
 
-	selectResult(value: string) {
+	selectResult(result: any) {
 		const {
 			autoBlur,
 			onChange
 		} = this.properties;
 
 		this._open = false;
-		this._selectedIndex = undefined;
+		this.updateSelectedIndex(Operation.reset);
 		this._focused = !autoBlur;
 		this._ignoreFocus = true;
-		onChange && onChange(value);
+		onChange && onChange(this.getResultLabel(result));
 	}
 
-	renderMenu(results: any[]): DNode {
-		const {
-			renderResult = (result: any): DNode => v('div', [ this.getResultValue(result) ]),
-			renderMenu = (resultItems: any[]): DNode => v('div', { classes: this.classes(css.results).get() }, resultItems)
-		} = this.properties;
+	getResultLabel(result: any): string {
+		const { getResultLabel } = this.properties;
+		return getResultLabel ? getResultLabel(result) : result;
+	}
 
+	renderMenu(results: any[]) {
 		const resultItems = results.map((result, i) => {
-			const renderedResult = <HNode> renderResult(result);
-			assign(renderedResult.properties, {
-				classes: this.classes(css.result, i === this._selectedIndex ? css.selectedResult : null).get(),
-				onmouseenter: this.onResultMouseEnter,
-				onmousedown: this.onResultMouseDown,
-				onmouseup: this.onResultMouseUp,
-				// Attrs are not used for styling
-				'data-index': String(i),
-				'data-selected': i === this._selectedIndex ? 'true' : 'false'
+			return w(ResultItem, {
+				bind: this,
+				index: i,
+				getResultLabel: this.getResultLabel,
+				key: String(i),
+				result,
+				selected: i === this._selectedIndex,
+				skipResult: () => {
+					this.updateSelectedIndex(this._direction);
+				},
+				onMouseEnter: this.onResultMouseEnter,
+				onMouseDown: this.onResultMouseDown,
+				onMouseUp: this.onResultMouseUp
 			});
-			return renderedResult;
 		});
 
-		const menu = <HNode> renderMenu(resultItems);
+		// const menu = <HNode> renderMenu(resultItems);
+		const menu = w(ResultMenu, {}, resultItems);
+		// const menu = v('div', {}, resultItems);
 
-		return resultItems.length > 0 ? menu : null;
-	}
-
-	getResultValue(result: any) {
-		const { getResultValue = (result: any) => result } = this.properties;
-		// By default, the ComboBox expects a list of strings. Objects can be used
-		// by passing a `getResultValue` property and returning the appropriate
-		// property to be used for a result label
-		return getResultValue(result);
+		return results.length > 0 ? menu : null;
 	}
 
 	render(): DNode {
@@ -291,13 +418,13 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._wasOpen = this._open;
 
 		return v('div', {
-			classes: this.classes(css.combobox).get(),
+			classes: this.classes(css.combobox),
 			afterCreate: this.afterCreate,
 			afterUpdate: this.afterUpdate
 		}, [
 			// TODO: Use TextInput once landed
 			v('input', {
-				classes: this.classes(css.input, clearable ? css.clearable : null).get(),
+				classes: this.classes(css.input, clearable ? css.clearable : null),
 				onblur: this.onInputBlur,
 				onfocus: this.onInputFocus,
 				oninput: this.onInput,
@@ -306,12 +433,12 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				...inputProperties
 			}),
 			clearable ? v('button', {
-				classes: this.classes(css.clear).get(),
+				classes: this.classes(css.clear),
 				innerHTML: 'clear combo box',
 				onclick: this.onClearClick
 			}) : null,
 			v('button', {
-				classes: this.classes(css.arrow).get(),
+				classes: this.classes(css.arrow),
 				innerHTML: 'open combo box',
 				onclick: this.onArrowClick
 			}),
