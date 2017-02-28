@@ -63,7 +63,9 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		const contentId = uuid();
 		const titleId = uuid();
 
-		const children: DNode[] = [
+		return v('div', {
+			classes: this.classes(css.main).get()
+		}, [
 			v('div', {
 				'aria-level': ariaHeadingLevel ? String(ariaHeadingLevel) : '',
 				classes: this.classes(css.title, closeable ? css.closeable : null).get(),
@@ -71,27 +73,20 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 				role: 'heading'
 			}, [
 				v('div', {
-					'aria-controls': open ? contentId : '',
+					'aria-controls': contentId,
 					'aria-disabled': String(!closeable),
 					'aria-expanded': String(open),
 					id: titleId,
 					role: 'button'
 				}, [ title ])
-			])
-		];
-
-		if (open) {
-			children.push(v('div', {
+			]),
+			v('div', {
 				'aria-labelledby': titleId,
-				classes: this.classes(css.content).get(),
+				classes: this.classes(css.content, open ? null : css.hidden).get(),
 				id: contentId,
 				enterAnimation,
 				exitAnimation
-			}, this.children));
-		}
-
-		return v('div', {
-			classes: this.classes(css.main).get()
-		}, children);
+			}, open ? this.children : [])
+		]);
 	}
 }
