@@ -24,3 +24,7 @@
 	border-width: var(--border-thin);
 	padding: var(--container-padding);
 }
+
+.hidden {
+	display: none;
+}
