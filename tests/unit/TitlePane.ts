@@ -116,7 +116,7 @@ registerSuite({
 		});
 		let vnode = <VNode> titlePane.__render__();
 
-		assert.strictEqual(vnode.children!.length, 1,
-			'`open=false` should not render content node');
+		assert.strictEqual(vnode.children![1].children!.length, 0,
+			'`open=false` should not render content');
 	}
 });
