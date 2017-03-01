@@ -8,5 +8,6 @@ registerSuite({
 	api() {
 		assert.isDefined(widgets.Dialog);
 		assert.isDefined(widgets.SlidePane);
+		assert.isDefined(widgets.Label);
 	}
 });
