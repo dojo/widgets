@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemeableMixin, ThemeableProperties, theme, ClassNameFlags } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 import { assign } from '@dojo/core/lang';
 import * as css from './styles/label.css';
@@ -32,7 +32,7 @@ const labelDefaults = {
  * @property label		Label settings for form label text, position, and visibility
  */
 export interface LabelProperties extends ThemeableProperties {
-	classes?: { [key: string]: boolean };
+	classes?: ClassNameFlags;
 	formId?: string;
 	label: string | LabelOptions;
 }
