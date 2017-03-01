@@ -3,7 +3,7 @@ import * as assert from 'intern/chai!assert';
 import { v } from '@dojo/widget-core/d';
 import { VNode } from '@dojo/interfaces/vdom';
 import Label from '../../src/label/Label';
-import * as css from '../../src/label/styles/label.css';
+import * as baseCss from '../../src/styles/base.css';
 
 let label: Label;
 
@@ -76,6 +76,6 @@ registerSuite({
 			}
 		});
 		const vnode = <VNode> label.__render__();
-		assert.isTrue(vnode.children![0].properties!.classes![css.visuallyHidden]);
+		assert.isTrue(vnode.children![0].properties!.classes![baseCss.visuallyHidden]);
 	}
 });
