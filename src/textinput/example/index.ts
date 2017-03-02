@@ -27,7 +27,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: 't2',
 				type: <TextInputType> 'email',
 				label: {
-					position: 'before',
+					before: true,
 					content: 'Email (required)'
 				},
 				required: true
@@ -39,10 +39,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				placeholder: 'Type something...',
 				label: {
 					content: 'Try listening to me!',
+					before: false,
 					hidden: true
 				}
 			}),
-			v('p', {}, ['(TODO: decide how to handle generic styles like .visually-hidden)']),
 			v('h3', {}, ['Disabled text input']),
 			w(TextInput, {
 				key: 't4',
@@ -65,6 +65,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();
