@@ -13,6 +13,7 @@
 
 	--dojo-error-color: var(--dojo-red);
 	--dojo-success-color: var(--dojo-green);
+	--dojo-gray: #BBB;
 
 	/* Shared values */
 	--base-font-family: inherit;

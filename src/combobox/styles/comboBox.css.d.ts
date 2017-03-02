@@ -6,3 +6,4 @@ export const result: string;
 export const selectedResult: string;
 export const clear: string;
 export const clearable: string;
+export const disabledResult: string;

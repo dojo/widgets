@@ -70,7 +70,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 
 		open && onOpen && onOpen();
 
-		return v('div', {}, open ? [
+		return v('div', open ? [
 			v('div', {
 				key: 'underlay',
 				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),

@@ -3,8 +3,10 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import ComboBox from '../../combobox/ComboBox';
-import { DNode } from '@dojo/widget-core/interfaces';
+import ComboBox from '../ComboBox';
+import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import ResultItem, { ResultItemProperties } from '../ResultItem';
+import ResultMenu from '../ResultMenu';
 
 const data = [
 	{ value: 'Maine' },
@@ -59,6 +61,66 @@ const data = [
 	{ value: 'West Virginia' }
 ];
 
+class CustomResultItem extends ResultItem {
+	renderLabel(result: any) {
+		const { label } = this.properties;
+
+		return v('div', [
+			v('img', {
+				src: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/300px-Flag_of_the_United_States.svg.png',
+				styles: {
+					paddingRight: '8px',
+					width: '25px',
+					height: 'auto'
+				}
+			}),
+			label
+		]);
+	}
+}
+
+class CustomResultMenu extends ResultMenu {
+	renderResults(results: WNode[]) {
+		const items: any[] = [
+			v('div', {
+				styles: {
+					fontWeight: 'bold',
+					padding: '0.5em 1em',
+					background: '#EEE'
+				}
+			}, [ 'A' ])
+		];
+
+		let lastLetter = 'a';
+
+		results.forEach(item => {
+			let state = (<ResultItemProperties> (<WNode> item).properties).label;
+			let letter = state.charAt(0).toLowerCase();
+			if (letter !== lastLetter) {
+				items.push(v('div', {
+					styles: {
+						fontWeight: 'bold',
+						padding: '0.5em 1em',
+						background: '#EEE'
+					}
+				}, [ letter.toUpperCase() ]));
+				lastLetter = letter;
+			}
+			items.push(item);
+		});
+
+		return items;
+	}
+}
+
+class CustomResultItemDisabled extends ResultItem {
+	isDisabled() {
+		const { label } = this.properties;
+
+		return label.length > 9;
+	}
+}
+
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	onRequestResults(value: string) {
 		const results = data.filter(item => {
@@ -71,8 +133,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 
 	render(): DNode {
 		return v('div', [
-			v('h1', {}, ['ComboBox Examples']),
-			v('h3', {}, ['Open on focus']),
+			v('h1', ['ComboBox Examples']),
+			v('h3', ['Open on focus']),
 			w(ComboBox, {
 				key: '1',
 				openOnFocus: true,
@@ -85,7 +147,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					placeholder: 'Enter a value'
 				}
 			}),
-			v('h3', {}, ['Clearable']),
+			v('h3', ['Clearable']),
 			w(ComboBox, {
 				key: '2',
 				clearable: true,
@@ -98,33 +160,21 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					placeholder: 'Enter a value'
 				}
 			}),
-			v('h3', {}, ['Custom result renderer']),
+			v('h3', ['Custom result renderer']),
 			w(ComboBox, {
 				key: '3',
 				openOnFocus: true,
 				onChange: (value: string) => this.setState({ 'value3': value }),
 				getResultLabel: (result: any) => <string> result.value,
 				onRequestResults: this.onRequestResults,
-				// renderResult: (result: any) => {
-				// 	return v('div', [
-				// 		v('img', {
-				// 			src: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/300px-Flag_of_the_United_States.svg.png',
-				// 			styles: {
-				// 				paddingRight: '8px',
-				// 				width: '25px',
-				// 				height: 'auto'
-				// 			}
-				// 		}),
-				// 		result.value
-				// 	]);
-				// },
+				customResultItem: CustomResultItem,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value3'],
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}
 			}),
-			v('h3', {}, ['Custom menu renderer']),
+			v('h3', ['Custom menu renderer']),
 			w(ComboBox, {
 				key: '4',
 				onChange: (value: string) => this.setState({ 'value4': value }),
@@ -132,26 +182,20 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value4'],
-				// renderMenu: (resultItems: DNode[]) => {
-				// 	const items = [
-				// 		v('div', {
-				// 			classes: { header: true }
-				// 		}, [ 'A' ])
-				// 	];
-				// 	let lastLetter = 'a';
-				// 	resultItems.forEach(item => {
-				// 		let state = (<HNode> item).children[0]!;
-				// 		let letter = (<string> state).charAt(0).toLowerCase();
-				// 		if (letter !== lastLetter) {
-				// 			items.push(v('div', {
-				// 				classes: { header: true }
-				// 			}, [ letter.toUpperCase() ]));
-				// 			lastLetter = letter;
-				// 		}
-				// 		items.push(<HNode> item);
-				// 	});
-				// 	return v('div', { classes: { results: true } }, items);
-				// },
+				customResultMenu: CustomResultMenu,
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
+			}),
+			v('h3', ['Disabled menu items']),
+			w(ComboBox, {
+				key: '5',
+				onChange: (value: string) => this.setState({ 'value5': value }),
+				getResultLabel: (result: any) => <string> result.value,
+				onRequestResults: this.onRequestResults,
+				results: <any[]> this.state['results'],
+				value: <string> this.state['value5'],
+				customResultItem: CustomResultItemDisabled,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}
