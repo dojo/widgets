@@ -61,7 +61,7 @@ const keys = {
 	down: 40
 };
 
-const ComboBoxBase = ThemeableMixin(WidgetBase);
+export const ComboBoxBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
