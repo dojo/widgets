@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { FormLabelMixin, FormLabelMixinProperties } from '@dojo/widget-core/mixins/FormLabel';
-import { v } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/widget-core/d';
+import Label, { LabelOptions } from '../label/Label';
 import * as css from './styles/textarea.css';
 
 /**
@@ -9,8 +9,20 @@ import * as css from './styles/textarea.css';
  *
  * Properties that can be set on a TextInput component
  *
- * @property columns	Number of columns, controls the width of the textarea
- * @property rows			Number of rows, controls the height of the textarea
+ * @property columns			Number of columns, controls the width of the textarea
+ * @property describedBy	ID of an element that provides more descriptive text
+ * @property disabled			Prevents the user from interacting with the form field
+ * @property formId				ID of a form element associated with the form field
+ * @property invalid			Indicates the value entered in the form field is invalid
+ * @property label				Label settings for form label text, position, and visibility
+ * @property maxLength		Maximum number of characters allowed in the input
+ * @property minLength		Minimum number of characters allowed in the input
+ * @property name					The form widget's name
+ * @property placeholder	Placeholder text
+ * @property readOnly			Allows or prevents user interaction
+ * @property required			Whether or not a value is required
+ * @property rows					Number of rows, controls the height of the textarea
+ * @property value				The current value
  * @property wrapText			Controls text wrapping. Can be "hard", "soft", or "off"
  * @property onBlur				Called when the input loses focus
  * @property onChange			Called when the node's 'change' event is fired
@@ -26,10 +38,22 @@ import * as css from './styles/textarea.css';
  * @property onTouchEnd		Called on the input's touchend event
  * @property onTouchCancel	Called on the input's touchcancel event
  */
-export interface TextareaProperties extends ThemeableProperties, FormLabelMixinProperties {
+export interface TextareaProperties extends ThemeableProperties {
 	columns?: number;
+	describedBy?: string;
+	disabled?: boolean;
+	formId?: string;
+	invalid?: boolean;
+	label?: string | LabelOptions;
+	maxLength?: number | string;
+	minLength?: number | string;
+	name?: string;
+	placeholder?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	rows?: number;
-	wrapText?: string;
+	value?: string;
+	wrapText?: 'hard' | 'soft' | 'off';
 	onBlur?(event: FocusEvent): void;
 	onChange?(event: Event): void;
 	onClick?(event: MouseEvent): void;
@@ -46,51 +70,89 @@ export interface TextareaProperties extends ThemeableProperties, FormLabelMixinP
 }
 
 @theme(css)
-export default class Textarea extends ThemeableMixin(FormLabelMixin(WidgetBase))<TextareaProperties> {
+export default class Textarea extends ThemeableMixin(WidgetBase)<TextareaProperties> {
+	onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
+	onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
+	onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	onInput (event: Event) { this.properties.onInput && this.properties.onInput(event); }
+	onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+	onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
+	onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
+	onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
+	onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
+	onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
+	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
+	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+
 	render() {
 		const {
 			columns = null,
-			rows = null,
-			wrapText = null,
+			describedBy,
+			disabled,
+			formId,
 			invalid,
-			onBlur,
-			onChange,
-			onClick,
-			onFocus,
-			onInput,
-			onKeyDown,
-			onKeyPress,
-			onKeyUp,
-			onMouseDown,
-			onMouseUp,
-			onTouchStart,
-			onTouchEnd,
-			onTouchCancel
+			label,
+			maxLength,
+			minLength,
+			name,
+			placeholder,
+			readOnly,
+			required,
+			rows,
+			value,
+			wrapText
 		} = this.properties;
 
-		const classes = [
-			css.root,
+		const labelClasses = [
+			css.label,
 			typeof invalid === 'boolean' ? invalid ? css.invalid : css.valid : null
 		];
 
-		return v('textarea', {
-			classes: this.classes(...classes).get(),
+		const textarea = v('textarea', {
+			classes: this.classes(css.root).get(),
 			cols: columns ? columns + '' : null,
+			'aria-describedby': describedBy,
+			disabled,
+			'aria-invalid': invalid,
+			maxlength: maxLength ? maxLength + '' : null,
+			minlength: minLength ? minLength + '' : null,
+			name,
+			placeholder,
+			readonly: readOnly ? 'readonly' : null,
+			'aria-readonly': readOnly ? true : null,
+			required,
 			rows: rows ? rows + '' : null,
+			value,
 			wrap: wrapText,
-			onblur: onBlur,
-			onchange: onChange,
-			onclick: onClick,
-			onfocus: onFocus,
-			oninput: onInput,
-			onkeydown: onKeyDown,
-			onkeypress: onKeyPress,
-			onkeyup: onKeyUp,
-			onmousedown: onMouseDown,
-			onmouseup: onMouseUp,
-			ontouchstart: onTouchStart,
-			ontouchend: onTouchEnd,
-			ontouchcancel: onTouchCancel
+			onblur: this.onBlur,
+			onchange: this.onChange,
+			onclick: this.onClick,
+			onfocus: this.onFocus,
+			oninput: this.onInput,
+			onkeydown: this.onKeyDown,
+			onkeypress: this.onKeyPress,
+			onkeyup: this.onKeyUp,
+			onmousedown: this.onMouseDown,
+			onmouseup: this.onMouseUp,
+			ontouchstart: this.onTouchStart,
+			ontouchend: this.onTouchEnd,
+			ontouchcancel: this.onTouchCancel
 		});
+
+		let textareaWidget;
+
+		if (label) {
+			textareaWidget = w(Label, {
+				classes: this.classes(...labelClasses).get(),
+				formId,
+				label
+			}, [ textarea ]);
+		}
+		else {
+			textareaWidget = textarea;
+		}
+
+		return textareaWidget;
 	}
 }
