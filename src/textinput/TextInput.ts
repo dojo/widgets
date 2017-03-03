@@ -101,13 +101,13 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			onTouchCancel
 		} = this.properties;
 
-		const classes = [
-			css.root,
+		const labelClasses = [
+			css.label,
 			typeof invalid === 'boolean' ? invalid ? css.invalid : css.valid : null
 		];
 
 		const textinput = v('input', {
-			classes: this.classes(...classes).get(),
+			classes: this.classes(css.root).get(),
 			'aria-describedby': describedBy,
 			disabled,
 			'aria-invalid': invalid,
@@ -116,7 +116,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			name,
 			placeholder,
 			readOnly,
-			'aria-readonly': readOnly ? true : null,
+			'aria-readonly': readOnly ? 'true' : null,
 			required,
 			type,
 			value,
@@ -139,7 +139,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 
 		if (label) {
 			textinputWidget = w(Label, {
-				classes: this.classes(css.label).get(),
+				classes: this.classes(...labelClasses).get(),
 				formId,
 				label
 			}, [ textinput ]);

@@ -49,7 +49,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				type: <TextInputType> 'text',
 				label: 'Can\'t type here',
 				value: 'Initial value',
-				disabled: true
+				disabled: true,
+				readOnly: true
 			}),
 			v('h3', {}, ['Validated Input']),
 			w(TextInput, {
