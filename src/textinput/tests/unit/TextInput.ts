@@ -24,8 +24,6 @@ registerSuite({
 		const textinput = new TextInput();
 		let vnode = <VNode> textinput.__render__();
 
-		console.log('vnode props', vnode.properties);
-
 		assert.strictEqual(vnode.vnodeSelector, 'input');
 		assert.strictEqual(vnode.properties!.type, 'text');
 
@@ -81,7 +79,6 @@ registerSuite({
 		});
 		let vnode = <VNode> textinput.__render__();
 
-		// assert.isFalse(vnode.properties!.classes![css.valid]);
 		assert.isTrue(vnode.properties!.classes![css.invalid]);
 
 		textinput.setProperties({
@@ -99,5 +96,65 @@ registerSuite({
 		vnode = <VNode> textinput.__render__();
 		assert.isFalse(vnode.properties!.classes![css.valid]);
 		assert.isFalse(vnode.properties!.classes![css.invalid]);
+	},
+
+	events() {
+		let blurred = false,
+				changed = false,
+				clicked = false,
+				focused = false,
+				input = false,
+				keydown = false,
+				keypress = false,
+				keyup = false,
+				mousedown = false,
+				mouseup = false,
+				touchstart = false,
+				touchend = false,
+				touchcancel = false;
+
+		const textinput = new TextInput();
+		textinput.setProperties({
+			onBlur: () => { blurred = true; },
+			onChange: () => { changed = true; },
+			onClick: () => { clicked = true; },
+			onFocus: () => { focused = true; },
+			onInput: () => { input = true; },
+			onKeyDown: () => { keydown = true; },
+			onKeyPress: () => { keypress = true; },
+			onKeyUp: () => { keyup = true; },
+			onMouseDown: () => { mousedown = true; },
+			onMouseUp: () => { mouseup = true; },
+			onTouchStart: () => { touchstart = true; },
+			onTouchEnd: () => { touchend = true; },
+			onTouchCancel: () => { touchcancel = true; }
+		});
+
+		textinput.onBlur(<FocusEvent> {});
+		assert.isTrue(blurred);
+		textinput.onChange(<Event> {});
+		assert.isTrue(changed);
+		textinput.onClick(<MouseEvent> {});
+		assert.isTrue(clicked);
+		textinput.onFocus(<FocusEvent> {});
+		assert.isTrue(focused);
+		textinput.onInput(<Event> {});
+		assert.isTrue(input);
+		textinput.onKeyDown(<KeyboardEvent> {});
+		assert.isTrue(keydown);
+		textinput.onKeyPress(<KeyboardEvent> {});
+		assert.isTrue(keypress);
+		textinput.onKeyUp(<KeyboardEvent> {});
+		assert.isTrue(keyup);
+		textinput.onMouseDown(<MouseEvent> {});
+		assert.isTrue(mousedown);
+		textinput.onMouseUp(<MouseEvent> {});
+		assert.isTrue(mouseup);
+		textinput.onTouchStart(<TouchEvent> {});
+		assert.isTrue(touchstart);
+		textinput.onTouchEnd(<TouchEvent> {});
+		assert.isTrue(touchend);
+		textinput.onTouchCancel(<TouchEvent> {});
+		assert.isTrue(touchcancel);
 	}
 });

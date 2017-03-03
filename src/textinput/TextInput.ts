@@ -71,6 +71,20 @@ const TextInputBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TextInput extends TextInputBase<TextInputProperties> {
+	onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
+	onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
+	onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	onInput (event: Event) { this.properties.onInput && this.properties.onInput(event); }
+	onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+	onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
+	onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
+	onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
+	onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
+	onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
+	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
+	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+
 	render() {
 		const {
 			describedBy,
@@ -85,20 +99,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			readOnly,
 			required,
 			type = 'text',
-			value,
-			onBlur,
-			onChange,
-			onClick,
-			onFocus,
-			onInput,
-			onKeyDown,
-			onKeyPress,
-			onKeyUp,
-			onMouseDown,
-			onMouseUp,
-			onTouchStart,
-			onTouchEnd,
-			onTouchCancel
+			value
 		} = this.properties;
 
 		const labelClasses = [
@@ -120,19 +121,19 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			required,
 			type,
 			value,
-			onblur: onBlur,
-			onchange: onChange,
-			onclick: onClick,
-			onfocus: onFocus,
-			oninput: onInput,
-			onkeydown: onKeyDown,
-			onkeypress: onKeyPress,
-			onkeyup: onKeyUp,
-			onmousedown: onMouseDown,
-			onmouseup: onMouseUp,
-			ontouchstart: onTouchStart,
-			ontouchend: onTouchEnd,
-			ontouchcancel: onTouchCancel
+			onblur: this.onBlur,
+			onchange: this.onChange,
+			onclick: this.onClick,
+			onfocus: this.onFocus,
+			oninput: this.onInput,
+			onkeydown: this.onKeyDown,
+			onkeypress: this.onKeyPress,
+			onkeyup: this.onKeyUp,
+			onmousedown: this.onMouseDown,
+			onmouseup: this.onMouseUp,
+			ontouchstart: this.onTouchStart,
+			ontouchend: this.onTouchEnd,
+			ontouchcancel: this.onTouchCancel
 		});
 
 		let textinputWidget;

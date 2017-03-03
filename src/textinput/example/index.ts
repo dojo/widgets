@@ -18,9 +18,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', {}, ['String label']),
 			w(TextInput, {
 				key: 't1',
+				label: 'Name',
 				type: <TextInputType> 'text',
-				placeholder: 'Hello, World',
-				label: 'Name'
+				placeholder: 'Hello, World'
 			}),
 			v('h3', {}, ['Label before the input']),
 			w(TextInput, {
