@@ -87,7 +87,7 @@ export default class Textarea extends ThemeableMixin(WidgetBase)<TextareaPropert
 
 	render() {
 		const {
-			columns = null,
+			columns,
 			describedBy,
 			disabled,
 			formId,
@@ -119,8 +119,8 @@ export default class Textarea extends ThemeableMixin(WidgetBase)<TextareaPropert
 			minlength: minLength ? minLength + '' : null,
 			name,
 			placeholder,
-			readonly: readOnly ? 'readonly' : null,
-			'aria-readonly': readOnly ? true : null,
+			readOnly,
+			'aria-readonly': readOnly ? 'true' : null,
 			required,
 			rows: rows ? rows + '' : null,
 			value,

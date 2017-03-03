@@ -10,6 +10,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		const value = (<HTMLInputElement> event.target).value;
 		this.setState({ inputValue: value });
 		this.setState({ invalid: value.trim().length === 0 });
+		console.log('changed, invalid should be', this.state.invalid);
 	}
 
 	render() {
@@ -47,6 +48,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();

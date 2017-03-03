@@ -8,7 +8,8 @@ registerSuite({
 	name: 'Textarea',
 
 	construction() {
-		const textarea = new Textarea({
+		const textarea = new Textarea();
+		textarea.setProperties({
 			columns: 30,
 			rows: 10,
 			wrapText: 'hard',
@@ -24,47 +25,136 @@ registerSuite({
 	},
 
 	'correct node attributes'() {
-		const textarea = new Textarea({});
+		const textarea = new Textarea();
 		let vnode = <VNode> textarea.__render__();
 
 		assert.strictEqual(vnode.vnodeSelector, 'textarea');
 		assert.isNull(vnode.properties!.cols);
 		assert.isNull(vnode.properties!.rows);
-		assert.isNull(vnode.properties!.wrap);
+		assert.isUndefined(vnode.properties!.wrap);
 
 		textarea.setProperties({
 			columns: 30,
 			rows: 10,
 			wrapText: 'hard',
-			placeholder: 'foo',
-			value: 'bar'
+			describedBy: 'id1',
+			disabled: true,
+			formId: 'id2',
+			label: 'foo',
+			maxLength: 50,
+			minLength: 5,
+			name: 'bar',
+			placeholder: 'baz',
+			readOnly: true,
+			required: true,
+			value: 'qux'
 		});
 		vnode = <VNode> textarea.__render__();
+		const labelNode = vnode.children![0];
+		const inputNode = vnode.children![1];
 
-		assert.strictEqual(vnode.properties!.cols, '30');
-		assert.strictEqual(vnode.properties!.rows, '10');
-		assert.strictEqual(vnode.properties!.wrap, 'hard');
-		assert.strictEqual(vnode.properties!.placeholder, 'foo');
-		assert.strictEqual(vnode.properties!.value, 'bar');
+		assert.strictEqual(inputNode.properties!.cols, '30');
+		assert.strictEqual(inputNode.properties!.rows, '10');
+		assert.strictEqual(inputNode.properties!.wrap, 'hard');
+		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
+		assert.isTrue(inputNode.properties!.disabled);
+		assert.strictEqual(inputNode.properties!.maxlength, '50');
+		assert.strictEqual(inputNode.properties!.minlength, '5');
+		assert.strictEqual(inputNode.properties!.name, 'bar');
+		assert.strictEqual(inputNode.properties!.placeholder, 'baz');
+		assert.isTrue(inputNode.properties!.readOnly);
+		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
+		assert.isTrue(inputNode.properties!.required);
+		assert.strictEqual(inputNode.properties!.value, 'qux');
+
+		assert.strictEqual(vnode.properties!['form'], 'id2');
+		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
 	},
 
 	'invalid state'() {
-		const textarea = new Textarea({});
-		let vnode = <VNode> textarea.__render__();
-
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-
+		const textarea = new Textarea();
 		textarea.setProperties({
+			label: 'foo',
 			invalid: true
 		});
-		vnode = <VNode> textarea.__render__();
+		let vnode = <VNode> textarea.__render__();
+
 		assert.isTrue(vnode.properties!.classes![css.invalid]);
 
 		textarea.setProperties({
+			label: 'foo',
 			invalid: false
 		});
 		vnode = <VNode> textarea.__render__();
 		assert.isTrue(vnode.properties!.classes![css.valid]);
+		assert.isFalse(vnode.properties!.classes![css.invalid]);
+
+		textarea.setProperties({
+			label: 'foo',
+			invalid: undefined
+		});
+		vnode = <VNode> textarea.__render__();
+		assert.isFalse(vnode.properties!.classes![css.valid]);
+		assert.isFalse(vnode.properties!.classes![css.invalid]);
+	},
+
+	events() {
+		let blurred = false,
+				changed = false,
+				clicked = false,
+				focused = false,
+				input = false,
+				keydown = false,
+				keypress = false,
+				keyup = false,
+				mousedown = false,
+				mouseup = false,
+				touchstart = false,
+				touchend = false,
+				touchcancel = false;
+
+		const textarea = new Textarea();
+		textarea.setProperties({
+			onBlur: () => { blurred = true; },
+			onChange: () => { changed = true; },
+			onClick: () => { clicked = true; },
+			onFocus: () => { focused = true; },
+			onInput: () => { input = true; },
+			onKeyDown: () => { keydown = true; },
+			onKeyPress: () => { keypress = true; },
+			onKeyUp: () => { keyup = true; },
+			onMouseDown: () => { mousedown = true; },
+			onMouseUp: () => { mouseup = true; },
+			onTouchStart: () => { touchstart = true; },
+			onTouchEnd: () => { touchend = true; },
+			onTouchCancel: () => { touchcancel = true; }
+		});
+
+		textarea.onBlur(<FocusEvent> {});
+		assert.isTrue(blurred);
+		textarea.onChange(<Event> {});
+		assert.isTrue(changed);
+		textarea.onClick(<MouseEvent> {});
+		assert.isTrue(clicked);
+		textarea.onFocus(<FocusEvent> {});
+		assert.isTrue(focused);
+		textarea.onInput(<Event> {});
+		assert.isTrue(input);
+		textarea.onKeyDown(<KeyboardEvent> {});
+		assert.isTrue(keydown);
+		textarea.onKeyPress(<KeyboardEvent> {});
+		assert.isTrue(keypress);
+		textarea.onKeyUp(<KeyboardEvent> {});
+		assert.isTrue(keyup);
+		textarea.onMouseDown(<MouseEvent> {});
+		assert.isTrue(mousedown);
+		textarea.onMouseUp(<MouseEvent> {});
+		assert.isTrue(mouseup);
+		textarea.onTouchStart(<TouchEvent> {});
+		assert.isTrue(touchstart);
+		textarea.onTouchEnd(<TouchEvent> {});
+		assert.isTrue(touchend);
+		textarea.onTouchCancel(<TouchEvent> {});
+		assert.isTrue(touchcancel);
 	}
 });
