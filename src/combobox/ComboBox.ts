@@ -122,16 +122,16 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			this._selectedIndex = index;
 		}
 		else if (operation !== undefined) {
-			switch (operation) {
-				case Operation.decrease:
-					this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === 0 ? results.length - 1 : this._selectedIndex - 1;
-					break;
-				case Operation.increase:
-					this._selectedIndex = this._selectedIndex === undefined || this._selectedIndex === results.length - 1 ? 0 : this._selectedIndex + 1;
-					break;
-				case Operation.reset:
-					this._selectedIndex = undefined;
-					break;
+			if (operation === Operation.increase || operation === Operation.decrease) {
+				const increment = operation === Operation.increase ? 1 : -1;
+				const total = results.length;
+				const current = this._selectedIndex;
+				const base = operation === Operation.increase ? -1 : 0;
+
+				this._selectedIndex = ((current === undefined ? base : current) + increment + total) % total;
+			}
+			else {
+				this._selectedIndex = undefined;
 			}
 			this._direction = operation;
 		}
