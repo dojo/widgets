@@ -6,7 +6,7 @@
 [![npm version](https://badge.fury.io/js/dojo-<< package-name >>.svg)](http://badge.fury.io/js/dojo-<< package-name >>)
 -->
 
-A suite of pre-built Dojo 2 widgets ready to use in your application. These widgets are built using [(@dojo/widget-core)](https://github.com/dojo/widget-core).
+A suite of pre-built Dojo 2 widgets, ready to use in your application. These widgets are built using [(@dojo/widget-core)](https://github.com/dojo/widget-core).
 
 **WARNING** This is *alpha* software. It is not yet production ready, so you should use at your own risk.
 
@@ -19,15 +19,35 @@ A suite of pre-built Dojo 2 widgets ready to use in your application. These widg
 
 ## Features
 
-// Add details of widgets
+Dojo 2 widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
+
+## Conventions
+
+### Icons
+
+We use [font awesome](http://fontawesome.io/) for icons.
+
+### Coding conventions
+
+`px vs em` - we specify font sizes in `px`. When creating a widget, spacing (margin, padding) should be specified using `px` unless the design calls for proportional spacing, in which case `em` can be used.
+
 
 ## How do I use this package?
 
-To use @dojo/widgets, install the package along in your project.
+***This package is not yet published.***
+
+When published you can import all Dojo 2 widgets from `npm`: @dojo/widgets
 
 ```shell
 npm install @dojo/widgets
 ```
+
+as well as import each widget individually, e.g. for our `ComboBox`:
+
+```shell
+npm install @dojo/widget-combobox
+```
+The above details are preliminary and subject ot change.
 
 ## How do I contribute?
 
