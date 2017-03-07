@@ -5,15 +5,20 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Textarea from '../../textarea/Textarea';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export const AppBase = StatefulMixin(WidgetBase);
+export class App extends AppBase<WidgetProperties> {
 	onChange(event: Event) {
 		const value = (<HTMLInputElement> event.target).value;
 		this.setState({ inputValue: value });
 		this.setState({ invalid: value.trim().length === 0 });
-		console.log('changed, invalid should be', this.state.invalid);
 	}
 
 	render() {
+		const {
+			inputValue = '',
+			invalid
+		} = this.state;
+
 		return v('div', [
 			v('h1', {}, ['Textarea Example']),
 			w(Textarea, {
@@ -39,8 +44,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				rows: 8,
 				label: 'Required',
 				required: true,
-				value: <string> this.state.inputValue,
-				invalid: <boolean | undefined> this.state.invalid,
+				value: <string> inputValue,
+				invalid: <boolean | undefined> invalid,
 				onChange: this.onChange
 			})
 		]);

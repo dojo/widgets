@@ -12,25 +12,7 @@
 	outline: none;
 }
 
-.root:disabled,
-.root:read-only {
-	background-color: var(--dojo-off-white);
-	color: var(--dojo-shade-gray);
-}
-
-/* TODO: better required styles */
-.root:required {
-	border-left-width: 8px;
-}
-
-/* TODO: this needs non-color design as well */
-.invalid {
-	border-color: var(--dojo-error-color);
-}
-
-.valid {
-	border-color: var(--dojo-success-color);
-}
+.inputWrapper { }
 
 .label {
 	font: var(--base-font);
@@ -39,4 +21,24 @@
 .label span {
 	display: block;
 	margin: var(--line-spacing) 0;
+}
+
+.disabled .root,
+.readonly .root {
+	background-color: var(--dojo-off-white);
+	color: var(--dojo-shade-gray);
+}
+
+/* TODO: better required styles */
+.required .root {
+	border-left-width: 8px;
+}
+
+/* TODO: this needs non-color design as well */
+.invalid .root {
+	border-color: var(--dojo-error-color);
+}
+
+.valid .root {
+	border-color: var(--dojo-success-color);
 }

@@ -69,8 +69,10 @@ export interface TextareaProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
+export const TextareaBase = ThemeableMixin(WidgetBase);
+
 @theme(css)
-export default class Textarea extends ThemeableMixin(WidgetBase)<TextareaProperties> {
+export default class Textarea extends TextareaBase<TextareaProperties> {
 	onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
 	onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
@@ -104,53 +106,61 @@ export default class Textarea extends ThemeableMixin(WidgetBase)<TextareaPropert
 			wrapText
 		} = this.properties;
 
-		const labelClasses = [
-			css.label,
-			typeof invalid === 'boolean' ? invalid ? css.invalid : css.valid : null
+		const stateClasses = [
+			disabled ? css.disabled : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
 		];
 
-		const textarea = v('textarea', {
-			classes: this.classes(css.root).get(),
-			cols: columns ? columns + '' : null,
-			'aria-describedby': describedBy,
-			disabled,
-			'aria-invalid': invalid,
-			maxlength: maxLength ? maxLength + '' : null,
-			minlength: minLength ? minLength + '' : null,
-			name,
-			placeholder,
-			readOnly,
-			'aria-readonly': readOnly ? 'true' : null,
-			required,
-			rows: rows ? rows + '' : null,
-			value,
-			wrap: wrapText,
-			onblur: this.onBlur,
-			onchange: this.onChange,
-			onclick: this.onClick,
-			onfocus: this.onFocus,
-			oninput: this.onInput,
-			onkeydown: this.onKeyDown,
-			onkeypress: this.onKeyPress,
-			onkeyup: this.onKeyUp,
-			onmousedown: this.onMouseDown,
-			onmouseup: this.onMouseUp,
-			ontouchstart: this.onTouchStart,
-			ontouchend: this.onTouchEnd,
-			ontouchcancel: this.onTouchCancel
-		});
+		const textarea = v('div', { classes: this.classes(css.inputWrapper) }, [
+			v('textarea', {
+				bind: this,
+				classes: this.classes(css.root),
+				cols: columns ? columns + '' : null,
+				'aria-describedby': describedBy,
+				disabled,
+				'aria-invalid': invalid,
+				maxlength: maxLength ? maxLength + '' : null,
+				minlength: minLength ? minLength + '' : null,
+				name,
+				placeholder,
+				readOnly,
+				'aria-readonly': readOnly ? 'true' : null,
+				required,
+				rows: rows ? rows + '' : null,
+				value,
+				wrap: wrapText,
+				onblur: this.onBlur,
+				onchange: this.onChange,
+				onclick: this.onClick,
+				onfocus: this.onFocus,
+				oninput: this.onInput,
+				onkeydown: this.onKeyDown,
+				onkeypress: this.onKeyPress,
+				onkeyup: this.onKeyUp,
+				onmousedown: this.onMouseDown,
+				onmouseup: this.onMouseUp,
+				ontouchstart: this.onTouchStart,
+				ontouchend: this.onTouchEnd,
+				ontouchcancel: this.onTouchCancel
+			})
+		]);
 
 		let textareaWidget;
 
 		if (label) {
 			textareaWidget = w(Label, {
-				classes: this.classes(...labelClasses).get(),
+				classes: this.classes(css.label, ...stateClasses),
 				formId,
 				label
 			}, [ textarea ]);
 		}
 		else {
-			textareaWidget = textarea;
+			textareaWidget = v('div', {
+				classes: this.classes(...stateClasses)
+			}, [ textarea ]);
 		}
 
 		return textareaWidget;

@@ -28,9 +28,9 @@ registerSuite({
 		const textarea = new Textarea();
 		let vnode = <VNode> textarea.__render__();
 
-		assert.strictEqual(vnode.vnodeSelector, 'textarea');
-		assert.isNull(vnode.properties!.cols);
-		assert.isNull(vnode.properties!.rows);
+		assert.strictEqual(vnode.children![0].children![0].vnodeSelector, 'textarea');
+		assert.isUndefined(vnode.properties!.cols);
+		assert.isUndefined(vnode.properties!.rows);
 		assert.isUndefined(vnode.properties!.wrap);
 
 		textarea.setProperties({
@@ -51,7 +51,7 @@ registerSuite({
 		});
 		vnode = <VNode> textarea.__render__();
 		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1];
+		const inputNode = vnode.children![1].children![0];
 
 		assert.strictEqual(inputNode.properties!.cols, '30');
 		assert.strictEqual(inputNode.properties!.rows, '10');
@@ -71,26 +71,35 @@ registerSuite({
 		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
 	},
 
-	'invalid state'() {
+	'state classes'() {
 		const textarea = new Textarea();
 		textarea.setProperties({
-			label: 'foo',
-			invalid: true
+			disabled: true,
+			invalid: true,
+			readOnly: true,
+			required: true
 		});
 		let vnode = <VNode> textarea.__render__();
 
+		assert.isTrue(vnode.properties!.classes![css.disabled]);
 		assert.isTrue(vnode.properties!.classes![css.invalid]);
+		assert.isTrue(vnode.properties!.classes![css.readonly]);
+		assert.isTrue(vnode.properties!.classes![css.required]);
 
 		textarea.setProperties({
-			label: 'foo',
-			invalid: false
+			disabled: false,
+			invalid: false,
+			readOnly: false,
+			required: false
 		});
 		vnode = <VNode> textarea.__render__();
+		assert.isFalse(vnode.properties!.classes![css.disabled]);
 		assert.isTrue(vnode.properties!.classes![css.valid]);
 		assert.isFalse(vnode.properties!.classes![css.invalid]);
+		assert.isFalse(vnode.properties!.classes![css.readonly]);
+		assert.isFalse(vnode.properties!.classes![css.required]);
 
 		textarea.setProperties({
-			label: 'foo',
 			invalid: undefined
 		});
 		vnode = <VNode> textarea.__render__();
