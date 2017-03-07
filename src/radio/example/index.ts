@@ -27,7 +27,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					name: 'sample-radios',
 					onChange: this.onChange
 				}),
-				v('br', {}),
 				w(Radio, {
 					key: 'r2',
 					checked: inputValue === 'second',
@@ -36,7 +35,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					name: 'sample-radios',
 					onChange: this.onChange
 				}),
-				v('br', {}),
 				w(Radio, {
 					key: 'r3',
 					checked: inputValue === 'third',
@@ -51,6 +49,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();
