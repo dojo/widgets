@@ -14,14 +14,14 @@ registerSuite({
 		label = new Label();
 		label.setProperties({
 			formId: 'foo',
-			classes: { 'bar': true },
+			classes: label.classes(baseCss.visuallyHidden),
 			label: 'baz'
 		});
 		const vnode = <VNode> label.__render__();
 
 		assert.strictEqual(vnode.vnodeSelector, 'label', 'tagname should be label');
 		assert.strictEqual(vnode.properties!.form, 'foo');
-		assert.isTrue(vnode.properties!.classes!['bar']);
+		assert.isTrue(vnode.properties!.classes![baseCss.visuallyHidden]);
 		assert.strictEqual(vnode.children![0].properties!.innerHTML, 'baz');
 	},
 
