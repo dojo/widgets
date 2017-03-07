@@ -5,7 +5,8 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Radio from '../../radio/Radio';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+const AppBase = StatefulMixin(WidgetBase);
+export class App extends AppBase<WidgetProperties> {
 	onChange(event: Event) {
 		const value = (<HTMLInputElement> event.target).value;
 		this.setState({ inputValue: value });
