@@ -31,14 +31,14 @@ export class App extends AppBase<WidgetProperties> {
 			v('legend', {}, ['Checkbox Example']),
 			w(Checkbox, {
 				key: 'c1',
-				checked: checkboxValues['c1'],
+				checked: <boolean> checkboxValues['c1'],
 				label: 'Sample checkbox that starts checked',
 				value: 'c1',
 				onChange: this.onChange
 			}),
 			w(Checkbox, {
 				key: 'c2',
-				checked: checkboxValues['c2'],
+				checked: <boolean> checkboxValues['c2'],
 				label: 'Sample disabled checkbox',
 				disabled: true,
 				value: 'c2',
@@ -46,7 +46,7 @@ export class App extends AppBase<WidgetProperties> {
 			}),
 			w(Checkbox, {
 				key: 'c3',
-				checked: checkboxValues['c3'],
+				checked: <boolean> checkboxValues['c3'],
 				label: 'Required checkbox',
 				required: true,
 				value: 'c3',
@@ -57,6 +57,6 @@ export class App extends AppBase<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();

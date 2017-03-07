@@ -1,8 +1,8 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import Radio from '../../src/radio/Radio';
-import * as css from '../../src/radio/styles/radio.css';
+import Radio from '../../Radio';
+import * as css from '../../styles/radio.css';
 
 registerSuite({
 	name: 'Radio',
