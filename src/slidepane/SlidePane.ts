@@ -4,7 +4,7 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { v } from '@dojo/widget-core/d';
 
 import * as css from './styles/slidePane.css';
-import * as animations from '../styles/animations.css';
+import * as animations from '../common/styles/animations.css';
 
 /**
  * Enum for left / right alignment
@@ -45,8 +45,10 @@ const DEFAULT_WIDTH = 256;
  */
 const SWIPE_THRESHOLD = 5;
 
+export const SlidePaneBase = ThemeableMixin(WidgetBase);
+
 @theme(css)
-export default class SlidePane extends ThemeableMixin(WidgetBase)<SlidePaneProperties> {
+export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private content: HTMLElement | null = null;
 	private initialX = 0;
 	private transform = 0;

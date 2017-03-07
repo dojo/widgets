@@ -5,7 +5,7 @@ import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 
 import * as css from './styles/dialog.css';
-import * as animations from '../styles/animations.css';
+import * as animations from '../common/styles/animations.css';
 
 /**
  * Enum for dialog / alertdialog role
@@ -44,8 +44,10 @@ export interface DialogProperties extends ThemeableProperties {
 	onRequestClose?(): void;
 };
 
+export const DialogBase = ThemeableMixin(WidgetBase);
+
 @theme(css)
-export default class Dialog extends ThemeableMixin(WidgetBase)<DialogProperties> {
+export default class Dialog extends DialogBase<DialogProperties> {
 	onCloseClick() {
 		const { closeable = true } = this.properties;
 		closeable && this.properties.onRequestClose && this.properties.onRequestClose();
@@ -74,7 +76,7 @@ export default class Dialog extends ThemeableMixin(WidgetBase)<DialogProperties>
 		return v('div', {}, open ? [
 			v('div', {
 				key: 'underlay',
-				classes: this.classes(css.underlayVisible).fixed(underlay ? css.underlay : null).get(),
+				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null).get(),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
 				onclick: this.onUnderlayClick

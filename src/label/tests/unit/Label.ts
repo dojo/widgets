@@ -2,8 +2,8 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { v } from '@dojo/widget-core/d';
 import { VNode } from '@dojo/interfaces/vdom';
-import Label from '../../src/label/Label';
-import * as baseCss from '../../src/styles/base.css';
+import Label from '../../Label';
+import * as baseCss from '../../../common/styles/base.css';
 
 let label: Label;
 
