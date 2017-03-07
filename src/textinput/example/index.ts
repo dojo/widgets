@@ -5,7 +5,8 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import TextInput, { TextInputType } from '../../textinput/TextInput';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export const AppBase = StatefulMixin(WidgetBase);
+export class App extends AppBase<WidgetProperties> {
 	onChange(event: Event) {
 		const value = (<HTMLInputElement> event.target).value;
 		this.setState({ inputValue: value });

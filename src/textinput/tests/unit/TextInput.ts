@@ -24,15 +24,15 @@ registerSuite({
 		const textinput = new TextInput();
 		let vnode = <VNode> textinput.__render__();
 
-		assert.strictEqual(vnode.vnodeSelector, 'input');
-		assert.strictEqual(vnode.properties!.type, 'text');
+		assert.strictEqual(vnode.children![0].children![0].vnodeSelector, 'input');
+		assert.strictEqual(vnode.children![0].children![0].properties!.type, 'text');
 
 		textinput.setProperties({
 			type: 'email'
 		});
 		vnode = <VNode> textinput.__render__();
 
-		assert.strictEqual(vnode.properties!.type, 'email');
+		assert.strictEqual(vnode.children![0].children![0].properties!.type, 'email');
 	},
 
 	'correct node attributes'() {
@@ -53,7 +53,7 @@ registerSuite({
 		});
 		const vnode = <VNode> textinput.__render__();
 		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1];
+		const inputNode = vnode.children![1].children![0];
 
 		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
 		assert.isTrue(inputNode.properties!.disabled);
