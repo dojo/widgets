@@ -26,8 +26,7 @@ export class App extends AppBase<WidgetProperties> {
 					content: 'Can\'t read me!',
 					hidden: true,
 					before: false
-				},
-				classes: { 'test-class': true }
+				}
 			}, [
 				v('input', {
 					type: 'text',
