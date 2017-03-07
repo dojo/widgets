@@ -104,7 +104,8 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 
 		const stateClasses = [
 			disabled ? css.disabled : null,
-			typeof invalid === 'boolean' ? invalid ? css.invalid : css.valid : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
@@ -112,7 +113,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 		const textinput = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('input', {
 				bind: this,
-				classes: this.classes(css.root).get(),
+				classes: this.classes(css.root),
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid,

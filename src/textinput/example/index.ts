@@ -13,6 +13,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	}
 
 	render() {
+		const {
+			inputValue = '',
+			invalid
+		} = this.state;
+
 		return v('div', [
 			v('h1', {}, ['Text Input Examples']),
 			v('h3', {}, ['String label']),
@@ -57,8 +62,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: 't5',
 				type: <TextInputType> 'text',
 				label: 'Type "foo" or "bar"',
-				value: <string> this.state.inputValue,
-				invalid: <boolean | undefined> this.state.invalid,
+				value: <string> inputValue,
+				invalid: <boolean | undefined> invalid,
 				onChange: this.onChange
 			})
 		]);
