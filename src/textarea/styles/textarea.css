@@ -29,9 +29,13 @@
 	color: var(--dojo-shade-gray);
 }
 
-/* TODO: better required styles */
+/* required styles */
 .required .root {
 	border-left-width: 8px;
+}
+.required span::after {
+	content: '*';
+	color: var(--dojo-error-color);
 }
 
 /* TODO: this needs non-color design as well */
