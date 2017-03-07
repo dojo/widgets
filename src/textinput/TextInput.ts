@@ -67,7 +67,7 @@ export interface TextInputProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
-const TextInputBase = ThemeableMixin(WidgetBase);
+export const TextInputBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TextInput extends TextInputBase<TextInputProperties> {
@@ -102,51 +102,58 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			value
 		} = this.properties;
 
-		const labelClasses = [
-			css.label,
-			typeof invalid === 'boolean' ? invalid ? css.invalid : css.valid : null
+		const stateClasses = [
+			disabled ? css.disabled : null,
+			typeof invalid === 'boolean' ? invalid ? css.invalid : css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
 		];
 
-		const textinput = v('input', {
-			classes: this.classes(css.root).get(),
-			'aria-describedby': describedBy,
-			disabled,
-			'aria-invalid': invalid,
-			maxlength: maxLength ? maxLength + '' : null,
-			minlength: minLength ? minLength + '' : null,
-			name,
-			placeholder,
-			readOnly,
-			'aria-readonly': readOnly ? 'true' : null,
-			required,
-			type,
-			value,
-			onblur: this.onBlur,
-			onchange: this.onChange,
-			onclick: this.onClick,
-			onfocus: this.onFocus,
-			oninput: this.onInput,
-			onkeydown: this.onKeyDown,
-			onkeypress: this.onKeyPress,
-			onkeyup: this.onKeyUp,
-			onmousedown: this.onMouseDown,
-			onmouseup: this.onMouseUp,
-			ontouchstart: this.onTouchStart,
-			ontouchend: this.onTouchEnd,
-			ontouchcancel: this.onTouchCancel
-		});
+		const textinput = v('div', { classes: this.classes(css.inputWrapper) }, [
+			v('input', {
+				bind: this,
+				classes: this.classes(css.root).get(),
+				'aria-describedby': describedBy,
+				disabled,
+				'aria-invalid': invalid,
+				maxlength: maxLength ? maxLength + '' : null,
+				minlength: minLength ? minLength + '' : null,
+				name,
+				placeholder,
+				readOnly,
+				'aria-readonly': readOnly ? 'true' : null,
+				required,
+				type,
+				value,
+				onblur: this.onBlur,
+				onchange: this.onChange,
+				onclick: this.onClick,
+				onfocus: this.onFocus,
+				oninput: this.onInput,
+				onkeydown: this.onKeyDown,
+				onkeypress: this.onKeyPress,
+				onkeyup: this.onKeyUp,
+				onmousedown: this.onMouseDown,
+				onmouseup: this.onMouseUp,
+				ontouchstart: this.onTouchStart,
+				ontouchend: this.onTouchEnd,
+				ontouchcancel: this.onTouchCancel
+			})
+		]);
 
 		let textinputWidget;
 
 		if (label) {
 			textinputWidget = w(Label, {
-				classes: this.classes(...labelClasses).get(),
+				classes: this.classes(css.label, ...stateClasses),
 				formId,
 				label
 			}, [ textinput ]);
 		}
 		else {
-			textinputWidget = textinput;
+			textinputWidget = v('div', {
+				classes: this.classes(...stateClasses)
+			}, [ textinput ]);
 		}
 
 		return textinputWidget;
