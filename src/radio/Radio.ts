@@ -51,7 +51,7 @@ export interface RadioProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
-const RadioBase = ThemeableMixin(WidgetBase);
+export const RadioBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Radio extends RadioBase<RadioProperties> {
@@ -82,7 +82,8 @@ export default class Radio extends RadioBase<RadioProperties> {
 		const stateClasses = [
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
-			typeof invalid === 'boolean' ? invalid ? css.invalid : css.valid : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
@@ -90,7 +91,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 		const radio = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('input', {
 				bind: this,
-				classes: this.classes(css.root).get(),
+				classes: this.classes(css.root),
 				checked,
 				'aria-describedby': describedBy,
 				disabled,
