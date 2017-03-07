@@ -1,9 +1,9 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import ComboBox from '../../../src/combobox/ComboBox';
-import ResultItem from '../../../src/combobox/ResultItem';
-import ResultMenu from '../../../src/combobox/ResultMenu';
+import ComboBox from '../../ComboBox';
+import ResultItem from '../../ResultItem';
+import ResultMenu from '../../ResultMenu';
 
 const keys = {
 	escape: 27,
@@ -96,15 +96,41 @@ registerSuite({
 	'Value should not change if no results exist'() {
 		const comboBox = new ComboBox();
 		let called = false;
+		// Set properties individually to hit all branches in onPropertiesChanged
 		comboBox.setProperties({
-			customResultItem: ResultItem,
-			customResultMenu: ResultMenu,
-			getResultLabel: (value: string) => value,
+			getResultLabel: (value: string) => value
+		});
+		comboBox.setProperties({
+			customResultItem: ResultItem
+		});
+		comboBox.setProperties({
+			customResultMenu: ResultMenu
+		});
+		comboBox.setProperties({
 			onChange: () => called = true
 		});
 
 		comboBox.onResultMouseUp();
 		assert.isFalse(called);
+	},
+
+	'skipResult should be called'() {
+		let disabled = false;
+		class CustomResultItem extends ResultItem {
+			isDisabled() {
+				disabled = !disabled;
+				return disabled;
+			}
+		}
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
+			results: ['a', 'b'],
+			customResultItem: CustomResultItem
+		});
+		comboBox.onArrowClick();
+		comboBox.onInputKeyDown(event(keys.down));
+		const vnode = <VNode> comboBox.__render__();
+		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
 	},
 
 	'Blur should be ignored when clicking result'() {

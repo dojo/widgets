@@ -49,11 +49,11 @@ export const SlidePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
-	private _content: HTMLElement | null = null;
-	private _initialX = 0;
-	private _transform = 0;
-	private _swiping = false;
-	private _wasOpen = false;
+	private _content: HTMLElement | null;
+	private _initialX: number;
+	private _transform: number;
+	private _swiping: boolean;
+	private _wasOpen: boolean;
 
 	onSwipeStart(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
@@ -161,7 +161,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			open ? css.open : null
 		];
 
-		if (!open && this._wasOpen && this._transform !== 0) {
+		if (!open && this._wasOpen && this._transform) {
 			// If pane is closing because of swipe
 			contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
 		}

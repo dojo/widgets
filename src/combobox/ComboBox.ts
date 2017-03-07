@@ -151,14 +151,9 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	@onPropertiesChanged
 	onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
-		if (includes(evt.changedPropertyKeys, 'customResultItem') || includes(evt.changedPropertyKeys, 'customResultMenu')) {
+		if (!this.registry || includes(evt.changedPropertyKeys, 'customResultItem') || includes(evt.changedPropertyKeys, 'customResultMenu')) {
 			this.registry = this.createRegistry();
 		}
-	}
-
-	constructor() {
-		super();
-		this.registry = this.createRegistry();
 	}
 
 	afterCreate(element: HTMLElement) {
@@ -304,6 +299,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			getResultLabel: this.getResultLabel,
 			skipResult: () => {
 				this.updateSelectedIndex(this._direction);
+				this.invalidate();
 			},
 			onResultMouseEnter: this.onResultMouseEnter,
 			onResultMouseDown: this.onResultMouseDown,

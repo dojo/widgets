@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import ResultMenu from '../../../src/combobox/ResultMenu';
+import ResultMenu from '../../ResultMenu';
 import { assign } from '@dojo/core/lang';
 import FactoryRegistry from '@dojo/widget-core/FactoryRegistry';
 

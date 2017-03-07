@@ -1,8 +1,8 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import ResultItem from '../../../src/combobox/ResultItem';
-import * as css from '../../../src/combobox/styles/comboBox.css';
+import ResultItem from '../../ResultItem';
+import * as css from '../../styles/comboBox.css';
 import { assign } from '@dojo/core/lang';
 
 function props(props = {}) {

@@ -1,5 +1,8 @@
 import './main';
 import '../../../dialog/tests/unit/Dialog';
+import '../../../combobox/tests/unit/ComboBox';
+// import '../../../combobox/tests/unit/ResultMenu';
+// import '../../../combobox/tests/unit/ResultItem';
 import '../../../slidepane/tests/unit/SlidePane';
 import '../../../label/tests/unit/Label';
 import '../../../button/tests/unit/Button';
