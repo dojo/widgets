@@ -4,6 +4,8 @@
 	--dojo-white: #FFFFFF;
 	--dojo-off-white: #FBFBFB;
 	--dojo-shade-gray: rgba(0, 0, 0, 0.3);
+	--dojo-gray: #9E9E9E;
+	--dojo-light-gray: #F2F2F2;
 	--dojo-red: #ED5153;
 	--dojo-green: #01D48E;
 
@@ -27,6 +29,6 @@
 
 	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
 	--input-padding: 0.5em 1em;
-	--input-border-color: var(--dojo-shade-gray);
+	--input-border-color: var(--dojo-gray);
 	--input-highlight-color: var(--dojo-blue);
 }

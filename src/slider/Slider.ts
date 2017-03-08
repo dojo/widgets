@@ -1,0 +1,179 @@
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import Label, { LabelOptions } from '../label/Label';
+import { v, w } from '@dojo/widget-core/d';
+import uuid from '@dojo/core/uuid';
+import * as css from './styles/slider.css';
+
+/**
+ * @type SliderProperties
+ *
+ * Properties that can be set on a Slider component
+ *
+ * @property describedBy	ID of an element that provides more descriptive text
+ * @property disabled			Prevents the user from interacting with the form field
+ * @property formId				ID of a form element associated with the form field
+ * @property invalid			Indicates the valid is invalid, or required and not filled in
+ * @property label				Label settings for form label text, position, and visibility
+ * @property max					The maximum value for the slider
+ * @property min					The minimum value for the slider
+ * @property name					The form widget's name
+ * @property readOnly			Allows or prevents user interaction
+ * @property required			Whether or not a value is required
+ * @property step					Size of the slider increment
+ * @property value				The current value
+ * @property onBlur				Called when the input loses focus
+ * @property onChange			Called when the node's 'change' event is fired
+ * @property onClick			Called when the input is clicked
+ * @property onFocus			Called when the input is focused
+ * @property onInput			Called when the 'input' event is fired
+ * @property onKeyDown		Called on the input's keydown event
+ * @property onKeyPress		Called on the input's keypress event
+ * @property onKeyUp			Called on the input's keyup event
+ * @property onMouseDown	Called on the input's mousedown event
+ * @property onMouseUp		Called on the input's mouseup event
+ * @property onTouchStart	Called on the input's touchstart event
+ * @property onTouchEnd		Called on the input's touchend event
+ * @property onTouchCancel	Called on the input's touchcancel event
+ */
+export interface SliderProperties extends ThemeableProperties {
+	describedBy?: string;
+	disabled?: boolean;
+	formId?: string;
+	invalid?: boolean;
+	label?: string | LabelOptions;
+	max?: number;
+	min?: number;
+	name?: string;
+	readOnly?: boolean;
+	required?: boolean;
+	step?: number;
+	value?: number;
+	onBlur?(event: FocusEvent): void;
+	onChange?(event: Event): void;
+	onClick?(event: MouseEvent): void;
+	onFocus?(event: FocusEvent): void;
+	onInput?(event: Event): void;
+	onKeyDown?(event: KeyboardEvent): void;
+	onKeyPress?(event: KeyboardEvent): void;
+	onKeyUp?(event: KeyboardEvent): void;
+	onMouseDown?(event: MouseEvent): void;
+	onMouseUp?(event: MouseEvent): void;
+	onTouchStart?(event: TouchEvent): void;
+	onTouchEnd?(event: TouchEvent): void;
+	onTouchCancel?(event: TouchEvent): void;
+}
+
+export const SliderBase = ThemeableMixin(WidgetBase);
+
+@theme(css)
+export default class Slider extends SliderBase<SliderProperties> {
+	onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
+	onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
+	onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	onInput (event: Event) { this.properties.onInput && this.properties.onInput(event); }
+	onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+	onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
+	onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
+	onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
+	onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
+	onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
+	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
+	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+
+	render() {
+		const {
+			describedBy,
+			disabled,
+			formId,
+			invalid,
+			label,
+			max = 100,
+			min = 0,
+			name,
+			readOnly,
+			required,
+			step = 1,
+			value = min
+		} = this.properties;
+
+		const stateClasses = [
+			disabled ? css.disabled : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
+		];
+
+		const inputId = uuid();
+
+		const slider = v('div', { classes: this.classes(css.inputWrapper)  }, [
+			v('input', {
+				bind: this,
+				classes: this.classes(css.input),
+				'aria-describedby': describedBy,
+				disabled,
+				id: inputId,
+				'aria-invalid': invalid + '',
+				max: max + '',
+				min: min + '',
+				name,
+				readOnly,
+				'aria-readonly': readOnly ? 'true' : null,
+				required,
+				step: step + '',
+				type: 'range',
+				value,
+				onblur: this.onBlur,
+				onchange: this.onChange,
+				onclick: this.onClick,
+				onfocus: this.onFocus,
+				oninput: this.onInput,
+				onkeydown: this.onKeyDown,
+				onkeypress: this.onKeyPress,
+				onkeyup: this.onKeyUp,
+				onmousedown: this.onMouseDown,
+				onmouseup: this.onMouseUp,
+				ontouchstart: this.onTouchStart,
+				ontouchend: this.onTouchEnd,
+				ontouchcancel: this.onTouchCancel
+			}),
+			v('div', {
+				classes: this.classes(css.track),
+				'aria-hidden': 'true'
+			}, [
+				v('span', {
+					classes: this.classes(css.fill),
+					styles: { width: (value / max * 100) + '%' }
+				}),
+				v('span', {
+					classes: this.classes(css.thumb),
+					styles: { left: (value / max * 100) + '%' }
+				})
+			]),
+			v('output', {
+				classes: this.classes(css.output),
+				for: inputId + '',
+				innerHTML: value + ''
+			})
+		]);
+
+		let sliderWidget;
+
+		if (label) {
+			sliderWidget = w(Label, {
+				classes: this.classes(css.root, ...stateClasses),
+				formId,
+				label
+			}, [ slider ]);
+		}
+		else {
+			sliderWidget = v('div', {
+				classes: this.classes(css.root, ...stateClasses)
+			}, [ slider ]);
+		}
+
+		return sliderWidget;
+	}
+}
