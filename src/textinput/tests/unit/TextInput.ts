@@ -41,6 +41,7 @@ registerSuite({
 			describedBy: 'id1',
 			disabled: true,
 			formId: 'id2',
+			invalid: true,
 			label: 'foo',
 			maxLength: 50,
 			minLength: 5,
@@ -57,6 +58,7 @@ registerSuite({
 
 		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
 		assert.isTrue(inputNode.properties!.disabled);
+		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
 		assert.strictEqual(inputNode.properties!.maxlength, '50');
 		assert.strictEqual(inputNode.properties!.minlength, '5');
 		assert.strictEqual(inputNode.properties!.name, 'bar');

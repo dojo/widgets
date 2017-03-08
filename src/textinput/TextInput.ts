@@ -116,7 +116,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 				classes: this.classes(css.root),
 				'aria-describedby': describedBy,
 				disabled,
-				'aria-invalid': invalid,
+				'aria-invalid': invalid + '',
 				maxlength: maxLength ? maxLength + '' : null,
 				minlength: minLength ? minLength + '' : null,
 				name,

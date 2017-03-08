@@ -2,4 +2,4 @@ import './main';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../slidepane/tests/unit/SlidePane';
 import '../../../label/tests/unit/Label';
-import '../../../textInput/tests/unit/TextInput';
+import '../../../textinput/tests/unit/TextInput';
