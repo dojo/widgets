@@ -117,7 +117,7 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 		const textarea = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('textarea', {
 				bind: this,
-				classes: this.classes(css.root),
+				classes: this.classes(css.input),
 				cols: columns ? columns + '' : null,
 				'aria-describedby': describedBy,
 				disabled,

@@ -1,12 +1,12 @@
 @import '../../common/styles/variables.css';
 
-.root {
+.input {
 	border: 1px solid var(--dojo-shade-gray);
 	max-width: 100%;
 	padding: var(--input-padding);
 }
 
-.root:focus {
+.input:focus {
 	border-color: var(--dojo-light-blue);
 	box-shadow: var(--input-focus-shadow);
 	outline: none;
@@ -23,14 +23,14 @@
 	margin: var(--line-spacing) 0;
 }
 
-.disabled .root,
-.readonly .root {
+.disabled .input,
+.readonly .input {
 	background-color: var(--dojo-off-white);
 	color: var(--dojo-shade-gray);
 }
 
 /* required styles */
-.required .root {
+.required .input {
 	border-left-width: 8px;
 }
 .required span::after {
@@ -39,10 +39,10 @@
 }
 
 /* TODO: this needs non-color design as well */
-.invalid .root {
+.invalid .input {
 	border-color: var(--dojo-error-color);
 }
 
-.valid .root {
+.valid .input {
 	border-color: var(--dojo-success-color);
 }
