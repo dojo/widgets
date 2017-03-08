@@ -113,7 +113,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 		const textinput = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('input', {
 				bind: this,
-				classes: this.classes(css.root),
+				classes: this.classes(css.input),
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid + '',
