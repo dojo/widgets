@@ -27,8 +27,6 @@
 
 	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
 	--input-padding: 0.5em 1em;
-
-	--form-border-color: var(--dojo-shade-gray);
-	--form-highlight-color: var(--dojo-blue);
-
+	--input-border-color: var(--dojo-shade-gray);
+	--input-highlight-color: var(--dojo-blue);
 }
