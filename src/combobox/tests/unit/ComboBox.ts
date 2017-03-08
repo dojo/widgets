@@ -56,6 +56,16 @@ registerSuite({
 		assert.lengthOf(vnode.children, 3);
 	},
 
+	'Label should render'() {
+		const comboBox = new ComboBox();
+		comboBox.setProperties({
+			label: 'foo'
+		});
+
+		const vnode = <VNode> comboBox.__render__();
+		assert.strictEqual(vnode.children![0].properties!.innerHTML, 'foo');
+	},
+
 	'Menu should open on input'() {
 		const comboBox = new ComboBox();
 		comboBox.setProperties({
@@ -129,6 +139,7 @@ registerSuite({
 		});
 		comboBox.onArrowClick();
 		comboBox.onInputKeyDown(event(keys.down));
+		<VNode> comboBox.__render__();
 		const vnode = <VNode> comboBox.__render__();
 		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
 	},
@@ -256,7 +267,7 @@ registerSuite({
 		});
 
 		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].properties!.placeholder, 'foobar');
+		assert.strictEqual(vnode.children![0].children![0].children![0].properties!.placeholder, 'foobar');
 	},
 
 	'Input should open on focus if openOnFocus is true'() {
@@ -278,7 +289,7 @@ registerSuite({
 		});
 
 		const vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].properties!.value, 'abc');
+		assert.strictEqual(vnode.children![0].children![0].children![0].properties!.value, 'abc');
 	},
 
 	'onBlur should be called'() {
@@ -353,9 +364,7 @@ registerSuite({
 	'Clicking arrow should not open menu if disabled'() {
 		const comboBox = new ComboBox();
 		comboBox.setProperties({
-			inputProperties: {
-				disabled: true
-			}
+			disabled: true
 		});
 
 		comboBox.onArrowClick();
@@ -366,9 +375,7 @@ registerSuite({
 	'Clicking arrow should not open menu if readonly'() {
 		const comboBox = new ComboBox();
 		comboBox.setProperties({
-			inputProperties: {
-				readOnly: true
-			}
+			readOnly: true
 		});
 
 		comboBox.onArrowClick();

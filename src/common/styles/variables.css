@@ -16,6 +16,7 @@
 	--dojo-gray: #BBB;
 
 	/* Shared values */
+	--base-font: 14px/1 sans-serif;
 	--base-font-family: inherit;
 	--input-font-family: sans-serif;
 	--input-font-size: 14px;

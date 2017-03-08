@@ -1,12 +1,13 @@
 import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { FormLabelMixinProperties } from '@dojo/widget-core/mixins/FormLabel';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
 import FactoryRegistry from '@dojo/widget-core/FactoryRegistry';
 import { includes } from '@dojo/shim/array';
 import ResultMenu, { ResultMenuProperties } from './ResultMenu';
 import ResultItem from './ResultItem';
+import TextInput from '../textinput/TextInput';
+import Label, { LabelOptions } from '../label/Label';
 
 import * as css from './styles/comboBox.css';
 
@@ -19,8 +20,14 @@ import * as css from './styles/comboBox.css';
  * @property clearable			Determines whether the input should be able to be cleared
  * @property customResultItem	Can be used to render a custom result
  * @property customResultMenu	Can be used to render a custom result menu
+ * @property disabled			Prevents user interaction and styles content accordingly
+ * @property formId				ID of a form element associated with the form field
  * @property inputProperties	HTML properties supported by FormLabelMixin to set on the underlying input
+ * @property invalid			Determines if this input is valid
+ * @property label				Label to show for this input
  * @property openOnFocus		Determines whether the result list should open when the input is focused
+ * @property readOnly			Prevents user interaction
+ * @property required			Determines if this input is required, styles accordingly
  * @property results			Results for the current search term; should be set in response to `onRequestResults`
  * @property value				Value to set on the input
  * @property getResultLabel		Can be used to get the text label of a result based on the underlying result object
@@ -35,8 +42,14 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	clearable?: boolean;
 	customResultItem?: any;
 	customResultMenu?: any;
-	inputProperties?: FormLabelMixinProperties;
+	disabled?: boolean;
+	formId?: string;
+	inputProperties?: any;
+	invalid?: boolean;
+	label?: string | LabelOptions;
 	openOnFocus?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
 	results?: any[];
 	value?: string;
 	getResultLabel?(result: any): string;
@@ -67,7 +80,7 @@ export const ComboBoxBase = ThemeableMixin(WidgetBase);
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _ignoreBlur: boolean;
 	private _ignoreFocus: boolean;
-	private _inputElement: HTMLInputElement | null;
+	private _inputElement: HTMLInputElement;
 	private _focused: boolean;
 	private _open: boolean;
 	private _direction: Operation;
@@ -157,7 +170,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	afterCreate(element: HTMLElement) {
-		this._inputElement = element.querySelector('input');
+		this._inputElement = <HTMLInputElement> element.querySelector('input');
 		// Maintain focused state
 		this._inputElement && this._inputElement[this._focused ? 'focus' : 'blur']();
 	}
@@ -236,10 +249,11 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	onArrowClick() {
 		const {
 			onRequestResults,
-			inputProperties
+			disabled,
+			readOnly
 		} = this.properties;
 
-		if (inputProperties && (inputProperties.disabled || inputProperties.readOnly)) {
+		if (disabled || readOnly) {
 			return;
 		}
 
@@ -312,6 +326,10 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	render(): DNode {
 		const {
 			clearable,
+			disabled,
+			formId,
+			label,
+			readOnly,
 			results = [],
 			inputProperties = {},
 			value = '',
@@ -325,32 +343,47 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		this._wasOpen = this._open;
 
-		return v('div', {
+		const container = v('div', {
 			classes: this.classes(css.combobox),
 			afterCreate: this.afterCreate,
 			afterUpdate: this.afterUpdate
 		}, [
 			// Use TextInput once landed
-			v('input', {
-				classes: this.classes(css.input, clearable ? css.clearable : null),
-				onblur: this.onInputBlur,
-				onfocus: this.onInputFocus,
-				oninput: this.onInput,
-				onkeydown: this.onInputKeyDown,
-				value: value,
+			w(TextInput, {
+				bind: this,
+				classes: this.classes(clearable ? css.clearable : null),
+				disabled,
+				readOnly,
+				onBlur: this.onInputBlur,
+				onFocus: this.onInputFocus,
+				onInput: this.onInput,
+				onKeyDown: this.onInputKeyDown,
+				value,
+				overrideClasses: css,
 				...inputProperties
 			}),
 			clearable ? v('button', {
+				bind: this,
 				classes: this.classes(css.clear),
 				innerHTML: 'clear combo box',
 				onclick: this.onClearClick
 			}) : null,
 			v('button', {
+				bind: this,
 				classes: this.classes(css.arrow),
 				innerHTML: 'open combo box',
 				onclick: this.onArrowClick
 			}),
 			this._open ? menu : null
 		]);
+
+		if (label) {
+			return w(Label, {
+				formId,
+				label
+			}, [ container ]);
+		}
+
+		return container;
 	}
 }

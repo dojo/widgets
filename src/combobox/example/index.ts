@@ -199,6 +199,27 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}
+			}),
+			v('h3', ['Disabled']),
+			w(ComboBox, {
+				key: '6',
+				disabled: true,
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
+			}),
+			v('h3', ['Read Only']),
+			w(ComboBox, {
+				key: '7',
+				readOnly: true,
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
+			}),
+			v('h3', ['Label']),
+			w(ComboBox, {
+				key: '8',
+				label: 'Enter a value'
 			})
 		]);
 	}
