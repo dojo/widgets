@@ -47,7 +47,7 @@ registerSuite({
 		assert.isTrue(inputNode.properties!.checked);
 		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
 		assert.isTrue(inputNode.properties!.disabled);
-		assert.isTrue(inputNode.properties!['aria-invalid']);
+		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
 		assert.strictEqual(inputNode.properties!.name, 'bar');
 		assert.isTrue(inputNode.properties!.readOnly);
 		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
