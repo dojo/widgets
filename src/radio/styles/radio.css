@@ -1,6 +1,6 @@
 @import '../../common/styles/variables.css';
 
-.label {
+.root {
 	display: block;
 	font: var(--base-font);
 	margin-bottom: var(--line-spacing);
