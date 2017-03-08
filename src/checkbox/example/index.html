@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Checkbox Example</title>
+</head>
+<body>
+	<script src="../../../../node_modules/@dojo/loader/loader.min.js"></script>
+	<link rel="stylesheet" href="../../common/styles/widgets.css">
+	<script>
+		require.config({
+			baseUrl: '../../../../',
+			packages: [
+				{ name: 'src', location: '_build/src' },
+				{ name: '@dojo', location: 'node_modules/@dojo' },
+				{ name: 'maquette', location: 'node_modules/maquette/dist', main: 'maquette' }
+			]
+		});
+
+		/* Requiring in the main module */
+		require([ 'src/checkbox/example/index' ], function () {});
+	</script>
+</body>
+</html>

@@ -10,5 +10,8 @@ registerSuite({
 		assert.isDefined(widgets.SlidePane);
 		assert.isDefined(widgets.Label);
 		assert.isDefined(widgets.TextInput);
+		assert.isDefined(widgets.Textarea);
+		assert.isDefined(widgets.Checkbox);
+		assert.isDefined(widgets.Radio);
 	}
 });
