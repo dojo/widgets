@@ -139,14 +139,14 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		if (label) {
 			selectWidget = w(Label, {
-				classes: this.classes(css.label, ...stateClasses),
+				classes: this.classes(css.root, ...stateClasses),
 				formId,
 				label
 			}, [ select ]);
 		}
 		else {
 			selectWidget = v('div', {
-				classes: this.classes(...stateClasses)
+				classes: this.classes(css.root, ...stateClasses)
 			}, [ select ]);
 		}
 

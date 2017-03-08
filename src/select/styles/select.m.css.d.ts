@@ -1,5 +1,5 @@
+export const input: string;
 export const root: string;
-export const label: string;
 export const inputWrapper: string;
 export const arrow: string;
 export const disabled: string;
