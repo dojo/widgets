@@ -1,7 +1,14 @@
 :root {
 	--dojo-blue: #34495e;
+	--dojo-light-blue: #86BBD8;
 	--dojo-white: #FFFFFF;
+	--dojo-off-white: #FBFBFB;
 	--dojo-shade-gray: rgba(0, 0, 0, 0.3);
+	--dojo-red: #ED5153;
+	--dojo-green: #01D48E;
+
+	--dojo-error-color: var(--dojo-red);
+	--dojo-success-color: var(--dojo-green);
 
 	--base-font: 14px/1 sans-serif;
 	--content-padding: 14px 35px;
@@ -10,7 +17,13 @@
 	--rounded-corners: 2px;
 	--short-animation-duration: .2s;
 
+	--block-spacing: 25px;
+	--line-spacing: 5px;
+
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
 	--underlay-bg: var(--dojo-shade-gray);
+
+	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
+	--input-padding: 0.5em 1em;
 }
