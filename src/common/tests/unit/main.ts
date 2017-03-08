@@ -17,5 +17,6 @@ registerSuite({
 		assert.isDefined(widgets.Radio);
 		assert.isDefined(widgets.Slider);
 		assert.isDefined(widgets.ComboBox);
+		assert.isDefined(widgets.Select);
 	}
 });
