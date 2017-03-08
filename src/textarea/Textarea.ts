@@ -121,7 +121,7 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 				cols: columns ? columns + '' : null,
 				'aria-describedby': describedBy,
 				disabled,
-				'aria-invalid': invalid,
+				'aria-invalid': invalid + '',
 				maxlength: maxLength ? maxLength + '' : null,
 				minlength: minLength ? minLength + '' : null,
 				name,
