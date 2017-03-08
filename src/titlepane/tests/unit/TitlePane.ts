@@ -1,16 +1,15 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import TitlePane from '../../src/titlepane/TitlePane';
-import * as animations from '../../src/styles/animations.css';
-import * as css from '../../src/titlepane/styles/titlePane.css';
+import TitlePane from '../../TitlePane';
+import * as css from '../../styles/titlePane.css';
 
 registerSuite({
 	name: 'TitlePane',
 
 	'Render correct children'() {
-		const titlePane = new TitlePane({
-			id: 'foo',
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
 			title: 'test'
 		});
 		let vnode = <VNode> titlePane.__render__();
@@ -19,7 +18,8 @@ registerSuite({
 	},
 
 	'click title to close'() {
-		const titlePane = new TitlePane({
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
 			closeable: true,
 			open: true,
 			onRequestClose() {
@@ -29,12 +29,13 @@ registerSuite({
 		});
 		let called = false;
 
-		titlePane.onClickTitle();
+		titlePane.onTitleClick();
 		assert.isTrue(called, 'onRequestClose should be called on title click');
 	},
 
 	'click title to open'() {
-		const titlePane = new TitlePane({
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
 			closeable: true,
 			open: false,
 			onRequestOpen() {
@@ -44,12 +45,13 @@ registerSuite({
 		});
 		let called = false;
 
-		titlePane.onClickTitle();
+		titlePane.onTitleClick();
 		assert.isTrue(called, 'onRequestOpen should be called on title click');
 	},
 
 	'property defaults'() {
-		const titlePane = new TitlePane({
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
 			onRequestClose() {
 				called = true;
 			},
@@ -58,7 +60,7 @@ registerSuite({
 		let called = false;
 		let vnode = <VNode> titlePane.__render__();
 
-		titlePane.onClickTitle();
+		titlePane.onTitleClick();
 		assert.isTrue(called, '`open` should default to `true` causing title click to call `onRequestClose`');
 
 		assert.strictEqual(vnode.children![0].properties!['aria-level'], '',
@@ -67,28 +69,11 @@ registerSuite({
 			'`closeable` should default to `true` and apply CSS class');
 		assert.strictEqual(vnode.children![0].children![0].properties!['aria-expanded'], 'true',
 			'`open` should default to `true` and set `aria-expanded`');
-		assert.strictEqual(vnode.children![1].properties!.enterAnimation, animations.expandDown,
-			'`enterAnimation` should use default value');
-		assert.strictEqual(vnode.children![1].properties!.exitAnimation, animations.collapseUp,
-			'`exitAnimation` should use default value');
-	},
-
-	'animation CSS classes'() {
-		const titlePane = new TitlePane({
-			enterAnimation: 'enter',
-			exitAnimation: 'exit',
-			title: 'test'
-		});
-		let vnode = <VNode> titlePane.__render__();
-
-		assert.strictEqual(vnode.children![1].properties!.enterAnimation, 'enter',
-			'should set provided value for `enterAnimation` on node');
-		assert.strictEqual(vnode.children![1].properties!.exitAnimation, 'exit',
-			'should set provided value for `exitAnimation` on node');
 	},
 
 	ariaHeadingLevel() {
-		const titlePane = new TitlePane({
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
 			ariaHeadingLevel: 5,
 			title: 'test'
 		});
@@ -99,18 +84,20 @@ registerSuite({
 	},
 
 	closeable() {
-		const titlePane = new TitlePane({
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
 			closeable: false,
 			title: 'test'
 		});
 		let vnode = <VNode> titlePane.__render__();
 
-		assert.isFalse(vnode.children![0].properties!.classes![css.closeable],
+		assert.isUndefined(vnode.children![0].properties!.classes![css.closeable],
 			'`closeable=false` should not apply CSS class');
 	},
 
 	open() {
-		const titlePane = new TitlePane({
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
 			open: false,
 			title: 'test'
 		});

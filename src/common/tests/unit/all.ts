@@ -9,6 +9,7 @@ import '../../../slidepane/tests/unit/SlidePane';
 import '../../../tabpane/tests/unit/Tab';
 import '../../../tabpane/tests/unit/TabButton';
 import '../../../tabpane/tests/unit/TabPane';
+import '../../../titlepane/tests/unit/TitlePane';
 import '../../../label/tests/unit/Label';
 import '../../../button/tests/unit/Button';
 import '../../../textinput/tests/unit/TextInput';

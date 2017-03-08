@@ -3,7 +3,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
-import TitlePane from '../../titlepane/TitlePane';
+import TitlePane from '../TitlePane';
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	render() {
@@ -15,7 +15,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(TitlePane, {
 				ariaHeadingLevel: 1,
 				closeable: false,
-				id: 'titlePanel1',
 				key: 'titlePanel1',
 				title: 'TitlePanel Widget With closeable=false',
 				onRequestClose: () => {
@@ -33,7 +32,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			]),
 			w(TitlePane, {
 				ariaHeadingLevel: 2,
-				id: 'titlePanel2',
 				key: 'titlePanel2',
 				open: <boolean> this.state['t2open'],
 				title: 'TitlePanel Widget (closeable)',
@@ -59,7 +57,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				})
 			]),
 			w(TitlePane, {
-				id: 'titlePanel3',
 				key: 'titlePanel3',
 				open: <boolean> (this.state['t3open'] === undefined ? false : this.state['t3open']),
 				title: 'TitlePanel Widget with open=false',
@@ -81,6 +78,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();
