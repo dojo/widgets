@@ -10,7 +10,8 @@
 @import '../../select/styles/select.m.css';
 @import '../../slidepane/styles/slidePane.m.css';
 @import '../../slider/styles/slider.m.css';
+@import '../../splitpane/styles/splitPane.m.css';
 @import '../../tabpane/styles/tabPane.m.css';
 @import '../../textarea/styles/textarea.m.css';
 @import '../../textinput/styles/textinput.m.css';
-@import '../../splitpane/styles/splitPane.m.css';
+@import '../../titlepane/styles/titlePane.css';

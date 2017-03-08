@@ -1,7 +1,12 @@
-@import '../../styles/variables.css';
+@import '../../common/styles/variables.css';
 
 .main {
 	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.main * {
+	box-sizing: border-box;
 }
 
 .title {
@@ -12,6 +17,8 @@
 	color: var(--title-bar-color);
 	font-size: var(--title-bar-font-size);
 	padding: var(--title-padding);
+	position: relative;
+	z-index: 1;
 }
 
 .closeable {
@@ -23,8 +30,10 @@
 	border-style: solid;
 	border-width: var(--border-thin);
 	padding: var(--container-padding);
+	transform: translateY(-100%);
+	transition: transform ease-in-out var(--short-animation-duration);
 }
 
-.hidden {
-	display: none;
+.open {
+	transform: translateY(0%);
 }

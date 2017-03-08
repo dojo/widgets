@@ -5,7 +5,6 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 
 import * as css from './styles/titlePane.css';
-import * as animations from '../styles/animations.css';
 
 /**
  * @type TitlePaneProperties
@@ -14,8 +13,6 @@ import * as animations from '../styles/animations.css';
  *
  * @property ariaHeadingLevel	'aria-heading-level' for the title's DOM node
  * @property closeable			If false the pane will not collapse in response to clicking the title
- * @property enterAnimation		Animation to apply when the pane is opened
- * @property exitAnimation		Animation to apply when the pane is closed
  * @property open				If true the pane is opened and content is visible
  * @property title				Title to display in above the content
  * @property onRequestClose		Called when the title of an open pane is clicked
@@ -24,8 +21,6 @@ import * as animations from '../styles/animations.css';
 export interface TitlePaneProperties extends ThemeableProperties {
 	ariaHeadingLevel?: number;
 	closeable?: boolean;
-	enterAnimation?: string;
-	exitAnimation?: string;
 	open?: boolean;
 	title: string;
 
@@ -37,25 +32,32 @@ export const TitlePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
-	onClickTitle() {
+	private _content: HTMLElement;
+	private _wasOpen: boolean;
+
+	onTitleClick() {
 		const {
-			open = true
+			open = true,
+			onRequestClose,
+			onRequestOpen
 		} = this.properties;
 
 		if (open) {
-			this.properties.onRequestClose && this.properties.onRequestClose();
+			onRequestClose && onRequestClose();
 		}
 		else {
-			this.properties.onRequestOpen && this.properties.onRequestOpen();
+			onRequestOpen && onRequestOpen();
 		}
+	}
+
+	cacheContent(element: HTMLElement) {
+		this._content = <HTMLElement> element.querySelector(`.${ css.content }`);
 	}
 
 	render(): DNode {
 		const {
 			ariaHeadingLevel,
 			closeable = true,
-			enterAnimation = animations.expandDown,
-			exitAnimation = animations.collapseUp,
 			open = true,
 			title
 		} = this.properties;
@@ -63,13 +65,17 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		const contentId = uuid();
 		const titleId = uuid();
 
+		this._wasOpen = !open;
+
 		return v('div', {
-			classes: this.classes(css.main).get()
+			classes: this.classes(css.main),
+			afterCreate: this.cacheContent,
+			afterUpdate: this.cacheContent
 		}, [
 			v('div', {
 				'aria-level': ariaHeadingLevel ? String(ariaHeadingLevel) : '',
-				classes: this.classes(css.title, closeable ? css.closeable : null).get(),
-				onclick: closeable ? this.onClickTitle : undefined,
+				classes: this.classes(css.title, closeable ? css.closeable : null),
+				onclick: closeable ? this.onTitleClick : undefined,
 				role: 'heading'
 			}, [
 				v('div', {
@@ -83,11 +89,15 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			]),
 			v('div', {
 				'aria-labelledby': titleId,
-				classes: this.classes(css.content, open ? null : css.hidden).get(),
+				classes: this.classes(
+					css.content,
+					open ? css.open : null
+				),
 				id: contentId,
-				enterAnimation,
-				exitAnimation
-			}, open ? this.children : [])
+				styles: {
+					height: (open && this._content) ? `${ this._content.offsetHeight }px` : null
+				}
+			}, this.children)
 		]);
 	}
 }
