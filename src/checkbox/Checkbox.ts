@@ -91,7 +91,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 		const checkbox = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('input', {
 				bind: this,
-				classes: this.classes(css.root),
+				classes: this.classes(css.input),
 				checked,
 				'aria-describedby': describedBy,
 				disabled,
