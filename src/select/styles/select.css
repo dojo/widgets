@@ -1,6 +1,6 @@
 @import '../../common/styles/variables.css';
 
-.root {
+.input {
 	appearance: none;
 	background-color: transparent;
 	border: 3px solid var(--input-border-color);
@@ -14,7 +14,7 @@
 	transition: border var(--short-animation-duration) ease;
 }
 
-.root:focus {
+.input:focus {
 	border-color: var(--input-highlight-color);
 }
 
@@ -50,24 +50,25 @@
 	width: 0.5em;
 }
 
-.root:focus ~ .arrow {
+
+.input:focus ~ .arrow {
 	background-color: var(--input-highlight-color);
 }
 
 /* State classes */
-.disabled .root,
-.readonly .root {
+.disabled .input,
+.readonly .input {
 	background-color: var(--dojo-light-gray);
 }
 
-.invalid .root {
+.invalid .input {
 	border-color: var(--dojo-error-color);
 }
 .invalid .arrow {
 	background-color: var(--dojo-error-color);
 }
 
-.valid .root {
+.valid .input {
 	border-color: var(--dojo-success-color);
 }
 .valid .arrow {

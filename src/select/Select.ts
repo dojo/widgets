@@ -108,7 +108,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		const select = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('select', {
 				bind: this,
-				classes: this.classes(css.root),
+				classes: this.classes(css.input),
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid + '',
