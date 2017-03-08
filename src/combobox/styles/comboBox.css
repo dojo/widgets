@@ -35,7 +35,7 @@
 	padding: var(--input-padding);
 }
 
-.result.disabledResult {
+.disabledResult {
 	color: var(--dojo-gray);
 	font-style: italic;
 	cursor: default;
