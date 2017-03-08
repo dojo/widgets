@@ -111,7 +111,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				classes: this.classes(css.root),
 				'aria-describedby': describedBy,
 				disabled,
-				'aria-invalid': invalid,
+				'aria-invalid': invalid + '',
 				name,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
