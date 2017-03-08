@@ -14,11 +14,11 @@
 
 .inputWrapper { }
 
-.label {
+.root {
 	font: var(--base-font);
 }
 
-.label span {
+.root span {
 	display: block;
 	margin: var(--line-spacing) 0;
 }
