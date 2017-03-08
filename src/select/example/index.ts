@@ -9,7 +9,8 @@ interface SelectOptions {
 	[key: string]: string;
 }
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export const AppBase = StatefulMixin(WidgetBase);
+export class App extends AppBase<WidgetProperties> {
 	_selectOptions: SelectOptions = {
 		'option1': 'First Option',
 		'option2': 'Second Option',
@@ -18,25 +19,29 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	};
 
 	render() {
+		const {
+			value = 'option1'
+		} = this.state;
+
 		return v('div', [
 			w(Select, {
-				id: 'select1',
+				key: 'select1',
 				label: 'Try changing me',
 				options: this._selectOptions,
-				value: <string> this.state.value,
+				value: <string> value,
 				onChange: (event: any) => {
 					console.log('changing value to', event.target.value);
 					this.setState({ value: event.target.value });
 				}
 			}),
 			v('p', {
-				innerHTML: 'Result: ' + this._selectOptions[this.state.value]
+				innerHTML: 'Result: ' + this._selectOptions[value]
 			})
 		]);
 	}
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();
