@@ -1,0 +1,55 @@
+@import '../../common/styles/variables.css';
+
+.root {
+	font: var(--base-font);
+}
+
+.tabButton {
+	border-top: var(--border-thick) solid transparent;
+	border-left: var(--border-thin) solid transparent;
+	border-right: var(--border-thin) solid transparent;
+	text-align: center;
+	padding: 14px 28px 14px 14px;
+	display: inline-block;
+	vertical-align: top;
+	width: var(--tab-width);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+	position: relative;
+}
+
+.activeTabButton {
+	border-top-color: var(--dojo-blue);
+	border-left-color: var(--dojo-shade-gray);
+	border-right-color: var(--dojo-shade-gray);
+}
+
+.activeTab {
+	color: red;
+}
+
+.disabledTabButton {
+	font-style: italic;
+	cursor: default;
+	color: var(--dojo-gray);
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+	outline: none;
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: 14px;
+}

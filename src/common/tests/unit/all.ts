@@ -4,6 +4,7 @@ import '../../../combobox/tests/unit/ComboBox';
 import '../../../combobox/tests/unit/ResultMenu';
 import '../../../combobox/tests/unit/ResultItem';
 import '../../../slidepane/tests/unit/SlidePane';
+import '../../../tabpane/tests/unit/TabPane';
 import '../../../label/tests/unit/Label';
 import '../../../button/tests/unit/Button';
 import '../../../textinput/tests/unit/TextInput';

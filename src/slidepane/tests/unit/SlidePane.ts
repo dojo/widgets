@@ -22,7 +22,7 @@ function createEvent(type: string, x: number): any {
 }
 
 registerSuite({
-	name: 'createSlidePane',
+	name: 'SlidePane',
 
 	'Should construct SlidePane with passed properties'() {
 		const slidePane = new SlidePane();
