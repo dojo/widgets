@@ -21,12 +21,31 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
+				attributeName: 'invalid',
+				value: value => value === 'false' || value === '0' ? false : true
+			},
+			{
+				attributeName: 'disabled',
+				value: value => value === 'false' || value === '0' ? false : true
+			},
+			{
 				attributeName: 'openonfocus',
 				propertyName: 'openOnFocus',
 				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
+				attributeName: 'readOnly',
+				value: value => value === 'false' || value === '0' ? false : true
+			},
+			{
+				attributeName: 'required',
+				value: value => value === 'false' || value === '0' ? false : true
+			},
+			{
 				attributeName: 'value'
+			},
+			{
+				attributeName: 'formId'
 			}
 		],
 		properties: [
@@ -44,6 +63,9 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 			},
 			{
 				propertyName: 'getResultLabel'
+			},
+			{
+				propertyName: 'label'
 			}
 		],
 		events: [
