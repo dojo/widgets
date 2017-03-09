@@ -28,12 +28,6 @@ To use `@dojo/widgets`, install the package:
 npm install @dojo/widgets
 ```
 
-You can also import each widget individually, e.g. for our `ComboBox`:
-
-```shell
-npm install @dojo/widget-combobox
-```
-
 ## Features
 
 Dojo 2 widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
