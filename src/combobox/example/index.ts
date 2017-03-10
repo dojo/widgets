@@ -219,6 +219,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', ['Label']),
 			w(ComboBox, {
 				key: '8',
+				onChange: (value: string) => this.setState({ 'value8': value }),
+				getResultLabel: (result: any) => <string> result.value,
+				onRequestResults: this.onRequestResults,
+				results: <any[]> this.state['results'],
+				value: <string> this.state['value8'],
 				label: 'Enter a value'
 			})
 		]);

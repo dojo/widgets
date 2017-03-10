@@ -35,15 +35,38 @@ const ResultItemBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class ResultItem extends ResultItemBase<ResultItemProperties> {
+	private _onMouseDown(event: MouseEvent) {
+		const { onMouseDown } = this.properties;
+
+		!this.isDisabled() && onMouseDown(event);
+	}
+
+	private _onMouseEnter() {
+		const {
+			index,
+			onMouseEnter
+		} = this.properties;
+
+		!this.isDisabled() && onMouseEnter(index);
+	}
+
+	private _onMouseUp(event: MouseEvent) {
+		const { onMouseUp } = this.properties;
+
+		!this.isDisabled() && onMouseUp(event);
+	}
+
 	@onPropertiesChanged
-	onPropertiesChanged(evt: PropertiesChangeEvent<this, ResultItemProperties>) {
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ResultItemProperties>) {
 		if (includes(evt.changedPropertyKeys, 'selected')) {
 			const {
 				selected,
 				skipResult
 			} = this.properties;
 
-			selected === true && this.isDisabled() && skipResult();
+			if (selected && this.isDisabled()) {
+				skipResult();
+			}
 		}
 	}
 
@@ -54,27 +77,6 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 	renderLabel(result: any) {
 		const { label } = this.properties;
 		return v('div', [ label ]);
-	}
-
-	onMouseEnter() {
-		const {
-			index,
-			onMouseEnter
-		} = this.properties;
-
-		!this.isDisabled() && onMouseEnter(index);
-	}
-
-	onMouseDown(event: MouseEvent) {
-		const { onMouseDown } = this.properties;
-
-		!this.isDisabled() && onMouseDown(event);
-	}
-
-	onMouseUp(event: MouseEvent) {
-		const { onMouseUp } = this.properties;
-
-		!this.isDisabled() && onMouseUp(event);
 	}
 
 	render(): DNode {
@@ -89,9 +91,9 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 				selected ? css.selectedResult : null,
 				this.isDisabled() ? css.disabledResult : null
 			),
-			onmouseenter: this.onMouseEnter,
-			onmousedown: this.onMouseDown,
-			onmouseup: this.onMouseUp,
+			onmouseenter: this._onMouseEnter,
+			onmousedown: this._onMouseDown,
+			onmouseup: this._onMouseUp,
 			'data-selected': selected ? 'true' : 'false'
 		}, [ this.renderLabel(result) ]);
 	}

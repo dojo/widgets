@@ -51,7 +51,7 @@ registerSuite({
 			results: ['abc']
 		});
 
-		comboBox.onArrowClick();
+		(<any> comboBox)._onArrowClick();
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 3);
 	},
@@ -72,7 +72,7 @@ registerSuite({
 			results: ['abc']
 		});
 
-		comboBox.onInput(event());
+		(<any> comboBox)._onInput(event());
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 3);
 	},
@@ -83,8 +83,8 @@ registerSuite({
 			results: ['abc']
 		});
 
-		comboBox.onInput(event());
-		comboBox.onInputBlur(event());
+		(<any> comboBox)._onInput(event());
+		(<any> comboBox)._onInputBlur(event());
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
 	},
@@ -96,9 +96,9 @@ registerSuite({
 			getResultLabel: (value: string) => value
 		});
 
-		comboBox.onArrowClick();
-		comboBox.onInputKeyDown(event(keys.down));
-		comboBox.onResultMouseUp();
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
+		(<any> comboBox)._onResultMouseUp();
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
 	},
@@ -120,7 +120,7 @@ registerSuite({
 			onChange: () => called = true
 		});
 
-		comboBox.onResultMouseUp();
+		(<any> comboBox)._onResultMouseUp();
 		assert.isFalse(called);
 	},
 
@@ -137,8 +137,8 @@ registerSuite({
 			results: ['a', 'b'],
 			customResultItem: CustomResultItem
 		});
-		comboBox.onArrowClick();
-		comboBox.onInputKeyDown(event(keys.down));
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		<VNode> comboBox.__render__();
 		const vnode = <VNode> comboBox.__render__();
 		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
@@ -152,10 +152,10 @@ registerSuite({
 			onBlur: () => called = true
 		});
 
-		comboBox.onArrowClick();
-		comboBox.onResultMouseEnter(1);
-		comboBox.onResultMouseDown();
-		comboBox.onInputBlur(event());
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onResultMouseEnter(1);
+		(<any> comboBox)._onResultMouseDown();
+		(<any> comboBox)._onInputBlur(event());
 		assert.isFalse(called);
 	},
 
@@ -165,14 +165,14 @@ registerSuite({
 			results: ['1', '2']
 		});
 
-		comboBox.onInputKeyDown(event(keys.down));
-		comboBox.onArrowClick();
-		comboBox.updateSelectedIndex();
-		comboBox.onInputKeyDown(event(keys.down));
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox).updateSelectedIndex();
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		let vnode = <VNode> comboBox.__render__();
 		assert.strictEqual(vnode.children![2].children![0].properties!['data-selected'], 'true');
 
-		comboBox.onInputKeyDown(event(keys.down));
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		vnode = <VNode> comboBox.__render__();
 		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
 	},
@@ -183,13 +183,13 @@ registerSuite({
 			results: ['1', '2']
 		});
 
-		comboBox.onInputKeyDown(event(keys.up));
-		comboBox.onArrowClick();
-		comboBox.onInputKeyDown(event(keys.up));
+		(<any> comboBox)._onInputKeyDown(event(keys.up));
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onInputKeyDown(event(keys.up));
 		let vnode = <VNode> comboBox.__render__();
 		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
 
-		comboBox.onInputKeyDown(event(keys.up));
+		(<any> comboBox)._onInputKeyDown(event(keys.up));
 		vnode = <VNode> comboBox.__render__();
 		assert.strictEqual(vnode.children![2].children![0].properties!['data-selected'], 'true');
 	},
@@ -203,15 +203,15 @@ registerSuite({
 			getResultLabel: (value: string) => value
 		});
 
-		comboBox.onInputKeyDown(event(keys.enter));
-		comboBox.onArrowClick();
-		comboBox.onInputKeyDown(event(keys.enter));
+		(<any> comboBox)._onInputKeyDown(event(keys.enter));
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onInputKeyDown(event(keys.enter));
 		let vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
 
-		comboBox.onArrowClick();
-		comboBox.onInputKeyDown(event(keys.down));
-		comboBox.onInputKeyDown(event(keys.enter));
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
+		(<any> comboBox)._onInputKeyDown(event(keys.enter));
 		assert.strictEqual(inputValue, '1');
 	},
 
@@ -219,8 +219,8 @@ registerSuite({
 		const comboBox = new ComboBox();
 		comboBox.setProperties({ results: ['a', 'b', 'c']});
 
-		comboBox.onArrowClick();
-		comboBox.onInputKeyDown(event(keys.escape));
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onInputKeyDown(event(keys.escape));
 		let vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
 	},
@@ -236,10 +236,10 @@ registerSuite({
 			autoBlur: true
 		});
 
-		comboBox.afterCreate(parent);
+		(<any> comboBox)._afterCreate(parent);
 		parent.querySelector = () => null;
-		comboBox.selectResult('abc');
-		comboBox.afterUpdate(parent);
+		(<any> comboBox)._selectResult('abc');
+		(<any> comboBox)._afterUpdate(parent);
 		assert.isTrue(blurred);
 	},
 
@@ -252,8 +252,8 @@ registerSuite({
 		});
 
 		let vnode = <VNode> comboBox.__render__();
-		comboBox.afterCreate(parentElement());
-		comboBox.onClearClick();
+		(<any> comboBox)._afterCreate(parentElement());
+		(<any> comboBox)._onClearClick();
 		assert.strictEqual(inputValue, '');
 		assert.lengthOf(vnode.children, 3);
 	},
@@ -277,7 +277,7 @@ registerSuite({
 			results: ['abc']
 		});
 
-		comboBox.onInputFocus(event());
+		(<any> comboBox)._onInputFocus(event());
 		let vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 3);
 	},
@@ -299,7 +299,7 @@ registerSuite({
 			onBlur: () => called = true
 		});
 
-		comboBox.onInputBlur(event());
+		(<any> comboBox)._onInputBlur(event());
 		assert.isTrue(called);
 	},
 
@@ -310,9 +310,9 @@ registerSuite({
 			onChange: () => called++
 		});
 
-		comboBox.onInput(event());
-		comboBox.onClearClick();
-		comboBox.selectResult('abc');
+		(<any> comboBox)._onInput(event());
+		(<any> comboBox)._onClearClick();
+		(<any> comboBox)._selectResult('abc');
 		assert.strictEqual(called, 3);
 	},
 
@@ -324,10 +324,10 @@ registerSuite({
 			onFocus: () => called = true
 		});
 
-		comboBox.onInputFocus(event());
-		comboBox.afterCreate(parent);
+		(<any> comboBox)._onInputFocus(event());
+		(<any> comboBox)._afterCreate(parent);
 		parent.querySelector = () => null;
-		comboBox.afterUpdate(parent);
+		(<any> comboBox)._afterUpdate(parent);
 		assert.isTrue(called);
 	},
 
@@ -339,10 +339,10 @@ registerSuite({
 			openOnFocus: true
 		});
 
-		comboBox.afterCreate(parentElement());
-		comboBox.onInput(event());
-		comboBox.onInputFocus(event());
-		comboBox.onArrowClick();
+		(<any> comboBox)._afterCreate(parentElement());
+		(<any> comboBox)._onInput(event());
+		(<any> comboBox)._onInputFocus(event());
+		(<any> comboBox)._onArrowClick();
 		assert.strictEqual(called, 3);
 	},
 
@@ -354,9 +354,9 @@ registerSuite({
 			onMenuChange: () => called++
 		});
 
-		comboBox.onInput(parentElement());
+		(<any> comboBox)._onInput(parentElement());
 		<VNode> comboBox.__render__();
-		comboBox.onInputBlur(parentElement());
+		(<any> comboBox)._onInputBlur(parentElement());
 		<VNode> comboBox.__render__();
 		assert.strictEqual(called, 2);
 	},
@@ -367,7 +367,7 @@ registerSuite({
 			disabled: true
 		});
 
-		comboBox.onArrowClick();
+		(<any> comboBox)._onArrowClick();
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
 	},
@@ -378,7 +378,7 @@ registerSuite({
 			readOnly: true
 		});
 
-		comboBox.onArrowClick();
+		(<any> comboBox)._onArrowClick();
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
 	},
@@ -393,8 +393,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		comboBox.afterCreate(parentElement());
-		comboBox.afterUpdate(parentElement(element));
+		(<any> comboBox)._afterCreate(parentElement());
+		(<any> comboBox)._afterUpdate(parentElement(element));
 		assert.strictEqual(menu.scrollTop, element.offsetTop);
 	},
 
@@ -410,8 +410,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		comboBox.afterCreate(parentElement());
-		comboBox.afterUpdate(parentElement(element));
+		(<any> comboBox)._afterCreate(parentElement());
+		(<any> comboBox)._afterUpdate(parentElement(element));
 		assert.strictEqual(menu.scrollTop, element.offsetTop - menu.clientHeight + element.offsetHeight);
 	},
 
@@ -427,8 +427,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		comboBox.afterCreate(parentElement());
-		comboBox.afterUpdate(parentElement(element));
+		(<any> comboBox)._afterCreate(parentElement());
+		(<any> comboBox)._afterUpdate(parentElement(element));
 		assert.strictEqual(menu.scrollTop, 50);
 	}
 });

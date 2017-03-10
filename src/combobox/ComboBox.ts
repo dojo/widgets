@@ -6,7 +6,7 @@ import FactoryRegistry from '@dojo/widget-core/FactoryRegistry';
 import { includes } from '@dojo/shim/array';
 import ResultMenu, { ResultMenuProperties } from './ResultMenu';
 import ResultItem from './ResultItem';
-import TextInput from '../textinput/TextInput';
+import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import Label, { LabelOptions } from '../label/Label';
 
 import * as css from './styles/comboBox.css';
@@ -44,7 +44,7 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	customResultMenu?: any;
 	disabled?: boolean;
 	formId?: string;
-	inputProperties?: any;
+	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	label?: string | LabelOptions;
 	openOnFocus?: boolean;
@@ -61,8 +61,8 @@ export interface ComboBoxProperties extends ThemeableProperties {
 };
 
 const enum Operation {
-	increase,
-	decrease,
+	increase = 1,
+	decrease = -1,
 	reset
 };
 
@@ -113,7 +113,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				this.invalidate();
 			}
 			else {
-				this.selectResult(results[this._selectedIndex]);
+				this._selectResult(results[this._selectedIndex]);
 			}
 		},
 
@@ -124,33 +124,19 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	};
 
-	updateSelectedIndex(operation?: Operation, index?: number) {
-		const { results } = this.properties;
-
-		if (!results || results.length === 0 || !this._open) {
-			return;
-		}
-
-		if (index !== undefined) {
-			this._selectedIndex = index;
-		}
-		else if (operation !== undefined) {
-			if (operation === Operation.increase || operation === Operation.decrease) {
-				const increment = operation === Operation.increase ? 1 : -1;
-				const total = results.length;
-				const current = this._selectedIndex;
-				const base = operation === Operation.increase ? -1 : 0;
-
-				this._selectedIndex = ((current === undefined ? base : current) + increment + total) % total;
-			}
-			else {
-				this._selectedIndex = undefined;
-			}
-			this._direction = operation;
-		}
+	private _afterCreate(element: HTMLElement) {
+		this._inputElement = <HTMLInputElement> element.querySelector('input');
+		this._restoreFocus();
 	}
 
-	createRegistry() {
+	private _afterUpdate(element: HTMLElement) {
+		this._restoreFocus();
+		// Make sure highlighted result is visible after arrow up / arrow down
+		const selectedResult = element.querySelector('[data-selected="true"]');
+		selectedResult && this.scrollIntoView(<HTMLElement> selectedResult);
+	}
+
+	private _createRegistry() {
 		const {
 			customResultItem = ResultItem,
 			customResultMenu = ResultMenu
@@ -162,40 +148,34 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		return registry;
 	}
 
-	@onPropertiesChanged
-	onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
-		if (!this.registry || includes(evt.changedPropertyKeys, 'customResultItem') || includes(evt.changedPropertyKeys, 'customResultMenu')) {
-			this.registry = this.createRegistry();
+	private _getResultLabel(result: any): string {
+		const { getResultLabel } = this.properties;
+		return getResultLabel ? getResultLabel(result) : result;
+	}
+
+	private _onArrowClick() {
+		const {
+			onRequestResults,
+			disabled,
+			readOnly
+		} = this.properties;
+
+		if (disabled || readOnly) {
+			return;
 		}
+
+		this._open = true;
+		this._focused = true;
+		this._inputElement && onRequestResults && onRequestResults(this._inputElement.value);
 	}
 
-	afterCreate(element: HTMLElement) {
-		this._inputElement = <HTMLInputElement> element.querySelector('input');
-		// Maintain focused state
-		this._inputElement && this._inputElement[this._focused ? 'focus' : 'blur']();
+	private _onClearClick() {
+		const { onChange } = this.properties;
+		this._focused = true;
+		onChange && onChange('');
 	}
 
-	afterUpdate(element: HTMLElement) {
-		// Maintain focused state
-		this._inputElement && this._inputElement[this._focused ? 'focus' : 'blur']();
-		// Make sure highlighted result is visible after arrow up / arrow down
-		const selectedResult = element.querySelector('[data-selected="true"]');
-		selectedResult && this.scrollIntoView(<HTMLElement> selectedResult);
-	}
-
-	scrollIntoView(element: HTMLElement) {
-		const menu = <HTMLElement> element.parentElement;
-		// Scroll menu up so top of highlighted result aligns with top of menu container
-		if (element.offsetTop - menu.scrollTop < 0) {
-			menu.scrollTop = element.offsetTop;
-		}
-		// Scroll menu down so bottom of highlighted result aligns with bottom of menu container
-		else if ((element.offsetTop - menu.scrollTop + element.offsetHeight) > menu.clientHeight) {
-			menu.scrollTop = element.offsetTop - menu.clientHeight + element.offsetHeight;
-		}
-	}
-
-	onInput(event: Event) {
+	private _onInput(event: Event) {
 		const {
 			onRequestResults,
 			onChange
@@ -207,7 +187,21 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		onRequestResults && onRequestResults((<HTMLInputElement> event.target).value);
 	}
 
-	onInputFocus(event: FocusEvent) {
+	private _onInputBlur(event: FocusEvent) {
+		const { onBlur } = this.properties;
+
+		if (this._ignoreBlur) {
+			return;
+		}
+
+		this.updateSelectedIndex(Operation.reset);
+		this._open = false;
+		this._focused = false;
+		onBlur && onBlur((<HTMLInputElement> event.target).value);
+		this.invalidate();
+	}
+
+	private _onInputFocus(event: FocusEvent) {
 		const {
 			openOnFocus,
 			onFocus,
@@ -228,66 +222,71 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._ignoreFocus = false;
 	}
 
-	onInputBlur(event: FocusEvent) {
-		const { onBlur } = this.properties;
-
-		if (this._ignoreBlur) {
-			return;
-		}
-
-		this.updateSelectedIndex(Operation.reset);
-		this._open = false;
-		this._focused = false;
-		onBlur && onBlur((<HTMLInputElement> event.target).value);
-		this.invalidate();
-	}
-
-	onInputKeyDown(event: KeyboardEvent) {
+	private _onInputKeyDown(event: KeyboardEvent) {
 		this._handlers[event.keyCode] && this._handlers[event.keyCode].call(this, event);
 	}
 
-	onArrowClick() {
-		const {
-			onRequestResults,
-			disabled,
-			readOnly
-		} = this.properties;
-
-		if (disabled || readOnly) {
-			return;
-		}
-
-		this._open = true;
-		this._focused = true;
-		this._inputElement && onRequestResults && onRequestResults(this._inputElement.value);
+	private _onResultMouseDown() {
+		this._ignoreBlur = true;
 	}
 
-	onClearClick() {
-		const { onChange } = this.properties;
-		this._focused = true;
-		onChange && onChange('');
-	}
-
-	onResultMouseEnter(index: number) {
+	private _onResultMouseEnter(index: number) {
 		this.updateSelectedIndex(undefined, index);
 		this.invalidate();
 	}
 
-	onResultMouseDown() {
-		this._ignoreBlur = true;
-	}
-
-	onResultMouseUp() {
+	private _onResultMouseUp() {
 		const { results } = this.properties;
 
 		if (!results || this._selectedIndex === undefined) {
 			return;
 		}
 
-		this.selectResult(results[this._selectedIndex]);
+		this._selectResult(results[this._selectedIndex]);
 	}
 
-	selectResult(result: any) {
+	private _notifyMenuChange() {
+		const {
+			results = [],
+			onMenuChange
+		} = this.properties;
+
+		if (!onMenuChange || results.length === 0) {
+			return;
+		}
+
+		if (this._open && !this._wasOpen) {
+			onMenuChange(true);
+		}
+		else if (!this._open && this._wasOpen) {
+			onMenuChange(false);
+		}
+	}
+
+	private _renderMenu(results: any[]) {
+		if (!this._open || results.length === 0) {
+			return null;
+		}
+
+		return w('result-menu', <ResultMenuProperties> {
+			bind: this,
+			registry: this.registry,
+			results: results,
+			selectedIndex: this._selectedIndex,
+			getResultLabel: this._getResultLabel,
+			skipResult: this._skipResult,
+			onResultMouseEnter: this._onResultMouseEnter,
+			onResultMouseDown: this._onResultMouseDown,
+			onResultMouseUp: this._onResultMouseUp
+		});
+	}
+
+	private _restoreFocus() {
+		const func = this._focused ? 'focus' : 'blur';
+		this._inputElement && this._inputElement[func]();
+	}
+
+	private _selectResult(result: any) {
 		const {
 			autoBlur,
 			onChange
@@ -297,30 +296,55 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._open = false;
 		this._focused = !autoBlur;
 		this._ignoreFocus = true;
-		onChange && onChange(this.getResultLabel(result));
+		onChange && onChange(this._getResultLabel(result));
 	}
 
-	getResultLabel(result: any): string {
-		const { getResultLabel } = this.properties;
-		return getResultLabel ? getResultLabel(result) : result;
+	private _skipResult() {
+		this.updateSelectedIndex(this._direction);
+		this.invalidate();
 	}
 
-	renderMenu(results: any[]) {
-		const menu = w('result-menu', <ResultMenuProperties> {
-			registry: this.registry,
-			results: results,
-			selectedIndex: this._selectedIndex,
-			getResultLabel: this.getResultLabel,
-			skipResult: () => {
-				this.updateSelectedIndex(this._direction);
-				this.invalidate();
-			},
-			onResultMouseEnter: this.onResultMouseEnter,
-			onResultMouseDown: this.onResultMouseDown,
-			onResultMouseUp: this.onResultMouseUp
-		});
+	@onPropertiesChanged
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
+		if (!this.registry || includes(evt.changedPropertyKeys, 'customResultItem') || includes(evt.changedPropertyKeys, 'customResultMenu')) {
+			this.registry = this._createRegistry();
+		}
+	}
 
-		return results.length > 0 ? menu : null;
+	protected scrollIntoView(element: HTMLElement) {
+		const menu = <HTMLElement> element.parentElement;
+		// Scroll menu up so top of highlighted result aligns with top of menu container
+		if (element.offsetTop - menu.scrollTop < 0) {
+			menu.scrollTop = element.offsetTop;
+		}
+		// Scroll menu down so bottom of highlighted result aligns with bottom of menu container
+		else if ((element.offsetTop - menu.scrollTop + element.offsetHeight) > menu.clientHeight) {
+			menu.scrollTop = element.offsetTop - menu.clientHeight + element.offsetHeight;
+		}
+	}
+
+	protected updateSelectedIndex(operation?: Operation, index?: number) {
+		const { results } = this.properties;
+
+		if (!results || results.length === 0 || !this._open) {
+			return;
+		}
+
+		if (index !== undefined) {
+			this._selectedIndex = index;
+		}
+		else if (operation !== undefined) {
+			if (operation === Operation.increase || operation === Operation.decrease) {
+				const total = results.length;
+				const base = operation === Operation.increase ? 0 : -1;
+				const current = this._selectedIndex !== undefined ? this._selectedIndex + operation : base;
+				this._selectedIndex = (current + total) % total;
+			}
+			else {
+				this._selectedIndex = undefined;
+			}
+			this._direction = operation;
+		}
 	}
 
 	render(): DNode {
@@ -332,21 +356,20 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			readOnly,
 			results = [],
 			inputProperties = {},
-			value = '',
-			onMenuChange
+			value = ''
 		} = this.properties;
 
-		const menu = this.renderMenu(results);
+		const menu = this._renderMenu(results);
 
-		menu && this._open && !this._wasOpen && onMenuChange && onMenuChange(true);
-		menu && !this._open && this._wasOpen && onMenuChange && onMenuChange(false);
+		this._notifyMenuChange();
 
 		this._wasOpen = this._open;
 
 		const container = v('div', {
+			bind: this,
 			classes: this.classes(css.combobox),
-			afterCreate: this.afterCreate,
-			afterUpdate: this.afterUpdate
+			afterCreate: this._afterCreate,
+			afterUpdate: this._afterUpdate
 		}, [
 			// Use TextInput once landed
 			w(TextInput, {
@@ -354,10 +377,10 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				classes: this.classes(clearable ? css.clearable : null),
 				disabled,
 				readOnly,
-				onBlur: this.onInputBlur,
-				onFocus: this.onInputFocus,
-				onInput: this.onInput,
-				onKeyDown: this.onInputKeyDown,
+				onBlur: this._onInputBlur,
+				onFocus: this._onInputFocus,
+				onInput: this._onInput,
+				onKeyDown: this._onInputKeyDown,
 				value,
 				overrideClasses: css,
 				...inputProperties
@@ -366,19 +389,20 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				bind: this,
 				classes: this.classes(css.clear),
 				innerHTML: 'clear combo box',
-				onclick: this.onClearClick
+				onclick: this._onClearClick
 			}) : null,
 			v('button', {
 				bind: this,
 				classes: this.classes(css.arrow),
 				innerHTML: 'open combo box',
-				onclick: this.onArrowClick
+				onclick: this._onArrowClick
 			}),
-			this._open ? menu : null
+			menu
 		]);
 
 		if (label) {
 			return w(Label, {
+				registry: this.registry,
 				formId,
 				label
 			}, [ container ]);

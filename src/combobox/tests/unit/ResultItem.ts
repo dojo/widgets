@@ -29,7 +29,7 @@ registerSuite({
 	'Disabled items should be skipped'() {
 		let called = false;
 		const resultItem = new ResultItem();
-		resultItem.onPropertiesChanged(<any> { changedPropertyKeys: {} });
+		(<any> resultItem).onPropertiesChanged(<any> { changedPropertyKeys: {} });
 		resultItem.isDisabled = () => true;
 		resultItem.setProperties(props({
 			skipResult: () => called = true,
@@ -64,9 +64,9 @@ registerSuite({
 		let called = 0;
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseEnter: () => called++ }));
-		resultItem.onMouseEnter();
+		(<any> resultItem)._onMouseEnter();
 		resultItem.isDisabled = () => true;
-		resultItem.onMouseEnter();
+		(<any> resultItem)._onMouseEnter();
 		assert.strictEqual(called, 1);
 	},
 
@@ -74,9 +74,9 @@ registerSuite({
 		let called = 0;
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseDown: () => called++ }));
-		resultItem.onMouseDown(<any> {});
+		(<any> resultItem)._onMouseDown(<any> {});
 		resultItem.isDisabled = () => true;
-		resultItem.onMouseDown(<any> {});
+		(<any> resultItem)._onMouseDown(<any> {});
 		assert.strictEqual(called, 1);
 	},
 
@@ -84,9 +84,9 @@ registerSuite({
 		let called = 0;
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseUp: () => called++ }));
-		resultItem.onMouseUp(<any> {});
+		(<any> resultItem)._onMouseUp(<any> {});
 		resultItem.isDisabled = () => true;
-		resultItem.onMouseUp(<any> {});
+		(<any> resultItem)._onMouseUp(<any> {});
 		assert.strictEqual(called, 1);
 	}
 });
