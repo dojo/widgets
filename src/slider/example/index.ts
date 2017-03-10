@@ -44,7 +44,7 @@ export class App extends AppBase<WidgetProperties> {
 			v('h1', {}, ['Vertical slider']),
 			w(Slider, {
 				key: 's2',
-				label: 'Something label moose',
+				label: 'Vertical Slider with default properties',
 				value: <number> verticalValue,
 				vertical: true,
 				onInput: this.onVerticalInput
