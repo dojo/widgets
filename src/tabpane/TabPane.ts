@@ -7,11 +7,31 @@ import * as css from './styles/tabPane.css';
 import Tab from './Tab';
 import TabButton from './TabButton';
 
+/**
+ * @type TabConfig
+ * 
+ * Object used to configure a tab
+ * 
+ * @property label		The content to show in the tab button
+ * @property content	The content to show in the tab
+ * @property closeable	Whether this tab should be closeable
+ * @property disabled	Whether this tab should be disabled
+ */
 export type TabConfig = {
 	label?: DNode;
 	content?: DNode;
-	disabled?: boolean;
 	closeable?: boolean;
+	disabled?: boolean;
+};
+
+/**
+ * Enum for tab button alignment
+ */
+export const enum Align {
+	top,
+	right,
+	bottom,
+	left
 };
 
 /**
@@ -19,13 +39,17 @@ export type TabConfig = {
  *
  * Properties that can be set on a TabPane component
  * 
- * @property activeIndex 			Position of the currently-active tab
+ * @property activeIndex 			Position of the currently active tab
+ * @property alignButtons			Position of the tab buttons
+ * @property loadingIndex 			Position of the currently loading tab, useful for tabs with async content
  * @property tabs 					List of tab configuration objects
  * @property onRequestTabChange		Called when a new tab button is clicked
  * @property onRequestTabClose		Called when a tab close button is clicked
  */
 export interface TabPaneProperties extends ThemeableProperties {
 	activeIndex?: number;
+	alignButtons?: Align;
+	loadingIndex?: number;
 	tabs?: TabConfig[];
 	onRequestTabChange?(index: number): void;
 	onRequestTabClose?(tabs: TabConfig[]): void;
@@ -35,6 +59,8 @@ export const TabPaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TabPane extends TabPaneBase<TabPaneProperties> {
+	private _loading: boolean;
+
 	onTabClick(index: number) {
 		const { onRequestTabChange } = this.properties;
 		onRequestTabChange && onRequestTabChange(index);
@@ -55,15 +81,17 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	renderTabButtons() {
 		const {
 			activeIndex = 0,
+			loadingIndex,
 			tabs = []
 		} = this.properties;
 
 		return tabs.map((tab, i) => w(TabButton, {
 			key: String(i),
-			active: i === activeIndex,
+			active: i === (this._loading ? loadingIndex : activeIndex),
 			closeable: tab.closeable,
 			disabled: tab.disabled,
 			index: i,
+			loading: i === loadingIndex,
 			onClick: this.onTabClick,
 			onCloseClick: this.onCloseClick
 		}, [ tab.label || null ]));
@@ -72,14 +100,16 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	renderTabs() {
 		const {
 			activeIndex = 0,
+			loadingIndex,
 			tabs = []
 		} = this.properties;
 
 		return tabs.filter((tab, i) => {
-			return i === activeIndex;
-		}).map(tab => w(Tab, {
-			active: true
-		}, [ tab.content || null ]));
+			return i === (this._loading ? loadingIndex : activeIndex);
+		}).map((tab, i) => w(Tab, {
+			active: true,
+			loading: this._loading
+		}, [ this._loading ? 'Loading...' : (tab.content || null) ]));
 	}
 
 	updateActiveIndex() {
@@ -96,6 +126,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		for (let i = 0; i < tabs.length; i++) {
 			if (!tabs[i].disabled) {
 				onRequestTabChange && onRequestTabChange(i);
+				break;
 			}
 		}
 	}
@@ -105,14 +136,44 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		if (includes(evt.changedPropertyKeys, 'tabs') || includes(evt.changedPropertyKeys, 'activeIndex')) {
 			this.updateActiveIndex();
 		}
+		if (includes(evt.changedPropertyKeys, 'loadingIndex')) {
+			const index = evt.properties.loadingIndex;
+			this._loading = typeof index === 'number';
+		}
 	}
 
 	render(): DNode {
+		const { alignButtons } = this.properties;
+
+		let alignClass;
+		let children = [
+			v('div', {
+				classes: this.classes(css.tabButtons)
+			}, this.renderTabButtons()),
+			v('div', {
+				classes: this.classes(css.tabs)
+			}, this.renderTabs())
+		];
+
+		switch (alignButtons) {
+			case Align.right:
+				alignClass = css.alignRight;
+				children.reverse();
+				break;
+			case Align.bottom:
+				alignClass = css.alignBottom;
+				children.reverse();
+				break;
+			case Align.left:
+				alignClass = css.alignLeft;
+				break;
+		}
+
 		return v('div', {
-			classes: this.classes(css.root)
-		}, [
-			v('div', this.renderTabButtons()),
-			v('div', this.renderTabs())
-		]);
+			classes: this.classes(
+				css.root,
+				alignClass ? alignClass : null
+			)
+		}, children);
 	}
 }

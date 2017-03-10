@@ -11,9 +11,11 @@ import * as css from './styles/tabPane.css';
  * Properties that can be set on a Tab component
  *
  * @property active		Dertermines whether this tab is selected
+ * @property loading		Determines whether the associated tab is loading
  */
 export interface TabProperties extends ThemeableProperties {
 	active?: boolean;
+	loading?: boolean;
 };
 
 export const TabBase = ThemeableMixin(WidgetBase);
@@ -21,10 +23,13 @@ export const TabBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class Tab extends TabBase<TabProperties> {
 	render(): DNode {
-		const { active } = this.properties;
+		const { loading } = this.properties;
 
 		return v('div', {
-			classes: this.classes(active ? css.activeTab : null)
+			classes: this.classes(
+				css.tab,
+				loading ? css.loading : null
+			)
 		}, this.children);
 	}
 }

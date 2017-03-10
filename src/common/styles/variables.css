@@ -35,6 +35,7 @@
 	--input-padding: 0.5em 1em;
 	--border-thick: 5px;
 	--tab-width: 120px;
+	--min-container-height: 250px;
 
 	/* Composed values */
 	--title-bar-bg: var(--dojo-blue);

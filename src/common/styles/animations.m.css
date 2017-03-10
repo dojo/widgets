@@ -29,3 +29,21 @@
 	animation-fill-mode: both;
 	animation-name: fadeOut;
 }
+
+@keyframes pulse {
+	0% { 
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1.0);
+		opacity: 0;
+	}
+}
+
+.pulse {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: fadeOut;
+	animation-iteration-count: infinite;
+	
+}
