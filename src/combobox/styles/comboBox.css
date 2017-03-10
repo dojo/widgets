@@ -16,6 +16,10 @@
 	padding-right: 2em;
 }
 
+.input::-ms-clear {
+	display: none;
+}
+
 .clearable {
 	padding-right: 4em;
 }

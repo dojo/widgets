@@ -96,8 +96,16 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		[keys.down](this: ComboBox, event: KeyboardEvent) {
 			event.preventDefault();
-			this.updateSelectedIndex(Operation.increase);
-			this.invalidate();
+			const { onRequestResults } = this.properties;
+
+			if (!this._open) {
+				this._open = true;
+				onRequestResults && onRequestResults(this._inputElement.value);
+			}
+			else {
+				this.updateSelectedIndex(Operation.increase);
+				this.invalidate();
+			}
 		},
 
 		[keys.enter](this: ComboBox) {
@@ -166,7 +174,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		this._open = true;
 		this._focused = true;
-		this._inputElement && onRequestResults && onRequestResults(this._inputElement.value);
+		onRequestResults && onRequestResults(this._inputElement.value);
 	}
 
 	private _onClearClick() {
@@ -283,7 +291,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _restoreFocus() {
 		const func = this._focused ? 'focus' : 'blur';
-		this._inputElement && this._inputElement[func]();
+		this._inputElement[func]();
 	}
 
 	private _selectResult(result: any) {
