@@ -24,7 +24,7 @@ import * as css from './styles/slider.css';
  * @property step						Size of the slider increment
  * @property value					The current value
  * @property vertical				Orients the slider vertically, false by default.
- * @property verticalHeight	(only used if vertical is true) Length of the vertical slider
+ * @property verticalHeight	Length of the vertical slider (only used if vertical is true)
  * @property onBlur					Called when the input loses focus
  * @property onChange				Called when the node's 'change' event is fired
  * @property onClick				Called when the input is clicked
