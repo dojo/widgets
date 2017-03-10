@@ -124,26 +124,6 @@ registerSuite({
 		assert.isFalse(called);
 	},
 
-	'skipResult should be called'() {
-		let disabled = false;
-		class CustomResultItem extends ResultItem {
-			isDisabled() {
-				disabled = !disabled;
-				return disabled;
-			}
-		}
-		const comboBox = new ComboBox();
-		comboBox.setProperties({
-			results: ['a', 'b'],
-			customResultItem: CustomResultItem
-		});
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		<VNode> comboBox.__render__();
-		const vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
-	},
-
 	'Blur should be ignored when clicking result'() {
 		const comboBox = new ComboBox();
 		let called = false;
