@@ -5,6 +5,7 @@ export const fill: string;
 export const thumb: string;
 export const input: string;
 export const output: string;
+export const vertical: string;
 export const disabled: string;
 export const readonly: string;
 export const required: string;

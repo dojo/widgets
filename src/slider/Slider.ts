@@ -2,6 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import Label, { LabelOptions } from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
+import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/slider.css';
 
@@ -10,30 +11,32 @@ import * as css from './styles/slider.css';
  *
  * Properties that can be set on a Slider component
  *
- * @property describedBy	ID of an element that provides more descriptive text
- * @property disabled			Prevents the user from interacting with the form field
- * @property formId				ID of a form element associated with the form field
- * @property invalid			Indicates the valid is invalid, or required and not filled in
- * @property label				Label settings for form label text, position, and visibility
- * @property max					The maximum value for the slider
- * @property min					The minimum value for the slider
- * @property name					The form widget's name
- * @property readOnly			Allows or prevents user interaction
- * @property required			Whether or not a value is required
- * @property step					Size of the slider increment
- * @property value				The current value
- * @property onBlur				Called when the input loses focus
- * @property onChange			Called when the node's 'change' event is fired
- * @property onClick			Called when the input is clicked
- * @property onFocus			Called when the input is focused
- * @property onInput			Called when the 'input' event is fired
- * @property onKeyDown		Called on the input's keydown event
- * @property onKeyPress		Called on the input's keypress event
- * @property onKeyUp			Called on the input's keyup event
- * @property onMouseDown	Called on the input's mousedown event
- * @property onMouseUp		Called on the input's mouseup event
- * @property onTouchStart	Called on the input's touchstart event
- * @property onTouchEnd		Called on the input's touchend event
+ * @property describedBy		ID of an element that provides more descriptive text
+ * @property disabled				Prevents the user from interacting with the form field
+ * @property formId					ID of a form element associated with the form field
+ * @property invalid				Indicates the valid is invalid, or required and not filled in
+ * @property label					Label settings for form label text, position, and visibility
+ * @property max						The maximum value for the slider
+ * @property min						The minimum value for the slider
+ * @property name						The form widget's name
+ * @property readOnly				Allows or prevents user interaction
+ * @property required				Whether or not a value is required
+ * @property step						Size of the slider increment
+ * @property value					The current value
+ * @property vertical				Orients the slider vertically, false by default.
+ * @property verticalHeight	(only used if vertical is true) Length of the vertical slider
+ * @property onBlur					Called when the input loses focus
+ * @property onChange				Called when the node's 'change' event is fired
+ * @property onClick				Called when the input is clicked
+ * @property onFocus				Called when the input is focused
+ * @property onInput				Called when the 'input' event is fired
+ * @property onKeyDown			Called on the input's keydown event
+ * @property onKeyPress			Called on the input's keypress event
+ * @property onKeyUp				Called on the input's keyup event
+ * @property onMouseDown		Called on the input's mousedown event
+ * @property onMouseUp			Called on the input's mouseup event
+ * @property onTouchStart		Called on the input's touchstart event
+ * @property onTouchEnd			Called on the input's touchend event
  * @property onTouchCancel	Called on the input's touchcancel event
  */
 export interface SliderProperties extends ThemeableProperties {
@@ -45,10 +48,13 @@ export interface SliderProperties extends ThemeableProperties {
 	max?: number;
 	min?: number;
 	name?: string;
+	output?(value: number): string | DNode;
 	readOnly?: boolean;
 	required?: boolean;
 	step?: number;
 	value?: number;
+	vertical?: boolean;
+	verticalHeight?: string;
 	onBlur?(event: FocusEvent): void;
 	onChange?(event: Event): void;
 	onClick?(event: MouseEvent): void;
@@ -92,9 +98,14 @@ export default class Slider extends SliderBase<SliderProperties> {
 			max = 100,
 			min = 0,
 			name,
+			output,
 			readOnly,
 			required,
 			step = 1,
+			vertical = false,
+			verticalHeight = '200px'
+		} = this.properties;
+		const {
 			value = min
 		} = this.properties;
 
@@ -103,12 +114,20 @@ export default class Slider extends SliderBase<SliderProperties> {
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null
+			required ? css.required : null,
+			vertical ? css.vertical : null
 		];
 
+		// id used to associate input with output
 		const inputId = uuid();
 
-		const slider = v('div', { classes: this.classes(css.inputWrapper)  }, [
+		// custom output node
+		const outputNode = output ? output(value) : value + '';
+
+		const slider = v('div', {
+			classes: this.classes(css.inputWrapper),
+			styles: vertical ? { height: verticalHeight } : {}
+		}, [
 			v('input', {
 				bind: this,
 				classes: this.classes(css.input),
@@ -123,8 +142,9 @@ export default class Slider extends SliderBase<SliderProperties> {
 				'aria-readonly': readOnly ? 'true' : null,
 				required,
 				step: step + '',
+				styles: vertical ? { width: verticalHeight } : {},
 				type: 'range',
-				value,
+				value: value + '',
 				onblur: this.onBlur,
 				onchange: this.onChange,
 				onclick: this.onClick,
@@ -141,7 +161,8 @@ export default class Slider extends SliderBase<SliderProperties> {
 			}),
 			v('div', {
 				classes: this.classes(css.track),
-				'aria-hidden': 'true'
+				'aria-hidden': 'true',
+				styles: vertical ? { width: verticalHeight } : {}
 			}, [
 				v('span', {
 					classes: this.classes(css.fill),
@@ -154,9 +175,8 @@ export default class Slider extends SliderBase<SliderProperties> {
 			]),
 			v('output', {
 				classes: this.classes(css.output),
-				for: inputId + '',
-				innerHTML: value + ''
-			})
+				for: inputId + ''
+			}, [ outputNode ])
 		]);
 
 		let sliderWidget;

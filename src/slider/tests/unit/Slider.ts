@@ -36,7 +36,7 @@ registerSuite({
 			name: 'bar',
 			readOnly: true,
 			required: true,
-			value: 'qux'
+			value: 5
 		});
 		const vnode = <VNode> slider.__render__();
 		const labelNode = vnode.children![0];
