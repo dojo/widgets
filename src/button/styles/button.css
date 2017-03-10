@@ -1,4 +1,4 @@
-@import '../../styles/variables.css';
+@import '../../common/styles/variables.css';
 
 .button {
 	background-color: var(--button-bg);
@@ -21,7 +21,8 @@
 	outline: none;
 }
 
-.button[aria-pressed="true"]:before {
+/* TODO: this could be a check icon */
+.button.pressed::before {
 	border-bottom: 2px solid var(--button-color);
 	border-right: 2px solid var(--button-color);
 	box-sizing: border-box;
@@ -33,14 +34,27 @@
 	width: 0.5em;
 }
 
-.button[disabled],
-.button[disabled]:hover {
+/* TODO: this could be a down arrow icon */
+.button.popup::after {
+	border-bottom: 2px solid var(--button-color);
+	border-right: 2px solid var(--button-color);
+	box-sizing: border-box;
+	content: '';
+	display: inline-block;
+	height: 0.6em;
+	margin-left: 0.6em;
+	transform: translate(0, -35%) rotate(45deg);
+	width: 0.6em;
+}
+
+.button.disabled,
+.button.disabled:hover {
 	background-color: var(--button-disabled-bg);
 	border-color: var(--button-disabled-bg);
 	cursor: default;
 }
 
-.button[data-dojo-icon]:before {
+.button[data-dojo-icon]::before {
 	content: attr(data-dojo-icon);
 	display: inline-block;
 	font-family: var(--button-icon-font);

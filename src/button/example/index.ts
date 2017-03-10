@@ -3,11 +3,12 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
-import Button from '../../button/Button';
+import Button, { ButtonType } from '../../button/Button';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export const AppBase = StatefulMixin(WidgetBase);
+export class App extends AppBase<WidgetProperties> {
 	toggleButton() {
-		this.setState({ buttonPressed: !this.state['buttonPressed'] });
+		this.setState({ buttonPressed: !this.state.buttonPressed });
 	}
 
 	render() {
@@ -23,13 +24,14 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				content: 'Basic Button'
 			}),
 			v('p', {
-				innerHTML: 'Disabled submit button:'
+				innerHTML: 'Disabled menu button:'
 			}),
 			w(Button, {
 				key: 'b2',
-				content: 'Submit',
+				content: 'Open',
 				disabled: true,
-				type: 'submit'
+				hasPopup: true,
+				type: <ButtonType> 'menu'
 			}),
 			v('p', {
 				innerHTML: 'Icon Button'
@@ -45,7 +47,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(Button, {
 				key: 'b4',
 				content: 'Button state',
-				pressed: <boolean> this.state['buttonPressed'],
+				pressed: <boolean> this.state.buttonPressed,
 				onClick: this.toggleButton
 			})
 		]);
@@ -53,6 +55,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 }
 
 const Projector = ProjectorMixin(App);
-const projector = new Projector({});
+const projector = new Projector();
 
 projector.append();
