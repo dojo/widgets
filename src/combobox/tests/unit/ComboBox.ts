@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import ComboBox from '../../ComboBox';
+import ComboBox, { Operation } from '../../ComboBox';
 import ResultItem from '../../ResultItem';
 import ResultMenu from '../../ResultMenu';
 
@@ -139,13 +139,12 @@ registerSuite({
 		assert.isFalse(called);
 	},
 
-	'Down arrow should change selected result'() {
+	'Down arrow should change selected result if open'() {
 		const comboBox = new ComboBox();
 		comboBox.setProperties({
 			results: ['1', '2']
 		});
 
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox).updateSelectedIndex();
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
@@ -155,6 +154,20 @@ registerSuite({
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		vnode = <VNode> comboBox.__render__();
 		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
+	},
+
+	'Down arrow should open results if closed'() {
+		const comboBox = new ComboBox();
+		let called = false;
+		comboBox.setProperties({
+			results: ['1', '2'],
+			onRequestResults: () => called = true
+		});
+		(<any> comboBox)._afterCreate(parentElement());
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
+		const vnode = <VNode> comboBox.__render__();
+		assert.isTrue(called);
+		assert.lengthOf(vnode.children, 3);
 	},
 
 	'Up arrow should change selected result'() {
@@ -339,6 +352,9 @@ registerSuite({
 		(<any> comboBox)._onInputBlur(parentElement());
 		<VNode> comboBox.__render__();
 		assert.strictEqual(called, 2);
+		(<any> comboBox)._wasOpen = false;
+		(<any> comboBox)._open = false;
+		(<any> comboBox)._notifyMenuChange();
 	},
 
 	'Clicking arrow should not open menu if disabled'() {
@@ -410,5 +426,15 @@ registerSuite({
 		(<any> comboBox)._afterCreate(parentElement());
 		(<any> comboBox)._afterUpdate(parentElement(element));
 		assert.strictEqual(menu.scrollTop, 50);
+	},
+
+	'Skip result should update index based on last direction'() {
+		const comboBox = new ComboBox();
+		comboBox.setProperties({ results: ['a', 'b', 'c'] });
+		(<any> comboBox)._open = true;
+		(<any> comboBox)._selectedIndex = 0;
+		(<any> comboBox)._direction = Operation.increase;
+		(<any> comboBox)._skipResult();
+		assert.strictEqual((<any> comboBox)._selectedIndex, 1);
 	}
 });

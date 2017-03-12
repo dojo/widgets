@@ -60,7 +60,8 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	onMenuChange?(open: boolean): void;
 };
 
-const enum Operation {
+// Enum used when traversing items using arrow keys
+export const enum Operation {
 	increase = 1,
 	decrease = -1,
 	reset
@@ -359,6 +360,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		const {
 			clearable,
 			disabled,
+			required,
+			invalid,
 			formId,
 			label,
 			readOnly,
@@ -385,6 +388,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				classes: this.classes(clearable ? css.clearable : null),
 				disabled,
 				readOnly,
+				invalid,
+				required,
 				onBlur: this._onInputBlur,
 				onFocus: this._onInputFocus,
 				onInput: this._onInput,

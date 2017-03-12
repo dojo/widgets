@@ -225,6 +225,23 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value8'],
 				label: 'Enter a value'
+			}),
+			v('h3', ['Required and validated']),
+			w(ComboBox, {
+				key: '9',
+				required: true,
+				onChange: (value: string) => this.setState({
+					'value9': value,
+					invalid: value.trim().length === 0
+				}),
+				getResultLabel: (result: any) => <string> result.value,
+				onRequestResults: this.onRequestResults,
+				results: <any[]> this.state['results'],
+				value: <string> this.state['value9'],
+				invalid: <boolean> this.state.invalid,
+				inputProperties: {
+					placeholder: 'Enter a value'
+				}
 			})
 		]);
 	}
