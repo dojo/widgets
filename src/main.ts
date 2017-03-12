@@ -1,5 +1,6 @@
 import Dialog from './dialog/Dialog';
 import SlidePane from './slidepane/SlidePane';
+import TabPane from './tabpane/TabPane';
 import Label from './label/Label';
 import Button from './button/Button';
 import TextInput from './textinput/TextInput';
@@ -12,6 +13,7 @@ import ComboBox from './combobox/ComboBox';
 export {
 	Dialog,
 	SlidePane,
+	TabPane,
 	Label,
 	Button,
 	TextInput,
