@@ -61,24 +61,7 @@ export const TabPaneBase = ThemeableMixin(WidgetBase);
 export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	private _loading: boolean;
 
-	onTabClick(index: number) {
-		const { onRequestTabChange } = this.properties;
-		onRequestTabChange && onRequestTabChange(index);
-	}
-
-	onCloseClick(index: number) {
-		let {
-			tabs = [],
-			onRequestTabClose
-		} = this.properties;
-
-		const newTabs = tabs.slice();
-		newTabs.splice(index, 1);
-
-		onRequestTabClose && onRequestTabClose(newTabs);
-	}
-
-	renderTabButtons() {
+	private _renderTabButtons() {
 		const {
 			activeIndex = 0,
 			loadingIndex,
@@ -97,7 +80,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		}, [ tab.label || null ]));
 	}
 
-	renderTabs() {
+	private _renderTabs() {
 		const {
 			activeIndex = 0,
 			loadingIndex,
@@ -112,7 +95,24 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		}, [ this._loading ? 'Loading...' : (tab.content || null) ]));
 	}
 
-	updateActiveIndex() {
+	protected onTabClick(index: number) {
+		const { onRequestTabChange } = this.properties;
+		onRequestTabChange && onRequestTabChange(index);
+	}
+
+	protected onCloseClick(index: number) {
+		let {
+			tabs = [],
+			onRequestTabClose
+		} = this.properties;
+
+		const newTabs = tabs.slice();
+		newTabs.splice(index, 1);
+
+		onRequestTabClose && onRequestTabClose(newTabs);
+	}
+
+	protected updateActiveIndex() {
 		let {
 			activeIndex = 0,
 			tabs = [],
@@ -132,7 +132,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	}
 
 	@onPropertiesChanged
-	onPropertiesChanged(evt: PropertiesChangeEvent<this, TabPaneProperties>) {
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, TabPaneProperties>) {
 		if (includes(evt.changedPropertyKeys, 'tabs') || includes(evt.changedPropertyKeys, 'activeIndex')) {
 			this.updateActiveIndex();
 		}
@@ -149,10 +149,10 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		let children = [
 			v('div', {
 				classes: this.classes(css.tabButtons)
-			}, this.renderTabButtons()),
+			}, this._renderTabButtons()),
 			v('div', {
 				classes: this.classes(css.tabs)
-			}, this.renderTabs())
+			}, this._renderTabs())
 		];
 
 		switch (alignButtons) {

@@ -32,7 +32,7 @@ export const TabButtonBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TabButton extends TabButtonBase<TabButtonProperties> {
-	onClick() {
+	private _onClick() {
 		const {
 			disabled,
 			index,
@@ -42,7 +42,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		!disabled && onClick && onClick(index);
 	}
 
-	onCloseClick(event: MouseEvent) {
+	private _onCloseClick(event: MouseEvent) {
 		const {
 			index,
 			onCloseClick
@@ -63,7 +63,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			v('button', {
 				classes: this.classes(css.close),
 				innerHTML: 'close tab',
-				onclick: this.onCloseClick
+				onclick: this._onCloseClick
 			})
 		]) : this.children;
 
@@ -73,7 +73,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 				active ? css.activeTabButton : null,
 				disabled ? css.disabledTabButton : null
 			),
-			onclick: this.onClick
+			onclick: this._onClick
 		}, children);
 	}
 }
