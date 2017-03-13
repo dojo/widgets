@@ -8,7 +8,7 @@ import * as css from './styles/dialog.css';
 import * as animations from '../common/styles/animations.css';
 
 /**
- * Enum for dialog / alertdialog role
+ * The role of this dialog, used for accessibility
  */
 export type Role = 'dialog' | 'alertdialog';
 
