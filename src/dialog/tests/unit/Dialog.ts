@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import Dialog, { Role } from '../../Dialog';
+import Dialog from '../../Dialog';
 
 registerSuite({
 	name: 'Dialog',
@@ -15,7 +15,7 @@ registerSuite({
 			title: 'dialog',
 			underlay: true,
 			closeable: true,
-			role: Role.dialog
+			role: 'dialog'
 		});
 
 		assert.strictEqual(dialog.properties.key, 'foo');
@@ -24,7 +24,7 @@ registerSuite({
 		assert.strictEqual(dialog.properties.title, 'dialog');
 		assert.isTrue(dialog.properties.underlay);
 		assert.isTrue(dialog.properties.closeable);
-		assert.strictEqual(dialog.properties.role, Role.dialog);
+		assert.strictEqual(dialog.properties.role, 'dialog');
 	},
 
 	'Render correct children'() {
@@ -32,7 +32,7 @@ registerSuite({
 		dialog.setProperties({
 			enterAnimation: 'enter',
 			exitAnimation: 'exit',
-			role: Role.dialog
+			role: 'dialog'
 		});
 		let vnode = <VNode> dialog.__render__();
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
@@ -41,7 +41,7 @@ registerSuite({
 		dialog.setProperties({
 			open: true,
 			underlay: true,
-			role: Role.alertdialog
+			role: 'dialog'
 		});
 		vnode = <VNode> dialog.__render__();
 		assert.lengthOf(vnode.children, 2);
