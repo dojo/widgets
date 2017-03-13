@@ -23,7 +23,6 @@ export interface TitlePaneProperties extends ThemeableProperties {
 	closeable?: boolean;
 	open?: boolean;
 	title: string;
-
 	onRequestClose?(): void;
 	onRequestOpen?(): void;
 };
@@ -32,10 +31,19 @@ export const TitlePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
-	private _content: HTMLElement;
-	private _wasOpen: boolean;
+	private _afterRender(element: HTMLElement) {
+		// Conditionally adjut top margin. Done manually instead of through Maquette
+		// so the underlying DOM is accessible, as we need to know the content height.
+		// Put in a timeout to push this operation to the next tick, otherwise
+		// element.offsetHeight below can be incorrect (e.g. before styling is applied)
+		setTimeout(() => {
+			const { open = true } = this.properties;
+			const height = element.offsetHeight;
+			element.style.marginTop = open ? '0px' : `-${ height }px`;
+		}, 0);
+	}
 
-	onTitleClick() {
+	private _onTitleClick() {
 		const {
 			open = true,
 			onRequestClose,
@@ -50,10 +58,6 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		}
 	}
 
-	cacheContent(element: HTMLElement) {
-		this._content = <HTMLElement> element.querySelector(`.${ css.content }`);
-	}
-
 	render(): DNode {
 		const {
 			ariaHeadingLevel,
@@ -65,17 +69,13 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		const contentId = uuid();
 		const titleId = uuid();
 
-		this._wasOpen = !open;
-
 		return v('div', {
-			classes: this.classes(css.main),
-			afterCreate: this.cacheContent,
-			afterUpdate: this.cacheContent
+			classes: this.classes(css.main)
 		}, [
 			v('div', {
 				'aria-level': ariaHeadingLevel ? String(ariaHeadingLevel) : '',
 				classes: this.classes(css.title, closeable ? css.closeable : null),
-				onclick: closeable ? this.onTitleClick : undefined,
+				onclick: closeable ? this._onTitleClick : undefined,
 				role: 'heading'
 			}, [
 				v('div', {
@@ -89,14 +89,10 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			]),
 			v('div', {
 				'aria-labelledby': titleId,
-				classes: this.classes(
-					css.content,
-					open ? css.open : null
-				),
+				classes: this.classes(css.content),
 				id: contentId,
-				styles: {
-					height: (open && this._content) ? `${ this._content.offsetHeight }px` : null
-				}
+				afterCreate: this._afterRender,
+				afterUpdate: this._afterRender
 			}, this.children)
 		]);
 	}

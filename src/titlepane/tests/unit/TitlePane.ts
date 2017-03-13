@@ -29,7 +29,7 @@ registerSuite({
 		});
 		let called = false;
 
-		titlePane.onTitleClick();
+		(<any> titlePane)._onTitleClick();
 		assert.isTrue(called, 'onRequestClose should be called on title click');
 	},
 
@@ -45,7 +45,7 @@ registerSuite({
 		});
 		let called = false;
 
-		titlePane.onTitleClick();
+		(<any> titlePane)._onTitleClick();
 		assert.isTrue(called, 'onRequestOpen should be called on title click');
 	},
 
@@ -60,7 +60,7 @@ registerSuite({
 		let called = false;
 		let vnode = <VNode> titlePane.__render__();
 
-		titlePane.onTitleClick();
+		(<any> titlePane)._onTitleClick();
 		assert.isTrue(called, '`open` should default to `true` causing title click to call `onRequestClose`');
 
 		assert.strictEqual(vnode.children![0].properties!['aria-level'], '',

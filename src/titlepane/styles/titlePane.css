@@ -26,14 +26,9 @@
 }
 
 .content {
-	border-color: var(--title-bar-bg);
-	border-style: solid;
-	border-width: var(--border-thin);
+	border-right: var(--border-thin) solid var(--title-bar-bg);
+	border-bottom: var(--border-thin) solid var(--title-bar-bg);
+	border-left: var(--border-thin) solid var(--title-bar-bg);
 	padding: var(--container-padding);
-	transform: translateY(-100%);
-	transition: transform ease-in-out var(--short-animation-duration);
-}
-
-.open {
-	transform: translateY(0%);
+	transition: margin-top ease-in-out var(--short-animation-duration);
 }
