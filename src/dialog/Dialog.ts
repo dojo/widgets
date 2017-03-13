@@ -8,12 +8,9 @@ import * as css from './styles/dialog.css';
 import * as animations from '../common/styles/animations.css';
 
 /**
- * Enum for dialog / alertdialog role
+ * The role of this dialog, used for accessibility
  */
-export const enum Role {
-	dialog,
-	alertdialog
-};
+export type Role = 'dialog' | 'alertdialog';
 
 /**
  * @type DialogProperties
@@ -64,7 +61,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			exitAnimation = animations.fadeOut,
 			title = '',
 			open = false,
-			role = Role.dialog,
+			role = 'dialog',
 			underlay = false,
 			onOpen
 		} = this.properties;
