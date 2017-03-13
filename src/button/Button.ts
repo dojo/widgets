@@ -14,7 +14,6 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property describedBy	ID of element with descriptive text
  * @property disabled			Whether the button is disabled or clickable
  * @property hasPopup			Whether the button triggers a popup
- * @property icon					Creates an icon button with the specified icon glyph
  * @property name					The button's name attribute
  * @property pressed			Indicates status of a toggle button
  * @property type					Button type can be "submit", "reset", "button", or "menu"
@@ -36,7 +35,6 @@ export interface ButtonProperties extends ThemeableProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	hasPopup?: boolean;
-	icon?: string;
 	name?: string;
 	pressed?: boolean;
 	type?: ButtonType;
@@ -76,7 +74,6 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			describedBy,
 			disabled,
 			hasPopup,
-			icon,
 			name,
 			pressed,
 			type,
@@ -95,7 +92,6 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			'aria-describedby': describedBy,
 			disabled,
 			'aria-haspopup': typeof hasPopup === 'boolean' ? hasPopup.toString() : null,
-			'data-dojo-icon': icon,
 			name,
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
 			type,

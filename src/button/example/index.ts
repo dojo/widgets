@@ -34,14 +34,6 @@ export class App extends AppBase<WidgetProperties> {
 				type: <ButtonType> 'menu'
 			}),
 			v('p', {
-				innerHTML: 'Icon Button'
-			}),
-			w(Button, {
-				key: 'b3',
-				content: 'Favorite',
-				icon: ''
-			}),
-			v('p', {
 				innerHTML: 'Toggle Button'
 			}),
 			w(Button, {

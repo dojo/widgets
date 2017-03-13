@@ -53,20 +53,3 @@
 	border-color: var(--button-disabled-bg);
 	cursor: default;
 }
-
-.button[data-dojo-icon]::before {
-	content: attr(data-dojo-icon);
-	display: inline-block;
-	font-family: var(--button-icon-font);
-	speak: none;
-	font-size: var(--button-icon-size);
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	margin: -0.5em 0.3em -0.5em -0.3em;
-	vertical-align: sub;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}

@@ -20,7 +20,6 @@ registerSuite({
 		button.setProperties({
 			content: 'foo',
 			type: 'submit',
-			icon: 'x',
 			name: 'bar',
 			disabled: true,
 			pressed: true,
@@ -31,7 +30,6 @@ registerSuite({
 		assert.strictEqual(vnode.vnodeSelector, 'button');
 		assert.strictEqual(vnode.properties!.innerHTML, 'foo');
 		assert.strictEqual(vnode.properties!.type, 'submit');
-		assert.strictEqual(vnode.properties!['data-dojo-icon'], 'x');
 		assert.strictEqual(vnode.properties!.name, 'bar');
 		assert.isTrue(vnode.properties!.disabled);
 		assert.strictEqual(vnode.properties!['aria-pressed'], 'true');
