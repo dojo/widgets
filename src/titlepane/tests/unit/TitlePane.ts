@@ -4,6 +4,15 @@ import { VNode } from '@dojo/interfaces/vdom';
 import TitlePane from '../../TitlePane';
 import * as css from '../../styles/titlePane.css';
 
+function contentElement() {
+	return {
+		offsetHeight: 200,
+		style: {
+			marginTop: null
+		}
+	};
+}
+
 registerSuite({
 	name: 'TitlePane',
 
@@ -105,5 +114,49 @@ registerSuite({
 
 		assert.strictEqual(vnode.children![1].children!.length, 0,
 			'`open=false` should not render content');
+	},
+
+	'By default, title pane should open'(this: any) {
+		const dfd = this.async();
+		const titlePane = new TitlePane();
+		const content = contentElement();
+
+		(<any> titlePane)._afterRender(content);
+
+		setTimeout(dfd.callback(() => {
+			assert.strictEqual(content.style.marginTop, '0px', 'top margin should be 0px when open');
+		}), 100);
+	},
+
+	'Title pane should open when `open` = true'(this: any) {
+		const dfd = this.async();
+		const titlePane = new TitlePane();
+		const content = contentElement();
+
+		(<any> titlePane)._afterRender(content);
+		titlePane.setProperties({
+			title: 'foo',
+			open: true
+		});
+
+		setTimeout(dfd.callback(() => {
+			assert.strictEqual(content.style.marginTop, '0px', 'top margin should be 0px when open');
+		}), 100);
+	},
+
+	'Title pane should close when `open` = false'(this: any) {
+		const dfd = this.async();
+		const titlePane = new TitlePane();
+		const content = contentElement();
+
+		(<any> titlePane)._afterRender(content);
+		titlePane.setProperties({
+			title: 'foo',
+			open: false
+		});
+
+		setTimeout(dfd.callback(() => {
+			assert.strictEqual(content.style.marginTop, '-200px', 'top margin should be -(content height) when closed');
+		}), 100);
 	}
 });
