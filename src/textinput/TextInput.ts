@@ -1,4 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
 import Label, { LabelOptions } from '../label/Label';
@@ -85,7 +86,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	render() {
+	render(): DNode {
 		const {
 			describedBy,
 			disabled,

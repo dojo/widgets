@@ -23,14 +23,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		this.setState({ closeable: (<HTMLInputElement> event.target).checked });
 	}
 
-	toggleEnterAnimation(event: Event) {
-		this.setState({ enterAnimation: (<HTMLInputElement> event.target).checked ? 'slideIn' : undefined });
-	}
-
-	toggleExitAnimation(event: Event) {
-		this.setState({ exitAnimation: (<HTMLInputElement> event.target).checked ? 'slideOut' : undefined });
-	}
-
 	render(): DNode {
 		return v('div', [
 			w(Dialog, {
@@ -40,8 +32,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				modal: <boolean> this.state['modal'],
 				underlay: <boolean> this.state['underlay'],
 				closeable: <boolean> this.state['closeable'],
-				enterAnimation: <string> this.state['enterAnimation'],
-				exitAnimation: <string> this.state['exitAnimation'],
 				onRequestClose: () => {
 					this.setState({ open: false });
 				}
@@ -87,28 +77,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				v('label', {
 					for: 'closeable',
 					innerHTML: 'closeable'
-				})
-			]),
-			v('div', { classes: { option: true }}, [
-				v('input', {
-					type: 'checkbox',
-					id: 'enterAnimation',
-					onchange: this.toggleEnterAnimation
-				}),
-				v('label', {
-					for: 'enterAnimation',
-					innerHTML: 'enterAnimation'
-				})
-			]),
-			v('div', { classes: { option: true }}, [
-				v('input', {
-					type: 'checkbox',
-					id: 'exitAnimation',
-					onchange: this.toggleExitAnimation
-				}),
-				v('label', {
-					for: 'exitAnimation',
-					innerHTML: 'exitAnimation'
 				})
 			])
 		]);

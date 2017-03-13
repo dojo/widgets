@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>SlidePane Example</title>
+	<title>Example</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 </head>
 <body>
 	<script src="../../../../node_modules/@dojo/loader/loader.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/maquette/2.4.2/css-transitions.min.js"></script>
+	<script src="../../../../node_modules/maquette/dist/css-transitions.min.js"></script>
 	<link rel="stylesheet" href="../../common/styles/widgets.css">
-	<style>
-		html,
-		body {
-			padding: 0;
-			margin: 0;
-		}
-	</style>
 	<script>
 		require.config({
 			baseUrl: '../../../../',
@@ -26,8 +19,25 @@
 			]
 		});
 
-		/* Requiring in the main module */
-		require([ 'src/slidepane/example/index' ], function () {});
+		(function () {
+			var query = window.location.search.substring(1).split('&');
+			var module;
+
+			for (var i = 0; i < query.length; i++) {
+				var pair = query[i].split('=');
+				if (pair[0].toLowerCase() === 'module') {
+					module = pair[1].toLowerCase();
+					break;
+				}
+			}
+
+			if (module) {
+				require([ 'src/' + module + '/example/index' ], function () {});
+			}
+			else {
+				console.error('No `module` parameter found in the URL');
+			}
+		})();
 	</script>
 </body>
 </html>
