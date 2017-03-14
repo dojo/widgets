@@ -44,6 +44,17 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	}
 
 	private _onTitleClick() {
+		this._toggle();
+	}
+
+	private _onTitleKeyUp(event: KeyboardEvent) {
+		if (event.keyCode === /* enter */ 13 ||
+			event.keyCode === /* space */ 32) {
+				this._toggle();
+		}
+	}
+
+	private _toggle() {
 		const {
 			open = true,
 			onRequestClose,
@@ -76,6 +87,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 				'aria-level': ariaHeadingLevel ? String(ariaHeadingLevel) : '',
 				classes: this.classes(css.title, closeable ? css.closeable : null),
 				onclick: closeable ? this._onTitleClick : undefined,
+				onkeyup: closeable ? this._onTitleKeyUp : undefined,
 				role: 'heading'
 			}, [
 				v('div', {
