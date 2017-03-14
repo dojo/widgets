@@ -17,7 +17,8 @@ export default function createTabPaneElement(): CustomElementDescriptor {
 				value: value => Number(value)
 			},
 			{
-				attributeName: 'alignButtons'
+				attributeName: 'alignButtons',
+				value: value => Number(value)
 			},
 			{
 				attributeName: 'loadingindex',
