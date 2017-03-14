@@ -13,5 +13,6 @@ registerSuite({
 		assert.isDefined(widgets.Textarea);
 		assert.isDefined(widgets.Checkbox);
 		assert.isDefined(widgets.Radio);
+		assert.isDefined(widgets.Slider);
 	}
 });

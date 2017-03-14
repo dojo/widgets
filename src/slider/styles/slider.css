@@ -1,0 +1,192 @@
+@import '../../common/styles/variables.css';
+
+.root {
+	display: block;
+	font: var(--base-font);
+	margin-bottom: var(--line-spacing);
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.track {
+	background-color: var(--dojo-light-gray);
+	border: 1px solid var(--input-border-color);
+	border-radius: var(--rounded-corners);
+	height: 0.75em;
+	position: relative;
+	width: 100%;
+}
+
+.fill {
+	background-color: var(--input-highlight-color);
+	border-radius: var(--rounded-corners);
+	bottom: 0;
+	content: "";
+	left: 0;
+	position: absolute;
+	top: 0;
+}
+
+.thumb {
+	background-color: var(--input-highlight-color);
+	border-radius: 50%;
+	box-shadow: inset 0 0 3px 0 var(--dojo-shade-gray);
+	height: 2em;
+	left: 50%;
+	margin-left: -1em;
+	position: absolute;
+	top: -0.625em;
+	width: 2em;
+}
+.thumb::before {
+	background-color: var(--dojo-light-gray);
+	border-radius: 50%;
+	box-shadow: 0 0 3px 0 var(--dojo-shade-gray);
+	content: "";
+	height: 1em;
+	left: 0.5em;
+	position: absolute;
+	top: 0.5em;
+	width: 1em;
+}
+
+.input {
+	height: 0.75em;
+}
+.input::-ms-thumb {
+	height: 2em;
+	width: 2em;
+}
+.input::-moz-range-thumb {
+	height: 2em;
+	width: 2em;
+}
+.input::-webkit-slider-thumb {
+	height: 2em;
+	width: 2em;
+}
+
+.input:focus ~ .track .thumb {
+	box-shadow: var(--input-focus-shadow);
+}
+
+.output { }
+
+/* vertical slider */
+.vertical .input,
+.vertical .track {
+	transform-origin: 0 0;
+	transform: rotate(-90deg) translate(-100%, 0);
+}
+
+/* disabled and readonly styles */
+.disabled .inputWrapper::before,
+.readonly .inputWrapper::before {
+	border-color: var(--input-border-color);
+}
+
+/* required style, only applies to inputs with a label */
+.required span::after {
+	content: '*';
+	color: var(--dojo-error-color);
+}
+
+/* invalid style */
+.invalid .track {
+	border-color: var(--dojo-error-color);
+}
+.invalid .thumb::before {
+	background-color: var(--dojo-error-color);
+}
+
+/* valid style */
+.valid .inputWrapper::before {
+	border-color: var(--dojo-success-color);
+}
+.valid .inputWrapper::after {
+	background-color: var(--dojo-success-color);
+}
+
+/* Make native input invisible */
+.nativeInput {
+	appearance: none;
+	background: transparent;
+	border: 0 none;
+	color: transparent;
+	font-size: inherit;
+	left: 0;
+	margin: 0px;
+	overflow: visible;
+	padding: 0px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+}
+
+/* invisible native track */
+.nativeInput::-ms-track {
+	appearance: none;
+	background: transparent;
+	border: 0 none;
+	color: transparent;
+	height: 100%;
+	margin: 0px;
+	overflow: visible;
+	padding: 0px;
+	width: 100%;
+}
+.nativeInput::-moz-range-track {
+	appearance: none;
+	background: transparent;
+	border: 0 none;
+	color: transparent;
+	height: 100%;
+	margin: 0px;
+	overflow: visible;
+	padding: 0px;
+	width: 100%;
+}
+.nativeInput:focus::-webkit-slider-runnable-track {
+	background: transparent;
+	border: transparent;
+}
+.nativeInput:focus {
+	outline: none;
+}
+
+/* thumb needs to be invisible and same size as custom thumb */
+.nativeInput::-ms-thumb {
+	border-radius: 50%;
+	border: 0 none;
+	background: transparent;
+	cursor: pointer;
+}
+.nativeInput::-moz-range-thumb {
+	border-radius: 50%;
+	border: 0 none;
+	background: transparent;
+	cursor: pointer;
+}
+.nativeInput::-webkit-slider-thumb {
+	appearance: none;
+	border-radius: 50%;
+	border: 0 none;
+	background: transparent;
+	cursor: pointer;
+}
+
+/* microsoft IE10+ and Edge - eliminates default fills before and after thumb */
+.nativeInput::-ms-fill-lower {
+	background: transparent;
+	border: 0 none;
+}
+.nativeInput::-ms-fill-upper {
+	background: transparent;
+	border: 0 none;
+}
+.nativeInput::-ms-tooltip {
+	display: none;
+}

@@ -5,6 +5,7 @@ import TextInput from './textinput/TextInput';
 import Textarea from './textarea/Textarea';
 import Checkbox from './checkbox/Checkbox';
 import Radio from './radio/Radio';
+import Slider from './slider/Slider';
 
 export {
 	Dialog,
@@ -13,5 +14,6 @@ export {
 	TextInput,
 	Textarea,
 	Checkbox,
-	Radio
+	Radio,
+	Slider
 };
