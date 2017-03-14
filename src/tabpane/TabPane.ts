@@ -106,7 +106,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 			onRequestTabClose
 		} = this.properties;
 
-		const newTabs = tabs.slice();
+		const newTabs = [...tabs];
 		newTabs.splice(index, 1);
 
 		onRequestTabClose && onRequestTabClose(newTabs);
@@ -146,11 +146,13 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		const { alignButtons } = this.properties;
 
 		let alignClass;
-		let children = [
+		const children = [
 			v('div', {
+				key: 'buttons',
 				classes: this.classes(css.tabButtons)
 			}, this._renderTabButtons()),
 			v('div', {
+				key: 'tabs',
 				classes: this.classes(css.tabs)
 			}, this._renderTabs())
 		];
