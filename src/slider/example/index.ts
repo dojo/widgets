@@ -13,14 +13,18 @@ export class App extends AppBase<WidgetProperties> {
 	}
 
 	onVerticalInput(event: Event) {
-		const value = (<HTMLInputElement> event.target).value;
-		this.setState({ verticalValue: parseFloat(value) });
+		const value = parseFloat((<HTMLInputElement> event.target).value);
+		this.setState({
+			verticalValue: value,
+			verticalInvalid: value > 50 ? true : false
+		});
 	}
 
 	render() {
 		const {
 			tribbleValue = 50,
-			verticalValue = 0
+			verticalValue = 0,
+			verticalInvalid = false
 		} = this.state;
 
 		return v('div', [
@@ -44,9 +48,22 @@ export class App extends AppBase<WidgetProperties> {
 			v('h1', {}, ['Vertical slider']),
 			w(Slider, {
 				key: 's2',
-				label: 'Vertical Slider with default properties',
+				label: 'Vertical Slider with default properties. Anything over 50 is invalid:',
 				value: <number> verticalValue,
 				vertical: true,
+				invalid: <boolean> verticalInvalid,
+				output: (value: number) => {
+					return v('span', {
+						innerHTML: verticalInvalid ? value + ' !' : value + '',
+						styles: {
+							position: 'absolute',
+							left: '30px',
+							top: (100 - value) + '%',
+							marginTop: '-10px',
+							padding: '5px'
+						}
+					});
+				},
 				onInput: this.onVerticalInput
 			})
 		]);

@@ -19,6 +19,7 @@ import * as css from './styles/slider.css';
  * @property max						The maximum value for the slider
  * @property min						The minimum value for the slider
  * @property name						The form widget's name
+ * @property output					An optional function that returns a string or DNode for custom output format
  * @property readOnly				Allows or prevents user interaction
  * @property required				Whether or not a value is required
  * @property step						Size of the slider increment
@@ -48,7 +49,7 @@ export interface SliderProperties extends ThemeableProperties {
 	max?: number;
 	min?: number;
 	name?: string;
-	output?(value: number): string | DNode;
+	output?(value: number): DNode;
 	readOnly?: boolean;
 	required?: boolean;
 	step?: number;
@@ -88,7 +89,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	render() {
+	render(): DNode {
 		const {
 			describedBy,
 			disabled,

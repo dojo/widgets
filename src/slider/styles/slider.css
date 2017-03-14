@@ -72,9 +72,7 @@
 	box-shadow: var(--input-focus-shadow);
 }
 
-.output {
-	position: absolute;
-}
+.output { }
 
 /* vertical slider */
 .vertical .input,
@@ -96,10 +94,10 @@
 }
 
 /* invalid style */
-.invalid .inputWrapper::before {
+.invalid .track {
 	border-color: var(--dojo-error-color);
 }
-.invalid .inputWrapper::after {
+.invalid .thumb::before {
 	background-color: var(--dojo-error-color);
 }
 
