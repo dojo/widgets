@@ -4,6 +4,9 @@ import { VNode } from '@dojo/interfaces/vdom';
 import TitlePane from '../../TitlePane';
 import * as css from '../../styles/titlePane.css';
 
+const ENTER_KEY_CODE = 13;
+const SPACE_KEY_CODE = 32;
+
 function contentElement() {
 	return {
 		offsetHeight: 200,
@@ -56,6 +59,64 @@ registerSuite({
 
 		(<any> titlePane)._onTitleClick();
 		assert.isTrue(called, 'onRequestOpen should be called on title click');
+	},
+
+	'toggle open state on keyup'() {
+		const props = {
+			closeable: true,
+			open: false,
+			onRequestClose() {
+				closeCount++;
+			},
+			onRequestOpen() {
+				openCount++;
+			},
+			title: 'test'
+		};
+		const titlePane = new TitlePane();
+		let openCount = 0;
+		let closeCount = 0;
+
+		titlePane.setProperties(props);
+		(<any> titlePane)._onTitleKeyUp({ keyCode: ENTER_KEY_CODE });
+		assert.strictEqual(openCount, 1, 'onRequestOpen should be called on title enter keyup');
+
+		titlePane.setProperties(props);
+		(<any> titlePane)._onTitleKeyUp({ keyCode: SPACE_KEY_CODE });
+		assert.strictEqual(openCount, 2, 'onRequestOpen should be called on title space keyup');
+
+		props.open = true;
+
+		titlePane.setProperties(props);
+		(<any> titlePane)._onTitleKeyUp({ keyCode: ENTER_KEY_CODE });
+		assert.strictEqual(closeCount, 1, 'onRequestClose should be called on title enter keyup');
+
+		titlePane.setProperties(props);
+		(<any> titlePane)._onTitleKeyUp({ keyCode: SPACE_KEY_CODE });
+		assert.strictEqual(closeCount, 2, 'onRequestClose should be called on title space keyup');
+	},
+
+	'keyup: only respond to enter and space'() {
+		const titlePane = new TitlePane();
+		titlePane.setProperties({
+			closeable: true,
+			open: false,
+			onRequestClose() {
+				called = true;
+			},
+			onRequestOpen() {
+				called = true;
+			},
+			title: 'test'
+		});
+		let called = false;
+
+		for (let i = 8; i < 223; i++) {
+			if (i !== ENTER_KEY_CODE && i !== SPACE_KEY_CODE) {
+				(<any> titlePane)._onTitleKeyUp({ keyCode: i });
+				assert.isFalse(called, `keyCode {i} should be ignored`);
+			}
+		}
 	},
 
 	'property defaults'() {
