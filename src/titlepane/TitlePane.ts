@@ -32,7 +32,7 @@ export const TitlePaneBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	private _afterRender(element: HTMLElement) {
-		// Conditionally adjut top margin. Done manually instead of through Maquette
+		// Conditionally adjust top margin. Done manually instead of through Maquette
 		// so the underlying DOM is accessible, as we need to know the content height.
 		// Put in a timeout to push this operation to the next tick, otherwise
 		// element.offsetHeight below can be incorrect (e.g. before styling is applied)
