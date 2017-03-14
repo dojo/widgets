@@ -8,8 +8,9 @@ import TitlePane from '../TitlePane';
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	render() {
 		return v('div', {
-			classes: {
-				'main-app': true
+			styles: {
+				margin: '20px',
+				width: '450px'
 			}
 		}, [
 			w(TitlePane, {
@@ -30,6 +31,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 				})
 			]),
+			v('div', {
+				styles: {
+					height: '15px'
+				}
+			}),
 			w(TitlePane, {
 				ariaHeadingLevel: 2,
 				key: 'titlePanel2',
@@ -56,6 +62,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 				})
 			]),
+			v('div', {
+				styles: {
+					height: '15px'
+				}
+			}),
 			w(TitlePane, {
 				key: 'titlePanel3',
 				open: <boolean> (this.state['t3open'] === undefined ? false : this.state['t3open']),
