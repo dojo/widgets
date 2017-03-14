@@ -1,12 +1,10 @@
 # @dojo/widgets
 
-<!-- TODO: change and uncomment
-[![Build Status](https://travis-ci.org/dojo/<< package-name >>.svg?branch=master)](https://travis-ci.org/dojo/<< package-name >>)
-[![codecov](https://codecov.io/gh/dojo/<< package-name >>/branch/master/graph/badge.svg)](https://codecov.io/gh/dojo/<< package-name >>)
-[![npm version](https://badge.fury.io/js/dojo-<< package-name >>.svg)](http://badge.fury.io/js/dojo-<< package-name >>)
--->
+[![Build Status](https://travis-ci.org/dojo/widgets.svg?branch=master)](https://travis-ci.org/dojo/widgets)
+[![codecov](https://codecov.io/gh/dojo/widgets/branch/master/graph/badge.svg)](https://codecov.io/gh/dojo/widgets)
+[![npm version](https://badge.fury.io/js/%40dojo%2Fwidgets.svg)](https://badge.fury.io/js/%40dojo%2Fwidgets)
 
-A suite of pre-built Dojo 2 widgets, ready to use in your application. These widgets are built using [(@dojo/widget-core)](https://github.com/dojo/widget-core).
+A suite of pre-built Dojo 2 widgets, ready to use in your application. These widgets are built using Dojo 2's widget authoring system [(@dojo/widget-core)](https://github.com/dojo/widget-core).
 
 **WARNING** This is *alpha* software. It is not yet production ready, so you should use at your own risk.
 
@@ -22,15 +20,24 @@ A suite of pre-built Dojo 2 widgets, ready to use in your application. These wid
 
 ## Usage
 
-To use `@dojo/widgets`, install the package:
+To use `@dojo/widgets` in your project, you will need to install the package:
 
 ```bash
 npm install @dojo/widgets
 ```
+This package contains *all* of the widgets in this repo.
+
+In a future release, we will also publish each widget individually to `npm`.
 
 ## Features
 
 Dojo 2 widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
+
+Dojo 2 widgets are fully accessible, out of the box.
+
+Dojo 2 widgets are fully themeable. In a future release we will ship with several official Dojo 2 themes.
+
+Dojo 2 widgets 
 
 ## Conventions
 
