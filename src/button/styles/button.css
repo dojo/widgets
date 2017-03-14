@@ -21,8 +21,7 @@
 	outline: none;
 }
 
-/* TODO: this could be a check icon */
-.button.pressed::before {
+.pressed::before {
 	border-bottom: 2px solid var(--button-color);
 	border-right: 2px solid var(--button-color);
 	box-sizing: border-box;
@@ -34,8 +33,7 @@
 	width: 0.5em;
 }
 
-/* TODO: this could be a down arrow icon */
-.button.popup::after {
+.popup::after {
 	border-bottom: 2px solid var(--button-color);
 	border-right: 2px solid var(--button-color);
 	box-sizing: border-box;
@@ -47,8 +45,8 @@
 	width: 0.6em;
 }
 
-.button.disabled,
-.button.disabled:hover {
+.disabled,
+.disabled:hover {
 	background-color: var(--button-disabled-bg);
 	border-color: var(--button-disabled-bg);
 	cursor: default;
