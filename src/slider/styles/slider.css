@@ -115,6 +115,7 @@
 	background: transparent;
 	border: 0 none;
 	color: transparent;
+	font-size: inherit;
 	left: 0;
 	margin: 0px;
 	overflow: visible;
