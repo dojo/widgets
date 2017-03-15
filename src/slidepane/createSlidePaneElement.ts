@@ -9,7 +9,7 @@ import SlidePane from './SlidePane';
 export default function createSlidePaneElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-slide-pane',
-		widgetFactory: SlidePane,
+		widgetConstructor: SlidePane,
 		attributes: [
 			{
 				attributeName: 'align'
