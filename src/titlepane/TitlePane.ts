@@ -1,7 +1,7 @@
 import uuid from '@dojo/core/uuid';
 import { v } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 
 import * as css from './styles/titlePane.css';
@@ -14,7 +14,7 @@ import * as css from './styles/titlePane.css';
  * @property ariaHeadingLevel	'aria-heading-level' for the title's DOM node
  * @property closeable			If false the pane will not collapse in response to clicking the title
  * @property open				If true the pane is opened and content is visible
- * @property title				Title to display in above the content
+ * @property title				Title to display above the content
  * @property onRequestClose		Called when the title of an open pane is clicked
  * @property onRequestOpen		Called when the title of a closed pane is clicked
  */
@@ -23,8 +23,8 @@ export interface TitlePaneProperties extends ThemeableProperties {
 	closeable?: boolean;
 	open?: boolean;
 	title: string;
-	onRequestClose?(): void;
-	onRequestOpen?(): void;
+	onRequestClose?(titlePane: TitlePane): void;
+	onRequestOpen?(titlePane: TitlePane): void;
 };
 
 export const TitlePaneBase = ThemeableMixin(WidgetBase);
@@ -62,10 +62,10 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		} = this.properties;
 
 		if (open) {
-			onRequestClose && onRequestClose();
+			onRequestClose && onRequestClose(this);
 		}
 		else {
-			onRequestOpen && onRequestOpen();
+			onRequestOpen && onRequestOpen(this);
 		}
 	}
 
