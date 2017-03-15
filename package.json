@@ -19,9 +19,9 @@
   "dependencies": {
     "@dojo/core": "2.0.0-alpha.26",
     "@dojo/has": "2.0.0-alpha.8",
-    "@dojo/i18n": "2.0.0-alpha.7",
+    "@dojo/i18n": "2.0.0-alpha.8",
     "@dojo/shim": "2.0.0-beta.10",
-    "@dojo/widget-core": "2.0.0-alpha.26",
+    "@dojo/widget-core": "2.0.0-alpha.27",
     "maquette": "2.4.3"
   },
   "devDependencies": {
