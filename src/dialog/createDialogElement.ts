@@ -9,7 +9,7 @@ import Dialog from './Dialog';
 export default function createDialogElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-dialog',
-		widgetFactory: Dialog,
+		widgetConstructor: Dialog,
 		attributes: [
 			{
 				attributeName: 'closeable',
