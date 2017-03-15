@@ -27,23 +27,26 @@ npm install @dojo/widgets
 ```
 This package contains *all* of the widgets in this repo.
 
+All of the widgets in this repo are on the same release schedule, that is to say, that we release all widgets at the same time. Minor releases may include new widgets and/or features, whereas patch releases may contain fixes to more than 1 widget.
+
 In a future release, we will also publish each widget individually to `npm`.
 
 ## Features
 
 Dojo 2 widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
 
-Dojo 2 widgets are fully accessible, out of the box.
+Dojo 2 widgets are fully accessible (`a11y`), out of the box.
 
-Dojo 2 widgets are fully themeable. In a future release we will ship with several official Dojo 2 themes.
+Dojo 2 widgets are fully themeable. In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets (all themes will live in a separate repo).
 
-Dojo 2 widgets 
+Dojo 2 widgets are fully internationalisable (`i18n`)
 
 ## Conventions
 
 ### Icons
 
 We use [font awesome](http://fontawesome.io/) for icons.
+Where a theme requires specific icons that are not part of the Font Awesome set, then those themes will ship their own icons.
 
 ### Coding conventions
 
