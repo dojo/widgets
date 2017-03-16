@@ -3,13 +3,11 @@ import TabPane from './TabPane';
 
 /**
  * Configures a TabPane web component
- *
- * @return	{CustomElementDescriptor?}
  */
 export default function createTabPaneElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-tab-pane',
-		widgetFactory: TabPane,
+		widgetConstructor: TabPane,
 		attributes: [
 			{
 				attributeName: 'activeindex',

@@ -10,22 +10,34 @@ import * as css from './styles/tabPane.css';
  *
  * Properties that can be set on a TabButton component
  *
- * @property active			Determines whether this tab button is active
- * @property closeable		Determines wehther this tab can be closed
- * @property disabled		Determines whether this tab can become active
- * @property index			The position of this tab button
- * @property loading		Determines whether the associated tab is loading
- * @property onClick		Called when this tab button is clicked
- * @property onCloseClick	Called when this tab button's close icon is clicked
+ * @property active	            Determines whether this tab button is active
+ * @property closeable          Determines wehther this tab can be closed
+ * @property controls           Id of element this tab button controls
+ * @property disabled           Determines whether this tab can become active
+ * @property id                 Id of this tab button element
+ * @property index              The position of this tab button
+ * @property loading            Determines whether the associated tab is loading
+ * @property onClick            Called when this tab button is clicked
+ * @property onCloseClick       Called when this tab button's close icon is clicked
+ * @property onEndPress         Called when the end button is pressed
+ * @property onHomePress        Called when the home button is pressed
+ * @property onLeftArrowPress   Called when the left arrow button is pressed
+ * @property onRightArrowPress  Called when the right arrow button is pressed
  */
 export interface TabButtonProperties extends ThemeableProperties {
 	active?: boolean;
 	closeable?: boolean;
+	controls?: string;
 	disabled?: boolean;
+	id?: string;
 	index?: number;
 	loading?: boolean;
 	onClick?: (index?: number) => void;
 	onCloseClick?: (index?: number) => void;
+	onEndPress?: () => void;
+	onHomePress?: () => void;
+	onLeftArrowPress?: (index?: number) => void;
+	onRightArrowPress?: (index?: number) => void;
 };
 
 export const TabButtonBase = ThemeableMixin(WidgetBase);
@@ -52,11 +64,59 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		onCloseClick && onCloseClick(index);
 	}
 
+	private _onKeyDown(event: KeyboardEvent) {
+		const {
+			closeable,
+			disabled,
+			index,
+			onCloseClick,
+			onHomePress,
+			onLeftArrowPress,
+			onRightArrowPress,
+			onEndPress
+		} = this.properties;
+
+		if (disabled) {
+			return;
+		}
+
+		switch (event.keyCode) {
+			// Escape
+			case 27:
+				closeable && onCloseClick && onCloseClick(index);
+				break;
+			// Left arrow
+			case 37:
+				onLeftArrowPress && onLeftArrowPress();
+				break;
+			// Right arrow
+			case 39:
+				onRightArrowPress && onRightArrowPress();
+				break;
+			// Home
+			case 36:
+				onHomePress && onHomePress();
+				break;
+			// End
+			case 35:
+				onEndPress && onEndPress();
+				break;
+		}
+	}
+
+	private _restoreFocus(element: HTMLElement) {
+		const { active } = this.properties;
+
+		active && element.focus();
+	}
+
 	render(): DNode {
 		const {
 			active,
 			closeable,
-			disabled
+			controls,
+			disabled,
+			id
 		} = this.properties;
 
 		const children = closeable ? this.children.concat([
@@ -68,12 +128,20 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		]) : this.children;
 
 		return v('div', {
+			afterCreate: this._restoreFocus,
+			afterUpdate: this._restoreFocus,
+			'aria-controls': controls,
+			'aria-selected': active ? 'true' : 'false',
 			classes: this.classes(
 				css.tabButton,
 				active ? css.activeTabButton : null,
 				disabled ? css.disabledTabButton : null
 			),
-			onclick: this._onClick
+			id,
+			role: 'tab',
+			tabIndex: active ? 0 : -1,
+			onclick: this._onClick,
+			onkeydown: this._onKeyDown
 		}, children);
 	}
 }

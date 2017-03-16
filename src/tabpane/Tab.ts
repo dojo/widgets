@@ -10,11 +10,13 @@ import * as css from './styles/tabPane.css';
  *
  * Properties that can be set on a Tab component
  *
- * @property active		Dertermines whether this tab is selected
- * @property loading		Determines whether the associated tab is loading
+ * @property id          ID of the underlying DOM element
+ * @property labelledBy  ID of element that serves as a label this tab
+ * @property loading     Determines whether the associated tab is loading
  */
 export interface TabProperties extends ThemeableProperties {
-	active?: boolean;
+	id?: string;
+	labelledBy?: string;
 	loading?: boolean;
 };
 
@@ -23,13 +25,20 @@ export const TabBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class Tab extends TabBase<TabProperties> {
 	render(): DNode {
-		const { loading } = this.properties;
+		const {
+			id,
+			labelledBy,
+			loading
+		} = this.properties;
 
 		return v('div', {
+			'aria-labelledby': labelledBy,
 			classes: this.classes(
 				css.tab,
 				loading ? css.loading : null
-			)
+			),
+			id,
+			role: 'tabpanel'
 		}, this.children);
 	}
 }
