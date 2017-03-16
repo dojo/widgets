@@ -11,14 +11,14 @@ import * as css from './styles/comboBox.css';
  *
  * Properties that can be set on a ResultItem component
  *
- * @property index			Position of this result in a list of results
- * @property label			The label to display for this result item
- * @property result			Data object associated with this item
- * @property selected		Determines whether or not this item is selected
- * @property skipResult		Called when a disabled result is selected to skip to next ResultMenuBase
- * @property onMouseEnter	Called when mouse enters this result item
- * @property onMouseDown	Called when mouse clicks this result item
- * @property onMouseUp		Called when mouse releases this result item
+ * @property index          Position of this result in a list of results
+ * @property label          The label to display for this result item
+ * @property result         Data object associated with this item
+ * @property selected       Determines whether or not this item is selected
+ * @property skipResult     Called when a disabled result is selected to skip to next ResultMenuBase
+ * @property onMouseEnter   Called when mouse enters this result item
+ * @property onMouseDown    Called when mouse clicks this result item
+ * @property onMouseUp      Called when mouse releases this result item
  */
 export interface ResultItemProperties extends ThemeableProperties {
 	index: number;
@@ -81,23 +81,23 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 
 	render(): DNode {
 		const {
-			selected,
-			result
+			result,
+			selected
 		} = this.properties;
 
 		return v('div', {
+			'aria-selected': selected ? 'true' : 'false',
+			'aria-disabled': this.isDisabled() ? 'true' : 'false',
 			classes: this.classes(
 				css.result,
 				selected ? css.selectedResult : null,
 				this.isDisabled() ? css.disabledResult : null
 			),
-			onmouseenter: this._onMouseEnter,
-			onmousedown: this._onMouseDown,
-			onmouseup: this._onMouseUp,
-			role: 'option',
 			'data-selected': selected ? 'true' : 'false',
-			'aria-selected': selected ? 'true' : 'false',
-			'aria-disabled': this.isDisabled() ? 'true' : 'false'
+			role: 'option',
+			onmousedown: this._onMouseDown,
+			onmouseenter: this._onMouseEnter,
+			onmouseup: this._onMouseUp
 		}, [ this.renderLabel(result) ]);
 	}
 }

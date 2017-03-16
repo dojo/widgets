@@ -12,14 +12,14 @@ import * as css from './styles/comboBox.css';
  *
  * Properties that can be set on a ResultMenu component
  *
- * @property id						An ID to apply to the ResultMenu DOM element
- * @property results				List of result data objects
- * @property selectedIndex			Position of the selected result in the list of results
- * @property getResultLabel			Can be used to get the text label of a result based on the underlying result object
- * @property skipResult				Called when a disabled result is selected to skip to next ResultMenuBase
- * @property onResultMouseEnter		Called when mouse enters a result item
- * @property onResultMouseDown		Called when mouse clicks a result item
- * @property onResultMouseUp		Called when mouse releases a result item
+ * @property id                     An ID to apply to the ResultMenu DOM element
+ * @property results                List of result data objects
+ * @property selectedIndex          Position of the selected result in the list of results
+ * @property getResultLabel         Can be used to get the text label of a result based on the underlying result object
+ * @property skipResult             Called when a disabled result is selected to skip to next ResultMenuBase
+ * @property onResultMouseEnter     Called when mouse enters a result item
+ * @property onResultMouseDown      Called when mouse clicks a result item
+ * @property onResultMouseUp        Called when mouse releases a result item
  */
 export interface ResultMenuProperties extends ThemeableProperties, RegistryMixinProperties {
 	id?: string;
@@ -42,10 +42,10 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 
 	render(): DNode {
 		const {
-			getResultLabel,
 			id,
 			results,
 			selectedIndex,
+			getResultLabel,
 			skipResult,
 			onResultMouseEnter,
 			onResultMouseDown,
@@ -53,8 +53,8 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 		} = this.properties;
 
 		const resultElements = this.renderResults(results.map((result, i) => w('result-item', <ResultItemProperties> {
-			index: i,
 			id,
+			index: i,
 			key: String(i),
 			label: getResultLabel(result),
 			result,
@@ -67,8 +67,8 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 
 		return v('div', {
 			classes: this.classes(css.results),
-			role: 'listbox',
-			id
+			id,
+			role: 'listbox'
 		}, resultElements);
 	}
 }

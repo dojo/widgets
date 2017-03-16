@@ -10,34 +10,34 @@ import * as css from './styles/textarea.css';
  *
  * Properties that can be set on a TextInput component
  *
- * @property columns			Number of columns, controls the width of the textarea
- * @property describedBy	ID of an element that provides more descriptive text
- * @property disabled			Prevents the user from interacting with the form field
- * @property formId				ID of a form element associated with the form field
- * @property invalid			Indicates the value entered in the form field is invalid
- * @property label				Label settings for form label text, position, and visibility
- * @property maxLength		Maximum number of characters allowed in the input
- * @property minLength		Minimum number of characters allowed in the input
- * @property name					The form widget's name
- * @property placeholder	Placeholder text
- * @property readOnly			Allows or prevents user interaction
- * @property required			Whether or not a value is required
- * @property rows					Number of rows, controls the height of the textarea
- * @property value				The current value
- * @property wrapText			Controls text wrapping. Can be "hard", "soft", or "off"
- * @property onBlur				Called when the input loses focus
- * @property onChange			Called when the node's 'change' event is fired
- * @property onClick			Called when the input is clicked
- * @property onFocus			Called when the input is focused
- * @property onInput			Called when the 'input' event is fired
- * @property onKeyDown		Called on the input's keydown event
- * @property onKeyPress		Called on the input's keypress event
- * @property onKeyUp			Called on the input's keyup event
- * @property onMouseDown	Called on the input's mousedown event
- * @property onMouseUp		Called on the input's mouseup event
- * @property onTouchStart	Called on the input's touchstart event
- * @property onTouchEnd		Called on the input's touchend event
- * @property onTouchCancel	Called on the input's touchcancel event
+ * @property columns         Number of columns, controls the width of the textarea
+ * @property describedBy     ID of an element that provides more descriptive text
+ * @property disabled        Prevents the user from interacting with the form field
+ * @property formId          ID of a form element associated with the form field
+ * @property invalid         Indicates the value entered in the form field is invalid
+ * @property label           Label settings for form label text, position, and visibility
+ * @property maxLength       Maximum number of characters allowed in the input
+ * @property minLength       Minimum number of characters allowed in the input
+ * @property name            The form widget's name
+ * @property placeholder     Placeholder text
+ * @property readOnly        Allows or prevents user interaction
+ * @property required        Whether or not a value is required
+ * @property rows            Number of rows, controls the height of the textarea
+ * @property value           The current value
+ * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
+ * @property onBlur          Called when the input loses focus
+ * @property onChange        Called when the node's 'change' event is fired
+ * @property onClick         Called when the input is clicked
+ * @property onFocus         Called when the input is focused
+ * @property onInput         Called when the 'input' event is fired
+ * @property onKeyDown       Called on the input's keydown event
+ * @property onKeyPress      Called on the input's keypress event
+ * @property onKeyUp         Called on the input's keyup event
+ * @property onMouseDown     Called on the input's mousedown event
+ * @property onMouseUp       Called on the input's mouseup event
+ * @property onTouchStart    Called on the input's touchstart event
+ * @property onTouchEnd      Called on the input's touchend event
+ * @property onTouchCancel   Called on the input's touchcancel event
  */
 export interface TextareaProperties extends ThemeableProperties {
 	columns?: number;
@@ -74,19 +74,19 @@ export const TextareaBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Textarea extends TextareaBase<TextareaProperties> {
-	onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
-	onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
-	onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
-	onInput (event: Event) { this.properties.onInput && this.properties.onInput(event); }
-	onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
-	onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
-	onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
-	onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
-	onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
-	onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
-	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
-	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
+	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
+	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	private _onInput (event: Event) { this.properties.onInput && this.properties.onInput(event); }
+	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+	private _onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
+	private _onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
+	private _onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
+	private _onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
+	private _onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
+	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
+	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
 	render(): DNode {
 		const {
@@ -133,19 +133,19 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 				rows: rows ? rows + '' : null,
 				value,
 				wrap: wrapText,
-				onblur: this.onBlur,
-				onchange: this.onChange,
-				onclick: this.onClick,
-				onfocus: this.onFocus,
-				oninput: this.onInput,
-				onkeydown: this.onKeyDown,
-				onkeypress: this.onKeyPress,
-				onkeyup: this.onKeyUp,
-				onmousedown: this.onMouseDown,
-				onmouseup: this.onMouseUp,
-				ontouchstart: this.onTouchStart,
-				ontouchend: this.onTouchEnd,
-				ontouchcancel: this.onTouchCancel
+				onblur: this._onBlur,
+				onchange: this._onChange,
+				onclick: this._onClick,
+				onfocus: this._onFocus,
+				oninput: this._onInput,
+				onkeydown: this._onKeyDown,
+				onkeypress: this._onKeyPress,
+				onkeyup: this._onKeyUp,
+				onmousedown: this._onMouseDown,
+				onmouseup: this._onMouseUp,
+				ontouchstart: this._onTouchStart,
+				ontouchend: this._onTouchEnd,
+				ontouchcancel: this._onTouchCancel
 			})
 		]);
 

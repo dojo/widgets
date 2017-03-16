@@ -19,12 +19,12 @@ export const enum Align {
  *
  * Properties that can be set on a SlidePane component
  *
- * @property align			The position of the pane on the screen (Align.left or Align.right)
- * @property open			Determines whether the pane is open or closed
- * @property underlay		Determines whether a semi-transparent background shows behind the pane
- * @property width			Width of the pane in pixels
- * @property onOpen			Called when the pane opens
- * @property onRequestClose	Called when the pane is swiped closed or the underlay is clicked or tapped
+ * @property align            The position of the pane on the screen (Align.left or Align.right)
+ * @property open             Determines whether the pane is open or closed
+ * @property underlay         Determines whether a semi-transparent background shows behind the pane
+ * @property width            Width of the pane in pixels
+ * @property onOpen           Called when the pane opens
+ * @property onRequestClose   Called when the pane is swiped closed or the underlay is clicked or tapped
  */
 export interface SlidePaneProperties extends ThemeableProperties {
 	align?: Align;
@@ -55,7 +55,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _swiping: boolean;
 	private _wasOpen: boolean;
 
-	onSwipeStart(event: MouseEvent & TouchEvent) {
+	private _onSwipeStart(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
 		event.preventDefault();
 
@@ -66,7 +66,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		this._transform = 0;
 	}
 
-	onSwipeMove(event: MouseEvent & TouchEvent) {
+	private _onSwipeMove(event: MouseEvent & TouchEvent) {
 		// Ignore mouse movement when not clicking
 		if (!this._swiping) {
 			return;
@@ -95,7 +95,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 	}
 
-	onSwipeEnd(event: MouseEvent & TouchEvent) {
+	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
 		this._swiping = false;
 
 		const {
@@ -126,12 +126,12 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 	}
 
-	afterCreate(element: HTMLElement) {
-		element.addEventListener('transitionend', this.onTransitionEnd);
+	private _afterCreate(element: HTMLElement) {
+		element.addEventListener('transitionend', this._onTransitionEnd);
 		this._content = element;
 	}
 
-	onTransitionEnd(event: TransitionEvent) {
+	private _onTransitionEnd(event: TransitionEvent) {
 		const content = (<HTMLElement> event.target);
 		content.classList.remove(css.slideIn, css.slideOut);
 		content.style.transform = '';
@@ -170,12 +170,12 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		this._wasOpen = open;
 
 		return v('div', {
-			ontouchstart: this.onSwipeStart,
-			ontouchmove: this.onSwipeMove,
-			ontouchend: this.onSwipeEnd,
-			onmousedown: this.onSwipeStart,
-			onmousemove: this.onSwipeMove,
-			onmouseup: this.onSwipeEnd
+			ontouchstart: this._onSwipeStart,
+			ontouchmove: this._onSwipeMove,
+			ontouchend: this._onSwipeEnd,
+			onmousedown: this._onSwipeStart,
+			onmousemove: this._onSwipeMove,
+			onmouseup: this._onSwipeEnd
 		}, [
 			open ? v('div', {
 				key: 'underlay',
@@ -187,7 +187,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 				key: 'content',
 				classes: this.classes(...contentClasses).fixed(...fixedContentClasses),
 				styles: contentStyles,
-				afterCreate: this.afterCreate
+				afterCreate: this._afterCreate
 			}, this.children)
 		]);
 	}

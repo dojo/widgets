@@ -3,8 +3,6 @@ import ComboBox from './ComboBox';
 
 /**
  * Configures a ComboBox web component
- *
- * @return	{CustomElementDescriptor?}
  */
 export default function createComboBoxElement(): CustomElementDescriptor {
 	return {

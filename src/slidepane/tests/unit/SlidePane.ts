@@ -96,8 +96,8 @@ registerSuite({
 			}
 		});
 
-		slidePane.onSwipeStart(createEvent('mousedown', 300));
-		slidePane.onSwipeEnd(createEvent('mouseup', 300));
+		(<any> slidePane)._onSwipeStart(createEvent('mousedown', 300));
+		(<any> slidePane)._onSwipeEnd(createEvent('mouseup', 300));
 
 		assert.isTrue(called, 'onRequestClose should be called on underlay click');
 	},
@@ -112,8 +112,8 @@ registerSuite({
 			}
 		});
 
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeEnd(createEvent('touchend', 300));
+		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
+		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 300));
 
 		assert.isTrue(called, 'onRequestClose should be called on underlay tap');
 	},
@@ -128,9 +128,9 @@ registerSuite({
 			}
 		});
 
-		slidePane.onSwipeStart(createEvent('mousedown', 300));
-		slidePane.onSwipeMove(createEvent('mousemove', 150));
-		slidePane.onSwipeEnd(createEvent('mouseup', 50));
+		(<any> slidePane)._onSwipeStart(createEvent('mousedown', 300));
+		(<any> slidePane)._onSwipeMove(createEvent('mousemove', 150));
+		(<any> slidePane)._onSwipeEnd(createEvent('mouseup', 50));
 
 		assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
 	},
@@ -145,7 +145,7 @@ registerSuite({
 			}
 		});
 
-		slidePane.afterCreate(<any> {
+		(<any> slidePane)._afterCreate(<any> {
 			addEventListener() {},
 			classList: {
 				add() {}
@@ -153,10 +153,10 @@ registerSuite({
 			style: {}
 		});
 
-		slidePane.onSwipeMove(createEvent('touchmove', 150));
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeMove(createEvent('touchmove', 150));
-		slidePane.onSwipeEnd(createEvent('touchend', 50));
+		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
+		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
+		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
+		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 50));
 
 		assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
 	},
@@ -173,7 +173,7 @@ registerSuite({
 			align: Align.right
 		});
 
-		slidePane.afterCreate(<any> {
+		(<any> slidePane)._afterCreate(<any> {
 			addEventListener() {},
 			classList: {
 				add() {}
@@ -181,9 +181,9 @@ registerSuite({
 			style: {}
 		});
 
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeMove(createEvent('touchmove', 400));
-		slidePane.onSwipeEnd(createEvent('touchend', 500));
+		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
+		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
+		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 500));
 
 		assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
 	},
@@ -198,7 +198,7 @@ registerSuite({
 			}
 		});
 
-		slidePane.afterCreate(<any> {
+		(<any> slidePane)._afterCreate(<any> {
 			addEventListener() {},
 			classList: {
 				add() {}
@@ -206,9 +206,9 @@ registerSuite({
 			style: {}
 		});
 
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeMove(createEvent('touchmove', 250));
-		slidePane.onSwipeEnd(createEvent('touchend', 250));
+		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
+		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 250));
+		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 250));
 
 		assert.isFalse(called, 'onRequestClose should not be called if not swiped far enough to close');
 	},
@@ -224,10 +224,10 @@ registerSuite({
 			style: { transform: '' }
 		};
 
-		slidePane.afterCreate(element);
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeMove(createEvent('touchmove', 400));
-		slidePane.onSwipeEnd(createEvent('touchmove', 500));
+		(<any> slidePane)._afterCreate(element);
+		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
+		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
+		(<any> slidePane)._onSwipeEnd(createEvent('touchmove', 500));
 
 		assert.strictEqual(element.style.transform, '', 'trnasform should not be applied if pane is at screen edge');
 	},
@@ -250,7 +250,7 @@ registerSuite({
 		};
 
 		const slidePane = new SlidePane();
-		slidePane.onTransitionEnd(event);
+		(<any> slidePane)._onTransitionEnd(event);
 
 		assert.strictEqual(event.target.style.transform, '');
 		assert.isTrue(called, `Element.classList.remove should be called when transition finishes`);
@@ -263,9 +263,9 @@ registerSuite({
 		});
 		<VNode> slidePane.__render__();
 		slidePane.setProperties({ open: false });
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeMove(createEvent('touchmove', 150));
-		slidePane.onSwipeEnd(createEvent('touchend', 50));
+		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
+		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
+		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 50));
 		const vnode = <VNode> slidePane.__render__();
 
 		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
@@ -281,9 +281,9 @@ registerSuite({
 			open: false,
 			align: Align.right
 		});
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeMove(createEvent('touchmove', 400));
-		slidePane.onSwipeEnd(createEvent('touchend', 500));
+		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
+		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
+		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 500));
 		const vnode = <VNode> slidePane.__render__();
 
 		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');

@@ -167,31 +167,31 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		slider.onBlur(<FocusEvent> {});
+		(<any> slider)._onBlur(<FocusEvent> {});
 		assert.isTrue(blurred);
-		slider.onChange(<Event> {});
+		(<any> slider)._onChange(<Event> {});
 		assert.isTrue(changed);
-		slider.onClick(<MouseEvent> {});
+		(<any> slider)._onClick(<MouseEvent> {});
 		assert.isTrue(clicked);
-		slider.onFocus(<FocusEvent> {});
+		(<any> slider)._onFocus(<FocusEvent> {});
 		assert.isTrue(focused);
-		slider.onInput(<Event> {});
+		(<any> slider)._onInput(<Event> {});
 		assert.isTrue(input);
-		slider.onKeyDown(<KeyboardEvent> {});
+		(<any> slider)._onKeyDown(<KeyboardEvent> {});
 		assert.isTrue(keydown);
-		slider.onKeyPress(<KeyboardEvent> {});
+		(<any> slider)._onKeyPress(<KeyboardEvent> {});
 		assert.isTrue(keypress);
-		slider.onKeyUp(<KeyboardEvent> {});
+		(<any> slider)._onKeyUp(<KeyboardEvent> {});
 		assert.isTrue(keyup);
-		slider.onMouseDown(<MouseEvent> {});
+		(<any> slider)._onMouseDown(<MouseEvent> {});
 		assert.isTrue(mousedown);
-		slider.onMouseUp(<MouseEvent> {});
+		(<any> slider)._onMouseUp(<MouseEvent> {});
 		assert.isTrue(mouseup);
-		slider.onTouchStart(<TouchEvent> {});
+		(<any> slider)._onTouchStart(<TouchEvent> {});
 		assert.isTrue(touchstart);
-		slider.onTouchEnd(<TouchEvent> {});
+		(<any> slider)._onTouchEnd(<TouchEvent> {});
 		assert.isTrue(touchend);
-		slider.onTouchCancel(<TouchEvent> {});
+		(<any> slider)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
 	}
 });

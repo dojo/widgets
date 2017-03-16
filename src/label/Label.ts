@@ -9,8 +9,8 @@ import * as baseCss from '../common/styles/base.css';
  * Label settings for form label text content, position (before or after), and visibility
  */
 export interface LabelOptions {
-	content: string;
 	before?: boolean;
+	content: string;
 	hidden?: boolean;
 }
 
@@ -18,8 +18,8 @@ export interface LabelOptions {
  * Default settings for form labels
  */
 const labelDefaults = {
-	content: '',
 	before: true,
+	content: '',
 	hidden: false
 };
 
@@ -28,9 +28,9 @@ const labelDefaults = {
  *
  * Properties that can be set on a Label component
  *
- * @property classes	Optional classes to be set on the label node
- * @property formId		ID of a form element associated with the form field
- * @property label		Label settings for form label text, position, and visibility
+ * @property classes    Optional classes to be set on the label node
+ * @property formId     ID of a form element associated with the form field
+ * @property label      Label settings for form label text, position, and visibility
  */
 export interface LabelProperties extends ThemeableProperties {
 	classes?: ClassesFunctionChain;
@@ -44,9 +44,9 @@ export const LabelBase = ThemeableMixin(WidgetBase);
 export default class Label extends LabelBase<LabelProperties>  {
 	render(): DNode {
 		const {
+			classes = {},
 			formId,
-			label,
-			classes = {}
+			label
 		} = this.properties;
 
 		// assign string or object label properites with defaults
@@ -71,8 +71,8 @@ export default class Label extends LabelBase<LabelProperties>  {
 		}
 
 		return v('label', {
-			'form': formId,
-			classes: classes
+			classes: classes,
+			'form': formId
 		}, this.children);
 	}
 }
