@@ -63,7 +63,7 @@ registerSuite({
 		});
 
 		const vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].properties!.innerHTML, 'foo');
+		assert.strictEqual(vnode.children![0].children![0].properties!.innerHTML, 'foo');
 	},
 
 	'Menu should open on input'() {
@@ -161,6 +161,7 @@ registerSuite({
 		let called = false;
 		comboBox.setProperties({
 			results: ['1', '2'],
+			required: true,
 			onRequestResults: () => called = true
 		});
 		(<any> comboBox)._afterCreate(parentElement());

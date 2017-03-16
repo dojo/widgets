@@ -3,10 +3,10 @@ import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import ResultMenu from '../../ResultMenu';
 import { assign } from '@dojo/core/lang';
-import FactoryRegistry from '@dojo/widget-core/FactoryRegistry';
+import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import ResultItem from '../../ResultItem';
 
-const registry = new FactoryRegistry();
+const registry = new WidgetRegistry();
 registry.define('result-item', ResultItem);
 
 function props(props = {}) {

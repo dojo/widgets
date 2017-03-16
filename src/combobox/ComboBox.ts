@@ -2,12 +2,13 @@ import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
-import FactoryRegistry from '@dojo/widget-core/FactoryRegistry';
+import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { includes } from '@dojo/shim/array';
 import ResultMenu, { ResultMenuProperties } from './ResultMenu';
 import ResultItem from './ResultItem';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import Label, { LabelOptions } from '../label/Label';
+import uuid from '@dojo/core/uuid';
 
 import * as css from './styles/comboBox.css';
 
@@ -151,7 +152,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			customResultMenu = ResultMenu
 		} = this.properties;
 
-		const registry = new FactoryRegistry();
+		const registry = new WidgetRegistry();
 		registry.define('result-item', customResultItem);
 		registry.define('result-menu', customResultMenu);
 		return registry;
@@ -272,15 +273,16 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	}
 
-	private _renderMenu(results: any[]) {
+	private _renderMenu(results: any[], id?: string) {
 		if (!this._open || results.length === 0) {
 			return null;
 		}
 
 		return w('result-menu', <ResultMenuProperties> {
 			bind: this,
+			id,
 			registry: this.registry,
-			results: results,
+			results,
 			selectedIndex: this._selectedIndex,
 			getResultLabel: this._getResultLabel,
 			skipResult: this._skipResult,
@@ -370,57 +372,61 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			value = ''
 		} = this.properties;
 
-		const menu = this._renderMenu(results);
+		const menuId = uuid();
+		const menu = this._renderMenu(results, menuId);
 
 		this._notifyMenuChange();
 
 		this._wasOpen = this._open;
 
-		const container = v('div', {
+		const input = w(TextInput, {
 			bind: this,
-			classes: this.classes(css.combobox),
+			classes: this.classes(clearable ? css.clearable : null),
+			controls: menuId,
+			disabled,
+			readOnly,
+			invalid,
+			required,
+			onBlur: this._onInputBlur,
+			onFocus: this._onInputFocus,
+			onInput: this._onInput,
+			onKeyDown: this._onInputKeyDown,
+			value,
+			overrideClasses: css,
+			...inputProperties
+		});
+
+		return v('div', {
+			bind: this,
+			classes: this.classes(css.root),
 			afterCreate: this._afterCreate,
-			afterUpdate: this._afterUpdate
+			afterUpdate: this._afterUpdate,
+			role: 'root',
+			'aria-haspopup': 'true',
+			'aria-expanded': this._open ? 'true' : 'false',
+			'aria-readonly': readOnly ? 'true' : 'false',
+			'aria-required': required ? 'true' : 'false'
 		}, [
-			// Use TextInput once landed
-			w(TextInput, {
+			label ? w(Label, {
 				bind: this,
-				classes: this.classes(clearable ? css.clearable : null),
-				disabled,
-				readOnly,
-				invalid,
-				required,
-				onBlur: this._onInputBlur,
-				onFocus: this._onInputFocus,
-				onInput: this._onInput,
-				onKeyDown: this._onInputKeyDown,
-				value,
-				overrideClasses: css,
-				...inputProperties
-			}),
+				formId,
+				label
+			}, [ input ]) : input,
 			clearable ? v('button', {
 				bind: this,
 				classes: this.classes(css.clear),
 				innerHTML: 'clear combo box',
-				onclick: this._onClearClick
+				onclick: this._onClearClick,
+				'aria-controls': menuId
 			}) : null,
 			v('button', {
 				bind: this,
 				classes: this.classes(css.arrow),
 				innerHTML: 'open combo box',
-				onclick: this._onArrowClick
+				onclick: this._onArrowClick,
+				'aria-controls': menuId
 			}),
 			menu
 		]);
-
-		if (label) {
-			return w(Label, {
-				registry: this.registry,
-				formId,
-				label
-			}, [ container ]);
-		}
-
-		return container;
 	}
 }

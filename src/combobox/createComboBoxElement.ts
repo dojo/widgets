@@ -9,7 +9,7 @@ import ComboBox from './ComboBox';
 export default function createComboBoxElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-combo-box',
-		widgetFactory: ComboBox,
+		widgetConstructor: ComboBox,
 		attributes: [
 			{
 				attributeName: 'autoblur',

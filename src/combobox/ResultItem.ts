@@ -94,7 +94,10 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 			onmouseenter: this._onMouseEnter,
 			onmousedown: this._onMouseDown,
 			onmouseup: this._onMouseUp,
-			'data-selected': selected ? 'true' : 'false'
+			role: 'option',
+			'data-selected': selected ? 'true' : 'false',
+			'aria-selected': selected ? 'true' : 'false',
+			'aria-disabled': this.isDisabled() ? 'true' : 'false'
 		}, [ this.renderLabel(result) ]);
 	}
 }

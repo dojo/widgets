@@ -11,7 +11,8 @@ import * as css from './styles/comboBox.css';
  * @type ResultMenuProperties
  *
  * Properties that can be set on a ResultMenu component
- * 
+ *
+ * @property id						An ID to apply to the ResultMenu DOM element
  * @property results				List of result data objects
  * @property selectedIndex			Position of the selected result in the list of results
  * @property getResultLabel			Can be used to get the text label of a result based on the underlying result object
@@ -21,6 +22,7 @@ import * as css from './styles/comboBox.css';
  * @property onResultMouseUp		Called when mouse releases a result item
  */
 export interface ResultMenuProperties extends ThemeableProperties, RegistryMixinProperties {
+	id?: string;
 	results: any[];
 	selectedIndex: number | undefined;
 	getResultLabel(result: any): string;
@@ -41,6 +43,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 	render(): DNode {
 		const {
 			getResultLabel,
+			id,
 			results,
 			selectedIndex,
 			skipResult,
@@ -51,6 +54,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 
 		const resultElements = this.renderResults(results.map((result, i) => w('result-item', <ResultItemProperties> {
 			index: i,
+			id,
 			key: String(i),
 			label: getResultLabel(result),
 			result,
@@ -62,7 +66,9 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 		})));
 
 		return v('div', {
-			classes: this.classes(css.results)
+			classes: this.classes(css.results),
+			role: 'listbox',
+			id
 		}, resultElements);
 	}
 }

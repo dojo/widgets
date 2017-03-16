@@ -1,4 +1,4 @@
-export const combobox: string;
+export const root: string;
 export const input: string;
 export const arrow: string;
 export const results: string;

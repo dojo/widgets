@@ -12,27 +12,28 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  *
  * Properties that can be set on a TextInput component
  *
+ * @property controls		ID of an element that this input controls
  * @property describedBy	ID of an element that provides more descriptive text
- * @property disabled			Prevents the user from interacting with the form field
- * @property formId				ID of a form element associated with the form field
- * @property invalid			Indicates the value entered in the form field is invalid
- * @property label				Label settings for form label text, position, and visibility
+ * @property disabled		Prevents the user from interacting with the form field
+ * @property formId			ID of a form element associated with the form field
+ * @property invalid		Indicates the value entered in the form field is invalid
+ * @property label			Label settings for form label text, position, and visibility
  * @property maxLength		Maximum number of characters allowed in the input
  * @property minLength		Minimum number of characters allowed in the input
- * @property name					The form widget's name
+ * @property name			The form widget's name
  * @property placeholder	Placeholder text
- * @property readOnly			Allows or prevents user interaction
- * @property required			Whether or not a value is required
- * @property type					Input type, e.g. text, email, tel, etc.
- * @property value				The current value
- * @property onBlur				Called when the input loses focus
- * @property onChange			Called when the node's 'change' event is fired
- * @property onClick			Called when the input is clicked
- * @property onFocus			Called when the input is focused
- * @property onInput			Called when the 'input' event is fired
+ * @property readOnly		Allows or prevents user interaction
+ * @property required		Whether or not a value is required
+ * @property type			Input type, e.g. text, email, tel, etc.
+ * @property value			The current value
+ * @property onBlur			Called when the input loses focus
+ * @property onChange		Called when the node's 'change' event is fired
+ * @property onClick		Called when the input is clicked
+ * @property onFocus		Called when the input is focused
+ * @property onInput		Called when the 'input' event is fired
  * @property onKeyDown		Called on the input's keydown event
  * @property onKeyPress		Called on the input's keypress event
- * @property onKeyUp			Called on the input's keyup event
+ * @property onKeyUp		Called on the input's keyup event
  * @property onMouseDown	Called on the input's mousedown event
  * @property onMouseUp		Called on the input's mouseup event
  * @property onTouchStart	Called on the input's touchstart event
@@ -40,6 +41,7 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property onTouchCancel	Called on the input's touchcancel event
  */
 export interface TextInputProperties extends ThemeableProperties {
+	controls?: string;
 	describedBy?: string;
 	disabled?: boolean;
 	formId?: string;
@@ -88,6 +90,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 
 	render(): DNode {
 		const {
+			controls,
 			describedBy,
 			disabled,
 			formId,
@@ -115,6 +118,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			v('input', {
 				bind: this,
 				classes: this.classes(css.input),
+				'aria-controls': controls,
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid + '',
