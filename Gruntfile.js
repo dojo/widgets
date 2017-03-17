@@ -47,6 +47,11 @@ module.exports = function (grunt) {
 					config: '<%= devDirectory %>/common/tests/intern-local',
 				}
 			}
+		},
+		typedoc: {
+			options: {
+				ignoreCompilerErrors: true // Remove this once compile errors are resolved
+			}
 		}
 	});
 
