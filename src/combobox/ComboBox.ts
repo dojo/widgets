@@ -378,22 +378,42 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		this._wasOpen = this._open;
 
-		const input = w(TextInput, {
-			bind: this,
-			classes: this.classes(clearable ? css.clearable : null),
-			controls: menuId,
-			disabled,
-			invalid,
-			readOnly,
-			required,
-			value,
-			onBlur: this._onInputBlur,
-			onFocus: this._onInputFocus,
-			onInput: this._onInput,
-			onKeyDown: this._onInputKeyDown,
-			overrideClasses: css,
-			...inputProperties
-		});
+		const controls = v('div', {
+			classes: this.classes(css.controls)
+		}, [
+			w(TextInput, {
+				bind: this,
+				classes: this.classes(clearable ? css.clearable : null),
+				controls: menuId,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				value,
+				onBlur: this._onInputBlur,
+				onFocus: this._onInputFocus,
+				onInput: this._onInput,
+				onKeyDown: this._onInputKeyDown,
+				overrideClasses: css,
+				...inputProperties
+			}),
+			clearable ? v('button', {
+				'aria-controls': menuId,
+				bind: this,
+				classes: this.classes(css.clear),
+				disabled,
+				innerHTML: 'clear combo box',
+				onclick: this._onClearClick
+			}) : null,
+			v('button', {
+				'aria-controls': menuId,
+				bind: this,
+				classes: this.classes(css.arrow),
+				disabled,
+				innerHTML: 'open combo box',
+				onclick: this._onArrowClick
+			})
+		]);
 
 		return v('div', {
 			afterCreate: this._afterCreate,
@@ -404,27 +424,13 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			'aria-required': required ? 'true' : 'false',
 			bind: this,
 			classes: this.classes(css.root),
-			role: 'root'
+			role: 'combobox'
 		}, [
 			label ? w(Label, {
 				bind: this,
 				formId,
 				label
-			}, [ input ]) : input,
-			clearable ? v('button', {
-				'aria-controls': menuId,
-				bind: this,
-				classes: this.classes(css.clear),
-				innerHTML: 'clear combo box',
-				onclick: this._onClearClick
-			}) : null,
-			v('button', {
-				'aria-controls': menuId,
-				bind: this,
-				classes: this.classes(css.arrow),
-				innerHTML: 'open combo box',
-				onclick: this._onArrowClick
-			}),
+			}, [ controls ]) : controls,
 			menu
 		]);
 	}

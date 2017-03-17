@@ -1,16 +1,18 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { ThemeableMixin, ThemeableProperties, theme, ClassesFunctionChain } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 import { assign } from '@dojo/core/lang';
 import * as baseCss from '../common/styles/base.css';
+import { includes } from '@dojo/shim/array';
 
 /**
  * Label settings for form label text content, position (before or after), and visibility
  */
 export interface LabelOptions {
-	before?: boolean;
 	content: string;
+	before?: boolean;
 	hidden?: boolean;
 }
 
@@ -18,8 +20,8 @@ export interface LabelOptions {
  * Default settings for form labels
  */
 const labelDefaults = {
-	before: true,
 	content: '',
+	before: true,
 	hidden: false
 };
 
@@ -28,25 +30,34 @@ const labelDefaults = {
  *
  * Properties that can be set on a Label component
  *
- * @property classes    Optional classes to be set on the label node
- * @property formId     ID of a form element associated with the form field
- * @property label      Label settings for form label text, position, and visibility
+ * @property classes	Optional classes to be set on the label node
+ * @property formId		ID of a form element associated with the form field
+ * @property label		Label settings for form label text, position, and visibility
+ * @property registry	A widget registry to pass down to children
  */
 export interface LabelProperties extends ThemeableProperties {
 	classes?: ClassesFunctionChain;
 	formId?: string;
 	label: string | LabelOptions;
+	registry?: WidgetRegistry;
 }
 
 export const LabelBase = ThemeableMixin(WidgetBase);
 
 @theme(baseCss)
 export default class Label extends LabelBase<LabelProperties>  {
+	@onPropertiesChanged
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, LabelProperties>) {
+		if (includes(evt.changedPropertyKeys, 'registry')) {
+			this.registry = evt.properties.registry;
+		}
+	}
+
 	render(): DNode {
 		const {
-			classes = {},
 			formId,
-			label
+			label,
+			classes = {}
 		} = this.properties;
 
 		// assign string or object label properites with defaults
@@ -71,8 +82,8 @@ export default class Label extends LabelBase<LabelProperties>  {
 		}
 
 		return v('label', {
-			classes: classes,
-			'form': formId
+			'form': formId,
+			classes: classes
 		}, this.children);
 	}
 }

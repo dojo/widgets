@@ -11,6 +11,10 @@
 	box-sizing: border-box;
 }
 
+.controls {
+	position: relative;
+}
+
 .input {
 	width: 100%;
 	padding-right: 2em;
