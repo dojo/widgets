@@ -4,12 +4,34 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Textarea from '../../textarea/Textarea';
+import dojo from '../../themes/dojo/theme';
 
 export const AppBase = StatefulMixin(WidgetBase);
 export class App extends AppBase<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojo : {};
+		this.invalidate();
+	}
+
+	onChange(event: Event) {
+		const value = (<HTMLInputElement> event.target).value;
+		this.setState({ inputValue: value });
+		this.setState({ invalid: value.trim().length === 0 });
+	}
+
 	render() {
 		return v('div', [
-			v('h1', {}, ['Textarea Example']),
+			v('h2', {}, ['Textarea Example']),
+			v('label', [
+				'Use Dojo Theme ',
+				v('input', {
+					type: 'checkbox',
+					onchange: this.themeChange
+				})
+			]),
 			w(Textarea, {
 				key: 't1',
 				columns: 40,
@@ -17,7 +39,8 @@ export class App extends AppBase<WidgetProperties> {
 				placeholder: 'Hello, World',
 				label: 'Type Something',
 				value: <string> this.state['value1'],
-				onChange: (event: Event) => this.setState({ 'value1': (<HTMLInputElement> event.target).value })
+				onChange: (event: Event) => this.setState({ 'value1': (<HTMLInputElement> event.target).value }),
+				theme: this._theme
 			}),
 			v('h3', {}, ['Disabled Textarea']),
 			w(Textarea, {
@@ -26,7 +49,8 @@ export class App extends AppBase<WidgetProperties> {
 				rows: 3,
 				label: 'Can\'t type here',
 				value: 'Initial value',
-				disabled: true
+				disabled: true,
+				theme: this._theme
 			}),
 			v('h3', {}, ['Validated, Required Textarea']),
 			w(Textarea, {
@@ -41,7 +65,8 @@ export class App extends AppBase<WidgetProperties> {
 					const value = (<HTMLInputElement> event.target).value;
 					this.setState({ 'value2': value });
 					this.setState({ invalid: value.trim().length === 0 });
-				}
+				},
+				theme: this._theme
 			})
 		]);
 	}

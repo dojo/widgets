@@ -1,29 +1,18 @@
 @import '../../common/styles/variables.css';
 
-.button {
-	background-color: var(--button-bg);
-	border: 1px solid var(--button-bg);
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
-	border-radius: var(--rounded-corners);
-	color: var(--button-color);
+.root {
 	cursor: pointer;
-	font: var(--base-font);
-	font-weight: bold;
 	display: inline-block;
-	padding: var(--button-padding);
-	transition: all var(--short-animation-duration) ease;
 }
 
-.button:hover,
-.button:focus {
-	background-color: var(--button-hover-bg);
-	border-color: var(--button-hover-bg);
+.root:hover,
+.root:focus {
 	outline: none;
 }
 
 .pressed::before {
-	border-bottom: 2px solid var(--button-color);
-	border-right: 2px solid var(--button-color);
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
 	box-sizing: border-box;
 	content: '';
 	display: inline-block;
@@ -34,8 +23,8 @@
 }
 
 .popup::after {
-	border-bottom: 2px solid var(--button-color);
-	border-right: 2px solid var(--button-color);
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
 	box-sizing: border-box;
 	content: '';
 	display: inline-block;
@@ -47,7 +36,5 @@
 
 .disabled,
 .disabled:hover {
-	background-color: var(--button-disabled-bg);
-	border-color: var(--button-disabled-bg);
 	cursor: default;
 }

@@ -81,19 +81,18 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			value
 		} = this.properties;
 
-		const stateClasses = [
-			disabled ? css.disabled : null,
-			popup ? css.popup : null,
-			pressed ? css.pressed : null
-		];
-
 		if (popup === true) {
 			popup = { expanded: false, id: '' };
 		}
 
 		return v('button', {
 			innerHTML: content,
-			classes: this.classes(css.button, ...stateClasses),
+			classes: this.classes(
+				css.root,
+				disabled ? css.disabled : null,
+				popup ? css.popup : null,
+				pressed ? css.pressed : null
+			),
 			'aria-describedby': describedBy,
 			disabled,
 			'aria-haspopup': popup ? 'true' : null,

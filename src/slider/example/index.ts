@@ -4,9 +4,18 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Slider from '../../slider/Slider';
+import dojo from '../../themes/dojo/theme';
 
 export const AppBase = StatefulMixin(WidgetBase);
 export class App extends AppBase<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojo : {};
+		this.invalidate();
+	}
+
 	onTribbleInput(event: Event) {
 		const value = (<HTMLInputElement> event.target).value;
 		this.setState({ tribbleValue: parseFloat(value) });
@@ -28,6 +37,13 @@ export class App extends AppBase<WidgetProperties> {
 		} = this.state;
 
 		return v('div', [
+			v('label', [
+				'Use Dojo Theme ',
+				v('input', {
+					type: 'checkbox',
+					onchange: this.themeChange
+				})
+			]),
 			v('h1', {}, ['Slider with custom output']),
 			w(Slider, {
 				key: 's1',
@@ -43,7 +59,8 @@ export class App extends AppBase<WidgetProperties> {
 				},
 				step: 1,
 				value: <number> tribbleValue,
-				onInput: this.onTribbleInput
+				onInput: this.onTribbleInput,
+				theme: this._theme
 			}),
 			v('h1', {}, ['Vertical slider']),
 			w(Slider, {
@@ -64,7 +81,8 @@ export class App extends AppBase<WidgetProperties> {
 						}
 					});
 				},
-				onInput: this.onVerticalInput
+				onInput: this.onVerticalInput,
+				theme: this._theme
 			})
 		]);
 	}

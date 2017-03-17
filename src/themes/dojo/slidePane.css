@@ -1,0 +1,58 @@
+@import '../../common/styles/variables.css';
+
+.underlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.underlayVisible {
+	background: var(--underlay-bg);
+}
+
+.content {
+	font: var(--base-font);
+	height: 100%;
+	position: fixed;
+	top: 0;
+	background-color: var(--title-bar-bg);
+	color: var(--title-bar-color);
+	padding: var(--content-padding);
+	box-sizing: border-box;
+}
+
+.left {
+	left: 0;
+	transform: translateX(-100%)
+}
+
+.right {
+	right: 0;
+	transform: translateX(100%);
+}
+
+.open {
+	transform: translateX(0%);
+}
+
+.left.slideOut {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(-100%) !important;
+}
+
+.right.slideOut {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(100%) !important;
+}
+
+.left.slideIn {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(0%) !important;
+}
+
+.right.slideIn {
+	transition: transform ease-in-out var(--short-animation-duration);
+	transform: translateX(0%) !important;
+}
