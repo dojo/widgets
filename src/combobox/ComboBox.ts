@@ -32,6 +32,7 @@ import * as css from './styles/comboBox.css';
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
  * @property value              Value to set on the input
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
+ * @property isDisabled         Used to determine if an item should be disabled
  * @property onBlur             Called when the input is blurred
  * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
@@ -54,6 +55,7 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	results?: any[];
 	value?: string;
 	getResultLabel?(result: any): string;
+	isDisabled?(result: any): boolean;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
@@ -88,6 +90,21 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _direction: Operation;
 	private _selectedIndex: number | undefined;
 	private _wasOpen: boolean;
+
+	private _nextIndex(operation?: Operation) {
+		const {
+			results = [],
+			isDisabled
+		} = this.properties;
+
+		const total = results.length;
+		let index = this._selectedIndex;
+		let curr = 0;
+
+		while (isDisabled(results[index])) {
+
+		}
+	}
 
 	private _handlers: {[key: string]: any} = {
 		[keys.up](this: ComboBox, event: KeyboardEvent) {
@@ -241,14 +258,32 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onResultMouseEnter(index: number) {
+		const {
+			results = [],
+			isDisabled
+		} = this.properties;
+
+		if (isDisabled && isDisabled(results[index])) {
+			return;
+		}
+
 		this.updateSelectedIndex(undefined, index);
 		this.invalidate();
 	}
 
 	private _onResultMouseUp() {
-		const { results } = this.properties;
+		const {
+			results = [],
+			isDisabled
+		} = this.properties;
 
-		if (!results || this._selectedIndex === undefined) {
+		if (this._selectedIndex === undefined) {
+			return;
+		}
+
+		const result = results[this._selectedIndex];
+
+		if (!result || (isDisabled && isDisabled(result))) {
 			return;
 		}
 
@@ -278,14 +313,16 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			return null;
 		}
 
+		const { isDisabled } = this.properties;
+
 		return w('result-menu', <ResultMenuProperties> {
 			bind: this,
 			id,
+			isDisabled,
 			registry: this.registry,
 			results,
 			selectedIndex: this._selectedIndex,
 			getResultLabel: this._getResultLabel,
-			skipResult: this._skipResult,
 			onResultMouseEnter: this._onResultMouseEnter,
 			onResultMouseDown: this._onResultMouseDown,
 			onResultMouseUp: this._onResultMouseUp
@@ -308,11 +345,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._focused = !autoBlur;
 		this._ignoreFocus = true;
 		onChange && onChange(this._getResultLabel(result));
-	}
-
-	private _skipResult() {
-		this.updateSelectedIndex(this._direction);
-		this.invalidate();
 	}
 
 	@onPropertiesChanged

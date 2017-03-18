@@ -63,7 +63,7 @@ const data = [
 
 class CustomResultItem extends ResultItem {
 	renderLabel(result: any) {
-		const { label } = this.properties;
+		const { getResultLabel } = this.properties;
 
 		return v('div', [
 			v('img', {
@@ -74,7 +74,7 @@ class CustomResultItem extends ResultItem {
 					height: 'auto'
 				}
 			}),
-			label
+			getResultLabel(result)
 		]);
 	}
 }
@@ -94,7 +94,7 @@ class CustomResultMenu extends ResultMenu {
 		let lastLetter = 'a';
 
 		results.forEach(item => {
-			let state = (<ResultItemProperties> (<WNode> item).properties).label;
+			let state = (<ResultItemProperties> (<WNode> item).properties).result.value;
 			let letter = state.charAt(0).toLowerCase();
 			if (letter !== lastLetter) {
 				items.push(v('div', {
@@ -110,14 +110,6 @@ class CustomResultMenu extends ResultMenu {
 		});
 
 		return items;
-	}
-}
-
-class CustomResultItemDisabled extends ResultItem {
-	isDisabled() {
-		const { label } = this.properties;
-
-		return label.length > 9;
 	}
 }
 
@@ -195,7 +187,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value5'],
-				customResultItem: CustomResultItemDisabled,
+				isDisabled: (result: any) => result.value.length > 9,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}

@@ -14,29 +14,13 @@ function props(props = {}) {
 		onMouseEnter: () => true,
 		onMouseDown: () => true,
 		onMouseUp: () => true,
-		skipResult: () => true
+		isDisabled: () => true,
+		getResultLabel: (result: any) => result
 	}, props);
 }
 
 registerSuite({
 	name: 'ResultItem',
-
-	'By default, no items should be disabled'() {
-		const resultItem = new ResultItem();
-		assert.isFalse(resultItem.isDisabled());
-	},
-
-	'Disabled items should be skipped'() {
-		let called = false;
-		const resultItem = new ResultItem();
-		(<any> resultItem).onPropertiesChanged(<any> { changedPropertyKeys: {} });
-		resultItem.isDisabled = () => true;
-		resultItem.setProperties(props({
-			skipResult: () => called = true,
-			selected: true
-		}));
-		assert.isTrue(called);
-	},
 
 	'label should render properly'() {
 		const resultItem = new ResultItem();
@@ -54,8 +38,9 @@ registerSuite({
 
 	'disabled result should render properly'() {
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props());
-		resultItem.isDisabled = () => true;
+		resultItem.setProperties(props({
+			isDisabled: () => true
+		}));
 		const vnode = <VNode> resultItem.__render__();
 		assert.isTrue(vnode.properties!.classes![css.disabledResult]);
 	},
@@ -65,7 +50,10 @@ registerSuite({
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseEnter: () => called++ }));
 		(<any> resultItem)._onMouseEnter();
-		resultItem.isDisabled = () => true;
+		resultItem.setProperties(props({
+			onMouseEnter: () => called++,
+			isDisabled: () => true
+		}));
 		(<any> resultItem)._onMouseEnter();
 		assert.strictEqual(called, 1);
 	},
@@ -75,7 +63,10 @@ registerSuite({
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseDown: () => called++ }));
 		(<any> resultItem)._onMouseDown(<any> {});
-		resultItem.isDisabled = () => true;
+		resultItem.setProperties(props({
+			onMouseDown: () => called++,
+			isDisabled: () => true
+		}));
 		(<any> resultItem)._onMouseDown(<any> {});
 		assert.strictEqual(called, 1);
 	},
@@ -85,7 +76,10 @@ registerSuite({
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseUp: () => called++ }));
 		(<any> resultItem)._onMouseUp(<any> {});
-		resultItem.isDisabled = () => true;
+		resultItem.setProperties(props({
+			onMouseUp: () => called++,
+			isDisabled: () => true
+		}));
 		(<any> resultItem)._onMouseUp(<any> {});
 		assert.strictEqual(called, 1);
 	}

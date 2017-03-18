@@ -1,8 +1,7 @@
-import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
-import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
-import { includes } from '@dojo/shim/array';
+import { DNode } from '@dojo/widget-core/interfaces';
 
 import * as css from './styles/comboBox.css';
 
@@ -11,21 +10,21 @@ import * as css from './styles/comboBox.css';
  *
  * Properties that can be set on a ResultItem component
  *
- * @property index          Position of this result in a list of results
- * @property label          The label to display for this result item
- * @property result         Data object associated with this item
- * @property selected       Determines whether or not this item is selected
- * @property skipResult     Called when a disabled result is selected to skip to next ResultMenuBase
- * @property onMouseEnter   Called when mouse enters this result item
- * @property onMouseDown    Called when mouse clicks this result item
- * @property onMouseUp      Called when mouse releases this result item
+ * @property index           Position of this result in a list of results
+ * @property result          Data object associated with this item
+ * @property selected        Determines whether or not this item is selected
+ * @property getResultLabel  Can be used to get the text label of a result based on the underlying result object
+ * @property isDisabled      Used to determine if an item should be disabled
+ * @property onMouseEnter    Called when mouse enters this result item
+ * @property onMouseDown     Called when mouse clicks this result item
+ * @property onMouseUp       Called when mouse releases this result item
  */
 export interface ResultItemProperties extends ThemeableProperties {
 	index: number;
-	label: string;
 	result: any;
 	selected: boolean;
-	skipResult(): void;
+	getResultLabel(result: any): string;
+	isDisabled(result: any): boolean;
 	onMouseEnter(index: number): void;
 	onMouseDown(event: MouseEvent): void;
 	onMouseUp(event: MouseEvent): void;
@@ -38,7 +37,7 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 	private _onMouseDown(event: MouseEvent) {
 		const { onMouseDown } = this.properties;
 
-		!this.isDisabled() && onMouseDown(event);
+		onMouseDown(event);
 	}
 
 	private _onMouseEnter() {
@@ -47,57 +46,41 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 			onMouseEnter
 		} = this.properties;
 
-		!this.isDisabled() && onMouseEnter(index);
+		onMouseEnter(index);
 	}
 
 	private _onMouseUp(event: MouseEvent) {
 		const { onMouseUp } = this.properties;
 
-		!this.isDisabled() && onMouseUp(event);
+		onMouseUp(event);
 	}
 
-	@onPropertiesChanged
-	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ResultItemProperties>) {
-		if (includes(evt.changedPropertyKeys, 'selected')) {
-			const {
-				selected,
-				skipResult
-			} = this.properties;
+	renderResult(result: any) {
+		const { getResultLabel } = this.properties;
 
-			if (selected && this.isDisabled()) {
-				skipResult();
-			}
-		}
-	}
-
-	isDisabled() {
-		return false;
-	}
-
-	renderLabel(result: any) {
-		const { label } = this.properties;
-		return v('div', [ label ]);
+		return v('div', [ getResultLabel(result) ]);
 	}
 
 	render(): DNode {
 		const {
+			isDisabled,
 			result,
 			selected
 		} = this.properties;
 
 		return v('div', {
 			'aria-selected': selected ? 'true' : 'false',
-			'aria-disabled': this.isDisabled() ? 'true' : 'false',
+			'aria-disabled': isDisabled(result) ? 'true' : 'false',
 			classes: this.classes(
 				css.result,
 				selected ? css.selectedResult : null,
-				this.isDisabled() ? css.disabledResult : null
+				isDisabled(result) ? css.disabledResult : null
 			),
 			'data-selected': selected ? 'true' : 'false',
 			role: 'option',
 			onmousedown: this._onMouseDown,
 			onmouseenter: this._onMouseEnter,
 			onmouseup: this._onMouseUp
-		}, [ this.renderLabel(result) ]);
+		}, [ this.renderResult(result) ]);
 	}
 }
