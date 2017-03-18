@@ -16,9 +16,9 @@ import * as css from './styles/comboBox.css';
  * @property results                List of result data objects
  * @property selectedIndex          Position of the selected result in the list of results
  * @property getResultLabel         Can be used to get the text label of a result based on the underlying result object
- * @property isDisabled             Used to determine if an item should be disabled
- * @property onResultMouseEnter     Called when mouse enters a result item
+ * @property isResultDisabled       Used to determine if an item should be disabled
  * @property onResultMouseDown      Called when mouse clicks a result item
+ * @property onResultMouseEnter     Called when mouse enters a result item
  * @property onResultMouseUp        Called when mouse releases a result item
  */
 export interface ResultMenuProperties extends ThemeableProperties, RegistryMixinProperties {
@@ -26,10 +26,10 @@ export interface ResultMenuProperties extends ThemeableProperties, RegistryMixin
 	results: any[];
 	selectedIndex: number | undefined;
 	getResultLabel(result: any): string;
-	isDisabled?(result: any): boolean;
-	onResultMouseEnter(index: number): void;
-	onResultMouseDown(event: MouseEvent): void;
-	onResultMouseUp(event: MouseEvent): void;
+	isResultDisabled?(result: any): boolean;
+	onResultMouseDown(event: MouseEvent, index: number): void;
+	onResultMouseEnter(event: MouseEvent, index: number): void;
+	onResultMouseUp(event: MouseEvent, index: number): void;
 };
 
 const ResultMenuBase = RegistryMixin(ThemeableMixin(WidgetBase));
@@ -46,7 +46,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 			results,
 			selectedIndex,
 			getResultLabel,
-			isDisabled = () => false,
+			isResultDisabled = () => false,
 			onResultMouseEnter,
 			onResultMouseDown,
 			onResultMouseUp
@@ -58,7 +58,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 			result,
 			selected: i === selectedIndex,
 			getResultLabel,
-			isDisabled,
+			isDisabled: isResultDisabled,
 			onMouseEnter: onResultMouseEnter,
 			onMouseDown: onResultMouseDown,
 			onMouseUp: onResultMouseUp

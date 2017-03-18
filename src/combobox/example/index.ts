@@ -62,7 +62,7 @@ const data = [
 ];
 
 class CustomResultItem extends ResultItem {
-	renderLabel(result: any) {
+	renderResult(result: any) {
 		const { getResultLabel } = this.properties;
 
 		return v('div', [
@@ -187,7 +187,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value5'],
-				isDisabled: (result: any) => result.value.length > 9,
+				isResultDisabled: (result: any) => result.value.length > 9,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				}

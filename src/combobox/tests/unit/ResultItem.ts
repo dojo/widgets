@@ -8,7 +8,6 @@ import { assign } from '@dojo/core/lang';
 function props(props = {}) {
 	return assign({
 		index: 0,
-		label: 'foo',
 		result: 'foo',
 		selected: false,
 		onMouseEnter: () => true,
@@ -24,7 +23,7 @@ registerSuite({
 
 	'label should render properly'() {
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props({ label: 'abc' }));
+		resultItem.setProperties(props({ result: 'abc' }));
 		const vnode = <VNode> resultItem.__render__();
 		assert.strictEqual(vnode.children![0].text, 'abc');
 	},
@@ -50,11 +49,6 @@ registerSuite({
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseEnter: () => called++ }));
 		(<any> resultItem)._onMouseEnter();
-		resultItem.setProperties(props({
-			onMouseEnter: () => called++,
-			isDisabled: () => true
-		}));
-		(<any> resultItem)._onMouseEnter();
 		assert.strictEqual(called, 1);
 	},
 
@@ -63,11 +57,6 @@ registerSuite({
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseDown: () => called++ }));
 		(<any> resultItem)._onMouseDown(<any> {});
-		resultItem.setProperties(props({
-			onMouseDown: () => called++,
-			isDisabled: () => true
-		}));
-		(<any> resultItem)._onMouseDown(<any> {});
 		assert.strictEqual(called, 1);
 	},
 
@@ -75,11 +64,6 @@ registerSuite({
 		let called = 0;
 		const resultItem = new ResultItem();
 		resultItem.setProperties(props({ onMouseUp: () => called++ }));
-		(<any> resultItem)._onMouseUp(<any> {});
-		resultItem.setProperties(props({
-			onMouseUp: () => called++,
-			isDisabled: () => true
-		}));
 		(<any> resultItem)._onMouseUp(<any> {});
 		assert.strictEqual(called, 1);
 	}

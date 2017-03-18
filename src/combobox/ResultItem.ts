@@ -15,8 +15,8 @@ import * as css from './styles/comboBox.css';
  * @property selected        Determines whether or not this item is selected
  * @property getResultLabel  Can be used to get the text label of a result based on the underlying result object
  * @property isDisabled      Used to determine if an item should be disabled
- * @property onMouseEnter    Called when mouse enters this result item
  * @property onMouseDown     Called when mouse clicks this result item
+ * @property onMouseEnter    Called when mouse enters this result item
  * @property onMouseUp       Called when mouse releases this result item
  */
 export interface ResultItemProperties extends ThemeableProperties {
@@ -25,9 +25,9 @@ export interface ResultItemProperties extends ThemeableProperties {
 	selected: boolean;
 	getResultLabel(result: any): string;
 	isDisabled(result: any): boolean;
-	onMouseEnter(index: number): void;
-	onMouseDown(event: MouseEvent): void;
-	onMouseUp(event: MouseEvent): void;
+	onMouseDown(event: MouseEvent, index: number): void;
+	onMouseEnter(event: MouseEvent, index: number): void;
+	onMouseUp(event: MouseEvent, index: number): void;
 };
 
 const ResultItemBase = ThemeableMixin(WidgetBase);
@@ -35,24 +35,30 @@ const ResultItemBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 	private _onMouseDown(event: MouseEvent) {
-		const { onMouseDown } = this.properties;
+		const {
+			index,
+			onMouseDown
+		} = this.properties;
 
-		onMouseDown(event);
+		onMouseDown(event, index);
 	}
 
-	private _onMouseEnter() {
+	private _onMouseEnter(event: MouseEvent) {
 		const {
 			index,
 			onMouseEnter
 		} = this.properties;
 
-		onMouseEnter(index);
+		onMouseEnter(event, index);
 	}
 
 	private _onMouseUp(event: MouseEvent) {
-		const { onMouseUp } = this.properties;
+		const {
+			onMouseUp,
+			index
+		} = this.properties;
 
-		onMouseUp(event);
+		onMouseUp(event, index);
 	}
 
 	renderResult(result: any) {
@@ -81,6 +87,8 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 			onmousedown: this._onMouseDown,
 			onmouseenter: this._onMouseEnter,
 			onmouseup: this._onMouseUp
-		}, [ this.renderResult(result) ]);
+		}, [
+			this.renderResult(result)
+		]);
 	}
 }

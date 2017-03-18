@@ -32,12 +32,12 @@ import * as css from './styles/comboBox.css';
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
  * @property value              Value to set on the input
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
- * @property isDisabled         Used to determine if an item should be disabled
+ * @property isResultDisabled   Used to determine if an item should be disabled
  * @property onBlur             Called when the input is blurred
  * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
- * @property onRequestResults   Called when results are shown; should be used to set `results`
  * @property onMenuChange       Called when menu visibility changes
+ * @property onRequestResults   Called when results are shown; should be used to set `results`
  */
 export interface ComboBoxProperties extends ThemeableProperties {
 	autoBlur?: boolean;
@@ -55,23 +55,22 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	results?: any[];
 	value?: string;
 	getResultLabel?(result: any): string;
-	isDisabled?(result: any): boolean;
+	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
-	onRequestResults?(value: string): void;
 	onMenuChange?(open: boolean): void;
+	onRequestResults?(value: string): void;
 };
 
 // Enum used when traversing items using arrow keys
 export const enum Operation {
 	increase = 1,
-	decrease = -1,
-	reset
+	decrease = -1
 };
 
 // This can go away when Safari decides to support KeyboardEvent.key
-const keys = {
+const keys: {[key: string]: number} = {
 	escape: 27,
 	enter: 13,
 	up: 38,
@@ -82,136 +81,64 @@ export const ComboBoxBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
+	private _activeIndex: number | undefined;
+	private _focused: boolean;
 	private _ignoreBlur: boolean;
 	private _ignoreFocus: boolean;
 	private _inputElement: HTMLInputElement;
-	private _focused: boolean;
 	private _open: boolean;
-	private _direction: Operation;
-	private _selectedIndex: number | undefined;
 	private _wasOpen: boolean;
 
-	private _nextIndex(operation?: Operation) {
-		const {
-			results = [],
-			isDisabled
-		} = this.properties;
-
-		const total = results.length;
-		let index = this._selectedIndex;
-		let curr = 0;
-
-		while (isDisabled(results[index])) {
-
-		}
+	private _closeMenu() {
+		this._open = false;
+		this.invalidate();
 	}
 
-	private _handlers: {[key: string]: any} = {
-		[keys.up](this: ComboBox, event: KeyboardEvent) {
-			event.preventDefault();
-			this.updateSelectedIndex(Operation.decrease);
-			this.invalidate();
-		},
-
-		[keys.down](this: ComboBox, event: KeyboardEvent) {
-			event.preventDefault();
-			const { onRequestResults } = this.properties;
-
-			if (!this._open) {
-				this._open = true;
-				onRequestResults && onRequestResults(this._inputElement.value);
-			}
-			else {
-				this.updateSelectedIndex(Operation.increase);
-				this.invalidate();
-			}
-		},
-
-		[keys.enter](this: ComboBox) {
-			const { results } = this.properties;
-
-			// If results already closed or no results, do nothing
-			if (!this._open || !results || results.length === 0) {
-				return;
-			}
-			// If no result selected, close menu
-			else if (this._selectedIndex === undefined) {
-				this._open = false;
-				this.invalidate();
-			}
-			else {
-				this._selectResult(results[this._selectedIndex]);
-			}
-		},
-
-		[keys.escape](this: ComboBox) {
-			this.updateSelectedIndex(Operation.reset);
-			this._open = false;
-			this.invalidate();
-		}
-	};
-
-	private _afterCreate(element: HTMLElement) {
-		this._inputElement = <HTMLInputElement> element.querySelector('input');
-		this._restoreFocus();
-	}
-
-	private _afterUpdate(element: HTMLElement) {
-		this._restoreFocus();
-		// Make sure highlighted result is visible after arrow up / arrow down
-		const selectedResult = element.querySelector('[data-selected="true"]');
-		selectedResult && this.scrollIntoView(<HTMLElement> selectedResult);
-	}
-
-	private _createRegistry() {
-		const {
-			customResultItem = ResultItem,
-			customResultMenu = ResultMenu
-		} = this.properties;
-
+	private _createRegistry(customResultItem: any, customResultMenu: any) {
 		const registry = new WidgetRegistry();
 		registry.define('result-item', customResultItem);
 		registry.define('result-menu', customResultMenu);
+
 		return registry;
 	}
 
-	private _getResultLabel(result: any): string {
+	private _getResultLabel(result: any) {
 		const { getResultLabel } = this.properties;
+
 		return getResultLabel ? getResultLabel(result) : result;
+	}
+
+	private _isIndexDisabled(index: number) {
+		const {
+			results = [],
+			isResultDisabled
+		} = this.properties;
+
+		return isResultDisabled && isResultDisabled(results[index]);
 	}
 
 	private _onArrowClick() {
 		const {
-			onRequestResults,
 			disabled,
 			readOnly
 		} = this.properties;
 
-		if (disabled || readOnly) {
-			return;
-		}
-
-		this._open = true;
-		this._focused = true;
-		onRequestResults && onRequestResults(this._inputElement.value);
+		!disabled && !readOnly && this._openMenu();
 	}
 
 	private _onClearClick() {
 		const { onChange } = this.properties;
+
 		this._focused = true;
 		onChange && onChange('');
 	}
 
 	private _onInput(event: Event) {
-		const {
-			onRequestResults,
-			onChange
-		} = this.properties;
+		const { onChange } = this.properties;
 
-		this.updateSelectedIndex(Operation.reset);
-		this._open = true;
+		this._activeIndex = undefined;
 		onChange && onChange((<HTMLInputElement> event.target).value);
-		onRequestResults && onRequestResults((<HTMLInputElement> event.target).value);
+		this._openMenu();
 	}
 
 	private _onInputBlur(event: FocusEvent) {
@@ -221,112 +148,85 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			return;
 		}
 
-		this.updateSelectedIndex(Operation.reset);
-		this._open = false;
 		this._focused = false;
 		onBlur && onBlur((<HTMLInputElement> event.target).value);
-		this.invalidate();
+		this._closeMenu();
 	}
 
 	private _onInputFocus(event: FocusEvent) {
 		const {
 			openOnFocus,
-			onFocus,
-			onRequestResults
+			onFocus
 		} = this.properties;
 
-		const value = (<HTMLInputElement> event.target).value;
-
 		this._focused = true;
-		this._ignoreBlur = false;
-		onFocus && onFocus(value);
-
-		if (openOnFocus && !this._ignoreFocus) {
-			this._open = true;
-			onRequestResults && onRequestResults(value);
-		}
-
-		this._ignoreFocus = false;
+		onFocus && onFocus((<HTMLInputElement> event.target).value);
+		openOnFocus && !this._ignoreFocus && this._openMenu();
+		this._ignoreBlur = this._ignoreFocus = false;
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
-		this._handlers[event.keyCode] && this._handlers[event.keyCode].call(this, event);
+		const { results = [] } = this.properties;
+
+		switch (event.keyCode) {
+			case keys.up:
+				event.preventDefault();
+				this._moveActiveIndex(Operation.decrease);
+				break;
+			case keys.down:
+				event.preventDefault();
+				this._open ? this._moveActiveIndex(Operation.increase) : this._openMenu();
+				break;
+			case keys.escape:
+				this._open && this._closeMenu();
+				break;
+			case keys.enter:
+				if (this._open && results.length > 0) {
+					this._activeIndex === undefined ? this._closeMenu() : this._selectIndex(this._activeIndex);
+				}
+				break;
+		}
+	}
+
+	private _onMenuChange() {
+		const { onMenuChange } = this.properties;
+
+		if (!onMenuChange) {
+			return;
+		}
+
+		this._open && !this._wasOpen && onMenuChange(true);
+		!this._open && this._wasOpen && onMenuChange(false);
 	}
 
 	private _onResultMouseDown() {
+		// Maintain underlying input focus on next render
 		this._ignoreBlur = true;
 	}
 
-	private _onResultMouseEnter(index: number) {
-		const {
-			results = [],
-			isDisabled
-		} = this.properties;
-
-		if (isDisabled && isDisabled(results[index])) {
+	private _onResultMouseEnter(event: MouseEvent, index: number) {
+		if (this._isIndexDisabled(index)) {
 			return;
 		}
 
-		this.updateSelectedIndex(undefined, index);
+		this._activeIndex = index;
 		this.invalidate();
 	}
 
-	private _onResultMouseUp() {
-		const {
-			results = [],
-			isDisabled
-		} = this.properties;
-
-		if (this._selectedIndex === undefined) {
-			return;
-		}
-
-		const result = results[this._selectedIndex];
-
-		if (!result || (isDisabled && isDisabled(result))) {
-			return;
-		}
-
-		this._selectResult(results[this._selectedIndex]);
-	}
-
-	private _notifyMenuChange() {
-		const {
-			results = [],
-			onMenuChange
-		} = this.properties;
-
-		if (!onMenuChange || results.length === 0) {
-			return;
-		}
-
-		if (this._open && !this._wasOpen) {
-			onMenuChange(true);
-		}
-		else if (!this._open && this._wasOpen) {
-			onMenuChange(false);
+	private _onResultMouseUp(event: MouseEvent, index: number) {
+		if (!this._isIndexDisabled(index)) {
+			this._ignoreFocus = true;
+			this._selectIndex(index);
 		}
 	}
 
-	private _renderMenu(results: any[], id?: string) {
-		if (!this._open || results.length === 0) {
-			return null;
-		}
+	private _openMenu() {
+		const { onRequestResults } = this.properties;
 
-		const { isDisabled } = this.properties;
-
-		return w('result-menu', <ResultMenuProperties> {
-			bind: this,
-			id,
-			isDisabled,
-			registry: this.registry,
-			results,
-			selectedIndex: this._selectedIndex,
-			getResultLabel: this._getResultLabel,
-			onResultMouseEnter: this._onResultMouseEnter,
-			onResultMouseDown: this._onResultMouseDown,
-			onResultMouseUp: this._onResultMouseUp
-		});
+		this._activeIndex = undefined;
+		this._open = true;
+		this._focused = true;
+		onRequestResults && onRequestResults(this._inputElement.value);
 	}
 
 	private _restoreFocus() {
@@ -334,27 +234,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._inputElement[func]();
 	}
 
-	private _selectResult(result: any) {
-		const {
-			autoBlur,
-			onChange
-		} = this.properties;
-
-		this.updateSelectedIndex(Operation.reset);
-		this._open = false;
-		this._focused = !autoBlur;
-		this._ignoreFocus = true;
-		onChange && onChange(this._getResultLabel(result));
-	}
-
-	@onPropertiesChanged
-	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
-		if (!this.registry || includes(evt.changedPropertyKeys, 'customResultItem') || includes(evt.changedPropertyKeys, 'customResultMenu')) {
-			this.registry = this._createRegistry();
-		}
-	}
-
-	protected scrollIntoView(element: HTMLElement) {
+	private _scrollIntoView(element: HTMLElement) {
 		const menu = <HTMLElement> element.parentElement;
 		// Scroll menu up so top of highlighted result aligns with top of menu container
 		if (element.offsetTop - menu.scrollTop < 0) {
@@ -366,28 +246,90 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	}
 
-	protected updateSelectedIndex(operation?: Operation, index?: number) {
-		const { results } = this.properties;
+	private _selectIndex(index: number) {
+		const {
+			autoBlur,
+			onChange,
+			results = []
+		} = this.properties;
 
-		if (!results || results.length === 0 || !this._open) {
+		this._focused = !autoBlur;
+		this._closeMenu();
+		onChange && onChange(this._getResultLabel(results[index]));
+	}
+
+	private _moveActiveIndex(operation: Operation) {
+		const { results = [] } = this.properties;
+
+		if (results.length === 0) {
+			this._activeIndex = 0;
 			return;
 		}
 
-		if (index !== undefined) {
-			this._selectedIndex = index;
+		function nextIndex(i?: number) {
+			const total = results.length;
+			const base = operation === Operation.increase ? 0 : -1;
+			const current = i !== undefined ? i + operation : base;
+			return (current + total) % total;
 		}
-		else if (operation !== undefined) {
-			if (operation === Operation.increase || operation === Operation.decrease) {
-				const total = results.length;
-				const base = operation === Operation.increase ? 0 : -1;
-				const current = this._selectedIndex !== undefined ? this._selectedIndex + operation : base;
-				this._selectedIndex = (current + total) % total;
-			}
-			else {
-				this._selectedIndex = undefined;
-			}
-			this._direction = operation;
+
+		let index = nextIndex(this._activeIndex);
+
+		while (this._isIndexDisabled(index)) {
+			index = nextIndex(index);
 		}
+
+		this._activeIndex = index;
+		this.invalidate();
+	}
+
+	protected onElementCreated(element: HTMLElement, key: string) {
+		if (key === 'root') {
+			this._inputElement = <HTMLInputElement> element.querySelector('input');
+			this._restoreFocus();
+		}
+	}
+
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (key === 'root') {
+			this._restoreFocus();
+			const selectedResult = element.querySelector('[data-selected="true"]');
+			selectedResult && this._scrollIntoView(<HTMLElement> selectedResult);
+		}
+	}
+
+	@onPropertiesChanged
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
+		const {
+			customResultItem = ResultItem,
+			customResultMenu = ResultMenu
+		} = this.properties;
+
+		if (
+			!this.registry ||
+			includes(evt.changedPropertyKeys, 'customResultItem') ||
+			includes(evt.changedPropertyKeys, 'customResultMenu')) {
+			this.registry = this._createRegistry(customResultItem, customResultMenu);
+		}
+	}
+
+	protected renderMenu(results: any[]) {
+		if (results.length === 0 || !this._open) {
+			return null;
+		}
+
+		return w('result-menu', <ResultMenuProperties> {
+			bind: this,
+			id: uuid(),
+			registry: this.registry,
+			results,
+			selectedIndex: this._activeIndex,
+			getResultLabel: this._getResultLabel,
+			isResultDisabled: this.properties.isResultDisabled,
+			onResultMouseDown: this._onResultMouseDown,
+			onResultMouseEnter: this._onResultMouseEnter,
+			onResultMouseUp: this._onResultMouseUp
+		});
 	}
 
 	render(): DNode {
@@ -404,16 +346,16 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			value = ''
 		} = this.properties;
 
-		const menuId = uuid();
-		const menu = this._renderMenu(results, menuId);
-		this._notifyMenuChange();
-
+		const menu = this.renderMenu(results);
+		const menuId = menu ? (<ResultMenuProperties> menu.properties).id : '';
+		this._onMenuChange();
 		this._wasOpen = this._open;
 
-		const controls = v('div', {
+		let controls: DNode = v('div', {
 			classes: this.classes(css.controls)
 		}, [
 			w(TextInput, {
+				...inputProperties,
 				bind: this,
 				classes: this.classes(clearable ? css.clearable : null),
 				controls: menuId,
@@ -426,14 +368,14 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				onFocus: this._onInputFocus,
 				onInput: this._onInput,
 				onKeyDown: this._onInputKeyDown,
-				overrideClasses: css,
-				...inputProperties
+				overrideClasses: css
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
 				bind: this,
 				classes: this.classes(css.clear),
 				disabled,
+				readOnly,
 				innerHTML: 'clear combo box',
 				onclick: this._onClearClick
 			}) : null,
@@ -442,27 +384,31 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				bind: this,
 				classes: this.classes(css.arrow),
 				disabled,
+				readOnly,
 				innerHTML: 'open combo box',
 				onclick: this._onArrowClick
 			})
 		]);
 
+		if (label) {
+			controls = w(Label, {
+				bind: this,
+				formId,
+				label
+			}, [ controls ]);
+		}
+
 		return v('div', {
-			afterCreate: this._afterCreate,
-			afterUpdate: this._afterUpdate,
 			'aria-expanded': this._open ? 'true' : 'false',
 			'aria-haspopup': 'true',
 			'aria-readonly': readOnly ? 'true' : 'false',
 			'aria-required': required ? 'true' : 'false',
 			bind: this,
 			classes: this.classes(css.root),
+			key: 'root',
 			role: 'combobox'
 		}, [
-			label ? w(Label, {
-				bind: this,
-				formId,
-				label
-			}, [ controls ]) : controls,
+			controls,
 			menu
 		]);
 	}

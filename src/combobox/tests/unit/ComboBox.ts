@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import ComboBox, { Operation } from '../../ComboBox';
+import ComboBox from '../../ComboBox';
 import ResultItem from '../../ResultItem';
 import ResultMenu from '../../ResultMenu';
 
@@ -53,7 +53,7 @@ registerSuite({
 
 		(<any> comboBox)._onArrowClick();
 		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 3);
+		assert.lengthOf(vnode.children, 2);
 	},
 
 	'Label should render'() {
@@ -74,7 +74,7 @@ registerSuite({
 
 		(<any> comboBox)._onInput(event());
 		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 3);
+		assert.lengthOf(vnode.children, 2);
 	},
 
 	'Menu should close when input blurred'() {
@@ -86,11 +86,12 @@ registerSuite({
 		(<any> comboBox)._onInput(event());
 		(<any> comboBox)._onInputBlur(event());
 		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
+		assert.lengthOf(vnode.children, 1);
 	},
 
 	'Menu should close when result clicked'() {
 		const comboBox = new ComboBox();
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		comboBox.setProperties({
 			results: ['abc'],
 			getResultLabel: (value: string) => value
@@ -100,15 +101,14 @@ registerSuite({
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		(<any> comboBox)._onResultMouseUp();
 		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
+		assert.lengthOf(vnode.children, 1);
 	},
 
-	'Value should not change if no results exist'() {
+	'Blur should be ignored when clicking result'() {
 		const comboBox = new ComboBox();
 		let called = false;
-		// Set properties individually to hit all branches in onPropertiesChanged
 		comboBox.setProperties({
-			getResultLabel: (value: string) => value
+			results: ['a', 'b']
 		});
 		comboBox.setProperties({
 			customResultItem: ResultItem
@@ -117,23 +117,11 @@ registerSuite({
 			customResultMenu: ResultMenu
 		});
 		comboBox.setProperties({
-			onChange: () => called = true
-		});
-
-		(<any> comboBox)._onResultMouseUp();
-		assert.isFalse(called);
-	},
-
-	'Blur should be ignored when clicking result'() {
-		const comboBox = new ComboBox();
-		let called = false;
-		comboBox.setProperties({
-			results: ['a', 'b'],
 			onBlur: () => called = true
 		});
 
 		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onResultMouseEnter(1);
+		(<any> comboBox)._onResultMouseEnter(event(), 0);
 		(<any> comboBox)._onResultMouseDown();
 		(<any> comboBox)._onInputBlur(event());
 		assert.isFalse(called);
@@ -141,34 +129,33 @@ registerSuite({
 
 	'Down arrow should change selected result if open'() {
 		const comboBox = new ComboBox();
+		(<any> comboBox)._moveActiveIndex();
 		comboBox.setProperties({
-			results: ['1', '2']
+			results: ['1', '2'],
+			required: true
 		});
 
 		(<any> comboBox)._onArrowClick();
-		(<any> comboBox).updateSelectedIndex();
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![2].children![0].properties!['data-selected'], 'true');
+		assert.strictEqual(vnode.children![1].children![0].properties!['data-selected'], 'true');
 
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
+		assert.strictEqual(vnode.children![1].children![1].properties!['data-selected'], 'true');
 	},
 
 	'Down arrow should open results if closed'() {
 		const comboBox = new ComboBox();
-		let called = false;
 		comboBox.setProperties({
-			results: ['1', '2'],
-			required: true,
-			onRequestResults: () => called = true
+			results: ['abc']
 		});
-		(<any> comboBox)._afterCreate(parentElement());
+
+		(<any> comboBox).onElementCreated();
+		(<any> comboBox).onElementCreated(parentElement(), 'controls');
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		const vnode = <VNode> comboBox.__render__();
-		assert.isTrue(called);
-		assert.lengthOf(vnode.children, 3);
+		assert.lengthOf(vnode.children, 2);
 	},
 
 	'Up arrow should change selected result'() {
@@ -177,15 +164,14 @@ registerSuite({
 			results: ['1', '2']
 		});
 
-		(<any> comboBox)._onInputKeyDown(event(keys.up));
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox)._onInputKeyDown(event(keys.up));
 		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![2].children![1].properties!['data-selected'], 'true');
+		assert.strictEqual(vnode.children![1].children![1].properties!['data-selected'], 'true');
 
 		(<any> comboBox)._onInputKeyDown(event(keys.up));
 		vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![2].children![0].properties!['data-selected'], 'true');
+		assert.strictEqual(vnode.children![1].children![0].properties!['data-selected'], 'true');
 	},
 
 	'Enter should select a result'() {
@@ -193,15 +179,14 @@ registerSuite({
 		const comboBox = new ComboBox();
 		comboBox.setProperties({
 			results: ['1', '2'],
-			onChange: (value: string) => inputValue = value,
-			getResultLabel: (value: string) => value
+			onChange: (value: string) => inputValue = value
 		});
 
 		(<any> comboBox)._onInputKeyDown(event(keys.enter));
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox)._onInputKeyDown(event(keys.enter));
 		let vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
+		assert.lengthOf(vnode.children, 1);
 
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
@@ -216,7 +201,7 @@ registerSuite({
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox)._onInputKeyDown(event(keys.escape));
 		let vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
+		assert.lengthOf(vnode.children, 1);
 	},
 
 	'Input should blur if autoBlur is true'() {
@@ -230,10 +215,11 @@ registerSuite({
 			autoBlur: true
 		});
 
-		(<any> comboBox)._afterCreate(parent);
+		(<any> comboBox).onElementCreated(parent, 'controls');
 		parent.querySelector = () => null;
-		(<any> comboBox)._selectResult('abc');
-		(<any> comboBox)._afterUpdate(parent);
+		(<any> comboBox)._selectIndex(0);
+		(<any> comboBox).onElementUpdated();
+		(<any> comboBox).onElementUpdated(parent, 'controls');
 		assert.isTrue(blurred);
 	},
 
@@ -245,11 +231,10 @@ registerSuite({
 			onChange: (value: string) => inputValue = value
 		});
 
-		let vnode = <VNode> comboBox.__render__();
-		(<any> comboBox)._afterCreate(parentElement());
+		<VNode> comboBox.__render__();
+		(<any> comboBox).onElementCreated(parentElement(), 'controls');
 		(<any> comboBox)._onClearClick();
 		assert.strictEqual(inputValue, '');
-		assert.lengthOf(vnode.children, 3);
 	},
 
 	'Allowed inputProperties are transferred to child input'() {
@@ -261,7 +246,7 @@ registerSuite({
 		});
 
 		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].children![0].children![0].properties!.placeholder, 'foobar');
+		assert.strictEqual(vnode.children![0].children![0].children![0].children![0].properties!.placeholder, 'foobar');
 	},
 
 	'Input should open on focus if openOnFocus is true'() {
@@ -273,7 +258,7 @@ registerSuite({
 
 		(<any> comboBox)._onInputFocus(event());
 		let vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 3);
+		assert.lengthOf(vnode.children, 2);
 	},
 
 	'value is set on underlying input'() {
@@ -283,7 +268,7 @@ registerSuite({
 		});
 
 		const vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].children![0].children![0].properties!.value, 'abc');
+		assert.strictEqual(vnode.children![0].children![0].children![0].children![0].properties!.value, 'abc');
 	},
 
 	'onBlur should be called'() {
@@ -300,13 +285,16 @@ registerSuite({
 	'onChange should be called'() {
 		let called = 0;
 		const comboBox = new ComboBox();
+		(<any> comboBox)._selectIndex(0);
 		comboBox.setProperties({
+			results: ['abc'],
+			getResultLabel: value => value,
 			onChange: () => called++
 		});
 
 		(<any> comboBox)._onInput(event());
 		(<any> comboBox)._onClearClick();
-		(<any> comboBox)._selectResult('abc');
+		(<any> comboBox)._selectIndex(0);
 		assert.strictEqual(called, 3);
 	},
 
@@ -319,9 +307,9 @@ registerSuite({
 		});
 
 		(<any> comboBox)._onInputFocus(event());
-		(<any> comboBox)._afterCreate(parent);
+		(<any> comboBox).onElementCreated(parent, 'controls');
 		parent.querySelector = () => null;
-		(<any> comboBox)._afterUpdate(parent);
+		(<any> comboBox).onElementUpdated(parent, 'controls');
 		assert.isTrue(called);
 	},
 
@@ -333,7 +321,7 @@ registerSuite({
 			openOnFocus: true
 		});
 
-		(<any> comboBox)._afterCreate(parentElement());
+		(<any> comboBox).onElementCreated(parentElement(), 'controls');
 		(<any> comboBox)._onInput(event());
 		(<any> comboBox)._onInputFocus(event());
 		(<any> comboBox)._onArrowClick();
@@ -353,9 +341,6 @@ registerSuite({
 		(<any> comboBox)._onInputBlur(parentElement());
 		<VNode> comboBox.__render__();
 		assert.strictEqual(called, 2);
-		(<any> comboBox)._wasOpen = false;
-		(<any> comboBox)._open = false;
-		(<any> comboBox)._notifyMenuChange();
 	},
 
 	'Clicking arrow should not open menu if disabled'() {
@@ -366,7 +351,7 @@ registerSuite({
 
 		(<any> comboBox)._onArrowClick();
 		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
+		assert.lengthOf(vnode.children, 1);
 	},
 
 	'Clicking arrow should not open menu if readonly'() {
@@ -377,7 +362,7 @@ registerSuite({
 
 		(<any> comboBox)._onArrowClick();
 		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
+		assert.lengthOf(vnode.children, 1);
 	},
 
 	'Selected element should stay visible when above viewport'() {
@@ -390,8 +375,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		(<any> comboBox)._afterCreate(parentElement());
-		(<any> comboBox)._afterUpdate(parentElement(element));
+		(<any> comboBox).onElementCreated(parentElement(), 'controls');
+		(<any> comboBox).onElementUpdated(parentElement(element), 'controls');
 		assert.strictEqual(menu.scrollTop, element.offsetTop);
 	},
 
@@ -407,8 +392,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		(<any> comboBox)._afterCreate(parentElement());
-		(<any> comboBox)._afterUpdate(parentElement(element));
+		(<any> comboBox).onElementCreated(parentElement(), 'controls');
+		(<any> comboBox).onElementUpdated(parentElement(element), 'controls');
 		assert.strictEqual(menu.scrollTop, element.offsetTop - menu.clientHeight + element.offsetHeight);
 	},
 
@@ -424,18 +409,23 @@ registerSuite({
 			parentElement: menu
 		};
 
-		(<any> comboBox)._afterCreate(parentElement());
-		(<any> comboBox)._afterUpdate(parentElement(element));
+		(<any> comboBox).onElementCreated(parentElement(), 'controls');
+		(<any> comboBox).onElementUpdated(parentElement(element), 'controls');
 		assert.strictEqual(menu.scrollTop, 50);
 	},
 
-	'Skip result should update index based on last direction'() {
+	'disabled result should be skipped'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({ results: ['a', 'b', 'c'] });
-		(<any> comboBox)._open = true;
-		(<any> comboBox)._selectedIndex = 0;
-		(<any> comboBox)._direction = Operation.increase;
-		(<any> comboBox)._skipResult();
-		assert.strictEqual((<any> comboBox)._selectedIndex, 1);
+		(<any> comboBox)._isIndexDisabled(0);
+		comboBox.setProperties({
+			results: ['1', '2'],
+			isResultDisabled: result => result === '1'
+		});
+
+		(<any> comboBox)._onResultMouseEnter(null, 0);
+		(<any> comboBox)._onArrowClick();
+		(<any> comboBox)._onInputKeyDown(event(keys.down));
+		let vnode = <VNode> comboBox.__render__();
+		assert.strictEqual(vnode.children![1].children![1].properties!['data-selected'], 'true');
 	}
 });
