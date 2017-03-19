@@ -30,7 +30,7 @@
 	outline: none;
 }
 
-.tabButton:focus {
+.tabButton:focus:not(.disabledTabButton) {
 	font-weight: bold;
 }
 

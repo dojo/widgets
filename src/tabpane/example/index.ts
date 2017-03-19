@@ -82,6 +82,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						'Nullam congue, massa in egestas sagittis, diam neque rutrum tellus, nec egestas metus tellus vel odio. Vivamus tincidunt quam nisl, sit amet venenatis purus bibendum eget. Phasellus fringilla ex vitae odio hendrerit, non volutpat orci rhoncus.'
 					]),
 					closeable: true
+				}, {
+					label: 'Default',
+					content: v('div', [
+						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in ex pharetra, iaculis turpis eget, tincidunt lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'
+					])
 				}]
 			})
 		]);

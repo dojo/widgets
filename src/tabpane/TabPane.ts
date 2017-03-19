@@ -64,68 +64,72 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	private _id: string;
 	private _loading: boolean;
 
-	private _firstTab() {
-		this.onTabClick(0);
+	constructor() {
+		super();
+		this._id = uuid();
 	}
 
-	private _lastTab() {
-		const { tabs = [] } = this.properties;
-
-		this.onTabClick(tabs.length - 1);
-	}
-
-	private _nextTab() {
+	private _getIndex() {
 		const {
 			activeIndex = 0,
-			loadingIndex = 0,
-			tabs = []
+			loadingIndex
 		} = this.properties;
 
-		function nextIndex(i: number) {
-			i = i === tabs.length - 1 ? 0 : i + 1;
-			return i;
+		return this._loading ? (loadingIndex || 0) : activeIndex;
+	}
+
+	private _getNextIndex(backwards?: boolean) {
+		const { tabs = [] } = this.properties;
+
+		if (tabs.every(result => Boolean(result.disabled))) {
+			return;
 		}
 
-		let i = nextIndex(this._loading ? loadingIndex : activeIndex);
+		function nextIndex(index: number) {
+			if (backwards) {
+				return (tabs.length + (index - 1)) % tabs.length;
+			}
+			return (index + 1) % tabs.length;
+		}
+
+		let i = nextIndex(this._getIndex());
 
 		while (tabs[i].disabled) {
 			i = nextIndex(i);
 		}
 
-		this.onTabClick(i);
+		return i;
 	}
 
-	private _previousTab() {
-		const {
-			activeIndex = 0,
-			loadingIndex = 0,
-			tabs = []
-		} = this.properties;
+	private _getFirstTab() {
+		this.onTabClick(0);
+	}
 
-		function previousIndex(i: number) {
-			i = i === 0 ? tabs.length - 1 : i - 1;
-			return i;
-		}
+	private _getLastTab() {
+		const { tabs = [] } = this.properties;
 
-		let i = previousIndex(this._loading ? loadingIndex : activeIndex);
+		this.onTabClick(tabs.length - 1);
+	}
 
-		while (tabs[i].disabled) {
-			i = previousIndex(i);
-		}
+	private _getNextTab() {
+		const index = this._getNextIndex();
+		typeof index === 'number' && this.onTabClick(index);
+	}
 
-		this.onTabClick(i);
+	private _getPreviousTab() {
+		const index = this._getNextIndex(true);
+		typeof index === 'number' && this.onTabClick(index);
 	}
 
 	private _renderTabButtons() {
 		const {
-			activeIndex = 0,
 			loadingIndex,
 			tabs = []
 		} = this.properties;
 
 		return tabs.map((tab, i) => {
 			return w(TabButton, {
-				active: i === (this._loading ? loadingIndex : activeIndex),
+				active: i === this._getIndex(),
 				closeable: tab.closeable,
 				controls: `${ this._id }-tab-${i}`,
 				disabled: tab.disabled,
@@ -135,10 +139,10 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 				loading: i === loadingIndex,
 				onClick: this.onTabClick,
 				onCloseClick: this.onCloseClick,
-				onRightArrowPress: this._nextTab,
-				onLeftArrowPress: this._previousTab,
-				onEndPress: this._lastTab,
-				onHomePress: this._firstTab
+				onEndPress: this._getLastTab,
+				onHomePress: this._getFirstTab,
+				onLeftArrowPress: this._getPreviousTab,
+				onRightArrowPress: this._getNextTab
 			}, [
 				tab.label || null
 			]);
@@ -146,15 +150,11 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	}
 
 	private _renderTabs() {
-		const {
-			activeIndex = 0,
-			loadingIndex,
-			tabs = []
-		} = this.properties;
+		const { tabs = [] } = this.properties;
 
 		return tabs
 			.filter((tab, i) => {
-				return i === (this._loading ? loadingIndex : activeIndex);
+				return i === this._getIndex();
 			})
 			.map((tab, i) => w(Tab, {
 				id: `${ this._id }-tab-${i}`,
@@ -163,13 +163,6 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 			}, [
 				this._loading ? 'Loading...' : (tab.content || null)
 			]));
-	}
-
-	protected onTabClick(index: number) {
-		console.log('requesting', index);
-		const { onRequestTabChange } = this.properties;
-
-		onRequestTabChange && onRequestTabChange(index);
 	}
 
 	protected onCloseClick(index: number) {
@@ -184,39 +177,30 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		onRequestTabClose && onRequestTabClose(newTabs);
 	}
 
-	protected updateActiveIndex() {
-		const {
-			activeIndex = 0,
-			tabs = [],
-			onRequestTabChange
-		} = this.properties;
-
-		if (tabs[activeIndex] && !tabs[activeIndex].disabled) {
-			return;
-		}
-
-		for (let i = 0; i < tabs.length; i++) {
-			if (!tabs[i].disabled) {
-				onRequestTabChange && onRequestTabChange(i);
-				break;
-			}
-		}
-	}
-
 	@onPropertiesChanged
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, TabPaneProperties>) {
-		if (includes(evt.changedPropertyKeys, 'tabs') || includes(evt.changedPropertyKeys, 'activeIndex')) {
-			this.updateActiveIndex();
-		}
+		const { tabs = [] } = this.properties;
+
 		if (includes(evt.changedPropertyKeys, 'loadingIndex')) {
 			this._loading = typeof evt.properties.loadingIndex === 'number';
 		}
+		if (includes(evt.changedPropertyKeys, 'tabs') || includes(evt.changedPropertyKeys, 'activeIndex') && tabs.length > 0) {
+			const tab = tabs[this._getIndex()];
+
+			if (!tab) {
+				this.onTabClick(0);
+				return;
+			}
+
+			const index = this._getNextIndex();
+			tab.disabled && typeof index === 'number' && this.onTabClick(index);
+		}
 	}
 
-	constructor() {
-		super();
+	protected onTabClick(index: number) {
+		const { onRequestTabChange } = this.properties;
 
-		this._id = uuid();
+		onRequestTabChange && onRequestTabChange(index);
 	}
 
 	render(): DNode {
@@ -238,8 +222,8 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 
 		switch (alignButtons) {
 			case Align.right:
-				ariaAlign = 'vertical';
 				alignClass = css.alignRight;
+				ariaAlign = 'vertical';
 				children.reverse();
 				break;
 			case Align.bottom:
@@ -247,8 +231,8 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 				children.reverse();
 				break;
 			case Align.left:
-				ariaAlign = 'vertical';
 				alignClass = css.alignLeft;
+				ariaAlign = 'vertical';
 				break;
 		}
 

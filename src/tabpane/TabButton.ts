@@ -70,16 +70,17 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			disabled,
 			index,
 			onCloseClick,
+			onEndPress,
 			onHomePress,
 			onLeftArrowPress,
-			onRightArrowPress,
-			onEndPress
+			onRightArrowPress
 		} = this.properties;
 
 		if (disabled) {
 			return;
 		}
 
+		// Accessibility
 		switch (event.keyCode) {
 			// Escape
 			case 27:
@@ -106,8 +107,15 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 
 	private _restoreFocus(element: HTMLElement) {
 		const { active } = this.properties;
-
 		active && element.focus();
+	}
+
+	protected onElementCreated(element: HTMLElement, key: string) {
+		key === 'tab-button' && this._restoreFocus(element);
+	}
+
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		key === 'tab-button' && this._restoreFocus(element);
 	}
 
 	render(): DNode {
@@ -128,9 +136,8 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		]) : this.children;
 
 		return v('div', {
-			afterCreate: this._restoreFocus,
-			afterUpdate: this._restoreFocus,
 			'aria-controls': controls,
+			'aria-disabled': disabled ? 'true' : 'false',
 			'aria-selected': active ? 'true' : 'false',
 			classes: this.classes(
 				css.tabButton,
@@ -138,6 +145,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 				disabled ? css.disabledTabButton : null
 			),
 			id,
+			key: 'tab-button',
 			role: 'tab',
 			tabIndex: active ? 0 : -1,
 			onclick: this._onClick,

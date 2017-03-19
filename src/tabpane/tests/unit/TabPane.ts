@@ -7,7 +7,7 @@ import * as css from '../../styles/tabPane.css';
 registerSuite({
 	name: 'TabPane',
 
-	'Active tab buttons should render'() {
+	'Active tab button should render'() {
 		const tabPane = new TabPane();
 		<VNode> tabPane.__render__();
 		tabPane.setProperties({
@@ -74,23 +74,5 @@ registerSuite({
 		});
 		(<any> tabPane).onCloseClick(0);
 		assert.deepEqual(newTabs, []);
-	},
-
-	'Next available tab index should be found'() {
-		const tabPane = new TabPane();
-		let activeIndex;
-		(<any> tabPane).updateActiveIndex();
-		tabPane.setProperties({
-			activeIndex: 0,
-			onRequestTabChange: index => activeIndex = index,
-			tabs: [{
-				label: 'foo',
-				disabled: true
-			}, {
-				label: 'bar'
-			}]
-		});
-		(<any> tabPane).updateActiveIndex();
-		assert.strictEqual(activeIndex, 1);
 	}
 });
