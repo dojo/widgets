@@ -152,7 +152,7 @@ registerSuite({
 		});
 
 		(<any> comboBox).onElementCreated();
-		(<any> comboBox).onElementCreated(parentElement(), 'controls');
+		(<any> comboBox).onElementCreated(parentElement(), 'root');
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
 		const vnode = <VNode> comboBox.__render__();
 		assert.lengthOf(vnode.children, 2);
@@ -215,11 +215,11 @@ registerSuite({
 			autoBlur: true
 		});
 
-		(<any> comboBox).onElementCreated(parent, 'controls');
+		(<any> comboBox).onElementCreated(parent, 'root');
 		parent.querySelector = () => null;
 		(<any> comboBox)._selectIndex(0);
 		(<any> comboBox).onElementUpdated();
-		(<any> comboBox).onElementUpdated(parent, 'controls');
+		(<any> comboBox).onElementUpdated(parent, 'root');
 		assert.isTrue(blurred);
 	},
 
@@ -232,7 +232,7 @@ registerSuite({
 		});
 
 		<VNode> comboBox.__render__();
-		(<any> comboBox).onElementCreated(parentElement(), 'controls');
+		(<any> comboBox).onElementCreated(parentElement(), 'root');
 		(<any> comboBox)._onClearClick();
 		assert.strictEqual(inputValue, '');
 	},
@@ -307,9 +307,9 @@ registerSuite({
 		});
 
 		(<any> comboBox)._onInputFocus(event());
-		(<any> comboBox).onElementCreated(parent, 'controls');
+		(<any> comboBox).onElementCreated(parent, 'root');
 		parent.querySelector = () => null;
-		(<any> comboBox).onElementUpdated(parent, 'controls');
+		(<any> comboBox).onElementUpdated(parent, 'root');
 		assert.isTrue(called);
 	},
 
@@ -321,7 +321,7 @@ registerSuite({
 			openOnFocus: true
 		});
 
-		(<any> comboBox).onElementCreated(parentElement(), 'controls');
+		(<any> comboBox).onElementCreated(parentElement(), 'root');
 		(<any> comboBox)._onInput(event());
 		(<any> comboBox)._onInputFocus(event());
 		(<any> comboBox)._onArrowClick();
@@ -375,8 +375,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		(<any> comboBox).onElementCreated(parentElement(), 'controls');
-		(<any> comboBox).onElementUpdated(parentElement(element), 'controls');
+		(<any> comboBox).onElementCreated(parentElement(), 'root');
+		(<any> comboBox).onElementUpdated(parentElement(element), 'root');
 		assert.strictEqual(menu.scrollTop, element.offsetTop);
 	},
 
@@ -392,8 +392,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		(<any> comboBox).onElementCreated(parentElement(), 'controls');
-		(<any> comboBox).onElementUpdated(parentElement(element), 'controls');
+		(<any> comboBox).onElementCreated(parentElement(), 'root');
+		(<any> comboBox).onElementUpdated(parentElement(element), 'root');
 		assert.strictEqual(menu.scrollTop, element.offsetTop - menu.clientHeight + element.offsetHeight);
 	},
 
@@ -409,8 +409,8 @@ registerSuite({
 			parentElement: menu
 		};
 
-		(<any> comboBox).onElementCreated(parentElement(), 'controls');
-		(<any> comboBox).onElementUpdated(parentElement(element), 'controls');
+		(<any> comboBox).onElementCreated(parentElement(), 'root');
+		(<any> comboBox).onElementUpdated(parentElement(element), 'root');
 		assert.strictEqual(menu.scrollTop, 50);
 	},
 
@@ -422,6 +422,7 @@ registerSuite({
 			isResultDisabled: result => result === '1'
 		});
 
+		(<any> comboBox)._onResultMouseUp(null, 0);
 		(<any> comboBox)._onResultMouseEnter(null, 0);
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox)._onInputKeyDown(event(keys.down));

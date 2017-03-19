@@ -63,6 +63,9 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 				propertyName: 'getResultLabel'
 			},
 			{
+				propertyName: 'isResultDisabled'
+			},
+			{
 				propertyName: 'label'
 			}
 		],

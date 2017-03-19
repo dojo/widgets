@@ -38,13 +38,14 @@ export interface DialogProperties extends ThemeableProperties {
 	title?: string;
 	underlay?: boolean;
 	onOpen?(): void;
-	onRequestClose?(): void;
 };
 
 export const DialogBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Dialog extends DialogBase<DialogProperties> {
+	private _wasOpen: boolean;
+
 	private _onCloseClick() {
 		const { closeable = true } = this.properties;
 		closeable && this.properties.onRequestClose && this.properties.onRequestClose();
@@ -68,7 +69,9 @@ export default class Dialog extends DialogBase<DialogProperties> {
 
 		const titleId = uuid();
 
-		open && onOpen && onOpen();
+		open && !this._wasOpen && onOpen && onOpen();
+
+		this._wasOpen = open;
 
 		return v('div', open ? [
 			v('div', {

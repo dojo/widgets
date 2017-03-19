@@ -51,8 +51,8 @@ export const SlidePaneBase = ThemeableMixin(WidgetBase);
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _content: HTMLElement | null;
 	private _initialX: number;
-	private _transform: number;
 	private _swiping: boolean;
+	private _transform: number;
 	private _wasOpen: boolean;
 
 	private _onSwipeStart(event: MouseEvent & TouchEvent) {
@@ -126,40 +126,31 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 	}
 
-	private _afterCreate(element: HTMLElement) {
-		element.addEventListener('transitionend', this._onTransitionEnd);
-		this._content = element;
-	}
-
 	private _onTransitionEnd(event: TransitionEvent) {
 		const content = (<HTMLElement> event.target);
 		content.classList.remove(css.slideIn, css.slideOut);
 		content.style.transform = '';
 	}
 
+	protected onElementCreated(element: HTMLElement, key: string) {
+		if (key === 'content') {
+			element.addEventListener('transitionend', this._onTransitionEnd);
+			this._content = element;
+		}
+	}
+
 	render(): DNode {
 		const {
-			open = false,
 			align = Align.left,
+			onOpen,
+			open = false,
 			underlay = false,
-			width = DEFAULT_WIDTH,
-			onOpen
+			width = DEFAULT_WIDTH
 		} = this.properties;
 
 		const contentStyles: {[key: string]: any} = {
 			width: width + 'px'
 		};
-
-		const contentClasses = [
-			css.content,
-			open && !this._wasOpen ? css.slideIn : null,
-			!open && this._wasOpen ? css.slideOut : null
-		];
-
-		const fixedContentClasses = [
-			align === Align.left ? css.left : css.right,
-			open ? css.open : null
-		];
 
 		if (!open && this._wasOpen && this._transform) {
 			// If pane is closing because of swipe
@@ -170,24 +161,30 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		this._wasOpen = open;
 
 		return v('div', {
-			ontouchstart: this._onSwipeStart,
-			ontouchmove: this._onSwipeMove,
-			ontouchend: this._onSwipeEnd,
 			onmousedown: this._onSwipeStart,
 			onmousemove: this._onSwipeMove,
-			onmouseup: this._onSwipeEnd
+			onmouseup: this._onSwipeEnd,
+			ontouchend: this._onSwipeEnd,
+			ontouchmove: this._onSwipeMove,
+			ontouchstart: this._onSwipeStart
 		}, [
 			open ? v('div', {
-				key: 'underlay',
 				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null),
 				enterAnimation: animations.fadeIn,
-				exitAnimation: animations.fadeOut
+				exitAnimation: animations.fadeOut,
+				key: 'underlay'
 			}) : null,
 			v('div', {
 				key: 'content',
-				classes: this.classes(...contentClasses).fixed(...fixedContentClasses),
-				styles: contentStyles,
-				afterCreate: this._afterCreate
+				classes: this.classes(
+					css.content,
+					open && !this._wasOpen ? css.slideIn : null,
+					!open && this._wasOpen ? css.slideOut : null
+				).fixed(
+					align === Align.left ? css.left : css.right,
+					open ? css.open : null
+				),
+				styles: contentStyles
 			}, this.children)
 		]);
 	}
