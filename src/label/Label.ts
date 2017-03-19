@@ -28,10 +28,9 @@ const labelDefaults = {
  *
  * Properties that can be set on a Label component
  *
- * @property classes	Optional classes to be set on the label node
- * @property formId		ID of a form element associated with the form field
- * @property label		Label settings for form label text, position, and visibility
- * @property registry	A widget registry to pass down to children
+ * @property classes    Optional classes to be set on the label node
+ * @property formId     ID of a form element associated with the form field
+ * @property label      Label settings for form label text, position, and visibility
  */
 export interface LabelProperties extends ThemeableProperties {
 	classes?: ClassesFunctionChain;
