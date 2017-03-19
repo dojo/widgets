@@ -145,13 +145,14 @@ registerSuite({
 			}
 		});
 
-		(<any> slidePane)._afterCreate(<any> {
+		(<any> slidePane).onElementCreated(null, 'foo');
+		(<any> slidePane).onElementCreated(<any> {
 			addEventListener() {},
 			classList: {
 				add() {}
 			},
 			style: {}
-		});
+		}, 'content');
 
 		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
 		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
@@ -173,13 +174,13 @@ registerSuite({
 			align: Align.right
 		});
 
-		(<any> slidePane)._afterCreate(<any> {
+		(<any> slidePane).onElementCreated(<any> {
 			addEventListener() {},
 			classList: {
 				add() {}
 			},
 			style: {}
-		});
+		}, 'content');
 
 		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
 		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
@@ -198,13 +199,13 @@ registerSuite({
 			}
 		});
 
-		(<any> slidePane)._afterCreate(<any> {
+		(<any> slidePane).onElementCreated(<any> {
 			addEventListener() {},
 			classList: {
 				add() {}
 			},
 			style: {}
-		});
+		}, 'content');
 
 		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
 		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 250));
@@ -224,7 +225,7 @@ registerSuite({
 			style: { transform: '' }
 		};
 
-		(<any> slidePane)._afterCreate(element);
+		(<any> slidePane).onElementCreated(element, 'content');
 		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
 		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
 		(<any> slidePane)._onSwipeEnd(createEvent('touchmove', 500));

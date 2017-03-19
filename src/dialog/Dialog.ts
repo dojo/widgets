@@ -38,6 +38,7 @@ export interface DialogProperties extends ThemeableProperties {
 	title?: string;
 	underlay?: boolean;
 	onOpen?(): void;
+	onRequestClose?(): void;
 };
 
 export const DialogBase = ThemeableMixin(WidgetBase);

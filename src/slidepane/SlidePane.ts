@@ -148,6 +148,17 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			width = DEFAULT_WIDTH
 		} = this.properties;
 
+		const contentClasses = [
+			css.content,
+			open && !this._wasOpen ? css.slideIn : null,
+			!open && this._wasOpen ? css.slideOut : null
+		];
+
+		const fixedContentClasses = [
+			align === Align.left ? css.left : css.right,
+			open ? css.open : null
+		];
+
 		const contentStyles: {[key: string]: any} = {
 			width: width + 'px'
 		};
@@ -176,14 +187,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			}) : null,
 			v('div', {
 				key: 'content',
-				classes: this.classes(
-					css.content,
-					open && !this._wasOpen ? css.slideIn : null,
-					!open && this._wasOpen ? css.slideOut : null
-				).fixed(
-					align === Align.left ? css.left : css.right,
-					open ? css.open : null
-				),
+				classes: this.classes(...contentClasses).fixed(...fixedContentClasses),
 				styles: contentStyles
 			}, this.children)
 		]);
