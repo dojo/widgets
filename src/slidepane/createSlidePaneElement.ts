@@ -3,8 +3,6 @@ import SlidePane from './SlidePane';
 
 /**
  * Configures a SlidePane web component
- *
- * @return	{CustomElementDescriptor?}
  */
 export default function createSlidePaneElement(): CustomElementDescriptor {
 	return {

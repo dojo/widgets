@@ -17,16 +17,16 @@ export type Role = 'dialog' | 'alertdialog';
  *
  * Properties that can be set on a Dialog component
  *
- * @property closeable			Determines whether the dialog can be closed
- * @property enterAnimation		CSS class to apply to the dialog when opened
- * @property exitAnimation		CSS class to apply to the dialog when closed
- * @property modal				Determines whether the dialog can be closed by clicking outside its content
- * @property open				Determines whether the dialog is open or closed
- * @property role				Role of this dialog for accessibility, either 'alert' or 'dialog'
- * @property title				Title to show in the dialog title bar
- * @property underlay			Determines whether a semi-transparent background shows behind the dialog
- * @property onOpen				Called when the dialog opens
- * @property onRequestClose		Called when the dialog is closed
+ * @property closeable          Determines whether the dialog can be closed
+ * @property enterAnimation     CSS class to apply to the dialog when opened
+ * @property exitAnimation      CSS class to apply to the dialog when closed
+ * @property modal              Determines whether the dialog can be closed by clicking outside its content
+ * @property open               Determines whether the dialog is open or closed
+ * @property role               Role of this dialog for accessibility, either 'alert' or 'dialog'
+ * @property title              Title to show in the dialog title bar
+ * @property underlay           Determines whether a semi-transparent background shows behind the dialog
+ * @property onOpen             Called when the dialog opens
+ * @property onRequestClose     Called when the dialog is closed
  */
 export interface DialogProperties extends ThemeableProperties {
 	closeable?: boolean;
@@ -45,13 +45,15 @@ export const DialogBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Dialog extends DialogBase<DialogProperties> {
-	onCloseClick() {
+	private _wasOpen: boolean;
+
+	private _onCloseClick() {
 		const { closeable = true } = this.properties;
 		closeable && this.properties.onRequestClose && this.properties.onRequestClose();
 	}
 
-	onUnderlayClick() {
-		!this.properties.modal && this.onCloseClick();
+	private _onUnderlayClick() {
+		!this.properties.modal && this._onCloseClick();
 	}
 
 	render(): DNode {
@@ -59,48 +61,50 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			closeable = true,
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
-			title = '',
 			open = false,
 			role = 'dialog',
+			title = '',
 			underlay = false,
 			onOpen
 		} = this.properties;
 
 		const titleId = uuid();
 
-		open && onOpen && onOpen();
+		open && !this._wasOpen && onOpen && onOpen();
 
-		return v('div', {}, open ? [
+		this._wasOpen = open;
+
+		return v('div', open ? [
 			v('div', {
-				key: 'underlay',
-				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null).get(),
+				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
-				onclick: this.onUnderlayClick
+				key: 'underlay',
+				onclick: this._onUnderlayClick
 			}),
 			v('div', {
-				key: 'main',
-				classes: this.classes(css.main).get(),
+				'aria-labelledby': titleId,
+				classes: this.classes(css.main),
 				enterAnimation: enterAnimation,
 				exitAnimation: exitAnimation,
-				'aria-labelledby': titleId,
+				key: 'main',
 				role: role
 			}, [
 				v('div', {
-					key: 'title',
+					classes: this.classes(css.title),
 					id: titleId,
-					classes: this.classes(css.title).get()
+					key: 'title'
 				}, [
 					title,
 					closeable ? v('button', {
-						classes: this.classes(css.close).get(),
+						classes: this.classes(css.close),
 						innerHTML: 'close dialog',
-						onclick: this.onCloseClick
+						onclick: this._onCloseClick
 					}) : null
 				]),
 				v('div', {
-					key: 'content',
-					classes: this.classes(css.content).get()
+					classes: this.classes(css.content),
+					key: 'content'
 				}, this.children)
 			])
 		] : []);

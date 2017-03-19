@@ -3,8 +3,6 @@ import Dialog from './Dialog';
 
 /**
  * Configures a Dialog web component
- *
- * @return	{CustomElementDescriptor?}
  */
 export default function createDialogElement(): CustomElementDescriptor {
 	return {

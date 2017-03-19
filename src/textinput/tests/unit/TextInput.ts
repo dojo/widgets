@@ -132,31 +132,31 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		textinput.onBlur(<FocusEvent> {});
+		(<any> textinput)._onBlur(<FocusEvent> {});
 		assert.isTrue(blurred);
-		textinput.onChange(<Event> {});
+		(<any> textinput)._onChange(<Event> {});
 		assert.isTrue(changed);
-		textinput.onClick(<MouseEvent> {});
+		(<any> textinput)._onClick(<MouseEvent> {});
 		assert.isTrue(clicked);
-		textinput.onFocus(<FocusEvent> {});
+		(<any> textinput)._onFocus(<FocusEvent> {});
 		assert.isTrue(focused);
-		textinput.onInput(<Event> {});
+		(<any> textinput)._onInput(<Event> {});
 		assert.isTrue(input);
-		textinput.onKeyDown(<KeyboardEvent> {});
+		(<any> textinput)._onKeyDown(<KeyboardEvent> {});
 		assert.isTrue(keydown);
-		textinput.onKeyPress(<KeyboardEvent> {});
+		(<any> textinput)._onKeyPress(<KeyboardEvent> {});
 		assert.isTrue(keypress);
-		textinput.onKeyUp(<KeyboardEvent> {});
+		(<any> textinput)._onKeyUp(<KeyboardEvent> {});
 		assert.isTrue(keyup);
-		textinput.onMouseDown(<MouseEvent> {});
+		(<any> textinput)._onMouseDown(<MouseEvent> {});
 		assert.isTrue(mousedown);
-		textinput.onMouseUp(<MouseEvent> {});
+		(<any> textinput)._onMouseUp(<MouseEvent> {});
 		assert.isTrue(mouseup);
-		textinput.onTouchStart(<TouchEvent> {});
+		(<any> textinput)._onTouchStart(<TouchEvent> {});
 		assert.isTrue(touchstart);
-		textinput.onTouchEnd(<TouchEvent> {});
+		(<any> textinput)._onTouchEnd(<TouchEvent> {});
 		assert.isTrue(touchend);
-		textinput.onTouchCancel(<TouchEvent> {});
+		(<any> textinput)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
 	}
 });

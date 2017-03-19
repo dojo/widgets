@@ -122,23 +122,23 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		radio.onBlur(<FocusEvent> {});
+		(<any> radio)._onBlur(<FocusEvent> {});
 		assert.isTrue(blurred);
-		radio.onChange(<Event> {});
+		(<any> radio)._onChange(<Event> {});
 		assert.isTrue(changed);
-		radio.onClick(<MouseEvent> {});
+		(<any> radio)._onClick(<MouseEvent> {});
 		assert.isTrue(clicked);
-		radio.onFocus(<FocusEvent> {});
+		(<any> radio)._onFocus(<FocusEvent> {});
 		assert.isTrue(focused);
-		radio.onMouseDown(<MouseEvent> {});
+		(<any> radio)._onMouseDown(<MouseEvent> {});
 		assert.isTrue(mousedown);
-		radio.onMouseUp(<MouseEvent> {});
+		(<any> radio)._onMouseUp(<MouseEvent> {});
 		assert.isTrue(mouseup);
-		radio.onTouchStart(<TouchEvent> {});
+		(<any> radio)._onTouchStart(<TouchEvent> {});
 		assert.isTrue(touchstart);
-		radio.onTouchEnd(<TouchEvent> {});
+		(<any> radio)._onTouchEnd(<TouchEvent> {});
 		assert.isTrue(touchend);
-		radio.onTouchCancel(<TouchEvent> {});
+		(<any> radio)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
 	}
 });

@@ -7,6 +7,7 @@ import Textarea from './textarea/Textarea';
 import Checkbox from './checkbox/Checkbox';
 import Radio from './radio/Radio';
 import Slider from './slider/Slider';
+import ComboBox from './combobox/ComboBox';
 
 export {
 	Dialog,
@@ -17,5 +18,6 @@ export {
 	Textarea,
 	Checkbox,
 	Radio,
-	Slider
+	Slider,
+	ComboBox
 };

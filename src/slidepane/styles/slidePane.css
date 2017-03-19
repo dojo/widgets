@@ -13,13 +13,12 @@
 }
 
 .content {
-	font: var(--base-font);
 	height: 100%;
 	position: fixed;
 	top: 0;
 	background-color: var(--title-bar-bg);
 	color: var(--title-bar-color);
-	padding: var(--content-padding);
+	padding: var(--container-padding);
 	box-sizing: border-box;
 }
 
