@@ -162,7 +162,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._focused = true;
 		onFocus && onFocus((<HTMLInputElement> event.target).value);
 		openOnFocus && !this._ignoreFocus && this._openMenu();
-		this._ignoreBlur = this._ignoreFocus = false;
+		this._ignoreBlur = false;
+		this._ignoreFocus = false;
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
