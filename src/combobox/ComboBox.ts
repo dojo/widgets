@@ -263,6 +263,10 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		if (results.length === 0) {
 			this._activeIndex = 0;
+			this.invalidate();
+			return;
+		}
+		if (results.every((result, i) => Boolean(this._isIndexDisabled(i)))) {
 			return;
 		}
 

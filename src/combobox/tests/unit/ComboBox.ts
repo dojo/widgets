@@ -418,6 +418,11 @@ registerSuite({
 		const comboBox = new ComboBox();
 		(<any> comboBox)._isIndexDisabled(0);
 		comboBox.setProperties({
+			results: ['1'],
+			isResultDisabled: result => result === '1'
+		});
+		(<any> comboBox)._moveActiveIndex();
+		comboBox.setProperties({
 			results: ['1', '2'],
 			isResultDisabled: result => result === '1'
 		});
