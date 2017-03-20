@@ -56,7 +56,7 @@ registerSuite({
 				}
 			});
 
-			item.onClick();
+			item.onClick(<any> {});
 			assert.isFalse(called, '`onClick` should not be called when the menu item is disabled.');
 		},
 
@@ -69,7 +69,7 @@ registerSuite({
 				}
 			});
 
-			item.onClick();
+			item.onClick(<any> {});
 			assert.isTrue(called, '`onClick` should be called when the menu item is enabled.');
 		}
 	},
