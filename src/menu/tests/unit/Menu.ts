@@ -2,7 +2,6 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import Menu from '../../Menu';
-import * as baseCss from '../../../common/styles/base.css';
 import * as css from '../../styles/menu.css';
 
 registerSuite({
@@ -191,14 +190,14 @@ registerSuite({
 			menu.setProperties({ label: 'Menu label' });
 			const vnode: any = menu.__render__();
 
-			assert.lengthOf(vnode.children, 1, 'menu not rendered');
+			assert.isTrue(vnode.children[1].properties.classes[css.hidden]);
 		},
 
-		'displayed by default with a label'() {
+		'displayed by default without a label'() {
 			const menu = new Menu();
 			const vnode: any = menu.__render__();
 
-			assert.notOk(vnode.properties.classes[baseCss.visuallyHidden]);
+			assert.notOk(vnode.properties.classes[css.hidden]);
 		},
 
 		'can still be hidden without a label'() {
@@ -206,7 +205,7 @@ registerSuite({
 			menu.setProperties({ hidden: true });
 			const vnode: any = menu.__render__();
 
-			assert.isTrue(vnode.properties.classes[baseCss.visuallyHidden]);
+			assert.isTrue(vnode.properties.classes[css.hidden]);
 		}
 	},
 
