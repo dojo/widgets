@@ -1,6 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
+import TestHarness from '@dojo/intern-helper/widgets/TestHarness';
 import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../styles/slidePane.css';
 
@@ -40,66 +41,97 @@ registerSuite({
 	},
 
 	'Render correct children'() {
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		const harness = new TestHarness(SlidePane, {
 			key: 'foo',
 			underlay: false
 		});
-		let vnode = <VNode> slidePane.__render__();
-		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
-		assert.lengthOf(vnode.children, 1);
 
-		slidePane.setProperties({
-			open: true,
-			underlay: true,
-			align: Align.right,
-			width: 256
+		harness.addRenderAssertion((render: any) => {
+			assert.strictEqual(render.vnodeSelector, 'div', 'tagname should be div');
+			assert.lengthOf(render.children, 1);
+
+			harness.setWidgetProperties({
+				open: true,
+				underlay: true,
+				align: Align.right,
+				width: 256
+			});
+		}, (render: any) => {
+			assert.lengthOf(render.children, 2);
 		});
-		vnode = <VNode> slidePane.__render__();
-		assert.lengthOf(vnode.children, 2);
+
+		return harness.startRender();
 	},
 
 	onOpen() {
 		let called = false;
-
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		const harness = new TestHarness(SlidePane, {
 			open: true,
-			onOpen: () => {
+			onOpen() {
 				called = true;
 			}
 		});
-		<VNode> slidePane.__render__();
 
-		assert.isTrue(called, 'onOpen should be called');
+		harness.addRenderAssertion(() => {
+			assert.isTrue(called, 'onOpen should be called');
+		});
+
+		return harness.startRender();
 	},
 
 	'change property to close'() {
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		const harness = new TestHarness(SlidePane, {
 			open: true
 		});
-		<VNode> slidePane.__render__();
-		slidePane.setProperties({ open: false });
-		<VNode> slidePane.__render__();
 
-		assert.isFalse(slidePane.properties.open, 'open property should be false when changed via `setProperties`');
+		harness.addRenderAssertion((render: any) => {
+			assert.lengthOf(render.children, 2, 'should have two children nodes');
+
+			harness.setWidgetProperties({
+				open: false
+			});
+		}, (render: any) => {
+			assert.lengthOf(render.children, 1, 'should have one child node');
+		});
+
+		return harness.startRender();
 	},
 
 	'click underlay to close'() {
 		let called = false;
 
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		const harness = new TestHarness(SlidePane, {
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		slidePane.onSwipeStart(createEvent('mousedown', 300));
-		slidePane.onSwipeEnd(createEvent('mouseup', 300));
+		harness.addRenderAssertion(() => {
+			harness.sendEvent('mousedown', 'CustomEvent', {
+				eventInit: <MouseEventInit> {
+					bubbles: true,
+					pageX: 300,
+					changedTouches: [ { screenX: 300 } ]
+				},
 
-		assert.isTrue(called, 'onRequestClose should be called on underlay click');
+				selector: ':first-child'
+			});
+
+			/* using MouseEvent here causes issues between pepjs and jsdom, therefore we will use custom event */
+			harness.sendEvent('mouseup', 'CustomEvent', {
+				eventInit: <MouseEventInit> {
+					bubbles: true,
+					pageX: 300,
+					changedTouches: [ { screenX: 300 } ]
+				},
+
+				selector: ':first-child'
+			});
+
+			assert.isTrue(called, 'onRequestClose should be called on underlay click');
+		});
+
+		return harness.startRender();
 	},
 
 	'tap underlay to close'() {
