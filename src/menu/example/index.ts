@@ -13,6 +13,10 @@ const AppBase = StatefulMixin(ThemeableMixin(WidgetBase));
 
 @theme(appCss)
 export class App extends AppBase<WidgetProperties> {
+	toggleAnimation(event: Event) {
+		this.setState({ animate: !(<any> event.target).checked });
+	}
+
 	toggleDisabled(event: Event) {
 		this.setState({
 			disabled: (<any> event.target).checked,
@@ -55,6 +59,17 @@ export class App extends AppBase<WidgetProperties> {
 					v('label', {
 						for: 'toggleDisabled'
 					}, [ 'Disable packages menu' ])
+				]),
+
+				v('div', [
+					v('input', {
+						id: 'toggleAnimation',
+						type: 'checkbox',
+						onchange: this.toggleAnimation
+					}),
+					v('label', {
+						for: 'toggleAnimation'
+					}, [ 'Disable package menu animation' ])
 				])
 			]),
 
@@ -85,6 +100,7 @@ export class App extends AppBase<WidgetProperties> {
 		];
 
 		const {
+			animate = true,
 			disabled,
 			expandOnClick,
 			packageMenuHidden
@@ -103,6 +119,7 @@ export class App extends AppBase<WidgetProperties> {
 			}),
 
 			w(Menu, {
+				animate: <boolean> animate,
 				disabled: <boolean> disabled,
 				expandOnClick: <boolean> expandOnClick,
 				hidden: <boolean> packageMenuHidden,

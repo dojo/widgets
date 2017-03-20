@@ -4,10 +4,6 @@
 }
 
 .menu {}
-.hidden {}
-.visible {}
-.afterHidden {}
-.afterVisible {}
 
 .menuItem {
 	cursor: pointer;
@@ -33,7 +29,9 @@
 }
 
 .subMenu {
-	height: 0;
 	overflow: hidden;
 	transition: height 0.5s ease-in-out;
 }
+
+.hidden { height: 0; }
+.visible { height: auto; }

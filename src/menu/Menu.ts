@@ -30,18 +30,11 @@ function getMenuHeight(menuElement: HTMLElement): number {
 	return Math.min(menuElement.scrollHeight, (isNaN(maxHeight) ? Infinity : maxHeight));
 }
 
-function addTransitionEndListener(element: HTMLElement, callback: (element: HTMLElement) => void) {
-	const listener = () => {
-		element.removeEventListener('transitionend', listener);
-		callback(element);
-	};
-	element.addEventListener('transitionend', listener);
-}
-
 @theme(css)
 export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 	protected _wasOpen = false;
 	private _hideTimer: Handle;
+	private _initialRender = true;
 
 	onLabelClick() {
 		const {
@@ -116,7 +109,8 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 			id,
 			role,
 			classes: this.classes.apply(this, this._getMenuClasses(hidden, Boolean(label))),
-			afterUpdate: this._afterRender,
+			afterCreate: this._afterCreate,
+			afterUpdate: this._afterUpdate,
 			onfocusin: this.onMenuFocus
 		}, this.children);
 
@@ -147,7 +141,20 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		}
 	}
 
-	protected _afterRender(element: HTMLElement) {
+	protected _afterCreate(element: HTMLElement) {
+		const { animate = true } = this.properties;
+		if (animate && this._initialRender) {
+			const hidden = element.classList.contains(css.hidden);
+			this._wasOpen = !hidden;
+
+			if (hidden) {
+				element.style.height = '0';
+			}
+		}
+		this._initialRender = false;
+	}
+
+	protected _afterUpdate(element: HTMLElement) {
 		const { animate = true, hidden = this._getDefaultHidden(), label } = this.properties;
 
 		if (!label) {
@@ -156,16 +163,6 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 
 		if (!animate) {
 			element.style.height = null;
-
-			if (hidden) {
-				element.classList.remove(css.afterVisible);
-				element.classList.add(css.afterHidden);
-			}
-			else {
-				element.classList.remove(css.afterHidden);
-				element.classList.add(css.afterVisible);
-			}
-
 			return;
 		}
 
@@ -188,19 +185,10 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 				element.style.height = height + 'px';
 				element.style.transition = transition;
 				requestAnimationFrame(() => {
-					addTransitionEndListener(element, (element: HTMLElement) => {
-						element.classList.add(css.afterHidden);
-					});
-
 					element.style.height = '0';
 				});
 			}
 			else {
-				addTransitionEndListener(element, (element: HTMLElement) => {
-					element.style.height = 'auto';
-					element.classList.add(css.afterVisible);
-				});
-
 				element.style.height = `${height}px`;
 			}
 		});
@@ -225,8 +213,12 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 	}
 
 	protected _getMenuClasses(hidden: boolean, isSubMenu: boolean) {
-		const { nested } = this.properties;
-		const classes = [ css.menu, hidden ? css.hidden : css.visible ];
+		const { animate = true, nested } = this.properties;
+		const classes = [ css.menu ];
+
+		if (this._initialRender || !animate || !isSubMenu) {
+			classes.push(hidden ? css.hidden : css.visible);
+		}
 
 		if (nested) {
 			classes.push(css.nestedMenu);

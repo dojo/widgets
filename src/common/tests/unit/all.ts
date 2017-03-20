@@ -18,3 +18,5 @@ import '../../../radio/tests/unit/Radio';
 import '../../../slider/tests/unit/Slider';
 import '../../../select/tests/unit/Select';
 import '../../../select/tests/unit/SelectOption';
+import '../../../menu/tests/unit/Menu';
+import '../../../menu/tests/unit/MenuItem';
