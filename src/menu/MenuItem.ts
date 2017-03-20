@@ -11,7 +11,8 @@ export interface MenuItemProperties extends ThemeableProperties {
 	getAriaProperties?: () => { [key: string]: string; };
 	hasMenu?: boolean;
 	label?: string;
-	onClick?: () => void;
+	onClick?: (event: MouseEvent) => void;
+	onKeypress?: (event: KeyboardEvent) => void;
 	selected?: boolean;
 	tabIndex?: number;
 	url?: string;
@@ -19,10 +20,17 @@ export interface MenuItemProperties extends ThemeableProperties {
 
 @theme(css)
 export class MenuItem extends ThemeableMixin(WidgetBase)<MenuItemProperties> {
-	onClick() {
+	onClick(event: MouseEvent) {
 		const { disabled, onClick } = this.properties;
 		if (!disabled && typeof onClick === 'function') {
-			onClick();
+			onClick(event);
+		}
+	}
+
+	onKeypress(event: KeyboardEvent) {
+		const { disabled, onKeypress } = this.properties;
+		if (!disabled && typeof onKeypress === 'function') {
+			onKeypress(event);
 		}
 	}
 
@@ -50,6 +58,7 @@ export class MenuItem extends ThemeableMixin(WidgetBase)<MenuItemProperties> {
 			classes,
 			href: url || undefined,
 			onclick: this.onClick,
+			onkeypress: this.onKeypress,
 			role: 'menuitem',
 			tabIndex : disabled ? -1 : tabIndex,
 			target: url && external ? '_blank' : undefined

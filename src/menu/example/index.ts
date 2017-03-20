@@ -14,7 +14,10 @@ const AppBase = StatefulMixin(ThemeableMixin(WidgetBase));
 @theme(appCss)
 export class App extends AppBase<WidgetProperties> {
 	toggleDisabled(event: Event) {
-		this.setState({ disabled: (<any> event.target).checked });
+		this.setState({
+			disabled: (<any> event.target).checked,
+			packageMenuHidden: true
+		});
 	}
 
 	toggleEvent(event: Event) {

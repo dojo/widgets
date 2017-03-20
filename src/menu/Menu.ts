@@ -54,6 +54,14 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		}
 	}
 
+	onLabelKeypress(event: KeyboardEvent) {
+		const { disabled } = this.properties;
+
+		if (!disabled && event.key === 'Enter') {
+			this._toggleDisplay();
+		}
+	}
+
 	onMenuMouseEnter() {
 		const {
 			disabled,
@@ -87,6 +95,14 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		}
 	}
 
+	onMenuFocus() {
+		const { hidden = this._getDefaultHidden() } = this.properties;
+		if (hidden) {
+			const onRequestShow = this.properties.onRequestShow;
+			onRequestShow && onRequestShow();
+		}
+	}
+
 	render(): DNode {
 		const {
 			hidden = this._getDefaultHidden(),
@@ -100,7 +116,8 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 			id,
 			role,
 			classes: this.classes.apply(this, this._getMenuClasses(hidden, Boolean(label))),
-			afterUpdate: this._afterRender
+			afterUpdate: this._afterRender,
+			onfocusin: this.onMenuFocus
 		}, this.children);
 
 		if (label) {
@@ -124,7 +141,8 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 				getAriaProperties: this._getLabelAriaProperties.bind(this, id),
 				hasMenu: true,
 				overrideClasses: overrideClasses || css,
-				onClick: this.onLabelClick
+				onClick: this.onLabelClick,
+				onKeypress: this.onLabelKeypress
 			}, properties));
 		}
 	}

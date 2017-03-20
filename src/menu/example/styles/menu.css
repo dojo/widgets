@@ -13,6 +13,12 @@
 	padding: 5px 10px;
 }
 
+.menuItem:focus,
+.menuLabel:focus {
+	box-shadow: inset var(--input-focus-shadow);
+	outline: none;
+}
+
 .menuLabel {
 	composes: menuItem;
 }
@@ -29,11 +35,5 @@
 .subMenu {
 	box-shadow: 0 0;
 	box-sizing: border-box;
-	padding: 0 0 0 15px;
-}
-
-.dropDown {
-	border: 1px solid rgba(0,0,0,0.3);
-	left: 100%;
-	top: 0;
+	padding: 0 15px;
 }

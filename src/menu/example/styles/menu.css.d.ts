@@ -4,4 +4,3 @@ export const menuLabel: string;
 export const disabled: string;
 export const selected: string;
 export const subMenu: string;
-export const dropDown: string;
