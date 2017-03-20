@@ -50,7 +50,7 @@ registerSuite({
 			assert.strictEqual(render.vnodeSelector, 'div', 'tagname should be div');
 			assert.lengthOf(render.children, 1);
 
-			harness.setWidgetProperties({
+			harness.setProperties({
 				open: true,
 				underlay: true,
 				align: Align.right,
@@ -87,7 +87,7 @@ registerSuite({
 		harness.addRenderAssertion((render: any) => {
 			assert.lengthOf(render.children, 2, 'should have two children nodes');
 
-			harness.setWidgetProperties({
+			harness.setProperties({
 				open: false
 			});
 		}, (render: any) => {
@@ -101,37 +101,37 @@ registerSuite({
 		let called = false;
 
 		const harness = new TestHarness(SlidePane, {
+			open: true,
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		harness.addRenderAssertion(() => {
-			harness.sendEvent('mousedown', 'CustomEvent', {
-				eventInit: <MouseEventInit> {
-					bubbles: true,
-					pageX: 300,
-					changedTouches: [ { screenX: 300 } ]
-				},
+		harness.startRender(false);
 
-				selector: ':first-child'
-			});
+		harness.sendEvent('mousedown', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 300,
+				changedTouches: [ { screenX: 300 } ]
+			},
 
-			/* using MouseEvent here causes issues between pepjs and jsdom, therefore we will use custom event */
-			harness.sendEvent('mouseup', 'CustomEvent', {
-				eventInit: <MouseEventInit> {
-					bubbles: true,
-					pageX: 300,
-					changedTouches: [ { screenX: 300 } ]
-				},
-
-				selector: ':first-child'
-			});
-
-			assert.isTrue(called, 'onRequestClose should be called on underlay click');
+			selector: ':first-child'
 		});
 
-		return harness.startRender();
+		/* using MouseEvent here causes issues between pepjs and jsdom, therefore we will use custom event */
+		harness.sendEvent('mouseup', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 300,
+				changedTouches: [ { screenX: 300 } ]
+			},
+
+			selector: ':first-child'
+		});
+
+		assert.isTrue(called, 'onRequestClose should be called on underlay click');
+		harness.destroy();
 	},
 
 	'tap underlay to close'() {
