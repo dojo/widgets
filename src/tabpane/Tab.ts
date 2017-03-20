@@ -10,9 +10,9 @@ import * as css from './styles/tabPane.css';
  *
  * Properties that can be set on a Tab component
  *
- * @property id          ID of the underlying DOM element
- * @property labelledBy  ID of element that serves as a label this tab
- * @property loading     Determines whether the associated tab is loading
+ * @property id          ID of this underlying DOM element
+ * @property labelledBy  ID of DOM element that serves as a label for this tab
+ * @property loading     Determines if this tab is loading
  */
 export interface TabProperties extends ThemeableProperties {
 	id?: string;

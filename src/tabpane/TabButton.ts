@@ -10,13 +10,13 @@ import * as css from './styles/tabPane.css';
  *
  * Properties that can be set on a TabButton component
  *
- * @property active	            Determines whether this tab button is active
- * @property closeable          Determines wehther this tab can be closed
- * @property controls           Id of element this tab button controls
+ * @property active             Determines whether this tab button is active
+ * @property closeable          Determines whether this tab can be closed
+ * @property controls           ID of the DOM element this tab button controls
  * @property disabled           Determines whether this tab can become active
- * @property id                 Id of this tab button element
+ * @property id                 ID of this tab button DOM element
  * @property index              The position of this tab button
- * @property loading            Determines whether the associated tab is loading
+ * @property loading            Determines whether this tab button is loading
  * @property onClick            Called when this tab button is clicked
  * @property onCloseClick       Called when this tab button's close icon is clicked
  * @property onEndPress         Called when the end button is pressed
