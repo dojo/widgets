@@ -20,8 +20,8 @@
 	--base-font: 14px/1 sans-serif;
 	--input-font-size: 14px;
 	--title-bar-font-size: 20px;
-	--content-padding: 14px 35px;
-	--content-padding-thin: 14px;
+	--container-padding: 14px 35px;
+	--container-padding-thin: 14px;
 	--subtle-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.25);
 	--rounded-corners: 2px;
 	--short-animation-duration: .2s;

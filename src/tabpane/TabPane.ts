@@ -64,11 +64,6 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	private _id: string;
 	private _loading: boolean;
 
-	constructor() {
-		super();
-		this._id = uuid();
-	}
-
 	private _getIndex() {
 		const {
 			activeIndex = 0,
@@ -179,12 +174,21 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 
 	@onPropertiesChanged
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, TabPaneProperties>) {
-		const { tabs = [] } = this.properties;
+		const keys = evt.changedPropertyKeys;
+		const {
+			loadingIndex,
+			tabs = []
+		} = this.properties;
 
-		if (includes(evt.changedPropertyKeys, 'loadingIndex')) {
-			this._loading = typeof evt.properties.loadingIndex === 'number';
+		if (includes(keys, 'loadingIndex')) {
+			this._loading = typeof loadingIndex === 'number';
 		}
-		if (includes(evt.changedPropertyKeys, 'tabs') || includes(evt.changedPropertyKeys, 'activeIndex') && tabs.length > 0) {
+		if ((
+			includes(keys, 'tabs') ||
+			includes(keys, 'activeIndex') ||
+			includes(keys, 'loadingIndex')) &&
+			tabs.length > 0) {
+
 			const tab = tabs[this._getIndex()];
 
 			if (!tab) {
@@ -192,8 +196,10 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 				return;
 			}
 
-			const index = this._getNextIndex();
-			tab.disabled && typeof index === 'number' && this.onTabClick(index);
+			if (tab.disabled) {
+				const index = this._getNextIndex();
+				typeof index === 'number' && this.onTabClick(index);
+			}
 		}
 	}
 
@@ -205,6 +211,8 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 
 	render(): DNode {
 		const { alignButtons } = this.properties;
+
+		this._id = uuid();
 
 		const children = [
 			v('div', {

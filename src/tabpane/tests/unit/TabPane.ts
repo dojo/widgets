@@ -74,5 +74,77 @@ registerSuite({
 		});
 		(<any> tabPane).onCloseClick(0);
 		assert.deepEqual(newTabs, []);
+	},
+
+	'Should get first tab'() {
+		const tabPane = new TabPane();
+		let tab;
+		tabPane.setProperties({ tabs: [{}, {}] });
+		tabPane.setProperties({
+			onRequestTabChange: index => tab = index,
+			activeIndex: 3
+		});
+		(<any> tabPane)._getFirstTab();
+		assert.strictEqual(tab, 0);
+	},
+
+	'Should get last tab'() {
+		const tabPane = new TabPane();
+		let tab;
+		(<any> tabPane)._getLastTab();
+		tabPane.setProperties({
+			onRequestTabChange: index => tab = index,
+			tabs: ['a', 'b'],
+			activeIndex: 0
+		});
+		(<any> tabPane)._getLastTab();
+		assert.strictEqual(tab, 1);
+	},
+
+	'Should get next tab'() {
+		const tabPane = new TabPane();
+		let tab;
+		(<any> tabPane)._getNextTab();
+		tabPane.setProperties({
+			onRequestTabChange: index => tab = index,
+			tabs: [{ disabled: true }, { disabled: true }, {}],
+			activeIndex: 2
+		});
+		(<any> tabPane)._getNextTab();
+		assert.strictEqual(tab, 2);
+	},
+
+	'Should get previous tab'() {
+		const tabPane = new TabPane();
+		let tab;
+		tabPane.setProperties({
+			onRequestTabChange: index => tab = index,
+			tabs: ['a', 'b'],
+			activeIndex: 1
+		});
+		(<any> tabPane)._getPreviousTab();
+		assert.strictEqual(tab, 0);
+	},
+
+	'Should default to first tab if invalid activeIndex passed'() {
+		const tabPane = new TabPane();
+		let tab;
+		tabPane.setProperties({
+			tabs: [{}, {}],
+			onRequestTabChange: index => tab = index,
+			activeIndex: 5
+		});
+		assert.strictEqual(tab, 0);
+	},
+
+	'Should skip tab if activeIndex is disabled'() {
+		const tabPane = new TabPane();
+		let tab;
+		tabPane.setProperties({
+			tabs: [{ disabled: true }, {}],
+			onRequestTabChange: index => tab = index,
+			activeIndex: 0
+		});
+		assert.strictEqual(tab, 1);
 	}
 });

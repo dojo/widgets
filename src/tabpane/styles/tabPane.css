@@ -67,7 +67,7 @@
 
 .tab {
 	position: relative;
-	padding: var(--content-padding);
+	padding: var(--container-padding);
 	border: var(--border-thin) solid var(--dojo-shade-gray);
 	z-index: 1;
 	background: var(--dojo-white);
