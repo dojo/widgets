@@ -1,0 +1,21 @@
+.demos > * {
+	display: block;
+	margin-bottom: 25px;
+}
+
+.options {
+	margin-bottom: 1.5em;
+}
+
+.options > div {
+	display: inline-block;
+}
+
+@media screen and (min-width: 500px) {
+	.demos > * {
+		float: left;
+	}
+	.demos > :first-child {
+		margin-right: 50px;
+	}
+}

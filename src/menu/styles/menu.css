@@ -1,0 +1,39 @@
+.container {
+	box-sizing: border-box;
+	position: relative;
+}
+
+.menu {}
+.hidden {}
+.visible {}
+.afterHidden {}
+.afterVisible {}
+
+.menuItem {
+	cursor: pointer;
+	display: block;
+}
+
+.menuLabel {
+	composes: menuItem;
+}
+
+.disabled {
+	cursor: default;
+}
+
+/**
+ * Selected menu items.
+ */
+.selected {}
+
+.nestedMenuContainer,
+.nestedMenu {
+	width: 100%;
+}
+
+.subMenu {
+	height: 0;
+	overflow: hidden;
+	transition: height 0.5s ease-in-out;
+}
