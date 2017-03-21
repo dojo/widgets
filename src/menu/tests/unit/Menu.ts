@@ -329,6 +329,27 @@ registerSuite({
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, '100px' ]);
 			}
+		},
+
+		'when a function'() {
+			const menu = new Menu();
+			let args: any[] = [];
+			menu.setProperties({
+				hidden: false,
+				label: 'Menu label',
+				animate(element, hidden) {
+					args = [ element, hidden ];
+				}
+			});
+
+			const vnode: any = menu.__render__();
+			const menuNode = vnode.children[1];
+			const element = getMockNavElement();
+
+			menuNode.properties.afterCreate.call(menu, element);
+			menuNode.properties.afterUpdate.call(menu, element);
+
+			assert.sameMembers(args, [ element, false ], 'The custom animate function should be called');
 		}
 	},
 

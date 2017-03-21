@@ -12,16 +12,68 @@ import * as css from './styles/menu.css';
 export type Role = 'menu' | 'menubar';
 
 export interface MenuProperties extends ThemeableProperties {
-	animate?: boolean;
+	/**
+	 * Only applies to nested menus. Either a flag indicating whether the widget instance should handle animating
+	 * between the visible and hidden states, or a function that manually handles the animation. If true (the default),
+	 * then the menu will slide into and out of view like an accordion. If false, then any animation should be handled
+	 * in the CSS, as the menu will just snap open/shut.
+	 */
+	animate?: boolean | ((element: HTMLElement, hidden: boolean) => void);
+
+	/**
+	 * Indicates whether the menu is disabled. If true, then the widget will ignore events.
+	 */
 	disabled?: boolean;
+
+	/**
+	 * Indicates whether the menu should be displayed/hidden via a click event. If false, then the menu is toggled
+	 * via a hover event. Defaults to true.
+	 */
 	expandOnClick?: boolean;
+
+	/**
+	 * Only applies to menus toggled into view with a hover event. The amount of time (in milliseconds) after a
+	 * mouseleave event that should pass before the menu is hidden. Defaults to 300ms.
+	 */
 	hideDelay?: number;
+
+	/**
+	 * Whether the menu is hidden. Defaults to true if a label is specified (i.e., the menu is controlled by a
+	 * a link); false otherwise.
+	 */
 	hidden?: boolean;
+
+	/**
+	 * The widget ID. Defaults to a random string.
+	 */
 	id?: string;
+
+	/**
+	 * The text or properties for a MenuItem widget that is used to control the menu.
+	 */
 	label?: string | MenuItemProperties;
+
+	/**
+	 * Indicates whether the menu is nested within another menu. Useful for styling, this does not affect
+	 * functionality. Defaults to false.
+	 */
 	nested?: boolean;
+
+	/**
+	 * Needed only when a label is used. Called when the menu is displayed, and the label is triggered.
+	 * This method should be used to update the widget's `hidden` property.
+	 */
 	onRequestHide?: () => void;
+
+	/**
+	 * Needed only when a label is used. Called when the menu is hidden, and the label is triggered.
+	 * This method should be used to update the widget's `hidden` property.
+	 */
 	onRequestShow?: () => void;
+
+	/**
+	 * The value to use for the menu's `role` property. Defaults to "menu".
+	 */
 	role?: Role;
 }
 
@@ -168,15 +220,22 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 			return;
 		}
 
+		if (typeof animate === 'function') {
+			return animate(element, hidden);
+		}
+
 		this._animate(element, hidden);
 	}
 
 	protected _animate(element: HTMLElement, hidden: boolean) {
+		// Assuming the menu has an `auto` height, manually apply the scroll height (or max-height if specified),
+		// and animate to and from that.
 		requestAnimationFrame(() => {
 			const height = getMenuHeight(element);
 			this._wasOpen = !hidden;
 
 			if (hidden) {
+				// Temporarily remove any transition to prevent the element from animating to `height`.
 				const transition = element.style.transition;
 				element.style.transition = null;
 
