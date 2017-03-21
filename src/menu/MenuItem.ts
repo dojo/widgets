@@ -6,15 +6,55 @@ import WidgetBase from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/menu.css';
 
 export interface MenuItemProperties extends ThemeableProperties {
+	/**
+	 * Indicates whether the menu is disabled. If true, then the widget will ignore events.
+	 */
 	disabled?: boolean;
+
+	/**
+	 * Applies only when a URL is provided. If `true`, the URL will be opened in a new window.
+	 */
 	external?: boolean;
+
+	/**
+	 * Returns an object of aria properties to apply to the widget's DOM element.
+	 */
 	getAriaProperties?: () => { [key: string]: string; };
+
+	/**
+	 * A flag indicating whether the widget is used as the label for a menu widget. If `true`,
+	 * then the `menuLabel` CSS class is applied instead of the `menuItem` class.
+	 */
 	hasMenu?: boolean;
+
+	/**
+	 * The widget text content.
+	 */
 	label?: string;
+
+	/**
+	 * An event handler for click events.
+	 */
 	onClick?: (event: MouseEvent) => void;
+
+	/**
+	 * An event handler for keypress events.
+	 */
 	onKeypress?: (event: KeyboardEvent) => void;
+
+	/**
+	 * Indicates whether the widget is selected.
+	 */
 	selected?: boolean;
+
+	/**
+	 * The tab index. Defaults to 0, and is forced to -1 if the widget is disabled.
+	 */
 	tabIndex?: number;
+
+	/**
+	 * A URL to navigate to on click.
+	 */
 	url?: string;
 }
 
