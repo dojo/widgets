@@ -3,16 +3,14 @@ import TitlePane from './TitlePane';
 
 /**
  * Configures a TitlePane web component
- *
- * @return {CustomElementDescriptor}
  */
 export default function createTitlePaneElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-title-pane',
-		widgetFactory: TitlePane,
+		widgetConstructor: TitlePane,
 		attributes: [
 			{
-				attributeName: 'ariaHeadingLevel',
+				attributeName: 'headingLevel',
 				value: value => Number(value)
 			},
 			{

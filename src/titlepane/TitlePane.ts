@@ -11,16 +11,16 @@ import * as css from './styles/titlePane.css';
  *
  * Properties that can be set on a TitlePane component
  *
- * @property ariaHeadingLevel	'aria-heading-level' for the title's DOM node
- * @property closeable			If false the pane will not collapse in response to clicking the title
- * @property open				If true the pane is opened and content is visible
- * @property title				Title to display above the content
- * @property onRequestClose		Called when the title of an open pane is clicked
- * @property onRequestOpen		Called when the title of a closed pane is clicked
+ * @property closeable          If false the pane will not collapse in response to clicking the title
+ * @property headingLevel       'aria-heading-level' for the title's DOM node
+ * @property open               If true the pane is opened and content is visible
+ * @property title              Title to display above the content
+ * @property onRequestClos      Called when the title of an open pane is clicked
+ * @property onRequestOpen      Called when the title of a closed pane is clicked
  */
 export interface TitlePaneProperties extends ThemeableProperties {
-	ariaHeadingLevel?: number;
 	closeable?: boolean;
+	headingLevel?: number;
 	open?: boolean;
 	title: string;
 	onRequestClose?(titlePane: TitlePane): void;
@@ -36,11 +36,11 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		// so the underlying DOM is accessible, as we need to know the content height.
 		// Put in a timeout to push this operation to the next tick, otherwise
 		// element.offsetHeight below can be incorrect (e.g. before styling is applied)
-		setTimeout(() => {
+		requestAnimationFrame(() => {
 			const { open = true } = this.properties;
 			const height = element.offsetHeight;
 			element.style.marginTop = open ? '0px' : `-${ height }px`;
-		}, 0);
+		});
 	}
 
 	private _onTitleClick() {
@@ -69,9 +69,17 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		}
 	}
 
+	protected onElementCreated(element: HTMLElement, key: string) {
+		key === 'content' && this._afterRender(element);
+	}
+
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		key === 'content' && this._afterRender(element);
+	}
+
 	render(): DNode {
 		const {
-			ariaHeadingLevel,
+			headingLevel,
 			closeable = true,
 			open = true,
 			title
@@ -84,7 +92,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			classes: this.classes(css.main)
 		}, [
 			v('div', {
-				'aria-level': ariaHeadingLevel ? String(ariaHeadingLevel) : '',
+				'aria-level': headingLevel ? String(headingLevel) : '',
 				classes: this.classes(css.title, closeable ? css.closeable : null),
 				onclick: closeable ? this._onTitleClick : undefined,
 				onkeyup: closeable ? this._onTitleKeyUp : undefined,
@@ -103,8 +111,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 				'aria-labelledby': titleId,
 				classes: this.classes(css.content),
 				id: contentId,
-				afterCreate: this._afterRender,
-				afterUpdate: this._afterRender
+				key: 'content'
 			}, this.children)
 		]);
 	}

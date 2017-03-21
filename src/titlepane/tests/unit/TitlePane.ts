@@ -144,7 +144,7 @@ registerSuite({
 	ariaHeadingLevel() {
 		const titlePane = new TitlePane();
 		titlePane.setProperties({
-			ariaHeadingLevel: 5,
+			headingLevel: 5,
 			title: 'test'
 		});
 		let vnode = <VNode> titlePane.__render__();
@@ -182,7 +182,7 @@ registerSuite({
 		const titlePane = new TitlePane();
 		const content = contentElement();
 
-		(<any> titlePane)._afterRender(content);
+		(<any> titlePane).onElementCreated(content, 'content');
 
 		setTimeout(dfd.callback(() => {
 			assert.strictEqual(content.style.marginTop, '0px', 'top margin should be 0px when open');
@@ -194,7 +194,7 @@ registerSuite({
 		const titlePane = new TitlePane();
 		const content = contentElement();
 
-		(<any> titlePane)._afterRender(content);
+		(<any> titlePane).onElementUpdated(content, 'content');
 		titlePane.setProperties({
 			title: 'foo',
 			open: true
@@ -210,7 +210,7 @@ registerSuite({
 		const titlePane = new TitlePane();
 		const content = contentElement();
 
-		(<any> titlePane)._afterRender(content);
+		(<any> titlePane).onElementCreated(content, 'content');
 		titlePane.setProperties({
 			title: 'foo',
 			open: false
