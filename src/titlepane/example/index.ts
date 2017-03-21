@@ -14,7 +14,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			}
 		}, [
 			w(TitlePane, {
-				ariaHeadingLevel: 1,
+				headingLevel: 1,
 				closeable: false,
 				key: 'titlePanel1',
 				title: 'TitlePanel Widget With closeable=false',
@@ -37,7 +37,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				}
 			}),
 			w(TitlePane, {
-				ariaHeadingLevel: 2,
+				headingLevel: 2,
 				key: 'titlePanel2',
 				open: <boolean> this.state['t2open'],
 				title: 'TitlePanel Widget (closeable)',
