@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import TestHarness from '@dojo/intern-helper/widgets/TestHarness';
-import SlidePane, { Align } from '../../SlidePane';
+import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
 import * as css from '../../styles/slidePane.css';
 
 function createEvent(type: string, x: number): any {
@@ -22,8 +22,20 @@ function createEvent(type: string, x: number): any {
 	};
 }
 
+/* for some reasons, it is "difficult" to explicitly type mixin class instance, so creating an
+ * instance just to extract type information */
+let harness = new TestHarness(SlidePane);
+
 registerSuite({
 	name: 'createSlidePane',
+
+	beforeEach() {
+		harness = new TestHarness(SlidePane);
+	},
+
+	afterEach() {
+		harness.destroy();
+	},
 
 	'Should construct SlidePane with passed properties'() {
 		const slidePane = new SlidePane();
@@ -41,7 +53,7 @@ registerSuite({
 	},
 
 	'Render correct children'() {
-		const harness = new TestHarness(SlidePane, {
+		harness.setProperties({
 			key: 'foo',
 			underlay: false
 		});
@@ -65,7 +77,8 @@ registerSuite({
 
 	onOpen() {
 		let called = false;
-		const harness = new TestHarness(SlidePane, {
+
+		harness.setProperties({
 			open: true,
 			onOpen() {
 				called = true;
@@ -80,7 +93,7 @@ registerSuite({
 	},
 
 	'change property to close'() {
-		const harness = new TestHarness(SlidePane, {
+		harness.setProperties({
 			open: true
 		});
 
@@ -97,23 +110,23 @@ registerSuite({
 		return harness.startRender();
 	},
 
-	'click underlay to close'() {
+	async 'click underlay to close'() {
 		let called = false;
 
-		const harness = new TestHarness(SlidePane, {
+		harness.setProperties({
 			open: true,
+
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		harness.startRender(false);
+		await harness.append();
 
 		harness.sendEvent('mousedown', 'CustomEvent', {
 			eventInit: <MouseEventInit> {
 				bubbles: true,
-				pageX: 300,
-				changedTouches: [ { screenX: 300 } ]
+				pageX: 300
 			},
 
 			selector: ':first-child'
@@ -123,29 +136,45 @@ registerSuite({
 		harness.sendEvent('mouseup', 'CustomEvent', {
 			eventInit: <MouseEventInit> {
 				bubbles: true,
-				pageX: 300,
-				changedTouches: [ { screenX: 300 } ]
+				pageX: 300
 			},
 
 			selector: ':first-child'
 		});
 
 		assert.isTrue(called, 'onRequestClose should be called on underlay click');
-		harness.destroy();
 	},
 
-	'tap underlay to close'() {
+	async 'tap underlay to close'() {
 		let called = false;
 
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		harness.setProperties({
+			open: true,
+
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		slidePane.onSwipeStart(createEvent('touchstart', 300));
-		slidePane.onSwipeEnd(createEvent('touchend', 300));
+		await harness.append();
+
+		harness.sendEvent('touchstart', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 300 } ]
+			},
+
+			selector: ':first-child'
+		});
+
+		harness.sendEvent('touchend', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 300 } ]
+			},
+
+			selector: ':first-child'
+		});
 
 		assert.isTrue(called, 'onRequestClose should be called on underlay tap');
 	},
