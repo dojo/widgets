@@ -248,10 +248,10 @@ registerSuite({
 				const menuNode = vnode.children[1];
 				let element = getMockNavElement();
 
-				element.classList.add(css.hidden);
 				menuNode.properties.afterCreate.call(menu, element);
 				assert.strictEqual(element.style.height, '0');
 
+				menu.setProperties({ hidden: false, label: 'Menu label' });
 				element = getMockNavElement();
 				menuNode.properties.afterCreate.call(menu, element);
 				assert.isNull(element.style.height);
