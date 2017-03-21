@@ -5,12 +5,11 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: #FFF;
+	background: var(--dojo-white);
 	width: 450px;
 	min-height: 250px;
 	overflow: hidden;
 	max-width: calc(100% - 30px);
-	font: var(--base-font);
 	box-shadow: var(--subtle-shadow);
 	border-radius: var(--rounded-corners);
 }
@@ -30,13 +29,13 @@
 .title {
 	position: relative;
 	background-color: var(--title-bar-bg);
-	font-size: var(--title-font-size);
+	font-size: var(--title-bar-font-size);
 	color: var(--title-bar-color);
-	padding: var(--content-padding);
+	padding: var(--container-padding);
 }
 
 .content {
-	padding: var(--content-padding);
+	padding: var(--container-padding);
 }
 
 .close {
@@ -55,5 +54,5 @@
 .close:after {
 	content: '✕';
 	display: block;
-	font-size: var(--title-font-size);
+	font-size: var(--title-bar-font-size);
 }

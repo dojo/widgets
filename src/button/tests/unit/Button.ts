@@ -72,27 +72,27 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		button.onBlur(<FocusEvent> {});
+		(<any> button)._onBlur(<FocusEvent> {});
 		assert.isTrue(blurred);
-		button.onClick(<MouseEvent> {});
+		(<any> button)._onClick(<MouseEvent> {});
 		assert.isTrue(clicked);
-		button.onFocus(<FocusEvent> {});
+		(<any> button)._onFocus(<FocusEvent> {});
 		assert.isTrue(focused);
-		button.onKeyDown(<KeyboardEvent> {});
+		(<any> button)._onKeyDown(<KeyboardEvent> {});
 		assert.isTrue(keydown);
-		button.onKeyPress(<KeyboardEvent> {});
+		(<any> button)._onKeyPress(<KeyboardEvent> {});
 		assert.isTrue(keypress);
-		button.onKeyUp(<KeyboardEvent> {});
+		(<any> button)._onKeyUp(<KeyboardEvent> {});
 		assert.isTrue(keyup);
-		button.onMouseDown(<MouseEvent> {});
+		(<any> button)._onMouseDown(<MouseEvent> {});
 		assert.isTrue(mousedown);
-		button.onMouseUp(<MouseEvent> {});
+		(<any> button)._onMouseUp(<MouseEvent> {});
 		assert.isTrue(mouseup);
-		button.onTouchStart(<TouchEvent> {});
+		(<any> button)._onTouchStart(<TouchEvent> {});
 		assert.isTrue(touchstart);
-		button.onTouchEnd(<TouchEvent> {});
+		(<any> button)._onTouchEnd(<TouchEvent> {});
 		assert.isTrue(touchend);
-		button.onTouchCancel(<TouchEvent> {});
+		(<any> button)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
 	}
 });

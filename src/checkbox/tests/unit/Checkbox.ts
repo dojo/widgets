@@ -122,23 +122,23 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		checkbox.onBlur(<FocusEvent> {});
+		(<any> checkbox)._onBlur(<FocusEvent> {});
 		assert.isTrue(blurred);
-		checkbox.onChange(<Event> {});
+		(<any> checkbox)._onChange(<Event> {});
 		assert.isTrue(changed);
-		checkbox.onClick(<MouseEvent> {});
+		(<any> checkbox)._onClick(<MouseEvent> {});
 		assert.isTrue(clicked);
-		checkbox.onFocus(<FocusEvent> {});
+		(<any> checkbox)._onFocus(<FocusEvent> {});
 		assert.isTrue(focused);
-		checkbox.onMouseDown(<MouseEvent> {});
+		(<any> checkbox)._onMouseDown(<MouseEvent> {});
 		assert.isTrue(mousedown);
-		checkbox.onMouseUp(<MouseEvent> {});
+		(<any> checkbox)._onMouseUp(<MouseEvent> {});
 		assert.isTrue(mouseup);
-		checkbox.onTouchStart(<TouchEvent> {});
+		(<any> checkbox)._onTouchStart(<TouchEvent> {});
 		assert.isTrue(touchstart);
-		checkbox.onTouchEnd(<TouchEvent> {});
+		(<any> checkbox)._onTouchEnd(<TouchEvent> {});
 		assert.isTrue(touchend);
-		checkbox.onTouchCancel(<TouchEvent> {});
+		(<any> checkbox)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
 	}
 });

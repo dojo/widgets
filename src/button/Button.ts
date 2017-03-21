@@ -11,25 +11,25 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  *
  * Properties that can be set on a Button component
  *
- * @property content			Text content of button
- * @property describedBy	ID of element with descriptive text
- * @property disabled			Whether the button is disabled or clickable
- * @property hasPopup			Whether the button triggers a popup
- * @property name					The button's name attribute
- * @property pressed			Indicates status of a toggle button
- * @property type					Button type can be "submit", "reset", "button", or "menu"
- * @property value				defines a value for the button submitted with form data
- * @property onBlur				Called when the button loses focus
- * @property onClick			Called when the button is clicked
- * @property onFocus			Called when the button is focused
- * @property onKeyDown		Called on the button's keydown event
- * @property onKeyPress		Called on the button's keypress event
- * @property onKeyUp			Called on the button's keyup event
- * @property onMouseDown	Called on the button's mousedown event
- * @property onMouseUp		Called on the button's mouseup event
- * @property onTouchStart	Called on the button's touchstart event
- * @property onTouchEnd		Called on the button's touchend event
- * @property onTouchCancel	Called on the button's touchcancel event
+ * @property content        Text content of button
+ * @property describedBy    ID of element with descriptive text
+ * @property disabled       Whether the button is disabled or clickable
+ * @property hasPopup       Whether the button triggers a popup
+ * @property name           The button's name attribute
+ * @property pressed        Indicates status of a toggle button
+ * @property type           Button type can be "submit", "reset", "button", or "menu"
+ * @property value          Defines a value for the button submitted with form data
+ * @property onBlur         Called when the button loses focus
+ * @property onClick        Called when the button is clicked
+ * @property onFocus        Called when the button is focused
+ * @property onKeyDown      Called on the button's keydown event
+ * @property onKeyPress     Called on the button's keypress event
+ * @property onKeyUp        Called on the button's keyup event
+ * @property onMouseDown    Called on the button's mousedown event
+ * @property onMouseUp      Called on the button's mouseup event
+ * @property onTouchCancel  Called on the button's touchcancel event
+ * @property onTouchEnd     Called on the button's touchend event
+ * @property onTouchStart   Called on the button's touchstart event
  */
 export interface ButtonProperties extends ThemeableProperties {
 	content?: string;
@@ -57,17 +57,17 @@ export const ButtonBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Button extends ButtonBase<ButtonProperties> {
-	onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
-	onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
-	onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
-	onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
-	onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
-	onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
-	onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
-	onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
-	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
-	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
+	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+	private _onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
+	private _onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
+	private _onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
+	private _onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
+	private _onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
+	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
+	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
 	render(): DNode {
 		const {
@@ -97,17 +97,17 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
 			type,
 			value,
-			onblur: this.onBlur,
-			onclick: this.onClick,
-			onfocus: this.onFocus,
-			onkeydown: this.onKeyDown,
-			onkeypress: this.onKeyPress,
-			onkeyup: this.onKeyUp,
-			onmousedown: this.onMouseDown,
-			onmouseup: this.onMouseUp,
-			ontouchstart: this.onTouchStart,
-			ontouchend: this.onTouchEnd,
-			ontouchcancel: this.onTouchCancel
+			onblur: this._onBlur,
+			onclick: this._onClick,
+			onfocus: this._onFocus,
+			onkeydown: this._onKeyDown,
+			onkeypress: this._onKeyPress,
+			onkeyup: this._onKeyUp,
+			onmousedown: this._onMouseDown,
+			onmouseup: this._onMouseUp,
+			ontouchstart: this._onTouchStart,
+			ontouchend: this._onTouchEnd,
+			ontouchcancel: this._onTouchCancel
 		});
 	}
 }

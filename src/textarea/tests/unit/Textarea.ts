@@ -141,31 +141,31 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		textarea.onBlur(<FocusEvent> {});
+		(<any> textarea)._onBlur(<FocusEvent> {});
 		assert.isTrue(blurred);
-		textarea.onChange(<Event> {});
+		(<any> textarea)._onChange(<Event> {});
 		assert.isTrue(changed);
-		textarea.onClick(<MouseEvent> {});
+		(<any> textarea)._onClick(<MouseEvent> {});
 		assert.isTrue(clicked);
-		textarea.onFocus(<FocusEvent> {});
+		(<any> textarea)._onFocus(<FocusEvent> {});
 		assert.isTrue(focused);
-		textarea.onInput(<Event> {});
+		(<any> textarea)._onInput(<Event> {});
 		assert.isTrue(input);
-		textarea.onKeyDown(<KeyboardEvent> {});
+		(<any> textarea)._onKeyDown(<KeyboardEvent> {});
 		assert.isTrue(keydown);
-		textarea.onKeyPress(<KeyboardEvent> {});
+		(<any> textarea)._onKeyPress(<KeyboardEvent> {});
 		assert.isTrue(keypress);
-		textarea.onKeyUp(<KeyboardEvent> {});
+		(<any> textarea)._onKeyUp(<KeyboardEvent> {});
 		assert.isTrue(keyup);
-		textarea.onMouseDown(<MouseEvent> {});
+		(<any> textarea)._onMouseDown(<MouseEvent> {});
 		assert.isTrue(mousedown);
-		textarea.onMouseUp(<MouseEvent> {});
+		(<any> textarea)._onMouseUp(<MouseEvent> {});
 		assert.isTrue(mouseup);
-		textarea.onTouchStart(<TouchEvent> {});
+		(<any> textarea)._onTouchStart(<TouchEvent> {});
 		assert.isTrue(touchstart);
-		textarea.onTouchEnd(<TouchEvent> {});
+		(<any> textarea)._onTouchEnd(<TouchEvent> {});
 		assert.isTrue(touchend);
-		textarea.onTouchCancel(<TouchEvent> {});
+		(<any> textarea)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
 	}
 });
