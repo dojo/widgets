@@ -11,69 +11,64 @@ import * as css from './styles/menu.css';
 
 export type Role = 'menu' | 'menubar';
 
+/**
+ * @type MenuProperties
+ *
+ * Properties that can be set on a Menu component
+ *
+ * @property animate
+ * Only applies to nested menus. Either a flag indicating whether the widget instance should handle animating
+ * between the visible and hidden states, or a function that manually handles the animation. If true (the default),
+ * then the menu will slide into and out of view like an accordion. If false, then any animation should be handled
+ * in the CSS, as the menu will just snap open/shut.
+ *
+ * @property disabled
+ * Indicates whether the menu is disabled. If true, then the widget will ignore events.
+ *
+ * @property expandOnClick
+ * Indicates whether the menu should be displayed/hidden via a click event. If false, then the menu is toggled
+ * via a hover event. Defaults to true.
+ *
+ * @property hideDelay
+ * Only applies to menus toggled into view with a hover event. The amount of time (in milliseconds) after a
+ * mouseleave event that should pass before the menu is hidden. Defaults to 300ms.
+ *
+ * @property hidden
+ * Whether the menu is hidden. Defaults to true if a label is specified (i.e., the menu is controlled by a
+ * link); false otherwise.
+ *
+ * @property id
+ * The widget ID. Defaults to a random string.
+ *
+ * @property label
+ * The text or properties for a MenuItem widget that is used to control the menu.
+ *
+ * @property nested
+ * Indicates whether the menu is nested within another menu. Useful for styling, this does not affect
+ * functionality. Defaults to false.
+ *
+ * @property onRequestHide
+ * Needed only when a label is used. Called when the menu is displayed, and the label is triggered.
+ * This method should be used to update the widget's `hidden` property.
+ *
+ * @property onRequestShow
+ * Needed only when a label is used. Called when the menu is hidden, and the label is triggered.
+ * This method should be used to update the widget's `hidden` property.
+ *
+ * @property role
+ * The value to use for the menu's `role` property. Defaults to "menu".
+ */
 export interface MenuProperties extends ThemeableProperties {
-	/**
-	 * Only applies to nested menus. Either a flag indicating whether the widget instance should handle animating
-	 * between the visible and hidden states, or a function that manually handles the animation. If true (the default),
-	 * then the menu will slide into and out of view like an accordion. If false, then any animation should be handled
-	 * in the CSS, as the menu will just snap open/shut.
-	 */
 	animate?: boolean | ((element: HTMLElement, hidden: boolean) => void);
-
-	/**
-	 * Indicates whether the menu is disabled. If true, then the widget will ignore events.
-	 */
 	disabled?: boolean;
-
-	/**
-	 * Indicates whether the menu should be displayed/hidden via a click event. If false, then the menu is toggled
-	 * via a hover event. Defaults to true.
-	 */
 	expandOnClick?: boolean;
-
-	/**
-	 * Only applies to menus toggled into view with a hover event. The amount of time (in milliseconds) after a
-	 * mouseleave event that should pass before the menu is hidden. Defaults to 300ms.
-	 */
 	hideDelay?: number;
-
-	/**
-	 * Whether the menu is hidden. Defaults to true if a label is specified (i.e., the menu is controlled by a
-	 * a link); false otherwise.
-	 */
 	hidden?: boolean;
-
-	/**
-	 * The widget ID. Defaults to a random string.
-	 */
 	id?: string;
-
-	/**
-	 * The text or properties for a MenuItem widget that is used to control the menu.
-	 */
 	label?: string | MenuItemProperties;
-
-	/**
-	 * Indicates whether the menu is nested within another menu. Useful for styling, this does not affect
-	 * functionality. Defaults to false.
-	 */
 	nested?: boolean;
-
-	/**
-	 * Needed only when a label is used. Called when the menu is displayed, and the label is triggered.
-	 * This method should be used to update the widget's `hidden` property.
-	 */
 	onRequestHide?: () => void;
-
-	/**
-	 * Needed only when a label is used. Called when the menu is hidden, and the label is triggered.
-	 * This method should be used to update the widget's `hidden` property.
-	 */
 	onRequestShow?: () => void;
-
-	/**
-	 * The value to use for the menu's `role` property. Defaults to "menu".
-	 */
 	role?: Role;
 }
 
@@ -82,9 +77,11 @@ function getMenuHeight(menuElement: HTMLElement): number {
 	return Math.min(menuElement.scrollHeight, (isNaN(maxHeight) ? Infinity : maxHeight));
 }
 
+export const MenuBase = ThemeableMixin(WidgetBase);
+
 @theme(css)
-export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
-	protected _wasOpen = false;
+export class Menu extends MenuBase<MenuProperties> {
+	protected wasOpen = false;
 	private _hideTimer: Handle;
 	private _initialRender = true;
 
@@ -95,7 +92,7 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		} = this.properties;
 
 		if (!disabled && expandOnClick) {
-			this._toggleDisplay();
+			this.toggleDisplay();
 		}
 	}
 
@@ -103,12 +100,12 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		const { disabled } = this.properties;
 
 		if (!disabled && event.key === 'Enter') {
-			this._toggleDisplay();
+			this.toggleDisplay();
 		}
 	}
 
 	onMenuFocus() {
-		const { disabled, hidden = this._getDefaultHidden() } = this.properties;
+		const { disabled, hidden = this.getDefaultHidden() } = this.properties;
 		if (!disabled && hidden) {
 			const onRequestShow = this.properties.onRequestShow;
 			onRequestShow && onRequestShow();
@@ -123,7 +120,7 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 
 		if (!disabled && !expandOnClick) {
 			this._hideTimer && this._hideTimer.destroy();
-			this._toggleDisplay(true);
+			this.toggleDisplay(true);
 		}
 	}
 
@@ -138,19 +135,18 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 			this._hideTimer && this._hideTimer.destroy();
 			if (hideDelay) {
 				this._hideTimer = createTimer(() => {
-					this._toggleDisplay(false);
+					this.toggleDisplay(false);
 				}, hideDelay);
 				this.own(this._hideTimer);
 			}
 			else {
-				this._toggleDisplay(false);
+				this.toggleDisplay(false);
 			}
 		}
 	}
 
 	render(): DNode {
 		const {
-			hidden = this._getDefaultHidden(),
 			id = uuid(),
 			nested,
 			role = 'menu'
@@ -160,9 +156,9 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		const menu = v('nav', {
 			id,
 			role,
-			classes: this.classes.apply(this, this._getMenuClasses(hidden, Boolean(label))),
-			afterCreate: this._afterCreate,
-			afterUpdate: this._afterUpdate,
+			classes: this.classes.apply(this, this.getMenuClasses()),
+			afterCreate: this.afterCreate,
+			afterUpdate: this.afterUpdate,
 			onfocusin: this.onMenuFocus
 		}, this.children);
 
@@ -184,7 +180,7 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 			const properties = typeof label === 'string' ? { label } : label;
 			return w(MenuItem, assign({
 				disabled,
-				getAriaProperties: this._getLabelAriaProperties.bind(this, id),
+				getAriaProperties: this.getLabelAriaProperties.bind(this, id),
 				hasMenu: true,
 				overrideClasses: overrideClasses || css,
 				onClick: this.onLabelClick,
@@ -193,13 +189,12 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		}
 	}
 
-	protected _afterCreate(element: HTMLElement) {
-		const { animate = true } = this.properties;
+	protected afterCreate(element: HTMLElement) {
+		const { animate = true, hidden = this.getDefaultHidden() } = this.properties;
 		this._initialRender = false;
 
 		if (animate) {
-			const hidden = element.classList.contains(css.hidden);
-			this._wasOpen = !hidden;
+			this.wasOpen = !hidden;
 
 			if (hidden) {
 				element.style.height = '0';
@@ -207,8 +202,8 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		}
 	}
 
-	protected _afterUpdate(element: HTMLElement) {
-		const { animate = true, hidden = this._getDefaultHidden(), label } = this.properties;
+	protected afterUpdate(element: HTMLElement) {
+		const { animate = true, hidden = this.getDefaultHidden(), label } = this.properties;
 
 		if (!label) {
 			return;
@@ -224,15 +219,17 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 			return animate(element, hidden);
 		}
 
-		this._animate(element, hidden);
+		this.animate(element);
 	}
 
-	protected _animate(element: HTMLElement, hidden: boolean) {
+	protected animate(element: HTMLElement) {
+		const { hidden = this.getDefaultHidden() } = this.properties;
+
 		// Assuming the menu has an `auto` height, manually apply the scroll height (or max-height if specified),
 		// and animate to and from that.
 		requestAnimationFrame(() => {
 			const height = getMenuHeight(element);
-			this._wasOpen = !hidden;
+			this.wasOpen = !hidden;
 
 			if (hidden) {
 				// Temporarily remove any transition to prevent the element from animating to `height`.
@@ -251,7 +248,7 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		});
 	}
 
-	protected _getDefaultHidden() {
+	protected getDefaultHidden() {
 		const { disabled, label } = this.properties;
 
 		if (label && disabled) {
@@ -261,16 +258,17 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		return label ? true : false;
 	}
 
-	protected _getLabelAriaProperties(id: string): { [key: string]: string; } {
-		const { hidden = this._getDefaultHidden() } = this.properties;
+	protected getLabelAriaProperties(id: string): { [key: string]: string; } {
+		const { hidden = this.getDefaultHidden() } = this.properties;
 		return {
 			'aria-controls': id,
 			'aria-expanded': String(!hidden)
 		};
 	}
 
-	protected _getMenuClasses(hidden: boolean, isSubMenu: boolean) {
-		const { animate = true, nested } = this.properties;
+	protected getMenuClasses() {
+		const { animate = true, hidden = this.getDefaultHidden(), label, nested } = this.properties;
+		const isSubMenu = Boolean(label);
 		const classes = [ css.menu ];
 
 		if (this._initialRender || !animate || !isSubMenu) {
@@ -288,18 +286,18 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		return classes;
 	}
 
-	protected _toggleDisplay(isHidden?: boolean) {
+	protected toggleDisplay(requestShow?: boolean) {
 		const {
 			onRequestHide,
 			onRequestShow
 		} = this.properties;
 
-		if (typeof isHidden === 'undefined') {
-			const { hidden = this._getDefaultHidden() } = this.properties;
-			isHidden = hidden;
+		if (typeof requestShow === 'undefined') {
+			const { hidden = this.getDefaultHidden() } = this.properties;
+			requestShow = hidden;
 		}
 
-		if (isHidden) {
+		if (requestShow) {
 			typeof onRequestShow === 'function' && onRequestShow();
 		}
 		else {

@@ -1,65 +1,63 @@
 import { assign } from '@dojo/core/lang';
-import { HNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { v } from '@dojo/widget-core/d';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/menu.css';
 
+/**
+ * @type MenuItemProperties
+ *
+ * Properties that can be set on a MenuItem component
+ *
+ * @property disabled
+ * Indicates whether the menu is disabled. If true, then the widget will ignore events.
+ *
+ * @property external
+ * Applies only when a URL is provided. If `true`, the URL will be opened in a new window.
+ *
+ * @property getAriaProperties
+ * Returns an object of aria properties to apply to the widget's DOM element.
+ *
+ * @property hasMenu
+ * A flag indicating whether the widget is used as the label for a menu widget. If `true`,
+ * then the `menuLabel` CSS class is applied instead of the `menuItem` class.
+ *
+ * @property label
+ * The widget text content.
+ *
+ * @property onClick
+ * An event handler for click events.
+ *
+ * @property onKeypress
+ * An event handler for keypress events.
+ *
+ * @property selected
+ * Indicates whether the widget is selected.
+ *
+ * @property tabIndex
+ * The tab index. Defaults to 0, and is forced to -1 if the widget is disabled.
+ *
+ * @property url
+ * A URL to navigate to on click.
+ */
 export interface MenuItemProperties extends ThemeableProperties {
-	/**
-	 * Indicates whether the menu is disabled. If true, then the widget will ignore events.
-	 */
 	disabled?: boolean;
-
-	/**
-	 * Applies only when a URL is provided. If `true`, the URL will be opened in a new window.
-	 */
 	external?: boolean;
-
-	/**
-	 * Returns an object of aria properties to apply to the widget's DOM element.
-	 */
 	getAriaProperties?: () => { [key: string]: string; };
-
-	/**
-	 * A flag indicating whether the widget is used as the label for a menu widget. If `true`,
-	 * then the `menuLabel` CSS class is applied instead of the `menuItem` class.
-	 */
 	hasMenu?: boolean;
-
-	/**
-	 * The widget text content.
-	 */
 	label?: string;
-
-	/**
-	 * An event handler for click events.
-	 */
 	onClick?: (event: MouseEvent) => void;
-
-	/**
-	 * An event handler for keypress events.
-	 */
 	onKeypress?: (event: KeyboardEvent) => void;
-
-	/**
-	 * Indicates whether the widget is selected.
-	 */
 	selected?: boolean;
-
-	/**
-	 * The tab index. Defaults to 0, and is forced to -1 if the widget is disabled.
-	 */
 	tabIndex?: number;
-
-	/**
-	 * A URL to navigate to on click.
-	 */
 	url?: string;
 }
 
+export const MenuItemBase = ThemeableMixin(WidgetBase);
+
 @theme(css)
-export class MenuItem extends ThemeableMixin(WidgetBase)<MenuItemProperties> {
+export class MenuItem extends MenuItemBase<MenuItemProperties> {
 	onClick(event: MouseEvent) {
 		const { disabled, onClick } = this.properties;
 		if (!disabled && typeof onClick === 'function') {
@@ -105,10 +103,10 @@ export class MenuItem extends ThemeableMixin(WidgetBase)<MenuItemProperties> {
 		}), label ? [ label ] : undefined);
 
 		if (this.children.length) {
-			const children = this.children as HNode[];
+			const children: DNode[] = [ labelNode ];
 			return v('span', {
 				classes: this.classes(css.menuItem)
-			}, [ labelNode ].concat(children));
+			}, children.concat(this.children));
 		}
 
 		return labelNode;
