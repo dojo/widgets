@@ -183,19 +183,21 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		if (includes(keys, 'loadingIndex')) {
 			this._loading = typeof loadingIndex === 'number';
 		}
+		// If the active tab is disabled, find the next available
 		if ((
 			includes(keys, 'tabs') ||
 			includes(keys, 'activeIndex') ||
 			includes(keys, 'loadingIndex')) &&
 			tabs.length > 0) {
-
 			const tab = tabs[this._getIndex()];
 
+			// If the activeIndex is invalid, default to the first tab
 			if (!tab) {
 				this.onTabClick(0);
 				return;
 			}
 
+			// If the current tab is disabled, find the next available
 			if (tab.disabled) {
 				const index = this._getNextIndex();
 				typeof index === 'number' && this.onTabClick(index);
@@ -226,12 +228,12 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		];
 
 		let alignClass;
-		let ariaAlign = 'horizontal';
+		let orientation = 'horizontal';
 
 		switch (alignButtons) {
 			case Align.right:
 				alignClass = css.alignRight;
-				ariaAlign = 'vertical';
+				orientation = 'vertical';
 				children.reverse();
 				break;
 			case Align.bottom:
@@ -240,12 +242,12 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 				break;
 			case Align.left:
 				alignClass = css.alignLeft;
-				ariaAlign = 'vertical';
+				orientation = 'vertical';
 				break;
 		}
 
 		return v('div', {
-			'aria-orientation': ariaAlign,
+			'aria-orientation': orientation,
 			classes: this.classes(
 				css.root,
 				alignClass ? alignClass : null
