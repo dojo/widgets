@@ -1,3 +1,4 @@
+import has from '@dojo/has/has';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
@@ -18,6 +19,14 @@ function contentElement() {
 
 registerSuite({
 	name: 'TitlePane',
+
+	setup() {
+		if (has('host-node')) {
+			(<any> global).requestAnimationFrame = function (callback: () => void) {
+				callback();
+			};
+		}
+	},
 
 	'Render correct children'() {
 		const titlePane = new TitlePane();
@@ -194,11 +203,11 @@ registerSuite({
 		const titlePane = new TitlePane();
 		const content = contentElement();
 
-		(<any> titlePane).onElementUpdated(content, 'content');
 		titlePane.setProperties({
 			title: 'foo',
 			open: true
 		});
+		(<any> titlePane).onElementUpdated(content, 'content');
 
 		setTimeout(dfd.callback(() => {
 			assert.strictEqual(content.style.marginTop, '0px', 'top margin should be 0px when open');
@@ -215,6 +224,7 @@ registerSuite({
 			title: 'foo',
 			open: false
 		});
+		(<any> titlePane).onElementCreated(content, 'content');
 
 		setTimeout(dfd.callback(() => {
 			assert.strictEqual(content.style.marginTop, '-200px', 'top margin should be -(content height) when closed');
