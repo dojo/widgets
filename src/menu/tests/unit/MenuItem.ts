@@ -74,6 +74,35 @@ registerSuite({
 		}
 	},
 
+	onKeypress: {
+		'when disabled'() {
+			const item = new MenuItem();
+			let event: any;
+			item.setProperties({
+				disabled: true,
+				onKeypress(_event: any) {
+					event = _event;
+				}
+			});
+
+			item.onKeypress(<any> { type: 'keypress' });
+			assert.isUndefined(event, '`onKeypress` should not be called when the menu item is disabled.');
+		},
+
+		'when enabled'() {
+			const item = new MenuItem();
+			let event: any;
+			item.setProperties({
+				onKeypress(_event: any) {
+					event = _event;
+				}
+			});
+
+			item.onKeypress(<any> { type: 'keypress' });
+			assert.strictEqual(event!.type, 'keypress', '`onKeypress` should be called when the menu item is enabled.');
+		}
+	},
+
 	disabled() {
 		const item = new MenuItem();
 		let vnode: any = item.__render__();
@@ -97,6 +126,40 @@ registerSuite({
 		assert.strictEqual(vnode.properties.target, '_blank');
 	},
 
+	getAriaProperties() {
+		const item = new MenuItem();
+		item.setProperties({
+			getAriaProperties() {
+				return { 'aria-expanded': 'false' };
+			}
+		});
+		const vnode: any = item.__render__();
+		assert.strictEqual(vnode.properties['aria-expanded'], 'false',
+			'Aria properties should be added to the node');
+	},
+
+	hasMenu: {
+		'when false'() {
+			const item = new MenuItem();
+			const vnode: any = item.__render__();
+
+			assert.isTrue(vnode.properties.classes[css.menuItem]);
+			assert.notOk(vnode.properties.classes[css.menuLabel]);
+		},
+
+		'when true'() {
+			const item = new MenuItem();
+			item.setProperties({ hasMenu: true });
+
+			const vnode: any = item.__render__();
+			const classes = css.menuLabel.split(' ');
+
+			classes.forEach((className: string) => {
+				assert.isTrue(vnode.properties.classes[className]);
+			});
+		}
+	},
+
 	label() {
 		const item = new MenuItem();
 		item.setProperties({ label: 'Label' });
@@ -114,6 +177,31 @@ registerSuite({
 		item.setProperties({ selected: true });
 		vnode = item.__render__();
 		assert.isTrue(vnode.properties.classes[css.selected]);
+	},
+
+	tabIndex: {
+		'when disabled'() {
+			const item = new MenuItem();
+			item.setProperties({ disabled: true, tabIndex: 1 });
+			const vnode: any = item.__render__();
+
+			assert.strictEqual(vnode.properties.tabIndex, -1, 'Specified tabIndex should be ignored');
+		},
+
+		'when enabled'() {
+			const item = new MenuItem();
+			item.setProperties({ tabIndex: 1 });
+			const vnode: any = item.__render__();
+
+			assert.strictEqual(vnode.properties.tabIndex, 1);
+		},
+
+		'defaults to 0'() {
+			const item = new MenuItem();
+			const vnode: any = item.__render__();
+
+			assert.strictEqual(vnode.properties.tabIndex, 0);
+		}
 	},
 
 	url() {

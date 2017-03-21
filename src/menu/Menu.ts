@@ -55,6 +55,14 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		}
 	}
 
+	onMenuFocus() {
+		const { disabled, hidden = this._getDefaultHidden() } = this.properties;
+		if (!disabled && hidden) {
+			const onRequestShow = this.properties.onRequestShow;
+			onRequestShow && onRequestShow();
+		}
+	}
+
 	onMenuMouseEnter() {
 		const {
 			disabled,
@@ -85,14 +93,6 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 			else {
 				this._toggleDisplay(false);
 			}
-		}
-	}
-
-	onMenuFocus() {
-		const { hidden = this._getDefaultHidden() } = this.properties;
-		if (hidden) {
-			const onRequestShow = this.properties.onRequestShow;
-			onRequestShow && onRequestShow();
 		}
 	}
 
@@ -143,7 +143,9 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 
 	protected _afterCreate(element: HTMLElement) {
 		const { animate = true } = this.properties;
-		if (animate && this._initialRender) {
+		this._initialRender = false;
+
+		if (animate) {
 			const hidden = element.classList.contains(css.hidden);
 			this._wasOpen = !hidden;
 
@@ -151,7 +153,6 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 				element.style.height = '0';
 			}
 		}
-		this._initialRender = false;
 	}
 
 	protected _afterUpdate(element: HTMLElement) {
@@ -162,6 +163,7 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 		}
 
 		if (!animate) {
+			// In case `animate` was previously `true`, remove any `height` property set on the node.
 			element.style.height = null;
 			return;
 		}
@@ -170,10 +172,6 @@ export class Menu extends ThemeableMixin(WidgetBase)<MenuProperties> {
 	}
 
 	protected _animate(element: HTMLElement, hidden: boolean) {
-		if (hidden && !this._wasOpen) {
-			return;
-		}
-
 		requestAnimationFrame(() => {
 			const height = getMenuHeight(element);
 			this._wasOpen = !hidden;
