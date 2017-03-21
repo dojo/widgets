@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import TestHarness from '@dojo/intern-helper/widgets/TestHarness';
-import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
+import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../styles/slidePane.css';
 
 function createEvent(type: string, x: number): any {
@@ -129,7 +129,7 @@ registerSuite({
 				pageX: 300
 			},
 
-			selector: ':first-child'
+			selector: ':first-child' /* this should be the underlay */
 		});
 
 		/* using MouseEvent here causes issues between pepjs and jsdom, therefore we will use custom event */
@@ -139,7 +139,7 @@ registerSuite({
 				pageX: 300
 			},
 
-			selector: ':first-child'
+			selector: ':first-child' /* this should be the underlay */
 		});
 
 		assert.isTrue(called, 'onRequestClose should be called on underlay click');
@@ -164,7 +164,7 @@ registerSuite({
 				changedTouches: [ { screenX: 300 } ]
 			},
 
-			selector: ':first-child'
+			selector: ':first-child' /* this should be the underlay */
 		});
 
 		harness.sendEvent('touchend', 'CustomEvent', {
@@ -173,25 +173,45 @@ registerSuite({
 				changedTouches: [ { screenX: 300 } ]
 			},
 
-			selector: ':first-child'
+			selector: ':first-child' /* this should be the underlay */
 		});
 
 		assert.isTrue(called, 'onRequestClose should be called on underlay tap');
 	},
 
-	'drag to close'() {
+	async 'drag to close'() {
 		let called = false;
 
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		harness.setProperties({
+			open: true,
+
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		(<any> slidePane)._onSwipeStart(createEvent('mousedown', 300));
-		(<any> slidePane)._onSwipeMove(createEvent('mousemove', 150));
-		(<any> slidePane)._onSwipeEnd(createEvent('mouseup', 50));
+		await harness.append();
+
+		harness.sendEvent('mousedown', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 300
+			}
+		});
+
+		harness.sendEvent('mousemove', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 150
+			}
+		});
+
+		harness.sendEvent('mouseup', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 50
+			}
+		});
 
 		assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
 	},
