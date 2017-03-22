@@ -1,5 +1,3 @@
-import { assign } from '@dojo/core/lang';
-import { DNode } from '@dojo/widget-core/interfaces';
 import { v } from '@dojo/widget-core/d';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
@@ -10,21 +8,21 @@ import * as css from './styles/menu.css';
  *
  * Properties that can be set on a MenuItem component
  *
+ * @property controls
+ * ID of an element that this input controls
+ *
  * @property disabled
  * Indicates whether the menu is disabled. If true, then the widget will ignore events.
  *
- * @property external
- * Applies only when a URL is provided. If `true`, the URL will be opened in a new window.
+ * @property expanded
+ * A flag indicating whether a widget controlled by `this` is expanded.
  *
- * @property getAriaProperties
- * Returns an object of aria properties to apply to the widget's DOM element.
+ * @property hasDropDown
+ * A flag indicating whether the widget has a drop down child.
  *
  * @property hasMenu
  * A flag indicating whether the widget is used as the label for a menu widget. If `true`,
  * then the `menuLabel` CSS class is applied instead of the `menuItem` class.
- *
- * @property label
- * The widget text content.
  *
  * @property onClick
  * An event handler for click events.
@@ -37,21 +35,17 @@ import * as css from './styles/menu.css';
  *
  * @property tabIndex
  * The tab index. Defaults to 0, and is forced to -1 if the widget is disabled.
- *
- * @property url
- * A URL to navigate to on click.
  */
 export interface MenuItemProperties extends ThemeableProperties {
+	controls?: string;
 	disabled?: boolean;
-	external?: boolean;
-	getAriaProperties?: () => { [key: string]: string; };
+	expanded?: boolean;
+	hasDropDown?: boolean;
 	hasMenu?: boolean;
-	label?: string;
 	onClick?: (event: MouseEvent) => void;
 	onKeypress?: (event: KeyboardEvent) => void;
 	selected?: boolean;
 	tabIndex?: number;
-	url?: string;
 }
 
 export const MenuItemBase = ThemeableMixin(WidgetBase);
@@ -74,42 +68,32 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 	render() {
 		const {
+			controls,
 			disabled,
-			external,
+			expanded,
+			hasDropDown = false,
 			hasMenu = false,
-			getAriaProperties,
-			label,
 			selected,
-			tabIndex = 0,
-			url
+			tabIndex = 0
 		} = this.properties;
 
-		const ariaProperties = getAriaProperties && getAriaProperties() || Object.create(null);
 		const classes = this.classes(
 			hasMenu ? css.menuLabel : css.menuItem,
 			disabled ? css.disabled : null,
 			selected ? css.selected : null
 		);
 
-		const labelNode = v('a', assign(ariaProperties, {
+		return v('span', {
+			'aria-controls': controls,
+			'aria-expanded': expanded,
+			'aria-hasdropdown': hasDropDown,
 			'aria-disabled': disabled,
 			classes,
-			href: url || undefined,
 			onclick: this.onClick,
 			onkeypress: this.onKeypress,
 			role: 'menuitem',
-			tabIndex : disabled ? -1 : tabIndex,
-			target: url && external ? '_blank' : undefined
-		}), label ? [ label ] : undefined);
-
-		if (this.children.length) {
-			const children: DNode[] = [ labelNode ];
-			return v('span', {
-				classes: this.classes(css.menuItem)
-			}, children.concat(this.children));
-		}
-
-		return labelNode;
+			tabIndex : disabled ? -1 : tabIndex
+		}, this.children);
 	}
 }
 

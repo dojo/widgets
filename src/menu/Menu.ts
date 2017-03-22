@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
-import MenuItem, { MenuItemProperties } from './MenuItem';
+import MenuItem from './MenuItem';
 import * as css from './styles/menu.css';
 
 export type Role = 'menu' | 'menubar';
@@ -17,10 +17,9 @@ export type Role = 'menu' | 'menubar';
  * Properties that can be set on a Menu component
  *
  * @property animate
- * Only applies to nested menus. Either a flag indicating whether the widget instance should handle animating
- * between the visible and hidden states, or a function that manually handles the animation. If true (the default),
- * then the menu will slide into and out of view like an accordion. If false, then any animation should be handled
- * in the CSS, as the menu will just snap open/shut.
+ * Only applies to nested menus. A flag indicating whether the widget instance should handle animating between the
+ * visible and hidden states. If true (the default), then the menu will slide into and out of view like an accordion.
+ * If false, then any animation should be handled in the CSS, as the menu will just snap open/shut.
  *
  * @property disabled
  * Indicates whether the menu is disabled. If true, then the widget will ignore events.
@@ -41,7 +40,7 @@ export type Role = 'menu' | 'menubar';
  * The widget ID. Defaults to a random string.
  *
  * @property label
- * The text or properties for a MenuItem widget that is used to control the menu.
+ * A widget that will be wrapped in a MenuItem widget that will be used to control the menu.
  *
  * @property nested
  * Indicates whether the menu is nested within another menu. Useful for styling, this does not affect
@@ -59,13 +58,13 @@ export type Role = 'menu' | 'menubar';
  * The value to use for the menu's `role` property. Defaults to "menu".
  */
 export interface MenuProperties extends ThemeableProperties {
-	animate?: boolean | ((element: HTMLElement, hidden: boolean) => void);
+	animate?: boolean;
 	disabled?: boolean;
 	expandOnClick?: boolean;
 	hideDelay?: number;
 	hidden?: boolean;
 	id?: string;
-	label?: string | MenuItemProperties;
+	label?: DNode;
 	nested?: boolean;
 	onRequestHide?: () => void;
 	onRequestShow?: () => void;
@@ -174,18 +173,18 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	renderLabel(id: string): DNode | void {
-		const { disabled, label, overrideClasses } = this.properties;
+		const { disabled, hidden = this.getDefaultHidden(), label, overrideClasses } = this.properties;
 
 		if (label) {
-			const properties = typeof label === 'string' ? { label } : label;
-			return w(MenuItem, assign({
+			return w(MenuItem, {
+				controls: id,
 				disabled,
-				getAriaProperties: this.getLabelAriaProperties.bind(this, id),
+				expanded: !hidden,
 				hasMenu: true,
 				overrideClasses: overrideClasses || css,
 				onClick: this.onLabelClick,
 				onKeypress: this.onLabelKeypress
-			}, properties));
+			}, [ label ]);
 		}
 	}
 
@@ -203,7 +202,7 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	protected afterUpdate(element: HTMLElement) {
-		const { animate = true, hidden = this.getDefaultHidden(), label } = this.properties;
+		const { animate = true, label } = this.properties;
 
 		if (!label) {
 			return;
@@ -213,10 +212,6 @@ export class Menu extends MenuBase<MenuProperties> {
 			// In case `animate` was previously `true`, remove any `height` property set on the node.
 			element.style.height = null;
 			return;
-		}
-
-		if (typeof animate === 'function') {
-			return animate(element, hidden);
 		}
 
 		this.animate(element);
@@ -256,14 +251,6 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 
 		return label ? true : false;
-	}
-
-	protected getLabelAriaProperties(id: string): { [key: string]: string; } {
-		const { hidden = this.getDefaultHidden() } = this.properties;
-		return {
-			'aria-controls': id,
-			'aria-expanded': String(!hidden)
-		};
 	}
 
 	protected getMenuClasses() {
