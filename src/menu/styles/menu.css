@@ -1,27 +1,44 @@
+@import '../../common/styles/variables.css';
+
 .container {
 	box-sizing: border-box;
 	position: relative;
 }
 
-.menu {}
+.menu {
+	background: #fff;
+	box-shadow: 0 0 2px 1px rgba(0,0,0,0.3);
+	font-family: sans-serif;
+	font-size: 14px;
+	padding: 5px 0;
+}
 
 .menuItem {
+	color: var(--title-bar-bg);
 	cursor: pointer;
 	display: block;
+	padding: 5px 10px;
 }
 
 .menuLabel {
 	composes: menuItem;
 }
 
-.disabled {
-	cursor: default;
+.menuItem:focus,
+.menuLabel:focus {
+	box-shadow: inset var(--input-focus-shadow);
+	outline: none;
 }
 
-/**
- * Selected menu items.
- */
-.selected {}
+.disabled {
+	cursor: default;
+	opacity: 0.3;
+}
+
+.selected {
+	background-color: var(--title-bar-bg);
+	color: #fff;
+}
 
 .nestedMenuContainer,
 .nestedMenu {
@@ -29,7 +46,10 @@
 }
 
 .subMenu {
+	box-shadow: 0 0;
+	box-sizing: border-box;
 	overflow: hidden;
+	padding: 0 15px;
 	transition: height 0.5s ease-in-out;
 }
 

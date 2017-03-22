@@ -1,4 +1,3 @@
-import { assign } from '@dojo/core/lang';
 import { createTimer } from '@dojo/core/util';
 import uuid from '@dojo/core/uuid';
 import { Handle } from '@dojo/interfaces/core';
@@ -97,8 +96,9 @@ export class Menu extends MenuBase<MenuProperties> {
 
 	onLabelKeypress(event: KeyboardEvent) {
 		const { disabled } = this.properties;
+		const key = 'key' in event ? event.key : event.keyCode;
 
-		if (!disabled && event.key === 'Enter') {
+		if (!disabled && key === 'Enter') {
 			this.toggleDisplay();
 		}
 	}
@@ -106,8 +106,7 @@ export class Menu extends MenuBase<MenuProperties> {
 	onMenuFocus() {
 		const { disabled, hidden = this.getDefaultHidden() } = this.properties;
 		if (!disabled && hidden) {
-			const onRequestShow = this.properties.onRequestShow;
-			onRequestShow && onRequestShow();
+			this.toggleDisplay(true);
 		}
 	}
 
@@ -238,6 +237,7 @@ export class Menu extends MenuBase<MenuProperties> {
 				});
 			}
 			else {
+				element.scrollTop = 0;
 				element.style.height = `${height}px`;
 			}
 		});

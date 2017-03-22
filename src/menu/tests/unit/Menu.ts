@@ -48,6 +48,7 @@ function getMockNavElement() {
 		get scrollHeight(){
 			return 300;
 		},
+		scrollTop: null,
 		style: styles,
 		classList: {
 			add(name: string) {
@@ -309,6 +310,7 @@ registerSuite({
 
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, '300px' ]);
+				assert.strictEqual(element.scrollTop, 0, 'The nav should be scrolled top');
 			},
 
 			'animates to the max-height when set'() {
