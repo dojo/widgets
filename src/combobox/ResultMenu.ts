@@ -32,7 +32,7 @@ export interface ResultMenuProperties extends ThemeableProperties, RegistryMixin
 	onResultMouseUp(event: MouseEvent, index: number): void;
 };
 
-const ResultMenuBase = RegistryMixin(ThemeableMixin(WidgetBase));
+export const ResultMenuBase = RegistryMixin(ThemeableMixin(WidgetBase));
 
 @theme(css)
 export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {

@@ -1,9 +1,18 @@
+var tsconfig = require('./tsconfig.json');
+
 module.exports = function (grunt) {
+	var createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcessors;
+
 	var staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
 	var staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
 
 	require('grunt-dojo2').initConfig(grunt, {
 		copy: {
+			'staticDefinitionFiles-dev': {
+				cwd: 'src',
+				src: [ '<%= staticDefinitionFiles %>' ],
+				dest: '<%= devDirectory %>'
+			},
 			staticTestFiles: {
 				expand: true,
 				cwd: 'src',
@@ -51,6 +60,19 @@ module.exports = function (grunt) {
 		typedoc: {
 			options: {
 				ignoreCompilerErrors: true // Remove this once compile errors are resolved
+			}
+		},
+		postcss: {
+			'modules-dev': {
+				files: [{
+					expand: true,
+					src: ['**/*.css', '!**/variables.css', '!**/widgets.css'],
+					dest: '<%= devDirectory %>',
+					cwd: 'src'
+				}],
+				options: {
+					processors: createProcessors(tsconfig.compilerOptions.outDir, 'src')
+				}
 			}
 		}
 	});
