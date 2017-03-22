@@ -329,32 +329,11 @@ registerSuite({
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, '100px' ]);
 			}
-		},
-
-		'when a function'() {
-			const menu = new Menu();
-			let args: any[] = [];
-			menu.setProperties({
-				hidden: false,
-				label: 'Menu label',
-				animate(element, hidden) {
-					args = [ element, hidden ];
-				}
-			});
-
-			const vnode: any = menu.__render__();
-			const menuNode = vnode.children[1];
-			const element = getMockNavElement();
-
-			menuNode.properties.afterCreate.call(menu, element);
-			menuNode.properties.afterUpdate.call(menu, element);
-
-			assert.sameMembers(args, [ element, false ], 'The custom animate function should be called');
 		}
 	},
 
 	label: {
-		'renders the menu within a container'() {
+		'renders the menu within a MenuItem'() {
 			const menu = new Menu();
 			menu.setProperties({
 				hidden: false,
@@ -374,7 +353,7 @@ registerSuite({
 			const vnode = <VNode> menu.__render__();
 			const label = <VNode> vnode.children![0];
 
-			assert.strictEqual(label.vnodeSelector, 'a', 'label node should be a link');
+			assert.strictEqual(label.vnodeSelector, 'span', 'label node should be a <span>');
 			assert.strictEqual(label.text, 'Menu label', 'label node should have the label text');
 		},
 
@@ -385,17 +364,6 @@ registerSuite({
 
 			assert.strictEqual(vnode.vnodeSelector, 'nav', 'menu node should be a nav');
 			assert.lengthOf(vnode.children, 3, 'menu node should have all children');
-		},
-
-		'allows label properties instead of a label string'() {
-			const menu = new Menu();
-			menu.setProperties({
-				label: { label: 'Menu label' }
-			});
-			const vnode = <VNode> menu.__render__();
-			const label = <VNode> vnode.children![0];
-
-			assert.strictEqual(label.text, 'Menu label', 'label node should have the label text');
 		}
 	},
 

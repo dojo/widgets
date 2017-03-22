@@ -11,38 +11,12 @@ registerSuite({
 		item.setProperties({
 			key: 'foo',
 			disabled: false,
-			external: true,
-			label: 'Label',
-			selected: false,
-			url: 'http://dojo.io'
+			selected: false
 		});
 
 		assert.strictEqual(item.properties.key, 'foo');
 		assert.isFalse(item.properties.disabled);
-		assert.isTrue(item.properties.external);
-		assert.strictEqual(item.properties.label, 'Label');
 		assert.isFalse(item.properties.selected);
-		assert.strictEqual(item.properties.url, 'http://dojo.io');
-	},
-
-	children: {
-		'without children'() {
-			const item = new MenuItem();
-			const vnode: any = item.__render__();
-
-			assert.strictEqual(vnode.vnodeSelector, 'a');
-			assert.lengthOf(vnode.children, 0);
-		},
-
-		'with children'() {
-			const item = new MenuItem();
-			item.setChildren([ 'Child' ]);
-			const vnode: any = item.__render__();
-
-			assert.strictEqual(vnode.vnodeSelector, 'span');
-			assert.isTrue(vnode.properties.classes[css.menuItem]);
-			assert.lengthOf(vnode.children, 2);
-		}
 	},
 
 	onClick: {
@@ -103,6 +77,16 @@ registerSuite({
 		}
 	},
 
+	controls() {
+		const item = new MenuItem();
+		item.setProperties({
+			controls: 'uuid-12345'
+		});
+		const vnode: any = item.__render__();
+		assert.strictEqual(vnode.properties['aria-controls'], 'uuid-12345',
+			'`controls` should be assigned to the `aria-controls` attribute');
+	},
+
 	disabled() {
 		const item = new MenuItem();
 		let vnode: any = item.__render__();
@@ -114,28 +98,24 @@ registerSuite({
 		assert.isTrue(vnode.properties.classes[css.disabled]);
 	},
 
-	external() {
-		const item = new MenuItem();
-		item.setProperties({ external: true });
-		let vnode: any = item.__render__();
-
-		assert.notOk(vnode.properties.target, 'target should not be set without a url');
-
-		item.setProperties({ external: true, url: 'http://dojo.io' });
-		vnode = item.__render__();
-		assert.strictEqual(vnode.properties.target, '_blank');
-	},
-
-	getAriaProperties() {
+	expanded() {
 		const item = new MenuItem();
 		item.setProperties({
-			getAriaProperties() {
-				return { 'aria-expanded': 'false' };
-			}
+			expanded: true
 		});
 		const vnode: any = item.__render__();
-		assert.strictEqual(vnode.properties['aria-expanded'], 'false',
-			'Aria properties should be added to the node');
+		assert.strictEqual(vnode.properties['aria-expanded'], true,
+			'`expanded` should be assigned to the `aria-expanded` attribute');
+	},
+
+	hasDropDown() {
+		const item = new MenuItem();
+		item.setProperties({
+			hasDropDown: true
+		});
+		const vnode: any = item.__render__();
+		assert.strictEqual(vnode.properties['aria-hasdropdown'], true,
+			'`hasDropDown` should be assigned to the `aria-hasdropdown` attribute');
 	},
 
 	hasMenu: {
@@ -158,14 +138,6 @@ registerSuite({
 				assert.isTrue(vnode.properties.classes[className]);
 			});
 		}
-	},
-
-	label() {
-		const item = new MenuItem();
-		item.setProperties({ label: 'Label' });
-		const vnode: any = item.__render__();
-
-		assert.strictEqual(vnode.text, 'Label');
 	},
 
 	selected() {
@@ -202,13 +174,5 @@ registerSuite({
 
 			assert.strictEqual(vnode.properties.tabIndex, 0);
 		}
-	},
-
-	url() {
-		const item = new MenuItem();
-		item.setProperties({ url: 'http://dojo.io' });
-		const vnode: any = item.__render__();
-
-		assert.strictEqual(vnode.properties.href, 'http://dojo.io');
 	}
 });

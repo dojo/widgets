@@ -112,11 +112,13 @@ export class App extends AppBase<WidgetProperties> {
 		}, [
 			w(MenuItem, {
 				key: 'DojoMenuLabel',
-				label: 'Dojo 2',
-				overrideClasses: menuCss,
-				url: 'http://dojo.io',
-				external: true
-			}),
+				overrideClasses: menuCss
+			}, [
+				v('a', {
+					href: 'http://dojo.io',
+					target: '_blank'
+				}, [ 'Dojo 2' ])
+			]),
 
 			w(Menu, {
 				animate: <boolean> animate,
@@ -135,12 +137,14 @@ export class App extends AppBase<WidgetProperties> {
 				overrideClasses: menuCss
 			}, packages.map((label, i) => {
 				return w(MenuItem, {
-					label,
 					key: `menu1-sub1-item${i}`,
-					overrideClasses: menuCss,
-					url: `https://github.com/dojo/${label}`,
-					external: true
-				});
+					overrideClasses: menuCss
+				}, [
+					v('a', {
+						href: `https://github.com/dojo/${label}`,
+						target: '_blank'
+					}, [ label ])
+				]);
 			}))
 		]);
 	}
