@@ -1,7 +1,7 @@
 import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { DNode, WNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { includes } from '@dojo/shim/array';
 import ResultMenu, { ResultMenuProperties } from './ResultMenu';
@@ -318,7 +318,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	}
 
-	protected renderMenu(results: any[]) {
+	protected renderMenu(results: any[]): WNode | null {
 		if (results.length === 0 || !this._open) {
 			return null;
 		}

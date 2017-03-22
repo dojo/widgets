@@ -1,6 +1,8 @@
 var tsconfig = require('./tsconfig.json');
 
 module.exports = function (grunt) {
+	var createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcessors;
+
 	var staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
 	var staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
 
@@ -69,7 +71,7 @@ module.exports = function (grunt) {
 					cwd: 'src'
 				}],
 				options: {
-					processors: require('grunt-dojo2/tasks/postcss').moduleProcessors(tsconfig.compilerOptions.outDir, 'src')
+					processors: createProcessors(tsconfig.compilerOptions.outDir, 'src')
 				}
 			}
 		}
