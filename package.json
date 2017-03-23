@@ -14,9 +14,10 @@
     "url": "https://github.com/dojo/widgets.git"
   },
   "scripts": {
+    "prepublish": "grunt peerDepInstall",
     "test": "grunt test"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@dojo/core": "2.0.0-alpha.26",
     "@dojo/has": "2.0.0-alpha.8",
     "@dojo/i18n": "2.0.0-alpha.8",
