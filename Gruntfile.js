@@ -38,6 +38,19 @@ module.exports = function (grunt) {
 				dest: '<%= distDirectory %>'
 			}
 		},
+		postcss: {
+			'modules-dev': {
+				files: [{
+					expand: true,
+					src: ['**/*.m.css'],
+					dest: '<%= devDirectory %>',
+					cwd: 'src'
+				}],
+				options: {
+					processors: createProcessors(tsconfig.compilerOptions.outDir, 'src')
+				}
+			}
+		},
 		intern: {
 			options: {
 				runType: 'runner',
