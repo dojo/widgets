@@ -61,19 +61,6 @@ module.exports = function (grunt) {
 			options: {
 				ignoreCompilerErrors: true // Remove this once compile errors are resolved
 			}
-		},
-		postcss: {
-			'modules-dev': {
-				files: [{
-					expand: true,
-					src: ['**/*.css', '!**/variables.css', '!**/widgets.css'],
-					dest: '<%= devDirectory %>',
-					cwd: 'src'
-				}],
-				options: {
-					processors: createProcessors(tsconfig.compilerOptions.outDir, 'src')
-				}
-			}
 		}
 	});
 
