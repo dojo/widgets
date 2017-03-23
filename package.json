@@ -34,7 +34,7 @@
     "@types/jsdom": "2.0.*",
     "@types/sinon": "^1.16.31",
     "grunt": "^1.0.1",
-    "grunt-dojo2": ">=2.0.0-beta.36",
+    "grunt-dojo2": ">=2.0.0-beta.37",
     "intern": "^3.4.1",
     "jsdom": "^9.12.0",
     "sinon": "^1.17.6",

@@ -1,9 +1,15 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import has from '@dojo/has/has';
 import { VNode } from '@dojo/interfaces/vdom';
 import TestHarness from '@dojo/intern-helper/widgets/TestHarness';
 import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../styles/slidePane.css';
+
+const hasTouch = (function (): boolean {
+	/* Since jsdom will fake it anyways, no problem predending we can do touch */
+	return Boolean(has('host-node') || 'ontouchstart' in window);
+})();
 
 function createEvent(type: string, x: number): any {
 	return {
@@ -145,7 +151,11 @@ registerSuite({
 		assert.isTrue(called, 'onRequestClose should be called on underlay click');
 	},
 
-	async 'tap underlay to close'() {
+	async 'tap underlay to close'(this: any) {
+		if (!hasTouch) {
+			this.skip('Environment not support touch events');
+		}
+
 		let called = false;
 
 		harness.setProperties({
@@ -216,102 +226,183 @@ registerSuite({
 		assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
 	},
 
-	'swipe to close'() {
+	async 'swipe to close'(this: any) {
+		if (!hasTouch) {
+			this.skip('Environment not support touch events');
+		}
+
 		let called = false;
 
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		harness.setProperties({
+			open: true,
+
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		(<any> slidePane).onElementCreated(null, 'foo');
-		(<any> slidePane).onElementCreated(<any> {
-			addEventListener() {},
-			classList: {
-				add() {}
-			},
-			style: {}
-		}, 'content');
+		await harness.append();
 
-		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
-		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
-		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
-		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 50));
+		harness.sendEvent('touchmove', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 150 } ]
+			}
+		});
+
+		harness.sendEvent('touchstart', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 300 } ]
+			}
+		});
+
+		harness.sendEvent('touchmove', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 150 } ]
+			}
+		});
+
+		harness.sendEvent('touchend', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 50 } ]
+			}
+		});
 
 		assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
 	},
 
-	'swipe to close right'() {
+	async 'swipe to close right'(this: any) {
+		if (!hasTouch) {
+			this.skip('Environment not support touch events');
+		}
+
 		let called = false;
 
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
-			onRequestClose() {
-				called = true;
-			},
+		harness.setProperties({
+			align: Align.right,
+			open: true,
 			width: 256,
-			align: Align.right
-		});
 
-		(<any> slidePane).onElementCreated(<any> {
-			addEventListener() {},
-			classList: {
-				add() {}
-			},
-			style: {}
-		}, 'content');
-
-		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
-		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
-		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 500));
-
-		assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
-	},
-
-	'not dragged far enough to close'() {
-		let called = false;
-
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		(<any> slidePane).onElementCreated(<any> {
-			addEventListener() {},
-			classList: {
-				add() {}
-			},
-			style: {}
-		}, 'content');
+		await harness.append();
 
-		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
-		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 250));
-		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 250));
+		harness.sendEvent('touchstart', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 300 } ]
+			}
+		});
+
+		harness.sendEvent('touchmove', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 400 } ]
+			}
+		});
+
+		harness.sendEvent('touchend', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				changedTouches: [ { screenX: 500 } ]
+			}
+		});
+
+		assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
+	},
+
+	async 'not dragged far enough to close'() {
+		let called = false;
+
+		harness.setProperties({
+			open: true,
+
+			onRequestClose() {
+				called = true;
+			}
+		});
+
+		harness.setChildren([
+			`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+		]);
+
+		await harness.append();
+
+		harness.sendEvent('mousedown', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 300
+			}
+		});
+
+		harness.sendEvent('mousemove', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 250
+			}
+		});
+
+		harness.sendEvent('mouseup', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 250
+			}
+		});
 
 		assert.isFalse(called, 'onRequestClose should not be called if not swiped far enough to close');
 	},
 
-	'pane cannot be moved past screen edge'() {
-		const slidePane = new SlidePane();
+	async 'pane cannot be moved past screen edge'() {
+		// const slidePane = new SlidePane();
 
-		const element: any = {
-			addEventListener() {},
-			classList: {
-				add() {}
+		harness.setProperties({
+			open: true
+		});
+
+		harness.setChildren([
+			`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+		]);
+
+		await harness.append();
+
+		harness.sendEvent('mousedown', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 300
 			},
-			style: { transform: '' }
-		};
 
-		(<any> slidePane).onElementCreated(element, 'content');
-		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
-		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
-		(<any> slidePane)._onSwipeEnd(createEvent('touchmove', 500));
+			selector: ':last-child'
+		});
 
-		assert.strictEqual(element.style.transform, '', 'trnasform should not be applied if pane is at screen edge');
+		harness.sendEvent('mousemove', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 400
+			},
+
+			selector: ':last-child'
+		});
+
+		harness.sendEvent('mouseup', 'CustomEvent', {
+			eventInit: <MouseEventInit> {
+				bubbles: true,
+				pageX: 500
+			},
+
+			selector: ':last-child'
+		});
+
+		assert.isUndefined(harness.widgetElement && (<HTMLElement> harness.widgetElement.lastChild).style.transform);
 	},
 
 	'classes and transform removed after transition'() {
