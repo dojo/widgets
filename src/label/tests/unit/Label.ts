@@ -3,7 +3,7 @@ import * as assert from 'intern/chai!assert';
 import { v } from '@dojo/widget-core/d';
 import { VNode } from '@dojo/interfaces/vdom';
 import Label from '../../Label';
-import * as baseCss from '../../../common/styles/base.css';
+import * as baseCss from '../../../common/styles/base.m.css';
 
 let label: Label;
 

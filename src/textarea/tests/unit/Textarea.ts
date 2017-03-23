@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import Textarea from '../../Textarea';
-import * as css from '../../styles/textarea.css';
+import * as css from '../../styles/textarea.m.css';
 
 registerSuite({
 	name: 'Textarea',

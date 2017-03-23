@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import TextInput from '../../TextInput';
-import * as css from '../../styles/textinput.css';
+import * as css from '../../styles/textinput.m.css';
 
 registerSuite({
 	name: 'TextInput',

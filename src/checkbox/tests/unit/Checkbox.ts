@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import Checkbox from '../../Checkbox';
-import * as css from '../../styles/checkbox.css';
+import * as css from '../../styles/checkbox.m.css';
 
 registerSuite({
 	name: 'Checkbox',
