@@ -9,6 +9,9 @@
   },
   "license": "BSD-3-Clause",
   "main": "main.js",
+  "engines": {
+    "npm": ">=3.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/dojo/widgets.git"
