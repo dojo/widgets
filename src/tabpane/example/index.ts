@@ -28,6 +28,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		this.setState({ align: align });
 	}
 	render(): DNode {
+		const { loading } = this.state;
+
 		return v('div', {
 			classes: { example: true }
 		}, [
@@ -41,22 +43,23 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			]),
 			w(TabPane, {
 				activeIndex: <number> this.state.activeIndex,
-				loadingIndex: <number> this.state.loadingIndex,
-				onRequestTabClose: (newTabs: TabConfig[]) => this.setState({ tabs: newTabs }),
 				alignButtons: <Align> this.state.align,
+				onRequestTabClose: (newTabs: TabConfig[]) => this.setState({ tabs: newTabs }),
 				onRequestTabChange: (index: number) => {
 					clearTimeout(timeout);
 					if (index === 2) {
-						this.setState({ loadingIndex: 2 });
+						this.setState({
+							activeIndex: 2,
+							loading: true
+						});
 						timeout = setTimeout(() => this.setState({
-							activeIndex: index,
-							loadingIndex: null
-						}), 3000);
+							loading: false
+						}), 2500);
 					}
 					else {
 						this.setState({
 							activeIndex: index,
-							loadingIndex: null
+							loading: false
 						});
 					}
 				},
@@ -73,9 +76,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					disabled: true
 				}, {
 					label: 'Async',
-					content: v('div', [
-						'Curabitur id elit a tellus consequat maximus in non lorem. Donec sagittis porta aliquam. Nulla facilisi. Quisque sed mauris justo. Donec eu fringilla urna. Aenean vulputate ipsum imperdiet orci ornare tempor.'
-					])
+					content: loading ? 'Loading...' : 'Curabitur id elit a tellus consequat maximus in non lorem. Donec sagittis porta aliquam. Nulla facilisi. Quisque sed mauris justo. Donec eu fringilla urna. Aenean vulputate ipsum imperdiet orci ornare tempor.'
 				}, {
 					label: 'Closeable',
 					content: v('div', [

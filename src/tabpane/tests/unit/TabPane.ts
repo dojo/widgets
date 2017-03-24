@@ -3,13 +3,20 @@ import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import TabPane, { Align } from '../../TabPane';
 import * as css from '../../styles/tabPane.css';
+import { assign } from '@dojo/core/lang';
+
+function props(props = {}) {
+	return assign({
+		activeIndex: 0,
+		tabs: []
+	}, props);
+}
 
 registerSuite({
 	name: 'TabPane',
 
 	'Active tab button should render'() {
 		const tabPane = new TabPane();
-		<VNode> tabPane.__render__();
 		tabPane.setProperties({
 			activeIndex: 0,
 			tabs: [{
@@ -22,56 +29,45 @@ registerSuite({
 		assert.property(vnode.children![0].children![0].properties!.classes!, css.activeTabButton);
 	},
 
-	'Loading tab button should render as active'() {
-		const tabPane = new TabPane();
-		<VNode> tabPane.__render__();
-		tabPane.setProperties({
-			loadingIndex: 0,
-			tabs: [{
-				content: ''
-			}]
-		});
-
-		const vnode = <VNode> tabPane.__render__();
-		assert.property(vnode.children![0].children![0].properties!.classes!, css.activeTabButton);
-	},
-
 	'alignButtons should add correct classes'() {
 		const tabPane = new TabPane();
 
-		tabPane.setProperties({ alignButtons: Align.right });
+		tabPane.setProperties(props({ alignButtons: Align.right, tabs: [{}] }));
 		let vnode = <VNode> tabPane.__render__();
 		assert.property(vnode.properties!.classes!, css.alignRight);
 
-		tabPane.setProperties({ alignButtons: Align.bottom });
+		tabPane.setProperties(props({ alignButtons: Align.bottom }));
 		vnode = <VNode> tabPane.__render__();
 		assert.property(vnode.properties!.classes!, css.alignBottom);
 
-		tabPane.setProperties({ alignButtons: Align.left });
+		tabPane.setProperties(props({ alignButtons: Align.left }));
 		vnode = <VNode> tabPane.__render__();
 		assert.property(vnode.properties!.classes!, css.alignLeft);
 	},
 
 	'Clicking tab should change activeIndex'() {
 		const tabPane = new TabPane();
-		let activeIndex;
-		tabPane.setProperties({
-			onRequestTabChange: index => activeIndex = index
-		});
+		let count = 0;
+		tabPane.setProperties(props({
+			onRequestTabChange: (index: number) => {
+				count = count + index
+				tabPane.setProperties(props({ activeIndex: 3 }))
+			}
+		}));
 		(<any> tabPane).onTabClick(3);
-		assert.strictEqual(activeIndex, 3);
+		(<any> tabPane).onTabClick(3);
+		assert.strictEqual(count, 3);
 	},
 
 	'Closing a tab should change tabs'() {
 		const tabPane = new TabPane();
 		let newTabs;
-		(<any> tabPane).onCloseClick(0);
-		tabPane.setProperties({
-			onRequestTabClose: tabs => newTabs = tabs,
+		tabPane.setProperties(props({
+			onRequestTabClose: (tabs: any[]) => newTabs = tabs,
 			tabs: [{
 				closeable: true
 			}]
-		});
+		}));
 		(<any> tabPane).onCloseClick(0);
 		assert.deepEqual(newTabs, []);
 	},
@@ -79,11 +75,10 @@ registerSuite({
 	'Should get first tab'() {
 		const tabPane = new TabPane();
 		let tab;
-		tabPane.setProperties({ tabs: [{}, {}] });
-		tabPane.setProperties({
-			onRequestTabChange: index => tab = index,
-			activeIndex: 3
-		});
+		tabPane.setProperties(props({
+			tabs: [{}, {}],
+			onRequestTabChange: (index: number) => tab = index
+		}));
 		(<any> tabPane)._getFirstTab();
 		assert.strictEqual(tab, 0);
 	},
@@ -91,12 +86,10 @@ registerSuite({
 	'Should get last tab'() {
 		const tabPane = new TabPane();
 		let tab;
-		(<any> tabPane)._getLastTab();
-		tabPane.setProperties({
-			onRequestTabChange: index => tab = index,
-			tabs: ['a', 'b'],
-			activeIndex: 0
-		});
+		tabPane.setProperties(props({
+			onRequestTabChange: (index: number) => tab = index,
+			tabs: ['a', 'b']
+		}));
 		(<any> tabPane)._getLastTab();
 		assert.strictEqual(tab, 1);
 	},
@@ -104,7 +97,6 @@ registerSuite({
 	'Should get next tab'() {
 		const tabPane = new TabPane();
 		let tab;
-		(<any> tabPane)._getNextTab();
 		tabPane.setProperties({
 			onRequestTabChange: index => tab = index,
 			tabs: [{ disabled: true }, { disabled: true }, {}],
@@ -139,11 +131,19 @@ registerSuite({
 
 	'Should skip tab if activeIndex is disabled'() {
 		const tabPane = new TabPane();
+		const tabs = [{ disabled: true }, {}];
 		let tab;
+		tabPane.setProperties(<any> {
+			onRequestTabChange: () => {}
+		});
 		tabPane.setProperties({
-			tabs: [{ disabled: true }, {}],
+			tabs: tabs,
 			onRequestTabChange: index => tab = index,
 			activeIndex: 0
+		});
+		tabPane.setProperties({
+			activeIndex: 1,
+			tabs: tabs
 		});
 		assert.strictEqual(tab, 1);
 	}

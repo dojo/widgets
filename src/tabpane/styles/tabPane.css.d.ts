@@ -4,7 +4,6 @@ export const close: string;
 export const tabButton: string;
 export const root: string;
 export const tab: string;
-export const loading: string;
 export const alignRight: string;
 export const alignBottom: string;
 export const alignLeft: string;

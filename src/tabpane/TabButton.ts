@@ -16,7 +16,6 @@ import * as css from './styles/tabPane.css';
  * @property disabled           Determines whether this tab can become active
  * @property id                 ID of this tab button DOM element
  * @property index              The position of this tab button
- * @property loading            Determines whether this tab button is loading
  * @property onClick            Called when this tab button is clicked
  * @property onCloseClick       Called when this tab button's close icon is clicked
  * @property onEndPress         Called when the end button is pressed
@@ -31,7 +30,6 @@ export interface TabButtonProperties extends ThemeableProperties {
 	disabled?: boolean;
 	id?: string;
 	index?: number;
-	loading?: boolean;
 	onClick?: (index?: number) => void;
 	onCloseClick?: (index?: number) => void;
 	onEndPress?: () => void;

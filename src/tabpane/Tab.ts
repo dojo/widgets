@@ -12,12 +12,10 @@ import * as css from './styles/tabPane.css';
  *
  * @property id          ID of this underlying DOM element
  * @property labelledBy  ID of DOM element that serves as a label for this tab
- * @property loading     Determines if this tab is loading
  */
 export interface TabProperties extends ThemeableProperties {
 	id?: string;
 	labelledBy?: string;
-	loading?: boolean;
 };
 
 export const TabBase = ThemeableMixin(WidgetBase);
@@ -27,16 +25,12 @@ export default class Tab extends TabBase<TabProperties> {
 	render(): DNode {
 		const {
 			id,
-			labelledBy,
-			loading
+			labelledBy
 		} = this.properties;
 
 		return v('div', {
 			'aria-labelledby': labelledBy,
-			classes: this.classes(
-				css.tab,
-				loading ? css.loading : null
-			),
+			classes: this.classes(css.tab),
 			id,
 			role: 'tabpanel'
 		}, this.children);

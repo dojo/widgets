@@ -43,16 +43,14 @@ export const enum Align {
  *
  * @property activeIndex           Position of the currently active tab
  * @property alignButtons          Position of the tab buttons
- * @property loadingIndex          Position of the currently loading tab, useful for tabs with async content
  * @property tabs                  List of tab configuration objects
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
 export interface TabPaneProperties extends ThemeableProperties {
-	activeIndex?: number;
+	activeIndex: number;
 	alignButtons?: Align;
-	loadingIndex?: number;
-	tabs?: TabConfig[];
+	tabs: TabConfig[];
 	onRequestTabChange?(index: number): void;
 	onRequestTabClose?(tabs: TabConfig[]): void;
 };
@@ -62,19 +60,12 @@ export const TabPaneBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	private _id: string;
-	private _loading: boolean;
-
-	private _getIndex() {
-		const {
-			activeIndex = 0,
-			loadingIndex = 0
-		} = this.properties;
-
-		return this._loading ? loadingIndex : activeIndex;
-	}
 
 	private _getNextIndex(backwards?: boolean) {
-		const { tabs = [] } = this.properties;
+		const {
+			activeIndex,
+			tabs
+		} = this.properties;
 
 		if (tabs.every(result => Boolean(result.disabled))) {
 			return;
@@ -87,7 +78,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 			return (index + 1) % tabs.length;
 		}
 
-		let i = nextIndex(this._getIndex());
+		let i = !tabs[activeIndex] ? 0 : nextIndex(activeIndex);
 
 		while (tabs[i].disabled) {
 			i = nextIndex(i);
@@ -97,13 +88,12 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	}
 
 	private _getFirstTab() {
-		this.onTabClick(0);
+		this.properties.tabs.length > 0 && this.onTabClick(0);
 	}
 
 	private _getLastTab() {
-		const { tabs = [] } = this.properties;
-
-		this.onTabClick(tabs.length - 1);
+		const { tabs } = this.properties;
+		tabs.length > 0 && this.onTabClick(tabs.length - 1);
 	}
 
 	private _getNextTab() {
@@ -118,20 +108,19 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 
 	private _renderTabButtons() {
 		const {
-			loadingIndex,
-			tabs = []
+			activeIndex,
+			tabs
 		} = this.properties;
 
 		return tabs.map((tab, i) => {
 			return w(TabButton, {
-				active: i === this._getIndex(),
+				active: i === activeIndex,
 				closeable: tab.closeable,
 				controls: `${ this._id }-tab-${i}`,
 				disabled: tab.disabled,
 				id: `${ this._id }-tabbutton-${i}`,
 				index: i,
 				key: String(i),
-				loading: i === loadingIndex,
 				onClick: this.onTabClick,
 				onCloseClick: this.onCloseClick,
 				onEndPress: this._getLastTab,
@@ -145,24 +134,26 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	}
 
 	private _renderTabs() {
-		const { tabs = [] } = this.properties;
+		const {
+			activeIndex,
+			tabs
+		} = this.properties;
 
 		return tabs
 			.filter((tab, i) => {
-				return i === this._getIndex();
+				return i === activeIndex;
 			})
 			.map((tab, i) => w(Tab, {
 				id: `${ this._id }-tab-${i}`,
-				labelledBy: `${ this._id }-tabbutton-${i}`,
-				loading: this._loading
+				labelledBy: `${ this._id }-tabbutton-${i}`
 			}, [
-				this._loading ? 'Loading...' : (tab.content || null)
+				tab.content || null
 			]));
 	}
 
 	protected onCloseClick(index: number) {
 		const {
-			tabs = [],
+			tabs,
 			onRequestTabClose
 		} = this.properties;
 
@@ -176,29 +167,14 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, TabPaneProperties>) {
 		const keys = evt.changedPropertyKeys;
 		const {
-			loadingIndex,
-			tabs = []
+			activeIndex,
+			tabs
 		} = this.properties;
 
-		if (includes(keys, 'loadingIndex')) {
-			this._loading = typeof loadingIndex === 'number';
-		}
-		// If the active tab is disabled, find the next available
-		if ((
-			includes(keys, 'tabs') ||
-			includes(keys, 'activeIndex') ||
-			includes(keys, 'loadingIndex')) &&
-			tabs.length > 0) {
-			const tab = tabs[this._getIndex()];
-
-			// If the activeIndex is invalid, default to the first tab
-			if (!tab) {
-				this.onTabClick(0);
-				return;
-			}
-
-			// If the current tab is disabled, find the next available
-			if (tab.disabled) {
+		// If the current tab is disabled or invalid, find the next available
+		if ((includes(keys, 'tabs') || includes(keys, 'activeIndex'))) {
+			const tab = tabs[activeIndex];
+			if (!tab || tab.disabled) {
 				const index = this._getNextIndex();
 				typeof index === 'number' && this.onTabClick(index);
 			}
@@ -207,7 +183,6 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 
 	protected onTabClick(index: number) {
 		const { onRequestTabChange } = this.properties;
-
 		onRequestTabChange && onRequestTabChange(index);
 	}
 

@@ -74,23 +74,6 @@
 	min-height: var(--min-container-height);
 }
 
-.loading {
-	padding-left: 58px;
-}
-
-.loading:before {
-	content: '';
-	display: inline-block;
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	background-color: #333;
-	border-radius: 100%;
-	animation: pulse 1.0s infinite ease-in-out;
-	left: 28px;
-	top: 10px;
-}
-
 .alignLeft .tabs {
 	display: inline-block;
 	vertical-align: top;
