@@ -3,7 +3,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 
-import * as css from './styles/tabPane.css';
+import * as css from './styles/tabPane.m.css';
 
 /**
  * @type TabProperties

@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import TabPane, { Align } from '../../TabPane';
-import * as css from '../../styles/tabPane.css';
+import * as css from '../../styles/tabPane.m.css';
 import { assign } from '@dojo/core/lang';
 
 function props(props = {}) {
@@ -50,8 +50,8 @@ registerSuite({
 		let count = 0;
 		tabPane.setProperties(props({
 			onRequestTabChange: (index: number) => {
-				count = count + index
-				tabPane.setProperties(props({ activeIndex: 3 }))
+				count = count + index;
+				tabPane.setProperties(props({ activeIndex: 3 }));
 			}
 		}));
 		(<any> tabPane).onTabClick(3);

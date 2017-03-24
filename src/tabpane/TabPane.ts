@@ -7,7 +7,7 @@ import Tab from './Tab';
 import TabButton from './TabButton';
 import uuid from '@dojo/core/uuid';
 
-import * as css from './styles/tabPane.css';
+import * as css from './styles/tabPane.m.css';
 
 /**
  * @type TabConfig

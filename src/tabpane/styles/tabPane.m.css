@@ -1,5 +1,4 @@
 @import '../../common/styles/variables.css';
-@import '../../common/styles/animations.css';
 
 .root {
 	font: var(--base-font);
