@@ -1,5 +1,117 @@
 @import '../../common/styles/variables.css';
 
+.root {
+	font: var(--base-font);
+}
+
+.inputWrapper {
+	display: inline-block;
+	perspective: 300px;
+	position: relative;
+}
+
+/* custom input styles */
+@keyframes slideDown {
+	0% {
+		opacity: 0;
+		transform: rotateX(50deg) translateY(-50%);
+	},
+	50% {
+		opacity: 0.7;
+		transform: rotateX(40deg) translateY(0);
+	},
+	100% {
+		opacity: 1;
+		transform: rotateX(0) translateY(0) translateZ(5px);
+	}
+}
+@keyframes slideUp {
+	0% {
+		opacity: 1;
+		transform: rotateX(0) translateY(0) translateZ(5px);
+	},
+	50% {
+		opacity: 0.3;
+		transform: rotateX(40deg) translateY(0);
+	},
+	100% {
+		opacity: 0;
+		transform: rotateX(50deg) translateY(-50%);
+	}
+}
+.open { }
+
+.trigger {
+	background-color: transparent;
+	border: 3px solid var(--input-border-color);
+	font-size: inherit;
+	min-width: 200px;
+	outline: none;
+	padding: 0.75em 3.5em 0.75em 1em;
+	position: relative;
+	text-align: left;
+}
+
+.trigger::before {
+	background-color: var(--input-border-color);
+	bottom: 0;
+	content: "";
+	pointer-events: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: all var(--short-animation-duration) ease;
+	width: 2.5em;
+}
+
+.trigger::after {
+	border-bottom: 2px solid var(--dojo-white);
+	border-left: 2px solid var(--dojo-white);
+	content: "";
+	height: 0.5em;
+	position: absolute;
+	right: 1.25em;
+	top: 50%;
+	transform: translate(50%, -65%) rotate(-45deg);
+	width: 0.5em;
+}
+
+.trigger:focus {
+	border-color: var(--input-highlight-color);
+}
+
+.trigger:focus::before {
+	background-color: var(--input-highlight-color);
+}
+
+.dropdown {
+	opacity: 0;
+	position: absolute;
+	transform: rotateX(-50deg) translateY(-20%);
+	transform-origin: 0 0;
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: slideUp;
+	width: 100%;
+	z-index: -1;
+}
+
+.open .dropdown {
+	opacity: 1;
+	transform: translateY(0) rotateX(0);
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: slideDown;
+	z-index: 2;
+}
+
+.focused {
+	background-color: var(--dojo-blue);
+}
+
+.selected { }
+
+/* native input styles */
 .input {
 	appearance: none;
 	background-color: transparent;
@@ -18,15 +130,6 @@
 	border-color: var(--input-highlight-color);
 }
 
-.root {
-	font: var(--base-font);
-}
-
-.inputWrapper {
-	display: inline-block;
-	position: relative;
-}
-
 .arrow {
 	background-color: var(--input-border-color);
 	bottom: 0;
@@ -34,7 +137,7 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-	transition: background var(--short-animation-duration) ease;
+	transition: all var(--short-animation-duration) ease;
 	width: 2.5em;
 }
 

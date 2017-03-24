@@ -1,0 +1,28 @@
+@import '../../common/styles/variables.css';
+
+.option {
+	background-color: var(--dojo-light-gray);
+	font-style: italic;
+	padding: 5px 8px;
+	position: relative;
+}
+
+.selected {
+	border: 2px solid var(--input-highlight-color);
+}
+
+.selected .option::before {
+	content: "";
+	border-bottom: 2px solid var(--dojo-success-color);
+	border-right: 2px solid var(--dojo-success-color);
+	height: 6px;
+	left: 2px;
+	position: absolute;
+	top: 4px;
+	transform: rotate(45deg);
+	width: 4px;
+}
+
+.focused .option {
+	background-color: var(--dojo-light-blue);
+}

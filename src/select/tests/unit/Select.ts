@@ -25,10 +25,16 @@ registerSuite({
 			invalid: true,
 			label: 'foo',
 			name: 'bar',
-			options: {
-				'one': 'One',
-				'two': 'Two'
-			},
+			options: [
+				{
+					value: 'one',
+					label: 'One'
+				},
+				{
+					value: 'two',
+					label: 'Two'
+				}
+			],
 			readOnly: true,
 			required: true,
 			value: 'one'
