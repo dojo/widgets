@@ -67,10 +67,10 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	private _getIndex() {
 		const {
 			activeIndex = 0,
-			loadingIndex
+			loadingIndex = 0
 		} = this.properties;
 
-		return this._loading ? (loadingIndex || 0) : activeIndex;
+		return this._loading ? loadingIndex : activeIndex;
 	}
 
 	private _getNextIndex(backwards?: boolean) {
