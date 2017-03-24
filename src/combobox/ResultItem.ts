@@ -3,7 +3,7 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 
-import * as css from './styles/comboBox.css';
+import * as css from './styles/comboBox.m.css';
 
 /**
  * @type ResultItemProperties

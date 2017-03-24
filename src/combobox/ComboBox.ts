@@ -10,7 +10,7 @@ import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import Label, { LabelOptions } from '../label/Label';
 import uuid from '@dojo/core/uuid';
 
-import * as css from './styles/comboBox.css';
+import * as css from './styles/comboBox.m.css';
 
 /**
  * @type ComboBoxProperties

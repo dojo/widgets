@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import SlidePane, { Align } from '../../SlidePane';
-import * as css from '../../styles/slidePane.css';
+import * as css from '../../styles/slidePane.m.css';
 
 function createEvent(type: string, x: number): any {
 	return {

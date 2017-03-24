@@ -38,6 +38,19 @@ module.exports = function (grunt) {
 				dest: '<%= distDirectory %>'
 			}
 		},
+		postcss: {
+			'modules-dev': {
+				files: [{
+					expand: true,
+					src: ['**/*.m.css'],
+					dest: '<%= devDirectory %>',
+					cwd: 'src'
+				}],
+				options: {
+					processors: createProcessors(tsconfig.compilerOptions.outDir, 'src')
+				}
+			}
+		},
 		intern: {
 			options: {
 				runType: 'runner',
@@ -60,19 +73,6 @@ module.exports = function (grunt) {
 		typedoc: {
 			options: {
 				ignoreCompilerErrors: true // Remove this once compile errors are resolved
-			}
-		},
-		postcss: {
-			'modules-dev': {
-				files: [{
-					expand: true,
-					src: ['**/*.css', '!**/variables.css', '!**/widgets.css'],
-					dest: '<%= devDirectory %>',
-					cwd: 'src'
-				}],
-				options: {
-					processors: createProcessors(tsconfig.compilerOptions.outDir, 'src')
-				}
 			}
 		}
 	});

@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import Label, { LabelOptions } from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
-import * as css from './styles/checkbox.css';
+import * as css from './styles/checkbox.m.css';
 
 /**
  * @type CheckboxProperties
