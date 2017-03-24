@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import MenuItem from '../../MenuItem';
-import * as css from '../../styles/menu.css';
+import * as css from '../../styles/menu.m.css';
 
 registerSuite({
 	name: 'MenuItem',

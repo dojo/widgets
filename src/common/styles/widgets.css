@@ -4,10 +4,10 @@
 @import '../../checkbox/styles/checkbox.m.css';
 @import '../../combobox/styles/comboBox.m.css';
 @import '../../dialog/styles/dialog.m.css';
+@import '../../menu/styles/menu.m.css';
 @import '../../radio/styles/radio.m.css';
 @import '../../slidepane/styles/slidePane.m.css';
 @import '../../slider/styles/slider.m.css';
 @import '../../tabpane/styles/tabPane.m.css';
 @import '../../textarea/styles/textarea.m.css';
 @import '../../textinput/styles/textinput.m.css';
-@import '../../menu/styles/menu.m.css';

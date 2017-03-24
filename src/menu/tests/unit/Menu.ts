@@ -4,7 +4,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
 import Menu from '../../Menu';
-import * as css from '../../styles/menu.css';
+import * as css from '../../styles/menu.m.css';
 
 function getStyle(element: any) {
 	return {
