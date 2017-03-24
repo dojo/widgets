@@ -6,7 +6,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import MenuItem from './MenuItem';
-import * as css from './styles/menu.css';
+import * as css from './styles/menu.m.css';
 
 export type Role = 'menu' | 'menubar';
 

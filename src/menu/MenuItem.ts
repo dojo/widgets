@@ -1,7 +1,7 @@
 import { v } from '@dojo/widget-core/d';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
-import * as css from './styles/menu.css';
+import * as css from './styles/menu.m.css';
 
 /**
  * @type MenuItemProperties
