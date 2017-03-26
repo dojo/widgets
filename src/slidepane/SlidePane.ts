@@ -1,10 +1,9 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
-
-import * as css from './styles/slidePane.m.css';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
+import * as css from './styles/slidePane.m.css';
 
 /**
  * Enum for left / right alignment

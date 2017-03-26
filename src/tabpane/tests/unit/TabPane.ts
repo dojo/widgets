@@ -4,11 +4,12 @@ import { VNode } from '@dojo/interfaces/vdom';
 import TabPane, { Align } from '../../TabPane';
 import * as css from '../../styles/tabPane.m.css';
 import { assign } from '@dojo/core/lang';
+import { w } from '@dojo/widget-core/d';
+import Tab from '../../Tab';
 
 function props(props = {}) {
 	return assign({
-		activeIndex: 0,
-		tabs: []
+		activeIndex: 0
 	}, props);
 }
 
@@ -17,11 +18,13 @@ registerSuite({
 
 	'Active tab button should render'() {
 		const tabPane = new TabPane();
+
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { key: 'bar' })
+		]);
 		tabPane.setProperties({
-			activeIndex: 0,
-			tabs: [{
-				label: 'foo'
-			}]
+			activeIndex: 0
 		});
 
 		const vnode = <VNode> tabPane.__render__();
@@ -32,7 +35,7 @@ registerSuite({
 	'alignButtons should add correct classes'() {
 		const tabPane = new TabPane();
 
-		tabPane.setProperties(props({ alignButtons: Align.right, tabs: [{}] }));
+		tabPane.setProperties(props({ alignButtons: Align.right }));
 		let vnode = <VNode> tabPane.__render__();
 		assert.property(vnode.properties!.classes!, css.alignRight);
 
@@ -47,104 +50,137 @@ registerSuite({
 
 	'Clicking tab should change activeIndex'() {
 		const tabPane = new TabPane();
-		let count = 0;
+		let called = 0;
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar' })
+		]);
 		tabPane.setProperties(props({
 			onRequestTabChange: (index: number) => {
-				count = count + index;
-				tabPane.setProperties(props({ activeIndex: 3 }));
+				called++;
+				tabPane.setProperties(props({ activeIndex: index }));
 			}
 		}));
-		(<any> tabPane).onTabClick(3);
-		(<any> tabPane).onTabClick(3);
-		assert.strictEqual(count, 3);
+		(<any> tabPane).selectIndex(0);
+		(<any> tabPane).selectIndex(1);
+		assert.strictEqual(called, 1);
 	},
 
 	'Closing a tab should change tabs'() {
 		const tabPane = new TabPane();
-		let newTabs;
+		let closedKey;
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo', closeable: true })
+		]);
 		tabPane.setProperties(props({
-			onRequestTabClose: (tabs: any[]) => newTabs = tabs,
-			tabs: [{
-				closeable: true
-			}]
+			onRequestTabClose: (index: number, key: string) => closedKey = key
 		}));
-		(<any> tabPane).onCloseClick(0);
-		assert.deepEqual(newTabs, []);
+		(<any> tabPane).closeIndex(0);
+		assert.strictEqual(closedKey, 'foo');
 	},
 
 	'Should get first tab'() {
 		const tabPane = new TabPane();
 		let tab;
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar' })
+		]);
 		tabPane.setProperties(props({
-			tabs: [{}, {}],
+			activeIndex: 1,
 			onRequestTabChange: (index: number) => tab = index
 		}));
-		(<any> tabPane)._getFirstTab();
+		(<any> tabPane).selectFirstIndex();
 		assert.strictEqual(tab, 0);
 	},
 
 	'Should get last tab'() {
 		const tabPane = new TabPane();
 		let tab;
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar' })
+		]);
 		tabPane.setProperties(props({
-			onRequestTabChange: (index: number) => tab = index,
-			tabs: ['a', 'b']
+			onRequestTabChange: (index: number) => tab = index
 		}));
-		(<any> tabPane)._getLastTab();
+		(<any> tabPane).selectLastIndex();
 		assert.strictEqual(tab, 1);
 	},
 
 	'Should get next tab'() {
 		const tabPane = new TabPane();
-		let tab;
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar', disabled: true }),
+			w(Tab, { label: 'baz', key: 'baz' })
+		]);
+		function onRequestTabChange(index: number) {
+			tabPane.setProperties({
+				activeIndex: index,
+				onRequestTabChange: onRequestTabChange
+			});
+		}
 		tabPane.setProperties({
-			onRequestTabChange: index => tab = index,
-			tabs: [{ disabled: true }, { disabled: true }, {}],
+			onRequestTabChange: onRequestTabChange,
 			activeIndex: 2
 		});
-		(<any> tabPane)._getNextTab();
-		assert.strictEqual(tab, 2);
+		(<any> tabPane).selectNextIndex();
+		assert.strictEqual(tabPane.properties.activeIndex, 0);
+		(<any> tabPane).selectNextIndex();
+		assert.strictEqual(tabPane.properties.activeIndex, 2);
 	},
 
 	'Should get previous tab'() {
 		const tabPane = new TabPane();
-		let tab;
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar', disabled: true }),
+			w(Tab, { label: 'baz', key: 'baz' })
+		]);
+		function onRequestTabChange(index: number) {
+			tabPane.setProperties({
+				activeIndex: index,
+				onRequestTabChange: onRequestTabChange
+			});
+		}
 		tabPane.setProperties({
-			onRequestTabChange: index => tab = index,
-			tabs: ['a', 'b'],
-			activeIndex: 1
+			onRequestTabChange: onRequestTabChange,
+			activeIndex: 2
 		});
-		(<any> tabPane)._getPreviousTab();
-		assert.strictEqual(tab, 0);
+		(<any> tabPane).selectPreviousIndex();
+		assert.strictEqual(tabPane.properties.activeIndex, 0);
+		(<any> tabPane).selectPreviousIndex();
+		assert.strictEqual(tabPane.properties.activeIndex, 2);
 	},
 
-	'Should default to first tab if invalid activeIndex passed'() {
+	'Should default to last tab if invalid activeIndex passed'() {
 		const tabPane = new TabPane();
 		let tab;
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar' })
+		]);
 		tabPane.setProperties({
-			tabs: [{}, {}],
 			onRequestTabChange: index => tab = index,
 			activeIndex: 5
 		});
-		assert.strictEqual(tab, 0);
+		<VNode> tabPane.__render__();
+		assert.strictEqual(tab, 1);
 	},
 
 	'Should skip tab if activeIndex is disabled'() {
 		const tabPane = new TabPane();
-		const tabs = [{ disabled: true }, {}];
 		let tab;
-		tabPane.setProperties(<any> {
-			onRequestTabChange: () => {}
-		});
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo', disabled: true }),
+			w(Tab, { label: 'bar', key: 'bar' })
+		]);
 		tabPane.setProperties({
-			tabs: tabs,
 			onRequestTabChange: index => tab = index,
 			activeIndex: 0
 		});
-		tabPane.setProperties({
-			activeIndex: 1,
-			tabs: tabs
-		});
+		<VNode> tabPane.__render__();
 		assert.strictEqual(tab, 1);
 	}
 });

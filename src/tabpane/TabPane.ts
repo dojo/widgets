@@ -1,30 +1,13 @@
-import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
-import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { assign } from '@dojo/core/lang';
+import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { TabProperties } from './Tab';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { includes } from '@dojo/shim/array';
 import { v, w } from '@dojo/widget-core/d';
-import Tab from './Tab';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import TabButton from './TabButton';
 import uuid from '@dojo/core/uuid';
 
 import * as css from './styles/tabPane.m.css';
-
-/**
- * @type TabConfig
- *
- * Object used to configure a tab
- *
- * @property closeable  Whether this tab should be closeable
- * @property content    The content to show in the tab
- * @property disabled   Whether this tab should be disabled
- * @property label      The content to show in the tab button
- */
-export type TabConfig = {
-	closeable?: boolean;
-	content?: DNode;
-	disabled?: boolean;
-	label?: DNode;
-};
 
 /**
  * Enum for tab button alignment
@@ -42,17 +25,15 @@ export const enum Align {
  * Properties that can be set on a TabPane component
  *
  * @property activeIndex           Position of the currently active tab
- * @property alignButtons          Position of the tab buttons
- * @property tabs                  List of tab configuration objects
+ * @property alignButtons          Orientation of the tab buttons
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
 export interface TabPaneProperties extends ThemeableProperties {
 	activeIndex: number;
 	alignButtons?: Align;
-	tabs: TabConfig[];
-	onRequestTabChange?(index: number): void;
-	onRequestTabClose?(tabs: TabConfig[]): void;
+	onRequestTabChange?(index: number, key: string): void;
+	onRequestTabClose?(index: number, key: string): void;
 };
 
 export const TabPaneBase = ThemeableMixin(WidgetBase);
@@ -61,14 +42,19 @@ export const TabPaneBase = ThemeableMixin(WidgetBase);
 export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	private _id: string;
 
-	private _getNextIndex(backwards?: boolean) {
-		const {
-			activeIndex,
-			tabs
-		} = this.properties;
+	private get _tabs(): DNode[] {
+		return this.children.filter((child: WNode) => child !== null);
+	}
 
-		if (tabs.every(result => Boolean(result.disabled))) {
-			return;
+	/**
+	 * Determines if the tab at `currentIndex` is enabled. If disabled,
+	 * returns the next valid index, or null if no enabled tabs exist.
+	 */
+	private _validateIndex(currentIndex: number, backwards?: boolean) {
+		const tabs = this._tabs;
+
+		if (tabs.every((result: WNode) => Boolean((<TabProperties> result.properties).disabled))) {
+			return null;
 		}
 
 		function nextIndex(index: number) {
@@ -78,116 +64,109 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 			return (index + 1) % tabs.length;
 		}
 
-		let i = !tabs[activeIndex] ? 0 : nextIndex(activeIndex);
+		let i = !tabs[currentIndex] ? tabs.length - 1 : currentIndex;
 
-		while (tabs[i].disabled) {
+		while ((<TabProperties> (<WNode> tabs[i]).properties).disabled) {
 			i = nextIndex(i);
 		}
 
 		return i;
 	}
 
-	private _getFirstTab() {
-		this.properties.tabs.length > 0 && this.onTabClick(0);
-	}
-
-	private _getLastTab() {
-		const { tabs } = this.properties;
-		tabs.length > 0 && this.onTabClick(tabs.length - 1);
-	}
-
-	private _getNextTab() {
-		const index = this._getNextIndex();
-		typeof index === 'number' && this.onTabClick(index);
-	}
-
-	private _getPreviousTab() {
-		const index = this._getNextIndex(true);
-		typeof index === 'number' && this.onTabClick(index);
-	}
-
 	private _renderTabButtons() {
-		const {
-			activeIndex,
-			tabs
-		} = this.properties;
+		return this._tabs.map((tab: WNode, i) => {
+			const {
+				closeable,
+				disabled,
+				key,
+				label
+			} = <TabProperties> tab.properties;
 
-		return tabs.map((tab, i) => {
 			return w(TabButton, {
-				active: i === activeIndex,
-				closeable: tab.closeable,
+				active: i === this.properties.activeIndex,
+				closeable,
 				controls: `${ this._id }-tab-${i}`,
-				disabled: tab.disabled,
+				disabled,
 				id: `${ this._id }-tabbutton-${i}`,
 				index: i,
-				key: String(i),
-				onClick: this.onTabClick,
-				onCloseClick: this.onCloseClick,
-				onEndPress: this._getLastTab,
-				onHomePress: this._getFirstTab,
-				onLeftArrowPress: this._getPreviousTab,
-				onRightArrowPress: this._getNextTab
+				key,
+				onClick: this.selectIndex,
+				onCloseClick: this.closeIndex,
+				onEndPress: this.selectLastIndex,
+				onHomePress: this.selectFirstIndex,
+				onLeftArrowPress: this.selectPreviousIndex,
+				onRightArrowPress: this.selectNextIndex
 			}, [
-				tab.label || null
+				label || null
 			]);
 		});
 	}
 
 	private _renderTabs() {
-		const {
-			activeIndex,
-			tabs
-		} = this.properties;
+		const { activeIndex } = this.properties;
 
-		return tabs
+		return this._tabs
 			.filter((tab, i) => {
 				return i === activeIndex;
 			})
-			.map((tab, i) => w(Tab, {
-				id: `${ this._id }-tab-${i}`,
-				labelledBy: `${ this._id }-tabbutton-${i}`
-			}, [
-				tab.content || null
-			]));
+			.map((tab, i) => {
+				assign((<WNode> tab).properties, {
+					id: `${ this._id }-tab-${i}`,
+					labelledBy: `${ this._id }-tabbutton-${i}`
+				});
+				return tab;
+			});
 	}
 
-	protected onCloseClick(index: number) {
-		const {
-			tabs,
-			onRequestTabClose
-		} = this.properties;
+	protected closeIndex(index: number) {
+		const { onRequestTabClose } = this.properties;
+		const key = (<TabProperties> (<WNode> this._tabs[index]).properties).key;
 
-		const newTabs = [...tabs];
-		newTabs.splice(index, 1);
-
-		onRequestTabClose && onRequestTabClose(newTabs);
+		onRequestTabClose && onRequestTabClose(index, key);
 	}
 
-	@onPropertiesChanged
-	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, TabPaneProperties>) {
-		const keys = evt.changedPropertyKeys;
+	protected selectFirstIndex() {
+		this.selectIndex(0, true);
+	}
+
+	protected selectIndex(index: number, backwards?: boolean) {
 		const {
 			activeIndex,
-			tabs
+			onRequestTabChange
 		} = this.properties;
 
-		// If the current tab is disabled or invalid, find the next available
-		if ((includes(keys, 'tabs') || includes(keys, 'activeIndex'))) {
-			const tab = tabs[activeIndex];
-			if (!tab || tab.disabled) {
-				const index = this._getNextIndex();
-				typeof index === 'number' && this.onTabClick(index);
-			}
+		const validIndex = this._validateIndex(index, backwards);
+
+		if (validIndex !== null && validIndex !== activeIndex) {
+			const key = (<TabProperties> (<WNode> this._tabs[validIndex]).properties).key;
+			onRequestTabChange && onRequestTabChange(validIndex, key);
 		}
 	}
 
-	protected onTabClick(index: number) {
-		const { onRequestTabChange } = this.properties;
-		onRequestTabChange && onRequestTabChange(index);
+	protected selectLastIndex() {
+		this.selectIndex(this._tabs.length - 1);
+	}
+
+	protected selectNextIndex() {
+		const { activeIndex } = this.properties;
+
+		this.selectIndex(activeIndex === this._tabs.length - 1 ? 0 : activeIndex + 1);
+	}
+
+	protected selectPreviousIndex() {
+		const { activeIndex } = this.properties;
+
+		this.selectIndex(activeIndex === 0 ? this._tabs.length - 1 : activeIndex - 1, true);
 	}
 
 	render(): DNode {
-		const { alignButtons } = this.properties;
+		const { activeIndex } = this.properties;
+		const validIndex = this._validateIndex(activeIndex);
+
+		if (validIndex !== null && validIndex !== activeIndex) {
+			this.selectIndex(validIndex);
+			return null;
+		}
 
 		this._id = uuid();
 
@@ -205,7 +184,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		let alignClass;
 		let orientation = 'horizontal';
 
-		switch (alignButtons) {
+		switch (this.properties.alignButtons) {
 			case Align.right:
 				alignClass = css.alignRight;
 				orientation = 'vertical';

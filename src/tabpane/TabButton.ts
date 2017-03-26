@@ -1,7 +1,7 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/tabPane.m.css';
 
@@ -26,16 +26,16 @@ import * as css from './styles/tabPane.m.css';
 export interface TabButtonProperties extends ThemeableProperties {
 	active?: boolean;
 	closeable?: boolean;
-	controls?: string;
+	controls: string;
 	disabled?: boolean;
-	id?: string;
-	index?: number;
-	onClick?: (index?: number) => void;
-	onCloseClick?: (index?: number) => void;
+	id: string;
+	index: number;
+	onClick?: (index: number) => void;
+	onCloseClick?: (index: number) => void;
 	onEndPress?: () => void;
 	onHomePress?: () => void;
-	onLeftArrowPress?: (index?: number) => void;
-	onRightArrowPress?: (index?: number) => void;
+	onLeftArrowPress?: () => void;
+	onRightArrowPress?: () => void;
 };
 
 export const TabButtonBase = ThemeableMixin(WidgetBase);
@@ -104,8 +104,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 	}
 
 	private _restoreFocus(element: HTMLElement) {
-		const { active } = this.properties;
-		active && element.focus();
+		this.properties.active && element.focus();
 	}
 
 	protected onElementCreated(element: HTMLElement, key: string) {

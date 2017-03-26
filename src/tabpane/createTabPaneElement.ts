@@ -15,13 +15,9 @@ export default function createTabPaneElement(): CustomElementDescriptor {
 				value: value => Number(value)
 			},
 			{
-				attributeName: 'alignButtons',
+				attributeName: 'alignbuttons',
+				propertyName: 'alignButtons',
 				value: value => Number(value)
-			}
-		],
-		properties: [
-			{
-				propertyName: 'tabs'
 			}
 		],
 		events: [
