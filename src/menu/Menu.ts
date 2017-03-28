@@ -83,66 +83,6 @@ export class Menu extends MenuBase<MenuProperties> {
 	private _hideTimer: Handle;
 	private _initialRender = true;
 
-	onLabelClick() {
-		const {
-			disabled,
-			expandOnClick = true
-		} = this.properties;
-
-		if (!disabled && expandOnClick) {
-			this.toggleDisplay();
-		}
-	}
-
-	onLabelKeypress(event: KeyboardEvent) {
-		const { disabled } = this.properties;
-		const key = 'key' in event ? event.key : event.keyCode;
-
-		if (!disabled && key === 'Enter') {
-			this.toggleDisplay();
-		}
-	}
-
-	onMenuFocus() {
-		const { disabled, hidden = this.getDefaultHidden() } = this.properties;
-		if (!disabled && hidden) {
-			this.toggleDisplay(true);
-		}
-	}
-
-	onMenuMouseEnter() {
-		const {
-			disabled,
-			expandOnClick = true
-		} = this.properties;
-
-		if (!disabled && !expandOnClick) {
-			this._hideTimer && this._hideTimer.destroy();
-			this.toggleDisplay(true);
-		}
-	}
-
-	onMenuMouseLeave() {
-		const {
-			disabled,
-			expandOnClick = true,
-			hideDelay = 300
-		} = this.properties;
-
-		if (!disabled && !expandOnClick) {
-			this._hideTimer && this._hideTimer.destroy();
-			if (hideDelay) {
-				this._hideTimer = createTimer(() => {
-					this.toggleDisplay(false);
-				}, hideDelay);
-				this.own(this._hideTimer);
-			}
-			else {
-				this.toggleDisplay(false);
-			}
-		}
-	}
-
 	render(): DNode {
 		const {
 			id = uuid(),
@@ -152,12 +92,11 @@ export class Menu extends MenuBase<MenuProperties> {
 
 		const label = this.renderLabel(id);
 		const menu = v('nav', {
-			id,
-			role,
 			classes: this.classes.apply(this, this.getMenuClasses()),
-			afterCreate: this.afterCreate,
-			afterUpdate: this.afterUpdate,
-			onfocusin: this.onMenuFocus
+			id,
+			key: 'menu',
+			onfocusin: this.onMenuFocus,
+			role
 		}, this.children);
 
 		if (label) {
@@ -185,35 +124,6 @@ export class Menu extends MenuBase<MenuProperties> {
 				onKeypress: this.onLabelKeypress
 			}, [ label ]);
 		}
-	}
-
-	protected afterCreate(element: HTMLElement) {
-		const { animate = true, hidden = this.getDefaultHidden() } = this.properties;
-		this._initialRender = false;
-
-		if (animate) {
-			this.wasOpen = !hidden;
-
-			if (hidden) {
-				element.style.height = '0';
-			}
-		}
-	}
-
-	protected afterUpdate(element: HTMLElement) {
-		const { animate = true, label } = this.properties;
-
-		if (!label) {
-			return;
-		}
-
-		if (!animate) {
-			// In case `animate` was previously `true`, remove any `height` property set on the node.
-			element.style.height = null;
-			return;
-		}
-
-		this.animate(element);
 	}
 
 	protected animate(element: HTMLElement) {
@@ -271,6 +181,99 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 
 		return classes;
+	}
+
+	protected onElementCreated(element: HTMLElement, key: string) {
+		if (key === 'menu') {
+			const { animate = true, hidden = this.getDefaultHidden() } = this.properties;
+			this._initialRender = false;
+
+			if (animate) {
+				this.wasOpen = !hidden;
+
+				if (hidden) {
+					element.style.height = '0';
+				}
+			}
+		}
+	}
+
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (key === 'menu') {
+			const { animate = true, label } = this.properties;
+
+			if (!label) {
+				return;
+			}
+
+			if (!animate) {
+				// In case `animate` was previously `true`, remove any `height` property set on the node.
+				element.style.height = null;
+				return;
+			}
+
+			this.animate(element);
+		}
+	}
+
+	protected onLabelClick() {
+		const {
+			disabled,
+			expandOnClick = true
+		} = this.properties;
+
+		if (!disabled && expandOnClick) {
+			this.toggleDisplay();
+		}
+	}
+
+	protected onLabelKeypress(event: KeyboardEvent) {
+		const { disabled } = this.properties;
+		const key: string | number = 'key' in event ? event.key : event.keyCode;
+
+		if (!disabled && (key === 'Enter' || key === 13)) {
+			this.toggleDisplay();
+		}
+	}
+
+	protected onMenuFocus() {
+		const { disabled, hidden = this.getDefaultHidden() } = this.properties;
+		if (!disabled && hidden) {
+			this.toggleDisplay(true);
+		}
+	}
+
+	protected onMenuMouseEnter() {
+		const {
+			disabled,
+			expandOnClick = true
+		} = this.properties;
+
+		if (!disabled && !expandOnClick) {
+			this._hideTimer && this._hideTimer.destroy();
+			this.toggleDisplay(true);
+		}
+	}
+
+	protected onMenuMouseLeave() {
+		const {
+			disabled,
+			expandOnClick = true,
+			hideDelay = 300
+		} = this.properties;
+
+		if (!disabled && !expandOnClick) {
+			this._hideTimer && this._hideTimer.destroy();
+			if (hideDelay) {
+				this._hideTimer = createTimer(() => {
+					this.toggleDisplay(false);
+				}, hideDelay);
+				this.own(this._hideTimer);
+			}
+			else {
+				this.toggleDisplay(false);
+			}
+		}
 	}
 
 	protected toggleDisplay(requestShow?: boolean) {
