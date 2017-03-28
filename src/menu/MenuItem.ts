@@ -52,20 +52,6 @@ export const MenuItemBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export class MenuItem extends MenuItemBase<MenuItemProperties> {
-	onClick(event: MouseEvent) {
-		const { disabled, onClick } = this.properties;
-		if (!disabled && typeof onClick === 'function') {
-			onClick(event);
-		}
-	}
-
-	onKeypress(event: KeyboardEvent) {
-		const { disabled, onKeypress } = this.properties;
-		if (!disabled && typeof onKeypress === 'function') {
-			onKeypress(event);
-		}
-	}
-
 	render() {
 		const {
 			controls,
@@ -94,6 +80,20 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			role: 'menuitem',
 			tabIndex : disabled ? -1 : tabIndex
 		}, this.children);
+	}
+
+	protected onClick(event: MouseEvent) {
+		const { disabled, onClick } = this.properties;
+		if (!disabled && typeof onClick === 'function') {
+			onClick(event);
+		}
+	}
+
+	protected onKeypress(event: KeyboardEvent) {
+		const { disabled, onKeypress } = this.properties;
+		if (!disabled && typeof onKeypress === 'function') {
+			onKeypress(event);
+		}
 	}
 }
 

@@ -124,8 +124,8 @@ registerSuite({
 				let vnode: any = menu.__render__();
 				let element: any = getMockNavElement();
 
-				vnode.properties.afterCreate.call(menu, element);
-				vnode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 				assert.isTrue(vnode.properties.classes[css.hidden]);
 
 				menu.setProperties({
@@ -135,18 +135,17 @@ registerSuite({
 				vnode = menu.__render__();
 				element = getMockNavElement();
 
-				vnode.properties.afterCreate.call(menu, element);
-				vnode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 				assert.isTrue(vnode.properties.classes[css.visible]);
 			},
 
 			'not animated'() {
 				const menu = new Menu();
-				const vnode: any = menu.__render__();
 				const element = getMockNavElement();
 
-				vnode.properties.afterCreate.call(menu, element);
-				vnode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null ]);
@@ -165,8 +164,8 @@ registerSuite({
 				let menuNode = vnode.children[1];
 				let element: any = getMockNavElement();
 
-				menuNode.properties.afterCreate.call(menu, element);
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 				assert.isTrue(menuNode.properties.classes[css.hidden]);
 
 				menu.setProperties({
@@ -179,8 +178,8 @@ registerSuite({
 				menuNode = vnode.children[1];
 				element = getMockNavElement();
 
-				menuNode.properties.afterCreate.call(menu, element);
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 				assert.isTrue(menuNode.properties.classes[css.visible]);
 			},
 
@@ -190,10 +189,8 @@ registerSuite({
 					animate: false,
 					label: 'Menu label'
 				});
-				const vnode: any = menu.__render__();
-				const menuNode = vnode.children[1];
 				const element: any = getMockNavElement();
-				menuNode.properties.afterCreate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
 
 				assert.isNull(element.style.height, 'style.height should not be modified');
 			},
@@ -206,10 +203,8 @@ registerSuite({
 					label: 'Menu label'
 				});
 
-				let vnode: any = menu.__render__();
-				let menuNode = vnode.children[1];
-				menuNode.properties.afterCreate.call(menu, element);
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, null ], 'style.height should be reset');
@@ -227,14 +222,16 @@ registerSuite({
 				let vnode: any = menu.__render__();
 				let menuNode = vnode.children[1];
 
-				menuNode.properties.afterCreate.call(menu, element);
+				(<any> menu).onElementCreated(element);
+				(<any> menu).onElementCreated(element, 'menu');
 
 				menu.setProperties({
 					label: 'Other label'
 				});
 				vnode = menu.__render__();
 				menuNode = vnode.children[1];
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementUpdated(element);
+				(<any> menu).onElementUpdated(element, 'menu');
 
 				assert.notOk(menuNode.properties.classes[css.hidden]);
 			},
@@ -245,16 +242,14 @@ registerSuite({
 					label: 'Menu label'
 				});
 
-				const vnode: any = menu.__render__();
-				const menuNode = vnode.children[1];
 				let element = getMockNavElement();
 
-				menuNode.properties.afterCreate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
 				assert.strictEqual(element.style.height, '0');
 
 				menu.setProperties({ hidden: false, label: 'Menu label' });
 				element = getMockNavElement();
-				menuNode.properties.afterCreate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
 				assert.isNull(element.style.height);
 			},
 
@@ -264,12 +259,10 @@ registerSuite({
 					label: 'Menu label'
 				});
 
-				const vnode: any = menu.__render__();
-				const menuNode = vnode.children[1];
 				const element = getMockNavElement();
 
-				menuNode.properties.afterCreate.call(menu, element);
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, '300px', '0' ]);
@@ -282,13 +275,11 @@ registerSuite({
 					label: 'Menu label'
 				});
 
-				const vnode: any = menu.__render__();
-				const menuNode = vnode.children[1];
 				const element = getMockNavElement();
 				element.style['max-height'] = '100px';
 
-				menuNode.properties.afterCreate.call(menu, element);
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, '100px', '0' ]);
@@ -301,12 +292,10 @@ registerSuite({
 					label: 'Menu label'
 				});
 
-				const vnode: any = menu.__render__();
-				const menuNode = vnode.children[1];
 				const element = getMockNavElement();
 
-				menuNode.properties.afterCreate.call(menu, element);
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, '300px' ]);
@@ -320,13 +309,11 @@ registerSuite({
 					label: 'Menu label'
 				});
 
-				const vnode: any = menu.__render__();
-				const menuNode = vnode.children[1];
 				const element = getMockNavElement();
 				element.style['max-height'] = '100px';
 
-				menuNode.properties.afterCreate.call(menu, element);
-				menuNode.properties.afterUpdate.call(menu, element);
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
 				assert.sameMembers(styleHistory.height, [ null, '100px' ]);
@@ -377,7 +364,7 @@ registerSuite({
 				menu.setProperties({ hidden: false });
 			}
 		});
-		menu.onLabelClick();
+		(<any> menu).onLabelClick();
 
 		assert.isFalse(menu.properties.hidden, 'menu should not be hidden');
 	},
@@ -391,7 +378,7 @@ registerSuite({
 				menu.setProperties({ hidden: true });
 			}
 		});
-		menu.onLabelClick();
+		(<any> menu).onLabelClick();
 
 		assert.isTrue(menu.properties.hidden, 'menu should be hidden');
 	},
@@ -405,7 +392,7 @@ registerSuite({
 				menu.setProperties({ hidden: false });
 			}
 		});
-		menu.onLabelClick();
+		(<any> menu).onLabelClick();
 
 		assert.isTrue(menu.properties.hidden, 'menu should not be shown on click when `expandOnClick` is false');
 	},
@@ -421,7 +408,7 @@ registerSuite({
 				}
 			});
 
-			menu.onLabelKeypress(<any> { key: 'Enter' });
+			(<any> menu).onLabelKeypress(<any> { key: 'Enter' });
 			assert.isTrue(menu.properties.hidden, 'menu should remain hidden when disabled');
 		},
 
@@ -434,7 +421,20 @@ registerSuite({
 				}
 			});
 
-			menu.onLabelKeypress(<any> { key: 'Enter' });
+			(<any> menu).onLabelKeypress(<any> { key: 'Enter' });
+			assert.isFalse(menu.properties.hidden);
+		},
+
+		'when `key` is not supported'() {
+			const menu = new Menu();
+			menu.setProperties({
+				hidden: true,
+				onRequestShow() {
+					menu.setProperties({ hidden: false });
+				}
+			});
+
+			(<any> menu).onLabelKeypress(<any> { keyCode: 13 });
 			assert.isFalse(menu.properties.hidden);
 		}
 	},
@@ -450,7 +450,7 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuFocus();
+			(<any> menu).onMenuFocus();
 			assert.isTrue(menu.properties.hidden, 'menu should remain hidden when disabled');
 		},
 
@@ -463,7 +463,7 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuFocus();
+			(<any> menu).onMenuFocus();
 			assert.isFalse(menu.properties.hidden, 'menu should open when focused');
 		},
 
@@ -480,7 +480,7 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuFocus();
+			(<any> menu).onMenuFocus();
 			assert.isFalse(hideCalled, 'onRequestHide not called');
 			assert.isFalse(showCalled, 'onRequestShow not called');
 		}
@@ -495,7 +495,7 @@ registerSuite({
 					menu.setProperties({ hidden: false });
 				}
 			});
-			menu.onMenuMouseEnter();
+			(<any> menu).onMenuMouseEnter();
 
 			assert.isTrue(menu.properties.hidden, 'mouseenter should be ignored');
 		},
@@ -510,7 +510,7 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuMouseEnter();
+			(<any> menu).onMenuMouseEnter();
 			assert.isFalse(menu.properties.hidden, 'mouseenter should not be ignored');
 		}
 	},
@@ -525,7 +525,7 @@ registerSuite({
 					menu.setProperties({ hidden: true });
 				}
 			});
-			menu.onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
 
 			assert.isFalse(menu.properties.hidden, 'mouseleave should be ignored');
 		},
@@ -541,7 +541,7 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
 			assert.isTrue(menu.properties.hidden, 'mouseleave should not be ignored');
 		}
 	},
@@ -556,7 +556,7 @@ registerSuite({
 			}
 		});
 		menu.__render__();
-		menu.onLabelClick();
+		(<any> menu).onLabelClick();
 
 		assert.isUndefined(menu.properties.hidden, 'menu should not be displayed when disabled');
 	},
@@ -599,7 +599,7 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
 			assert.isFalse(menu.properties.hidden, 'menu should not be hidden immediately');
 			setTimeout(dfd.callback(() => {
 				assert.isTrue(menu.properties.hidden, 'menu should be hidden after a delay');
@@ -618,8 +618,8 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuMouseLeave();
-			menu.onMenuMouseEnter();
+			(<any> menu).onMenuMouseLeave();
+			(<any> menu).onMenuMouseEnter();
 			setTimeout(dfd.callback(() => {
 				assert.isFalse(menu.properties.hidden, 'menu should not be hidden after show request');
 			}), 200);
@@ -640,11 +640,11 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuMouseLeave();
-			menu.onMenuMouseLeave();
-			menu.onMenuMouseLeave();
-			menu.onMenuMouseLeave();
-			menu.onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
 
 			setTimeout(dfd.callback(() => {
 				assert.strictEqual(callCount, 1, 'hide request should be called once');
@@ -662,7 +662,7 @@ registerSuite({
 				}
 			});
 
-			menu.onMenuMouseLeave();
+			(<any> menu).onMenuMouseLeave();
 			menu.destroy();
 			setTimeout(dfd.callback(() => {
 				assert.isFalse(menu.properties.hidden, 'menu should not be hidden after the menu is destroyed');

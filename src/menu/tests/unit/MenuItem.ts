@@ -30,7 +30,7 @@ registerSuite({
 				}
 			});
 
-			item.onClick(<any> {});
+			(<any> item).onClick(<any> {});
 			assert.isFalse(called, '`onClick` should not be called when the menu item is disabled.');
 		},
 
@@ -43,7 +43,7 @@ registerSuite({
 				}
 			});
 
-			item.onClick(<any> {});
+			(<any> item).onClick(<any> {});
 			assert.isTrue(called, '`onClick` should be called when the menu item is enabled.');
 		}
 	},
@@ -59,7 +59,7 @@ registerSuite({
 				}
 			});
 
-			item.onKeypress(<any> { type: 'keypress' });
+			(<any> item).onKeypress(<any> { type: 'keypress' });
 			assert.isUndefined(event, '`onKeypress` should not be called when the menu item is disabled.');
 		},
 
@@ -72,7 +72,7 @@ registerSuite({
 				}
 			});
 
-			item.onKeypress(<any> { type: 'keypress' });
+			(<any> item).onKeypress(<any> { type: 'keypress' });
 			assert.strictEqual(event!.type, 'keypress', '`onKeypress` should be called when the menu item is enabled.');
 		}
 	},
