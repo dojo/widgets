@@ -6,7 +6,7 @@
 }
 
 .menu {
-	background: #fff;
+	background: var(--menu-bg);
 	box-shadow: 0 0 2px 1px rgba(0,0,0,0.3);
 	font-family: sans-serif;
 	font-size: 14px;
@@ -36,8 +36,8 @@
 }
 
 .selected {
-	background-color: var(--title-bar-bg);
-	color: #fff;
+	background-color: var(--menu-selected-bg);
+	color: var(--menu-selected-color);
 }
 
 .nestedMenuContainer,
