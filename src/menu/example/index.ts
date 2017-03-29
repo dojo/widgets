@@ -3,7 +3,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
-import Menu from '../Menu';
+import Menu, { Orientation } from '../Menu';
 import MenuItem from '../MenuItem';
 
 const AppBase = StatefulMixin(WidgetBase);
@@ -25,6 +25,10 @@ export class App extends AppBase<WidgetProperties> {
 			expandOnClick: !(<any> event.target).checked,
 			packageMenuHidden: true
 		});
+	}
+
+	toggleOrientation(event: Event) {
+		this.setState({ isFileMenuHorizontal: (<any> event.target).checked });
 	}
 
 	toggleSelected(key: string) {
@@ -66,6 +70,17 @@ export class App extends AppBase<WidgetProperties> {
 					v('label', {
 						for: 'toggleAnimation'
 					}, [ 'Disable package menu animation' ])
+				]),
+
+				v('span', [
+					v('input', {
+						id: 'toggleOrientation',
+						type: 'checkbox',
+						onchange: this.toggleOrientation
+					}),
+					v('label', {
+						for: 'toggleOrientation'
+					}, [ 'Render file menu horizontally' ])
 				])
 			]),
 
@@ -106,13 +121,12 @@ export class App extends AppBase<WidgetProperties> {
 			}, [
 				w(MenuItem, {
 					key: 'DojoMenuLabel',
-					tabIndex: -1
-				}, [
-					v('a', {
+					tag: 'a',
+					properties: {
 						href: 'http://dojo.io',
 						target: '_blank'
-					}, [ 'Dojo 2' ])
-				]),
+					}
+				}, [ 'Dojo 2' ]),
 
 				w(Menu, {
 					animate: <boolean> animate,
@@ -131,13 +145,12 @@ export class App extends AppBase<WidgetProperties> {
 				}, packages.map((label, i) => {
 					return w(MenuItem, {
 						key: `menu1-sub1-item${i}`,
-						tabIndex: -1
-					}, [
-						v('a', {
+						tag: 'a',
+						properties: {
 							href: `https://github.com/dojo/${label}`,
 							target: '_blank'
-						}, [ label ])
-					]);
+						}
+					}, [ label ]);
 				}))
 			])
 		]);
@@ -148,42 +161,36 @@ export class App extends AppBase<WidgetProperties> {
 			return name.charAt(0).toLowerCase() + name.replace(/\s/g, '').slice(1);
 		}
 
-		return v('div', { style: 'float: left; margin-right: 50px;' }, [
+		return v('div', { style: 'float: left; margin: 0 50px 50px 0;' }, [
 			w(Menu, {
-				key: 'ChromeFileMenu'
+				key: 'ChromeFileMenu',
+				orientation: this.state['isFileMenuHorizontal'] ? 'horizontal' : 'vertical' as Orientation
 			}, [
-				[
-					'New Tab',
-					'New Window',
-					'New Incognito Window',
-					'Reopen Closed Tab',
-					'Open File...',
-					'Open Location...'
-				],
-				[
-					'Close Window',
-					'Close Tab',
-					'Save Page As...'
-				],
-				[ 'Email Page Location' ],
-				[ 'Print' ]
-			].map(group => {
-				return v('div', group.map(name => {
-					const key = getKey(name);
-					const toggleSelected: () => void = this.toggleSelected.bind(this, key);
-					return w(MenuItem, {
-						key,
-						disabled: name === 'Open Location...',
-						onKeypress: (event: KeyboardEvent) => {
-							const pressed = 'key' in event ? event.key : event.keyCode;
-							if (pressed === 'Enter') {
-								toggleSelected();
-							}
-						},
-						onClick: toggleSelected,
-						selected: <boolean> this.state[`${key}Selected`]
-					}, [ name ]);
-				}));
+				'New Tab',
+				'New Window',
+				'New Incognito Window',
+				'Reopen Closed Tab',
+				'Open File...',
+				'Open Location...',
+				'Close Window',
+				'Close Tab',
+				'Save Page As...',
+				'Email Page Location',
+				'Print'
+			].map((name, i) => {
+				const key = getKey(name);
+				const toggleSelected: () => void = this.toggleSelected.bind(this, key);
+				return w(MenuItem, {
+					key,
+					disabled: name === 'Open Location...',
+					onKeydown: (event: KeyboardEvent) => {
+						if (event.keyCode === 13) {
+							toggleSelected();
+						}
+					},
+					onClick: toggleSelected,
+					selected: <boolean> this.state[`${key}Selected`]
+				}, [ name ]);
 			}))
 		]);
 	}

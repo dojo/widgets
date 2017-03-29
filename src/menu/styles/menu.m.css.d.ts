@@ -9,3 +9,4 @@ export const nestedMenu: string;
 export const subMenu: string;
 export const hidden: string;
 export const visible: string;
+export const horizontal: string;

@@ -1,66 +1,67 @@
+import { assign } from '@dojo/core/lang';
 import { v } from '@dojo/widget-core/d';
+import { VirtualDomProperties } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/menu.m.css';
 
+export type MenuItemType = 'item' | 'checkbox' | 'radio';
+
 /**
  * @type MenuItemProperties
  *
- * Properties that can be set on a MenuItem component
+ * Properties that can be set on a MenuItem component.
  *
- * @property controls
- * ID of an element that this input controls
- *
- * @property disabled
- * Indicates whether the menu is disabled. If true, then the widget will ignore events.
- *
- * @property expanded
- * A flag indicating whether a widget controlled by `this` is expanded.
- *
- * @property hasDropDown
- * A flag indicating whether the widget has a drop down child.
- *
- * @property hasMenu
- * A flag indicating whether the widget is used as the label for a menu widget. If `true`,
- * then the `menuLabel` CSS class is applied instead of the `menuItem` class.
- *
- * @property onClick
- * An event handler for click events.
- *
- * @property onKeypress
- * An event handler for keypress events.
- *
- * @property selected
- * Indicates whether the widget is selected.
- *
- * @property tabIndex
- * The tab index. Defaults to 0, and is forced to -1 if the widget is disabled.
+ * @property active			Determines whether the item should receive focus.
+ * @property controls		The ID of an element that this input controls.
+ * @property disabled		Indicates whether the item is disabled.
+ * @property expanded		Indicates whether a widget controlled by `this` is expanded.
+ * @property hasMenu		Indicates whether the widget is used as the label for a menu.
+ * @property hasPopup		Indicates whether the widget has a drop down child.
+ * @property onClick		Called when the widget is activated via a click or space key.
+ * @property onKeydown		Called when keys are pressed while the widget has focus.
+ * @property properties		Additional properties for the widget's vnode.
+ * @property selected		Determines whether the widget is marked as selected.
+ * @property tag			The HTML tag name to use for the widget's vnode. Defaults to 'span'.
+ * @property type			The type of the menu item. Defaults to 'item'.
  */
 export interface MenuItemProperties extends ThemeableProperties {
+	active?: boolean;
 	controls?: string;
 	disabled?: boolean;
 	expanded?: boolean;
-	hasDropDown?: boolean;
 	hasMenu?: boolean;
+	hasPopup?: boolean;
 	onClick?: (event: MouseEvent) => void;
-	onKeypress?: (event: KeyboardEvent) => void;
+	onKeydown?: (event: KeyboardEvent) => void;
+	properties?: VirtualDomProperties;
 	selected?: boolean;
-	tabIndex?: number;
+	tag?: string;
+	type?: MenuItemType;
 }
 
 export const MenuItemBase = ThemeableMixin(WidgetBase);
+
+const roleMap: { [key: string]: string } = {
+	item: 'menuitem',
+	checkbox: 'menuitemcheckbox',
+	radio: 'menuitemradio'
+};
 
 @theme(css)
 export class MenuItem extends MenuItemBase<MenuItemProperties> {
 	render() {
 		const {
+			active = false,
 			controls,
-			disabled,
-			expanded,
-			hasDropDown = false,
+			disabled = false,
+			expanded = false,
+			hasPopup = false,
 			hasMenu = false,
+			properties,
 			selected,
-			tabIndex = 0
+			tag = 'span',
+			type = 'item'
 		} = this.properties;
 
 		const classes = this.classes(
@@ -69,17 +70,18 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			selected ? css.selected : null
 		);
 
-		return v('span', {
+		return v(tag, assign(Object.create(null), properties, {
 			'aria-controls': controls,
-			'aria-expanded': expanded,
-			'aria-hasdropdown': hasDropDown,
-			'aria-disabled': disabled,
+			'aria-expanded': String(expanded),
+			'aria-haspopup': hasPopup ? 'true' : undefined,
+			'aria-disabled': String(disabled),
 			classes,
+			key: 'menu-item',
 			onclick: this.onClick,
-			onkeypress: this.onKeypress,
-			role: 'menuitem',
-			tabIndex : disabled ? -1 : tabIndex
-		}, this.children);
+			onkeydown: this.onKeydown,
+			role: roleMap[type],
+			tabIndex: active ? 0 : -1
+		}), this.children);
 	}
 
 	protected onClick(event: MouseEvent) {
@@ -89,10 +91,17 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 		}
 	}
 
-	protected onKeypress(event: KeyboardEvent) {
-		const { disabled, onKeypress } = this.properties;
-		if (!disabled && typeof onKeypress === 'function') {
-			onKeypress(event);
+	protected onElementUpdated(element: HTMLElement) {
+		this.properties.active && element.focus();
+	}
+
+	protected onKeydown(event: KeyboardEvent) {
+		const { disabled, onKeydown } = this.properties;
+		if (!disabled) {
+			if (event.keyCode === 32) { // space
+				(<HTMLElement> event.target).click();
+			}
+			typeof onKeydown === 'function' && onKeydown(event);
 		}
 	}
 }
