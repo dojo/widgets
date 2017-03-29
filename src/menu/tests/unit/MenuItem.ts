@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import MenuItem from '../../MenuItem';
 import * as css from '../../styles/menu.m.css';
 
@@ -17,6 +18,56 @@ registerSuite({
 		assert.strictEqual(item.properties.key, 'foo');
 		assert.isFalse(item.properties.disabled);
 		assert.isFalse(item.properties.selected);
+	},
+
+	properties: {
+		'applies properties to the vnode'() {
+			const item = new MenuItem();
+			item.setProperties({
+				properties: {
+					'data-custom': '12345'
+				}
+			});
+
+			const vnode: any = item.__render__();
+			assert.strictEqual(vnode.properties['data-custom'], '12345');
+		},
+
+		'does not override static properties'() {
+			const item = new MenuItem();
+			item.setProperties({
+				controls: 'controls-base',
+				expanded: false,
+				hasPopup: false,
+				disabled: false,
+				properties: {
+					'aria-controls': 'controls-custom',
+					'aria-expanded': 'true',
+					'aria-haspopup': 'true',
+					'aria-disabled': 'true'
+				}
+			});
+
+			const vnode: any = item.__render__();
+			const properties = vnode.properties;
+
+			assert.strictEqual(properties['aria-controls'], 'controls-base');
+			assert.strictEqual(properties['aria-expanded'], 'false');
+			assert.isUndefined(properties['aria-haspopup']);
+			assert.strictEqual(properties['aria-disabled'], 'false');
+		}
+	},
+
+	active() {
+		const item = new MenuItem();
+		const focus = sinon.spy();
+
+		(<any> item).onElementUpdated(<any> { focus });
+		assert.isFalse(focus.called, 'element should not receive focus when `active` is false');
+
+		item.setProperties({ active: true });
+		(<any> item).onElementUpdated(<any> { focus });
+		assert.isTrue(focus.called, 'element should receive focus when `active` is true');
 	},
 
 	onClick: {
@@ -48,32 +99,43 @@ registerSuite({
 		}
 	},
 
-	onKeypress: {
+	onKeydown: {
 		'when disabled'() {
 			const item = new MenuItem();
 			let event: any;
 			item.setProperties({
 				disabled: true,
-				onKeypress(_event: any) {
+				onKeydown(_event: any) {
 					event = _event;
 				}
 			});
 
-			(<any> item).onKeypress(<any> { type: 'keypress' });
-			assert.isUndefined(event, '`onKeypress` should not be called when the menu item is disabled.');
+			(<any> item).onKeydown(<any> { type: 'keydown' });
+			assert.isUndefined(event, '`onKeydown` should not be called when the menu item is disabled.');
 		},
 
 		'when enabled'() {
 			const item = new MenuItem();
 			let event: any;
 			item.setProperties({
-				onKeypress(_event: any) {
+				onKeydown(_event: any) {
 					event = _event;
 				}
 			});
 
-			(<any> item).onKeypress(<any> { type: 'keypress' });
-			assert.strictEqual(event!.type, 'keypress', '`onKeypress` should be called when the menu item is enabled.');
+			(<any> item).onKeydown(<any> { type: 'keydown' });
+			assert.strictEqual(event!.type, 'keydown', '`onKeydown` should be called when the menu item is enabled.');
+		},
+
+		'space key'() {
+			const item = new MenuItem();
+			const click = sinon.spy();
+			(<any> item).onKeydown(<any> {
+				keyCode: 32,
+				target: { click }
+			});
+
+			assert.isTrue(click.called, 'The event target\'s "click" method should be called.');
 		}
 	},
 
@@ -104,18 +166,8 @@ registerSuite({
 			expanded: true
 		});
 		const vnode: any = item.__render__();
-		assert.strictEqual(vnode.properties['aria-expanded'], true,
+		assert.strictEqual(vnode.properties['aria-expanded'], 'true',
 			'`expanded` should be assigned to the `aria-expanded` attribute');
-	},
-
-	hasDropDown() {
-		const item = new MenuItem();
-		item.setProperties({
-			hasDropDown: true
-		});
-		const vnode: any = item.__render__();
-		assert.strictEqual(vnode.properties['aria-hasdropdown'], true,
-			'`hasDropDown` should be assigned to the `aria-hasdropdown` attribute');
 	},
 
 	hasMenu: {
@@ -140,6 +192,25 @@ registerSuite({
 		}
 	},
 
+	hasPopup() {
+		const item = new MenuItem();
+		item.setProperties({
+			hasPopup: true
+		});
+		let vnode: any = item.__render__();
+
+		assert.strictEqual(vnode.properties['aria-haspopup'], 'true',
+			'`hasPopup` should be assigned to the `aria-haspopup` attribute');
+
+		item.setProperties({
+			hasPopup: false
+		});
+		vnode = item.__render__();
+
+		assert.isUndefined(vnode.properties['aria-haspopup'],
+			'the `aria-haspopup` attribute should be undefined');
+	},
+
 	selected() {
 		const item = new MenuItem();
 		let vnode: any = item.__render__();
@@ -151,28 +222,34 @@ registerSuite({
 		assert.isTrue(vnode.properties.classes[css.selected]);
 	},
 
-	tabIndex: {
-		'when disabled'() {
-			const item = new MenuItem();
-			item.setProperties({ disabled: true, tabIndex: 1 });
-			const vnode: any = item.__render__();
+	tag() {
+		const item = new MenuItem();
+		let vnode: any = item.__render__();
 
-			assert.strictEqual(vnode.properties.tabIndex, -1, 'Specified tabIndex should be ignored');
-		},
+		assert.strictEqual(vnode.vnodeSelector, 'span', 'defaults to span');
 
-		'when enabled'() {
-			const item = new MenuItem();
-			item.setProperties({ tabIndex: 1 });
-			const vnode: any = item.__render__();
+		item.setProperties({
+			tag: 'a'
+		});
+		vnode = item.__render__();
+		assert.strictEqual(vnode.vnodeSelector, 'a');
+	},
 
-			assert.strictEqual(vnode.properties.tabIndex, 1);
-		},
+	type() {
+		const item = new MenuItem();
+		let vnode: any = item.__render__();
+		assert.strictEqual(vnode.properties.role, 'menuitem', 'role should default to "menuitem"');
 
-		'defaults to 0'() {
-			const item = new MenuItem();
-			const vnode: any = item.__render__();
+		item.setProperties({ type: 'item' });
+		vnode = item.__render__();
+		assert.strictEqual(vnode.properties.role, 'menuitem', '"item" type should map to "menuitem" role');
 
-			assert.strictEqual(vnode.properties.tabIndex, 0);
-		}
+		item.setProperties({ type: 'checkbox' });
+		vnode = item.__render__();
+		assert.strictEqual(vnode.properties.role, 'menuitemcheckbox', '"checkbox" type should map to "menuitemcheckbox" role');
+
+		item.setProperties({ type: 'radio' });
+		vnode = item.__render__();
+		assert.strictEqual(vnode.properties.role, 'menuitemradio', '"radio" type should map to "menuitemradio" role');
 	}
 });

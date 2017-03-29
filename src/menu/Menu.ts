@@ -1,62 +1,39 @@
+import { assign } from '@dojo/core/lang';
 import { createTimer } from '@dojo/core/util';
 import uuid from '@dojo/core/uuid';
 import { Handle } from '@dojo/interfaces/core';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
+import StatefulMixin from '@dojo/widget-core/mixins/Stateful';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import MenuItem from './MenuItem';
 import * as css from './styles/menu.m.css';
+
+export type Orientation = 'horizontal' | 'vertical';
 
 export type Role = 'menu' | 'menubar';
 
 /**
  * @type MenuProperties
  *
- * Properties that can be set on a Menu component
+ * Properties that can be set on a Menu component.
  *
- * @property animate
- * Only applies to nested menus. A flag indicating whether the widget instance should handle animating between the
- * visible and hidden states. If true (the default), then the menu will slide into and out of view like an accordion.
- * If false, then any animation should be handled in the CSS, as the menu will just snap open/shut.
- *
- * @property disabled
- * Indicates whether the menu is disabled. If true, then the widget will ignore events.
- *
- * @property expandOnClick
- * Indicates whether the menu should be displayed/hidden via a click event. If false, then the menu is toggled
- * via a hover event. Defaults to true.
- *
- * @property hideDelay
- * Only applies to menus toggled into view with a hover event. The amount of time (in milliseconds) after a
- * mouseleave event that should pass before the menu is hidden. Defaults to 300ms.
- *
- * @property hidden
- * Whether the menu is hidden. Defaults to true if a label is specified (i.e., the menu is controlled by a
- * link); false otherwise.
- *
- * @property id
- * The widget ID. Defaults to a random string.
- *
- * @property label
- * A widget that will be wrapped in a MenuItem widget that will be used to control the menu.
- *
- * @property nested
- * Indicates whether the menu is nested within another menu. Useful for styling, this does not affect
- * functionality. Defaults to false.
- *
- * @property onRequestHide
- * Needed only when a label is used. Called when the menu is displayed, and the label is triggered.
- * This method should be used to update the widget's `hidden` property.
- *
- * @property onRequestShow
- * Needed only when a label is used. Called when the menu is hidden, and the label is triggered.
- * This method should be used to update the widget's `hidden` property.
- *
- * @property role
- * The value to use for the menu's `role` property. Defaults to "menu".
+ * @property active				Determines whether the menu trigger is active (should have focus).
+ * @property animate			Determines whether animation should be handled internally.
+ * @property disabled			Determines whether the menu is disabled.
+ * @property expandOnClick		Determines whether a menu is displayed on click (default) or hover.
+ * @property hideDelay			The amount of time (in milliseconds) after mouseleave before hiding the menu.
+ * @property hidden				Determines whether the menu is hidden.
+ * @property id					The widget ID. Defaults to a random string.
+ * @property label				A DNode to use as the trigger for a nested menu.
+ * @property nested				Indicates whether the menu is nested within another menu.
+ * @property onRequestHide		Called when the menu is displayed and the trigger is activated.
+ * @property onRequestShow		Called when the menu is hidden and the trigger is activated.
+ * @property role				The value to use for the menu's `role` property. Defaults to 'menu'.
  */
 export interface MenuProperties extends ThemeableProperties {
+	active?: boolean;
 	animate?: boolean;
 	disabled?: boolean;
 	expandOnClick?: boolean;
@@ -67,6 +44,7 @@ export interface MenuProperties extends ThemeableProperties {
 	nested?: boolean;
 	onRequestHide?: () => void;
 	onRequestShow?: () => void;
+	orientation?: Orientation;
 	role?: Role;
 }
 
@@ -75,13 +53,42 @@ function getMenuHeight(menuElement: HTMLElement): number {
 	return Math.min(menuElement.scrollHeight, (isNaN(maxHeight) ? Infinity : maxHeight));
 }
 
-export const MenuBase = ThemeableMixin(WidgetBase);
+export const enum Operation {
+	decrease,
+	increase,
+	reset
+}
+
+const commonKeys = {
+	enter: 13,
+	escape: 27,
+	tab: 9
+};
+
+const horizontalKeys = assign({
+	ascend: 38, // up arrow
+	decrease: 37, // left arrow
+	descend: 40, // down arrow
+	increase: 39 // right arrow
+}, commonKeys);
+
+const verticalKeys = assign({
+	ascend: 37, // left arrow
+	decrease: 38, // up arrow
+	descend: 39, // right arrow
+	increase: 40 // down arrow
+}, commonKeys);
+
+export const MenuBase = StatefulMixin(ThemeableMixin(WidgetBase));
 
 @theme(css)
 export class Menu extends MenuBase<MenuProperties> {
 	protected wasOpen = false;
+	private _activeIndex = 0;
+	private _domNode: HTMLElement;
 	private _hideTimer: Handle;
 	private _initialRender = true;
+	private _isLabelActive = false;
 
 	render(): DNode {
 		const {
@@ -91,15 +98,19 @@ export class Menu extends MenuBase<MenuProperties> {
 		} = this.properties;
 
 		const label = this.renderLabel(id);
-		const menu = v('nav', {
+		const menu = v('div', {
 			classes: this.classes.apply(this, this.getMenuClasses()),
 			id,
 			key: 'menu',
-			onfocusin: this.onMenuFocus,
-			role
-		}, this.children);
+			onfocus: this.onMenuFocus,
+			onfocusout: this.onMenuFocusout,
+			onkeydown: this.onMenuKeydown,
+			role,
+			tabIndex: this.state.active || label ? -1 : 0
+		}, this.renderChildren());
 
 		if (label) {
+			this._isLabelActive = false;
 			return v('div', {
 				classes: this.classes(css.container, nested ? css.nestedMenuContainer : null),
 				onmouseenter: this.onMenuMouseEnter,
@@ -111,17 +122,19 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	renderLabel(id: string): DNode | void {
-		const { disabled, hidden = this.getDefaultHidden(), label, overrideClasses } = this.properties;
+		const { active, disabled, hidden = this.getDefaultHidden(), label, overrideClasses } = this.properties;
+		const labelActive = this._isLabelActive || active;
 
 		if (label) {
 			return w(MenuItem, {
+				active: labelActive,
 				controls: id,
 				disabled,
 				expanded: !hidden,
 				hasMenu: true,
 				overrideClasses: overrideClasses || css,
 				onClick: this.onLabelClick,
-				onKeypress: this.onLabelKeypress
+				onKeydown: this.onLabelKeydown
 			}, [ label ]);
 		}
 	}
@@ -153,6 +166,15 @@ export class Menu extends MenuBase<MenuProperties> {
 		});
 	}
 
+	protected exitMenu() {
+		const { label, hidden = this.getDefaultHidden() } = this.properties;
+
+		if (label && !hidden) {
+			this._isLabelActive = true;
+			this.setState({ active: false });
+		}
+	}
+
 	protected getDefaultHidden() {
 		const { disabled, label } = this.properties;
 
@@ -163,13 +185,28 @@ export class Menu extends MenuBase<MenuProperties> {
 		return label ? true : false;
 	}
 
+	protected getDefaultOrientation(): Orientation {
+		const { role = 'menu' } = this.properties;
+		return role === 'menubar' ? 'horizontal' : 'vertical';
+	}
+
 	protected getMenuClasses() {
-		const { animate = true, hidden = this.getDefaultHidden(), label, nested } = this.properties;
+		const {
+			animate = true,
+			hidden = this.getDefaultHidden(),
+			label,
+			orientation = this.getDefaultOrientation(),
+			nested
+		} = this.properties;
 		const isSubMenu = Boolean(label);
 		const classes = [ css.menu ];
 
 		if (this._initialRender || !animate || !isSubMenu) {
 			classes.push(hidden ? css.hidden : css.visible);
+		}
+
+		if (orientation === 'horizontal') {
+			classes.push(css.horizontal);
 		}
 
 		if (nested) {
@@ -183,10 +220,27 @@ export class Menu extends MenuBase<MenuProperties> {
 		return classes;
 	}
 
+	protected moveActiveIndex(operation: Operation) {
+		if (operation === Operation.reset) {
+			this._activeIndex = 0;
+			this.toggleDisplay(false);
+		}
+		else {
+			const max = this.children.length;
+			const previousIndex = this._activeIndex;
+			this._activeIndex = operation === Operation.decrease ?
+				previousIndex - 1 < 0 ? max - 1 : previousIndex - 1 :
+				Math.min(previousIndex + 1, max) % max;
+
+			this.invalidate();
+		}
+	}
+
 	protected onElementCreated(element: HTMLElement, key: string) {
 		if (key === 'menu') {
 			const { animate = true, hidden = this.getDefaultHidden() } = this.properties;
 			this._initialRender = false;
+			this._domNode = element;
 
 			if (animate) {
 				this.wasOpen = !hidden;
@@ -227,19 +281,62 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 	}
 
-	protected onLabelKeypress(event: KeyboardEvent) {
-		const { disabled } = this.properties;
-		const key: string | number = 'key' in event ? event.key : event.keyCode;
+	protected onLabelKeydown(event: KeyboardEvent) {
+		const { disabled, hidden = this.getDefaultHidden(), label, orientation = this.getDefaultOrientation() } = this.properties;
+		const keys = orientation === 'horizontal' ? horizontalKeys : verticalKeys;
 
-		if (!disabled && (key === 'Enter' || key === 13)) {
-			this.toggleDisplay();
+		if (!disabled) {
+			const key = event.keyCode;
+
+			if (key === keys.enter) { // enter
+				this.toggleDisplay();
+			}
+			else if (key === keys.descend && label && !hidden) {
+				this.setState({ active: true });
+			}
 		}
 	}
 
 	protected onMenuFocus() {
-		const { disabled, hidden = this.getDefaultHidden() } = this.properties;
-		if (!disabled && hidden) {
-			this.toggleDisplay(true);
+		this.setState({ active: true });
+	}
+
+	protected onMenuFocusout() {
+		if (this.properties.label) {
+			requestAnimationFrame(() => {
+				if (!this._domNode.contains(document.activeElement)) {
+					this.setState({ active: false });
+				}
+			});
+		}
+	}
+
+	protected onMenuKeydown(event: KeyboardEvent) {
+		const { orientation = this.getDefaultOrientation() } = this.properties;
+		const keys = orientation === 'horizontal' ? horizontalKeys : verticalKeys;
+
+		switch (event.keyCode) {
+			case keys.tab:
+				event.stopPropagation();
+				this.setState({ active: false });
+				break;
+			case keys.ascend:
+				event.stopPropagation();
+				this.exitMenu();
+				break;
+			case keys.decrease:
+				event.stopPropagation();
+				this.moveActiveIndex(Operation.decrease);
+				break;
+			case keys.increase:
+				event.stopPropagation();
+				this.moveActiveIndex(Operation.increase);
+				break;
+			case keys.escape:
+				event.stopPropagation();
+				this._isLabelActive = true;
+				this.moveActiveIndex(Operation.reset);
+				break;
 		}
 	}
 
@@ -276,6 +373,21 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 	}
 
+	protected renderChildren() {
+		const { hidden = this.getDefaultHidden() } = this.properties;
+		const activeIndex = this.state.active && !this._isLabelActive ? this._activeIndex : null;
+
+		if (!hidden) {
+			this.children.forEach((child: any, i) => {
+				if (child && child.properties) {
+					child.properties.active = i === activeIndex;
+				}
+			});
+		}
+
+		return this.children;
+	}
+
 	protected toggleDisplay(requestShow?: boolean) {
 		const {
 			onRequestHide,
@@ -288,9 +400,11 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 
 		if (requestShow) {
+			this.setState({ active: true });
 			typeof onRequestShow === 'function' && onRequestShow();
 		}
 		else {
+			this.setState({ active: false });
 			typeof onRequestHide === 'function' && onRequestHide();
 		}
 	}
