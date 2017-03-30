@@ -4,13 +4,24 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import Label, { LabelOptions } from '../label/Label';
-import * as css from './styles/select.css';
+import * as css from './styles/select.m.css';
 
+/**
+ * @type SelectOption
+ *
+ * Properties that can be set on a Select component
+ *
+ * @property label				Text to display to the user
+ * @property value				Option value
+ * @property disabled			Toggle disabled status of the individual option
+ * @property id						Optional custom id
+ * @property selected			Toggle selected/deselected state for multiselect widgets
+ */
 export interface SelectOption {
-	value: string;
 	label: string;
-	id?: string;
+	value: string;
 	disabled?: boolean;
+	id?: string;
 	selected?: boolean;
 }
 
@@ -37,13 +48,6 @@ export interface SelectOption {
  * @property onClick			Called when the input is clicked
  * @property onFocus			Called when the input is focused
  * @property onKeyDown		Called on the input's keydown event
- * @property onKeyPress		Called on the input's keypress event
- * @property onKeyUp			Called on the input's keyup event
- * @property onMouseDown	Called on the input's mousedown event
- * @property onMouseUp		Called on the input's mouseup event
- * @property onTouchStart	Called on the input's touchstart event
- * @property onTouchEnd		Called on the input's touchend event
- * @property onTouchCancel	Called on the input's touchcancel event
  */
 export interface SelectProperties extends ThemeableProperties {
 	describedBy?: string;
@@ -60,17 +64,10 @@ export interface SelectProperties extends ThemeableProperties {
 	useNativeSelect?: boolean;
 	value?: string;
 	onBlur?(event: FocusEvent): void;
-	onChange?(value: string): void;
+	onChange?(option: SelectOption): void;
 	onClick?(event: MouseEvent): void;
 	onFocus?(event: FocusEvent): void;
 	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
 }
 
 // This should have a lookup somewhere
@@ -79,7 +76,9 @@ const keys = {
 	enter: 13,
 	space: 32,
 	up: 38,
-	down: 40
+	down: 40,
+	home: 36,
+	end: 35
 };
 
 export const SelectBase = ThemeableMixin(WidgetBase);
@@ -88,58 +87,119 @@ export const SelectBase = ThemeableMixin(WidgetBase);
 export default class Select extends SelectBase<SelectProperties> {
 	private _open = false;
 	private _focusedIndex: number;
+	private _selectId: string = uuid();
 
-	// default form events
-	onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
-	onChange (event: Event, value?: string) {
-		value = value || (<HTMLInputElement> event.target).value;
-		this.properties.onChange && this.properties.onChange(value);
+	// native select events
+	private _onNativeBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	private _onNativeChange (event: Event) {
+		const { options = [] } = this.properties;
+		const option = options.filter((option: SelectOption) => option.value === (<HTMLInputElement> event.target).value)[0];
+		this.properties.onChange && this.properties.onChange(option);
 	}
-	onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
-	onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
-	onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
-	onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
-	onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
-	onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
-	onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
-	onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
-	onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+	private _onNativeClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
+	private _onNativeFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	private _onNativeKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
 
-	private _keyHandlers = {
-		[keys.enter](this: Select, event: KeyboardEvent) {
-			const { options = [] } = this.properties;
-			const { _focusedIndex = 0 } = this;
-			this.onChange(event, options[_focusedIndex].value);
-		},
-		[keys.space](this: Select, event: KeyboardEvent) {
-			const { options = [] } = this.properties;
-			const { _focusedIndex = 0 } = this;
-			this.onChange(event, options[_focusedIndex].value);
-		},
-		[keys.escape](this: Select) {
-			this._open = false;
-			this.invalidate();
-		},
-		[keys.down](this: Select) {
-			const { options = [] } = this.properties;
-			const { _focusedIndex = 0 } = this;
-
-			this._focusedIndex = (_focusedIndex + 1) % options.length;
-			this.invalidate();
-		}
-	};
-
-	// custom events
+	// custom select events
 	private _onTriggerClick(event: MouseEvent) {
 		this.properties.onClick && this.properties.onClick(event);
+
 		this._open = !this._open;
 		this._focusedIndex = this._focusedIndex || 0;
 		this.invalidate();
 	}
 
+	private _onTriggerBlur() {
+		this._open = false;
+		this.invalidate();
+	}
+
+	private _onOptionClick(event: MouseEvent) {
+		this.properties.onClick && this.properties.onClick(event);
+
+		const {
+			options = [],
+			onChange
+		} = this.properties;
+		const clickedOption = options.filter((option: SelectOption, i: number) => {
+			if (option.value === (<HTMLInputElement> event.target).value) {
+				this._focusedIndex = i;
+				return true;
+			}
+			return false;
+		})[0];
+		onChange && onChange(clickedOption);
+	}
+
 	private _onListboxKeyDown(event: KeyboardEvent) {
-		this._keyHandlers[event.which] && this._keyHandlers[event.which].call(this, event);
+		this.properties.onKeyDown && this.properties.onKeyDown(event);
+
+		const {
+			options = [],
+			onChange
+		} = this.properties;
+		const { _focusedIndex = 0 } = this;
+
+		switch (event.which) {
+			case keys.enter:
+				onChange && onChange(options[_focusedIndex]);
+				break;
+			case keys.space:
+				onChange && onChange(options[_focusedIndex]);
+				break;
+			case keys.escape:
+				this._open = false;
+				this.invalidate();
+				break;
+			case keys.down:
+				event.preventDefault();
+				this._focusedIndex = (_focusedIndex + 1) % options.length;
+				this.invalidate();
+				break;
+			case keys.up:
+				event.preventDefault();
+				this._focusedIndex = (_focusedIndex - 1 + options.length) % options.length;
+				this.invalidate();
+				break;
+			case keys.home:
+				this._focusedIndex = 0;
+				this.invalidate();
+				break;
+			case keys.end:
+				this._focusedIndex = options.length - 1;
+				this.invalidate();
+				break;
+		}
+	}
+
+	private _renderCustomOptions(): DNode[] {
+		const {
+			multiple,
+			options = [],
+			renderOption,
+			value
+		} = this.properties;
+
+		const optionNodes = [];
+		let optionNode, option;
+		for (let i = 0; i < options.length; i++) {
+			option = options[i];
+			option.id = option.id || uuid() + '';
+			option.selected = multiple ? option.selected : value === option.value;
+			optionNode = renderOption ? renderOption(option) : option.label;
+
+			optionNodes.push(v('div', {
+				bind: this,
+				role: 'option',
+				id: option.id,
+				classes: this.classes(this._focusedIndex === i ? css.focused : null, option.selected ? css.selected : null),
+				'aria-disabled': option.disabled ? 'true' : null,
+				'aria-selected': option.selected ? 'true' : 'false',
+				onclick: this._onOptionClick
+			}, [ optionNode ]));
+		}
+
+		return optionNodes;
 	}
 
 	renderNativeSelect(): DNode {
@@ -172,29 +232,56 @@ export default class Select extends SelectBase<SelectProperties> {
 				classes: this.classes(css.input),
 				'aria-describedby': describedBy,
 				disabled,
-				'aria-invalid': invalid + '',
+				'aria-invalid': invalid ? 'true' : null,
 				multiple: multiple ? true : null,
 				name,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
 				required,
 				value,
-				onblur: this.onBlur,
-				onchange: this.onChange,
-				onclick: this.onClick,
-				onfocus: this.onFocus,
-				onkeydown: this.onKeyDown,
-				onkeypress: this.onKeyPress,
-				onkeyup: this.onKeyUp,
-				onmousedown: this.onMouseDown,
-				onmouseup: this.onMouseUp,
-				ontouchstart: this.onTouchStart,
-				ontouchend: this.onTouchEnd,
-				ontouchcancel: this.onTouchCancel
+				onblur: this._onNativeBlur,
+				onchange: this._onNativeChange,
+				onclick: this._onNativeClick,
+				onfocus: this._onNativeFocus,
+				onkeydown: this._onNativeKeyDown
 			}, optionNodes),
 			v('span', {
 				classes: this.classes(css.arrow)
 			})
+		]);
+	}
+
+	renderCustomMultiSelect(): DNode {
+		const {
+			describedBy,
+			disabled,
+			invalid,
+			options = [],
+			readOnly,
+			required
+		} = this.properties;
+
+		const {
+			_focusedIndex = 0
+		} = this;
+
+		return v('div', { classes: this.classes(css.inputWrapper) }, [
+			v('div', {
+				bind: this,
+				role: 'listbox',
+				classes: this.classes(css.input),
+				disabled,
+				'aria-describedby': describedBy,
+				'aria-invalid': invalid ? 'true' : null,
+				'aria-multiselectable': 'true',
+				'aria-activedescendant': options[_focusedIndex].id,
+				'aria-readonly': readOnly ? 'true' : null,
+				'aria-required': required ? 'true' : null,
+				tabIndex: 0,
+				onblur: this._onNativeBlur,
+				onfocus: this._onNativeFocus,
+				onkeydown: this._onListboxKeyDown
+			}, this._renderCustomOptions())
 		]);
 	}
 
@@ -203,43 +290,20 @@ export default class Select extends SelectBase<SelectProperties> {
 			describedBy,
 			disabled,
 			invalid,
-			multiple,
 			options = [],
 			readOnly,
-			renderOption,
 			required,
 			value
 		} = this.properties;
 
-		// create option nodes
-		const optionNodes = [];
-		let optionNode, option;
-		for (let i = 0; i < options.length; i++) {
-			option = options[i];
-			option.id = option.id || uuid() + '';
-
-			if (renderOption) {
-				optionNode = renderOption(option);
-			}
-			else {
-				optionNode = option.label;
-			}
-			optionNodes.push(v('div', {
-				role: 'option',
-				id: option.id,
-				classes: this.classes(this._focusedIndex === i ? css.focused : null, option.selected ? css.selected : null),
-				'aria-disabled': option.disabled ? 'true' : null,
-				'aria-selected': option.selected ? 'true' : 'false'
-			}, [ optionNode ]));
-		}
-
+		// create dropdown trigger (if single-select) and select box
 		const {
 			_open = false,
-			_focusedIndex = 0
+			_focusedIndex = 0,
+			_selectId
 		} = this;
 
-		// menu dropdown id
-		const selectId = uuid();
+		const selectedOption = options.filter((option: SelectOption) => option.value === value)[0] || options[0];
 
 		return v('div', {
 			classes: this.classes(css.inputWrapper, _open ? css.open : null)
@@ -247,28 +311,29 @@ export default class Select extends SelectBase<SelectProperties> {
 			v('button', {
 				bind: this,
 				type: 'button',
-				classes: this.classes(css.trigger),
+				classes: this.classes(css.trigger, css.input),
 				disabled,
-				'aria-describedby': describedBy,
-				'aria-controls': selectId,
-				'aria-owns': selectId,
+				'aria-controls': _selectId,
+				'aria-owns': _selectId,
 				'aria-expanded': _open + '',
 				'aria-haspopup': 'listbox',
 				'aria-activedescendant': options[_focusedIndex].id,
 				value,
+				onblur: this._onTriggerBlur,
 				onclick: this._onTriggerClick,
+				onfocus: this._onNativeFocus,
 				onkeydown: this._onListboxKeyDown
-			}, [ options[0].label ]),
+			}, [ selectedOption.label ]),
 			v('div', {
 				bind: this,
 				role: 'listbox',
-				id: selectId,
+				id: _selectId,
 				classes: this.classes(css.dropdown),
+				'aria-describedby': describedBy,
 				'aria-invalid': invalid ? 'true' : null,
-				'aria-multiselectable': multiple ? 'true' : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null
-			}, optionNodes)
+			}, this._renderCustomOptions())
 		]);
 	}
 
@@ -278,6 +343,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			formId,
 			invalid,
 			label,
+			multiple,
 			readOnly,
 			required,
 			useNativeSelect = false
@@ -287,13 +353,14 @@ export default class Select extends SelectBase<SelectProperties> {
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
+			multiple ? css.multiselect : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
 
 		let rootWidget;
 
-		const select = useNativeSelect ? this.renderNativeSelect() : this.renderCustomSelect();
+		const select = useNativeSelect ? this.renderNativeSelect() : multiple ? this.renderCustomMultiSelect() : this.renderCustomSelect();
 
 		if (label) {
 			rootWidget = w(Label, {

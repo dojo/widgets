@@ -1,8 +1,8 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import Select from '../../Select';
-import * as css from '../../styles/select.css';
+import Select, { SelectOption } from '../../Select';
+import * as css from '../../styles/select.m.css';
 
 registerSuite({
 	name: 'Select',
@@ -104,14 +104,7 @@ registerSuite({
 				changed = false,
 				clicked = false,
 				focused = false,
-				keydown = false,
-				keypress = false,
-				keyup = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+				keydown = false;
 
 		const select = new Select();
 		select.setProperties({
@@ -119,19 +112,12 @@ registerSuite({
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },
 			onFocus: () => { focused = true; },
-			onKeyDown: () => { keydown = true; },
-			onKeyPress: () => { keypress = true; },
-			onKeyUp: () => { keyup = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+			onKeyDown: () => { keydown = true; }
 		});
 
 		select.onBlur(<FocusEvent> {});
 		assert.isTrue(blurred);
-		select.onChange(<Event> {});
+		select.onChange(<any> {});
 		assert.isTrue(changed);
 		select.onClick(<MouseEvent> {});
 		assert.isTrue(clicked);
@@ -139,19 +125,5 @@ registerSuite({
 		assert.isTrue(focused);
 		select.onKeyDown(<KeyboardEvent> {});
 		assert.isTrue(keydown);
-		select.onKeyPress(<KeyboardEvent> {});
-		assert.isTrue(keypress);
-		select.onKeyUp(<KeyboardEvent> {});
-		assert.isTrue(keyup);
-		select.onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
-		select.onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
-		select.onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		select.onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		select.onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
 	}
 });

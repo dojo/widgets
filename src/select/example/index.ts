@@ -5,7 +5,7 @@ import { ThemeableMixin, theme } from '@dojo/widget-core/mixins/Themeable';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Select, { SelectOption } from '../../select/Select';
-import * as exampleCss from '../styles/example.css';
+import * as exampleCss from '../styles/example.m.css';
 
 export const AppBase = StatefulMixin(ThemeableMixin(WidgetBase));
 
@@ -52,9 +52,6 @@ export class App extends AppBase<WidgetProperties> {
 	];
 
 	render() {
-		const {
-			value = 'option1'
-		} = this.state;
 
 		return v('div', [
 			w(Select, {
@@ -62,41 +59,40 @@ export class App extends AppBase<WidgetProperties> {
 				label: 'Try changing me',
 				options: this._selectOptions,
 				useNativeSelect: true,
-				value: <string> value,
-				onChange: (value: string) => {
-					this.setState({ value: value });
+				value: <string> this.state['value1'],
+				onChange: (option: SelectOption) => {
+					this.setState({ value1: option.value });
 				}
 			}),
 			v('p', {
-				innerHTML: 'Result: ' + this.state.value
+				innerHTML: 'Result: ' + this.state['value1']
 			}),
 			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
-				key: 'select3',
+				key: 'select2',
 				overrideClasses: exampleCss,
 				label: 'Custom box!',
 				options: this._selectOptions,
-				value: <string> value,
+				value: <string> this.state['value2'],
 				renderOption: (option: SelectOption) => {
 					return v('div', {
 						classes: this.classes(exampleCss.option),
 						innerHTML: option.label
 					});
 				},
-				onChange: (value: string) => {
-					console.log('changing custom select with event', value);
-					// this.setState({ value: event.target})
+				onChange: (option: SelectOption) => {
+					this.setState({ value2: option.value });
 				}
 			}),
 			v('h2', {}, [ 'Native multiselect widget' ]),
 			w(Select, {
-				key: 'select2',
+				key: 'select3',
 				options: this._selectOptions,
 				useNativeSelect: true,
 				multiple: true,
-				value: <string> value,
-				onChange: (value: string) => {
-					this.setState({ value: value });
+				onChange: (option: SelectOption) => {
+					console.log('changed option', option);
+					// this.setState({ value: value });
 				}
 			}),
 			v('h2', {}, [ 'Custom select widget, multiple selection' ]),
@@ -110,6 +106,10 @@ export class App extends AppBase<WidgetProperties> {
 						classes: this.classes(exampleCss.option),
 						innerHTML: option.label
 					});
+				},
+				onChange: (option: SelectOption) => {
+					console.log('changed option', option);
+					// this.setState({ value: value });
 				}
 			})
 		]);
