@@ -1,8 +1,8 @@
-@import './dialog.css';
-@import './slidePane.css';
-@import './button.css';
-@import './textinput.css';
-@import './textarea.css';
-@import './checkbox.css';
-@import './radio.css';
-@import './slider.css';
+@import './dialog.m.css';
+@import './slidePane.m.css';
+@import './button.m.css';
+@import './textinput.m.css';
+@import './textarea.m.css';
+@import './checkbox.m.css';
+@import './radio.m.css';
+@import './slider.m.css';

@@ -1,11 +1,11 @@
-import * as button from './button.css';
-import * as checkbox from './checkbox.css';
-import * as dialog from './dialog.css';
-import * as radio from './radio.css';
-import * as slidePane from './slidePane.css';
-import * as slider from './slider.css';
-import * as textarea from './textarea.css';
-import * as textinput from './textinput.css';
+import * as button from './button.m.css';
+import * as checkbox from './checkbox.m.css';
+import * as dialog from './dialog.m.css';
+import * as radio from './radio.m.css';
+import * as slidePane from './slidePane.m.css';
+import * as slider from './slider.m.css';
+import * as textarea from './textarea.m.css';
+import * as textinput from './textinput.m.css';
 
 export default {
 	'dojo-button': button,
