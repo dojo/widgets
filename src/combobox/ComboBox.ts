@@ -312,6 +312,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	protected renderMenu(results: any[]): WNode | null {
+		const { theme = {}, isResultDisabled } = this.properties;
+
 		if (results.length === 0 || !this._open) {
 			return null;
 		}
@@ -323,10 +325,11 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			results,
 			selectedIndex: this._activeIndex,
 			getResultLabel: this._getResultLabel,
-			isResultDisabled: this.properties.isResultDisabled,
+			isResultDisabled,
 			onResultMouseDown: this._onResultMouseDown,
 			onResultMouseEnter: this._onResultMouseEnter,
-			onResultMouseUp: this._onResultMouseUp
+			onResultMouseUp: this._onResultMouseUp,
+			theme
 		});
 	}
 
@@ -341,7 +344,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			readOnly,
 			required,
 			results = [],
-			value = ''
+			value = '',
+			theme = {}
 		} = this.properties;
 
 		const menu = this.renderMenu(results);
@@ -366,7 +370,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				onFocus: this._onInputFocus,
 				onInput: this._onInput,
 				onKeyDown: this._onInputKeyDown,
-				overrideClasses: css
+				overrideClasses: css,
+				theme
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,

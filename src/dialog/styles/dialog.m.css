@@ -5,13 +5,11 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: var(--dojo-white);
+	background: var(--component-background);
 	width: 450px;
 	min-height: var(--min-container-height);
 	overflow: hidden;
 	max-width: calc(100% - 30px);
-	box-shadow: var(--subtle-shadow);
-	border-radius: var(--rounded-corners);
 }
 
 .underlay {
@@ -23,20 +21,14 @@
 }
 
 .underlayVisible {
-	background: var(--underlay-bg);
+	background: var(--underlay-background);
 }
 
 .title {
 	position: relative;
-	background-color: var(--title-bar-bg);
-	font-size: var(--title-bar-font-size);
-	color: var(--title-bar-color);
-	padding: var(--container-padding);
 }
 
-.content {
-	padding: var(--container-padding);
-}
+.content {}
 
 .close {
 	position: absolute;
@@ -48,11 +40,10 @@
 	border: none;
 	background: none;
 	outline: none;
-	color: var(--title-bar-color);
 }
 
 .close:after {
 	content: '✕';
 	display: block;
-	font-size: var(--title-bar-font-size);
+	font-size: 14px;
 }

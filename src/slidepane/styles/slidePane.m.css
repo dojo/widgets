@@ -11,16 +11,14 @@
 }
 
 .underlayVisible {
-	background: var(--underlay-bg);
+	background: var(--underlay-background);
 }
 
 .content {
 	height: 100%;
 	position: fixed;
 	top: 0;
-	background-color: var(--title-bar-bg);
-	color: var(--title-bar-color);
-	padding: var(--container-padding);
+	background-color: var(--component-background);
 	box-sizing: border-box;
 }
 

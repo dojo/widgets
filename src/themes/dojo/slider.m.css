@@ -1,4 +1,4 @@
-@import '../../common/styles/variables.css';
+@import './variables.css';
 
 .root {
 	display: block;

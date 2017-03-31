@@ -1,4 +1,4 @@
-@import '../../common/styles/variables.css';
+@import './variables.css';
 
 .input {
 	border: 1px solid var(--dojo-shade-gray);

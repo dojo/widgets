@@ -11,6 +11,7 @@ export class App extends AppBase<WidgetProperties> {
 	private _theme: {};
 
 	themeChange(event: Event) {
+		console.log('called');
 		const checked = (<HTMLInputElement> event.target).checked;
 		this._theme = checked ? dojo : {};
 		this.invalidate();

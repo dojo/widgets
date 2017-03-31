@@ -1,4 +1,4 @@
-@import '../../common/styles/variables.css';
+@import './variables.css';
 
 .root {
 	position: relative;
@@ -33,24 +33,25 @@
 	width: 100%;
 	max-height: var(--select-menu-height);
 	overflow-y: auto;
+	background: var(--dojo-white);
+	border: var(--border-thin) solid var(--dojo-shade-gray);
 	z-index: 1;
-	border: 1px solid var(--component-color);
-	background: var(--component-background);
 }
 
 .result {
 	cursor: pointer;
+	padding: var(--input-padding);
 }
 
 .disabledResult {
-	color: var(--disabled-color);
+	color: var(--dojo-gray);
 	font-style: italic;
 	cursor: default;
 }
 
 .selectedResult {
-	background: var(--selected-background);
-	color: var(--selected-color);
+	background: var(--dojo-blue);
+	color: var(--dojo-white);
 }
 
 .clear,
@@ -66,6 +67,11 @@
 	padding: 0;
 }
 
+.clear:focus,
+.arrow:focus {
+	box-shadow: var(--input-focus-shadow);
+}
+
 .arrow {
 	right: 7px;
 }
@@ -77,11 +83,11 @@
 .arrow:after {
 	content: '▼';
 	display: block;
-	font-size: 14px;
+	font-size: var(--input-font-size);
 }
 
 .clear:after {
 	content: '✕';
 	display: block;
-	font-size: 14px;
+	font-size: var(--input-font-size);
 }

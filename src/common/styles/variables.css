@@ -1,6 +1,18 @@
 :root {
-	/* Colors */
-	--dojo-blue: #34495e;
+	--selected-background: #34495e;
+	--selected-color: #fff;
+	--disabled-color: #bbb;
+	--component-background: #fff;
+	--component-color: #000;
+	--underlay-background: color(var(--component-color) alpha(-70%));
+
+	--error-color: red;
+	--success-color: green;
+
+	--short-animation-duration: .2s;
+}
+
+	/*--dojo-blue: #34495e;
 	--dojo-light-blue: #86BBD8;
 	--dojo-white: #FFFFFF;
 	--dojo-off-white: #FBFBFB;
@@ -15,7 +27,6 @@
 	--dojo-error-color: var(--dojo-red);
 	--dojo-success-color: var(--dojo-green);
 
-	/* Shared values */
 	--base-font: 14px/1 sans-serif;
 	--input-font-size: 14px;
 	--title-bar-font-size: 20px;
@@ -36,7 +47,6 @@
 	--tab-width: 120px;
 	--min-container-height: 250px;
 
-	/* Composed values */
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
 	--underlay-bg: var(--dojo-shade-gray);
@@ -50,8 +60,4 @@
 	--button-color: var(--dojo-white);
 	--button-icon-font: 'iconFont';
 	--button-icon-size: 1.4em;
-	--button-padding: 0.75em 1.25em;
-
-	--error-color: red;
-	--success-color: green;
-}
+	--button-padding: 0.75em 1.25em;*/

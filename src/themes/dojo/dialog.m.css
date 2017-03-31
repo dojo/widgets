@@ -1,4 +1,4 @@
-@import '../../common/styles/variables.css';
+@import './variables.css';
 
 .main {
 	position: absolute;
@@ -30,13 +30,13 @@
 .title {
 	position: relative;
 	background-color: var(--title-bar-bg);
-	font-size: var(--title-font-size);
+	font-size: var(--title-bar-font-size);
 	color: var(--title-bar-color);
-	padding: var(--content-padding);
+	padding: var(--container-padding);
 }
 
 .content {
-	padding: var(--content-padding);
+	padding: var(--container-padding);
 }
 
 .close {
@@ -55,5 +55,5 @@
 .close:after {
 	content: '✕';
 	display: block;
-	font-size: var(--title-font-size);
+	font-size: var(--title-bar-font-size);
 }

@@ -7,6 +7,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import ComboBox from '../ComboBox';
 import ResultItem, { ResultItemProperties } from '../ResultItem';
 import ResultMenu from '../ResultMenu';
+import dojo from '../../themes/dojo/theme';
 
 const data = [
 	{ value: 'Maine' },
@@ -114,6 +115,15 @@ class CustomResultMenu extends ResultMenu {
 }
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		console.log('called');
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojo : {};
+		this.invalidate();
+	}
+
 	onRequestResults(value: string) {
 		const results = data.filter(item => {
 			const match = item.value.toLowerCase().match(new RegExp('^' + value.toLowerCase()));
@@ -126,6 +136,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	render(): DNode {
 		return v('div', [
 			v('h1', ['ComboBox Examples']),
+			v('label', [
+				'Use Dojo Theme ',
+				v('input', {
+					type: 'checkbox',
+					onchange: this.themeChange
+				})
+			]),
 			v('h3', ['Open on focus']),
 			w(ComboBox, {
 				key: '1',
@@ -137,7 +154,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				value: <string> this.state['value1'],
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			}),
 			v('h3', ['Clearable']),
 			w(ComboBox, {
@@ -150,7 +168,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				value: <string> this.state['value2'],
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			}),
 			v('h3', ['Custom result renderer']),
 			w(ComboBox, {
@@ -164,7 +183,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				value: <string> this.state['value3'],
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			}),
 			v('h3', ['Custom menu renderer']),
 			w(ComboBox, {
@@ -177,7 +197,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				customResultMenu: CustomResultMenu,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			}),
 			v('h3', ['Disabled menu items']),
 			w(ComboBox, {
@@ -190,7 +211,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				isResultDisabled: (result: any) => result.value.length > 9,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			}),
 			v('h3', ['Disabled']),
 			w(ComboBox, {
@@ -198,7 +220,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				disabled: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			}),
 			v('h3', ['Read Only']),
 			w(ComboBox, {
@@ -206,7 +229,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				readOnly: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			}),
 			v('h3', ['Label']),
 			w(ComboBox, {
@@ -216,7 +240,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value8'],
-				label: 'Enter a value'
+				label: 'Enter a value',
+				theme: this._theme
 			}),
 			v('h3', ['Required and validated']),
 			w(ComboBox, {
@@ -233,7 +258,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				invalid: <boolean> this.state.invalid,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				theme: this._theme
 			})
 		]);
 	}

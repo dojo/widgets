@@ -49,7 +49,8 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 			isResultDisabled = () => false,
 			onResultMouseEnter,
 			onResultMouseDown,
-			onResultMouseUp
+			onResultMouseUp,
+			theme = {}
 		} = this.properties;
 
 		const resultElements = this.renderResults(results.map((result, i) => w('result-item', <ResultItemProperties> {
@@ -61,7 +62,8 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 			isDisabled: isResultDisabled,
 			onMouseEnter: onResultMouseEnter,
 			onMouseDown: onResultMouseDown,
-			onMouseUp: onResultMouseUp
+			onMouseUp: onResultMouseUp,
+			theme
 		})));
 
 		return v('div', {
