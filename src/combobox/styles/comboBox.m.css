@@ -4,7 +4,7 @@
 	position: relative;
 	display: inline-block;
 	box-sizing: border-box;
-	width: var(--form-field-width);
+	width: 200px;
 }
 
 .root * {
@@ -31,7 +31,7 @@
 .results {
 	position: absolute;
 	width: 100%;
-	max-height: var(--select-menu-height);
+	max-height: 400px;
 	overflow-y: auto;
 	z-index: 1;
 	border: 1px solid var(--component-color);

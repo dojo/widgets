@@ -179,7 +179,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			classes: this.classes(css.root)
 		}, [
 			open ? v('div', {
-				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null),
+				classes: this.classes(css.underlay, underlay ? css.underlayVisible : null),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
 				key: 'underlay'
