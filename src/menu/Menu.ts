@@ -87,20 +87,25 @@ export class Menu extends MenuBase<MenuProperties> {
 	private _activeIndex = 0;
 	private _domNode: HTMLElement;
 	private _hideTimer: Handle;
+	private _id = uuid();
 	private _initialRender = true;
 	private _isLabelActive = false;
 
 	render(): DNode {
 		const {
-			id = uuid(),
+			id,
 			nested,
 			role = 'menu'
 		} = this.properties;
 
-		const label = this.renderLabel(id);
+		if (id) {
+			this._id = id;
+		}
+
+		const label = this.renderLabel();
 		const menu = v('div', {
 			classes: this.classes.apply(this, this.getMenuClasses()),
-			id,
+			id: this._id,
 			key: 'menu',
 			onfocus: this.onMenuFocus,
 			onfocusout: this.onMenuFocusout,
@@ -121,14 +126,14 @@ export class Menu extends MenuBase<MenuProperties> {
 		return menu;
 	}
 
-	renderLabel(id: string): DNode | void {
+	renderLabel(): DNode | void {
 		const { active, disabled, hidden = this.getDefaultHidden(), label, overrideClasses } = this.properties;
 		const labelActive = this._isLabelActive || active;
 
 		if (label) {
 			return w(MenuItem, {
 				active: labelActive,
-				controls: id,
+				controls: this._id,
 				disabled,
 				expanded: !hidden,
 				hasMenu: true,
@@ -141,6 +146,10 @@ export class Menu extends MenuBase<MenuProperties> {
 
 	protected animate(element: HTMLElement) {
 		const { hidden = this.getDefaultHidden() } = this.properties;
+
+		if (this.wasOpen !== hidden) {
+			return;
+		}
 
 		// Assuming the menu has an `auto` height, manually apply the scroll height (or max-height if specified),
 		// and animate to and from that.
@@ -241,13 +250,10 @@ export class Menu extends MenuBase<MenuProperties> {
 			const { animate = true, hidden = this.getDefaultHidden() } = this.properties;
 			this._initialRender = false;
 			this._domNode = element;
+			this.wasOpen = !hidden;
 
-			if (animate) {
-				this.wasOpen = !hidden;
-
-				if (hidden) {
-					element.style.height = '0';
-				}
+			if (animate && hidden) {
+				element.style.height = '0';
 			}
 		}
 	}
