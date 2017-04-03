@@ -303,7 +303,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	}
 
-	@onPropertiesChanged
+	@onPropertiesChanged()
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
 		const {
 			customResultItem = ResultItem,
