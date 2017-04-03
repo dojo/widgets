@@ -259,13 +259,11 @@ registerSuite({
 
 			'collapsed from the scroll height to 0'() {
 				const menu = new Menu();
-				menu.setProperties({
-					label: 'Menu label'
-				});
-
+				menu.setProperties({ hidden: false, label: 'Menu label' });
 				const element = getMockNavElement();
 
 				(<any> menu).onElementCreated(element, 'menu');
+				menu.setProperties({ hidden: true, label: 'Menu label' });
 				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
@@ -275,14 +273,13 @@ registerSuite({
 
 			'collapsed from the max-height if it is set'() {
 				const menu = new Menu();
-				menu.setProperties({
-					label: 'Menu label'
-				});
+				menu.setProperties({ hidden: false, label: 'Menu label' });
 
 				const element = getMockNavElement();
 				element.style['max-height'] = '100px';
 
 				(<any> menu).onElementCreated(element, 'menu');
+				menu.setProperties({ label: 'Menu label', hidden: true });
 				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
@@ -291,36 +288,32 @@ registerSuite({
 
 			'expanded to the scroll height'() {
 				const menu = new Menu();
-				menu.setProperties({
-					hidden: false,
-					label: 'Menu label'
-				});
+				menu.setProperties({ hidden: true, label: 'Menu label' });
 
 				const element = getMockNavElement();
 
 				(<any> menu).onElementCreated(element, 'menu');
+				menu.setProperties({ hidden: false, label: 'Menu label' });
 				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
-				assert.sameMembers(styleHistory.height, [ null, '300px' ]);
+				assert.sameMembers(styleHistory.height, [ null, '0', '300px' ]);
 				assert.strictEqual(element.scrollTop, 0, 'The nav should be scrolled top');
 			},
 
 			'animates to the max-height when set'() {
 				const menu = new Menu();
-				menu.setProperties({
-					hidden: false,
-					label: 'Menu label'
-				});
+				menu.setProperties({ hidden: true, label: 'Menu label' });
 
 				const element = getMockNavElement();
 				element.style['max-height'] = '100px';
 
 				(<any> menu).onElementCreated(element, 'menu');
+				menu.setProperties({ hidden: false, label: 'Menu label' });
 				(<any> menu).onElementUpdated(element, 'menu');
 
 				const styleHistory = element.styleHistory;
-				assert.sameMembers(styleHistory.height, [ null, '100px' ]);
+				assert.sameMembers(styleHistory.height, [ null, '0', '100px' ]);
 			}
 		}
 	},
