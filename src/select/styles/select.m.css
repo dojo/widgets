@@ -72,8 +72,15 @@
 	transform: rotateX(0);
 }
 
-.focused {
-	background-color: var(--dojo-blue);
+.option {
+	background-color: var(--dojo-white);
+	cursor: pointer;
+	padding: var(--input-padding);
+}
+
+.dropdown .focused,
+.input:focus .focused {
+	background-color: var(--dojo-light-blue);
 }
 
 .selected { }

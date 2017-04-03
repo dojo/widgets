@@ -26,7 +26,8 @@ export class App extends AppBase<WidgetProperties> {
 		},
 		{
 			value: 'option4',
-			label: 'Fourth Option'
+			label: 'Fourth Option',
+			disabled: true
 		}
 	];
 
@@ -47,7 +48,29 @@ export class App extends AppBase<WidgetProperties> {
 		},
 		{
 			value: 'goat',
-			label: 'Goat'
+			label: 'Goat',
+			disabled: true
+		}
+	];
+
+	_evenMoreSelectOptions: SelectOption[] = [
+		{
+			value: 'seattle',
+			label: 'Seattle',
+			selected: true
+		},
+		{
+			value: 'los-angeles',
+			label: 'Los Angeles'
+		},
+		{
+			value: 'austin',
+			label: 'Austin',
+			selected: true
+		},
+		{
+			value: 'boston',
+			label: 'Boston'
 		}
 	];
 
@@ -65,19 +88,18 @@ export class App extends AppBase<WidgetProperties> {
 				}
 			}),
 			v('p', {
-				innerHTML: 'Result: ' + this.state['value1']
+				innerHTML: 'Result value: ' + this.state['value1']
 			}),
 			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
 				key: 'select2',
-				overrideClasses: exampleCss,
 				label: 'Custom box!',
 				options: this._selectOptions,
 				value: <string> this.state['value2'],
 				renderOption: (option: SelectOption) => {
 					return v('div', {
-						classes: this.classes(exampleCss.option),
-						innerHTML: option.label
+						innerHTML: (option.selected ? 'x ' : '') + option.label,
+						styles: { fontStyle: 'italic' }
 					});
 				},
 				onChange: (option: SelectOption) => {
@@ -87,29 +109,27 @@ export class App extends AppBase<WidgetProperties> {
 			v('h2', {}, [ 'Native multiselect widget' ]),
 			w(Select, {
 				key: 'select3',
-				options: this._selectOptions,
+				options: this._moreSelectOptions,
 				useNativeSelect: true,
 				multiple: true,
 				onChange: (option: SelectOption) => {
-					console.log('changed option', option);
-					// this.setState({ value: value });
+					option.selected = !option.selected;
 				}
 			}),
-			v('h2', {}, [ 'Custom select widget, multiple selection' ]),
+			v('h2', {}, [ 'Custom multiselect widget' ]),
 			w(Select, {
 				key: 'select4',
-				overrideClasses: exampleCss,
-				options: this._moreSelectOptions,
+				options: this._evenMoreSelectOptions,
 				multiple: true,
 				renderOption: (option: SelectOption) => {
 					return v('div', {
-						classes: this.classes(exampleCss.option),
-						innerHTML: option.label
+						innerHTML: (option.selected ? 'x ' : '') + option.label,
+						styles: { fontStyle: 'italic' }
 					});
 				},
 				onChange: (option: SelectOption) => {
-					console.log('changed option', option);
-					// this.setState({ value: value });
+					option.selected = !option.selected;
+					this.invalidate();
 				}
 			})
 		]);

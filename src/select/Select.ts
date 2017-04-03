@@ -85,50 +85,76 @@ export const SelectBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Select extends SelectBase<SelectProperties> {
+	private _focusedIndex = 0;
+	private _ignoreBlur = false;
 	private _open = false;
-	private _focusedIndex: number;
 	private _selectId: string = uuid();
 
+	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
+	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+
 	// native select events
-	private _onNativeBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onNativeChange (event: Event) {
 		const { options = [] } = this.properties;
 		const option = options.filter((option: SelectOption) => option.value === (<HTMLInputElement> event.target).value)[0];
 		this.properties.onChange && this.properties.onChange(option);
 	}
-	private _onNativeClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	private _onNativeFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
-	private _onNativeKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
 
 	// custom select events
-	private _onTriggerClick(event: MouseEvent) {
-		this.properties.onClick && this.properties.onClick(event);
-
-		this._open = !this._open;
+	private _openSelect() {
+		this._open = true;
+		this._ignoreBlur = false;
 		this._focusedIndex = this._focusedIndex || 0;
 		this.invalidate();
 	}
-
-	private _onTriggerBlur() {
+	private _closeSelect() {
 		this._open = false;
 		this.invalidate();
 	}
 
-	private _onOptionClick(event: MouseEvent) {
+	private _onTriggerClick(event: MouseEvent) {
 		this.properties.onClick && this.properties.onClick(event);
 
+		this._open ? this._closeSelect() : this._openSelect();
+	}
+
+	private _onTriggerBlur(event: FocusEvent) {
+		if (!this._ignoreBlur) {
+			this.properties.onBlur && this.properties.onBlur(event);
+			this._closeSelect();
+		}
+	}
+
+	private _onOptionMouseDown() {
+		this._ignoreBlur = true;
+	}
+
+	private _onOptionClick(event: MouseEvent) {
 		const {
 			options = [],
-			onChange
+			onChange,
+			onClick
 		} = this.properties;
-		const clickedOption = options.filter((option: SelectOption, i: number) => {
-			if (option.value === (<HTMLInputElement> event.target).value) {
-				this._focusedIndex = i;
-				return true;
+
+		onClick && onClick(event);
+
+		// find parent option node, and get index
+		let optionNode = <HTMLElement> event.target;
+		while (!optionNode.hasAttribute('data-dojo-index') && optionNode.parentElement) {
+			optionNode = optionNode.parentElement;
+		}
+
+		const index = optionNode.getAttribute('data-dojo-index');
+		if (index) {
+			const option = options[parseInt(index, 10)];
+
+			if (option && !option.disabled) {
+				this._focusedIndex = parseInt(index, 10);
+				onChange && onChange(option);
 			}
-			return false;
-		})[0];
-		onChange && onChange(clickedOption);
+		}
 	}
 
 	private _onListboxKeyDown(event: KeyboardEvent) {
@@ -136,24 +162,28 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		const {
 			options = [],
+			multiple,
 			onChange
 		} = this.properties;
-		const { _focusedIndex = 0 } = this;
+		const { _focusedIndex } = this;
 
 		switch (event.which) {
 			case keys.enter:
-				onChange && onChange(options[_focusedIndex]);
+				!options[_focusedIndex].disabled && onChange && onChange(options[_focusedIndex]);
 				break;
 			case keys.space:
-				onChange && onChange(options[_focusedIndex]);
+				!options[_focusedIndex].disabled && onChange && onChange(options[_focusedIndex]);
 				break;
 			case keys.escape:
-				this._open = false;
-				this.invalidate();
+				this._closeSelect();
 				break;
 			case keys.down:
 				event.preventDefault();
-				this._focusedIndex = (_focusedIndex + 1) % options.length;
+				if (this._open || multiple) {
+					this._focusedIndex = (_focusedIndex + 1) % options.length;
+				} else {
+					this._openSelect();
+				}
 				this.invalidate();
 				break;
 			case keys.up:
@@ -192,10 +222,12 @@ export default class Select extends SelectBase<SelectProperties> {
 				bind: this,
 				role: 'option',
 				id: option.id,
-				classes: this.classes(this._focusedIndex === i ? css.focused : null, option.selected ? css.selected : null),
+				classes: this.classes(css.option, this._focusedIndex === i ? css.focused : null, option.selected ? css.selected : null),
 				'aria-disabled': option.disabled ? 'true' : null,
 				'aria-selected': option.selected ? 'true' : 'false',
-				onclick: this._onOptionClick
+				'data-dojo-index': i + '',
+				onclick: this._onOptionClick,
+				onmousedown: this._onOptionMouseDown
 			}, [ optionNode ]));
 		}
 
@@ -239,11 +271,11 @@ export default class Select extends SelectBase<SelectProperties> {
 				'aria-readonly': readOnly ? 'true' : null,
 				required,
 				value,
-				onblur: this._onNativeBlur,
+				onblur: this._onBlur,
 				onchange: this._onNativeChange,
-				onclick: this._onNativeClick,
-				onfocus: this._onNativeFocus,
-				onkeydown: this._onNativeKeyDown
+				onclick: this._onClick,
+				onfocus: this._onFocus,
+				onkeydown: this._onKeyDown
 			}, optionNodes),
 			v('span', {
 				classes: this.classes(css.arrow)
@@ -262,7 +294,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		} = this.properties;
 
 		const {
-			_focusedIndex = 0
+			_focusedIndex
 		} = this;
 
 		return v('div', { classes: this.classes(css.inputWrapper) }, [
@@ -274,12 +306,12 @@ export default class Select extends SelectBase<SelectProperties> {
 				'aria-describedby': describedBy,
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-multiselectable': 'true',
-				'aria-activedescendant': options[_focusedIndex].id,
+				'aria-activedescendant': options.length > 0 ? options[_focusedIndex].id : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
 				tabIndex: 0,
-				onblur: this._onNativeBlur,
-				onfocus: this._onNativeFocus,
+				onblur: this._onBlur,
+				onfocus: this._onFocus,
 				onkeydown: this._onListboxKeyDown
 			}, this._renderCustomOptions())
 		]);
@@ -296,34 +328,33 @@ export default class Select extends SelectBase<SelectProperties> {
 			value
 		} = this.properties;
 
-		// create dropdown trigger (if single-select) and select box
 		const {
-			_open = false,
-			_focusedIndex = 0,
+			_open,
+			_focusedIndex,
 			_selectId
 		} = this;
 
 		const selectedOption = options.filter((option: SelectOption) => option.value === value)[0] || options[0];
 
+		// create dropdown trigger and select box
 		return v('div', {
 			classes: this.classes(css.inputWrapper, _open ? css.open : null)
 		}, [
 			v('button', {
 				bind: this,
-				type: 'button',
 				classes: this.classes(css.trigger, css.input),
 				disabled,
 				'aria-controls': _selectId,
 				'aria-owns': _selectId,
 				'aria-expanded': _open + '',
 				'aria-haspopup': 'listbox',
-				'aria-activedescendant': options[_focusedIndex].id,
+				'aria-activedescendant': options.length > 0 ? options[_focusedIndex].id : null,
 				value,
 				onblur: this._onTriggerBlur,
 				onclick: this._onTriggerClick,
-				onfocus: this._onNativeFocus,
+				onfocus: this._onFocus,
 				onkeydown: this._onListboxKeyDown
-			}, [ selectedOption.label ]),
+			}, [ selectedOption ? selectedOption.label : '' ]),
 			v('div', {
 				bind: this,
 				role: 'listbox',
