@@ -1,5 +1,7 @@
 @import '../../common/styles/variables.css';
 
+.root {}
+
 .underlay {
 	position: fixed;
 	top: 0;

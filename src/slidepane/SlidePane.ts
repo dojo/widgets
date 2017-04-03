@@ -177,7 +177,8 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			onmouseup: this._onSwipeEnd,
 			ontouchend: this._onSwipeEnd,
 			ontouchmove: this._onSwipeMove,
-			ontouchstart: this._onSwipeStart
+			ontouchstart: this._onSwipeStart,
+			classes: this.classes(css.root)
 		}, [
 			open ? v('div', {
 				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null),
