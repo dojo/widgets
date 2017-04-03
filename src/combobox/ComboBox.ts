@@ -1,14 +1,14 @@
-import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { DNode, WNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { includes } from '@dojo/shim/array';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, WNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
-import { includes } from '@dojo/shim/array';
-import ResultMenu, { ResultMenuProperties } from './ResultMenu';
-import ResultItem from './ResultItem';
-import TextInput, { TextInputProperties } from '../textinput/TextInput';
+import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import Label, { LabelOptions } from '../label/Label';
+import ResultItem from './ResultItem';
+import ResultMenu, { ResultMenuProperties } from './ResultMenu';
+import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import uuid from '@dojo/core/uuid';
+import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 
 import * as css from './styles/comboBox.m.css';
 
@@ -23,7 +23,7 @@ import * as css from './styles/comboBox.m.css';
  * @property customResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property formId             ID of a form element associated with the form field
- * @property inputProperties    HTML properties supported by FormLabelMixin to set on the underlying input
+ * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
  * @property label              Label to show for this input
  * @property openOnFocus        Determines whether the result list should open when the input is focused

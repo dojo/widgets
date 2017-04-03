@@ -14,10 +14,12 @@ export default function createDialogElement(): CustomElementDescriptor {
 				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
-				attributeName: 'enterAnimation'
+				attributeName: 'enteranimation',
+				propertyName: 'enterAnimation'
 			},
 			{
-				attributeName: 'exitAnimation'
+				attributeName: 'exitanimation',
+				propertyName: 'enterAnimation'
 			},
 			{
 				attributeName: 'modal',
@@ -45,7 +47,7 @@ export default function createDialogElement(): CustomElementDescriptor {
 			},
 			{
 				propertyName: 'onRequestClose',
-				eventName: 'requestClose'
+				eventName: 'close'
 			}
 		]
 	};

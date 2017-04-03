@@ -32,7 +32,8 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
-				attributeName: 'readOnly',
+				attributeName: 'readonly',
+				propertyName: 'readOnly',
 				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
@@ -43,7 +44,8 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 				attributeName: 'value'
 			},
 			{
-				attributeName: 'formId'
+				attributeName: 'formid',
+				propertyName: 'formId'
 			}
 		],
 		properties: [
