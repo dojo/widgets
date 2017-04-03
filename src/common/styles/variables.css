@@ -6,6 +6,18 @@
 	--component-color: #424242;
 	--underlay-background: color(var(--component-color) alpha(-70%));
 
+	/* Colors */
+	--dojo-blue: #34495e;
+	--dojo-light-blue: #86BBD8;
+	--dojo-white: #FFFFFF;
+	--dojo-off-white: #FBFBFB;
+	--dojo-black: #5A5A5A;
+	--dojo-shade-gray: rgba(0, 0, 0, 0.3);
+	--dojo-gray: #9E9E9E;
+	--dojo-light-gray: #F2F2F2;
+	--dojo-red: #ED5153;
+	--dojo-green: #01D48E;
+
 	--error-color: red;
 	--success-color: green;
 

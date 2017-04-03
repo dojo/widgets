@@ -9,45 +9,39 @@ import Calendar from './Calendar';
 export default function createCalendarElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-calendar',
-		widgetFactory: Calendar,
-		attributes: [
+		widgetConstructor: Calendar,
+		attributes: [],
+		properties: [
 			{
-				attributeName: 'closeable',
-				value: value => value === 'false' || value === '0' ? false : true
+				propertyName: 'selectedDate'
 			},
 			{
-				attributeName: 'enterAnimation'
+				propertyName: 'focusedDate'
 			},
 			{
-				attributeName: 'exitAnimation'
-			},
-			{
-				attributeName: 'modal',
-				value: value => value === 'false' || value === '0' ? false : true
-			},
-			{
-				attributeName: 'open',
-				value: value => value === 'false' || value === '0' ? false : true
-			},
-			{
-				attributeName: 'role'
-			},
-			{
-				attributeName: 'title'
-			},
-			{
-				attributeName: 'underlay',
-				value: value => value === 'false' || value === '0' ? false : true
+				propertyName: 'renderDateCell'
 			}
 		],
 		events: [
 			{
-				propertyName: 'onOpen',
-				eventName: 'open'
+				propertyName: 'onMonthChange',
+				eventName: 'monthchange'
 			},
 			{
-				propertyName: 'onRequestClose',
-				eventName: 'requestClose'
+				propertyName: 'onYearChange',
+				eventName: 'yearchange'
+			},
+			{
+				propertyName: 'onDateSelect',
+				eventName: 'dateselect'
+			},
+			{
+				propertyName: 'onYearSelect',
+				eventName: 'yearselect'
+			},
+			{
+				propertyName: 'onDateFocus',
+				eventName: 'datefocus'
 			}
 		]
 	};

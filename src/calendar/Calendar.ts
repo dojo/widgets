@@ -3,20 +3,20 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
-import * as css from './styles/calendar.css';
+import * as css from './styles/calendar.m.css';
 
 /**
  * @type CalendarProperties
  *
  * Properties that can be set on a Calendar component
  *
- * @property selectedDate			The currently selected date
- * @property focusedDate			Date that can receive keyboard focus. Used for a11y and to open the calendar on a specific month without selecting a date.
- * @property renderDateCell		Custom date cell render function. Should return a DNode.
- * @property onMonthChange		Function called when the month changes
- * @property onYearChange			Function called when the year changes
- * @property onDateSelect			Function called when the user selects a date
- * @property onDateFocus			Function called when a new date receives focus
+ * @property selectedDate     The currently selected date
+ * @property focusedDate      Date that can receive keyboard focus. Used for a11y and to open the calendar on a specific month without selecting a date.
+ * @property renderDateCell   Custom date cell render function. Should return a DNode.
+ * @property onMonthChange    Function called when the month changes
+ * @property onYearChange     Function called when the year changes
+ * @property onDateSelect     Function called when the user selects a date
+ * @property onDateFocus      Function called when a new date receives focus
  */
 export interface CalendarProperties extends ThemeableProperties {
 	selectedDate?: Date;
@@ -29,7 +29,7 @@ export interface CalendarProperties extends ThemeableProperties {
 };
 
 // TODO: this should probably be imported from somewhere else
-const keyCodes = {
+/* const keyCodes = {
 	enter: 13,
 	esc: 27,
 	space: 32,
@@ -39,7 +39,7 @@ const keyCodes = {
 	down: 40,
 	pageUp: 33,
 	pageDown: 34
-};
+}; */
 
 // TODO: will need locale-specific month names and weekdays
 const monthNames = [
@@ -222,12 +222,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 						classes: this.classes(css.monthTrigger).get(),
 						'aria-describedby': monthLabelId,
 						'aria-haspopup': true,
-						onclick: this.onMonthTriggerClick,
-						onkeydown: (event: KeyboardEvent) => {
-							if (event.which === keyCodes.enter || event.which === keyCodes.space) {
-								this.onMonthTriggerClick();
-							}
-						}
+						onclick: this.onMonthTriggerClick
 					}, [
 						v('span', { classes: this.classes().fixed(css.visuallyHidden).get() }, [ messages.chooseMonth ])
 					]),
