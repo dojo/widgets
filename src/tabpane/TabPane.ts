@@ -46,6 +46,77 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		return this.children.filter((child: WNode) => child !== null);
 	}
 
+	private _onDownArrowPress() {
+		const { alignButtons } = this.properties;
+
+		if (alignButtons === Align.left || alignButtons === Align.right) {
+			this.selectNextIndex();
+		}
+	}
+
+	private _onLeftArrowPress() {
+		this.selectPreviousIndex();
+	}
+
+	private _onRightArrowPress() {
+		this.selectNextIndex();
+	}
+
+	private _onUpArrowPress() {
+		const { alignButtons } = this.properties;
+
+		if (alignButtons === Align.left || alignButtons === Align.right) {
+			this.selectPreviousIndex();
+		}
+	}
+
+	private _renderTabButtons() {
+		return this._tabs.map((tab: WNode, i) => {
+			const {
+				closeable,
+				disabled,
+				key,
+				label
+			} = <TabProperties> tab.properties;
+
+			return w(TabButton, {
+				active: i === this.properties.activeIndex,
+				closeable,
+				controls: `${ this._id }-tab-${i}`,
+				disabled,
+				id: `${ this._id }-tabbutton-${i}`,
+				index: i,
+				key,
+				onClick: this.selectIndex,
+				onCloseClick: this.closeIndex,
+				onEndPress: this.selectLastIndex,
+				onHomePress: this.selectFirstIndex,
+				onDownArrowPress: this._onDownArrowPress,
+				onLeftArrowPress: this._onLeftArrowPress,
+				onRightArrowPress: this._onRightArrowPress,
+				onUpArrowPress: this._onUpArrowPress
+			}, [
+				label || null
+			]);
+		});
+	}
+
+	private _renderTabs() {
+		const { activeIndex } = this.properties;
+
+		return this._tabs
+			.filter((tab, i) => {
+				return i === activeIndex;
+			})
+			.map((tab, i) => {
+				assign((<WNode> tab).properties, {
+					id: `${ this._id }-tab-${i}`,
+					labelledBy: `${ this._id }-tabbutton-${i}`
+				});
+				return tab;
+			});
+	}
+
 	/**
 	 * Determines if the tab at `currentIndex` is enabled. If disabled,
 	 * returns the next valid index, or null if no enabled tabs exist.
@@ -71,51 +142,6 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		}
 
 		return i;
-	}
-
-	private _renderTabButtons() {
-		return this._tabs.map((tab: WNode, i) => {
-			const {
-				closeable,
-				disabled,
-				key,
-				label
-			} = <TabProperties> tab.properties;
-
-			return w(TabButton, {
-				active: i === this.properties.activeIndex,
-				closeable,
-				controls: `${ this._id }-tab-${i}`,
-				disabled,
-				id: `${ this._id }-tabbutton-${i}`,
-				index: i,
-				key,
-				onClick: this.selectIndex,
-				onCloseClick: this.closeIndex,
-				onEndPress: this.selectLastIndex,
-				onHomePress: this.selectFirstIndex,
-				onLeftArrowPress: this.selectPreviousIndex,
-				onRightArrowPress: this.selectNextIndex
-			}, [
-				label || null
-			]);
-		});
-	}
-
-	private _renderTabs() {
-		const { activeIndex } = this.properties;
-
-		return this._tabs
-			.filter((tab, i) => {
-				return i === activeIndex;
-			})
-			.map((tab, i) => {
-				assign((<WNode> tab).properties, {
-					id: `${ this._id }-tab-${i}`,
-					labelledBy: `${ this._id }-tabbutton-${i}`
-				});
-				return tab;
-			});
 	}
 
 	protected closeIndex(index: number) {

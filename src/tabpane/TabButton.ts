@@ -20,8 +20,10 @@ import * as css from './styles/tabPane.m.css';
  * @property onCloseClick       Called when this tab button's close icon is clicked
  * @property onEndPress         Called when the end button is pressed
  * @property onHomePress        Called when the home button is pressed
+ * @property onDownArrowPress   Called when the down arrow button is pressed
  * @property onLeftArrowPress   Called when the left arrow button is pressed
  * @property onRightArrowPress  Called when the right arrow button is pressed
+ * @property onUpArrowPress     Called when the up arrow button is pressed
  */
 export interface TabButtonProperties extends ThemeableProperties {
 	active?: boolean;
@@ -34,8 +36,10 @@ export interface TabButtonProperties extends ThemeableProperties {
 	onCloseClick?: (index: number) => void;
 	onEndPress?: () => void;
 	onHomePress?: () => void;
+	onDownArrowPress?: () => void;
 	onLeftArrowPress?: () => void;
 	onRightArrowPress?: () => void;
+	onUpArrowPress?: () => void;
 };
 
 export const TabButtonBase = ThemeableMixin(WidgetBase);
@@ -70,8 +74,10 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			onCloseClick,
 			onEndPress,
 			onHomePress,
+			onDownArrowPress,
 			onLeftArrowPress,
-			onRightArrowPress
+			onRightArrowPress,
+			onUpArrowPress
 		} = this.properties;
 
 		if (disabled) {
@@ -91,6 +97,14 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			// Right arrow
 			case 39:
 				onRightArrowPress && onRightArrowPress();
+				break;
+			// Up arrow
+			case 38:
+				onUpArrowPress && onUpArrowPress();
+				break;
+			// Down arrow
+			case 40:
+				onDownArrowPress && onDownArrowPress();
 				break;
 			// Home
 			case 36:
@@ -126,6 +140,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 
 		const children = closeable ? this.children.concat([
 			v('button', {
+				tabIndex: active ? 0 : -1,
 				classes: this.classes(css.close),
 				innerHTML: 'close tab',
 				onclick: this._onCloseClick

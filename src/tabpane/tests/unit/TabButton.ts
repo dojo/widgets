@@ -19,7 +19,10 @@ registerSuite({
 	'Closeable tab button should render X'() {
 		const tabButton = new TabButton();
 		tabButton.setChildren([ 'abc' ]);
-		tabButton.setProperties(props({ closeable: true }));
+		tabButton.setProperties(props({
+			closeable: true,
+			active: true
+		}));
 		let vnode = <VNode> tabButton.__render__();
 		assert.lengthOf(vnode.children, 2);
 	},
@@ -80,6 +83,7 @@ registerSuite({
 			closeable: true,
 			onCloseClick: () => called = true
 		}));
+		<VNode> tabButton.__render__();
 		(<any> tabButton)._onKeyDown({ keyCode: 27 });
 		assert.isTrue(called);
 	},
@@ -94,6 +98,16 @@ registerSuite({
 		assert.isTrue(called);
 	},
 
+	'Up arrow should trigger property'() {
+		const tabButton = new TabButton();
+		let called = false;
+		tabButton.setProperties(props({
+			onUpArrowPress: () => called = true
+		}));
+		(<any> tabButton)._onKeyDown({ keyCode: 38 });
+		assert.isTrue(called);
+	},
+
 	'Right arrow should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
@@ -101,6 +115,16 @@ registerSuite({
 			onRightArrowPress: () => called = true
 		}));
 		(<any> tabButton)._onKeyDown({ keyCode: 39 });
+		assert.isTrue(called);
+	},
+
+	'Down arrow should trigger property'() {
+		const tabButton = new TabButton();
+		let called = false;
+		tabButton.setProperties(props({
+			onDownArrowPress: () => called = true
+		}));
+		(<any> tabButton)._onKeyDown({ keyCode: 40 });
 		assert.isTrue(called);
 	},
 

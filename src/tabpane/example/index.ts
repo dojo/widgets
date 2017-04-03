@@ -12,7 +12,6 @@ import Task from '@dojo/core/async/Task';
 let refresh: Task<any>;
 
 function refreshData() {
-	refresh && refresh.cancel();
 	return new Task((resolve, reject) => {
 		setTimeout(resolve, 1500);
 	});
@@ -62,6 +61,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				alignButtons: <Align> align,
 				onRequestTabClose: (index: number, key: string) => this.setState({ closedKeys: [...closedKeys, key] }),
 				onRequestTabChange: (index: number, key: string) => {
+					refresh && refresh.cancel();
 					if (key === 'async') {
 						this.setState({
 							activeIndex: 2,

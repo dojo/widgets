@@ -125,9 +125,9 @@ registerSuite({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 2
 		});
-		(<any> tabPane).selectNextIndex();
+		(<any> tabPane)._onRightArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 0);
-		(<any> tabPane).selectNextIndex();
+		(<any> tabPane)._onRightArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 2);
 	},
 
@@ -148,10 +148,68 @@ registerSuite({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 2
 		});
-		(<any> tabPane).selectPreviousIndex();
+		(<any> tabPane)._onLeftArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 0);
-		(<any> tabPane).selectPreviousIndex();
+		(<any> tabPane)._onLeftArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 2);
+	},
+
+	'Up arrow should get previous tab'() {
+		const tabPane = new TabPane();
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar' })
+		]);
+		function onRequestTabChange(index: number) {
+			tabPane.setProperties({
+				activeIndex: index,
+				onRequestTabChange: onRequestTabChange
+			});
+		}
+		(<any> tabPane)._onUpArrowPress();
+		tabPane.setProperties({
+			onRequestTabChange: onRequestTabChange,
+			activeIndex: 0,
+			alignButtons: Align.left
+		});
+		(<any> tabPane)._onUpArrowPress();
+		assert.strictEqual(tabPane.properties.activeIndex, 1);
+		tabPane.setProperties({
+			onRequestTabChange: onRequestTabChange,
+			activeIndex: 0,
+			alignButtons: Align.right
+		});
+		(<any> tabPane)._onUpArrowPress();
+		assert.strictEqual(tabPane.properties.activeIndex, 1);
+	},
+
+	'Down arrow should get next tab'() {
+		const tabPane = new TabPane();
+		tabPane.setChildren([
+			w(Tab, { label: 'foo', key: 'foo' }),
+			w(Tab, { label: 'bar', key: 'bar' })
+		]);
+		function onRequestTabChange(index: number) {
+			tabPane.setProperties({
+				activeIndex: index,
+				onRequestTabChange: onRequestTabChange
+			});
+		}
+		(<any> tabPane)._onDownArrowPress();
+		tabPane.setProperties({
+			onRequestTabChange: onRequestTabChange,
+			activeIndex: 0,
+			alignButtons: Align.left
+		});
+		(<any> tabPane)._onDownArrowPress();
+		assert.strictEqual(tabPane.properties.activeIndex, 1);
+		tabPane.setProperties({
+			onRequestTabChange: onRequestTabChange,
+			activeIndex: 0,
+			alignButtons: Align.right
+		});
+		(<any> tabPane)._onDownArrowPress();
+		assert.strictEqual(tabPane.properties.activeIndex, 1);
 	},
 
 	'Should default to last tab if invalid activeIndex passed'() {
