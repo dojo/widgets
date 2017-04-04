@@ -19,7 +19,7 @@ export type MenuItemType = 'item' | 'checkbox' | 'radio';
  * @property hasMenu		Indicates whether the widget is used as the label for a menu.
  * @property hasPopup		Indicates whether the widget has a drop down child.
  * @property onClick		Called when the widget is activated via a click or space key.
- * @property onKeydown		Called when keys are pressed while the widget has focus.
+ * @property onKeyDown		Called when keys are pressed while the widget has focus.
  * @property properties		Additional properties for the widget's vnode.
  * @property selected		Determines whether the widget is marked as selected.
  * @property tag			The HTML tag name to use for the widget's vnode. Defaults to 'span'.
@@ -33,7 +33,7 @@ export interface MenuItemProperties extends ThemeableProperties {
 	hasMenu?: boolean;
 	hasPopup?: boolean;
 	onClick?: (event: MouseEvent) => void;
-	onKeydown?: (event: KeyboardEvent) => void;
+	onKeyDown?: (event: KeyboardEvent) => void;
 	properties?: VirtualDomProperties;
 	selected?: boolean;
 	tag?: string;
@@ -42,6 +42,7 @@ export interface MenuItemProperties extends ThemeableProperties {
 
 export const MenuItemBase = ThemeableMixin(WidgetBase);
 
+const SPACE_KEY = 32;
 const roleMap: { [key: string]: string } = {
 	item: 'menuitem',
 	checkbox: 'menuitemcheckbox',
@@ -76,9 +77,9 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			'aria-haspopup': hasPopup ? 'true' : undefined,
 			'aria-disabled': String(disabled),
 			classes,
-			key: 'menu-item',
+			key: 'root',
 			onclick: this.onClick,
-			onkeydown: this.onKeydown,
+			onkeydown: this.onKeyDown,
 			role: roleMap[type],
 			tabIndex: active ? 0 : -1
 		}), this.children);
@@ -86,22 +87,24 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 	protected onClick(event: MouseEvent) {
 		const { disabled, onClick } = this.properties;
-		if (!disabled && typeof onClick === 'function') {
+		if (!disabled && onClick) {
 			onClick(event);
 		}
 	}
 
-	protected onElementUpdated(element: HTMLElement) {
-		this.properties.active && element.focus();
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (key === 'root') {
+			this.properties.active && element.focus();
+		}
 	}
 
-	protected onKeydown(event: KeyboardEvent) {
-		const { disabled, onKeydown } = this.properties;
+	protected onKeyDown(event: KeyboardEvent) {
+		const { disabled, onKeyDown } = this.properties;
 		if (!disabled) {
-			if (event.keyCode === 32) { // space
+			if (event.keyCode === SPACE_KEY) {
 				(<HTMLElement> event.target).click();
 			}
-			typeof onKeydown === 'function' && onKeydown(event);
+			onKeyDown && onKeyDown(event);
 		}
 	}
 }
