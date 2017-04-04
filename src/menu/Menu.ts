@@ -23,6 +23,7 @@ export type Role = 'menu' | 'menubar';
  * @property animate			Determines whether animation should be handled internally.
  * @property disabled			Determines whether the menu is disabled.
  * @property expandOnClick		Determines whether a menu is displayed on click (default) or hover.
+ * @property focusable			Determines whether the menu trigger can receive focus with tab key.
  * @property hideDelay			The amount of time (in milliseconds) after mouseleave before hiding the menu.
  * @property hidden				Determines whether the menu is hidden.
  * @property hideOnActivate		Determines whether the menu should be hidden when an item is activated. Defaults to true.
@@ -38,6 +39,7 @@ export interface MenuProperties extends ThemeableProperties {
 	animate?: boolean;
 	disabled?: boolean;
 	expandOnClick?: boolean;
+	focusable?: boolean;
 	hideDelay?: number;
 	hidden?: boolean;
 	hideOnActivate?: boolean;
@@ -57,8 +59,7 @@ function getMenuHeight(menuElement: HTMLElement): number {
 
 export const enum Operation {
 	decrease,
-	increase,
-	reset
+	increase
 }
 
 const commonKeys = {
@@ -96,26 +97,22 @@ export class Menu extends MenuBase<MenuProperties> {
 
 	render(): DNode {
 		const {
-			id,
+			id = this._id,
 			nested,
 			role = 'menu'
 		} = this.properties;
 
-		if (id) {
-			this._id = id;
-		}
-
 		const label = this.renderLabel();
 		const menu = v('div', {
 			classes: this.classes.apply(this, this.getMenuClasses()),
-			id: this._id,
+			id,
 			key: 'menu',
 			onclick: this.onItemActivate,
-			onfocus: this.onMenuFocus,
+			onfocusin: this.onMenuFocus,
 			onfocusout: this.onMenuFocusOut,
 			onkeydown: this.onMenuKeyDown,
-			role,
-			tabIndex: this.state.active || label ? -1 : 0
+			onmousedown: this.onMenuMouseDown,
+			role
 		}, this.renderChildren());
 
 		if (label) {
@@ -131,15 +128,24 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	renderLabel(): DNode | void {
-		const { active, disabled, hidden = this.getDefaultHidden(), label, overrideClasses } = this.properties;
+		const {
+			active,
+			disabled,
+			focusable,
+			hidden = this.getDefaultHidden(),
+			id = this._id,
+			label,
+			overrideClasses
+		} = this.properties;
 		const labelActive = this._isLabelActive || active;
 
 		if (label) {
 			return w(MenuItem, {
 				active: labelActive,
-				controls: this._id,
+				controls: id,
 				disabled,
 				expanded: !hidden,
+				focusable,
 				hasMenu: true,
 				overrideClasses: overrideClasses || css,
 				onClick: this.onLabelClick,
@@ -189,13 +195,7 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	protected getDefaultHidden() {
-		const { disabled, label } = this.properties;
-
-		if (label && disabled) {
-			return true;
-		}
-
-		return label ? true : false;
+		return this.properties.label ? true : false;
 	}
 
 	protected getDefaultOrientation(): Orientation {
@@ -234,19 +234,13 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	protected moveActiveIndex(operation: Operation) {
-		if (operation === Operation.reset) {
-			this._activeIndex = 0;
-			this.toggleDisplay(false);
-		}
-		else {
-			const max = this.children.length;
-			const previousIndex = this._activeIndex;
-			this._activeIndex = operation === Operation.decrease ?
-				previousIndex - 1 < 0 ? max - 1 : previousIndex - 1 :
-				Math.min(previousIndex + 1, max) % max;
+		const max = this.children.length;
+		const previousIndex = this._activeIndex;
+		this._activeIndex = operation === Operation.decrease ?
+			previousIndex - 1 < 0 ? max - 1 : previousIndex - 1 :
+			Math.min(previousIndex + 1, max) % max;
 
-			this.invalidate();
-		}
+		this.invalidate();
 	}
 
 	protected onElementCreated(element: HTMLElement, key: string) {
@@ -317,7 +311,7 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	protected onMenuFocus() {
-		this.setState({ active: true });
+		!this.state.active && this.setState({ active: true });
 	}
 
 	protected onMenuFocusOut() {
@@ -328,10 +322,13 @@ export class Menu extends MenuBase<MenuProperties> {
 				}
 			});
 		}
+		else {
+			this.setState({ active: false });
+		}
 	}
 
 	protected onMenuKeyDown(event: KeyboardEvent) {
-		const { orientation = this.getDefaultOrientation() } = this.properties;
+		const { label, orientation = this.getDefaultOrientation() } = this.properties;
 		const keys = orientation === 'horizontal' ? horizontalKeys : verticalKeys;
 
 		switch (event.keyCode) {
@@ -343,22 +340,39 @@ export class Menu extends MenuBase<MenuProperties> {
 				this.setState({ active: false });
 				break;
 			case keys.ascend:
+				event.preventDefault();
 				event.stopPropagation();
 				this.exitMenu();
 				break;
 			case keys.decrease:
+				event.preventDefault();
 				event.stopPropagation();
 				this.moveActiveIndex(Operation.decrease);
 				break;
 			case keys.increase:
+				event.preventDefault();
 				event.stopPropagation();
 				this.moveActiveIndex(Operation.increase);
 				break;
 			case keys.escape:
-				event.stopPropagation();
-				this._isLabelActive = true;
-				this.moveActiveIndex(Operation.reset);
+				if (label) {
+					event.stopPropagation();
+					this._isLabelActive = true;
+					this.toggleDisplay(false);
+				}
 				break;
+		}
+	}
+
+	protected onMenuMouseDown(event: MouseEvent) {
+		let itemNode = <HTMLElement> event.target;
+		while (!itemNode.hasAttribute('data-dojo-index') && itemNode.parentElement) {
+			itemNode = itemNode.parentElement;
+		}
+
+		const index = parseInt(itemNode.getAttribute('data-dojo-index') || '', 10);
+		if (!isNaN(index)) {
+			this._activeIndex = index;
 		}
 	}
 
@@ -396,12 +410,14 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	protected renderChildren() {
-		const { hidden = this.getDefaultHidden() } = this.properties;
+		const { hidden = this.getDefaultHidden(), label } = this.properties;
 		const activeIndex = this.state.active && !this._isLabelActive ? this._activeIndex : null;
 
 		if (!hidden) {
 			this.children.forEach((child: any, i) => {
 				if (child && child.properties) {
+					child.properties.index = i;
+					child.properties.focusable = !label && i === this._activeIndex;
 					child.properties.active = i === activeIndex;
 				}
 			});
@@ -427,6 +443,7 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 		else {
 			this.setState({ active: false });
+			this._activeIndex = 0;
 			onRequestHide && onRequestHide();
 		}
 	}

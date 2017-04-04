@@ -448,10 +448,7 @@ registerSuite({
 			});
 			(<any> menu).onLabelKeyDown(<any> { keyCode: 40 });
 			(<any> menu).onLabelKeyDown(<any> {});
-			const vnode: any = menu.__render__();
-			const menuNode = vnode.children[1];
 
-			assert.strictEqual(menuNode.properties.tabIndex, -1, 'tab index should be -1 when the submenu has focus');
 			assert.notOk(menu.properties.hidden, 'the submenu should not be hidden');
 		},
 
@@ -467,10 +464,7 @@ registerSuite({
 			});
 			(<any> menu).onLabelKeyDown(<any> { keyCode: 39 });
 			(<any> menu).onLabelKeyDown(<any> {});
-			const vnode: any = menu.__render__();
-			const menuNode = vnode.children[1];
 
-			assert.strictEqual(menuNode.properties.tabIndex, -1, 'tab index should be -1 when the submenu has focus');
 			assert.notOk(menu.properties.hidden, 'the submenu should not be hidden');
 		}
 	},
@@ -544,31 +538,32 @@ registerSuite({
 			(<any> menu).onMenuFocus();
 			(<any> menu).onMenuFocusOut();
 
-			assert.isTrue(menu.state.active, 'menu should remain active');
+			assert.isFalse(menu.state.active, 'menu should be inactive');
 		}
 	},
 
 	onMenuKeyDown: (() => {
+		const preventDefault = () => {};
 		const stopPropagation = () => {};
 
 		function getExitAssertion(keyCode = 37, orientation: Orientation = 'vertical') {
 			return function () {
 				const menu = new Menu();
 				menu.setProperties({ orientation });
-				(<any> menu).onMenuKeyDown(<any> { keyCode, stopPropagation });
+				(<any> menu).onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				sinon.spy(menu, 'invalidate');
 
 				assert.isFalse((<any> menu.invalidate).called, 'menu should not be invalidated');
 
 				menu.setProperties({ label: 'menu label', orientation });
-				(<any> menu).onMenuKeyDown(<any> { keyCode, stopPropagation });
+				(<any> menu).onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				assert.isFalse((<any> menu.invalidate).called, 'menu should not be invalidated while hidden');
 
 				menu.setProperties({ label: 'menu label', hidden: false, orientation });
 				const child = new MenuItem();
 				child.setProperties({ active: true });
 				menu.setChildren([ <any> child ]);
-				(<any> menu).onMenuKeyDown(<any> { keyCode, stopPropagation });
+				(<any> menu).onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				menu.__render__();
 
 				assert.isTrue((<any> menu.invalidate).called, 'menu should be invalidated');
@@ -585,13 +580,13 @@ registerSuite({
 				menu.setProperties({ label: 'menu label', hidden: false, orientation });
 				menu.setChildren(<any> [ first, second ]);
 				(<any> menu).onMenuFocus();
-				(<any> menu).onMenuKeyDown(<any> { keyCode, stopPropagation });
+				(<any> menu).onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				(<any> menu).renderChildren();
 
 				assert.isTrue(second.properties.active, 'active status should cycle from the first to last child');
 				assert.notOk(first.properties.active, 'only one child should be active');
 
-				(<any> menu).onMenuKeyDown(<any> { keyCode, stopPropagation });
+				(<any> menu).onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				(<any> menu).renderChildren();
 
 				assert.notOk(second.properties.active, 'previously-active child should be inactive');
@@ -608,13 +603,13 @@ registerSuite({
 				menu.setProperties({ label: 'menu label', hidden: false, orientation });
 				menu.setChildren(<any> [ first, second ]);
 				(<any> menu).onMenuFocus();
-				(<any> menu).onMenuKeyDown(<any> { keyCode, stopPropagation });
+				(<any> menu).onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				(<any> menu).renderChildren();
 
 				assert.isTrue(second.properties.active, 'next child should be active');
 				assert.notOk(first.properties.active, 'only one child should be active');
 
-				(<any> menu).onMenuKeyDown(<any> { keyCode, stopPropagation });
+				(<any> menu).onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				(<any> menu).renderChildren();
 
 				assert.notOk(second.properties.active, 'previously-active child should be inactive');
@@ -649,24 +644,35 @@ registerSuite({
 					child.setProperties({ active: true });
 					menu.setChildren([ <any> child ]);
 					(<any> menu).onMenuKeyDown(<any> { keyCode: 9, stopPropagation: () => {} });
-					const vnode: any = menu.__render__();
+					menu.__render__();
 
-					assert.strictEqual(vnode.properties.tabIndex, 0, 'Menu should be focusable');
 					assert.notOk(child.properties.active, 'Child should be marked as inactive');
 				},
 
 				'escape key'() {
 					const menu = new Menu();
-					const onRequestHide = sinon.spy();
-					menu.setProperties({
-						label: 'menu label',
-						onRequestHide
-					});
-					(<any> menu).onMenuKeyDown(<any> { keyCode: 27, stopPropagation: () => {} });
-					const vnode: any = menu.__render__();
+					let onRequestHide = sinon.spy();
 
-					assert.strictEqual(vnode.children[0].properties.tabIndex, 0, 'label should be focusable');
-					assert.isTrue(onRequestHide.called, 'menu should be hidden.');
+					menu.setProperties({ onRequestHide });
+					(<any> menu).onMenuKeyDown(<any> { keyCode: 27, stopPropagation: () => {} });
+					menu.__render__();
+
+					assert.isFalse(onRequestHide.called, 'top-level menu should not be hidden');
+
+					const renderLabel = menu.renderLabel;
+					let label: any;
+					menu.renderLabel = function () {
+						label = renderLabel.call(menu);
+						return label;
+					};
+
+					onRequestHide = sinon.spy();
+					menu.setProperties({ label: 'menu label', onRequestHide });
+					(<any> menu).onMenuKeyDown(<any> { keyCode: 27, stopPropagation: () => {} });
+					menu.__render__();
+
+					assert.isTrue(label.properties.active, 'menu label should be active');
+					assert.isTrue(onRequestHide.called, 'menu should be hidden');
 				}
 			},
 
@@ -683,6 +689,63 @@ registerSuite({
 			}
 		};
 	})(),
+
+	onMenuMouseDown: {
+		'item with `data-dojo-index` property'() {
+			const menu = new Menu();
+			const children: any[] = '01234'.split('').map(i => {
+				return new MenuItem();
+			});
+
+			menu.setChildren(children);
+			(<any> menu).onMenuMouseDown(<any> {
+				target: {
+					hasAttribute: () => false,
+					parentElement: {
+						getAttribute: () => '2',
+						hasAttribute: () => true
+					}
+				}
+			});
+			(<any> menu).onMenuFocus();
+			(<any> menu).renderChildren();
+
+			children.forEach((child: MenuItem, i) => {
+				if (i === 2) {
+					assert.isTrue(child.properties.active);
+				}
+				else {
+					assert.isFalse(child.properties.active);
+				}
+			});
+		},
+
+		'item without `data-dojo-index` property'() {
+			const menu = new Menu();
+			const children: any[] = '01234'.split('').map(i => {
+				return new MenuItem();
+			});
+
+			menu.setChildren(children);
+			(<any> menu).onMenuMouseDown(<any> {
+				target: {
+					hasAttribute: () => true,
+					getAttribute: () => null
+				}
+			});
+			(<any> menu).onMenuFocus();
+			(<any> menu).renderChildren();
+
+			children.forEach((child: MenuItem, i) => {
+				if (i === 0) {
+					assert.isTrue(child.properties.active);
+				}
+				else {
+					assert.isFalse(child.properties.active);
+				}
+			});
+		}
+	},
 
 	onMenuMouseEnter: {
 		'when `expandOnClick` is true'() {

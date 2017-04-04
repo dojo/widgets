@@ -52,9 +52,9 @@ registerSuite({
 			const properties = vnode.properties;
 
 			assert.strictEqual(properties['aria-controls'], 'controls-base');
-			assert.strictEqual(properties['aria-expanded'], 'false');
+			assert.isUndefined(properties['aria-expanded']);
 			assert.isUndefined(properties['aria-haspopup']);
-			assert.strictEqual(properties['aria-disabled'], 'false');
+			assert.isUndefined(properties['aria-disabled']);
 		}
 	},
 
@@ -163,10 +163,13 @@ registerSuite({
 
 	expanded() {
 		const item = new MenuItem();
-		item.setProperties({
-			expanded: true
-		});
-		const vnode: any = item.__render__();
+		item.setProperties({ expanded: true });
+		let vnode: any = item.__render__();
+
+		assert.isUndefined(vnode.properties['aria-expanded'], '`expanded` should be ignored without `hasPopup`');
+
+		item.setProperties({ expanded: true, hasPopup: true });
+		vnode = item.__render__();
 		assert.strictEqual(vnode.properties['aria-expanded'], 'true',
 			'`expanded` should be assigned to the `aria-expanded` attribute');
 	},

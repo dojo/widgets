@@ -16,8 +16,10 @@ export type MenuItemType = 'item' | 'checkbox' | 'radio';
  * @property controls		The ID of an element that this input controls.
  * @property disabled		Indicates whether the item is disabled.
  * @property expanded		Indicates whether a widget controlled by `this` is expanded.
+ * @property focusable		Determines whether the item can receive focus with tab key.
  * @property hasMenu		Indicates whether the widget is used as the label for a menu.
  * @property hasPopup		Indicates whether the widget has a drop down child.
+ * @property index			Specifies the index of the item within a parent menu.
  * @property onClick		Called when the widget is activated via a click or space key.
  * @property onKeyDown		Called when keys are pressed while the widget has focus.
  * @property properties		Additional properties for the widget's vnode.
@@ -30,8 +32,10 @@ export interface MenuItemProperties extends ThemeableProperties {
 	controls?: string;
 	disabled?: boolean;
 	expanded?: boolean;
+	focusable?: boolean;
 	hasMenu?: boolean;
 	hasPopup?: boolean;
+	index?: boolean;
 	onClick?: (event: MouseEvent) => void;
 	onKeyDown?: (event: KeyboardEvent) => void;
 	properties?: VirtualDomProperties;
@@ -53,12 +57,13 @@ const roleMap: { [key: string]: string } = {
 export class MenuItem extends MenuItemBase<MenuItemProperties> {
 	render() {
 		const {
-			active = false,
 			controls,
 			disabled = false,
 			expanded = false,
+			focusable,
 			hasPopup = false,
 			hasMenu = false,
+			index,
 			properties,
 			selected = false,
 			tag = 'span',
@@ -73,15 +78,16 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 		const itemProperties: { [key: string]: any; } = {
 			'aria-controls': controls,
-			'aria-expanded': String(expanded),
+			'aria-expanded': hasPopup ? String(expanded) : undefined,
 			'aria-haspopup': hasPopup ? 'true' : undefined,
-			'aria-disabled': String(disabled),
+			'aria-disabled': disabled ? 'true' : undefined,
+			'data-dojo-index': typeof index === 'number' ? String(index) : undefined,
 			classes,
 			key: 'root',
 			onclick: this.onClick,
 			onkeydown: this.onKeyDown,
 			role: roleMap[type],
-			tabIndex: active ? 0 : -1
+			tabIndex: focusable ? 0 : -1
 		};
 
 		if (type === 'checkbox' || type === 'radio') {
@@ -93,24 +99,28 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 	protected onClick(event: MouseEvent) {
 		const { disabled, onClick } = this.properties;
+
 		if (!disabled && onClick) {
 			onClick(event);
 		}
 	}
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			this.properties.active && element.focus();
+		const { active } = this.properties;
+
+		if (key === 'root' && active) {
+			element.focus();
 		}
 	}
 
 	protected onKeyDown(event: KeyboardEvent) {
 		const { disabled, onKeyDown } = this.properties;
+
 		if (!disabled) {
+			onKeyDown && onKeyDown(event);
 			if (event.keyCode === SPACE_KEY) {
 				(<HTMLElement> event.target).click();
 			}
-			onKeyDown && onKeyDown(event);
 		}
 	}
 }
