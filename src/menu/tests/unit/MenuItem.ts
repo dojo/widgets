@@ -63,10 +63,11 @@ registerSuite({
 		const focus = sinon.spy();
 
 		(<any> item).onElementUpdated(<any> { focus });
+		(<any> item).onElementUpdated(<any> { focus }, 'root');
 		assert.isFalse(focus.called, 'element should not receive focus when `active` is false');
 
 		item.setProperties({ active: true });
-		(<any> item).onElementUpdated(<any> { focus });
+		(<any> item).onElementUpdated(<any> { focus }, 'root');
 		assert.isTrue(focus.called, 'element should receive focus when `active` is true');
 	},
 
@@ -99,38 +100,38 @@ registerSuite({
 		}
 	},
 
-	onKeydown: {
+	onKeyDown: {
 		'when disabled'() {
 			const item = new MenuItem();
 			let event: any;
 			item.setProperties({
 				disabled: true,
-				onKeydown(_event: any) {
+				onKeyDown(_event: any) {
 					event = _event;
 				}
 			});
 
-			(<any> item).onKeydown(<any> { type: 'keydown' });
-			assert.isUndefined(event, '`onKeydown` should not be called when the menu item is disabled.');
+			(<any> item).onKeyDown(<any> { type: 'keydown' });
+			assert.isUndefined(event, '`onKeyDown` should not be called when the menu item is disabled.');
 		},
 
 		'when enabled'() {
 			const item = new MenuItem();
 			let event: any;
 			item.setProperties({
-				onKeydown(_event: any) {
+				onKeyDown(_event: any) {
 					event = _event;
 				}
 			});
 
-			(<any> item).onKeydown(<any> { type: 'keydown' });
-			assert.strictEqual(event!.type, 'keydown', '`onKeydown` should be called when the menu item is enabled.');
+			(<any> item).onKeyDown(<any> { type: 'keydown' });
+			assert.strictEqual(event!.type, 'keydown', '`onKeyDown` should be called when the menu item is enabled.');
 		},
 
 		'space key'() {
 			const item = new MenuItem();
 			const click = sinon.spy();
-			(<any> item).onKeydown(<any> {
+			(<any> item).onKeyDown(<any> {
 				keyCode: 32,
 				target: { click }
 			});

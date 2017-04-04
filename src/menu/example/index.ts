@@ -3,7 +3,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
-import Menu, { Orientation } from '../Menu';
+import Menu, { Orientation, Role } from '../Menu';
 import MenuItem from '../MenuItem';
 
 const AppBase = StatefulMixin(WidgetBase);
@@ -117,7 +117,9 @@ export class App extends AppBase<WidgetProperties> {
 
 		return v('div', { style: 'float: left;' }, [
 			w(Menu, {
-				key: 'DojoMenu'
+				key: 'DojoMenu',
+				orientation: <Orientation> 'vertical',
+				role: <Role> 'menubar'
 			}, [
 				w(MenuItem, {
 					key: 'DojoMenuLabel',
@@ -164,7 +166,8 @@ export class App extends AppBase<WidgetProperties> {
 		return v('div', { style: 'float: left; margin: 0 50px 50px 0;' }, [
 			w(Menu, {
 				key: 'ChromeFileMenu',
-				orientation: this.state['isFileMenuHorizontal'] ? 'horizontal' : 'vertical' as Orientation
+				orientation: this.state['isFileMenuHorizontal'] ? 'horizontal' : 'vertical' as Orientation,
+				role: <Role> 'menubar'
 			}, [
 				'New Tab',
 				'New Window',
@@ -183,7 +186,7 @@ export class App extends AppBase<WidgetProperties> {
 				return w(MenuItem, {
 					key,
 					disabled: name === 'Open Location...',
-					onKeydown: (event: KeyboardEvent) => {
+					onKeyDown: (event: KeyboardEvent) => {
 						if (event.keyCode === 13) {
 							toggleSelected();
 						}

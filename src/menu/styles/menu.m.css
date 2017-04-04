@@ -1,6 +1,6 @@
 @import '../../common/styles/variables.css';
 
-.container {
+.root {
 	box-sizing: border-box;
 	position: relative;
 }
@@ -44,7 +44,7 @@
 	color: var(--menu-selected-color);
 }
 
-.nestedMenuContainer,
+.nestedMenuRoot,
 .nestedMenu {
 	width: 100%;
 }
@@ -54,7 +54,7 @@
 	box-sizing: border-box;
 	overflow: hidden;
 	padding: 0 15px;
-	transition: height 0.5s ease-in-out;
+	transition: height var(--short-animation-duration) ease-in-out;
 }
 
 .hidden { height: 0; }
