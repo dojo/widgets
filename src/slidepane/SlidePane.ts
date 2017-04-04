@@ -23,7 +23,7 @@ export const enum Align {
  * @property underlay         Determines whether a semi-transparent background shows behind the pane
  * @property width            Width of the pane in pixels
  * @property onOpen           Called when the pane opens
- * @property onRequestClose   Called when the pane is swiped closed or the underlay is clicked or tapped
+ * @property onClose          Called when the pane is swiped closed or the underlay is clicked or tapped
  */
 export interface SlidePaneProperties extends ThemeableProperties {
 	align?: Align;
@@ -31,7 +31,7 @@ export interface SlidePaneProperties extends ThemeableProperties {
 	underlay?: boolean;
 	width?: number;
 	onOpen?(): void;
-	onRequestClose?(): void;
+	onClose?(): void;
 };
 
 /**
@@ -100,7 +100,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		const {
 			width = DEFAULT_WIDTH,
 			align = Align.left,
-			onRequestClose
+			onClose
 		} = this.properties;
 
 		// Current pointer position
@@ -112,11 +112,11 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		if (delta > width / 2) {
 			// Cache the transform to apply on next render
 			this._transform = 100 * delta / width;
-			onRequestClose && onRequestClose();
+			onClose && onClose();
 		}
 		// If the underlay was clicked
 		else if (Math.abs(delta) < SWIPE_THRESHOLD && (<HTMLElement> event.target).classList.contains(css.underlay)) {
-			onRequestClose && onRequestClose();
+			onClose && onClose();
 		}
 		// If pane was not swiped far enough to close
 		else if (delta > 0) {

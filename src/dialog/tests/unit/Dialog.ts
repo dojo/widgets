@@ -47,17 +47,17 @@ registerSuite({
 		assert.lengthOf(vnode.children, 2);
 	},
 
-	onRequestClose() {
+	onClose() {
 		const dialog = new Dialog();
 		dialog.setProperties({
 			open: true,
-			onRequestClose: () => {
+			onClose: () => {
 				dialog.setProperties({ open: false });
 			}
 		});
 		(<any> dialog)._onCloseClick();
 
-		assert.isFalse(dialog.properties.open, 'onRequestClose should be called when close button is clicked');
+		assert.isFalse(dialog.properties.open, 'onClose should be called when close button is clicked');
 	},
 
 	onOpen() {
@@ -80,7 +80,7 @@ registerSuite({
 		dialog.setProperties({
 			open: true,
 			modal: true,
-			onRequestClose: () => {
+			onClose: () => {
 				dialog.setProperties({ open: false });
 			}
 		});

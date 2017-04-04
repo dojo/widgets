@@ -32,7 +32,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				modal: <boolean> this.state['modal'],
 				underlay: <boolean> this.state['underlay'],
 				closeable: <boolean> this.state['closeable'],
-				onRequestClose: () => {
+				onClose: () => {
 					this.setState({ open: false });
 				}
 			}, [

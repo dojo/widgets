@@ -85,7 +85,7 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 				eventName: 'change'
 			},
 			{
-				propertyName: 'onRequestResults',
+				propertyName: 'onResultsRequest',
 				eventName: 'requestresults'
 			},
 			{

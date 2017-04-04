@@ -114,7 +114,7 @@ class CustomResultMenu extends ResultMenu {
 }
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
-	onRequestResults(value: string) {
+	onResultsRequest(value: string) {
 		const results = data.filter(item => {
 			const match = item.value.toLowerCase().match(new RegExp('^' + value.toLowerCase()));
 			return Boolean(match && match.length > 0);
@@ -132,7 +132,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				openOnFocus: true,
 				onChange: (value: string) => this.setState({ 'value1': value }),
 				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
+				onResultsRequest: this.onResultsRequest,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value1'],
 				inputProperties: {
@@ -145,7 +145,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				clearable: true,
 				onChange: (value: string) => this.setState({ 'value2': value }),
 				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
+				onResultsRequest: this.onResultsRequest,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value2'],
 				inputProperties: {
@@ -158,7 +158,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				openOnFocus: true,
 				onChange: (value: string) => this.setState({ 'value3': value }),
 				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
+				onResultsRequest: this.onResultsRequest,
 				customResultItem: CustomResultItem,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value3'],
@@ -171,7 +171,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '4',
 				onChange: (value: string) => this.setState({ 'value4': value }),
 				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
+				onResultsRequest: this.onResultsRequest,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value4'],
 				customResultMenu: CustomResultMenu,
@@ -184,7 +184,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '5',
 				onChange: (value: string) => this.setState({ 'value5': value }),
 				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
+				onResultsRequest: this.onResultsRequest,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value5'],
 				isResultDisabled: (result: any) => result.value.length > 9,
@@ -213,7 +213,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '8',
 				onChange: (value: string) => this.setState({ 'value8': value }),
 				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
+				onResultsRequest: this.onResultsRequest,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value8'],
 				label: 'Enter a value'
@@ -227,7 +227,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					invalid: value.trim().length === 0
 				}),
 				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
+				onResultsRequest: this.onResultsRequest,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value9'],
 				invalid: <boolean> this.state.invalid,

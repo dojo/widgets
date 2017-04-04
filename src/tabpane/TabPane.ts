@@ -26,14 +26,14 @@ export const enum Align {
  *
  * @property activeIndex           Position of the currently active tab
  * @property alignButtons          Orientation of the tab buttons
- * @property onRequestTabChange    Called when a new tab button is clicked
- * @property onRequestTabClose     Called when a tab close button is clicked
+ * @property onTabChange           Called when a new tab button is clicked
+ * @property onTabClose            Called when a tab close button is clicked
  */
 export interface TabPaneProperties extends ThemeableProperties {
 	activeIndex: number;
 	alignButtons?: Align;
-	onRequestTabChange?(index: number, key: string): void;
-	onRequestTabClose?(index: number, key: string): void;
+	onTabChange?(index: number, key: string): void;
+	onTabClose?(index: number, key: string): void;
 };
 
 export const TabPaneBase = ThemeableMixin(WidgetBase);
@@ -145,10 +145,10 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	}
 
 	protected closeIndex(index: number) {
-		const { onRequestTabClose } = this.properties;
+		const { onTabClose } = this.properties;
 		const key = (<TabProperties> (<WNode> this._tabs[index]).properties).key;
 
-		onRequestTabClose && onRequestTabClose(index, key);
+		onTabClose && onTabClose(index, key);
 	}
 
 	protected selectFirstIndex() {
@@ -158,14 +158,14 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	protected selectIndex(index: number, backwards?: boolean) {
 		const {
 			activeIndex,
-			onRequestTabChange
+			onTabChange
 		} = this.properties;
 
 		const validIndex = this._validateIndex(index, backwards);
 
 		if (validIndex !== null && validIndex !== activeIndex) {
 			const key = (<TabProperties> (<WNode> this._tabs[validIndex]).properties).key;
-			onRequestTabChange && onRequestTabChange(validIndex, key);
+			onTabChange && onTabChange(validIndex, key);
 		}
 	}
 
