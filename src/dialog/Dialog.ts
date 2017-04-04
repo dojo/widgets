@@ -4,8 +4,8 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 
-import * as css from './styles/dialog.css';
-import * as animations from '../common/styles/animations.css';
+import * as css from './styles/dialog.m.css';
+import * as animations from '../common/styles/animations.m.css';
 
 /**
  * The role of this dialog, used for accessibility

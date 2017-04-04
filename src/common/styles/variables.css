@@ -10,6 +10,7 @@
 	--dojo-light-gray: #F2F2F2;
 	--dojo-red: #ED5153;
 	--dojo-green: #01D48E;
+	--dojo-gray: #BBB;
 
 	--dojo-error-color: var(--dojo-red);
 	--dojo-success-color: var(--dojo-green);
@@ -18,8 +19,9 @@
 	/* Shared values */
 	--base-font: 14px/1 sans-serif;
 	--input-font-size: 14px;
-	--container-padding: 14px 35px;
 	--title-bar-font-size: 20px;
+	--container-padding: 14px 35px;
+	--container-padding-thin: 14px;
 	--subtle-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.25);
 	--rounded-corners: 2px;
 	--short-animation-duration: .2s;
@@ -31,6 +33,9 @@
 	--form-field-width: 200px;
 	--select-menu-height: 500px;
 	--input-padding: 0.5em 1em;
+	--border-thick: 5px;
+	--tab-width: 120px;
+	--min-container-height: 250px;
 
 	/* Composed values */
 	--title-bar-bg: var(--dojo-blue);

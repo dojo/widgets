@@ -1,10 +1,9 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
-
-import * as css from './styles/slidePane.css';
-import * as animations from '../common/styles/animations.css';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import * as animations from '../common/styles/animations.m.css';
+import * as css from './styles/slidePane.m.css';
 
 /**
  * Enum for left / right alignment
@@ -177,7 +176,8 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			onmouseup: this._onSwipeEnd,
 			ontouchend: this._onSwipeEnd,
 			ontouchmove: this._onSwipeMove,
-			ontouchstart: this._onSwipeStart
+			ontouchstart: this._onSwipeStart,
+			classes: this.classes(css.root)
 		}, [
 			open ? v('div', {
 				classes: this.classes(css.underlay).fixed(underlay ? css.underlayVisible : null),

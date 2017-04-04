@@ -8,6 +8,7 @@ registerSuite({
 	api() {
 		assert.isDefined(widgets.Dialog);
 		assert.isDefined(widgets.SlidePane);
+		assert.isDefined(widgets.TabPane);
 		assert.isDefined(widgets.Label);
 		assert.isDefined(widgets.Button);
 		assert.isDefined(widgets.TextInput);

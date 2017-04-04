@@ -4,7 +4,7 @@ import has from '@dojo/has/has';
 import { VNode } from '@dojo/interfaces/vdom';
 import TestHarness from '@dojo/intern-helper/widgets/TestHarness';
 import SlidePane, { Align } from '../../SlidePane';
-import * as css from '../../styles/slidePane.css';
+import * as css from '../../styles/slidePane.m.css';
 
 const hasTouch = (function (): boolean {
 	/* Since jsdom will fake it anyways, no problem predending we can do touch */
@@ -33,7 +33,7 @@ function createEvent(type: string, x: number): any {
 let harness = new TestHarness(SlidePane);
 
 registerSuite({
-	name: 'createSlidePane',
+	name: 'SlidePane',
 
 	beforeEach() {
 		harness = new TestHarness(SlidePane);

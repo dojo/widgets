@@ -1,10 +1,10 @@
+import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
+import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { v, w } from '@dojo/widget-core/d';
 import ComboBox from '../ComboBox';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
 import ResultItem, { ResultItemProperties } from '../ResultItem';
 import ResultMenu from '../ResultMenu';
 

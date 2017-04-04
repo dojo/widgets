@@ -4,7 +4,7 @@ import Label, { LabelOptions } from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
-import * as css from './styles/slider.css';
+import * as css from './styles/slider.m.css';
 
 /**
  * @type SliderProperties

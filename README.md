@@ -6,7 +6,7 @@
 
 A suite of pre-built Dojo 2 widgets, ready to use in your application. These widgets are built using Dojo 2's widget authoring system [(@dojo/widget-core)](https://github.com/dojo/widget-core).
 
-**WARNING** This is *alpha* software. It is not yet production ready, so you should use at your own risk.
+**WARNING** This is _beta_ software. While we do not anticipate significant changes to the API at this stage, we may feel the need to do so. This is not yet production ready, so you should use at your own risk.
 
 - [Usage](#usage)
 - [Features](#features)

@@ -3,7 +3,7 @@ import * as assert from 'intern/chai!assert';
 import { v } from '@dojo/widget-core/d';
 import { VNode } from '@dojo/interfaces/vdom';
 import Slider from '../../Slider';
-import * as css from '../../styles/slider.css';
+import * as css from '../../styles/slider.m.css';
 
 registerSuite({
 	name: 'Slider',

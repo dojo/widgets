@@ -51,8 +51,7 @@ export const loaders = {
 export const loaderOptions = {
 	// Packages that should be registered with the loader in each testing environment
 	packages: [
-		{ name: 'src', location: '_build/src' },
-		{ name: 'tests', location: '_build/tests' },
+		{ name: 'src', location: '_build' },
 		{ name: 'dojo', location: 'node_modules/intern/browser_modules/dojo' },
 		{ name: '@dojo', location: 'node_modules/@dojo' },
 		{ name: 'grunt-dojo2', location: 'node_modules/grunt-dojo2'},

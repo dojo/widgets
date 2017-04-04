@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import Radio from '../../Radio';
-import * as css from '../../styles/radio.css';
+import * as css from '../../styles/radio.m.css';
 
 registerSuite({
 	name: 'Radio',

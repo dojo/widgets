@@ -3,7 +3,7 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 
-import * as css from './styles/comboBox.css';
+import * as css from './styles/comboBox.m.css';
 
 /**
  * @type ResultItemProperties
@@ -30,7 +30,7 @@ export interface ResultItemProperties extends ThemeableProperties {
 	onMouseUp(event: MouseEvent, index: number): void;
 };
 
-const ResultItemBase = ThemeableMixin(WidgetBase);
+export const ResultItemBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class ResultItem extends ResultItemBase<ResultItemProperties> {
@@ -61,7 +61,7 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 		onMouseUp(event, index);
 	}
 
-	renderResult(result: any) {
+	renderResult(result: any): DNode {
 		const { getResultLabel } = this.properties;
 
 		return v('div', [ getResultLabel(result) ]);
