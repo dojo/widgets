@@ -212,15 +212,41 @@ registerSuite({
 			'the `aria-haspopup` attribute should be undefined');
 	},
 
-	selected() {
-		const item = new MenuItem();
-		let vnode: any = item.__render__();
+	selected: {
+		basic() {
+			const item = new MenuItem();
+			let vnode: any = item.__render__();
 
-		assert.notOk(vnode.properties.classes[css.selected]);
+			assert.notOk(vnode.properties.classes[css.selected]);
 
-		item.setProperties({ selected: true });
-		vnode = item.__render__();
-		assert.isTrue(vnode.properties.classes[css.selected]);
+			item.setProperties({ selected: true });
+			vnode = item.__render__();
+			assert.isTrue(vnode.properties.classes[css.selected]);
+		},
+
+		'type="checkbox"'() {
+			const item = new MenuItem();
+			item.setProperties({ type: 'checkbox' });
+			let vnode: any = item.__render__();
+
+			assert.strictEqual(vnode.properties['aria-checked'], 'false');
+
+			item.setProperties({ type: 'checkbox', selected: true });
+			vnode = item.__render__();
+			assert.strictEqual(vnode.properties['aria-checked'], 'true');
+		},
+
+		'type="radio"'() {
+			const item = new MenuItem();
+			item.setProperties({ type: 'radio' });
+			let vnode: any = item.__render__();
+
+			assert.strictEqual(vnode.properties['aria-checked'], 'false');
+
+			item.setProperties({ type: 'radio', selected: true });
+			vnode = item.__render__();
+			assert.strictEqual(vnode.properties['aria-checked'], 'true');
+		}
 	},
 
 	tag() {

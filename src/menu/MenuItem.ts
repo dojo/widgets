@@ -60,7 +60,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			hasPopup = false,
 			hasMenu = false,
 			properties,
-			selected,
+			selected = false,
 			tag = 'span',
 			type = 'item'
 		} = this.properties;
@@ -71,7 +71,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			selected ? css.selected : null
 		);
 
-		return v(tag, assign(Object.create(null), properties, {
+		const itemProperties: { [key: string]: any; } = {
 			'aria-controls': controls,
 			'aria-expanded': String(expanded),
 			'aria-haspopup': hasPopup ? 'true' : undefined,
@@ -82,7 +82,13 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			onkeydown: this.onKeyDown,
 			role: roleMap[type],
 			tabIndex: active ? 0 : -1
-		}), this.children);
+		};
+
+		if (type === 'checkbox' || type === 'radio') {
+			itemProperties['aria-checked'] = String(selected);
+		}
+
+		return v(tag, assign(Object.create(null), properties, itemProperties), this.children);
 	}
 
 	protected onClick(event: MouseEvent) {
