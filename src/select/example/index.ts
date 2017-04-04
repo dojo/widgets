@@ -1,15 +1,12 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
-import { ThemeableMixin, theme } from '@dojo/widget-core/mixins/Themeable';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Select, { SelectOption } from '../../select/Select';
-import * as exampleCss from '../styles/example.m.css';
 
-export const AppBase = StatefulMixin(ThemeableMixin(WidgetBase));
+export const AppBase = StatefulMixin(WidgetBase);
 
-@theme(exampleCss)
 export class App extends AppBase<WidgetProperties> {
 	_selectOptions: SelectOption[] = [
 		{

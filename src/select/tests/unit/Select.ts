@@ -151,6 +151,21 @@ registerSuite({
 			let optionValue;
 			(<any> select)._onNativeChange(<any> event);
 			assert.strictEqual(optionValue, 'Two');
+		},
+
+		'onChange with no options'() {
+			// mostly for code coverage; this shouldn't be possible
+			const select = new Select();
+			let selectedOption;
+			select.setProperties({
+				onChange: (option: SelectOption) => selectedOption = option
+			});
+
+			const falseClick = event();
+			falseClick.target.value = undefined;
+			(<any> select)._onNativeChange(falseClick);
+
+			assert.isUndefined(selectedOption, 'onChange called with undefined option');
 		}
 	},
 
@@ -247,11 +262,24 @@ registerSuite({
 
 			(<any> select)._onOptionClick(event(0, 2));
 			assert.strictEqual(clickedOption, 'two', 'onChange not called for disabled option');
+		},
+
+		'Option click with no options'() {
+			// mostly for code coverage; this shouldn't be possible
+			const select = new Select();
+			let clicked = false;
+			let changed = false;
+			select.setProperties({
+				onChange: () => changed = true,
+				onClick: () => clicked = true
+			});
 
 			const falseClick = event();
-			falseClick.parentElement = false;
+			falseClick.target.parentElement = false;
 			(<any> select)._onOptionClick(falseClick);
-			assert.strictEqual(clickedOption, 'two', 'onChange not called non-option click');
+
+			assert.isTrue(clicked, 'properties.onClick called');
+			assert.isFalse(changed, 'onChange shouldn\'t fire with no options');
 		}
 	},
 
@@ -389,7 +417,9 @@ registerSuite({
 			assert.strictEqual(selectedOption, 'one', 'Home key navigates to first option');
 
 			(<any> select)._onListboxKeyDown(event(keys.end));
+			(<any> select)._onListboxKeyDown(event(keys.space));
 			assert.strictEqual((<any> select)._focusedIndex, 2, 'End key navigates to last option');
+			assert.strictEqual(selectedOption, 'one', 'Space key can\'t select disabled option');
 
 			(<any> select)._onListboxKeyDown(event(keys.down));
 			(<any> select)._onListboxKeyDown(event(keys.enter));

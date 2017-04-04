@@ -3,6 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
+import { find } from '@dojo/shim/array';
 import Label, { LabelOptions } from '../label/Label';
 import * as css from './styles/select.m.css';
 
@@ -11,11 +12,11 @@ import * as css from './styles/select.m.css';
  *
  * Properties that can be set on a Select component
  *
- * @property label				Text to display to the user
- * @property value				Option value
- * @property disabled			Toggle disabled status of the individual option
- * @property id						Optional custom id
- * @property selected			Toggle selected/deselected state for multiselect widgets
+ * @property label        Text to display to the user
+ * @property value        Option value
+ * @property disabled     Toggle disabled status of the individual option
+ * @property id           Optional custom id
+ * @property selected     Toggle selected/deselected state for multiselect widgets
  */
 export interface SelectOption {
 	label: string;
@@ -30,24 +31,24 @@ export interface SelectOption {
  *
  * Properties that can be set on a Select component
  *
- * @property describedBy	ID of an element that provides more descriptive text
- * @property disabled			Prevents the user from interacting with the form field
- * @property formId				ID of a form element associated with the form field
- * @property invalid			Indicates the value entered in the form field is invalid
- * @property label				Label settings for form label text, position, and visibility
- * @property multiple			Whether the widget supports multiple selection
- * @property name					The form widget's name
- * @property options			Array of data for the select options' value, text content, and state
- * @property readOnly			Allows or prevents user interaction
- * @property renderOption	Custom render function for select options
- * @property required			Whether or not a value is required
- * @property useNatveSelect		Use the native <select> element if true
- * @property value				The current value
- * @property onBlur				Called when the input loses focus
- * @property onChange			Called when the node's 'change' event is fired
- * @property onClick			Called when the input is clicked
- * @property onFocus			Called when the input is focused
- * @property onKeyDown		Called on the input's keydown event
+ * @property describedBy    ID of an element that provides more descriptive text
+ * @property disabled       Prevents the user from interacting with the form field
+ * @property formId         ID of a form element associated with the form field
+ * @property invalid        Indicates the value entered in the form field is invalid
+ * @property label          Label settings for form label text, position, and visibility
+ * @property multiple       Whether the widget supports multiple selection
+ * @property name           The form widget's name
+ * @property options        Array of data for the select options' value, text content, and state
+ * @property readOnly       Allows or prevents user interaction
+ * @property renderOption   Custom render function for select options
+ * @property required       Whether or not a value is required
+ * @property useNatveSelect Use the native <select> element if true
+ * @property value          The current value
+ * @property onBlur         Called when the input loses focus
+ * @property onChange       Called when the node's 'change' event is fired
+ * @property onClick        Called when the input is clicked
+ * @property onFocus        Called when the input is focused
+ * @property onKeyDown      Called on the input's keydown event
  */
 export interface SelectProperties extends ThemeableProperties {
 	describedBy?: string;
@@ -85,21 +86,34 @@ export const SelectBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Select extends SelectBase<SelectProperties> {
-	private _focusedIndex = 0;
-	private _ignoreBlur = false;
-	private _open = false;
-	private _selectId: string = uuid();
+	private _focusedIndex: number;
+	private _ignoreBlur: boolean;
+	private _open: boolean;
+	private _selectId: string;
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
 	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
 
+	constructor() {
+		super();
+
+		this._focusedIndex = 0;
+		this._ignoreBlur = false;
+		this._open = false;
+		this._selectId = uuid();
+	}
+
 	// native select events
 	private _onNativeChange (event: Event) {
-		const { options = [] } = this.properties;
-		const option = options.filter((option: SelectOption) => option.value === (<HTMLInputElement> event.target).value)[0];
-		this.properties.onChange && this.properties.onChange(option);
+		const {
+			options = [],
+			onChange
+		} = this.properties;
+		const value = (<HTMLInputElement> event.target).value;
+		const option = find(options, (option: SelectOption) => option.value === value);
+		onChange && onChange(option);
 	}
 
 	// custom select events
@@ -154,6 +168,9 @@ export default class Select extends SelectBase<SelectProperties> {
 				this._focusedIndex = parseInt(index, 10);
 				onChange && onChange(option);
 			}
+			else {
+				event.preventDefault();
+			}
 		}
 	}
 
@@ -169,10 +186,20 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		switch (event.which) {
 			case keys.enter:
-				!options[_focusedIndex].disabled && onChange && onChange(options[_focusedIndex]);
+				if (options[_focusedIndex].disabled) {
+					event.preventDefault();
+				}
+				else {
+					onChange && onChange(options[_focusedIndex]);
+				}
 				break;
 			case keys.space:
-				!options[_focusedIndex].disabled && onChange && onChange(options[_focusedIndex]);
+				if (options[_focusedIndex].disabled) {
+					event.preventDefault();
+				}
+				else {
+					onChange && onChange(options[_focusedIndex]);
+				}
 				break;
 			case keys.escape:
 				this._closeSelect();
@@ -218,11 +245,18 @@ export default class Select extends SelectBase<SelectProperties> {
 			option.selected = multiple ? option.selected : value === option.value;
 			optionNode = renderOption ? renderOption(option) : option.label;
 
+			const optionClasses = [
+				css.option,
+				this._focusedIndex === i ? css.focused : null,
+				option.selected ? css.selected : null,
+				option.disabled ? css.disabledOption : null
+			];
+
 			optionNodes.push(v('div', {
 				bind: this,
 				role: 'option',
 				id: option.id,
-				classes: this.classes(css.option, this._focusedIndex === i ? css.focused : null, option.selected ? css.selected : null),
+				classes: this.classes(...optionClasses),
 				'aria-disabled': option.disabled ? 'true' : null,
 				'aria-selected': option.selected ? 'true' : 'false',
 				'data-dojo-index': i + '',
@@ -334,7 +368,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			_selectId
 		} = this;
 
-		const selectedOption = options.filter((option: SelectOption) => option.value === value)[0] || options[0];
+		const selectedOption = find(options, (option: SelectOption) => option.value === value) || options[0];
 
 		// create dropdown trigger and select box
 		return v('div', {
@@ -389,9 +423,14 @@ export default class Select extends SelectBase<SelectProperties> {
 			required ? css.required : null
 		];
 
-		let rootWidget;
+		let rootWidget, select;
 
-		const select = useNativeSelect ? this.renderNativeSelect() : multiple ? this.renderCustomMultiSelect() : this.renderCustomSelect();
+		if (useNativeSelect) {
+			select = this.renderNativeSelect();
+		}
+		else {
+			select = multiple ? this.renderCustomMultiSelect() : this.renderCustomSelect();
+		}
 
 		if (label) {
 			rootWidget = w(Label, {

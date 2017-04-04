@@ -78,6 +78,11 @@
 	padding: var(--input-padding);
 }
 
+.disabledOption {
+	background-color: var(--dojo-light-gray);
+	cursor: default;
+}
+
 .dropdown .focused,
 .input:focus .focused {
 	background-color: var(--dojo-light-blue);
