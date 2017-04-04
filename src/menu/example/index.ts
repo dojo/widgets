@@ -4,7 +4,7 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Menu, { Orientation, Role } from '../Menu';
-import MenuItem from '../MenuItem';
+import MenuItem, { MenuItemType } from '../MenuItem';
 
 const AppBase = StatefulMixin(WidgetBase);
 
@@ -192,7 +192,8 @@ export class App extends AppBase<WidgetProperties> {
 						}
 					},
 					onClick: toggleSelected,
-					selected: <boolean> this.state[`${key}Selected`]
+					selected: <boolean> this.state[`${key}Selected`],
+					type: <MenuItemType> 'checkbox'
 				}, [ name ]);
 			}))
 		]);

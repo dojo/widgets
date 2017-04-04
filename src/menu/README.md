@@ -144,21 +144,22 @@ w(Menu, {}, [
 
 ### Keyboard Navigation
 
-`Menu` follows the [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices-1.1/#menu) for menus to the extent that the various use cases are described. As such, `Menu` provides the following keyboard interactions:
+`Menu` follows the [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices-1.1/#menu) for menus to the extent that the various use cases are described. As such, menus exhibit the following behavior:
 
-**With `orientation="horizontal"`**:
+- One `tab` press into a top-level menu, one `tab` press out of it.
+- Arrow keys control navigation between items within a menu (see below).
+- Pressing the escape key within a submenu closes the submenu. When the submenu is re-opened, focus is placed on the first item.
+- Pressing the enter key triggers an item's action. If the item is used as the trigger for a submenu, then the submenu is toggled opened/closed.
+- Pressing the space key triggers an item's action. If the item is used as the trigger for a submenu, then the submenu is toggled opened/closed.
+
+**Arrow key navigation with `orientation="horizontal"`**:
 - Pressing the left arrow key moves focus to the previous item. If the first item is currently selected, focus is moved to the last item.
 - Pressing the right arrow key moves focus to the next item. If the last item is currently selected, focus is moved to the first item.
 - Pressing the down arrow key when focus is on a trigger for a submenu moves focus into the submenu, placing the focus on the previously-focused item. If the submenu is hidden, it will be displayed.
 - Pressing the up arrow key when focus is on an item within a submenu moves focus back to the trigger item. The next time the submenu receives focus, the previously-focused item receives the focus. Pressing the up arrow key has no effect in other circumstances.
 
-**With `orientation="vertical"` (the default)**:
+**Arrow key navigation with `orientation="vertical"` (the default)**:
 - Pressing the up arrow key moves focus to the previous item. If the first item is currently selected, focus is moved to the last item.
 - Pressing the down arrow key moves focus to the next item. If the last item is currently selected, focus is moved to the first item.
 - Pressing the right arrow key when focus is on a trigger for a submenu moves focus into the submenu, placing the focus on the previously-focused item. If the submenu is hidden, it will be displayed.
 - Pressing the left arrow key when focus is on an item within a submenu moves focus back to the trigger item. The next time the submenu receives focus, the previously-focused item receives the focus. Pressing the left arrow key has no effect in other circumstances.
-
-**Common operations**:
-- Pressing the escape key within a submenu closes the submenu. When the submenu is re-opened, focus is placed on the first item.
-- Pressing the enter key triggers an item's action. If the item is used as the trigger for a submenu, then the submenu is toggled opened/closed.
-- Pressing the space key triggers an item's action. If the item is used as the trigger for a submenu, then the submenu is toggled opened/closed.
