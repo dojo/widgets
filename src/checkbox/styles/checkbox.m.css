@@ -23,7 +23,7 @@
 	width: 1.5em;
 	display: inline-block;
 	vertical-align: middle;
-	margin-right: 10px;
+	margin: 0 .8em;
 }
 
 .inputWrapper::before,
@@ -114,26 +114,8 @@
 	right: 3px;
 }
 
-.offLabel {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 5px;
-	transition: all var(--short-animation-duration) var(--short-animation-easing);
-}
-
+.offLabel,
 .onLabel {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	left: calc(-100% + 1.5em);
-	transition: all var(--short-animation-duration) var(--short-animation-easing);
-}
-
-.toggle.checked .offLabel {
-	right: calc(-100% + 1.5em);
-}
-
-.toggle.checked .onLabel {
-	left: 5px;
+	display: inline-block;
+	vertical-align: middle;
 }

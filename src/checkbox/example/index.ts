@@ -18,7 +18,8 @@ export class App extends AppBase<WidgetProperties> {
 			c1 = true,
 			c2 = false,
 			c3 = false,
-			c4 = false
+			c4 = false,
+			c5 = true
 		} = this.state;
 
 		return v('fieldset', [
@@ -58,14 +59,18 @@ export class App extends AppBase<WidgetProperties> {
 			w(Checkbox, {
 				key: 'c4',
 				checked: <boolean> c4,
-				label: {
-					content: 'Toggle with a label',
-					before: false
-				},
+				label: 'Checkbox in "toggle" mode',
 				mode: Mode.toggle,
-				onLabel: 'On',
-				offLabel: 'Off',
 				value: 'c4',
+				onChange: this.onChange
+			}),
+			w(Checkbox, {
+				key: 'c5',
+				checked: <boolean> c5,
+				label: 'Disabled toggle mode',
+				mode: Mode.toggle,
+				disabled: true,
+				value: 'c5',
 				onChange: this.onChange
 			})
 		]);

@@ -42,8 +42,8 @@ export interface CheckboxProperties extends ThemeableProperties {
 	label?: string | LabelOptions;
 	mode?: Mode;
 	name?: string;
-	offLabel?: string;
-	onLabel?: string;
+	offLabel?: DNode;
+	onLabel?: DNode;
 	readOnly?: boolean;
 	required?: boolean;
 	value?: string;
@@ -107,35 +107,35 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			required ? css.required : null
 		];
 
-		const checkbox = v('div', {
-			classes: this.classes(css.inputWrapper)
-		}, [
+		const children = [
 			mode === Mode.toggle && offLabel ? v('div', { classes: this.classes(css.offLabel) }, [ offLabel ]) : null,
-			v('input', {
-				bind: this,
-				classes: this.classes(css.input),
-				checked,
-				'aria-describedby': describedBy,
-				disabled,
-				'aria-invalid': invalid + '',
-				name,
-				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
-				required,
-				type: 'checkbox',
-				value,
-				onblur: this._onBlur,
-				onchange: this._onChange,
-				onclick: this._onClick,
-				onfocus: this._onFocus,
-				onmousedown: this._onMouseDown,
-				onmouseup: this._onMouseUp,
-				ontouchstart: this._onTouchStart,
-				ontouchend: this._onTouchEnd,
-				ontouchcancel: this._onTouchCancel
-			}),
+			v('div', { classes: this.classes(css.inputWrapper) }, [
+				v('input', {
+					bind: this,
+					classes: this.classes(css.input),
+					checked,
+					'aria-describedby': describedBy,
+					disabled,
+					'aria-invalid': invalid + '',
+					name,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					type: 'checkbox',
+					value,
+					onblur: this._onBlur,
+					onchange: this._onChange,
+					onclick: this._onClick,
+					onfocus: this._onFocus,
+					onmousedown: this._onMouseDown,
+					onmouseup: this._onMouseUp,
+					ontouchstart: this._onTouchStart,
+					ontouchend: this._onTouchEnd,
+					ontouchcancel: this._onTouchCancel
+				})
+			]),
 			mode === Mode.toggle && onLabel ? v('div', { classes: this.classes(css.onLabel) }, [ onLabel ]) : null
-		]);
+		];
 
 		let checkboxWidget;
 
@@ -144,12 +144,12 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 				classes: this.classes(css.root, ...stateClasses),
 				formId,
 				label
-			}, [ checkbox ]);
+			}, children);
 		}
 		else {
 			checkboxWidget = v('div', {
 				classes: this.classes(css.root, ...stateClasses)
-			}, [ checkbox ]);
+			}, children);
 		}
 
 		return checkboxWidget;
