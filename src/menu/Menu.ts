@@ -1,4 +1,3 @@
-import { assign } from '@dojo/core/lang';
 import { createTimer } from '@dojo/core/util';
 import uuid from '@dojo/core/uuid';
 import { Handle } from '@dojo/interfaces/core';
@@ -151,17 +150,16 @@ export class Menu extends MenuBase<MenuProperties> {
 		const { orientation = this.getDefaultOrientation(), parentOrientation } = this.properties;
 		const isHorizontal = orientation === 'horizontal';
 
-		return assign({
+		return {
 			ascend: isHorizontal ? Keys.up : Keys.left,
 			decrease: isHorizontal ? Keys.left : Keys.up,
 			descend: isHorizontal || parentOrientation === 'horizontal' ? Keys.down : Keys.right,
-			increase: isHorizontal ? Keys.right : Keys.down
-		}, {
 			enter: Keys.enter,
 			escape: Keys.escape,
+			increase: isHorizontal ? Keys.right : Keys.down,
 			space: Keys.space,
 			tab: Keys.tab
-		});
+		};
 	}
 
 	protected animate(element: HTMLElement) {
