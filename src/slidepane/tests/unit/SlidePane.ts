@@ -1,185 +1,227 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+
 import has from '@dojo/has/has';
-import { VNode } from '@dojo/interfaces/vdom';
-import TestHarness from '@dojo/intern-helper/widgets/TestHarness';
-import SlidePane, { Align } from '../../SlidePane';
+import harness, { assignProperties, assignChildProperties, Harness, replaceChild } from '@dojo/intern-helper/harness';
+import { v } from '@dojo/widget-core/d';
+
+import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
 import * as css from '../../styles/slidePane.m.css';
+import * as animations from '../../../common/styles/animations.m.css';
 
 const hasTouch = (function (): boolean {
-	/* Since jsdom will fake it anyways, no problem predending we can do touch */
-	return Boolean(has('host-node') || 'ontouchstart' in window);
+	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
+	return Boolean('ontouchstart' in window || has('host-node'));
 })();
 
-function createEvent(type: string, x: number): any {
-	return {
-		type,
-		stopPropagation() { },
-		preventDefault() { },
-		pageX: x,
-		changedTouches: [{
-			screenX: x
-		}],
-		target: {
-			classList: {
-				contains() { return true; }
-			}
-		}
-	};
-}
+let widget: Harness<SlidePaneProperties, typeof SlidePane>;
 
-/* for some reasons, it is "difficult" to explicitly type mixin class instance, so creating an
- * instance just to extract type information */
-let harness = new TestHarness(SlidePane);
+const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+	Quisque id purus ipsum. Aenean ac purus purus.
+	Nam sollicitudin varius augue, sed lacinia felis tempor in.`;
 
 registerSuite({
 	name: 'SlidePane',
 
 	beforeEach() {
-		harness = new TestHarness(SlidePane);
+		widget = harness(SlidePane);
 	},
 
 	afterEach() {
-		harness.destroy();
+		widget.destroy();
 	},
 
 	'Should construct SlidePane with passed properties'() {
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		widget.setProperties({
 			key: 'foo',
 			align: Align.left,
 			open: true,
 			underlay: true
 		});
 
-		assert.strictEqual(slidePane.properties.key, 'foo');
-		assert.strictEqual(slidePane.properties.align, Align.left);
-		assert.isTrue(slidePane.properties.open);
-		assert.isTrue(slidePane.properties.underlay);
+		widget.setChildren(GREEKING);
+
+		widget.expectRender(v('div', {
+			onmousedown: widget.listener,
+			onmousemove: widget.listener,
+			onmouseup: widget.listener,
+			ontouchend: widget.listener,
+			ontouchmove: widget.listener,
+			ontouchstart: widget.listener,
+			classes: widget.classes(css.root)
+		}, [
+			v('div', {
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.underlay, css.underlayVisible),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				key: 'underlay'
+			}),
+			v('div', {
+				key: 'content',
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
+				styles: {
+					width: '256px'
+				}
+			}, [ GREEKING ])
+		]));
 	},
 
 	'Render correct children'() {
-		harness.setProperties({
+		widget.setProperties({
 			key: 'foo',
 			underlay: false
 		});
 
-		harness.addRenderAssertion((render: any) => {
-			assert.strictEqual(render.vnodeSelector, 'div', 'tagname should be div');
-			assert.lengthOf(render.children, 1);
-
-			harness.setProperties({
-				open: true,
-				underlay: true,
-				align: Align.right,
-				width: 256
-			});
-		}, (render: any) => {
-			assert.lengthOf(render.children, 2);
-		});
-
-		return harness.startRender();
+		widget.expectRender(v('div', {
+			onmousedown: widget.listener,
+			onmousemove: widget.listener,
+			onmouseup: widget.listener,
+			ontouchend: widget.listener,
+			ontouchmove: widget.listener,
+			ontouchstart: widget.listener,
+			classes: widget.classes(css.root)
+		}, [
+			null,
+			v('div', {
+				key: 'content',
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.content, css.left),
+				styles: {
+					width: '256px'
+				}
+			}, [])
+		]));
 	},
 
 	onOpen() {
 		let called = false;
 
-		harness.setProperties({
+		widget.setProperties({
 			open: true,
 			onOpen() {
 				called = true;
 			}
 		});
 
-		harness.addRenderAssertion(() => {
-			assert.isTrue(called, 'onOpen should be called');
-		});
+		widget.getRender();
 
-		return harness.startRender();
+		assert.isTrue(called, 'onOpen should be called');
 	},
 
 	'change property to close'() {
-		harness.setProperties({
+		widget.setProperties({
 			open: true
 		});
 
-		harness.addRenderAssertion((render: any) => {
-			assert.lengthOf(render.children, 2, 'should have two children nodes');
+		widget.expectRender(v('div', {
+			onmousedown: widget.listener,
+			onmousemove: widget.listener,
+			onmouseup: widget.listener,
+			ontouchend: widget.listener,
+			ontouchmove: widget.listener,
+			ontouchstart: widget.listener,
+			classes: widget.classes(css.root)
+		}, [
+			v('div', {
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.underlay),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				key: 'underlay'
+			}),
+			v('div', {
+				key: 'content',
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
+				styles: {
+					width: '256px'
+				}
+			}, [])
+		]));
 
-			harness.setProperties({
-				open: false
-			});
-		}, (render: any) => {
-			assert.lengthOf(render.children, 1, 'should have one child node');
+		widget.setProperties({
+			open: false
 		});
 
-		return harness.startRender();
+		widget.expectRender(v('div', {
+			onmousedown: widget.listener,
+			onmousemove: widget.listener,
+			onmouseup: widget.listener,
+			ontouchend: widget.listener,
+			ontouchmove: widget.listener,
+			ontouchstart: widget.listener,
+			classes: widget.classes(css.root)
+		}, [
+			null,
+			v('div', {
+				key: 'content',
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.content, css.left, css.slideOut),
+				styles: {
+					width: '256px'
+				}
+			}, [])
+		]));
 	},
 
-	async 'click underlay to close'() {
+	'click underlay to close'() {
 		let called = false;
 
-		harness.setProperties({
+		widget.setProperties({
 			open: true,
-
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		await harness.append();
-
-		harness.sendEvent('mousedown', 'CustomEvent', {
+		widget.sendEvent('mousedown', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 300
 			},
-
 			selector: ':first-child' /* this should be the underlay */
 		});
 
-		/* using MouseEvent here causes issues between pepjs and jsdom, therefore we will use custom event */
-		harness.sendEvent('mouseup', 'CustomEvent', {
+		widget.sendEvent('mouseup', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 300
 			},
-
 			selector: ':first-child' /* this should be the underlay */
 		});
 
-		assert.isTrue(called, 'onRequestClose should be called on underlay click');
+		assert.isTrue(called, 'onRequestClose should have been called');
 	},
 
-	async 'tap underlay to close'(this: any) {
+	'tap underlay to close'(this: any) {
 		if (!hasTouch) {
 			this.skip('Environment not support touch events');
 		}
 
 		let called = false;
 
-		harness.setProperties({
+		widget.setProperties({
 			open: true,
-
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		await harness.append();
-
-		harness.sendEvent('touchstart', 'CustomEvent', {
+		widget.sendEvent('touchstart', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 300 } ]
 			},
-
 			selector: ':first-child' /* this should be the underlay */
 		});
 
-		harness.sendEvent('touchend', 'CustomEvent', {
+		widget.sendEvent('touchend', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 300 } ]
 			},
 
@@ -189,36 +231,30 @@ registerSuite({
 		assert.isTrue(called, 'onRequestClose should be called on underlay tap');
 	},
 
-	async 'drag to close'() {
+	'drag to close'() {
 		let called = false;
 
-		harness.setProperties({
+		widget.setProperties({
 			open: true,
-
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		await harness.append();
-
-		harness.sendEvent('mousedown', 'CustomEvent', {
+		widget.sendEvent('mousedown', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 300
 			}
 		});
 
-		harness.sendEvent('mousemove', 'CustomEvent', {
+		widget.sendEvent('mousemove', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 150
 			}
 		});
 
-		harness.sendEvent('mouseup', 'CustomEvent', {
+		widget.sendEvent('mouseup', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 50
 			}
 		});
@@ -226,47 +262,40 @@ registerSuite({
 		assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
 	},
 
-	async 'swipe to close'(this: any) {
+	'swipe to close'(this: any) {
 		if (!hasTouch) {
 			this.skip('Environment not support touch events');
 		}
 
 		let called = false;
 
-		harness.setProperties({
+		widget.setProperties({
 			open: true,
-
 			onRequestClose() {
 				called = true;
 			}
 		});
 
-		await harness.append();
-
-		harness.sendEvent('touchmove', 'CustomEvent', {
+		widget.sendEvent('touchmove', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 150 } ]
 			}
 		});
 
-		harness.sendEvent('touchstart', 'CustomEvent', {
+		widget.sendEvent('touchstart', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 300 } ]
 			}
 		});
 
-		harness.sendEvent('touchmove', 'CustomEvent', {
+		widget.sendEvent('touchmove', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 150 } ]
 			}
 		});
 
-		harness.sendEvent('touchend', 'CustomEvent', {
+		widget.sendEvent('touchend', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 50 } ]
 			}
 		});
@@ -274,14 +303,14 @@ registerSuite({
 		assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
 	},
 
-	async 'swipe to close right'(this: any) {
+	'swipe to close right'(this: any) {
 		if (!hasTouch) {
 			this.skip('Environment not support touch events');
 		}
 
 		let called = false;
 
-		harness.setProperties({
+		widget.setProperties({
 			align: Align.right,
 			open: true,
 			width: 256,
@@ -291,25 +320,20 @@ registerSuite({
 			}
 		});
 
-		await harness.append();
-
-		harness.sendEvent('touchstart', 'CustomEvent', {
+		widget.sendEvent('touchstart', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 300 } ]
 			}
 		});
 
-		harness.sendEvent('touchmove', 'CustomEvent', {
+		widget.sendEvent('touchmove', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 400 } ]
 			}
 		});
 
-		harness.sendEvent('touchend', 'CustomEvent', {
+		widget.sendEvent('touchend', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				changedTouches: [ { screenX: 500 } ]
 			}
 		});
@@ -317,10 +341,10 @@ registerSuite({
 		assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
 	},
 
-	async 'not dragged far enough to close'() {
+	'not dragged far enough to close'() {
 		let called = false;
 
-		harness.setProperties({
+		widget.setProperties({
 			open: true,
 
 			onRequestClose() {
@@ -328,31 +352,20 @@ registerSuite({
 			}
 		});
 
-		harness.setChildren([
-			`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			Quisque id purus ipsum. Aenean ac purus purus.
-			Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-		]);
-
-		await harness.append();
-
-		harness.sendEvent('mousedown', 'CustomEvent', {
+		widget.sendEvent('mousedown', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 300
 			}
 		});
 
-		harness.sendEvent('mousemove', 'CustomEvent', {
+		widget.sendEvent('mousemove', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 250
 			}
 		});
 
-		harness.sendEvent('mouseup', 'CustomEvent', {
+		widget.sendEvent('mouseup', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 250
 			}
 		});
@@ -360,105 +373,210 @@ registerSuite({
 		assert.isFalse(called, 'onRequestClose should not be called if not swiped far enough to close');
 	},
 
-	async 'pane cannot be moved past screen edge'() {
-		// const slidePane = new SlidePane();
-
-		harness.setProperties({
+	'pane cannot be moved past screen edge'() {
+		widget.setProperties({
 			open: true
 		});
 
-		harness.setChildren([
-			`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-			Quisque id purus ipsum. Aenean ac purus purus.
-			Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-		]);
+		widget.setChildren(GREEKING);
 
-		await harness.append();
-
-		harness.sendEvent('mousedown', 'CustomEvent', {
+		widget.sendEvent('mousedown', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 300
 			},
 
-			selector: ':last-child'
+			selector: ':last-child :first-child' /* this should be the content */
 		});
 
-		harness.sendEvent('mousemove', 'CustomEvent', {
+		widget.sendEvent('mousemove', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 400
 			},
 
-			selector: ':last-child'
+			selector: ':last-child :first-child' /* this should be the content */
 		});
 
-		harness.sendEvent('mouseup', 'CustomEvent', {
+		assert(!((<HTMLElement> widget.getDom().lastChild).style.transform));
+
+		widget.sendEvent('mouseup', {
 			eventInit: <MouseEventInit> {
-				bubbles: true,
 				pageX: 500
 			},
 
-			selector: ':last-child'
+			selector: ':last-child :first-child' /* this should be the content */
 		});
 
-		assert.isUndefined(harness.widgetElement && (<HTMLElement> harness.widgetElement.lastChild).style.transform);
+		assert(!((<HTMLElement> widget.getDom().lastChild).style.transform));
 	},
 
 	'classes and transform removed after transition'() {
-		let called = false;
+		widget.setProperties({
+			open: true
+		});
 
-		const event: any = {
-			target: {
-				addEventListener() {},
-				classList: {
-					remove() {
-						called = true;
-						assert.strictEqual(arguments[0], css.slideIn, 'slideIn class should be removed after transition');
-						assert.strictEqual(arguments[1], css.slideOut, 'slideOut class should be removed after transition');
-					}
-				},
-				style: { transform: 'foobar' }
-			}
-		};
+		const content = <HTMLElement> widget.getDom().lastChild;
 
-		const slidePane = new SlidePane();
-		(<any> slidePane)._onTransitionEnd(event);
+		assert.isTrue(content.classList.contains(css.slideIn), 'should have css.slideIn');
+		content.classList.add(css.slideOut);
+		assert.isTrue(content.classList.contains(css.slideOut), 'shuld have css.slideOut');
+		content.style.transform = 'translateX(1%)';
 
-		assert.strictEqual(event.target.style.transform, '');
-		assert.isTrue(called, `Element.classList.remove should be called when transition finishes`);
+		widget.sendEvent('transitionend', {
+			selector: ':last-child'
+		});
+
+		assert.isFalse(content.classList.contains(css.slideIn), 'should not have css.slideIn');
+		assert.isFalse(content.classList.contains(css.slideOut), 'shuld not have css.slideOut');
+		assert.strictEqual(content.style.transform, '', 'transform should be removed');
 	},
 
 	'last transform is applied on next render if being swiped closed'() {
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		widget.setProperties({
 			open: true
 		});
-		<VNode> slidePane.__render__();
-		slidePane.setProperties({ open: false });
-		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
-		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
-		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 50));
-		const vnode = <VNode> slidePane.__render__();
 
-		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
+		widget.setChildren(GREEKING);
+
+		const expected = v('div', {
+			onmousedown: widget.listener,
+			onmousemove: widget.listener,
+			onmouseup: widget.listener,
+			ontouchend: widget.listener,
+			ontouchmove: widget.listener,
+			ontouchstart: widget.listener,
+			classes: widget.classes(css.root)
+		}, [
+			v('div', {
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.underlay),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				key: 'underlay'
+			}),
+			v('div', {
+				key: 'content',
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
+				styles: {
+					width: '256px'
+				}
+			}, [ GREEKING ])
+		]);
+
+		widget.expectRender(expected);
+
+		widget.setProperties({
+			open: false
+		});
+
+		widget.sendEvent('mousedown', {
+			eventInit: <MouseEventInit> {
+				pageX: 300
+			},
+			selector: ':last-child'
+		});
+
+		widget.sendEvent('mousemove', {
+			eventInit: <MouseEventInit> {
+				pageX: 150
+			},
+			selector: ':last-child'
+		});
+
+		widget.sendEvent('mouseup', {
+			eventInit: <MouseEventInit> {
+				pageX: 50
+			},
+			selector: ':last-child'
+		});
+
+		assignProperties(expected, { classes: widget.classes(css.root) });
+		replaceChild(expected, 0, null);
+		assignChildProperties(expected, 1, {
+			classes: widget.classes(css.content, css.left, css.slideOut),
+			styles: {
+				transform: 'translateX(-97.65625%)',
+				width: '256px'
+			}
+		});
+		widget.expectRender(expected);
 	},
 
 	'last transform is applied on next render if being swiped closed right'() {
-		const slidePane = new SlidePane();
-		slidePane.setProperties({
+		widget.setProperties({
+			align: Align.right,
 			open: true
 		});
-		<VNode> slidePane.__render__();
-		slidePane.setProperties({
-			open: false,
-			align: Align.right
-		});
-		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
-		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
-		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 500));
-		const vnode = <VNode> slidePane.__render__();
 
-		assert.isDefined(vnode.children![0].properties!.styles!['transform'], 'transform should be applied');
+		widget.setChildren(GREEKING);
+
+		const expected = v('div', {
+			onmousedown: widget.listener,
+			onmousemove: widget.listener,
+			onmouseup: widget.listener,
+			ontouchend: widget.listener,
+			ontouchmove: widget.listener,
+			ontouchstart: widget.listener,
+			classes: widget.classes(css.root)
+		}, [
+			v('div', {
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.underlay),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				key: 'underlay'
+			}),
+			v('div', {
+				key: 'content',
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.content, css.right, css.open, css.slideIn),
+				styles: {
+					width: '256px'
+				}
+			}, [ GREEKING ])
+		]);
+
+		widget.expectRender(expected);
+
+		widget.setProperties({
+			align: Align.right,
+			open: false
+		});
+
+		widget.sendEvent('mousedown', {
+			eventInit: <MouseEventInit> {
+				pageX: 300
+			},
+			selector: ':last-child'
+		});
+
+		widget.sendEvent('mousemove', {
+			eventInit: <MouseEventInit> {
+				pageX: 400
+			},
+			selector: ':last-child'
+		});
+
+		widget.sendEvent('mouseup', {
+			eventInit: <MouseEventInit> {
+				pageX: 500
+			},
+			selector: ':last-child'
+		});
+
+		assignProperties(expected, { classes: widget.classes(css.root) });
+		replaceChild(expected, 0, null);
+		assignChildProperties(expected, 1, {
+			classes: widget.classes(css.content, css.right, css.slideOut),
+			styles: {
+				transform: 'translateX(78.125%)',
+				width: '256px'
+			}
+		});
+		widget.expectRender(expected);
 	}
 });
