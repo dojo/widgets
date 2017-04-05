@@ -32,6 +32,8 @@ export type Role = 'menu' | 'menubar';
  * @property nested				Indicates whether the menu is nested within another menu.
  * @property onRequestHide		Called when the menu is displayed and the trigger is activated.
  * @property onRequestShow		Called when the menu is hidden and the trigger is activated.
+ * @property orientation		Determines whether the menu is rendered horizontally.
+ * @property parentOrientation	Indicates the orientation of the menu's parent (if applicable).
  * @property role				The value to use for the menu's `role` property. Defaults to 'menu'.
  */
 export interface MenuProperties extends ThemeableProperties {
@@ -49,6 +51,7 @@ export interface MenuProperties extends ThemeableProperties {
 	onRequestHide?: () => void;
 	onRequestShow?: () => void;
 	orientation?: Orientation;
+	parentOrientation?: Orientation;
 	role?: Role;
 }
 
@@ -62,26 +65,16 @@ export const enum Operation {
 	increase
 }
 
-const commonKeys = {
-	enter: 13,
-	escape: 27,
-	space: 32,
-	tab: 9
+const enum Keys {
+	down = 40,
+	enter = 13,
+	escape = 27,
+	left = 37,
+	right = 39,
+	space =  32,
+	tab = 9,
+	up = 38
 };
-
-const horizontalKeys = assign({
-	ascend: 38, // up arrow
-	decrease: 37, // left arrow
-	descend: 40, // down arrow
-	increase: 39 // right arrow
-}, commonKeys);
-
-const verticalKeys = assign({
-	ascend: 37, // left arrow
-	decrease: 38, // up arrow
-	descend: 39, // right arrow
-	increase: 40 // down arrow
-}, commonKeys);
 
 export const MenuBase = StatefulMixin(ThemeableMixin(WidgetBase));
 
@@ -152,6 +145,23 @@ export class Menu extends MenuBase<MenuProperties> {
 				onKeyDown: this.onLabelKeyDown
 			}, [ label ]);
 		}
+	}
+
+	private _getKeys() {
+		const { orientation = this.getDefaultOrientation(), parentOrientation } = this.properties;
+		const isHorizontal = orientation === 'horizontal';
+
+		return assign({
+			ascend: isHorizontal ? Keys.up : Keys.left,
+			decrease: isHorizontal ? Keys.left : Keys.up,
+			descend: isHorizontal || parentOrientation === 'horizontal' ? Keys.down : Keys.right,
+			increase: isHorizontal ? Keys.right : Keys.down
+		}, {
+			enter: Keys.enter,
+			escape: Keys.escape,
+			space: Keys.space,
+			tab: Keys.tab
+		});
 	}
 
 	protected animate(element: HTMLElement) {
@@ -295,16 +305,20 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	protected onLabelKeyDown(event: KeyboardEvent) {
-		const { disabled, orientation = this.getDefaultOrientation() } = this.properties;
-		const keys = orientation === 'horizontal' ? horizontalKeys : verticalKeys;
+		const { disabled } = this.properties;
 
 		if (!disabled) {
+			const keys = this._getKeys();
 			const key = event.keyCode;
 
 			if (key === keys.enter) {
 				this.toggleDisplay();
 			}
 			else if (key === keys.descend) {
+				if (key === Keys.down) {
+					event.preventDefault();
+				}
+
 				this.toggleDisplay(true);
 			}
 		}
@@ -328,8 +342,8 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	protected onMenuKeyDown(event: KeyboardEvent) {
-		const { label, orientation = this.getDefaultOrientation() } = this.properties;
-		const keys = orientation === 'horizontal' ? horizontalKeys : verticalKeys;
+		const { label } = this.properties;
+		const keys = this._getKeys();
 
 		switch (event.keyCode) {
 			case keys.space:

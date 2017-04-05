@@ -446,9 +446,12 @@ registerSuite({
 				label: 'Menu label',
 				orientation: 'horizontal'
 			});
-			(<any> menu).onLabelKeyDown(<any> { keyCode: 40 });
+
+			const preventDefault = sinon.spy();
+			(<any> menu).onLabelKeyDown(<any> { keyCode: 40, preventDefault });
 			(<any> menu).onLabelKeyDown(<any> {});
 
+			assert.isTrue(preventDefault.called, 'the default action should be prevented to prevent scrolling');
 			assert.notOk(menu.properties.hidden, 'the submenu should not be hidden');
 		},
 
