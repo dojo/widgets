@@ -35,7 +35,7 @@ export interface MenuItemProperties extends ThemeableProperties {
 	focusable?: boolean;
 	hasMenu?: boolean;
 	hasPopup?: boolean;
-	index?: boolean;
+	index?: number;
 	onClick?: (event: MouseEvent) => void;
 	onKeyDown?: (event: KeyboardEvent) => void;
 	properties?: VirtualDomProperties;

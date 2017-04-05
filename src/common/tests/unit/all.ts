@@ -20,3 +20,4 @@ import '../../../select/tests/unit/Select';
 import '../../../select/tests/unit/SelectOption';
 import '../../../menu/tests/unit/Menu';
 import '../../../menu/tests/unit/MenuItem';
+import '../../../menu/tests/unit/SubMenu';

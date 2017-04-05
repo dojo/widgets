@@ -5,6 +5,7 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Menu, { Orientation, Role } from '../Menu';
 import MenuItem, { MenuItemType } from '../MenuItem';
+import SubMenu from '../SubMenu';
 
 const AppBase = StatefulMixin(WidgetBase);
 
@@ -130,7 +131,7 @@ export class App extends AppBase<WidgetProperties> {
 					}
 				}, [ 'Dojo 2' ]),
 
-				w(Menu, {
+				w(SubMenu, {
 					animate: <boolean> animate,
 					disabled: <boolean> disabled,
 					expandOnClick: <boolean> expandOnClick,

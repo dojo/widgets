@@ -1,13 +1,13 @@
-# `@dojo/widgets/menu/Menu`
+# Creating Menus
 
-`Menu` is a widget that provides a list of actions, with the ability to nest menus. Common examples include horizontal menubars used for app navigation on wider screens, vertical menubars used in a `SlidePane` on smaller screens, and the reply/reply all/forward menus found in mail applications. Due to the generic nature of `Menu`, there are certain patterns that should be followed when using it to guarantee the best experience for all app users.
+Dojo 2 provides a set of widgets that can be used to create menus: `MenuItem`, which wraps a `DNode` and represents a single item within a menu; `Menu`, which renders a list of menu items; and `SubMenu`, which renders a `Menu` with an additional `MenuItem` used to toggle the menu in and out of view. Due to the generic nature of `Menu`, there are certain patterns that should be followed when using it to guarantee the best experience for all users.
 
 ## Basic Usage
 
 `Menu` is used in tandem with `MenuItem`, a helper widget that provides mouse and keyboard handlers for menu operations and ensures menu items have the proper ARIA roles and properties.
 
 ```typescript
-// Basic example
+// Basic example: a simple menu that renders a list of actions
 w(Menu, {}, [
 	w(MenuItem, {
 		onClick: () => {
@@ -61,8 +61,8 @@ w(Menu, {
 ```
 
 ```typescript
-// Menu toggled open/closed with a trigger
-w(Menu, {
+// Menu toggled open/closed with a trigger, where `this` is parent widget
+w(SubMenu, {
 	hidden: this.state.hidden,
 	label: 'More',
 	onRequestHide: () => {
@@ -96,7 +96,7 @@ w(Menu, {
 
 ### `Menu` types
 
-`Menu` supports two `role` properties: `'menu'` and `'menubar'`. If the menu will always be visible, use `'menubar'`. Otherwise, the default `'menu'` can be used.
+`Menu` supports two `role` properties: `'menu'` and `'menubar'`. If the menu will always be visible, use `'menubar'`. Otherwise, the default `'menu'` can be used. `SubMenu` by nature is not persistent, so its `role` is always `menu`.
 
 ### `MenuItem` types
 
@@ -144,22 +144,22 @@ w(Menu, {}, [
 
 ### Keyboard Navigation
 
-`Menu` follows the [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices-1.1/#menu) for menus to the extent that the various use cases are described. As such, menus exhibit the following behavior:
+`Menu` and `SubMenu` follow the [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices-1.1/#menu) for menus to the extent that the various use cases are described. As such, menus exhibit the following behavior:
 
 - One `tab` press into a top-level menu, one `tab` press out of it.
 - Arrow keys control navigation between items within a menu (see below).
-- Pressing the escape key within a submenu closes the submenu. When the submenu is re-opened, focus is placed on the first item.
-- Pressing the enter key triggers an item's action. If the item is used as the trigger for a submenu, then the submenu is toggled opened/closed.
-- Pressing the space key triggers an item's action. If the item is used as the trigger for a submenu, then the submenu is toggled opened/closed.
+- Pressing the escape key within a `SubMenu` closes its menu. When the menu is re-opened, focus is placed on the first item.
+- Pressing the enter key triggers an item's action. If the item is used as the trigger for a `SubMenu`, then its menu is toggled opened/closed.
+- Pressing the space key triggers an item's action. If the item is used as the trigger for a `SubMenu`, then its menu is toggled opened/closed.
 
 **Arrow key navigation with `orientation="horizontal"`**:
 - Pressing the left arrow key moves focus to the previous item. If the first item is currently selected, focus is moved to the last item.
 - Pressing the right arrow key moves focus to the next item. If the last item is currently selected, focus is moved to the first item.
-- Pressing the down arrow key when focus is on a trigger for a submenu moves focus into the submenu, placing the focus on the previously-focused item. If the submenu is hidden, it will be displayed.
-- Pressing the up arrow key when focus is on an item within a submenu moves focus back to the trigger item. The next time the submenu receives focus, the previously-focused item receives the focus. Pressing the up arrow key has no effect in other circumstances.
+- Pressing the down arrow key when focus is on a trigger for a `SubMenu` moves focus into its menu, placing the focus on the previously-focused item. If the menu is hidden, it is displayed.
+- Pressing the up arrow key when focus is on an item within a `SubMenu` moves focus back to its trigger. The next time the `SubMenu` receives focus, the previously-focused item receives the focus. Pressing the up arrow key has no effect in other circumstances.
 
 **Arrow key navigation with `orientation="vertical"` (the default)**:
 - Pressing the up arrow key moves focus to the previous item. If the first item is currently selected, focus is moved to the last item.
 - Pressing the down arrow key moves focus to the next item. If the last item is currently selected, focus is moved to the first item.
-- Pressing the right arrow key when focus is on a trigger for a submenu moves focus into the submenu, placing the focus on the previously-focused item. If the submenu is hidden, it will be displayed.
-- Pressing the left arrow key when focus is on an item within a submenu moves focus back to the trigger item. The next time the submenu receives focus, the previously-focused item receives the focus. Pressing the left arrow key has no effect in other circumstances.
+- Pressing the right arrow key when focus is on a trigger for a `SubMenu` moves focus its menu, placing the focus on the previously-focused item. If the menu is hidden, it is displayed.
+- Pressing the left arrow key when focus is on an item within a `SubMenu` moves focus back its trigger. The next time the `SubMenu` receives focus, the previously-focused item receives the focus. Pressing the left arrow key has no effect in other circumstances.

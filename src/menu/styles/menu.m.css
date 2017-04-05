@@ -49,11 +49,14 @@
 	width: 100%;
 }
 
-.subMenu {
-	box-shadow: 0 0;
+.nestedMenu {
 	box-sizing: border-box;
-	overflow: hidden;
+	box-shadow: 0 0;
 	padding: 0 15px;
+}
+
+.subMenu {
+	overflow: hidden;
 	transition: height var(--short-animation-duration) ease-in-out;
 }
 
