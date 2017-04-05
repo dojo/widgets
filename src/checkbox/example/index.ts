@@ -3,7 +3,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
-import Checkbox from '../../checkbox/Checkbox';
+import Checkbox, { Mode } from '../../checkbox/Checkbox';
 
 export const AppBase = StatefulMixin(WidgetBase);
 export class App extends AppBase<WidgetProperties> {
@@ -17,7 +17,8 @@ export class App extends AppBase<WidgetProperties> {
 		const {
 			c1 = true,
 			c2 = false,
-			c3 = false
+			c3 = false,
+			c4 = false
 		} = this.state;
 
 		return v('fieldset', [
@@ -25,14 +26,20 @@ export class App extends AppBase<WidgetProperties> {
 			w(Checkbox, {
 				key: 'c1',
 				checked: <boolean> c1,
-				label: 'Sample checkbox that starts checked',
+				label: {
+					content: 'Sample checkbox that starts checked',
+					before: false
+				},
 				value: 'c1',
 				onChange: this.onChange
 			}),
 			w(Checkbox, {
 				key: 'c2',
 				checked: <boolean> c2,
-				label: 'Sample disabled checkbox',
+				label: {
+					content: 'Sample disabled checkbox',
+					before: false
+				},
 				disabled: true,
 				value: 'c2',
 				onChange: this.onChange
@@ -40,9 +47,25 @@ export class App extends AppBase<WidgetProperties> {
 			w(Checkbox, {
 				key: 'c3',
 				checked: <boolean> c3,
-				label: 'Required checkbox',
+				label: {
+					content: 'Required checkbox',
+					before: false
+				},
 				required: true,
 				value: 'c3',
+				onChange: this.onChange
+			}),
+			w(Checkbox, {
+				key: 'c4',
+				checked: <boolean> c4,
+				label: {
+					content: 'Toggle with a label',
+					before: false
+				},
+				mode: Mode.toggle,
+				onLabel: 'On',
+				offLabel: 'Off',
+				value: 'c4',
 				onChange: this.onChange
 			})
 		]);

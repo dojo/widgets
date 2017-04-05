@@ -4,20 +4,26 @@
 	display: block;
 	font: var(--base-font);
 	margin-bottom: var(--line-spacing);
-	padding: 0.25em 0 0.25em 2em;
 	position: relative;
 }
 
 .input {
 	opacity: 0;
 	position: absolute;
-	z-index: -1;
+	top: 0;
+	left: 0;
+	width: calc(1.5em + 4px);
+	height: calc(1.5em + 4px);
+	margin: 0;
+	z-index: 1;
 }
 
 .inputWrapper {
-	left: 0;
-	position: absolute;
-	top: 0;
+	position: relative;
+	width: 1.5em;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 10px;
 }
 
 .inputWrapper::before,
@@ -75,4 +81,59 @@
 }
 .valid .inputWrapper::after {
 	background-color: var(--dojo-success-color);
+}
+
+/* Toggle mode */
+.toggle .inputWrapper {
+	width: var(--toggle-width);
+	overflow: hidden;
+}
+
+.toggle .input {
+	width: var(--toggle-width);
+}
+
+.toggle .inputWrapper::before {
+	width: var(--toggle-width);
+	position: relative;
+	background-color: var(--dojo-white);
+	transition: background-color var(--short-animation-duration) var(--short-animation-easing);
+}
+
+.toggle .inputWrapper::after {
+	transform: scale(1);
+	left: auto;
+	right: calc(100% - 1.5em + 3px);
+}
+
+.toggle.checked .inputWrapper::before {
+	background-color: var(--dojo-light-blue);
+}
+
+.toggle.checked .inputWrapper::after {
+	right: 3px;
+}
+
+.offLabel {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5px;
+	transition: all var(--short-animation-duration) var(--short-animation-easing);
+}
+
+.onLabel {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: calc(-100% + 1.5em);
+	transition: all var(--short-animation-duration) var(--short-animation-easing);
+}
+
+.toggle.checked .offLabel {
+	right: calc(-100% + 1.5em);
+}
+
+.toggle.checked .onLabel {
+	left: 5px;
 }
