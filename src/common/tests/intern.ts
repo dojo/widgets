@@ -56,7 +56,8 @@ export const loaderOptions = {
 		{ name: '@dojo', location: 'node_modules/@dojo' },
 		{ name: 'grunt-dojo2', location: 'node_modules/grunt-dojo2'},
 		{ name: 'pepjs', location: 'node_modules/pepjs/dist', main: 'pep' },
-		{ name: 'maquette', location: 'node_modules/maquette/dist', main: 'maquette' }
+		{ name: 'maquette', location: 'node_modules/maquette/dist', main: 'maquette' },
+		{ name: 'sinon', location: 'node_modules/sinon/pkg', main: 'sinon' }
 	]
 };
 

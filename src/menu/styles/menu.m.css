@@ -1,0 +1,66 @@
+@import '../../common/styles/variables.css';
+
+.root {
+	box-sizing: border-box;
+	position: relative;
+}
+
+.menu {
+	background: var(--menu-bg);
+	box-shadow: 0 0 2px 1px rgba(0,0,0,0.3);
+	font-family: sans-serif;
+	font-size: 14px;
+	padding: 5px 0;
+}
+
+.menu:focus {
+	outline: none;
+}
+
+.menuItem {
+	color: var(--title-bar-bg);
+	cursor: pointer;
+	display: block;
+	padding: 5px 10px;
+}
+
+.menuLabel {
+	composes: menuItem;
+}
+
+.menuItem:focus,
+.menuLabel:focus {
+	box-shadow: inset var(--input-focus-shadow);
+	outline: none;
+}
+
+.disabled {
+	cursor: default;
+	opacity: 0.3;
+}
+
+.selected {
+	background-color: var(--menu-selected-bg);
+	color: var(--menu-selected-color);
+}
+
+.nestedMenuRoot,
+.nestedMenu {
+	width: 100%;
+}
+
+.subMenu {
+	box-shadow: 0 0;
+	box-sizing: border-box;
+	overflow: hidden;
+	padding: 0 15px;
+	transition: height var(--short-animation-duration) ease-in-out;
+}
+
+.hidden { height: 0; }
+.visible { height: auto; }
+
+.horizontal {
+	display: flex;
+	flex-direction: row;
+}
