@@ -4,9 +4,11 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Menu, { Orientation, Role } from '../Menu';
+import MenuBar, { MenuBarProperties } from '../MenuBar';
 import MenuItem, { MenuItemType } from '../MenuItem';
-import SubMenu from '../SubMenu';
+import SubMenu, { MenuType, SubMenuProperties } from '../SubMenu';
 
+const BREAKPOINT = 800;
 const AppBase = StatefulMixin(WidgetBase);
 
 export class App extends AppBase<WidgetProperties> {
@@ -16,15 +18,15 @@ export class App extends AppBase<WidgetProperties> {
 
 	toggleDisabled(event: Event) {
 		this.setState({
-			disabled: (<any> event.target).checked,
-			packageMenuHidden: true
+			cliMenuDisabled: (<any> event.target).checked,
+			cliMenuHidden: true
 		});
 	}
 
 	toggleEvent(event: Event) {
 		this.setState({
 			expandOnClick: !(<any> event.target).checked,
-			packageMenuHidden: true
+			cliMenuHidden: true
 		});
 	}
 
@@ -59,7 +61,7 @@ export class App extends AppBase<WidgetProperties> {
 					}),
 					v('label', {
 						for: 'toggleDisabled'
-					}, [ 'Disable packages menu' ])
+					}, [ 'Disable CLI menu' ])
 				]),
 
 				v('span', [
@@ -86,75 +88,8 @@ export class App extends AppBase<WidgetProperties> {
 			]),
 
 			v('div', [
-				this.renderFileMenu(),
-				this.renderDojoMenu()
-			])
-		]);
-	}
-
-	renderDojoMenu() {
-		const packages = [
-			'cli',
-			'compose',
-			'core',
-			'has',
-			'interfaces',
-			'i18n',
-			'loader',
-			'routing',
-			'shim',
-			'stores',
-			'streams',
-			'widget-core',
-			'widgets'
-		];
-
-		const {
-			animate = true,
-			disabled,
-			expandOnClick,
-			packageMenuHidden
-		} = this.state;
-
-		return v('div', { style: 'float: left;' }, [
-			w(Menu, {
-				key: 'DojoMenu',
-				orientation: <Orientation> 'vertical',
-				role: <Role> 'menubar'
-			}, [
-				w(MenuItem, {
-					key: 'DojoMenuLabel',
-					tag: 'a',
-					properties: {
-						href: 'http://dojo.io',
-						target: '_blank'
-					}
-				}, [ 'Dojo 2' ]),
-
-				w(SubMenu, {
-					animate: <boolean> animate,
-					disabled: <boolean> disabled,
-					expandOnClick: <boolean> expandOnClick,
-					hidden: <boolean> packageMenuHidden,
-					key: 'menu1-sub1',
-					label: 'Dojo 2 Packages',
-					nested: true,
-					onRequestHide: () => {
-						this.setState({ packageMenuHidden: true });
-					},
-					onRequestShow: () => {
-						this.setState({ packageMenuHidden: false });
-					}
-				}, packages.map((label, i) => {
-					return w(MenuItem, {
-						key: `menu1-sub1-item${i}`,
-						tag: 'a',
-						properties: {
-							href: `https://github.com/dojo/${label}`,
-							target: '_blank'
-						}
-					}, [ label ]);
-				}))
+				this.renderMenuBar(),
+				this.renderFileMenu()
 			])
 		]);
 	}
@@ -167,7 +102,7 @@ export class App extends AppBase<WidgetProperties> {
 		return v('div', { style: 'float: left; margin: 0 50px 50px 0;' }, [
 			w(Menu, {
 				key: 'ChromeFileMenu',
-				orientation: this.state['isFileMenuHorizontal'] ? 'horizontal' : 'vertical' as Orientation,
+				orientation: this.state.isFileMenuHorizontal ? 'horizontal' : 'vertical' as Orientation,
 				role: <Role> 'menubar'
 			}, [
 				'New Tab',
@@ -198,6 +133,92 @@ export class App extends AppBase<WidgetProperties> {
 				}, [ name ]);
 			}))
 		]);
+	}
+
+	renderMenuBar() {
+		return v('div', {
+			style: 'margin-bottom: 50px;'
+		}, [
+			w(MenuBar, <MenuBarProperties> {
+				breakpoint: BREAKPOINT,
+				open: this.state.slidePaneOpen,
+				onRequestClose: () => {
+					this.setState({ slidePaneOpen: false });
+				},
+				onRequestOpen: () => {
+					this.setState({ slidePaneOpen: true });
+				},
+				slidePaneButtonLabel: 'Show Menu'
+			}, [ this._getPackageMenu() ])
+		]);
+	}
+
+	private _getCliPackageMenu() {
+		const items = [
+			'cli',
+			'cli-build',
+			'cli-create-app',
+			'cli-test-intern'
+		].map((label, i) => {
+			return w(MenuItem, {
+				key: `menu1-sub1-item${i}`,
+				tag: 'a',
+				properties: {
+					href: `https://github.com/dojo/${label}`,
+					target: '_blank'
+				}
+			}, [ label ]);
+		});
+
+		const { cliMenuDisabled = false, cliMenuHidden = true, expandOnClick = true } = this.state;
+
+		return w(SubMenu, <SubMenuProperties> {
+			disabled: cliMenuDisabled,
+			expandOnClick,
+			hidden: cliMenuHidden,
+			label: 'cli',
+			onRequestHide: () => {
+				this.setState({ cliMenuHidden: true });
+			},
+			onRequestShow: () => {
+				this.setState({ cliMenuHidden: false });
+			},
+			parentOrientation: document.body.offsetWidth >= BREAKPOINT ? 'horizontal' : 'vertical' as Orientation,
+			type: document.body.offsetWidth >= BREAKPOINT ? 'dropdown' : 'inline' as MenuType
+		}, items);
+	}
+
+	private _getPackageMenu() {
+		const children = [ this._getCliPackageMenu() ]
+			.concat([
+				'compose',
+				'core',
+				'has',
+				'interfaces',
+				'i18n',
+				'loader',
+				'routing',
+				'shim',
+				'stores',
+				'streams',
+				'widget-core',
+				'widgets'
+			].map((label, i) => {
+				return w(MenuItem, {
+					key: `menu1-sub1-item${i + 1}`,
+					tag: 'a',
+					properties: {
+						href: `https://github.com/dojo/${label}`,
+						target: '_blank'
+					}
+				}, [ label ]);
+			}));
+
+		return w(Menu, {
+			key: 'DojoMenu',
+			orientation: document.body.offsetWidth >= BREAKPOINT ? 'horizontal' : 'vertical' as Orientation,
+			role: <Role> 'menubar'
+		}, children);
 	}
 }
 

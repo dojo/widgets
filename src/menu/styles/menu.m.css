@@ -22,6 +22,7 @@
 	cursor: pointer;
 	display: block;
 	padding: 5px 10px;
+	text-decoration: underline;
 }
 
 .menuLabel {
@@ -44,10 +45,7 @@
 	color: var(--menu-selected-color);
 }
 
-.nestedMenuRoot,
-.nestedMenu {
-	width: 100%;
-}
+.nestedMenuRoot {}
 
 .nestedMenu {
 	box-sizing: border-box;
@@ -62,6 +60,7 @@
 .inline.subMenu {
 	overflow: hidden;
 	transition: height var(--short-animation-duration) ease-in-out;
+	width: 100%;
 }
 
 .popup.subMenu,
