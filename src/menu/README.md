@@ -65,6 +65,7 @@ w(Menu, {
 w(SubMenu, {
 	hidden: this.state.hidden,
 	label: 'More',
+	type: 'dropdown', // render as a dropdown, rather than as an accordion
 	onRequestHide: () => {
 		this.setState({ hidden: true });
 	},

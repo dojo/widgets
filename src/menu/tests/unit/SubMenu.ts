@@ -120,7 +120,124 @@ registerSuite({
 		assert.strictEqual(menu.properties.label, 'Menu Label');
 	},
 
+	type() {
+		const menu = new SubMenu();
+		menu.setProperties({ label: 'Menu label' });
+		let vnode: any = menu.__render__();
+		let menuNode: any = vnode.children[1];
+
+		assert.isTrue(menuNode.properties.classes[css.inline], 'should be "inline" by default');
+
+		menu.setProperties({ label: 'Menu label', type: 'dropdown' });
+		vnode = menu.__render__();
+		menuNode = vnode.children[1];
+		assert.isTrue(menuNode.properties.classes[css.dropDown]);
+
+		menu.setProperties({ label: 'Menu label', type: 'popup' });
+		vnode = menu.__render__();
+		menuNode = vnode.children[1];
+		assert.isTrue(menuNode.properties.classes[css.popup]);
+	},
+
+	position() {
+		const menu = new SubMenu();
+		menu.setProperties({ label: 'Menu label' });
+		let vnode: any = menu.__render__();
+		let menuNode: any = vnode.children[1];
+
+		assert.notOk(menuNode.properties.classes[css.top]);
+		assert.notOk(menuNode.properties.classes[css.right]);
+		assert.notOk(menuNode.properties.classes[css.bottom]);
+		assert.notOk(menuNode.properties.classes[css.left]);
+
+		menu.setProperties({ label: 'Menu label', position: { x: 'left' }});
+		vnode = menu.__render__();
+		menuNode = vnode.children[1];
+
+		assert.notOk(menuNode.properties.classes[css.top]);
+		assert.notOk(menuNode.properties.classes[css.right]);
+		assert.notOk(menuNode.properties.classes[css.bottom]);
+		assert.isTrue(menuNode.properties.classes[css.left]);
+
+		menu.setProperties({ label: 'Menu label', position: { x: 'left', y: 'bottom' }});
+		vnode = menu.__render__();
+		menuNode = vnode.children[1];
+
+		assert.notOk(menuNode.properties.classes[css.top]);
+		assert.notOk(menuNode.properties.classes[css.right]);
+		assert.isTrue(menuNode.properties.classes[css.bottom]);
+		assert.isTrue(menuNode.properties.classes[css.left]);
+
+		menu.setProperties({ label: 'Menu label', position: { x: 'right', y: 'top' }});
+		vnode = menu.__render__();
+		menuNode = vnode.children[1];
+
+		assert.isTrue(menuNode.properties.classes[css.top]);
+		assert.isTrue(menuNode.properties.classes[css.right]);
+		assert.notOk(menuNode.properties.classes[css.bottom]);
+		assert.notOk(menuNode.properties.classes[css.left]);
+	},
+
 	animate: {
+		'when `type` is not "inline"': {
+			'state classes added immediately'() {
+				const menu = new SubMenu();
+				menu.setProperties({
+					label: 'Menu label',
+					type: 'popup'
+				});
+
+				let vnode: any = menu.__render__();
+				let menuNode = vnode.children[1];
+				let element: any = getMockNavElement();
+
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
+				assert.isTrue(menuNode.properties.classes[css.hidden]);
+
+				menu.setProperties({
+					label: 'Menu label',
+					hidden: false,
+					type: 'popup'
+				});
+
+				vnode = menu.__render__();
+				menuNode = vnode.children[1];
+				element = getMockNavElement();
+
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
+				assert.isTrue(menuNode.properties.classes[css.visible]);
+			},
+
+			'style.height not reset on initialization'() {
+				const menu = new SubMenu();
+				menu.setProperties({
+					label: 'Menu label',
+					type: 'popup'
+				});
+				const element: any = getMockNavElement();
+				(<any> menu).onElementCreated(element, 'menu');
+
+				assert.isNull(element.style.height, 'style.height should not be modified');
+			},
+
+			'style.height removed on subsequent renders'() {
+				const menu = new SubMenu();
+				const element = getMockNavElement();
+				menu.setProperties({
+					label: 'Menu label',
+					type: 'popup'
+				});
+
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
+
+				const styleHistory = element.styleHistory;
+				assert.sameMembers(styleHistory.height, [ null, null ], 'style.height should be reset');
+			}
+		},
+
 		'when false': {
 			'state classes added immediately'() {
 				const menu = new SubMenu();
@@ -726,6 +843,24 @@ registerSuite({
 		menu.setProperties({ id: 'menu-42', label: 'Menu label' });
 		vnode = menu.__render__();
 		assert.strictEqual(vnode.children[1].properties.id, 'menu-42');
+	},
+
+	labelId() {
+		const menu = new SubMenu();
+		menu.setProperties({ label: 'Menu label' });
+		let vnode: any = menu.__render__();
+		let labelNode = vnode.children[0];
+		let menuNode = vnode.children[1];
+
+		assert.isString(labelNode.properties.id, 'label id should be generated');
+		assert.strictEqual(menuNode.properties['aria-labelledby'], labelNode.properties.id);
+
+		menu.setProperties({ label: 'Menu label', labelId: 'menu-42' });
+		vnode = menu.__render__();
+		labelNode = vnode.children[0];
+		menuNode = vnode.children[1];
+		assert.strictEqual(labelNode.properties.id, 'menu-42');
+		assert.strictEqual(menuNode.properties['aria-labelledby'], 'menu-42');
 	},
 
 	onMenuFocusOut: {

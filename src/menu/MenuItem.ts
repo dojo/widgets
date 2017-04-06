@@ -19,6 +19,7 @@ export type MenuItemType = 'item' | 'checkbox' | 'radio';
  * @property focusable		Determines whether the item can receive focus with tab key.
  * @property hasMenu		Indicates whether the widget is used as the label for a menu.
  * @property hasPopup		Indicates whether the widget has a drop down child.
+ * @property id				Specifies the ID for the widget.
  * @property index			Specifies the index of the item within a parent menu.
  * @property onClick		Called when the widget is activated via a click or space key.
  * @property onKeyDown		Called when keys are pressed while the widget has focus.
@@ -35,6 +36,7 @@ export interface MenuItemProperties extends ThemeableProperties {
 	focusable?: boolean;
 	hasMenu?: boolean;
 	hasPopup?: boolean;
+	id?: string;
 	index?: number;
 	onClick?: (event: MouseEvent) => void;
 	onKeyDown?: (event: KeyboardEvent) => void;
@@ -63,6 +65,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			focusable,
 			hasPopup = false,
 			hasMenu = false,
+			id,
 			index,
 			properties,
 			selected = false,
@@ -83,6 +86,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			'aria-disabled': disabled ? 'true' : undefined,
 			'data-dojo-index': typeof index === 'number' ? String(index) : undefined,
 			classes,
+			id,
 			key: 'root',
 			onclick: this.onClick,
 			onkeydown: this.onKeyDown,

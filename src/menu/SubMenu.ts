@@ -10,6 +10,8 @@ import Menu, { Keys, MenuProperties, Orientation, Role } from './Menu';
 import MenuItem from './MenuItem';
 import * as css from './styles/menu.m.css';
 
+export type MenuType = 'dropdown' | 'inline' | 'popup';
+
 /**
  * @type MenuProperties
  *
@@ -24,9 +26,12 @@ import * as css from './styles/menu.m.css';
  * @property hideOnActivate		Determines whether the menu should be hidden when an item is activated. Defaults to true.
  * @property index				Specifies the index of the menu trigger within a parent menu.
  * @property label				A DNode to use as the trigger for a nested menu.
+ * @property labelId			The ID for the menu trigger.
  * @property onRequestHide		Called when the menu is displayed and the trigger is activated.
  * @property onRequestShow		Called when the menu is hidden and the trigger is activated.
  * @property parentOrientation	Indicates the orientation of the menu's parent (if applicable).
+ * @property position			The position for dropdown/popup menu in relation to the trigger.
+ * @property type				Specifies the submenu's type.
  */
 export interface SubMenuProperties extends MenuProperties {
 	active?: boolean;
@@ -38,9 +43,12 @@ export interface SubMenuProperties extends MenuProperties {
 	hideOnActivate?: boolean;
 	index?: number;
 	label: DNode;
+	labelId?: string;
 	onRequestHide?: () => void;
 	onRequestShow?: () => void;
 	parentOrientation?: Orientation;
+	position?: { x?: 'left' | 'right'; y?: 'bottom' | 'top' };
+	type?: MenuType;
 }
 
 function getMenuHeight(menuElement: HTMLElement): number {
@@ -58,6 +66,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 	private _id = uuid();
 	private _initialRender = true;
 	private _isLabelActive = false;
+	private _labelId = uuid();
 	private _wasOpen = false;
 
 	constructor() {
@@ -91,6 +100,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			id = this._id,
 			index,
 			label,
+			labelId = this._labelId,
 			overrideClasses
 		} = this.properties;
 		const labelActive = this._isLabelActive || active;
@@ -102,6 +112,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			expanded: !hidden,
 			focusable,
 			hasMenu: true,
+			id: labelId,
 			index,
 			overrideClasses: overrideClasses || css,
 			onClick: this._onLabelClick,
@@ -111,9 +122,9 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 
 	renderMenu() {
 		const {
-			animate = true,
 			hidden = true,
 			id = this._id,
+			labelId = this._labelId,
 			orientation
 		} = this.properties;
 
@@ -125,26 +136,39 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			role: <Role> 'menu'
 		}, this.children);
 
-		const classes = [ css.subMenu ];
-		if (this._initialRender || !animate) {
-			classes.push(hidden ? css.hidden : css.visible);
-		}
-
 		return v('div', {
-			classes: this.classes(...classes),
+			'aria-labelledby': labelId,
+			classes: this.classes(...this._getMenuClasses()),
 			id,
 			key: 'menu'
 		}, [ menu ]);
 	}
 
+	private _getMenuClasses() {
+		const { animate = true, hidden = true, position, type = 'inline' } = this.properties;
+		const classes = [ css.subMenu, type === 'dropdown' ? css.dropDown : (<any> css)[type] ];
+
+		if (this._initialRender || type !== 'inline' || !animate) {
+			classes.push(hidden ? css.hidden : css.visible);
+		}
+
+		if (position) {
+			const { x, y } = position;
+			x && classes.push((<any> css)[x]);
+			y && classes.push((<any> css)[y]);
+		}
+
+		return classes;
+	}
+
 	protected onElementCreated(element: HTMLElement, key: string) {
 		if (key === 'menu') {
-			const { animate = true, hidden = true } = this.properties;
+			const { animate = true, hidden = true, type = 'inline' } = this.properties;
 			this._initialRender = false;
 			this._domNode = element;
 			this._wasOpen = !hidden;
 
-			if (animate && hidden) {
+			if (animate && hidden && type === 'inline') {
 				element.style.height = '0';
 			}
 		}
@@ -152,10 +176,11 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
 		if (key === 'menu') {
-			const { animate = true } = this.properties;
+			const { animate = true, type = 'inline' } = this.properties;
 
-			if (!animate) {
-				// In case `animate` was previously `true`, remove any `height` property set on the node.
+			if (!animate || type !== 'inline') {
+				// In case `animate` was previously `true` and `type` previously 'inline',
+				// remove any `height` property set on the node.
 				element.style.height = null;
 				return;
 			}
