@@ -1,10 +1,11 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import Select, { SelectOption } from '../../Select';
+import Select from '../../Select';
+import SelectOption, { OptionData } from '../../SelectOption';
 import * as css from '../../styles/select.m.css';
 
-const testOptions: SelectOption[] = [
+const testOptions: OptionData[] = [
 	{
 		label: 'One',
 		value: 'one',
@@ -33,17 +34,11 @@ const keys = {
 };
 
 // event always mocks interacting with second test option
-function event(key = 0, optionIndex = 1) {
+function event(key = 0) {
 	return <any> {
 		which: key,
 		target: {
-			value: testOptions[optionIndex].value,
-			parentElement: {
-				hasAttribute: () => true,
-				getAttribute: () => optionIndex + ''
-			},
-			hasAttribute: () => false,
-			getAttribute: () => false
+			value: testOptions[1].value
 		},
 		preventDefault() { }
 	};
@@ -158,7 +153,7 @@ registerSuite({
 			const select = new Select();
 			let selectedOption;
 			select.setProperties({
-				onChange: (option: SelectOption) => selectedOption = option
+				onChange: (option: OptionData) => selectedOption = option
 			});
 
 			const falseClick = event();
@@ -201,7 +196,7 @@ registerSuite({
 	},
 
 	'Custom Options': {
-		'Correct generic attributes'() {
+		'First option focused'() {
 			const select = new Select();
 			select.setProperties({
 				options: testOptions
@@ -210,12 +205,6 @@ registerSuite({
 			const selectNode = vnode.children![0].children![1];
 
 			assert.strictEqual(selectNode.children!.length, 3);
-			assert.strictEqual(selectNode.children![0].vnodeSelector, 'div');
-			assert.strictEqual(selectNode.children![0].properties!.role, 'option', 'All custom options should have the role of option');
-			assert.strictEqual(selectNode.children![0].properties!.id, 'first', 'Custom id from option.id should be used');
-			assert.strictEqual(selectNode.children![0].properties!['data-dojo-index'], '0', 'Should set data-dojo-index based on index in options array');
-			assert.strictEqual(selectNode.children![0].text, 'One');
-			assert.isTrue(selectNode.children![0].properties!.classes![css.option], 'All options should have the class css.option');
 			assert.isTrue(selectNode.children![0].properties!.classes![css.focused], 'First option should be focused by default');
 		},
 
@@ -233,35 +222,22 @@ registerSuite({
 			assert.strictEqual(selectNode.children![2].properties!['aria-disabled'], 'true', 'Third option should be disabled');
 		},
 
-		'Custom option render'() {
-			const select = new Select();
-			select.setProperties({
-				options: testOptions,
-				renderOption: (option) => option.label + ' foo'
-			});
-			const vnode = <VNode> select.__render__();
-			const selectNode = vnode.children![0].children![1];
-
-			assert.strictEqual(selectNode.children![0].text, 'One foo');
-			assert.strictEqual(selectNode.children![1].text, 'Two foo');
-		},
-
-		'Option click'() {
+		'Disabled option click'() {
 			const select = new Select();
 			let clicked = false;
-			let clickedOption;
+			let changedOption;
 			select.setProperties({
 				options: testOptions,
 				onClick: () => clicked = true,
-				onChange: (option: SelectOption) => clickedOption = option.value
+				onChange: (option: OptionData) => changedOption = option.value
 			});
-			(<any> select)._onOptionClick(event());
+			(<any> select)._onOptionClick(event(), 1);
 
 			assert.isTrue(clicked, 'properties.onClick called');
-			assert.strictEqual(clickedOption, 'two', 'onChange called with second option');
+			assert.strictEqual(changedOption, 'two', 'onChange called with second option');
 
-			(<any> select)._onOptionClick(event(0, 2));
-			assert.strictEqual(clickedOption, 'two', 'onChange not called for disabled option');
+			(<any> select)._onOptionClick(event(), 2);
+			assert.strictEqual(changedOption, 'two', 'onChange not called for disabled option');
 		},
 
 		'Option click with no options'() {
@@ -274,9 +250,7 @@ registerSuite({
 				onClick: () => clicked = true
 			});
 
-			const falseClick = event();
-			falseClick.target.parentElement = false;
-			(<any> select)._onOptionClick(falseClick);
+			(<any> select)._onOptionClick(event(), undefined);
 
 			assert.isTrue(clicked, 'properties.onClick called');
 			assert.isFalse(changed, 'onChange shouldn\'t fire with no options');
@@ -289,6 +263,7 @@ registerSuite({
 			select.setProperties({
 				disabled: true,
 				options: testOptions,
+				customOption: SelectOption,
 				value: 'two'
 			});
 			const vnode = <VNode> select.__render__();
@@ -389,7 +364,7 @@ registerSuite({
 			let keydown = false;
 			select.setProperties({
 				options: testOptions,
-				onChange: (option: SelectOption) => selectedOption = option.value,
+				onChange: (option: OptionData) => selectedOption = option.value,
 				onKeyDown: () => keydown = true
 			});
 			(<any> select)._open = true;
@@ -458,7 +433,7 @@ registerSuite({
 			select.setProperties({
 				multiple: true,
 				options: testOptions,
-				onChange: (option: SelectOption) => selectedOption = option.value
+				onChange: (option: OptionData) => selectedOption = option.value
 			});
 
 			(<any> select)._onListboxKeyDown(event(keys.down));

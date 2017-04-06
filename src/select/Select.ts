@@ -1,36 +1,21 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import { find } from '@dojo/shim/array';
+import { assign } from '@dojo/core/lang';
+import { find, includes } from '@dojo/shim/array';
 import Label, { LabelOptions } from '../label/Label';
+import SelectOption, { OptionData } from './SelectOption';
 import * as css from './styles/select.m.css';
-
-/**
- * @type SelectOption
- *
- * Properties that can be set on a Select component
- *
- * @property label        Text to display to the user
- * @property value        Option value
- * @property disabled     Toggle disabled status of the individual option
- * @property id           Optional custom id
- * @property selected     Toggle selected/deselected state for multiselect widgets
- */
-export interface SelectOption {
-	label: string;
-	value: string;
-	disabled?: boolean;
-	id?: string;
-	selected?: boolean;
-}
 
 /**
  * @type SelectProperties
  *
  * Properties that can be set on a Select component
  *
+ * @property customOption   Custom widget constructor for options. Should use SelectOption as a base
  * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
  * @property formId         ID of a form element associated with the form field
@@ -40,7 +25,6 @@ export interface SelectOption {
  * @property name           The form widget's name
  * @property options        Array of data for the select options' value, text content, and state
  * @property readOnly       Allows or prevents user interaction
- * @property renderOption   Custom render function for select options
  * @property required       Whether or not a value is required
  * @property useNatveSelect Use the native <select> element if true
  * @property value          The current value
@@ -51,6 +35,7 @@ export interface SelectOption {
  * @property onKeyDown      Called on the input's keydown event
  */
 export interface SelectProperties extends ThemeableProperties {
+	customOption?: any;
 	describedBy?: string;
 	disabled?: boolean;
 	formId?: string;
@@ -58,14 +43,13 @@ export interface SelectProperties extends ThemeableProperties {
 	label?: string | LabelOptions;
 	multiple?: boolean;
 	name?: string;
-	options?: SelectOption[];
+	options?: OptionData[];
 	readOnly?: boolean;
-	renderOption?(option: SelectOption): DNode;
 	required?: boolean;
 	useNativeSelect?: boolean;
 	value?: string;
 	onBlur?(event: FocusEvent): void;
-	onChange?(option: SelectOption): void;
+	onChange?(option: OptionData): void;
 	onClick?(event: MouseEvent): void;
 	onFocus?(event: FocusEvent): void;
 	onKeyDown?(event: KeyboardEvent): void;
@@ -105,6 +89,13 @@ export default class Select extends SelectBase<SelectProperties> {
 		this._selectId = uuid();
 	}
 
+	private _createRegistry(customOption: any) {
+		const registry = new WidgetRegistry();
+		registry.define('select-option', customOption);
+
+		return registry;
+	}
+
 	// native select events
 	private _onNativeChange (event: Event) {
 		const {
@@ -112,7 +103,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			onChange
 		} = this.properties;
 		const value = (<HTMLInputElement> event.target).value;
-		const option = find(options, (option: SelectOption) => option.value === value);
+		const option = find(options, (option: OptionData) => option.value === value);
 		onChange && onChange(option);
 	}
 
@@ -123,6 +114,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		this._focusedIndex = this._focusedIndex || 0;
 		this.invalidate();
 	}
+
 	private _closeSelect() {
 		this._open = false;
 		this.invalidate();
@@ -145,7 +137,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		this._ignoreBlur = true;
 	}
 
-	private _onOptionClick(event: MouseEvent) {
+	private _onOptionClick(event: MouseEvent, index: number) {
 		const {
 			options = [],
 			onChange,
@@ -154,23 +146,16 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		onClick && onClick(event);
 
-		// find parent option node, and get index
-		let optionNode = <HTMLElement> event.target;
-		while (!optionNode.hasAttribute('data-dojo-index') && optionNode.parentElement) {
-			optionNode = optionNode.parentElement;
+		const option = options[index];
+
+		// if the option exists and isn't disabled, focus it and fire onChange
+		if (option && !option.disabled) {
+			this._focusedIndex = index;
+			onChange && onChange(option);
 		}
-
-		const index = optionNode.getAttribute('data-dojo-index');
-		if (index) {
-			const option = options[parseInt(index, 10)];
-
-			if (option && !option.disabled) {
-				this._focusedIndex = parseInt(index, 10);
-				onChange && onChange(option);
-			}
-			else {
-				event.preventDefault();
-			}
+		else {
+			// prevent the menu from closing when clicking on disabled options
+			event.preventDefault();
 		}
 	}
 
@@ -233,39 +218,34 @@ export default class Select extends SelectBase<SelectProperties> {
 		const {
 			multiple,
 			options = [],
-			renderOption,
 			value
 		} = this.properties;
 
-		const optionNodes = [];
-		let optionNode, option;
-		for (let i = 0; i < options.length; i++) {
-			option = options[i];
-			option.id = option.id || uuid() + '';
-			option.selected = multiple ? option.selected : value === option.value;
-			optionNode = renderOption ? renderOption(option) : option.label;
-
-			const optionClasses = [
-				css.option,
-				this._focusedIndex === i ? css.focused : null,
-				option.selected ? css.selected : null,
-				option.disabled ? css.disabledOption : null
-			];
-
-			optionNodes.push(v('div', {
-				bind: this,
-				role: 'option',
-				id: option.id,
-				classes: this.classes(...optionClasses),
-				'aria-disabled': option.disabled ? 'true' : null,
-				'aria-selected': option.selected ? 'true' : 'false',
-				'data-dojo-index': i + '',
-				onclick: this._onOptionClick,
-				onmousedown: this._onOptionMouseDown
-			}, [ optionNode ]));
-		}
+		const optionNodes = options.map((option, i) => w('select-option', {
+			bind: this,
+			focused: this._focusedIndex === i,
+			index: i,
+			key: i + '',
+			optionData: assign({}, option, <any> {
+				id: option.id || uuid() + '',
+				selected: multiple ? option.selected : value === option.value
+			}),
+			onMouseDown: this._onOptionMouseDown,
+			onClick: this._onOptionClick
+		}));
 
 		return optionNodes;
+	}
+
+	@onPropertiesChanged()
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, SelectProperties>) {
+		const {
+			customOption = SelectOption
+		} = this.properties;
+
+		if ( !this.registry || includes(evt.changedPropertyKeys, 'customOption')) {
+			this.registry = this._createRegistry(customOption);
+		}
 	}
 
 	renderNativeSelect(): DNode {
@@ -368,7 +348,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			_selectId
 		} = this;
 
-		const selectedOption = find(options, (option: SelectOption) => option.value === value) || options[0];
+		const selectedOption = find(options, (option: OptionData) => option.value === value) || options[0];
 
 		// create dropdown trigger and select box
 		return v('div', {
@@ -436,7 +416,8 @@ export default class Select extends SelectBase<SelectProperties> {
 			rootWidget = w(Label, {
 				classes: this.classes(css.root, ...stateClasses),
 				formId,
-				label
+				label,
+				registry: this.registry
 			}, [ select ]);
 		}
 		else {

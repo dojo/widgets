@@ -3,12 +3,24 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Select, { SelectOption } from '../../select/Select';
+import Select from '../Select';
+import SelectOption, { OptionData } from '../SelectOption';
+
+class CustomOption extends SelectOption {
+	renderLabel() {
+		const { optionData } = this.properties;
+
+		return v('div', {
+			innerHTML: (optionData.selected ? 'x ' : '') + optionData.label,
+			styles: { fontStyle: 'italic' }
+		});
+	}
+}
 
 export const AppBase = StatefulMixin(WidgetBase);
 
 export class App extends AppBase<WidgetProperties> {
-	_selectOptions: SelectOption[] = [
+	_selectOptions: OptionData[] = [
 		{
 			value: 'option1',
 			label: 'First Option'
@@ -28,7 +40,7 @@ export class App extends AppBase<WidgetProperties> {
 		}
 	];
 
-	_moreSelectOptions: SelectOption[] = [
+	_moreSelectOptions: OptionData[] = [
 		{
 			value: 'cat',
 			label: 'Cat',
@@ -50,7 +62,7 @@ export class App extends AppBase<WidgetProperties> {
 		}
 	];
 
-	_evenMoreSelectOptions: SelectOption[] = [
+	_evenMoreSelectOptions: OptionData[] = [
 		{
 			value: 'seattle',
 			label: 'Seattle',
@@ -80,7 +92,7 @@ export class App extends AppBase<WidgetProperties> {
 				options: this._selectOptions,
 				useNativeSelect: true,
 				value: <string> this.state['value1'],
-				onChange: (option: SelectOption) => {
+				onChange: (option: OptionData) => {
 					this.setState({ value1: option.value });
 				}
 			}),
@@ -90,16 +102,11 @@ export class App extends AppBase<WidgetProperties> {
 			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
 				key: 'select2',
+				customOption: CustomOption,
 				label: 'Custom box!',
 				options: this._selectOptions,
 				value: <string> this.state['value2'],
-				renderOption: (option: SelectOption) => {
-					return v('div', {
-						innerHTML: (option.selected ? 'x ' : '') + option.label,
-						styles: { fontStyle: 'italic' }
-					});
-				},
-				onChange: (option: SelectOption) => {
+				onChange: (option: OptionData) => {
 					this.setState({ value2: option.value });
 				}
 			}),
@@ -109,22 +116,17 @@ export class App extends AppBase<WidgetProperties> {
 				options: this._moreSelectOptions,
 				useNativeSelect: true,
 				multiple: true,
-				onChange: (option: SelectOption) => {
+				onChange: (option: OptionData) => {
 					option.selected = !option.selected;
 				}
 			}),
 			v('h2', {}, [ 'Custom multiselect widget' ]),
 			w(Select, {
 				key: 'select4',
+				customOption: CustomOption,
 				options: this._evenMoreSelectOptions,
 				multiple: true,
-				renderOption: (option: SelectOption) => {
-					return v('div', {
-						innerHTML: (option.selected ? 'x ' : '') + option.label,
-						styles: { fontStyle: 'italic' }
-					});
-				},
-				onChange: (option: SelectOption) => {
+				onChange: (option: OptionData) => {
 					option.selected = !option.selected;
 					this.invalidate();
 				}
