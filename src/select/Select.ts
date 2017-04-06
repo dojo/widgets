@@ -262,15 +262,12 @@ export default class Select extends SelectBase<SelectProperties> {
 		} = this.properties;
 
 		/* create option nodes */
-		const optionNodes = [];
-		for (let option of options) {
-			optionNodes.push(v('option', {
-				value: option.value,
-				innerHTML: option.label,
-				disabled: option.disabled,
-				selected: option.selected && multiple ? option.selected : null
-			}));
-		}
+		const optionNodes = options.map(option => v('option', {
+			value: option.value,
+			innerHTML: option.label,
+			disabled: option.disabled,
+			selected: option.selected && multiple ? option.selected : null
+		}));
 
 		return v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('select', {
