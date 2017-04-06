@@ -70,24 +70,15 @@ export const SelectBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Select extends SelectBase<SelectProperties> {
-	private _focusedIndex: number;
-	private _ignoreBlur: boolean;
-	private _open: boolean;
-	private _selectId: string;
+	private _focusedIndex = 0;
+	private _ignoreBlur = false;
+	private _open = false;
+	private _selectId = uuid();
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
 	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
-
-	constructor() {
-		super();
-
-		this._focusedIndex = 0;
-		this._ignoreBlur = false;
-		this._open = false;
-		this._selectId = uuid();
-	}
 
 	private _createRegistry(customOption: any) {
 		const registry = new WidgetRegistry();
