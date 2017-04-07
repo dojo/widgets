@@ -7,7 +7,6 @@
 	transform: translate(-50%, -50%);
 	background: var(--component-background);
 	width: 450px;
-	min-height: var(--min-container-height);
 	overflow: hidden;
 	max-width: calc(100% - 30px);
 }

@@ -76,7 +76,8 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 				closeable,
 				disabled,
 				key,
-				label
+				label,
+				theme = {}
 			} = <TabProperties> tab.properties;
 
 			return w(TabButton, {
@@ -94,7 +95,8 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 				onDownArrowPress: this._onDownArrowPress,
 				onLeftArrowPress: this._onLeftArrowPress,
 				onRightArrowPress: this._onRightArrowPress,
-				onUpArrowPress: this._onUpArrowPress
+				onUpArrowPress: this._onUpArrowPress,
+				theme
 			}, [
 				label || null
 			]);
