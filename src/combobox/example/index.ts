@@ -7,7 +7,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import ComboBox from '../ComboBox';
 import ResultItem, { ResultItemProperties } from '../ResultItem';
 import ResultMenu from '../ResultMenu';
-import dojo from '../../themes/dojo/theme';
+import dojoTheme from '../../themes/dojo/theme';
 
 const data = [
 	{ value: 'Maine' },
@@ -120,7 +120,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	themeChange(event: Event) {
 		console.log('called');
 		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojo : {};
+		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 

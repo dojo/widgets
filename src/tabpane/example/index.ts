@@ -8,7 +8,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import Tab from '../Tab';
 import TabPane, { Align } from '../TabPane';
 import Task from '@dojo/core/async/Task';
-import dojo from '../../themes/dojo/theme';
+import dojoTheme from '../../themes/dojo/theme';
 
 let refresh: Task<any>;
 
@@ -23,7 +23,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojo : {};
+		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 

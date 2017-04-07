@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import SlidePane, { Align } from '../../slidepane/SlidePane';
-import dojo from '../../themes/dojo/theme';
+import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	private _theme: {};
@@ -13,7 +13,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	themeChange(event: Event) {
 		console.log('called');
 		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojo : {};
+		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 

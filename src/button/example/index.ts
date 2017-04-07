@@ -4,16 +4,15 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
 import Button, { ButtonType } from '../../button/Button';
-import dojo from '../../themes/dojo/theme';
+import dojoTheme from '../../themes/dojo/theme';
 
 export const AppBase = StatefulMixin(WidgetBase);
 export class App extends AppBase<WidgetProperties> {
 	private _theme: {};
 
 	themeChange(event: Event) {
-		console.log('called');
 		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojo : {};
+		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 

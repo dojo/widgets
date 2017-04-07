@@ -4,7 +4,7 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Textarea from '../../textarea/Textarea';
-import dojo from '../../themes/dojo/theme';
+import dojoTheme from '../../themes/dojo/theme';
 
 export const AppBase = StatefulMixin(WidgetBase);
 export class App extends AppBase<WidgetProperties> {
@@ -12,14 +12,8 @@ export class App extends AppBase<WidgetProperties> {
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojo : {};
+		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
-	}
-
-	onChange(event: Event) {
-		const value = (<HTMLInputElement> event.target).value;
-		this.setState({ inputValue: value });
-		this.setState({ invalid: value.trim().length === 0 });
 	}
 
 	render() {
