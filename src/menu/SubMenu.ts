@@ -3,13 +3,13 @@ import uuid from '@dojo/core/uuid';
 import { Handle } from '@dojo/interfaces/core';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import StatefulMixin from '@dojo/widget-core/mixins/Stateful';
 import ThemeableMixin, { theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import Menu, { Keys, MenuProperties, Orientation, Role } from './Menu';
 import MenuItem from './MenuItem';
 import * as css from './styles/menu.m.css';
 
+export type Animation = 'fade' | 'slide' | 'none';
 export type MenuType = 'dropdown' | 'inline' | 'popup';
 
 /**
@@ -17,11 +17,12 @@ export type MenuType = 'dropdown' | 'inline' | 'popup';
  *
  * Properties that can be set on a Menu component.
  *
- * @property active				Determines whether the menu trigger is active (should have focus).
- * @property animate			Determines whether animation should be handled internally.
+ * @property active				Determines whether the submenu is active (should have focus).
+ * @property animation			The animation type. Defaults to 'slide' for "inline" menus; otherwise, 'fade';
  * @property expandOnClick		Determines whether a menu is displayed on click (default) or hover.
  * @property focusable			Determines whether the menu trigger can receive focus with tab key.
  * @property hidden				Determines whether the menu is hidden.
+ * @property hideOnBlur			Determines whether the menu should be hidden on blur. Defaults to true.
  * @property hideDelay			The amount of time (in milliseconds) after mouseleave before hiding the menu.
  * @property hideOnActivate		Determines whether the menu should be hidden when an item is activated. Defaults to true.
  * @property index				Specifies the index of the menu trigger within a parent menu.
@@ -35,10 +36,11 @@ export type MenuType = 'dropdown' | 'inline' | 'popup';
  */
 export interface SubMenuProperties extends MenuProperties {
 	active?: boolean;
-	animate?: boolean;
+	animation?: Animation;
 	expandOnClick?: boolean;
 	focusable?: boolean;
 	hidden?: boolean;
+	hideOnBlur?: boolean;
 	hideDelay?: number;
 	hideOnActivate?: boolean;
 	index?: number;
@@ -56,16 +58,23 @@ function getMenuHeight(menuElement: HTMLElement): number {
 	return Math.min(menuElement.scrollHeight, (isNaN(maxHeight) ? Infinity : maxHeight));
 }
 
-export const SubMenuBase = StatefulMixin(ThemeableMixin(WidgetBase));
+export const SubMenuBase = ThemeableMixin(WidgetBase);
+
+// `this.properties.active` is set by parent widgets to indicate that the label should
+// receive focus. From there, whether focus management within the submenu is handled
+// by the `SubMenu`. If `active` is false, then neither the label nor the menu should
+// receive focus. If `active` is true and `hidden` is true, then the label should
+// receive focus. If `active` is true and `hidden` is false, then the menu should receive
+// focus, unless `this._labelActive` is true, in which case the label should receive focus.
 
 @theme(css)
 export class SubMenu extends SubMenuBase<SubMenuProperties> {
-	private _activeIndex = 0;
+	private _active = false;
 	private _domNode: HTMLElement | null;
 	private _hideTimer: Handle;
 	private _id = uuid();
 	private _initialRender = true;
-	private _isLabelActive = false;
+	private _labelActive = false;
 	private _labelId = uuid();
 	private _wasOpen = false;
 
@@ -81,7 +90,6 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		const label = this.renderLabel();
 		const menu = this.renderMenu();
 
-		this._isLabelActive = false;
 		return v('div', {
 			classes: this.classes(css.root, css.nestedMenuRoot),
 			onfocusout: this._onMenuFocusOut,
@@ -93,7 +101,6 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 
 	renderLabel(): DNode {
 		const {
-			active,
 			disabled,
 			focusable,
 			hidden = true,
@@ -103,10 +110,9 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			labelId = this._labelId,
 			overrideClasses
 		} = this.properties;
-		const labelActive = this._isLabelActive || active;
 
 		return w(MenuItem, {
-			active: labelActive,
+			active: this._isLabelActive(),
 			controls: id,
 			disabled,
 			expanded: !hidden,
@@ -129,7 +135,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		} = this.properties;
 
 		const menu = w(Menu, <MenuProperties> {
-			active: this.state.active && !this._isLabelActive,
+			active: this._isActive() && !this._isLabelActive(),
 			activeIndex: hidden ? 0 : undefined,
 			nested: true,
 			orientation,
@@ -144,31 +150,14 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		}, [ menu ]);
 	}
 
-	private _getMenuClasses() {
-		const { animate = true, hidden = true, position, type = 'inline' } = this.properties;
-		const classes = [ css.subMenu, type === 'dropdown' ? css.dropDown : (<any> css)[type] ];
-
-		if (this._initialRender || type !== 'inline' || !animate) {
-			classes.push(hidden ? css.hidden : css.visible);
-		}
-
-		if (position) {
-			const { x, y } = position;
-			x && classes.push((<any> css)[x]);
-			y && classes.push((<any> css)[y]);
-		}
-
-		return classes;
-	}
-
 	protected onElementCreated(element: HTMLElement, key: string) {
 		if (key === 'menu') {
-			const { animate = true, hidden = true, type = 'inline' } = this.properties;
+			const { animation = this._getDefaultAnimation(), hidden = true } = this.properties;
 			this._initialRender = false;
 			this._domNode = element;
 			this._wasOpen = !hidden;
 
-			if (animate && hidden && type === 'inline') {
+			if (animation === 'slide' && hidden) {
 				element.style.height = '0';
 			}
 		}
@@ -176,48 +165,33 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
 		if (key === 'menu') {
-			const { animate = true, type = 'inline' } = this.properties;
+			const { animation = this._getDefaultAnimation() } = this.properties;
 
-			if (!animate || type !== 'inline') {
-				// In case `animate` was previously `true` and `type` previously 'inline',
-				// remove any `height` property set on the node.
+			if (animation !== 'slide') {
+				// In case `animation` was previously 'slide', remove any `height` property set on the node.
 				element.style.height = null;
-				return;
+			}
+
+			if (animation !== 'fade') {
+				// In case `animation` was previously 'fade', remove the added `fade` class.
+				element.classList.remove(css.fade);
 			}
 
 			this._animate(element);
 		}
 	}
 
-	private _getKeys() {
-		const { orientation, parentOrientation } = this.properties;
-		const isHorizontal = orientation === 'horizontal';
-
-		return {
-			ascend: isHorizontal ? Keys.up : Keys.left,
-			decrease: isHorizontal ? Keys.left : Keys.up,
-			descend: isHorizontal || parentOrientation === 'horizontal' ? Keys.down : Keys.right,
-			enter: Keys.enter,
-			escape: Keys.escape,
-			increase: isHorizontal ? Keys.right : Keys.down,
-			space: Keys.space,
-			tab: Keys.tab
-		};
-	}
-
-	private _exitMenu() {
-		const { hidden = true } = this.properties;
-
-		if (!hidden) {
-			this._isLabelActive = true;
-			this.setState({ active: false });
-		}
-	}
-
 	private _animate(element: HTMLElement) {
-		const { hidden = true } = this.properties;
+		const { animation = this._getDefaultAnimation(), hidden = true } = this.properties;
 
-		if (this._wasOpen !== hidden) {
+		if (animation === 'none' || this._wasOpen !== hidden) {
+			return;
+		}
+
+		this._wasOpen = !hidden;
+
+		if (animation === 'fade') {
+			element.classList.add(css.fade);
 			return;
 		}
 
@@ -225,7 +199,6 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		// and animate to and from that.
 		requestAnimationFrame(() => {
 			const height = getMenuHeight(element);
-			this._wasOpen = !hidden;
 
 			if (hidden) {
 				// Temporarily remove any transition to prevent the element from animating to `height`.
@@ -245,6 +218,71 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		});
 	}
 
+	private _exitMenu() {
+		const { hidden = true } = this.properties;
+
+		if (!hidden) {
+			this._labelActive = true;
+			this._inactivate();
+		}
+	}
+
+	private _getDefaultAnimation(): Animation {
+		const { type = 'inline' } = this.properties;
+		return type === 'inline' ? 'slide' : 'fade';
+	}
+
+	private _getKeys() {
+		const { orientation, parentOrientation } = this.properties;
+		const isHorizontal = orientation === 'horizontal';
+
+		return {
+			ascend: isHorizontal ? Keys.up : Keys.left,
+			decrease: isHorizontal ? Keys.left : Keys.up,
+			descend: isHorizontal || parentOrientation === 'horizontal' ? Keys.down : Keys.right,
+			enter: Keys.enter,
+			escape: Keys.escape,
+			increase: isHorizontal ? Keys.right : Keys.down,
+			space: Keys.space,
+			tab: Keys.tab
+		};
+	}
+
+	private _getMenuClasses() {
+		const { animation = this._getDefaultAnimation(), hidden = true, position, type = 'inline' } = this.properties;
+		const classes = [ css.subMenu, type === 'dropdown' ? css.dropDown : (<any> css)[type] ];
+
+		if (this._initialRender || animation !== 'slide') {
+			classes.push(hidden ? css.hidden : css.visible);
+		}
+
+		if (animation === 'slide') {
+			classes.push(css.slide);
+		}
+
+		if (position) {
+			const { x, y } = position;
+			x && classes.push((<any> css)[x]);
+			y && classes.push((<any> css)[y]);
+		}
+
+		return classes;
+	}
+
+	private _inactivate() {
+		this._active = false;
+		this.invalidate();
+	}
+
+	private _isActive() {
+		return this._active || this.properties.active;
+	}
+
+	private _isLabelActive() {
+		const { active, hidden = true } = this.properties;
+		return this._labelActive || (active && (hidden || !this._active));
+	}
+
 	private _onLabelClick() {
 		const {
 			disabled,
@@ -252,7 +290,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		} = this.properties;
 
 		if (!disabled && expandOnClick) {
-			this._isLabelActive = true;
+			this._labelActive = true;
 			this._toggleDisplay();
 		}
 	}
@@ -264,7 +302,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			const keys = this._getKeys();
 			const key = event.keyCode;
 
-			if (key === keys.enter) {
+			if (key === keys.enter || key === keys.space) {
 				this._toggleDisplay();
 			}
 			else if (key === keys.descend) {
@@ -272,6 +310,8 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 					event.preventDefault();
 				}
 
+				event.stopPropagation();
+				this._labelActive = false;
 				this._toggleDisplay(true);
 			}
 		}
@@ -279,22 +319,34 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 
 	private _onMenuFocusOut() {
 		requestAnimationFrame(() => {
-			if (!(<HTMLElement> this._domNode).contains(document.activeElement)) {
-				this.setState({ active: false });
+			const node = this._domNode as HTMLElement;
+			if (node && !node.contains(document.activeElement)) {
+				const { hideOnBlur = true } = this.properties;
+				this._labelActive = false;
+
+				if (hideOnBlur) {
+					this._toggleDisplay(false);
+				}
+				else {
+					this._inactivate();
+				}
 			}
 		});
 	}
 
 	private _onMenuKeyDown(event: KeyboardEvent) {
-		const keys = this._getKeys();
+		if (!this._active) {
+			return;
+		}
 
+		const keys = this._getKeys();
 		switch (event.keyCode) {
 			case keys.space:
 				this._onItemActivate();
 				break;
 			case keys.escape:
 				event.stopPropagation();
-				this._isLabelActive = true;
+				this._labelActive = true;
 				this._toggleDisplay(false);
 				break;
 			case keys.ascend:
@@ -358,12 +410,11 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		}
 
 		if (requestShow) {
-			!inactive && this.setState({ active: true });
+			this._active = true;
 			onRequestShow && onRequestShow();
 		}
 		else {
-			this.setState({ active: false });
-			this._activeIndex = 0;
+			this._active = false;
 			onRequestHide && onRequestHide();
 		}
 	}

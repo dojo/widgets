@@ -120,6 +120,69 @@ registerSuite({
 		assert.strictEqual(menu.properties.label, 'Menu Label');
 	},
 
+	active: {
+		'when false'() {
+			const menu = new SubMenu();
+			const children: any[] = '01234'.split('').map(i => {
+				return new MenuItem();
+			});
+
+			menu.setProperties({
+				active: false,
+				hidden: false,
+				label: 'Menu label'
+			});
+			menu.setChildren(children);
+			menu.__render__();
+
+			children.forEach((child: MenuItem) => {
+				assert.notOk(child.properties.active, 'menu items should be inactive');
+			});
+		},
+
+		'when true and hidden'() {
+			const menu = new SubMenu();
+			const children: any[] = '01234'.split('').map(i => {
+				return new MenuItem();
+			});
+
+			menu.setProperties({
+				active: true,
+				label: 'Menu label'
+			});
+			menu.setChildren(children);
+			menu.__render__();
+
+			children.forEach((child: MenuItem) => {
+				assert.notOk(child.properties.active, 'menu items should be inactive');
+			});
+		},
+
+		'when true and not hidden'() {
+			const menu = new SubMenu();
+			const children: any[] = '01234'.split('').map(i => {
+				return new MenuItem();
+			});
+
+			menu.setProperties({
+				active: true,
+				label: 'Menu label',
+				onRequestShow() {
+					menu.setProperties({
+						active: true,
+						hidden: false,
+						label: 'Menu label'
+					});
+				}
+			});
+			menu.setChildren(children);
+			(<any> menu)._toggleDisplay(true);
+			menu.__render__();
+
+			assert.isTrue(children[0].properties.active, 'menu item should be active');
+		}
+	},
+
 	type() {
 		const menu = new SubMenu();
 		menu.setProperties({ label: 'Menu label' });
@@ -178,71 +241,12 @@ registerSuite({
 		assert.notOk(menuNode.properties.classes[css.left]);
 	},
 
-	animate: {
-		'when `type` is not "inline"': {
+	animation: {
+		none: {
 			'state classes added immediately'() {
 				const menu = new SubMenu();
 				menu.setProperties({
-					label: 'Menu label',
-					type: 'popup'
-				});
-
-				let vnode: any = menu.__render__();
-				let menuNode = vnode.children[1];
-				let element: any = getMockNavElement();
-
-				(<any> menu).onElementCreated(element, 'menu');
-				(<any> menu).onElementUpdated(element, 'menu');
-				assert.isTrue(menuNode.properties.classes[css.hidden]);
-
-				menu.setProperties({
-					label: 'Menu label',
-					hidden: false,
-					type: 'popup'
-				});
-
-				vnode = menu.__render__();
-				menuNode = vnode.children[1];
-				element = getMockNavElement();
-
-				(<any> menu).onElementCreated(element, 'menu');
-				(<any> menu).onElementUpdated(element, 'menu');
-				assert.isTrue(menuNode.properties.classes[css.visible]);
-			},
-
-			'style.height not reset on initialization'() {
-				const menu = new SubMenu();
-				menu.setProperties({
-					label: 'Menu label',
-					type: 'popup'
-				});
-				const element: any = getMockNavElement();
-				(<any> menu).onElementCreated(element, 'menu');
-
-				assert.isNull(element.style.height, 'style.height should not be modified');
-			},
-
-			'style.height removed on subsequent renders'() {
-				const menu = new SubMenu();
-				const element = getMockNavElement();
-				menu.setProperties({
-					label: 'Menu label',
-					type: 'popup'
-				});
-
-				(<any> menu).onElementCreated(element, 'menu');
-				(<any> menu).onElementUpdated(element, 'menu');
-
-				const styleHistory = element.styleHistory;
-				assert.sameMembers(styleHistory.height, [ null, null ], 'style.height should be reset');
-			}
-		},
-
-		'when false': {
-			'state classes added immediately'() {
-				const menu = new SubMenu();
-				menu.setProperties({
-					animate: false,
+					animation: 'none',
 					label: 'Menu label'
 				});
 
@@ -255,7 +259,7 @@ registerSuite({
 				assert.isTrue(menuNode.properties.classes[css.hidden]);
 
 				menu.setProperties({
-					animate: false,
+					animation: 'none',
 					label: 'Menu label',
 					hidden: false
 				});
@@ -272,7 +276,7 @@ registerSuite({
 			'style.height not reset on initialization'() {
 				const menu = new SubMenu();
 				menu.setProperties({
-					animate: false,
+					animation: 'none',
 					label: 'Menu label'
 				});
 				const element: any = getMockNavElement();
@@ -285,7 +289,7 @@ registerSuite({
 				const menu = new SubMenu();
 				const element = getMockNavElement();
 				menu.setProperties({
-					animate: false,
+					animation: 'none',
 					label: 'Menu label'
 				});
 
@@ -297,7 +301,76 @@ registerSuite({
 			}
 		},
 
-		'when true': {
+		fade: {
+			'state classes added immediately'() {
+				const menu = new SubMenu();
+				menu.setProperties({
+					animation: 'fade',
+					label: 'Menu label'
+				});
+
+				let vnode: any = menu.__render__();
+				let menuNode = vnode.children[1];
+				let element: any = getMockNavElement();
+
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
+				assert.isTrue(menuNode.properties.classes[css.hidden]);
+
+				menu.setProperties({
+					animation: 'fade',
+					label: 'Menu label',
+					hidden: false
+				});
+
+				vnode = menu.__render__();
+				menuNode = vnode.children[1];
+				element = getMockNavElement();
+
+				(<any> menu).onElementCreated(element, 'menu');
+				(<any> menu).onElementUpdated(element, 'menu');
+				assert.isTrue(menuNode.properties.classes[css.visible]);
+			},
+
+			'fade class added'() {
+				const menu = new SubMenu();
+				const element = getMockNavElement();
+				menu.setProperties({
+					animation: 'fade',
+					label: 'Menu label'
+				});
+
+				(<any> menu).onElementCreated(element, 'menu');
+				menu.setProperties({
+					animation: 'fade',
+					hidden: false,
+					label: 'Other label'
+				});
+				(<any> menu).onElementUpdated(element, 'menu');
+
+				assert.isTrue(element.classList.contains(css.fade));
+			},
+
+			'when changed from "fade"'() {
+				const menu = new SubMenu();
+				const element = getMockNavElement();
+				menu.setProperties({
+					animation: 'fade',
+					label: 'Menu label'
+				});
+
+				(<any> menu).onElementCreated(element, 'menu');
+				menu.setProperties({
+					animation: 'none',
+					label: 'Other label'
+				});
+				(<any> menu).onElementUpdated(element, 'menu');
+
+				assert.notOk(element.classList.contains(css.fade), '`fade` class should be removed');
+			}
+		},
+
+		slide: {
 			'state classes not added immediately after the initial render'() {
 				const menu = new SubMenu();
 				menu.setProperties({
@@ -421,7 +494,7 @@ registerSuite({
 			const vnode = <VNode> menu.__render__();
 			const label = <VNode> vnode.children![0];
 
-			assert.strictEqual(label.vnodeSelector, 'span', 'label node should be a <span>');
+			assert.strictEqual(label.vnodeSelector, 'a', 'label node should be a <a>');
 			assert.strictEqual(label.text, 'Menu label', 'label node should have the label text');
 		}
 	},
@@ -537,10 +610,13 @@ registerSuite({
 			});
 
 			const preventDefault = sinon.spy();
-			(<any> menu)._onLabelKeyDown(<any> { keyCode: 40, preventDefault });
+			const stopPropagation = sinon.spy();
+			(<any> menu)._onLabelKeyDown(<any> { keyCode: 40, preventDefault, stopPropagation });
 			(<any> menu)._onLabelKeyDown(<any> {});
 
 			assert.isTrue(preventDefault.called, 'the default action should be prevented to prevent scrolling');
+			assert.isTrue(stopPropagation.called, `the propagation should be stopped to prevent navigation
+				within a parent menu.`);
 			assert.notOk(menu.properties.hidden, 'the submenu should not be hidden');
 		},
 
@@ -554,10 +630,13 @@ registerSuite({
 				hidden: false,
 				label: 'Menu label'
 			});
-			(<any> menu)._onLabelKeyDown(<any> { keyCode: 39 });
+			const stopPropagation = sinon.spy();
+			(<any> menu)._onLabelKeyDown(<any> { keyCode: 39, stopPropagation });
 			(<any> menu)._onLabelKeyDown(<any> {});
 
 			assert.notOk(menu.properties.hidden, 'the submenu should not be hidden');
+			assert.isTrue(stopPropagation.called, `the propagation should be stopped to prevent navigation
+				within a parent menu.`);
 		}
 	},
 
@@ -568,6 +647,7 @@ registerSuite({
 		function getExitAssertion(keyCode = 37, orientation: Orientation = 'vertical') {
 			return function () {
 				const menu = new SubMenu();
+				(<any> menu)._toggleDisplay(true);
 				menu.setProperties({ label: 'Menu label', orientation });
 				(<any> menu)._onMenuKeyDown(<any> { keyCode, preventDefault, stopPropagation });
 				sinon.spy(menu, 'invalidate');
@@ -597,6 +677,7 @@ registerSuite({
 					let onRequestHide = sinon.spy();
 
 					menu.setProperties({ label: 'Menu label', onRequestHide });
+					(<any> menu)._toggleDisplay(true);
 					(<any> menu)._onMenuKeyDown(<any> { keyCode: 32 });
 					assert.isTrue(onRequestHide.called, 'Menu should be hidden');
 
@@ -623,6 +704,7 @@ registerSuite({
 					};
 
 					menu.setProperties({ label: 'menu label', onRequestHide });
+					(<any> menu)._toggleDisplay(true);
 					(<any> menu)._onMenuKeyDown(<any> { keyCode: 27, stopPropagation: () => {} });
 					menu.__render__();
 
@@ -833,6 +915,62 @@ registerSuite({
 		}
 	},
 
+	hideOnBlur: {
+		'when the event target node is within the menu'() {
+			const menu = new SubMenu();
+			const onRequestHide = sinon.spy();
+			const element: any = getMockNavElement();
+
+			menu.setProperties({
+				label: 'Menu label',
+				onRequestHide
+			});
+			(<any> menu).onElementCreated(element, 'menu');
+			(<any> menu)._toggleDisplay(true);
+			(<any> menu)._onMenuFocusOut();
+			menu.__render__();
+
+			assert.isFalse(onRequestHide.called, 'menu should not be hidden');
+		},
+
+		'when true'() {
+			const menu = new SubMenu();
+			const onRequestHide = sinon.spy();
+			const element: any = getMockNavElement();
+			menu.setProperties({
+				label: 'Menu label',
+				onRequestHide
+			});
+			element.contains = () => false;
+
+			(<any> menu).onElementCreated(element, 'menu');
+			(<any> menu)._toggleDisplay(true);
+			(<any> menu)._onMenuFocusOut();
+			menu.__render__();
+
+			assert.isTrue(onRequestHide.called, 'menu should be hidden');
+		},
+
+		'when false'() {
+			const menu = new SubMenu();
+			const onRequestHide = sinon.spy();
+			menu.setProperties({
+				hideOnBlur: false,
+				label: 'Menu label',
+				onRequestHide
+			});
+			const element: any = getMockNavElement();
+			element.contains = () => false;
+
+			(<any> menu).onElementCreated(element, 'menu');
+			(<any> menu)._toggleDisplay(true);
+			(<any> menu)._onMenuFocusOut();
+			menu.__render__();
+
+			assert.isFalse(onRequestHide.called, 'menu should not be hidden');
+		}
+	},
+
 	id() {
 		const menu = new SubMenu();
 		menu.setProperties({ label: 'Menu label' });
@@ -861,31 +999,5 @@ registerSuite({
 		menuNode = vnode.children[1];
 		assert.strictEqual(labelNode.properties.id, 'menu-42');
 		assert.strictEqual(menuNode.properties['aria-labelledby'], 'menu-42');
-	},
-
-	onMenuFocusOut: {
-		'when the event target node is within the menu'() {
-			const menu = new SubMenu();
-			const element: any = getMockNavElement();
-
-			(<any> menu).onElementCreated(element, 'menu');
-			(<any> menu).onElementCreated();
-			(<any> menu)._toggleDisplay(true);
-			(<any> menu)._onMenuFocusOut();
-
-			assert.isTrue(menu.state.active, 'menu should remain active');
-		},
-
-		'when the event target node is outside the menu'() {
-			const menu = new SubMenu();
-			const element: any = getMockNavElement();
-			element.contains = () => false;
-
-			(<any> menu).onElementCreated(element, 'menu');
-			(<any> menu)._toggleDisplay(true);
-			(<any> menu)._onMenuFocusOut();
-
-			assert.isFalse(menu.state.active, 'menu should be inactive');
-		}
 	}
 });

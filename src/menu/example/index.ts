@@ -162,7 +162,6 @@ export class App extends AppBase<WidgetProperties> {
 		].map((label, i) => {
 			return w(MenuItem, {
 				key: `menu1-sub1-item${i}`,
-				tag: 'a',
 				properties: {
 					href: `https://github.com/dojo/${label}`,
 					target: '_blank'
@@ -171,11 +170,13 @@ export class App extends AppBase<WidgetProperties> {
 		});
 
 		const { cliMenuDisabled = false, cliMenuHidden = true, expandOnClick = true } = this.state;
+		const isMenuBar = document.body.offsetWidth >= BREAKPOINT;
 
 		return w(SubMenu, <SubMenuProperties> {
 			disabled: cliMenuDisabled,
 			expandOnClick,
 			hidden: cliMenuHidden,
+			hideOnBlur: isMenuBar,
 			label: 'cli',
 			onRequestHide: () => {
 				this.setState({ cliMenuHidden: true });
@@ -183,8 +184,8 @@ export class App extends AppBase<WidgetProperties> {
 			onRequestShow: () => {
 				this.setState({ cliMenuHidden: false });
 			},
-			parentOrientation: document.body.offsetWidth >= BREAKPOINT ? 'horizontal' : 'vertical' as Orientation,
-			type: document.body.offsetWidth >= BREAKPOINT ? 'dropdown' : 'inline' as MenuType
+			parentOrientation: isMenuBar ? 'horizontal' : 'vertical' as Orientation,
+			type: isMenuBar ? 'dropdown' : 'inline' as MenuType
 		}, items);
 	}
 
@@ -206,7 +207,6 @@ export class App extends AppBase<WidgetProperties> {
 			].map((label, i) => {
 				return w(MenuItem, {
 					key: `menu1-sub1-item${i + 1}`,
-					tag: 'a',
 					properties: {
 						href: `https://github.com/dojo/${label}`,
 						target: '_blank'

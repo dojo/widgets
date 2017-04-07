@@ -143,27 +143,34 @@ registerSuite({
 	onMenuFocusOut: {
 		'when the event target node is within the menu'() {
 			const menu = new Menu();
+			const child: any = new MenuItem();
 			const element: any = getMockNavElement();
 
+			menu.setChildren([ child ]);
 			(<any> menu).onElementCreated(element, 'root');
 			(<any> menu).onElementCreated();
 			(<any> menu)._onMenuFocusOut();
 			(<any> menu)._onMenuFocus();
+			(<any> menu)._onMenuFocus();
 			(<any> menu)._onMenuFocusOut();
+			menu.__render__();
 
-			assert.isTrue(menu.state.active, 'menu should remain active');
+			assert.isTrue(child.properties.active, 'menu should remain active');
 		},
 
 		'when the event target node is outside the menu'() {
 			const menu = new Menu();
+			const child: any = new MenuItem();
 			const element: any = getMockNavElement();
 			element.contains = () => false;
 
+			menu.setChildren([ child ]);
 			(<any> menu).onElementCreated(element, 'root');
 			(<any> menu)._onMenuFocus();
 			(<any> menu)._onMenuFocusOut();
+			menu.__render__();
 
-			assert.isFalse(menu.state.active, 'menu should be inactive');
+			assert.isFalse(child.properties.active, 'menu should be inactive');
 		}
 	},
 

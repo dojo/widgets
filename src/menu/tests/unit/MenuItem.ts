@@ -82,7 +82,7 @@ registerSuite({
 				}
 			});
 
-			(<any> item).onClick(<any> {});
+			(<any> item)._onClick(<any> {});
 			assert.isFalse(called, '`onClick` should not be called when the menu item is disabled.');
 		},
 
@@ -95,7 +95,7 @@ registerSuite({
 				}
 			});
 
-			(<any> item).onClick(<any> {});
+			(<any> item)._onClick(<any> {});
 			assert.isTrue(called, '`onClick` should be called when the menu item is enabled.');
 		}
 	},
@@ -111,7 +111,7 @@ registerSuite({
 				}
 			});
 
-			(<any> item).onKeyDown(<any> { type: 'keydown' });
+			(<any> item)._onKeyDown(<any> { type: 'keydown' });
 			assert.isUndefined(event, '`onKeyDown` should not be called when the menu item is disabled.');
 		},
 
@@ -124,19 +124,25 @@ registerSuite({
 				}
 			});
 
-			(<any> item).onKeyDown(<any> { type: 'keydown' });
+			(<any> item)._onKeyDown(<any> { type: 'keydown' });
 			assert.strictEqual(event!.type, 'keydown', '`onKeyDown` should be called when the menu item is enabled.');
 		},
 
 		'space key'() {
 			const item = new MenuItem();
 			const click = sinon.spy();
-			(<any> item).onKeyDown(<any> {
+			const preventDefault = sinon.spy();
+			const stopPropagation = sinon.spy();
+			(<any> item)._onKeyDown(<any> {
 				keyCode: 32,
+				preventDefault,
+				stopPropagation,
 				target: { click }
 			});
 
 			assert.isTrue(click.called, 'The event target\'s "click" method should be called.');
+			assert.isTrue(preventDefault.called, 'event.preventDefault should be called to stop scrolling.');
+			assert.isTrue(stopPropagation.called, 'event.stopPropagation should be called.');
 		}
 	},
 
@@ -256,7 +262,7 @@ registerSuite({
 		const item = new MenuItem();
 		let vnode: any = item.__render__();
 
-		assert.strictEqual(vnode.vnodeSelector, 'span', 'defaults to span');
+		assert.strictEqual(vnode.vnodeSelector, 'a', 'defaults to `a`');
 
 		item.setProperties({
 			tag: 'a'

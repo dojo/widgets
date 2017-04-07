@@ -1,7 +1,6 @@
 import uuid from '@dojo/core/uuid';
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import StatefulMixin from '@dojo/widget-core/mixins/Stateful';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/menu.m.css';
@@ -49,10 +48,11 @@ export const enum Keys {
 	up = 38
 };
 
-export const MenuBase = StatefulMixin(ThemeableMixin(WidgetBase));
+export const MenuBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export class Menu extends MenuBase<MenuProperties> {
+	private _active = false;
 	private _activeIndex = 0;
 	private _domNode: HTMLElement | null;
 	private _id = uuid();
@@ -99,13 +99,8 @@ export class Menu extends MenuBase<MenuProperties> {
 		const isHorizontal = orientation === 'horizontal';
 
 		return {
-			ascend: isHorizontal ? Keys.up : Keys.left,
 			decrease: isHorizontal ? Keys.left : Keys.up,
-			descend: isHorizontal ? Keys.down : Keys.right,
-			enter: Keys.enter,
-			escape: Keys.escape,
 			increase: isHorizontal ? Keys.right : Keys.down,
-			space: Keys.space,
 			tab: Keys.tab
 		};
 	}
@@ -126,7 +121,7 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	private _isActive() {
-		return this.state.active || this.properties.active;
+		return this._active || this.properties.active;
 	}
 
 	private _moveActiveIndex(operation: Operation) {
@@ -140,14 +135,19 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	private _onMenuFocus() {
-		!this._isActive() && this.setState({ active: true });
+		if (!this._isActive()) {
+			this._active = true;
+			this.invalidate();
+		}
 	}
 
 	private _onMenuFocusOut() {
 		if (this._isActive()) {
 			requestAnimationFrame(() => {
-				if (!(<HTMLElement> this._domNode).contains(document.activeElement)) {
-					this.setState({ active: false });
+				const node = this._domNode as HTMLElement;
+				if (node && !node.contains(document.activeElement)) {
+					this._active = false;
+					this.invalidate();
 				}
 			});
 		}
@@ -159,7 +159,8 @@ export class Menu extends MenuBase<MenuProperties> {
 		switch (event.keyCode) {
 			case keys.tab:
 				event.stopPropagation();
-				this.setState({ active: false });
+				this._active = false;
+				this.invalidate();
 				break;
 			case keys.decrease:
 				event.preventDefault();

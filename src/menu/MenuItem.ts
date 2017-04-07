@@ -25,7 +25,7 @@ export type MenuItemType = 'item' | 'checkbox' | 'radio';
  * @property onKeyDown		Called when keys are pressed while the widget has focus.
  * @property properties		Additional properties for the widget's vnode.
  * @property selected		Determines whether the widget is marked as selected.
- * @property tag			The HTML tag name to use for the widget's vnode. Defaults to 'span'.
+ * @property tag			The HTML tag name to use for the widget's vnode. Defaults to 'a'.
  * @property type			The type of the menu item. Defaults to 'item'.
  */
 export interface MenuItemProperties extends ThemeableProperties {
@@ -69,7 +69,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			index,
 			properties,
 			selected = false,
-			tag = 'span',
+			tag = 'a',
 			type = 'item'
 		} = this.properties;
 
@@ -88,8 +88,8 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			classes,
 			id,
 			key: 'root',
-			onclick: this.onClick,
-			onkeydown: this.onKeyDown,
+			onclick: this._onClick,
+			onkeydown: this._onKeyDown,
 			role: roleMap[type],
 			tabIndex: focusable ? 0 : -1
 		};
@@ -101,7 +101,15 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 		return v(tag, assign(Object.create(null), properties, itemProperties), this.children);
 	}
 
-	protected onClick(event: MouseEvent) {
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (key === 'root') {
+			requestAnimationFrame(() => {
+				this.properties.active && element.focus();
+			});
+		}
+	}
+
+	private _onClick(event: MouseEvent) {
 		const { disabled, onClick } = this.properties;
 
 		if (!disabled && onClick) {
@@ -109,20 +117,18 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 		}
 	}
 
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		const { active } = this.properties;
-
-		if (key === 'root' && active) {
-			element.focus();
-		}
-	}
-
-	protected onKeyDown(event: KeyboardEvent) {
+	private _onKeyDown(event: KeyboardEvent) {
 		const { disabled, onKeyDown } = this.properties;
+		const isSpaceKey = event.keyCode === SPACE_KEY;
+
+		if (isSpaceKey) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 
 		if (!disabled) {
 			onKeyDown && onKeyDown(event);
-			if (event.keyCode === SPACE_KEY) {
+			if (isSpaceKey) {
 				(<HTMLElement> event.target).click();
 			}
 		}
