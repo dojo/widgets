@@ -254,6 +254,22 @@ registerSuite({
 
 			assert.isTrue(clicked, 'properties.onClick called');
 			assert.isFalse(changed, 'onChange shouldn\'t fire with no options');
+		},
+
+		'Custom option factory'() {
+			class CustomOption extends SelectOption {
+				renderLabel() {
+					return 'foo';
+				}
+			}
+			const select = new Select();
+			select.setProperties({
+				customOption: CustomOption,
+				options: testOptions
+			});
+			const vnode = <VNode> select.__render__();
+			const selectNode = vnode.children![0].children![1];
+			assert.strictEqual(selectNode.children![1].text, 'foo');
 		}
 	},
 
@@ -263,7 +279,6 @@ registerSuite({
 			select.setProperties({
 				disabled: true,
 				options: testOptions,
-				customOption: SelectOption,
 				value: 'two'
 			});
 			const vnode = <VNode> select.__render__();
