@@ -7,7 +7,7 @@ import * as sinon from 'sinon';
 import { Orientation } from '../../Menu';
 import SubMenu from '../../SubMenu';
 import MenuItem from '../../MenuItem';
-import * as css from '../../styles/menu.m.css';
+import * as css from '../../styles/subMenu.m.css';
 
 function getStyle(element: any) {
 	return {

@@ -108,7 +108,7 @@ export class Menu extends MenuBase<MenuProperties> {
 
 	private _getMenuClasses() {
 		const { nested, orientation = this._getDefaultOrientation() } = this.properties;
-		const classes = [ css.menu ];
+		const classes = [ css.root ];
 
 		if (orientation === 'horizontal') {
 			classes.push(css.horizontal);

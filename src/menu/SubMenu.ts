@@ -7,7 +7,7 @@ import ThemeableMixin, { theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import Menu, { Keys, MenuProperties, Orientation, Role } from './Menu';
 import MenuItem from './MenuItem';
-import * as css from './styles/menu.m.css';
+import * as css from './styles/subMenu.m.css';
 
 export type Animation = 'fade' | 'slide' | 'none';
 export type MenuType = 'dropdown' | 'inline' | 'popup';
@@ -92,7 +92,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		const menu = this.renderMenu();
 
 		return v('div', {
-			classes: this.classes(css.root, css.nestedMenuRoot),
+			classes: this.classes(css.root),
 			onfocusout: this._onMenuFocusOut,
 			onkeydown: this._onMenuKeyDown,
 			onmouseenter: this._onMenuMouseEnter,

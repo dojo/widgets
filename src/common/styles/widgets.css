@@ -5,6 +5,8 @@
 @import '../../combobox/styles/comboBox.m.css';
 @import '../../dialog/styles/dialog.m.css';
 @import '../../menu/styles/menu.m.css';
+@import '../../menu/styles/menuBar.m.css';
+@import '../../menu/styles/subMenu.m.css';
 @import '../../radio/styles/radio.m.css';
 @import '../../select/styles/select.m.css';
 @import '../../slidepane/styles/slidePane.m.css';
