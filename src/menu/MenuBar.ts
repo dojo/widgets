@@ -7,7 +7,7 @@ import * as css from './styles/menuBar.m.css';
 import SlidePane from '../slidepane/SlidePane';
 
 export interface MenuBarProperties extends ThemeableProperties {
-	breakpoint?: number;
+	breakpoint: number;
 	slidePaneButtonLabel?: string;
 	slidePaneStyles?: any;
 	onRequestClose?: () => void;
@@ -82,10 +82,7 @@ export class MenuBar extends MenuBarBase<MenuBarProperties> {
 		// be possible to invalidate only when the vw crosses the breakpoint.
 		const viewportSubscription = viewportSource.subscribe({
 			next: debounce(() => {
-				const { breakpoint } = this.properties;
-				if (typeof breakpoint === 'number') {
-					this.invalidate();
-				}
+				this.invalidate();
 			}, 200)
 		});
 		this.own({

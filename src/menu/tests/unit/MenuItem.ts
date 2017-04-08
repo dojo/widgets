@@ -1,3 +1,4 @@
+import has from '@dojo/has/has';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
@@ -6,6 +7,25 @@ import * as css from '../../styles/menu.m.css';
 
 registerSuite({
 	name: 'MenuItem',
+
+	setup() {
+		if (has('host-node')) {
+			(<any> global).requestAnimationFrame = function (callback: () => void) {
+				callback();
+			};
+		}
+		else if (has('host-browser')) {
+			sinon.stub(window, 'requestAnimationFrame', function (callback: () => void) {
+				callback();
+			});
+		}
+	},
+
+	teardown() {
+		if (has('host-browser')) {
+			(<any> window.requestAnimationFrame).restore();
+		}
+	},
 
 	'Should construct menu item with passed properties'() {
 		const item = new MenuItem();
