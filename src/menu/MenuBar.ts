@@ -32,6 +32,7 @@ const MenuBarBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export class MenuBar extends MenuBarBase<MenuBarProperties> {
 	constructor() {
+		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
 		super();
 		this._observeViewport();
 	}

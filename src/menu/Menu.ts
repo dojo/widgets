@@ -58,6 +58,7 @@ export class Menu extends MenuBase<MenuProperties> {
 	private _id = uuid();
 
 	constructor() {
+		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
 		super();
 		// TODO: Remove once focus management is implemented.
 		this.own({ destroy: () => {

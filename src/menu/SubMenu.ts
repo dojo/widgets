@@ -79,6 +79,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 	private _wasOpen = false;
 
 	constructor() {
+		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
 		super();
 		// TODO: Remove once focus management is implemented.
 		this.own({ destroy: () => {
