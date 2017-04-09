@@ -110,12 +110,24 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 					// When animating from `visibility: hidden`, some browsers will mark the element as visible
 					// within the next task, whereas others may take multiple tasks before the element switches
 					// to visible.
+					let callCount = 0;
 					const scheduleFocus = () => {
 						requestAnimationFrame(() => {
 							visibility = getComputedStyle(element).getPropertyValue('visibility');
 
 							if (this.properties.active) {
-								visibility === 'hidden' ? scheduleFocus() : element.focus();
+								if (visibility === 'hidden') {
+									if (callCount > 30) {
+										console.warn('Hidden elements cannot receive focus.');
+									}
+									else {
+										callCount++;
+										scheduleFocus();
+									}
+								}
+								else {
+									element.focus();
+								}
 							}
 						});
 					};

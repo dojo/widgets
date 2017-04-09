@@ -163,6 +163,29 @@ registerSuite({
 			item.setProperties({ active: true });
 			(<any> item).onElementUpdated(<any> { focus }, 'root');
 			assert.isFalse(focus.called, 'element should not receive focus when `active` changes to false');
+		},
+
+		'cap on waiting period'() {
+			const item = new MenuItem();
+			const focus = sinon.spy();
+			sinon.stub(console, 'warn');
+
+			const getComputedStyleMock = {
+				getPropertyValue: () =>  'hidden'
+			};
+
+			if (has('host-node')) {
+				(<any> global).getComputedStyle = () => getComputedStyleMock;
+			}
+			else if (has('host-browser')) {
+				sinon.stub(window, 'getComputedStyle').returns(getComputedStyleMock);
+			}
+
+			item.setProperties({ active: true });
+			(<any> item).onElementUpdated(<any> { focus }, 'root');
+			assert.isTrue((<any> console.warn).calledWith('Hidden elements cannot receive focus.'));
+			assert.isFalse(focus.called);
+			(<any> console.warn).restore();
 		}
 	},
 
