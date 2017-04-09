@@ -60,13 +60,6 @@ function getMenuHeight(menuElement: HTMLElement): number {
 
 export const SubMenuBase = ThemeableMixin(WidgetBase);
 
-// `this.properties.active` is set by parent widgets to indicate that the label should
-// receive focus. From there, whether focus management within the submenu is handled
-// by the `SubMenu`. If `active` is false, then neither the label nor the menu should
-// receive focus. If `active` is true and `hidden` is true, then the label should
-// receive focus. If `active` is true and `hidden` is false, then the menu should receive
-// focus, unless `this._labelActive` is true, in which case the label should receive focus.
-
 @theme(css)
 export class SubMenu extends SubMenuBase<SubMenuProperties> {
 	private _active = false;

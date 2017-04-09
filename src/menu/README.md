@@ -1,6 +1,6 @@
 # Creating Menus
 
-Dojo 2 provides a set of widgets that can be used to create menus: `MenuItem`, which wraps a `DNode` and represents a single item within a menu; `Menu`, which renders a list of menu items; and `SubMenu`, which renders a `Menu` with an additional `MenuItem` used to toggle the menu in and out of view. Due to the generic nature of `Menu`, there are certain patterns that should be followed when using it to guarantee the best experience for all users.
+Dojo 2 provides a set of widgets that can be used to create menus: `MenuItem`, which wraps a `DNode` and represents a single item within a menu; `Menu`, which renders a list of menu items; `SubMenu`, which renders a `Menu` with an additional `MenuItem` used to toggle the menu in and out of view; and `MenuBar`, which is a light widget that renders its children to a `SlidePane` beneath a specified breakpoint. Due to the generic nature of `Menu`, there are certain patterns that should be followed when using it to guarantee the best experience for all users.
 
 ## Basic Usage
 
@@ -30,7 +30,7 @@ w(Menu, {}, [
 ```
 
 ```typescript
-// Horizontal menubar
+// Horizontal menu
 w(Menu, {
 	// "horizontal" is the default orientation for menubars, so the `orientation` property
 	// is not technically required here.
@@ -38,21 +38,18 @@ w(Menu, {
 	role: 'menubar'
 }, [
 	w(MenuItem, {
-		tag: 'a',
 		properties: {
 			href: 'http://dojo.io'
 		}
 	}, [ 'Dojo 2' ]),
 
 	w(MenuItem, {
-		tag: 'a',
 		properties: {
 			href: 'https://github.com/dojo/widget-core'
 		}
 	}, [ 'Dojo 2 Widget Core' ]),
 
 	w(MenuItem, {
-		tag: 'a',
 		properties: {
 			href: 'https://github.com/dojo/widgets'
 		}
@@ -90,6 +87,44 @@ w(SubMenu, {
 			// forward
 		}
 	}, [ 'Forward' ]),
+]);
+```
+
+```typescript
+// Responsive menubar
+w(MenuBar, {
+	// render as a `SlidePane` beneath 500px
+	breakpoint: 500,
+	open: this.state.slidePaneOpen,
+	onRequestClose: () => {
+		this.setState({ slidePaneOpen: false });
+	},
+	onRequestOpen: () => {
+		this.setState({ slidePaneOpen: true });
+	},
+	slidePaneButtonLabel: 'Show Menu'
+}, [
+	w(Menu, {
+		role: 'menubar'
+	}, [
+		w(MenuItem, {
+			properties: {
+				href: 'http://dojo.io'
+			}
+		}, [ 'Dojo 2' ]),
+
+		w(MenuItem, {
+			properties: {
+				href: 'https://github.com/dojo/widget-core'
+			}
+		}, [ 'Dojo 2 Widget Core' ]),
+
+		w(MenuItem, {
+			properties: {
+				href: 'https://github.com/dojo/widgets'
+			}
+		}, [ 'Dojo 2 Widgets' ])
+	]);
 ]);
 ```
 

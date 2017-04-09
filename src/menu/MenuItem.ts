@@ -103,9 +103,28 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
 		if (key === 'root') {
-			requestAnimationFrame(() => {
-				this.properties.active && element.focus();
-			});
+			let visibility = getComputedStyle(element).getPropertyValue('visibility');
+
+			if (this.properties.active) {
+				if (visibility === 'hidden') {
+					// When animating from `visibility: hidden`, some browsers will mark the element as visible
+					// within the next task, whereas others may take multiple tasks before the element switches
+					// to visible.
+					const scheduleFocus = () => {
+						requestAnimationFrame(() => {
+							visibility = getComputedStyle(element).getPropertyValue('visibility');
+
+							if (this.properties.active) {
+								visibility === 'hidden' ? scheduleFocus() : element.focus();
+							}
+						});
+					};
+					scheduleFocus();
+				}
+				else {
+					element.focus();
+				}
+			}
 		}
 	}
 

@@ -78,17 +78,92 @@ registerSuite({
 		}
 	},
 
-	active() {
-		const item = new MenuItem();
-		const focus = sinon.spy();
+	active: {
+		afterEach() {
+			if (has('host-browser')) {
+				(<any> window.getComputedStyle).restore();
+			}
+		},
 
-		(<any> item).onElementUpdated(<any> { focus });
-		(<any> item).onElementUpdated(<any> { focus }, 'root');
-		assert.isFalse(focus.called, 'element should not receive focus when `active` is false');
+		'visible menu items'() {
+			const item = new MenuItem();
+			const focus = sinon.spy();
+			const getComputedStyleMock = {
+				getPropertyValue: () => 'visible'
+			};
 
-		item.setProperties({ active: true });
-		(<any> item).onElementUpdated(<any> { focus }, 'root');
-		assert.isTrue(focus.called, 'element should receive focus when `active` is true');
+			if (has('host-node')) {
+				(<any> global).getComputedStyle = () => getComputedStyleMock;
+			}
+			else if (has('host-browser')) {
+				sinon.stub(window, 'getComputedStyle').returns(getComputedStyleMock);
+			}
+
+			(<any> item).onElementUpdated(<any> { focus });
+			(<any> item).onElementUpdated(<any> { focus }, 'root');
+			assert.isFalse(focus.called, 'element should not receive focus when `active` is false');
+
+			item.setProperties({ active: true });
+			(<any> item).onElementUpdated(<any> { focus }, 'root');
+			assert.isTrue(focus.called, 'element should receive focus when `active` is true');
+		},
+
+		'hidden menu items'() {
+			const item = new MenuItem();
+			const focus = sinon.spy();
+
+			let callCount = 0;
+			const getComputedStyleMock = {
+				getPropertyValue: () =>  {
+					const visibility = callCount < 10 ? 'hidden' : 'visible';
+					callCount++;
+					return visibility;
+				}
+			};
+
+			if (has('host-node')) {
+				(<any> global).getComputedStyle = () => getComputedStyleMock;
+			}
+			else if (has('host-browser')) {
+				sinon.stub(window, 'getComputedStyle').returns(getComputedStyleMock);
+			}
+
+			(<any> item).onElementUpdated(<any> { focus });
+			(<any> item).onElementUpdated(<any> { focus }, 'root');
+			assert.isFalse(focus.called, 'element should not receive focus when `active` is false');
+
+			item.setProperties({ active: true });
+			(<any> item).onElementUpdated(<any> { focus }, 'root');
+			assert.isTrue(focus.called, 'element should receive focus when `active` is true');
+		},
+
+		'hidden menu items that become inactive before becoming visible'() {
+			const item = new MenuItem();
+			const focus = sinon.spy();
+
+			let callCount = 0;
+			const getComputedStyleMock = {
+				getPropertyValue: () =>  {
+					const visibility = callCount < 10 ? 'hidden' : 'visible';
+					if (callCount === 5) {
+						item.setProperties({ active: false });
+					}
+					callCount++;
+					return visibility;
+				}
+			};
+
+			if (has('host-node')) {
+				(<any> global).getComputedStyle = () => getComputedStyleMock;
+			}
+			else if (has('host-browser')) {
+				sinon.stub(window, 'getComputedStyle').returns(getComputedStyleMock);
+			}
+
+			item.setProperties({ active: true });
+			(<any> item).onElementUpdated(<any> { focus }, 'root');
+			assert.isFalse(focus.called, 'element should not receive focus when `active` changes to false');
+		}
 	},
 
 	onClick: {
