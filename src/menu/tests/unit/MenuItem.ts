@@ -189,6 +189,20 @@ registerSuite({
 		}
 	},
 
+	index() {
+		const item = new MenuItem();
+		item.setProperties({ index: 3 });
+		const vnode: any = item.__render__();
+		assert.strictEqual(vnode.properties['data-dojo-index'], '3');
+	},
+
+	menuId() {
+		const item = new MenuItem();
+		item.setProperties({ menuId: 'menu-id' });
+		const vnode: any = item.__render__();
+		assert.strictEqual(vnode.properties['data-dojo-menuid'], 'menu-id');
+	},
+
 	onClick: {
 		'when disabled'() {
 			const item = new MenuItem();
@@ -250,17 +264,28 @@ registerSuite({
 			const item = new MenuItem();
 			const click = sinon.spy();
 			const preventDefault = sinon.spy();
-			const stopPropagation = sinon.spy();
 			(<any> item)._onKeyDown(<any> {
 				keyCode: 32,
 				preventDefault,
-				stopPropagation,
 				target: { click }
 			});
 
 			assert.isTrue(click.called, 'The event target\'s "click" method should be called.');
 			assert.isTrue(preventDefault.called, 'event.preventDefault should be called to stop scrolling.');
-			assert.isTrue(stopPropagation.called, 'event.stopPropagation should be called.');
+		},
+
+		'enter key'() {
+			const item = new MenuItem();
+			const onClick = sinon.spy();
+			const preventDefault = sinon.spy();
+			item.setProperties({ onClick });
+			(<any> item)._onKeyDown(<any> {
+				keyCode: 13,
+				preventDefault
+			});
+
+			assert.isTrue(onClick.called, 'The `onClick` property should be called');
+			assert.isFalse(preventDefault.called, 'event.preventDefault should not be called.');
 		}
 	},
 

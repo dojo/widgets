@@ -255,12 +255,13 @@ registerSuite({
 				return new MenuItem();
 			});
 
+			menu.setProperties({ id: 'menu-id' });
 			menu.setChildren(children);
 			(<any> menu)._onMenuMouseDown(<any> {
 				target: {
 					hasAttribute: () => false,
 					parentElement: {
-						getAttribute: () => '2',
+						getAttribute: (name: string) => name === 'data-dojo-index' ? '2' : 'menu-id',
 						hasAttribute: () => true
 					}
 				}
@@ -284,11 +285,12 @@ registerSuite({
 				return new MenuItem();
 			});
 
+			menu.setProperties({ id: 'menu-id' });
 			menu.setChildren(children);
 			(<any> menu)._onMenuMouseDown(<any> {
 				target: {
 					hasAttribute: () => true,
-					getAttribute: () => null
+					getAttribute: (name: string) => name === 'data-dojo-index' ? null : 'menu-id'
 				}
 			});
 			(<any> menu)._onMenuFocus();
@@ -310,10 +312,11 @@ registerSuite({
 				return new MenuItem();
 			});
 
+			menu.setProperties({ id: 'menu-id' });
 			menu.setChildren(children);
 			(<any> menu)._onMenuMouseDown(<any> {
 				target: {
-					getAttribute: () => '2',
+					getAttribute: (name: string) => name === 'data-dojo-index' ? '2' : 'menu-id',
 					hasAttribute: () => true
 				}
 			});
@@ -327,6 +330,35 @@ registerSuite({
 				}
 				else {
 					assert.isFalse(child.properties.active);
+				}
+			});
+		},
+
+		'without a matching menu id'() {
+			const menu = new Menu();
+			const children: any[] = '01234'.split('').map(i => {
+				return new MenuItem();
+			});
+
+			menu.setChildren(children);
+			(<any> menu)._onMenuMouseDown(<any> {
+				target: {
+					hasAttribute: () => false,
+					parentElement: {
+						getAttribute: (name: string) => name === 'data-dojo-index' ? '2' : 'menu-id',
+						hasAttribute: () => true
+					}
+				}
+			});
+			(<any> menu)._onMenuFocus();
+			(<any> menu)._renderChildren();
+
+			children.forEach((child: MenuItem, i) => {
+				if (i === 0) {
+					assert.isTrue(child.properties.active, `The menu's current active index should not change.`);
+				}
+				else {
+					assert.isFalse(child.properties.active, `The menu's current active index should not change.`);
 				}
 			});
 		}

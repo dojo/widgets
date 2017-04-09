@@ -5,7 +5,7 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Menu, { Orientation, Role } from '../Menu';
 import MenuBar, { MenuBarProperties } from '../MenuBar';
-import MenuItem, { MenuItemType } from '../MenuItem';
+import MenuItem, { MenuItemProperties, MenuItemType } from '../MenuItem';
 import SubMenu, { MenuType, SubMenuProperties } from '../SubMenu';
 
 const BREAKPOINT = 800;
@@ -89,7 +89,45 @@ export class App extends AppBase<WidgetProperties> {
 
 			v('div', [
 				this.renderMenuBar(),
-				this.renderFileMenu()
+				this.renderFileMenu(),
+				v('div', { style: 'float: left;' }, [
+					w(SubMenu, <SubMenuProperties> {
+						animation: 'none',
+						hidden: this.state.radioMenuHidden,
+						label: 'Radio Popup',
+						type: 'popup',
+						onRequestHide: () => {
+							this.setState({ radioMenuHidden: true });
+						},
+						onRequestShow: () => {
+							this.setState({ radioMenuHidden: false });
+						}
+					}, [
+						w(MenuItem, <MenuItemProperties> {
+							selected: this.state.size === 'small',
+							type: 'radio',
+							onClick: () => {
+								this.setState({ size: 'small' });
+							}
+						}, [ 'Small' ]),
+
+						w(MenuItem, <MenuItemProperties> {
+							selected: this.state.size === 'medium',
+							type: 'radio',
+							onClick: () => {
+								this.setState({ size: 'medium' });
+							}
+						}, [ 'Medium' ]),
+
+						w(MenuItem, <MenuItemProperties> {
+							selected: this.state.size === 'large',
+							type: 'radio',
+							onClick: () => {
+								this.setState({ size: 'large' });
+							}
+						}, [ 'Large' ])
+					])
+				])
 			])
 		]);
 	}

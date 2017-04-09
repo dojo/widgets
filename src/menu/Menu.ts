@@ -182,22 +182,26 @@ export class Menu extends MenuBase<MenuProperties> {
 			itemNode = itemNode.parentElement;
 		}
 
+		const { id = this._id } = this.properties;
 		const index = parseInt(itemNode.getAttribute('data-dojo-index') || '', 10);
-		if (!isNaN(index)) {
+		const menuId = itemNode.getAttribute('data-dojo-menuid');
+
+		if (menuId === id && !isNaN(index)) {
 			this._activeIndex = index;
 		}
 	}
 
 	private _renderChildren() {
-		const { activeIndex = this._activeIndex } = this.properties;
+		const { activeIndex = this._activeIndex, id = this._id } = this.properties;
 		const focusIndex = this._isActive() ? activeIndex : undefined;
 		this._activeIndex = activeIndex;
 
 		this.children.filter((child: any) => child && child.properties)
 			.forEach((child: any, i) => {
-				child.properties.index = i;
-				child.properties.focusable = i === activeIndex;
 				child.properties.active = i === focusIndex;
+				child.properties.focusable = i === activeIndex;
+				child.properties.index = i;
+				child.properties.menuId = id;
 			});
 
 		return this.children;

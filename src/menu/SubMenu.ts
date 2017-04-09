@@ -11,6 +11,10 @@ import * as css from './styles/subMenu.m.css';
 
 export type Animation = 'fade' | 'slide' | 'none';
 export type MenuType = 'dropdown' | 'inline' | 'popup';
+export interface Position {
+	x?: 'left' | 'right';
+	y?: 'above' | 'below' | 'top';
+}
 
 /**
  * @type MenuProperties
@@ -49,7 +53,7 @@ export interface SubMenuProperties extends MenuProperties {
 	onRequestHide?: () => void;
 	onRequestShow?: () => void;
 	parentOrientation?: Orientation;
-	position?: { x?: 'left' | 'right'; y?: 'bottom' | 'top' };
+	position?: Position;
 	type?: MenuType;
 }
 
@@ -86,6 +90,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 
 		return v('div', {
 			classes: this.classes(css.root),
+			onclick: this._onItemActivate,
 			onfocusout: this._onMenuFocusOut,
 			onkeydown: this._onMenuKeyDown,
 			onmouseenter: this._onMenuMouseEnter,
@@ -102,7 +107,8 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			index,
 			label,
 			labelId = this._labelId,
-			overrideClasses
+			overrideClasses,
+			type = 'inline'
 		} = this.properties;
 
 		return w(MenuItem, {
@@ -110,7 +116,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			controls: id,
 			disabled,
 			expanded: !hidden,
-			focusable,
+			focusable: focusable || type === 'popup',
 			hasMenu: true,
 			id: labelId,
 			index,
@@ -226,6 +232,13 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		return type === 'inline' ? 'slide' : 'fade';
 	}
 
+	private _getDefaultPosition(): Position | void {
+		const { type = 'inline' } = this.properties;
+		if (type === 'popup') {
+			return { y: 'top' };
+		}
+	}
+
 	private _getKeys() {
 		const { orientation, parentOrientation } = this.properties;
 		const isHorizontal = orientation === 'horizontal';
@@ -243,7 +256,12 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 	}
 
 	private _getMenuClasses() {
-		const { animation = this._getDefaultAnimation(), hidden = true, position, type = 'inline' } = this.properties;
+		const {
+			animation = this._getDefaultAnimation(),
+			hidden = true,
+			position = this._getDefaultPosition(),
+			type = 'inline'
+		} = this.properties;
 		const classes = [ css.subMenu, type === 'dropdown' ? css.dropDown : (<any> css)[type] ];
 
 		if (this._initialRender || animation !== 'slide') {
@@ -280,11 +298,14 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 	private _onLabelClick() {
 		const {
 			disabled,
-			expandOnClick = true
+			expandOnClick = true,
+			type = 'inline'
 		} = this.properties;
 
 		if (!disabled && expandOnClick) {
-			this._labelActive = true;
+			if (type !== 'popup') {
+				this._labelActive = true;
+			}
 			this._toggleDisplay();
 		}
 	}
@@ -296,17 +317,13 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			const keys = this._getKeys();
 			const key = event.keyCode;
 
-			if (key === keys.enter || key === keys.space) {
-				this._toggleDisplay();
-			}
-			else if (key === keys.descend) {
-				if (key === Keys.down) {
-					event.preventDefault();
-				}
-
-				event.stopPropagation();
+			if (key === keys.enter || key === keys.space || key === keys.descend) {
+				const force = key === keys.descend ? true : undefined;
 				this._labelActive = false;
-				this._toggleDisplay(true);
+
+				key === Keys.down && event.preventDefault();
+				key === keys.descend && event.stopPropagation();
+				this._toggleDisplay(force);
 			}
 		}
 	}
@@ -338,6 +355,9 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			case keys.space:
 				this._onItemActivate();
 				break;
+			case keys.enter:
+				this._onItemActivate();
+				break;
 			case keys.escape:
 				event.stopPropagation();
 				this._labelActive = true;
@@ -352,9 +372,10 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 	}
 
 	private _onItemActivate() {
-		const { hideOnActivate = true } = this.properties;
+		const { hidden = true, hideOnActivate = true } = this.properties;
 
-		if (hideOnActivate) {
+		if (!hidden && hideOnActivate) {
+			this._labelActive = true;
 			this._toggleDisplay(false);
 		}
 	}
@@ -404,7 +425,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		}
 
 		if (requestShow) {
-			this._active = true;
+			this._active = !inactive;
 			onRequestShow && onRequestShow();
 		}
 		else {

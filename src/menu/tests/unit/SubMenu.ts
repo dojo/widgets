@@ -209,8 +209,9 @@ registerSuite({
 		let menuNode: any = vnode.children[1];
 
 		assert.notOk(menuNode.properties.classes[css.top]);
+		assert.notOk(menuNode.properties.classes[css.above]);
+		assert.notOk(menuNode.properties.classes[css.below]);
 		assert.notOk(menuNode.properties.classes[css.right]);
-		assert.notOk(menuNode.properties.classes[css.bottom]);
 		assert.notOk(menuNode.properties.classes[css.left]);
 
 		menu.setProperties({ label: 'Menu label', position: { x: 'left' }});
@@ -218,17 +219,19 @@ registerSuite({
 		menuNode = vnode.children[1];
 
 		assert.notOk(menuNode.properties.classes[css.top]);
+		assert.notOk(menuNode.properties.classes[css.above]);
+		assert.notOk(menuNode.properties.classes[css.below]);
 		assert.notOk(menuNode.properties.classes[css.right]);
-		assert.notOk(menuNode.properties.classes[css.bottom]);
 		assert.isTrue(menuNode.properties.classes[css.left]);
 
-		menu.setProperties({ label: 'Menu label', position: { x: 'left', y: 'bottom' }});
+		menu.setProperties({ label: 'Menu label', position: { x: 'left', y: 'below' }});
 		vnode = menu.__render__();
 		menuNode = vnode.children[1];
 
 		assert.notOk(menuNode.properties.classes[css.top]);
+		assert.notOk(menuNode.properties.classes[css.above]);
+		assert.isTrue(menuNode.properties.classes[css.below]);
 		assert.notOk(menuNode.properties.classes[css.right]);
-		assert.isTrue(menuNode.properties.classes[css.bottom]);
 		assert.isTrue(menuNode.properties.classes[css.left]);
 
 		menu.setProperties({ label: 'Menu label', position: { x: 'right', y: 'top' }});
@@ -236,8 +239,19 @@ registerSuite({
 		menuNode = vnode.children[1];
 
 		assert.isTrue(menuNode.properties.classes[css.top]);
+		assert.notOk(menuNode.properties.classes[css.above]);
+		assert.notOk(menuNode.properties.classes[css.below]);
 		assert.isTrue(menuNode.properties.classes[css.right]);
-		assert.notOk(menuNode.properties.classes[css.bottom]);
+		assert.notOk(menuNode.properties.classes[css.left]);
+
+		menu.setProperties({ label: 'Menu label', position: { y: 'above' }});
+		vnode = menu.__render__();
+		menuNode = vnode.children[1];
+
+		assert.notOk(menuNode.properties.classes[css.top]);
+		assert.isTrue(menuNode.properties.classes[css.above]);
+		assert.notOk(menuNode.properties.classes[css.below]);
+		assert.notOk(menuNode.properties.classes[css.right]);
 		assert.notOk(menuNode.properties.classes[css.left]);
 	},
 
@@ -564,6 +578,29 @@ registerSuite({
 			children.forEach((child: MenuItem) => {
 				assert.notOk(child.properties.active, 'menu items should be inactive');
 			});
+		},
+
+		'when `type` is "popup"'() {
+			const menu = new SubMenu();
+			const children: any[] = '01234'.split('').map(i => {
+				return new MenuItem();
+			});
+
+			menu.setProperties({
+				expandOnClick: true,
+				hidden: true,
+				label: 'Menu label',
+				type: 'popup',
+				onRequestShow() {
+					menu.setProperties({ hidden: false, label: 'Menu label' });
+				}
+			});
+			menu.setChildren(children);
+			(<any> menu)._onLabelClick();
+			menu.__render__();
+
+			assert.isFalse(menu.properties.hidden, 'menu should be displayed on click');
+			assert.isTrue(children[0].properties.active, 'popup menus should receive focus on click');
 		}
 	},
 
@@ -670,27 +707,32 @@ registerSuite({
 			};
 		}
 
+		function getActivateAssertion(keyCode = 32) {
+			return function () {
+				const menu = new SubMenu();
+				let onRequestHide = sinon.spy();
+
+				menu.setProperties({ hidden: false, label: 'Menu label', onRequestHide });
+				(<any> menu)._toggleDisplay(true);
+				(<any> menu)._onMenuKeyDown(<any> { keyCode });
+				assert.isTrue(onRequestHide.called, 'Menu should be hidden');
+
+				onRequestHide = sinon.spy();
+				menu.setProperties({ hidden: false, label: 'Menu label', hideOnActivate: false });
+				(<any> menu)._onMenuKeyDown(<any> { keyCode });
+				assert.isFalse(onRequestHide.called, 'Menu should not be hidden');
+
+				onRequestHide = sinon.spy();
+				menu.setProperties({ hidden: false, label: 'Menu label', hideOnActivate: true, role: 'menubar' });
+				(<any> menu)._onMenuKeyDown(<any> { keyCode });
+				assert.isFalse(onRequestHide.called, 'Menu should not be hidden');
+			};
+		}
+
 		return {
 			'common operations': {
-				'space key'() {
-					const menu = new SubMenu();
-					let onRequestHide = sinon.spy();
-
-					menu.setProperties({ label: 'Menu label', onRequestHide });
-					(<any> menu)._toggleDisplay(true);
-					(<any> menu)._onMenuKeyDown(<any> { keyCode: 32 });
-					assert.isTrue(onRequestHide.called, 'Menu should be hidden');
-
-					onRequestHide = sinon.spy();
-					menu.setProperties({ label: 'Menu label', hideOnActivate: false });
-					(<any> menu)._onMenuKeyDown(<any> { keyCode: 32 });
-					assert.isFalse(onRequestHide.called, 'Menu should not be hidden');
-
-					onRequestHide = sinon.spy();
-					menu.setProperties({ label: 'Menu label', hideOnActivate: true, role: 'menubar' });
-					(<any> menu)._onMenuKeyDown(<any> { keyCode: 32 });
-					assert.isFalse(onRequestHide.called, 'Menu should not be hidden');
-				},
+				'space key': getActivateAssertion(),
+				'enter key': getActivateAssertion(13),
 
 				'escape key'() {
 					const menu = new SubMenu();
@@ -898,7 +940,11 @@ registerSuite({
 			const menu = new SubMenu();
 			const onRequestHide = sinon.spy();
 
-			menu.setProperties({ label: 'Menu label', onRequestHide });
+			menu.setProperties({
+				label: 'Menu label',
+				hidden: false,
+				onRequestHide
+			});
 			(<any> menu)._onItemActivate();
 
 			assert.isTrue(onRequestHide.called, 'Menu should be hidden');
@@ -908,10 +954,28 @@ registerSuite({
 			const menu = new SubMenu();
 			const onRequestHide = sinon.spy();
 
-			menu.setProperties({ label: 'Menu label', hideOnActivate: false, onRequestHide });
+			menu.setProperties({
+				label: 'Menu label',
+				hideOnActivate: false,
+				hidden: false,
+				onRequestHide
+			});
 			(<any> menu)._onItemActivate();
 
 			assert.isFalse(onRequestHide.called, 'Menu should not be hidden');
+		},
+
+		'when true and hidden'() {
+			const menu = new SubMenu();
+			const onRequestHide = sinon.spy();
+
+			menu.setProperties({
+				label: 'Menu label',
+				onRequestHide
+			});
+			(<any> menu)._onItemActivate();
+
+			assert.isFalse(onRequestHide.called, 'Menu should not try to re-hide itself.');
 		}
 	},
 

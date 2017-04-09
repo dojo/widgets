@@ -21,6 +21,7 @@ export type MenuItemType = 'item' | 'checkbox' | 'radio';
  * @property hasPopup		Indicates whether the widget has a drop down child.
  * @property id				Specifies the ID for the widget.
  * @property index			Specifies the index of the item within a parent menu.
+ * @property menuId			The ID of the parent menu.
  * @property onClick		Called when the widget is activated via a click or space key.
  * @property onKeyDown		Called when keys are pressed while the widget has focus.
  * @property properties		Additional properties for the widget's vnode.
@@ -38,7 +39,8 @@ export interface MenuItemProperties extends ThemeableProperties {
 	hasPopup?: boolean;
 	id?: string;
 	index?: number;
-	onClick?: (event: MouseEvent) => void;
+	menuId?: string;
+	onClick?: (event: Event) => void;
 	onKeyDown?: (event: KeyboardEvent) => void;
 	properties?: VirtualDomProperties;
 	selected?: boolean;
@@ -49,6 +51,7 @@ export interface MenuItemProperties extends ThemeableProperties {
 export const MenuItemBase = ThemeableMixin(WidgetBase);
 
 const SPACE_KEY = 32;
+const ENTER_KEY = 13;
 const roleMap: { [key: string]: string } = {
 	item: 'menuitem',
 	checkbox: 'menuitemcheckbox',
@@ -67,6 +70,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			hasMenu = false,
 			id,
 			index,
+			menuId,
 			properties,
 			selected = false,
 			tag = 'a',
@@ -85,6 +89,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			'aria-haspopup': hasPopup ? 'true' : undefined,
 			'aria-disabled': disabled ? 'true' : undefined,
 			'data-dojo-index': typeof index === 'number' ? String(index) : undefined,
+			'data-dojo-menuid': menuId,
 			classes,
 			id,
 			key: 'root',
@@ -149,18 +154,20 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
-		const { disabled, onKeyDown } = this.properties;
+		const { disabled, onClick, onKeyDown } = this.properties;
 		const isSpaceKey = event.keyCode === SPACE_KEY;
 
 		if (isSpaceKey) {
 			event.preventDefault();
-			event.stopPropagation();
 		}
 
 		if (!disabled) {
 			onKeyDown && onKeyDown(event);
 			if (isSpaceKey) {
 				(<HTMLElement> event.target).click();
+			}
+			else if (event.keyCode === ENTER_KEY) {
+				onClick && onClick(event);
 			}
 		}
 	}
