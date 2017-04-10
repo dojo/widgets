@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 
 import has from '@dojo/has/has';
-import harness, { assignProperties, assignChildProperties, Harness, replaceChild } from '@dojo/intern-helper/harness';
+import harness, { assignProperties, assignChildProperties, Harness, replaceChild } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
 import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
@@ -39,7 +39,7 @@ registerSuite({
 			underlay: true
 		});
 
-		widget.setChildren(GREEKING);
+		widget.setChildren([ GREEKING ]);
 
 		widget.expectRender(v('div', {
 			onmousedown: widget.listener,
@@ -378,7 +378,7 @@ registerSuite({
 			open: true
 		});
 
-		widget.setChildren(GREEKING);
+		widget.setChildren([ GREEKING ]);
 
 		widget.sendEvent('mousedown', {
 			eventInit: <MouseEventInit> {
@@ -435,7 +435,7 @@ registerSuite({
 			open: true
 		});
 
-		widget.setChildren(GREEKING);
+		widget.setChildren([ GREEKING ]);
 
 		const expected = v('div', {
 			onmousedown: widget.listener,
@@ -510,7 +510,7 @@ registerSuite({
 			open: true
 		});
 
-		widget.setChildren(GREEKING);
+		widget.setChildren([ GREEKING ]);
 
 		const expected = v('div', {
 			onmousedown: widget.listener,

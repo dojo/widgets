@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@dojo/interfaces": "beta1",
-    "@dojo/intern-helper": "2.0.0-pre",
     "@dojo/loader": "beta1",
+    "@dojo/test-extras": ">=2.0.0-alpha.1",
     "@types/chai": "3.4.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",

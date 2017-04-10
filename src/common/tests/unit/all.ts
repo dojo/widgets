@@ -1,4 +1,4 @@
-import '@dojo/intern-helper/support/loadJsdom';
+import '@dojo/test-extras/support/loadJsdom';
 import './main';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../combobox/tests/unit/ComboBox';
