@@ -1,3 +1,4 @@
+import { createHandle } from '@dojo/core/lang';
 import uuid from '@dojo/core/uuid';
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
@@ -61,9 +62,9 @@ export class Menu extends MenuBase<MenuProperties> {
 		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
 		super();
 		// TODO: Remove once focus management is implemented.
-		this.own({ destroy: () => {
+		this.own(createHandle(() => {
 			this._domNode = null;
-		}});
+		}));
 	}
 
 	render(): DNode {

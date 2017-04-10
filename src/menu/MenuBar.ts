@@ -1,3 +1,4 @@
+import { createHandle } from '@dojo/core/lang';
 import { debounce } from '@dojo/core/util';
 import Observable from '@dojo/shim/Observable';
 import { v, w } from '@dojo/widget-core/d';
@@ -86,11 +87,9 @@ export class MenuBar extends MenuBarBase<MenuBarProperties> {
 				this.invalidate();
 			}, 200)
 		});
-		this.own({
-			destroy() {
-				viewportSubscription.unsubscribe();
-			}
-		});
+		this.own(createHandle(() => {
+			viewportSubscription.unsubscribe();
+		}));
 	}
 }
 

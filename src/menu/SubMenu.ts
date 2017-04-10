@@ -1,3 +1,4 @@
+import { createHandle } from '@dojo/core/lang';
 import { createTimer } from '@dojo/core/util';
 import uuid from '@dojo/core/uuid';
 import { Handle } from '@dojo/interfaces/core';
@@ -79,9 +80,9 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
 		super();
 		// TODO: Remove once focus management is implemented.
-		this.own({ destroy: () => {
+		this.own(createHandle(() => {
 			this._domNode = null;
-		}});
+		}));
 	}
 
 	render(): DNode {
