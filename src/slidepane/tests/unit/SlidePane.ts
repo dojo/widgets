@@ -418,7 +418,7 @@ registerSuite({
 
 		assert.isTrue(content.classList.contains(css.slideIn), 'should have css.slideIn');
 		content.classList.add(css.slideOut);
-		assert.isTrue(content.classList.contains(css.slideOut), 'shuld have css.slideOut');
+		assert.isTrue(content.classList.contains(css.slideOut), 'should have css.slideOut');
 		content.style.transform = 'translateX(1%)';
 
 		widget.sendEvent('transitionend', {
@@ -426,7 +426,7 @@ registerSuite({
 		});
 
 		assert.isFalse(content.classList.contains(css.slideIn), 'should not have css.slideIn');
-		assert.isFalse(content.classList.contains(css.slideOut), 'shuld not have css.slideOut');
+		assert.isFalse(content.classList.contains(css.slideOut), 'should not have css.slideOut');
 		assert.strictEqual(content.style.transform, '', 'transform should be removed');
 	},
 

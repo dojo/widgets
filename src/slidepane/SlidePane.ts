@@ -127,7 +127,9 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 
 	private _onTransitionEnd(event: TransitionEvent) {
 		const content = (<HTMLElement> event.target);
-		content.classList.remove(css.slideIn, css.slideOut);
+		/* IE11 does not support multiple remove arguments */
+		content.classList.remove(css.slideIn);
+		content.classList.remove(css.slideOut);
 		content.style.transform = '';
 	}
 
