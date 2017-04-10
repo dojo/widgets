@@ -15,32 +15,16 @@
 
 .dropDown.hidden,
 .popup.hidden {
-	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
 }
 
 /* Animations */
-@keyframes fadeIn {
-	0% {
-		opacity: 0;
-		visibility: hidden;
-	}
-	100% {
-		opacity: 1;
-		visibility: visible;
-	}
+.fade {
+	transition: opacity var(--short-animation-duration) ease-in-out;
 }
-@keyframes fadeOut {
-	0% {
-		opacity: 1;
-		visibility: visible;
-	}
-	100% {
-		opacity: 0;
-		visibility: hidden;
-	}
-}
-.fade.hidden { animation: fadeOut var(--short-animation-duration) ease-in-out both; }
-.fade.visible { animation: fadeIn var(--short-animation-duration) ease-in-out both; }
+.fade.hidden { opacity: 0; }
+.fade.visible { opacity: 1 }
 
 .slide {
 	overflow: hidden;
