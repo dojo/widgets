@@ -33,6 +33,8 @@ export interface Position {
  * @property index				Specifies the index of the menu trigger within a parent menu.
  * @property label				A DNode to use as the trigger for a nested menu.
  * @property labelId			The ID for the menu trigger.
+ * @property labelStyles		Override styles for the menu trigger.
+ * @property menuStyles			Override styles for the menu.
  * @property onRequestHide		Called when the menu is displayed and the trigger is activated.
  * @property onRequestShow		Called when the menu is hidden and the trigger is activated.
  * @property parentOrientation	Indicates the orientation of the menu's parent (if applicable).
@@ -51,6 +53,8 @@ export interface SubMenuProperties extends MenuProperties {
 	index?: number;
 	label: DNode;
 	labelId?: string;
+	labelStyles?: any;
+	menuStyles?: any;
 	onRequestHide?: () => void;
 	onRequestShow?: () => void;
 	parentOrientation?: Orientation;
@@ -108,7 +112,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			index,
 			label,
 			labelId = this._labelId,
-			overrideClasses,
+			labelStyles,
 			type = 'inline'
 		} = this.properties;
 
@@ -121,7 +125,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			hasMenu: true,
 			id: labelId,
 			index,
-			overrideClasses: overrideClasses || css,
+			overrideClasses: labelStyles,
 			onClick: this._onLabelClick,
 			onKeyDown: this._onLabelKeyDown
 		}, [ label ]);
@@ -132,6 +136,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			hidden = true,
 			id = this._id,
 			labelId = this._labelId,
+			menuStyles,
 			orientation
 		} = this.properties;
 
@@ -140,6 +145,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			activeIndex: hidden ? 0 : undefined,
 			nested: true,
 			orientation,
+			overrideClasses: menuStyles,
 			role: <Role> 'menu'
 		}, this.children);
 
