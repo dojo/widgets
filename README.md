@@ -86,7 +86,8 @@ In a future release we will ship with several official Dojo 2 themes that can be
 
 ## Conventions
 
-Currently, all of our widgets are 'controlled' widgets. This means that a parent widget is responsible to the 'state' of the child widget.
+### controlled vs uncontrolled widgets
+Currently, all of our *form* widgets are 'controlled' widgets. This means that a parent widget is responsible to the 'state' of the child widget.
 'Controlled' widgets are also known as 'stateless' widgets.
 
 ### EventHandlers
