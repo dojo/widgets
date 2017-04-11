@@ -29,7 +29,7 @@ npm install @dojo/widgets
 ```
 This package contains *all* of the widgets in this repo.
 
-All of the widgets in this repo are on the same release schedule, that is to say, that we release all widgets at the same time.
+All of the widgets are on the same release schedule, that is to say, that we release all widgets at the same time.
 Minor releases may include new widgets and/or features, whereas patch releases may contain fixes to more than 1 widget.
 
 To use a widget in your application, you will need to import each widget individually:
@@ -44,17 +44,18 @@ Each widget module has a default export of the widget itself, as well as named e
 import Button, { ButtonProperties } from '@dojo/widgets/button/Button';
 ```
 
+Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported. 
 
 ## Features
 
-All widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
+- All widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
 
-All widgets support accessibility (`a11y`) out of the box.
+- All widgets support accessibility (`a11y`) out of the box.
 
-All widgets are fully themeable.
+- All widgets are fully themeable.
 In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets (all themes will live in a separate repo).
 
-All widgets support internationalisation (`i18n`)
+- All widgets support internationalisation (`i18n`)
 
 ## Widgets
 
@@ -84,6 +85,23 @@ All widgets support internationalisation (`i18n`)
 [Dialog](src/dialog/README.md)
 
 ## Conventions
+
+Currently, all of our widgets are 'controlled' widgets. This means that a parent widget is responsible to the 'state' of the child widget.
+'Controlled' widgets are also known as 'stateless' widgets.
+
+### EventHandlers
+
+You can register event handlers that get called when the corresponding events occur, by passing the handlers into a widget, in their `properties`.
+The naming convention for event handlers is as follows:
+
+- if the parent of the widget has the power to decide *if* an event is successful, i.e. can cancel the event, then the child widget will call an event handler in the following format:
+
+`onRequest[X]`, e.g. for a `close` event, the event handler called by the child widget must be called `onRequestClose`
+
+- for events that will occur regardless of child/parent interaction, then the `Request` naming convention is dropped:
+
+`on[X]`, e.g. for a `dismiss` event, then event handler called by the child widget must be called `onDismiss`
+
 
 ### Icons
 
