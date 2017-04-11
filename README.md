@@ -114,6 +114,21 @@ Where a theme requires specific icons that are not part of the Font Awesome set,
 When creating a widget, spacing (margin, padding) should be specified using `px` unless the design calls for proportional spacing, in which case `em` can be used.
 
 
+## How to customise a widget
+
+There are may ways in which you can customise the behaviour and appearance of our widgets.
+
+
+### Extending widgets
+
+If you want to extend one of the official widgets, then all you need to do is to simply extend it:
+
+```ts
+export class MyWidget extends Button {
+...
+}
+```
+
 ## How do I contribute?
 
 We appreciate your interest!  Please see the [Dojo 2 Meta Repository](https://github.com/dojo/meta#readme) for the
