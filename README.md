@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/dojo/widgets/branch/master/graph/badge.svg)](https://codecov.io/gh/dojo/widgets)
 [![npm version](https://badge.fury.io/js/%40dojo%2Fwidgets.svg)](https://badge.fury.io/js/%40dojo%2Fwidgets)
 
-A suite of pre-built Dojo 2 widgets, ready to use in your application.
+A suite of pre-built Dojo 2 widgets, ready to use in your web application.
 These widgets are built using Dojo 2's widget authoring system [(@dojo/widget-core)](https://github.com/dojo/widget-core).
 
 **WARNING** This is _beta_ software. While we do not anticipate significant changes to the API at this stage, we may feel the need to do so.
@@ -32,18 +32,56 @@ This package contains *all* of the widgets in this repo.
 All of the widgets in this repo are on the same release schedule, that is to say, that we release all widgets at the same time.
 Minor releases may include new widgets and/or features, whereas patch releases may contain fixes to more than 1 widget.
 
-In a future release, we will also publish each widget individually to `npm`.
+To use a widget in your application, you will need to import each widget individually:
+
+```ts
+import Button from '@dojo/widgets/button/Button';
+```
+
+Each widget module has a default export of the widget itself, as well as named exports for things such as properties specific to the widget:
+
+```ts
+import Button, { ButtonProperties } from '@dojo/widgets/button/Button';
+```
+
 
 ## Features
 
-Dojo 2 widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
+All widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
 
-Dojo 2 widgets are fully accessible (`a11y`), out of the box.
+All widgets support accessibility (`a11y`) out of the box.
 
-Dojo 2 widgets are fully themeable.
+All widgets are fully themeable.
 In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets (all themes will live in a separate repo).
 
-Dojo 2 widgets are fully internationalisable (`i18n`)
+All widgets support internationalisation (`i18n`)
+
+## Widgets
+
+### Form widgets
+[Button](src/button/README.md)
+
+[Checkbox](src/checkbox/README.md)
+
+[ComboBox](src/combobox/README.md)
+
+[Label](src/label/README.md)
+
+[Radio](src/radio/README.md)
+
+[Slider](src/slider/README.md)
+
+[TextArea](src/TextArea/README.md)
+
+[TextInput](src/TextInput/README.md)
+
+### Layout widgets
+[SlidePane](src/slidepane/README.md)
+
+[TabPane](src/tabpane/README.md)
+
+### Misc widgets
+[Dialog](src/dialog/README.md)
 
 ## Conventions
 
