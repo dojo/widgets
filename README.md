@@ -4,9 +4,11 @@
 [![codecov](https://codecov.io/gh/dojo/widgets/branch/master/graph/badge.svg)](https://codecov.io/gh/dojo/widgets)
 [![npm version](https://badge.fury.io/js/%40dojo%2Fwidgets.svg)](https://badge.fury.io/js/%40dojo%2Fwidgets)
 
-A suite of pre-built Dojo 2 widgets, ready to use in your application. These widgets are built using Dojo 2's widget authoring system [(@dojo/widget-core)](https://github.com/dojo/widget-core).
+A suite of pre-built Dojo 2 widgets, ready to use in your application.
+These widgets are built using Dojo 2's widget authoring system [(@dojo/widget-core)](https://github.com/dojo/widget-core).
 
-**WARNING** This is _beta_ software. While we do not anticipate significant changes to the API at this stage, we may feel the need to do so. This is not yet production ready, so you should use at your own risk.
+**WARNING** This is _beta_ software. While we do not anticipate significant changes to the API at this stage, we may feel the need to do so.
+This is not yet production ready, so you should use at your own risk.
 
 - [Usage](#usage)
 - [Features](#features)
@@ -27,7 +29,8 @@ npm install @dojo/widgets
 ```
 This package contains *all* of the widgets in this repo.
 
-All of the widgets in this repo are on the same release schedule, that is to say, that we release all widgets at the same time. Minor releases may include new widgets and/or features, whereas patch releases may contain fixes to more than 1 widget.
+All of the widgets in this repo are on the same release schedule, that is to say, that we release all widgets at the same time.
+Minor releases may include new widgets and/or features, whereas patch releases may contain fixes to more than 1 widget.
 
 In a future release, we will also publish each widget individually to `npm`.
 
@@ -37,7 +40,8 @@ Dojo 2 widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, 
 
 Dojo 2 widgets are fully accessible (`a11y`), out of the box.
 
-Dojo 2 widgets are fully themeable. In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets (all themes will live in a separate repo).
+Dojo 2 widgets are fully themeable.
+In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets (all themes will live in a separate repo).
 
 Dojo 2 widgets are fully internationalisable (`i18n`)
 
@@ -50,7 +54,8 @@ Where a theme requires specific icons that are not part of the Font Awesome set,
 
 ### Coding conventions
 
-`px vs em` - we specify font sizes in `px`. When creating a widget, spacing (margin, padding) should be specified using `px` unless the design calls for proportional spacing, in which case `em` can be used.
+`px vs em` - we specify font sizes in `px`.
+When creating a widget, spacing (margin, padding) should be specified using `px` unless the design calls for proportional spacing, in which case `em` can be used.
 
 
 ## How do I contribute?
