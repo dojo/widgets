@@ -86,10 +86,6 @@ In a future release we will ship with several official Dojo 2 themes that can be
 
 ## Conventions
 
-### controlled vs uncontrolled widgets
-Currently, all of our *form* widgets are 'controlled' widgets. This means that a parent widget is responsible to the 'state' of the child widget.
-'Controlled' widgets are also known as 'stateless' widgets.
-
 ### EventHandlers
 
 You can register event handlers that get called when the corresponding events occur, by passing the handlers into a widget, in their `properties`.
@@ -103,6 +99,9 @@ The naming convention for event handlers is as follows:
 
 `on[X]`, e.g. for a `dismiss` event, then event handler called by the child widget must be called `onDismiss`
 
+### Controlled vs uncontrolled form widgets
+Currently, all of our *form* widgets are 'controlled' widgets. This means that a parent widget is responsible to the 'state' of the child widget.
+'Controlled' widgets are also known as 'stateless' widgets.
 
 ### Icons
 
