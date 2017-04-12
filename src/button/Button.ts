@@ -14,7 +14,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property content        Text content of button
  * @property describedBy    ID of element with descriptive text
  * @property disabled       Whether the button is disabled or clickable
- * @property hasPopup       Whether the button triggers a popup
+ * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
  * @property name           The button's name attribute
  * @property pressed        Indicates status of a toggle button
  * @property type           Button type can be "submit", "reset", "button", or "menu"
