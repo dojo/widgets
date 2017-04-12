@@ -30,7 +30,7 @@ export class App extends AppBase<WidgetProperties> {
 				key: 'b2',
 				content: 'Open',
 				disabled: true,
-				hasPopup: true,
+				popup: { expanded: false, id: 'fakeId' },
 				type: <ButtonType> 'menu'
 			}),
 			v('p', {

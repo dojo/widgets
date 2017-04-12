@@ -24,7 +24,7 @@ registerSuite({
 			disabled: true,
 			pressed: true,
 			describedBy: 'baz',
-			hasPopup: true
+			popup: true
 		});
 		const vnode = <VNode> button.__render__();
 		assert.strictEqual(vnode.vnodeSelector, 'button');
@@ -35,6 +35,8 @@ registerSuite({
 		assert.strictEqual(vnode.properties!['aria-pressed'], 'true');
 		assert.strictEqual(vnode.properties!['aria-describedby'], 'baz');
 		assert.strictEqual(vnode.properties!['aria-haspopup'], 'true');
+		assert.strictEqual(vnode.properties!['aria-controls'], '');
+		assert.strictEqual(vnode.properties!['aria-expanded'], 'false');
 		assert.lengthOf(vnode.children, 0);
 	},
 

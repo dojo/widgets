@@ -35,7 +35,7 @@ export interface ButtonProperties extends ThemeableProperties {
 	content?: string;
 	describedBy?: string;
 	disabled?: boolean;
-	hasPopup?: boolean;
+	popup?: { expanded?: boolean; id?: string; } | boolean;
 	name?: string;
 	pressed?: boolean;
 	type?: ButtonType;
@@ -70,11 +70,11 @@ export default class Button extends ButtonBase<ButtonProperties> {
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
 	render(): DNode {
-		const {
+		let {
 			content = '',
 			describedBy,
 			disabled,
-			hasPopup,
+			popup = false,
 			name,
 			pressed,
 			type,
@@ -83,16 +83,22 @@ export default class Button extends ButtonBase<ButtonProperties> {
 
 		const stateClasses = [
 			disabled ? css.disabled : null,
-			hasPopup ? css.popup : null,
+			popup ? css.popup : null,
 			pressed ? css.pressed : null
 		];
+
+		if (popup === true) {
+			popup = { expanded: false, id: '' };
+		}
 
 		return v('button', {
 			innerHTML: content,
 			classes: this.classes(css.button, ...stateClasses),
 			'aria-describedby': describedBy,
 			disabled,
-			'aria-haspopup': typeof hasPopup === 'boolean' ? hasPopup.toString() : null,
+			'aria-haspopup': popup ? 'true' : null,
+			'aria-controls': popup ? popup.id : null,
+			'aria-expanded': popup ? popup.expanded + '' : null,
 			name,
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
 			type,
