@@ -5,6 +5,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/menu.m.css';
+import { Keys } from '../common/util';
 
 export type Orientation = 'horizontal' | 'vertical';
 
@@ -15,20 +16,18 @@ export type Role = 'menu' | 'menubar';
  *
  * Properties that can be set on a Menu component.
  *
- * @property active				Determines whether the menu has focus.
- * @property activeIndex		Determines the index of the focused item.
- * @property disabled			Determines whether the menu is disabled.
- * @property id					The widget ID. Defaults to a random string.
- * @property nested				Indicates whether the menu is nested within another menu.
- * @property orientation		Determines whether the menu is rendered horizontally.
- * @property role				The value to use for the menu's `role` property. Defaults to 'menu'.
+ * @property active             Determines whether the menu has focus.
+ * @property activeIndex        Determines the index of the focused item.
+ * @property disabled           Determines whether the menu is disabled.
+ * @property id                 The widget ID. Defaults to a random string.
+ * @property orientation        Determines whether the menu is rendered horizontally.
+ * @property role               The value to use for the menu's `role` property. Defaults to 'menu'.
  */
 export interface MenuProperties extends ThemeableProperties {
 	active?: boolean;
 	activeIndex?: number;
 	disabled?: boolean;
 	id?: string;
-	nested?: boolean;
 	orientation?: Orientation;
 	role?: Role;
 }
@@ -37,17 +36,6 @@ export const enum Operation {
 	decrease,
 	increase
 }
-
-export const enum Keys {
-	down = 40,
-	enter = 13,
-	escape = 27,
-	left = 37,
-	right = 39,
-	space =  32,
-	tab = 9,
-	up = 38
-};
 
 export const MenuBase = ThemeableMixin(WidgetBase);
 
@@ -108,15 +96,11 @@ export class Menu extends MenuBase<MenuProperties> {
 	}
 
 	private _getMenuClasses() {
-		const { nested, orientation = this._getDefaultOrientation() } = this.properties;
+		const { orientation = this._getDefaultOrientation() } = this.properties;
 		const classes = [ css.root ];
 
 		if (orientation === 'horizontal') {
 			classes.push(css.horizontal);
-		}
-
-		if (nested) {
-			classes.push(css.nestedMenu);
 		}
 
 		return classes;

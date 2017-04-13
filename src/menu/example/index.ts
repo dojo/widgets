@@ -186,7 +186,7 @@ export class App extends AppBase<WidgetProperties> {
 				onRequestOpen: () => {
 					this.setState({ slidePaneOpen: true });
 				},
-				slidePaneButtonLabel: 'Show Menu'
+				slidePaneTrigger: 'Show Menu'
 			}, [ this._getPackageMenu() ])
 		]);
 	}

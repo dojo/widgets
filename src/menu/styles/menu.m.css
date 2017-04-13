@@ -40,11 +40,6 @@
 	color: var(--menu-selected-color);
 }
 
-.nestedMenu {
-	box-sizing: border-box;
-	padding: 0 15px;
-}
-
 .horizontal {
 	display: flex;
 	flex-direction: row;

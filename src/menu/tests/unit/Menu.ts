@@ -105,14 +105,12 @@ registerSuite({
 		menu.setProperties({
 			key: 'foo',
 			disabled: false,
-			nested: true,
 			orientation: 'horizontal',
 			role: 'menubar'
 		});
 
 		assert.strictEqual(menu.properties.key, 'foo');
 		assert.isFalse(menu.properties.disabled);
-		assert.isTrue(menu.properties.nested);
 		assert.strictEqual(menu.properties.orientation, 'horizontal');
 		assert.strictEqual(menu.properties.role, 'menubar');
 	},
@@ -384,13 +382,5 @@ registerSuite({
 		menu.setProperties({ role: 'menubar' });
 		vnode = menu.__render__();
 		assert.strictEqual(vnode.properties.role, 'menubar');
-	},
-
-	nested() {
-		const menu = new Menu();
-		menu.setProperties({ nested: true });
-		const vnode: any = menu.__render__();
-
-		assert.isTrue(vnode.properties.classes[css.nestedMenu]);
 	}
 });

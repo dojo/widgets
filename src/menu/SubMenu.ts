@@ -6,9 +6,10 @@ import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
-import Menu, { Keys, MenuProperties, Orientation, Role } from './Menu';
+import Menu, { MenuProperties, Orientation, Role } from './Menu';
 import MenuItem from './MenuItem';
 import * as css from './styles/subMenu.m.css';
+import { Keys } from '../common/util';
 
 export type Animation = 'fade' | 'slide' | 'none';
 export type MenuType = 'dropdown' | 'inline' | 'popup';
@@ -22,24 +23,24 @@ export interface Position {
  *
  * Properties that can be set on a Menu component.
  *
- * @property active				Determines whether the submenu is active (should have focus).
- * @property animation			The animation type. Defaults to 'slide' for "inline" menus; otherwise, 'fade';
- * @property expandOnClick		Determines whether a menu is displayed on click (default) or hover.
- * @property focusable			Determines whether the menu trigger can receive focus with tab key.
- * @property hidden				Determines whether the menu is hidden.
- * @property hideOnBlur			Determines whether the menu should be hidden on blur. Defaults to true.
- * @property hideDelay			The amount of time (in milliseconds) after mouseleave before hiding the menu.
- * @property hideOnActivate		Determines whether the menu should be hidden when an item is activated. Defaults to true.
- * @property index				Specifies the index of the menu trigger within a parent menu.
- * @property label				A DNode to use as the trigger for a nested menu.
- * @property labelId			The ID for the menu trigger.
- * @property labelStyles		Override styles for the menu trigger.
- * @property menuStyles			Override styles for the menu.
- * @property onRequestHide		Called when the menu is displayed and the trigger is activated.
- * @property onRequestShow		Called when the menu is hidden and the trigger is activated.
- * @property parentOrientation	Indicates the orientation of the menu's parent (if applicable).
- * @property position			The position for dropdown/popup menu in relation to the trigger.
- * @property type				Specifies the submenu's type.
+ * @property active             Determines whether the submenu is active (should have focus).
+ * @property animation          The animation type. Defaults to 'slide' for "inline" menus; otherwise, 'fade';
+ * @property expandOnClick      Determines whether a menu is displayed on click (default) or hover.
+ * @property focusable          Determines whether the menu trigger can receive focus with tab key.
+ * @property hidden             Determines whether the menu is hidden.
+ * @property hideOnBlur         Determines whether the menu should be hidden on blur. Defaults to true.
+ * @property hideDelay          The amount of time (in milliseconds) after mouseleave before hiding the menu.
+ * @property hideOnActivate     Determines whether the menu should be hidden when an item is activated. Defaults to true.
+ * @property index              Specifies the index of the menu trigger within a parent menu.
+ * @property label              A DNode to use as the trigger for a nested menu.
+ * @property labelId            The ID for the menu trigger.
+ * @property labelStyles        Override styles for the menu trigger.
+ * @property menuStyles         Override styles for the menu.
+ * @property onRequestHide      Called when the menu is displayed and the trigger is activated.
+ * @property onRequestShow      Called when the menu is hidden and the trigger is activated.
+ * @property parentOrientation  Indicates the orientation of the menu's parent (if applicable).
+ * @property position           The position for dropdown/popup menu in relation to the trigger.
+ * @property type               Specifies the submenu's type.
  */
 export interface SubMenuProperties extends MenuProperties {
 	active?: boolean;

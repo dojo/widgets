@@ -4,6 +4,7 @@ import { VirtualDomProperties } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/menu.m.css';
+import { Keys } from '../common/util';
 
 export type MenuItemType = 'item' | 'checkbox' | 'radio';
 
@@ -12,22 +13,22 @@ export type MenuItemType = 'item' | 'checkbox' | 'radio';
  *
  * Properties that can be set on a MenuItem component.
  *
- * @property active			Determines whether the item should receive focus.
- * @property controls		The ID of an element that this input controls.
- * @property disabled		Indicates whether the item is disabled.
- * @property expanded		Indicates whether a widget controlled by `this` is expanded.
- * @property focusable		Determines whether the item can receive focus with tab key.
- * @property hasMenu		Indicates whether the widget is used as the label for a menu.
- * @property hasPopup		Indicates whether the widget has a drop down child.
- * @property id				Specifies the ID for the widget.
- * @property index			Specifies the index of the item within a parent menu.
- * @property menuId			The ID of the parent menu.
- * @property onClick		Called when the widget is activated via a click or space key.
- * @property onKeyDown		Called when keys are pressed while the widget has focus.
- * @property properties		Additional properties for the widget's vnode.
- * @property selected		Determines whether the widget is marked as selected.
- * @property tag			The HTML tag name to use for the widget's vnode. Defaults to 'a'.
- * @property type			The type of the menu item. Defaults to 'item'.
+ * @property active         Determines whether the item should receive focus.
+ * @property controls       The ID of an element that this input controls.
+ * @property disabled       Indicates whether the item is disabled.
+ * @property expanded       Indicates whether a widget controlled by `this` is expanded.
+ * @property focusable      Determines whether the item can receive focus with tab key.
+ * @property hasMenu        Indicates whether the widget is used as the label for a menu.
+ * @property hasPopup       Indicates whether the widget has a drop down child.
+ * @property id             Specifies the ID for the widget.
+ * @property index          Specifies the index of the item within a parent menu.
+ * @property menuId         The ID of the parent menu.
+ * @property onClick        Called when the widget is activated via a click or space key.
+ * @property onKeyDown      Called when keys are pressed while the widget has focus.
+ * @property properties     Additional properties for the widget's vnode.
+ * @property selected       Determines whether the widget is marked as selected.
+ * @property tag            The HTML tag name to use for the widget's vnode. Defaults to 'a'.
+ * @property type           The type of the menu item. Defaults to 'item'.
  */
 export interface MenuItemProperties extends ThemeableProperties {
 	active?: boolean;
@@ -48,15 +49,20 @@ export interface MenuItemProperties extends ThemeableProperties {
 	type?: MenuItemType;
 }
 
-export const MenuItemBase = ThemeableMixin(WidgetBase);
+/**
+ * @private
+ * The maximum number of frames that should execute before a menu item scheduled to receive focus
+ * stops waiting to become visible.
+ */
+const MAX_FOCUS_FRAME_COUNT = 30;
 
-const SPACE_KEY = 32;
-const ENTER_KEY = 13;
 const roleMap: { [key: string]: string } = {
 	item: 'menuitem',
 	checkbox: 'menuitemcheckbox',
 	radio: 'menuitemradio'
 };
+
+export const MenuItemBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export class MenuItem extends MenuItemBase<MenuItemProperties> {
@@ -122,7 +128,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 							if (this.properties.active) {
 								if (visibility === 'hidden') {
-									if (callCount > 30) {
+									if (callCount > MAX_FOCUS_FRAME_COUNT) {
 										console.warn('Hidden elements cannot receive focus.');
 									}
 									else {
@@ -155,7 +161,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 	private _onKeyDown(event: KeyboardEvent) {
 		const { disabled, onClick, onKeyDown } = this.properties;
-		const isSpaceKey = event.keyCode === SPACE_KEY;
+		const isSpaceKey = event.keyCode === Keys.space;
 
 		if (isSpaceKey) {
 			event.preventDefault();
@@ -166,7 +172,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			if (isSpaceKey) {
 				(<HTMLElement> event.target).click();
 			}
-			else if (event.keyCode === ENTER_KEY) {
+			else if (event.keyCode === Keys.enter) {
 				onClick && onClick(event);
 			}
 		}

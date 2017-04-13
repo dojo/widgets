@@ -1,38 +1,34 @@
 import has from '@dojo/has/has';
+import { v } from '@dojo/widget-core/d';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
 import MenuBar from '../../MenuBar';
 import * as css from '../../styles/menuBar.m.css';
+import * as util from '../../../common/util';
+
+let mockSubscription: { unsubscribe: any };
 
 registerSuite({
 	name: 'MenuBar',
 
 	beforeEach() {
 		if (has('host-node')) {
-			(<any> global).window = {
-				addEventListener: sinon.spy(),
-				removeEventListener: sinon.spy()
-			};
 			(<any> global).document = {
 				body: { offsetWidth: 500 }
 			};
 		}
-		else if (has('host-browser')) {
-			sinon.spy(window, 'addEventListener');
-			sinon.spy(window, 'removeEventListener');
-		}
+
+		mockSubscription = { unsubscribe: sinon.spy() };
+		sinon.stub(util, 'observeViewport').returns(mockSubscription);
 	},
 
 	afterEach() {
 		if (has('host-node')) {
-			delete (<any> global).window;
 			delete (<any> global).document;
 		}
-		else if (has('host-browser')) {
-			(<any> window).addEventListener.restore();
-			(<any> window).removeEventListener.restore();
-		}
+
+		(<any> util.observeViewport).restore();
 	},
 
 	'Should construct menu bar with passed properties'() {
@@ -40,13 +36,13 @@ registerSuite({
 		menuBar.setProperties({
 			key: 'foo',
 			breakpoint: 500,
-			slidePaneButtonLabel: 'Open SlidePane',
-			open: false
+			open: false,
+			slidePaneTrigger: 'Open SlidePane'
 		});
 
 		assert.strictEqual(menuBar.properties.key, 'foo');
 		assert.strictEqual(menuBar.properties.breakpoint, 500);
-		assert.strictEqual(menuBar.properties.slidePaneButtonLabel, 'Open SlidePane');
+		assert.strictEqual(menuBar.properties.slidePaneTrigger, 'Open SlidePane');
 		assert.isFalse(menuBar.properties.open);
 	},
 
@@ -82,47 +78,112 @@ registerSuite({
 	},
 
 	'observes window resizes': {
-		basic: () => {
-			const menuBar = new MenuBar();
-			assert.isTrue((<any> window.addEventListener).calledWith('resize'));
-
-			menuBar.destroy();
-			assert.isTrue((<any> window.removeEventListener).calledWith('resize'));
-		},
-
-		'invalidates the widget'(this: any) {
+		'invalidates when vw increases beyond breakpoint'(this: any) {
 			const dfd = this.async();
 			const menuBar = new MenuBar();
-			const listener: () => void = (<any> window.addEventListener).args[0][1];
+			const observer = (<any> util.observeViewport).args[0][0];
 
-			menuBar.setProperties({ breakpoint: 1000 });
+			menuBar.setProperties({ breakpoint: 800 });
 			sinon.spy(menuBar, 'invalidate');
-			listener();
+			observer.next(900);
 
 			setTimeout(dfd.callback(() => {
 				assert.isTrue((<any> menuBar).invalidate.called);
 			}), 300);
+		},
+
+		'invalidates when vw decreases beneath breakpoint'(this: any) {
+			const dfd = this.async();
+			const menuBar = new MenuBar();
+			const observer = (<any> util.observeViewport).args[0][0];
+
+			menuBar.setProperties({ breakpoint: 400 });
+			sinon.spy(menuBar, 'invalidate');
+			observer.next(300);
+
+			setTimeout(dfd.callback(() => {
+				assert.isTrue((<any> menuBar).invalidate.called);
+			}), 300);
+		},
+
+		'does not invalidate when the viewport width does not cross the breakpoint'(this: any) {
+			const dfd = this.async();
+			const menuBar = new MenuBar();
+			const observer = (<any> util.observeViewport).args[0][0];
+
+			menuBar.setProperties({ breakpoint: 800 });
+			sinon.spy(menuBar, 'invalidate');
+			observer.next(500);
+
+			setTimeout(dfd.callback(() => {
+				assert.isFalse((<any> menuBar).invalidate.called);
+			}), 300);
+		},
+
+		'stops observing on destroy'() {
+			const menuBar = new MenuBar();
+			menuBar.destroy();
+
+			assert.isTrue(mockSubscription.unsubscribe.called);
 		}
 	},
 
-	slidePane() {
+	onRequestOpen() {
 		const menuBar = new MenuBar();
 		const onRequestOpen = sinon.spy();
 		menuBar.setProperties({
 			breakpoint: Infinity,
-			open: true,
-			onRequestOpen,
-			slidePaneButtonLabel: 'Button Label',
-			slidePaneStyles: css
+			onRequestOpen
 		});
 
-		const vnode: any = menuBar.__render__();
 		(<any> menuBar)._onSlidePaneClick();
 		assert.isTrue(onRequestOpen.called);
+	},
 
-		const button = vnode.children[0];
-		assert.strictEqual(button.vnodeSelector, 'button');
-		assert.strictEqual(button.text, 'Button Label');
-		assert.isTrue(button.properties.classes[css.slidePaneButton]);
+	slidePaneTrigger: {
+		'defaults to a <button>'() {
+			const menuBar = new MenuBar();
+			menuBar.setProperties({ breakpoint: Infinity });
+			const vnode: any = menuBar.__render__();
+			const button = vnode.children[0];
+
+			assert.strictEqual(button.vnodeSelector, 'button');
+			assert.notOk(button.text);
+			assert.isTrue(button.properties.classes[css.slidePaneButton]);
+		},
+
+		'string value'() {
+			const menuBar = new MenuBar();
+			menuBar.setProperties({
+				breakpoint: Infinity,
+				slidePaneTrigger: 'Button Label'
+			});
+
+			const vnode: any = menuBar.__render__();
+			const button = vnode.children[0];
+			assert.strictEqual(button.vnodeSelector, 'button');
+			assert.strictEqual(button.text, 'Button Label');
+			assert.isTrue(button.properties.classes[css.slidePaneButton]);
+		},
+
+		'function value'() {
+			const menuBar = new MenuBar();
+			const slidePaneTrigger = sinon.stub().returns(v('a', [ 'Button label' ]));
+			const onRequestOpen = sinon.spy();
+			menuBar.setProperties({
+				breakpoint: Infinity,
+				onRequestOpen,
+				slidePaneTrigger
+			});
+
+			const vnode: any = menuBar.__render__();
+			const button = vnode.children[0];
+			assert.strictEqual(button.vnodeSelector, 'a');
+			assert.strictEqual(button.text, 'Button label');
+
+			const onClick = slidePaneTrigger.args[0][0];
+			onClick();
+			assert.isTrue(onRequestOpen.called, 'slidePaneTrigger should be passed the onClick listener');
+		}
 	}
 });
