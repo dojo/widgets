@@ -16,7 +16,10 @@ import * as css from './styles/checkbox.m.css';
  * @property formId         ID of a form element associated with the form field
  * @property invalid        Indicates the valid is invalid, or required and not filled in
  * @property label          Label settings for form label text, position, and visibility
+ * @property mode           The type of user interface to show for this Checkbox
  * @property name           The form widget's name
+ * @property offLabel       Label to show in the "off" positin of a toggle
+ * @property onLabel        Label to show in the "on" positin of a toggle
  * @property readOnly       Allows or prevents user interaction
  * @property required       Whether or not a value is required
  * @property value          The current value
@@ -37,7 +40,10 @@ export interface CheckboxProperties extends ThemeableProperties {
 	formId?: string;
 	invalid?: boolean;
 	label?: string | LabelOptions;
+	mode?: Mode;
 	name?: string;
+	offLabel?: DNode;
+	onLabel?: DNode;
 	readOnly?: boolean;
 	required?: boolean;
 	value?: string;
@@ -51,6 +57,14 @@ export interface CheckboxProperties extends ThemeableProperties {
 	onTouchEnd?(event: TouchEvent): void;
 	onTouchCancel?(event: TouchEvent): void;
 }
+
+/**
+ * The type of UI to show for this Checkbox
+ */
+export const enum Mode {
+	normal,
+	toggle
+};
 
 export const CheckboxBase = ThemeableMixin(WidgetBase);
 
@@ -74,13 +88,17 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			formId,
 			invalid,
 			label,
+			mode,
 			name,
+			offLabel,
+			onLabel,
 			readOnly,
 			required,
 			value
 		} = this.properties;
 
 		const stateClasses = [
+			mode === Mode.toggle ? css.toggle : null,
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
@@ -89,31 +107,35 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			required ? css.required : null
 		];
 
-		const checkbox = v('div', { classes: this.classes(css.inputWrapper) }, [
-			v('input', {
-				bind: this,
-				classes: this.classes(css.input),
-				checked,
-				'aria-describedby': describedBy,
-				disabled,
-				'aria-invalid': invalid + '',
-				name,
-				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
-				required,
-				type: 'checkbox',
-				value,
-				onblur: this._onBlur,
-				onchange: this._onChange,
-				onclick: this._onClick,
-				onfocus: this._onFocus,
-				onmousedown: this._onMouseDown,
-				onmouseup: this._onMouseUp,
-				ontouchstart: this._onTouchStart,
-				ontouchend: this._onTouchEnd,
-				ontouchcancel: this._onTouchCancel
-			})
-		]);
+		const children = [
+			v('div', { classes: this.classes(css.inputWrapper) }, [
+				mode === Mode.toggle ? v('div', { classes: this.classes(css.onLabel) }, [ onLabel || null ]) : null,
+				mode === Mode.toggle ? v('div', { classes: this.classes(css.offLabel) }, [ offLabel || null ]) : null,
+				v('input', {
+					bind: this,
+					classes: this.classes(css.input),
+					checked,
+					'aria-describedby': describedBy,
+					disabled,
+					'aria-invalid': invalid + '',
+					name,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					type: 'checkbox',
+					value,
+					onblur: this._onBlur,
+					onchange: this._onChange,
+					onclick: this._onClick,
+					onfocus: this._onFocus,
+					onmousedown: this._onMouseDown,
+					onmouseup: this._onMouseUp,
+					ontouchstart: this._onTouchStart,
+					ontouchend: this._onTouchEnd,
+					ontouchcancel: this._onTouchCancel
+				})
+			])
+		];
 
 		let checkboxWidget;
 
@@ -122,12 +144,12 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 				classes: this.classes(css.root, ...stateClasses),
 				formId,
 				label
-			}, [ checkbox ]);
+			}, children);
 		}
 		else {
 			checkboxWidget = v('div', {
 				classes: this.classes(css.root, ...stateClasses)
-			}, [ checkbox]);
+			}, children);
 		}
 
 		return checkboxWidget;

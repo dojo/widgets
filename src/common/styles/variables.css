@@ -14,7 +14,6 @@
 
 	--dojo-error-color: var(--dojo-red);
 	--dojo-success-color: var(--dojo-green);
-	--dojo-gray: #BBB;
 
 	/* Shared values */
 	--base-font: 14px/1 sans-serif;
@@ -43,6 +42,7 @@
 	--underlay-bg: var(--dojo-shade-gray);
 	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
 	--input-border-color: var(--dojo-gray);
+	--toggle-width: 48px;
 	--input-highlight-color: var(--dojo-blue);
 	--button-bg: var(--dojo-blue);
 	--button-hover-bg: var(--dojo-light-blue);
