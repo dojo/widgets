@@ -96,7 +96,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 				checked,
 				'aria-describedby': describedBy,
 				disabled,
-				'aria-invalid': invalid + '',
+				'aria-invalid': invalid ? 'true' : null,
 				name,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
