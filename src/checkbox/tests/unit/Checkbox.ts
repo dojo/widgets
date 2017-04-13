@@ -84,7 +84,10 @@ registerSuite({
 			disabled: false,
 			invalid: false,
 			readOnly: false,
-			required: false
+			required: false,
+			mode: Mode.toggle,
+			onLabel: null,
+			offLabel: null
 		});
 		vnode = <VNode> checkbox.__render__();
 		assert.isFalse(vnode.properties!.classes![css.checked]);
