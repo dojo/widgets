@@ -55,9 +55,6 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _wasOpen: boolean;
 
 	private _onSwipeStart(event: MouseEvent & TouchEvent) {
-		event.stopPropagation();
-		event.preventDefault();
-
 		this._swiping = true;
 		// Cache initial pointer position
 		this._initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
