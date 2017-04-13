@@ -196,68 +196,57 @@ registerSuite({
 		assert.strictEqual(vnode.properties['data-dojo-index'], '3');
 	},
 
-	menuId() {
-		const item = new MenuItem();
-		item.setProperties({ menuId: 'menu-id' });
-		const vnode: any = item.__render__();
-		assert.strictEqual(vnode.properties['data-dojo-menuid'], 'menu-id');
-	},
-
 	onClick: {
 		'when disabled'() {
 			const item = new MenuItem();
-			let called = false;
+			const onClick = sinon.spy();
 			item.setProperties({
 				disabled: true,
-				onClick() {
-					called = true;
-				}
+				onClick
 			});
 
 			(<any> item)._onClick(<any> {});
-			assert.isFalse(called, '`onClick` should not be called when the menu item is disabled.');
+			assert.isFalse(onClick.called, '`onClick` should not be called when the menu item is disabled.');
 		},
 
 		'when not disabled'() {
 			const item = new MenuItem();
-			let called = false;
+			const onClick = sinon.spy();
+			const event: any = {};
 			item.setProperties({
-				onClick() {
-					called = true;
-				}
+				index: 42,
+				onClick
 			});
 
 			(<any> item)._onClick(<any> {});
-			assert.isTrue(called, '`onClick` should be called when the menu item is enabled.');
+			assert.isTrue(onClick.calledWith(event, 42), '`onClick` should be called with the event and index.');
 		}
 	},
 
 	onKeyDown: {
 		'when disabled'() {
 			const item = new MenuItem();
-			let event: any;
+			const onKeyDown = sinon.spy();
 			item.setProperties({
 				disabled: true,
-				onKeyDown(_event: any) {
-					event = _event;
-				}
+				onKeyDown
 			});
 
-			(<any> item)._onKeyDown(<any> { type: 'keydown' });
-			assert.isUndefined(event, '`onKeyDown` should not be called when the menu item is disabled.');
+			(<any> item)._onKeyDown(<any> { event: 'keydown' });
+			assert.isFalse(onKeyDown.called, '`onKeyDown` should not be called when the menu item is disabled.');
 		},
 
 		'when enabled'() {
 			const item = new MenuItem();
-			let event: any;
+			const event: any = { type: 'keydown' };
+			const onKeyDown = sinon.spy();
 			item.setProperties({
-				onKeyDown(_event: any) {
-					event = _event;
-				}
+				index: 4,
+				onKeyDown
 			});
 
-			(<any> item)._onKeyDown(<any> { type: 'keydown' });
-			assert.strictEqual(event!.type, 'keydown', '`onKeyDown` should be called when the menu item is enabled.');
+			(<any> item)._onKeyDown(event);
+			assert.isTrue(onKeyDown.calledWith(event, 4), '`onKeyDown` should be called with the event and index.');
 		},
 
 		'space key'() {
@@ -278,15 +267,29 @@ registerSuite({
 			const item = new MenuItem();
 			const onClick = sinon.spy();
 			const preventDefault = sinon.spy();
-			item.setProperties({ onClick });
-			(<any> item)._onKeyDown(<any> {
-				keyCode: 13,
-				preventDefault
+			const event: any = { keyCode: 13, preventDefault };
+			item.setProperties({
+				index: 7,
+				onClick
 			});
+			(<any> item)._onKeyDown(event);
 
-			assert.isTrue(onClick.called, 'The `onClick` property should be called');
+			assert.isTrue(onClick.calledWith(event, 7), 'The `onClick` property should be called with the event and index.');
 			assert.isFalse(preventDefault.called, 'event.preventDefault should not be called.');
 		}
+	},
+
+	onMouseDown() {
+		const item = new MenuItem();
+		const onMouseDown = sinon.spy();
+		const event: any = {};
+		item.setProperties({
+			index: 3,
+			onMouseDown
+		});
+		(<any> item)._onMouseDown(event);
+
+		assert.isTrue(onMouseDown.calledWith(event, 3));
 	},
 
 	controls() {

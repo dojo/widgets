@@ -68,7 +68,6 @@ export class Menu extends MenuBase<MenuProperties> {
 			onfocusin: this._onMenuFocus,
 			onfocusout: this._onMenuFocusOut,
 			onkeydown: this._onMenuKeyDown,
-			onmousedown: this._onMenuMouseDown,
 			role
 		}, this._renderChildren());
 	}
@@ -161,23 +160,14 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 	}
 
-	private _onMenuMouseDown(event: MouseEvent) {
-		let itemNode = <HTMLElement> event.target;
-		while (!itemNode.hasAttribute('data-dojo-index') && itemNode.parentElement) {
-			itemNode = itemNode.parentElement;
-		}
-
-		const { id = this._id } = this.properties;
-		const index = parseInt(itemNode.getAttribute('data-dojo-index') || '', 10);
-		const menuId = itemNode.getAttribute('data-dojo-menuid');
-
-		if (menuId === id && !isNaN(index)) {
+	private _onMenuItemMouseDown(index?: number) {
+		if (typeof index === 'number') {
 			this._activeIndex = index;
 		}
 	}
 
 	private _renderChildren() {
-		const { activeIndex = this._activeIndex, id = this._id } = this.properties;
+		const { activeIndex = this._activeIndex } = this.properties;
 		const focusIndex = this._isActive() ? activeIndex : undefined;
 		this._activeIndex = activeIndex;
 
@@ -186,7 +176,7 @@ export class Menu extends MenuBase<MenuProperties> {
 				child.properties.active = i === focusIndex;
 				child.properties.focusable = i === activeIndex;
 				child.properties.index = i;
-				child.properties.menuId = id;
+				child.properties.onMouseDown = this._onMenuItemMouseDown;
 			});
 
 		return this.children;

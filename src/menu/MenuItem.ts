@@ -22,9 +22,9 @@ export type MenuItemType = 'item' | 'checkbox' | 'radio';
  * @property hasPopup       Indicates whether the widget has a drop down child.
  * @property id             Specifies the ID for the widget.
  * @property index          Specifies the index of the item within a parent menu.
- * @property menuId         The ID of the parent menu.
  * @property onClick        Called when the widget is activated via a click or space key.
  * @property onKeyDown      Called when keys are pressed while the widget has focus.
+ * @property onMouseDown    Called during a mousedown event.
  * @property properties     Additional properties for the widget's vnode.
  * @property selected       Determines whether the widget is marked as selected.
  * @property tag            The HTML tag name to use for the widget's vnode. Defaults to 'a'.
@@ -40,9 +40,9 @@ export interface MenuItemProperties extends ThemeableProperties {
 	hasPopup?: boolean;
 	id?: string;
 	index?: number;
-	menuId?: string;
-	onClick?: (event: Event) => void;
-	onKeyDown?: (event: KeyboardEvent) => void;
+	onClick?: (event: Event, index?: number) => void;
+	onKeyDown?: (event: KeyboardEvent, index?: number) => void;
+	onMouseDown?: (event: Event, index?: number) => void;
 	properties?: VirtualDomProperties;
 	selected?: boolean;
 	tag?: string;
@@ -76,7 +76,6 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			hasMenu = false,
 			id,
 			index,
-			menuId,
 			properties,
 			selected = false,
 			tag = 'a',
@@ -95,12 +94,12 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			'aria-haspopup': hasPopup ? 'true' : undefined,
 			'aria-disabled': disabled ? 'true' : undefined,
 			'data-dojo-index': typeof index === 'number' ? String(index) : undefined,
-			'data-dojo-menuid': menuId,
 			classes,
 			id,
 			key: 'root',
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown,
+			onmousedown: this._onMouseDown,
 			role: roleMap[type],
 			tabIndex: focusable ? 0 : -1
 		};
@@ -152,15 +151,15 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 	}
 
 	private _onClick(event: MouseEvent) {
-		const { disabled, onClick } = this.properties;
+		const { disabled, index, onClick } = this.properties;
 
 		if (!disabled && onClick) {
-			onClick(event);
+			onClick(event, index);
 		}
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
-		const { disabled, onClick, onKeyDown } = this.properties;
+		const { disabled, index, onClick, onKeyDown } = this.properties;
 		const isSpaceKey = event.keyCode === Keys.space;
 
 		if (isSpaceKey) {
@@ -168,14 +167,19 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 		}
 
 		if (!disabled) {
-			onKeyDown && onKeyDown(event);
+			onKeyDown && onKeyDown(event, index);
 			if (isSpaceKey) {
 				(<HTMLElement> event.target).click();
 			}
 			else if (event.keyCode === Keys.enter) {
-				onClick && onClick(event);
+				onClick && onClick(event, index);
 			}
 		}
+	}
+
+	private _onMouseDown(event: MouseEvent) {
+		const { index, onMouseDown } = this.properties;
+		onMouseDown && onMouseDown(event, index);
 	}
 }
 
