@@ -90,7 +90,7 @@ export class App extends AppBase<WidgetProperties> {
 				key: 'select1',
 				label: 'Try changing me',
 				options: this._selectOptions,
-				useNativeSelect: true,
+				useNativeElement: true,
 				value: <string> this.state['value1'],
 				onChange: (option: OptionData) => {
 					this.setState({ value1: option.value });
@@ -114,7 +114,7 @@ export class App extends AppBase<WidgetProperties> {
 			w(Select, {
 				key: 'select3',
 				options: this._moreSelectOptions,
-				useNativeSelect: true,
+				useNativeElement: true,
 				multiple: true,
 				onChange: (option: OptionData) => {
 					option.selected = !option.selected;

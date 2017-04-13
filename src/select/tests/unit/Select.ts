@@ -52,7 +52,7 @@ registerSuite({
 			const select = new Select();
 			select.setProperties({
 				options: testOptions,
-				useNativeSelect: true
+				useNativeElement: true
 			});
 			const vnode = <VNode> select.__render__();
 			const selectNode = vnode.children![0].children![0];
@@ -75,7 +75,7 @@ registerSuite({
 				name: 'bar',
 				readOnly: true,
 				required: true,
-				useNativeSelect: true,
+				useNativeElement: true,
 				value: 'one'
 			});
 			const vnode = <VNode> select.__render__();
@@ -97,7 +97,7 @@ registerSuite({
 		'Arrow'() {
 			const select = new Select();
 			select.setProperties({
-				useNativeSelect: true
+				useNativeElement: true
 			});
 			const vnode = <VNode> select.__render__();
 
@@ -114,7 +114,7 @@ registerSuite({
 
 			const select = new Select();
 			select.setProperties({
-				useNativeSelect: true,
+				useNativeElement: true,
 				onBlur: () => { blurred = true; },
 				onClick: () => { clicked = true; },
 				onFocus: () => { focused = true; },
@@ -135,7 +135,7 @@ registerSuite({
 			const select = new Select();
 			select.setProperties({
 				options: testOptions,
-				useNativeSelect: true,
+				useNativeElement: true,
 				onChange: (option) => optionValue = option.label
 			});
 			const event = {
@@ -170,7 +170,7 @@ registerSuite({
 			select.setProperties({
 				multiple: true,
 				options: testOptions,
-				useNativeSelect: true
+				useNativeElement: true
 			});
 			const vnode = <VNode> select.__render__();
 			const selectNode = vnode.children![0].children![0];
@@ -184,7 +184,7 @@ registerSuite({
 			select.setProperties({
 				multiple: true,
 				options: testOptions,
-				useNativeSelect: true,
+				useNativeElement: true,
 				value: 'one'
 			});
 			const vnode = <VNode> select.__render__();

@@ -46,7 +46,7 @@ export interface SelectProperties extends ThemeableProperties {
 	options?: OptionData[];
 	readOnly?: boolean;
 	required?: boolean;
-	useNativeSelect?: boolean;
+	useNativeElement?: boolean;
 	value?: string;
 	onBlur?(event: FocusEvent): void;
 	onChange?(option: OptionData): void;
@@ -287,16 +287,16 @@ export default class Select extends SelectBase<SelectProperties> {
 
 	renderCustomMultiSelect(): DNode {
 		const {
-			_focusedIndex,
-			properties = {
-				describedBy,
-				disabled,
-				invalid,
-				options = [],
-				readOnly,
-				required
-			}
+			_focusedIndex
 		} = this;
+		const {
+			describedBy,
+			disabled,
+			invalid,
+			options = [],
+			readOnly,
+			required
+		} = this.properties;
 
 		return v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('div', {
@@ -378,7 +378,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			multiple,
 			readOnly,
 			required,
-			useNativeSelect = false
+			useNativeElement = false
 		} = this.properties;
 
 		const stateClasses = [
@@ -392,7 +392,7 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		let rootWidget, select;
 
-		if (useNativeSelect) {
+		if (useNativeElement) {
 			select = this.renderNativeSelect();
 		}
 		else {
