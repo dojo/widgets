@@ -287,16 +287,15 @@ export default class Select extends SelectBase<SelectProperties> {
 
 	renderCustomMultiSelect(): DNode {
 		const {
-			describedBy,
-			disabled,
-			invalid,
-			options = [],
-			readOnly,
-			required
-		} = this.properties;
-
-		const {
-			_focusedIndex
+			_focusedIndex,
+			properties = {
+				describedBy,
+				disabled,
+				invalid,
+				options = [],
+				readOnly,
+				required
+			}
 		} = this;
 
 		return v('div', { classes: this.classes(css.inputWrapper) }, [
