@@ -9,6 +9,7 @@ import ResultMenu, { ResultMenuProperties } from './ResultMenu';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import uuid from '@dojo/core/uuid';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
+import keys from '../common/keys';
 
 import * as css from './styles/comboBox.m.css';
 
@@ -29,7 +30,7 @@ import * as css from './styles/comboBox.m.css';
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property readOnly           Prevents user interaction
  * @property required           Determines if this input is required, styles accordingly
- * @property results            Results for the current search term; should be set in response to `onRequestResults`
+ * @property results            Results for the current search term; should be set in response to `onResultsRequest`
  * @property value              Value to set on the input
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property isResultDisabled   Used to determine if an item should be disabled
@@ -37,7 +38,7 @@ import * as css from './styles/comboBox.m.css';
  * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
- * @property onRequestResults   Called when results are shown; should be used to set `results`
+ * @property onResultsRequest   Called when results are shown; should be used to set `results`
  */
 export interface ComboBoxProperties extends ThemeableProperties {
 	autoBlur?: boolean;
@@ -60,21 +61,13 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
 	onMenuChange?(open: boolean): void;
-	onRequestResults?(value: string): void;
+	onResultsRequest?(value: string): void;
 };
 
 // Enum used when traversing items using arrow keys
 export const enum Operation {
 	increase = 1,
 	decrease = -1
-};
-
-// This can go away when Safari decides to support KeyboardEvent.key
-const keys: {[key: string]: number} = {
-	escape: 27,
-	enter: 13,
-	up: 38,
-	down: 40
 };
 
 export const ComboBoxBase = ThemeableMixin(WidgetBase);
@@ -222,12 +215,12 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _openMenu() {
-		const { onRequestResults } = this.properties;
+		const { onResultsRequest } = this.properties;
 
 		this._activeIndex = undefined;
 		this._open = true;
 		this._focused = true;
-		onRequestResults && onRequestResults(this._inputElement.value);
+		onResultsRequest && onResultsRequest(this._inputElement.value);
 	}
 
 	private _restoreFocus() {

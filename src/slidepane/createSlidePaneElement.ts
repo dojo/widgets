@@ -31,7 +31,7 @@ export default function createSlidePaneElement(): CustomElementDescriptor {
 				eventName: 'open'
 			},
 			{
-				propertyName: 'onRequestClose',
+				propertyName: 'onClose',
 				eventName: 'close'
 			}
 		]

@@ -22,11 +22,11 @@ export default function createTabPaneElement(): CustomElementDescriptor {
 		],
 		events: [
 			{
-				propertyName: 'onRequestTabChange',
+				propertyName: 'onTabChange',
 				eventName: 'tabchange'
 			},
 			{
-				propertyName: 'onRequestTabClose',
+				propertyName: 'onTabClose',
 				eventName: 'tabclose'
 			}
 		]

@@ -313,11 +313,11 @@ registerSuite({
 		assert.isTrue(called);
 	},
 
-	'onRequestResults should be called'() {
+	'onResultsRequest should be called'() {
 		let called = 0;
 		const comboBox = new ComboBox();
 		comboBox.setProperties({
-			onRequestResults: () => called++,
+			onResultsRequest: () => called++,
 			openOnFocus: true
 		});
 

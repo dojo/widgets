@@ -2,6 +2,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import keys from '../common/keys';
 
 import * as css from './styles/tabPane.m.css';
 
@@ -85,33 +86,26 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		}
 
 		// Accessibility
-		switch (event.keyCode) {
-			// Escape
-			case 27:
+		switch (event.which) {
+			case keys.escape:
 				closeable && onCloseClick && onCloseClick(index);
 				break;
-			// Left arrow
-			case 37:
+			case keys.left:
 				onLeftArrowPress && onLeftArrowPress();
 				break;
-			// Right arrow
-			case 39:
+			case keys.right:
 				onRightArrowPress && onRightArrowPress();
 				break;
-			// Up arrow
-			case 38:
+			case keys.up:
 				onUpArrowPress && onUpArrowPress();
 				break;
-			// Down arrow
-			case 40:
+			case keys.down:
 				onDownArrowPress && onDownArrowPress();
 				break;
-			// Home
-			case 36:
+			case keys.home:
 				onHomePress && onHomePress();
 				break;
-			// End
-			case 35:
+			case keys.end:
 				onEndPress && onEndPress();
 				break;
 		}

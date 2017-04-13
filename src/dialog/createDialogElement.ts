@@ -46,7 +46,7 @@ export default function createDialogElement(): CustomElementDescriptor {
 				eventName: 'open'
 			},
 			{
-				propertyName: 'onRequestClose',
+				propertyName: 'onClose',
 				eventName: 'close'
 			}
 		]

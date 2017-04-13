@@ -56,7 +56,7 @@ registerSuite({
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
 		tabPane.setProperties(props({
-			onRequestTabChange: (index: number) => {
+			onTabChange: (index: number) => {
 				called++;
 				tabPane.setProperties(props({ activeIndex: index }));
 			}
@@ -73,7 +73,7 @@ registerSuite({
 			w(Tab, { label: 'foo', key: 'foo', closeable: true })
 		]);
 		tabPane.setProperties(props({
-			onRequestTabClose: (index: number, key: string) => closedKey = key
+			onTabClose: (index: number, key: string) => closedKey = key
 		}));
 		(<any> tabPane).closeIndex(0);
 		assert.strictEqual(closedKey, 'foo');
@@ -88,7 +88,7 @@ registerSuite({
 		]);
 		tabPane.setProperties(props({
 			activeIndex: 1,
-			onRequestTabChange: (index: number) => tab = index
+			onTabChange: (index: number) => tab = index
 		}));
 		(<any> tabPane).selectFirstIndex();
 		assert.strictEqual(tab, 0);
@@ -102,7 +102,7 @@ registerSuite({
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
 		tabPane.setProperties(props({
-			onRequestTabChange: (index: number) => tab = index
+			onTabChange: (index: number) => tab = index
 		}));
 		(<any> tabPane).selectLastIndex();
 		assert.strictEqual(tab, 1);
@@ -115,14 +115,14 @@ registerSuite({
 			w(Tab, { label: 'bar', key: 'bar', disabled: true }),
 			w(Tab, { label: 'baz', key: 'baz' })
 		]);
-		function onRequestTabChange(index: number) {
+		function onTabChange(index: number) {
 			tabPane.setProperties({
 				activeIndex: index,
-				onRequestTabChange: onRequestTabChange
+				onTabChange: onTabChange
 			});
 		}
 		tabPane.setProperties({
-			onRequestTabChange: onRequestTabChange,
+			onTabChange: onTabChange,
 			activeIndex: 2
 		});
 		(<any> tabPane)._onRightArrowPress();
@@ -138,14 +138,14 @@ registerSuite({
 			w(Tab, { label: 'bar', key: 'bar', disabled: true }),
 			w(Tab, { label: 'baz', key: 'baz' })
 		]);
-		function onRequestTabChange(index: number) {
+		function onTabChange(index: number) {
 			tabPane.setProperties({
 				activeIndex: index,
-				onRequestTabChange: onRequestTabChange
+				onTabChange: onTabChange
 			});
 		}
 		tabPane.setProperties({
-			onRequestTabChange: onRequestTabChange,
+			onTabChange: onTabChange,
 			activeIndex: 2
 		});
 		(<any> tabPane)._onLeftArrowPress();
@@ -160,22 +160,22 @@ registerSuite({
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
-		function onRequestTabChange(index: number) {
+		function onTabChange(index: number) {
 			tabPane.setProperties({
 				activeIndex: index,
-				onRequestTabChange: onRequestTabChange
+				onTabChange: onTabChange
 			});
 		}
 		(<any> tabPane)._onUpArrowPress();
 		tabPane.setProperties({
-			onRequestTabChange: onRequestTabChange,
+			onTabChange: onTabChange,
 			activeIndex: 0,
 			alignButtons: Align.left
 		});
 		(<any> tabPane)._onUpArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 1);
 		tabPane.setProperties({
-			onRequestTabChange: onRequestTabChange,
+			onTabChange: onTabChange,
 			activeIndex: 0,
 			alignButtons: Align.right
 		});
@@ -189,22 +189,22 @@ registerSuite({
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
-		function onRequestTabChange(index: number) {
+		function onTabChange(index: number) {
 			tabPane.setProperties({
 				activeIndex: index,
-				onRequestTabChange: onRequestTabChange
+				onTabChange: onTabChange
 			});
 		}
 		(<any> tabPane)._onDownArrowPress();
 		tabPane.setProperties({
-			onRequestTabChange: onRequestTabChange,
+			onTabChange: onTabChange,
 			activeIndex: 0,
 			alignButtons: Align.left
 		});
 		(<any> tabPane)._onDownArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 1);
 		tabPane.setProperties({
-			onRequestTabChange: onRequestTabChange,
+			onTabChange: onTabChange,
 			activeIndex: 0,
 			alignButtons: Align.right
 		});
@@ -220,7 +220,7 @@ registerSuite({
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
 		tabPane.setProperties({
-			onRequestTabChange: index => tab = index,
+			onTabChange: index => tab = index,
 			activeIndex: 5
 		});
 		<VNode> tabPane.__render__();
@@ -235,7 +235,7 @@ registerSuite({
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
 		tabPane.setProperties({
-			onRequestTabChange: index => tab = index,
+			onTabChange: index => tab = index,
 			activeIndex: 0
 		});
 		<VNode> tabPane.__render__();

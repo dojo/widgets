@@ -72,7 +72,7 @@ registerSuite({
 			disabled: true,
 			onLeftArrowPress: () => called = true
 		}));
-		(<any> tabButton)._onKeyDown({ keyCode: 37 });
+		(<any> tabButton)._onKeyDown({ which: 37 });
 		assert.isFalse(called);
 	},
 
@@ -84,7 +84,7 @@ registerSuite({
 			onCloseClick: () => called = true
 		}));
 		<VNode> tabButton.__render__();
-		(<any> tabButton)._onKeyDown({ keyCode: 27 });
+		(<any> tabButton)._onKeyDown({ which: 27 });
 		assert.isTrue(called);
 	},
 
@@ -94,7 +94,7 @@ registerSuite({
 		tabButton.setProperties(props({
 			onLeftArrowPress: () => called = true
 		}));
-		(<any> tabButton)._onKeyDown({ keyCode: 37 });
+		(<any> tabButton)._onKeyDown({ which: 37 });
 		assert.isTrue(called);
 	},
 
@@ -104,7 +104,7 @@ registerSuite({
 		tabButton.setProperties(props({
 			onUpArrowPress: () => called = true
 		}));
-		(<any> tabButton)._onKeyDown({ keyCode: 38 });
+		(<any> tabButton)._onKeyDown({ which: 38 });
 		assert.isTrue(called);
 	},
 
@@ -114,7 +114,7 @@ registerSuite({
 		tabButton.setProperties(props({
 			onRightArrowPress: () => called = true
 		}));
-		(<any> tabButton)._onKeyDown({ keyCode: 39 });
+		(<any> tabButton)._onKeyDown({ which: 39 });
 		assert.isTrue(called);
 	},
 
@@ -124,7 +124,7 @@ registerSuite({
 		tabButton.setProperties(props({
 			onDownArrowPress: () => called = true
 		}));
-		(<any> tabButton)._onKeyDown({ keyCode: 40 });
+		(<any> tabButton)._onKeyDown({ which: 40 });
 		assert.isTrue(called);
 	},
 
@@ -134,7 +134,7 @@ registerSuite({
 		tabButton.setProperties(props({
 			onHomePress: () => called = true
 		}));
-		(<any> tabButton)._onKeyDown({ keyCode: 36 });
+		(<any> tabButton)._onKeyDown({ which: 36 });
 		assert.isTrue(called);
 	},
 
@@ -144,7 +144,7 @@ registerSuite({
 		tabButton.setProperties(props({
 			onEndPress: () => called = true
 		}));
-		(<any> tabButton)._onKeyDown({ keyCode: 35 });
+		(<any> tabButton)._onKeyDown({ which: 35 });
 		assert.isTrue(called);
 	},
 

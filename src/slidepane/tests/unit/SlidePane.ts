@@ -91,7 +91,7 @@ registerSuite({
 
 		const slidePane = new SlidePane();
 		slidePane.setProperties({
-			onRequestClose() {
+			onClose() {
 				called = true;
 			}
 		});
@@ -99,7 +99,7 @@ registerSuite({
 		(<any> slidePane)._onSwipeStart(createEvent('mousedown', 300));
 		(<any> slidePane)._onSwipeEnd(createEvent('mouseup', 300));
 
-		assert.isTrue(called, 'onRequestClose should be called on underlay click');
+		assert.isTrue(called, 'onClose should be called on underlay click');
 	},
 
 	'tap underlay to close'() {
@@ -107,7 +107,7 @@ registerSuite({
 
 		const slidePane = new SlidePane();
 		slidePane.setProperties({
-			onRequestClose() {
+			onClose() {
 				called = true;
 			}
 		});
@@ -115,7 +115,7 @@ registerSuite({
 		(<any> slidePane)._onSwipeStart(createEvent('touchstart', 300));
 		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 300));
 
-		assert.isTrue(called, 'onRequestClose should be called on underlay tap');
+		assert.isTrue(called, 'onClose should be called on underlay tap');
 	},
 
 	'drag to close'() {
@@ -123,7 +123,7 @@ registerSuite({
 
 		const slidePane = new SlidePane();
 		slidePane.setProperties({
-			onRequestClose() {
+			onClose() {
 				called = true;
 			}
 		});
@@ -132,7 +132,7 @@ registerSuite({
 		(<any> slidePane)._onSwipeMove(createEvent('mousemove', 150));
 		(<any> slidePane)._onSwipeEnd(createEvent('mouseup', 50));
 
-		assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
+		assert.isTrue(called, 'onClose should be called if dragged far enough');
 	},
 
 	'swipe to close'() {
@@ -140,7 +140,7 @@ registerSuite({
 
 		const slidePane = new SlidePane();
 		slidePane.setProperties({
-			onRequestClose() {
+			onClose() {
 				called = true;
 			}
 		});
@@ -159,7 +159,7 @@ registerSuite({
 		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 150));
 		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 50));
 
-		assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
+		assert.isTrue(called, 'onClose should be called if swiped far enough');
 	},
 
 	'swipe to close right'() {
@@ -167,7 +167,7 @@ registerSuite({
 
 		const slidePane = new SlidePane();
 		slidePane.setProperties({
-			onRequestClose() {
+			onClose() {
 				called = true;
 			},
 			width: 256,
@@ -186,7 +186,7 @@ registerSuite({
 		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 400));
 		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 500));
 
-		assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
+		assert.isTrue(called, 'onClose should be called if swiped far enough to close right');
 	},
 
 	'not dragged far enough to close'() {
@@ -194,7 +194,7 @@ registerSuite({
 
 		const slidePane = new SlidePane();
 		slidePane.setProperties({
-			onRequestClose() {
+			onClose() {
 				called = true;
 			}
 		});
@@ -211,7 +211,7 @@ registerSuite({
 		(<any> slidePane)._onSwipeMove(createEvent('touchmove', 250));
 		(<any> slidePane)._onSwipeEnd(createEvent('touchend', 250));
 
-		assert.isFalse(called, 'onRequestClose should not be called if not swiped far enough to close');
+		assert.isFalse(called, 'onClose should not be called if not swiped far enough to close');
 	},
 
 	'pane cannot be moved past screen edge'() {

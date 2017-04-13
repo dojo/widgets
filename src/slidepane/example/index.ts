@@ -26,7 +26,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				open: <boolean> this.state['open'],
 				underlay: <boolean> this.state['underlay'],
 				align: <Align> this.state['align'],
-				onRequestClose: () => {
+				onClose: () => {
 					this.setState({ open: false });
 				}
 			}, [

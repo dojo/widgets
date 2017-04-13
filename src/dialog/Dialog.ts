@@ -26,7 +26,7 @@ export type RoleType = 'dialog' | 'alertdialog';
  * @property title              Title to show in the dialog title bar
  * @property underlay           Determines whether a semi-transparent background shows behind the dialog
  * @property onOpen             Called when the dialog opens
- * @property onRequestClose     Called when the dialog is closed
+ * @property onClose            Called when the dialog is closed
  */
 export interface DialogProperties extends ThemeableProperties {
 	closeable?: boolean;
@@ -38,7 +38,7 @@ export interface DialogProperties extends ThemeableProperties {
 	title?: string;
 	underlay?: boolean;
 	onOpen?(): void;
-	onRequestClose?(): void;
+	onClose?(): void;
 };
 
 export const DialogBase = ThemeableMixin(WidgetBase);
@@ -49,7 +49,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 
 	private _onCloseClick() {
 		const { closeable = true } = this.properties;
-		closeable && this.properties.onRequestClose && this.properties.onRequestClose();
+		closeable && this.properties.onClose && this.properties.onClose();
 	}
 
 	private _onUnderlayClick() {
