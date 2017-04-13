@@ -108,8 +108,9 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 		];
 
 		const children = [
-			mode === Mode.toggle && offLabel ? v('div', { classes: this.classes(css.offLabel) }, [ offLabel ]) : null,
 			v('div', { classes: this.classes(css.inputWrapper) }, [
+				mode === Mode.toggle ? v('div', { classes: this.classes(css.onLabel) }, [ onLabel || null ]) : null,
+				mode === Mode.toggle ? v('div', { classes: this.classes(css.offLabel) }, [ offLabel || null ]) : null,
 				v('input', {
 					bind: this,
 					classes: this.classes(css.input),
@@ -133,8 +134,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 					ontouchend: this._onTouchEnd,
 					ontouchcancel: this._onTouchCancel
 				})
-			]),
-			mode === Mode.toggle && onLabel ? v('div', { classes: this.classes(css.onLabel) }, [ onLabel ]) : null
+			])
 		];
 
 		let checkboxWidget;

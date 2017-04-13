@@ -68,6 +68,8 @@ export class App extends AppBase<WidgetProperties> {
 				key: 'c5',
 				checked: <boolean> c5,
 				label: 'Disabled toggle mode',
+				onLabel: 'On',
+				offLabel: 'Off',
 				mode: Mode.toggle,
 				disabled: true,
 				value: 'c5',

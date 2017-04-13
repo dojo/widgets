@@ -85,37 +85,66 @@
 
 /* Toggle mode */
 .toggle .inputWrapper {
-	width: var(--toggle-width);
+	width: auto;
+	position: relative;
+	display: inline-block;
+	border: 2px solid var(--dojo-blue);
 	overflow: hidden;
+	padding: 2px 3px 1px 3px;
+	white-space: nowrap;
+	background: var(--dojo-white);
+	transition: background var(--short-animation-duration) var(--short-animation-easing);
+}
+
+.checked.toggle .inputWrapper {
+	background: var(--dojo-light-blue);
+}
+
+.toggle.disabled .inputWrapper,
+.toggle.readonly .inputWrapper {
+	border-color: var(--input-border-color);
 }
 
 .toggle .input {
-	width: var(--toggle-width);
+	width: 100%;
+	height: 100%;
 }
 
 .toggle .inputWrapper::before {
-	width: var(--toggle-width);
-	position: relative;
-	background-color: var(--dojo-white);
-	transition: background-color var(--short-animation-duration) var(--short-animation-easing);
+	display: none;
 }
 
 .toggle .inputWrapper::after {
 	transform: scale(1);
-	left: auto;
-	right: calc(100% - 1.5em + 3px);
+	content: "";
+	position: absolute;
+	top: 1px;
+	transform: translateX(-1.5em);
+	left: calc(1.5em + 1px);
+	transition: left var(--short-animation-duration) var(--short-animation-easing);
 }
 
-.toggle.checked .inputWrapper::before {
-	background-color: var(--dojo-light-blue);
+.checked.toggle .inputWrapper::after {
+	left: calc(100% + 5px);
 }
 
-.toggle.checked .inputWrapper::after {
-	right: 3px;
-}
-
-.offLabel,
-.onLabel {
+.onLabel,
+.offLabel {
+	position: relative;
 	display: inline-block;
-	vertical-align: middle;
+	min-width: calc(1.5em - 6px);
+	text-align: center;
+	transition: opacity var(--short-animation-duration) var(--short-animation-easing);
+}
+
+.onLabel {
+	opacity: 0;
+}
+
+.checked .onLabel {
+	opacity: 1;
+}
+
+.checked .offLabel {
+	opacity: 0;
 }
