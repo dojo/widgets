@@ -14,3 +14,5 @@ import '../../../textarea/tests/unit/Textarea';
 import '../../../checkbox/tests/unit/Checkbox';
 import '../../../radio/tests/unit/Radio';
 import '../../../slider/tests/unit/Slider';
+import '../../../select/tests/unit/Select';
+import '../../../select/tests/unit/SelectOption';

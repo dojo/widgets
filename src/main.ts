@@ -4,6 +4,7 @@ import ComboBox from './combobox/ComboBox';
 import Dialog from './dialog/Dialog';
 import Label from './label/Label';
 import Radio from './radio/Radio';
+import Select from './select/Select';
 import SlidePane from './slidepane/SlidePane';
 import Slider from './slider/Slider';
 import TabPane from './tabpane/TabPane';
@@ -17,6 +18,7 @@ export {
 	Dialog,
 	Label,
 	Radio,
+	Select,
 	SlidePane,
 	Slider,
 	TabPane,
