@@ -1,4 +1,5 @@
 import './main';
+import './util';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../combobox/tests/unit/ResultMenu';

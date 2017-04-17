@@ -6,6 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { assign } from '@dojo/core/lang';
 import { find, includes } from '@dojo/shim/array';
+import { Keys } from '../common/util';
 import Label, { LabelOptions } from '../label/Label';
 import SelectOption, { OptionData } from './SelectOption';
 import * as css from './styles/select.m.css';
@@ -54,17 +55,6 @@ export interface SelectProperties extends ThemeableProperties {
 	onFocus?(event: FocusEvent): void;
 	onKeyDown?(event: KeyboardEvent): void;
 }
-
-// This should have a lookup somewhere
-const keys = {
-	escape: 27,
-	enter: 13,
-	space: 32,
-	up: 38,
-	down: 40,
-	home: 36,
-	end: 35
-};
 
 export const SelectBase = ThemeableMixin(WidgetBase);
 
@@ -161,7 +151,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		const { _focusedIndex } = this;
 
 		switch (event.which) {
-			case keys.enter:
+			case Keys.Enter:
 				if (options[_focusedIndex].disabled) {
 					event.preventDefault();
 				}
@@ -169,7 +159,7 @@ export default class Select extends SelectBase<SelectProperties> {
 					onChange && onChange(options[_focusedIndex]);
 				}
 				break;
-			case keys.space:
+			case Keys.Space:
 				if (options[_focusedIndex].disabled) {
 					event.preventDefault();
 				}
@@ -177,10 +167,10 @@ export default class Select extends SelectBase<SelectProperties> {
 					onChange && onChange(options[_focusedIndex]);
 				}
 				break;
-			case keys.escape:
+			case Keys.Escape:
 				this._closeSelect();
 				break;
-			case keys.down:
+			case Keys.Down:
 				event.preventDefault();
 				if (this._open || multiple) {
 					this._focusedIndex = (_focusedIndex + 1) % options.length;
@@ -189,16 +179,16 @@ export default class Select extends SelectBase<SelectProperties> {
 				}
 				this.invalidate();
 				break;
-			case keys.up:
+			case Keys.Up:
 				event.preventDefault();
 				this._focusedIndex = (_focusedIndex - 1 + options.length) % options.length;
 				this.invalidate();
 				break;
-			case keys.home:
+			case Keys.Home:
 				this._focusedIndex = 0;
 				this.invalidate();
 				break;
-			case keys.end:
+			case Keys.End:
 				this._focusedIndex = options.length - 1;
 				this.invalidate();
 				break;
