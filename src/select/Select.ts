@@ -243,7 +243,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		// add ids to options for use with aria-activedescendant
 		if (includes(evt.changedPropertyKeys, 'options')) {
 			for (let option of options) {
-				option.id = option.id || uuid() + '';
+				option.id = option.id || uuid();
 			}
 		}
 	}
