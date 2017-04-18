@@ -117,11 +117,13 @@ When creating a widget, spacing (margin, padding) should be specified using `px`
 ## How to customise a widget
 
 There are may ways in which you can customise the behaviour and appearance of our widgets.
+See the `widget-core` [README](https://github.com/dojo/widget-core) for examples of how to customise the theme or a specific CSS class of a widget.
 
+Or can you write your own widget that extends an official widget.
 
 ### Extending widgets
 
-If you want to extend one of the official widgets, then all you need to do is to simply extend it:
+If you want to extend one of the official widgets, then since all our widgets are Classes, you can simply extend it:
 
 ```ts
 export class MyWidget extends Button {
