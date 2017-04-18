@@ -10,7 +10,7 @@ import * as animations from '../common/styles/animations.m.css';
 /**
  * The role of this dialog, used for accessibility
  */
-export type Role = 'dialog' | 'alertdialog';
+export type RoleType = 'dialog' | 'alertdialog';
 
 /**
  * @type DialogProperties
@@ -34,7 +34,7 @@ export interface DialogProperties extends ThemeableProperties {
 	exitAnimation?: string;
 	modal?: boolean;
 	open?: boolean;
-	role?: Role;
+	role?: RoleType;
 	title?: string;
 	underlay?: boolean;
 	onOpen?(): void;

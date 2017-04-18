@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import Checkbox from '../../Checkbox';
+import Checkbox, { Mode } from '../../Checkbox';
 import * as css from '../../styles/checkbox.m.css';
 
 registerSuite({
@@ -65,7 +65,10 @@ registerSuite({
 			disabled: true,
 			invalid: true,
 			readOnly: true,
-			required: true
+			required: true,
+			mode: Mode.toggle,
+			offLabel: 'Off',
+			onLabel: 'On'
 		});
 		let vnode = <VNode> checkbox.__render__();
 
@@ -74,13 +77,17 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.invalid]);
 		assert.isTrue(vnode.properties!.classes![css.readonly]);
 		assert.isTrue(vnode.properties!.classes![css.required]);
+		assert.isTrue(vnode.properties!.classes![css.toggle]);
 
 		checkbox.setProperties({
 			checked: false,
 			disabled: false,
 			invalid: false,
 			readOnly: false,
-			required: false
+			required: false,
+			mode: Mode.toggle,
+			onLabel: null,
+			offLabel: null
 		});
 		vnode = <VNode> checkbox.__render__();
 		assert.isFalse(vnode.properties!.classes![css.checked]);
