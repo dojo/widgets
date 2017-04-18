@@ -135,7 +135,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 				'aria-describedby': describedBy,
 				disabled,
 				id: inputId,
-				'aria-invalid': invalid + '',
+				'aria-invalid': invalid ? 'true' : null,
 				max: max + '',
 				min: min + '',
 				name,

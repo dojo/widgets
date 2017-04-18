@@ -218,7 +218,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			index: i,
 			key: i + '',
 			optionData: assign({}, option, <any> {
-				id: option.id || uuid() + '',
+				id: option.id,
 				selected: multiple ? option.selected : value === option.value
 			}),
 			onMouseDown: this._onOptionMouseDown,
@@ -231,11 +231,20 @@ export default class Select extends SelectBase<SelectProperties> {
 	@onPropertiesChanged()
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, SelectProperties>) {
 		const {
-			customOption = SelectOption
+			customOption = SelectOption,
+			options = []
 		} = this.properties;
 
+		// update custom option registry
 		if ( !this.registry || includes(evt.changedPropertyKeys, 'customOption')) {
 			this.registry = this._createRegistry(customOption);
+		}
+
+		// add ids to options for use with aria-activedescendant
+		if (includes(evt.changedPropertyKeys, 'options')) {
+			options.forEach((option) => {
+				option.id = option.id || uuid();
+			});
 		}
 	}
 

@@ -117,7 +117,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 					checked,
 					'aria-describedby': describedBy,
 					disabled,
-					'aria-invalid': invalid + '',
+					'aria-invalid': invalid ? 'true' : null,
 					name,
 					readOnly,
 					'aria-readonly': readOnly ? 'true' : null,
