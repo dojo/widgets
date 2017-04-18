@@ -44,7 +44,8 @@ Each widget module has a default export of the widget itself, as well as named e
 import Button, { ButtonProperties } from '@dojo/widgets/button/Button';
 ```
 
-Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported. 
+Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported.
+This allows us to make sure that the production build of your application only includes the widgets you use and is as small as possible. 
 
 ## Features
 
@@ -53,9 +54,9 @@ Because each widget is a separate module, when you create a release build of you
 - All widgets support accessibility (`a11y`) out of the box.
 
 - All widgets are fully themeable.
-In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets (all themes will live in a separate repo).
+In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets.
 
-- All widgets support internationalisation (`i18n`)
+- All widgets support internationalization (`i18n`)
 
 ## Widgets
 
@@ -97,13 +98,26 @@ The naming convention for event handlers is as follows:
 
 `onRequest[X]`, e.g. for a `close` event, the event handler called by the child widget must be called `onRequestClose`
 
+Here the child widget is _request_ing that the `close` event take place.
+
 - for events that will occur regardless of child/parent interaction, then the `Request` naming convention is dropped:
 
 `on[X]`, e.g. for a `dismiss` event, then event handler called by the child widget must be called `onDismiss`
 
-### Controlled vs uncontrolled form widgets
-Currently, all of our *form* widgets are 'controlled' widgets. This means that a parent widget is responsible to the 'state' of the child widget.
-'Controlled' widgets are also known as 'stateless' widgets.
+### Controlled vs. uncontrolled form widgets
+Currently, all of our *form* widgets are controlled widgets.
+This means that a parent widget is responsible to the state of the child widget.
+
+e.g.
+
+```ts
+[in WidgetFoo.ts]
+
+w(CheckBox, {}, []);
+```
+Here, `WidgetFoo` is the parent widget, which in turn, creates a child widget of type `CheckBox`.
+In this instance, the `CheckBox` is controlled by `WidgetFoo`, therefore `WidgetFoo` is known as a 'controlled' widget.
+Controlled widgets are also known as 'stateless' widgets, because they do not hold internal state; their state is passed in as part of their `properties`.
 
 ### Icons
 
@@ -112,7 +126,7 @@ Where a theme requires specific icons that are not part of the Font Awesome set,
 
 ### Coding conventions
 
-`px vs em` - we specify font sizes in `px`.
+`px vs. em` - we specify font sizes in `px`.
 When creating a widget, spacing (margin, padding) should be specified using `px` unless the design calls for proportional spacing, in which case `em` can be used.
 
 
