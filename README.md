@@ -116,7 +116,7 @@ e.g.
 w(CheckBox, {}, []);
 ```
 Here, `WidgetFoo` is the parent widget, which in turn, creates a child widget of type `CheckBox`.
-In this instance, the `CheckBox` is controlled by `WidgetFoo`, therefore `WidgetFoo` is known as a 'controlled' widget.
+In this instance, the `CheckBox` is controlled by `WidgetFoo`, therefore the `CheckBox` is known as a 'controlled' widget.
 Controlled widgets are also known as 'stateless' widgets, because they do not hold internal state; their state is passed in as part of their `properties`.
 
 ### Icons
