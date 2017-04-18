@@ -62,13 +62,15 @@ In a future release we will ship with several official Dojo 2 themes that can be
 ### Form widgets
 [Button](src/button/README.md)
 
-[Checkbox](src/checkbox/README.md)
+[Checkbox/Switch](src/checkbox/README.md)
 
 [ComboBox](src/combobox/README.md)
 
 [Label](src/label/README.md)
 
 [Radio](src/radio/README.md)
+
+[Select](src/select/README.md)
 
 [Slider](src/slider/README.md)
 
