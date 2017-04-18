@@ -98,7 +98,7 @@ The naming convention for event handlers is as follows:
 
 `onRequest[X]`, e.g. for a `close` event, the event handler called by the child widget must be called `onRequestClose`
 
-Here the child widget is _request_ing that the `close` event take place.
+Here the child widget is requesting that the `close` event take place.
 
 - for events that will occur regardless of child/parent interaction, then the `Request` naming convention is dropped:
 
