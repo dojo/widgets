@@ -9,6 +9,7 @@ import ResultMenu, { ResultMenuProperties } from './ResultMenu';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import uuid from '@dojo/core/uuid';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
+import { Keys } from '../common/util';
 
 import * as css from './styles/comboBox.m.css';
 
@@ -67,14 +68,6 @@ export interface ComboBoxProperties extends ThemeableProperties {
 export const enum Operation {
 	increase = 1,
 	decrease = -1
-};
-
-// This can go away when Safari decides to support KeyboardEvent.key
-const keys: {[key: string]: number} = {
-	escape: 27,
-	enter: 13,
-	up: 38,
-	down: 40
 };
 
 export const ComboBoxBase = ThemeableMixin(WidgetBase);
@@ -169,19 +162,19 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _onInputKeyDown(event: KeyboardEvent) {
 		const { results = [] } = this.properties;
 
-		switch (event.keyCode) {
-			case keys.up:
+		switch (event.which) {
+			case Keys.Up:
 				event.preventDefault();
 				this._moveActiveIndex(Operation.decrease);
 				break;
-			case keys.down:
+			case Keys.Down:
 				event.preventDefault();
 				this._open ? this._moveActiveIndex(Operation.increase) : this._openMenu();
 				break;
-			case keys.escape:
+			case Keys.Escape:
 				this._open && this._closeMenu();
 				break;
-			case keys.enter:
+			case Keys.Enter:
 				if (this._open && results.length > 0) {
 					this._activeIndex === undefined ? this._closeMenu() : this._selectIndex(this._activeIndex);
 				}

@@ -31,9 +31,9 @@ function parentElement(input?: any) {
 	};
 }
 
-function event(keyCode = 0) {
+function event(which = 0) {
 	return <any> {
-		keyCode: keyCode,
+		which: which,
 		target: {
 			value: '',
 			getAttribute() { }
