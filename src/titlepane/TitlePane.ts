@@ -4,7 +4,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
 
-import * as css from './styles/titlePane.css';
+import * as css from './styles/titlePane.m.css';
 
 /**
  * @type TitlePaneProperties
@@ -15,7 +15,7 @@ import * as css from './styles/titlePane.css';
  * @property headingLevel       'aria-heading-level' for the title's DOM node
  * @property open               If true the pane is opened and content is visible
  * @property title              Title to display above the content
- * @property onRequestClos      Called when the title of an open pane is clicked
+ * @property onRequestClose     Called when the title of an open pane is clicked
  * @property onRequestOpen      Called when the title of a closed pane is clicked
  */
 export interface TitlePaneProperties extends ThemeableProperties {
@@ -89,7 +89,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		const titleId = uuid();
 
 		return v('div', {
-			classes: this.classes(css.main)
+			classes: this.classes(css.root)
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : '',

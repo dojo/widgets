@@ -10,7 +10,7 @@ export default function createTitlePaneElement(): CustomElementDescriptor {
 		widgetConstructor: TitlePane,
 		attributes: [
 			{
-				attributeName: 'headingLevel',
+				attributeName: 'headinglevel',
 				value: value => Number(value)
 			},
 			{
