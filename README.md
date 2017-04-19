@@ -45,11 +45,11 @@ import Button, { ButtonProperties } from '@dojo/widgets/button/Button';
 ```
 
 Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported.
-This allows us to make sure that the production build of your application only includes the widgets you use and is as small as possible. 
+This allows our build tooling ([`dojo cli`](https://github.com/dojo/cli)), to make sure that the production build of your application only includes the widgets you use and is as small as possible. 
 
 ## Features
 
-- All widgets are supported in all evergreen browsers (IE11+, Chrome, Firefox, Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
+- All widgets are supported in all evergreen browsers (Chrome, Edge, Firefox, IE11+ and Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
 
 - All widgets support accessibility (`a11y`) out of the box.
 
@@ -160,6 +160,9 @@ export class MyWidget extends Button {
 ...
 }
 ```
+
+Dojo 2 widgets provide standard extension points to allow you to customise their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/widget-core).
+
 
 ## How do I contribute?
 
