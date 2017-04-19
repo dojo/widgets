@@ -3,7 +3,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import TitlePane from '../../TitlePane';
-import * as css from '../../styles/titlePane.css';
+import * as css from '../../styles/titlePane.m.css';
 
 const ENTER_KEY_CODE = 13;
 const SPACE_KEY_CODE = 32;

@@ -1,11 +1,11 @@
 @import '../../common/styles/variables.css';
 
-.main {
+.root {
 	overflow: hidden;
 	box-sizing: border-box;
 }
 
-.main * {
+.root * {
 	box-sizing: border-box;
 }
 
