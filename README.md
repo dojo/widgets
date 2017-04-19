@@ -128,7 +128,7 @@ const props = {
   invalid: true,    //defaults to false
   required: true    //defaults to false
 }
-w(TextInput, props, []);
+w(TextInput, props);
 ```
 
 Controlled form widgets can hold their own state for various reasons, however, they will always have their current value passed in.
