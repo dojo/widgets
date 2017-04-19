@@ -31,15 +31,14 @@
   "devDependencies": {
     "@dojo/interfaces": "beta1",
     "@dojo/loader": "beta1",
+    "@dojo/test-extras": ">=2.0.0-alpha.1",
     "@types/chai": "3.4.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
-    "@types/jsdom": "2.0.*",
     "@types/sinon": "^1.16.31",
     "grunt": "^1.0.1",
     "grunt-dojo2": "beta1",
     "intern": "^3.4.1",
-    "jsdom": "^9.5.0",
     "sinon": "^1.17.6",
     "typescript": "~2.2.1"
   }

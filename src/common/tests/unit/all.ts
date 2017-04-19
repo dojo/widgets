@@ -1,3 +1,4 @@
+import '@dojo/test-extras/support/loadJsdom';
 import './main';
 import './util';
 import '../../../dialog/tests/unit/Dialog';
