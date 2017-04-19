@@ -106,18 +106,32 @@ Here the child widget is requesting that the `close` event take place.
 
 ### Controlled vs. uncontrolled form widgets
 Currently, all of our *form* widgets are controlled widgets.
-This means that a parent widget is responsible to the state of the child widget.
+This means that a parent widget is responsible for passing in the current value of the child widget.
 
 e.g.
 
 ```ts
 [in WidgetFoo.ts]
 
-w(CheckBox, {}, []);
+w(TextInput, {value: 'Hello Dojo!'}, []);
 ```
-Here, `WidgetFoo` is the parent widget, which in turn, creates a child widget of type `CheckBox`.
-In this instance, the `CheckBox` is controlled by `WidgetFoo`, therefore the `CheckBox` is known as a 'controlled' widget.
-Controlled widgets are also known as 'stateless' widgets, because they do not hold internal state; their state is passed in as part of their `properties`.
+
+Here, `WidgetFoo` is the parent widget, which in turn, creates a child widget of type `TextInput`.
+In this instance, the `TextInput` is controlled by `WidgetFoo`, therefore the `TextInput` is known as a 'controlled' widget.
+Controlled form widgets have their current value passed into themselves by a parent widget. As well as their value, the parent is also responsible for determining other parts of the widget's state, such as if the widget is mandatory in the form, and also if the current value is valid.
+
+Here is how you would set the current value to 'Hello Dojo!', but also make the `TextInput` mandatory and invalid:
+
+```ts
+const props = {
+  value: 'Hello Dojo!',
+  invalid: true,    //defaults to false
+  required: true    //defaults to false
+}
+w(TextInput, props, []);
+```
+
+Controlled form widgets can hold their own state for various reasons, however, they will always have their current value passed in.
 
 ### Icons
 
