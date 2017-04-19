@@ -9,7 +9,7 @@ import { Keys } from '../common/util';
 
 export type Orientation = 'horizontal' | 'vertical';
 
-export type Role = 'menu' | 'menubar';
+export type RoleType = 'menu' | 'menubar';
 
 /**
  * @type MenuProperties
@@ -29,7 +29,7 @@ export interface MenuProperties extends ThemeableProperties {
 	disabled?: boolean;
 	id?: string;
 	orientation?: Orientation;
-	role?: Role;
+	role?: RoleType;
 }
 
 export const enum Operation {
@@ -88,9 +88,9 @@ export class Menu extends MenuBase<MenuProperties> {
 		const isHorizontal = orientation === 'horizontal';
 
 		return {
-			decrease: isHorizontal ? Keys.left : Keys.up,
-			increase: isHorizontal ? Keys.right : Keys.down,
-			tab: Keys.tab
+			decrease: isHorizontal ? Keys.Left : Keys.Up,
+			increase: isHorizontal ? Keys.Right : Keys.Down,
+			tab: Keys.Tab
 		};
 	}
 

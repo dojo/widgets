@@ -160,7 +160,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 
 	private _onKeyDown(event: KeyboardEvent) {
 		const { disabled, index, onClick, onKeyDown } = this.properties;
-		const isSpaceKey = event.keyCode === Keys.space;
+		const isSpaceKey = event.keyCode === Keys.Space;
 
 		if (isSpaceKey) {
 			event.preventDefault();
@@ -171,7 +171,7 @@ export class MenuItem extends MenuItemBase<MenuItemProperties> {
 			if (isSpaceKey) {
 				(<HTMLElement> event.target).click();
 			}
-			else if (event.keyCode === Keys.enter) {
+			else if (event.keyCode === Keys.Enter) {
 				onClick && onClick(event, index);
 			}
 		}

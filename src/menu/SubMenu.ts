@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
-import Menu, { MenuProperties, Orientation, Role } from './Menu';
+import Menu, { MenuProperties, Orientation, RoleType } from './Menu';
 import MenuItem from './MenuItem';
 import * as css from './styles/subMenu.m.css';
 import { Keys } from '../common/util';
@@ -147,7 +147,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 			nested: true,
 			orientation,
 			overrideClasses: menuStyles,
-			role: <Role> 'menu'
+			role: <RoleType> 'menu'
 		}, this.children);
 
 		return v('div', {
@@ -252,14 +252,14 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 		const isHorizontal = orientation === 'horizontal';
 
 		return {
-			ascend: isHorizontal ? Keys.up : Keys.left,
-			decrease: isHorizontal ? Keys.left : Keys.up,
-			descend: isHorizontal || parentOrientation === 'horizontal' ? Keys.down : Keys.right,
-			enter: Keys.enter,
-			escape: Keys.escape,
-			increase: isHorizontal ? Keys.right : Keys.down,
-			space: Keys.space,
-			tab: Keys.tab
+			ascend: isHorizontal ? Keys.Up : Keys.Left,
+			decrease: isHorizontal ? Keys.Left : Keys.Up,
+			descend: isHorizontal || parentOrientation === 'horizontal' ? Keys.Down : Keys.Right,
+			enter: Keys.Enter,
+			escape: Keys.Escape,
+			increase: isHorizontal ? Keys.Right : Keys.Down,
+			space: Keys.Space,
+			tab: Keys.Tab
 		};
 	}
 
@@ -329,7 +329,7 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 				const force = key === keys.descend ? true : undefined;
 				this._labelActive = false;
 
-				key === Keys.down && event.preventDefault();
+				key === Keys.Down && event.preventDefault();
 				key === keys.descend && event.stopPropagation();
 				this._toggleDisplay(force);
 			}

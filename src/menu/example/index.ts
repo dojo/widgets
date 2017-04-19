@@ -3,7 +3,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
-import Menu, { Orientation, Role } from '../Menu';
+import Menu, { Orientation, RoleType } from '../Menu';
 import MenuBar, { MenuBarProperties } from '../MenuBar';
 import MenuItem, { MenuItemProperties, MenuItemType } from '../MenuItem';
 import SubMenu, { MenuType, SubMenuProperties } from '../SubMenu';
@@ -141,7 +141,7 @@ export class App extends AppBase<WidgetProperties> {
 			w(Menu, {
 				key: 'ChromeFileMenu',
 				orientation: this.state.isFileMenuHorizontal ? 'horizontal' : 'vertical' as Orientation,
-				role: <Role> 'menubar'
+				role: <RoleType> 'menubar'
 			}, [
 				'New Tab',
 				'New Window',
@@ -255,7 +255,7 @@ export class App extends AppBase<WidgetProperties> {
 		return w(Menu, {
 			key: 'DojoMenu',
 			orientation: document.body.offsetWidth >= BREAKPOINT ? 'horizontal' : 'vertical' as Orientation,
-			role: <Role> 'menubar'
+			role: <RoleType> 'menubar'
 		}, children);
 	}
 }

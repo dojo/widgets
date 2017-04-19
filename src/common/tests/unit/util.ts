@@ -1,4 +1,3 @@
-import has from '@dojo/has/has';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
@@ -8,30 +7,13 @@ registerSuite({
 	name: 'util',
 
 	beforeEach() {
-		if (has('host-node')) {
-			(<any> global).window = {
-				addEventListener: sinon.spy(),
-				removeEventListener: sinon.spy()
-			};
-			(<any> global).document = {
-				body: { offsetWidth: 500 }
-			};
-		}
-		else if (has('host-browser')) {
-			sinon.spy(window, 'addEventListener');
-			sinon.spy(window, 'removeEventListener');
-		}
+		sinon.spy(window, 'addEventListener');
+		sinon.spy(window, 'removeEventListener');
 	},
 
 	afterEach() {
-		if (has('host-node')) {
-			delete (<any> global).window;
-			delete (<any> global).document;
-		}
-		else if (has('host-browser')) {
-			(<any> window).addEventListener.restore();
-			(<any> window).removeEventListener.restore();
-		}
+		(<any> window).addEventListener.restore();
+		(<any> window).removeEventListener.restore();
 	},
 
 	Keys() {
@@ -56,7 +38,7 @@ registerSuite({
 		listener();
 
 		assert.isTrue((<any> window.addEventListener).calledWith('resize'));
-		assert.isTrue(next.calledWith(500), '`next` should be passed the current viewport width.');
+		assert.isNumber(next.args[0][0], '`next should be passed the current viewport width.`');
 
 		subscriber.unsubscribe();
 		assert.isTrue((<any> window.removeEventListener).calledWith('resize'));
