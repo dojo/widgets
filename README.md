@@ -113,7 +113,7 @@ e.g.
 ```ts
 [in WidgetFoo.ts]
 
-w(TextInput, {value: 'Hello Dojo!'}, []);
+w(TextInput, {value: 'Hello Dojo!'});
 ```
 
 Here, `WidgetFoo` is the parent widget, which in turn, creates a child widget of type `TextInput`.
