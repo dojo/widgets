@@ -19,11 +19,11 @@ registerSuite({
 	'Active tab button should render'() {
 		const tabPane = new TabPane();
 
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { key: 'bar' })
 		]);
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			activeIndex: 0
 		});
 
@@ -35,15 +35,15 @@ registerSuite({
 	'alignButtons should add correct classes'() {
 		const tabPane = new TabPane();
 
-		tabPane.setProperties(props({ alignButtons: Align.right }));
+		tabPane.__setProperties__(props({ alignButtons: Align.right }));
 		let vnode = <VNode> tabPane.__render__();
 		assert.property(vnode.properties!.classes!, css.alignRight);
 
-		tabPane.setProperties(props({ alignButtons: Align.bottom }));
+		tabPane.__setProperties__(props({ alignButtons: Align.bottom }));
 		vnode = <VNode> tabPane.__render__();
 		assert.property(vnode.properties!.classes!, css.alignBottom);
 
-		tabPane.setProperties(props({ alignButtons: Align.left }));
+		tabPane.__setProperties__(props({ alignButtons: Align.left }));
 		vnode = <VNode> tabPane.__render__();
 		assert.property(vnode.properties!.classes!, css.alignLeft);
 	},
@@ -51,14 +51,14 @@ registerSuite({
 	'Clicking tab should change activeIndex'() {
 		const tabPane = new TabPane();
 		let called = 0;
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
-		tabPane.setProperties(props({
+		tabPane.__setProperties__(props({
 			onRequestTabChange: (index: number) => {
 				called++;
-				tabPane.setProperties(props({ activeIndex: index }));
+				tabPane.__setProperties__(props({ activeIndex: index }));
 			}
 		}));
 		(<any> tabPane).selectIndex(0);
@@ -69,10 +69,10 @@ registerSuite({
 	'Closing a tab should change tabs'() {
 		const tabPane = new TabPane();
 		let closedKey;
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo', closeable: true })
 		]);
-		tabPane.setProperties(props({
+		tabPane.__setProperties__(props({
 			onRequestTabClose: (index: number, key: string) => closedKey = key
 		}));
 		(<any> tabPane).closeIndex(0);
@@ -82,11 +82,11 @@ registerSuite({
 	'Should get first tab'() {
 		const tabPane = new TabPane();
 		let tab;
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
-		tabPane.setProperties(props({
+		tabPane.__setProperties__(props({
 			activeIndex: 1,
 			onRequestTabChange: (index: number) => tab = index
 		}));
@@ -97,11 +97,11 @@ registerSuite({
 	'Should get last tab'() {
 		const tabPane = new TabPane();
 		let tab;
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
-		tabPane.setProperties(props({
+		tabPane.__setProperties__(props({
 			onRequestTabChange: (index: number) => tab = index
 		}));
 		(<any> tabPane).selectLastIndex();
@@ -110,18 +110,18 @@ registerSuite({
 
 	'Should get next tab'() {
 		const tabPane = new TabPane();
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar', disabled: true }),
 			w(Tab, { label: 'baz', key: 'baz' })
 		]);
 		function onRequestTabChange(index: number) {
-			tabPane.setProperties({
+			tabPane.__setProperties__({
 				activeIndex: index,
 				onRequestTabChange: onRequestTabChange
 			});
 		}
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 2
 		});
@@ -133,18 +133,18 @@ registerSuite({
 
 	'Should get previous tab'() {
 		const tabPane = new TabPane();
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar', disabled: true }),
 			w(Tab, { label: 'baz', key: 'baz' })
 		]);
 		function onRequestTabChange(index: number) {
-			tabPane.setProperties({
+			tabPane.__setProperties__({
 				activeIndex: index,
 				onRequestTabChange: onRequestTabChange
 			});
 		}
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 2
 		});
@@ -156,25 +156,25 @@ registerSuite({
 
 	'Up arrow should get previous tab'() {
 		const tabPane = new TabPane();
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
 		function onRequestTabChange(index: number) {
-			tabPane.setProperties({
+			tabPane.__setProperties__({
 				activeIndex: index,
 				onRequestTabChange: onRequestTabChange
 			});
 		}
 		(<any> tabPane)._onUpArrowPress();
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 0,
 			alignButtons: Align.left
 		});
 		(<any> tabPane)._onUpArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 1);
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 0,
 			alignButtons: Align.right
@@ -185,25 +185,25 @@ registerSuite({
 
 	'Down arrow should get next tab'() {
 		const tabPane = new TabPane();
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
 		function onRequestTabChange(index: number) {
-			tabPane.setProperties({
+			tabPane.__setProperties__({
 				activeIndex: index,
 				onRequestTabChange: onRequestTabChange
 			});
 		}
 		(<any> tabPane)._onDownArrowPress();
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 0,
 			alignButtons: Align.left
 		});
 		(<any> tabPane)._onDownArrowPress();
 		assert.strictEqual(tabPane.properties.activeIndex, 1);
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: onRequestTabChange,
 			activeIndex: 0,
 			alignButtons: Align.right
@@ -215,11 +215,11 @@ registerSuite({
 	'Should default to last tab if invalid activeIndex passed'() {
 		const tabPane = new TabPane();
 		let tab;
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: index => tab = index,
 			activeIndex: 5
 		});
@@ -230,11 +230,11 @@ registerSuite({
 	'Should skip tab if activeIndex is disabled'() {
 		const tabPane = new TabPane();
 		let tab;
-		tabPane.setChildren([
+		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo', disabled: true }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
-		tabPane.setProperties({
+		tabPane.__setProperties__({
 			onRequestTabChange: index => tab = index,
 			activeIndex: 0
 		});

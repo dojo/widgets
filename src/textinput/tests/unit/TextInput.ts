@@ -9,7 +9,7 @@ registerSuite({
 
 	construction() {
 		const textinput = new TextInput();
-		textinput.setProperties({
+		textinput.__setProperties__({
 			type: 'text',
 			placeholder: 'bar',
 			value: 'baz'
@@ -27,7 +27,7 @@ registerSuite({
 		assert.strictEqual(vnode.children![0].children![0].vnodeSelector, 'input');
 		assert.strictEqual(vnode.children![0].children![0].properties!.type, 'text');
 
-		textinput.setProperties({
+		textinput.__setProperties__({
 			type: 'email'
 		});
 		vnode = <VNode> textinput.__render__();
@@ -37,7 +37,7 @@ registerSuite({
 
 	'correct node attributes'() {
 		const textinput = new TextInput();
-		textinput.setProperties({
+		textinput.__setProperties__({
 			describedBy: 'id1',
 			disabled: true,
 			formId: 'id2',
@@ -75,7 +75,7 @@ registerSuite({
 
 	'invalid state'() {
 		const textinput = new TextInput();
-		textinput.setProperties({
+		textinput.__setProperties__({
 			label: 'foo',
 			invalid: true
 		});
@@ -83,7 +83,7 @@ registerSuite({
 
 		assert.isTrue(vnode.properties!.classes![css.invalid]);
 
-		textinput.setProperties({
+		textinput.__setProperties__({
 			label: 'foo',
 			invalid: false
 		});
@@ -91,7 +91,7 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.valid]);
 		assert.isFalse(vnode.properties!.classes![css.invalid]);
 
-		textinput.setProperties({
+		textinput.__setProperties__({
 			label: 'foo',
 			invalid: undefined
 		});
@@ -116,7 +116,7 @@ registerSuite({
 				touchcancel = false;
 
 		const textinput = new TextInput();
-		textinput.setProperties({
+		textinput.__setProperties__({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },

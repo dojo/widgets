@@ -12,7 +12,7 @@ registerSuite({
 
 	'Render label with correct properties'() {
 		label = new Label();
-		label.setProperties({
+		label.__setProperties__({
 			formId: 'foo',
 			classes: label.classes(baseCss.visuallyHidden),
 			label: 'baz'
@@ -28,14 +28,14 @@ registerSuite({
 	'Render correct children': {
 		beforeEach() {
 			label = new Label();
-			label.setChildren([
+			label.__setChildren__([
 				v('div', {}, ['First']),
 				v('div', {}, ['Second'])
 			]);
 		},
 
 		'label before'() {
-			label.setProperties({
+			label.__setProperties__({
 				label: {
 					content: 'foo',
 					before: true,
@@ -51,7 +51,7 @@ registerSuite({
 		},
 
 		'label after'() {
-			label.setProperties({
+			label.__setProperties__({
 				label: {
 					content: 'foo',
 					before: false,
@@ -69,7 +69,7 @@ registerSuite({
 
 	'hidden label text'() {
 		label = new Label();
-		label.setProperties({
+		label.__setProperties__({
 			label: {
 				content: 'foo',
 				hidden: true

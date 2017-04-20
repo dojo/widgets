@@ -9,7 +9,7 @@ registerSuite({
 
 	'Render correct properties'() {
 		const option = new SelectOption();
-		option.setProperties({
+		option.__setProperties__({
 			index: 2,
 			optionData: {
 				disabled: true,
@@ -31,7 +31,7 @@ registerSuite({
 
 	renderLabel() {
 		const option = new SelectOption();
-		option.setProperties({
+		option.__setProperties__({
 			index: 0,
 			optionData: {
 				label: 'bar',
@@ -45,7 +45,7 @@ registerSuite({
 
 	'State classes'() {
 		const option = new SelectOption();
-		option.setProperties({
+		option.__setProperties__({
 			focused: true,
 			index: 0,
 			optionData: {
@@ -61,7 +61,7 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.selected]);
 		assert.isTrue(vnode.properties!.classes![css.disabledOption]);
 
-		option.setProperties({
+		option.__setProperties__({
 			focused: false,
 			index: 0,
 			optionData: {
@@ -82,7 +82,7 @@ registerSuite({
 		let mouseDown = false;
 		let clickedIndex;
 		const option = new SelectOption();
-		option.setProperties({
+		option.__setProperties__({
 			index: 3,
 			optionData: {
 				label: '',

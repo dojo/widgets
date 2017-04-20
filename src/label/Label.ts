@@ -1,10 +1,9 @@
-import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
-import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme, ClassesFunctionChain } from '@dojo/widget-core/mixins/Themeable';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v } from '@dojo/widget-core/d';
 import { assign } from '@dojo/core/lang';
-import { includes } from '@dojo/shim/array';
 import * as baseCss from '../common/styles/base.m.css';
 
 /**
@@ -45,12 +44,6 @@ export const LabelBase = ThemeableMixin(WidgetBase);
 
 @theme(baseCss)
 export default class Label extends LabelBase<LabelProperties>  {
-	@onPropertiesChanged()
-	protected onPropertiesChanged(event: PropertiesChangeEvent<this, LabelProperties>) {
-		if (includes(event.changedPropertyKeys, 'registry')) {
-			this.registry = event.properties.registry;
-		}
-	}
 
 	render(): DNode {
 		const {

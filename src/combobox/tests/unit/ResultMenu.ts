@@ -27,7 +27,7 @@ registerSuite({
 
 	'By default renderResults should return items'() {
 		const resultMenu = new ResultMenu();
-		resultMenu.setProperties(props());
+		resultMenu.__setProperties__(props());
 		const items: any[] = ['a', 'b'];
 		assert.deepEqual(resultMenu.renderResults(items), items);
 	},
@@ -35,7 +35,7 @@ registerSuite({
 	'renderResults should be called'() {
 		let called = false;
 		const resultMenu = new ResultMenu();
-		resultMenu.setProperties(props());
+		resultMenu.__setProperties__(props());
 		resultMenu.renderResults = results => {
 			called = true;
 			return results;

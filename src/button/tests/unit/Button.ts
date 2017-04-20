@@ -7,7 +7,7 @@ registerSuite({
 	name: 'Button',
 	construction() {
 		const button = new Button();
-		button.setProperties({
+		button.__setProperties__({
 			content: 'foo',
 			name: 'bar'
 		});
@@ -17,7 +17,7 @@ registerSuite({
 
 	'correct node attributes'() {
 		const button = new Button();
-		button.setProperties({
+		button.__setProperties__({
 			content: 'foo',
 			type: 'submit',
 			name: 'bar',
@@ -60,7 +60,7 @@ registerSuite({
 				touchcancel = false;
 
 		const button = new Button();
-		button.setProperties({
+		button.__setProperties__({
 			onBlur: () => { blurred = true; },
 			onClick: () => { clicked = true; },
 			onFocus: () => { focused = true; },

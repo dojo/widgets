@@ -47,7 +47,7 @@ registerSuite({
 
 	'Menu should open when arrow clicked'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['abc']
 		});
 
@@ -58,7 +58,7 @@ registerSuite({
 
 	'Label should render'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			label: 'foo'
 		});
 
@@ -68,7 +68,7 @@ registerSuite({
 
 	'Menu should open on input'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['abc']
 		});
 
@@ -79,7 +79,7 @@ registerSuite({
 
 	'Menu should close when input blurred'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['abc']
 		});
 
@@ -92,7 +92,7 @@ registerSuite({
 	'Menu should close when result clicked'() {
 		const comboBox = new ComboBox();
 		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['abc'],
 			getResultLabel: (value: string) => value
 		});
@@ -107,16 +107,16 @@ registerSuite({
 	'Blur should be ignored when clicking result'() {
 		const comboBox = new ComboBox();
 		let called = false;
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['a', 'b']
 		});
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			customResultItem: ResultItem
 		});
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			customResultMenu: ResultMenu
 		});
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			onBlur: () => called = true
 		});
 
@@ -130,7 +130,7 @@ registerSuite({
 	'Down arrow should change selected result if open'() {
 		const comboBox = new ComboBox();
 		(<any> comboBox)._moveActiveIndex();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['1', '2'],
 			required: true
 		});
@@ -147,7 +147,7 @@ registerSuite({
 
 	'Down arrow should open results if closed'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['abc']
 		});
 
@@ -160,7 +160,7 @@ registerSuite({
 
 	'Up arrow should change selected result'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['1', '2']
 		});
 
@@ -177,7 +177,7 @@ registerSuite({
 	'Enter should select a result'() {
 		let inputValue = 'foobar';
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['1', '2'],
 			onChange: (value: string) => inputValue = value
 		});
@@ -196,7 +196,7 @@ registerSuite({
 
 	'Escape should close menu'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({ results: ['a', 'b', 'c']});
+		comboBox.__setProperties__({ results: ['a', 'b', 'c']});
 
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox)._onInputKeyDown(event(keys.escape));
@@ -210,7 +210,7 @@ registerSuite({
 		input.blur = () => blurred = true;
 		const parent = parentElement(input);
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['abc'],
 			autoBlur: true
 		});
@@ -226,7 +226,7 @@ registerSuite({
 	'Clearable should render clear button and allow input to be cleared'() {
 		let inputValue = 'foobar';
 		const comboBox: ComboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			clearable: true,
 			onChange: (value: string) => inputValue = value
 		});
@@ -239,7 +239,7 @@ registerSuite({
 
 	'Allowed inputProperties are transferred to child input'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			inputProperties: {
 				placeholder: 'foobar'
 			}
@@ -251,7 +251,7 @@ registerSuite({
 
 	'Input should open on focus if openOnFocus is true'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			openOnFocus: true,
 			results: ['abc']
 		});
@@ -263,7 +263,7 @@ registerSuite({
 
 	'value is set on underlying input'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			value: 'abc'
 		});
 
@@ -274,7 +274,7 @@ registerSuite({
 	'onBlur should be called'() {
 		let called = false;
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			onBlur: () => called = true
 		});
 
@@ -286,7 +286,7 @@ registerSuite({
 		let called = 0;
 		const comboBox = new ComboBox();
 		(<any> comboBox)._selectIndex(0);
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['abc'],
 			getResultLabel: value => value,
 			onChange: () => called++
@@ -302,7 +302,7 @@ registerSuite({
 		let called = false;
 		const parent = parentElement();
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			onFocus: () => called = true
 		});
 
@@ -316,7 +316,7 @@ registerSuite({
 	'onRequestResults should be called'() {
 		let called = 0;
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			onRequestResults: () => called++,
 			openOnFocus: true
 		});
@@ -331,7 +331,7 @@ registerSuite({
 	'onMenuChange should be called'() {
 		let called = 0;
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['a'],
 			onMenuChange: () => called++
 		});
@@ -345,7 +345,7 @@ registerSuite({
 
 	'Clicking arrow should not open menu if disabled'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			disabled: true
 		});
 
@@ -356,7 +356,7 @@ registerSuite({
 
 	'Clicking arrow should not open menu if readonly'() {
 		const comboBox = new ComboBox();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			readOnly: true
 		});
 
@@ -417,12 +417,12 @@ registerSuite({
 	'disabled result should be skipped'() {
 		const comboBox = new ComboBox();
 		(<any> comboBox)._isIndexDisabled(0);
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['1'],
 			isResultDisabled: result => result === '1'
 		});
 		(<any> comboBox)._moveActiveIndex();
-		comboBox.setProperties({
+		comboBox.__setProperties__({
 			results: ['1', '2'],
 			isResultDisabled: result => result === '1'
 		});

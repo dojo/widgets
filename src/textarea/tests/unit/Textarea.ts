@@ -9,7 +9,7 @@ registerSuite({
 
 	construction() {
 		const textarea = new Textarea();
-		textarea.setProperties({
+		textarea.__setProperties__({
 			columns: 30,
 			rows: 10,
 			wrapText: 'hard',
@@ -33,7 +33,7 @@ registerSuite({
 		assert.isUndefined(vnode.properties!.rows);
 		assert.isUndefined(vnode.properties!.wrap);
 
-		textarea.setProperties({
+		textarea.__setProperties__({
 			columns: 30,
 			rows: 10,
 			wrapText: 'hard',
@@ -75,7 +75,7 @@ registerSuite({
 
 	'state classes'() {
 		const textarea = new Textarea();
-		textarea.setProperties({
+		textarea.__setProperties__({
 			disabled: true,
 			invalid: true,
 			readOnly: true,
@@ -88,7 +88,7 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.readonly]);
 		assert.isTrue(vnode.properties!.classes![css.required]);
 
-		textarea.setProperties({
+		textarea.__setProperties__({
 			disabled: false,
 			invalid: false,
 			readOnly: false,
@@ -101,7 +101,7 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.readonly]);
 		assert.isFalse(vnode.properties!.classes![css.required]);
 
-		textarea.setProperties({
+		textarea.__setProperties__({
 			invalid: undefined
 		});
 		vnode = <VNode> textarea.__render__();
@@ -125,7 +125,7 @@ registerSuite({
 				touchcancel = false;
 
 		const textarea = new Textarea();
-		textarea.setProperties({
+		textarea.__setProperties__({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },

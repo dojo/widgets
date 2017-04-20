@@ -8,7 +8,7 @@ registerSuite({
 
 	'Should construct dialog with passed properties'() {
 		const dialog = new Dialog();
-		dialog.setProperties({
+		dialog.__setProperties__({
 			key: 'foo',
 			modal: true,
 			open: true,
@@ -29,7 +29,7 @@ registerSuite({
 
 	'Render correct children'() {
 		const dialog = new Dialog();
-		dialog.setProperties({
+		dialog.__setProperties__({
 			enterAnimation: 'enter',
 			exitAnimation: 'exit',
 			role: 'dialog'
@@ -38,7 +38,7 @@ registerSuite({
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
 		assert.lengthOf(vnode.children, 0);
 
-		dialog.setProperties({
+		dialog.__setProperties__({
 			open: true,
 			underlay: true,
 			role: 'dialog'
@@ -49,10 +49,10 @@ registerSuite({
 
 	onRequestClose() {
 		const dialog = new Dialog();
-		dialog.setProperties({
+		dialog.__setProperties__({
 			open: true,
 			onRequestClose: () => {
-				dialog.setProperties({ open: false });
+				dialog.__setProperties__({ open: false });
 			}
 		});
 		(<any> dialog)._onCloseClick();
@@ -64,7 +64,7 @@ registerSuite({
 		let called = false;
 
 		const dialog = new Dialog();
-		dialog.setProperties({
+		dialog.__setProperties__({
 			open: true,
 			onOpen: () => {
 				called = true;
@@ -77,18 +77,18 @@ registerSuite({
 
 	modal() {
 		const dialog = new Dialog();
-		dialog.setProperties({
+		dialog.__setProperties__({
 			open: true,
 			modal: true,
 			onRequestClose: () => {
-				dialog.setProperties({ open: false });
+				dialog.__setProperties__({ open: false });
 			}
 		});
 		(<any> dialog)._onUnderlayClick();
 
 		assert.isTrue(dialog.properties.open, 'dialog should stay open when underlay is clicked and modal is true');
 
-		dialog.setProperties({ modal: false });
+		dialog.__setProperties__({ modal: false });
 		(<any> dialog)._onUnderlayClick();
 
 		assert.isUndefined(dialog.properties.open, 'dialog should close if underlay is clicked and modal is false');
@@ -96,7 +96,7 @@ registerSuite({
 
 	closeable() {
 		const dialog = new Dialog();
-		dialog.setProperties({
+		dialog.__setProperties__({
 			closeable: false,
 			open: true,
 			title: 'foo'

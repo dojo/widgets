@@ -50,7 +50,7 @@ registerSuite({
 	'Native Single Select': {
 		'Options with correct attributes'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				options: testOptions,
 				useNativeElement: true
 			});
@@ -68,7 +68,7 @@ registerSuite({
 
 		'correct node attributes'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				describedBy: 'id1',
 				disabled: true,
 				invalid: true,
@@ -96,7 +96,7 @@ registerSuite({
 
 		'Arrow'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				useNativeElement: true
 			});
 			const vnode = <VNode> select.__render__();
@@ -113,7 +113,7 @@ registerSuite({
 					keydown = false;
 
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				useNativeElement: true,
 				onBlur: () => { blurred = true; },
 				onClick: () => { clicked = true; },
@@ -133,7 +133,7 @@ registerSuite({
 
 		'onChange called with correct option'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				options: testOptions,
 				useNativeElement: true,
 				onChange: (option) => optionValue = option.label
@@ -152,7 +152,7 @@ registerSuite({
 			// mostly for code coverage; this shouldn't be possible
 			const select = new Select();
 			let selectedOption;
-			select.setProperties({
+			select.__setProperties__({
 				onChange: (option: OptionData) => selectedOption = option
 			});
 
@@ -167,7 +167,7 @@ registerSuite({
 	'Native Multi-select': {
 		'Uses option.selected'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				multiple: true,
 				options: testOptions,
 				useNativeElement: true
@@ -181,7 +181,7 @@ registerSuite({
 
 		'Correct attributes'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				multiple: true,
 				options: testOptions,
 				useNativeElement: true,
@@ -198,7 +198,7 @@ registerSuite({
 	'Custom Options': {
 		'First option focused'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				options: testOptions
 			});
 			const vnode = <VNode> select.__render__();
@@ -210,7 +210,7 @@ registerSuite({
 
 		'State attributes'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				options: testOptions,
 				value: 'three'
 			});
@@ -226,7 +226,7 @@ registerSuite({
 			const select = new Select();
 			let clicked = false;
 			let changedOption;
-			select.setProperties({
+			select.__setProperties__({
 				options: testOptions,
 				onClick: () => clicked = true,
 				onChange: (option: OptionData) => changedOption = option.value
@@ -245,7 +245,7 @@ registerSuite({
 			const select = new Select();
 			let clicked = false;
 			let changed = false;
-			select.setProperties({
+			select.__setProperties__({
 				onChange: () => changed = true,
 				onClick: () => clicked = true
 			});
@@ -263,7 +263,7 @@ registerSuite({
 				}
 			}
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				customOption: CustomOption,
 				options: testOptions
 			});
@@ -276,7 +276,7 @@ registerSuite({
 	'Custom Single-select': {
 		'Correct trigger attributes'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				disabled: true,
 				options: testOptions,
 				value: 'two'
@@ -299,7 +299,7 @@ registerSuite({
 		},
 		'Correct listbox attributes'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				describedBy: 'foo',
 				options: testOptions,
 				invalid: true,
@@ -324,7 +324,7 @@ registerSuite({
 			const select = new Select();
 			let clicked = false;
 
-			select.setProperties({
+			select.__setProperties__({
 				onClick: () => clicked = true
 			});
 
@@ -344,7 +344,7 @@ registerSuite({
 			let blurred = false;
 			(<any> select)._open = true;
 
-			select.setProperties({
+			select.__setProperties__({
 				onBlur: () => blurred = true
 			});
 			let vnode = <VNode> select.__render__();
@@ -377,7 +377,7 @@ registerSuite({
 			const select = new Select();
 			let selectedOption;
 			let keydown = false;
-			select.setProperties({
+			select.__setProperties__({
 				options: testOptions,
 				onChange: (option: OptionData) => selectedOption = option.value,
 				onKeyDown: () => keydown = true
@@ -420,7 +420,7 @@ registerSuite({
 	'Custom multi-select': {
 		'Correct listbox attributes'() {
 			const select = new Select();
-			select.setProperties({
+			select.__setProperties__({
 				describedBy: 'foo',
 				multiple: true,
 				options: testOptions,
@@ -445,7 +445,7 @@ registerSuite({
 		'Navigate options with keyboard'() {
 			const select = new Select();
 			let selectedOption;
-			select.setProperties({
+			select.__setProperties__({
 				multiple: true,
 				options: testOptions,
 				onChange: (option: OptionData) => selectedOption = option.value
@@ -465,7 +465,7 @@ registerSuite({
 
 	'state classes'() {
 		const select = new Select();
-		select.setProperties({
+		select.__setProperties__({
 			disabled: true,
 			invalid: true,
 			multiple: true,
@@ -480,7 +480,7 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.readonly]);
 		assert.isTrue(vnode.properties!.classes![css.required]);
 
-		select.setProperties({
+		select.__setProperties__({
 			disabled: false,
 			invalid: false,
 			multiple: false,
@@ -495,7 +495,7 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.readonly]);
 		assert.isFalse(vnode.properties!.classes![css.required]);
 
-		select.setProperties({
+		select.__setProperties__({
 			invalid: undefined
 		});
 		vnode = <VNode> select.__render__();
@@ -505,7 +505,7 @@ registerSuite({
 
 	label() {
 		const select = new Select();
-		select.setProperties({
+		select.__setProperties__({
 			label: 'foo',
 			formId: 'bar'
 		});

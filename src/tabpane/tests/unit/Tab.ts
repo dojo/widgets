@@ -8,7 +8,7 @@ registerSuite({
 
 	'Content should render'() {
 		const tab = new Tab();
-		tab.setChildren([ 'abc' ]);
+		tab.__setChildren__([ 'abc' ]);
 		const vnode = <VNode> tab.__render__();
 		assert.strictEqual(vnode.text, 'abc');
 	}

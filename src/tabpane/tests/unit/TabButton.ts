@@ -18,8 +18,8 @@ registerSuite({
 
 	'Closeable tab button should render X'() {
 		const tabButton = new TabButton();
-		tabButton.setChildren([ 'abc' ]);
-		tabButton.setProperties(props({
+		tabButton.__setChildren__([ 'abc' ]);
+		tabButton.__setProperties__(props({
 			closeable: true,
 			active: true
 		}));
@@ -29,14 +29,14 @@ registerSuite({
 
 	'Active tab button should render properly'() {
 		const tabButton = new TabButton();
-		tabButton.setProperties(props({ active: true }));
+		tabButton.__setProperties__(props({ active: true }));
 		let vnode = <VNode> tabButton.__render__();
 		assert.property(vnode.properties!.classes!, css.activeTabButton);
 	},
 
 	'Disabled tab button should render properly'() {
 		const tabButton = new TabButton();
-		tabButton.setProperties(props({ disabled: true }));
+		tabButton.__setProperties__(props({ disabled: true }));
 		let vnode = <VNode> tabButton.__render__();
 		assert.property(vnode.properties!.classes!, css.disabledTabButton);
 	},
@@ -44,7 +44,7 @@ registerSuite({
 	'Closing tab should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({ onCloseClick: () => called = true }));
+		tabButton.__setProperties__(props({ onCloseClick: () => called = true }));
 		(<any> tabButton)._onCloseClick({ stopPropagation() { } });
 		assert.isTrue(called);
 	},
@@ -52,12 +52,12 @@ registerSuite({
 	'Selecting tab should trigger property'() {
 		const tabButton = new TabButton();
 		let called = 0;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onClick: () => called++,
 			disabled: true
 		}));
 		(<any> tabButton)._onClick();
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onClick: () => called++,
 			disabled: false
 		}));
@@ -68,7 +68,7 @@ registerSuite({
 	'Key down should be ignored for disabled tab'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			disabled: true,
 			onLeftArrowPress: () => called = true
 		}));
@@ -79,7 +79,7 @@ registerSuite({
 	'Escape should close tab'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			closeable: true,
 			onCloseClick: () => called = true
 		}));
@@ -91,7 +91,7 @@ registerSuite({
 	'Left arrow should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onLeftArrowPress: () => called = true
 		}));
 		(<any> tabButton)._onKeyDown({ which: 37 });
@@ -101,7 +101,7 @@ registerSuite({
 	'Up arrow should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onUpArrowPress: () => called = true
 		}));
 		(<any> tabButton)._onKeyDown({ which: 38 });
@@ -111,7 +111,7 @@ registerSuite({
 	'Right arrow should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onRightArrowPress: () => called = true
 		}));
 		(<any> tabButton)._onKeyDown({ which: 39 });
@@ -121,7 +121,7 @@ registerSuite({
 	'Down arrow should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onDownArrowPress: () => called = true
 		}));
 		(<any> tabButton)._onKeyDown({ which: 40 });
@@ -131,7 +131,7 @@ registerSuite({
 	'Home should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onHomePress: () => called = true
 		}));
 		(<any> tabButton)._onKeyDown({ which: 36 });
@@ -141,7 +141,7 @@ registerSuite({
 	'End should trigger property'() {
 		const tabButton = new TabButton();
 		let called = false;
-		tabButton.setProperties(props({
+		tabButton.__setProperties__(props({
 			onEndPress: () => called = true
 		}));
 		(<any> tabButton)._onKeyDown({ which: 35 });
@@ -151,7 +151,7 @@ registerSuite({
 	'Focus is restored after render'() {
 		const tabButton = new TabButton();
 		let focused = 0;
-		tabButton.setProperties(props({ active: true }));
+		tabButton.__setProperties__(props({ active: true }));
 		(<any> tabButton).onElementCreated({
 			focus: () => focused++
 		}, 'tab-button');

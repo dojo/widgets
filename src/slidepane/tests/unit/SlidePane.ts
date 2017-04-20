@@ -492,7 +492,6 @@ registerSuite({
 			selector: ':last-child'
 		});
 
-		assignProperties(expected, { classes: widget.classes(css.root) });
 		replaceChild(expected, 0, null);
 		assignChildProperties(expected, 1, {
 			classes: widget.classes(css.content, css.left, css.slideOut),
@@ -501,6 +500,7 @@ registerSuite({
 				width: '256px'
 			}
 		});
+		assignProperties(expected, { classes: widget.classes(css.root) });
 		widget.expectRender(expected);
 	},
 
@@ -568,7 +568,6 @@ registerSuite({
 			selector: ':last-child'
 		});
 
-		assignProperties(expected, { classes: widget.classes(css.root) });
 		replaceChild(expected, 0, null);
 		assignChildProperties(expected, 1, {
 			classes: widget.classes(css.content, css.right, css.slideOut),
@@ -577,6 +576,7 @@ registerSuite({
 				width: '256px'
 			}
 		});
+		assignProperties(expected, { classes: widget.classes(css.root) });
 		widget.expectRender(expected);
 	}
 });

@@ -9,7 +9,7 @@ registerSuite({
 
 	construction() {
 		const checkbox = new Checkbox();
-		checkbox.setProperties({
+		checkbox.__setProperties__({
 			checked: true
 		});
 
@@ -28,7 +28,7 @@ registerSuite({
 
 	'correct node attributes'() {
 		const checkbox = new Checkbox();
-		checkbox.setProperties({
+		checkbox.__setProperties__({
 			checked: true,
 			describedBy: 'id1',
 			disabled: true,
@@ -60,7 +60,7 @@ registerSuite({
 
 	'state classes'() {
 		const checkbox = new Checkbox();
-		checkbox.setProperties({
+		checkbox.__setProperties__({
 			checked: true,
 			disabled: true,
 			invalid: true,
@@ -79,7 +79,7 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.required]);
 		assert.isTrue(vnode.properties!.classes![css.toggle]);
 
-		checkbox.setProperties({
+		checkbox.__setProperties__({
 			checked: false,
 			disabled: false,
 			invalid: false,
@@ -97,7 +97,7 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.readonly]);
 		assert.isFalse(vnode.properties!.classes![css.required]);
 
-		checkbox.setProperties({
+		checkbox.__setProperties__({
 			invalid: undefined
 		});
 		vnode = <VNode> checkbox.__render__();
@@ -117,7 +117,7 @@ registerSuite({
 				touchcancel = false;
 
 		const checkbox = new Checkbox();
-		checkbox.setProperties({
+		checkbox.__setProperties__({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },
