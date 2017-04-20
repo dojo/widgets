@@ -1,0 +1,46 @@
+@import '../../common/styles/variables.css';
+
+.root {
+	background: var(--menu-bg);
+	box-shadow: 0 0 2px 1px rgba(0,0,0,0.3);
+	font-family: sans-serif;
+	font-size: 14px;
+	padding: 5px 0;
+}
+
+.root:focus {
+	outline: none;
+}
+
+.menuItem {
+	color: var(--title-bar-bg);
+	cursor: pointer;
+	display: block;
+	padding: 5px 10px;
+	text-decoration: underline;
+}
+
+.menuLabel {
+	composes: menuItem;
+}
+
+.menuItem:focus,
+.menuLabel:focus {
+	box-shadow: inset var(--input-focus-shadow);
+	outline: none;
+}
+
+.disabled {
+	cursor: default;
+	opacity: 0.3;
+}
+
+.selected {
+	background-color: var(--menu-selected-bg);
+	color: var(--menu-selected-color);
+}
+
+.horizontal {
+	display: flex;
+	flex-direction: row;
+}
