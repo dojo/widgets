@@ -7,7 +7,10 @@ import WidgetBase from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/menu.m.css';
 import { Keys } from '../common/util';
 
-export type Orientation = 'horizontal' | 'vertical';
+export const enum Orientation {
+	Horizontal,
+	Vertical
+}
 
 export type RoleType = 'menu' | 'menubar';
 
@@ -44,7 +47,7 @@ export class Menu extends MenuBase<MenuProperties> {
 	private _active = false;
 	private _activeIndex = 0;
 	private _domNode: HTMLElement | null;
-	private _id = uuid();
+	private _id: string;
 
 	constructor() {
 		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
@@ -57,7 +60,7 @@ export class Menu extends MenuBase<MenuProperties> {
 
 	render(): DNode {
 		const {
-			id = this._id,
+			id = this._getDefaultId(),
 			role = 'menu'
 		} = this.properties;
 
@@ -78,14 +81,21 @@ export class Menu extends MenuBase<MenuProperties> {
 		}
 	}
 
+	private _getDefaultId() {
+		if (!this._id) {
+			this._id = uuid();
+		}
+		return this._id;
+	}
+
 	private _getDefaultOrientation(): Orientation {
 		const { role = 'menu' } = this.properties;
-		return role === 'menubar' ? 'horizontal' : 'vertical';
+		return role === 'menubar' ? Orientation.Horizontal : Orientation.Vertical;
 	}
 
 	private _getKeys() {
 		const { orientation = this._getDefaultOrientation() } = this.properties;
-		const isHorizontal = orientation === 'horizontal';
+		const isHorizontal = orientation === Orientation.Horizontal;
 
 		return {
 			decrease: isHorizontal ? Keys.Left : Keys.Up,
@@ -98,7 +108,7 @@ export class Menu extends MenuBase<MenuProperties> {
 		const { orientation = this._getDefaultOrientation() } = this.properties;
 		const classes = [ css.root ];
 
-		if (orientation === 'horizontal') {
+		if (orientation === Orientation.Horizontal) {
 			classes.push(css.horizontal);
 		}
 

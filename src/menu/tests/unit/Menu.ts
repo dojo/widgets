@@ -105,13 +105,13 @@ registerSuite({
 		menu.setProperties({
 			key: 'foo',
 			disabled: false,
-			orientation: 'horizontal',
+			orientation: Orientation.Horizontal,
 			role: 'menubar'
 		});
 
 		assert.strictEqual(menu.properties.key, 'foo');
 		assert.isFalse(menu.properties.disabled);
-		assert.strictEqual(menu.properties.orientation, 'horizontal');
+		assert.strictEqual(menu.properties.orientation, Orientation.Horizontal);
 		assert.strictEqual(menu.properties.role, 'menubar');
 	},
 
@@ -129,11 +129,11 @@ registerSuite({
 		let vnode: any = menu.__render__();
 		assert.notOk(vnode.properties.classes[css.horizontal], 'should not have horizontal class by default');
 
-		menu.setProperties({ orientation: 'horizontal' });
+		menu.setProperties({ orientation: Orientation.Horizontal });
 		vnode = menu.__render__();
 		assert.isTrue(vnode.properties.classes[css.horizontal], 'should have horizontal class');
 
-		menu.setProperties({ orientation: 'vertical' });
+		menu.setProperties({ orientation: Orientation.Vertical });
 		vnode = menu.__render__();
 		assert.notOk(vnode.properties.classes[css.horizontal], 'horizontal class should be removed');
 	},
@@ -176,7 +176,7 @@ registerSuite({
 		const preventDefault = () => {};
 		const stopPropagation = () => {};
 
-		function getDecreaseAssertion(keyCode = 38, orientation: Orientation = 'vertical') {
+		function getDecreaseAssertion(keyCode = 38, orientation: Orientation = Orientation.Vertical) {
 			return function () {
 				const menu = new Menu();
 				const first = new MenuItem();
@@ -199,7 +199,7 @@ registerSuite({
 			};
 		}
 
-		function getIncreaseAssertion(keyCode = 40, orientation: Orientation = 'vertical') {
+		function getIncreaseAssertion(keyCode = 40, orientation: Orientation = Orientation.Vertical) {
 			return function () {
 				const menu = new Menu();
 				const first = new MenuItem();
@@ -240,8 +240,8 @@ registerSuite({
 			},
 
 			'horizontal orientation': {
-				'left arrow key': getDecreaseAssertion(37, 'horizontal'),
-				'right arrow key': getIncreaseAssertion(39, 'horizontal')
+				'left arrow key': getDecreaseAssertion(37, Orientation.Horizontal),
+				'right arrow key': getIncreaseAssertion(39, Orientation.Horizontal)
 			}
 		};
 	})(),

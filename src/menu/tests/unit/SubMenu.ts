@@ -643,7 +643,7 @@ registerSuite({
 
 			menu.setProperties({
 				label: 'Menu label',
-				orientation: 'horizontal'
+				orientation: Orientation.Horizontal
 			});
 
 			const preventDefault = sinon.spy();
@@ -681,7 +681,7 @@ registerSuite({
 		const preventDefault = () => {};
 		const stopPropagation = () => {};
 
-		function getExitAssertion(keyCode = 37, orientation: Orientation = 'vertical') {
+		function getExitAssertion(keyCode = 37, orientation: Orientation = Orientation.Vertical) {
 			return function () {
 				const menu = new SubMenu();
 				(<any> menu)._toggleDisplay(true);
@@ -756,7 +756,7 @@ registerSuite({
 			},
 
 			'left arrow key: vertical orientation': getExitAssertion(),
-			'up arrow key: horizontal orientation': getExitAssertion(38, 'horizontal')
+			'up arrow key: horizontal orientation': getExitAssertion(38, Orientation.Horizontal)
 		};
 	})(),
 

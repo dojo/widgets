@@ -249,12 +249,12 @@ export class SubMenu extends SubMenuBase<SubMenuProperties> {
 
 	private _getKeys() {
 		const { orientation, parentOrientation } = this.properties;
-		const isHorizontal = orientation === 'horizontal';
+		const isHorizontal = orientation === Orientation.Horizontal;
 
 		return {
 			ascend: isHorizontal ? Keys.Up : Keys.Left,
 			decrease: isHorizontal ? Keys.Left : Keys.Up,
-			descend: isHorizontal || parentOrientation === 'horizontal' ? Keys.Down : Keys.Right,
+			descend: isHorizontal || parentOrientation === Orientation.Horizontal ? Keys.Down : Keys.Right,
 			enter: Keys.Enter,
 			escape: Keys.Escape,
 			increase: isHorizontal ? Keys.Right : Keys.Down,

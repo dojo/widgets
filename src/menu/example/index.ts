@@ -140,7 +140,7 @@ export class App extends AppBase<WidgetProperties> {
 		return v('div', { style: 'float: left; margin: 0 50px 50px 0;' }, [
 			w(Menu, {
 				key: 'ChromeFileMenu',
-				orientation: this.state.isFileMenuHorizontal ? 'horizontal' : 'vertical' as Orientation,
+				orientation: this.state.isFileMenuHorizontal ? Orientation.Horizontal : Orientation.Vertical,
 				role: <RoleType> 'menubar'
 			}, [
 				'New Tab',
@@ -222,7 +222,7 @@ export class App extends AppBase<WidgetProperties> {
 			onRequestShow: () => {
 				this.setState({ cliMenuHidden: false });
 			},
-			parentOrientation: isMenuBar ? 'horizontal' : 'vertical' as Orientation,
+			parentOrientation: isMenuBar ? Orientation.Horizontal : Orientation.Vertical,
 			type: isMenuBar ? 'dropdown' : 'inline' as MenuType
 		}, items);
 	}
@@ -254,7 +254,7 @@ export class App extends AppBase<WidgetProperties> {
 
 		return w(Menu, {
 			key: 'DojoMenu',
-			orientation: document.body.offsetWidth >= BREAKPOINT ? 'horizontal' : 'vertical' as Orientation,
+			orientation: document.body.offsetWidth >= BREAKPOINT ? Orientation.Horizontal : Orientation.Vertical,
 			role: <RoleType> 'menubar'
 		}, children);
 	}
