@@ -309,16 +309,14 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			includes(evt.changedPropertyKeys, 'customResultItem') ||
 			includes(evt.changedPropertyKeys, 'customResultMenu')) {
 
-			if ( !this._registry || includes(evt.changedPropertyKeys, 'customOption')) {
-				const registry = this._createRegistry(customResultItem, customResultMenu);
-				if (this._registry) {
-					this.registries.replace(this._registry, registry);
-				}
-				else {
-					this.registries.add(registry);
-				}
-				this._registry = registry;
+			const registry = this._createRegistry(customResultItem, customResultMenu);
+			if (this._registry) {
+				this.registries.replace(this._registry, registry);
 			}
+			else {
+				this.registries.add(registry);
+			}
+			this._registry = registry;
 		}
 	}
 
