@@ -1,6 +1,36 @@
-.root {}
-.controls {}
-.disabled {}
-.invalid {}
-.readOnly {}
+@import '../../common/styles/variables.css';
+
+.root,
+.root * {
+	box-sizing: border-box;
+}
+
+.root {
+	display: inline-block;
+	width: var(--form-field-width);
+}
+
+.input {
+	composes: input from '../../textinput/styles/textinput.m.css';
+
+	width: 100%;
+}
+
+.arrow:after {
+	content: '\1F557';
+}
+
+/* State classes */
 .required {}
+
+.disabled .input,
+.readonly .input {
+	background-color: var(--dojo-light-gray);
+}
+
+.invalid .input {
+	border-color: var(--dojo-error-color);
+}
+.invalid .arrow {
+	background-color: var(--dojo-error-color);
+}

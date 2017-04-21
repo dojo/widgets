@@ -68,6 +68,7 @@ export function getOptions(start: string = '00:00:00', end: string = '23:59:59',
 }
 
 /**
+ * @private
  * Create a numeric timestamp for the specified hour, minute, and second units.
  *
  * @param units   An object containing the hours, minutes, and seconds for the time.
@@ -136,7 +137,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 					classes: this.classes(
 						disabled ? css.disabled : null,
 						invalid ? css.invalid : null,
-						readOnly ? css.readOnly : null,
+						readOnly ? css.readonly : null,
 						required ? css.required : null
 					),
 					formId,
@@ -169,7 +170,16 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			value
 		} = this.properties;
 
+		const classes = [
+			css.input,
+			disabled ? css.disabled : null,
+			invalid ? css.required : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
+		];
+
 		return v('input', {
+			classes: this.classes(...classes),
 			disabled,
 			invalid,
 			key: 'native-input',
@@ -203,6 +213,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			onMenuChange,
 			openOnFocus,
 			options,
+			overrideClasses,
 			readOnly,
 			required,
 			value
@@ -226,6 +237,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			onMenuChange,
 			onRequestResults: this._onRequestOptions,
 			openOnFocus,
+			overrideClasses: overrideClasses || css,
 			readOnly,
 			required,
 			results: options,

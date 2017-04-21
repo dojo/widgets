@@ -99,6 +99,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(TimePicker, {
 				key: '6',
 				required: true,
+				onBlur: (value: string) => this.setState({
+					invalid: value.trim().length === 0
+				}),
 				onChange: (value: string) => this.setState({
 					'value6': value,
 					invalid: value.trim().length === 0
