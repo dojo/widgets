@@ -7,6 +7,7 @@ import Radio from './radio/Radio';
 import Select from './select/Select';
 import SlidePane from './slidepane/SlidePane';
 import Slider from './slider/Slider';
+import SplitPane from './splitPane/SplitPane';
 import TabPane from './tabpane/TabPane';
 import Textarea from './textarea/Textarea';
 import TextInput from './textinput/TextInput';
@@ -21,6 +22,7 @@ export {
 	Select,
 	SlidePane,
 	Slider,
+	SplitPane,
 	TabPane,
 	Textarea,
 	TextInput

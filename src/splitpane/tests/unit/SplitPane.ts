@@ -2,9 +2,8 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 
 import has from '@dojo/has/has';
-import harness, { assignProperties, assignChildProperties, Harness, replaceChild } from '@dojo/test-extras/harness';
+import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
-import { HNode } from '@dojo/widget-core/interfaces';
 
 import SplitPane, { Direction, SplitPaneProperties } from '../../SplitPane';
 import * as css from '../../styles/splitPane.m.css';
