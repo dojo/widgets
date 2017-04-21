@@ -84,10 +84,10 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			v('div', {
 				'aria-labelledby': this._titleId,
 				classes: this.classes(css.main),
-				enterAnimation: enterAnimation,
-				exitAnimation: exitAnimation,
+				enterAnimation,
+				exitAnimation,
 				key: 'main',
-				role: role
+				role
 			}, [
 				v('div', {
 					classes: this.classes(css.title),

@@ -367,7 +367,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		let controls: DNode = v('div', {
 			classes: this.classes(css.controls)
 		}, [
-			w(TextInput, {
+			w<TextInputProperties>(TextInput, {
 				...inputProperties,
 				classes: this.classes(clearable ? css.clearable : null),
 				controls: menuId,
