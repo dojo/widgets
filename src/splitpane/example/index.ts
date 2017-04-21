@@ -16,13 +16,18 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			border: '1px solid rgba(170, 170, 170, 0.5)'
 		};
 
-		return v('div', [
+		return v('div', {
+			styles: {
+				padding: '50px'
+			}
+		}, [
 			v('h1', ['SplitPane Examples']),
 			v('h3', ['Row']),
 			v('div', {
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
+					key: 'row',
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ rowSize: size }),
 					size: <number> this.state.rowSize
@@ -33,9 +38,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
+					key: 'column',
 					direction: Direction.column,
 					onResize: (size: number) => this.setState({ columnSize: size }),
-					size: <number> this.state.rowSize
+					size: <number> this.state.columnSize
 				})
 			]),
 			v('h3', ['Nested']),
@@ -43,6 +49,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
+					key: 'nested',
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ nestedSizeA: size }),
 					size: <number> this.state.nestedSizeA,
@@ -58,6 +65,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
+					key: 'verticalNested',
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ nestedSizeC: size }),
 					size: <number> this.state.nestedSizeC,
@@ -73,6 +81,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
+					key: 'horizontalNested',
 					direction: Direction.column,
 					onResize: (size: number) => this.setState({ nestedSizeE: size }),
 					size: <number> this.state.nestedSizeE,
@@ -81,6 +90,34 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						onResize: (size: number) => this.setState({ nestedSizeF: size }),
 						size: <number> this.state.nestedSizeF
 					})
+				})
+			]),
+			v('h3', ['Maximum size']),
+			v('div', {
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					key: 'horizontalNested',
+					direction: Direction.row,
+					onResize: (size: number) => {
+						size = size > 300 ? 300 : size;
+						this.setState({ maxSize: size });
+					},
+					size: <number> this.state.maxSize
+				})
+			]),
+			v('h3', ['Minimum size']),
+			v('div', {
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					key: 'horizontalNested',
+					direction: Direction.row,
+					onResize: (size: number) => {
+						size = size < 100 ? 100 : size;
+						this.setState({ minSize: size });
+					},
+					size: <number> this.state.minSize
 				})
 			])
 		]);
