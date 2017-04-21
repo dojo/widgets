@@ -1,0 +1,48 @@
+@import './variables.css';
+
+.input {
+	border: 1px solid var(--dojo-shade-gray);
+	max-width: 100%;
+	padding: var(--input-padding);
+}
+
+.input:focus {
+	border-color: var(--dojo-light-blue);
+	box-shadow: var(--input-focus-shadow);
+	outline: none;
+}
+
+.inputWrapper { }
+
+.root {
+	font: var(--base-font);
+}
+
+.root span {
+	display: block;
+	margin: var(--line-spacing) 0;
+}
+
+.disabled .input,
+.readonly .input {
+	background-color: var(--dojo-off-white);
+	color: var(--dojo-shade-gray);
+}
+
+/* required styles */
+.required .input {
+	border-left-width: 8px;
+}
+.required span::after {
+	content: '*';
+	color: var(--dojo-error-color);
+}
+
+/* TODO: this needs non-color design as well */
+.invalid .input {
+	border-color: var(--dojo-error-color);
+}
+
+.valid .input {
+	border-color: var(--dojo-success-color);
+}

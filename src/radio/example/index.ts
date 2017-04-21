@@ -4,9 +4,18 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Radio from '../../radio/Radio';
+import dojoTheme from '../../themes/dojo/theme';
 
 export const AppBase = StatefulMixin(WidgetBase);
 export class App extends AppBase<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojoTheme : {};
+		this.invalidate();
+	}
+
 	onChange(event: Event) {
 		const value = (<HTMLInputElement> event.target).value;
 		this.setState({ inputValue: value });
@@ -18,6 +27,16 @@ export class App extends AppBase<WidgetProperties> {
 		} = this.state;
 
 		return v('div', [
+			v('h2', {
+				innerHTML: 'Checkbox Examples'
+			}),
+			v('label', [
+				'Use Dojo Theme ',
+				v('input', {
+					type: 'checkbox',
+					onchange: this.themeChange
+				})
+			]),
 			v('fieldset', {}, [
 				v('legend', {}, ['Set of radio buttons with first option selected']),
 				w(Radio, {
@@ -26,7 +45,8 @@ export class App extends AppBase<WidgetProperties> {
 					value: 'first',
 					label: 'First option',
 					name: 'sample-radios',
-					onChange: this.onChange
+					onChange: this.onChange,
+					theme: this._theme
 				}),
 				w(Radio, {
 					key: 'r2',
@@ -34,7 +54,8 @@ export class App extends AppBase<WidgetProperties> {
 					value: 'second',
 					label: 'Second option',
 					name: 'sample-radios',
-					onChange: this.onChange
+					onChange: this.onChange,
+					theme: this._theme
 				}),
 				w(Radio, {
 					key: 'r3',
@@ -42,7 +63,8 @@ export class App extends AppBase<WidgetProperties> {
 					value: 'third',
 					label: 'Third option',
 					name: 'sample-radios',
-					onChange: this.onChange
+					onChange: this.onChange,
+					theme: this._theme
 				})
 			])
 		]);

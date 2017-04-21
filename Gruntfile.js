@@ -28,13 +28,13 @@ module.exports = function (grunt) {
 			devStyles: {
 				expand: true,
 				cwd: 'src',
-				src: 'common/styles/widgets.css',
+				src: '**/widgets.css',
 				dest: '<%= devDirectory %>'
 			},
 			distStyles: {
 				expand: true,
 				cwd: 'src',
-				src: 'common/styles/widgets.css',
+				src: '**/widgets.css',
 				dest: '<%= distDirectory %>'
 			}
 		},

@@ -5,8 +5,17 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Dialog from '../../dialog/Dialog';
+import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojoTheme : {};
+		this.invalidate();
+	}
+
 	openDialog() {
 		this.setState({ open: true });
 	}
@@ -34,7 +43,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				closeable: <boolean> this.state['closeable'],
 				onRequestClose: () => {
 					this.setState({ open: false });
-				}
+				},
+				theme: this._theme
 			}, [
 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
@@ -45,6 +55,15 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				innerHTML: 'open dialog',
 				onclick: this.openDialog
 			}),
+			v('div', { classes: { option: true }}, [
+				v('label', [
+					'Use Dojo Theme ',
+					v('input', {
+						type: 'checkbox',
+						onchange: this.themeChange
+					})
+				])
+			]),
 			v('div', { classes: { option: true }}, [
 				v('input', {
 					type: 'checkbox',

@@ -1,23 +1,17 @@
 @import '../../common/styles/variables.css';
 
-.root {
-	font: var(--base-font);
-	box-sizing: border-box;
-}
-
-.root * {
+.root, .root * {
 	box-sizing: border-box;
 }
 
 .tabButton {
-	border-top: var(--border-thick) solid transparent;
-	border-left: var(--border-thin) solid transparent;
-	border-right: var(--border-thin) solid transparent;
+	border-top: 2px solid transparent;
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
 	text-align: center;
-	padding: 14px 28px 14px 28px;
 	display: inline-block;
 	vertical-align: top;
-	width: var(--tab-width);
+	width: auto;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -25,8 +19,7 @@
 	position: relative;
 	top: 1px;
 	z-index: 1;
-	background: var(--dojo-white);
-	outline: none;
+	background: #FFF;
 }
 
 .tabButton:focus:not(.disabledTabButton) {
@@ -34,16 +27,14 @@
 }
 
 .activeTabButton {
-	border-top-color: var(--dojo-blue);
-	border-left-color: var(--dojo-shade-gray);
-	border-right-color: var(--dojo-shade-gray);
+	border-color: black;
 	z-index: 2;
 }
 
 .disabledTabButton {
 	font-style: italic;
 	cursor: default;
-	color: var(--dojo-gray);
+	color: var(--disabled-color);
 }
 
 .close {
@@ -65,23 +56,16 @@
 	font-size: 14px;
 }
 
-.close:focus {
-	box-shadow: var(--input-focus-shadow);
-}
-
 .tab {
 	position: relative;
-	padding: var(--container-padding);
-	border: var(--border-thin) solid var(--dojo-shade-gray);
+	border: 1px solid black;
 	z-index: 1;
-	background: var(--dojo-white);
-	min-height: var(--min-container-height);
+	background: #FFF;
 }
 
 .alignLeft .tabs {
 	display: inline-block;
 	vertical-align: top;
-	width: calc(100% - var(--tab-width));
 }
 
 .alignLeft .tabButtons {
@@ -90,9 +74,9 @@
 }
 
 .alignLeft .tabButton {
-	border-top: var(--border-thin) solid transparent;
-	border-left: var(--border-thick) solid transparent;
-	border-bottom: var(--border-thin) solid transparent;
+	border-top: 1px solid transparent;
+	border-left: 2px solid transparent;
+	border-bottom: 1px solid transparent;
 	border-right: none;
 	display: block;
 	top: 0;
@@ -100,28 +84,27 @@
 }
 
 .alignLeft .activeTabButton {
-	border-top-color: var(--dojo-shade-gray);
-	border-left-color: var(--dojo-blue);
-	border-bottom-color: var(--dojo-shade-gray);
+	border-top-color: var(--selected-background);
+	border-left-color: var(--selected-background);
+	border-bottom-color: var(--selected-background);
 }
 
 .alignBottom .tabButton {
 	border-top: none;
-	border-bottom: var(--border-thick) solid transparent;
+	border-bottom: 2px solid transparent;
 	top: -1px;
 	z-index: 0;
 }
 
 .alignBottom .activeTabButton {
-	border-top-color: var(--dojo-shade-gray);
-	border-bottom-color: var(--dojo-blue);
+	border-top-color: var(--selected-background);
+	border-bottom-color: var(--selected-background);
 	z-index: 1;
 }
 
 .alignRight .tabs {
 	display: inline-block;
 	vertical-align: top;
-	width: calc(100% - var(--tab-width));
 }
 
 .alignRight .tabButtons {
@@ -130,9 +113,9 @@
 }
 
 .alignRight .tabButton {
-	border-top: var(--border-thin) solid transparent;
-	border-right: var(--border-thick) solid transparent;
-	border-bottom: var(--border-thin) solid transparent;
+	border-top: 1px solid transparent;
+	border-right: 2px solid transparent;
+	border-bottom: 1px solid transparent;
 	border-left: none;
 	display: block;
 	top: 0;
@@ -141,8 +124,8 @@
 }
 
 .alignRight .activeTabButton {
-	border-top-color: var(--dojo-shade-gray);
-	border-right-color: var(--dojo-blue);
-	border-bottom-color: var(--dojo-shade-gray);
+	border-top-color: var(--selected-background);
+	border-right-color: var(--selected-background);
+	border-bottom-color: var(--selected-background);
 	z-index: 1;
 }

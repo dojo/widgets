@@ -2,143 +2,37 @@
 
 .root {
 	display: block;
-	font: var(--base-font);
-	margin-bottom: var(--line-spacing);
 	position: relative;
 }
 
-.input {
-	opacity: 0;
-	position: absolute;
-	z-index: -1;
-}
-
-.inputWrapper {
-	position: relative;
-	width: 1.5em;
-	display: inline-block;
-	vertical-align: middle;
-	margin: 0 .8em;
-}
-
-.inputWrapper::before,
-.inputWrapper::after {
-	box-sizing: border-box;
-	content: '';
-	display: block;
-}
-
-.inputWrapper::before {
-	border: 2px solid var(--input-highlight-color);
-	height: 1.5em;
-	width: 1.5em;
-}
-
-.inputWrapper::after {
-	background-color: var(--input-highlight-color);
-	height: calc(1.5em - 6px);
-	left: 3px;
-	position: absolute;
-	top: 3px;
-	transform: scale(0);
-	transition: all var(--short-animation-duration) var(--short-animation-easing);
-	width: calc(1.5em - 6px);
-}
-
-/* checked style */
-.checked .inputWrapper::after {
-	transform: scale(1);
-}
-
-/* disabled and readonly styles */
-.disabled .inputWrapper::before,
-.readonly .inputWrapper::before {
-	border-color: var(--input-border-color);
-}
+.input {}
+.inputWrapper {}
+.checked {}
+.disabled {}
+.readonly {}
 
 /* required style, only applies to inputs with a label */
 .required span::after {
 	content: '*';
-	color: var(--dojo-error-color);
+	color: var(--error-color);
 }
 
 /* invalid style */
 .invalid .inputWrapper::before {
-	border-color: var(--dojo-error-color);
+	border-color: var(--error-color);
 }
 .invalid .inputWrapper::after {
-	background-color: var(--dojo-error-color);
+	background-color: var(--error-color);
 }
 
 /* valid style */
 .valid .inputWrapper::before {
-	border-color: var(--dojo-success-color);
+	border-color: var(--success-color);
 }
 .valid .inputWrapper::after {
-	background-color: var(--dojo-success-color);
+	background-color: var(--success-color);
 }
 
-/* Toggle mode */
-.toggle .inputWrapper {
-	width: auto;
-	position: relative;
-	display: inline-block;
-	border: 2px solid var(--dojo-blue);
-	overflow: hidden;
-	padding: 2px 3px 1px 3px;
-	white-space: nowrap;
-	background: var(--dojo-white);
-	transition: background var(--short-animation-duration) var(--short-animation-easing);
-}
-
-.checked.toggle .inputWrapper {
-	background: var(--dojo-light-blue);
-}
-
-.toggle.disabled .inputWrapper,
-.toggle.readonly .inputWrapper {
-	border-color: var(--input-border-color);
-}
-
-.toggle .input {
-	position: fixed;
-}
-
-.toggle .inputWrapper::before {
-	display: none;
-}
-
-.toggle .inputWrapper::after {
-	transform: scale(1);
-	content: "";
-	position: absolute;
-	top: 1px;
-	transform: translateX(-1.5em);
-	left: calc(1.5em + 1px);
-	transition: left var(--short-animation-duration) var(--short-animation-easing);
-}
-
-.checked.toggle .inputWrapper::after {
-	left: calc(100% + 5px);
-}
-
-.onLabel,
-.offLabel {
-	position: relative;
-	display: inline-block;
-	min-width: calc(1.5em - 6px);
-	text-align: center;
-	transition: opacity var(--short-animation-duration) var(--short-animation-easing);
-}
-
-.onLabel {
-	opacity: 0;
-}
-
-.checked .onLabel {
-	opacity: 1;
-}
-
-.checked .offLabel {
-	opacity: 0;
-}
+.toggle {}
+.onLabel {}
+.offLabel {}

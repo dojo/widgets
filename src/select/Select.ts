@@ -199,7 +199,8 @@ export default class Select extends SelectBase<SelectProperties> {
 		const {
 			multiple,
 			options = [],
-			value
+			value,
+			theme
 		} = this.properties;
 
 		const optionNodes = options.map((option, i) => w('select-option', {
@@ -212,7 +213,8 @@ export default class Select extends SelectBase<SelectProperties> {
 				selected: multiple ? option.selected : value === option.value
 			}),
 			onMouseDown: this._onOptionMouseDown,
-			onClick: this._onOptionClick
+			onClick: this._onOptionClick,
+			theme
 		}));
 
 		return optionNodes;
@@ -377,7 +379,8 @@ export default class Select extends SelectBase<SelectProperties> {
 			multiple,
 			readOnly,
 			required,
-			useNativeElement = false
+			useNativeElement = false,
+			theme
 		} = this.properties;
 
 		const stateClasses = [
@@ -403,7 +406,8 @@ export default class Select extends SelectBase<SelectProperties> {
 				classes: this.classes(css.root, ...stateClasses),
 				formId,
 				label,
-				registry: this.registry
+				registry: this.registry,
+				theme
 			}, [ select ]);
 		}
 		else {

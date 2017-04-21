@@ -1,7 +1,9 @@
-@import '../../common/styles/variables.css';
+@import './variables.css';
 
 .root {
 	display: block;
+	font: var(--base-font);
+	margin-bottom: var(--line-spacing);
 }
 
 .inputWrapper {
@@ -9,15 +11,17 @@
 }
 
 .track {
-	background-color: var(--component-background);
-	border: 1px solid var(--component-color);
+	background-color: var(--dojo-light-gray);
+	border: 1px solid var(--input-border-color);
+	border-radius: var(--rounded-corners);
 	height: 0.75em;
 	position: relative;
 	width: 100%;
 }
 
 .fill {
-	background-color: var(--selected-background);
+	background-color: var(--input-highlight-color);
+	border-radius: var(--rounded-corners);
 	bottom: 0;
 	content: "";
 	left: 0;
@@ -26,14 +30,26 @@
 }
 
 .thumb {
-	background-color: var(--component-background);
-	border: 1px solid var(--component-color);
+	background-color: var(--input-highlight-color);
+	border-radius: 50%;
+	box-shadow: inset 0 0 3px 0 var(--dojo-shade-gray);
 	height: 2em;
 	left: 50%;
 	margin-left: -1em;
 	position: absolute;
 	top: -0.625em;
 	width: 2em;
+}
+.thumb::before {
+	background-color: var(--dojo-light-gray);
+	border-radius: 50%;
+	box-shadow: 0 0 3px 0 var(--dojo-shade-gray);
+	content: "";
+	height: 1em;
+	left: 0.5em;
+	position: absolute;
+	top: 0.5em;
+	width: 1em;
 }
 
 .input {
@@ -52,6 +68,10 @@
 	width: 2em;
 }
 
+.input:focus ~ .track .thumb {
+	box-shadow: var(--input-focus-shadow);
+}
+
 .output { }
 
 /* vertical slider */
@@ -64,29 +84,29 @@
 /* disabled and readonly styles */
 .disabled .inputWrapper::before,
 .readonly .inputWrapper::before {
-	border-color: var(--disabled-color);
+	border-color: var(--input-border-color);
 }
 
 /* required style, only applies to inputs with a label */
 .required span::after {
 	content: '*';
-	color: var(--error-color);
+	color: var(--dojo-error-color);
 }
 
 /* invalid style */
 .invalid .track {
-	border-color: var(--error-color);
+	border-color: var(--dojo-error-color);
 }
 .invalid .thumb::before {
-	background-color: var(--error-color);
+	background-color: var(--dojo-error-color);
 }
 
 /* valid style */
 .valid .inputWrapper::before {
-	border-color: var(--success-color);
+	border-color: var(--dojo-success-color);
 }
 .valid .inputWrapper::after {
-	background-color: var(--success-color);
+	background-color: var(--dojo-success-color);
 }
 
 /* Make native input invisible */

@@ -1,6 +1,4 @@
-@import '../../common/styles/variables.css';
-
-.root {}
+@import './variables.css';
 
 .underlay {
 	position: fixed;
@@ -11,14 +9,17 @@
 }
 
 .underlayVisible {
-	background: var(--underlay-background);
+	background: var(--underlay-bg);
 }
 
 .content {
+	font: var(--base-font);
 	height: 100%;
 	position: fixed;
 	top: 0;
-	background-color: var(--component-background);
+	background-color: var(--title-bar-bg);
+	color: var(--title-bar-color);
+	padding: var(--container-padding);
 	box-sizing: border-box;
 }
 

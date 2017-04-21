@@ -1,54 +1,14 @@
 :root {
-	/* Colors */
-	--dojo-blue: #34495e;
-	--dojo-light-blue: #86BBD8;
-	--dojo-white: #FFFFFF;
-	--dojo-off-white: #FBFBFB;
-	--dojo-light-gray: #DDD;
-	--dojo-shade-gray: rgba(0, 0, 0, 0.3);
-	--dojo-gray: #9E9E9E;
-	--dojo-light-gray: #F2F2F2;
-	--dojo-red: #ED5153;
-	--dojo-green: #01D48E;
-	--dojo-gray: #BBB;
+	--selected-background: #34495e;
+	--selected-color: #fff;
+	--disabled-color: #bbb;
+	--component-background: #fff;
+	--component-color: #000;
+	--underlay-background: color(var(--component-color) alpha(-70%));
 
-	--dojo-error-color: var(--dojo-red);
-	--dojo-success-color: var(--dojo-green);
+	--error-color: red;
+	--success-color: green;
 
-	/* Shared values */
-	--base-font: 14px/1 sans-serif;
-	--input-font-size: 14px;
-	--title-bar-font-size: 20px;
-	--container-padding: 14px 35px;
-	--container-padding-thin: 14px;
-	--subtle-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.25);
-	--rounded-corners: 2px;
 	--short-animation-duration: .2s;
 	--short-animation-easing: ease;
-
-	--block-spacing: 25px;
-	--line-spacing: 5px;
-	--border-thin: 1px;
-	--form-field-width: 200px;
-	--select-menu-height: 500px;
-	--input-padding: 0.5em 1em;
-	--border-thick: 5px;
-	--tab-width: 120px;
-	--min-container-height: 250px;
-
-	/* Composed values */
-	--title-bar-bg: var(--dojo-blue);
-	--title-bar-color: var(--dojo-white);
-	--underlay-bg: var(--dojo-shade-gray);
-	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
-	--input-border-color: var(--dojo-gray);
-	--toggle-width: 48px;
-	--input-highlight-color: var(--dojo-blue);
-	--button-bg: var(--dojo-blue);
-	--button-hover-bg: var(--dojo-light-blue);
-	--button-disabled-bg: var(--dojo-shade-gray);
-	--button-color: var(--dojo-white);
-	--button-icon-font: 'iconFont';
-	--button-icon-size: 1.4em;
-	--button-padding: 0.75em 1.25em;
 }

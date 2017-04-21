@@ -5,6 +5,7 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Select from '../Select';
 import SelectOption, { OptionData } from '../SelectOption';
+import dojoTheme from '../../themes/dojo/theme';
 
 class CustomOption extends SelectOption {
 	renderLabel() {
@@ -20,6 +21,14 @@ class CustomOption extends SelectOption {
 export const AppBase = StatefulMixin(WidgetBase);
 
 export class App extends AppBase<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojoTheme : {};
+		this.invalidate();
+	}
+
 	_selectOptions: OptionData[] = [
 		{
 			value: 'option1',
@@ -86,12 +95,21 @@ export class App extends AppBase<WidgetProperties> {
 	render() {
 
 		return v('div', [
+			v('label', [
+				'Use Dojo Theme ',
+				v('input', {
+					type: 'checkbox',
+					onchange: this.themeChange
+				})
+			]),
+			v('br'),
 			w(Select, {
 				key: 'select1',
 				label: 'Try changing me',
 				options: this._selectOptions,
 				useNativeElement: true,
 				value: <string> this.state['value1'],
+				theme: this._theme,
 				onChange: (option: OptionData) => {
 					this.setState({ value1: option.value });
 				}
@@ -106,6 +124,7 @@ export class App extends AppBase<WidgetProperties> {
 				label: 'Custom box!',
 				options: this._selectOptions,
 				value: <string> this.state['value2'],
+				theme: this._theme,
 				onChange: (option: OptionData) => {
 					this.setState({ value2: option.value });
 				}
@@ -116,6 +135,7 @@ export class App extends AppBase<WidgetProperties> {
 				options: this._moreSelectOptions,
 				useNativeElement: true,
 				multiple: true,
+				theme: this._theme,
 				onChange: (option: OptionData) => {
 					option.selected = !option.selected;
 				}
@@ -126,6 +146,7 @@ export class App extends AppBase<WidgetProperties> {
 				customOption: CustomOption,
 				options: this._evenMoreSelectOptions,
 				multiple: true,
+				theme: this._theme,
 				onChange: (option: OptionData) => {
 					option.selected = !option.selected;
 					this.invalidate();

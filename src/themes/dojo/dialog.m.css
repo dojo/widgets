@@ -1,14 +1,18 @@
-@import '../../common/styles/variables.css';
+@import './variables.css';
 
 .main {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: var(--component-background);
+	background: #FFF;
 	width: 450px;
+	min-height: var(--min-container-height);
 	overflow: hidden;
 	max-width: calc(100% - 30px);
+	font: var(--base-font);
+	box-shadow: var(--subtle-shadow);
+	border-radius: var(--rounded-corners);
 }
 
 .underlay {
@@ -20,14 +24,20 @@
 }
 
 .underlayVisible {
-	background: var(--underlay-background);
+	background: var(--underlay-bg);
 }
 
 .title {
 	position: relative;
+	background-color: var(--title-bar-bg);
+	font-size: var(--title-bar-font-size);
+	color: var(--title-bar-color);
+	padding: var(--container-padding);
 }
 
-.content {}
+.content {
+	padding: var(--container-padding);
+}
 
 .close {
 	position: absolute;
@@ -39,10 +49,11 @@
 	border: none;
 	background: none;
 	outline: none;
+	color: var(--title-bar-color);
 }
 
 .close:after {
 	content: '✕';
 	display: block;
-	font-size: 14px;
+	font-size: var(--title-bar-font-size);
 }

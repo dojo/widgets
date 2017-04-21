@@ -4,12 +4,28 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import TextInput, { TextInputType } from '../../textinput/TextInput';
+import dojoTheme from '../../themes/dojo/theme';
 
 export const AppBase = StatefulMixin(WidgetBase);
 export class App extends AppBase<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojoTheme : {};
+		this.invalidate();
+	}
+
 	render() {
 		return v('div', [
-			v('h1', {}, ['Text Input Examples']),
+			v('h2', {}, ['Text Input Examples']),
+			v('label', [
+				'Use Dojo Theme ',
+				v('input', {
+					type: 'checkbox',
+					onchange: this.themeChange
+				})
+			]),
 			v('h3', {}, ['String label']),
 			w(TextInput, {
 				key: 't1',
@@ -17,7 +33,8 @@ export class App extends AppBase<WidgetProperties> {
 				type: <TextInputType> 'text',
 				placeholder: 'Hello, World',
 				value: <string> this.state['value1'],
-				onChange: (event: Event) => this.setState({ 'value1': (<HTMLInputElement> event.target).value })
+				onChange: (event: Event) => this.setState({ 'value1': (<HTMLInputElement> event.target).value }),
+				theme: this._theme
 			}),
 			v('h3', {}, ['Label before the input']),
 			w(TextInput, {
@@ -29,7 +46,8 @@ export class App extends AppBase<WidgetProperties> {
 				},
 				required: true,
 				value: <string> this.state['value2'],
-				onChange: (event: Event) => this.setState({ 'value2': (<HTMLInputElement> event.target).value })
+				onChange: (event: Event) => this.setState({ 'value2': (<HTMLInputElement> event.target).value }),
+				theme: this._theme
 			}),
 			v('h3', {}, ['Hidden accessible label']),
 			w(TextInput, {
@@ -42,7 +60,8 @@ export class App extends AppBase<WidgetProperties> {
 					hidden: true
 				},
 				value: <string> this.state['value3'],
-				onChange: (event: Event) => this.setState({ 'value3': (<HTMLInputElement> event.target).value })
+				onChange: (event: Event) => this.setState({ 'value3': (<HTMLInputElement> event.target).value }),
+				theme: this._theme
 			}),
 			v('h3', {}, ['Disabled text input']),
 			w(TextInput, {
@@ -51,7 +70,8 @@ export class App extends AppBase<WidgetProperties> {
 				label: 'Can\'t type here',
 				value: 'Initial value',
 				disabled: true,
-				readOnly: true
+				readOnly: true,
+				theme: this._theme
 			}),
 			v('h3', {}, ['Validated Input']),
 			w(TextInput, {
@@ -64,7 +84,8 @@ export class App extends AppBase<WidgetProperties> {
 					const value = (<HTMLInputElement> event.target).value;
 					this.setState({ 'value4': value });
 					this.setState({ invalid: value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar' });
-				}
+				},
+				theme: this._theme
 			})
 		]);
 	}
