@@ -1,13 +1,47 @@
+import { includes } from '@dojo/shim/array';
 import { padStart } from '@dojo/shim/string';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
-import WidgetBase from '@dojo/widget-core/WidgetBase';
+import WidgetBase, { onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
 import Label, { LabelOptions } from '../label/Label';
 import { TextInputProperties } from '../textinput/TextInput';
 
+/**
+ * @type TimePickerProperties
+ *
+ * Properties that can be set on a TimePicker component
+ *
+ * @property autoBlur           Determines whether the input should blur after value selection
+ * @property buttonText         The text for the menu trigger (defaults to '')
+ * @property clearable          Determines whether the custom input should be able to be cleared
+ * @property customOptionItem   Can be used to render a custom option
+ * @property customOptionMenu   Can be used to render a custom option menu
+ * @property disabled           Prevents user interaction and styles content accordingly
+ * @property end                The maximum time to display in the menu (defaults to '23:59:59')
+ * @property formId             ID of a form element associated with the form field
+ * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
+ * @property inputProperties    TextInput properties to set on the underlying input
+ * @property invalid            Determines if this input is valid
+ * @property isOptionDisabled   Used to determine if an item should be disabled
+ * @property label              Label settings for form label text, position, and visibility
+ * @property name               The native input's name.
+ * @property onBlur             Called when the input is blurred
+ * @property onChange           Called when the value changes
+ * @property onFocus            Called when the input is focused
+ * @property onMenuChange       Called when menu visibility changes
+ * @property onRequestOptions   Called when options are shown; should be used to set `options`
+ * @property openOnFocus        Determines whether the result list should open when the input is focused
+ * @property options            Options for the current input; should be set in response to `onRequestOptions`
+ * @property readOnly           Prevents user interaction
+ * @property required           Determines if this input is required, styles accordingly
+ * @property start              The minimum time to display in the menu (defaults to '00:00:00')
+ * @property step               The number of seconds between each option in the menu (defaults to 60)
+ * @property useNativeElement   Use the native <input type="time"> element if true
+ * @property value              Value to set on the input
+ */
 export interface TimePickerProperties extends ThemeableProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
@@ -21,6 +55,7 @@ export interface TimePickerProperties extends ThemeableProperties {
 	invalid?: boolean;
 	isOptionDisabled?(result: any): boolean;
 	label?: string | LabelOptions;
+	name?: string;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
@@ -42,6 +77,14 @@ export interface TimeUnits {
 	second?: number;
 }
 
+/**
+ * Generate an array of time unit objects from the specified start date to the specified end date.
+ *
+ * @param start    The start time. Defaults to midnight.
+ * @param end      The end time. Defaults to 23:59:59.
+ * @param step     The amount of time in seconds between each step. Defaults to 60.
+ * @return         An array of time unit objects.
+ */
 export function getOptions(start: string = '00:00:00', end: string = '23:59:59', step = 60): TimeUnits[] {
 	const endUnits = parseUnits(end);
 	const startUnits = parseUnits(start);
@@ -114,6 +157,7 @@ export const TimePickerBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export class TimePicker extends TimePickerBase<TimePickerProperties> {
+	private _getOptions: () => TimeUnits[];
 	private _nativeInputNode: HTMLInputElement;
 
 	render(): DNode {
@@ -146,7 +190,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			}
 
 			return v('span', {
-				classes: this.classes(css.root)
+				classes: this.classes(css.root),
+				key: 'root'
 			}, children);
 		}
 
@@ -159,14 +204,37 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		}
 	}
 
+	@onPropertiesChanged()
+	protected onPropertiesChanged(event: PropertiesChangeEvent<this, TimePickerProperties>) {
+		if (
+			!this._getOptions ||
+			includes(event.changedPropertyKeys, 'start') ||
+			includes(event.changedPropertyKeys, 'end') ||
+			includes(event.changedPropertyKeys, 'step')) {
+			this._getOptions = (() => {
+				const { end, start, step } = this.properties;
+				let options: TimeUnits[];
+				return function () {
+					if (options) {
+						return options;
+					}
+					options = getOptions(start, end, step);
+					return options;
+				};
+			})();
+		}
+	}
+
 	protected renderNativeInput() {
 		const {
 			disabled,
 			end,
 			invalid,
+			name,
 			readOnly,
 			required,
 			start,
+			step,
 			value
 		} = this.properties;
 
@@ -179,17 +247,22 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		];
 
 		return v('input', {
+			'aria-invalid': invalid ? 'true' : null,
+			'aria-readonly': readOnly ? 'true' : null,
+			bind: this,
 			classes: this.classes(...classes),
 			disabled,
 			invalid,
 			key: 'native-input',
 			max: end,
 			min: start,
-			onBlur: this._onNativeBlur,
-			onChange: this._onNativeChange,
-			onFocus: this._onNativeFocus,
+			name,
+			onblur: this._onNativeBlur,
+			onchange: this._onNativeChange,
+			onfocus: this._onNativeFocus,
 			readOnly,
 			required,
+			step,
 			type: 'time',
 			value
 		});
@@ -221,6 +294,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 
 		return w(ComboBox, {
 			autoBlur,
+			bind: this,
 			clearable,
 			customResultItem: customOptionItem,
 			customResultMenu: customOptionMenu,
@@ -273,8 +347,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	}
 
 	private _onRequestOptions(value: string) {
-		const { end, onRequestOptions, start, step } = this.properties;
-		onRequestOptions && onRequestOptions(value, getOptions.bind(null, start, end, step));
+		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this._getOptions);
 	}
 }
 

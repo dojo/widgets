@@ -11,9 +11,15 @@
 }
 
 .input {
-	composes: input from '../../textinput/styles/textinput.m.css';
-
+	border: 1px solid var(--dojo-shade-gray);
+	padding: var(--input-padding);
 	width: 100%;
+}
+
+.input:focus {
+	border-color: var(--dojo-light-blue);
+	box-shadow: var(--input-focus-shadow);
+	outline: none;
 }
 
 .arrow:after {
