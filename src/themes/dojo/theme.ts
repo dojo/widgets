@@ -2,6 +2,7 @@ import * as button from './button.m.css';
 import * as checkbox from './checkbox.m.css';
 import * as dialog from './dialog.m.css';
 import * as radio from './radio.m.css';
+import * as select from './select.m.css';
 import * as slidePane from './slidePane.m.css';
 import * as slider from './slider.m.css';
 import * as tabPane from './tabPane.m.css';
@@ -14,6 +15,7 @@ export default {
 	'dojo-checkbox': checkbox,
 	'dojo-dialog': dialog,
 	'dojo-radio': radio,
+	'dojo-select': select,
 	'dojo-slidePane': slidePane,
 	'dojo-slider': slider,
 	'dojo-tabPane': tabPane,

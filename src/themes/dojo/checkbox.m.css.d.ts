@@ -7,3 +7,6 @@ export const readonly: string;
 export const required: string;
 export const invalid: string;
 export const valid: string;
+export const toggle: string;
+export const onLabel: string;
+export const offLabel: string;
