@@ -117,8 +117,8 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 	private _onResize() {
 		const {
 			direction = Direction.row,
-			size = DEFAULT_SIZE,
-			onResize
+			onResize,
+			size = DEFAULT_SIZE
 		} = this.properties;
 
 		const rootSize = direction === Direction.row ? this._root.offsetWidth : this._root.offsetHeight;
@@ -138,10 +138,10 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 
 	render(): DNode {
 		const {
+			direction = Direction.row,
 			leading = null,
 			size = DEFAULT_SIZE,
-			trailing = null,
-			direction = Direction.row
+			trailing = null
 		} = this.properties;
 
 		const styles: {[key: string]: string} = {};
@@ -160,15 +160,15 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 				styles
 			}, [ leading ]),
 			v('div', {
-				key: 'divider',
 				classes: this.classes(css.divider),
+				key: 'divider',
 				onmousedown: this._onDragStart,
-				ontouchstart: this._onDragStart,
-				ontouchend: this._onDragEnd
+				ontouchend: this._onDragEnd,
+				ontouchstart: this._onDragStart
 			}),
 			v('div', {
-				key: 'trailing',
-				classes: this.classes(css.trailing)
+				classes: this.classes(css.trailing),
+				key: 'trailing'
 			}, [ trailing ])
 		]);
 	}

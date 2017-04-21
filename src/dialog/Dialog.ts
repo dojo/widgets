@@ -21,24 +21,24 @@ export type RoleType = 'dialog' | 'alertdialog';
  * @property enterAnimation     CSS class to apply to the dialog when opened
  * @property exitAnimation      CSS class to apply to the dialog when closed
  * @property modal              Determines whether the dialog can be closed by clicking outside its content
+ * @property onOpen             Called when the dialog opens
+ * @property onRequestClose     Called when the dialog is closed
  * @property open               Determines whether the dialog is open or closed
  * @property role               Role of this dialog for accessibility, either 'alert' or 'dialog'
  * @property title              Title to show in the dialog title bar
  * @property underlay           Determines whether a semi-transparent background shows behind the dialog
- * @property onOpen             Called when the dialog opens
- * @property onRequestClose     Called when the dialog is closed
  */
 export interface DialogProperties extends ThemeableProperties {
 	closeable?: boolean;
 	enterAnimation?: string;
 	exitAnimation?: string;
 	modal?: boolean;
+	onOpen?(): void;
+	onRequestClose?(): void;
 	open?: boolean;
 	role?: RoleType;
 	title?: string;
 	underlay?: boolean;
-	onOpen?(): void;
-	onRequestClose?(): void;
 };
 
 export const DialogBase = ThemeableMixin(WidgetBase);
@@ -62,11 +62,11 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			closeable = true,
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
+			onOpen,
 			open = false,
 			role = 'dialog',
 			title = '',
-			underlay = false,
-			onOpen
+			underlay = false
 		} = this.properties;
 
 		open && !this._wasOpen && onOpen && onOpen();

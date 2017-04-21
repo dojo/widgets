@@ -10,24 +10,24 @@ import * as css from './styles/comboBox.m.css';
  *
  * Properties that can be set on a ResultItem component
  *
- * @property index           Position of this result in a list of results
- * @property result          Data object associated with this item
- * @property selected        Determines whether or not this item is selected
  * @property getResultLabel  Can be used to get the text label of a result based on the underlying result object
+ * @property index           Position of this result in a list of results
  * @property isDisabled      Used to determine if an item should be disabled
  * @property onMouseDown     Called when mouse clicks this result item
  * @property onMouseEnter    Called when mouse enters this result item
  * @property onMouseUp       Called when mouse releases this result item
+ * @property result          Data object associated with this item
+ * @property selected        Determines whether or not this item is selected
  */
 export interface ResultItemProperties extends ThemeableProperties {
-	index: number;
-	result: any;
-	selected: boolean;
 	getResultLabel(result: any): string;
+	index: number;
 	isDisabled(result: any): boolean;
 	onMouseDown(event: MouseEvent, index: number): void;
 	onMouseEnter(event: MouseEvent, index: number): void;
 	onMouseUp(event: MouseEvent, index: number): void;
+	result: any;
+	selected: boolean;
 };
 
 export const ResultItemBase = ThemeableMixin(WidgetBase);
@@ -83,10 +83,10 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 				isDisabled(result) ? css.disabledOption : null
 			),
 			'data-selected': selected ? 'true' : 'false',
-			role: 'option',
 			onmousedown: this._onMouseDown,
 			onmouseenter: this._onMouseEnter,
-			onmouseup: this._onMouseUp
+			onmouseup: this._onMouseUp,
+			role: 'option'
 		}, [
 			this.renderResult(result)
 		]);

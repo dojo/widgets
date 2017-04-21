@@ -19,19 +19,19 @@ export const enum Align {
  * Properties that can be set on a SlidePane component
  *
  * @property align            The position of the pane on the screen (Align.left or Align.right)
+ * @property onOpen           Called when the pane opens
+ * @property onRequestClose   Called when the pane is swiped closed or the underlay is clicked or tapped
  * @property open             Determines whether the pane is open or closed
  * @property underlay         Determines whether a semi-transparent background shows behind the pane
  * @property width            Width of the pane in pixels
- * @property onOpen           Called when the pane opens
- * @property onRequestClose   Called when the pane is swiped closed or the underlay is clicked or tapped
  */
 export interface SlidePaneProperties extends ThemeableProperties {
 	align?: Align;
+	onOpen?(): void;
+	onRequestClose?(): void;
 	open?: boolean;
 	underlay?: boolean;
 	width?: number;
-	onOpen?(): void;
-	onRequestClose?(): void;
 };
 
 /**
@@ -70,8 +70,8 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 
 		const {
-			width = DEFAULT_WIDTH,
-			align = Align.left
+			align = Align.left,
+			width = DEFAULT_WIDTH
 		} = this.properties;
 
 		// Current pointer position
@@ -97,9 +97,9 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		this._swiping = false;
 
 		const {
-			width = DEFAULT_WIDTH,
 			align = Align.left,
-			onRequestClose
+			onRequestClose,
+			width = DEFAULT_WIDTH
 		} = this.properties;
 
 		// Current pointer position
@@ -167,13 +167,13 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		this._slideIn = false;
 
 		return v('div', {
+			classes: this.classes(css.root),
 			onmousedown: this._onSwipeStart,
 			onmousemove: this._onSwipeMove,
 			onmouseup: this._onSwipeEnd,
 			ontouchend: this._onSwipeEnd,
 			ontouchmove: this._onSwipeMove,
-			ontouchstart: this._onSwipeStart,
-			classes: this.classes(css.root)
+			ontouchstart: this._onSwipeStart
 		}, [
 			open ? v('div', {
 				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),

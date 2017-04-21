@@ -18,6 +18,26 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 
 		return v('div', [
 			v('h1', ['SplitPane Examples']),
+			v('h3', ['Row']),
+			v('div', {
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					direction: Direction.row,
+					onResize: (size: number) => this.setState({ rowSize: size }),
+					size: <number> this.state.rowSize
+				})
+			]),
+			v('h3', ['Column']),
+			v('div', {
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					direction: Direction.column,
+					onResize: (size: number) => this.setState({ columnSize: size }),
+					size: <number> this.state.rowSize
+				})
+			]),
 			v('h3', ['Nested']),
 			v('div', {
 				styles: containerStyles
@@ -30,6 +50,36 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						direction: Direction.column,
 						onResize: (size: number) => this.setState({ nestedSizeB: size }),
 						size: <number> this.state.nestedSizeB
+					})
+				})
+			]),
+			v('h3', ['Multiple vertical nested']),
+			v('div', {
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					direction: Direction.row,
+					onResize: (size: number) => this.setState({ nestedSizeC: size }),
+					size: <number> this.state.nestedSizeC,
+					trailing: w(SplitPane, {
+						direction: Direction.row,
+						onResize: (size: number) => this.setState({ nestedSizeD: size }),
+						size: <number> this.state.nestedSizeD
+					})
+				})
+			]),
+			v('h3', ['Multiple horizontal nested']),
+			v('div', {
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					direction: Direction.column,
+					onResize: (size: number) => this.setState({ nestedSizeE: size }),
+					size: <number> this.state.nestedSizeE,
+					trailing: w(SplitPane, {
+						direction: Direction.column,
+						onResize: (size: number) => this.setState({ nestedSizeF: size }),
+						size: <number> this.state.nestedSizeF
 					})
 				})
 			])

@@ -19,9 +19,9 @@ import * as css from './styles/tabPane.m.css';
  * @property index              The position of this tab button
  * @property onClick            Called when this tab button is clicked
  * @property onCloseClick       Called when this tab button's close icon is clicked
+ * @property onDownArrowPress   Called when the down arrow button is pressed
  * @property onEndPress         Called when the end button is pressed
  * @property onHomePress        Called when the home button is pressed
- * @property onDownArrowPress   Called when the down arrow button is pressed
  * @property onLeftArrowPress   Called when the left arrow button is pressed
  * @property onRightArrowPress  Called when the right arrow button is pressed
  * @property onUpArrowPress     Called when the up arrow button is pressed
@@ -35,9 +35,9 @@ export interface TabButtonProperties extends ThemeableProperties {
 	index: number;
 	onClick?: (index: number) => void;
 	onCloseClick?: (index: number) => void;
+	onDownArrowPress?: () => void;
 	onEndPress?: () => void;
 	onHomePress?: () => void;
-	onDownArrowPress?: () => void;
 	onLeftArrowPress?: () => void;
 	onRightArrowPress?: () => void;
 	onUpArrowPress?: () => void;
@@ -73,9 +73,9 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			disabled,
 			index,
 			onCloseClick,
+			onDownArrowPress,
 			onEndPress,
 			onHomePress,
-			onDownArrowPress,
 			onLeftArrowPress,
 			onRightArrowPress,
 			onUpArrowPress
@@ -159,10 +159,10 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			),
 			id,
 			key: 'tab-button',
-			role: 'tab',
-			tabIndex: active ? 0 : -1,
 			onclick: this._onClick,
-			onkeydown: this._onKeyDown
+			onkeydown: this._onKeyDown,
+			role: 'tab',
+			tabIndex: active ? 0 : -1
 		}, children);
 	}
 }
