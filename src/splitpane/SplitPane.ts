@@ -70,10 +70,10 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		const { direction = Direction.row } = this.properties;
 
 		if (direction === Direction.row) {
-			return event.type === 'touchstart' ? event.changedTouches[0].clientX : event.clientX;
+			return event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
 		}
 		else {
-			return event.type === 'touchstart' ? event.changedTouches[0].clientY : event.clientY;
+			return event.changedTouches ? event.changedTouches[0].clientY : event.clientY;
 		}
 	}
 

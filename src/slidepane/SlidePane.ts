@@ -48,7 +48,7 @@ export const SlidePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
-	private _content: HTMLElement | null;
+	private _content: HTMLElement;
 	private _initialX: number;
 	private _slideIn: boolean;
 	private _swiping: boolean;
@@ -87,9 +87,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 
 		// Move the pane
-		if (this._content) {
-			this._content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
-		}
+		this._content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
