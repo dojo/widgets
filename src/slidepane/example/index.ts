@@ -11,7 +11,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	private _theme: {};
 
 	themeChange(event: Event) {
-		console.log('called');
 		const checked = (<HTMLInputElement> event.target).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
