@@ -6,8 +6,8 @@ env:
   global:
   - SAUCE_USERNAME: dojo2-ts-ci
   - SAUCE_ACCESS_KEY: e92610e3-834e-4bec-a3b5-6f7b9d874601
-  - BROWSERSTACK_USERNAME: dtktestaccount1
-  - BROWSERSTACK_ACCESS_KEY: mG2qbEFJCZY2qLsM7yfx
+  - BROWSERSTACK_USERNAME: dylanschiemann2
+  - BROWSERSTACK_ACCESS_KEY: 2upt88qsxsqqeukQvecu
 cache:
   directories:
   - node_modules
@@ -21,7 +21,7 @@ install:
 script:
 - grunt
 - grunt intern:node --combined
-- grunt intern:saucelabs --combined
+- grunt intern:browserstack --combined
 - grunt remapIstanbul:ci
 - grunt uploadCoverage
 - grunt doc
