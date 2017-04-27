@@ -66,7 +66,7 @@ export const loaderOptions = {
 export const suites = [ 'src/common/tests/unit/all' ];
 
 // Functional test suite(s) to run in each browser once non-functional tests are completed
-export const functionalSuites = [];
+export const functionalSuites = [ 'src/common/tests/functional/all' ];
 
 // A regular expression matching URLs to files that should not be included in code coverage analysis
 export const excludeInstrumentation = /(?:node_modules|bower_components|tests|styles|themes|example|.+Element\.)/;
