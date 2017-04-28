@@ -97,6 +97,7 @@ registerSuite({
 				readOnly: false,
 				required: true,
 				results: undefined,
+				theme: undefined,
 				value: 'some value'
 			}));
 

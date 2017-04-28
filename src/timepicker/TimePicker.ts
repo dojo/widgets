@@ -289,6 +289,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			overrideClasses,
 			readOnly,
 			required,
+			theme,
 			value
 		} = this.properties;
 
@@ -315,6 +316,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			readOnly,
 			required,
 			results: options,
+			theme,
 			value
 		});
 	}

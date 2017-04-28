@@ -7,18 +7,10 @@
 
 .root {
 	display: inline-block;
-	width: var(--form-field-width);
-}
-
-.input {
-	border: 1px solid var(--dojo-shade-gray);
-	padding: var(--input-padding);
-	width: 100%;
+	/* width: var(--form-field-width); */
 }
 
 .input:focus {
-	border-color: var(--dojo-light-blue);
-	box-shadow: var(--input-focus-shadow);
 	outline: none;
 }
 
@@ -27,16 +19,7 @@
 }
 
 /* State classes */
+.disabled {}
+.invalid {}
+.readonly {}
 .required {}
-
-.disabled .input,
-.readonly .input {
-	background-color: var(--dojo-light-gray);
-}
-
-.invalid .input {
-	border-color: var(--dojo-error-color);
-}
-.invalid .arrow {
-	background-color: var(--dojo-error-color);
-}
