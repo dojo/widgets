@@ -1,17 +1,5 @@
 @import '../../common/styles/variables.css';
 
-/* TODO: move this somewhere else */
-.visuallyHidden {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	width: 1px;
-}
-
 .root {
 	box-sizing: border-box;
 	display: inline-block;
@@ -26,21 +14,16 @@
 	margin-bottom: 10px;
 	position: relative;
 	text-align: center;
-	z-index: 2;
 }
 
 /* Previous/next month arrows */
 .previousMonth,
 .nextMonth {
 	background: #fff;
-	border: 4px solid var(--dojo-black);
-	border-radius: 50%;
+	border: none;
 	cursor: pointer;
-	height: 30px;
 	position: absolute;
-	top: 0;
-	transition: border 0.2s ease;
-	width: 30px;
+	top: 5px;
 }
 
 .previousMonth {
@@ -53,39 +36,22 @@
 
 .previousMonth::before,
 .nextMonth::before {
-	border-top: 8px solid transparent;
-	border-bottom: 8px solid transparent;
+	border-left: 2px solid var(--component-color);
+	border-top: 2px solid var(--component-color);
 	content: "";
 	display: block;
+	height: 20px;
 	position: relative;
-	top: 1px;
 	transition: border 0.2s ease;
+	width: 20px;
 }
 
 .previousMonth::before {
-	border-right: 10px solid var(--dojo-black);
-	right: 1px;
+	transform: rotate(-45deg);
 }
 
 .nextMonth::before {
-	border-left: 10px solid var(--dojo-black);
-	left: 1px;
-}
-
-.previousMonth:hover,
-.previousMonth:focus,
-.nextMonth:hover,
-.nextMonth:focus {
-	border-color: var(--dojo-light-blue);
-	outline: none;
-}
-
-.previousMonth:hover::before,
-.previousMonth:focus::before,
-.nextMonth:hover::before,
-.nextMonth:focus::before {
-	border-left-color: var(--dojo-light-blue);
-	border-right-color: var(--dojo-light-blue);
+	transform: rotate(135deg);
 }
 
 .currentMonthLabel {
@@ -99,50 +65,30 @@
 	transition: color 0.2s ease;
 }
 
-/* Month picker styles */
-.monthPicker {
-	perspective: 1000px;
-}
-
 /* Button to open month popup */
 .monthTrigger {
-	background-color: var(--dojo-shade-gray);
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
 	height: 35px;
-	transition: background 0.2s ease;
 	width: 180px;
 }
 
-.monthTrigger:hover,
-.monthTrigger:focus {
-	background-color: var(--dojo-blue);
-	outline: none;
-}
-
-.monthTrigger:hover ~ .currentMonthLabel,
-.monthTrigger:focus ~ .currentMonthLabel {
-	color: var(--dojo-white);
+.monthTrigger::after {
+	display: none;
 }
 
 /* Month popup */
 .monthPopup {
-	background-color: var(--dojo-off-white);
-	border: 3px solid var(--dojo-blue);
-	border-top-width: 10px;
+	background-color: var(--component-background);
+	border: 3px solid var(--component-color);
 	left: 0;
 	margin-top: 20px;
+	opacity: 1;
 	padding: 10px 15px;
 	position: absolute;
 	width: 100%;
-	transform: scale(1, 1) rotateX(0);
-	transform-origin: center top;
-	transition: all 0.3s ease-out;
 }
 
 .monthPopup::before {
-	border-bottom: 20px solid var(--dojo-blue);
+	border-bottom: 20px solid var(--component-color);
 	border-left: 20px solid transparent;
 	border-right: 20px solid transparent;
 	content: "";
@@ -153,7 +99,7 @@
 }
 
 .monthPopupHidden {
-	transform: scale(1, 0) rotateX(90deg);
+	opacity: 0;
 	z-index: -1;
 }
 
@@ -173,7 +119,7 @@
 	left: 8px;
 	right: 8px;
 	transform: scale(0, 1);
-	transition: all 0.2s ease-out;
+	transition: all var(--short-animation-duration) var(--short-animation-easing);
 }
 
 .spinner {
@@ -183,13 +129,9 @@
 }
 
 .spinner::after {
-	background: var(--dojo-black);
+	background: var(--component-color);
 	bottom: -4px;
 	height: 3px;
-}
-
-.spinner:focus {
-	outline: none;
 }
 
 .spinner:focus::after {
@@ -198,7 +140,7 @@
 
 .spinnerPrevious,
 .spinnerNext {
-	color: var(--dojo-shade-gray);
+	color: var(--disabled-color);
 	cursor: pointer;
 	line-height: 24px;
 	padding: 0 8px;
@@ -207,7 +149,7 @@
 
 .spinnerPrevious::after,
 .spinnerNext::after {
-	background: var(--dojo-shade-gray);
+	background: var(--disabled-color);
 	bottom: 0;
 	height: 2px;
 }
@@ -225,7 +167,6 @@
 }
 
 .monthRadio {
-	cursor: pointer;
 	display: block;
 	float: left;
 	font-size: 12px;
@@ -235,32 +176,30 @@
 	width: 25%;
 }
 
-.monthRadio span {
-	background: var(--dojo-off-white);
+.monthRadio abbr {
+	cursor: pointer;
 	display: block;
 	padding: 6px 12px;
-	position: relative;
-	transition: background 0.25s ease;
 }
 
-.monthRadio:hover span {
-	background: var(--dojo-light-blue);
+.monthRadio:hover abbr {
+	background: var(--disabled-color); /* TODO: better color variable? */
 }
 
-.monthRadio input[type=radio]:checked ~ span {
-	background: var(--dojo-blue);
-	color: #fff;
+.monthRadioChecked abbr {
+	background: var(--selected-background);
+	color: var(--selected-color);
 	font-weight: bold;
 }
 
-.monthRadio input[type=radio]:focus ~ span:before {
-	border: 1px solid #fff;
-	bottom: 3px;
-	content: "";
-	left: 3px;
+.monthRadioInput {
+	appearance: none;
+	height: 100%;
+	left: 0;
+	margin: 0;
 	position: absolute;
-	right: 3px;
-	top: 3px;
+	top: 0;
+	width: 100%;
 }
 
 /* Date grid */
@@ -270,47 +209,24 @@
 }
 
 .weekday {
-	color: var(--dojo-shade-gray);
-	font-weight: 400;
+	color: var(--disabled-color);
+	font-weight: normal;
 	text-transform: uppercase;
 }
 
 .date {
-	font-size: 18px;
-	font-weight: 100;
-	position: relative;
-	transition: all 0.2s ease;
+	cursor: pointer;
 }
 
-.date:hover,
-.date:focus {
-	background-color: var(--dojo-light-blue);
-	cursor: pointer;
-	outline: none;
+.date:hover {
+	background-color: var(--disabled-color); /* TODO: better hover color variable? */
 }
 
 .inactiveDate {
-	background-color: var(--dojo-off-white);
-	color: var(--dojo-shade-gray);
+	background-color: var(--disabled-color);
 }
 
 .selectedDate {
-	background-color: var(--dojo-blue);
-	color: var(--dojo-off-white);
-}
-
-.selectedDate:focus {
-	background-color: var(--dojo-blue);
-	color: var(--dojo-off-white);
-	position: relative;
-}
-
-.selectedDate:focus:before {
-	border: 1px solid #fff;
-	bottom: 3px;
-	content: "";
-	left: 3px;
-	position: absolute;
-	right: 3px;
-	top: 3px;
+	background-color: var(--selected-background);
+	color: var(--selected-color);
 }

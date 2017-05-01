@@ -13,6 +13,8 @@ export const spinnerNext: string;
 export const spinnerPrevious: string;
 export const monthControl: string;
 export const monthRadio: string;
+export const monthRadioChecked: string;
+export const monthRadioInput: string;
 export const weekday: string;
 export const date: string;
 export const inactiveDate: string;

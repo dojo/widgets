@@ -1,8 +1,13 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { v } from '@dojo/widget-core/d';
-import { DNode } from '@dojo/widget-core/interfaces';
+import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
+import { v, w } from '@dojo/widget-core/d';
+import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
+import { includes } from '@dojo/shim/array';
+import { Keys } from '../common/util';
+import MonthPicker, { CalendarMessages } from './MonthPicker';
+import CalendarCell from './CalendarCell';
 import * as css from './styles/calendar.m.css';
 
 /**
@@ -10,39 +15,32 @@ import * as css from './styles/calendar.m.css';
  *
  * Properties that can be set on a Calendar component
  *
+ * @property customDateCell   Custom widget constructor for the date cell. Should use CalendarCell as a base.
  * @property selectedDate     The currently selected date
  * @property focusedDate      Date that can receive keyboard focus. Used for a11y and to open the calendar on a specific month without selecting a date.
- * @property renderDateCell   Custom date cell render function. Should return a DNode.
  * @property onMonthChange    Function called when the month changes
  * @property onYearChange     Function called when the year changes
  * @property onDateSelect     Function called when the user selects a date
  * @property onDateFocus      Function called when a new date receives focus
  */
 export interface CalendarProperties extends ThemeableProperties {
+	customDateCell?: any;
+	labels?: CalendarMessages;
+	month?: number;
+	monthNames?: { short: string; long: string; }[];
 	selectedDate?: Date;
-	focusedDate?: Date;
-	renderDateCell?(date: number): DNode;
-	onMonthChange?(): void;
-	onYearChange?(): void;
-	onDateSelect?(): void;
-	onDateFocus?(): void;
+	weekdayNames?: { short: string; long: string; }[];
+	year?: number;
+	renderMonthLabel?(month: string, year: string): string;
+	renderWeekdayCell?(day: string): DNode;
+	onMonthChange?(month: number): void;
+	onYearChange?(year: number): void;
+	onDateSelect?(date: Date): void;
 };
 
-// TODO: this should probably be imported from somewhere else
-/* const keyCodes = {
-	enter: 13,
-	esc: 27,
-	space: 32,
-	left: 37,
-	up: 38,
-	right: 39,
-	down: 40,
-	pageUp: 33,
-	pageDown: 34
-}; */
+const TODAY = new Date();
 
-// TODO: will need locale-specific month names and weekdays
-const monthNames = [
+const DEFAULT_MONTHS = [
 	{short: 'Jan', long: 'January'},
 	{short: 'Feb', long: 'February'},
 	{short: 'Mar', long: 'March'},
@@ -57,7 +55,7 @@ const monthNames = [
 	{short: 'Dec', long: 'December'}
 ];
 
-const weekdayNames = [
+const DEFAULT_WEEKDAYS = [
 	{short: 'Sun', long: 'Sunday'},
 	{short: 'Mon', long: 'Monday'},
 	{short: 'Tue', long: 'Tuesday'},
@@ -67,8 +65,7 @@ const weekdayNames = [
 	{short: 'Sat', long: 'Saturday'}
 ];
 
-// will need to localize messages
-const messages = {
+const DEFAULT_LABELS: CalendarMessages = {
 	chooseMonth: 'Choose Month',
 	chooseYear: 'Choose Year',
 	previousMonth: 'Previous Month',
@@ -77,39 +74,173 @@ const messages = {
 
 @theme(css)
 export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarProperties> {
-	private _focusedDay: number;
-	private _focusedMonth: number;
-	private _focusedYear: number;
+	private _callDateFocus = false;
+	private _focusedDay = 1;
+	private _monthLabelId = uuid();
 	private _monthPopupOpen = false;
 
-	onMonthTriggerClick() {
-		// TODO: focus stuff
-		this._monthPopupOpen = !this._monthPopupOpen;
-		this.invalidate();
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (this._callDateFocus) {
+			const { month } = this._getMonthYear();
+			// focus date with correct key
+			if (key === (this._focusedDay + '-' + month)) {
+				element.focus();
+				this._callDateFocus = false;
+			}
+		}
 	}
 
-	_getMonthLength(month: number, year = this._focusedYear) {
+	@onPropertiesChanged()
+	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, CalendarProperties>) {
+		const { customDateCell = CalendarCell } = this.properties;
+
+		// update custom option registry
+		if ( !this.registry || includes(evt.changedPropertyKeys, 'customDateCell')) {
+			this.registry = this._createRegistry(customDateCell);
+		}
+	}
+
+	private _createRegistry(customDateCell: any) {
+		const registry = new WidgetRegistry();
+		registry.define('date-cell', customDateCell);
+
+		return registry;
+	}
+
+	private _getMonthLength(month: number, year: number) {
 		const d = new Date(year, month + 1, 0);
 		return d.getDate();
 	}
 
-	_renderDateGrid(selectedDate: Date | undefined) {
-		const currentMonthLength = this._getMonthLength(this._focusedMonth);
-		const previousMonthLength = this._getMonthLength(this._focusedMonth - 1);
-		const initialWeekday = new Date(this._focusedYear, this._focusedMonth, 1).getDay();
+	private _getMonthYear() {
+		const {
+			month,
+			selectedDate = TODAY,
+			year
+		} = this.properties;
+		return { month: typeof month === 'number' ? month : selectedDate.getMonth(), year: year ? year : selectedDate.getFullYear() };
+	}
+
+	private _goToDate(day: number) {
+		const {
+			month,
+			year
+		} = this._getMonthYear();
+		const currentMonthLength = this._getMonthLength(month, year);
+		const previousMonthLength = this._getMonthLength(month - 1, year);
+
+		if (day < 1) {
+			this._onMonthIncrement('down');
+			day += previousMonthLength;
+		}
+		else if (day > currentMonthLength) {
+			this._onMonthIncrement('up');
+			day -= currentMonthLength;
+		}
+
+		this._focusedDay = day;
+		this._callDateFocus = true;
+		this.invalidate();
+	}
+
+	private _onDateClick(date: number, disabled: boolean) {
+		const { onDateSelect } = this.properties;
+		let {
+			month,
+			year
+		} = this._getMonthYear();
+
+		if (disabled && date < 15) {
+			({ month, year } = this._onMonthIncrement('up'));
+			this._callDateFocus = true;
+		}
+		else if (disabled && date >= 15) {
+			({ month, year } = this._onMonthIncrement('down'));
+			this._callDateFocus = true;
+		}
+		this._focusedDay = date;
+		onDateSelect && onDateSelect(new Date(year, month, date));
+	}
+
+	private _onDateFocusCalled() {
+		this._callDateFocus = false;
+	}
+
+	private _onDateKeyDown(event: KeyboardEvent) {
+		const { month, year } = this._getMonthYear();
+		switch (event.which) {
+			case Keys.Up:
+				this._goToDate(this._focusedDay - 7);
+				break;
+			case Keys.Down:
+				this._goToDate(this._focusedDay + 7);
+				break;
+			case Keys.Left:
+				this._goToDate(this._focusedDay - 1);
+				break;
+			case Keys.Right:
+				this._goToDate(this._focusedDay + 1);
+				break;
+			case Keys.PageUp:
+				this._goToDate(1);
+				break;
+			case Keys.PageDown:
+				const monthLengh = this._getMonthLength(month, year);
+				this._goToDate(monthLengh);
+				break;
+			case Keys.Enter:
+			case Keys.Space:
+				const { onDateSelect } = this.properties;
+				onDateSelect && onDateSelect(new Date(year, month, this._focusedDay));
+		}
+	}
+
+	private _onMonthIncrement(direction: 'up' | 'down') {
+		const {
+			month,
+			year
+		} = this._getMonthYear();
+		const {
+			onMonthChange,
+			onYearChange
+		} = this.properties;
+
+		if (month === 11 && direction === 'up') {
+			onMonthChange && onMonthChange(0);
+			onYearChange && onYearChange(year + 1);
+			return { month: 0, year: year + 1 };
+		}
+		else if (month === 0 && direction === 'down') {
+			onMonthChange && onMonthChange(11);
+			onYearChange && onYearChange(year - 1);
+			return { month: 11, year: year - 1 };
+		}
+		else {
+			const nextMonth = direction === 'up' ? month + 1 : month - 1;
+			onMonthChange && onMonthChange(nextMonth);
+			return { month: nextMonth, year: year };
+		}
+	}
+
+	private _renderDateGrid(selectedDate?: Date) {
+		const {
+			month,
+			year
+		} = this._getMonthYear();
+
+		const currentMonthLength = this._getMonthLength(month, year);
+		const previousMonthLength = this._getMonthLength(month - 1, year);
+		const initialWeekday = new Date(year, month, 1).getDay();
 
 		let dayIndex = 0,
 				date = initialWeekday > 0 ? previousMonthLength - initialWeekday : 0,
 				isCurrentMonth = initialWeekday > 0 ? false : true,
-				isSelectedDay = false,
-				weeks: any[] = [],
-				days: any[],
-				dateCellClasses: (string | null)[],
+				isSelectedDay: boolean,
+				weeks: DNode[] = [],
+				days: DNode[],
 				i: number;
 
-		const { renderDateCell = this.renderDateCell } = this.properties;
-
-		for (let w = 0; w < 6; w++) {
+		for (let week = 0; week < 6; week++) {
 			days = [];
 
 			for (i = 0; i < 7; i++) {
@@ -129,24 +260,24 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				}
 				dayIndex++;
 
-				if (isCurrentMonth && selectedDate && new Date(this._focusedYear, this._focusedMonth, date).toDateString() === selectedDate.toDateString()) {
+				// set isSelectedDay if the dates match
+				if (isCurrentMonth && selectedDate && new Date(year, month, date).toDateString() === selectedDate.toDateString()) {
 					isSelectedDay = true;
 				} else {
 					isSelectedDay = false;
 				}
 
-				dateCellClasses = [
-					css.date,
-					isCurrentMonth ? null : css.inactiveDate,
-					isSelectedDay ? css.selectedDate : null
-				];
-
-				days.push(v('td', {
-					role: 'gridcell',
-					'aria-selected': String(isSelectedDay),
-					'tabindex': isCurrentMonth && date === this._focusedDay ? '0' : '-1',
-					classes: this.classes(...dateCellClasses).get()
-				}, [ renderDateCell(date) ]));
+				days.push(w('date-cell', {
+					key: date + '-' + (isCurrentMonth ? month : 'inactive'),
+					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
+					date,
+					disabled: !isCurrentMonth,
+					focusable: isCurrentMonth && date === this._focusedDay,
+					selected: isSelectedDay,
+					onClick: this._onDateClick,
+					onFocusCalled: this._onDateFocusCalled,
+					onKeyDown: this._onDateKeyDown
+				}));
 			}
 
 			weeks.push(v('tr', {}, days));
@@ -155,145 +286,63 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		return weeks;
 	}
 
-	renderDateCell(date: number) {
-		return v('span', {}, [ String(date) ]);
-	}
-
 	render() {
-		let {
+		const {
+			labels = DEFAULT_LABELS,
+			monthNames = DEFAULT_MONTHS,
+			renderMonthLabel,
 			selectedDate,
-			focusedDate
+			weekdayNames = DEFAULT_WEEKDAYS,
+			onMonthChange,
+			onYearChange
 		} = this.properties;
-
-		if (!focusedDate) {
-			focusedDate = selectedDate || new Date();
-		}
-
-		this._focusedDay = focusedDate.getDate();
-		this._focusedMonth = focusedDate.getMonth();
-		this._focusedYear = focusedDate.getFullYear();
-
-		const monthButtonId = uuid();
-		const monthLabelId = uuid();
-		const yearSpinnerId = uuid();
-
-		// Month picker month array
-		// TODO: use radio widget instead of v()
-		const monthRadios = [];
-		const monthRadiosName = uuid();
-		for (const month in monthNames) {
-			monthRadios.push(v('label', {
-				classes: this.classes(css.monthRadio).get()
-			}, [
-				v('input', {
-					type: 'radio',
-					classes: this.classes(css.visuallyHidden).get(),
-					name: monthRadiosName,
-					value: month + ''
-				}),
-				v('span', {}, [ monthNames[month].short ])
-			]));
-		}
+		const {
+			month,
+			year
+		} = this._getMonthYear();
 
 		// Calendar Weekday array
 		const weekdays = [];
 		for (const weekday in weekdayNames) {
 			weekdays.push(v('th', {
 				role: 'columnheader',
-				classes: this.classes(css.weekday).get()
+				classes: this.classes(css.weekday)
 			}, [
 				v('abbr', { title: weekdayNames[weekday].long }, [ weekdayNames[weekday].short ])
 			]));
 		}
 
-		return v('div', { classes: this.classes(css.root).get() }, [
-			// calendar header and month nav
-			v('div', {
-				classes: this.classes(css.header).get(),
-				role: 'heading'
-			}, [
-				v('div', {
-					classes: this.classes(css.monthPicker).get()
-				}, [
-					// Month popup trigger
-					// TODO: use button widget
-					v('button', {
-						id: monthButtonId,
-						classes: this.classes(css.monthTrigger).get(),
-						'aria-describedby': monthLabelId,
-						'aria-haspopup': true,
-						onclick: this.onMonthTriggerClick
-					}, [
-						v('span', { classes: this.classes().fixed(css.visuallyHidden).get() }, [ messages.chooseMonth ])
-					]),
-					v('label', {
-						id: monthLabelId,
-						classes: this.classes(css.currentMonthLabel).get(),
-						'aria-live': 'assertive',
-						'aria-atomic': true,
-						innerHTML: monthNames[this._focusedMonth].long + ' ' + this._focusedYear
-					}),
-					// month popup
-					v('div', {
-						classes: this.classes(css.monthPopup).fixed(this._monthPopupOpen ? null : css.monthPopupHidden).get(),
-						role: 'dialog',
-						'aria-labelledby': monthButtonId,
-						'aria-hidden': this._monthPopupOpen ? null : 'true'
-					}, [
-						// year spinner
-						v('div', {}, [
-							v('label', {
-								for: yearSpinnerId,
-								classes: this.classes(css.visuallyHidden).get(),
-								innerHTML: messages.chooseYear
-							}),
-							v('span', {
-								role: 'button',
-								classes: this.classes(css.spinnerPrevious).get(),
-								innerHTML: String(this._focusedYear - 1)
-							}),
-							v('div', {
-								id: yearSpinnerId,
-								classes: this.classes(css.spinner).get(),
-								role: 'spinbutton',
-								'aria-valuemin': '1',
-								'aria-valuenow': this._focusedYear,
-								tabindex: '0',
-								innerHTML: String(this._focusedYear)
-							}),
-							v('span', {
-								role: 'button',
-								classes: this.classes(css.spinnerNext).get(),
-								innerHTML: String(this._focusedYear + 1)
-							})
-						]),
-						// month picker
-						v('fieldset', {
-							classes: this.classes(css.monthControl).get()
-						}, [
-							v('legend', { classes: this.classes(css.visuallyHidden).get() }, [ messages.chooseMonth ]),
-							...monthRadios
-						])
-					])
-				]),
-				// previous/next month buttons
-				v('button', {
-					classes: this.classes(css.previousMonth).get()
-				}, [
-					v('span', { classes: this.classes(css.visuallyHidden).get() }, [ messages.previousMonth ])
-				]),
-				v('button', {
-					classes: this.classes(css.nextMonth).get()
-				}, [
-					v('span', { classes: this.classes(css.visuallyHidden).get() }, [ messages.nextMonth ])
-				])
-			]),
+		return v('div', { classes: this.classes(css.root) }, [
+			// month popup
+			w(MonthPicker, {
+				currentMonth: month,
+				currentYear: year,
+				currentMonthLabel: renderMonthLabel,
+				labelId: this._monthLabelId,
+				labels,
+				monthNames,
+				open: this._monthPopupOpen,
+				onRequestClose: () => {
+					this._monthPopupOpen = false;
+					this.invalidate();
+				},
+				onRequestOpen: () => {
+					this._monthPopupOpen = true;
+					this.invalidate();
+				},
+				onRequestMonthChange: (requestMonth: number) => {
+					onMonthChange && onMonthChange(requestMonth);
+				},
+				onRequestYearChange: (requestYear: number) => {
+					onYearChange && onYearChange(requestYear);
+				}
+			}),
 			// date table
 			v('table', {
 				cellspacing: '0',
 				cellpadding: '0',
 				role: 'grid',
-				'aria-labelledby': monthLabelId
+				'aria-labelledby': this._monthLabelId
 			}, [
 				v('thead', {}, [
 					v('tr', {}, weekdays)

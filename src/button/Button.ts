@@ -35,6 +35,7 @@ export interface ButtonProperties extends ThemeableProperties {
 	content?: string;
 	describedBy?: string;
 	disabled?: boolean;
+	id?: string;
 	popup?: { expanded?: boolean; id?: string; } | boolean;
 	name?: string;
 	pressed?: boolean;
@@ -74,6 +75,7 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			content = '',
 			describedBy,
 			disabled,
+			id,
 			popup = false,
 			name,
 			pressed,
@@ -95,6 +97,7 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			),
 			'aria-describedby': describedBy,
 			disabled,
+			id,
 			'aria-haspopup': popup ? 'true' : null,
 			'aria-controls': popup ? popup.id : null,
 			'aria-expanded': popup ? popup.expanded + '' : null,
