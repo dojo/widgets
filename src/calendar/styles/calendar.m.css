@@ -104,6 +104,8 @@
 }
 
 /* year spinner */
+.yearPicker {}
+
 .spinner,
 .spinnerNext,
 .spinnerPrevious {

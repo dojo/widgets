@@ -15,13 +15,18 @@ import * as css from './styles/calendar.m.css';
  *
  * Properties that can be set on a Calendar component
  *
- * @property customDateCell   Custom widget constructor for the date cell. Should use CalendarCell as a base.
- * @property selectedDate     The currently selected date
- * @property focusedDate      Date that can receive keyboard focus. Used for a11y and to open the calendar on a specific month without selecting a date.
- * @property onMonthChange    Function called when the month changes
- * @property onYearChange     Function called when the year changes
- * @property onDateSelect     Function called when the user selects a date
- * @property onDateFocus      Function called when a new date receives focus
+ * @property customDateCell    Custom widget constructor for the date cell. Should use CalendarCell as a base.
+ * @property labels            Customize or internationalize accessible text for the Calendar widget
+ * @property month             Set the currently displayed month, 0-based
+ * @property monthNames        Customize or internationalize full month names and abbreviations
+ * @property selectedDate      The currently selected date
+ * @property weekdayNames      Customize or internationalize weekday names and abbreviations
+ * @property year              Set the currently displayed year
+ * @property renderMonthLabel  Format the displayed current month and year
+ * @property renderWeekdayCell Format the weekday column headers
+ * @property onMonthChange     Function called when the month changes
+ * @property onYearChange      Function called when the year changes
+ * @property onDateSelect      Function called when the user selects a date
  */
 export interface CalendarProperties extends ThemeableProperties {
 	customDateCell?: any;
@@ -31,8 +36,8 @@ export interface CalendarProperties extends ThemeableProperties {
 	selectedDate?: Date;
 	weekdayNames?: { short: string; long: string; }[];
 	year?: number;
-	renderMonthLabel?(month: string, year: string): string;
-	renderWeekdayCell?(day: string): DNode;
+	renderMonthLabel?(month: number, year: number): string;
+	renderWeekdayCell?(day: { short: string; long: string; }): DNode;
 	onMonthChange?(month: number): void;
 	onYearChange?(year: number): void;
 	onDateSelect?(date: Date): void;
@@ -286,6 +291,11 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		return weeks;
 	}
 
+	private _renderWeekdayCell(day: { short: string; long: string; }): DNode {
+		const { renderWeekdayCell } = this.properties;
+		return renderWeekdayCell ? renderWeekdayCell(day) : v('abbr', { title: day.long }, [ day.short ]);
+	}
+
 	render() {
 		const {
 			labels = DEFAULT_LABELS,
@@ -308,20 +318,20 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				role: 'columnheader',
 				classes: this.classes(css.weekday)
 			}, [
-				v('abbr', { title: weekdayNames[weekday].long }, [ weekdayNames[weekday].short ])
+				this._renderWeekdayCell(weekdayNames[weekday])
 			]));
 		}
 
 		return v('div', { classes: this.classes(css.root) }, [
 			// month popup
 			w(MonthPicker, {
-				currentMonth: month,
-				currentYear: year,
-				currentMonthLabel: renderMonthLabel,
 				labelId: this._monthLabelId,
 				labels,
+				month,
 				monthNames,
 				open: this._monthPopupOpen,
+				renderMonthLabel,
+				year,
 				onRequestClose: () => {
 					this._monthPopupOpen = false;
 					this.invalidate();

@@ -3,24 +3,33 @@ import Calendar from './Calendar';
 
 /**
  * Configures a Calendar web component
- *
- * @return	{CustomElementDescriptor?}
  */
 export default function createCalendarElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-calendar',
 		widgetConstructor: Calendar,
-		attributes: [],
-		properties: [
+		attributes: [
 			{
-				propertyName: 'selectedDate'
+				attributeName: 'month',
+				value: value => value ? parseInt(value, 10) : undefined
 			},
 			{
-				propertyName: 'focusedDate'
+				attributeName: 'selecteddate',
+				propertyName: 'selectedDate',
+				value: value => value ? new Date(value) : undefined
 			},
 			{
-				propertyName: 'renderDateCell'
+				attributeName: 'year',
+				value: value => value ? parseInt(value, 10) : undefined
 			}
+		],
+		properties: [
+			{ propertyName: 'customDateCell' },
+			{ propertyName: 'labels' },
+			{ propertyName: 'monthNames' },
+			{ propertyName: 'weekdayNames' },
+			{ propertyName: 'renderMonthLabel' },
+			{ propertyName: 'renderWeekdayCell' }
 		],
 		events: [
 			{
@@ -34,14 +43,6 @@ export default function createCalendarElement(): CustomElementDescriptor {
 			{
 				propertyName: 'onDateSelect',
 				eventName: 'dateselect'
-			},
-			{
-				propertyName: 'onYearSelect',
-				eventName: 'yearselect'
-			},
-			{
-				propertyName: 'onDateFocus',
-				eventName: 'datefocus'
 			}
 		]
 	};

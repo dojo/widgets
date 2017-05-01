@@ -21,23 +21,31 @@ export interface CalendarMessages {
  *
  * Properties that can be set on a Calendar component
  *
- * @property selectedDate     The currently selected date
- * @property focusedDate      Date that can receive keyboard focus. Used for a11y and to open the calendar on a specific month without selecting a date.
- * @property onMonthChange    Function called when the month changes
- * @property onYearChange     Function called when the year changes
- * @property onDateSelect     Function called when the user selects a date
- * @property onDateFocus      Function called when a new date receives focus
+ * @property callTriggerFocus     Boolean that sets focus on the popup trigger on next render
+ * @property callPopupFocus       Boolean that sets focus within the popup on next render
+ * @property labelId              Set id to reference label containing current month and year
+ * @property labels               Customize or internationalize accessible helper text
+ * @property month                Currently displayed month, zero-based
+ * @property monthNames           Array of full and abbreviated month names
+ * @property open                 Boolean, sets state of popup
+ * @property renderMonthLabel     Format the displayed current month and year
+ * @property year                 Currently displayed year
+ * @property onFocusCalled        Called immedately after focus is set on either the trigger or popup
+ * @property onRequestOpen        Called when a user action occurs that should trigger the popup opening
+ * @property onRequestClose       Called when a user action occurs that should close the popup
+ * @property onRequestMonthChange Called when a month should change; receives the zero-based month number
+ * @property onRequestYearChange  Called when a year should change; receives the year as an integer
  */
 export interface MonthPickerProperties extends ThemeableProperties {
 	callTriggerFocus?: boolean;
 	callPopupFocus?: boolean;
-	currentMonth: number;
-	currentYear: number;
-	currentMonthLabel?(month: string, year: string): string;
 	labelId?: string;
 	labels: CalendarMessages;
+	month: number;
 	monthNames: { short: string; long: string; }[];
 	open?: boolean;
+	renderMonthLabel?(month: number, year: number): string;
+	year: number;
 	onFocusCalled?(): void;
 	onRequestOpen?(): void;
 	onRequestClose?(): void;
@@ -94,20 +102,20 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 	private _decreaseYear() {
 		const {
-			currentYear,
+			year,
 			onRequestYearChange
 		} = this.properties;
 
-		onRequestYearChange && onRequestYearChange(currentYear - 1);
+		onRequestYearChange && onRequestYearChange(year - 1);
 	}
 
 	private _increaseYear() {
 		const {
-			currentYear,
+			year,
 			onRequestYearChange
 		} = this.properties;
 
-		onRequestYearChange && onRequestYearChange(currentYear + 1);
+		onRequestYearChange && onRequestYearChange(year + 1);
 	}
 
 	private _onButtonClick() {
@@ -120,35 +128,35 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 	private _onMonthDecrease() {
 		const {
-			currentMonth,
-			currentYear,
+			month,
+			year,
 			onRequestMonthChange,
 			onRequestYearChange
 		} = this.properties;
 
-		if (currentMonth === 0) {
+		if (month === 0) {
 			onRequestMonthChange && onRequestMonthChange(11);
-			onRequestYearChange && onRequestYearChange(currentYear - 1);
+			onRequestYearChange && onRequestYearChange(year - 1);
 		}
 		else {
-			onRequestMonthChange && onRequestMonthChange(currentMonth - 1);
+			onRequestMonthChange && onRequestMonthChange(month - 1);
 		}
 	}
 
 	private _onMonthIncrease() {
 		const {
-			currentMonth,
-			currentYear,
+			month,
+			year,
 			onRequestMonthChange,
 			onRequestYearChange
 		} = this.properties;
 
-		if (currentMonth === 11) {
+		if (month === 11) {
 			onRequestMonthChange && onRequestMonthChange(0);
-			onRequestYearChange && onRequestYearChange(currentYear + 1);
+			onRequestYearChange && onRequestYearChange(year + 1);
 		}
 		else {
-			onRequestMonthChange && onRequestMonthChange(currentMonth + 1);
+			onRequestMonthChange && onRequestMonthChange(month + 1);
 		}
 	}
 
@@ -183,15 +191,20 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		}
 	}
 
-	private _renderMonthRadios() {
-		const { currentMonth } = this.properties;
+	private _renderMonthLabel(month: number, year: number) {
+		const { monthNames, renderMonthLabel } = this.properties;
+		return renderMonthLabel ? renderMonthLabel(month, year) : monthNames[month].long + ' ' + year;
+	}
 
-		return this.properties.monthNames.map((month, i) => w(Radio, {
+	private _renderMonthRadios() {
+		const { month } = this.properties;
+
+		return this.properties.monthNames.map((monthName, i) => w(Radio, {
 			key: this._radiosName + i,
 			overrideClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
-			checked: i === currentMonth,
+			checked: i === month,
 			label: {
-				content: `<abbr title="${month.long}">${month.short}</abbr>`,
+				content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
 				before: false
 			},
 			name: this._radiosName,
@@ -206,11 +219,10 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 	render() {
 		const {
-			currentMonth,
-			currentYear,
+			month,
+			year,
 			labelId = this._labelId,
 			labels,
-			monthNames,
 			open = false
 		} = this.properties;
 
@@ -233,9 +245,8 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				id: labelId,
 				classes: this.classes(css.currentMonthLabel),
 				'aria-live': 'polite',
-				'aria-atomic': 'false',
-				innerHTML: monthNames[currentMonth].long + ' ' + currentYear
-			}),
+				'aria-atomic': 'false'
+			}, [ this._renderMonthLabel(month, year) ]),
 			// previous/next month buttons
 			v('button', {
 				classes: this.classes(css.previousMonth),
@@ -258,7 +269,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				role: 'dialog',
 				onkeydown: this._onPopupKeyDown
 			}, [
-				v('div', { classes: this.classes(css.monthPicker) }, [
+				v('div', { classes: this.classes(css.yearPicker) }, [
 					v('label', {
 						for: this._yearSpinnerId,
 						classes: this.classes().fixed(baseCss.visuallyHidden)
@@ -267,22 +278,22 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 						role: 'button',
 						classes: this.classes(css.spinnerPrevious),
 						onclick: this._decreaseYear
-					}, [ String(currentYear - 1) ]),
+					}, [ String(year - 1) ]),
 					v('div', {
 						key: 'year-spinner',
 						id: this._yearSpinnerId,
 						classes: this.classes(css.spinner),
 						role: 'spinbutton',
 						'aria-valuemin': '1',
-						'aria-valuenow': String(currentYear),
+						'aria-valuenow': String(year),
 						tabIndex: open ? 0 : -1,
 						onkeydown: this._onYearKeyDown
-					}, [ String(currentYear) ]),
+					}, [ String(year) ]),
 					v('span', {
 						role: 'button',
 						classes: this.classes(css.spinnerNext),
 						onclick: this._increaseYear
-					}, [ String(currentYear + 1) ])
+					}, [ String(year + 1) ])
 				]),
 				v('fieldset', {
 					classes: this.classes(css.monthControl),
