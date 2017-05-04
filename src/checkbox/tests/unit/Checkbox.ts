@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as Test from 'intern/lib/Test';
 
 import has from '@dojo/has/has';
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -23,7 +24,7 @@ registerSuite({
 		widget.destroy();
 	},
 
-	render() {
+	simple() {
 		const children: HNode[] = [
 			v('div', {
 				classes: widget.classes(css.inputWrapper)
@@ -64,19 +65,18 @@ registerSuite({
 	},
 
 	'properties and attributes'() {
-		const checkbox = new Checkbox();
 		const checkboxProperties: CheckboxProperties = {
-			describedBy: 'id1',
 			bind: widget,
 			checked: true,
+			describedBy: 'id1',
 			disabled: true,
 			formId: 'id2',
 			invalid: true,
 			label: 'foo',
 			mode: Mode.toggle,
+			name: 'bar',
 			offLabel: 'Off',
 			onLabel: 'On',
-			name: 'bar',
 			readOnly: true,
 			required: true,
 			value: 'qux'
@@ -86,11 +86,11 @@ registerSuite({
 				classes: widget.classes(css.inputWrapper)
 			}, [
 				v('div', { classes: widget.classes(css.onLabel) }, [ checkboxProperties.onLabel! ]),
-				v('div', { classes: widget.classes(css.offLabel) }, [ checkboxProperties.onLabel! ]),
+				v('div', { classes: widget.classes(css.offLabel) }, [ checkboxProperties.offLabel! ]),
 				v('input', {
 					'aria-describedby': checkboxProperties.describedBy,
-					'aria-invalid': checkboxProperties.invalid,
-					'aria-readonly': checkboxProperties.readOnly,
+					'aria-invalid': String(checkboxProperties.invalid),
+					'aria-readonly': String(checkboxProperties.readOnly),
 					bind: widget,
 					checked: checkboxProperties.checked,
 					classes: widget.classes(css.input),
@@ -114,135 +114,117 @@ registerSuite({
 		];
 
 		widget.setProperties(checkboxProperties);
-		widget.setChildren(children);
 
+		// TODO: is there a better way to do this than a throwaway Checkbox instance?
+		const checkbox = new Checkbox();
 		widget.expectRender(w<LabelProperties>(Label, {
 			classes: checkbox.classes(css.root, css.toggle, css.checked, css.disabled, css.invalid, css.readonly, css.required),
 			formId: checkboxProperties.formId,
 			label: checkboxProperties.label!
 		}, children));
-	}/*,
-
-	'correct node attributes'() {
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
-			checked: true,
-			describedBy: 'id1',
-			disabled: true,
-			formId: 'id2',
-			invalid: true,
-			label: 'foo',
-			name: 'bar',
-			readOnly: true,
-			required: true,
-			value: 'qux'
-		});
-		const vnode = <VNode> checkbox.__render__();
-		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1].children![0];
-
-		assert.isTrue(inputNode.properties!.checked);
-		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
-		assert.isTrue(inputNode.properties!.disabled);
-		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
-		assert.strictEqual(inputNode.properties!.name, 'bar');
-		assert.isTrue(inputNode.properties!.readOnly);
-		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
-		assert.isTrue(inputNode.properties!.required);
-		assert.strictEqual(inputNode.properties!.value, 'qux');
-
-		assert.strictEqual(vnode.properties!['form'], 'id2');
-		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
 	},
 
-	'state classes'() {
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
-			checked: true,
-			disabled: true,
-			invalid: true,
-			readOnly: true,
-			required: true,
-			mode: Mode.toggle,
-			offLabel: 'Off',
-			onLabel: 'On'
-		});
-		let vnode = <VNode> checkbox.__render__();
+	// TODO: is it preferred to combine this with the previous test?
+	// Manipulating the harness and the expected results is more hassle than it's worth
+	'properties and attributes 2'() {
+		const children: HNode[] = [
+			v('div', {
+				classes: widget.classes(css.inputWrapper)
+			}, [
+				v('div', { classes: widget.classes(css.onLabel) }, [ null ]),
+				v('div', { classes: widget.classes(css.offLabel) }, [ null ]),
+				v('input', {
+					'aria-describedby': undefined,
+					'aria-invalid': null,
+					'aria-readonly': null,
+					bind: widget,
+					checked: false,
+					classes: widget.classes(css.input),
+					disabled: undefined,
+					name: undefined,
+					onblur: widget.listener,
+					onchange: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener,
+					readOnly: undefined,
+					required: undefined,
+					type: 'checkbox',
+					value: undefined
+				})
+			])
+		];
 
-		assert.isTrue(vnode.properties!.classes![css.checked]);
-		assert.isTrue(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.invalid]);
-		assert.isTrue(vnode.properties!.classes![css.readonly]);
-		assert.isTrue(vnode.properties!.classes![css.required]);
-		assert.isTrue(vnode.properties!.classes![css.toggle]);
-
-		checkbox.__setProperties__({
-			checked: false,
-			disabled: false,
+		widget.setChildren(children);
+		widget.setProperties({
 			invalid: false,
-			readOnly: false,
-			required: false,
-			mode: Mode.toggle,
-			onLabel: null,
-			offLabel: null
+			mode: Mode.toggle
 		});
-		vnode = <VNode> checkbox.__render__();
-		assert.isFalse(vnode.properties!.classes![css.checked]);
-		assert.isFalse(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-		assert.isFalse(vnode.properties!.classes![css.readonly]);
-		assert.isFalse(vnode.properties!.classes![css.required]);
 
-		checkbox.__setProperties__({
-			invalid: undefined
-		});
-		vnode = <VNode> checkbox.__render__();
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
+		widget.expectRender(v('div', {
+			classes: widget.classes(css.root, css.toggle, css.valid)
+		}, children));
 	},
 
 	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+		let blurred = false;
+		let changed = false;
+		let clicked = false;
+		let focused = false;
+		let mousedown = false;
+		let mouseup = false;
 
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
+		widget.setProperties({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },
 			onFocus: () => { focused = true; },
 			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+			onMouseUp: () => { mouseup = true; }
 		});
 
-		(<any> checkbox)._onBlur(<FocusEvent> {});
+		widget.sendEvent('blur', { selector: 'input' });
 		assert.isTrue(blurred);
-		(<any> checkbox)._onChange(<Event> {});
+		widget.sendEvent('change', { selector: 'input' });
 		assert.isTrue(changed);
-		(<any> checkbox)._onClick(<MouseEvent> {});
+		widget.sendEvent('click', { selector: 'input' });
 		assert.isTrue(clicked);
-		(<any> checkbox)._onFocus(<FocusEvent> {});
+		widget.sendEvent('focus', { selector: 'input' });
 		assert.isTrue(focused);
-		(<any> checkbox)._onMouseDown(<MouseEvent> {});
+		widget.sendEvent('mousedown', { selector: 'input' });
 		assert.isTrue(mousedown);
-		(<any> checkbox)._onMouseUp(<MouseEvent> {});
+		widget.sendEvent('mouseup', { selector: 'input' });
 		assert.isTrue(mouseup);
-		(<any> checkbox)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> checkbox)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> checkbox)._onTouchCancel(<TouchEvent> {});
+	},
+
+	'touch events'(this: Test) {
+		// TODO: this should be centralized & standardized somewhere
+		const hasTouch = has('host-node') || 'ontouchstart' in document ||
+			('onpointerdown' in document && navigator.maxTouchPoints > 0);
+
+		if (!hasTouch) {
+			this.skip('Touch events not supported');
+		}
+
+		let touchcancel = false;
+		let touchend = false;
+		let touchstart = false;
+
+		widget.setProperties({
+			onTouchCancel: () => { touchcancel = true; },
+			onTouchEnd: () => { touchend = true; },
+			onTouchStart: () => { touchstart = true; }
+		});
+
+		widget.sendEvent('touchcancel', { selector: 'input' });
 		assert.isTrue(touchcancel);
-	}*/
+		widget.sendEvent('touchend', { selector: 'input' });
+		assert.isTrue(touchend);
+		widget.sendEvent('touchstart', { selector: 'input' });
+		assert.isTrue(touchstart);
+	}
 });
