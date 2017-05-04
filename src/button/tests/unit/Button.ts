@@ -163,7 +163,6 @@ registerSuite({
 		assert.isTrue(mouseup);
 	},
 
-	// TODO: is 'this' typing correct?
 	'touch events'(this: Test) {
 		// TODO: this should be centralized & standardized somewhere
 		const hasTouch = has('host-node') || 'ontouchstart' in document ||
