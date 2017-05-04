@@ -43,8 +43,6 @@ export interface CalendarProperties extends ThemeableProperties {
 	onDateSelect?(date: Date): void;
 };
 
-const TODAY = new Date();
-
 const DEFAULT_MONTHS = [
 	{short: 'Jan', long: 'January'},
 	{short: 'Feb', long: 'February'},
@@ -80,6 +78,7 @@ const DEFAULT_LABELS: CalendarMessages = {
 @theme(css)
 export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarProperties> {
 	private _callDateFocus = false;
+	private _defaultDate = new Date();
 	private _focusedDay = 1;
 	private _monthLabelId = uuid();
 	private _monthPopupOpen = false;
@@ -120,7 +119,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 	private _getMonthYear() {
 		const {
 			month,
-			selectedDate = TODAY,
+			selectedDate = this._defaultDate,
 			year
 		} = this.properties;
 		return { month: typeof month === 'number' ? month : selectedDate.getMonth(), year: year ? year : selectedDate.getFullYear() };
@@ -232,6 +231,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			month,
 			year
 		} = this._getMonthYear();
+		const { theme = {} } = this.properties;
 
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
@@ -279,6 +279,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 					disabled: !isCurrentMonth,
 					focusable: isCurrentMonth && date === this._focusedDay,
 					selected: isSelectedDay,
+					theme,
 					onClick: this._onDateClick,
 					onFocusCalled: this._onDateFocusCalled,
 					onKeyDown: this._onDateKeyDown
@@ -302,6 +303,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			monthNames = DEFAULT_MONTHS,
 			renderMonthLabel,
 			selectedDate,
+			theme = {},
 			weekdayNames = DEFAULT_WEEKDAYS,
 			onMonthChange,
 			onYearChange
@@ -331,6 +333,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				monthNames,
 				open: this._monthPopupOpen,
 				renderMonthLabel,
+				theme,
 				year,
 				onRequestClose: () => {
 					this._monthPopupOpen = false;

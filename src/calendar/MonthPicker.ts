@@ -197,7 +197,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 	}
 
 	private _renderMonthRadios() {
-		const { month } = this.properties;
+		const { month, theme = {} } = this.properties;
 
 		return this.properties.monthNames.map((monthName, i) => w(Radio, {
 			key: this._radiosName + i,
@@ -210,6 +210,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			name: this._radiosName,
 			// TODO: replace this with a method to "unfocus" components?
 			// tabIndex: open ? 0 : -1,
+			theme,
 			value: i + '',
 			onMouseUp: () => {
 				this._closePopup();
@@ -223,7 +224,8 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			year,
 			labelId = this._labelId,
 			labels,
-			open = false
+			open = false,
+			theme = {}
 		} = this.properties;
 
 		return v('div', { classes: this.classes(css.header) }, [
@@ -237,6 +239,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 					id: this._dialogId,
 					expanded: open
 				},
+				theme,
 				onClick: this._onButtonClick
 			}, [
 				v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseMonth ])
