@@ -204,7 +204,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			theme
 		} = this.properties;
 
-		const optionNodes = options.map((option, i) => w('select-option', {
+		const optionNodes = options.map((option, i) => w<SelectOption>('select-option', {
 			bind: this,
 			focused: this._focusedIndex === i,
 			index: i,
