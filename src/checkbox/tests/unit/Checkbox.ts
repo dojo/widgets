@@ -1,30 +1,127 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
-import Checkbox, { Mode } from '../../Checkbox';
+
+import has from '@dojo/has/has';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
+import { HNode } from '@dojo/widget-core/interfaces';
+
+import Checkbox, { CheckboxProperties, Mode } from '../../Checkbox';
+import Label, { LabelProperties } from '../../../label/Label';
 import * as css from '../../styles/checkbox.m.css';
+
+let widget: Harness<CheckboxProperties, typeof Checkbox>;
 
 registerSuite({
 	name: 'Checkbox',
 
-	construction() {
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
-			checked: true
-		});
-
-		assert.isTrue(checkbox.properties.checked);
+	beforeEach() {
+		widget = harness(Checkbox);
 	},
 
-	'default node attributes'() {
-		const checkbox = new Checkbox();
-		const vnode = <VNode> checkbox.__render__();
-		const inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.vnodeSelector, 'input');
-		assert.strictEqual(inputNode.properties!.type, 'checkbox');
-		assert.strictEqual(inputNode.properties!.checked, false);
+	afterEach() {
+		widget.destroy();
 	},
+
+	render() {
+		const children: HNode[] = [
+			v('div', {
+				classes: widget.classes(css.inputWrapper)
+			}, [
+				null,
+				null,
+				v('input', {
+					'aria-describedby': undefined,
+					'aria-invalid': null,
+					'aria-readonly': null,
+					bind: widget,
+					checked: false,
+					classes: widget.classes(css.input),
+					disabled: undefined,
+					name: undefined,
+					onblur: widget.listener,
+					onchange: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener,
+					readOnly: undefined,
+					required: undefined,
+					type: 'checkbox',
+					value: undefined
+				})
+			])
+		];
+
+		widget.setChildren(children);
+
+		widget.expectRender(v('div', {
+			classes: widget.classes(css.root)
+		}, children));
+	},
+
+	'properties and attributes'() {
+		const checkbox = new Checkbox();
+		const checkboxProperties: CheckboxProperties = {
+			describedBy: 'id1',
+			bind: widget,
+			checked: true,
+			disabled: true,
+			formId: 'id2',
+			invalid: true,
+			label: 'foo',
+			mode: Mode.toggle,
+			offLabel: 'Off',
+			onLabel: 'On',
+			name: 'bar',
+			readOnly: true,
+			required: true,
+			value: 'qux'
+		};
+		const children: HNode[] = [
+			v('div', {
+				classes: widget.classes(css.inputWrapper)
+			}, [
+				v('div', { classes: widget.classes(css.onLabel) }, [ checkboxProperties.onLabel! ]),
+				v('div', { classes: widget.classes(css.offLabel) }, [ checkboxProperties.onLabel! ]),
+				v('input', {
+					'aria-describedby': checkboxProperties.describedBy,
+					'aria-invalid': checkboxProperties.invalid,
+					'aria-readonly': checkboxProperties.readOnly,
+					bind: widget,
+					checked: checkboxProperties.checked,
+					classes: widget.classes(css.input),
+					disabled: checkboxProperties.disabled,
+					name: checkboxProperties.name,
+					onblur: widget.listener,
+					onchange: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener,
+					readOnly: checkboxProperties.readOnly,
+					required: checkboxProperties.required,
+					type: 'checkbox',
+					value: checkboxProperties.value
+				})
+			])
+		];
+
+		widget.setProperties(checkboxProperties);
+		widget.setChildren(children);
+
+		widget.expectRender(w<LabelProperties>(Label, {
+			classes: checkbox.classes(css.root, css.toggle, css.checked, css.disabled, css.invalid, css.readonly, css.required),
+			formId: checkboxProperties.formId,
+			label: checkboxProperties.label!
+		}, children));
+	}/*,
 
 	'correct node attributes'() {
 		const checkbox = new Checkbox();
@@ -147,5 +244,5 @@ registerSuite({
 		assert.isTrue(touchend);
 		(<any> checkbox)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
-	}
+	}*/
 });
