@@ -84,7 +84,7 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 			key: 'root',
 			role: 'gridcell',
 			'aria-selected': String(selected),
-			'tabindex': focusable ? '0' : '-1',
+			tabIndex: focusable ? 0 : -1,
 			classes: this.classes(...dateCellClasses),
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown

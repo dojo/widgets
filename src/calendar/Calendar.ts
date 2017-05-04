@@ -58,7 +58,7 @@ const DEFAULT_MONTHS = [
 	{short: 'Dec', long: 'December'}
 ];
 
-const DEFAULT_WEEKDAYS = [
+export const DEFAULT_WEEKDAYS = [
 	{short: 'Sun', long: 'Sunday'},
 	{short: 'Mon', long: 'Monday'},
 	{short: 'Tue', long: 'Tuesday'},
@@ -68,7 +68,7 @@ const DEFAULT_WEEKDAYS = [
 	{short: 'Sat', long: 'Saturday'}
 ];
 
-const DEFAULT_LABELS: CalendarMessages = {
+export const DEFAULT_LABELS: CalendarMessages = {
 	chooseMonth: 'Choose Month',
 	chooseYear: 'Choose Year',
 	previousMonth: 'Previous Month',
