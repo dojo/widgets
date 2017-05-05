@@ -1,7 +1,6 @@
 import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
 
-import harness, { assignChildProperties, assignProperties, Harness } from '@dojo/test-extras/harness';
+import harness, { Harness } from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { WNode } from '@dojo/widget-core/interfaces';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
@@ -70,7 +69,7 @@ registerSuite({
 		widget.expectRender(expected);
 	},
 
-	render2() {
+	'properties and attributes'() {
 		const resultMenuProperties: ResultMenuProperties = {
 			id: 'foo',
 			results: ['a', 'b'],
@@ -78,15 +77,12 @@ registerSuite({
 			selectedIndex: 0,
 			theme: 'bar',
 			getResultLabel: () => '',
-			isResultDisabled: () => {
-				called = true;
-				return true;
-			},
+			// TODO: something to test that isResultDisabled gets called
+			isResultDisabled: () => true,
 			onResultMouseDown: () => true,
 			onResultMouseEnter: () => true,
 			onResultMouseUp: () => true
 		};
-		let called = false;
 		let expected = v('div', {
 			classes: widget.classes(css.results),
 			id: resultMenuProperties.id,
@@ -98,6 +94,4 @@ registerSuite({
 
 		widget.setProperties(resultMenuProperties);
 		widget.expectRender(expected);
-
-		assert.isTrue(called, 'isResultDisabled should be called');
 	}});
