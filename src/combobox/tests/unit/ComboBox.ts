@@ -132,7 +132,9 @@ registerSuite({
 		(<any> comboBox)._moveActiveIndex();
 		comboBox.setProperties({
 			results: ['1', '2'],
-			required: true
+			required: true,
+			customResultItem: ResultItem,
+			customResultMenu: ResultMenu
 		});
 
 		(<any> comboBox)._onArrowClick();
