@@ -115,10 +115,8 @@ registerSuite({
 
 		widget.setProperties(checkboxProperties);
 
-		// TODO: is there a better way to do this than a throwaway Checkbox instance?
-		const checkbox = new Checkbox();
 		widget.expectRender(w<LabelProperties>(Label, {
-			classes: checkbox.classes(css.root, css.toggle, css.checked, css.disabled, css.invalid, css.readonly, css.required),
+			classes: widget.classes(css.root, css.toggle, css.checked, css.disabled, css.invalid, css.readonly, css.required),
 			formId: checkboxProperties.formId,
 			label: checkboxProperties.label!
 		}, children));
