@@ -1,70 +1,84 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
-import ResultItem from '../../ResultItem';
-import * as css from '../../styles/comboBox.m.css';
-import { assign } from '@dojo/core/lang';
 
-function props(props = {}) {
-	return assign({
-		index: 0,
-		result: 'foo',
-		selected: false,
-		onMouseEnter: () => true,
-		onMouseDown: () => true,
-		onMouseUp: () => true,
-		isDisabled: () => true,
-		getResultLabel: (result: any) => result
-	}, props);
-}
+import harness, { assignProperties, Harness } from '@dojo/test-extras/harness';
+import { v } from '@dojo/widget-core/d';
+
+import ResultItem, { ResultItemProperties } from '../../ResultItem';
+import * as css from '../../styles/comboBox.m.css';
+
+let widget: Harness<ResultItemProperties, typeof ResultItem>;
 
 registerSuite({
 	name: 'ResultItem',
 
-	'label should render properly'() {
-		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ result: 'abc' }));
-		const vnode = <VNode> resultItem.__render__();
-		assert.strictEqual(vnode.children![0].text, 'abc');
+	beforeEach() {
+		widget = harness(ResultItem);
 	},
 
-	'selected result should render properly'() {
-		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ selected: true }));
-		const vnode = <VNode> resultItem.__render__();
-		assert.strictEqual(vnode.properties!['data-selected'], 'true');
+	afterEach() {
+		widget.destroy();
 	},
 
-	'disabled result should render properly'() {
-		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({
-			isDisabled: () => true
-		}));
-		const vnode = <VNode> resultItem.__render__();
-		assert.isTrue(vnode.properties!.classes![css.disabledOption]);
-	},
+	render() {
+		let mousedown = false;
+		let mouseenter = false;
+		let mouseup = false;
+		let resultItemProperties: ResultItemProperties = {
+			index: 10,
+			result: 'bar',
+			selected: false,
+			getResultLabel() {
+				return 'foo';
+			},
+			isDisabled() {
+				return false;
+			},
+			onMouseDown() {
+				mousedown = true;
+			},
+			onMouseEnter() {
+				mouseenter = true;
+			},
+			onMouseUp() {
+				mouseup = true;
+			}
+		};
+		let expected = v('div', {
+			'aria-disabled': String(resultItemProperties.isDisabled(resultItemProperties.result)),
+			'aria-selected': String(resultItemProperties.selected),
+			classes: widget.classes(css.result),
+			'data-selected': String(resultItemProperties.selected),
+			role: 'option',
+			onmousedown: widget.listener,
+			onmouseenter: widget.listener,
+			onmouseup: widget.listener
+		}, [
+			v('div', [ resultItemProperties.getResultLabel(resultItemProperties.result) ])
+		]);
 
-	'onMouseEnter should be called'() {
-		let called = 0;
-		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ onMouseEnter: () => called++ }));
-		(<any> resultItem)._onMouseEnter();
-		assert.strictEqual(called, 1);
-	},
+		widget.setProperties(resultItemProperties);
 
-	'onMouseDown should be called'() {
-		let called = 0;
-		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ onMouseDown: () => called++ }));
-		(<any> resultItem)._onMouseDown(<any> {});
-		assert.strictEqual(called, 1);
-	},
+		widget.expectRender(expected);
 
-	'onMouseUp should be called'() {
-		let called = 0;
-		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ onMouseUp: () => called++ }));
-		(<any> resultItem)._onMouseUp(<any> {});
-		assert.strictEqual(called, 1);
+		widget.sendEvent('mousedown');
+		assert.isTrue(mousedown, 'mousedown event handler should be called');
+
+		widget.sendEvent('mouseenter');
+		assert.isTrue(mouseenter, 'mouseenter event handler should be called');
+
+		widget.sendEvent('mouseup');
+		assert.isTrue(mouseup, 'mouseup event handler should be called');
+
+		resultItemProperties.selected = true;
+		resultItemProperties.isDisabled = () => true;
+		assignProperties(expected, {
+			'aria-disabled': String(resultItemProperties.isDisabled(resultItemProperties.result)),
+			'aria-selected': String(resultItemProperties.selected),
+			classes: widget.classes(css.result, css.selectedResult, css.disabledResult),
+			'data-selected':  String(resultItemProperties.selected)
+		});
+
+		widget.expectRender(expected);
 	}
 });
