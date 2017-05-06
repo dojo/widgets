@@ -23,21 +23,21 @@ registerSuite({
 
 	'label should render properly'() {
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props({ result: 'abc' }));
+		resultItem.__setProperties__(props({ result: 'abc' }));
 		const vnode = <VNode> resultItem.__render__();
 		assert.strictEqual(vnode.children![0].text, 'abc');
 	},
 
 	'selected result should render properly'() {
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props({ selected: true }));
+		resultItem.__setProperties__(props({ selected: true }));
 		const vnode = <VNode> resultItem.__render__();
 		assert.strictEqual(vnode.properties!['data-selected'], 'true');
 	},
 
 	'disabled result should render properly'() {
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props({
+		resultItem.__setProperties__(props({
 			isDisabled: () => true
 		}));
 		const vnode = <VNode> resultItem.__render__();
@@ -47,7 +47,7 @@ registerSuite({
 	'onMouseEnter should be called'() {
 		let called = 0;
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props({ onMouseEnter: () => called++ }));
+		resultItem.__setProperties__(props({ onMouseEnter: () => called++ }));
 		(<any> resultItem)._onMouseEnter();
 		assert.strictEqual(called, 1);
 	},
@@ -55,7 +55,7 @@ registerSuite({
 	'onMouseDown should be called'() {
 		let called = 0;
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props({ onMouseDown: () => called++ }));
+		resultItem.__setProperties__(props({ onMouseDown: () => called++ }));
 		(<any> resultItem)._onMouseDown(<any> {});
 		assert.strictEqual(called, 1);
 	},
@@ -63,7 +63,7 @@ registerSuite({
 	'onMouseUp should be called'() {
 		let called = 0;
 		const resultItem = new ResultItem();
-		resultItem.setProperties(props({ onMouseUp: () => called++ }));
+		resultItem.__setProperties__(props({ onMouseUp: () => called++ }));
 		(<any> resultItem)._onMouseUp(<any> {});
 		assert.strictEqual(called, 1);
 	}

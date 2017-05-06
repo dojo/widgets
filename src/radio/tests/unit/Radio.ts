@@ -9,7 +9,7 @@ registerSuite({
 
 	construction() {
 		const radio = new Radio();
-		radio.setProperties({
+		radio.__setProperties__({
 			checked: true
 		});
 
@@ -28,7 +28,7 @@ registerSuite({
 
 	'correct node attributes'() {
 		const radio = new Radio();
-		radio.setProperties({
+		radio.__setProperties__({
 			checked: true,
 			describedBy: 'id1',
 			disabled: true,
@@ -60,7 +60,7 @@ registerSuite({
 
 	'state classes'() {
 		const radio = new Radio();
-		radio.setProperties({
+		radio.__setProperties__({
 			checked: true,
 			disabled: true,
 			invalid: true,
@@ -75,7 +75,7 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.readonly]);
 		assert.isTrue(vnode.properties!.classes![css.required]);
 
-		radio.setProperties({
+		radio.__setProperties__({
 			checked: false,
 			disabled: false,
 			invalid: false,
@@ -90,7 +90,7 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.readonly]);
 		assert.isFalse(vnode.properties!.classes![css.required]);
 
-		radio.setProperties({
+		radio.__setProperties__({
 			invalid: undefined
 		});
 		vnode = <VNode> radio.__render__();
@@ -110,7 +110,7 @@ registerSuite({
 				touchcancel = false;
 
 		const radio = new Radio();
-		radio.setProperties({
+		radio.__setProperties__({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },

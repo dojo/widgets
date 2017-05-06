@@ -10,7 +10,7 @@ registerSuite({
 
 	construction() {
 		const slider = new Slider();
-		slider.setProperties({
+		slider.__setProperties__({
 			min: 0,
 			max: 100,
 			value: 50
@@ -33,7 +33,7 @@ registerSuite({
 		assert.strictEqual(inputNode.properties!.step, '1');
 		assert.strictEqual(inputNode.properties!.value, '0');
 
-		slider.setProperties({
+		slider.__setProperties__({
 			min: 20,
 			vertical: true
 		});
@@ -49,7 +49,7 @@ registerSuite({
 
 	'correct node attributes'() {
 		const slider = new Slider();
-		slider.setProperties({
+		slider.__setProperties__({
 			describedBy: 'id1',
 			disabled: true,
 			formId: 'id2',
@@ -85,7 +85,7 @@ registerSuite({
 		assert.strictEqual(vnode.properties!['form'], 'id2');
 		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
 
-		slider.setProperties({
+		slider.__setProperties__({
 			vertical: true,
 			verticalHeight: '100px'
 		});
@@ -97,7 +97,7 @@ registerSuite({
 
 	'state classes'() {
 		const slider = new Slider();
-		slider.setProperties({
+		slider.__setProperties__({
 			disabled: true,
 			invalid: true,
 			readOnly: true,
@@ -112,7 +112,7 @@ registerSuite({
 		assert.isTrue(vnode.properties!.classes![css.required]);
 		assert.isTrue(vnode.properties!.classes![css.vertical]);
 
-		slider.setProperties({
+		slider.__setProperties__({
 			disabled: false,
 			invalid: false,
 			readOnly: false,
@@ -127,7 +127,7 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.required]);
 		assert.isFalse(vnode.properties!.classes![css.vertical]);
 
-		slider.setProperties({
+		slider.__setProperties__({
 			invalid: undefined
 		});
 		vnode = <VNode> slider.__render__();
@@ -151,7 +151,7 @@ registerSuite({
 				touchcancel = false;
 
 		const slider = new Slider();
-		slider.setProperties({
+		slider.__setProperties__({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },

@@ -64,6 +64,7 @@ export default class Select extends SelectBase<SelectProperties> {
 	private _ignoreBlur = false;
 	private _open = false;
 	private _selectId = uuid();
+	private _registry: WidgetRegistry;
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
@@ -203,7 +204,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			theme
 		} = this.properties;
 
-		const optionNodes = options.map((option, i) => w('select-option', {
+		const optionNodes = options.map((option, i) => w<SelectOption>('select-option', {
 			bind: this,
 			focused: this._focusedIndex === i,
 			index: i,
@@ -228,8 +229,15 @@ export default class Select extends SelectBase<SelectProperties> {
 		} = this.properties;
 
 		// update custom option registry
-		if ( !this.registry || includes(evt.changedPropertyKeys, 'customOption')) {
-			this.registry = this._createRegistry(customOption);
+		if ( !this._registry || includes(evt.changedPropertyKeys, 'customOption')) {
+			const registry = this._createRegistry(customOption);
+			if (this._registry) {
+				this.registries.replace(this._registry, registry);
+			}
+			else {
+				this.registries.add(registry);
+			}
+			this._registry = registry;
 		}
 
 		// add ids to options for use with aria-activedescendant
@@ -406,7 +414,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				classes: this.classes(css.root, ...stateClasses),
 				formId,
 				label,
-				registry: this.registry,
+				registry: this._registry,
 				theme
 			}, [ select ]);
 		}

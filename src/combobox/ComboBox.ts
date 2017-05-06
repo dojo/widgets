@@ -81,6 +81,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _inputElement: HTMLInputElement;
 	private _open: boolean;
 	private _wasOpen: boolean;
+	private _registry: WidgetRegistry;
 
 	private _closeMenu() {
 		this._open = false;
@@ -304,10 +305,18 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		} = this.properties;
 
 		if (
-			!this.registry ||
+			!this._registry ||
 			includes(evt.changedPropertyKeys, 'customResultItem') ||
 			includes(evt.changedPropertyKeys, 'customResultMenu')) {
-			this.registry = this._createRegistry(customResultItem, customResultMenu);
+
+			const registry = this._createRegistry(customResultItem, customResultMenu);
+			if (this._registry) {
+				this.registries.replace(this._registry, registry);
+			}
+			else {
+				this.registries.add(registry);
+			}
+			this._registry = registry;
 		}
 	}
 
@@ -321,7 +330,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		return w('result-menu', <ResultMenuProperties> {
 			bind: this,
 			id: uuid(),
-			registry: this.registry,
+			registry: this._registry,
 			results,
 			selectedIndex: this._activeIndex,
 			getResultLabel: this._getResultLabel,
@@ -370,7 +379,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				onFocus: this._onInputFocus,
 				onInput: this._onInput,
 				onKeyDown: this._onInputKeyDown,
-				overrideClasses: css,
+				extraClasses: css,
 				theme
 			}),
 			clearable ? v('button', {

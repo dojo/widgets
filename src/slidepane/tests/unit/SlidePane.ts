@@ -2,7 +2,8 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 
 import has from '@dojo/has/has';
-import harness, { assignProperties, assignChildProperties, Harness, replaceChild } from '@dojo/test-extras/harness';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { assignProperties, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
 
 import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
@@ -492,7 +493,6 @@ registerSuite({
 			selector: ':last-child'
 		});
 
-		assignProperties(expected, { classes: widget.classes(css.root) });
 		replaceChild(expected, 0, null);
 		assignChildProperties(expected, 1, {
 			classes: widget.classes(css.content, css.left, css.slideOut),
@@ -501,6 +501,7 @@ registerSuite({
 				width: '256px'
 			}
 		});
+		assignProperties(expected, { classes: widget.classes(css.root) });
 		widget.expectRender(expected);
 	},
 
@@ -568,7 +569,6 @@ registerSuite({
 			selector: ':last-child'
 		});
 
-		assignProperties(expected, { classes: widget.classes(css.root) });
 		replaceChild(expected, 0, null);
 		assignChildProperties(expected, 1, {
 			classes: widget.classes(css.content, css.right, css.slideOut),
@@ -577,6 +577,7 @@ registerSuite({
 				width: '256px'
 			}
 		});
+		assignProperties(expected, { classes: widget.classes(css.root) });
 		widget.expectRender(expected);
 	}
 });
