@@ -73,7 +73,6 @@ registerSuite({
 			invalid: false,
 			mode: Mode.toggle
 		});
-		widget.setChildren(children);
 		widget.expectRender(v('div', {
 			classes: widget.classes(css.root, css.toggle, css.valid)
 		}, children));
