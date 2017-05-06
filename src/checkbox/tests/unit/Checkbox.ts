@@ -3,7 +3,7 @@ import * as assert from 'intern/chai!assert';
 import * as Test from 'intern/lib/Test';
 
 import has from '@dojo/has/has';
-import harness, { Harness } from '@dojo/test-extras/harness';
+import harness, { assignChildProperties, assignProperties, Harness, replaceChild } from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { HNode } from '@dojo/widget-core/interfaces';
 
@@ -62,11 +62,25 @@ registerSuite({
 		widget.expectRender(v('div', {
 			classes: widget.classes(css.root)
 		}, children));
+
+		assignProperties(children[0], {
+			classes: widget.classes(css.inputWrapper)
+		});
+		replaceChild(children[0], 0, v('div', { classes: widget.classes(css.onLabel) }, [ null ]));
+		replaceChild(children[0], 1, v('div', { classes: widget.classes(css.offLabel) }, [ null ]));
+
+		widget.setProperties({
+			invalid: false,
+			mode: Mode.toggle
+		});
+		widget.setChildren(children);
+		widget.expectRender(v('div', {
+			classes: widget.classes(css.root, css.toggle, css.valid)
+		}, children));
 	},
 
 	'properties and attributes'() {
 		const checkboxProperties: CheckboxProperties = {
-			bind: widget,
 			checked: true,
 			describedBy: 'id1',
 			disabled: true,
