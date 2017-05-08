@@ -34,79 +34,83 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				])
 			]),
 
-			w(TitlePane, {
-				headingLevel: 1,
-				closeable: false,
-				key: 'titlePane1',
-				theme: this._theme,
-				title: 'TitlePanel Widget With closeable=false',
-				onRequestClose: () => {
-					alert('onRequestClose should never get called');
-				},
-				onRequestOpen: () => {
-					alert('onRequestOpen should never get called');
-				}
-			}, [
-				v('div', {
-					innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Quisque id purus ipsum. Aenean ac purus purus.
-						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-				})
-			]),
 			v('div', {
-				styles: {
-					height: '15px'
-				}
-			}),
-			w(TitlePane, {
-				headingLevel: 2,
-				key: 'titlePane2',
-				open: t2open,
-				theme: this._theme,
-				title: 'TitlePanel Widget (closeable)',
-				onRequestClose: () => {
-					this.setState({ t2open: false });
-				},
-				onRequestOpen: () => {
-					this.setState({ t2open: true });
-				}
+				id: 'titlePane1',
+				styles: { 'margin-bottom': '15px' }
 			}, [
-				v('div', {
-					innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Quisque id purus ipsum. Aenean ac purus purus.
-						Nam sollicitudin varius augue, sed lacinia felis tempor in.
-						<br>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Quisque id purus ipsum. Aenean ac purus purus.
-						Nam sollicitudin varius augue, sed lacinia felis tempor in.
-						<br>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Quisque id purus ipsum. Aenean ac purus purus.
-						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-				})
+				w(TitlePane, {
+					headingLevel: 1,
+					closeable: false,
+					key: 'titlePane1',
+					theme: this._theme,
+					title: 'TitlePanel Widget With closeable=false',
+					onRequestClose: () => {
+						alert('onRequestClose should never get called');
+					},
+					onRequestOpen: () => {
+						alert('onRequestOpen should never get called');
+					}
+				}, [
+					v('div', {
+						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+					})
+				])
 			]),
+
 			v('div', {
-				styles: {
-					height: '15px'
-				}
-			}),
-			w(TitlePane, {
-				key: 'titlePane3',
-				open: t3open,
-				theme: this._theme,
-				title: 'TitlePanel Widget with open=false',
-				onRequestClose: () => {
-					this.setState({ t3open: false });
-				},
-				onRequestOpen: () => {
-					this.setState({ t3open: true });
-				}
+				id: 'titlePane2',
+				styles: { 'margin-bottom': '15px' }
 			}, [
-				v('div', {
-					innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Quisque id purus ipsum. Aenean ac purus purus.
-						Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-				})
+				w(TitlePane, {
+					headingLevel: 2,
+					key: 'titlePane2',
+					open: t2open,
+					theme: this._theme,
+					title: 'TitlePanel Widget (closeable)',
+					onRequestClose: () => {
+						this.setState({ t2open: false });
+					},
+					onRequestOpen: () => {
+						this.setState({ t2open: true });
+					}
+				}, [
+					v('div', {
+						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.
+							<br>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.
+							<br>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+					})
+				])
+			]),
+
+			v('div', { id: 'titlePane3' }, [
+				w(TitlePane, {
+					key: 'titlePane3',
+					open: t3open,
+					theme: this._theme,
+					title: 'TitlePanel Widget with open=false',
+					onRequestClose: () => {
+						this.setState({ t3open: false });
+					},
+					onRequestOpen: () => {
+						this.setState({ t3open: true });
+					}
+				}, [
+					v('div', {
+						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Quisque id purus ipsum. Aenean ac purus purus.
+							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+					})
+				])
 			])
 		]);
 	}
