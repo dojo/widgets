@@ -1,60 +1,120 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import has from '@dojo/has/has';
-import { VNode } from '@dojo/interfaces/vdom';
-import TitlePane from '../../TitlePane';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { compareProperty } from '@dojo/test-extras/support/d';
+import { v } from '@dojo/widget-core/d';
+import TitlePane, { TitlePaneProperties } from '../../TitlePane';
 import * as css from '../../styles/titlePane.m.css';
 import { Keys } from '../../../common/util';
 
-function contentElement() {
-	return {
-		offsetHeight: 200,
-		style: {
-			marginTop: null
-		}
-	};
-}
+const isNonEmptyString = compareProperty((value: any) => {
+	return typeof value === 'string' && value.length > 0;
+});
 
+let titlePane: Harness<TitlePaneProperties, typeof TitlePane>;
 registerSuite({
 	name: 'TitlePane',
 
-	setup() {
-		if (has('host-node')) {
-			(<any> global).requestAnimationFrame = function (callback: () => void) {
-				callback();
-			};
-		}
+	beforeEach() {
+		titlePane = harness(TitlePane);
 	},
 
-	'Render correct children'() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
+	afterEach() {
+		titlePane.destroy();
+	},
+
+	'default rendering'() {
+		titlePane.setProperties({
 			title: 'test'
 		});
-		let vnode = <VNode> titlePane.__render__();
 
-		assert.lengthOf(vnode.children, 2);
+		titlePane.expectRender(v('div', {
+			classes: titlePane.classes(css.root)
+		}, [
+			v('div', {
+				'aria-level': '',
+				classes: titlePane.classes(css.title, css.closeable),
+				onclick: titlePane.listener,
+				onkeyup: titlePane.listener,
+				role: 'heading'
+			}, [
+				v('div', <any> {
+					'aria-controls': isNonEmptyString,
+					'aria-disabled': 'false',
+					'aria-expanded': 'true',
+					id: isNonEmptyString,
+					role: 'button',
+					tabIndex: 0
+				}, [ 'test' ])
+			]),
+			v('div', <any> {
+				'aria-labelledby': isNonEmptyString,
+				afterCreate: titlePane.listener,
+				afterUpdate: titlePane.listener,
+				classes: titlePane.classes(css.content),
+				id: isNonEmptyString,
+				key: 'content'
+			})
+		]));
+	},
+
+	'Should construct with the passed properties'() {
+		titlePane.setProperties({
+			closeable: false,
+			headingLevel: 5,
+			open: false,
+			title: 'test'
+		});
+
+		titlePane.expectRender(v('div', {
+			classes: titlePane.classes(css.root)
+		}, [
+			v('div', {
+				'aria-level': '5',
+				classes: titlePane.classes(css.title),
+				onclick: undefined,
+				onkeyup: undefined,
+				role: 'heading'
+			}, [
+				v('div', <any> {
+					'aria-controls': isNonEmptyString,
+					'aria-disabled': 'true',
+					'aria-expanded': 'false',
+					id: isNonEmptyString,
+					role: 'button',
+					tabIndex: -1
+				}, [ 'test' ])
+			]),
+			v('div', <any> {
+				'aria-labelledby': isNonEmptyString,
+				afterCreate: titlePane.listener,
+				afterUpdate: titlePane.listener,
+				classes: titlePane.classes(css.content),
+				id: isNonEmptyString,
+				key: 'content'
+			})
+		]));
 	},
 
 	'click title to close'() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
+		let called = false;
+		titlePane.setProperties({
 			closeable: true,
-			open: true,
 			onRequestClose() {
 				called = true;
 			},
 			title: 'test'
 		});
-		let called = false;
 
-		(<any> titlePane)._onTitleClick();
+		titlePane.sendEvent('click', {
+			selector: '[role="heading"]'
+		});
 		assert.isTrue(called, 'onRequestClose should be called on title click');
 	},
 
 	'click title to open'() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
+		let called = false;
+		titlePane.setProperties({
 			closeable: true,
 			open: false,
 			onRequestOpen() {
@@ -62,50 +122,68 @@ registerSuite({
 			},
 			title: 'test'
 		});
-		let called = false;
 
-		(<any> titlePane)._onTitleClick();
+		titlePane.sendEvent('click', {
+			selector: '[role="heading"]'
+		});
 		assert.isTrue(called, 'onRequestOpen should be called on title click');
 	},
 
-	'toggle open state on keyup'() {
+	'open on keyup'() {
+		let openCount = 0;
 		const props = {
 			closeable: true,
 			open: false,
-			onRequestClose() {
-				closeCount++;
-			},
 			onRequestOpen() {
 				openCount++;
 			},
 			title: 'test'
 		};
-		const titlePane = new TitlePane();
-		let openCount = 0;
-		let closeCount = 0;
 
-		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Enter });
+		titlePane.setProperties(props);
+		titlePane.sendEvent('keyup', {
+			eventInit: { keyCode: Keys.Enter },
+			selector: '[role="heading"]'
+		});
 		assert.strictEqual(openCount, 1, 'onRequestOpen should be called on title enter keyup');
 
-		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Space });
+		titlePane.setProperties(props);
+		titlePane.sendEvent('keyup', {
+			eventInit: { keyCode: Keys.Space },
+			selector: '[role="heading"]'
+		});
 		assert.strictEqual(openCount, 2, 'onRequestOpen should be called on title space keyup');
+	},
 
-		props.open = true;
+	'close on keyup'() {
+		let closeCount = 0;
+		const props = {
+			closeable: true,
+			open: true,
+			onRequestClose() {
+				closeCount++;
+			},
+			title: 'test'
+		};
 
-		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Enter });
+		titlePane.setProperties(props);
+		titlePane.sendEvent('keyup', {
+			eventInit: { keyCode: Keys.Enter },
+			selector: '[role="heading"]'
+		});
 		assert.strictEqual(closeCount, 1, 'onRequestClose should be called on title enter keyup');
 
-		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Space });
+		titlePane.setProperties(props);
+		titlePane.sendEvent('keyup', {
+			eventInit: { keyCode: Keys.Space },
+			selector: '[role="heading"]'
+		});
 		assert.strictEqual(closeCount, 2, 'onRequestClose should be called on title space keyup');
 	},
 
 	'keyup: only respond to enter and space'() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
+		let called = false;
+		titlePane.setProperties({
 			closeable: true,
 			open: false,
 			onRequestClose() {
@@ -116,116 +194,15 @@ registerSuite({
 			},
 			title: 'test'
 		});
-		let called = false;
 
 		for (let i = 8; i < 223; i++) {
 			if (i !== Keys.Enter && i !== Keys.Space) {
-				(<any> titlePane)._onTitleKeyUp({ keyCode: i });
+				titlePane.sendEvent('keyup', {
+					eventInit: { keyCode: i },
+					selector: '[role="heading"]'
+				});
 				assert.isFalse(called, `keyCode {i} should be ignored`);
 			}
 		}
-	},
-
-	'property defaults'() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
-			onRequestClose() {
-				called = true;
-			},
-			title: 'test'
-		});
-		let called = false;
-		let vnode = <VNode> titlePane.__render__();
-
-		(<any> titlePane)._onTitleClick();
-		assert.isTrue(called, '`open` should default to `true` causing title click to call `onRequestClose`');
-
-		assert.strictEqual(vnode.children![0].properties!['aria-level'], '',
-			'`ariaHeadingLevel` should default to empty');
-		assert.isTrue(vnode.children![0].properties!.classes![css.closeable],
-			'`closeable` should default to `true` and apply CSS class');
-		assert.strictEqual(vnode.children![0].children![0].properties!['aria-expanded'], 'true',
-			'`open` should default to `true` and set `aria-expanded`');
-	},
-
-	ariaHeadingLevel() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
-			headingLevel: 5,
-			title: 'test'
-		});
-		let vnode = <VNode> titlePane.__render__();
-
-		assert.strictEqual(vnode.children![0].properties!['aria-level'], '5',
-			'`ariaHeadingLevel` value should be set on title node');
-	},
-
-	closeable() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
-			closeable: false,
-			title: 'test'
-		});
-		let vnode = <VNode> titlePane.__render__();
-
-		assert.isUndefined(vnode.children![0].properties!.classes![css.closeable],
-			'`closeable=false` should not apply CSS class');
-	},
-
-	open() {
-		const titlePane = new TitlePane();
-		titlePane.__setProperties__({
-			open: false,
-			title: 'test'
-		});
-		let vnode = <VNode> titlePane.__render__();
-
-		assert.strictEqual(vnode.children![1].children!.length, 0,
-			'`open=false` should not render content');
-	},
-
-	'By default, title pane should open'(this: any) {
-		const dfd = this.async();
-		const titlePane = new TitlePane();
-		const content = contentElement();
-
-		(<any> titlePane).onElementCreated(content, 'content');
-
-		setTimeout(dfd.callback(() => {
-			assert.strictEqual(content.style.marginTop, '0px', 'top margin should be 0px when open');
-		}), 100);
-	},
-
-	'Title pane should open when `open` = true'(this: any) {
-		const dfd = this.async();
-		const titlePane = new TitlePane();
-		const content = contentElement();
-
-		titlePane.__setProperties__({
-			title: 'foo',
-			open: true
-		});
-		(<any> titlePane).onElementUpdated(content, 'content');
-
-		setTimeout(dfd.callback(() => {
-			assert.strictEqual(content.style.marginTop, '0px', 'top margin should be 0px when open');
-		}), 100);
-	},
-
-	'Title pane should close when `open` = false'(this: any) {
-		const dfd = this.async();
-		const titlePane = new TitlePane();
-		const content = contentElement();
-
-		(<any> titlePane).onElementCreated(content, 'content');
-		titlePane.__setProperties__({
-			title: 'foo',
-			open: false
-		});
-		(<any> titlePane).onElementCreated(content, 'content');
-
-		setTimeout(dfd.callback(() => {
-			assert.strictEqual(content.style.marginTop, '-200px', 'top margin should be -(content height) when closed');
-		}), 100);
 	}
 });
