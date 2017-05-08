@@ -30,7 +30,7 @@ registerSuite({
 
 	'Render correct children'() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			title: 'test'
 		});
 		let vnode = <VNode> titlePane.__render__();
@@ -40,7 +40,7 @@ registerSuite({
 
 	'click title to close'() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			closeable: true,
 			open: true,
 			onRequestClose() {
@@ -56,7 +56,7 @@ registerSuite({
 
 	'click title to open'() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			closeable: true,
 			open: false,
 			onRequestOpen() {
@@ -86,28 +86,28 @@ registerSuite({
 		let openCount = 0;
 		let closeCount = 0;
 
-		titlePane.setProperties(props);
+		titlePane.__setProperties__(props);
 		(<any> titlePane)._onTitleKeyUp({ keyCode: ENTER_KEY_CODE });
 		assert.strictEqual(openCount, 1, 'onRequestOpen should be called on title enter keyup');
 
-		titlePane.setProperties(props);
+		titlePane.__setProperties__(props);
 		(<any> titlePane)._onTitleKeyUp({ keyCode: SPACE_KEY_CODE });
 		assert.strictEqual(openCount, 2, 'onRequestOpen should be called on title space keyup');
 
 		props.open = true;
 
-		titlePane.setProperties(props);
+		titlePane.__setProperties__(props);
 		(<any> titlePane)._onTitleKeyUp({ keyCode: ENTER_KEY_CODE });
 		assert.strictEqual(closeCount, 1, 'onRequestClose should be called on title enter keyup');
 
-		titlePane.setProperties(props);
+		titlePane.__setProperties__(props);
 		(<any> titlePane)._onTitleKeyUp({ keyCode: SPACE_KEY_CODE });
 		assert.strictEqual(closeCount, 2, 'onRequestClose should be called on title space keyup');
 	},
 
 	'keyup: only respond to enter and space'() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			closeable: true,
 			open: false,
 			onRequestClose() {
@@ -130,7 +130,7 @@ registerSuite({
 
 	'property defaults'() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			onRequestClose() {
 				called = true;
 			},
@@ -152,7 +152,7 @@ registerSuite({
 
 	ariaHeadingLevel() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			headingLevel: 5,
 			title: 'test'
 		});
@@ -164,7 +164,7 @@ registerSuite({
 
 	closeable() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			closeable: false,
 			title: 'test'
 		});
@@ -176,7 +176,7 @@ registerSuite({
 
 	open() {
 		const titlePane = new TitlePane();
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			open: false,
 			title: 'test'
 		});
@@ -203,7 +203,7 @@ registerSuite({
 		const titlePane = new TitlePane();
 		const content = contentElement();
 
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			title: 'foo',
 			open: true
 		});
@@ -220,7 +220,7 @@ registerSuite({
 		const content = contentElement();
 
 		(<any> titlePane).onElementCreated(content, 'content');
-		titlePane.setProperties({
+		titlePane.__setProperties__({
 			title: 'foo',
 			open: false
 		});
