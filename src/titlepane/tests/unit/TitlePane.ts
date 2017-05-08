@@ -1,12 +1,10 @@
-import has from '@dojo/has/has';
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import has from '@dojo/has/has';
 import { VNode } from '@dojo/interfaces/vdom';
 import TitlePane from '../../TitlePane';
 import * as css from '../../styles/titlePane.m.css';
-
-const ENTER_KEY_CODE = 13;
-const SPACE_KEY_CODE = 32;
+import { Keys } from '../../../common/util';
 
 function contentElement() {
 	return {
@@ -87,21 +85,21 @@ registerSuite({
 		let closeCount = 0;
 
 		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: ENTER_KEY_CODE });
+		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Enter });
 		assert.strictEqual(openCount, 1, 'onRequestOpen should be called on title enter keyup');
 
 		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: SPACE_KEY_CODE });
+		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Space });
 		assert.strictEqual(openCount, 2, 'onRequestOpen should be called on title space keyup');
 
 		props.open = true;
 
 		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: ENTER_KEY_CODE });
+		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Enter });
 		assert.strictEqual(closeCount, 1, 'onRequestClose should be called on title enter keyup');
 
 		titlePane.__setProperties__(props);
-		(<any> titlePane)._onTitleKeyUp({ keyCode: SPACE_KEY_CODE });
+		(<any> titlePane)._onTitleKeyUp({ keyCode: Keys.Space });
 		assert.strictEqual(closeCount, 2, 'onRequestClose should be called on title space keyup');
 	},
 
@@ -121,7 +119,7 @@ registerSuite({
 		let called = false;
 
 		for (let i = 8; i < 223; i++) {
-			if (i !== ENTER_KEY_CODE && i !== SPACE_KEY_CODE) {
+			if (i !== Keys.Enter && i !== Keys.Space) {
 				(<any> titlePane)._onTitleKeyUp({ keyCode: i });
 				assert.isFalse(called, `keyCode {i} should be ignored`);
 			}

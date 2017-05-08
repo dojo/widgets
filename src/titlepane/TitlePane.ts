@@ -3,6 +3,7 @@ import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
+import { Keys } from '../common/util';
 
 import * as css from './styles/titlePane.m.css';
 
@@ -12,7 +13,7 @@ import * as css from './styles/titlePane.m.css';
  * Properties that can be set on a TitlePane component
  *
  * @property closeable          If false the pane will not collapse in response to clicking the title
- * @property headingLevel       'aria-heading-level' for the title's DOM node
+ * @property headingLevel       'aria-level' for the title's DOM node
  * @property open               If true the pane is opened and content is visible
  * @property title              Title to display above the content
  * @property onRequestClose     Called when the title of an open pane is clicked
@@ -31,6 +32,9 @@ export const TitlePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
+	private _contentId = uuid();
+	private _titleId = uuid();
+
 	private _afterRender(element: HTMLElement) {
 		// Conditionally adjust top margin. Done manually instead of through Maquette
 		// so the underlying DOM is accessible, as we need to know the content height.
@@ -48,9 +52,10 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	}
 
 	private _onTitleKeyUp(event: KeyboardEvent) {
-		if (event.keyCode === /* enter */ 13 ||
-			event.keyCode === /* space */ 32) {
-				this._toggle();
+		const { keyCode } = event;
+
+		if (keyCode === Keys.Enter || keyCode === Keys.Space) {
+			this._toggle();
 		}
 	}
 
@@ -85,9 +90,6 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			title
 		} = this.properties;
 
-		const contentId = uuid();
-		const titleId = uuid();
-
 		return v('div', {
 			classes: this.classes(css.root)
 		}, [
@@ -99,18 +101,18 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 				role: 'heading'
 			}, [
 				v('div', {
-					'aria-controls': contentId,
+					'aria-controls': this._contentId,
 					'aria-disabled': String(!closeable),
 					'aria-expanded': String(open),
-					id: titleId,
+					id: this._titleId,
 					role: 'button',
 					tabIndex: closeable ? 0 : -1
 				}, [ title ])
 			]),
 			v('div', {
-				'aria-labelledby': titleId,
+				'aria-labelledby': this._titleId,
 				classes: this.classes(css.content),
-				id: contentId,
+				id: this._contentId,
 				key: 'content'
 			}, this.children)
 		]);

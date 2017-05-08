@@ -16,6 +16,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	}
 
 	render() {
+		const { t2open = true, t3open = false } = this.state;
+
 		return v('div', {
 			styles: {
 				margin: '20px',
@@ -35,7 +37,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(TitlePane, {
 				headingLevel: 1,
 				closeable: false,
-				key: 'titlePanel1',
+				key: 'titlePane1',
 				theme: this._theme,
 				title: 'TitlePanel Widget With closeable=false',
 				onRequestClose: () => {
@@ -58,8 +60,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			}),
 			w(TitlePane, {
 				headingLevel: 2,
-				key: 'titlePanel2',
-				open: <boolean> this.state['t2open'],
+				key: 'titlePane2',
+				open: t2open,
 				theme: this._theme,
 				title: 'TitlePanel Widget (closeable)',
 				onRequestClose: () => {
@@ -89,8 +91,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				}
 			}),
 			w(TitlePane, {
-				key: 'titlePanel3',
-				open: <boolean> (this.state['t3open'] === undefined ? false : this.state['t3open']),
+				key: 'titlePane3',
+				open: t3open,
 				theme: this._theme,
 				title: 'TitlePanel Widget with open=false',
 				onRequestClose: () => {
