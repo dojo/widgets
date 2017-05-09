@@ -118,7 +118,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 
 		if (label) {
 			radioWidget = w(Label, {
-				classes: this.classes(css.root, ...stateClasses),
+				extraClasses: this.classes(css.root, ...stateClasses),
 				formId,
 				label
 			}, [ radio ]);
