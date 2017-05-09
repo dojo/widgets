@@ -3,6 +3,7 @@ import './main';
 import './util';
 import '../../../button/tests/unit/Button';
 import '../../../checkbox/tests/unit/Checkbox';
+import '../../../calendar/tests/unit/Calendar';
 import '../../../calendar/tests/unit/CalendarCell';
 import '../../../calendar/tests/unit/MonthPicker';
 import '../../../combobox/tests/unit/ComboBox';

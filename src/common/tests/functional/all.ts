@@ -1,3 +1,4 @@
+import '../../../calendar/tests/functional/Calendar';
 import '../../../combobox/tests/functional/ComboBox';
 import '../../../slidepane/tests/functional/SlidePane';
 import '../../../tabpane/tests/functional/TabPane';
