@@ -183,7 +183,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 
 		if (label) {
 			sliderWidget = w(Label, {
-				classes: this.classes(css.root, ...stateClasses),
+				extraClasses: this.classes(css.root, ...stateClasses),
 				formId,
 				label
 			}, [ slider ]);
