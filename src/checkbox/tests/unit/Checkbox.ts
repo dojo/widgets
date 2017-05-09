@@ -3,7 +3,8 @@ import * as assert from 'intern/chai!assert';
 import * as Test from 'intern/lib/Test';
 
 import has from '@dojo/has/has';
-import harness, { assignChildProperties, assignProperties, Harness, replaceChild } from '@dojo/test-extras/harness';
+import { assignProperties, replaceChild } from '@dojo/test-extras/support/d';
+import harness, { Harness } from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { HNode } from '@dojo/widget-core/interfaces';
 
