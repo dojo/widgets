@@ -14,14 +14,13 @@ registerSuite({
 		label = new Label();
 		label.__setProperties__({
 			formId: 'foo',
-			classes: label.classes(baseCss.visuallyHidden),
+			extraClasses: label.classes(baseCss.visuallyHidden),
 			label: 'baz'
 		});
 		const vnode = <VNode> label.__render__();
 
 		assert.strictEqual(vnode.vnodeSelector, 'label', 'tagname should be label');
 		assert.strictEqual(vnode.properties!.form, 'foo');
-		assert.isTrue(vnode.properties!.classes![baseCss.visuallyHidden]);
 		assert.strictEqual(vnode.children![0].properties!.innerHTML, 'baz');
 	},
 
@@ -65,17 +64,5 @@ registerSuite({
 			assert.strictEqual(vnode.children![0].vnodeSelector, 'div');
 			assert.strictEqual(vnode.children![1].vnodeSelector, 'div');
 		}
-	},
-
-	'hidden label text'() {
-		label = new Label();
-		label.__setProperties__({
-			label: {
-				content: 'foo',
-				hidden: true
-			}
-		});
-		const vnode = <VNode> label.__render__();
-		assert.isTrue(vnode.children![0].properties!.classes![baseCss.visuallyHidden]);
 	}
 });

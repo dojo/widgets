@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme, ClassesFunctionChain } from '@dojo/widget-core/mixins/Themeable';
+import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { RegistryMixin } from '@dojo/widget-core/mixins/Registry';
 import { WidgetRegistry } from '@dojo/widget-core/WidgetRegistry';
 import { v } from '@dojo/widget-core/d';
@@ -30,13 +30,11 @@ const labelDefaults = {
  *
  * Properties that can be set on a Label component
  *
- * @property classes    Optional classes to be set on the label node
  * @property formId     ID of a form element associated with the form field
  * @property label      Label settings for form label text, position, and visibility
  */
 export interface LabelProperties extends ThemeableProperties {
 	registry?: WidgetRegistry;
-	classes?: ClassesFunctionChain;
 	formId?: string;
 	label: string | LabelOptions;
 }
@@ -49,8 +47,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 	render(): DNode {
 		const {
 			formId,
-			label,
-			classes = {}
+			label
 		} = this.properties;
 
 		// assign string or object label properites with defaults
@@ -75,8 +72,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 		}
 
 		return v('label', {
-			'form': formId,
-			classes: classes
+			'form': formId
 		}, this.children);
 	}
 }
