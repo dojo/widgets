@@ -140,7 +140,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		if (label) {
 			checkboxWidget = w(Label, {
-				classes: this.classes(css.root, ...stateClasses),
+				extraClasses: this.classes(css.root, ...stateClasses),
 				formId,
 				label
 			}, children);
