@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
 import * as css from '../../styles/timePicker.m.css';
 import ComboBox, { ComboBoxProperties } from '../../../combobox/ComboBox';
-import Label, { LabelProperties } from '../../../label/Label';
+import Label from '../../../label/Label';
 
 registerSuite({
 	name: 'TimePicker',
@@ -93,7 +93,7 @@ registerSuite({
 				onMenuChange: undefined,
 				onRequestResults: picker.listener,
 				openOnFocus: false,
-				overrideClasses: css,
+				extraClasses: css,
 				readOnly: false,
 				required: true,
 				results: undefined,
@@ -219,7 +219,7 @@ registerSuite({
 				classes: picker.classes(css.root),
 				key: 'root'
 			}, [
-				w(Label, <LabelProperties> {
+				w(Label, <any> {
 					bind: picker.listener,
 					classes: labelClasses,
 					formId: undefined,
