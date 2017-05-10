@@ -50,6 +50,7 @@ export const SlidePaneBase = ThemeableMixin(WidgetBase);
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _content: HTMLElement | null;
 	private _initialX: number;
+	private _slideIn: boolean;
 	private _swiping: boolean;
 	private _transform: number;
 	private _wasOpen: boolean;
@@ -92,6 +93,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
+		const { target, type } = event;
 		this._swiping = false;
 
 		const {
@@ -101,7 +103,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		} = this.properties;
 
 		// Current pointer position
-		const currentX = event.type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
+		const currentX = type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
 		// Difference between current and initial pointer position
 		const delta = align === Align.right ? currentX - this._initialX : this._initialX - currentX;
 
@@ -112,27 +114,20 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			onRequestClose && onRequestClose();
 		}
 		// If the underlay was clicked
-		else if (Math.abs(delta) < SWIPE_THRESHOLD && (<HTMLElement> event.target).classList.contains(css.underlay)) {
+		else if (Math.abs(delta) < SWIPE_THRESHOLD && (!this._content || !this._content.contains(target as HTMLElement))) {
 			onRequestClose && onRequestClose();
 		}
 		// If pane was not swiped far enough to close
 		else if (delta > 0) {
 			// Animate the pane back open
-			this._content && this._content.classList.add(css.slideIn);
+			this._slideIn = true;
+			this.invalidate();
 		}
-	}
-
-	private _onTransitionEnd(event: TransitionEvent) {
-		const content = (<HTMLElement> event.target);
-		/* IE11 does not support multiple remove arguments */
-		content.classList.remove(css.slideIn);
-		content.classList.remove(css.slideOut);
-		content.style.transform = '';
 	}
 
 	protected onElementCreated(element: HTMLElement, key: string) {
 		if (key === 'content') {
-			element.addEventListener('transitionend', this._onTransitionEnd);
+			element.addEventListener('transitionend', this.invalidate.bind(this));
 			this._content = element;
 		}
 	}
@@ -148,16 +143,15 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 
 		const contentClasses = [
 			css.content,
-			open && !this._wasOpen ? css.slideIn : null,
+			align === Align.left ? css.left : css.right,
+			open ? css.open : null,
+			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
 			!open && this._wasOpen ? css.slideOut : null
 		];
-
-		const fixedContentClasses = [
-			align === Align.left ? css.left : css.right,
-			open ? css.open : null
-		];
+		this._slideIn = false;
 
 		const contentStyles: {[key: string]: any} = {
+			transform: '',
 			width: width + 'px'
 		};
 
@@ -186,7 +180,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			}) : null,
 			v('div', {
 				key: 'content',
-				classes: this.classes(...contentClasses).fixed(...fixedContentClasses),
+				classes: this.classes(...contentClasses),
 				styles: contentStyles
 			}, this.children)
 		]);

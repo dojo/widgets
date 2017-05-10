@@ -65,6 +65,7 @@ registerSuite({
 				afterUpdate: widget.listener,
 				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
 				styles: {
+					transform: '',
 					width: '256px'
 				}
 			}, [ GREEKING ])
@@ -93,6 +94,7 @@ registerSuite({
 				afterUpdate: widget.listener,
 				classes: widget.classes(css.content, css.left),
 				styles: {
+					transform: '',
 					width: '256px'
 				}
 			}, [])
@@ -142,6 +144,7 @@ registerSuite({
 				afterUpdate: widget.listener,
 				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
 				styles: {
+					transform: '',
 					width: '256px'
 				}
 			}, [])
@@ -167,6 +170,7 @@ registerSuite({
 				afterUpdate: widget.listener,
 				classes: widget.classes(css.content, css.left, css.slideOut),
 				styles: {
+					transform: '',
 					width: '256px'
 				}
 			}, [])
@@ -410,25 +414,77 @@ registerSuite({
 		assert(!((<HTMLElement> widget.getDom().lastChild).style.transform));
 	},
 
-	'classes and transform removed after transition'() {
+	'classes removed after transition'() {
 		widget.setProperties({
 			open: true
 		});
 
-		const content = <HTMLElement> widget.getDom().lastChild;
+		widget.setChildren([ GREEKING ]);
 
-		assert.isTrue(content.classList.contains(css.slideIn), 'should have css.slideIn');
-		content.classList.add(css.slideOut);
-		assert.isTrue(content.classList.contains(css.slideOut), 'should have css.slideOut');
-		content.style.transform = 'translateX(1%)';
+		const expected = v('div', {
+			onmousedown: widget.listener,
+			onmousemove: widget.listener,
+			onmouseup: widget.listener,
+			ontouchend: widget.listener,
+			ontouchmove: widget.listener,
+			ontouchstart: widget.listener,
+			classes: widget.classes(css.root)
+		}, [
+			v('div', {
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.underlay),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				key: 'underlay'
+			}),
+			v('div', {
+				key: 'content',
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
+				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
+				styles: {
+					transform: '',
+					width: '256px'
+				}
+			}, [ GREEKING ])
+		]);
+
+		widget.expectRender(expected);
 
 		widget.sendEvent('transitionend', {
 			selector: ':last-child'
 		});
 
-		assert.isFalse(content.classList.contains(css.slideIn), 'should not have css.slideIn');
-		assert.isFalse(content.classList.contains(css.slideOut), 'should not have css.slideOut');
-		assert.strictEqual(content.style.transform, '', 'transform should be removed');
+		assignChildProperties(expected, 0, {
+			classes: widget.classes(css.underlay)
+		});
+		assignChildProperties(expected, 1, {
+			classes: widget.classes(css.content, css.left, css.open)
+		});
+		assignProperties(expected, { classes: widget.classes(css.root) });
+		widget.expectRender(expected, '`css.slideIn` should be removed when the animation ends.');
+
+		widget.setProperties({
+			open: false
+		});
+
+		replaceChild(expected, 0, null);
+		assignChildProperties(expected, 1, {
+			classes: widget.classes(css.content, css.left, css.slideOut)
+		});
+		assignProperties(expected, { classes: widget.classes(css.root) });
+		widget.expectRender(expected);
+
+		widget.sendEvent('transitionend', {
+			selector: ':last-child'
+		});
+
+		assignChildProperties(expected, 1, {
+			classes: widget.classes(css.content, css.left)
+		});
+		assignProperties(expected, { classes: widget.classes(css.root) });
+		widget.expectRender(expected, '`css.slideOut` should be removed when the animation ends.');
 	},
 
 	'last transform is applied on next render if being swiped closed'() {
@@ -461,6 +517,7 @@ registerSuite({
 				afterUpdate: widget.listener,
 				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
 				styles: {
+					transform: '',
 					width: '256px'
 				}
 			}, [ GREEKING ])
@@ -536,6 +593,7 @@ registerSuite({
 				afterUpdate: widget.listener,
 				classes: widget.classes(css.content, css.right, css.open, css.slideIn),
 				styles: {
+					transform: '',
 					width: '256px'
 				}
 			}, [ GREEKING ])
