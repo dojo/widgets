@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as css from '../../styles/dialog.m.css';
 
 interface Options {
 	closeable?: boolean;
@@ -9,8 +10,6 @@ interface Options {
 
 const CONTAINER_SELECTOR = 'div > div';
 const DELAY = 400;
-const DIALOG_SELECTOR = 'div > div > :last-child';
-const UNDERLAY_SELECTOR = 'div > div > :first-child';
 
 function openDialog(remote: any, options: Options = {}) {
 	const { closeable = true, modal, underlay } = options;
@@ -66,7 +65,7 @@ function clickUnderlay(remote: any, options: Options = { underlay: true }) {
 	}
 
 	return promise
-		.findByCssSelector(UNDERLAY_SELECTOR)
+		.findByCssSelector(`.${css.underlay}`)
 			.click()
 			.end();
 }
@@ -84,7 +83,7 @@ registerSuite({
 				.then(({ height, width }: { height: number; width: number; }) => {
 					viewportSize = { height, width };
 				})
-			.findByCssSelector(DIALOG_SELECTOR)
+			.findByCssSelector(`.${css.main}`)
 				.getSize()
 					.then(({ height, width }: { height: number; width: number; }) => {
 						dialogSize = { height, width };
@@ -109,7 +108,7 @@ registerSuite({
 				})
 				.end()
 			.sleep(DELAY)
-			.findByCssSelector(UNDERLAY_SELECTOR)
+			.findByCssSelector(`.${css.underlay}`)
 				.getSize()
 				.then(({ height, width }: { height: number; width: number; }) => {
 					assert.isAtLeast(height, viewportSize.height * 0.8);
