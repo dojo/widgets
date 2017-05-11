@@ -78,6 +78,12 @@ export interface TimeUnits {
 }
 
 /**
+ * @private
+ * Regular epression that matches a standard time string ('HH:mm:ss').
+ */
+const TIME_PATTERN = /^\d{2}:\d{2}(:\d{2})?$/;
+
+/**
  * Generate an array of time unit objects from the specified start date to the specified end date.
  *
  * @param start    The start time. Defaults to midnight.
@@ -137,21 +143,18 @@ function getTime(units: TimeUnits, date = new Date()) {
  * @throws Error  For any string not in the format 'HH:mm' or 'HH:mm:ss'.
  * @return        An object containing `hour`, `second`, and `number` properties.
  */
-export const parseUnits = (function () {
-	const TIME_PATTERN = /^\d{2}:\d{2}(:\d{2})?$/;
-	return function (value: string | TimeUnits): TimeUnits {
-		if (typeof value === 'string') {
-			if (!TIME_PATTERN.test(value)) {
-				throw new Error('Time strings must be in the format HH:mm or HH:mm:ss');
-			}
-
-			const [ hour, minute, second = 0 ] = value.split(':').map(unit => parseInt(unit, 10));
-			return { hour, minute, second } as TimeUnits;
+export function parseUnits (value: string | TimeUnits): TimeUnits {
+	if (typeof value === 'string') {
+		if (!TIME_PATTERN.test(value)) {
+			throw new Error('Time strings must be in the format HH:mm or HH:mm:ss');
 		}
 
-		return value;
-	};
-})();
+		const [ hour, minute, second = 0 ] = value.split(':').map(unit => parseInt(unit, 10));
+		return { hour, minute, second } as TimeUnits;
+	}
+
+	return value;
+}
 
 export const TimePickerBase = ThemeableMixin(WidgetBase);
 
@@ -300,7 +303,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			customResultItem: customOptionItem,
 			customResultMenu: customOptionMenu,
 			disabled,
-			extraClasses: extraClasses || css,
+			extraClasses,
 			formId,
 			getResultLabel: this._getOptionLabel,
 			inputProperties,

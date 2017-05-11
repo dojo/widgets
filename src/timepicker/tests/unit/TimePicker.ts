@@ -93,7 +93,7 @@ registerSuite({
 				onMenuChange: undefined,
 				onRequestResults: picker.listener,
 				openOnFocus: false,
-				extraClasses: css,
+				extraClasses: undefined,
 				readOnly: false,
 				required: true,
 				results: undefined,
