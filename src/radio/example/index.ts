@@ -28,7 +28,7 @@ export class App extends AppBase<WidgetProperties> {
 
 		return v('div', [
 			v('h2', {
-				innerHTML: 'Checkbox Examples'
+				innerHTML: 'Radio Examples'
 			}),
 			v('label', [
 				'Use Dojo Theme ',
