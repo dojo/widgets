@@ -128,6 +128,7 @@ registerSuite({
 		}
 
 		if (browserName.toLowerCase() === 'microsoftedge') {
+			// TODO: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11469232/
 			this.skip('Edge driver does not handle mouse movements correctly.');
 		}
 
@@ -152,6 +153,7 @@ registerSuite({
 		}
 
 		if (browserName.toLowerCase() === 'microsoftedge') {
+			// TODO: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11469232/
 			this.skip('Edge driver does not handle mouse movements correctly.');
 		}
 
@@ -179,6 +181,7 @@ registerSuite({
 		}
 
 		if (browserName.toLowerCase() === 'microsoftedge') {
+			// TODO: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11469232/
 			this.skip('Edge driver does not handle mouse movements correctly.');
 		}
 
