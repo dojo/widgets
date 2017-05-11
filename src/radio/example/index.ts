@@ -66,6 +66,25 @@ export class App extends AppBase<WidgetProperties> {
 					onChange: this.onChange,
 					theme: this._theme
 				})
+			]),
+			v('fieldset', {}, [
+				v('legend', {}, ['Set of disabled radio buttons']),
+				w(Radio, {
+					key: 'r4',
+					checked: false,
+					disabled: true,
+					label: 'First option',
+					name: 'sample-radios-disabled',
+					theme: this._theme
+				}),
+				w(Radio, {
+					key: 'r5',
+					checked: true,
+					disabled: true,
+					label: 'Second option',
+					name: 'sample-radios-disabled',
+					theme: this._theme
+				})
 			])
 		]);
 	}
