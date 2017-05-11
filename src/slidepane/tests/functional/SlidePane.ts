@@ -1,9 +1,8 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as css from '../../styles/slidePane.m.css';
 
 const DELAY = 400;
-const SLIDEPANE_SELECTOR = 'div > div > :last-child';
-const UNDERLAY_SELECTOR = 'div > div > :first-child';
 
 function openSlidePane(remote: any, alignRight?: boolean) {
 	let promise = remote
@@ -40,7 +39,7 @@ function clickUnderlay(remote: any) {
 	}
 
 	return underlay
-		.findByCssSelector(UNDERLAY_SELECTOR)
+		.findByCssSelector(`.${css.underlay}`)
 			.click()
 			.sleep(DELAY)
 			.end();
@@ -79,7 +78,7 @@ registerSuite({
 				.then(({ height, width }: { height: number; width: number; }) => {
 					viewportSize = { height, width };
 				})
-			.findByCssSelector(UNDERLAY_SELECTOR)
+			.findByCssSelector(`.${css.underlay}`)
 				.getSize()
 				.then(({ height, width }: { height: number; width: number; }) => {
 					assert.closeTo(height, viewportSize.height, viewportSize.height * 0.2);
@@ -89,20 +88,20 @@ registerSuite({
 
 	'the underlay should be destroyed when the slidepane is hidden'(this: any) {
 		return clickUnderlay(this.remote)
-			.findByCssSelector(UNDERLAY_SELECTOR)
-				.getAttribute('class')
-				.then((className: string) => {
-					assert.match(className, /slidePane-m__content/, 'the underlay should be removed.');
+			.findByCssSelector(`.${css.root}`)
+				.getProperty('children')
+				.then((children: any[]) => {
+					assert.lengthOf(children, 1, 'the underlay should be removed.');
 				});
 	},
 
 	'the underlay should not be destroyed when the slidepane is clicked'(this: any) {
 		return openSlidePane(this.remote)
-			.findByCssSelector(SLIDEPANE_SELECTOR)
+			.findByCssSelector(`.${css.content}`)
 				.click()
 				.end()
 			.sleep(DELAY)
-			.findByCssSelector(UNDERLAY_SELECTOR)
+			.findByCssSelector(`.${css.underlay}`)
 				.getAttribute('class')
 				.then((className: string) => {
 					assert.match(className, /slidePane-m__underlay/, 'the underlay should not be removed.');
@@ -111,7 +110,7 @@ registerSuite({
 
 	'the slidepane should not be hidden when it is clicked'(this: any) {
 		return openSlidePane(this.remote)
-			.findByCssSelector(SLIDEPANE_SELECTOR)
+			.findByCssSelector(`.${css.content}`)
 				.click()
 				.sleep(DELAY)
 				.getPosition()
@@ -134,7 +133,7 @@ registerSuite({
 
 		let width = 0;
 		return swipeSlidePane(this.remote)
-			.findByCssSelector(SLIDEPANE_SELECTOR)
+			.findByCssSelector(`.${css.content}`)
 				.getSize()
 					.then((size: { width: number; }) => {
 						width = size.width;
@@ -163,11 +162,11 @@ registerSuite({
 				.then(({ width }: { width: number }) => {
 					viewportWidth = width;
 				})
-			.findByCssSelector(SLIDEPANE_SELECTOR)
+			.findByCssSelector(`.${css.content}`)
 				.getPosition()
 				.then(({ x }: { x: number; }) => {
 					// Edge/IE11/Chrome on Windows visually hide the slidepane correctly, but the position
-					// is slightly less than the expected (the viewport width).
+					// is slightly less than expected (the viewport width).
 					const expected = viewportWidth * 0.95;
 					assert.isAtLeast(x, expected, 'The slidepane should be hidden off to the right.');
 				});
@@ -186,7 +185,7 @@ registerSuite({
 		}
 
 		return swipeSlidePane(this.remote, 50)
-			.findByCssSelector(SLIDEPANE_SELECTOR)
+			.findByCssSelector(`.${css.content}`)
 				.getPosition()
 					.then(({ x }: { x: number; }) => {
 						assert.strictEqual(x, 0, 'The slidepane should be open.');
