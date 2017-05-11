@@ -29,7 +29,7 @@ registerSuite({
 	name: 'Calendar',
 
 	'Open month picker'() {
-		return openMonthPicker(this.remote)
+		return openMonthPicker((<any> this).remote)
 			.findByCssSelector('[role=dialog]')
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
@@ -45,7 +45,7 @@ registerSuite({
 	},
 
 	'Close month picker'() {
-		return openMonthPicker(this.remote)
+		return openMonthPicker((<any> this).remote)
 			.sleep(DELAY)
 			.findByTagName('button')
 				.click()
@@ -58,7 +58,7 @@ registerSuite({
 	},
 
 	'Clicking month radio selects month and closes popup'() {
-		return openMonthPicker(this.remote)
+		return openMonthPicker((<any> this).remote)
 			.findByCssSelector('input[type=radio]')
 				.click()
 				.end()
@@ -79,7 +79,7 @@ registerSuite({
 		const today = new Date();
 		const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
 		const disabledDateSelector = firstDay === 0 ? 'tbody tr:last-child td:last-child' : `tbody tr:first-child td:nth-child(${firstDay})`;
-		return clickDate(this.remote)
+		return clickDate((<any> this).remote)
 			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
 				.getVisibleText()
 				.then((text: string) => {
@@ -94,7 +94,7 @@ registerSuite({
 	},
 
 	'Arrow keys move date focus'() {
-		return clickDate(this.remote)
+		return clickDate((<any> this).remote)
 			.sleep(DELAY)
 			.pressKeys('ARROW_RIGHT')
 			.sleep(DELAY)

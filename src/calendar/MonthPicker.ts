@@ -21,8 +21,6 @@ export interface CalendarMessages {
  *
  * Properties that can be set on a Calendar component
  *
- * @property callTriggerFocus     Boolean that sets focus on the popup trigger on next render
- * @property callPopupFocus       Boolean that sets focus within the popup on next render
  * @property labelId              Set id to reference label containing current month and year
  * @property labels               Customize or internationalize accessible helper text
  * @property month                Currently displayed month, zero-based
@@ -30,15 +28,12 @@ export interface CalendarMessages {
  * @property open                 Boolean, sets state of popup
  * @property renderMonthLabel     Format the displayed current month and year
  * @property year                 Currently displayed year
- * @property onFocusCalled        Called immedately after focus is set on either the trigger or popup
  * @property onRequestOpen        Called when a user action occurs that should trigger the popup opening
  * @property onRequestClose       Called when a user action occurs that should close the popup
  * @property onRequestMonthChange Called when a month should change; receives the zero-based month number
  * @property onRequestYearChange  Called when a year should change; receives the year as an integer
  */
 export interface MonthPickerProperties extends ThemeableProperties {
-	callTriggerFocus?: boolean;
-	callPopupFocus?: boolean;
 	labelId?: string;
 	labels: CalendarMessages;
 	month: number;
@@ -46,7 +41,6 @@ export interface MonthPickerProperties extends ThemeableProperties {
 	open?: boolean;
 	renderMonthLabel?(month: number, year: number): string;
 	year: number;
-	onFocusCalled?(): void;
 	onRequestOpen?(): void;
 	onRequestClose?(): void;
 	onRequestMonthChange?(month: number): void;
@@ -68,14 +62,8 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 	// move focus when opening/closing the popup
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		// trigger button
-		if (key === 'button') {
-			if (this._callTriggerFocus) {
-				// TODO: fix this to work with imported widgets
-				element.focus();
-				this._callTriggerFocus = false;
-			}
-		}
+		// TODO: find a way to call focus on button widget
+
 		// popup
 		if (key === 'year-spinner') {
 			const { open } = this.properties;
@@ -201,7 +189,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 		return this.properties.monthNames.map((monthName, i) => w(Radio, {
 			key: this._radiosName + i,
-			overrideClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
+			extraClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
 			checked: i === month,
 			label: {
 				content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
@@ -212,6 +200,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			// tabIndex: open ? 0 : -1,
 			theme,
 			value: i + '',
+			onChange: this._onRadioChange,
 			onMouseUp: () => {
 				this._closePopup();
 			}
@@ -234,7 +223,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				key: 'button',
 				describedBy: labelId,
 				id: this._buttonId,
-				overrideClasses: { root: css.monthTrigger },
+				extraClasses: { root: css.monthTrigger },
 				popup: {
 					id: this._dialogId,
 					expanded: open
@@ -265,6 +254,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			]),
 			// popup
 			v('div', {
+				key: 'month-popup',
 				'aria-hidden': String(!open),
 				'aria-labelledby': this._buttonId,
 				classes: this.classes(css.monthPopup, open ? null : css.monthPopupHidden),
@@ -299,8 +289,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 					}, [ String(year + 1) ])
 				]),
 				v('fieldset', {
-					classes: this.classes(css.monthControl),
-					onchange: this._onRadioChange
+					classes: this.classes(css.monthControl)
 				}, [
 					v('legend', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseMonth ]),
 					...this._renderMonthRadios()

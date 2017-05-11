@@ -7,7 +7,7 @@ import uuid from '@dojo/core/uuid';
 import { includes } from '@dojo/shim/array';
 import { Keys } from '../common/util';
 import MonthPicker, { CalendarMessages } from './MonthPicker';
-import CalendarCell from './CalendarCell';
+import CalendarCell, { CalendarCellProperties } from './CalendarCell';
 import * as css from './styles/calendar.m.css';
 
 /**
@@ -82,6 +82,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 	private _focusedDay = 1;
 	private _monthLabelId = uuid();
 	private _monthPopupOpen = false;
+	private _registry: WidgetRegistry;
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
 		if (this._callDateFocus) {
@@ -99,8 +100,16 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		const { customDateCell = CalendarCell } = this.properties;
 
 		// update custom option registry
-		if ( !this.registry || includes(evt.changedPropertyKeys, 'customDateCell')) {
-			this.registry = this._createRegistry(customDateCell);
+		if ( !this._registry || includes(evt.changedPropertyKeys, 'customDateCell')) {
+			const registry = this._createRegistry(customDateCell);
+
+			if (this._registry) {
+				this.registries.replace(this._registry, registry);
+			}
+			else {
+				this.registries.add(registry);
+			}
+			this._registry = registry;
 		}
 	}
 
@@ -272,7 +281,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 					isSelectedDay = false;
 				}
 
-				days.push(w('date-cell', {
+				days.push(w('date-cell', <CalendarCellProperties> {
 					key: date + '-' + (isCurrentMonth ? month : 'inactive'),
 					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
 					date,

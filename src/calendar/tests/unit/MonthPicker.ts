@@ -1,16 +1,14 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import harness, { Harness, assignProperties } from '@dojo/test-extras/harness';
-import assertRender from '@dojo/test-extras/support/assertRender';
-// import { findIndex } from '@dojo/test-extras/support/d';
-// import callListener from '@dojo/test-extras/support/callListener';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { compareProperty, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 import Radio from '../../../radio/Radio';
 import Button from '../../../button/Button';
 
 import MonthPicker, { MonthPickerProperties } from '../../MonthPicker';
-import { DEFAULT_MONTHS, DEFAULT_WEEKDAYS, DEFAULT_LABELS } from '../../Calendar';
+import { DEFAULT_MONTHS, DEFAULT_LABELS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
@@ -23,18 +21,41 @@ const requiredProps = {
 	year: testDate.getFullYear()
 };
 
-const expectedPopup = function(widget) {
-	return v('div', {
-		'aria-hidden': 'true',
-		'aria-labelledby': '', // widget._buttonId,
-		classes: widget.classes(css.monthPopup, css.monthPopupHidden),
-		id: '', // widget._dialogId,
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
+
+const monthRadios = function(widget: any) {
+	return DEFAULT_MONTHS.map((monthName, i) => w(Radio, <any> {
+		key: compareId, // widget._radiosName + i,
+		extraClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
+		checked: i === 5,
+		label: {
+			content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
+			before: false
+		},
+		name: compareId, // widget._radiosName,
+		value: i + '',
+		onChange: widget.listener,
+		onMouseUp: widget.listener
+	}));
+};
+
+const expectedPopup = function(widget: any, open?: boolean) {
+	return v('div', <any> {
+		afterCreate: widget.listener,
+		afterUpdate: widget.listener,
+		'aria-hidden': open ? 'false' : 'true',
+		'aria-labelledby': compareId, // widget._buttonId,
+		classes: widget.classes(css.monthPopup, open ? null : css.monthPopupHidden),
+		id: compareId, // widget._dialogId,
+		key: 'month-popup',
 		role: 'dialog',
 		onkeydown: widget.listener
 	}, [
 		v('div', { classes: widget.classes(css.yearPicker) }, [
 			v('label', {
-				for: '', // widget._yearSpinnerId,
+				for: compareId, // widget._yearSpinnerId,
 				classes: widget.classes(baseCss.visuallyHidden)
 			}, [ DEFAULT_LABELS.chooseYear ]),
 			v('span', {
@@ -42,14 +63,16 @@ const expectedPopup = function(widget) {
 				classes: widget.classes(css.spinnerPrevious),
 				onclick: widget.listener
 			}, [ '2016' ]),
-			v('div', {
+			v('div', <any> {
+				afterCreate: widget.listener,
+				afterUpdate: widget.listener,
 				key: 'year-spinner',
-				id: '', // widget._yearSpinnerId,
+				id: compareId, // widget._yearSpinnerId,
 				classes: widget.classes(css.spinner),
 				role: 'spinbutton',
 				'aria-valuemin': '1',
 				'aria-valuenow': '2017',
-				tabIndex: -1,
+				tabIndex: open ? 0 : -1,
 				onkeydown: widget.listener
 			}, [ '2017' ]),
 			v('span', {
@@ -59,38 +82,26 @@ const expectedPopup = function(widget) {
 			}, [ '2018' ])
 		]),
 		v('fieldset', {
-			classes: widget.classes(css.monthControl),
-			onchange: widget.listener
+			classes: widget.classes(css.monthControl)
 		}, [
 			v('legend', { classes: widget.classes(baseCss.visuallyHidden) }, [ DEFAULT_LABELS.chooseMonth ]),
-			<any[]> DEFAULT_MONTHS.map((monthName, i) => w(Radio, {
-				key: '', // widget._radiosName + i,
-				overrideClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
-				checked: i === 5,
-				label: {
-					content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
-					before: false
-				},
-				name: '', // widget._radiosName,
-				value: i + '',
-				onMouseUp: widget.listener
-			}))
+			...monthRadios(widget)
 		])
 	]);
 };
 
-const expected = function(widget) {
+const expected = function(widget: any, open?: boolean) {
 	return v('div', {
 		classes: widget.classes(css.header)
 	}, [
-		w(Button, {
+		w(Button, <any> {
 			key: 'button',
-			describedBy: '', // widget._labelId,
-			id: '', // widget._buttonId,
-			overrideClasses: { root: css.monthTrigger },
+			describedBy: compareId, // widget._labelId,
+			id: compareId, // widget._buttonId,
+			extraClasses: { root: css.monthTrigger },
 			popup: {
-				id: '', // widget._dialogId,
-				expanded: false
+				id: compareId, // widget._dialogId,
+				expanded: !!open
 			},
 			onClick: widget.listener
 		}, [
@@ -98,8 +109,8 @@ const expected = function(widget) {
 				classes: widget.classes(baseCss.visuallyHidden)
 			}, [ DEFAULT_LABELS.chooseMonth ])
 		]),
-		v('label', {
-			id: '', // widget._labelId,
+		v('label', <any> {
+			id: compareId, // widget._labelId,
 			classes: widget.classes(css.currentMonthLabel),
 			'aria-live': 'polite',
 			'aria-atomic': 'false'
@@ -121,7 +132,7 @@ const expected = function(widget) {
 				classes: widget.classes(baseCss.visuallyHidden)
 			}, [ DEFAULT_LABELS.nextMonth ])
 		]),
-		expectedPopup(widget)
+		expectedPopup(widget, open)
 	]);
 };
 
@@ -138,36 +149,31 @@ registerSuite({
 
 	'Popup should render with default properties'() {
 		widget.setProperties({
-			labels: DEFAULT_LABELS,
-			month: testDate.getMonth(),
-			monthNames: DEFAULT_MONTHS,
-			year: testDate.getFullYear()
+			...requiredProps
 		});
 
-		const renderedStuff = widget.getRender();
+		widget.expectRender(expected(widget));
+	},
 
-		const classes1 = widget.classes(css.monthTrigger);
-		const classes2 = widget.classes(baseCss.visuallyHidden);
-
-		assignProperties(renderedStuff!.children[0]!.children[0], {
-			classes: classes2
+	'Popup should render with custom properties'() {
+		widget.setProperties({
+			labelId: 'foo',
+			open: true,
+			renderMonthLabel: () => { return 'bar'; },
+			...requiredProps
 		});
 
-		assertRender(renderedStuff!.children[0], w(Button, {
-			key: 'button',
-			describedBy: '', // widget._labelId,
-			id: '', // widget._buttonId,
-			overrideClasses: { root: css.monthTrigger },
-			popup: {
-				id: '', // widget._dialogId,
-				expanded: false
-			},
-			onClick: widget.listener
-		}, [
-			v('span', {
-				classes: classes2
-			}, [ DEFAULT_LABELS.chooseMonth ])
-		]));
+		let expectedVdom = expected(widget, true);
+
+		assignChildProperties(expectedVdom, '0', {
+			describedBy: 'foo'
+		});
+		assignChildProperties(expectedVdom, '1', {
+			id: 'foo'
+		});
+		replaceChild(expectedVdom, '1,0', 'bar');
+
+		widget.expectRender(expectedVdom);
 	},
 
 	'Popup opens and closes on button click'() {
@@ -177,23 +183,26 @@ registerSuite({
 			onRequestClose: () => { closed = true; },
 			...requiredProps
 		});
-		const widgetDom = widget.getDom();
 
 		// open
-		callListener(widget, 'onClick', {
+		widget.callListener('onClick', {
 			key: 'button'
 		});
 		widget.getRender();
 		assert.isFalse(closed, 'First click should open popup');
-		assert.strictEqual(document.activeElement, widgetDom.querySelector('[role=spinbutton]'));
 
 		// close
-		callListener(widget, 'onClick', {
+		widget.setProperties({
+			open: !closed,
+			onRequestOpen: () => { closed = false; },
+			onRequestClose: () => { closed = true; },
+			...requiredProps
+		});
+		widget.callListener('onClick', {
 			key: 'button'
 		});
 		widget.getRender();
 		assert.isTrue(closed, 'Second click should close popup');
-		// TODO: make sure focus is back on button
 	},
 
 	'Popup closes with correct keys'() {
@@ -209,43 +218,158 @@ registerSuite({
 			eventInit: {
 				which: Keys.Escape
 			},
-			selector: ':nth-child(5)' // should be the popup div
+			key: 'month-popup'
 		});
-		widget.getRender();
 		assert.isTrue(closed, 'Should close on escape key press');
 
 		// enter key
 		closed = false;
-		widget.setProperties({
-			open: true,
-			onRequestClose: () => { closed = true; },
-			...requiredProps
-		});
 		widget.sendEvent('keydown', {
 			eventInit: {
 				which: Keys.Enter
 			},
-			selector: ':nth-child(5)' // should be the popup div
+			key: 'month-popup'
 		});
-		widget.getRender();
 		assert.isTrue(closed, 'Should close on enter key press');
 
 		// space key
 		closed = false;
-		widget.setProperties({
-			open: true,
-			onRequestClose: () => { closed = true; },
-			...requiredProps
-		});
 		widget.sendEvent('keydown', {
 			eventInit: {
 				which: Keys.Space
 			},
-			selector: ':nth-child(5)' // should be the popup div
+			key: 'month-popup'
 		});
-		widget.getRender();
 		assert.isTrue(closed, 'Should close on space key press');
 
-		// TODO: make sure focus is set on the trigger button
+		// random key
+		closed = false;
+		widget.sendEvent('keydown', {
+			eventInit: {
+				which: Keys.PageDown
+			},
+			key: 'month-popup'
+		});
+		assert.isFalse(closed, 'Other keys don\'t close popup');
+	},
+
+	'Arrow keys change year spinner'() {
+		let currentYear = 2017;
+		widget.setProperties({
+			...requiredProps,
+			year: currentYear,
+			onRequestYearChange: (year: number) => { currentYear = year; }
+		});
+
+		widget.sendEvent('keydown', {
+			eventInit: {
+				which: Keys.Right
+			},
+			key: 'year-spinner'
+		});
+
+		assert.strictEqual(currentYear, 2018, 'Right arrow key increased year');
+
+		widget.sendEvent('keydown', {
+			eventInit: {
+				which: Keys.Left
+			},
+			key: 'year-spinner'
+		});
+
+		assert.strictEqual(currentYear, 2016, 'Left arrow key decreased year');
+	},
+
+	'Clicking buttons changes year'() {
+		let currentYear = 2017;
+		widget.setProperties({
+			...requiredProps,
+			year: currentYear,
+			onRequestYearChange: (year: number) => { currentYear = year; }
+		});
+
+		widget.sendEvent('click', {
+			selector: '.' + css.spinnerNext
+		});
+		assert.strictEqual(currentYear, 2018, 'clicking next year button increased year');
+
+		widget.sendEvent('click', {
+			selector: '.' + css.spinnerPrevious
+		});
+		assert.strictEqual(currentYear, 2016, 'clicking previous year button decreased year');
+	},
+
+	'Change month radios'() {
+		let currentMonth = 5;
+		let closed = false;
+		widget.setProperties({
+			...requiredProps,
+			open: !closed,
+			onRequestClose: () => { closed = true; },
+			onRequestMonthChange: (month: number) => { currentMonth = month; }
+		});
+
+		widget.callListener('onChange', {
+			args: [
+				{
+					target: { value: 6 }
+				}
+			],
+			index: '4,1,8'
+		});
+		assert.strictEqual(currentMonth, 6, 'Change event sets month value');
+
+		widget.callListener('onMouseUp', {
+			index: '4,1,8'
+		});
+		assert.isTrue(closed, 'Clicking radios closes popup');
+	},
+
+	'Previous/next month buttons'() {
+		let currentMonth = 5;
+		let currentYear = 2017;
+		widget.setProperties({
+			...requiredProps,
+			month: currentMonth,
+			onRequestMonthChange: (month: number) => { currentMonth = month; }
+		});
+
+		widget.sendEvent('click', {
+			selector: '.' + css.previousMonth
+		});
+		assert.strictEqual(currentMonth, 4, 'Previous month arrow decreases month');
+
+		widget.sendEvent('click', {
+			selector: '.' + css.nextMonth
+		});
+		assert.strictEqual(currentMonth, 6, 'Next month arrow increases month');
+
+		widget.setProperties({
+			...requiredProps,
+			month: 0,
+			year: 2017,
+			onRequestMonthChange: (month: number) => { currentMonth = month; },
+			onRequestYearChange: (year: number) => { currentYear = year; }
+		});
+		widget.getRender();
+		widget.sendEvent('click', {
+			selector: '.' + css.previousMonth
+		});
+		assert.strictEqual(currentMonth, 11, 'Previous month wraps around');
+		assert.strictEqual(currentYear, 2016, 'Year decreases when month wraps around');
+
+		widget.setProperties({
+			...requiredProps,
+			month: 11,
+			year: 2017,
+			onRequestMonthChange: (month: number) => { currentMonth = month; },
+			onRequestYearChange: (year: number) => { currentYear = year; }
+		});
+		widget.getRender();
+		widget.sendEvent('click', {
+			selector: '.' + css.nextMonth
+		});
+		assert.strictEqual(currentMonth, 0, 'Next month wraps around');
+		assert.strictEqual(currentYear, 2018, 'Year increases when month wraps around');
 	}
 });
