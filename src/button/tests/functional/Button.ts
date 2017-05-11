@@ -13,11 +13,11 @@ registerSuite({
 	'button should be visible'(this: any) {
 		return getPage(this.remote)
 			.findByCssSelector('button:first-of-type')
-		// as per mwistrand, `isDisplayed` is broken in Safari 10, commented out for now
-			// .isDisplayed()
-			// .then((displayed: boolean) => {
-			// 	assert.isTrue(displayed, 'The button should be displayed.');
-			// })
+		// `isDisplayed` is broken in Safari 10, commented out for now. See https://github.com/SeleniumHQ/selenium/issues/3029
+		// .isDisplayed()
+		// .then((displayed: boolean) => {
+		// 	assert.isTrue(displayed, 'The label should be displayed.');
+		// })
 			.getSize()
 			.then(({ height, width }: { height: number; width: number; }) => {
 				assert.isAbove(height, 0, 'The button height should be greater than zero.');
