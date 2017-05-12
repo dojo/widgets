@@ -39,6 +39,21 @@ export interface LabelProperties extends ThemeableProperties {
 	label: string | LabelOptions;
 }
 
+/**
+ * This is a helper function for using `extraClasses` with Label.
+ * It can be used as follows:
+ * extraClasses: { root: parseLabelClasses(this.classes(css.class1, css.class2).get()) }
+ */
+export function parseLabelClasses(classes: { [key: string]: boolean }): string {
+	return Object.keys(classes).reduce((classNamesString: string, className) => {
+		if (classes[className] === true) {
+			classNamesString += ` ${className}`;
+		}
+
+		return classNamesString;
+	}, '').trim();
+}
+
 export const LabelBase = RegistryMixin(ThemeableMixin(WidgetBase));
 
 @theme(baseCss)
