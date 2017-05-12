@@ -112,7 +112,6 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 				mode === Mode.toggle ? v('div', { classes: this.classes(css.onLabel) }, [ onLabel || null ]) : null,
 				mode === Mode.toggle ? v('div', { classes: this.classes(css.offLabel) }, [ offLabel || null ]) : null,
 				v('input', {
-					bind: this,
 					classes: this.classes(css.input),
 					checked,
 					'aria-describedby': describedBy,

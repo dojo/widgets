@@ -384,7 +384,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
-				bind: this,
 				classes: this.classes(css.clear),
 				disabled,
 				readOnly,
@@ -393,7 +392,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}) : null,
 			v('button', {
 				'aria-controls': menuId,
-				bind: this,
 				classes: this.classes(css.arrow),
 				disabled,
 				readOnly,
@@ -404,7 +402,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		if (label) {
 			controls = w(Label, {
-				bind: this,
 				formId,
 				label
 			}, [ controls ]);
@@ -415,7 +412,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			'aria-haspopup': 'true',
 			'aria-readonly': readOnly ? 'true' : 'false',
 			'aria-required': required ? 'true' : 'false',
-			bind: this,
 			classes: this.classes(css.root),
 			key: 'root',
 			role: 'combobox'

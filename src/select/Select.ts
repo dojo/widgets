@@ -205,7 +205,6 @@ export default class Select extends SelectBase<SelectProperties> {
 		} = this.properties;
 
 		const optionNodes = options.map((option, i) => w<SelectOption>('select-option', {
-			bind: this,
 			focused: this._focusedIndex === i,
 			index: i,
 			key: i + '',
@@ -271,7 +270,6 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		return v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('select', {
-				bind: this,
 				classes: this.classes(css.input),
 				'aria-describedby': describedBy,
 				disabled,
@@ -309,7 +307,6 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		return v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('div', {
-				bind: this,
 				role: 'listbox',
 				classes: this.classes(css.input),
 				disabled,
@@ -351,7 +348,6 @@ export default class Select extends SelectBase<SelectProperties> {
 			classes: this.classes(css.inputWrapper, _open ? css.open : null)
 		}, [
 			v('button', {
-				bind: this,
 				classes: this.classes(css.trigger, css.input),
 				disabled,
 				'aria-controls': _selectId,
@@ -366,7 +362,6 @@ export default class Select extends SelectBase<SelectProperties> {
 				onkeydown: this._onListboxKeyDown
 			}, [ selectedOption ? selectedOption.label : '' ]),
 			v('div', {
-				bind: this,
 				role: 'listbox',
 				id: _selectId,
 				classes: this.classes(css.dropdown),
