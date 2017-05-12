@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as css from '../../styles/radio.m.css';
 
 function getPage(remote: any) {
 	return remote
@@ -12,7 +13,7 @@ registerSuite({
 
 	'radio button should be visible'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('fieldset:first-of-type input[type="radio"]:first-of-type')
+			.findByCssSelector(`#example-1 .${css.root}:first-of-type`)
 			.getSize()
 			.then(({ height, width }: { height: number; width: number; }) => {
 				assert.isAbove(height, 0, 'The radio button height should be greater than zero.');
@@ -23,7 +24,7 @@ registerSuite({
 
 	'radio button label text should be as defined'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('fieldset:first-of-type label:first-of-type')
+			.findByCssSelector(`#example-1 .${css.root}:first-of-type`)
 			.getVisibleText()
 			.then((text: string) => {
 				assert.strictEqual(text, 'First option');
@@ -33,9 +34,9 @@ registerSuite({
 	},
 	'radio button can be selected by clicking on its label'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('fieldset:first-of-type label:first-of-type')
+			.findByCssSelector(`#example-1 .${css.root}:first-of-type`)
 			.click()
-				.findByCssSelector('input[type="radio"]')
+				.findByCssSelector(`.${css.input}`)
 				.isSelected()
 				.then((selected: boolean) => {
 					assert.isTrue(selected, '2nd radio button should be selected.');
@@ -45,15 +46,15 @@ registerSuite({
 	},
 	'radio buttons should be selectable'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('fieldset:first-of-type')
-				.findByCssSelector('label:first-of-type input[type="radio"]')
+			.findByCssSelector('#example-1')
+				.findByCssSelector(`.${css.root}:first-of-type .${css.input}`)
 				.isSelected()
 				.then((checked: boolean) => {
 					assert.isTrue(checked, 'Initially the first radio button should be selected');
 				})
 				.end()
 
-				.findByCssSelector('label:nth-of-type(3) input[type="radio"]')
+				.findByCssSelector(`.${css.root}:nth-of-type(3) .${css.input}`)
 				.isSelected()
 				.then((checked: boolean) => {
 					assert.isFalse(checked, 'Initially the 3rd radio button should not be selected');
@@ -65,7 +66,7 @@ registerSuite({
 				})
 				.end()
 
-				.findByCssSelector('label:first-of-type input[type="radio"]')
+				.findByCssSelector(`.${css.root}:first-of-type .${css.input}`)
 				.isSelected()
 				.then((checked: boolean) => {
 					assert.isFalse(checked);
@@ -75,8 +76,8 @@ registerSuite({
 	},
 	'disabled radio buttons should not be selectable'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('fieldset:nth-of-type(2)')
-				.findByCssSelector('label:first-of-type input[type="radio"]')
+			.findByCssSelector('#example-2')
+				.findByCssSelector(`.${css.root}:first-of-type .${css.input}`)
 				.isSelected()
 				.then((checked: boolean) => {
 					assert.isFalse(checked, 'Initially the first radio button should not be selected');
