@@ -3,7 +3,7 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { RegistryMixin, RegistryMixinProperties } from '@dojo/widget-core/mixins/Registry';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
-import { ResultItemProperties } from './ResultItem';
+import ResultItem from './ResultItem';
 
 import * as css from './styles/comboBox.m.css';
 
@@ -53,7 +53,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 			theme = {}
 		} = this.properties;
 
-		const resultElements = this.renderResults(results.map((result, i) => w('result-item', <ResultItemProperties> {
+		const resultElements = this.renderResults(results.map((result, i) => w<ResultItem>('result-item', {
 			index: i,
 			key: String(i),
 			result,
