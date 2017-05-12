@@ -103,7 +103,7 @@ registerSuite({
 
 			assert.strictEqual(vnode.children![0].children!.length, 2, 'Select node and arrow node rendered');
 			assert.strictEqual(vnode.children![0].children![1].vnodeSelector, 'span');
-			assert.isTrue(vnode.children![0].children![1].properties!.classes![css.arrow]);
+			assert.isTrue(vnode.children![0].children![1].properties!.classes![css.nativeArrow]);
 		},
 
 		'basic events'() {
