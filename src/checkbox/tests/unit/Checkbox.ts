@@ -3,13 +3,12 @@ import * as assert from 'intern/chai!assert';
 import * as Test from 'intern/lib/Test';
 
 import has from '@dojo/has/has';
-import { assignProperties, replaceChild } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { HNode } from '@dojo/widget-core/interfaces';
 
 import Checkbox, { CheckboxProperties, Mode } from '../../Checkbox';
-import Label, { LabelProperties } from '../../../label/Label';
+import Label, { parseLabelClasses } from '../../../label/Label';
 import * as css from '../../styles/checkbox.m.css';
 
 let widget: Harness<CheckboxProperties, typeof Checkbox>;
@@ -26,8 +25,9 @@ registerSuite({
 	},
 
 	simple() {
-		const children: HNode[] = [
-			v('div', {
+		widget.expectRender(v('div', {
+			classes: widget.classes(css.root)
+		}, [ v('div', {
 				classes: widget.classes(css.inputWrapper)
 			}, [
 				null,
@@ -36,7 +36,7 @@ registerSuite({
 					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
-					bind: widget,
+					bind: true,
 					checked: false,
 					classes: widget.classes(css.input),
 					disabled: undefined,
@@ -56,27 +56,7 @@ registerSuite({
 					value: undefined
 				})
 			])
-		];
-
-		widget.setChildren(children);
-
-		widget.expectRender(v('div', {
-			classes: widget.classes(css.root)
-		}, children));
-
-		assignProperties(children[0], {
-			classes: widget.classes(css.inputWrapper)
-		});
-		replaceChild(children[0], 0, v('div', { classes: widget.classes(css.onLabel) }, [ null ]));
-		replaceChild(children[0], 1, v('div', { classes: widget.classes(css.offLabel) }, [ null ]));
-
-		widget.setProperties({
-			invalid: false,
-			mode: Mode.toggle
-		});
-		widget.expectRender(v('div', {
-			classes: widget.classes(css.root, css.toggle, css.valid)
-		}, children));
+		]));
 	},
 
 	'properties and attributes'() {
@@ -95,19 +75,45 @@ registerSuite({
 			required: true,
 			value: 'qux'
 		};
-		const children: HNode[] = [
+
+		widget.setProperties(checkboxProperties);
+
+		const labelClasses = widget.classes(
+			css.root,
+			css.toggle,
+			css.checked,
+			css.disabled,
+			css.invalid,
+			css.readonly,
+			css.required
+		);
+
+		// TODO: is there something that works other than 'any'?
+		widget.expectRender(w<any>(Label, {
+			extraClasses: { root:
+				// TODO: any
+				parseLabelClasses(<any> labelClasses())
+			},
+			formId: checkboxProperties.formId,
+			label: checkboxProperties.label!
+		}, [
 			v('div', {
-				classes: widget.classes(css.inputWrapper)
+				classes: {
+					[css.inputWrapper]: true,
+					[css.input]: false,
+					[css.offLabel]: false,
+					[css.onLabel]: false
+				}
 			}, [
-				v('div', { classes: widget.classes(css.onLabel) }, [ checkboxProperties.onLabel! ]),
-				v('div', { classes: widget.classes(css.offLabel) }, [ checkboxProperties.offLabel! ]),
+				v('div', { classes: { [css.onLabel]: true } }, [ checkboxProperties.onLabel! ]),
+				v('div', { classes: { [css.offLabel]: true, [css.onLabel]: false } }, [ checkboxProperties.offLabel! ]),
 				v('input', {
 					'aria-describedby': checkboxProperties.describedBy,
 					'aria-invalid': String(checkboxProperties.invalid),
 					'aria-readonly': String(checkboxProperties.readOnly),
-					bind: widget,
+					bind: true,
 					checked: checkboxProperties.checked,
-					classes: widget.classes(css.input),
+					classes: { [css.input]: true, [css.offLabel]: false, [css.onLabel]: false },
 					disabled: checkboxProperties.disabled,
 					name: checkboxProperties.name,
 					onblur: widget.listener,
@@ -125,20 +131,10 @@ registerSuite({
 					value: checkboxProperties.value
 				})
 			])
-		];
-
-		widget.setProperties(checkboxProperties);
-
-		widget.expectRender(w<LabelProperties>(Label, {
-			classes: widget.classes(css.root, css.toggle, css.checked, css.disabled, css.invalid, css.readonly, css.required),
-			formId: checkboxProperties.formId,
-			label: checkboxProperties.label!
-		}, children));
+		]));
 	},
 
-	// TODO: is it preferred to combine this with the previous test?
-	// Manipulating the harness and the expected results is more hassle than it's worth
-	'properties and attributes 2'() {
+	'invalid and toggle'() {
 		const children: HNode[] = [
 			v('div', {
 				classes: widget.classes(css.inputWrapper)
@@ -149,7 +145,7 @@ registerSuite({
 					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
-					bind: widget,
+					bind: true,
 					checked: false,
 					classes: widget.classes(css.input),
 					disabled: undefined,
