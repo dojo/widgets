@@ -13,11 +13,6 @@ registerSuite({
 	'Label should be visible'(this: any) {
 		return getPage(this.remote)
 			.findByCssSelector('label:first-of-type')
-		// `isDisplayed` is broken in Safari 10, commented out for now. See https://github.com/SeleniumHQ/selenium/issues/3029
-		// .isDisplayed()
-		// .then((displayed: boolean) => {
-		// 	assert.isTrue(displayed, 'The label should be displayed.');
-		// })
 			.getSize()
 			.then(({ height, width }: { height: number; width: number; }) => {
 				assert.isAbove(height, 0, 'The label height should be greater than zero.');
