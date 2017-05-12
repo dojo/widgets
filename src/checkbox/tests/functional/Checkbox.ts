@@ -16,11 +16,6 @@ registerSuite({
 	'checkbox should be visible'(this: any) {
 		return getPage(this.remote)
 			.findByCssSelector(nthCheckbox(1))
-		// `isDisplayed` is broken in Safari 10, commented out for now. See https://github.com/SeleniumHQ/selenium/issues/3029
-		// .isDisplayed()
-		// .then((displayed: boolean) => {
-		// 	assert.isTrue(displayed, 'The checkbox should be displayed.');
-		// })
 			.getSize()
 			.then(({ height, width }: { height: number; width: number; }) => {
 				assert.isAbove(height, 0, 'The checkbox height should be greater than zero.');
