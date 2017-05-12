@@ -1,3 +1,4 @@
+export const root: string;
 export const main: string;
 export const underlay: string;
 export const underlayVisible: string;
