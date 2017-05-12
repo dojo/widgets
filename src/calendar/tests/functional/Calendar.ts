@@ -1,9 +1,11 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as keys from 'leadfoot/keys';
+import * as css from '../../styles/calendar.m.css';
 
 const DELAY = 500;
 
-function openMonthPicker(remote) {
+function openMonthPicker(remote: any) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
 		.setFindTimeout(5000)
@@ -12,7 +14,7 @@ function openMonthPicker(remote) {
 			.end();
 }
 
-function clickDate(remote) {
+function clickDate(remote: any) {
 	const today = new Date();
 	const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
 	return remote
@@ -20,8 +22,6 @@ function clickDate(remote) {
 		.setFindTimeout(5000)
 		.findByCssSelector(`tbody > tr:first-child > td:nth-child(${firstDay + 1})`)
 			.click()
-			.getVisibleText()
-			.then((text: string) => { console.log('clicked date', text); })
 			.end();
 }
 
@@ -87,16 +87,16 @@ registerSuite({
 				})
 				.end()
 			.findByCssSelector(disabledDateSelector)
-				.getComputedStyle('background-color')
-				.then((color: string) => {
-					assert.strictEqual(color, 'rgba(187, 187, 187, 1)', 'Disabled date has correct background color');
+				.getAttribute('class')
+				.then((className: string) => {
+					assert.include(className, css.inactiveDate, 'Disabled date has correct css class');
 				});
 	},
 
 	'Arrow keys move date focus'() {
 		return clickDate((<any> this).remote)
 			.sleep(DELAY)
-			.pressKeys('ARROW_RIGHT')
+			.pressKeys(keys.ARROW_RIGHT)
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
@@ -104,13 +104,69 @@ registerSuite({
 					assert.strictEqual(text, '2', 'Right arrow moves active element to second day');
 				})
 				.end()
-			.pressKeys('ARROW_DOWN')
+			.pressKeys(keys.ARROW_DOWN)
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
 				.then((text: string) => {
 					assert.strictEqual(text, '9', 'Down arrow moves active element to next week');
 				})
+				.end()
+			.pressKeys(keys.ARROW_LEFT)
+			.sleep(DELAY)
+			.getActiveElement()
+				.getVisibleText()
+				.then((text: string) => {
+					assert.strictEqual(text, '8', 'Left arrow moves active element to previous day');
+				})
+				.end()
+			.pressKeys(keys.ARROW_UP)
+			.sleep(DELAY)
+			.getActiveElement()
+				.getVisibleText()
+				.then((text: string) => {
+					assert.strictEqual(text, '1', 'Up arrow moves active element to previous week');
+				})
+				.end()
+			.pressKeys(keys.PAGE_DOWN)
+			.sleep(DELAY)
+			.getActiveElement()
+				.getVisibleText()
+				.then((text: string) => {
+					const today = new Date();
+					const monthLengh = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+					assert.strictEqual(text, String(monthLengh), 'Page down moves to last day');
+				})
+				.end()
+			.pressKeys(keys.PAGE_UP)
+			.sleep(DELAY)
+			.getActiveElement()
+				.getVisibleText()
+				.then((text: string) => {
+					assert.strictEqual(text, '1', 'Page up moves to first day');
+				})
 				.end();
+	},
+
+	'Clicking disabled date moves focus'() {
+		let clickedDate = '';
+		return clickDate((<any> this).remote)
+			.findByCssSelector(`.${css.inactiveDate}`)
+				.getVisibleText()
+				.then((text: string) => {
+					clickedDate = text;
+				})
+				.click()
+				.end()
+			.sleep(DELAY)
+			.getActiveElement()
+				.getVisibleText()
+				.then((text: string) => {
+					assert.strictEqual(text, clickedDate, 'Clicked date has focus');
+				})
+				.getAttribute('class')
+				.then((className: string) => {
+					assert.include(className, css.selectedDate, 'Clicked date has selected class');
+				});
 	}
 });
