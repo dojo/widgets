@@ -327,8 +327,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			return null;
 		}
 
-		return w('result-menu', <ResultMenuProperties> {
-			bind: this,
+		return w<ResultMenu>('result-menu', {
 			id: uuid(),
 			registry: this._registry,
 			results,
@@ -367,7 +366,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}, [
 			w(TextInput, {
 				...inputProperties,
-				bind: this,
 				classes: this.classes(clearable ? css.clearable : null),
 				controls: menuId,
 				disabled,
