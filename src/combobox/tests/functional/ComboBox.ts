@@ -14,65 +14,18 @@ function getPage(remote: any) {
 registerSuite({
 	name: 'ComboBox',
 
-	'the controls should be over the right end of the input'(this: any) {
-		let clearButtonSize: { height: number; width: number; };
-		let closeButtonSize: { height: number; width: number; };
-		let inputPosition: { x: number; y: number };
-		let inputSize: { height: number; width: number; };
-
-		return getPage(this.remote)
-			.findByCssSelector(`.${css.input}`)
-				.getSize()
-					.then(({ height, width }: { height: number; width: number; }) => {
-						inputSize = { height, width };
-					})
-				.getPosition()
-					.then((position: { x: number; y: number; }) => {
-						inputPosition = position;
-					})
-				.end()
-			.findByCssSelector(`.${css.arrow}`)
-				.getSize()
-					.then(({ height, width }: { height: number; width: number; }) => {
-						closeButtonSize = { height, width };
-					})
-				.getPosition()
-					.then(({ x, y }: { x: number; y: number; }) => {
-						const expectedX = inputPosition.x + inputSize.width - closeButtonSize.width;
-
-						assert.closeTo(x, expectedX, 10, 'The close button should be near the right edge of the input.');
-						assert.isAbove(y, inputPosition.y);
-						assert.isBelow(y + closeButtonSize.height, inputPosition.y + inputSize.height);
-					})
-				.end()
-			.findByCssSelector(`.${css.clear}`)
-				.getSize()
-					.then(({ height, width }: { height: number; width: number; }) => {
-						clearButtonSize = { height, width };
-					})
-				.getPosition()
-					.then(({ x, y }: { x: number; y: number; }) => {
-						const expectedX = inputPosition.x + inputSize.width -
-							closeButtonSize.width - clearButtonSize.width;
-
-						assert.closeTo(x, expectedX, 20, 'The clear button should be near the left edge of the close button.');
-						assert.isAbove(y, inputPosition.y);
-						assert.isBelow(y + clearButtonSize.height, inputPosition.y + inputSize.height);
-					});
-	},
-
 	'the results menu should be visible'(this: any) {
 		let inputWidth: number;
 
 		return getPage(this.remote)
+			.findByCssSelector(`.${css.arrow}`)
+				.click()
+				.end()
 			.findByCssSelector(`.${css.input}`)
 				.getSize()
 					.then(({ width }: { width: number; }) => {
 						inputWidth = width;
 					})
-				.end()
-			.findByCssSelector(`.${css.arrow}`)
-				.click()
 				.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.results}`)
@@ -84,8 +37,12 @@ registerSuite({
 	},
 
 	'the selected result menu should be visible'(this: any) {
-		if (this.remote.session.capabilities.browserName === 'firefox') {
-			this.skip('FirefoxDriver sends actual charcodes to the input.');
+		const { browserName, touchEnabled } = this.remote.session.capabilities;
+
+		if (touchEnabled || browserName === 'firefox' || browserName === 'safari') {
+			// TODO: FirefoxDriver and SafariDriver update the input value with non-printable characters.
+			// https://openradar.appspot.com/radar?id=6097023048613888
+			this.skip('Arrow keys required for tests.');
 		}
 
 		let menuBottom: number;
@@ -96,9 +53,11 @@ registerSuite({
 			.findByCssSelector(`.${css.arrow}`)
 				.click()
 				.end()
+			.sleep(DELAY)
 			.findByCssSelector(`.${css.input}`)
 				.pressKeys(keys.ARROW_UP)
 				.end()
+			.sleep(DELAY)
 			.findByCssSelector(`.${css.results}`)
 				.getPosition()
 				.then(({ y }: { y: number; }) => {
