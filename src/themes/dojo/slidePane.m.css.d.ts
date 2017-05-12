@@ -1,4 +1,3 @@
-export const underlay: string;
 export const underlayVisible: string;
 export const content: string;
 export const left: string;
