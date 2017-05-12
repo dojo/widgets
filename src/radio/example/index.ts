@@ -37,7 +37,7 @@ export class App extends AppBase<WidgetProperties> {
 					onchange: this.themeChange
 				})
 			]),
-			v('fieldset', {}, [
+			v('fieldset', { id: 'example-1' }, [
 				v('legend', {}, ['Set of radio buttons with first option selected']),
 				w(Radio, {
 					key: 'r1',
@@ -67,7 +67,7 @@ export class App extends AppBase<WidgetProperties> {
 					theme: this._theme
 				})
 			]),
-			v('fieldset', {}, [
+			v('fieldset', { id: 'example-2' }, [
 				v('legend', {}, ['Set of disabled radio buttons']),
 				w(Radio, {
 					key: 'r4',
