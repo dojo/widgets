@@ -281,7 +281,7 @@ registerSuite({
 	},
 
 	'Clicking buttons changes year'() {
-		let currentYear = 2017;
+		let currentYear = testDate.getFullYear();
 		widget.setProperties({
 			...requiredProps,
 			year: currentYear,
@@ -291,16 +291,16 @@ registerSuite({
 		widget.sendEvent('click', {
 			selector: '.' + css.spinnerNext
 		});
-		assert.strictEqual(currentYear, 2018, 'clicking next year button increased year');
+		assert.strictEqual(currentYear, testDate.getFullYear() + 1, 'clicking next year button increased year');
 
 		widget.sendEvent('click', {
 			selector: '.' + css.spinnerPrevious
 		});
-		assert.strictEqual(currentYear, 2016, 'clicking previous year button decreased year');
+		assert.strictEqual(currentYear, testDate.getFullYear() - 1, 'clicking previous year button decreased year');
 	},
 
 	'Change month radios'() {
-		let currentMonth = 5;
+		let currentMonth = testDate.getMonth();
 		let closed = false;
 		widget.setProperties({
 			...requiredProps,
@@ -326,8 +326,8 @@ registerSuite({
 	},
 
 	'Previous/next month buttons'() {
-		let currentMonth = 5;
-		let currentYear = 2017;
+		let currentMonth = testDate.getMonth();
+		let currentYear = testDate.getFullYear();
 		widget.setProperties({
 			...requiredProps,
 			month: currentMonth,
@@ -337,17 +337,17 @@ registerSuite({
 		widget.sendEvent('click', {
 			selector: '.' + css.previousMonth
 		});
-		assert.strictEqual(currentMonth, 4, 'Previous month arrow decreases month');
+		assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Previous month arrow decreases month');
 
 		widget.sendEvent('click', {
 			selector: '.' + css.nextMonth
 		});
-		assert.strictEqual(currentMonth, 6, 'Next month arrow increases month');
+		assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Next month arrow increases month');
 
 		widget.setProperties({
 			...requiredProps,
 			month: 0,
-			year: 2017,
+			year: testDate.getFullYear(),
 			onRequestMonthChange: (month: number) => { currentMonth = month; },
 			onRequestYearChange: (year: number) => { currentYear = year; }
 		});
@@ -356,12 +356,12 @@ registerSuite({
 			selector: '.' + css.previousMonth
 		});
 		assert.strictEqual(currentMonth, 11, 'Previous month wraps around');
-		assert.strictEqual(currentYear, 2016, 'Year decreases when month wraps around');
+		assert.strictEqual(currentYear, testDate.getFullYear() - 1, 'Year decreases when month wraps around');
 
 		widget.setProperties({
 			...requiredProps,
 			month: 11,
-			year: 2017,
+			year: testDate.getFullYear(),
 			onRequestMonthChange: (month: number) => { currentMonth = month; },
 			onRequestYearChange: (year: number) => { currentYear = year; }
 		});
@@ -370,6 +370,6 @@ registerSuite({
 			selector: '.' + css.nextMonth
 		});
 		assert.strictEqual(currentMonth, 0, 'Next month wraps around');
-		assert.strictEqual(currentYear, 2018, 'Year increases when month wraps around');
+		assert.strictEqual(currentYear, testDate.getFullYear() + 1, 'Year increases when month wraps around');
 	}
 });
