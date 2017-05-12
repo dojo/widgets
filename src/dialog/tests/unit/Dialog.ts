@@ -2,6 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import Dialog from '../../Dialog';
+import * as css from '../../styles/dialog.m.css';
 
 registerSuite({
 	name: 'Dialog',
@@ -36,6 +37,7 @@ registerSuite({
 		});
 		let vnode = <VNode> dialog.__render__();
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
+		assert.property(vnode.properties!.classes!, css.root);
 		assert.lengthOf(vnode.children, 0);
 
 		dialog.__setProperties__({
