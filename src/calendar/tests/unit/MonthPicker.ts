@@ -26,15 +26,15 @@ const compareId = compareProperty((value: any) => {
 });
 
 const monthRadios = function(widget: any) {
-	return DEFAULT_MONTHS.map((monthName, i) => w(Radio, <any> {
-		key: compareId, // widget._radiosName + i,
+	return DEFAULT_MONTHS.map((monthName, i) => w(Radio, {
+		key: <any> compareId, // widget._radiosName + i,
 		extraClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
 		checked: i === 5,
 		label: {
 			content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
 			before: false
 		},
-		name: compareId, // widget._radiosName,
+		name: <any> compareId, // widget._radiosName,
 		value: i + '',
 		onChange: widget.listener,
 		onMouseUp: widget.listener
@@ -42,20 +42,20 @@ const monthRadios = function(widget: any) {
 };
 
 const expectedPopup = function(widget: any, open?: boolean) {
-	return v('div', <any> {
+	return v('div', {
 		afterCreate: widget.listener,
 		afterUpdate: widget.listener,
 		'aria-hidden': open ? 'false' : 'true',
-		'aria-labelledby': compareId, // widget._buttonId,
+		'aria-labelledby': <any> compareId, // widget._buttonId,
 		classes: widget.classes(css.monthPopup, open ? null : css.monthPopupHidden),
-		id: compareId, // widget._dialogId,
+		id: <any> compareId, // widget._dialogId,
 		key: 'month-popup',
 		role: 'dialog',
 		onkeydown: widget.listener
 	}, [
 		v('div', { classes: widget.classes(css.yearPicker) }, [
 			v('label', {
-				for: compareId, // widget._yearSpinnerId,
+				for: <any> compareId, // widget._yearSpinnerId,
 				classes: widget.classes(baseCss.visuallyHidden)
 			}, [ DEFAULT_LABELS.chooseYear ]),
 			v('span', {
@@ -63,11 +63,11 @@ const expectedPopup = function(widget: any, open?: boolean) {
 				classes: widget.classes(css.spinnerPrevious),
 				onclick: widget.listener
 			}, [ '2016' ]),
-			v('div', <any> {
+			v('div', {
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
 				key: 'year-spinner',
-				id: compareId, // widget._yearSpinnerId,
+				id: <any> compareId, // widget._yearSpinnerId,
 				classes: widget.classes(css.spinner),
 				role: 'spinbutton',
 				'aria-valuemin': '1',
@@ -94,13 +94,13 @@ const expected = function(widget: any, open?: boolean) {
 	return v('div', {
 		classes: widget.classes(css.header)
 	}, [
-		w(Button, <any> {
+		w(Button, {
 			key: 'button',
-			describedBy: compareId, // widget._labelId,
-			id: compareId, // widget._buttonId,
+			describedBy: <any> compareId, // widget._labelId,
+			id: <any> compareId, // widget._buttonId,
 			extraClasses: { root: css.monthTrigger },
 			popup: {
-				id: compareId, // widget._dialogId,
+				id: <any> compareId, // widget._dialogId,
 				expanded: !!open
 			},
 			onClick: widget.listener
@@ -109,8 +109,8 @@ const expected = function(widget: any, open?: boolean) {
 				classes: widget.classes(baseCss.visuallyHidden)
 			}, [ DEFAULT_LABELS.chooseMonth ])
 		]),
-		v('label', <any> {
-			id: compareId, // widget._labelId,
+		v('label', {
+			id: <any> compareId, // widget._labelId,
 			classes: widget.classes(css.currentMonthLabel),
 			'aria-live': 'polite',
 			'aria-atomic': 'false'

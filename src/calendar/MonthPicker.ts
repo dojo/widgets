@@ -3,6 +3,7 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
+import { DNode, TypedTargetEvent } from '@dojo/widget-core/interfaces';
 import Radio from '../radio/Radio';
 import Button from '../button/Button';
 import * as css from './styles/calendar.m.css';
@@ -159,11 +160,11 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		}
 	}
 
-	private _onRadioChange(event: Event) {
+	private _onRadioChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const {
 			onRequestMonthChange
 		} = this.properties;
-		const month = parseInt((<HTMLInputElement> event.target).value, 10);
+		const month = parseInt(event.target.value, 10);
 
 		onRequestMonthChange && onRequestMonthChange(month);
 	}
@@ -181,7 +182,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 	private _renderMonthLabel(month: number, year: number) {
 		const { monthNames, renderMonthLabel } = this.properties;
-		return renderMonthLabel ? renderMonthLabel(month, year) : monthNames[month].long + ' ' + year;
+		return renderMonthLabel ? renderMonthLabel(month, year) : `${monthNames[month].long} ${year}`;
 	}
 
 	private _renderMonthRadios() {
@@ -201,13 +202,11 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			theme,
 			value: i + '',
 			onChange: this._onRadioChange,
-			onMouseUp: () => {
-				this._closePopup();
-			}
+			onMouseUp: this._closePopup
 		}));
 	}
 
-	render() {
+	protected render(): DNode {
 		const {
 			month,
 			year,

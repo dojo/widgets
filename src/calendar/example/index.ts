@@ -10,9 +10,9 @@ export class App extends AppBase<WidgetProperties> {
 	render() {
 		return v('div', {}, [
 			w(Calendar, {
-				month: <number> this.state.month,
-				selectedDate: <Date> this.state.selectedDate,
-				year: <number> this.state.year,
+				month: this.state.month,
+				selectedDate: this.state.selectedDate,
+				year: this.state.year,
 				onMonthChange: (month: number) => { this.setState({ 'month': month }); },
 				onYearChange: (year: number) => { this.setState({ 'year': year }); },
 				onDateSelect: (date: Date) => {

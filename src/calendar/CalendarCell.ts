@@ -58,11 +58,11 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 		onKeyDown && onKeyDown(event);
 	}
 
-	formatDate(date: number): DNode {
+	protected formatDate(date: number): DNode {
 		return v('span', [ String(date) ]);
 	}
 
-	render() {
+	protected render(): DNode {
 		const {
 			date,
 			disabled = false,

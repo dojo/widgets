@@ -5,7 +5,7 @@ import { compareProperty, assignProperties, assignChildProperties, replaceChild,
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
-import CalendarCell, { CalendarCellProperties } from '../../CalendarCell';
+import CalendarCell from '../../CalendarCell';
 import MonthPicker from '../../MonthPicker';
 import Calendar, { CalendarProperties, DEFAULT_MONTHS, DEFAULT_LABELS, DEFAULT_WEEKDAYS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
@@ -18,7 +18,7 @@ const compareId = compareProperty((value: any) => {
 });
 
 const expectedDateCell = function(widget: any, date: number, active: boolean) {
-	return w('date-cell', <CalendarCellProperties> {
+	return w<CalendarCell>('date-cell', {
 		key: date + '-' + (active ? '5' : 'inactive'),
 		callFocus: false,
 		date,
@@ -33,8 +33,8 @@ const expectedDateCell = function(widget: any, date: number, active: boolean) {
 
 const expected = function(widget: any) {
 	return v('div', { classes: widget.classes(css.root) }, [
-		w(MonthPicker, <any> {
-			labelId: compareId,
+		w(MonthPicker, {
+			labelId: <any> compareId,
 			labels: DEFAULT_LABELS,
 			month: 5,
 			monthNames: DEFAULT_MONTHS,

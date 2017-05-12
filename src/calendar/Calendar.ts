@@ -7,7 +7,7 @@ import uuid from '@dojo/core/uuid';
 import { includes } from '@dojo/shim/array';
 import { Keys } from '../common/util';
 import MonthPicker, { CalendarMessages } from './MonthPicker';
-import CalendarCell, { CalendarCellProperties } from './CalendarCell';
+import CalendarCell from './CalendarCell';
 import * as css from './styles/calendar.m.css';
 
 /**
@@ -131,7 +131,10 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			selectedDate = this._defaultDate,
 			year
 		} = this.properties;
-		return { month: typeof month === 'number' ? month : selectedDate.getMonth(), year: year ? year : selectedDate.getFullYear() };
+		return {
+			month: typeof month === 'number' ? month : selectedDate.getMonth(),
+			year: typeof year === 'number' ? year : selectedDate.getFullYear()
+		};
 	}
 
 	private _goToDate(day: number) {
@@ -158,10 +161,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 
 	private _onDateClick(date: number, disabled: boolean) {
 		const { onDateSelect } = this.properties;
-		let {
-			month,
-			year
-		} = this._getMonthYear();
+		let { month, year } = this._getMonthYear();
 
 		if (disabled && date < 15) {
 			({ month, year } = this._onMonthIncrement());
@@ -223,10 +223,9 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			onYearChange && onYearChange(year - 1);
 			return { month: 11, year: year - 1 };
 		}
-		else {
-			onMonthChange && onMonthChange(month - 1);
-			return { month: month - 1, year: year };
-		}
+
+		onMonthChange && onMonthChange(month - 1);
+		return { month: month - 1, year: year };
 	}
 
 	private _onMonthIncrement() {
@@ -244,10 +243,9 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			onYearChange && onYearChange(year + 1);
 			return { month: 0, year: year + 1 };
 		}
-		else {
-			onMonthChange && onMonthChange(month + 1);
-			return { month: month + 1, year: year };
-		}
+
+		onMonthChange && onMonthChange(month + 1);
+		return { month: month + 1, year: year };
 	}
 
 	private _renderDateGrid(selectedDate?: Date) {
@@ -261,13 +259,13 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 		const initialWeekday = new Date(year, month, 1).getDay();
 
-		let dayIndex = 0,
-				date = initialWeekday > 0 ? previousMonthLength - initialWeekday : 0,
-				isCurrentMonth = initialWeekday > 0 ? false : true,
-				isSelectedDay: boolean,
-				weeks: DNode[] = [],
-				days: DNode[],
-				i: number;
+		let dayIndex = 0;
+		let date = initialWeekday > 0 ? previousMonthLength - initialWeekday : 0;
+		let isCurrentMonth = initialWeekday > 0 ? false : true;
+		let isSelectedDay: boolean;
+		let weeks: DNode[] = [];
+		let days: DNode[];
+		let i: number;
 
 		for (let week = 0; week < 6; week++) {
 			days = [];
@@ -296,7 +294,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 					isSelectedDay = false;
 				}
 
-				days.push(w('date-cell', <CalendarCellProperties> {
+				days.push(w<CalendarCell>('date-cell', {
 					key: date + '-' + (isCurrentMonth ? month : 'inactive'),
 					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
 					date,
@@ -321,7 +319,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		return renderWeekdayCell ? renderWeekdayCell(day) : v('abbr', { title: day.long }, [ day.short ]);
 	}
 
-	render() {
+	protected render(): DNode {
 		const {
 			labels = DEFAULT_LABELS,
 			monthNames = DEFAULT_MONTHS,
