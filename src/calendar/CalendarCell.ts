@@ -34,21 +34,17 @@ export const CalendarCellBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class CalendarCell extends CalendarCellBase<CalendarCellProperties> {
 	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			const { callFocus, onFocusCalled } = this.properties;
-			if (callFocus) {
-				element.focus();
-				onFocusCalled && onFocusCalled();
-			}
+		const { callFocus, onFocusCalled } = this.properties;
+		if (callFocus) {
+			element.focus();
+			onFocusCalled && onFocusCalled();
 		}
 	}
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			const { callFocus, onFocusCalled } = this.properties;
-			if (callFocus) {
-				element.focus();
-				onFocusCalled && onFocusCalled();
-			}
+		const { callFocus, onFocusCalled } = this.properties;
+		if (callFocus) {
+			element.focus();
+			onFocusCalled && onFocusCalled();
 		}
 	}
 
@@ -63,7 +59,7 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 	}
 
 	formatDate(date: number): DNode {
-		return v('span', {}, [ String(date) ]);
+		return v('span', [ String(date) ]);
 	}
 
 	render() {

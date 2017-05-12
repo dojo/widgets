@@ -98,7 +98,6 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 	@onPropertiesChanged()
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, CalendarProperties>) {
 		const { customDateCell = CalendarCell } = this.properties;
-		console.log('properties changed event, changed props are', evt.changedPropertyKeys);
 
 		// update custom option registry
 		if ( !this._registry || includes(evt.changedPropertyKeys, 'customDateCell')) {

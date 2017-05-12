@@ -72,11 +72,21 @@ registerSuite({
 				clickedDisabled = disabled;
 			}
 		});
-
 		widget.sendEvent('click');
-
 		assert.strictEqual(clickedDate, 1);
 		assert.isTrue(clickedDisabled);
+
+		widget.setProperties({
+			date: 2,
+			onClick: (date: number, disabled: boolean) => {
+				clickedDate = date;
+				clickedDisabled = disabled;
+			}
+		});
+		widget.getRender();
+		widget.sendEvent('click');
+		assert.strictEqual(clickedDate, 2);
+		assert.isFalse(clickedDisabled, 'disabled defaults to false');
 	},
 
 	'Keydown handler called'() {
