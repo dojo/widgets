@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as css from '../../styles/button.m.css';
 
 function getPage(remote: any) {
 	return remote
@@ -12,7 +13,7 @@ registerSuite({
 
 	'button should be visible'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('button:first-of-type')
+			.findByCssSelector(`#example-1 .${css.root}`)
 			.getSize()
 			.then(({ height, width }: { height: number; width: number; }) => {
 				assert.isAbove(height, 0, 'The button height should be greater than zero.');
@@ -23,7 +24,7 @@ registerSuite({
 
 	'button text should be as defined'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('button:first-of-type')
+			.findByCssSelector(`#example-1 .${css.root}`)
 			.getVisibleText()
 			.then((text: string) => {
 				assert.strictEqual(text, 'Basic Button');
@@ -33,7 +34,7 @@ registerSuite({
 	},
 	'button should be disabled'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('button:nth-of-type(2)')
+			.findByCssSelector(`#example-2 .${css.root}`)
 			.isEnabled()
 			.then((enabled: boolean) => {
 				assert.isTrue(!enabled, 'The button should be disabled.');
@@ -42,7 +43,7 @@ registerSuite({
 	},
 	'button should be toggle-able'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('button:nth-of-type(3)')
+			.findByCssSelector(`#example-3 .${css.root}`)
 			.getAttribute('aria-pressed')
 			.then((pressed: string) => {
 				assert.isNull(pressed, 'Initial state should be null');
