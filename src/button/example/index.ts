@@ -32,35 +32,41 @@ export class App extends AppBase<WidgetProperties> {
 					onchange: this.themeChange
 				})
 			]),
-			v('p', {
-				innerHTML: 'Basic example:'
-			}),
-			w(Button, {
-				key: 'b1',
-				theme: this._theme,
-				content: 'Basic Button'
-			}),
-			v('p', {
-				innerHTML: 'Disabled menu button:'
-			}),
-			w(Button, {
-				key: 'b2',
-				theme: this._theme,
-				content: 'Open',
-				disabled: true,
-				popup: { expanded: false, id: 'fakeId' },
-				type: <ButtonType> 'menu'
-			}),
-			v('p', {
-				innerHTML: 'Toggle Button'
-			}),
-			w(Button, {
-				key: 'b4',
-				theme: this._theme,
-				content: 'Button state',
-				pressed: <boolean> this.state.buttonPressed,
-				onClick: this.toggleButton
-			})
+			v('div', { id: 'example-1' }, [
+				v('p', {
+					innerHTML: 'Basic example:'
+				}),
+				w(Button, {
+					key: 'b1',
+					theme: this._theme,
+					content: 'Basic Button'
+				})
+			]),
+			v('div', { id: 'example-2' }, [
+				v('p', {
+					innerHTML: 'Disabled menu button:'
+				}),
+				w(Button, {
+					key: 'b2',
+					theme: this._theme,
+					content: 'Open',
+					disabled: true,
+					popup: { expanded: false, id: 'fakeId' },
+					type: <ButtonType> 'menu'
+				})
+			]),
+			v('div', { id: 'example-3' }, [
+				v('p', {
+					innerHTML: 'Toggle Button'
+				}),
+				w(Button, {
+					key: 'b3',
+					theme: this._theme,
+					content: 'Button state',
+					pressed: <boolean> this.state.buttonPressed,
+					onClick: this.toggleButton
+				})
+			])
 		]);
 	}
 }
