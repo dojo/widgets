@@ -43,7 +43,7 @@ export interface CalendarProperties extends ThemeableProperties {
 	onDateSelect?(date: Date): void;
 };
 
-const DEFAULT_MONTHS = [
+export const DEFAULT_MONTHS = [
 	{short: 'Jan', long: 'January'},
 	{short: 'Feb', long: 'February'},
 	{short: 'Mar', long: 'March'},
@@ -121,8 +121,8 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 	}
 
 	private _getMonthLength(month: number, year: number) {
-		const d = new Date(year, month + 1, 0);
-		return d.getDate();
+		const lastDate = new Date(year, month + 1, 0);
+		return lastDate.getDate();
 	}
 
 	private _getMonthYear() {
@@ -143,11 +143,11 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 
 		if (day < 1) {
-			this._onMonthIncrement('down');
+			this._onMonthDecrement();
 			day += previousMonthLength;
 		}
 		else if (day > currentMonthLength) {
-			this._onMonthIncrement('up');
+			this._onMonthIncrement();
 			day -= currentMonthLength;
 		}
 
@@ -164,11 +164,11 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		} = this._getMonthYear();
 
 		if (disabled && date < 15) {
-			({ month, year } = this._onMonthIncrement('up'));
+			({ month, year } = this._onMonthIncrement());
 			this._callDateFocus = true;
 		}
 		else if (disabled && date >= 15) {
-			({ month, year } = this._onMonthIncrement('down'));
+			({ month, year } = this._onMonthDecrement());
 			this._callDateFocus = true;
 		}
 		this._focusedDay = date;
@@ -208,7 +208,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		}
 	}
 
-	private _onMonthIncrement(direction: 'up' | 'down') {
+	private _onMonthDecrement() {
 		const {
 			month,
 			year
@@ -218,20 +218,35 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 			onYearChange
 		} = this.properties;
 
-		if (month === 11 && direction === 'up') {
-			onMonthChange && onMonthChange(0);
-			onYearChange && onYearChange(year + 1);
-			return { month: 0, year: year + 1 };
-		}
-		else if (month === 0 && direction === 'down') {
+		if (month === 0) {
 			onMonthChange && onMonthChange(11);
 			onYearChange && onYearChange(year - 1);
 			return { month: 11, year: year - 1 };
 		}
 		else {
-			const nextMonth = direction === 'up' ? month + 1 : month - 1;
-			onMonthChange && onMonthChange(nextMonth);
-			return { month: nextMonth, year: year };
+			onMonthChange && onMonthChange(month - 1);
+			return { month: month - 1, year: year };
+		}
+	}
+
+	private _onMonthIncrement() {
+		const {
+			month,
+			year
+		} = this._getMonthYear();
+		const {
+			onMonthChange,
+			onYearChange
+		} = this.properties;
+
+		if (month === 11) {
+			onMonthChange && onMonthChange(0);
+			onYearChange && onYearChange(year + 1);
+			return { month: 0, year: year + 1 };
+		}
+		else {
+			onMonthChange && onMonthChange(month + 1);
+			return { month: month + 1, year: year };
 		}
 	}
 
