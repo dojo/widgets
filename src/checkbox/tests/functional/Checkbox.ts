@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as css from '../../styles/checkbox.m.css';
 
 function getPage(remote: any) {
 	return remote
@@ -8,7 +9,7 @@ function getPage(remote: any) {
 }
 
 function nthCheckbox(n: number) {
-	return `fieldset label:nth-of-type(${n}) input[type="checkbox"]`;
+	return `#example-${n} .${css.root} .${css.input}`;
 }
 registerSuite({
 	name: 'Checkbox',
@@ -26,7 +27,7 @@ registerSuite({
 
 	'checkbox label text should be as defined'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('fieldset label:first-of-type')
+			.findByCssSelector(`#example-1 .${css.root}`)
 			.getVisibleText()
 			.then((text: string) => {
 				assert.strictEqual(text, 'Sample checkbox that starts checked');
