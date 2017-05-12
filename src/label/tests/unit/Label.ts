@@ -1,9 +1,10 @@
 import * as registerSuite from 'intern!object';
+import * as assert from 'intern/chai!assert';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
-import Label, { LabelProperties } from '../../Label';
+import Label, { LabelProperties, parseLabelClasses } from '../../Label';
 import * as baseCss from '../../../common/styles/base.m.css';
 
 let widget: Harness<LabelProperties, typeof Label>;
@@ -92,5 +93,16 @@ registerSuite({
 				innerHTML: 'baz'
 			})
 		]));
+	},
+
+	parseLabelClasses() {
+		const classes = {
+			foo: true,
+			bar: false,
+			baz: true
+		};
+		const result = parseLabelClasses(classes);
+
+		assert.strictEqual('foo baz', result);
 	}
 });
