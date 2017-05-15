@@ -378,7 +378,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				onFocus: this._onInputFocus,
 				onInput: this._onInput,
 				onKeyDown: this._onInputKeyDown,
-				overrideClasses: css,
 				readOnly,
 				required,
 				theme,
