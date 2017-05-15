@@ -384,7 +384,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
-				classes: this.classes(css.clear, iconCss.icon, iconCss.timesCircle),
+				classes: this.classes(css.clear, iconCss.icon, iconCss.times),
 				disabled,
 				readOnly,
 				innerHTML: 'clear combo box',
