@@ -15,7 +15,7 @@
 }
 
 .divider {
-	background: var(--dojo-gray);
+	background: var(--component-color);
 	cursor: pointer;
 	flex: 0 0 auto;
 	background-clip: padding-box;
@@ -34,8 +34,8 @@
 }
 
 .row > .divider:hover {
-	border-left-color: var(--dojo-light-shade-gray);
-	border-right-color: var(--dojo-light-shade-gray);
+	border-left-color: var(--underlay-background);
+	border-right-color: var(--underlay-background);
 }
 
 .column > .divider {
@@ -46,8 +46,8 @@
 }
 
 .column > .divider:hover {
-	border-top-color: var(--dojo-light-shade-gray);
-	border-bottom-color: var(--dojo-light-shade-gray);
+	border-top-color: var(--underlay-background);
+	border-bottom-color: var(--underlay-background);
 }
 
 .trailing {

@@ -1,10 +1,10 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { v } from '@dojo/widget-core/d';
 import { createHandle } from '@dojo/core/lang';
 import { debounce } from '@dojo/core/util';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { observeViewport } from '../common/util';
+import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { v } from '@dojo/widget-core/d';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/splitPane.m.css';
 
@@ -46,6 +46,7 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 	private _lastSize: number;
 	private _position: number;
 	private _root: HTMLElement;
+	private _boundHandlers: any[];
 
 	constructor() {
 		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
@@ -57,9 +58,19 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		 * uses a `_dragging` flag so no handlers will be erroneously executed
 		 * if a user isn't actually resizing this SplitPane instance.
 		 */
-		document.addEventListener('mouseup', this._onDragEnd.bind(this));
-		document.addEventListener('mousemove', this._onDragMove.bind(this));
-		document.addEventListener('touchmove', this._onDragMove.bind(this));
+		this._boundHandlers = [];
+		[
+			{ event: 'mouseup', func: this._onDragEnd.bind(this) },
+			{ event: 'mousemove', func: this._onDragMove.bind(this) },
+			{ event: 'touchmove', func: this._onDragMove.bind(this) }
+		].forEach(object => {
+			document.addEventListener(object.event, object.func);
+			this._boundHandlers.push(object);
+		});
+
+		this.own(createHandle(() => {
+			this._boundHandlers.forEach(object => document.removeEventListener(object.event, object.func));
+		}));
 
 		const viewportSubscription = observeViewport({
 			next: debounce(this._onResize.bind(this), 200)

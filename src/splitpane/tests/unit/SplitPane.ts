@@ -105,6 +105,12 @@ registerSuite({
 			onResize: size => setSize = size
 		});
 
+		widget.sendEvent('mousemove', {
+			eventInit: <MouseEventInit> {
+				clientX: 0
+			},
+			selector: ':nth-child(2)' /* this should be the divider */
+		});
 		widget.sendEvent('mousedown', {
 			eventInit: <MouseEventInit> {
 				clientX: 500
@@ -285,12 +291,12 @@ registerSuite({
 		let called = 0;
 		const splitPane = new SplitPane();
 
-		splitPane.setProperties({ onResize: () => called++ });
+		splitPane.__setProperties__({ onResize: () => called++ });
 
 		(<any> splitPane)._root = { offsetWidth: 50, offsetHeight: 50 };
 		(<any> splitPane)._onResize();
 
-		splitPane.setProperties({
+		splitPane.__setProperties__({
 			direction: Direction.column,
 			size: 25
 		});

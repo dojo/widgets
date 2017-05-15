@@ -359,7 +359,8 @@ registerSuite({
 	'Clicking arrow should not open menu if readonly'() {
 		const comboBox = new ComboBox();
 		comboBox.__setProperties__({
-			readOnly: true
+			readOnly: true,
+			theme: {}
 		});
 
 		(<any> comboBox)._onArrowClick();
