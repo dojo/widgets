@@ -7,4 +7,4 @@ export const result: string;
 export const disabledResult: string;
 export const selectedResult: string;
 export const clear: string;
-export const arrow: string;
+export const trigger: string;

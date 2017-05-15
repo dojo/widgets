@@ -54,7 +54,7 @@
 }
 
 .clear,
-.arrow {
+.trigger {
 	position: absolute;
 	cursor: pointer;
 	font-size: 0;
@@ -65,22 +65,26 @@
 	padding: 0;
 }
 
-.arrow {
-	right: 7px;
+.clear:before, .after:before {
+	font-size: inherit;
+}
+
+.trigger {
+	/*right: 7px;*/
 }
 
 .clear {
-	right: 27px;
+	/*right: 27px;*/
 }
 
-.arrow:after {
-	content: '▼';
-	display: block;
-	font-size: 14px;
+.trigger:after {
+	/*content: '▼';*/
+	/*display: block;*/
+	/*font-size: 14px;*/
 }
 
 .clear:after {
-	content: '✕';
-	display: block;
-	font-size: 14px;
+	/*content: '✕';*/
+	/*display: block;*/
+	/*font-size: 14px;*/
 }
