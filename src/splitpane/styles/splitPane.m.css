@@ -19,11 +19,10 @@
 	cursor: pointer;
 	flex: 0 0 auto;
 	background-clip: padding-box;
-	/*transition: border var(--short-animation-duration) var(--short-animation-duration);*/
 }
 
 .leading {
-	flex: 0 0 auto;
+	flex: 0 1 auto;
 }
 
 .row > .divider {

@@ -1,12 +1,15 @@
-import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as registerSuite from 'intern!object';
+import * as sinon from 'sinon';
 
-import has from '@dojo/has/has';
-import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
+import { VNode } from '@dojo/interfaces/vdom';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import has from '@dojo/has/has';
 
-import SplitPane, { Direction, SplitPaneProperties } from '../../SplitPane';
 import * as css from '../../styles/splitPane.m.css';
+import * as util from '../../../common/util';
+import SplitPane, { Direction, SplitPaneProperties } from '../../SplitPane';
 
 const hasTouch = (function (): boolean {
 	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
@@ -20,10 +23,17 @@ registerSuite({
 
 	beforeEach() {
 		widget = harness(SplitPane);
+		sinon.stub(util, 'observeViewport').returns({ unsubscribe: sinon.spy() });
+		window.getSelection = window.getSelection || (() => {});
+		sinon.stub(window, 'getSelection', () => ({
+			removeAllRanges() { }
+		}));
 	},
 
 	afterEach() {
 		widget.destroy();
+		(<any> util.observeViewport).restore();
+		(<any> window).getSelection.restore();
 	},
 
 	'Should construct SplitPane with passed properties'() {
@@ -234,6 +244,12 @@ registerSuite({
 			},
 			selector: ':nth-child(2)' /* this should be the divider */
 		});
+		widget.sendEvent('touchmove', {
+			eventInit: <MouseEventInit> {
+				changedTouches: [{ clientX: 150 }]
+			},
+			selector: ':nth-child(2)' /* this should be the divider */
+		});
 		widget.sendEvent('touchend', {
 			selector: ':nth-child(2)' /* this should be the divider */
 		});
@@ -287,22 +303,61 @@ registerSuite({
 		assert.strictEqual(called, 2);
 	},
 
-	'onResieze should be called'() {
-		let called = 0;
+	'onResize should be called when window is resized for column'(this: any) {
+		const dfd = this.async();
 		const splitPane = new SplitPane();
-
-		splitPane.__setProperties__({ onResize: () => called++ });
-
-		(<any> splitPane)._root = { offsetWidth: 50, offsetHeight: 50 };
-		(<any> splitPane)._onResize();
+		const observer = (<any> util.observeViewport).args[0][0];
+		let called = false;
 
 		splitPane.__setProperties__({
-			direction: Direction.column,
-			size: 25
+			onResize: () => called = true,
+			size: 300
 		});
+		(<any> splitPane)._root = { offsetWidth: 50 };
+		<VNode> splitPane.__render__();
+		observer.next(50);
 
-		(<any> splitPane)._onResize();
+		setTimeout(dfd.callback(() => {
+			assert.isTrue(called);
+		}), 300);
+	},
 
-		assert.strictEqual(called, 1);
+	'onResize should be called when window is resized for row'(this: any) {
+		const dfd = this.async();
+		const splitPane = new SplitPane();
+		const observer = (<any> util.observeViewport).args[0][0];
+		let called = false;
+
+		splitPane.__setProperties__({
+			onResize: () => called = true,
+			size: 300,
+			direction: Direction.column
+		});
+		(<any> splitPane)._root = { offsetHeight: 50 };
+		<VNode> splitPane.__render__();
+		observer.next(50);
+
+		setTimeout(dfd.callback(() => {
+			assert.isTrue(called);
+		}), 300);
+	},
+
+	'onResize not called when window is not resized past threshold'(this: any) {
+		const dfd = this.async();
+		const splitPane = new SplitPane();
+		const observer = (<any> util.observeViewport).args[0][0];
+		let called = false;
+
+		splitPane.__setProperties__({
+			onResize: () => called = true,
+			direction: Direction.column
+		});
+		(<any> splitPane)._root = { offsetHeight: 400 };
+		<VNode> splitPane.__render__();
+		observer.next(400);
+
+		setTimeout(dfd.callback(() => {
+			assert.isFalse(called);
+		}), 300);
 	}
 });

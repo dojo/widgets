@@ -5,16 +5,26 @@ import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import SplitPane, { Direction } from '../../splitpane/SplitPane';
+import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+	private _theme: {};
+
+	themeChange(event: Event) {
+		const checked = (<HTMLInputElement> event.target).checked;
+		this._theme = checked ? dojoTheme : {};
+		this.invalidate();
+	}
+
 	render(): DNode {
 		const containerStyles = {
-			width: '100vw',
-			height: '100vh',
+			width: '100%',
+			height: '500px',
 			maxWidth: '1000px',
-			maxHeight: '600px',
 			border: '1px solid rgba(170, 170, 170, 0.5)'
 		};
+
+		console.log('size = ', this.state.rowSize);
 
 		return v('div', {
 			styles: {
@@ -22,6 +32,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			}
 		}, [
 			v('h1', ['SplitPane Examples']),
+			v('label', [
+				'Use Dojo Theme ',
+				v('input', {
+					type: 'checkbox',
+					onchange: this.themeChange
+				})
+			]),
 			v('h3', ['Row']),
 			v('div', {
 				styles: containerStyles
@@ -30,7 +47,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					key: 'row',
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ rowSize: size }),
-					size: <number> this.state.rowSize
+					size: <number> this.state.rowSize,
+					theme: this._theme
 				})
 			]),
 			v('h3', ['Column']),
@@ -41,7 +59,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					key: 'column',
 					direction: Direction.column,
 					onResize: (size: number) => this.setState({ columnSize: size }),
-					size: <number> this.state.columnSize
+					size: <number> this.state.columnSize,
+					theme: this._theme
 				})
 			]),
 			v('h3', ['Nested']),
@@ -53,10 +72,12 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ nestedSizeA: size }),
 					size: <number> this.state.nestedSizeA,
+					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => this.setState({ nestedSizeB: size }),
-						size: <number> this.state.nestedSizeB
+						size: <number> this.state.nestedSizeB,
+						theme: this._theme
 					})
 				})
 			]),
@@ -69,10 +90,12 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ nestedSizeC: size }),
 					size: <number> this.state.nestedSizeC,
+					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.row,
 						onResize: (size: number) => this.setState({ nestedSizeD: size }),
-						size: <number> this.state.nestedSizeD
+						size: <number> this.state.nestedSizeD,
+						theme: this._theme
 					})
 				})
 			]),
@@ -85,10 +108,12 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					direction: Direction.column,
 					onResize: (size: number) => this.setState({ nestedSizeE: size }),
 					size: <number> this.state.nestedSizeE,
+					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => this.setState({ nestedSizeF: size }),
-						size: <number> this.state.nestedSizeF
+						size: <number> this.state.nestedSizeF,
+						theme: this._theme
 					})
 				})
 			]),
@@ -103,7 +128,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						size = size > 300 ? 300 : size;
 						this.setState({ maxSize: size });
 					},
-					size: <number> this.state.maxSize
+					size: <number> this.state.maxSize,
+					theme: this._theme
 				})
 			]),
 			v('h3', ['Minimum size']),
@@ -117,7 +143,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						size = size < 100 ? 100 : size;
 						this.setState({ minSize: size });
 					},
-					size: <number> this.state.minSize
+					size: <number> this.state.minSize,
+					theme: this._theme
 				})
 			])
 		]);

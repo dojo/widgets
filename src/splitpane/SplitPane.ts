@@ -43,7 +43,7 @@ const DEFAULT_SIZE = 100;
 export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 	private _divider: HTMLElement;
 	private _dragging: boolean;
-	private _lastSize: number;
+	private _lastSize?: number;
 	private _position: number;
 	private _root: HTMLElement;
 	private _boundHandlers: any[];
@@ -73,12 +73,17 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		}));
 
 		const viewportSubscription = observeViewport({
-			next: debounce(this._onResize.bind(this), 200)
+			next: debounce(this._onResize.bind(this), 50)
 		});
 
 		this.own(createHandle(() => {
 			viewportSubscription.unsubscribe();
 		}));
+	}
+
+	private _deselect() {
+		const selection = window.getSelection();
+		selection.removeAllRanges();
 	}
 
 	private _getPosition(event: MouseEvent & TouchEvent) {
@@ -95,12 +100,15 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 	private _onDragStart(event: MouseEvent & TouchEvent) {
 		this._dragging = true;
 		this._position = this._getPosition(event);
+		this._deselect();
 	}
 
 	private _onDragMove(event: MouseEvent & TouchEvent) {
 		if (!this._dragging) {
 			return;
 		}
+
+		this._deselect();
 
 		const {
 			direction = Direction.row,
@@ -127,6 +135,7 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 
 	private _onDragEnd(event: MouseEvent & TouchEvent) {
 		this._dragging = false;
+		this._lastSize = undefined;
 	}
 
 	private _onResize() {
@@ -164,25 +173,35 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 
 		return v('div', {
 			classes: this.classes(
+				direction === Direction.column ? css.column : css.row
+			).fixed(
 				css.root,
 				direction === Direction.column ? css.column : css.row
 			),
 			key: 'root'
 		}, [
 			v('div', {
-				classes: this.classes(css.leading),
+				classes: this.classes().fixed(
+					css.leading
+				),
 				key: 'leading',
 				styles
 			}, [ leading ]),
 			v('div', {
-				classes: this.classes(css.divider),
+				classes: this.classes(
+					css.divider
+				).fixed(
+					css.divider
+				),
 				key: 'divider',
 				onmousedown: this._onDragStart,
 				ontouchend: this._onDragEnd,
 				ontouchstart: this._onDragStart
 			}),
 			v('div', {
-				classes: this.classes(css.trailing),
+				classes: this.classes().fixed(
+					css.trailing
+				),
 				key: 'trailing'
 			}, [ trailing ])
 		]);
