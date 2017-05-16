@@ -45,7 +45,7 @@ function openDialog(remote: any, options: Options = {}) {
 }
 
 function clickUnderlay(remote: any, options: Options = { underlay: true }) {
-	const { mouseEnabled, touchEnabled } = remote.environmentType;
+	const { browser, touchEnabled } = remote.session.capabilities;
 	const promise = openDialog(remote, options);
 
 	if (touchEnabled) {
@@ -56,18 +56,20 @@ function clickUnderlay(remote: any, options: Options = { underlay: true }) {
 			.end();
 	}
 
-	if (mouseEnabled) {
-		// `click` clicks the center of the element, which in this case is where the dialog node is.
+	// TODO: The iPhone driver does not support touch events:
+	// https://github.com/theintern/intern/issues/602
+	if (browser && browser.toLowerCase() === 'iphone') {
 		return promise
-			.moveMouseTo(null, 0, 0)
-			.clickMouseButton()
-			.end();
+			.findByCssSelector(`.${css.underlay}`)
+				.click()
+				.end();
 	}
 
+	// `click` clicks the center of the element, which in this case is where the dialog node is.
 	return promise
-		.findByCssSelector(`.${css.underlay}`)
-			.click()
-			.end();
+		.moveMouseTo(null, 0, 0)
+		.clickMouseButton()
+		.end();
 }
 
 registerSuite({
