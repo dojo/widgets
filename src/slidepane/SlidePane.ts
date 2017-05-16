@@ -93,7 +93,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
-		const { target, type } = event;
+		const { changedTouches, pageX, target, type } = event;
 		this._swiping = false;
 
 		const {
@@ -103,7 +103,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		} = this.properties;
 
 		// Current pointer position
-		const currentX = type === 'touchend' ? event.changedTouches[0].screenX : event.pageX;
+		const currentX = type === 'touchend' ? changedTouches[0].screenX : pageX;
 		// Difference between current and initial pointer position
 		const delta = align === Align.right ? currentX - this._initialX : this._initialX - currentX;
 
