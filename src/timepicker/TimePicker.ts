@@ -15,7 +15,6 @@ import { TextInputProperties } from '../textinput/TextInput';
  * Properties that can be set on a TimePicker component
  *
  * @property autoBlur           Determines whether the input should blur after value selection
- * @property buttonText         The text for the menu trigger (defaults to '')
  * @property clearable          Determines whether the custom input should be able to be cleared
  * @property customOptionItem   Can be used to render a custom option
  * @property customOptionMenu   Can be used to render a custom option menu
@@ -71,6 +70,13 @@ export interface TimePickerProperties extends ThemeableProperties {
 	value?: string;
 }
 
+/**
+ * An object representing a dateless time (without milliseconds).
+ *
+ * @property hour    The number of hours.
+ * @property minute  An optional number of minutes.
+ * @property second  An optional number of seconds.
+ */
 export interface TimeUnits {
 	hour: number;
 	minute?: number;
@@ -160,8 +166,7 @@ export const TimePickerBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export class TimePicker extends TimePickerBase<TimePickerProperties> {
-	private _getOptions: () => TimeUnits[];
-	private _nativeInputNode: HTMLInputElement;
+	private _options: TimeUnits[] | null;
 
 	render(): DNode {
 		const {
@@ -201,12 +206,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return this.renderCustomInput();
 	}
 
-	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'native-input') {
-			this._nativeInputNode = element as HTMLInputElement;
-		}
-	}
-
 	@onPropertiesChanged()
 	protected onPropertiesChanged(event: PropertiesChangeEvent<this, TimePickerProperties>) {
 		if (
@@ -214,17 +213,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			includes(event.changedPropertyKeys, 'start') ||
 			includes(event.changedPropertyKeys, 'end') ||
 			includes(event.changedPropertyKeys, 'step')) {
-			this._getOptions = (() => {
-				const { end, start, step } = this.properties;
-				let options: TimeUnits[];
-				return function () {
-					if (options) {
-						return options;
-					}
-					options = getOptions(start, end, step);
-					return options;
-				};
-			})();
+			this._options = null;
 		}
 	}
 
@@ -339,20 +328,30 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
 	}
 
-	private _onNativeBlur() {
-		this.properties.onBlur && this.properties.onBlur(this._nativeInputNode.value);
+	private _getOptions() {
+		if (this._options) {
+			return this._options;
+		}
+
+		const { end, start, step } = this.properties;
+		this._options = getOptions(start, end, step);
+		return this._options;
 	}
 
-	private _onNativeChange() {
-		this.properties.onChange && this.properties.onChange(this._nativeInputNode.value);
+	private _onNativeBlur(event: FocusEvent) {
+		this.properties.onBlur && this.properties.onBlur((<HTMLInputElement> event.target).value);
 	}
 
-	private _onNativeFocus() {
-		this.properties.onFocus && this.properties.onFocus(this._nativeInputNode.value);
+	private _onNativeChange(event: FocusEvent) {
+		this.properties.onChange && this.properties.onChange((<HTMLInputElement> event.target).value);
+	}
+
+	private _onNativeFocus(event: FocusEvent) {
+		this.properties.onFocus && this.properties.onFocus((<HTMLInputElement> event.target).value);
 	}
 
 	private _onRequestOptions(value: string) {
-		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this._getOptions);
+		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this._getOptions.bind(this));
 	}
 }
 
