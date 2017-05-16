@@ -7,7 +7,6 @@
 
 .root {
 	display: inline-block;
-	/* width: var(--form-field-width); */
 }
 
 .input:focus {
