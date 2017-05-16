@@ -78,7 +78,8 @@ registerSuite({
 
 		widget.setProperties(checkboxProperties);
 
-		const labelClasses = widget.classes(
+		// TODO: any
+		const parsedLabelClasses = parseLabelClasses(<any> widget.classes(
 			css.root,
 			css.toggle,
 			css.checked,
@@ -86,34 +87,33 @@ registerSuite({
 			css.invalid,
 			css.readonly,
 			css.required
-		);
+		)());
+		widget.resetClasses();
+		const onLabelClass = widget.classes(css.onLabel);
+		const offLabelClass = widget.classes(css.offLabel);
+		const inputClass = widget.classes(css.input);
+		const inputWrapperClass = widget.classes(css.inputWrapper);
 
-		// TODO: is there something that works other than 'any'?
+		// TODO: any
 		widget.expectRender(w<any>(Label, {
 			extraClasses: { root:
-				// TODO: any
-				parseLabelClasses(<any> labelClasses())
+				parsedLabelClasses
 			},
 			formId: checkboxProperties.formId,
 			label: checkboxProperties.label!
 		}, [
 			v('div', {
-				classes: {
-					[css.inputWrapper]: true,
-					[css.input]: false,
-					[css.offLabel]: false,
-					[css.onLabel]: false
-				}
+				classes: inputWrapperClass
 			}, [
-				v('div', { classes: { [css.onLabel]: true } }, [ checkboxProperties.onLabel! ]),
-				v('div', { classes: { [css.offLabel]: true, [css.onLabel]: false } }, [ checkboxProperties.offLabel! ]),
+				v('div', { classes: onLabelClass }, [ checkboxProperties.onLabel! ]),
+				v('div', { classes: offLabelClass }, [ checkboxProperties.offLabel! ]),
 				v('input', {
 					'aria-describedby': checkboxProperties.describedBy,
 					'aria-invalid': String(checkboxProperties.invalid),
 					'aria-readonly': String(checkboxProperties.readOnly),
 					bind: true,
 					checked: checkboxProperties.checked,
-					classes: { [css.input]: true, [css.offLabel]: false, [css.onLabel]: false },
+					classes: inputClass,
 					disabled: checkboxProperties.disabled,
 					name: checkboxProperties.name,
 					onblur: widget.listener,
@@ -167,7 +167,6 @@ registerSuite({
 			])
 		];
 
-		widget.setChildren(children);
 		widget.setProperties({
 			invalid: false,
 			mode: Mode.toggle
