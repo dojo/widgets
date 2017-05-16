@@ -7,7 +7,7 @@ import uuid from '@dojo/core/uuid';
 import { assign } from '@dojo/core/lang';
 import { find, includes } from '@dojo/shim/array';
 import { Keys } from '../common/util';
-import Label, { LabelOptions } from '../label/Label';
+import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import SelectOption, { OptionData } from './SelectOption';
 import * as css from './styles/select.m.css';
 
@@ -406,7 +406,7 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		if (label) {
 			rootWidget = w(Label, {
-				extraClasses: this.classes(css.root, ...stateClasses),
+				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses)()) },
 				formId,
 				label,
 				registry: this._registry,
