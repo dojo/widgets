@@ -5,6 +5,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
 import Label, { LabelProperties, parseLabelClasses } from '../../Label';
+import * as css from '../../styles/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
 let widget: Harness<LabelProperties, typeof Label>;
@@ -26,6 +27,7 @@ registerSuite({
 		});
 
 		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
 			form: undefined
 		}, [
 			v('span', {
@@ -43,6 +45,7 @@ registerSuite({
 		});
 
 		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
 			form: undefined
 		}, [
 			v('span', {
@@ -63,6 +66,7 @@ registerSuite({
 		]);
 
 		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
 			form: 'foo'
 		}, [
 			v('span', {
@@ -86,6 +90,7 @@ registerSuite({
 		]);
 
 		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
 			form: 'foo'
 		}, [
 			v('div', [ 'child' ]),
