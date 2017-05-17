@@ -59,7 +59,7 @@ export interface TimePickerProperties extends ThemeableProperties {
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
 	onMenuChange?(open: boolean): void;
-	onRequestOptions?(value: string, getOptions: () => TimeUnits[]): void;
+	onRequestOptions?(value: string, options: TimeUnits[]): void;
 	openOnFocus?: boolean;
 	options?: TimeUnits[];
 	readOnly?: boolean;
@@ -208,7 +208,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	@onPropertiesChanged()
 	protected onPropertiesChanged(event: PropertiesChangeEvent<this, TimePickerProperties>) {
 		if (
-			!this._getOptions ||
 			includes(event.changedPropertyKeys, 'start') ||
 			includes(event.changedPropertyKeys, 'end') ||
 			includes(event.changedPropertyKeys, 'step')) {
@@ -350,7 +349,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	}
 
 	private _onRequestOptions(value: string) {
-		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this._getOptions.bind(this));
+		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this._getOptions());
 	}
 }
 

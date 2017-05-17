@@ -152,10 +152,11 @@ registerSuite({
 			assert.isTrue(onRequestOptions.calledWith('12:34:56'));
 
 			const expectedOptions = getOptions('00:00:00', '23:00', 3600);
-			const buildOptions = onRequestOptions.firstCall.args[1];
-			const actualOptions = buildOptions();
+			const actualOptions = onRequestOptions.firstCall.args[1];
 			assert.sameDeepMembers(actualOptions, expectedOptions);
-			assert.strictEqual(buildOptions(), actualOptions, 'The results array should be cached');
+
+			vnode.properties.onRequestResults('12:34:56');
+			assert.strictEqual(actualOptions, onRequestOptions.secondCall.args[1], 'The options array should be cached.');
 
 			picker.destroy();
 		}

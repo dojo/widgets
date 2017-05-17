@@ -10,8 +10,8 @@ import dojoTheme from '../../themes/dojo/theme';
 export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	private _theme: {};
 
-	onRequestOptions(value: string, getOptions: () => TimeUnits[]) {
-		this.setState({ options: getOptions() });
+	onRequestOptions(value: string, options: TimeUnits[]) {
+		this.setState({ options });
 	}
 
 	themeChange(event: Event) {
@@ -37,9 +37,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				},
 				key: '7',
 				onChange: (value: string) => this.setState({ 'value7': value }),
-				onRequestOptions: (value: string, getOptions: () => TimeUnits[]) => {
-					const options = getOptions();
-
+				onRequestOptions: (value: string, options: TimeUnits[]) => {
 					if (!value) {
 						return this.setState({ options });
 					}
