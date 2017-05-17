@@ -8,8 +8,9 @@ import Select from './select/Select';
 import SlidePane from './slidepane/SlidePane';
 import Slider from './slider/Slider';
 import TabPane from './tabpane/TabPane';
-import Textarea from './textarea/Textarea';
 import TextInput from './textinput/TextInput';
+import Textarea from './textarea/Textarea';
+import TitlePane from './titlepane/TitlePane';
 
 export {
 	Button,
@@ -22,6 +23,7 @@ export {
 	SlidePane,
 	Slider,
 	TabPane,
+	TextInput,
 	Textarea,
-	TextInput
+	TitlePane
 };

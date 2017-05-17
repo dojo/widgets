@@ -1,0 +1,24 @@
+@import '../../common/styles/variables.css';
+
+.root {
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.root * {
+	box-sizing: border-box;
+}
+
+.title {
+	background-color: var(--component-background);
+	position: relative;
+	z-index: 1;
+}
+
+.closeable {
+	cursor: pointer;
+}
+
+.content {
+	transition: margin-top ease-in-out var(--short-animation-duration);
+}

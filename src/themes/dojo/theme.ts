@@ -8,6 +8,7 @@ import * as slider from './slider.m.css';
 import * as tabPane from './tabPane.m.css';
 import * as textarea from './textarea.m.css';
 import * as textinput from './textinput.m.css';
+import * as titlePane from './titlePane.m.css';
 import * as comboBox from './comboBox.m.css';
 
 export default {
@@ -21,5 +22,6 @@ export default {
 	'dojo-tabPane': tabPane,
 	'dojo-textarea': textarea,
 	'dojo-textinput': textinput,
+	'dojo-titlePane': titlePane,
 	'dojo-comboBox': comboBox
 };
