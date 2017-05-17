@@ -1,15 +1,15 @@
-import { DNode, WNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import uuid from '@dojo/core/uuid';
 import { includes } from '@dojo/shim/array';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
+import { DNode, WNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
-import Label, { LabelOptions } from '../label/Label';
+import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import ResultItem from './ResultItem';
 import ResultMenu from './ResultMenu';
-import TextInput, { TextInputProperties } from '../textinput/TextInput';
-import uuid from '@dojo/core/uuid';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { Keys } from '../common/util';
+import Label, { LabelOptions } from '../label/Label';
+import TextInput, { TextInputProperties } from '../textinput/TextInput';
 
 import * as css from './styles/comboBox.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -127,6 +127,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		const { onChange } = this.properties;
 
 		this._focused = true;
+		this.invalidate();
 		onChange && onChange('');
 	}
 
