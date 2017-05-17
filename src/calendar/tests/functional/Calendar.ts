@@ -9,8 +9,9 @@ function openMonthPicker(remote: any) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
 		.setFindTimeout(5000)
-		.findByTagName('button')
+		.findByCssSelector(`.${css.monthTrigger}`)
 			.click()
+			.sleep(DELAY)
 			.end();
 }
 
@@ -22,6 +23,7 @@ function clickDate(remote: any) {
 		.setFindTimeout(5000)
 		.findByCssSelector(`tbody > tr:first-child > td:nth-child(${firstDay + 1})`)
 			.click()
+			.sleep(DELAY)
 			.end();
 }
 
@@ -30,13 +32,12 @@ registerSuite({
 
 	'Open month picker'() {
 		return openMonthPicker((<any> this).remote)
-			.findByCssSelector('[role=dialog]')
+			.findByCssSelector(`.${css.monthPopup}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'false', 'The month dialog should open on first click');
 				})
 				.end()
-			.sleep(DELAY)
 			.getActiveElement()
 				.getAttribute('role')
 				.then((role: string) => {
@@ -46,9 +47,9 @@ registerSuite({
 
 	'Close month picker'() {
 		return openMonthPicker((<any> this).remote)
-			.sleep(DELAY)
-			.findByTagName('button')
+			.findByCssSelector(`.${css.monthTrigger}`)
 				.click()
+				.sleep(DELAY)
 				.end()
 			.findByCssSelector('[role=dialog]')
 				.getAttribute('aria-hidden')
@@ -61,6 +62,7 @@ registerSuite({
 		return openMonthPicker((<any> this).remote)
 			.findByCssSelector('input[type=radio]')
 				.click()
+				.sleep(DELAY)
 				.end()
 			.findByTagName('label')
 				.getVisibleText()
@@ -68,7 +70,7 @@ registerSuite({
 					assert.include(label, 'January', 'Clicking first month radio changes label text to January');
 				})
 				.end()
-			.findByCssSelector('[role=dialog]')
+			.findByCssSelector(`.${css.monthPopup}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'true', 'Clicking month radio closes popup');
@@ -95,7 +97,6 @@ registerSuite({
 
 	'Arrow keys move date focus'() {
 		return clickDate((<any> this).remote)
-			.sleep(DELAY)
 			.pressKeys(keys.ARROW_RIGHT)
 			.sleep(DELAY)
 			.getActiveElement()
