@@ -130,7 +130,6 @@ export default class Slider extends SliderBase<SliderProperties> {
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
-				bind: this,
 				classes: this.classes(css.input).fixed(css.nativeInput),
 				'aria-describedby': describedBy,
 				disabled,

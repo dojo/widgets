@@ -25,8 +25,7 @@
     "@dojo/has": "beta1",
     "@dojo/i18n": "beta1",
     "@dojo/shim": "beta1",
-    "@dojo/widget-core": "beta1",
-    "maquette": "2.4.3"
+    "@dojo/widget-core": "beta1"
   },
   "devDependencies": {
     "@dojo/interfaces": "beta1",
