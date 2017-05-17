@@ -113,7 +113,7 @@ export function getOptions(start: string = '00:00:00', end: string = '23:59:59',
 	}
 
 	return options.map((time: number) => {
-		const date = new Date(time);
+		date.setTime(time);
 		return {
 			hour: date.getHours(),
 			minute: date.getMinutes(),
