@@ -220,6 +220,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		const {
 			disabled,
 			end,
+			inputProperties,
 			invalid,
 			name,
 			readOnly,
@@ -232,12 +233,13 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		const classes = [
 			css.input,
 			disabled ? css.disabled : null,
-			invalid ? css.required : null,
+			invalid ? css.invalid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
 
 		return v('input', {
+			'aria-describedby': inputProperties && inputProperties.describedBy,
 			'aria-invalid': invalid ? 'true' : null,
 			'aria-readonly': readOnly ? 'true' : null,
 			classes: this.classes(...classes),

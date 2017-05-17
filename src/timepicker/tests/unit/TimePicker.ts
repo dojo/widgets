@@ -179,6 +179,7 @@ registerSuite({
 				v('input', {
 					afterCreate: picker.listener,
 					afterUpdate: picker.listener,
+					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
 					classes: inputClasses,
@@ -196,6 +197,63 @@ registerSuite({
 					step: undefined,
 					type: 'time',
 					value: undefined
+				})
+			]));
+
+			picker.destroy();
+		},
+
+		'Attributes added'() {
+			const picker = harness(TimePicker);
+			const inputClasses = picker.classes(
+				css.disabled,
+				css.input,
+				css.invalid,
+				css.readonly,
+				css.required
+			);
+
+			picker.setProperties({
+				disabled: true,
+				end: '12:00',
+				inputProperties: { describedBy: 'Some descriptive text' },
+				invalid: true,
+				name: 'some-field',
+				readOnly: true,
+				required: true,
+				start: '10:00',
+				step: 60,
+				useNativeElement: true,
+				value: '11:30'
+			});
+
+			picker.expectRender(v('span', {
+				afterCreate: picker.listener,
+				afterUpdate: picker.listener,
+				classes: picker.classes(css.root),
+				key: 'root'
+			}, [
+				v('input', {
+					afterCreate: picker.listener,
+					afterUpdate: picker.listener,
+					'aria-describedby': 'Some descriptive text',
+					'aria-invalid': 'true',
+					'aria-readonly': 'true',
+					classes: inputClasses,
+					disabled: true,
+					invalid: true,
+					key: 'native-input',
+					max: '12:00',
+					min: '10:00',
+					name: 'some-field',
+					onblur: picker.listener,
+					onchange: picker.listener,
+					onfocus: picker.listener,
+					readOnly: true,
+					required: true,
+					step: 60,
+					type: 'time',
+					value: '11:30'
 				})
 			]));
 
@@ -225,6 +283,7 @@ registerSuite({
 					v('input', {
 						afterCreate: picker.listener,
 						afterUpdate: picker.listener,
+						'aria-describedby': undefined,
 						'aria-invalid': null,
 						'aria-readonly': null,
 						classes: inputClasses,
