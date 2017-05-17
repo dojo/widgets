@@ -34,13 +34,14 @@ export const CalendarCellBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class CalendarCell extends CalendarCellBase<CalendarCellProperties> {
 	protected onElementCreated(element: HTMLElement, key: string) {
-		const { callFocus, onFocusCalled } = this.properties;
-		if (callFocus) {
-			element.focus();
-			onFocusCalled && onFocusCalled();
-		}
+		this._callFocus(element);
 	}
+
 	protected onElementUpdated(element: HTMLElement, key: string) {
+		this._callFocus(element);
+	}
+
+	private _callFocus(element: HTMLElement) {
 		const { callFocus, onFocusCalled } = this.properties;
 		if (callFocus) {
 			element.focus();

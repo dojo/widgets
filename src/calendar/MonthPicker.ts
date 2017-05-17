@@ -9,7 +9,16 @@ import Button from '../button/Button';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
-// will need to localize messages
+/**
+ * @type CalendarMessages
+ *
+ * Accessible text for Month Picker controls. Messages can be localized by passing a CalendarMessages object into the Calendar widget's labels property
+ *
+ * @property chooseMonth          Labels the button that opens the month picker popup
+ * @property chooseYear           Labels the year spinner within the popup
+ * @property previousMonth        Labels the prvious month arrow button
+ * @property nextMonth            Labels the next month arrow button
+ */
 export interface CalendarMessages {
 	chooseMonth: string;
 	chooseYear: string;
@@ -52,18 +61,14 @@ export const MonthPickerBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> {
-	private _buttonId = uuid();
-	private _dialogId = uuid();
-	private _labelId = uuid();
-	private _yearSpinnerId = uuid();
-	private _radiosName = uuid();
+	private _idBase = uuid();
 
 	private _callTriggerFocus = false;
 	private _callPopupFocus = false;
 
 	// move focus when opening/closing the popup
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		// TODO: find a way to call focus on button widget
+		// TODO: When the focus manager issue is resolved, use it to set focus on the button widget: https://github.com/dojo/widget-core/issues/107
 
 		// popup
 		if (key === 'year-spinner') {
@@ -77,6 +82,8 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 	private _closePopup() {
 		const { onRequestClose } = this.properties;
+
+		// TODO: When the focus manager issue is resolved, use it to set unfocus the popup when closed: https://github.com/dojo/widget-core/issues/107
 
 		this._callTriggerFocus = true;
 		onRequestClose && onRequestClose();
@@ -189,16 +196,14 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		const { month, theme = {} } = this.properties;
 
 		return this.properties.monthNames.map((monthName, i) => w(Radio, {
-			key: this._radiosName + i,
+			key: `${this._idBase}_radios_${i}`,
 			extraClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
 			checked: i === month,
 			label: {
 				content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
 				before: false
 			},
-			name: this._radiosName,
-			// TODO: replace this with a method to "unfocus" components?
-			// tabIndex: open ? 0 : -1,
+			name: `${this._idBase}_radios`,
 			theme,
 			value: i + '',
 			onChange: this._onRadioChange,
@@ -210,7 +215,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		const {
 			month,
 			year,
-			labelId = this._labelId,
+			labelId = `${this._idBase}_label`,
 			labels,
 			open = false,
 			theme = {}
@@ -221,10 +226,10 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			w(Button, {
 				key: 'button',
 				describedBy: labelId,
-				id: this._buttonId,
+				id: `${this._idBase}_button`,
 				extraClasses: { root: css.monthTrigger },
 				popup: {
-					id: this._dialogId,
+					id: `${this._idBase}_dialog`,
 					expanded: open
 				},
 				theme,
@@ -255,15 +260,15 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			v('div', {
 				key: 'month-popup',
 				'aria-hidden': String(!open),
-				'aria-labelledby': this._buttonId,
+				'aria-labelledby': `${this._idBase}_button`,
 				classes: this.classes(css.monthPopup, open ? null : css.monthPopupHidden),
-				id: this._dialogId,
+				id: `${this._idBase}_dialog`,
 				role: 'dialog',
 				onkeydown: this._onPopupKeyDown
 			}, [
 				v('div', { classes: this.classes(css.yearPicker) }, [
 					v('label', {
-						for: this._yearSpinnerId,
+						for: `${this._idBase}_year`,
 						classes: this.classes().fixed(baseCss.visuallyHidden)
 					}, [ labels.chooseYear ]),
 					v('span', {
@@ -273,7 +278,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 					}, [ String(year - 1) ]),
 					v('div', {
 						key: 'year-spinner',
-						id: this._yearSpinnerId,
+						id: `${this._idBase}_year`,
 						classes: this.classes(css.spinner),
 						role: 'spinbutton',
 						'aria-valuemin': '1',

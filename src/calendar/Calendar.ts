@@ -295,7 +295,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				}
 
 				days.push(w<CalendarCell>('date-cell', {
-					key: date + '-' + (isCurrentMonth ? month : 'inactive'),
+					key: `${date}-${isCurrentMonth ? month : 'inactive'}`,
 					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
 					date,
 					disabled: !isCurrentMonth,
