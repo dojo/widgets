@@ -3,8 +3,12 @@ import * as assert from 'intern/chai!assert';
 import * as css from '../../styles/slider.m.css';
 import * as keys from 'leadfoot/keys';
 
-function getPage(remote: any) {
-	return remote
+function getPage(test: any) {
+	const { browserName } = test.remote.environmentType;
+	if (browserName.toLowerCase() === 'microsoftedge') {
+		test.skip('example page currently doesn\'t work in edge.');
+	}
+	return test.remote
 		.get('http://localhost:9000/_build/common/example/?module=slider')
 		.setFindTimeout(5000);
 }
@@ -64,7 +68,8 @@ registerSuite({
 
 	'horizontal slider': {
 		'each component of a slider should be visible'(this: any) {
-			return getPage(this.remote)
+
+			return getPage(this)
 				.findByCssSelector(`#example-1 .${css.root}`)
 				.isDisplayed()
 				.findByCssSelector(`.${css.input}`)
@@ -86,7 +91,7 @@ registerSuite({
 				.end();
 		},
 		'label should be as defined'(this: any) {
-			return getPage(this.remote)
+			return getPage(this)
 				.findByCssSelector(`#example-1 .${css.root}`)
 				.getVisibleText()
 				.then((text: string) => {
@@ -95,7 +100,7 @@ registerSuite({
 				.end();
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
-			let command = getPage(this.remote)
+			let command = getPage(this)
 				.findByCssSelector(`#example-1 .${css.root}`);
 			return checkValue(command)
 				.end();
@@ -110,7 +115,7 @@ registerSuite({
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this.remote)
+			let command = getPage(this)
 				.findByCssSelector(`#example-1 .${css.root}`);
 			command = checkValue(command, sliderValues);
 
@@ -137,7 +142,7 @@ registerSuite({
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this.remote)
+			let command = getPage(this)
 				.findByCssSelector(`#example-1 .${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
@@ -157,7 +162,7 @@ registerSuite({
 	},
 	'vertical slider': {
 		'each component of a slider should be visible'(this: any) {
-			return getPage(this.remote)
+			return getPage(this)
 				.findByCssSelector(`#example-2 .${css.root}`)
 				.isDisplayed()
 				.findByCssSelector(`.${css.input}`)
@@ -179,7 +184,7 @@ registerSuite({
 				.end();
 		},
 		'label should be as defined'(this: any) {
-			return getPage(this.remote)
+			return getPage(this)
 				.findByCssSelector(`#example-2 .${css.root}`)
 				.getVisibleText()
 				.then((text: string) => {
@@ -188,7 +193,7 @@ registerSuite({
 				.end();
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
-			let command = getPage(this.remote)
+			let command = getPage(this)
 				.findByCssSelector(`#example-2 .${css.root}`);
 			return checkValue(command)
 				.end();
@@ -203,7 +208,7 @@ registerSuite({
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this.remote)
+			let command = getPage(this)
 				.findByCssSelector(`#example-2 .${css.root}`);
 			command = checkValue(command, sliderValues);
 
@@ -230,7 +235,7 @@ registerSuite({
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this.remote)
+			let command = getPage(this)
 				.findByCssSelector(`#example-2 .${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
