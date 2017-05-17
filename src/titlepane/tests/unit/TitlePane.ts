@@ -38,21 +38,21 @@ registerSuite({
 				onkeyup: titlePane.listener,
 				role: 'heading'
 			}, [
-				v('div', <any> {
+				v('div', {
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': 'false',
 					'aria-expanded': 'true',
-					id: isNonEmptyString,
+					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: 0
 				}, [ 'test' ])
 			]),
-			v('div', <any> {
+			v('div', {
 				'aria-labelledby': isNonEmptyString,
 				afterCreate: titlePane.listener,
 				afterUpdate: titlePane.listener,
 				classes: titlePane.classes(css.content),
-				id: isNonEmptyString,
+				id: <any> isNonEmptyString,
 				key: 'content'
 			})
 		]));
@@ -76,21 +76,21 @@ registerSuite({
 				onkeyup: undefined,
 				role: 'heading'
 			}, [
-				v('div', <any> {
+				v('div', {
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': 'true',
 					'aria-expanded': 'false',
-					id: isNonEmptyString,
+					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: -1
 				}, [ 'test' ])
 			]),
-			v('div', <any> {
+			v('div', {
 				'aria-labelledby': isNonEmptyString,
 				afterCreate: titlePane.listener,
 				afterUpdate: titlePane.listener,
 				classes: titlePane.classes(css.content),
-				id: isNonEmptyString,
+				id: <any> isNonEmptyString,
 				key: 'content'
 			})
 		]));
