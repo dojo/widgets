@@ -1,6 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as css from '../../styles/slider.m.css';
+import * as keys from 'leadfoot/keys';
 
 function getPage(remote: any) {
 	return remote
@@ -9,55 +10,60 @@ function getPage(remote: any) {
 }
 
 function checkValue(command: any, values?: number[]) {
-
-	let currentValue = -1;
+	const notIE = command.session.capabilities.browserName.toLowerCase() !== 'internet explorer';
+	let currentValue: number;
 	return command
 		.findByCssSelector(`.${css.inputWrapper}`)
 			.findByCssSelector(`.${css.input}`)
 			.getProperty('value')
-			.then((value: number) => {
-				currentValue = value;
+			.then((value: string) => {
+				currentValue = parseInt(value, 10);
 			})
 			.end()
 			.findByCssSelector(`.${css.fill}`)
 			.getAttribute('style')
 			.then((style: string) => {
-				const absWidthRegex = /width:\s*(\d+)%/;
+				const absWidthRegex = /width:\s*(\d+)\.?\d*%/;
 				let result = style.match(absWidthRegex);
+				let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
 				assert.lengthOf(result, 2);
-				let width = result && result.length > 0 ? result[1] : -1;
-				assert.strictEqual(width, currentValue);
-				values && values.push(<number> width);
+				notIE && assert.closeTo(width, currentValue, 1);
 			})
 			.end()
 			.findByCssSelector(`.${css.thumb}`)
 			.getAttribute('style')
 			.then((style: string) => {
-				const absWidthRegex = /left:\s*(\d+)%/;
+				const absWidthRegex = /left:\s*(\d+)\.?\d*%/;
 				let result = style.match(absWidthRegex);
+				let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
 				assert.lengthOf(result, 2);
-				let width = result && result.length > 0 ? result[1] : -1;
-				assert.strictEqual(width, currentValue);
+				notIE && assert.closeTo(width, currentValue, 1);
+				values && values.push(width);
 			})
 			.end()
 		.end();
 }
 
 function slide(command: any, x: number, y: number) {
-	return command
+	return command.session.capabilities.brokenMouseEvents ?
+		command.findByCssSelector(`.${css.thumb}`)
+		.moveMouseTo(x, y)
+		.pressMouseButton()
+		.end()
+		:
+		command
 		.findByCssSelector(`.${css.thumb}`)
 		.moveMouseTo()
 		.pressMouseButton()
 		.moveMouseTo(x, y)
 		.releaseMouseButton()
 		.end();
-
 }
 registerSuite({
 	name: 'Slider',
 
 	'horizontal slider': {
-		'each components of a slider should be visible'(this: any) {
+		'each component of a slider should be visible'(this: any) {
 			return getPage(this.remote)
 				.findByCssSelector(`#example-1 .${css.root}`)
 				.isDisplayed()
@@ -95,6 +101,14 @@ registerSuite({
 				.end();
 		},
 		'slider should be slidable with mouse'(this: any) {
+			const { browserName, mouseEnabled } = this.remote.environmentType;
+			if (!mouseEnabled) {
+				this.skip('Test requires mouse interactions.');
+			}
+			if (browserName.toLowerCase() === 'internet explorer') {
+				this.skip('mouse movements doesn\'t work in IE.');
+			}
+
 			let sliderValues: number[] = [];
 			let command = getPage(this.remote)
 				.findByCssSelector(`#example-1 .${css.root}`);
@@ -114,15 +128,24 @@ registerSuite({
 				.end();
 		},
 		'slider should be slidable with left and right arrow keys'(this: any) {
+			const { browserName, supportsKeysCommand } = this.remote.environmentType;
+			if (!supportsKeysCommand) {
+				this.skip('Arrow keys required for tests.');
+			}
+			if (browserName.toLowerCase() === 'safari' || browserName.toLowerCase() === 'internet explorer') {
+				this.skip('pressKeys with arrow keys doesn\'t work in iphone and IE.');
+			}
+
 			let sliderValues: number[] = [];
 			let command = getPage(this.remote)
 				.findByCssSelector(`#example-1 .${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
-				.pressKeys('\uE012'); // left arrow
+				.pressKeys(keys.ARROW_LEFT);
 
 			command = checkValue(command, sliderValues)
-				.pressKeys(['\uE014', '\uE014']); // right arrow
+				.click()
+				.pressKeys([keys.ARROW_RIGHT, keys.ARROW_RIGHT]);
 
 			return checkValue(command, sliderValues)
 				.then(() => {
@@ -133,7 +156,7 @@ registerSuite({
 		}
 	},
 	'vertical slider': {
-		'each components of a slider should be visible'(this: any) {
+		'each component of a slider should be visible'(this: any) {
 			return getPage(this.remote)
 				.findByCssSelector(`#example-2 .${css.root}`)
 				.isDisplayed()
@@ -171,39 +194,53 @@ registerSuite({
 				.end();
 		},
 		'slider should be slidable with mouse'(this: any) {
+			const { browserName, mouseEnabled } = this.remote.environmentType;
+			if (!mouseEnabled) {
+				this.skip('Test requires mouse interactions.');
+			}
+			if (browserName.toLowerCase() === 'internet explorer') {
+				this.skip('mouse movements doesn\'t work in IE.');
+			}
+
 			let sliderValues: number[] = [];
 			let command = getPage(this.remote)
 				.findByCssSelector(`#example-2 .${css.root}`);
 			command = checkValue(command, sliderValues);
 
-			command = slide(command, 0, -30);
+			command = slide(command, 1, -30);
 			command = checkValue(command, sliderValues);
 
-			command = slide(command, 0, -40);
+			command = slide(command, 1, -40);
 			command = checkValue(command, sliderValues);
 
 			return command
 				.then(() => {
-					console.log('mouse values', sliderValues);
 					assert.lengthOf(sliderValues, 3);
 					assert.isTrue(sliderValues[1] > sliderValues[0] && sliderValues[2] > sliderValues[1]);
 				})
 				.end();
 		},
 		'slider should be slidable with up and down arrow keys'(this: any) {
+			const { browserName, supportsKeysCommand } = this.remote.environmentType;
+			if (!supportsKeysCommand) {
+				this.skip('Arrow keys required for tests.');
+			}
+			if (browserName.toLowerCase() === 'safari' || browserName.toLowerCase() === 'internet explorer') {
+				this.skip('pressKeys with arrow keys doesn\'t work in iphone and IE.');
+			}
+
 			let sliderValues: number[] = [];
 			let command = getPage(this.remote)
 				.findByCssSelector(`#example-2 .${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
-				.pressKeys(['\uE014', '\uE013']); // up arrow
+				.pressKeys([keys.ARROW_UP, keys.ARROW_UP]);
 
 			command = checkValue(command, sliderValues)
-				.pressKeys('\uE015'); // down arrow
+				.pressKeys(keys.ARROW_DOWN);
 
 			return checkValue(command, sliderValues)
 				.then(() => {
-					console.log('key values', sliderValues);
 					assert.lengthOf(sliderValues, 3);
 					assert.isTrue(sliderValues[1] > sliderValues[2] && sliderValues[2] > sliderValues[0]);
 				})
