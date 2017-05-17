@@ -2,6 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as css from '../../styles/textinput.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
+import * as keys from 'leadfoot/keys';
 
 function getPage(remote: any) {
 	return remote
@@ -37,18 +38,23 @@ registerSuite({
 			});
 	},
 	'TextInput should gain focus when clicking on the label'(this: any) {
-		let input: any;
+		let elementClassName: string;
 		return getPage(this.remote)
 			.findByCssSelector(`#example-text .${css.root}`)
 			.findByCssSelector(`.${css.input}`)
-			.then(function(element: any) {
-				input = element;
+			.getProperty('className')
+			.then(function(className: string) {
+				elementClassName = className;
 			})
 			.end()
 			.click()
 			.getActiveElement()
 			.then(function(element: any) {
-				assert.strictEqual(element._elementId, input._elementId);
+				element
+					.getProperty('className')
+					.then(function(className: string) {
+						assert.strictEqual(className, elementClassName);
+					});
 			})
 			.end();
 	},
@@ -83,12 +89,17 @@ registerSuite({
 			.end();
 	},
 	'Disabled TextInput should not allow input to be typed'(this: any) {
-		const dfd = this.async(2000);
-		getPage(this.remote)
+		const initValue = 'Initial value';
+		return getPage(this.remote)
 			.findByCssSelector(`#example-disabled .${css.root} .${css.input}`)
 			.click()
+			.then(null, () => {})
 			.type('text')
-			.then(() => dfd.reject('an error should occur when trying to type in a disabled input box'), dfd.resolve)
+			.then(null, () => {})
+			.getProperty('value')
+			.then((value: string) => {
+				assert.strictEqual(value, initValue);
+			})
 			.end();
 	},
 	'Validated TextInput should update style based on validaty'(this: any) {
@@ -104,22 +115,28 @@ registerSuite({
 			.findByCssSelector(`.${css.input}`)
 			.click()
 			.type(validText)
+			.pressKeys(keys.TAB)
 			.end()
 			.click()
-			.getProperty('className')
-			.then((className: string) => {
-				assert.notInclude(className, css.invalid);
-				assert.include(className, css.valid);
+			.then(function(this: any) {
+				this.getProperty('className')
+					.then((className: string) => {
+						assert.notInclude(className, css.invalid);
+						assert.include(className, css.valid);
+					});
 			})
 			.findByCssSelector(`.${css.input}`)
 			.click()
 			.type(invalidText)
+			.pressKeys(keys.TAB)
 			.end()
 			.click()
-			.getProperty('className')
-			.then((className: string) => {
-				assert.notInclude(className, css.valid);
-				assert.include(className, css.invalid);
+			.then(function(this: any) {
+				this.getProperty('className')
+					.then((className: string) => {
+						assert.notInclude(className, css.valid);
+						assert.include(className, css.invalid);
+					});
 			})
 			.end();
 	}
