@@ -76,7 +76,6 @@ registerSuite({
 
 			picker.expectRender(w(ComboBox, <ComboBoxProperties> {
 				autoBlur: false,
-				bind: picker.listener,
 				clearable: true,
 				customResultItem: undefined,
 				customResultMenu: undefined,
@@ -182,7 +181,6 @@ registerSuite({
 					afterUpdate: picker.listener,
 					'aria-invalid': null,
 					'aria-readonly': null,
-					bind: picker.listener,
 					classes: inputClasses,
 					disabled: undefined,
 					invalid: undefined,
@@ -220,7 +218,6 @@ registerSuite({
 				key: 'root'
 			}, [
 				w(Label, <any> {
-					bind: picker.listener,
 					classes: labelClasses,
 					formId: undefined,
 					label: 'foo'
@@ -230,7 +227,6 @@ registerSuite({
 						afterUpdate: picker.listener,
 						'aria-invalid': null,
 						'aria-readonly': null,
-						bind: picker.listener,
 						classes: inputClasses,
 						disabled: undefined,
 						invalid: undefined,

@@ -185,7 +185,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 
 			if (label) {
 				children = [ w(Label, {
-					bind: this,
 					classes: this.classes(
 						disabled ? css.disabled : null,
 						invalid ? css.invalid : null,
@@ -241,7 +240,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return v('input', {
 			'aria-invalid': invalid ? 'true' : null,
 			'aria-readonly': readOnly ? 'true' : null,
-			bind: this,
 			classes: this.classes(...classes),
 			disabled,
 			invalid,
@@ -287,7 +285,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 
 		return w(ComboBox, {
 			autoBlur,
-			bind: this,
 			clearable,
 			customResultItem: customOptionItem,
 			customResultMenu: customOptionMenu,
