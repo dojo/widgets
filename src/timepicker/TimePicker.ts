@@ -166,7 +166,7 @@ export const TimePickerBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export class TimePicker extends TimePickerBase<TimePickerProperties> {
-	private _options: TimeUnits[] | null;
+	protected options: TimeUnits[] | null;
 
 	render(): DNode {
 		const {
@@ -205,13 +205,23 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return this.renderCustomInput();
 	}
 
+	protected getOptions() {
+		if (this.options) {
+			return this.options;
+		}
+
+		const { end, start, step } = this.properties;
+		this.options = getOptions(start, end, step);
+		return this.options;
+	}
+
 	@onPropertiesChanged()
 	protected onPropertiesChanged(event: PropertiesChangeEvent<this, TimePickerProperties>) {
 		if (
 			includes(event.changedPropertyKeys, 'start') ||
 			includes(event.changedPropertyKeys, 'end') ||
 			includes(event.changedPropertyKeys, 'step')) {
-			this._options = null;
+			this.options = null;
 		}
 	}
 
@@ -326,16 +336,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
 	}
 
-	private _getOptions() {
-		if (this._options) {
-			return this._options;
-		}
-
-		const { end, start, step } = this.properties;
-		this._options = getOptions(start, end, step);
-		return this._options;
-	}
-
 	private _onNativeBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((<HTMLInputElement> event.target).value);
 	}
@@ -349,7 +349,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	}
 
 	private _onRequestOptions(value: string) {
-		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this._getOptions());
+		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this.getOptions());
 	}
 }
 
