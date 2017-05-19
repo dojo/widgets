@@ -5,6 +5,7 @@ import { assignProperties, assignChildProperties } from '@dojo/test-extras/suppo
 import Radio, { RadioProperties } from '../../Radio';
 import Label from '../../../label/Label';
 import { v, w } from '@dojo/widget-core/d';
+import has from '@dojo/has/has';
 import * as css from '../../styles/radio.m.css';
 
 let radio: Harness<RadioProperties, typeof Radio>;
@@ -223,6 +224,10 @@ registerSuite({
 
 	},
 	'events setup'() {
+		// TODO this is borrowed from: https://github.com/msssk/widgets/blob/672a53433159cce85418f322cbcd5e3c9d1e94bb/src/checkbox/tests/unit/Checkbox.ts#L212
+		// Will need to clean it up once this piece of code is landed somewhere.
+		const hasTouch = has('host-node') || 'ontouchstart' in document || ('onpointerdown' in document && navigator.maxTouchPoints > 0);
+
 		let blurred = false,
 				changed = false,
 				clicked = false,
@@ -257,11 +262,14 @@ registerSuite({
 		assert.isTrue(mousedown);
 		radio.sendEvent('mouseup', { selector: 'input' });
 		assert.isTrue(mouseup);
-		radio.sendEvent('touchstart', { selector: 'input' });
-		assert.isTrue(touchstart);
-		radio.sendEvent('touchend', { selector: 'input' });
-		assert.isTrue(touchend);
-		radio.sendEvent('touchcancel', { selector: 'input' });
-		assert.isTrue(touchcancel);
+		if (hasTouch) {
+			radio.sendEvent('touchstart', { selector: 'input' });
+			assert.isTrue(touchstart);
+			radio.sendEvent('touchend', { selector: 'input' });
+			assert.isTrue(touchend);
+			radio.sendEvent('touchcancel', { selector: 'input' });
+			assert.isTrue(touchcancel);
+
+		}
 	}
 });
