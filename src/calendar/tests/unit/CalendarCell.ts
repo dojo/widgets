@@ -113,12 +113,18 @@ registerSuite({
 		});
 		widget.getRender();
 
-		assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
+		assert.isFalse(callFocus, 'Focus callback should set callFocus to false in onElementCreated');
 
 		callFocus = true;
-		document.body.focus();
+		widget.setProperties({
+			callFocus,
+			date: 2,
+			onFocusCalled: () => {
+				callFocus = false;
+			}
+		});
 		widget.getRender();
 
-		assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
+		assert.isFalse(callFocus, 'Focus callback should set callFocus to false in onElementUpdated');
 	}
 });

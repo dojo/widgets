@@ -430,24 +430,20 @@ registerSuite({
 		widget.callListener('onRequestOpen', {
 			index: '0'
 		});
-		// removing this doesn't seem to have an effect
-		const newRender = widget.getRender();
-		console.log('finished render is', newRender);
-
 		assignChildProperties(expectedVdom, '0', {
 			open: true
 		});
 		widget.expectRender(expectedVdom, 'Month popup should have "open: true" after onRequestOpen is called');
 
-		/* widget.callListener('onRequestClose', {
+		widget.callListener('onRequestClose', {
 			index: '0'
 		});
-		widget.getRender();
+		// widget.getRender();
 
 		assignChildProperties(expectedVdom, '0', {
 			open: false
 		});
-		widget.expectRender(expectedVdom, 'Month popup should have "open: false" after onRequestClose is called'); */
+		widget.expectRender(expectedVdom, 'Month popup should have "open: false" after onRequestClose is called');
 	},
 
 	'Month popup events change month and year'() {
