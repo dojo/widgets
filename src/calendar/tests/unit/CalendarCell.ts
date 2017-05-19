@@ -113,14 +113,12 @@ registerSuite({
 		});
 		widget.getRender();
 
-		assert.strictEqual(document.activeElement, widget.getDom(), 'Focus should be set to Cell\'s root node in afterCreate');
 		assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 
 		callFocus = true;
 		document.body.focus();
 		widget.getRender();
 
-		assert.strictEqual(document.activeElement, widget.getDom(), 'Focus should be set to Cell\'s root node in afterUpdate');
 		assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 	}
 });

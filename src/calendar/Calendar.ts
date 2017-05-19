@@ -84,17 +84,6 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 	private _monthPopupOpen = false;
 	private _registry: WidgetRegistry;
 
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (this._callDateFocus) {
-			const { month } = this._getMonthYear();
-			// focus date with correct key
-			if (key === (this._focusedDay + '-' + month)) {
-				element.focus();
-				this._callDateFocus = false;
-			}
-		}
-	}
-
 	@onPropertiesChanged()
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, CalendarProperties>) {
 		const { customDateCell = CalendarCell } = this.properties;
@@ -295,7 +284,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				}
 
 				days.push(w<CalendarCell>('date-cell', {
-					key: `${date}-${isCurrentMonth ? month : 'inactive'}`,
+					key: `date-${week * 7 + i}`,
 					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
 					date,
 					disabled: !isCurrentMonth,
@@ -320,6 +309,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 	}
 
 	protected render(): DNode {
+		console.log('rendering, open is', this._monthPopupOpen);
 		const {
 			labels = DEFAULT_LABELS,
 			monthNames = DEFAULT_MONTHS,
