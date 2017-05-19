@@ -14,6 +14,7 @@ import * as css from './styles/calendar.m.css';
  * @property disabled         Boolean, whether or not the date is in the current month
  * @property focusable        Boolean, whether or not the date can receive focus
  * @property selected         True if the date is currently selected
+ * @property today            True if the date the same as the current day
  * @property onClick          Callback function for the click event
  * @property onFocusCalled    Callback function when the cell receives focus
  * @property onKeyDown        Callback function for the key down event
@@ -24,6 +25,7 @@ export interface CalendarCellProperties extends ThemeableProperties {
 	disabled?: boolean;
 	focusable?: boolean;
 	selected?: boolean;
+	today?: boolean;
 	onClick?(date: number, disabled: boolean): void;
 	onFocusCalled?(): void;
 	onKeyDown?(event: KeyboardEvent): void;
@@ -68,13 +70,15 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 			date,
 			disabled = false,
 			focusable = false,
-			selected = false
+			selected = false,
+			today = false
 		} = this.properties;
 
 		const dateCellClasses = [
 			css.date,
 			disabled ? css.inactiveDate : null,
-			selected ? css.selectedDate : null
+			selected ? css.selectedDate : null,
+			today ? css.todayDate : null
 		];
 
 		return v('td', {

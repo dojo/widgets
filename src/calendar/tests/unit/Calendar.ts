@@ -27,6 +27,7 @@ const expectedDateCell = function(widget: any, date: number, active: boolean) {
 		disabled: !active,
 		focusable: date === 1 && active,
 		selected: false,
+		today: new Date().toDateString() === testDate.toDateString(),
 		onClick: widget.listener,
 		onFocusCalled: widget.listener,
 		onKeyDown: widget.listener

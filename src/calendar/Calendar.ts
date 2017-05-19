@@ -247,6 +247,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 		const initialWeekday = new Date(year, month, 1).getDay();
+		const todayString = new Date().toDateString();
 
 		let dayIndex = 0;
 		let date = initialWeekday > 0 ? previousMonthLength - initialWeekday : 0;
@@ -254,6 +255,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 		let isSelectedDay: boolean;
 		let weeks: DNode[] = [];
 		let days: DNode[];
+		let dateString: string;
 		let i: number;
 
 		for (let week = 0; week < 6; week++) {
@@ -277,7 +279,8 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 				dayIndex++;
 
 				// set isSelectedDay if the dates match
-				if (isCurrentMonth && selectedDate && new Date(year, month, date).toDateString() === selectedDate.toDateString()) {
+				dateString = new Date(year, month, date).toDateString();
+				if (isCurrentMonth && selectedDate && dateString === selectedDate.toDateString()) {
 					isSelectedDay = true;
 				} else {
 					isSelectedDay = false;
@@ -291,6 +294,7 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 					focusable: isCurrentMonth && date === this._focusedDay,
 					selected: isSelectedDay,
 					theme,
+					today: dateString === todayString,
 					onClick: this._onDateClick,
 					onFocusCalled: this._onDateFocusCalled,
 					onKeyDown: this._onDateKeyDown
@@ -309,7 +313,6 @@ export default class Calendar extends ThemeableMixin(WidgetBase)<CalendarPropert
 	}
 
 	protected render(): DNode {
-		console.log('rendering, open is', this._monthPopupOpen);
 		const {
 			labels = DEFAULT_LABELS,
 			monthNames = DEFAULT_MONTHS,

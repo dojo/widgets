@@ -18,3 +18,4 @@ export const weekday: string;
 export const date: string;
 export const inactiveDate: string;
 export const selectedDate: string;
+export const todayDate: string;

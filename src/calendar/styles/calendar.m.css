@@ -232,3 +232,5 @@
 	background-color: var(--selected-background);
 	color: var(--selected-color);
 }
+
+.todayDate {}

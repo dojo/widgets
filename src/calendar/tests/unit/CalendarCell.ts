@@ -44,7 +44,8 @@ registerSuite({
 			date: 2,
 			disabled: true,
 			focusable: true,
-			selected: true
+			selected: true,
+			today: true
 		});
 
 		widget.expectRender(v('td', {
@@ -54,7 +55,7 @@ registerSuite({
 			role: 'gridcell',
 			'aria-selected': 'true',
 			tabIndex: 0,
-			classes: widget.classes(css.date, css.inactiveDate, css.selectedDate),
+			classes: widget.classes(css.date, css.inactiveDate, css.selectedDate, css.todayDate),
 			onclick: widget.listener,
 			onkeydown: widget.listener
 		}, [
