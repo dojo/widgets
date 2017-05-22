@@ -45,7 +45,7 @@ export interface LabelProperties extends ThemeableProperties {
  * It can be used as follows:
  * extraClasses: { root: parseLabelClasses(this.classes(css.class1, css.class2).get()) }
  */
-export function parseLabelClasses(classes: { [key: string]: boolean }): string {
+export function parseLabelClasses(classes: { [index: string]: boolean | null | undefined }): string {
 	return Object.keys(classes).reduce((classNamesString: string, className) => {
 		if (classes[className] === true) {
 			classNamesString += ` ${className}`;

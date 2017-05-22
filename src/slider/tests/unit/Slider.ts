@@ -1,55 +1,91 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { v } from '@dojo/widget-core/d';
-import { VNode } from '@dojo/interfaces/vdom';
-import Slider from '../../Slider';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
+import Slider, { SliderProperties } from '../../Slider';
+import { v, w } from '@dojo/widget-core/d';
+import Label from '../../../label/Label';
+import has from '@dojo/has/has';
 import * as css from '../../styles/slider.m.css';
 
+let slider: Harness<SliderProperties, typeof Slider>;
+
+const idComparator = compareProperty((value) => {
+	return typeof value === 'string';
+});
+
 registerSuite({
-	name: 'Slider',
+	name: 'Slider unit tests',
 
-	construction() {
-		const slider = new Slider();
-		slider.__setProperties__({
-			min: 0,
-			max: 100,
-			value: 50
-		});
-
-		assert.strictEqual(slider.properties.min, 0);
-		assert.strictEqual(slider.properties.max, 100);
-		assert.strictEqual(slider.properties.value, 50);
+	beforeEach() {
+		slider = harness(Slider);
+	},
+	afterEach() {
+		slider.destroy();
 	},
 
-	'default node attributes'() {
-		const slider = new Slider();
-		let vnode = <VNode> slider.__render__();
-		let inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.vnodeSelector, 'input');
-		assert.strictEqual(inputNode.properties!.type, 'range');
-		assert.strictEqual(inputNode.properties!.min, '0');
-		assert.strictEqual(inputNode.properties!.max, '100');
-		assert.strictEqual(inputNode.properties!.step, '1');
-		assert.strictEqual(inputNode.properties!.value, '0');
-
-		slider.__setProperties__({
-			min: 20,
-			vertical: true
-		});
-		vnode = <VNode> slider.__render__();
-		inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.properties!.value, '20');
-		assert.strictEqual(inputNode.properties!.styles!.width, '200px');
-		assert.strictEqual(vnode.children![0].children![1].properties!.styles!.width, '200px');
-		assert.strictEqual(vnode.children![0].properties!.styles!.height, '200px');
-		assert.isTrue(vnode.properties!.classes![css.vertical]);
+	'default render'() {
+		const expected = v('div', {
+			classes: slider.classes(css.root)
+		}, [
+			v('div', {
+				classes: slider.classes(css.inputWrapper),
+				styles: {}
+			}, [
+				v('input', {
+					classes: slider.classes(css.input, css.nativeInput),
+					'aria-describedby': undefined,
+					disabled: undefined,
+					id: <any> idComparator,
+					'aria-invalid': null,
+					max: '100',
+					min: '0',
+					name: undefined,
+					readOnly: undefined,
+					'aria-readonly': null,
+					required: undefined,
+					step: '1',
+					styles: {},
+					type: 'range',
+					value: '0',
+					onblur: slider.listener,
+					onchange: slider.listener,
+					onclick: slider.listener,
+					onfocus: slider.listener,
+					oninput: slider.listener,
+					onkeydown: slider.listener,
+					onkeypress: slider.listener,
+					onkeyup: slider.listener,
+					onmousedown: slider.listener,
+					onmouseup: slider.listener,
+					ontouchstart: slider.listener,
+					ontouchend: slider.listener,
+					ontouchcancel: slider.listener
+				}),
+				v('div', {
+					classes: slider.classes(css.track),
+					'aria-hidden': 'true',
+					styles: {}
+				}, [
+					v('span', {
+						classes: slider.classes(css.fill),
+						styles: { width: '0%' }
+					}),
+					v('span', {
+						classes: slider.classes(css.thumb),
+						styles: { left: '0%' }
+					})
+				]),
+				v('output', {
+					classes: slider.classes(css.output),
+					for: idComparator
+				}, [ '0' ])
+			])
+		]);
+		slider.expectRender(expected);
 	},
-
-	'correct node attributes'() {
-		const slider = new Slider();
-		slider.__setProperties__({
+	'render with properties'() {
+		slider.setProperties({
 			describedBy: 'id1',
 			disabled: true,
 			formId: 'id2',
@@ -62,96 +98,295 @@ registerSuite({
 			readOnly: true,
 			required: true,
 			step: 2,
-			value: 4
+			value: 6
 		});
-		let vnode = <VNode> slider.__render__();
-		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1].children![0];
-		const outputNode = vnode.children![1].children![2];
-
-		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
-		assert.isTrue(inputNode.properties!.disabled);
-		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
-		assert.strictEqual(inputNode.properties!.max, '6');
-		assert.strictEqual(inputNode.properties!.min, '0');
-		assert.strictEqual(inputNode.properties!.name, 'bar');
-		assert.isTrue(inputNode.properties!.readOnly);
-		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
-		assert.isTrue(inputNode.properties!.required);
-		assert.strictEqual(inputNode.properties!.step, '2');
-		assert.strictEqual(inputNode.properties!.value, '4');
-		assert.strictEqual(outputNode.children![0].properties!.innerHTML, 'baz');
-
-		assert.strictEqual(vnode.properties!['form'], 'id2');
-		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
-
-		slider.__setProperties__({
-			vertical: true,
-			verticalHeight: '100px'
-		});
-		vnode = <VNode> slider.__render__();
-		assert.strictEqual(vnode.children![0].children![0].properties!.styles!.width, '100px');
-		assert.strictEqual(vnode.children![0].children![1].properties!.styles!.width, '100px');
-		assert.strictEqual(vnode.children![0].properties!.styles!.height, '100px');
+		const expected = w(Label, {
+			extraClasses: {
+				root: [css.root, css.disabled, css.invalid, css.readonly, css.required].join(' ')
+			},
+			formId: 'id2',
+			label: 'foo'
+		}, [
+			v('div', {
+				classes: slider.classes(css.inputWrapper),
+				styles: {}
+			}, [
+				v('input', {
+					classes: slider.classes(css.input, css.nativeInput),
+					'aria-describedby': 'id1',
+					disabled: true,
+					id: <any> idComparator,
+					'aria-invalid': 'true',
+					max: '6',
+					min: '0',
+					name: 'bar',
+					readOnly: true,
+					'aria-readonly': 'true',
+					required: true,
+					step: '2',
+					styles: {},
+					type: 'range',
+					value: '6',
+					onblur: slider.listener,
+					onchange: slider.listener,
+					onclick: slider.listener,
+					onfocus: slider.listener,
+					oninput: slider.listener,
+					onkeydown: slider.listener,
+					onkeypress: slider.listener,
+					onkeyup: slider.listener,
+					onmousedown: slider.listener,
+					onmouseup: slider.listener,
+					ontouchstart: slider.listener,
+					ontouchend: slider.listener,
+					ontouchcancel: slider.listener
+				}),
+				v('div', {
+					classes: slider.classes(css.track),
+					'aria-hidden': 'true',
+					styles: {}
+				}, [
+					v('span', {
+						classes: slider.classes(css.fill),
+						styles: { width: '100%' }
+					}),
+					v('span', {
+						classes: slider.classes(css.thumb),
+						styles: { left: '100%' }
+					})
+				]),
+				v('output', {
+					classes: slider.classes(css.output),
+					for: idComparator
+				}, [ v('span', {
+					innerHTML: 'baz'
+				}) ])
+			])
+		]);
+		slider.expectRender(expected);
 	},
+	'vertical slider with height change'() {
+		slider.setProperties({
+			min: 20,
+			vertical: true
+		});
 
+		const expected = v('div', {
+			classes: slider.classes(css.root, css.vertical)
+		}, [
+			v('div', {
+				classes: slider.classes(css.inputWrapper),
+				styles: { height: '200px' }
+			}, [
+				v('input', {
+					classes: slider.classes(css.input, css.nativeInput),
+					'aria-describedby': undefined,
+					disabled: undefined,
+					id: <any> idComparator,
+					'aria-invalid': null,
+					max: '100',
+					min: '20',
+					name: undefined,
+					readOnly: undefined,
+					'aria-readonly': null,
+					required: undefined,
+					step: '1',
+					styles: { width: '200px' },
+					type: 'range',
+					value: '20',
+					onblur: slider.listener,
+					onchange: slider.listener,
+					onclick: slider.listener,
+					onfocus: slider.listener,
+					oninput: slider.listener,
+					onkeydown: slider.listener,
+					onkeypress: slider.listener,
+					onkeyup: slider.listener,
+					onmousedown: slider.listener,
+					onmouseup: slider.listener,
+					ontouchstart: slider.listener,
+					ontouchend: slider.listener,
+					ontouchcancel: slider.listener
+				}),
+				v('div', {
+					classes: slider.classes(css.track),
+					'aria-hidden': 'true',
+					styles: { width: '200px' }
+				}, [
+					v('span', {
+						classes: slider.classes(css.fill),
+						styles: { width: '20%' }
+					}),
+					v('span', {
+						classes: slider.classes(css.thumb),
+						styles: { left: '20%' }
+					})
+				]),
+				v('output', {
+					classes: slider.classes(css.output),
+					for: idComparator
+				}, [ '20' ])
+			])
+		]);
+		slider.expectRender(expected);
+
+		slider.setProperties({
+			min: 20,
+			vertical: true,
+			verticalHeight: '300px'
+		});
+		assignChildProperties(expected, '0,1,0', {
+			classes: slider.classes(css.fill)
+		});
+		assignChildProperties(expected, '0,1,1', {
+			classes: slider.classes(css.thumb)
+		});
+		assignChildProperties(expected, '0,0', {
+			classes: slider.classes(css.input, css.nativeInput),
+			styles: { width: '300px' }
+		});
+		assignChildProperties(expected, '0,1', {
+			classes: slider.classes(css.track),
+			styles: { width: '300px' }
+		});
+		assignChildProperties(expected, '0,2', {
+			classes: slider.classes(css.output)
+		});
+		assignChildProperties(expected, '0', {
+			classes: slider.classes(css.inputWrapper),
+			styles: { height: '300px' }
+		});
+		assignProperties(expected, {
+			classes: slider.classes(css.root, css.vertical)
+		});
+		slider.expectRender(expected);
+	},
 	'state classes'() {
-		const slider = new Slider();
-		slider.__setProperties__({
+		slider.setProperties({
 			disabled: true,
 			invalid: true,
 			readOnly: true,
 			required: true,
 			vertical: true
 		});
-		let vnode = <VNode> slider.__render__();
+		const expected = v('div', {
+			classes: slider.classes(css.root, css.disabled, css.invalid, css.readonly, css.required, css.vertical)
+		}, [
+			v('div', {
+				classes: slider.classes(css.inputWrapper),
+				styles: { height: '200px' }
+			}, [
+				v('input', {
+					classes: slider.classes(css.input, css.nativeInput),
+					'aria-describedby': undefined,
+					disabled: true,
+					id: <any> idComparator,
+					'aria-invalid': 'true',
+					max: '100',
+					min: '0',
+					name: undefined,
+					readOnly: true,
+					'aria-readonly': 'true',
+					required: true,
+					step: '1',
+					styles: { width: '200px' },
+					type: 'range',
+					value: '0',
+					onblur: slider.listener,
+					onchange: slider.listener,
+					onclick: slider.listener,
+					onfocus: slider.listener,
+					oninput: slider.listener,
+					onkeydown: slider.listener,
+					onkeypress: slider.listener,
+					onkeyup: slider.listener,
+					onmousedown: slider.listener,
+					onmouseup: slider.listener,
+					ontouchstart: slider.listener,
+					ontouchend: slider.listener,
+					ontouchcancel: slider.listener
+				}),
+				v('div', {
+					classes: slider.classes(css.track),
+					'aria-hidden': 'true',
+					styles: { width: '200px' }
+				}, [
+					v('span', {
+						classes: slider.classes(css.fill),
+						styles: { width: '0%' }
+					}),
+					v('span', {
+						classes: slider.classes(css.thumb),
+						styles: { left: '0%' }
+					})
+				]),
+				v('output', {
+					classes: slider.classes(css.output),
+					for: idComparator
+				}, [ '0' ])
+			])
+		]);
+		slider.expectRender(expected);
 
-		assert.isTrue(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.invalid]);
-		assert.isTrue(vnode.properties!.classes![css.readonly]);
-		assert.isTrue(vnode.properties!.classes![css.required]);
-		assert.isTrue(vnode.properties!.classes![css.vertical]);
-
-		slider.__setProperties__({
+		slider.setProperties({
 			disabled: false,
 			invalid: false,
 			readOnly: false,
 			required: false,
 			vertical: false
 		});
-		vnode = <VNode> slider.__render__();
-		assert.isFalse(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-		assert.isFalse(vnode.properties!.classes![css.readonly]);
-		assert.isFalse(vnode.properties!.classes![css.required]);
-		assert.isFalse(vnode.properties!.classes![css.vertical]);
-
-		slider.__setProperties__({
-			invalid: undefined
+		assignChildProperties(expected, '0,1,0', {
+			classes: slider.classes(css.fill)
 		});
-		vnode = <VNode> slider.__render__();
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
+		assignChildProperties(expected, '0,1,1', {
+			classes: slider.classes(css.thumb)
+		});
+		assignChildProperties(expected, '0,0', {
+			classes: slider.classes(css.input, css.nativeInput),
+			'aria-invalid': null,
+			'aria-readonly': null,
+			readOnly: false,
+			required: false,
+			disabled: false,
+			styles: {}
+		});
+		assignChildProperties(expected, '0,1', {
+			classes: slider.classes(css.track),
+			styles: {}
+		});
+		assignChildProperties(expected, '0,2', {
+			classes: slider.classes(css.output)
+		});
+		assignChildProperties(expected, '0', {
+			classes: slider.classes(css.inputWrapper),
+			styles: {}
+		});
+		assignProperties(expected, {
+			classes: slider.classes(css.root, css.valid)
+		});
+		slider.expectRender(expected);
 	},
 
-	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				input = false,
-				keydown = false,
-				keypress = false,
-				keyup = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+	'events'() {
+		// TODO this is borrowed from: https://github.com/msssk/widgets/blob/672a53433159cce85418f322cbcd5e3c9d1e94bb/src/checkbox/tests/unit/Checkbox.ts#L212
+		// Will need to clean it up once this piece of code is landed somewhere.
+		const hasTouch = has('host-node') || 'ontouchstart' in document || ('onpointerdown' in document && navigator.maxTouchPoints > 0);
 
-		const slider = new Slider();
-		slider.__setProperties__({
+		let blurred = false,
+		changed = false,
+		clicked = false,
+		focused = false,
+		input = false,
+		keydown = false,
+		keypress = false,
+		keyup = false,
+		mousedown = false,
+		mouseup = false,
+		touchstart = false,
+		touchend = false,
+		touchcancel = false;
+
+		slider.setProperties({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },
@@ -167,31 +402,33 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		(<any> slider)._onBlur(<FocusEvent> {});
+		slider.sendEvent('blur', { selector: 'input'});
 		assert.isTrue(blurred);
-		(<any> slider)._onChange(<Event> {});
+		slider.sendEvent('change', { selector: 'input'});
 		assert.isTrue(changed);
-		(<any> slider)._onClick(<MouseEvent> {});
+		slider.sendEvent('click', { selector: 'input'});
 		assert.isTrue(clicked);
-		(<any> slider)._onFocus(<FocusEvent> {});
+		slider.sendEvent('focus', { selector: 'input'});
 		assert.isTrue(focused);
-		(<any> slider)._onInput(<Event> {});
+		slider.sendEvent('input', { selector: 'input'});
 		assert.isTrue(input);
-		(<any> slider)._onKeyDown(<KeyboardEvent> {});
+		slider.sendEvent('keydown', { selector: 'input'});
 		assert.isTrue(keydown);
-		(<any> slider)._onKeyPress(<KeyboardEvent> {});
+		slider.sendEvent('keypress', { selector: 'input'});
 		assert.isTrue(keypress);
-		(<any> slider)._onKeyUp(<KeyboardEvent> {});
+		slider.sendEvent('keyup', { selector: 'input'});
 		assert.isTrue(keyup);
-		(<any> slider)._onMouseDown(<MouseEvent> {});
+		slider.sendEvent('mousedown', { selector: 'input'});
 		assert.isTrue(mousedown);
-		(<any> slider)._onMouseUp(<MouseEvent> {});
+		slider.sendEvent('mouseup', { selector: 'input'});
 		assert.isTrue(mouseup);
-		(<any> slider)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> slider)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> slider)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		if (hasTouch) {
+			slider.sendEvent('touchstart', { selector: 'input'});
+			assert.isTrue(touchstart);
+			slider.sendEvent('touchend', { selector: 'input'});
+			assert.isTrue(touchend);
+			slider.sendEvent('touchcancel', { selector: 'input'});
+			assert.isTrue(touchcancel);
+		}
 	}
 });
