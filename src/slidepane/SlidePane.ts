@@ -148,7 +148,6 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
 			!open && this._wasOpen ? css.slideOut : null
 		];
-		this._slideIn = false;
 
 		const contentStyles: {[key: string]: any} = {
 			transform: '',
@@ -159,9 +158,13 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			// If pane is closing because of swipe
 			contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
 		}
+		else if (this._slideIn && this._content) {
+			this._content.style.transform = '';
+		}
 
 		open && !this._wasOpen && onOpen && onOpen();
 		this._wasOpen = open;
+		this._slideIn = false;
 
 		return v('div', {
 			onmousedown: this._onSwipeStart,
