@@ -422,6 +422,7 @@ registerSuite({
 
 	'Month popup state controlled'() {
 		let expectedVdom = expected(widget);
+		expectedVdom = expected(widget);
 
 		widget.setProperties({
 			month: testDate.getMonth(),
@@ -439,8 +440,6 @@ registerSuite({
 		widget.callListener('onRequestClose', {
 			index: '0'
 		});
-		// widget.getRender();
-
 		assignChildProperties(expectedVdom, '0', {
 			open: false
 		});
