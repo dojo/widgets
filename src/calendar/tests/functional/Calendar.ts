@@ -64,7 +64,7 @@ registerSuite({
 				.click()
 				.sleep(DELAY)
 				.end()
-			.findByTagName('label')
+			.findByCssSelector(`.${css.currentMonthLabel}`)
 				.getVisibleText()
 				.then((label: string) => {
 					assert.include(label, 'January', 'Clicking first month radio changes label text to January');

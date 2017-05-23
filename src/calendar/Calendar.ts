@@ -1,4 +1,4 @@
-import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase, onPropertiesChanged, diffProperty, DiffType } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v, w } from '@dojo/widget-core/d';
@@ -78,6 +78,7 @@ export const DEFAULT_LABELS: CalendarMessages = {
 export const CalendarBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@diffProperty('customDateCell', DiffType.REFERENCE)
 export default class Calendar extends CalendarBase<CalendarProperties> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();

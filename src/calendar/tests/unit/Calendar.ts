@@ -165,12 +165,12 @@ registerSuite({
 			monthNames: DEFAULT_MONTHS,
 			selectedDate: new Date('June 1 2017'),
 			weekdayNames: DEFAULT_WEEKDAYS,
-			year: 2017,
+			year: testDate.getFullYear(),
 			renderMonthLabel: (month: number, year: number) => 'Foo',
 			renderWeekdayCell: (day: { short: string; long: string; }) => 'Bar'
 		});
 
-		const expectedVdom = expected(widget);
+		let expectedVdom = expected(widget);
 
 		for (let i = 0; i < 7; i++) {
 			replaceChild(expectedVdom, `1,0,0,${i},0`, 'Bar');
@@ -183,6 +183,15 @@ registerSuite({
 		});
 
 		widget.expectRender(expectedVdom);
+
+		class CustomCalendarCell extends CalendarCell {}
+		widget.setProperties({
+			customDateCell: CustomCalendarCell,
+			month: testDate.getMonth(),
+			year: testDate.getFullYear()
+		});
+		expectedVdom = expected(widget);
+		widget.expectRender(expectedVdom, 'renders with updated properties');
 	},
 
 	'Click to select date'() {
