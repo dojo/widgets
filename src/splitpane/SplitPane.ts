@@ -147,7 +147,7 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 
 		const rootSize = direction === Direction.row ? this._root.offsetWidth : this._root.offsetHeight;
 		if (size > rootSize) {
-			onResize && onResize(rootSize);
+			onResize && onResize(rootSize - this._divider.offsetWidth);
 		}
 	}
 
