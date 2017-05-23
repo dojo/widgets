@@ -67,6 +67,7 @@
 
 /* Button to open month popup */
 .monthTrigger {
+	cursor: pointer;
 	height: 35px;
 	width: 180px;
 }
@@ -173,22 +174,23 @@
 	float: left;
 	font-size: 12px;
 	padding: 4px;
+	position: relative;
 	text-align: center;
 	text-transform: uppercase;
 	width: 25%;
 }
 
-.monthRadio abbr {
+.monthRadioLabel {
 	cursor: pointer;
 	display: block;
 	padding: 6px 12px;
 }
 
-.monthRadio:hover abbr {
+.monthRadio:hover .monthRadioLabel {
 	background: var(--disabled-color); /* TODO: better color variable? */
 }
 
-.monthRadioChecked abbr {
+.monthRadioChecked .monthRadioLabel {
 	background: var(--selected-background);
 	color: var(--selected-color);
 	font-weight: bold;

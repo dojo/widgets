@@ -2,10 +2,8 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { compareProperty, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
-import { v, w } from '@dojo/widget-core/d';
+import { v } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
-import Radio from '../../../radio/Radio';
-import Button from '../../../button/Button';
 
 import MonthPicker, { MonthPickerProperties } from '../../MonthPicker';
 import { DEFAULT_MONTHS, DEFAULT_LABELS } from '../../Calendar';
@@ -25,20 +23,28 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
-const monthRadios = function(widget: any) {
-	return DEFAULT_MONTHS.map((monthName, i) => w(Radio, {
-		key: <any> compareId, // widget._radiosName + i,
-		extraClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
-		checked: i === 5,
-		label: {
-			content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
-			before: false
-		},
-		name: <any> compareId, // widget._radiosName,
-		value: i + '',
-		onChange: widget.listener,
-		onMouseUp: widget.listener
-	}));
+const monthRadios = function(widget: any, open?: boolean) {
+	return DEFAULT_MONTHS.map((monthName, i) => v('label', {
+		afterCreate: widget.listener,
+		afterUpdate: widget.listener,
+		key: <any> compareId,
+		classes: widget.classes(css.monthRadio, i === 5 ? css.monthRadioChecked : null)
+	}, [
+		v('input', {
+			checked: i === 5,
+			classes: widget.classes(css.monthRadioInput),
+			name: <any> compareId,
+			tabIndex: open ? 0 : -1,
+			type: 'radio',
+			value: i + '',
+			onchange: widget.listener,
+			onmouseup: widget.listener
+		}),
+		v('abbr', {
+			classes: widget.classes(css.monthRadioLabel),
+			title: monthName.long
+		}, [ monthName.short ])
+	]));
 };
 
 const expectedPopup = function(widget: any, open?: boolean) {
@@ -85,29 +91,30 @@ const expectedPopup = function(widget: any, open?: boolean) {
 			classes: widget.classes(css.monthControl)
 		}, [
 			v('legend', { classes: widget.classes(baseCss.visuallyHidden) }, [ DEFAULT_LABELS.chooseMonth ]),
-			...monthRadios(widget)
+			...monthRadios(widget, open)
 		])
 	]);
 };
 
-const expected = function(widget: any, open?: boolean) {
+const expected = function(widget: any, open = false) {
 	return v('div', {
 		classes: widget.classes(css.header)
 	}, [
-		w(Button, {
+		v('button', {
+			afterCreate: widget.listener,
+			afterUpdate: widget.listener,
 			key: 'button',
-			describedBy: <any> compareId, // widget._labelId,
-			id: <any> compareId, // widget._buttonId,
-			extraClasses: { root: css.monthTrigger },
-			popup: {
-				id: <any> compareId, // widget._dialogId,
-				expanded: !!open
-			},
-			onClick: widget.listener
+			'aria-controls': <any> compareId,
+			'aria-describedby': <any> compareId,
+			'aria-expanded': String(open),
+			'aria-haspopup': 'true',
+			classes: widget.classes(css.monthTrigger),
+			id: <any> compareId,
+			onclick: widget.listener
 		}, [
-			v('span', {
-				classes: widget.classes(baseCss.visuallyHidden)
-			}, [ DEFAULT_LABELS.chooseMonth ])
+			v('span', { classes: widget.classes(baseCss.visuallyHidden) }, [
+				DEFAULT_LABELS.chooseMonth
+			])
 		]),
 		v('label', {
 			id: <any> compareId, // widget._labelId,
@@ -166,7 +173,7 @@ registerSuite({
 		let expectedVdom = expected(widget, true);
 
 		assignChildProperties(expectedVdom, '0', {
-			describedBy: 'foo'
+			'aria-describedby': 'foo'
 		});
 		assignChildProperties(expectedVdom, '1', {
 			id: 'foo'
@@ -185,23 +192,21 @@ registerSuite({
 		});
 
 		// open
-		widget.callListener('onClick', {
+		widget.sendEvent('click', {
 			key: 'button'
 		});
-		widget.getRender();
 		assert.isFalse(closed, 'First click should open popup');
 
-		// close
 		widget.setProperties({
-			open: !closed,
+			open: true,
 			onRequestOpen: () => { closed = false; },
 			onRequestClose: () => { closed = true; },
 			...requiredProps
 		});
-		widget.callListener('onClick', {
+		widget.getRender();
+		widget.sendEvent('click', {
 			key: 'button'
 		});
-		widget.getRender();
 		assert.isTrue(closed, 'Second click should close popup');
 	},
 
@@ -309,18 +314,14 @@ registerSuite({
 			onRequestMonthChange: (month: number) => { currentMonth = month; }
 		});
 
-		widget.callListener('onChange', {
-			args: [
-				{
-					target: { value: 6 }
-				}
-			],
-			index: '4,1,8'
+		widget.sendEvent('change', {
+			selector: `.${css.monthRadio}:nth-of-type(7) input`
 		});
-		assert.strictEqual(currentMonth, 6, 'Change event sets month value');
 
-		widget.callListener('onMouseUp', {
-			index: '4,1,8'
+		assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
+
+		widget.sendEvent('mouseup', {
+			selector: `.${css.monthRadio}:nth-of-type(7) input`
 		});
 		assert.isTrue(closed, 'Clicking radios closes popup');
 	},
@@ -369,6 +370,7 @@ registerSuite({
 		widget.sendEvent('click', {
 			selector: '.' + css.nextMonth
 		});
+
 		assert.strictEqual(currentMonth, 0, 'Next month wraps around');
 		assert.strictEqual(currentYear, testDate.getFullYear() + 1, 'Year increases when month wraps around');
 	}

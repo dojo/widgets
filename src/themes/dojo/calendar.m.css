@@ -53,13 +53,25 @@
 
 /* Button to open month popup */
 .monthTrigger {
+	background-color: var(--button-bg);
+	border: 1px solid var(--button-bg);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+	border-radius: var(--rounded-corners);
+	color: var(--button-color);
+	cursor: pointer;
+	display: inline-block;
+	font: var(--base-font);
+	font-weight: bold;
 	height: 35px;
+	padding: var(--button-padding);
+	transition: all var(--short-animation-duration) ease;
 	width: 180px;
 }
 
-.monthTrigger::after {
-	display: none;
-	visibility: hidden;
+.monthTrigger:focus {
+	box-shadow: var(--input-focus-shadow);
+	border: 1px solid var(--dojo-light-blue);
+	outline: none;
 }
 
 /* Month popup */
@@ -91,7 +103,9 @@
 }
 
 /* year spinner */
-.yearPicker {}
+.yearPicker {
+	margin-bottom: 5px;
+}
 
 .spinner,
 .spinnerNext,
@@ -165,23 +179,24 @@
 	float: left;
 	font-size: 12px;
 	padding: 4px;
+	position: relative;
 	text-align: center;
 	text-transform: uppercase;
 	width: 25%;
 }
 
-.monthRadio abbr {
+.monthRadioLabel {
 	cursor: pointer;
 	display: block;
 	padding: 6px 12px;
 	text-decoration: none;
 }
 
-.monthRadio:hover abbr {
+.monthRadio:hover .monthRadioLabel {
 	background: var(--calendar-hover-bg);
 }
 
-.monthRadioChecked abbr {
+.monthRadioChecked .monthRadioLabel {
 	background: var(--calendar-selected);
 	color: var(--dojo-white);
 	font-weight: bold;
@@ -192,9 +207,15 @@
 	height: 100%;
 	left: 0;
 	margin: 0;
+	outline: none;
 	position: absolute;
 	top: 0;
 	width: 100%;
+}
+
+.monthRadioInput:focus ~ .monthRadioLabel {
+	box-shadow: var(--input-focus-shadow);
+	outline: 1px solid var(--dojo-light-blue);
 }
 
 /* Date grid */

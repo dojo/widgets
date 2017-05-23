@@ -1,11 +1,9 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { v, w } from '@dojo/widget-core/d';
+import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
 import { DNode, TypedTargetEvent } from '@dojo/widget-core/interfaces';
-import Radio from '../radio/Radio';
-import Button from '../button/Button';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
@@ -68,7 +66,14 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 	// move focus when opening/closing the popup
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		// TODO: When the focus manager issue is resolved, use it to set focus on the button widget: https://github.com/dojo/widget-core/issues/107
+		// button
+		if (key === 'button') {
+			const { open } = this.properties;
+			if (!open && this._callTriggerFocus) {
+				element.focus();
+				this._callTriggerFocus = false;
+			}
+		}
 
 		// popup
 		if (key === 'year-spinner') {
@@ -193,22 +198,27 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 	}
 
 	private _renderMonthRadios() {
-		const { month, theme = {} } = this.properties;
+		const { month, open } = this.properties;
 
-		return this.properties.monthNames.map((monthName, i) => w(Radio, {
+		return this.properties.monthNames.map((monthName, i) => v('label', {
 			key: `${this._idBase}_radios_${i}`,
-			extraClasses: { root: css.monthRadio, input: css.monthRadioInput, checked: css.monthRadioChecked },
-			checked: i === month,
-			label: {
-				content: `<abbr title="${monthName.long}">${monthName.short}</abbr>`,
-				before: false
-			},
-			name: `${this._idBase}_radios`,
-			theme,
-			value: i + '',
-			onChange: this._onRadioChange,
-			onMouseUp: this._closePopup
-		}));
+			classes: this.classes(css.monthRadio, i === month ? css.monthRadioChecked : null)
+		}, [
+			v('input', {
+				checked: i === month,
+				classes: this.classes(css.monthRadioInput),
+				name: `${this._idBase}_radios`,
+				tabIndex: open ? 0 : -1,
+				type: 'radio',
+				value: i + '',
+				onchange: this._onRadioChange,
+				onmouseup: this._closePopup
+			}),
+			v('abbr', {
+				classes: this.classes(css.monthRadioLabel),
+				title: monthName.long
+			}, [ monthName.short ])
+		]));
 	}
 
 	protected render(): DNode {
@@ -217,23 +227,20 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 			year,
 			labelId = `${this._idBase}_label`,
 			labels,
-			open = false,
-			theme = {}
+			open = false
 		} = this.properties;
 
 		return v('div', { classes: this.classes(css.header) }, [
 			// button
-			w(Button, {
+			v('button', {
 				key: 'button',
-				describedBy: labelId,
+				'aria-controls': `${this._idBase}_dialog`,
+				'aria-describedby': labelId,
+				'aria-expanded': String(open),
+				'aria-haspopup': 'true',
+				classes: this.classes(css.monthTrigger),
 				id: `${this._idBase}_button`,
-				extraClasses: { root: css.monthTrigger },
-				popup: {
-					id: `${this._idBase}_dialog`,
-					expanded: open
-				},
-				theme,
-				onClick: this._onButtonClick
+				onclick: this._onButtonClick
 			}, [
 				v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseMonth ])
 			]),
