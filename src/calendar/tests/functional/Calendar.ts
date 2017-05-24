@@ -5,6 +5,9 @@ import * as css from '../../styles/calendar.m.css';
 
 const DELAY = 500;
 
+const today = new Date();
+const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
+
 function openMonthPicker(remote: any) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
@@ -16,8 +19,6 @@ function openMonthPicker(remote: any) {
 }
 
 function clickDate(remote: any) {
-	const today = new Date();
-	const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
 		.setFindTimeout(5000)
@@ -51,10 +52,16 @@ registerSuite({
 				.click()
 				.sleep(DELAY)
 				.end()
-			.findByCssSelector('[role=dialog]')
+			.findByCssSelector(`.${css.monthPopup}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'true', 'The month dialog should close on second click');
+				})
+				.end()
+			.getActiveElement()
+				.getAttribute('class')
+				.then((className: string) => {
+					assert.include(className, css.monthTrigger, 'focus moved to button');
 				});
 	},
 
@@ -78,8 +85,6 @@ registerSuite({
 	},
 
 	'Correct dates are disabled'() {
-		const today = new Date();
-		const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
 		const disabledDateSelector = firstDay === 0 ? 'tbody tr:last-child td:last-child' : `tbody tr:first-child td:nth-child(${firstDay})`;
 		return clickDate((<any> this).remote)
 			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
@@ -95,9 +100,16 @@ registerSuite({
 				});
 	},
 
-	'Arrow keys move date focus'() {
+	'Arrow keys move date focus'(this: any) {
+		const { touchEnabled } = this.remote.session.capabilities;
+		if (touchEnabled) {
+			this.skip('Keys required for tests.');
+		}
+
 		return clickDate((<any> this).remote)
-			.pressKeys(keys.ARROW_RIGHT)
+			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
+				.pressKeys(keys.ARROW_RIGHT)
+				.end()
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
@@ -105,7 +117,9 @@ registerSuite({
 					assert.strictEqual(text, '2', 'Right arrow moves active element to second day');
 				})
 				.end()
-			.pressKeys(keys.ARROW_DOWN)
+			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
+				.pressKeys(keys.ARROW_DOWN)
+				.end()
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
@@ -113,7 +127,9 @@ registerSuite({
 					assert.strictEqual(text, '9', 'Down arrow moves active element to next week');
 				})
 				.end()
-			.pressKeys(keys.ARROW_LEFT)
+			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
+				.pressKeys(keys.ARROW_LEFT)
+				.end()
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
@@ -121,7 +137,9 @@ registerSuite({
 					assert.strictEqual(text, '8', 'Left arrow moves active element to previous day');
 				})
 				.end()
-			.pressKeys(keys.ARROW_UP)
+			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
+				.pressKeys(keys.ARROW_UP)
+				.end()
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
@@ -129,7 +147,9 @@ registerSuite({
 					assert.strictEqual(text, '1', 'Up arrow moves active element to previous week');
 				})
 				.end()
-			.pressKeys(keys.PAGE_DOWN)
+			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
+				.pressKeys(keys.PAGE_DOWN)
+				.end()
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
@@ -139,7 +159,9 @@ registerSuite({
 					assert.strictEqual(text, String(monthLengh), 'Page down moves to last day');
 				})
 				.end()
-			.pressKeys(keys.PAGE_UP)
+			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
+				.pressKeys(keys.PAGE_UP)
+				.end()
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()

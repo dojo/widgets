@@ -256,4 +256,6 @@
 	color: var(--dojo-white);
 }
 
-.todayDate {}
+.todayDate {
+	border: 2px solid var(--dojo-light-blue);
+}

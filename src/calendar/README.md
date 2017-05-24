@@ -64,38 +64,21 @@ protected render: DNode () {
 	]);
 }
 ```
+## Features
 
-## Properties
+- Renders a date grid with weekday headers, defaulting to the current month
+![Image of basic calendar](http://placekitten.com/450/300)
+- Clicking on the current month label opens a month picker that allows you to infinitely cycle through years and choose a month
+![Image of open month picker](http://placekitten.com/450/300)
 
-customDateCell?: any;
-labels?: CalendarMessages;
-month?: number;
-monthNames?: { short: string; long: string; }[];
-selectedDate?: Date;
-weekdayNames?: { short: string; long: string; }[];
-year?: number;
-renderMonthLabel?(month: number, year: number): string;
-renderWeekdayCell?(day: { short: string; long: string; }): DNode;
-onMonthChange?(month: number): void;
-onYearChange?(year: number): void;
-onDateSelect?(date: Date): void;
+### Keyboard Usage
+- All controls are in the tab order and accessible by keyboard
+- Arrow keys move focus in the date grid, and navigating to a disabled date updates the month
+- Page up and page down move to the first and last date in the month
+- Arrow keys change the year within the month control popup
 
-| Property | Description | Default value |
-| customDateCell | Custom widget constructor for calendar cells, extended from `@dojo/widgets/calendar/CalendarCell` | |
-| month | Currently displayed month using a 0-based index | The current month |
-| selectedDate | A date object that sets the selected date | |
-| year | Currently displayed year | The current year |
-| renderMonthLabel | Function that takes the month and year and returns a DNode | `${monthNames[month].long} ${year}` |
-| renderWeekdayCell | Function that takes the weekday name and returns a DNode | `v('abbr', { title: day.long }, [ day.short ])` |
-
-### i18n properties
-| Property | Description | Default value |
-| labels | A set of accessible text labels for UI controls | `DEFAULT_LABELS` from `@dojo/widgets/calendar/Calendar` |
-| monthNames | An object with abbreviated and full month names | `DEFAULT_Months` from `@dojo/widgets/calendar/Calendar` |
-| weekdayNames | An object with abbreviated and full weekday names | `DEFAULT_WEEKDAYS` from `@dojo/widgets/calendar/Calendar` |
-
-### Event Handlers
-| Event name | Description |
-| onMonthChange | Called when a month change is requested |
-| onYearChange | Called when a year change is requested |
-| onDateSelect | Called when a date is selected |
+## Accessibility Features
+- The month label is read by screen readers when updated through `aria-live: polite`
+- The month popup trigger, year control, month radios, and previous/next month arrows all have screen-reader-accessible labels and instructions
+- The weekdays and month radios are marked up with `<abbr>` tags that contain unabbreviated titles
+- Focus is controlled when opening and closing the month popup
