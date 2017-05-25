@@ -1,15 +1,33 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
-import Dialog from '../../Dialog';
+import Dialog, { DialogProperties } from '../../Dialog';
 import * as css from '../../styles/dialog.m.css';
+import * as animations from '../../../common/styles/animations.m.css';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { compareProperty } from '@dojo/test-extras/support/d';
+import { HNode } from '@dojo/widget-core/interfaces';
+import { v } from '@dojo/widget-core/d';
+
+let dialog: Harness<DialogProperties, typeof Dialog>;
+
+const idComparator = compareProperty((value) => {
+	return typeof value === 'string';
+});
 
 registerSuite({
 	name: 'Dialog',
 
+	beforeEach() {
+		dialog = harness(Dialog);
+	},
+	afterEach() {
+		dialog.destroy();
+	},
+
 	'Should construct dialog with passed properties'() {
-		const dialog = new Dialog();
-		dialog.__setProperties__({
+		dialog.setChildren(['dialog content']);
+		dialog.setProperties({
 			key: 'foo',
 			modal: true,
 			open: true,
@@ -19,84 +37,119 @@ registerSuite({
 			role: 'dialog'
 		});
 
-		assert.strictEqual(dialog.properties.key, 'foo');
-		assert.isTrue(dialog.properties.modal);
-		assert.isTrue(dialog.properties.open);
-		assert.strictEqual(dialog.properties.title, 'dialog');
-		assert.isTrue(dialog.properties.underlay);
-		assert.isTrue(dialog.properties.closeable);
-		assert.strictEqual(dialog.properties.role, 'dialog');
+		const expected = v('div', {
+			classes: dialog.classes(css.root)
+		}, [
+			v('div', {
+				classes: dialog.classes(css.underlayVisible, css.underlay),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				key: 'underlay',
+				onclick: dialog.listener,
+				afterCreate: dialog.listener,
+				afterUpdate: dialog.listener
+			}),
+			v('div', {
+				'aria-labelledby': idComparator,
+				classes: dialog.classes(css.main),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				afterCreate: dialog.listener,
+				afterUpdate: dialog.listener,
+				key: 'main',
+				role: 'dialog'
+			}, [
+				v('div', {
+					classes: dialog.classes(css.title),
+					id: <any> idComparator,
+					key: 'title',
+					afterCreate: dialog.listener,
+					afterUpdate: dialog.listener
+				}, [
+					'dialog',
+					v('button', {
+						classes: dialog.classes(css.close),
+						innerHTML: 'close dialog',
+						onclick: dialog.listener
+					})
+				]),
+				v('div', {
+					classes: dialog.classes(css.content),
+					key: 'content',
+					afterCreate: dialog.listener,
+					afterUpdate: dialog.listener
+				}, ['dialog content'])
+			])
+
+		]);
+		dialog.expectRender(expected);
 	},
 
 	'Render correct children'() {
-		const dialog = new Dialog();
-		dialog.__setProperties__({
+		dialog.setProperties({
 			enterAnimation: 'enter',
 			exitAnimation: 'exit',
 			role: 'dialog'
 		});
-		let vnode = <VNode> dialog.__render__();
-		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');
-		assert.property(vnode.properties!.classes!, css.root);
+		let vnode = <HNode> dialog.getRender();
 		assert.lengthOf(vnode.children, 0);
 
-		dialog.__setProperties__({
+		dialog.setProperties({
 			open: true,
 			underlay: true,
 			role: 'dialog'
 		});
-		vnode = <VNode> dialog.__render__();
+		vnode = <HNode> dialog.getRender();
 		assert.lengthOf(vnode.children, 2);
 	},
 
 	onRequestClose() {
-		const dialog = new Dialog();
-		dialog.__setProperties__({
+		let called = false;
+		dialog.setProperties({
 			open: true,
-			onRequestClose: () => {
-				dialog.__setProperties__({ open: false });
-			}
+			closeable: true,
+			onRequestClose: () => called = true
 		});
-		(<any> dialog)._onCloseClick();
-
-		assert.isFalse(dialog.properties.open, 'onRequestClose should be called when close button is clicked');
+		dialog.sendEvent('click', { selector: 'button'});
+		assert.isTrue(called, 'onRequestClose should be called when close button is clicked');
 	},
 
 	onOpen() {
 		let called = false;
 
-		const dialog = new Dialog();
-		dialog.__setProperties__({
+		dialog.setProperties({
 			open: true,
 			onOpen: () => {
 				called = true;
 			}
 		});
-		<VNode> dialog.__render__();
+		dialog.getRender(); // just to trigger a `_invalidate()`
 
 		assert.isTrue(called, 'onOpen should be called');
 	},
 
 	modal() {
-		const dialog = new Dialog();
-		dialog.__setProperties__({
+		let called = false;
+		dialog.setProperties({
 			open: true,
 			modal: true,
-			onRequestClose: () => {
-				dialog.__setProperties__({ open: false });
-			}
+			onRequestClose: () => called = true
 		});
-		(<any> dialog)._onUnderlayClick();
+		dialog.sendEvent('click', { key: 'underlay' } );
+		assert.isFalse(called, 'onRequestClose should not be called when underlay is clicked and modal is true');
 
-		assert.isTrue(dialog.properties.open, 'dialog should stay open when underlay is clicked and modal is true');
-
-		dialog.__setProperties__({ modal: false });
-		(<any> dialog)._onUnderlayClick();
-
-		assert.isUndefined(dialog.properties.open, 'dialog should close if underlay is clicked and modal is false');
+		dialog.setProperties({
+			open: true,
+			modal: false,
+			onRequestClose: () => called = true
+		});
+		dialog.getRender(); // just to trigger a `_invalidate()`
+		dialog.sendEvent('click', { key: 'underlay' } );
+		assert.isTrue(called, 'onRequestClose should be called if underlay is clicked and modal is false');
 	},
 
 	closeable() {
+		// this test can not be converted using `test-extras` because there's no way to use `callListener` or `sendEvent` without the close button being rendered
 		const dialog = new Dialog();
 		dialog.__setProperties__({
 			closeable: false,
