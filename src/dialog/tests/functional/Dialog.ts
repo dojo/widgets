@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as keys from 'leadfoot/keys';
 import * as css from '../../styles/dialog.m.css';
 
 interface Options {
@@ -145,6 +146,45 @@ registerSuite({
 				.getProperty('children')
 				.then((children: HTMLElement[]) => {
 					assert.lengthOf(children, 2, 'The dialog should not be destroyed when the underlay is clicked.');
+				});
+	},
+
+	'The dialog should be hidden when the close button is clicked'(this: any) {
+		return openDialog(this.remote)
+			.findByCssSelector(`.${css.close}`)
+				.click()
+				.sleep(DELAY)
+				.end()
+			.findByCssSelector(`.${css.root}`)
+				.getProperty('children')
+				.then((children: HTMLElement[]) => {
+					assert.lengthOf(children, 0);
+				});
+	},
+
+	'The dialog should be hidden when the close button is activated with the enter key'(this: any) {
+		if (this.remote.session.capabilities.browserName === 'safari') {
+			// TODO: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5403
+			this.skip('SafariDriver does not move focus with tab key.');
+		}
+
+		// The number of tab presses required to highlight the close button.
+		const tabCount = 6;
+		const tabKeys: string[] = [];
+		for (let i = 0; i < tabCount; i++) {
+			tabKeys.push(keys.TAB);
+		}
+
+		return openDialog(this.remote)
+			.pressKeys(tabKeys)
+			.findByCssSelector(`.${css.close}`)
+				.pressKeys(keys.ENTER)
+				.sleep(DELAY)
+				.end()
+			.findByCssSelector(`.${css.root}`)
+				.getProperty('children')
+				.then((children: HTMLElement[]) => {
+					assert.lengthOf(children, 0);
 				});
 	}
 });
