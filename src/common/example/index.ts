@@ -33,7 +33,7 @@ export class App extends AppBase<WidgetProperties> {
 			v('h2', {
 				innerHTML: 'Select a module to view'
 			}),
-			w(Select, { onChange: this.onModuleChange, bind: this, useNativeElement: true, options: [
+			w(Select, { onChange: this.onModuleChange, useNativeElement: true, options: [
 				{ label: 'Pick a module', value: '', disabled: true, selected: true },
 				...modules.map((module) => {
 					return { value: module, label: module };
