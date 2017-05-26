@@ -68,7 +68,7 @@
 	padding: 0;
 }
 
-.clear:before, .trigger:before {
+.clear i, .trigger i {
 	font-size: initial;
 }
 

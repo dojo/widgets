@@ -19,13 +19,13 @@
 	background: var(--component-background);
 }
 
-.trigger:before {
+.trigger i {
 	position: absolute;
 	right: 4px;
 	z-index: 1;
 }
 
-.trigger:focus:before {
+.trigger:focus {
 	color: var(--selected-background);
 }
 
@@ -94,7 +94,7 @@
 	width: 1.5em;
 }
 
-.nativeArrow:before {
+.nativeArrow i {
 	position: absolute;
 	right: 4px;
 	z-index: 1;

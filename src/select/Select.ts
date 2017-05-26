@@ -288,9 +288,9 @@ export default class Select extends SelectBase<SelectProperties> {
 				onfocus: this._onFocus,
 				onkeydown: this._onKeyDown
 			}, optionNodes),
-			v('span', {
-				classes: this.classes(css.nativeArrow, iconCss.icon, iconCss.downIcon)
-			})
+			v('span', { classes: this.classes(css.nativeArrow) }, [
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon) })
+			])
 		]);
 	}
 
@@ -350,7 +350,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			classes: this.classes(css.inputWrapper, _open ? css.open : null)
 		}, [
 			v('button', {
-				classes: this.classes(css.trigger, iconCss.icon, iconCss.downIcon, css.input),
+				classes: this.classes(css.trigger, css.input),
 				disabled,
 				'aria-controls': _selectId,
 				'aria-owns': _selectId,
@@ -362,7 +362,10 @@ export default class Select extends SelectBase<SelectProperties> {
 				onclick: this._onTriggerClick,
 				onfocus: this._onFocus,
 				onkeydown: this._onListboxKeyDown
-			}, [ selectedOption ? selectedOption.label : '' ]),
+			}, [
+				selectedOption ? selectedOption.label : '',
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon) })
+			]),
 			v('div', {
 				role: 'listbox',
 				id: _selectId,

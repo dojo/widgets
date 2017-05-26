@@ -384,20 +384,24 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
-				classes: this.classes(css.clear, iconCss.icon, iconCss.timesIcon),
+				classes: this.classes(css.clear),
 				disabled,
 				readOnly,
-				innerHTML: 'clear combo box',
 				onclick: this._onClearClick
-			}) : null,
+			}, [
+				'clear combo box',
+				v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon)})
+			]) : null,
 			v('button', {
 				'aria-controls': menuId,
-				classes: this.classes(css.trigger, iconCss.icon, iconCss.downIcon),
+				classes: this.classes(css.trigger),
 				disabled,
 				readOnly,
-				innerHTML: 'open combo box',
 				onclick: this._onArrowClick
-			})
+			}, [
+				'open combo box',
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon)})
+			])
 		]);
 
 		if (label) {
