@@ -133,9 +133,6 @@
 	background: transparent;
 	border: transparent;
 }
-.nativeInput:focus {
-	outline: none;
-}
 
 /* thumb needs to be invisible and same size as custom thumb */
 .nativeInput::-ms-thumb {

@@ -5,11 +5,6 @@
 	display: inline-block;
 }
 
-.root:hover,
-.root:focus {
-	outline: none;
-}
-
 .pressed::before {
 	border-bottom: 2px solid black;
 	border-right: 2px solid black;

@@ -9,9 +9,20 @@
 }
 
 .input {
-	opacity: 0;
+	appearance: none;
+	height: 100%;
+	left: 0;
+	margin: 0;
 	position: absolute;
+	top: 0;
+	width: 100%;
 	z-index: -1;
+}
+
+.input:focus {
+	border-color: var(--dojo-light-blue);
+	box-shadow: var(--input-focus-shadow);
+	outline: none;
 }
 
 .inputWrapper {
@@ -83,7 +94,6 @@
 	position: relative;
 	display: inline-block;
 	border: 2px solid var(--dojo-blue);
-	overflow: hidden;
 	padding: 2px 3px 1px 3px;
 	white-space: nowrap;
 	background: var(--dojo-white);
@@ -97,10 +107,6 @@
 .toggle.disabled .inputWrapper,
 .toggle.readonly .inputWrapper {
 	border-color: var(--input-border-color);
-}
-
-.toggle .input {
-	position: fixed;
 }
 
 .toggle .inputWrapper::before {
@@ -119,6 +125,10 @@
 
 .checked.toggle .inputWrapper::after {
 	left: calc(100% + 5px);
+}
+
+.toggle .input:focus {
+	box-shadow: 0 0 4px 3px var(--dojo-light-blue);
 }
 
 .onLabel,
