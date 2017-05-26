@@ -384,7 +384,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
-				classes: this.classes(css.clear, iconCss.icon, iconCss.times),
+				classes: this.classes(css.clear, iconCss.icon, iconCss.timesIcon),
 				disabled,
 				readOnly,
 				innerHTML: 'clear combo box',
@@ -392,7 +392,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}) : null,
 			v('button', {
 				'aria-controls': menuId,
-				classes: this.classes(css.trigger, iconCss.icon, iconCss.chevronDown),
+				classes: this.classes(css.trigger, iconCss.icon, iconCss.downIcon),
 				disabled,
 				readOnly,
 				innerHTML: 'open combo box',

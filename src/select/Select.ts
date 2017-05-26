@@ -289,7 +289,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				onkeydown: this._onKeyDown
 			}, optionNodes),
 			v('span', {
-				classes: this.classes(css.nativeArrow, iconCss.icon, iconCss.chevronDown)
+				classes: this.classes(css.nativeArrow, iconCss.icon, iconCss.downIcon)
 			})
 		]);
 	}
@@ -350,7 +350,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			classes: this.classes(css.inputWrapper, _open ? css.open : null)
 		}, [
 			v('button', {
-				classes: this.classes(css.trigger, iconCss.icon, iconCss.chevronDown, css.input),
+				classes: this.classes(css.trigger, iconCss.icon, iconCss.downIcon, css.input),
 				disabled,
 				'aria-controls': _selectId,
 				'aria-owns': _selectId,
