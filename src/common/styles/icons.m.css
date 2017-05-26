@@ -1,148 +1,73 @@
 @font-face {
-	font-family: 'dojo2';
-	src:
-		url('fonts/dojo2.ttf?k76fx7') format('truetype'),
-		url('fonts/dojo2.woff?k76fx7') format('woff'),
-		url('fonts/dojo2.svg?k76fx7#dojo2') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'dojo2';
+  src:
+    url('./fonts/dojo2.ttf?fkcsox') format('truetype'),
+    url('./fonts/dojo2.woff?fkcsox') format('woff'),
+    url('./fonts/dojo2.svg?fkcsox#dojo2') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 .icon {
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-	display: inline-block;
-	font: normal normal normal 14px/1 'dojo2';
-	font-size: inherit;
-	text-rendering: auto;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'dojo2' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.plus:before {
-	content: "\f067";
+.plusIcon:before {
+  content: "\f067";
 }
-.minus:before {
-	content: "\f068";
+.minusIcon:before {
+  content: "\f068";
 }
-.check:before {
-	content: "\f00c";
+.checkIcon:before {
+  content: "\f00c";
 }
-.close:before {
-	content: "\f00d";
+.timesIcon:before {
+  content: "\f00d";
 }
-.remove:before {
-	content: "\f00d";
+.leftIcon:before {
+  content: "\f053";
 }
-.times:before {
-	content: "\f00d";
+.rightIcon:before {
+  content: "\f054";
 }
-.chevronLeft:before {
-	content: "\f053";
+.plusCircleIcon:before {
+  content: "\f055";
 }
-.chevronRight:before {
-	content: "\f054";
+.minusCircleIcon:before {
+  content: "\f056";
 }
-.plusCircle:before {
-	content: "\f055";
+.timesCircleIcon:before {
+  content: "\f057";
 }
-.minusCircle:before {
-	content: "\f056";
+.checkCircleIcon:before {
+  content: "\f058";
 }
-.timesCircle:before {
-	content: "\f057";
+.questionCircleIcon:before {
+  content: "\f059";
 }
-.checkCircle:before {
-	content: "\f058";
+.infoCircleIcon:before {
+  content: "\f05a";
 }
-.questionCircle:before {
-	content: "\f059";
+.exclamationCircleIcon:before {
+  content: "\f06a";
 }
-.infoCircle:before {
-	content: "\f05a";
+.upIcon:before {
+  content: "\f077";
 }
-.arrowLeft:before {
-	content: "\f060";
+.downIcon:before {
+  content: "\f078";
 }
-.arrowRight:before {
-	content: "\f061";
+.barsIcon:before {
+  content: "\f0c9";
 }
-.arrowUp:before {
-	content: "\f062";
-}
-.arrowDown:before {
-	content: "\f063";
-}
-.exclamationCircle:before {
-	content: "\f06a";
-}
-.chevronUp:before {
-	content: "\f077";
-}
-.chevronDown:before {
-	content: "\f078";
-}
-.arrowsV:before {
-	content: "\f07d";
-}
-.arrowsH:before {
-	content: "\f07e";
-}
-.arrowCircleLeft:before {
-	content: "\f0a8";
-}
-.arrowCircleRight:before {
-	content: "\f0a9";
-}
-.arrowCircleUp:before {
-	content: "\f0aa";
-}
-.arrowCircleDown:before {
-	content: "\f0ab";
-}
-.bars:before {
-	content: "\f0c9";
-}
-.navicon:before {
-	content: "\f0c9";
-}
-.reorder:before {
-	content: "\f0c9";
-}
-.caretDown:before {
-	content: "\f0d7";
-}
-.caretUp:before {
-	content: "\f0d8";
-}
-.caretLeft:before {
-	content: "\f0d9";
-}
-.caretRight:before {
-	content: "\f0da";
-}
-.sort:before {
-	content: "\f0dc";
-}
-.unsorted:before {
-	content: "\f0dc";
-}
-.sortDesc:before {
-	content: "\f0dd";
-}
-.sortDown:before {
-	content: "\f0dd";
-}
-.sortAsc:before {
-	content: "\f0de";
-}
-.sortUp:before {
-	content: "\f0de";
-}
-
