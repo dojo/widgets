@@ -17,7 +17,10 @@
 
 .input {
 	width: 100%;
+	padding: 2px 4px;
 	padding-right: 2em;
+	border: 1px solid var(--component-color);
+	background: var(--component-background);
 }
 
 .input::-ms-clear {
@@ -28,7 +31,7 @@
 	padding-right: 4em;
 }
 
-.results {
+.dropdown {
 	position: absolute;
 	width: 100%;
 	max-height: 400px;
@@ -38,23 +41,23 @@
 	background: var(--component-background);
 }
 
-.result {
+.option {
 	cursor: pointer;
 }
 
-.disabledResult {
+.disabledOption {
 	color: var(--disabled-color);
 	font-style: italic;
 	cursor: default;
 }
 
-.selectedResult {
+.selected {
 	background: var(--selected-background);
 	color: var(--selected-color);
 }
 
 .clear,
-.arrow {
+.trigger {
 	position: absolute;
 	cursor: pointer;
 	font-size: 0;
@@ -65,22 +68,14 @@
 	padding: 0;
 }
 
-.arrow {
+.clear i, .trigger i {
+	font-size: initial;
+}
+
+.trigger {
 	right: 7px;
 }
 
 .clear {
 	right: 27px;
-}
-
-.arrow:after {
-	content: '▼';
-	display: block;
-	font-size: 14px;
-}
-
-.clear:after {
-	content: '✕';
-	display: block;
-	font-size: 14px;
 }

@@ -78,9 +78,9 @@ export default class ResultItem extends ResultItemBase<ResultItemProperties> {
 			'aria-selected': selected ? 'true' : 'false',
 			'aria-disabled': isDisabled(result) ? 'true' : 'false',
 			classes: this.classes(
-				css.result,
-				selected ? css.selectedResult : null,
-				isDisabled(result) ? css.disabledResult : null
+				css.option,
+				selected ? css.selected : null,
+				isDisabled(result) ? css.disabledOption : null
 			),
 			'data-selected': selected ? 'true' : 'false',
 			role: 'option',

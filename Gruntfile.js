@@ -5,6 +5,7 @@ module.exports = function (grunt) {
 
 	var staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
 	var staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
+	var fontFiles = 'common/styles/fonts/*.{svg,ttf,woff}';
 
 	require('grunt-dojo2').initConfig(grunt, {
 		copy: {
@@ -24,6 +25,18 @@ module.exports = function (grunt) {
 				cwd: 'src',
 				src: staticExampleFiles,
 				dest: '<%= devDirectory %>'
+			},
+			devFonts: {
+				expand: true,
+				cwd: 'src',
+				src: fontFiles,
+				dest: '<%= devDirectory %>'
+			},
+			distFonts: {
+				expand: true,
+				cwd: 'src',
+				src: fontFiles,
+				dest: '<%= distDirectory %>'
 			},
 			devStyles: {
 				expand: true,
@@ -80,12 +93,14 @@ module.exports = function (grunt) {
 	grunt.registerTask('dev', grunt.config.get('devTasks').concat([
 		'copy:staticExampleFiles',
 		'postcss:modules-dev',
-		'copy:devStyles'
+		'copy:devStyles',
+		'copy:devFonts'
 	]));
 
 	grunt.registerTask('dist', grunt.config.get('distTasks').concat([
 		'postcss:modules-dist',
 		'postcss:variables',
-		'copy:distStyles'
+		'copy:distStyles',
+		'copy:distFonts'
 	]));
 };

@@ -41,7 +41,7 @@ registerSuite({
 			isDisabled: () => true
 		}));
 		const vnode = <VNode> resultItem.__render__();
-		assert.isTrue(vnode.properties!.classes![css.disabledResult]);
+		assert.isTrue(vnode.properties!.classes![css.disabledOption]);
 	},
 
 	'onMouseEnter should be called'() {

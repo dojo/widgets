@@ -103,7 +103,7 @@ registerSuite({
 
 			assert.strictEqual(vnode.children![0].children!.length, 2, 'Select node and arrow node rendered');
 			assert.strictEqual(vnode.children![0].children![1].vnodeSelector, 'span');
-			assert.isTrue(vnode.children![0].children![1].properties!.classes![css.arrow]);
+			assert.isTrue(vnode.children![0].children![1].properties!.classes![css.nativeArrow]);
 		},
 
 		'basic events'() {
@@ -295,7 +295,7 @@ registerSuite({
 			assert.strictEqual(button.properties!['aria-haspopup'], 'listbox');
 			assert.strictEqual(button.properties!['aria-activedescendant'], 'first');
 			assert.strictEqual(button.properties!.value, 'two');
-			assert.strictEqual(button.text, 'Two');
+			assert.strictEqual(button.children![0].text, 'Two');
 		},
 		'Correct listbox attributes'() {
 			const select = new Select();

@@ -10,6 +10,7 @@ import { Keys } from '../common/util';
 import Label, { LabelOptions } from '../label/Label';
 import SelectOption, { OptionData } from './SelectOption';
 import * as css from './styles/select.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 
 /**
  * @type SelectProperties
@@ -59,6 +60,7 @@ export interface SelectProperties extends ThemeableProperties {
 export const SelectBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class Select extends SelectBase<SelectProperties> {
 	private _focusedIndex = 0;
 	private _ignoreBlur = false;
@@ -286,9 +288,11 @@ export default class Select extends SelectBase<SelectProperties> {
 				onfocus: this._onFocus,
 				onkeydown: this._onKeyDown
 			}, optionNodes),
-			v('span', {
-				classes: this.classes(css.arrow)
-			})
+			v('span', { classes: this.classes(css.nativeArrow) }, [
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				})
+			])
 		]);
 	}
 
@@ -360,7 +364,10 @@ export default class Select extends SelectBase<SelectProperties> {
 				onclick: this._onTriggerClick,
 				onfocus: this._onFocus,
 				onkeydown: this._onListboxKeyDown
-			}, [ selectedOption ? selectedOption.label : '' ]),
+			}, [
+				selectedOption ? selectedOption.label : '',
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon) })
+			]),
 			v('div', {
 				role: 'listbox',
 				id: _selectId,

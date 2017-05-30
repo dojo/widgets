@@ -67,7 +67,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 		})));
 
 		return v('div', {
-			classes: this.classes(css.results),
+			classes: this.classes(css.dropdown),
 			id,
 			role: 'listbox'
 		}, resultElements);

@@ -12,6 +12,7 @@ import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { Keys } from '../common/util';
 
 import * as css from './styles/comboBox.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 
 /**
  * @type ComboBoxProperties
@@ -73,6 +74,7 @@ export const enum Operation {
 export const ComboBoxBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _activeIndex: number | undefined;
 	private _focused: boolean;
@@ -385,17 +387,25 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				classes: this.classes(css.clear),
 				disabled,
 				readOnly,
-				innerHTML: 'clear combo box',
 				onclick: this._onClearClick
-			}) : null,
+			}, [
+				'clear combo box',
+				v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				})
+			]) : null,
 			v('button', {
 				'aria-controls': menuId,
-				classes: this.classes(css.arrow),
+				classes: this.classes(css.trigger),
 				disabled,
 				readOnly,
-				innerHTML: 'open combo box',
 				onclick: this._onArrowClick
-			})
+			}, [
+				'open combo box',
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				})
+			])
 		]);
 
 		if (label) {

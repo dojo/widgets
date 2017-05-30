@@ -3,7 +3,7 @@
 	--selected-color: #fff;
 	--disabled-color: #bbb;
 	--component-background: #fff;
-	--component-color: #000;
+	--component-color: #424242;
 	--underlay-background: color(var(--component-color) alpha(-70%));
 
 	--error-color: red;
