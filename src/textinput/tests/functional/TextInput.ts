@@ -80,10 +80,8 @@ registerSuite({
 				assert.isTrue(text && text.length > 0);
 			})
 				.findByCssSelector(`.${baseCss.visuallyHidden}`)
-				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
-					assert.isAtMost(height, 1, 'The label text height should be no more than 1px.');
-					assert.isAtMost(width, 1, 'The label text width should be no more than 1px.');
+				.then((element: any) => {
+					assert(element, 'element with specified class "visuallyHidden" should exist.`');
 				})
 				.end()
 			.end();
