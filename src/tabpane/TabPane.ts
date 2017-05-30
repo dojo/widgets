@@ -40,11 +40,11 @@ export const TabPaneBase = ThemeableMixin(WidgetBase);
 type Tab = WidgetBase<TabProperties>;
 
 @theme(css)
-export default class TabPane extends TabPaneBase<TabPaneProperties> {
+export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> {
 	private _id: string;
 
 	private get _tabs(): WNode<Tab>[] {
-		return this.children.filter((child: WNode) => child !== null) as WNode<Tab>[];
+		return this.children.filter(child => child !== null) as WNode<Tab>[];
 	}
 
 	private _onDownArrowPress() {
