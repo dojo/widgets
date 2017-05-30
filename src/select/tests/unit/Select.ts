@@ -295,7 +295,7 @@ registerSuite({
 			assert.strictEqual(button.properties!['aria-haspopup'], 'listbox');
 			assert.strictEqual(button.properties!['aria-activedescendant'], 'first');
 			assert.strictEqual(button.properties!.value, 'two');
-			assert.strictEqual(button.text, 'Two');
+			assert.strictEqual(button.children![0].text, 'Two');
 		},
 		'Correct listbox attributes'() {
 			const select = new Select();
