@@ -1,6 +1,5 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
 import Dialog, { DialogProperties } from '../../Dialog';
 import * as css from '../../styles/dialog.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
@@ -149,17 +148,49 @@ registerSuite({
 	},
 
 	closeable() {
-		// this test can not be converted using `test-extras` because there's no way to use `callListener` or `sendEvent` without the close button being rendered
-		const dialog = new Dialog();
-		dialog.__setProperties__({
-			closeable: false,
+		dialog.setProperties({
 			open: true,
-			title: 'foo'
+			closeable: false
 		});
-		const vnode = <VNode> dialog.__render__();
-		(<any> dialog)._onCloseClick();
 
-		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
-		assert.isUndefined(vnode.children![1].children![0].children, 'close button should not render if closeable is false');
+		const expected = v('div', {
+			classes: dialog.classes(css.root)
+		}, [
+			v('div', {
+				classes: dialog.classes(css.underlay),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				key: 'underlay',
+				onclick: dialog.listener,
+				afterCreate: dialog.listener,
+				afterUpdate: dialog.listener
+			}),
+			v('div', {
+				'aria-labelledby': idComparator,
+				classes: dialog.classes(css.main),
+				enterAnimation: animations.fadeIn,
+				exitAnimation: animations.fadeOut,
+				afterCreate: dialog.listener,
+				afterUpdate: dialog.listener,
+				key: 'main',
+				role: 'dialog'
+			}, [
+				v('div', {
+					classes: dialog.classes(css.title),
+					id: <any> idComparator,
+					key: 'title',
+					afterCreate: dialog.listener,
+					afterUpdate: dialog.listener
+				}, [ '', null ]),
+				v('div', {
+					classes: dialog.classes(css.content),
+					key: 'content',
+					afterCreate: dialog.listener,
+					afterUpdate: dialog.listener
+				}, [])
+			])
+
+		]);
+		dialog.expectRender(expected);
 	}
 });
