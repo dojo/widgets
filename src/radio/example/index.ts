@@ -28,7 +28,7 @@ export class App extends AppBase<WidgetProperties> {
 
 		return v('div', [
 			v('h2', {
-				innerHTML: 'Checkbox Examples'
+				innerHTML: 'Radio Examples'
 			}),
 			v('label', [
 				'Use Dojo Theme ',
@@ -37,7 +37,7 @@ export class App extends AppBase<WidgetProperties> {
 					onchange: this.themeChange
 				})
 			]),
-			v('fieldset', {}, [
+			v('fieldset', { id: 'example-1' }, [
 				v('legend', {}, ['Set of radio buttons with first option selected']),
 				w(Radio, {
 					key: 'r1',
@@ -64,6 +64,25 @@ export class App extends AppBase<WidgetProperties> {
 					label: 'Third option',
 					name: 'sample-radios',
 					onChange: this.onChange,
+					theme: this._theme
+				})
+			]),
+			v('fieldset', { id: 'example-2' }, [
+				v('legend', {}, ['Set of disabled radio buttons']),
+				w(Radio, {
+					key: 'r4',
+					checked: false,
+					disabled: true,
+					label: 'First option',
+					name: 'sample-radios-disabled',
+					theme: this._theme
+				}),
+				w(Radio, {
+					key: 'r5',
+					checked: true,
+					disabled: true,
+					label: 'Second option',
+					name: 'sample-radios-disabled',
 					theme: this._theme
 				})
 			])
