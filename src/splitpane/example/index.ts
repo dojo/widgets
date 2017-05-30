@@ -24,8 +24,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			border: '1px solid rgba(170, 170, 170, 0.5)'
 		};
 
-		console.log('size = ', this.state.rowSize);
-
 		return v('div', {
 			styles: {
 				padding: '50px'

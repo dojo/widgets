@@ -314,6 +314,7 @@ registerSuite({
 			size: 300
 		});
 		(<any> splitPane)._root = { offsetWidth: 50 };
+		(<any> splitPane)._divider = { offsetWidth: 5 };
 		<VNode> splitPane.__render__();
 		observer.next(50);
 
@@ -334,6 +335,7 @@ registerSuite({
 			direction: Direction.column
 		});
 		(<any> splitPane)._root = { offsetHeight: 50 };
+		(<any> splitPane)._divider = { offsetWidth: 5 };
 		<VNode> splitPane.__render__();
 		observer.next(50);
 
@@ -353,6 +355,7 @@ registerSuite({
 			direction: Direction.column
 		});
 		(<any> splitPane)._root = { offsetHeight: 400 };
+		(<any> splitPane)._divider = { offsetWidth: 5 };
 		<VNode> splitPane.__render__();
 		observer.next(400);
 
