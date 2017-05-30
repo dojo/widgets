@@ -289,7 +289,9 @@ export default class Select extends SelectBase<SelectProperties> {
 				onkeydown: this._onKeyDown
 			}, optionNodes),
 			v('span', { classes: this.classes(css.nativeArrow) }, [
-				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon) })
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				})
 			])
 		]);
 	}

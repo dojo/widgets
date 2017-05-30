@@ -390,7 +390,9 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				onclick: this._onClearClick
 			}, [
 				'clear combo box',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon)})
+				v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				})
 			]) : null,
 			v('button', {
 				'aria-controls': menuId,
@@ -400,7 +402,9 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				onclick: this._onArrowClick
 			}, [
 				'open combo box',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon)})
+				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				})
 			])
 		]);
 
