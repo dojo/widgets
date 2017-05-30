@@ -75,6 +75,9 @@ export const SliderBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Slider extends SliderBase<SliderProperties> {
+	// id used to associate input with output
+	private _inputId = uuid();
+
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
@@ -119,9 +122,6 @@ export default class Slider extends SliderBase<SliderProperties> {
 			vertical ? css.vertical : null
 		];
 
-		// id used to associate input with output
-		const inputId = uuid();
-
 		// custom output node
 		const outputNode = output ? output(value) : value + '';
 
@@ -133,7 +133,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 				classes: this.classes(css.input).fixed(css.nativeInput),
 				'aria-describedby': describedBy,
 				disabled,
-				id: inputId,
+				id: this._inputId,
 				'aria-invalid': invalid ? 'true' : null,
 				max: max + '',
 				min: min + '',
@@ -175,7 +175,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 			]),
 			v('output', {
 				classes: this.classes(css.output),
-				for: inputId + ''
+				for: this._inputId + ''
 			}, [ outputNode ])
 		]);
 
