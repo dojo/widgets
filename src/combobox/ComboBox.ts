@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import Label, { LabelOptions } from '../label/Label';
 import ResultItem from './ResultItem';
-import ResultMenu, { ResultMenuProperties } from './ResultMenu';
+import ResultMenu from './ResultMenu';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import uuid from '@dojo/core/uuid';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
@@ -81,6 +81,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _ignoreBlur: boolean;
 	private _ignoreFocus: boolean;
 	private _inputElement: HTMLInputElement;
+	private _menuId = uuid();
 	private _open: boolean;
 	private _wasOpen: boolean;
 	private _registry: WidgetRegistry;
@@ -330,7 +331,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 
 		return w<ResultMenu>('result-menu', {
-			id: uuid(),
+			id: this._menuId,
 			registry: this._registry,
 			results,
 			selectedIndex: this._activeIndex,
@@ -359,7 +360,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		} = this.properties;
 
 		const menu = this.renderMenu(results);
-		const menuId = menu ? (<ResultMenuProperties> menu.properties).id : '';
+		const menuId = menu ? this._menuId : '';
 		this._onMenuChange();
 		this._wasOpen = this._open;
 

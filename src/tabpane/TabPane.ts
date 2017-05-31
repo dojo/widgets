@@ -40,7 +40,7 @@ export const TabPaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class TabPane extends TabPaneBase<TabPaneProperties> {
-	private _id: string;
+	private _id = uuid();
 
 	private get _tabs(): DNode[] {
 		return this.children.filter((child: WNode) => child !== null);
@@ -195,8 +195,6 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 			this.selectIndex(validIndex);
 			return null;
 		}
-
-		this._id = uuid();
 
 		const children = [
 			v('div', {

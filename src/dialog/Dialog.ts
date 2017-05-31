@@ -45,6 +45,7 @@ export const DialogBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Dialog extends DialogBase<DialogProperties> {
+	private _titleId = uuid();
 	private _wasOpen: boolean;
 
 	private _onCloseClick() {
@@ -68,8 +69,6 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			onOpen
 		} = this.properties;
 
-		const titleId = uuid();
-
 		open && !this._wasOpen && onOpen && onOpen();
 
 		this._wasOpen = open;
@@ -83,7 +82,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 				onclick: this._onUnderlayClick
 			}),
 			v('div', {
-				'aria-labelledby': titleId,
+				'aria-labelledby': this._titleId,
 				classes: this.classes(css.main),
 				enterAnimation: enterAnimation,
 				exitAnimation: exitAnimation,
@@ -92,7 +91,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			}, [
 				v('div', {
 					classes: this.classes(css.title),
-					id: titleId,
+					id: this._titleId,
 					key: 'title'
 				}, [
 					title,
