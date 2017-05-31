@@ -7,6 +7,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { compareProperty } from '@dojo/test-extras/support/d';
 import { HNode } from '@dojo/widget-core/interfaces';
 import { v } from '@dojo/widget-core/d';
+import * as sinon from 'sinon';
 
 let dialog: Harness<DialogProperties, typeof Dialog>;
 
@@ -103,48 +104,45 @@ registerSuite({
 	},
 
 	onRequestClose() {
-		let called = false;
+		const spy = sinon.spy();
 		dialog.setProperties({
 			open: true,
 			closeable: true,
-			onRequestClose: () => called = true
+			onRequestClose: spy
 		});
 		dialog.sendEvent('click', { selector: 'button'});
-		assert.isTrue(called, 'onRequestClose should be called when close button is clicked');
+		assert.isTrue(spy.calledOnce, 'onRequestClose should be called when close button is clicked');
 	},
 
 	onOpen() {
-		let called = false;
-
+		const spy = sinon.spy();
 		dialog.setProperties({
 			open: true,
-			onOpen: () => {
-				called = true;
-			}
+			onOpen: spy
 		});
 		dialog.getRender(); // just to trigger a `_invalidate()`
 
-		assert.isTrue(called, 'onOpen should be called');
+		assert.isTrue(spy.calledOnce, 'onOpen should be called');
 	},
 
 	modal() {
-		let called = false;
+		const spy = sinon.spy();
 		dialog.setProperties({
 			open: true,
 			modal: true,
-			onRequestClose: () => called = true
+			onRequestClose: spy
 		});
 		dialog.sendEvent('click', { key: 'underlay' } );
-		assert.isFalse(called, 'onRequestClose should not be called when underlay is clicked and modal is true');
+		assert.isTrue(spy.notCalled, 'onRequestClose should not be called when underlay is clicked and modal is true');
 
 		dialog.setProperties({
 			open: true,
 			modal: false,
-			onRequestClose: () => called = true
+			onRequestClose: spy
 		});
 		dialog.getRender(); // just to trigger a `_invalidate()`
 		dialog.sendEvent('click', { key: 'underlay' } );
-		assert.isTrue(called, 'onRequestClose should be called if underlay is clicked and modal is false');
+		assert.isTrue(spy.calledOnce, 'onRequestClose should be called if underlay is clicked and modal is false');
 	},
 
 	closeable() {
