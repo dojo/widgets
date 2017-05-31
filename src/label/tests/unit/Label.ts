@@ -1,81 +1,113 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+
+import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
-import { VNode } from '@dojo/interfaces/vdom';
-import Label from '../../Label';
+
+import Label, { LabelProperties, parseLabelClasses } from '../../Label';
+import * as css from '../../styles/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
-let label: Label;
+let widget: Harness<LabelProperties, typeof Label>;
 
 registerSuite({
 	name: 'Label',
 
-	'Render label with correct properties'() {
-		label = new Label();
-		label.__setProperties__({
-			formId: 'foo',
-			classes: label.classes(baseCss.visuallyHidden),
+	beforeEach() {
+		widget = harness(Label);
+	},
+
+	afterEach() {
+		widget.destroy();
+	},
+
+	simple() {
+		widget.setProperties({
 			label: 'baz'
 		});
-		const vnode = <VNode> label.__render__();
 
-		assert.strictEqual(vnode.vnodeSelector, 'label', 'tagname should be label');
-		assert.strictEqual(vnode.properties!.form, 'foo');
-		assert.isTrue(vnode.properties!.classes![baseCss.visuallyHidden]);
-		assert.strictEqual(vnode.children![0].properties!.innerHTML, 'baz');
+		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
+			form: undefined
+		}, [
+			v('span', {
+				innerHTML: 'baz'
+			})
+		]));
 	},
 
-	'Render correct children': {
-		beforeEach() {
-			label = new Label();
-			label.__setChildren__([
-				v('div', {}, ['First']),
-				v('div', {}, ['Second'])
-			]);
-		},
-
-		'label before'() {
-			label.__setProperties__({
-				label: {
-					content: 'foo',
-					before: true,
-					hidden: false
-				}
-			});
-			const vnode = <VNode> label.__render__();
-
-			assert.strictEqual(vnode.children!.length, 3);
-			assert.strictEqual(vnode.children![0].properties!.innerHTML, 'foo');
-			assert.strictEqual(vnode.children![1].vnodeSelector, 'div');
-			assert.strictEqual(vnode.children![2].vnodeSelector, 'div');
-		},
-
-		'label after'() {
-			label.__setProperties__({
-				label: {
-					content: 'foo',
-					before: false,
-					hidden: false
-				}
-			});
-			const vnode = <VNode> label.__render__();
-
-			assert.strictEqual(vnode.children!.length, 3);
-			assert.strictEqual(vnode.children![2].properties!.innerHTML, 'foo');
-			assert.strictEqual(vnode.children![0].vnodeSelector, 'div');
-			assert.strictEqual(vnode.children![1].vnodeSelector, 'div');
-		}
-	},
-
-	'hidden label text'() {
-		label = new Label();
-		label.__setProperties__({
+	hidden() {
+		widget.setProperties({
 			label: {
-				content: 'foo',
+				content: 'baz',
 				hidden: true
 			}
 		});
-		const vnode = <VNode> label.__render__();
-		assert.isTrue(vnode.children![0].properties!.classes![baseCss.visuallyHidden]);
+
+		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
+			form: undefined
+		}, [
+			v('span', {
+				classes: widget.classes(baseCss.visuallyHidden),
+				innerHTML: 'baz'
+			})
+		]));
+	},
+
+	'with children'() {
+		widget.setProperties({
+			formId: 'foo',
+			label: 'baz'
+		});
+		widget.setChildren([
+			v('div', [ 'First' ]),
+			v('div', [ 'Second' ])
+		]);
+
+		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
+			form: 'foo'
+		}, [
+			v('span', {
+				innerHTML: 'baz'
+			}),
+			v('div', [ 'First' ]),
+			v('div', [ 'Second' ])
+		]));
+	},
+
+	'label after'() {
+		widget.setProperties({
+			formId: 'foo',
+			label: {
+				content: 'baz',
+				before: false
+			}
+		});
+		widget.setChildren([
+			v('div', [ 'child' ])
+		]);
+
+		widget.expectRender(v('label', {
+			classes: widget.classes(css.root),
+			form: 'foo'
+		}, [
+			v('div', [ 'child' ]),
+			v('span', {
+				innerHTML: 'baz'
+			})
+		]));
+	},
+
+	parseLabelClasses() {
+		const classes = {
+			foo: true,
+			bar: false,
+			baz: true
+		};
+		const result = parseLabelClasses(classes);
+
+		assert.strictEqual('foo baz', result);
 	}
 });

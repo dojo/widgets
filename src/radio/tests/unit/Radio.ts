@@ -1,104 +1,233 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
-import Radio from '../../Radio';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import Radio, { RadioProperties } from '../../Radio';
+import Label from '../../../label/Label';
+import { v, w } from '@dojo/widget-core/d';
+import has from '@dojo/has/has';
 import * as css from '../../styles/radio.m.css';
 
+let radio: Harness<RadioProperties, typeof Radio>;
+
 registerSuite({
-	name: 'Radio',
+	name: 'Radio unit tests',
 
-	construction() {
-		const radio = new Radio();
-		radio.__setProperties__({
-			checked: true
-		});
-
-		assert.isTrue(radio.properties.checked);
+	beforeEach() {
+		radio = harness(Radio);
+	},
+	afterEach() {
+		radio.destroy();
 	},
 
-	'default node attributes'() {
-		const radio = new Radio();
-		const vnode = <VNode> radio.__render__();
-		const inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.vnodeSelector, 'input');
-		assert.strictEqual(inputNode.properties!.type, 'radio');
-		assert.strictEqual(inputNode.properties!.checked, false);
+	'default render'() {
+		const expected = v('div', {
+			classes: radio.classes(css.root)
+		}, [
+			v('div', {
+				classes: radio.classes(css.inputWrapper)
+			}, [
+				v('input', {
+					classes: radio.classes(css.input),
+					type: 'radio',
+					checked: false,
+					disabled: undefined,
+					name: undefined,
+					readOnly: undefined,
+					required: undefined,
+					value: undefined,
+					'aria-describedby': undefined,
+					'aria-invalid': null,
+					'aria-readonly': null,
+					'onblur': radio.listener,
+					'onchange': radio.listener,
+					'onclick': radio.listener,
+					'onfocus': radio.listener,
+					'onmousedown': radio.listener,
+					'onmouseup': radio.listener,
+					'ontouchcancel': radio.listener,
+					'ontouchend': radio.listener,
+					'ontouchstart': radio.listener
+				})
+			])
+		]);
+		radio.expectRender(expected);
 	},
-
-	'correct node attributes'() {
-		const radio = new Radio();
-		radio.__setProperties__({
+	'render with properties'() {
+		radio.setProperties({
 			checked: true,
 			describedBy: 'id1',
 			disabled: true,
-			formId: 'id2',
 			invalid: true,
-			label: 'foo',
 			name: 'bar',
 			readOnly: true,
 			required: true,
 			value: 'qux'
 		});
-		const vnode = <VNode> radio.__render__();
-		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1].children![0];
 
-		assert.isTrue(inputNode.properties!.checked);
-		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
-		assert.isTrue(inputNode.properties!.disabled);
-		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
-		assert.strictEqual(inputNode.properties!.name, 'bar');
-		assert.isTrue(inputNode.properties!.readOnly);
-		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
-		assert.isTrue(inputNode.properties!.required);
-		assert.strictEqual(inputNode.properties!.value, 'qux');
-
-		assert.strictEqual(vnode.properties!['form'], 'id2');
-		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
+		const expected = v('div', {
+			classes: radio.classes(css.root, css.checked, css.disabled, css.invalid, css.readonly, css.required)
+		}, [
+			v('div', {
+				classes: radio.classes(css.inputWrapper)
+			}, [
+				v('input', {
+					classes: radio.classes(css.input),
+					type: 'radio',
+					checked: true,
+					disabled: true,
+					name: 'bar',
+					readOnly: true,
+					required: true,
+					value: 'qux',
+					'aria-describedby': 'id1',
+					'aria-invalid': 'true',
+					'aria-readonly': 'true',
+					'onblur': radio.listener,
+					'onchange': radio.listener,
+					'onclick': radio.listener,
+					'onfocus': radio.listener,
+					'onmousedown': radio.listener,
+					'onmouseup': radio.listener,
+					'ontouchcancel': radio.listener,
+					'ontouchend': radio.listener,
+					'ontouchstart': radio.listener
+				})
+			])
+		]);
+		radio.expectRender(expected);
 	},
+	'render with label'() {
+		radio.setProperties({
+			formId: 'id2',
+			label: 'foo'
+		});
 
-	'state classes'() {
-		const radio = new Radio();
-		radio.__setProperties__({
+		const expected = w<any>(Label, {
+			extraClasses: {
+				// root: parseLabelClasses(<any> radio.classes(css.root, css.checked, css.disabled, css.invalid, css.readonly, css.required))
+				root: css.root
+			},
+			formId: 'id2',
+			label: 'foo'
+		}, [
+			v('div', {
+				classes: radio.classes(css.inputWrapper)
+			}, [
+				v('input', {
+					classes: radio.classes(css.input),
+					type: 'radio',
+					checked: false,
+					disabled: undefined,
+					name: undefined,
+					readOnly: undefined,
+					required: undefined,
+					value: undefined,
+					'aria-describedby': undefined,
+					'aria-invalid': null,
+					'aria-readonly': null,
+					'onblur': radio.listener,
+					'onchange': radio.listener,
+					'onclick': radio.listener,
+					'onfocus': radio.listener,
+					'onmousedown': radio.listener,
+					'onmouseup': radio.listener,
+					'ontouchcancel': radio.listener,
+					'ontouchend': radio.listener,
+					'ontouchstart': radio.listener
+				})
+			])
+		]);
+		radio.expectRender(expected);
+	},
+	'render with state change'() {
+		radio.setProperties({
 			checked: true,
 			disabled: true,
 			invalid: true,
 			readOnly: true,
 			required: true
 		});
-		let vnode = <VNode> radio.__render__();
 
-		assert.isTrue(vnode.properties!.classes![css.checked]);
-		assert.isTrue(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.invalid]);
-		assert.isTrue(vnode.properties!.classes![css.readonly]);
-		assert.isTrue(vnode.properties!.classes![css.required]);
+		const expected = v('div', {
+			classes: radio.classes(css.root, css.checked, css.disabled, css.invalid, css.readonly, css.required)
+		}, [
+			v('div', {
+				classes: radio.classes(css.inputWrapper)
+			}, [
+				v('input', {
+					classes: radio.classes(css.input),
+					type: 'radio',
+					checked: true,
+					disabled: true,
+					name: undefined,
+					readOnly: true,
+					required: true,
+					value: undefined,
+					'aria-describedby': undefined,
+					'aria-invalid': 'true',
+					'aria-readonly': 'true',
+					'onblur': radio.listener,
+					'onchange': radio.listener,
+					'onclick': radio.listener,
+					'onfocus': radio.listener,
+					'onmousedown': radio.listener,
+					'onmouseup': radio.listener,
+					'ontouchcancel': radio.listener,
+					'ontouchend': radio.listener,
+					'ontouchstart': radio.listener
+				})
+			])
+		]);
+		radio.expectRender(expected);
 
-		radio.__setProperties__({
+		radio.setProperties({
 			checked: false,
 			disabled: false,
 			invalid: false,
 			readOnly: false,
 			required: false
 		});
-		vnode = <VNode> radio.__render__();
-		assert.isFalse(vnode.properties!.classes![css.checked]);
-		assert.isFalse(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-		assert.isFalse(vnode.properties!.classes![css.readonly]);
-		assert.isFalse(vnode.properties!.classes![css.required]);
+		assignChildProperties(expected, '0,0', {
+			classes: radio.classes(css.input),
+			checked: false,
+			disabled: false,
+			readOnly: false,
+			required: false,
+			'aria-readonly': null,
+			'aria-invalid': null
+		});
+		assignChildProperties(expected, '0', {
+			classes: radio.classes(css.inputWrapper)
+		});
+		assignProperties(expected, {
+			classes: radio.classes(css.root, css.valid)
+		});
+		radio.expectRender(expected);
 
-		radio.__setProperties__({
+		radio.setProperties({
 			invalid: undefined
 		});
-		vnode = <VNode> radio.__render__();
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-	},
+		assignChildProperties(expected, '0,0', {
+			classes: radio.classes(css.input),
+			disabled: undefined,
+			readOnly: undefined,
+			required: undefined
+		});
+		assignChildProperties(expected, '0', {
+			classes: radio.classes(css.inputWrapper)
+		});
+		assignProperties(expected, {
+			classes: radio.classes(css.root)
+		});
+		radio.expectRender(expected);
 
-	events() {
+	},
+	'events setup'() {
+		// TODO this is borrowed from: https://github.com/msssk/widgets/blob/672a53433159cce85418f322cbcd5e3c9d1e94bb/src/checkbox/tests/unit/Checkbox.ts#L212
+		// Will need to clean it up once this piece of code is landed somewhere.
+		const hasTouch = has('host-node') || 'ontouchstart' in document || ('onpointerdown' in document && navigator.maxTouchPoints > 0);
+
 		let blurred = false,
 				changed = false,
 				clicked = false,
@@ -109,8 +238,7 @@ registerSuite({
 				touchend = false,
 				touchcancel = false;
 
-		const radio = new Radio();
-		radio.__setProperties__({
+		radio.setProperties({
 			onBlur: () => { blurred = true; },
 			onChange: () => { changed = true; },
 			onClick: () => { clicked = true; },
@@ -122,23 +250,26 @@ registerSuite({
 			onTouchCancel: () => { touchcancel = true; }
 		});
 
-		(<any> radio)._onBlur(<FocusEvent> {});
+		radio.sendEvent('blur', { selector: 'input'});
 		assert.isTrue(blurred);
-		(<any> radio)._onChange(<Event> {});
+		radio.sendEvent('change', { selector: 'input' });
 		assert.isTrue(changed);
-		(<any> radio)._onClick(<MouseEvent> {});
+		radio.sendEvent('click', { selector: 'input' });
 		assert.isTrue(clicked);
-		(<any> radio)._onFocus(<FocusEvent> {});
+		radio.sendEvent('focus', { selector: 'input' });
 		assert.isTrue(focused);
-		(<any> radio)._onMouseDown(<MouseEvent> {});
+		radio.sendEvent('mousedown', { selector: 'input' });
 		assert.isTrue(mousedown);
-		(<any> radio)._onMouseUp(<MouseEvent> {});
+		radio.sendEvent('mouseup', { selector: 'input' });
 		assert.isTrue(mouseup);
-		(<any> radio)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> radio)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> radio)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		if (hasTouch) {
+			radio.sendEvent('touchstart', { selector: 'input' });
+			assert.isTrue(touchstart);
+			radio.sendEvent('touchend', { selector: 'input' });
+			assert.isTrue(touchend);
+			radio.sendEvent('touchcancel', { selector: 'input' });
+			assert.isTrue(touchcancel);
+
+		}
 	}
 });

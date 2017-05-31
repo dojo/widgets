@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import Label, { LabelOptions } from '../label/Label';
+import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import * as css from './styles/checkbox.m.css';
 
@@ -140,7 +140,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		if (label) {
 			checkboxWidget = w(Label, {
-				classes: this.classes(css.root, ...stateClasses),
+				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).get()) },
 				formId,
 				label
 			}, children);
