@@ -41,7 +41,7 @@ type Tab = WidgetBase<TabProperties>;
 
 @theme(css)
 export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> {
-	private _id: string;
+	private _id = uuid();
 
 	private get _tabs(): WNode<Tab>[] {
 		return this.children.filter(child => child !== null) as WNode<Tab>[];
@@ -196,8 +196,6 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 			this.selectIndex(validIndex);
 			return null;
 		}
-
-		this._id = uuid();
 
 		const children = [
 			v('div', {
