@@ -3,7 +3,6 @@ import * as registerSuite from 'intern!object';
 import * as sinon from 'sinon';
 
 import { v } from '@dojo/widget-core/d';
-import { VNode } from '@dojo/interfaces/vdom';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import has from '@dojo/has/has';
 
@@ -301,66 +300,5 @@ registerSuite({
 		});
 
 		assert.strictEqual(called, 2);
-	},
-
-	'onResize should be called when window is resized for column'(this: any) {
-		const dfd = this.async();
-		const splitPane = new SplitPane();
-		const observer = (<any> util.observeViewport).args[0][0];
-		let called = false;
-
-		splitPane.__setProperties__({
-			onResize: () => called = true,
-			size: 300
-		});
-		(<any> splitPane)._root = { offsetWidth: 50 };
-		(<any> splitPane)._divider = { offsetWidth: 5 };
-		<VNode> splitPane.__render__();
-		observer.next(50);
-
-		setTimeout(dfd.callback(() => {
-			assert.isTrue(called);
-		}), 300);
-	},
-
-	'onResize should be called when window is resized for row'(this: any) {
-		const dfd = this.async();
-		const splitPane = new SplitPane();
-		const observer = (<any> util.observeViewport).args[0][0];
-		let called = false;
-
-		splitPane.__setProperties__({
-			onResize: () => called = true,
-			size: 300,
-			direction: Direction.column
-		});
-		(<any> splitPane)._root = { offsetHeight: 50 };
-		(<any> splitPane)._divider = { offsetWidth: 5 };
-		<VNode> splitPane.__render__();
-		observer.next(50);
-
-		setTimeout(dfd.callback(() => {
-			assert.isTrue(called);
-		}), 300);
-	},
-
-	'onResize not called when window is not resized past threshold'(this: any) {
-		const dfd = this.async();
-		const splitPane = new SplitPane();
-		const observer = (<any> util.observeViewport).args[0][0];
-		let called = false;
-
-		splitPane.__setProperties__({
-			onResize: () => called = true,
-			direction: Direction.column
-		});
-		(<any> splitPane)._root = { offsetHeight: 400 };
-		(<any> splitPane)._divider = { offsetWidth: 5 };
-		<VNode> splitPane.__render__();
-		observer.next(400);
-
-		setTimeout(dfd.callback(() => {
-			assert.isFalse(called);
-		}), 300);
 	}
 });

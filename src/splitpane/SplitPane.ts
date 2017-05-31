@@ -1,7 +1,5 @@
 import { createHandle } from '@dojo/core/lang';
-import { debounce } from '@dojo/core/util';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { observeViewport } from '../common/util';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
@@ -71,14 +69,6 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		this.own(createHandle(() => {
 			this._boundHandlers.forEach(object => document.removeEventListener(object.event, object.func));
 		}));
-
-		const viewportSubscription = observeViewport({
-			next: debounce(this._onResize.bind(this), 50)
-		});
-
-		this.own(createHandle(() => {
-			viewportSubscription.unsubscribe();
-		}));
 	}
 
 	private _deselect() {
@@ -136,19 +126,6 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 	private _onDragEnd(event: MouseEvent & TouchEvent) {
 		this._dragging = false;
 		this._lastSize = undefined;
-	}
-
-	private _onResize() {
-		const {
-			direction = Direction.row,
-			onResize,
-			size = DEFAULT_SIZE
-		} = this.properties;
-
-		const rootSize = direction === Direction.row ? this._root.offsetWidth : this._root.offsetHeight;
-		if (size > rootSize) {
-			onResize && onResize(rootSize);
-		}
 	}
 
 	protected onElementCreated(element: HTMLElement, key: string) {
