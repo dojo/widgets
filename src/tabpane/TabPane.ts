@@ -37,13 +37,14 @@ export interface TabPaneProperties extends ThemeableProperties {
 };
 
 export const TabPaneBase = ThemeableMixin(WidgetBase);
+type Tab = WidgetBase<TabProperties>;
 
 @theme(css)
-export default class TabPane extends TabPaneBase<TabPaneProperties> {
+export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> {
 	private _id = uuid();
 
-	private get _tabs(): DNode[] {
-		return this.children.filter((child: WNode) => child !== null);
+	private get _tabs(): WNode<Tab>[] {
+		return this.children.filter(child => child !== null) as WNode<Tab>[];
 	}
 
 	private _onDownArrowPress() {
@@ -71,7 +72,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	}
 
 	private _renderTabButtons() {
-		return this._tabs.map((tab: WNode, i) => {
+		return this._tabs.map((tab, i) => {
 			const {
 				closeable,
 				disabled,
@@ -111,7 +112,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 				return i === activeIndex;
 			})
 			.map((tab, i) => {
-				assign((<WNode> tab).properties, {
+				assign(tab.properties, {
 					id: `${ this._id }-tab-${i}`,
 					labelledBy: `${ this._id }-tabbutton-${i}`
 				});
@@ -126,7 +127,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 	private _validateIndex(currentIndex: number, backwards?: boolean) {
 		const tabs = this._tabs;
 
-		if (tabs.every((result: WNode) => Boolean((<TabProperties> result.properties).disabled))) {
+		if (tabs.every(result => Boolean(result.properties.disabled))) {
 			return null;
 		}
 
@@ -139,7 +140,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 
 		let i = !tabs[currentIndex] ? tabs.length - 1 : currentIndex;
 
-		while ((<TabProperties> (<WNode> tabs[i]).properties).disabled) {
+		while (tabs[i].properties.disabled) {
 			i = nextIndex(i);
 		}
 
@@ -148,7 +149,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 
 	protected closeIndex(index: number) {
 		const { onRequestTabClose } = this.properties;
-		const key = (<TabProperties> (<WNode> this._tabs[index]).properties).key;
+		const key = this._tabs[index].properties.key;
 
 		onRequestTabClose && onRequestTabClose(index, key);
 	}
@@ -166,7 +167,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties> {
 		const validIndex = this._validateIndex(index, backwards);
 
 		if (validIndex !== null && validIndex !== activeIndex) {
-			const key = (<TabProperties> (<WNode> this._tabs[validIndex]).properties).key;
+			const key = this._tabs[validIndex].properties.key;
 			onRequestTabChange && onRequestTabChange(validIndex, key);
 		}
 	}
