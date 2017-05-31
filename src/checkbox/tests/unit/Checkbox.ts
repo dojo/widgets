@@ -5,13 +5,52 @@ import * as Test from 'intern/lib/Test';
 import has from '@dojo/has/has';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
-import { HNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 
 import Checkbox, { CheckboxProperties, Mode } from '../../Checkbox';
 import Label, { parseLabelClasses } from '../../../label/Label';
 import * as css from '../../styles/checkbox.m.css';
 
 let widget: Harness<CheckboxProperties, typeof Checkbox>;
+
+function expectedChildrenRender(properties: CheckboxProperties = {}): DNode[] {
+	return [
+		v('div', {
+			classes: widget.classes(css.inputWrapper)
+		}, [
+			properties.mode === Mode.toggle ?
+				v('div', { classes: widget.classes(css.onLabel) }, [
+					properties.onLabel ? properties.onLabel : null
+				]) : null,
+			properties.mode === Mode.toggle ?
+				v('div', { classes: widget.classes(css.offLabel) }, [
+					properties.offLabel ? properties.offLabel : null
+				]) : null,
+			v('input', {
+				'aria-describedby': properties.describedBy,
+				'aria-invalid': properties.invalid ? String(properties.invalid) : null,
+				'aria-readonly': properties.readOnly ? String(properties.readOnly) : null,
+				checked: properties.checked ? true : false,
+				classes: widget.classes(css.input),
+				disabled: properties.disabled ? true : undefined,
+				name: properties.name,
+				onblur: widget.listener,
+				onchange: widget.listener,
+				onclick: widget.listener,
+				onfocus: widget.listener,
+				onmousedown: widget.listener,
+				onmouseup: widget.listener,
+				ontouchstart: widget.listener,
+				ontouchend: widget.listener,
+				ontouchcancel: widget.listener,
+				readOnly: properties.readOnly ? true : undefined,
+				required: properties.required ? true : undefined,
+				type: 'checkbox',
+				value: properties.value
+			})
+		])
+	];
+}
 
 registerSuite({
 	name: 'Checkbox',
@@ -27,35 +66,7 @@ registerSuite({
 	simple() {
 		widget.expectRender(v('div', {
 			classes: widget.classes(css.root)
-		}, [ v('div', {
-				classes: widget.classes(css.inputWrapper)
-			}, [
-				null,
-				null,
-				v('input', {
-					'aria-describedby': undefined,
-					'aria-invalid': null,
-					'aria-readonly': null,
-					checked: false,
-					classes: widget.classes(css.input),
-					disabled: undefined,
-					name: undefined,
-					onblur: widget.listener,
-					onchange: widget.listener,
-					onclick: widget.listener,
-					onfocus: widget.listener,
-					onmousedown: widget.listener,
-					onmouseup: widget.listener,
-					ontouchstart: widget.listener,
-					ontouchend: widget.listener,
-					ontouchcancel: widget.listener,
-					readOnly: undefined,
-					required: undefined,
-					type: 'checkbox',
-					value: undefined
-				})
-			])
-		]));
+		}, expectedChildrenRender()));
 	},
 
 	'properties and attributes'() {
@@ -87,89 +98,25 @@ registerSuite({
 			css.required
 		)());
 		widget.resetClasses();
-		const onLabelClass = widget.classes(css.onLabel);
-		const offLabelClass = widget.classes(css.offLabel);
-		const inputClass = widget.classes(css.input);
-		const inputWrapperClass = widget.classes(css.inputWrapper);
-
 		widget.expectRender(w(Label, {
 			extraClasses: { root:
 				parsedLabelClasses
 			},
 			formId: checkboxProperties.formId,
 			label: checkboxProperties.label!
-		}, [
-			v('div', {
-				classes: inputWrapperClass
-			}, [
-				v('div', { classes: onLabelClass }, [ checkboxProperties.onLabel! ]),
-				v('div', { classes: offLabelClass }, [ checkboxProperties.offLabel! ]),
-				v('input', {
-					'aria-describedby': checkboxProperties.describedBy,
-					'aria-invalid': String(checkboxProperties.invalid),
-					'aria-readonly': String(checkboxProperties.readOnly),
-					checked: checkboxProperties.checked,
-					classes: inputClass,
-					disabled: checkboxProperties.disabled,
-					name: checkboxProperties.name,
-					onblur: widget.listener,
-					onchange: widget.listener,
-					onclick: widget.listener,
-					onfocus: widget.listener,
-					onmousedown: widget.listener,
-					onmouseup: widget.listener,
-					ontouchstart: widget.listener,
-					ontouchend: widget.listener,
-					ontouchcancel: widget.listener,
-					readOnly: checkboxProperties.readOnly,
-					required: checkboxProperties.required,
-					type: 'checkbox',
-					value: checkboxProperties.value
-				})
-			])
-		]));
+		}, expectedChildrenRender(checkboxProperties)));
 	},
 
 	'invalid and toggle'() {
-		const children: HNode[] = [
-			v('div', {
-				classes: widget.classes(css.inputWrapper)
-			}, [
-				v('div', { classes: widget.classes(css.onLabel) }, [ null ]),
-				v('div', { classes: widget.classes(css.offLabel) }, [ null ]),
-				v('input', {
-					'aria-describedby': undefined,
-					'aria-invalid': null,
-					'aria-readonly': null,
-					checked: false,
-					classes: widget.classes(css.input),
-					disabled: undefined,
-					name: undefined,
-					onblur: widget.listener,
-					onchange: widget.listener,
-					onclick: widget.listener,
-					onfocus: widget.listener,
-					onmousedown: widget.listener,
-					onmouseup: widget.listener,
-					ontouchstart: widget.listener,
-					ontouchend: widget.listener,
-					ontouchcancel: widget.listener,
-					readOnly: undefined,
-					required: undefined,
-					type: 'checkbox',
-					value: undefined
-				})
-			])
-		];
-
-		widget.setProperties({
+		const checkboxProperties = {
 			invalid: false,
 			mode: Mode.toggle
-		});
+		};
+		widget.setProperties(checkboxProperties);
 
 		widget.expectRender(v('div', {
 			classes: widget.classes(css.root, css.toggle, css.valid)
-		}, children));
+		}, expectedChildrenRender(checkboxProperties)));
 	},
 
 	events() {
