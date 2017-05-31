@@ -77,8 +77,7 @@ registerSuite({
 
 		widget.setProperties(checkboxProperties);
 
-		// TODO: any
-		const parsedLabelClasses = parseLabelClasses(<any> widget.classes(
+		const parsedLabelClasses = parseLabelClasses(widget.classes(
 			css.root,
 			css.toggle,
 			css.checked,
@@ -93,8 +92,7 @@ registerSuite({
 		const inputClass = widget.classes(css.input);
 		const inputWrapperClass = widget.classes(css.inputWrapper);
 
-		// TODO: any
-		widget.expectRender(w<any>(Label, {
+		widget.expectRender(w(Label, {
 			extraClasses: { root:
 				parsedLabelClasses
 			},
