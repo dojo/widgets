@@ -1,10 +1,11 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme, ClassesFunctionChain } from '@dojo/widget-core/mixins/Themeable';
+import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { RegistryMixin } from '@dojo/widget-core/mixins/Registry';
 import { WidgetRegistry } from '@dojo/widget-core/WidgetRegistry';
 import { v } from '@dojo/widget-core/d';
 import { assign } from '@dojo/core/lang';
+import * as css from './styles/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 /**
@@ -30,27 +31,39 @@ const labelDefaults = {
  *
  * Properties that can be set on a Label component
  *
- * @property classes    Optional classes to be set on the label node
  * @property formId     ID of a form element associated with the form field
  * @property label      Label settings for form label text, position, and visibility
  */
 export interface LabelProperties extends ThemeableProperties {
 	registry?: WidgetRegistry;
-	classes?: ClassesFunctionChain;
 	formId?: string;
 	label: string | LabelOptions;
 }
 
+/**
+ * This is a helper function for using `extraClasses` with Label.
+ * It can be used as follows:
+ * extraClasses: { root: parseLabelClasses(this.classes(css.class1, css.class2).get()) }
+ */
+export function parseLabelClasses(classes: { [key: string]: boolean | null | undefined }): string {
+	return Object.keys(classes).reduce((classNamesString: string, className) => {
+		if (classes[className] === true) {
+			classNamesString += ` ${className}`;
+		}
+
+		return classNamesString;
+	}, '').trim();
+}
+
 export const LabelBase = RegistryMixin(ThemeableMixin(WidgetBase));
 
-@theme(baseCss)
+@theme(css)
 export default class Label extends LabelBase<LabelProperties>  {
 
 	render(): DNode {
 		const {
 			formId,
-			label,
-			classes = {}
+			label
 		} = this.properties;
 
 		// assign string or object label properites with defaults
@@ -75,8 +88,8 @@ export default class Label extends LabelBase<LabelProperties>  {
 		}
 
 		return v('label', {
-			'form': formId,
-			classes: classes
+			classes: this.classes(css.root),
+			form: formId
 		}, this.children);
 	}
 }
