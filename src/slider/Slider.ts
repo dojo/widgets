@@ -126,7 +126,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		const outputNode = output ? output(value) : value + '';
 
 		const slider = v('div', {
-			classes: this.classes(css.inputWrapper),
+			classes: this.classes().fixed(css.inputWrapper),
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
@@ -160,16 +160,16 @@ export default class Slider extends SliderBase<SliderProperties> {
 				ontouchcancel: this._onTouchCancel
 			}),
 			v('div', {
-				classes: this.classes(css.track),
+				classes: this.classes(css.track).fixed(css.trackFixed),
 				'aria-hidden': 'true',
 				styles: vertical ? { width: verticalHeight } : {}
 			}, [
 				v('span', {
-					classes: this.classes(css.fill),
+					classes: this.classes(css.fill).fixed(css.fillFixed),
 					styles: { width: (value / max * 100) + '%' }
 				}),
 				v('span', {
-					classes: this.classes(css.thumb),
+					classes: this.classes(css.thumb).fixed(css.thumbFixed),
 					styles: { left: (value / max * 100) + '%' }
 				})
 			]),
@@ -183,14 +183,14 @@ export default class Slider extends SliderBase<SliderProperties> {
 
 		if (label) {
 			sliderWidget = w(Label, {
-				classes: this.classes(css.root, ...stateClasses),
+				classes: this.classes(css.root, ...stateClasses).fixed(css.rootFixed),
 				formId,
 				label
 			}, [ slider ]);
 		}
 		else {
 			sliderWidget = v('div', {
-				classes: this.classes(css.root, ...stateClasses)
+				classes: this.classes(css.root, ...stateClasses).fixed(css.rootFixed)
 			}, [ slider ]);
 		}
 
