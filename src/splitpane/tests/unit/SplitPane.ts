@@ -1,6 +1,5 @@
 import * as assert from 'intern/chai!assert';
 import * as registerSuite from 'intern!object';
-import * as sinon from 'sinon';
 
 import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -21,15 +20,13 @@ registerSuite({
 
 	beforeEach() {
 		widget = harness(SplitPane);
-		window.getSelection = window.getSelection || (() => {});
-		sinon.stub(window, 'getSelection', () => ({
+		window.getSelection = window.getSelection || (() => ({
 			removeAllRanges() { }
 		}));
 	},
 
 	afterEach() {
 		widget.destroy();
-		(<any> window).getSelection.restore();
 	},
 
 	'Should construct SplitPane with passed properties'() {
