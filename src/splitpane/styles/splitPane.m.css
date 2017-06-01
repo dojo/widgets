@@ -1,6 +1,6 @@
 @import '../../common/styles/variables.css';
 
-.root {
+.rootFixed {
 	width: 100%;
 	height: 100%;
 	position: relative;
@@ -10,45 +10,57 @@
 	overflow: hidden;
 }
 
-.column {
+.root { }
+
+.columnFixed {
 	flex-direction: column;
 }
 
-.divider {
+.column { }
+
+.dividerFixed {
 	background: var(--component-color);
 	cursor: pointer;
 	flex: 0 0 auto;
 	background-clip: padding-box;
 }
 
-.leading {
+.divider { }
+
+.leadingFixed {
 	flex: 0 0 auto;
 }
 
-.row > .divider {
+.leading { }
+
+.rowFixed > .dividerFixed {
 	width: 1px;
 	border-left: 2.5px solid transparent;
 	border-right: 2.5px solid transparent;
 	cursor: ew-resize;
 }
 
-.row > .divider:hover {
+.rowFixed > .dividerFixed:hover {
 	border-left-color: var(--underlay-background);
 	border-right-color: var(--underlay-background);
 }
 
-.column > .divider {
+.row { }
+
+.columnFixed > .dividerFixed {
 	height: 1px;
 	border-top: 2.5px solid transparent;
 	border-bottom: 2.5px solid transparent;
 	cursor: ns-resize;
 }
 
-.column > .divider:hover {
+.columnFixed > .dividerFixed:hover {
 	border-top-color: var(--underlay-background);
 	border-bottom-color: var(--underlay-background);
 }
 
-.trailing {
+.trailingFixed {
 	flex: 1 1 0%;
 }
+
+.trailing { }

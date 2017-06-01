@@ -150,16 +150,19 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 
 		return v('div', {
 			classes: this.classes(
-				direction === Direction.column ? css.column : css.row
-			).fixed(
 				css.root,
 				direction === Direction.column ? css.column : css.row
+			).fixed(
+				css.rootFixed,
+				direction === Direction.column ? css.columnFixed : css.rowFixed
 			),
 			key: 'root'
 		}, [
 			v('div', {
-				classes: this.classes().fixed(
+				classes: this.classes(
 					css.leading
+				).fixed(
+					css.leadingFixed
 				),
 				key: 'leading',
 				styles
@@ -168,7 +171,7 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 				classes: this.classes(
 					css.divider
 				).fixed(
-					css.divider
+					css.dividerFixed
 				),
 				key: 'divider',
 				onmousedown: this._onDragStart,
@@ -176,8 +179,10 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 				ontouchstart: this._onDragStart
 			}),
 			v('div', {
-				classes: this.classes().fixed(
+				classes: this.classes(
 					css.trailing
+				).fixed(
+					css.trailingFixed
 				),
 				key: 'trailing'
 			}, [ trailing ])
