@@ -14,6 +14,10 @@ export default function createDialogElement(): CustomElementDescriptor {
 				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{
+				attributeName: 'closetext',
+				propertyName: 'closeText'
+			},
+			{
 				attributeName: 'enteranimation',
 				propertyName: 'enterAnimation'
 			},
