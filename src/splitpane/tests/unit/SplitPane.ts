@@ -7,7 +7,6 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import has from '@dojo/has/has';
 
 import * as css from '../../styles/splitPane.m.css';
-import * as util from '../../../common/util';
 import SplitPane, { Direction, SplitPaneProperties } from '../../SplitPane';
 
 const hasTouch = (function (): boolean {
@@ -22,7 +21,6 @@ registerSuite({
 
 	beforeEach() {
 		widget = harness(SplitPane);
-		sinon.stub(util, 'observeViewport').returns({ unsubscribe: sinon.spy() });
 		window.getSelection = window.getSelection || (() => {});
 		sinon.stub(window, 'getSelection', () => ({
 			removeAllRanges() { }
@@ -31,7 +29,6 @@ registerSuite({
 
 	afterEach() {
 		widget.destroy();
-		(<any> util.observeViewport).restore();
 		(<any> window).getSelection.restore();
 	},
 
