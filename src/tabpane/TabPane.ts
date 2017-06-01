@@ -91,9 +91,9 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 				key,
 				onClick: this.selectIndex,
 				onCloseClick: this.closeIndex,
+				onDownArrowPress: this._onDownArrowPress,
 				onEndPress: this.selectLastIndex,
 				onHomePress: this.selectFirstIndex,
-				onDownArrowPress: this._onDownArrowPress,
 				onLeftArrowPress: this._onLeftArrowPress,
 				onRightArrowPress: this._onRightArrowPress,
 				onUpArrowPress: this._onUpArrowPress,
@@ -230,8 +230,8 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 		return v('div', {
 			'aria-orientation': orientation,
 			classes: this.classes(
-				css.root,
-				alignClass ? alignClass : null
+				alignClass ? alignClass : null,
+				css.root
 			),
 			role: 'tablist'
 		}, children);

@@ -17,6 +17,7 @@ const modules = [
 	'select',
 	'slidepane',
 	'slider',
+	'splitpane',
 	'tabpane',
 	'textarea',
 	'textinput'

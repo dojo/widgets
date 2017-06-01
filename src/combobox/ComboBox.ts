@@ -25,21 +25,21 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property customResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property formId             ID of a form element associated with the form field
+ * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
- * @property label              Label to show for this input
- * @property openOnFocus        Determines whether the result list should open when the input is focused
- * @property readOnly           Prevents user interaction
- * @property required           Determines if this input is required, styles accordingly
- * @property results            Results for the current search term; should be set in response to `onRequestResults`
- * @property value              Value to set on the input
- * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property isResultDisabled   Used to determine if an item should be disabled
+ * @property label              Label to show for this input
  * @property onBlur             Called when the input is blurred
  * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestResults   Called when results are shown; should be used to set `results`
+ * @property openOnFocus        Determines whether the result list should open when the input is focused
+ * @property readOnly           Prevents user interaction
+ * @property required           Determines if this input is required, styles accordingly
+ * @property results            Results for the current search term; should be set in response to `onRequestResults`
+ * @property value              Value to set on the input
  */
 export interface ComboBoxProperties extends ThemeableProperties {
 	autoBlur?: boolean;
@@ -48,21 +48,21 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	customResultMenu?: any;
 	disabled?: boolean;
 	formId?: string;
+	getResultLabel?(result: any): string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
-	label?: string | LabelOptions;
-	openOnFocus?: boolean;
-	readOnly?: boolean;
-	required?: boolean;
-	results?: any[];
-	value?: string;
-	getResultLabel?(result: any): string;
 	isResultDisabled?(result: any): boolean;
+	label?: string | LabelOptions;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
 	onMenuChange?(open: boolean): void;
 	onRequestResults?(value: string): void;
+	openOnFocus?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
+	results?: any[];
+	value?: string;
 };
 
 // Enum used when traversing items using arrow keys
@@ -107,8 +107,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _isIndexDisabled(index: number) {
 		const {
-			results = [],
-			isResultDisabled
+			isResultDisabled,
+			results = []
 		} = this.properties;
 
 		return isResultDisabled && isResultDisabled(results[index]);
@@ -152,8 +152,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _onInputFocus(event: FocusEvent) {
 		const {
-			openOnFocus,
-			onFocus
+			onFocus,
+			openOnFocus
 		} = this.properties;
 
 		this._focused = true;
@@ -331,15 +331,15 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 
 		return w<ResultMenu>('result-menu', {
-			id: this._menuId,
-			registry: this._registry,
-			results,
-			selectedIndex: this._activeIndex,
 			getResultLabel: this._getResultLabel,
+			id: this._menuId,
 			isResultDisabled,
 			onResultMouseDown: this._onResultMouseDown,
 			onResultMouseEnter: this._onResultMouseEnter,
 			onResultMouseUp: this._onResultMouseUp,
+			registry: this._registry,
+			results,
+			selectedIndex: this._activeIndex,
 			theme
 		});
 	}
@@ -367,21 +367,21 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		let controls: DNode = v('div', {
 			classes: this.classes(css.controls)
 		}, [
-			w(TextInput, {
+			w(TextInput, <TextInputProperties> {
 				...inputProperties,
 				classes: this.classes(clearable ? css.clearable : null),
 				controls: menuId,
 				disabled,
+				extraClasses: css,
 				invalid,
-				readOnly,
-				required,
-				value,
 				onBlur: this._onInputBlur,
 				onFocus: this._onInputFocus,
 				onInput: this._onInput,
 				onKeyDown: this._onInputKeyDown,
-				extraClasses: css,
-				theme
+				readOnly,
+				required,
+				theme,
+				value
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
