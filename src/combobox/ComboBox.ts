@@ -63,13 +63,13 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	required?: boolean;
 	results?: any[];
 	value?: string;
-};
+}
 
 // Enum used when traversing items using arrow keys
 export const enum Operation {
 	increase = 1,
 	decrease = -1
-};
+}
 
 export const ComboBoxBase = ThemeableMixin(WidgetBase);
 
@@ -229,7 +229,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _restoreFocus() {
 		const func = this._focused ? 'focus' : 'blur';
-		this._inputElement[func]();
+		this._inputElement && this._inputElement[func]();
 	}
 
 	private _scrollIntoView(element: HTMLElement) {
@@ -369,7 +369,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}, [
 			w(TextInput, <TextInputProperties> {
 				...inputProperties,
-				classes: this.classes(clearable ? css.clearable : null),
 				controls: menuId,
 				disabled,
 				extraClasses: css,
