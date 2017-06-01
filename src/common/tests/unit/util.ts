@@ -1,20 +1,9 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import * as sinon from 'sinon';
 import { Keys } from '../../util';
 
 registerSuite({
 	name: 'util',
-
-	beforeEach() {
-		sinon.spy(window, 'addEventListener');
-		sinon.spy(window, 'removeEventListener');
-	},
-
-	afterEach() {
-		(<any> window).addEventListener.restore();
-		(<any> window).removeEventListener.restore();
-	},
 
 	Keys() {
 		assert.strictEqual(Keys.Down, 40);
