@@ -1,23 +1,37 @@
 @import '../../common/styles/variables.css';
 
 .root {
-	display: block;
+
+}
+
+.rootFixed {
+	display: inline-block;
 }
 
 .inputWrapper {
-  position: relative;
+
+}
+
+.inputWrapperFixed {
+	position: relative;
 }
 
 .track {
 	background-color: var(--component-background);
 	border: 1px solid var(--component-color);
 	height: 0.75em;
+}
+
+.trackFixed {
 	position: relative;
 	width: 100%;
 }
 
 .fill {
 	background-color: var(--selected-background);
+}
+
+.fillFixed {
 	bottom: 0;
 	content: "";
 	left: 0;
@@ -31,9 +45,12 @@
 	height: 2em;
 	left: 50%;
 	margin-left: -1em;
-	position: absolute;
 	top: -0.625em;
 	width: 2em;
+}
+
+.thumbFixed {
+	position: absolute;
 }
 
 .input {
