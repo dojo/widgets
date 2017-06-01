@@ -1,5 +1,3 @@
-import Observable, { Observer, Subscription } from '@dojo/shim/Observable';
-
 export const enum Keys {
 	Down = 40,
 	End = 35,
@@ -14,23 +12,3 @@ export const enum Keys {
 	Tab = 9,
 	Up = 38
 }
-
-export const observeViewport = (function () {
-	let viewportSource: Observable<number>;
-
-	return function (observer: Observer<number>): Subscription {
-		if (!viewportSource) {
-			viewportSource = new Observable((observer) => {
-				const listener = function () {
-					observer.next(document.body.offsetWidth);
-				};
-				window.addEventListener('resize', listener);
-				return function () {
-					window.removeEventListener('resize', listener);
-				};
-			});
-		}
-
-		return viewportSource.subscribe(observer);
-	};
-})();
