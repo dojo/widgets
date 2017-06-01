@@ -1,6 +1,7 @@
 export const root: string;
 export const rootFixed: string;
 export const inputWrapper: string;
+export const inputWrapperFixed: string;
 export const track: string;
 export const trackFixed: string;
 export const fill: string;

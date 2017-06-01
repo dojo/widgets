@@ -126,7 +126,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		const outputNode = output ? output(value) : value + '';
 
 		const slider = v('div', {
-			classes: this.classes().fixed(css.inputWrapper),
+			classes: this.classes(css.inputWrapper).fixed(css.inputWrapperFixed),
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
