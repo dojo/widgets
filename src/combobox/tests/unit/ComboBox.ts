@@ -75,6 +75,7 @@ registerSuite({
 			classes: comboBox.classes(css.controls)
 		}, [
 			w(TextInput, {
+				key: 'input',
 				controls: '',
 				disabled: undefined,
 				invalid: undefined,
@@ -91,10 +92,13 @@ registerSuite({
 			null,
 			v('button', {
 				'aria-controls': '',
+				key: 'trigger-button',
 				classes: comboBox.classes(css.trigger),
 				disabled: undefined,
 				readOnly: undefined,
-				onclick: comboBox.listener
+				onclick: comboBox.listener,
+				afterCreate: comboBox.listener,
+				afterUpdate: comboBox.listener
 			}, [
 				'open combo box',
 				v('i', {
@@ -123,7 +127,7 @@ registerSuite({
 	},
 
 	'Menu should open when arrow clicked'() {
-		comboBox.callListener('onclick', { index: '0,2'});
+		comboBox.callListener('onclick', { key: 'trigger-button' });
 		comboBox.setProperties({
 			results: ['abc']
 		});
@@ -145,7 +149,7 @@ registerSuite({
 	'Menu should open on input'() {
 		comboBox.setProperties({ results: ['abc'] });
 
-		comboBox.callListener('onInput', { index: '0,0'});
+		comboBox.callListener('onInput', { key: 'input'});
 		// trigger another render
 		comboBox.setProperties({ results: ['cba'] });
 		const vnode = <HNode> comboBox.getRender();
@@ -159,8 +163,8 @@ registerSuite({
 			results: ['abc']
 		});
 
-		comboBox.callListener('onInput', { index: '0,0'});
-		comboBox.callListener('onBlur', { index: '0,0'}); // `_closeMenu()` triggers another render
+		comboBox.callListener('onInput', { key: 'input'});
+		comboBox.callListener('onBlur', { key: 'input'}); // `_closeMenu()` triggers another render
 		const vnode = <HNode> comboBox.getRender();
 
 		assert.lengthOf(vnode.vNodes, 1);
@@ -168,15 +172,15 @@ registerSuite({
 	},
 
 	'Menu should close when result clicked'() {
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
 		comboBox.setProperties({
 			results: ['abc'],
 			getResultLabel: (value: string) => value
 		});
 
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
-		comboBox.callListener('onclick', { index: '0,2'});
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
 		comboBox.callListener('onResultMouseUp', { index: 1 });
 		const vnode = <HNode> comboBox.getRender();
 
@@ -185,14 +189,14 @@ registerSuite({
 
 	'Blur should be ignored when clicking result'() {
 		const spy = sinon.spy();
-		comboBox.callListener('onclick', { index: '0,2'});
+		comboBox.callListener('onclick', { key: 'trigger-button'});
 		comboBox.setProperties({
 			results: ['a', 'b'],
 			onBlur: spy
 		});
 		comboBox.callListener('onResultMouseEnter', { index: 1 });
 		comboBox.callListener('onResultMouseDown', { index: 1 });
-		comboBox.callListener('onBlur', { index: '0,0'});
+		comboBox.callListener('onBlur', { key: 'input'});
 
 		assert.isFalse(spy.called);
 	},
@@ -205,13 +209,13 @@ registerSuite({
 			customResultMenu: ResultMenu
 		});
 
-		comboBox.callListener('onclick', { index: '0,2'});
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
 		let vnode = <HNode> comboBox.getRender();
 		let menuNode = <WNode<ResultMenu>> findIndex(vnode, 1);
 		assert.strictEqual(menuNode.properties.selectedIndex, 0);
 
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
 		vnode = <HNode> comboBox.getRender();
 		menuNode = <WNode<ResultMenu>> findIndex(vnode, 1);
 		assert.strictEqual(menuNode.properties.selectedIndex, 1);
@@ -236,13 +240,13 @@ registerSuite({
 			results: ['1', '2']
 		});
 
-		comboBox.callListener('onclick', { index: '0,2'});
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.up) ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.up) ] });
 		let vnode = <HNode> comboBox.getRender();
 		let menuNode = <WNode<ResultMenu>> findIndex(vnode, 1);
 		assert.strictEqual(menuNode.properties.selectedIndex, 1);
 
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.up) ] });
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.up) ] });
 		vnode = <HNode> comboBox.getRender();
 		menuNode = <WNode<ResultMenu>> findIndex(vnode, 1);
 		assert.strictEqual(menuNode.properties.selectedIndex, 0);
@@ -255,22 +259,22 @@ registerSuite({
 			onChange: (value: string) => inputValue = value
 		});
 
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.enter) ] });
-		comboBox.callListener('onclick', { index: '0,2'});
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.enter) ] });
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.enter) ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.enter) ] });
 		const vnode = <HNode> comboBox.getRender();
 		assert.lengthOf(vnode.vNodes, 1);
 
-		comboBox.callListener('onclick', { index: '0,2'});
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.enter) ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.enter) ] });
 		assert.strictEqual(inputValue, '1');
 	},
 
 	'Escape should close menu'() {
 		comboBox.setProperties({ results: ['a', 'b', 'c']});
-		comboBox.callListener('onclick', { index: '0,2'});
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.escape) ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.escape) ] });
 		const vnode = <HNode> comboBox.getRender();
 
 		assert.lengthOf(vnode.vNodes, 1);
@@ -324,7 +328,7 @@ registerSuite({
 			openOnFocus: true,
 			results: ['abc']
 		});
-		comboBox.callListener('onFocus', { index: '0,0'});
+		comboBox.callListener('onFocus', { key: 'input'});
 		// trigger another render
 		comboBox.setProperties({
 			openOnFocus: true,
@@ -350,7 +354,7 @@ registerSuite({
 		comboBox.setProperties({
 			onBlur: spy
 		});
-		comboBox.callListener('onBlur', { index: '0,0', args: [ event() ]});
+		comboBox.callListener('onBlur', { key: 'input', args: [ event() ]});
 
 		assert.isTrue(spy.called);
 	},
@@ -363,7 +367,7 @@ registerSuite({
 			clearable: true,
 			onChange: spy
 		});
-		comboBox.callListener('onInput', { index: '0,0', args: [ event() ] });
+		comboBox.callListener('onInput', { key: 'input', args: [ event() ] });
 		comboBox.callListener('onclick', { index: '0,1'});
 
 		assert.isTrue(spy.calledTwice);
@@ -374,7 +378,7 @@ registerSuite({
 		comboBox.setProperties({
 			onFocus: spy
 		});
-		comboBox.callListener('onFocus', { index: '0,0', args: [ event() ] });
+		comboBox.callListener('onFocus', { key: 'input', args: [ event() ] });
 
 		assert.isTrue(spy.called);
 	},
@@ -386,9 +390,9 @@ registerSuite({
 			openOnFocus: true
 		});
 
-		comboBox.callListener('onInput', { index: '0,0', args: [ event() ] });
-		comboBox.callListener('onFocus', { index: '0,0', args: [ event() ] });
-		comboBox.callListener('onclick', { index: '0,2'});
+		comboBox.callListener('onInput', { key: 'input', args: [ event() ] });
+		comboBox.callListener('onFocus', { key: 'input', args: [ event() ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
 		assert.strictEqual(spy.callCount, 3);
 	},
 
@@ -398,13 +402,13 @@ registerSuite({
 			results: ['a'],
 			onMenuChange: spy
 		});
-		comboBox.callListener('onInput', { index: '0,0' });
+		comboBox.callListener('onInput', { key: 'input' });
 		// trigger another render
 		comboBox.setProperties({
 			results: ['b'],
 			onMenuChange: spy
 		});
-		comboBox.callListener('onBlur', { index: '0,0' });
+		comboBox.callListener('onBlur', { key: 'input' });
 
 		// trigger another render
 		comboBox.setProperties({
@@ -420,7 +424,7 @@ registerSuite({
 		comboBox.setProperties({
 			disabled: true
 		});
-		comboBox.callListener('onclick', { index: '0,2'});
+		comboBox.callListener('onclick', { key: 'trigger-button'});
 		const vnode = <HNode> comboBox.getRender();
 		assert.lengthOf(vnode.vNodes, 1);
 	},
@@ -430,7 +434,7 @@ registerSuite({
 			readOnly: true,
 			theme: {}
 		});
-		comboBox.callListener('onclick', { index: '0,2'});
+		comboBox.callListener('onclick', { key: 'trigger-button'});
 		const vnode = <HNode> comboBox.getRender();
 		assert.lengthOf(vnode.vNodes, 1);
 	},
@@ -488,15 +492,15 @@ registerSuite({
 	},
 
 	'disabled result should be skipped'() {
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
 		comboBox.setProperties({
 			results: ['1', '2'],
 			isResultDisabled: result => result === '1'
 		});
 		comboBox.callListener('onResultMouseUp', { index: 1, args: [null, 0] });
 		comboBox.callListener('onResultMouseEnter', { index: 1, args: [null, 0] });
-		comboBox.callListener('onclick', { index: '0,2'});
-		comboBox.callListener('onKeyDown', { index: '0,0', args: [ event(keys.down) ] });
+		comboBox.callListener('onclick', { key: 'trigger-button'});
+		comboBox.callListener('onKeyDown', { key: 'input', args: [ event(keys.down) ] });
 		const vnode = <HNode> comboBox.getRender();
 		const menuNode = <WNode<ResultMenu>> findIndex(vnode, 1);
 

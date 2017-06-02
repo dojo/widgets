@@ -367,7 +367,8 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		let controls: DNode = v('div', {
 			classes: this.classes(css.controls)
 		}, [
-			w(TextInput, <TextInputProperties> {
+			w(TextInput, {
+				key: 'input',
 				...inputProperties,
 				controls: menuId,
 				disabled,
@@ -384,6 +385,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
+				// key: 'clear-button',
 				classes: this.classes(css.clear),
 				disabled,
 				readOnly,
@@ -395,6 +397,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				})
 			]) : null,
 			v('button', {
+				key: 'trigger-button',
 				'aria-controls': menuId,
 				classes: this.classes(css.trigger),
 				disabled,
