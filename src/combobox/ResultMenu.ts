@@ -30,7 +30,7 @@ export interface ResultMenuProperties extends ThemeableProperties, RegistryMixin
 	onResultMouseUp(event: MouseEvent, index: number): void;
 	results: any[];
 	selectedIndex: number | undefined;
-};
+}
 
 export const ResultMenuBase = RegistryMixin(ThemeableMixin(WidgetBase));
 

@@ -28,7 +28,7 @@ export interface ResultItemProperties extends ThemeableProperties {
 	onMouseUp(event: MouseEvent, index: number): void;
 	result: any;
 	selected: boolean;
-};
+}
 
 export const ResultItemBase = ThemeableMixin(WidgetBase);
 

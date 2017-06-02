@@ -1,13 +1,32 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-
-import harness, { assignProperties, Harness } from '@dojo/test-extras/harness';
+import { assign } from '@dojo/core/lang';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { HNode } from '@dojo/widget-core/interfaces';
 import { v } from '@dojo/widget-core/d';
-
 import ResultItem, { ResultItemProperties } from '../../ResultItem';
 import * as css from '../../styles/comboBox.m.css';
+import { findIndex } from '@dojo/test-extras/support/d';
+import * as sinon from 'sinon';
 
 let widget: Harness<ResultItemProperties, typeof ResultItem>;
+
+type Classes = {
+	[index: string]: boolean | null | undefined;
+};
+
+function props(props = {}) {
+	return assign({
+		index: 0,
+		result: 'foo',
+		selected: false,
+		onMouseEnter: () => true,
+		onMouseDown: () => true,
+		onMouseUp: () => true,
+		isDisabled: () => true,
+		getResultLabel: (result: any) => result
+	}, props);
+}
 
 registerSuite({
 	name: 'ResultItem',
@@ -21,10 +40,8 @@ registerSuite({
 	},
 
 	render() {
-		let mousedown = false;
-		let mouseenter = false;
-		let mouseup = false;
-		let resultItemProperties: ResultItemProperties = {
+		const stub = sinon.stub();
+		const resultItemProperties: ResultItemProperties = {
 			index: 10,
 			result: 'bar',
 			selected: false,
@@ -34,51 +51,66 @@ registerSuite({
 			isDisabled() {
 				return false;
 			},
-			onMouseDown() {
-				mousedown = true;
-			},
-			onMouseEnter() {
-				mouseenter = true;
-			},
-			onMouseUp() {
-				mouseup = true;
-			}
+			onMouseDown: stub,
+			onMouseEnter: stub,
+			onMouseUp: stub
 		};
-		let expected = v('div', {
-			'aria-disabled': String(resultItemProperties.isDisabled(resultItemProperties.result)),
-			'aria-selected': String(resultItemProperties.selected),
-			classes: widget.classes(css.result),
-			'data-selected': String(resultItemProperties.selected),
+		const expected = v('div', {
+			'aria-disabled': 'false',
+			'aria-selected': 'false',
+			classes: widget.classes(css.option),
+			'data-selected': 'false',
 			role: 'option',
 			onmousedown: widget.listener,
 			onmouseenter: widget.listener,
 			onmouseup: widget.listener
 		}, [
-			v('div', [ resultItemProperties.getResultLabel(resultItemProperties.result) ])
+			v('div', ['foo'])
 		]);
-
 		widget.setProperties(resultItemProperties);
-
 		widget.expectRender(expected);
+	},
 
-		widget.sendEvent('mousedown');
-		assert.isTrue(mousedown, 'mousedown event handler should be called');
+	'label should render properly'() {
+		widget.setProperties(props({ result: 'abc' }));
+		const vnode = <HNode> widget.getRender();
+		const actualText = findIndex(vnode, '0,0');
+		assert.strictEqual(actualText, 'abc');
+	},
 
+	'selected result should render properly'() {
+		widget.setProperties(props({ selected: true }));
+		const vnode = <HNode> widget.getRender();
+		assert.strictEqual(vnode.properties!['data-selected'], 'true');
+	},
+
+	'disabled result should render properly'() {
+		widget.setProperties(props({
+			isDisabled: () => true
+		}));
+		const vnode = <HNode> widget.getRender();
+		const classes = <Classes> vnode.properties.classes;
+		assert.isTrue(classes[css.disabledOption]);
+	},
+
+	'onMouseEnter should be called'() {
+		const spy = sinon.spy();
+		widget.setProperties(props({ onMouseEnter: spy }));
 		widget.sendEvent('mouseenter');
-		assert.isTrue(mouseenter, 'mouseenter event handler should be called');
+		assert.isTrue(spy.calledOnce);
+	},
 
+	'onMouseDown should be called'() {
+		const spy = sinon.spy();
+		widget.setProperties(props({ onMouseDown: spy }));
+		widget.sendEvent('mousedown');
+		assert.isTrue(spy.calledOnce);
+	},
+
+	'onMouseUp should be called'() {
+		const spy = sinon.spy();
+		widget.setProperties(props({ onMouseUp: spy }));
 		widget.sendEvent('mouseup');
-		assert.isTrue(mouseup, 'mouseup event handler should be called');
-
-		resultItemProperties.selected = true;
-		resultItemProperties.isDisabled = () => true;
-		assignProperties(expected, {
-			'aria-disabled': String(resultItemProperties.isDisabled(resultItemProperties.result)),
-			'aria-selected': String(resultItemProperties.selected),
-			classes: widget.classes(css.result, css.selectedResult, css.disabledResult),
-			'data-selected':  String(resultItemProperties.selected)
-		});
-
-		widget.expectRender(expected);
+		assert.isTrue(spy.calledOnce);
 	}
 });
