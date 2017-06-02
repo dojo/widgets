@@ -220,11 +220,11 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _openMenu() {
 		const { onRequestResults } = this.properties;
-
+		const value = this._inputElement ? this._inputElement.value : '';
 		this._activeIndex = undefined;
 		this._open = true;
 		this._focused = true;
-		onRequestResults && onRequestResults(this._inputElement.value);
+		onRequestResults && onRequestResults(value);
 	}
 
 	private _restoreFocus() {
