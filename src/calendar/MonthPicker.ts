@@ -231,7 +231,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		} = this.properties;
 
 		return v('div', { classes: this.classes(css.header) }, [
-			// button
+			// trigger button
 			v('button', {
 				key: 'button',
 				'aria-controls': `${this._idBase}_dialog`,
@@ -273,6 +273,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				role: 'dialog',
 				onkeydown: this._onPopupKeyDown
 			}, [
+				// year spinner
 				v('div', { classes: this.classes(css.yearPicker) }, [
 					v('label', {
 						for: `${this._idBase}_year`,
@@ -299,6 +300,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 						onclick: this._increaseYear
 					}, [ String(year + 1) ])
 				]),
+				// month radio group
 				v('fieldset', {
 					classes: this.classes(css.monthControl)
 				}, [

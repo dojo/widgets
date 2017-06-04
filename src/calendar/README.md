@@ -30,29 +30,20 @@ Dojo 2's `Calendar` renders a date grid with a dropdown month and year picker. T
 
 *Basic Example*
 ```js
-import Calendar from '@dojo/widgets/calendar/Calendar';
-
-protected render: DNode () {
-  return v('div', [
-		w(Calendar, {
-			month: this.state.month,
-			selectedDate: this.state.selectedDate,
-			year: this.state.year,
-			onMonthChange: (month: number) => { this.setState({ 'month': month }); },
-			onYearChange: (year: number) => { this.setState({ 'year': year }); },
-			onDateSelect: (date: Date) => {
-				this.setState({ 'selectedDate': date });
-			}
-		})
-	]);
-}
+w(Calendar, {
+	month: this.state.month,
+	selectedDate: this.state.selectedDate,
+	year: this.state.year,
+	onMonthChange: (month: number) => { this.setState({ 'month': month }); },
+	onYearChange: (year: number) => { this.setState({ 'year': year }); },
+	onDateSelect: (date: Date) => {
+		this.setState({ 'selectedDate': date });
+	}
+})
 ```
 
 *Example with custom month heading, custom weekday format, and an extended CalendarCell widget with custom content*
 ```js
-import Calendar from '@dojo/widgets/calendar/Calendar';
-import CalendarCell from '@dojo/widgets/calendar/CalendarCell';
-
 class MyCalendarCell extends CalendarCell {
 	formatDate(date: number): DNode {
 		const { selected } = this.properties;
@@ -65,27 +56,23 @@ class MyCalendarCell extends CalendarCell {
 
 [ ... ]
 
-protected render: DNode () {
-  return v('div', [
-		w(Calendar, {
-			customDateCell: MyCalendarCell,
-			month: this.state.month,
-			selectedDate: this.state.selectedDate,
-			year: this.state.year,
-			renderMonthLabel: (month: number, year: number) => {
-				// Instead of e.g. "March 2017", you would get 3-2017
-				return `${month + 1}-${year}`;
-			},
-			renderWeekdayCell: (day: { short: string; long: string; }) => {
-				// Labels weekdays with only their first letter
-				return day.short.substring(0,1);
-			},
-			onMonthChange: (month: number) => { this.setState({ 'month': month }); },
-			onYearChange: (year: number) => { this.setState({ 'year': year }); },
-			onDateSelect: (date: Date) => {
-				this.setState({ 'selectedDate': date });
-			}
-		})
-	]);
-}
+w(Calendar, {
+	customDateCell: MyCalendarCell,
+	month: this.state.month,
+	selectedDate: this.state.selectedDate,
+	year: this.state.year,
+	renderMonthLabel: (month: number, year: number) => {
+		// Instead of e.g. "March 2017", you would get 3-2017
+		return `${month + 1}-${year}`;
+	},
+	renderWeekdayCell: (day: { short: string; long: string; }) => {
+		// Labels weekdays with only their first letter
+		return day.short.substring(0,1);
+	},
+	onMonthChange: (month: number) => { this.setState({ 'month': month }); },
+	onYearChange: (year: number) => { this.setState({ 'year': year }); },
+	onDateSelect: (date: Date) => {
+		this.setState({ 'selectedDate': date });
+	}
+})
 ```

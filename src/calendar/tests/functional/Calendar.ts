@@ -101,9 +101,9 @@ registerSuite({
 	},
 
 	'Arrow keys move date focus'(this: any) {
-		const { touchEnabled } = this.remote.session.capabilities;
-		if (touchEnabled) {
-			this.skip('Keys required for tests.');
+		const { supportsKeysCommand } = this.remote.environmentType;
+		if (!supportsKeysCommand) {
+			this.skip();
 		}
 
 		return clickDate((<any> this).remote)

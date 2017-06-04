@@ -2,7 +2,7 @@ import { WidgetBase, onPropertiesChanged, diffProperty, DiffType } from '@dojo/w
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { DNode, PropertiesChangeEvent, Constructor } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { includes } from '@dojo/shim/array';
 import { Keys } from '../common/util';
@@ -29,7 +29,7 @@ import * as css from './styles/calendar.m.css';
  * @property onDateSelect      Function called when the user selects a date
  */
 export interface CalendarProperties extends ThemeableProperties {
-	customDateCell?: any;
+	customDateCell?: Constructor<CalendarCell>;
 	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string; }[];
@@ -285,7 +285,8 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				dateString = new Date(year, month, date).toDateString();
 				if (isCurrentMonth && selectedDate && dateString === selectedDate.toDateString()) {
 					isSelectedDay = true;
-				} else {
+				}
+				else {
 					isSelectedDay = false;
 				}
 
