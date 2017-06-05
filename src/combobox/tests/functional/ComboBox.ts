@@ -18,7 +18,7 @@ registerSuite({
 		let inputWidth: number;
 
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.arrow}`)
+			.findByCssSelector(`.${css.trigger}`)
 				.click()
 				.end()
 			.findByCssSelector(`.${css.input}`)
@@ -28,7 +28,7 @@ registerSuite({
 					})
 				.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${css.results}`)
+			.findByCssSelector(`.${css.dropdown}`)
 				.getSize()
 				.then(({ height, width }: { height: number; width: number; }) => {
 					assert.strictEqual(width, inputWidth);
@@ -50,7 +50,7 @@ registerSuite({
 		let itemHeight: number;
 
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.arrow}`)
+			.findByCssSelector(`.${css.trigger}`)
 				.click()
 				.end()
 			.sleep(DELAY)
@@ -58,7 +58,7 @@ registerSuite({
 				.pressKeys(keys.ARROW_UP)
 				.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${css.results}`)
+			.findByCssSelector(`.${css.dropdown}`)
 				.getPosition()
 				.then(({ y }: { y: number; }) => {
 					menuTop = y;
@@ -68,7 +68,7 @@ registerSuite({
 					menuBottom = menuTop + height;
 				})
 				.end()
-			.findByCssSelector(`.${css.selectedResult}`)
+			.findByCssSelector(`.${css.selected}`)
 				.getSize()
 				.then(({ height }: { height: number }) => {
 					itemHeight = height;
@@ -93,7 +93,7 @@ registerSuite({
 		}
 
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.arrow}`)
+			.findByCssSelector(`.${css.trigger}`)
 				.click()
 				.sleep(DELAY)
 				.pressKeys(keys.TAB)
@@ -149,7 +149,7 @@ registerSuite({
 		}
 
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.arrow}`)
+			.findByCssSelector(`.${css.trigger}`)
 				.click()
 				.sleep(30)
 			.getActiveElement()
