@@ -1,6 +1,6 @@
 import { assign } from '@dojo/core/lang';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
-import { TabProperties } from './Tab';
+import Tab, { TabProperties } from './Tab';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
@@ -37,7 +37,6 @@ export interface TabPaneProperties extends ThemeableProperties {
 };
 
 export const TabPaneBase = ThemeableMixin(WidgetBase);
-type Tab = WidgetBase<TabProperties>;
 
 @theme(css)
 export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> {
