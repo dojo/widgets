@@ -298,7 +298,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 					focusable: isCurrentMonth && date === this._focusedDay,
 					selected: isSelectedDay,
 					theme,
-					today: dateString === todayString,
+					today: isCurrentMonth && dateString === todayString,
 					onClick: this._onDateClick,
 					onFocusCalled: this._onDateFocusCalled,
 					onKeyDown: this._onDateKeyDown

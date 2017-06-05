@@ -68,7 +68,12 @@ registerSuite({
 	'Clicking month radio selects month and closes popup'() {
 		return openMonthPicker((<any> this).remote)
 			.findByCssSelector('input[type=radio]')
-				.click()
+				.then((el: HTMLElement) => {
+					return (<any> this).remote.moveMouseTo(el);
+				})
+				.pressMouseButton()
+				.sleep(100)
+				.releaseMouseButton()
 				.sleep(DELAY)
 				.end()
 			.findByCssSelector(`.${css.currentMonthLabel}`)
