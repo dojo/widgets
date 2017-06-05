@@ -1,11 +1,17 @@
 # @dojo/widgets/dialog/Dialog widget
-Dojo 2's `Dialog` component can be used to show content inside of a window over top of application content. It provides default styling for a titlebar, content area, underlay, and a close button, and will respond to different screen sizes responsively.
+
+Dojo 2's `Dialog` component can be used to show content inside a window over top the application content. It provides default styling for a titlebar, content area, underlay, and a close button, and will respond to different screen sizes responsively.
 
 ## Features
+
+- Can be used as a modal window or classic dialog
+- Possible to show a semi-transparent underlay
+- Custom CSS animations can be provided
 
 ![Image of basic dialog](http://placekitten.com/450/300)
 
 ### Accessibility Features
+
 - The titlebar and content have screen-reader-accessible labels and instructions
 - The close button is a `<button>` with screen-reader-accessible instructive text
 
