@@ -142,20 +142,6 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					onchange: this.themeChange
 				})
 			]),
-			v('h3', ['Open on focus']),
-			w(ComboBox, {
-				key: '1',
-				openOnFocus: true,
-				onChange: (value: string) => this.setState({ 'value1': value }),
-				getResultLabel: (result: any) => <string> result.value,
-				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value1'],
-				inputProperties: {
-					placeholder: 'Enter a value'
-				},
-				theme: this._theme
-			}),
 			v('h3', ['Clearable']),
 			w(ComboBox, {
 				key: '2',
@@ -165,6 +151,20 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				onRequestResults: this.onRequestResults,
 				results: <any[]> this.state['results'],
 				value: <string> this.state['value2'],
+				inputProperties: {
+					placeholder: 'Enter a value'
+				},
+				theme: this._theme
+			}),
+			v('h3', ['Open on focus']),
+			w(ComboBox, {
+				key: '1',
+				openOnFocus: true,
+				onChange: (value: string) => this.setState({ 'value1': value }),
+				getResultLabel: (result: any) => <string> result.value,
+				onRequestResults: this.onRequestResults,
+				results: <any[]> this.state['results'],
+				value: <string> this.state['value1'],
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
