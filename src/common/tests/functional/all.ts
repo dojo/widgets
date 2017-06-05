@@ -5,3 +5,4 @@ import '../../../radio/tests/functional/Radio';
 import '../../../checkbox/tests/functional/Checkbox';
 import '../../../button/tests/functional/Button';
 import '../../../textinput/tests/functional/TextInput';
+import '../../../slider/tests/functional/Slider';
