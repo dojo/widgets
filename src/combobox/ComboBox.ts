@@ -3,7 +3,7 @@ import { includes } from '@dojo/shim/array';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode, WNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase, onPropertiesChanged, diffProperty, DiffType } from '@dojo/widget-core/WidgetBase';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import ResultItem from './ResultItem';
 import ResultMenu from './ResultMenu';
@@ -75,6 +75,8 @@ export const ComboBoxBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
+@diffProperty('customResultItem', DiffType.REFERENCE)
+@diffProperty('customResultMenu', DiffType.REFERENCE)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _activeIndex: number | undefined;
 	private _focused: boolean;
@@ -85,6 +87,14 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _open: boolean;
 	private _wasOpen: boolean;
 	private _registry: WidgetRegistry;
+
+	constructor() {
+		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
+		super();
+
+		this._registry = this._createRegistry(ResultItem, ResultMenu);
+		this.registries.add(this._registry);
+	}
 
 	private _closeMenu() {
 		this._open = false;
@@ -309,17 +319,11 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		} = this.properties;
 
 		if (
-			!this._registry ||
 			includes(evt.changedPropertyKeys, 'customResultItem') ||
 			includes(evt.changedPropertyKeys, 'customResultMenu')) {
-
 			const registry = this._createRegistry(customResultItem, customResultMenu);
-			if (this._registry) {
-				this.registries.replace(this._registry, registry);
-			}
-			else {
-				this.registries.add(registry);
-			}
+
+			this.registries.replace(this._registry, registry);
 			this._registry = registry;
 		}
 	}
