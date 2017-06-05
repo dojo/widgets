@@ -5,7 +5,7 @@
 }
 
 .rootFixed {
-	display: inline-block;
+	display: block;
 }
 
 .inputWrapper {
