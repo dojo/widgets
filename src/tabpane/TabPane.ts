@@ -1,11 +1,10 @@
 import { assign } from '@dojo/core/lang';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
-import { TabProperties } from './Tab';
+import Tab, { TabProperties } from './Tab';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import TabButton from './TabButton';
-import Tab from './Tab';
 import uuid from '@dojo/core/uuid';
 
 import * as css from './styles/tabPane.m.css';
