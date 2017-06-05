@@ -21,7 +21,10 @@ Dojo 2's `Dialog` component can be used to show content inside a window over top
 ## Example Usage
 
 *Basic Example*
-```js
+```typescript
+import Dialog from '@dojo/widgets/dialog/Dialog';
+import { w } from '@dojo/widget-core/d';
+
 w(Dialog, {
 	title: 'My Dialog',
 	open: this.state.open,
@@ -30,7 +33,10 @@ w(Dialog, {
 ```
 
 *Modal with underlay*
-```js
+```typescript
+import Dialog from '@dojo/widgets/dialog/Dialog';
+import { w } from '@dojo/widget-core/d';
+
 w(Dialog, {
 	title: 'My Dialog',
 	open: this.state.open,
@@ -41,7 +47,10 @@ w(Dialog, {
 ```
 
 *Custom animations*
-```js
+```typescript
+import Dialog from '@dojo/widgets/dialog/Dialog';
+import { w } from '@dojo/widget-core/d';
+
 w(Dialog, {
 	title: 'My Dialog',
 	open: this.state.open,
@@ -52,7 +61,10 @@ w(Dialog, {
 ```
 
 *Dialog that can't be closed*
-```js
+```typescript
+import Dialog from '@dojo/widgets/dialog/Dialog';
+import { w } from '@dojo/widget-core/d';
+
 w(Dialog, {
 	title: 'My Dialog',
 	open: this.state.open,
