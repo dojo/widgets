@@ -3,7 +3,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
-import Button, { ButtonType } from '../../button/Button';
+import Button from '../../button/Button';
 import dojoTheme from '../../themes/dojo/theme';
 
 export const AppBase = StatefulMixin(WidgetBase);
@@ -52,7 +52,7 @@ export class App extends AppBase<WidgetProperties> {
 					content: 'Open',
 					disabled: true,
 					popup: { expanded: false, id: 'fakeId' },
-					type: <ButtonType> 'menu'
+					type: 'menu'
 				})
 			]),
 			v('div', { id: 'example-3' }, [
@@ -63,7 +63,7 @@ export class App extends AppBase<WidgetProperties> {
 					key: 'b3',
 					theme: this._theme,
 					content: 'Button state',
-					pressed: <boolean> this.state.buttonPressed,
+					pressed: this.state.buttonPressed,
 					onClick: this.toggleButton
 				})
 			])

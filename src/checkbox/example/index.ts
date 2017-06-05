@@ -47,7 +47,7 @@ export class App extends AppBase<WidgetProperties> {
 				v('div', { id: 'example-1' }, [
 					w(Checkbox, {
 						key: 'c1',
-						checked: <boolean> c1,
+						checked: c1,
 						label: 'Sample checkbox that starts checked',
 						value: 'c1',
 						onChange: this.onChange,
@@ -58,7 +58,7 @@ export class App extends AppBase<WidgetProperties> {
 				v('div', { id: 'example-2' }, [
 					w(Checkbox, {
 						key: 'c2',
-						checked: <boolean> c2,
+						checked: c2,
 						label: 'Sample disabled checkbox',
 						disabled: true,
 						value: 'c2',
@@ -70,7 +70,7 @@ export class App extends AppBase<WidgetProperties> {
 				v('div', { id: 'example-3' }, [
 					w(Checkbox, {
 						key: 'c3',
-						checked: <boolean> c3,
+						checked: c3,
 						label: 'Required checkbox',
 						required: true,
 						value: 'c3',
@@ -82,7 +82,7 @@ export class App extends AppBase<WidgetProperties> {
 				v('div', { id: 'example-4' }, [
 					w(Checkbox, {
 						key: 'c4',
-						checked: <boolean> c4,
+						checked: c4,
 						label: 'Checkbox in "toggle" mode',
 						mode: Mode.toggle,
 						value: 'c4',
@@ -94,7 +94,7 @@ export class App extends AppBase<WidgetProperties> {
 				v('div', { id: 'example-5' }, [
 					w(Checkbox, {
 						key: 'c5',
-						checked: <boolean> c5,
+						checked: c5,
 						label: 'Disabled toggle mode',
 						onLabel: 'On',
 						offLabel: 'Off',

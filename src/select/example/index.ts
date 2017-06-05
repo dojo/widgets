@@ -108,14 +108,12 @@ export class App extends AppBase<WidgetProperties> {
 				label: 'Try changing me',
 				options: this._selectOptions,
 				useNativeElement: true,
-				value: <string> this.state['value1'],
+				value: this.state.value1,
 				theme: this._theme,
-				onChange: (option: OptionData) => {
-					this.setState({ value1: option.value });
-				}
+				onChange: (option: OptionData) => this.setState({ value1: option.value })
 			}),
 			v('p', {
-				innerHTML: 'Result value: ' + this.state['value1']
+				innerHTML: 'Result value: ' + this.state.value1
 			}),
 			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
@@ -123,11 +121,9 @@ export class App extends AppBase<WidgetProperties> {
 				customOption: CustomOption,
 				label: 'Custom box!',
 				options: this._selectOptions,
-				value: <string> this.state['value2'],
+				value: this.state.value2,
 				theme: this._theme,
-				onChange: (option: OptionData) => {
-					this.setState({ value2: option.value });
-				}
+				onChange: (option: OptionData) => this.setState({ value2: option.value })
 			}),
 			v('h2', {}, [ 'Native multiselect widget' ]),
 			w(Select, {
@@ -138,6 +134,7 @@ export class App extends AppBase<WidgetProperties> {
 				theme: this._theme,
 				onChange: (option: OptionData) => {
 					option.selected = !option.selected;
+					this.invalidate();
 				}
 			}),
 			v('h2', {}, [ 'Custom multiselect widget' ]),

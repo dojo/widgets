@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import ComboBox from '../ComboBox';
-import ResultItem, { ResultItemProperties } from '../ResultItem';
+import ResultItem from '../ResultItem';
 import ResultMenu from '../ResultMenu';
 import dojoTheme from '../../themes/dojo/theme';
 
@@ -82,7 +82,7 @@ class CustomResultItem extends ResultItem {
 
 class CustomResultMenu extends ResultMenu {
 	renderResults(results: WNode[]) {
-		const items: any[] = [
+		const items: DNode[] = [
 			v('div', {
 				styles: {
 					fontWeight: 'bold',
@@ -94,8 +94,8 @@ class CustomResultMenu extends ResultMenu {
 
 		let lastLetter = 'a';
 
-		results.forEach(item => {
-			let state = (<ResultItemProperties> (<WNode> item).properties).result.value;
+		results.forEach((item: WNode<ResultItem>) => {
+			let state = item.properties.result.value;
 			let letter = state.charAt(0).toLowerCase();
 			if (letter !== lastLetter) {
 				items.push(v('div', {
@@ -147,10 +147,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '2',
 				clearable: true,
 				onChange: (value: string) => this.setState({ 'value2': value }),
-				getResultLabel: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value2'],
+				results: this.state.results,
+				value: this.state.value2,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -161,10 +161,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '1',
 				openOnFocus: true,
 				onChange: (value: string) => this.setState({ 'value1': value }),
-				getResultLabel: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value1'],
+				results: this.state.results,
+				value: this.state.value1,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -175,11 +175,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '3',
 				openOnFocus: true,
 				onChange: (value: string) => this.setState({ 'value3': value }),
-				getResultLabel: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				customResultItem: CustomResultItem,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value3'],
+				results: this.state.results,
+				value: this.state.value3,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -189,10 +189,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '4',
 				onChange: (value: string) => this.setState({ 'value4': value }),
-				getResultLabel: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value4'],
+				results: this.state.results,
+				value: this.state.value4,
 				customResultMenu: CustomResultMenu,
 				inputProperties: {
 					placeholder: 'Enter a value'
@@ -203,10 +203,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '5',
 				onChange: (value: string) => this.setState({ 'value5': value }),
-				getResultLabel: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value5'],
+				results: this.state.results,
+				value: this.state.value5,
 				isResultDisabled: (result: any) => result.value.length > 9,
 				inputProperties: {
 					placeholder: 'Enter a value'
@@ -235,10 +235,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '8',
 				onChange: (value: string) => this.setState({ 'value8': value }),
-				getResultLabel: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value8'],
+				results: this.state.results,
+				value: this.state.value8,
 				label: 'Enter a value',
 				theme: this._theme
 			}),
@@ -250,11 +250,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					'value9': value,
 					invalid: value.trim().length === 0
 				}),
-				getResultLabel: (result: any) => <string> result.value,
+				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: <any[]> this.state['results'],
-				value: <string> this.state['value9'],
-				invalid: <boolean> this.state.invalid,
+				results: this.state.results,
+				value: this.state.value9,
+				invalid: this.state.invalid,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},

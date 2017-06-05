@@ -58,7 +58,7 @@ export class App extends AppBase<WidgetProperties> {
 					else { return 'I permanently altered the ecology of a planet for my tribbles'; }
 				},
 				step: 1,
-				value: <number> tribbleValue,
+				value: tribbleValue,
 				onInput: this.onTribbleInput,
 				theme: this._theme
 			}),
@@ -66,9 +66,9 @@ export class App extends AppBase<WidgetProperties> {
 			w(Slider, {
 				key: 's2',
 				label: 'Vertical Slider with default properties. Anything over 50 is invalid:',
-				value: <number> verticalValue,
+				value: verticalValue,
 				vertical: true,
-				invalid: <boolean> verticalInvalid,
+				invalid: verticalInvalid,
 				output: (value: number) => {
 					return v('span', {
 						innerHTML: verticalInvalid ? value + ' !' : value + '',

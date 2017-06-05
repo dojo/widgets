@@ -45,7 +45,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					key: 'row',
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ rowSize: size }),
-					size: <number> this.state.rowSize,
+					size: this.state.rowSize,
 					theme: this._theme
 				})
 			]),
@@ -57,7 +57,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					key: 'column',
 					direction: Direction.column,
 					onResize: (size: number) => this.setState({ columnSize: size }),
-					size: <number> this.state.columnSize,
+					size: this.state.columnSize,
 					theme: this._theme
 				})
 			]),
@@ -69,12 +69,12 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					key: 'nested',
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ nestedSizeA: size }),
-					size: <number> this.state.nestedSizeA,
+					size: this.state.nestedSizeA,
 					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => this.setState({ nestedSizeB: size }),
-						size: <number> this.state.nestedSizeB,
+						size: this.state.nestedSizeB,
 						theme: this._theme
 					})
 				})
@@ -87,12 +87,12 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					key: 'verticalNested',
 					direction: Direction.row,
 					onResize: (size: number) => this.setState({ nestedSizeC: size }),
-					size: <number> this.state.nestedSizeC,
+					size: this.state.nestedSizeC,
 					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.row,
 						onResize: (size: number) => this.setState({ nestedSizeD: size }),
-						size: <number> this.state.nestedSizeD,
+						size: this.state.nestedSizeD,
 						theme: this._theme
 					})
 				})
@@ -105,12 +105,12 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					key: 'horizontalNested',
 					direction: Direction.column,
 					onResize: (size: number) => this.setState({ nestedSizeE: size }),
-					size: <number> this.state.nestedSizeE,
+					size: this.state.nestedSizeE,
 					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => this.setState({ nestedSizeF: size }),
-						size: <number> this.state.nestedSizeF,
+						size: this.state.nestedSizeF,
 						theme: this._theme
 					})
 				})
@@ -126,7 +126,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						size = size > 300 ? 300 : size;
 						this.setState({ maxSize: size });
 					},
-					size: <number> this.state.maxSize,
+					size: this.state.maxSize,
 					theme: this._theme
 				})
 			]),
@@ -141,7 +141,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 						size = size < 100 ? 100 : size;
 						this.setState({ minSize: size });
 					},
-					size: <number> this.state.minSize,
+					size: this.state.minSize,
 					theme: this._theme
 				})
 			])

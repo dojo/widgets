@@ -74,8 +74,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			]),
 			w(TabPane, {
 				theme: this._theme,
-				activeIndex: <number> activeIndex,
-				alignButtons: <Align> align,
+				activeIndex: activeIndex,
+				alignButtons: align,
 				onRequestTabClose: (index: number, key: string) => this.setState({ closedKeys: [...closedKeys, key] }),
 				onRequestTabChange: (index: number, key: string) => {
 					refresh && refresh.cancel();
