@@ -146,7 +146,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '2',
 				clearable: true,
-				onChange: (value: string) => this.setState({ 'value2': value }),
+				onChange: (value: string) => {
+					this.setState({ 'value2': value });
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				results: this.state.results,
@@ -160,7 +162,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '1',
 				openOnFocus: true,
-				onChange: (value: string) => this.setState({ 'value1': value }),
+				onChange: (value: string) => {
+					this.setState({ 'value1': value });
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				results: this.state.results,
@@ -174,7 +178,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '3',
 				openOnFocus: true,
-				onChange: (value: string) => this.setState({ 'value3': value }),
+				onChange: (value: string) => {
+					this.setState({ 'value3': value });
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				customResultItem: CustomResultItem,
@@ -188,7 +194,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', ['Custom menu renderer']),
 			w(ComboBox, {
 				key: '4',
-				onChange: (value: string) => this.setState({ 'value4': value }),
+				onChange: (value: string) => {
+					this.setState({ 'value4': value });
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				results: this.state.results,
@@ -202,7 +210,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', ['Disabled menu items']),
 			w(ComboBox, {
 				key: '5',
-				onChange: (value: string) => this.setState({ 'value5': value }),
+				onChange: (value: string) => {
+					this.setState({ 'value5': value });
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				results: this.state.results,
@@ -234,7 +244,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('h3', ['Label']),
 			w(ComboBox, {
 				key: '8',
-				onChange: (value: string) => this.setState({ 'value8': value }),
+				onChange: (value: string) => {
+					this.setState({ 'value8': value });
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				results: this.state.results,
@@ -246,10 +258,12 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '9',
 				required: true,
-				onChange: (value: string) => this.setState({
-					'value9': value,
-					invalid: value.trim().length === 0
-				}),
+				onChange: (value: string) => {
+					this.setState({
+						'value9': value,
+						invalid: value.trim().length === 0
+					});
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				results: this.state.results,

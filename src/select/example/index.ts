@@ -110,7 +110,9 @@ export class App extends AppBase<WidgetProperties> {
 				useNativeElement: true,
 				value: this.state.value1,
 				theme: this._theme,
-				onChange: (option: OptionData) => this.setState({ value1: option.value })
+				onChange: (option: OptionData) => {
+					this.setState({ value1: option.value });
+				}
 			}),
 			v('p', {
 				innerHTML: 'Result value: ' + this.state.value1
@@ -123,7 +125,9 @@ export class App extends AppBase<WidgetProperties> {
 				options: this._selectOptions,
 				value: this.state.value2,
 				theme: this._theme,
-				onChange: (option: OptionData) => this.setState({ value2: option.value })
+				onChange: (option: OptionData) => {
+					this.setState({ value2: option.value });
+				}
 			}),
 			v('h2', {}, [ 'Native multiselect widget' ]),
 			w(Select, {

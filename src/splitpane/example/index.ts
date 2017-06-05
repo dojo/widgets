@@ -44,7 +44,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				w(SplitPane, {
 					key: 'row',
 					direction: Direction.row,
-					onResize: (size: number) => this.setState({ rowSize: size }),
+					onResize: (size: number) => {
+						this.setState({ rowSize: size });
+					},
 					size: this.state.rowSize,
 					theme: this._theme
 				})
@@ -56,7 +58,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				w(SplitPane, {
 					key: 'column',
 					direction: Direction.column,
-					onResize: (size: number) => this.setState({ columnSize: size }),
+					onResize: (size: number) => {
+						this.setState({ columnSize: size });
+					},
 					size: this.state.columnSize,
 					theme: this._theme
 				})
@@ -68,12 +72,16 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				w(SplitPane, {
 					key: 'nested',
 					direction: Direction.row,
-					onResize: (size: number) => this.setState({ nestedSizeA: size }),
+					onResize: (size: number) => {
+						this.setState({ nestedSizeA: size });
+					},
 					size: this.state.nestedSizeA,
 					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
-						onResize: (size: number) => this.setState({ nestedSizeB: size }),
+						onResize: (size: number) => {
+							this.setState({ nestedSizeB: size });
+						},
 						size: this.state.nestedSizeB,
 						theme: this._theme
 					})
@@ -86,12 +94,16 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				w(SplitPane, {
 					key: 'verticalNested',
 					direction: Direction.row,
-					onResize: (size: number) => this.setState({ nestedSizeC: size }),
+					onResize: (size: number) => {
+						this.setState({ nestedSizeC: size });
+					},
 					size: this.state.nestedSizeC,
 					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.row,
-						onResize: (size: number) => this.setState({ nestedSizeD: size }),
+						onResize: (size: number) => {
+							this.setState({ nestedSizeD: size });
+						},
 						size: this.state.nestedSizeD,
 						theme: this._theme
 					})
@@ -104,12 +116,16 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				w(SplitPane, {
 					key: 'horizontalNested',
 					direction: Direction.column,
-					onResize: (size: number) => this.setState({ nestedSizeE: size }),
+					onResize: (size: number) => {
+						this.setState({ nestedSizeE: size });
+					},
 					size: this.state.nestedSizeE,
 					theme: this._theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
-						onResize: (size: number) => this.setState({ nestedSizeF: size }),
+						onResize: (size: number) => {
+							this.setState({ nestedSizeF: size });
+						},
 						size: this.state.nestedSizeF,
 						theme: this._theme
 					})

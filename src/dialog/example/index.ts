@@ -41,7 +41,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				modal: this.state.modal,
 				underlay: this.state.underlay,
 				closeable: this.state.closeable,
-				onRequestClose: () => this.setState({ open: false }),
+				onRequestClose: () => {
+					this.setState({ open: false });
+				},
 				theme: this._theme
 			}, [
 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.

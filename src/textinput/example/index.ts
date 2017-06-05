@@ -34,7 +34,9 @@ export class App extends AppBase<WidgetProperties> {
 					type: 'text',
 					placeholder: 'Hello, World',
 					value: this.state.value1,
-					onChange: (event: Event) => this.setState({ value1: (<HTMLInputElement> event.target).value }),
+					onChange: (event: Event) => {
+						this.setState({ value1: (<HTMLInputElement> event.target).value });
+					},
 					theme: this._theme
 				})
 			]),
@@ -49,7 +51,9 @@ export class App extends AppBase<WidgetProperties> {
 					},
 					required: true,
 					value: this.state.value2,
-					onChange: (event: Event) => this.setState({ value2: (<HTMLInputElement> event.target).value }),
+					onChange: (event: Event) => {
+						this.setState({ value2: (<HTMLInputElement> event.target).value });
+					},
 					theme: this._theme
 				})
 			]),
@@ -65,7 +69,9 @@ export class App extends AppBase<WidgetProperties> {
 						hidden: true
 					},
 					value: this.state.value3,
-					onChange: (event: Event) => this.setState({ value3: (<HTMLInputElement> event.target).value }),
+					onChange: (event: Event) => {
+						this.setState({ value3: (<HTMLInputElement> event.target).value });
+					},
 					theme: this._theme
 				})
 			]),

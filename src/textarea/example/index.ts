@@ -33,7 +33,9 @@ export class App extends AppBase<WidgetProperties> {
 				placeholder: 'Hello, World',
 				label: 'Type Something',
 				value: this.state.value1,
-				onChange: (event: Event) => this.setState({ value1: (<HTMLInputElement> event.target).value }),
+				onChange: (event: Event) => {
+					this.setState({ value1: (<HTMLInputElement> event.target).value });
+				},
 				theme: this._theme
 			}),
 			v('h3', {}, ['Disabled Textarea']),
