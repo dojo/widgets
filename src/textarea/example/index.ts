@@ -32,8 +32,10 @@ export class App extends AppBase<WidgetProperties> {
 				rows: 8,
 				placeholder: 'Hello, World',
 				label: 'Type Something',
-				value: <string> this.state['value1'],
-				onChange: (event: Event) => this.setState({ 'value1': (<HTMLInputElement> event.target).value }),
+				value: this.state.value1,
+				onChange: (event: Event) => {
+					this.setState({ value1: (<HTMLInputElement> event.target).value });
+				},
 				theme: this._theme
 			}),
 			v('h3', {}, ['Disabled Textarea']),
@@ -53,11 +55,11 @@ export class App extends AppBase<WidgetProperties> {
 				rows: 8,
 				label: 'Required',
 				required: true,
-				value: <string> this.state['value2'],
-				invalid: <boolean | undefined> this.state.invalid,
+				value: this.state.value2,
+				invalid: this.state.invalid,
 				onChange: (event: Event) => {
 					const value = (<HTMLInputElement> event.target).value;
-					this.setState({ 'value2': value });
+					this.setState({ value2: value });
 					this.setState({ invalid: value.trim().length === 0 });
 				},
 				theme: this._theme

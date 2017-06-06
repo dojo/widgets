@@ -37,10 +37,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(Dialog, {
 				key: 'dialog',
 				title: 'Dialog',
-				open: <boolean> this.state['open'],
-				modal: <boolean> this.state['modal'],
-				underlay: <boolean> this.state['underlay'],
-				closeable: <boolean> this.state['closeable'],
+				open: this.state.open,
+				modal: this.state.modal,
+				underlay: this.state.underlay,
+				closeable: this.state.closeable,
 				onRequestClose: () => {
 					this.setState({ open: false });
 				},

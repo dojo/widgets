@@ -74,9 +74,11 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			]),
 			w(TabPane, {
 				theme: this._theme,
-				activeIndex: <number> activeIndex,
-				alignButtons: <Align> align,
-				onRequestTabClose: (index: number, key: string) => this.setState({ closedKeys: [...closedKeys, key] }),
+				activeIndex: activeIndex,
+				alignButtons: align,
+				onRequestTabClose: (index: number, key: string) => {
+					this.setState({ closedKeys: [...closedKeys, key] });
+				},
 				onRequestTabChange: (index: number, key: string) => {
 					refresh && refresh.cancel();
 					if (key === 'async') {
@@ -84,7 +86,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 							activeIndex: 2,
 							loading: true
 						});
-						refresh = refreshData().then(() => this.setState({ loading: false }));
+						refresh = refreshData().then(() => {
+							this.setState({ loading: false });
+						});
 					}
 					else {
 						this.setState({ activeIndex: index });

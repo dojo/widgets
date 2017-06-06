@@ -32,9 +32,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 		return v('div', [
 			w(SlidePane, {
 				key: 'pane',
-				open: <boolean> this.state['open'],
-				underlay: <boolean> this.state['underlay'],
-				align: <Align> this.state['align'],
+				open: this.state.open,
+				underlay: this.state.underlay,
+				align: this.state.align,
 				onRequestClose: () => {
 					this.setState({ open: false });
 				},
