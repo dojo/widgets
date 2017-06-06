@@ -65,15 +65,15 @@ registerSuite({
 				});
 	},
 
-	'Clicking month radio selects month and closes popup'() {
-		return openMonthPicker((<any> this).remote)
+	'Clicking month radio selects month and closes popup'(this: any) {
+		const { browserName } = this.remote.environmentType;
+		if (browserName.toLowerCase() === 'microsoftedge') {
+			this.skip('Edge driver does not handle mouseup on click.');
+		}
+
+		return openMonthPicker(this.remote)
 			.findByCssSelector('input[type=radio]')
-				.then((el: HTMLElement) => {
-					return (<any> this).remote.moveMouseTo(el);
-				})
-				.pressMouseButton()
-				.sleep(100)
-				.releaseMouseButton()
+				.click()
 				.sleep(DELAY)
 				.end()
 			.findByCssSelector(`.${css.currentMonthLabel}`)
@@ -106,9 +106,12 @@ registerSuite({
 	},
 
 	'Arrow keys move date focus'(this: any) {
-		const { supportsKeysCommand } = this.remote.environmentType;
-		if (!supportsKeysCommand) {
-			this.skip();
+		const { supportsKeysCommand, browserName } = this.remote.environmentType;
+		if (!supportsKeysCommand || browserName.toLowerCase() === 'safari') {
+			this.skip('Arrow keys must be supported');
+		}
+		if (browserName.toLowerCase() === 'microsoftedge') {
+			this.skip('Edge driver does not handle focus on click');
 		}
 
 		return clickDate((<any> this).remote)

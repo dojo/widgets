@@ -87,20 +87,23 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 	private _monthPopupOpen = false;
 	private _registry: WidgetRegistry;
 
+	constructor() {
+		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
+		super();
+
+		this._registry = this._createRegistry(CalendarCell);
+		this.registries.add(this._registry);
+	}
+
 	@onPropertiesChanged()
 	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, CalendarProperties>) {
 		const { customDateCell = CalendarCell } = this.properties;
 
 		// update custom option registry
-		if ( !this._registry || includes(evt.changedPropertyKeys, 'customDateCell')) {
+		if ( includes(evt.changedPropertyKeys, 'customDateCell')) {
 			const registry = this._createRegistry(customDateCell);
 
-			if (this._registry) {
-				this.registries.replace(this._registry, registry);
-			}
-			else {
-				this.registries.add(registry);
-			}
+			this.registries.replace(this._registry, registry);
 			this._registry = registry;
 		}
 	}

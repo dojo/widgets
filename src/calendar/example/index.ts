@@ -27,7 +27,6 @@ export class App extends AppBase<WidgetProperties> {
 				onChange: this.themeChange
 			}),
 			w(Calendar, {
-				key: 'calendar',
 				month: this.state.month,
 				selectedDate: this.state.selectedDate,
 				theme: this._theme,
