@@ -1,0 +1,261 @@
+@import '../../common/styles/variables.css';
+@import './variables.css';
+
+/* Previous/next month arrows */
+.previousMonth,
+.nextMonth {
+	background: #fff;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	top: 5px;
+}
+
+.previousMonth {
+	left: 0;
+}
+
+.nextMonth {
+	right: 0;
+}
+
+.previousMonth::before,
+.nextMonth::before {
+	border-left: 2px solid var(--dojo-blue);
+	border-top: 2px solid var(--dojo-blue);
+	content: "";
+	display: block;
+	height: 20px;
+	position: relative;
+	transition: border 0.2s ease;
+	width: 20px;
+}
+
+.previousMonth::before {
+	transform: rotate(-45deg);
+}
+
+.nextMonth::before {
+	transform: rotate(135deg);
+}
+
+.currentMonthLabel {
+	color: var(--button-color);
+	font-weight: bold;
+	font-size: 16px;
+	pointer-events: none;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	transition: color 0.2s ease;
+}
+
+/* Button to open month popup */
+.monthTrigger {
+	background-color: var(--button-bg);
+	border: 1px solid var(--button-bg);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+	border-radius: var(--rounded-corners);
+	color: var(--button-color);
+	cursor: pointer;
+	display: inline-block;
+	font: var(--base-font);
+	font-weight: bold;
+	height: 35px;
+	padding: var(--button-padding);
+	transition: all var(--short-animation-duration) ease;
+	width: 180px;
+}
+
+.monthTrigger:focus {
+	box-shadow: var(--input-focus-shadow);
+	border: 1px solid var(--dojo-light-blue);
+	outline: none;
+}
+
+/* Month popup */
+.monthPopup {
+	background-color: var(--dojo-off-white);
+	border: 3px solid var(--component-color);
+	left: 0;
+	margin-top: 20px;
+	opacity: 1;
+	padding: 10px 15px;
+	position: absolute;
+	width: 100%;
+}
+
+.monthPopup::before {
+	border-bottom: 20px solid var(--component-color);
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	content: "";
+	left: 50%;
+	margin-left: -20px;
+	position: absolute;
+	top: -20px;
+}
+
+.monthPopupHidden {
+	opacity: 0;
+	z-index: -1;
+}
+
+/* year spinner */
+.yearPicker {
+	margin-bottom: 5px;
+}
+
+.spinner,
+.spinnerNext,
+.spinnerPrevious {
+	display: inline-block;
+	position: relative;
+}
+
+.spinner::after,
+.spinnerNext::after,
+.spinnerPrevious::after {
+	content: "";
+	position: absolute;
+	left: 8px;
+	right: 8px;
+	transform: scale(0, 1);
+	transition: all var(--short-animation-duration) var(--short-animation-easing);
+}
+
+.spinner {
+	font-size: 24px;
+	line-height: 1;
+	padding: 0 8px;
+}
+
+.spinner::after {
+	background: var(--component-color);
+	bottom: -4px;
+	height: 3px;
+}
+
+.spinner:focus {
+	box-shadow: var(--input-focus-shadow);
+	outline: 1px solid var(--dojo-light-blue);
+}
+
+.spinner:focus::after {
+	transform: scale(1, 1);
+}
+
+.spinnerPrevious,
+.spinnerNext {
+	color: var(--dojo-shade-gray);
+	cursor: pointer;
+	line-height: 24px;
+	padding: 0 8px;
+	vertical-align: text-bottom;
+}
+
+.spinnerPrevious::after,
+.spinnerNext::after {
+	background: var(--dojo-shade-gray);
+	bottom: 0;
+	height: 2px;
+}
+
+.spinnerPrevious:hover::after,
+.spinnerNext:hover::after {
+	transform: scale(1, 1);
+}
+
+/* Month picker radios */
+.monthControl {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.monthRadio {
+	display: block;
+	float: left;
+	font-size: 12px;
+	padding: 4px;
+	position: relative;
+	text-align: center;
+	text-transform: uppercase;
+	width: 25%;
+}
+
+.monthRadioLabel {
+	cursor: pointer;
+	display: block;
+	padding: 6px 12px;
+	text-decoration: none;
+}
+
+.monthRadio:hover .monthRadioLabel {
+	background: var(--calendar-hover-bg);
+}
+
+.monthRadioChecked .monthRadioLabel {
+	background: var(--calendar-selected);
+	color: var(--dojo-white);
+	font-weight: bold;
+}
+
+.monthRadioInput {
+	appearance: none;
+	height: 100%;
+	left: 0;
+	margin: 0;
+	outline: none;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.monthRadioInput:focus ~ .monthRadioLabel {
+	box-shadow: var(--input-focus-shadow);
+	outline: 1px solid var(--dojo-light-blue);
+}
+
+/* Date grid */
+.weekday, .date {
+	padding: 10px 20px;
+	text-align: center;
+}
+
+.weekday {
+	color: var(--dojo-gray);
+	font-weight: normal;
+	text-transform: uppercase;
+}
+
+.weekday abbr {
+	text-decoration: none;
+}
+
+.date {
+	cursor: pointer;
+}
+
+.date:focus {
+	box-shadow: var(--input-focus-shadow);
+	outline: 1px solid var(--dojo-light-blue);
+}
+
+.date:hover {
+	background-color: var(--calendar-hover-bg);
+}
+
+.inactiveDate {
+	background-color: var(--calendar-disabled-bg);
+}
+
+.selectedDate {
+	background-color: var(--calendar-selected);
+	color: var(--dojo-white);
+}
+
+.todayDate {
+	border: 2px solid var(--dojo-light-blue);
+}

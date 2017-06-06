@@ -21,6 +21,7 @@ registerSuite({
 			content: 'foo',
 			type: 'submit',
 			name: 'bar',
+			id: 'qux',
 			disabled: true,
 			pressed: true,
 			describedBy: 'baz',
@@ -31,6 +32,7 @@ registerSuite({
 		assert.strictEqual(vnode.properties!.innerHTML, 'foo');
 		assert.strictEqual(vnode.properties!.type, 'submit');
 		assert.strictEqual(vnode.properties!.name, 'bar');
+		assert.strictEqual(vnode.properties!.id, 'qux');
 		assert.isTrue(vnode.properties!.disabled);
 		assert.strictEqual(vnode.properties!['aria-pressed'], 'true');
 		assert.strictEqual(vnode.properties!['aria-describedby'], 'baz');

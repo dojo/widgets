@@ -9,6 +9,7 @@ export const AppBase = StatefulMixin(WidgetBase);
 
 const modules = [
 	'button',
+	'calendar',
 	'checkbox',
 	'combobox',
 	'dialog',
