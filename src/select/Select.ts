@@ -1,4 +1,4 @@
-import { WidgetBase, onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase, onPropertiesChanged, diffProperty, DiffType } from '@dojo/widget-core/WidgetBase';
 import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
@@ -61,6 +61,7 @@ export const SelectBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
+@diffProperty('customOption', DiffType.REFERENCE)
 export default class Select extends SelectBase<SelectProperties> {
 	private _focusedIndex = 0;
 	private _ignoreBlur = false;
@@ -72,6 +73,14 @@ export default class Select extends SelectBase<SelectProperties> {
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
 	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+
+	constructor() {
+		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
+		super();
+
+		this._registry = this._createRegistry(SelectOption);
+		this.registries.add(this._registry);
+	}
 
 	private _createRegistry(customOption: any) {
 		const registry = new WidgetRegistry();
@@ -230,14 +239,10 @@ export default class Select extends SelectBase<SelectProperties> {
 		} = this.properties;
 
 		// update custom option registry
-		if ( !this._registry || includes(evt.changedPropertyKeys, 'customOption')) {
+		if ( includes(evt.changedPropertyKeys, 'customOption')) {
 			const registry = this._createRegistry(customOption);
-			if (this._registry) {
-				this.registries.replace(this._registry, registry);
-			}
-			else {
-				this.registries.add(registry);
-			}
+
+			this.registries.replace(this._registry, registry);
 			this._registry = registry;
 		}
 
