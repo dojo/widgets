@@ -41,18 +41,18 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 			]),
 
 			v('p', {
-				id: 'description',
+				id: 'description1',
 				classes: this.classes().fixed(baseCss.visuallyHidden)
 			}, [ 'Accepts 24-hour time with a leading zero, rounded to the nearest half hour.' ]),
 
 			v('h3', [ 'Filter options on input' ]),
 			w(TimePicker, {
 				inputProperties: {
-					describedBy: 'description',
+					describedBy: 'description1',
 					placeholder: 'Enter a value'
 				},
-				key: '7',
-				onChange: (value: string) => this.setState({ 'value7': value }),
+				key: '1',
+				onChange: (value: string) => this.setState({ 'value1': value }),
 				onRequestOptions: (value: string, options: TimeUnits[]) => {
 					if (!value) {
 						return this.setState({ options });
@@ -69,26 +69,26 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 						options: matching.length ? matching : options
 					});
 				},
-				options: <TimeUnits[]> this.state.options,
+				options: this.state.options,
 				step: 1800,
 				theme: this._theme,
-				value: <string> this.state['value7']
+				value: this.state['value1']
 			}),
 
 			v('h3', [ 'Open on focus' ]),
 			w(TimePicker, {
 				inputProperties: {
-					describedBy: 'description',
+					describedBy: 'description1',
 					placeholder: 'Enter a value'
 				},
-				key: '1',
+				key: '2',
 				openOnFocus: true,
-				onChange: (value: string) => this.setState({ 'value1': value }),
+				onChange: (value: string) => this.setState({ 'value2': value }),
 				onRequestOptions: this.onRequestOptions,
-				options: <TimeUnits[]> this.state.options,
+				options: this.state.options,
 				step: 1800,
 				theme: this._theme,
-				value: <string> this.state['value1']
+				value: this.state['value2']
 			}),
 
 			v('h3', [ 'Disabled menu items' ]),
@@ -102,22 +102,22 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 					placeholder: 'Enter a value'
 				},
 				isOptionDisabled: (option: TimeUnits) => option.hour >= 12,
-				key: '2',
-				onChange: (value: string) => this.setState({ 'value2': value }),
+				key: '3',
+				onChange: (value: string) => this.setState({ 'value3': value }),
 				onRequestOptions: this.onRequestOptions,
-				options: <TimeUnits[]> this.state.options,
+				options: this.state.options,
 				step: 3600,
 				theme: this._theme,
-				value: <string> this.state['value2']
+				value: this.state['value3']
 			}),
 
 			v('h3', [ 'Disabled' ]),
 			w(TimePicker, {
 				inputProperties: {
-					describedBy: 'description',
+					describedBy: 'description1',
 					placeholder: 'Enter a value'
 				},
-				key: '3',
+				key: '4',
 				disabled: true,
 				theme: this._theme
 			}),
@@ -125,50 +125,50 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 			v('h3', [ 'Read Only' ]),
 			w(TimePicker, {
 				inputProperties: {
-					describedBy: 'description',
+					describedBy: 'description1',
 					placeholder: 'Enter a value'
 				},
-				key: '4',
+				key: '5',
 				readOnly: true,
 				theme: this._theme
 			}),
 
 			v('h3', [ 'Label' ]),
 			w(TimePicker, {
-				key: '5',
+				key: '6',
 				inputProperties: {
-					describedBy: 'description'
+					describedBy: 'description1'
 				},
 				label: 'Enter a value',
-				onChange: (value: string) => this.setState({ 'value5': value }),
+				onChange: (value: string) => this.setState({ 'value6': value }),
 				onRequestOptions: this.onRequestOptions,
-				options: <TimeUnits[]> this.state.options,
+				options: this.state.options,
 				step: 1800,
 				theme: this._theme,
-				value: <string> this.state['value5']
+				value: this.state['value6']
 			}),
 
 			v('h3', [ 'Required and validated' ]),
 			w(TimePicker, {
 				inputProperties: {
-					describedBy: 'description',
+					describedBy: 'description1',
 					placeholder: 'Enter a value'
 				},
-				invalid: <boolean> this.state.invalid,
-				key: '6',
+				invalid: this.state.invalid,
+				key: '7',
 				required: true,
 				onBlur: (value: string) => this.setState({
 					invalid: value.trim().length === 0
 				}),
 				onChange: (value: string) => this.setState({
-					'value6': value,
+					'value7': value,
 					invalid: value.trim().length === 0
 				}),
 				onRequestOptions: this.onRequestOptions,
-				options: <TimeUnits[]> this.state.options,
+				options: this.state.options,
 				step: 1800,
 				theme: this._theme,
-				value: <string> this.state['value6']
+				value: this.state['value7']
 			}),
 
 			v('h3', [ 'One second increment' ]),
@@ -183,13 +183,13 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 					placeholder: 'Enter a value'
 				},
 				key: '8',
-				options: <TimeUnits[]> this.state.options,
+				options: this.state.options,
 				onChange: (value: string) => this.setState({ 'value8': value }),
 				onRequestOptions: this.onRequestOptions,
 				start: '12:00:00',
 				step: 1,
 				theme: this._theme,
-				value: <string> this.state['value8']
+				value: this.state['value8']
 			}),
 
 			v('h3', [ 'Use 12-hour time' ]),
@@ -210,10 +210,10 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 				key: '9',
 				onChange: (value: string) => this.setState({ 'value9': value }),
 				onRequestOptions: this.onRequestOptions,
-				options: <TimeUnits[]> this.state.options,
+				options: this.state.options,
 				step: 1800,
 				theme: this._theme,
-				value: <string> this.state['value9']
+				value: this.state['value9']
 			}),
 
 			v('h3', [ 'Native `<input type="time">`' ]),
@@ -227,7 +227,7 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 				step: 1800,
 				theme: this._theme,
 				useNativeElement: true,
-				value: <string> this.state['value10']
+				value: this.state['value10']
 			})
 		]);
 	}

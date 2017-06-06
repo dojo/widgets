@@ -111,7 +111,7 @@ w(TimePicker, {
 });
 ```
 
-## Themeing
+## Theming
 
 The following CSS classes are used to style the `TimePicker` widget and should be provided by custom themes:
 
