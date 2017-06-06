@@ -10,10 +10,8 @@ import TimePicker, { TimeUnits } from '../TimePicker';
 import dojoTheme from '../../themes/dojo/theme';
 import * as baseCss from '../../common/styles/base.m.css';
 
-// Load all CLDR data required to render 12-hour time
 setLocaleData();
 
-// reusable date for custom option label formatting
 const TODAY = new Date();
 const getEnglishTime = getDateFormatter({ time: 'short' });
 

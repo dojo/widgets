@@ -146,7 +146,6 @@ function getTime(units: TimeUnits, date = new Date()) {
  * to `{ hour: 19, minute: 3, second: 27 }`.
  *
  * @param value   A standard time string or an object with `hour`, `minute`, and `second` properties.
- * @throws Error  For any string not in the format 'HH:mm' or 'HH:mm:ss'.
  * @return        An object containing `hour`, `second`, and `number` properties.
  */
 export function parseUnits (value: string | TimeUnits): TimeUnits {
