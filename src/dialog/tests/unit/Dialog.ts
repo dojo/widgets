@@ -16,6 +16,7 @@ registerSuite({
 			title: 'dialog',
 			underlay: true,
 			closeable: true,
+			closeText: 'foo',
 			role: 'dialog'
 		});
 
@@ -25,6 +26,7 @@ registerSuite({
 		assert.strictEqual(dialog.properties.title, 'dialog');
 		assert.isTrue(dialog.properties.underlay);
 		assert.isTrue(dialog.properties.closeable);
+		assert.strictEqual(dialog.properties.closeText, 'foo');
 		assert.strictEqual(dialog.properties.role, 'dialog');
 	},
 
@@ -33,7 +35,8 @@ registerSuite({
 		dialog.__setProperties__({
 			enterAnimation: 'enter',
 			exitAnimation: 'exit',
-			role: 'dialog'
+			role: 'dialog',
+			closeText: 'foo'
 		});
 		let vnode = <VNode> dialog.__render__();
 		assert.strictEqual(vnode.vnodeSelector, 'div', 'tagname should be div');

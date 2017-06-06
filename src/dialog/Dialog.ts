@@ -18,6 +18,7 @@ export type RoleType = 'dialog' | 'alertdialog';
  * Properties that can be set on a Dialog component
  *
  * @property closeable          Determines whether the dialog can be closed
+ * @property closeText          Hidden text used by screen readers to display for the close button
  * @property enterAnimation     CSS class to apply to the dialog when opened
  * @property exitAnimation      CSS class to apply to the dialog when closed
  * @property modal              Determines whether the dialog can be closed by clicking outside its content
@@ -30,6 +31,7 @@ export type RoleType = 'dialog' | 'alertdialog';
  */
 export interface DialogProperties extends ThemeableProperties {
 	closeable?: boolean;
+	closeText?: string;
 	enterAnimation?: string;
 	exitAnimation?: string;
 	modal?: boolean;
@@ -60,13 +62,14 @@ export default class Dialog extends DialogBase<DialogProperties> {
 	render(): DNode {
 		const {
 			closeable = true,
+			closeText = 'close dialog',
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
 			onOpen,
 			open = false,
 			role = 'dialog',
 			title = '',
-			underlay = false
+			underlay
 		} = this.properties;
 
 		open && !this._wasOpen && onOpen && onOpen();
@@ -97,7 +100,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 					title,
 					closeable ? v('button', {
 						classes: this.classes(css.close),
-						innerHTML: 'close dialog',
+						innerHTML: closeText,
 						onclick: this._onCloseClick
 					}) : null
 				]),
