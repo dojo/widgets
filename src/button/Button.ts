@@ -11,7 +11,6 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  *
  * Properties that can be set on a Button component
  *
- * @property content        Text content of button
  * @property describedBy    ID of element with descriptive text
  * @property disabled       Whether the button is disabled or clickable
  * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
@@ -32,7 +31,6 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property onTouchStart   Called on the button's touchstart event
  */
 export interface ButtonProperties extends ThemeableProperties {
-	content?: string;
 	describedBy?: string;
 	disabled?: boolean;
 	id?: string;
@@ -72,7 +70,6 @@ export default class Button extends ButtonBase<ButtonProperties> {
 
 	render(): DNode {
 		let {
-			content = '',
 			describedBy,
 			disabled,
 			id,
@@ -88,7 +85,6 @@ export default class Button extends ButtonBase<ButtonProperties> {
 		}
 
 		return v('button', {
-			innerHTML: content,
 			classes: this.classes(
 				css.root,
 				disabled ? css.disabled : null,
@@ -116,6 +112,6 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			'aria-expanded': popup ? popup.expanded + '' : null,
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
 			'aria-describedby': describedBy
-		});
+		}, this.children);
 	}
 }

@@ -13,6 +13,7 @@ let widget: Harness<ButtonProperties, typeof Button>;
 
 registerSuite({
 	name: 'Button',
+<<<<<<< HEAD
 
 	beforeEach() {
 		widget = harness(Button);
@@ -53,6 +54,19 @@ registerSuite({
 	'properties and attributes'() {
 		const buttonProperties: ButtonProperties = {
 			content: 'foo',
+=======
+	construction() {
+		const button = new Button();
+		button.__setProperties__({
+			name: 'bar'
+		});
+		assert.strictEqual(button.properties.name, 'bar');
+	},
+
+	'correct node attributes'() {
+		const button = new Button();
+		button.__setProperties__({
+>>>>>>> updated button content to use children
 			type: 'submit',
 			name: 'bar',
 			id: 'qux',
@@ -98,6 +112,7 @@ registerSuite({
 		widget.setProperties({
 			popup: true
 		});
+<<<<<<< HEAD
 
 		widget.expectRender(v('button', {
 			'aria-controls': '',
@@ -124,6 +139,27 @@ registerSuite({
 			type: undefined,
 			value: undefined
 		}));
+=======
+		button.__setChildren__([ 'foo' ]);
+		const vnode = <VNode> button.__render__();
+		assert.strictEqual(vnode.vnodeSelector, 'button');
+		assert.strictEqual(vnode.text, 'foo');
+		assert.strictEqual(vnode.properties!.type, 'submit');
+		assert.strictEqual(vnode.properties!.name, 'bar');
+		assert.strictEqual(vnode.properties!.id, 'qux');
+		assert.isTrue(vnode.properties!.disabled);
+		assert.strictEqual(vnode.properties!['aria-pressed'], 'true');
+		assert.strictEqual(vnode.properties!['aria-describedby'], 'baz');
+		assert.strictEqual(vnode.properties!['aria-haspopup'], 'true');
+		assert.strictEqual(vnode.properties!['aria-controls'], '');
+		assert.strictEqual(vnode.properties!['aria-expanded'], 'false');
+	},
+
+	'button without popup'() {
+		const button = new Button();
+		const vnode = <VNode> button.__render__();
+		assert.strictEqual(vnode.properties!['aria-haspopup'], null);
+>>>>>>> updated button content to use children
 	},
 
 	events() {

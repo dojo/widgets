@@ -22,9 +22,7 @@ export class App extends AppBase<WidgetProperties> {
 
 	render() {
 		return v('div', [
-			v('h2', {
-				innerHTML: 'Button Examples'
-			}),
+			v('h2', [ 'Button Examples' ]),
 			v('label', [
 				'Use Dojo Theme ',
 				v('input', {
@@ -33,39 +31,30 @@ export class App extends AppBase<WidgetProperties> {
 				})
 			]),
 			v('div', { id: 'example-1' }, [
-				v('p', {
-					innerHTML: 'Basic example:'
-				}),
+				v('p', [ 'Basic example:' ]),
 				w(Button, {
 					key: 'b1',
-					theme: this._theme,
-					content: 'Basic Button'
-				})
+					theme: this._theme
+				}, [ 'Basic Button' ])
 			]),
 			v('div', { id: 'example-2' }, [
-				v('p', {
-					innerHTML: 'Disabled menu button:'
-				}),
+				v('p', [ 'Disabled menu button:' ]),
 				w(Button, {
 					key: 'b2',
 					theme: this._theme,
-					content: 'Open',
 					disabled: true,
 					popup: { expanded: false, id: 'fakeId' },
 					type: 'menu'
-				})
+				}, [ 'Open' ])
 			]),
 			v('div', { id: 'example-3' }, [
-				v('p', {
-					innerHTML: 'Toggle Button'
-				}),
+				v('p', [ 'Toggle Button' ]),
 				w(Button, {
 					key: 'b3',
 					theme: this._theme,
-					content: 'Button state',
 					pressed: this.state.buttonPressed,
 					onClick: this.toggleButton
-				})
+				}, [ 'Button state' ])
 			])
 		]);
 	}
