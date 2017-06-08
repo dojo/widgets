@@ -32,7 +32,7 @@ registerSuite({
 			classes: titlePane.classes(css.root)
 		}, [
 			v('div', {
-				'aria-level': '',
+				'aria-level': null,
 				classes: titlePane.classes(css.title, css.closeable),
 				onclick: titlePane.listener,
 				onkeyup: titlePane.listener,
@@ -40,7 +40,7 @@ registerSuite({
 			}, [
 				v('div', {
 					'aria-controls': isNonEmptyString,
-					'aria-disabled': 'false',
+					'aria-disabled': null,
 					'aria-expanded': 'true',
 					id: <any> isNonEmptyString,
 					role: 'button',
