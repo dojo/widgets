@@ -54,11 +54,6 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	}
 
 	private _onTitleKeyUp(event: KeyboardEvent) {
-		const { closeable = true } = this.properties;
-		if (!closeable) {
-			return;
-		}
-
 		const {keyCode } = event;
 
 		if (keyCode === Keys.Enter || keyCode === Keys.Space) {
@@ -106,7 +101,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			classes: this.classes(css.root)
 		}, [
 			v('div', {
-				'aria-level': headingLevel ? String(headingLevel) : '',
+				'aria-level': headingLevel ? String(headingLevel) : null,
 				classes: this.classes(css.title, closeable ? css.closeable : null),
 				onclick: this._onTitleClick,
 				onkeyup: this._onTitleKeyUp,
@@ -114,7 +109,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			}, [
 				v('div', {
 					'aria-controls': this._contentId,
-					'aria-disabled': String(!closeable),
+					'aria-disabled': closeable ? null : 'true',
 					'aria-expanded': String(open),
 					id: this._titleId,
 					role: 'button',

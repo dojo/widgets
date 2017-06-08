@@ -9,8 +9,8 @@ import SlidePane from './slidepane/SlidePane';
 import Slider from './slider/Slider';
 import SplitPane from './splitpane/SplitPane';
 import TabPane from './tabpane/TabPane';
-import TextInput from './textinput/TextInput';
 import Textarea from './textarea/Textarea';
+import TextInput from './textinput/TextInput';
 import TitlePane from './titlepane/TitlePane';
 
 export {
@@ -25,7 +25,7 @@ export {
 	Slider,
 	SplitPane,
 	TabPane,
-	TextInput,
 	Textarea,
+	TextInput,
 	TitlePane
 };

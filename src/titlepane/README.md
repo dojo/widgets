@@ -18,8 +18,11 @@ Dojo 2's `TitlePane` component can be used to display content inside a window wi
 
 ### Accessibility Features
 
-- The titlebar and aria-labelledby have screen-reader-accessible labels and instructions
-- The text within a closeable titlebar is contained within a `<button>` with screen-reader-accessible instructive text
+- The titlebar has a role of heading and accepts a `headingLevel` property to set the correct heading level
+- The accordion panel has `aria-labelledby` set to the titlebar
+- The accordion opens on Enter and Space
+- `aria-expanded` is set to `true` or `false` on the toggle button depending on `properties.open`
+- `aria-controls` on the toggle button points to the accordion content
 
 ## Themeing
 
