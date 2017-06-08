@@ -72,8 +72,8 @@ registerSuite({
 			v('div', {
 				'aria-level': '5',
 				classes: titlePane.classes(css.title),
-				onclick: undefined,
-				onkeyup: undefined,
+				onclick: titlePane.listener,
+				onkeyup: titlePane.listener,
 				role: 'heading'
 			}, [
 				v('div', {
@@ -127,6 +127,68 @@ registerSuite({
 			selector: '[role="heading"]'
 		});
 		assert.isTrue(called, 'onRequestOpen should be called on title click');
+	},
+
+	'can not open pane on click'() {
+		let called = 0;
+		titlePane.setProperties({
+			closeable: false,
+			open: true,
+			onRequestClose() {
+				called++;
+			},
+			title: 'test'
+		});
+		titlePane.getRender();
+		titlePane.sendEvent('click', {
+			selector: '[role="heading"]'
+		});
+
+		titlePane.setProperties({
+			open: true,
+			onRequestClose() {
+				called++;
+			},
+			title: 'test'
+		});
+		titlePane.getRender();
+		titlePane.sendEvent('click', {
+			selector: '[role="heading"]'
+		});
+
+		assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
+	},
+
+	'can not open pane on keyup'() {
+		let called = 0;
+		titlePane.setProperties({
+			closeable: false,
+			open: true,
+			onRequestClose() {
+				called++;
+			},
+			title: 'test'
+		});
+		titlePane.getRender();
+		titlePane.sendEvent('keyup', {
+			eventInit: { keyCode: Keys.Enter },
+			selector: '[role="heading"]'
+		});
+
+		titlePane.setProperties({
+			open: true,
+			onRequestClose() {
+				called++;
+			},
+			title: 'test'
+		});
+		titlePane.getRender();
+		titlePane.sendEvent('keyup', {
+			eventInit: { keyCode: Keys.Enter },
+			selector: '[role="heading"]'
+		});
+
+		assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
 	},
 
 	'open on keyup'() {

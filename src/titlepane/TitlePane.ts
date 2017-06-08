@@ -1,8 +1,9 @@
 import uuid from '@dojo/core/uuid';
-import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
+import { v } from '@dojo/widget-core/d';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+
 import { Keys } from '../common/util';
 
 import * as css from './styles/titlePane.m.css';
@@ -14,18 +15,18 @@ import * as css from './styles/titlePane.m.css';
  *
  * @property closeable          If false the pane will not collapse in response to clicking the title
  * @property headingLevel       'aria-level' for the title's DOM node
- * @property open               If true the pane is opened and content is visible
- * @property title              Title to display above the content
  * @property onRequestClose     Called when the title of an open pane is clicked
  * @property onRequestOpen      Called when the title of a closed pane is clicked
+ * @property open               If true the pane is opened and content is visible
+ * @property title              Title to display above the content
  */
 export interface TitlePaneProperties extends ThemeableProperties {
 	closeable?: boolean;
 	headingLevel?: number;
-	open?: boolean;
-	title: string;
 	onRequestClose?(titlePane: TitlePane): void;
 	onRequestOpen?(titlePane: TitlePane): void;
+	open?: boolean;
+	title: string;
 };
 
 export const TitlePaneBase = ThemeableMixin(WidgetBase);
@@ -38,8 +39,9 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	private _afterRender(element: HTMLElement) {
 		// Conditionally adjust top margin. Done manually instead of through Maquette
 		// so the underlying DOM is accessible, as we need to know the content height.
-		// Put in a timeout to push this operation to the next tick, otherwise
-		// element.offsetHeight below can be incorrect (e.g. before styling is applied)
+		// Put in a rAF to push this operation to the next tick, otherwise
+		// element.offsetHeight can be incorrect (e.g. before styling is applied)
+		// Note that this will go away when meta support is added to widget-core
 		requestAnimationFrame(() => {
 			const { open = true } = this.properties;
 			const height = element.offsetHeight;
@@ -52,7 +54,12 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	}
 
 	private _onTitleKeyUp(event: KeyboardEvent) {
-		const { keyCode } = event;
+		const { closeable = true } = this.properties;
+		if (!closeable) {
+			return;
+		}
+
+		const {keyCode } = event;
 
 		if (keyCode === Keys.Enter || keyCode === Keys.Space) {
 			this._toggle();
@@ -61,10 +68,15 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 
 	private _toggle() {
 		const {
-			open = true,
+			closeable = true,
 			onRequestClose,
-			onRequestOpen
+			onRequestOpen,
+			open = true
 		} = this.properties;
+
+		if (!closeable) {
+			return;
+		}
 
 		if (open) {
 			onRequestClose && onRequestClose(this);
@@ -84,8 +96,8 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 
 	render(): DNode {
 		const {
-			headingLevel,
 			closeable = true,
+			headingLevel,
 			open = true,
 			title
 		} = this.properties;
@@ -96,8 +108,8 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : '',
 				classes: this.classes(css.title, closeable ? css.closeable : null),
-				onclick: closeable ? this._onTitleClick : undefined,
-				onkeyup: closeable ? this._onTitleKeyUp : undefined,
+				onclick: this._onTitleClick,
+				onkeyup: this._onTitleKeyUp,
 				role: 'heading'
 			}, [
 				v('div', {

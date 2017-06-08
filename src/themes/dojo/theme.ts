@@ -27,5 +27,5 @@ export default {
 	'dojo-tabPane': tabPane,
 	'dojo-textarea': textarea,
 	'dojo-textinput': textinput,
-	'dojo-titlePane': titlePane,
+	'dojo-titlePane': titlePane
 };

@@ -1,8 +1,9 @@
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
+import { v, w } from '@dojo/widget-core/d';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
+
 import TitlePane from '../TitlePane';
 import dojoTheme from '../../themes/dojo/theme';
 
@@ -16,7 +17,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	}
 
 	render() {
-		const { t2open = true, t3open = false } = this.state;
+		const {
+			t2open = true,
+			t3open = false
+		} = this.state;
 
 		return v('div', {
 			styles: {
@@ -24,7 +28,10 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				width: '450px'
 			}
 		}, [
-			v('div', { classes: { option: true }, style: 'margin-bottom: 20px;' }, [
+			v('div', {
+				classes: { option: true },
+				style: 'margin-bottom: 20px;'
+			}, [
 				v('label', [
 					'Use Dojo Theme ',
 					v('input', {
@@ -43,13 +50,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 					closeable: false,
 					key: 'titlePane1',
 					theme: this._theme,
-					title: 'TitlePanel Widget With closeable=false',
-					onRequestClose: () => {
-						alert('onRequestClose should never get called');
-					},
-					onRequestOpen: () => {
-						alert('onRequestOpen should never get called');
-					}
+					title: 'TitlePanel Widget With closeable=false'
 				}, [
 					v('div', {
 						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.

@@ -22,12 +22,12 @@ Dojo 2's `Dialog` component can be used to show content inside a window over top
 
 The following CSS classes are used to style the `Dialog` widget and should be provided by custom themes:
 
-- `close`: Applied to the close button in the titlebar.
-- `content`: Applied to content of the dialog window.
-- `main`: Applied to dialog window itself that includes both the titlebar and the content window.
-- `root`: Applied to the top-level wrapper node.
-- `title`: Applied to the titlebar of the dialog window.
-- `underlayVisible`: Applied to the application mask behind a dialog with an underlay.
+- `close`: Applied to the close button in the titlebar
+- `content`: Applied to content of the dialog window
+- `main`: Applied to dialog window itself that includes both the titlebar and the content window
+- `root`: Applied to the top-level wrapper node
+- `title`: Applied to the titlebar of the dialog window
+- `underlayVisible`: Applied to the application mask behind a dialog with an underlay
 
 ## Example Usage
 
