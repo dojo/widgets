@@ -1,16 +1,16 @@
 # @dojo/widgets/slider/Slider widget
 
-Dojo 2's `Slider` widget creates a range slider control with a styleable track, fill, and thumb.
+Dojo 2's `Slider` widget creates a range slider control with a styleable track, fill, and draggable thumb control.
 
 
 ## Features
 
 - Horizontal or vertical slider with a track, fill, and single thumb
-- Output node with customizable text
+- Output node with customizable text that can be used to display the current value
 
 ### Accessibility Features
 
-`Slider` uses the native `<input type="range">`as its base, which ensures built-in keyboard and screen reader accessibility. All common form field attributes (`disabled`, `invalid`, `readOnly`, `required`) may be set, as well as a visible or hidden label. The output node is associated with the input.
+`Slider` uses the native `<input type="range">`as its base, which ensures built-in keyboard and screen reader accessibility. All common form field attributes (`disabled`, `invalid`, `readOnly`, `required`) may be set, as well as a visible or hidden label. The output node used to display the current value uses `<output>` and is associated with the input.
 
 ## Example Usage
 
@@ -71,13 +71,15 @@ The following CSS classes are available on the `Slider` widget for use with cust
 - `root`: Applied to either the wrapping `<label>`, or a `<div>` in the same position in the node hierarchy
 - `inputWrapper`: Applied to the immediate parent of the `<input>` and custom track
 - `input`: Applied to the native `<input>` element
+- `track`: Applied to the element used to render the custom track
+- `fill`: Applied to the element used for the custom fill, a child of the track
+- `thumb`: Applied to the element used as the custom thumb, a child of the track
+- `output`: Applied to the `<output>` element used to display the current value
+
+*Conditional Classes*
 - `vertical`: Applied to the same level as `root` if `properties.vertical` is true
 - `disabled`: Applied to the same level as `root` if `properties.disabled` is true
 - `readonly`: Applied to the same level as `root` if `properties.readOnly` is true
 - `required`: Applied to the same level as `root` if `properties.required` is true
 - `invalid`: Applied to the same level as `root` if `properties.invalid` is true
 - `valid`: Applied to the same level as `root` if `properties.invalid` is set false (i.e. not only undefined)
-- `track`: Applied to the element used to render the custom track
-- `fill`: Applied to the element used for the custom fill, a child of the track
-- `thumb`: Applied to the element used as the custom thumb, a child of the track
-- `output`: Applied to the `<output>` element used to display the current value
