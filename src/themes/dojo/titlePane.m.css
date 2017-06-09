@@ -16,13 +16,9 @@
 	border-width: var(--border-thin);
 	color: var(--title-bar-color);
 	font-size: var(--title-bar-font-size);
-	padding: var(--title-padding);
+	padding: var(--header-padding);
 	position: relative;
 	z-index: 1;
-}
-
-.closeable {
-	cursor: pointer;
 }
 
 .content {

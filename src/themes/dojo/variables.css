@@ -40,7 +40,7 @@
 	/* Composed values */
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
-	--title-padding: 5px;
+	--header-padding: 5px;
 	--underlay-bg: var(--dojo-shade-gray);
 	--input-focus-shadow: 0 0 4px 1px var(--dojo-light-blue);
 	--input-border-color: var(--dojo-gray);

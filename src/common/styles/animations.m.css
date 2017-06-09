@@ -29,33 +29,3 @@
 	animation-fill-mode: both;
 	animation-name: fadeOut;
 }
-
-@keyframes expandDown {
-	from {
-		max-height: 0;
-	}
-	to {
-		max-height: 300px;
-	}
-}
-
-.expandDown {
-	animation-duration: var(--short-animation-duration);
-	animation-fill-mode: both;
-	animation-name: expandDown;
-}
-
-@keyframes collapseUp {
-	from {
-		max-height: 300px;
-	}
-	to {
-		max-height: 0;
-	}
-}
-
-.collapseUp {
-	animation-duration: var(--short-animation-duration);
-	animation-fill-mode: both;
-	animation-name: collapseUp;
-}

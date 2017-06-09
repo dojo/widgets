@@ -98,11 +98,17 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		} = this.properties;
 
 		return v('div', {
-			classes: this.classes(css.root)
+			classes: this.classes(css.root).fixed(css.rootFixed)
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
-				classes: this.classes(css.title, closeable ? css.closeable : null),
+				classes: this.classes(
+					closeable ? css.closeable : null,
+					css.title
+				).fixed(
+					closeable ? css.closeableFixed : null,
+					css.titleFixed
+				),
 				onclick: this._onTitleClick,
 				onkeyup: this._onTitleKeyUp,
 				role: 'heading'
@@ -111,6 +117,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 					'aria-controls': this._contentId,
 					'aria-disabled': closeable ? null : 'true',
 					'aria-expanded': String(open),
+					'aria-hidden': open ? null : 'true',
 					id: this._titleId,
 					role: 'button',
 					tabIndex: closeable ? 0 : -1

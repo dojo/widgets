@@ -29,11 +29,11 @@ registerSuite({
 		});
 
 		titlePane.expectRender(v('div', {
-			classes: titlePane.classes(css.root)
+			classes: titlePane.classes(css.root, css.rootFixed)
 		}, [
 			v('div', {
 				'aria-level': null,
-				classes: titlePane.classes(css.title, css.closeable),
+				classes: titlePane.classes(css.title, css.titleFixed, css.closeable, css.closeableFixed),
 				onclick: titlePane.listener,
 				onkeyup: titlePane.listener,
 				role: 'heading'
@@ -42,6 +42,7 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': null,
 					'aria-expanded': 'true',
+					'aria-hidden': null,
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: 0
@@ -67,11 +68,11 @@ registerSuite({
 		});
 
 		titlePane.expectRender(v('div', {
-			classes: titlePane.classes(css.root)
+			classes: titlePane.classes(css.root, css.rootFixed)
 		}, [
 			v('div', {
 				'aria-level': '5',
-				classes: titlePane.classes(css.title),
+				classes: titlePane.classes(css.title, css.titleFixed),
 				onclick: titlePane.listener,
 				onkeyup: titlePane.listener,
 				role: 'heading'
@@ -80,6 +81,7 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': 'true',
 					'aria-expanded': 'false',
+					'aria-hidden': 'true',
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: -1
@@ -107,7 +109,7 @@ registerSuite({
 		});
 
 		titlePane.sendEvent('click', {
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 		assert.isTrue(called, 'onRequestClose should be called on title click');
 	},
@@ -124,7 +126,7 @@ registerSuite({
 		});
 
 		titlePane.sendEvent('click', {
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 		assert.isTrue(called, 'onRequestOpen should be called on title click');
 	},
@@ -141,7 +143,7 @@ registerSuite({
 		});
 		titlePane.getRender();
 		titlePane.sendEvent('click', {
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 
 		titlePane.setProperties({
@@ -153,7 +155,7 @@ registerSuite({
 		});
 		titlePane.getRender();
 		titlePane.sendEvent('click', {
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 
 		assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
@@ -172,7 +174,7 @@ registerSuite({
 		titlePane.getRender();
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Enter },
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 
 		titlePane.setProperties({
@@ -185,7 +187,7 @@ registerSuite({
 		titlePane.getRender();
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Enter },
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 
 		assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
@@ -205,14 +207,14 @@ registerSuite({
 		titlePane.setProperties(props);
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Enter },
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 		assert.strictEqual(openCount, 1, 'onRequestOpen should be called on title enter keyup');
 
 		titlePane.setProperties(props);
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Space },
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 		assert.strictEqual(openCount, 2, 'onRequestOpen should be called on title space keyup');
 	},
@@ -231,14 +233,14 @@ registerSuite({
 		titlePane.setProperties(props);
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Enter },
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 		assert.strictEqual(closeCount, 1, 'onRequestClose should be called on title enter keyup');
 
 		titlePane.setProperties(props);
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Space },
-			selector: '[role="heading"]'
+			selector: `.${css.title}`
 		});
 		assert.strictEqual(closeCount, 2, 'onRequestClose should be called on title space keyup');
 	},
@@ -261,7 +263,7 @@ registerSuite({
 			if (i !== Keys.Enter && i !== Keys.Space) {
 				titlePane.sendEvent('keyup', {
 					eventInit: { keyCode: i },
-					selector: '[role="heading"]'
+					selector: `.${css.title}`
 				});
 				assert.isFalse(called, `keyCode {i} should be ignored`);
 			}
