@@ -80,7 +80,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	render(): DNode {
+	protected render(): DNode {
 		const {
 			checked = false,
 			describedBy,
@@ -109,8 +109,14 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		const children = [
 			v('div', { classes: this.classes(css.inputWrapper) }, [
-				mode === Mode.toggle ? v('div', { classes: this.classes(css.onLabel) }, [ onLabel || null ]) : null,
-				mode === Mode.toggle ? v('div', { classes: this.classes(css.offLabel) }, [ offLabel || null ]) : null,
+				mode === Mode.toggle ? v('div', {
+					classes: this.classes(css.onLabel),
+					'aria-hidden': checked ? null : 'true'
+				}, [ onLabel || null ]) : null,
+				mode === Mode.toggle ? v('div', {
+					classes: this.classes(css.offLabel),
+					'aria-hidden': checked ? 'true' : null
+				}, [ offLabel || null ]) : null,
 				v('input', {
 					classes: this.classes(css.input),
 					checked,
