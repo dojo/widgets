@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
 import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
@@ -34,8 +34,8 @@ export class App extends AppBase<WidgetProperties> {
 					type: 'text',
 					placeholder: 'Hello, World',
 					value: this.state.value1,
-					onChange: (event: Event) => {
-						this.setState({ value1: (<HTMLInputElement> event.target).value });
+					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
+						this.setState({ value1: event.target.value });
 					},
 					theme: this._theme
 				})
@@ -51,8 +51,8 @@ export class App extends AppBase<WidgetProperties> {
 					},
 					required: true,
 					value: this.state.value2,
-					onChange: (event: Event) => {
-						this.setState({ value2: (<HTMLInputElement> event.target).value });
+					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
+						this.setState({ value2: event.target.value });
 					},
 					theme: this._theme
 				})
@@ -69,8 +69,8 @@ export class App extends AppBase<WidgetProperties> {
 						hidden: true
 					},
 					value: this.state.value3,
-					onChange: (event: Event) => {
-						this.setState({ value3: (<HTMLInputElement> event.target).value });
+					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
+						this.setState({ value3: event.target.value });
 					},
 					theme: this._theme
 				})
@@ -95,8 +95,8 @@ export class App extends AppBase<WidgetProperties> {
 					label: 'Type "foo" or "bar"',
 					value: this.state.value4,
 					invalid: this.state.invalid,
-					onChange: (event: Event) => {
-						const value = (<HTMLInputElement> event.target).value;
+					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
+						const value = event.target.value;
 						this.setState({ value4: value });
 						this.setState({ invalid: value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar' });
 					},
