@@ -95,14 +95,9 @@ export default class Button extends ButtonBase<ButtonProperties> {
 				popup ? css.popup : null,
 				pressed ? css.pressed : null
 			),
-			'aria-describedby': describedBy,
 			disabled,
 			id,
-			'aria-haspopup': popup ? 'true' : null,
-			'aria-controls': popup ? popup.id : null,
-			'aria-expanded': popup ? popup.expanded + '' : null,
 			name,
-			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
 			type,
 			value,
 			onblur: this._onBlur,
@@ -115,7 +110,12 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			onmouseup: this._onMouseUp,
 			ontouchstart: this._onTouchStart,
 			ontouchend: this._onTouchEnd,
-			ontouchcancel: this._onTouchCancel
+			ontouchcancel: this._onTouchCancel,
+			'aria-haspopup': popup ? 'true' : null,
+			'aria-controls': popup ? popup.id : null,
+			'aria-expanded': popup ? popup.expanded + '' : null,
+			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
+			'aria-describedby': describedBy
 		});
 	}
 }
