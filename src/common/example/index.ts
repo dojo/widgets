@@ -21,7 +21,8 @@ const modules = [
 	'splitpane',
 	'tabpane',
 	'textarea',
-	'textinput'
+	'textinput',
+	'titlepane'
 ];
 
 export class App extends AppBase<WidgetProperties> {

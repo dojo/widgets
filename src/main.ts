@@ -11,6 +11,7 @@ import SplitPane from './splitpane/SplitPane';
 import TabPane from './tabpane/TabPane';
 import Textarea from './textarea/Textarea';
 import TextInput from './textinput/TextInput';
+import TitlePane from './titlepane/TitlePane';
 
 export {
 	Button,
@@ -25,5 +26,6 @@ export {
 	SplitPane,
 	TabPane,
 	Textarea,
-	TextInput
+	TextInput,
+	TitlePane
 };

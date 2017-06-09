@@ -11,6 +11,7 @@ import * as splitPane from './splitPane.m.css';
 import * as tabPane from './tabPane.m.css';
 import * as textarea from './textarea.m.css';
 import * as textinput from './textinput.m.css';
+import * as titlePane from './titlePane.m.css';
 
 export default {
 	'dojo-button': button,
@@ -25,5 +26,6 @@ export default {
 	'dojo-splitPane': splitPane,
 	'dojo-tabPane': tabPane,
 	'dojo-textarea': textarea,
-	'dojo-textinput': textinput
+	'dojo-textinput': textinput,
+	'dojo-titlePane': titlePane
 };

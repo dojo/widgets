@@ -1,0 +1,31 @@
+@import '../../common/styles/variables.css';
+
+.rootFixed {
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.rootFixed * {
+	box-sizing: border-box;
+}
+
+.root { }
+
+.titleFixed {
+	position: relative;
+	z-index: 1;
+}
+
+.title {
+	background-color: var(--component-background);
+}
+
+.closeableFixed {
+	cursor: pointer;
+}
+
+.closeable { }
+
+.content {
+	transition: margin-top ease-in-out var(--short-animation-duration);
+}

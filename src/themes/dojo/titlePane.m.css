@@ -1,0 +1,30 @@
+@import './variables.css';
+
+.root {
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.root * {
+	box-sizing: border-box;
+}
+
+.title {
+	background-color: var(--title-bar-bg);
+	border-color: var(--title-bar-bg);
+	border-style: solid;
+	border-width: var(--border-thin);
+	color: var(--title-bar-color);
+	font-size: var(--title-bar-font-size);
+	padding: var(--header-padding);
+	position: relative;
+	z-index: 1;
+}
+
+.content {
+	border-right: var(--border-thin) solid var(--title-bar-bg);
+	border-bottom: var(--border-thin) solid var(--title-bar-bg);
+	border-left: var(--border-thin) solid var(--title-bar-bg);
+	padding: var(--container-padding);
+	transition: margin-top ease-in-out var(--short-animation-duration);
+}
