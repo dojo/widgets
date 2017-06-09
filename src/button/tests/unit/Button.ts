@@ -32,7 +32,6 @@ registerSuite({
 			classes: widget.classes(css.root),
 			disabled: undefined,
 			id: undefined,
-			innerHTML: '',
 			name: undefined,
 			onblur: widget.listener,
 			onclick: widget.listener,
@@ -52,7 +51,6 @@ registerSuite({
 
 	'properties and attributes'() {
 		const buttonProperties: ButtonProperties = {
-			content: 'foo',
 			type: 'submit',
 			name: 'bar',
 			id: 'qux',
@@ -66,6 +64,7 @@ registerSuite({
 			value: 'value'
 		};
 		widget.setProperties(buttonProperties);
+		widget.setChildren(['foo']);
 
 		widget.expectRender(v('button', {
 			'aria-controls': (<any> buttonProperties.popup).id,
@@ -75,7 +74,6 @@ registerSuite({
 			'aria-pressed': String(buttonProperties.pressed),
 			classes: widget.classes(css.root, css.disabled, css.popup, css.pressed),
 			disabled: buttonProperties.disabled,
-			innerHTML: buttonProperties.content,
 			name: buttonProperties.name,
 			id: buttonProperties.id,
 			onblur: widget.listener,
@@ -91,7 +89,7 @@ registerSuite({
 			ontouchcancel: widget.listener,
 			type: buttonProperties.type,
 			value: buttonProperties.value
-		}));
+		}, [ 'foo' ]));
 	},
 
 	'popup = true'() {
@@ -107,7 +105,6 @@ registerSuite({
 			'aria-pressed': null,
 			classes: widget.classes(css.root, css.popup),
 			disabled: undefined,
-			innerHTML: '',
 			name: undefined,
 			id: undefined,
 			onblur: widget.listener,
