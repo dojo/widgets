@@ -13,7 +13,7 @@ Dojo 2's `Button` widget creates a `<button>` element
 
 - The basic button provides a strongly typed `type` property, as well as `describedBy` and `disabled`
 - Setting `pressed` to create a toggle button handles `aria-pressed`
-- Creating a popup button with `popup` sets `aria-haspopup`, `aria-controls`, and `aria-expanded`.
+- Creating a popup button with `popup` sets `aria-haspopup`, `aria-controls`, and `aria-expanded`
 
 ## Example Usage
 
