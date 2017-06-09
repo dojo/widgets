@@ -31,6 +31,7 @@ registerSuite({
 			'aria-pressed': null,
 			classes: widget.classes(css.root),
 			disabled: undefined,
+			id: undefined,
 			innerHTML: '',
 			name: undefined,
 			onblur: widget.listener,
@@ -62,7 +63,6 @@ registerSuite({
 				id: 'popupId'
 			},
 			pressed: true,
-			type: 'submit',
 			value: 'value'
 		};
 		widget.setProperties(buttonProperties);
@@ -77,6 +77,7 @@ registerSuite({
 			disabled: buttonProperties.disabled,
 			innerHTML: buttonProperties.content,
 			name: buttonProperties.name,
+			id: buttonProperties.id,
 			onblur: widget.listener,
 			onclick: widget.listener,
 			onfocus: widget.listener,
@@ -108,6 +109,7 @@ registerSuite({
 			disabled: undefined,
 			innerHTML: '',
 			name: undefined,
+			id: undefined,
 			onblur: widget.listener,
 			onclick: widget.listener,
 			onfocus: widget.listener,
