@@ -5,7 +5,7 @@ Dojo 2's `TextInput` widget provides a basic text input widget, optionally wrapp
 
 ## Features
 
-- Allows specification of input type (e.g. `text`, `email`, `number`, etc).
+- Allows specification of input type (e.g. `text`, `email`, `number`, etc)
 - Correctly handles a11y attributes
 - Wraps the input in a visible or invisible but accessible `<label>` if the `label` property is added
 
