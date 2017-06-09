@@ -42,13 +42,13 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': null,
 					'aria-expanded': 'true',
-					'aria-hidden': null,
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: 0
 				}, [ 'test' ])
 			]),
 			v('div', {
+				'aria-hidden': null,
 				'aria-labelledby': isNonEmptyString,
 				afterCreate: titlePane.listener,
 				afterUpdate: titlePane.listener,
@@ -81,13 +81,13 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': 'true',
 					'aria-expanded': 'false',
-					'aria-hidden': 'true',
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: -1
 				}, [ 'test' ])
 			]),
 			v('div', {
+				'aria-hidden': 'true',
 				'aria-labelledby': isNonEmptyString,
 				afterCreate: titlePane.listener,
 				afterUpdate: titlePane.listener,
