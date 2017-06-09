@@ -1,0 +1,24 @@
+@import '../../common/styles/variables.css';
+
+.root,
+.root * {
+	box-sizing: border-box;
+}
+
+.root {
+	display: inline-block;
+}
+
+.input:focus {
+	outline: none;
+}
+
+.arrow:after {
+	content: '\1F557';
+}
+
+/* State classes */
+.disabled {}
+.invalid {}
+.readonly {}
+.required {}

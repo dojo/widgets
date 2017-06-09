@@ -22,6 +22,7 @@ const modules = [
 	'tabpane',
 	'textarea',
 	'textinput',
+	'timepicker',
 	'titlepane'
 ];
 

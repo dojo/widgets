@@ -1,0 +1,28 @@
+@import './variables.css';
+
+.root {
+	width: var(--form-field-width);
+}
+
+.input {
+	border: 1px solid var(--dojo-shade-gray);
+	padding: var(--input-padding);
+	width: 100%;
+}
+
+.input:focus {
+	border-color: var(--dojo-light-blue);
+	box-shadow: var(--input-focus-shadow);
+}
+
+.disabled .input,
+.readonly .input {
+	background-color: var(--dojo-light-gray);
+}
+
+.invalid .input {
+	border-color: var(--dojo-error-color);
+}
+.invalid .arrow {
+	background-color: var(--dojo-error-color);
+}

@@ -23,5 +23,5 @@ import '../../../tabpane/tests/unit/TabButton';
 import '../../../tabpane/tests/unit/TabPane';
 import '../../../textarea/tests/unit/Textarea';
 import '../../../textinput/tests/unit/TextInput';
-import '../../../textinput/tests/unit/TextInput';
+import '../../../timepicker/tests/unit/TimePicker';
 import '../../../titlepane/tests/unit/TitlePane';
