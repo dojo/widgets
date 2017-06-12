@@ -5,7 +5,7 @@ Dojo 2's `Label` widget creates a `<label>` element that wraps its children and 
 
 ## Features
 
-- Provides an API to add an accessible label before or after the form control
+- Provides an API to add an accessible label before (default) or after the form control
 - The label may be visually hidden while remaining accessible to screen readers
 - `properties.label` may take an options object or a string
 - All form controls in `@dojo/widgets` make use of the label and share the same `properties.label` API
