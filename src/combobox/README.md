@@ -2,12 +2,13 @@
 
 Dojo 2's `ComboBox` widget provides a form control that allows users to either enter a value manually or to select a value from a list of results.
 
-
 ## Features
 
 - Compatible with any underlying data provider, data format, or store
 - Custom components can be used for the list of results and each individual result
 - Completely keyboard accessible
+
+![Image of basic dialog](http://placekitten.com/450/300)
 
 ### Keyboard Usage
 
