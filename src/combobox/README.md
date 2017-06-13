@@ -16,20 +16,20 @@ Dojo 2's `ComboBox` widget provides a form control that allows users to either e
 
 **Input Events**:
 
-- Escape key: hides the results menu if it is open.
-- Down Arrow: if the results menu is closed, pressing the down arrows opens the menu. If the menu is already open, then pressing the down arrow highlights the next option. If the last last option is highlighted, then the first option is highlighted and scrolled into view.
-- Up Arrow: if the results menu is open, pressing the up arrow highlights the previous result. If the first result is currently highlighted, then the last option is highlighted and scrolled into view.
-- Enter Key: if the results menu is open, pressing the enter key selects the highlighted option and sets its value as the input value.
+- Escape key: hides the results menu if it is open
+- Down Arrow: if the results menu is closed, pressing the down arrow opens the menu. If the menu is already open, then pressing the down arrow highlights the next option. If the last last option is highlighted, then the first option is highlighted and scrolled into view
+- Up Arrow: if the results menu is open, pressing the up arrow highlights the previous result. If the first result is currently highlighted, then the last option is highlighted and scrolled into view
+- Enter Key: if the results menu is open, pressing the enter key selects the highlighted option and sets its value as the input value
 
 **Arrow Button Events**
 
-- Enter Key: opens the results menu.
-- Space Key: opens the results menu.
+- Enter Key: opens the results menu
+- Space Key: opens the results menu
 
 **Clear Button Events**
 
-- Enter Key: clears the input value.
-- Space Key: clears the input value.
+- Enter Key: clears the input value
+- Space Key: clears the input value
 
 ### Accessibility Features
 
