@@ -8,7 +8,7 @@ Dojo 2's `ComboBox` widget provides a form control that allows users to either e
 - Custom components can be used for the list of results and each individual result
 - Completely keyboard accessible
 
-![Image of basic dialog](http://placekitten.com/450/300)
+![Image of basic combobox](http://placekitten.com/450/300)
 
 ### Keyboard Usage
 
