@@ -43,34 +43,6 @@ The `ComboBox` makes no assumptions about the format of its underlying data. A f
 
 ## Example Usage
 
-/**
- * @type ComboBoxProperties
- *
- * Properties that can be set on a ComboBox component
- *
- * @property autoBlur           Determines whether the input should blur after value selection
- * @property clearable          Determines whether the input should be able to be cleared
- * @property customResultItem   Can be used to render a custom result
- * @property customResultMenu   Can be used to render a custom result menu
- * @property disabled           Prevents user interaction and styles content accordingly
- * @property formId             ID of a form element associated with the form field
- * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
- * @property inputProperties    TextInput properties to set on the underlying input
- * @property invalid            Determines if this input is valid
- * @property isResultDisabled   Used to determine if an item should be disabled
- * @property label              Label to show for this input
- * @property onBlur             Called when the input is blurred
- * @property onChange           Called when the value changes
- * @property onFocus            Called when the input is focused
- * @property onMenuChange       Called when menu visibility changes
- * @property onRequestResults   Called when results are shown; should be used to set `results`
- * @property openOnFocus        Determines whether the result list should open when the input is focused
- * @property readOnly           Prevents user interaction
- * @property required           Determines if this input is required, styles accordingly
- * @property results            Results for the current search term; should be set in response to `onRequestResults`
- * @property value              Value to set on the input
- */
-
 *Basic Example*
 ```typescript
 import ComboBox from '@dojo/widgets/combobox/ComboBox';
