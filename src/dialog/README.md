@@ -40,7 +40,7 @@ w(Dialog, {
 	title: 'My Dialog',
 	open: this.state.open,
 	onRequestClose: () => this.setState({ open: false })
-}, [ 'My dialog content...' ])
+}, [ 'My dialog content...' ]);
 ```
 
 *Modal with underlay*
@@ -54,7 +54,7 @@ w(Dialog, {
 	modal: true,
 	underlay: true,
 	onRequestClose: () => this.setState({ open: false })
-}, [ 'My dialog content...' ])
+}, [ 'My dialog content...' ]);
 ```
 
 *Custom animations*
@@ -68,7 +68,7 @@ w(Dialog, {
 	enterAnimation: 'fly-in',
 	exitAnimation: 'fly-out',
 	onRequestClose: () => this.setState({ open: false })
-}, [ 'My dialog content...' ])
+}, [ 'My dialog content...' ]);
 ```
 
 *Dialog that can't be closed*
@@ -80,5 +80,5 @@ w(Dialog, {
 	title: 'My Dialog',
 	open: this.state.open,
 	closeable: false
-}, [ 'My dialog content...' ])
+}, [ 'My dialog content...' ]);
 ```
