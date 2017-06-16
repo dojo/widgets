@@ -41,6 +41,7 @@ export const TabPaneBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> {
 	private _id = uuid();
+	private _callTabFocus = false;
 
 	private get _tabs(): WNode<Tab>[] {
 		return this.children.filter(child => child !== null) as WNode<Tab>[];
@@ -81,6 +82,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 			} = <TabProperties> tab.properties;
 
 			return w(TabButton, {
+				callFocus: this._callTabFocus &&  i === this.properties.activeIndex,
 				active: i === this.properties.activeIndex,
 				closeable,
 				controls: `${ this._id }-tab-${i}`,
@@ -92,6 +94,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 				onCloseClick: this.closeIndex,
 				onDownArrowPress: this._onDownArrowPress,
 				onEndPress: this.selectLastIndex,
+				onFocusCalled: () => { this._callTabFocus = false; },
 				onHomePress: this.selectFirstIndex,
 				onLeftArrowPress: this._onLeftArrowPress,
 				onRightArrowPress: this._onRightArrowPress,
@@ -149,6 +152,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 	protected closeIndex(index: number) {
 		const { onRequestTabClose } = this.properties;
 		const key = this._tabs[index].properties.key;
+		this._callTabFocus = true;
 
 		onRequestTabClose && onRequestTabClose(index, key);
 	}
@@ -164,6 +168,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 		} = this.properties;
 
 		const validIndex = this._validateIndex(index, backwards);
+		this._callTabFocus = true;
 
 		if (validIndex !== null && validIndex !== activeIndex) {
 			const key = this._tabs[validIndex].properties.key;
