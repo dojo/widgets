@@ -151,13 +151,31 @@ registerSuite({
 	'Focus is restored after render'() {
 		const tabButton = new TabButton();
 		let focused = 0;
-		tabButton.__setProperties__(props({ active: true }));
+		let focusCallback = false;
+		tabButton.__setProperties__(props({ callFocus: true }));
 		(<any> tabButton).onElementCreated({
 			focus: () => focused++
 		}, 'tab-button');
+		tabButton.__setProperties__(props({
+			callFocus: true,
+			onFocusCalled: () => { focusCallback = true; }
+		}));
 		(<any> tabButton).onElementUpdated({
 			focus: () => focused++
 		}, 'tab-button');
 		assert.strictEqual(focused, 2);
+		assert.isTrue(focusCallback);
+
+		focusCallback = false;
+		tabButton.__setProperties__(props({
+			callFocus: false,
+			onFocusCalled: () => { focusCallback = true; }
+		}));
+
+		(<any> tabButton).onElementUpdated({
+			focus: () => focused++
+		}, 'tab-button');
+		assert.strictEqual(focused, 2, 'Focus isn\'t called when properties.callFocus is false');
+		assert.isFalse(focusCallback);
 	}
 });
