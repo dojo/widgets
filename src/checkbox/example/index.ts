@@ -1,14 +1,19 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Checkbox, { Mode } from '../../checkbox/Checkbox';
 import dojoTheme from '../../themes/dojo/theme';
 
-export const AppBase = StatefulMixin(WidgetBase);
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _checkboxStates: { [key: string]: boolean } = {
+		c1: true,
+		c2: false,
+		c3: false,
+		c4: false,
+		c5: true
+	};
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const checked = event.target.checked;
@@ -19,7 +24,8 @@ export class App extends AppBase<WidgetProperties> {
 	onChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const value = event.target.value;
 		const checked = event.target.checked;
-		this.setState({ [value]: checked });
+		this._checkboxStates[value] = checked;
+		this.invalidate();
 	}
 
 	render() {
@@ -29,7 +35,7 @@ export class App extends AppBase<WidgetProperties> {
 			c3 = false,
 			c4 = false,
 			c5 = true
-		} = this.state;
+		} = this._checkboxStates;
 
 		return v('div', [
 			v('h2', {

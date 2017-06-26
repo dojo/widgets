@@ -1,5 +1,4 @@
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
@@ -7,8 +6,10 @@ import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces
 import TitlePane from '../TitlePane';
 import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _t2Open = true;
+	private _t3Open = false;
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const checked = event.target.checked;
@@ -18,9 +19,9 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 
 	render() {
 		const {
-			t2open = true,
-			t3open = false
-		} = this.state;
+			_t2Open,
+			_t3Open
+		} = this;
 
 		return v('div', {
 			styles: {
@@ -67,14 +68,16 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				w(TitlePane, {
 					headingLevel: 2,
 					key: 'titlePane2',
-					open: t2open,
+					open: _t2Open,
 					theme: this._theme,
 					title: 'TitlePanel Widget (closeable)',
 					onRequestClose: () => {
-						this.setState({ t2open: false });
+						this._t2Open = false;
+						this.invalidate();
 					},
 					onRequestOpen: () => {
-						this.setState({ t2open: true });
+						this._t2Open = true;
+						this.invalidate();
 					}
 				}, [
 					v('div', {
@@ -96,14 +99,16 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			v('div', { id: 'titlePane3' }, [
 				w(TitlePane, {
 					key: 'titlePane3',
-					open: t3open,
+					open: _t3Open,
 					theme: this._theme,
 					title: 'TitlePanel Widget with open=false',
 					onRequestClose: () => {
-						this.setState({ t3open: false });
+						this._t3Open = false;
+						this.invalidate();
 					},
 					onRequestOpen: () => {
-						this.setState({ t3open: true });
+						this._t3Open = true;
+						this.invalidate();
 					}
 				}, [
 					v('div', {

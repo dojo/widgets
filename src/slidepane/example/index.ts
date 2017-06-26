@@ -1,14 +1,16 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import SlidePane, { Align } from '../../slidepane/SlidePane';
 import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _open = false;
+	private _underlay = false;
+	private _align: Align = Align.left;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -17,26 +19,30 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	}
 
 	openSlidePane() {
-		this.setState({ open: true });
+		this._open = true;
+		this.invalidate();
 	}
 
 	toggleUnderlay(event: Event) {
-		this.setState({ underlay: (<HTMLInputElement> event.target).checked });
+		this._underlay = (<HTMLInputElement> event.target).checked;
+		this.invalidate();
 	}
 
 	toggleAlign(event: Event) {
-		this.setState({ align: (<HTMLInputElement> event.target).checked ? Align.right : Align.left });
+		this._align = (<HTMLInputElement> event.target).checked ? Align.right : Align.left;
+		this.invalidate();
 	}
 
 	render(): DNode {
 		return v('div', [
 			w(SlidePane, {
 				key: 'pane',
-				open: this.state.open,
-				underlay: this.state.underlay,
-				align: this.state.align,
+				open: this._open,
+				underlay: this._underlay,
+				align: this._align,
 				onRequestClose: () => {
-					this.setState({ open: false });
+					this._open = false;
+					this.invalidate();
 				},
 				theme: this._theme
 			}, [

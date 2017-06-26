@@ -1,14 +1,15 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Slider from '../../slider/Slider';
 import dojoTheme from '../../themes/dojo/theme';
 
-export const AppBase = StatefulMixin(WidgetBase);
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _tribbleValue: number;
+	private _verticalValue: number;
+	private _verticalInvalid: boolean;
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const checked = event.target.checked;
@@ -18,23 +19,23 @@ export class App extends AppBase<WidgetProperties> {
 
 	onTribbleInput(event: TypedTargetEvent<HTMLInputElement>) {
 		const value = event.target.value;
-		this.setState({ tribbleValue: parseFloat(value) });
+		this._tribbleValue = parseFloat(value);
+		this.invalidate();
 	}
 
 	onVerticalInput(event: TypedTargetEvent<HTMLInputElement>) {
 		const value = parseFloat(event.target.value);
-		this.setState({
-			verticalValue: value,
-			verticalInvalid: value > 50 ? true : false
-		});
+		this._verticalValue = value;
+		this._verticalInvalid = value > 50;
+		this.invalidate();
 	}
 
 	render() {
 		const {
-			tribbleValue = 50,
-			verticalValue = 0,
-			verticalInvalid = false
-		} = this.state;
+			_tribbleValue: tribbleValue = 50,
+			_verticalValue: verticalValue = 0,
+			_verticalInvalid: verticalInvalid = false
+		} = this;
 
 		return v('div', [
 			v('label', [

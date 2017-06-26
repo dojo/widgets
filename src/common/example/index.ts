@@ -1,11 +1,8 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import Select from '../../select/Select';
 import { v, w } from '@dojo/widget-core/d';
-
-export const AppBase = StatefulMixin(WidgetBase);
 
 const modules = [
 	'button',
@@ -26,7 +23,7 @@ const modules = [
 	'titlepane'
 ];
 
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	onModuleChange(event: any) {
 		const module = event.value;
 		window.location.search = `?module=${module}`;

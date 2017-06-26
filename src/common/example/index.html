@@ -49,11 +49,9 @@
 				}
 			}
 
+			require([ 'src/common/example/index' ], function () {});
 			if (module) {
 				require([ 'src/' + module + '/example/index' ], function () {});
-			}
-			else {
-				require([ 'src/common/example/index' ], function () {});
 			}
 		})();
 	</script>

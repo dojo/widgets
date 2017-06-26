@@ -1,7 +1,7 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { includes } from '@dojo/shim/array';
+import { deepAssign } from '@dojo/core/lang';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
@@ -18,8 +18,26 @@ function refreshData() {
 	});
 }
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+interface State {
+	align: Align;
+	closedKeys: string[];
+	loading: boolean;
+	activeIndex: number;
+}
+
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _state: State = {
+		align: Align.top,
+		closedKeys: [],
+		loading: false,
+		activeIndex: 0
+	};
+
+	private setState(state: Partial<State>) {
+		this._state = deepAssign(this._state, state);
+		this.invalidate();
+	}
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -51,7 +69,7 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			align,
 			closedKeys = [],
 			loading
-		} = this.state;
+		} = this._state;
 
 		return v('div', {
 			classes: { example: true }

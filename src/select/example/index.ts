@@ -1,6 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Select from '../Select';
@@ -18,10 +17,10 @@ class CustomOption extends SelectOption {
 	}
 }
 
-export const AppBase = StatefulMixin(WidgetBase);
-
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _value1: string;
+	private _value2: string;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -108,14 +107,15 @@ export class App extends AppBase<WidgetProperties> {
 				label: 'Try changing me',
 				options: this._selectOptions,
 				useNativeElement: true,
-				value: this.state.value1,
+				value: this._value1,
 				theme: this._theme,
 				onChange: (option: OptionData) => {
-					this.setState({ value1: option.value });
+					this._value1 = option.value;
+					this.invalidate();
 				}
 			}),
 			v('p', {
-				innerHTML: 'Result value: ' + this.state.value1
+				innerHTML: 'Result value: ' + this._value1
 			}),
 			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
@@ -123,10 +123,11 @@ export class App extends AppBase<WidgetProperties> {
 				customOption: CustomOption,
 				label: 'Custom box!',
 				options: this._selectOptions,
-				value: this.state.value2,
+				value: this._value2,
 				theme: this._theme,
 				onChange: (option: OptionData) => {
-					this.setState({ value2: option.value });
+					this._value2 = option.value;
+					this.invalidate();
 				}
 			}),
 			v('h2', {}, [ 'Native multiselect widget' ]),

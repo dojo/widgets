@@ -1,14 +1,13 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
 import Button from '../../button/Button';
 import dojoTheme from '../../themes/dojo/theme';
 
-export const AppBase = StatefulMixin(WidgetBase);
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _buttonPressed = false;
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const checked = event.target.checked;
@@ -17,7 +16,8 @@ export class App extends AppBase<WidgetProperties> {
 	}
 
 	toggleButton() {
-		this.setState({ buttonPressed: !this.state.buttonPressed });
+		this._buttonPressed = !this._buttonPressed;
+		this.invalidate();
 	}
 
 	render() {
@@ -52,7 +52,7 @@ export class App extends AppBase<WidgetProperties> {
 				w(Button, {
 					key: 'b3',
 					theme: this._theme,
-					pressed: this.state.buttonPressed,
+					pressed: this._buttonPressed,
 					onClick: this.toggleButton
 				}, [ 'Button state' ])
 			])
