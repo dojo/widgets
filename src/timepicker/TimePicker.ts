@@ -1,9 +1,9 @@
-import { includes } from '@dojo/shim/array';
 import { padStart } from '@dojo/shim/string';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
-import WidgetBase, { onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
+import { diffProperty, WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { auto } from '@dojo/widget-core/diff';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
@@ -216,14 +216,11 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return this.options;
 	}
 
-	@onPropertiesChanged()
-	protected onPropertiesChanged(event: PropertiesChangeEvent<this, TimePickerProperties>) {
-		if (
-			includes(event.changedPropertyKeys, 'start') ||
-			includes(event.changedPropertyKeys, 'end') ||
-			includes(event.changedPropertyKeys, 'step')) {
-			this.options = null;
-		}
+	@diffProperty('start', auto)
+	@diffProperty('end', auto)
+	@diffProperty('step', auto)
+	protected onPropertiesChanged() {
+		this.options = null;
 	}
 
 	protected renderNativeInput() {

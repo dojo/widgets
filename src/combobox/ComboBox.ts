@@ -1,9 +1,9 @@
 import uuid from '@dojo/core/uuid';
-import { includes } from '@dojo/shim/array';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, WNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { DNode, WNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { WidgetBase, onPropertiesChanged, diffProperty, DiffType } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase, diffProperty } from '@dojo/widget-core/WidgetBase';
+import { reference } from '@dojo/widget-core/diff';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import ResultItem from './ResultItem';
 import ResultMenu from './ResultMenu';
@@ -63,20 +63,18 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	required?: boolean;
 	results?: any[];
 	value?: string;
-};
+}
 
 // Enum used when traversing items using arrow keys
 export const enum Operation {
 	increase = 1,
 	decrease = -1
-};
+}
 
 export const ComboBoxBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-@diffProperty('customResultItem', DiffType.REFERENCE)
-@diffProperty('customResultMenu', DiffType.REFERENCE)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _activeIndex: number | undefined;
 	private _focused: boolean;
@@ -311,21 +309,17 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	}
 
-	@onPropertiesChanged()
-	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, ComboBoxProperties>) {
+	@diffProperty('customResultItem', reference)
+	@diffProperty('customResultMenu', reference)
+	protected onPropertiesChanged(previousProperties: any, newProperties: any) {
 		const {
 			customResultItem = ResultItem,
 			customResultMenu = ResultMenu
-		} = this.properties;
+		} = newProperties;
 
-		if (
-			includes(evt.changedPropertyKeys, 'customResultItem') ||
-			includes(evt.changedPropertyKeys, 'customResultMenu')) {
-			const registry = this._createRegistry(customResultItem, customResultMenu);
-
-			this.registries.replace(this._registry, registry);
-			this._registry = registry;
-		}
+		const registry = this._createRegistry(customResultItem, customResultMenu);
+		this.registries.replace(this._registry, registry);
+		this._registry = registry;
 	}
 
 	protected renderMenu(results: any[]): WNode | null {
