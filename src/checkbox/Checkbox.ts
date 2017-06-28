@@ -148,7 +148,8 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			checkboxWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).get()) },
 				formId,
-				label
+				label,
+				theme: this.properties.theme
 			}, children);
 		}
 		else {

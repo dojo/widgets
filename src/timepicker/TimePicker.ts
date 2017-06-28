@@ -192,7 +192,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 						required ? css.required : null).get())
 					},
 					formId,
-					label
+					label,
+					theme: this.properties.theme
 				}, [ input ]) ];
 			}
 

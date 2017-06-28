@@ -277,6 +277,7 @@ registerSuite({
 				w(Label, {
 					extraClasses: { root: parseLabelClasses(picker.classes(css.input)()) },
 					formId: undefined,
+					theme: undefined,
 					label: 'foo'
 				}, [
 					v('input', {

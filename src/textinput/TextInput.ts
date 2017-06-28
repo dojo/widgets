@@ -152,7 +152,8 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			textinputWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses)()) },
 				formId,
-				label
+				label,
+				theme: this.properties.theme
 			}, [ textinput ]);
 		}
 		else {
