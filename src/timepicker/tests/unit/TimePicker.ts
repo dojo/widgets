@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
 import * as css from '../../styles/timePicker.m.css';
 import ComboBox, { ComboBoxProperties } from '../../../combobox/ComboBox';
-import Label from '../../../label/Label';
+import Label, { parseLabelClasses } from '../../../label/Label';
 
 registerSuite({
 	name: 'TimePicker',
@@ -264,8 +264,6 @@ registerSuite({
 		'Label should render'() {
 			const picker = harness(TimePicker);
 			const inputClasses = picker.classes(css.input);
-			const labelClasses = picker.classes;
-
 			picker.setProperties({
 				label: 'foo',
 				useNativeElement: true
@@ -276,8 +274,8 @@ registerSuite({
 				classes: picker.classes(css.root),
 				key: 'root'
 			}, [
-				w(Label, <any> {
-					classes: labelClasses,
+				w(Label, {
+					extraClasses: { root: parseLabelClasses(picker.classes(css.input)()) },
 					formId: undefined,
 					label: 'foo'
 				}, [
@@ -317,12 +315,9 @@ registerSuite({
 			});
 			let vnode: any = picker.getRender();
 			let label = vnode.children[0];
-			let classes: any = label.properties.classes();
+			let classes: any = label.properties.extraClasses;
 
-			assert.notOk(classes[css.disabled]);
-			assert.notOk(classes[css.invalid]);
-			assert.notOk(classes[css.readonly]);
-			assert.notOk(classes[css.required]);
+			assert.deepEqual(classes, { root: parseLabelClasses(picker.classes(css.input)()) });
 
 			picker.setProperties({
 				disabled: true,
@@ -334,12 +329,9 @@ registerSuite({
 			});
 			vnode = picker.getRender();
 			label = vnode.children[0];
-			classes = label.properties.classes();
 
-			assert.isTrue(classes[css.disabled]);
-			assert.isTrue(classes[css.invalid]);
-			assert.isTrue(classes[css.readonly]);
-			assert.isTrue(classes[css.required]);
+			classes = label.properties.extraClasses;
+			assert.deepEqual(classes, { root: parseLabelClasses(picker.classes(css.input, css.disabled, css.invalid, css.readonly, css.required)()) });
 
 			picker.destroy();
 		},

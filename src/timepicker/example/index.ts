@@ -227,6 +227,8 @@ export class App extends ThemeableMixin(StatefulMixin(WidgetBase))<ThemeableProp
 				step: 1800,
 				theme: this._theme,
 				useNativeElement: true,
+				invalid: true,
+				label: 'foo',
 				value: this.state['value10']
 			})
 		]);
