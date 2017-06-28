@@ -6,7 +6,7 @@ import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mi
 import WidgetBase, { onPropertiesChanged } from '@dojo/widget-core/WidgetBase';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
-import Label, { LabelOptions } from '../label/Label';
+import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import { TextInputProperties } from '../textinput/TextInput';
 
 /**
@@ -184,14 +184,16 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 
 			if (label) {
 				children = [ w(Label, {
-					classes: this.classes(
+					extraClasses: { root: parseLabelClasses(this.classes(
+						css.input,
 						disabled ? css.disabled : null,
 						invalid ? css.invalid : null,
 						readOnly ? css.readonly : null,
-						required ? css.required : null
-					),
+						required ? css.required : null).get())
+					},
 					formId,
-					label
+					label,
+					theme: this.properties.theme
 				}, [ input ]) ];
 			}
 
