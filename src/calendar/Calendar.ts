@@ -91,14 +91,14 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		super();
 
 		this._registry = this._createRegistry(CalendarCell);
-		this.registries.add(this._registry);
+		this.getRegistries().add(this._registry);
 	}
 
 	@diffProperty('customDateCell', reference)
 	protected onPropertiesChanged(previousProperties: any, newProperties: any) {
 		const { customDateCell = CalendarCell } = newProperties;
 		const registry = this._createRegistry(customDateCell);
-		this.registries.replace(this._registry, registry);
+		this.getRegistries().replace(this._registry, registry);
 		this._registry = registry;
 	}
 

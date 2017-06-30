@@ -91,7 +91,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		super();
 
 		this._registry = this._createRegistry(ResultItem, ResultMenu);
-		this.registries.add(this._registry);
+		this.getRegistries().add(this._registry);
 	}
 
 	private _closeMenu() {
@@ -318,7 +318,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		} = newProperties;
 
 		const registry = this._createRegistry(customResultItem, customResultMenu);
-		this.registries.replace(this._registry, registry);
+		this.getRegistries().replace(this._registry, registry);
 		this._registry = registry;
 	}
 

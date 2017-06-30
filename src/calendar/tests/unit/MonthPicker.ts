@@ -143,6 +143,10 @@ const expected = function(widget: any, open = false) {
 	]);
 };
 
+interface TestEventInit extends EventInit {
+	which: number;
+}
+
 registerSuite({
 	name: 'Calendar MonthPicker',
 
@@ -219,7 +223,7 @@ registerSuite({
 		});
 
 		// escape key
-		widget.sendEvent('keydown', {
+		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.Escape
 			},
@@ -229,7 +233,7 @@ registerSuite({
 
 		// enter key
 		closed = false;
-		widget.sendEvent('keydown', {
+		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.Enter
 			},
@@ -239,7 +243,7 @@ registerSuite({
 
 		// space key
 		closed = false;
-		widget.sendEvent('keydown', {
+		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.Space
 			},
@@ -249,7 +253,7 @@ registerSuite({
 
 		// random key
 		closed = false;
-		widget.sendEvent('keydown', {
+		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.PageDown
 			},
@@ -266,7 +270,7 @@ registerSuite({
 			onRequestYearChange: (year: number) => { currentYear = year; }
 		});
 
-		widget.sendEvent('keydown', {
+		widget.sendEvent<any>('keydown', {
 			eventInit: {
 				which: Keys.Right
 			},
@@ -275,7 +279,7 @@ registerSuite({
 
 		assert.strictEqual(currentYear, 2018, 'Right arrow key increased year');
 
-		widget.sendEvent('keydown', {
+		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.Left
 			},

@@ -80,7 +80,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		super();
 
 		this._registry = this._createRegistry(SelectOption);
-		this.registries.add(this._registry);
+		this.getRegistries().add(this._registry);
 	}
 
 	private _createRegistry(customOption: any) {
@@ -235,7 +235,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		} = newProperties;
 
 		const registry = this._createRegistry(customOption);
-		this.registries.replace(this._registry, registry);
+		this.getRegistries().replace(this._registry, registry);
 		this._registry = registry;
 	}
 

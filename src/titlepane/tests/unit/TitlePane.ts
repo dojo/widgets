@@ -11,6 +11,10 @@ const isNonEmptyString = compareProperty((value: any) => {
 	return typeof value === 'string' && value.length > 0;
 });
 
+interface TestEventInit extends EventInit {
+	keyCode: number;
+}
+
 let titlePane: Harness<TitlePaneProperties, typeof TitlePane>;
 registerSuite({
 	name: 'TitlePane',
@@ -172,7 +176,7 @@ registerSuite({
 			title: 'test'
 		});
 		titlePane.getRender();
-		titlePane.sendEvent('keyup', {
+		titlePane.sendEvent<TestEventInit>('keyup', {
 			eventInit: { keyCode: Keys.Enter },
 			selector: `.${css.title}`
 		});
@@ -185,7 +189,7 @@ registerSuite({
 			title: 'test'
 		});
 		titlePane.getRender();
-		titlePane.sendEvent('keyup', {
+		titlePane.sendEvent<TestEventInit>('keyup', {
 			eventInit: { keyCode: Keys.Enter },
 			selector: `.${css.title}`
 		});
@@ -205,14 +209,14 @@ registerSuite({
 		};
 
 		titlePane.setProperties(props);
-		titlePane.sendEvent('keyup', {
+		titlePane.sendEvent<TestEventInit>('keyup', {
 			eventInit: { keyCode: Keys.Enter },
 			selector: `.${css.title}`
 		});
 		assert.strictEqual(openCount, 1, 'onRequestOpen should be called on title enter keyup');
 
 		titlePane.setProperties(props);
-		titlePane.sendEvent('keyup', {
+		titlePane.sendEvent<TestEventInit>('keyup', {
 			eventInit: { keyCode: Keys.Space },
 			selector: `.${css.title}`
 		});
@@ -231,14 +235,14 @@ registerSuite({
 		};
 
 		titlePane.setProperties(props);
-		titlePane.sendEvent('keyup', {
+		titlePane.sendEvent<TestEventInit>('keyup', {
 			eventInit: { keyCode: Keys.Enter },
 			selector: `.${css.title}`
 		});
 		assert.strictEqual(closeCount, 1, 'onRequestClose should be called on title enter keyup');
 
 		titlePane.setProperties(props);
-		titlePane.sendEvent('keyup', {
+		titlePane.sendEvent<TestEventInit>('keyup', {
 			eventInit: { keyCode: Keys.Space },
 			selector: `.${css.title}`
 		});
@@ -261,7 +265,7 @@ registerSuite({
 
 		for (let i = 8; i < 223; i++) {
 			if (i !== Keys.Enter && i !== Keys.Space) {
-				titlePane.sendEvent('keyup', {
+				titlePane.sendEvent<TestEventInit>('keyup', {
 					eventInit: { keyCode: i },
 					selector: `.${css.title}`
 				});
