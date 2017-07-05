@@ -226,7 +226,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		}
 	}
 
-	protected renderNativeInput() {
+	protected renderNativeInput(): DNode {
 		const {
 			disabled,
 			end,
@@ -270,7 +270,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		});
 	}
 
-	protected renderCustomInput() {
+	protected renderCustomInput(): DNode {
 		const {
 			autoBlur,
 			clearable,

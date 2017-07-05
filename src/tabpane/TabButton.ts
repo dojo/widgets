@@ -12,7 +12,7 @@ import * as css from './styles/tabPane.m.css';
  * Properties that can be set on a TabButton component
  *
  * @property active             Determines whether this tab button is active
- * @property callFocus        Used to immediately call focus on the cell
+ * @property callFocus          Used to immediately call focus on the cell
  * @property closeable          Determines whether this tab can be closed
  * @property controls           ID of the DOM element this tab button controls
  * @property disabled           Determines whether this tab can become active
@@ -22,7 +22,7 @@ import * as css from './styles/tabPane.m.css';
  * @property onCloseClick       Called when this tab button's close icon is clicked
  * @property onDownArrowPress   Called when the down arrow button is pressed
  * @property onEndPress         Called when the end button is pressed
- * @property onFocusCalled    Callback function when the cell receives focus
+ * @property onFocusCalled      Callback function when the cell receives focus
  * @property onHomePress        Called when the home button is pressed
  * @property onLeftArrowPress   Called when the left arrow button is pressed
  * @property onRightArrowPress  Called when the right arrow button is pressed
