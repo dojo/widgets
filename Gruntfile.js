@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 			distStyles: {
 				expand: true,
 				cwd: 'src',
-				src: ['**/widgets.css', '**/example.css'],
+				src: '**/widgets.css',
 				dest: '<%= distDirectory %>'
 			}
 		},
