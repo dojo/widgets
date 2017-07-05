@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import TabButton from '../../TabButton';
 import * as css from '../../styles/tabPane.m.css';
@@ -43,139 +44,138 @@ registerSuite({
 
 	'Closing tab should trigger property'() {
 		const tabButton = new TabButton();
-		let called = false;
-		tabButton.__setProperties__(props({ onCloseClick: () => called = true }));
+		const onCloseClick = sinon.spy();
+		tabButton.__setProperties__(props({ onCloseClick }));
 		(<any> tabButton)._onCloseClick({ stopPropagation() { } });
-		assert.isTrue(called);
+		assert.isTrue(onCloseClick.called);
 	},
 
 	'Selecting tab should trigger property'() {
 		const tabButton = new TabButton();
-		let called = 0;
+		const onClick = sinon.spy();
 		tabButton.__setProperties__(props({
-			onClick: () => called++,
+			onClick,
 			disabled: true
 		}));
 		(<any> tabButton)._onClick();
 		tabButton.__setProperties__(props({
-			onClick: () => called++,
+			onClick,
 			disabled: false
 		}));
 		(<any> tabButton)._onClick();
-		assert.strictEqual(called, 1);
+		assert.isTrue(onClick.calledOnce);
 	},
 
 	'Key down should be ignored for disabled tab'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onLeftArrowPress = sinon.spy();
 		tabButton.__setProperties__(props({
 			disabled: true,
-			onLeftArrowPress: () => called = true
+			onLeftArrowPress
 		}));
 		(<any> tabButton)._onKeyDown({ which: 37 });
-		assert.isFalse(called);
+		assert.isFalse(onLeftArrowPress.called);
 	},
 
 	'Escape should close tab'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onCloseClick = sinon.spy();
 		tabButton.__setProperties__(props({
 			closeable: true,
-			onCloseClick: () => called = true
+			onCloseClick
 		}));
 		<VNode> tabButton.__render__();
 		(<any> tabButton)._onKeyDown({ which: 27 });
-		assert.isTrue(called);
+		assert.isTrue(onCloseClick.called);
 	},
 
 	'Left arrow should trigger property'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onLeftArrowPress = sinon.spy();
 		tabButton.__setProperties__(props({
-			onLeftArrowPress: () => called = true
+			onLeftArrowPress
 		}));
 		(<any> tabButton)._onKeyDown({ which: 37 });
-		assert.isTrue(called);
+		assert.isTrue(onLeftArrowPress.called);
 	},
 
 	'Up arrow should trigger property'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onUpArrowPress = sinon.spy();
 		tabButton.__setProperties__(props({
-			onUpArrowPress: () => called = true
+			onUpArrowPress
 		}));
 		(<any> tabButton)._onKeyDown({ which: 38 });
-		assert.isTrue(called);
+		assert.isTrue(onUpArrowPress.called);
 	},
 
 	'Right arrow should trigger property'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onRightArrowPress = sinon.spy();
 		tabButton.__setProperties__(props({
-			onRightArrowPress: () => called = true
+			onRightArrowPress
 		}));
 		(<any> tabButton)._onKeyDown({ which: 39 });
-		assert.isTrue(called);
+		assert.isTrue(onRightArrowPress.called);
 	},
 
 	'Down arrow should trigger property'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onDownArrowPress = sinon.spy();
 		tabButton.__setProperties__(props({
-			onDownArrowPress: () => called = true
+			onDownArrowPress
 		}));
 		(<any> tabButton)._onKeyDown({ which: 40 });
-		assert.isTrue(called);
+		assert.isTrue(onDownArrowPress.called);
 	},
 
 	'Home should trigger property'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onHomePress = sinon.spy();
 		tabButton.__setProperties__(props({
-			onHomePress: () => called = true
+			onHomePress
 		}));
 		(<any> tabButton)._onKeyDown({ which: 36 });
-		assert.isTrue(called);
+		assert.isTrue(onHomePress.called);
 	},
 
 	'End should trigger property'() {
 		const tabButton = new TabButton();
-		let called = false;
+		const onEndPress = sinon.spy();
 		tabButton.__setProperties__(props({
-			onEndPress: () => called = true
+			onEndPress
 		}));
 		(<any> tabButton)._onKeyDown({ which: 35 });
-		assert.isTrue(called);
+		assert.isTrue(onEndPress.called);
 	},
 
 	'Focus is restored after render'() {
 		const tabButton = new TabButton();
-		let focused = 0;
-		let focusCallback = false;
+		const focus = sinon.spy();
+		const onFocusCalled = sinon.spy();
 		tabButton.__setProperties__(props({ callFocus: true }));
 		(<any> tabButton).onElementCreated({
-			focus: () => focused++
+			focus
 		}, 'tab-button');
 		tabButton.__setProperties__(props({
 			callFocus: true,
-			onFocusCalled: () => { focusCallback = true; }
+			onFocusCalled
 		}));
 		(<any> tabButton).onElementUpdated({
-			focus: () => focused++
+			focus
 		}, 'tab-button');
-		assert.strictEqual(focused, 2);
-		assert.isTrue(focusCallback);
+		assert.isTrue(focus.calledTwice);
+		assert.isTrue(onFocusCalled.calledOnce);
 
-		focusCallback = false;
 		tabButton.__setProperties__(props({
 			callFocus: false,
-			onFocusCalled: () => { focusCallback = true; }
+			onFocusCalled
 		}));
 
 		(<any> tabButton).onElementUpdated({
-			focus: () => focused++
+			focus
 		}, 'tab-button');
-		assert.strictEqual(focused, 2, 'Focus isn\'t called when properties.callFocus is false');
-		assert.isFalse(focusCallback);
+		assert.isTrue(focus.calledTwice, 'Focus isn\'t called when properties.callFocus is false');
+		assert.isFalse(onFocusCalled.calledTwice);
 	}
 });

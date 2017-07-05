@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { compareProperty } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
@@ -99,46 +100,41 @@ registerSuite({
 	},
 
 	'click title to close'() {
-		let called = false;
+		const onRequestClose = sinon.spy();
+
 		titlePane.setProperties({
 			closeable: true,
-			onRequestClose() {
-				called = true;
-			},
+			onRequestClose,
 			title: 'test'
 		});
 
 		titlePane.sendEvent('click', {
 			selector: `.${css.title}`
 		});
-		assert.isTrue(called, 'onRequestClose should be called on title click');
+		assert.isTrue(onRequestClose.called, 'onRequestClose should be called on title click');
 	},
 
 	'click title to open'() {
-		let called = false;
+		const onRequestOpen = sinon.spy();
 		titlePane.setProperties({
 			closeable: true,
 			open: false,
-			onRequestOpen() {
-				called = true;
-			},
+			onRequestOpen,
 			title: 'test'
 		});
 
 		titlePane.sendEvent('click', {
 			selector: `.${css.title}`
 		});
-		assert.isTrue(called, 'onRequestOpen should be called on title click');
+		assert.isTrue(onRequestOpen.called, 'onRequestOpen should be called on title click');
 	},
 
 	'can not open pane on click'() {
-		let called = 0;
+		const onRequestClose = sinon.spy();
 		titlePane.setProperties({
 			closeable: false,
 			open: true,
-			onRequestClose() {
-				called++;
-			},
+			onRequestClose,
 			title: 'test'
 		});
 		titlePane.getRender();
@@ -148,9 +144,7 @@ registerSuite({
 
 		titlePane.setProperties({
 			open: true,
-			onRequestClose() {
-				called++;
-			},
+			onRequestClose,
 			title: 'test'
 		});
 		titlePane.getRender();
@@ -158,17 +152,15 @@ registerSuite({
 			selector: `.${css.title}`
 		});
 
-		assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
+		assert.isTrue(onRequestClose.calledOnce, 'onRequestClose should only becalled once');
 	},
 
 	'can not open pane on keyup'() {
-		let called = 0;
+		const onRequestClose = sinon.spy();
 		titlePane.setProperties({
 			closeable: false,
 			open: true,
-			onRequestClose() {
-				called++;
-			},
+			onRequestClose,
 			title: 'test'
 		});
 		titlePane.getRender();
@@ -179,9 +171,7 @@ registerSuite({
 
 		titlePane.setProperties({
 			open: true,
-			onRequestClose() {
-				called++;
-			},
+			onRequestClose,
 			title: 'test'
 		});
 		titlePane.getRender();
@@ -190,17 +180,15 @@ registerSuite({
 			selector: `.${css.title}`
 		});
 
-		assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
+		assert.isTrue(onRequestClose.calledOnce, 'onRequestClose should only becalled once');
 	},
 
 	'open on keyup'() {
-		let openCount = 0;
+		const onRequestOpen = sinon.spy();
 		const props = {
 			closeable: true,
 			open: false,
-			onRequestOpen() {
-				openCount++;
-			},
+			onRequestOpen,
 			title: 'test'
 		};
 
@@ -209,24 +197,22 @@ registerSuite({
 			eventInit: { keyCode: Keys.Enter },
 			selector: `.${css.title}`
 		});
-		assert.strictEqual(openCount, 1, 'onRequestOpen should be called on title enter keyup');
+		assert.isTrue(onRequestOpen.calledOnce, 'onRequestOpen should be called on title enter keyup');
 
 		titlePane.setProperties(props);
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Space },
 			selector: `.${css.title}`
 		});
-		assert.strictEqual(openCount, 2, 'onRequestOpen should be called on title space keyup');
+		assert.isTrue(onRequestOpen.calledTwice, 'onRequestOpen should be called on title space keyup');
 	},
 
 	'close on keyup'() {
-		let closeCount = 0;
+		const onRequestClose = sinon.spy();
 		const props = {
 			closeable: true,
 			open: true,
-			onRequestClose() {
-				closeCount++;
-			},
+			onRequestClose,
 			title: 'test'
 		};
 
@@ -235,27 +221,24 @@ registerSuite({
 			eventInit: { keyCode: Keys.Enter },
 			selector: `.${css.title}`
 		});
-		assert.strictEqual(closeCount, 1, 'onRequestClose should be called on title enter keyup');
+		assert.isTrue(onRequestClose.calledOnce, 'onRequestClose should be called on title enter keyup');
 
 		titlePane.setProperties(props);
 		titlePane.sendEvent('keyup', {
 			eventInit: { keyCode: Keys.Space },
 			selector: `.${css.title}`
 		});
-		assert.strictEqual(closeCount, 2, 'onRequestClose should be called on title space keyup');
+		assert.isTrue(onRequestClose.calledTwice, 'onRequestClose should be called on title space keyup');
 	},
 
 	'keyup: only respond to enter and space'() {
-		let called = false;
+		const onRequestClose = sinon.spy();
+		const onRequestOpen = sinon.spy();
 		titlePane.setProperties({
 			closeable: true,
 			open: false,
-			onRequestClose() {
-				called = true;
-			},
-			onRequestOpen() {
-				called = true;
-			},
+			onRequestClose,
+			onRequestOpen,
 			title: 'test'
 		});
 
@@ -265,7 +248,8 @@ registerSuite({
 					eventInit: { keyCode: i },
 					selector: `.${css.title}`
 				});
-				assert.isFalse(called, `keyCode {i} should be ignored`);
+				assert.isFalse(onRequestClose.called, `keyCode {i} should be ignored`);
+				assert.isFalse(onRequestOpen.called, `keyCode {i} should be ignored`);
 			}
 		}
 	}

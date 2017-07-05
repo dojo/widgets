@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import ResultItem from '../../ResultItem';
 import * as css from '../../styles/comboBox.m.css';
@@ -45,26 +46,26 @@ registerSuite({
 	},
 
 	'onMouseEnter should be called'() {
-		let called = 0;
+		const onMouseEnter = sinon.spy();
 		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ onMouseEnter: () => called++ }));
+		resultItem.__setProperties__(props({ onMouseEnter }));
 		(<any> resultItem)._onMouseEnter();
-		assert.strictEqual(called, 1);
+		assert.isTrue(onMouseEnter.called);
 	},
 
 	'onMouseDown should be called'() {
-		let called = 0;
+		const onMouseDown = sinon.spy();
 		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ onMouseDown: () => called++ }));
+		resultItem.__setProperties__(props({ onMouseDown }));
 		(<any> resultItem)._onMouseDown(<any> {});
-		assert.strictEqual(called, 1);
+		assert.isTrue(onMouseDown.called);
 	},
 
 	'onMouseUp should be called'() {
-		let called = 0;
+		const onMouseUp = sinon.spy();
 		const resultItem = new ResultItem();
-		resultItem.__setProperties__(props({ onMouseUp: () => called++ }));
+		resultItem.__setProperties__(props({ onMouseUp }));
 		(<any> resultItem)._onMouseUp(<any> {});
-		assert.strictEqual(called, 1);
+		assert.isTrue(onMouseUp.called);
 	}
 });

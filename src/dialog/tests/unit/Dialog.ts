@@ -1,4 +1,5 @@
 import * as registerSuite from 'intern!object';
+import * as sinon from 'sinon';
 import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import Dialog from '../../Dialog';
@@ -66,18 +67,16 @@ registerSuite({
 	},
 
 	onOpen() {
-		let called = false;
+		const onOpen = sinon.spy();
 
 		const dialog = new Dialog();
 		dialog.__setProperties__({
 			open: true,
-			onOpen: () => {
-				called = true;
-			}
+			onOpen
 		});
 		<VNode> dialog.__render__();
 
-		assert.isTrue(called, 'onOpen should be called');
+		assert.isTrue(onOpen.called, 'onOpen should be called');
 	},
 
 	modal() {

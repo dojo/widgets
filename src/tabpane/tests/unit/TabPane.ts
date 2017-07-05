@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import TabPane, { Align } from '../../TabPane';
 import * as css from '../../styles/tabPane.m.css';
@@ -50,20 +51,17 @@ registerSuite({
 
 	'Clicking tab should change activeIndex'() {
 		const tabPane = new TabPane();
-		let called = 0;
+		const onRequestTabChange = sinon.spy();
 		tabPane.__setChildren__([
 			w(Tab, { label: 'foo', key: 'foo' }),
 			w(Tab, { label: 'bar', key: 'bar' })
 		]);
 		tabPane.__setProperties__(props({
-			onRequestTabChange: (index: number) => {
-				called++;
-				tabPane.__setProperties__(props({ activeIndex: index }));
-			}
+			onRequestTabChange
 		}));
 		(<any> tabPane).selectIndex(0);
 		(<any> tabPane).selectIndex(1);
-		assert.strictEqual(called, 1);
+		assert.isTrue(onRequestTabChange.calledOnce);
 	},
 
 	'Closing a tab should change tabs'() {

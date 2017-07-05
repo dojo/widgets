@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import ComboBox from '../../ComboBox';
 import ResultItem from '../../ResultItem';
@@ -106,7 +107,7 @@ registerSuite({
 
 	'Blur should be ignored when clicking result'() {
 		const comboBox = new ComboBox();
-		let called = false;
+		const onBlur = sinon.spy();
 		comboBox.__setProperties__({
 			results: ['a', 'b']
 		});
@@ -117,14 +118,14 @@ registerSuite({
 			customResultMenu: ResultMenu
 		});
 		comboBox.__setProperties__({
-			onBlur: () => called = true
+			onBlur
 		});
 
 		(<any> comboBox)._onArrowClick();
 		(<any> comboBox)._onResultMouseEnter(event(), 0);
 		(<any> comboBox)._onResultMouseDown();
 		(<any> comboBox)._onInputBlur(event());
-		assert.isFalse(called);
+		assert.isFalse(onBlur.called);
 	},
 
 	'Down arrow should change selected result if open'() {
@@ -207,9 +208,9 @@ registerSuite({
 	},
 
 	'Input should blur if autoBlur is true'() {
-		let blurred = false;
+		const onBlur = sinon.spy();
 		const input = inputElement();
-		input.blur = () => blurred = true;
+		input.blur = onBlur;
 		const parent = parentElement(input);
 		const comboBox = new ComboBox();
 		comboBox.__setProperties__({
@@ -222,7 +223,7 @@ registerSuite({
 		(<any> comboBox)._selectIndex(0);
 		(<any> comboBox).onElementUpdated();
 		(<any> comboBox).onElementUpdated(parent, 'root');
-		assert.isTrue(blurred);
+		assert.isTrue(onBlur.called);
 	},
 
 	'Clearable should render clear button and allow input to be cleared'() {
@@ -274,52 +275,52 @@ registerSuite({
 	},
 
 	'onBlur should be called'() {
-		let called = false;
+		const onBlur = sinon.spy();
 		const comboBox = new ComboBox();
 		comboBox.__setProperties__({
-			onBlur: () => called = true
+			onBlur
 		});
 
 		(<any> comboBox)._onInputBlur(event());
-		assert.isTrue(called);
+		assert.isTrue(onBlur.called);
 	},
 
 	'onChange should be called'() {
-		let called = 0;
+		const onChange = sinon.spy();
 		const comboBox = new ComboBox();
 		(<any> comboBox)._selectIndex(0);
 		comboBox.__setProperties__({
 			results: ['abc'],
 			getResultLabel: value => value,
-			onChange: () => called++
+			onChange
 		});
 
 		(<any> comboBox)._onInput(event());
 		(<any> comboBox)._onClearClick();
 		(<any> comboBox)._selectIndex(0);
-		assert.strictEqual(called, 3);
+		assert.isTrue(onChange.calledThrice);
 	},
 
 	'onFocus should be called'() {
-		let called = false;
+		const onFocus = sinon.spy();
 		const parent = parentElement();
 		const comboBox = new ComboBox();
 		comboBox.__setProperties__({
-			onFocus: () => called = true
+			onFocus
 		});
 
 		(<any> comboBox)._onInputFocus(event());
 		(<any> comboBox).onElementCreated(parent, 'root');
 		parent.querySelector = () => null;
 		(<any> comboBox).onElementUpdated(parent, 'root');
-		assert.isTrue(called);
+		assert.isTrue(onFocus.called);
 	},
 
 	'onRequestResults should be called'() {
-		let called = 0;
+		const onRequestResults = sinon.spy();
 		const comboBox = new ComboBox();
 		comboBox.__setProperties__({
-			onRequestResults: () => called++,
+			onRequestResults,
 			openOnFocus: true
 		});
 
@@ -327,22 +328,22 @@ registerSuite({
 		(<any> comboBox)._onInput(event());
 		(<any> comboBox)._onInputFocus(event());
 		(<any> comboBox)._onArrowClick();
-		assert.strictEqual(called, 3);
+		assert.isTrue(onRequestResults.calledThrice);
 	},
 
 	'onMenuChange should be called'() {
-		let called = 0;
+		const onMenuChange = sinon.spy();
 		const comboBox = new ComboBox();
 		comboBox.__setProperties__({
 			results: ['a'],
-			onMenuChange: () => called++
+			onMenuChange
 		});
 
 		(<any> comboBox)._onInput(parentElement());
 		<VNode> comboBox.__render__();
 		(<any> comboBox)._onInputBlur(parentElement());
 		<VNode> comboBox.__render__();
-		assert.strictEqual(called, 2);
+		assert.isTrue(onMenuChange.calledTwice);
 	},
 
 	'Clicking arrow should not open menu if disabled'() {

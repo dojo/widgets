@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { compareProperty, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
@@ -306,11 +307,11 @@ registerSuite({
 
 	'Change month radios'() {
 		let currentMonth = testDate.getMonth();
-		let closed = false;
+		const onRequestClose = sinon.spy();
 		widget.setProperties({
 			...requiredProps,
-			open: !closed,
-			onRequestClose: () => { closed = true; },
+			open: true,
+			onRequestClose,
 			onRequestMonthChange: (month: number) => { currentMonth = month; }
 		});
 
@@ -323,7 +324,7 @@ registerSuite({
 		widget.sendEvent('mouseup', {
 			selector: `.${css.monthRadio}:nth-of-type(7) input`
 		});
-		assert.isTrue(closed, 'Clicking radios closes popup');
+		assert.isTrue(onRequestClose.called, 'Clicking radios closes popup');
 	},
 
 	'Previous/next month buttons'() {

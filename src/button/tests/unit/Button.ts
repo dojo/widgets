@@ -1,6 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as Test from 'intern/lib/Test';
+import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -124,42 +125,42 @@ registerSuite({
 	},
 
 	events() {
-		let blurred = false;
-		let clicked = false;
-		let focused = false;
-		let keydown = false;
-		let keypress = false;
-		let keyup = false;
-		let mousedown = false;
-		let mouseup = false;
+		const onBlur = sinon.spy();
+		const onClick = sinon.spy();
+		const onFocus = sinon.spy();
+		const onKeyDown = sinon.spy();
+		const onKeyPress = sinon.spy();
+		const onKeyUp = sinon.spy();
+		const onMouseDown = sinon.spy();
+		const onMouseUp = sinon.spy();
 
 		widget.setProperties({
-			onBlur: () => { blurred = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onKeyDown: () => { keydown = true; },
-			onKeyPress: () => { keypress = true; },
-			onKeyUp: () => { keyup = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; }
+			onBlur,
+			onClick,
+			onFocus,
+			onKeyDown,
+			onKeyPress,
+			onKeyUp,
+			onMouseDown,
+			onMouseUp
 		});
 
 		widget.sendEvent('blur');
-		assert.isTrue(blurred);
+		assert.isTrue(onBlur.called);
 		widget.sendEvent('click');
-		assert.isTrue(clicked);
+		assert.isTrue(onClick.called);
 		widget.sendEvent('focus');
-		assert.isTrue(focused);
+		assert.isTrue(onFocus.called);
 		widget.sendEvent('keydown');
-		assert.isTrue(keydown);
+		assert.isTrue(onKeyDown.called);
 		widget.sendEvent('keypress');
-		assert.isTrue(keypress);
+		assert.isTrue(onKeyPress.called);
 		widget.sendEvent('keyup');
-		assert.isTrue(keyup);
+		assert.isTrue(onKeyUp.called);
 		widget.sendEvent('mousedown');
-		assert.isTrue(mousedown);
+		assert.isTrue(onMouseDown.called);
 		widget.sendEvent('mouseup');
-		assert.isTrue(mouseup);
+		assert.isTrue(onMouseUp.called);
 	},
 
 	'touch events'(this: Test) {
@@ -171,21 +172,21 @@ registerSuite({
 			this.skip('Touch events not supported');
 		}
 
-		let touchstart = false;
-		let touchend = false;
-		let touchcancel = false;
+		const onTouchStart = sinon.spy();
+		const onTouchEnd = sinon.spy();
+		const onTouchCancel = sinon.spy();
 
 		widget.setProperties({
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
 		});
 
 		widget.sendEvent('touchstart');
-		assert.isTrue(touchstart);
+		assert.isTrue(onTouchStart.called);
 		widget.sendEvent('touchend');
-		assert.isTrue(touchend);
+		assert.isTrue(onTouchEnd.called);
 		widget.sendEvent('touchcancel');
-		assert.isTrue(touchcancel);
+		assert.isTrue(onTouchCancel.called);
 	}
 });

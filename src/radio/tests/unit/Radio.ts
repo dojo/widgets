@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import Radio from '../../Radio';
 import * as css from '../../styles/radio.m.css';
@@ -99,46 +100,46 @@ registerSuite({
 	},
 
 	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+		const onBlur = sinon.spy();
+		const onChange = sinon.spy();
+		const onClick = sinon.spy();
+		const onFocus = sinon.spy();
+		const onMouseDown = sinon.spy();
+		const onMouseUp = sinon.spy();
+		const onTouchStart = sinon.spy();
+		const onTouchEnd = sinon.spy();
+		const onTouchCancel = sinon.spy();
 
 		const radio = new Radio();
 		radio.__setProperties__({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+			onBlur,
+			onChange,
+			onClick,
+			onFocus,
+			onMouseDown,
+			onMouseUp,
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
 		});
 
 		(<any> radio)._onBlur(<FocusEvent> {});
-		assert.isTrue(blurred);
+		assert.isTrue(onBlur.called);
 		(<any> radio)._onChange(<Event> {});
-		assert.isTrue(changed);
+		assert.isTrue(onChange.called);
 		(<any> radio)._onClick(<MouseEvent> {});
-		assert.isTrue(clicked);
+		assert.isTrue(onClick.called);
 		(<any> radio)._onFocus(<FocusEvent> {});
-		assert.isTrue(focused);
+		assert.isTrue(onFocus.called);
 		(<any> radio)._onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
+		assert.isTrue(onMouseDown.called);
 		(<any> radio)._onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
+		assert.isTrue(onMouseUp.called);
 		(<any> radio)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
+		assert.isTrue(onTouchStart.called);
 		(<any> radio)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
+		assert.isTrue(onTouchEnd.called);
 		(<any> radio)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		assert.isTrue(onTouchCancel.called);
 	}
 });
