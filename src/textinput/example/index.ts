@@ -11,7 +11,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value2: string;
 	private _value3: string;
 	private _value4: string;
-	private _invalid = false;
+	private _invalid: boolean;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
