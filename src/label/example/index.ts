@@ -1,13 +1,10 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../../label/Label';
 
-const AppBase = StatefulMixin(WidgetBase);
-
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	render() {
 		return v('div', [
 			v('h1', {}, ['Label Examples']),

@@ -1,14 +1,17 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Dialog from '../../dialog/Dialog';
 import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _modal = false;
+	private _underlay = false;
+	private _closeable = false;
+	private _open = false;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -17,19 +20,23 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 	}
 
 	openDialog() {
-		this.setState({ open: true });
+		this._open = true;
+		this.invalidate();
 	}
 
-	toggleModal(event: Event) {
-		this.setState({ modal: (<HTMLInputElement> event.target).checked });
+	toggleModal(event: any) {
+		this._modal = event.target.checked;
+		this.invalidate();
 	}
 
-	toggleUnderlay(event: Event) {
-		this.setState({ underlay: (<HTMLInputElement> event.target).checked });
+	toggleUnderlay(event: any) {
+		this._underlay = event.target.checked;
+		this.invalidate();
 	}
 
-	toggleCloseable(event: Event) {
-		this.setState({ closeable: (<HTMLInputElement> event.target).checked });
+	toggleCloseable(event: any) {
+		this._closeable = event.target.checked;
+		this.invalidate();
 	}
 
 	render(): DNode {
@@ -37,12 +44,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(Dialog, {
 				key: 'dialog',
 				title: 'Dialog',
-				open: this.state.open,
-				modal: this.state.modal,
-				underlay: this.state.underlay,
-				closeable: this.state.closeable,
+				open: this._open,
+				modal: this._modal,
+				underlay: this._underlay,
+				closeable: this._closeable,
 				onRequestClose: () => {
-					this.setState({ open: false });
+					this._open = false;
+					this.invalidate();
 				},
 				theme: this._theme
 			}, [

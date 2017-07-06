@@ -1,14 +1,13 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import Radio from '../../radio/Radio';
 import dojoTheme from '../../themes/dojo/theme';
 
-export const AppBase = StatefulMixin(WidgetBase);
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _inputValue: string;
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const checked = event.target.checked;
@@ -18,13 +17,14 @@ export class App extends AppBase<WidgetProperties> {
 
 	onChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const value = event.target.value;
-		this.setState({ inputValue: value });
+		this._inputValue = value;
+		this.invalidate();
 	}
 
 	render() {
 		const {
-			inputValue = 'first'
-		} = this.state;
+			_inputValue = 'first'
+		} = this;
 
 		return v('div', [
 			v('h2', {
@@ -41,7 +41,7 @@ export class App extends AppBase<WidgetProperties> {
 				v('legend', {}, ['Set of radio buttons with first option selected']),
 				w(Radio, {
 					key: 'r1',
-					checked: inputValue === 'first',
+					checked: _inputValue === 'first',
 					value: 'first',
 					label: 'First option',
 					name: 'sample-radios',
@@ -50,7 +50,7 @@ export class App extends AppBase<WidgetProperties> {
 				}),
 				w(Radio, {
 					key: 'r2',
-					checked: inputValue === 'second',
+					checked: this._inputValue === 'second',
 					value: 'second',
 					label: 'Second option',
 					name: 'sample-radios',
@@ -59,7 +59,7 @@ export class App extends AppBase<WidgetProperties> {
 				}),
 				w(Radio, {
 					key: 'r3',
-					checked: inputValue === 'third',
+					checked: this._inputValue === 'third',
 					value: 'third',
 					label: 'Third option',
 					name: 'sample-radios',

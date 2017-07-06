@@ -1,10 +1,10 @@
-import { WidgetBase, onPropertiesChanged, diffProperty, DiffType } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase, diffProperty } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, PropertiesChangeEvent, Constructor } from '@dojo/widget-core/interfaces';
+import { reference } from '@dojo/widget-core/diff';
+import { DNode, Constructor } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
-import { includes } from '@dojo/shim/array';
 import { Keys } from '../common/util';
 import MonthPicker, { CalendarMessages } from './MonthPicker';
 import CalendarCell from './CalendarCell';
@@ -41,7 +41,7 @@ export interface CalendarProperties extends ThemeableProperties {
 	onMonthChange?(month: number): void;
 	onYearChange?(year: number): void;
 	onDateSelect?(date: Date): void;
-};
+}
 
 export const DEFAULT_MONTHS = [
 	{short: 'Jan', long: 'January'},
@@ -78,7 +78,6 @@ export const DEFAULT_LABELS: CalendarMessages = {
 export const CalendarBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
-@diffProperty('customDateCell', DiffType.REFERENCE)
 export default class Calendar extends CalendarBase<CalendarProperties> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
@@ -92,20 +91,15 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		super();
 
 		this._registry = this._createRegistry(CalendarCell);
-		this.registries.add(this._registry);
+		this.getRegistries().add(this._registry);
 	}
 
-	@onPropertiesChanged()
-	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, CalendarProperties>) {
-		const { customDateCell = CalendarCell } = this.properties;
-
-		// update custom option registry
-		if ( includes(evt.changedPropertyKeys, 'customDateCell')) {
-			const registry = this._createRegistry(customDateCell);
-
-			this.registries.replace(this._registry, registry);
-			this._registry = registry;
-		}
+	@diffProperty('customDateCell', reference)
+	protected onPropertiesChanged(previousProperties: any, newProperties: any) {
+		const { customDateCell = CalendarCell } = newProperties;
+		const registry = this._createRegistry(customDateCell);
+		this.getRegistries().replace(this._registry, registry);
+		this._registry = registry;
 	}
 
 	private _createRegistry(customDateCell: any) {

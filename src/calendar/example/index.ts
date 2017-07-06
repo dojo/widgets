@@ -1,15 +1,16 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Calendar from '../../calendar/Calendar';
 import Checkbox from '../../checkbox/Checkbox';
 import dojoTheme from '../../themes/dojo/theme';
 
-const AppBase = StatefulMixin(WidgetBase);
-export class App extends AppBase<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _month: number;
+	private _year: number;
+	private _selectedDate: Date;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -27,17 +28,24 @@ export class App extends AppBase<WidgetProperties> {
 				onChange: this.themeChange
 			}),
 			w(Calendar, {
-				month: this.state.month,
-				selectedDate: this.state.selectedDate,
+				month: this._month,
+				selectedDate: this._selectedDate,
 				theme: this._theme,
-				year: this.state.year,
-				onMonthChange: (month: number) => { this.setState({ 'month': month }); },
-				onYearChange: (year: number) => { this.setState({ 'year': year }); },
+				year: this._year,
+				onMonthChange: (month: number) => {
+					this._month = month;
+					this.invalidate();
+				},
+				onYearChange: (year: number) => {
+					this._year = year;
+					this.invalidate();
+				},
 				onDateSelect: (date: Date) => {
-					this.setState({ 'selectedDate': date });
+					this._selectedDate = date;
+					this.invalidate();
 				}
 			}),
-			this.state.selectedDate ? v('p', [ `Selected Date: ${this.state.selectedDate.toDateString()}` ]) : null
+			this._selectedDate ? v('p', [ `Selected Date: ${this._selectedDate.toDateString()}` ]) : null
 		]);
 	}
 }

@@ -1,11 +1,12 @@
-import { WidgetBase, onPropertiesChanged, diffProperty, DiffType } from '@dojo/widget-core/WidgetBase';
-import { DNode, PropertiesChangeEvent } from '@dojo/widget-core/interfaces';
+import { WidgetBase, diffProperty } from '@dojo/widget-core/WidgetBase';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v, w } from '@dojo/widget-core/d';
+import { reference, auto } from '@dojo/widget-core/diff';
 import uuid from '@dojo/core/uuid';
 import { assign } from '@dojo/core/lang';
-import { find, includes } from '@dojo/shim/array';
+import { find } from '@dojo/shim/array';
 import { Keys } from '../common/util';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import SelectOption, { OptionData } from './SelectOption';
@@ -61,13 +62,13 @@ export const SelectBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-@diffProperty('customOption', DiffType.REFERENCE)
 export default class Select extends SelectBase<SelectProperties> {
 	private _focusedIndex = 0;
 	private _ignoreBlur = false;
 	private _open = false;
 	private _selectId = uuid();
 	private _registry: WidgetRegistry;
+	private _options: OptionData[] = [];
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
@@ -79,7 +80,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		super();
 
 		this._registry = this._createRegistry(SelectOption);
-		this.registries.add(this._registry);
+		this.getRegistries().add(this._registry);
 	}
 
 	private _createRegistry(customOption: any) {
@@ -92,11 +93,10 @@ export default class Select extends SelectBase<SelectProperties> {
 	// native select events
 	private _onNativeChange (event: Event) {
 		const {
-			options = [],
 			onChange
 		} = this.properties;
 		const value = (<HTMLInputElement> event.target).value;
-		const option = find(options, (option: OptionData) => option.value === value);
+		const option = find(this._options, (option: OptionData) => option.value === value);
 		onChange && onChange(option);
 	}
 
@@ -132,14 +132,13 @@ export default class Select extends SelectBase<SelectProperties> {
 
 	private _onOptionClick(event: MouseEvent, index: number) {
 		const {
-			options = [],
 			onChange,
 			onClick
 		} = this.properties;
 
 		onClick && onClick(event);
 
-		const option = options[index];
+		const option = this._options[index];
 
 		// if the option exists and isn't disabled, focus it and fire onChange
 		if (option && !option.disabled) {
@@ -156,7 +155,6 @@ export default class Select extends SelectBase<SelectProperties> {
 		this.properties.onKeyDown && this.properties.onKeyDown(event);
 
 		const {
-			options = [],
 			multiple,
 			onChange
 		} = this.properties;
@@ -164,19 +162,19 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		switch (event.which) {
 			case Keys.Enter:
-				if (options[_focusedIndex].disabled) {
+				if (this._options[_focusedIndex].disabled) {
 					event.preventDefault();
 				}
 				else {
-					onChange && onChange(options[_focusedIndex]);
+					onChange && onChange(this._options[_focusedIndex]);
 				}
 				break;
 			case Keys.Space:
-				if (options[_focusedIndex].disabled) {
+				if (this._options[_focusedIndex].disabled) {
 					event.preventDefault();
 				}
 				else {
-					onChange && onChange(options[_focusedIndex]);
+					onChange && onChange(this._options[_focusedIndex]);
 				}
 				break;
 			case Keys.Escape:
@@ -185,7 +183,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			case Keys.Down:
 				event.preventDefault();
 				if (this._open || multiple) {
-					this._focusedIndex = (_focusedIndex + 1) % options.length;
+					this._focusedIndex = (_focusedIndex + 1) % this._options.length;
 				} else {
 					this._openSelect();
 				}
@@ -193,7 +191,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				break;
 			case Keys.Up:
 				event.preventDefault();
-				this._focusedIndex = (_focusedIndex - 1 + options.length) % options.length;
+				this._focusedIndex = (_focusedIndex - 1 + this._options.length) % this._options.length;
 				this.invalidate();
 				break;
 			case Keys.Home:
@@ -201,7 +199,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				this.invalidate();
 				break;
 			case Keys.End:
-				this._focusedIndex = options.length - 1;
+				this._focusedIndex = this._options.length - 1;
 				this.invalidate();
 				break;
 		}
@@ -210,12 +208,11 @@ export default class Select extends SelectBase<SelectProperties> {
 	private _renderCustomOptions(): DNode[] {
 		const {
 			multiple,
-			options = [],
 			value,
 			theme
 		} = this.properties;
 
-		const optionNodes = options.map((option, i) => w<SelectOption>('select-option', {
+		const optionNodes = this._options.map((option, i) => w<SelectOption>('select-option', {
 			focused: this._focusedIndex === i,
 			index: i,
 			key: i + '',
@@ -231,27 +228,26 @@ export default class Select extends SelectBase<SelectProperties> {
 		return optionNodes;
 	}
 
-	@onPropertiesChanged()
-	protected onPropertiesChanged(evt: PropertiesChangeEvent<this, SelectProperties>) {
+	@diffProperty('customOption', reference)
+	protected onCustomOptionChange(previousProperties: any, newProperties: any) {
 		const {
-			customOption = SelectOption,
+			customOption = SelectOption
+		} = newProperties;
+
+		const registry = this._createRegistry(customOption);
+		this.getRegistries().replace(this._registry, registry);
+		this._registry = registry;
+	}
+
+	@diffProperty('options', auto)
+	protected onOptionsChange(previousProperties: { options: OptionData[] }, newProperties: { options: OptionData[] }) {
+		const {
 			options = []
-		} = this.properties;
+		} = newProperties;
 
-		// update custom option registry
-		if ( includes(evt.changedPropertyKeys, 'customOption')) {
-			const registry = this._createRegistry(customOption);
-
-			this.registries.replace(this._registry, registry);
-			this._registry = registry;
-		}
-
-		// add ids to options for use with aria-activedescendant
-		if (includes(evt.changedPropertyKeys, 'options')) {
-			options.forEach((option) => {
-				option.id = option.id || uuid();
-			});
-		}
+		this._options = options.map((option) => {
+			return { id: uuid(), ...option };
+		});
 	}
 
 	renderNativeSelect(): DNode {
@@ -261,14 +257,13 @@ export default class Select extends SelectBase<SelectProperties> {
 			invalid,
 			multiple,
 			name,
-			options = [],
 			readOnly,
 			required,
 			value
 		} = this.properties;
 
 		/* create option nodes */
-		const optionNodes = options.map(option => v('option', {
+		const optionNodes = this._options.map(option => v('option', {
 			value: option.value,
 			innerHTML: option.label,
 			disabled: option.disabled,
@@ -309,7 +304,6 @@ export default class Select extends SelectBase<SelectProperties> {
 			describedBy,
 			disabled,
 			invalid,
-			options = [],
 			readOnly,
 			required
 		} = this.properties;
@@ -322,7 +316,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				'aria-describedby': describedBy,
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-multiselectable': 'true',
-				'aria-activedescendant': options.length > 0 ? options[_focusedIndex].id : null,
+				'aria-activedescendant': this._options.length > 0 ? this._options[_focusedIndex].id : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
 				tabIndex: 0,
@@ -338,7 +332,6 @@ export default class Select extends SelectBase<SelectProperties> {
 			describedBy,
 			disabled,
 			invalid,
-			options = [],
 			readOnly,
 			required,
 			value
@@ -350,7 +343,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			_selectId
 		} = this;
 
-		const selectedOption = find(options, (option: OptionData) => option.value === value) || options[0];
+		const selectedOption = find(this._options, (option: OptionData) => option.value === value) || this._options[0];
 
 		// create dropdown trigger and select box
 		return v('div', {
@@ -363,7 +356,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				'aria-owns': _selectId,
 				'aria-expanded': _open + '',
 				'aria-haspopup': 'listbox',
-				'aria-activedescendant': options.length > 0 ? options[_focusedIndex].id : null,
+				'aria-activedescendant': this._options.length > 0 ? this._options[_focusedIndex].id : null,
 				value,
 				onblur: this._onTriggerBlur,
 				onclick: this._onTriggerClick,

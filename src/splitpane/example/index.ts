@@ -1,14 +1,20 @@
+import { deepAssign } from '@dojo/core/lang';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import SplitPane, { Direction } from '../../splitpane/SplitPane';
 import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private state: any = {};
+
+	public setState(state: any) {
+		this.state = deepAssign(this.state, state);
+		this.invalidate();
+	}
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;

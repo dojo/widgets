@@ -1,6 +1,5 @@
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { StatefulMixin } from '@dojo/widget-core/mixins/Stateful';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
@@ -114,8 +113,17 @@ class CustomResultMenu extends ResultMenu {
 	}
 }
 
-export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
+export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
+	private _results: any[];
+	private _valueOne: string;
+	private _valueTwo: string;
+	private _valueThree: string;
+	private _valueFour: string;
+	private _valueFive: string;
+	private _valueEight: string;
+	private _valueNine: string;
+	private _invalid: boolean;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -129,7 +137,8 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			return Boolean(match && match.length > 0);
 		});
 
-		this.setState({ results: results.sort((a, b) => a.value < b.value ? -1 : 1) });
+		this._results = results.sort((a, b) => a.value < b.value ? -1 : 1);
+		this.invalidate();
 	}
 
 	render(): DNode {
@@ -147,12 +156,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '2',
 				clearable: true,
 				onChange: (value: string) => {
-					this.setState({ 'value2': value });
+					this._valueTwo = value;
+					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: this.state.results,
-				value: this.state.value2,
+				results: this._results,
+				value: this._valueTwo,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -163,12 +173,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '1',
 				openOnFocus: true,
 				onChange: (value: string) => {
-					this.setState({ 'value1': value });
+					this._valueOne = value;
+					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: this.state.results,
-				value: this.state.value1,
+				results: this._results,
+				value: this._valueOne,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -179,13 +190,14 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '3',
 				openOnFocus: true,
 				onChange: (value: string) => {
-					this.setState({ 'value3': value });
+					this._valueThree = value;
+					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
 				customResultItem: CustomResultItem,
-				results: this.state.results,
-				value: this.state.value3,
+				results: this._results,
+				value: this._valueThree,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -195,12 +207,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '4',
 				onChange: (value: string) => {
-					this.setState({ 'value4': value });
+					this._valueFour = value;
+					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: this.state.results,
-				value: this.state.value4,
+				results: this._results,
+				value: this._valueFour,
 				customResultMenu: CustomResultMenu,
 				inputProperties: {
 					placeholder: 'Enter a value'
@@ -211,12 +224,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '5',
 				onChange: (value: string) => {
-					this.setState({ 'value5': value });
+					this._valueFive = value;
+					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: this.state.results,
-				value: this.state.value5,
+				results: this._results,
+				value: this._valueFive,
 				isResultDisabled: (result: any) => result.value.length > 9,
 				inputProperties: {
 					placeholder: 'Enter a value'
@@ -245,12 +259,13 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 			w(ComboBox, {
 				key: '8',
 				onChange: (value: string) => {
-					this.setState({ 'value8': value });
+					this._valueEight = value;
+					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: this.state.results,
-				value: this.state.value8,
+				results: this._results,
+				value: this._valueEight,
 				label: 'Enter a value',
 				theme: this._theme
 			}),
@@ -259,16 +274,15 @@ export class App extends StatefulMixin(WidgetBase)<WidgetProperties> {
 				key: '9',
 				required: true,
 				onChange: (value: string) => {
-					this.setState({
-						'value9': value,
-						invalid: value.trim().length === 0
-					});
+					this._valueNine = value;
+					this._invalid = value.trim().length === 0;
+					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				results: this.state.results,
-				value: this.state.value9,
-				invalid: this.state.invalid,
+				results: this._results,
+				value: this._valueNine,
+				invalid: this._invalid,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
