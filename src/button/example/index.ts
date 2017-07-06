@@ -7,7 +7,7 @@ import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
-	private _buttonPressed = false;
+	private _buttonPressed: boolean;
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const checked = event.target.checked;
