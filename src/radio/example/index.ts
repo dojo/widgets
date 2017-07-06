@@ -41,7 +41,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				v('legend', {}, ['Set of radio buttons with first option selected']),
 				w(Radio, {
 					key: 'r1',
-					checked: this._inputValue === 'first',
+					checked: _inputValue === 'first',
 					value: 'first',
 					label: 'First option',
 					name: 'sample-radios',
