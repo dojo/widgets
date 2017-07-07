@@ -96,7 +96,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			onChange
 		} = this.properties;
 		const value = (<HTMLInputElement> event.target).value;
-		const option = find(this._options, (option: OptionData) => option.value === value);
+		const option = find(this._options, (option: OptionData) => option.value === value)!;
 		onChange && onChange(option);
 	}
 
