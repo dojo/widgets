@@ -98,15 +98,13 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			}, [
 				v('div', {
 					classes: this.classes(css.title),
-					id: this._titleId,
 					key: 'title'
 				}, [
-					title,
+					v('div', { id: this._titleId }, [ title ]),
 					closeable ? v('button', {
 						classes: this.classes(css.close),
-						innerHTML: closeText,
 						onclick: this._onCloseClick
-					}) : null
+					}, [ closeText ]) : null
 				]),
 				v('div', {
 					classes: this.classes(css.content),
