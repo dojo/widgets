@@ -14,7 +14,7 @@
 	border: var(--border-thin) solid var(--border-color);
 	box-shadow: var(--drop-shadow);
 	box-sizing: border-box;
-	font: var(--base-font);
+	font-size: var(--base-font-size);
 	height: 100%;
 	line-height: var(--base-line-height);
 	position: fixed;
