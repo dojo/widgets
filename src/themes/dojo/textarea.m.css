@@ -1,48 +1,72 @@
 @import './variables.css';
 
-.input {
-	border: 1px solid var(--dojo-shade-gray);
-	max-width: 100%;
-	padding: var(--input-padding);
-}
-
-.input:focus {
-	border-color: var(--dojo-light-blue);
-	box-shadow: var(--input-focus-shadow);
-	outline: none;
-}
-
-.inputWrapper { }
+.root, .root * { box-sizing: border-box; }
 
 .root {
+	display: block;
 	font: var(--base-font);
+	line-height: var(--base-line-height);
+	margin: 0 var(--grid-base) var(--block-spacing);
 }
 
 .root span {
 	display: block;
-	margin: var(--line-spacing) 0;
+	font-size: var(--small-font-size);
 }
 
+.input {
+	border: 1px solid var(--dojo-grey);
+	border-bottom-color: var(--dojo-dark-grey);
+	font: inherit;
+	padding: var(--grid-base) calc(var(--grid-base) * 3) var(--grid-base) var(--grid-base);
+	width: 100%;
+}
+
+.input:focus {
+	border-color: var(--dojo-blue);
+	border-bottom-color: var(--dojo-blue);
+	box-shadow: var(--box-shadow-dimensions) color(var(--dojo-blue) alpha(20%));
+	outline: none;
+}
+
+.input:hover {
+	box-shadow: var(--box-shadow-dimensions) color(var(--dojo-black) alpha(20%));
+}
+
+.inputWrapper { }
+
+/* disabled and readonly */
 .disabled .input,
 .readonly .input {
-	background-color: var(--dojo-off-white);
-	color: var(--dojo-shade-gray);
+	background-color: var(--dojo-light-grey);
 }
 
-/* required styles */
-.required .input {
-	border-left-width: 8px;
+.disabled .input:hover,
+.readonly .input:hover {
+	box-shadow: none;
 }
+
+/* required */
 .required span::after {
 	content: '*';
-	color: var(--dojo-error-color);
 }
 
-/* TODO: this needs non-color design as well */
+/* invalid */
 .invalid .input {
-	border-color: var(--dojo-error-color);
+	border-color: var(--dojo-light-red);
+	border-bottom-color: var(--dojo-red);
 }
 
+.invalid .input:focus {
+	box-shadow: var(--box-shadow-dimensions) color(var(--dojo-red) alpha(20%));
+}
+
+/* valid */
 .valid .input {
-	border-color: var(--dojo-success-color);
+	border-color: var(--dojo-light-green);
+	border-bottom-color: var(--dojo-green);
+}
+
+.valid .input:focus {
+	box-shadow: var(--box-shadow-dimensions) color(var(--dojo-green) alpha(20%));
 }
