@@ -1,7 +1,7 @@
 @import './variables.css';
 
-.main,
-.main * {
+.root,
+.root * {
 	box-sizing: border-box;
 }
 
