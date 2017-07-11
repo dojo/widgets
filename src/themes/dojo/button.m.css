@@ -1,36 +1,35 @@
 @import './variables.css';
 
 .root {
-	background-color: var(--button-bg);
-	border: 1px solid var(--button-bg);
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
-	border-radius: var(--rounded-corners);
-	color: var(--button-color);
+	background-color: var(--dojo-white);
+	border: 1px solid var(--dojo-blue);
+	color: var(--dojo-blue);
 	cursor: pointer;
-	font: var(--base-font);
-	font-weight: bold;
 	display: inline-block;
-	padding: var(--button-padding);
-	transition: all var(--short-animation-duration) ease;
+	font-size: var(--base-font-size);
+	font-weight: bold;
+	line-height: var(--base-line-height);
+	min-width: calc(var(--grid-base) * 20);
+	padding: var(--grid-base);
+	transition: background var(--transition-duration) var(--transition-easing) color var(--transition-duration) var(--transition-easing);
 }
 
 .root:hover,
 .root:focus {
-	background-color: var(--button-hover-bg);
-	border-color: var(--button-hover-bg);
+	background-color: var(--dojo-blue);
+	color: var(--dojo-white);
 	outline: none;
 }
 
-.pressed::before {
-	border-bottom: 2px solid var(--button-color);
-	border-right: 2px solid var(--button-color);
-	box-sizing: border-box;
-	content: '';
-	display: inline-block;
-	height: 1em;
-	margin: -1em 0.5em 0 0;
-	transform: rotate(45deg);
-	width: 0.5em;
+.pressed {
+	background-color: var(--dojo-blue);
+	color: var(--dojo-white);
+}
+
+.pressed:hover,
+.pressed:focus {
+	background-color: var(--dojo-white);
+	color: var(--dojo-blue);
 }
 
 .popup::after {
@@ -47,7 +46,7 @@
 
 .disabled,
 .disabled:hover {
-	background-color: var(--button-disabled-bg);
-	border-color: var(--button-disabled-bg);
+	background-color: var(--dojo-light-gray);
+	border-color: var(--dojo-light-gray);
 	cursor: default;
 }

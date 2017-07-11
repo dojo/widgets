@@ -1,4 +1,8 @@
 :root {
+	/*******************************
+	******** Old variables *********
+	*******************************/
+
 	/* Colors */
 	--dojo-blue: #34495e;
 	--dojo-light-blue: #86BBD8;
@@ -55,4 +59,34 @@
 	--calendar-disabled-bg: var(--dojo-light-gray);
 	--calendar-hover-bg: var(--dojo-light-blue);
 	--calendar-selected: var(--dojo-blue);
+
+	/*******************************
+	******** New variables *********
+	*******************************/
+
+	/* Spacing */
+	--grid-base: 8px;
+	--block-spacing: calc(var(--grid-base) * 3);
+
+	/* Fonts */
+	--base-font-size: 16px;
+	--base-line-height: 24px;
+	--small-font-size: 14px;
+
+	/* Base Colors */
+	--dojo-white: #ffffff;
+	--dojo-light-grey: #f4f6f7;
+	--dojo-grey: #d6dde2;
+	--dojo-dark-grey: #5c6c7c;
+	--dojo-black: #000000;
+	--dojo-blue: #006be6;
+	--dojo-red: #eb1313;
+	--dojo-light-red: #f7c3c3;
+	--dojo-green: #188701;
+	--dojo-light-green: #bdf1b7;
+
+	/* Misc, for now */
+	--box-shadow-dimensions: 0 2px 2px 0;
+	--transition-duration: 0.25s;
+	--transition-easing: ease;
 }
