@@ -14,6 +14,7 @@
 	font: var(--base-font);
 	height: 488px;
 	left: 50%;
+	line-height: var(--base-line-height);
 	max-height: 100%;
 	max-width: 100%;
 	position: absolute;
