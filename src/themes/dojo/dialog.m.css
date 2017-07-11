@@ -29,7 +29,6 @@
 .title {
 	border-bottom: var(--border-thin) solid var(--border-color);
 	box-sizing: border-box;
-	color: var(--base-color);
 	flex: 0 0 auto;
 	font-size: var(--header-font-size);
 	height: calc(7 * var(--grid-size));

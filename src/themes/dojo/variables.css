@@ -109,10 +109,11 @@
 	--transition-easing: ease;
 =======
 	/* New theme variables */
-	--dojo-white: #FFFFFF;
+	--dojo-black: #000000;
+	--dojo-dark-gray: #5C6C7C;
 	--dojo-gray: #D6DDE2;
 	--dojo-light-gray: #F4F6F7;
-	--dojo-dark-gray: #5C6C7C;
+	--dojo-white: #FFFFFF;
 
 	--pane-bg: var(--dojo-white);
 	--border-color: var(--dojo-light-gray);
