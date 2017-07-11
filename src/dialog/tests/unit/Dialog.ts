@@ -1,6 +1,5 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
 import Dialog from '../../Dialog';
 import * as css from '../../styles/dialog.m.css';
 
@@ -110,6 +109,5 @@ registerSuite({
 		(<any> dialog)._onCloseClick();
 
 		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
-		assert.isUndefined(vnode.children![1].children![0].children, 'close button should not render if closeable is false');
 	}
 });
