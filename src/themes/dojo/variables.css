@@ -1,5 +1,5 @@
 :root {
-	/* Colors */
+	/* Old variables, will go away once new theme is complete */
 	--dojo-blue: #34495e;
 	--dojo-light-blue: #86BBD8;
 	--dojo-white: #FFFFFF;
@@ -11,12 +11,9 @@
 	--dojo-red: #ED5153;
 	--dojo-green: #01D48E;
 	--dojo-gray: #BBB;
-
 	--dojo-error-color: var(--dojo-red);
 	--dojo-success-color: var(--dojo-green);
 	--dojo-gray: #BBB;
-
-	/* Shared values */
 	--base-font: 14px/1 sans-serif;
 	--input-font-size: 14px;
 	--title-bar-font-size: 20px;
@@ -26,7 +23,6 @@
 	--rounded-corners: 2px;
 	--short-animation-duration: .2s;
 	--short-animation-easing: ease;
-
 	--block-spacing: 25px;
 	--line-spacing: 5px;
 	--border-thin: 1px;
@@ -36,8 +32,6 @@
 	--border-thick: 5px;
 	--tab-width: 120px;
 	--min-container-height: 250px;
-
-	/* Composed values */
 	--title-bar-bg: var(--dojo-blue);
 	--title-bar-color: var(--dojo-white);
 	--header-padding: 5px;
@@ -55,4 +49,22 @@
 	--calendar-disabled-bg: var(--dojo-light-gray);
 	--calendar-hover-bg: var(--dojo-light-blue);
 	--calendar-selected: var(--dojo-blue);
+
+	/* New theme variables */
+	--dojo-white: #FFFFFF;
+	--dojo-gray: #D6DDE2;
+	--dojo-light-gray: #F4F6F7;
+	--dojo-dark-gray: #5C6C7C;
+
+	--pane-bg: var(--dojo-white);
+	--border-color: var(--dojo-light-gray);
+	--base-color: var(--dojo-dark-gray);
+
+	--base-font: inherit;
+	--border-thin: 1px;
+	--drop-shadow: 0 9px 16px 0 rgba(0, 0, 0, 0.5);
+	--grid-size: 8px;
+	--header-font-size: 20px;
+	--header-line-height: 1.2;
+	--underlay-bg: rgba(0, 0, 0, 0.59);
 }

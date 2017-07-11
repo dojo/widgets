@@ -1,18 +1,27 @@
 @import './variables.css';
 
+.root,
+.root * {
+	box-sizing: border-box;
+}
+
 .underlayVisible {
 	background: var(--underlay-bg);
 }
 
-.content {
+.pane {
 	font: var(--base-font);
 	height: 100%;
 	position: fixed;
 	top: 0;
-	background-color: var(--title-bar-bg);
-	color: var(--title-bar-color);
-	padding: var(--container-padding);
 	box-sizing: border-box;
+	background: var(--dojo-white);
+	border: var(--border-thin) solid var(--border-color);
+	box-shadow: 0 9px 16px 0 rgba(0, 0, 0, 0.5);
+}
+
+.content {
+	padding: calc(2 * var(--grid-size));
 }
 
 .left {
@@ -27,6 +36,53 @@
 
 .open {
 	transform: translateX(0%);
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 35px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: 14px;
+}
+
+.title {
+	border-bottom: var(--border-thin) solid var(--border-color);
+	box-sizing: border-box;
+	flex: 0 0 auto;
+	font-size: var(--header-font-size);
+	height: calc(7 * var(--grid-size));
+	line-height: var(--header-line-height);
+	padding: calc(2 * var(--grid-size));
+	position: relative;
+	text-align: left;
+}
+
+.close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 0;
+	padding: var(--grid-size);
+	position: absolute;
+	right: calc(2 * var(--grid-size));
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: var(--header-font-size);
 }
 
 .left.slideOut {

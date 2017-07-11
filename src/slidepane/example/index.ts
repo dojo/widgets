@@ -36,6 +36,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	render(): DNode {
 		return v('div', [
 			w(SlidePane, {
+				title: 'SlidePane',
 				key: 'pane',
 				open: this._open,
 				underlay: this._underlay,

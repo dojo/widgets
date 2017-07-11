@@ -14,13 +14,15 @@
 	background: var(--underlay-background);
 }
 
-.content {
+.pane {
 	height: 100%;
 	position: fixed;
 	top: 0;
 	background-color: var(--component-background);
 	box-sizing: border-box;
 }
+
+.content { }
 
 .left {
 	left: 0;
@@ -54,4 +56,25 @@
 .right.slideIn {
 	transition: transform ease-in-out var(--short-animation-duration);
 	transform: translateX(0%) !important;
+}
+
+.title {
+	position: relative;
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 35px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: 14px;
 }
