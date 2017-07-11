@@ -60,7 +60,9 @@
 	--border-color: var(--dojo-light-gray);
 	--base-color: var(--dojo-dark-gray);
 
+	--base-font-size: 16px;
 	--base-font: inherit;
+	--base-line-height: 24px;
 	--border-thin: 1px;
 	--drop-shadow: 0 9px 16px 0 rgba(0, 0, 0, 0.5);
 	--grid-size: 8px;

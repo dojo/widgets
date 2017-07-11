@@ -10,14 +10,15 @@
 }
 
 .pane {
-	font: var(--base-font);
-	height: 100%;
-	position: fixed;
-	top: 0;
-	box-sizing: border-box;
 	background: var(--dojo-white);
 	border: var(--border-thin) solid var(--border-color);
-	box-shadow: 0 9px 16px 0 rgba(0, 0, 0, 0.5);
+	box-shadow: var(--drop-shadow);
+	box-sizing: border-box;
+	font: var(--base-font);
+	height: 100%;
+	line-height: var(--base-line-height);
+	position: fixed;
+	top: 0;
 }
 
 .content {
@@ -26,12 +27,12 @@
 
 .left {
 	left: 0;
-	transform: translateX(-100%)
+	transform: translateX(calc(-100% - 10px))
 }
 
 .right {
 	right: 0;
-	transform: translateX(100%);
+	transform: translateX(calc(100% + 10px));
 }
 
 .open {
