@@ -200,15 +200,13 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			}, [
 				title ? v('div', {
 					classes: this.classes(css.title),
-					id: this._titleId,
 					key: 'title'
 				}, [
-					title,
+					v('div', { id: this._titleId }, [ title ]),
 					v('button', {
 						classes: this.classes(css.close),
-						innerHTML: closeText,
 						onclick: this._onCloseClick
-					})
+					}, [ closeText ])
 				]) : null,
 				v('div', { classes: this.classes(css.content) }, this.children)
 			])

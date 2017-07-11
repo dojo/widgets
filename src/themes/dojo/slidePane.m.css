@@ -12,7 +12,7 @@
 .pane {
 	background: var(--dojo-white);
 	border: var(--border-thin) solid var(--border-color);
-	box-shadow: var(--drop-shadow);
+	box-shadow: var(--box-shadow-dimensions-large) color(var(--dojo-black) alpha(50%));
 	box-sizing: border-box;
 	font-size: var(--base-font-size);
 	height: 100%;

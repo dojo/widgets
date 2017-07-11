@@ -51,10 +51,11 @@
 	--calendar-selected: var(--dojo-blue);
 
 	/* New theme variables */
-	--dojo-white: #FFFFFF;
+	--dojo-black: #000000;
+	--dojo-dark-gray: #5C6C7C;
 	--dojo-gray: #D6DDE2;
 	--dojo-light-gray: #F4F6F7;
-	--dojo-dark-gray: #5C6C7C;
+	--dojo-white: #FFFFFF;
 
 	--pane-bg: var(--dojo-white);
 	--border-color: var(--dojo-light-gray);
@@ -63,9 +64,9 @@
 	--base-font-size: 16px;
 	--base-line-height: 24px;
 	--border-thin: 1px;
-	--drop-shadow: 0 9px 16px 0 rgba(0, 0, 0, 0.5);
+	--box-shadow-dimensions-large: 0 9px 16px 0;
 	--grid-size: 8px;
 	--header-font-size: 20px;
 	--header-line-height: 1.2;
-	--underlay-bg: rgba(0, 0, 0, 0.59);
+	--underlay-bg: color(var(--dojo-black) alpha(60%));
 }
