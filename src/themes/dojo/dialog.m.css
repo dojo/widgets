@@ -1,12 +1,12 @@
 @import './variables.css';
 
-.main,
-.main * {
+.main {
 	box-sizing: border-box;
 }
 
 .main {
 	background: #FFF;
+	border: var(--border-thin) solid var(--border-color);
 	box-shadow: var(--drop-shadow);
 	display: flex;
 	flex-direction: column;
@@ -27,6 +27,7 @@
 
 .title {
 	border-bottom: var(--border-thin) solid var(--border-color);
+	box-sizing: border-box;
 	color: var(--base-color);
 	flex: 0 0 auto;
 	font-size: var(--header-font-size);
