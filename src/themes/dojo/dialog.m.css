@@ -11,7 +11,7 @@
 	box-shadow: var(--drop-shadow);
 	display: flex;
 	flex-direction: column;
-	font: var(--base-font);
+	font-size: var(--base-font-size);
 	height: 488px;
 	left: 50%;
 	line-height: var(--base-line-height);
