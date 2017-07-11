@@ -69,7 +69,7 @@
 	--block-spacing: calc(var(--grid-base) * 3);
 
 	/* Fonts */
-	--base-font: 16px/1.5 sans-serif;
+	--base-font-size: 16px;
 	--base-line-height: 24px;
 	--small-font-size: 14px;
 
@@ -87,4 +87,6 @@
 
 	/* Misc, for now */
 	--box-shadow-dimensions: 0 2px 2px 0;
+	--transition-duration: 0.25s;
+	--transition-easing: ease;
 }

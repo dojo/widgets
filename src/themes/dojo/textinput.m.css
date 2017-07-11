@@ -4,7 +4,7 @@
 
 .root {
 	display: block;
-	font: var(--base-font);
+	font-size: var(--base-font-size);
 	line-height: var(--base-line-height);
 	margin: 0 var(--grid-base) var(--block-spacing);
 }
@@ -19,6 +19,7 @@
 	border-bottom-color: var(--dojo-dark-grey);
 	font: inherit;
 	padding: var(--grid-base) calc(var(--grid-base) * 3) var(--grid-base) var(--grid-base);
+	transition: all var(--transition-duration) var(--transition-easing);
 	width: 100%;
 }
 
