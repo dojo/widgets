@@ -1,6 +1,6 @@
-@import 'animations.m.css';
-@import 'base.m.css';
-@import 'icons.m.css';
+@import '../styles/animations.m.css';
+@import '../styles/base.m.css';
+@import '../styles/icons.m.css';
 @import '../../button/styles/button.m.css';
 @import '../../calendar/styles/calendar.m.css';
 @import '../../checkbox/styles/checkbox.m.css';
