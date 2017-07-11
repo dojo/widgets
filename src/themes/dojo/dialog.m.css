@@ -1,58 +1,62 @@
 @import './variables.css';
 
-.main {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: #FFF;
-	width: 450px;
-	min-height: var(--min-container-height);
-	overflow: hidden;
-	max-width: calc(100% - 30px);
-	font: var(--base-font);
-	box-shadow: var(--subtle-shadow);
-	border-radius: var(--rounded-corners);
+.main,
+.main * {
+	box-sizing: border-box;
 }
 
-.underlay {
-	width: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
+.main {
+	background: #FFF;
+	box-shadow: var(--drop-shadow);
+	display: flex;
+	flex-direction: column;
+	font: var(--base-font);
+	height: 488px;
+	left: 50%;
+	max-height: 100%;
+	max-width: 100%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 640px;
 }
 
 .underlayVisible {
-	background: var(--underlay-bg);
+	background-color: var(--underlay-bg);
 }
 
 .title {
+	border-bottom: var(--border-thin) solid var(--border-color);
+	color: var(--base-color);
+	flex: 0 0 auto;
+	font-size: var(--header-font-size);
+	height: calc(7 * var(--grid-size));
+	line-height: var(--header-line-height);
+	padding: calc(2 * var(--grid-size));
 	position: relative;
-	background-color: var(--title-bar-bg);
-	font-size: var(--title-bar-font-size);
-	color: var(--title-bar-color);
-	padding: var(--container-padding);
+	text-align: left;
 }
 
 .content {
-	padding: var(--container-padding);
+	flex: 1 1 auto;
+	overflow: auto;
+	padding: calc(2 * var(--grid-size));
 }
 
 .close {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 35px;
+	background: none;
+	border: none;
 	cursor: pointer;
 	font-size: 0;
-	border: none;
-	background: none;
-	color: var(--title-bar-color);
+	padding: var(--grid-size);
+	position: absolute;
+	right: calc(2 * var(--grid-size));
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .close:after {
 	content: '✕';
 	display: block;
-	font-size: var(--title-bar-font-size);
+	font-size: var(--header-font-size);
 }

@@ -21,7 +21,7 @@
 	--dojo-gray: #BBB;
 
 	/* Shared values */
-	--base-font: 14px/1 sans-serif;
+	/*--base-font: 14px/1 sans-serif;*/
 	--input-font-size: 14px;
 	--title-bar-font-size: 20px;
 	--container-padding: 14px 35px;
@@ -33,7 +33,6 @@
 
 	--block-spacing: 25px;
 	--line-spacing: 5px;
-	--border-thin: 1px;
 	--form-field-width: 200px;
 	--select-menu-height: 500px;
 	--input-padding: 0.5em 1em;

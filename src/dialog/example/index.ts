@@ -10,7 +10,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _modal = false;
 	private _underlay = false;
-	private _closeable = false;
+	private _closeable = true;
 	private _open = false;
 
 	themeChange(event: Event) {
