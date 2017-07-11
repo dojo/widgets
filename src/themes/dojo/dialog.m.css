@@ -12,7 +12,7 @@
 	display: flex;
 	flex-direction: column;
 	font-size: var(--base-font-size);
-	height: 488px;
+	height: calc(75 * var(--grid-size));
 	left: 50%;
 	line-height: var(--base-line-height);
 	max-height: 100%;
@@ -20,7 +20,7 @@
 	position: absolute;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	width: 640px;
+	width: calc(80 * var(--grid-size));
 }
 
 .underlayVisible {
