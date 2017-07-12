@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as css from '../../styles/slidePane.m.css';
 
-const DELAY = 400;
+const DELAY = 500;
 
 function openSlidePane(remote: any, alignRight?: boolean) {
 	let promise = remote
