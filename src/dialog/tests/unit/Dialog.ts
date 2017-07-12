@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import { VNode } from '@dojo/interfaces/vdom';
 import Dialog from '../../Dialog';
 import * as css from '../../styles/dialog.m.css';
 
@@ -105,7 +106,7 @@ registerSuite({
 			open: true,
 			title: 'foo'
 		});
-		const vnode = <VNode> dialog.__render__();
+		<VNode> dialog.__render__();
 		(<any> dialog)._onCloseClick();
 
 		assert.isTrue(dialog.properties.open, 'dialog should not close if closeable is false');
