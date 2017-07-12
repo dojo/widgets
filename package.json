@@ -30,7 +30,7 @@
   "devDependencies": {
     "@dojo/interfaces": "next",
     "@dojo/loader": "next",
-    "@dojo/test-extras": "latest",
+    "@dojo/test-extras": "next",
     "@types/chai": "3.4.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",

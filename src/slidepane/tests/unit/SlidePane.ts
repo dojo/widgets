@@ -1,10 +1,10 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 
-import has from '@dojo/has/has';
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
+import { compareProperty } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import has from '@dojo/has/has';
 
 import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
 import * as css from '../../styles/slidePane.m.css';
@@ -14,6 +14,10 @@ const hasTouch = (function (): boolean {
 	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
 	return Boolean('ontouchstart' in window || has('host-node'));
 })();
+
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
 
 let widget: Harness<SlidePaneProperties, typeof SlidePane>;
 
@@ -43,13 +47,14 @@ registerSuite({
 		widget.setChildren([ GREEKING ]);
 
 		widget.expectRender(v('div', {
+			'aria-labelledby': compareId,
+			classes: widget.classes(css.root),
 			onmousedown: widget.listener,
 			onmousemove: widget.listener,
 			onmouseup: widget.listener,
 			ontouchend: widget.listener,
 			ontouchmove: widget.listener,
-			ontouchstart: widget.listener,
-			classes: widget.classes(css.root)
+			ontouchstart: widget.listener
 		}, [
 			v('div', {
 				afterCreate: widget.listener,
@@ -63,12 +68,17 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
+				classes: widget.classes(css.pane, css.left, css.open, css.slideIn),
 				styles: {
 					transform: '',
-					width: '256px'
+					width: '320px'
 				}
-			}, [ GREEKING ])
+			}, [
+				null,
+				v('div', {
+					classes: widget.classes(css.content)
+				}, [ GREEKING ])
+			])
 		]));
 	},
 
@@ -79,6 +89,7 @@ registerSuite({
 		});
 
 		widget.expectRender(v('div', {
+			'aria-labelledby': compareId,
 			onmousedown: widget.listener,
 			onmousemove: widget.listener,
 			onmouseup: widget.listener,
@@ -92,12 +103,17 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.content, css.left),
+				classes: widget.classes(css.pane, css.left),
 				styles: {
 					transform: '',
-					width: '256px'
+					width: '320px'
 				}
-			}, [])
+			}, [
+				null,
+				v('div', {
+					classes: widget.classes(css.content)
+				}, [])
+			])
 		]));
 	},
 
@@ -122,6 +138,7 @@ registerSuite({
 		});
 
 		widget.expectRender(v('div', {
+			'aria-labelledby': compareId,
 			onmousedown: widget.listener,
 			onmousemove: widget.listener,
 			onmouseup: widget.listener,
@@ -142,12 +159,17 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
+				classes: widget.classes(css.pane, css.left, css.open, css.slideIn),
 				styles: {
 					transform: '',
-					width: '256px'
+					width: '320px'
 				}
-			}, [])
+			}, [
+				null,
+				v('div', {
+					classes: widget.classes(css.content)
+				}, [])
+			])
 		]));
 
 		widget.setProperties({
@@ -155,6 +177,7 @@ registerSuite({
 		});
 
 		widget.expectRender(v('div', {
+			'aria-labelledby': compareId,
 			onmousedown: widget.listener,
 			onmousemove: widget.listener,
 			onmouseup: widget.listener,
@@ -168,12 +191,17 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.content, css.left, css.slideOut),
+				classes: widget.classes(css.pane, css.left, css.slideOut),
 				styles: {
 					transform: '',
-					width: '256px'
+					width: '320px'
 				}
-			}, [])
+			}, [
+				null,
+				v('div', {
+					classes: widget.classes(css.content)
+				}, [])
+			])
 		]));
 	},
 
@@ -318,7 +346,7 @@ registerSuite({
 		widget.setProperties({
 			align: Align.right,
 			open: true,
-			width: 256,
+			width: 320,
 
 			onRequestClose() {
 				called = true;
@@ -415,76 +443,61 @@ registerSuite({
 	},
 
 	'classes removed after transition'() {
-		widget.setProperties({
-			open: true
-		});
+		function expected(open: boolean, transitionDone?: boolean) {
+			return v('div', {
+				'aria-labelledby': compareId,
+				onmousedown: widget.listener,
+				onmousemove: widget.listener,
+				onmouseup: widget.listener,
+				ontouchend: widget.listener,
+				ontouchmove: widget.listener,
+				ontouchstart: widget.listener,
+				classes: widget.classes(css.root)
+			}, [
+				open ? v('div', {
+					afterCreate: widget.listener,
+					afterUpdate: widget.listener,
+					classes: widget.classes(css.underlay),
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut,
+					key: 'underlay'
+				}) : null,
+				v('div', {
+					key: 'content',
+					afterCreate: widget.listener,
+					afterUpdate: widget.listener,
+					classes: widget.classes(
+						css.pane,
+						css.left,
+						open ? css.open : null,
+						transitionDone ? null : (open ? css.slideIn : css.slideOut)
+					),
+					styles: {
+						transform: '',
+						width: '320px'
+					}
+				}, [
+					null,
+					v('div', {
+						classes: widget.classes(css.content)
+					}, [ GREEKING ])
+				])
+			]);
+		}
 
+		widget.setProperties({ open: true });
 		widget.setChildren([ GREEKING ]);
-
-		const expected = v('div', {
-			onmousedown: widget.listener,
-			onmousemove: widget.listener,
-			onmouseup: widget.listener,
-			ontouchend: widget.listener,
-			ontouchmove: widget.listener,
-			ontouchstart: widget.listener,
-			classes: widget.classes(css.root)
-		}, [
-			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
-				classes: widget.classes(css.underlay),
-				enterAnimation: animations.fadeIn,
-				exitAnimation: animations.fadeOut,
-				key: 'underlay'
-			}),
-			v('div', {
-				key: 'content',
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
-				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
-				styles: {
-					transform: '',
-					width: '256px'
-				}
-			}, [ GREEKING ])
-		]);
-
-		widget.expectRender(expected);
+		widget.expectRender(expected(true, false));
+		widget.sendEvent('transitionend', { selector: ':last-child' });
+		widget.expectRender(expected(true, true), '`css.slideIn` should be removed when the animation ends.');
+		widget.setProperties({ open: false });
+		widget.expectRender(expected(false, false));
 
 		widget.sendEvent('transitionend', {
 			selector: ':last-child'
 		});
 
-		assignChildProperties(expected, 0, {
-			classes: widget.classes(css.underlay)
-		});
-		assignChildProperties(expected, 1, {
-			classes: widget.classes(css.content, css.left, css.open)
-		});
-		assignProperties(expected, { classes: widget.classes(css.root) });
-		widget.expectRender(expected, '`css.slideIn` should be removed when the animation ends.');
-
-		widget.setProperties({
-			open: false
-		});
-
-		replaceChild(expected, 0, null);
-		assignChildProperties(expected, 1, {
-			classes: widget.classes(css.content, css.left, css.slideOut)
-		});
-		assignProperties(expected, { classes: widget.classes(css.root) });
-		widget.expectRender(expected);
-
-		widget.sendEvent('transitionend', {
-			selector: ':last-child'
-		});
-
-		assignChildProperties(expected, 1, {
-			classes: widget.classes(css.content, css.left)
-		});
-		assignProperties(expected, { classes: widget.classes(css.root) });
-		widget.expectRender(expected, '`css.slideOut` should be removed when the animation ends.');
+		widget.expectRender(expected(false, true), '`css.slideOut` should be removed when the animation ends.');
 	},
 
 	'last transform is applied on next render if being swiped closed'() {
@@ -494,36 +507,44 @@ registerSuite({
 
 		widget.setChildren([ GREEKING ]);
 
-		const expected = v('div', {
-			onmousedown: widget.listener,
-			onmousemove: widget.listener,
-			onmouseup: widget.listener,
-			ontouchend: widget.listener,
-			ontouchmove: widget.listener,
-			ontouchstart: widget.listener,
-			classes: widget.classes(css.root)
-		}, [
-			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
-				classes: widget.classes(css.underlay),
-				enterAnimation: animations.fadeIn,
-				exitAnimation: animations.fadeOut,
-				key: 'underlay'
-			}),
-			v('div', {
-				key: 'content',
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
-				classes: widget.classes(css.content, css.left, css.open, css.slideIn),
-				styles: {
-					transform: '',
-					width: '256px'
-				}
-			}, [ GREEKING ])
-		]);
+		function expected(closed: boolean, swipeState: any = {}) {
+			return v('div', {
+				'aria-labelledby': compareId,
+				onmousedown: widget.listener,
+				onmousemove: widget.listener,
+				onmouseup: widget.listener,
+				ontouchend: widget.listener,
+				ontouchmove: widget.listener,
+				ontouchstart: widget.listener,
+				classes: widget.classes(css.root)
+			}, [
+				closed ? null : v('div', {
+					afterCreate: widget.listener,
+					afterUpdate: widget.listener,
+					classes: widget.classes(css.underlay),
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut,
+					key: 'underlay'
+				}),
+				v('div', {
+					key: 'content',
+					afterCreate: widget.listener,
+					afterUpdate: widget.listener,
+					classes: swipeState.classes || widget.classes(css.pane, css.left, css.open, css.slideIn),
+					styles: swipeState.styles || {
+						transform: '',
+						width: '320px'
+					}
+				}, [
+					null,
+					v('div', {
+						classes: widget.classes(css.content)
+					}, [ GREEKING ])
+				])
+			]);
+		}
 
-		widget.expectRender(expected);
+		widget.expectRender(expected(false));
 
 		widget.setProperties({
 			open: false
@@ -550,16 +571,13 @@ registerSuite({
 			selector: ':last-child'
 		});
 
-		replaceChild(expected, 0, null);
-		assignChildProperties(expected, 1, {
-			classes: widget.classes(css.content, css.left, css.slideOut),
+		widget.expectRender(expected(true, {
+			classes: widget.classes(css.pane, css.left, css.slideOut),
 			styles: {
-				transform: 'translateX(-97.65625%)',
-				width: '256px'
+				transform: 'translateX(-78.125%)',
+				width: '320px'
 			}
-		});
-		assignProperties(expected, { classes: widget.classes(css.root) });
-		widget.expectRender(expected);
+		}));
 	},
 
 	'last transform is applied on next render if being swiped closed right'() {
@@ -570,36 +588,44 @@ registerSuite({
 
 		widget.setChildren([ GREEKING ]);
 
-		const expected = v('div', {
-			onmousedown: widget.listener,
-			onmousemove: widget.listener,
-			onmouseup: widget.listener,
-			ontouchend: widget.listener,
-			ontouchmove: widget.listener,
-			ontouchstart: widget.listener,
-			classes: widget.classes(css.root)
-		}, [
-			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
-				classes: widget.classes(css.underlay),
-				enterAnimation: animations.fadeIn,
-				exitAnimation: animations.fadeOut,
-				key: 'underlay'
-			}),
-			v('div', {
-				key: 'content',
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
-				classes: widget.classes(css.content, css.right, css.open, css.slideIn),
-				styles: {
-					transform: '',
-					width: '256px'
-				}
-			}, [ GREEKING ])
-		]);
+		function expected(closed: boolean, swipeState: any = {}) {
+			return v('div', {
+				'aria-labelledby': compareId,
+				onmousedown: widget.listener,
+				onmousemove: widget.listener,
+				onmouseup: widget.listener,
+				ontouchend: widget.listener,
+				ontouchmove: widget.listener,
+				ontouchstart: widget.listener,
+				classes: widget.classes(css.root)
+			}, [
+				closed ? null : v('div', {
+					afterCreate: widget.listener,
+					afterUpdate: widget.listener,
+					classes: widget.classes(css.underlay),
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut,
+					key: 'underlay'
+				}),
+				v('div', {
+					key: 'content',
+					afterCreate: widget.listener,
+					afterUpdate: widget.listener,
+					classes: swipeState.classes || widget.classes(css.pane, css.right, css.open, css.slideIn),
+					styles: swipeState.styles || {
+						transform: '',
+						width: '320px'
+					}
+				}, [
+					null,
+					v('div', {
+						classes: widget.classes(css.content)
+					}, [ GREEKING ])
+				])
+			]);
+		}
 
-		widget.expectRender(expected);
+		widget.expectRender(expected(false));
 
 		widget.setProperties({
 			align: Align.right,
@@ -627,15 +653,12 @@ registerSuite({
 			selector: ':last-child'
 		});
 
-		replaceChild(expected, 0, null);
-		assignChildProperties(expected, 1, {
-			classes: widget.classes(css.content, css.right, css.slideOut),
+		widget.expectRender(expected(true, {
+			classes: widget.classes(css.pane, css.right, css.slideOut),
 			styles: {
-				transform: 'translateX(78.125%)',
-				width: '256px'
+				transform: 'translateX(62.5%)',
+				width: '320px'
 			}
-		});
-		assignProperties(expected, { classes: widget.classes(css.root) });
-		widget.expectRender(expected);
+		}));
 	}
 });
