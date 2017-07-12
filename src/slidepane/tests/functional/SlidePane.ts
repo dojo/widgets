@@ -2,7 +2,7 @@ import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as css from '../../styles/slidePane.m.css';
 
-const DELAY = 500;
+const DELAY = 400;
 
 function openSlidePane(remote: any, alignRight?: boolean) {
 	let promise = remote
@@ -91,7 +91,7 @@ registerSuite({
 			.findByCssSelector(`.${css.root}`)
 				.getProperty('children')
 				.then((children: any[]) => {
-					assert.lengthOf(children, 1, 'the underlay should be removed.');
+					assert.lengthOf(children, 2, 'the underlay should be removed.');
 				});
 	},
 
