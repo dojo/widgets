@@ -1,7 +1,9 @@
 @import './variables.css';
 
+.root, .root * { box-sizing: border-box; }
+
 .root {
-	font: var(--base-font);
+	font-size: var(--font-size-base);
 }
 
 .inputWrapper {
@@ -13,53 +15,42 @@
 /* custom input styles */
 .trigger {
 	background-color: transparent;
-	border: 3px solid var(--input-border-color);
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
 	font-size: inherit;
+	line-height: var(--line-height-base);
 	min-width: 200px;
 	outline: none;
-	padding: 0.75em 3.5em 0.75em 1em;
+	padding: var(--spacing-regular) calc(var(--spacing-regular) * 3) var(--spacing-regular) var(--spacing-regular);
 	position: relative;
 	text-align: left;
-}
-
-.trigger::before {
-	background-color: var(--input-border-color);
-	bottom: 0;
-	content: "";
-	pointer-events: none;
-	position: absolute;
-	right: 0;
-	top: 0;
-	transition: all var(--short-animation-duration) ease;
-	width: 2.5em;
-}
-
-.trigger::after {
-	border-bottom: 2px solid var(--dojo-white);
-	border-left: 2px solid var(--dojo-white);
-	content: "";
-	height: 0.5em;
-	position: absolute;
-	right: 1.25em;
-	top: 50%;
-	transform: translate(50%, -65%) rotate(-45deg);
-	width: 0.5em;
 }
 
 .trigger:focus {
 	border-color: var(--input-highlight-color);
 }
 
-.trigger:focus::before {
-	background-color: var(--input-highlight-color);
+.arrow {
+	border-left: var(--border-width) solid var(--color-border);
+	bottom: var(--border-width);
+	color: var(--color-text-faded);
+	font-size: var(--font-size-icon);
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	pointer-events: none;
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 .dropdown {
+	border: var(--border-width) solid var(--color-border);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 	opacity: 0;
 	position: absolute;
 	transform: rotateX(90deg);
 	transform-origin: 0 0;
-	transition: all var(--short-animation-duration) ease-out;
+	transition: all var(--transition-duration) var(--transition-easing);
 	width: 100%;
 }
 
@@ -73,9 +64,16 @@
 }
 
 .option {
-	background-color: var(--dojo-white);
+	background-color: var(--color-background);
+	border: var(--border-width) solid transparent;
 	cursor: pointer;
-	padding: var(--input-padding);
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
+}
+
+.option:hover {
+	background-color: var(--color-background-faded);
 }
 
 .disabledOption {
@@ -85,58 +83,33 @@
 
 .dropdown .focused,
 .input:focus .focused {
-	background-color: var(--dojo-light-blue);
+	border: var(--border-width) solid var(--color-highlight);
 }
 
-.selected { }
+.selected {
+	background-color: var(--color-background-faded);
+}
 
 /* native input styles */
 .input {
 	appearance: none;
 	background-color: transparent;
-	border: 3px solid var(--input-border-color);
+	border: 1px solid var(--dojo-grey);
+	border-bottom-color: var(--dojo-dark-grey);
 	border-radius: 0;
 	cursor: pointer;
 	display: block;
 	font-size: inherit;
-	line-height: 1;
-	max-width: 100%;
+	line-height: var(--line-height-base);
+	min-width: 200px;
 	outline: 0;
-	padding: 0.75em 3.5em 0.75em 1em;
-	transition: border var(--short-animation-duration) ease;
-	width: var(--form-field-width);
+	padding: var(--spacing-regular) calc(var(--spacing-regular) * 3) var(--spacing-regular) var(--spacing-regular);
+	transition: border var(--transition-duration) var(--transition-easing);
+	width: 100%;
 }
 
 .input:focus {
-	border-color: var(--input-highlight-color);
-}
-
-.arrow {
-	background-color: var(--input-border-color);
-	bottom: 0;
-	pointer-events: none;
-	position: absolute;
-	right: 0;
-	top: 0;
-	transition: all var(--short-animation-duration) ease;
-	width: 2.5em;
-}
-
-.arrow::after {
-	border-bottom: 2px solid var(--dojo-white);
-	border-left: 2px solid var(--dojo-white);
-	content: "";
-	height: 0.5em;
-	position: absolute;
-	right: 50%;
-	top: 50%;
-	transform: translate(50%, -65%) rotate(-45deg);
-	width: 0.5em;
-}
-
-
-.input:focus ~ .arrow {
-	background-color: var(--input-highlight-color);
+	border-color: var(--dojo-blue);
 }
 
 /* State classes */
@@ -166,8 +139,4 @@
 
 .multiselect .input {
 	padding: 0;
-}
-
-.multiselect .arrow {
-	display: none;
 }
