@@ -84,9 +84,7 @@
 	--dojo-black: #000000;
 	--dojo-blue: #006be6;
 	--dojo-red: #eb1313;
-	--dojo-light-red: #f7c3c3;
 	--dojo-green: #188701;
-	--dojo-light-green: #bdf1b7;
 
 	/* Color usage names */
 	--color-text-primary: var(--dojo-black);
