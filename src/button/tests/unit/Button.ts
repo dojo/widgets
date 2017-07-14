@@ -8,6 +8,7 @@ import { v } from '@dojo/widget-core/d';
 
 import Button, { ButtonProperties } from '../../Button';
 import * as css from '../../styles/button.m.css';
+import * as iconCss from '../../../common/styles/icons.m.css';
 
 let widget: Harness<ButtonProperties, typeof Button>;
 
@@ -46,7 +47,7 @@ registerSuite({
 			ontouchcancel: widget.listener,
 			type: undefined,
 			value: undefined
-		}));
+		}, [ null ]));
 	},
 
 	'properties and attributes'() {
@@ -89,7 +90,14 @@ registerSuite({
 			ontouchcancel: widget.listener,
 			type: buttonProperties.type,
 			value: buttonProperties.value
-		}, [ 'foo' ]));
+		}, [
+			'foo',
+			v('i', {
+				classes: widget.classes(css.addon, iconCss.icon, iconCss.downIcon),
+				role: 'presentation',
+				'aria-hidden': 'true'
+			})
+		]));
 	},
 
 	'popup = true'() {
@@ -120,7 +128,13 @@ registerSuite({
 			ontouchcancel: widget.listener,
 			type: undefined,
 			value: undefined
-		}));
+		}, [
+			v('i', {
+				classes: widget.classes(css.addon, iconCss.icon, iconCss.downIcon),
+				role: 'presentation',
+				'aria-hidden': 'true'
+			})
+		]));
 	},
 
 	events() {
