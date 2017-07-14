@@ -250,7 +250,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		});
 	}
 
-	renderNativeSelect(): DNode {
+	protected renderNativeSelect(): DNode {
 		const {
 			describedBy,
 			disabled,
@@ -296,7 +296,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		]);
 	}
 
-	renderCustomMultiSelect(): DNode {
+	protected renderCustomMultiSelect(): DNode {
 		const {
 			_focusedIndex
 		} = this;
@@ -327,7 +327,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		]);
 	}
 
-	renderCustomSelect(): DNode {
+	protected renderCustomSelect(): DNode {
 		const {
 			describedBy,
 			disabled,
@@ -381,7 +381,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		]);
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		const {
 			disabled,
 			formId,

@@ -58,7 +58,8 @@
 
 .dropdown .focused,
 .input:focus .focused {
-	background-color: var(--selected-color);
+	background-color: var(--selected-background);
+	color: var(--selected-color);
 }
 
 .selected { }
