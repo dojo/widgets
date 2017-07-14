@@ -17,17 +17,9 @@
 	width: 0.5em;
 }
 
-.popup::after {
-	border-bottom: 2px solid black;
-	border-right: 2px solid black;
-	box-sizing: border-box;
-	content: '';
-	display: inline-block;
-	height: 0.6em;
-	margin-left: 0.6em;
-	transform: translate(0, -35%) rotate(45deg);
-	width: 0.6em;
-}
+.popup { }
+
+.addon { }
 
 .disabled,
 .disabled:hover {

@@ -1,52 +1,65 @@
 @import './variables.css';
 
+.root, .root *, .root:before, .root:after { box-sizing: border-box; }
+
 .root {
-	background-color: var(--dojo-white);
-	border: 1px solid var(--dojo-blue);
-	color: var(--dojo-blue);
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	color: var(--color-highlight);
 	cursor: pointer;
 	display: inline-block;
-	font-size: var(--base-font-size);
+	font-size: var(--font-size-base);
 	font-weight: bold;
-	line-height: var(--base-line-height);
+	line-height: var(--line-height-base);
 	min-width: calc(var(--grid-base) * 20);
-	padding: var(--grid-base);
-	transition: background var(--transition-duration) var(--transition-easing) color var(--transition-duration) var(--transition-easing);
+	padding: var(--spacing-regular);
+	transition: all var(--transition-duration) var(--transition-easing);
 }
 
 .root:hover,
 .root:focus {
-	background-color: var(--dojo-blue);
-	color: var(--dojo-white);
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 	outline: none;
 }
 
+.root:hover .addon,
+.root:focus .addon {
+	border-left-color: var(--color-highlight);
+}
+
 .pressed {
-	background-color: var(--dojo-blue);
-	color: var(--dojo-white);
+	background-color: var(--color-highlight);
+	border-color: var(--color-highlight);
+	color: var(--color-text-inverted);
 }
 
-.pressed:hover,
-.pressed:focus {
-	background-color: var(--dojo-white);
-	color: var(--dojo-blue);
+.pressed .addon {
+	border-left-color: color(var(--color-highlight) saturation(+7%) lightness(+13%));
 }
 
-.popup::after {
-	border-bottom: 2px solid var(--button-color);
-	border-right: 2px solid var(--button-color);
-	box-sizing: border-box;
-	content: '';
-	display: inline-block;
-	height: 0.6em;
-	margin-left: 0.6em;
-	transform: translate(0, -35%) rotate(45deg);
-	width: 0.6em;
+.popup {
+	padding-right: calc(var(--line-height-base) + 3 * var(--spacing-regular));
+	position: relative;
+}
+
+.addon {
+	border-left: var(--border-width) solid var(--color-border);
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 0;
+	width: calc(var(--line-height-base) + 2 * var(--spacing-regular)); /* square icon addons */
+	transition: border var(--transition-duration) var(--transition-easing);
 }
 
 .disabled,
 .disabled:hover {
-	background-color: var(--dojo-light-gray);
-	border-color: var(--dojo-light-gray);
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border);
+	box-shadow: none;
+	color: var(--color-text-faded);
 	cursor: default;
 }
