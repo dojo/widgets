@@ -26,25 +26,6 @@ function openSlidePane(remote: any, alignRight?: boolean) {
 		.sleep(DELAY);
 }
 
-function clickUnderlay(remote: any) {
-	const { mouseEnabled } = remote.environmentType;
-	const underlay = openSlidePane(remote);
-
-	if (mouseEnabled) {
-		return underlay
-			.moveMouseTo(null, 300, 10)
-			.clickMouseButton()
-			.sleep(DELAY)
-			.end();
-	}
-
-	return underlay
-		.findByCssSelector(`.${css.underlay}`)
-			.click()
-			.sleep(DELAY)
-			.end();
-}
-
 function swipeSlidePane(remote: any, distance = 250, alignRight?: boolean) {
 	const { mouseEnabled } = remote.environmentType;
 	const initialX = alignRight ? 10 : 300;
@@ -83,15 +64,6 @@ registerSuite({
 				.then(({ height, width }: { height: number; width: number; }) => {
 					assert.closeTo(height, viewportSize.height, viewportSize.height * 0.2);
 					assert.closeTo(width, viewportSize.width, viewportSize.width * 0.2);
-				});
-	},
-
-	'the underlay should be destroyed when the slidepane is hidden'(this: any) {
-		return clickUnderlay(this.remote)
-			.findByCssSelector(`.${css.root}`)
-				.getProperty('children')
-				.then((children: any[]) => {
-					assert.lengthOf(children, 2, 'the underlay should be removed.');
 				});
 	},
 

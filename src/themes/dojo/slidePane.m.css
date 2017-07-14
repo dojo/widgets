@@ -6,23 +6,23 @@
 }
 
 .underlayVisible {
-	background: var(--underlay-bg);
+	background: var(--color-box-shadow-strong);
 }
 
 .pane {
-	background: var(--dojo-white);
-	border: var(--border-thin) solid var(--border-color);
-	box-shadow: var(--box-shadow-dimensions-large) color(var(--dojo-black) alpha(50%));
+	background: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
 	box-sizing: border-box;
-	font-size: var(--base-font-size);
+	font-size: var(--font-size-base);
 	height: 100%;
-	line-height: var(--base-line-height);
+	line-height: var(--line-height-base);
 	position: fixed;
 	top: 0;
 }
 
 .content {
-	padding: calc(2 * var(--grid-size));
+	padding: calc(2 * var(--grid-base));
 }
 
 .left {
@@ -57,13 +57,12 @@
 }
 
 .title {
-	border-bottom: var(--border-thin) solid var(--border-color);
+	border-bottom: var(--border-thin) solid var(--color-border);
 	box-sizing: border-box;
 	flex: 0 0 auto;
-	font-size: var(--header-font-size);
-	height: calc(7 * var(--grid-size));
-	line-height: var(--header-line-height);
-	padding: calc(2 * var(--grid-size));
+	font-size: var(--font-size-title);
+	height: calc(7 * var(--grid-base));
+	padding: calc(2 * var(--grid-base));
 	position: relative;
 	text-align: left;
 }
@@ -73,9 +72,9 @@
 	border: none;
 	cursor: pointer;
 	font-size: 0;
-	padding: var(--grid-size);
+	padding: var(--grid-base);
 	position: absolute;
-	right: calc(2 * var(--grid-size));
+	right: calc(2 * var(--grid-base));
 	top: 50%;
 	transform: translateY(-50%);
 }
@@ -83,25 +82,25 @@
 .close:after {
 	content: '✕';
 	display: block;
-	font-size: var(--header-font-size);
+	font-size: var(--font-size-title);
 }
 
 .left.slideOut {
-	transition: transform ease-in-out var(--short-animation-duration);
+	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(-100%) !important;
 }
 
 .right.slideOut {
-	transition: transform ease-in-out var(--short-animation-duration);
+	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(100%) !important;
 }
 
 .left.slideIn {
-	transition: transform ease-in-out var(--short-animation-duration);
+	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(0%) !important;
 }
 
 .right.slideIn {
-	transition: transform ease-in-out var(--short-animation-duration);
+	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(0%) !important;
 }
