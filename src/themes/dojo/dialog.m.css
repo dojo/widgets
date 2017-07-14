@@ -24,7 +24,7 @@
 }
 
 .underlayVisible {
-	background-color: var(--color-underlay-background);
+	background-color: var(--color-box-shadow-strong);
 }
 
 .title {
