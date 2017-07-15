@@ -19,7 +19,7 @@
 	border-left: var(--border-width) solid transparent;
 	border-right: var(--border-width) solid transparent;
 	border-top: var(--border-width) solid transparent;
-	color: var(--dojo-dark-grey);
+	color: var(--color-text-faded);
 	cursor: pointer;
 	display: inline-block;
 	outline: none;
@@ -34,18 +34,18 @@
 }
 
 .tabButton:hover:not(.disabledTabButton):not(.activeTabButton) {
-	background-color: var(--dojo-light-grey);
-	border-color: var(--dojo-light-grey);
+	background-color: var(--color-background-faded);
+	border-color: var(--color-background-faded);
 	color: var(--color-text-primary);
 }
 
 .activeTabButton {
-	border-bottom-color: var(--dojo-blue);
-	color: var(--dojo-blue);
+	border-bottom-color: var(--color-highlight);
+	color: var(--color-highlight);
 }
 
 .disabledTabButton {
-	color: var(--dojo-gray);
+	color: var(--color-border);
 	cursor: default;
 }
 
@@ -70,7 +70,6 @@
 
 .tab {
 	position: relative;
-	padding: var(--container-padding);
 }
 
 .alignLeft .tabs {
@@ -85,16 +84,16 @@
 }
 
 .alignLeft .tabButton {
-	border-top: var(--border-thin) solid transparent;
-	border-left: var(--border-thick) solid transparent;
-	border-bottom: var(--border-thin) solid transparent;
+	border-top: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid transparent;
+	border-bottom: var(--border-width) solid transparent;
 	border-right: var(--border-width) solid var(--color-border);
 	display: block;
 }
 
 .alignLeft .activeTabButton {
-	border-right-color: var(--dojo-blue);
-	color: var(--dojo-blue);
+	border-right-color: var(--color-highlight);
+	color: var(--color-highlight);
 }
 
 .alignRight .tabs {
@@ -109,16 +108,16 @@
 }
 
 .alignRight .tabButton {
-	border-top: var(--border-thin) solid transparent;
-	border-right: var(--border-thick) solid transparent;
-	border-bottom: var(--border-thin) solid transparent;
+	border-top: var(--border-width) solid transparent;
+	border-right: var(--border-width) solid transparent;
+	border-bottom: var(--border-width) solid transparent;
 	border-left: var(--border-width) solid var(--color-border);
 	display: block;
 }
 
 .alignRight .activeTabButton {
-	border-left-color: var(--dojo-blue);
-	color: var(--dojo-blue);
+	border-left-color: var(--color-highlight);
+	color: var(--color-highlight);
 }
 
 .alignBottom .tabButton {
@@ -127,6 +126,6 @@
 }
 
 .alignBottom .activeTabButton {
-	border-top-color: var(--dojo-blue);
+	border-top-color: var(--color-highlight);
 	border-bottom-color: transparent;
 }
