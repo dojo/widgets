@@ -1,5 +1,11 @@
 @import './variables.css';
 
+.root {
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
 .root,
 .root * {
 	box-sizing: border-box;
@@ -14,9 +20,7 @@
 	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
 	box-sizing: border-box;
-	font-size: var(--font-size-base);
 	height: 100%;
-	line-height: var(--line-height-base);
 	position: fixed;
 	top: 0;
 }
@@ -40,14 +44,14 @@
 }
 
 .close {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 35px;
+	background: none;
+	border: none;
 	cursor: pointer;
 	font-size: 0;
-	border: none;
-	background: none;
+	position: absolute;
+	right: 35px;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .close:after {
@@ -86,21 +90,21 @@
 }
 
 .left.slideOut {
-	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(-100%) !important;
+	transition: transform ease-in-out var(--transition-duration);
 }
 
 .right.slideOut {
-	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(100%) !important;
+	transition: transform ease-in-out var(--transition-duration);
 }
 
 .left.slideIn {
-	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(0%) !important;
+	transition: transform ease-in-out var(--transition-duration);
 }
 
 .right.slideIn {
-	transition: transform ease-in-out var(--transition-duration);
 	transform: translateX(0%) !important;
+	transition: transform ease-in-out var(--transition-duration);
 }
