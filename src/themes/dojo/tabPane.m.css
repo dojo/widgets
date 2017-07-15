@@ -6,6 +6,7 @@
 
 .root {
 	box-sizing: border-box;
+	color: var(--color-text-primary);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
 }
@@ -84,10 +85,10 @@
 }
 
 .alignLeft .tabButton {
-	border-top: var(--border-width) solid transparent;
-	border-left: var(--border-width) solid transparent;
 	border-bottom: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid transparent;
 	border-right: var(--border-width) solid var(--color-border);
+	border-top: var(--border-width) solid transparent;
 	display: block;
 }
 
@@ -108,10 +109,10 @@
 }
 
 .alignRight .tabButton {
-	border-top: var(--border-width) solid transparent;
-	border-right: var(--border-width) solid transparent;
 	border-bottom: var(--border-width) solid transparent;
 	border-left: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid transparent;
+	border-top: var(--border-width) solid transparent;
 	display: block;
 }
 
@@ -121,11 +122,11 @@
 }
 
 .alignBottom .tabButton {
-	border-top-color: var(--color-border);
 	border-bottom-color: transparent;
+	border-top-color: var(--color-border);
 }
 
 .alignBottom .activeTabButton {
-	border-top-color: var(--color-highlight);
 	border-bottom-color: transparent;
+	border-top-color: var(--color-highlight);
 }
