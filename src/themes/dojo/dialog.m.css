@@ -1,5 +1,11 @@
 @import './variables.css';
 
+.root {
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
 .root,
 .root * {
 	box-sizing: border-box;
@@ -11,10 +17,8 @@
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
 	display: flex;
 	flex-direction: column;
-	font-size: var(--font-size-base);
 	height: calc(75 * var(--grid-base));
 	left: 50%;
-	line-height: var(--line-height-base);
 	max-height: 100%;
 	max-width: 100%;
 	position: absolute;
