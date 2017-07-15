@@ -40,6 +40,11 @@
 	color: var(--color-text-primary);
 }
 
+.tabButton:focus:not(.disabledTabButton) {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+}
+
 .activeTabButton {
 	border-bottom-color: var(--color-highlight);
 	color: var(--color-highlight);
