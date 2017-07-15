@@ -202,7 +202,7 @@ registerSuite({
 				options: testOptions
 			});
 			const vnode = <VNode> select.__render__();
-			const selectNode = vnode.children![0].children![1];
+			const selectNode = vnode.children![0].children![2];
 
 			assert.strictEqual(selectNode.children!.length, 3);
 			assert.isTrue(selectNode.children![0].properties!.classes![css.focused], 'First option should be focused by default');
@@ -215,7 +215,7 @@ registerSuite({
 				value: 'three'
 			});
 			const vnode = <VNode> select.__render__();
-			const selectNode = vnode.children![0].children![1];
+			const selectNode = vnode.children![0].children![2];
 
 			assert.strictEqual(selectNode.children![1].properties!['aria-selected'], 'false', 'Single select should use value, not option.selected');
 			assert.strictEqual(selectNode.children![2].properties!['aria-selected'], 'true', 'Third option should be selected');
@@ -268,7 +268,7 @@ registerSuite({
 				options: testOptions
 			});
 			const vnode = <VNode> select.__render__();
-			const selectNode = vnode.children![0].children![1];
+			const selectNode = vnode.children![0].children![2];
 			assert.strictEqual(selectNode.children![1].text, 'foo');
 		}
 	},
@@ -283,11 +283,10 @@ registerSuite({
 			});
 			const vnode = <VNode> select.__render__();
 			const button = vnode.children![0].children![0];
-			const dropdown = vnode.children![0].children![1];
+			const dropdown = vnode.children![0].children![2];
 
 			assert.strictEqual(button.vnodeSelector, 'button');
 			assert.isTrue(button.properties!.classes![css.trigger]);
-			assert.isTrue(button.properties!.classes![css.input]);
 			assert.isTrue(button.properties!.disabled);
 			assert.strictEqual(button.properties!['aria-controls'], dropdown.properties!.id);
 			assert.strictEqual(button.properties!['aria-owns'], dropdown.properties!.id);
@@ -295,7 +294,7 @@ registerSuite({
 			assert.strictEqual(button.properties!['aria-haspopup'], 'listbox');
 			assert.strictEqual(button.properties!['aria-activedescendant'], 'first');
 			assert.strictEqual(button.properties!.value, 'two');
-			assert.strictEqual(button.children![0].text, 'Two');
+			assert.strictEqual(button.text, 'Two');
 		},
 		'Correct listbox attributes'() {
 			const select = new Select();
@@ -308,7 +307,7 @@ registerSuite({
 			});
 			const vnode = <VNode> select.__render__();
 			const button = vnode.children![0].children![0];
-			const dropdown = vnode.children![0].children![1];
+			const dropdown = vnode.children![0].children![2];
 
 			assert.strictEqual(dropdown.vnodeSelector, 'div');
 			assert.strictEqual(dropdown.properties!['role'], 'listbox');
