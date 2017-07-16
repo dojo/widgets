@@ -232,6 +232,27 @@ registerSuite({
 		assert.isTrue(called, 'onRequestClose should have been called');
 	},
 
+	'click close button to close'() {
+		let called = false;
+
+		widget.setProperties({
+			open: true,
+			title: 'foo',
+			closeText: 'close',
+			onRequestClose() {
+				called = true;
+			}
+		});
+
+		widget.getRender();
+
+		widget.sendEvent('click', {
+			selector: `.${css.close}`
+		});
+
+		assert.isTrue(called, 'onRequestClose should have been called');
+	},
+
 	'tap underlay to close'(this: any) {
 		if (!hasTouch) {
 			this.skip('Environment not support touch events');
