@@ -7,6 +7,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { Keys } from '../common/util';
 
 import * as css from './styles/titlePane.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 
 /**
  * @type TitlePaneProperties
@@ -32,6 +33,7 @@ export interface TitlePaneProperties extends ThemeableProperties {
 export const TitlePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	private _contentId = uuid();
 	private _titleId = uuid();
@@ -98,7 +100,10 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		} = this.properties;
 
 		return v('div', {
-			classes: this.classes(css.root).fixed(css.rootFixed)
+			classes: this.classes(
+				css.root,
+				open ? css.open : null
+			).fixed(css.rootFixed)
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
@@ -120,7 +125,18 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 					id: this._titleId,
 					role: 'button',
 					tabIndex: closeable ? 0 : -1
-				}, [ title ])
+				}, [
+					v('i', {
+						classes: this.classes(
+							css.arrow,
+							iconCss.icon,
+							open ? iconCss.downIcon : iconCss.rightIcon
+						),
+						role: 'presentation',
+						'aria-hidden': 'true'
+					}),
+					title
+				])
 			]),
 			v('div', {
 				'aria-hidden': open ? null : 'true',

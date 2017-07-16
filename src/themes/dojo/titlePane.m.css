@@ -39,3 +39,17 @@
 	padding: var(--grid-base);
 	transition: margin-top ease-in-out var(--transition-duration);
 }
+
+.open .title > div {
+	color: var(--color-highlight);
+}
+
+.arrow {
+	position: absolute;
+	left: 8px;
+	top: 12px;
+}
+
+.open .arrow {
+	top: 10px;
+}
