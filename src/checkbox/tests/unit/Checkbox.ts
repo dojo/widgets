@@ -105,6 +105,21 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.invalid]);
 	},
 
+	'focused class'() {
+		const radio = new Radio();
+		let vnode = <VNode> radio.__render__();
+
+		assert.isUndefined(vnode.properties!.classes![css.focused]);
+
+		(<any> radio)._onFocus(<FocusEvent> {});
+		vnode = <VNode> radio.__render__();
+		assert.isTrue(vnode.properties!.classes![css.focused]);
+
+		(<any> radio)._onBlur(<FocusEvent> {});
+		vnode = <VNode> radio.__render__();
+		assert.isFalse(vnode.properties!.classes![css.focused]);
+	},
+
 	events() {
 		let blurred = false,
 				changed = false,

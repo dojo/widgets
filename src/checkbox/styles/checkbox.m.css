@@ -9,6 +9,7 @@
 .inputWrapper {}
 .checked {}
 .disabled {}
+.focused {}
 .readonly {}
 
 /* required style, only applies to inputs with a label */
