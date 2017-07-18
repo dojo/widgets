@@ -106,7 +106,7 @@ registerSuite({
 	},
 
 	'focused class'() {
-		const radio = new Radio();
+		const radio = new Checkbox();
 		let vnode = <VNode> radio.__render__();
 
 		assert.isUndefined(vnode.properties!.classes![css.focused]);
