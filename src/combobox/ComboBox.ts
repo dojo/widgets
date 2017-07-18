@@ -390,7 +390,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				onclick: this._onClearClick
 			}, [
 				'clear combo box',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon),
+				v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
 					role: 'presentation', 'aria-hidden': 'true'
 				})
 			]) : null,

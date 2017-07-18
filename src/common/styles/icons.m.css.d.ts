@@ -2,7 +2,7 @@ export const icon: string;
 export const plusIcon: string;
 export const minusIcon: string;
 export const checkIcon: string;
-export const timesIcon: string;
+export const closeIcon: string;
 export const leftIcon: string;
 export const rightIcon: string;
 export const plusCircleIcon: string;
