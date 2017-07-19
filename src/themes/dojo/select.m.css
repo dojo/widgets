@@ -48,9 +48,7 @@
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 	opacity: 0;
 	position: absolute;
-	transform: rotateX(90deg);
-	transform-origin: 0 0;
-	transition: all var(--transition-duration) var(--transition-easing);
+	transition: opacity var(--transition-duration) var(--transition-easing);
 	width: 100%;
 }
 
@@ -60,7 +58,6 @@
 
 .open .dropdown {
 	opacity: 1;
-	transform: rotateX(0);
 }
 
 .option {
@@ -77,7 +74,8 @@
 }
 
 .disabledOption {
-	background-color: var(--dojo-light-gray);
+	background-color: var(--color-background-faded);
+	color: var(--color-text-faded);
 	cursor: default;
 }
 
@@ -94,8 +92,8 @@
 .input {
 	appearance: none;
 	background-color: transparent;
-	border: 1px solid var(--dojo-grey);
-	border-bottom-color: var(--dojo-dark-grey);
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
 	border-radius: 0;
 	cursor: pointer;
 	display: block;
@@ -109,32 +107,31 @@
 }
 
 .input:focus {
-	border-color: var(--dojo-blue);
+	border-color: var(--color-highlight);
 }
 
 /* State classes */
 .disabled .input,
 .readonly .input {
-	background-color: var(--dojo-light-gray);
+	background-color: var(--color-background-faded);
 }
 
 .invalid .input {
-	border-color: var(--dojo-error-color);
+	border-color: var(--color-error);
 }
 .invalid .arrow {
-	background-color: var(--dojo-error-color);
+	background-color: var(--color-error);
 }
 
 .valid .input {
-	border-color: var(--dojo-success-color);
+	border-color: var(--color-success);
 }
 .valid .arrow {
-	background-color: var(--dojo-success-color);
+	background-color: var(--color-success);
 }
 
 .required > span::after {
 	content: '*';
-	color: var(--dojo-error-color);
 }
 
 .multiselect .input {
