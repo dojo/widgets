@@ -27,7 +27,8 @@
 }
 
 .trigger:focus {
-	border-color: var(--input-highlight-color);
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 }
 
 .arrow {
@@ -108,26 +109,45 @@
 
 .input:focus {
 	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 }
 
 /* State classes */
 .disabled .input,
-.readonly .input {
+.readonly .input,
+.disabled .trigger,
+.readonly .trigger {
 	background-color: var(--color-background-faded);
 }
 
-.invalid .input {
+.invalid .input,
+.invalid .trigger {
+	border-color: color(var(--color-error) saturation(-9%) lightness(+37%));
+	border-bottom-color: var(--color-error);
+}
+.invalid .input:focus,
+.invalid .trigger:focus {
 	border-color: var(--color-error);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-error) alpha(20%));
 }
 .invalid .arrow {
-	background-color: var(--color-error);
+	border-left-color: color(var(--color-error) saturation(-9%) lightness(+37%));
+	color: var(--color-error);
 }
 
-.valid .input {
+.valid .input,
+.valid .trigger {
+	border-color: color(var(--color-success) saturation(-32%) lightness(+55%));
+	border-bottom-color: var(--color-success);
+}
+.valid .input:focus,
+.valid .trigger:focus {
 	border-color: var(--color-success);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-success) alpha(20%));
 }
 .valid .arrow {
-	background-color: var(--color-success);
+	border-left-color: color(var(--color-success) saturation(-32%) lightness(+55%));
+	color: var(--color-success);
 }
 
 .required > span::after {
