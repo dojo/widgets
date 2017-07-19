@@ -10,6 +10,7 @@ export const thumb: string;
 export const thumbFixed: string;
 export const input: string;
 export const output: string;
+export const outputTooltip: string;
 export const vertical: string;
 export const disabled: string;
 export const readonly: string;

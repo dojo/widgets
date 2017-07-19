@@ -50,6 +50,7 @@ export interface SliderProperties extends ThemeableProperties {
 	min?: number;
 	name?: string;
 	output?(value: number): DNode;
+	outputIsTooltip?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
 	step?: number;
@@ -103,6 +104,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 			min = 0,
 			name,
 			output,
+			outputIsTooltip = false,
 			readOnly,
 			required,
 			step = 1,
@@ -124,6 +126,12 @@ export default class Slider extends SliderBase<SliderProperties> {
 
 		// custom output node
 		const outputNode = output ? output(value) : value + '';
+
+		// output styles
+		let outputStyles: { left?: string; top?: string } = {};
+		if (outputIsTooltip) {
+			outputStyles = vertical ? { top: ((max - value) / max * 100) + '%' } : { left: (value / max * 100) + '%' };
+		}
 
 		const slider = v('div', {
 			classes: this.classes(css.inputWrapper).fixed(css.inputWrapperFixed),
@@ -174,8 +182,9 @@ export default class Slider extends SliderBase<SliderProperties> {
 				})
 			]),
 			v('output', {
-				classes: this.classes(css.output),
-				for: this._inputId + ''
+				classes: this.classes(css.output, outputIsTooltip ? css.outputTooltip : null),
+				for: this._inputId + '',
+				styles: outputStyles
 			}, [ outputNode ])
 		]);
 

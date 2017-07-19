@@ -71,6 +71,12 @@
 
 .output { }
 
+.outputTooltip {
+	left: 2.5em;
+	position: absolute;
+	top: 2.5em;
+}
+
 /* vertical slider */
 .vertical .input,
 .vertical .track {
@@ -79,9 +85,9 @@
 }
 
 /* disabled and readonly styles */
-.disabled .inputWrapper::before,
-.readonly .inputWrapper::before {
-	border-color: var(--disabled-color);
+.disabled .track,
+.readonly .track {
+	background-color: var(--disabled-color);
 }
 
 /* required style, only applies to inputs with a label */
