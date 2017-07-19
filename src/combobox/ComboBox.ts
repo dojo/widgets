@@ -311,6 +311,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	@diffProperty('customResultItem', reference)
 	@diffProperty('customResultMenu', reference)
+	@diffProperty('results', reference)
 	protected onPropertiesChanged(previousProperties: any, newProperties: any) {
 		const {
 			customResultItem = ResultItem,
@@ -401,7 +402,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				readOnly,
 				onclick: this._onArrowClick
 			}, [
-				'open combo box',
 				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
 					role: 'presentation', 'aria-hidden': 'true'
 				})
@@ -420,7 +420,12 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			'aria-haspopup': 'true',
 			'aria-readonly': readOnly ? 'true' : 'false',
 			'aria-required': required ? 'true' : 'false',
-			classes: this.classes(css.root),
+			classes: this.classes(
+				css.root,
+				this._open ? css.open : null,
+				invalid ? css.invalid : null,
+				invalid === false ? css.valid : null
+			),
 			key: 'root',
 			role: 'combobox'
 		}, [

@@ -1,55 +1,103 @@
 @import './variables.css';
 
 .root {
-	position: relative;
-	display: inline-block;
 	box-sizing: border-box;
-	width: var(--form-field-width);
+	color: var(--color-text-primary);
+	display: inline-block;
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	position: relative;
+	width: 100%;
 }
 
 .root * {
 	box-sizing: border-box;
 }
 
-.controls {
-	position: relative;
-}
-
-.input {
+.root input {
+	line-height: var(--line-height-base);
+	min-width: 200px;
+	padding: var(--spacing-regular) calc(var(--spacing-regular) * 6) var(--spacing-regular) var(--spacing-regular);
 	width: 100%;
-	padding-right: 2em;
 }
 
-.input::-ms-clear {
-	display: none;
-}
-
-.clearable {
-	padding-right: 4em;
-}
-
-.results {
+.trigger {
+	appearance: none;
+	background-color: transparent;
+	border-bottom: 0;
+	border-left: var(--border-width) solid var(--color-border);
+	border-radius: 0;
+	border-right: 0;
+	border-top: 0;
+	bottom: var(--border-width);
+	color: var(--color-text-faded);
+	cursor: pointer;
+	display: block;
+	font-size: inherit;
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	outline: 0;
+	padding: var(--spacing-regular) calc(var(--spacing-regular) + 4);
 	position: absolute;
-	width: 100%;
-	max-height: var(--select-menu-height);
-	overflow-y: auto;
-	background: var(--dojo-white);
-	border: var(--border-thin) solid var(--dojo-shade-gray);
+	right: 0;
+	top: var(--border-width);
 	z-index: 1;
 }
 
-.result {
+.dropdown {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	opacity: 0;
+	position: absolute;
+	transform-origin: 0 0;
+	transform: rotateX(90deg);
+	transition: all var(--transition-duration) var(--transition-easing);
+	width: 100%;
+	z-index: 2;
+}
+
+.open .dropdown {
+	opacity: 1;
+	transform: rotateX(0);
+}
+
+.option {
+	background-color: var(--color-background);
+	border: var(--border-width) solid transparent;
 	cursor: pointer;
-	padding: var(--input-padding);
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
 }
 
-.disabledResult {
-	color: var(--dojo-gray);
-	font-style: italic;
-	cursor: default;
+.selected {
+	background-color: var(--color-background-faded);
 }
 
-.selectedResult {
-	background: var(--dojo-blue);
-	color: var(--dojo-white);
+.invalid .trigger {
+	border-left-color: color(var(--color-error) saturation(-9%) lightness(+37%));
+	color: var(--color-error);
+}
+
+.valid .trigger {
+	border-left-color: color(var(--color-success) saturation(-32%) lightness(+55%));
+	color: var(--color-success);
+}
+
+.clear {
+	background: none;
+	border: none;
+	color: var(--color-border);
+	cursor: pointer;
+	font-size: 0;
+	padding: 0;
+	position: absolute;
+	right: calc(var(--spacing-regular) * 6);
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.clear i {
+	font-size: var(--font-size-base);
 }

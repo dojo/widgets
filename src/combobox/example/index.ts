@@ -142,7 +142,9 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render(): DNode {
-		return v('div', [
+		return v('div', {
+			styles: { maxWidth: '256px' }
+		}, [
 			v('h1', ['ComboBox Examples']),
 			v('label', [
 				'Use Dojo Theme ',
