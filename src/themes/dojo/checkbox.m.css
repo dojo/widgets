@@ -1,11 +1,16 @@
 @import './variables.css';
 
-.root, .root * { box-sizing: border-box; }
+.root,
+.root *,
+.root *::before,
+.root *::after {
+	box-sizing: border-box;
+}
 
 .root {
 	display: block;
 	font-size: var(--font-size-base);
-	margin-bottom: var(--line-spacing-base);
+	line-height: var(--line-height-base);
 	padding: 0 0 0 calc(var(--grid-base) * 3);
 	position: relative;
 }
@@ -35,20 +40,21 @@
 }
 
 .inputWrapper::before {
-	border: var(--border-width) solid var(--color-border);
+	border: var(--border-width) solid var(--color-border-strong);
 	height: calc(var(--grid-base) * 2);
 	width: calc(var(--grid-base) * 2);
 }
 
 .inputWrapper::after {
-	color: var(--color-border);
+	color: var(--color-border-strong);
 	height: calc(var(--grid-base) * 2);
 	left: 3px;
 	position: absolute;
+	text-align: center;
 	top: 3px;
 	transform: scale(0);
 	transition: all var(--short-animation-duration) var(--short-animation-easing);
-	width: calc(1.5em - 6px);
+	width: calc(var(--grid-base) * 2);
 }
 
 /* checked style */
@@ -59,13 +65,13 @@
 /* disabled and readonly styles */
 .disabled .inputWrapper::before,
 .readonly .inputWrapper::before {
-	border-color: var(--input-border-color);
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border);
 }
 
 /* required style, only applies to inputs with a label */
 .required span::after {
 	content: '*';
-	color: var(--dojo-error-color);
 }
 
 /* invalid style */
@@ -85,65 +91,118 @@
 }
 
 /* Toggle mode */
+.toggle {
+	padding-left: 0;
+}
+
 .toggle .inputWrapper {
 	width: auto;
 	position: relative;
-	display: inline-block;
-	border: 2px solid var(--dojo-blue);
-	padding: 2px 3px 1px 3px;
-	white-space: nowrap;
-	background: var(--dojo-white);
-	transition: background var(--short-animation-duration) var(--short-animation-easing);
 }
 
-.checked.toggle .inputWrapper {
-	background: var(--dojo-light-blue);
-}
-
-.toggle.disabled .inputWrapper,
-.toggle.readonly .inputWrapper {
-	border-color: var(--input-border-color);
-}
-
-.toggle .inputWrapper::before {
+.toggle .inputWrapper::before,
+.toggle .inputWrapper::after {
 	display: none;
 }
 
-.toggle .inputWrapper::after {
-	transform: scale(1);
+.toggle .input {
+	width: auto;
+}
+
+.toggleSwitch {
+	background-color: var(--color-border);
+	border: var(--border-width) solid var(--color-border-strong);
+	border-radius: calc(var(--line-height-base) / 2);
+	display: inline-block;
+	height: var(--line-height-base);
+	position: relative;
+	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
+	vertical-align: middle;
+	width: calc(var(--line-height-base) * 1.75);
+}
+
+.toggleSwitch::before,
+.toggleSwitch::after {
+	border-radius: calc(var(--line-height-base) / 2);
 	content: "";
+	height: var(--line-height-base);
+	left: calc(var(--border-width) * -1);
 	position: absolute;
-	top: 1px;
-	transform: translateX(-1.5em);
-	left: calc(1.5em + 1px);
-	transition: left var(--short-animation-duration) var(--short-animation-easing);
+	top: calc(var(--border-width) * -1);
+	transition: all var(--transition-duration) var(--transition-easing);
+	width: var(--line-height-base);
 }
 
-.checked.toggle .inputWrapper::after {
-	left: calc(100% + 5px);
+.toggleSwitch::before {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border-strong);
 }
 
-.toggle .input:focus {
-	box-shadow: 0 0 4px 3px var(--dojo-light-blue);
+.toggleSwitch::after {
+	background-color: var(--color-highlight);
+	transform: translate(0, 0) scale(0);
 }
 
 .onLabel,
 .offLabel {
-	position: relative;
+	color: var(--color-text-faded);
 	display: inline-block;
-	min-width: calc(1.5em - 6px);
-	text-align: center;
-	transition: opacity var(--short-animation-duration) var(--short-animation-easing);
 }
 
 .onLabel {
-	opacity: 0;
+	padding-left: var(--spacing-regular);
 }
 
-.checked .onLabel {
-	opacity: 1;
+.offLabel {
+	padding-right: var(--spacing-regular);
 }
 
-.checked .offLabel {
-	opacity: 0;
+.checked .toggleSwitch {
+	background-color: var(--color-highlight);
+	border-color: var(--color-highlight);
+}
+
+.checked .toggleSwitch::before {
+	border-color: var(--color-highlight);
+	transform: translate(75%, 0);
+}
+
+.checked .toggleSwitch::after {
+	border-color: var(--color-highlight);
+	transform: translate(75%, 0) scale(0);
+}
+
+/* Focused styles */
+
+.focused .toggleSwitch::before {
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+}
+
+.focused .toggleSwitch::after {
+	transform: translate(0, 0) scale(0.5);
+}
+
+.focused.checked .toggleSwitch {
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+}
+
+.focused.checked .toggleSwitch::after {
+	transform: translate(75%, 0) scale(0.5);
+}
+
+.focused .onLabel,
+.focused .offLabel {
+	color: var(--color-highlight);
+}
+
+.disabled .toggleSwitch,
+.readonly .toggleSwitch {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border-strong);
+}
+
+.disabled .toggleSwitch::before,
+.readonly .toggleSwitch::before {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border-strong);
 }

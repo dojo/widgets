@@ -89,6 +89,29 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
+	protected renderToggle(): DNode[] {
+		const {
+			checked,
+			mode,
+			onLabel,
+			offLabel
+		} = this.properties;
+
+		return mode === Mode.toggle ? [
+			offLabel ? v('div', {
+				classes: this.classes(css.offLabel),
+				'aria-hidden': checked ? 'true' : null
+			}, [ offLabel ]) : null,
+			v('div', {
+				classes: this.classes(css.toggleSwitch)
+			}),
+			onLabel ? v('div', {
+				classes: this.classes(css.onLabel),
+				'aria-hidden': checked ? null : 'true'
+			}, [ onLabel ]) : null
+		] : [];
+	}
+
 	protected render(): DNode {
 		const {
 			checked = false,
@@ -99,8 +122,6 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			label,
 			mode,
 			name,
-			offLabel,
-			onLabel,
 			readOnly,
 			required,
 			value
@@ -119,14 +140,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		const children = [
 			v('div', { classes: this.classes(css.inputWrapper) }, [
-				mode === Mode.toggle ? v('div', {
-					classes: this.classes(css.onLabel),
-					'aria-hidden': checked ? null : 'true'
-				}, [ onLabel || null ]) : null,
-				mode === Mode.toggle ? v('div', {
-					classes: this.classes(css.offLabel),
-					'aria-hidden': checked ? 'true' : null
-				}, [ offLabel || null ]) : null,
+				...this.renderToggle(),
 				v('input', {
 					classes: this.classes(css.input),
 					checked,
