@@ -1,4 +1,5 @@
 @import './variables.css';
+@import '../../common/styles/icons.m.css';
 
 .root,
 .root *,
@@ -15,11 +16,17 @@
 	position: relative;
 }
 
+.root span {
+	color: var(--color-text-faded);
+	transition: color var(--transition-duration) var(--transition-easing);
+}
+
 .input {
 	appearance: none;
 	height: 100%;
 	left: 0;
 	margin: 0;
+	outline: none;
 	position: absolute;
 	top: 0;
 	width: 100%;
@@ -27,72 +34,49 @@
 }
 
 .inputWrapper {
+	composes: checkIcon icon;
 	left: 0;
 	position: absolute;
-	top: 0;
+	top: calc(var(--grid-base) / 2);
 }
 
 .inputWrapper::before,
 .inputWrapper::after {
-	box-sizing: border-box;
-	content: '';
 	display: block;
-}
-
-.inputWrapper::before {
-	border: var(--border-width) solid var(--color-border-strong);
 	height: calc(var(--grid-base) * 2);
 	width: calc(var(--grid-base) * 2);
 }
 
 .inputWrapper::after {
+	border: var(--border-width) solid var(--color-border-strong);
+	content: '';
+}
+
+.inputWrapper::before {
 	color: var(--color-border-strong);
-	height: calc(var(--grid-base) * 2);
-	left: 3px;
+	font-size: var(--font-size-small);
+	left: 0;
+	line-height: calc(var(--grid-base) * 2);
 	position: absolute;
 	text-align: center;
-	top: 3px;
+	top: 0;
 	transform: scale(0);
 	transition: all var(--short-animation-duration) var(--short-animation-easing);
-	width: calc(var(--grid-base) * 2);
+	width: 100%;
 }
 
 /* checked style */
-.checked .inputWrapper::after {
+.checked .inputWrapper::before {
 	transform: scale(1);
-}
-
-/* disabled and readonly styles */
-.disabled .inputWrapper::before,
-.readonly .inputWrapper::before {
-	background-color: var(--color-background-faded);
-	border-color: var(--color-border);
-}
-
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
-}
-
-/* invalid style */
-.invalid .inputWrapper::before {
-	border-color: var(--dojo-error-color);
-}
-.invalid .inputWrapper::after {
-	background-color: var(--dojo-error-color);
-}
-
-/* valid style */
-.valid .inputWrapper::before {
-	border-color: var(--dojo-success-color);
-}
-.valid .inputWrapper::after {
-	background-color: var(--dojo-success-color);
 }
 
 /* Toggle mode */
 .toggle {
 	padding-left: 0;
+}
+
+.toggle span {
+ color: var(--color-text-primary);
 }
 
 .toggle .inputWrapper {
@@ -173,8 +157,25 @@
 }
 
 /* Focused styles */
+.focused span {
+	color: var(--color-highlight);
+}
+
+.focused.toggle span {
+	color: var(--color-text-primary);
+}
+
+.focused .inputWrapper::before {
+	color: var(--color-highlight);
+}
+
+.focused .inputWrapper::after {
+	border: var(--border-width-emphasized) solid var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+}
 
 .focused .toggleSwitch::before {
+	border-color: var(--color-highlight);
 	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 }
 
@@ -195,6 +196,13 @@
 	color: var(--color-highlight);
 }
 
+/* disabled and readonly styles */
+.disabled .inputWrapper::after,
+.readonly .inputWrapper::after {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border);
+}
+
 .disabled .toggleSwitch,
 .readonly .toggleSwitch {
 	background-color: var(--color-background-faded);
@@ -205,4 +213,25 @@
 .readonly .toggleSwitch::before {
 	background-color: var(--color-background-faded);
 	border-color: var(--color-border-strong);
+}
+
+/* required style, only applies to inputs with a label */
+.required span::after {
+	content: '*';
+}
+
+/* invalid style */
+.invalid .inputWrapper::after {
+	border-color: var(--dojo-error-color);
+}
+.invalid .inputWrapper::before {
+	color: var(--dojo-error-color);
+}
+
+/* valid style */
+.valid .inputWrapper::after {
+	border-color: var(--dojo-success-color);
+}
+.valid .inputWrapper::before {
+	color: var(--dojo-success-color);
 }
