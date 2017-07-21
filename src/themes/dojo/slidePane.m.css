@@ -1,12 +1,12 @@
 @import './variables.css';
 
 .root {
+	box-sizing: border-box;
 	color: var(--color-text-primary);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
 }
 
-.root,
 .root * {
 	box-sizing: border-box;
 }
@@ -60,10 +60,6 @@
 	transform: translateX(calc(100% + 10px));
 }
 
-.open {
-	transform: translateX(0%);
-}
-
 .left.slideOut {
 	transition: transform ease-in-out var(--transition-duration);
 }
@@ -78,4 +74,8 @@
 
 .right.slideIn {
 	transition: transform ease-in-out var(--transition-duration);
+}
+
+.open {
+	transform: translateX(0%);
 }

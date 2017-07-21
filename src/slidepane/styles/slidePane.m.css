@@ -27,12 +27,24 @@
 
 .content { }
 
-.open { }
-
-.openFixed {
-	transform: translateX(0%);
+.title {
+	position: relative;
 }
 
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 35px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+}
+
+.close i {
+	font-size: 14px;
+}
 
 .leftFixed {
 	left: 0;
@@ -76,21 +88,8 @@
 	transition: transform ease-in-out var(--short-animation-duration);
 }
 
-.title {
-	position: relative;
-}
+.open { }
 
-.close {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 35px;
-	cursor: pointer;
-	font-size: 0;
-	border: none;
-	background: none;
-}
-
-.close i {
-	font-size: 14px;
+.openFixed {
+	transform: translateX(0%);
 }
