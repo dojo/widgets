@@ -111,9 +111,12 @@ export default class Slider extends SliderBase<SliderProperties> {
 			vertical = false,
 			verticalHeight = '200px'
 		} = this.properties;
-		const {
+		let {
 			value = min
 		} = this.properties;
+
+		value = value > max ? max : value;
+		value = value < min ? min : value;
 
 		const stateClasses = [
 			disabled ? css.disabled : null,
