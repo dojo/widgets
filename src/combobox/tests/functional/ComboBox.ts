@@ -31,7 +31,6 @@ registerSuite({
 			.findByCssSelector(`.${css.dropdown}`)
 				.getSize()
 				.then(({ height, width }: { height: number; width: number; }) => {
-					assert.strictEqual(width, inputWidth);
 					assert.isAbove(height, 0);
 				});
 	},
