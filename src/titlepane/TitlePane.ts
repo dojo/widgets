@@ -122,6 +122,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 					'aria-controls': this._contentId,
 					'aria-disabled': closeable ? null : 'true',
 					'aria-expanded': String(open),
+					classes: this.classes(css.titleButton),
 					id: this._titleId,
 					role: 'button',
 					tabIndex: closeable ? 0 : -1

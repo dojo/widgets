@@ -7,4 +7,5 @@ export const open: string;
 export const root: string;
 export const rootFixed: string;
 export const title: string;
+export const titleButton: string;
 export const titleFixed: string;

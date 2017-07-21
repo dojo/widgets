@@ -47,6 +47,7 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': null,
 					'aria-expanded': 'true',
+					classes: titlePane.classes(css.titleButton),
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: 0
@@ -97,6 +98,7 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': 'true',
 					'aria-expanded': 'false',
+					classes: titlePane.classes(css.titleButton),
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: -1

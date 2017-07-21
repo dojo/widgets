@@ -12,7 +12,7 @@
 	box-sizing: border-box;
 }
 
-.title > div {
+.titleButton {
 	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	color: var(--color-text-faded);
@@ -21,13 +21,13 @@
 	z-index: 1;
 }
 
-.title > div:focus {
+.titleButton:focus {
 	border-color: var(--color-highlight);
 	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 	outline: none;
 }
 
-.title > div:hover {
+.titleButton:hover {
 	background: var(--color-background-faded);
 	color: var(--color-text-primary);
 }
@@ -40,7 +40,7 @@
 	transition: margin-top ease-in-out var(--transition-duration);
 }
 
-.open .title > div {
+.open .titleButton {
 	color: var(--color-highlight);
 }
 
