@@ -19,45 +19,10 @@
 	background: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
-	box-sizing: border-box;
-	height: 100%;
-	position: fixed;
-	top: 0;
 }
 
 .content {
 	padding: calc(2 * var(--grid-base));
-}
-
-.left {
-	left: 0;
-	transform: translateX(calc(-100% - 10px))
-}
-
-.right {
-	right: 0;
-	transform: translateX(calc(100% + 10px));
-}
-
-.open {
-	transform: translateX(0%);
-}
-
-.close {
-	background: none;
-	border: none;
-	cursor: pointer;
-	font-size: 0;
-	position: absolute;
-	right: 35px;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.close:after {
-	content: '✕';
-	display: block;
-	font-size: 14px;
 }
 
 .title {
@@ -83,28 +48,34 @@
 	transform: translateY(-50%);
 }
 
-.close:after {
-	content: '✕';
-	display: block;
+.close i {
 	font-size: var(--font-size-title);
 }
 
+.left {
+	transform: translateX(calc(-100% - 10px));
+}
+
+.right {
+	transform: translateX(calc(100% + 10px));
+}
+
+.open {
+	transform: translateX(0%);
+}
+
 .left.slideOut {
-	transform: translateX(-100%) !important;
 	transition: transform ease-in-out var(--transition-duration);
 }
 
 .right.slideOut {
-	transform: translateX(100%) !important;
 	transition: transform ease-in-out var(--transition-duration);
 }
 
 .left.slideIn {
-	transform: translateX(0%) !important;
 	transition: transform ease-in-out var(--transition-duration);
 }
 
 .right.slideIn {
-	transform: translateX(0%) !important;
 	transition: transform ease-in-out var(--transition-duration);
 }

@@ -68,7 +68,16 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.pane, css.left, css.open, css.slideIn),
+				classes: widget.classes(
+					css.pane,
+					css.paneFixed,
+					css.left,
+					css.leftFixed,
+					css.open,
+					css.openFixed,
+					css.slideIn,
+					css.slideInFixed
+				),
 				styles: {
 					transform: '',
 					width: '320px'
@@ -103,7 +112,12 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.pane, css.left),
+				classes: widget.classes(
+					css.pane,
+					css.paneFixed,
+					css.left,
+					css.leftFixed
+				),
 				styles: {
 					transform: '',
 					width: '320px'
@@ -159,7 +173,16 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.pane, css.left, css.open, css.slideIn),
+				classes: widget.classes(
+					css.pane,
+					css.paneFixed,
+					css.left,
+					css.leftFixed,
+					css.open,
+					css.openFixed,
+					css.slideIn,
+					css.slideInFixed
+				),
 				styles: {
 					transform: '',
 					width: '320px'
@@ -191,7 +214,14 @@ registerSuite({
 				key: 'content',
 				afterCreate: widget.listener,
 				afterUpdate: widget.listener,
-				classes: widget.classes(css.pane, css.left, css.slideOut),
+				classes: widget.classes(
+					css.pane,
+					css.paneFixed,
+					css.left,
+					css.leftFixed,
+					css.slideOut,
+					css.slideOutFixed
+				),
 				styles: {
 					transform: '',
 					width: '320px'
@@ -489,9 +519,13 @@ registerSuite({
 					afterUpdate: widget.listener,
 					classes: widget.classes(
 						css.pane,
+						css.paneFixed,
 						css.left,
+						css.leftFixed,
 						open ? css.open : null,
-						transitionDone ? null : (open ? css.slideIn : css.slideOut)
+						open ? css.openFixed : null,
+						transitionDone ? null : (open ? css.slideIn : css.slideOut),
+						transitionDone ? null : (open ? css.slideInFixed : css.slideOutFixed)
 					),
 					styles: {
 						transform: '',
@@ -551,7 +585,16 @@ registerSuite({
 					key: 'content',
 					afterCreate: widget.listener,
 					afterUpdate: widget.listener,
-					classes: swipeState.classes || widget.classes(css.pane, css.left, css.open, css.slideIn),
+					classes: swipeState.classes || widget.classes(
+						css.pane,
+						css.paneFixed,
+						css.left,
+						css.leftFixed,
+						css.open,
+						css.openFixed,
+						css.slideIn,
+						css.slideInFixed
+					),
 					styles: swipeState.styles || {
 						transform: '',
 						width: '320px'
@@ -593,7 +636,14 @@ registerSuite({
 		});
 
 		widget.expectRender(expected(true, {
-			classes: widget.classes(css.pane, css.left, css.slideOut),
+			classes: widget.classes(
+				css.pane,
+				css.paneFixed,
+				css.left,
+				css.leftFixed,
+				css.slideOut,
+				css.slideOutFixed
+			),
 			styles: {
 				transform: 'translateX(-78.125%)',
 				width: '320px'
@@ -632,7 +682,16 @@ registerSuite({
 					key: 'content',
 					afterCreate: widget.listener,
 					afterUpdate: widget.listener,
-					classes: swipeState.classes || widget.classes(css.pane, css.right, css.open, css.slideIn),
+					classes: swipeState.classes || widget.classes(
+						css.pane,
+						css.paneFixed,
+						css.right,
+						css.rightFixed,
+						css.open,
+						css.openFixed,
+						css.slideIn,
+						css.slideInFixed
+					),
 					styles: swipeState.styles || {
 						transform: '',
 						width: '320px'
@@ -675,7 +734,14 @@ registerSuite({
 		});
 
 		widget.expectRender(expected(true, {
-			classes: widget.classes(css.pane, css.right, css.slideOut),
+			classes: widget.classes(
+				css.pane,
+				css.paneFixed,
+				css.right,
+				css.rightFixed,
+				css.slideOut,
+				css.slideOutFixed
+			),
 			styles: {
 				transform: 'translateX(62.5%)',
 				width: '320px'

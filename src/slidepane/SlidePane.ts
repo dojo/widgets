@@ -4,6 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
 import * as css from './styles/slidePane.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 import uuid from '@dojo/core/uuid';
 
 /**
@@ -52,6 +53,7 @@ const SWIPE_THRESHOLD = 5;
 export const SlidePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _content: HTMLElement;
 	private _initialX: number;
@@ -160,6 +162,14 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			!open && this._wasOpen ? css.slideOut : null
 		];
 
+		const fixedContentClasses = [
+			css.paneFixed,
+			open ? css.openFixed : null,
+			align === Align.left ? css.leftFixed : css.rightFixed,
+			this._slideIn || (open && !this._wasOpen) ? css.slideInFixed : null,
+			!open && this._wasOpen ? css.slideOutFixed : null
+		];
+
 		const contentStyles: {[key: string]: any} = {
 			transform: '',
 			width: width + 'px'
@@ -195,7 +205,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			}) : null,
 			v('div', {
 				key: 'content',
-				classes: this.classes(...contentClasses),
+				classes: this.classes(...contentClasses).fixed(...fixedContentClasses),
 				styles: contentStyles
 			}, [
 				title ? v('div', {
@@ -206,7 +216,12 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 					v('button', {
 						classes: this.classes(css.close),
 						onclick: this._onCloseClick
-					}, [ closeText ])
+					}, [
+						closeText,
+						v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon),
+							role: 'presentation', 'aria-hidden': 'true'
+						})
+					])
 				]) : null,
 				v('div', { classes: this.classes(css.content) }, this.children)
 			])

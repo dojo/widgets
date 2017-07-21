@@ -14,48 +14,66 @@
 	background: var(--underlay-background);
 }
 
-.pane {
+.paneFixed {
 	height: 100%;
 	position: fixed;
 	top: 0;
-	background-color: var(--component-background);
 	box-sizing: border-box;
+}
+
+.pane {
+	background-color: var(--component-background);
 }
 
 .content { }
 
-.left {
+.open { }
+
+.openFixed {
+	transform: translateX(0%);
+}
+
+
+.leftFixed {
 	left: 0;
 	transform: translateX(-100%)
 }
 
-.right {
+.rightFixed {
 	right: 0;
 	transform: translateX(100%);
 }
 
-.open {
-	transform: translateX(0%);
+.leftFixed.slideOutFixed {
+	transform: translateX(-100%) !important;
+}
+
+.rightFixed.slideOutFixed {
+	transform: translateX(100%) !important;
+}
+
+.leftFixed.slideInFixed {
+	transform: translateX(0%) !important;
+}
+
+.rightFixed.slideInFixed {
+	transform: translateX(0%) !important;
 }
 
 .left.slideOut {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(-100%) !important;
 }
 
 .right.slideOut {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(100%) !important;
 }
 
 .left.slideIn {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(0%) !important;
 }
 
 .right.slideIn {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(0%) !important;
 }
 
 .title {
@@ -73,8 +91,6 @@
 	background: none;
 }
 
-.close:after {
-	content: '✕';
-	display: block;
+.close i {
 	font-size: 14px;
 }
