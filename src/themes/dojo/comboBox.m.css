@@ -24,24 +24,31 @@
 .trigger {
 	appearance: none;
 	background-color: transparent;
-	border-bottom: 0;
-	border-left: var(--border-width) solid var(--color-border);
 	border-radius: 0;
-	border-right: 0;
-	border-top: 0;
+	border: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid var(--color-border);
 	bottom: var(--border-width);
 	color: var(--color-text-faded);
 	cursor: pointer;
 	display: block;
-	font-size: inherit;
-	font-size: var(--font-size-base);
+	font-size: 0;
 	line-height: var(--line-height-base);
 	outline: 0;
 	padding: var(--spacing-regular) calc(var(--spacing-regular) + 4);
 	position: absolute;
 	right: 0;
 	top: var(--border-width);
+	transition: border-color var(--transition-duration) var(--transition-easing);
 	z-index: 1;
+}
+
+.trigger i {
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
+.trigger:focus {
+	border-color: var(--color-highlight);
 }
 
 .dropdown {
@@ -54,7 +61,7 @@
 	transform: rotateX(90deg);
 	transition: all var(--transition-duration) var(--transition-easing);
 	width: 100%;
-	z-index: 2;
+	z-index: 10;
 }
 
 .open .dropdown {
@@ -87,15 +94,20 @@
 
 .clear {
 	background: none;
-	border: none;
+	border: var(--border-width) solid transparent;
 	color: var(--color-border);
 	cursor: pointer;
 	font-size: 0;
+	outline: none;
 	padding: 0;
 	position: absolute;
 	right: calc(var(--spacing-regular) * 6);
 	top: 50%;
 	transform: translateY(-50%);
+}
+
+.clear:focus {
+	border-color: var(--color-highlight);
 }
 
 .clear i {

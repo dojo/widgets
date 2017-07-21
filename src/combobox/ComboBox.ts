@@ -402,6 +402,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				readOnly,
 				onclick: this._onArrowClick
 			}, [
+				'open combo box',
 				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
 					role: 'presentation', 'aria-hidden': 'true'
 				})
