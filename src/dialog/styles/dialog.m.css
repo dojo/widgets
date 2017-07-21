@@ -42,8 +42,6 @@
 	background: none;
 }
 
-.close:after {
-	content: '✕';
-	display: block;
+.close i {
 	font-size: 14px;
 }

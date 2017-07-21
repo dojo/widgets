@@ -60,8 +60,7 @@
 	transform: translateY(-50%);
 }
 
-.close:after {
-	content: '✕';
-	display: block;
+.close i {
 	font-size: var(--font-size-title);
 }
+

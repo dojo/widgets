@@ -108,7 +108,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
+						v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon),
 							role: 'presentation', 'aria-hidden': 'true'
 						})
 					]) : null
