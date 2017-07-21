@@ -21,7 +21,7 @@ registerSuite({
 			.findByCssSelector(`.${css.trigger}`)
 				.click()
 				.end()
-			.findByCssSelector(`.${css.controls} inpu`)
+			.findByCssSelector(`.${css.controls} input`)
 				.getSize()
 					.then(({ width }: { width: number; }) => {
 						inputWidth = width;
@@ -54,7 +54,7 @@ registerSuite({
 				.click()
 				.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${css.controls} inpu`)
+			.findByCssSelector(`.${css.controls} input`)
 				.pressKeys(keys.ARROW_UP)
 				.end()
 			.sleep(DELAY)
