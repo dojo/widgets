@@ -120,6 +120,31 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.focused]);
 	},
 
+	'toggle attributes'() {
+		const checkbox = new Checkbox();
+		checkbox.__setProperties__({
+			checked: true,
+			mode: Mode.toggle,
+			offLabel: 'Off',
+			onLabel: 'On'
+		});
+		let vnode = <VNode> checkbox.__render__();
+
+		assert.strictEqual(vnode.children![0].children![0].properties!['aria-hidden'], 'true');
+		assert.isNull(vnode.children![0].children![2].properties!['aria-hidden']);
+
+		checkbox.__setProperties__({
+			checked: false,
+			mode: Mode.toggle,
+			offLabel: 'Off',
+			onLabel: 'On'
+		});
+		vnode = <VNode> checkbox.__render__();
+
+		assert.isNull(vnode.children![0].children![0].properties!['aria-hidden']);
+		assert.strictEqual(vnode.children![0].children![2].properties!['aria-hidden'], 'true');
+	},
+
 	events() {
 		let blurred = false,
 				changed = false,
