@@ -5,7 +5,7 @@ module.exports = function (grunt) {
 
 	var staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
 	var staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
-	var fontFiles = 'common/styles/fonts/*.{svg,ttf,woff}';
+	var fontFiles = [ 'common/styles/fonts/*.{svg,ttf,woff}', 'themes/dojo/fonts/*.{svg,ttf,woff}' ];
 
 	require('grunt-dojo2').initConfig(grunt, {
 		copy: {

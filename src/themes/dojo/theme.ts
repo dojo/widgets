@@ -3,6 +3,7 @@ import * as calendar from './calendar.m.css';
 import * as checkbox from './checkbox.m.css';
 import * as comboBox from './comboBox.m.css';
 import * as dialog from './dialog.m.css';
+import * as icons from './icons.m.css';
 import * as radio from './radio.m.css';
 import * as select from './select.m.css';
 import * as slidePane from './slidePane.m.css';
@@ -19,6 +20,7 @@ export default {
 	'dojo-checkbox': checkbox,
 	'dojo-comboBox': comboBox,
 	'dojo-dialog': dialog,
+	'dojo-icons': icons,
 	'dojo-radio': radio,
 	'dojo-select': select,
 	'dojo-slidePane': slidePane,
