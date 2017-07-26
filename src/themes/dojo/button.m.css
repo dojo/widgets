@@ -1,53 +1,65 @@
 @import './variables.css';
 
+.root, .root *, .root:before, .root:after { box-sizing: border-box; }
+
 .root {
-	background-color: var(--button-bg);
-	border: 1px solid var(--button-bg);
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
-	border-radius: var(--rounded-corners);
-	color: var(--button-color);
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	color: var(--color-highlight);
 	cursor: pointer;
-	font: var(--base-font);
-	font-weight: bold;
 	display: inline-block;
-	padding: var(--button-padding);
-	transition: all var(--short-animation-duration) ease;
+	font-size: var(--font-size-base);
+	font-weight: bold;
+	line-height: var(--line-height-base);
+	min-width: calc(var(--grid-base) * 20);
+	padding: var(--spacing-regular);
+	transition: all var(--transition-duration) var(--transition-easing);
 }
 
 .root:hover,
 .root:focus {
-	background-color: var(--button-hover-bg);
-	border-color: var(--button-hover-bg);
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 	outline: none;
 }
 
-.pressed::before {
-	border-bottom: 2px solid var(--button-color);
-	border-right: 2px solid var(--button-color);
-	box-sizing: border-box;
-	content: '';
-	display: inline-block;
-	height: 1em;
-	margin: -1em 0.5em 0 0;
-	transform: rotate(45deg);
-	width: 0.5em;
+.root:hover .addon,
+.root:focus .addon {
+	border-left-color: var(--color-highlight);
 }
 
-.popup::after {
-	border-bottom: 2px solid var(--button-color);
-	border-right: 2px solid var(--button-color);
-	box-sizing: border-box;
-	content: '';
-	display: inline-block;
-	height: 0.6em;
-	margin-left: 0.6em;
-	transform: translate(0, -35%) rotate(45deg);
-	width: 0.6em;
+.pressed {
+	background-color: var(--color-highlight);
+	border-color: var(--color-highlight);
+	color: var(--color-text-inverted);
+}
+
+.pressed .addon {
+	border-left-color: color(var(--color-highlight) saturation(+7%) lightness(+13%));
+}
+
+.popup {
+	padding-right: calc(var(--line-height-base) + 3 * var(--spacing-regular));
+	position: relative;
+}
+
+.addon {
+	border-left: var(--border-width) solid var(--color-border);
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 0;
+	width: calc(var(--line-height-base) + 2 * var(--spacing-regular)); /* square icon addons */
+	transition: border var(--transition-duration) var(--transition-easing);
 }
 
 .disabled,
 .disabled:hover {
-	background-color: var(--button-disabled-bg);
-	border-color: var(--button-disabled-bg);
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border);
+	box-shadow: none;
+	color: var(--color-text-faded);
 	cursor: default;
 }

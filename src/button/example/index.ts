@@ -38,19 +38,26 @@ export class App extends WidgetBase<WidgetProperties> {
 				}, [ 'Basic Button' ])
 			]),
 			v('div', { id: 'example-2' }, [
-				v('p', [ 'Disabled menu button:' ]),
+				v('p', [ 'Disabled submit button:' ]),
 				w(Button, {
 					key: 'b2',
 					theme: this._theme,
 					disabled: true,
-					popup: { expanded: false, id: 'fakeId' },
-					type: 'menu'
-				}, [ 'Open' ])
+					type: 'submit'
+				}, [ 'Submit' ])
 			]),
 			v('div', { id: 'example-3' }, [
-				v('p', [ 'Toggle Button' ]),
+				v('p', [ 'Popup button:' ]),
 				w(Button, {
 					key: 'b3',
+					theme: this._theme,
+					popup: { expanded: false, id: 'fakeId' }
+				}, [ 'Open' ])
+			]),
+			v('div', { id: 'example-4' }, [
+				v('p', [ 'Toggle Button' ]),
+				w(Button, {
+					key: 'b4',
 					theme: this._theme,
 					pressed: this._buttonPressed,
 					onClick: this.toggleButton

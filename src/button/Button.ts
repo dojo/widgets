@@ -3,6 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 import * as css from './styles/button.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -55,6 +56,7 @@ export interface ButtonProperties extends ThemeableProperties {
 export const ButtonBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class Button extends ButtonBase<ButtonProperties> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
@@ -112,6 +114,11 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			'aria-expanded': popup ? popup.expanded + '' : null,
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
 			'aria-describedby': describedBy
-		}, this.children);
+		}, [
+			...this.children,
+			popup ? v('i', { classes: this.classes(css.addon, iconCss.icon, iconCss.downIcon),
+				role: 'presentation', 'aria-hidden': 'true'
+			}) : null
+		]);
 	}
 }
