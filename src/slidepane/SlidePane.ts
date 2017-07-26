@@ -4,6 +4,8 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
 import * as css from './styles/slidePane.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
+import uuid from '@dojo/core/uuid';
 
 /**
  * Enum for left / right alignment
@@ -19,17 +21,21 @@ export const enum Align {
  * Properties that can be set on a SlidePane component
  *
  * @property align            The position of the pane on the screen (Align.left or Align.right)
+ * @property closeText        Hidden text used by screen readers to display for the close button
  * @property onOpen           Called when the pane opens
  * @property onRequestClose   Called when the pane is swiped closed or the underlay is clicked or tapped
  * @property open             Determines whether the pane is open or closed
+ * @property title            Title to display in the pane
  * @property underlay         Determines whether a semi-transparent background shows behind the pane
  * @property width            Width of the pane in pixels
  */
 export interface SlidePaneProperties extends ThemeableProperties {
 	align?: Align;
+	closeText?: string;
 	onOpen?(): void;
 	onRequestClose?(): void;
 	open?: boolean;
+	title?: string;
 	underlay?: boolean;
 	width?: number;
 };
@@ -37,7 +43,7 @@ export interface SlidePaneProperties extends ThemeableProperties {
 /**
  * The default width of the slide pane
  */
-const DEFAULT_WIDTH = 256;
+const DEFAULT_WIDTH = 320;
 
 /**
  * The minimum swipe delta in px required to be counted as a swipe and not a touch / click
@@ -47,13 +53,20 @@ const SWIPE_THRESHOLD = 5;
 export const SlidePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _content: HTMLElement;
 	private _initialX: number;
 	private _slideIn: boolean;
 	private _swiping: boolean;
+	private _titleId = uuid();
 	private _transform: number;
 	private _wasOpen: boolean;
+
+	private _onCloseClick() {
+		const { onRequestClose } = this.properties;
+		onRequestClose && onRequestClose();
+	}
 
 	private _onSwipeStart(event: MouseEvent & TouchEvent) {
 		this._swiping = true;
@@ -133,18 +146,28 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	render(): DNode {
 		const {
 			align = Align.left,
+			closeText = 'close pane',
 			onOpen,
 			open = false,
+			title = '',
 			underlay = false,
 			width = DEFAULT_WIDTH
 		} = this.properties;
 
 		const contentClasses = [
-			css.content,
+			css.pane,
 			align === Align.left ? css.left : css.right,
 			open ? css.open : null,
 			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
 			!open && this._wasOpen ? css.slideOut : null
+		];
+
+		const fixedContentClasses = [
+			css.paneFixed,
+			open ? css.openFixed : null,
+			align === Align.left ? css.leftFixed : css.rightFixed,
+			this._slideIn || (open && !this._wasOpen) ? css.slideInFixed : null,
+			!open && this._wasOpen ? css.slideOutFixed : null
 		];
 
 		const contentStyles: {[key: string]: any} = {
@@ -165,6 +188,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		this._slideIn = false;
 
 		return v('div', {
+			'aria-labelledby': this._titleId,
 			classes: this.classes(css.root),
 			onmousedown: this._onSwipeStart,
 			onmousemove: this._onSwipeMove,
@@ -181,9 +205,26 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			}) : null,
 			v('div', {
 				key: 'content',
-				classes: this.classes(...contentClasses),
+				classes: this.classes(...contentClasses).fixed(...fixedContentClasses),
 				styles: contentStyles
-			}, this.children)
+			}, [
+				title ? v('div', {
+					classes: this.classes(css.title),
+					key: 'title'
+				}, [
+					v('div', { id: this._titleId }, [ title ]),
+					v('button', {
+						classes: this.classes(css.close),
+						onclick: this._onCloseClick
+					}, [
+						closeText,
+						v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon),
+							role: 'presentation', 'aria-hidden': 'true'
+						})
+					])
+				]) : null,
+				v('div', { classes: this.classes(css.content) }, this.children)
+			])
 		]);
 	}
 }

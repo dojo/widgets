@@ -1,50 +1,81 @@
 @import './variables.css';
 
-.underlayVisible {
-	background: var(--underlay-bg);
+.root {
+	box-sizing: border-box;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
 }
 
-.content {
-	font: var(--base-font);
-	height: 100%;
-	position: fixed;
-	top: 0;
-	background-color: var(--title-bar-bg);
-	color: var(--title-bar-color);
-	padding: var(--container-padding);
+.root * {
 	box-sizing: border-box;
 }
 
+.underlayVisible {
+	background: var(--color-box-shadow-strong);
+}
+
+.pane {
+	background: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
+}
+
+.content {
+	padding: calc(2 * var(--grid-base));
+}
+
+.title {
+	border-bottom: var(--border-thin) solid var(--color-border);
+	box-sizing: border-box;
+	flex: 0 0 auto;
+	font-size: var(--font-size-title);
+	height: calc(7 * var(--grid-base));
+	padding: calc(2 * var(--grid-base));
+	position: relative;
+	text-align: left;
+}
+
+.close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 0;
+	padding: var(--grid-base);
+	position: absolute;
+	right: calc(2 * var(--grid-base));
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.close i {
+	font-size: var(--font-size-title);
+}
+
 .left {
-	left: 0;
-	transform: translateX(-100%)
+	transform: translateX(calc(-100% - 10px));
 }
 
 .right {
-	right: 0;
-	transform: translateX(100%);
+	transform: translateX(calc(100% + 10px));
+}
+
+.left.slideOut {
+	transition: transform ease-in-out var(--transition-duration);
+}
+
+.right.slideOut {
+	transition: transform ease-in-out var(--transition-duration);
+}
+
+.left.slideIn {
+	transition: transform ease-in-out var(--transition-duration);
+}
+
+.right.slideIn {
+	transition: transform ease-in-out var(--transition-duration);
 }
 
 .open {
 	transform: translateX(0%);
-}
-
-.left.slideOut {
-	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(-100%) !important;
-}
-
-.right.slideOut {
-	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(100%) !important;
-}
-
-.left.slideIn {
-	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(0%) !important;
-}
-
-.right.slideIn {
-	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(0%) !important;
 }

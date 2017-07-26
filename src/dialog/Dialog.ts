@@ -51,8 +51,12 @@ export default class Dialog extends DialogBase<DialogProperties> {
 	private _wasOpen: boolean;
 
 	private _onCloseClick() {
-		const { closeable = true } = this.properties;
-		closeable && this.properties.onRequestClose && this.properties.onRequestClose();
+		const {
+			closeable = true,
+			onRequestClose
+		} = this.properties;
+
+		closeable && onRequestClose && onRequestClose();
 	}
 
 	private _onUnderlayClick() {

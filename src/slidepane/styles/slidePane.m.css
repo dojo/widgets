@@ -14,44 +14,82 @@
 	background: var(--underlay-background);
 }
 
-.content {
+.paneFixed {
 	height: 100%;
 	position: fixed;
 	top: 0;
-	background-color: var(--component-background);
 	box-sizing: border-box;
 }
 
-.left {
+.pane {
+	background-color: var(--component-background);
+}
+
+.content { }
+
+.title {
+	position: relative;
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 35px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+}
+
+.close i {
+	font-size: 14px;
+}
+
+.leftFixed {
 	left: 0;
 	transform: translateX(-100%)
 }
 
-.right {
+.rightFixed {
 	right: 0;
 	transform: translateX(100%);
 }
 
-.open {
-	transform: translateX(0%);
+.leftFixed.slideOutFixed {
+	transform: translateX(-100%) !important;
+}
+
+.rightFixed.slideOutFixed {
+	transform: translateX(100%) !important;
+}
+
+.leftFixed.slideInFixed {
+	transform: translateX(0%) !important;
+}
+
+.rightFixed.slideInFixed {
+	transform: translateX(0%) !important;
 }
 
 .left.slideOut {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(-100%) !important;
 }
 
 .right.slideOut {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(100%) !important;
 }
 
 .left.slideIn {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(0%) !important;
 }
 
 .right.slideIn {
 	transition: transform ease-in-out var(--short-animation-duration);
-	transform: translateX(0%) !important;
+}
+
+.open { }
+
+.openFixed {
+	transform: translateX(0%);
 }
