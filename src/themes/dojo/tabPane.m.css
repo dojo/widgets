@@ -1,8 +1,14 @@
 @import './variables.css';
 
+:root {
+	--tab-width: calc(var(--grid-base) * 16);
+}
+
 .root {
-	font: var(--base-font);
 	box-sizing: border-box;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
 }
 
 .root * {
@@ -10,72 +16,66 @@
 }
 
 .tabButton {
-	border-top: var(--border-thick) solid transparent;
-	border-left: var(--border-thin) solid transparent;
-	border-right: var(--border-thin) solid transparent;
-	text-align: center;
-	padding: 14px 28px 14px 28px;
-	display: inline-block;
-	vertical-align: top;
-	width: var(--tab-width);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	border-bottom: var(--border-width) solid var(--color-border);
+	border-left: var(--border-width) solid transparent;
+	border-right: var(--border-width) solid transparent;
+	border-top: var(--border-width) solid transparent;
+	color: var(--color-text-faded);
 	cursor: pointer;
-	position: relative;
-	top: 1px;
-	z-index: 1;
-	background: var(--dojo-white);
+	display: inline-block;
 	outline: none;
+	overflow: hidden;
+	padding: 15px 0;
+	position: relative;
+	text-align: center;
+	text-overflow: ellipsis;
+	vertical-align: top;
+	white-space: nowrap;
+	width: var(--tab-width);
+}
+
+.tabButton:hover:not(.disabledTabButton):not(.activeTabButton) {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-background-faded);
+	color: var(--color-text-primary);
 }
 
 .tabButton:focus:not(.disabledTabButton) {
-	font-weight: bold;
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 }
 
 .activeTabButton {
-	border-top-color: var(--dojo-blue);
-	border-left-color: var(--dojo-shade-gray);
-	border-right-color: var(--dojo-shade-gray);
-	z-index: 2;
+	border-bottom-color: var(--color-highlight);
+	color: var(--color-highlight);
 }
 
 .disabledTabButton {
-	font-style: italic;
+	color: var(--color-border);
 	cursor: default;
-	color: var(--dojo-gray);
 }
 
 .close {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 5px;
+	background: none;
+	border: none;
 	cursor: pointer;
 	font-size: 0;
-	border: none;
-	background: none;
 	outline: none;
 	padding: 1px 3px;
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .close:after {
 	content: '✕';
 	display: block;
-	font-size: 14px;
-}
-
-.close:focus {
-	box-shadow: var(--input-focus-shadow);
+	font-size: var(--font-size-small);
 }
 
 .tab {
 	position: relative;
-	padding: var(--container-padding);
-	border: var(--border-thin) solid var(--dojo-shade-gray);
-	z-index: 1;
-	background: var(--dojo-white);
-	min-height: var(--min-container-height);
 }
 
 .alignLeft .tabs {
@@ -90,32 +90,16 @@
 }
 
 .alignLeft .tabButton {
-	border-top: var(--border-thin) solid transparent;
-	border-left: var(--border-thick) solid transparent;
-	border-bottom: var(--border-thin) solid transparent;
-	border-right: none;
+	border-bottom: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid transparent;
+	border-right: var(--border-width) solid var(--color-border);
+	border-top: var(--border-width) solid transparent;
 	display: block;
-	top: 0;
-	left: 1px;
 }
 
 .alignLeft .activeTabButton {
-	border-top-color: var(--dojo-shade-gray);
-	border-left-color: var(--dojo-blue);
-	border-bottom-color: var(--dojo-shade-gray);
-}
-
-.alignBottom .tabButton {
-	border-top: none;
-	border-bottom: var(--border-thick) solid transparent;
-	top: -1px;
-	z-index: 0;
-}
-
-.alignBottom .activeTabButton {
-	border-top-color: var(--dojo-shade-gray);
-	border-bottom-color: var(--dojo-blue);
-	z-index: 1;
+	border-right-color: var(--color-highlight);
+	color: var(--color-highlight);
 }
 
 .alignRight .tabs {
@@ -130,19 +114,24 @@
 }
 
 .alignRight .tabButton {
-	border-top: var(--border-thin) solid transparent;
-	border-right: var(--border-thick) solid transparent;
-	border-bottom: var(--border-thin) solid transparent;
-	border-left: none;
+	border-bottom: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid transparent;
+	border-top: var(--border-width) solid transparent;
 	display: block;
-	top: 0;
-	left: -1px;
-	z-index: 0;
 }
 
 .alignRight .activeTabButton {
-	border-top-color: var(--dojo-shade-gray);
-	border-right-color: var(--dojo-blue);
-	border-bottom-color: var(--dojo-shade-gray);
-	z-index: 1;
+	border-left-color: var(--color-highlight);
+	color: var(--color-highlight);
+}
+
+.alignBottom .tabButton {
+	border-bottom-color: transparent;
+	border-top-color: var(--color-border);
+}
+
+.alignBottom .activeTabButton {
+	border-bottom-color: transparent;
+	border-top-color: var(--color-highlight);
 }
