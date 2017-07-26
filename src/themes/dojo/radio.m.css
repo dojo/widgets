@@ -1,16 +1,22 @@
 @import './variables.css';
 
+.root, .root * { box-sizing: border-box; }
+
 .root {
 	display: block;
-	font: var(--base-font);
-	margin-bottom: var(--line-spacing);
-	padding: 0.25em 0 0.25em 2em;
+	padding: 0 0 0 calc(var(--grid-base) * 3);
 	position: relative;
+}
+
+.root span {
+	color: var(--color-text-faded);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	transition: color var(--transition-duration) var(--transition-easing);
 }
 
 .input {
 	appearance: none;
-	border-radius: 50%;
 	height: 100%;
 	left: 0;
 	margin: 0;
@@ -21,15 +27,13 @@
 }
 
 .input:focus {
-	border-color: var(--dojo-light-blue);
-	box-shadow: var(--input-focus-shadow);
 	outline: none;
 }
 
 .inputWrapper {
 	left: 0;
 	position: absolute;
-	top: 0;
+	top: calc(var(--grid-base) / 2);
 }
 
 .inputWrapper::before,
@@ -38,23 +42,37 @@
 	box-sizing: border-box;
 	content: '';
 	display: block;
+	transition: all var(--transition-duration) var(--transition-easing);
 }
 
 .inputWrapper::before {
-	border: 2px solid var(--input-highlight-color);
-	height: 1.5em;
-	width: 1.5em;
+	border: var(--border-width) solid var(--color-border-strong);
+	height: calc(var(--grid-base) * 2);
+	width: calc(var(--grid-base) * 2);
 }
 
 .inputWrapper::after {
-	background-color: var(--input-highlight-color);
-	height: calc(1.5em - 6px);
-	left: 3px;
+	background-color: var(--color-border-strong);
+	height: var(--grid-base);
+	left: calc(var(--grid-base) / 2);
 	position: absolute;
-	top: 3px;
+	top: calc(var(--grid-base) / 2);
 	transform: scale(0);
-	transition: all var(--short-animation-duration) var(--short-animation-easing);
-	width: calc(1.5em - 6px);
+	width: var(--grid-base);
+}
+
+/* focus styles */
+.focused span {
+	color: var(--color-highlight);
+}
+
+.focused .inputWrapper:before {
+	border: var(--border-width-emphasized) solid var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+}
+
+.focused .inputWrapper:after {
+	background-color: var(--color-highlight);
 }
 
 /* checked style */
@@ -65,13 +83,13 @@
 /* disabled and readonly styles */
 .disabled .inputWrapper::before,
 .readonly .inputWrapper::before {
-	border-color: var(--input-border-color);
+	border-color: var(--color-border);
+	background-color: var(--color-background-faded);
 }
 
 /* required style, only applies to inputs with a label */
 .required span::after {
 	content: '*';
-	color: var(--dojo-error-color);
 }
 
 /* invalid style */

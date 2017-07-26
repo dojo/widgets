@@ -56,10 +56,20 @@ export const RadioBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Radio extends RadioBase<RadioProperties> {
-	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	private _focused = false;
+
+	private _onBlur (event: FocusEvent) {
+		this._focused = false;
+		this.properties.onBlur && this.properties.onBlur(event);
+		this.invalidate();
+	}
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	private _onFocus (event: FocusEvent) {
+		this._focused = true;
+		this.properties.onFocus && this.properties.onFocus(event);
+		this.invalidate();
+	}
 	private _onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
 	private _onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
 	private _onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
@@ -83,6 +93,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 		const stateClasses = [
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
+			this._focused ? css.focused : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
