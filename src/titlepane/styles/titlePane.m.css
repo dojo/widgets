@@ -11,6 +11,8 @@
 
 .root { }
 
+.open { }
+
 .titleFixed {
 	position: relative;
 	z-index: 1;
@@ -29,3 +31,7 @@
 .content {
 	transition: margin-top ease-in-out var(--short-animation-duration);
 }
+
+.arrow { }
+
+.titleButton { }

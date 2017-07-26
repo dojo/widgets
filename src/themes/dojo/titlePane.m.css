@@ -1,30 +1,55 @@
 @import './variables.css';
 
 .root {
-	overflow: hidden;
 	box-sizing: border-box;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	overflow: hidden;
 }
 
 .root * {
 	box-sizing: border-box;
 }
 
-.title {
-	background-color: var(--title-bar-bg);
-	border-color: var(--title-bar-bg);
-	border-style: solid;
-	border-width: var(--border-thin);
-	color: var(--title-bar-color);
-	font-size: var(--title-bar-font-size);
-	padding: var(--header-padding);
+.titleButton {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	color: var(--color-text-faded);
+	padding: var(--grid-base) var(--grid-base) var(--grid-base) calc(var(--grid-base) * 4);
 	position: relative;
 	z-index: 1;
 }
 
+.titleButton:focus {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+	outline: none;
+}
+
+.titleButton:hover {
+	background: var(--color-background-faded);
+	color: var(--color-text-primary);
+}
+
 .content {
-	border-right: var(--border-thin) solid var(--title-bar-bg);
-	border-bottom: var(--border-thin) solid var(--title-bar-bg);
-	border-left: var(--border-thin) solid var(--title-bar-bg);
-	padding: var(--container-padding);
-	transition: margin-top ease-in-out var(--short-animation-duration);
+	border-bottom: var(--border-width) solid var(--color-border);
+	border-left: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid var(--color-border);
+	padding: var(--grid-base);
+	transition: margin-top ease-in-out var(--transition-duration);
+}
+
+.open .titleButton {
+	color: var(--color-highlight);
+}
+
+.arrow {
+	position: absolute;
+	left: 8px;
+	top: 12px;
+}
+
+.open .arrow {
+	top: 10px;
 }

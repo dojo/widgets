@@ -5,6 +5,7 @@ import { compareProperty } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
 import TitlePane, { TitlePaneProperties } from '../../TitlePane';
 import * as css from '../../styles/titlePane.m.css';
+import * as iconCss from '../../../common/styles/icons.m.css';
 import { Keys } from '../../../common/util';
 
 const isNonEmptyString = compareProperty((value: any) => {
@@ -33,7 +34,7 @@ registerSuite({
 		});
 
 		titlePane.expectRender(v('div', {
-			classes: titlePane.classes(css.root, css.rootFixed)
+			classes: titlePane.classes(css.root, css.open, css.rootFixed)
 		}, [
 			v('div', {
 				'aria-level': null,
@@ -46,10 +47,22 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': null,
 					'aria-expanded': 'true',
+					classes: titlePane.classes(css.titleButton),
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: 0
-				}, [ 'test' ])
+				}, [
+					v('i', {
+						classes: titlePane.classes(
+							css.arrow,
+							iconCss.icon,
+							iconCss.downIcon
+						),
+						role: 'presentation',
+						'aria-hidden': 'true'
+					}),
+					'test'
+				])
 			]),
 			v('div', {
 				'aria-hidden': null,
@@ -85,10 +98,22 @@ registerSuite({
 					'aria-controls': isNonEmptyString,
 					'aria-disabled': 'true',
 					'aria-expanded': 'false',
+					classes: titlePane.classes(css.titleButton),
 					id: <any> isNonEmptyString,
 					role: 'button',
 					tabIndex: -1
-				}, [ 'test' ])
+				}, [
+					v('i', {
+						classes: titlePane.classes(
+							css.arrow,
+							iconCss.icon,
+							iconCss.rightIcon
+						),
+						role: 'presentation',
+						'aria-hidden': 'true'
+					}),
+					'test'
+				])
 			]),
 			v('div', {
 				'aria-hidden': 'true',
