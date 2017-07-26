@@ -218,7 +218,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						v('i', { classes: this.classes(iconCss.icon, iconCss.timesIcon),
+						v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
 							role: 'presentation', 'aria-hidden': 'true'
 						})
 					])
