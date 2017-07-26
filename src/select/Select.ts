@@ -250,7 +250,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		});
 	}
 
-	renderNativeSelect(): DNode {
+	protected renderNativeSelect(): DNode {
 		const {
 			describedBy,
 			disabled,
@@ -288,7 +288,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				onfocus: this._onFocus,
 				onkeydown: this._onKeyDown
 			}, optionNodes),
-			v('span', { classes: this.classes(css.nativeArrow) }, [
+			multiple ? null : v('span', { classes: this.classes(css.arrow) }, [
 				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
 					role: 'presentation', 'aria-hidden': 'true'
 				})
@@ -296,7 +296,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		]);
 	}
 
-	renderCustomMultiSelect(): DNode {
+	protected renderCustomMultiSelect(): DNode {
 		const {
 			_focusedIndex
 		} = this;
@@ -327,7 +327,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		]);
 	}
 
-	renderCustomSelect(): DNode {
+	protected renderCustomSelect(): DNode {
 		const {
 			describedBy,
 			disabled,
@@ -350,7 +350,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			classes: this.classes(css.inputWrapper, _open ? css.open : null)
 		}, [
 			v('button', {
-				classes: this.classes(css.trigger, css.input),
+				classes: this.classes(css.trigger),
 				disabled,
 				'aria-controls': _selectId,
 				'aria-owns': _selectId,
@@ -362,9 +362,12 @@ export default class Select extends SelectBase<SelectProperties> {
 				onclick: this._onTriggerClick,
 				onfocus: this._onFocus,
 				onkeydown: this._onListboxKeyDown
-			}, [
-				selectedOption ? selectedOption.label : '',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon) })
+			}, [ selectedOption ? selectedOption.label : '' ]),
+			v('span', { classes: this.classes(css.arrow) }, [
+				v('i', {
+					classes: this.classes(iconCss.icon, iconCss.downIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				})
 			]),
 			v('div', {
 				role: 'listbox',
@@ -378,7 +381,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		]);
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		const {
 			disabled,
 			formId,

@@ -4,19 +4,17 @@
 
 .inputWrapper {
 	display: inline-block;
-	perspective: 300px;
 	position: relative;
 }
 
 /* custom input styles */
 .trigger {
+	background: var(--component-background);
+	border: 1px solid var(--component-color);
 	font-size: inherit;
 	min-width: 200px;
-	padding: 0.75em 3.5em 0.75em 1em;
 	position: relative;
 	text-align: left;
-	border: 1px solid var(--component-color);
-	background: var(--component-background);
 }
 
 .trigger i {
@@ -60,7 +58,8 @@
 
 .dropdown .focused,
 .input:focus .focused {
-	background-color: var(--selected-color);
+	background-color: var(--selected-background);
+	color: var(--selected-color);
 }
 
 .selected { }
@@ -68,6 +67,8 @@
 /* native input styles */
 .input {
 	appearance: none;
+	background: var(--component-background);
+	border: 1px solid var(--component-color);
 	border-radius: 0;
 	cursor: pointer;
 	display: block;
@@ -76,8 +77,6 @@
 	max-width: 100%;
 	padding: 2px 4px;
 	transition: border var(--short-animation-duration) ease;
-	border: 1px solid var(--component-color);
-	background: var(--component-background);
 	width: 200px;
 }
 
@@ -85,7 +84,7 @@
 	border-color: var(--selected-background);
 }
 
-.nativeArrow {
+.arrow {
 	bottom: 0;
 	pointer-events: none;
 	position: absolute;
@@ -94,7 +93,7 @@
 	width: 1.5em;
 }
 
-.nativeArrow i {
+.arrow i {
 	position: absolute;
 	right: 4px;
 	z-index: 1;
@@ -102,7 +101,7 @@
 }
 
 
-.input:focus ~ .nativeArrow {
+.input:focus ~ .arrow {
 	color: var(--selected-background);
 }
 
@@ -115,14 +114,14 @@
 .invalid .input {
 	border-color: var(--error-color);
 }
-.invalid .nativeArrow {
+.invalid .arrow {
 	background-color: var(--error-color);
 }
 
 .valid .input {
 	border-color: var(--success-color);
 }
-.valid .nativeArrow {
+.valid .arrow {
 	background-color: var(--success-color);
 }
 
@@ -133,8 +132,4 @@
 
 .multiselect .input {
 	padding: 0;
-}
-
-.multiselect .nativeArrow {
-	display: none;
 }
