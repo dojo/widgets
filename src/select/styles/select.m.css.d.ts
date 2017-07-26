@@ -8,7 +8,7 @@ export const disabledOption: string;
 export const focused: string;
 export const input: string;
 export const selected: string;
-export const nativeArrow: string;
+export const arrow: string;
 export const disabled: string;
 export const readonly: string;
 export const invalid: string;

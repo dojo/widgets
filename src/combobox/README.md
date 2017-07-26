@@ -162,5 +162,5 @@ The following CSS classes are used to style the `ComboBox` widget and should be 
 - `readOnly`: Applied to both the input and optional label when the widget is read-only
 - `required`: Applied to both the input and optional label when the widget is required
 - `root`: Applied to the top-level wrapper node
-- `timesIcon`: Applied to the clear icon
+- `closeIcon`: Applied to the clear icon
 - `trigger`: Applied to button containing the down arrow

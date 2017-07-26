@@ -1,21 +1,23 @@
 @font-face {
-  font-family: 'dojo2';
+  font-family: 'dojo2BaseTheme';
   src:
-    url('./fonts/dojo2.ttf?fkcsox') format('truetype'),
-    url('./fonts/dojo2.woff?fkcsox') format('woff'),
-    url('./fonts/dojo2.svg?fkcsox#dojo2') format('svg');
+    url('./fonts/dojo2BaseTheme.ttf?nocf9g') format('truetype'),
+    url('./fonts/dojo2BaseTheme.woff?nocf9g') format('woff'),
+    url('./fonts/dojo2BaseTheme.svg?nocf9g#dojo2') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 .icon {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'dojo2' !important;
+  font-family: 'dojo2BaseTheme' !important;
   speak: none;
+  font-size: inherit;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
+  line-height: inherit;
 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
@@ -23,71 +25,71 @@
 }
 
 .plusIcon:before {
-  content: "\f067";
+  content: "\e145";
 }
 .minusIcon:before {
-  content: "\f068";
+  content: "\e15b";
 }
 .checkIcon:before {
-  content: "\f00c";
+  content: "\e5ca";
 }
 .closeIcon:before {
-  content: "\f00d";
+  content: "\e5cd";
 }
 .leftIcon:before {
-  content: "\f053";
+  content: "\e314";
 }
 .rightIcon:before {
-  content: "\f054";
+  content: "\e315";
 }
 .upIcon:before {
-  content: "\f077";
+  content: "\e316";
 }
 .downIcon:before {
-  content: "\f078";
+  content: "\e313";
 }
 .upAltIcon:before {
-  content: "\f0d8";
+  content: "\e5c7";
 }
 .downAltIcon:before {
-  content: "\f0d7";
+  content: "\e5c5";
 }
 .searchIcon:before {
-  content: "\f002";
+  content: "\e8b6";
 }
 .barsIcon:before {
-  content: "\f0c9";
+  content: "\e5d2";
 }
 .settingsIcon:before {
-  content: "\f013";
+  content: "\e8b8";
 }
 .alertIcon:before {
-  content: "\f06a";
+  content: "\e002";
 }
 .helpIcon:before {
-  content: "\f059";
+  content: "\e887";
 }
 .infoIcon:before {
-  content: "\f05a";
+  content: "\e88e";
 }
 .phoneIcon:before {
-  content: "\f095";
+  content: "\e0cd";
 }
 .editIcon:before {
-  content: "\f040";
+  content: "\e254";
 }
 .dateIcon:before {
-  content: "\f133";
+  content: "\e916";
 }
 .linkIcon:before {
-  content: "\f127";
+  content: "\e157";
 }
 .locationIcon:before {
-  content: "\f041";
+  content: "\e8b4";
 }
 .secureIcon:before {
-  content: "\f023";
+  content: "\e899";
 }
 .mailIcon:before {
-  content: "\f0e0";
+  content: "\e0e1";
 }
