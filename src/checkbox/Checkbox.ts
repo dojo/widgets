@@ -70,15 +70,47 @@ export const CheckboxBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Checkbox extends CheckboxBase<CheckboxProperties> {
-	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
+	private _focused = false;
+	private _onBlur (event: FocusEvent) {
+		this._focused = false;
+		this.properties.onBlur && this.properties.onBlur(event);
+		this.invalidate();
+	}
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
+	private _onFocus (event: FocusEvent) {
+		this._focused = true;
+		this.properties.onFocus && this.properties.onFocus(event);
+		this.invalidate();
+	}
 	private _onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
 	private _onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
 	private _onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+
+	protected renderToggle(): DNode[] {
+		const {
+			checked,
+			mode,
+			onLabel,
+			offLabel
+		} = this.properties;
+
+		return mode === Mode.toggle ? [
+			offLabel ? v('div', {
+				classes: this.classes(css.offLabel),
+				'aria-hidden': checked ? 'true' : null
+			}, [ offLabel ]) : null,
+			v('div', {
+				classes: this.classes(css.toggleSwitch)
+			}),
+			onLabel ? v('div', {
+				classes: this.classes(css.onLabel),
+				'aria-hidden': checked ? null : 'true'
+			}, [ onLabel ]) : null
+		] : [];
+	}
 
 	protected render(): DNode {
 		const {
@@ -90,8 +122,6 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			label,
 			mode,
 			name,
-			offLabel,
-			onLabel,
 			readOnly,
 			required,
 			value
@@ -101,6 +131,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			mode === Mode.toggle ? css.toggle : null,
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
+			this._focused ? css.focused : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
@@ -109,14 +140,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		const children = [
 			v('div', { classes: this.classes(css.inputWrapper) }, [
-				mode === Mode.toggle ? v('div', {
-					classes: this.classes(css.onLabel),
-					'aria-hidden': checked ? null : 'true'
-				}, [ onLabel || null ]) : null,
-				mode === Mode.toggle ? v('div', {
-					classes: this.classes(css.offLabel),
-					'aria-hidden': checked ? 'true' : null
-				}, [ offLabel || null ]) : null,
+				...this.renderToggle(),
 				v('input', {
 					classes: this.classes(css.input),
 					checked,

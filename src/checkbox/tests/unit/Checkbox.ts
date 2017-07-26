@@ -105,6 +105,46 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.invalid]);
 	},
 
+	'focused class'() {
+		const radio = new Checkbox();
+		let vnode = <VNode> radio.__render__();
+
+		assert.isUndefined(vnode.properties!.classes![css.focused]);
+
+		(<any> radio)._onFocus(<FocusEvent> {});
+		vnode = <VNode> radio.__render__();
+		assert.isTrue(vnode.properties!.classes![css.focused]);
+
+		(<any> radio)._onBlur(<FocusEvent> {});
+		vnode = <VNode> radio.__render__();
+		assert.isFalse(vnode.properties!.classes![css.focused]);
+	},
+
+	'toggle attributes'() {
+		const checkbox = new Checkbox();
+		checkbox.__setProperties__({
+			checked: true,
+			mode: Mode.toggle,
+			offLabel: 'Off',
+			onLabel: 'On'
+		});
+		let vnode = <VNode> checkbox.__render__();
+
+		assert.strictEqual(vnode.children![0].children![0].properties!['aria-hidden'], 'true');
+		assert.isNull(vnode.children![0].children![2].properties!['aria-hidden']);
+
+		checkbox.__setProperties__({
+			checked: false,
+			mode: Mode.toggle,
+			offLabel: 'Off',
+			onLabel: 'On'
+		});
+		vnode = <VNode> checkbox.__render__();
+
+		assert.isNull(vnode.children![0].children![0].properties!['aria-hidden']);
+		assert.strictEqual(vnode.children![0].children![2].properties!['aria-hidden'], 'true');
+	},
+
 	events() {
 		let blurred = false,
 				changed = false,
