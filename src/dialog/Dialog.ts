@@ -5,6 +5,7 @@ import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 
 import * as css from './styles/dialog.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 import * as animations from '../common/styles/animations.m.css';
 
 /**
@@ -46,6 +47,7 @@ export interface DialogProperties extends ThemeableProperties {
 export const DialogBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class Dialog extends DialogBase<DialogProperties> {
 	private _titleId = uuid();
 	private _wasOpen: boolean;
@@ -98,15 +100,18 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			}, [
 				v('div', {
 					classes: this.classes(css.title),
-					id: this._titleId,
 					key: 'title'
 				}, [
-					title,
+					v('div', { id: this._titleId }, [ title ]),
 					closeable ? v('button', {
 						classes: this.classes(css.close),
-						innerHTML: closeText,
 						onclick: this._onCloseClick
-					}) : null
+					}, [
+						closeText,
+						v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+							role: 'presentation', 'aria-hidden': 'true'
+						})
+					]) : null
 				]),
 				v('div', {
 					classes: this.classes(css.content),
