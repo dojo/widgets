@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { v } from '@dojo/widget-core/d';
 import { VNode } from '@dojo/interfaces/vdom';
 import Slider from '../../Slider';
@@ -136,62 +137,62 @@ registerSuite({
 	},
 
 	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				input = false,
-				keydown = false,
-				keypress = false,
-				keyup = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+		const onBlur = sinon.spy();
+		const onChange = sinon.spy();
+		const onClick = sinon.spy();
+		const onFocus = sinon.spy();
+		const onInput = sinon.spy();
+		const onKeyDown = sinon.spy();
+		const onKeyPress = sinon.spy();
+		const onKeyUp = sinon.spy();
+		const onMouseDown = sinon.spy();
+		const onMouseUp = sinon.spy();
+		const onTouchStart = sinon.spy();
+		const onTouchEnd = sinon.spy();
+		const onTouchCancel = sinon.spy();
 
 		const slider = new Slider();
 		slider.__setProperties__({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onInput: () => { input = true; },
-			onKeyDown: () => { keydown = true; },
-			onKeyPress: () => { keypress = true; },
-			onKeyUp: () => { keyup = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+			onBlur,
+			onChange,
+			onClick,
+			onInput,
+			onFocus,
+			onKeyDown,
+			onKeyPress,
+			onKeyUp,
+			onMouseDown,
+			onMouseUp,
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
 		});
 
 		(<any> slider)._onBlur(<FocusEvent> {});
-		assert.isTrue(blurred);
+		assert.isTrue(onBlur.called);
 		(<any> slider)._onChange(<Event> {});
-		assert.isTrue(changed);
+		assert.isTrue(onChange.called);
 		(<any> slider)._onClick(<MouseEvent> {});
-		assert.isTrue(clicked);
+		assert.isTrue(onClick.called);
 		(<any> slider)._onFocus(<FocusEvent> {});
-		assert.isTrue(focused);
+		assert.isTrue(onFocus.called);
 		(<any> slider)._onInput(<Event> {});
-		assert.isTrue(input);
+		assert.isTrue(onInput.called);
 		(<any> slider)._onKeyDown(<KeyboardEvent> {});
-		assert.isTrue(keydown);
+		assert.isTrue(onKeyDown.called);
 		(<any> slider)._onKeyPress(<KeyboardEvent> {});
-		assert.isTrue(keypress);
+		assert.isTrue(onKeyPress.called);
 		(<any> slider)._onKeyUp(<KeyboardEvent> {});
-		assert.isTrue(keyup);
+		assert.isTrue(onKeyUp.called);
 		(<any> slider)._onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
+		assert.isTrue(onMouseDown.called);
 		(<any> slider)._onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
+		assert.isTrue(onMouseUp.called);
 		(<any> slider)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
+		assert.isTrue(onTouchStart.called);
 		(<any> slider)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
+		assert.isTrue(onTouchEnd.called);
 		(<any> slider)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		assert.isTrue(onTouchCancel.called);
 	}
 });

@@ -1,5 +1,6 @@
 import * as assert from 'intern/chai!assert';
 import * as registerSuite from 'intern!object';
+import * as sinon from 'sinon';
 
 import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -160,10 +161,10 @@ registerSuite({
 	},
 
 	'Mouse move should call onResize for row'() {
-		let called = false;
+		const onResize = sinon.spy();
 
 		widget.setProperties({
-			onResize: () => called = true
+			onResize
 		});
 
 		widget.sendEvent('mousedown', {
@@ -182,14 +183,14 @@ registerSuite({
 			selector: ':nth-child(2)' /* this should be the divider */
 		});
 
-		assert.isTrue(called);
+		assert.isTrue(onResize.called);
 	},
 
 	'Mouse move should call onResize for column'() {
-		let called = false;
+		const onResize = sinon.spy();
 
 		widget.setProperties({
-			onResize: () => called = true,
+			onResize,
 			direction: Direction.column
 		});
 
@@ -209,7 +210,7 @@ registerSuite({
 			selector: ':nth-child(2)' /* this should be the divider */
 		});
 
-		assert.isTrue(called);
+		assert.isTrue(onResize.called);
 	},
 
 	'Touch move should call onResize for row'(this: any) {
@@ -217,10 +218,10 @@ registerSuite({
 			this.skip('Environment not support touch events');
 		}
 
-		let called = false;
+		const onResize = sinon.spy();
 
 		widget.setProperties({
-			onResize: () => called = true,
+			onResize,
 			direction: Direction.row,
 			size: 100
 		});
@@ -247,7 +248,7 @@ registerSuite({
 			selector: ':nth-child(2)' /* this should be the divider */
 		});
 
-		assert.isTrue(called);
+		assert.isTrue(onResize.called);
 	},
 
 	'Touch move should call onResize for column'(this: any) {
@@ -255,10 +256,10 @@ registerSuite({
 			this.skip('Environment not support touch events');
 		}
 
-		let called = 0;
+		const onResize = sinon.spy();
 
 		widget.setProperties({
-			onResize: () => called++,
+			onResize,
 			direction: Direction.column
 		});
 
@@ -293,6 +294,6 @@ registerSuite({
 			selector: ':nth-child(2)' /* this should be the divider */
 		});
 
-		assert.strictEqual(called, 2);
+		assert.isTrue(onResize.calledTwice);
 	}
 });

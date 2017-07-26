@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import Select from '../../Select';
 import SelectOption, { OptionData } from '../../SelectOption';
@@ -107,28 +108,28 @@ registerSuite({
 		},
 
 		'basic events'() {
-			let blurred = false,
-					clicked = false,
-					focused = false,
-					keydown = false;
+			const onBlur = sinon.spy();
+			const onClick = sinon.spy();
+			const onFocus = sinon.spy();
+			const onKeyDown = sinon.spy();
 
 			const select = new Select();
 			select.__setProperties__({
 				useNativeElement: true,
-				onBlur: () => { blurred = true; },
-				onClick: () => { clicked = true; },
-				onFocus: () => { focused = true; },
-				onKeyDown: () => { keydown = true; }
+				onBlur,
+				onClick,
+				onFocus,
+				onKeyDown
 			});
 
 			(<any> select)._onBlur(<FocusEvent> {});
-			assert.isTrue(blurred);
+			assert.isTrue(onBlur.called);
 			(<any> select)._onClick(<MouseEvent> {});
-			assert.isTrue(clicked);
+			assert.isTrue(onClick.called);
 			(<any> select)._onFocus(<FocusEvent> {});
-			assert.isTrue(focused);
+			assert.isTrue(onFocus.called);
 			(<any> select)._onKeyDown(<KeyboardEvent> {});
-			assert.isTrue(keydown);
+			assert.isTrue(onKeyDown.called);
 		},
 
 		'onChange called with correct option'() {
@@ -224,16 +225,16 @@ registerSuite({
 
 		'Disabled option click'() {
 			const select = new Select();
-			let clicked = false;
+			const onClick = sinon.spy();
 			let changedOption;
 			select.__setProperties__({
 				options: testOptions,
-				onClick: () => clicked = true,
+				onClick,
 				onChange: (option: OptionData) => changedOption = option.value
 			});
 			(<any> select)._onOptionClick(event(), 1);
 
-			assert.isTrue(clicked, 'properties.onClick called');
+			assert.isTrue(onClick.called, 'properties.onClick called');
 			assert.strictEqual(changedOption, 'two', 'onChange called with second option');
 
 			(<any> select)._onOptionClick(event(), 2);
@@ -243,17 +244,17 @@ registerSuite({
 		'Option click with no options'() {
 			// mostly for code coverage; this shouldn't be possible
 			const select = new Select();
-			let clicked = false;
-			let changed = false;
+			const onClick = sinon.spy();
+			const onChange = sinon.spy();
 			select.__setProperties__({
-				onChange: () => changed = true,
-				onClick: () => clicked = true
+				onChange,
+				onClick
 			});
 
 			(<any> select)._onOptionClick(event(), undefined);
 
-			assert.isTrue(clicked, 'properties.onClick called');
-			assert.isFalse(changed, 'onChange shouldn\'t fire with no options');
+			assert.isTrue(onClick.called, 'properties.onClick called');
+			assert.isFalse(onChange.called, 'onChange shouldn\'t fire with no options');
 		},
 
 		'Custom option factory'() {
@@ -321,17 +322,17 @@ registerSuite({
 		},
 		'Open/close on trigger click'() {
 			const select = new Select();
-			let clicked = false;
+			const onClick = sinon.spy();
 
 			select.__setProperties__({
-				onClick: () => clicked = true
+				onClick
 			});
 
 			(<any> select)._onTriggerClick(event());
 			let vnode = <VNode> select.__render__();
 
 			assert.isTrue(vnode.children![0].properties!.classes![css.open], 'Open dropdown on first click');
-			assert.isTrue(clicked, 'properties.onClick called');
+			assert.isTrue(onClick.called, 'properties.onClick called');
 
 			(<any> select)._onTriggerClick(event());
 			vnode = <VNode> select.__render__();
@@ -340,11 +341,11 @@ registerSuite({
 		},
 		'Close on trigger blur'() {
 			const select = new Select();
-			let blurred = false;
+			const onBlur = sinon.spy();
 			(<any> select)._open = true;
 
 			select.__setProperties__({
-				onBlur: () => blurred = true
+				onBlur
 			});
 			let vnode = <VNode> select.__render__();
 
@@ -354,13 +355,12 @@ registerSuite({
 			vnode = <VNode> select.__render__();
 
 			assert.isFalse(vnode.children![0].properties!.classes![css.open], 'Dropdown closed on blur');
-			assert.isTrue(blurred, 'properties.onBlur called');
+			assert.isTrue(onBlur.called, 'properties.onBlur called');
 
 			(<any> select)._open = true;
-			blurred = false;
 			(<any> select)._onOptionMouseDown();
 			(<any> select)._onTriggerBlur();
-			assert.isFalse(blurred, 'Dropdown not closed on option click');
+			assert.isFalse(onBlur.calledTwice, 'Dropdown not closed on option click');
 		},
 		'Open/close with keyboard'() {
 			const select = new Select();
@@ -375,17 +375,17 @@ registerSuite({
 		'Navigate options with keyboard'() {
 			const select = new Select();
 			let selectedOption;
-			let keydown = false;
+			const onKeyDown = sinon.spy();
 			select.__setProperties__({
 				options: testOptions,
 				onChange: (option: OptionData) => selectedOption = option.value,
-				onKeyDown: () => keydown = true
+				onKeyDown
 			});
 			(<any> select)._open = true;
 
 			(<any> select)._onListboxKeyDown(event(keys.enter));
 			assert.strictEqual(selectedOption, 'one', 'First option is focused by default');
-			assert.isTrue(keydown, 'properties.onKeyDown called');
+			assert.isTrue(onKeyDown.called, 'properties.onKeyDown called');
 
 			(<any> select)._onListboxKeyDown(event(keys.down));
 			(<any> select)._onListboxKeyDown(event(keys.space));

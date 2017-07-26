@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
@@ -91,41 +92,31 @@ registerSuite({
 	},
 
 	'Keydown handler called'() {
-		let called = false;
+		const onKeyDown = sinon.spy();
 		widget.setProperties({
 			date: 1,
-			onKeyDown: () => {
-				called = true;
-			}
+			onKeyDown
 		});
 		widget.sendEvent('keydown');
-
-		assert.isTrue(called);
+		assert.isTrue(onKeyDown.called);
 	},
 
 	'Focus is set with callback'() {
-		let callFocus = true;
+		const onFocusCalled = sinon.spy();
 		widget.setProperties({
-			callFocus,
+			callFocus: true,
 			date: 1,
-			onFocusCalled: () => {
-				callFocus = false;
-			}
+			onFocusCalled
 		});
 		widget.getRender();
+		assert.isTrue(onFocusCalled.called);
 
-		assert.isFalse(callFocus, 'Focus callback should set callFocus to false in onElementCreated');
-
-		callFocus = true;
 		widget.setProperties({
-			callFocus,
+			callFocus: true,
 			date: 2,
-			onFocusCalled: () => {
-				callFocus = false;
-			}
+			onFocusCalled
 		});
 		widget.getRender();
-
-		assert.isFalse(callFocus, 'Focus callback should set callFocus to false in onElementUpdated');
+		assert.isTrue(onFocusCalled.calledTwice);
 	}
 });

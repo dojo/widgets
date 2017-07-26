@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -102,18 +103,16 @@ registerSuite({
 	},
 
 	onOpen() {
-		let called = false;
+		const onOpen = sinon.spy();
 
 		widget.setProperties({
 			open: true,
-			onOpen() {
-				called = true;
-			}
+			onOpen
 		});
 
 		widget.getRender();
 
-		assert.isTrue(called, 'onOpen should be called');
+		assert.isTrue(onOpen.called, 'onOpen should be called');
 	},
 
 	'change property to close'() {
@@ -178,13 +177,11 @@ registerSuite({
 	},
 
 	'click underlay to close'() {
-		let called = false;
+		const onRequestClose = sinon.spy();
 
 		widget.setProperties({
 			open: true,
-			onRequestClose() {
-				called = true;
-			}
+			onRequestClose
 		});
 
 		widget.sendEvent('mousedown', {
@@ -201,7 +198,7 @@ registerSuite({
 			selector: ':first-child' /* this should be the underlay */
 		});
 
-		assert.isTrue(called, 'onRequestClose should have been called');
+		assert.isTrue(onRequestClose.called, 'onRequestClose should have been called');
 	},
 
 	'tap underlay to close'(this: any) {
@@ -209,13 +206,11 @@ registerSuite({
 			this.skip('Environment not support touch events');
 		}
 
-		let called = false;
+		const onRequestClose = sinon.spy();
 
 		widget.setProperties({
 			open: true,
-			onRequestClose() {
-				called = true;
-			}
+			onRequestClose
 		});
 
 		widget.sendEvent('touchstart', {
@@ -233,17 +228,15 @@ registerSuite({
 			selector: ':first-child' /* this should be the underlay */
 		});
 
-		assert.isTrue(called, 'onRequestClose should be called on underlay tap');
+		assert.isTrue(onRequestClose.called, 'onRequestClose should be called on underlay tap');
 	},
 
 	'drag to close'() {
-		let called = false;
+		const onRequestClose = sinon.spy();
 
 		widget.setProperties({
 			open: true,
-			onRequestClose() {
-				called = true;
-			}
+			onRequestClose
 		});
 
 		widget.sendEvent('mousedown', {
@@ -264,7 +257,7 @@ registerSuite({
 			}
 		});
 
-		assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
+		assert.isTrue(onRequestClose.called, 'onRequestClose should be called if dragged far enough');
 	},
 
 	'swipe to close'(this: any) {
@@ -272,13 +265,11 @@ registerSuite({
 			this.skip('Environment not support touch events');
 		}
 
-		let called = false;
+		const onRequestClose = sinon.spy();
 
 		widget.setProperties({
 			open: true,
-			onRequestClose() {
-				called = true;
-			}
+			onRequestClose
 		});
 
 		widget.sendEvent('touchmove', {
@@ -305,7 +296,7 @@ registerSuite({
 			}
 		});
 
-		assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
+		assert.isTrue(onRequestClose.called, 'onRequestClose should be called if swiped far enough');
 	},
 
 	'swipe to close right'(this: any) {
@@ -313,16 +304,13 @@ registerSuite({
 			this.skip('Environment not support touch events');
 		}
 
-		let called = false;
+		const onRequestClose = sinon.spy();
 
 		widget.setProperties({
 			align: Align.right,
 			open: true,
 			width: 256,
-
-			onRequestClose() {
-				called = true;
-			}
+			onRequestClose
 		});
 
 		widget.sendEvent('touchstart', {
@@ -343,18 +331,15 @@ registerSuite({
 			}
 		});
 
-		assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
+		assert.isTrue(onRequestClose.called, 'onRequestClose should be called if swiped far enough to close right');
 	},
 
 	'not dragged far enough to close'() {
-		let called = false;
+		const onRequestClose = sinon.spy();
 
 		widget.setProperties({
 			open: true,
-
-			onRequestClose() {
-				called = true;
-			}
+			onRequestClose
 		});
 
 		widget.sendEvent('mousedown', {
@@ -375,7 +360,7 @@ registerSuite({
 			}
 		});
 
-		assert.isFalse(called, 'onRequestClose should not be called if not swiped far enough to close');
+		assert.isFalse(onRequestClose.called, 'onRequestClose should not be called if not swiped far enough to close');
 	},
 
 	'pane cannot be moved past screen edge'() {

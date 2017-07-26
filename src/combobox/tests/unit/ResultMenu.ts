@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import ResultMenu from '../../ResultMenu';
 import { assign } from '@dojo/core/lang';
@@ -33,14 +34,11 @@ registerSuite({
 	},
 
 	'renderResults should be called'() {
-		let called = false;
+		const renderResults = sinon.spy();
 		const resultMenu = new ResultMenu();
 		resultMenu.__setProperties__(props());
-		resultMenu.renderResults = results => {
-			called = true;
-			return results;
-		};
+		resultMenu.renderResults = renderResults;
 		<VNode> resultMenu.__render__();
-		assert.isTrue(called);
+		assert.isTrue(renderResults.called);
 	}
 });

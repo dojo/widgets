@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 import { VNode } from '@dojo/interfaces/vdom';
 import TextInput from '../../TextInput';
 import * as css from '../../styles/textinput.m.css';
@@ -101,62 +102,62 @@ registerSuite({
 	},
 
 	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				input = false,
-				keydown = false,
-				keypress = false,
-				keyup = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+		const onBlur = sinon.spy();
+		const onChange = sinon.spy();
+		const onClick = sinon.spy();
+		const onFocus = sinon.spy();
+		const onInput = sinon.spy();
+		const onKeyDown = sinon.spy();
+		const onKeyPress = sinon.spy();
+		const onKeyUp = sinon.spy();
+		const onMouseDown = sinon.spy();
+		const onMouseUp = sinon.spy();
+		const onTouchStart = sinon.spy();
+		const onTouchEnd = sinon.spy();
+		const onTouchCancel = sinon.spy();
 
-		const textinput = new TextInput();
-		textinput.__setProperties__({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onInput: () => { input = true; },
-			onKeyDown: () => { keydown = true; },
-			onKeyPress: () => { keypress = true; },
-			onKeyUp: () => { keyup = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+		const textInput = new TextInput();
+		textInput.__setProperties__({
+			onBlur,
+			onChange,
+			onClick,
+			onInput,
+			onFocus,
+			onKeyDown,
+			onKeyPress,
+			onKeyUp,
+			onMouseDown,
+			onMouseUp,
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
 		});
 
-		(<any> textinput)._onBlur(<FocusEvent> {});
-		assert.isTrue(blurred);
-		(<any> textinput)._onChange(<Event> {});
-		assert.isTrue(changed);
-		(<any> textinput)._onClick(<MouseEvent> {});
-		assert.isTrue(clicked);
-		(<any> textinput)._onFocus(<FocusEvent> {});
-		assert.isTrue(focused);
-		(<any> textinput)._onInput(<Event> {});
-		assert.isTrue(input);
-		(<any> textinput)._onKeyDown(<KeyboardEvent> {});
-		assert.isTrue(keydown);
-		(<any> textinput)._onKeyPress(<KeyboardEvent> {});
-		assert.isTrue(keypress);
-		(<any> textinput)._onKeyUp(<KeyboardEvent> {});
-		assert.isTrue(keyup);
-		(<any> textinput)._onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
-		(<any> textinput)._onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
-		(<any> textinput)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> textinput)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> textinput)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		(<any> textInput)._onBlur(<FocusEvent> {});
+		assert.isTrue(onBlur.called);
+		(<any> textInput)._onChange(<Event> {});
+		assert.isTrue(onChange.called);
+		(<any> textInput)._onClick(<MouseEvent> {});
+		assert.isTrue(onClick.called);
+		(<any> textInput)._onFocus(<FocusEvent> {});
+		assert.isTrue(onFocus.called);
+		(<any> textInput)._onInput(<Event> {});
+		assert.isTrue(onInput.called);
+		(<any> textInput)._onKeyDown(<KeyboardEvent> {});
+		assert.isTrue(onKeyDown.called);
+		(<any> textInput)._onKeyPress(<KeyboardEvent> {});
+		assert.isTrue(onKeyPress.called);
+		(<any> textInput)._onKeyUp(<KeyboardEvent> {});
+		assert.isTrue(onKeyUp.called);
+		(<any> textInput)._onMouseDown(<MouseEvent> {});
+		assert.isTrue(onMouseDown.called);
+		(<any> textInput)._onMouseUp(<MouseEvent> {});
+		assert.isTrue(onMouseUp.called);
+		(<any> textInput)._onTouchStart(<TouchEvent> {});
+		assert.isTrue(onTouchStart.called);
+		(<any> textInput)._onTouchEnd(<TouchEvent> {});
+		assert.isTrue(onTouchEnd.called);
+		(<any> textInput)._onTouchCancel(<TouchEvent> {});
+		assert.isTrue(onTouchCancel.called);
 	}
 });
