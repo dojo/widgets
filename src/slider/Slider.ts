@@ -183,7 +183,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 			]),
 			v('output', {
 				classes: this.classes(css.output, outputIsTooltip ? css.outputTooltip : null),
-				for: this._inputId + '',
+				for: `${this._inputId}`,
 				styles: outputStyles
 			}, [ outputNode ])
 		]);
