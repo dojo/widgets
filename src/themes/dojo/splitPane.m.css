@@ -12,9 +12,19 @@
 }
 
 .divider {
-	box-sizing: content-box;
 	background-color: var(--color-border);
+	box-sizing: content-box;
 	transition: border var(--transition-duration) var(--transition-easing);
+}
+
+.row > .divider {
+	border-left: 2.5px solid transparent;
+	border-right: 2.5px solid transparent;
+}
+
+.column > .divider {
+	border-bottom: 2.5px solid transparent;
+	border-top: 2.5px solid transparent;
 }
 
 .row > .divider:hover {
@@ -23,6 +33,6 @@
 }
 
 .column > .divider:hover {
-	border-top-color: var(--color-border-strong);
 	border-bottom-color: var(--color-border-strong);
+	border-top-color: var(--color-border-strong);
 }
