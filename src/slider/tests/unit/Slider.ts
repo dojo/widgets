@@ -135,6 +135,32 @@ registerSuite({
 		assert.isFalse(vnode.properties!.classes![css.invalid]);
 	},
 
+	'Tooltip position'() {
+		const slider = new Slider();
+		slider.__setProperties__({
+			max: 40,
+			outputIsTooltip: true,
+			value: 20
+		});
+		let vnode = <VNode> slider.__render__();
+		let outputNode = vnode.children![0].children![2];
+
+		assert.strictEqual(outputNode.properties!.styles!.left, '50%');
+		assert.isUndefined(outputNode.properties!.styles!.top);
+
+		slider.__setProperties__({
+			max: 40,
+			outputIsTooltip: true,
+			value: 10,
+			vertical: true
+		});
+		vnode = <VNode> slider.__render__();
+		outputNode = vnode.children![0].children![2];
+
+		assert.strictEqual(outputNode.properties!.styles!.top, '75%');
+		assert.isUndefined(outputNode.properties!.styles!.left);
+	},
+
 	events() {
 		let blurred = false,
 				changed = false,

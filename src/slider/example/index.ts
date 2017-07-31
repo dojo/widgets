@@ -63,25 +63,30 @@ export class App extends WidgetBase<WidgetProperties> {
 				onInput: this.onTribbleInput,
 				theme: this._theme
 			}),
-			v('h1', {}, ['Vertical slider']),
+			v('h1', {}, ['Disabled slider']),
 			w(Slider, {
 				key: 's2',
+				label: 'Stuck at 30',
+				min: 0,
+				max: 100,
+				step: 1,
+				value: 30,
+				disabled: true,
+				theme: this._theme
+			}),
+			v('h1', {}, ['Vertical slider']),
+			w(Slider, {
+				key: 's3',
 				label: 'Vertical Slider with default properties. Anything over 50 is invalid:',
 				value: verticalValue,
 				vertical: true,
 				invalid: verticalInvalid,
 				output: (value: number) => {
 					return v('span', {
-						innerHTML: verticalInvalid ? value + ' !' : value + '',
-						styles: {
-							position: 'absolute',
-							left: '30px',
-							top: (100 - value) + '%',
-							marginTop: '-10px',
-							padding: '5px'
-						}
+						innerHTML: verticalInvalid ? value + ' !' : value + ''
 					});
 				},
+				outputIsTooltip: true,
 				onInput: this.onVerticalInput,
 				theme: this._theme
 			})
