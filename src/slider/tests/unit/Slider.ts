@@ -219,5 +219,24 @@ registerSuite({
 		assert.isTrue(touchend);
 		(<any> slider)._onTouchCancel(<TouchEvent> {});
 		assert.isTrue(touchcancel);
+	},
+
+	'min and max should be respected'() {
+		const slider = new Slider();
+		slider.__setProperties__({
+			max: 40,
+			value: 100
+		});
+		let vnode = <VNode> slider.__render__();
+		let inputNode = vnode.children![0].children![0];
+		assert.strictEqual(inputNode.properties!.value, '40');
+
+		slider.__setProperties__({
+			min: 30,
+			value: 20
+		});
+		vnode = <VNode> slider.__render__();
+		inputNode = vnode.children![0].children![0];
+		assert.strictEqual(inputNode.properties!.value, '30');
 	}
 });
