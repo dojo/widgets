@@ -18,13 +18,13 @@
 }
 
 .row > .divider {
-	border-left: 2.5px solid transparent;
-	border-right: 2.5px solid transparent;
+	border-left: 2px solid transparent;
+	border-right: 2px solid transparent;
 }
 
 .column > .divider {
-	border-bottom: 2.5px solid transparent;
-	border-top: 2.5px solid transparent;
+	border-bottom: 2px solid transparent;
+	border-top: 2px solid transparent;
 }
 
 .row > .divider:hover {
