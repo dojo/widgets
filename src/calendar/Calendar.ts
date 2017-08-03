@@ -6,9 +6,11 @@ import { reference } from '@dojo/widget-core/diff';
 import { DNode, Constructor } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
-import MonthPicker, { CalendarMessages } from './MonthPicker';
+import { CalendarMessages } from './MonthPicker';
+import DatePicker from './DatePicker';
 import CalendarCell from './CalendarCell';
 import * as css from './styles/calendar.m.css';
+import * as baseCss from '../common/styles/base.m.css';
 
 /**
  * @type CalendarProperties
@@ -83,7 +85,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 	private _defaultDate = new Date();
 	private _focusedDay = 1;
 	private _monthLabelId = uuid();
-	private _monthPopupOpen = false;
+	private _popupOpen = false;
 	private _registry: WidgetRegistry;
 
 	constructor() {
@@ -341,23 +343,20 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		}
 
 		return v('div', { classes: this.classes(css.root) }, [
-			// month popup
-			w(MonthPicker, {
+			// header
+			w(DatePicker, {
 				labelId: this._monthLabelId,
 				labels,
 				month,
 				monthNames,
-				open: this._monthPopupOpen,
 				renderMonthLabel,
 				theme,
 				year,
-				onRequestClose: () => {
-					this._monthPopupOpen = false;
-					this.invalidate();
+				onMonthPopupChange: (open: boolean) => {
+					this._popupOpen = open;
 				},
-				onRequestOpen: () => {
-					this._monthPopupOpen = true;
-					this.invalidate();
+				onYearPopupChange: (open: boolean) => {
+					this._popupOpen = open;
 				},
 				onRequestMonthChange: (requestMonth: number) => {
 					onMonthChange && onMonthChange(requestMonth);
@@ -371,7 +370,8 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				cellspacing: '0',
 				cellpadding: '0',
 				role: 'grid',
-				'aria-labelledby': this._monthLabelId
+				'aria-labelledby': this._monthLabelId,
+				classes: this.classes().fixed(this._popupOpen ? baseCss.visuallyHidden : null)
 			}, [
 				v('thead', [
 					v('tr', weekdays)
