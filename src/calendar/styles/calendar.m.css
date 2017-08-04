@@ -40,49 +40,25 @@
 
 .todayDate {}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-._datePicker { }
-._topMatter { }
-._monthTrigger { }
-._yearTrigger { }
-._controls { }
-._previousMonth { }
-._nextMonth { }
-._monthGrid { }
-._monthFields { }
-._yearGrid { }
-._yearFields { }
-._monthRadio { }
-._yearRadio { }
-._monthRadioChecked { }
-._yearRadioChecked { }
-._monthRadioInput { }
-._monthRadioLabel { }
-._yearRadioInput { }
-._yearRadioLabel { }
-._monthTriggerActive { }
-._yearTriggerActive { }
+/* Date picker  */
+.datePicker { }
+.topMatter { }
+.monthTrigger { }
+.yearTrigger { }
+.controls { }
+.previousMonth { }
+.nextMonth { }
+.monthGrid { }
+.monthFields { }
+.yearGrid { }
+.yearFields { }
+.monthRadio { }
+.yearRadio { }
+.monthRadioChecked { }
+.yearRadioChecked { }
+.monthRadioInput { }
+.monthRadioLabel { }
+.yearRadioInput { }
+.yearRadioLabel { }
+.monthTriggerActive { }
+.yearTriggerActive { }

@@ -183,11 +183,11 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 		return this.properties.monthNames.map((monthName, i) => v('label', {
 			key: `${this._idBase}_month_radios_${i}`,
-			classes: this.classes(css._monthRadio, i === month ? css._monthRadioChecked : null)
+			classes: this.classes(css.monthRadio, i === month ? css.monthRadioChecked : null)
 		}, [
 			v('input', {
 				checked: i === month,
-				classes: this.classes(css._monthRadioInput),
+				classes: this.classes(css.monthRadioInput),
 				name: `${this._idBase}_month_radios`,
 				tabIndex: this._monthPopupOpen ? 0 : -1,
 				type: 'radio',
@@ -196,7 +196,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				onmouseup: this._closeMonthPopup
 			}),
 			v('abbr', {
-				classes: this.classes(css._monthRadioLabel),
+				classes: this.classes(css.monthRadioLabel),
 				title: monthName.long
 			}, [ monthName.short ])
 		]));
@@ -210,11 +210,11 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		for (let i = year - (YEAR_RANGE / 2); i < year + (YEAR_RANGE / 2); i++) {
 			radios.push(v('label', {
 				key: `${this._idBase}_year_radios_${i}`,
-				classes: this.classes(css._yearRadio, i === year ? css._yearRadioChecked : null)
+				classes: this.classes(css.yearRadio, i === year ? css.yearRadioChecked : null)
 			}, [
 				v('input', {
 					checked: i === year,
-					classes: this.classes(css._yearRadioInput),
+					classes: this.classes(css.yearRadioInput),
 					name: `${this._idBase}_year_radios`,
 					tabIndex: this._yearPopupOpen ? 0 : -1,
 					type: 'radio',
@@ -223,7 +223,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 					onmouseup: this._closeYearPopup
 				}),
 				v('abbr', {
-					classes: this.classes(css._yearRadioLabel)
+					classes: this.classes(css.yearRadioLabel)
 				}, [ `${ i }` ])
 			]));
 		}
@@ -246,9 +246,9 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		} = this.properties;
 
 		return v('div', {
-			classes: this.classes(css._datePicker)
+			classes: this.classes(css.datePicker)
 		}, [
-			v('div', { classes: this.classes(css._topMatter) }, [
+			v('div', { classes: this.classes(css.topMatter) }, [
 				// hidden label
 				v('label', {
 					id: labelId,
@@ -265,8 +265,8 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 					'aria-expanded': String(this._monthPopupOpen),
 					'aria-haspopup': 'true',
 					classes: this.classes(
-						css._monthTrigger,
-						this._monthPopupOpen ? css._monthTriggerActive : null
+						css.monthTrigger,
+						this._monthPopupOpen ? css.monthTriggerActive : null
 					),
 					onclick: this._onMonthButtonClick,
 					id: `${this._idBase}_month_button`
@@ -280,8 +280,8 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 					'aria-expanded': String(this._yearPopupOpen),
 					'aria-haspopup': 'true',
 					classes: this.classes(
-						css._yearTrigger,
-						this._yearPopupOpen ? css._yearTriggerActive : null
+						css.yearTrigger,
+						this._yearPopupOpen ? css.yearTriggerActive : null
 					),
 					onclick: this._onYearButtonClick,
 					id: `${this._idBase}_year_button`
@@ -289,10 +289,10 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 
 				// previous/next month buttons
 				v('div', {
-					classes: this.classes(css._controls)
+					classes: this.classes(css.controls)
 				}, [
 					v('button', {
-						classes: this.classes(css._previousMonth),
+						classes: this.classes(css.previousMonth),
 						onclick: this._onMonthDecrease
 					}, [
 						v('i', { classes: this.classes(iconCss.icon, iconCss.leftIcon),
@@ -301,7 +301,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 						v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.previousMonth ])
 					]),
 					v('button', {
-						classes: this.classes(css._nextMonth),
+						classes: this.classes(css.nextMonth),
 						onclick: this._onMonthIncrease
 					}, [
 						v('i', { classes: this.classes(iconCss.icon, iconCss.rightIcon),
@@ -317,12 +317,12 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				key: 'month-grid',
 				'aria-hidden': String(!this._monthPopupOpen),
 				'aria-labelledby': `${this._idBase}_month_button`,
-				classes: this.classes(css._monthGrid).fixed(!this._monthPopupOpen ? baseCss.visuallyHidden : null),
+				classes: this.classes(css.monthGrid).fixed(!this._monthPopupOpen ? baseCss.visuallyHidden : null),
 				id: `${this._idBase}_month_dialog`,
 				role: 'dialog',
 				onkeydown: this._onPopupKeyDown
 			}, [
-				v('fieldset', { classes: this.classes(css._monthFields) }, [
+				v('fieldset', { classes: this.classes(css.monthFields) }, [
 					v('legend', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseMonth ]),
 					...this._renderMonthRadios()
 				])
@@ -333,12 +333,12 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				key: 'year-grid',
 				'aria-hidden': String(!this._yearPopupOpen),
 				'aria-labelledby': `${this._idBase}_year_button`,
-				classes: this.classes(css._yearGrid).fixed(!this._yearPopupOpen ? baseCss.visuallyHidden : null),
+				classes: this.classes(css.yearGrid).fixed(!this._yearPopupOpen ? baseCss.visuallyHidden : null),
 				id: `${this._idBase}_year_dialog`,
 				role: 'dialog',
 				onkeydown: this._onPopupKeyDown
 			}, [
-				v('fieldset', { classes: this.classes(css._yearFields) }, [
+				v('fieldset', { classes: this.classes(css.yearFields) }, [
 					v('legend', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseYear ]),
 					...this._renderYearRadios()
 				])
