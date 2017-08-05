@@ -62,6 +62,8 @@ const YEAR_RANGE = 50;
 export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> {
 	private _callMonthTriggerFocus = false;
 	private _callYearTriggerFocus = false;
+	private _callMonthPopupFocus = false;
+	private _callYearPopupFocus = false;
 	private _idBase = uuid();
 	private _monthPopupOpen = false;
 	private _yearPopupOpen = false;
@@ -80,6 +82,20 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				this._callYearTriggerFocus = false;
 			}
 		}
+		if (this._callMonthPopupFocus && key.indexOf(`${this._idBase}_month_radios`) > -1) {
+			const m = key.split('_')[3];
+			if (this._monthPopupOpen && m === `${this.properties.month}`) {
+				(<HTMLInputElement> element.children[0]).focus();
+				this._callMonthPopupFocus = false;
+			}
+		}
+		if (this._callYearPopupFocus && key.indexOf(`${this._idBase}_year_radios`) > -1) {
+			const y = key.split('_')[3];
+			if (this._yearPopupOpen && y === `${this.properties.year}`) {
+				(<HTMLInputElement> element.children[0]).focus();
+				this._callYearPopupFocus = false;
+			}
+		}
 	}
 
 	private _onMonthButtonClick() {
@@ -93,6 +109,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 	private _openMonthPopup() {
 		const { onMonthPopupChange } = this.properties;
 		this._monthPopupOpen = true;
+		this._callMonthPopupFocus = true;
 		this._yearPopupOpen = false;
 		this.invalidate();
 		onMonthPopupChange && onMonthPopupChange(true);
@@ -101,6 +118,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 	private _openYearPopup() {
 		const { onYearPopupChange } = this.properties;
 		this._yearPopupOpen = true;
+		this._callYearPopupFocus = true;
 		this._monthPopupOpen = false;
 		this.invalidate();
 		onYearPopupChange && onYearPopupChange(true);
@@ -248,7 +266,10 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		return v('div', {
 			classes: this.classes(css.datePicker)
 		}, [
-			v('div', { classes: this.classes(css.topMatter) }, [
+			v('div', {
+				classes: this.classes(css.topMatter),
+				role: 'menubar'
+			}, [
 				// hidden label
 				v('label', {
 					id: labelId,
@@ -261,30 +282,30 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				v('button', {
 					key: 'month-button',
 					'aria-controls': `${this._idBase}_month_dialog`,
-					'aria-describedby': labelId,
 					'aria-expanded': String(this._monthPopupOpen),
 					'aria-haspopup': 'true',
+					id: `${this._idBase}_month_button`,
 					classes: this.classes(
 						css.monthTrigger,
 						this._monthPopupOpen ? css.monthTriggerActive : null
 					),
-					onclick: this._onMonthButtonClick,
-					id: `${this._idBase}_month_button`
+					role: 'menuitem',
+					onclick: this._onMonthButtonClick
 				}, [ monthNames[month].long ]),
 
 				// year trigger
 				v('button', {
 					key: 'year-button',
 					'aria-controls': `${this._idBase}_year_dialog`,
-					'aria-describedby': labelId,
 					'aria-expanded': String(this._yearPopupOpen),
 					'aria-haspopup': 'true',
+					id: `${this._idBase}_year_button`,
 					classes: this.classes(
 						css.yearTrigger,
 						this._yearPopupOpen ? css.yearTriggerActive : null
 					),
-					onclick: this._onYearButtonClick,
-					id: `${this._idBase}_year_button`
+					role: 'menuitem',
+					onclick: this._onYearButtonClick
 				}, [ `${ year }` ]),
 
 				// previous/next month buttons

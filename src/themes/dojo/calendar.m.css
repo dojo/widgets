@@ -88,12 +88,24 @@
 .previousMonth,
 .nextMonth {
 	background: 0;
-	border: 0;
+	border: var(--border-width) solid transparent;
 	color: inherit;
 	cursor: pointer;
 	font-family: inherit;
 	line-height: inherit;
 	outline: none;
+	transition: border-color var(--transition-duration) var(--transition-easing);
+}
+
+.monthTrigger:focus,
+.monthTrigger:hover,
+.yearTrigger:focus,
+.yearTrigger:hover,
+.previousMonth:focus,
+.previousMonth:hover,
+.nextMonth:focus,
+.nextMonth:hover {
+	border-color: var(--color-highlight);
 }
 
 .monthTrigger,
@@ -103,12 +115,6 @@
 	font-size: var(--font-size-small);
 	padding: var(--grid-base);
 	text-transform: uppercase;
-	border: var(--border-width) solid transparent;
-}
-
-.monthTrigger:focus,
-.yearTrigger:focus {
-	border-color: var(--color-highlight);
 }
 
 .monthTriggerActive,
@@ -145,19 +151,6 @@
 	padding: 0;
 }
 
-.monthGrid,
-.yearGrid {
-	height: calc(var(--grid-base) * 20);
-}
-
-.monthGrid {
-	overflow: hidden;
-}
-
-.yearGrid {
-	overflow: auto;
-}
-
 .monthRadio,
 .yearRadio {
 	display: block;
@@ -177,10 +170,12 @@
 
 .monthRadioLabel,
 .yearRadioLabel {
+	border: var(--border-width) solid transparent;
 	cursor: pointer;
 	display: block;
 	text-decoration: none;
 	padding: var(--grid-base);
+	transition: all var(--transition-duration) var(--transition-easing);
 }
 
 
@@ -203,9 +198,16 @@
 }
 
 .monthRadio:hover .monthRadioLabel,
-.yearRadio:hover .yearRadioLabel,
+.yearRadio:hover .yearRadioLabel {
+	color: var(--color-highlight);
+	border: var(--border-width) solid var(--color-border);
+}
+
+.monthRadioChecked:hover .monthRadioLabel,
+.yearRadioChecked:hover .yearRadioLabel,
 .monthRadioInput:focus ~ .monthRadioLabel,
 .yearRadioInput:focus ~ .yearRadioLabel {
+	background-color: var(--color-background);
 	color: var(--color-highlight);
-	outline: var(--border-width) solid var(--color-border);
+	border: var(--border-width) solid var(--color-highlight);
 }

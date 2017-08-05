@@ -6,7 +6,7 @@ import { reference } from '@dojo/widget-core/diff';
 import { DNode, Constructor } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
-import { CalendarMessages } from './MonthPicker';
+import { CalendarMessages } from './DatePicker';
 import DatePicker from './DatePicker';
 import CalendarCell from './CalendarCell';
 import * as css from './styles/calendar.m.css';
