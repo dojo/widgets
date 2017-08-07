@@ -55,7 +55,7 @@ export interface MonthPickerProperties extends ThemeableProperties {
 
 export const MonthPickerBase = ThemeableMixin(WidgetBase);
 
-const YEAR_RANGE = 50;
+const YEAR_RANGE = 20;
 
 @theme(css)
 @theme(iconCss)

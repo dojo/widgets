@@ -174,21 +174,27 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		const { month, year } = this._getMonthYear();
 		switch (event.which) {
 			case Keys.Up:
+				event.preventDefault();
 				this._goToDate(this._focusedDay - 7);
 				break;
 			case Keys.Down:
+				event.preventDefault();
 				this._goToDate(this._focusedDay + 7);
 				break;
 			case Keys.Left:
+				event.preventDefault();
 				this._goToDate(this._focusedDay - 1);
 				break;
 			case Keys.Right:
+				event.preventDefault();
 				this._goToDate(this._focusedDay + 1);
 				break;
 			case Keys.PageUp:
+				event.preventDefault();
 				this._goToDate(1);
 				break;
 			case Keys.PageDown:
+				event.preventDefault();
 				const monthLengh = this._getMonthLength(month, year);
 				this._goToDate(monthLengh);
 				break;
