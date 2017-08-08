@@ -67,8 +67,6 @@ registerSuite({
 			v('div', {
 				'aria-hidden': null,
 				'aria-labelledby': isNonEmptyString,
-				afterCreate: titlePane.listener,
-				afterUpdate: titlePane.listener,
 				classes: titlePane.classes(css.content),
 				id: <any> isNonEmptyString,
 				key: 'content'
@@ -118,8 +116,6 @@ registerSuite({
 			v('div', {
 				'aria-hidden': 'true',
 				'aria-labelledby': isNonEmptyString,
-				afterCreate: titlePane.listener,
-				afterUpdate: titlePane.listener,
 				classes: titlePane.classes(css.content),
 				id: <any> isNonEmptyString,
 				key: 'content'

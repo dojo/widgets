@@ -172,14 +172,10 @@ registerSuite({
 				useNativeElement: true
 			});
 			picker.expectRender(v('span', {
-				afterCreate: picker.listener,
-				afterUpdate: picker.listener,
 				classes: picker.classes(css.root),
 				key: 'root'
 			}, [
 				v('input', {
-					afterCreate: picker.listener,
-					afterUpdate: picker.listener,
 					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
@@ -229,14 +225,10 @@ registerSuite({
 			});
 
 			picker.expectRender(v('span', {
-				afterCreate: picker.listener,
-				afterUpdate: picker.listener,
 				classes: picker.classes(css.root),
 				key: 'root'
 			}, [
 				v('input', {
-					afterCreate: picker.listener,
-					afterUpdate: picker.listener,
 					'aria-describedby': 'Some descriptive text',
 					'aria-invalid': 'true',
 					'aria-readonly': 'true',
@@ -269,8 +261,6 @@ registerSuite({
 				useNativeElement: true
 			});
 			picker.expectRender(v('span', {
-				afterCreate: picker.listener,
-				afterUpdate: picker.listener,
 				classes: picker.classes(css.root),
 				key: 'root'
 			}, [
@@ -281,8 +271,6 @@ registerSuite({
 					label: 'foo'
 				}, [
 					v('input', {
-						afterCreate: picker.listener,
-						afterUpdate: picker.listener,
 						'aria-describedby': undefined,
 						'aria-invalid': null,
 						'aria-readonly': null,

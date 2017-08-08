@@ -25,8 +25,6 @@ const compareId = compareProperty((value: any) => {
 
 const monthRadios = function(widget: any, open?: boolean) {
 	return DEFAULT_MONTHS.map((monthName, i) => v('label', {
-		afterCreate: widget.listener,
-		afterUpdate: widget.listener,
 		key: <any> compareId,
 		classes: widget.classes(css.monthRadio, i === 5 ? css.monthRadioChecked : null)
 	}, [
@@ -49,8 +47,6 @@ const monthRadios = function(widget: any, open?: boolean) {
 
 const expectedPopup = function(widget: any, open?: boolean) {
 	return v('div', {
-		afterCreate: widget.listener,
-		afterUpdate: widget.listener,
 		'aria-hidden': open ? 'false' : 'true',
 		'aria-labelledby': <any> compareId, // widget._buttonId,
 		classes: widget.classes(css.monthPopup, open ? null : css.monthPopupHidden),
@@ -70,8 +66,6 @@ const expectedPopup = function(widget: any, open?: boolean) {
 				onclick: widget.listener
 			}, [ '2016' ]),
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				key: 'year-spinner',
 				id: <any> compareId, // widget._yearSpinnerId,
 				classes: widget.classes(css.spinner),
@@ -101,8 +95,6 @@ const expected = function(widget: any, open = false) {
 		classes: widget.classes(css.header)
 	}, [
 		v('button', {
-			afterCreate: widget.listener,
-			afterUpdate: widget.listener,
 			key: 'button',
 			'aria-controls': <any> compareId,
 			'aria-describedby': <any> compareId,

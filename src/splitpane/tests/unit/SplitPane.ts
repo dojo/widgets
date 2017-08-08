@@ -31,21 +31,15 @@ registerSuite({
 
 	'Should construct SplitPane with passed properties'() {
 		widget.expectRender(v('div', {
-			afterCreate: widget.listener,
-			afterUpdate: widget.listener,
 			classes: widget.classes(css.root, css.rootFixed, css.row, css.rowFixed),
 			key: 'root'
 		}, [
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.leading, css.leadingFixed),
 				key: 'leading',
 				styles: { width: '100px' }
 			}, [ null ]),
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.divider, css.dividerFixed),
 				key: 'divider',
 				onmousedown: widget.listener,
@@ -53,8 +47,6 @@ registerSuite({
 				ontouchstart: widget.listener
 			}),
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.trailing, css.trailingFixed),
 				key: 'trailing'
 			}, [ null ])
@@ -71,21 +63,15 @@ registerSuite({
 		});
 
 		widget.expectRender(v('div', {
-			afterCreate: widget.listener,
-			afterUpdate: widget.listener,
 			classes: widget.classes(css.root, css.rootFixed, css.column, css.columnFixed),
 			key: 'root'
 		}, [
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.leading, css.leadingFixed),
 				key: 'leading',
 				styles: { height: '200px' }
 			}, [ 'abc' ]),
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.divider, css.dividerFixed),
 				key: 'divider',
 				onmousedown: widget.listener,
@@ -93,8 +79,6 @@ registerSuite({
 				ontouchstart: widget.listener
 			}),
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.trailing, css.trailingFixed),
 				key: 'trailing'
 			}, [ 'def' ])
