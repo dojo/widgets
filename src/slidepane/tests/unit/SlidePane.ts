@@ -57,8 +57,6 @@ registerSuite({
 			ontouchstart: widget.listener
 		}, [
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.underlay, css.underlayVisible),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
@@ -66,8 +64,6 @@ registerSuite({
 			}),
 			v('div', {
 				key: 'content',
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(
 					css.pane,
 					css.paneFixed,
@@ -110,8 +106,6 @@ registerSuite({
 			null,
 			v('div', {
 				key: 'content',
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(
 					css.pane,
 					css.paneFixed,
@@ -162,8 +156,6 @@ registerSuite({
 			classes: widget.classes(css.root)
 		}, [
 			v('div', {
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(css.underlay),
 				enterAnimation: animations.fadeIn,
 				exitAnimation: animations.fadeOut,
@@ -171,8 +163,6 @@ registerSuite({
 			}),
 			v('div', {
 				key: 'content',
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(
 					css.pane,
 					css.paneFixed,
@@ -212,8 +202,6 @@ registerSuite({
 			null,
 			v('div', {
 				key: 'content',
-				afterCreate: widget.listener,
-				afterUpdate: widget.listener,
 				classes: widget.classes(
 					css.pane,
 					css.paneFixed,
@@ -506,8 +494,6 @@ registerSuite({
 				classes: widget.classes(css.root)
 			}, [
 				open ? v('div', {
-					afterCreate: widget.listener,
-					afterUpdate: widget.listener,
 					classes: widget.classes(css.underlay),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
@@ -515,8 +501,6 @@ registerSuite({
 				}) : null,
 				v('div', {
 					key: 'content',
-					afterCreate: widget.listener,
-					afterUpdate: widget.listener,
 					classes: widget.classes(
 						css.pane,
 						css.paneFixed,
@@ -574,8 +558,6 @@ registerSuite({
 				classes: widget.classes(css.root)
 			}, [
 				closed ? null : v('div', {
-					afterCreate: widget.listener,
-					afterUpdate: widget.listener,
 					classes: widget.classes(css.underlay),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
@@ -583,8 +565,6 @@ registerSuite({
 				}),
 				v('div', {
 					key: 'content',
-					afterCreate: widget.listener,
-					afterUpdate: widget.listener,
 					classes: swipeState.classes || widget.classes(
 						css.pane,
 						css.paneFixed,
@@ -671,8 +651,6 @@ registerSuite({
 				classes: widget.classes(css.root)
 			}, [
 				closed ? null : v('div', {
-					afterCreate: widget.listener,
-					afterUpdate: widget.listener,
 					classes: widget.classes(css.underlay),
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
@@ -680,8 +658,6 @@ registerSuite({
 				}),
 				v('div', {
 					key: 'content',
-					afterCreate: widget.listener,
-					afterUpdate: widget.listener,
 					classes: swipeState.classes || widget.classes(
 						css.pane,
 						css.paneFixed,

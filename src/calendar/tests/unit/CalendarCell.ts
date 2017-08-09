@@ -25,8 +25,6 @@ registerSuite({
 		});
 
 		widget.expectRender(v('td', {
-			afterCreate: widget.listener,
-			afterUpdate: widget.listener,
 			key: 'root',
 			role: 'gridcell',
 			'aria-selected': 'false',
@@ -49,8 +47,6 @@ registerSuite({
 		});
 
 		widget.expectRender(v('td', {
-			afterCreate: widget.listener,
-			afterUpdate: widget.listener,
 			key: 'root',
 			role: 'gridcell',
 			'aria-selected': 'true',
