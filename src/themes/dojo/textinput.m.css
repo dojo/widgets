@@ -1,49 +1,73 @@
 @import './variables.css';
 
-.input {
-	border: 1px solid var(--dojo-shade-gray);
-	padding: var(--input-padding);
-}
-
-.input:focus {
-	border-color: var(--dojo-light-blue);
-	box-shadow: var(--input-focus-shadow);
-	outline: none;
-}
-
-.inputWrapper { }
+.root, .root * { box-sizing: border-box; }
 
 .root {
-	font: var(--base-font);
+	display: block;
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
 }
 
 .root span {
 	display: block;
-	margin: var(--line-spacing) 0;
+	font-size: var(--font-size-small);
+	line-height: var(--line-height-base);
 }
 
-/* disabled and readonly styles */
+.input {
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+	font-size: inherit;
+	padding: var(--grid-base) calc(var(--grid-base) * 3) var(--grid-base) var(--grid-base);
+	transition: all var(--transition-duration) var(--transition-easing);
+	width: 100%;
+}
+
+.input:focus {
+	border-color: var(--color-highlight);
+	border-bottom-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+	outline: none;
+}
+
+.input:hover {
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-box-shadow));
+}
+
+.inputWrapper { }
+
+/* disabled and readonly */
 .disabled .input,
 .readonly .input {
-	background-color: var(--dojo-off-white);
-	color: var(--dojo-shade-gray);
+	background-color: var(--color-background-faded);
 }
 
-/* required styles */
-.required .input {
-	border-left-width: 8px;
+.disabled .input:hover,
+.readonly .input:hover {
+	box-shadow: none;
 }
+
+/* required */
 .required span::after {
 	content: '*';
-	color: var(--dojo-error-color);
 }
 
-/* TODO: this needs non-color invalid design as well */
+/* invalid */
 .invalid .input {
-	border-color: var(--dojo-error-color);
+	border-color: color(var(--color-error) saturation(-9%) lightness(+37%));
+	border-bottom-color: var(--color-error);
 }
 
-/* valid style */
+.invalid .input:focus {
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-error) alpha(20%));
+}
+
+/* valid */
 .valid .input {
-	border-color: var(--dojo-success-color);
+	border-color: color(var(--color-success) saturation(-32%) lightness(+55%));
+	border-bottom-color: var(--color-success);
+}
+
+.valid .input:focus {
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-success) alpha(20%));
 }
