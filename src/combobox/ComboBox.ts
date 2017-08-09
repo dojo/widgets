@@ -372,7 +372,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				classes: this.classes(clearable ? css.clearable : null),
 				controls: menuId,
 				disabled,
-				// extraClasses: css as any,
 				invalid,
 				onBlur: this._onInputBlur,
 				onFocus: this._onInputFocus,
