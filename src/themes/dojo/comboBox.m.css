@@ -15,7 +15,6 @@
 }
 
 .root input {
-	line-height: var(--line-height-base);
 	min-width: 200px;
 	padding: var(--spacing-regular) calc(var(--spacing-regular) * 6) var(--spacing-regular) var(--spacing-regular);
 	width: 100%;
