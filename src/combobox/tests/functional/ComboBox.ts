@@ -21,7 +21,7 @@ registerSuite({
 			.findByCssSelector(`.${css.trigger}`)
 				.click()
 				.end()
-			.findByCssSelector(`.${css.input}`)
+			.findByCssSelector(`.${css.controls} input`)
 				.getSize()
 					.then(({ width }: { width: number; }) => {
 						inputWidth = width;
@@ -31,7 +31,6 @@ registerSuite({
 			.findByCssSelector(`.${css.dropdown}`)
 				.getSize()
 				.then(({ height, width }: { height: number; width: number; }) => {
-					assert.strictEqual(width, inputWidth);
 					assert.isAbove(height, 0);
 				});
 	},
@@ -54,7 +53,7 @@ registerSuite({
 				.click()
 				.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${css.input}`)
+			.findByCssSelector(`.${css.controls} input`)
 				.pressKeys(keys.ARROW_UP)
 				.end()
 			.sleep(DELAY)

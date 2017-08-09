@@ -20,7 +20,9 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		return v('div', [
+		return v('div', {
+			styles: { maxWidth: '256px' }
+		}, [
 			v('h2', {}, ['Text Input Examples']),
 			v('label', [
 				'Use Dojo Theme ',

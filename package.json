@@ -41,5 +41,12 @@
     "intern": "^3.4.1",
     "sinon": "^1.17.6",
     "typescript": "~2.4.1"
+  },
+  "dependencies": {
+    "@dojo/core": "^2.0.0-beta2.3",
+    "@dojo/has": "^2.0.0-beta2.2",
+    "@dojo/i18n": "^2.0.0-beta2.2",
+    "@dojo/shim": "^2.0.0-beta2.3",
+    "@dojo/widget-core": "^2.0.0-beta2.6"
   }
 }

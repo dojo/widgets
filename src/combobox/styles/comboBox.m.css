@@ -79,3 +79,7 @@
 .clear {
 	right: 27px;
 }
+
+.valid { }
+.invalid { }
+.open { }
