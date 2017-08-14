@@ -8,7 +8,7 @@ import Select from './select/Select';
 import SlidePane from './slidepane/SlidePane';
 import Slider from './slider/Slider';
 import SplitPane from './splitpane/SplitPane';
-import TabPane from './tabpane/TabPane';
+import TabController from './tabcontroller/TabController';
 import Textarea from './textarea/Textarea';
 import TextInput from './textinput/TextInput';
 import TitlePane from './titlepane/TitlePane';
@@ -24,7 +24,7 @@ export {
 	SlidePane,
 	Slider,
 	SplitPane,
-	TabPane,
+	TabController,
 	Textarea,
 	TextInput,
 	TitlePane

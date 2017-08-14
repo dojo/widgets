@@ -16,7 +16,7 @@ const modules = [
 	'slidepane',
 	'slider',
 	'splitpane',
-	'tabpane',
+	'tabcontroller',
 	'textarea',
 	'textinput',
 	'timepicker',

@@ -13,3 +13,4 @@ npm-debug.log
 yarn.lock
 /_apidoc
 deploy_key
+package-lock.json

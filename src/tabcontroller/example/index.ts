@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import Tab from '../Tab';
-import TabPane, { Align } from '../TabPane';
+import TabController, { Align } from '../TabController';
 import Task from '@dojo/core/async/Task';
 import dojoTheme from '../../themes/dojo/theme';
 
@@ -90,7 +90,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				v('option', { value: 'right' }, [ 'Right' ]),
 				v('option', { value: 'bottom' }, [ 'Bottom' ])
 			]),
-			w(TabPane, {
+			w(TabController, {
 				theme: this._theme,
 				activeIndex: activeIndex,
 				alignButtons: align,

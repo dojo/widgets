@@ -7,7 +7,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import TabButton from './TabButton';
 import uuid from '@dojo/core/uuid';
 
-import * as css from './styles/tabPane.m.css';
+import * as css from './styles/tabController.m.css';
 
 /**
  * Enum for tab button alignment
@@ -20,26 +20,26 @@ export const enum Align {
 };
 
 /**
- * @type TabPaneProperties
+ * @type TabControllerProperties
  *
- * Properties that can be set on a TabPane component
+ * Properties that can be set on a TabController component
  *
  * @property activeIndex           Position of the currently active tab
  * @property alignButtons          Orientation of the tab buttons
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
-export interface TabPaneProperties extends ThemeableProperties {
+export interface TabControllerProperties extends ThemeableProperties {
 	activeIndex: number;
 	alignButtons?: Align;
 	onRequestTabChange?(index: number, key: string): void;
 	onRequestTabClose?(index: number, key: string): void;
 };
 
-export const TabPaneBase = ThemeableMixin(WidgetBase);
+export const TabControllerBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
-export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> {
+export default class TabController extends TabControllerBase<TabControllerProperties, WNode<Tab>> {
 	private _id = uuid();
 	private _callTabFocus = false;
 
@@ -111,7 +111,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 
 		return this._tabs
 			.filter((tab, i) => {
-				return i === activeIndex;
+				return i === activeIndex && tab.children.length;
 			})
 			.map((tab, i) => {
 				assign(tab.properties, {
@@ -195,6 +195,7 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 	render(): DNode {
 		const { activeIndex } = this.properties;
 		const validIndex = this._validateIndex(activeIndex);
+		const tabs = this._renderTabs();
 
 		if (validIndex !== null && validIndex !== activeIndex) {
 			this.selectIndex(validIndex);
@@ -206,10 +207,10 @@ export default class TabPane extends TabPaneBase<TabPaneProperties, WNode<Tab>> 
 				key: 'buttons',
 				classes: this.classes(css.tabButtons)
 			}, this._renderTabButtons()),
-			v('div', {
+			tabs.length ? v('div', {
 				key: 'tabs',
 				classes: this.classes(css.tabs)
-			}, this._renderTabs())
+			}, this._renderTabs()) : null
 		];
 
 		let alignClass;
