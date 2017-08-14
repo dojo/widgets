@@ -26,7 +26,7 @@ export interface CalendarMessages {
 };
 
 /**
- * @type MonthPickerProperties
+ * @type DatePickerProperties
  *
  * Properties that can be set on a Calendar component
  *
@@ -40,26 +40,27 @@ export interface CalendarMessages {
  * @property renderMonthLabel     Format the displayed current month and year
  * @property year                 Currently displayed year
  */
-export interface MonthPickerProperties extends ThemeableProperties {
+export interface DatePickerProperties extends ThemeableProperties {
 	labelId?: string;
 	labels: CalendarMessages;
 	month: number;
 	monthNames: { short: string; long: string; }[];
+	year: number;
+	yearRange?: number;
+	renderMonthLabel?(month: number, year: number): string;
 	onMonthPopupChange?(open: boolean): void;
 	onRequestMonthChange?(month: number): void;
 	onRequestYearChange?(year: number): void;
 	onYearPopupChange?(open: boolean): void;
-	renderMonthLabel?(month: number, year: number): string;
-	year: number;
 };
 
-export const MonthPickerBase = ThemeableMixin(WidgetBase);
+export const DatePickerBase = ThemeableMixin(WidgetBase);
 
-const YEAR_RANGE = 20;
+const BASE_YEAR = 2000;
 
 @theme(css)
 @theme(iconCss)
-export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> {
+export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 	private _callMonthTriggerFocus = false;
 	private _callYearTriggerFocus = false;
 	private _callMonthPopupFocus = false;
@@ -67,6 +68,35 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 	private _idBase = uuid();
 	private _monthPopupOpen = false;
 	private _yearPopupOpen = false;
+	private _yearPage = 0;
+
+	private _closeMonthPopup() {
+		const { onMonthPopupChange } = this.properties;
+		this._monthPopupOpen = false;
+		this._callMonthTriggerFocus = true;
+		this.invalidate();
+		onMonthPopupChange && onMonthPopupChange(false);
+	}
+
+	private _closeYearPopup() {
+		const { onYearPopupChange } = this.properties;
+		this._yearPopupOpen = false;
+		this._callYearTriggerFocus = true;
+		this.invalidate();
+		onYearPopupChange && onYearPopupChange(false);
+	}
+
+	private _getYearRange() {
+		const { year, yearRange = 20 } = this.properties;
+		const offset = (year - BASE_YEAR) % yearRange - yearRange * this._yearPage;
+
+		if ( year >= BASE_YEAR) {
+			return { first: year - offset, last: year + yearRange - offset };
+		}
+		else {
+			return { first: year - (yearRange + offset), last: year - offset };
+		}
+	}
 
 	// move focus when opening/closing the popup
 	protected onElementUpdated(element: HTMLElement, key: string) {
@@ -102,8 +132,41 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		this._monthPopupOpen ? this._closeMonthPopup() : this._openMonthPopup();
 	}
 
+	private _onMonthRadioChange(event: TypedTargetEvent<HTMLInputElement>) {
+		const { onRequestMonthChange } = this.properties;
+		onRequestMonthChange && onRequestMonthChange(parseInt(event.target.value, 10));
+	}
+
+	private _onPopupKeyDown(event: KeyboardEvent) {
+		// close popup on escape, or if a value is selected with enter/space
+		if (
+			event.which === Keys.Escape ||
+			event.which === Keys.Enter ||
+			event.which === Keys.Space
+		) {
+			this._closeMonthPopup();
+			this._closeYearPopup();
+		}
+	}
+
 	private _onYearButtonClick() {
 		this._yearPopupOpen ? this._closeYearPopup() : this._openYearPopup();
+	}
+
+	private _onYearPageDown() {
+		this._yearPage--;
+		this._yearPopupOpen && this.invalidate();
+	}
+
+	private _onYearPageUp() {
+		this._yearPage++;
+		this._yearPopupOpen && this.invalidate();
+	}
+
+	private _onYearRadioChange(event: TypedTargetEvent<HTMLInputElement>) {
+		const { onRequestYearChange } = this.properties;
+		this._yearPage = 0;
+		onRequestYearChange && onRequestYearChange(parseInt(event.target.value, 10));
 	}
 
 	private _openMonthPopup() {
@@ -122,78 +185,6 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		this._monthPopupOpen = false;
 		this.invalidate();
 		onYearPopupChange && onYearPopupChange(true);
-	}
-
-	private _closeMonthPopup() {
-		const { onMonthPopupChange } = this.properties;
-		this._monthPopupOpen = false;
-		this._callMonthTriggerFocus = true;
-		this.invalidate();
-		onMonthPopupChange && onMonthPopupChange(false);
-	}
-
-	private _closeYearPopup() {
-		const { onYearPopupChange } = this.properties;
-		this._yearPopupOpen = false;
-		this._callYearTriggerFocus = true;
-		this.invalidate();
-		onYearPopupChange && onYearPopupChange(false);
-	}
-
-	private _onMonthDecrease() {
-		const {
-			month,
-			year,
-			onRequestMonthChange,
-			onRequestYearChange
-		} = this.properties;
-
-		if (month === 0) {
-			onRequestMonthChange && onRequestMonthChange(11);
-			onRequestYearChange && onRequestYearChange(year - 1);
-		}
-		else {
-			onRequestMonthChange && onRequestMonthChange(month - 1);
-		}
-	}
-
-	private _onMonthIncrease() {
-		const {
-			month,
-			year,
-			onRequestMonthChange,
-			onRequestYearChange
-		} = this.properties;
-
-		if (month === 11) {
-			onRequestMonthChange && onRequestMonthChange(0);
-			onRequestYearChange && onRequestYearChange(year + 1);
-		}
-		else {
-			onRequestMonthChange && onRequestMonthChange(month + 1);
-		}
-	}
-
-	private _onPopupKeyDown(event: KeyboardEvent) {
-		// close popup on escape, or if a value is selected with enter/space
-		if (
-			event.which === Keys.Escape ||
-			event.which === Keys.Enter ||
-			event.which === Keys.Space
-		) {
-			this._closeMonthPopup();
-			this._closeYearPopup();
-		}
-	}
-
-	private _onMonthRadioChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const { onRequestMonthChange } = this.properties;
-		onRequestMonthChange && onRequestMonthChange(parseInt(event.target.value, 10));
-	}
-
-	private _onYearRadioChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const { onRequestYearChange } = this.properties;
-		onRequestYearChange && onRequestYearChange(parseInt(event.target.value, 10));
 	}
 
 	private _renderMonthRadios() {
@@ -224,8 +215,8 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 		const { year } = this.properties;
 		const radios = [];
 
-		// TODO: Don't only show +/ 50 years
-		for (let i = year - (YEAR_RANGE / 2); i < year + (YEAR_RANGE / 2); i++) {
+		const yearLimits = this._getYearRange();
+		for (let i = yearLimits.first; i < yearLimits.last; i++) {
 			radios.push(v('label', {
 				key: `${this._idBase}_year_radios_${i}`,
 				classes: this.classes(css.yearRadio, i === year ? css.yearRadioChecked : null)
@@ -306,31 +297,7 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 					),
 					role: 'menuitem',
 					onclick: this._onYearButtonClick
-				}, [ `${ year }` ]),
-
-				// previous/next month buttons
-				v('div', {
-					classes: this.classes(css.controls)
-				}, [
-					v('button', {
-						classes: this.classes(css.previousMonth),
-						onclick: this._onMonthDecrease
-					}, [
-						v('i', { classes: this.classes(iconCss.icon, iconCss.leftIcon),
-							role: 'presentation', 'aria-hidden': 'true'
-						}),
-						v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.previousMonth ])
-					]),
-					v('button', {
-						classes: this.classes(css.nextMonth),
-						onclick: this._onMonthIncrease
-					}, [
-						v('i', { classes: this.classes(iconCss.icon, iconCss.rightIcon),
-							role: 'presentation', 'aria-hidden': 'true'
-						}),
-						v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.nextMonth ])
-					])
-				])
+				}, [ `${ year }` ])
 			]),
 
 			// month grid
@@ -340,10 +307,12 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				'aria-labelledby': `${this._idBase}_month_button`,
 				classes: this.classes(css.monthGrid).fixed(!this._monthPopupOpen ? baseCss.visuallyHidden : null),
 				id: `${this._idBase}_month_dialog`,
-				role: 'dialog',
-				onkeydown: this._onPopupKeyDown
+				role: 'dialog'
 			}, [
-				v('fieldset', { classes: this.classes(css.monthFields) }, [
+				v('fieldset', {
+					classes: this.classes(css.monthFields),
+					onkeydown: this._onPopupKeyDown
+				}, [
 					v('legend', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseMonth ]),
 					...this._renderMonthRadios()
 				])
@@ -356,12 +325,38 @@ export default class MonthPicker extends MonthPickerBase<MonthPickerProperties> 
 				'aria-labelledby': `${this._idBase}_year_button`,
 				classes: this.classes(css.yearGrid).fixed(!this._yearPopupOpen ? baseCss.visuallyHidden : null),
 				id: `${this._idBase}_year_dialog`,
-				role: 'dialog',
-				onkeydown: this._onPopupKeyDown
+				role: 'dialog'
 			}, [
-				v('fieldset', { classes: this.classes(css.yearFields) }, [
+				v('fieldset', {
+					classes: this.classes(css.yearFields),
+					onkeydown: this._onPopupKeyDown
+				}, [
 					v('legend', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseYear ]),
 					...this._renderYearRadios()
+				]),
+				v('div', {
+					classes: this.classes(css.controls)
+				}, [
+					v('button', {
+						classes: this.classes(css.previous),
+						tabIndex: this._yearPopupOpen ? 0 : -1,
+						onclick: this._onYearPageDown
+					}, [
+						v('i', { classes: this.classes(iconCss.icon, iconCss.leftIcon),
+							role: 'presentation', 'aria-hidden': 'true'
+						}),
+						v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.previousMonth ])
+					]),
+					v('button', {
+						classes: this.classes(css.next),
+						tabIndex: this._yearPopupOpen ? 0 : -1,
+						onclick: this._onYearPageUp
+					}, [
+						v('i', { classes: this.classes(iconCss.icon, iconCss.rightIcon),
+							role: 'presentation', 'aria-hidden': 'true'
+						}),
+						v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.nextMonth ])
+					])
 				])
 			])
 		]);

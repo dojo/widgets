@@ -11,6 +11,7 @@ import DatePicker from './DatePicker';
 import CalendarCell from './CalendarCell';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 
 /**
  * @type CalendarProperties
@@ -80,6 +81,7 @@ export const DEFAULT_LABELS: CalendarMessages = {
 export const CalendarBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class Calendar extends CalendarBase<CalendarProperties> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
@@ -245,6 +247,14 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		return { month: month + 1, year: year };
 	}
 
+	private _onMonthPageDown() {
+		this._onMonthDecrement();
+	}
+
+	private _onMonthPageUp() {
+		this._onMonthIncrement();
+	}
+
 	private _renderDateGrid(selectedDate?: Date) {
 		const {
 			month,
@@ -377,12 +387,37 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				cellpadding: '0',
 				role: 'grid',
 				'aria-labelledby': this._monthLabelId,
-				classes: this.classes().fixed(this._popupOpen ? baseCss.visuallyHidden : null)
+				classes: this.classes(css.dateGrid).fixed(this._popupOpen ? baseCss.visuallyHidden : null)
 			}, [
 				v('thead', [
 					v('tr', weekdays)
 				]),
-				v('tbody', this._renderDateGrid(selectedDate))
+				v('tbody', this._renderDateGrid(selectedDate)),
+			]),
+			// controls
+			v('div', {
+				classes: this.classes(css.controls).fixed(this._popupOpen ? baseCss.visuallyHidden : null)
+			}, [
+				v('button', {
+					classes: this.classes(css.previous),
+					tabIndex: this._popupOpen ? -1 : 0,
+					onclick: this._onMonthPageDown
+				}, [
+					v('i', { classes: this.classes(iconCss.icon, iconCss.leftIcon),
+						role: 'presentation', 'aria-hidden': 'true'
+					}),
+					v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.previousMonth ])
+				]),
+				v('button', {
+					classes: this.classes(css.next),
+					tabIndex: this._popupOpen ? -1 : 0,
+					onclick: this._onMonthPageUp
+				}, [
+					v('i', { classes: this.classes(iconCss.icon, iconCss.rightIcon),
+						role: 'presentation', 'aria-hidden': 'true'
+					}),
+					v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.nextMonth ])
+				])
 			])
 		]);
 	}

@@ -13,10 +13,11 @@
 	display: inline-block;
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
+	position: relative;
 	width: calc((var(--grid-base) * 35) + (var(--border-width) * 4));
 }
 
-.root > table {
+.dateGrid {
 	width: 100%;
 }
 
@@ -85,8 +86,8 @@
 
 .monthTrigger,
 .yearTrigger,
-.previousMonth,
-.nextMonth {
+.previous,
+.next {
 	background: 0;
 	border: var(--border-width) solid transparent;
 	color: inherit;
@@ -101,10 +102,10 @@
 .monthTrigger:hover,
 .yearTrigger:focus,
 .yearTrigger:hover,
-.previousMonth:focus,
-.previousMonth:hover,
-.nextMonth:focus,
-.nextMonth:hover {
+.previous:focus,
+.previous:hover,
+.next:focus,
+.next:hover {
 	border-color: var(--color-highlight);
 }
 
@@ -124,22 +125,38 @@
 	color: var(--color-highlight);
 }
 
-.controls {
-	flex: 1;
-	text-align: right;
-}
-
-.previousMonth,
-.nextMonth {
-	color: var(--color-text-faded);
+.previous,
+.next {
+	background-color: var(--color-background-faded);
+	border: var(--border-width) solid var(--color-border);
+	color: var(--color-text-primary);
+	display: block;
 	font-size: var(--font-size-icon);
 	line-height: 1;
-	padding: calc(var(--grid-base) - 1px);
+	padding: calc(var(--grid-base) * 1.5) 0;
+	position: absolute;
+	top: 50%;
+	width: calc(var(--spacing-large) + 2);
 }
 
-.monthPopup,
-.yearPopup {
-	top: calc(var(--grid-base) * 5);
+.previous i,
+.next i {
+	position: relative;
+	left: calc((var(--spacing-large) - var(--font-size-icon)) / 2);
+}
+
+.previous {
+	left: 0;
+	transform: translate(-100%, -50%);
+}
+
+.next {
+	right: 0;
+	transform: translate(100%, -50%);
+}
+
+.monthGrid,
+.yearGrid {
 	position: relative;
 	background-color: var(--color-background);
 }

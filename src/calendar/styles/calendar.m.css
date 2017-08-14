@@ -10,6 +10,8 @@
 }
 
 /* Date grid */
+.dateGrid {}
+
 .weekday, .date {
 	padding: 10px 20px;
 	text-align: center;
@@ -46,8 +48,8 @@
 .monthTrigger { }
 .yearTrigger { }
 .controls { }
-.previousMonth { }
-.nextMonth { }
+.previous { }
+.next { }
 .monthGrid { }
 .monthFields { }
 .yearGrid { }
