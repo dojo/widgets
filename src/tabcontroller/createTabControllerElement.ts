@@ -1,13 +1,13 @@
 import { CustomElementDescriptor } from '@dojo/widget-core/customElements';
-import TabPane from './TabPane';
+import TabController from './TabController';
 
 /**
- * Configures a TabPane web component
+ * Configures a TabController web component
  */
-export default function createTabPaneElement(): CustomElementDescriptor {
+export default function createTabControllerElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-tab-pane',
-		widgetConstructor: TabPane,
+		widgetConstructor: TabController,
 		attributes: [
 			{
 				attributeName: 'activeindex',

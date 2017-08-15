@@ -4,7 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { Keys } from '../common/util';
 
-import * as css from './styles/tabPane.m.css';
+import * as css from './styles/tabController.m.css';
 
 /**
  * @type TabButtonProperties

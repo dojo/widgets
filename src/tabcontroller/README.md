@@ -1,6 +1,6 @@
-# @dojo/widgets/tabpane/TabPane widget
+# @dojo/widgets/tabcontroller/TabController widget
 
-Dojo 2's `TabPane` widget provides a user interface capable of displaying tabbed content. The content shown at any given time is based on the currently-selected tab button.
+Dojo 2's `TabController` widget provides a user interface capable of displaying tabbed content. The content shown at any given time is based on the currently-selected tab button.
 
 ## Features
 
@@ -8,11 +8,11 @@ Dojo 2's `TabPane` widget provides a user interface capable of displaying tabbed
 - Tabs can be closeable, disabled, and can fetch data asynchronously
 - Completely keyboard accessible
 
-![Image of basic tabpane](http://placekitten.com/450/300)
+![Image of basic tabcontroller](http://placekitten.com/450/300)
 
 ### Keyboard Usage
 
-`TabPane` supports standard keyboard navigation for switching between and closing tabs.
+`TabController` supports standard keyboard navigation for switching between and closing tabs.
 
 **Tab Button Events**
 
@@ -26,17 +26,17 @@ Dojo 2's `TabPane` widget provides a user interface capable of displaying tabbed
 
 ### Accessibility Features
 
-Beyond complete keyboard accessibility, `TabPane` ensures that all appropriate ARIA attributes are included.
+Beyond complete keyboard accessibility, `TabController` ensures that all appropriate ARIA attributes are included.
 
 ## Example Usage
 
 *Basic Example*
 ```typescript
-import TabPane from '@dojo/widgets/tabpane/TabPane';
-import Tab from '@dojo/widgets/tabpane/Tab';
+import TabController from '@dojo/widgets/tabcontroller/TabController';
+import Tab from '@dojo/widgets/tabcontroller/Tab';
 import { w } from '@dojo/widget-core/d';
 
-w(TabPane, {
+w(TabController, {
 	activeIndex: this.state.activeIndex,
 	onRequestTabChange: (index: number) => this.setState({ activeIndex: index })
 }, [
@@ -54,11 +54,11 @@ w(TabPane, {
 
 *Closeable Tab*
 ```typescript
-import TabPane from '@dojo/widgets/tabpane/TabPane';
-import Tab from '@dojo/widgets/tabpane/Tab';
+import TabController from '@dojo/widgets/tabcontroller/TabController';
+import Tab from '@dojo/widgets/tabcontroller/Tab';
 import { w } from '@dojo/widget-core/d';
 
-w(TabPane, {
+w(TabController, {
 	activeIndex: this.state.activeIndex,
 	onRequestTabChange: (index: number) => this.setState({ activeIndex: index }),
 	onRequestTabClose: (index: number, key: string) => {
@@ -79,11 +79,11 @@ w(TabPane, {
 
 *Align Buttons Under Content*
 ```typescript
-import TabPane, { Align } from '@dojo/widgets/tabpane/TabPane';
-import Tab from '@dojo/widgets/tabpane/Tab';
+import TabController, { Align } from '@dojo/widgets/tabcontroller/TabController';
+import Tab from '@dojo/widgets/tabcontroller/Tab';
 import { w } from '@dojo/widget-core/d';
 
-w(TabPane, {
+w(TabController, {
 	activeIndex: this.state.activeIndex,
 	alignButtons: Align.bottom,
 	onRequestTabChange: (index: number) => this.setState({ activeIndex: index })
@@ -101,7 +101,7 @@ w(TabPane, {
 
 ## Theming
 
-The following CSS classes are used to style the `TabPane` widget and should be provided by custom themes:
+The following CSS classes are used to style the `TabController` widget and should be provided by custom themes:
 
 - `activeTabButton`: Applied to the button associated with the currently-active tab
 - `alignBottom`: Applied to the top-level wrapper node when buttons are positioned under content

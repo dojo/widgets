@@ -9,7 +9,7 @@ import * as select from './select.m.css';
 import * as slidePane from './slidePane.m.css';
 import * as slider from './slider.m.css';
 import * as splitPane from './splitPane.m.css';
-import * as tabPane from './tabPane.m.css';
+import * as tabController from './tabController.m.css';
 import * as textarea from './textarea.m.css';
 import * as textinput from './textinput.m.css';
 import * as titlePane from './titlePane.m.css';
@@ -26,7 +26,7 @@ export default {
 	'dojo-slidePane': slidePane,
 	'dojo-slider': slider,
 	'dojo-splitPane': splitPane,
-	'dojo-tabPane': tabPane,
+	'dojo-tabController': tabController,
 	'dojo-textarea': textarea,
 	'dojo-textinput': textinput,
 	'dojo-titlePane': titlePane

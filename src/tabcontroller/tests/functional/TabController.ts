@@ -1,15 +1,15 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import * as css from '../../styles/tabPane.m.css';
+import * as css from '../../styles/tabController.m.css';
 
 function getPage(remote: any) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=tabpane')
+		.get('http://localhost:9000/_build/common/example/?module=tabcontroller')
 		.setFindTimeout(5000);
 }
 
 registerSuite({
-	name: 'TabPane',
+	name: 'TabController',
 
 	'tab pane should be visible'(this: any) {
 		return getPage(this.remote)
