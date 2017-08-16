@@ -392,7 +392,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				v('thead', [
 					v('tr', weekdays)
 				]),
-				v('tbody', this._renderDateGrid(selectedDate)),
+				v('tbody', this._renderDateGrid(selectedDate))
 			]),
 			// controls
 			v('div', {

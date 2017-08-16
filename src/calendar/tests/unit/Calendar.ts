@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import CalendarCell from '../../CalendarCell';
-import MonthPicker from '../../MonthPicker';
+import DatePicker from '../../DatePicker';
 import Calendar, { CalendarProperties, DEFAULT_MONTHS, DEFAULT_LABELS, DEFAULT_WEEKDAYS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
 
@@ -37,16 +37,15 @@ const expectedDateCell = function(widget: any, date: number, active: boolean) {
 const expected = function(widget: any) {
 	dateIndex = -1;
 	return v('div', { classes: widget.classes(css.root) }, [
-		w(MonthPicker, {
+		w(DatePicker, {
 			labelId: <any> compareId,
 			labels: DEFAULT_LABELS,
 			month: 5,
 			monthNames: DEFAULT_MONTHS,
-			open: false,
 			renderMonthLabel: undefined,
 			year: 2017,
-			onRequestClose: widget.listener,
-			onRequestOpen: widget.listener,
+			onMonthPopupChange: widget.listener,
+			onYearPopupChange: widget.listener,
 			onRequestMonthChange: widget.listener,
 			onRequestYearChange: widget.listener
 		}),

@@ -33,7 +33,7 @@ registerSuite({
 
 	'Open month picker'() {
 		return openMonthPicker((<any> this).remote)
-			.findByCssSelector(`.${css.monthPopup}`)
+			.findByCssSelector(`.${css.monthGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'false', 'The month dialog should open on first click');
@@ -52,7 +52,7 @@ registerSuite({
 				.click()
 				.sleep(DELAY)
 				.end()
-			.findByCssSelector(`.${css.monthPopup}`)
+			.findByCssSelector(`.${css.monthGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'true', 'The month dialog should close on second click');
@@ -76,13 +76,13 @@ registerSuite({
 				.click()
 				.sleep(DELAY)
 				.end()
-			.findByCssSelector(`.${css.currentMonthLabel}`)
+			.findByCssSelector(`.${css.monthTrigger}`)
 				.getVisibleText()
 				.then((label: string) => {
 					assert.include(label, 'January', 'Clicking first month radio changes label text to January');
 				})
 				.end()
-			.findByCssSelector(`.${css.monthPopup}`)
+			.findByCssSelector(`.${css.monthGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'true', 'Clicking month radio closes popup');
