@@ -159,6 +159,17 @@ registerSuite({
 
 		assert.strictEqual(outputNode.properties!.styles!.top, '75%');
 		assert.isUndefined(outputNode.properties!.styles!.left);
+
+		slider.__setProperties__({
+			max: 90,
+			min: 10,
+			outputIsTooltip: true,
+			value: 50
+		});
+		vnode = <VNode> slider.__render__();
+		outputNode = vnode.children![0].children![2];
+
+		assert.strictEqual(outputNode.properties!.styles!.left, '50%');
 	},
 
 	events() {
