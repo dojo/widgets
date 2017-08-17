@@ -361,6 +361,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		return v('div', { classes: this.classes(css.root) }, [
 			// header
 			w(DatePicker, {
+				key: 'date-picker',
 				labelId: this._monthLabelId,
 				labels,
 				month,

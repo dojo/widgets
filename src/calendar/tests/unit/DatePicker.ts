@@ -206,8 +206,8 @@ registerSuite({
 		});
 
 		widget.expectRender(expected(widget));
-	}
-/*
+	},
+
 	'Popup should render with custom properties'() {
 		widget.setProperties({
 			labelId: 'foo',
@@ -215,94 +215,144 @@ registerSuite({
 			...requiredProps
 		});
 
-		let expectedVdom = expected(widget, true);
-
-		assignChildProperties(expectedVdom, '0', {
-			'aria-describedby': 'foo'
-		});
-		assignChildProperties(expectedVdom, '1', {
-			id: 'foo'
-		});
-		replaceChild(expectedVdom, '1,0', 'bar');
-
+		let expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', { id: 'foo' });
+		replaceChild(expectedVdom, '0,0,0', 'bar');
 		widget.expectRender(expectedVdom);
 	},
 
-	'Popup opens and closes on button click'() {
-		let closed = true;
+	'Month popup opens and closes on button click'() {
+		let isOpen;
 		widget.setProperties({
-			onRequestOpen: () => { closed = false; },
-			onRequestClose: () => { closed = true; },
+			onMonthPopupChange: open => { isOpen = open; },
 			...requiredProps
 		});
 
-		// open
 		widget.sendEvent('click', {
-			key: 'button'
+			key: 'month-button'
 		});
-		assert.isFalse(closed, 'First click should open popup');
+		assert.isTrue(isOpen, 'First click should open popup');
 
-		widget.setProperties({
-			open: true,
-			onRequestOpen: () => { closed = false; },
-			onRequestClose: () => { closed = true; },
-			...requiredProps
-		});
-		widget.getRender();
 		widget.sendEvent('click', {
-			key: 'button'
+			key: 'month-button'
 		});
-		assert.isTrue(closed, 'Second click should close popup');
+		assert.isFalse(isOpen, 'Second click should close popup');
 	},
 
-	'Popup closes with correct keys'() {
-		let closed = false;
+	'Year popup opens and closes on button click'() {
+		let isOpen;
 		widget.setProperties({
-			open: true,
-			onRequestClose: () => { closed = true; },
+			onYearPopupChange: open => { isOpen = open; },
+			...requiredProps
+		});
+
+		widget.sendEvent('click', {
+			key: 'year-button'
+		});
+		assert.isTrue(isOpen, 'First click should open popup');
+
+		widget.sendEvent('click', {
+			key: 'year-button'
+		});
+		assert.isFalse(isOpen, 'Second click should close popup');
+	},
+
+	'Month popup closes with correct keys'() {
+		let isOpen;
+		widget.setProperties({
+			onMonthPopupChange: open => { isOpen = open; },
 			...requiredProps
 		});
 
 		// escape key
+		widget.sendEvent('click', { key: 'month-button' });
 		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.Escape
 			},
-			key: 'month-popup'
+			selector: `.${css.monthGrid} fieldset`
 		});
-		assert.isTrue(closed, 'Should close on escape key press');
+		assert.isFalse(isOpen, 'Should close on escape key press');
 
 		// enter key
-		closed = false;
+		widget.sendEvent('click', { key: 'month-button' });
 		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.Enter
 			},
-			key: 'month-popup'
+			selector: `.${css.monthGrid} fieldset`
 		});
-		assert.isTrue(closed, 'Should close on enter key press');
+		assert.isFalse(isOpen, 'Should close on enter key press');
 
 		// space key
-		closed = false;
+		widget.sendEvent('click', { key: 'month-button' });
 		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.Space
 			},
-			key: 'month-popup'
+			selector: `.${css.monthGrid} fieldset`
 		});
-		assert.isTrue(closed, 'Should close on space key press');
+		assert.isFalse(isOpen, 'Should close on space key press');
 
 		// random key
-		closed = false;
+		widget.sendEvent('click', { key: 'month-button' });
 		widget.sendEvent<TestEventInit>('keydown', {
 			eventInit: {
 				which: Keys.PageDown
 			},
-			key: 'month-popup'
+			selector: `.${css.monthGrid} fieldset`
 		});
-		assert.isFalse(closed, 'Other keys don\'t close popup');
+		assert.isTrue(isOpen, 'Other keys don\'t close popup');
 	},
 
+	'year popup closes with correct keys'() {
+		let isOpen;
+		widget.setProperties({
+			onYearPopupChange: open => { isOpen = open; },
+			...requiredProps
+		});
+
+		// escape key
+		widget.sendEvent('click', { key: 'year-button' });
+		widget.sendEvent<TestEventInit>('keydown', {
+			eventInit: {
+				which: Keys.Escape
+			},
+			selector: `.${css.yearGrid} fieldset`
+		});
+		assert.isFalse(isOpen, 'Should close on escape key press');
+
+		// enter key
+		widget.sendEvent('click', { key: 'year-button' });
+		widget.sendEvent<TestEventInit>('keydown', {
+			eventInit: {
+				which: Keys.Enter
+			},
+			selector: `.${css.yearGrid} fieldset`
+		});
+		assert.isFalse(isOpen, 'Should close on enter key press');
+
+		// space key
+		widget.sendEvent('click', { key: 'year-button' });
+		widget.sendEvent<TestEventInit>('keydown', {
+			eventInit: {
+				which: Keys.Space
+			},
+			selector: `.${css.yearGrid} fieldset`
+		});
+		assert.isFalse(isOpen, 'Should close on space key press');
+
+		// random key
+		widget.sendEvent('click', { key: 'year-button' });
+		widget.sendEvent<TestEventInit>('keydown', {
+			eventInit: {
+				which: Keys.PageDown
+			},
+			selector: `.${css.yearGrid} fieldset`
+		});
+		assert.isTrue(isOpen, 'Other keys don\'t close popup');
+	},
+/*
 	'Arrow keys change year spinner'() {
 		let currentYear = 2017;
 		widget.setProperties({
