@@ -127,13 +127,15 @@ export default class Slider extends SliderBase<SliderProperties> {
 			vertical ? css.vertical : null
 		];
 
+		const percentValue = (value - min) / (max - min) * 100;
+
 		// custom output node
 		const outputNode = output ? output(value) : value + '';
 
 		// output styles
 		let outputStyles: { left?: string; top?: string } = {};
 		if (outputIsTooltip) {
-			outputStyles = vertical ? { top: ((max - value) / max * 100) + '%' } : { left: (value / max * 100) + '%' };
+			outputStyles = vertical ? { top: `${100 - percentValue}%` } : { left: `${percentValue}%` };
 		}
 
 		const slider = v('div', {
@@ -177,11 +179,11 @@ export default class Slider extends SliderBase<SliderProperties> {
 			}, [
 				v('span', {
 					classes: this.classes(css.fill).fixed(css.fillFixed),
-					styles: { width: (value / max * 100) + '%' }
+					styles: { width: `${percentValue}%` }
 				}),
 				v('span', {
 					classes: this.classes(css.thumb).fixed(css.thumbFixed),
-					styles: { left: (value / max * 100) + '%' }
+					styles: { left: `${percentValue}%` }
 				})
 			]),
 			v('output', {
