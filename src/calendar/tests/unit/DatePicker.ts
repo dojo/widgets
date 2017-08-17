@@ -19,6 +19,7 @@ const requiredProps = {
 	monthNames: DEFAULT_MONTHS,
 	year: testDate.getFullYear()
 };
+let customProps: any = {};
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -48,7 +49,8 @@ const monthRadios = function(widget: any, open?: boolean) {
 
 const yearRadios = function(widget: any, open?: boolean) {
 	const radios = [];
-	for (let i = 2000; i < 2020; i++) {
+	const maxYear = customProps.yearRange ? 2000 + customProps.yearRange : 2020;
+	for (let i = 2000; i < maxYear; i++) {
 		radios.push(v('label', {
 			key: <any> compareId,
 			classes: widget.classes(css.yearRadio, i === 2017 ? css.yearRadioChecked : null)
@@ -146,7 +148,7 @@ const expected = function(widget: any, monthOpen = false, yearOpen = false) {
 		}, [
 			// hidden label
 			v('label', {
-				id: <any> compareId,
+				id: customProps.labelId ? customProps.labelId : <any> compareId,
 				classes: widget.classes(baseCss.visuallyHidden),
 				'aria-live': 'polite',
 				'aria-atomic': 'false'
@@ -209,22 +211,26 @@ registerSuite({
 	},
 
 	'Popup should render with custom properties'() {
-		widget.setProperties({
+		customProps = {
 			labelId: 'foo',
+			yearRange: 25
+		};
+		widget.setProperties({
 			renderMonthLabel: () => { return 'bar'; },
+			...customProps,
 			...requiredProps
 		});
 
 		let expectedVdom = expected(widget);
-		assignChildProperties(expectedVdom, '0,0', { id: 'foo' });
 		replaceChild(expectedVdom, '0,0,0', 'bar');
+
 		widget.expectRender(expectedVdom);
 	},
 
 	'Month popup opens and closes on button click'() {
 		let isOpen;
 		widget.setProperties({
-			onMonthPopupChange: open => { isOpen = open; },
+			onPopupChange: open => { isOpen = open; },
 			...requiredProps
 		});
 
@@ -242,7 +248,7 @@ registerSuite({
 	'Year popup opens and closes on button click'() {
 		let isOpen;
 		widget.setProperties({
-			onYearPopupChange: open => { isOpen = open; },
+			onPopupChange: open => { isOpen = open; },
 			...requiredProps
 		});
 
@@ -260,7 +266,7 @@ registerSuite({
 	'Month popup closes with correct keys'() {
 		let isOpen;
 		widget.setProperties({
-			onMonthPopupChange: open => { isOpen = open; },
+			onPopupChange: open => { isOpen = open; },
 			...requiredProps
 		});
 
@@ -308,7 +314,7 @@ registerSuite({
 	'year popup closes with correct keys'() {
 		let isOpen;
 		widget.setProperties({
-			onYearPopupChange: open => { isOpen = open; },
+			onPopupChange: open => { isOpen = open; },
 			...requiredProps
 		});
 

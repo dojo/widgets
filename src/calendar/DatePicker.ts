@@ -34,11 +34,12 @@ export interface CalendarMessages {
  * @property labels               Customize or internationalize accessible helper text
  * @property month                Currently displayed month, zero-based
  * @property monthNames           Array of full and abbreviated month names
- * @property onMonthPopupChange   Called when a user action occurs that triggers the month popup to open
+ * @property year                 Currently displayed year
+ * @property yearRange            Number of years to display in a single page of the year popup
+ * @property renderMonthLabel     Format the displayed current month and year
+ * @property onPopupChange        Called when a user action occurs that triggers a change in the month or year popup state
  * @property onRequestMonthChange Called when a month should change; receives the zero-based month number
  * @property onRequestYearChange  Called when a year should change; receives the year as an integer
- * @property renderMonthLabel     Format the displayed current month and year
- * @property year                 Currently displayed year
  */
 export interface DatePickerProperties extends ThemeableProperties {
 	labelId?: string;
@@ -48,10 +49,9 @@ export interface DatePickerProperties extends ThemeableProperties {
 	year: number;
 	yearRange?: number;
 	renderMonthLabel?(month: number, year: number): string;
-	onMonthPopupChange?(open: boolean): void;
+	onPopupChange?(open: boolean): void;
 	onRequestMonthChange?(month: number): void;
 	onRequestYearChange?(year: number): void;
-	onYearPopupChange?(open: boolean): void;
 };
 
 export const DatePickerBase = ThemeableMixin(WidgetBase);
@@ -71,19 +71,23 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 	private _yearPage = 0;
 
 	private _closeMonthPopup() {
-		const { onMonthPopupChange } = this.properties;
+		const { onPopupChange } = this.properties;
 		this._monthPopupOpen = false;
 		this._callMonthTriggerFocus = true;
 		this.invalidate();
-		onMonthPopupChange && onMonthPopupChange(false);
+		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
 	private _closeYearPopup() {
-		const { onYearPopupChange } = this.properties;
+		const { onPopupChange } = this.properties;
 		this._yearPopupOpen = false;
 		this._callYearTriggerFocus = true;
 		this.invalidate();
-		onYearPopupChange && onYearPopupChange(false);
+		onPopupChange && onPopupChange(this._getPopupState());
+	}
+
+	private _getPopupState() {
+		return this._monthPopupOpen || this._yearPopupOpen;
 	}
 
 	private _getYearRange() {
@@ -170,21 +174,21 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 	}
 
 	private _openMonthPopup() {
-		const { onMonthPopupChange } = this.properties;
+		const { onPopupChange } = this.properties;
 		this._monthPopupOpen = true;
 		this._callMonthPopupFocus = true;
 		this._yearPopupOpen = false;
 		this.invalidate();
-		onMonthPopupChange && onMonthPopupChange(true);
+		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
 	private _openYearPopup() {
-		const { onYearPopupChange } = this.properties;
+		const { onPopupChange } = this.properties;
 		this._yearPopupOpen = true;
 		this._callYearPopupFocus = true;
 		this._monthPopupOpen = false;
 		this.invalidate();
-		onYearPopupChange && onYearPopupChange(true);
+		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
 	private _renderMonthRadios() {

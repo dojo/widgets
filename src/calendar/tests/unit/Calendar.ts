@@ -47,8 +47,7 @@ const expected = function(widget: any, popupOpen = false) {
 			monthNames: DEFAULT_MONTHS,
 			renderMonthLabel: undefined,
 			year: 2017,
-			onMonthPopupChange: widget.listener,
-			onYearPopupChange: widget.listener,
+			onPopupChange: widget.listener,
 			onRequestMonthChange: widget.listener,
 			onRequestYearChange: widget.listener
 		}),
@@ -533,10 +532,10 @@ registerSuite({
 		assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Next button increments month');
 	},
 
-	'Month popup should open'() {
+	'onPopupChange should control visibility'() {
 		// Needed to get initial CSS classes on the component to then falsify
 		expected(widget);
-		widget.callListener('onMonthPopupChange', {
+		widget.callListener('onPopupChange', {
 			args: [true],
 			key: 'date-picker'
 		});
@@ -545,21 +544,6 @@ registerSuite({
 			month: testDate.getMonth(),
 			year: testDate.getFullYear()
 		});
-		widget.expectRender(expected(widget, true), 'Renders open popup when month trigger clicked');
+		widget.expectRender(expected(widget, true), 'Date grid is hidden when onPopupOpen is called');
 	},
-
-	'Year popup should open'() {
-		// Needed to get initial CSS classes on the component to then falsify
-		expected(widget);
-		widget.callListener('onYearPopupChange', {
-			args: [true],
-			key: 'date-picker'
-		});
-		widget.setProperties({
-			theme: {},
-			month: testDate.getMonth(),
-			year: testDate.getFullYear()
-		});
-		widget.expectRender(expected(widget, true), 'Renders open popup when month trigger clicked');
-	}
 });

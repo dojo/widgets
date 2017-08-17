@@ -369,10 +369,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				renderMonthLabel,
 				theme,
 				year,
-				onMonthPopupChange: (open: boolean) => {
-					this._popupOpen = open;
-				},
-				onYearPopupChange: (open: boolean) => {
+				onPopupChange: (open: boolean) => {
 					this._popupOpen = open;
 				},
 				onRequestMonthChange: (requestMonth: number) => {
