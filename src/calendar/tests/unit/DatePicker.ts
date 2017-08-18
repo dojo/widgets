@@ -475,12 +475,12 @@ registerSuite({
 		assert.isTrue(isOpen, 'Year popup opens when clicking year button');
 
 		widget.sendEvent('change', {
-			selector: `.${css.yearRadio}:nth-of-type(1) input`
+			selector: `.${css.yearRadio}:nth-of-type(2) input`
 		});
 		assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
 
 		widget.sendEvent('mouseup', {
-			selector: `.${css.yearRadio}:nth-of-type(1) input`
+			selector: `.${css.yearRadio}:nth-of-type(2) input`
 		});
 		assert.isFalse(isOpen, 'Clicking radios closes popup');
 	}

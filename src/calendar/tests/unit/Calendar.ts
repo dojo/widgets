@@ -213,7 +213,6 @@ registerSuite({
 
 		class CustomCalendarCell extends CalendarCell {}
 		widget.setProperties({
-			customDateCell: CustomCalendarCell,
 			month: testDate.getMonth(),
 			year: testDate.getFullYear()
 		});
@@ -288,6 +287,10 @@ registerSuite({
 				which: Keys.Right,
 				preventDefault: () => {}
 			}],
+			key: 'date-4'
+		});
+		// not a good way to test this, but this would be called with the arrow key
+		widget.callListener('onFocusCalled', {
 			key: 'date-4'
 		});
 		widget.callListener('onKeyDown', {
@@ -540,10 +543,9 @@ registerSuite({
 			key: 'date-picker'
 		});
 		widget.setProperties({
-			theme: {},
 			month: testDate.getMonth(),
 			year: testDate.getFullYear()
 		});
 		widget.expectRender(expected(widget, true), 'Date grid is hidden when onPopupOpen is called');
-	},
+	}
 });
