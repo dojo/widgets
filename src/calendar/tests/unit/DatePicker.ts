@@ -1,7 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { compareProperty, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
+import { compareProperty, findKey, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -47,10 +47,9 @@ const monthRadios = function(widget: any, open?: boolean) {
 	]));
 };
 
-const yearRadios = function(widget: any, open?: boolean) {
+const yearRadios = function(widget: any, open?: boolean, yearStart = 2000, yearEnd = 2020) {
 	const radios = [];
-	const maxYear = customProps.yearRange ? 2000 + customProps.yearRange : 2020;
-	for (let i = 2000; i < maxYear; i++) {
+	for (let i = yearStart; i < yearEnd; i++) {
 		radios.push(v('label', {
 			key: <any> compareId,
 			classes: widget.classes(css.yearRadio, i === 2017 ? css.yearRadioChecked : null)
@@ -94,7 +93,7 @@ const expectedMonthPopup = function(widget: any, open: boolean) {
 	]);
 };
 
-const expectedYearPopup = function(widget: any, open: boolean) {
+const expectedYearPopup = function(widget: any, open: boolean, yearStart?: number, yearEnd?: number) {
 	return v('div', {
 		key: 'year-grid',
 		'aria-hidden': String(!open),
@@ -108,7 +107,7 @@ const expectedYearPopup = function(widget: any, open: boolean) {
 			onkeydown: widget.listener
 		}, [
 			v('legend', { classes: widget.classes(baseCss.visuallyHidden) }, [ DEFAULT_LABELS.chooseYear ]),
-			...yearRadios(widget, open)
+			...yearRadios(widget, open, yearStart, yearEnd)
 		]),
 		v('div', {
 			classes: widget.classes(css.controls)
@@ -137,7 +136,7 @@ const expectedYearPopup = function(widget: any, open: boolean) {
 	]);
 };
 
-const expected = function(widget: any, monthOpen = false, yearOpen = false) {
+const expected = function(widget: any, monthOpen = false, yearOpen = false, yearStart?: number, yearEnd?: number) {
 	// new
 	return v('div', {
 		classes: widget.classes(css.datePicker)
@@ -183,7 +182,7 @@ const expected = function(widget: any, monthOpen = false, yearOpen = false) {
 		expectedMonthPopup(widget, monthOpen),
 
 		// year picker
-		expectedYearPopup(widget, yearOpen)
+		expectedYearPopup(widget, yearOpen, yearStart, yearEnd)
 	]);
 };
 
@@ -199,6 +198,7 @@ registerSuite({
 	},
 
 	afterEach() {
+		customProps = {};
 		widget.destroy();
 	},
 
@@ -221,9 +221,30 @@ registerSuite({
 			...requiredProps
 		});
 
-		let expectedVdom = expected(widget);
+		let expectedVdom = expected(widget, false, false, 2000, 2025);
 		replaceChild(expectedVdom, '0,0,0', 'bar');
 
+		widget.expectRender(expectedVdom);
+	},
+
+	'Year below 2000 calculates correctly'() {
+		// classes are easier to replace if we do this twice
+		widget.setProperties({
+			...requiredProps
+		});
+		let expectedVdom = expected(widget);
+		widget.expectRender(expectedVdom);
+
+		widget.setProperties({
+			...requiredProps,
+			year: 1997
+		});
+		expectedVdom = expected(widget, false, false, 1980, 2000);
+		const yearGridVdom = findKey(expectedVdom, 'year-grid');
+		replaceChild(expectedVdom, '0,0,0', 'June 1997');
+		replaceChild(expectedVdom, '0,2,0', '1997');
+		assignChildProperties(yearGridVdom!, '0,18', { classes: widget.classes(css.yearRadio, css.yearRadioChecked) });
+		assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
 		widget.expectRender(expectedVdom);
 	},
 
@@ -263,12 +284,38 @@ registerSuite({
 		assert.isFalse(isOpen, 'Second click should close popup');
 	},
 
-	'Month popup closes with correct keys'() {
+	'Popup switches between month and year'() {
 		let isOpen;
+		let expectedVdom = expected(widget, false, false);
 		widget.setProperties({
 			onPopupChange: open => { isOpen = open; },
 			...requiredProps
 		});
+		widget.expectRender(expectedVdom);
+
+		widget.sendEvent('click', {
+			key: 'month-button'
+		});
+		expectedVdom = expected(widget, true, false);
+		assert.isTrue(isOpen, 'Month button opens popup');
+		widget.expectRender(expectedVdom);
+
+		widget.sendEvent('click', {
+			key: 'year-button'
+		});
+		expectedVdom = expected(widget, false, true);
+		assert.isTrue(isOpen, 'After clicking year button, popup is still open');
+		widget.expectRender(expectedVdom);
+	},
+
+	'Month popup closes with correct keys'() {
+		let isOpen;
+		let expectedVdom = expected(widget, false, false);
+		widget.setProperties({
+			onPopupChange: open => { isOpen = open; },
+			...requiredProps
+		});
+		widget.expectRender(expectedVdom);
 
 		// escape key
 		widget.sendEvent('click', { key: 'month-button' });
@@ -278,6 +325,8 @@ registerSuite({
 			},
 			selector: `.${css.monthGrid} fieldset`
 		});
+		expectedVdom = expected(widget, false, false);
+		widget.expectRender(expectedVdom);
 		assert.isFalse(isOpen, 'Should close on escape key press');
 
 		// enter key
@@ -288,6 +337,7 @@ registerSuite({
 			},
 			selector: `.${css.monthGrid} fieldset`
 		});
+		widget.expectRender(expectedVdom);
 		assert.isFalse(isOpen, 'Should close on enter key press');
 
 		// space key
@@ -298,6 +348,7 @@ registerSuite({
 			},
 			selector: `.${css.monthGrid} fieldset`
 		});
+		widget.expectRender(expectedVdom);
 		assert.isFalse(isOpen, 'Should close on space key press');
 
 		// random key
@@ -308,11 +359,15 @@ registerSuite({
 			},
 			selector: `.${css.monthGrid} fieldset`
 		});
+		expectedVdom = expected(widget, true, false);
+		widget.expectRender(expectedVdom);
 		assert.isTrue(isOpen, 'Other keys don\'t close popup');
 	},
 
 	'year popup closes with correct keys'() {
 		let isOpen;
+		let expectedVdom = expected(widget, false, false);
+		expectedVdom = expected(widget, false, false);
 		widget.setProperties({
 			onPopupChange: open => { isOpen = open; },
 			...requiredProps
@@ -326,6 +381,7 @@ registerSuite({
 			},
 			selector: `.${css.yearGrid} fieldset`
 		});
+		widget.expectRender(expectedVdom);
 		assert.isFalse(isOpen, 'Should close on escape key press');
 
 		// enter key
@@ -336,6 +392,7 @@ registerSuite({
 			},
 			selector: `.${css.yearGrid} fieldset`
 		});
+		widget.expectRender(expectedVdom);
 		assert.isFalse(isOpen, 'Should close on enter key press');
 
 		// space key
@@ -346,6 +403,7 @@ registerSuite({
 			},
 			selector: `.${css.yearGrid} fieldset`
 		});
+		widget.expectRender(expectedVdom);
 		assert.isFalse(isOpen, 'Should close on space key press');
 
 		// random key
@@ -356,123 +414,74 @@ registerSuite({
 			},
 			selector: `.${css.yearGrid} fieldset`
 		});
+		expectedVdom = expected(widget, false, true);
+		widget.expectRender(expectedVdom);
 		assert.isTrue(isOpen, 'Other keys don\'t close popup');
 	},
-/*
-	'Arrow keys change year spinner'() {
-		let currentYear = 2017;
+
+	'Clicking buttons changes year page'() {
+		let expectedVdom = expected(widget);
 		widget.setProperties({
-			...requiredProps,
-			year: currentYear,
-			onRequestYearChange: (year: number) => { currentYear = year; }
+			...requiredProps
 		});
-
-		widget.sendEvent<any>('keydown', {
-			eventInit: {
-				which: Keys.Right
-			},
-			key: 'year-spinner'
-		});
-
-		assert.strictEqual(currentYear, 2018, 'Right arrow key increased year');
-
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.Left
-			},
-			key: 'year-spinner'
-		});
-
-		assert.strictEqual(currentYear, 2016, 'Left arrow key decreased year');
-	},
-
-	'Clicking buttons changes year'() {
-		let currentYear = testDate.getFullYear();
-		widget.setProperties({
-			...requiredProps,
-			year: currentYear,
-			onRequestYearChange: (year: number) => { currentYear = year; }
-		});
+		widget.sendEvent('click', { key: 'year-button' });
 
 		widget.sendEvent('click', {
-			selector: '.' + css.spinnerNext
+			selector: `.${css.next}`
 		});
-		assert.strictEqual(currentYear, testDate.getFullYear() + 1, 'clicking next year button increased year');
+		expectedVdom = expected(widget, false, true, 2020, 2040);
+		widget.expectRender(expectedVdom);
 
 		widget.sendEvent('click', {
-			selector: '.' + css.spinnerPrevious
+			selector: '.' + css.previous
 		});
-		assert.strictEqual(currentYear, testDate.getFullYear() - 1, 'clicking previous year button decreased year');
+		expectedVdom = expected(widget, false, true, 2000, 2020);
+		widget.expectRender(expectedVdom);
 	},
 
 	'Change month radios'() {
 		let currentMonth = testDate.getMonth();
-		let closed = false;
+		let isOpen = false;
 		widget.setProperties({
 			...requiredProps,
-			open: !closed,
-			onRequestClose: () => { closed = true; },
+			onPopupChange: (open: boolean) => { isOpen = open; },
 			onRequestMonthChange: (month: number) => { currentMonth = month; }
 		});
+
+		widget.sendEvent('click', { key: 'month-button' });
+		assert.isTrue(isOpen, 'Month popup opens when clicking month button');
 
 		widget.sendEvent('change', {
 			selector: `.${css.monthRadio}:nth-of-type(7) input`
 		});
-
 		assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
 
 		widget.sendEvent('mouseup', {
 			selector: `.${css.monthRadio}:nth-of-type(7) input`
 		});
-		assert.isTrue(closed, 'Clicking radios closes popup');
+		assert.isFalse(isOpen, 'Clicking radios closes popup');
 	},
 
-	'Previous/next month buttons'() {
-		let currentMonth = testDate.getMonth();
-		let currentYear = testDate.getFullYear();
+	'Change year radios'() {
+		let currentYear = testDate.getMonth();
+		let isOpen = false;
 		widget.setProperties({
 			...requiredProps,
-			month: currentMonth,
-			onRequestMonthChange: (month: number) => { currentMonth = month; }
-		});
-
-		widget.sendEvent('click', {
-			selector: '.' + css.previousMonth
-		});
-		assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Previous month arrow decreases month');
-
-		widget.sendEvent('click', {
-			selector: '.' + css.nextMonth
-		});
-		assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Next month arrow increases month');
-
-		widget.setProperties({
-			...requiredProps,
-			month: 0,
-			year: testDate.getFullYear(),
-			onRequestMonthChange: (month: number) => { currentMonth = month; },
+			onPopupChange: (open: boolean) => { isOpen = open; },
 			onRequestYearChange: (year: number) => { currentYear = year; }
 		});
-		widget.getRender();
-		widget.sendEvent('click', {
-			selector: '.' + css.previousMonth
-		});
-		assert.strictEqual(currentMonth, 11, 'Previous month wraps around');
-		assert.strictEqual(currentYear, testDate.getFullYear() - 1, 'Year decreases when month wraps around');
 
-		widget.setProperties({
-			...requiredProps,
-			month: 11,
-			year: testDate.getFullYear(),
-			onRequestMonthChange: (month: number) => { currentMonth = month; },
-			onRequestYearChange: (year: number) => { currentYear = year; }
-		});
-		widget.getRender();
-		widget.sendEvent('click', {
-			selector: '.' + css.nextMonth
-		});
+		widget.sendEvent('click', { key: 'year-button' });
+		assert.isTrue(isOpen, 'Year popup opens when clicking year button');
 
-		assert.strictEqual(currentMonth, 0, 'Next month wraps around');
-		assert.strictEqual(currentYear, testDate.getFullYear() + 1, 'Year increases when month wraps around');
-	}*/
+		widget.sendEvent('change', {
+			selector: `.${css.yearRadio}:nth-of-type(1) input`
+		});
+		assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
+
+		widget.sendEvent('mouseup', {
+			selector: `.${css.yearRadio}:nth-of-type(1) input`
+		});
+		assert.isFalse(isOpen, 'Clicking radios closes popup');
+	}
 });
