@@ -1,7 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { RegistryMixin } from '@dojo/widget-core/mixins/Registry';
 import { WidgetRegistry } from '@dojo/widget-core/WidgetRegistry';
 import { v } from '@dojo/widget-core/d';
 import { assign } from '@dojo/core/lang';
@@ -55,7 +54,7 @@ export function parseLabelClasses(classes: { [key: string]: boolean | undefined 
 	}, '').trim();
 }
 
-export const LabelBase = RegistryMixin(ThemeableMixin(WidgetBase));
+export const LabelBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class Label extends LabelBase<LabelProperties>  {
