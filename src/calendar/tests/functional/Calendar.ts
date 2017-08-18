@@ -18,6 +18,16 @@ function openMonthPicker(remote: any) {
 			.end();
 }
 
+function openYearPicker(remote: any) {
+	return remote
+		.get('http://localhost:9000/_build/common/example/?module=calendar')
+		.setFindTimeout(5000)
+		.findByCssSelector(`.${css.yearTrigger}`)
+			.click()
+			.sleep(DELAY)
+			.end();
+}
+
 function clickDate(remote: any) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
@@ -40,9 +50,9 @@ registerSuite({
 				})
 				.end()
 			.getActiveElement()
-				.getAttribute('role')
-				.then((role: string) => {
-					assert.strictEqual(role, 'spinbutton', 'focus moved inside popup');
+				.getAttribute('value')
+				.then((value: string) => {
+					assert.strictEqual(value, `${today.getMonth()}`, 'focus moved to current month radio inside popup');
 				});
 	},
 
@@ -62,6 +72,21 @@ registerSuite({
 				.getAttribute('class')
 				.then((className: string) => {
 					assert.include(className, css.monthTrigger, 'focus moved to button');
+				});
+	},
+
+	'Open year picker'() {
+		return openYearPicker((<any> this).remote)
+			.findByCssSelector(`.${css.yearGrid}`)
+				.getAttribute('aria-hidden')
+				.then((hidden: string) => {
+					assert.strictEqual(hidden, 'false', 'The month dialog should open on first click');
+				})
+				.end()
+			.getActiveElement()
+				.getAttribute('value')
+				.then((value: string) => {
+					assert.strictEqual(value, `${today.getFullYear()}`, 'focus moved to current year radio inside popup');
 				});
 	},
 
