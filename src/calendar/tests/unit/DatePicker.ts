@@ -36,7 +36,7 @@ const monthRadios = function(widget: any, open?: boolean) {
 			name: <any> compareId,
 			tabIndex: open ? 0 : -1,
 			type: 'radio',
-			value: i + '',
+			value: `${i}`,
 			onchange: widget.listener,
 			onmouseup: widget.listener
 		}),
@@ -75,7 +75,7 @@ const yearRadios = function(widget: any, open?: boolean, yearStart = 2000, yearE
 const expectedMonthPopup = function(widget: any, open: boolean) {
 	return v('div', {
 		key: 'month-grid',
-		'aria-hidden': String(!open),
+		'aria-hidden': `${!open}`,
 		'aria-labelledby': <any> compareId,
 		classes: widget.classes(css.monthGrid, !open ? baseCss.visuallyHidden : null),
 		id: <any> compareId,
@@ -96,7 +96,7 @@ const expectedMonthPopup = function(widget: any, open: boolean) {
 const expectedYearPopup = function(widget: any, open: boolean, yearStart?: number, yearEnd?: number) {
 	return v('div', {
 		key: 'year-grid',
-		'aria-hidden': String(!open),
+		'aria-hidden': `${!open}`,
 		'aria-labelledby': <any> compareId,
 		classes: widget.classes(css.yearGrid, !open ? baseCss.visuallyHidden : null),
 		id: <any> compareId,
@@ -157,7 +157,7 @@ const expected = function(widget: any, monthOpen = false, yearOpen = false, year
 			v('button', {
 				key: 'month-button',
 				'aria-controls': <any> compareId,
-				'aria-expanded': String(monthOpen),
+				'aria-expanded': `${monthOpen}`,
 				'aria-haspopup': 'true',
 				id: <any> compareId,
 				classes: widget.classes(css.monthTrigger, monthOpen ? css.monthTriggerActive : null),
@@ -169,7 +169,7 @@ const expected = function(widget: any, monthOpen = false, yearOpen = false, year
 			v('button', {
 				key: 'year-button',
 				'aria-controls': <any> compareId,
-				'aria-expanded': String(yearOpen),
+				'aria-expanded': `${yearOpen}`,
 				'aria-haspopup': 'true',
 				id: <any> compareId,
 				classes: widget.classes(css.yearTrigger, yearOpen ? css.yearTriggerActive : null),

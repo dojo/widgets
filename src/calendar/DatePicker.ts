@@ -117,15 +117,15 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 			}
 		}
 		if (this._callMonthPopupFocus && key.indexOf(`${this._idBase}_month_radios`) > -1) {
-			const m = key.split('_')[3];
-			if (this._monthPopupOpen && m === `${this.properties.month}`) {
+			const month = key.split('_')[3];
+			if (this._monthPopupOpen && month === `${this.properties.month}`) {
 				(<HTMLInputElement> element.children[0]).focus();
 				this._callMonthPopupFocus = false;
 			}
 		}
 		if (this._callYearPopupFocus && key.indexOf(`${this._idBase}_year_radios`) > -1) {
-			const y = key.split('_')[3];
-			if (this._yearPopupOpen && y === `${this.properties.year}`) {
+			const year = key.split('_')[3];
+			if (this._yearPopupOpen && year === `${this.properties.year}`) {
 				(<HTMLInputElement> element.children[0]).focus();
 				this._callYearPopupFocus = false;
 			}
@@ -204,7 +204,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 				name: `${this._idBase}_month_radios`,
 				tabIndex: this._monthPopupOpen ? 0 : -1,
 				type: 'radio',
-				value: i + '',
+				value: `${i}`,
 				onchange: this._onMonthRadioChange,
 				onmouseup: this._closeMonthPopup
 			}),
@@ -231,7 +231,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 					name: `${this._idBase}_year_radios`,
 					tabIndex: this._yearPopupOpen ? 0 : -1,
 					type: 'radio',
-					value: i + '',
+					value: `${i}`,
 					onchange: this._onYearRadioChange,
 					onmouseup: this._closeYearPopup
 				}),
@@ -277,7 +277,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 				v('button', {
 					key: 'month-button',
 					'aria-controls': `${this._idBase}_month_dialog`,
-					'aria-expanded': String(this._monthPopupOpen),
+					'aria-expanded': `${this._monthPopupOpen}`,
 					'aria-haspopup': 'true',
 					id: `${this._idBase}_month_button`,
 					classes: this.classes(
@@ -292,7 +292,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 				v('button', {
 					key: 'year-button',
 					'aria-controls': `${this._idBase}_year_dialog`,
-					'aria-expanded': String(this._yearPopupOpen),
+					'aria-expanded': `${this._yearPopupOpen}`,
 					'aria-haspopup': 'true',
 					id: `${this._idBase}_year_button`,
 					classes: this.classes(
@@ -307,7 +307,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 			// month grid
 			v('div', {
 				key: 'month-grid',
-				'aria-hidden': String(!this._monthPopupOpen),
+				'aria-hidden': `${!this._monthPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_month_button`,
 				classes: this.classes(css.monthGrid).fixed(!this._monthPopupOpen ? baseCss.visuallyHidden : null),
 				id: `${this._idBase}_month_dialog`,
@@ -325,7 +325,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 			// year grid
 			v('div', {
 				key: 'year-grid',
-				'aria-hidden': String(!this._yearPopupOpen),
+				'aria-hidden': `${!this._yearPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_year_button`,
 				classes: this.classes(css.yearGrid).fixed(!this._yearPopupOpen ? baseCss.visuallyHidden : null),
 				id: `${this._idBase}_year_dialog`,

@@ -164,7 +164,7 @@ registerSuite({
 				.then((text: string) => {
 					const today = new Date();
 					const monthLengh = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-					assert.strictEqual(text, String(monthLengh), 'Page down moves to last day');
+					assert.strictEqual(text, `${monthLengh}`, 'Page down moves to last day');
 				})
 				.end()
 			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
