@@ -208,7 +208,7 @@ registerSuite({
 			onKeyPress,
 			onKeyUp,
 			onMouseDown,
-			onMouseUp,
+			onMouseUp
 		});
 
 		widget.sendEvent('blur', { selector: 'textarea' });
