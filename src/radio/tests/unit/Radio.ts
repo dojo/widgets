@@ -1,159 +1,243 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
-import Radio from '../../Radio';
+import * as sinon from 'sinon';
+
+import has from '@dojo/has/has';
+import { v, w } from '@dojo/widget-core/d';
+import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import harness, { Harness } from '@dojo/test-extras/harness';
+
+import Label from '../../../label/Label';
+import Radio, { RadioProperties } from '../../Radio';
 import * as css from '../../styles/radio.m.css';
+
+const hasTouch = (function (): boolean {
+	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
+	return Boolean('ontouchstart' in window || has('host-node'));
+})();
+
+const expected = function(widget: any, label = false) {
+	const radioVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
+		v('input', {
+			classes: widget.classes(css.input),
+			checked: false,
+			'aria-describedby': undefined,
+			disabled: undefined,
+			'aria-invalid': null,
+			name: undefined,
+			readOnly: undefined,
+			'aria-readonly': null,
+			required: undefined,
+			type: 'radio',
+			value: undefined,
+			onblur: widget.listener,
+			onchange: widget.listener,
+			onclick: widget.listener,
+			onfocus: widget.listener,
+			onmousedown: widget.listener,
+			onmouseup: widget.listener,
+			ontouchstart: widget.listener,
+			ontouchend: widget.listener,
+			ontouchcancel: widget.listener
+		})
+	]);
+
+	if (label) {
+		return w(Label, {
+			extraClasses: { root: css.root },
+			label: 'foo',
+			formId: undefined,
+			theme: undefined
+		}, [ radioVdom ]);
+	}
+	else {
+		return v('div', {
+			classes: widget.classes(css.root)
+		}, [ radioVdom ]);
+	}
+};
+
+let widget: Harness<RadioProperties, typeof Radio>;
 
 registerSuite({
 	name: 'Radio',
 
-	construction() {
-		const radio = new Radio();
-		radio.__setProperties__({
-			checked: true
-		});
-
-		assert.isTrue(radio.properties.checked);
+	beforeEach() {
+		widget = harness(Radio);
 	},
 
-	'default node attributes'() {
-		const radio = new Radio();
-		const vnode = <VNode> radio.__render__();
-		const inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.vnodeSelector, 'input');
-		assert.strictEqual(inputNode.properties!.type, 'radio');
-		assert.strictEqual(inputNode.properties!.checked, false);
+	afterEach() {
+		widget.destroy();
 	},
 
-	'correct node attributes'() {
-		const radio = new Radio();
-		radio.__setProperties__({
+	'default properties'() {
+		widget.expectRender(expected(widget));
+	},
+
+	'custom properties'() {
+		widget.setProperties({
 			checked: true,
-			describedBy: 'id1',
-			disabled: true,
-			formId: 'id2',
-			invalid: true,
-			label: 'foo',
+			describedBy: 'foo',
 			name: 'bar',
-			readOnly: true,
-			required: true,
-			value: 'qux'
+			value: 'baz'
 		});
-		const vnode = <VNode> radio.__render__();
-		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1].children![0];
 
-		assert.isTrue(inputNode.properties!.checked);
-		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
-		assert.isTrue(inputNode.properties!.disabled);
-		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
-		assert.strictEqual(inputNode.properties!.name, 'bar');
-		assert.isTrue(inputNode.properties!.readOnly);
-		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
-		assert.isTrue(inputNode.properties!.required);
-		assert.strictEqual(inputNode.properties!.value, 'qux');
+		const expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			checked: true,
+			'aria-describedby': 'foo',
+			name: 'bar',
+			value: 'baz'
+		});
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.checked)
+		});
 
-		assert.strictEqual(vnode.properties!['form'], 'id2');
-		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
+		widget.expectRender(expectedVdom);
+	},
+
+	'label'() {
+		widget.setProperties({
+			label: 'foo'
+		});
+
+		widget.expectRender(expected(widget, true));
 	},
 
 	'state classes'() {
-		const radio = new Radio();
-		radio.__setProperties__({
-			checked: true,
-			disabled: true,
+		widget.setProperties({
 			invalid: true,
+			disabled: true,
 			readOnly: true,
 			required: true
 		});
-		let vnode = <VNode> radio.__render__();
 
-		assert.isTrue(vnode.properties!.classes![css.checked]);
-		assert.isTrue(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.invalid]);
-		assert.isTrue(vnode.properties!.classes![css.readonly]);
-		assert.isTrue(vnode.properties!.classes![css.required]);
+		let expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
+		});
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.invalid, css.disabled, css.readonly, css.required)
+		});
 
-		radio.__setProperties__({
-			checked: false,
-			disabled: false,
+		widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
+
+		widget.setProperties({
 			invalid: false,
+			disabled: false,
 			readOnly: false,
 			required: false
 		});
-		vnode = <VNode> radio.__render__();
-		assert.isFalse(vnode.properties!.classes![css.checked]);
-		assert.isFalse(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-		assert.isFalse(vnode.properties!.classes![css.readonly]);
-		assert.isFalse(vnode.properties!.classes![css.required]);
+		expectedVdom = expected(widget);
 
-		radio.__setProperties__({
-			invalid: undefined
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: false,
+			readOnly: false,
+			required: false
 		});
-		vnode = <VNode> radio.__render__();
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.valid)
+		});
+
+		widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+	},
+
+	'state classes on label'() {
+		widget.setProperties({
+			label: 'foo',
+			formId: 'bar',
+			invalid: true,
+			disabled: true,
+			readOnly: true,
+			required: true
+		});
+
+		const expectedVdom = expected(widget, true);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
+		});
+		assignProperties(expectedVdom, {
+			extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` },
+			formId: 'bar'
+		});
+		widget.expectRender(expectedVdom);
 	},
 
 	'focused class'() {
-		const radio = new Radio();
-		let vnode = <VNode> radio.__render__();
+		let expectedVdom = expected(widget);
+		widget.expectRender(expectedVdom);
 
-		assert.isUndefined(vnode.properties!.classes![css.focused]);
+		widget.sendEvent('focus', { selector: 'input' });
+		expectedVdom = expected(widget);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.focused)
+		});
+		widget.expectRender(expectedVdom, 'Should have focused class after focus event');
 
-		(<any> radio)._onFocus(<FocusEvent> {});
-		vnode = <VNode> radio.__render__();
-		assert.isTrue(vnode.properties!.classes![css.focused]);
-
-		(<any> radio)._onBlur(<FocusEvent> {});
-		vnode = <VNode> radio.__render__();
-		assert.isFalse(vnode.properties!.classes![css.focused]);
+		widget.sendEvent('blur', { selector: 'input' });
+		expectedVdom = expected(widget);
+		widget.expectRender(expectedVdom, 'Should not have focused class after blur event');
 	},
 
 	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+		const onBlur = sinon.stub();
+		const onChange = sinon.stub();
+		const onClick = sinon.stub();
+		const onFocus = sinon.stub();
+		const onMouseDown = sinon.stub();
+		const onMouseUp = sinon.stub();
 
-		const radio = new Radio();
-		radio.__setProperties__({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+		widget.setProperties({
+			onBlur,
+			onChange,
+			onClick,
+			onFocus,
+			onMouseDown,
+			onMouseUp
 		});
 
-		(<any> radio)._onBlur(<FocusEvent> {});
-		assert.isTrue(blurred);
-		(<any> radio)._onChange(<Event> {});
-		assert.isTrue(changed);
-		(<any> radio)._onClick(<MouseEvent> {});
-		assert.isTrue(clicked);
-		(<any> radio)._onFocus(<FocusEvent> {});
-		assert.isTrue(focused);
-		(<any> radio)._onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
-		(<any> radio)._onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
-		(<any> radio)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> radio)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> radio)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		widget.sendEvent('blur', { selector: 'input' });
+		assert.isTrue(onBlur.called, 'onBlur called');
+		widget.sendEvent('change', { selector: 'input' });
+		assert.isTrue(onChange.called, 'onChange called');
+		widget.sendEvent('click', { selector: 'input' });
+		assert.isTrue(onClick.called, 'onClick called');
+		widget.sendEvent('focus', { selector: 'input' });
+		assert.isTrue(onFocus.called, 'onFocus called');
+		widget.sendEvent('mousedown', { selector: 'input' });
+		assert.isTrue(onMouseDown.called, 'onMouseDown called');
+		widget.sendEvent('mouseup', { selector: 'input' });
+		assert.isTrue(onMouseUp.called, 'onMouseUp called');
+	},
+
+	'touch events'(this: any) {
+		if (!hasTouch) {
+			this.skip('Environment not support touch events');
+		}
+
+		const onTouchStart = sinon.stub();
+		const onTouchEnd = sinon.stub();
+		const onTouchCancel = sinon.stub();
+
+		widget.setProperties({
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
+		});
+
+		widget.sendEvent('touchstart', { selector: 'input' });
+		assert.isTrue(onTouchStart.called, 'onTouchStart called');
+		widget.sendEvent('touchend', { selector: 'input' });
+		assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
+		widget.sendEvent('touchcancel', { selector: 'input' });
+		assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 	}
 });
