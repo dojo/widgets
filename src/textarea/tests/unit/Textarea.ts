@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
@@ -186,50 +187,50 @@ registerSuite({
 	},
 
 	events() {
-		let blurred = false;
-		let changed = false;
-		let clicked = false;
-		let focused = false;
-		let input = false;
-		let keydown = false;
-		let keypress = false;
-		let keyup = false;
-		let mousedown = false;
-		let mouseup = false;
+		const onBlur = sinon.stub();
+		const onChange = sinon.stub();
+		const onClick = sinon.stub();
+		const onFocus = sinon.stub();
+		const onInput = sinon.stub();
+		const onKeyDown = sinon.stub();
+		const onKeyPress = sinon.stub();
+		const onKeyUp = sinon.stub();
+		const onMouseDown = sinon.stub();
+		const onMouseUp = sinon.stub();
 
 		widget.setProperties({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onInput: () => { input = true; },
-			onKeyDown: () => { keydown = true; },
-			onKeyPress: () => { keypress = true; },
-			onKeyUp: () => { keyup = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; }
+			onBlur,
+			onChange,
+			onClick,
+			onFocus,
+			onInput,
+			onKeyDown,
+			onKeyPress,
+			onKeyUp,
+			onMouseDown,
+			onMouseUp,
 		});
 
 		widget.sendEvent('blur', { selector: 'textarea' });
-		assert.isTrue(blurred, 'Didn\'t run onBlur');
+		assert.isTrue(onBlur.called, 'onBlur called');
 		widget.sendEvent('change', { selector: 'textarea' });
-		assert.isTrue(changed, 'Didn\'t run onChange');
+		assert.isTrue(onChange.called, 'onChange called');
 		widget.sendEvent('click', { selector: 'textarea' });
-		assert.isTrue(clicked, 'Didn\'t run onClick');
+		assert.isTrue(onClick.called, 'onClick called');
 		widget.sendEvent('focus', { selector: 'textarea' });
-		assert.isTrue(focused, 'Didn\'t run onFocus');
+		assert.isTrue(onFocus.called, 'onFocus called');
 		widget.sendEvent('input', { selector: 'textarea' });
-		assert.isTrue(input, 'Didn\'t run onInpput');
+		assert.isTrue(onInput.called, 'onInput called');
 		widget.sendEvent('keydown', { selector: 'textarea' });
-		assert.isTrue(keydown, 'Didn\'t run onKeyDown');
+		assert.isTrue(onKeyDown.called, 'onKeyDown called');
 		widget.sendEvent('keypress', { selector: 'textarea' });
-		assert.isTrue(keypress, 'Didn\'t run onKeyPress');
+		assert.isTrue(onKeyPress.called, 'onKeyPress called');
 		widget.sendEvent('keyup', { selector: 'textarea' });
-		assert.isTrue(keyup, 'Didn\'t run onKeyUp');
+		assert.isTrue(onKeyUp.called, 'onKeyUp called');
 		widget.sendEvent('mousedown', { selector: 'textarea' });
-		assert.isTrue(mousedown, 'Didn\'t run onMouseDown');
+		assert.isTrue(onMouseDown.called, 'onMouseDown called');
 		widget.sendEvent('mouseup', { selector: 'textarea' });
-		assert.isTrue(mouseup, 'Didn\'t run onMouseUp');
+		assert.isTrue(onMouseUp.called, 'onMouseUp called');
 	},
 
 	'touch events'(this: any) {
@@ -237,21 +238,21 @@ registerSuite({
 			this.skip('Environment not support touch events');
 		}
 
-		let touchstart = false;
-		let touchend = false;
-		let touchcancel = false;
+		const onTouchStart = sinon.stub();
+		const onTouchEnd = sinon.stub();
+		const onTouchCancel = sinon.stub();
 
 		widget.setProperties({
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
 		});
 
 		widget.sendEvent('touchstart', { selector: 'textarea' });
-		assert.isTrue(touchstart, 'Didn\'t run onTouchStart');
+		assert.isTrue(onTouchStart.called, 'onTouchStart called');
 		widget.sendEvent('touchend', { selector: 'textarea' });
-		assert.isTrue(touchend, 'Didn\'t run onTouchEnd');
+		assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
 		widget.sendEvent('touchcancel', { selector: 'textarea' });
-		assert.isTrue(touchcancel, 'Didn\'t run onTouchCancel');
+		assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 	}
 });
