@@ -6,9 +6,11 @@ import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import CalendarCell from '../../CalendarCell';
-import MonthPicker from '../../MonthPicker';
+import DatePicker from '../../DatePicker';
 import Calendar, { CalendarProperties, DEFAULT_MONTHS, DEFAULT_LABELS, DEFAULT_WEEKDAYS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
+import * as baseCss from '../../../common/styles/base.m.css';
+import * as iconCss from '../../../common/styles/icons.m.css';
 
 let widget: Harness<CalendarProperties, typeof Calendar>;
 const testDate = new Date('June 3 2017');
@@ -34,19 +36,18 @@ const expectedDateCell = function(widget: any, date: number, active: boolean) {
 	});
 };
 
-const expected = function(widget: any) {
+const expected = function(widget: any, popupOpen = false) {
 	dateIndex = -1;
 	return v('div', { classes: widget.classes(css.root) }, [
-		w(MonthPicker, {
+		w(DatePicker, {
+			key: 'date-picker',
 			labelId: <any> compareId,
 			labels: DEFAULT_LABELS,
 			month: 5,
 			monthNames: DEFAULT_MONTHS,
-			open: false,
 			renderMonthLabel: undefined,
 			year: 2017,
-			onRequestClose: widget.listener,
-			onRequestOpen: widget.listener,
+			onPopupChange: widget.listener,
 			onRequestMonthChange: widget.listener,
 			onRequestYearChange: widget.listener
 		}),
@@ -54,7 +55,8 @@ const expected = function(widget: any) {
 			cellspacing: '0',
 			cellpadding: '0',
 			role: 'grid',
-			'aria-labelledby': compareId // this._monthLabelId
+			'aria-labelledby': compareId, // this._monthLabelId,
+			classes: widget.classes(css.dateGrid, popupOpen ? baseCss.visuallyHidden : null)
 		}, [
 			v('thead', [
 				v('tr', DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string; }) => v('th', {
@@ -121,6 +123,30 @@ const expected = function(widget: any) {
 					expectedDateCell(widget, 8, false)
 				])
 			])
+		]),
+		v('div', {
+			classes: widget.classes(css.controls, popupOpen ? baseCss.visuallyHidden : null)
+		}, [
+			v('button', {
+				classes: widget.classes(css.previous),
+				tabIndex: popupOpen ? -1 : 0,
+				onclick: widget.listener
+			}, [
+				v('i', { classes: widget.classes(iconCss.icon, iconCss.leftIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				}),
+				v('span', { classes: widget.classes(baseCss.visuallyHidden) }, [ 'Previous Month' ])
+			]),
+			v('button', {
+				classes: widget.classes(css.next),
+				tabIndex: popupOpen ? -1 : 0,
+				onclick: widget.listener
+			}, [
+				v('i', { classes: widget.classes(iconCss.icon, iconCss.rightIcon),
+					role: 'presentation', 'aria-hidden': 'true'
+				}),
+				v('span', { classes: widget.classes(baseCss.visuallyHidden) }, [ 'Next Month' ])
+			])
 		])
 	]);
 };
@@ -138,6 +164,7 @@ registerSuite({
 
 	'Render specific month with default props'() {
 		widget.setProperties({
+			theme: {},
 			month: testDate.getMonth(),
 			year: testDate.getFullYear()
 		});
@@ -186,7 +213,6 @@ registerSuite({
 
 		class CustomCalendarCell extends CalendarCell {}
 		widget.setProperties({
-			customDateCell: CustomCalendarCell,
 			month: testDate.getMonth(),
 			year: testDate.getFullYear()
 		});
@@ -258,13 +284,19 @@ registerSuite({
 		// right arrow, then select
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Right
+				which: Keys.Right,
+				preventDefault: () => {}
 			}],
+			key: 'date-4'
+		});
+		// not a good way to test this, but this would be called with the arrow key
+		widget.callListener('onFocusCalled', {
 			key: 'date-4'
 		});
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Enter
+				which: Keys.Enter,
+				preventDefault: () => {}
 			}],
 			key: 'date-5'
 		});
@@ -274,13 +306,15 @@ registerSuite({
 		// down arrow
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Down
+				which: Keys.Down,
+				preventDefault: () => {}
 			}],
 			key: 'date-5'
 		});
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Enter
+				which: Keys.Enter,
+				preventDefault: () => {}
 			}],
 			key: 'date-12'
 		});
@@ -290,13 +324,15 @@ registerSuite({
 		// left arrow
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Left
+				which: Keys.Left,
+				preventDefault: () => {}
 			}],
 			key: 'date-12'
 		});
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Space
+				which: Keys.Space,
+				preventDefault: () => {}
 			}],
 			key: 'date-11'
 		});
@@ -306,13 +342,15 @@ registerSuite({
 		// up arrow
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Up
+				which: Keys.Up,
+				preventDefault: () => {}
 			}],
 			key: 'date-11'
 		});
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Space
+				which: Keys.Space,
+				preventDefault: () => {}
 			}],
 			key: 'date-4'
 		});
@@ -322,13 +360,15 @@ registerSuite({
 		// page down
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.PageDown
+				which: Keys.PageDown,
+				preventDefault: () => {}
 			}],
 			key: 'date-4'
 		});
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Space
+				which: Keys.Space,
+				preventDefault: () => {}
 			}],
 			key: 'date-33'
 		});
@@ -338,13 +378,15 @@ registerSuite({
 		// page up
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.PageUp
+				which: Keys.PageUp,
+				preventDefault: () => {}
 			}],
 			key: 'date-33'
 		});
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Space
+				which: Keys.Space,
+				preventDefault: () => {}
 			}],
 			key: 'date-4'
 		});
@@ -364,7 +406,8 @@ registerSuite({
 
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Left
+				which: Keys.Left,
+				preventDefault: () => {}
 			}],
 			key: 'date-4'
 		});
@@ -372,13 +415,15 @@ registerSuite({
 
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.PageDown
+				which: Keys.PageDown,
+				preventDefault: () => {}
 			}],
 			key: 'date-4'
 		});
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Right
+				which: Keys.Right,
+				preventDefault: () => {}
 			}],
 			key: 'date-4'
 		});
@@ -401,7 +446,8 @@ registerSuite({
 
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Up
+				which: Keys.Up,
+				preventDefault: () => {}
 			}],
 			key: 'date-0'
 		});
@@ -421,38 +467,13 @@ registerSuite({
 
 		widget.callListener('onKeyDown', {
 			args: [{
-				which: Keys.Down
+				which: Keys.Down,
+				preventDefault: () => {}
 			}],
 			key: 'date-35'
 		});
 		assert.strictEqual(currentMonth, 0, 'Next month wraps from December to January');
 		assert.strictEqual(currentYear, 2018, 'Year increments when month wraps');
-	},
-
-	'Month popup state controlled'() {
-		let expectedVdom = expected(widget);
-		expectedVdom = expected(widget);
-
-		widget.setProperties({
-			month: testDate.getMonth(),
-			year: testDate.getFullYear()
-		});
-
-		widget.callListener('onRequestOpen', {
-			index: '0'
-		});
-		assignChildProperties(expectedVdom, '0', {
-			open: true
-		});
-		widget.expectRender(expectedVdom, 'Month popup should have "open: true" after onRequestOpen is called');
-
-		widget.callListener('onRequestClose', {
-			index: '0'
-		});
-		assignChildProperties(expectedVdom, '0', {
-			open: false
-		});
-		widget.expectRender(expectedVdom, 'Month popup should have "open: false" after onRequestClose is called');
 	},
 
 	'Month popup events change month and year'() {
@@ -480,5 +501,51 @@ registerSuite({
 			index: '0'
 		});
 		assert.strictEqual(currentYear, 2018, 'Popup year change triggers calendar year change');
+	},
+
+	'Previous button should decrement month'() {
+		let currentMonth = testDate.getMonth();
+		widget.setProperties({
+			month: currentMonth,
+			onMonthChange: (month: number) => {
+				currentMonth = month;
+			}
+		});
+
+		widget.sendEvent('click', {
+			selector: `.${css.previous}`
+		});
+
+		assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Previous button decrements month');
+	},
+
+	'Next button should increment month'() {
+		let currentMonth = testDate.getMonth();
+		widget.setProperties({
+			month: currentMonth,
+			onMonthChange: (month: number) => {
+				currentMonth = month;
+			}
+		});
+
+		widget.sendEvent('click', {
+			selector: `.${css.next}`
+		});
+
+		assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Next button increments month');
+	},
+
+	'onPopupChange should control visibility'() {
+		// Needed to get initial CSS classes on the component to then falsify
+		expected(widget);
+		widget.callListener('onPopupChange', {
+			args: [true],
+			key: 'date-picker'
+		});
+		widget.setProperties({
+			month: testDate.getMonth(),
+			year: testDate.getFullYear()
+		});
+		widget.expectRender(expected(widget, true), 'Date grid is hidden when onPopupOpen is called');
 	}
 });

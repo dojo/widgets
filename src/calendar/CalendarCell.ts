@@ -62,7 +62,7 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 	}
 
 	protected formatDate(date: number): DNode {
-		return v('span', [ String(date) ]);
+		return v('span', [ `${date}` ]);
 	}
 
 	protected render(): DNode {
@@ -84,7 +84,7 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 		return v('td', {
 			key: 'root',
 			role: 'gridcell',
-			'aria-selected': String(selected),
+			'aria-selected': `${selected}`,
 			tabIndex: focusable ? 0 : -1,
 			classes: this.classes(...dateCellClasses),
 			onclick: this._onClick,

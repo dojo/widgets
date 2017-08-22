@@ -4,7 +4,7 @@ import './util';
 import '../../../button/tests/unit/Button';
 import '../../../calendar/tests/unit/Calendar';
 import '../../../calendar/tests/unit/CalendarCell';
-import '../../../calendar/tests/unit/MonthPicker';
+import '../../../calendar/tests/unit/DatePicker';
 import '../../../checkbox/tests/unit/Checkbox';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../combobox/tests/unit/ResultItem';

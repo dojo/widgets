@@ -6,9 +6,12 @@ import { reference } from '@dojo/widget-core/diff';
 import { DNode, Constructor } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
-import MonthPicker, { CalendarMessages } from './MonthPicker';
+import { CalendarMessages } from './DatePicker';
+import DatePicker from './DatePicker';
 import CalendarCell from './CalendarCell';
 import * as css from './styles/calendar.m.css';
+import * as baseCss from '../common/styles/base.m.css';
+import * as iconCss from '../common/styles/icons.m.css';
 
 /**
  * @type CalendarProperties
@@ -78,12 +81,13 @@ export const DEFAULT_LABELS: CalendarMessages = {
 export const CalendarBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
+@theme(iconCss)
 export default class Calendar extends CalendarBase<CalendarProperties> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
 	private _focusedDay = 1;
 	private _monthLabelId = uuid();
-	private _monthPopupOpen = false;
+	private _popupOpen = false;
 	private _registry: WidgetRegistry;
 
 	constructor() {
@@ -172,21 +176,27 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		const { month, year } = this._getMonthYear();
 		switch (event.which) {
 			case Keys.Up:
+				event.preventDefault();
 				this._goToDate(this._focusedDay - 7);
 				break;
 			case Keys.Down:
+				event.preventDefault();
 				this._goToDate(this._focusedDay + 7);
 				break;
 			case Keys.Left:
+				event.preventDefault();
 				this._goToDate(this._focusedDay - 1);
 				break;
 			case Keys.Right:
+				event.preventDefault();
 				this._goToDate(this._focusedDay + 1);
 				break;
 			case Keys.PageUp:
+				event.preventDefault();
 				this._goToDate(1);
 				break;
 			case Keys.PageDown:
+				event.preventDefault();
 				const monthLengh = this._getMonthLength(month, year);
 				this._goToDate(monthLengh);
 				break;
@@ -235,6 +245,14 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 
 		onMonthChange && onMonthChange(month + 1);
 		return { month: month + 1, year: year };
+	}
+
+	private _onMonthPageDown() {
+		this._onMonthDecrement();
+	}
+
+	private _onMonthPageUp() {
+		this._onMonthIncrement();
 	}
 
 	private _renderDateGrid(selectedDate?: Date) {
@@ -341,23 +359,18 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		}
 
 		return v('div', { classes: this.classes(css.root) }, [
-			// month popup
-			w(MonthPicker, {
+			// header
+			w(DatePicker, {
+				key: 'date-picker',
 				labelId: this._monthLabelId,
 				labels,
 				month,
 				monthNames,
-				open: this._monthPopupOpen,
 				renderMonthLabel,
 				theme,
 				year,
-				onRequestClose: () => {
-					this._monthPopupOpen = false;
-					this.invalidate();
-				},
-				onRequestOpen: () => {
-					this._monthPopupOpen = true;
-					this.invalidate();
+				onPopupChange: (open: boolean) => {
+					this._popupOpen = open;
 				},
 				onRequestMonthChange: (requestMonth: number) => {
 					onMonthChange && onMonthChange(requestMonth);
@@ -371,12 +384,38 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				cellspacing: '0',
 				cellpadding: '0',
 				role: 'grid',
-				'aria-labelledby': this._monthLabelId
+				'aria-labelledby': this._monthLabelId,
+				classes: this.classes(css.dateGrid).fixed(this._popupOpen ? baseCss.visuallyHidden : null)
 			}, [
 				v('thead', [
 					v('tr', weekdays)
 				]),
 				v('tbody', this._renderDateGrid(selectedDate))
+			]),
+			// controls
+			v('div', {
+				classes: this.classes(css.controls).fixed(this._popupOpen ? baseCss.visuallyHidden : null)
+			}, [
+				v('button', {
+					classes: this.classes(css.previous),
+					tabIndex: this._popupOpen ? -1 : 0,
+					onclick: this._onMonthPageDown
+				}, [
+					v('i', { classes: this.classes(iconCss.icon, iconCss.leftIcon),
+						role: 'presentation', 'aria-hidden': 'true'
+					}),
+					v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.previousMonth ])
+				]),
+				v('button', {
+					classes: this.classes(css.next),
+					tabIndex: this._popupOpen ? -1 : 0,
+					onclick: this._onMonthPageUp
+				}, [
+					v('i', { classes: this.classes(iconCss.icon, iconCss.rightIcon),
+						role: 'presentation', 'aria-hidden': 'true'
+					}),
+					v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.nextMonth ])
+				])
 			])
 		]);
 	}

@@ -48,7 +48,7 @@ class MyCalendarCell extends CalendarCell {
 	formatDate(date: number): DNode {
 		const { selected } = this.properties;
 		return v('div', [
-			String(date),
+			`${date}`,
 			selected ? v('span', { classes: this.classes(iconCss.checkMark) }) : null
 		]);
 	}

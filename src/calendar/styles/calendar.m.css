@@ -9,204 +9,9 @@
 	box-sizing: inherit;
 }
 
-/* Calendar header styles */
-.header {
-	margin-bottom: 10px;
-	position: relative;
-	text-align: center;
-}
-
-/* Previous/next month arrows */
-.previousMonth,
-.nextMonth {
-	background: #fff;
-	border: none;
-	cursor: pointer;
-	position: absolute;
-	top: 5px;
-}
-
-.previousMonth {
-	left: 0;
-}
-
-.nextMonth {
-	right: 0;
-}
-
-.previousMonth::before,
-.nextMonth::before {
-	border-left: 2px solid var(--component-color);
-	border-top: 2px solid var(--component-color);
-	content: "";
-	display: block;
-	height: 20px;
-	position: relative;
-	transition: border 0.2s ease;
-	width: 20px;
-}
-
-.previousMonth::before {
-	transform: rotate(-45deg);
-}
-
-.nextMonth::before {
-	transform: rotate(135deg);
-}
-
-.currentMonthLabel {
-	font-weight: bold;
-	font-size: 16px;
-	pointer-events: none;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	transition: color 0.2s ease;
-}
-
-/* Button to open month popup */
-.monthTrigger {
-	cursor: pointer;
-	height: 35px;
-	width: 180px;
-}
-
-.monthTrigger::after {
-	display: none;
-}
-
-/* Month popup */
-.monthPopup {
-	background-color: var(--component-background);
-	border: 3px solid var(--component-color);
-	left: 0;
-	margin-top: 20px;
-	opacity: 1;
-	padding: 10px 15px;
-	position: absolute;
-	width: 100%;
-}
-
-.monthPopup::before {
-	border-bottom: 20px solid var(--component-color);
-	border-left: 20px solid transparent;
-	border-right: 20px solid transparent;
-	content: "";
-	left: 50%;
-	margin-left: -20px;
-	position: absolute;
-	top: -20px;
-}
-
-.monthPopupHidden {
-	opacity: 0;
-	z-index: -1;
-}
-
-/* year spinner */
-.yearPicker {}
-
-.spinner,
-.spinnerNext,
-.spinnerPrevious {
-	display: inline-block;
-	position: relative;
-}
-
-.spinner::after,
-.spinnerNext::after,
-.spinnerPrevious::after {
-	content: "";
-	position: absolute;
-	left: 8px;
-	right: 8px;
-	transform: scale(0, 1);
-	transition: all var(--short-animation-duration) var(--short-animation-easing);
-}
-
-.spinner {
-	font-size: 24px;
-	line-height: 1;
-	padding: 0 8px;
-}
-
-.spinner::after {
-	background: var(--component-color);
-	bottom: -4px;
-	height: 3px;
-}
-
-.spinner:focus::after {
-	transform: scale(1, 1);
-}
-
-.spinnerPrevious,
-.spinnerNext {
-	color: var(--disabled-color);
-	cursor: pointer;
-	line-height: 24px;
-	padding: 0 8px;
-	vertical-align: text-bottom;
-}
-
-.spinnerPrevious::after,
-.spinnerNext::after {
-	background: var(--disabled-color);
-	bottom: 0;
-	height: 2px;
-}
-
-.spinnerPrevious:hover::after,
-.spinnerNext:hover::after {
-	transform: scale(1, 1);
-}
-
-/* Month picker radios */
-.monthControl {
-	border: 0;
-	margin: 0;
-	padding: 0;
-}
-
-.monthRadio {
-	display: block;
-	float: left;
-	font-size: 12px;
-	padding: 4px;
-	position: relative;
-	text-align: center;
-	text-transform: uppercase;
-	width: 25%;
-}
-
-.monthRadioLabel {
-	cursor: pointer;
-	display: block;
-	padding: 6px 12px;
-}
-
-.monthRadio:hover .monthRadioLabel {
-	background: var(--disabled-color); /* TODO: better color variable? */
-}
-
-.monthRadioChecked .monthRadioLabel {
-	background: var(--selected-background);
-	color: var(--selected-color);
-	font-weight: bold;
-}
-
-.monthRadioInput {
-	appearance: none;
-	height: 100%;
-	left: 0;
-	margin: 0;
-	position: absolute;
-	top: 0;
-	width: 100%;
-}
-
 /* Date grid */
+.dateGrid {}
+
 .weekday, .date {
 	padding: 10px 20px;
 	text-align: center;
@@ -236,3 +41,26 @@
 }
 
 .todayDate {}
+
+/* Date picker  */
+.datePicker { }
+.topMatter { }
+.monthTrigger { }
+.yearTrigger { }
+.controls { }
+.previous { }
+.next { }
+.monthGrid { }
+.monthFields { }
+.yearGrid { }
+.yearFields { }
+.monthRadio { }
+.yearRadio { }
+.monthRadioChecked { }
+.yearRadioChecked { }
+.monthRadioInput { }
+.monthRadioLabel { }
+.yearRadioInput { }
+.yearRadioLabel { }
+.monthTriggerActive { }
+.yearTriggerActive { }

@@ -18,6 +18,16 @@ function openMonthPicker(remote: any) {
 			.end();
 }
 
+function openYearPicker(remote: any) {
+	return remote
+		.get('http://localhost:9000/_build/common/example/?module=calendar')
+		.setFindTimeout(5000)
+		.findByCssSelector(`.${css.yearTrigger}`)
+			.click()
+			.sleep(DELAY)
+			.end();
+}
+
 function clickDate(remote: any) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
@@ -33,16 +43,16 @@ registerSuite({
 
 	'Open month picker'() {
 		return openMonthPicker((<any> this).remote)
-			.findByCssSelector(`.${css.monthPopup}`)
+			.findByCssSelector(`.${css.monthGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'false', 'The month dialog should open on first click');
 				})
 				.end()
 			.getActiveElement()
-				.getAttribute('role')
-				.then((role: string) => {
-					assert.strictEqual(role, 'spinbutton', 'focus moved inside popup');
+				.getAttribute('value')
+				.then((value: string) => {
+					assert.strictEqual(value, `${today.getMonth()}`, 'focus moved to current month radio inside popup');
 				});
 	},
 
@@ -52,7 +62,7 @@ registerSuite({
 				.click()
 				.sleep(DELAY)
 				.end()
-			.findByCssSelector(`.${css.monthPopup}`)
+			.findByCssSelector(`.${css.monthGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'true', 'The month dialog should close on second click');
@@ -62,6 +72,21 @@ registerSuite({
 				.getAttribute('class')
 				.then((className: string) => {
 					assert.include(className, css.monthTrigger, 'focus moved to button');
+				});
+	},
+
+	'Open year picker'() {
+		return openYearPicker((<any> this).remote)
+			.findByCssSelector(`.${css.yearGrid}`)
+				.getAttribute('aria-hidden')
+				.then((hidden: string) => {
+					assert.strictEqual(hidden, 'false', 'The month dialog should open on first click');
+				})
+				.end()
+			.getActiveElement()
+				.getAttribute('value')
+				.then((value: string) => {
+					assert.strictEqual(value, `${today.getFullYear()}`, 'focus moved to current year radio inside popup');
 				});
 	},
 
@@ -76,13 +101,13 @@ registerSuite({
 				.click()
 				.sleep(DELAY)
 				.end()
-			.findByCssSelector(`.${css.currentMonthLabel}`)
+			.findByCssSelector(`.${css.monthTrigger}`)
 				.getVisibleText()
 				.then((label: string) => {
 					assert.include(label, 'January', 'Clicking first month radio changes label text to January');
 				})
 				.end()
-			.findByCssSelector(`.${css.monthPopup}`)
+			.findByCssSelector(`.${css.monthGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
 					assert.strictEqual(hidden, 'true', 'Clicking month radio closes popup');
@@ -164,7 +189,7 @@ registerSuite({
 				.then((text: string) => {
 					const today = new Date();
 					const monthLengh = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-					assert.strictEqual(text, String(monthLengh), 'Page down moves to last day');
+					assert.strictEqual(text, `${monthLengh}`, 'Page down moves to last day');
 				})
 				.end()
 			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
