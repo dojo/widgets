@@ -8,11 +8,6 @@ import has from '@dojo/has/has';
 import * as css from '../../styles/splitPane.m.css';
 import SplitPane, { Direction, SplitPaneProperties } from '../../SplitPane';
 
-const hasTouch = (function (): boolean {
-	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
-	return Boolean('ontouchstart' in window || has('host-node'));
-})();
-
 let widget: Harness<SplitPaneProperties, typeof SplitPane>;
 
 registerSuite({
@@ -197,7 +192,7 @@ registerSuite({
 	},
 
 	'Touch move should call onResize for row'(this: any) {
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Environment not support touch events');
 		}
 
@@ -235,7 +230,7 @@ registerSuite({
 	},
 
 	'Touch move should call onResize for column'(this: any) {
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Environment not support touch events');
 		}
 

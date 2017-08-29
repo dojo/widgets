@@ -177,11 +177,7 @@ registerSuite({
 	},
 
 	'touch events'(this: Test) {
-		// TODO: this should be centralized & standardized somewhere
-		const hasTouch = has('host-node') || 'ontouchstart' in document ||
-			('onpointerdown' in document && navigator.maxTouchPoints > 0);
-
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Touch events not supported');
 		}
 

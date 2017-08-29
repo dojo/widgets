@@ -1,6 +1,7 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
+
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { assignProperties } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
