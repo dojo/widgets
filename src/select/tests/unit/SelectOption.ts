@@ -1,101 +1,90 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
-import SelectOption from '../../SelectOption';
+import * as sinon from 'sinon';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { assignProperties } from '@dojo/test-extras/support/d';
+import { v } from '@dojo/widget-core/d';
+
+import SelectOption, { SelectOptionProperties, OptionData } from '../../SelectOption';
 import * as css from '../../styles/select.m.css';
+
+let widget: Harness<SelectOptionProperties, typeof SelectOption>;
+let testData: OptionData;
+
+const expected = function(widget: any) {
+	return v('div', {
+		role: 'option',
+		id: undefined,
+		classes: widget.classes(css.option),
+		'aria-disabled': null,
+		'aria-selected': 'false',
+		onclick: widget.listener,
+		onmousedown: widget.listener
+	}, [ 'bar' ]);
+};
 
 registerSuite({
 	name: 'SelectOption',
 
+	beforeEach() {
+		widget = harness(SelectOption);
+		testData = {
+			label: 'bar',
+			value: '42'
+		};
+	},
+
+	afterEach() {
+		widget.destroy();
+	},
+
 	'Render correct properties'() {
-		const option = new SelectOption();
-		option.__setProperties__({
-			index: 2,
-			optionData: {
-				disabled: true,
-				id: 'foo',
-				label: '',
-				selected: false,
-				value: 'baz'
-			}
-		});
-		const vnode = <VNode> option.__render__();
-
-		assert.strictEqual(vnode.vnodeSelector, 'div');
-		assert.strictEqual(vnode.properties!.role, 'option');
-		assert.strictEqual(vnode.properties!.id, 'foo', 'Custom id from option.id should be used');
-		assert.isTrue(vnode.properties!.classes![css.option], 'All options should have the class css.option');
-		assert.strictEqual(vnode.properties!['aria-disabled'], 'true');
-		assert.strictEqual(vnode.properties!['aria-selected'], 'false');
-	},
-
-	renderLabel() {
-		const option = new SelectOption();
-		option.__setProperties__({
+		widget.setProperties({
 			index: 0,
-			optionData: {
-				label: 'bar',
-				value: ''
-			}
+			optionData: testData
 		});
-		const vnode = <VNode> option.__render__();
 
-		assert.strictEqual(vnode.text, 'bar', 'renderLabel returns label property');
+		widget.expectRender(expected(widget));
 	},
 
-	'State classes'() {
-		const option = new SelectOption();
-		option.__setProperties__({
+	'custom properties'() {
+		testData.selected = true;
+		testData.disabled = true;
+		testData.id = 'foo';
+
+		widget.setProperties({
 			focused: true,
 			index: 0,
-			optionData: {
-				disabled: true,
-				selected: true,
-				label: '',
-				value: ''
-			}
+			optionData: testData
 		});
-		let vnode = <VNode> option.__render__();
 
-		assert.isTrue(vnode.properties!.classes![css.focused]);
-		assert.isTrue(vnode.properties!.classes![css.selected]);
-		assert.isTrue(vnode.properties!.classes![css.disabledOption]);
-
-		option.__setProperties__({
-			focused: false,
-			index: 0,
-			optionData: {
-				disabled: false,
-				selected: false,
-				label: '',
-				value: ''
-			}
+		const expectedVdom = expected(widget);
+		assignProperties(expectedVdom, {
+			'aria-disabled': 'true',
+			'aria-selected': 'true',
+			id: 'foo',
+			classes: widget.classes(css.option, css.focused, css.selected, css.disabledOption)
 		});
-		vnode = <VNode> option.__render__();
 
-		assert.isFalse(vnode.properties!.classes![css.focused]);
-		assert.isFalse(vnode.properties!.classes![css.selected]);
-		assert.isFalse(vnode.properties!.classes![css.disabledOption]);
+		widget.expectRender(expectedVdom);
 	},
 
 	'click events'() {
-		let mouseDown = false;
-		let clickedIndex;
-		const option = new SelectOption();
-		option.__setProperties__({
-			index: 3,
-			optionData: {
-				label: '',
-				value: ''
-			},
-			onMouseDown: () => mouseDown = true,
-			onClick: (event, index) => clickedIndex = index
+		const onClick = sinon.stub();
+		const onMouseDown = sinon.stub();
+
+		widget.setProperties({
+			index: 0,
+			optionData: testData,
+			onClick,
+			onMouseDown
 		});
 
-		(<any> option)._onMouseDown();
-		assert.isTrue(mouseDown, 'onMouseDown property called');
+		widget.sendEvent('click');
+		assert.isTrue(onClick.called, 'click handler called');
+		assert.strictEqual(onClick.getCall(0).args[1], 0, 'click hander called with correct index');
 
-		(<any> option)._onClick(<any> {}, option.properties.index);
-		assert.strictEqual(clickedIndex, 3, 'onClick property called with correct index');
+		widget.sendEvent('mousedown');
+		assert.isTrue(onMouseDown.called, 'mousedown handler called');
 	}
 });

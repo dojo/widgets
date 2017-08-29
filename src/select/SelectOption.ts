@@ -82,7 +82,7 @@ export default class SelectOption extends SelectOptionBase<SelectOptionPropertie
 			id: optionData.id,
 			classes: this.classes(...optionClasses),
 			'aria-disabled': optionData.disabled ? 'true' : null,
-			'aria-selected': optionData.selected + '',
+			'aria-selected': optionData.selected ? 'true' : 'false',
 			onclick: this._onClick,
 			onmousedown: this._onMouseDown
 		}, [ this.renderLabel() ]);
