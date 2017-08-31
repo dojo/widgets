@@ -10,11 +10,6 @@ import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
 import * as css from '../../styles/slidePane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 
-const hasTouch = (function (): boolean {
-	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
-	return Boolean('ontouchstart' in window || has('host-node'));
-})();
-
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
@@ -272,7 +267,7 @@ registerSuite({
 	},
 
 	'tap underlay to close'(this: any) {
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Environment not support touch events');
 		}
 
@@ -335,7 +330,7 @@ registerSuite({
 	},
 
 	'swipe to close'(this: any) {
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Environment not support touch events');
 		}
 
@@ -376,7 +371,7 @@ registerSuite({
 	},
 
 	'swipe to close right'(this: any) {
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Environment not support touch events');
 		}
 
