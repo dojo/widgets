@@ -144,6 +144,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		if (option && !option.disabled) {
 			this._focusedIndex = index;
 			onChange && onChange(option);
+			this._closeSelect();
 		}
 		else {
 			// prevent the menu from closing when clicking on disabled options
