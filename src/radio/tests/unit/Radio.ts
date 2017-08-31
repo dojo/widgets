@@ -11,11 +11,6 @@ import Label from '../../../label/Label';
 import Radio, { RadioProperties } from '../../Radio';
 import * as css from '../../styles/radio.m.css';
 
-const hasTouch = (function (): boolean {
-	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
-	return Boolean('ontouchstart' in window || has('host-node'));
-})();
-
 const expected = function(widget: any, label = false) {
 	const radioVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
 		v('input', {
@@ -219,7 +214,7 @@ registerSuite({
 	},
 
 	'touch events'(this: any) {
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Environment not support touch events');
 		}
 
