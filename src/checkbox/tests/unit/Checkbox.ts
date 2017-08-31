@@ -11,11 +11,6 @@ import Label from '../../../label/Label';
 import Checkbox, { CheckboxProperties, Mode } from '../../Checkbox';
 import * as css from '../../styles/checkbox.m.css';
 
-const hasTouch = (function (): boolean {
-	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
-	return Boolean('ontouchstart' in window || has('host-node'));
-})();
-
 const expectedToggle = function(widget: any, labels = false) {
 	if (labels) {
 		return [
@@ -289,7 +284,7 @@ registerSuite({
 	},
 
 	'touch events'(this: any) {
-		if (!hasTouch) {
+		if (!has('touch')) {
 			this.skip('Environment not support touch events');
 		}
 
