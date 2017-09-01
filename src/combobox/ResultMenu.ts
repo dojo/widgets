@@ -1,6 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { RegistryMixin, RegistryMixinProperties } from '@dojo/widget-core/mixins/Registry';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
 import ResultItem from './ResultItem';
@@ -21,7 +20,7 @@ import * as css from './styles/comboBox.m.css';
  * @property results                List of result data objects
  * @property selectedIndex          Position of the selected result in the list of results
  */
-export interface ResultMenuProperties extends ThemeableProperties, RegistryMixinProperties {
+export interface ResultMenuProperties extends ThemeableProperties {
 	getResultLabel(result: any): string;
 	id?: string;
 	isResultDisabled?(result: any): boolean;
@@ -32,7 +31,7 @@ export interface ResultMenuProperties extends ThemeableProperties, RegistryMixin
 	selectedIndex: number | undefined;
 };
 
-export const ResultMenuBase = RegistryMixin(ThemeableMixin(WidgetBase));
+export const ResultMenuBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
