@@ -28,6 +28,7 @@
     "@dojo/widget-core": "beta2"
   },
   "devDependencies": {
+    "@dojo/cli": "^2.0.0-beta2.3",
     "@dojo/cli-build-webpack": "^2.0.0-beta2.6",
     "@dojo/interfaces": "beta2",
     "@dojo/loader": "beta2",
