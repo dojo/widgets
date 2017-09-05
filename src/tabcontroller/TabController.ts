@@ -89,7 +89,7 @@ export default class TabController extends TabControllerBase<TabControllerProper
 				disabled,
 				id: `${ this._id }-tabbutton-${i}`,
 				index: i,
-				key,
+				key: `${ key }-tabbutton`,
 				onClick: this.selectIndex,
 				onCloseClick: this.closeIndex,
 				onDownArrowPress: this._onDownArrowPress,
@@ -196,6 +196,7 @@ export default class TabController extends TabControllerBase<TabControllerProper
 		const { activeIndex } = this.properties;
 		const validIndex = this._validateIndex(activeIndex);
 		const tabs = this._renderTabs();
+		console.log('tab render, activeIndex is', activeIndex, 'valid index is', validIndex);
 
 		if (validIndex !== null && validIndex !== activeIndex) {
 			this.selectIndex(validIndex);
