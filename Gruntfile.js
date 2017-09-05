@@ -64,7 +64,7 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		intern: {
+		intern3: {
 			options: {
 				runType: 'runner',
 				config: '<%= devDirectory %>/common/tests/intern',
