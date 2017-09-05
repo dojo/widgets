@@ -49,11 +49,15 @@ export const copy = {
 	},
 	'gh-pages': {
 		expand: true,
-		cwd: '.',
-		src: [
-			'index.html'
-		],
+		cwd: 'support/showcase/dist',
+		src: '**/*',
 		dest: '<%= cloneDirectory %>'
+	},
+	'showcase-modules': {
+		dot: true,
+		expand: true,
+		src: 'node_modules/**/*',
+		dest: 'support/showcase'
 	}
 };
 
@@ -121,6 +125,13 @@ export const setupDeploy = {
 		options: {
 			repo: 'bitpshr/widgets'
 		}
+	}
+};
+
+export const exec = {
+	'build-showcase': {
+		command: 'dojo build',
+		cwd: 'support/showcase'
 	}
 };
 

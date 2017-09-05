@@ -2,7 +2,7 @@
 /bower_components
 /dist
 /html-report
-/node_modules
+node_modules
 /typings
 .baseDir.ts
 .tscache
@@ -17,3 +17,4 @@ package-lock.json
 /.grunt/
 /.sync
 deploy_key*
+.DS_Store

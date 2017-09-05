@@ -28,6 +28,7 @@
     "@dojo/widget-core": "beta2"
   },
   "devDependencies": {
+    "@dojo/cli-build-webpack": "^2.0.0-beta2.6",
     "@dojo/interfaces": "beta2",
     "@dojo/loader": "beta2",
     "@dojo/test-extras": "beta2",
@@ -39,6 +40,7 @@
     "grunt": "^1.0.1",
     "grunt-dojo2": "latest",
     "grunt-dojo2-extras": "^2.0.0-beta1.3",
+    "grunt-exec": "^3.0.0",
     "grunt-prompt": "^1.3.3",
     "intern": "^3.4.1",
     "load-grunt-tasks": "^3.5.2",

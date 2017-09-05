@@ -11,20 +11,20 @@ env:
 cache:
   directories:
   - node_modules
-before_install:
-- if [ ${TRAVIS_BRANCH-""} == "master" ] && [ -n ${encrypted_12c8071d2874_key-""}
-  ]; then openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv
-  -in deploy_key.enc -out deploy_key -d; fi
+# before_install:
+# - if [ ${TRAVIS_BRANCH-""} == "master" ] && [ -n ${encrypted_12c8071d2874_key-""}
+#   ]; then openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv
+#   -in deploy_key.enc -out deploy_key -d; fi
 install:
 - travis_retry npm install grunt-cli
 - travis_retry npm install
 script:
 - grunt
-- grunt intern:node --combined
-- grunt intern:browserstack --combined
-- grunt remapIstanbul:ci
-- grunt uploadCoverage
-- grunt doc
+# - grunt intern:node --combined
+# - grunt intern:browserstack --combined
+# - grunt remapIstanbul:ci
+# - grunt uploadCoverage
+# - grunt doc
 deploy:
   provider: script
   script: grunt cd
