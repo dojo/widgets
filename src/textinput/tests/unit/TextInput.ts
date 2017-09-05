@@ -1,162 +1,248 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
-import TextInput from '../../TextInput';
+import * as sinon from 'sinon';
+
+import has from '@dojo/has/has';
+import { v, w } from '@dojo/widget-core/d';
+import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import harness, { Harness } from '@dojo/test-extras/harness';
+
+import Label from '../../../label/Label';
+import TextInput, { TextInputProperties } from '../../TextInput';
 import * as css from '../../styles/textinput.m.css';
+
+const expected = function(widget: any, label = false) {
+	const inputVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
+		v('input', {
+			classes: widget.classes(css.input),
+			'aria-controls': undefined,
+			'aria-describedby': undefined,
+			disabled: undefined,
+			'aria-invalid': null,
+			maxlength: null,
+			minlength: null,
+			name: undefined,
+			placeholder: undefined,
+			readOnly: undefined,
+			'aria-readonly': null,
+			required: undefined,
+			type: 'text',
+			value: undefined,
+			onblur: widget.listener,
+			onchange: widget.listener,
+			onclick: widget.listener,
+			onfocus: widget.listener,
+			oninput: widget.listener,
+			onkeydown: widget.listener,
+			onkeypress: widget.listener,
+			onkeyup: widget.listener,
+			onmousedown: widget.listener,
+			onmouseup: widget.listener,
+			ontouchstart: widget.listener,
+			ontouchend: widget.listener,
+			ontouchcancel: widget.listener
+		})
+	]);
+
+	if (label) {
+		return w(Label, {
+			extraClasses: { root: css.root },
+			label: 'foo',
+			formId: undefined,
+			theme: undefined
+		}, [ inputVdom ]);
+	}
+	else {
+		return v('div', {
+			classes: widget.classes(css.root)
+		}, [ inputVdom ]);
+	}
+};
+
+let widget: Harness<TextInputProperties, typeof TextInput>;
 
 registerSuite({
 	name: 'TextInput',
 
-	construction() {
-		const textinput = new TextInput();
-		textinput.__setProperties__({
-			type: 'text',
-			placeholder: 'bar',
-			value: 'baz'
-		});
-
-		assert.strictEqual(textinput.properties.type, 'text');
-		assert.strictEqual(textinput.properties.placeholder, 'bar');
-		assert.strictEqual(textinput.properties.value, 'baz');
+	beforeEach() {
+		widget = harness(TextInput);
 	},
 
-	'default node attributes'() {
-		const textinput = new TextInput();
-		let vnode = <VNode> textinput.__render__();
-
-		assert.strictEqual(vnode.children![0].children![0].vnodeSelector, 'input');
-		assert.strictEqual(vnode.children![0].children![0].properties!.type, 'text');
-
-		textinput.__setProperties__({
-			type: 'email'
-		});
-		vnode = <VNode> textinput.__render__();
-
-		assert.strictEqual(vnode.children![0].children![0].properties!.type, 'email');
+	afterEach() {
+		widget.destroy();
 	},
 
-	'correct node attributes'() {
-		const textinput = new TextInput();
-		textinput.__setProperties__({
-			describedBy: 'id1',
-			disabled: true,
-			formId: 'id2',
-			invalid: true,
-			label: 'foo',
+	'default properties'() {
+		widget.expectRender(expected(widget));
+	},
+
+	'custom properties'() {
+		widget.setProperties({
+			controls: 'foo',
+			describedBy: 'bar',
 			maxLength: 50,
-			minLength: 5,
-			name: 'bar',
-			placeholder: 'baz',
-			readOnly: true,
-			required: true,
-			type: 'number',
-			value: 'qux'
+			minLength: 10,
+			name: 'baz',
+			placeholder: 'qux',
+			type: 'email',
+			value: 'hello world'
 		});
-		const vnode = <VNode> textinput.__render__();
-		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1].children![0];
 
-		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
-		assert.isTrue(inputNode.properties!.disabled);
-		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
-		assert.strictEqual(inputNode.properties!.maxlength, '50');
-		assert.strictEqual(inputNode.properties!.minlength, '5');
-		assert.strictEqual(inputNode.properties!.name, 'bar');
-		assert.strictEqual(inputNode.properties!.placeholder, 'baz');
-		assert.isTrue(inputNode.properties!.readOnly);
-		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
-		assert.isTrue(inputNode.properties!.required);
-		assert.strictEqual(inputNode.properties!.type, 'number');
-		assert.strictEqual(inputNode.properties!.value, 'qux');
+		const expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			'aria-controls': 'foo',
+			'aria-describedby': 'bar',
+			maxlength: '50',
+			minlength: '10',
+			name: 'baz',
+			placeholder: 'qux',
+			type: 'email',
+			value: 'hello world'
+		});
 
-		assert.strictEqual(vnode.properties!['form'], 'id2');
-		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
+		widget.expectRender(expectedVdom);
 	},
 
-	'invalid state'() {
-		const textinput = new TextInput();
-		textinput.__setProperties__({
-			label: 'foo',
-			invalid: true
+	'label'() {
+		widget.setProperties({
+			label: 'foo'
 		});
-		let vnode = <VNode> textinput.__render__();
 
-		assert.isTrue(vnode.properties!.classes![css.invalid]);
+		widget.expectRender(expected(widget, true));
+	},
 
-		textinput.__setProperties__({
-			label: 'foo',
-			invalid: false
+	'state classes'() {
+		widget.setProperties({
+			invalid: true,
+			disabled: true,
+			readOnly: true,
+			required: true
 		});
-		vnode = <VNode> textinput.__render__();
-		assert.isTrue(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
 
-		textinput.__setProperties__({
-			label: 'foo',
-			invalid: undefined
+		let expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
 		});
-		vnode = <VNode> textinput.__render__();
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.invalid, css.disabled, css.readonly, css.required)
+		});
+
+		widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
+
+		widget.setProperties({
+			invalid: false,
+			disabled: false,
+			readOnly: false,
+			required: false
+		});
+		expectedVdom = expected(widget);
+
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: false,
+			readOnly: false,
+			required: false
+		});
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.valid)
+		});
+
+		widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+	},
+
+	'state classes on label'() {
+		widget.setProperties({
+			label: 'foo',
+			invalid: true,
+			disabled: true,
+			readOnly: true,
+			required: true
+		});
+
+		const expectedVdom = expected(widget, true);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
+		});
+		assignProperties(expectedVdom, {
+			extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
+		});
+		widget.expectRender(expectedVdom);
 	},
 
 	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				input = false,
-				keydown = false,
-				keypress = false,
-				keyup = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+		const onBlur = sinon.stub();
+		const onChange = sinon.stub();
+		const onClick = sinon.stub();
+		const onFocus = sinon.stub();
+		const onInput = sinon.stub();
+		const onKeyDown = sinon.stub();
+		const onKeyPress = sinon.stub();
+		const onKeyUp = sinon.stub();
+		const onMouseDown = sinon.stub();
+		const onMouseUp = sinon.stub();
 
-		const textinput = new TextInput();
-		textinput.__setProperties__({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onInput: () => { input = true; },
-			onKeyDown: () => { keydown = true; },
-			onKeyPress: () => { keypress = true; },
-			onKeyUp: () => { keyup = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+		widget.setProperties({
+			onBlur,
+			onChange,
+			onClick,
+			onFocus,
+			onInput,
+			onKeyDown,
+			onKeyPress,
+			onKeyUp,
+			onMouseDown,
+			onMouseUp
 		});
 
-		(<any> textinput)._onBlur(<FocusEvent> {});
-		assert.isTrue(blurred);
-		(<any> textinput)._onChange(<Event> {});
-		assert.isTrue(changed);
-		(<any> textinput)._onClick(<MouseEvent> {});
-		assert.isTrue(clicked);
-		(<any> textinput)._onFocus(<FocusEvent> {});
-		assert.isTrue(focused);
-		(<any> textinput)._onInput(<Event> {});
-		assert.isTrue(input);
-		(<any> textinput)._onKeyDown(<KeyboardEvent> {});
-		assert.isTrue(keydown);
-		(<any> textinput)._onKeyPress(<KeyboardEvent> {});
-		assert.isTrue(keypress);
-		(<any> textinput)._onKeyUp(<KeyboardEvent> {});
-		assert.isTrue(keyup);
-		(<any> textinput)._onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
-		(<any> textinput)._onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
-		(<any> textinput)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> textinput)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> textinput)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		widget.sendEvent('blur', { selector: 'input' });
+		assert.isTrue(onBlur.called, 'onBlur called');
+		widget.sendEvent('change', { selector: 'input' });
+		assert.isTrue(onChange.called, 'onChange called');
+		widget.sendEvent('click', { selector: 'input' });
+		assert.isTrue(onClick.called, 'onClick called');
+		widget.sendEvent('focus', { selector: 'input' });
+		assert.isTrue(onFocus.called, 'onFocus called');
+		widget.sendEvent('input', { selector: 'input' });
+		assert.isTrue(onInput.called, 'onInput called');
+		widget.sendEvent('keydown', { selector: 'input' });
+		assert.isTrue(onKeyDown.called, 'onKeyDown called');
+		widget.sendEvent('keypress', { selector: 'input' });
+		assert.isTrue(onKeyPress.called, 'onKeyPress called');
+		widget.sendEvent('keyup', { selector: 'input' });
+		assert.isTrue(onKeyUp.called, 'onKeyUp called');
+		widget.sendEvent('mousedown', { selector: 'input' });
+		assert.isTrue(onMouseDown.called, 'onMouseDown called');
+		widget.sendEvent('mouseup', { selector: 'input' });
+		assert.isTrue(onMouseUp.called, 'onMouseUp called');
+	},
+
+	'touch events'(this: any) {
+		if (!has('touch')) {
+			this.skip('Environment not support touch events');
+		}
+
+		const onTouchStart = sinon.stub();
+		const onTouchEnd = sinon.stub();
+		const onTouchCancel = sinon.stub();
+
+		widget.setProperties({
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
+		});
+
+		widget.sendEvent('touchstart', { selector: 'input' });
+		assert.isTrue(onTouchStart.called, 'onTouchStart called');
+		widget.sendEvent('touchend', { selector: 'input' });
+		assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
+		widget.sendEvent('touchcancel', { selector: 'input' });
+		assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 	}
 });
