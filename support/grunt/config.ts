@@ -1,6 +1,6 @@
 const createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcessors;
 
-const cloneDirectory = '.sync';
+export const cloneDirectory = '.sync';
 const fontFiles = [ 'common/styles/fonts/*.{svg,ttf,woff}', 'themes/dojo/fonts/*.{svg,ttf,woff}' ];
 const staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
 const staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
@@ -126,4 +126,22 @@ export const setupDeploy = {
 
 export const clean = {
 	repo: [ '<%= cloneDirectory %>/**/*', '!.git/**' ]
+};
+
+export const sync = {
+	'gh-pages': {
+		options: {
+			branch: 'gh-pages',
+			cloneDirectory: '<%= cloneDirectory %>'
+		}
+	}
+};
+
+export const publish = {
+	'gh-pages': {
+		options: {
+			branch: 'gh-pages',
+			cloneDirectory: '<%= cloneDirectory %>'
+		}
+	}
 };

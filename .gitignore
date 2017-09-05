@@ -14,3 +14,6 @@ yarn.lock
 /_apidoc
 deploy_key
 package-lock.json
+/.grunt/
+/.sync
+deploy_key*
