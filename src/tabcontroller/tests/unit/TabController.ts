@@ -6,7 +6,6 @@ import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assign } from '@dojo/core/lang';
 
 import TabController, { Align, TabControllerProperties } from '../../TabController';
 import TabButton from '../../TabButton';
@@ -17,8 +16,8 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
-const tabChildren = function(number = 2) {
-	const tabChildren = [
+const tabChildren = function(tabs = 2) {
+	const children = [
 		w(Tab, {
 			key: '0'
 		}, [ 'tab content 1' ]),
@@ -30,15 +29,15 @@ const tabChildren = function(number = 2) {
 		}, [ 'tab content 2' ])
 	];
 
-	if (number > 2) {
-		for (let i = 2; i < number; i++) {
-			tabChildren.push(w(Tab, {
+	if (tabs > 2) {
+		for (let i = 2; i < tabs; i++) {
+			children.push(w(Tab, {
 				key: `${i}`
 			}, [ `tab content ${i}` ]));
 		}
 	}
 
-	return tabChildren;
+	return children;
 };
 
 const expectedTabButtons = function(widget: any, empty = false): DNode {
@@ -385,5 +384,51 @@ registerSuite({
 		widget.getRender();
 
 		assert.isTrue(onRequestTabChange.calledWith(2));
+	},
+
+	'Clicking on tab button sets callFocus to true'() {
+		widget.setProperties({
+			activeIndex: 1
+		});
+		widget.setChildren([
+			w(Tab, {
+				key: '0'
+			}, [ 'tab content 1' ]),
+			w(Tab, {
+				closeable: true,
+				key: '1',
+				label: 'foo'
+			}, [ 'tab content 2' ])
+		]);
+
+		let tabButtons = expectedTabButtons(widget);
+		let tabContent = expectedTabContent(widget);
+		let expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+
+		widget.callListener('onClick', {
+			args: [ 0 ],
+			key: '0-tabbutton'
+		});
+		widget.setProperties({
+			activeIndex: 0
+		});
+
+		tabButtons = expectedTabButtons(widget);
+		tabContent = expectedTabContent(widget);
+		assignChildProperties((<any> tabButtons), '0', { callFocus: true });
+		assignChildProperties((<any> tabButtons), '1', { disabled: undefined });
+		expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+
+		widget.expectRender(expectedVdom, 'Clicking tab button updates callFocus property to true');
+
+		widget.callListener('onFocusCalled', {
+			args: [ 0 ],
+			key: '0-tabbutton'
+		});
+		widget.setChildren(tabChildren());
+		tabButtons = expectedTabButtons(widget);
+		tabContent = expectedTabContent(widget);
+		expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+		widget.expectRender(expectedVdom, 'onFocusCalled updates callFocus to false');
 	}
 });

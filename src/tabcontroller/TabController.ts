@@ -196,7 +196,6 @@ export default class TabController extends TabControllerBase<TabControllerProper
 		const { activeIndex } = this.properties;
 		const validIndex = this._validateIndex(activeIndex);
 		const tabs = this._renderTabs();
-		console.log('tab render, activeIndex is', activeIndex, 'valid index is', validIndex);
 
 		if (validIndex !== null && validIndex !== activeIndex) {
 			this.selectIndex(validIndex);
