@@ -57,7 +57,10 @@ export const copy = {
 		dot: true,
 		expand: true,
 		src: 'node_modules/**/*',
-		dest: 'support/showcase'
+		dest: 'support/showcase',
+		options: {
+			mode: true
+		}
 	}
 };
 
@@ -130,7 +133,7 @@ export const setupDeploy = {
 
 export const exec = {
 	'build-showcase': {
-		command: './node_modules/.bin/dojo build',
+		command: './node_modules/@dojo/cli/bin/dojo.js build',
 		cwd: 'support/showcase'
 	}
 };
