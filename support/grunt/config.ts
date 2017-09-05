@@ -130,7 +130,7 @@ export const setupDeploy = {
 
 export const exec = {
 	'build-showcase': {
-		command: 'dojo build',
+		command: './node_modules/.bin/dojo build',
 		cwd: 'support/showcase'
 	}
 };
