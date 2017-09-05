@@ -1,253 +1,385 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { v } from '@dojo/widget-core/d';
-import { VNode } from '@dojo/interfaces/vdom';
-import Slider from '../../Slider';
+import * as sinon from 'sinon';
+
+import has from '@dojo/has/has';
+import { v, w } from '@dojo/widget-core/d';
+import { assignProperties, assignChildProperties, compareProperty, replaceChild } from '@dojo/test-extras/support/d';
+import harness, { Harness } from '@dojo/test-extras/harness';
+
+import Label from '../../../label/Label';
+import Slider, { SliderProperties } from '../../Slider';
 import * as css from '../../styles/slider.m.css';
+
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
+
+const expected = function(widget: any, label = false, tooltip = false) {
+	const sliderVdom = v('div', {
+		classes: widget.classes(css.inputWrapper, css.inputWrapperFixed),
+		styles: {}
+	}, [
+		v('input', {
+			classes: widget.classes(css.input, css.nativeInput),
+			'aria-describedby': undefined,
+			disabled: undefined,
+			id: <any> compareId,
+			'aria-invalid': null,
+			max: '100',
+			min: '0',
+			name: undefined,
+			readOnly: undefined,
+			'aria-readonly': null,
+			required: undefined,
+			step: '1',
+			styles: {},
+			type: 'range',
+			value: '0',
+			onblur: widget.listener,
+			onchange: widget.listener,
+			onclick: widget.listener,
+			onfocus: widget.listener,
+			oninput: widget.listener,
+			onkeydown: widget.listener,
+			onkeypress: widget.listener,
+			onkeyup: widget.listener,
+			onmousedown: widget.listener,
+			onmouseup: widget.listener,
+			ontouchstart: widget.listener,
+			ontouchend: widget.listener,
+			ontouchcancel: widget.listener
+		}),
+		v('div', {
+			classes: widget.classes(css.track, css.trackFixed),
+			'aria-hidden': 'true',
+			styles: {}
+		}, [
+			v('span', {
+				classes: widget.classes(css.fill, css.fillFixed),
+				styles: { width: '0%' }
+			}),
+			v('span', {
+				classes: widget.classes(css.thumb, css.thumbFixed),
+				styles: { left: '0%' }
+			})
+		]),
+		v('output', {
+			classes: widget.classes(css.output, tooltip ? css.outputTooltip : null),
+			for: <any> compareId,
+			styles: {}
+		}, [ '0' ])
+	]);
+
+	if (label) {
+		return w(Label, {
+			extraClasses: { root: `${css.root} ${css.rootFixed}` },
+			label: 'foo',
+			formId: undefined,
+			theme: undefined
+		}, [ sliderVdom ]);
+	}
+	else {
+		return v('div', {
+			classes: widget.classes(css.root, css.rootFixed)
+		}, [ sliderVdom ]);
+	}
+};
+
+let widget: Harness<SliderProperties, typeof Slider>;
 
 registerSuite({
 	name: 'Slider',
 
-	construction() {
-		const slider = new Slider();
-		slider.__setProperties__({
-			min: 0,
-			max: 100,
-			value: 50
-		});
-
-		assert.strictEqual(slider.properties.min, 0);
-		assert.strictEqual(slider.properties.max, 100);
-		assert.strictEqual(slider.properties.value, 50);
+	beforeEach() {
+		widget = harness(Slider);
 	},
 
-	'default node attributes'() {
-		const slider = new Slider();
-		let vnode = <VNode> slider.__render__();
-		let inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.vnodeSelector, 'input');
-		assert.strictEqual(inputNode.properties!.type, 'range');
-		assert.strictEqual(inputNode.properties!.min, '0');
-		assert.strictEqual(inputNode.properties!.max, '100');
-		assert.strictEqual(inputNode.properties!.step, '1');
-		assert.strictEqual(inputNode.properties!.value, '0');
-
-		slider.__setProperties__({
-			min: 20,
-			vertical: true
-		});
-		vnode = <VNode> slider.__render__();
-		inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.properties!.value, '20');
-		assert.strictEqual(inputNode.properties!.styles!.width, '200px');
-		assert.strictEqual(vnode.children![0].children![1].properties!.styles!.width, '200px');
-		assert.strictEqual(vnode.children![0].properties!.styles!.height, '200px');
-		assert.isTrue(vnode.properties!.classes![css.vertical]);
+	afterEach() {
+		widget.destroy();
 	},
 
-	'correct node attributes'() {
-		const slider = new Slider();
-		slider.__setProperties__({
-			describedBy: 'id1',
-			disabled: true,
-			formId: 'id2',
-			invalid: true,
-			label: 'foo',
-			max: 6,
-			min: 0,
-			name: 'bar',
-			output: () => v('span', { innerHTML: 'baz'}),
-			readOnly: true,
-			required: true,
-			step: 2,
-			value: 4
-		});
-		let vnode = <VNode> slider.__render__();
-		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1].children![0];
-		const outputNode = vnode.children![1].children![2];
-
-		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
-		assert.isTrue(inputNode.properties!.disabled);
-		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
-		assert.strictEqual(inputNode.properties!.max, '6');
-		assert.strictEqual(inputNode.properties!.min, '0');
-		assert.strictEqual(inputNode.properties!.name, 'bar');
-		assert.isTrue(inputNode.properties!.readOnly);
-		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
-		assert.isTrue(inputNode.properties!.required);
-		assert.strictEqual(inputNode.properties!.step, '2');
-		assert.strictEqual(inputNode.properties!.value, '4');
-		assert.strictEqual(outputNode.children![0].properties!.innerHTML, 'baz');
-
-		assert.strictEqual(vnode.properties!['form'], 'id2');
-		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
-
-		slider.__setProperties__({
-			vertical: true,
-			verticalHeight: '100px'
-		});
-		vnode = <VNode> slider.__render__();
-		assert.strictEqual(vnode.children![0].children![0].properties!.styles!.width, '100px');
-		assert.strictEqual(vnode.children![0].children![1].properties!.styles!.width, '100px');
-		assert.strictEqual(vnode.children![0].properties!.styles!.height, '100px');
+	'default properties'() {
+		widget.expectRender(expected(widget));
 	},
 
-	'state classes'() {
-		const slider = new Slider();
-		slider.__setProperties__({
-			disabled: true,
-			invalid: true,
-			readOnly: true,
-			required: true,
-			vertical: true
-		});
-		let vnode = <VNode> slider.__render__();
-
-		assert.isTrue(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.invalid]);
-		assert.isTrue(vnode.properties!.classes![css.readonly]);
-		assert.isTrue(vnode.properties!.classes![css.required]);
-		assert.isTrue(vnode.properties!.classes![css.vertical]);
-
-		slider.__setProperties__({
-			disabled: false,
-			invalid: false,
-			readOnly: false,
-			required: false,
-			vertical: false
-		});
-		vnode = <VNode> slider.__render__();
-		assert.isFalse(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-		assert.isFalse(vnode.properties!.classes![css.readonly]);
-		assert.isFalse(vnode.properties!.classes![css.required]);
-		assert.isFalse(vnode.properties!.classes![css.vertical]);
-
-		slider.__setProperties__({
-			invalid: undefined
-		});
-		vnode = <VNode> slider.__render__();
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-	},
-
-	'Tooltip position'() {
-		const slider = new Slider();
-		slider.__setProperties__({
-			max: 40,
-			outputIsTooltip: true,
-			value: 20
-		});
-		let vnode = <VNode> slider.__render__();
-		let outputNode = vnode.children![0].children![2];
-
-		assert.strictEqual(outputNode.properties!.styles!.left, '50%');
-		assert.isUndefined(outputNode.properties!.styles!.top);
-
-		slider.__setProperties__({
-			max: 40,
-			outputIsTooltip: true,
-			value: 10,
-			vertical: true
-		});
-		vnode = <VNode> slider.__render__();
-		outputNode = vnode.children![0].children![2];
-
-		assert.strictEqual(outputNode.properties!.styles!.top, '75%');
-		assert.isUndefined(outputNode.properties!.styles!.left);
-
-		slider.__setProperties__({
-			max: 90,
+	'custom properties'() {
+		widget.setProperties({
+			describedBy: 'foo',
+			max: 60,
 			min: 10,
+			name: 'bar',
+			output: () => 'tribbles',
 			outputIsTooltip: true,
-			value: 50
+			step: 5,
+			value: 35
 		});
-		vnode = <VNode> slider.__render__();
-		outputNode = vnode.children![0].children![2];
 
-		assert.strictEqual(outputNode.properties!.styles!.left, '50%');
+		const expectedVdom = expected(widget, false, true);
+		assignChildProperties(expectedVdom, '0,0', {
+			'aria-describedby': 'foo',
+			max: '60',
+			min: '10',
+			name: 'bar',
+			step: '5',
+			value: '35'
+		});
+		assignChildProperties(expectedVdom, '0,1,0', {
+			styles: { width: '50%' }
+		});
+		assignChildProperties(expectedVdom, '0,1,1', {
+			styles: { left: '50%' }
+		});
+		assignChildProperties(expectedVdom, '0,2', {
+			styles: { left: '50%' }
+		});
+		replaceChild(expectedVdom, '0,2,0', 'tribbles');
+
+		widget.expectRender(expectedVdom);
 	},
 
-	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				input = false,
-				keydown = false,
-				keypress = false,
-				keyup = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+	'vertical slider': {
+		'default properties'() {
+			widget.setProperties({
+				vertical: true
+			});
 
-		const slider = new Slider();
-		slider.__setProperties__({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onInput: () => { input = true; },
-			onKeyDown: () => { keydown = true; },
-			onKeyPress: () => { keypress = true; },
-			onKeyUp: () => { keyup = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
-		});
+			const expectedVdom = expected(widget);
+			assignChildProperties(expectedVdom, '0', {
+				styles: { height: '200px' }
+			});
+			assignChildProperties(expectedVdom, '0,0', {
+				styles: { width: '200px' }
+			});
+			assignChildProperties(expectedVdom, '0,1', {
+				styles: { width: '200px' }
+			});
+			assignProperties(expectedVdom, {
+				classes: widget.classes(css.root, css.vertical, css.rootFixed)
+			});
 
-		(<any> slider)._onBlur(<FocusEvent> {});
-		assert.isTrue(blurred);
-		(<any> slider)._onChange(<Event> {});
-		assert.isTrue(changed);
-		(<any> slider)._onClick(<MouseEvent> {});
-		assert.isTrue(clicked);
-		(<any> slider)._onFocus(<FocusEvent> {});
-		assert.isTrue(focused);
-		(<any> slider)._onInput(<Event> {});
-		assert.isTrue(input);
-		(<any> slider)._onKeyDown(<KeyboardEvent> {});
-		assert.isTrue(keydown);
-		(<any> slider)._onKeyPress(<KeyboardEvent> {});
-		assert.isTrue(keypress);
-		(<any> slider)._onKeyUp(<KeyboardEvent> {});
-		assert.isTrue(keyup);
-		(<any> slider)._onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
-		(<any> slider)._onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
-		(<any> slider)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> slider)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> slider)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+			widget.expectRender(expectedVdom);
+		},
+
+		'custom properties'() {
+			widget.setProperties({
+				max: 10,
+				min: 5,
+				outputIsTooltip: true,
+				value: 6,
+				vertical: true,
+				verticalHeight: '100px'
+			});
+
+			const expectedVdom = expected(widget, false, true);
+			assignChildProperties(expectedVdom, '0', {
+				styles: { height: '100px' }
+			});
+			assignChildProperties(expectedVdom, '0,0', {
+				max: '10',
+				min: '5',
+				styles: { width: '100px' },
+				value: '6'
+			});
+			replaceChild(expectedVdom, '0,2,0', '6');
+			assignChildProperties(expectedVdom, '0,1', {
+				styles: { width: '100px' }
+			});
+			assignChildProperties(expectedVdom, '0,1,0', {
+				styles: { width: '20%' }
+			});
+			assignChildProperties(expectedVdom, '0,1,1', {
+				styles: { left: '20%' }
+			});
+			assignChildProperties(expectedVdom, '0,2', {
+				styles: { top: '80%' }
+			});
+			assignProperties(expectedVdom, {
+				classes: widget.classes(css.root, css.vertical, css.rootFixed)
+			});
+
+			widget.expectRender(expectedVdom);
+		}
 	},
 
 	'min and max should be respected'() {
-		const slider = new Slider();
-		slider.__setProperties__({
+		widget.setProperties({
 			max: 40,
 			value: 100
 		});
-		let vnode = <VNode> slider.__render__();
-		let inputNode = vnode.children![0].children![0];
-		assert.strictEqual(inputNode.properties!.value, '40');
 
-		slider.__setProperties__({
+		let expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			max: '40',
+			value: '40'
+		});
+		replaceChild(expectedVdom, '0,2,0', '40');
+		assignChildProperties(expectedVdom, '0,1,0', {
+			styles: { width: '100%' }
+		});
+		assignChildProperties(expectedVdom, '0,1,1', {
+			styles: { left: '100%' }
+		});
+
+		widget.expectRender(expectedVdom, 'If value property exceeds max, value is set to max');
+
+		widget.setProperties({
 			min: 30,
 			value: 20
 		});
-		vnode = <VNode> slider.__render__();
-		inputNode = vnode.children![0].children![0];
-		assert.strictEqual(inputNode.properties!.value, '30');
+		expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			min: '30',
+			value: '30'
+		});
+		replaceChild(expectedVdom, '0,2,0', '30');
+
+		widget.expectRender(expectedVdom, 'If value property is below min, value is set to min');
+	},
+
+	'label'() {
+		widget.setProperties({
+			label: 'foo'
+		});
+
+		widget.expectRender(expected(widget, true));
+	},
+
+	'state classes'() {
+		widget.setProperties({
+			invalid: true,
+			disabled: true,
+			readOnly: true,
+			required: true
+		});
+
+		let expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
+		});
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required, css.rootFixed)
+		});
+
+		widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
+
+		widget.setProperties({
+			invalid: false,
+			disabled: false,
+			readOnly: false,
+			required: false
+		});
+		expectedVdom = expected(widget);
+
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: false,
+			readOnly: false,
+			required: false
+		});
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.valid, css.rootFixed)
+		});
+
+		widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+	},
+
+	'state classes on label'() {
+		widget.setProperties({
+			label: 'foo',
+			formId: 'bar',
+			invalid: true,
+			disabled: true,
+			readOnly: true,
+			required: true
+		});
+
+		const expectedVdom = expected(widget, true);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
+		});
+		assignProperties(expectedVdom, {
+			extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required} ${css.rootFixed}` },
+			formId: 'bar'
+		});
+
+		widget.expectRender(expectedVdom);
+	},
+
+	events() {
+		const onBlur = sinon.stub();
+		const onChange = sinon.stub();
+		const onClick = sinon.stub();
+		const onFocus = sinon.stub();
+		const onInput = sinon.stub();
+		const onKeyDown = sinon.stub();
+		const onKeyPress = sinon.stub();
+		const onKeyUp = sinon.stub();
+		const onMouseDown = sinon.stub();
+		const onMouseUp = sinon.stub();
+
+		widget.setProperties({
+			onBlur,
+			onChange,
+			onClick,
+			onFocus,
+			onInput,
+			onKeyDown,
+			onKeyPress,
+			onKeyUp,
+			onMouseDown,
+			onMouseUp
+		});
+
+		widget.sendEvent('blur', { selector: 'input' });
+		assert.isTrue(onBlur.called, 'onBlur called');
+		widget.sendEvent('change', { selector: 'input' });
+		assert.isTrue(onChange.called, 'onChange called');
+		widget.sendEvent('click', { selector: 'input' });
+		assert.isTrue(onClick.called, 'onClick called');
+		widget.sendEvent('focus', { selector: 'input' });
+		assert.isTrue(onFocus.called, 'onFocus called');
+		widget.sendEvent('input', { selector: 'input' });
+		assert.isTrue(onInput.called, 'onInput called');
+		widget.sendEvent('keydown', { selector: 'input' });
+		assert.isTrue(onKeyDown.called, 'onKeyDown called');
+		widget.sendEvent('keypress', { selector: 'input' });
+		assert.isTrue(onKeyPress.called, 'onKeyPress called');
+		widget.sendEvent('keyup', { selector: 'input' });
+		assert.isTrue(onKeyUp.called, 'onKeyUp called');
+		widget.sendEvent('mousedown', { selector: 'input' });
+		assert.isTrue(onMouseDown.called, 'onMouseDown called');
+		widget.sendEvent('mouseup', { selector: 'input' });
+		assert.isTrue(onMouseUp.called, 'onMouseUp called');
+	},
+
+	'touch events'(this: any) {
+		if (!has('touch')) {
+			this.skip('Environment not support touch events');
+		}
+
+		const onTouchStart = sinon.stub();
+		const onTouchEnd = sinon.stub();
+		const onTouchCancel = sinon.stub();
+
+		widget.setProperties({
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
+		});
+
+		widget.sendEvent('touchstart', { selector: 'input' });
+		assert.isTrue(onTouchStart.called, 'onTouchStart called');
+		widget.sendEvent('touchend', { selector: 'input' });
+		assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
+		widget.sendEvent('touchcancel', { selector: 'input' });
+		assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 	}
 });

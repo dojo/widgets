@@ -130,7 +130,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		const percentValue = (value - min) / (max - min) * 100;
 
 		// custom output node
-		const outputNode = output ? output(value) : value + '';
+		const outputNode = output ? output(value) : `${value}`;
 
 		// output styles
 		let outputStyles: { left?: string; top?: string } = {};
@@ -148,16 +148,16 @@ export default class Slider extends SliderBase<SliderProperties> {
 				disabled,
 				id: this._inputId,
 				'aria-invalid': invalid ? 'true' : null,
-				max: max + '',
-				min: min + '',
+				max: `${max}`,
+				min: `${min}`,
 				name,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
 				required,
-				step: step + '',
+				step: `${step}`,
 				styles: vertical ? { width: verticalHeight } : {},
 				type: 'range',
-				value: value + '',
+				value: `${value}`,
 				onblur: this._onBlur,
 				onchange: this._onChange,
 				onclick: this._onClick,
