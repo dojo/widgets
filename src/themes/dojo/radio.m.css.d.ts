@@ -1,6 +1,7 @@
 export const root: string;
 export const input: string;
 export const inputWrapper: string;
+export const focused: string;
 export const checked: string;
 export const disabled: string;
 export const readonly: string;

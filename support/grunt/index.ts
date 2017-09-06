@@ -17,7 +17,7 @@ export = function (grunt: IGrunt) {
 		'copy:devFonts'
 	]));
 
-	grunt.registerTask('dist', (grunt.config.get('devTasks') as string[]).concat([
+	grunt.registerTask('dist', (grunt.config.get('distTasks') as string[]).concat([
 		'postcss:modules-dist',
 		'postcss:variables',
 		'copy:distStyles',
@@ -25,7 +25,10 @@ export = function (grunt: IGrunt) {
 	]));
 
 	grunt.registerTask('cd', [
+		'release',
 		'copy:showcase-modules',
+		'copy:showcase-widgets',
+		'exec:install-showcase-widgets',
 		'exec:build-showcase',
 		'prebuild',
 		'sync:gh-pages',

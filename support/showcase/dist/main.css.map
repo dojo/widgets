@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///./src/main.css"],"names":[],"mappings":";;;;;;;AAAA;CACC,gBAAgB;CAChB","file":"main.css","sourcesContent":["body {\n\tbackground: red;\n}\n\n\n\n// WEBPACK FOOTER //\n// ./src/main.css"],"sourceRoot":""}

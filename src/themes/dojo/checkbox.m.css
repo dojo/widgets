@@ -1,5 +1,5 @@
 @import './variables.css';
-@import '../../common/styles/icons.m.css';
+@import './icons.m.css';
 
 .root,
 .root *,

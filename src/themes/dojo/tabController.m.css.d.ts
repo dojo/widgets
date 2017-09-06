@@ -7,5 +7,5 @@ export const tab: string;
 export const alignLeft: string;
 export const tabs: string;
 export const tabButtons: string;
-export const alignBottom: string;
 export const alignRight: string;
+export const alignBottom: string;

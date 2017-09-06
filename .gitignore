@@ -1,6 +1,7 @@
 /_build
 /bower_components
 /dist
+/support/showcase/dist
 /html-report
 node_modules
 /typings

@@ -47,6 +47,6 @@
     "load-grunt-tasks": "^3.5.2",
     "sinon": "^1.17.6",
     "ts-node": "^3.3.0",
-    "typescript": "~2.4.1"
+    "typescript": "~2.5.0"
   }
 }

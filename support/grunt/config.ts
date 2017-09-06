@@ -61,6 +61,13 @@ export const copy = {
 		options: {
 			mode: true
 		}
+	},
+	'showcase-widgets': {
+		src: 'dist/*.tgz',
+		dest: 'support/showcase/node_modules/widgets.tgz',
+		options: {
+			mode: true
+		}
 	}
 };
 
@@ -134,6 +141,10 @@ export const setupDeploy = {
 export const exec = {
 	'build-showcase': {
 		command: './node_modules/@dojo/cli/bin/dojo.js build',
+		cwd: 'support/showcase'
+	},
+	'install-showcase-widgets': {
+		command: 'npm install node_modules/*.tgz',
 		cwd: 'support/showcase'
 	}
 };

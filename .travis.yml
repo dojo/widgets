@@ -27,7 +27,7 @@ script:
 # - grunt doc
 deploy:
   provider: script
-  script: grunt cd
+  script: grunt cd --pre-release-tag=alpha --dry-run --skip-checks
   skip_cleanup: true
   on:
     branch: master
