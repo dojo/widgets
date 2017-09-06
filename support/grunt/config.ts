@@ -133,7 +133,7 @@ export const prompt = {
 export const setupDeploy = {
 	repo: {
 		options: {
-			repo: 'bitpshr/widgets'
+			repo: 'dojo/widgets'
 		}
 	}
 };
