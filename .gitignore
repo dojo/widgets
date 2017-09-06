@@ -13,9 +13,9 @@ coverage-final.lcov
 npm-debug.log
 yarn.lock
 /_apidoc
-deploy_key
 package-lock.json
 /.grunt/
 /.sync
-deploy_key*
+deploy_key
+deploy_key.pub
 .DS_Store
