@@ -35,6 +35,7 @@ const labelDefaults = {
  */
 export interface LabelProperties extends ThemeableProperties {
 	registry?: WidgetRegistry;
+	forId?: string;
 	formId?: string;
 	label: string | LabelOptions;
 }
@@ -61,6 +62,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 
 	render(): DNode {
 		const {
+			forId,
 			formId,
 			label
 		} = this.properties;
@@ -88,6 +90,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 
 		return v('label', {
 			classes: this.classes(css.root),
+			for: forId,
 			form: formId
 		}, this.children);
 	}

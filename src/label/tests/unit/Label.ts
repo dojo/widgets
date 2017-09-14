@@ -28,6 +28,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
+			for: undefined,
 			form: undefined
 		}, [
 			v('span', {
@@ -46,6 +47,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
+			for: undefined,
 			form: undefined
 		}, [
 			v('span', {
@@ -57,6 +59,7 @@ registerSuite({
 
 	'with children'() {
 		widget.setProperties({
+			forId: 'id',
 			formId: 'foo',
 			label: 'baz'
 		});
@@ -67,6 +70,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
+			for: 'id',
 			form: 'foo'
 		}, [
 			v('span', {
@@ -91,6 +95,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
+			for: undefined,
 			form: 'foo'
 		}, [
 			v('div', [ 'child' ]),
