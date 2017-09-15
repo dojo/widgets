@@ -13,7 +13,6 @@ import * as css from './styles/slider.m.css';
  *
  * @property describedBy       ID of an element that provides more descriptive text
  * @property disabled          Prevents the user from interacting with the form field
- * @property formId            ID of a form element associated with the form field
  * @property invalid           Indicates the valid is invalid, or required and not filled in
  * @property label             Label settings for form label text, position, and visibility
  * @property max               The maximum value for the slider
@@ -43,7 +42,6 @@ import * as css from './styles/slider.m.css';
 export interface SliderProperties extends ThemeableProperties {
 	describedBy?: string;
 	disabled?: boolean;
-	formId?: string;
 	invalid?: boolean;
 	label?: string | LabelOptions;
 	max?: number;
@@ -97,7 +95,6 @@ export default class Slider extends SliderBase<SliderProperties> {
 		const {
 			describedBy,
 			disabled,
-			formId,
 			invalid,
 			label,
 			max = 100,
@@ -198,7 +195,6 @@ export default class Slider extends SliderBase<SliderProperties> {
 		if (label) {
 			sliderWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).fixed(css.rootFixed)()) },
-				formId,
 				label,
 				theme: this.properties.theme
 			}, [ slider ]);

@@ -21,7 +21,6 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property customOption   Custom widget constructor for options. Should use SelectOption as a base
  * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
- * @property formId         ID of a form element associated with the form field
  * @property invalid        Indicates the value entered in the form field is invalid
  * @property label          Label settings for form label text, position, and visibility
  * @property multiple       Whether the widget supports multiple selection
@@ -41,7 +40,6 @@ export interface SelectProperties extends ThemeableProperties {
 	customOption?: any;
 	describedBy?: string;
 	disabled?: boolean;
-	formId?: string;
 	invalid?: boolean;
 	label?: string | LabelOptions;
 	multiple?: boolean;
@@ -385,7 +383,6 @@ export default class Select extends SelectBase<SelectProperties> {
 	protected render(): DNode {
 		const {
 			disabled,
-			formId,
 			invalid,
 			label,
 			multiple,
@@ -416,7 +413,6 @@ export default class Select extends SelectBase<SelectProperties> {
 		if (label) {
 			rootWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses)()) },
-				formId,
 				label,
 				registry: this._registry,
 				theme

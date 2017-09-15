@@ -48,7 +48,6 @@ const expected = function(widget: any, label = false) {
 		return w(Label, {
 			extraClasses: { root: css.root },
 			label: 'foo',
-			formId: undefined,
 			theme: undefined
 		}, [ inputVdom ]);
 	}

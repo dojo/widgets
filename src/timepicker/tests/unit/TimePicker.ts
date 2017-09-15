@@ -65,7 +65,6 @@ registerSuite({
 				autoBlur: false,
 				clearable: true,
 				disabled: false,
-				formId: 'form',
 				invalid: true,
 				label: 'Some Field',
 				openOnFocus: false,
@@ -80,7 +79,6 @@ registerSuite({
 				customResultItem: undefined,
 				customResultMenu: undefined,
 				disabled: false,
-				formId: 'form',
 				getResultLabel: <any> picker.listener,
 				inputProperties: undefined,
 				invalid: true,
@@ -266,7 +264,6 @@ registerSuite({
 			}, [
 				w(Label, {
 					extraClasses: { root: parseLabelClasses(picker.classes(css.input)()) },
-					formId: undefined,
 					theme: undefined,
 					label: 'foo'
 				}, [

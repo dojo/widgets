@@ -24,7 +24,6 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property customResultItem   Can be used to render a custom result
  * @property customResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
- * @property formId             ID of a form element associated with the form field
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
@@ -47,7 +46,6 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	customResultItem?: any;
 	customResultMenu?: any;
 	disabled?: boolean;
-	formId?: string;
 	getResultLabel?(result: any): string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
@@ -348,7 +346,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		const {
 			clearable,
 			disabled,
-			formId,
 			inputProperties = {},
 			invalid,
 			label,
@@ -410,7 +407,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		if (label) {
 			controls = w(Label, {
-				formId,
 				label
 			}, [ controls ]);
 		}
