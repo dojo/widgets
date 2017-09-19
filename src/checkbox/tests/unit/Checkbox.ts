@@ -68,7 +68,6 @@ const expected = function(widget: any, label = false, toggle = false, toggleLabe
 		return w(Label, {
 			extraClasses: { root: css.root },
 			label: 'foo',
-			formId: undefined,
 			theme: undefined
 		}, [ checkboxVdom ]);
 	}
@@ -171,7 +170,6 @@ registerSuite({
 	'state classes on label'() {
 		widget.setProperties({
 			label: 'foo',
-			formId: 'bar',
 			invalid: true,
 			disabled: true,
 			readOnly: true,
@@ -187,8 +185,7 @@ registerSuite({
 			required: true
 		});
 		assignProperties(expectedVdom, {
-			extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` },
-			formId: 'bar'
+			extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
 		});
 		widget.expectRender(expectedVdom);
 	},

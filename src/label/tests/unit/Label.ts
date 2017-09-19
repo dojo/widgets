@@ -28,7 +28,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
-			form: undefined
+			for: undefined
 		}, [
 			v('span', {
 				innerHTML: 'baz'
@@ -46,7 +46,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
-			form: undefined
+			for: undefined
 		}, [
 			v('span', {
 				classes: widget.classes(baseCss.visuallyHidden),
@@ -57,7 +57,7 @@ registerSuite({
 
 	'with children'() {
 		widget.setProperties({
-			formId: 'foo',
+			forId: 'id',
 			label: 'baz'
 		});
 		widget.setChildren([
@@ -67,7 +67,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
-			form: 'foo'
+			for: 'id'
 		}, [
 			v('span', {
 				innerHTML: 'baz'
@@ -79,7 +79,6 @@ registerSuite({
 
 	'label after'() {
 		widget.setProperties({
-			formId: 'foo',
 			label: {
 				content: 'baz',
 				before: false
@@ -91,7 +90,7 @@ registerSuite({
 
 		widget.expectRender(v('label', {
 			classes: widget.classes(css.root),
-			form: 'foo'
+			for: undefined
 		}, [
 			v('div', [ 'child' ]),
 			v('span', {

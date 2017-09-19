@@ -30,12 +30,12 @@ const labelDefaults = {
  *
  * Properties that can be set on a Label component
  *
- * @property formId     ID of a form element associated with the form field
+ * @property forId     ID to explicitly associate the label with an input element
  * @property label      Label settings for form label text, position, and visibility
  */
 export interface LabelProperties extends ThemeableProperties {
 	registry?: WidgetRegistry;
-	formId?: string;
+	forId?: string;
 	label: string | LabelOptions;
 }
 
@@ -61,7 +61,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 
 	render(): DNode {
 		const {
-			formId,
+			forId,
 			label
 		} = this.properties;
 
@@ -88,7 +88,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 
 		return v('label', {
 			classes: this.classes(css.root),
-			form: formId
+			for: forId
 		}, this.children);
 	}
 }

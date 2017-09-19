@@ -13,7 +13,6 @@ import * as css from './styles/checkbox.m.css';
  * @property checked        Checked/unchecked property of the radio
  * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
- * @property formId         ID of a form element associated with the form field
  * @property invalid        Indicates the valid is invalid, or required and not filled in
  * @property label          Label settings for form label text, position, and visibility
  * @property mode           The type of user interface to show for this Checkbox
@@ -37,7 +36,6 @@ export interface CheckboxProperties extends ThemeableProperties {
 	checked?: boolean;
 	describedBy?: string;
 	disabled?: boolean;
-	formId?: string;
 	invalid?: boolean;
 	label?: string | LabelOptions;
 	mode?: Mode;
@@ -117,7 +115,6 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			checked = false,
 			describedBy,
 			disabled,
-			formId,
 			invalid,
 			label,
 			mode,
@@ -171,7 +168,6 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 		if (label) {
 			checkboxWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).get()) },
-				formId,
 				label,
 				theme: this.properties.theme
 			}, children);
