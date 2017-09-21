@@ -85,7 +85,7 @@ export const postcss = {
 	}
 };
 
-export const intern = {
+export const intern3 = {
 	options: {
 		runType: 'runner',
 		config: '<%= devDirectory %>/common/tests/intern',
