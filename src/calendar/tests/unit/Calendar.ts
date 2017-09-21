@@ -22,7 +22,7 @@ const compareId = compareProperty((value: any) => {
 let dateIndex = -1;
 const expectedDateCell = function(widget: any, date: number, active: boolean) {
 	dateIndex++;
-	return w<CalendarCell>('date-cell', {
+	return w(CalendarCell, {
 		key: `date-${dateIndex}`,
 		callFocus: false,
 		date,

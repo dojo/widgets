@@ -41,6 +41,8 @@ const testOptions: OptionData[] = [
 	}
 ];
 
+let ExpectedCustomOption: typeof SelectOption;
+
 const expectedNative = function(widget: any, multiple = false) {
 	return v('div', { classes: widget.classes(css.inputWrapper) }, [
 		v('select', {
@@ -89,7 +91,7 @@ const expectedNative = function(widget: any, multiple = false) {
 
 const expectedOptions = function(widget: any, multiple = false) {
 	return [
-		w<SelectOption>('select-option', {
+		w(ExpectedCustomOption, {
 			focused: true,
 			index: 0,
 			key: '0',
@@ -103,7 +105,7 @@ const expectedOptions = function(widget: any, multiple = false) {
 			onClick: widget.listener,
 			theme: undefined
 		}),
-		w<SelectOption>('select-option', {
+		w(ExpectedCustomOption, {
 			focused: false,
 			index: 1,
 			key: '1',
@@ -117,7 +119,7 @@ const expectedOptions = function(widget: any, multiple = false) {
 			onClick: widget.listener,
 			theme: undefined
 		}),
-		w<SelectOption>('select-option', {
+		w(ExpectedCustomOption, {
 			focused: false,
 			index: 2,
 			key: '2',
@@ -218,6 +220,7 @@ registerSuite({
 
 	beforeEach() {
 		widget = harness(Select);
+		ExpectedCustomOption = SelectOption;
 	},
 
 	afterEach() {
@@ -329,14 +332,17 @@ registerSuite({
 				return 'foo';
 			}
 		}
+
+		ExpectedCustomOption = CustomOption;
 		widget.setProperties({
-			CustomOption: CustomOption,
+			CustomOption,
 			options: testOptions
 		});
 
 		let selectVdom = expectedSingle(widget);
 		widget.expectRender(expected(widget, selectVdom));
 
+		ExpectedCustomOption = SelectOption;
 		widget.setProperties({
 			CustomOption: undefined,
 			options: testOptions
