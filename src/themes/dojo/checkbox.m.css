@@ -12,6 +12,7 @@
 	display: block;
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
+	min-height: var(--line-height-base);
 	padding: 0 0 0 calc(var(--grid-base) * 3);
 	position: relative;
 }
@@ -30,7 +31,6 @@
 	position: absolute;
 	top: 0;
 	width: 100%;
-	z-index: -1;
 }
 
 .inputWrapper {
