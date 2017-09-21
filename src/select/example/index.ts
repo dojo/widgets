@@ -120,7 +120,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
 				key: 'select2',
-				customOption: CustomOption,
+				CustomOption: CustomOption,
 				label: 'Custom box!',
 				options: this._selectOptions,
 				value: this._value2,
@@ -145,7 +145,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h2', {}, [ 'Custom multiselect widget' ]),
 			w(Select, {
 				key: 'select4',
-				customOption: CustomOption,
+				CustomOption: CustomOption,
 				options: this._evenMoreSelectOptions,
 				multiple: true,
 				theme: this._theme,

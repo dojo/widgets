@@ -10,7 +10,6 @@ import { Keys } from '../../../common/util';
 import Select, { SelectProperties } from '../../Select';
 import SelectOption, { OptionData } from '../../SelectOption';
 import Label from '../../../label/Label';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import * as css from '../../styles/select.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
@@ -18,10 +17,6 @@ let widget: Harness<SelectProperties, typeof Select>;
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
-});
-
-const compareRegistry = compareProperty((value: any) => {
-	return value instanceof WidgetRegistry;
 });
 
 interface TestEventInit extends EventInit {
@@ -208,7 +203,6 @@ const expected = function(widget: any, selectVdom: any, label = false) {
 		return w(Label, {
 			extraClasses: { root: css.root },
 			label: 'foo',
-			registry: <any> compareRegistry,
 			theme: undefined
 		}, [ selectVdom ]);
 	}
@@ -336,7 +330,7 @@ registerSuite({
 			}
 		}
 		widget.setProperties({
-			customOption: CustomOption,
+			CustomOption: CustomOption,
 			options: testOptions
 		});
 
@@ -344,7 +338,7 @@ registerSuite({
 		widget.expectRender(expected(widget, selectVdom));
 
 		widget.setProperties({
-			customOption: undefined,
+			CustomOption: undefined,
 			options: testOptions
 		});
 

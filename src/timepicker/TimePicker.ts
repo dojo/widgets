@@ -2,7 +2,8 @@ import { padStart } from '@dojo/shim/string';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
-import { diffProperty, WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
@@ -290,8 +291,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return w(ComboBox, {
 			autoBlur,
 			clearable,
-			customResultItem: customOptionItem,
-			customResultMenu: customOptionMenu,
+			CustomResultItem: customOptionItem,
+			CustomResultMenu: customOptionMenu,
 			disabled,
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),

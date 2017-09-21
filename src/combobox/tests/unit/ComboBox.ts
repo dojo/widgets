@@ -111,10 +111,10 @@ registerSuite({
 			results: ['a', 'b']
 		});
 		comboBox.__setProperties__({
-			customResultItem: ResultItem
+			CustomResultItem: ResultItem
 		});
 		comboBox.__setProperties__({
-			customResultMenu: ResultMenu
+			CustomResultMenu: ResultMenu
 		});
 		comboBox.__setProperties__({
 			onBlur: () => called = true
@@ -133,8 +133,8 @@ registerSuite({
 		comboBox.__setProperties__({
 			results: ['1', '2'],
 			required: true,
-			customResultItem: ResultItem,
-			customResultMenu: ResultMenu
+			CustomResultItem: ResultItem,
+			CustomResultMenu: ResultMenu
 		});
 
 		(<any> comboBox)._onArrowClick();

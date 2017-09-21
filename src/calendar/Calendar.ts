@@ -1,8 +1,6 @@
-import { WidgetBase, diffProperty } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v, w } from '@dojo/widget-core/d';
-import { reference } from '@dojo/widget-core/diff';
 import { DNode, Constructor } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
@@ -88,30 +86,6 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 	private _focusedDay = 1;
 	private _monthLabelId = uuid();
 	private _popupOpen = false;
-	private _registry: WidgetRegistry;
-
-	constructor() {
-		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
-		super();
-
-		this._registry = this._createRegistry(CalendarCell);
-		this.getRegistries().add(this._registry);
-	}
-
-	@diffProperty('customDateCell', reference)
-	protected onPropertiesChanged(previousProperties: any, newProperties: any) {
-		const { customDateCell = CalendarCell } = newProperties;
-		const registry = this._createRegistry(customDateCell);
-		this.getRegistries().replace(this._registry, registry);
-		this._registry = registry;
-	}
-
-	private _createRegistry(customDateCell: any) {
-		const registry = new WidgetRegistry();
-		registry.define('date-cell', customDateCell);
-
-		return registry;
-	}
 
 	private _getMonthLength(month: number, year: number) {
 		const lastDate = new Date(year, month + 1, 0);
@@ -260,7 +234,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 			month,
 			year
 		} = this._getMonthYear();
-		const { theme = {} } = this.properties;
+		const { theme = {}, customDateCell } = this.properties;
 
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
@@ -305,7 +279,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 					isSelectedDay = false;
 				}
 
-				days.push(w<CalendarCell>('date-cell', {
+				days.push(w<CalendarCell>(customDateCell || CalendarCell, {
 					key: `date-${week * 7 + i}`,
 					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
 					date,
