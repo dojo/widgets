@@ -227,16 +227,16 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _openMenu() {
 		const { onRequestResults } = this.properties;
-
+		const value = this._inputElement ? this._inputElement.value : '';
 		this._activeIndex = undefined;
 		this._open = true;
 		this._focused = true;
-		onRequestResults && onRequestResults(this._inputElement.value);
+		onRequestResults && onRequestResults(value);
 	}
 
 	private _restoreFocus() {
 		const func = this._focused ? 'focus' : 'blur';
-		this._inputElement[func]();
+		this._inputElement && this._inputElement[func]();
 	}
 
 	private _scrollIntoView(element: HTMLElement) {
@@ -364,9 +364,9 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		let controls: DNode = v('div', {
 			classes: this.classes(css.controls)
 		}, [
-			w(TextInput, <TextInputProperties> {
+			w(TextInput, {
+				key: 'input',
 				...inputProperties,
-				classes: this.classes(clearable ? css.clearable : null),
 				controls: menuId,
 				disabled,
 				invalid,
@@ -381,6 +381,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			}),
 			clearable ? v('button', {
 				'aria-controls': menuId,
+				// key: 'clear-button',
 				classes: this.classes(css.clear),
 				disabled,
 				readOnly,
@@ -392,6 +393,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				})
 			]) : null,
 			v('button', {
+				key: 'trigger-button',
 				'aria-controls': menuId,
 				classes: this.classes(css.trigger),
 				disabled,

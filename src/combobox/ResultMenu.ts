@@ -29,7 +29,7 @@ export interface ResultMenuProperties extends ThemeableProperties {
 	onResultMouseUp(event: MouseEvent, index: number): void;
 	results: any[];
 	selectedIndex: number | undefined;
-};
+}
 
 export const ResultMenuBase = ThemeableMixin(WidgetBase);
 
