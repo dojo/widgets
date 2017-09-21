@@ -42,10 +42,6 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 			},
 			{
 				attributeName: 'value'
-			},
-			{
-				attributeName: 'formid',
-				propertyName: 'formId'
 			}
 		],
 		properties: [

@@ -13,7 +13,6 @@ import * as css from './styles/textarea.m.css';
  * @property columns         Number of columns, controls the width of the textarea
  * @property describedBy     ID of an element that provides more descriptive text
  * @property disabled        Prevents the user from interacting with the form field
- * @property formId          ID of a form element associated with the form field
  * @property invalid         Indicates the value entered in the form field is invalid
  * @property label           Label settings for form label text, position, and visibility
  * @property maxLength       Maximum number of characters allowed in the input
@@ -43,7 +42,6 @@ export interface TextareaProperties extends ThemeableProperties {
 	columns?: number;
 	describedBy?: string;
 	disabled?: boolean;
-	formId?: string;
 	invalid?: boolean;
 	label?: string | LabelOptions;
 	maxLength?: number | string;
@@ -93,7 +91,6 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 			columns,
 			describedBy,
 			disabled,
-			formId,
 			invalid,
 			label,
 			maxLength,
@@ -118,18 +115,18 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 		const textarea = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('textarea', {
 				classes: this.classes(css.input),
-				cols: columns ? columns + '' : null,
+				cols: columns ? `${columns}` : null,
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
-				maxlength: maxLength ? maxLength + '' : null,
-				minlength: minLength ? minLength + '' : null,
+				maxlength: maxLength ? `${maxLength}` : null,
+				minlength: minLength ? `${minLength}` : null,
 				name,
 				placeholder,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
 				required,
-				rows: rows ? rows + '' : null,
+				rows: rows ? `${rows}` : null,
 				value,
 				wrap: wrapText,
 				onblur: this._onBlur,
@@ -153,7 +150,6 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 		if (label) {
 			textareaWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses)()) },
-				formId,
 				label,
 				theme: this.properties.theme
 			}, [ textarea ]);

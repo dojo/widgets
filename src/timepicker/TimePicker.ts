@@ -20,7 +20,6 @@ import { TextInputProperties } from '../textinput/TextInput';
  * @property customOptionMenu   Can be used to render a custom option menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property end                The maximum time to display in the menu (defaults to '23:59:59')
- * @property formId             ID of a form element associated with the form field
  * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
@@ -48,7 +47,6 @@ export interface TimePickerProperties extends ThemeableProperties {
 	customOptionMenu?: any;
 	disabled?: boolean;
 	end?: string;
-	formId?: string;
 	getOptionLabel?(option: TimeUnits): string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
@@ -170,7 +168,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	render(): DNode {
 		const {
 			disabled,
-			formId,
 			invalid,
 			label,
 			readOnly,
@@ -191,7 +188,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 						readOnly ? css.readonly : null,
 						required ? css.required : null).get())
 					},
-					formId,
 					label,
 					theme: this.properties.theme
 				}, [ input ]) ];
@@ -275,7 +271,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			customOptionMenu,
 			disabled,
 			extraClasses,
-			formId,
 			inputProperties,
 			invalid,
 			isOptionDisabled,
@@ -299,7 +294,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			customResultMenu: customOptionMenu,
 			disabled,
 			extraClasses,
-			formId,
 			getResultLabel: this._getOptionLabel.bind(this),
 			inputProperties,
 			invalid,

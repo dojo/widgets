@@ -208,7 +208,6 @@ const expected = function(widget: any, selectVdom: any, label = false) {
 		return w(Label, {
 			extraClasses: { root: css.root },
 			label: 'foo',
-			formId: undefined,
 			registry: <any> compareRegistry,
 			theme: undefined
 		}, [ selectVdom ]);
@@ -740,7 +739,6 @@ registerSuite({
 		'state classes and form id'() {
 			widget.setProperties({
 				disabled: true,
-				formId: 'bar',
 				invalid: true,
 				label: 'foo',
 				options: testOptions,
@@ -758,8 +756,7 @@ registerSuite({
 			});
 			const expectedVdom = expected(widget, selectVdom, true);
 			assignProperties(expectedVdom, {
-				extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` },
-				formId: 'bar'
+				extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
 			});
 			widget.expectRender(expectedVdom);
 		}

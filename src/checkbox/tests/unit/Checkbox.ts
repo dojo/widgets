@@ -1,191 +1,305 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
-import { VNode } from '@dojo/interfaces/vdom';
-import Checkbox, { Mode } from '../../Checkbox';
+import * as sinon from 'sinon';
+
+import has from '@dojo/has/has';
+import { v, w } from '@dojo/widget-core/d';
+import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import harness, { Harness } from '@dojo/test-extras/harness';
+
+import Label from '../../../label/Label';
+import Checkbox, { CheckboxProperties, Mode } from '../../Checkbox';
 import * as css from '../../styles/checkbox.m.css';
+
+const expectedToggle = function(widget: any, labels = false) {
+	if (labels) {
+		return [
+			v('div', {
+				classes: widget.classes(css.offLabel),
+				'aria-hidden': null
+			}, [ 'off' ]),
+			v('div', {
+				classes: widget.classes(css.toggleSwitch)
+			}),
+			v('div', {
+				classes: widget.classes(css.onLabel),
+				'aria-hidden': 'true'
+			}, [ 'on' ])
+		];
+	}
+
+	return [
+		null,
+		v('div', {
+			classes: widget.classes(css.toggleSwitch)
+		}),
+		null
+	];
+};
+
+const expected = function(widget: any, label = false, toggle = false, toggleLabels = false) {
+	const checkboxVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
+		...(toggle ? expectedToggle(widget, toggleLabels) : []),
+		v('input', {
+			classes: widget.classes(css.input),
+			checked: false,
+			'aria-describedby': undefined,
+			disabled: undefined,
+			'aria-invalid': null,
+			name: undefined,
+			readOnly: undefined,
+			'aria-readonly': null,
+			required: undefined,
+			type: 'checkbox',
+			value: undefined,
+			onblur: widget.listener,
+			onchange: widget.listener,
+			onclick: widget.listener,
+			onfocus: widget.listener,
+			onmousedown: widget.listener,
+			onmouseup: widget.listener,
+			ontouchstart: widget.listener,
+			ontouchend: widget.listener,
+			ontouchcancel: widget.listener
+		})
+	]);
+
+	if (label) {
+		return w(Label, {
+			extraClasses: { root: css.root },
+			label: 'foo',
+			theme: undefined
+		}, [ checkboxVdom ]);
+	}
+	else {
+		return v('div', {
+			classes: widget.classes(css.root)
+		}, [ checkboxVdom ]);
+	}
+};
+
+let widget: Harness<CheckboxProperties, typeof Checkbox>;
 
 registerSuite({
 	name: 'Checkbox',
 
-	construction() {
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
-			checked: true
-		});
-
-		assert.isTrue(checkbox.properties.checked);
+	beforeEach() {
+		widget = harness(Checkbox);
 	},
 
-	'default node attributes'() {
-		const checkbox = new Checkbox();
-		const vnode = <VNode> checkbox.__render__();
-		const inputNode = vnode.children![0].children![0];
-
-		assert.strictEqual(inputNode.vnodeSelector, 'input');
-		assert.strictEqual(inputNode.properties!.type, 'checkbox');
-		assert.strictEqual(inputNode.properties!.checked, false);
+	afterEach() {
+		widget.destroy();
 	},
 
-	'correct node attributes'() {
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
+	'default properties'() {
+		widget.expectRender(expected(widget));
+	},
+
+	'custom properties'() {
+		widget.setProperties({
 			checked: true,
-			describedBy: 'id1',
-			disabled: true,
-			formId: 'id2',
-			invalid: true,
-			label: 'foo',
+			describedBy: 'foo',
 			name: 'bar',
-			readOnly: true,
-			required: true,
-			value: 'qux'
+			value: 'baz'
 		});
-		const vnode = <VNode> checkbox.__render__();
-		const labelNode = vnode.children![0];
-		const inputNode = vnode.children![1].children![0];
 
-		assert.isTrue(inputNode.properties!.checked);
-		assert.strictEqual(inputNode.properties!['aria-describedby'], 'id1');
-		assert.isTrue(inputNode.properties!.disabled);
-		assert.strictEqual(inputNode.properties!['aria-invalid'], 'true');
-		assert.strictEqual(inputNode.properties!.name, 'bar');
-		assert.isTrue(inputNode.properties!.readOnly);
-		assert.strictEqual(inputNode.properties!['aria-readonly'], 'true');
-		assert.isTrue(inputNode.properties!.required);
-		assert.strictEqual(inputNode.properties!.value, 'qux');
+		const expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			checked: true,
+			'aria-describedby': 'foo',
+			name: 'bar',
+			value: 'baz'
+		});
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.checked)
+		});
 
-		assert.strictEqual(vnode.properties!['form'], 'id2');
-		assert.strictEqual(labelNode.properties!.innerHTML, 'foo');
+		widget.expectRender(expectedVdom);
+	},
+
+	'label'() {
+		widget.setProperties({
+			label: 'foo'
+		});
+
+		widget.expectRender(expected(widget, true));
 	},
 
 	'state classes'() {
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
-			checked: true,
-			disabled: true,
+		widget.setProperties({
 			invalid: true,
+			disabled: true,
 			readOnly: true,
-			required: true,
-			mode: Mode.toggle,
-			offLabel: 'Off',
-			onLabel: 'On'
+			required: true
 		});
-		let vnode = <VNode> checkbox.__render__();
 
-		assert.isTrue(vnode.properties!.classes![css.checked]);
-		assert.isTrue(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.invalid]);
-		assert.isTrue(vnode.properties!.classes![css.readonly]);
-		assert.isTrue(vnode.properties!.classes![css.required]);
-		assert.isTrue(vnode.properties!.classes![css.toggle]);
+		let expectedVdom = expected(widget);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
+		});
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.invalid, css.disabled, css.readonly, css.required)
+		});
 
-		checkbox.__setProperties__({
-			checked: false,
-			disabled: false,
+		widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
+
+		widget.setProperties({
 			invalid: false,
+			disabled: false,
 			readOnly: false,
-			required: false,
-			mode: Mode.toggle,
-			onLabel: null,
-			offLabel: null
+			required: false
 		});
-		vnode = <VNode> checkbox.__render__();
-		assert.isFalse(vnode.properties!.classes![css.checked]);
-		assert.isFalse(vnode.properties!.classes![css.disabled]);
-		assert.isTrue(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
-		assert.isFalse(vnode.properties!.classes![css.readonly]);
-		assert.isFalse(vnode.properties!.classes![css.required]);
+		expectedVdom = expected(widget);
 
-		checkbox.__setProperties__({
-			invalid: undefined
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: false,
+			readOnly: false,
+			required: false
 		});
-		vnode = <VNode> checkbox.__render__();
-		assert.isFalse(vnode.properties!.classes![css.valid]);
-		assert.isFalse(vnode.properties!.classes![css.invalid]);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.valid)
+		});
+
+		widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+	},
+
+	'state classes on label'() {
+		widget.setProperties({
+			label: 'foo',
+			invalid: true,
+			disabled: true,
+			readOnly: true,
+			required: true
+		});
+
+		const expectedVdom = expected(widget, true);
+		assignChildProperties(expectedVdom, '0,0', {
+			disabled: true,
+			'aria-invalid': 'true',
+			readOnly: true,
+			'aria-readonly': 'true',
+			required: true
+		});
+		assignProperties(expectedVdom, {
+			extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
+		});
+		widget.expectRender(expectedVdom);
 	},
 
 	'focused class'() {
-		const radio = new Checkbox();
-		let vnode = <VNode> radio.__render__();
+		let expectedVdom = expected(widget);
+		widget.expectRender(expectedVdom);
 
-		assert.isUndefined(vnode.properties!.classes![css.focused]);
+		widget.sendEvent('focus', { selector: 'input' });
+		expectedVdom = expected(widget);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.focused)
+		});
+		widget.expectRender(expectedVdom, 'Should have focused class after focus event');
 
-		(<any> radio)._onFocus(<FocusEvent> {});
-		vnode = <VNode> radio.__render__();
-		assert.isTrue(vnode.properties!.classes![css.focused]);
-
-		(<any> radio)._onBlur(<FocusEvent> {});
-		vnode = <VNode> radio.__render__();
-		assert.isFalse(vnode.properties!.classes![css.focused]);
+		widget.sendEvent('blur', { selector: 'input' });
+		expectedVdom = expected(widget);
+		widget.expectRender(expectedVdom, 'Should not have focused class after blur event');
 	},
 
-	'toggle attributes'() {
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
+	'toggle mode'() {
+		widget.setProperties({
+			mode: Mode.toggle
+		});
+		let expectedVdom = expected(widget, false, true);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.toggle)
+		});
+		widget.expectRender(expectedVdom, 'Toggle input without toggle labels');
+
+		widget.setProperties({
+			mode: Mode.toggle,
+			offLabel: 'off',
+			onLabel: 'on'
+		});
+		expectedVdom = expected(widget, false, true, true);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.toggle)
+		});
+		widget.expectRender(expectedVdom, 'Toggle input with toggle labels');
+
+		widget.setProperties({
 			checked: true,
 			mode: Mode.toggle,
-			offLabel: 'Off',
-			onLabel: 'On'
+			offLabel: 'off',
+			onLabel: 'on'
 		});
-		let vnode = <VNode> checkbox.__render__();
-
-		assert.strictEqual(vnode.children![0].children![0].properties!['aria-hidden'], 'true');
-		assert.isNull(vnode.children![0].children![2].properties!['aria-hidden']);
-
-		checkbox.__setProperties__({
-			checked: false,
-			mode: Mode.toggle,
-			offLabel: 'Off',
-			onLabel: 'On'
+		expectedVdom = expected(widget, false, true, true);
+		assignProperties(expectedVdom, {
+			classes: widget.classes(css.root, css.toggle, css.checked)
 		});
-		vnode = <VNode> checkbox.__render__();
-
-		assert.isNull(vnode.children![0].children![0].properties!['aria-hidden']);
-		assert.strictEqual(vnode.children![0].children![2].properties!['aria-hidden'], 'true');
+		assignChildProperties(expectedVdom, '0,3', {
+			checked: true
+		});
+		assignChildProperties(expectedVdom, '0,0', {
+			'aria-hidden': 'true'
+		});
+		assignChildProperties(expectedVdom, '0,2', {
+			'aria-hidden': null
+		});
+		widget.expectRender(expectedVdom, 'Checked toggle input with toggle labels');
 	},
 
 	events() {
-		let blurred = false,
-				changed = false,
-				clicked = false,
-				focused = false,
-				mousedown = false,
-				mouseup = false,
-				touchstart = false,
-				touchend = false,
-				touchcancel = false;
+		const onBlur = sinon.stub();
+		const onChange = sinon.stub();
+		const onClick = sinon.stub();
+		const onFocus = sinon.stub();
+		const onMouseDown = sinon.stub();
+		const onMouseUp = sinon.stub();
 
-		const checkbox = new Checkbox();
-		checkbox.__setProperties__({
-			onBlur: () => { blurred = true; },
-			onChange: () => { changed = true; },
-			onClick: () => { clicked = true; },
-			onFocus: () => { focused = true; },
-			onMouseDown: () => { mousedown = true; },
-			onMouseUp: () => { mouseup = true; },
-			onTouchStart: () => { touchstart = true; },
-			onTouchEnd: () => { touchend = true; },
-			onTouchCancel: () => { touchcancel = true; }
+		widget.setProperties({
+			onBlur,
+			onChange,
+			onClick,
+			onFocus,
+			onMouseDown,
+			onMouseUp
 		});
 
-		(<any> checkbox)._onBlur(<FocusEvent> {});
-		assert.isTrue(blurred);
-		(<any> checkbox)._onChange(<Event> {});
-		assert.isTrue(changed);
-		(<any> checkbox)._onClick(<MouseEvent> {});
-		assert.isTrue(clicked);
-		(<any> checkbox)._onFocus(<FocusEvent> {});
-		assert.isTrue(focused);
-		(<any> checkbox)._onMouseDown(<MouseEvent> {});
-		assert.isTrue(mousedown);
-		(<any> checkbox)._onMouseUp(<MouseEvent> {});
-		assert.isTrue(mouseup);
-		(<any> checkbox)._onTouchStart(<TouchEvent> {});
-		assert.isTrue(touchstart);
-		(<any> checkbox)._onTouchEnd(<TouchEvent> {});
-		assert.isTrue(touchend);
-		(<any> checkbox)._onTouchCancel(<TouchEvent> {});
-		assert.isTrue(touchcancel);
+		widget.sendEvent('blur', { selector: 'input' });
+		assert.isTrue(onBlur.called, 'onBlur called');
+		widget.sendEvent('change', { selector: 'input' });
+		assert.isTrue(onChange.called, 'onChange called');
+		widget.sendEvent('click', { selector: 'input' });
+		assert.isTrue(onClick.called, 'onClick called');
+		widget.sendEvent('focus', { selector: 'input' });
+		assert.isTrue(onFocus.called, 'onFocus called');
+		widget.sendEvent('mousedown', { selector: 'input' });
+		assert.isTrue(onMouseDown.called, 'onMouseDown called');
+		widget.sendEvent('mouseup', { selector: 'input' });
+		assert.isTrue(onMouseUp.called, 'onMouseUp called');
+	},
+
+	'touch events'(this: any) {
+		if (!has('touch')) {
+			this.skip('Environment not support touch events');
+		}
+
+		const onTouchStart = sinon.stub();
+		const onTouchEnd = sinon.stub();
+		const onTouchCancel = sinon.stub();
+
+		widget.setProperties({
+			onTouchStart,
+			onTouchEnd,
+			onTouchCancel
+		});
+
+		widget.sendEvent('touchstart', { selector: 'input' });
+		assert.isTrue(onTouchStart.called, 'onTouchStart called');
+		widget.sendEvent('touchend', { selector: 'input' });
+		assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
+		widget.sendEvent('touchcancel', { selector: 'input' });
+		assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 	}
 });

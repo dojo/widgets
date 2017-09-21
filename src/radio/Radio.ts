@@ -13,7 +13,6 @@ import * as css from './styles/radio.m.css';
  * @property checked          Checked/unchecked property of the radio
  * @property describedBy      ID of an element that provides more descriptive text
  * @property disabled         Prevents the user from interacting with the form field
- * @property formId           ID of a form element associated with the form field
  * @property invalid          Indicates the valid is invalid, or required and not filled in
  * @property label            Label settings for form label text, position, and visibility
  * @property name             The form widget's name
@@ -34,7 +33,6 @@ export interface RadioProperties extends ThemeableProperties {
 	checked?: boolean;
 	describedBy?: string;
 	disabled?: boolean;
-	formId?: string;
 	invalid?: boolean;
 	label?: string | LabelOptions;
 	name?: string;
@@ -81,7 +79,6 @@ export default class Radio extends RadioBase<RadioProperties> {
 			checked = false,
 			describedBy,
 			disabled,
-			formId,
 			invalid,
 			label,
 			name,
@@ -130,7 +127,6 @@ export default class Radio extends RadioBase<RadioProperties> {
 		if (label) {
 			radioWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).get()) },
-				formId,
 				label,
 				theme: this.properties.theme
 			}, [ radio ]);
