@@ -16,7 +16,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a Calendar component
  *
- * @property customDateCell    Custom widget constructor for the date cell. Should use CalendarCell as a base.
+ * @property CustomDateCell    Custom widget constructor for the date cell. Should use CalendarCell as a base.
  * @property labels            Customize or internationalize accessible text for the Calendar widget
  * @property month             Set the currently displayed month, 0-based
  * @property monthNames        Customize or internationalize full month names and abbreviations
@@ -30,7 +30,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onDateSelect      Function called when the user selects a date
  */
 export interface CalendarProperties extends ThemeableProperties {
-	customDateCell?: Constructor<CalendarCell>;
+	CustomDateCell?: Constructor<CalendarCell>;
 	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string; }[];
@@ -234,7 +234,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 			month,
 			year
 		} = this._getMonthYear();
-		const { theme = {}, customDateCell } = this.properties;
+		const { theme = {}, CustomDateCell = CalendarCell } = this.properties;
 
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
@@ -279,7 +279,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 					isSelectedDay = false;
 				}
 
-				days.push(w<CalendarCell>(customDateCell || CalendarCell, {
+				days.push(w(CustomDateCell, {
 					key: `date-${week * 7 + i}`,
 					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
 					date,

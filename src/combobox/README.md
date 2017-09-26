@@ -141,7 +141,7 @@ class CustomResultItem extends ResultItem {
 w(ComboBox, {
 	results: ['foo', 'bar', 'baz'],
 	value: this.state.currentValue,,
-	customResultItem: CustomResultItem,
+	CustomResultItem: CustomResultItem,
 	onChange: (value: string) => this.setState({ currentValue: value })
 });
 ```

@@ -186,7 +186,7 @@ registerSuite({
 
 	'Renders with custom properties'() {
 		widget.setProperties({
-			customDateCell: CalendarCell,
+			CustomDateCell: CalendarCell,
 			labels: DEFAULT_LABELS,
 			month: testDate.getMonth(),
 			monthNames: DEFAULT_MONTHS,

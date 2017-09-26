@@ -21,8 +21,8 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the input should be able to be cleared
- * @property customResultItem   Can be used to render a custom result
- * @property customResultMenu   Can be used to render a custom result menu
+ * @property CustomResultItem   Can be used to render a custom result
+ * @property CustomResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property inputProperties    TextInput properties to set on the underlying input

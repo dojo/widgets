@@ -17,8 +17,8 @@ import { TextInputProperties } from '../textinput/TextInput';
  *
  * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the custom input should be able to be cleared
- * @property customOptionItem   Can be used to render a custom option
- * @property customOptionMenu   Can be used to render a custom option menu
+ * @property CustomOptionItem   Can be used to render a custom option
+ * @property CustomOptionMenu   Can be used to render a custom option menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property end                The maximum time to display in the menu (defaults to '23:59:59')
  * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
@@ -44,8 +44,8 @@ import { TextInputProperties } from '../textinput/TextInput';
 export interface TimePickerProperties extends ThemeableProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
-	customOptionItem?: any;
-	customOptionMenu?: any;
+	CustomOptionItem?: any;
+	CustomOptionMenu?: any;
 	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
@@ -268,8 +268,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		const {
 			autoBlur,
 			clearable,
-			customOptionItem,
-			customOptionMenu,
+			CustomOptionItem,
+			CustomOptionMenu,
 			disabled,
 			extraClasses,
 			inputProperties,
@@ -291,8 +291,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return w(ComboBox, {
 			autoBlur,
 			clearable,
-			CustomResultItem: customOptionItem,
-			CustomResultMenu: customOptionMenu,
+			CustomResultItem: CustomOptionItem,
+			CustomResultMenu: CustomOptionMenu,
 			disabled,
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),

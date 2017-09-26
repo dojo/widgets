@@ -18,7 +18,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a Select component
  *
- * @property customOption   Custom widget constructor for options. Should use SelectOption as a base
+ * @property CustomOption   Custom widget constructor for options. Should use SelectOption as a base
  * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
  * @property invalid        Indicates the value entered in the form field is invalid

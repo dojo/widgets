@@ -57,7 +57,7 @@ class MyCalendarCell extends CalendarCell {
 [ ... ]
 
 w(Calendar, {
-	customDateCell: MyCalendarCell,
+	CustomDateCell: MyCalendarCell,
 	month: this.state.month,
 	selectedDate: this.state.selectedDate,
 	year: this.state.year,
