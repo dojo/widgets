@@ -30,7 +30,7 @@
   "devDependencies": {
     "@dojo/interfaces": "next",
     "@dojo/loader": "next",
-    "@dojo/test-extras": "file:../../dojo-org/test-extras/dist/dojo-test-extras-2.0.0-alpha.1.tgz",
+    "@dojo/test-extras": "next",
     "@types/chai": "3.4.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
