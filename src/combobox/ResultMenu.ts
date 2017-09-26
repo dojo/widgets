@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { Constructor, DNode, WNode } from '@dojo/widget-core/interfaces';
 import ResultItem from './ResultItem';
 
 import * as css from './styles/comboBox.m.css';
@@ -21,6 +21,7 @@ import * as css from './styles/comboBox.m.css';
  * @property selectedIndex          Position of the selected result in the list of results
  */
 export interface ResultMenuProperties extends ThemeableProperties {
+	CustomResultItem?: Constructor<ResultItem>;
 	getResultLabel(result: any): string;
 	id?: string;
 	isResultDisabled?(result: any): boolean;
@@ -41,6 +42,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 
 	render(): DNode {
 		const {
+			CustomResultItem = ResultItem,
 			getResultLabel,
 			id,
 			isResultDisabled = () => false,
@@ -52,7 +54,7 @@ export default class ResultMenu extends ResultMenuBase<ResultMenuProperties> {
 			theme = {}
 		} = this.properties;
 
-		const resultElements = this.renderResults(results.map((result, i) => w<ResultItem>('result-item', {
+		const resultElements = this.renderResults(results.map((result, i) => w(CustomResultItem, {
 			getResultLabel,
 			index: i,
 			isDisabled: isResultDisabled,
