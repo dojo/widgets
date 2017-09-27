@@ -52,10 +52,10 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 				propertyName: 'inputProperties'
 			},
 			{
-				propertyName: 'customResultItem'
+				propertyName: 'CustomResultItem'
 			},
 			{
-				propertyName: 'customResultMenu'
+				propertyName: 'CustomResultMenu'
 			},
 			{
 				propertyName: 'getResultLabel'

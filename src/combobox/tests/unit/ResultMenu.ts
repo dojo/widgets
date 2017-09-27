@@ -3,16 +3,10 @@ import * as assert from 'intern/chai!assert';
 import { VNode } from '@dojo/interfaces/vdom';
 import ResultMenu from '../../ResultMenu';
 import { assign } from '@dojo/core/lang';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
-import ResultItem from '../../ResultItem';
-
-const registry = new WidgetRegistry();
-registry.define('result-item', ResultItem);
 
 function props(props = {}) {
 	return assign({
 		results: ['a', 'b'],
-		registry: registry,
 		selectedIndex: 0,
 		getResultLabel: () => '',
 		onResultMouseEnter: () => true,

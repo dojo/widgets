@@ -1,9 +1,9 @@
-import { WidgetBase, diffProperty } from '@dojo/widget-core/WidgetBase';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
+import { Constructor, DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import { v, w } from '@dojo/widget-core/d';
-import { reference, auto } from '@dojo/widget-core/diff';
+import { auto } from '@dojo/widget-core/diff';
 import uuid from '@dojo/core/uuid';
 import { assign } from '@dojo/core/lang';
 import { find } from '@dojo/shim/array';
@@ -18,7 +18,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a Select component
  *
- * @property customOption   Custom widget constructor for options. Should use SelectOption as a base
+ * @property CustomOption   Custom widget constructor for options. Should use SelectOption as a base
  * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
  * @property invalid        Indicates the value entered in the form field is invalid
@@ -37,7 +37,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onKeyDown      Called on the input's keydown event
  */
 export interface SelectProperties extends ThemeableProperties {
-	customOption?: any;
+	CustomOption?: Constructor<SelectOption>;
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
@@ -65,28 +65,12 @@ export default class Select extends SelectBase<SelectProperties> {
 	private _ignoreBlur = false;
 	private _open = false;
 	private _selectId = uuid();
-	private _registry: WidgetRegistry;
 	private _options: OptionData[] = [];
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
 	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
-
-	constructor() {
-		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
-		super();
-
-		this._registry = this._createRegistry(SelectOption);
-		this.getRegistries().add(this._registry);
-	}
-
-	private _createRegistry(customOption: any) {
-		const registry = new WidgetRegistry();
-		registry.define('select-option', customOption);
-
-		return registry;
-	}
 
 	// native select events
 	private _onNativeChange (event: Event) {
@@ -206,16 +190,17 @@ export default class Select extends SelectBase<SelectProperties> {
 
 	private _renderCustomOptions(): DNode[] {
 		const {
+			CustomOption = SelectOption,
 			multiple,
 			value,
 			theme
 		} = this.properties;
 
-		const optionNodes = this._options.map((option, i) => w<SelectOption>('select-option', {
+		const optionNodes = this._options.map((option, i) => w(CustomOption, {
 			focused: this._focusedIndex === i,
 			index: i,
 			key: i + '',
-			optionData: assign({}, option, <any> {
+			optionData: assign({}, option, {
 				id: option.id,
 				selected: multiple ? option.selected : value === option.value
 			}),
@@ -225,17 +210,6 @@ export default class Select extends SelectBase<SelectProperties> {
 		}));
 
 		return optionNodes;
-	}
-
-	@diffProperty('customOption', reference)
-	protected onCustomOptionChange(previousProperties: any, newProperties: any) {
-		const {
-			customOption = SelectOption
-		} = newProperties;
-
-		const registry = this._createRegistry(customOption);
-		this.getRegistries().replace(this._registry, registry);
-		this._registry = registry;
 	}
 
 	@diffProperty('options', auto)
@@ -414,7 +388,6 @@ export default class Select extends SelectBase<SelectProperties> {
 			rootWidget = w(Label, {
 				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses)()) },
 				label,
-				registry: this._registry,
 				theme
 			}, [ select ]);
 		}

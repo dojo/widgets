@@ -1,10 +1,10 @@
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { Constructor, DNode, WNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { WidgetBase, diffProperty } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { reference } from '@dojo/widget-core/diff';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import ResultItem from './ResultItem';
 import ResultMenu from './ResultMenu';
 import { Keys } from '../common/util';
@@ -21,8 +21,8 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the input should be able to be cleared
- * @property customResultItem   Can be used to render a custom result
- * @property customResultMenu   Can be used to render a custom result menu
+ * @property CustomResultItem   Can be used to render a custom result
+ * @property CustomResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property inputProperties    TextInput properties to set on the underlying input
@@ -43,8 +43,8 @@ import * as iconCss from '../common/styles/icons.m.css';
 export interface ComboBoxProperties extends ThemeableProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
-	customResultItem?: any;
-	customResultMenu?: any;
+	CustomResultItem?: Constructor<ResultItem>;
+	CustomResultMenu?: Constructor<ResultMenu>;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
 	inputProperties?: TextInputProperties;
@@ -73,6 +73,7 @@ export const ComboBoxBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
+@diffProperty('results', reference)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _activeIndex: number | undefined;
 	private _focused: boolean;
@@ -82,27 +83,10 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _menuId = uuid();
 	private _open: boolean;
 	private _wasOpen: boolean;
-	private _registry: WidgetRegistry;
-
-	constructor() {
-		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
-		super();
-
-		this._registry = this._createRegistry(ResultItem, ResultMenu);
-		this.getRegistries().add(this._registry);
-	}
 
 	private _closeMenu() {
 		this._open = false;
 		this.invalidate();
-	}
-
-	private _createRegistry(customResultItem: any, customResultMenu: any) {
-		const registry = new WidgetRegistry();
-		registry.define('result-item', customResultItem);
-		registry.define('result-menu', customResultMenu);
-
-		return registry;
 	}
 
 	private _getResultLabel(result: any) {
@@ -307,35 +291,21 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	}
 
-	@diffProperty('customResultItem', reference)
-	@diffProperty('customResultMenu', reference)
-	@diffProperty('results', reference)
-	protected onPropertiesChanged(previousProperties: any, newProperties: any) {
-		const {
-			customResultItem = ResultItem,
-			customResultMenu = ResultMenu
-		} = newProperties;
-
-		const registry = this._createRegistry(customResultItem, customResultMenu);
-		this.getRegistries().replace(this._registry, registry);
-		this._registry = registry;
-	}
-
 	protected renderMenu(results: any[]): WNode | null {
-		const { theme = {}, isResultDisabled } = this.properties;
+		const { theme = {}, isResultDisabled, CustomResultMenu = ResultMenu, CustomResultItem } = this.properties;
 
 		if (results.length === 0 || !this._open) {
 			return null;
 		}
 
-		return w<ResultMenu>('result-menu', {
+		return w(CustomResultMenu, {
 			getResultLabel: this._getResultLabel,
+			CustomResultItem,
 			id: this._menuId,
 			isResultDisabled,
 			onResultMouseDown: this._onResultMouseDown,
 			onResultMouseEnter: this._onResultMouseEnter,
 			onResultMouseUp: this._onResultMouseUp,
-			registry: this._registry,
 			results,
 			selectedIndex: this._activeIndex,
 			theme

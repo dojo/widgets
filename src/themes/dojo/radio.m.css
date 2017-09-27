@@ -4,6 +4,7 @@
 
 .root {
 	display: block;
+	min-height: var(--line-height-base);
 	padding: 0 0 0 calc(var(--grid-base) * 3);
 	position: relative;
 }
@@ -23,7 +24,6 @@
 	position: absolute;
 	top: 0;
 	width: 100%;
-	z-index: -1;
 }
 
 .input:focus {

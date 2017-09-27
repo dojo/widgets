@@ -10,7 +10,6 @@ import { Keys } from '../../../common/util';
 import Select, { SelectProperties } from '../../Select';
 import SelectOption, { OptionData } from '../../SelectOption';
 import Label from '../../../label/Label';
-import WidgetRegistry from '@dojo/widget-core/WidgetRegistry';
 import * as css from '../../styles/select.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
@@ -18,10 +17,6 @@ let widget: Harness<SelectProperties, typeof Select>;
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
-});
-
-const compareRegistry = compareProperty((value: any) => {
-	return value instanceof WidgetRegistry;
 });
 
 interface TestEventInit extends EventInit {
@@ -45,6 +40,8 @@ const testOptions: OptionData[] = [
 		disabled: true
 	}
 ];
+
+let ExpectedCustomOption: typeof SelectOption;
 
 const expectedNative = function(widget: any, multiple = false) {
 	return v('div', { classes: widget.classes(css.inputWrapper) }, [
@@ -94,7 +91,7 @@ const expectedNative = function(widget: any, multiple = false) {
 
 const expectedOptions = function(widget: any, multiple = false) {
 	return [
-		w<SelectOption>('select-option', {
+		w(ExpectedCustomOption, {
 			focused: true,
 			index: 0,
 			key: '0',
@@ -108,7 +105,7 @@ const expectedOptions = function(widget: any, multiple = false) {
 			onClick: widget.listener,
 			theme: undefined
 		}),
-		w<SelectOption>('select-option', {
+		w(ExpectedCustomOption, {
 			focused: false,
 			index: 1,
 			key: '1',
@@ -122,7 +119,7 @@ const expectedOptions = function(widget: any, multiple = false) {
 			onClick: widget.listener,
 			theme: undefined
 		}),
-		w<SelectOption>('select-option', {
+		w(ExpectedCustomOption, {
 			focused: false,
 			index: 2,
 			key: '2',
@@ -208,7 +205,6 @@ const expected = function(widget: any, selectVdom: any, label = false) {
 		return w(Label, {
 			extraClasses: { root: css.root },
 			label: 'foo',
-			registry: <any> compareRegistry,
 			theme: undefined
 		}, [ selectVdom ]);
 	}
@@ -224,6 +220,7 @@ registerSuite({
 
 	beforeEach() {
 		widget = harness(Select);
+		ExpectedCustomOption = SelectOption;
 	},
 
 	afterEach() {
@@ -335,16 +332,19 @@ registerSuite({
 				return 'foo';
 			}
 		}
+
+		ExpectedCustomOption = CustomOption;
 		widget.setProperties({
-			customOption: CustomOption,
+			CustomOption,
 			options: testOptions
 		});
 
 		let selectVdom = expectedSingle(widget);
 		widget.expectRender(expected(widget, selectVdom));
 
+		ExpectedCustomOption = SelectOption;
 		widget.setProperties({
-			customOption: undefined,
+			CustomOption: undefined,
 			options: testOptions
 		});
 

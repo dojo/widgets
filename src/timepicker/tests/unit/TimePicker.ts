@@ -5,7 +5,7 @@ import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
 import * as css from '../../styles/timePicker.m.css';
-import ComboBox, { ComboBoxProperties } from '../../../combobox/ComboBox';
+import ComboBox from '../../../combobox/ComboBox';
 import Label, { parseLabelClasses } from '../../../label/Label';
 
 registerSuite({
@@ -73,11 +73,11 @@ registerSuite({
 				value: 'some value'
 			});
 
-			picker.expectRender(w(ComboBox, <ComboBoxProperties> {
+			picker.expectRender(w(ComboBox, {
 				autoBlur: false,
 				clearable: true,
-				customResultItem: undefined,
-				customResultMenu: undefined,
+				CustomResultItem: undefined,
+				CustomResultMenu: undefined,
 				disabled: false,
 				getResultLabel: <any> picker.listener,
 				inputProperties: undefined,

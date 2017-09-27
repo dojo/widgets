@@ -2,7 +2,8 @@ import { padStart } from '@dojo/shim/string';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
-import { diffProperty, WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
@@ -16,8 +17,8 @@ import { TextInputProperties } from '../textinput/TextInput';
  *
  * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the custom input should be able to be cleared
- * @property customOptionItem   Can be used to render a custom option
- * @property customOptionMenu   Can be used to render a custom option menu
+ * @property CustomOptionItem   Can be used to render a custom option
+ * @property CustomOptionMenu   Can be used to render a custom option menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property end                The maximum time to display in the menu (defaults to '23:59:59')
  * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
@@ -43,8 +44,8 @@ import { TextInputProperties } from '../textinput/TextInput';
 export interface TimePickerProperties extends ThemeableProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
-	customOptionItem?: any;
-	customOptionMenu?: any;
+	CustomOptionItem?: any;
+	CustomOptionMenu?: any;
 	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
@@ -267,8 +268,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		const {
 			autoBlur,
 			clearable,
-			customOptionItem,
-			customOptionMenu,
+			CustomOptionItem,
+			CustomOptionMenu,
 			disabled,
 			extraClasses,
 			inputProperties,
@@ -290,8 +291,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return w(ComboBox, {
 			autoBlur,
 			clearable,
-			customResultItem: customOptionItem,
-			customResultMenu: customOptionMenu,
+			CustomResultItem: CustomOptionItem,
+			CustomResultMenu: CustomOptionMenu,
 			disabled,
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),

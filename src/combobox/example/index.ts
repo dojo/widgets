@@ -197,7 +197,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults: this.onRequestResults,
-				customResultItem: CustomResultItem,
+				CustomResultItem,
 				results: this._results,
 				value: this._valueThree,
 				inputProperties: {
@@ -216,7 +216,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				onRequestResults: this.onRequestResults,
 				results: this._results,
 				value: this._valueFour,
-				customResultMenu: CustomResultMenu,
+				CustomResultMenu,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
