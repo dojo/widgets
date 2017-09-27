@@ -21,18 +21,18 @@
     "test": "grunt test"
   },
   "peerDependencies": {
-    "@dojo/core": "beta2",
-    "@dojo/has": "beta2",
-    "@dojo/i18n": "beta2",
-    "@dojo/shim": "beta2",
-    "@dojo/widget-core": "beta2"
+    "@dojo/core": "next",
+    "@dojo/has": "next",
+    "@dojo/i18n": "next",
+    "@dojo/shim": "next",
+    "@dojo/widget-core": "next"
   },
   "devDependencies": {
-    "@dojo/cli": "^2.0.0-beta2.3",
-    "@dojo/cli-build-webpack": "^2.0.0-beta2.6",
-    "@dojo/interfaces": "beta2",
-    "@dojo/loader": "beta2",
-    "@dojo/test-extras": "beta2",
+    "@dojo/cli": "next",
+    "@dojo/cli-build-webpack": "next",
+    "@dojo/interfaces": "next",
+    "@dojo/loader": "next",
+    "@dojo/test-extras": "next",
     "@types/chai": "3.4.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",

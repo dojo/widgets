@@ -18,4 +18,3 @@ package-lock.json
 /.sync
 deploy_key
 deploy_key.pub
-.DS_Store
