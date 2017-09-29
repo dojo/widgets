@@ -1,8 +1,9 @@
 /_build
 /bower_components
 /dist
+/support/showcase/dist
 /html-report
-/node_modules
+node_modules
 /typings
 .baseDir.ts
 .tscache
@@ -12,5 +13,8 @@ coverage-final.lcov
 npm-debug.log
 yarn.lock
 /_apidoc
-deploy_key
 package-lock.json
+/.grunt/
+/.sync
+deploy_key
+deploy_key.pub

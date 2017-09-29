@@ -18,7 +18,7 @@ const getEnglishTime = getDateFormatter({ time: 'short' });
 export class App extends ThemeableMixin(WidgetBase)<ThemeableProperties> {
 	private _theme: {};
 	private _options: TimeUnits[];
-	private _values: any;
+	private _values: any = {};
 	private _invalid = false;
 
 	onRequestOptions(value: string, options: TimeUnits[]) {
