@@ -31,7 +31,8 @@ registerSuite({
 			for: undefined
 		}, [
 			v('span', {
-				innerHTML: 'baz'
+				innerHTML: 'baz',
+				classes: widget.classes(css.labelText)
 			})
 		]));
 	},
@@ -49,7 +50,7 @@ registerSuite({
 			for: undefined
 		}, [
 			v('span', {
-				classes: widget.classes(baseCss.visuallyHidden),
+				classes: widget.classes(css.labelText, baseCss.visuallyHidden),
 				innerHTML: 'baz'
 			})
 		]));
@@ -70,7 +71,8 @@ registerSuite({
 			for: 'id'
 		}, [
 			v('span', {
-				innerHTML: 'baz'
+				innerHTML: 'baz',
+				classes: widget.classes(css.labelText)
 			}),
 			v('div', [ 'First' ]),
 			v('div', [ 'Second' ])
@@ -94,7 +96,8 @@ registerSuite({
 		}, [
 			v('div', [ 'child' ]),
 			v('span', {
-				innerHTML: 'baz'
+				innerHTML: 'baz',
+				classes: widget.classes(css.labelText)
 			})
 		]));
 	},
