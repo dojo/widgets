@@ -75,7 +75,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 		// add label text node to children
 		const labelText = v('span', {
 			innerHTML: labelProps.content,
-			classes: this.classes().fixed(labelProps.hidden ? baseCss.visuallyHidden : null)
+			classes: this.classes(css.labelText).fixed(labelProps.hidden ? baseCss.visuallyHidden : null)
 		});
 		if (labelProps.before) {
 			this.children.unshift(labelText);
