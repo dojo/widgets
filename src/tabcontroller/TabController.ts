@@ -89,7 +89,7 @@ export default class TabController extends TabControllerBase<TabControllerProper
 				disabled,
 				id: `${ this._id }-tabbutton-${i}`,
 				index: i,
-				key,
+				key: `${ key }-tabbutton`,
 				onClick: this.selectIndex,
 				onCloseClick: this.closeIndex,
 				onDownArrowPress: this._onDownArrowPress,
