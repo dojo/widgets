@@ -25,7 +25,7 @@ export interface ListboxOptionProperties extends ThemeableProperties {
 	id: string;
 	option: any;
 	selected?: boolean;
-	onClick?(event: MouseEvent, option: any): void;
+	onClick?(option: any): void;
 }
 
 export const ListboxOptionBase = ThemeableMixin(WidgetBase);
@@ -34,12 +34,12 @@ export const ListboxOptionBase = ThemeableMixin(WidgetBase);
 export default class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
 	private _onClick(event: MouseEvent) {
 		const { option, onClick } = this.properties;
-		onClick && onClick(event, option);
+		onClick && onClick(option);
 	}
 
 	protected renderResult(): DNode {
 		const { getOptionLabel, option } = this.properties;
-		return getOptionLabel ? getOptionLabel(option) : option;
+		return getOptionLabel ? getOptionLabel(option) : `${option}`;
 	}
 
 	protected render() {
@@ -47,7 +47,6 @@ export default class ListboxOption extends ListboxOptionBase<ListboxOptionProper
 		active = false,
 		disabled = false,
 		id,
-		option,
 		selected = false
 	} = this.properties;
 

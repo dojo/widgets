@@ -1,5 +1,22 @@
-.root { }
-.option { }
-.activeOption { }
-.disabledOption { }
-.selectedOption { }
+@import '../../common/styles/variables.css';
+
+.root {
+	border: 1px solid var(--component-color);
+	background: var(--component-background);
+	max-height: 400px;
+}
+.option {
+	cursor: pointer;
+}
+.activeOption {
+	background-color: var(--selected-background);
+	color: var(--selected-color);
+}
+.disabledOption {
+	background-color: var(--disabled-color);
+	cursor: default;
+}
+.selectedOption {
+	background-color: var(--selected-background);
+	color: var(--selected-color);
+}

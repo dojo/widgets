@@ -12,6 +12,7 @@ const modules = [
 	'combobox',
 	'dialog',
 	'label',
+	'listbox',
 	'radio',
 	'select',
 	'slidepane',

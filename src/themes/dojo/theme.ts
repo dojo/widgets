@@ -5,6 +5,7 @@ import * as checkbox from './checkbox.m.css';
 import * as comboBox from './comboBox.m.css';
 import * as dialog from './dialog.m.css';
 import * as icons from './icons.m.css';
+import * as listbox from './listbox.m.css';
 import * as radio from './radio.m.css';
 import * as select from './select.m.css';
 import * as slidePane from './slidePane.m.css';
@@ -23,6 +24,7 @@ export default {
 	'dojo-comboBox': comboBox,
 	'dojo-dialog': dialog,
 	'dojo-icons': icons,
+	'dojo-listbox': listbox,
 	'dojo-radio': radio,
 	'dojo-select': select,
 	'dojo-slidePane': slidePane,

@@ -1,0 +1,38 @@
+@import './variables.css';
+
+.root {
+	border: var(--border-width) solid var(--color-border);
+}
+
+.root:focus {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
+	outline: none;
+}
+
+.option {
+	background-color: var(--color-background);
+	border: var(--border-width) solid transparent;
+	cursor: pointer;
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
+}
+
+.option:hover {
+	background-color: var(--color-background-faded);
+}
+
+.root:focus .activeOption {
+	border: var(--border-width) solid var(--color-highlight);
+}
+
+.disabledOption {
+	background-color: var(--color-background-faded);
+	color: var(--color-text-faded);
+	cursor: default;
+}
+
+.selectedOption {
+	background-color: var(--color-background-faded);
+}
