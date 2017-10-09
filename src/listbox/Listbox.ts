@@ -39,9 +39,9 @@ export interface ListboxProperties extends ThemeableProperties {
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
-	onActiveIndexChange?(index: number, key: string): void;
-	onOptionSelect?(option: any, index: number, key: string): void;
-	onKeyDown?(event: KeyboardEvent, key: string): void;
+	onActiveIndexChange?(index: number, key: string | number): void;
+	onOptionSelect?(option: any, index: number, key: string | number): void;
+	onKeyDown?(event: KeyboardEvent, key: string | number): void;
 }
 
 export const ListboxBase = ThemeableMixin(WidgetBase);
@@ -139,7 +139,9 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			selected: getOptionSelected(option, i),
 			theme,
 			onClick: (data: any) => {
-				onOptionSelect && onOptionSelect(data, i, key);
+				if (!getOptionDisabled(option, i)) {
+					onOptionSelect && onOptionSelect(data, i, key);
+				}
 			}
 		}));
 	}

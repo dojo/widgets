@@ -54,11 +54,11 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	label?: string | LabelOptions;
-	onBlur?(value: string): void;
-	onChange?(value: string, key: string): void;
-	onFocus?(value: string): void;
-	onMenuChange?(open: boolean): void;
-	onRequestResults?(key: string): void;
+	onBlur?(value: string, key: string | number): void;
+	onChange?(value: string, key: string | number): void;
+	onFocus?(value: string, key: string | number): void;
+	onMenuChange?(open: boolean, key: string | number): void;
+	onRequestResults?(key: string | number): void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -133,24 +133,25 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onInputBlur(event: FocusEvent) {
-		const { onBlur } = this.properties;
+		const { key = '', onBlur } = this.properties;
 
 		if (this._ignoreBlur) {
 			this._ignoreBlur = false;
 			return;
 		}
 
-		onBlur && onBlur((<HTMLInputElement> event.target).value);
+		onBlur && onBlur((<HTMLInputElement> event.target).value, key);
 		this._closeMenu();
 	}
 
 	private _onInputFocus(event: FocusEvent) {
 		const {
+			key = '',
 			onFocus,
 			openOnFocus
 		} = this.properties;
 
-		onFocus && onFocus((<HTMLInputElement> event.target).value);
+		onFocus && onFocus((<HTMLInputElement> event.target).value, key);
 		openOnFocus && this._openMenu();
 	}
 
@@ -187,14 +188,14 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onMenuChange() {
-		const { onMenuChange } = this.properties;
+		const { key = '', onMenuChange } = this.properties;
 
 		if (!onMenuChange) {
 			return;
 		}
 
-		this._open && !this._wasOpen && onMenuChange(true);
-		!this._open && this._wasOpen && onMenuChange(false);
+		this._open && !this._wasOpen && onMenuChange(true, key);
+		!this._open && this._wasOpen && onMenuChange(false, key);
 	}
 
 	private _onResultHover(): void {
