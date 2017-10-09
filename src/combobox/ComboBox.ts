@@ -5,8 +5,9 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { reference } from '@dojo/widget-core/diff';
-import ResultItem from './ResultItem';
-import ResultMenu from './ResultMenu';
+// import ResultItem from './ResultItem';
+// import ResultMenu from './ResultMenu';
+import ListBox from '../listbox/Listbox';
 import { Keys } from '../common/util';
 import Label, { LabelOptions } from '../label/Label';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
@@ -25,6 +26,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property CustomResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
+ * @property id                 Optional id string for the combobox
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
  * @property isResultDisabled   Used to determine if an item should be disabled
@@ -43,19 +45,20 @@ import * as iconCss from '../common/styles/icons.m.css';
 export interface ComboBoxProperties extends ThemeableProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
-	CustomResultItem?: Constructor<ResultItem>;
-	CustomResultMenu?: Constructor<ResultMenu>;
+	// CustomResultItem?: Constructor<ResultItem>;
+	// CustomResultMenu?: Constructor<ResultMenu>;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
+	id?: string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	label?: string | LabelOptions;
 	onBlur?(value: string): void;
-	onChange?(value: string): void;
+	onChange?(value: string, key: string): void;
 	onFocus?(value: string): void;
 	onMenuChange?(open: boolean): void;
-	onRequestResults?(value: string): void;
+	onRequestResults?(key: string): void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -75,12 +78,11 @@ export const ComboBoxBase = ThemeableMixin(WidgetBase);
 @theme(iconCss)
 @diffProperty('results', reference)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
-	private _activeIndex: number | undefined;
-	private _focused: boolean;
+	private _activeIndex = 0;
+	private _callInputFocus = false;
 	private _ignoreBlur: boolean;
-	private _ignoreFocus: boolean;
-	private _inputElement: HTMLInputElement;
-	private _menuId = uuid();
+	private _idBase = uuid();
+	private _menuHasFocus = false;
 	private _open: boolean;
 	private _wasOpen: boolean;
 
@@ -89,19 +91,18 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this.invalidate();
 	}
 
+	private _getMenuId() {
+		return `${this._idBase}-menu`;
+	}
+
 	private _getResultLabel(result: any) {
 		const { getResultLabel } = this.properties;
 
 		return getResultLabel ? getResultLabel(result) : result;
 	}
 
-	private _isIndexDisabled(index: number) {
-		const {
-			isResultDisabled,
-			results = []
-		} = this.properties;
-
-		return isResultDisabled && isResultDisabled(results[index]);
+	private _getResultId(result: any, index: number) {
+		return `${this._idBase}-result${index}`;
 	}
 
 	private _onArrowClick() {
@@ -110,22 +111,24 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			readOnly
 		} = this.properties;
 
-		!disabled && !readOnly && this._openMenu();
+		if (!disabled && !readOnly) {
+			this._callInputFocus = true;
+			this._openMenu();
+		}
 	}
 
 	private _onClearClick() {
-		const { onChange } = this.properties;
+		const { key = '', onChange } = this.properties;
 
-		this._focused = true;
+		this._callInputFocus = true;
 		this.invalidate();
-		onChange && onChange('');
+		onChange && onChange('', key);
 	}
 
 	private _onInput(event: Event) {
-		const { onChange } = this.properties;
+		const { key = '', onChange } = this.properties;
 
-		this._activeIndex = undefined;
-		onChange && onChange((<HTMLInputElement> event.target).value);
+		onChange && onChange((<HTMLInputElement> event.target).value, key);
 		this._openMenu();
 	}
 
@@ -133,10 +136,10 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		const { onBlur } = this.properties;
 
 		if (this._ignoreBlur) {
+			this._ignoreBlur = false;
 			return;
 		}
 
-		this._focused = false;
 		onBlur && onBlur((<HTMLInputElement> event.target).value);
 		this._closeMenu();
 	}
@@ -147,15 +150,13 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			openOnFocus
 		} = this.properties;
 
-		this._focused = true;
 		onFocus && onFocus((<HTMLInputElement> event.target).value);
-		openOnFocus && !this._ignoreFocus && this._openMenu();
-		this._ignoreBlur = false;
-		this._ignoreFocus = false;
+		openOnFocus && this._openMenu();
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
 		const { results = [] } = this.properties;
+		this._menuHasFocus = true;
 
 		switch (event.which) {
 			case Keys.Up:
@@ -171,8 +172,16 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				break;
 			case Keys.Enter:
 				if (this._open && results.length > 0) {
-					this._activeIndex === undefined ? this._closeMenu() : this._selectIndex(this._activeIndex);
+					this._selectIndex(this._activeIndex);
 				}
+				break;
+			case Keys.Home:
+				this._activeIndex = 0;
+				this.invalidate();
+				break;
+			case Keys.End:
+				this._activeIndex = results.length - 1;
+				this.invalidate();
 				break;
 		}
 	}
@@ -188,39 +197,25 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		!this._open && this._wasOpen && onMenuChange(false);
 	}
 
+	private _onResultHover(): void {
+		this._menuHasFocus = false;
+		this.invalidate();
+	}
+
 	private _onResultMouseDown() {
 		// Maintain underlying input focus on next render
 		this._ignoreBlur = true;
 	}
 
-	private _onResultMouseEnter(event: MouseEvent, index: number) {
-		if (this._isIndexDisabled(index)) {
-			return;
-		}
-
-		this._activeIndex = index;
-		this.invalidate();
-	}
-
-	private _onResultMouseUp(event: MouseEvent, index: number) {
-		if (!this._isIndexDisabled(index)) {
-			this._ignoreFocus = true;
-			this._selectIndex(index);
-		}
-	}
-
 	private _openMenu() {
-		const { onRequestResults } = this.properties;
+		const {
+			value = '',
+			key = '',
+			onRequestResults } = this.properties;
 
-		this._activeIndex = undefined;
+		this._activeIndex = 0;
 		this._open = true;
-		this._focused = true;
-		onRequestResults && onRequestResults(this._inputElement.value);
-	}
-
-	private _restoreFocus() {
-		const func = this._focused ? 'focus' : 'blur';
-		this._inputElement[func]();
+		onRequestResults && onRequestResults(key);
 	}
 
 	private _scrollIntoView(element: HTMLElement) {
@@ -237,14 +232,14 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _selectIndex(index: number) {
 		const {
-			autoBlur,
+			key = '',
 			onChange,
 			results = []
 		} = this.properties;
 
-		this._focused = !autoBlur;
+		this._callInputFocus = true;
 		this._closeMenu();
-		onChange && onChange(this._getResultLabel(results[index]));
+		onChange && onChange(this._getResultLabel(results[index]), key);
 	}
 
 	private _moveActiveIndex(operation: Operation) {
@@ -255,9 +250,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			this.invalidate();
 			return;
 		}
-		if (results.every((result, i) => Boolean(this._isIndexDisabled(i)))) {
-			return;
-		}
 
 		function nextIndex(i?: number) {
 			const total = results.length;
@@ -266,59 +258,23 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			return (current + total) % total;
 		}
 
-		let index = nextIndex(this._activeIndex);
-
-		while (this._isIndexDisabled(index)) {
-			index = nextIndex(index);
-		}
-
-		this._activeIndex = index;
+		this._activeIndex = nextIndex(this._activeIndex);
 		this.invalidate();
 	}
 
-	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			this._inputElement = <HTMLInputElement> element.querySelector('input');
-			this._restoreFocus();
-		}
-	}
-
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			this._restoreFocus();
-			const selectedResult = element.querySelector('[data-selected="true"]');
-			selectedResult && this._scrollIntoView(<HTMLElement> selectedResult);
+		if (key === 'root' && this._callInputFocus) {
+			this._callInputFocus = false;
+			(element.querySelector('input') as HTMLElement).focus();
 		}
 	}
 
-	protected renderMenu(results: any[]): WNode | null {
-		const { theme = {}, isResultDisabled, CustomResultMenu = ResultMenu, CustomResultItem } = this.properties;
-
-		if (results.length === 0 || !this._open) {
-			return null;
-		}
-
-		return w(CustomResultMenu, {
-			getResultLabel: this._getResultLabel,
-			CustomResultItem,
-			id: this._menuId,
-			isResultDisabled,
-			onResultMouseDown: this._onResultMouseDown,
-			onResultMouseEnter: this._onResultMouseEnter,
-			onResultMouseUp: this._onResultMouseUp,
-			results,
-			selectedIndex: this._activeIndex,
-			theme
-		});
-	}
-
-	render(): DNode {
+	protected renderInput(): WNode {
 		const {
 			clearable,
 			disabled,
 			inputProperties = {},
 			invalid,
-			label,
 			readOnly,
 			required,
 			results = [],
@@ -326,58 +282,130 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			theme = {}
 		} = this.properties;
 
+		return w(TextInput, <TextInputProperties> {
+			...inputProperties,
+			key: 'textinput',
+			'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
+			'aria-owns': this._getMenuId(),
+			classes: this.classes(clearable ? css.clearable : null),
+			controls: this._getMenuId(),
+			disabled,
+			invalid,
+			onBlur: this._onInputBlur,
+			onFocus: this._onInputFocus,
+			onInput: this._onInput,
+			onKeyDown: this._onInputKeyDown,
+			readOnly,
+			required,
+			theme,
+			value
+		});
+	}
+
+	protected renderClearButton() {
+		const {
+			disabled,
+			readOnly
+		} = this.properties;
+
+		return v('button', {
+			'aria-controls': this._getMenuId(),
+			classes: this.classes(css.clear),
+			disabled,
+			readOnly,
+			onclick: this._onClearClick
+		}, [
+			'clear combo box',
+			v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+				role: 'presentation', 'aria-hidden': 'true'
+			})
+		]);
+	}
+
+	protected renderMenuButton() {
+		const {
+			disabled,
+			readOnly
+		} = this.properties;
+
+		return v('button', {
+			classes: this.classes(css.trigger),
+			disabled,
+			readOnly,
+			tabIndex: -1,
+			onclick: this._onArrowClick
+		}, [
+			'open combo box',
+			v('i', {
+				'aria-hidden': 'true',
+				classes: this.classes(iconCss.icon, iconCss.downIcon),
+				role: 'presentation'
+			})
+		]);
+	}
+
+	protected renderMenu(results: any[]): DNode | null {
+		const { theme = {}, isResultDisabled } = this.properties;
+
+		if (results.length === 0 || !this._open) {
+			return null;
+		}
+
+		return v('div', {
+			key: 'dropdown',
+			classes: this.classes(css.dropdown),
+			onmouseover: this._onResultHover,
+			onmousedown: this._onResultMouseDown
+		}, [
+			w(ListBox, {
+				activeIndex: this._activeIndex,
+				id: this._getMenuId(),
+				focused: this._menuHasFocus,
+				optionData: results,
+				tabIndex: -1,
+				getOptionDisabled: isResultDisabled,
+				getOptionId: this._getResultId,
+				getOptionLabel: this._getResultLabel,
+				onActiveIndexChange: (index: number) => {
+					this._activeIndex = index;
+					this.invalidate();
+				},
+				onOptionSelect: (option: any, index: number) => {
+					this._selectIndex(index);
+				},
+				theme
+			})
+		]);
+	}
+
+	render(): DNode {
+		const {
+			clearable,
+			id,
+			invalid,
+			label,
+			readOnly,
+			required,
+			results = [],
+			theme = {}
+		} = this.properties;
+
 		const menu = this.renderMenu(results);
-		const menuId = menu ? this._menuId : '';
 		this._onMenuChange();
 		this._wasOpen = this._open;
 
 		let controls: DNode = v('div', {
 			classes: this.classes(css.controls)
 		}, [
-			w(TextInput, <TextInputProperties> {
-				...inputProperties,
-				classes: this.classes(clearable ? css.clearable : null),
-				controls: menuId,
-				disabled,
-				invalid,
-				onBlur: this._onInputBlur,
-				onFocus: this._onInputFocus,
-				onInput: this._onInput,
-				onKeyDown: this._onInputKeyDown,
-				readOnly,
-				required,
-				theme,
-				value
-			}),
-			clearable ? v('button', {
-				'aria-controls': menuId,
-				classes: this.classes(css.clear),
-				disabled,
-				readOnly,
-				onclick: this._onClearClick
-			}, [
-				'clear combo box',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
-					role: 'presentation', 'aria-hidden': 'true'
-				})
-			]) : null,
-			v('button', {
-				'aria-controls': menuId,
-				classes: this.classes(css.trigger),
-				disabled,
-				readOnly,
-				onclick: this._onArrowClick
-			}, [
-				'open combo box',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
-					role: 'presentation', 'aria-hidden': 'true'
-				})
-			])
+			this.renderInput(),
+			clearable ? this.renderClearButton() : null,
+			this.renderMenuButton()
 		]);
 
 		if (label) {
 			controls = w(Label, {
-				label
+				label,
+				theme
 			}, [ controls ]);
 		}
 
@@ -386,6 +414,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			'aria-haspopup': 'true',
 			'aria-readonly': readOnly ? 'true' : 'false',
 			'aria-required': required ? 'true' : 'false',
+			id,
 			classes: this.classes(
 				css.root,
 				this._open ? css.open : null,

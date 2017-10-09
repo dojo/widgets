@@ -116,13 +116,13 @@ class CustomResultMenu extends ResultMenu {
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _results: any[];
-	private _valueOne: string;
-	private _valueTwo: string;
-	private _valueThree: string;
-	private _valueFour: string;
-	private _valueFive: string;
-	private _valueEight: string;
-	private _valueNine: string;
+	private _value1 = '';
+	private _value2 = '';
+	private _value3 = '';
+	private _value4 = '';
+	private _value5 = '';
+	private _value8 = '';
+	private _value9 = '';
 	private _invalid: boolean;
 
 	themeChange(event: Event) {
@@ -131,7 +131,13 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
-	onRequestResults(value: string) {
+	onChange(value: string, key: string) {
+		(this as any)[`_value${key}`] = value;
+		this.invalidate();
+	}
+
+	onRequestResults(key: string) {
+		const value = (this as any)[`_value${key}`];
 		const results = data.filter(item => {
 			const match = item.value.toLowerCase().match(new RegExp('^' + value.toLowerCase()));
 			return Boolean(match && match.length > 0);
@@ -142,6 +148,11 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render(): DNode {
+		const {
+			onChange,
+			onRequestResults
+		} = this;
+
 		return v('div', {
 			styles: { maxWidth: '256px' }
 		}, [
@@ -157,14 +168,11 @@ export class App extends WidgetBase<WidgetProperties> {
 			w(ComboBox, {
 				key: '2',
 				clearable: true,
-				onChange: (value: string) => {
-					this._valueTwo = value;
-					this.invalidate();
-				},
+				onChange,
 				getResultLabel: (result: any) => result.value,
-				onRequestResults: this.onRequestResults,
+				onRequestResults,
 				results: this._results,
-				value: this._valueTwo,
+				value: this._value2,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -174,14 +182,11 @@ export class App extends WidgetBase<WidgetProperties> {
 			w(ComboBox, {
 				key: '1',
 				openOnFocus: true,
-				onChange: (value: string) => {
-					this._valueOne = value;
-					this.invalidate();
-				},
+				onChange,
 				getResultLabel: (result: any) => result.value,
-				onRequestResults: this.onRequestResults,
+				onRequestResults,
 				results: this._results,
-				value: this._valueOne,
+				value: this._value1,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -191,15 +196,12 @@ export class App extends WidgetBase<WidgetProperties> {
 			w(ComboBox, {
 				key: '3',
 				openOnFocus: true,
-				onChange: (value: string) => {
-					this._valueThree = value;
-					this.invalidate();
-				},
+				onChange,
 				getResultLabel: (result: any) => result.value,
-				onRequestResults: this.onRequestResults,
-				CustomResultItem,
+				onRequestResults,
+				// CustomResultItem,
 				results: this._results,
-				value: this._valueThree,
+				value: this._value3,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -208,15 +210,12 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Custom menu renderer']),
 			w(ComboBox, {
 				key: '4',
-				onChange: (value: string) => {
-					this._valueFour = value;
-					this.invalidate();
-				},
+				onChange,
 				getResultLabel: (result: any) => result.value,
-				onRequestResults: this.onRequestResults,
+				onRequestResults,
 				results: this._results,
-				value: this._valueFour,
-				CustomResultMenu,
+				value: this._value4,
+				// CustomResultMenu,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
@@ -225,14 +224,11 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Disabled menu items']),
 			w(ComboBox, {
 				key: '5',
-				onChange: (value: string) => {
-					this._valueFive = value;
-					this.invalidate();
-				},
+				onChange,
 				getResultLabel: (result: any) => result.value,
-				onRequestResults: this.onRequestResults,
+				onRequestResults,
 				results: this._results,
-				value: this._valueFive,
+				value: this._value5,
 				isResultDisabled: (result: any) => result.value.length > 9,
 				inputProperties: {
 					placeholder: 'Enter a value'
@@ -260,14 +256,11 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Label']),
 			w(ComboBox, {
 				key: '8',
-				onChange: (value: string) => {
-					this._valueEight = value;
-					this.invalidate();
-				},
+				onChange,
 				getResultLabel: (result: any) => result.value,
-				onRequestResults: this.onRequestResults,
+				onRequestResults,
 				results: this._results,
-				value: this._valueEight,
+				value: this._value8,
 				label: 'Enter a value',
 				theme: this._theme
 			}),
@@ -276,14 +269,14 @@ export class App extends WidgetBase<WidgetProperties> {
 				key: '9',
 				required: true,
 				onChange: (value: string) => {
-					this._valueNine = value;
+					this._value9 = value;
 					this._invalid = value.trim().length === 0;
 					this.invalidate();
 				},
 				getResultLabel: (result: any) => result.value,
-				onRequestResults: this.onRequestResults,
+				onRequestResults,
 				results: this._results,
-				value: this._valueNine,
+				value: this._value9,
 				invalid: this._invalid,
 				inputProperties: {
 					placeholder: 'Enter a value'

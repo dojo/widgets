@@ -10,8 +10,8 @@ import * as css from './styles/listbox.m.css';
  * Properties that can be set on a ListboxOption
  *
  * @property active               Boolean whether or not the option is currently active
+ * @property disabled             Boolean whether or not the option is disabled
  * @property getOptionLabel       Function to return string label based on option data
- * @property getOptionDisabled    Function that accepts option data and returns a boolean
  * @property id                   Optional custom id for the listbox
  * @property option               Data for the option
  * @property selected             Boolean whether or not the option has been selected

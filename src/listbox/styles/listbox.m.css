@@ -8,7 +8,9 @@
 .option {
 	cursor: pointer;
 }
-.activeOption {
+
+.focused .activeOption,
+.root:focus .activeOption {
 	background-color: var(--selected-background);
 	color: var(--selected-color);
 }

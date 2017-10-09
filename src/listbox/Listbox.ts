@@ -21,7 +21,7 @@ import * as css from './styles/listbox.m.css';
  * @property optionData           Array of data for listbox options
  * @property getOptionLabel       Function to return string label based on option data
  * @property getOptionDisabled    Function that accepts option data and returns a boolean for disabled/not disabled
- * @property getOptionId          Required function that accepts option data and returns a string ID
+ * @property getOptionId          Function that accepts option data and returns a string ID
  * @property getOptionSelected    Function that accepts option data and returns a boolean for selected/unselected
  * @property onActiveIndexChange  Called with the index of the new requested active descendant
  * @property onOptionSelect       Called with the option data of the new requested selected item
@@ -31,15 +31,17 @@ export interface ListboxProperties extends ThemeableProperties {
 	activeIndex?: number;
 	CustomOption?: Constructor<ListboxOption>;
 	describedBy?: string;
+	focused?: boolean;
 	id?: string;
 	optionData?: any[];
 	tabIndex?: number;
+	getOptionDisabled?(option: any, index: number): boolean;
+	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
-	getOptionDisabled?(option: any): boolean;
-	getOptionSelected?(option: any): boolean;
-	onActiveIndexChange?(index: number): void;
-	onOptionSelect?(option: any, index: number): void;
-	onKeyDown?(event: KeyboardEvent): void;
+	getOptionSelected?(option: any, index: number): boolean;
+	onActiveIndexChange?(index: number, key: string): void;
+	onOptionSelect?(option: any, index: number, key: string): void;
+	onKeyDown?(event: KeyboardEvent, key: string): void;
 }
 
 export const ListboxBase = ThemeableMixin(WidgetBase);
@@ -50,12 +52,14 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 	private _idBase = uuid();
 
 	private _getOptionId(index: number) {
-		return `${this._idBase}-${index}`;
+		const { optionData = [], getOptionId } = this.properties;
+		return getOptionId ? getOptionId(optionData[index], index) : `${this._idBase}-${index}`;
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
 		const {
 			activeIndex = 0,
+			key = '',
 			optionData = [],
 			getOptionDisabled = () => false,
 			onActiveIndexChange,
@@ -63,51 +67,60 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			onKeyDown
 		} = this.properties;
 
-		onKeyDown && onKeyDown(event);
+		onKeyDown && onKeyDown(event, key);
 
 		const activeItem = optionData[activeIndex];
 		let newIndex: number;
 
 		switch (event.which) {
 			case Keys.Enter:
-				if (getOptionDisabled(activeItem)) {
+				if (getOptionDisabled(activeItem, activeIndex)) {
 					event.preventDefault();
 				}
 				else {
-					onOptionSelect && onOptionSelect(activeItem, activeIndex);
+					onOptionSelect && onOptionSelect(activeItem, activeIndex, key);
 				}
 				break;
 			case Keys.Space:
-				if (getOptionDisabled(activeItem)) {
+				if (getOptionDisabled(activeItem, activeIndex)) {
 					event.preventDefault();
 				}
 				else {
-					onOptionSelect && onOptionSelect(activeItem, activeIndex);
+					onOptionSelect && onOptionSelect(activeItem, activeIndex, key);
 				}
 				break;
 			case Keys.Down:
 				event.preventDefault();
 				newIndex = (activeIndex + 1) % optionData.length;
-				onActiveIndexChange && onActiveIndexChange(newIndex);
+				onActiveIndexChange && onActiveIndexChange(newIndex, key);
 				break;
 			case Keys.Up:
 				event.preventDefault();
 				newIndex = (activeIndex - 1 + optionData.length) % optionData.length;
-				onActiveIndexChange && onActiveIndexChange(newIndex);
+				onActiveIndexChange && onActiveIndexChange(newIndex, key);
 				break;
 			case Keys.Home:
-				onActiveIndexChange && onActiveIndexChange(0);
+				onActiveIndexChange && onActiveIndexChange(0, key);
 				break;
 			case Keys.End:
-				onActiveIndexChange && onActiveIndexChange(optionData.length - 1);
+				onActiveIndexChange && onActiveIndexChange(optionData.length - 1, key);
 				break;
 		}
+	}
+
+	protected getRootClasses() {
+		const { focused } = this.properties;
+		return this.classes(
+			css.root,
+			focused ? css.focused : null
+		);
 	}
 
 	protected renderOptions() {
 		const {
 			activeIndex = 0,
 			CustomOption = ListboxOption,
+			key = '',
 			optionData = [],
 			theme,
 			getOptionLabel,
@@ -118,15 +131,15 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 
 		return optionData.map((option, i) => w(CustomOption, {
 			active: activeIndex === i,
-			disabled: getOptionDisabled(option),
+			disabled: getOptionDisabled(option, i),
 			getOptionLabel,
 			id: this._getOptionId(i),
 			key: this._getOptionId(i),
 			option,
-			selected: getOptionSelected(option),
+			selected: getOptionSelected(option, i),
 			theme,
 			onClick: (data: any) => {
-				onOptionSelect && onOptionSelect(data, i);
+				onOptionSelect && onOptionSelect(data, i, key);
 			}
 		}));
 	}
@@ -141,7 +154,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 
 		return v('div', {
 			'aria-activedescendant': this._getOptionId(activeIndex),
-			classes: this.classes(css.root),
+			classes: this.getRootClasses(),
 			describedBy,
 			id,
 			role: 'listbox',

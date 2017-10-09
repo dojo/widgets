@@ -23,6 +23,7 @@
 	background-color: var(--color-background-faded);
 }
 
+.focused .activeOption,
 .root:focus .activeOption {
 	border: var(--border-width) solid var(--color-highlight);
 }
