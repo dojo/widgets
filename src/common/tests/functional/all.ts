@@ -1,3 +1,4 @@
+import '../../../accordionpane/tests/functional/AccordionPane';
 import '../../../button/tests/functional/Button';
 import '../../../calendar/tests/functional/Calendar';
 import '../../../checkbox/tests/functional/Checkbox';

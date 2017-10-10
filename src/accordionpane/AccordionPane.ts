@@ -66,9 +66,6 @@ export default class AccordionPane extends AccordionPaneBase<AccordionPaneProper
 	}
 
 	render(): DNode {
-		return v('div', {
-			classes: this.classes(css.root),
-			key: 'root'
-		}, this.renderChildren());
+		return v('div', { classes: this.classes(css.root) }, this.renderChildren());
 	}
 }

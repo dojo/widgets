@@ -23,8 +23,7 @@ registerSuite({
 
 	'default rendering'() {
 		pane.expectRender(v('div', {
-			classes: pane.classes(css.root),
-			key: 'root'
+			classes: pane.classes(css.root)
 		}, []));
 	},
 
@@ -39,8 +38,7 @@ registerSuite({
 		]);
 
 		pane.expectRender(v('div', {
-			classes: pane.classes(css.root),
-			key: 'root'
+			classes: pane.classes(css.root)
 		}, [
 			w(TitlePane, {
 				key: 'foo',
