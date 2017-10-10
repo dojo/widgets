@@ -26,7 +26,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		return v('div', {
 			styles: {
 				margin: '20px',
-				width: '300px'
+				maxWidth: '350px'
 			}
 		}, [
 			v('div', {

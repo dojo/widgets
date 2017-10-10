@@ -1,6 +1,7 @@
 import { deepAssign } from '@dojo/core/lang';
 import { DNode, WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
 import { includes } from '@dojo/shim/array';
+import { Set } from '@dojo/shim/Set';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { ThemeableMixin, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
@@ -9,6 +10,7 @@ import dojoTheme from '@dojo/widgets/themes/dojo/theme';
 import Task from '@dojo/core/async/Task';
 
 import { OptionData } from '@dojo/widgets/select/SelectOption';
+import AccordionPane from '@dojo/widgets/titlepane/TitlePane';
 import Button from '@dojo/widgets/button/Button';
 import Checkbox, { Mode } from '@dojo/widgets/checkbox/Checkbox';
 import ComboBox from '@dojo/widgets/combobox/ComboBox';
@@ -29,6 +31,7 @@ import { dataLarge, dataSmall} from './data';
 import * as css from './styles/app.m.css';
 
 interface State {
+	accordionPanes: string[];
 	activeTabIndex: number;
 	buttonPressed: boolean;
 	checkboxBasic: boolean;
@@ -57,7 +60,9 @@ export const AppBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export default class App extends AppBase<WidgetProperties> {
 	private _tabRefresh: Task<any>;
+	private _openKeys = new Set<string>();
 	private _state: State = {
+		accordionPanes: [],
 		activeTabIndex: 0,
 		buttonPressed: false,
 		checkboxBasic: false,
@@ -375,6 +380,28 @@ export default class App extends AppBase<WidgetProperties> {
 					v('div', [
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia felis tempor in. <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia felis tempor in.'
 					])
+				])
+			]),
+			v('div', { classes: this.classes(css.component) }, [
+				w(AccordionPane, {
+					theme: dojoTheme,
+					onRequestClose: (key: string) => {
+						this._openKeys.delete(key);
+						this.setState({ accordionPanes: [...Array.from(this._openKeys)] });
+					},
+					onRequestOpen: (key: string) => {
+						this._openKeys.add(key);
+						this.setState({ accordionPanes: [...Array.from(this._openKeys)] });
+					}
+				}, [
+					w(TitlePane, {
+						title: 'Pane 1',
+						key: 'foo'
+					}, [ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ante sed massa finibus, at euismod ex molestie. Donec sagittis ligula at lorem blandit imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.' ]),
+					w(TitlePane, {
+						title: 'Pane 2',
+						key: 'bar'
+					}, [ 'Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus. Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus vehicula, vehicula varius eros.' ])
 				])
 			]),
 			v('div', { classes: this.classes(css.component) }, [

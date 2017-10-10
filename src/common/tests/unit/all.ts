@@ -1,6 +1,7 @@
 import '@dojo/test-extras/support/loadJsdom';
 import './main';
 import './util';
+import '../../../accordionpane/tests/unit/AccordionPane';
 import '../../../button/tests/unit/Button';
 import '../../../calendar/tests/unit/Calendar';
 import '../../../calendar/tests/unit/CalendarCell';
