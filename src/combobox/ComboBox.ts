@@ -1,12 +1,10 @@
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
-import { Constructor, DNode, WNode } from '@dojo/widget-core/interfaces';
+import { DNode, WNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { reference } from '@dojo/widget-core/diff';
-// import ResultItem from './ResultItem';
-// import ResultMenu from './ResultMenu';
 import ListBox from '../listbox/Listbox';
 import { Keys } from '../common/util';
 import Label, { LabelOptions } from '../label/Label';
@@ -210,9 +208,9 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _openMenu() {
 		const {
-			value = '',
 			key = '',
-			onRequestResults } = this.properties;
+			onRequestResults
+		} = this.properties;
 
 		this._activeIndex = 0;
 		this._open = true;
@@ -264,9 +262,14 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root' && this._callInputFocus) {
-			this._callInputFocus = false;
-			(element.querySelector('input') as HTMLElement).focus();
+		if (key === 'root') {
+			if (this._callInputFocus) {
+				this._callInputFocus = false;
+				(element.querySelector('input') as HTMLElement).focus();
+			}
+
+			const selectedResult = element.querySelector('[data-selected="true"]') as HTMLElement;
+			selectedResult && this._scrollIntoView(selectedResult);
 		}
 	}
 

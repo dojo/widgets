@@ -1,15 +1,14 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { Constructor, DNode } from '@dojo/widget-core/interfaces';
+import { reference } from '@dojo/widget-core/diff';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
-import { auto } from '@dojo/widget-core/diff';
 import uuid from '@dojo/core/uuid';
-import { assign } from '@dojo/core/lang';
 import { find } from '@dojo/shim/array';
 import { Keys } from '../common/util';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
-import SelectOption, { OptionData } from './SelectOption';
+import Listbox from '../listbox/Listbox';
 import * as css from './styles/select.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
 
@@ -23,7 +22,6 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property disabled       Prevents the user from interacting with the form field
  * @property invalid        Indicates the value entered in the form field is invalid
  * @property label          Label settings for form label text, position, and visibility
- * @property multiple       Whether the widget supports multiple selection
  * @property name           The form widget's name
  * @property options        Array of data for the select options' value, text content, and state
  * @property readOnly       Allows or prevents user interaction
@@ -37,211 +35,208 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onKeyDown      Called on the input's keydown event
  */
 export interface SelectProperties extends ThemeableProperties {
-	CustomOption?: Constructor<SelectOption>;
 	describedBy?: string;
 	disabled?: boolean;
+	id?: string;
 	invalid?: boolean;
+	getOptionDisabled?(option: any, index: number): boolean;
+	getOptionId?(option: any, index: number): string;
+	getOptionLabel?(option: any): DNode;
+	getOptionSelected?(option: any, index: number): boolean;
+	getOptionValue?(option: any, index: number): string;
 	label?: string | LabelOptions;
-	multiple?: boolean;
 	name?: string;
-	options?: OptionData[];
+	options?: any[];
 	readOnly?: boolean;
 	required?: boolean;
 	useNativeElement?: boolean;
 	value?: string;
-	onBlur?(event: FocusEvent): void;
-	onChange?(option: OptionData): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
-	onKeyDown?(event: KeyboardEvent): void;
+	onBlur?(key: string | number): void;
+	onChange?(option: any, key: string | number): void;
+	onClick?(key: string | number): void;
+	onFocus?(key: string | number): void;
+	onKeyDown?(event: KeyboardEvent, key: string | number): void;
 }
 
 export const SelectBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
+@diffProperty('options', reference)
 export default class Select extends SelectBase<SelectProperties> {
+	private _callTriggerFocus = false;
+	private _callListboxFocus = false;
 	private _focusedIndex = 0;
 	private _ignoreBlur = false;
 	private _open = false;
-	private _selectId = uuid();
-	private _options: OptionData[] = [];
+	private _baseId = uuid();
 
-	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
-	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
-	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
+	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
+	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(this.properties.key || ''); }
+	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(this.properties.key || ''); }
+	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event, this.properties.key || ''); }
 
 	// native select events
 	private _onNativeChange (event: Event) {
 		const {
+			key = '',
+			options = [],
 			onChange
 		} = this.properties;
 		const value = (<HTMLInputElement> event.target).value;
-		const option = find(this._options, (option: OptionData) => option.value === value)!;
-		onChange && onChange(option);
+		const option = find(options, (option: any) => option.value === value)!;
+		onChange && onChange(option, key);
 	}
 
 	// custom select events
 	private _openSelect() {
+		this._callListboxFocus = true;
+		this._ignoreBlur = true;
 		this._open = true;
-		this._ignoreBlur = false;
 		this._focusedIndex = this._focusedIndex || 0;
 		this.invalidate();
 	}
 
 	private _closeSelect() {
+		this._callTriggerFocus = true;
+		this._ignoreBlur = true;
 		this._open = false;
 		this.invalidate();
 	}
 
+	private _onDropdownKeyDown(event: KeyboardEvent) {
+		const {
+			key = ''
+		} = this.properties;
+		this.properties.onKeyDown && this.properties.onKeyDown(event, key);
+
+		if (event.which === Keys.Escape) {
+			this._closeSelect();
+		}
+	}
+
+	private _onDropdownMouseDown(event: MouseEvent) {
+		this._ignoreBlur = true;
+	}
+
 	private _onTriggerClick(event: MouseEvent) {
-		this.properties.onClick && this.properties.onClick(event);
+		console.log('trigger click event');
+		const { key = '', onClick } = this.properties;
+		onClick && onClick(key);
 
 		this._open ? this._closeSelect() : this._openSelect();
 	}
 
 	private _onTriggerBlur(event: FocusEvent) {
-		if (!this._ignoreBlur) {
-			this.properties.onBlur && this.properties.onBlur(event);
-			this._closeSelect();
+		if (this._ignoreBlur) {
+			this._ignoreBlur = false;
+			return;
 		}
+
+		const { key = '', onBlur } = this.properties;
+		onBlur && onBlur(key);
+		this._closeSelect();
 	}
 
-	private _onOptionMouseDown() {
-		this._ignoreBlur = true;
-	}
-
-	private _onOptionClick(event: MouseEvent, index: number) {
+	private _onTriggerKeyDown(event: KeyboardEvent) {
 		const {
-			onChange,
-			onClick
+			key = '',
+			onKeyDown
 		} = this.properties;
 
-		onClick && onClick(event);
+		onKeyDown && onKeyDown(event, key);
 
-		const option = this._options[index];
-
-		// if the option exists and isn't disabled, focus it and fire onChange
-		if (option && !option.disabled) {
-			this._focusedIndex = index;
-			onChange && onChange(option);
-			this._closeSelect();
-		}
-		else {
-			// prevent the menu from closing when clicking on disabled options
-			event.preventDefault();
+		if (event.which === Keys.Down) {
+			this._openSelect();
 		}
 	}
 
 	private _onListboxKeyDown(event: KeyboardEvent) {
-		this.properties.onKeyDown && this.properties.onKeyDown(event);
-
 		const {
-			multiple,
-			onChange
+			key = '',
+			onKeyDown
 		} = this.properties;
 		const { _focusedIndex } = this;
 
-		switch (event.which) {
-			case Keys.Enter:
-				if (this._options[_focusedIndex].disabled) {
-					event.preventDefault();
-				}
-				else {
-					onChange && onChange(this._options[_focusedIndex]);
-				}
-				break;
-			case Keys.Space:
-				if (this._options[_focusedIndex].disabled) {
-					event.preventDefault();
-				}
-				else {
-					onChange && onChange(this._options[_focusedIndex]);
-				}
-				break;
-			case Keys.Escape:
-				this._closeSelect();
-				break;
-			case Keys.Down:
-				event.preventDefault();
-				if (this._open || multiple) {
-					this._focusedIndex = (_focusedIndex + 1) % this._options.length;
-				} else {
-					this._openSelect();
-				}
-				this.invalidate();
-				break;
-			case Keys.Up:
-				event.preventDefault();
-				this._focusedIndex = (_focusedIndex - 1 + this._options.length) % this._options.length;
-				this.invalidate();
-				break;
-			case Keys.Home:
-				this._focusedIndex = 0;
-				this.invalidate();
-				break;
-			case Keys.End:
-				this._focusedIndex = this._options.length - 1;
-				this.invalidate();
-				break;
+		onKeyDown && onKeyDown(event, key);
+
+		if (event.which === Keys.Escape) {
+			this._closeSelect();
 		}
 	}
 
-	private _renderCustomOptions(): DNode[] {
-		const {
-			CustomOption = SelectOption,
-			multiple,
-			value,
-			theme
-		} = this.properties;
+	private _onListboxBlur(event: FocusEvent) {
+		if (this._ignoreBlur) {
+			this._ignoreBlur = false;
+			return;
+		}
 
-		const optionNodes = this._options.map((option, i) => w(CustomOption, {
-			focused: this._focusedIndex === i,
-			index: i,
-			key: i + '',
-			optionData: assign({}, option, {
-				id: option.id,
-				selected: multiple ? option.selected : value === option.value
-			}),
-			onMouseDown: this._onOptionMouseDown,
-			onClick: this._onOptionClick,
-			theme
-		}));
-
-		return optionNodes;
+		const { key = '', onBlur } = this.properties;
+		onBlur && onBlur(key);
+		this._closeSelect();
 	}
 
-	@diffProperty('options', auto)
-	protected onOptionsChange(previousProperties: { options: OptionData[] }, newProperties: { options: OptionData[] }) {
+	protected getModifierClasses() {
 		const {
-			options = []
-		} = newProperties;
+			disabled,
+			invalid,
+			readOnly,
+			required
+		} = this.properties;
 
-		this._options = options.map((option) => {
-			return { id: uuid(), ...option };
-		});
+		return [
+			disabled ? css.disabled : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
+		];
+	}
+
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (key === 'root' && this._callListboxFocus) {
+			this._callListboxFocus = false;
+			(element.querySelector('[role="listbox"]') as HTMLElement).focus();
+		}
+
+		if (key === 'trigger' && this._callTriggerFocus) {
+			this._callTriggerFocus = false;
+			element.focus();
+		}
+	}
+
+	protected renderExpandIcon() {
+		return v('span', { classes: this.classes(css.arrow) }, [
+			v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
+				role: 'presentation', 'aria-hidden': 'true'
+			})
+		]);
 	}
 
 	protected renderNativeSelect(): DNode {
 		const {
 			describedBy,
 			disabled,
+			getOptionDisabled,
+			getOptionId,
+			getOptionLabel,
+			getOptionSelected,
+			getOptionValue,
 			invalid,
-			multiple,
 			name,
+			options = [],
 			readOnly,
 			required,
 			value
 		} = this.properties;
 
 		/* create option nodes */
-		const optionNodes = this._options.map(option => v('option', {
-			value: option.value,
-			innerHTML: option.label,
-			disabled: option.disabled,
-			selected: option.selected && multiple ? option.selected : null
-		}));
+		const optionNodes = options.map((option, i) => v('option', {
+			value: getOptionValue ? getOptionValue(option, i) : '',
+			id: getOptionId ? getOptionId(option, i) : undefined,
+			disabled: getOptionDisabled ? getOptionDisabled(option, i) : false,
+			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
+		}, [ getOptionLabel ? getOptionLabel(option) : '' ]));
 
 		return v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('select', {
@@ -249,7 +244,6 @@ export default class Select extends SelectBase<SelectProperties> {
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
-				multiple: multiple ? true : null,
 				name,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
@@ -261,139 +255,127 @@ export default class Select extends SelectBase<SelectProperties> {
 				onfocus: this._onFocus,
 				onkeydown: this._onKeyDown
 			}, optionNodes),
-			multiple ? null : v('span', { classes: this.classes(css.arrow) }, [
-				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
-					role: 'presentation', 'aria-hidden': 'true'
-				})
-			])
-		]);
-	}
-
-	protected renderCustomMultiSelect(): DNode {
-		const {
-			_focusedIndex
-		} = this;
-		const {
-			describedBy,
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
-
-		return v('div', { classes: this.classes(css.inputWrapper) }, [
-			v('div', {
-				role: 'listbox',
-				classes: this.classes(css.input),
-				disabled,
-				'aria-describedby': describedBy,
-				'aria-invalid': invalid ? 'true' : null,
-				'aria-multiselectable': 'true',
-				'aria-activedescendant': this._options.length > 0 ? this._options[_focusedIndex].id : null,
-				'aria-readonly': readOnly ? 'true' : null,
-				'aria-required': required ? 'true' : null,
-				tabIndex: 0,
-				onblur: this._onBlur,
-				onfocus: this._onFocus,
-				onkeydown: this._onListboxKeyDown
-			}, this._renderCustomOptions())
+			this.renderExpandIcon()
 		]);
 	}
 
 	protected renderCustomSelect(): DNode {
 		const {
 			describedBy,
-			disabled,
-			invalid,
-			readOnly,
-			required,
-			value
+			getOptionDisabled,
+			getOptionId,
+			getOptionLabel,
+			getOptionSelected,
+			key = '',
+			options = [],
+			theme,
+			onChange
 		} = this.properties;
 
 		const {
 			_open,
 			_focusedIndex,
-			_selectId
+			_baseId
 		} = this;
-
-		const selectedOption = find(this._options, (option: OptionData) => option.value === value) || this._options[0];
 
 		// create dropdown trigger and select box
 		return v('div', {
+			key: 'root',
 			classes: this.classes(css.inputWrapper, _open ? css.open : null)
 		}, [
+			...this.renderCustomTrigger(),
+			v('div', {
+				classes: this.classes(css.dropdown),
+				onkeydown: this._onDropdownKeyDown,
+				onmousedown: this._onDropdownMouseDown
+			}, [
+				w(Listbox, {
+					activeIndex: _focusedIndex,
+					describedBy,
+					id: _baseId,
+					optionData: options,
+					tabIndex: _open ? 0 : -1,
+					getOptionDisabled,
+					getOptionId,
+					getOptionLabel,
+					getOptionSelected,
+					theme,
+					onActiveIndexChange: (index: number) => {
+						this._focusedIndex = index;
+						this.invalidate();
+					},
+					onBlur: this._onListboxBlur,
+					onKeyDown: this._onListboxKeyDown,
+					onOptionSelect: (option: any) => {
+						onChange && onChange(option, key);
+						this._closeSelect();
+					}
+				})
+			])
+		]);
+	}
+
+	protected renderCustomTrigger(): DNode[] {
+		const {
+			describedBy,
+			disabled,
+			getOptionLabel,
+			getOptionSelected,
+			invalid,
+			options = [],
+			readOnly,
+			required,
+			value
+		} = this.properties;
+
+		const selectedOption = find(options, (option: any, index: number) => {
+			return getOptionSelected ? getOptionSelected(option, index) : false;
+		}) || options[0];
+
+		return [
 			v('button', {
-				classes: this.classes(css.trigger),
-				disabled,
-				'aria-controls': _selectId,
-				'aria-owns': _selectId,
-				'aria-expanded': _open + '',
+				'aria-controls': this._baseId,
+				'aria-expanded': `${this._open}`,
 				'aria-haspopup': 'listbox',
-				'aria-activedescendant': this._options.length > 0 ? this._options[_focusedIndex].id : null,
+				'aria-invalid': invalid ? 'true' : null,
+				'aria-readonly': readOnly ? 'true' : null,
+				'aria-required': required ? 'true' : null,
+				classes: this.classes(css.trigger),
+				describedBy,
+				disabled,
+				key: 'trigger',
 				value,
 				onblur: this._onTriggerBlur,
 				onclick: this._onTriggerClick,
 				onfocus: this._onFocus,
-				onkeydown: this._onListboxKeyDown
-			}, [ selectedOption ? selectedOption.label : '' ]),
-			v('span', { classes: this.classes(css.arrow) }, [
-				v('i', {
-					classes: this.classes(iconCss.icon, iconCss.downIcon),
-					role: 'presentation', 'aria-hidden': 'true'
-				})
-			]),
-			v('div', {
-				role: 'listbox',
-				id: _selectId,
-				classes: this.classes(css.dropdown),
-				'aria-describedby': describedBy,
-				'aria-invalid': invalid ? 'true' : null,
-				'aria-readonly': readOnly ? 'true' : null,
-				'aria-required': required ? 'true' : null
-			}, this._renderCustomOptions())
-		]);
+				onkeydown: this._onTriggerKeyDown
+			}, [ getOptionLabel ? getOptionLabel(selectedOption) : '' ]),
+			this.renderExpandIcon()
+		];
 	}
 
 	protected render(): DNode {
 		const {
-			disabled,
-			invalid,
 			label,
-			multiple,
-			readOnly,
-			required,
 			useNativeElement = false,
 			theme
 		} = this.properties;
 
-		const stateClasses = [
-			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
-			invalid === false ? css.valid : null,
-			multiple ? css.multiselect : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
-
-		let rootWidget, select;
-
-		if (useNativeElement) {
-			select = this.renderNativeSelect();
-		}
-		else {
-			select = multiple ? this.renderCustomMultiSelect() : this.renderCustomSelect();
-		}
+		let rootWidget;
+		const select = useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect();
+		const modifierClasses = this.getModifierClasses();
 
 		if (label) {
 			rootWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses)()) },
+				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...modifierClasses)()) },
+				forId: this._baseId,
 				label,
 				theme
 			}, [ select ]);
 		}
 		else {
 			rootWidget = v('div', {
-				classes: this.classes(css.root, ...stateClasses)
+				classes: this.classes(css.root, ...modifierClasses)
 			}, [ select ]);
 		}
 

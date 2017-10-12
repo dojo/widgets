@@ -33,6 +33,7 @@ export interface ListboxProperties extends ThemeableProperties {
 	describedBy?: string;
 	focused?: boolean;
 	id?: string;
+	multiselect?: boolean;
 	optionData?: any[];
 	tabIndex?: number;
 	getOptionDisabled?(option: any, index: number): boolean;
@@ -41,6 +42,7 @@ export interface ListboxProperties extends ThemeableProperties {
 	getOptionSelected?(option: any, index: number): boolean;
 	onActiveIndexChange?(index: number, key: string | number): void;
 	onOptionSelect?(option: any, index: number, key: string | number): void;
+	onBlur?(event: FocusEvent, key: string | number): void;
 	onKeyDown?(event: KeyboardEvent, key: string | number): void;
 }
 
@@ -54,6 +56,11 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 	private _getOptionId(index: number) {
 		const { optionData = [], getOptionId } = this.properties;
 		return getOptionId ? getOptionId(optionData[index], index) : `${this._idBase}-${index}`;
+	}
+
+	private _onBlur(event: FocusEvent) {
+		const { key = '', onBlur } = this.properties;
+		onBlur && onBlur(event, key);
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
@@ -126,6 +133,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			getOptionLabel,
 			getOptionDisabled = () => false,
 			getOptionSelected = () => false,
+			onActiveIndexChange,
 			onOptionSelect
 		} = this.properties;
 
@@ -140,6 +148,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			theme,
 			onClick: (data: any) => {
 				if (!getOptionDisabled(option, i)) {
+					onActiveIndexChange && onActiveIndexChange(i, key);
 					onOptionSelect && onOptionSelect(data, i, key);
 				}
 			}
@@ -151,16 +160,19 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			activeIndex = 0,
 			describedBy,
 			id,
+			multiselect = false,
 			tabIndex = 0
 		} = this.properties;
 
 		return v('div', {
 			'aria-activedescendant': this._getOptionId(activeIndex),
+			'aria-multiselectable': multiselect ? 'true' : null,
 			classes: this.getRootClasses(),
 			describedBy,
 			id,
 			role: 'listbox',
 			tabIndex,
+			onblur: this._onBlur,
 			onkeydown: this._onKeyDown
 		}, this.renderOptions());
 	}

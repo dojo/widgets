@@ -59,7 +59,7 @@ export default class ListboxOption extends ListboxOptionBase<ListboxOptionProper
 
 	return v('div', {
 		'aria-disabled': disabled ? 'true' : null,
-		'aria-selected': String(selected),
+		'aria-selected': disabled ? null : String(selected),
 		classes: this.classes(...optionClasses),
 		id,
 		role: 'option',
