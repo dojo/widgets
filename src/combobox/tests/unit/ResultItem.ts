@@ -1,5 +1,6 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import { VNode } from '@dojo/interfaces/vdom';
 import ResultItem from '../../ResultItem';
 import * as css from '../../styles/comboBox.m.css';
@@ -18,8 +19,7 @@ function props(props = {}) {
 	}, props);
 }
 
-registerSuite({
-	name: 'ResultItem',
+registerSuite('ResultItem', {
 
 	'label should render properly'() {
 		const resultItem = new ResultItem();

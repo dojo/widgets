@@ -1,6 +1,7 @@
-import * as registerSuite from 'intern!object';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import has, { add } from '@dojo/has/has';
-import * as assert from 'intern/chai!assert';
 import * as widgets from '../../../main';
 
 add('touch', () => {
@@ -8,8 +9,7 @@ add('touch', () => {
 	return Boolean('ontouchstart' in window || has('host-node'));
 });
 
-registerSuite({
-	name: 'main',
+registerSuite('main', {
 
 	api() {
 		assert.isDefined(widgets.Button);

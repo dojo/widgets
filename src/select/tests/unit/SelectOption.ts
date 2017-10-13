@@ -1,5 +1,6 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -24,8 +25,7 @@ const expected = function(widget: any) {
 	}, [ 'bar' ]);
 };
 
-registerSuite({
-	name: 'SelectOption',
+registerSuite('SelectOption', {
 
 	beforeEach() {
 		widget = harness(SelectOption);
@@ -39,53 +39,55 @@ registerSuite({
 		widget.destroy();
 	},
 
-	'Render correct properties'() {
-		widget.setProperties({
-			index: 0,
-			optionData: testData
-		});
+	tests: {
+		'Render correct properties'() {
+			widget.setProperties({
+				index: 0,
+				optionData: testData
+			});
 
-		widget.expectRender(expected(widget));
-	},
+			widget.expectRender(expected(widget));
+		},
 
-	'custom properties'() {
-		testData.selected = true;
-		testData.disabled = true;
-		testData.id = 'foo';
+		'custom properties'() {
+			testData.selected = true;
+			testData.disabled = true;
+			testData.id = 'foo';
 
-		widget.setProperties({
-			focused: true,
-			index: 0,
-			optionData: testData
-		});
+			widget.setProperties({
+				focused: true,
+				index: 0,
+				optionData: testData
+			});
 
-		const expectedVdom = expected(widget);
-		assignProperties(expectedVdom, {
-			'aria-disabled': 'true',
-			'aria-selected': 'true',
-			id: 'foo',
-			classes: widget.classes(css.option, css.focused, css.selected, css.disabledOption)
-		});
+			const expectedVdom = expected(widget);
+			assignProperties(expectedVdom, {
+				'aria-disabled': 'true',
+				'aria-selected': 'true',
+				id: 'foo',
+				classes: widget.classes(css.option, css.focused, css.selected, css.disabledOption)
+			});
 
-		widget.expectRender(expectedVdom);
-	},
+			widget.expectRender(expectedVdom);
+		},
 
-	'click events'() {
-		const onClick = sinon.stub();
-		const onMouseDown = sinon.stub();
+		'click events'() {
+			const onClick = sinon.stub();
+			const onMouseDown = sinon.stub();
 
-		widget.setProperties({
-			index: 0,
-			optionData: testData,
-			onClick,
-			onMouseDown
-		});
+			widget.setProperties({
+				index: 0,
+				optionData: testData,
+				onClick,
+				onMouseDown
+			});
 
-		widget.sendEvent('click');
-		assert.isTrue(onClick.called, 'click handler called');
-		assert.strictEqual(onClick.getCall(0).args[1], 0, 'click hander called with correct index');
+			widget.sendEvent('click');
+			assert.isTrue(onClick.called, 'click handler called');
+			assert.strictEqual(onClick.getCall(0).args[1], 0, 'click hander called with correct index');
 
-		widget.sendEvent('mousedown');
-		assert.isTrue(onMouseDown.called, 'mousedown handler called');
+			widget.sendEvent('mousedown');
+			assert.isTrue(onMouseDown.called, 'mousedown handler called');
+		}
 	}
 });

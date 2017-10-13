@@ -17,6 +17,12 @@
 		"noImplicitAny": true,
 		"noImplicitThis": true,
 		"outDir": "_build/",
+		"plugins": [
+			{
+				"name": "tslint-language-service",
+				"alwaysShowRuleFailuresAsWarnings": true
+			}
+		],
 		"removeComments": false,
 		"sourceMap": true,
 		"strictNullChecks": true,

@@ -1,6 +1,8 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
-import * as keys from 'leadfoot/keys';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
+import { Remote } from 'intern/lib/executors/Node';
+import keys from '@theintern/leadfoot/keys';
 import * as css from '../../styles/calendar.m.css';
 
 const DELAY = 500;
@@ -8,7 +10,7 @@ const DELAY = 500;
 const today = new Date();
 const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
 
-function openMonthPicker(remote: any) {
+function openMonthPicker(remote: Remote) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
 		.setFindTimeout(5000)
@@ -18,7 +20,7 @@ function openMonthPicker(remote: any) {
 			.end();
 }
 
-function openYearPicker(remote: any) {
+function openYearPicker(remote: Remote) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
 		.setFindTimeout(5000)
@@ -28,7 +30,7 @@ function openYearPicker(remote: any) {
 			.end();
 }
 
-function clickDate(remote: any) {
+function clickDate(remote: Remote) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=calendar')
 		.setFindTimeout(5000)
@@ -38,11 +40,9 @@ function clickDate(remote: any) {
 			.end();
 }
 
-registerSuite({
-	name: 'Calendar',
-
+registerSuite('Calendar', {
 	'Open month picker'() {
-		return openMonthPicker((<any> this).remote)
+		return openMonthPicker(this.remote)
 			.findByCssSelector(`.${css.monthGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
@@ -57,7 +57,7 @@ registerSuite({
 	},
 
 	'Close month picker'() {
-		return openMonthPicker((<any> this).remote)
+		return openMonthPicker(this.remote)
 			.findByCssSelector(`.${css.monthTrigger}`)
 				.click()
 				.sleep(DELAY)
@@ -76,7 +76,7 @@ registerSuite({
 	},
 
 	'Open year picker'() {
-		return openYearPicker((<any> this).remote)
+		return openYearPicker(this.remote)
 			.findByCssSelector(`.${css.yearGrid}`)
 				.getAttribute('aria-hidden')
 				.then((hidden: string) => {
@@ -90,8 +90,8 @@ registerSuite({
 				});
 	},
 
-	'Clicking month radio selects month and closes popup'(this: any) {
-		const { browserName } = this.remote.environmentType;
+	'Clicking month radio selects month and closes popup'() {
+		const { browserName = '' } = this.remote.session.capabilities;
 		if (browserName.toLowerCase() === 'microsoftedge') {
 			this.skip('Edge driver does not handle mouseup on click.');
 		}
@@ -103,7 +103,7 @@ registerSuite({
 				.end()
 			.findByCssSelector(`.${css.monthTrigger}`)
 				.getVisibleText()
-				.then((label: string) => {
+				.then(label => {
 					assert.include(label, 'January', 'Clicking first month radio changes label text to January');
 				})
 				.end()
@@ -116,10 +116,10 @@ registerSuite({
 
 	'Correct dates are disabled'() {
 		const disabledDateSelector = firstDay === 0 ? 'tbody tr:last-child td:last-child' : `tbody tr:first-child td:nth-child(${firstDay})`;
-		return clickDate((<any> this).remote)
+		return clickDate(this.remote)
 			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					assert.strictEqual(text, '1', 'Month starts on correct day');
 				})
 				.end()
@@ -130,8 +130,8 @@ registerSuite({
 				});
 	},
 
-	'Arrow keys move date focus'(this: any) {
-		const { supportsKeysCommand, browserName } = this.remote.environmentType;
+	'Arrow keys move date focus'() {
+		const { supportsKeysCommand, browserName = '' } = this.remote.session.capabilities;
 		if (!supportsKeysCommand || browserName.toLowerCase() === 'safari') {
 			this.skip('Arrow keys must be supported');
 		}
@@ -139,14 +139,14 @@ registerSuite({
 			this.skip('Edge driver does not handle focus on click');
 		}
 
-		return clickDate((<any> this).remote)
+		return clickDate(this.remote)
 			.findByCssSelector(`tbody tr:first-child td:nth-child(${firstDay + 1})`)
 				.pressKeys(keys.ARROW_RIGHT)
 				.end()
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					assert.strictEqual(text, '2', 'Right arrow moves active element to second day');
 				})
 				.end()
@@ -156,7 +156,7 @@ registerSuite({
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					assert.strictEqual(text, '9', 'Down arrow moves active element to next week');
 				})
 				.end()
@@ -166,7 +166,7 @@ registerSuite({
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					assert.strictEqual(text, '8', 'Left arrow moves active element to previous day');
 				})
 				.end()
@@ -176,7 +176,7 @@ registerSuite({
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					assert.strictEqual(text, '1', 'Up arrow moves active element to previous week');
 				})
 				.end()
@@ -186,7 +186,7 @@ registerSuite({
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					const today = new Date();
 					const monthLengh = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 					assert.strictEqual(text, `${monthLengh}`, 'Page down moves to last day');
@@ -198,7 +198,7 @@ registerSuite({
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					assert.strictEqual(text, '1', 'Page up moves to first day');
 				})
 				.end();
@@ -206,10 +206,10 @@ registerSuite({
 
 	'Clicking disabled date moves focus'() {
 		let clickedDate = '';
-		return clickDate((<any> this).remote)
+		return clickDate(this.remote)
 			.findByCssSelector(`.${css.inactiveDate}`)
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					clickedDate = text;
 				})
 				.click()
@@ -217,7 +217,7 @@ registerSuite({
 			.sleep(DELAY)
 			.getActiveElement()
 				.getVisibleText()
-				.then((text: string) => {
+				.then(text => {
 					assert.strictEqual(text, clickedDate, 'Clicked date has focus');
 				})
 				.getAttribute('class')

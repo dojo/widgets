@@ -170,3 +170,7 @@ export const publish = {
 		}
 	}
 };
+
+export const intern = {
+	version: 4
+};

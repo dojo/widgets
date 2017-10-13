@@ -1,7 +1,9 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
 
-function getPage(remote: any) {
+import { Remote } from 'intern/lib/executors/Node';
+
+function getPage(remote: Remote) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=titlepane')
 		.setFindTimeout(5000);
@@ -9,35 +11,34 @@ function getPage(remote: any) {
 
 const DELAY = 400;
 
-registerSuite({
-	name: 'TitlePane',
+registerSuite('TitlePane', {
 
-	'Should be fully visible when `open`'(this: any) {
+	'Should be fully visible when `open`'() {
 		return getPage(this.remote)
 			.findByCssSelector('#titlePane2 > div > :last-child')
 				.getComputedStyle('margin-top')
-				.then((marginTop: string) => {
+				.then(marginTop => {
 					assert.strictEqual(marginTop, '0px');
 				});
 	},
 
-	'Should be hidden when not `open`'(this: any) {
+	'Should be hidden when not `open`'() {
 		let height: number;
 
 		return getPage(this.remote)
 			.findByCssSelector('#titlePane2 > div > :last-child')
 				.getSize()
-					.then((size: { height: number }) => {
-						height = size.height;
-					})
-				.end()
+				.then(size => {
+					height = size.height;
+				})
+			.end()
 			.findByCssSelector('#titlePane2 > div > :first-child')
 				.click()
-				.end()
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector('#titlePane2 > div > :last-child')
 				.getComputedStyle('margin-top')
-				.then((marginTop: string) => {
+				.then(marginTop => {
 					assert.closeTo(parseInt(marginTop, 10), -height, 2);
 				});
 	}

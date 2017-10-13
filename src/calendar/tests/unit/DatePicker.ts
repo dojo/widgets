@@ -1,5 +1,6 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { compareProperty, findKey, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
@@ -190,9 +191,7 @@ interface TestEventInit extends EventInit {
 	which: number;
 }
 
-registerSuite({
-	name: 'Calendar DatePicker',
-
+registerSuite('Calendar DatePicker', {
 	beforeEach() {
 		widget = harness(DatePicker);
 	},
@@ -202,286 +201,288 @@ registerSuite({
 		widget.destroy();
 	},
 
-	'Popup should render with default properties'() {
-		widget.setProperties({
-			...requiredProps
-		});
+	tests: {
+		'Popup should render with default properties'() {
+			widget.setProperties({
+				...requiredProps
+			});
 
-		widget.expectRender(expected(widget));
-	},
+			widget.expectRender(expected(widget));
+		},
 
-	'Popup should render with custom properties'() {
-		customProps = {
-			labelId: 'foo',
-			yearRange: 25
-		};
-		widget.setProperties({
-			renderMonthLabel: () => { return 'bar'; },
-			...customProps,
-			...requiredProps
-		});
+		'Popup should render with custom properties'() {
+			customProps = {
+				labelId: 'foo',
+				yearRange: 25
+			};
+			widget.setProperties({
+				renderMonthLabel: () => { return 'bar'; },
+				...customProps,
+				...requiredProps
+			});
 
-		let expectedVdom = expected(widget, false, false, 2000, 2025);
-		replaceChild(expectedVdom, '0,0,0', 'bar');
+			let expectedVdom = expected(widget, false, false, 2000, 2025);
+			replaceChild(expectedVdom, '0,0,0', 'bar');
 
-		widget.expectRender(expectedVdom);
-	},
+			widget.expectRender(expectedVdom);
+		},
 
-	'Year below 2000 calculates correctly'() {
-		// classes are easier to replace if we do this twice
-		widget.setProperties({
-			...requiredProps
-		});
-		let expectedVdom = expected(widget);
-		widget.expectRender(expectedVdom);
+		'Year below 2000 calculates correctly'() {
+			// classes are easier to replace if we do this twice
+			widget.setProperties({
+				...requiredProps
+			});
+			let expectedVdom = expected(widget);
+			widget.expectRender(expectedVdom);
 
-		widget.setProperties({
-			...requiredProps,
-			year: 1997
-		});
-		expectedVdom = expected(widget, false, false, 1980, 2000);
-		const yearGridVdom = findKey(expectedVdom, 'year-grid');
-		replaceChild(expectedVdom, '0,0,0', 'June 1997');
-		replaceChild(expectedVdom, '0,2,0', '1997');
-		assignChildProperties(yearGridVdom!, '0,18', { classes: widget.classes(css.yearRadio, css.yearRadioChecked) });
-		assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
-		widget.expectRender(expectedVdom);
-	},
+			widget.setProperties({
+				...requiredProps,
+				year: 1997
+			});
+			expectedVdom = expected(widget, false, false, 1980, 2000);
+			const yearGridVdom = findKey(expectedVdom, 'year-grid');
+			replaceChild(expectedVdom, '0,0,0', 'June 1997');
+			replaceChild(expectedVdom, '0,2,0', '1997');
+			assignChildProperties(yearGridVdom!, '0,18', { classes: widget.classes(css.yearRadio, css.yearRadioChecked) });
+			assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
+			widget.expectRender(expectedVdom);
+		},
 
-	'Month popup opens and closes on button click'() {
-		let isOpen;
-		widget.setProperties({
-			onPopupChange: open => { isOpen = open; },
-			...requiredProps
-		});
+		'Month popup opens and closes on button click'() {
+			let isOpen;
+			widget.setProperties({
+				onPopupChange: open => { isOpen = open; },
+				...requiredProps
+			});
 
-		widget.sendEvent('click', {
-			key: 'month-button'
-		});
-		assert.isTrue(isOpen, 'First click should open popup');
+			widget.sendEvent('click', {
+				key: 'month-button'
+			});
+			assert.isTrue(isOpen, 'First click should open popup');
 
-		widget.sendEvent('click', {
-			key: 'month-button'
-		});
-		assert.isFalse(isOpen, 'Second click should close popup');
-	},
+			widget.sendEvent('click', {
+				key: 'month-button'
+			});
+			assert.isFalse(isOpen, 'Second click should close popup');
+		},
 
-	'Year popup opens and closes on button click'() {
-		let isOpen;
-		widget.setProperties({
-			onPopupChange: open => { isOpen = open; },
-			...requiredProps
-		});
+		'Year popup opens and closes on button click'() {
+			let isOpen;
+			widget.setProperties({
+				onPopupChange: open => { isOpen = open; },
+				...requiredProps
+			});
 
-		widget.sendEvent('click', {
-			key: 'year-button'
-		});
-		assert.isTrue(isOpen, 'First click should open popup');
+			widget.sendEvent('click', {
+				key: 'year-button'
+			});
+			assert.isTrue(isOpen, 'First click should open popup');
 
-		widget.sendEvent('click', {
-			key: 'year-button'
-		});
-		assert.isFalse(isOpen, 'Second click should close popup');
-	},
+			widget.sendEvent('click', {
+				key: 'year-button'
+			});
+			assert.isFalse(isOpen, 'Second click should close popup');
+		},
 
-	'Popup switches between month and year'() {
-		let isOpen;
-		let expectedVdom = expected(widget, false, false);
-		widget.setProperties({
-			onPopupChange: open => { isOpen = open; },
-			...requiredProps
-		});
-		widget.expectRender(expectedVdom);
+		'Popup switches between month and year'() {
+			let isOpen;
+			let expectedVdom = expected(widget, false, false);
+			widget.setProperties({
+				onPopupChange: open => { isOpen = open; },
+				...requiredProps
+			});
+			widget.expectRender(expectedVdom);
 
-		widget.sendEvent('click', {
-			key: 'month-button'
-		});
-		expectedVdom = expected(widget, true, false);
-		assert.isTrue(isOpen, 'Month button opens popup');
-		widget.expectRender(expectedVdom);
+			widget.sendEvent('click', {
+				key: 'month-button'
+			});
+			expectedVdom = expected(widget, true, false);
+			assert.isTrue(isOpen, 'Month button opens popup');
+			widget.expectRender(expectedVdom);
 
-		widget.sendEvent('click', {
-			key: 'year-button'
-		});
-		expectedVdom = expected(widget, false, true);
-		assert.isTrue(isOpen, 'After clicking year button, popup is still open');
-		widget.expectRender(expectedVdom);
-	},
+			widget.sendEvent('click', {
+				key: 'year-button'
+			});
+			expectedVdom = expected(widget, false, true);
+			assert.isTrue(isOpen, 'After clicking year button, popup is still open');
+			widget.expectRender(expectedVdom);
+		},
 
-	'Month popup closes with correct keys'() {
-		let isOpen;
-		let expectedVdom = expected(widget, false, false);
-		widget.setProperties({
-			onPopupChange: open => { isOpen = open; },
-			...requiredProps
-		});
-		widget.expectRender(expectedVdom);
+		'Month popup closes with correct keys'() {
+			let isOpen;
+			let expectedVdom = expected(widget, false, false);
+			widget.setProperties({
+				onPopupChange: open => { isOpen = open; },
+				...requiredProps
+			});
+			widget.expectRender(expectedVdom);
 
-		// escape key
-		widget.sendEvent('click', { key: 'month-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.Escape
-			},
-			selector: `.${css.monthGrid} fieldset`
-		});
-		expectedVdom = expected(widget, false, false);
-		widget.expectRender(expectedVdom);
-		assert.isFalse(isOpen, 'Should close on escape key press');
+			// escape key
+			widget.sendEvent('click', { key: 'month-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.Escape
+				},
+				selector: `.${css.monthGrid} fieldset`
+			});
+			expectedVdom = expected(widget, false, false);
+			widget.expectRender(expectedVdom);
+			assert.isFalse(isOpen, 'Should close on escape key press');
 
-		// enter key
-		widget.sendEvent('click', { key: 'month-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.Enter
-			},
-			selector: `.${css.monthGrid} fieldset`
-		});
-		widget.expectRender(expectedVdom);
-		assert.isFalse(isOpen, 'Should close on enter key press');
+			// enter key
+			widget.sendEvent('click', { key: 'month-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.Enter
+				},
+				selector: `.${css.monthGrid} fieldset`
+			});
+			widget.expectRender(expectedVdom);
+			assert.isFalse(isOpen, 'Should close on enter key press');
 
-		// space key
-		widget.sendEvent('click', { key: 'month-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.Space
-			},
-			selector: `.${css.monthGrid} fieldset`
-		});
-		widget.expectRender(expectedVdom);
-		assert.isFalse(isOpen, 'Should close on space key press');
+			// space key
+			widget.sendEvent('click', { key: 'month-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.Space
+				},
+				selector: `.${css.monthGrid} fieldset`
+			});
+			widget.expectRender(expectedVdom);
+			assert.isFalse(isOpen, 'Should close on space key press');
 
-		// random key
-		widget.sendEvent('click', { key: 'month-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.PageDown
-			},
-			selector: `.${css.monthGrid} fieldset`
-		});
-		expectedVdom = expected(widget, true, false);
-		widget.expectRender(expectedVdom);
-		assert.isTrue(isOpen, 'Other keys don\'t close popup');
-	},
+			// random key
+			widget.sendEvent('click', { key: 'month-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.PageDown
+				},
+				selector: `.${css.monthGrid} fieldset`
+			});
+			expectedVdom = expected(widget, true, false);
+			widget.expectRender(expectedVdom);
+			assert.isTrue(isOpen, 'Other keys don\'t close popup');
+		},
 
-	'year popup closes with correct keys'() {
-		let isOpen;
-		let expectedVdom = expected(widget, false, false);
-		expectedVdom = expected(widget, false, false);
-		widget.setProperties({
-			onPopupChange: open => { isOpen = open; },
-			...requiredProps
-		});
+		'year popup closes with correct keys'() {
+			let isOpen;
+			let expectedVdom = expected(widget, false, false);
+			expectedVdom = expected(widget, false, false);
+			widget.setProperties({
+				onPopupChange: open => { isOpen = open; },
+				...requiredProps
+			});
 
-		// escape key
-		widget.sendEvent('click', { key: 'year-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.Escape
-			},
-			selector: `.${css.yearGrid} fieldset`
-		});
-		widget.expectRender(expectedVdom);
-		assert.isFalse(isOpen, 'Should close on escape key press');
+			// escape key
+			widget.sendEvent('click', { key: 'year-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.Escape
+				},
+				selector: `.${css.yearGrid} fieldset`
+			});
+			widget.expectRender(expectedVdom);
+			assert.isFalse(isOpen, 'Should close on escape key press');
 
-		// enter key
-		widget.sendEvent('click', { key: 'year-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.Enter
-			},
-			selector: `.${css.yearGrid} fieldset`
-		});
-		widget.expectRender(expectedVdom);
-		assert.isFalse(isOpen, 'Should close on enter key press');
+			// enter key
+			widget.sendEvent('click', { key: 'year-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.Enter
+				},
+				selector: `.${css.yearGrid} fieldset`
+			});
+			widget.expectRender(expectedVdom);
+			assert.isFalse(isOpen, 'Should close on enter key press');
 
-		// space key
-		widget.sendEvent('click', { key: 'year-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.Space
-			},
-			selector: `.${css.yearGrid} fieldset`
-		});
-		widget.expectRender(expectedVdom);
-		assert.isFalse(isOpen, 'Should close on space key press');
+			// space key
+			widget.sendEvent('click', { key: 'year-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.Space
+				},
+				selector: `.${css.yearGrid} fieldset`
+			});
+			widget.expectRender(expectedVdom);
+			assert.isFalse(isOpen, 'Should close on space key press');
 
-		// random key
-		widget.sendEvent('click', { key: 'year-button' });
-		widget.sendEvent<TestEventInit>('keydown', {
-			eventInit: {
-				which: Keys.PageDown
-			},
-			selector: `.${css.yearGrid} fieldset`
-		});
-		expectedVdom = expected(widget, false, true);
-		widget.expectRender(expectedVdom);
-		assert.isTrue(isOpen, 'Other keys don\'t close popup');
-	},
+			// random key
+			widget.sendEvent('click', { key: 'year-button' });
+			widget.sendEvent<TestEventInit>('keydown', {
+				eventInit: {
+					which: Keys.PageDown
+				},
+				selector: `.${css.yearGrid} fieldset`
+			});
+			expectedVdom = expected(widget, false, true);
+			widget.expectRender(expectedVdom);
+			assert.isTrue(isOpen, 'Other keys don\'t close popup');
+		},
 
-	'Clicking buttons changes year page'() {
-		let expectedVdom = expected(widget);
-		widget.setProperties({
-			...requiredProps
-		});
-		widget.sendEvent('click', { key: 'year-button' });
+		'Clicking buttons changes year page'() {
+			let expectedVdom = expected(widget);
+			widget.setProperties({
+				...requiredProps
+			});
+			widget.sendEvent('click', { key: 'year-button' });
 
-		widget.sendEvent('click', {
-			selector: `.${css.next}`
-		});
-		expectedVdom = expected(widget, false, true, 2020, 2040);
-		widget.expectRender(expectedVdom);
+			widget.sendEvent('click', {
+				selector: `.${css.next}`
+			});
+			expectedVdom = expected(widget, false, true, 2020, 2040);
+			widget.expectRender(expectedVdom);
 
-		widget.sendEvent('click', {
-			selector: '.' + css.previous
-		});
-		expectedVdom = expected(widget, false, true, 2000, 2020);
-		widget.expectRender(expectedVdom);
-	},
+			widget.sendEvent('click', {
+				selector: '.' + css.previous
+			});
+			expectedVdom = expected(widget, false, true, 2000, 2020);
+			widget.expectRender(expectedVdom);
+		},
 
-	'Change month radios'() {
-		let currentMonth = testDate.getMonth();
-		let isOpen = false;
-		widget.setProperties({
-			...requiredProps,
-			onPopupChange: (open: boolean) => { isOpen = open; },
-			onRequestMonthChange: (month: number) => { currentMonth = month; }
-		});
+		'Change month radios'() {
+			let currentMonth = testDate.getMonth();
+			let isOpen = false;
+			widget.setProperties({
+				...requiredProps,
+				onPopupChange: (open: boolean) => { isOpen = open; },
+				onRequestMonthChange: (month: number) => { currentMonth = month; }
+			});
 
-		widget.sendEvent('click', { key: 'month-button' });
-		assert.isTrue(isOpen, 'Month popup opens when clicking month button');
+			widget.sendEvent('click', { key: 'month-button' });
+			assert.isTrue(isOpen, 'Month popup opens when clicking month button');
 
-		widget.sendEvent('change', {
-			selector: `.${css.monthRadio}:nth-of-type(7) input`
-		});
-		assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
+			widget.sendEvent('change', {
+				selector: `.${css.monthRadio}:nth-of-type(7) input`
+			});
+			assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
 
-		widget.sendEvent('mouseup', {
-			selector: `.${css.monthRadio}:nth-of-type(7) input`
-		});
-		assert.isFalse(isOpen, 'Clicking radios closes popup');
-	},
+			widget.sendEvent('mouseup', {
+				selector: `.${css.monthRadio}:nth-of-type(7) input`
+			});
+			assert.isFalse(isOpen, 'Clicking radios closes popup');
+		},
 
-	'Change year radios'() {
-		let currentYear = testDate.getMonth();
-		let isOpen = false;
-		widget.setProperties({
-			...requiredProps,
-			onPopupChange: (open: boolean) => { isOpen = open; },
-			onRequestYearChange: (year: number) => { currentYear = year; }
-		});
+		'Change year radios'() {
+			let currentYear = testDate.getMonth();
+			let isOpen = false;
+			widget.setProperties({
+				...requiredProps,
+				onPopupChange: (open: boolean) => { isOpen = open; },
+				onRequestYearChange: (year: number) => { currentYear = year; }
+			});
 
-		widget.sendEvent('click', { key: 'year-button' });
-		assert.isTrue(isOpen, 'Year popup opens when clicking year button');
+			widget.sendEvent('click', { key: 'year-button' });
+			assert.isTrue(isOpen, 'Year popup opens when clicking year button');
 
-		widget.sendEvent('change', {
-			selector: `.${css.yearRadio}:nth-of-type(2) input`
-		});
-		assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
+			widget.sendEvent('change', {
+				selector: `.${css.yearRadio}:nth-of-type(2) input`
+			});
+			assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
 
-		widget.sendEvent('mouseup', {
-			selector: `.${css.yearRadio}:nth-of-type(2) input`
-		});
-		assert.isFalse(isOpen, 'Clicking radios closes popup');
+			widget.sendEvent('mouseup', {
+				selector: `.${css.yearRadio}:nth-of-type(2) input`
+			});
+			assert.isFalse(isOpen, 'Clicking radios closes popup');
+		}
 	}
 });

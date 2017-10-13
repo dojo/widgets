@@ -1,5 +1,6 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import { VNode } from '@dojo/interfaces/vdom';
 import ComboBox from '../../ComboBox';
 import ResultItem from '../../ResultItem';
@@ -42,9 +43,7 @@ function event(which = 0) {
 	};
 }
 
-registerSuite({
-	name: 'ComboBox',
-
+registerSuite('ComboBox', {
 	'Menu should open when arrow clicked'() {
 		const comboBox = new ComboBox();
 		comboBox.__setProperties__({

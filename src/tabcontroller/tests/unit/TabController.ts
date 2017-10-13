@@ -1,5 +1,6 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
@@ -131,8 +132,7 @@ const expected = function(widget: any, children: DNode[] = []) {
 
 let widget: Harness<TabControllerProperties, typeof TabController>;
 
-registerSuite({
-	name: 'TabController',
+registerSuite('TabController', {
 
 	beforeEach() {
 		widget = harness(TabController);
@@ -142,293 +142,295 @@ registerSuite({
 		widget.destroy();
 	},
 
-	'default properties'() {
-		widget.setProperties({
-			activeIndex: 0
-		});
-		let tabButtons = expectedTabButtons(widget, true);
-		let tabContent = null;
+	tests: {
+		'default properties'() {
+			widget.setProperties({
+				activeIndex: 0
+			});
+			let tabButtons = expectedTabButtons(widget, true);
+			let tabContent = null;
 
-		widget.expectRender(expected(widget, [ tabButtons, tabContent ]), 'Empty tab controller');
+			widget.expectRender(expected(widget, [ tabButtons, tabContent ]), 'Empty tab controller');
 
-		widget.setChildren(tabChildren());
-		tabButtons = expectedTabButtons(widget);
-		tabContent = expectedTabContent(widget);
+			widget.setChildren(tabChildren());
+			tabButtons = expectedTabButtons(widget);
+			tabContent = expectedTabContent(widget);
 
-		widget.expectRender(expected(widget, [ tabButtons, tabContent ]), 'Tab controller with tabs');
-	},
+			widget.expectRender(expected(widget, [ tabButtons, tabContent ]), 'Tab controller with tabs');
+		},
 
-	'custom orientation'() {
-		widget.setProperties({
-			activeIndex: 0,
-			alignButtons: Align.bottom
-		});
-		widget.setChildren(tabChildren());
+		'custom orientation'() {
+			widget.setProperties({
+				activeIndex: 0,
+				alignButtons: Align.bottom
+			});
+			widget.setChildren(tabChildren());
 
-		let tabButtons = expectedTabButtons(widget);
-		let tabContent = expectedTabContent(widget);
-		let expectedVdom = expected(widget, [ tabContent, tabButtons ]);
-		assignProperties(expectedVdom, {
-			classes: widget.classes(css.alignBottom, css.root)
-		});
-		widget.expectRender(expectedVdom, 'tabs aligned bottom');
+			let tabButtons = expectedTabButtons(widget);
+			let tabContent = expectedTabContent(widget);
+			let expectedVdom = expected(widget, [ tabContent, tabButtons ]);
+			assignProperties(expectedVdom, {
+				classes: widget.classes(css.alignBottom, css.root)
+			});
+			widget.expectRender(expectedVdom, 'tabs aligned bottom');
 
-		widget.setProperties({
-			activeIndex: 0,
-			alignButtons: Align.right
-		});
-		widget.setChildren(tabChildren());
-		tabButtons = expectedTabButtons(widget);
-		tabContent = expectedTabContent(widget);
-		expectedVdom = expected(widget, [ tabContent, tabButtons ]);
-		assignProperties(expectedVdom, {
-			'aria-orientation': 'vertical',
-			classes: widget.classes(css.alignRight, css.root)
-		});
-		widget.expectRender(expectedVdom, 'tabs aligned right');
+			widget.setProperties({
+				activeIndex: 0,
+				alignButtons: Align.right
+			});
+			widget.setChildren(tabChildren());
+			tabButtons = expectedTabButtons(widget);
+			tabContent = expectedTabContent(widget);
+			expectedVdom = expected(widget, [ tabContent, tabButtons ]);
+			assignProperties(expectedVdom, {
+				'aria-orientation': 'vertical',
+				classes: widget.classes(css.alignRight, css.root)
+			});
+			widget.expectRender(expectedVdom, 'tabs aligned right');
 
-		widget.setProperties({
-			activeIndex: 0,
-			alignButtons: Align.left
-		});
-		widget.setChildren(tabChildren());
-		tabButtons = expectedTabButtons(widget);
-		tabContent = expectedTabContent(widget);
-		expectedVdom = expected(widget, [ tabButtons, tabContent ]);
-		assignProperties(expectedVdom, {
-			'aria-orientation': 'vertical',
-			classes: widget.classes(css.alignLeft, css.root)
-		});
-		widget.expectRender(expectedVdom, 'tabs aligned left');
-	},
+			widget.setProperties({
+				activeIndex: 0,
+				alignButtons: Align.left
+			});
+			widget.setChildren(tabChildren());
+			tabButtons = expectedTabButtons(widget);
+			tabContent = expectedTabContent(widget);
+			expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			assignProperties(expectedVdom, {
+				'aria-orientation': 'vertical',
+				classes: widget.classes(css.alignLeft, css.root)
+			});
+			widget.expectRender(expectedVdom, 'tabs aligned left');
+		},
 
-	'Clicking tab should change activeIndex'() {
-		const onRequestTabChange = sinon.stub();
-		widget.setProperties({
-			activeIndex: 2,
-			onRequestTabChange
-		});
-		widget.setChildren(tabChildren(3));
-		widget.callListener('onClick', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		assert.isTrue(onRequestTabChange.calledOnce, 'onRequestTabChange called when tab is clicked');
-		assert.isTrue(onRequestTabChange.calledWith(0, '0'), 'onRequestTabChange called with correct index and key');
+		'Clicking tab should change activeIndex'() {
+			const onRequestTabChange = sinon.stub();
+			widget.setProperties({
+				activeIndex: 2,
+				onRequestTabChange
+			});
+			widget.setChildren(tabChildren(3));
+			widget.callListener('onClick', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			assert.isTrue(onRequestTabChange.calledOnce, 'onRequestTabChange called when tab is clicked');
+			assert.isTrue(onRequestTabChange.calledWith(0, '0'), 'onRequestTabChange called with correct index and key');
 
-		widget.callListener('onClick', {
-			args: [ 1 ],
-			key: '1-tabbutton'
-		});
-		assert.isTrue(onRequestTabChange.calledOnce, 'onRequestTabChange not called on disabled tabs');
+			widget.callListener('onClick', {
+				args: [ 1 ],
+				key: '1-tabbutton'
+			});
+			assert.isTrue(onRequestTabChange.calledOnce, 'onRequestTabChange not called on disabled tabs');
 
-		widget.callListener('onClick', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.isTrue(onRequestTabChange.calledOnce, 'onRequestTabChange not called on the active tab');
-	},
+			widget.callListener('onClick', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.isTrue(onRequestTabChange.calledOnce, 'onRequestTabChange not called on the active tab');
+		},
 
-	'Closing a tab should change tabs'() {
-		const onRequestTabClose = sinon.stub();
-		widget.setProperties({
-			activeIndex: 2,
-			onRequestTabClose
-		});
-		widget.setChildren(tabChildren(3));
+		'Closing a tab should change tabs'() {
+			const onRequestTabClose = sinon.stub();
+			widget.setProperties({
+				activeIndex: 2,
+				onRequestTabClose
+			});
+			widget.setChildren(tabChildren(3));
 
-		widget.callListener('onCloseClick', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
+			widget.callListener('onCloseClick', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
 
-		assert.isTrue(onRequestTabClose.calledOnce, 'onRequestTabClose called when a tab\'s onCloseClick fires');
-		assert.isTrue(onRequestTabClose.calledWith(2, '2'), 'onRequestTabClose called with correct index and key');
-	},
+			assert.isTrue(onRequestTabClose.calledOnce, 'onRequestTabClose called when a tab\'s onCloseClick fires');
+			assert.isTrue(onRequestTabClose.calledWith(2, '2'), 'onRequestTabClose called with correct index and key');
+		},
 
-	'Basic keyboard navigation'() {
-		const onRequestTabChange = sinon.stub();
-		widget.setProperties({
-			activeIndex: 2,
-			onRequestTabChange
-		});
-		widget.setChildren(tabChildren(5));
+		'Basic keyboard navigation'() {
+			const onRequestTabChange = sinon.stub();
+			widget.setProperties({
+				activeIndex: 2,
+				onRequestTabChange
+			});
+			widget.setChildren(tabChildren(5));
 
-		widget.callListener('onRightArrowPress', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(0).args[0], 3, 'Right arrow moves to next tab');
+			widget.callListener('onRightArrowPress', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(0).args[0], 3, 'Right arrow moves to next tab');
 
-		widget.callListener('onDownArrowPress', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.isTrue(onRequestTabChange.calledOnce, 'Down arrow does nothing on horizontal tabs');
+			widget.callListener('onDownArrowPress', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.isTrue(onRequestTabChange.calledOnce, 'Down arrow does nothing on horizontal tabs');
 
-		widget.callListener('onLeftArrowPress', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(1).args[0], 0, 'Left arrow moves to previous tab, skipping disabled tab');
+			widget.callListener('onLeftArrowPress', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(1).args[0], 0, 'Left arrow moves to previous tab, skipping disabled tab');
 
-		widget.callListener('onUpArrowPress', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.isTrue(onRequestTabChange.calledTwice, 'Up arrow does nothing on horizontal tabs');
+			widget.callListener('onUpArrowPress', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.isTrue(onRequestTabChange.calledTwice, 'Up arrow does nothing on horizontal tabs');
 
-		widget.callListener('onHomePress', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(2).args[0], 0, 'Home moves to first tab');
+			widget.callListener('onHomePress', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(2).args[0], 0, 'Home moves to first tab');
 
-		widget.callListener('onEndPress', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(3).args[0], 4, 'End moves to last tab');
-	},
+			widget.callListener('onEndPress', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(3).args[0], 4, 'End moves to last tab');
+		},
 
-	'Arrow keys wrap to first and last tab'() {
-		const onRequestTabChange = sinon.stub();
-		widget.setProperties({
-			activeIndex: 0,
-			onRequestTabChange
-		});
-		widget.setChildren(tabChildren(3));
-		widget.callListener('onLeftArrowPress', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		assert.isTrue(onRequestTabChange.calledWith(2), 'Left arrow wraps from first to last tab');
+		'Arrow keys wrap to first and last tab'() {
+			const onRequestTabChange = sinon.stub();
+			widget.setProperties({
+				activeIndex: 0,
+				onRequestTabChange
+			});
+			widget.setChildren(tabChildren(3));
+			widget.callListener('onLeftArrowPress', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			assert.isTrue(onRequestTabChange.calledWith(2), 'Left arrow wraps from first to last tab');
 
-		widget.setProperties({
-			activeIndex: 2,
-			onRequestTabChange
-		});
-		widget.getRender();
-		widget.callListener('onRightArrowPress', {
-			args: [ 2 ],
-			key: '2-tabbutton'
-		});
-		assert.isTrue(onRequestTabChange.calledWith(0), 'Right arrow wraps from last to first tab');
-	},
+			widget.setProperties({
+				activeIndex: 2,
+				onRequestTabChange
+			});
+			widget.getRender();
+			widget.callListener('onRightArrowPress', {
+				args: [ 2 ],
+				key: '2-tabbutton'
+			});
+			assert.isTrue(onRequestTabChange.calledWith(0), 'Right arrow wraps from last to first tab');
+		},
 
-	'Arrow keys on vertical tabs'() {
-		const onRequestTabChange = sinon.stub();
-		widget.setProperties({
-			activeIndex: 0,
-			alignButtons: Align.right,
-			onRequestTabChange
-		});
-		widget.setChildren(tabChildren(5));
+		'Arrow keys on vertical tabs'() {
+			const onRequestTabChange = sinon.stub();
+			widget.setProperties({
+				activeIndex: 0,
+				alignButtons: Align.right,
+				onRequestTabChange
+			});
+			widget.setChildren(tabChildren(5));
 
-		widget.callListener('onDownArrowPress', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(0).args[0], 2, 'Down arrow moves to next tab, skipping disabled tab');
+			widget.callListener('onDownArrowPress', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(0).args[0], 2, 'Down arrow moves to next tab, skipping disabled tab');
 
-		widget.callListener('onRightArrowPress', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(1).args[0], 2, 'Right arrow works on vertical tabs');
+			widget.callListener('onRightArrowPress', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(1).args[0], 2, 'Right arrow works on vertical tabs');
 
-		widget.callListener('onUpArrowPress', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(2).args[0], 4, 'Up arrow moves to previous tab');
+			widget.callListener('onUpArrowPress', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(2).args[0], 4, 'Up arrow moves to previous tab');
 
-		widget.callListener('onLeftArrowPress', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(3).args[0], 4, 'Left arrow works on vertical tabs');
+			widget.callListener('onLeftArrowPress', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(3).args[0], 4, 'Left arrow works on vertical tabs');
 
-		widget.setProperties({
-			activeIndex: 0,
-			alignButtons: Align.left,
-			onRequestTabChange
-		});
-		widget.getRender();
-		widget.callListener('onDownArrowPress', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		assert.strictEqual(onRequestTabChange.getCall(4).args[0], 2, 'Down arrow works on left-aligned tabs');
-	},
+			widget.setProperties({
+				activeIndex: 0,
+				alignButtons: Align.left,
+				onRequestTabChange
+			});
+			widget.getRender();
+			widget.callListener('onDownArrowPress', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			assert.strictEqual(onRequestTabChange.getCall(4).args[0], 2, 'Down arrow works on left-aligned tabs');
+		},
 
-	'Should default to last tab if invalid activeIndex passed'() {
-		const onRequestTabChange = sinon.stub();
-		widget.setProperties({
-			activeIndex: 5,
-			onRequestTabChange
-		});
-		widget.setChildren(tabChildren(3));
-		widget.getRender();
+		'Should default to last tab if invalid activeIndex passed'() {
+			const onRequestTabChange = sinon.stub();
+			widget.setProperties({
+				activeIndex: 5,
+				onRequestTabChange
+			});
+			widget.setChildren(tabChildren(3));
+			widget.getRender();
 
-		assert.isTrue(onRequestTabChange.calledWith(2));
-	},
+			assert.isTrue(onRequestTabChange.calledWith(2));
+		},
 
-	'Should skip tab if activeIndex is disabled'() {
-		const onRequestTabChange = sinon.stub();
-		widget.setProperties({
-			activeIndex: 1,
-			onRequestTabChange
-		});
-		widget.setChildren(tabChildren(3));
-		widget.getRender();
+		'Should skip tab if activeIndex is disabled'() {
+			const onRequestTabChange = sinon.stub();
+			widget.setProperties({
+				activeIndex: 1,
+				onRequestTabChange
+			});
+			widget.setChildren(tabChildren(3));
+			widget.getRender();
 
-		assert.isTrue(onRequestTabChange.calledWith(2));
-	},
+			assert.isTrue(onRequestTabChange.calledWith(2));
+		},
 
-	'Clicking on tab button sets callFocus to true'() {
-		widget.setProperties({
-			activeIndex: 1
-		});
-		widget.setChildren([
-			w(Tab, {
-				key: '0'
-			}, [ 'tab content 1' ]),
-			w(Tab, {
-				closeable: true,
-				key: '1',
-				label: 'foo'
-			}, [ 'tab content 2' ])
-		]);
+		'Clicking on tab button sets callFocus to true'() {
+			widget.setProperties({
+				activeIndex: 1
+			});
+			widget.setChildren([
+				w(Tab, {
+					key: '0'
+				}, [ 'tab content 1' ]),
+				w(Tab, {
+					closeable: true,
+					key: '1',
+					label: 'foo'
+				}, [ 'tab content 2' ])
+			]);
 
-		let tabButtons = expectedTabButtons(widget);
-		let tabContent = expectedTabContent(widget);
-		let expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			let tabButtons = expectedTabButtons(widget);
+			let tabContent = expectedTabContent(widget);
+			let expectedVdom = expected(widget, [ tabButtons, tabContent ]);
 
-		widget.callListener('onClick', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		widget.setProperties({
-			activeIndex: 0
-		});
+			widget.callListener('onClick', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			widget.setProperties({
+				activeIndex: 0
+			});
 
-		tabButtons = expectedTabButtons(widget);
-		tabContent = expectedTabContent(widget);
-		assignChildProperties((<any> tabButtons), '0', { callFocus: true });
-		assignChildProperties((<any> tabButtons), '1', { disabled: undefined });
-		expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			tabButtons = expectedTabButtons(widget);
+			tabContent = expectedTabContent(widget);
+			assignChildProperties((<any> tabButtons), '0', { callFocus: true });
+			assignChildProperties((<any> tabButtons), '1', { disabled: undefined });
+			expectedVdom = expected(widget, [ tabButtons, tabContent ]);
 
-		widget.expectRender(expectedVdom, 'Clicking tab button updates callFocus property to true');
+			widget.expectRender(expectedVdom, 'Clicking tab button updates callFocus property to true');
 
-		widget.callListener('onFocusCalled', {
-			args: [ 0 ],
-			key: '0-tabbutton'
-		});
-		widget.setChildren(tabChildren());
-		tabButtons = expectedTabButtons(widget);
-		tabContent = expectedTabContent(widget);
-		expectedVdom = expected(widget, [ tabButtons, tabContent ]);
-		widget.expectRender(expectedVdom, 'onFocusCalled updates callFocus to false');
+			widget.callListener('onFocusCalled', {
+				args: [ 0 ],
+				key: '0-tabbutton'
+			});
+			widget.setChildren(tabChildren());
+			tabButtons = expectedTabButtons(widget);
+			tabContent = expectedTabContent(widget);
+			expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			widget.expectRender(expectedVdom, 'onFocusCalled updates callFocus to false');
+		}
 	}
 });

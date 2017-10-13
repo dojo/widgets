@@ -1,10 +1,12 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
+import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/slidePane.m.css';
 
 const DELAY = 400;
 
-function openSlidePane(remote: any, alignRight?: boolean) {
+function openSlidePane(remote: Remote, alignRight?: boolean) {
 	let promise = remote
 		.get('http://localhost:9000/_build/common/example/?module=slidepane')
 		.setFindTimeout(5000)
@@ -26,16 +28,16 @@ function openSlidePane(remote: any, alignRight?: boolean) {
 		.sleep(DELAY);
 }
 
-function swipeSlidePane(remote: any, distance = 250, alignRight?: boolean) {
-	const { mouseEnabled } = remote.environmentType;
+function swipeSlidePane(remote: Remote, distance = 250, alignRight?: boolean) {
+	const { mouseEnabled } = remote.session.capabilities;
 	const initialX = alignRight ? 10 : 300;
 
 	if (mouseEnabled) {
 		const finalX = alignRight ? distance : -distance;
 		return openSlidePane(remote, alignRight)
-			.moveMouseTo(null, initialX, 10)
+			.moveMouseTo(undefined, initialX, 10)
 			.pressMouseButton()
-			.moveMouseTo(null, finalX, 0)
+			.moveMouseTo(undefined, finalX, 0)
 			.releaseMouseButton()
 			.sleep(DELAY);
 	}
@@ -48,26 +50,25 @@ function swipeSlidePane(remote: any, distance = 250, alignRight?: boolean) {
 		.sleep(DELAY);
 }
 
-registerSuite({
-	name: 'SlidePane',
+registerSuite('SlidePane', {
 
-	'the underlay should cover the screen'(this: any) {
+	'the underlay should cover the screen'() {
 		let viewportSize: { height: number; width: number; };
 
 		return openSlidePane(this.remote)
 			.getWindowSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height, width }) => {
 					viewportSize = { height, width };
 				})
 			.findByCssSelector(`.${css.underlay}`)
 				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height, width }) => {
 					assert.closeTo(height, viewportSize.height, viewportSize.height * 0.2);
 					assert.closeTo(width, viewportSize.width, viewportSize.width * 0.2);
 				});
 	},
 
-	'the underlay should not be destroyed when the slidepane is clicked'(this: any) {
+	'the underlay should not be destroyed when the slidepane is clicked'() {
 		return openSlidePane(this.remote)
 			.findByCssSelector(`.${css.content}`)
 				.click()
@@ -80,19 +81,19 @@ registerSuite({
 				});
 	},
 
-	'the slidepane should not be hidden when it is clicked'(this: any) {
+	'the slidepane should not be hidden when it is clicked'() {
 		return openSlidePane(this.remote)
 			.findByCssSelector(`.${css.content}`)
 				.click()
 				.sleep(DELAY)
 				.getPosition()
-					.then(({ x }: { x: number; }) => {
+					.then(({ x }) => {
 						assert.strictEqual(x, 0, 'The slidepane should be visible.');
 					});
 	},
 
-	'a left-aligned slidepane should close when swiping from right to left'(this: any) {
-		const { browserName, mouseEnabled, touchEnabled } = this.remote.environmentType;
+	'a left-aligned slidepane should close when swiping from right to left'() {
+		const { browserName = '', mouseEnabled, touchEnabled } = this.remote.session.capabilities;
 
 		if (!mouseEnabled && !touchEnabled) {
 			this.skip('Test requires mouse or touch interactions.');
@@ -107,17 +108,17 @@ registerSuite({
 		return swipeSlidePane(this.remote)
 			.findByCssSelector(`.${css.content}`)
 				.getSize()
-					.then((size: { width: number; }) => {
+					.then(size => {
 						width = size.width;
 					})
 				.getPosition()
-					.then(({ x }: { x: number; }) => {
+					.then(({ x }) => {
 						assert.closeTo(x, -width, 15);
 					});
 	},
 
-	'a right-aligned slidepane should close when swiping from left to right'(this: any) {
-		const { browserName, mouseEnabled, touchEnabled } = this.remote.environmentType;
+	'a right-aligned slidepane should close when swiping from left to right'() {
+		const { browserName = '', mouseEnabled, touchEnabled } = this.remote.session.capabilities;
 
 		if (!mouseEnabled && !touchEnabled) {
 			this.skip('Test requires mouse or touch interactions.');
@@ -131,12 +132,12 @@ registerSuite({
 		let viewportWidth = 0;
 		return swipeSlidePane(this.remote, undefined, true)
 			.getWindowSize()
-				.then(({ width }: { width: number }) => {
+				.then(({ width }) => {
 					viewportWidth = width;
 				})
 			.findByCssSelector(`.${css.content}`)
 				.getPosition()
-				.then(({ x }: { x: number; }) => {
+				.then(({ x }) => {
 					// Edge/IE11/Chrome on Windows visually hide the slidepane correctly, but the position
 					// is slightly less than expected (the viewport width).
 					const expected = viewportWidth * 0.95;
@@ -144,8 +145,8 @@ registerSuite({
 				});
 	},
 
-	'minor swipe movements should not close the slidepane'(this: any) {
-		const { browserName, mouseEnabled, touchEnabled } = this.remote.environmentType;
+	'minor swipe movements should not close the slidepane'() {
+		const { browserName = '', mouseEnabled, touchEnabled } = this.remote.session.capabilities;
 
 		if (!mouseEnabled && !touchEnabled) {
 			this.skip('Test requires mouse or touch interactions.');
@@ -159,7 +160,7 @@ registerSuite({
 		return swipeSlidePane(this.remote, 50)
 			.findByCssSelector(`.${css.content}`)
 				.getPosition()
-					.then(({ x }: { x: number; }) => {
+					.then(({ x }) => {
 						assert.strictEqual(x, 0, 'The slidepane should be open.');
 					});
 	}
