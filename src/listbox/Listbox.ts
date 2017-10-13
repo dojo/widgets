@@ -109,12 +109,11 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		}
 	}
 
-	protected getRootClasses() {
+	protected getModifierClasses() {
 		const { focused } = this.properties;
-		return this.classes(
-			css.root,
+		return [
 			focused ? css.focused : null
-		);
+		];
 	}
 
 	protected renderOptions() {
@@ -161,7 +160,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		return v('div', {
 			'aria-activedescendant': this._getOptionId(activeIndex),
 			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.getRootClasses(),
+			classes: this.classes(css.root, ...this.getModifierClasses()),
 			describedBy,
 			id,
 			role: 'listbox',

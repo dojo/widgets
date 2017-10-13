@@ -3,14 +3,13 @@ import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty, replaceChild, findIndex } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import { WNode } from '@dojo/widget-core/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import Listbox, { ListboxProperties } from '../../Listbox';
 import ListboxOption from '../../ListboxOption';
-import Label from '../../../label/Label';
 import * as css from '../../styles/listbox.m.css';
 
 let widget: Harness<ListboxProperties, typeof Listbox>;

@@ -37,33 +37,38 @@ export default class ListboxOption extends ListboxOptionBase<ListboxOptionProper
 		onClick && onClick(option);
 	}
 
+	protected getModifierClasses() {
+		const {
+			active = false,
+			disabled = false,
+			selected = false
+		} = this.properties;
+		return [
+			active ? css.activeOption : null,
+			disabled ? css.disabledOption : null,
+			selected ? css.selectedOption : null
+		];
+	}
+
 	protected renderResult(): DNode {
 		const { getOptionLabel, option } = this.properties;
 		return getOptionLabel ? getOptionLabel(option) : `${option}`;
 	}
 
 	protected render() {
-	const {
-		active = false,
-		disabled = false,
-		id,
-		selected = false
-	} = this.properties;
+		const {
+			disabled = false,
+			id,
+			selected = false
+		} = this.properties;
 
-	const optionClasses = [
-		css.option,
-		active ? css.activeOption : null,
-		selected ? css.selectedOption : null,
-		disabled ? css.disabledOption : null
-	];
-
-	return v('div', {
-		'aria-disabled': disabled ? 'true' : null,
-		'aria-selected': disabled ? null : String(selected),
-		classes: this.classes(...optionClasses),
-		id,
-		role: 'option',
-		onclick: this._onClick
+		return v('div', {
+			'aria-disabled': disabled ? 'true' : null,
+			'aria-selected': disabled ? null : String(selected),
+			classes: this.classes(css.option, ...this.getModifierClasses()),
+			id,
+			role: 'option',
+			onclick: this._onClick
 		}, [ this.renderResult() ]);
 	}
 }
