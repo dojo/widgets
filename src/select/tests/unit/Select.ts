@@ -9,7 +9,6 @@ import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import Select, { SelectProperties } from '../../Select';
-import SelectOption, { OptionData } from '../../SelectOption';
 import Label from '../../../label/Label';
 import * as css from '../../styles/select.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';

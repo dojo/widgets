@@ -98,7 +98,6 @@ export default class Select extends SelectBase<SelectProperties> {
 	}
 
 	private _closeSelect() {
-		this._callTriggerFocus = true;
 		this._ignoreBlur = true;
 		this._open = false;
 		this.invalidate();
@@ -106,21 +105,18 @@ export default class Select extends SelectBase<SelectProperties> {
 
 	private _onDropdownKeyDown(event: KeyboardEvent) {
 		const {
-			key = ''
+			key = '',
+			onKeyDown
 		} = this.properties;
-		this.properties.onKeyDown && this.properties.onKeyDown(event, key);
+		onKeyDown && onKeyDown(event, key);
 
 		if (event.which === Keys.Escape) {
+			this._callTriggerFocus = true;
 			this._closeSelect();
 		}
 	}
 
-	private _onDropdownMouseDown(event: MouseEvent) {
-		this._ignoreBlur = true;
-	}
-
 	private _onTriggerClick(event: MouseEvent) {
-		console.log('trigger click event');
 		const { key = '', onClick } = this.properties;
 		onClick && onClick(key);
 
@@ -148,20 +144,6 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		if (event.which === Keys.Down) {
 			this._openSelect();
-		}
-	}
-
-	private _onListboxKeyDown(event: KeyboardEvent) {
-		const {
-			key = '',
-			onKeyDown
-		} = this.properties;
-		const { _focusedIndex } = this;
-
-		onKeyDown && onKeyDown(event, key);
-
-		if (event.which === Keys.Escape) {
-			this._closeSelect();
 		}
 	}
 
@@ -286,8 +268,8 @@ export default class Select extends SelectBase<SelectProperties> {
 			...this.renderCustomTrigger(),
 			v('div', {
 				classes: this.classes(css.dropdown),
-				onkeydown: this._onDropdownKeyDown,
-				onmousedown: this._onDropdownMouseDown
+				onfocusout: this._onListboxBlur,
+				onkeydown: this._onDropdownKeyDown
 			}, [
 				w(Listbox, {
 					activeIndex: _focusedIndex,
@@ -304,10 +286,9 @@ export default class Select extends SelectBase<SelectProperties> {
 						this._focusedIndex = index;
 						this.invalidate();
 					},
-					onBlur: this._onListboxBlur,
-					onKeyDown: this._onListboxKeyDown,
 					onOptionSelect: (option: any) => {
 						onChange && onChange(option, key);
+						this._callTriggerFocus = true;
 						this._closeSelect();
 					}
 				})

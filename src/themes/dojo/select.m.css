@@ -15,6 +15,7 @@
 	background-color: transparent;
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
+	cursor: pointer;
 	font-size: inherit;
 	line-height: var(--line-height-base);
 	outline: none;
@@ -43,7 +44,6 @@
 }
 
 .dropdown {
-	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 	opacity: 0;
 	pointer-events: none;

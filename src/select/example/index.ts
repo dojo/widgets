@@ -78,7 +78,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				key: 'select1',
 				...this.getOptionSettings(),
 				getOptionSelected: (option: any) => !!this._value1 && option.value === this._value1,
-				label: 'Try changing me',
+				label: 'Native select',
 				options: this._selectOptions,
 				useNativeElement: true,
 				value: this._value1,
@@ -91,12 +91,11 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('p', {
 				innerHTML: 'Result value: ' + this._value1
 			}),
-			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
 				key: 'select2',
 				...this.getOptionSettings(),
 				getOptionSelected: (option: any) => !!this._value2 && option.value === this._value2,
-				label: 'Custom box!',
+				label: 'Custom select box',
 				options: this._moreSelectOptions,
 				value: this._value2,
 				theme: this._theme,

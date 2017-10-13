@@ -42,7 +42,6 @@ export interface ListboxProperties extends ThemeableProperties {
 	getOptionSelected?(option: any, index: number): boolean;
 	onActiveIndexChange?(index: number, key: string | number): void;
 	onOptionSelect?(option: any, index: number, key: string | number): void;
-	onBlur?(event: FocusEvent, key: string | number): void;
 	onKeyDown?(event: KeyboardEvent, key: string | number): void;
 }
 
@@ -58,17 +57,12 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		return getOptionId ? getOptionId(optionData[index], index) : `${this._idBase}-${index}`;
 	}
 
-	private _onBlur(event: FocusEvent) {
-		const { key = '', onBlur } = this.properties;
-		onBlur && onBlur(event, key);
-	}
-
 	private _onKeyDown(event: KeyboardEvent) {
 		const {
 			activeIndex = 0,
 			key = '',
 			optionData = [],
-			getOptionDisabled = () => false,
+			getOptionDisabled = (option: any, index: number) => false,
 			onActiveIndexChange,
 			onOptionSelect,
 			onKeyDown
@@ -131,8 +125,8 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			optionData = [],
 			theme,
 			getOptionLabel,
-			getOptionDisabled = () => false,
-			getOptionSelected = () => false,
+			getOptionDisabled = (option: any, index: number) => false,
+			getOptionSelected = (option: any, index: number) => false,
 			onActiveIndexChange,
 			onOptionSelect
 		} = this.properties;
@@ -172,7 +166,6 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			id,
 			role: 'listbox',
 			tabIndex,
-			onblur: this._onBlur,
 			onkeydown: this._onKeyDown
 		}, this.renderOptions());
 	}

@@ -14,7 +14,9 @@ interface CustomOption {
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
-	private _listboxIndex = 0;
+	private _listbox1Index = 0;
+	private _listbox1Value: string;
+	private _listbox2Index = 0;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -22,7 +24,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
-	_options: any[] = [
+	_options: CustomOption[] = [
 		{
 			value: 'option1',
 			label: 'First Option'
@@ -42,8 +44,26 @@ export class App extends WidgetBase<WidgetProperties> {
 		}
 	];
 
-	render() {
+	_moreOptions: CustomOption[] = [
+		{
+			value: 'seattle',
+			label: 'Seattle'
+		},
+		{
+			value: 'los-angeles',
+			label: 'Los Angeles'
+		},
+		{
+			value: 'austin',
+			label: 'Austin'
+		},
+		{
+			value: 'boston',
+			label: 'Boston'
+		}
+	];
 
+	render() {
 		return v('div', [
 			v('label', [
 				'Use Dojo Theme ',
@@ -53,21 +73,43 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('br'),
+			v('label', { for: 'listbox1' }, [ 'Single-select listbox example' ]),
 			w(Listbox, {
-				key: 'select1',
-				activeIndex: this._listboxIndex,
+				key: 'listbox1',
+				activeIndex: this._listbox1Index,
+				id: 'listbox1',
 				optionData: this._options,
+				theme: this._theme,
+				getOptionLabel: (option: CustomOption) => option.label,
+				getOptionDisabled: (option: CustomOption) => !!option.disabled,
+				getOptionSelected: (option: CustomOption) => option.value === this._listbox1Value,
+				onActiveIndexChange: (index: number) => {
+					this._listbox1Index = index;
+					this.invalidate();
+				},
+				onOptionSelect: (option: any, index: number) => {
+					this._listbox1Value = option.value;
+					this.invalidate();
+				}
+			}),
+			v('br'),
+			v('label', { for: 'listbox2' }, [ 'Multi-select listbox example' ]),
+			w(Listbox, {
+				key: 'listbox2',
+				activeIndex: this._listbox2Index,
+				id: 'listbox2',
+				optionData: this._moreOptions,
 				theme: this._theme,
 				getOptionLabel: (option: CustomOption) => option.label,
 				getOptionDisabled: (option: CustomOption) => !!option.disabled,
 				getOptionSelected: (option: CustomOption) => !!option.selected,
 				onActiveIndexChange: (index: number) => {
-					this._listboxIndex = index;
+					this._listbox2Index = index;
 					this.invalidate();
 				},
 				onOptionSelect: (option: any, index: number) => {
-					this._options[index].selected = !this._options[index].selected;
-					this._options = [ ...this._options ];
+					this._moreOptions[index].selected = !this._moreOptions[index].selected;
+					this._moreOptions = [ ...this._moreOptions ];
 					this.invalidate();
 				}
 			})
