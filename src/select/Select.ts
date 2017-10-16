@@ -17,25 +17,28 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a Select component
  *
- * @property CustomOption   Custom widget constructor for options. Should use SelectOption as a base
- * @property describedBy    ID of an element that provides more descriptive text
- * @property disabled       Prevents the user from interacting with the form field
- * @property invalid        Indicates the value entered in the form field is invalid
- * @property label          Label settings for form label text, position, and visibility
- * @property name           The form widget's name
- * @property options        Array of data for the select options' value, text content, and state
- * @property readOnly       Allows or prevents user interaction
- * @property required       Whether or not a value is required
- * @property useNatveSelect Use the native <select> element if true
- * @property value          The current value
- * @property onBlur         Called when the input loses focus
- * @property onChange       Called when the node's 'change' event is fired
- * @property onFocus        Called when the input is focused
+ * @property describedBy       ID of an element that provides more descriptive text
+ * @property disabled          Prevents the user from interacting with the form field
+ * @property invalid           Indicates the value entered in the form field is invalid
+ * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
+ * @property getOptionId       Function that accepts an option's data and index and returns a string id
+ * @property getOptionLabel    Function that accepts an option's data and index and returns a DNode label
+ * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
+ * @property getOptionValue    Function that accepts an option's data and index and returns a string value
+ * @property label             Label settings for form label text, position, and visibility
+ * @property name              The form widget's name
+ * @property options           Array of any type of data for the options
+ * @property readOnly          Allows or prevents user interaction
+ * @property required          Whether or not a value is required
+ * @property useNativeElement  Use the native <select> element if true
+ * @property value             The current value
+ * @property onBlur            Called when the input loses focus
+ * @property onChange          Called when the node's 'change' event is fired
+ * @property onFocus           Called when the input is focused
  */
 export interface SelectProperties extends ThemeableProperties {
 	describedBy?: string;
 	disabled?: boolean;
-	id?: string;
 	invalid?: boolean;
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;

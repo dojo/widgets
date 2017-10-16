@@ -43,7 +43,6 @@ const testOptions: any[] = [
 const testProperties: Partial<SelectProperties> = {
 	describedBy: 'foo',
 	disabled: true,
-	id: 'foo',
 	invalid: true,
 	getOptionDisabled: (option: any, index: number) => !!option.disabled,
 	getOptionId: (option: any, index: number) => option.value,
