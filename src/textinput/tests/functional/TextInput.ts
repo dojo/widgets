@@ -4,7 +4,6 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/textinput.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
-import keys from '@theintern/leadfoot/keys';
 
 function getPage(remote: Remote) {
 	return remote
@@ -119,6 +118,7 @@ registerSuite('TextInput', {
 				.end()
 				.click()
 			.end()
+			// focus another input
 			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
 				.click()
 			.end()
@@ -134,6 +134,7 @@ registerSuite('TextInput', {
 				.end()
 				.click()
 			.end()
+			// focus another input
 			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
 				.click()
 			.end()

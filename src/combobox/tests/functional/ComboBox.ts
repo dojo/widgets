@@ -30,7 +30,7 @@ registerSuite('ComboBox', {
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
 				.getSize()
-				.then(({ height, width }) => {
+				.then(({ height }) => {
 					assert.isAbove(height, 0);
 				});
 	},
