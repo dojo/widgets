@@ -21,7 +21,7 @@ import '../../../label/tests/unit/Label';
 import '../../../listbox/tests/unit/Listbox';
 import '../../../listbox/tests/unit/ListboxOption';
 import '../../../radio/tests/unit/Radio';
-// import '../../../select/tests/unit/Select';
+import '../../../select/tests/unit/Select';
 import '../../../slidepane/tests/unit/SlidePane';
 import '../../../slider/tests/unit/Slider';
 import '../../../splitpane/tests/unit/SplitPane';

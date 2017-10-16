@@ -30,9 +30,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property value          The current value
  * @property onBlur         Called when the input loses focus
  * @property onChange       Called when the node's 'change' event is fired
- * @property onClick        Called when the input is clicked
  * @property onFocus        Called when the input is focused
- * @property onKeyDown      Called on the input's keydown event
  */
 export interface SelectProperties extends ThemeableProperties {
 	describedBy?: string;
@@ -53,9 +51,7 @@ export interface SelectProperties extends ThemeableProperties {
 	value?: string;
 	onBlur?(key: string | number): void;
 	onChange?(option: any, key: string | number): void;
-	onClick?(key: string | number): void;
 	onFocus?(key: string | number): void;
-	onKeyDown?(event: KeyboardEvent, key: string | number): void;
 }
 
 export const SelectBase = ThemeableMixin(WidgetBase);
@@ -72,20 +68,19 @@ export default class Select extends SelectBase<SelectProperties> {
 	private _baseId = uuid();
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
-	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(this.properties.key || ''); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(this.properties.key || ''); }
-	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event, this.properties.key || ''); }
 
 	// native select events
 	private _onNativeChange (event: Event) {
 		const {
 			key = '',
+			getOptionValue,
 			options = [],
 			onChange
 		} = this.properties;
 		const value = (<HTMLInputElement> event.target).value;
-		const option = find(options, (option: any) => option.value === value)!;
-		onChange && onChange(option, key);
+		const option = find(options, (option: any, index: number) => getOptionValue ? getOptionValue(option, index) === value : false);
+		option && onChange && onChange(option, key);
 	}
 
 	// custom select events
@@ -104,12 +99,6 @@ export default class Select extends SelectBase<SelectProperties> {
 	}
 
 	private _onDropdownKeyDown(event: KeyboardEvent) {
-		const {
-			key = '',
-			onKeyDown
-		} = this.properties;
-		onKeyDown && onKeyDown(event, key);
-
 		if (event.which === Keys.Escape) {
 			this._callTriggerFocus = true;
 			this._closeSelect();
@@ -117,9 +106,6 @@ export default class Select extends SelectBase<SelectProperties> {
 	}
 
 	private _onTriggerClick(event: MouseEvent) {
-		const { key = '', onClick } = this.properties;
-		onClick && onClick(key);
-
 		this._open ? this._closeSelect() : this._openSelect();
 	}
 
@@ -135,16 +121,13 @@ export default class Select extends SelectBase<SelectProperties> {
 	}
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
-		const {
-			key = '',
-			onKeyDown
-		} = this.properties;
-
-		onKeyDown && onKeyDown(event, key);
-
 		if (event.which === Keys.Down) {
 			this._openSelect();
 		}
+	}
+
+	private _onTriggerMouseDown() {
+		this._ignoreBlur = true;
 	}
 
 	private _onListboxBlur(event: FocusEvent) {
@@ -178,7 +161,8 @@ export default class Select extends SelectBase<SelectProperties> {
 	protected onElementUpdated(element: HTMLElement, key: string) {
 		if (key === 'root' && this._callListboxFocus) {
 			this._callListboxFocus = false;
-			(element.querySelector('[role="listbox"]') as HTMLElement).focus();
+			const listbox = <HTMLElement> element.querySelector('[role="listbox"]');
+			listbox && listbox.focus();
 		}
 
 		if (key === 'trigger' && this._callTriggerFocus) {
@@ -216,7 +200,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		const optionNodes = options.map((option, i) => v('option', {
 			value: getOptionValue ? getOptionValue(option, i) : '',
 			id: getOptionId ? getOptionId(option, i) : undefined,
-			disabled: getOptionDisabled ? getOptionDisabled(option, i) : false,
+			disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
 			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
 		}, [ getOptionLabel ? getOptionLabel(option) : '' ]));
 
@@ -233,9 +217,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				value,
 				onblur: this._onBlur,
 				onchange: this._onNativeChange,
-				onclick: this._onClick,
-				onfocus: this._onFocus,
-				onkeydown: this._onKeyDown
+				onfocus: this._onFocus
 			}, optionNodes),
 			this.renderExpandIcon()
 		]);
@@ -329,7 +311,8 @@ export default class Select extends SelectBase<SelectProperties> {
 				onblur: this._onTriggerBlur,
 				onclick: this._onTriggerClick,
 				onfocus: this._onFocus,
-				onkeydown: this._onTriggerKeyDown
+				onkeydown: this._onTriggerKeyDown,
+				onmousedown: this._onTriggerMouseDown
 			}, [ getOptionLabel ? getOptionLabel(selectedOption) : '' ]),
 			this.renderExpandIcon()
 		];

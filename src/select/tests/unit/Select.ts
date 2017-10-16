@@ -4,11 +4,12 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty, replaceChild, findIndex } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty, findIndex } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import Select, { SelectProperties } from '../../Select';
+import Listbox from '../../../listbox/Listbox';
 import Label from '../../../label/Label';
 import * as css from '../../styles/select.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
@@ -23,16 +24,14 @@ interface TestEventInit extends EventInit {
 	which: number;
 }
 
-const testOptions: OptionData[] = [
+const testOptions: any[] = [
 	{
 		label: 'One',
-		value: 'one',
-		id: 'first'
+		value: 'one'
 	},
 	{
 		label: 'Two',
-		value: 'two',
-		selected: true
+		value: 'two'
 	},
 	{
 		label: 'Three',
@@ -41,47 +40,59 @@ const testOptions: OptionData[] = [
 	}
 ];
 
-let ExpectedCustomOption: typeof SelectOption;
+const testProperties: Partial<SelectProperties> = {
+	describedBy: 'foo',
+	disabled: true,
+	id: 'foo',
+	invalid: true,
+	getOptionDisabled: (option: any, index: number) => !!option.disabled,
+	getOptionId: (option: any, index: number) => option.value,
+	getOptionLabel: (option: any) => option.label,
+	getOptionSelected: (option: any, index: number) => option.value === 'two',
+	getOptionValue: (option: any, index: number) => option.value,
+	name: 'foo',
+	options: testOptions,
+	readOnly: true,
+	required: true,
+	value: 'two'
+};
 
-const expectedNative = function(widget: any, multiple = false) {
+const expectedNative = function(widget: any, useTestProperties = false) {
 	return v('div', { classes: widget.classes(css.inputWrapper) }, [
 		v('select', {
 			classes: widget.classes(css.input),
-			'aria-describedby': undefined,
-			disabled: undefined,
-			'aria-invalid': null,
-			multiple: multiple ? true : null,
-			name: undefined,
-			readOnly: undefined,
-			'aria-readonly': null,
-			required: undefined,
-			value: undefined,
+			'aria-describedby': useTestProperties ? 'foo' : undefined,
+			disabled: useTestProperties ? true : undefined,
+			'aria-invalid': useTestProperties ? 'true' : null,
+			name: useTestProperties ? 'foo' : undefined,
+			readOnly: useTestProperties ? true : undefined,
+			'aria-readonly': useTestProperties ? 'true' : null,
+			required: useTestProperties ? true : undefined,
+			value: useTestProperties ? 'two' : undefined,
 			onblur: widget.listener,
 			onchange: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			onkeydown: widget.listener
+			onfocus: widget.listener
 		}, [
 			v('option', {
-				value: 'one',
-				innerHTML: 'One',
-				disabled: undefined,
-				selected: null
-			}),
+				value: useTestProperties ? 'one' : '',
+				id: useTestProperties ? 'one' : undefined,
+				disabled: useTestProperties ? false : undefined,
+				selected: useTestProperties ? false : undefined
+			}, [ useTestProperties ? 'One' : '' ]),
 			v('option', {
-				value: 'two',
-				innerHTML: 'Two',
-				disabled: undefined,
-				selected: multiple ? true : null
-			}),
+				value: useTestProperties ? 'two' : '',
+				id: useTestProperties ? 'two' : undefined,
+				disabled: useTestProperties ? false : undefined,
+				selected: useTestProperties ? true : undefined
+			}, [ useTestProperties ? 'Two' : '' ]),
 			v('option', {
-				value: 'three',
-				innerHTML: 'Three',
-				disabled: true,
-				selected: null
-			})
+				value: useTestProperties ? 'three' : '',
+				id: useTestProperties ? 'three' : undefined,
+				disabled: useTestProperties ? true : undefined,
+				selected: useTestProperties ? false : undefined
+			}, [ useTestProperties ? 'Three' : '' ])
 		]),
-		multiple ? null : v('span', { classes: widget.classes(css.arrow) }, [
+		v('span', { classes: widget.classes(css.arrow) }, [
 			v('i', { classes: widget.classes(iconCss.icon, iconCss.downIcon),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
@@ -89,72 +100,29 @@ const expectedNative = function(widget: any, multiple = false) {
 	]);
 };
 
-const expectedOptions = function(widget: any, multiple = false) {
-	return [
-		w(ExpectedCustomOption, {
-			focused: true,
-			index: 0,
-			key: '0',
-			optionData: {
-				id: 'first',
-				value: 'one',
-				label: 'One',
-				selected: multiple ? undefined : false
-			},
-			onMouseDown: widget.listener,
-			onClick: widget.listener,
-			theme: undefined
-		}),
-		w(ExpectedCustomOption, {
-			focused: false,
-			index: 1,
-			key: '1',
-			optionData: {
-				id: <any> compareId,
-				value: 'two',
-				label: 'Two',
-				selected: multiple ? true : false
-			},
-			onMouseDown: widget.listener,
-			onClick: widget.listener,
-			theme: undefined
-		}),
-		w(ExpectedCustomOption, {
-			focused: false,
-			index: 2,
-			key: '2',
-			optionData: {
-				id: <any> compareId,
-				value: 'three',
-				label: 'Three',
-				selected: multiple ? undefined : false,
-				disabled: true
-			},
-			onMouseDown: widget.listener,
-			onClick: widget.listener,
-			theme: undefined
-		})
-	];
-};
-
-const expectedSingle = function(widget: any) {
+const expectedSingle = function(widget: any, useTestProperties = false, open = false) {
 	return v('div', {
-		classes: widget.classes(css.inputWrapper)
+		classes: widget.classes(css.inputWrapper, open ? css.open : null),
+		key: 'root'
 	}, [
 		v('button', {
-			classes: widget.classes(css.trigger),
-			disabled: undefined,
-			'aria-controls': compareId,
-			'aria-owns': compareId,
-			'aria-expanded': 'false',
+			'aria-controls': <any> compareId,
+			'aria-expanded': open ? 'true' : 'false',
 			'aria-haspopup': 'listbox',
-			'aria-activedescendant': 'first',
-			value: undefined,
+			'aria-invalid': useTestProperties ? 'true' : null,
+			'aria-readonly': useTestProperties ? 'true' : null,
+			'aria-required': useTestProperties ? 'true' : null,
+			classes: widget.classes(css.trigger),
+			describedBy: useTestProperties ? 'foo' : undefined,
+			disabled: useTestProperties ? true : undefined,
+			key: 'trigger',
+			value: useTestProperties ? 'two' : undefined,
 			onblur: widget.listener,
 			onclick: widget.listener,
 			onfocus: widget.listener,
-			onkeydown: widget.listener
-		}, [ 'One' ]),
+			onkeydown: widget.listener,
+			onmousedown: widget.listener
+		}, [ useTestProperties ? 'Two' : '' ]),
 		v('span', { classes: widget.classes(css.arrow) }, [
 			v('i', {
 				classes: widget.classes(iconCss.icon, iconCss.downIcon),
@@ -163,34 +131,25 @@ const expectedSingle = function(widget: any) {
 			})
 		]),
 		v('div', {
-			role: 'listbox',
-			id: <any> compareId,
 			classes: widget.classes(css.dropdown),
-			'aria-describedby': undefined,
-			'aria-invalid': null,
-			'aria-readonly': null,
-			'aria-required': null
-		}, expectedOptions(widget))
-	]);
-};
-
-const expectedMultiple = function(widget: any) {
-	return v('div', { classes: widget.classes(css.inputWrapper) }, [
-		v('div', {
-			role: 'listbox',
-			classes: widget.classes(css.input),
-			disabled: undefined,
-			'aria-describedby': undefined,
-			'aria-invalid': null,
-			'aria-multiselectable': 'true',
-			'aria-activedescendant': 'first',
-			'aria-readonly': null,
-			'aria-required': null,
-			tabIndex: 0,
-			onblur: widget.listener,
-			onfocus: widget.listener,
+			onfocusout: widget.listener,
 			onkeydown: widget.listener
-		}, expectedOptions(widget, true))
+		}, [
+			w(Listbox, {
+				activeIndex: 0,
+				describedBy: useTestProperties ? 'foo' : undefined,
+				id: <any> compareId,
+				optionData: useTestProperties ? testOptions : [],
+				tabIndex: open ? 0 : -1,
+				getOptionDisabled: useTestProperties ? widget.listener : undefined,
+				getOptionId: useTestProperties ? widget.listener : undefined,
+				getOptionLabel: useTestProperties ? widget.listener : undefined,
+				getOptionSelected: useTestProperties ? widget.listener : undefined,
+				theme: undefined,
+				onActiveIndexChange: widget.listener,
+				onOptionSelect: widget.listener
+			})
+		])
 	]);
 };
 
@@ -204,6 +163,7 @@ const expected = function(widget: any, selectVdom: any, label = false) {
 	if (label) {
 		return w(Label, {
 			extraClasses: { root: css.root },
+			forId: <any> compareId,
 			label: 'foo',
 			theme: undefined
 		}, [ selectVdom ]);
@@ -219,7 +179,6 @@ registerSuite('Select', {
 
 	beforeEach() {
 		widget = harness(Select);
-		ExpectedCustomOption = SelectOption;
 	},
 
 	afterEach() {
@@ -227,6 +186,7 @@ registerSuite('Select', {
 	},
 
 	tests: {
+
 		'Native Single Select': {
 			'default properties'() {
 				widget.setProperties({
@@ -240,29 +200,11 @@ registerSuite('Select', {
 
 			'custom properties'() {
 				widget.setProperties({
-					describedBy: 'id1',
-					disabled: true,
-					invalid: true,
-					name: 'bar',
-					options: testOptions,
-					readOnly: true,
-					required: true,
-					useNativeElement: true,
-					value: 'one'
+					...testProperties,
+					useNativeElement: true
 				});
 
-				const selectVdom = expectedNative(widget);
-				assignChildProperties(selectVdom, '0', {
-					'aria-describedby': 'id1',
-					disabled: true,
-					'aria-invalid': 'true',
-					name: 'bar',
-					readOnly: true,
-					'aria-readonly': 'true',
-					required: true,
-					value: 'one'
-				});
-
+				const selectVdom = expectedNative(widget, true);
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
 					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
@@ -273,464 +215,233 @@ registerSuite('Select', {
 
 			'basic events'() {
 				const onBlur = sinon.stub();
-				const onClick = sinon.stub();
 				const onFocus = sinon.stub();
-				const onKeyDown = sinon.stub();
 
 				widget.setProperties({
 					useNativeElement: true,
 					onBlur,
-					onClick,
-					onFocus,
-					onKeyDown
+					onFocus
 				});
 
 				widget.sendEvent('blur', { selector: 'select' });
 				assert.isTrue(onBlur.called, 'onBlur called');
-				widget.sendEvent('click', { selector: 'select' });
-				assert.isTrue(onClick.called, 'onClick called');
 				widget.sendEvent('focus', { selector: 'select' });
 				assert.isTrue(onFocus.called, 'onFocus called');
-				widget.sendEvent('keydown', { selector: 'select' });
-				assert.isTrue(onKeyDown.called, 'onKeyDown called');
 			},
 
 			'onChange called with correct option'() {
 				const onChange = sinon.stub();
 				widget.setProperties({
+					getOptionValue: testProperties.getOptionValue,
 					options: testOptions,
 					useNativeElement: true,
 					onChange
 				});
 
-				widget.sendEvent('change', {
-					target: widget.getDom().querySelector('option')!
+				widget.sendEvent('change', { selector: 'option' });
+				assert.isTrue(onChange.calledWith(testOptions[0]), 'onChange should be called with the first entry in the testOptions array');
+			},
+
+			'events called with widget key'() {
+				const onBlur = sinon.stub();
+				const onFocus = sinon.stub();
+				const onChange = sinon.stub();
+				widget.setProperties({
+					key: 'foo',
+					getOptionValue: testProperties.getOptionValue,
+					useNativeElement: true,
+					options: testOptions,
+					onBlur,
+					onFocus,
+					onChange
 				});
 
-				assert.isTrue(onChange.calledWith(testOptions[0]), 'onChange should be called with the first entry in the testOptions array');
+				widget.sendEvent('blur', { selector: 'select' });
+				assert.isTrue(onBlur.calledWith('foo'), 'onBlur called with foo key');
+				widget.sendEvent('focus', { selector: 'select' });
+				assert.isTrue(onFocus.calledWith('foo'), 'onFocus called with foo key');
+				widget.sendEvent('change', { selector: 'option' });
+				assert.isTrue(onChange.calledWith(testOptions[0], 'foo'), 'onChange called with foo key');
 			}
-		},
-
-		'Native Multi-select'() {
-			widget.setProperties({
-				multiple: true,
-				options: testOptions,
-				useNativeElement: true
-			});
-
-			const selectVdom = expectedNative(widget, true);
-			const expectedVdom = expected(widget, selectVdom);
-			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.multiselect)
-			});
-			widget.expectRender(expectedVdom);
-		},
-
-		'Custom option factory'() {
-			class CustomOption extends SelectOption {
-				renderLabel() {
-					return 'foo';
-				}
-			}
-
-			ExpectedCustomOption = CustomOption;
-			widget.setProperties({
-				CustomOption,
-				options: testOptions
-			});
-
-			let selectVdom = expectedSingle(widget);
-			widget.expectRender(expected(widget, selectVdom));
-
-			ExpectedCustomOption = SelectOption;
-			widget.setProperties({
-				CustomOption: undefined,
-				options: testOptions
-			});
-
-			selectVdom = expectedSingle(widget);
-			widget.expectRender(expected(widget, selectVdom));
 		},
 
 		'Custom Single-select': {
 			'default properties'() {
-				widget.setProperties({
-					options: testOptions
-				});
-
 				let selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom), 'renders with options');
-
-				widget.setProperties({
-					options: undefined
-				});
-				selectVdom = expectedSingle(widget);
-				replaceChild(selectVdom, '2', v('div', {
-					role: 'listbox',
-					id: <any> compareId,
-					classes: widget.classes(css.dropdown),
-					'aria-describedby': undefined,
-					'aria-invalid': null,
-					'aria-readonly': null,
-					'aria-required': null
-				}, []));
-				replaceChild(selectVdom, '0,0', '');
-				assignChildProperties(selectVdom, '0', {
-					'aria-activedescendant': null
-				});
-				widget.expectRender(expected(widget, selectVdom), 'renders with no options');
+				widget.expectRender(expected(widget, selectVdom));
 			},
 
 			'custom properties'() {
-				widget.setProperties({
-					describedBy: 'id1',
-					disabled: true,
-					invalid: true,
-					options: testOptions,
-					readOnly: true,
-					required: true,
-					value: 'two'
-				});
-				const selectVdom = expectedSingle(widget);
+				widget.setProperties(testProperties);
 
-				assignChildProperties(selectVdom, '0', {
-					disabled: true,
-					value: 'two'
-				});
-				assignChildProperties(selectVdom, '2', {
-					'aria-describedby': 'id1',
-					'aria-invalid': 'true',
-					'aria-readonly': 'true',
-					'aria-required': 'true'
-				});
-				assignChildProperties(selectVdom, '2,1', {
-					optionData: {
-						id: <any> compareId,
-						value: 'two',
-						label: 'Two',
-						selected: true
-					}
-				});
-				replaceChild(selectVdom, '0,0', 'Two');
-
+				const selectVdom = expectedSingle(widget, true);
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+					classes: widget.classes(css.root, css.multiselect)
 				});
-
 				widget.expectRender(expectedVdom);
 			},
 
-			'Open/close on trigger click'() {
-				const onClick = sinon.stub();
-
+			'open/close on trigger click'() {
 				widget.setProperties({
-					options: testOptions,
-					onClick
+					...testProperties
 				});
-				let selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom));
-
-				widget.sendEvent('click', { selector: 'button' });
-
-				// need to call this here so the class is present in all widget.classes() calls
-				widget.classes(css.open);
-				selectVdom = expectedSingle(widget);
+				let selectVdom = expected(widget, expectedSingle(widget, true));
 				assignProperties(selectVdom, {
-					classes: widget.classes(css.inputWrapper, css.open)
+					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
 				});
-				assignChildProperties(selectVdom, '0', {
-					'aria-expanded': 'true'
-				});
-
-				widget.expectRender(expected(widget, selectVdom), 'Open on first click');
+				widget.expectRender(selectVdom, 'Dropdown is closed before click');
 
 				widget.sendEvent('click', { selector: 'button' });
-				selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom), 'Close on second click');
-				assert.isTrue(onClick.calledTwice, 'onClick handler called two times');
+
+				selectVdom = expected(widget, expectedSingle(widget, true, true));
+				assignProperties(selectVdom, {
+					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+				});
+				widget.expectRender(selectVdom, 'Open on first click');
+
+				widget.sendEvent('click', { selector: 'button' });
+				selectVdom = expected(widget, expectedSingle(widget, true));
+				assignProperties(selectVdom, {
+					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+				});
+				widget.expectRender(selectVdom, 'Close on second click');
 			},
 
-			'Click options'() {
-				const onClick = sinon.stub();
-				const onChange = sinon.stub();
-				const preventDefault = sinon.stub();
-
-				widget.setProperties({
-					options: testOptions,
-					onChange,
-					onClick
-				});
-
-				widget.sendEvent('click', { selector: 'button' });
-				assert.isTrue(isOpen(widget), 'Widget opens on button click');
-
-				widget.callListener('onClick', {
-					args: [ { preventDefault }, 1 ],
-					key: '1'
-				});
-				assert.isTrue(onChange.calledOnce, 'onChange called when clicking second option');
-				assert.strictEqual(onChange.getCall(0).args[0].value, 'two', 'Clicking second option calls onChange with correct data');
-				assert.isTrue(onClick.calledTwice, 'onClick handler calls twice for button click and option click');
-				assert.isFalse(isOpen(widget), 'Clicking option closes menu');
-
-				widget.sendEvent('click', { selector: 'button' });
-				widget.callListener('onClick', {
-					args: [ { preventDefault }, 2 ],
-					key: '2'
-				});
-				assert.isTrue(onChange.calledOnce, 'onChange not called when clicking disabled option');
-				assert.isTrue(preventDefault.calledOnce, 'event.preventDefault called when clicking disabled option');
-				assert.isTrue(isOpen(widget), 'Clicking disabled option doesn\'t close menu');
-			},
-
-			'Open/close with keyboard and blur'() {
-				const onBlur = sinon.stub();
-				const onKeyDown = sinon.stub();
-
-				widget.setProperties({
-					options: testOptions,
-					onBlur,
-					onKeyDown
-				});
-				let selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom));
-
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Down
-					},
-					selector: 'button'
-				});
-
-				// need to call this here so the class is present in all widget.classes() calls
-				widget.classes(css.open);
-				selectVdom = expectedSingle(widget);
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.inputWrapper, css.open)
-				});
-				assignChildProperties(selectVdom, '0', {
-					'aria-expanded': 'true'
-				});
-
-				widget.expectRender(expected(widget, selectVdom), 'Opens with down arrow');
-
-				widget.callListener('onMouseDown', { key: '1' });
-				widget.sendEvent('blur', { selector: 'button' });
-				assert.isTrue(isOpen(widget), 'Widget doesn\'t close after mousedown then blur');
-
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Escape
-					},
-					selector: 'button'
-				});
-				selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom), 'Close on escape key');
-				assert.isTrue(onKeyDown.calledTwice, 'onKeyDown event handler called twice');
-
-				widget.sendEvent('click', { selector: 'button' });
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.inputWrapper, css.open)
-				});
-				assignChildProperties(selectVdom, '0', {
-					'aria-expanded': 'true'
-				});
-				widget.expectRender(expected(widget, selectVdom), 'Opens on button click');
-
-				widget.sendEvent('blur', { selector: 'button' });
-				selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom), 'Closes after blur event');
-				assert.isTrue(onBlur.called, 'onBlur event handler called');
-			},
-
-			'Navigate options with keyboard'() {
+			'select options'() {
 				const onChange = sinon.stub();
 
+				ExpectedCustomOption = CustomOption;
 				widget.setProperties({
 					options: testOptions,
 					onChange
 				});
 
-				widget.sendEvent('click', { selector: 'button' });
+				widget.sendEvent('click', { key: 'trigger' });
+				assert.isTrue(isOpen(widget), 'Widget opens on button click');
+
+				widget.callListener('onOptionSelect', { args: [ testOptions[1] ], index: '0,2,0' });
+				assert.isFalse(isOpen(widget), 'Widget closes on option select');
+				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
+
+				// open widget a second time
+				widget.sendEvent('click', { key: 'trigger' });
+
+				widget.sendEvent('mousedown', { key: 'trigger' });
+				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
+				widget.sendEvent('click', { key: 'trigger' });
+				assert.isFalse(isOpen(widget), 'Widget closes on second button click');
+			},
+
+			'change active option'() {
+				widget.setProperties({
+					...testProperties
+				});
+				let selectVdom = expected(widget, expectedSingle(widget, true));
+				assignProperties(selectVdom, {
+					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+				});
+				widget.callListener('onActiveIndexChange', { args: [ 1 ], index: '0,2,0' });
+
+				selectVdom = expected(widget, expectedSingle(widget, true));
+				assignProperties(selectVdom, {
+					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+				});
+				assignProperties(selectVdom, {
+					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+				});
+				assignChildProperties(selectVdom, '0,2,0', { activeIndex: 1 });
+
+				widget.expectRender(selectVdom);
+			},
+
+			'open/close with keyboard'() {
+				widget.setProperties({
+					options: testOptions
+				});
+
 				widget.sendEvent<TestEventInit>('keydown', {
 					eventInit: {
 						which: Keys.Down
 					},
-					selector: 'button'
+					key: 'trigger'
 				});
+				assert.isTrue(isOpen(widget), 'Dropdown opens with down arrow on button');
+
 				widget.sendEvent<TestEventInit>('keydown', {
 					eventInit: {
 						which: Keys.Enter
 					},
-					selector: 'button'
+					selector: `.${css.dropdown}`
 				});
-				assert.isTrue(onChange.calledOnce, 'onChange handler called');
-				assert.strictEqual(onChange.getCall(0).args[0].value, 'two', 'Down arrow + enter selects the second option');
+				assert.isTrue(isOpen(widget), 'Dropdown does not close with any key');
 
 				widget.sendEvent<TestEventInit>('keydown', {
 					eventInit: {
-						which: Keys.End
+						which: Keys.Escape
 					},
-					selector: 'button'
+					selector: `.${css.dropdown}`
 				});
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Enter
-					},
-					selector: 'button'
-				});
-				assert.isTrue(onChange.calledOnce, 'End + enter doesn\'t select disabled option');
-
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Down
-					},
-					selector: 'button'
-				});
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Space
-					},
-					selector: 'button'
-				});
-				assert.strictEqual(onChange.getCall(1).args[0].value, 'one', 'Down arrow wraps around to first option');
+				assert.isFalse(isOpen(widget), 'Dropdown closes with escape key on dropdown');
 
 				widget.sendEvent<TestEventInit>('keydown', {
 					eventInit: {
 						which: Keys.Up
 					},
-					selector: 'button'
+					key: 'trigger'
 				});
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Space
-					},
-					selector: 'button'
-				});
-				assert.isTrue(onChange.calledTwice, 'Up arrow wraps to last [disabled] option');
-
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Home
-					},
-					selector: 'button'
-				});
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Space
-					},
-					selector: 'button'
-				});
-				assert.strictEqual(onChange.getCall(2).args[0].value, 'one', 'Home goes to first option');
-			}
-		},
-
-		'Custom multi-select': {
-			'default properties'() {
-				widget.setProperties({
-					multiple: true,
-					options: testOptions
-				});
-				let selectVdom = expectedMultiple(widget);
-				let expectedVdom = expected(widget, selectVdom);
-				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.multiselect)
-				});
-				widget.expectRender(expectedVdom, 'renders with custom options');
-
-				widget.setProperties({
-					multiple: true,
-					options: undefined
-				});
-				selectVdom = expectedMultiple(widget);
-				replaceChild(selectVdom, '0', v('div', {
-					role: 'listbox',
-					classes: widget.classes(css.input),
-					disabled: undefined,
-					'aria-describedby': undefined,
-					'aria-invalid': null,
-					'aria-multiselectable': 'true',
-					'aria-activedescendant': null,
-					'aria-readonly': null,
-					'aria-required': null,
-					tabIndex: 0,
-					onblur: widget.listener,
-					onfocus: widget.listener,
-					onkeydown: widget.listener
-				}, []));
-				expectedVdom = expected(widget, selectVdom);
-				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.multiselect)
-				});
-				widget.expectRender(expectedVdom, 'renders with no options');
+				assert.isFalse(isOpen(widget), 'Dropdown does not open with any key');
 			},
 
-			'custom properties'() {
-				widget.setProperties({
-					describedBy: 'id1',
-					disabled: true,
-					invalid: true,
-					multiple: true,
-					options: testOptions,
-					readOnly: true,
-					required: true,
-					value: 'two'
-				});
-
-				let selectVdom = expectedMultiple(widget);
-				assignChildProperties(selectVdom, '0', {
-					disabled: true,
-					'aria-describedby': 'id1',
-					'aria-invalid': 'true',
-					'aria-readonly': 'true',
-					'aria-required': 'true'
-				});
-				let expectedVdom = expected(widget, selectVdom);
-				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.multiselect, css.readonly, css.required)
-				});
-				widget.expectRender(expectedVdom, 'renders with custom properties and state classes');
-
-				widget.setProperties({
-					invalid: false,
-					multiple: true,
-					options: testOptions
-				});
-				selectVdom = expectedMultiple(widget);
-				expectedVdom = expected(widget, selectVdom);
-				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.valid, css.multiselect)
-				});
-				widget.expectRender(expectedVdom, 'renders with valid state class');
-			},
-
-			'events'() {
+			'close on listbox blur'() {
 				const onBlur = sinon.stub();
-				const onFocus = sinon.stub();
-				const onKeyDown = sinon.stub();
-
 				widget.setProperties({
-					multiple: true,
-					onBlur,
-					onFocus,
-					onKeyDown
+					options: testOptions,
+					onBlur
 				});
 
-				widget.sendEvent('blur', { selector: `.${css.input}` });
-				assert.isTrue(onBlur.called, 'onBlur handler called');
-				widget.sendEvent('focus', { selector: `.${css.input}` });
-				assert.isTrue(onFocus.called, 'onFocus handler called');
-				widget.sendEvent('keydown', { selector: `.${css.input}` });
-				assert.isTrue(onKeyDown.called, 'onKeyDown handler called');
+				widget.sendEvent('click', { key: 'trigger' });
+				widget.sendEvent('blur', { key: 'trigger' }); // fake trigger blur after opening dropdown
+				assert.isTrue(isOpen(widget), 'Dropdown opens with click on button');
+
+				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
+				assert.isFalse(isOpen(widget), 'Dropdown closes on listbox blur');
+				assert.isTrue(onBlur.calledOnce, 'onBlur callback should only be called once for last blur event');
+			},
+
+			'close on trigger blur'() {
+				const onBlur = sinon.stub();
+				widget.setProperties({
+					options: testOptions,
+					onBlur
+				});
+
+				widget.sendEvent('click', { key: 'trigger' });
+				widget.sendEvent('blur', { key: 'trigger' }); // fake trigger blur after opening dropdown
+				assert.isTrue(isOpen(widget), 'Dropdown opens with click on button');
+
+				widget.sendEvent('blur', { key: 'trigger' });
+				assert.isFalse(isOpen(widget), 'Dropdown closes on trigger blur');
+				assert.isTrue(onBlur.calledOnce, 'onBlur callback should only be called once for last blur event');
+			},
+
+			'events called with widget key'() {
+				const onBlur = sinon.stub();
+				widget.setProperties({ key: 'foo', onBlur });
+
+				widget.sendEvent('blur', { key: 'trigger' });
+				assert.isTrue(onBlur.calledWith('foo'), 'Trigger blur event called with foo key');
+
+				widget.sendEvent('blur', { key: 'trigger' }); // first second blur to reset _ignoreBlur
+				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
+				assert.isTrue(onBlur.getCall(1).calledWith('foo'), 'Dropdown blur event called with foo key');
 			}
 		},
 
 		label: {
 			'default properties'() {
 				widget.setProperties({
-					label: 'foo',
-					options: testOptions
+					label: 'foo'
 				});
 				const selectVdom = expectedSingle(widget);
 				widget.expectRender(expected(widget, selectVdom, true), 'renders label with basic properties');
@@ -738,25 +449,26 @@ registerSuite('Select', {
 
 			'state classes and form id'() {
 				widget.setProperties({
-					disabled: true,
-					invalid: true,
-					label: 'foo',
-					options: testOptions,
-					readOnly: true,
-					required: true
+					...testProperties,
+					label: 'foo'
 				});
-				const selectVdom = expectedSingle(widget);
-				assignChildProperties(selectVdom, '0', {
-					disabled: true
-				});
-				assignChildProperties(selectVdom, '2', {
-					'aria-invalid': 'true',
-					'aria-readonly': 'true',
-					'aria-required': 'true'
-				});
-				const expectedVdom = expected(widget, selectVdom, true);
+				const expectedVdom = expected(widget, expectedSingle(widget, true), true);
 				assignProperties(expectedVdom, {
 					extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
+				});
+				widget.expectRender(expectedVdom);
+			},
+
+			'valid state class'() {
+				widget.setProperties({
+					...testProperties,
+					invalid: false,
+					label: 'foo'
+				});
+				const expectedVdom = expected(widget, expectedSingle(widget, true), true);
+				assignChildProperties(expectedVdom, '0,0', { 'aria-invalid': null });
+				assignProperties(expectedVdom, {
+					extraClasses: { root: `${css.root} ${css.disabled} ${css.valid} ${css.readonly} ${css.required}` }
 				});
 				widget.expectRender(expectedVdom);
 			}
