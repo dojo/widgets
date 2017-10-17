@@ -46,10 +46,7 @@ interface FocusInputEvent extends FocusEvent {
  * @property value              Value to set on the input
  */
 export interface TimePickerProperties extends ThemeableProperties {
-	autoBlur?: boolean;
 	clearable?: boolean;
-	CustomOptionItem?: any;
-	CustomOptionMenu?: any;
 	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
@@ -235,10 +232,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 
 	protected renderCustomInput(): DNode {
 		const {
-			autoBlur,
 			clearable,
-			CustomOptionItem,
-			CustomOptionMenu,
 			disabled,
 			extraClasses,
 			inputProperties,
@@ -258,10 +252,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		} = this.properties;
 
 		return w(ComboBox, {
-			autoBlur,
 			clearable,
-			CustomResultItem: CustomOptionItem,
-			CustomResultMenu: CustomOptionMenu,
 			disabled,
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),
