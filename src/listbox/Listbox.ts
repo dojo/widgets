@@ -31,7 +31,7 @@ export interface ListboxProperties extends ThemeableProperties {
 	activeIndex?: number;
 	CustomOption?: Constructor<ListboxOption>;
 	describedBy?: string;
-	focused?: boolean;
+	visualFocus?: boolean;
 	id?: string;
 	multiselect?: boolean;
 	optionData?: any[];
@@ -75,13 +75,6 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 
 		switch (event.which) {
 			case Keys.Enter:
-				if (getOptionDisabled(activeItem, activeIndex)) {
-					event.preventDefault();
-				}
-				else {
-					onOptionSelect && onOptionSelect(activeItem, activeIndex, key);
-				}
-				break;
 			case Keys.Space:
 				if (getOptionDisabled(activeItem, activeIndex)) {
 					event.preventDefault();
@@ -110,9 +103,9 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 	}
 
 	protected getModifierClasses() {
-		const { focused } = this.properties;
+		const { visualFocus } = this.properties;
 		return [
-			focused ? css.focused : null
+			visualFocus ? css.focused : null
 		];
 	}
 

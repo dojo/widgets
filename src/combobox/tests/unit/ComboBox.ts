@@ -1,439 +1,667 @@
-const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
+import * as registerSuite from 'intern!object';
+import * as assert from 'intern/chai!assert';
+import * as sinon from 'sinon';
 
-import { VNode } from '@dojo/interfaces/vdom';
-import ComboBox from '../../ComboBox';
-import ResultItem from '../../ResultItem';
-import ResultMenu from '../../ResultMenu';
+import harness, { Harness } from '@dojo/test-extras/harness';
+import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
+import { v, w } from '@dojo/widget-core/d';
+import { Keys } from '../../../common/util';
 
-const keys = {
-	escape: 27,
-	enter: 13,
-	up: 38,
-	down: 40
+import ComboBox, { ComboBoxProperties } from '../../ComboBox';
+import Listbox from '../../../listbox/Listbox';
+import Label from '../../../label/Label';
+import TextInput from '../../../textinput/TextInput';
+import * as css from '../../styles/comboBox.m.css';
+import * as iconCss from '../../../common/styles/icons.m.css';
+
+let widget: Harness<ComboBoxProperties, typeof ComboBox>;
+
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
+
+const testOptions: any[] = [
+	{
+		label: 'One',
+		value: 'one'
+	},
+	{
+		label: 'Two',
+		value: 'two'
+	},
+	{
+		label: 'Three',
+		value: 'three',
+		disabled: true
+	}
+];
+
+const testProperties = {
+	clearable: true,
+	getResultLabel: (result: any) => result.label,
+	id: 'foo',
+	label: 'foo',
+	results: testOptions,
+	value: 'one',
+	theme: {}
 };
 
-function inputElement() {
-	return <any> {
-		value: 'foobar',
-		blur() { },
-		focus() { }
-	};
-}
+const expectedControls = function(widget: any, useTestProperties: boolean, label: boolean) {
+	const controlsVdom = v('div', {
+		classes: widget.classes(css.controls)
+	}, [
+		w(TextInput, <any> {
+			key: 'textinput',
+			'aria-activedescendant': <any> compareId,
+			'aria-owns': <any> compareId,
+			classes: widget.classes(useTestProperties ? css.clearable : null),
+			controls: <any> compareId,
+			disabled: undefined,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			theme: useTestProperties ? {} : undefined,
+			value: useTestProperties ? 'one' : '',
+			onBlur: widget.listener,
+			onFocus: widget.listener,
+			onInput: widget.listener,
+			onKeyDown: widget.listener
+		}),
+		useTestProperties ? v('button', {
+			'aria-controls': <any> compareId,
+			classes: widget.classes(css.clear),
+			disabled: undefined,
+			readOnly: undefined,
+			onclick: widget.listener
+		}, [
+			'clear combo box',
+			v('i', { classes: widget.classes(iconCss.icon, iconCss.closeIcon),
+				role: 'presentation', 'aria-hidden': 'true'
+			})
+		]) : null,
+		v('button', {
+			classes: widget.classes(css.trigger),
+			disabled: undefined,
+			readOnly: undefined,
+			tabIndex: -1,
+			onclick: widget.listener
+		}, [
+			'open combo box',
+			v('i', {
+				'aria-hidden': 'true',
+				classes: widget.classes(iconCss.icon, iconCss.downIcon),
+				role: 'presentation'
+			})
+		])
+	]);
 
-function parentElement(input?: any) {
-	if (!input) {
-		input = inputElement();
+	if (label) {
+		return w(Label, {
+			label: 'foo',
+			theme: useTestProperties ? {} : undefined
+		}, [ controlsVdom ]);
 	}
-	return <any> {
-		querySelector() {
-			return input;
-		}
-	};
+
+	return controlsVdom;
+};
+
+function isOpen(widget: any): boolean {
+	const vdom = widget.getRender();
+	return (<any> vdom)!.properties!['aria-expanded'] === 'true';
 }
 
-function event(which = 0) {
-	return <any> {
-		which: which,
-		target: {
-			value: '',
-			getAttribute() { }
+const expectedMenu = function(widget: any, useTestProperties: boolean, open: boolean) {
+	if (!open || !useTestProperties) {
+		return null;
+	}
+
+	return v('div', {
+		key: 'dropdown',
+		classes: widget.classes(css.dropdown),
+		onmouseover: widget.listener,
+		onmousedown: widget.listener
+	}, [
+		w(Listbox, {
+			activeIndex: 0,
+			id: <any> compareId,
+			visualFocus: false,
+			optionData: testOptions,
+			tabIndex: -1,
+			getOptionDisabled: undefined,
+			getOptionId: widget.listener,
+			getOptionLabel: widget.listener,
+			onActiveIndexChange: widget.listener,
+			onOptionSelect: widget.listener,
+			theme: useTestProperties ? {} : undefined
+		})
+	]);
+};
+
+const expectedVdom = function(widget: any, useTestProperties = false, open = false, label = false) {
+	const menuVdom = expectedMenu(widget, useTestProperties, open);
+	const controlsVdom = expectedControls(widget, useTestProperties, label);
+
+	return v('div', {
+		'aria-expanded': open ? 'true' : 'false',
+		'aria-haspopup': 'true',
+		'aria-readonly': 'false',
+		'aria-required': 'false',
+		id: useTestProperties ? 'foo' : undefined,
+		classes: widget.classes(
+			css.root,
+			open ? css.open : null
+		),
+		key: 'root',
+		role: 'combobox'
+	}, [
+		controlsVdom,
+		menuVdom
+	]);
+};
+
+registerSuite({
+	name: 'ComboBox',
+
+	beforeEach() {
+		widget = harness(ComboBox);
+	},
+
+	afterEach() {
+		widget.destroy();
+	},
+
+	tests: {
+		'renders with default properties'() {
+			const vdom = expectedVdom(widget);
+			widget.expectRender(vdom);
 		},
-		preventDefault() { }
-	};
-}
 
-registerSuite('ComboBox', {
-	'Menu should open when arrow clicked'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['abc']
-		});
+		'renders with custom properties'() {
+			widget.setProperties(testProperties);
+			const vdom = expectedVdom(widget, true, false, true);
+			widget.expectRender(vdom);
+		},
 
-		(<any> comboBox)._onArrowClick();
-		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
-	},
+		'dropdown renders correctly when open'() {
+			widget.setProperties(testProperties);
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
 
-	'Label should render'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			label: 'foo'
-		});
+			let vdom = expectedVdom(widget, true, false, true);
+			vdom = expectedVdom(widget, true, true, true);
+			widget.expectRender(vdom);
+		},
 
-		const vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].children![0].properties!.innerHTML, 'foo');
-	},
+		'arrow click opens menu'() {
+			const onRequestResults = sinon.stub();
+			const onMenuChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				onRequestResults,
+				onMenuChange
+			});
 
-	'Menu should open on input'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['abc']
-		});
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
+			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults called when menu is opened');
+			assert.isTrue(onMenuChange.calledOnce, 'onMenuChange called when menu is opened');
+		},
 
-		(<any> comboBox)._onInput(event());
-		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
-	},
+		'menu opens on input'() {
+			const onChange = sinon.stub();
+			const onRequestResults = sinon.stub();
+			const onMenuChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				onChange,
+				onRequestResults,
+				onMenuChange
+			});
 
-	'Menu should close when input blurred'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['abc']
-		});
+			widget.callListener('onInput', {
+				args: [ { target: { value: 'foo' } } ],
+				key: 'textinput'
+			});
 
-		(<any> comboBox)._onInput(event());
-		(<any> comboBox)._onInputBlur(event());
-		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 1);
-	},
+			assert.isTrue(isOpen(widget), 'widget is open after input event');
+			assert.isTrue(onChange.calledWith('foo'), 'onChange callback called with input value');
+			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults callback called');
+			assert.isTrue(onMenuChange.calledOnce, 'onMenuChange called when menu is opened');
+		},
 
-	'Menu should close when result clicked'() {
-		const comboBox = new ComboBox();
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		comboBox.__setProperties__({
-			results: ['abc'],
-			getResultLabel: (value: string) => value
-		});
+		'menu closes on input blur'() {
+			const onBlur = sinon.stub();
+			const onMenuChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				onBlur,
+				onMenuChange
+			});
 
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		(<any> comboBox)._onResultMouseUp();
-		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 1);
-	},
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
 
-	'Blur should be ignored when clicking result'() {
-		const comboBox = new ComboBox();
-		let called = false;
-		comboBox.__setProperties__({
-			results: ['a', 'b']
-		});
-		comboBox.__setProperties__({
-			CustomResultItem: ResultItem
-		});
-		comboBox.__setProperties__({
-			CustomResultMenu: ResultMenu
-		});
-		comboBox.__setProperties__({
-			onBlur: () => called = true
-		});
+			widget.callListener('onBlur', {
+				args: [ { target: { value: 'foo' } } ],
+				key: 'textinput'
+			});
+			assert.isTrue(onBlur.calledWith('foo'), 'onBlur callback called with input value');
+			assert.isFalse(isOpen(widget), 'widget is closed after input blur');
+			assert.isTrue(onMenuChange.calledTwice, 'onMenuChange called twice');
+		},
 
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onResultMouseEnter(event(), 0);
-		(<any> comboBox)._onResultMouseDown();
-		(<any> comboBox)._onInputBlur(event());
-		assert.isFalse(called);
-	},
+		'blur ignored when clicking option'() {
+			const onBlur = sinon.stub();
+			const onMenuChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				onBlur,
+				onMenuChange
+			});
 
-	'Down arrow should change selected result if open'() {
-		const comboBox = new ComboBox();
-		(<any> comboBox)._moveActiveIndex();
-		comboBox.__setProperties__({
-			results: ['1', '2'],
-			required: true,
-			CustomResultItem: ResultItem,
-			CustomResultMenu: ResultMenu
-		});
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
 
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![1].children![0].properties!['data-selected'], 'true');
+			widget.sendEvent('mousedown', { key: 'dropdown' });
+			widget.callListener('onBlur', {
+				args: [ { target: { value: 'foo' } } ],
+				key: 'textinput'
+			});
 
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![1].children![1].properties!['data-selected'], 'true');
-	},
+			assert.isFalse(onBlur.called, 'onBlur not called for dropdown click');
+			assert.isTrue(isOpen(widget), 'dropdown not closed for dropdown click');
+			assert.isFalse(onMenuChange.calledTwice, 'onMenuChange only called once');
+		},
 
-	'Down arrow should open results if closed'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['abc']
-		});
+		'menu closes on result selection'() {
+			const onChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				onChange
+			});
 
-		(<any> comboBox).onElementCreated();
-		(<any> comboBox).onElementCreated(parentElement(), 'root');
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
-	},
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
 
-	'Up arrow should change selected result'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['1', '2']
-		});
+			widget.callListener('onOptionSelect', {
+				args: [ testOptions[1], 1 ],
+				index: '1,0'
+			});
+			assert.isTrue(onChange.calledWith('Two'), 'onChange callback called with label of second option');
+			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
+		},
 
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.up));
-		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![1].children![1].properties!['data-selected'], 'true');
+		'keyboard opens and closes menu'() {
+			const onRequestResults = sinon.stub();
+			const preventDefault = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				onRequestResults
+			});
 
-		(<any> comboBox)._onInputKeyDown(event(keys.up));
-		vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![1].children![0].properties!['data-selected'], 'true');
-	},
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Down, preventDefault } ],
+				key: 'textinput'
+			});
+			assert.isTrue(isOpen(widget), 'widget is open after down key press');
+			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults called when menu is opened');
+			assert.isTrue(preventDefault.calledOnce, 'down key press prevents default page scroll');
 
-	'Enter should select a result'() {
-		let inputValue = 'foobar';
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['1', '2'],
-			onChange: (value: string) => inputValue = value
-		});
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Escape } ],
+				key: 'textinput'
+			});
+			assert.isFalse(isOpen(widget), 'widget is closed after escape key press');
+		},
 
-		(<any> comboBox)._onInputKeyDown(event(keys.enter));
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.enter));
-		let vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 1);
+		'listbox onActiveIndexChange'() {
+			widget.setProperties(testProperties);
+			let vdom = expectedVdom(widget, true, true, true);
 
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		(<any> comboBox)._onInputKeyDown(event(keys.enter));
-		assert.strictEqual(inputValue, '1');
-	},
+			// open dropdown
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			widget.callListener('onActiveIndexChange', {
+				args: [ 1 ],
+				index: '1,0'
+			});
 
-	'Escape should close menu'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({ results: ['a', 'b', 'c']});
+			vdom = expectedVdom(widget, true, true, true);
+			assignChildProperties(vdom, '1,0', { activeIndex: 1 });
 
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.escape));
-		let vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 1);
-	},
+			widget.expectRender(vdom);
+		},
 
-	'Input should blur if autoBlur is true'() {
-		let blurred = false;
-		const input = inputElement();
-		input.blur = () => blurred = true;
-		const parent = parentElement(input);
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['abc'],
-			autoBlur: true
-		});
+		'keyboard navigates options'() {
+			const preventDefault = sinon.stub();
+			let vdom = expectedVdom(widget, true, true, true);
+			vdom = expectedVdom(widget, true, true, true);
 
-		(<any> comboBox).onElementCreated(parent, 'root');
-		parent.querySelector = () => null;
-		(<any> comboBox)._selectIndex(0);
-		(<any> comboBox).onElementUpdated();
-		(<any> comboBox).onElementUpdated(parent, 'root');
-		assert.isTrue(blurred);
-	},
+			widget.setProperties({
+				...testProperties,
+				label: undefined
+			});
+			// open dropdown
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
 
-	'Clearable should render clear button and allow input to be cleared'() {
-		let inputValue = 'foobar';
-		const comboBox: ComboBox = new ComboBox();
-		comboBox.__setProperties__({
-			clearable: true,
-			onChange: (value: string) => inputValue = value
-		});
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Down, preventDefault } ],
+				key: 'textinput'
+			});
 
-		<VNode> comboBox.__render__();
-		(<any> comboBox).onElementCreated(parentElement(), 'root');
-		(<any> comboBox)._onClearClick();
-		assert.strictEqual(inputValue, '');
-	},
+			// shouldn't need this line with correct bind
+			widget.setProperties(testProperties);
+			assignChildProperties(vdom, '1,0', {
+				activeIndex: 1,
+				visualFocus: true
+			});
+			widget.expectRender(vdom, 'down arrow moves active index to second option and sets visualFocus to true');
 
-	'Allowed inputProperties are transferred to child input'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			inputProperties: {
-				placeholder: 'foobar'
-			}
-		});
+			// shouldn't need this line with correct bind
+			widget.setProperties({ ...testProperties, label: undefined });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Up, preventDefault } ],
+				key: 'textinput'
+			});
+			widget.setProperties(testProperties);
+			assignChildProperties(vdom, '1,0', {
+				activeIndex: 0
+			});
+			widget.expectRender(vdom, 'up arrow moves active index to first option');
 
-		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].children![0].children![0].children![0].properties!.placeholder, 'foobar');
-	},
+			// shouldn't need this line with correct bind
+			widget.setProperties({ ...testProperties, label: undefined });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Up, preventDefault } ],
+				key: 'textinput'
+			});
+			widget.setProperties(testProperties);
+			assignChildProperties(vdom, '1,0', {
+				activeIndex: 2
+			});
+			widget.expectRender(vdom, 'up arrow wraps to last option');
 
-	'Input should open on focus if openOnFocus is true'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			openOnFocus: true,
-			results: ['abc']
-		});
+			// shouldn't need this line with correct bind
+			widget.setProperties({ ...testProperties, label: undefined });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Down, preventDefault } ],
+				key: 'textinput'
+			});
+			widget.setProperties(testProperties);
+			assignChildProperties(vdom, '1,0', {
+				activeIndex: 0
+			});
+			widget.expectRender(vdom, 'down arrow wraps to first option');
 
-		(<any> comboBox)._onInputFocus(event());
-		let vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 2);
-	},
+			// shouldn't need this line with correct bind
+			widget.setProperties({ ...testProperties, label: undefined });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.End, preventDefault } ],
+				key: 'textinput'
+			});
+			widget.setProperties(testProperties);
+			assignChildProperties(vdom, '1,0', {
+				activeIndex: 2
+			});
+			widget.expectRender(vdom, 'end moves to last option');
 
-	'value is set on underlying input'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			value: 'abc'
-		});
+			// shouldn't need this line with correct bind
+			widget.setProperties({ ...testProperties, label: undefined });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Home, preventDefault } ],
+				key: 'textinput'
+			});
+			widget.setProperties(testProperties);
+			assignChildProperties(vdom, '1,0', {
+				activeIndex: 0
+			});
+			widget.expectRender(vdom, 'home moves to first option');
 
-		const vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![0].children![0].children![0].children![0].properties!.value, 'abc');
-	},
+			assert.strictEqual(preventDefault.callCount, 4, 'preventDefault called four times for up and down keys');
+		},
 
-	'onBlur should be called'() {
-		let called = false;
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			onBlur: () => called = true
-		});
+		'enter and space select option'() {
+			const onChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				onChange
+			});
 
-		(<any> comboBox)._onInputBlur(event());
-		assert.isTrue(called);
-	},
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Enter } ],
+				key: 'textinput'
+			});
+			assert.isTrue(onChange.calledWith('One'), 'enter triggers onChange callback called with label of first option');
+			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
 
-	'onChange should be called'() {
-		let called = 0;
-		const comboBox = new ComboBox();
-		(<any> comboBox)._selectIndex(0);
-		comboBox.__setProperties__({
-			results: ['abc'],
-			getResultLabel: value => value,
-			onChange: () => called++
-		});
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Enter } ],
+				key: 'textinput'
+			});
+			assert.isFalse(onChange.calledTwice, 'enter doesn\'t trigger onChange when menu is closed');
 
-		(<any> comboBox)._onInput(event());
-		(<any> comboBox)._onClearClick();
-		(<any> comboBox)._selectIndex(0);
-		assert.strictEqual(called, 3);
-	},
+			onChange.reset();
 
-	'onFocus should be called'() {
-		let called = false;
-		const parent = parentElement();
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			onFocus: () => called = true
-		});
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Space } ],
+				key: 'textinput'
+			});
+			assert.isTrue(onChange.calledWith('One'), 'space triggers onChange callback called with label of first option');
+			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
+		},
 
-		(<any> comboBox)._onInputFocus(event());
-		(<any> comboBox).onElementCreated(parent, 'root');
-		parent.querySelector = () => null;
-		(<any> comboBox).onElementUpdated(parent, 'root');
-		assert.isTrue(called);
-	},
+		'disabled options are not selected'() {
+			const onChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				isResultDisabled: (result: any) => !!result.disabled,
+				onChange
+			});
 
-	'onRequestResults should be called'() {
-		let called = 0;
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			onRequestResults: () => called++,
-			openOnFocus: true
-		});
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Up, preventDefault: sinon.stub() } ],
+				key: 'textinput'
+			});
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Enter } ],
+				key: 'textinput'
+			});
 
-		(<any> comboBox).onElementCreated(parentElement(), 'root');
-		(<any> comboBox)._onInput(event());
-		(<any> comboBox)._onInputFocus(event());
-		(<any> comboBox)._onArrowClick();
-		assert.strictEqual(called, 3);
-	},
+			assert.isFalse(onChange.called, 'onChange not called for disabled option');
+			assert.isTrue(isOpen(widget), 'widget not closed after attempting to select disabled option');
+		},
 
-	'onMenuChange should be called'() {
-		let called = 0;
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			results: ['a'],
-			onMenuChange: () => called++
-		});
+		'keyboard does not trigger onChange with no results'() {
+			const onChange = sinon.stub();
+			let vdom = expectedVdom(widget);
+			widget.setProperties({
+				onChange
+			});
 
-		(<any> comboBox)._onInput(parentElement());
-		<VNode> comboBox.__render__();
-		(<any> comboBox)._onInputBlur(parentElement());
-		<VNode> comboBox.__render__();
-		assert.strictEqual(called, 2);
-	},
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			vdom = expectedVdom(widget, false, true);
+			widget.expectRender(vdom, 'dropdown does not render with no results');
 
-	'Clicking arrow should not open menu if disabled'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			disabled: true
-		});
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				key: 'textinput'
+			});
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Enter } ],
+				key: 'textinput'
+			});
 
-		(<any> comboBox)._onArrowClick();
-		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 1);
-	},
+			assert.isFalse(onChange.called, 'onChange not called for no results');
+			assert.isTrue(isOpen(widget), 'widget technically open with no results');
+		},
 
-	'Clicking arrow should not open menu if readonly'() {
-		const comboBox = new ComboBox();
-		comboBox.__setProperties__({
-			readOnly: true,
-			theme: {}
-		});
+		'clear button clears input'() {
+			const onChange = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				onChange
+			});
 
-		(<any> comboBox)._onArrowClick();
-		const vnode = <VNode> comboBox.__render__();
-		assert.lengthOf(vnode.children, 1);
-	},
+			widget.sendEvent('click', { selector: `.${css.clear}` });
+			assert.isTrue(onChange.calledWith(''), 'clear button calls onChange with an empty string');
+		},
 
-	'Selected element should stay visible when above viewport'() {
-		const comboBox = new ComboBox();
-		const menu = {
-			scrollTop: 200
-		};
-		const element = {
-			offsetTop: 100,
-			parentElement: menu
-		};
+		'inputProperties transferred to child input'() {
+			widget.setProperties({
+				inputProperties: {
+					placeholder: 'foo'
+				}
+			});
 
-		(<any> comboBox).onElementCreated(parentElement(), 'root');
-		(<any> comboBox).onElementUpdated(parentElement(element), 'root');
-		assert.strictEqual(menu.scrollTop, element.offsetTop);
-	},
+			const vdom = expectedVdom(widget);
+			assignChildProperties(vdom, '0,0', { placeholder: 'foo' });
 
-	'Selected element should stay visible when below viewport'() {
-		const comboBox = new ComboBox();
-		const menu = {
-			scrollTop: 200,
-			clientHeight: 200
-		};
-		const element = {
-			offsetTop: 500,
-			offsetHeight: 100,
-			parentElement: menu
-		};
+			widget.expectRender(vdom);
+		},
 
-		(<any> comboBox).onElementCreated(parentElement(), 'root');
-		(<any> comboBox).onElementUpdated(parentElement(element), 'root');
-		assert.strictEqual(menu.scrollTop, element.offsetTop - menu.clientHeight + element.offsetHeight);
-	},
+		'input opens on focus with openOnFocus'() {
+			const onFocus = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				label: undefined,
+				openOnFocus: true,
+				onFocus
+			});
 
-	'No scrolling should occur if result is in viewport'() {
-		const comboBox = new ComboBox();
-		const menu = {
-			scrollTop: 50,
-			clientHeight: 200
-		};
-		const element = {
-			offsetTop: 100,
-			offsetHeight: 100,
-			parentElement: menu
-		};
+			widget.callListener('onFocus', {
+				args: [ { target: { value: 'foo' } } ],
+				key: 'textinput'
+			});
 
-		(<any> comboBox).onElementCreated(parentElement(), 'root');
-		(<any> comboBox).onElementUpdated(parentElement(element), 'root');
-		assert.strictEqual(menu.scrollTop, 50);
-	},
+			assert.isTrue(onFocus.calledWith('foo'), 'onFocus handler called with input value');
+			assert.isTrue(isOpen(widget), 'widget opens on input focus');
+		},
 
-	'disabled result should be skipped'() {
-		const comboBox = new ComboBox();
-		(<any> comboBox)._isIndexDisabled(0);
-		comboBox.__setProperties__({
-			results: ['1'],
-			isResultDisabled: result => result === '1'
-		});
-		(<any> comboBox)._moveActiveIndex();
-		comboBox.__setProperties__({
-			results: ['1', '2'],
-			isResultDisabled: result => result === '1'
-		});
+		'widget states render correctly'() {
+			widget.setProperties({
+				...testProperties,
+				disabled: true,
+				invalid: true,
+				readOnly: true,
+				required: true
+			});
 
-		(<any> comboBox)._onResultMouseUp(null, 0);
-		(<any> comboBox)._onResultMouseEnter(null, 0);
-		(<any> comboBox)._onArrowClick();
-		(<any> comboBox)._onInputKeyDown(event(keys.down));
-		let vnode = <VNode> comboBox.__render__();
-		assert.strictEqual(vnode.children![1].children![1].properties!['data-selected'], 'true');
+			let vdom = expectedVdom(widget, true, false, true);
+			assignChildProperties(vdom, '0,0,0', {
+				disabled: true,
+				invalid: true,
+				readOnly: true,
+				required: true
+			});
+			assignChildProperties(vdom, '0,0,1', {
+				disabled: true,
+				readOnly: true
+			});
+			assignChildProperties(vdom, '0,0,2', {
+				disabled: true,
+				readOnly: true
+			});
+			assignProperties(vdom, {
+				'aria-readonly': 'true',
+				'aria-required': 'true',
+				classes: widget.classes(css.root, css.invalid)
+			});
+			widget.expectRender(vdom, 'disabled, invalid, readOnly, and required render');
+
+			widget.setProperties({ invalid: false });
+			vdom = expectedVdom(widget);
+			assignChildProperties(vdom, '0,0', {
+				invalid: false
+			});
+			assignProperties(vdom, {
+				classes: widget.classes(css.root, css.valid)
+			});
+			widget.expectRender(vdom, 'valid render');
+		},
+
+		'disabled state blocks menu opening'() {
+			const onMenuChange = sinon.stub();
+			const onRequestResults = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				disabled: true,
+				label: undefined,
+				onMenuChange,
+				onRequestResults
+			});
+
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			assert.isFalse(isOpen(widget), 'widget stays closed on arrow click');
+
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				key: 'textinput'
+			});
+			assert.isFalse(isOpen(widget), 'widget stays closed on key down');
+
+			assert.isFalse(onMenuChange.called, 'onMenuChange never called');
+			assert.isFalse(onRequestResults.called, 'onRequestResults never called');
+		},
+
+		'readOnly state blocks menu opening'() {
+			const onMenuChange = sinon.stub();
+			const onRequestResults = sinon.stub();
+			widget.setProperties({
+				...testProperties,
+				readOnly: true,
+				label: undefined,
+				onMenuChange,
+				onRequestResults
+			});
+
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+			assert.isFalse(isOpen(widget), 'widget stays closed on arrow click');
+
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				key: 'textinput'
+			});
+			assert.isFalse(isOpen(widget), 'widget stays closed on key down');
+
+			assert.isFalse(onMenuChange.called, 'onMenuChange never called');
+			assert.isFalse(onRequestResults.called, 'onRequestResults never called');
+		},
+
+		'hover and keyboard events toggle visualFocus'() {
+			widget.setProperties({ ...testProperties, label: undefined });
+			let vdom = expectedVdom(widget, true, true, true);
+			vdom = expectedVdom(widget, true, true, true);
+
+			widget.sendEvent('click', { selector: `.${css.trigger}` });
+
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Up, preventDefault: sinon.stub() } ],
+				key: 'textinput'
+			});
+			widget.callListener('onKeyDown', {
+				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				key: 'textinput'
+			});
+			assignChildProperties(vdom, '1,0', {
+				visualFocus: true
+			});
+			// only necessary for label scoping issue
+			widget.setProperties(testProperties);
+			widget.expectRender(vdom, 'keydown event sets visualFocus to true');
+
+			widget.sendEvent('mouseover', { key: 'dropdown' });
+			assignChildProperties(vdom, '1,0', {
+				visualFocus: false
+			});
+			widget.expectRender(vdom, 'mouseover event sets visualFocus to false');
+		}
 	}
 });

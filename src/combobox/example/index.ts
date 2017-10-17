@@ -1,11 +1,9 @@
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import ComboBox from '../ComboBox';
-import ResultItem from '../ResultItem';
-import ResultMenu from '../ResultMenu';
 import dojoTheme from '../../themes/dojo/theme';
 
 const data = [
@@ -61,65 +59,11 @@ const data = [
 	{ value: 'West Virginia' }
 ];
 
-class CustomResultItem extends ResultItem {
-	renderResult(result: any) {
-		const { getResultLabel } = this.properties;
-
-		return v('div', [
-			v('img', {
-				src: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/300px-Flag_of_the_United_States.svg.png',
-				styles: {
-					paddingRight: '8px',
-					width: '25px',
-					height: 'auto'
-				}
-			}),
-			getResultLabel(result)
-		]);
-	}
-}
-
-class CustomResultMenu extends ResultMenu {
-	renderResults(results: WNode[]) {
-		const items: DNode[] = [
-			v('div', {
-				styles: {
-					fontWeight: 'bold',
-					padding: '0.5em 1em',
-					background: '#EEE'
-				}
-			}, [ 'A' ])
-		];
-
-		let lastLetter = 'a';
-
-		results.forEach((item: WNode<ResultItem>) => {
-			let state = item.properties.result.value;
-			let letter = state.charAt(0).toLowerCase();
-			if (letter !== lastLetter) {
-				items.push(v('div', {
-					styles: {
-						fontWeight: 'bold',
-						padding: '0.5em 1em',
-						background: '#EEE'
-					}
-				}, [ letter.toUpperCase() ]));
-				lastLetter = letter;
-			}
-			items.push(item);
-		});
-
-		return items;
-	}
-}
-
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _results: any[];
 	private _value1 = '';
 	private _value2 = '';
-	private _value3 = '';
-	private _value4 = '';
 	private _value5 = '';
 	private _value8 = '';
 	private _value9 = '';
@@ -187,35 +131,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				onRequestResults,
 				results: this._results,
 				value: this._value1,
-				inputProperties: {
-					placeholder: 'Enter a value'
-				},
-				theme: this._theme
-			}),
-			v('h3', ['Custom result renderer']),
-			w(ComboBox, {
-				key: '3',
-				openOnFocus: true,
-				onChange,
-				getResultLabel: (result: any) => result.value,
-				onRequestResults,
-				// CustomResultItem,
-				results: this._results,
-				value: this._value3,
-				inputProperties: {
-					placeholder: 'Enter a value'
-				},
-				theme: this._theme
-			}),
-			v('h3', ['Custom menu renderer']),
-			w(ComboBox, {
-				key: '4',
-				onChange,
-				getResultLabel: (result: any) => result.value,
-				onRequestResults,
-				results: this._results,
-				value: this._value4,
-				// CustomResultMenu,
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},

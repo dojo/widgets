@@ -5,7 +5,7 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { reference } from '@dojo/widget-core/diff';
-import ListBox from '../listbox/Listbox';
+import Listbox from '../listbox/Listbox';
 import { Keys } from '../common/util';
 import Label, { LabelOptions } from '../label/Label';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
@@ -18,10 +18,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a ComboBox component
  *
- * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the input should be able to be cleared
- * @property CustomResultItem   Can be used to render a custom result
- * @property CustomResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property id                 Optional id string for the combobox
@@ -41,10 +38,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property value              Value to set on the input
  */
 export interface ComboBoxProperties extends ThemeableProperties {
-	autoBlur?: boolean;
 	clearable?: boolean;
-	// CustomResultItem?: Constructor<ResultItem>;
-	// CustomResultMenu?: Constructor<ResultMenu>;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
 	id?: string;
@@ -80,7 +74,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _callInputFocus = false;
 	private _ignoreBlur: boolean;
 	private _idBase = uuid();
-	private _menuHasFocus = false;
+	private _menuHasVisualFocus = false;
 	private _open: boolean;
 	private _wasOpen: boolean;
 
@@ -96,7 +90,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	private _getResultLabel(result: any) {
 		const { getResultLabel } = this.properties;
 
-		return getResultLabel ? getResultLabel(result) : result;
+		return getResultLabel ? getResultLabel(result) : `${result}`;
 	}
 
 	private _getResultId(result: any, index: number) {
@@ -154,8 +148,13 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
-		const { results = [] } = this.properties;
-		this._menuHasFocus = true;
+		const {
+			disabled,
+			isResultDisabled = () => false,
+			readOnly,
+			results = []
+		} = this.properties;
+		this._menuHasVisualFocus = true;
 
 		switch (event.which) {
 			case Keys.Up:
@@ -164,13 +163,22 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				break;
 			case Keys.Down:
 				event.preventDefault();
-				this._open ? this._moveActiveIndex(Operation.increase) : this._openMenu();
+				if (!this._open && !disabled && !readOnly) {
+					this._openMenu();
+				}
+				else if (this._open) {
+					this._moveActiveIndex(Operation.increase);
+				}
 				break;
 			case Keys.Escape:
 				this._open && this._closeMenu();
 				break;
 			case Keys.Enter:
+			case Keys.Space:
 				if (this._open && results.length > 0) {
+					if (isResultDisabled(results[this._activeIndex])) {
+						return;
+					}
 					this._selectIndex(this._activeIndex);
 				}
 				break;
@@ -197,7 +205,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onResultHover(): void {
-		this._menuHasFocus = false;
+		this._menuHasVisualFocus = false;
 		this.invalidate();
 	}
 
@@ -215,19 +223,21 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._activeIndex = 0;
 		this._open = true;
 		onRequestResults && onRequestResults(key);
+		this.invalidate();
 	}
 
-	private _scrollIntoView(element: HTMLElement) {
-		const menu = <HTMLElement> element.parentElement;
-		// Scroll menu up so top of highlighted result aligns with top of menu container
-		if (element.offsetTop - menu.scrollTop < 0) {
-			menu.scrollTop = element.offsetTop;
-		}
-		// Scroll menu down so bottom of highlighted result aligns with bottom of menu container
-		else if ((element.offsetTop - menu.scrollTop + element.offsetHeight) > menu.clientHeight) {
-			menu.scrollTop = element.offsetTop - menu.clientHeight + element.offsetHeight;
-		}
-	}
+	// should update to use interesection meta
+	// private _scrollIntoView(element: HTMLElement) {
+	// 	const menu = <HTMLElement> element.parentElement;
+	// 	// Scroll menu up so top of highlighted result aligns with top of menu container
+	// 	if (element.offsetTop - menu.scrollTop < 0) {
+	// 		menu.scrollTop = element.offsetTop;
+	// 	}
+	// 	// Scroll menu down so bottom of highlighted result aligns with bottom of menu container
+	// 	else if ((element.offsetTop - menu.scrollTop + element.offsetHeight) > menu.clientHeight) {
+	// 		menu.scrollTop = element.offsetTop - menu.clientHeight + element.offsetHeight;
+	// 	}
+	// }
 
 	private _selectIndex(index: number) {
 		const {
@@ -265,11 +275,12 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		if (key === 'root') {
 			if (this._callInputFocus) {
 				this._callInputFocus = false;
-				(element.querySelector('input') as HTMLElement).focus();
+				const input = element.querySelector('input') as HTMLElement;
+				input && input.focus();
 			}
 
-			const selectedResult = element.querySelector('[data-selected="true"]') as HTMLElement;
-			selectedResult && this._scrollIntoView(selectedResult);
+			// const selectedResult = element.querySelector('[aria-selected="true"]') as HTMLElement;
+			// selectedResult && this._scrollIntoView(selectedResult);
 		}
 	}
 
@@ -283,7 +294,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			required,
 			results = [],
 			value = '',
-			theme = {}
+			theme
 		} = this.properties;
 
 		return w(TextInput, <TextInputProperties> {
@@ -349,7 +360,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	protected renderMenu(results: any[]): DNode | null {
-		const { theme = {}, isResultDisabled } = this.properties;
+		const { theme, isResultDisabled } = this.properties;
 
 		if (results.length === 0 || !this._open) {
 			return null;
@@ -361,10 +372,10 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			onmouseover: this._onResultHover,
 			onmousedown: this._onResultMouseDown
 		}, [
-			w(ListBox, {
+			w(Listbox, {
 				activeIndex: this._activeIndex,
 				id: this._getMenuId(),
-				focused: this._menuHasFocus,
+				visualFocus: this._menuHasVisualFocus,
 				optionData: results,
 				tabIndex: -1,
 				getOptionDisabled: isResultDisabled,
@@ -391,14 +402,15 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			readOnly,
 			required,
 			results = [],
-			theme = {}
+			theme
 		} = this.properties;
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();
 		this._wasOpen = this._open;
 
-		let controls: DNode = v('div', {
+		let controls: DNode = v('div', <any> {
+			bind: this,
 			classes: this.classes(css.controls)
 		}, [
 			this.renderInput(),

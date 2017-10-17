@@ -119,7 +119,7 @@ registerSuite({
 		widget.setProperties({
 			activeIndex: 0,
 			describedBy: 'foo',
-			focused: true,
+			visualFocus: true,
 			id: 'bar',
 			multiselect: true,
 			optionData: testOptions,
