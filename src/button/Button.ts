@@ -36,7 +36,7 @@ export const ButtonBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-export default class Button extends ButtonBase<ButtonProperties> {
+export default class Button<P extends ButtonProperties = ButtonProperties> extends ButtonBase<P> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }

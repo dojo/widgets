@@ -29,7 +29,7 @@ export interface TabProperties extends ThemedProperties {
 export const TabBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Tab extends TabBase<TabProperties> {
+export default class Tab<P extends TabProperties = TabProperties> extends TabBase<P> {
 	render(): DNode {
 		const {
 			id,

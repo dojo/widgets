@@ -70,7 +70,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @theme(iconCss)
 @diffProperty('results', reference)
-export default class ComboBox extends ThemedBase<ComboBoxProperties> {
+export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P> {
 	private _activeIndex = 0;
 	private _callInputFocus = false;
 	private _ignoreBlur: boolean;

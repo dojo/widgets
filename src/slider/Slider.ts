@@ -34,7 +34,7 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 export const SliderBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Slider extends SliderBase<SliderProperties> {
+export default class Slider<P extends SliderProperties = SliderProperties> extends SliderBase<P> {
 	// id used to associate input with output
 	private _inputId = uuid();
 

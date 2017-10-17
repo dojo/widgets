@@ -39,7 +39,7 @@ export interface TabControllerProperties extends ThemedProperties {
 export const TabControllerBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TabController extends TabControllerBase<TabControllerProperties, WNode<Tab>> {
+export default class TabController<P extends TabControllerProperties = TabControllerProperties> extends TabControllerBase<P, WNode<Tab>> {
 	private _id = uuid();
 	private _callTabFocus = false;
 

@@ -50,7 +50,7 @@ export interface TabButtonProperties extends ThemedProperties {
 export const TabButtonBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TabButton extends TabButtonBase<TabButtonProperties> {
+export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends TabButtonBase<P> {
 	private _onClick() {
 		const {
 			disabled,

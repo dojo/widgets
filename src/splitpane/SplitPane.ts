@@ -37,7 +37,7 @@ export const SplitPaneBase = ThemedMixin(WidgetBase);
 const DEFAULT_SIZE = 100;
 
 @theme(css)
-export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
+export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperties> extends SplitPaneBase<P> {
 	private _divider: HTMLElement;
 	private _dragging: boolean;
 	private _lastSize?: number;
