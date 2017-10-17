@@ -9,8 +9,8 @@ interface Options {
 	underlay?: boolean;
 }
 
-const CONTAINER_SELECTOR = 'div > div';
-const DELAY = 400;
+const CONTAINER_SELECTOR = `.${css.root}`;
+const DELAY = 500;
 
 function openDialog(remote: any, options: Options = {}) {
 	const { closeable = true, modal, underlay } = options;
@@ -168,15 +168,8 @@ registerSuite({
 			this.skip('SafariDriver does not move focus with tab key.');
 		}
 
-		// The number of tab presses required to highlight the close button.
-		const tabCount = 6;
-		const tabKeys: string[] = [];
-		for (let i = 0; i < tabCount; i++) {
-			tabKeys.push(keys.TAB);
-		}
-
 		return openDialog(this.remote)
-			.pressKeys(tabKeys)
+			.pressKeys(keys.TAB)
 			.findByCssSelector(`.${css.close}`)
 				.pressKeys(keys.ENTER)
 				.sleep(DELAY)
