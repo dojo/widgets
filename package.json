@@ -3,7 +3,7 @@
   "version": "0.1.1-pre",
   "description": "Dojo 2 Widgets",
   "private": true,
-  "homepage": "http://dojo.io",
+  "homepage": "https://dojo.io",
   "bugs": {
     "url": "https://github.com/dojo/widgets/issues"
   },
