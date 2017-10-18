@@ -1,9 +1,9 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import { Keys } from '../../util';
 
-registerSuite({
-	name: 'util',
+registerSuite('util', {
 
 	keys() {
 		assert.strictEqual(Keys.Down, 40);

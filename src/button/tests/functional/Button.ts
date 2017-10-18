@@ -1,17 +1,17 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
+import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/button.m.css';
 
-function getPage(remote: any) {
+function getPage(remote: Remote) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=button')
 		.setFindTimeout(5000);
 }
 
-registerSuite({
-	name: 'Button',
-
-	'button should be visible'(this: any) {
+registerSuite('Button', {
+	'button should be visible'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-1 .${css.root}`)
 			.getSize()
@@ -22,7 +22,7 @@ registerSuite({
 			.end();
 	},
 
-	'button text should be as defined'(this: any) {
+	'button text should be as defined'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-1 .${css.root}`)
 			.getVisibleText()
@@ -32,38 +32,36 @@ registerSuite({
 			.end();
 
 	},
-	'button should be disabled'(this: any) {
+	'button should be disabled'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-2 .${css.root}`)
 			.isEnabled()
-			.then((enabled: boolean) => {
+			.then(enabled => {
 				assert.isTrue(!enabled, 'The button should be disabled.');
 			})
 			.end();
 	},
-	'button should be toggle-able'(this: any) {
+	'button should be toggle-able'() {
 		return getPage(this.remote)
-			.findByCssSelector(`#example-3 .${css.root}`)
-			.getAttribute('aria-pressed')
-			.then((pressed: string) => {
-				assert.isNull(pressed, 'Initial state should be null');
-			})
-			.click()
-			.then(function (this: any) {
-				// `getAttribute` needs to be placed in then callback, rather than being
-				// directly chainable after `click()` - it won't wait until `click is done`
-				this.getAttribute('aria-pressed')
-					.then((pressed: string) => {
-						assert.strictEqual(pressed, 'true');
-					});
-			})
-			.click()
-			.then(function (this: any) {
-				this.getAttribute('aria-pressed')
-					.then((pressed: string) => {
-						assert.strictEqual(pressed, 'false');
-					});
-			})
+			.findByCssSelector(`#example-4 .${css.root}`)
+				.getAttribute('aria-pressed')
+				.then((pressed: string) => {
+					assert.isNull(pressed, 'Initial state should be null');
+				})
+				.click()
+			.end()
+			.findByCssSelector(`#example-4 .${css.root}`)
+				.getAttribute('aria-pressed')
+				.then((pressed: string) => {
+					assert.strictEqual(pressed, 'true');
+				})
+				.click()
+			.end()
+			.findByCssSelector(`#example-4 .${css.root}`)
+				.getAttribute('aria-pressed')
+				.then((pressed: string) => {
+					assert.strictEqual(pressed, 'false');
+				})
 			.end();
 	}
 });

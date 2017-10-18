@@ -1,5 +1,6 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import { VNode } from '@dojo/interfaces/vdom';
 import ResultMenu from '../../ResultMenu';
 import { assign } from '@dojo/core/lang';
@@ -16,8 +17,7 @@ function props(props = {}) {
 	}, props);
 }
 
-registerSuite({
-	name: 'ResultMenu',
+registerSuite('ResultMenu', {
 
 	'By default renderResults should return items'() {
 		const resultMenu = new ResultMenu();

@@ -1,15 +1,15 @@
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
 import * as css from '../../styles/timePicker.m.css';
 import ComboBox from '../../../combobox/ComboBox';
 import Label, { parseLabelClasses } from '../../../label/Label';
 
-registerSuite({
-	name: 'TimePicker',
+registerSuite('TimePicker', {
 
 	getOptions: {
 		'Should include each minute for a full day by default'() {

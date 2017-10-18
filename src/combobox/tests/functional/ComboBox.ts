@@ -1,20 +1,20 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
-import * as keys from 'leadfoot/keys';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
+import { Remote } from 'intern/lib/executors/Node';
+import keys from '@theintern/leadfoot/keys';
 import * as css from '../../styles/comboBox.m.css';
 
 const DELAY = 300;
 
-function getPage(remote: any) {
+function getPage(remote: Remote) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=combobox')
 		.setFindTimeout(5000);
 }
 
-registerSuite({
-	name: 'ComboBox',
-
-	'the results menu should be visible'(this: any) {
+registerSuite('ComboBox', {
+	'the results menu should be visible'() {
 		let inputWidth: number;
 
 		return getPage(this.remote)
@@ -23,19 +23,19 @@ registerSuite({
 				.end()
 			.findByCssSelector(`.${css.controls} input`)
 				.getSize()
-					.then(({ width }: { width: number; }) => {
+					.then(({ width }) => {
 						inputWidth = width;
 					})
 				.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
 				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height }) => {
 					assert.isAbove(height, 0);
 				});
 	},
 
-	'the selected result menu should be visible'(this: any) {
+	'the selected result menu should be visible'() {
 		const { browserName, touchEnabled } = this.remote.session.capabilities;
 
 		if (touchEnabled || browserName === 'firefox' || browserName === 'safari') {
@@ -54,7 +54,7 @@ registerSuite({
 				.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.controls} input`)
-				.pressKeys(keys.ARROW_UP)
+				.type(keys.ARROW_UP)
 				.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
@@ -79,7 +79,7 @@ registerSuite({
 				});
 	},
 
-	'tab order'(this: any) {
+	'tab order'() {
 		const { browserName } = this.remote.session.capabilities;
 
 		if (browserName === 'safari') {
@@ -91,23 +91,27 @@ registerSuite({
 			this.skip('FirefoxDriver sends actual charcodes to the input.');
 		}
 
+		const initialTab = browserName === 'chrome' ?
+			() => this.remote.findByTagName('body').type(keys.TAB) :
+			() => this.remote.pressKeys(keys.TAB);
+
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
 				.click()
 				.sleep(DELAY)
-				.pressKeys(keys.TAB)
+				.then(initialTab)
 			.getActiveElement()
 				.getProperty('textContent')
 				.then((text: string) => {
 					assert.strictEqual(text, 'clear combo box', 'The "clear" button should receive focus.');
 				})
-				.pressKeys(keys.TAB)
+				.type(keys.TAB)
 			.getActiveElement()
 				.getProperty('textContent')
 				.then((text: string) => {
 					assert.strictEqual(text, 'open combo box', 'The "open" button should receive focus.');
 				})
-				.pressKeys(keys.TAB)
+				.type(keys.TAB)
 			.getActiveElement()
 				.getTagName()
 				.then((tag: string) => {
@@ -115,7 +119,7 @@ registerSuite({
 				});
 	},
 
-	'the input should receive focus when the "clear" button is activated'(this: any) {
+	'the input should receive focus when the "clear" button is activated'() {
 		if (this.remote.session.capabilities.browserName === 'safari') {
 			// TODO: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5403
 			this.skip('SafariDriver does not move focus with tab key.');
@@ -127,21 +131,21 @@ registerSuite({
 				.sleep(30)
 			.getActiveElement()
 				.getTagName()
-				.then((tag: string) => {
+				.then(tag => {
 					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "clear" button is clicked.');
 				})
-				.pressKeys(keys.TAB)
+				.type(keys.TAB)
 			.getActiveElement()
-				.pressKeys(keys.ENTER)
+				.type(keys.ENTER)
 				.sleep(30)
 			.getActiveElement()
 				.getTagName()
-				.then((tag: string) => {
+				.then(tag => {
 					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "clear" button is activated with the ENTER key.');
 				});
 	},
 
-	'the input should receive focus when the "open" button is activated'(this: any) {
+	'the input should receive focus when the "open" button is activated'() {
 		if (this.remote.session.capabilities.browserName === 'safari') {
 			// TODO: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5403
 			this.skip('SafariDriver does not move focus with tab key.');
@@ -153,16 +157,16 @@ registerSuite({
 				.sleep(30)
 			.getActiveElement()
 				.getTagName()
-				.then((tag: string) => {
+				.then(tag => {
 					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is clicked.');
 				})
-				.pressKeys(keys.TAB)
+				.type(keys.TAB)
 			.getActiveElement()
-				.pressKeys(keys.ENTER)
+				.type(keys.ENTER)
 				.sleep(30)
 			.getActiveElement()
 				.getTagName()
-				.then((tag: string) => {
+				.then(tag => {
 					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is activated with the ENTER key.');
 				});
 	}
