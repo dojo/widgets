@@ -1,5 +1,6 @@
 import * as registerSuite from 'intern!object';
 import * as assert from 'intern/chai!assert';
+import * as css from '../../styles/label.m.css';
 
 function getPage(remote: any) {
 	return remote
@@ -12,7 +13,7 @@ registerSuite({
 
 	'Label should be visible'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('label:first-of-type')
+			.findByCssSelector(`.${css.root}.label1`)
 			.getSize()
 			.then(({ height, width }: { height: number; width: number; }) => {
 				assert.isAbove(height, 0, 'The label height should be greater than zero.');
@@ -22,7 +23,7 @@ registerSuite({
 	},
 	'Label text should be as defined'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('label:first-of-type')
+			.findByCssSelector(`.${css.root}.label1`)
 			.getVisibleText()
 			.then((text: string) => {
 				assert.strictEqual(text, 'Type something');
@@ -33,7 +34,7 @@ registerSuite({
 	'Input box should gain focus when clicking on the label'(this: any) {
 		let input: any;
 		getPage(this.remote)
-			.findByCssSelector('label:first-of-type')
+			.findByCssSelector(`.${css.root}.label1`)
 			.then(function(element: any) {
 				input = element;
 			})
@@ -47,7 +48,7 @@ registerSuite({
 	},
 	'Hidden label text should not be displayed'(this: any) {
 		return getPage(this.remote)
-			.findByCssSelector('label:nth-of-type(2)')
+			.findByCssSelector(`.${css.root}.label2`)
 			.getVisibleText()
 			.then((text: string) => {
 				assert.strictEqual(text, 'Can\'t read me!');

@@ -10,6 +10,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h1', {}, ['Label Examples']),
 			v('h3', {}, ['Label assigned as string without extra options']),
 			w(Label, {
+				extraClasses: { root: 'label1' },
 				label: 'Type something'
 			}, [
 				v('input', {
@@ -19,6 +20,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', {}, ['Hidden label after the input']),
 			w(Label, {
+                extraClasses: { root: 'label2' },
 				label: {
 					content: 'Can\'t read me!',
 					hidden: true,
