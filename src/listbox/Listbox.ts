@@ -1,13 +1,54 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { DNode, Constructor } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { reference } from '@dojo/widget-core/diff';
+import { auto, reference } from '@dojo/widget-core/diff';
 import { v, w } from '@dojo/widget-core/d';
+import Intersection from '@dojo/widget-core/meta/Intersection';
+import Dimensions from '@dojo/widget-core/meta/Dimensions';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
-import ListboxOption from './ListboxOption';
 import * as css from './styles/listbox.m.css';
+
+interface ListboxOptionProperties extends ThemeableProperties {
+	active?: boolean;
+	classes?: (string | null)[];
+	disabled?: boolean;
+	label: DNode;
+	id: string;
+	option: any;
+	selected?: boolean;
+	onClick?(option: any): void;
+}
+
+const ListboxOptionBase = ThemeableMixin(WidgetBase);
+
+@theme(css)
+class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
+	private _onClick(event: MouseEvent) {
+		const { option, onClick } = this.properties;
+		onClick && onClick(option);
+	}
+
+	protected render() {
+		const {
+			classes = [],
+			disabled = false,
+			id,
+			label,
+			selected = false
+		} = this.properties;
+
+		return v('div', {
+			'aria-disabled': disabled ? 'true' : null,
+			'aria-selected': disabled ? null : String(selected),
+			classes: this.classes(...classes),
+			id,
+			role: 'option',
+			onclick: this._onClick
+		}, [ label ]);
+	}
+}
 
 /**
  * @type ListboxProperties
@@ -29,7 +70,6 @@ import * as css from './styles/listbox.m.css';
 
 export interface ListboxProperties extends ThemeableProperties {
 	activeIndex?: number;
-	CustomOption?: Constructor<ListboxOption>;
 	describedBy?: string;
 	visualFocus?: boolean;
 	id?: string;
@@ -38,7 +78,7 @@ export interface ListboxProperties extends ThemeableProperties {
 	tabIndex?: number;
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
-	getOptionLabel?(option: any): DNode;
+	getOptionLabel?(option: any, index: number): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
 	onActiveIndexChange?(index: number, key: string | number): void;
 	onOptionSelect?(option: any, index: number, key: string | number): void;
@@ -50,11 +90,23 @@ export const ListboxBase = ThemeableMixin(WidgetBase);
 @theme(css)
 @diffProperty('optionData', reference)
 export default class Listbox extends ListboxBase<ListboxProperties> {
+	private _scroll: number | undefined;
 	private _idBase = uuid();
 
-	private _getOptionId(index: number) {
+	private _getOptionId(index: number): string {
 		const { optionData = [], getOptionId } = this.properties;
 		return getOptionId ? getOptionId(optionData[index], index) : `${this._idBase}-${index}`;
+	}
+
+	@diffProperty('activeIndex', auto)
+	private _getOptionVisible(previousProperties: ListboxProperties, { activeIndex = 0 }: ListboxProperties) {
+		const intersectionOptions = { root: 'root' };
+		const optionKey = this._getOptionId(activeIndex);
+		const intersection = this.meta(Intersection).get(optionKey, intersectionOptions);
+
+		if (this.meta(Intersection).has(optionKey, intersectionOptions) && intersection.intersectionRatio < 100) {
+			this.calculateScroll();
+		}
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
@@ -76,10 +128,8 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		switch (event.which) {
 			case Keys.Enter:
 			case Keys.Space:
-				if (getOptionDisabled(activeItem, activeIndex)) {
-					event.preventDefault();
-				}
-				else {
+				event.preventDefault();
+				if (!getOptionDisabled(activeItem, activeIndex)) {
 					onOptionSelect && onOptionSelect(activeItem, activeIndex, key);
 				}
 				break;
@@ -102,6 +152,27 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		}
 	}
 
+	protected animateScroll(element: HTMLElement, scrollValue: number) {
+		element.scrollTop = scrollValue;
+	}
+
+	protected calculateScroll() {
+		const { activeIndex = 0 } = this.properties;
+		const scrollOffset = this.meta(Dimensions).get('root').scroll;
+		const menuHeight = this.meta(Dimensions).get('root').offset.height;
+		const optionOffset = this.meta(Dimensions).get(this._getOptionId(activeIndex)).offset;
+
+		if (optionOffset.top - scrollOffset.top < 0) {
+			this._scroll = optionOffset.top;
+			this.invalidate();
+		}
+
+		else if ((optionOffset.top + optionOffset.height) > (scrollOffset.top + menuHeight)) {
+			this._scroll = optionOffset.top + optionOffset.height - menuHeight;
+			this.invalidate();
+		}
+	}
+
 	protected getModifierClasses() {
 		const { visualFocus } = this.properties;
 		return [
@@ -109,36 +180,75 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		];
 	}
 
-	protected renderOptions() {
+	protected getOptionClasses(active: boolean, disabled: boolean, selected: boolean) {
+		return [
+			css.option,
+			active ? css.activeOption : null,
+			disabled ? css.disabledOption : null,
+			selected ? css.selectedOption : null
+		];
+	}
+
+	protected onElementCreated(element: HTMLElement, key: string) {
+		if (key === 'root' && typeof this._scroll === 'number') {
+			this.animateScroll(element, this._scroll);
+			this._scroll = undefined;
+		}
+	}
+
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (key === 'root' && typeof this._scroll === 'number') {
+			this.animateScroll(element, this._scroll);
+			this._scroll = undefined;
+		}
+	}
+
+	protected renderOptionLabel(option: any, index: number): DNode {
+		const { getOptionLabel } = this.properties;
+		return getOptionLabel ? getOptionLabel(option, index) : `${option}`;
+	}
+
+	protected renderOption(option: any, index: number): DNode {
 		const {
 			activeIndex = 0,
-			CustomOption = ListboxOption,
 			key = '',
-			optionData = [],
-			theme,
-			getOptionLabel,
 			getOptionDisabled = (option: any, index: number) => false,
 			getOptionSelected = (option: any, index: number) => false,
+			theme,
 			onActiveIndexChange,
 			onOptionSelect
 		} = this.properties;
 
-		return optionData.map((option, i) => w(CustomOption, {
-			active: activeIndex === i,
-			disabled: getOptionDisabled(option, i),
-			getOptionLabel,
-			id: this._getOptionId(i),
-			key: this._getOptionId(i),
-			option,
-			selected: getOptionSelected(option, i),
-			theme,
-			onClick: (data: any) => {
-				if (!getOptionDisabled(option, i)) {
-					onActiveIndexChange && onActiveIndexChange(i, key);
-					onOptionSelect && onOptionSelect(data, i, key);
+		const disabled = getOptionDisabled(option, index);
+		const selected = getOptionSelected(option, index);
+
+		return v('div', { key: this._getOptionId(index) }, [
+			w(ListboxOption, {
+				active: activeIndex === index,
+				classes: this.getOptionClasses(activeIndex === index, disabled, selected),
+				disabled,
+				label: this.renderOptionLabel(option, index),
+				id: this._getOptionId(index),
+				key: 'option',
+				option,
+				selected,
+				theme,
+				onClick: (data: any) => {
+					if (!getOptionDisabled(option, index)) {
+						onActiveIndexChange && onActiveIndexChange(index, key);
+						onOptionSelect && onOptionSelect(data, index, key);
+					}
 				}
-			}
-		}));
+			})
+		]);
+	}
+
+	protected renderOptions(): DNode[] {
+		const {
+			optionData = []
+		} = this.properties;
+
+		return optionData.map(this.renderOption.bind(this));
 	}
 
 	protected render() {
@@ -156,6 +266,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			classes: this.classes(css.root, ...this.getModifierClasses()),
 			describedBy,
 			id,
+			key: 'root',
 			role: 'listbox',
 			tabIndex,
 			onkeydown: this._onKeyDown

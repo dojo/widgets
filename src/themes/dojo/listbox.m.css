@@ -2,8 +2,9 @@
 
 .root {
 	border: var(--border-width) solid var(--color-border);
-	max-height: 400px;
+	max-height: 150px;
 	overflow-y: scroll;
+	position: relative;
 }
 
 .root:focus {

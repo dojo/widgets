@@ -41,6 +41,22 @@ export class App extends WidgetBase<WidgetProperties> {
 			value: 'option4',
 			label: 'Fourth Option',
 			disabled: true
+		},
+		{
+			value: 'option5',
+			label: 'First Option'
+		},
+		{
+			value: 'option6',
+			label: 'Second Option'
+		},
+		{
+			value: 'option7',
+			label: 'Third Option'
+		},
+		{
+			value: 'option8',
+			label: 'Fourth Option'
 		}
 	];
 

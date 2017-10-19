@@ -278,9 +278,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				const input = element.querySelector('input') as HTMLElement;
 				input && input.focus();
 			}
-
-			// const selectedResult = element.querySelector('[aria-selected="true"]') as HTMLElement;
-			// selectedResult && this._scrollIntoView(selectedResult);
 		}
 	}
 
