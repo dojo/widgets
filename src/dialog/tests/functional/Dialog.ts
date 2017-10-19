@@ -11,11 +11,9 @@ interface Options {
 	underlay?: boolean;
 }
 
-const CONTAINER_SELECTOR = `.${css.root}`;
-const DELAY = 500;
+const DELAY = 400;
 
-function openDialog(remote: Remote, options: Options = {}) {
-	const { closeable = true, modal, underlay } = options;
+function openDialog(remote: Remote, { closeable = true, modal, underlay }: Options = {}) {
 	let promise = remote
 		.get('http://localhost:9000/_build/common/example/?module=dialog')
 		.setFindTimeout(5000);
@@ -44,35 +42,27 @@ function openDialog(remote: Remote, options: Options = {}) {
 	return promise
 		.findById('button')
 			.click()
-			.end();
+			.end()
+		.sleep(DELAY);
 }
 
 function clickUnderlay(remote: Remote, options: Options = { underlay: true }) {
-	const { browser, touchEnabled } = remote.session.capabilities;
-	const promise = openDialog(remote, options);
+	const { mouseEnabled } = remote.session.capabilities;
 
-	if (touchEnabled) {
-		return promise
-			.moveFinger(0, 0)
-			.pressFinger(0, 0)
-			.releaseFinger(0, 0)
-			.end();
+	if (mouseEnabled) {
+		// `click` clicks the center of the element, which in this case is where the dialog node is.
+		return openDialog(remote, options)
+			.moveMouseTo(0, 0)
+			.clickMouseButton(0)
+			.sleep(DELAY);
 	}
 
-	// TODO: The iPhone driver does not support touch events:
-	// https://github.com/theintern/intern/issues/602
-	if (browser && browser.toLowerCase() === 'iphone') {
-		return promise
-			.findByCssSelector(`.${css.underlay}`)
-				.click()
-				.end();
-	}
-
-	// `click` clicks the center of the element, which in this case is where the dialog node is.
-	return promise
-		.moveMouseTo(undefined, 0, 0)
-		.clickMouseButton()
-		.end();
+	return openDialog(remote, options)
+		.moveFinger(0, 0)
+		.pressFinger(0, 0)
+		.sleep(100)
+		.releaseFinger(0, 0)
+		.sleep(DELAY);
 }
 
 registerSuite('Dialog', {
@@ -81,7 +71,6 @@ registerSuite('Dialog', {
 		let viewportSize: { height: number; width: number };
 
 		return openDialog(this.remote)
-			.sleep(DELAY)
 			.getWindowSize()
 				.then(({ height, width }) => {
 					viewportSize = { height, width };
@@ -109,7 +98,6 @@ registerSuite('Dialog', {
 				.then(({ height, width }) => {
 					viewportSize = { height, width };
 				})
-				.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.underlay}`)
 				.getSize()
@@ -121,8 +109,7 @@ registerSuite('Dialog', {
 
 	'Clicking the underlay should destroy the dialog'() {
 		return clickUnderlay(this.remote)
-			.sleep(DELAY)
-			.findByCssSelector(CONTAINER_SELECTOR)
+			.findByCssSelector(`.${css.root}`)
 				.getProperty('children')
 				.then((children: HTMLElement[]) => {
 					assert.lengthOf(children, 0);
@@ -131,8 +118,7 @@ registerSuite('Dialog', {
 
 	'Clicking the underlay should not destroy the dialog when "modal" is true'() {
 		return clickUnderlay(this.remote, { underlay: true, modal: true })
-			.sleep(DELAY)
-			.findByCssSelector(CONTAINER_SELECTOR)
+			.findByCssSelector(`.${css.root}`)
 				.getProperty('children')
 				.then((children: HTMLElement[]) => {
 					assert.lengthOf(children, 2);
@@ -141,8 +127,7 @@ registerSuite('Dialog', {
 
 	'The dialog should not be closeable when "closeable" is false'() {
 		return clickUnderlay(this.remote, { underlay: true, closeable: false })
-			.sleep(DELAY)
-			.findByCssSelector(CONTAINER_SELECTOR)
+			.findByCssSelector(`.${css.root}`)
 				.getProperty('children')
 				.then((children: HTMLElement[]) => {
 					assert.lengthOf(children, 2, 'The dialog should not be destroyed when the underlay is clicked.');
@@ -170,10 +155,8 @@ registerSuite('Dialog', {
 
 		return openDialog(this.remote)
 			.pressKeys(keys.TAB)
-			.findByCssSelector(`.${css.close}`)
-				.pressKeys(keys.ENTER)
-				.sleep(DELAY)
-				.end()
+			.pressKeys(keys.ENTER)
+			.sleep(DELAY)
 			.findByCssSelector(`.${css.root}`)
 				.getProperty('children')
 				.then((children: HTMLElement[]) => {
