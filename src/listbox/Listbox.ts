@@ -4,7 +4,6 @@ import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mi
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto, reference } from '@dojo/widget-core/diff';
 import { v, w } from '@dojo/widget-core/d';
-import Intersection from '@dojo/widget-core/meta/Intersection';
 import Dimensions from '@dojo/widget-core/meta/Dimensions';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
@@ -98,17 +97,6 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		return getOptionId ? getOptionId(optionData[index], index) : `${this._idBase}-${index}`;
 	}
 
-	@diffProperty('activeIndex', auto)
-	private _getOptionVisible(previousProperties: ListboxProperties, { activeIndex = 0 }: ListboxProperties) {
-		const intersectionOptions = { root: 'root' };
-		const optionKey = this._getOptionId(activeIndex);
-		const intersection = this.meta(Intersection).get(optionKey, intersectionOptions);
-
-		if (this.meta(Intersection).has(optionKey, intersectionOptions) && intersection.intersectionRatio < 100) {
-			this.calculateScroll();
-		}
-	}
-
 	private _onKeyDown(event: KeyboardEvent) {
 		const {
 			activeIndex = 0,
@@ -156,8 +144,8 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		element.scrollTop = scrollValue;
 	}
 
-	protected calculateScroll() {
-		const { activeIndex = 0 } = this.properties;
+	@diffProperty('activeIndex', auto)
+	protected calculateScroll(previousProperties: ListboxProperties, { activeIndex = 0 }: ListboxProperties) {
 		const scrollOffset = this.meta(Dimensions).get('root').scroll;
 		const menuHeight = this.meta(Dimensions).get('root').offset.height;
 		const optionOffset = this.meta(Dimensions).get(this._getOptionId(activeIndex)).offset;
