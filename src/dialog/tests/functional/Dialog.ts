@@ -1,6 +1,8 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
-import * as keys from 'leadfoot/keys';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
+import { Remote } from 'intern/lib/executors/Node';
+import keys from '@theintern/leadfoot/keys';
 import * as css from '../../styles/dialog.m.css';
 
 interface Options {
@@ -12,7 +14,7 @@ interface Options {
 const CONTAINER_SELECTOR = `.${css.root}`;
 const DELAY = 500;
 
-function openDialog(remote: any, options: Options = {}) {
+function openDialog(remote: Remote, options: Options = {}) {
 	const { closeable = true, modal, underlay } = options;
 	let promise = remote
 		.get('http://localhost:9000/_build/common/example/?module=dialog')
@@ -45,7 +47,7 @@ function openDialog(remote: any, options: Options = {}) {
 			.end();
 }
 
-function clickUnderlay(remote: any, options: Options = { underlay: true }) {
+function clickUnderlay(remote: Remote, options: Options = { underlay: true }) {
 	const { browser, touchEnabled } = remote.session.capabilities;
 	const promise = openDialog(remote, options);
 
@@ -68,31 +70,29 @@ function clickUnderlay(remote: any, options: Options = { underlay: true }) {
 
 	// `click` clicks the center of the element, which in this case is where the dialog node is.
 	return promise
-		.moveMouseTo(null, 0, 0)
+		.moveMouseTo(undefined, 0, 0)
 		.clickMouseButton()
 		.end();
 }
 
-registerSuite({
-	name: 'Dialog',
-
-	'The dialog should be visibly centered by default'(this: any) {
+registerSuite('Dialog', {
+	'The dialog should be visibly centered by default'() {
 		let dialogSize: { height: number; width: number };
 		let viewportSize: { height: number; width: number };
 
 		return openDialog(this.remote)
 			.sleep(DELAY)
 			.getWindowSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height, width }) => {
 					viewportSize = { height, width };
 				})
 			.findByCssSelector(`.${css.main}`)
 				.getSize()
-					.then(({ height, width }: { height: number; width: number; }) => {
+					.then(({ height, width }) => {
 						dialogSize = { height, width };
 					})
 				.getPosition()
-					.then(({ x, y }: { x: number; y: number; }) => {
+					.then(({ x, y }) => {
 						const expectedX = (viewportSize.width - dialogSize.width) / 2;
 						const expectedY = (viewportSize.height - dialogSize.height) / 2;
 
@@ -101,25 +101,25 @@ registerSuite({
 					});
 	},
 
-	'The underlay should cover the entire visible screen'(this: any) {
+	'The underlay should cover the entire visible screen'() {
 		let viewportSize: { height: number; width: number };
 
 		return openDialog(this.remote, { underlay: true })
 			.getWindowSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height, width }) => {
 					viewportSize = { height, width };
 				})
 				.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.underlay}`)
 				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height, width }) => {
 					assert.isAtLeast(height, viewportSize.height * 0.8);
 					assert.isAtLeast(width, viewportSize.width * 0.9);
 				});
 	},
 
-	'Clicking the underlay should destroy the dialog'(this: any) {
+	'Clicking the underlay should destroy the dialog'() {
 		return clickUnderlay(this.remote)
 			.sleep(DELAY)
 			.findByCssSelector(CONTAINER_SELECTOR)
@@ -129,7 +129,7 @@ registerSuite({
 				});
 	},
 
-	'Clicking the underlay should not destroy the dialog when "modal" is true'(this: any) {
+	'Clicking the underlay should not destroy the dialog when "modal" is true'() {
 		return clickUnderlay(this.remote, { underlay: true, modal: true })
 			.sleep(DELAY)
 			.findByCssSelector(CONTAINER_SELECTOR)
@@ -139,7 +139,7 @@ registerSuite({
 				});
 	},
 
-	'The dialog should not be closeable when "closeable" is false'(this: any) {
+	'The dialog should not be closeable when "closeable" is false'() {
 		return clickUnderlay(this.remote, { underlay: true, closeable: false })
 			.sleep(DELAY)
 			.findByCssSelector(CONTAINER_SELECTOR)
@@ -149,7 +149,7 @@ registerSuite({
 				});
 	},
 
-	'The dialog should be hidden when the close button is clicked'(this: any) {
+	'The dialog should be hidden when the close button is clicked'() {
 		return openDialog(this.remote)
 			.findByCssSelector(`.${css.close}`)
 				.click()
@@ -162,7 +162,7 @@ registerSuite({
 				});
 	},
 
-	'The dialog should be hidden when the close button is activated with the enter key'(this: any) {
+	'The dialog should be hidden when the close button is activated with the enter key'() {
 		if (this.remote.session.capabilities.browserName === 'safari') {
 			// TODO: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5403
 			this.skip('SafariDriver does not move focus with tab key.');
