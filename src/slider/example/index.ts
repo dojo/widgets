@@ -47,6 +47,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h1', {}, ['Slider with custom output']),
 			w(Slider, {
+				extraClasses: { root: 's1' },
 				key: 's1',
 				label: 'How much do you like tribbles?',
 				min: 0,
@@ -66,6 +67,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}),
 			v('h1', {}, ['Disabled slider']),
 			w(Slider, {
+				extraClasses: { root: 's2' },
 				key: 's2',
 				label: 'Stuck at 30',
 				min: 0,
@@ -77,6 +79,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}),
 			v('h1', {}, ['Vertical slider']),
 			w(Slider, {
+				extraClasses: { root: 's3' },
 				key: 's3',
 				label: 'Vertical Slider with default properties. Anything over 50 is invalid:',
 				value: verticalValue,

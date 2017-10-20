@@ -1,7 +1,8 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
+import keys from '@theintern/leadfoot/keys';
 import * as css from '../../styles/slider.m.css';
-import * as keys from 'leadfoot/keys';
 
 function getPage(test: any) {
 	const { browserName } = test.remote.environmentType;
@@ -19,91 +20,86 @@ function checkValue(command: any, values?: number[]) {
 	return command
 		.findByCssSelector(`.${css.inputWrapper}`)
 			.findByCssSelector(`.${css.input}`)
-			.getProperty('value')
-			.then((value: string) => {
-				currentValue = parseInt(value, 10);
-			})
+				.getProperty('value')
+				.then((value: string) => {
+					currentValue = parseInt(value, 10);
+				})
 			.end()
 			.findByCssSelector(`.${css.fill}`)
-			.getAttribute('style')
-			.then((style: string) => {
-				const absWidthRegex = /width:\s*(\d+)\.?\d*%/;
-				let result = style.match(absWidthRegex);
-				let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
-				assert.lengthOf(result, 2);
-				notIE && assert.closeTo(width, currentValue, 1);
-			})
+				.getAttribute('style')
+				.then((style: string) => {
+					const absWidthRegex = /width:\s*(\d+)\.?\d*%/;
+					let result = style.match(absWidthRegex);
+					let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
+					assert.lengthOf(result, 2);
+					notIE && assert.closeTo(width, currentValue, 1);
+				})
 			.end()
 			.findByCssSelector(`.${css.thumb}`)
-			.getAttribute('style')
-			.then((style: string) => {
-				const absWidthRegex = /left:\s*(\d+)\.?\d*%/;
-				let result = style.match(absWidthRegex);
-				let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
-				assert.lengthOf(result, 2);
-				notIE && assert.closeTo(width, currentValue, 1);
-				values && values.push(width);
-			})
+				.getAttribute('style')
+				.then((style: string) => {
+					const absWidthRegex = /left:\s*(\d+)\.?\d*%/;
+					let result = style.match(absWidthRegex);
+					let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
+					assert.lengthOf(result, 2);
+					notIE && assert.closeTo(width, currentValue, 1);
+					values && values.push(width);
+				})
 			.end()
 		.end();
 }
 
 function slide(command: any, x: number, y: number) {
 	return command.session.capabilities.brokenMouseEvents ?
-		command.findByCssSelector(`.${css.thumb}`)
-		.moveMouseTo(x, y)
-		.pressMouseButton()
-		.end()
+		command
+			.findByCssSelector(`.${css.thumb}`)
+				.moveMouseTo(x, y)
+				.pressMouseButton()
+			.end()
 		:
 		command
-		.findByCssSelector(`.${css.thumb}`)
-		.moveMouseTo()
-		.pressMouseButton()
-		.moveMouseTo(x, y)
-		.releaseMouseButton()
-		.end();
+			.findByCssSelector(`.${css.thumb}`)
+				.moveMouseTo()
+				.pressMouseButton()
+				.moveMouseTo(x, y)
+				.releaseMouseButton()
+			.end();
 }
-registerSuite({
-	name: 'Slider',
 
+registerSuite('Slider', {
 	'horizontal slider': {
 		'each component of a slider should be visible'(this: any) {
-
 			return getPage(this)
-				.findByCssSelector(`#example-1 .${css.root}`)
-				.isDisplayed()
-				.findByCssSelector(`.${css.input}`)
-				.isDisplayed()
+				.findByCssSelector(`.s1.${css.root}`)
+					.isDisplayed()
+					.findByCssSelector(`.${css.input}`)
+					.isDisplayed()
 				.end()
 				.findByCssSelector(`.${css.track}`)
-				.isDisplayed()
+					.isDisplayed()
 				.end()
 				.findByCssSelector(`.${css.output}`)
-				.isDisplayed()
+					.isDisplayed()
 				.end()
-
 				.getSize()
 				.then(({ height, width }: { height: number; width: number; }) => {
 					assert.isAbove(height, 0, 'The height of the slider should be greater than zero.');
 					assert.isAbove(width, 0, 'The width of the slider should be greater than zero.');
 				})
-
 				.end();
 		},
 		'label should be as defined'(this: any) {
 			return getPage(this)
-				.findByCssSelector(`#example-1 .${css.root}`)
-				.getVisibleText()
-				.then((text: string) => {
-					assert.include(text, 'How much do you like tribbles?');
-				})
+				.findByCssSelector(`.s1.${css.root}`)
+					.getVisibleText()
+					.then((text: string) => {
+						assert.include(text, 'How much do you like tribbles?');
+					})
 				.end();
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
-			let command = getPage(this)
-				.findByCssSelector(`#example-1 .${css.root}`);
-			return checkValue(command)
-				.end();
+			const command = getPage(this).findByCssSelector(`.s1.${css.root}`);
+			return checkValue(command).end();
 		},
 		'slider should be slidable with mouse'(this: any) {
 			const { browserName, mouseEnabled } = this.remote.environmentType;
@@ -115,8 +111,7 @@ registerSuite({
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this)
-				.findByCssSelector(`#example-1 .${css.root}`);
+			let command = getPage(this).findByCssSelector(`.s1.${css.root}`);
 			command = checkValue(command, sliderValues);
 
 			command = slide(command, -30, 0);
@@ -143,7 +138,7 @@ registerSuite({
 
 			let sliderValues: number[] = [];
 			let command = getPage(this)
-				.findByCssSelector(`#example-1 .${css.root}`);
+				.findByCssSelector(`.s1.${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
 				.pressKeys(keys.ARROW_LEFT);
@@ -163,7 +158,7 @@ registerSuite({
 	'vertical slider': {
 		'each component of a slider should be visible'(this: any) {
 			return getPage(this)
-				.findByCssSelector(`#example-2 .${css.root}`)
+				.findByCssSelector(`.s2.${css.root}`)
 				.isDisplayed()
 				.findByCssSelector(`.${css.input}`)
 				.isDisplayed()
@@ -185,7 +180,7 @@ registerSuite({
 		},
 		'label should be as defined'(this: any) {
 			return getPage(this)
-				.findByCssSelector(`#example-2 .${css.root}`)
+				.findByCssSelector(`.s3.${css.root}`)
 				.getVisibleText()
 				.then((text: string) => {
 					assert.include(text, 'Vertical Slider with default properties.');
@@ -194,11 +189,11 @@ registerSuite({
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
 			let command = getPage(this)
-				.findByCssSelector(`#example-2 .${css.root}`);
+				.findByCssSelector(`.s2.${css.root}`);
 			return checkValue(command)
 				.end();
 		},
-		'slider should be slidable with mouse'(this: any) {
+		'slider should be functional with mouse'(this: any) {
 			const { browserName, mouseEnabled } = this.remote.environmentType;
 			if (!mouseEnabled) {
 				this.skip('Test requires mouse interactions.');
@@ -209,7 +204,7 @@ registerSuite({
 
 			let sliderValues: number[] = [];
 			let command = getPage(this)
-				.findByCssSelector(`#example-2 .${css.root}`);
+				.findByCssSelector(`.s3.${css.root}`);
 			command = checkValue(command, sliderValues);
 
 			command = slide(command, 1, -30);
@@ -225,7 +220,7 @@ registerSuite({
 				})
 				.end();
 		},
-		'slider should be slidable with up and down arrow keys'(this: any) {
+		'slider should be functional with up and down arrow keys'(this: any) {
 			const { browserName, supportsKeysCommand } = this.remote.environmentType;
 			if (!supportsKeysCommand) {
 				this.skip('Arrow keys required for tests.');
@@ -236,7 +231,7 @@ registerSuite({
 
 			let sliderValues: number[] = [];
 			let command = getPage(this)
-				.findByCssSelector(`#example-2 .${css.root}`);
+				.findByCssSelector(`.s3.${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
 				.pressKeys([keys.ARROW_UP, keys.ARROW_UP]);
