@@ -1,17 +1,17 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
+import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/label.m.css';
 
-function getPage(remote: any) {
+function getPage(remote: Remote) {
 	return remote
 		.get('http://localhost:9000/_build/common/example/?module=label')
 		.setFindTimeout(5000);
 }
 
-registerSuite({
-	name: 'Label',
-
-	'Label should be visible'(this: any) {
+registerSuite('Label', {
+	'Label should be visible'() {
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root}.label1`)
 			.getSize()
@@ -21,44 +21,47 @@ registerSuite({
 			})
 			.end();
 	},
-	'Label text should be as defined'(this: any) {
+	'Label text should be as defined'() {
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root}.label1`)
-			.getVisibleText()
-			.then((text: string) => {
-				assert.strictEqual(text, 'Type something');
-			})
+				.getVisibleText()
+				.then((text: string) => {
+					assert.strictEqual(text, 'Type something');
+				})
 			.end();
 
 	},
-	'Input box should gain focus when clicking on the label'(this: any) {
-		let input: any;
-		getPage(this.remote)
+	'Input box should gain focus when clicking on the label'() {
+		let input: string;
+		return getPage(this.remote)
 			.findByCssSelector(`.${css.root}.label1`)
-			.then(function(element: any) {
-				input = element;
-			})
-			.click()
+				.click()
+				.findByTagName('input')
+					.then((element) => {
+						input = element.elementId;
+					})
+				.end()
+			.end()
+			.sleep(30)
 			.getActiveElement()
-			.then(function(element: any) {
-				assert.strictEqual(element, input);
-			})
-			.end();
+			.then((element) => {
+				assert.strictEqual(input, element.elementId);
+			});
 
 	},
-	'Hidden label text should not be displayed'(this: any) {
+	'Hidden label text should not be displayed'() {
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root}.label2`)
-			.getVisibleText()
-			.then((text: string) => {
-				assert.strictEqual(text, 'Can\'t read me!');
-			})
-				.findByTagName('span')
-				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
-					assert.isAtMost(height, 1, 'The label text height should be no more than 1px.');
-					assert.isAtMost(width, 1, 'The label text width should be no more than 1px.');
+				.getVisibleText()
+				.then((text: string) => {
+					assert.strictEqual(text, 'Can\'t read me!');
 				})
+				.findByTagName('span')
+					.getSize()
+					.then(({ height, width }: { height: number; width: number; }) => {
+						assert.isAtMost(height, 1, 'The label text height should be no more than 1px.');
+						assert.isAtMost(width, 1, 'The label text width should be no more than 1px.');
+					})
 				.end()
 			.end();
 	}
