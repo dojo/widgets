@@ -47,8 +47,7 @@
 		"remoteCapabilities": {
 			"capabilities": {
 				"project": "Dojo 2",
-				"name": "@dojo/widgets",
-				"fixSessionCapabilities": false
+				"name": "@dojo/widgets"
 			}
 		},
 
