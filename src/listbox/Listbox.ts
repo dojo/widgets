@@ -9,7 +9,8 @@ import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
 import * as css from './styles/listbox.m.css';
 
-interface ListboxOptionProperties extends ThemeableProperties {
+/* Listbox Option sub-widget */
+export interface ListboxOptionProperties extends ThemeableProperties {
 	active?: boolean;
 	classes?: (string | null)[];
 	disabled?: boolean;
@@ -23,7 +24,7 @@ interface ListboxOptionProperties extends ThemeableProperties {
 const ListboxOptionBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
-class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
+export class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
 	private _onClick(event: MouseEvent) {
 		const { option, onClick } = this.properties;
 		onClick && onClick(option);
@@ -146,16 +147,18 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 
 	@diffProperty('activeIndex', auto)
 	protected calculateScroll(previousProperties: ListboxProperties, { activeIndex = 0 }: ListboxProperties) {
-		const scrollOffset = this.meta(Dimensions).get('root').scroll;
+		const scrollOffset = this.meta(Dimensions).get('root').scroll.top;
 		const menuHeight = this.meta(Dimensions).get('root').offset.height;
 		const optionOffset = this.meta(Dimensions).get(this._getOptionId(activeIndex)).offset;
 
-		if (optionOffset.top - scrollOffset.top < 0) {
+		if (optionOffset.top - scrollOffset < 0) {
+			console.log('scroll up to option');
 			this._scroll = optionOffset.top;
 			this.invalidate();
 		}
 
-		else if ((optionOffset.top + optionOffset.height) > (scrollOffset.top + menuHeight)) {
+		else if ((optionOffset.top + optionOffset.height) > (scrollOffset + menuHeight)) {
+			console.log('scroll down to option');
 			this._scroll = optionOffset.top + optionOffset.height - menuHeight;
 			this.invalidate();
 		}
@@ -217,7 +220,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 				disabled,
 				label: this.renderOptionLabel(option, index),
 				id: this._getOptionId(index),
-				key: 'option',
+				key: `option-${index}`,
 				option,
 				selected,
 				theme,

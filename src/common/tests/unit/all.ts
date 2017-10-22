@@ -17,7 +17,6 @@ import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../label/tests/unit/Label';
 import '../../../listbox/tests/unit/Listbox';
-import '../../../listbox/tests/unit/ListboxOption';
 import '../../../radio/tests/unit/Radio';
 import '../../../select/tests/unit/Select';
 import '../../../slidepane/tests/unit/SlidePane';

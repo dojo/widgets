@@ -4,15 +4,15 @@ import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
-import { WNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
-import Listbox, { ListboxProperties } from '../../Listbox';
-import ListboxOption from '../../ListboxOption';
+import Listbox, { ListboxProperties, ListboxOption, ListboxOptionProperties } from '../../Listbox';
 import * as css from '../../styles/listbox.m.css';
 
 let widget: Harness<ListboxProperties, typeof Listbox>;
+let optionWidget: Harness<ListboxOptionProperties, typeof ListboxOption>;
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -41,49 +41,59 @@ const testOptions: any[] = [
 
 const expectedOptions = function(widget: any, activeIndex = 0) {
 	return [
-		w(ListboxOption, {
-			active: activeIndex === 0,
-			disabled: false,
-			getOptionLabel: undefined,
-			id: 'first',
-			key: 'first',
-			option: testOptions[0],
-			selected: false,
-			onClick: widget.listener,
-			theme: undefined
-		}),
-		w(ListboxOption, {
-			active: activeIndex === 1,
-			disabled: false,
-			getOptionLabel: undefined,
-			id: <any> compareId,
-			key: <any> compareId,
-			option: testOptions[1],
-			selected: false,
-			onClick: widget.listener,
-			theme: undefined
-		}),
-		w(ListboxOption, {
-			active: activeIndex === 2,
-			disabled: false,
-			getOptionLabel: undefined,
-			id: <any> compareId,
-			key: <any> compareId,
-			option: testOptions[2],
-			selected: false,
-			onClick: widget.listener,
-			theme: undefined
-		})
+		v('div', { key: 'first' }, [
+			w(ListboxOption, {
+				active: activeIndex === 0,
+				classes: [ css.option, css.activeOption, null, null ],
+				disabled: false,
+				id: 'first',
+				key: 'option-0',
+				label: '[object Object]',
+				option: testOptions[0],
+				selected: false,
+				onClick: widget.listener,
+				theme: undefined
+			})
+		]),
+		v('div', { key: <any> compareId }, [
+			w(ListboxOption, {
+				active: activeIndex === 1,
+				classes: [ css.option, null, null, null ],
+				disabled: false,
+				id: <any> compareId,
+				key: 'option-1',
+				label: '[object Object]',
+				option: testOptions[1],
+				selected: false,
+				onClick: widget.listener,
+				theme: undefined
+			})
+		]),
+		v('div', { key: <any> compareId }, [
+			w(ListboxOption, {
+				active: activeIndex === 2,
+				classes: [ css.option, null, null, null ],
+				disabled: false,
+				id: <any> compareId,
+				key: 'option-2',
+				label: '[object Object]',
+				option: testOptions[2],
+				selected: false,
+				onClick: widget.listener,
+				theme: undefined
+			})
+		])
 	];
 };
 
-const expectedVdom = function(widget: any, options: WNode[]) {
+const expectedVdom = function(widget: any, options: DNode[]) {
 	return v('div', {
 		'aria-activedescendant': compareId,
 		'aria-multiselectable': null,
 		classes: widget.classes(css.root),
 		describedBy: undefined,
 		id: undefined,
+		key: 'root',
 		role: 'listbox',
 		tabIndex: 0,
 		onkeydown: widget.listener
@@ -109,8 +119,10 @@ registerSuite({
 		widget.setProperties({ optionData: testOptions });
 		const vdom = expectedVdom(widget, expectedOptions(widget));
 		assignChildProperties(vdom, '0', {
-			id: <any> compareId,
 			key: <any> compareId
+		});
+		assignChildProperties(vdom, '0,0', {
+			id: <any> compareId
 		});
 		widget.expectRender(vdom);
 	},
@@ -124,6 +136,7 @@ registerSuite({
 			multiselect: true,
 			optionData: testOptions,
 			tabIndex: -1,
+			theme: {},
 			getOptionDisabled: (option: any) => !!option.disabled,
 			getOptionId: (option: any, index: number) => option.id || `${index}`,
 			getOptionLabel: (option: any) => option.label,
@@ -139,16 +152,21 @@ registerSuite({
 			id: 'bar',
 			tabIndex: -1
 		});
-		assignChildProperties(vdom, '0', {
-			getOptionLabel: widget.listener
+		assignChildProperties(vdom, '0,0', {
+			label: 'One',
+			theme: {}
 		});
-		assignChildProperties(vdom, '1', {
+		assignChildProperties(vdom, '1,0', {
+			classes: <any> [ css.option, null, null, css.selectedOption ],
+			label: 'Two',
 			selected: true,
-			getOptionLabel: widget.listener
+			theme: {}
 		});
-		assignChildProperties(vdom, '2', {
+		assignChildProperties(vdom, '2,0', {
+			classes: <any> [ css.option, null, css.disabledOption, null ],
 			disabled: true,
-			getOptionLabel: widget.listener
+			label: 'Three',
+			theme: {}
 		});
 		widget.expectRender(vdom);
 	},
@@ -195,13 +213,12 @@ registerSuite({
 		const onOptionSelect = sinon.stub();
 		widget.setProperties({
 			activeIndex: 1,
-			getOptionId: (option: any, index: number) => `${index}`,
 			optionData: testOptions,
 			onActiveIndexChange,
 			onOptionSelect
 		});
 
-		widget.callListener('onClick', { args: [testOptions[0]], key: '0' });
+		widget.callListener('onClick', { args: [testOptions[0]], key: 'option-0' });
 		assert.isTrue(onActiveIndexChange.calledWith(0), 'Clicking first option moves active index');
 		assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0), 'Clicking first option selects it');
 	},
@@ -235,7 +252,6 @@ registerSuite({
 		widget.setProperties({
 			activeIndex: 2,
 			optionData: testOptions,
-			getOptionId: (option: any, index: number) => `${index}`,
 			getOptionDisabled: (option: any) => !!option.disabled,
 			onOptionSelect
 		});
@@ -246,7 +262,143 @@ registerSuite({
 		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Space } });
 		assert.isFalse(onOptionSelect.called, 'Space key does not select disabled option');
 
-		widget.callListener('onClick', { key: '2' });
+		widget.callListener('onClick', { key: 'option-2' });
 		assert.isFalse(onOptionSelect.called, 'Clicking disabled option does not select it');
+	},
+
+	'scroll to active option below the viewport'() {
+		const scrollStub = sinon.stub();
+		class StubDimensions {
+			public get(key: any) {
+				if (key === 'root') {
+					return {
+						scroll: { top: 0 },
+						offset: { height: 200 }
+					};
+				}
+				else {
+					return {
+						offset: {
+							top: 300,
+							height: 50
+						}
+					};
+				}
+			}
+		};
+		class ScrollListbox extends Listbox {
+			animateScroll(element: HTMLElement, scrollValue: number) {
+				scrollStub(scrollValue);
+			};
+			meta(MetaType: any): any {
+				return new StubDimensions();
+			}
+		}
+		widget = harness(ScrollListbox);
+		widget.setProperties({ activeIndex: 3 });
+		widget.getRender();
+
+		assert.isTrue(scrollStub.calledWith(150));
+	},
+
+	'scroll to active option above the viewport'() {
+		const scrollStub = sinon.stub();
+		class StubDimensions {
+			public get(key: any) {
+				if (key === 'root') {
+					return {
+						scroll: { top: 300 },
+						offset: { height: 200 }
+					};
+				}
+				else {
+					return {
+						offset: {
+							top: 100,
+							height: 50
+						}
+					};
+				}
+			}
+		};
+		class ScrollListbox extends Listbox {
+			animateScroll(element: HTMLElement, scrollValue: number) {
+				scrollStub(scrollValue);
+			};
+			meta(MetaType: any): any {
+				return new StubDimensions();
+			}
+		}
+		widget = harness(ScrollListbox);
+		widget.setProperties({ activeIndex: 0 });
+		widget.getRender();
+
+		// onElementUpdated
+		scrollStub.reset();
+		widget.setProperties({});
+		widget.getRender();
+
+		assert.isTrue(scrollStub.calledWith(100));
+	},
+
+	'ListboxOption': {
+		beforeEach() {
+			optionWidget = harness(ListboxOption);
+		},
+
+		afterEach() {
+			optionWidget.destroy();
+		},
+
+		'default render'() {
+			optionWidget.setProperties({
+				label: 'foo',
+				id: 'bar',
+				option: 'baz'
+			});
+
+			optionWidget.expectRender(v('div', {
+				'aria-disabled': null,
+				'aria-selected': 'false',
+				classes: optionWidget.classes(),
+				id: 'bar',
+				role: 'option',
+				onclick: optionWidget.listener
+			}, [ 'foo' ]));
+		},
+
+		'custom properties'() {
+			optionWidget.setProperties({
+				active: true,
+				classes: [ css.option ],
+				disabled: true,
+				label: 'foo',
+				id: 'bar',
+				option: 'baz',
+				selected: true
+			});
+
+			optionWidget.expectRender(v('div', {
+				'aria-disabled': 'true',
+				'aria-selected': null,
+				classes: optionWidget.classes(css.option),
+				id: 'bar',
+				role: 'option',
+				onclick: optionWidget.listener
+			}, [ 'foo' ]));
+		},
+
+		'option click'() {
+			const onClick = sinon.stub();
+			optionWidget.setProperties({
+				label: 'foo',
+				id: 'bar',
+				option: 'baz',
+				onClick
+			});
+
+			optionWidget.sendEvent('click');
+			assert.isTrue(onClick.calledWith('baz'));
+		}
 	}
 });
