@@ -2,8 +2,6 @@
 
 .root {
 	border: var(--border-width) solid var(--color-border);
-	max-height: 150px;
-	overflow-y: scroll;
 	position: relative;
 }
 

@@ -152,13 +152,11 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		const optionOffset = this.meta(Dimensions).get(this._getOptionId(activeIndex)).offset;
 
 		if (optionOffset.top - scrollOffset < 0) {
-			console.log('scroll up to option');
 			this._scroll = optionOffset.top;
 			this.invalidate();
 		}
 
 		else if ((optionOffset.top + optionOffset.height) > (scrollOffset + menuHeight)) {
-			console.log('scroll down to option');
 			this._scroll = optionOffset.top + optionOffset.height - menuHeight;
 			this.invalidate();
 		}
