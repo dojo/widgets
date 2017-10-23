@@ -8,6 +8,7 @@ import '../../../listbox/tests/functional/Listbox';
 import '../../../radio/tests/functional/Radio';
 import '../../../slidepane/tests/functional/SlidePane';
 import '../../../tabcontroller/tests/functional/TabController';
+import '../../../textarea/tests/functional/Textarea';
 import '../../../textinput/tests/functional/TextInput';
 import '../../../titlepane/tests/functional/TitlePane';
 import '../../../tooltip/tests/functional/Tooltip';

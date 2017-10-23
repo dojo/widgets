@@ -9,7 +9,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _value1: string;
 	private _value2: string;
-	private _invalid = false;
+	private _invalid: boolean;
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const checked = event.target.checked;
@@ -28,6 +28,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			w(Textarea, {
+				extraClasses: { root: 't1' },
 				key: 't1',
 				columns: 40,
 				rows: 8,
@@ -42,6 +43,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}),
 			v('h3', {}, ['Disabled Textarea']),
 			w(Textarea, {
+				extraClasses: { root: 't2' },
 				key: 't2',
 				columns: 40,
 				rows: 3,
@@ -52,6 +54,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}),
 			v('h3', {}, ['Validated, Required Textarea']),
 			w(Textarea, {
+				extraClasses: { root: 't3' },
 				key: 't3',
 				columns: 40,
 				rows: 8,
@@ -66,6 +69,18 @@ export class App extends WidgetBase<WidgetProperties> {
 					this.invalidate();
 				},
 				theme: this._theme
+			}),
+			v('h3', {}, ['Hidden Label Textarea']),
+			w(Textarea, {
+				extraClasses: { root: 't4' },
+				key: 't4',
+				columns: 40,
+				rows: 8,
+				label: {
+					content: 'Hidden label',
+					before: false,
+					hidden: true
+				}
 			})
 		]);
 	}
