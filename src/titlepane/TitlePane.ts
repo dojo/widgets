@@ -164,7 +164,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 					timing: this._timing,
 					controls: {
 						play: this._play,
-						onFinish: this._onAnimationFinish.bind(this)
+						onFinish: this._onAnimationFinish
 					}
 				} : {
 					id: 'up',
@@ -172,7 +172,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 					timing: this._timing,
 					controls: {
 						play: this._play,
-						onFinish: this._onAnimationFinish.bind(this)
+						onFinish: this._onAnimationFinish
 					}
 				}
 			}, this.children)
