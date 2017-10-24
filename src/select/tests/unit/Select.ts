@@ -276,7 +276,7 @@ registerSuite('Select', {
 				const selectVdom = expectedSingle(widget, true);
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.multiselect)
+					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
 				});
 				widget.expectRender(expectedVdom);
 			},
@@ -310,7 +310,6 @@ registerSuite('Select', {
 			'select options'() {
 				const onChange = sinon.stub();
 
-				ExpectedCustomOption = CustomOption;
 				widget.setProperties({
 					options: testOptions,
 					onChange

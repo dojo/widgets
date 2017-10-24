@@ -1,5 +1,5 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -100,9 +100,7 @@ const expectedVdom = function(widget: any, options: DNode[]) {
 	}, options);
 };
 
-registerSuite({
-	name: 'Listbox',
-
+registerSuite('Listbox', {
 	beforeEach() {
 		widget = harness(Listbox);
 	},
@@ -111,245 +109,249 @@ registerSuite({
 		widget.destroy();
 	},
 
-	'empty listbox'() {
-		widget.expectRender(expectedVdom(widget, []));
-	},
-
-	'options with default properties'() {
-		widget.setProperties({ optionData: testOptions });
-		const vdom = expectedVdom(widget, expectedOptions(widget));
-		assignChildProperties(vdom, '0', {
-			key: <any> compareId
-		});
-		assignChildProperties(vdom, '0,0', {
-			id: <any> compareId
-		});
-		widget.expectRender(vdom);
-	},
-
-	'custom properties'() {
-		widget.setProperties({
-			activeIndex: 0,
-			describedBy: 'foo',
-			visualFocus: true,
-			id: 'bar',
-			multiselect: true,
-			optionData: testOptions,
-			tabIndex: -1,
-			theme: {},
-			getOptionDisabled: (option: any) => !!option.disabled,
-			getOptionId: (option: any, index: number) => option.id || `${index}`,
-			getOptionLabel: (option: any) => option.label,
-			getOptionSelected: (option: any, index: number) => index === 1
-		});
-
-		const vdom = expectedVdom(widget, expectedOptions(widget));
-		assignProperties(vdom, {
-			'aria-activedescendant': 'first',
-			'aria-multiselectable': 'true',
-			classes: widget.classes(css.root, css.focused),
-			describedBy: 'foo',
-			id: 'bar',
-			tabIndex: -1
-		});
-		assignChildProperties(vdom, '0,0', {
-			label: 'One',
-			theme: {}
-		});
-		assignChildProperties(vdom, '1,0', {
-			classes: <any> [ css.option, null, null, css.selectedOption ],
-			label: 'Two',
-			selected: true,
-			theme: {}
-		});
-		assignChildProperties(vdom, '2,0', {
-			classes: <any> [ css.option, null, css.disabledOption, null ],
-			disabled: true,
-			label: 'Three',
-			theme: {}
-		});
-		widget.expectRender(vdom);
-	},
-
-	'onkeydown event'() {
-		const onKeyDown = sinon.stub();
-		widget.setProperties({ onKeyDown });
-
-		widget.sendEvent('keydown');
-		assert.isTrue(onKeyDown.called);
-	},
-
-	'arrow keys move active index'() {
-		const onActiveIndexChange = sinon.stub();
-		widget.setProperties({
-			optionData: testOptions,
-			onActiveIndexChange
-		});
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Down } });
-		assert.isTrue(onActiveIndexChange.calledWith(1), 'Down arrow moves to second option');
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Up } });
-		assert.isTrue(onActiveIndexChange.calledWith(2), 'Up arrow moves to last option');
-	},
-
-	'home and end move active index'() {
-		const onActiveIndexChange = sinon.stub();
-		widget.setProperties({
-			activeIndex: 1,
-			optionData: testOptions,
-			onActiveIndexChange
-		});
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Home } });
-		assert.isTrue(onActiveIndexChange.calledWith(0), 'Home key moves to first option');
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.End } });
-		assert.isTrue(onActiveIndexChange.calledWith(2), 'End key moves to last option');
-	},
-
-	'clicking selects option and moves active index'() {
-		const onActiveIndexChange = sinon.stub();
-		const onOptionSelect = sinon.stub();
-		widget.setProperties({
-			activeIndex: 1,
-			optionData: testOptions,
-			onActiveIndexChange,
-			onOptionSelect
-		});
-
-		widget.callListener('onClick', { args: [testOptions[0]], key: 'option-0' });
-		assert.isTrue(onActiveIndexChange.calledWith(0), 'Clicking first option moves active index');
-		assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0), 'Clicking first option selects it');
-	},
-
-	'keyboard selects active option'() {
-		const onOptionSelect = sinon.stub();
-		widget.setProperties({
-			activeIndex: 1,
-			key: 'foo',
-			optionData: testOptions,
-			onOptionSelect
-		});
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Enter } });
-		assert.isTrue(onOptionSelect.calledWith(testOptions[1], 1, 'foo'), 'Enter key selects option');
-
-		widget.setProperties({
-			activeIndex: 0,
-			key: 'foo',
-			optionData: testOptions,
-			onOptionSelect
-		});
-		widget.getRender();
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Space } });
-		assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0, 'foo'), 'Space key selects option');
-	},
-
-	'disabled options are not selected'() {
-		const onOptionSelect = sinon.stub();
-		widget.setProperties({
-			activeIndex: 2,
-			optionData: testOptions,
-			getOptionDisabled: (option: any) => !!option.disabled,
-			onOptionSelect
-		});
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Enter } });
-		assert.isFalse(onOptionSelect.called, 'Enter key does not select disabled option');
-
-		widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Space } });
-		assert.isFalse(onOptionSelect.called, 'Space key does not select disabled option');
-
-		widget.callListener('onClick', { key: 'option-2' });
-		assert.isFalse(onOptionSelect.called, 'Clicking disabled option does not select it');
-	},
-
-	'scroll to active option below the viewport'() {
-		const scrollStub = sinon.stub();
-		class StubDimensions {
-			public get(key: any) {
-				if (key === 'root') {
-					return {
-						scroll: { top: 0 },
-						offset: { height: 200 }
-					};
-				}
-				else {
-					return {
-						offset: {
-							top: 300,
-							height: 50
-						}
-					};
-				}
-			}
-		};
-		class ScrollListbox extends Listbox {
-			animateScroll(element: HTMLElement, scrollValue: number) {
-				scrollStub(scrollValue);
-			};
-			meta(MetaType: any): any {
-				return new StubDimensions();
-			}
-		}
-		widget = harness(ScrollListbox);
-		widget.setProperties({ activeIndex: 3 });
-		widget.getRender();
-
-		assert.isTrue(scrollStub.calledWith(150));
-	},
-
-	'scroll to active option above the viewport'() {
-		const scrollStub = sinon.stub();
-		class StubDimensions {
-			public get(key: any) {
-				if (key === 'root') {
-					return {
-						scroll: { top: 300 },
-						offset: { height: 200 }
-					};
-				}
-				else {
-					return {
-						offset: {
-							top: 100,
-							height: 50
-						}
-					};
-				}
-			}
-		};
-		class ScrollListbox extends Listbox {
-			animateScroll(element: HTMLElement, scrollValue: number) {
-				scrollStub(scrollValue);
-			};
-			meta(MetaType: any): any {
-				return new StubDimensions();
-			}
-		}
-		widget = harness(ScrollListbox);
-		widget.setProperties({ activeIndex: 0 });
-		widget.getRender();
-
-		// onElementUpdated
-		scrollStub.reset();
-		widget.setProperties({});
-		widget.getRender();
-
-		assert.isTrue(scrollStub.calledWith(100));
-	},
-
-	'ListboxOption': {
-		beforeEach() {
-			optionWidget = harness(ListboxOption);
+	tests: {
+		'empty listbox'() {
+			widget.expectRender(expectedVdom(widget, []));
 		},
 
-		afterEach() {
-			optionWidget.destroy();
+		'options with default properties'() {
+			widget.setProperties({ optionData: testOptions });
+			const vdom = expectedVdom(widget, expectedOptions(widget));
+			assignChildProperties(vdom, '0', {
+				key: <any> compareId
+			});
+			assignChildProperties(vdom, '0,0', {
+				id: <any> compareId
+			});
+			widget.expectRender(vdom);
 		},
 
+		'custom properties'() {
+			widget.setProperties({
+				activeIndex: 0,
+				describedBy: 'foo',
+				visualFocus: true,
+				id: 'bar',
+				multiselect: true,
+				optionData: testOptions,
+				tabIndex: -1,
+				theme: {},
+				getOptionDisabled: (option: any) => !!option.disabled,
+				getOptionId: (option: any, index: number) => option.id || `${index}`,
+				getOptionLabel: (option: any) => option.label,
+				getOptionSelected: (option: any, index: number) => index === 1
+			});
+
+			const vdom = expectedVdom(widget, expectedOptions(widget));
+			assignProperties(vdom, {
+				'aria-activedescendant': 'first',
+				'aria-multiselectable': 'true',
+				classes: widget.classes(css.root, css.focused),
+				describedBy: 'foo',
+				id: 'bar',
+				tabIndex: -1
+			});
+			assignChildProperties(vdom, '0,0', {
+				label: 'One',
+				theme: {}
+			});
+			assignChildProperties(vdom, '1,0', {
+				classes: <any> [ css.option, null, null, css.selectedOption ],
+				label: 'Two',
+				selected: true,
+				theme: {}
+			});
+			assignChildProperties(vdom, '2,0', {
+				classes: <any> [ css.option, null, css.disabledOption, null ],
+				disabled: true,
+				label: 'Three',
+				theme: {}
+			});
+			widget.expectRender(vdom);
+		},
+
+		'onkeydown event'() {
+			const onKeyDown = sinon.stub();
+			widget.setProperties({ onKeyDown });
+
+			widget.sendEvent('keydown');
+			assert.isTrue(onKeyDown.called);
+		},
+
+		'arrow keys move active index'() {
+			const onActiveIndexChange = sinon.stub();
+			widget.setProperties({
+				optionData: testOptions,
+				onActiveIndexChange
+			});
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Down } });
+			assert.isTrue(onActiveIndexChange.calledWith(1), 'Down arrow moves to second option');
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Up } });
+			assert.isTrue(onActiveIndexChange.calledWith(2), 'Up arrow moves to last option');
+		},
+
+		'home and end move active index'() {
+			const onActiveIndexChange = sinon.stub();
+			widget.setProperties({
+				activeIndex: 1,
+				optionData: testOptions,
+				onActiveIndexChange
+			});
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Home } });
+			assert.isTrue(onActiveIndexChange.calledWith(0), 'Home key moves to first option');
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.End } });
+			assert.isTrue(onActiveIndexChange.calledWith(2), 'End key moves to last option');
+		},
+
+		'clicking selects option and moves active index'() {
+			const onActiveIndexChange = sinon.stub();
+			const onOptionSelect = sinon.stub();
+			widget.setProperties({
+				activeIndex: 1,
+				optionData: testOptions,
+				onActiveIndexChange,
+				onOptionSelect
+			});
+
+			widget.callListener('onClick', { args: [testOptions[0]], key: 'option-0' });
+			assert.isTrue(onActiveIndexChange.calledWith(0), 'Clicking first option moves active index');
+			assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0), 'Clicking first option selects it');
+		},
+
+		'keyboard selects active option'() {
+			const onOptionSelect = sinon.stub();
+			widget.setProperties({
+				activeIndex: 1,
+				key: 'foo',
+				optionData: testOptions,
+				onOptionSelect
+			});
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Enter } });
+			assert.isTrue(onOptionSelect.calledWith(testOptions[1], 1, 'foo'), 'Enter key selects option');
+
+			widget.setProperties({
+				activeIndex: 0,
+				key: 'foo',
+				optionData: testOptions,
+				onOptionSelect
+			});
+			widget.getRender();
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Space } });
+			assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0, 'foo'), 'Space key selects option');
+		},
+
+		'disabled options are not selected'() {
+			const onOptionSelect = sinon.stub();
+			widget.setProperties({
+				activeIndex: 2,
+				optionData: testOptions,
+				getOptionDisabled: (option: any) => !!option.disabled,
+				onOptionSelect
+			});
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Enter } });
+			assert.isFalse(onOptionSelect.called, 'Enter key does not select disabled option');
+
+			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Space } });
+			assert.isFalse(onOptionSelect.called, 'Space key does not select disabled option');
+
+			widget.callListener('onClick', { key: 'option-2' });
+			assert.isFalse(onOptionSelect.called, 'Clicking disabled option does not select it');
+		},
+
+		'scroll to active option below the viewport'() {
+			const scrollStub = sinon.stub();
+			class StubDimensions {
+				public get(key: any) {
+					if (key === 'root') {
+						return {
+							scroll: { top: 0 },
+							offset: { height: 200 }
+						};
+					}
+					else {
+						return {
+							offset: {
+								top: 300,
+								height: 50
+							}
+						};
+					}
+				}
+			};
+			class ScrollListbox extends Listbox {
+				animateScroll(element: HTMLElement, scrollValue: number) {
+					scrollStub(scrollValue);
+				};
+				meta(MetaType: any): any {
+					return new StubDimensions();
+				}
+			}
+			widget = harness(ScrollListbox);
+			widget.setProperties({ activeIndex: 3 });
+			widget.getRender();
+
+			assert.isTrue(scrollStub.calledWith(150));
+		},
+
+		'scroll to active option above the viewport'() {
+			const scrollStub = sinon.stub();
+			class StubDimensions {
+				public get(key: any) {
+					if (key === 'root') {
+						return {
+							scroll: { top: 300 },
+							offset: { height: 200 }
+						};
+					}
+					else {
+						return {
+							offset: {
+								top: 100,
+								height: 50
+							}
+						};
+					}
+				}
+			};
+			class ScrollListbox extends Listbox {
+				animateScroll(element: HTMLElement, scrollValue: number) {
+					scrollStub(scrollValue);
+				};
+				meta(MetaType: any): any {
+					return new StubDimensions();
+				}
+			}
+			widget = harness(ScrollListbox);
+			widget.setProperties({ activeIndex: 0 });
+			widget.getRender();
+
+			// onElementUpdated
+			scrollStub.reset();
+			widget.setProperties({});
+			widget.getRender();
+
+			assert.isTrue(scrollStub.calledWith(100));
+		}
+	}
+});
+
+registerSuite('ListboxOption', {
+	beforeEach() {
+		optionWidget = harness(ListboxOption);
+	},
+
+	afterEach() {
+		optionWidget.destroy();
+	},
+
+	tests: {
 		'default render'() {
 			optionWidget.setProperties({
 				label: 'foo',

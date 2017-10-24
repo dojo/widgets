@@ -1,5 +1,5 @@
-import * as registerSuite from 'intern!object';
-import * as assert from 'intern/chai!assert';
+const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
@@ -159,9 +159,7 @@ const expectedVdom = function(widget: any, useTestProperties = false, open = fal
 	]);
 };
 
-registerSuite({
-	name: 'ComboBox',
-
+registerSuite('ComboBox', {
 	beforeEach() {
 		widget = harness(ComboBox);
 	},
