@@ -1,6 +1,5 @@
 const createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcessors;
 
-export const cloneDirectory = '.sync';
 const fontFiles = [ 'common/styles/fonts/*.{svg,ttf,woff}', 'themes/dojo/fonts/*.{svg,ttf,woff}' ];
 const staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
 const staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
@@ -46,28 +45,6 @@ export const copy = {
 		cwd: 'src',
 		src: '**/widgets.css',
 		dest: '<%= distDirectory %>'
-	},
-	'gh-pages': {
-		expand: true,
-		cwd: 'support/showcase/dist',
-		src: '**/*',
-		dest: '<%= cloneDirectory %>'
-	},
-	'showcase-modules': {
-		dot: true,
-		expand: true,
-		src: 'node_modules/**/*',
-		dest: 'support/showcase',
-		options: {
-			mode: true
-		}
-	},
-	'showcase-widgets': {
-		src: 'dist/*.tgz',
-		dest: 'support/showcase/node_modules/widgets.tgz',
-		options: {
-			mode: true
-		}
 	}
 };
 
@@ -108,66 +85,6 @@ export const intern3 = {
 export const typedoc = {
 	options: {
 		ignoreCompilerErrors: true // Remove this once compile errors are resolved
-	}
-};
-
-export const prompt = {
-	github: {
-		options: {
-			questions: [
-				{
-					config: 'github.username',
-					type: 'input',
-					message: 'Github username'
-				},
-				{
-					config: 'github.password',
-					type: 'password',
-					message: 'Github password'
-				}
-			]
-		}
-	}
-};
-
-export const setupDeploy = {
-	repo: {
-		options: {
-			repo: 'dojo/widgets'
-		}
-	}
-};
-
-export const exec = {
-	'build-showcase': {
-		command: './node_modules/@dojo/cli/bin/dojo.js build',
-		cwd: 'support/showcase'
-	},
-	'install-showcase-widgets': {
-		command: 'npm install node_modules/*.tgz',
-		cwd: 'support/showcase'
-	}
-};
-
-export const clean = {
-	repo: [ '<%= cloneDirectory %>/**/*', '!.git/**' ]
-};
-
-export const sync = {
-	'gh-pages': {
-		options: {
-			branch: 'gh-pages',
-			cloneDirectory: '<%= cloneDirectory %>'
-		}
-	}
-};
-
-export const publish = {
-	'gh-pages': {
-		options: {
-			branch: 'gh-pages',
-			cloneDirectory: '<%= cloneDirectory %>'
-		}
 	}
 };
 
