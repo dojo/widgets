@@ -20,12 +20,13 @@
 
 .dividerFixed {
 	background-clip: padding-box;
-	background: var(--component-color);
 	cursor: pointer;
 	flex: 0 0 auto;
 }
 
-.divider { }
+.divider {
+	background-color: var(--component-color);
+}
 
 .leadingFixed {
 	flex: 0 0 auto;
