@@ -68,9 +68,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 	}
 
 	private _onKeyUp(event: KeyboardEvent) {
-		const { keyCode } = event;
-
-		if (keyCode === Keys.Escape) {
+		if (event.keyCode === Keys.Escape) {
 			this._onCloseClick();
 		}
 	}
