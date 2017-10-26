@@ -191,7 +191,38 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
-	private _renderMonthRadios() {
+	protected renderControlsTrigger(type: 'month' | 'year'): DNode {
+		const {
+			month,
+			monthNames,
+			year
+		} = this.properties;
+
+		const content = type === 'month' ? monthNames[month].long : `${year}`;
+		const open = type === 'month' ? this._monthPopupOpen : this._yearPopupOpen;
+		const onclick = type === 'month' ? this._onMonthButtonClick : this._onYearButtonClick;
+
+		return v('button', {
+			key: `${type}-button`,
+			'aria-controls': `${this._idBase}_${type}_dialog`,
+			'aria-expanded': `${open}`,
+			'aria-haspopup': 'true',
+			id: `${this._idBase}_${type}_button`,
+			classes: this.classes(
+				(css as any)[`${type}Trigger`],
+				open ? (css as any)[`${type}TriggerActive`] : null
+			),
+			role: 'menuitem',
+			onclick
+		}, [ content ]);
+	}
+
+	protected renderMonthLabel(month: number, year: number) {
+		const { monthNames, renderMonthLabel } = this.properties;
+		return renderMonthLabel ? renderMonthLabel(month, year) : `${monthNames[month].long} ${year}`;
+	}
+
+	protected renderMonthRadios() {
 		const { month } = this.properties;
 
 		return this.properties.monthNames.map((monthName, i) => v('label', {
@@ -215,7 +246,20 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		]));
 	}
 
-	private _renderYearRadios() {
+	protected renderPagingButtonContent(type: 'next' | 'previous') {
+		const { labels } = this.properties;
+		const iconClass = type === 'next' ? iconCss.rightIcon : iconCss.leftIcon;
+		const labelText = type === 'next' ? labels.nextMonth : labels.previousMonth;
+
+		return [
+			v('i', { classes: this.classes(iconCss.icon, iconClass),
+				role: 'presentation', 'aria-hidden': 'true'
+			}),
+			v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labelText ])
+		];
+	}
+
+	protected renderYearRadios() {
 		const { year } = this.properties;
 		const radios = [];
 
@@ -244,17 +288,11 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		return radios;
 	}
 
-	private _renderMonthLabel(month: number, year: number) {
-		const { monthNames, renderMonthLabel } = this.properties;
-		return renderMonthLabel ? renderMonthLabel(month, year) : `${monthNames[month].long} ${year}`;
-	}
-
 	protected render(): DNode {
 		const {
 			labelId = `${this._idBase}_label`,
 			labels,
 			month,
-			monthNames,
 			year
 		} = this.properties;
 
@@ -271,37 +309,13 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 					classes: this.classes().fixed(baseCss.visuallyHidden),
 					'aria-live': 'polite',
 					'aria-atomic': 'false'
-				}, [ this._renderMonthLabel(month, year) ]),
+				}, [ this.renderMonthLabel(month, year) ]),
 
 				// month trigger
-				v('button', {
-					key: 'month-button',
-					'aria-controls': `${this._idBase}_month_dialog`,
-					'aria-expanded': `${this._monthPopupOpen}`,
-					'aria-haspopup': 'true',
-					id: `${this._idBase}_month_button`,
-					classes: this.classes(
-						css.monthTrigger,
-						this._monthPopupOpen ? css.monthTriggerActive : null
-					),
-					role: 'menuitem',
-					onclick: this._onMonthButtonClick
-				}, [ monthNames[month].long ]),
+				this.renderControlsTrigger('month'),
 
 				// year trigger
-				v('button', {
-					key: 'year-button',
-					'aria-controls': `${this._idBase}_year_dialog`,
-					'aria-expanded': `${this._yearPopupOpen}`,
-					'aria-haspopup': 'true',
-					id: `${this._idBase}_year_button`,
-					classes: this.classes(
-						css.yearTrigger,
-						this._yearPopupOpen ? css.yearTriggerActive : null
-					),
-					role: 'menuitem',
-					onclick: this._onYearButtonClick
-				}, [ `${ year }` ])
+				this.renderControlsTrigger('year')
 			]),
 
 			// month grid
@@ -318,7 +332,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 					onkeydown: this._onPopupKeyDown
 				}, [
 					v('legend', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseMonth ]),
-					...this._renderMonthRadios()
+					...this.renderMonthRadios()
 				])
 			]),
 
@@ -336,7 +350,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 					onkeydown: this._onPopupKeyDown
 				}, [
 					v('legend', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.chooseYear ]),
-					...this._renderYearRadios()
+					...this.renderYearRadios()
 				]),
 				v('div', {
 					classes: this.classes(css.controls)
@@ -345,22 +359,12 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 						classes: this.classes(css.previous),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						onclick: this._onYearPageDown
-					}, [
-						v('i', { classes: this.classes(iconCss.icon, iconCss.leftIcon),
-							role: 'presentation', 'aria-hidden': 'true'
-						}),
-						v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.previousMonth ])
-					]),
+					}, this.renderPagingButtonContent('previous')),
 					v('button', {
 						classes: this.classes(css.next),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						onclick: this._onYearPageUp
-					}, [
-						v('i', { classes: this.classes(iconCss.icon, iconCss.rightIcon),
-							role: 'presentation', 'aria-hidden': 'true'
-						}),
-						v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.nextMonth ])
-					])
+					}, this.renderPagingButtonContent('next'))
 				])
 			])
 		]);

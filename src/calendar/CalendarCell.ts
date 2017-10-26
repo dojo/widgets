@@ -65,28 +65,33 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 		return v('span', [ `${date}` ]);
 	}
 
-	protected render(): DNode {
+	protected getModifierClasses() {
 		const {
-			date,
 			disabled = false,
-			focusable = false,
 			selected = false,
 			today = false
 		} = this.properties;
 
-		const dateCellClasses = [
-			css.date,
+		return [
 			disabled ? css.inactiveDate : null,
 			selected ? css.selectedDate : null,
 			today ? css.todayDate : null
 		];
+	}
+
+	protected render(): DNode {
+		const {
+			date,
+			focusable = false,
+			selected = false
+		} = this.properties;
 
 		return v('td', {
 			key: 'root',
 			role: 'gridcell',
 			'aria-selected': `${selected}`,
 			tabIndex: focusable ? 0 : -1,
-			classes: this.classes(...dateCellClasses),
+			classes: this.classes(css.date, ...this.getModifierClasses()),
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown
 		}, [ this.formatDate(date) ]);

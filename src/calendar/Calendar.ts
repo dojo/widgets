@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, Constructor } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
 import { CalendarMessages } from './DatePicker';
@@ -16,7 +16,6 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a Calendar component
  *
- * @property CustomDateCell    Custom widget constructor for the date cell. Should use CalendarCell as a base.
  * @property labels            Customize or internationalize accessible text for the Calendar widget
  * @property month             Set the currently displayed month, 0-based
  * @property monthNames        Customize or internationalize full month names and abbreviations
@@ -30,7 +29,6 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onDateSelect      Function called when the user selects a date
  */
 export interface CalendarProperties extends ThemeableProperties {
-	CustomDateCell?: Constructor<CalendarCell>;
 	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string; }[];
@@ -234,7 +232,6 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 			month,
 			year
 		} = this._getMonthYear();
-		const { theme = {}, CustomDateCell = CalendarCell } = this.properties;
 
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
@@ -279,19 +276,9 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 					isSelectedDay = false;
 				}
 
-				days.push(w(CustomDateCell, {
-					key: `date-${week * 7 + i}`,
-					callFocus: this._callDateFocus && isCurrentMonth && date === this._focusedDay,
-					date,
-					disabled: !isCurrentMonth,
-					focusable: isCurrentMonth && date === this._focusedDay,
-					selected: isSelectedDay,
-					theme,
-					today: isCurrentMonth && dateString === todayString,
-					onClick: this._onDateClick,
-					onFocusCalled: this._onDateFocusCalled,
-					onKeyDown: this._onDateKeyDown
-				}));
+				const isToday = isCurrentMonth && dateString === todayString;
+
+				days.push(this.renderDateCell(date, isSelectedDay, isCurrentMonth, isToday));
 			}
 
 			weeks.push(v('tr', days));
@@ -300,19 +287,31 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		return weeks;
 	}
 
-	private _renderWeekdayCell(day: { short: string; long: string; }): DNode {
-		const { renderWeekdayCell } = this.properties;
-		return renderWeekdayCell ? renderWeekdayCell(day) : v('abbr', { title: day.long }, [ day.short ]);
+	protected renderDateCell(date: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
+		const key = currentMonth ? `date-${date}` : `date-${date}-dimmed`;
+		const { theme = {} } = this.properties;
+
+		return w(CalendarCell, {
+			key,
+			callFocus: this._callDateFocus && currentMonth && date === this._focusedDay,
+			date,
+			disabled: !currentMonth,
+			focusable: currentMonth && date === this._focusedDay,
+			selected,
+			theme,
+			today,
+			onClick: this._onDateClick,
+			onFocusCalled: this._onDateFocusCalled,
+			onKeyDown: this._onDateKeyDown
+		});
 	}
 
-	protected render(): DNode {
+	protected renderDatePicker() {
 		const {
 			labels = DEFAULT_LABELS,
 			monthNames = DEFAULT_MONTHS,
 			renderMonthLabel,
-			selectedDate,
 			theme = {},
-			weekdayNames = DEFAULT_WEEKDAYS,
 			onMonthChange,
 			onYearChange
 		} = this.properties;
@@ -321,6 +320,51 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 			year
 		} = this._getMonthYear();
 
+		return w(DatePicker, {
+			key: 'date-picker',
+			labelId: this._monthLabelId,
+			labels,
+			month,
+			monthNames,
+			renderMonthLabel,
+			theme,
+			year,
+			onPopupChange: (open: boolean) => {
+				this._popupOpen = open;
+			},
+			onRequestMonthChange: (requestMonth: number) => {
+				onMonthChange && onMonthChange(requestMonth);
+			},
+			onRequestYearChange: (requestYear: number) => {
+				onYearChange && onYearChange(requestYear);
+			}
+		});
+	}
+
+	protected renderPagingButtonContent(type: 'next' | 'previous') {
+		const { labels = DEFAULT_LABELS } = this.properties;
+		const iconClass = type === 'next' ? iconCss.rightIcon : iconCss.leftIcon;
+		const labelText = type === 'next' ? labels.nextMonth : labels.previousMonth;
+
+		return [
+			v('i', { classes: this.classes(iconCss.icon, iconClass),
+				role: 'presentation', 'aria-hidden': 'true'
+			}),
+			v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labelText ])
+		];
+	}
+
+	protected renderWeekdayCell(day: { short: string; long: string; }): DNode {
+		const { renderWeekdayCell } = this.properties;
+		return renderWeekdayCell ? renderWeekdayCell(day) : v('abbr', { title: day.long }, [ day.short ]);
+	}
+
+	protected render(): DNode {
+		const {
+			selectedDate,
+			weekdayNames = DEFAULT_WEEKDAYS
+		} = this.properties;
+
 		// Calendar Weekday array
 		const weekdays = [];
 		for (const weekday in weekdayNames) {
@@ -328,31 +372,13 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				role: 'columnheader',
 				classes: this.classes(css.weekday)
 			}, [
-				this._renderWeekdayCell(weekdayNames[weekday])
+				this.renderWeekdayCell(weekdayNames[weekday])
 			]));
 		}
 
 		return v('div', { classes: this.classes(css.root) }, [
 			// header
-			w(DatePicker, {
-				key: 'date-picker',
-				labelId: this._monthLabelId,
-				labels,
-				month,
-				monthNames,
-				renderMonthLabel,
-				theme,
-				year,
-				onPopupChange: (open: boolean) => {
-					this._popupOpen = open;
-				},
-				onRequestMonthChange: (requestMonth: number) => {
-					onMonthChange && onMonthChange(requestMonth);
-				},
-				onRequestYearChange: (requestYear: number) => {
-					onYearChange && onYearChange(requestYear);
-				}
-			}),
+			this.renderDatePicker(),
 			// date table
 			v('table', {
 				cellspacing: '0',
@@ -374,22 +400,12 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 					classes: this.classes(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageDown
-				}, [
-					v('i', { classes: this.classes(iconCss.icon, iconCss.leftIcon),
-						role: 'presentation', 'aria-hidden': 'true'
-					}),
-					v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.previousMonth ])
-				]),
+				}, this.renderPagingButtonContent('previous')),
 				v('button', {
 					classes: this.classes(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageUp
-				}, [
-					v('i', { classes: this.classes(iconCss.icon, iconCss.rightIcon),
-						role: 'presentation', 'aria-hidden': 'true'
-					}),
-					v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labels.nextMonth ])
-				])
+				}, this.renderPagingButtonContent('next'))
 			])
 		]);
 	}
