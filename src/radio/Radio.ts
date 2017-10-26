@@ -74,6 +74,26 @@ export default class Radio extends RadioBase<RadioProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
+	protected getModifierClasses() {
+		const {
+			checked = false,
+			disabled,
+			invalid,
+			readOnly,
+			required
+		} = this.properties;
+
+		return [
+			checked ? css.checked : null,
+			disabled ? css.disabled : null,
+			this._focused ? css.focused : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
+		];
+	}
+
 	render(): DNode {
 		const {
 			checked = false,
@@ -86,16 +106,6 @@ export default class Radio extends RadioBase<RadioProperties> {
 			required,
 			value
 		} = this.properties;
-
-		const stateClasses = [
-			checked ? css.checked : null,
-			disabled ? css.disabled : null,
-			this._focused ? css.focused : null,
-			invalid ? css.invalid : null,
-			invalid === false ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
 
 		const radio = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('input', {
@@ -126,14 +136,14 @@ export default class Radio extends RadioBase<RadioProperties> {
 
 		if (label) {
 			radioWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).get()) },
+				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses()).get()) },
 				label,
 				theme: this.properties.theme
 			}, [ radio ]);
 		}
 		else {
 			radioWidget = v('div', {
-				classes: this.classes(css.root, ...stateClasses)
+				classes: this.classes(css.root, ...this.getModifierClasses())
 			}, [ radio]);
 		}
 
