@@ -83,6 +83,35 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		}));
 	}
 
+	protected getContent() {
+		return v('div', {
+			classes: this.classes(css.content),
+			key: 'content'
+		}, this.children);
+	}
+
+	protected renderCloseIcon() {
+		return v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+			role: 'presentation', 'aria-hidden': 'true'
+		});
+	}
+
+	protected renderTitle() {
+		const { title = '' } = this.properties;
+		return v('div', { id: this._titleId }, [ title ]);
+	}
+
+	protected renderUnderlay() {
+		const { underlay } = this.properties;
+		return v('div', {
+			classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
+			enterAnimation: animations.fadeIn,
+			exitAnimation: animations.fadeOut,
+			key: 'underlay',
+			onclick: this._onUnderlayClick
+		});
+	}
+
 	render(): DNode {
 		const {
 			closeable = true,
@@ -91,9 +120,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			exitAnimation = animations.fadeOut,
 			onOpen,
 			open = false,
-			role = 'dialog',
-			title = '',
-			underlay
+			role = 'dialog'
 		} = this.properties;
 
 		open && !this._wasOpen && onOpen && onOpen();
@@ -103,13 +130,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		return v('div', {
 			classes: this.classes(css.root)
 		}, open ? [
-			v('div', {
-				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
-				enterAnimation: animations.fadeIn,
-				exitAnimation: animations.fadeOut,
-				key: 'underlay',
-				onclick: this._onUnderlayClick
-			}),
+			this.renderUnderlay(),
 			v('div', {
 				'aria-labelledby': this._titleId,
 				classes: this.classes(css.main),
@@ -122,21 +143,16 @@ export default class Dialog extends DialogBase<DialogProperties> {
 					classes: this.classes(css.title),
 					key: 'title'
 				}, [
-					v('div', { id: this._titleId }, [ title ]),
+					this.renderTitle(),
 					closeable ? v('button', {
 						classes: this.classes(css.close),
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
-							role: 'presentation', 'aria-hidden': 'true'
-						})
+						this.renderCloseIcon()
 					]) : null
 				]),
-				v('div', {
-					classes: this.classes(css.content),
-					key: 'content'
-				}, this.children)
+				this.getContent()
 			])
 		] : []);
 	}
