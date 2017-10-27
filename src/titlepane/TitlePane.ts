@@ -4,8 +4,6 @@ import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mi
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import { Keys } from '../common/util';
-
 import * as css from './styles/titlePane.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
 
@@ -55,14 +53,6 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		this._toggle();
 	}
 
-	private _onTitleKeyUp(event: KeyboardEvent) {
-		const {keyCode } = event;
-
-		if (keyCode === Keys.Enter || keyCode === Keys.Space) {
-			this._toggle();
-		}
-	}
-
 	private _toggle() {
 		const {
 			closeable = true,
@@ -92,12 +82,46 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		key === 'content' && this._afterRender(element);
 	}
 
+	protected getButtonContent() {
+		return this.properties.title;
+	}
+
+	protected getFixedModifierClasses() {
+		const { closeable = true } = this.properties;
+		return [
+			closeable ? css.closeableFixed : null
+		];
+	}
+
+	protected getModifierClasses() {
+		const { closeable = true } = this.properties;
+		return [
+			closeable ? css.closeable : null
+		];
+	}
+
+	protected getPaneContent() {
+		return this.children;
+	}
+
+	protected renderExpandIcon() {
+		const { open = true } = this.properties;
+		return v('i', {
+			classes: this.classes(
+				css.arrow,
+				iconCss.icon,
+				open ? iconCss.downIcon : iconCss.rightIcon
+			),
+			role: 'presentation',
+			'aria-hidden': 'true'
+		});
+	}
+
 	render(): DNode {
 		const {
 			closeable = true,
 			headingLevel,
-			open = true,
-			title
+			open = true
 		} = this.properties;
 
 		return v('div', {
@@ -108,36 +132,19 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
-				classes: this.classes(
-					closeable ? css.closeable : null,
-					css.title
-				).fixed(
-					closeable ? css.closeableFixed : null,
-					css.titleFixed
-				),
-				onclick: this._onTitleClick,
-				onkeyup: this._onTitleKeyUp,
+				classes: this.classes(css.title, ...this.getModifierClasses()).fixed(css.titleFixed, ...this.getFixedModifierClasses()),
 				role: 'heading'
 			}, [
-				v('div', {
+				v('button', {
 					'aria-controls': this._contentId,
-					'aria-disabled': closeable ? null : 'true',
 					'aria-expanded': String(open),
+					disabled: !closeable,
 					classes: this.classes(css.titleButton),
 					id: this._titleId,
-					role: 'button',
-					tabIndex: closeable ? 0 : -1
+					onclick: this._onTitleClick
 				}, [
-					v('i', {
-						classes: this.classes(
-							css.arrow,
-							iconCss.icon,
-							open ? iconCss.downIcon : iconCss.rightIcon
-						),
-						role: 'presentation',
-						'aria-hidden': 'true'
-					}),
-					title
+					this.renderExpandIcon(),
+					this.getButtonContent()
 				])
 			]),
 			v('div', {
@@ -146,7 +153,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 				classes: this.classes(css.content),
 				id: this._contentId,
 				key: 'content'
-			}, this.children)
+			}, this.getPaneContent())
 		]);
 	}
 }
