@@ -86,6 +86,22 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
+	protected getModifierClasses() {
+		const {
+			disabled,
+			invalid,
+			readOnly,
+			required
+		} = this.properties;
+		return [
+			disabled ? css.disabled : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
+		];
+	}
+
 	render(): DNode {
 		const {
 			controls,
@@ -102,14 +118,6 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			type = 'text',
 			value
 		} = this.properties;
-
-		const stateClasses = [
-			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
-			invalid === false ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
 
 		const textinput = v('div', { classes: this.classes(css.inputWrapper) }, [
 			v('input', {
@@ -147,14 +155,14 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 
 		if (label) {
 			textinputWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses)()) },
+				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses())()) },
 				label,
 				theme: this.properties.theme
 			}, [ textinput ]);
 		}
 		else {
 			textinputWidget = v('div', {
-				classes: this.classes(css.root, ...stateClasses)
+				classes: this.classes(css.root, ...this.getModifierClasses())
 			}, [ textinput ]);
 		}
 
