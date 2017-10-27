@@ -30,14 +30,14 @@ const testChildren = [
 ];
 
 const expected = function(widget: any, closeable = false, children: any[] = []) {
-	if (closeable) {
-		children.push(v('button', {
+	children.push(
+		closeable ? v('button', {
 			tabIndex: -1,
 			classes: widget.classes(css.close),
 			innerHTML: 'close tab',
 			onclick: widget.listener
-		}));
-	}
+		}) : null
+	);
 
 	return v('div', {
 		'aria-controls': 'foo',
