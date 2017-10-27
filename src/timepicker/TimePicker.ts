@@ -166,41 +166,50 @@ export const TimePickerBase = ThemeableMixin(WidgetBase);
 export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	protected options: TimeUnits[] | null;
 
-	render(): DNode {
+	private _formatUnits(units: TimeUnits): string {
+		const { step = 60 } = this.properties;
+		const { hour, minute, second } = units;
+
+		return (step >= 60 ? [ hour, minute ] : [ hour, minute, second ])
+			.map(unit => padStart(String(unit), 2, '0'))
+			.join(':');
+	}
+
+	private _getOptionLabel(value: TimeUnits) {
+		const { getOptionLabel } = this.properties;
+		const units = parseUnits(value);
+		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
+	}
+
+	private _onNativeBlur(event: FocusEvent) {
+		this.properties.onBlur && this.properties.onBlur((<HTMLInputElement> event.target).value);
+	}
+
+	private _onNativeChange(event: FocusEvent) {
+		this.properties.onChange && this.properties.onChange((<HTMLInputElement> event.target).value);
+	}
+
+	private _onNativeFocus(event: FocusEvent) {
+		this.properties.onFocus && this.properties.onFocus((<HTMLInputElement> event.target).value);
+	}
+
+	private _onRequestOptions(value: string) {
+		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this.getOptions());
+	}
+
+	protected getModifierClasses() {
 		const {
 			disabled,
 			invalid,
-			label,
 			readOnly,
-			required,
-			useNativeElement
+			required
 		} = this.properties;
-
-		if (useNativeElement) {
-			const input = this.renderNativeInput();
-			let children: DNode[] = [ input ];
-
-			if (label) {
-				children = [ w(Label, {
-					extraClasses: { root: parseLabelClasses(this.classes(
-						css.input,
-						disabled ? css.disabled : null,
-						invalid ? css.invalid : null,
-						readOnly ? css.readonly : null,
-						required ? css.required : null).get())
-					},
-					label,
-					theme: this.properties.theme
-				}, [ input ]) ];
-			}
-
-			return v('span', {
-				classes: this.classes(css.root),
-				key: 'root'
-			}, children);
-		}
-
-		return this.renderCustomInput();
+		return [
+			disabled ? css.disabled : null,
+			invalid ? css.invalid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
+		];
 	}
 
 	protected getOptions() {
@@ -218,50 +227,6 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	@diffProperty('step', auto)
 	protected onPropertiesChanged() {
 		this.options = null;
-	}
-
-	protected renderNativeInput(): DNode {
-		const {
-			disabled,
-			end,
-			inputProperties,
-			invalid,
-			name,
-			readOnly,
-			required,
-			start,
-			step,
-			value
-		} = this.properties;
-
-		const classes = [
-			css.input,
-			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
-
-		return v('input', {
-			'aria-describedby': inputProperties && inputProperties.describedBy,
-			'aria-invalid': invalid ? 'true' : null,
-			'aria-readonly': readOnly ? 'true' : null,
-			classes: this.classes(...classes),
-			disabled,
-			invalid,
-			key: 'native-input',
-			max: end,
-			min: start,
-			name,
-			onblur: this._onNativeBlur,
-			onchange: this._onNativeChange,
-			onfocus: this._onNativeFocus,
-			readOnly,
-			required,
-			step,
-			type: 'time',
-			value
-		});
 	}
 
 	protected renderCustomInput(): DNode {
@@ -314,35 +279,67 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		});
 	}
 
-	private _formatUnits(units: TimeUnits): string {
-		const { step = 60 } = this.properties;
-		const { hour, minute, second } = units;
+	protected renderNativeInput(): DNode {
+		const {
+			disabled,
+			end,
+			inputProperties,
+			invalid,
+			name,
+			readOnly,
+			required,
+			start,
+			step,
+			value
+		} = this.properties;
 
-		return (step >= 60 ? [ hour, minute ] : [ hour, minute, second ])
-			.map(unit => padStart(String(unit), 2, '0'))
-			.join(':');
+		return v('input', {
+			'aria-describedby': inputProperties && inputProperties.describedBy,
+			'aria-invalid': invalid ? 'true' : null,
+			'aria-readonly': readOnly ? 'true' : null,
+			classes: this.classes(css.input, ...this.getModifierClasses()),
+			disabled,
+			invalid,
+			key: 'native-input',
+			max: end,
+			min: start,
+			name,
+			onblur: this._onNativeBlur,
+			onchange: this._onNativeChange,
+			onfocus: this._onNativeFocus,
+			readOnly,
+			required,
+			step,
+			type: 'time',
+			value
+		});
 	}
 
-	private _getOptionLabel(value: TimeUnits) {
-		const { getOptionLabel } = this.properties;
-		const units = parseUnits(value);
-		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
-	}
+	render(): DNode {
+		const {
+			label,
+			useNativeElement
+		} = this.properties;
 
-	private _onNativeBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur((<HTMLInputElement> event.target).value);
-	}
+		if (useNativeElement) {
+			const input = this.renderNativeInput();
+			let children: DNode[] = [ input ];
 
-	private _onNativeChange(event: FocusEvent) {
-		this.properties.onChange && this.properties.onChange((<HTMLInputElement> event.target).value);
-	}
+			if (label) {
+				children = [ w(Label, {
+					extraClasses: { root: parseLabelClasses(this.classes(css.input, ...this.getModifierClasses()).get()) },
+					label,
+					theme: this.properties.theme
+				}, [ input ]) ];
+			}
 
-	private _onNativeFocus(event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus((<HTMLInputElement> event.target).value);
-	}
+			return v('span', {
+				classes: this.classes(css.root),
+				key: 'root'
+			}, children);
+		}
 
-	private _onRequestOptions(value: string) {
-		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this.getOptions());
+		return this.renderCustomInput();
 	}
 }
 
