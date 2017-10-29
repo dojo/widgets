@@ -6,17 +6,17 @@ import Listbox from '../Listbox';
 import dojoTheme from '../../themes/dojo/theme';
 
 interface CustomOption {
-	value: string;
+	disabled?: boolean;
 	label: string;
 	selected?: boolean;
-	disabled?: boolean;
+	value: string;
 }
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _listbox1Index = 0;
 	private _listbox1Value: string;
 	private _listbox2Index = 0;
+	private _theme: {};
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -105,6 +105,8 @@ export class App extends WidgetBase<WidgetProperties> {
 				},
 				onOptionSelect: (option: any, index: number) => {
 					this._listbox1Value = option.value;
+					this._options = [ ...this._options ];
+					console.log('option select, updated options');
 					this.invalidate();
 				}
 			}),

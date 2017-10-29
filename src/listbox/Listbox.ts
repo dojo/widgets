@@ -1,12 +1,13 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto, reference } from '@dojo/widget-core/diff';
-import { v, w } from '@dojo/widget-core/d';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import Dimensions from '@dojo/widget-core/meta/Dimensions';
-import uuid from '@dojo/core/uuid';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
+import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import uuid from '@dojo/core/uuid';
+import { v, w } from '@dojo/widget-core/d';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+
 import * as css from './styles/listbox.m.css';
 
 /* Listbox Option sub-widget */
@@ -14,11 +15,12 @@ export interface ListboxOptionProperties extends ThemeableProperties {
 	active?: boolean;
 	classes?: (string | null)[];
 	disabled?: boolean;
-	label: DNode;
 	id: string;
+	index: number;
+	label: DNode;
 	option: any;
 	selected?: boolean;
-	onClick?(option: any): void;
+	onClick?(option: any, index: number, key?: string | number): void;
 }
 
 const ListboxOptionBase = ThemeableMixin(WidgetBase);
@@ -26,8 +28,8 @@ const ListboxOptionBase = ThemeableMixin(WidgetBase);
 @theme(css)
 export class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
 	private _onClick(event: MouseEvent) {
-		const { option, onClick } = this.properties;
-		onClick && onClick(option);
+		const { index, key, option, onClick } = this.properties;
+		onClick && onClick(option, index, key);
 	}
 
 	protected render() {
@@ -56,14 +58,16 @@ export class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
  * Properties that can be set on a Listbox component
  *
  * @property activeIndex          Index of the currently active listbox option
- * @property customOption         Custom widget constructor for options. Should extend ListboxOption
  * @property describedBy          ID of an element that provides more descriptive text
- * @property id                   Optional custom id for the listbox
- * @property optionData           Array of data for listbox options
  * @property getOptionLabel       Function to return string label based on option data
  * @property getOptionDisabled    Function that accepts option data and returns a boolean for disabled/not disabled
  * @property getOptionId          Function that accepts option data and returns a string ID
  * @property getOptionSelected    Function that accepts option data and returns a boolean for selected/unselected
+ * @property id                   Optional custom id for the listbox
+ * @property multiselect          Adds currect semantics for a multiselect listbox
+ * @property optionData           Array of data for listbox options
+ * @property tabIndex             Listbox is in the focus order by default, but setting tabIndex: -1 will remove it
+ * @property visualFocus          When controlling Listbox through an outside widget, e.g. in ComboBox, visualFocus mimics visual focus styling when true
  * @property onActiveIndexChange  Called with the index of the new requested active descendant
  * @property onOptionSelect       Called with the option data of the new requested selected item
  */
@@ -71,18 +75,18 @@ export class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
 export interface ListboxProperties extends ThemeableProperties {
 	activeIndex?: number;
 	describedBy?: string;
-	visualFocus?: boolean;
-	id?: string;
-	multiselect?: boolean;
-	optionData?: any[];
-	tabIndex?: number;
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any, index: number): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
-	onActiveIndexChange?(index: number, key: string | number): void;
-	onOptionSelect?(option: any, index: number, key: string | number): void;
-	onKeyDown?(event: KeyboardEvent, key: string | number): void;
+	id?: string;
+	multiselect?: boolean;
+	optionData?: any[];
+	tabIndex?: number;
+	visualFocus?: boolean;
+	onActiveIndexChange?(index: number, key?: string | number): void;
+	onKeyDown?(event: KeyboardEvent, key?: string | number): void;
+	onOptionSelect?(option: any, index: number, key?: string | number): void;
 }
 
 export const ListboxBase = ThemeableMixin(WidgetBase);
@@ -90,8 +94,14 @@ export const ListboxBase = ThemeableMixin(WidgetBase);
 @theme(css)
 @diffProperty('optionData', reference)
 export default class Listbox extends ListboxBase<ListboxProperties> {
-	private _scroll: number | undefined;
+	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();
+	private _scroll: number | undefined;
+
+	private _getOptionDisabled(option: any, index: number) {
+		const { getOptionDisabled } = this.properties;
+		return getOptionDisabled ? getOptionDisabled(option, index) : false;
+	}
 
 	private _getOptionId(index: number): string {
 		const { optionData = [], getOptionId } = this.properties;
@@ -101,9 +111,8 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 	private _onKeyDown(event: KeyboardEvent) {
 		const {
 			activeIndex = 0,
-			key = '',
+			key,
 			optionData = [],
-			getOptionDisabled = (option: any, index: number) => false,
 			onActiveIndexChange,
 			onOptionSelect,
 			onKeyDown
@@ -118,7 +127,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			case Keys.Enter:
 			case Keys.Space:
 				event.preventDefault();
-				if (!getOptionDisabled(activeItem, activeIndex)) {
+				if (!this._getOptionDisabled(activeItem, activeIndex)) {
 					onOptionSelect && onOptionSelect(activeItem, activeIndex, key);
 				}
 				break;
@@ -141,14 +150,23 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		}
 	}
 
+	private _onOptionClick(option: any, index: number, key?: string | number) {
+		const { onActiveIndexChange, onOptionSelect } = this.properties;
+		if (!this._getOptionDisabled(option, index)) {
+			onActiveIndexChange && onActiveIndexChange(index, key);
+			onOptionSelect && onOptionSelect(option, index, key);
+		}
+	}
+
 	protected animateScroll(element: HTMLElement, scrollValue: number) {
 		element.scrollTop = scrollValue;
 	}
 
 	@diffProperty('activeIndex', auto)
 	protected calculateScroll(previousProperties: ListboxProperties, { activeIndex = 0 }: ListboxProperties) {
-		const scrollOffset = this.meta(Dimensions).get('root').scroll.top;
-		const menuHeight = this.meta(Dimensions).get('root').offset.height;
+		const menuDimensions = this.meta(Dimensions).get('root');
+		const scrollOffset = menuDimensions.scroll.top;
+		const menuHeight = menuDimensions.offset.height;
 		const optionOffset = this.meta(Dimensions).get(this._getOptionId(activeIndex)).offset;
 
 		if (optionOffset.top - scrollOffset < 0) {
@@ -200,16 +218,12 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 	protected renderOption(option: any, index: number): DNode {
 		const {
 			activeIndex = 0,
-			key = '',
-			getOptionDisabled = (option: any, index: number) => false,
-			getOptionSelected = (option: any, index: number) => false,
-			theme,
-			onActiveIndexChange,
-			onOptionSelect
+			getOptionSelected,
+			theme
 		} = this.properties;
 
-		const disabled = getOptionDisabled(option, index);
-		const selected = getOptionSelected(option, index);
+		const disabled = this._getOptionDisabled(option, index);
+		const selected = getOptionSelected ? getOptionSelected(option, index) : false;
 
 		return v('div', { key: this._getOptionId(index) }, [
 			w(ListboxOption, {
@@ -218,16 +232,12 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 				disabled,
 				label: this.renderOptionLabel(option, index),
 				id: this._getOptionId(index),
+				index: index,
 				key: `option-${index}`,
 				option,
 				selected,
 				theme,
-				onClick: (data: any) => {
-					if (!getOptionDisabled(option, index)) {
-						onActiveIndexChange && onActiveIndexChange(index, key);
-						onOptionSelect && onOptionSelect(data, index, key);
-					}
-				}
+				onClick: this._onOptionClick
 			})
 		]);
 	}
@@ -237,7 +247,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			optionData = []
 		} = this.properties;
 
-		return optionData.map(this.renderOption.bind(this));
+		return optionData.map(this._boundRenderOption);
 	}
 
 	protected render() {

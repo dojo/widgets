@@ -1,13 +1,14 @@
-import uuid from '@dojo/core/uuid';
-import { v, w } from '@dojo/widget-core/d';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { Keys } from '../common/util';
+import { reference } from '@dojo/widget-core/diff';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { reference } from '@dojo/widget-core/diff';
-import Listbox from '../listbox/Listbox';
-import { Keys } from '../common/util';
+import uuid from '@dojo/core/uuid';
+import { v, w } from '@dojo/widget-core/d';
+
 import Label, { LabelOptions } from '../label/Label';
+import Listbox from '../listbox/Listbox';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
 
 import * as css from './styles/comboBox.m.css';
@@ -225,19 +226,6 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		onRequestResults && onRequestResults(key);
 		this.invalidate();
 	}
-
-	// should update to use interesection meta
-	// private _scrollIntoView(element: HTMLElement) {
-	// 	const menu = <HTMLElement> element.parentElement;
-	// 	// Scroll menu up so top of highlighted result aligns with top of menu container
-	// 	if (element.offsetTop - menu.scrollTop < 0) {
-	// 		menu.scrollTop = element.offsetTop;
-	// 	}
-	// 	// Scroll menu down so bottom of highlighted result aligns with bottom of menu container
-	// 	else if ((element.offsetTop - menu.scrollTop + element.offsetHeight) > menu.clientHeight) {
-	// 		menu.scrollTop = element.offsetTop - menu.clientHeight + element.offsetHeight;
-	// 	}
-	// }
 
 	private _selectIndex(index: number) {
 		const {

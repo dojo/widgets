@@ -47,6 +47,7 @@ const expectedOptions = function(widget: any, activeIndex = 0) {
 				classes: [ css.option, css.activeOption, null, null ],
 				disabled: false,
 				id: 'first',
+				index: 0,
 				key: 'option-0',
 				label: '[object Object]',
 				option: testOptions[0],
@@ -61,6 +62,7 @@ const expectedOptions = function(widget: any, activeIndex = 0) {
 				classes: [ css.option, null, null, null ],
 				disabled: false,
 				id: <any> compareId,
+				index: 1,
 				key: 'option-1',
 				label: '[object Object]',
 				option: testOptions[1],
@@ -75,6 +77,7 @@ const expectedOptions = function(widget: any, activeIndex = 0) {
 				classes: [ css.option, null, null, null ],
 				disabled: false,
 				id: <any> compareId,
+				index: 2,
 				key: 'option-2',
 				label: '[object Object]',
 				option: testOptions[2],
@@ -217,7 +220,7 @@ registerSuite('Listbox', {
 				onOptionSelect
 			});
 
-			widget.callListener('onClick', { args: [testOptions[0]], key: 'option-0' });
+			widget.callListener('onClick', { args: [testOptions[0], 0], key: 'option-0' });
 			assert.isTrue(onActiveIndexChange.calledWith(0), 'Clicking first option moves active index');
 			assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0), 'Clicking first option selects it');
 		},
@@ -356,6 +359,7 @@ registerSuite('ListboxOption', {
 			optionWidget.setProperties({
 				label: 'foo',
 				id: 'bar',
+				index: 0,
 				option: 'baz'
 			});
 
@@ -376,6 +380,7 @@ registerSuite('ListboxOption', {
 				disabled: true,
 				label: 'foo',
 				id: 'bar',
+				index: 1,
 				option: 'baz',
 				selected: true
 			});
@@ -395,12 +400,13 @@ registerSuite('ListboxOption', {
 			optionWidget.setProperties({
 				label: 'foo',
 				id: 'bar',
+				index: 1,
 				option: 'baz',
 				onClick
 			});
 
 			optionWidget.sendEvent('click');
-			assert.isTrue(onClick.calledWith('baz'));
+			assert.isTrue(onClick.calledWith('baz', 1));
 		}
 	}
 });
