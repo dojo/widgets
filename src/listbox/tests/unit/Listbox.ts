@@ -289,7 +289,7 @@ registerSuite('Listbox', {
 				}
 			};
 			class ScrollListbox extends Listbox {
-				animateScroll(element: HTMLElement, scrollValue: number) {
+				animateScroll(scrollValue: number) {
 					scrollStub(scrollValue);
 				};
 				meta(MetaType: any): any {
@@ -324,7 +324,7 @@ registerSuite('Listbox', {
 				}
 			};
 			class ScrollListbox extends Listbox {
-				animateScroll(element: HTMLElement, scrollValue: number) {
+				animateScroll(scrollValue: number) {
 					scrollStub(scrollValue);
 				};
 				meta(MetaType: any): any {

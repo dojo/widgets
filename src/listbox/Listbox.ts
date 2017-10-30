@@ -1,14 +1,25 @@
 import { auto, reference } from '@dojo/widget-core/diff';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import Dimensions from '@dojo/widget-core/meta/Dimensions';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { DNode, WidgetMetaConstructor } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
+import MetaBase from '@dojo/widget-core/meta/Base';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/listbox.m.css';
+
+/* Default scroll meta */
+class DefaultScroll extends MetaBase {
+	public scroll(key: string | number, amount: number): void {
+		const node = this.getNode(key);
+		if (node) {
+			node.scrollTop = amount;
+		}
+	}
+}
 
 /* Listbox Option sub-widget */
 export interface ListboxOptionProperties extends ThemeableProperties {
@@ -82,6 +93,7 @@ export interface ListboxProperties extends ThemeableProperties {
 	id?: string;
 	multiselect?: boolean;
 	optionData?: any[];
+	ScrollMeta?: WidgetMetaConstructor<DefaultScroll>;
 	tabIndex?: number;
 	visualFocus?: boolean;
 	onActiveIndexChange?(index: number, key?: string | number): void;
@@ -96,7 +108,6 @@ export const ListboxBase = ThemeableMixin(WidgetBase);
 export default class Listbox extends ListboxBase<ListboxProperties> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();
-	private _scroll: number | undefined;
 
 	private _getOptionDisabled(option: any, index: number) {
 		const { getOptionDisabled } = this.properties;
@@ -158,8 +169,9 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		}
 	}
 
-	protected animateScroll(element: HTMLElement, scrollValue: number) {
-		element.scrollTop = scrollValue;
+	protected animateScroll(scrollValue: number) {
+		const { ScrollMeta = DefaultScroll } = this.properties;
+		this.meta(ScrollMeta).scroll('root', scrollValue);
 	}
 
 	@diffProperty('activeIndex', auto)
@@ -170,13 +182,11 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		const optionOffset = this.meta(Dimensions).get(this._getOptionId(activeIndex)).offset;
 
 		if (optionOffset.top - scrollOffset < 0) {
-			this._scroll = optionOffset.top;
-			this.invalidate();
+			this.animateScroll(optionOffset.top);
 		}
 
 		else if ((optionOffset.top + optionOffset.height) > (scrollOffset + menuHeight)) {
-			this._scroll = optionOffset.top + optionOffset.height - menuHeight;
-			this.invalidate();
+			this.animateScroll(optionOffset.top + optionOffset.height - menuHeight);
 		}
 	}
 
@@ -194,20 +204,6 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 			disabled ? css.disabledOption : null,
 			selected ? css.selectedOption : null
 		];
-	}
-
-	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'root' && typeof this._scroll === 'number') {
-			this.animateScroll(element, this._scroll);
-			this._scroll = undefined;
-		}
-	}
-
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root' && typeof this._scroll === 'number') {
-			this.animateScroll(element, this._scroll);
-			this._scroll = undefined;
-		}
 	}
 
 	protected renderOptionLabel(option: any, index: number): DNode {
