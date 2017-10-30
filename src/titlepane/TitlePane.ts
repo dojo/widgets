@@ -1,6 +1,8 @@
 import uuid from '@dojo/core/uuid';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { DNode, AnimationTimingProperties } from '@dojo/widget-core/interfaces';
 import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
+import AnimatableMixin from '@dojo/widget-core/mixins/Animatable';
+import Dimensions from '@dojo/widget-core/meta/Dimensions';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
@@ -24,31 +26,43 @@ import * as iconCss from '../common/styles/icons.m.css';
 export interface TitlePaneProperties extends ThemeableProperties {
 	closeable?: boolean;
 	headingLevel?: number;
-	onRequestClose?(titlePane: TitlePane): void;
-	onRequestOpen?(titlePane: TitlePane): void;
+	onRequestClose?(): void;
+	onRequestOpen?(): void;
 	open?: boolean;
 	title: string;
 };
 
-export const TitlePaneBase = ThemeableMixin(WidgetBase);
+export const TitlePaneBase = AnimatableMixin(ThemeableMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
 export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	private _contentId = uuid();
 	private _titleId = uuid();
+	private _play = true;
 
-	private _afterRender(element: HTMLElement) {
-		// Conditionally adjust top margin. Done manually instead of through Maquette
-		// so the underlying DOM is accessible, as we need to know the content height.
-		// Put in a rAF to push this operation to the next tick, otherwise
-		// element.offsetHeight can be incorrect (e.g. before styling is applied)
-		// Note that this will go away when meta support is added to widget-core
-		requestAnimationFrame(() => {
-			const { open = true } = this.properties;
-			const height = element.offsetHeight;
-			element.style.marginTop = open ? '0px' : `-${ height }px`;
-		});
+	private _timing: AnimationTimingProperties = {
+		duration: 300,
+		fill: 'forwards',
+		easing: 'ease-in-out'
+	};
+
+	_animateOpen() {
+		const { size } = this.meta(Dimensions).get('content');
+
+		return [
+			{ marginTop: `-${size.height}px` },
+			{ marginTop: `0px` }
+		];
+	}
+
+	_animateClosed() {
+		const { size } = this.meta(Dimensions).get('content');
+
+		return [
+			{ marginTop: `0px` },
+			{ marginTop: `-${size.height}px` }
+		];
 	}
 
 	private _onTitleClick() {
@@ -75,20 +89,19 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 			return;
 		}
 
+		this._play = true;
+
 		if (open) {
-			onRequestClose && onRequestClose(this);
+			onRequestClose && onRequestClose();
 		}
 		else {
-			onRequestOpen && onRequestOpen(this);
+			onRequestOpen && onRequestOpen();
 		}
 	}
 
-	protected onElementCreated(element: HTMLElement, key: string) {
-		key === 'content' && this._afterRender(element);
-	}
-
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		key === 'content' && this._afterRender(element);
+	private _onAnimationFinish() {
+		this._play = false;
+		this.invalidate();
 	}
 
 	render(): DNode {
@@ -144,7 +157,24 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 				'aria-labelledby': this._titleId,
 				classes: this.classes(css.content),
 				id: this._contentId,
-				key: 'content'
+				key: 'content',
+				animate: open ? {
+					id: 'down',
+					effects: this._animateOpen.bind(this),
+					timing: this._timing,
+					controls: {
+						play: this._play,
+						onFinish: this._onAnimationFinish
+					}
+				} : {
+					id: 'up',
+					effects: this._animateClosed.bind(this),
+					timing: this._timing,
+					controls: {
+						play: this._play,
+						onFinish: this._onAnimationFinish
+					}
+				}
 			}, this.children)
 		]);
 	}

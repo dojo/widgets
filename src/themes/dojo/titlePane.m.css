@@ -37,7 +37,6 @@
 	border-left: var(--border-width) solid var(--color-border);
 	border-right: var(--border-width) solid var(--color-border);
 	padding: var(--grid-base);
-	transition: margin-top ease-in-out var(--transition-duration);
 }
 
 .open .titleButton {
