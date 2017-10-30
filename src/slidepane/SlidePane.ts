@@ -71,7 +71,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _wasOpen: boolean;
 
 	get plane() {
-		const { align } = this.properties;
+		const { align = Align.left } = this.properties;
 		return align === Align.left || align === Align.right ? Plane.x : Plane.y;
 	}
 
