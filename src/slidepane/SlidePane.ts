@@ -11,8 +11,10 @@ import uuid from '@dojo/core/uuid';
  * Enum for left / right alignment
  */
 export const enum Align {
-	left,
-	right
+	bottom = 'bottom',
+	left = 'left',
+	right = 'right',
+	top = 'top'
 };
 
 /**
@@ -20,7 +22,7 @@ export const enum Align {
  *
  * Properties that can be set on a SlidePane component
  *
- * @property align            The position of the pane on the screen (Align.left or Align.right)
+ * @property align            The position of the pane on the screen
  * @property closeText        Hidden text used by screen readers to display for the close button
  * @property onOpen           Called when the pane opens
  * @property onRequestClose   Called when the pane is swiped closed or the underlay is clicked or tapped
@@ -50,18 +52,45 @@ const DEFAULT_WIDTH = 320;
  */
 const SWIPE_THRESHOLD = 5;
 
+enum Plane {
+	x,
+	y
+};
+
 export const SlidePaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
 export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _content: HTMLElement;
-	private _initialX: number;
+	private _initialPosition: number;
 	private _slideIn: boolean;
 	private _swiping: boolean;
 	private _titleId = uuid();
 	private _transform: number;
 	private _wasOpen: boolean;
+
+	get plane() {
+		const { align } = this.properties;
+		return align === Align.left || align === Align.right ? Plane.x : Plane.y;
+	}
+
+	private _getDelta(event: MouseEvent & TouchEvent, eventType: string) {
+		const { align = Align.left } = this.properties;
+
+		if (this.plane === Plane.x) {
+			// Current pointer position
+			const currentX = event.type === eventType ? event.changedTouches[0].screenX : event.pageX;
+			// Difference between current and initial pointer position
+			return align === Align.right ? currentX - this._initialPosition : this._initialPosition - currentX;
+		}
+		else {
+			// Current pointer position
+			const currentY = event.type === eventType ? event.changedTouches[0].screenY : event.pageY;
+			// Difference between current and initial pointer position
+			return align === Align.bottom ? currentY - this._initialPosition : this._initialPosition - currentY;
+		}
+	}
 
 	private _onCloseClick() {
 		const { onRequestClose } = this.properties;
@@ -71,7 +100,13 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	private _onSwipeStart(event: MouseEvent & TouchEvent) {
 		this._swiping = true;
 		// Cache initial pointer position
-		this._initialX = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
+		if (this.plane === Plane.x) {
+			this._initialPosition = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
+		}
+		else {
+			this._initialPosition = event.type === 'touchstart' ? event.changedTouches[0].screenY : event.pageY;
+		}
+
 		// Clear out the last transform applied
 		this._transform = 0;
 	}
@@ -87,10 +122,8 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			width = DEFAULT_WIDTH
 		} = this.properties;
 
-		// Current pointer position
-		const currentX = event.type === 'touchmove' ? event.changedTouches[0].screenX : event.pageX;
-		// Difference between current and initial pointer position
-		const delta = align === Align.right ? currentX - this._initialX : this._initialX - currentX;
+		const delta = this._getDelta(event, 'touchmove');
+
 		// Transform to apply
 		this._transform = 100 * delta / width;
 
@@ -100,23 +133,23 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 
 		// Move the pane
-		this._content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
+		if (this.plane === Plane.x) {
+			this._content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
+		}
+		else {
+			this._content.style.transform = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
+		}
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
-		const { changedTouches, pageX, target, type } = event;
 		this._swiping = false;
 
 		const {
-			align = Align.left,
 			onRequestClose,
 			width = DEFAULT_WIDTH
 		} = this.properties;
 
-		// Current pointer position
-		const currentX = type === 'touchend' ? changedTouches[0].screenX : pageX;
-		// Difference between current and initial pointer position
-		const delta = align === Align.right ? currentX - this._initialX : this._initialX - currentX;
+		const delta = this._getDelta(event, 'touchend');
 
 		// If the pane was swiped far enough to close
 		if (delta > width / 2) {
@@ -125,7 +158,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			onRequestClose && onRequestClose();
 		}
 		// If the underlay was clicked
-		else if (Math.abs(delta) < SWIPE_THRESHOLD && (!this._content || !this._content.contains(target as HTMLElement))) {
+		else if (Math.abs(delta) < SWIPE_THRESHOLD && (!this._content || !this._content.contains(event.target as HTMLElement))) {
 			onRequestClose && onRequestClose();
 		}
 		// If pane was not swiped far enough to close
@@ -156,7 +189,10 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 
 		const contentClasses = [
 			css.pane,
-			align === Align.left ? css.left : css.right,
+			align === Align.left ? css.left : null,
+			align === Align.bottom ? css.bottom : null,
+			align === Align.top ? css.top : null,
+			align === Align.right ? css.right : null,
 			open ? css.open : null,
 			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
 			!open && this._wasOpen ? css.slideOut : null
@@ -165,19 +201,28 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		const fixedContentClasses = [
 			css.paneFixed,
 			open ? css.openFixed : null,
-			align === Align.left ? css.leftFixed : css.rightFixed,
+			align === Align.left ? css.leftFixed : null,
+			align === Align.bottom ? css.bottomFixed : null,
+			align === Align.top ? css.topFixed : null,
+			align === Align.right ? css.rightFixed : null,
 			this._slideIn || (open && !this._wasOpen) ? css.slideInFixed : null,
 			!open && this._wasOpen ? css.slideOutFixed : null
 		];
 
 		const contentStyles: {[key: string]: any} = {
 			transform: '',
-			width: width + 'px'
+			width: this.plane === Plane.x ? `${ width }px` : null,
+			height: this.plane === Plane.y ? `${ width }px` : null
 		};
 
 		if (!open && this._wasOpen && this._transform) {
 			// If pane is closing because of swipe
-			contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
+			if (this.plane === Plane.x) {
+				contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
+			}
+			else {
+				contentStyles['transform'] = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
+			}
 		}
 		else if (this._slideIn && this._content) {
 			this._content.style.transform = '';

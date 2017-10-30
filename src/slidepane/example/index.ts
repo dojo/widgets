@@ -3,14 +3,31 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import SlidePane, { Align } from '../../slidepane/SlidePane';
+import SlidePane, { Align } from '../SlidePane';
+import Select from '../../select/Select';
+import { OptionData } from '../../select/SelectOption';
 import dojoTheme from '../../themes/dojo/theme';
+
+const ALIGN_OPTIONS = [{
+	value: Align.left,
+	label: 'Left'
+}, {
+	value: Align.right,
+	label: 'Right'
+}, {
+	value: Align.top,
+	label: 'Top'
+}, {
+	value: Align.bottom,
+	label: 'Bottom'
+}];
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _open = false;
 	private _underlay = false;
 	private _align: Align = Align.left;
+	private _alignValue = 'left';
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -28,8 +45,22 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
-	toggleAlign(event: Event) {
-		this._align = (<HTMLInputElement> event.target).checked ? Align.right : Align.left;
+	onAlignChange(option: OptionData) {
+		this._alignValue = option.value;
+		switch (option.value) {
+			case 'left':
+				this._align = Align.left;
+				break;
+			case 'right':
+				this._align = Align.right;
+				break;
+			case 'top':
+				this._align = Align.top;
+				break;
+			case 'bottom':
+				this._align = Align.bottom;
+				break;
+		}
 		this.invalidate();
 	}
 
@@ -77,14 +108,12 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('div', { classes: { option: true }}, [
-				v('input', {
-					type: 'checkbox',
-					id: 'alignRight',
-					onchange: this.toggleAlign
-				}),
-				v('label', {
-					for: 'alignRight',
-					innerHTML: 'align right'
+				w(Select, {
+					label: 'Alignment',
+					options: ALIGN_OPTIONS,
+					value: this._alignValue,
+					theme: this._theme,
+					onChange: this.onAlignChange
 				})
 			])
 		]);
