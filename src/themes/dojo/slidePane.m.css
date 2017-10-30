@@ -61,7 +61,7 @@
 }
 
 .top {
-	transform: translateY(calc(-100% - 10px));
+	transform: translateY(calc(-100% - 20px));
 }
 
 .bottom {

@@ -79,15 +79,11 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		const { align = Align.left } = this.properties;
 
 		if (this.plane === Plane.x) {
-			// Current pointer position
 			const currentX = event.type === eventType ? event.changedTouches[0].screenX : event.pageX;
-			// Difference between current and initial pointer position
 			return align === Align.right ? currentX - this._initialPosition : this._initialPosition - currentX;
 		}
 		else {
-			// Current pointer position
 			const currentY = event.type === eventType ? event.changedTouches[0].screenY : event.pageY;
-			// Difference between current and initial pointer position
 			return align === Align.bottom ? currentY - this._initialPosition : this._initialPosition - currentY;
 		}
 	}
