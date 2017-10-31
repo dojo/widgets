@@ -16,11 +16,21 @@
 }
 
 .paneFixed {
-	height: 100%;
 	position: fixed;
-	top: 0;
 	box-sizing: border-box;
 	z-index: 1;
+}
+
+.leftFixed,
+.rightFixed {
+	height: 100%;
+	top: 0;
+}
+
+.topFixed,
+.bottomFixed {
+	width: 100%;
+	left: 0;
 }
 
 .pane {
@@ -58,12 +68,30 @@
 	transform: translateX(100%);
 }
 
+.topFixed {
+	top: 0;
+	transform: translateY(-100%)
+}
+
+.bottomFixed {
+	bottom: 0;
+	transform: translateY(100%);
+}
+
 .leftFixed.slideOutFixed {
 	transform: translateX(-100%) !important;
 }
 
 .rightFixed.slideOutFixed {
 	transform: translateX(100%) !important;
+}
+
+.topFixed.slideOutFixed {
+	transform: translateY(-100%) !important;
+}
+
+.bottomFixed.slideOutFixed {
+	transform: translateY(100%) !important;
 }
 
 .leftFixed.slideInFixed {
@@ -74,19 +102,16 @@
 	transform: translateX(0%) !important;
 }
 
-.left.slideOut {
-	transition: transform ease-in-out var(--short-animation-duration);
+.topFixed.slideInFixed {
+	transform: translateY(0%) !important;
 }
 
-.right.slideOut {
-	transition: transform ease-in-out var(--short-animation-duration);
+.bottomFixed.slideInFixed {
+	transform: translateY(0%) !important;
 }
 
-.left.slideIn {
-	transition: transform ease-in-out var(--short-animation-duration);
-}
-
-.right.slideIn {
+.slideIn,
+.slideOut {
 	transition: transform ease-in-out var(--short-animation-duration);
 }
 

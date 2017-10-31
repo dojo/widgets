@@ -71,7 +71,8 @@ registerSuite('SlidePane', {
 					),
 					styles: {
 						transform: '',
-						width: '320px'
+						width: '320px',
+						height: null
 					}
 				}, [
 					null,
@@ -109,7 +110,8 @@ registerSuite('SlidePane', {
 					),
 					styles: {
 						transform: '',
-						width: '320px'
+						width: '320px',
+						height: null
 					}
 				}, [
 					null,
@@ -170,7 +172,8 @@ registerSuite('SlidePane', {
 					),
 					styles: {
 						transform: '',
-						width: '320px'
+						width: '320px',
+						height: null
 					}
 				}, [
 					null,
@@ -207,7 +210,8 @@ registerSuite('SlidePane', {
 					),
 					styles: {
 						transform: '',
-						width: '320px'
+						width: '320px',
+						height: null
 					}
 				}, [
 					null,
@@ -370,6 +374,48 @@ registerSuite('SlidePane', {
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
 		},
 
+		'swipe to close top'() {
+			if (!has('touch')) {
+				this.skip('Environment not support touch events');
+			}
+
+			let called = false;
+
+			widget.setProperties({
+				open: true,
+				align: Align.top,
+				onRequestClose() {
+					called = true;
+				}
+			});
+
+			widget.sendEvent('touchmove', {
+				eventInit: <MouseEventInit> {
+					changedTouches: [ { screenY: 150 } ]
+				}
+			});
+
+			widget.sendEvent('touchstart', {
+				eventInit: <MouseEventInit> {
+					changedTouches: [ { screenY: 300 } ]
+				}
+			});
+
+			widget.sendEvent('touchmove', {
+				eventInit: <MouseEventInit> {
+					changedTouches: [ { screenY: 150 } ]
+				}
+			});
+
+			widget.sendEvent('touchend', {
+				eventInit: <MouseEventInit> {
+					changedTouches: [ { screenY: 50 } ]
+				}
+			});
+
+			assert.isTrue(called, 'onRequestClose should be called if swiped far enough up');
+		},
+
 		'swipe to close right'() {
 			if (!has('touch')) {
 				this.skip('Environment not support touch events');
@@ -406,6 +452,44 @@ registerSuite('SlidePane', {
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
+		},
+
+		'swipe to close bottom'() {
+			if (!has('touch')) {
+				this.skip('Environment not support touch events');
+			}
+
+			let called = false;
+
+			widget.setProperties({
+				align: Align.bottom,
+				open: true,
+				width: 320,
+
+				onRequestClose() {
+					called = true;
+				}
+			});
+
+			widget.sendEvent('touchstart', {
+				eventInit: <MouseEventInit> {
+					changedTouches: [ { screenY: 300 } ]
+				}
+			});
+
+			widget.sendEvent('touchmove', {
+				eventInit: <MouseEventInit> {
+					changedTouches: [ { screenY: 400 } ]
+				}
+			});
+
+			widget.sendEvent('touchend', {
+				eventInit: <MouseEventInit> {
+					changedTouches: [ { screenY: 500 } ]
+				}
+			});
+
+			assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close bottom');
 		},
 
 		'not dragged far enough to close'() {
@@ -508,7 +592,8 @@ registerSuite('SlidePane', {
 						),
 						styles: {
 							transform: '',
-							width: '320px'
+							width: '320px',
+							height: null
 						}
 					}, [
 						null,
@@ -572,7 +657,8 @@ registerSuite('SlidePane', {
 						),
 						styles: swipeState.styles || {
 							transform: '',
-							width: '320px'
+							width: '320px',
+							height: null
 						}
 					}, [
 						null,
@@ -621,7 +707,8 @@ registerSuite('SlidePane', {
 				),
 				styles: {
 					transform: 'translateX(-78.125%)',
-					width: '320px'
+					width: '320px',
+					height: null
 				}
 			}));
 		},
@@ -665,7 +752,8 @@ registerSuite('SlidePane', {
 						),
 						styles: swipeState.styles || {
 							transform: '',
-							width: '320px'
+							width: '320px',
+							height: null
 						}
 					}, [
 						null,
@@ -715,7 +803,8 @@ registerSuite('SlidePane', {
 				),
 				styles: {
 					transform: 'translateX(62.5%)',
-					width: '320px'
+					width: '320px',
+					height: null
 				}
 			}));
 		}

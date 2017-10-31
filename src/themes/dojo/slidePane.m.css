@@ -60,19 +60,16 @@
 	transform: translateX(calc(100% + 10px));
 }
 
-.left.slideOut {
-	transition: transform ease-in-out var(--transition-duration);
+.top {
+	transform: translateY(calc(-100% - 20px));
 }
 
-.right.slideOut {
-	transition: transform ease-in-out var(--transition-duration);
+.bottom {
+	transform: translateY(calc(100% + 10px));
 }
 
-.left.slideIn {
-	transition: transform ease-in-out var(--transition-duration);
-}
-
-.right.slideIn {
+.slideIn,
+.slideOut {
 	transition: transform ease-in-out var(--transition-duration);
 }
 

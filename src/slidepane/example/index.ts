@@ -29,7 +29,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	toggleAlign(event: Event) {
-		this._align = (<HTMLInputElement> event.target).checked ? Align.right : Align.left;
+		this._align = (<HTMLInputElement> event.target).checked ? Align.bottom : Align.left;
 		this.invalidate();
 	}
 
