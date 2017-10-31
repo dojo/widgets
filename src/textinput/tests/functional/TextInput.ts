@@ -38,20 +38,25 @@ registerSuite('TextInput', {
 				});
 	},
 	'TextInput should gain focus when clicking on the label'() {
-		let inputElement: any;
+		const { remote: { session: { capabilities: { browserName } } } } = this;
+
 		return getPage(this.remote)
 			.findByCssSelector(`#example-text .${css.root}`)
-				.findByCssSelector(`.${css.input}`)
-					.then(element => {
-						inputElement = element;
-					})
-				.end()
-				.click()
+				.then(element => {
+					if (browserName === 'firefox') {
+						return this.remote
+							.moveMouseTo(element, 5, 5)
+							.clickMouseButton(0);
+					}
+					else {
+						return element.click();
+					}
+				})
 			.end()
 			.sleep(1000)
-			.getActiveElement()
-			.then(activeElement => {
-				return activeElement.equals(inputElement);
+			.execute(`return document.activeElement === document.querySelector('#example-text .${css.root} .${css.input}');`)
+			.then(isEqual => {
+				assert.isTrue(isEqual);
 			});
 	},
 	'TextInput should allow input to be typed'() {
