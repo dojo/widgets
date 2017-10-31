@@ -52,7 +52,7 @@ export default class AccordionPane extends AccordionPaneBase<AccordionPaneProper
 			theme
 		} = this.properties;
 
-		return this.children.filter(child => child).map(child => {
+		return this.children.filter((child) => child).map(child => {
 			// null checks skipped since children are filtered prior to mapping
 			assign(child!.properties, {
 				onRequestClose: this._assignCallback(child!, 'onRequestClose', this.onRequestClose),
