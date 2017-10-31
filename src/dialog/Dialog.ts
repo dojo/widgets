@@ -68,7 +68,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 	}
 
 	private _onKeyUp(event: KeyboardEvent) {
-		if (event.keyCode === Keys.Escape) {
+		if (event.which === Keys.Escape) {
 			this._onCloseClick();
 		}
 	}
@@ -95,8 +95,6 @@ export default class Dialog extends DialogBase<DialogProperties> {
 			title = '',
 			underlay
 		} = this.properties;
-
-		document.body.onkeyup = this._onKeyUp.bind(this);
 
 		open && !this._wasOpen && onOpen && onOpen();
 
