@@ -11,6 +11,7 @@ import Dialog, { DialogProperties } from '../../Dialog';
 import * as css from '../../styles/dialog.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
+import { Keys } from '../../../common/util';
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -207,6 +208,32 @@ registerSuite('Dialog', {
 				selector: `.${css.underlay}`
 			});
 			assert.isTrue(onRequestClose.called, 'onRequestClose is called when the underlay is clicked and modal is false');
+		},
+
+		escapeKey() {
+			const onRequestClose = sinon.stub();
+
+			widget.setProperties({
+				open: true,
+				onRequestClose
+			});
+			widget.getRender();
+
+			widget.sendEvent('keyup', {
+				eventInit: <KeyboardEventInit> {
+					which: Keys.Down
+				}
+			});
+
+			assert.isTrue(onRequestClose.notCalled);
+
+			widget.sendEvent('keyup', {
+				eventInit: <KeyboardEventInit> {
+					which: Keys.Escape
+				}
+			});
+
+			assert.isTrue(onRequestClose.calledOnce);
 		}
 	}
 });

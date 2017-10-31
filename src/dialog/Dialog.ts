@@ -3,6 +3,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
+import { Keys } from '../common/util';
+import { createHandle } from '@dojo/core/lang';
 
 import * as css from './styles/dialog.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -65,6 +67,22 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		!this.properties.modal && this._onCloseClick();
 	}
 
+	private _onKeyUp(event: KeyboardEvent) {
+		if (event.which === Keys.Escape) {
+			this._onCloseClick();
+		}
+	}
+
+	constructor() {
+		super();
+
+		const keyUpFunc = this._onKeyUp.bind(this);
+		document.addEventListener('keyup', keyUpFunc);
+		this.own(createHandle(() => {
+			document.removeEventListener('keyup', keyUpFunc);
+		}));
+	}
+
 	render(): DNode {
 		const {
 			closeable = true,
@@ -82,7 +100,9 @@ export default class Dialog extends DialogBase<DialogProperties> {
 
 		this._wasOpen = open;
 
-		return v('div', { classes: this.classes(css.root) }, open ? [
+		return v('div', {
+			classes: this.classes(css.root)
+		}, open ? [
 			v('div', {
 				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
 				enterAnimation: animations.fadeIn,
