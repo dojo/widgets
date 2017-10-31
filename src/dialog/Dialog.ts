@@ -77,9 +77,9 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		super();
 
 		const keyUpFunc = this._onKeyUp.bind(this);
-		document.addEventListener('onkeyup', keyUpFunc);
+		document.addEventListener('keyup', keyUpFunc);
 		this.own(createHandle(() => {
-			document.removeEventListener('onkeyup', keyUpFunc);
+			document.removeEventListener('keyup', keyUpFunc);
 		}));
 	}
 

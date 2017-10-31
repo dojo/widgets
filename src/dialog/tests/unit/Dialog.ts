@@ -221,7 +221,7 @@ registerSuite('Dialog', {
 
 			widget.sendEvent('keyup', {
 				eventInit: <KeyboardEventInit> {
-					keyCode: Keys.Down
+					which: Keys.Down
 				}
 			});
 
@@ -229,7 +229,7 @@ registerSuite('Dialog', {
 
 			widget.sendEvent('keyup', {
 				eventInit: <KeyboardEventInit> {
-					keyCode: Keys.Escape
+					which: Keys.Escape
 				}
 			});
 
