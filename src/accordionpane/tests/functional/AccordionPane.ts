@@ -16,13 +16,15 @@ registerSuite('AccordionPane', {
 		return getPage(this.remote)
 			.sleep(DELAY)
 			.findByCssSelector('#pane > div > :first-child')
-			.getSize()
-			.then((size: { height: number }) => {
-				assert.isBelow(size.height, 50);
-			})
-			.click()
-			.sleep(DELAY)
-			.getSize()
+				.getSize()
+				.then((size: { height: number }) => {
+					assert.isBelow(size.height, 50);
+				})
+				.findByCssSelector('[role="heading"]')
+					.click()
+				.end()
+				.sleep(DELAY)
+				.getSize()
 				.then((size: { height: number }) => {
 					assert.isAbove(size.height, 50);
 				});

@@ -38,26 +38,21 @@ registerSuite('TextInput', {
 				});
 	},
 	'TextInput should gain focus when clicking on the label'() {
-		let elementClassName: string;
+		let inputElement: any;
 		return getPage(this.remote)
 			.findByCssSelector(`#example-text .${css.root}`)
 				.findByCssSelector(`.${css.input}`)
-					.getProperty('className')
-					.then((className: string) => {
-						elementClassName = className;
+					.then(element => {
+						inputElement = element;
 					})
 				.end()
 				.click()
-				.sleep(1000)
-				.getActiveElement()
-				.then(element => {
-					return element
-						.getProperty('className')
-						.then((className: string) => {
-							assert.strictEqual(className, elementClassName);
-						});
-				})
-			.end();
+			.end()
+			.sleep(1000)
+			.getActiveElement()
+			.then(activeElement => {
+				return activeElement.equals(inputElement);
+			});
 	},
 	'TextInput should allow input to be typed'() {
 		const testInput = 'test text';
@@ -116,12 +111,13 @@ registerSuite('TextInput', {
 					.click()
 					.type(validText)
 				.end()
-				.click()
 			.end()
+			.sleep(500)
 			// focus another input
 			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
 				.click()
 			.end()
+			.sleep(500)
 			.findByCssSelector(`#example-validated .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
@@ -132,8 +128,8 @@ registerSuite('TextInput', {
 					.click()
 					.type(invalidText)
 				.end()
-				.click()
 			.end()
+			.sleep(500)
 			// focus another input
 			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
 				.click()
