@@ -5,6 +5,7 @@ import Select from '../../select/Select';
 import { v, w } from '@dojo/widget-core/d';
 
 const modules = [
+	'accordionpane',
 	'button',
 	'calendar',
 	'checkbox',
