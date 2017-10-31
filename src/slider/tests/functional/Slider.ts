@@ -1,15 +1,20 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
+import Command from '@theintern/leadfoot/Command';
+import Element from '@theintern/leadfoot/Element';
 import keys from '@theintern/leadfoot/keys';
+import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/slider.m.css';
+import * as labelCss from '../../../label/styles/label.m.css';
 
 function getPage(test: any) {
 	const { browserName } = test.remote.environmentType;
 	if (browserName.toLowerCase() === 'microsoftedge') {
 		test.skip('example page currently doesn\'t work in edge.');
 	}
-	return test.remote
+	const remote: Remote = test.remote;
+	return remote
 		.get('http://localhost:9000/_build/common/example/?module=slider')
 		.setFindTimeout(5000);
 }
@@ -47,6 +52,35 @@ function checkValue(command: any, values?: number[]) {
 				})
 			.end()
 		.end();
+}
+
+function clickToFocus(test: any, selector: string) {
+	const { mouseEnabled } = test.remote.session.capabilities;
+	if (!mouseEnabled) {
+		test.skip('Test requires mouse interactions.');
+	}
+
+	let input: string;
+	return getPage(test)
+		.findByCssSelector(`#example-s1 .${css.root}`)
+			.findByCssSelector(selector)
+				.then(function (this: { parent: Command<Element> }, element) {
+					return this.parent
+						.moveMouseTo(element)
+						.clickMouseButton(0);
+				})
+			.end()
+			.findByTagName('input')
+				.then((element) => {
+					input = element.elementId;
+				})
+			.end()
+		.end()
+		.sleep(30)
+		.getActiveElement()
+		.then((element) => {
+			assert.strictEqual(input, element.elementId);
+		});
 }
 
 function slide(command: any, x: number, y: number) {
@@ -153,6 +187,21 @@ registerSuite('Slider', {
 					assert.isTrue(sliderValues[0] > sliderValues[1] && sliderValues[2] > sliderValues[0]);
 				})
 				.end();
+		},
+		'Input box should gain focus when clicking on the slider thumb'() {
+			return clickToFocus(this, `.${css.thumb}`);
+		},
+		'Input box should gain focus when clicking on the slider fill'() {
+			return clickToFocus(this, `.${css.fill}`);
+		},
+		'Input box should gain focus when clicking on the slider wrapper'() {
+			return clickToFocus(this, `.${css.inputWrapper}`);
+		},
+		'Input box should gain focus when clicking on the slider label'() {
+			return clickToFocus(this, `.${labelCss.labelText}`);
+		},
+		'Input box should gain focus when clicking on the slider output label'() {
+			return clickToFocus(this, `.${css.output}`);
 		}
 	},
 	'vertical slider': {
