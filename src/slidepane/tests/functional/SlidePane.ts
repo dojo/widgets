@@ -2,6 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
+import Command from '@theintern/leadfoot/Command';
 import * as css from '../../styles/slidePane.m.css';
 
 const DELAY = 400;
@@ -28,7 +29,19 @@ function openSlidePane(remote: Remote, alignRight?: boolean) {
 		.sleep(DELAY);
 }
 
-function swipeSlidePane(remote: Remote, distance = 250, alignRight?: boolean) {
+function swipeSlidePane(remote: Remote): Command<any>;
+function swipeSlidePane(remote: Remote, alignRight: boolean): Command<any>;
+function swipeSlidePane(remote: Remote, distance: number, alignRight?: boolean): Command<any>;
+function swipeSlidePane(remote: Remote, distance?: number | boolean, alignRight?: boolean) {
+	if (typeof distance === 'boolean') {
+		alignRight = distance;
+		distance = 250;
+	}
+	else if (typeof distance === 'undefined') {
+		alignRight = undefined;
+		distance = 250;
+	}
+
 	const { mouseEnabled } = remote.session.capabilities;
 	const initialX = alignRight ? 10 : 300;
 
@@ -130,7 +143,7 @@ registerSuite('SlidePane', {
 		}
 
 		let viewportWidth = 0;
-		return swipeSlidePane(this.remote, undefined, true)
+		return swipeSlidePane(this.remote, true)
 			.getWindowSize()
 				.then(({ width }) => {
 					viewportWidth = width;
