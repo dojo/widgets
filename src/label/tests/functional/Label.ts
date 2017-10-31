@@ -13,7 +13,7 @@ function getPage(remote: Remote) {
 registerSuite('Label', {
 	'Label should be visible'() {
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.root}.label1`)
+			.findByCssSelector(`#example-1 .${css.root}`)
 			.getSize()
 			.then(({ height, width }: { height: number; width: number; }) => {
 				assert.isAbove(height, 0, 'The label height should be greater than zero.');
@@ -23,7 +23,7 @@ registerSuite('Label', {
 	},
 	'Label text should be as defined'() {
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.root}.label1`)
+			.findByCssSelector(`#example-1 .${css.root}`)
 				.getVisibleText()
 				.then((text: string) => {
 					assert.strictEqual(text, 'Type something');
@@ -34,7 +34,7 @@ registerSuite('Label', {
 	'Input box should gain focus when clicking on the label'() {
 		let input: string;
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.root}.label1`)
+			.findByCssSelector(`#example-1 .${css.root}`)
 				.click()
 				.findByTagName('input')
 					.then((element) => {
@@ -51,7 +51,7 @@ registerSuite('Label', {
 	},
 	'Hidden label text should not be displayed'() {
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.root}.label2`)
+			.findByCssSelector(`#example-2 .${css.root}`)
 				.getVisibleText()
 				.then((text: string) => {
 					assert.strictEqual(text, 'Can\'t read me!');

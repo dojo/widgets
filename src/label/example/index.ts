@@ -9,28 +9,31 @@ export class App extends WidgetBase<WidgetProperties> {
 		return v('div', [
 			v('h1', {}, ['Label Examples']),
 			v('h3', {}, ['Label assigned as string without extra options']),
-			w(Label, {
-				extraClasses: { root: 'label1' },
-				label: 'Type something'
-			}, [
-				v('input', {
-					type: 'text',
-					placeholder: '...'
-				})
+			v('div', { id: 'example-1'}, [
+				w(Label, {
+					label: 'Type something'
+				}, [
+					v('input', {
+						type: 'text',
+						placeholder: '...'
+					})
+				])
 			]),
 			v('h3', {}, ['Hidden label after the input']),
-			w(Label, {
-				extraClasses: { root: 'label2' },
-				label: {
-					content: 'Can\'t read me!',
-					hidden: true,
-					before: false
-				}
-			}, [
-				v('input', {
-					type: 'text',
-					placeholder: 'Type something'
-				})
+			v('div', { id: 'example-2'}, [
+				w(Label, {
+					extraClasses: { root: 'label2' },
+					label: {
+						content: 'Can\'t read me!',
+						hidden: true,
+						before: false
+					}
+				}, [
+					v('input', {
+						type: 'text',
+						placeholder: 'Type something'
+					})
+				])
 			])
 		]);
 	}
