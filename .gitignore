@@ -1,7 +1,6 @@
 /_build
 /bower_components
 /dist
-/support/showcase/dist
 /html-report
 node_modules
 /typings
@@ -15,6 +14,5 @@ yarn.lock
 /_apidoc
 package-lock.json
 /.grunt/
-/.sync
 deploy_key
 deploy_key.pub
