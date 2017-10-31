@@ -264,7 +264,7 @@ registerSuite('Listbox', {
 			widget.sendEvent<TestEventInit>('keydown', { eventInit: { which: Keys.Space } });
 			assert.isFalse(onOptionSelect.called, 'Space key does not select disabled option');
 
-			widget.callListener('onClick', { key: 'option-2' });
+			widget.callListener('onClick', { args: [testOptions[2], 2], key: 'option-2' });
 			assert.isFalse(onOptionSelect.called, 'Clicking disabled option does not select it');
 		},
 
