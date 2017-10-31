@@ -15,7 +15,7 @@ function getPage(remote: Remote) {
 registerSuite('Textarea', {
 	'should be visible'() {
 		return getPage(this.remote)
-			.findByCssSelector(`.t1.${css.root}`)
+			.findByCssSelector(`#example-t1 .${css.root}`)
 				.isDisplayed()
 				.findByCssSelector(`.${css.inputWrapper}`)
 					.isDisplayed()
@@ -32,7 +32,7 @@ registerSuite('Textarea', {
 	},
 	'label should be as defined'() {
 		return getPage(this.remote)
-			.findByCssSelector(`.t1.${css.root}`)
+			.findByCssSelector(`#example-t1 .${css.root}`)
 				.getVisibleText()
 				.then(text => {
 					assert.strictEqual(text, 'Type Something');
@@ -42,7 +42,7 @@ registerSuite('Textarea', {
 	'should gain focus when clicking on the label'() {
 		let elementClassName: string;
 		return getPage(this.remote)
-			.findByCssSelector(`.t1.${css.root}`)
+			.findByCssSelector(`#example-t1 .${css.root}`)
 				.findByCssSelector(`.${css.input}`)
 					.getProperty('className')
 					.then((className: string) => {
@@ -64,7 +64,7 @@ registerSuite('Textarea', {
 	'should allow input to be typed'() {
 		const testInput = 'test text';
 		return getPage(this.remote)
-			.findByCssSelector(`.t1.${css.root}`)
+			.findByCssSelector(`#example-t1 .${css.root}`)
 				.click()
 				.findByCssSelector(`.${css.input}`)
 					.type(testInput)
@@ -78,7 +78,7 @@ registerSuite('Textarea', {
 	'disabled should not allow input to be typed'() {
 		const initValue = 'Initial value';
 		return getPage(this.remote)
-			.findByCssSelector(`.t2.${css.root} .${css.input}`)
+			.findByCssSelector(`#example-t2 .${css.root} .${css.input}`)
 				.click()
 				.then(null, () => {})
 				.type('text')
@@ -97,7 +97,7 @@ registerSuite('Textarea', {
 		}
 
 		return getPage(this.remote)
-			.findByCssSelector(`.t3.${css.root}`)
+			.findByCssSelector(`#example-t3 .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.invalid);
@@ -109,12 +109,12 @@ registerSuite('Textarea', {
 				.end()
 			.end()
 			// focus another input
-			.findByCssSelector(`.t1.${css.root} .${css.input}`)
+			.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
 				.click()
 			.end()
 			.sleep(500)
 			// enter invalid value
-			.findByCssSelector(`.t3.${css.root}`)
+			.findByCssSelector(`#example-t3 .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.invalid);
@@ -126,11 +126,11 @@ registerSuite('Textarea', {
 				.end()
 			.end()
 			// focus another input
-			.findByCssSelector(`.t1.${css.root} .${css.input}`)
+			.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
 				.click()
 			.end()
 			.sleep(500)
-			.findByCssSelector(`.t3.${css.root}`)
+			.findByCssSelector(`#example-t3 .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.valid);
@@ -140,7 +140,7 @@ registerSuite('Textarea', {
 	},
 	'hidden label should not be displayed'() {
 		return getPage(this.remote)
-			.findByCssSelector(`.t4.${css.root}`)
+			.findByCssSelector(`#example-t4 .${css.root}`)
 				.getVisibleText()
 				.then(text => {
 					assert.isTrue(text && text.length > 0);
