@@ -68,14 +68,8 @@
 	transform: translateY(calc(100% + 10px));
 }
 
-.left.slideOut,
-.right.slideOut,
-.top.slideOut,
-.bottom.slideOut,
-.left.slideIn,
-.right.slideIn,
-.top.slideIn,
-.bottom.slideIn {
+.slideIn,
+.slideOut {
 	transition: transform ease-in-out var(--transition-duration);
 }
 
