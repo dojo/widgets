@@ -52,7 +52,7 @@ const DEFAULT_WIDTH = 320;
  */
 const SWIPE_THRESHOLD = 5;
 
-enum Plane {
+const enum Plane {
 	x,
 	y
 };
@@ -183,12 +183,11 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			width = DEFAULT_WIDTH
 		} = this.properties;
 
+		const alignCss: {[key: string]: any} = css;
+
 		const contentClasses = [
 			css.pane,
-			align === Align.left ? css.left : null,
-			align === Align.bottom ? css.bottom : null,
-			align === Align.top ? css.top : null,
-			align === Align.right ? css.right : null,
+			alignCss[align],
 			open ? css.open : null,
 			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
 			!open && this._wasOpen ? css.slideOut : null
@@ -197,10 +196,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		const fixedContentClasses = [
 			css.paneFixed,
 			open ? css.openFixed : null,
-			align === Align.left ? css.leftFixed : null,
-			align === Align.bottom ? css.bottomFixed : null,
-			align === Align.top ? css.topFixed : null,
-			align === Align.right ? css.rightFixed : null,
+			alignCss[`${align}Fixed`],
 			this._slideIn || (open && !this._wasOpen) ? css.slideInFixed : null,
 			!open && this._wasOpen ? css.slideOutFixed : null
 		];
