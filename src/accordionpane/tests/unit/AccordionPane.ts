@@ -1,18 +1,17 @@
+const { assert } = intern.getPlugin('chai');
+const { registerSuite } = intern.getInterface('object');
+
 import { v, w } from '@dojo/widget-core/d';
-import * as assert from 'intern/chai!assert';
-import * as registerSuite from 'intern!object';
 import * as sinon from 'sinon';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
+import * as css from '../../styles/accordionPane.m.css';
 import AccordionPane, { AccordionPaneProperties } from '../../AccordionPane';
 import TitlePane from '../../../titlepane/TitlePane';
 
-import * as css from '../../styles/accordionPane.m.css';
-
 let pane: Harness<AccordionPaneProperties, typeof AccordionPane>;
-registerSuite({
-	name: 'AccordionPane',
 
+registerSuite('AccordionPane', {
 	beforeEach() {
 		pane = harness(AccordionPane);
 	},
@@ -21,75 +20,77 @@ registerSuite({
 		pane.destroy();
 	},
 
-	'default rendering'() {
-		pane.expectRender(v('div', {
-			classes: pane.classes(css.root)
-		}, []));
-	},
+	tests: {
+		'default rendering'() {
+			pane.expectRender(v('div', {
+				classes: pane.classes(css.root)
+			}, []));
+		},
 
-	'default rendering with children'() {
-		pane.setProperties({ openKeys: [] });
+		'default rendering with children'() {
+			pane.setProperties({ openKeys: [] });
 
-		pane.setChildren([
-			w(TitlePane, { title: 'foo', key: 'foo', onRequestOpen: () => {} }),
-			undefined,
-			w(TitlePane, { title: 'bar', key: 'bar', onRequestClose: () => {} }),
-			w(TitlePane, { title: 'baz', key: 'baz' })
-		]);
+			pane.setChildren([
+				w(TitlePane, { title: 'foo', key: 'foo', onRequestOpen: () => {} }),
+				undefined,
+				w(TitlePane, { title: 'bar', key: 'bar', onRequestClose: () => {} }),
+				w(TitlePane, { title: 'baz', key: 'baz' })
+			]);
 
-		pane.expectRender(v('div', {
-			classes: pane.classes(css.root)
-		}, [
-			w(TitlePane, {
-				key: 'foo',
-				onRequestClose: pane.listener,
-				onRequestOpen: pane.listener,
-				open: false,
-				theme: undefined,
-				title: 'foo'
-			}),
-			w(TitlePane, {
-				key: 'bar',
-				onRequestClose: pane.listener,
-				onRequestOpen: pane.listener,
-				open: false,
-				theme: undefined,
-				title: 'bar'
-			}),
-			w(TitlePane, {
-				key: 'baz',
-				onRequestClose: pane.listener,
-				onRequestOpen: pane.listener,
-				open: false,
-				theme: undefined,
-				title: 'baz'
-			})
-		]));
-	},
+			pane.expectRender(v('div', {
+				classes: pane.classes(css.root)
+			}, [
+				w(TitlePane, {
+					key: 'foo',
+					onRequestClose: pane.listener,
+					onRequestOpen: pane.listener,
+					open: false,
+					theme: undefined,
+					title: 'foo'
+				}),
+				w(TitlePane, {
+					key: 'bar',
+					onRequestClose: pane.listener,
+					onRequestOpen: pane.listener,
+					open: false,
+					theme: undefined,
+					title: 'bar'
+				}),
+				w(TitlePane, {
+					key: 'baz',
+					onRequestClose: pane.listener,
+					onRequestOpen: pane.listener,
+					open: false,
+					theme: undefined,
+					title: 'baz'
+				})
+			]));
+		},
 
-	'onRequestOpen should be called'() {
-		const onRequestOpen = sinon.stub();
+		'onRequestOpen should be called'() {
+			const onRequestOpen = sinon.stub();
 
-		pane.setProperties({ onRequestOpen });
+			pane.setProperties({ onRequestOpen });
 
-		pane.setChildren([
-			w(TitlePane, { title: 'foo', key: 'foo' })
-		]);
+			pane.setChildren([
+				w(TitlePane, { title: 'foo', key: 'foo' })
+			]);
 
-		pane.callListener('onRequestOpen', { key: 'foo' });
-		assert.isTrue(onRequestOpen.calledOnce);
-	},
+			pane.callListener('onRequestOpen', { key: 'foo' });
+			assert.isTrue(onRequestOpen.calledWith('foo'));
+		},
 
-	'onRequestClose should be called'() {
-		const onRequestClose = sinon.stub();
+		'onRequestClose should be called'() {
+			const onRequestClose = sinon.stub();
 
-		pane.setProperties({ onRequestClose });
+			pane.setProperties({ onRequestClose });
 
-		pane.setChildren([
-			w(TitlePane, { title: 'foo', key: 'foo' })
-		]);
+			pane.setChildren([
+				w(TitlePane, { title: 'foo', key: 'foo' })
+			]);
 
-		pane.callListener('onRequestClose', { key: 'foo' });
-		assert.isTrue(onRequestClose.calledOnce);
+			pane.callListener('onRequestClose', { key: 'foo' });
+			assert.isTrue(onRequestClose.calledWith('foo'));
+		}
 	}
 });

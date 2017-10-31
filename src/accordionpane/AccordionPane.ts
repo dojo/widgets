@@ -29,8 +29,8 @@ export const AccordionPaneBase = ThemeableMixin(WidgetBase);
 
 @theme(css)
 export default class AccordionPane extends AccordionPaneBase<AccordionPaneProperties, WNode<TitlePane>> {
-	private _assignCallback(child: WNode<TitlePane>, functionName: string, callback: (key: string) => void) {
-		const existingProperty = (child.properties as any)[functionName];
+	private _assignCallback(child: WNode<TitlePane>, functionName: 'onRequestClose' | 'onRequestOpen', callback: (key: string) => void) {
+		const existingProperty = child.properties[functionName];
 		const property = () => { callback.call(this, `${ child.properties.key }`); };
 
 		return existingProperty ? after(existingProperty, property) : property;

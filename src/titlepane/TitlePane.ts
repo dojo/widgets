@@ -24,8 +24,8 @@ import * as iconCss from '../common/styles/icons.m.css';
 export interface TitlePaneProperties extends ThemeableProperties {
 	closeable?: boolean;
 	headingLevel?: number;
-	onRequestClose?(titlePane: TitlePane): void;
-	onRequestOpen?(titlePane: TitlePane): void;
+	onRequestClose?(key: string | number | undefined): void;
+	onRequestOpen?(key: string | number | undefined): void;
 	open?: boolean;
 	title: string;
 };
@@ -66,6 +66,7 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 	private _toggle() {
 		const {
 			closeable = true,
+			key,
 			onRequestClose,
 			onRequestOpen,
 			open = true
@@ -76,10 +77,10 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		}
 
 		if (open) {
-			onRequestClose && onRequestClose(this);
+			onRequestClose && onRequestClose(key);
 		}
 		else {
-			onRequestOpen && onRequestOpen(this);
+			onRequestOpen && onRequestOpen(key);
 		}
 	}
 
