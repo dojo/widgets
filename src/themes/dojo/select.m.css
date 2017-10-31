@@ -24,6 +24,8 @@
 	position: relative;
 	text-align: left;
 	width: 100%;
+	appearance: none;
+	border-radius: 0;
 }
 
 .trigger:focus {
