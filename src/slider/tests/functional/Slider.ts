@@ -70,7 +70,7 @@ registerSuite('Slider', {
 	'horizontal slider': {
 		'each component of a slider should be visible'(this: any) {
 			return getPage(this)
-				.findByCssSelector(`.s1.${css.root}`)
+				.findByCssSelector(`#example-s1 .${css.root}`)
 					.isDisplayed()
 					.findByCssSelector(`.${css.input}`)
 					.isDisplayed()
@@ -90,7 +90,7 @@ registerSuite('Slider', {
 		},
 		'label should be as defined'(this: any) {
 			return getPage(this)
-				.findByCssSelector(`.s1.${css.root}`)
+				.findByCssSelector(`#example-s1 .${css.root}`)
 					.getVisibleText()
 					.then((text: string) => {
 						assert.include(text, 'How much do you like tribbles?');
@@ -98,7 +98,7 @@ registerSuite('Slider', {
 				.end();
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
-			const command = getPage(this).findByCssSelector(`.s1.${css.root}`);
+			const command = getPage(this).findByCssSelector(`#example-s1 .${css.root}`);
 			return checkValue(command).end();
 		},
 		'slider should be slidable with mouse'(this: any) {
@@ -111,7 +111,7 @@ registerSuite('Slider', {
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this).findByCssSelector(`.s1.${css.root}`);
+			let command = getPage(this).findByCssSelector(`#example-s1 .${css.root}`);
 			command = checkValue(command, sliderValues);
 
 			command = slide(command, -30, 0);
@@ -138,7 +138,7 @@ registerSuite('Slider', {
 
 			let sliderValues: number[] = [];
 			let command = getPage(this)
-				.findByCssSelector(`.s1.${css.root}`);
+				.findByCssSelector(`#example-s1 .${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
 				.pressKeys(keys.ARROW_LEFT);
@@ -158,7 +158,7 @@ registerSuite('Slider', {
 	'vertical slider': {
 		'each component of a slider should be visible'(this: any) {
 			return getPage(this)
-				.findByCssSelector(`.s2.${css.root}`)
+				.findByCssSelector(`#example-s2 .${css.root}`)
 				.isDisplayed()
 				.findByCssSelector(`.${css.input}`)
 				.isDisplayed()
@@ -180,7 +180,7 @@ registerSuite('Slider', {
 		},
 		'label should be as defined'(this: any) {
 			return getPage(this)
-				.findByCssSelector(`.s3.${css.root}`)
+				.findByCssSelector(`#example-s3 .${css.root}`)
 				.getVisibleText()
 				.then((text: string) => {
 					assert.include(text, 'Vertical Slider with default properties.');
@@ -189,7 +189,7 @@ registerSuite('Slider', {
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
 			let command = getPage(this)
-				.findByCssSelector(`.s2.${css.root}`);
+				.findByCssSelector(`#example-s2 .${css.root}`);
 			return checkValue(command)
 				.end();
 		},
@@ -204,7 +204,7 @@ registerSuite('Slider', {
 
 			let sliderValues: number[] = [];
 			let command = getPage(this)
-				.findByCssSelector(`.s3.${css.root}`);
+				.findByCssSelector(`#example-s3 .${css.root}`);
 			command = checkValue(command, sliderValues);
 
 			command = slide(command, 1, -30);
@@ -231,7 +231,7 @@ registerSuite('Slider', {
 
 			let sliderValues: number[] = [];
 			let command = getPage(this)
-				.findByCssSelector(`.s3.${css.root}`);
+				.findByCssSelector(`#example-s3 .${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
 				.pressKeys([keys.ARROW_UP, keys.ARROW_UP]);
