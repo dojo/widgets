@@ -53,7 +53,7 @@ registerSuite('TextInput', {
 					}
 				})
 			.end()
-			.sleep(1000)
+			.sleep(250)
 			.execute(`return document.activeElement === document.querySelector('#example-text .${css.root} .${css.input}');`)
 			.then(isEqual => {
 				assert.isTrue(isEqual);
@@ -116,31 +116,14 @@ registerSuite('TextInput', {
 					.click()
 					.type(validText)
 				.end()
-			.end()
-			.sleep(500)
-			// focus another input
-			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
-				.click()
-			.end()
-			.sleep(500)
-			.findByCssSelector(`#example-validated .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.invalid);
 					assert.include(className, css.valid);
 				})
 				.findByCssSelector(`.${css.input}`)
-					.click()
 					.type(invalidText)
 				.end()
-			.end()
-			.sleep(500)
-			// focus another input
-			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
-				.click()
-			.end()
-			.sleep(500)
-			.findByCssSelector(`#example-validated .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.valid);
