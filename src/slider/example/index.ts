@@ -60,6 +60,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				},
 				step: 1,
 				value: tribbleValue,
+				onChange: this.onTribbleInput,
 				onInput: this.onTribbleInput,
 				theme: this._theme
 			}),
@@ -87,6 +88,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					});
 				},
 				outputIsTooltip: true,
+				onChange: this.onTribbleInput,
 				onInput: this.onVerticalInput,
 				theme: this._theme
 			})
