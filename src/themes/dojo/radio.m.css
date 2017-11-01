@@ -94,16 +94,16 @@
 
 /* invalid style */
 .invalid .inputWrapper::before {
-	border-color: var(--dojo-error-color);
+	border-color: var(--color-error);
 }
 .invalid .inputWrapper::after {
-	background-color: var(--dojo-error-color);
+	background-color: var(--color-error);
 }
 
 /* valid style */
 .valid .inputWrapper::before {
-	border-color: var(--dojo-success-color);
+	border-color: var(--color-success);
 }
 .valid .inputWrapper::after {
-	background-color: var(--dojo-success-color);
+	background-color: var(--color-success);
 }
