@@ -8,9 +8,6 @@ env:
   - SAUCE_ACCESS_KEY: e92610e3-834e-4bec-a3b5-6f7b9d874601
   - BROWSERSTACK_USERNAME: dylanschiemann2
   - BROWSERSTACK_ACCESS_KEY: 2upt88qsxsqqeukQvecu
-cache:
-  directories:
-  - node_modules
 before_install:
 - if [ ${TRAVIS_BRANCH-""} == "master" ] && [ -n ${encrypted_12c8071d2874_key-""}
   ]; then openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv

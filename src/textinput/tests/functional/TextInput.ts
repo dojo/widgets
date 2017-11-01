@@ -38,26 +38,26 @@ registerSuite('TextInput', {
 				});
 	},
 	'TextInput should gain focus when clicking on the label'() {
-		let elementClassName: string;
+		const { remote: { session: { capabilities: { browserName } } } } = this;
+
 		return getPage(this.remote)
 			.findByCssSelector(`#example-text .${css.root}`)
-				.findByCssSelector(`.${css.input}`)
-					.getProperty('className')
-					.then((className: string) => {
-						elementClassName = className;
-					})
-				.end()
-				.click()
-				.sleep(1000)
-				.getActiveElement()
 				.then(element => {
-					return element
-						.getProperty('className')
-						.then((className: string) => {
-							assert.strictEqual(className, elementClassName);
-						});
+					if (browserName === 'firefox') {
+						return this.remote
+							.moveMouseTo(element, 5, 5)
+							.clickMouseButton(0);
+					}
+					else {
+						return element.click();
+					}
 				})
-			.end();
+			.end()
+			.sleep(250)
+			.execute(`return document.activeElement === document.querySelector('#example-text .${css.root} .${css.input}');`)
+			.then(isEqual => {
+				assert.isTrue(isEqual);
+			});
 	},
 	'TextInput should allow input to be typed'() {
 		const testInput = 'test text';
@@ -116,30 +116,14 @@ registerSuite('TextInput', {
 					.click()
 					.type(validText)
 				.end()
-				.click()
-			.end()
-			// focus another input
-			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
-				.click()
-			.end()
-			.findByCssSelector(`#example-validated .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.invalid);
 					assert.include(className, css.valid);
 				})
 				.findByCssSelector(`.${css.input}`)
-					.click()
 					.type(invalidText)
 				.end()
-				.click()
-			.end()
-			// focus another input
-			.findByCssSelector(`#example-text .${css.root} .${css.input}`)
-				.click()
-			.end()
-			.sleep(500)
-			.findByCssSelector(`#example-validated .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.valid);

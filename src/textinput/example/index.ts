@@ -103,7 +103,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Type "foo" or "bar"',
 					value: this._value4,
 					invalid: this._invalid,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
+					onInput: (event: TypedTargetEvent<HTMLInputElement>) => {
 						const value = event.target.value;
 						this._value4 = value;
 						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
