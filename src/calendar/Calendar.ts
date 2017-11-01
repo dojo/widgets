@@ -278,7 +278,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 
 				const isToday = isCurrentMonth && dateString === todayString;
 
-				days.push(this.renderDateCell(date, isSelectedDay, isCurrentMonth, isToday));
+				days.push(this.renderDateCell(date, week * 7 + i, isSelectedDay, isCurrentMonth, isToday));
 			}
 
 			weeks.push(v('tr', days));
@@ -287,12 +287,11 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		return weeks;
 	}
 
-	protected renderDateCell(date: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
-		const key = currentMonth ? `date-${date}` : `date-${date}-dimmed`;
+	protected renderDateCell(date: number, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
 		const { theme = {} } = this.properties;
 
 		return w(CalendarCell, {
-			key,
+			key: `date-${index}`,
 			callFocus: this._callDateFocus && currentMonth && date === this._focusedDay,
 			date,
 			disabled: !currentMonth,

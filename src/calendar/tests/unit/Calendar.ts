@@ -20,9 +20,11 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+let dateIndex = -1;
 const expectedDateCell = function(widget: any, date: number, active: boolean) {
+	dateIndex++;
 	return w(CalendarCell, {
-		key: `date-${date}${active ? '' : '-dimmed'}`,
+		key: `date-${dateIndex}`,
 		callFocus: false,
 		date,
 		disabled: !active,
@@ -36,6 +38,7 @@ const expectedDateCell = function(widget: any, date: number, active: boolean) {
 };
 
 const expected = function(widget: any, popupOpen = false) {
+	dateIndex = -1;
 	return v('div', { classes: widget.classes(css.root) }, [
 		w(DatePicker, {
 			key: 'date-picker',
@@ -174,7 +177,7 @@ registerSuite('Calendar', {
 			});
 
 			const expectedVdom = expected(widget);
-			assignProperties(findKey(expectedVdom, 'date-3')!, {
+			assignProperties(findKey(expectedVdom, 'date-6')!, {
 				selected: true
 			});
 
@@ -198,7 +201,7 @@ registerSuite('Calendar', {
 			for (let i = 0; i < 7; i++) {
 				replaceChild(expectedVdom, `1,0,0,${i},0`, 'Bar');
 			}
-			assignProperties(findKey(expectedVdom, 'date-1')!, {
+			assignProperties(findKey(expectedVdom, 'date-4')!, {
 				selected: true
 			});
 			assignChildProperties(expectedVdom, '0', {
@@ -227,7 +230,7 @@ registerSuite('Calendar', {
 
 			widget.callListener('onClick', {
 				args: [1, false],
-				key: 'date-1'
+				key: 'date-4'
 			});
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Clicking cell selects correct date');
@@ -251,7 +254,7 @@ registerSuite('Calendar', {
 
 			widget.callListener('onClick', {
 				args: [1, true],
-				key: 'date-1-dimmed'
+				key: 'date-34'
 			});
 			assert.strictEqual(currentMonth, 6, 'Month changes to July');
 			assert.strictEqual(selectedDate.getMonth(), 6, 'selected date in July');
@@ -259,7 +262,7 @@ registerSuite('Calendar', {
 
 			widget.callListener('onClick', {
 				args: [30, true],
-				key: 'date-30-dimmed'
+				key: 'date-2'
 			});
 			assert.strictEqual(currentMonth, 4, 'Month changes to May');
 			assert.strictEqual(selectedDate.getMonth(), 4, 'selected date in May');
@@ -282,18 +285,18 @@ registerSuite('Calendar', {
 					which: Keys.Right,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-4'
 			});
 			// not a good way to test this, but this would be called with the arrow key
 			widget.callListener('onFocusCalled', {
-				key: 'date-1'
+				key: 'date-4'
 			});
 			widget.callListener('onKeyDown', {
 				args: [{
 					which: Keys.Enter,
 					preventDefault: () => {}
 				}],
-				key: 'date-2'
+				key: 'date-5'
 			});
 			assert.strictEqual(selectedDate.getDate(), 2, 'Right arrow + enter selects second day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
@@ -304,14 +307,14 @@ registerSuite('Calendar', {
 					which: Keys.Down,
 					preventDefault: () => {}
 				}],
-				key: 'date-2'
+				key: 'date-5'
 			});
 			widget.callListener('onKeyDown', {
 				args: [{
 					which: Keys.Enter,
 					preventDefault: () => {}
 				}],
-				key: 'date-9'
+				key: 'date-12'
 			});
 			assert.strictEqual(selectedDate.getDate(), 9, 'Down arrow + enter selects one week down');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
@@ -322,14 +325,14 @@ registerSuite('Calendar', {
 					which: Keys.Left,
 					preventDefault: () => {}
 				}],
-				key: 'date-9'
+				key: 'date-12'
 			});
 			widget.callListener('onKeyDown', {
 				args: [{
 					which: Keys.Space,
 					preventDefault: () => {}
 				}],
-				key: 'date-8'
+				key: 'date-11'
 			});
 			assert.strictEqual(selectedDate.getDate(), 8, 'Left arrow + space selects previous day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
@@ -340,14 +343,14 @@ registerSuite('Calendar', {
 					which: Keys.Up,
 					preventDefault: () => {}
 				}],
-				key: 'date-8'
+				key: 'date-11'
 			});
 			widget.callListener('onKeyDown', {
 				args: [{
 					which: Keys.Space,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-4'
 			});
 			assert.strictEqual(selectedDate.getDate(), 1, 'Left arrow + space selects previous day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
@@ -358,14 +361,14 @@ registerSuite('Calendar', {
 					which: Keys.PageDown,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-4'
 			});
 			widget.callListener('onKeyDown', {
 				args: [{
 					which: Keys.Space,
 					preventDefault: () => {}
 				}],
-				key: 'date-30'
+				key: 'date-33'
 			});
 			assert.strictEqual(selectedDate.getDate(), 30, 'Page Down + space selects last day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
@@ -376,14 +379,14 @@ registerSuite('Calendar', {
 					which: Keys.PageUp,
 					preventDefault: () => {}
 				}],
-				key: 'date-30'
+				key: 'date-33'
 			});
 			widget.callListener('onKeyDown', {
 				args: [{
 					which: Keys.Space,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-4'
 			});
 			assert.strictEqual(selectedDate.getDate(), 1, 'Page Up + space selects first day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
@@ -404,7 +407,7 @@ registerSuite('Calendar', {
 					which: Keys.Left,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-4'
 			});
 			assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Going left from the first day goes to previous month');
 
@@ -413,14 +416,14 @@ registerSuite('Calendar', {
 					which: Keys.PageDown,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-4'
 			});
 			widget.callListener('onKeyDown', {
 				args: [{
 					which: Keys.Right,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-4'
 			});
 			assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Going right from the last day goes to next month');
 		},
@@ -444,7 +447,7 @@ registerSuite('Calendar', {
 					which: Keys.Up,
 					preventDefault: () => {}
 				}],
-				key: 'date-1'
+				key: 'date-0'
 			});
 			assert.strictEqual(currentMonth, 11, 'Previous month wraps from January to December');
 			assert.strictEqual(currentYear, 2016, 'Year decrements when month wraps');
@@ -465,7 +468,7 @@ registerSuite('Calendar', {
 					which: Keys.Down,
 					preventDefault: () => {}
 				}],
-				key: 'date-30'
+				key: 'date-35'
 			});
 			assert.strictEqual(currentMonth, 0, 'Next month wraps from December to January');
 			assert.strictEqual(currentYear, 2018, 'Year increments when month wraps');
