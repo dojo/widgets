@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@dojo/cli": "~0.1.0",
-    "@dojo/cli-build-webpack": "~0.1.0",
+    "@dojo/cli-build-webpack": "~0.1.1",
     "@dojo/interfaces": "~0.1.0",
     "@dojo/loader": "~0.1.0",
     "@dojo/test-extras": "~0.1.0",
