@@ -65,7 +65,7 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 		return v('span', [ `${date}` ]);
 	}
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const {
 			disabled = false,
 			selected = false,

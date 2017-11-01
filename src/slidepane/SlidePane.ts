@@ -172,11 +172,11 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 	}
 
-	protected getContent() {
+	protected getContent(): DNode {
 		return v('div', { classes: this.classes(css.content) }, this.children);
 	}
 
-	protected getStyles() {
+	protected getStyles(): { [key: string]: string | null } {
 		const {
 			align = Align.left,
 			open = false,
@@ -198,7 +198,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		};
 	}
 
-	protected getFixedModifierClasses() {
+	protected getFixedModifierClasses(): (string | null)[] {
 		const {
 			align = Align.left,
 			open = false
@@ -213,7 +213,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		];
 	}
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const {
 			align = Align.left,
 			open = false
@@ -228,18 +228,18 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		];
 	}
 
-	protected renderCloseIcon() {
+	protected renderCloseIcon(): DNode {
 		return v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
 			role: 'presentation', 'aria-hidden': 'true'
 		});
 	}
 
-	protected renderTitle() {
+	protected renderTitle(): DNode {
 		const { title = '' } = this.properties;
 		return v('div', { id: this._titleId }, [ title ]);
 	}
 
-	protected renderUnderlay() {
+	protected renderUnderlay(): DNode {
 		const { underlay = false } = this.properties;
 		return v('div', {
 			classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),

@@ -130,7 +130,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		}
 	}
 
-	protected getContent() {
+	protected getContent(): DNode[] {
 		const { active, closeable } = this.properties;
 
 		return [
@@ -144,7 +144,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		];
 	}
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const { active, disabled } = this.properties;
 		return [
 			active ? css.activeTabButton : null,

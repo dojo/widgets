@@ -305,7 +305,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		});
 	}
 
-	protected renderDatePicker() {
+	protected renderDatePicker(): DNode {
 		const {
 			labels = DEFAULT_LABELS,
 			monthNames = DEFAULT_MONTHS,
@@ -340,7 +340,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		});
 	}
 
-	protected renderPagingButtonContent(type: Paging) {
+	protected renderPagingButtonContent(type: Paging): DNode[] {
 		const { labels = DEFAULT_LABELS } = this.properties;
 		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;

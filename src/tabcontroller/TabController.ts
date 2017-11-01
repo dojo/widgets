@@ -106,11 +106,11 @@ export default class TabController extends TabControllerBase<TabControllerProper
 		onRequestTabClose && onRequestTabClose(index, key);
 	}
 
-	protected renderButtonContent(label?: DNode) {
+	protected renderButtonContent(label?: DNode): DNode[] {
 		return [ label || null ];
 	}
 
-	protected renderTabButtons() {
+	protected renderTabButtons(): DNode[] {
 		return this._tabs.map((tab, i) => {
 			const {
 				closeable,
@@ -143,7 +143,7 @@ export default class TabController extends TabControllerBase<TabControllerProper
 		});
 	}
 
-	protected renderTabs() {
+	protected renderTabs(): DNode[] {
 		const { activeIndex } = this.properties;
 
 		return this._tabs

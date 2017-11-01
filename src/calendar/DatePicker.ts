@@ -233,12 +233,12 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		}, [ content ]);
 	}
 
-	protected renderMonthLabel(month: number, year: number) {
+	protected renderMonthLabel(month: number, year: number): DNode {
 		const { monthNames, renderMonthLabel } = this.properties;
 		return renderMonthLabel ? renderMonthLabel(month, year) : `${monthNames[month].long} ${year}`;
 	}
 
-	protected renderMonthRadios() {
+	protected renderMonthRadios(): DNode[] {
 		const { month } = this.properties;
 
 		return this.properties.monthNames.map((monthName, i) => v('label', {
@@ -262,7 +262,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		]));
 	}
 
-	protected renderPagingButtonContent(type: Paging) {
+	protected renderPagingButtonContent(type: Paging): DNode[] {
 		const { labels } = this.properties;
 		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
@@ -275,7 +275,7 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		];
 	}
 
-	protected renderYearRadios() {
+	protected renderYearRadios(): DNode[] {
 		const { year } = this.properties;
 		const radios = [];
 

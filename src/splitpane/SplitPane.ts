@@ -128,7 +128,7 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		this._lastSize = undefined;
 	}
 
-	protected getPaneContent(content: DNode) {
+	protected getPaneContent(content: DNode): DNode[] {
 		return [ content ];
 	}
 

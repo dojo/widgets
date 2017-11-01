@@ -82,29 +82,29 @@ export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
 		key === 'content' && this._afterRender(element);
 	}
 
-	protected getButtonContent() {
+	protected getButtonContent(): DNode {
 		return this.properties.title;
 	}
 
-	protected getFixedModifierClasses() {
+	protected getFixedModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
 		return [
 			closeable ? css.closeableFixed : null
 		];
 	}
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
 		return [
 			closeable ? css.closeable : null
 		];
 	}
 
-	protected getPaneContent() {
+	protected getPaneContent(): DNode[] {
 		return this.children;
 	}
 
-	protected renderExpandIcon() {
+	protected renderExpandIcon(): DNode {
 		const { open = true } = this.properties;
 		return v('i', {
 			classes: this.classes(

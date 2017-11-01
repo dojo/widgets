@@ -87,7 +87,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const {
 			checked = false,
 			disabled,

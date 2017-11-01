@@ -91,7 +91,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
@@ -110,7 +110,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		];
 	}
 
-	protected renderControls(percentValue: number) {
+	protected renderControls(percentValue: number): DNode {
 		const {
 			vertical = false,
 			verticalHeight = '200px'
@@ -132,7 +132,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		]);
 	}
 
-	protected renderOutput(value: number, percentValue: number) {
+	protected renderOutput(value: number, percentValue: number): DNode {
 		const {
 			output,
 			outputIsTooltip = false,

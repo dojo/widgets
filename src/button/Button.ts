@@ -70,11 +70,11 @@ export default class Button extends ButtonBase<ButtonProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getContent() {
+	protected getContent(): DNode[] {
 		return this.children;
 	}
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const {
 			disabled,
 			popup = false,
@@ -88,7 +88,7 @@ export default class Button extends ButtonBase<ButtonProperties> {
 		];
 	}
 
-	protected renderPopupIcon() {
+	protected renderPopupIcon(): DNode {
 		return v('i', { classes: this.classes(css.addon, iconCss.icon, iconCss.downIcon),
 			role: 'presentation', 'aria-hidden': 'true'
 		});

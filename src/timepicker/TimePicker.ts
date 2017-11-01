@@ -10,6 +10,10 @@ import ComboBox from '../combobox/ComboBox';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import { TextInputProperties } from '../textinput/TextInput';
 
+interface FocusInputEvent extends FocusEvent {
+	target: HTMLInputElement;
+}
+
 /**
  * @type TimePickerProperties
  *
@@ -181,23 +185,23 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
 	}
 
-	private _onNativeBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur((<HTMLInputElement> event.target).value);
+	private _onNativeBlur(event: FocusInputEvent) {
+		this.properties.onBlur && this.properties.onBlur(event.target.value);
 	}
 
-	private _onNativeChange(event: FocusEvent) {
-		this.properties.onChange && this.properties.onChange((<HTMLInputElement> event.target).value);
+	private _onNativeChange(event: FocusInputEvent) {
+		this.properties.onChange && this.properties.onChange(event.target.value);
 	}
 
-	private _onNativeFocus(event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus((<HTMLInputElement> event.target).value);
+	private _onNativeFocus(event: FocusInputEvent) {
+		this.properties.onFocus && this.properties.onFocus(event.target.value);
 	}
 
 	private _onRequestOptions(value: string) {
 		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this.getOptions());
 	}
 
-	protected getModifierClasses() {
+	protected getModifierClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
