@@ -26,7 +26,7 @@
 }
 
 .title {
-	border-bottom: var(--border-thin) solid var(--color-border);
+	border-bottom: var(--border-width) solid var(--color-border);
 	box-sizing: border-box;
 	flex: 0 0 auto;
 	font-size: var(--font-size-title);
