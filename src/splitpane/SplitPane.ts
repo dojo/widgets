@@ -128,6 +128,21 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		this._lastSize = undefined;
 	}
 
+	protected getPaneContent(content: DNode): DNode[] {
+		return [ content ];
+	}
+
+	protected getPaneStyles(): {[key: string]: string} {
+		const {
+			direction = Direction.row,
+			size = DEFAULT_SIZE
+		} = this.properties;
+		const styles: {[key: string]: string} = {};
+
+		styles[direction === Direction.row ? 'width' : 'height'] = `${size}px`;
+		return styles;
+	}
+
 	protected onElementCreated(element: HTMLElement, key: string) {
 		if (key === 'root') {
 			this._root = element;
@@ -141,12 +156,8 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		const {
 			direction = Direction.row,
 			leading = null,
-			size = DEFAULT_SIZE,
 			trailing = null
 		} = this.properties;
-
-		const styles: {[key: string]: string} = {};
-		styles[direction === Direction.row ? 'width' : 'height'] = `${size}px`;
 
 		return v('div', {
 			classes: this.classes(
@@ -165,8 +176,8 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 					css.leadingFixed
 				),
 				key: 'leading',
-				styles
-			}, [ leading ]),
+				styles: this.getPaneStyles()
+			}, this.getPaneContent(leading)),
 			v('div', {
 				classes: this.classes(
 					css.divider
@@ -185,7 +196,7 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 					css.trailingFixed
 				),
 				key: 'trailing'
-			}, [ trailing ])
+			}, this.getPaneContent(trailing))
 		]);
 	}
 }

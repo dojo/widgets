@@ -87,6 +87,28 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
+	protected getModifierClasses(): (string | null)[] {
+		const {
+			checked = false,
+			disabled,
+			invalid,
+			mode,
+			readOnly,
+			required
+		} = this.properties;
+
+		return [
+			mode === Mode.toggle ? css.toggle : null,
+			checked ? css.checked : null,
+			disabled ? css.disabled : null,
+			this._focused ? css.focused : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
+		];
+	}
+
 	protected renderToggle(): DNode[] {
 		const {
 			checked,
@@ -117,23 +139,11 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			disabled,
 			invalid,
 			label,
-			mode,
 			name,
 			readOnly,
 			required,
 			value
 		} = this.properties;
-
-		const stateClasses = [
-			mode === Mode.toggle ? css.toggle : null,
-			checked ? css.checked : null,
-			disabled ? css.disabled : null,
-			this._focused ? css.focused : null,
-			invalid ? css.invalid : null,
-			invalid === false ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
 
 		const children = [
 			v('div', { classes: this.classes(css.inputWrapper) }, [
@@ -167,14 +177,14 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		if (label) {
 			checkboxWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).get()) },
+				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses()).get()) },
 				label,
 				theme: this.properties.theme
 			}, children);
 		}
 		else {
 			checkboxWidget = v('div', {
-				classes: this.classes(css.root, ...stateClasses)
+				classes: this.classes(css.root, ...this.getModifierClasses())
 			}, children);
 		}
 

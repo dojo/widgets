@@ -32,7 +32,7 @@ registerSuite('TitlePane', {
 					height = size.height;
 				})
 			.end()
-			.findByCssSelector('#titlePane2 > div > :first-child')
+			.findByCssSelector('#titlePane2 button')
 				.click()
 			.end()
 			.sleep(DELAY)

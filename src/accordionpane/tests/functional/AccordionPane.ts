@@ -20,7 +20,7 @@ registerSuite('AccordionPane', {
 				.then((size: { height: number }) => {
 					assert.isBelow(size.height, 50);
 				})
-				.findByCssSelector('[role="heading"]')
+				.findByCssSelector('button')
 					.click()
 				.end()
 				.sleep(DELAY)

@@ -186,7 +186,6 @@ registerSuite('Calendar', {
 
 		'Renders with custom properties'() {
 			widget.setProperties({
-				CustomDateCell: CalendarCell,
 				labels: DEFAULT_LABELS,
 				month: testDate.getMonth(),
 				monthNames: DEFAULT_MONTHS,
@@ -211,7 +210,6 @@ registerSuite('Calendar', {
 
 			widget.expectRender(expectedVdom);
 
-			class CustomCalendarCell extends CalendarCell {}
 			widget.setProperties({
 				month: testDate.getMonth(),
 				year: testDate.getFullYear()

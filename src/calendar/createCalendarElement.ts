@@ -24,7 +24,6 @@ export default function createCalendarElement(): CustomElementDescriptor {
 			}
 		],
 		properties: [
-			{ propertyName: 'CustomDateCell' },
 			{ propertyName: 'labels' },
 			{ propertyName: 'monthNames' },
 			{ propertyName: 'weekdayNames' },

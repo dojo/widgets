@@ -70,6 +70,30 @@ export default class Button extends ButtonBase<ButtonProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
+	protected getContent(): DNode[] {
+		return this.children;
+	}
+
+	protected getModifierClasses(): (string | null)[] {
+		const {
+			disabled,
+			popup = false,
+			pressed
+		} = this.properties;
+
+		return [
+			disabled ? css.disabled : null,
+			popup ? css.popup : null,
+			pressed ? css.pressed : null
+		];
+	}
+
+	protected renderPopupIcon(): DNode {
+		return v('i', { classes: this.classes(css.addon, iconCss.icon, iconCss.downIcon),
+			role: 'presentation', 'aria-hidden': 'true'
+		});
+	}
+
 	render(): DNode {
 		let {
 			describedBy,
@@ -87,12 +111,7 @@ export default class Button extends ButtonBase<ButtonProperties> {
 		}
 
 		return v('button', {
-			classes: this.classes(
-				css.root,
-				disabled ? css.disabled : null,
-				popup ? css.popup : null,
-				pressed ? css.pressed : null
-			),
+			classes: this.classes(css.root, ...this.getModifierClasses()),
 			disabled,
 			id,
 			name,
@@ -115,10 +134,8 @@ export default class Button extends ButtonBase<ButtonProperties> {
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
 			'aria-describedby': describedBy
 		}, [
-			...this.children,
-			popup ? v('i', { classes: this.classes(css.addon, iconCss.icon, iconCss.downIcon),
-				role: 'presentation', 'aria-hidden': 'true'
-			}) : null
+			...this.getContent(),
+			popup ? this.renderPopupIcon() : null
 		]);
 	}
 }

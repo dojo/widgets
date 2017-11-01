@@ -71,57 +71,6 @@ export default class TabController extends TabControllerBase<TabControllerProper
 		}
 	}
 
-	private _renderTabButtons() {
-		return this._tabs.map((tab, i) => {
-			const {
-				closeable,
-				disabled,
-				key,
-				label,
-				theme = {}
-			} = <TabProperties> tab.properties;
-
-			return w(TabButton, {
-				callFocus: this._callTabFocus &&  i === this.properties.activeIndex,
-				active: i === this.properties.activeIndex,
-				closeable,
-				controls: `${ this._id }-tab-${i}`,
-				disabled,
-				id: `${ this._id }-tabbutton-${i}`,
-				index: i,
-				key: `${ key }-tabbutton`,
-				onClick: this.selectIndex,
-				onCloseClick: this.closeIndex,
-				onDownArrowPress: this._onDownArrowPress,
-				onEndPress: this.selectLastIndex,
-				onFocusCalled: () => { this._callTabFocus = false; },
-				onHomePress: this.selectFirstIndex,
-				onLeftArrowPress: this._onLeftArrowPress,
-				onRightArrowPress: this._onRightArrowPress,
-				onUpArrowPress: this._onUpArrowPress,
-				theme
-			}, [
-				label || null
-			]);
-		});
-	}
-
-	private _renderTabs() {
-		const { activeIndex } = this.properties;
-
-		return this._tabs
-			.filter((tab, i) => {
-				return i === activeIndex && tab.children.length;
-			})
-			.map((tab, i) => {
-				assign(tab.properties, {
-					id: `${ this._id }-tab-${i}`,
-					labelledBy: `${ this._id }-tabbutton-${i}`
-				});
-				return tab;
-			});
-	}
-
 	/**
 	 * Determines if the tab at `currentIndex` is enabled. If disabled,
 	 * returns the next valid index, or null if no enabled tabs exist.
@@ -155,6 +104,59 @@ export default class TabController extends TabControllerBase<TabControllerProper
 		this._callTabFocus = true;
 
 		onRequestTabClose && onRequestTabClose(index, key);
+	}
+
+	protected renderButtonContent(label?: DNode): DNode[] {
+		return [ label || null ];
+	}
+
+	protected renderTabButtons(): DNode[] {
+		return this._tabs.map((tab, i) => {
+			const {
+				closeable,
+				disabled,
+				key,
+				label,
+				theme = {}
+			} = <TabProperties> tab.properties;
+
+			return w(TabButton, {
+				callFocus: this._callTabFocus &&  i === this.properties.activeIndex,
+				active: i === this.properties.activeIndex,
+				closeable,
+				controls: `${ this._id }-tab-${i}`,
+				disabled,
+				id: `${ this._id }-tabbutton-${i}`,
+				index: i,
+				key: `${ key }-tabbutton`,
+				onClick: this.selectIndex,
+				onCloseClick: this.closeIndex,
+				onDownArrowPress: this._onDownArrowPress,
+				onEndPress: this.selectLastIndex,
+				onFocusCalled: () => { this._callTabFocus = false; },
+				onHomePress: this.selectFirstIndex,
+				onLeftArrowPress: this._onLeftArrowPress,
+				onRightArrowPress: this._onRightArrowPress,
+				onUpArrowPress: this._onUpArrowPress,
+				theme
+			}, this.renderButtonContent(label));
+		});
+	}
+
+	protected renderTabs(): DNode[] {
+		const { activeIndex } = this.properties;
+
+		return this._tabs
+			.filter((tab, i) => {
+				return i === activeIndex && tab.children.length;
+			})
+			.map((tab, i) => {
+				assign(tab.properties, {
+					id: `${ this._id }-tab-${i}`,
+					labelledBy: `${ this._id }-tabbutton-${i}`
+				});
+				return tab;
+			});
 	}
 
 	protected selectFirstIndex() {
@@ -195,7 +197,7 @@ export default class TabController extends TabControllerBase<TabControllerProper
 	render(): DNode {
 		const { activeIndex } = this.properties;
 		const validIndex = this._validateIndex(activeIndex);
-		const tabs = this._renderTabs();
+		const tabs = this.renderTabs();
 
 		if (validIndex !== null && validIndex !== activeIndex) {
 			this.selectIndex(validIndex);
@@ -206,11 +208,11 @@ export default class TabController extends TabControllerBase<TabControllerProper
 			v('div', {
 				key: 'buttons',
 				classes: this.classes(css.tabButtons)
-			}, this._renderTabButtons()),
+			}, this.renderTabButtons()),
 			tabs.length ? v('div', {
 				key: 'tabs',
 				classes: this.classes(css.tabs)
-			}, this._renderTabs()) : null
+			}, tabs) : null
 		];
 
 		let alignClass;

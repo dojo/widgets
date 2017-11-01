@@ -91,6 +91,69 @@ export default class Slider extends SliderBase<SliderProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
+	protected getModifierClasses(): (string | null)[] {
+		const {
+			disabled,
+			invalid,
+			readOnly,
+			required,
+			vertical = false
+		} = this.properties;
+
+		return [
+			disabled ? css.disabled : null,
+			invalid ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null,
+			vertical ? css.vertical : null
+		];
+	}
+
+	protected renderControls(percentValue: number): DNode {
+		const {
+			vertical = false,
+			verticalHeight = '200px'
+		} = this.properties;
+
+		return v('div', {
+			classes: this.classes(css.track).fixed(css.trackFixed),
+			'aria-hidden': 'true',
+			styles: vertical ? { width: verticalHeight } : {}
+		}, [
+			v('span', {
+				classes: this.classes(css.fill).fixed(css.fillFixed),
+				styles: { width: `${percentValue}%` }
+			}),
+			v('span', {
+				classes: this.classes(css.thumb).fixed(css.thumbFixed),
+				styles: { left: `${percentValue}%` }
+			})
+		]);
+	}
+
+	protected renderOutput(value: number, percentValue: number): DNode {
+		const {
+			output,
+			outputIsTooltip = false,
+			vertical = false
+		} = this.properties;
+
+		const outputNode = output ? output(value) : `${value}`;
+
+		// output styles
+		let outputStyles: { left?: string; top?: string } = {};
+		if (outputIsTooltip) {
+			outputStyles = vertical ? { top: `${100 - percentValue}%` } : { left: `${percentValue}%` };
+		}
+
+		return v('output', {
+			classes: this.classes(css.output, outputIsTooltip ? css.outputTooltip : null),
+			for: `${this._inputId}`,
+			styles: outputStyles
+		}, [ outputNode ]);
+	}
+
 	render(): DNode {
 		const {
 			describedBy,
@@ -100,8 +163,6 @@ export default class Slider extends SliderBase<SliderProperties> {
 			max = 100,
 			min = 0,
 			name,
-			output,
-			outputIsTooltip = false,
 			readOnly,
 			required,
 			step = 1,
@@ -115,25 +176,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		value = value > max ? max : value;
 		value = value < min ? min : value;
 
-		const stateClasses = [
-			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
-			invalid === false ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null,
-			vertical ? css.vertical : null
-		];
-
 		const percentValue = (value - min) / (max - min) * 100;
-
-		// custom output node
-		const outputNode = output ? output(value) : `${value}`;
-
-		// output styles
-		let outputStyles: { left?: string; top?: string } = {};
-		if (outputIsTooltip) {
-			outputStyles = vertical ? { top: `${100 - percentValue}%` } : { left: `${percentValue}%` };
-		}
 
 		const slider = v('div', {
 			classes: this.classes(css.inputWrapper).fixed(css.inputWrapperFixed),
@@ -169,39 +212,22 @@ export default class Slider extends SliderBase<SliderProperties> {
 				ontouchend: this._onTouchEnd,
 				ontouchcancel: this._onTouchCancel
 			}),
-			v('div', {
-				classes: this.classes(css.track).fixed(css.trackFixed),
-				'aria-hidden': 'true',
-				styles: vertical ? { width: verticalHeight } : {}
-			}, [
-				v('span', {
-					classes: this.classes(css.fill).fixed(css.fillFixed),
-					styles: { width: `${percentValue}%` }
-				}),
-				v('span', {
-					classes: this.classes(css.thumb).fixed(css.thumbFixed),
-					styles: { left: `${percentValue}%` }
-				})
-			]),
-			v('output', {
-				classes: this.classes(css.output, outputIsTooltip ? css.outputTooltip : null),
-				for: `${this._inputId}`,
-				styles: outputStyles
-			}, [ outputNode ])
+			this.renderControls(percentValue),
+			this.renderOutput(value, percentValue)
 		]);
 
 		let sliderWidget;
 
 		if (label) {
 			sliderWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...stateClasses).fixed(css.rootFixed)()) },
+				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses()).fixed(css.rootFixed)()) },
 				label,
 				theme: this.properties.theme
 			}, [ slider ]);
 		}
 		else {
 			sliderWidget = v('div', {
-				classes: this.classes(css.root, ...stateClasses).fixed(css.rootFixed)
+				classes: this.classes(css.root, ...this.getModifierClasses()).fixed(css.rootFixed)
 			}, [ slider ]);
 		}
 

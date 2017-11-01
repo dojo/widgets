@@ -172,51 +172,96 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 		}
 	}
 
-	render(): DNode {
+	protected getContent(): DNode {
+		return v('div', { classes: this.classes(css.content) }, this.children);
+	}
+
+	protected getStyles(): { [key: string]: string | null } {
 		const {
 			align = Align.left,
-			closeText = 'close pane',
-			onOpen,
 			open = false,
-			title = '',
-			underlay = false,
 			width = DEFAULT_WIDTH
 		} = this.properties;
 
+		let translate = '';
+		const translateAxis = this.plane === Plane.x ? 'X' : 'Y';
+
+		// If pane is closing because of swipe
+		if (!open && this._wasOpen && this._transform) {
+			translate = align === Align.left || align === Align.top ? `-${this._transform}` : `${this._transform}`;
+		}
+
+		return {
+			transform: translate ? `translate${translateAxis}(${translate}%)` : '',
+			width: this.plane === Plane.x ? `${ width }px` : null,
+			height: this.plane === Plane.y ? `${ width }px` : null
+		};
+	}
+
+	protected getFixedModifierClasses(): (string | null)[] {
+		const {
+			align = Align.left,
+			open = false
+		} = this.properties;
 		const alignCss: {[key: string]: any} = css;
 
-		const contentClasses = [
-			css.pane,
-			alignCss[align],
-			open ? css.open : null,
-			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
-			!open && this._wasOpen ? css.slideOut : null
-		];
-
-		const fixedContentClasses = [
-			css.paneFixed,
+		return [
 			open ? css.openFixed : null,
 			alignCss[`${align}Fixed`],
 			this._slideIn || (open && !this._wasOpen) ? css.slideInFixed : null,
 			!open && this._wasOpen ? css.slideOutFixed : null
 		];
+	}
 
-		const contentStyles: {[key: string]: any} = {
-			transform: '',
-			width: this.plane === Plane.x ? `${ width }px` : null,
-			height: this.plane === Plane.y ? `${ width }px` : null
-		};
+	protected getModifierClasses(): (string | null)[] {
+		const {
+			align = Align.left,
+			open = false
+		} = this.properties;
+		const alignCss: {[key: string]: any} = css;
 
-		if (!open && this._wasOpen && this._transform) {
-			// If pane is closing because of swipe
-			if (this.plane === Plane.x) {
-				contentStyles['transform'] = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
-			}
-			else {
-				contentStyles['transform'] = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
-			}
-		}
-		else if (this._slideIn && this._content) {
+		return [
+			alignCss[align],
+			open ? css.open : null,
+			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
+			!open && this._wasOpen ? css.slideOut : null
+		];
+	}
+
+	protected renderCloseIcon(): DNode {
+		return v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+			role: 'presentation', 'aria-hidden': 'true'
+		});
+	}
+
+	protected renderTitle(): DNode {
+		const { title = '' } = this.properties;
+		return v('div', { id: this._titleId }, [ title ]);
+	}
+
+	protected renderUnderlay(): DNode {
+		const { underlay = false } = this.properties;
+		return v('div', {
+			classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
+			enterAnimation: animations.fadeIn,
+			exitAnimation: animations.fadeOut,
+			key: 'underlay'
+		});
+	}
+
+	render(): DNode {
+		const {
+			closeText = 'close pane',
+			onOpen,
+			open = false,
+			title = ''
+		} = this.properties;
+
+		const contentStyles = this.getStyles();
+		const contentClasses = this.getModifierClasses();
+		const fixedContentClasses = this.getFixedModifierClasses();
+
+		if (this._slideIn && this._content) {
 			this._content.style.transform = '';
 		}
 
@@ -234,33 +279,26 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			ontouchmove: this._onSwipeMove,
 			ontouchstart: this._onSwipeStart
 		}, [
-			open ? v('div', {
-				classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
-				enterAnimation: animations.fadeIn,
-				exitAnimation: animations.fadeOut,
-				key: 'underlay'
-			}) : null,
+			open ? this.renderUnderlay() : null,
 			v('div', {
 				key: 'content',
-				classes: this.classes(...contentClasses).fixed(...fixedContentClasses),
+				classes: this.classes(css.pane, ...contentClasses).fixed(css.paneFixed, ...fixedContentClasses),
 				styles: contentStyles
 			}, [
 				title ? v('div', {
 					classes: this.classes(css.title),
 					key: 'title'
 				}, [
-					v('div', { id: this._titleId }, [ title ]),
+					this.renderTitle(),
 					v('button', {
 						classes: this.classes(css.close),
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
-							role: 'presentation', 'aria-hidden': 'true'
-						})
+						this.renderCloseIcon()
 					])
 				]) : null,
-				v('div', { classes: this.classes(css.content) }, this.children)
+				this.getContent()
 			])
 		]);
 	}

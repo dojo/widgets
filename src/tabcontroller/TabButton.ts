@@ -130,6 +130,28 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		}
 	}
 
+	protected getContent(): DNode[] {
+		const { active, closeable } = this.properties;
+
+		return [
+			...this.children,
+			closeable ? v('button', {
+				tabIndex: active ? 0 : -1,
+				classes: this.classes(css.close),
+				innerHTML: 'close tab',
+				onclick: this._onCloseClick
+			}) : null
+		];
+	}
+
+	protected getModifierClasses(): (string | null)[] {
+		const { active, disabled } = this.properties;
+		return [
+			active ? css.activeTabButton : null,
+			disabled ? css.disabledTabButton : null
+		];
+	}
+
 	protected onElementCreated(element: HTMLElement, key: string) {
 		key === 'tab-button' && this._callFocus(element);
 	}
@@ -141,36 +163,22 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 	render(): DNode {
 		const {
 			active,
-			closeable,
 			controls,
 			disabled,
 			id
 		} = this.properties;
 
-		const children = closeable ? this.children.concat([
-			v('button', {
-				tabIndex: active ? 0 : -1,
-				classes: this.classes(css.close),
-				innerHTML: 'close tab',
-				onclick: this._onCloseClick
-			})
-		]) : this.children;
-
 		return v('div', {
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
 			'aria-selected': active ? 'true' : 'false',
-			classes: this.classes(
-				css.tabButton,
-				active ? css.activeTabButton : null,
-				disabled ? css.disabledTabButton : null
-			),
+			classes: this.classes(css.tabButton, ...this.getModifierClasses()),
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown,
 			role: 'tab',
 			tabIndex: active ? 0 : -1
-		}, children);
+		}, this.getContent());
 	}
 }
