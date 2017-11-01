@@ -3,6 +3,7 @@
 	--grid-base: 8px;
 	--spacing-regular: var(--grid-base);
 	--spacing-large: calc(var(--grid-base) * 2);
+	--touch-target-min: 48px;
 
 	/* Fonts */
 	--font-size-base: 16px;

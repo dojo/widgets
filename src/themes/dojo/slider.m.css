@@ -39,20 +39,21 @@
 }
 
 .input {
-	height: var(--border-width);
+	height: 15px;
 	outline: none;
+	top: -7px;
 }
 .input::-ms-thumb {
-	height: calc(var(--grid-base) * 2);
-	width: calc(var(--grid-base) * 2);
+	height: var(--touch-target-min);
+	width: var(--touch-target-min);
 }
 .input::-moz-range-thumb {
-	height: calc(var(--grid-base) * 2);
-	width: calc(var(--grid-base) * 2);
+	height: var(--touch-target-min);
+	width: var(--touch-target-min);
 }
 .input::-webkit-slider-thumb {
-	height: calc(var(--grid-base) * 2);
-	width: calc(var(--grid-base) * 2);
+	height: var(--touch-target-min);
+	width: var(--touch-target-min);
 }
 
 /* focused styles */
