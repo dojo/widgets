@@ -1,7 +1,7 @@
 import { auto, reference } from '@dojo/widget-core/diff';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import Dimensions from '@dojo/widget-core/meta/Dimensions';
-import { DNode, WidgetMetaConstructor } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import MetaBase from '@dojo/widget-core/meta/Base';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
@@ -10,56 +10,15 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/listbox.m.css';
+import ListboxOption from './ListboxOption';
 
 /* Default scroll meta */
-class DefaultScroll extends MetaBase {
+export class ScrollMeta extends MetaBase {
 	public scroll(key: string | number, amount: number): void {
 		const node = this.getNode(key);
 		if (node) {
 			node.scrollTop = amount;
 		}
-	}
-}
-
-/* Listbox Option sub-widget */
-export interface ListboxOptionProperties extends ThemeableProperties {
-	active?: boolean;
-	classes?: (string | null)[];
-	disabled?: boolean;
-	id: string;
-	index: number;
-	label: DNode;
-	option: any;
-	selected?: boolean;
-	onClick?(option: any, index: number, key?: string | number): void;
-}
-
-const ListboxOptionBase = ThemeableMixin(WidgetBase);
-
-@theme(css)
-export class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {
-	private _onClick(event: MouseEvent) {
-		const { index, key, option, onClick } = this.properties;
-		onClick && onClick(option, index, key);
-	}
-
-	protected render() {
-		const {
-			classes = [],
-			disabled = false,
-			id,
-			label,
-			selected = false
-		} = this.properties;
-
-		return v('div', {
-			'aria-disabled': disabled ? 'true' : null,
-			'aria-selected': disabled ? null : String(selected),
-			classes: this.classes(...classes),
-			id,
-			role: 'option',
-			onclick: this._onClick
-		}, [ label ]);
 	}
 }
 
@@ -93,7 +52,6 @@ export interface ListboxProperties extends ThemeableProperties {
 	id?: string;
 	multiselect?: boolean;
 	optionData?: any[];
-	ScrollMeta?: WidgetMetaConstructor<DefaultScroll>;
 	tabIndex?: number;
 	visualFocus?: boolean;
 	onActiveIndexChange?(index: number, key?: string | number): void;
@@ -170,7 +128,6 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 	}
 
 	protected animateScroll(scrollValue: number) {
-		const { ScrollMeta = DefaultScroll } = this.properties;
 		this.meta(ScrollMeta).scroll('root', scrollValue);
 	}
 

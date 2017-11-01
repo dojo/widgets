@@ -1,18 +1,20 @@
-const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
+const { registerSuite } = intern.getInterface('object');
 import * as sinon from 'sinon';
 
-import harness, { Harness } from '@dojo/test-extras/harness';
 import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { v, w } from '@dojo/widget-core/d';
+import harness, { Harness } from '@dojo/test-extras/harness';
 import { Keys } from '../../../common/util';
+import { ProjectorMixin } from '@dojo/widget-core/main';
+import { v, w } from '@dojo/widget-core/d';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import Listbox, { ListboxProperties, ListboxOption, ListboxOptionProperties } from '../../Listbox';
+import Listbox, { ListboxProperties, ScrollMeta } from '../../Listbox';
+import ListboxOption from '../../ListboxOption';
 import * as css from '../../styles/listbox.m.css';
 
 let widget: Harness<ListboxProperties, typeof Listbox>;
-let optionWidget: Harness<ListboxOptionProperties, typeof ListboxOption>;
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -270,7 +272,8 @@ registerSuite('Listbox', {
 
 		'scroll to active option below the viewport'() {
 			const scrollStub = sinon.stub();
-			class StubDimensions {
+			class StubMeta {
+				// dimensions .get()
 				public get(key: any) {
 					if (key === 'root') {
 						return {
@@ -287,20 +290,22 @@ registerSuite('Listbox', {
 						};
 					}
 				}
+
+				// scroll meta
+				public scroll(key: string | number, scrollValue: number) {
+					scrollStub(key, scrollValue);
+				}
 			};
 			class ScrollListbox extends Listbox {
-				animateScroll(scrollValue: number) {
-					scrollStub(scrollValue);
-				};
 				meta(MetaType: any): any {
-					return new StubDimensions();
+					return new StubMeta();
 				}
 			}
 			widget = harness(ScrollListbox);
 			widget.setProperties({ activeIndex: 3 });
 			widget.getRender();
 
-			assert.isTrue(scrollStub.calledWith(150));
+			assert.isTrue(scrollStub.calledWith('root', 150));
 		},
 
 		'scroll to active option above the viewport'() {
@@ -322,11 +327,13 @@ registerSuite('Listbox', {
 						};
 					}
 				}
+
+				// scroll meta
+				public scroll(key: string | number, scrollValue: number) {
+					scrollStub(key, scrollValue);
+				}
 			};
 			class ScrollListbox extends Listbox {
-				animateScroll(scrollValue: number) {
-					scrollStub(scrollValue);
-				};
 				meta(MetaType: any): any {
 					return new StubDimensions();
 				}
@@ -340,73 +347,45 @@ registerSuite('Listbox', {
 			widget.setProperties({});
 			widget.getRender();
 
-			assert.isTrue(scrollStub.calledWith(100));
-		}
-	}
-});
-
-registerSuite('ListboxOption', {
-	beforeEach() {
-		optionWidget = harness(ListboxOption);
-	},
-
-	afterEach() {
-		optionWidget.destroy();
-	},
-
-	tests: {
-		'default render'() {
-			optionWidget.setProperties({
-				label: 'foo',
-				id: 'bar',
-				index: 0,
-				option: 'baz'
-			});
-
-			optionWidget.expectRender(v('div', {
-				'aria-disabled': null,
-				'aria-selected': 'false',
-				classes: optionWidget.classes(),
-				id: 'bar',
-				role: 'option',
-				onclick: optionWidget.listener
-			}, [ 'foo' ]));
+			assert.isTrue(scrollStub.calledWith('root', 100));
 		},
 
-		'custom properties'() {
-			optionWidget.setProperties({
-				active: true,
-				classes: [ css.option ],
-				disabled: true,
-				label: 'foo',
-				id: 'bar',
-				index: 1,
-				option: 'baz',
-				selected: true
-			});
+		'scroll meta'() {
+			let scrollPosition = 0;
+			let rAF = sinon.stub(global, 'requestAnimationFrame');
 
-			optionWidget.expectRender(v('div', {
-				'aria-disabled': 'true',
-				'aria-selected': null,
-				classes: optionWidget.classes(css.option),
-				id: 'bar',
-				role: 'option',
-				onclick: optionWidget.listener
-			}, [ 'foo' ]));
-		},
+			function resolveRAF() {
+				for (let i = 0; i < rAF.callCount; i++) {
+					rAF.getCall(i).args[0]();
+				}
+				rAF.reset();
+			}
 
-		'option click'() {
-			const onClick = sinon.stub();
-			optionWidget.setProperties({
-				label: 'foo',
-				id: 'bar',
-				index: 1,
-				option: 'baz',
-				onClick
-			});
+			class TestWidget extends ProjectorMixin(WidgetBase) {
+				render() {
+					this.meta(ScrollMeta).scroll('root', 100);
+					return v('div', {
+						key: 'root',
+						classes: { 'root': true },
+						styles: { height: '200px', 'overflow-y': 'scroll' }
+					}, [
+						v('div', {
+							styles: { height: '400px' }
+						})
+					]);
+				}
+			}
 
-			optionWidget.sendEvent('click');
-			assert.isTrue(onClick.calledWith('baz', 1));
+			const div = document.createElement('div');
+			document.body.appendChild(div);
+
+			const widget = new TestWidget();
+			widget.append(div);
+
+			resolveRAF();
+
+			const widgetDiv = document.querySelector('.root');
+			assert.strictEqual(widgetDiv!.scrollTop, 100);
 		}
 	}
 });
