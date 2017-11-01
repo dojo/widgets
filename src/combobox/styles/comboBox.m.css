@@ -34,8 +34,6 @@
 .dropdown {
 	position: absolute;
 	width: 100%;
-	max-height: 400px;
-	overflow-y: auto;
 	z-index: 1;
 	border: 1px solid var(--component-color);
 	background: var(--component-background);

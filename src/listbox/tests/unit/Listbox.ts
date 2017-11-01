@@ -351,7 +351,6 @@ registerSuite('Listbox', {
 		},
 
 		'scroll meta'() {
-			let scrollPosition = 0;
 			let rAF = sinon.stub(global, 'requestAnimationFrame');
 
 			function resolveRAF() {

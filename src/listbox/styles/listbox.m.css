@@ -3,6 +3,8 @@
 .root {
 	border: 1px solid var(--component-color);
 	background: var(--component-background);
+	max-height: 400px;
+	overflow-y: auto;
 }
 .option {
 	cursor: pointer;
