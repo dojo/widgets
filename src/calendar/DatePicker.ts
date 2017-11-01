@@ -9,6 +9,22 @@ import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
 
 /**
+ * Enum for next/previous buttons
+ */
+export const enum Paging {
+	next = 'next',
+	previous = 'previous'
+};
+
+/**
+ * Enum for month or year controls
+ */
+export const enum Controls {
+	month = 'month',
+	year = 'year'
+};
+
+/**
  * @type CalendarMessages
  *
  * Accessible text for Month Picker controls. Messages can be localized by passing a CalendarMessages object into the Calendar widget's labels property
@@ -191,16 +207,16 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
-	protected renderControlsTrigger(type: 'month' | 'year'): DNode {
+	protected renderControlsTrigger(type: Controls): DNode {
 		const {
 			month,
 			monthNames,
 			year
 		} = this.properties;
 
-		const content = type === 'month' ? monthNames[month].long : `${year}`;
-		const open = type === 'month' ? this._monthPopupOpen : this._yearPopupOpen;
-		const onclick = type === 'month' ? this._onMonthButtonClick : this._onYearButtonClick;
+		const content = type === Controls.month ? monthNames[month].long : `${year}`;
+		const open = type === Controls.month ? this._monthPopupOpen : this._yearPopupOpen;
+		const onclick = type === Controls.month ? this._onMonthButtonClick : this._onYearButtonClick;
 
 		return v('button', {
 			key: `${type}-button`,
@@ -246,10 +262,10 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		]));
 	}
 
-	protected renderPagingButtonContent(type: 'next' | 'previous') {
+	protected renderPagingButtonContent(type: Paging) {
 		const { labels } = this.properties;
-		const iconClass = type === 'next' ? iconCss.rightIcon : iconCss.leftIcon;
-		const labelText = type === 'next' ? labels.nextMonth : labels.previousMonth;
+		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
+		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
 			v('i', { classes: this.classes(iconCss.icon, iconClass),
@@ -312,10 +328,10 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 				}, [ this.renderMonthLabel(month, year) ]),
 
 				// month trigger
-				this.renderControlsTrigger('month'),
+				this.renderControlsTrigger(Controls.month),
 
 				// year trigger
-				this.renderControlsTrigger('year')
+				this.renderControlsTrigger(Controls.year)
 			]),
 
 			// month grid
@@ -359,12 +375,12 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 						classes: this.classes(css.previous),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						onclick: this._onYearPageDown
-					}, this.renderPagingButtonContent('previous')),
+					}, this.renderPagingButtonContent(Paging.previous)),
 					v('button', {
 						classes: this.classes(css.next),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						onclick: this._onYearPageUp
-					}, this.renderPagingButtonContent('next'))
+					}, this.renderPagingButtonContent(Paging.next))
 				])
 			])
 		]);

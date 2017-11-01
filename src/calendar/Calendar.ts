@@ -5,7 +5,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
 import { CalendarMessages } from './DatePicker';
-import DatePicker from './DatePicker';
+import DatePicker, { Paging } from './DatePicker';
 import CalendarCell from './CalendarCell';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
@@ -341,10 +341,10 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		});
 	}
 
-	protected renderPagingButtonContent(type: 'next' | 'previous') {
+	protected renderPagingButtonContent(type: Paging) {
 		const { labels = DEFAULT_LABELS } = this.properties;
-		const iconClass = type === 'next' ? iconCss.rightIcon : iconCss.leftIcon;
-		const labelText = type === 'next' ? labels.nextMonth : labels.previousMonth;
+		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
+		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
 			v('i', { classes: this.classes(iconCss.icon, iconClass),
@@ -400,12 +400,12 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 					classes: this.classes(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageDown
-				}, this.renderPagingButtonContent('previous')),
+				}, this.renderPagingButtonContent(Paging.previous)),
 				v('button', {
 					classes: this.classes(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageUp
-				}, this.renderPagingButtonContent('next'))
+				}, this.renderPagingButtonContent(Paging.next))
 			])
 		]);
 	}
