@@ -6,24 +6,6 @@ import Calendar from '../../calendar/Calendar';
 import Checkbox from '../../checkbox/Checkbox';
 import dojoTheme from '../../themes/dojo/theme';
 
-interface MyWidgetProperties {
-	foo?: string;
-	onClick?(foo: string): void;
-}
-
-class MyWidget<P extends MyWidgetProperties = MyWidgetProperties> extends WidgetBase<MyWidgetProperties> {
-	_onClick() {
-		const { foo = 'bar', onClick } = this.properties;
-		onClick && onClick(foo);
-	}
-	render() {
-		return v('a', {
-			href: '#',
-			onclick: this._onClick
-		}, [ 'Foo Link' ]);
-	}
-}
-
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _month: number;
@@ -38,7 +20,6 @@ export class App extends WidgetBase<WidgetProperties> {
 
 	render() {
 		return v('div', {}, [
-			w(MyWidget, {}),
 			w(Checkbox, {
 				label: 'Use Dojo Theme',
 				onChange: this.themeChange

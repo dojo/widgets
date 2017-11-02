@@ -34,7 +34,7 @@ export interface CalendarCellProperties extends ThemedProperties {
 export const CalendarCellBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class CalendarCell<P extends CalendarCellProperties = CalendarCellProperties> extends CalendarCellBase<P> {
+export default class CalendarCell<P extends CalendarCellProperties = CalendarCellProperties> extends CalendarCellBase<P, null> {
 	protected onElementCreated(element: HTMLElement, key: string) {
 		this._callFocus(element);
 	}
