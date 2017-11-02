@@ -5,6 +5,7 @@
 	background: var(--component-background);
 	max-height: 400px;
 	overflow-y: auto;
+	position: relative;
 }
 .option {
 	cursor: pointer;

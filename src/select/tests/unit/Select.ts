@@ -42,8 +42,6 @@ const testOptions: any[] = [
 
 const testProperties: Partial<SelectProperties> = {
 	describedBy: 'foo',
-	disabled: true,
-	invalid: true,
 	getOptionDisabled: (option: any, index: number) => !!option.disabled,
 	getOptionId: (option: any, index: number) => option.value,
 	getOptionLabel: (option: any) => option.label,
@@ -51,9 +49,15 @@ const testProperties: Partial<SelectProperties> = {
 	getOptionValue: (option: any, index: number) => option.value,
 	name: 'foo',
 	options: testOptions,
-	readOnly: true,
-	required: true,
 	value: 'two'
+};
+
+const testStateProperties: Partial<SelectProperties> = {
+	...testProperties,
+	disabled: true,
+	invalid: true,
+	readOnly: true,
+	required: true
 };
 
 const expectedNative = function(widget: any, useTestProperties = false) {
@@ -108,12 +112,12 @@ const expectedSingle = function(widget: any, useTestProperties = false, open = f
 			'aria-controls': <any> compareId,
 			'aria-expanded': open ? 'true' : 'false',
 			'aria-haspopup': 'listbox',
-			'aria-invalid': useTestProperties ? 'true' : null,
-			'aria-readonly': useTestProperties ? 'true' : null,
-			'aria-required': useTestProperties ? 'true' : null,
+			'aria-invalid': null,
+			'aria-readonly': null,
+			'aria-required': null,
 			classes: widget.classes(css.trigger),
 			describedBy: useTestProperties ? 'foo' : undefined,
-			disabled: useTestProperties ? true : undefined,
+			disabled: undefined,
 			key: 'trigger',
 			value: useTestProperties ? 'two' : undefined,
 			onblur: widget.listener,
@@ -199,7 +203,7 @@ registerSuite('Select', {
 
 			'custom properties'() {
 				widget.setProperties({
-					...testProperties,
+					...testStateProperties,
 					useNativeElement: true
 				});
 
@@ -271,9 +275,15 @@ registerSuite('Select', {
 			},
 
 			'custom properties'() {
-				widget.setProperties(testProperties);
+				widget.setProperties(testStateProperties);
 
 				const selectVdom = expectedSingle(widget, true);
+				assignChildProperties(selectVdom, '0', {
+					'aria-invalid': 'true',
+					'aria-readonly': 'true',
+					'aria-required': 'true',
+					disabled: true
+				});
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
 					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
@@ -282,28 +292,17 @@ registerSuite('Select', {
 			},
 
 			'open/close on trigger click'() {
-				widget.setProperties({
-					...testProperties
-				});
+				widget.setProperties(testProperties);
 				let selectVdom = expected(widget, expectedSingle(widget, true));
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
-				});
 				widget.expectRender(selectVdom, 'Dropdown is closed before click');
 
 				widget.sendEvent('click', { selector: 'button' });
 
 				selectVdom = expected(widget, expectedSingle(widget, true, true));
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
-				});
 				widget.expectRender(selectVdom, 'Open on first click');
 
 				widget.sendEvent('click', { selector: 'button' });
 				selectVdom = expected(widget, expectedSingle(widget, true));
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
-				});
 				widget.expectRender(selectVdom, 'Close on second click');
 			},
 
@@ -332,22 +331,11 @@ registerSuite('Select', {
 			},
 
 			'change active option'() {
-				widget.setProperties({
-					...testProperties
-				});
+				widget.setProperties(testProperties);
 				let selectVdom = expected(widget, expectedSingle(widget, true));
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
-				});
 				widget.callListener('onActiveIndexChange', { args: [ 1 ], index: '0,2,0' });
 
 				selectVdom = expected(widget, expectedSingle(widget, true));
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
-				});
-				assignProperties(selectVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
-				});
 				assignChildProperties(selectVdom, '0,2,0', { activeIndex: 1 });
 
 				widget.expectRender(selectVdom);
@@ -447,24 +435,35 @@ registerSuite('Select', {
 
 			'state classes and form id'() {
 				widget.setProperties({
-					...testProperties,
+					...testStateProperties,
 					label: 'foo'
 				});
 				const expectedVdom = expected(widget, expectedSingle(widget, true), true);
 				assignProperties(expectedVdom, {
 					extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
 				});
+				assignChildProperties(expectedVdom, '0,0', {
+					'aria-invalid': 'true',
+					'aria-readonly': 'true',
+					'aria-required': 'true',
+					disabled: true
+				});
 				widget.expectRender(expectedVdom);
 			},
 
 			'valid state class'() {
 				widget.setProperties({
-					...testProperties,
+					...testStateProperties,
 					invalid: false,
 					label: 'foo'
 				});
 				const expectedVdom = expected(widget, expectedSingle(widget, true), true);
-				assignChildProperties(expectedVdom, '0,0', { 'aria-invalid': null });
+				assignChildProperties(expectedVdom, '0,0', {
+					'aria-invalid': null,
+					'aria-readonly': 'true',
+					'aria-required': 'true',
+					disabled: true
+				});
 				assignProperties(expectedVdom, {
 					extraClasses: { root: `${css.root} ${css.disabled} ${css.valid} ${css.readonly} ${css.required}` }
 				});

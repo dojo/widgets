@@ -7,7 +7,7 @@ import dojoTheme from '../../themes/dojo/theme';
 
 interface CustomOption {
 	disabled?: boolean;
-	label: string;
+	label?: string;
 	selected?: boolean;
 	value: string;
 }
@@ -25,39 +25,56 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	_options: CustomOption[] = [
-		{
-			value: 'option1',
-			label: 'First Option'
-		},
-		{
-			value: 'option2',
-			label: 'Second Option'
-		},
-		{
-			value: 'option3',
-			label: 'Third Option'
-		},
-		{
-			value: 'option4',
-			label: 'Fourth Option',
-			disabled: true
-		},
-		{
-			value: 'option5',
-			label: 'First Option'
-		},
-		{
-			value: 'option6',
-			label: 'Second Option'
-		},
-		{
-			value: 'option7',
-			label: 'Third Option'
-		},
-		{
-			value: 'option8',
-			label: 'Fourth Option'
-		}
+		{ value: 'Maine' },
+		{ value: 'New Hampshire' },
+		{ value: 'Vermont' },
+		{ value: 'Massachusetts' },
+		{ value: 'Connecticut' },
+		{ value: 'Rhode Island' },
+		{ value: 'New York' },
+		{ value: 'New Jersey' },
+		{ value: 'Pennsylvania' },
+		{ value: 'Delaware' },
+		{ value: 'Maryland' },
+		{ value: 'Virginia' },
+		{ value: 'Florida' },
+		{ value: 'Texas' },
+		{ value: 'Kentucky' },
+		{ value: 'Tennessee' },
+		{ value: 'North Carolina' },
+		{ value: 'South Carolina' },
+		{ value: 'Georgia' },
+		{ value: 'Alabama' },
+		{ value: 'Mississippi' },
+		{ value: 'Arkansas' },
+		{ value: 'Louisiana' },
+		{ value: 'Missouri' },
+		{ value: 'Oklahoma', disabled: true },
+		{ value: 'Ohio' },
+		{ value: 'Nebraska' },
+		{ value: 'Michigan' },
+		{ value: 'Indiana' },
+		{ value: 'Wisconsin' },
+		{ value: 'Illinois' },
+		{ value: 'Minnesota' },
+		{ value: 'Iowa' },
+		{ value: 'North Dakota' },
+		{ value: 'South Dakota' },
+		{ value: 'Kansas' },
+		{ value: 'Colorado' },
+		{ value: 'New Mexico' },
+		{ value: 'Arizona' },
+		{ value: 'Nevada' },
+		{ value: 'California' },
+		{ value: 'Wyoming' },
+		{ value: 'Montana' },
+		{ value: 'Utah' },
+		{ value: 'Idaho' },
+		{ value: 'Washington' },
+		{ value: 'Oregon' },
+		{ value: 'Alaska' },
+		{ value: 'Hawaii' },
+		{ value: 'West Virginia' }
 	];
 
 	_moreOptions: CustomOption[] = [
@@ -96,7 +113,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				id: 'listbox1',
 				optionData: this._options,
 				theme: this._theme,
-				getOptionLabel: (option: CustomOption) => option.label,
+				getOptionLabel: (option: CustomOption) => option.value,
 				getOptionDisabled: (option: CustomOption) => !!option.disabled,
 				getOptionSelected: (option: CustomOption) => option.value === this._listbox1Value,
 				onActiveIndexChange: (index: number) => {
