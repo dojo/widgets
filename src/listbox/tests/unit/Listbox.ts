@@ -4,9 +4,10 @@ import * as sinon from 'sinon';
 
 import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import { DNode } from '@dojo/widget-core/interfaces';
+import global from '@dojo/shim/global';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { Keys } from '../../../common/util';
-import { ProjectorMixin } from '@dojo/widget-core/main';
+import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
