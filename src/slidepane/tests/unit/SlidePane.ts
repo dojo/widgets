@@ -62,7 +62,6 @@ registerSuite('SlidePane', {
 					classes: widget.classes(
 						css.pane,
 						css.paneFixed,
-						css.left,
 						css.leftFixed,
 						css.open,
 						css.openFixed,
@@ -105,7 +104,6 @@ registerSuite('SlidePane', {
 					classes: widget.classes(
 						css.pane,
 						css.paneFixed,
-						css.left,
 						css.leftFixed
 					),
 					styles: {
@@ -163,7 +161,6 @@ registerSuite('SlidePane', {
 					classes: widget.classes(
 						css.pane,
 						css.paneFixed,
-						css.left,
 						css.leftFixed,
 						css.open,
 						css.openFixed,
@@ -203,7 +200,6 @@ registerSuite('SlidePane', {
 					classes: widget.classes(
 						css.pane,
 						css.paneFixed,
-						css.left,
 						css.leftFixed,
 						css.slideOut,
 						css.slideOutFixed
@@ -583,7 +579,6 @@ registerSuite('SlidePane', {
 						classes: widget.classes(
 							css.pane,
 							css.paneFixed,
-							css.left,
 							css.leftFixed,
 							open ? css.open : null,
 							open ? css.openFixed : null,
@@ -648,7 +643,6 @@ registerSuite('SlidePane', {
 						classes: swipeState.classes || widget.classes(
 							css.pane,
 							css.paneFixed,
-							css.left,
 							css.leftFixed,
 							css.open,
 							css.openFixed,
@@ -700,7 +694,6 @@ registerSuite('SlidePane', {
 				classes: widget.classes(
 					css.pane,
 					css.paneFixed,
-					css.left,
 					css.leftFixed,
 					css.slideOut,
 					css.slideOutFixed
@@ -743,7 +736,6 @@ registerSuite('SlidePane', {
 						classes: swipeState.classes || widget.classes(
 							css.pane,
 							css.paneFixed,
-							css.right,
 							css.rightFixed,
 							css.open,
 							css.openFixed,
@@ -796,7 +788,6 @@ registerSuite('SlidePane', {
 				classes: widget.classes(
 					css.pane,
 					css.paneFixed,
-					css.right,
 					css.rightFixed,
 					css.slideOut,
 					css.slideOutFixed
