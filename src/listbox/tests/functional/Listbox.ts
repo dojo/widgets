@@ -14,7 +14,12 @@ function getPage(remote: Remote) {
 }
 
 registerSuite('Listbox', {
-	'clicking option selects it and focuses listbox'() {
+	'clicking option selects it'() {
+		const { mouseEnabled } = this.remote.session.capabilities;
+		if (!mouseEnabled) {
+			this.skip('Test requires mouse interactions.');
+		}
+
 		let selectedId = '';
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root} > div:nth-child(2) > div`)
@@ -34,12 +39,6 @@ registerSuite('Listbox', {
 				.getAttribute('aria-activedescendant')
 				.then((id: string) => {
 					assert.strictEqual(id, selectedId, 'listbox aria-activedescendant is equal to clicked option id');
-				})
-				.end()
-			.getActiveElement()
-				.getAttribute('class')
-				.then((className: string) => {
-					assert.include(className, css.root, 'active element is listbox root');
 				});
 	},
 
@@ -82,6 +81,7 @@ registerSuite('Listbox', {
 				})
 				.end()
 			.pressKeys(keys.ARROW_DOWN)
+			.sleep(DELAY)
 			.findByCssSelector(`.${css.root}`)
 				.getPosition()
 				.then(({ y }: { y: number; }) => {
@@ -96,19 +96,22 @@ registerSuite('Listbox', {
 	},
 
 	'keys move and select active option'() {
-		const { touchEnabled } = this.remote.session.capabilities;
-		if (touchEnabled) {
+		const { browserName, touchEnabled } = this.remote.session.capabilities;
+		if (touchEnabled || browserName === 'safari') {
+			// safari driver doesn't recognize focus on divs
 			this.skip('Arrow keys required for tests.');
 		}
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root} > div:nth-child(2) > div`)
 				.click()
+				.sleep(DELAY)
 				.end()
-			.sleep(DELAY)
-			.pressKeys(keys.ARROW_DOWN)
-			.sleep(DELAY)
-			.pressKeys(keys.ENTER)
+			.findByCssSelector(`.${css.root}`)
+				.type(keys.ARROW_DOWN)
+				.type(keys.ENTER)
+				.sleep(DELAY)
+				.end()
 			.findByCssSelector(`.${css.root} > div:nth-child(3) > div`)
 				.getAttribute('class')
 				.then((className: string) => {
@@ -127,9 +130,10 @@ registerSuite('Listbox', {
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root}`)
 				.click()
+				.sleep(DELAY)
+				.type(keys.TAB)
+				.sleep(DELAY)
 				.end()
-			.sleep(DELAY)
-			.pressKeys(keys.TAB)
 			.getActiveElement()
 				.getAttribute('id')
 				.then((id: string) => {

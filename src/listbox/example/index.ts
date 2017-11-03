@@ -123,7 +123,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				onOptionSelect: (option: any, index: number) => {
 					this._listbox1Value = option.value;
 					this._options = [ ...this._options ];
-					console.log('option select, updated options');
 					this.invalidate();
 				}
 			}),
