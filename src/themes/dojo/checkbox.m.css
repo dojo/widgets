@@ -48,6 +48,7 @@
 }
 
 .inputWrapper::after {
+	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border-strong);
 	content: '';
 }

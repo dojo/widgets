@@ -12,7 +12,7 @@
 
 /* custom input styles */
 .trigger {
-	background-color: transparent;
+	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
 	cursor: pointer;
@@ -65,7 +65,7 @@
 /* native input styles */
 .input {
 	appearance: none;
-	background-color: transparent;
+	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
 	border-radius: 0;
