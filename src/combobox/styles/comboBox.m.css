@@ -32,11 +32,11 @@
 }
 
 .dropdown {
-	position: absolute;
-	width: 100%;
-	z-index: 1;
 	border: 1px solid var(--component-color);
 	background: var(--component-background);
+	position: absolute;
+	width: 100%;
+	z-index: var(--zindex-dropdown);
 }
 
 .option {

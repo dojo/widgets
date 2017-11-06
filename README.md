@@ -45,7 +45,7 @@ import Button, { ButtonProperties } from '@dojo/widgets/button/Button';
 ```
 
 Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported.
-This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make sure that the production build of your application only includes the widgets you use and is as small as possible. 
+This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make sure that the production build of your application only includes the widgets you use and is as small as possible.
 
 ## Features
 

@@ -11,7 +11,7 @@
 	width: 450px;
 	overflow: hidden;
 	max-width: calc(100% - 30px);
-	z-index: 2;
+	z-index: calc(var(--zindex-dialog) + 1);
 }
 
 .underlay {
@@ -24,7 +24,7 @@
 
 .underlayVisible {
 	background: var(--underlay-background);
-	z-index: 1;
+	z-index: var(--zindex-dialog);
 }
 
 .title {

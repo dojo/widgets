@@ -41,7 +41,7 @@
 
 .open .dropdown {
 	display: block;
-	z-index: 1;
+	z-index: var(--zindex-dropdown);
 }
 
 /* native input styles */
