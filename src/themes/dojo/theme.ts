@@ -15,6 +15,7 @@ import * as tabController from './tabController.m.css';
 import * as textarea from './textarea.m.css';
 import * as textinput from './textinput.m.css';
 import * as titlePane from './titlePane.m.css';
+import * as tooltip from './tooltip.m.css';
 
 export default {
 	'dojo-accordionPane': accordionPane,
@@ -33,5 +34,6 @@ export default {
 	'dojo-tabController': tabController,
 	'dojo-textarea': textarea,
 	'dojo-textinput': textinput,
-	'dojo-titlePane': titlePane
+	'dojo-titlePane': titlePane,
+	'dojo-tooltip': tooltip
 };

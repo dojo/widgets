@@ -1,0 +1,39 @@
+.root { }
+.content { }
+.top { }
+.right { }
+.left { }
+.bottom { }
+
+.rootFixed {
+	position: relative;
+	display: inline-block;
+}
+
+.contentFixed {
+	position: absolute;
+}
+
+.bottomFixed .contentFixed {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+}
+
+.leftFixed .contentFixed {
+	left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%);
+}
+
+.rightFixed .contentFixed {
+	right: 0;
+    top: 50%;
+    transform: translate(100%, -50%);
+}
+
+.topFixed .contentFixed {
+	top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+}

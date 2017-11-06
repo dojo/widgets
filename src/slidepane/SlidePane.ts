@@ -203,6 +203,8 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			align = Align.left,
 			open = false
 		} = this.properties;
+		// https://github.com/Microsoft/TypeScript/issues/13042
+		// const alignCss: {[Key in Align]: string} = css;
 		const alignCss: {[key: string]: any} = css;
 
 		return [
