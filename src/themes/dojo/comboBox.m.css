@@ -38,7 +38,6 @@
 	right: 0;
 	top: var(--border-width);
 	transition: border-color var(--transition-duration) var(--transition-easing);
-	z-index: 1;
 }
 
 .trigger i {
@@ -56,16 +55,13 @@
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 	opacity: 0;
 	position: absolute;
-	transform-origin: 0 0;
-	transform: rotateX(90deg);
 	transition: all var(--transition-duration) var(--transition-easing);
 	width: 100%;
-	z-index: 10;
 }
 
 .open .dropdown {
 	opacity: 1;
-	transform: rotateX(0);
+	z-index: var(--zindex-dropdown);
 }
 
 .option {

@@ -13,12 +13,14 @@
 
 .underlayVisible {
 	background: var(--color-box-shadow-strong);
+	z-index: var(--zindex-dialog);
 }
 
 .pane {
 	background: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
+	z-index: calc(var(--zindex-dialog) + 1);
 }
 
 .content {

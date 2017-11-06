@@ -70,7 +70,7 @@
 .root:hover .outputTooltip {
 	opacity: 1;
 	pointer-events: auto;
-	z-index: 5;
+	z-index: var(--zindex-tooltip);
 }
 
 .output {

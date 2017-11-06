@@ -21,7 +21,6 @@
 	padding: var(--grid-base) var(--grid-base) var(--grid-base) calc(var(--grid-base) * 4);
 	position: relative;
 	width: 100%;
-	z-index: 1;
 }
 
 .titleButton:focus {
