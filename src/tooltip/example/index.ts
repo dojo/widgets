@@ -1,28 +1,31 @@
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { Set } from '@dojo/shim/Set';
 import { w, v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
 
+import Button from '../../button/Button';
+import TextInput from '../../textinput/TextInput';
 import Tooltip, { Orientation } from '../Tooltip';
 
 import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
+	private _showing = new Set<string>();
 	private _theme: {};
-	private _showing: boolean;
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
 		this._theme = event.target.checked ? dojoTheme : {};
 		this.invalidate();
 	}
 
-	onShow() {
-		this._showing = true;
+	onShow(key: string) {
+		this._showing.add(key);
 		this.invalidate();
 	}
 
-	onHide() {
-		this._showing = false;
+	onHide(key: string) {
+		this._showing.delete(key);
 		this.invalidate();
 	}
 
@@ -36,15 +39,38 @@ export class App extends WidgetBase<WidgetProperties> {
 					onchange: this.themeChange
 				})
 			]),
-			w(Tooltip, {
-				content: 'This is a tooltip.',
-				orientation: Orientation.left,
-				onRequestHide: this.onHide,
-				onRequestShow: this.onShow,
-				showing: this._showing,
-				theme: this._theme
-			}, [
-				'Hover me!'
+			v('div', { id: 'example-1' }, [
+				w(Tooltip, {
+					key: 'foo',
+					content: 'This is a right-oriented tooltip that opens and closes based on child click.',
+					orientation: Orientation.right,
+					showing: this._showing.has('foo'),
+					theme: this._theme
+				}, [
+					w(Button, {
+						theme: this._theme,
+						onClick: () => {
+							const exists = this._showing.has('foo');
+							exists ? this.onHide('foo') : this.onShow('foo');
+						}
+					}, [ 'Click me' ])
+				])
+			]),
+			v('div', { id: 'example-2' }, [
+				w(Tooltip, {
+					key: 'bar',
+					content: 'This is a right-oriented tooltip that opens and closes based on child focus.',
+					orientation: Orientation.right,
+					showing: this._showing.has('bar'),
+					theme: this._theme
+				}, [
+					w(TextInput, {
+						theme: this._theme,
+						placeholder: 'Focus me',
+						onFocus: () => { this.onShow('bar'); },
+						onBlur: () => { this.onHide('bar'); }
+					})
+				])
 			])
 		]);
 	}
