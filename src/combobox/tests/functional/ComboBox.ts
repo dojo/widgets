@@ -3,6 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
+import * as listboxCss from '../../../listbox/styles/listbox.m.css';
 import * as css from '../../styles/comboBox.m.css';
 
 const DELAY = 300;
@@ -67,7 +68,7 @@ registerSuite('ComboBox', {
 					menuBottom = menuTop + height;
 				})
 				.end()
-			.findByCssSelector(`.${css.selected}`)
+			.findByCssSelector(`.${listboxCss.activeOption}`)
 				.getSize()
 				.then(({ height }: { height: number }) => {
 					itemHeight = height;
@@ -107,15 +108,9 @@ registerSuite('ComboBox', {
 				})
 				.type(keys.TAB)
 			.getActiveElement()
-				.getProperty('textContent')
-				.then((text: string) => {
-					assert.strictEqual(text, 'open combo box', 'The "open" button should receive focus.');
-				})
-				.type(keys.TAB)
-			.getActiveElement()
 				.getTagName()
 				.then((tag: string) => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The results menu should not receive focus.');
+					assert.strictEqual(tag.toLowerCase(), 'input', 'The results menu and "open" button should not receive focus.');
 				});
 	},
 

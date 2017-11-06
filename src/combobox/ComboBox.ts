@@ -1,14 +1,14 @@
-import uuid from '@dojo/core/uuid';
-import { v, w } from '@dojo/widget-core/d';
-import { Constructor, DNode, WNode } from '@dojo/widget-core/interfaces';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
+import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { Keys } from '../common/util';
+import { reference } from '@dojo/widget-core/diff';
 import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { reference } from '@dojo/widget-core/diff';
-import ResultItem from './ResultItem';
-import ResultMenu from './ResultMenu';
-import { Keys } from '../common/util';
+import uuid from '@dojo/core/uuid';
+import { v, w } from '@dojo/widget-core/d';
+
 import Label, { LabelOptions } from '../label/Label';
+import Listbox from '../listbox/Listbox';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
 
 import * as css from './styles/comboBox.m.css';
@@ -19,12 +19,10 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a ComboBox component
  *
- * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the input should be able to be cleared
- * @property CustomResultItem   Can be used to render a custom result
- * @property CustomResultMenu   Can be used to render a custom result menu
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
+ * @property id                 Optional id string for the combobox
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
  * @property isResultDisabled   Used to determine if an item should be disabled
@@ -41,21 +39,19 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property value              Value to set on the input
  */
 export interface ComboBoxProperties extends ThemeableProperties {
-	autoBlur?: boolean;
 	clearable?: boolean;
-	CustomResultItem?: Constructor<ResultItem>;
-	CustomResultMenu?: Constructor<ResultMenu>;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
+	id?: string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	label?: string | LabelOptions;
-	onBlur?(value: string): void;
-	onChange?(value: string): void;
-	onFocus?(value: string): void;
-	onMenuChange?(open: boolean): void;
-	onRequestResults?(value: string): void;
+	onBlur?(value: string, key?: string | number): void;
+	onChange?(value: string, key?: string | number): void;
+	onFocus?(value: string, key?: string | number): void;
+	onMenuChange?(open: boolean, key?: string | number): void;
+	onRequestResults?(key?: string | number): void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -75,12 +71,11 @@ export const ComboBoxBase = ThemeableMixin(WidgetBase);
 @theme(iconCss)
 @diffProperty('results', reference)
 export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
-	private _activeIndex: number | undefined;
-	private _focused: boolean;
+	private _activeIndex = 0;
+	private _callInputFocus = false;
 	private _ignoreBlur: boolean;
-	private _ignoreFocus: boolean;
-	private _inputElement: HTMLInputElement;
-	private _menuId = uuid();
+	private _idBase = uuid();
+	private _menuHasVisualFocus = false;
 	private _open: boolean;
 	private _wasOpen: boolean;
 
@@ -89,19 +84,18 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this.invalidate();
 	}
 
+	private _getMenuId() {
+		return `${this._idBase}-menu`;
+	}
+
 	private _getResultLabel(result: any) {
 		const { getResultLabel } = this.properties;
 
-		return getResultLabel ? getResultLabel(result) : result;
+		return getResultLabel ? getResultLabel(result) : `${result}`;
 	}
 
-	private _isIndexDisabled(index: number) {
-		const {
-			isResultDisabled,
-			results = []
-		} = this.properties;
-
-		return isResultDisabled && isResultDisabled(results[index]);
+	private _getResultId(result: any, index: number) {
+		return `${this._idBase}-result${index}`;
 	}
 
 	private _onArrowClick() {
@@ -110,52 +104,58 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			readOnly
 		} = this.properties;
 
-		!disabled && !readOnly && this._openMenu();
+		if (!disabled && !readOnly) {
+			this._callInputFocus = true;
+			this._openMenu();
+		}
 	}
 
 	private _onClearClick() {
-		const { onChange } = this.properties;
+		const { key, onChange } = this.properties;
 
-		this._focused = true;
+		this._callInputFocus = true;
 		this.invalidate();
-		onChange && onChange('');
+		onChange && onChange('', key);
 	}
 
 	private _onInput(event: Event) {
-		const { onChange } = this.properties;
+		const { key, onChange } = this.properties;
 
-		this._activeIndex = undefined;
-		onChange && onChange((<HTMLInputElement> event.target).value);
+		onChange && onChange((<HTMLInputElement> event.target).value, key);
 		this._openMenu();
 	}
 
 	private _onInputBlur(event: FocusEvent) {
-		const { onBlur } = this.properties;
+		const { key, onBlur } = this.properties;
 
 		if (this._ignoreBlur) {
+			this._ignoreBlur = false;
 			return;
 		}
 
-		this._focused = false;
-		onBlur && onBlur((<HTMLInputElement> event.target).value);
+		onBlur && onBlur((<HTMLInputElement> event.target).value, key);
 		this._closeMenu();
 	}
 
 	private _onInputFocus(event: FocusEvent) {
 		const {
+			key,
 			onFocus,
 			openOnFocus
 		} = this.properties;
 
-		this._focused = true;
-		onFocus && onFocus((<HTMLInputElement> event.target).value);
-		openOnFocus && !this._ignoreFocus && this._openMenu();
-		this._ignoreBlur = false;
-		this._ignoreFocus = false;
+		onFocus && onFocus((<HTMLInputElement> event.target).value, key);
+		openOnFocus && this._openMenu();
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
-		const { results = [] } = this.properties;
+		const {
+			disabled,
+			isResultDisabled = () => false,
+			readOnly,
+			results = []
+		} = this.properties;
+		this._menuHasVisualFocus = true;
 
 		switch (event.which) {
 			case Keys.Up:
@@ -164,28 +164,50 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 				break;
 			case Keys.Down:
 				event.preventDefault();
-				this._open ? this._moveActiveIndex(Operation.increase) : this._openMenu();
+				if (!this._open && !disabled && !readOnly) {
+					this._openMenu();
+				}
+				else if (this._open) {
+					this._moveActiveIndex(Operation.increase);
+				}
 				break;
 			case Keys.Escape:
 				this._open && this._closeMenu();
 				break;
 			case Keys.Enter:
+			case Keys.Space:
 				if (this._open && results.length > 0) {
-					this._activeIndex === undefined ? this._closeMenu() : this._selectIndex(this._activeIndex);
+					if (isResultDisabled(results[this._activeIndex])) {
+						return;
+					}
+					this._selectIndex(this._activeIndex);
 				}
+				break;
+			case Keys.Home:
+				this._activeIndex = 0;
+				this.invalidate();
+				break;
+			case Keys.End:
+				this._activeIndex = results.length - 1;
+				this.invalidate();
 				break;
 		}
 	}
 
 	private _onMenuChange() {
-		const { onMenuChange } = this.properties;
+		const { key, onMenuChange } = this.properties;
 
 		if (!onMenuChange) {
 			return;
 		}
 
-		this._open && !this._wasOpen && onMenuChange(true);
-		!this._open && this._wasOpen && onMenuChange(false);
+		this._open && !this._wasOpen && onMenuChange(true, key);
+		!this._open && this._wasOpen && onMenuChange(false, key);
+	}
+
+	private _onResultHover(): void {
+		this._menuHasVisualFocus = false;
+		this.invalidate();
 	}
 
 	private _onResultMouseDown() {
@@ -193,58 +215,28 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._ignoreBlur = true;
 	}
 
-	private _onResultMouseEnter(event: MouseEvent, index: number) {
-		if (this._isIndexDisabled(index)) {
-			return;
-		}
-
-		this._activeIndex = index;
-		this.invalidate();
-	}
-
-	private _onResultMouseUp(event: MouseEvent, index: number) {
-		if (!this._isIndexDisabled(index)) {
-			this._ignoreFocus = true;
-			this._selectIndex(index);
-		}
-	}
-
 	private _openMenu() {
-		const { onRequestResults } = this.properties;
+		const {
+			key,
+			onRequestResults
+		} = this.properties;
 
-		this._activeIndex = undefined;
+		this._activeIndex = 0;
 		this._open = true;
-		this._focused = true;
-		onRequestResults && onRequestResults(this._inputElement.value);
-	}
-
-	private _restoreFocus() {
-		const func = this._focused ? 'focus' : 'blur';
-		this._inputElement[func]();
-	}
-
-	private _scrollIntoView(element: HTMLElement) {
-		const menu = <HTMLElement> element.parentElement;
-		// Scroll menu up so top of highlighted result aligns with top of menu container
-		if (element.offsetTop - menu.scrollTop < 0) {
-			menu.scrollTop = element.offsetTop;
-		}
-		// Scroll menu down so bottom of highlighted result aligns with bottom of menu container
-		else if ((element.offsetTop - menu.scrollTop + element.offsetHeight) > menu.clientHeight) {
-			menu.scrollTop = element.offsetTop - menu.clientHeight + element.offsetHeight;
-		}
+		onRequestResults && onRequestResults(key);
+		this.invalidate();
 	}
 
 	private _selectIndex(index: number) {
 		const {
-			autoBlur,
+			key,
 			onChange,
 			results = []
 		} = this.properties;
 
-		this._focused = !autoBlur;
+		this._callInputFocus = true;
 		this._closeMenu();
-		onChange && onChange(this._getResultLabel(results[index]));
+		onChange && onChange(this._getResultLabel(results[index]), key);
 	}
 
 	private _moveActiveIndex(operation: Operation) {
@@ -255,129 +247,162 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			this.invalidate();
 			return;
 		}
-		if (results.every((result, i) => Boolean(this._isIndexDisabled(i)))) {
-			return;
-		}
 
-		function nextIndex(i?: number) {
-			const total = results.length;
-			const base = operation === Operation.increase ? 0 : -1;
-			const current = i !== undefined ? i + operation : base;
-			return (current + total) % total;
-		}
+		const total = results.length;
+		const nextIndex = (this._activeIndex + operation + total) % total;
 
-		let index = nextIndex(this._activeIndex);
-
-		while (this._isIndexDisabled(index)) {
-			index = nextIndex(index);
-		}
-
-		this._activeIndex = index;
+		this._activeIndex = nextIndex;
 		this.invalidate();
-	}
-
-	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			this._inputElement = <HTMLInputElement> element.querySelector('input');
-			this._restoreFocus();
-		}
 	}
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
 		if (key === 'root') {
-			this._restoreFocus();
-			const selectedResult = element.querySelector('[data-selected="true"]');
-			selectedResult && this._scrollIntoView(<HTMLElement> selectedResult);
+			if (this._callInputFocus) {
+				this._callInputFocus = false;
+				const input = element.querySelector('input') as HTMLElement;
+				input && input.focus();
+			}
 		}
 	}
 
-	protected renderMenu(results: any[]): WNode | null {
-		const { theme = {}, isResultDisabled, CustomResultMenu = ResultMenu, CustomResultItem } = this.properties;
-
-		if (results.length === 0 || !this._open) {
-			return null;
-		}
-
-		return w(CustomResultMenu, {
-			getResultLabel: this._getResultLabel,
-			CustomResultItem,
-			id: this._menuId,
-			isResultDisabled,
-			onResultMouseDown: this._onResultMouseDown,
-			onResultMouseEnter: this._onResultMouseEnter,
-			onResultMouseUp: this._onResultMouseUp,
-			results,
-			selectedIndex: this._activeIndex,
-			theme
-		});
-	}
-
-	render(): DNode {
+	protected renderInput(): WNode {
 		const {
 			clearable,
 			disabled,
 			inputProperties = {},
 			invalid,
-			label,
 			readOnly,
 			required,
 			results = [],
 			value = '',
-			theme = {}
+			theme
+		} = this.properties;
+
+		return w(TextInput, <TextInputProperties> {
+			...inputProperties,
+			key: 'textinput',
+			'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
+			'aria-owns': this._getMenuId(),
+			classes: this.classes(clearable ? css.clearable : null),
+			controls: this._getMenuId(),
+			disabled,
+			invalid,
+			onBlur: this._onInputBlur,
+			onFocus: this._onInputFocus,
+			onInput: this._onInput,
+			onKeyDown: this._onInputKeyDown,
+			readOnly,
+			required,
+			theme,
+			value
+		});
+	}
+
+	protected renderClearButton() {
+		const {
+			disabled,
+			readOnly
+		} = this.properties;
+
+		return v('button', {
+			'aria-controls': this._getMenuId(),
+			classes: this.classes(css.clear),
+			disabled,
+			readOnly,
+			onclick: this._onClearClick
+		}, [
+			'clear combo box',
+			v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+				role: 'presentation', 'aria-hidden': 'true'
+			})
+		]);
+	}
+
+	protected renderMenuButton() {
+		const {
+			disabled,
+			readOnly
+		} = this.properties;
+
+		return v('button', {
+			classes: this.classes(css.trigger),
+			disabled,
+			readOnly,
+			tabIndex: -1,
+			onclick: this._onArrowClick
+		}, [
+			'open combo box',
+			v('i', {
+				'aria-hidden': 'true',
+				classes: this.classes(iconCss.icon, iconCss.downIcon),
+				role: 'presentation'
+			})
+		]);
+	}
+
+	protected renderMenu(results: any[]): DNode | null {
+		const { theme, isResultDisabled } = this.properties;
+
+		if (results.length === 0 || !this._open) {
+			return null;
+		}
+
+		return v('div', {
+			key: 'dropdown',
+			classes: this.classes(css.dropdown),
+			onmouseover: this._onResultHover,
+			onmousedown: this._onResultMouseDown
+		}, [
+			w(Listbox, {
+				activeIndex: this._activeIndex,
+				id: this._getMenuId(),
+				visualFocus: this._menuHasVisualFocus,
+				optionData: results,
+				tabIndex: -1,
+				getOptionDisabled: isResultDisabled,
+				getOptionId: this._getResultId,
+				getOptionLabel: this._getResultLabel,
+				onActiveIndexChange: (index: number) => {
+					this._activeIndex = index;
+					this.invalidate();
+				},
+				onOptionSelect: (option: any, index: number) => {
+					this._selectIndex(index);
+				},
+				theme
+			})
+		]);
+	}
+
+	render(): DNode {
+		const {
+			clearable,
+			id,
+			invalid,
+			label,
+			readOnly,
+			required,
+			results = [],
+			theme
 		} = this.properties;
 
 		const menu = this.renderMenu(results);
-		const menuId = menu ? this._menuId : '';
 		this._onMenuChange();
 		this._wasOpen = this._open;
 
-		let controls: DNode = v('div', {
+		let controls: DNode = v('div', <any> {
+			bind: this,
 			classes: this.classes(css.controls)
 		}, [
-			w(TextInput, <TextInputProperties> {
-				...inputProperties,
-				classes: this.classes(clearable ? css.clearable : null),
-				controls: menuId,
-				disabled,
-				invalid,
-				onBlur: this._onInputBlur,
-				onFocus: this._onInputFocus,
-				onInput: this._onInput,
-				onKeyDown: this._onInputKeyDown,
-				readOnly,
-				required,
-				theme,
-				value
-			}),
-			clearable ? v('button', {
-				'aria-controls': menuId,
-				classes: this.classes(css.clear),
-				disabled,
-				readOnly,
-				onclick: this._onClearClick
-			}, [
-				'clear combo box',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
-					role: 'presentation', 'aria-hidden': 'true'
-				})
-			]) : null,
-			v('button', {
-				'aria-controls': menuId,
-				classes: this.classes(css.trigger),
-				disabled,
-				readOnly,
-				onclick: this._onArrowClick
-			}, [
-				'open combo box',
-				v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
-					role: 'presentation', 'aria-hidden': 'true'
-				})
-			])
+			this.renderInput(),
+			clearable ? this.renderClearButton() : null,
+			this.renderMenuButton()
 		]);
 
 		if (label) {
 			controls = w(Label, {
-				label
+				label,
+				theme
 			}, [ controls ]);
 		}
 
@@ -386,6 +411,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			'aria-haspopup': 'true',
 			'aria-readonly': readOnly ? 'true' : 'false',
 			'aria-required': required ? 'true' : 'false',
+			id,
 			classes: this.classes(
 				css.root,
 				this._open ? css.open : null,

@@ -2,20 +2,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Select from '../Select';
-import SelectOption, { OptionData } from '../SelectOption';
+import Select, { SelectProperties } from '../Select';
 import dojoTheme from '../../themes/dojo/theme';
-
-class CustomOption extends SelectOption {
-	renderLabel() {
-		const { optionData } = this.properties;
-
-		return v('div', {
-			innerHTML: (optionData.selected ? 'x ' : '') + optionData.label,
-			styles: { fontStyle: 'italic' }
-		});
-	}
-}
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
@@ -28,31 +16,10 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
-	_selectOptions: OptionData[] = [
-		{
-			value: 'option1',
-			label: 'First Option'
-		},
-		{
-			value: 'option2',
-			label: 'Second Option'
-		},
-		{
-			value: 'option3',
-			label: 'Third Option'
-		},
-		{
-			value: 'option4',
-			label: 'Fourth Option',
-			disabled: true
-		}
-	];
-
-	_moreSelectOptions: OptionData[] = [
+	_selectOptions = [
 		{
 			value: 'cat',
-			label: 'Cat',
-			selected: true
+			label: 'Cat'
 		},
 		{
 			value: 'dog',
@@ -60,8 +27,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		},
 		{
 			value: 'hamster',
-			label: 'Hamster',
-			selected: true
+			label: 'Hamster'
 		},
 		{
 			value: 'goat',
@@ -70,11 +36,10 @@ export class App extends WidgetBase<WidgetProperties> {
 		}
 	];
 
-	_evenMoreSelectOptions: OptionData[] = [
+	_moreSelectOptions = [
 		{
 			value: 'seattle',
-			label: 'Seattle',
-			selected: true
+			label: 'Seattle'
 		},
 		{
 			value: 'los-angeles',
@@ -82,14 +47,21 @@ export class App extends WidgetBase<WidgetProperties> {
 		},
 		{
 			value: 'austin',
-			label: 'Austin',
-			selected: true
+			label: 'Austin'
 		},
 		{
 			value: 'boston',
 			label: 'Boston'
 		}
 	];
+
+	getOptionSettings(): Partial<SelectProperties> {
+		return {
+			getOptionDisabled: (option) => option.disabled,
+			getOptionLabel: (option) => option.label,
+			getOptionValue: (option) => option.value
+		};
+	}
 
 	render() {
 
@@ -104,12 +76,14 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('br'),
 			w(Select, {
 				key: 'select1',
-				label: 'Try changing me',
+				...this.getOptionSettings(),
+				getOptionSelected: (option: any) => !!this._value1 && option.value === this._value1,
+				label: 'Native select',
 				options: this._selectOptions,
 				useNativeElement: true,
 				value: this._value1,
 				theme: this._theme,
-				onChange: (option: OptionData) => {
+				onChange: (option: any) => {
 					this._value1 = option.value;
 					this.invalidate();
 				}
@@ -117,40 +91,16 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('p', {
 				innerHTML: 'Result value: ' + this._value1
 			}),
-			v('h2', {}, [ 'Custom Select Box, single select:' ]),
 			w(Select, {
 				key: 'select2',
-				CustomOption: CustomOption,
-				label: 'Custom box!',
-				options: this._selectOptions,
+				...this.getOptionSettings(),
+				getOptionSelected: (option: any) => !!this._value2 && option.value === this._value2,
+				label: 'Custom select box',
+				options: this._moreSelectOptions,
 				value: this._value2,
 				theme: this._theme,
-				onChange: (option: OptionData) => {
+				onChange: (option: any) => {
 					this._value2 = option.value;
-					this.invalidate();
-				}
-			}),
-			v('h2', {}, [ 'Native multiselect widget' ]),
-			w(Select, {
-				key: 'select3',
-				options: this._moreSelectOptions,
-				useNativeElement: true,
-				multiple: true,
-				theme: this._theme,
-				onChange: (option: OptionData) => {
-					option.selected = !option.selected;
-					this.invalidate();
-				}
-			}),
-			v('h2', {}, [ 'Custom multiselect widget' ]),
-			w(Select, {
-				key: 'select4',
-				CustomOption: CustomOption,
-				options: this._evenMoreSelectOptions,
-				multiple: true,
-				theme: this._theme,
-				onChange: (option: OptionData) => {
-					option.selected = !option.selected;
 					this.invalidate();
 				}
 			})

@@ -62,7 +62,6 @@ registerSuite('TimePicker', {
 		'Should delegate to ComboBox'() {
 			const picker = harness(TimePicker);
 			picker.setProperties({
-				autoBlur: false,
 				clearable: true,
 				disabled: false,
 				invalid: true,
@@ -74,10 +73,7 @@ registerSuite('TimePicker', {
 			});
 
 			picker.expectRender(w(ComboBox, {
-				autoBlur: false,
 				clearable: true,
-				CustomResultItem: undefined,
-				CustomResultMenu: undefined,
 				disabled: false,
 				getResultLabel: <any> picker.listener,
 				inputProperties: undefined,

@@ -15,8 +15,10 @@
 	background-color: transparent;
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
+	cursor: pointer;
 	font-size: inherit;
 	line-height: var(--line-height-base);
+	min-height: calc(var(--spacing-regular) * 5 + 2);
 	outline: none;
 	padding: var(--spacing-regular) calc(var(--spacing-regular) * 3) var(--spacing-regular) var(--spacing-regular);
 	position: relative;
@@ -43,9 +45,9 @@
 }
 
 .dropdown {
-	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 	opacity: 0;
+	pointer-events: none;
 	position: absolute;
 	transition: opacity var(--transition-duration) var(--transition-easing);
 	width: 100%;
@@ -57,34 +59,7 @@
 
 .open .dropdown {
 	opacity: 1;
-}
-
-.option {
-	background-color: var(--color-background);
-	border: var(--border-width) solid transparent;
-	cursor: pointer;
-	line-height: var(--line-height-base);
-	padding: var(--spacing-regular);
-	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
-}
-
-.option:hover {
-	background-color: var(--color-background-faded);
-}
-
-.disabledOption {
-	background-color: var(--color-background-faded);
-	color: var(--color-text-faded);
-	cursor: default;
-}
-
-.dropdown .focused,
-.input:focus .focused {
-	border: var(--border-width) solid var(--color-highlight);
-}
-
-.selected {
-	background-color: var(--color-background-faded);
+	pointer-events: all;
 }
 
 /* native input styles */
@@ -150,8 +125,4 @@
 
 .required > span::after {
 	content: '*';
-}
-
-.multiselect .input {
-	padding: 0;
 }

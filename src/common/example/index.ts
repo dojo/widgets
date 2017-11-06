@@ -12,6 +12,7 @@ const modules = [
 	'combobox',
 	'dialog',
 	'label',
+	'listbox',
 	'radio',
 	'select',
 	'slidepane',
@@ -25,8 +26,7 @@ const modules = [
 ];
 
 export class App extends WidgetBase<WidgetProperties> {
-	onModuleChange(event: any) {
-		const module = event.value;
+	onModuleChange(module: any) {
 		window.location.search = `?module=${module}`;
 	}
 
@@ -35,12 +35,13 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h2', {
 				innerHTML: 'Select a module to view'
 			}),
-			w(Select, { onChange: this.onModuleChange, useNativeElement: true, options: [
-				{ label: 'Pick a module', value: '', disabled: true, selected: true },
-				...modules.map((module) => {
-					return { value: module, label: module };
-				})
-			]})
+			w(Select, {
+				onChange: this.onModuleChange,
+				useNativeElement: true,
+				options: modules,
+				getOptionValue: (module: any) => module,
+				getOptionLabel: (module: any) => module
+			})
 		]);
 	}
 }
