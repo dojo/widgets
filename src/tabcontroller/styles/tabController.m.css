@@ -5,9 +5,8 @@
 }
 
 .tabButton {
+	border: 1px solid transparent;
 	border-top: 2px solid transparent;
-	border-left: 1px solid transparent;
-	border-right: 1px solid transparent;
 	text-align: center;
 	display: inline-block;
 	vertical-align: top;
@@ -18,8 +17,6 @@
 	cursor: pointer;
 	position: relative;
 	top: 1px;
-	z-index: 1;
-	background: #FFF;
 }
 
 .tabButton:focus:not(.disabledTabButton) {
@@ -27,8 +24,10 @@
 }
 
 .activeTabButton {
+	background: #FFF;
 	border-color: black;
-	z-index: 2;
+	border-bottom-color: #FFF;
+	z-index: calc(var(--zindex-base) + 1);
 }
 
 .disabledTabButton {
@@ -58,7 +57,6 @@
 .tab {
 	position: relative;
 	border: 1px solid black;
-	z-index: 1;
 	background: #FFF;
 }
 
@@ -76,7 +74,7 @@
 	border-top: 1px solid transparent;
 	border-left: 2px solid transparent;
 	border-bottom: 1px solid transparent;
-	border-right: none;
+	border-right: 1px solid transparent;
 	display: block;
 	top: 0;
 	left: 1px;
@@ -86,19 +84,17 @@
 	border-top-color: var(--selected-background);
 	border-left-color: var(--selected-background);
 	border-bottom-color: var(--selected-background);
+	border-right: 1px solid #FFF;
 }
 
 .alignBottom .tabButton {
 	border-top: none;
 	border-bottom: 2px solid transparent;
 	top: -1px;
-	z-index: 0;
 }
 
 .alignBottom .activeTabButton {
-	border-top-color: var(--selected-background);
 	border-bottom-color: var(--selected-background);
-	z-index: 1;
 }
 
 .alignRight .tabs {
@@ -119,12 +115,10 @@
 	display: block;
 	top: 0;
 	left: -1px;
-	z-index: 0;
 }
 
 .alignRight .activeTabButton {
 	border-top-color: var(--selected-background);
 	border-right-color: var(--selected-background);
 	border-bottom-color: var(--selected-background);
-	z-index: 1;
 }

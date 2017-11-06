@@ -13,6 +13,7 @@
 	border: 1px solid var(--component-color);
 	font-size: inherit;
 	min-width: 200px;
+	padding-right: 25px;
 	position: relative;
 	text-align: left;
 }
@@ -20,7 +21,6 @@
 .trigger i {
 	position: absolute;
 	right: 4px;
-	z-index: 1;
 }
 
 .trigger:focus {
@@ -37,12 +37,11 @@
 	width: 100%;
 }
 
-.open {
-	z-index: 2;
-}
+.open { }
 
 .open .dropdown {
 	display: block;
+	z-index: var(--zindex-dropdown);
 }
 
 /* native input styles */
@@ -56,7 +55,7 @@
 	font-size: inherit;
 	line-height: 1;
 	max-width: 100%;
-	padding: 2px 4px;
+	padding: 2px 25px 2px 4px;
 	transition: border var(--short-animation-duration) ease;
 	width: 200px;
 }
@@ -77,7 +76,6 @@
 .arrow i {
 	position: absolute;
 	right: 4px;
-	z-index: 1;
 	padding: 2px 0;
 }
 

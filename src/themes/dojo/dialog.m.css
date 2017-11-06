@@ -25,11 +25,12 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 	width: calc(80 * var(--grid-base));
-	z-index: 2;
+	z-index: calc(var(--zindex-dialog) + 1);
 }
 
 .underlayVisible {
 	background-color: var(--color-box-shadow-strong);
+	z-index: var(--zindex-dialog);
 }
 
 .title {
@@ -64,4 +65,3 @@
 .close i {
 	font-size: var(--font-size-title);
 }
-

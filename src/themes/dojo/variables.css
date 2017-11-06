@@ -46,4 +46,12 @@
 	/* Transitions */
 	--transition-duration: 0.25s;
 	--transition-easing: ease;
+
+	/* Z-index levels */
+	--zindex-base: 0;
+	--zindex-tooltip: 100;
+	--zindex-dropdown: 200;
+	--zindex-fixed: 300;
+	--zindex-dialog: 400;
+	--zindex-alert: 500;
 }

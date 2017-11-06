@@ -54,7 +54,7 @@
 }
 
 .open {
-	z-index: 2;
+	z-index: var(--zindex-dropdown);
 }
 
 .open .dropdown {
