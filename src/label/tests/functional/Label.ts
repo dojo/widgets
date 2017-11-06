@@ -32,22 +32,15 @@ registerSuite('Label', {
 
 	},
 	'Input box should gain focus when clicking on the label'() {
-		let input: string;
 		return getPage(this.remote)
 			.findByCssSelector(`#example-1 .${css.root}`)
 				.click()
-				.findByTagName('input')
-					.then((element) => {
-						input = element.elementId;
-					})
-				.end()
 			.end()
-			.sleep(30)
-			.getActiveElement()
-			.then((element) => {
-				assert.strictEqual(input, element.elementId);
+			.sleep(250)
+			.execute(`return document.activeElement === document.querySelector('#example-1 .${css.root} input');`)
+			.then(isEqual => {
+				assert.isTrue(isEqual);
 			});
-
 	},
 	'Hidden label text should not be displayed'() {
 		return getPage(this.remote)
