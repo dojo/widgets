@@ -25,7 +25,7 @@ const labelDefaults = {
 };
 
 /**
- * @type LabelWidgetProperties
+ * @type LabelProperties
  *
  * Properties that can be set on a Label component
  *
