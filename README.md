@@ -115,6 +115,19 @@ Where a theme requires specific icons that are not part of the Font Awesome set,
 `px vs. em` - we specify font sizes in `px`.
 When creating a widget, spacing (margin, padding) should be specified using `px` unless the design calls for proportional spacing, in which case `em` can be used.
 
+### Z-index layering
+
+Widgets adhere to a basic convention for blocking off ranges of z-index values based on function and visual context. This is present in both individual widget CSS and in the Dojo theme styles. These values can be overridden in a custom theme if necessary, since no `z-index` values are set in fixed styles.
+
+The range definitions are as follows:
+
+- **0 - 100**: Any specific component layering, e.g. a caption over an image.
+- **100 - 200**: Tooltips and other small, local, interactive overlays.
+- **200 - 300**: Dropdowns. Common examples include menus and select boxes.
+- **300 - 400**: Fixed position elements. Fixed headers and footers are clear examples of fixed page elements, but it could also include a drag-and-drop element in a drag state.
+- **400 - 500**: Dialogs and other full-page overlays. Slide panes are another good example of a common UI pattern in this range. It includes any widget that is intended to cover all page content, or that often is used with an underlay.
+- **500 +***: Alerts and special cases. Toast notifications could potentially be in this range, or any component important enough to interrupt all other interaction.
+
 
 ## How to customize a widget
 
