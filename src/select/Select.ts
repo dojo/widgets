@@ -52,9 +52,9 @@ export interface SelectProperties extends ThemeableProperties {
 	required?: boolean;
 	useNativeElement?: boolean;
 	value?: string;
-	onBlur?(key: string | number): void;
-	onChange?(option: any, key: string | number): void;
-	onFocus?(key: string | number): void;
+	onBlur?(key?: string | number): void;
+	onChange?(option: any, key?: string | number): void;
+	onFocus?(key?: string | number): void;
 }
 
 export const SelectBase = ThemeableMixin(WidgetBase);
@@ -76,7 +76,7 @@ export default class Select extends SelectBase<SelectProperties> {
 	// native select events
 	private _onNativeChange (event: Event) {
 		const {
-			key = '',
+			key,
 			getOptionValue,
 			options = [],
 			onChange
@@ -118,7 +118,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			return;
 		}
 
-		const { key = '', onBlur } = this.properties;
+		const { key, onBlur } = this.properties;
 		onBlur && onBlur(key);
 		this._closeSelect();
 	}
@@ -139,7 +139,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			return;
 		}
 
-		const { key = '', onBlur } = this.properties;
+		const { key, onBlur } = this.properties;
 		onBlur && onBlur(key);
 		this._closeSelect();
 	}
@@ -233,7 +233,7 @@ export default class Select extends SelectBase<SelectProperties> {
 			getOptionId,
 			getOptionLabel,
 			getOptionSelected,
-			key = '',
+			key,
 			options = [],
 			theme,
 			onChange

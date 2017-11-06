@@ -47,11 +47,11 @@ export interface ComboBoxProperties extends ThemeableProperties {
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	label?: string | LabelOptions;
-	onBlur?(value: string, key: string | number): void;
-	onChange?(value: string, key: string | number): void;
-	onFocus?(value: string, key: string | number): void;
-	onMenuChange?(open: boolean, key: string | number): void;
-	onRequestResults?(key: string | number): void;
+	onBlur?(value: string, key?: string | number): void;
+	onChange?(value: string, key?: string | number): void;
+	onFocus?(value: string, key?: string | number): void;
+	onMenuChange?(open: boolean, key?: string | number): void;
+	onRequestResults?(key?: string | number): void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -111,7 +111,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onClearClick() {
-		const { key = '', onChange } = this.properties;
+		const { key, onChange } = this.properties;
 
 		this._callInputFocus = true;
 		this.invalidate();
@@ -119,14 +119,14 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onInput(event: Event) {
-		const { key = '', onChange } = this.properties;
+		const { key, onChange } = this.properties;
 
 		onChange && onChange((<HTMLInputElement> event.target).value, key);
 		this._openMenu();
 	}
 
 	private _onInputBlur(event: FocusEvent) {
-		const { key = '', onBlur } = this.properties;
+		const { key, onBlur } = this.properties;
 
 		if (this._ignoreBlur) {
 			this._ignoreBlur = false;
@@ -139,7 +139,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _onInputFocus(event: FocusEvent) {
 		const {
-			key = '',
+			key,
 			onFocus,
 			openOnFocus
 		} = this.properties;
@@ -195,7 +195,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 	}
 
 	private _onMenuChange() {
-		const { key = '', onMenuChange } = this.properties;
+		const { key, onMenuChange } = this.properties;
 
 		if (!onMenuChange) {
 			return;
@@ -217,7 +217,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _openMenu() {
 		const {
-			key = '',
+			key,
 			onRequestResults
 		} = this.properties;
 
@@ -229,7 +229,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 	private _selectIndex(index: number) {
 		const {
-			key = '',
+			key,
 			onChange,
 			results = []
 		} = this.properties;
@@ -248,14 +248,10 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			return;
 		}
 
-		function nextIndex(i?: number) {
-			const total = results.length;
-			const base = operation === Operation.increase ? 0 : -1;
-			const current = i !== undefined ? i + operation : base;
-			return (current + total) % total;
-		}
+		const total = results.length;
+		const nextIndex = (this._activeIndex + operation + total) % total;
 
-		this._activeIndex = nextIndex(this._activeIndex);
+		this._activeIndex = nextIndex;
 		this.invalidate();
 	}
 
