@@ -117,7 +117,7 @@ When creating a widget, spacing (margin, padding) should be specified using `px`
 
 ### Z-index layering
 
-Widgets adhere to a basic convention for blocking off ranges of z-index values based on function and visual context. This is present in both individual widget CSS and in the Dojo theme styles. These values can be overridden in a custom theme if necessary, since no `z-index` values are set in fixed styles.
+Widgets adhere to a basic convention for using specific ranges of z-index values based on function and visual context. This convention is followed in both individual widget CSS and in the Dojo theme styles. These values can be overridden in a custom theme if necessary, since no `z-index` values are set in fixed styles.
 
 The range definitions are as follows:
 
