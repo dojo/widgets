@@ -116,6 +116,7 @@ registerSuite('TextInput', {
 					.click()
 					.type(validText)
 				.end()
+			.sleep(10)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.invalid);
@@ -124,6 +125,7 @@ registerSuite('TextInput', {
 				.findByCssSelector(`.${css.input}`)
 					.type(invalidText)
 				.end()
+			.sleep(10)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.valid);
