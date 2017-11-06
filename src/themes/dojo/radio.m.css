@@ -46,6 +46,7 @@
 }
 
 .inputWrapper::before {
+	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border-strong);
 	height: calc(var(--grid-base) * 2);
 	width: calc(var(--grid-base) * 2);
