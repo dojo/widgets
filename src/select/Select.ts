@@ -28,6 +28,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property label             Label settings for form label text, position, and visibility
  * @property name              The form widget's name
  * @property options           Array of any type of data for the options
+ * @property placeholder       Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined)
  * @property readOnly          Allows or prevents user interaction
  * @property required          Whether or not a value is required
  * @property useNativeElement  Use the native <select> element if true
@@ -48,6 +49,7 @@ export interface SelectProperties extends ThemedProperties {
 	label?: string | LabelOptions;
 	name?: string;
 	options?: any[];
+	placeholder?: string;
 	readOnly?: boolean;
 	required?: boolean;
 	useNativeElement?: boolean;
@@ -69,6 +71,15 @@ export default class Select extends ThemedBase<SelectProperties> {
 	private _ignoreBlur = false;
 	private _open = false;
 	private _baseId = uuid();
+
+	private _getOptionLabel(option: any) {
+		const { getOptionLabel } = this.properties;
+		if (!option) {
+			return '';
+		}
+
+		return getOptionLabel ? getOptionLabel(option) : `${option}`;
+	}
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(this.properties.key || ''); }
@@ -188,7 +199,6 @@ export default class Select extends ThemedBase<SelectProperties> {
 			disabled,
 			getOptionDisabled,
 			getOptionId,
-			getOptionLabel,
 			getOptionSelected,
 			getOptionValue,
 			invalid,
@@ -205,7 +215,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 			id: getOptionId ? getOptionId(option, i) : undefined,
 			disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
 			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
-		}, [ getOptionLabel ? getOptionLabel(option) : '' ]));
+		}, [ this._getOptionLabel(option) ]));
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v('select', {
@@ -285,18 +295,30 @@ export default class Select extends ThemedBase<SelectProperties> {
 		const {
 			describedBy,
 			disabled,
-			getOptionLabel,
 			getOptionSelected,
 			invalid,
 			options = [],
+			placeholder,
 			readOnly,
 			required,
 			value
 		} = this.properties;
 
+		let label: DNode;
+		let isPlaceholder = false;
+
 		const selectedOption = find(options, (option: any, index: number) => {
 			return getOptionSelected ? getOptionSelected(option, index) : false;
-		}) || options[0];
+		});
+
+		if (selectedOption) {
+			label = this._getOptionLabel(selectedOption);
+		}
+
+		else {
+			isPlaceholder = true;
+			label = placeholder ? placeholder : this._getOptionLabel(options[0]);
+		}
 
 		return [
 			v('button', {
@@ -306,7 +328,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
-				classes: this.theme(css.trigger),
+				classes: this.theme([css.trigger, isPlaceholder ? css.placeholder : null]),
 				describedBy,
 				disabled,
 				key: 'trigger',
@@ -316,7 +338,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 				onfocus: this._onFocus,
 				onkeydown: this._onTriggerKeyDown,
 				onmousedown: this._onTriggerMouseDown
-			}, [ getOptionLabel ? getOptionLabel(selectedOption) : '' ]),
+			}, [ label ]),
 			this.renderExpandIcon()
 		];
 	}

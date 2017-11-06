@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty, findIndex } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty, findIndex, replaceChild } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -81,19 +81,19 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 				id: useTestProperties ? 'one' : undefined,
 				disabled: useTestProperties ? false : undefined,
 				selected: useTestProperties ? false : undefined
-			}, [ useTestProperties ? 'One' : '' ]),
+			}, [ useTestProperties ? 'One' : `${testOptions[0]}` ]),
 			v('option', {
 				value: useTestProperties ? 'two' : '',
 				id: useTestProperties ? 'two' : undefined,
 				disabled: useTestProperties ? false : undefined,
 				selected: useTestProperties ? true : undefined
-			}, [ useTestProperties ? 'Two' : '' ]),
+			}, [ useTestProperties ? 'Two' : `${testOptions[1]}` ]),
 			v('option', {
 				value: useTestProperties ? 'three' : '',
 				id: useTestProperties ? 'three' : undefined,
 				disabled: useTestProperties ? true : undefined,
 				selected: useTestProperties ? false : undefined
-			}, [ useTestProperties ? 'Three' : '' ])
+			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ])
 		]),
 		v('span', { classes: css.arrow }, [
 			v('i', { classes: [ iconCss.icon, iconCss.downIcon ],
@@ -115,7 +115,7 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 			'aria-invalid': null,
 			'aria-readonly': null,
 			'aria-required': null,
-			classes: css.trigger,
+			classes: [ css.trigger, useTestProperties ? null : css.placeholder ],
 			describedBy: useTestProperties ? 'foo' : undefined,
 			disabled: undefined,
 			key: 'trigger',
@@ -289,6 +289,34 @@ registerSuite('Select', {
 					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
 				});
 				widget.expectRender(expectedVdom);
+			},
+
+			'placeholder'() {
+				widget.setProperties({
+					...testProperties,
+					placeholder: 'foo'
+				});
+
+				let expectedVdom = expected(widget, expectedSingle(widget, true));
+
+				widget.expectRender(expectedVdom, 'placeholder not shown if selected option is present');
+
+				widget.setProperties({
+					...testProperties,
+					getOptionSelected: () => false,
+					placeholder: 'bar'
+				});
+
+				assignChildProperties(expectedVdom, '0,0', {
+					classes: widget.classes(css.trigger, css.placeholder)
+				});
+				expectedVdom = expected(widget, expectedSingle(widget, true));
+				assignChildProperties(expectedVdom, '0,0', {
+					classes: widget.classes(css.trigger, css.placeholder)
+				});
+				replaceChild(expectedVdom, '0,0,0', 'bar');
+
+				widget.expectRender(expectedVdom, 'placeholder is shown if no selected option');
 			},
 
 			'open/close on trigger click'() {

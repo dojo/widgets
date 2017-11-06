@@ -12,6 +12,7 @@
 	background: var(--component-background);
 	border: 1px solid var(--component-color);
 	font-size: inherit;
+	min-height: 25px;
 	min-width: 200px;
 	padding-right: 25px;
 	position: relative;
@@ -26,6 +27,8 @@
 .trigger:focus {
 	color: var(--selected-background);
 }
+
+.placeholder { }
 
 .dropdown {
 	background: var(--component-background);

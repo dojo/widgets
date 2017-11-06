@@ -35,6 +35,9 @@
 	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-box-shadow));
 }
 
+.input::placeholder { color: var(--color-text-faded); }
+.input:-ms-input-placeholder { color: var(--color-text-faded); }
+
 .inputWrapper { }
 
 /* disabled and readonly */

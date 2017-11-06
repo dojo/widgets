@@ -75,8 +75,8 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
-	onChange(value: string, key: string) {
-		(this as any)[`_value${key}`] = value;
+	onChange(value: string, key?: string) {
+		(this as any)[`_value${key!}`] = value;
 		this.invalidate();
 	}
 
