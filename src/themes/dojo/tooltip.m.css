@@ -29,9 +29,9 @@
 	border-bottom: var(--grid-base) solid var(--color-background-inverted);
 	content: "";
 	position: absolute;
-    top: calc(var(--grid-base) * -1);
-    left: 50%;
-    margin-left: calc(var(--grid-base) * -1);
+	top: calc(var(--grid-base) * -1);
+	left: 50%;
+	margin-left: calc(var(--grid-base) * -1);
 }
 
 .top .content {
@@ -45,9 +45,9 @@
 	border-top: var(--grid-base) solid var(--color-background-inverted);
 	content: "";
 	position: absolute;
-    bottom: calc(var(--grid-base) * -1);
-    left: 50%;
-    margin-left: calc(var(--grid-base) * -1);
+	bottom: calc(var(--grid-base) * -1);
+	left: 50%;
+	margin-left: calc(var(--grid-base) * -1);
 }
 
 .left .content {
@@ -59,11 +59,11 @@
 	border-top: var(--grid-base) solid transparent;
 	border-bottom: var(--grid-base) solid transparent;
 	border-left: var(--grid-base) solid var(--color-background-inverted);
-    content: "";
-    position: absolute;
-    right: calc(var(--grid-base) * -1);
-    top: 50%;
-    margin-top: calc(var(--grid-base) * -1);
+	content: "";
+	position: absolute;
+	right: calc(var(--grid-base) * -1);
+	top: 50%;
+	margin-top: calc(var(--grid-base) * -1);
 }
 
 .right .content {
@@ -75,9 +75,9 @@
 	border-top: var(--grid-base) solid transparent;
 	border-bottom: var(--grid-base) solid transparent;
 	border-right: var(--grid-base) solid var(--color-background-inverted);
-    content: "";
-    position: absolute;
-    left: calc(var(--grid-base) * -1);
-    top: 50%;
-    margin-top: calc(var(--grid-base) * -1);
+	content: "";
+	position: absolute;
+	left: calc(var(--grid-base) * -1);
+	top: 50%;
+	margin-top: calc(var(--grid-base) * -1);
 }
