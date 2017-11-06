@@ -22,7 +22,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', {}, ['Hidden label after the input']),
 			v('div', { id: 'example-2'}, [
 				w(Label, {
-					extraClasses: { root: 'label2' },
 					label: {
 						content: 'Can\'t read me!',
 						hidden: true,
