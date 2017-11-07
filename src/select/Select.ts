@@ -314,7 +314,6 @@ export default class Select extends ThemedBase<SelectProperties> {
 		if (selectedOption) {
 			label = this._getOptionLabel(selectedOption);
 		}
-
 		else {
 			isPlaceholder = true;
 			label = placeholder ? placeholder : this._getOptionLabel(options[0]);
