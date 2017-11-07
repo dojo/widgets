@@ -664,11 +664,11 @@ registerSuite('SlidePane', {
 						classes: swipeState.classes || [
 							css.pane,
 							css.left,
-							css.open,
+							closed ? null : css.open,
 							css.slideIn,
 							null,
 							css.paneFixed,
-							css.openFixed,
+							closed ? null : css.openFixed,
 							css.leftFixed,
 							css.slideInFixed,
 							null
@@ -718,14 +718,14 @@ registerSuite('SlidePane', {
 				classes: [
 					css.pane,
 					css.left,
-					css.open,
-					css.slideOutFixed,
 					null,
+					null,
+					css.slideOut,
 					css.paneFixed,
-					css.openFixed,
+					null,
 					css.leftFixed,
-					css.slideOutFixed,
-					null
+					null,
+					css.slideOutFixed
 				],
 				styles: {
 					transform: 'translateX(-78.125%)',
@@ -819,15 +819,15 @@ registerSuite('SlidePane', {
 			widget.expectRender(expected(true, {
 				classes: [
 					css.pane,
-					css.right,
-					css.open,
-					css.slideIn,
+					undefined,
 					null,
+					null,
+					css.slideOut,
 					css.paneFixed,
-					css.openFixed,
+					null,
 					css.rightFixed,
-					css.slideInFixed,
-					null
+					null,
+					css.slideOutFixed
 				],
 				styles: {
 					transform: 'translateX(62.5%)',

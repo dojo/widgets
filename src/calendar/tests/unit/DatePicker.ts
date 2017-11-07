@@ -107,7 +107,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 			classes: css.yearFields,
 			onkeydown: widget.listener
 		}, [
-			v('legend', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.chooseYear ]),
+			v('legend', { classes: [ baseCss.visuallyHidden ] }, [ DEFAULT_LABELS.chooseYear ]),
 			...yearRadios(widget, open, yearStart, yearEnd)
 		]),
 		v('div', {
