@@ -4,18 +4,17 @@ import * as sinon from 'sinon';
 
 import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import global from '@dojo/shim/global';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { Keys } from '../../../common/util';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import Listbox, { ListboxProperties, ScrollMeta } from '../../Listbox';
+import Listbox, { ScrollMeta } from '../../Listbox';
 import ListboxOption from '../../ListboxOption';
 import * as css from '../../styles/listbox.m.css';
 
-let widget: Harness<ListboxProperties, typeof Listbox>;
+let widget: Harness<Listbox>;
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -42,7 +41,7 @@ const testOptions: any[] = [
 	}
 ];
 
-const expectedOptions = function(widget: any, activeIndex = 0) {
+const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 	return [
 		v('div', { key: 'first' }, [
 			w(ListboxOption, {
@@ -92,11 +91,11 @@ const expectedOptions = function(widget: any, activeIndex = 0) {
 	];
 };
 
-const expectedVdom = function(widget: any, options: DNode[]) {
+const expectedVdom = function(widget: Harness<Listbox>, options: DNode[]) {
 	return v('div', {
 		'aria-activedescendant': compareId,
 		'aria-multiselectable': null,
-		classes: widget.classes(css.root),
+		classes: [ css.root, null ],
 		describedBy: undefined,
 		id: undefined,
 		key: 'root',
@@ -152,7 +151,7 @@ registerSuite('Listbox', {
 			assignProperties(vdom, {
 				'aria-activedescendant': 'first',
 				'aria-multiselectable': 'true',
-				classes: widget.classes(css.root, css.focused),
+				classes: [ css.root, css.focused ],
 				describedBy: 'foo',
 				id: 'bar',
 				tabIndex: -1
@@ -352,21 +351,12 @@ registerSuite('Listbox', {
 		},
 
 		'scroll meta'() {
-			let rAF = sinon.stub(global, 'requestAnimationFrame');
-
-			function resolveRAF() {
-				for (let i = 0; i < rAF.callCount; i++) {
-					rAF.getCall(i).args[0]();
-				}
-				rAF.reset();
-			}
-
 			class TestWidget extends ProjectorMixin(WidgetBase) {
 				render() {
 					this.meta(ScrollMeta).scroll('root', 100);
 					return v('div', {
 						key: 'root',
-						classes: { 'root': true },
+						classes: 'root',
 						styles: { height: '200px', 'overflow-y': 'scroll' }
 					}, [
 						v('div', {
@@ -380,9 +370,8 @@ registerSuite('Listbox', {
 			document.body.appendChild(div);
 
 			const widget = new TestWidget();
+			widget.async = true;
 			widget.append(div);
-
-			resolveRAF();
 
 			const widgetDiv = document.querySelector('.root');
 			assert.strictEqual(widgetDiv!.scrollTop, 100);

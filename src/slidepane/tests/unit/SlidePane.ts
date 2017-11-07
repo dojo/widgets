@@ -61,7 +61,7 @@ registerSuite('SlidePane', {
 					key: 'content',
 					classes: [
 						css.pane,
-						css.left,
+						undefined,
 						css.open,
 						css.slideIn,
 						null,
@@ -106,7 +106,7 @@ registerSuite('SlidePane', {
 					key: 'content',
 					classes: [
 						css.pane,
-						css.left,
+						undefined,
 						null,
 						null,
 						null,
@@ -170,7 +170,7 @@ registerSuite('SlidePane', {
 					key: 'content',
 					classes: [
 						css.pane,
-						css.left,
+						undefined,
 						css.open,
 						css.slideIn,
 						null,
@@ -212,7 +212,7 @@ registerSuite('SlidePane', {
 					key: 'content',
 					classes: [
 						css.pane,
-						css.left,
+						undefined,
 						null,
 						null,
 						css.slideOut,
@@ -596,7 +596,7 @@ registerSuite('SlidePane', {
 						key: 'content',
 						classes: [
 							css.pane,
-							css.left,
+							undefined,
 							open ? css.open : null,
 							transitionDone ? null : ( open ? css.slideIn : null),
 							transitionDone ? null : ( open ? null : css.slideOut),
@@ -663,7 +663,7 @@ registerSuite('SlidePane', {
 						key: 'content',
 						classes: swipeState.classes || [
 							css.pane,
-							css.left,
+							undefined,
 							closed ? null : css.open,
 							css.slideIn,
 							null,
@@ -717,7 +717,7 @@ registerSuite('SlidePane', {
 			widget.expectRender(expected(true, {
 				classes: [
 					css.pane,
-					css.left,
+					undefined,
 					null,
 					null,
 					css.slideOut,
@@ -764,7 +764,7 @@ registerSuite('SlidePane', {
 						key: 'content',
 						classes: swipeState.classes || [
 							css.pane,
-							css.right,
+							undefined,
 							css.open,
 							css.slideIn,
 							null,

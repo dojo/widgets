@@ -14,7 +14,7 @@ import Label from '../../../label/Label';
 import * as css from '../../styles/select.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
-let widget: Harness<SelectProperties, typeof Select>;
+let widget: Harness<Select>;
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -60,10 +60,10 @@ const testStateProperties: Partial<SelectProperties> = {
 	required: true
 };
 
-const expectedNative = function(widget: any, useTestProperties = false) {
-	return v('div', { classes: widget.classes(css.inputWrapper) }, [
+const expectedNative = function(widget: Harness<Select>, useTestProperties = false) {
+	return v('div', { classes: css.inputWrapper }, [
 		v('select', {
-			classes: widget.classes(css.input),
+			classes: css.input,
 			'aria-describedby': useTestProperties ? 'foo' : undefined,
 			disabled: useTestProperties ? true : undefined,
 			'aria-invalid': useTestProperties ? 'true' : null,
@@ -95,17 +95,17 @@ const expectedNative = function(widget: any, useTestProperties = false) {
 				selected: useTestProperties ? false : undefined
 			}, [ useTestProperties ? 'Three' : '' ])
 		]),
-		v('span', { classes: widget.classes(css.arrow) }, [
-			v('i', { classes: widget.classes(iconCss.icon, iconCss.downIcon),
+		v('span', { classes: css.arrow }, [
+			v('i', { classes: [ iconCss.icon, iconCss.downIcon ],
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		])
 	]);
 };
 
-const expectedSingle = function(widget: any, useTestProperties = false, open = false) {
+const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false) {
 	return v('div', {
-		classes: widget.classes(css.inputWrapper, open ? css.open : null),
+		classes: [ css.inputWrapper, open ? css.open : null ],
 		key: 'root'
 	}, [
 		v('button', {
@@ -115,7 +115,7 @@ const expectedSingle = function(widget: any, useTestProperties = false, open = f
 			'aria-invalid': null,
 			'aria-readonly': null,
 			'aria-required': null,
-			classes: widget.classes(css.trigger),
+			classes: css.trigger,
 			describedBy: useTestProperties ? 'foo' : undefined,
 			disabled: undefined,
 			key: 'trigger',
@@ -126,15 +126,15 @@ const expectedSingle = function(widget: any, useTestProperties = false, open = f
 			onkeydown: widget.listener,
 			onmousedown: widget.listener
 		}, [ useTestProperties ? 'Two' : '' ]),
-		v('span', { classes: widget.classes(css.arrow) }, [
+		v('span', { classes: css.arrow }, [
 			v('i', {
-				classes: widget.classes(iconCss.icon, iconCss.downIcon),
+				classes: [ iconCss.icon, iconCss.downIcon ],
 				role: 'presentation',
 				'aria-hidden': 'true'
 			})
 		]),
 		v('div', {
-			classes: widget.classes(css.dropdown),
+			classes: css.dropdown,
 			onfocusout: widget.listener,
 			onkeydown: widget.listener
 		}, [
@@ -145,8 +145,8 @@ const expectedSingle = function(widget: any, useTestProperties = false, open = f
 				optionData: useTestProperties ? testOptions : [],
 				tabIndex: open ? 0 : -1,
 				getOptionDisabled: useTestProperties ? widget.listener : undefined,
-				getOptionId: useTestProperties ? widget.listener : undefined,
-				getOptionLabel: useTestProperties ? widget.listener : undefined,
+				getOptionId: useTestProperties ? (widget.listener as any) : undefined,
+				getOptionLabel: useTestProperties ? (widget.listener as any) : undefined,
 				getOptionSelected: useTestProperties ? widget.listener : undefined,
 				theme: undefined,
 				onActiveIndexChange: widget.listener,
@@ -162,7 +162,7 @@ function isOpen(widget: any): boolean {
 	return (<any> button)!.properties!['aria-expanded'] === 'true';
 }
 
-const expected = function(widget: any, selectVdom: any, label = false) {
+const expected = function(widget: Harness<Select>, selectVdom: any, label = false) {
 	if (label) {
 		return w(Label, {
 			extraClasses: { root: css.root },
@@ -173,7 +173,7 @@ const expected = function(widget: any, selectVdom: any, label = false) {
 	}
 	else {
 		return v('div', {
-			classes: widget.classes(css.root)
+			classes: [ css.root, null, null, null, null, null ]
 		}, [ selectVdom ]);
 	}
 };
@@ -210,7 +210,7 @@ registerSuite('Select', {
 				const selectVdom = expectedNative(widget, true);
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -286,7 +286,7 @@ registerSuite('Select', {
 				});
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required)
+					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
 				});
 				widget.expectRender(expectedVdom);
 			},
