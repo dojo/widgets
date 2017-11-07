@@ -11,7 +11,7 @@ import Tooltip, { Orientation } from '../Tooltip';
 import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _showing = new Set<string>();
+	private _open = new Set<string>();
 	private _theme: {};
 
 	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
@@ -20,12 +20,12 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	onShow(key: string) {
-		this._showing.add(key);
+		this._open.add(key);
 		this.invalidate();
 	}
 
 	onHide(key: string) {
-		this._showing.delete(key);
+		this._open.delete(key);
 		this.invalidate();
 	}
 
@@ -44,13 +44,13 @@ export class App extends WidgetBase<WidgetProperties> {
 					key: 'foo',
 					content: 'This is a right-oriented tooltip that opens and closes based on child click.',
 					orientation: Orientation.right,
-					showing: this._showing.has('foo'),
+					open: this._open.has('foo'),
 					theme: this._theme
 				}, [
 					w(Button, {
 						theme: this._theme,
 						onClick: () => {
-							const exists = this._showing.has('foo');
+							const exists = this._open.has('foo');
 							exists ? this.onHide('foo') : this.onShow('foo');
 						}
 					}, [ 'Click me' ])
@@ -61,7 +61,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					key: 'bar',
 					content: 'This is a right-oriented tooltip that opens and closes based on child focus.',
 					orientation: Orientation.right,
-					showing: this._showing.has('bar'),
+					open: this._open.has('bar'),
 					theme: this._theme
 				}, [
 					w(TextInput, {

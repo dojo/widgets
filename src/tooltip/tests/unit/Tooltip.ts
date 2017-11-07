@@ -27,10 +27,10 @@ registerSuite('Tooltip', {
 			]));
 		},
 
-		'should render content if showing'() {
+		'should render content if open'() {
 			widget.setProperties({
 				content: 'foobar',
-				showing: true
+				open: true
 			});
 
 			widget.expectRender(v('div', {

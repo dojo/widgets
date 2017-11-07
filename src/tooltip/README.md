@@ -8,8 +8,6 @@ Dojo 2's `Tooltip` component can be used to show or hide content around a child 
 - Supports top, right, bottom, and left orientations
 - Optionally persistent
 
-![Image of basic dialog](http://placekitten.com/450/300)
-
 ## Themeing
 
 The following CSS classes are used to style the `Tooltip` widget and should be provided by custom themes:
@@ -32,7 +30,7 @@ import { w } from '@dojo/widget-core/d';
 w(Tooltip, {
 	key: 'foo',
 	content: 'This is a tooltip!',
-	showing: this._tooltipShowing
+	open: this._tooltipShowing
 }, [
 	w(TextInput, {
 		placeholder: 'Focus me',

@@ -10,7 +10,7 @@ export default function createTooltipElement(): CustomElementDescriptor {
 		widgetConstructor: Tooltip,
 		attributes: [
 			{
-				attributeName: 'showing',
+				attributeName: 'open',
 				value: value => value === 'false' || value === '0' ? false : true
 			},
 			{

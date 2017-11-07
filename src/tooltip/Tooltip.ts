@@ -12,12 +12,12 @@ import * as css from './styles/tooltip.m.css';
  *
  * @property content           Information to show within the tooltip
  * @property orientation       Where this tooltip should render relative to its child
- * @property showing           Determines if this tooltip is visible
+ * @property open           Determines if this tooltip is visible
  */
 export interface TooltipProperties extends WidgetProperties {
 	content: DNode;
 	orientation?: Orientation;
-	showing?: boolean;
+	open?: boolean;
 };
 
 // Enum used to position the Tooltip
@@ -62,7 +62,7 @@ export default class Tooltip extends TooltipBase<TooltipProperties> {
 	}
 
 	render(): DNode {
-		const { showing } = this.properties;
+		const { open } = this.properties;
 		const classes = this.getModifierClasses();
 		const fixedClasses = this.getFixedModifierClasses();
 
@@ -70,7 +70,7 @@ export default class Tooltip extends TooltipBase<TooltipProperties> {
 			classes: this.classes(...classes).fixed(...fixedClasses)
 		}, [
 			this.renderTarget(),
-			showing ? this.renderContent() : null
+			open ? this.renderContent() : null
 		]);
 	}
 }
