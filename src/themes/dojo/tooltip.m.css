@@ -1,0 +1,83 @@
+@import './variables.css';
+
+.root {
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
+.root,
+.root * {
+	box-sizing: border-box;
+}
+
+.content {
+	background-color: var(--color-background-inverted);
+	color: var(--color-text-inverted);
+	display: inline-block;
+	padding: var(--spacing-regular);
+}
+
+.bottom .content {
+	margin: var(--spacing-regular) 0 0;
+	transform: translate(-50%, calc(100% + var(--grid-base)));
+}
+
+.bottom .content::before {
+	border-left: var(--grid-base) solid transparent;
+	border-right: var(--grid-base) solid transparent;
+	border-bottom: var(--grid-base) solid var(--color-background-inverted);
+	content: "";
+	position: absolute;
+	top: calc(var(--grid-base) * -1);
+	left: 50%;
+	margin-left: calc(var(--grid-base) * -1);
+}
+
+.top .content {
+	margin: 0 0 var(--spacing-regular);
+	transform: translate(-50%, calc(-100% - var(--grid-base)));
+}
+
+.top .content::before {
+	border-left: var(--grid-base) solid transparent;
+	border-right: var(--grid-base) solid transparent;
+	border-top: var(--grid-base) solid var(--color-background-inverted);
+	content: "";
+	position: absolute;
+	bottom: calc(var(--grid-base) * -1);
+	left: 50%;
+	margin-left: calc(var(--grid-base) * -1);
+}
+
+.left .content {
+	margin: 0 var(--spacing-regular) 0 0;
+	transform: translate(calc(-100% - var(--grid-base)), -50%);
+}
+
+.left .content::before {
+	border-top: var(--grid-base) solid transparent;
+	border-bottom: var(--grid-base) solid transparent;
+	border-left: var(--grid-base) solid var(--color-background-inverted);
+	content: "";
+	position: absolute;
+	right: calc(var(--grid-base) * -1);
+	top: 50%;
+	margin-top: calc(var(--grid-base) * -1);
+}
+
+.right .content {
+	margin: 0 0 0 var(--spacing-regular);
+	transform: translate(calc(100% + var(--grid-base)), -50%);
+}
+
+.right .content::before {
+	border-top: var(--grid-base) solid transparent;
+	border-bottom: var(--grid-base) solid transparent;
+	border-right: var(--grid-base) solid var(--color-background-inverted);
+	content: "";
+	position: absolute;
+	left: calc(var(--grid-base) * -1);
+	top: 50%;
+	margin-top: calc(var(--grid-base) * -1);
+}

@@ -22,7 +22,8 @@ const modules = [
 	'textarea',
 	'textinput',
 	'timepicker',
-	'titlepane'
+	'titlepane',
+	'tooltip'
 ];
 
 export class App extends WidgetBase<WidgetProperties> {

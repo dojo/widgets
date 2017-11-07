@@ -1,12 +1,12 @@
 import has, { add } from '@dojo/has/has';
+import '@dojo/test-extras/support/loadJsdom';
+import './util';
 
 add('touch', () => {
 	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
 	return Boolean('ontouchstart' in window || has('host-node'));
 });
 
-import '@dojo/test-extras/support/loadJsdom';
-import './util';
 import '../../../accordionpane/tests/unit/AccordionPane';
 import '../../../button/tests/unit/Button';
 import '../../../calendar/tests/unit/Calendar';
@@ -30,3 +30,4 @@ import '../../../textarea/tests/unit/Textarea';
 import '../../../textinput/tests/unit/TextInput';
 import '../../../timepicker/tests/unit/TimePicker';
 import '../../../titlepane/tests/unit/TitlePane';
+import '../../../tooltip/tests/unit/Tooltip';

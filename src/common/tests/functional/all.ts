@@ -10,3 +10,4 @@ import '../../../slidepane/tests/functional/SlidePane';
 import '../../../tabcontroller/tests/functional/TabController';
 import '../../../textinput/tests/functional/TextInput';
 import '../../../titlepane/tests/functional/TitlePane';
+import '../../../tooltip/tests/functional/Tooltip';
