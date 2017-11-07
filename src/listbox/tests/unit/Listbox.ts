@@ -370,8 +370,11 @@ registerSuite('Listbox', {
 			document.body.appendChild(div);
 
 			const widget = new TestWidget();
-			widget.async = true;
+			widget.async = false;
 			widget.append(div);
+			widget.setProperties({
+				key: 'root'
+			});
 
 			const widgetDiv = document.querySelector('.root');
 			assert.strictEqual(widgetDiv!.scrollTop, 100);
