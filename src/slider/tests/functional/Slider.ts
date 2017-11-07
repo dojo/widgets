@@ -1,8 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import Command from '@theintern/leadfoot/Command';
-import Element from '@theintern/leadfoot/Element';
 import keys from '@theintern/leadfoot/keys';
 import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/slider.m.css';
@@ -61,11 +59,12 @@ function clickToFocus(test: any, selector: string) {
 	}
 
 	let input: string;
-	return getPage(test)
+	const remote = getPage(test);
+	remote
 		.findByCssSelector(`#example-s1 .${css.root}`)
 			.findByCssSelector(selector)
-				.then(function (this: { parent: Command<Element> }, element) {
-					return this.parent
+				.then((element) => {
+					return remote
 						.moveMouseTo(element)
 						.clickMouseButton(0);
 				})
