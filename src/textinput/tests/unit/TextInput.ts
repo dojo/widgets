@@ -9,13 +9,13 @@ import { assignProperties, assignChildProperties } from '@dojo/test-extras/suppo
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
-import TextInput, { TextInputProperties } from '../../TextInput';
+import TextInput from '../../TextInput';
 import * as css from '../../styles/textinput.m.css';
 
-const expected = function(widget: any, label = false) {
-	const inputVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
+const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
+	const inputVdom = v('div', { classes: css.inputWrapper }, [
 		v('input', {
-			classes: widget.classes(css.input),
+			classes: css.input,
 			'aria-controls': undefined,
 			'aria-describedby': undefined,
 			disabled: undefined,
@@ -54,12 +54,12 @@ const expected = function(widget: any, label = false) {
 	}
 	else {
 		return v('div', {
-			classes: widget.classes(css.root)
+			classes
 		}, [ inputVdom ]);
 	}
 };
 
-let widget: Harness<TextInputProperties, typeof TextInput>;
+let widget: Harness<TextInput>;
 
 registerSuite('TextInput', {
 
@@ -73,7 +73,7 @@ registerSuite('TextInput', {
 
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected(widget));
+			widget.expectRender(expected());
 		},
 
 		'custom properties'() {
@@ -88,7 +88,10 @@ registerSuite('TextInput', {
 				value: 'hello world'
 			});
 
-			const expectedVdom = expected(widget);
+			const expectedVdom = expected();
+			assignProperties(expectedVdom, {
+				classes: [ css.root, null, null, null, null, null ]
+			});
 			assignChildProperties(expectedVdom, '0,0', {
 				'aria-controls': 'foo',
 				'aria-describedby': 'bar',
@@ -108,7 +111,7 @@ registerSuite('TextInput', {
 				label: 'foo'
 			});
 
-			widget.expectRender(expected(widget, true));
+			widget.expectRender(expected(true));
 		},
 
 		'state classes'() {
@@ -119,16 +122,13 @@ registerSuite('TextInput', {
 				required: true
 			});
 
-			let expectedVdom = expected(widget);
+			let expectedVdom = expected(false, [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]);
 			assignChildProperties(expectedVdom, '0,0', {
 				disabled: true,
 				'aria-invalid': 'true',
 				readOnly: true,
 				'aria-readonly': 'true',
 				required: true
-			});
-			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.invalid, css.disabled, css.readonly, css.required)
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -139,7 +139,7 @@ registerSuite('TextInput', {
 				readOnly: false,
 				required: false
 			});
-			expectedVdom = expected(widget);
+			expectedVdom = expected();
 
 			assignChildProperties(expectedVdom, '0,0', {
 				disabled: false,
@@ -147,7 +147,7 @@ registerSuite('TextInput', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.valid)
+				classes: [ css.root, null, null, css.valid, null, null ]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
@@ -162,7 +162,7 @@ registerSuite('TextInput', {
 				required: true
 			});
 
-			const expectedVdom = expected(widget, true);
+			const expectedVdom = expected(true);
 			assignChildProperties(expectedVdom, '0,0', {
 				disabled: true,
 				'aria-invalid': 'true',

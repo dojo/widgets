@@ -9,13 +9,13 @@ import { assignProperties, assignChildProperties } from '@dojo/test-extras/suppo
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
-import Radio, { RadioProperties } from '../../Radio';
+import Radio from '../../Radio';
 import * as css from '../../styles/radio.m.css';
 
-const expected = function(widget: any, label = false) {
-	const radioVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
+const expected = function(widget: Harness<Radio>, label = false) {
+	const radioVdom = v('div', { classes: css.inputWrapper }, [
 		v('input', {
-			classes: widget.classes(css.input),
+			classes: css.input,
 			checked: false,
 			'aria-describedby': undefined,
 			disabled: undefined,
@@ -47,12 +47,12 @@ const expected = function(widget: any, label = false) {
 	}
 	else {
 		return v('div', {
-			classes: widget.classes(css.root)
+			classes: [ css.root, null, null, null, null, null, null, null ]
 		}, [ radioVdom ]);
 	}
 };
 
-let widget: Harness<RadioProperties, typeof Radio>;
+let widget: Harness<Radio>;
 
 registerSuite('Radio', {
 
@@ -85,7 +85,7 @@ registerSuite('Radio', {
 				value: 'baz'
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.checked)
+				classes: [ css.root, css.checked, null, null, null, null, null, null ]
 			});
 
 			widget.expectRender(expectedVdom);
@@ -116,7 +116,7 @@ registerSuite('Radio', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.invalid, css.disabled, css.readonly, css.required)
+				classes: [ css.root, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -135,7 +135,7 @@ registerSuite('Radio', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.valid)
+				classes: [ css.root, null, null, null, null, css.valid, null, null ]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
@@ -171,7 +171,7 @@ registerSuite('Radio', {
 			widget.sendEvent('focus', { selector: 'input' });
 			expectedVdom = expected(widget);
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.focused)
+				classes: [ css.root, null, null, css.focused, null, null, null, null ]
 			});
 			widget.expectRender(expectedVdom, 'Should have focused class after focus event');
 

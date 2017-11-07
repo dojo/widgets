@@ -1,7 +1,7 @@
 import { assign } from '@dojo/core/lang';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
 import Tab, { TabProperties } from './Tab';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import TabButton from './TabButton';
@@ -29,14 +29,14 @@ export const enum Align {
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
-export interface TabControllerProperties extends ThemeableProperties {
+export interface TabControllerProperties extends ThemedProperties {
 	activeIndex: number;
 	alignButtons?: Align;
 	onRequestTabChange?(index: number, key: string): void;
 	onRequestTabClose?(index: number, key: string): void;
 };
 
-export const TabControllerBase = ThemeableMixin(WidgetBase);
+export const TabControllerBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class TabController extends TabControllerBase<TabControllerProperties, WNode<Tab>> {
@@ -207,11 +207,11 @@ export default class TabController extends TabControllerBase<TabControllerProper
 		const children = [
 			v('div', {
 				key: 'buttons',
-				classes: this.classes(css.tabButtons)
+				classes: this.theme(css.tabButtons)
 			}, this.renderTabButtons()),
 			tabs.length ? v('div', {
 				key: 'tabs',
-				classes: this.classes(css.tabs)
+				classes: this.theme(css.tabs)
 			}, tabs) : null
 		];
 
@@ -236,10 +236,10 @@ export default class TabController extends TabControllerBase<TabControllerProper
 
 		return v('div', {
 			'aria-orientation': orientation,
-			classes: this.classes(
+			classes: this.theme([
 				alignClass ? alignClass : null,
 				css.root
-			),
+			]),
 			role: 'tablist'
 		}, children);
 	}

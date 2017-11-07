@@ -1,6 +1,6 @@
 import { createHandle } from '@dojo/core/lang';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
@@ -25,7 +25,7 @@ export const enum Direction {
  * @property size           Size of the primary pane
  * @property trailing       Content to show in the secondary pane
  */
-export interface SplitPaneProperties extends ThemeableProperties {
+export interface SplitPaneProperties extends ThemedProperties {
 	direction?: Direction;
 	leading?: DNode;
 	onResize?(size: number): void;
@@ -33,7 +33,7 @@ export interface SplitPaneProperties extends ThemeableProperties {
 	trailing?: DNode;
 };
 
-export const SplitPaneBase = ThemeableMixin(WidgetBase);
+export const SplitPaneBase = ThemedMixin(WidgetBase);
 
 const DEFAULT_SIZE = 100;
 
@@ -160,41 +160,39 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 		} = this.properties;
 
 		return v('div', {
-			classes: this.classes(
-				css.root,
-				direction === Direction.column ? css.column : css.row
-			).fixed(
+			classes: [
+				...this.theme([
+					css.root,
+					direction === Direction.column ? css.column : css.row
+				]),
 				css.rootFixed,
 				direction === Direction.column ? css.columnFixed : css.rowFixed
-			),
+			],
 			key: 'root'
 		}, [
 			v('div', {
-				classes: this.classes(
-					css.leading
-				).fixed(
+				classes: [
+					this.theme(css.leading),
 					css.leadingFixed
-				),
+				],
 				key: 'leading',
 				styles: this.getPaneStyles()
 			}, this.getPaneContent(leading)),
 			v('div', {
-				classes: this.classes(
-					css.divider
-				).fixed(
+				classes: [
+					this.theme(css.divider),
 					css.dividerFixed
-				),
+				],
 				key: 'divider',
 				onmousedown: this._onDragStart,
 				ontouchend: this._onDragEnd,
 				ontouchstart: this._onDragStart
 			}),
 			v('div', {
-				classes: this.classes(
-					css.trailing
-				).fixed(
+				classes: [
+					this.theme(css.trailing),
 					css.trailingFixed
-				),
+				],
 				key: 'trailing'
 			}, this.getPaneContent(trailing))
 		]);

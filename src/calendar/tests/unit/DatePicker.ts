@@ -6,13 +6,13 @@ import { compareProperty, findKey, assignChildProperties, replaceChild } from '@
 import { v } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
-import DatePicker, { DatePickerProperties } from '../../DatePicker';
+import DatePicker from '../../DatePicker';
 import { DEFAULT_MONTHS, DEFAULT_LABELS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
-let widget: Harness<DatePickerProperties, typeof DatePicker>;
+let widget: Harness<DatePicker>;
 const testDate = new Date('June 3 2017');
 const requiredProps = {
 	labels: DEFAULT_LABELS,
@@ -26,14 +26,14 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
-const monthRadios = function(widget: any, open?: boolean) {
+const monthRadios = function(widget: Harness<DatePicker>, open?: boolean) {
 	return DEFAULT_MONTHS.map((monthName, i) => v('label', {
 		key: <any> compareId,
-		classes: widget.classes(css.monthRadio, i === 5 ? css.monthRadioChecked : null)
+		classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ]
 	}, [
 		v('input', {
 			checked: i === 5,
-			classes: widget.classes(css.monthRadioInput),
+			classes: css.monthRadioInput,
 			name: <any> compareId,
 			tabIndex: open ? 0 : -1,
 			type: 'radio',
@@ -42,22 +42,22 @@ const monthRadios = function(widget: any, open?: boolean) {
 			onmouseup: widget.listener
 		}),
 		v('abbr', {
-			classes: widget.classes(css.monthRadioLabel),
+			classes: css.monthRadioLabel,
 			title: monthName.long
 		}, [ monthName.short ])
 	]));
 };
 
-const yearRadios = function(widget: any, open?: boolean, yearStart = 2000, yearEnd = 2020) {
+const yearRadios = function(widget: Harness<DatePicker>, open?: boolean, yearStart = 2000, yearEnd = 2020) {
 	const radios = [];
 	for (let i = yearStart; i < yearEnd; i++) {
 		radios.push(v('label', {
 			key: <any> compareId,
-			classes: widget.classes(css.yearRadio, i === 2017 ? css.yearRadioChecked : null)
+			classes: [ css.yearRadio, i === 2017 ? css.yearRadioChecked : null ]
 		}, [
 			v('input', {
 				checked: i === 2017,
-				classes: widget.classes(css.yearRadioInput),
+				classes: css.yearRadioInput,
 				name: <any> compareId,
 				tabIndex: open ? 0 : -1,
 				type: 'radio',
@@ -66,90 +66,90 @@ const yearRadios = function(widget: any, open?: boolean, yearStart = 2000, yearE
 				onmouseup: widget.listener
 			}),
 			v('abbr', {
-				classes: widget.classes(css.yearRadioLabel)
+				classes: css.yearRadioLabel
 			}, [ `${ i }` ])
 		]));
 	}
 	return radios;
 };
 
-const expectedMonthPopup = function(widget: any, open: boolean) {
+const expectedMonthPopup = function(widget: Harness<DatePicker>, open: boolean) {
 	return v('div', {
 		key: 'month-grid',
 		'aria-hidden': `${!open}`,
 		'aria-labelledby': <any> compareId,
-		classes: widget.classes(css.monthGrid, !open ? baseCss.visuallyHidden : null),
+		classes: [ css.monthGrid, !open ? baseCss.visuallyHidden : null ],
 		id: <any> compareId,
 		role: 'dialog'
 	}, [
 		v('fieldset', {
-			classes: widget.classes(css.monthFields),
+			classes: css.monthFields,
 			onkeydown: widget.listener
 		}, [
 			v('legend', {
-				classes: widget.classes(baseCss.visuallyHidden)
+				classes: baseCss.visuallyHidden
 			}, [ DEFAULT_LABELS.chooseMonth ]),
 			...monthRadios(widget, open)
 		])
 	]);
 };
 
-const expectedYearPopup = function(widget: any, open: boolean, yearStart?: number, yearEnd?: number) {
+const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, yearStart?: number, yearEnd?: number) {
 	return v('div', {
 		key: 'year-grid',
 		'aria-hidden': `${!open}`,
 		'aria-labelledby': <any> compareId,
-		classes: widget.classes(css.yearGrid, !open ? baseCss.visuallyHidden : null),
+		classes: [ css.yearGrid, !open ? baseCss.visuallyHidden : null ],
 		id: <any> compareId,
 		role: 'dialog'
 	}, [
 		v('fieldset', {
-			classes: widget.classes(css.yearFields),
+			classes: css.yearFields,
 			onkeydown: widget.listener
 		}, [
-			v('legend', { classes: widget.classes(baseCss.visuallyHidden) }, [ DEFAULT_LABELS.chooseYear ]),
+			v('legend', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.chooseYear ]),
 			...yearRadios(widget, open, yearStart, yearEnd)
 		]),
 		v('div', {
-			classes: widget.classes(css.controls)
+			classes: css.controls
 		}, [
 			v('button', {
-				classes: widget.classes(css.previous),
+				classes: css.previous,
 				tabIndex: open ? 0 : -1,
 				onclick: widget.listener
 			}, [
-				v('i', { classes: widget.classes(iconCss.icon, iconCss.leftIcon),
+				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: widget.classes(baseCss.visuallyHidden) }, [ DEFAULT_LABELS.previousMonth ])
+				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousMonth ])
 			]),
 			v('button', {
-				classes: widget.classes(css.next),
+				classes: css.next,
 				tabIndex: open ? 0 : -1,
 				onclick: widget.listener
 			}, [
-				v('i', { classes: widget.classes(iconCss.icon, iconCss.rightIcon),
+				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: widget.classes(baseCss.visuallyHidden) }, [ DEFAULT_LABELS.nextMonth ])
+				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextMonth ])
 			])
 		])
 	]);
 };
 
-const expected = function(widget: any, monthOpen = false, yearOpen = false, yearStart?: number, yearEnd?: number) {
+const expected = function(widget: Harness<DatePicker>, monthOpen = false, yearOpen = false, yearStart?: number, yearEnd?: number) {
 	// new
 	return v('div', {
-		classes: widget.classes(css.datePicker)
+		classes: css.datePicker
 	}, [
 		v('div', {
-			classes: widget.classes(css.topMatter),
+			classes: css.topMatter,
 			role: 'menubar'
 		}, [
 			// hidden label
 			v('label', {
 				id: customProps.labelId ? customProps.labelId : <any> compareId,
-				classes: widget.classes(baseCss.visuallyHidden),
+				classes: [ baseCss.visuallyHidden ],
 				'aria-live': 'polite',
 				'aria-atomic': 'false'
 			}, [ 'June 2017' ]),
@@ -161,7 +161,7 @@ const expected = function(widget: any, monthOpen = false, yearOpen = false, year
 				'aria-expanded': `${monthOpen}`,
 				'aria-haspopup': 'true',
 				id: <any> compareId,
-				classes: widget.classes(css.monthTrigger, monthOpen ? css.monthTriggerActive : null),
+				classes: [ css.monthTrigger, monthOpen ? css.monthTriggerActive : null ],
 				role: 'menuitem',
 				onclick: widget.listener
 			}, [ 'June' ]),
@@ -173,7 +173,7 @@ const expected = function(widget: any, monthOpen = false, yearOpen = false, year
 				'aria-expanded': `${yearOpen}`,
 				'aria-haspopup': 'true',
 				id: <any> compareId,
-				classes: widget.classes(css.yearTrigger, yearOpen ? css.yearTriggerActive : null),
+				classes: [ css.yearTrigger, yearOpen ? css.yearTriggerActive : null ],
 				role: 'menuitem',
 				onclick: widget.listener
 			}, [ '2017' ])
@@ -243,7 +243,7 @@ registerSuite('Calendar DatePicker', {
 			const yearGridVdom = findKey(expectedVdom, 'year-grid');
 			replaceChild(expectedVdom, '0,0,0', 'June 1997');
 			replaceChild(expectedVdom, '0,2,0', '1997');
-			assignChildProperties(yearGridVdom!, '0,18', { classes: widget.classes(css.yearRadio, css.yearRadioChecked) });
+			assignChildProperties(yearGridVdom!, '0,18', { classes: [ css.yearRadio, css.yearRadioChecked ] });
 			assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
 			widget.expectRender(expectedVdom);
 		},

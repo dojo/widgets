@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import * as css from './styles/textarea.m.css';
@@ -38,7 +38,7 @@ import * as css from './styles/textarea.m.css';
  * @property onTouchEnd      Called on the input's touchend event
  * @property onTouchCancel   Called on the input's touchcancel event
  */
-export interface TextareaProperties extends ThemeableProperties {
+export interface TextareaProperties extends ThemedProperties {
 	columns?: number;
 	describedBy?: string;
 	disabled?: boolean;
@@ -68,7 +68,7 @@ export interface TextareaProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
-export const TextareaBase = ThemeableMixin(WidgetBase);
+export const TextareaBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class Textarea extends TextareaBase<TextareaProperties> {
@@ -120,9 +120,9 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 			wrapText
 		} = this.properties;
 
-		const textarea = v('div', { classes: this.classes(css.inputWrapper) }, [
+		const textarea = v('div', { classes: this.theme(css.inputWrapper) }, [
 			v('textarea', {
-				classes: this.classes(css.input),
+				classes: this.theme(css.input),
 				cols: columns ? `${columns}` : null,
 				'aria-describedby': describedBy,
 				disabled,
@@ -157,14 +157,14 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 
 		if (label) {
 			textareaWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses())()) },
+				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
 				label,
 				theme: this.properties.theme
 			}, [ textarea ]);
 		}
 		else {
 			textareaWidget = v('div', {
-				classes: this.classes(css.root, ...this.getModifierClasses())
+				classes: this.theme([ css.root, ...this.getModifierClasses() ])
 			}, [ textarea ]);
 		}
 

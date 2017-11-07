@@ -1,5 +1,5 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
@@ -31,7 +31,7 @@ export const enum Align {
  * @property underlay         Determines whether a semi-transparent background shows behind the pane
  * @property width            Width of the pane in pixels
  */
-export interface SlidePaneProperties extends ThemeableProperties {
+export interface SlidePaneProperties extends ThemedProperties {
 	align?: Align;
 	closeText?: string;
 	onOpen?(): void;
@@ -57,7 +57,7 @@ const enum Plane {
 	y
 };
 
-export const SlidePaneBase = ThemeableMixin(WidgetBase);
+export const SlidePaneBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
@@ -173,7 +173,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	}
 
 	protected getContent(): DNode {
-		return v('div', { classes: this.classes(css.content) }, this.children);
+		return v('div', { classes: this.theme(css.content) }, this.children);
 	}
 
 	protected getStyles(): { [key: string]: string | null } {
@@ -229,7 +229,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	}
 
 	protected renderCloseIcon(): DNode {
-		return v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+		return v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
 			role: 'presentation', 'aria-hidden': 'true'
 		});
 	}
@@ -242,7 +242,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 	protected renderUnderlay(): DNode {
 		const { underlay = false } = this.properties;
 		return v('div', {
-			classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
+			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay'
@@ -271,7 +271,7 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 
 		return v('div', {
 			'aria-labelledby': this._titleId,
-			classes: this.classes(css.root),
+			classes: this.theme(css.root),
 			onmousedown: this._onSwipeStart,
 			onmousemove: this._onSwipeMove,
 			onmouseup: this._onSwipeEnd,
@@ -282,16 +282,16 @@ export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
 			open ? this.renderUnderlay() : null,
 			v('div', {
 				key: 'content',
-				classes: this.classes(css.pane, ...contentClasses).fixed(css.paneFixed, ...fixedContentClasses),
+				classes: [ ...this.theme([ css.pane, ...contentClasses ]), css.paneFixed, ...fixedContentClasses ],
 				styles: contentStyles
 			}, [
 				title ? v('div', {
-					classes: this.classes(css.title),
+					classes: this.theme(css.title),
 					key: 'title'
 				}, [
 					this.renderTitle(),
 					v('button', {
-						classes: this.classes(css.close),
+						classes: this.theme(css.close),
 						onclick: this._onCloseClick
 					}, [
 						closeText,

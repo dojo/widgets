@@ -159,14 +159,14 @@ registerSuite('TimePicker', {
 	'Native input': {
 		basic() {
 			const picker = harness(TimePicker);
-			const inputClasses = picker.classes(css.input);
+			const inputClasses = [ css.input, null, null, null, null ];
 
 			picker.setProperties({
 				name: 'some-field',
 				useNativeElement: true
 			});
 			picker.expectRender(v('span', {
-				classes: picker.classes(css.root),
+				classes: css.root,
 				key: 'root'
 			}, [
 				v('input', {
@@ -196,13 +196,13 @@ registerSuite('TimePicker', {
 
 		'Attributes added'() {
 			const picker = harness(TimePicker);
-			const inputClasses = picker.classes(
-				css.disabled,
+			const inputClasses = [
 				css.input,
+				css.disabled,
 				css.invalid,
 				css.readonly,
 				css.required
-			);
+			];
 
 			picker.setProperties({
 				disabled: true,
@@ -219,7 +219,7 @@ registerSuite('TimePicker', {
 			});
 
 			picker.expectRender(v('span', {
-				classes: picker.classes(css.root),
+				classes: css.root,
 				key: 'root'
 			}, [
 				v('input', {
@@ -249,17 +249,17 @@ registerSuite('TimePicker', {
 
 		'Label should render'() {
 			const picker = harness(TimePicker);
-			const inputClasses = picker.classes(css.input);
+			const inputClasses = [ css.input, null, null, null, null ];
 			picker.setProperties({
 				label: 'foo',
 				useNativeElement: true
 			});
 			picker.expectRender(v('span', {
-				classes: picker.classes(css.root),
+				classes: css.root,
 				key: 'root'
 			}, [
 				w(Label, {
-					extraClasses: { root: parseLabelClasses(picker.classes(css.input)()) },
+					extraClasses: { root: parseLabelClasses(css.input) },
 					theme: undefined,
 					label: 'foo'
 				}, [
@@ -299,7 +299,7 @@ registerSuite('TimePicker', {
 			let label = vnode.children[0];
 			let classes: any = label.properties.extraClasses;
 
-			assert.deepEqual(classes, { root: parseLabelClasses(picker.classes(css.input)()) });
+			assert.deepEqual(classes, { root: parseLabelClasses(css.input) });
 
 			picker.setProperties({
 				disabled: true,
@@ -313,7 +313,7 @@ registerSuite('TimePicker', {
 			label = vnode.children[0];
 
 			classes = label.properties.extraClasses;
-			assert.deepEqual(classes, { root: parseLabelClasses(picker.classes(css.input, css.disabled, css.invalid, css.readonly, css.required)()) });
+			assert.deepEqual(classes, { root: parseLabelClasses([ css.input, css.disabled, css.invalid, css.readonly, css.required ]) });
 
 			picker.destroy();
 		},

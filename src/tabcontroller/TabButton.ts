@@ -1,5 +1,5 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { Keys } from '../common/util';
@@ -28,7 +28,7 @@ import * as css from './styles/tabController.m.css';
  * @property onRightArrowPress  Called when the right arrow button is pressed
  * @property onUpArrowPress     Called when the up arrow button is pressed
  */
-export interface TabButtonProperties extends ThemeableProperties {
+export interface TabButtonProperties extends ThemedProperties {
 	active?: boolean;
 	callFocus?: boolean;
 	closeable?: boolean;
@@ -47,7 +47,7 @@ export interface TabButtonProperties extends ThemeableProperties {
 	onUpArrowPress?: () => void;
 };
 
-export const TabButtonBase = ThemeableMixin(WidgetBase);
+export const TabButtonBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class TabButton extends TabButtonBase<TabButtonProperties> {
@@ -137,7 +137,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			...this.children,
 			closeable ? v('button', {
 				tabIndex: active ? 0 : -1,
-				classes: this.classes(css.close),
+				classes: this.theme(css.close),
 				innerHTML: 'close tab',
 				onclick: this._onCloseClick
 			}) : null
@@ -172,7 +172,7 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
 			'aria-selected': active ? 'true' : 'false',
-			classes: this.classes(css.tabButton, ...this.getModifierClasses()),
+			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,

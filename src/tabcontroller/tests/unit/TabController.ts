@@ -8,7 +8,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
-import TabController, { Align, TabControllerProperties } from '../../TabController';
+import TabController, { Align } from '../../TabController';
 import TabButton from '../../TabButton';
 import Tab from '../../Tab';
 import * as css from '../../styles/tabController.m.css';
@@ -41,17 +41,17 @@ const tabChildren = function(tabs = 2) {
 	return children;
 };
 
-const expectedTabButtons = function(widget: any, empty = false): DNode {
+const expectedTabButtons = function(empty = false): DNode {
 	if (empty) {
 		return v('div', {
 			key: 'buttons',
-			classes: widget.classes(css.tabButtons)
-		}, []);
+			classes: css.tabButtons
+		}, [ ]);
 	}
 
 	return v('div', {
 		key: 'buttons',
-		classes: widget.classes(css.tabButtons)
+		classes: css.tabButtons
 	}, [
 		w(TabButton, {
 			callFocus: false,
@@ -96,7 +96,7 @@ const expectedTabButtons = function(widget: any, empty = false): DNode {
 	]);
 };
 
-const expectedTabContent = function(widget: any, index = 0): DNode {
+const expectedTabContent = function(index = 0): DNode {
 	if (index < 0 || index > 1) {
 		return null;
 	}
@@ -118,19 +118,19 @@ const expectedTabContent = function(widget: any, index = 0): DNode {
 	];
 	return v('div', {
 		key: 'tabs',
-		classes: widget.classes(css.tabs)
+		classes: css.tabs
 	}, [ tabs[index] ]);
 };
 
-const expected = function(widget: any, children: DNode[] = []) {
+const expected = function(children: DNode[] = []) {
 	return v('div', {
 		'aria-orientation': 'horizontal',
-		classes: widget.classes(css.root),
+		classes: [ null, css.root ],
 		role: 'tablist'
 	}, children);
 };
 
-let widget: Harness<TabControllerProperties, typeof TabController>;
+let widget: Harness<TabController>;
 
 registerSuite('TabController', {
 
@@ -147,16 +147,16 @@ registerSuite('TabController', {
 			widget.setProperties({
 				activeIndex: 0
 			});
-			let tabButtons = expectedTabButtons(widget, true);
+			let tabButtons = expectedTabButtons(true);
 			let tabContent = null;
 
-			widget.expectRender(expected(widget, [ tabButtons, tabContent ]), 'Empty tab controller');
+			widget.expectRender(expected([ tabButtons, tabContent ]), 'Empty tab controller');
 
 			widget.setChildren(tabChildren());
-			tabButtons = expectedTabButtons(widget);
-			tabContent = expectedTabContent(widget);
+			tabButtons = expectedTabButtons();
+			tabContent = expectedTabContent();
 
-			widget.expectRender(expected(widget, [ tabButtons, tabContent ]), 'Tab controller with tabs');
+			widget.expectRender(expected([ tabButtons, tabContent ]), 'Tab controller with tabs');
 		},
 
 		'custom orientation'() {
@@ -166,11 +166,11 @@ registerSuite('TabController', {
 			});
 			widget.setChildren(tabChildren());
 
-			let tabButtons = expectedTabButtons(widget);
-			let tabContent = expectedTabContent(widget);
-			let expectedVdom = expected(widget, [ tabContent, tabButtons ]);
+			let tabButtons = expectedTabButtons();
+			let tabContent = expectedTabContent();
+			let expectedVdom = expected([ tabContent, tabButtons ]);
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.alignBottom, css.root)
+				classes: [ css.alignBottom, css.root ]
 			});
 			widget.expectRender(expectedVdom, 'tabs aligned bottom');
 
@@ -179,12 +179,12 @@ registerSuite('TabController', {
 				alignButtons: Align.right
 			});
 			widget.setChildren(tabChildren());
-			tabButtons = expectedTabButtons(widget);
-			tabContent = expectedTabContent(widget);
-			expectedVdom = expected(widget, [ tabContent, tabButtons ]);
+			tabButtons = expectedTabButtons();
+			tabContent = expectedTabContent();
+			expectedVdom = expected([ tabContent, tabButtons ]);
 			assignProperties(expectedVdom, {
 				'aria-orientation': 'vertical',
-				classes: widget.classes(css.alignRight, css.root)
+				classes: [ css.alignRight, css.root ]
 			});
 			widget.expectRender(expectedVdom, 'tabs aligned right');
 
@@ -193,12 +193,12 @@ registerSuite('TabController', {
 				alignButtons: Align.left
 			});
 			widget.setChildren(tabChildren());
-			tabButtons = expectedTabButtons(widget);
-			tabContent = expectedTabContent(widget);
-			expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			tabButtons = expectedTabButtons();
+			tabContent = expectedTabContent();
+			expectedVdom = expected([ tabButtons, tabContent ]);
 			assignProperties(expectedVdom, {
 				'aria-orientation': 'vertical',
-				classes: widget.classes(css.alignLeft, css.root)
+				classes: [ css.alignLeft, css.root ]
 			});
 			widget.expectRender(expectedVdom, 'tabs aligned left');
 		},
@@ -402,9 +402,9 @@ registerSuite('TabController', {
 				}, [ 'tab content 2' ])
 			]);
 
-			let tabButtons = expectedTabButtons(widget);
-			let tabContent = expectedTabContent(widget);
-			let expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			let tabButtons = expectedTabButtons();
+			let tabContent = expectedTabContent();
+			let expectedVdom = expected([ tabButtons, tabContent ]);
 
 			widget.callListener('onClick', {
 				args: [ 0 ],
@@ -414,11 +414,11 @@ registerSuite('TabController', {
 				activeIndex: 0
 			});
 
-			tabButtons = expectedTabButtons(widget);
-			tabContent = expectedTabContent(widget);
+			tabButtons = expectedTabButtons();
+			tabContent = expectedTabContent();
 			assignChildProperties((<any> tabButtons), '0', { callFocus: true });
 			assignChildProperties((<any> tabButtons), '1', { disabled: undefined });
-			expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			expectedVdom = expected([ tabButtons, tabContent ]);
 
 			widget.expectRender(expectedVdom, 'Clicking tab button updates callFocus property to true');
 
@@ -427,9 +427,9 @@ registerSuite('TabController', {
 				key: '0-tabbutton'
 			});
 			widget.setChildren(tabChildren());
-			tabButtons = expectedTabButtons(widget);
-			tabContent = expectedTabContent(widget);
-			expectedVdom = expected(widget, [ tabButtons, tabContent ]);
+			tabButtons = expectedTabButtons();
+			tabContent = expectedTabContent();
+			expectedVdom = expected([ tabButtons, tabContent ]);
 			widget.expectRender(expectedVdom, 'onFocusCalled updates callFocus to false');
 		}
 	}

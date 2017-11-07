@@ -8,12 +8,12 @@ import { Keys } from '../../../common/util';
 
 import CalendarCell from '../../CalendarCell';
 import DatePicker from '../../DatePicker';
-import Calendar, { CalendarProperties, DEFAULT_MONTHS, DEFAULT_LABELS, DEFAULT_WEEKDAYS } from '../../Calendar';
+import Calendar, { DEFAULT_MONTHS, DEFAULT_LABELS, DEFAULT_WEEKDAYS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
-let widget: Harness<CalendarProperties, typeof Calendar>;
+let widget: Harness<Calendar>;
 const testDate = new Date('June 3 2017');
 
 const compareId = compareProperty((value: any) => {
@@ -21,7 +21,7 @@ const compareId = compareProperty((value: any) => {
 });
 
 let dateIndex = -1;
-const expectedDateCell = function(widget: any, date: number, active: boolean) {
+const expectedDateCell = function(widget: Harness<Calendar>, date: number, active: boolean) {
 	dateIndex++;
 	return w(CalendarCell, {
 		key: `date-${dateIndex}`,
@@ -37,9 +37,9 @@ const expectedDateCell = function(widget: any, date: number, active: boolean) {
 	});
 };
 
-const expected = function(widget: any, popupOpen = false) {
+const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 	dateIndex = -1;
-	return v('div', { classes: widget.classes(css.root) }, [
+	return v('div', { classes: css.root }, [
 		w(DatePicker, {
 			key: 'date-picker',
 			labelId: <any> compareId,
@@ -57,12 +57,12 @@ const expected = function(widget: any, popupOpen = false) {
 			cellpadding: '0',
 			role: 'grid',
 			'aria-labelledby': compareId, // this._monthLabelId,
-			classes: widget.classes(css.dateGrid, popupOpen ? baseCss.visuallyHidden : null)
+			classes: [ css.dateGrid, popupOpen ? baseCss.visuallyHidden : null ]
 		}, [
 			v('thead', [
 				v('tr', DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string; }) => v('th', {
 						role: 'columnheader',
-						classes: widget.classes(css.weekday)
+						classes: css.weekday
 					}, [
 						v('abbr', { title: weekday.long }, [ weekday.short ])
 					])
@@ -126,27 +126,27 @@ const expected = function(widget: any, popupOpen = false) {
 			])
 		]),
 		v('div', {
-			classes: widget.classes(css.controls, popupOpen ? baseCss.visuallyHidden : null)
+			classes: [ css.controls, popupOpen ? baseCss.visuallyHidden : null ]
 		}, [
 			v('button', {
-				classes: widget.classes(css.previous),
+				classes: css.previous,
 				tabIndex: popupOpen ? -1 : 0,
 				onclick: widget.listener
 			}, [
-				v('i', { classes: widget.classes(iconCss.icon, iconCss.leftIcon),
+				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: widget.classes(baseCss.visuallyHidden) }, [ 'Previous Month' ])
+				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Previous Month' ])
 			]),
 			v('button', {
-				classes: widget.classes(css.next),
+				classes: css.next,
 				tabIndex: popupOpen ? -1 : 0,
 				onclick: widget.listener
 			}, [
-				v('i', { classes: widget.classes(iconCss.icon, iconCss.rightIcon),
+				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: widget.classes(baseCss.visuallyHidden) }, [ 'Next Month' ])
+				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Next Month' ])
 			])
 		])
 	]);

@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { DNode, SupportedClassName } from '@dojo/widget-core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { assign } from '@dojo/core/lang';
 import * as css from './styles/label.m.css';
@@ -32,7 +32,7 @@ const labelDefaults = {
  * @property forId     ID to explicitly associate the label with an input element
  * @property label      Label settings for form label text, position, and visibility
  */
-export interface LabelProperties extends ThemeableProperties {
+export interface LabelProperties extends ThemedProperties {
 	forId?: string;
 	label: string | LabelOptions;
 }
@@ -40,19 +40,13 @@ export interface LabelProperties extends ThemeableProperties {
 /**
  * This is a helper function for using `extraClasses` with Label.
  * It can be used as follows:
- * extraClasses: { root: parseLabelClasses(this.classes(css.class1, css.class2).get()) }
+ * extraClasses: { root: parseLabelClasses(this.theme([ css.class1, css.class2 ])) }
  */
-export function parseLabelClasses(classes: { [key: string]: boolean | undefined | null }): string {
-	return Object.keys(classes).reduce((classNamesString: string, className) => {
-		if (classes[className] === true) {
-			classNamesString += ` ${className}`;
-		}
-
-		return classNamesString;
-	}, '').trim();
+export function parseLabelClasses(classes: SupportedClassName | SupportedClassName[]): string {
+	return Array.isArray(classes) ? classes.filter((str) => str).join(' ') : classes || '';
 }
 
-export const LabelBase = ThemeableMixin(WidgetBase);
+export const LabelBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class Label extends LabelBase<LabelProperties>  {
@@ -75,7 +69,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 		// add label text node to children
 		const labelText = v('span', {
 			innerHTML: labelProps.content,
-			classes: this.classes(css.labelText).fixed(labelProps.hidden ? baseCss.visuallyHidden : null)
+			classes: [ this.theme(css.labelText), labelProps.hidden ? baseCss.visuallyHidden : null ]
 		});
 		if (labelProps.before) {
 			this.children.unshift(labelText);
@@ -85,7 +79,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 		}
 
 		return v('label', {
-			classes: this.classes(css.root),
+			classes: this.theme(css.root),
 			for: forId
 		}, this.children);
 	}

@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import * as css from './styles/button.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -31,7 +31,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property onTouchEnd     Called on the button's touchend event
  * @property onTouchStart   Called on the button's touchstart event
  */
-export interface ButtonProperties extends ThemeableProperties {
+export interface ButtonProperties extends ThemedProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	id?: string;
@@ -53,7 +53,7 @@ export interface ButtonProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
-export const ButtonBase = ThemeableMixin(WidgetBase);
+export const ButtonBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
@@ -89,7 +89,7 @@ export default class Button extends ButtonBase<ButtonProperties> {
 	}
 
 	protected renderPopupIcon(): DNode {
-		return v('i', { classes: this.classes(css.addon, iconCss.icon, iconCss.downIcon),
+		return v('i', { classes: this.theme([ css.addon, iconCss.icon, iconCss.downIcon ]),
 			role: 'presentation', 'aria-hidden': 'true'
 		});
 	}
@@ -111,7 +111,7 @@ export default class Button extends ButtonBase<ButtonProperties> {
 		}
 
 		return v('button', {
-			classes: this.classes(css.root, ...this.getModifierClasses()),
+			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
 			disabled,
 			id,
 			name,

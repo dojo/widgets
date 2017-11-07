@@ -4,10 +4,10 @@ const { assert } = intern.getPlugin('chai');
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
-import CalendarCell, { CalendarCellProperties } from '../../CalendarCell';
+import CalendarCell from '../../CalendarCell';
 import * as css from '../../styles/calendar.m.css';
 
-let widget: Harness<CalendarCellProperties, typeof CalendarCell>;
+let widget: Harness<CalendarCell>;
 
 registerSuite('CalendarCell', {
 	beforeEach() {
@@ -29,7 +29,7 @@ registerSuite('CalendarCell', {
 				role: 'gridcell',
 				'aria-selected': 'false',
 				tabIndex: -1,
-				classes: widget.classes(css.date),
+				classes: [ css.date, null, null, null ],
 				onclick: widget.listener,
 				onkeydown: widget.listener
 			}, [
@@ -51,7 +51,7 @@ registerSuite('CalendarCell', {
 				role: 'gridcell',
 				'aria-selected': 'true',
 				tabIndex: 0,
-				classes: widget.classes(css.date, css.inactiveDate, css.selectedDate, css.todayDate),
+				classes: [ css.date, css.inactiveDate, css.selectedDate, css.todayDate ],
 				onclick: widget.listener,
 				onkeydown: widget.listener
 			}, [

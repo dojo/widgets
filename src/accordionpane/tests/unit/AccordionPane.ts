@@ -6,10 +6,10 @@ import * as sinon from 'sinon';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import * as css from '../../styles/accordionPane.m.css';
-import AccordionPane, { AccordionPaneProperties } from '../../AccordionPane';
+import AccordionPane from '../../AccordionPane';
 import TitlePane from '../../../titlepane/TitlePane';
 
-let pane: Harness<AccordionPaneProperties, typeof AccordionPane>;
+let pane: Harness<AccordionPane>;
 
 registerSuite('AccordionPane', {
 	beforeEach() {
@@ -23,7 +23,7 @@ registerSuite('AccordionPane', {
 	tests: {
 		'default rendering'() {
 			pane.expectRender(v('div', {
-				classes: pane.classes(css.root)
+				classes: css.root
 			}, []));
 		},
 
@@ -32,13 +32,13 @@ registerSuite('AccordionPane', {
 
 			pane.setChildren([
 				w(TitlePane, { title: 'foo', key: 'foo', onRequestOpen: () => {} }),
-				undefined,
+				null,
 				w(TitlePane, { title: 'bar', key: 'bar', onRequestClose: () => {} }),
 				w(TitlePane, { title: 'baz', key: 'baz' })
 			]);
 
 			pane.expectRender(v('div', {
-				classes: pane.classes(css.root)
+				classes: css.root
 			}, [
 				w(TitlePane, {
 					key: 'foo',

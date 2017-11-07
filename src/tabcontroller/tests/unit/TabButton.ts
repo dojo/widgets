@@ -9,7 +9,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { Keys } from '../../../common/util';
 import { assign } from '@dojo/core/lang';
 
-import TabButton, { TabButtonProperties } from '../../TabButton';
+import TabButton from '../../TabButton';
 import * as css from '../../styles/tabController.m.css';
 
 interface KeyboardEventInit extends EventInit {
@@ -33,7 +33,7 @@ const expected = function(widget: any, closeable = false, children: any[] = []) 
 	children.push(
 		closeable ? v('button', {
 			tabIndex: -1,
-			classes: widget.classes(css.close),
+			classes: css.close,
 			innerHTML: 'close tab',
 			onclick: widget.listener
 		}) : null
@@ -43,7 +43,7 @@ const expected = function(widget: any, closeable = false, children: any[] = []) 
 		'aria-controls': 'foo',
 		'aria-disabled': 'false',
 		'aria-selected': 'false',
-		classes: widget.classes(css.tabButton),
+		classes: [ css.tabButton, null, null ],
 		id: 'foo',
 		key: 'tab-button',
 		onclick: widget.listener,
@@ -53,7 +53,7 @@ const expected = function(widget: any, closeable = false, children: any[] = []) 
 	}, children);
 };
 
-let widget: Harness<TabButtonProperties, typeof TabButton>;
+let widget: Harness<TabButton>;
 
 registerSuite('TabButton', {
 
@@ -80,7 +80,7 @@ registerSuite('TabButton', {
 			const expectedVdom = expected(widget, true, [...testChildren]);
 			assignProperties(expectedVdom, {
 				'aria-disabled': 'true',
-				classes: widget.classes(css.tabButton, css.disabledTabButton)
+				classes: [ css.tabButton, null, css.disabledTabButton ]
 			});
 			widget.expectRender(expectedVdom);
 		},
@@ -92,7 +92,7 @@ registerSuite('TabButton', {
 			let expectedVdom = expected(widget);
 			assignProperties(expectedVdom, {
 				'aria-selected': 'true',
-				classes: widget.classes(css.tabButton, css.activeTabButton),
+				classes: [ css.tabButton, css.activeTabButton, null ],
 				tabIndex: 0
 			});
 			widget.expectRender(expectedVdom, 'Selected tab render without close button');
@@ -104,7 +104,7 @@ registerSuite('TabButton', {
 			expectedVdom = expected(widget, true);
 			assignProperties(expectedVdom, {
 				'aria-selected': 'true',
-				classes: widget.classes(css.tabButton, css.activeTabButton),
+				classes: [ css.tabButton, css.activeTabButton, null ],
 				tabIndex: 0
 			});
 			assignChildProperties(expectedVdom, '0', {

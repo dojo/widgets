@@ -6,9 +6,9 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import has from '@dojo/has/has';
 
 import * as css from '../../styles/splitPane.m.css';
-import SplitPane, { Direction, SplitPaneProperties } from '../../SplitPane';
+import SplitPane, { Direction } from '../../SplitPane';
 
-let widget: Harness<SplitPaneProperties, typeof SplitPane>;
+let widget: Harness<SplitPane>;
 
 registerSuite('SplitPane', {
 
@@ -26,23 +26,23 @@ registerSuite('SplitPane', {
 	tests: {
 		'Should construct SplitPane with passed properties'() {
 			widget.expectRender(v('div', {
-				classes: widget.classes(css.root, css.rootFixed, css.row, css.rowFixed),
+				classes: [ css.root, css.row, css.rootFixed, css.rowFixed ],
 				key: 'root'
 			}, [
 				v('div', {
-					classes: widget.classes(css.leading, css.leadingFixed),
+					classes: [ css.leading, css.leadingFixed ],
 					key: 'leading',
 					styles: { width: '100px' }
 				}, [ null ]),
 				v('div', {
-					classes: widget.classes(css.divider, css.dividerFixed),
+					classes: [ css.divider, css.dividerFixed ],
 					key: 'divider',
 					onmousedown: widget.listener,
 					ontouchend: widget.listener,
 					ontouchstart: widget.listener
 				}),
 				v('div', {
-					classes: widget.classes(css.trailing, css.trailingFixed),
+					classes: [ css.trailing, css.trailingFixed ],
 					key: 'trailing'
 				}, [ null ])
 			]));
@@ -58,23 +58,23 @@ registerSuite('SplitPane', {
 			});
 
 			widget.expectRender(v('div', {
-				classes: widget.classes(css.root, css.rootFixed, css.column, css.columnFixed),
+				classes: [ css.root, css.column, css.rootFixed, css.columnFixed ],
 				key: 'root'
 			}, [
 				v('div', {
-					classes: widget.classes(css.leading, css.leadingFixed),
+					classes: [ css.leading, css.leadingFixed ],
 					key: 'leading',
 					styles: { height: '200px' }
 				}, [ 'abc' ]),
 				v('div', {
-					classes: widget.classes(css.divider, css.dividerFixed),
+					classes: [ css.divider, css.dividerFixed ],
 					key: 'divider',
 					onmousedown: widget.listener,
 					ontouchend: widget.listener,
 					ontouchstart: widget.listener
 				}),
 				v('div', {
-					classes: widget.classes(css.trailing, css.trailingFixed),
+					classes: [ css.trailing, css.trailingFixed ],
 					key: 'trailing'
 				}, [ 'def' ])
 			]));

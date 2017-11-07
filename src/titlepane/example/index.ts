@@ -30,7 +30,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}
 		}, [
 			v('div', {
-				classes: { option: true },
+				classes: 'option',
 				style: 'margin-bottom: 20px;'
 			}, [
 				v('label', [

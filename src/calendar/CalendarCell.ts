@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import * as css from './styles/calendar.m.css';
@@ -19,7 +19,7 @@ import * as css from './styles/calendar.m.css';
  * @property onFocusCalled    Callback function when the cell receives focus
  * @property onKeyDown        Callback function for the key down event
  */
-export interface CalendarCellProperties extends ThemeableProperties {
+export interface CalendarCellProperties extends ThemedProperties {
 	callFocus?: boolean;
 	date: number;
 	disabled?: boolean;
@@ -31,7 +31,7 @@ export interface CalendarCellProperties extends ThemeableProperties {
 	onKeyDown?(event: KeyboardEvent): void;
 };
 
-export const CalendarCellBase = ThemeableMixin(WidgetBase);
+export const CalendarCellBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class CalendarCell extends CalendarCellBase<CalendarCellProperties> {
@@ -91,7 +91,7 @@ export default class CalendarCell extends CalendarCellBase<CalendarCellPropertie
 			role: 'gridcell',
 			'aria-selected': `${selected}`,
 			tabIndex: focusable ? 0 : -1,
-			classes: this.classes(css.date, ...this.getModifierClasses()),
+			classes: this.theme([ css.date, ...this.getModifierClasses() ]),
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown
 		}, [ this.formatDate(date) ]);

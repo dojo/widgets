@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
@@ -28,7 +28,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onYearChange      Function called when the year changes
  * @property onDateSelect      Function called when the user selects a date
  */
-export interface CalendarProperties extends ThemeableProperties {
+export interface CalendarProperties extends ThemedProperties {
 	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string; }[];
@@ -74,7 +74,7 @@ export const DEFAULT_LABELS: CalendarMessages = {
 	nextMonth: 'Next Month'
 };
 
-export const CalendarBase = ThemeableMixin(WidgetBase);
+export const CalendarBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
@@ -346,10 +346,10 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			v('i', { classes: this.classes(iconCss.icon, iconClass),
+			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			}),
-			v('span', { classes: this.classes().fixed(baseCss.visuallyHidden) }, [ labelText ])
+			v('span', { classes: [ baseCss.visuallyHidden ] }, [ labelText ])
 		];
 	}
 
@@ -369,13 +369,13 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		for (const weekday in weekdayNames) {
 			weekdays.push(v('th', {
 				role: 'columnheader',
-				classes: this.classes(css.weekday)
+				classes: this.theme(css.weekday)
 			}, [
 				this.renderWeekdayCell(weekdayNames[weekday])
 			]));
 		}
 
-		return v('div', { classes: this.classes(css.root) }, [
+		return v('div', { classes: this.theme(css.root) }, [
 			// header
 			this.renderDatePicker(),
 			// date table
@@ -384,7 +384,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 				cellpadding: '0',
 				role: 'grid',
 				'aria-labelledby': this._monthLabelId,
-				classes: this.classes(css.dateGrid).fixed(this._popupOpen ? baseCss.visuallyHidden : null)
+				classes: [ this.theme(css.dateGrid), this._popupOpen ? baseCss.visuallyHidden : null ]
 			}, [
 				v('thead', [
 					v('tr', weekdays)
@@ -393,15 +393,15 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 			]),
 			// controls
 			v('div', {
-				classes: this.classes(css.controls).fixed(this._popupOpen ? baseCss.visuallyHidden : null)
+				classes: [ this.theme(css.controls), this._popupOpen ? baseCss.visuallyHidden : null ]
 			}, [
 				v('button', {
-					classes: this.classes(css.previous),
+					classes: this.theme(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageDown
 				}, this.renderPagingButtonContent(Paging.previous)),
 				v('button', {
-					classes: this.classes(css.next),
+					classes: this.theme(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageUp
 				}, this.renderPagingButtonContent(Paging.next))

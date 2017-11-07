@@ -6,7 +6,7 @@ import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import has from '@dojo/has/has';
 
-import SlidePane, { Align, SlidePaneProperties } from '../../SlidePane';
+import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../styles/slidePane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 
@@ -14,7 +14,7 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
-let widget: Harness<SlidePaneProperties, typeof SlidePane>;
+let widget: Harness<SlidePane>;
 
 const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 	Quisque id purus ipsum. Aenean ac purus purus.
@@ -43,7 +43,7 @@ registerSuite('SlidePane', {
 
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
-				classes: widget.classes(css.root),
+				classes: css.root,
 				onmousedown: widget.listener,
 				onmousemove: widget.listener,
 				onmouseup: widget.listener,
@@ -52,22 +52,25 @@ registerSuite('SlidePane', {
 				ontouchstart: widget.listener
 			}, [
 				v('div', {
-					classes: widget.classes(css.underlay, css.underlayVisible),
+					classes: [ css.underlayVisible, css.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					key: 'underlay'
 				}),
 				v('div', {
 					key: 'content',
-					classes: widget.classes(
+					classes: [
 						css.pane,
-						css.paneFixed,
-						css.leftFixed,
+						css.left,
 						css.open,
-						css.openFixed,
 						css.slideIn,
-						css.slideInFixed
-					),
+						null,
+						css.paneFixed,
+						css.openFixed,
+						css.leftFixed,
+						css.slideInFixed,
+						null
+					],
 					styles: {
 						transform: '',
 						width: '320px',
@@ -76,7 +79,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: widget.classes(css.content)
+						classes: css.content
 					}, [ GREEKING ])
 				])
 			]));
@@ -96,16 +99,23 @@ registerSuite('SlidePane', {
 				ontouchend: widget.listener,
 				ontouchmove: widget.listener,
 				ontouchstart: widget.listener,
-				classes: widget.classes(css.root)
+				classes: css.root
 			}, [
 				null,
 				v('div', {
 					key: 'content',
-					classes: widget.classes(
+					classes: [
 						css.pane,
+						css.left,
+						null,
+						null,
+						null,
 						css.paneFixed,
-						css.leftFixed
-					),
+						null,
+						css.leftFixed,
+						null,
+						null
+					],
 					styles: {
 						transform: '',
 						width: '320px',
@@ -114,7 +124,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: widget.classes(css.content)
+						classes: css.content
 					}, [])
 				])
 			]));
@@ -148,25 +158,28 @@ registerSuite('SlidePane', {
 				ontouchend: widget.listener,
 				ontouchmove: widget.listener,
 				ontouchstart: widget.listener,
-				classes: widget.classes(css.root)
+				classes: css.root
 			}, [
 				v('div', {
-					classes: widget.classes(css.underlay),
+					classes: [ null, css.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					key: 'underlay'
 				}),
 				v('div', {
 					key: 'content',
-					classes: widget.classes(
+					classes: [
 						css.pane,
-						css.paneFixed,
-						css.leftFixed,
+						css.left,
 						css.open,
-						css.openFixed,
 						css.slideIn,
-						css.slideInFixed
-					),
+						null,
+						css.paneFixed,
+						css.openFixed,
+						css.leftFixed,
+						css.slideInFixed,
+						null
+					],
 					styles: {
 						transform: '',
 						width: '320px',
@@ -175,7 +188,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: widget.classes(css.content)
+						classes: css.content
 					}, [])
 				])
 			]));
@@ -192,18 +205,23 @@ registerSuite('SlidePane', {
 				ontouchend: widget.listener,
 				ontouchmove: widget.listener,
 				ontouchstart: widget.listener,
-				classes: widget.classes(css.root)
+				classes: css.root
 			}, [
 				null,
 				v('div', {
 					key: 'content',
-					classes: widget.classes(
+					classes: [
 						css.pane,
-						css.paneFixed,
-						css.leftFixed,
+						css.left,
+						null,
+						null,
 						css.slideOut,
+						css.paneFixed,
+						null,
+						css.leftFixed,
+						null,
 						css.slideOutFixed
-					),
+					],
 					styles: {
 						transform: '',
 						width: '320px',
@@ -212,7 +230,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: widget.classes(css.content)
+						classes: css.content
 					}, [])
 				])
 			]));
@@ -566,25 +584,28 @@ registerSuite('SlidePane', {
 					ontouchend: widget.listener,
 					ontouchmove: widget.listener,
 					ontouchstart: widget.listener,
-					classes: widget.classes(css.root)
+					classes: css.root
 				}, [
 					open ? v('div', {
-						classes: widget.classes(css.underlay),
+						classes: [ null, css.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
 					}) : null,
 					v('div', {
 						key: 'content',
-						classes: widget.classes(
+						classes: [
 							css.pane,
-							css.paneFixed,
-							css.leftFixed,
+							css.left,
 							open ? css.open : null,
+							transitionDone ? null : ( open ? css.slideIn : null),
+							transitionDone ? null : ( open ? null : css.slideOut),
+							css.paneFixed,
 							open ? css.openFixed : null,
-							transitionDone ? null : (open ? css.slideIn : css.slideOut),
-							transitionDone ? null : (open ? css.slideInFixed : css.slideOutFixed)
-						),
+							css.leftFixed,
+							transitionDone ? null : ( open ? css.slideInFixed : null),
+							transitionDone ? null : ( open ? null : css.slideOutFixed)
+						],
 						styles: {
 							transform: '',
 							width: '320px',
@@ -593,7 +614,7 @@ registerSuite('SlidePane', {
 					}, [
 						null,
 						v('div', {
-							classes: widget.classes(css.content)
+							classes: css.content
 						}, [ GREEKING ])
 					])
 				]);
@@ -630,25 +651,28 @@ registerSuite('SlidePane', {
 					ontouchend: widget.listener,
 					ontouchmove: widget.listener,
 					ontouchstart: widget.listener,
-					classes: widget.classes(css.root)
+					classes: css.root
 				}, [
 					closed ? null : v('div', {
-						classes: widget.classes(css.underlay),
+						classes: [ null, css.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
 					}),
 					v('div', {
 						key: 'content',
-						classes: swipeState.classes || widget.classes(
+						classes: swipeState.classes || [
 							css.pane,
-							css.paneFixed,
-							css.leftFixed,
+							css.left,
 							css.open,
-							css.openFixed,
 							css.slideIn,
-							css.slideInFixed
-						),
+							null,
+							css.paneFixed,
+							css.openFixed,
+							css.leftFixed,
+							css.slideInFixed,
+							null
+						],
 						styles: swipeState.styles || {
 							transform: '',
 							width: '320px',
@@ -657,7 +681,7 @@ registerSuite('SlidePane', {
 					}, [
 						null,
 						v('div', {
-							classes: widget.classes(css.content)
+							classes: css.content
 						}, [ GREEKING ])
 					])
 				]);
@@ -691,13 +715,18 @@ registerSuite('SlidePane', {
 			});
 
 			widget.expectRender(expected(true, {
-				classes: widget.classes(
+				classes: [
 					css.pane,
+					css.left,
+					css.open,
+					css.slideOutFixed,
+					null,
 					css.paneFixed,
+					css.openFixed,
 					css.leftFixed,
-					css.slideOut,
-					css.slideOutFixed
-				),
+					css.slideOutFixed,
+					null
+				],
 				styles: {
 					transform: 'translateX(-78.125%)',
 					width: '320px',
@@ -723,25 +752,28 @@ registerSuite('SlidePane', {
 					ontouchend: widget.listener,
 					ontouchmove: widget.listener,
 					ontouchstart: widget.listener,
-					classes: widget.classes(css.root)
+					classes: css.root
 				}, [
 					closed ? null : v('div', {
-						classes: widget.classes(css.underlay),
+						classes: [ null, css.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
 					}),
 					v('div', {
 						key: 'content',
-						classes: swipeState.classes || widget.classes(
+						classes: swipeState.classes || [
 							css.pane,
-							css.paneFixed,
-							css.rightFixed,
+							css.right,
 							css.open,
-							css.openFixed,
 							css.slideIn,
-							css.slideInFixed
-						),
+							null,
+							css.paneFixed,
+							css.openFixed,
+							css.rightFixed,
+							css.slideInFixed,
+							null
+						],
 						styles: swipeState.styles || {
 							transform: '',
 							width: '320px',
@@ -750,7 +782,7 @@ registerSuite('SlidePane', {
 					}, [
 						null,
 						v('div', {
-							classes: widget.classes(css.content)
+							classes: css.content
 						}, [ GREEKING ])
 					])
 				]);
@@ -785,13 +817,18 @@ registerSuite('SlidePane', {
 			});
 
 			widget.expectRender(expected(true, {
-				classes: widget.classes(
+				classes: [
 					css.pane,
+					css.right,
+					css.open,
+					css.slideIn,
+					null,
 					css.paneFixed,
+					css.openFixed,
 					css.rightFixed,
-					css.slideOut,
-					css.slideOutFixed
-				),
+					css.slideInFixed,
+					null
+				],
 				styles: {
 					transform: 'translateX(62.5%)',
 					width: '320px',

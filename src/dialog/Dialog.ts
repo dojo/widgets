@@ -1,6 +1,6 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
@@ -32,7 +32,7 @@ export type RoleType = 'dialog' | 'alertdialog';
  * @property title              Title to show in the dialog title bar
  * @property underlay           Determines whether a semi-transparent background shows behind the dialog
  */
-export interface DialogProperties extends ThemeableProperties {
+export interface DialogProperties extends ThemedProperties {
 	closeable?: boolean;
 	closeText?: string;
 	enterAnimation?: string;
@@ -46,7 +46,7 @@ export interface DialogProperties extends ThemeableProperties {
 	underlay?: boolean;
 };
 
-export const DialogBase = ThemeableMixin(WidgetBase);
+export const DialogBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
@@ -85,13 +85,13 @@ export default class Dialog extends DialogBase<DialogProperties> {
 
 	protected getContent(): DNode {
 		return v('div', {
-			classes: this.classes(css.content),
+			classes: this.theme(css.content),
 			key: 'content'
 		}, this.children);
 	}
 
 	protected renderCloseIcon(): DNode {
-		return v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+		return v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
 			role: 'presentation', 'aria-hidden': 'true'
 		});
 	}
@@ -104,7 +104,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 	protected renderUnderlay(): DNode {
 		const { underlay } = this.properties;
 		return v('div', {
-			classes: this.classes(underlay ? css.underlayVisible : null).fixed(css.underlay),
+			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay',
@@ -128,24 +128,24 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		this._wasOpen = open;
 
 		return v('div', {
-			classes: this.classes(css.root)
+			classes: this.theme(css.root)
 		}, open ? [
 			this.renderUnderlay(),
 			v('div', {
 				'aria-labelledby': this._titleId,
-				classes: this.classes(css.main),
+				classes: this.theme(css.main),
 				enterAnimation,
 				exitAnimation,
 				key: 'main',
 				role
 			}, [
 				v('div', {
-					classes: this.classes(css.title),
+					classes: this.theme(css.title),
 					key: 'title'
 				}, [
 					this.renderTitle(),
 					closeable ? v('button', {
-						classes: this.classes(css.close),
+						classes: this.theme(css.close),
 						onclick: this._onCloseClick
 					}, [
 						closeText,
