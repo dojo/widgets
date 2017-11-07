@@ -28,8 +28,6 @@ export const enum Orientation {
 	top = 'top'
 };
 
-// https://github.com/Microsoft/TypeScript/issues/13042
-// const orientationCss: {[Key in Orientation]: string} = css;
 const orientationCss: {[key: string]: any} = css;
 
 export const TooltipBase = ThemeableMixin(WidgetBase);
