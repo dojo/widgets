@@ -1,5 +1,5 @@
 import { DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
@@ -30,10 +30,10 @@ export const enum Orientation {
 
 const orientationCss: {[key: string]: any} = css;
 
-export const TooltipBase = ThemeableMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Tooltip extends TooltipBase<TooltipProperties> {
+export default class Tooltip extends ThemedBase<TooltipProperties> {
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
 
@@ -53,7 +53,7 @@ export default class Tooltip extends TooltipBase<TooltipProperties> {
 
 	protected renderContent(): DNode {
 		return v('div', {
-			classes: this.classes(css.content).fixed(css.contentFixed)
+			classes: [ this.theme(css.content), css.contentFixed ]
 		}, [ this.properties.content ]);
 	}
 
@@ -67,7 +67,7 @@ export default class Tooltip extends TooltipBase<TooltipProperties> {
 		const fixedClasses = this.getFixedModifierClasses();
 
 		return v('div', {
-			classes: this.classes(...classes).fixed(...fixedClasses)
+			classes: [ ...this.theme(classes), ...fixedClasses ]
 		}, [
 			this.renderTarget(),
 			open ? this.renderContent() : null

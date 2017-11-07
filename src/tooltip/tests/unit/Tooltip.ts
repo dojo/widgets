@@ -3,10 +3,10 @@ const { registerSuite } = intern.getInterface('object');
 import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
-import Tooltip, { TooltipProperties, Orientation } from './../../Tooltip';
+import Tooltip, { Orientation } from './../../Tooltip';
 import * as css from './../../styles/tooltip.m.css';
 
-let widget: Harness<TooltipProperties, typeof Tooltip>;
+let widget: Harness<Tooltip>;
 
 registerSuite('Tooltip', {
 	beforeEach() {
@@ -20,9 +20,9 @@ registerSuite('Tooltip', {
 	tests: {
 		'should construct Tooltip'() {
 			widget.expectRender(v('div', {
-				classes: widget.classes(css.rootFixed, css.right, css.rightFixed)
+				classes: [ css.right, css.rootFixed, css.rightFixed ]
 			}, [
-				v('div'),
+				v('div', {}, []),
 				null
 			]));
 		},
@@ -34,11 +34,11 @@ registerSuite('Tooltip', {
 			});
 
 			widget.expectRender(v('div', {
-				classes: widget.classes(css.rootFixed, css.right, css.rightFixed)
+				classes: [ css.right, css.rootFixed, css.rightFixed ]
 			}, [
-				v('div'),
+				v('div', {}, []),
 				v('div', {
-					classes: widget.classes(css.content, css.contentFixed)
+					classes: [ css.content, css.contentFixed ]
 				}, ['foobar' ])
 			]));
 		},
@@ -50,9 +50,9 @@ registerSuite('Tooltip', {
 			});
 
 			widget.expectRender(v('div', {
-				classes: widget.classes(css.rootFixed, css.bottom, css.bottomFixed)
+				classes: [ css.bottom, css.rootFixed, css.bottomFixed ]
 			}, [
-				v('div'),
+				v('div', {}, []),
 				null
 			]));
 		}
