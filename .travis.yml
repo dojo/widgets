@@ -19,6 +19,7 @@ script:
 - grunt
 - grunt intern:browserstack --test-reporter
 - grunt uploadCoverage
+- grunt dist
 - grunt doc
 notifications:
   slack:
