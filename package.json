@@ -32,7 +32,7 @@
     "@dojo/cli-build-webpack": "~0.2.0",
     "@dojo/interfaces": "~0.1.0",
     "@dojo/loader": "~0.1.0",
-    "@dojo/test-extras": "file:./deps/dojo-test-extras-0.1.1-beta3.1.tgz",
+    "@dojo/test-extras": "~0.2.0",
     "@types/chai": "3.4.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
