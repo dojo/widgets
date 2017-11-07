@@ -6,8 +6,6 @@ Dojo 2's `AccordionPane` component can be used to show multiple pieces of conten
 
 - Optionally supports multiple panes open at once
 
-![Image of basic dialog](http://placekitten.com/450/300)
-
 ### Accessibility Features
 
 An `AccordionPane` expects all children to be `TitlePane` components, and as such, supports standard keyboard navigation for toggling child content open or closed.
