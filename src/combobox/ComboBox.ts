@@ -1,5 +1,5 @@
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/widget-core/diff';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
@@ -265,7 +265,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		}
 	}
 
-	protected renderInput(): WNode {
+	protected renderInput() {
 		const {
 			clearable,
 			disabled,
@@ -391,7 +391,6 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		this._wasOpen = this._open;
 
 		let controls: DNode = v('div', <any> {
-			bind: this,
 			classes: this.theme(css.controls)
 		}, [
 			this.renderInput(),

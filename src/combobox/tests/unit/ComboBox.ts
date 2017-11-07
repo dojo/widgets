@@ -149,8 +149,8 @@ const expectedVdom = function(widget: Harness<ComboBox>, useTestProperties = fal
 		id: useTestProperties ? 'foo' : undefined,
 		classes: [
 			css.root,
-			null,
 			open ? css.open : null,
+			null,
 			null
 		],
 		key: 'root',
@@ -582,7 +582,7 @@ registerSuite('ComboBox', {
 				invalid: false
 			});
 			assignProperties(vdom, {
-				classes: [ css.root, css.valid ]
+				classes: [ css.root, null, null, css.valid ]
 			});
 			widget.expectRender(vdom, 'valid render');
 		},
