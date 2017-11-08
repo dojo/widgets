@@ -17,7 +17,7 @@ export interface ListboxOptionProperties extends ThemedProperties {
 	onClick?(option: any, index: number, key?: string | number): void;
 }
 
-const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class ListboxOption extends ThemedBase<ListboxOptionProperties> {
@@ -26,7 +26,7 @@ export default class ListboxOption extends ThemedBase<ListboxOptionProperties> {
 		onClick && onClick(option, index, key);
 	}
 
-	protected render() {
+	protected render(): DNode {
 		const {
 			classes = [],
 			disabled = false,

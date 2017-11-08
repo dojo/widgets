@@ -265,7 +265,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		}
 	}
 
-	protected renderInput() {
+	protected renderInput(): DNode {
 		const {
 			clearable,
 			disabled,
@@ -298,7 +298,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		});
 	}
 
-	protected renderClearButton() {
+	protected renderClearButton(): DNode {
 		const {
 			disabled,
 			readOnly
@@ -318,7 +318,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		]);
 	}
 
-	protected renderMenuButton() {
+	protected renderMenuButton(): DNode {
 		const {
 			disabled,
 			readOnly
@@ -340,7 +340,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		]);
 	}
 
-	protected renderMenu(results: any[]): DNode | null {
+	protected renderMenu(results: any[]): DNode {
 		const { theme, isResultDisabled } = this.properties;
 
 		if (results.length === 0 || !this._open) {

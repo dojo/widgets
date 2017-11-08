@@ -203,7 +203,7 @@ export default class Listbox extends ThemedBase<ListboxProperties> {
 		return optionData.map(this._boundRenderOption);
 	}
 
-	protected render() {
+	protected render(): DNode {
 		const {
 			activeIndex = 0,
 			describedBy,

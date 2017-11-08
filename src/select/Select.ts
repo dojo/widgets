@@ -174,7 +174,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 		}
 	}
 
-	protected renderExpandIcon() {
+	protected renderExpandIcon(): DNode {
 		return v('span', { classes: this.theme(css.arrow) }, [
 			v('i', { classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
