@@ -58,7 +58,6 @@ function clickToFocus(test: any, selector: string) {
 		test.skip('Test requires mouse interactions.');
 	}
 
-	let input: string;
 	const remote = getPage(test);
 	remote
 		.findByCssSelector(`#example-s1 .${css.root}`)
@@ -69,16 +68,11 @@ function clickToFocus(test: any, selector: string) {
 						.clickMouseButton(0);
 				})
 			.end()
-			.findByTagName('input')
-				.then((element) => {
-					input = element.elementId;
-				})
-			.end()
 		.end()
 		.sleep(30)
-		.getActiveElement()
-		.then((element) => {
-			assert.strictEqual(input, element.elementId);
+		.execute(`return document.activeElement === document.querySelector('#example-s1 .${css.root} input');`)
+		.then(isEqual => {
+			assert.isTrue(isEqual);
 		});
 }
 
