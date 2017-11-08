@@ -63,7 +63,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				innerHTML: 'open dialog',
 				onclick: this.openDialog
 			}),
-			v('div', { classes: { option: true }}, [
+			v('div', { classes: 'option' }, [
 				v('label', [
 					'Use Dojo Theme ',
 					v('input', {
@@ -72,7 +72,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					})
 				])
 			]),
-			v('div', { classes: { option: true }}, [
+			v('div', { classes: 'option' }, [
 				v('input', {
 					type: 'checkbox',
 					id: 'modal',
@@ -83,7 +83,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					innerHTML: 'modal'
 				})
 			]),
-			v('div', { classes: { option: true }}, [
+			v('div', { classes: 'option' }, [
 				v('input', {
 					type: 'checkbox',
 					id: 'underlay',
@@ -94,7 +94,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					innerHTML: 'underlay'
 				})
 			]),
-			v('div', { classes: { option: true }}, [
+			v('div', { classes: 'option' }, [
 				v('input', {
 					type: 'checkbox',
 					id: 'closeable',
