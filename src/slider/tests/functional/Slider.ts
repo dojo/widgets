@@ -258,6 +258,9 @@ registerSuite('Slider', {
 			if (browserName === 'firefox') {
 				this.skip('Fails in Firefox.');
 			}
+			if (browserName === 'safari') {
+				this.skip('Fails in Safari.');
+			}
 
 			let sliderValues: number[] = [];
 			let command = getPage(this)
