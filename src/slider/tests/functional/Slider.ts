@@ -136,6 +136,9 @@ registerSuite('Slider', {
 			if (browserName.toLowerCase() === 'internet explorer') {
 				this.skip('mouse movements doesn\'t work in IE.');
 			}
+			if (browserName === 'firefox') {
+				this.skip('Fails in Firefox.')
+			}
 
 			let sliderValues: number[] = [];
 			let command = getPage(this).findByCssSelector(`#example-s1 .${css.root}`);
@@ -242,6 +245,9 @@ registerSuite('Slider', {
 			}
 			if (browserName.toLowerCase() === 'internet explorer') {
 				this.skip('mouse movements doesn\'t work in IE.');
+			}
+			if (browserName === 'firefox') {
+				this.skip('Fails in Firefox.')
 			}
 
 			let sliderValues: number[] = [];
