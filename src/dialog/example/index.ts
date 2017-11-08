@@ -41,6 +41,11 @@ export class App extends WidgetBase<WidgetProperties> {
 
 	render(): DNode {
 		return v('div', [
+			v('button', {
+				id: 'button',
+				innerHTML: 'open dialog',
+				onclick: this.openDialog
+			}),
 			w(Dialog, {
 				key: 'dialog',
 				title: 'Dialog',
@@ -58,11 +63,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 			]),
-			v('button', {
-				id: 'button',
-				innerHTML: 'open dialog',
-				onclick: this.openDialog
-			}),
 			v('div', { classes: 'option' }, [
 				v('label', [
 					'Use Dojo Theme ',
