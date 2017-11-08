@@ -59,7 +59,7 @@ function clickToFocus(test: any, selector: string) {
 	}
 
 	const remote = getPage(test);
-	remote
+	return remote
 		.findByCssSelector(`#example-s1 .${css.root}`)
 			.findByCssSelector(selector)
 				.then((element) => {
