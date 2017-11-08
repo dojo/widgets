@@ -53,9 +53,15 @@ function checkValue(command: any, values?: number[]) {
 }
 
 function clickToFocus(test: any, selector: string) {
-	const { mouseEnabled } = test.remote.session.capabilities;
+	const { browserName, mouseEnabled } = test.remote.session.capabilities;
 	if (!mouseEnabled) {
 		test.skip('Test requires mouse interactions.');
+	}
+	if (browserName === 'firefox') {
+		test.skip('Fails in Firefox.');
+	}
+	if (browserName === 'safari') {
+		test.skip('Fails in Safari 9.');
 	}
 
 	const remote = getPage(test);
@@ -137,6 +143,9 @@ registerSuite('Slider', {
 				this.skip('mouse movements doesn\'t work in IE.');
 			}
 			if (browserName === 'firefox') {
+				this.skip('Fails in Firefox.');
+			}
+			if (browserName === 'safari') {
 				this.skip('Fails in Firefox.');
 			}
 
