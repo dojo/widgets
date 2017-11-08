@@ -74,10 +74,6 @@ export default class Select extends ThemedBase<SelectProperties> {
 
 	private _getOptionLabel(option: any) {
 		const { getOptionLabel } = this.properties;
-		if (!option) {
-			return '';
-		}
-
 		return getOptionLabel ? getOptionLabel(option) : `${option}`;
 	}
 

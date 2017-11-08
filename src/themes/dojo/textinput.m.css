@@ -36,7 +36,6 @@
 }
 
 .input::placeholder { color: var(--color-text-faded); }
-.input:-ms-input-placeholder { color: var(--color-text-faded); }
 
 .inputWrapper { }
 
