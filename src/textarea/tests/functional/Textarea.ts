@@ -32,7 +32,7 @@ registerSuite('Textarea', {
 	},
 	'label should be as defined'() {
 		const { browserName = '' } = this.remote.session.capabilities;
-		if (browserName.toLowerCase() === 'microsoftedge') {
+		if (browserName.toLowerCase() === 'internet explorer') {
 			this.skip('Label is including textarea placeholder.');
 		}
 
