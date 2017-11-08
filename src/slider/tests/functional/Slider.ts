@@ -137,7 +137,7 @@ registerSuite('Slider', {
 				this.skip('mouse movements doesn\'t work in IE.');
 			}
 			if (browserName === 'firefox') {
-				this.skip('Fails in Firefox.')
+				this.skip('Fails in Firefox.');
 			}
 
 			let sliderValues: number[] = [];
@@ -247,7 +247,7 @@ registerSuite('Slider', {
 				this.skip('mouse movements doesn\'t work in IE.');
 			}
 			if (browserName === 'firefox') {
-				this.skip('Fails in Firefox.')
+				this.skip('Fails in Firefox.');
 			}
 
 			let sliderValues: number[] = [];
