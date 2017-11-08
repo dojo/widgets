@@ -3,10 +3,10 @@ const { registerSuite } = intern.getInterface('object');
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
-import Tab, { TabProperties } from '../../Tab';
+import Tab from '../../Tab';
 import * as css from '../../styles/tabController.m.css';
 
-let widget: Harness<TabProperties, typeof Tab>;
+let widget: Harness<Tab>;
 
 registerSuite('Tab', {
 
@@ -23,7 +23,7 @@ registerSuite('Tab', {
 			widget.setProperties({ key: 'foo' });
 			widget.expectRender(v('div', {
 				'aria-labelledby': undefined,
-				classes: widget.classes(css.tab),
+				classes: css.tab,
 				id: undefined,
 				role: 'tabpanel'
 			}, []));
@@ -46,7 +46,7 @@ registerSuite('Tab', {
 
 			widget.expectRender(v('div', {
 				'aria-labelledby': 'id',
-				classes: widget.classes(css.tab),
+				classes: css.tab,
 				id: 'foo',
 				role: 'tabpanel'
 			}, testChildren));

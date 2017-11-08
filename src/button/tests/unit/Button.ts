@@ -9,7 +9,7 @@ import Button, { ButtonProperties } from '../../Button';
 import * as css from '../../styles/button.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
-let widget: Harness<ButtonProperties, typeof Button>;
+let widget: Harness<Button>;
 
 registerSuite('Button', {
 	beforeEach() {
@@ -28,7 +28,7 @@ registerSuite('Button', {
 				'aria-expanded': null,
 				'aria-haspopup': null,
 				'aria-pressed': null,
-				classes: widget.classes(css.root),
+				classes: [ css.root, null, null, null ],
 				disabled: undefined,
 				id: undefined,
 				name: undefined,
@@ -71,7 +71,7 @@ registerSuite('Button', {
 				'aria-expanded': String((<any> buttonProperties.popup).expanded),
 				'aria-haspopup': 'true',
 				'aria-pressed': String(buttonProperties.pressed),
-				classes: widget.classes(css.root, css.disabled, css.popup, css.pressed),
+				classes: [ css.root, css.disabled, css.popup, css.pressed ],
 				disabled: buttonProperties.disabled,
 				name: buttonProperties.name,
 				id: buttonProperties.id,
@@ -91,7 +91,7 @@ registerSuite('Button', {
 			}, [
 				'foo',
 				v('i', {
-					classes: widget.classes(css.addon, iconCss.icon, iconCss.downIcon),
+					classes: [ css.addon, iconCss.icon, iconCss.downIcon ],
 					role: 'presentation',
 					'aria-hidden': 'true'
 				})
@@ -109,7 +109,7 @@ registerSuite('Button', {
 				'aria-expanded': 'false',
 				'aria-haspopup': 'true',
 				'aria-pressed': null,
-				classes: widget.classes(css.root, css.popup),
+				classes: [ css.root, null, css.popup, null ],
 				disabled: undefined,
 				name: undefined,
 				id: undefined,
@@ -128,7 +128,7 @@ registerSuite('Button', {
 				value: undefined
 			}, [
 				v('i', {
-					classes: widget.classes(css.addon, iconCss.icon, iconCss.downIcon),
+					classes: [ css.addon, iconCss.icon, iconCss.downIcon ],
 					role: 'presentation',
 					'aria-hidden': 'true'
 				})

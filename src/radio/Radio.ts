@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import * as css from './styles/radio.m.css';
@@ -29,7 +29,7 @@ import * as css from './styles/radio.m.css';
  * @property onTouchEnd       Called on the input's touchend event
  * @property onTouchCancel    Called on the input's touchcancel event
  */
-export interface RadioProperties extends ThemeableProperties {
+export interface RadioProperties extends ThemedProperties {
 	checked?: boolean;
 	describedBy?: string;
 	disabled?: boolean;
@@ -50,7 +50,7 @@ export interface RadioProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
-export const RadioBase = ThemeableMixin(WidgetBase);
+export const RadioBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class Radio extends RadioBase<RadioProperties> {
@@ -107,9 +107,9 @@ export default class Radio extends RadioBase<RadioProperties> {
 			value
 		} = this.properties;
 
-		const radio = v('div', { classes: this.classes(css.inputWrapper) }, [
+		const radio = v('div', { classes: this.theme(css.inputWrapper) }, [
 			v('input', {
-				classes: this.classes(css.input),
+				classes: this.theme(css.input),
 				checked,
 				'aria-describedby': describedBy,
 				disabled,
@@ -136,14 +136,14 @@ export default class Radio extends RadioBase<RadioProperties> {
 
 		if (label) {
 			radioWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses()).get()) },
+				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
 				label,
 				theme: this.properties.theme
 			}, [ radio ]);
 		}
 		else {
 			radioWidget = v('div', {
-				classes: this.classes(css.root, ...this.getModifierClasses())
+				classes: this.theme([ css.root, ...this.getModifierClasses() ])
 			}, [ radio]);
 		}
 

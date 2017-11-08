@@ -5,10 +5,10 @@ import * as sinon from 'sinon';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
-import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';
+import ListboxOption from '../../ListboxOption';
 import * as css from '../../styles/listbox.m.css';
 
-let widget: Harness<ListboxOptionProperties, typeof ListboxOption>;
+let widget: Harness<ListboxOption>;
 
 registerSuite('ListboxOption', {
 	beforeEach() {
@@ -31,7 +31,7 @@ registerSuite('ListboxOption', {
 			widget.expectRender(v('div', {
 				'aria-disabled': null,
 				'aria-selected': 'false',
-				classes: widget.classes(),
+				classes: null,
 				id: 'bar',
 				role: 'option',
 				onclick: widget.listener
@@ -53,7 +53,7 @@ registerSuite('ListboxOption', {
 			widget.expectRender(v('div', {
 				'aria-disabled': 'true',
 				'aria-selected': null,
-				classes: widget.classes(css.option),
+				classes: [ css.option ],
 				id: 'bar',
 				role: 'option',
 				onclick: widget.listener

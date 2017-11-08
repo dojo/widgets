@@ -4,11 +4,11 @@ const { assert } = intern.getPlugin('chai');
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
-import Label, { LabelProperties, parseLabelClasses } from '../../Label';
+import Label, { parseLabelClasses } from '../../Label';
 import * as css from '../../styles/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
-let widget: Harness<LabelProperties, typeof Label>;
+let widget: Harness<Label>;
 
 registerSuite('Label', {
 
@@ -27,12 +27,12 @@ registerSuite('Label', {
 			});
 
 			widget.expectRender(v('label', {
-				classes: widget.classes(css.root),
+				classes: css.root,
 				for: undefined
 			}, [
 				v('span', {
 					innerHTML: 'baz',
-					classes: widget.classes(css.labelText)
+					classes: [ css.labelText, null ]
 				})
 			]));
 		},
@@ -46,11 +46,11 @@ registerSuite('Label', {
 			});
 
 			widget.expectRender(v('label', {
-				classes: widget.classes(css.root),
+				classes: css.root,
 				for: undefined
 			}, [
 				v('span', {
-					classes: widget.classes(css.labelText, baseCss.visuallyHidden),
+					classes: [ css.labelText, baseCss.visuallyHidden ],
 					innerHTML: 'baz'
 				})
 			]));
@@ -67,12 +67,12 @@ registerSuite('Label', {
 			]);
 
 			widget.expectRender(v('label', {
-				classes: widget.classes(css.root),
+				classes: css.root,
 				for: 'id'
 			}, [
 				v('span', {
 					innerHTML: 'baz',
-					classes: widget.classes(css.labelText)
+					classes: [ css.labelText, null ]
 				}),
 				v('div', [ 'First' ]),
 				v('div', [ 'Second' ])
@@ -91,24 +91,19 @@ registerSuite('Label', {
 			]);
 
 			widget.expectRender(v('label', {
-				classes: widget.classes(css.root),
+				classes: css.root,
 				for: undefined
 			}, [
 				v('div', [ 'child' ]),
 				v('span', {
 					innerHTML: 'baz',
-					classes: widget.classes(css.labelText)
+					classes: [ css.labelText, null ]
 				})
 			]));
 		},
 
 		parseLabelClasses() {
-			const classes = {
-				foo: true,
-				bar: false,
-				baz: true
-			};
-			const result = parseLabelClasses(classes);
+			const result = parseLabelClasses([ 'foo', null, 'baz' ]);
 
 			assert.strictEqual('foo baz', result);
 		}

@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import * as css from './styles/textinput.m.css';
@@ -39,7 +39,7 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property onTouchEnd     Called on the input's touchend event
  * @property onTouchCancel  Called on the input's touchcancel event
  */
-export interface TextInputProperties extends ThemeableProperties {
+export interface TextInputProperties extends ThemedProperties {
 	controls?: string;
 	describedBy?: string;
 	disabled?: boolean;
@@ -68,7 +68,7 @@ export interface TextInputProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
-export const TextInputBase = ThemeableMixin(WidgetBase);
+export const TextInputBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class TextInput extends TextInputBase<TextInputProperties> {
@@ -119,9 +119,9 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			value
 		} = this.properties;
 
-		const textinput = v('div', { classes: this.classes(css.inputWrapper) }, [
+		const textinput = v('div', { classes: this.theme(css.inputWrapper) }, [
 			v('input', {
-				classes: this.classes(css.input),
+				classes: this.theme(css.input),
 				'aria-controls': controls,
 				'aria-describedby': describedBy,
 				disabled,
@@ -155,14 +155,14 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 
 		if (label) {
 			textinputWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses())()) },
+				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
 				label,
 				theme: this.properties.theme
 			}, [ textinput ]);
 		}
 		else {
 			textinputWidget = v('div', {
-				classes: this.classes(css.root, ...this.getModifierClasses())
+				classes: this.theme([ css.root, ...this.getModifierClasses() ])
 			}, [ textinput ]);
 		}
 

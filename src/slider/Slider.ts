@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
@@ -39,7 +39,7 @@ import * as css from './styles/slider.m.css';
  * @property onTouchEnd        Called on the input's touchend event
  * @property onTouchCancel     Called on the input's touchcancel event
  */
-export interface SliderProperties extends ThemeableProperties {
+export interface SliderProperties extends ThemedProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
@@ -70,7 +70,7 @@ export interface SliderProperties extends ThemeableProperties {
 	onTouchCancel?(event: TouchEvent): void;
 }
 
-export const SliderBase = ThemeableMixin(WidgetBase);
+export const SliderBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class Slider extends SliderBase<SliderProperties> {
@@ -117,16 +117,16 @@ export default class Slider extends SliderBase<SliderProperties> {
 		} = this.properties;
 
 		return v('div', {
-			classes: this.classes(css.track).fixed(css.trackFixed),
+			classes: [ this.theme(css.track), css.trackFixed ],
 			'aria-hidden': 'true',
 			styles: vertical ? { width: verticalHeight } : {}
 		}, [
 			v('span', {
-				classes: this.classes(css.fill).fixed(css.fillFixed),
+				classes: [ this.theme(css.fill), css.fillFixed ],
 				styles: { width: `${percentValue}%` }
 			}),
 			v('span', {
-				classes: this.classes(css.thumb).fixed(css.thumbFixed),
+				classes: [ this.theme(css.thumb), css.thumbFixed ],
 				styles: { left: `${percentValue}%` }
 			})
 		]);
@@ -148,7 +148,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		}
 
 		return v('output', {
-			classes: this.classes(css.output, outputIsTooltip ? css.outputTooltip : null),
+			classes: [ this.theme(css.output), outputIsTooltip ? css.outputTooltip : null ],
 			for: `${this._inputId}`,
 			styles: outputStyles
 		}, [ outputNode ]);
@@ -179,11 +179,11 @@ export default class Slider extends SliderBase<SliderProperties> {
 		const percentValue = (value - min) / (max - min) * 100;
 
 		const slider = v('div', {
-			classes: this.classes(css.inputWrapper).fixed(css.inputWrapperFixed),
+			classes: [ this.theme(css.inputWrapper), css.inputWrapperFixed ],
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
-				classes: this.classes(css.input).fixed(css.nativeInput),
+				classes: [ this.theme(css.input), css.nativeInput ],
 				'aria-describedby': describedBy,
 				disabled,
 				id: this._inputId,
@@ -220,14 +220,14 @@ export default class Slider extends SliderBase<SliderProperties> {
 
 		if (label) {
 			sliderWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses()).fixed(css.rootFixed)()) },
+				extraClasses: { root: parseLabelClasses([ ...this.theme([ css.root, ...this.getModifierClasses() ]), css.rootFixed ]) },
 				label,
 				theme: this.properties.theme
 			}, [ slider ]);
 		}
 		else {
 			sliderWidget = v('div', {
-				classes: this.classes(css.root, ...this.getModifierClasses()).fixed(css.rootFixed)
+				classes: [ ...this.theme([ css.root, ...this.getModifierClasses() ]), css.rootFixed ]
 			}, [ slider ]);
 		}
 

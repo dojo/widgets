@@ -72,7 +72,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		} = this._state;
 
 		return v('div', {
-			classes: { example: true }
+			classes: 'example'
 		}, [
 			v('label', [
 				'Use Dojo Theme ',

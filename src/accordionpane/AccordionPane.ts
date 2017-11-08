@@ -2,7 +2,7 @@ import { after } from '@dojo/core/aspect';
 import { assign } from '@dojo/core/lang';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
 import { includes } from '@dojo/shim/array';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
@@ -19,13 +19,13 @@ import * as css from './styles/accordionPane.m.css';
  * @property onRequestOpen    Called when the title of a closed pane is clicked
  * @property openKeys         Array of TitlePane keys indicating which panes should be open
  */
-export interface AccordionPaneProperties extends ThemeableProperties {
+export interface AccordionPaneProperties extends ThemedProperties {
 	onRequestClose?(key: string): void;
 	onRequestOpen?(key: string): void;
 	openKeys?: string[];
 };
 
-export const AccordionPaneBase = ThemeableMixin(WidgetBase);
+export const AccordionPaneBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class AccordionPane extends AccordionPaneBase<AccordionPaneProperties, WNode<TitlePane>> {
@@ -66,6 +66,6 @@ export default class AccordionPane extends AccordionPaneBase<AccordionPaneProper
 	}
 
 	render(): DNode {
-		return v('div', { classes: this.classes(css.root) }, this.renderChildren());
+		return v('div', { classes: this.theme(css.root) }, this.renderChildren());
 	}
 }

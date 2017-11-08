@@ -7,14 +7,14 @@ import { assignProperties, assignChildProperties, compareProperty } from '@dojo/
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
-import ComboBox, { ComboBoxProperties } from '../../ComboBox';
+import ComboBox from '../../ComboBox';
 import Listbox from '../../../listbox/Listbox';
 import Label from '../../../label/Label';
 import TextInput from '../../../textinput/TextInput';
 import * as css from '../../styles/comboBox.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
-let widget: Harness<ComboBoxProperties, typeof ComboBox>;
+let widget: Harness<ComboBox>;
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -46,15 +46,15 @@ const testProperties = {
 	theme: {}
 };
 
-const expectedControls = function(widget: any, useTestProperties: boolean, label: boolean) {
+const expectedControls = function(widget: Harness<ComboBox>, useTestProperties: boolean, label: boolean) {
 	const controlsVdom = v('div', {
-		classes: widget.classes(css.controls)
+		classes: css.controls
 	}, [
 		w(TextInput, <any> {
 			key: 'textinput',
 			'aria-activedescendant': <any> compareId,
 			'aria-owns': <any> compareId,
-			classes: widget.classes(useTestProperties ? css.clearable : null),
+			classes: useTestProperties ? css.clearable : null,
 			controls: <any> compareId,
 			disabled: undefined,
 			invalid: undefined,
@@ -69,18 +69,18 @@ const expectedControls = function(widget: any, useTestProperties: boolean, label
 		}),
 		useTestProperties ? v('button', {
 			'aria-controls': <any> compareId,
-			classes: widget.classes(css.clear),
+			classes: css.clear,
 			disabled: undefined,
 			readOnly: undefined,
 			onclick: widget.listener
 		}, [
 			'clear combo box',
-			v('i', { classes: widget.classes(iconCss.icon, iconCss.closeIcon),
+			v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]) : null,
 		v('button', {
-			classes: widget.classes(css.trigger),
+			classes: css.trigger,
 			disabled: undefined,
 			readOnly: undefined,
 			tabIndex: -1,
@@ -89,7 +89,7 @@ const expectedControls = function(widget: any, useTestProperties: boolean, label
 			'open combo box',
 			v('i', {
 				'aria-hidden': 'true',
-				classes: widget.classes(iconCss.icon, iconCss.downIcon),
+				classes: [ iconCss.icon, iconCss.downIcon ],
 				role: 'presentation'
 			})
 		])
@@ -105,19 +105,19 @@ const expectedControls = function(widget: any, useTestProperties: boolean, label
 	return controlsVdom;
 };
 
-function isOpen(widget: any): boolean {
+function isOpen(widget: Harness<ComboBox>): boolean {
 	const vdom = widget.getRender();
 	return (<any> vdom)!.properties!['aria-expanded'] === 'true';
 }
 
-const expectedMenu = function(widget: any, useTestProperties: boolean, open: boolean) {
+const expectedMenu = function(widget: Harness<ComboBox>, useTestProperties: boolean, open: boolean) {
 	if (!open || !useTestProperties) {
 		return null;
 	}
 
 	return v('div', {
 		key: 'dropdown',
-		classes: widget.classes(css.dropdown),
+		classes: css.dropdown,
 		onmouseover: widget.listener,
 		onmousedown: widget.listener
 	}, [
@@ -128,8 +128,8 @@ const expectedMenu = function(widget: any, useTestProperties: boolean, open: boo
 			optionData: testOptions,
 			tabIndex: -1,
 			getOptionDisabled: undefined,
-			getOptionId: widget.listener,
-			getOptionLabel: widget.listener,
+			getOptionId: widget.listener as any,
+			getOptionLabel: widget.listener as any,
 			onActiveIndexChange: widget.listener,
 			onOptionSelect: widget.listener,
 			theme: useTestProperties ? {} : undefined
@@ -137,7 +137,7 @@ const expectedMenu = function(widget: any, useTestProperties: boolean, open: boo
 	]);
 };
 
-const expectedVdom = function(widget: any, useTestProperties = false, open = false, label = false) {
+const expectedVdom = function(widget: Harness<ComboBox>, useTestProperties = false, open = false, label = false) {
 	const menuVdom = expectedMenu(widget, useTestProperties, open);
 	const controlsVdom = expectedControls(widget, useTestProperties, label);
 
@@ -147,10 +147,12 @@ const expectedVdom = function(widget: any, useTestProperties = false, open = fal
 		'aria-readonly': 'false',
 		'aria-required': 'false',
 		id: useTestProperties ? 'foo' : undefined,
-		classes: widget.classes(
+		classes: [
 			css.root,
-			open ? css.open : null
-		),
+			open ? css.open : null,
+			null,
+			null
+		],
 		key: 'root',
 		role: 'combobox'
 	}, [
@@ -570,7 +572,7 @@ registerSuite('ComboBox', {
 			assignProperties(vdom, {
 				'aria-readonly': 'true',
 				'aria-required': 'true',
-				classes: widget.classes(css.root, css.invalid)
+				classes: [ css.root, null, css.invalid, null ]
 			});
 			widget.expectRender(vdom, 'disabled, invalid, readOnly, and required render');
 
@@ -580,7 +582,7 @@ registerSuite('ComboBox', {
 				invalid: false
 			});
 			assignProperties(vdom, {
-				classes: widget.classes(css.root, css.valid)
+				classes: [ css.root, null, null, css.valid ]
 			});
 			widget.expectRender(vdom, 'valid render');
 		},

@@ -1,7 +1,7 @@
 import { getDateFormatter } from '@dojo/i18n/date';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { theme, ThemeableMixin, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
+import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
@@ -15,7 +15,7 @@ const TODAY = new Date();
 const getEnglishTime = getDateFormatter({ time: 'short' });
 
 @theme(baseCss)
-export class App extends ThemeableMixin(WidgetBase)<ThemeableProperties> {
+export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 	private _theme: {};
 	private _options: TimeUnits[];
 	private _values: any = {};
@@ -50,7 +50,7 @@ export class App extends ThemeableMixin(WidgetBase)<ThemeableProperties> {
 
 			v('p', {
 				id: 'description1',
-				classes: this.classes().fixed(baseCss.visuallyHidden)
+				classes: baseCss.visuallyHidden
 			}, [ 'Accepts 24-hour time with a leading zero, rounded to the nearest half hour.' ]),
 
 			v('h3', [ 'Filter options on input' ]),
@@ -107,7 +107,7 @@ export class App extends ThemeableMixin(WidgetBase)<ThemeableProperties> {
 			v('h3', [ 'Disabled menu items' ]),
 			v('p', {
 				id: 'description2',
-				classes: this.classes().fixed(baseCss.visuallyHidden)
+				classes: baseCss.visuallyHidden
 			}, [ 'Accepts 24-hour time with a leading zero, rounded to the nearest hour.' ]),
 			w(TimePicker, {
 				inputProperties: {
@@ -192,7 +192,7 @@ export class App extends ThemeableMixin(WidgetBase)<ThemeableProperties> {
 			v('h3', [ 'One second increment' ]),
 			v('p', {
 				id: 'description8',
-				classes: this.classes().fixed(baseCss.visuallyHidden)
+				classes: baseCss.visuallyHidden
 			}, [ 'Accepts 24-hour time with a leading zero, rounded to the nearest second.' ]),
 			w(TimePicker, {
 				end: '12:00:59',
@@ -215,7 +215,7 @@ export class App extends ThemeableMixin(WidgetBase)<ThemeableProperties> {
 			v('h3', [ 'Use 12-hour time' ]),
 			v('p', {
 				id: 'description9',
-				classes: this.classes().fixed(baseCss.visuallyHidden)
+				classes: baseCss.visuallyHidden
 			}, [ 'Accepts 12-hour time without a leading zero, rounded to the nearest half hour.' ]),
 			w(TimePicker, {
 				getOptionLabel: (option: TimeUnits) => {

@@ -9,7 +9,7 @@ import { assignProperties, assignChildProperties, compareProperty, replaceChild 
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
-import Slider, { SliderProperties } from '../../Slider';
+import Slider from '../../Slider';
 import * as css from '../../styles/slider.m.css';
 
 const compareId = compareProperty((value: any) => {
@@ -18,11 +18,11 @@ const compareId = compareProperty((value: any) => {
 
 const expected = function(widget: any, label = false, tooltip = false) {
 	const sliderVdom = v('div', {
-		classes: widget.classes(css.inputWrapper, css.inputWrapperFixed),
+		classes: [ css.inputWrapper, css.inputWrapperFixed ],
 		styles: {}
 	}, [
 		v('input', {
-			classes: widget.classes(css.input, css.nativeInput),
+			classes: [ css.input, css.nativeInput ],
 			'aria-describedby': undefined,
 			disabled: undefined,
 			id: <any> compareId,
@@ -52,21 +52,21 @@ const expected = function(widget: any, label = false, tooltip = false) {
 			ontouchcancel: widget.listener
 		}),
 		v('div', {
-			classes: widget.classes(css.track, css.trackFixed),
+			classes: [ css.track, css.trackFixed ],
 			'aria-hidden': 'true',
 			styles: {}
 		}, [
 			v('span', {
-				classes: widget.classes(css.fill, css.fillFixed),
+				classes: [ css.fill, css.fillFixed ],
 				styles: { width: '0%' }
 			}),
 			v('span', {
-				classes: widget.classes(css.thumb, css.thumbFixed),
+				classes: [ css.thumb, css.thumbFixed ],
 				styles: { left: '0%' }
 			})
 		]),
 		v('output', {
-			classes: widget.classes(css.output, tooltip ? css.outputTooltip : null),
+			classes: [ css.output, tooltip ? css.outputTooltip : null ],
 			for: <any> compareId,
 			styles: {}
 		}, [ '0' ])
@@ -81,12 +81,12 @@ const expected = function(widget: any, label = false, tooltip = false) {
 	}
 	else {
 		return v('div', {
-			classes: widget.classes(css.root, css.rootFixed)
+			classes: [ css.root, null, null, null, null, null, null, css.rootFixed ]
 		}, [ sliderVdom ]);
 	}
 };
 
-let widget: Harness<SliderProperties, typeof Slider>;
+let widget: Harness<Slider>;
 
 registerSuite('Slider', {
 
@@ -155,7 +155,7 @@ registerSuite('Slider', {
 					styles: { width: '200px' }
 				});
 				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.vertical, css.rootFixed)
+					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -195,7 +195,7 @@ registerSuite('Slider', {
 					styles: { top: '80%' }
 				});
 				assignProperties(expectedVdom, {
-					classes: widget.classes(css.root, css.vertical, css.rootFixed)
+					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -262,7 +262,7 @@ registerSuite('Slider', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.disabled, css.invalid, css.readonly, css.required, css.rootFixed)
+				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, css.rootFixed ]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -281,7 +281,7 @@ registerSuite('Slider', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.valid, css.rootFixed)
+				classes: [ css.root, null, null, css.valid, null, null, null, css.rootFixed ]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');

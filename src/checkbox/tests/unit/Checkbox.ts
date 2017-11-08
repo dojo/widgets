@@ -9,21 +9,24 @@ import { assignProperties, assignChildProperties } from '@dojo/test-extras/suppo
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
-import Checkbox, { CheckboxProperties, Mode } from '../../Checkbox';
+import Checkbox, { Mode } from '../../Checkbox';
 import * as css from '../../styles/checkbox.m.css';
 
-const expectedToggle = function(widget: any, labels = false) {
+const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 	if (labels) {
 		return [
 			v('div', {
-				classes: widget.classes(css.offLabel),
+				key: 'offLabel',
+				classes: css.offLabel,
 				'aria-hidden': null
 			}, [ 'off' ]),
 			v('div', {
-				classes: widget.classes(css.toggleSwitch)
+				key: 'toggle',
+				classes: css.toggleSwitch
 			}),
 			v('div', {
-				classes: widget.classes(css.onLabel),
+				key: 'onLabel',
+				classes: css.onLabel,
 				'aria-hidden': 'true'
 			}, [ 'on' ])
 		];
@@ -32,17 +35,18 @@ const expectedToggle = function(widget: any, labels = false) {
 	return [
 		null,
 		v('div', {
-			classes: widget.classes(css.toggleSwitch)
+			key: 'toggle',
+			classes: css.toggleSwitch
 		}),
 		null
 	];
 };
 
-const expected = function(widget: any, label = false, toggle = false, toggleLabels = false) {
-	const checkboxVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
+const expected = function(widget: Harness<Checkbox>, label = false, toggle = false, toggleLabels = false) {
+	const checkboxVdom = v('div', { classes: css.inputWrapper }, [
 		...(toggle ? expectedToggle(widget, toggleLabels) : []),
 		v('input', {
-			classes: widget.classes(css.input),
+			classes: css.input,
 			checked: false,
 			'aria-describedby': undefined,
 			disabled: undefined,
@@ -74,12 +78,12 @@ const expected = function(widget: any, label = false, toggle = false, toggleLabe
 	}
 	else {
 		return v('div', {
-			classes: widget.classes(css.root)
+			classes: [ css.root, null, null, null, null, null, null, null, null ]
 		}, [ checkboxVdom ]);
 	}
 };
 
-let widget: Harness<CheckboxProperties, typeof Checkbox>;
+let widget: Harness<Checkbox>;
 
 registerSuite('Checkbox', {
 	beforeEach() {
@@ -111,7 +115,7 @@ registerSuite('Checkbox', {
 				value: 'baz'
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.checked)
+				classes: [ css.root, null, css.checked, null, null, null, null, null, null ]
 			});
 
 			widget.expectRender(expectedVdom);
@@ -142,7 +146,7 @@ registerSuite('Checkbox', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.invalid, css.disabled, css.readonly, css.required)
+				classes: [ css.root, null, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -161,7 +165,7 @@ registerSuite('Checkbox', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.valid)
+				classes: [ css.root, null, null, null, null, null, css.valid, null, null ]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
@@ -197,7 +201,7 @@ registerSuite('Checkbox', {
 			widget.sendEvent('focus', { selector: 'input' });
 			expectedVdom = expected(widget);
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.focused)
+				classes: [ css.root, null, null, null, css.focused, null, null, null, null ]
 			});
 			widget.expectRender(expectedVdom, 'Should have focused class after focus event');
 
@@ -212,7 +216,7 @@ registerSuite('Checkbox', {
 			});
 			let expectedVdom = expected(widget, false, true);
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.toggle)
+				classes: [ css.root, css.toggle, null, null, null, null, null, null, null ]
 			});
 			widget.expectRender(expectedVdom, 'Toggle input without toggle labels');
 
@@ -223,7 +227,7 @@ registerSuite('Checkbox', {
 			});
 			expectedVdom = expected(widget, false, true, true);
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.toggle)
+				classes: [ css.root, css.toggle, null, null, null, null, null, null, null ]
 			});
 			widget.expectRender(expectedVdom, 'Toggle input with toggle labels');
 
@@ -235,7 +239,7 @@ registerSuite('Checkbox', {
 			});
 			expectedVdom = expected(widget, false, true, true);
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.toggle, css.checked)
+				classes: [ css.root, css.toggle, css.checked, null, null, null, null, null, null ]
 			});
 			assignChildProperties(expectedVdom, '0,3', {
 				checked: true

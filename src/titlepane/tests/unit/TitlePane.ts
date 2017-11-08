@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { compareProperty } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
-import TitlePane, { TitlePaneProperties } from '../../TitlePane';
+import TitlePane from '../../TitlePane';
 import * as css from '../../styles/titlePane.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 
@@ -16,7 +16,7 @@ interface TestEventInit extends EventInit {
 	keyCode: number;
 }
 
-let titlePane: Harness<TitlePaneProperties, typeof TitlePane>;
+let titlePane: Harness<TitlePane>;
 registerSuite('TitlePane', {
 
 	beforeEach() {
@@ -34,27 +34,27 @@ registerSuite('TitlePane', {
 			});
 
 			titlePane.expectRender(v('div', {
-				classes: titlePane.classes(css.root, css.open, css.rootFixed)
+				classes: [ css.root, css.open, css.rootFixed ]
 			}, [
 				v('div', {
 					'aria-level': null,
-					classes: titlePane.classes(css.title, css.titleFixed, css.closeable, css.closeableFixed),
+					classes: [ css.title, css.closeable, css.titleFixed, css.closeableFixed ],
 					role: 'heading'
 				}, [
 					v('button', {
 						'aria-controls': isNonEmptyString,
 						'aria-expanded': 'true',
-						classes: titlePane.classes(css.titleButton),
+						classes: css.titleButton,
 						disabled: false,
 						id: <any> isNonEmptyString,
 						onclick: titlePane.listener
 					}, [
 						v('i', {
-							classes: titlePane.classes(
+							classes: [
 								css.arrow,
 								iconCss.icon,
 								iconCss.downIcon
-							),
+							],
 							role: 'presentation',
 							'aria-hidden': 'true'
 						}),
@@ -64,10 +64,10 @@ registerSuite('TitlePane', {
 				v('div', {
 					'aria-hidden': null,
 					'aria-labelledby': isNonEmptyString,
-					classes: titlePane.classes(css.content),
+					classes: css.content,
 					id: <any> isNonEmptyString,
 					key: 'content'
-				})
+				}, [ ])
 			]));
 		},
 
@@ -80,27 +80,27 @@ registerSuite('TitlePane', {
 			});
 
 			titlePane.expectRender(v('div', {
-				classes: titlePane.classes(css.root, css.rootFixed)
+				classes: [ css.root, null, css.rootFixed ]
 			}, [
 				v('div', {
 					'aria-level': '5',
-					classes: titlePane.classes(css.title, css.titleFixed),
+					classes: [ css.title, null, css.titleFixed, null ],
 					role: 'heading'
 				}, [
 					v('button', {
 						'aria-controls': isNonEmptyString,
 						'aria-expanded': 'false',
-						classes: titlePane.classes(css.titleButton),
+						classes: css.titleButton,
 						disabled: true,
 						id: <any> isNonEmptyString,
 						onclick: titlePane.listener
 					}, [
 						v('i', {
-							classes: titlePane.classes(
+							classes: [
 								css.arrow,
 								iconCss.icon,
 								iconCss.rightIcon
-							),
+							],
 							role: 'presentation',
 							'aria-hidden': 'true'
 						}),
@@ -110,10 +110,10 @@ registerSuite('TitlePane', {
 				v('div', {
 					'aria-hidden': 'true',
 					'aria-labelledby': isNonEmptyString,
-					classes: titlePane.classes(css.content),
+					classes: css.content,
 					id: <any> isNonEmptyString,
 					key: 'content'
-				})
+				}, [])
 			]));
 		},
 

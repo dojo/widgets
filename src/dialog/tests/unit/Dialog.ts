@@ -7,7 +7,7 @@ import { v } from '@dojo/widget-core/d';
 import { assignChildProperties, compareProperty, replaceChild } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
-import Dialog, { DialogProperties } from '../../Dialog';
+import Dialog from '../../Dialog';
 import * as css from '../../styles/dialog.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
@@ -17,24 +17,24 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
-const expectedCloseButton = function(widget: any) {
+const expectedCloseButton = function() {
 	return v('button', {
-		classes: widget.classes(css.close),
+		classes: css.close,
 		onclick: widget.listener
 	}, [
 		'close dialog',
 		v('i', {
-			classes: widget.classes(iconCss.icon, iconCss.closeIcon),
+			classes: [ iconCss.icon, iconCss.closeIcon ],
 			role: 'presentation',
 			'aria-hidden': 'true'
 		})
 	]);
 };
 
-const expected = function(widget: any, open = false, closeable = false, children: any[] = []) {
-	return v('div', { classes: widget.classes(css.root) }, open ? [
+const expected = function(widget: Harness<Dialog>, open = false, closeable = false, children: any[] = []) {
+	return v('div', { classes: css.root }, open ? [
 		v('div', {
-			classes: widget.classes(css.underlay),
+			classes: [ null, css.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay',
@@ -42,28 +42,28 @@ const expected = function(widget: any, open = false, closeable = false, children
 		}),
 		v('div', {
 			'aria-labelledby': compareId,
-			classes: widget.classes(css.main),
+			classes: css.main,
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'main',
 			role: 'dialog'
 		}, [
 			v('div', {
-				classes: widget.classes(css.title),
+				classes: css.title,
 				key: 'title'
 			}, [
 				v('div', { id: <any> compareId }, [ '' ]),
-				closeable ? expectedCloseButton(widget) : null
+				closeable ? expectedCloseButton() : null
 			]),
 			v('div', {
-				classes: widget.classes(css.content),
+				classes: css.content,
 				key: 'content'
 			}, children)
 		])
 	] : []);
 };
 
-let widget: Harness<DialogProperties, typeof Dialog>;
+let widget: Harness<Dialog>;
 
 registerSuite('Dialog', {
 
@@ -107,13 +107,13 @@ registerSuite('Dialog', {
 
 			let expectedVdom = expected(widget, true, true);
 			assignChildProperties(expectedVdom, '0', {
-				classes: widget.classes(css.underlayVisible, css.underlay) // do this here so the class is present in future renders
+				classes: [ css.underlayVisible, css.underlay ] // do this here so the class is present in future renders
 			});
 			expectedVdom = expected(widget, true, true);
 			replaceChild(expectedVdom, '1,0,1,0', 'foo');
 			replaceChild(expectedVdom, '1,0,0,0', 'foo');
 			assignChildProperties(expectedVdom, '0', {
-				classes: widget.classes(css.underlayVisible, css.underlay)
+				classes: [ css.underlayVisible, css.underlay ]
 			});
 			assignChildProperties(expectedVdom, '1', {
 				enterAnimation: 'fooAnimation',

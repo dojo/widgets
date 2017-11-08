@@ -1,8 +1,8 @@
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/widget-core/diff';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
@@ -38,7 +38,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
  * @property value              Value to set on the input
  */
-export interface ComboBoxProperties extends ThemeableProperties {
+export interface ComboBoxProperties extends ThemedProperties {
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
@@ -65,12 +65,12 @@ export const enum Operation {
 	decrease = -1
 }
 
-export const ComboBoxBase = ThemeableMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
 @diffProperty('results', reference)
-export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
+export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 	private _activeIndex = 0;
 	private _callInputFocus = false;
 	private _ignoreBlur: boolean;
@@ -265,7 +265,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		}
 	}
 
-	protected renderInput(): WNode {
+	protected renderInput(): DNode {
 		const {
 			clearable,
 			disabled,
@@ -283,7 +283,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			key: 'textinput',
 			'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
 			'aria-owns': this._getMenuId(),
-			classes: this.classes(clearable ? css.clearable : null),
+			classes: this.theme(clearable ? css.clearable : null),
 			controls: this._getMenuId(),
 			disabled,
 			invalid,
@@ -298,7 +298,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		});
 	}
 
-	protected renderClearButton() {
+	protected renderClearButton(): DNode {
 		const {
 			disabled,
 			readOnly
@@ -306,26 +306,26 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		return v('button', {
 			'aria-controls': this._getMenuId(),
-			classes: this.classes(css.clear),
+			classes: this.theme(css.clear),
 			disabled,
 			readOnly,
 			onclick: this._onClearClick
 		}, [
 			'clear combo box',
-			v('i', { classes: this.classes(iconCss.icon, iconCss.closeIcon),
+			v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]);
 	}
 
-	protected renderMenuButton() {
+	protected renderMenuButton(): DNode {
 		const {
 			disabled,
 			readOnly
 		} = this.properties;
 
 		return v('button', {
-			classes: this.classes(css.trigger),
+			classes: this.theme(css.trigger),
 			disabled,
 			readOnly,
 			tabIndex: -1,
@@ -334,13 +334,13 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			'open combo box',
 			v('i', {
 				'aria-hidden': 'true',
-				classes: this.classes(iconCss.icon, iconCss.downIcon),
+				classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
 				role: 'presentation'
 			})
 		]);
 	}
 
-	protected renderMenu(results: any[]): DNode | null {
+	protected renderMenu(results: any[]): DNode {
 		const { theme, isResultDisabled } = this.properties;
 
 		if (results.length === 0 || !this._open) {
@@ -349,7 +349,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 
 		return v('div', {
 			key: 'dropdown',
-			classes: this.classes(css.dropdown),
+			classes: this.theme(css.dropdown),
 			onmouseover: this._onResultHover,
 			onmousedown: this._onResultMouseDown
 		}, [
@@ -391,8 +391,7 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 		this._wasOpen = this._open;
 
 		let controls: DNode = v('div', <any> {
-			bind: this,
-			classes: this.classes(css.controls)
+			classes: this.theme(css.controls)
 		}, [
 			this.renderInput(),
 			clearable ? this.renderClearButton() : null,
@@ -412,12 +411,12 @@ export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {
 			'aria-readonly': readOnly ? 'true' : 'false',
 			'aria-required': required ? 'true' : 'false',
 			id,
-			classes: this.classes(
+			classes: this.theme([
 				css.root,
 				this._open ? css.open : null,
 				invalid ? css.invalid : null,
 				invalid === false ? css.valid : null
-			),
+			]),
 			key: 'root',
 			role: 'combobox'
 		}, [

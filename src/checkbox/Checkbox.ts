@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import * as css from './styles/checkbox.m.css';
@@ -32,7 +32,7 @@ import * as css from './styles/checkbox.m.css';
  * @property onTouchEnd     Called on the input's touchend event
  * @property onTouchCancel  Called on the input's touchcancel event
  */
-export interface CheckboxProperties extends ThemeableProperties {
+export interface CheckboxProperties extends ThemedProperties {
 	checked?: boolean;
 	describedBy?: string;
 	disabled?: boolean;
@@ -64,7 +64,7 @@ export const enum Mode {
 	toggle
 };
 
-export const CheckboxBase = ThemeableMixin(WidgetBase);
+export const CheckboxBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class Checkbox extends CheckboxBase<CheckboxProperties> {
@@ -119,14 +119,17 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		return mode === Mode.toggle ? [
 			offLabel ? v('div', {
-				classes: this.classes(css.offLabel),
+				key: 'offLabel',
+				classes: this.theme(css.offLabel),
 				'aria-hidden': checked ? 'true' : null
 			}, [ offLabel ]) : null,
 			v('div', {
-				classes: this.classes(css.toggleSwitch)
+				key: 'toggle',
+				classes: this.theme(css.toggleSwitch)
 			}),
 			onLabel ? v('div', {
-				classes: this.classes(css.onLabel),
+				key: 'onLabel',
+				classes: this.theme(css.onLabel),
 				'aria-hidden': checked ? null : 'true'
 			}, [ onLabel ]) : null
 		] : [];
@@ -146,10 +149,10 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 		} = this.properties;
 
 		const children = [
-			v('div', { classes: this.classes(css.inputWrapper) }, [
+			v('div', { classes: this.theme(css.inputWrapper) }, [
 				...this.renderToggle(),
 				v('input', {
-					classes: this.classes(css.input),
+					classes: this.theme(css.input),
 					checked,
 					'aria-describedby': describedBy,
 					disabled,
@@ -177,14 +180,14 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 
 		if (label) {
 			checkboxWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...this.getModifierClasses()).get()) },
+				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
 				label,
 				theme: this.properties.theme
 			}, children);
 		}
 		else {
 			checkboxWidget = v('div', {
-				classes: this.classes(css.root, ...this.getModifierClasses())
+				classes: this.theme([ css.root, ...this.getModifierClasses() ])
 			}, children);
 		}
 

@@ -9,13 +9,13 @@ import { assignProperties, assignChildProperties } from '@dojo/test-extras/suppo
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
-import Textarea, { TextareaProperties } from '../../Textarea';
+import Textarea from '../../Textarea';
 import * as css from '../../styles/textarea.m.css';
 
-const expected = function(widget: any, label = false) {
-	const textareaVdom = v('div', { classes: widget.classes(css.inputWrapper) }, [
+const expected = function(label = false) {
+	const textareaVdom = v('div', { classes: css.inputWrapper }, [
 		v('textarea', {
-			classes: widget.classes(css.input),
+			classes: css.input,
 			cols: null,
 			'aria-describedby': undefined,
 			disabled: undefined,
@@ -55,12 +55,12 @@ const expected = function(widget: any, label = false) {
 	}
 	else {
 		return v('div', {
-			classes: widget.classes(css.root)
+			classes: [ css.root, null, null, null, null, null ]
 		}, [ textareaVdom ]);
 	}
 };
 
-let widget: Harness<TextareaProperties, typeof Textarea>;
+let widget: Harness<Textarea>;
 
 registerSuite('Textarea', {
 
@@ -74,7 +74,7 @@ registerSuite('Textarea', {
 
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected(widget));
+			widget.expectRender(expected());
 		},
 
 		'custom properties'() {
@@ -90,7 +90,7 @@ registerSuite('Textarea', {
 				wrapText: 'soft'
 			});
 
-			const expectedVdom = expected(widget);
+			const expectedVdom = expected();
 			assignChildProperties(expectedVdom, '0,0', {
 				cols: '15',
 				'aria-describedby': 'foo',
@@ -111,7 +111,7 @@ registerSuite('Textarea', {
 				label: 'foo'
 			});
 
-			widget.expectRender(expected(widget, true));
+			widget.expectRender(expected(true));
 		},
 
 		'state classes'() {
@@ -122,7 +122,7 @@ registerSuite('Textarea', {
 				required: true
 			});
 
-			let expectedVdom = expected(widget);
+			let expectedVdom = expected();
 			assignChildProperties(expectedVdom, '0,0', {
 				disabled: true,
 				'aria-invalid': 'true',
@@ -131,7 +131,7 @@ registerSuite('Textarea', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.invalid, css.disabled, css.readonly, css.required)
+				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -142,7 +142,7 @@ registerSuite('Textarea', {
 				readOnly: false,
 				required: false
 			});
-			expectedVdom = expected(widget);
+			expectedVdom = expected();
 
 			assignChildProperties(expectedVdom, '0,0', {
 				disabled: false,
@@ -150,7 +150,7 @@ registerSuite('Textarea', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: widget.classes(css.root, css.valid)
+				classes: [ css.root, null, null, css.valid, null, null ]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
@@ -165,7 +165,7 @@ registerSuite('Textarea', {
 				required: true
 			});
 
-			const expectedVdom = expected(widget, true);
+			const expectedVdom = expected(true);
 			assignChildProperties(expectedVdom, '0,0', {
 				disabled: true,
 				'aria-invalid': 'true',

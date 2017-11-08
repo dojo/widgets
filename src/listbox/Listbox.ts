@@ -4,7 +4,7 @@ import Dimensions from '@dojo/widget-core/meta/Dimensions';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import MetaBase from '@dojo/widget-core/meta/Base';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
@@ -42,7 +42,7 @@ export class ScrollMeta extends MetaBase {
  * @property onOptionSelect       Called with the option data of the new requested selected item
  */
 
-export interface ListboxProperties extends ThemeableProperties {
+export interface ListboxProperties extends ThemedProperties {
 	activeIndex?: number;
 	describedBy?: string;
 	getOptionDisabled?(option: any, index: number): boolean;
@@ -59,11 +59,11 @@ export interface ListboxProperties extends ThemeableProperties {
 	onOptionSelect?(option: any, index: number, key?: string | number): void;
 }
 
-export const ListboxBase = ThemeableMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @diffProperty('optionData', reference)
-export default class Listbox extends ListboxBase<ListboxProperties> {
+export default class Listbox extends ThemedBase<ListboxProperties> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();
 
@@ -203,7 +203,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		return optionData.map(this._boundRenderOption);
 	}
 
-	protected render() {
+	protected render(): DNode {
 		const {
 			activeIndex = 0,
 			describedBy,
@@ -215,7 +215,7 @@ export default class Listbox extends ListboxBase<ListboxProperties> {
 		return v('div', {
 			'aria-activedescendant': this._getOptionId(activeIndex),
 			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.classes(css.root, ...this.getModifierClasses()),
+			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
 			describedBy,
 			id,
 			key: 'root',

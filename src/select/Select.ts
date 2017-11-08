@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { reference } from '@dojo/widget-core/diff';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemeableMixin, ThemeableProperties, theme } from '@dojo/widget-core/mixins/Themeable';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { find } from '@dojo/shim/array';
@@ -36,7 +36,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onChange          Called when the node's 'change' event is fired
  * @property onFocus           Called when the input is focused
  */
-export interface SelectProperties extends ThemeableProperties {
+export interface SelectProperties extends ThemedProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
@@ -57,12 +57,12 @@ export interface SelectProperties extends ThemeableProperties {
 	onFocus?(key?: string | number): void;
 }
 
-export const SelectBase = ThemeableMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
 @diffProperty('options', reference)
-export default class Select extends SelectBase<SelectProperties> {
+export default class Select extends ThemedBase<SelectProperties> {
 	private _callTriggerFocus = false;
 	private _callListboxFocus = false;
 	private _focusedIndex = 0;
@@ -174,9 +174,9 @@ export default class Select extends SelectBase<SelectProperties> {
 		}
 	}
 
-	protected renderExpandIcon() {
-		return v('span', { classes: this.classes(css.arrow) }, [
-			v('i', { classes: this.classes(iconCss.icon, iconCss.downIcon),
+	protected renderExpandIcon(): DNode {
+		return v('span', { classes: this.theme(css.arrow) }, [
+			v('i', { classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]);
@@ -207,9 +207,9 @@ export default class Select extends SelectBase<SelectProperties> {
 			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
 		}, [ getOptionLabel ? getOptionLabel(option) : '' ]));
 
-		return v('div', { classes: this.classes(css.inputWrapper) }, [
+		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v('select', {
-				classes: this.classes(css.input),
+				classes: this.theme(css.input),
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
@@ -248,11 +248,11 @@ export default class Select extends SelectBase<SelectProperties> {
 		// create dropdown trigger and select box
 		return v('div', {
 			key: 'root',
-			classes: this.classes(css.inputWrapper, _open ? css.open : null)
+			classes: this.theme([ css.inputWrapper, _open ? css.open : null ])
 		}, [
 			...this.renderCustomTrigger(),
 			v('div', {
-				classes: this.classes(css.dropdown),
+				classes: this.theme(css.dropdown),
 				onfocusout: this._onListboxBlur,
 				onkeydown: this._onDropdownKeyDown
 			}, [
@@ -306,7 +306,7 @@ export default class Select extends SelectBase<SelectProperties> {
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
-				classes: this.classes(css.trigger),
+				classes: this.theme(css.trigger),
 				describedBy,
 				disabled,
 				key: 'trigger',
@@ -334,7 +334,7 @@ export default class Select extends SelectBase<SelectProperties> {
 
 		if (label) {
 			rootWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.classes(css.root, ...modifierClasses)()) },
+				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...modifierClasses ])) },
 				forId: this._baseId,
 				label,
 				theme
@@ -342,7 +342,7 @@ export default class Select extends SelectBase<SelectProperties> {
 		}
 		else {
 			rootWidget = v('div', {
-				classes: this.classes(css.root, ...modifierClasses)
+				classes: this.theme([ css.root, ...modifierClasses ])
 			}, [ select ]);
 		}
 

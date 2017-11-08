@@ -1,7 +1,7 @@
 import { padStart } from '@dojo/shim/string';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import ThemeableMixin, { theme, ThemeableProperties } from '@dojo/widget-core/mixins/Themeable';
+import ThemedMixin, { theme, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
@@ -45,7 +45,8 @@ interface FocusInputEvent extends FocusEvent {
  * @property useNativeElement   Use the native <input type="time"> element if true
  * @property value              Value to set on the input
  */
-export interface TimePickerProperties extends ThemeableProperties {
+export interface TimePickerProperties extends ThemedProperties {
+	autoBlur?: boolean;
 	clearable?: boolean;
 	disabled?: boolean;
 	end?: string;
@@ -161,7 +162,7 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 	return value;
 }
 
-export const TimePickerBase = ThemeableMixin(WidgetBase);
+export const TimePickerBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export class TimePicker extends TimePickerBase<TimePickerProperties> {
@@ -292,7 +293,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			'aria-describedby': inputProperties && inputProperties.describedBy,
 			'aria-invalid': invalid ? 'true' : null,
 			'aria-readonly': readOnly ? 'true' : null,
-			classes: this.classes(css.input, ...this.getModifierClasses()),
+			classes: this.theme([ css.input, ...this.getModifierClasses() ]),
 			disabled,
 			invalid,
 			key: 'native-input',
@@ -322,14 +323,14 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 
 			if (label) {
 				children = [ w(Label, {
-					extraClasses: { root: parseLabelClasses(this.classes(css.input, ...this.getModifierClasses()).get()) },
+					extraClasses: { root: parseLabelClasses(this.theme([ css.input, ...this.getModifierClasses() ])) },
 					label,
 					theme: this.properties.theme
 				}, [ input ]) ];
 			}
 
 			return v('span', {
-				classes: this.classes(css.root),
+				classes: this.theme(css.root),
 				key: 'root'
 			}, children);
 		}
