@@ -148,9 +148,13 @@ registerSuite('Dialog', {
 	},
 
 	'The dialog should be hidden when the close button is activated with the enter key'() {
-		if (this.remote.session.capabilities.browserName === 'safari') {
+		const { browserName = '' } = this.remote.session.capabilities;
+		if (browserName === 'safari') {
 			// TODO: https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5403
 			this.skip('SafariDriver does not move focus with tab key.');
+		}
+		if (browserName.toLowerCase() === 'microsoftedge' || browserName === 'firefox') {
+			this.skip('Edge and Firefox are also having trouble with tab key focus.');
 		}
 
 		return openDialog(this.remote)
