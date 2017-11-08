@@ -74,7 +74,8 @@ export default class Select extends ThemedBase<SelectProperties> {
 
 	private _getOptionLabel(option: any) {
 		const { getOptionLabel } = this.properties;
-		return getOptionLabel ? getOptionLabel(option) : `${option}`;
+		const fallback = option ? `${option}` : '';
+		return getOptionLabel ? getOptionLabel(option) : fallback;
 	}
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
