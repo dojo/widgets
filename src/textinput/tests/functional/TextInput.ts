@@ -16,10 +16,6 @@ registerSuite('TextInput', {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-text .${css.root}`)
 				.isDisplayed()
-				.findByCssSelector(`.${css.inputWrapper}`)
-					.isDisplayed()
-				.end()
-
 				.findByCssSelector(`.${css.input}`)
 					.getSize()
 					.then(({ height, width }) => {

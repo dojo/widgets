@@ -7,8 +7,9 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
-import { TextInputProperties } from '../textinput/TextInput';
+import { LabeledProperties, InputProperties } from '../common/interfaces';
+import Label from '../label/Label2';
+import uuid from '@dojo/core/uuid';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;
@@ -45,16 +46,15 @@ interface FocusInputEvent extends FocusEvent {
  * @property useNativeElement   Use the native <input type="time"> element if true
  * @property value              Value to set on the input
  */
-export interface TimePickerProperties extends ThemedProperties {
+export interface TimePickerProperties extends ThemedProperties, LabeledProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
 	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
-	inputProperties?: TextInputProperties;
+	inputProperties?: InputProperties;
 	invalid?: boolean;
 	isOptionDisabled?(result: any): boolean;
-	label?: string | LabelOptions;
 	name?: string;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
@@ -168,6 +168,13 @@ export const TimePickerBase = ThemedMixin(WidgetBase);
 export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	protected options: TimeUnits[] | null;
 
+	private _uuid: string;
+
+	constructor() {
+		super();
+		this._uuid = uuid();
+	}
+
 	private _formatUnits(units: TimeUnits): string {
 		const { step = 60 } = this.properties;
 		const { hour, minute, second } = units;
@@ -199,7 +206,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this.getOptions());
 	}
 
-	protected getModifierClasses(): (string | null)[] {
+	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
@@ -207,6 +214,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			required
 		} = this.properties;
 		return [
+			css.root,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			readOnly ? css.readonly : null,
@@ -240,6 +248,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			invalid,
 			isOptionDisabled,
 			label,
+			labelAfter,
+			labelHidden,
 			onBlur,
 			onChange,
 			onFocus,
@@ -261,6 +271,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			invalid,
 			isResultDisabled: isOptionDisabled,
 			label,
+			labelAfter,
+			labelHidden,
 			onBlur,
 			onChange,
 			onFocus,
@@ -286,56 +298,48 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			required,
 			start,
 			step,
-			value
+			value,
+			label,
+			theme,
+			labelHidden = false,
+			labelAfter = false
 		} = this.properties;
 
-		return v('input', {
-			'aria-describedby': inputProperties && inputProperties.describedBy,
-			'aria-invalid': invalid ? 'true' : null,
-			'aria-readonly': readOnly ? 'true' : null,
-			classes: this.theme([ css.input, ...this.getModifierClasses() ]),
-			disabled,
-			invalid,
-			key: 'native-input',
-			max: end,
-			min: start,
-			name,
-			onblur: this._onNativeBlur,
-			onchange: this._onNativeChange,
-			onfocus: this._onNativeFocus,
-			readOnly,
-			required,
-			step,
-			type: 'time',
-			value
-		});
+		const children = [
+			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null,
+			v('input', {
+				id: this._uuid,
+				'aria-describedby': inputProperties && inputProperties.describedBy,
+				'aria-invalid': invalid ? 'true' : null,
+				'aria-readonly': readOnly ? 'true' : null,
+				classes: this.theme([ css.input, ...this.getRootClasses() ]),
+				disabled,
+				invalid,
+				key: 'native-input',
+				max: end,
+				min: start,
+				name,
+				onblur: this._onNativeBlur,
+				onchange: this._onNativeChange,
+				onfocus: this._onNativeFocus,
+				readOnly,
+				required,
+				step,
+				type: 'time',
+				value
+			})
+		];
+
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children.reverse() : children);
 	}
 
 	render(): DNode {
-		const {
-			label,
-			useNativeElement
-		} = this.properties;
+		const { useNativeElement } = this.properties;
 
-		if (useNativeElement) {
-			const input = this.renderNativeInput();
-			let children: DNode[] = [ input ];
-
-			if (label) {
-				children = [ w(Label, {
-					extraClasses: { root: parseLabelClasses(this.theme([ css.input, ...this.getModifierClasses() ])) },
-					label,
-					theme: this.properties.theme
-				}, [ input ]) ];
-			}
-
-			return v('span', {
-				classes: this.theme(css.root),
-				key: 'root'
-			}, children);
-		}
-
-		return this.renderCustomInput();
+		return useNativeElement ? this.renderNativeInput() : this.renderCustomInput();
 	}
 }
 

@@ -2,7 +2,9 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import Label from '../label/Label2';
+import { InputProperties, LabeledProperties } from '../common/interfaces';
+import uuid from '@dojo/core/uuid';
 import * as css from './styles/textinput.m.css';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
@@ -16,7 +18,6 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
  * @property invalid        Indicates the value entered in the form field is invalid
- * @property label          Label settings for form label text, position, and visibility
  * @property maxLength      Maximum number of characters allowed in the input
  * @property minLength      Minimum number of characters allowed in the input
  * @property name           The form widget's name
@@ -39,33 +40,9 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property onTouchEnd     Called on the input's touchend event
  * @property onTouchCancel  Called on the input's touchcancel event
  */
-export interface TextInputProperties extends ThemedProperties {
+export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties {
 	controls?: string;
-	describedBy?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	label?: string | LabelOptions;
-	maxLength?: number | string;
-	minLength?: number | string;
-	name?: string;
-	placeholder?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	type?: TextInputType;
-	value?: string;
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
-	onInput?(event: Event): void;
-	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
 }
 
 export const TextInputBase = ThemedMixin(WidgetBase);
@@ -86,7 +63,14 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses(): (string | null)[] {
+	private _uuid: string;
+
+	constructor() {
+		super();
+		this._uuid = uuid();
+	}
+
+	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
@@ -94,6 +78,7 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			required
 		} = this.properties;
 		return [
+			css.root,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
@@ -109,6 +94,8 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			disabled,
 			invalid,
 			label,
+			labelAfter = false,
+			labelHidden = false,
 			maxLength,
 			minLength,
 			name,
@@ -116,11 +103,14 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 			readOnly,
 			required,
 			type = 'text',
-			value
+			value,
+			theme
 		} = this.properties;
 
-		const textinput = v('div', { classes: this.theme(css.inputWrapper) }, [
+		const children = [
+			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null,
 			v('input', {
+				id: this._uuid,
 				classes: this.theme(css.input),
 				'aria-controls': controls,
 				'aria-describedby': describedBy,
@@ -149,23 +139,11 @@ export default class TextInput extends TextInputBase<TextInputProperties> {
 				ontouchend: this._onTouchEnd,
 				ontouchcancel: this._onTouchCancel
 			})
-		]);
+		];
 
-		let textinputWidget;
-
-		if (label) {
-			textinputWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
-				label,
-				theme: this.properties.theme
-			}, [ textinput ]);
-		}
-		else {
-			textinputWidget = v('div', {
-				classes: this.theme([ css.root, ...this.getModifierClasses() ])
-			}, [ textinput ]);
-		}
-
-		return textinputWidget;
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children.reverse() : children);
 	}
 }

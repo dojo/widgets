@@ -37,8 +37,6 @@
 
 .input::placeholder { color: var(--color-text-faded); }
 
-.inputWrapper { }
-
 /* disabled and readonly */
 .disabled .input,
 .readonly .input {

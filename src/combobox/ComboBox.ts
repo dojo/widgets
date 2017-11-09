@@ -7,9 +7,10 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 
-import Label, { LabelOptions } from '../label/Label';
+import Label from '../label/Label2';
 import Listbox from '../listbox/Listbox';
-import TextInput, { TextInputProperties } from '../textinput/TextInput';
+import TextInput from '../textinput/TextInput';
+import { LabeledProperties, InputProperties } from '../common/interfaces';
 
 import * as css from './styles/comboBox.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -38,15 +39,14 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
  * @property value              Value to set on the input
  */
-export interface ComboBoxProperties extends ThemedProperties {
+export interface ComboBoxProperties extends ThemedProperties, LabeledProperties {
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
 	id?: string;
-	inputProperties?: TextInputProperties;
+	inputProperties?: InputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
-	label?: string | LabelOptions;
 	onBlur?(value: string, key?: string | number): void;
 	onChange?(value: string, key?: string | number): void;
 	onFocus?(value: string, key?: string | number): void;
@@ -256,34 +256,33 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 	}
 
 	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			if (this._callInputFocus) {
-				this._callInputFocus = false;
-				const input = element.querySelector('input') as HTMLElement;
-				input && input.focus();
-			}
+		if (key === 'root' && this._callInputFocus) {
+			this._callInputFocus = false;
+			const input = element.querySelector('input') as HTMLElement;
+			input && input.focus();
 		}
 	}
 
 	protected renderInput(): DNode {
 		const {
-			clearable,
+			// clearable,
 			disabled,
 			inputProperties = {},
 			invalid,
 			readOnly,
 			required,
-			results = [],
+			// results = [],
 			value = '',
 			theme
 		} = this.properties;
 
-		return w(TextInput, <TextInputProperties> {
+		// TODO: Likely need to extend TextInput here to add in these items
+		return w(TextInput, {
 			...inputProperties,
 			key: 'textinput',
-			'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
-			'aria-owns': this._getMenuId(),
-			classes: this.theme(clearable ? css.clearable : null),
+			// 'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
+			// 'aria-owns': this._getMenuId(),
+			// classes: this.theme(clearable ? css.clearable : null),
 			controls: this._getMenuId(),
 			disabled,
 			invalid,
@@ -382,6 +381,9 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 			label,
 			readOnly,
 			required,
+			disabled,
+			labelHidden,
+			labelAfter,
 			results = [],
 			theme
 		} = this.properties;
@@ -390,20 +392,17 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		this._onMenuChange();
 		this._wasOpen = this._open;
 
-		let controls: DNode = v('div', <any> {
-			classes: this.theme(css.controls)
-		}, [
-			this.renderInput(),
-			clearable ? this.renderClearButton() : null,
-			this.renderMenuButton()
-		]);
-
-		if (label) {
-			controls = w(Label, {
-				label,
-				theme
-			}, [ controls ]);
-		}
+		const controls = [
+			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: id }, [ label ]) : null,
+			v('div', {
+				classes: this.theme(css.controls)
+			}, [
+				this.renderInput(),
+				clearable ? this.renderClearButton() : null,
+				this.renderMenuButton()
+			]),
+			menu
+		];
 
 		return v('div', {
 			'aria-expanded': this._open ? 'true' : 'false',
@@ -419,9 +418,6 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 			]),
 			key: 'root',
 			role: 'combobox'
-		}, [
-			controls,
-			menu
-		]);
+		}, labelAfter ? controls.reverse() : controls);
 	}
 }

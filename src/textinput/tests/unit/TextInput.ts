@@ -13,7 +13,7 @@ import TextInput from '../../TextInput';
 import * as css from '../../styles/textinput.m.css';
 
 const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
-	const inputVdom = v('div', { classes: css.inputWrapper }, [
+	const inputVdom = v('div', [
 		v('input', {
 			classes: css.input,
 			'aria-controls': undefined,

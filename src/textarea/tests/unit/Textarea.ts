@@ -13,7 +13,7 @@ import Textarea from '../../Textarea';
 import * as css from '../../styles/textarea.m.css';
 
 const expected = function(label = false) {
-	const textareaVdom = v('div', { classes: css.inputWrapper }, [
+	const textareaVdom = v('div', [
 		v('textarea', {
 			classes: css.input,
 			cols: null,

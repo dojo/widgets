@@ -2,7 +2,9 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import Label from '../label/Label2';
+import { InputProperties, LabeledProperties } from '../common/interfaces';
+import uuid from '@dojo/core/uuid';
 import * as css from './styles/textarea.m.css';
 
 /**
@@ -38,34 +40,10 @@ import * as css from './styles/textarea.m.css';
  * @property onTouchEnd      Called on the input's touchend event
  * @property onTouchCancel   Called on the input's touchcancel event
  */
-export interface TextareaProperties extends ThemedProperties {
+export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties {
 	columns?: number;
-	describedBy?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	label?: string | LabelOptions;
-	maxLength?: number | string;
-	minLength?: number | string;
-	name?: string;
-	placeholder?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	rows?: number;
-	value?: string;
 	wrapText?: 'hard' | 'soft' | 'off';
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
-	onInput?(event: Event): void;
-	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
 }
 
 export const TextareaBase = ThemedMixin(WidgetBase);
@@ -86,7 +64,14 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses(): (string | null)[] {
+	private _uuid: string;
+
+	constructor() {
+		super();
+		this._uuid = uuid();
+	}
+
+	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
@@ -94,6 +79,7 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 			required
 		} = this.properties;
 		return [
+			css.root,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
@@ -117,11 +103,16 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 			required,
 			rows,
 			value,
-			wrapText
+			wrapText,
+			theme,
+			labelHidden,
+			labelAfter
 		} = this.properties;
 
-		const textarea = v('div', { classes: this.theme(css.inputWrapper) }, [
+		const children = [
+			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null,
 			v('textarea', {
+				id: this._uuid,
 				classes: this.theme(css.input),
 				cols: columns ? `${columns}` : null,
 				'aria-describedby': describedBy,
@@ -151,23 +142,11 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 				ontouchend: this._onTouchEnd,
 				ontouchcancel: this._onTouchCancel
 			})
-		]);
+		];
 
-		let textareaWidget;
-
-		if (label) {
-			textareaWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
-				label,
-				theme: this.properties.theme
-			}, [ textarea ]);
-		}
-		else {
-			textareaWidget = v('div', {
-				classes: this.theme([ css.root, ...this.getModifierClasses() ])
-			}, [ textarea ]);
-		}
-
-		return textareaWidget;
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children.reverse() : children);
 	}
 }

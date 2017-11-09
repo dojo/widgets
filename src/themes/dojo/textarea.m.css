@@ -34,8 +34,6 @@
 	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-box-shadow));
 }
 
-.inputWrapper { }
-
 /* disabled and readonly */
 .disabled .input,
 .readonly .input {
