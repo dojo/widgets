@@ -79,6 +79,11 @@ registerSuite('TimePicker', {
 			.end();
 	},
 	'picker opens on focus'() {
+		const { browserName = '' } = this.remote.session.capabilities;
+		if (browserName.toLowerCase() === 'microsoftedge') {
+			this.skip('Edge driver does not handle focus on click');
+		}
+
 		const exampleId = 'example-open-on-focus';
 		return getPage(this.remote, exampleId)
 			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.input}`)
@@ -130,6 +135,11 @@ registerSuite('TimePicker', {
 			.end();
 	},
 	'disabled timepickers cannot be opened'() {
+		const { browserName } = this.remote.session.capabilities;
+		if (browserName === 'firefox') {
+			this.skip('Firefox does not like clicking on disabled things.');
+		}
+
 		return testDisabledPicker(this.remote, 'example-disabled');
 	},
 	'readonly timepickers cannot be opened'() {
