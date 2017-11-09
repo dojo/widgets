@@ -146,6 +146,11 @@ registerSuite('TimePicker', {
 		return testDisabledPicker(this.remote, 'example-readonly');
 	},
 	'validated inputs update on input'() {
+		const { browserName } = this.remote.session.capabilities;
+		if (browserName === 'internet explorer') {
+			this.skip('Test does not work on Internet Explorer');
+		}
+
 		const exampleId = 'example-required-validated';
 		return getPage(this.remote, exampleId)
 			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.root}`)
@@ -176,6 +181,14 @@ registerSuite('TimePicker', {
 			.end();
 	},
 	'validated inputs update on focus change'() {
+		const { browserName = '' } = this.remote.session.capabilities;
+		if (browserName.toLowerCase() === 'microsoftedge') {
+			this.skip('Edge driver does not handle focus on click');
+		}
+		if (browserName === 'internet explorer') {
+			this.skip('Test does not work on Internet Explorer');
+		}
+
 		const exampleId = 'example-required-validated';
 		return getPage(this.remote, exampleId)
 			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.root}`)
