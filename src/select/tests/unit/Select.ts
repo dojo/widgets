@@ -308,11 +308,11 @@ registerSuite('Select', {
 				});
 
 				assignChildProperties(expectedVdom, '0,0', {
-					classes: widget.classes(css.trigger, css.placeholder)
+					classes: [ css.trigger, css.placeholder ]
 				});
 				expectedVdom = expected(widget, expectedSingle(widget, true));
 				assignChildProperties(expectedVdom, '0,0', {
-					classes: widget.classes(css.trigger, css.placeholder)
+					classes: [ css.trigger, css.placeholder ]
 				});
 				replaceChild(expectedVdom, '0,0,0', 'bar');
 

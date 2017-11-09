@@ -324,7 +324,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
-				classes: this.theme([css.trigger, isPlaceholder ? css.placeholder : null]),
+				classes: this.theme([ css.trigger, isPlaceholder ? css.placeholder : null ]),
 				describedBy,
 				disabled,
 				key: 'trigger',
