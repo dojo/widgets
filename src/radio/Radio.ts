@@ -1,8 +1,10 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import Label from '../label/Label';
+import { LabeledProperties, InputEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
+import uuid from '@dojo/core/uuid';
 import * as css from './styles/radio.m.css';
 
 /**
@@ -29,25 +31,15 @@ import * as css from './styles/radio.m.css';
  * @property onTouchEnd       Called on the input's touchend event
  * @property onTouchCancel    Called on the input's touchcancel event
  */
-export interface RadioProperties extends ThemedProperties {
+export interface RadioProperties extends ThemedProperties, LabeledProperties, InputEventProperties {
 	checked?: boolean;
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
-	label?: string | LabelOptions;
 	name?: string;
 	readOnly?: boolean;
 	required?: boolean;
 	value?: string;
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
 }
 
 export const RadioBase = ThemedMixin(WidgetBase);
@@ -55,6 +47,7 @@ export const RadioBase = ThemedMixin(WidgetBase);
 @theme(css)
 export default class Radio extends RadioBase<RadioProperties> {
 	private _focused = false;
+	private _uuid = uuid();
 
 	private _onBlur (event: FocusEvent) {
 		this._focused = false;
@@ -74,7 +67,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses(): (string | null)[] {
+	protected getRootClasses(): (string | null)[] {
 		const {
 			checked = false,
 			disabled,
@@ -84,6 +77,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 		} = this.properties;
 
 		return [
+			css.root,
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
 			this._focused ? css.focused : null,
@@ -101,52 +95,47 @@ export default class Radio extends RadioBase<RadioProperties> {
 			disabled,
 			invalid,
 			label,
+			labelAfter = true,
+			labelHidden,
+			theme,
 			name,
 			readOnly,
 			required,
 			value
 		} = this.properties;
 
-		const radio = v('div', { classes: this.theme(css.inputWrapper) }, [
-			v('input', {
-				classes: this.theme(css.input),
-				checked,
-				'aria-describedby': describedBy,
-				disabled,
-				'aria-invalid': invalid ? 'true' : null,
-				name,
-				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
-				required,
-				type: 'radio',
-				value,
-				onblur: this._onBlur,
-				onchange: this._onChange,
-				onclick: this._onClick,
-				onfocus: this._onFocus,
-				onmousedown: this._onMouseDown,
-				onmouseup: this._onMouseUp,
-				ontouchstart: this._onTouchStart,
-				ontouchend: this._onTouchEnd,
-				ontouchcancel: this._onTouchCancel
-			})
-		]);
+		const children = [
+			v('div', { classes: this.theme(css.inputWrapper) }, [
+				v('input', {
+					id: this._uuid,
+					classes: this.theme(css.input),
+					checked,
+					'aria-describedby': describedBy,
+					disabled,
+					'aria-invalid': invalid ? 'true' : null,
+					name,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					type: 'radio',
+					value,
+					onblur: this._onBlur,
+					onchange: this._onChange,
+					onclick: this._onClick,
+					onfocus: this._onFocus,
+					onmousedown: this._onMouseDown,
+					onmouseup: this._onMouseUp,
+					ontouchstart: this._onTouchStart,
+					ontouchend: this._onTouchEnd,
+					ontouchcancel: this._onTouchCancel
+				})
+			]),
+			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null,
+		];
 
-		let radioWidget;
-
-		if (label) {
-			radioWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
-				label,
-				theme: this.properties.theme
-			}, [ radio ]);
-		}
-		else {
-			radioWidget = v('div', {
-				classes: this.theme([ css.root, ...this.getModifierClasses() ])
-			}, [ radio]);
-		}
-
-		return radioWidget;
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children : children.reverse());
 	}
 }

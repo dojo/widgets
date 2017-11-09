@@ -1,9 +1,10 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import Label from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
+import { LabeledProperties, InputEventProperties } from '../common/interfaces';
 import * as css from './styles/slider.m.css';
 
 /**
@@ -39,11 +40,10 @@ import * as css from './styles/slider.m.css';
  * @property onTouchEnd        Called on the input's touchend event
  * @property onTouchCancel     Called on the input's touchcancel event
  */
-export interface SliderProperties extends ThemedProperties {
+export interface SliderProperties extends ThemedProperties, LabeledProperties, InputEventProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
-	label?: string | LabelOptions;
 	max?: number;
 	min?: number;
 	name?: string;
@@ -55,19 +55,10 @@ export interface SliderProperties extends ThemedProperties {
 	value?: number;
 	vertical?: boolean;
 	verticalHeight?: string;
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
 	onInput?(event: Event): void;
 	onKeyDown?(event: KeyboardEvent): void;
 	onKeyPress?(event: KeyboardEvent): void;
 	onKeyUp?(event: KeyboardEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
 }
 
 export const SliderBase = ThemedMixin(WidgetBase);
@@ -91,7 +82,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses(): (string | null)[] {
+	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
@@ -101,6 +92,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		} = this.properties;
 
 		return [
+			css.root,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
@@ -160,6 +152,8 @@ export default class Slider extends SliderBase<SliderProperties> {
 			disabled,
 			invalid,
 			label,
+			labelAfter,
+			labelHidden,
 			max = 100,
 			min = 0,
 			name,
@@ -167,8 +161,10 @@ export default class Slider extends SliderBase<SliderProperties> {
 			required,
 			step = 1,
 			vertical = false,
-			verticalHeight = '200px'
+			verticalHeight = '200px',
+			theme
 		} = this.properties;
+
 		let {
 			value = min
 		} = this.properties;
@@ -216,21 +212,14 @@ export default class Slider extends SliderBase<SliderProperties> {
 			this.renderOutput(value, percentValue)
 		]);
 
-		let sliderWidget;
+		const children = [
+			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._inputId }, [ label ]) : null,
+			slider
+		];
 
-		if (label) {
-			sliderWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses([ ...this.theme([ css.root, ...this.getModifierClasses() ]), css.rootFixed ]) },
-				label,
-				theme: this.properties.theme
-			}, [ slider ]);
-		}
-		else {
-			sliderWidget = v('div', {
-				classes: [ ...this.theme([ css.root, ...this.getModifierClasses() ]), css.rootFixed ]
-			}, [ slider ]);
-		}
-
-		return sliderWidget;
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children.reverse() : children);
 	}
 }

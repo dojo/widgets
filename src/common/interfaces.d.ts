@@ -35,7 +35,7 @@ export interface LabeledProperties {
  * @property onTouchEnd     Called on the input's touchend event
  * @property onTouchCancel  Called on the input's touchcancel event
  */
-export interface InputProperties {
+export interface InputProperties extends InputEventProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
@@ -46,14 +46,17 @@ export interface InputProperties {
 	readOnly?: boolean;
 	required?: boolean;
 	value?: string;
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
 	onInput?(event: Event): void;
 	onKeyDown?(event: KeyboardEvent): void;
 	onKeyPress?(event: KeyboardEvent): void;
 	onKeyUp?(event: KeyboardEvent): void;
+}
+
+export interface InputEventProperties {
+	onBlur?(event: FocusEvent): void;
+	onChange?(event: Event): void;
+	onClick?(event: MouseEvent): void;
+	onFocus?(event: FocusEvent): void;
 	onMouseDown?(event: MouseEvent): void;
 	onMouseUp?(event: MouseEvent): void;
 	onTouchStart?(event: TouchEvent): void;

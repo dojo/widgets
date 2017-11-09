@@ -21,10 +21,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	render() {
 		return v('div', {}, [
 			w(Checkbox, {
-				label: {
-					content: 'Use Dojo Theme',
-					before: false
-				},
+				label: 'Use Dojo Theme',
 				onChange: this.themeChange
 			}),
 			w(Calendar, {

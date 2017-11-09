@@ -8,7 +8,7 @@ import { auto } from '@dojo/widget-core/diff';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
-import Label from '../label/Label2';
+import Label from '../label/Label';
 import uuid from '@dojo/core/uuid';
 
 interface FocusInputEvent extends FocusEvent {

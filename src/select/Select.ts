@@ -7,7 +7,8 @@ import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { find } from '@dojo/shim/array';
 import { Keys } from '../common/util';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import { LabeledProperties } from '../common/interfaces';
+import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import * as css from './styles/select.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -37,7 +38,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onChange          Called when the node's 'change' event is fired
  * @property onFocus           Called when the input is focused
  */
-export interface SelectProperties extends ThemedProperties {
+export interface SelectProperties extends ThemedProperties, LabeledProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
@@ -46,7 +47,6 @@ export interface SelectProperties extends ThemedProperties {
 	getOptionLabel?(option: any): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
-	label?: string | LabelOptions;
 	name?: string;
 	options?: any[];
 	placeholder?: string;
@@ -152,7 +152,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 		this._closeSelect();
 	}
 
-	protected getModifierClasses() {
+	protected getRootClasses() {
 		const {
 			disabled,
 			invalid,
@@ -161,6 +161,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 		} = this.properties;
 
 		return [
+			css.root,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
@@ -254,7 +255,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 
 		// create dropdown trigger and select box
 		return v('div', {
-			key: 'root',
+			key: 'wrapper',
 			classes: this.theme([ css.inputWrapper, _open ? css.open : null ])
 		}, [
 			...this.renderCustomTrigger(),
@@ -342,28 +343,24 @@ export default class Select extends ThemedBase<SelectProperties> {
 	protected render(): DNode {
 		const {
 			label,
+			labelHidden,
+			labelAfter,
+			disabled,
+			invalid,
+			readOnly,
+			required,
 			useNativeElement = false,
 			theme
 		} = this.properties;
 
-		let rootWidget;
-		const select = useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect();
-		const modifierClasses = this.getModifierClasses();
+		const children = [
+			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._baseId }, [ label ]) : null,
+			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect()
+		];
 
-		if (label) {
-			rootWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...modifierClasses ])) },
-				forId: this._baseId,
-				label,
-				theme
-			}, [ select ]);
-		}
-		else {
-			rootWidget = v('div', {
-				classes: this.theme([ css.root, ...modifierClasses ])
-			}, [ select ]);
-		}
-
-		return rootWidget;
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children.reverse() : children);
 	}
 }

@@ -7,7 +7,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 
-import Label from '../label/Label2';
+import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import TextInput from '../textinput/TextInput';
 import { LabeledProperties, InputProperties } from '../common/interfaces';

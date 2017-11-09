@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
-import Label from '../label/Label2';
+import Label from '../label/Label';
 import { InputProperties, LabeledProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/textarea.m.css';
