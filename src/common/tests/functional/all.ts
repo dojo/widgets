@@ -12,5 +12,6 @@ import '../../../slider/tests/functional/Slider';
 import '../../../tabcontroller/tests/functional/TabController';
 import '../../../textarea/tests/functional/Textarea';
 import '../../../textinput/tests/functional/TextInput';
+import '../../../timepicker/tests/functional/TimePicker';
 import '../../../titlepane/tests/functional/TitlePane';
 import '../../../tooltip/tests/functional/Tooltip';
