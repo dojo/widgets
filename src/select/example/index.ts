@@ -9,6 +9,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _value1: string;
 	private _value2: string;
+	private _value3: string;
 
 	themeChange(event: Event) {
 		const checked = (<HTMLInputElement> event.target).checked;
@@ -54,6 +55,8 @@ export class App extends WidgetBase<WidgetProperties> {
 			label: 'Boston'
 		}
 	];
+
+	_evenMoreSelectOptions = [ 'Maru', 'Garfield', 'Grumpy Cat', 'Hobbes' ];
 
 	getOptionSettings(): Partial<SelectProperties> {
 		return {
@@ -101,6 +104,20 @@ export class App extends WidgetBase<WidgetProperties> {
 				theme: this._theme,
 				onChange: (option: any) => {
 					this._value2 = option.value;
+					this.invalidate();
+				}
+			}),
+			v('br'),
+			w(Select, {
+				key: 'select3',
+				getOptionSelected: (option: any) => !!this._value3 && option === this._value3,
+				label: 'Custom select with placeholder',
+				options: this._evenMoreSelectOptions,
+				placeholder: 'Choose a cat',
+				value: this._value3,
+				theme: this._theme,
+				onChange: (option: any) => {
+					this._value3 = option;
 					this.invalidate();
 				}
 			})

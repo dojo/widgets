@@ -33,6 +33,10 @@
 	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));
 }
 
+.placeholder {
+	color: var(--color-text-faded);
+}
+
 .arrow {
 	border-left: var(--border-width) solid var(--color-border);
 	bottom: var(--border-width);
