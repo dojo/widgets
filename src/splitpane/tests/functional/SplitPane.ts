@@ -46,7 +46,6 @@ function testResizes(command: Command<Element | void>, resizes: Coord[], expecte
 			.then(({ x, y }) => {
 				currentX = x;
 				currentY = y;
-				intern.log('initially', x, y);
 			})
 		.end();
 
@@ -57,7 +56,6 @@ function testResizes(command: Command<Element | void>, resizes: Coord[], expecte
 			.findByCssSelector(`.${css.divider}`)
 				.getPosition()
 				.then(({ x, y }) => {
-					intern.log('resize', i, x, y);
 					if (typeof delta.x === 'function') {
 						assert.isTrue(delta.x(x), `Resize ${i} should pass x test.`);
 					}
