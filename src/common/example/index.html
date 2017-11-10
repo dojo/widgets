@@ -16,16 +16,15 @@
 	</style>
 </head>
 <body>
+	<script src="../../../node_modules/@dojo/shim/util/amd.js"></script>
 	<script src="../../../node_modules/@dojo/loader/loader.min.js"></script>
 	<link rel="stylesheet" href="./example.css">
 	<link rel="stylesheet" href="../../themes/dojo/widgets.css">
 	<script>
-		require.config({
+		require.config(shimAmdDependencies({
 			baseUrl: '../../../',
 			packages: [
 				{ name: 'src', location: '_build' },
-				{ name: '@dojo', location: 'node_modules/@dojo' },
-				{ name: 'pepjs', location: 'node_modules/pepjs/dist', main: 'pep' },
 				{ name: 'cldrjs', location: 'node_modules/cldrjs' },
 				{ name: 'globalize', location: 'node_modules/globalize', main: 'dist/globalize' }
 			],
@@ -37,7 +36,7 @@
 					'cldr/unresolved': 'cldrjs/dist/cldr/unresolved'
 				}
 			}
-		});
+		}));
 
 		(function () {
 			var query = window.location.search.substring(1).split('&');
@@ -51,10 +50,12 @@
 				}
 			}
 
-			require([ 'src/common/example/index' ], function () {});
-			if (module) {
-				require([ 'src/' + module + '/example/index' ], function () {});
-			}
+			require(['@dojo/shim/main'], function () {
+				require([ 'src/common/example/index' ], function () {});
+				if (module) {
+					require([ 'src/' + module + '/example/index' ], function () {});
+				}
+			});
 		})();
 	</script>
 </body>
