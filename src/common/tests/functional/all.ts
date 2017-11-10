@@ -9,6 +9,7 @@ import '../../../listbox/tests/functional/Listbox';
 import '../../../radio/tests/functional/Radio';
 import '../../../slidepane/tests/functional/SlidePane';
 import '../../../slider/tests/functional/Slider';
+import '../../../splitpane/tests/functional/SplitPane';
 import '../../../tabcontroller/tests/functional/TabController';
 import '../../../textarea/tests/functional/Textarea';
 import '../../../textinput/tests/functional/TextInput';
