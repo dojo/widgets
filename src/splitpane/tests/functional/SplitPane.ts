@@ -9,6 +9,10 @@ import * as css from '../../styles/splitPane.m.css';
 const DELAY = 300;
 
 function getPage(test: Test): Command<void> {
+	const { browserName = '' } = test.remote.environmentType!;
+	if (browserName === 'safari' || browserName === 'firefox' || browserName.toLowerCase() === 'microsoftedge') {
+		test.skip('Tests do not run in these browsers.');
+	}
 	return test.remote
 		.get('http://localhost:9000/_build/common/example/?module=splitpane')
 		.setFindTimeout(5000);
