@@ -17,10 +17,6 @@ registerSuite('Textarea', {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t1 .${css.root}`)
 				.isDisplayed()
-				.findByCssSelector(`.${css.inputWrapper}`)
-					.isDisplayed()
-				.end()
-
 				.findByCssSelector(`.${css.input}`)
 					.getSize()
 					.then(({ height, width }) => {

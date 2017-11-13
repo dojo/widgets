@@ -203,7 +203,7 @@ registerSuite('Slider', {
 			return clickToFocus(this, `.${css.inputWrapper}`);
 		},
 		'Input box should gain focus when clicking on the slider label'() {
-			return clickToFocus(this, `.${labelCss.labelText}`);
+			return clickToFocus(this, `.${labelCss.root}`);
 		},
 		'Input box should gain focus when clicking on the slider output label'() {
 			return clickToFocus(this, `.${css.output}`);

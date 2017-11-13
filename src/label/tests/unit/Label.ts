@@ -24,7 +24,15 @@ registerSuite('Label', {
 			widget.setChildren([ 'baz' ]);
 
 			widget.expectRender(v('label', {
-				classes: css.root,
+				classes: [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				],
 				for: undefined
 			}, [
 				'baz'
@@ -39,7 +47,14 @@ registerSuite('Label', {
 			widget.setChildren([ 'baz' ]);
 
 			widget.expectRender(v('label', {
-				classes: [ css.root, baseCss.visuallyHidden ],
+				classes: [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					baseCss.visuallyHidden ],
 				for: undefined
 			}, [
 				'baz'

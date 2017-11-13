@@ -113,6 +113,7 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null,
 			v('textarea', {
 				id: this._uuid,
+				key: 'input',
 				classes: this.theme(css.input),
 				cols: columns ? `${columns}` : null,
 				'aria-describedby': describedBy,

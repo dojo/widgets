@@ -353,6 +353,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 			onmousedown: this._onResultMouseDown
 		}, [
 			w(Listbox, {
+				key: 'listbox',
 				activeIndex: this._activeIndex,
 				id: this._getMenuId(),
 				visualFocus: this._menuHasVisualFocus,

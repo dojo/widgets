@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty, findKey, replaceChild } from '@dojo/test-extras/support/d';
+import { assignProperties, compareProperty, findKey, replaceChild } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -281,7 +281,7 @@ registerSuite('Select', {
 				widget.setProperties(testStateProperties);
 
 				const selectVdom = expectedSingle(widget, true);
-				assignChildProperties(selectVdom, '0', {
+				assignProperties(findKey(selectVdom, 'trigger')!, {
 					'aria-invalid': 'true',
 					'aria-readonly': 'true',
 					'aria-required': 'true',
@@ -310,14 +310,14 @@ registerSuite('Select', {
 					placeholder: 'bar'
 				});
 
-				assignChildProperties(expectedVdom, '0,0', {
+				assignProperties(findKey(expectedVdom, 'trigger')!, {
 					classes: [ css.trigger, css.placeholder ]
 				});
 				expectedVdom = expected(widget, expectedSingle(widget, true));
-				assignChildProperties(expectedVdom, '0,0', {
+				assignProperties(findKey(expectedVdom, 'trigger')!, {
 					classes: [ css.trigger, css.placeholder ]
 				});
-				replaceChild(expectedVdom, '0,0,0', 'bar');
+				replaceChild(expectedVdom, '1,0,0', 'bar');
 
 				widget.expectRender(expectedVdom, 'placeholder is shown if no selected option');
 			},

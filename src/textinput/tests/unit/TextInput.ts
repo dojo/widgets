@@ -5,17 +5,35 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import { assignProperties, compareProperty, findKey } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import TextInput from '../../TextInput';
 import * as css from '../../styles/textinput.m.css';
 
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
+
 const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
-	const inputVdom = v('div', [
+	return v('div', {
+		key: 'root',
+		classes
+	}, [
+		label ? w(Label, {
+			theme: undefined,
+			disabled: undefined,
+			hidden: false,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null,
 		v('input', {
+			key: 'input',
 			classes: css.input,
+			id: <any> compareId,
 			'aria-controls': undefined,
 			'aria-describedby': undefined,
 			disabled: undefined,
@@ -43,13 +61,6 @@ const expected = function(label = false, classes: (string | null)[] = [ css.root
 			ontouchend: widget.listener,
 			ontouchcancel: widget.listener
 		})
-	]);
-
-	return v('div', {
-		classes
-	}, [
-		label ? w(Label, { theme: undefined, forId: 'foo' }, [ 'foo' ]) : null,
-		inputVdom
 	]);
 };
 
@@ -86,7 +97,7 @@ registerSuite('TextInput', {
 			assignProperties(expectedVdom, {
 				classes: [ css.root, null, null, null, null, null ]
 			});
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				'aria-controls': 'foo',
 				'aria-describedby': 'bar',
 				maxlength: '50',
@@ -117,7 +128,7 @@ registerSuite('TextInput', {
 			});
 
 			let expectedVdom = expected(false, [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]);
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: true,
 				'aria-invalid': 'true',
 				readOnly: true,
@@ -135,7 +146,7 @@ registerSuite('TextInput', {
 			});
 			expectedVdom = expected();
 
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: false,
 				readOnly: false,
 				required: false
@@ -145,29 +156,6 @@ registerSuite('TextInput', {
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
-		},
-
-		'state classes on label'() {
-			widget.setProperties({
-				label: 'foo',
-				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			});
-
-			const expectedVdom = expected(true);
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-			assignProperties(expectedVdom, {
-				extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
-			});
-			widget.expectRender(expectedVdom);
 		},
 
 		events() {

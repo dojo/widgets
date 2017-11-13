@@ -5,9 +5,14 @@ import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
+import { compareProperty } from '@dojo/test-extras/support/d';
 import * as css from '../../styles/timePicker.m.css';
 import ComboBox from '../../../combobox/ComboBox';
 import Label from '../../../label/Label';
+
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
 
 registerSuite('TimePicker', {
 
@@ -72,27 +77,37 @@ registerSuite('TimePicker', {
 				value: 'some value'
 			});
 
-			picker.expectRender(w(ComboBox, {
-				clearable: true,
-				disabled: false,
-				getResultLabel: <any> picker.listener,
-				inputProperties: undefined,
-				invalid: true,
-				isResultDisabled: undefined,
-				label: 'Some Field',
-				onBlur: undefined,
-				onChange: undefined,
-				onFocus: undefined,
-				onMenuChange: undefined,
-				onRequestResults: picker.listener,
-				openOnFocus: false,
-				extraClasses: undefined,
-				readOnly: false,
-				required: true,
-				results: undefined,
-				theme: undefined,
-				value: 'some value'
-			}));
+			picker.expectRender(
+				v('div', {
+					key: 'root',
+					classes: css.root
+				}, [
+					null,
+					w(ComboBox, {
+						clearable: true,
+						disabled: false,
+						getResultLabel: <any> picker.listener,
+						inputProperties: undefined,
+						invalid: true,
+						isResultDisabled: undefined,
+						label: 'Some Field',
+						labelAfter: undefined,
+						labelHidden: undefined,
+						onBlur: undefined,
+						onChange: undefined,
+						onFocus: undefined,
+						onMenuChange: undefined,
+						onRequestResults: picker.listener,
+						openOnFocus: false,
+						extraClasses: undefined,
+						readOnly: false,
+						required: true,
+						results: undefined,
+						theme: undefined,
+						value: 'some value'
+					})
+				])
+			);
 
 			picker.destroy();
 		},
@@ -159,24 +174,25 @@ registerSuite('TimePicker', {
 	'Native input': {
 		basic() {
 			const picker = harness(TimePicker);
-			const inputClasses = [ css.input, null, null, null, null ];
 
 			picker.setProperties({
 				name: 'some-field',
 				useNativeElement: true
 			});
-			picker.expectRender(v('span', {
-				classes: css.root,
+			picker.expectRender(v('div', {
+				classes: [ css.root, null, null, null, null ],
 				key: 'root'
 			}, [
+				null,
 				v('input', {
 					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
-					classes: inputClasses,
+					classes: css.input,
 					disabled: undefined,
 					invalid: undefined,
 					key: 'native-input',
+					id: <any> compareId,
 					max: undefined,
 					min: undefined,
 					name: 'some-field',
@@ -196,14 +212,6 @@ registerSuite('TimePicker', {
 
 		'Attributes added'() {
 			const picker = harness(TimePicker);
-			const inputClasses = [
-				css.input,
-				css.disabled,
-				css.invalid,
-				css.readonly,
-				css.required
-			];
-
 			picker.setProperties({
 				disabled: true,
 				end: '12:00',
@@ -218,15 +226,22 @@ registerSuite('TimePicker', {
 				value: '11:30'
 			});
 
-			picker.expectRender(v('span', {
-				classes: css.root,
+			picker.expectRender(v('div', {
+				classes: [ css.root,
+					css.disabled,
+					css.invalid,
+					css.readonly,
+					css.required
+				],
 				key: 'root'
 			}, [
+				null,
 				v('input', {
 					'aria-describedby': 'Some descriptive text',
 					'aria-invalid': 'true',
 					'aria-readonly': 'true',
-					classes: inputClasses,
+					classes: css.input,
+					id: <any> compareId,
 					disabled: true,
 					invalid: true,
 					key: 'native-input',
@@ -249,24 +264,32 @@ registerSuite('TimePicker', {
 
 		'Label should render'() {
 			const picker = harness(TimePicker);
-			const inputClasses = [ css.input, null, null, null, null ];
 			picker.setProperties({
 				label: 'foo',
 				useNativeElement: true
 			});
-			picker.expectRender(v('span', {
-				classes: css.root,
+			picker.expectRender(v('div', {
+				classes: [ css.root, null, null, null, null ],
 				key: 'root'
 			}, [
-				w(Label, { theme: undefined, forId: 'foo' }, [ 'foo' ]),
+				w(Label, {
+					theme: undefined,
+					disabled: undefined,
+					hidden: false,
+					invalid: undefined,
+					readOnly: undefined,
+					required: undefined,
+					forId: <any> compareId
+				}, [ 'foo' ]),
 				v('input', {
 					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
-					classes: inputClasses,
+					classes: css.input,
 					disabled: undefined,
 					invalid: undefined,
 					key: 'native-input',
+					id: <any> compareId,
 					max: undefined,
 					min: undefined,
 					name: undefined,

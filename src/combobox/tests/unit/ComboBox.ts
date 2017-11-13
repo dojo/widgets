@@ -3,13 +3,13 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty, findKey } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import ComboBox from '../../ComboBox';
+import Label from '../../../label/Label';
 import Listbox from '../../../listbox/Listbox';
-// import Label from '../../../label/Label';
 import TextInput from '../../../textinput/TextInput';
 import * as css from '../../styles/comboBox.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
@@ -52,9 +52,6 @@ const expectedControls = function(widget: Harness<ComboBox>, useTestProperties: 
 	}, [
 		w(TextInput, <any> {
 			key: 'textinput',
-			'aria-activedescendant': <any> compareId,
-			'aria-owns': <any> compareId,
-			classes: useTestProperties ? css.clearable : null,
 			controls: <any> compareId,
 			disabled: undefined,
 			invalid: undefined,
@@ -117,6 +114,7 @@ const expectedMenu = function(widget: Harness<ComboBox>, useTestProperties: bool
 		w(Listbox, {
 			activeIndex: 0,
 			id: <any> compareId,
+			key: 'listbox',
 			visualFocus: false,
 			optionData: testOptions,
 			tabIndex: -1,
@@ -149,6 +147,15 @@ const expectedVdom = function(widget: Harness<ComboBox>, useTestProperties = fal
 		key: 'root',
 		role: 'combobox'
 	}, [
+		label ? w(Label, {
+			theme: undefined,
+			disabled: undefined,
+			hidden: undefined,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null,
 		controlsVdom,
 		menuVdom
 	]);
@@ -319,19 +326,18 @@ registerSuite('ComboBox', {
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 			widget.callListener('onActiveIndexChange', {
 				args: [ 1 ],
-				index: '1,0'
+				key: 'listbox'
 			});
 
 			vdom = expectedVdom(widget, true, true, true);
-			assignChildProperties(vdom, '1,0', { activeIndex: 1 });
+			assignProperties(findKey(vdom, 'listbox')!, { activeIndex: 1 });
 
 			widget.expectRender(vdom);
 		},
 
 		'keyboard navigates options'() {
 			const preventDefault = sinon.stub();
-			let vdom = expectedVdom(widget, true, true, true);
-			vdom = expectedVdom(widget, true, true, true);
+			const vdom = expectedVdom(widget, true, true, true);
 
 			widget.setProperties({
 				...testProperties,
@@ -347,7 +353,7 @@ registerSuite('ComboBox', {
 
 			// shouldn't need this line with correct bind
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(vdom, 'textinput')!, {
 				activeIndex: 1,
 				visualFocus: true
 			});
@@ -360,7 +366,7 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(vdom, 'textinput')!, {
 				activeIndex: 0
 			});
 			widget.expectRender(vdom, 'up arrow moves active index to first option');
@@ -372,7 +378,7 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(vdom, 'textinput')!, {
 				activeIndex: 2
 			});
 			widget.expectRender(vdom, 'up arrow wraps to last option');
@@ -384,7 +390,7 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(vdom, 'textinput')!, {
 				activeIndex: 0
 			});
 			widget.expectRender(vdom, 'down arrow wraps to first option');
@@ -396,7 +402,7 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(vdom, 'textinput')!, {
 				activeIndex: 2
 			});
 			widget.expectRender(vdom, 'end moves to last option');
@@ -408,7 +414,7 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(vdom, 'textinput')!, {
 				activeIndex: 0
 			});
 			widget.expectRender(vdom, 'home moves to first option');
@@ -515,7 +521,7 @@ registerSuite('ComboBox', {
 			});
 
 			const vdom = expectedVdom(widget);
-			assignChildProperties(vdom, '0,0', { placeholder: 'foo' });
+			assignProperties(findKey(vdom, 'textinput')!, { placeholder: 'foo' });
 
 			widget.expectRender(vdom);
 		},

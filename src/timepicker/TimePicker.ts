@@ -312,7 +312,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 				'aria-describedby': inputProperties && inputProperties.describedBy,
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-readonly': readOnly ? 'true' : null,
-				classes: this.theme([ css.input, ...this.getRootClasses() ]),
+				classes: this.theme(css.input),
 				disabled,
 				invalid,
 				key: 'native-input',
