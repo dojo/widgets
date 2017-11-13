@@ -179,6 +179,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
+				key: 'input',
 				classes: [ this.theme(css.input), css.nativeInput ],
 				'aria-describedby': describedBy,
 				disabled,
@@ -219,7 +220,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 
 		return v('div', {
 			key: 'root',
-			classes: this.theme(this.getRootClasses())
+			classes: [...this.theme(this.getRootClasses()), css.rootFixed]
 		}, labelAfter ? children.reverse() : children);
 	}
 }

@@ -265,6 +265,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 				onkeydown: this._onDropdownKeyDown
 			}, [
 				w(Listbox, {
+					key: 'listbox',
 					activeIndex: _focusedIndex,
 					describedBy,
 					id: _baseId,

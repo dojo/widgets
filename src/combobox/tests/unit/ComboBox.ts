@@ -9,7 +9,7 @@ import { Keys } from '../../../common/util';
 
 import ComboBox from '../../ComboBox';
 import Listbox from '../../../listbox/Listbox';
-import Label from '../../../label/Label';
+// import Label from '../../../label/Label';
 import TextInput from '../../../textinput/TextInput';
 import * as css from '../../styles/comboBox.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
@@ -94,13 +94,6 @@ const expectedControls = function(widget: Harness<ComboBox>, useTestProperties: 
 			})
 		])
 	]);
-
-	if (label) {
-		return w(Label, {
-			label: 'foo',
-			theme: useTestProperties ? {} : undefined
-		}, [ controlsVdom ]);
-	}
 
 	return controlsVdom;
 };

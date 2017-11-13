@@ -7,7 +7,7 @@ import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
 import * as css from '../../styles/timePicker.m.css';
 import ComboBox from '../../../combobox/ComboBox';
-import Label, { parseLabelClasses } from '../../../label/Label';
+import Label from '../../../label/Label';
 
 registerSuite('TimePicker', {
 
@@ -258,62 +258,28 @@ registerSuite('TimePicker', {
 				classes: css.root,
 				key: 'root'
 			}, [
-				w(Label, {
-					extraClasses: { root: parseLabelClasses(css.input) },
-					theme: undefined,
-					label: 'foo'
-				}, [
-					v('input', {
-						'aria-describedby': undefined,
-						'aria-invalid': null,
-						'aria-readonly': null,
-						classes: inputClasses,
-						disabled: undefined,
-						invalid: undefined,
-						key: 'native-input',
-						max: undefined,
-						min: undefined,
-						name: undefined,
-						onblur: picker.listener,
-						onchange: picker.listener,
-						onfocus: picker.listener,
-						readOnly: undefined,
-						required: undefined,
-						step: undefined,
-						type: 'time',
-						value: undefined
-					})
-				])
+				w(Label, { theme: undefined, forId: 'foo' }, [ 'foo' ]),
+				v('input', {
+					'aria-describedby': undefined,
+					'aria-invalid': null,
+					'aria-readonly': null,
+					classes: inputClasses,
+					disabled: undefined,
+					invalid: undefined,
+					key: 'native-input',
+					max: undefined,
+					min: undefined,
+					name: undefined,
+					onblur: picker.listener,
+					onchange: picker.listener,
+					onfocus: picker.listener,
+					readOnly: undefined,
+					required: undefined,
+					step: undefined,
+					type: 'time',
+					value: undefined
+				})
 			]));
-
-			picker.destroy();
-		},
-
-		'Label should have state classes'() {
-			const picker = harness(TimePicker);
-			picker.setProperties({
-				label: 'foo',
-				useNativeElement: true
-			});
-			let vnode: any = picker.getRender();
-			let label = vnode.children[0];
-			let classes: any = label.properties.extraClasses;
-
-			assert.deepEqual(classes, { root: parseLabelClasses(css.input) });
-
-			picker.setProperties({
-				disabled: true,
-				invalid: true,
-				label: 'foo',
-				readOnly: true,
-				required: true,
-				useNativeElement: true
-			});
-			vnode = picker.getRender();
-			label = vnode.children[0];
-
-			classes = label.properties.extraClasses;
-			assert.deepEqual(classes, { root: parseLabelClasses([ css.input, css.disabled, css.invalid, css.readonly, css.required ]) });
 
 			picker.destroy();
 		},

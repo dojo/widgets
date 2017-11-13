@@ -5,16 +5,21 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Radio from '../../Radio';
 import * as css from '../../styles/radio.m.css';
 
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
+
 const expected = function(widget: Harness<Radio>, label = false) {
 	const radioVdom = v('div', { classes: css.inputWrapper }, [
 		v('input', {
+			id: <any> compareId,
 			classes: css.input,
 			checked: false,
 			'aria-describedby': undefined,
@@ -38,18 +43,21 @@ const expected = function(widget: Harness<Radio>, label = false) {
 		})
 	]);
 
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: css.root },
-			label: 'foo',
-			theme: undefined
-		}, [ radioVdom ]);
-	}
-	else {
-		return v('div', {
-			classes: [ css.root, null, null, null, null, null, null, null ]
-		}, [ radioVdom ]);
-	}
+	return v('div', {
+		key: 'root',
+		classes: [ css.root, null, null, null, null, null, null, null ]
+	}, [
+		radioVdom,
+		label ? w(Label, {
+			theme: undefined,
+			disabled: undefined,
+			hidden: undefined,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null
+	]);
 };
 
 let widget: Harness<Radio>;
@@ -141,7 +149,7 @@ registerSuite('Radio', {
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
 		},
 
-		'state classes on label'() {
+		'state properties on label'() {
 			widget.setProperties({
 				label: 'foo',
 				invalid: true,
@@ -158,9 +166,27 @@ registerSuite('Radio', {
 				'aria-readonly': 'true',
 				required: true
 			});
-			assignProperties(expectedVdom, {
-				extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
+
+			assignChildProperties(expectedVdom, 1, {
+				disabled: true,
+				readOnly: true,
+				required: true,
+				invalid: true
 			});
+
+			assignProperties(expectedVdom, {
+				classes: [
+					css.root,
+					null,
+					css.disabled,
+					null,
+					css.invalid,
+					null,
+					css.readonly,
+					css.required
+				]
+			});
+
 			widget.expectRender(expectedVdom);
 		},
 

@@ -45,18 +45,12 @@ const expected = function(label = false, classes: (string | null)[] = [ css.root
 		})
 	]);
 
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: css.root },
-			label: 'foo',
-			theme: undefined
-		}, [ inputVdom ]);
-	}
-	else {
-		return v('div', {
-			classes
-		}, [ inputVdom ]);
-	}
+	return v('div', {
+		classes
+	}, [
+		label ? w(Label, { theme: undefined, forId: 'foo' }, [ 'foo' ]) : null,
+		inputVdom
+	]);
 };
 
 let widget: Harness<TextInput>;

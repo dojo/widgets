@@ -46,18 +46,12 @@ const expected = function(label = false) {
 		})
 	]);
 
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: css.root },
-			label: 'foo',
-			theme: undefined
-		}, [ textareaVdom ]);
-	}
-	else {
-		return v('div', {
-			classes: [ css.root, null, null, null, null, null ]
-		}, [ textareaVdom ]);
-	}
+	return v('div', {
+		classes: [ css.root, null, null, null, null, null ]
+	}, [
+		label ? w(Label, { theme: undefined, forId: 'foo' }, [ 'foo' ]) : null,
+		textareaVdom
+	]);
 };
 
 let widget: Harness<Textarea>;
