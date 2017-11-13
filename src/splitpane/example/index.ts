@@ -45,6 +45,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', ['Row']),
 			v('div', {
+				id: 'example-row',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
@@ -59,6 +60,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', ['Column']),
 			v('div', {
+				id: 'example-column',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
@@ -73,6 +75,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', ['Nested']),
 			v('div', {
+				id: 'example-nested',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
@@ -95,6 +98,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', ['Multiple vertical nested']),
 			v('div', {
+				id: 'example-vertical-nested',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
@@ -117,6 +121,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', ['Multiple horizontal nested']),
 			v('div', {
+				id: 'example-horizontal-nested',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
@@ -139,10 +144,11 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', ['Maximum size']),
 			v('div', {
+				id: 'example-max',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
-					key: 'horizontalNested',
+					key: 'maxSize',
 					direction: Direction.row,
 					onResize: (size: number) => {
 						size = size > 300 ? 300 : size;
@@ -154,10 +160,11 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', ['Minimum size']),
 			v('div', {
+				id: 'example-min',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
-					key: 'horizontalNested',
+					key: 'minSize',
 					direction: Direction.row,
 					onResize: (size: number) => {
 						size = size < 100 ? 100 : size;
