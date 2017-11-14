@@ -203,9 +203,6 @@ registerSuite('Slider', {
 		},
 		'Input box should gain focus when clicking on the slider label'() {
 			return clickToFocus(this, `label`);
-		},
-		'Input box should gain focus when clicking on the slider output label'() {
-			return clickToFocus(this, `.${css.output}`);
 		}
 	},
 	'vertical slider': {

@@ -47,7 +47,7 @@ registerSuite('Textarea', {
 		}
 
 		return getPage(this.remote)
-			.findByCssSelector(`#example-t1 .${css.root}`)
+			.findByCssSelector(`#example-t1 .${css.root} label`)
 				.click()
 				.sleep(1000)
 			.end()
