@@ -78,35 +78,29 @@ registerSuite('TimePicker', {
 			});
 
 			picker.expectRender(
-				v('div', {
-					key: 'root',
-					classes: css.root
-				}, [
-					null,
-					w(ComboBox, {
-						clearable: true,
-						disabled: false,
-						getResultLabel: <any> picker.listener,
-						inputProperties: undefined,
-						invalid: true,
-						isResultDisabled: undefined,
-						label: 'Some Field',
-						labelAfter: undefined,
-						labelHidden: undefined,
-						onBlur: undefined,
-						onChange: undefined,
-						onFocus: undefined,
-						onMenuChange: undefined,
-						onRequestResults: picker.listener,
-						openOnFocus: false,
-						extraClasses: undefined,
-						readOnly: false,
-						required: true,
-						results: undefined,
-						theme: undefined,
-						value: 'some value'
-					})
-				])
+				w(ComboBox, {
+					clearable: true,
+					disabled: false,
+					getResultLabel: <any> picker.listener,
+					inputProperties: undefined,
+					invalid: true,
+					isResultDisabled: undefined,
+					label: 'Some Field',
+					labelAfter: undefined,
+					labelHidden: undefined,
+					onBlur: undefined,
+					onChange: undefined,
+					onFocus: undefined,
+					onMenuChange: undefined,
+					onRequestResults: picker.listener,
+					openOnFocus: false,
+					extraClasses: undefined,
+					readOnly: false,
+					required: true,
+					results: undefined,
+					theme: undefined,
+					value: 'some value'
+				})
 			);
 
 			picker.destroy();
