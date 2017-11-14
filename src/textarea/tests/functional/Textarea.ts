@@ -51,7 +51,7 @@ registerSuite('Textarea', {
 				.click()
 				.sleep(1000)
 			.end()
-			.execute(`return document.activeElement === document.querySelector('#example-t1 .${css.root} .${css.input}');`)
+			.execute(`return document.activeElement === document.querySelector('#example-t1 .${css.input}');`)
 			.then(isEqual => {
 				assert.isTrue(isEqual);
 			});

@@ -4,7 +4,6 @@ const { assert } = intern.getPlugin('chai');
 import keys from '@theintern/leadfoot/keys';
 import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/slider.m.css';
-import * as labelCss from '../../../label/styles/label.m.css';
 
 function getPage(test: any) {
 	const { browserName } = test.remote.environmentType;
@@ -203,7 +202,7 @@ registerSuite('Slider', {
 			return clickToFocus(this, `.${css.inputWrapper}`);
 		},
 		'Input box should gain focus when clicking on the slider label'() {
-			return clickToFocus(this, `.${labelCss.root}`);
+			return clickToFocus(this, `label`);
 		},
 		'Input box should gain focus when clicking on the slider output label'() {
 			return clickToFocus(this, `.${css.output}`);
