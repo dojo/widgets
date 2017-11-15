@@ -265,24 +265,18 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 
 	protected renderInput(): DNode {
 		const {
-			// clearable,
 			disabled,
 			inputProperties = {},
 			invalid,
 			readOnly,
 			required,
-			// results = [],
 			value = '',
 			theme
 		} = this.properties;
 
-		// TODO: Likely need to extend TextInput here to add in these items
 		return w(TextInput, {
 			...inputProperties,
 			key: 'textinput',
-			// 'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
-			// 'aria-owns': this._getMenuId(),
-			// classes: this.theme(clearable ? css.clearable : null),
 			controls: this._getMenuId(),
 			disabled,
 			invalid,
