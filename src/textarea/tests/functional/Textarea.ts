@@ -64,7 +64,7 @@ registerSuite('Textarea', {
 
 		const testInput = 'test text';
 		return getPage(this.remote)
-			.findByCssSelector(`#example-t1 .${css.root}`)
+			.findByCssSelector(`#example-t1 .${css.root} label`)
 				.click()
 				.findByCssSelector(`.${css.input}`)
 					.type(testInput)

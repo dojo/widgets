@@ -198,9 +198,6 @@ registerSuite('Slider', {
 		'Input box should gain focus when clicking on the slider fill'() {
 			return clickToFocus(this, `.${css.fill}`);
 		},
-		'Input box should gain focus when clicking on the slider wrapper'() {
-			return clickToFocus(this, `.${css.inputWrapper}`);
-		},
 		'Input box should gain focus when clicking on the slider label'() {
 			return clickToFocus(this, `label`);
 		}
