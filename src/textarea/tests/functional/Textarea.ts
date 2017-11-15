@@ -64,15 +64,13 @@ registerSuite('Textarea', {
 
 		const testInput = 'test text';
 		return getPage(this.remote)
-			.findByCssSelector(`#example-t1 .${css.root} label`)
+			.findByCssSelector(`#example-t1 .${css.input}`)
 				.click()
-				.findByCssSelector(`.${css.input}`)
-					.type(testInput)
-					.getProperty('value')
-					.then((value: string) => {
-						assert.strictEqual(value, testInput);
-					})
-				.end()
+				.type(testInput)
+				.getProperty('value')
+				.then((value: string) => {
+					assert.strictEqual(value, testInput);
+				})
 			.end();
 	},
 	'disabled should not allow input to be typed'() {
