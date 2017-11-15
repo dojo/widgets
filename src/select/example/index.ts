@@ -1,21 +1,12 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Select, { SelectProperties } from '../Select';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _value1: string;
 	private _value2: string;
 	private _value3: string;
-
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	_selectOptions = [
 		{
@@ -67,15 +58,9 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
+		const { theme } = this.properties;
 
 		return v('div', [
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('br'),
 			w(Select, {
 				key: 'select1',
@@ -85,7 +70,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				options: this._selectOptions,
 				useNativeElement: true,
 				value: this._value1,
-				theme: this._theme,
+				theme,
 				onChange: (option: any) => {
 					this._value1 = option.value;
 					this.invalidate();
@@ -101,7 +86,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				label: 'Custom select box',
 				options: this._moreSelectOptions,
 				value: this._value2,
-				theme: this._theme,
+				theme,
 				onChange: (option: any) => {
 					this._value2 = option.value;
 					this.invalidate();
@@ -115,7 +100,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				options: this._evenMoreSelectOptions,
 				placeholder: 'Choose a cat',
 				value: this._value3,
-				theme: this._theme,
+				theme,
 				onChange: (option: any) => {
 					this._value3 = option;
 					this.invalidate();
@@ -124,8 +109,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

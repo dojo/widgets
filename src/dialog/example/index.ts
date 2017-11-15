@@ -1,23 +1,14 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Dialog from '../../dialog/Dialog';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _modal = false;
 	private _underlay = false;
 	private _closeable = true;
 	private _open = false;
-
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	openDialog() {
 		this._open = true;
@@ -40,6 +31,8 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render(): DNode {
+		const { theme } = this.properties;
+
 		return v('div', [
 			v('button', {
 				id: 'button',
@@ -57,20 +50,11 @@ export class App extends WidgetBase<WidgetProperties> {
 					this._open = false;
 					this.invalidate();
 				},
-				theme: this._theme
+				theme
 			}, [
 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-			]),
-			v('div', { classes: 'option' }, [
-				v('label', [
-					'Use Dojo Theme ',
-					v('input', {
-						type: 'checkbox',
-						onchange: this.themeChange
-					})
-				])
 			]),
 			v('div', { classes: 'option' }, [
 				v('input', {
@@ -109,8 +93,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

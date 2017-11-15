@@ -1,22 +1,13 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import SlidePane, { Align } from '../../slidepane/SlidePane';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _open = false;
 	private _underlay = false;
 	private _align: Align = Align.left;
-
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	openSlidePane() {
 		this._open = true;
@@ -34,6 +25,8 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render(): DNode {
+		const { theme } = this.properties;
+
 		return v('div', [
 			w(SlidePane, {
 				title: 'SlidePane',
@@ -45,7 +38,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					this._open = false;
 					this.invalidate();
 				},
-				theme: this._theme
+				theme
 			}, [
 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
@@ -56,15 +49,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				innerHTML: 'open slidepane',
 				onclick: this.openSlidePane
 			}),
-			v('div', { classes: 'option' }, [
-				v('label', [
-					'Use Dojo Theme ',
-					v('input', {
-						type: 'checkbox',
-						onchange: this.themeChange
-					})
-				])
-			]),
 			v('div', { classes: 'option' }, [
 				v('input', {
 					type: 'checkbox',
@@ -90,8 +74,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

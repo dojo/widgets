@@ -1,23 +1,14 @@
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { Set } from '@dojo/shim/Set';
 import { w, v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 
 import Button from '../../button/Button';
 import TextInput from '../../textinput/TextInput';
 import Tooltip, { Orientation } from '../Tooltip';
 
-import dojoTheme from '../../themes/dojo/theme';
-
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase<ThemedProperties> {
 	private _open = new Set<string>();
-	private _theme: {};
-
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		this._theme = event.target.checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onShow(key: string) {
 		this._open.add(key);
@@ -30,25 +21,20 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
+		const { theme } = this.properties;
+
 		return v('div', [
 			v('h2', [ 'Tooltip Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'example-1' }, [
 				w(Tooltip, {
 					key: 'foo',
 					content: 'This is a right-oriented tooltip that opens and closes based on child click.',
 					orientation: Orientation.right,
 					open: this._open.has('foo'),
-					theme: this._theme
+					theme
 				}, [
 					w(Button, {
-						theme: this._theme,
+						theme,
 						onClick: () => {
 							const exists = this._open.has('foo');
 							exists ? this.onHide('foo') : this.onShow('foo');
@@ -62,10 +48,10 @@ export class App extends WidgetBase<WidgetProperties> {
 					content: 'This is a right-oriented tooltip that opens and closes based on child focus.',
 					orientation: Orientation.right,
 					open: this._open.has('bar'),
-					theme: this._theme
+					theme
 				}, [
 					w(TextInput, {
-						theme: this._theme,
+						theme,
 						placeholder: 'Focus me',
 						onFocus: () => { this.onShow('bar'); },
 						onBlur: () => { this.onHide('bar'); }
@@ -75,8 +61,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

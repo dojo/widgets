@@ -1,12 +1,9 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Checkbox, { Mode } from '../../checkbox/Checkbox';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _checkboxStates: { [key: string]: boolean } = {
 		c1: true,
 		c2: false,
@@ -15,13 +12,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		c5: true
 	};
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
-	onChange(event: TypedTargetEvent<HTMLInputElement>) {
+	onChange(event: any) {
 		const value = event.target.value;
 		const checked = event.target.checked;
 		this._checkboxStates[value] = checked;
@@ -29,6 +20,8 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
+		const { theme } = this.properties;
+
 		const {
 			c1 = true,
 			c2 = false,
@@ -41,13 +34,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h2', {
 				innerHTML: 'Checkbox Examples'
 			}),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('fieldset', [
 				v('legend', {}, ['Checkbox Example']),
 				v('div', { id: 'example-1' }, [
@@ -57,7 +43,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						label: 'Sample checkbox that starts checked',
 						value: 'c1',
 						onChange: this.onChange,
-						theme: this._theme
+						theme
 					})
 				]),
 
@@ -69,7 +55,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						disabled: true,
 						value: 'c2',
 						onChange: this.onChange,
-						theme: this._theme
+						theme
 					})
 				]),
 
@@ -81,7 +67,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						required: true,
 						value: 'c3',
 						onChange: this.onChange,
-						theme: this._theme
+						theme
 					})
 				]),
 
@@ -93,7 +79,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						mode: Mode.toggle,
 						value: 'c4',
 						onChange: this.onChange,
-						theme: this._theme
+						theme
 					})
 				]),
 
@@ -108,15 +94,10 @@ export class App extends WidgetBase<WidgetProperties> {
 						disabled: true,
 						value: 'c5',
 						onChange: this.onChange,
-						theme: this._theme
+						theme
 					})
 				])
 			])
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

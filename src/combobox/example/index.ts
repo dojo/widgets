@@ -1,10 +1,8 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import ComboBox from '../ComboBox';
-import dojoTheme from '../../themes/dojo/theme';
 
 const data = [
 	{ value: 'Maine' },
@@ -59,8 +57,7 @@ const data = [
 	{ value: 'West Virginia' }
 ];
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _results: any[];
 	private _value1 = '';
 	private _value2 = '';
@@ -68,12 +65,6 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value8 = '';
 	private _value9 = '';
 	private _invalid: boolean;
-
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onChange(value: string, key?: string) {
 		if (!key) {
@@ -96,6 +87,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render(): DNode {
+		const { theme } = this.properties;
 		const {
 			onChange,
 			onRequestResults
@@ -105,13 +97,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			styles: { maxWidth: '256px' }
 		}, [
 			v('h1', ['ComboBox Examples']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('h3', ['Clearable']),
 			w(ComboBox, {
 				key: '2',
@@ -124,7 +109,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				theme: this._theme
+				theme
 			}),
 			v('h3', ['Open on focus']),
 			w(ComboBox, {
@@ -138,7 +123,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				theme: this._theme
+				theme
 			}),
 			v('h3', ['Disabled menu items']),
 			w(ComboBox, {
@@ -152,7 +137,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				theme: this._theme
+				theme
 			}),
 			v('h3', ['Disabled']),
 			w(ComboBox, {
@@ -161,7 +146,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				theme: this._theme
+				theme
 			}),
 			v('h3', ['Read Only']),
 			w(ComboBox, {
@@ -170,7 +155,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				theme: this._theme
+				theme
 			}),
 			v('h3', ['Label']),
 			w(ComboBox, {
@@ -181,7 +166,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				results: this._results,
 				value: this._value8,
 				label: 'Enter a value',
-				theme: this._theme
+				theme
 			}),
 			v('h3', ['Required and validated']),
 			w(ComboBox, {
@@ -200,13 +185,8 @@ export class App extends WidgetBase<WidgetProperties> {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				theme: this._theme
+				theme
 			})
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

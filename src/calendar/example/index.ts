@@ -1,36 +1,21 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Calendar from '../../calendar/Calendar';
-import Checkbox from '../../checkbox/Checkbox';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _month: number;
 	private _year: number;
 	private _selectedDate: Date;
 
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	render() {
+		const { theme } = this.properties;
+
 		return v('div', {}, [
-			w(Checkbox, {
-				label: {
-					content: 'Use Dojo Theme',
-					before: false
-				},
-				onChange: this.themeChange
-			}),
 			w(Calendar, {
 				month: this._month,
 				selectedDate: this._selectedDate,
-				theme: this._theme,
+				theme,
 				year: this._year,
 				onMonthChange: (month: number) => {
 					this._month = month;
@@ -49,8 +34,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

@@ -1,36 +1,23 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import TextInput from '../../textinput/TextInput';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _value1: string;
 	private _value2: string;
 	private _value3: string;
 	private _value4: string;
 	private _invalid: boolean;
 
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	render() {
+		const { theme } = this.properties;
+
 		return v('div', {
 			styles: { maxWidth: '256px' }
 		}, [
 			v('h2', {}, ['Text Input Examples']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'example-text' }, [
 				v('h3', {}, ['String label']),
 				w(TextInput, {
@@ -43,7 +30,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._value1 = event.target.value;
 						this.invalidate();
 					},
-					theme: this._theme
+					theme
 				})
 			]),
 			v('div', { id: 'example-email' }, [
@@ -61,7 +48,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._value2 = event.target.value;
 						this.invalidate();
 					},
-					theme: this._theme
+					theme
 				})
 			]),
 			v('div', { id: 'example-hidden-label' }, [
@@ -80,7 +67,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._value3 = event.target.value;
 						this.invalidate();
 					},
-					theme: this._theme
+					theme
 				})
 			]),
 			v('div', { id: 'example-disabled' }, [
@@ -92,7 +79,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					value: 'Initial value',
 					disabled: true,
 					readOnly: true,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('div', { id: 'example-validated' }, [
@@ -109,14 +96,9 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
 						this.invalidate();
 					},
-					theme: this._theme
+					theme
 				})
 			])
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();
