@@ -40,13 +40,13 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 
 	onAlignChange(event: Event) {
-		const value = (<HTMLInputElement> event!.target).value;
+		const value = (event.target as HTMLInputElement).value;
 		let align = Align.top;
 
 		switch (value) {

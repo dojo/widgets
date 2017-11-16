@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Radio from '../../radio/Radio';
@@ -9,14 +9,14 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _inputValue: string;
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
+	themeChange(event: Event) {
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 
-	onChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const value = event.target.value;
+	onChange(event: Event) {
+		const value = (event.target as HTMLInputElement).value;
 		this._inputValue = value;
 		this.invalidate();
 	}

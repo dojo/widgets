@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import TextInput from '../../textinput/TextInput';
@@ -14,7 +14,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _invalid: boolean;
 
 	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
@@ -39,8 +39,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					type: 'text',
 					placeholder: 'Hello, World',
 					value: this._value1,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-						this._value1 = event.target.value;
+					onChange: (event: Event) => {
+						this._value1 = (event.target as HTMLInputElement).value;
 						this.invalidate();
 					},
 					theme: this._theme
@@ -54,8 +54,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Email (required)',
 					required: true,
 					value: this._value2,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-						this._value2 = event.target.value;
+					onChange: (event: Event) => {
+						this._value2 = (event.target as HTMLInputElement).value;
 						this.invalidate();
 					},
 					theme: this._theme
@@ -71,8 +71,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					labelAfter: true,
 					labelHidden: true,
 					value: this._value3,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-						this._value3 = event.target.value;
+					onChange: (event: Event) => {
+						this._value3 = (event.target as HTMLInputElement).value;
 						this.invalidate();
 					},
 					theme: this._theme
@@ -98,8 +98,9 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Type "foo" or "bar"',
 					value: this._value4,
 					invalid: this._invalid,
-					onInput: (event: TypedTargetEvent<HTMLInputElement>) => {
-						const value = event.target.value;
+					onInput: (event: Event) => {
+						const target = event.target as HTMLInputElement;
+						const value = target.value;
 						this._value4 = value;
 						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
 						this.invalidate();
