@@ -1,4 +1,3 @@
-import { createHandle } from '@dojo/core/lang';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
@@ -65,10 +64,10 @@ export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {
 			document.addEventListener(object.event, object.func);
 			this._boundHandlers.push(object);
 		});
+	}
 
-		this.own(createHandle(() => {
-			this._boundHandlers.forEach(object => document.removeEventListener(object.event, object.func));
-		}));
+	protected onDetach(): void {
+		this._boundHandlers.forEach(object => document.removeEventListener(object.event, object.func));
 	}
 
 	private _deselect() {

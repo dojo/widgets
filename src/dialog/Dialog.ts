@@ -4,7 +4,6 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
-import { createHandle } from '@dojo/core/lang';
 
 import * as css from './styles/dialog.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -67,7 +66,7 @@ export default class Dialog extends DialogBase<DialogProperties> {
 		!this.properties.modal && this._onCloseClick();
 	}
 
-	private _onKeyUp(event: KeyboardEvent) {
+	private _onKeyUp = (event: KeyboardEvent) => {
 		if (event.which === Keys.Escape) {
 			this._onCloseClick();
 		}
@@ -75,12 +74,11 @@ export default class Dialog extends DialogBase<DialogProperties> {
 
 	constructor() {
 		super();
+		document.addEventListener('keyup', this._onKeyUp);
+	}
 
-		const keyUpFunc = this._onKeyUp.bind(this);
-		document.addEventListener('keyup', keyUpFunc);
-		this.own(createHandle(() => {
-			document.removeEventListener('keyup', keyUpFunc);
-		}));
+	protected onDetach(): void {
+		document.removeEventListener('keyup', this._onKeyUp);
 	}
 
 	protected getContent(): DNode {
