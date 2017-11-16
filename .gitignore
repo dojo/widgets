@@ -12,7 +12,6 @@ coverage-final.lcov
 npm-debug.log
 yarn.lock
 /_apidoc
-package-lock.json
 /.grunt/
 deploy_key
 deploy_key.pub
