@@ -1,32 +1,19 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Textarea from '../../textarea/Textarea';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _value1: string;
 	private _value2: string;
 	private _invalid: boolean;
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	render() {
+		const { theme } = this.properties;
+
 		return v('div', [
 			v('h2', {}, ['Textarea Example']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'example-t1'}, [
 				w(Textarea, {
 					key: 't1',
@@ -39,7 +26,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._value1 = event.target.value;
 						this.invalidate();
 					},
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h3', {}, ['Disabled Textarea']),
@@ -51,7 +38,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Can\'t type here',
 					value: 'Initial value',
 					disabled: true,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h3', {}, ['Validated, Required Textarea']),
@@ -70,7 +57,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._invalid = value.trim().length === 0;
 						this.invalidate();
 					},
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h3', {}, ['Hidden Label Textarea']),
@@ -89,8 +76,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

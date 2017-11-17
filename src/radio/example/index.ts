@@ -1,19 +1,11 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Radio from '../../radio/Radio';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _inputValue: string;
-
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onChange(event: TypedTargetEvent<HTMLInputElement>) {
 		const value = event.target.value;
@@ -22,6 +14,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
+		const { theme } = this.properties;
 		const {
 			_inputValue = 'first'
 		} = this;
@@ -30,13 +23,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h2', {
 				innerHTML: 'Radio Examples'
 			}),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('fieldset', { id: 'example-1' }, [
 				v('legend', {}, ['Set of radio buttons with first option selected']),
 				w(Radio, {
@@ -46,7 +32,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'First option',
 					name: 'sample-radios',
 					onChange: this.onChange,
-					theme: this._theme
+					theme
 				}),
 				w(Radio, {
 					key: 'r2',
@@ -55,7 +41,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Second option',
 					name: 'sample-radios',
 					onChange: this.onChange,
-					theme: this._theme
+					theme
 				}),
 				w(Radio, {
 					key: 'r3',
@@ -64,7 +50,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Third option',
 					name: 'sample-radios',
 					onChange: this.onChange,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('fieldset', { id: 'example-2' }, [
@@ -75,7 +61,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					disabled: true,
 					label: 'First option',
 					name: 'sample-radios-disabled',
-					theme: this._theme
+					theme
 				}),
 				w(Radio, {
 					key: 'r5',
@@ -83,14 +69,9 @@ export class App extends WidgetBase<WidgetProperties> {
 					disabled: true,
 					label: 'Second option',
 					name: 'sample-radios-disabled',
-					theme: this._theme
+					theme
 				})
 			])
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

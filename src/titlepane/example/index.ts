@@ -1,23 +1,15 @@
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 
 import TitlePane from '../TitlePane';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _t2Open = true;
 	private _t3Open = false;
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	render() {
+		const { theme } = this.properties;
 		const {
 			_t2Open,
 			_t3Open
@@ -30,19 +22,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			}
 		}, [
 			v('div', {
-				classes: 'option',
-				style: 'margin-bottom: 20px;'
-			}, [
-				v('label', [
-					'Use Dojo Theme ',
-					v('input', {
-						type: 'checkbox',
-						onchange: this.themeChange
-					})
-				])
-			]),
-
-			v('div', {
 				id: 'titlePane1',
 				styles: { 'margin-bottom': '15px' }
 			}, [
@@ -50,7 +29,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					headingLevel: 1,
 					closeable: false,
 					key: 'titlePane1',
-					theme: this._theme,
+					theme,
 					title: 'TitlePanel Widget With closeable=false'
 				}, [
 					v('div', {
@@ -69,7 +48,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					headingLevel: 2,
 					key: 'titlePane2',
 					open: _t2Open,
-					theme: this._theme,
+					theme,
 					title: 'TitlePanel Widget (closeable)',
 					onRequestClose: () => {
 						this._t2Open = false;
@@ -100,7 +79,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				w(TitlePane, {
 					key: 'titlePane3',
 					open: _t3Open,
-					theme: this._theme,
+					theme,
 					title: 'TitlePanel Widget with open=false',
 					onRequestClose: () => {
 						this._t3Open = false;
@@ -121,8 +100,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

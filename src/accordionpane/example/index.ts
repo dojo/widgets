@@ -1,35 +1,21 @@
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { Set } from '@dojo/shim/Set';
 import { w, v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { from } from '@dojo/shim/array';
 
 import AccordionPane from '../../accordionpane/AccordionPane';
 import TitlePane from '../../titlepane/TitlePane';
 
-import dojoTheme from '../../themes/dojo/theme';
-
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase<ThemedProperties> {
 	private _exclusiveKey: string | undefined;
 	private _openKeys = new Set<string>();
-	private _theme: {};
-
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		this._theme = event.target.checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	render() {
+		const { theme } = this.properties;
+
 		return v('div', { styles: { maxWidth: '350px' } }, [
 			v('h2', [ 'AccordionPane Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'pane' }, [
 				v('h3', [ 'Normal AccordionPane' ]),
 				w(AccordionPane, {
@@ -42,7 +28,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.invalidate();
 					},
 					openKeys: from(this._openKeys),
-					theme: this._theme
+					theme
 				}, [
 					w(TitlePane, {
 						title: 'Pane 1',
@@ -66,7 +52,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.invalidate();
 					},
 					openKeys: this._exclusiveKey ? [ this._exclusiveKey ] : [],
-					theme: this._theme
+					theme
 				}, [
 					w(TitlePane, {
 						title: 'Pane 1',
@@ -81,8 +67,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

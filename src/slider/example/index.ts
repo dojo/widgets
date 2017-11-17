@@ -1,21 +1,13 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Slider from '../../slider/Slider';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _tribbleValue: number;
 	private _verticalValue: number;
 	private _verticalInvalid: boolean;
-
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onTribbleInput(event: TypedTargetEvent<HTMLInputElement>) {
 		const value = event.target.value;
@@ -31,6 +23,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
+		const { theme } = this.properties;
 		const {
 			_tribbleValue: tribbleValue = 50,
 			_verticalValue: verticalValue = 0,
@@ -38,13 +31,6 @@ export class App extends WidgetBase<WidgetProperties> {
 		} = this;
 
 		return v('div', [
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('h1', {}, ['Slider with custom output']),
 			v('div', { id: 'example-s1'}, [
 				w(Slider, {
@@ -63,7 +49,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					value: tribbleValue,
 					onChange: this.onTribbleInput,
 					onInput: this.onTribbleInput,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h1', {}, ['Disabled slider']),
@@ -76,7 +62,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					step: 1,
 					value: 30,
 					disabled: true,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h1', {}, ['Vertical slider']),
@@ -95,14 +81,9 @@ export class App extends WidgetBase<WidgetProperties> {
 					outputIsTooltip: true,
 					onChange: this.onVerticalInput,
 					onInput: this.onVerticalInput,
-					theme: this._theme
+					theme
 				})
 			])
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

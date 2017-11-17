@@ -1,14 +1,11 @@
 import { deepAssign } from '@dojo/core/lang';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import SplitPane, { Direction } from '../../splitpane/SplitPane';
-import dojoTheme from '../../themes/dojo/theme';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private state: any = {};
 
 	public setState(state: any) {
@@ -16,13 +13,9 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	render(): DNode {
+		const { theme } = this.properties;
+
 		const containerStyles = {
 			width: '100%',
 			height: '500px',
@@ -36,13 +29,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			}
 		}, [
 			v('h1', ['SplitPane Examples']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('h3', ['Row']),
 			v('div', {
 				id: 'example-row',
@@ -55,7 +41,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.setState({ rowSize: size });
 					},
 					size: this.state.rowSize,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h3', ['Column']),
@@ -70,7 +56,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.setState({ columnSize: size });
 					},
 					size: this.state.columnSize,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h3', ['Nested']),
@@ -85,14 +71,14 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.setState({ nestedSizeA: size });
 					},
 					size: this.state.nestedSizeA,
-					theme: this._theme,
+					theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeB: size });
 						},
 						size: this.state.nestedSizeB,
-						theme: this._theme
+						theme
 					})
 				})
 			]),
@@ -108,14 +94,14 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.setState({ nestedSizeC: size });
 					},
 					size: this.state.nestedSizeC,
-					theme: this._theme,
+					theme,
 					trailing: w(SplitPane, {
 						direction: Direction.row,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeD: size });
 						},
 						size: this.state.nestedSizeD,
-						theme: this._theme
+						theme
 					})
 				})
 			]),
@@ -131,14 +117,14 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.setState({ nestedSizeE: size });
 					},
 					size: this.state.nestedSizeE,
-					theme: this._theme,
+					theme,
 					trailing: w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeF: size });
 						},
 						size: this.state.nestedSizeF,
-						theme: this._theme
+						theme
 					})
 				})
 			]),
@@ -155,7 +141,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.setState({ maxSize: size });
 					},
 					size: this.state.maxSize,
-					theme: this._theme
+					theme
 				})
 			]),
 			v('h3', ['Minimum size']),
@@ -171,14 +157,9 @@ export class App extends WidgetBase<WidgetProperties> {
 						this.setState({ minSize: size });
 					},
 					size: this.state.minSize,
-					theme: this._theme
+					theme
 				})
 			])
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

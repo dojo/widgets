@@ -1,14 +1,12 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { includes } from '@dojo/shim/array';
 import { deepAssign } from '@dojo/core/lang';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import Tab from '../Tab';
 import TabController, { Align } from '../TabController';
 import Task from '@dojo/core/async/Task';
-import dojoTheme from '../../themes/dojo/theme';
 
 let refresh: Task<any>;
 
@@ -25,8 +23,7 @@ interface State {
 	activeIndex: number;
 }
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
+export default class App extends WidgetBase<ThemedProperties> {
 	private _state: State = {
 		align: Align.top,
 		closedKeys: [],
@@ -36,12 +33,6 @@ export class App extends WidgetBase<WidgetProperties> {
 
 	private setState(state: Partial<State>) {
 		this._state = deepAssign(this._state, state);
-		this.invalidate();
-	}
-
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 
@@ -64,6 +55,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.setState({ align: align });
 	}
 	render(): DNode {
+		const { theme } = this.properties;
 		const {
 			activeIndex = 0,
 			align,
@@ -74,13 +66,6 @@ export class App extends WidgetBase<WidgetProperties> {
 		return v('div', {
 			classes: 'example'
 		}, [
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('select', {
 				styles: { marginBottom: '20px' },
 				onchange: this.onAlignChange
@@ -91,7 +76,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				v('option', { value: 'bottom' }, [ 'Bottom' ])
 			]),
 			w(TabController, {
-				theme: this._theme,
+				theme,
 				activeIndex: activeIndex,
 				alignButtons: align,
 				onRequestTabClose: (index: number, key: string) => {
@@ -114,14 +99,14 @@ export class App extends WidgetBase<WidgetProperties> {
 				}
 			}, [
 				w(Tab, {
-					theme: this._theme,
+					theme,
 					key: 'default',
 					label: 'Default'
 				}, [
 					'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in ex pharetra, iaculis turpis eget, tincidunt lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.'
 				]),
 				w(Tab, {
-					theme: this._theme,
+					theme,
 					disabled: true,
 					key: 'disabled',
 					label: 'Disabled'
@@ -129,14 +114,14 @@ export class App extends WidgetBase<WidgetProperties> {
 					'Sed nibh est, sollicitudin consectetur porta finibus, condimentum gravida purus. Phasellus varius fringilla erat, a dignissim nunc iaculis et. Curabitur eu neque erat. Integer id lacus nulla. Phasellus ut sem eget enim interdum interdum ac ac orci.'
 				]),
 				w(Tab, {
-					theme: this._theme,
+					theme,
 					key: 'async',
 					label: 'Async'
 				}, [
 					loading ? 'Loading...' : 'Curabitur id elit a tellus consequat maximus in non lorem. Donec sagittis porta aliquam. Nulla facilisi. Quisque sed mauris justo. Donec eu fringilla urna. Aenean vulputate ipsum imperdiet orci ornare tempor.'
 				]),
 				!includes(closedKeys, 'closeable') ? w(Tab, {
-					theme: this._theme,
+					theme,
 					closeable: true,
 					key: 'closeable',
 					label: 'Closeable'
@@ -144,7 +129,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					'Nullam congue, massa in egestas sagittis, diam neque rutrum tellus, nec egestas metus tellus vel odio. Vivamus tincidunt quam nisl, sit amet venenatis purus bibendum eget. Phasellus fringilla ex vitae odio hendrerit, non volutpat orci rhoncus.'
 				]) : null,
 				w(Tab, {
-					theme: this._theme,
+					theme,
 					key: 'foo',
 					label: 'Foobar'
 				}, [
@@ -154,8 +139,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

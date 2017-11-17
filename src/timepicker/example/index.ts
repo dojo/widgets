@@ -1,12 +1,10 @@
 import { getDateFormatter } from '@dojo/i18n/date';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
 import TimePicker, { TimeUnits } from '../TimePicker';
-import dojoTheme from '../../themes/dojo/theme';
 import * as baseCss from '../../common/styles/base.m.css';
 
 setLocaleData();
@@ -15,8 +13,7 @@ const TODAY = new Date();
 const getEnglishTime = getDateFormatter({ time: 'short' });
 
 @theme(baseCss)
-export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
-	private _theme: {};
+export default class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 	private _options: TimeUnits[];
 	private _values: any = {};
 	private _invalid = false;
@@ -26,28 +23,16 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 		this.invalidate();
 	}
 
-	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	private _setValue(key: string, value: string) {
 		this._values[key] = value;
 		this.invalidate();
 	}
 
 	render(): DNode {
+		const { theme } = this.properties;
+
 		return v('div', [
 			v('h1', [ 'TimePicker Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
-
 			v('p', {
 				id: 'description1',
 				classes: baseCss.visuallyHidden
@@ -83,7 +68,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					},
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
+					theme,
 					value: this._values['value1']
 				})
 			]),
@@ -103,7 +88,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
+					theme,
 					value: this._values['value2']
 				})
 			]),
@@ -127,7 +112,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 3600,
-					theme: this._theme,
+					theme,
 					value: this._values['value3']
 				})
 			]),
@@ -141,7 +126,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					},
 					key: '4',
 					disabled: true,
-					theme: this._theme
+					theme
 				})
 			]),
 
@@ -154,7 +139,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					},
 					key: '5',
 					readOnly: true,
-					theme: this._theme
+					theme
 				})
 			]),
 
@@ -172,7 +157,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
+					theme,
 					value: this._values['value6']
 				})
 			]),
@@ -198,7 +183,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
+					theme,
 					value: this._values['value7']
 				})
 			]),
@@ -223,7 +208,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					start: '12:00:00',
 					step: 1,
-					theme: this._theme,
+					theme,
 					value: this._values['value8']
 				})
 			]),
@@ -251,7 +236,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
+					theme,
 					value: this._values['value9']
 				})
 			]),
@@ -268,7 +253,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._setValue('value10', value);
 					},
 					step: 1800,
-					theme: this._theme,
+					theme,
 					useNativeElement: true,
 					invalid: true,
 					label: 'foo',
@@ -278,8 +263,3 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();
