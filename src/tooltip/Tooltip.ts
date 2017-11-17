@@ -53,12 +53,13 @@ export default class Tooltip extends ThemedBase<TooltipProperties> {
 
 	protected renderContent(): DNode {
 		return v('div', {
-			classes: [ this.theme(css.content), css.contentFixed ]
+			classes: [ this.theme(css.content), css.contentFixed ],
+			key: 'content'
 		}, [ this.properties.content ]);
 	}
 
 	protected renderTarget(): DNode {
-		return v('div', this.children);
+		return v('div', { key: 'target' }, this.children);
 	}
 
 	render(): DNode {

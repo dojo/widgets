@@ -22,7 +22,7 @@ registerSuite('Tooltip', {
 			widget.expectRender(v('div', {
 				classes: [ css.right, css.rootFixed, css.rightFixed ]
 			}, [
-				v('div', {}, []),
+				v('div', { key: 'target' }, []),
 				null
 			]));
 		},
@@ -36,10 +36,11 @@ registerSuite('Tooltip', {
 			widget.expectRender(v('div', {
 				classes: [ css.right, css.rootFixed, css.rightFixed ]
 			}, [
-				v('div', {}, []),
+				v('div', { key: 'target' }, []),
 				v('div', {
+					key: 'content',
 					classes: [ css.content, css.contentFixed ]
-				}, ['foobar' ])
+				}, [ 'foobar' ])
 			]));
 		},
 
@@ -52,7 +53,7 @@ registerSuite('Tooltip', {
 			widget.expectRender(v('div', {
 				classes: [ css.bottom, css.rootFixed, css.bottomFixed ]
 			}, [
-				v('div', {}, []),
+				v('div', { key: 'target' }, []),
 				null
 			]));
 		}
