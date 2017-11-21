@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Label from '../label/Label';
-import { LabeledProperties, InputEventProperties } from '../common/interfaces';
+import { LabeledProperties, InputEventProperties, MouseEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/radio.m.css';
@@ -21,17 +21,8 @@ import * as css from './styles/radio.m.css';
  * @property readOnly         Allows or prevents user interaction
  * @property required         Whether or not a value is required
  * @property value            The current value
- * @property onBlur           Called when the input loses focus
- * @property onChange         Called when the node's 'change' event is fired
- * @property onClick          Called when the input is clicked
- * @property onFocus          Called when the input is focused
- * @property onMouseDown      Called on the input's mousedown event
- * @property onMouseUp        Called on the input's mouseup event
- * @property onTouchStart     Called on the input's touchstart event
- * @property onTouchEnd       Called on the input's touchend event
- * @property onTouchCancel    Called on the input's touchcancel event
  */
-export interface RadioProperties extends ThemedProperties, LabeledProperties, InputEventProperties {
+export interface RadioProperties extends ThemedProperties, LabeledProperties, InputEventProperties, MouseEventProperties {
 	checked?: boolean;
 	describedBy?: string;
 	disabled?: boolean;

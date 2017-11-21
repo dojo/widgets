@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
-import { InputProperties, LabeledProperties } from '../common/interfaces';
+import { InputProperties, LabeledProperties, InputEventProperties, MouseEventProperties, KeyEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/textarea.m.css';
 
@@ -13,34 +13,10 @@ import * as css from './styles/textarea.m.css';
  * Properties that can be set on a TextInput component
  *
  * @property columns         Number of columns, controls the width of the textarea
- * @property describedBy     ID of an element that provides more descriptive text
- * @property disabled        Prevents the user from interacting with the form field
- * @property invalid         Indicates the value entered in the form field is invalid
- * @property label           Label settings for form label text, position, and visibility
- * @property maxLength       Maximum number of characters allowed in the input
- * @property minLength       Minimum number of characters allowed in the input
- * @property name            The form widget's name
- * @property placeholder     Placeholder text
- * @property readOnly        Allows or prevents user interaction
- * @property required        Whether or not a value is required
  * @property rows            Number of rows, controls the height of the textarea
- * @property value           The current value
  * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
- * @property onBlur          Called when the input loses focus
- * @property onChange        Called when the node's 'change' event is fired
- * @property onClick         Called when the input is clicked
- * @property onFocus         Called when the input is focused
- * @property onInput         Called when the 'input' event is fired
- * @property onKeyDown       Called on the input's keydown event
- * @property onKeyPress      Called on the input's keypress event
- * @property onKeyUp         Called on the input's keyup event
- * @property onMouseDown     Called on the input's mousedown event
- * @property onMouseUp       Called on the input's mouseup event
- * @property onTouchStart    Called on the input's touchstart event
- * @property onTouchEnd      Called on the input's touchend event
- * @property onTouchCancel   Called on the input's touchcancel event
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties {
+export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, MouseEventProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';

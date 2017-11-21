@@ -4,7 +4,7 @@ import Label from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
-import { LabeledProperties, InputEventProperties } from '../common/interfaces';
+import { LabeledProperties, InputEventProperties, MouseEventProperties, KeyEventProperties } from '../common/interfaces';
 import * as css from './styles/slider.m.css';
 
 /**
@@ -26,21 +26,8 @@ import * as css from './styles/slider.m.css';
  * @property value             The current value
  * @property vertical          Orients the slider vertically, false by default.
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
- * @property onBlur            Called when the input loses focus
- * @property onChange          Called when the node's 'change' event is fired
- * @property onClick           Called when the input is clicked
- * @property onFocus           Called when the input is focused
- * @property onInput           Called when the 'input' event is fired
- * @property onKeyDown         Called on the input's keydown event
- * @property onKeyPress        Called on the input's keypress event
- * @property onKeyUp           Called on the input's keyup event
- * @property onMouseDown       Called on the input's mousedown event
- * @property onMouseUp         Called on the input's mouseup event
- * @property onTouchStart      Called on the input's touchstart event
- * @property onTouchEnd        Called on the input's touchend event
- * @property onTouchCancel     Called on the input's touchcancel event
  */
-export interface SliderProperties extends ThemedProperties, LabeledProperties, InputEventProperties {
+export interface SliderProperties extends ThemedProperties, LabeledProperties, InputEventProperties, MouseEventProperties, KeyEventProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
@@ -55,10 +42,6 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 	value?: number;
 	vertical?: boolean;
 	verticalHeight?: string;
-	onInput?(event: Event): void;
-	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
 }
 
 export const SliderBase = ThemedMixin(WidgetBase);

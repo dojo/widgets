@@ -11,6 +11,11 @@ import * as baseCss from '../common/styles/base.m.css';
  * Properties that can be set on a Label component
  *
  * @property forId     ID to explicitly associate the label with an input element
+ * @property disabled
+ * @property readOnly
+ * @property required
+ * @property invalid
+ * @property hidden
  */
 export interface LabelProperties extends ThemedProperties {
 	forId?: string;

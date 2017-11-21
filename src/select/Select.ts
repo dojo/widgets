@@ -34,9 +34,6 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property required          Whether or not a value is required
  * @property useNativeElement  Use the native <select> element if true
  * @property value             The current value
- * @property onBlur            Called when the input loses focus
- * @property onChange          Called when the node's 'change' event is fired
- * @property onFocus           Called when the input is focused
  */
 export interface SelectProperties extends ThemedProperties, LabeledProperties {
 	describedBy?: string;

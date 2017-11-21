@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
-import { InputProperties, LabeledProperties } from '../common/interfaces';
+import { InputProperties, LabeledProperties, MouseEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/textinput.m.css';
 
@@ -15,32 +15,9 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * Properties that can be set on a TextInput component
  *
  * @property controls       ID of an element that this input controls
- * @property describedBy    ID of an element that provides more descriptive text
- * @property disabled       Prevents the user from interacting with the form field
- * @property invalid        Indicates the value entered in the form field is invalid
- * @property maxLength      Maximum number of characters allowed in the input
- * @property minLength      Minimum number of characters allowed in the input
- * @property name           The form widget's name
- * @property placeholder    Placeholder text
- * @property readOnly       Allows or prevents user interaction
- * @property required       Whether or not a value is required
  * @property type           Input type, e.g. text, email, tel, etc.
- * @property value          The current value
- * @property onBlur         Called when the input loses focus
- * @property onChange       Called when the node's 'change' event is fired
- * @property onClick        Called when the input is clicked
- * @property onFocus        Called when the input is focused
- * @property onInput        Called when the 'input' event is fired
- * @property onKeyDown      Called on the input's keydown event
- * @property onKeyPress     Called on the input's keypress event
- * @property onKeyUp        Called on the input's keyup event
- * @property onMouseDown    Called on the input's mousedown event
- * @property onMouseUp      Called on the input's mouseup event
- * @property onTouchStart   Called on the input's touchstart event
- * @property onTouchEnd     Called on the input's touchend event
- * @property onTouchCancel  Called on the input's touchcancel event
  */
-export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties {
+export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties, MouseEventProperties, KeyEventProperties, InputEventProperties {
 	controls?: string;
 	type?: TextInputType;
 }
