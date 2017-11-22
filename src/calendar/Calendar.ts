@@ -1,9 +1,12 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n'
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
+import commonBundle from '../common/nls/common';
 import { Keys } from '../common/util';
+import calendarBundle from './nls/Calendar';
 import { CalendarMessages } from './DatePicker';
 import DatePicker, { Paging } from './DatePicker';
 import CalendarCell from './CalendarCell';
@@ -58,23 +61,16 @@ export const DEFAULT_MONTHS = [
 ];
 
 export const DEFAULT_WEEKDAYS = [
-	{short: 'Sun', long: 'Sunday'},
-	{short: 'Mon', long: 'Monday'},
-	{short: 'Tue', long: 'Tuesday'},
-	{short: 'Wed', long: 'Wednesday'},
-	{short: 'Thu', long: 'Thursday'},
-	{short: 'Fri', long: 'Friday'},
-	{short: 'Sat', long: 'Saturday'}
+	{short: 'sun', long: 'sunday'},
+	{short: 'mon', long: 'monday'},
+	{short: 'tue', long: 'tuesday'},
+	{short: 'wed', long: 'wednesday'},
+	{short: 'thu', long: 'thursday'},
+	{short: 'fri', long: 'friday'},
+	{short: 'sat', long: 'saturday'}
 ];
 
-export const DEFAULT_LABELS: CalendarMessages = {
-	chooseMonth: 'Choose Month',
-	chooseYear: 'Choose Year',
-	previousMonth: 'Previous Month',
-	nextMonth: 'Next Month'
-};
-
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -307,7 +303,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 
 	protected renderDatePicker(): DNode {
 		const {
-			labels = DEFAULT_LABELS,
+			labels = this.localizeBundle(calendarBundle),
 			monthNames = DEFAULT_MONTHS,
 			renderMonthLabel,
 			theme,
@@ -341,7 +337,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	protected renderPagingButtonContent(type: Paging): DNode[] {
-		const { labels = DEFAULT_LABELS } = this.properties;
+		const { labels = this.localizeBundle(calendarBundle) } = this.properties;
 		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
@@ -359,9 +355,10 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	protected render(): DNode {
+		const messages = this.localizeBundle(commonBundle);
 		const {
 			selectedDate,
-			weekdayNames = DEFAULT_WEEKDAYS
+			weekdayNames = DEFAULT_WEEKDAYS.map((weekday) => ({ short: messages[weekday.short], long: messages[weekday.long] }))
 		} = this.properties;
 
 		// Calendar Weekday array
