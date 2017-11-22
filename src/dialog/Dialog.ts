@@ -1,9 +1,11 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
+import dialogBundle from './nls/Dialog';
 
 import * as css from './styles/dialog.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -45,7 +47,7 @@ export interface DialogProperties extends ThemedProperties {
 	underlay?: boolean;
 };
 
-export const DialogBase = ThemedMixin(WidgetBase);
+export const DialogBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -111,9 +113,10 @@ export default class Dialog extends DialogBase<DialogProperties> {
 	}
 
 	render(): DNode {
+		const messages = this.localizeBundle(dialogBundle);
 		const {
 			closeable = true,
-			closeText = 'close dialog',
+			closeText = messages.close,
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
 			onOpen,
