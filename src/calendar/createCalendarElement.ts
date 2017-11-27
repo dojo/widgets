@@ -28,7 +28,8 @@ export default function createCalendarElement(): CustomElementDescriptor {
 			{ propertyName: 'monthNames' },
 			{ propertyName: 'weekdayNames' },
 			{ propertyName: 'renderMonthLabel' },
-			{ propertyName: 'renderWeekdayCell' }
+			{ propertyName: 'renderWeekdayCell' },
+			{ propertyName: 'theme' }
 		],
 		events: [
 			{

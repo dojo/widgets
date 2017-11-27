@@ -25,6 +25,9 @@ export default function createSlidePaneElement(): CustomElementDescriptor {
 				value: value => Number(value)
 			}
 		],
+		properties: [
+			{ propertyName: 'theme' }
+		],
 		events: [
 			{
 				propertyName: 'onOpen',

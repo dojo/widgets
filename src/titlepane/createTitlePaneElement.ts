@@ -25,6 +25,9 @@ export default function createTitlePaneElement(): CustomElementDescriptor {
 				attributeName: 'title'
 			}
 		],
+		properties: [
+			{ propertyName: 'theme' }
+		],
 		events: [
 			{
 				propertyName: 'onRequestClose',

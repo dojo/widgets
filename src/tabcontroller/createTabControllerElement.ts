@@ -20,6 +20,9 @@ export default function createTabControllerElement(): CustomElementDescriptor {
 				value: value => Number(value)
 			}
 		],
+		properties: [
+			{ propertyName: 'theme' }
+		],
 		events: [
 			{
 				propertyName: 'onRequestTabChange',

@@ -45,27 +45,14 @@ export default function createComboBoxElement(): CustomElementDescriptor {
 			}
 		],
 		properties: [
-			{
-				propertyName: 'results'
-			},
-			{
-				propertyName: 'inputProperties'
-			},
-			{
-				propertyName: 'CustomResultItem'
-			},
-			{
-				propertyName: 'CustomResultMenu'
-			},
-			{
-				propertyName: 'getResultLabel'
-			},
-			{
-				propertyName: 'isResultDisabled'
-			},
-			{
-				propertyName: 'label'
-			}
+			{ propertyName: 'results' },
+			{ propertyName: 'inputProperties' },
+			{ propertyName: 'CustomResultItem' },
+			{ propertyName: 'CustomResultMenu' },
+			{ propertyName: 'getResultLabel' },
+			{ propertyName: 'isResultDisabled' },
+			{ propertyName: 'label' },
+			{ propertyName: 'theme' }
 		],
 		events: [
 			{
