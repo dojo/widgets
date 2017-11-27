@@ -28,11 +28,11 @@ export default function createTitlePaneElement(): CustomElementDescriptor {
 		events: [
 			{
 				propertyName: 'onRequestClose',
-				eventName: 'requestClose'
+				eventName: 'close'
 			},
 			{
 				propertyName: 'onRequestOpen',
-				eventName: 'requestOpen'
+				eventName: 'open'
 			}
 		]
 	};

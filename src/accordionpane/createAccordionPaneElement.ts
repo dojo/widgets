@@ -6,7 +6,7 @@ import AccordionPane from './AccordionPane';
  */
 export default function createAccordionPaneElement(): CustomElementDescriptor {
 	return {
-		tagName: 'dojo-accordionpane',
+		tagName: 'dojo-accordion-pane',
 		widgetConstructor: AccordionPane,
 		properties: [
 			{
