@@ -90,10 +90,6 @@
 	display: none;
 }
 
-.toggle .input {
-	width: auto;
-}
-
 .toggleSwitch {
 	background-color: var(--color-border);
 	border: var(--border-width) solid var(--color-border-strong);
