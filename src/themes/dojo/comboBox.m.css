@@ -20,6 +20,10 @@
 	width: 100%;
 }
 
+.clearable input {
+	padding-right: calc(var(--spacing-regular) * 8);
+}
+
 .trigger {
 	appearance: none;
 	background-color: transparent;

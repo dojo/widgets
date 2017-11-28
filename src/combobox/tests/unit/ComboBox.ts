@@ -148,6 +148,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 		classes: [
 			css.root,
 			open ? css.open : null,
+			useTestProperties ? css.clearable : null,
 			null,
 			null
 		],
@@ -586,7 +587,7 @@ registerSuite('ComboBox', {
 			assignProperties(expected, {
 				'aria-readonly': 'true',
 				'aria-required': 'true',
-				classes: [ css.root, null, css.invalid, null ]
+				classes: [ css.root, null, css.clearable, css.invalid, null ]
 			});
 			widget.expectRender(expected, 'disabled, invalid, readOnly, and required render');
 
