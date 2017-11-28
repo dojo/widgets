@@ -85,12 +85,14 @@ registerSuite('TextInput', {
 
 		'custom properties'() {
 			widget.setProperties({
-				controls: 'foo',
-				describedBy: 'bar',
+				aria: {
+					controls: 'foo',
+					describedBy: 'bar'
+				},
 				maxLength: 50,
 				minLength: 10,
-				name: 'baz',
-				placeholder: 'qux',
+				name: 'bar',
+				placeholder: 'baz',
 				type: 'email',
 				value: 'hello world'
 			});
@@ -104,8 +106,8 @@ registerSuite('TextInput', {
 				'aria-describedby': 'bar',
 				maxlength: '50',
 				minlength: '10',
-				name: 'baz',
-				placeholder: 'qux',
+				name: 'bar',
+				placeholder: 'baz',
 				type: 'email',
 				value: 'hello world'
 			});

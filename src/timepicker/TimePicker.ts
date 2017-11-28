@@ -281,7 +281,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 		const {
 			disabled,
 			end,
-			inputProperties,
+			inputProperties: { customAria } = { customAria: {} },
 			invalid,
 			name,
 			readOnly,
@@ -307,7 +307,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			}, [ label ]) : null,
 			v('input', {
 				id: this._uuid,
-				'aria-describedby': inputProperties && inputProperties.describedBy,
+				'aria-describedby': customAria && customAria['aria-describedby'],
 				'aria-invalid': invalid === true ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,
 				classes: this.theme(css.input),

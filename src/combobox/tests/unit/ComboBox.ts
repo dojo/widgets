@@ -52,7 +52,11 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 	}, [
 		w(TextInput, <any> {
 			key: 'textinput',
-			controls: <any> compareId,
+			aria: {
+				'aria-activedescendant': <any> compareId,
+				'aria-controls': <any> compareId,
+				'aria-owns': <any> compareId
+			},
 			disabled: undefined,
 			invalid: undefined,
 			readOnly: undefined,

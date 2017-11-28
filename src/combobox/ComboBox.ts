@@ -279,7 +279,11 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		return w(TextInput, {
 			...inputProperties,
 			key: 'textinput',
-			controls: this._getMenuId(),
+			aria: {
+				'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
+				'aria-controls': this._getMenuId(),
+				'aria-owns': this._getMenuId()
+			},
 			disabled,
 			invalid,
 			onBlur: this._onInputBlur,
@@ -418,8 +422,8 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		return v('div', {
 			'aria-expanded': this._open ? 'true' : 'false',
 			'aria-haspopup': 'true',
-			'aria-readonly': readOnly ? 'true' : 'false',
-			'aria-required': required ? 'true' : 'false',
+			'aria-readonly': readOnly ? 'true' : null,
+			'aria-required': required ? 'true' : null,
 			id,
 			classes: this.theme([
 				css.root,
