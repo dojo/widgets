@@ -86,39 +86,49 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 		} = this.properties;
 
 		const children = [
-			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null,
-			v('textarea', {
-				id: this._uuid,
-				key: 'input',
-				classes: this.theme(css.input),
-				cols: columns ? `${columns}` : null,
-				'aria-describedby': describedBy,
+			label ? w(Label, {
+				theme,
 				disabled,
-				'aria-invalid': invalid ? 'true' : null,
-				maxlength: maxLength ? `${maxLength}` : null,
-				minlength: minLength ? `${minLength}` : null,
-				name,
-				placeholder,
+				invalid,
 				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
 				required,
-				rows: rows ? `${rows}` : null,
-				value,
-				wrap: wrapText,
-				onblur: this._onBlur,
-				onchange: this._onChange,
-				onclick: this._onClick,
-				onfocus: this._onFocus,
-				oninput: this._onInput,
-				onkeydown: this._onKeyDown,
-				onkeypress: this._onKeyPress,
-				onkeyup: this._onKeyUp,
-				onmousedown: this._onMouseDown,
-				onmouseup: this._onMouseUp,
-				ontouchstart: this._onTouchStart,
-				ontouchend: this._onTouchEnd,
-				ontouchcancel: this._onTouchCancel
-			})
+				hidden: labelHidden,
+				forId: this._uuid
+			}, [ label ]) : null,
+			v('div', { classes: this.theme(css.inputWrapper) }, [
+				v('textarea', {
+					id: this._uuid,
+					key: 'input',
+					classes: this.theme(css.input),
+					cols: columns ? `${columns}` : null,
+					'aria-describedby': describedBy,
+					disabled,
+					'aria-invalid': invalid ? 'true' : null,
+					maxlength: maxLength ? `${maxLength}` : null,
+					minlength: minLength ? `${minLength}` : null,
+					name,
+					placeholder,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					rows: rows ? `${rows}` : null,
+					value,
+					wrap: wrapText,
+					onblur: this._onBlur,
+					onchange: this._onChange,
+					onclick: this._onClick,
+					onfocus: this._onFocus,
+					oninput: this._onInput,
+					onkeydown: this._onKeyDown,
+					onkeypress: this._onKeyPress,
+					onkeyup: this._onKeyUp,
+					onmousedown: this._onMouseDown,
+					onmouseup: this._onMouseUp,
+					ontouchstart: this._onTouchStart,
+					ontouchend: this._onTouchEnd,
+					ontouchcancel: this._onTouchCancel
+				})
+			])
 		];
 
 		return v('div', {

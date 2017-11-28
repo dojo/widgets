@@ -10,6 +10,8 @@
 	max-width: 100%;
 }
 
+.inputWrapper {}
+
 .disabled {}
 .readonly {}
 .required {}

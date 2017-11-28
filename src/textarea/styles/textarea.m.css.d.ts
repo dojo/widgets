@@ -1,5 +1,6 @@
 export const root: string;
 export const input: string;
+export const inputWrapper: string;
 export const disabled: string;
 export const readonly: string;
 export const required: string;
