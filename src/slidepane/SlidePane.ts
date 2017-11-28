@@ -1,11 +1,14 @@
+import uuid from '@dojo/core/uuid';
 import { DNode } from '@dojo/widget-core/interfaces';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
+import slidePaneBundle from './nls/SlidePane';
+
 import * as css from './styles/slidePane.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
-import uuid from '@dojo/core/uuid';
 
 /**
  * Enum for left / right alignment
@@ -57,7 +60,7 @@ const enum Plane {
 	y
 };
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -251,7 +254,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 	render(): DNode {
 		const {
-			closeText = 'close pane',
+			closeText = this.localizeBundle(slidePaneBundle).close,
 			onOpen,
 			open = false,
 			title = ''

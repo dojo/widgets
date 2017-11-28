@@ -1,8 +1,8 @@
-const bundlePath = 'src/dialog/nls/common';
+const bundlePath = 'src/slidepane/nls/common';
 const locales: string[] = [];
 
 const messages = {
-	close: 'close dialog'
+	close: 'close pane'
 };
 
 export default { bundlePath, locales, messages };

@@ -2,6 +2,7 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/widget-core/diff';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
@@ -10,6 +11,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
+import comboBoxBundle from './nls/ComboBox';
 import { LabeledProperties } from '../common/interfaces';
 
 import * as css from './styles/comboBox.m.css';
@@ -65,7 +67,7 @@ export const enum Operation {
 	decrease = -1
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -296,6 +298,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			disabled,
 			readOnly
 		} = this.properties;
+		const messages = this.localizeBundle(comboBoxBundle);
 
 		return v('button', {
 			key: 'clear',
@@ -305,7 +308,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			readOnly,
 			onclick: this._onClearClick
 		}, [
-			'clear combo box',
+			messages.clear,
 			v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
@@ -317,6 +320,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			disabled,
 			readOnly
 		} = this.properties;
+		const messages = this.localizeBundle(comboBoxBundle);
 
 		return v('button', {
 			key: 'trigger',
@@ -326,7 +330,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			tabIndex: -1,
 			onclick: this._onArrowClick
 		}, [
-			'open combo box',
+			messages.open,
 			v('i', {
 				'aria-hidden': 'true',
 				classes: this.theme([ iconCss.icon, iconCss.downIcon ]),

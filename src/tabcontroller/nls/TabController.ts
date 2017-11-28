@@ -1,8 +1,8 @@
-const bundlePath = 'src/dialog/nls/common';
+const bundlePath = 'src/tabcontroller/nls/common';
 const locales: string[] = [];
 
 const messages = {
-	close: 'close dialog'
+	closeTab: 'close tab'
 };
 
 export default { bundlePath, locales, messages };

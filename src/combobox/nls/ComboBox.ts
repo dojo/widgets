@@ -1,8 +1,9 @@
-const bundlePath = 'src/dialog/nls/common';
+const bundlePath = 'src/combobox/nls/common';
 const locales: string[] = [];
 
 const messages = {
-	close: 'close dialog'
+	clear: 'clear combo box',
+	open: 'open combo box'
 };
 
 export default { bundlePath, locales, messages };
