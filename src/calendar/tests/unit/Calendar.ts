@@ -41,7 +41,11 @@ const expectedDateCell = function(widget: Harness<Calendar>, date: number, activ
 
 const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 	dateIndex = -1;
-	return v('div', { classes: css.root }, [
+	return v('div', {
+		classes: css.root,
+		dir: null,
+		lang: null
+	}, [
 		w(DatePicker, {
 			key: 'date-picker',
 			labelId: <any> compareId,
