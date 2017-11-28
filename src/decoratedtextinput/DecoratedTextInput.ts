@@ -1,7 +1,5 @@
-import { assign } from '@dojo/core/lang';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { theme } from '@dojo/widget-core/mixins/Themed';
-import uuid from '@dojo/core/uuid';
 import { v } from '@dojo/widget-core/d';
 
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
@@ -14,21 +12,20 @@ export interface DecoratedTextInputProperties extends TextInputProperties {
 
 @theme(css)
 export default class DecoratedTextInput extends TextInput<DecoratedTextInputProperties> {
-	protected renderAddon(addon: DNode) {
+	protected renderAddon(addon: DNode, before = false) {
 		return v('span', {
-			classes: this.theme(css.addon)
-		}, [ addon ])
+			classes: this.theme([css.addon, before ? css.addonBefore : css.addonAfter])
+		}, [ addon ]);
 	}
 
 	protected renderInputWrapper() {
 		let {
 			addonAfter = [],
-			addonBefore = [],
-			label
+			addonBefore = []
 		} = this.properties;
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
-			...addonBefore.map((addon: DNode) => this.renderAddon(addon)),
+			...addonBefore.map((addon: DNode) => this.renderAddon(addon, true)),
 			this.renderInput(),
 			...addonAfter.map((addon: DNode) => this.renderAddon(addon))
 		]);
