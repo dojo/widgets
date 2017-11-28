@@ -33,7 +33,7 @@
 	font-size: 0;
 	line-height: var(--line-height-base);
 	outline: 0;
-	padding: var(--spacing-regular) calc(var(--spacing-regular) + 4);
+	padding: var(--spacing-regular);
 	position: absolute;
 	right: 0;
 	top: var(--border-width);
@@ -41,7 +41,7 @@
 }
 
 .trigger i {
-	font-size: var(--font-size-base);
+	font-size: var(--font-size-icon);
 	line-height: var(--line-height-base);
 }
 
