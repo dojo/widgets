@@ -17,12 +17,9 @@ export default function createSplitPaneElement(): CustomElementDescriptor {
 			}
 		],
 		properties: [
-			{
-				propertyName: 'leading'
-			},
-			{
-				propertyName: 'trailing'
-			}
+			{ propertyName: 'leading' },
+			{ propertyName: 'trailing' },
+			{ propertyName: 'theme' }
 		],
 		events: [
 			{

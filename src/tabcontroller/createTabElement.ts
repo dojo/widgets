@@ -23,9 +23,8 @@ export default function createTabElement(): CustomElementDescriptor {
 			}
 		],
 		properties: [
-			{
-				propertyName: 'label'
-			}
+			{ propertyName: 'label' },
+			{ propertyName: 'theme' }
 		]
 	};
 };

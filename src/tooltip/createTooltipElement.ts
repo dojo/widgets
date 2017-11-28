@@ -18,9 +18,8 @@ export default function createTooltipElement(): CustomElementDescriptor {
 			}
 		],
 		properties: [
-			{
-				propertyName: 'content'
-			}
+			{ propertyName: 'content' },
+			{ propertyName: 'theme' }
 		]
 	};
 };
