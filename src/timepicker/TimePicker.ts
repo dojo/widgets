@@ -296,7 +296,15 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		} = this.properties;
 
 		const children = [
-			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null,
+			label ? w(Label, {
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: this._uuid
+			}, [ label ]) : null,
 			v('input', {
 				id: this._uuid,
 				'aria-describedby': inputProperties && inputProperties.describedBy,

@@ -390,7 +390,16 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		this._wasOpen = this._open;
 
 		const controls = [
-			label ? w(Label, { key: 'label', theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: id }, [ label ]) : null,
+			label ? w(Label, {
+				key: 'label',
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: id
+			}, [ label ]) : null,
 			v('div', {
 				classes: this.theme(css.controls)
 			}, [

@@ -151,7 +151,15 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 					ontouchcancel: this._onTouchCancel
 				})
 			]),
-			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._uuid }, [ label ]) : null
+			label ? w(Label, {
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: this._uuid
+			}, [ label ]) : null
 		];
 
 		return v('div', {

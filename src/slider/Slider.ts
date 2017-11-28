@@ -184,7 +184,15 @@ export default class Slider extends SliderBase<SliderProperties> {
 		]);
 
 		const children = [
-			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._inputId }, [ label ]) : null,
+			label ? w(Label, {
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: this._inputId
+			}, [ label ]) : null,
 			slider
 		];
 

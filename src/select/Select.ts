@@ -339,7 +339,15 @@ export default class Select extends ThemedBase<SelectProperties> {
 		} = this.properties;
 
 		const children = [
-			label ? w(Label, { theme, disabled, invalid, readOnly, required, hidden: labelHidden, forId: this._baseId }, [ label ]) : null,
+			label ? w(Label, {
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: this._baseId
+			}, [ label ]) : null,
 			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect()
 		];
 
