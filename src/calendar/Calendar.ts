@@ -1,15 +1,15 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { I18nMixin } from '@dojo/widget-core/mixins/I18n'
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import commonBundle from '../common/nls/common';
 import { Keys } from '../common/util';
-import calendarBundle from './nls/Calendar';
+import CalendarCell from './CalendarCell';
 import { CalendarMessages } from './DatePicker';
 import DatePicker, { Paging } from './DatePicker';
-import CalendarCell from './CalendarCell';
+import calendarBundle from './nls/Calendar';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -45,29 +45,34 @@ export interface CalendarProperties extends ThemedProperties {
 	onDateSelect?(date: Date): void;
 }
 
-export const DEFAULT_MONTHS = [
-	{short: 'Jan', long: 'January'},
-	{short: 'Feb', long: 'February'},
-	{short: 'Mar', long: 'March'},
-	{short: 'Apr', long: 'April'},
-	{short: 'May', long: 'May'},
-	{short: 'Jun', long: 'June'},
-	{short: 'Jul', long: 'July'},
-	{short: 'Aug', long: 'August'},
-	{short: 'Sep', long: 'September'},
-	{short: 'Oct', long: 'October'},
-	{short: 'Nov', long: 'November'},
-	{short: 'Dec', long: 'December'}
+interface ShortLong<T> {
+	short: keyof T;
+	long: keyof T;
+}
+
+const DEFAULT_MONTHS: ShortLong<typeof commonBundle.messages>[] = [
+	{ short: 'janShort', long: 'january' },
+	{ short: 'febShort', long: 'february' },
+	{ short: 'marShort', long: 'march' },
+	{ short: 'aprShort', long: 'april' },
+	{ short: 'mayShort', long: 'may' },
+	{ short: 'junShort', long: 'june' },
+	{ short: 'julShort', long: 'july' },
+	{ short: 'augShort', long: 'august' },
+	{ short: 'sepShort', long: 'september' },
+	{ short: 'octShort', long: 'october' },
+	{ short: 'novShort', long: 'november' },
+	{ short: 'decShort', long: 'december' }
 ];
 
-export const DEFAULT_WEEKDAYS = [
-	{short: 'sun', long: 'sunday'},
-	{short: 'mon', long: 'monday'},
-	{short: 'tue', long: 'tuesday'},
-	{short: 'wed', long: 'wednesday'},
-	{short: 'thu', long: 'thursday'},
-	{short: 'fri', long: 'friday'},
-	{short: 'sat', long: 'saturday'}
+const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
+	{ short: 'sunShort', long: 'sunday' },
+	{ short: 'monShort', long: 'monday' },
+	{ short: 'tueShort', long: 'tuesday' },
+	{ short: 'wedShort', long: 'wednesday' },
+	{ short: 'thuShort', long: 'thursday' },
+	{ short: 'friShort', long: 'friday' },
+	{ short: 'satShort', long: 'saturday' }
 ];
 
 export const CalendarBase = I18nMixin(ThemedMixin(WidgetBase));
@@ -86,6 +91,14 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 		return lastDate.getDate();
 	}
 
+	private _getMonths() {
+		const messages = this.localizeBundle(commonBundle);
+		return DEFAULT_MONTHS.map((month) => ({
+			short: messages[month.short],
+			long: messages[month.long]
+		}));
+	}
+
 	private _getMonthYear() {
 		const {
 			month,
@@ -96,6 +109,14 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 			month: typeof month === 'number' ? month : selectedDate.getMonth(),
 			year: typeof year === 'number' ? year : selectedDate.getFullYear()
 		};
+	}
+
+	private _getWeekdays() {
+		const messages = this.localizeBundle(commonBundle);
+		return DEFAULT_WEEKDAYS.map((weekday) => ({
+			short: messages[weekday.short],
+			long: messages[weekday.long]
+		}));
 	}
 
 	private _goToDate(day: number) {
@@ -304,7 +325,7 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 	protected renderDatePicker(): DNode {
 		const {
 			labels = this.localizeBundle(calendarBundle),
-			monthNames = DEFAULT_MONTHS,
+			monthNames = this._getMonths(),
 			renderMonthLabel,
 			theme = {},
 			onMonthChange,
@@ -355,10 +376,9 @@ export default class Calendar extends CalendarBase<CalendarProperties> {
 	}
 
 	protected render(): DNode {
-		const messages = this.localizeBundle(commonBundle);
 		const {
 			selectedDate,
-			weekdayNames = DEFAULT_WEEKDAYS.map((weekday) => ({ short: messages[weekday.short], long: messages[weekday.long] }))
+			weekdayNames = this._getWeekdays()
 		} = this.properties;
 
 		// Calendar Weekday array
