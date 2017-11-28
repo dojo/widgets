@@ -1,0 +1,14 @@
+@import '../../common/styles/variables.css';
+
+.addon {
+	flex: 0 0 auto;
+}
+
+.input {
+	composes: input from '../../textinput/styles/textinput.m.css';
+	flex: 1 1 auto;
+}
+
+.inputWrapper {
+	display: flex;
+}

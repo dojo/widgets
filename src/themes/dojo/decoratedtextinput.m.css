@@ -1,0 +1,15 @@
+@import './variables.css';
+
+.addon {
+	background-color: #ccc;
+	flex: 0 0 auto;
+}
+
+.input {
+	composes: input from './textinput.m.css';
+	flex: 1 1 auto;
+}
+
+.inputWrapper {
+	display: flex;
+}

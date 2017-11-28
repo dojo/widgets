@@ -3,6 +3,7 @@ import * as button from './button.m.css';
 import * as calendar from './calendar.m.css';
 import * as checkbox from './checkbox.m.css';
 import * as comboBox from './comboBox.m.css';
+import * as decoratedtextinput from './decoratedtextinput.m.css';
 import * as dialog from './dialog.m.css';
 import * as icons from './icons.m.css';
 import * as label from './label.m.css';
@@ -25,6 +26,7 @@ export default {
 	'dojo-calendar': calendar,
 	'dojo-checkbox': checkbox,
 	'dojo-comboBox': comboBox,
+	'dojo-decoratedtextinput': decoratedtextinput,
 	'dojo-dialog': dialog,
 	'dojo-icons': icons,
 	'dojo-label': label,
