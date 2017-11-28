@@ -7,7 +7,7 @@ import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { find } from '@dojo/shim/array';
 import { Keys } from '../common/util';
-import { LabeledProperties } from '../common/interfaces';
+import { LabeledProperties, InputProperties } from '../common/interfaces';
 import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import * as css from './styles/select.m.css';
@@ -18,42 +18,29 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a Select component
  *
- * @property describedBy       ID of an element that provides more descriptive text
- * @property disabled          Prevents the user from interacting with the form field
- * @property invalid           Indicates the value entered in the form field is invalid
  * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
  * @property getOptionId       Function that accepts an option's data and index and returns a string id
  * @property getOptionLabel    Function that accepts an option's data and index and returns a DNode label
  * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
  * @property getOptionValue    Function that accepts an option's data and index and returns a string value
- * @property label             Label settings for form label text, position, and visibility
- * @property name              The form widget's name
  * @property options           Array of any type of data for the options
  * @property placeholder       Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined)
- * @property readOnly          Allows or prevents user interaction
- * @property required          Whether or not a value is required
  * @property useNativeElement  Use the native <select> element if true
- * @property value             The current value
+ * @property value           The current value
  */
-export interface SelectProperties extends ThemedProperties, LabeledProperties {
-	describedBy?: string;
-	disabled?: boolean;
-	invalid?: boolean;
+export interface SelectProperties extends ThemedProperties, InputProperties, LabeledProperties {
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
-	name?: string;
 	options?: any[];
 	placeholder?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	useNativeElement?: boolean;
-	value?: string;
 	onBlur?(key?: string | number): void;
 	onChange?(option: any, key?: string | number): void;
 	onFocus?(key?: string | number): void;
+	value?: string;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);

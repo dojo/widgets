@@ -30,7 +30,7 @@ const expected = function(label = false) {
 			required: undefined,
 			forId: <any> compareId
 		}, [ 'foo' ]) : null,
-		v('div', { classes: [ css.inputWrapper ]}, [
+		v('div', { classes: css.inputWrapper }, [
 			v('textarea', {
 				classes: css.input,
 				id: <any> compareId,

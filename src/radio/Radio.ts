@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Label from '../label/Label';
-import { LabeledProperties, InputEventProperties, MouseEventProperties } from '../common/interfaces';
+import { LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/radio.m.css';
@@ -13,23 +13,10 @@ import * as css from './styles/radio.m.css';
  * Properties that can be set on a Radio component
  *
  * @property checked          Checked/unchecked property of the radio
- * @property describedBy      ID of an element that provides more descriptive text
- * @property disabled         Prevents the user from interacting with the form field
- * @property invalid          Indicates the valid is invalid, or required and not filled in
- * @property label            Label settings for form label text, position, and visibility
- * @property name             The form widget's name
- * @property readOnly         Allows or prevents user interaction
- * @property required         Whether or not a value is required
- * @property value            The current value
+ * @property value           The current value
  */
-export interface RadioProperties extends ThemedProperties, LabeledProperties, InputEventProperties, MouseEventProperties {
+export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties {
 	checked?: boolean;
-	describedBy?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	name?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	value?: string;
 }
 

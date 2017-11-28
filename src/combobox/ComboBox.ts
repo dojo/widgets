@@ -9,8 +9,8 @@ import { v, w } from '@dojo/widget-core/d';
 
 import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
-import TextInput from '../textinput/TextInput';
-import { LabeledProperties, InputProperties } from '../common/interfaces';
+import TextInput, { TextInputProperties } from '../textinput/TextInput';
+import { LabeledProperties } from '../common/interfaces';
 
 import * as css from './styles/comboBox.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -44,7 +44,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties 
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
 	id?: string;
-	inputProperties?: InputProperties;
+	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string, key?: string | number): void;

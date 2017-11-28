@@ -30,7 +30,7 @@ const expected = function(label = false, classes: (string | null)[] = [ css.root
 			required: undefined,
 			forId: <any> compareId
 		}, [ 'foo' ]) : null,
-		v('div', { classes: [ css.inputWrapper ] }, [
+		v('div', { classes: css.inputWrapper }, [
 			v('input', {
 				key: 'input',
 				classes: css.input,

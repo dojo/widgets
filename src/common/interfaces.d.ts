@@ -12,26 +12,17 @@ export interface LabeledProperties {
  * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
  * @property invalid        Indicates the value entered in the form field is invalid
- * @property maxLength      Maximum number of characters allowed in the input
- * @property minLength      Minimum number of characters allowed in the input
  * @property name           The form widget's name
- * @property placeholder    Placeholder text
  * @property readOnly       Allows or prevents user interaction
  * @property required       Whether or not a value is required
- * @property value          The current value
- * @property onInput        Called when the 'input' event is fired
  */
-export interface InputProperties extends InputEventProperties {
+export interface InputProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
-	maxLength?: number | string;
-	minLength?: number | string;
 	name?: string;
-	placeholder?: string;
 	readOnly?: boolean;
 	required?: boolean;
-	value?: string;
 }
 
 /**
@@ -39,6 +30,7 @@ export interface InputProperties extends InputEventProperties {
  * @property onBlur         Called when the input loses focus
  * @property onChange       Called when the node's 'change' event is fired
  * @property onFocus        Called when the input is focused
+ * @property onInput        Called when the 'input' event is fired
  */
 export interface InputEventProperties {
 	onBlur?(event: FocusEvent): void;
@@ -48,7 +40,7 @@ export interface InputEventProperties {
 }
 
 /**
- * @type MouseEventProperties
+ * @type PointerEventProperties
  * @property onClick        Called when the input is clicked
  * @property onMouseDown    Called on the input's mousedown event
  * @property onMouseUp      Called on the input's mouseup event
@@ -56,7 +48,7 @@ export interface InputEventProperties {
  * @property onTouchEnd     Called on the input's touchend event
  * @property onTouchCancel  Called on the input's touchcancel event
  */
-export interface MouseEventProperties {
+export interface PointerEventProperties {
 	onClick?(event: MouseEvent): void;
 	onMouseDown?(event: MouseEvent): void;
 	onMouseUp?(event: MouseEvent): void;

@@ -4,7 +4,7 @@ import Label from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
-import { LabeledProperties, InputEventProperties, MouseEventProperties, KeyEventProperties } from '../common/interfaces';
+import { LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import * as css from './styles/slider.m.css';
 
 /**
@@ -12,36 +12,23 @@ import * as css from './styles/slider.m.css';
  *
  * Properties that can be set on a Slider component
  *
- * @property describedBy       ID of an element that provides more descriptive text
- * @property disabled          Prevents the user from interacting with the form field
- * @property invalid           Indicates the valid is invalid, or required and not filled in
- * @property label             Label settings for form label text, position, and visibility
  * @property max               The maximum value for the slider
  * @property min               The minimum value for the slider
- * @property name              The form widget's name
  * @property output            An optional function that returns a string or DNode for custom output format
- * @property readOnly          Allows or prevents user interaction
- * @property required          Whether or not a value is required
  * @property step              Size of the slider increment
- * @property value             The current value
  * @property vertical          Orients the slider vertically, false by default.
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
+ * @property value           The current value
  */
-export interface SliderProperties extends ThemedProperties, LabeledProperties, InputEventProperties, MouseEventProperties, KeyEventProperties {
-	describedBy?: string;
-	disabled?: boolean;
-	invalid?: boolean;
+export interface SliderProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties {
 	max?: number;
 	min?: number;
-	name?: string;
 	output?(value: number): DNode;
 	outputIsTooltip?: boolean;
-	readOnly?: boolean;
-	required?: boolean;
 	step?: number;
-	value?: number;
 	vertical?: boolean;
 	verticalHeight?: string;
+	value?: number;
 }
 
 export const SliderBase = ThemedMixin(WidgetBase);

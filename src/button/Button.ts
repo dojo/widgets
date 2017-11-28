@@ -4,7 +4,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import * as css from './styles/button.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
-import { InputEventProperties, MouseEventProperties, KeyEventProperties } from '../common/interfaces';
+import { InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -21,7 +21,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property type           Button type can be "submit", "reset", "button", or "menu"
  * @property value          Defines a value for the button submitted with form data
  */
-export interface ButtonProperties extends ThemedProperties, InputEventProperties, MouseEventProperties, KeyEventProperties {
+export interface ButtonProperties extends ThemedProperties, InputEventProperties, PointerEventProperties, KeyEventProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	id?: string;

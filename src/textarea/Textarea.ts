@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
-import { InputProperties, LabeledProperties, InputEventProperties, MouseEventProperties, KeyEventProperties } from '../common/interfaces';
+import { InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/textarea.m.css';
 
@@ -15,11 +15,19 @@ import * as css from './styles/textarea.m.css';
  * @property columns         Number of columns, controls the width of the textarea
  * @property rows            Number of rows, controls the height of the textarea
  * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
+ * @property maxLength      Maximum number of characters allowed in the input
+ * @property minLength      Minimum number of characters allowed in the input
+ * @property placeholder    Placeholder text
+ * @property value           The current value
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, MouseEventProperties {
+export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
+	maxLength?: number | string;
+	minLength?: number | string;
+	placeholder?: string;
+	value?: string;
 }
 
 export const TextareaBase = ThemedMixin(WidgetBase);

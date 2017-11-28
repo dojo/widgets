@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
-import { InputProperties, LabeledProperties, MouseEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
+import { InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/textinput.m.css';
 
@@ -16,10 +16,18 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  *
  * @property controls       ID of an element that this input controls
  * @property type           Input type, e.g. text, email, tel, etc.
+ * @property maxLength      Maximum number of characters allowed in the input
+ * @property minLength      Minimum number of characters allowed in the input
+ * @property placeholder    Placeholder text
+ * @property value           The current value
  */
-export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties, MouseEventProperties, KeyEventProperties, InputEventProperties {
+export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties {
 	controls?: string;
 	type?: TextInputType;
+	maxLength?: number | string;
+	minLength?: number | string;
+	placeholder?: string;
+	value?: string;
 }
 
 export const TextInputBase = ThemedMixin(WidgetBase);

@@ -8,6 +8,7 @@ import { auto } from '@dojo/widget-core/diff';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
+import { TextInputProperties } from '../textinput/TextInput';
 import Label from '../label/Label';
 import uuid from '@dojo/core/uuid';
 
@@ -24,14 +25,10 @@ interface FocusInputEvent extends FocusEvent {
  * @property clearable          Determines whether the custom input should be able to be cleared
  * @property CustomOptionItem   Can be used to render a custom option
  * @property CustomOptionMenu   Can be used to render a custom option menu
- * @property disabled           Prevents user interaction and styles content accordingly
  * @property end                The maximum time to display in the menu (defaults to '23:59:59')
  * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
  * @property inputProperties    TextInput properties to set on the underlying input
- * @property invalid            Determines if this input is valid
  * @property isOptionDisabled   Used to determine if an item should be disabled
- * @property label              Label settings for form label text, position, and visibility
- * @property name               The native input's name.
  * @property onBlur             Called when the input is blurred
  * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
@@ -39,23 +36,18 @@ interface FocusInputEvent extends FocusEvent {
  * @property onRequestOptions   Called when options are shown; should be used to set `options`
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property options            Options for the current input; should be set in response to `onRequestOptions`
- * @property readOnly           Prevents user interaction
- * @property required           Determines if this input is required, styles accordingly
  * @property start              The minimum time to display in the menu (defaults to '00:00:00')
  * @property step               The number of seconds between each option in the menu (defaults to 60)
  * @property useNativeElement   Use the native <input type="time"> element if true
- * @property value              Value to set on the input
+ * @property value           The current value
  */
-export interface TimePickerProperties extends ThemedProperties, LabeledProperties {
+export interface TimePickerProperties extends ThemedProperties, InputProperties, LabeledProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
-	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
-	inputProperties?: InputProperties;
-	invalid?: boolean;
+	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
-	name?: string;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
@@ -63,8 +55,6 @@ export interface TimePickerProperties extends ThemedProperties, LabeledPropertie
 	onRequestOptions?(value: string, options: TimeUnits[]): void;
 	openOnFocus?: boolean;
 	options?: TimeUnits[];
-	readOnly?: boolean;
-	required?: boolean;
 	start?: string;
 	step?: number;
 	useNativeElement?: boolean;
