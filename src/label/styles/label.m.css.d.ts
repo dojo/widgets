@@ -4,4 +4,4 @@ export const invalid: string;
 export const valid: string;
 export const required: string;
 export const disabled: string;
-export const faded: string;
+export const secondary: string;

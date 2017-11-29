@@ -1,3 +1,3 @@
 export const root: string;
-export const faded: string;
+export const secondary: string;
 export const required: string;

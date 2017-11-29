@@ -16,7 +16,7 @@ import * as baseCss from '../common/styles/base.m.css';
  * @property required
  * @property invalid
  * @property hidden
- * @property faded
+ * @property secondary
  */
 export interface LabelProperties extends ThemedProperties {
 	forId?: string;
@@ -25,7 +25,7 @@ export interface LabelProperties extends ThemedProperties {
 	required?: boolean;
 	invalid?: boolean;
 	hidden?: boolean;
-	faded?: boolean;
+	secondary?: boolean;
 }
 
 export const LabelBase = ThemedMixin(WidgetBase);
@@ -39,7 +39,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 			invalid,
 			readOnly,
 			required,
-			faded
+			secondary
 		} = this.properties;
 		return [
 			css.root,
@@ -48,7 +48,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null,
-			faded ? css.faded : null
+			secondary ? css.secondary : null
 		];
 	}
 

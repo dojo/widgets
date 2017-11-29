@@ -6,7 +6,7 @@
 	line-height: var(--line-height-base);
 }
 
-.faded {
+.secondary {
 	color: var(--color-text-faded);
 }
 
