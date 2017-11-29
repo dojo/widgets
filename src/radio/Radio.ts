@@ -116,7 +116,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 				required,
 				hidden: labelHidden,
 				forId: this._uuid,
-				faded: true
+				secondary: true
 			}, [ label ]) : null
 		];
 

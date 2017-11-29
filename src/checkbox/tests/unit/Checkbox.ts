@@ -81,7 +81,8 @@ const expected = function(widget: Harness<Checkbox>, label = false, toggle = fal
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: <any> compareId
+			forId: <any> compareId,
+			secondary: true
 		}, [ 'foo' ]) : null
 	];
 

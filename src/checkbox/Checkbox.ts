@@ -159,7 +159,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 				required,
 				hidden: labelHidden,
 				forId: this._uuid,
-				faded: true
+				secondary: true
 			}, [ label ]) : null
 		];
 

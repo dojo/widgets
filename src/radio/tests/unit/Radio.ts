@@ -55,7 +55,8 @@ const expected = function(widget: Harness<Radio>, label = false) {
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: <any> compareId
+			forId: <any> compareId,
+			secondary: true
 		}, [ 'foo' ]) : null
 	]);
 };
