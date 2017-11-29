@@ -13,6 +13,7 @@ const modules = [
 	'dialog',
 	'label',
 	'listbox',
+	'progress',
 	'radio',
 	'select',
 	'slidepane',
