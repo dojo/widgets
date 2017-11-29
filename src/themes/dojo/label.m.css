@@ -1,0 +1,18 @@
+@import './variables.css';
+
+.root {
+	transition: color var(--transition-duration) var(--transition-easing);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
+.faded {
+	color: var(--color-text-faded);
+}
+
+.required::after {
+	content: '*';
+}
+
+
+

@@ -136,11 +136,6 @@
 	background-color: var(--color-background-faded);
 }
 
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
-}
-
 /* invalid style */
 .invalid .track {
 	background-color: var(--color-error);

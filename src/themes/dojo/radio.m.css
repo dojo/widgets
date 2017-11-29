@@ -9,13 +9,6 @@
 	position: relative;
 }
 
-.root span {
-	color: var(--color-text-faded);
-	font-size: var(--font-size-base);
-	line-height: var(--line-height-base);
-	transition: color var(--transition-duration) var(--transition-easing);
-}
-
 .input {
 	appearance: none;
 	height: 100%;
@@ -63,10 +56,6 @@
 }
 
 /* focus styles */
-.focused span {
-	color: var(--color-highlight);
-}
-
 .focused .inputWrapper:before {
 	border: var(--border-width-emphasized) solid var(--color-highlight);
 	box-shadow: var(--box-shadow-dimensions-small) color(var(--color-highlight) alpha(20%));

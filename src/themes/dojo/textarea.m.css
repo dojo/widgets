@@ -8,12 +8,6 @@
 	line-height: var(--line-height-base);
 }
 
-.root span {
-	display: block;
-	font-size: var(--font-size-small);
-	line-height: var(--line-height-base);
-}
-
 .input {
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
@@ -43,11 +37,6 @@
 .disabled .input:hover,
 .readonly .input:hover {
 	box-shadow: none;
-}
-
-/* required */
-.required span::after {
-	content: '*';
 }
 
 /* invalid */
