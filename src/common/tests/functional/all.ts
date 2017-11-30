@@ -15,4 +15,5 @@ import '../../../textarea/tests/functional/Textarea';
 import '../../../textinput/tests/functional/TextInput';
 import '../../../timepicker/tests/functional/TimePicker';
 import '../../../titlepane/tests/functional/TitlePane';
+import '../../../toolbar/tests/functional/Toolbar';
 import '../../../tooltip/tests/functional/Tooltip';

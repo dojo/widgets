@@ -23,6 +23,7 @@ const modules = [
 	'textinput',
 	'timepicker',
 	'titlepane',
+	'toolbar',
 	'tooltip'
 ];
 
