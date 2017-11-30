@@ -1,16 +1,12 @@
 const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
+import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
+import { v, w } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { compareProperty } from '@dojo/test-extras/support/d';
-import { v } from '@dojo/widget-core/d';
 
 import Toolbar from '../../Toolbar';
+import SlidePane, { Align } from '../../../slidepane/SlidePane';
 import * as css from '../../styles/toolbar.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
-
-const isNonEmptyString = compareProperty((value: any) => {
-	return typeof value === 'string' && value.length > 0;
-});
 
 let toolbar: Harness<Toolbar>;
 registerSuite('Toolbar', {
@@ -31,11 +27,28 @@ registerSuite('Toolbar', {
 					css.rootFixed
 				],
 				key: 'root'
-			}, [
-				null,
-				null,
-				null
-			]));
+			}, [ null, null, null ]));
+		},
+
+		'expanded rendering'() {
+			toolbar.setProperties({ collapseWidth: 10 });
+			toolbar.mockMeta(Dimensions, {
+				get(key: string | number) {
+					return {
+						offset: { height: 100, left: 100, top: 100, width: 100 },
+						position: { bottom: 200, left: 100, right: 200, top: 100 },
+						scroll: { height: 100, left: 100, top: 100, width: 100 },
+						size: { width: 100, height: 100 }
+					};
+				}
+			});
+			toolbar.expectRender(v('div', {
+				classes: [
+					css.root,
+					css.rootFixed
+				],
+				key: 'root'
+			}, [ null, null, null ]));
 		},
 
 		'fixed rendering'() {
@@ -92,6 +105,75 @@ registerSuite('Toolbar', {
 					}, [ 'test' ])
 				]),
 				null
+			]));
+		},
+
+		'open and close menu'() {
+			const slidePaneVDom = w(SlidePane, {
+				align: Align.right,
+				closeText: 'close menu',
+				key: 'menu',
+				onRequestClose: toolbar.listener,
+				open: false,
+				theme: undefined,
+				title: 'Menu'
+			}, [
+				v('div', {
+					classes: [ css.action ],
+					key: 0
+				}, [ 'test' ])
+			]);
+
+			const buttonVDom = v('button', {
+				classes: [ css.menuButton, css.menuButtonFixed ],
+				onclick: toolbar.listener
+			}, [
+				'open menu',
+				v('i', {
+					classes: [ iconCss.icon, iconCss.barsIcon ],
+					role: 'presentation',
+					'aria-hidden': 'true'
+				})
+			]);
+
+
+			toolbar.expectRender(v('div', {
+				classes: [
+					css.root,
+					css.rootFixed
+				],
+				key: 'root'
+			}, [ null, null, null ]));
+
+			toolbar.setChildren([ 'test' ]);
+			toolbar.expectRender(v('div', {
+				classes: [
+					css.root,
+					css.rootFixed,
+					css.collapsed
+				],
+				key: 'root'
+			}, [
+				null,
+				slidePaneVDom,
+				buttonVDom
+			]));
+
+			toolbar.sendEvent('click', { selector: `.${css.menuButton}` });
+			toolbar.getRender();
+
+			toolbar.callListener('onRequestClose', { key: 'menu' });
+			toolbar.expectRender(v('div', {
+				classes: [
+					css.root,
+					css.rootFixed,
+					css.collapsed
+				],
+				key: 'root'
+			}, [
+				null,
+				slidePaneVDom,
+				buttonVDom
 			]));
 		}
 	}
