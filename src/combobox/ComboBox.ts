@@ -2,7 +2,7 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/widget-core/diff';
-import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
+import { I18nMixin, LocalizedMessages } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
@@ -66,6 +66,8 @@ export const enum Operation {
 	increase = 1,
 	decrease = -1
 }
+
+type ComboBoxMessages = LocalizedMessages<typeof comboBoxBundle.messages>;
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
@@ -293,12 +295,11 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		});
 	}
 
-	protected renderClearButton(): DNode {
+	protected renderClearButton(messages: ComboBoxMessages): DNode {
 		const {
 			disabled,
 			readOnly
 		} = this.properties;
-		const messages = this.localizeBundle(comboBoxBundle);
 
 		return v('button', {
 			key: 'clear',
@@ -315,12 +316,11 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		]);
 	}
 
-	protected renderMenuButton(): DNode {
+	protected renderMenuButton(messages: ComboBoxMessages): DNode {
 		const {
 			disabled,
 			readOnly
 		} = this.properties;
-		const messages = this.localizeBundle(comboBoxBundle);
 
 		return v('button', {
 			key: 'trigger',
@@ -388,6 +388,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 			results = [],
 			theme
 		} = this.properties;
+		const messages = this.localizeBundle(comboBoxBundle);
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();
@@ -408,8 +409,8 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 				classes: this.theme(css.controls)
 			}, [
 				this.renderInput(),
-				clearable ? this.renderClearButton() : null,
-				this.renderMenuButton()
+				clearable ? this.renderClearButton(messages) : null,
+				this.renderMenuButton(messages)
 			]),
 			menu
 		];
