@@ -23,6 +23,12 @@ export default function createToolbarElement(): CustomElementDescriptor {
 		],
 		properties: [
 			{ propertyName: 'actions' }
+		],
+		events: [
+			{
+				propertyName: 'onCollapse',
+				eventName: 'collapse'
+			}
 		]
 	};
 }

@@ -197,6 +197,8 @@ registerSuite('Toolbar', {
 				})
 			]);
 
+			toolbar.setProperties({ onCollapse: () => {} });
+
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
