@@ -3,7 +3,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
-import { DNode, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -14,7 +14,7 @@ import * as iconCss from '../common/styles/icons.m.css';
 export const enum Paging {
 	next = 'next',
 	previous = 'previous'
-};
+}
 
 /**
  * Enum for month or year controls
@@ -22,7 +22,7 @@ export const enum Paging {
 export const enum Controls {
 	month = 'month',
 	year = 'year'
-};
+}
 
 /**
  * @type CalendarMessages
@@ -39,7 +39,7 @@ export interface CalendarMessages {
 	chooseYear: string;
 	previousMonth: string;
 	nextMonth: string;
-};
+}
 
 /**
  * @type DatePickerProperties
@@ -68,7 +68,7 @@ export interface DatePickerProperties extends ThemedProperties {
 	onPopupChange?(open: boolean): void;
 	onRequestMonthChange?(month: number): void;
 	onRequestYearChange?(year: number): void;
-};
+}
 
 export const DatePickerBase = ThemedMixin(WidgetBase);
 
@@ -152,9 +152,9 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		this._monthPopupOpen ? this._closeMonthPopup() : this._openMonthPopup();
 	}
 
-	private _onMonthRadioChange(event: TypedTargetEvent<HTMLInputElement>) {
+	private _onMonthRadioChange(event: Event) {
 		const { onRequestMonthChange } = this.properties;
-		onRequestMonthChange && onRequestMonthChange(parseInt(event.target.value, 10));
+		onRequestMonthChange && onRequestMonthChange(parseInt((event.target as HTMLInputElement).value, 10));
 	}
 
 	private _onPopupKeyDown(event: KeyboardEvent) {
@@ -183,10 +183,10 @@ export default class DatePicker extends DatePickerBase<DatePickerProperties> {
 		this._yearPopupOpen && this.invalidate();
 	}
 
-	private _onYearRadioChange(event: TypedTargetEvent<HTMLInputElement>) {
+	private _onYearRadioChange(event: Event) {
 		const { onRequestYearChange } = this.properties;
 		this._yearPage = 0;
-		onRequestYearChange && onRequestYearChange(parseInt(event.target.value, 10));
+		onRequestYearChange && onRequestYearChange(parseInt((event.target as HTMLInputElement).value, 10));
 	}
 
 	private _openMonthPopup() {

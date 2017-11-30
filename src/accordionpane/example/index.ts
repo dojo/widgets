@@ -2,7 +2,7 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { Set } from '@dojo/shim/Set';
 import { w, v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { from } from '@dojo/shim/array';
 
 import AccordionPane from '../../accordionpane/AccordionPane';
@@ -15,8 +15,9 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _openKeys = new Set<string>();
 	private _theme: {};
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		this._theme = event.target.checked ? dojoTheme : {};
+	themeChange(event: Event) {
+		const checked = (event.target as HTMLInputElement).checked;
+		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 

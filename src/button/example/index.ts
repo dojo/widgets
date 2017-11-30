@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
 import Button from '../../button/Button';
@@ -9,8 +9,8 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 	private _buttonPressed: boolean;
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
+	themeChange(event: Event) {
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}

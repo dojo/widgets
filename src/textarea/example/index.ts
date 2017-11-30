@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Textarea from '../../textarea/Textarea';
@@ -11,8 +11,8 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value2: string;
 	private _invalid: boolean;
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
+	themeChange(event: Event) {
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
@@ -35,8 +35,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					placeholder: 'Hello, World',
 					label: 'Type Something',
 					value: this._value1,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-						this._value1 = event.target.value;
+					onChange: (event: Event) => {
+						this._value1 = (event.target as HTMLInputElement).value;
 						this.invalidate();
 					},
 					theme: this._theme
@@ -64,8 +64,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					required: true,
 					value: this._value2,
 					invalid: this._invalid,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-						const value = event.target.value;
+					onChange: (event: Event) => {
+						const value = (event.target as HTMLInputElement).value;
 						this._value2 = value;
 						this._invalid = value.trim().length === 0;
 						this.invalidate();

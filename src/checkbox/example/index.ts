@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Checkbox, { Mode } from '../../checkbox/Checkbox';
@@ -15,15 +15,15 @@ export class App extends WidgetBase<WidgetProperties> {
 		c5: true
 	};
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
+	themeChange(event: Event) {
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 
-	onChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const value = event.target.value;
-		const checked = event.target.checked;
+	onChange(event: Event) {
+		const value = (event.target as HTMLInputElement).value;
+		const checked = (event.target as HTMLInputElement).checked;
 		this._checkboxStates[value] = checked;
 		this.invalidate();
 	}

@@ -1,6 +1,6 @@
 {
   "name": "@dojo/widgets",
-  "version": "0.2.3-pre",
+  "version": "0.3.0-pre",
   "description": "Dojo 2 Widgets",
   "private": true,
   "homepage": "https://dojo.io",
@@ -21,16 +21,16 @@
     "test": "grunt test"
   },
   "peerDependencies": {
-    "@dojo/core": "~0.2.1",
-    "@dojo/has": "~0.1.0",
-    "@dojo/i18n": "~0.2.0",
-    "@dojo/shim": "~0.2.2",
-    "@dojo/widget-core": "~0.3.0"
+    "@dojo/core": "~0.3.0",
+    "@dojo/has": "~0.1.1",
+    "@dojo/i18n": "~0.3.0",
+    "@dojo/shim": "~0.2.3",
+    "@dojo/widget-core": "~0.4.0"
   },
   "devDependencies": {
-    "@dojo/interfaces": "~0.1.0",
-    "@dojo/loader": "~0.1.0",
-    "@dojo/test-extras": "~0.2.0",
+    "@dojo/interfaces": "~0.2.0",
+    "@dojo/loader": "~0.1.1",
+    "@dojo/test-extras": "~0.3.0",
     "@types/chai": "3.4.*",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
@@ -38,11 +38,10 @@
     "@types/sinon": "^1.16.31",
     "grunt": "^1.0.1",
     "grunt-dojo2": "latest",
-    "grunt-dojo2-extras": "^2.0.0-beta1.3",
     "intern": "~4.1.0",
     "load-grunt-tasks": "^3.5.2",
     "sinon": "^1.17.6",
     "ts-node": "^3.3.0",
-    "typescript": "~2.5.0"
+    "typescript": "~2.6.1"
   }
 }

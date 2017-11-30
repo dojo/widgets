@@ -13,7 +13,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _align: Align = Align.left;
 
 	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
@@ -24,12 +24,12 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	toggleUnderlay(event: Event) {
-		this._underlay = (<HTMLInputElement> event.target).checked;
+		this._underlay = (event.target as HTMLInputElement).checked;
 		this.invalidate();
 	}
 
 	toggleAlign(event: Event) {
-		this._align = (<HTMLInputElement> event.target).checked ? Align.right : Align.left;
+		this._align = (event.target as HTMLInputElement).checked ? Align.right : Align.left;
 		this.invalidate();
 	}
 

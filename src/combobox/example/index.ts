@@ -70,7 +70,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _invalid: boolean;
 
 	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
