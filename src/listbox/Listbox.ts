@@ -63,7 +63,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @diffProperty('optionData', reference)
-export default class Listbox extends ThemedBase<ListboxProperties> {
+export default class Listbox<P extends ListboxProperties = ListboxProperties> extends ThemedBase<P, null> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();
 

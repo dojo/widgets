@@ -33,7 +33,7 @@ const orientationCss: {[key: string]: any} = css;
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Tooltip extends ThemedBase<TooltipProperties> {
+export default class Tooltip<P extends TooltipProperties = TooltipProperties> extends ThemedBase<P> {
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
 
