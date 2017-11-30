@@ -18,7 +18,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		const style = document.createElement('style');
 		document.head.appendChild(style);
 		const sheet = style.sheet as CSSStyleSheet;
-		sheet.insertRule('#moduleSelect { position: absolute; left: 0; top: 200px; } ');
+		sheet.insertRule('#module-select { position: absolute; left: 0; top: 200px; } ');
 	}
 
 	render() {

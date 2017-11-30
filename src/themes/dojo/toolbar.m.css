@@ -1,7 +1,7 @@
 @import './variables.css';
 
 .toolbar {
-	background: #FFF;
+	background: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	box-sizing: border-box;
 	height: calc(7 * var(--grid-base));
@@ -11,6 +11,8 @@
 
 .title {
 	font-size: var(--font-size-title);
+	margin: 0;
+    font-weight: normal;
 }
 
 .action {

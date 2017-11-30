@@ -1,4 +1,3 @@
-import { debounce } from '@dojo/core/util';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, theme } from '@dojo/widget-core/mixins/Themed';
@@ -32,13 +31,11 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(iconCss)
 export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	private _collapsed = false;
-	private _onResize: () => void;
 	private _open = false;
 
 	constructor() {
 		super();
-		this._onResize = debounce(this._collapseIfNecessary, 250);
-		window.addEventListener('resize', this._onResize);
+		window.addEventListener('resize', this._collapseIfNecessary);
 	}
 
 	private _closeMenu() {
@@ -65,14 +62,14 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 		this.invalidate();
 	}
 
-	protected getFixedModifierClasses(): (string | null)[] {
+	protected getFixedRootClasses(): (string | null)[] {
 		return [
 			css.rootFixed,
 			this.properties.fixed ? css.stickyFixed : null
 		];
 	}
 
-	protected getModifierClasses(): (string | null)[] {
+	protected getRootClasses(): (string | null)[] {
 		return [
 			css.root,
 			this._collapsed ? css.collapsed : null,
@@ -85,7 +82,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	}
 
 	protected onDetach() {
-		window.removeEventListener('resize', this._onResize);
+		window.removeEventListener('resize', this._collapseIfNecessary);
 	}
 
 	protected renderActions(): DNode {
@@ -103,7 +100,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 		return this._collapsed ? w(SlidePane, {
 			align: Align.right,
 			closeText: 'close menu',
-			key: 'menu',
+			key: 'slide-pane-menu',
 			onRequestClose: this._closeMenu,
 			open: this._open,
 			theme,
@@ -130,14 +127,14 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	protected renderTitle(): DNode {
 		const { title } = this.properties;
 
-		return title ? v('div', {
+		return title ? v('h1', {
 			classes: [ this.theme(css.title), css.titleFixed ]
 		}, [ title ]) : null;
 	}
 
 	render(): DNode {
-		const classes = this.getModifierClasses();
-		const fixedClasses = this.getFixedModifierClasses();
+		const classes = this.getRootClasses();
+		const fixedClasses = this.getFixedRootClasses();
 
 		return v('div', {
 			classes: [ ...this.theme(classes), ...fixedClasses ],

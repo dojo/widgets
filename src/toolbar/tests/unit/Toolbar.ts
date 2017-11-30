@@ -118,7 +118,7 @@ registerSuite('Toolbar', {
 						css.toolbarFixed
 					]
 				}, [
-					v('div', {
+					v('h1', {
 						classes: [ css.title, css.titleFixed ]
 					}, [ 'test' ]),
 					null,
@@ -173,7 +173,7 @@ registerSuite('Toolbar', {
 			const slidePaneVDom = w(SlidePane, {
 				align: Align.right,
 				closeText: 'close menu',
-				key: 'menu',
+				key: 'slide-pane-menu',
 				onRequestClose: toolbar.listener,
 				open: false,
 				theme: undefined,
@@ -248,7 +248,7 @@ registerSuite('Toolbar', {
 			toolbar.sendEvent('click', { selector: `.${css.menuButton}` });
 			toolbar.getRender();
 
-			toolbar.callListener('onRequestClose', { key: 'menu' });
+			toolbar.callListener('onRequestClose', { key: 'slide-pane-menu' });
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
