@@ -30,10 +30,10 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, L
 	value?: string;
 }
 
-export const TextareaBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Textarea extends TextareaBase<TextareaProperties> {
+export default class Textarea<P extends TextareaProperties = TextareaProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
@@ -65,7 +65,7 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 		return [
 			css.root,
 			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null

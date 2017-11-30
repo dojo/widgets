@@ -20,10 +20,10 @@ export interface RadioProperties extends ThemedProperties, LabeledProperties, In
 	value?: string;
 }
 
-export const RadioBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Radio extends RadioBase<RadioProperties> {
+export default class Radio<P extends RadioProperties = RadioProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _uuid = uuid();
 
@@ -59,7 +59,7 @@ export default class Radio extends RadioBase<RadioProperties> {
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
 			this._focused ? css.focused : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
@@ -90,10 +90,10 @@ export default class Radio extends RadioBase<RadioProperties> {
 					checked,
 					'aria-describedby': describedBy,
 					disabled,
-					'aria-invalid': invalid ? 'true' : null,
+					'aria-invalid': invalid === true ? 'true' : null,
 					name,
 					readOnly,
-					'aria-readonly': readOnly ? 'true' : null,
+					'aria-readonly': readOnly === true ? 'true' : null,
 					required,
 					type: 'radio',
 					value,

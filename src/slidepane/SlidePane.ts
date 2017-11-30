@@ -57,11 +57,11 @@ const enum Plane {
 	y
 };
 
-export const SlidePaneBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {
+export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
 	private _content: HTMLElement;
 	private _initialPosition: number;
 	private _slideIn: boolean;

@@ -28,10 +28,10 @@ export interface LabelProperties extends ThemedProperties {
 	secondary?: boolean;
 }
 
-export const LabelBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Label extends LabelBase<LabelProperties>  {
+export default class Label<P extends LabelProperties = LabelProperties> extends ThemedBase<P>  {
 
 	protected getRootClasses(): (string | null)[] {
 		const {
@@ -44,7 +44,7 @@ export default class Label extends LabelBase<LabelProperties>  {
 		return [
 			css.root,
 			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null,

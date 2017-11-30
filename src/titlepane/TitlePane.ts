@@ -28,11 +28,11 @@ export interface TitlePaneProperties extends ThemedProperties {
 	title: string;
 };
 
-export const TitlePaneBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {
+export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
 	private _contentId = uuid();
 	private _titleId = uuid();
 

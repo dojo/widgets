@@ -47,10 +47,10 @@ export interface TabButtonProperties extends ThemedProperties {
 	onUpArrowPress?: () => void;
 };
 
-export const TabButtonBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TabButton extends TabButtonBase<TabButtonProperties> {
+export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
 	private _onClick() {
 		const {
 			disabled,
@@ -171,14 +171,14 @@ export default class TabButton extends TabButtonBase<TabButtonProperties> {
 		return v('div', {
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
-			'aria-selected': active ? 'true' : 'false',
+			'aria-selected': active === true ? 'true' : 'false',
 			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown,
 			role: 'tab',
-			tabIndex: active ? 0 : -1
+			tabIndex: active === true ? 0 : -1
 		}, this.getContent());
 	}
 }

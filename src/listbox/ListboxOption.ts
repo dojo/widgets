@@ -20,7 +20,7 @@ export interface ListboxOptionProperties extends ThemedProperties {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class ListboxOption extends ThemedBase<ListboxOptionProperties> {
+export default class ListboxOption<P extends ListboxOptionProperties = ListboxOptionProperties> extends ThemedBase<P, null> {
 	private _onClick(event: MouseEvent) {
 		const { index, key, option, onClick } = this.properties;
 		onClick && onClick(option, index, key);

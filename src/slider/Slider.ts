@@ -31,10 +31,10 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 	value?: number;
 }
 
-export const SliderBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Slider extends SliderBase<SliderProperties> {
+export default class Slider<P extends SliderProperties = SliderProperties> extends ThemedBase<P, null> {
 	// id used to associate input with output
 	private _inputId = uuid();
 
@@ -64,7 +64,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		return [
 			css.root,
 			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null,
@@ -154,12 +154,12 @@ export default class Slider extends SliderBase<SliderProperties> {
 				'aria-describedby': describedBy,
 				disabled,
 				id: this._inputId,
-				'aria-invalid': invalid ? 'true' : null,
+				'aria-invalid': invalid === true ? 'true' : null,
 				max: `${max}`,
 				min: `${min}`,
 				name,
 				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
+				'aria-readonly': readOnly === true ? 'true' : null,
 				required,
 				step: `${step}`,
 				styles: vertical ? { width: verticalHeight } : {},

@@ -36,10 +36,10 @@ export interface TabControllerProperties extends ThemedProperties {
 	onRequestTabClose?(index: number, key: string): void;
 };
 
-export const TabControllerBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TabController extends TabControllerBase<TabControllerProperties, WNode<Tab>> {
+export default class TabController<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<P, WNode<Tab>> {
 	private _id = uuid();
 	private _callTabFocus = false;
 

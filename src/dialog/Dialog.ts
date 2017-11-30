@@ -45,11 +45,11 @@ export interface DialogProperties extends ThemedProperties {
 	underlay?: boolean;
 };
 
-export const DialogBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-export default class Dialog extends DialogBase<DialogProperties> {
+export default class Dialog<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
 	private _titleId = uuid();
 	private _wasOpen: boolean;
 

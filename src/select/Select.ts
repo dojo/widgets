@@ -48,7 +48,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @theme(iconCss)
 @diffProperty('options', reference)
-export default class Select extends ThemedBase<SelectProperties> {
+export default class Select<P extends SelectProperties = SelectProperties> extends ThemedBase<P, null> {
 	private _callTriggerFocus = false;
 	private _callListboxFocus = false;
 	private _focusedIndex = 0;
@@ -147,7 +147,7 @@ export default class Select extends ThemedBase<SelectProperties> {
 		return [
 			css.root,
 			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null

@@ -34,10 +34,10 @@ export const enum Mode {
 	toggle
 };
 
-export const CheckboxBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Checkbox extends CheckboxBase<CheckboxProperties> {
+export default class Checkbox<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _onBlur (event: FocusEvent) {
 		this._focused = false;
@@ -75,7 +75,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
 			this._focused ? css.focused : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
@@ -133,10 +133,10 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 					checked,
 					'aria-describedby': describedBy,
 					disabled,
-					'aria-invalid': invalid ? 'true' : null,
+					'aria-invalid': invalid === true ? 'true' : null,
 					name,
 					readOnly,
-					'aria-readonly': readOnly ? 'true' : null,
+					'aria-readonly': readOnly === true ? 'true' : null,
 					required,
 					type: 'checkbox',
 					value,

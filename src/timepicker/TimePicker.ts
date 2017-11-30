@@ -152,10 +152,10 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 	return value;
 }
 
-export const TimePickerBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export class TimePicker extends TimePickerBase<TimePickerProperties> {
+export class TimePicker<P extends TimePickerProperties = TimePickerProperties> extends ThemedBase<P, null> {
 	protected options: TimeUnits[] | null;
 
 	private _uuid: string;
@@ -308,8 +308,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			v('input', {
 				id: this._uuid,
 				'aria-describedby': inputProperties && inputProperties.describedBy,
-				'aria-invalid': invalid ? 'true' : null,
-				'aria-readonly': readOnly ? 'true' : null,
+				'aria-invalid': invalid === true ? 'true' : null,
+				'aria-readonly': readOnly === true ? 'true' : null,
 				classes: this.theme(css.input),
 				disabled,
 				invalid,
