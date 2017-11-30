@@ -44,6 +44,8 @@ registerSuite('SlidePane', {
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
 				classes: css.root,
+				dir: null,
+				lang: null,
 				onmousedown: widget.listener,
 				onmousemove: widget.listener,
 				onmouseup: widget.listener,
@@ -93,6 +95,8 @@ registerSuite('SlidePane', {
 
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
+				dir: null,
+				lang: null,
 				onmousedown: widget.listener,
 				onmousemove: widget.listener,
 				onmouseup: widget.listener,
@@ -152,6 +156,8 @@ registerSuite('SlidePane', {
 
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
+				dir: null,
+				lang: null,
 				onmousedown: widget.listener,
 				onmousemove: widget.listener,
 				onmouseup: widget.listener,
@@ -199,6 +205,8 @@ registerSuite('SlidePane', {
 
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
+				dir: null,
+				lang: null,
 				onmousedown: widget.listener,
 				onmousemove: widget.listener,
 				onmouseup: widget.listener,
@@ -578,6 +586,8 @@ registerSuite('SlidePane', {
 			function expected(open: boolean, transitionDone?: boolean) {
 				return v('div', {
 					'aria-labelledby': compareId,
+					dir: null,
+					lang: null,
 					onmousedown: widget.listener,
 					onmousemove: widget.listener,
 					onmouseup: widget.listener,
@@ -645,6 +655,8 @@ registerSuite('SlidePane', {
 			function expected(closed: boolean, swipeState: any = {}) {
 				return v('div', {
 					'aria-labelledby': compareId,
+					dir: null,
+					lang: null,
 					onmousedown: widget.listener,
 					onmousemove: widget.listener,
 					onmouseup: widget.listener,
@@ -746,6 +758,8 @@ registerSuite('SlidePane', {
 			function expected(closed: boolean, swipeState: any = {}) {
 				return v('div', {
 					'aria-labelledby': compareId,
+					dir: null,
+					lang: null,
 					onmousedown: widget.listener,
 					onmousemove: widget.listener,
 					onmouseup: widget.listener,

@@ -139,6 +139,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 		'aria-haspopup': 'true',
 		'aria-readonly': 'false',
 		'aria-required': 'false',
+		dir: null,
 		id: useTestProperties ? 'foo' : undefined,
 		classes: [
 			css.root,
@@ -147,6 +148,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 			null
 		],
 		key: 'root',
+		lang: null,
 		role: 'combobox'
 	}, [
 		label ? w(Label, {

@@ -23,8 +23,18 @@
 			"options": {
 				"packages": [
 					{ "name": "src", "location": "_build" },
-					{ "name": "maquette", "location": "node_modules/maquette/dist", "main": "maquette" }
-				]
+					{ "name": "maquette", "location": "node_modules/maquette/dist", "main": "maquette" },
+					{ "name": "cldrjs", "location": "node_modules/cldrjs" },
+					{ "name": "globalize", "location": "node_modules/globalize", "main": "dist/globalize" }
+				],
+				"map": {
+					"globalize": {
+						"cldr": "cldrjs/dist/cldr",
+						"cldr/event": "cldrjs/dist/cldr/event",
+						"cldr/supplemental": "cldrjs/dist/cldr/supplemental",
+						"cldr/unresolved": "cldrjs/dist/cldr/unresolved"
+					}
+				}
 			}
 		}
 	},

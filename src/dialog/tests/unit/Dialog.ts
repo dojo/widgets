@@ -32,7 +32,11 @@ const expectedCloseButton = function() {
 };
 
 const expected = function(widget: Harness<Dialog>, open = false, closeable = false, children: any[] = []) {
-	return v('div', { classes: css.root }, open ? [
+	return v('div', {
+		classes: css.root,
+		dir: null,
+		lang: null
+	}, open ? [
 		v('div', {
 			classes: [ null, css.underlay ],
 			enterAnimation: animations.fadeIn,

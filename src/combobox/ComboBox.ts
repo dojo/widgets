@@ -2,6 +2,7 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/widget-core/diff';
+import { I18nMixin, LocalizedMessages } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
@@ -10,6 +11,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
+import comboBoxBundle from './nls/ComboBox';
 import { LabeledProperties } from '../common/interfaces';
 
 import * as css from './styles/comboBox.m.css';
@@ -65,7 +67,9 @@ export const enum Operation {
 	decrease = -1
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+type ComboBoxMessages = LocalizedMessages<typeof comboBoxBundle.messages>;
+
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -291,7 +295,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 		});
 	}
 
-	protected renderClearButton(): DNode {
+	protected renderClearButton(messages: ComboBoxMessages): DNode {
 		const {
 			disabled,
 			readOnly
@@ -305,14 +309,14 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 			readOnly,
 			onclick: this._onClearClick
 		}, [
-			'clear combo box',
+			messages.clear,
 			v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]);
 	}
 
-	protected renderMenuButton(): DNode {
+	protected renderMenuButton(messages: ComboBoxMessages): DNode {
 		const {
 			disabled,
 			readOnly
@@ -326,7 +330,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 			tabIndex: -1,
 			onclick: this._onArrowClick
 		}, [
-			'open combo box',
+			messages.open,
 			v('i', {
 				'aria-hidden': 'true',
 				classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
@@ -384,6 +388,7 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 			results = [],
 			theme
 		} = this.properties;
+		const messages = this.localizeBundle(comboBoxBundle);
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();
@@ -404,8 +409,8 @@ export default class ComboBox extends ThemedBase<ComboBoxProperties> {
 				classes: this.theme(css.controls)
 			}, [
 				this.renderInput(),
-				clearable ? this.renderClearButton() : null,
-				this.renderMenuButton()
+				clearable ? this.renderClearButton(messages) : null,
+				this.renderMenuButton(messages)
 			]),
 			menu
 		];
