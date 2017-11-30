@@ -74,11 +74,11 @@ export const DEFAULT_LABELS: CalendarMessages = {
 	nextMonth: 'Next Month'
 };
 
-export const CalendarBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-export default class Calendar<P extends CalendarProperties = CalendarProperties> extends CalendarBase<P, null> {
+export default class Calendar<P extends CalendarProperties = CalendarProperties> extends ThemedBase<P, null> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
 	private _focusedDay = 1;

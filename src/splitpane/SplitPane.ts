@@ -32,12 +32,12 @@ export interface SplitPaneProperties extends ThemedProperties {
 	trailing?: DNode;
 };
 
-export const SplitPaneBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 const DEFAULT_SIZE = 100;
 
 @theme(css)
-export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperties> extends SplitPaneBase<P, null> {
+export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P, null> {
 	private _divider: HTMLElement;
 	private _dragging: boolean;
 	private _lastSize?: number;

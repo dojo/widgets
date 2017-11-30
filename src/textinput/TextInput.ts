@@ -30,10 +30,10 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	value?: string;
 }
 
-export const TextInputBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TextInput<P extends TextInputProperties = TextInputProperties> extends TextInputBase<P, null> {
+export default class TextInput<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }

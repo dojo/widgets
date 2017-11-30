@@ -31,10 +31,10 @@ export interface CalendarCellProperties extends ThemedProperties {
 	onKeyDown?(event: KeyboardEvent): void;
 };
 
-export const CalendarCellBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class CalendarCell<P extends CalendarCellProperties = CalendarCellProperties> extends CalendarCellBase<P, null> {
+export default class CalendarCell<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<P, null> {
 	protected onElementCreated(element: HTMLElement, key: string) {
 		this._callFocus(element);
 	}

@@ -47,10 +47,10 @@ export interface TabButtonProperties extends ThemedProperties {
 	onUpArrowPress?: () => void;
 };
 
-export const TabButtonBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends TabButtonBase<P> {
+export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
 	private _onClick() {
 		const {
 			disabled,

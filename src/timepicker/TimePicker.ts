@@ -152,10 +152,10 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 	return value;
 }
 
-export const TimePickerBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export class TimePicker<P extends TimePickerProperties = TimePickerProperties> extends TimePickerBase<P, null> {
+export class TimePicker<P extends TimePickerProperties = TimePickerProperties> extends ThemedBase<P, null> {
 	protected options: TimeUnits[] | null;
 
 	private _uuid: string;
