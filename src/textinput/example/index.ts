@@ -51,10 +51,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				w(TextInput, {
 					key: 't2',
 					type: 'email',
-					label: {
-						before: true,
-						content: 'Email (required)'
-					},
+					label: 'Email (required)',
 					required: true,
 					value: this._value2,
 					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
@@ -70,11 +67,9 @@ export class App extends WidgetBase<WidgetProperties> {
 					key: 't3',
 					type: 'text',
 					placeholder: 'Type something...',
-					label: {
-						content: 'Try listening to me!',
-						before: false,
-						hidden: true
-					},
+					label: 'Try listening to me!',
+					labelAfter: true,
+					labelHidden: true,
 					value: this._value3,
 					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
 						this._value3 = event.target.value;

@@ -7,8 +7,10 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
 import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { TextInputProperties } from '../textinput/TextInput';
+import Label from '../label/Label';
+import uuid from '@dojo/core/uuid';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;
@@ -23,14 +25,10 @@ interface FocusInputEvent extends FocusEvent {
  * @property clearable          Determines whether the custom input should be able to be cleared
  * @property CustomOptionItem   Can be used to render a custom option
  * @property CustomOptionMenu   Can be used to render a custom option menu
- * @property disabled           Prevents user interaction and styles content accordingly
  * @property end                The maximum time to display in the menu (defaults to '23:59:59')
  * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
  * @property inputProperties    TextInput properties to set on the underlying input
- * @property invalid            Determines if this input is valid
  * @property isOptionDisabled   Used to determine if an item should be disabled
- * @property label              Label settings for form label text, position, and visibility
- * @property name               The native input's name.
  * @property onBlur             Called when the input is blurred
  * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
@@ -38,24 +36,18 @@ interface FocusInputEvent extends FocusEvent {
  * @property onRequestOptions   Called when options are shown; should be used to set `options`
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property options            Options for the current input; should be set in response to `onRequestOptions`
- * @property readOnly           Prevents user interaction
- * @property required           Determines if this input is required, styles accordingly
  * @property start              The minimum time to display in the menu (defaults to '00:00:00')
  * @property step               The number of seconds between each option in the menu (defaults to 60)
  * @property useNativeElement   Use the native <input type="time"> element if true
- * @property value              Value to set on the input
+ * @property value           The current value
  */
-export interface TimePickerProperties extends ThemedProperties {
+export interface TimePickerProperties extends ThemedProperties, InputProperties, LabeledProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
-	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
 	inputProperties?: TextInputProperties;
-	invalid?: boolean;
 	isOptionDisabled?(result: any): boolean;
-	label?: string | LabelOptions;
-	name?: string;
 	onBlur?(value: string): void;
 	onChange?(value: string): void;
 	onFocus?(value: string): void;
@@ -63,8 +55,6 @@ export interface TimePickerProperties extends ThemedProperties {
 	onRequestOptions?(value: string, options: TimeUnits[]): void;
 	openOnFocus?: boolean;
 	options?: TimeUnits[];
-	readOnly?: boolean;
-	required?: boolean;
 	start?: string;
 	step?: number;
 	useNativeElement?: boolean;
@@ -168,6 +158,13 @@ export const TimePickerBase = ThemedMixin(WidgetBase);
 export class TimePicker extends TimePickerBase<TimePickerProperties> {
 	protected options: TimeUnits[] | null;
 
+	private _uuid: string;
+
+	constructor() {
+		super();
+		this._uuid = uuid();
+	}
+
 	private _formatUnits(units: TimeUnits): string {
 		const { step = 60 } = this.properties;
 		const { hour, minute, second } = units;
@@ -199,7 +196,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this.getOptions());
 	}
 
-	protected getModifierClasses(): (string | null)[] {
+	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
@@ -207,6 +204,7 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			required
 		} = this.properties;
 		return [
+			css.root,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			readOnly ? css.readonly : null,
@@ -240,6 +238,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			invalid,
 			isOptionDisabled,
 			label,
+			labelAfter,
+			labelHidden,
 			onBlur,
 			onChange,
 			onFocus,
@@ -261,6 +261,8 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			invalid,
 			isResultDisabled: isOptionDisabled,
 			label,
+			labelAfter,
+			labelHidden,
 			onBlur,
 			onChange,
 			onFocus,
@@ -286,56 +288,56 @@ export class TimePicker extends TimePickerBase<TimePickerProperties> {
 			required,
 			start,
 			step,
-			value
+			value,
+			label,
+			theme,
+			labelHidden = false,
+			labelAfter = false
 		} = this.properties;
 
-		return v('input', {
-			'aria-describedby': inputProperties && inputProperties.describedBy,
-			'aria-invalid': invalid ? 'true' : null,
-			'aria-readonly': readOnly ? 'true' : null,
-			classes: this.theme([ css.input, ...this.getModifierClasses() ]),
-			disabled,
-			invalid,
-			key: 'native-input',
-			max: end,
-			min: start,
-			name,
-			onblur: this._onNativeBlur,
-			onchange: this._onNativeChange,
-			onfocus: this._onNativeFocus,
-			readOnly,
-			required,
-			step,
-			type: 'time',
-			value
-		});
+		const children = [
+			label ? w(Label, {
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: this._uuid
+			}, [ label ]) : null,
+			v('input', {
+				id: this._uuid,
+				'aria-describedby': inputProperties && inputProperties.describedBy,
+				'aria-invalid': invalid ? 'true' : null,
+				'aria-readonly': readOnly ? 'true' : null,
+				classes: this.theme(css.input),
+				disabled,
+				invalid,
+				key: 'native-input',
+				max: end,
+				min: start,
+				name,
+				onblur: this._onNativeBlur,
+				onchange: this._onNativeChange,
+				onfocus: this._onNativeFocus,
+				readOnly,
+				required,
+				step,
+				type: 'time',
+				value
+			})
+		];
+
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children.reverse() : children);
 	}
 
 	render(): DNode {
-		const {
-			label,
-			useNativeElement
-		} = this.properties;
+		const { useNativeElement } = this.properties;
 
-		if (useNativeElement) {
-			const input = this.renderNativeInput();
-			let children: DNode[] = [ input ];
-
-			if (label) {
-				children = [ w(Label, {
-					extraClasses: { root: parseLabelClasses(this.theme([ css.input, ...this.getModifierClasses() ])) },
-					label,
-					theme: this.properties.theme
-				}, [ input ]) ];
-			}
-
-			return v('span', {
-				classes: this.theme(css.root),
-				key: 'root'
-			}, children);
-		}
-
-		return this.renderCustomInput();
+		return useNativeElement ? this.renderNativeInput() : this.renderCustomInput();
 	}
 }
 

@@ -26,18 +26,18 @@ registerSuite('Label', {
 			.findByCssSelector(`#example-1 .${css.root}`)
 				.getVisibleText()
 				.then((text: string) => {
-					assert.strictEqual(text, 'Type something');
+					assert.strictEqual(text, 'Type Something');
 				})
 			.end();
 
 	},
 	'Input box should gain focus when clicking on the label'() {
 		return getPage(this.remote)
-			.findByCssSelector(`#example-1 .${css.root}`)
+			.findByCssSelector(`#example-3 .${css.root}`)
 				.click()
 			.end()
 			.sleep(250)
-			.execute(`return document.activeElement === document.querySelector('#example-1 .${css.root} input');`)
+			.execute(`return document.activeElement === document.querySelector('#example-3 input');`)
 			.then(isEqual => {
 				assert.isTrue(isEqual);
 			});
@@ -49,13 +49,12 @@ registerSuite('Label', {
 				.then((text: string) => {
 					assert.strictEqual(text, 'Can\'t read me!');
 				})
-				.findByTagName('span')
-					.getSize()
-					.then(({ height, width }: { height: number; width: number; }) => {
-						assert.isAtMost(height, 1, 'The label text height should be no more than 1px.');
-						assert.isAtMost(width, 1, 'The label text width should be no more than 1px.');
-					})
-				.end()
+
+				.getSize()
+				.then(({ height, width }: { height: number; width: number; }) => {
+					assert.isAtMost(height, 1, 'The label text height should be no more than 1px.');
+					assert.isAtMost(width, 1, 'The label text width should be no more than 1px.');
+				})
 			.end();
 	}
 });

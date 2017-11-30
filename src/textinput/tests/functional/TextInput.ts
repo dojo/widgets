@@ -16,10 +16,6 @@ registerSuite('TextInput', {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-text .${css.root}`)
 				.isDisplayed()
-				.findByCssSelector(`.${css.inputWrapper}`)
-					.isDisplayed()
-				.end()
-
 				.findByCssSelector(`.${css.input}`)
 					.getSize()
 					.then(({ height, width }) => {
@@ -41,7 +37,7 @@ registerSuite('TextInput', {
 		const { remote: { session: { capabilities: { browserName } } } } = this;
 
 		return getPage(this.remote)
-			.findByCssSelector(`#example-text .${css.root}`)
+			.findByCssSelector(`#example-text .${css.root} label`)
 				.then(element => {
 					if (browserName === 'firefox') {
 						return this.remote

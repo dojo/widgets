@@ -17,11 +17,6 @@
 	position: relative;
 }
 
-.root span {
-	color: var(--color-text-faded);
-	transition: color var(--transition-duration) var(--transition-easing);
-}
-
 .input {
 	appearance: none;
 	height: 100%;
@@ -88,10 +83,6 @@
 .toggle .inputWrapper::before,
 .toggle .inputWrapper::after {
 	display: none;
-}
-
-.toggle .input {
-	width: auto;
 }
 
 .toggleSwitch {
@@ -214,11 +205,6 @@
 .readonly .toggleSwitch::before {
 	background-color: var(--color-background-faded);
 	border-color: var(--color-border-strong);
-}
-
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
 }
 
 /* invalid style */

@@ -5,58 +5,65 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import { assignProperties, compareProperty, findKey } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import TextInput from '../../TextInput';
 import * as css from '../../styles/textinput.m.css';
 
-const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
-	const inputVdom = v('div', { classes: css.inputWrapper }, [
-		v('input', {
-			classes: css.input,
-			'aria-controls': undefined,
-			'aria-describedby': undefined,
-			disabled: undefined,
-			'aria-invalid': null,
-			maxlength: null,
-			minlength: null,
-			name: undefined,
-			placeholder: undefined,
-			readOnly: undefined,
-			'aria-readonly': null,
-			required: undefined,
-			type: 'text',
-			value: undefined,
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			oninput: widget.listener,
-			onkeydown: widget.listener,
-			onkeypress: widget.listener,
-			onkeyup: widget.listener,
-			onmousedown: widget.listener,
-			onmouseup: widget.listener,
-			ontouchstart: widget.listener,
-			ontouchend: widget.listener,
-			ontouchcancel: widget.listener
-		})
-	]);
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
 
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: css.root },
-			label: 'foo',
-			theme: undefined
-		}, [ inputVdom ]);
-	}
-	else {
-		return v('div', {
-			classes
-		}, [ inputVdom ]);
-	}
+const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
+	return v('div', {
+		key: 'root',
+		classes
+	}, [
+		label ? w(Label, {
+			theme: undefined,
+			disabled: undefined,
+			hidden: false,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null,
+		v('div', { classes: css.inputWrapper }, [
+			v('input', {
+				key: 'input',
+				classes: css.input,
+				id: <any> compareId,
+				'aria-controls': undefined,
+				'aria-describedby': undefined,
+				disabled: undefined,
+				'aria-invalid': null,
+				maxlength: null,
+				minlength: null,
+				name: undefined,
+				placeholder: undefined,
+				readOnly: undefined,
+				'aria-readonly': null,
+				required: undefined,
+				type: 'text',
+				value: undefined,
+				onblur: widget.listener,
+				onchange: widget.listener,
+				onclick: widget.listener,
+				onfocus: widget.listener,
+				oninput: widget.listener,
+				onkeydown: widget.listener,
+				onkeypress: widget.listener,
+				onkeyup: widget.listener,
+				onmousedown: widget.listener,
+				onmouseup: widget.listener,
+				ontouchstart: widget.listener,
+				ontouchend: widget.listener,
+				ontouchcancel: widget.listener
+			})
+		])
+	]);
 };
 
 let widget: Harness<TextInput>;
@@ -92,7 +99,7 @@ registerSuite('TextInput', {
 			assignProperties(expectedVdom, {
 				classes: [ css.root, null, null, null, null, null ]
 			});
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				'aria-controls': 'foo',
 				'aria-describedby': 'bar',
 				maxlength: '50',
@@ -123,7 +130,7 @@ registerSuite('TextInput', {
 			});
 
 			let expectedVdom = expected(false, [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]);
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: true,
 				'aria-invalid': 'true',
 				readOnly: true,
@@ -141,7 +148,7 @@ registerSuite('TextInput', {
 			});
 			expectedVdom = expected();
 
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: false,
 				readOnly: false,
 				required: false
@@ -151,29 +158,6 @@ registerSuite('TextInput', {
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
-		},
-
-		'state classes on label'() {
-			widget.setProperties({
-				label: 'foo',
-				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			});
-
-			const expectedVdom = expected(true);
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-			assignProperties(expectedVdom, {
-				extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
-			});
-			widget.expectRender(expectedVdom);
 		},
 
 		events() {

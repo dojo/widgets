@@ -3,13 +3,13 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
+import { assignProperties, compareProperty, findKey } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import ComboBox from '../../ComboBox';
-import Listbox from '../../../listbox/Listbox';
 import Label from '../../../label/Label';
+import Listbox from '../../../listbox/Listbox';
 import TextInput from '../../../textinput/TextInput';
 import * as css from '../../styles/comboBox.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
@@ -46,15 +46,12 @@ const testProperties = {
 	theme: {}
 };
 
-const expectedControls = function(widget: Harness<ComboBox>, useTestProperties: boolean, label: boolean) {
+const getExpectedControls = function(widget: Harness<ComboBox>, useTestProperties: boolean, label: boolean) {
 	const controlsVdom = v('div', {
 		classes: css.controls
 	}, [
 		w(TextInput, <any> {
 			key: 'textinput',
-			'aria-activedescendant': <any> compareId,
-			'aria-owns': <any> compareId,
-			classes: useTestProperties ? css.clearable : null,
 			controls: <any> compareId,
 			disabled: undefined,
 			invalid: undefined,
@@ -69,6 +66,7 @@ const expectedControls = function(widget: Harness<ComboBox>, useTestProperties: 
 		}),
 		useTestProperties ? v('button', {
 			'aria-controls': <any> compareId,
+			key: 'clear',
 			classes: css.clear,
 			disabled: undefined,
 			readOnly: undefined,
@@ -80,6 +78,7 @@ const expectedControls = function(widget: Harness<ComboBox>, useTestProperties: 
 			})
 		]) : null,
 		v('button', {
+			key: 'trigger',
 			classes: css.trigger,
 			disabled: undefined,
 			readOnly: undefined,
@@ -95,13 +94,6 @@ const expectedControls = function(widget: Harness<ComboBox>, useTestProperties: 
 		])
 	]);
 
-	if (label) {
-		return w(Label, {
-			label: 'foo',
-			theme: useTestProperties ? {} : undefined
-		}, [ controlsVdom ]);
-	}
-
 	return controlsVdom;
 };
 
@@ -110,7 +102,7 @@ function isOpen(widget: Harness<ComboBox>): boolean {
 	return (<any> vdom)!.properties!['aria-expanded'] === 'true';
 }
 
-const expectedMenu = function(widget: Harness<ComboBox>, useTestProperties: boolean, open: boolean) {
+const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: boolean, open: boolean) {
 	if (!open || !useTestProperties) {
 		return null;
 	}
@@ -124,6 +116,7 @@ const expectedMenu = function(widget: Harness<ComboBox>, useTestProperties: bool
 		w(Listbox, {
 			activeIndex: 0,
 			id: <any> compareId,
+			key: 'listbox',
 			visualFocus: false,
 			optionData: testOptions,
 			tabIndex: -1,
@@ -137,9 +130,9 @@ const expectedMenu = function(widget: Harness<ComboBox>, useTestProperties: bool
 	]);
 };
 
-const expectedVdom = function(widget: Harness<ComboBox>, useTestProperties = false, open = false, label = false) {
-	const menuVdom = expectedMenu(widget, useTestProperties, open);
-	const controlsVdom = expectedControls(widget, useTestProperties, label);
+const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = false, open = false, label = false) {
+	const menuVdom = getExpectedMenu(widget, useTestProperties, open);
+	const controlsVdom = getExpectedControls(widget, useTestProperties, label);
 
 	return v('div', {
 		'aria-expanded': open ? 'true' : 'false',
@@ -156,6 +149,16 @@ const expectedVdom = function(widget: Harness<ComboBox>, useTestProperties = fal
 		key: 'root',
 		role: 'combobox'
 	}, [
+		label ? w(Label, {
+			key: 'label',
+			theme: undefined,
+			disabled: undefined,
+			hidden: undefined,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null,
 		controlsVdom,
 		menuVdom
 	]);
@@ -172,23 +175,23 @@ registerSuite('ComboBox', {
 
 	tests: {
 		'renders with default properties'() {
-			const vdom = expectedVdom(widget);
-			widget.expectRender(vdom);
+			const expected = getExpectedVdom(widget);
+			widget.expectRender(expected);
 		},
 
 		'renders with custom properties'() {
 			widget.setProperties(testProperties);
-			const vdom = expectedVdom(widget, true, false, true);
-			widget.expectRender(vdom);
+			const expected = getExpectedVdom(widget, true, false, true);
+			widget.expectRender(expected);
 		},
 
 		'dropdown renders correctly when open'() {
 			widget.setProperties(testProperties);
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 
-			let vdom = expectedVdom(widget, true, false, true);
-			vdom = expectedVdom(widget, true, true, true);
-			widget.expectRender(vdom);
+			let expected = getExpectedVdom(widget, true, false, true);
+			expected = getExpectedVdom(widget, true, true, true);
+			widget.expectRender(expected);
 		},
 
 		'arrow click opens menu'() {
@@ -320,25 +323,24 @@ registerSuite('ComboBox', {
 
 		'listbox onActiveIndexChange'() {
 			widget.setProperties(testProperties);
-			let vdom = expectedVdom(widget, true, true, true);
+			let expected = getExpectedVdom(widget, true, true, true);
 
 			// open dropdown
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 			widget.callListener('onActiveIndexChange', {
 				args: [ 1 ],
-				index: '1,0'
+				key: 'listbox'
 			});
 
-			vdom = expectedVdom(widget, true, true, true);
-			assignChildProperties(vdom, '1,0', { activeIndex: 1 });
+			expected = getExpectedVdom(widget, true, true, true);
+			assignProperties(findKey(expected, 'listbox')!, { activeIndex: 1 });
 
-			widget.expectRender(vdom);
+			widget.expectRender(expected);
 		},
 
 		'keyboard navigates options'() {
 			const preventDefault = sinon.stub();
-			let vdom = expectedVdom(widget, true, true, true);
-			vdom = expectedVdom(widget, true, true, true);
+			const expected = getExpectedVdom(widget, true, true, true);
 
 			widget.setProperties({
 				...testProperties,
@@ -354,11 +356,11 @@ registerSuite('ComboBox', {
 
 			// shouldn't need this line with correct bind
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				activeIndex: 1,
 				visualFocus: true
 			});
-			widget.expectRender(vdom, 'down arrow moves active index to second option and sets visualFocus to true');
+			widget.expectRender(expected, 'down arrow moves active index to second option and sets visualFocus to true');
 
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
@@ -367,10 +369,10 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				activeIndex: 0
 			});
-			widget.expectRender(vdom, 'up arrow moves active index to first option');
+			widget.expectRender(expected, 'up arrow moves active index to first option');
 
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
@@ -379,10 +381,10 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				activeIndex: 2
 			});
-			widget.expectRender(vdom, 'up arrow wraps to last option');
+			widget.expectRender(expected, 'up arrow wraps to last option');
 
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
@@ -391,10 +393,10 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				activeIndex: 0
 			});
-			widget.expectRender(vdom, 'down arrow wraps to first option');
+			widget.expectRender(expected, 'down arrow wraps to first option');
 
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
@@ -403,10 +405,10 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				activeIndex: 2
 			});
-			widget.expectRender(vdom, 'end moves to last option');
+			widget.expectRender(expected, 'end moves to last option');
 
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
@@ -415,10 +417,10 @@ registerSuite('ComboBox', {
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				activeIndex: 0
 			});
-			widget.expectRender(vdom, 'home moves to first option');
+			widget.expectRender(expected, 'home moves to first option');
 
 			assert.strictEqual(preventDefault.callCount, 4, 'preventDefault called four times for up and down keys');
 		},
@@ -481,14 +483,14 @@ registerSuite('ComboBox', {
 
 		'keyboard does not trigger onChange with no results'() {
 			const onChange = sinon.stub();
-			let vdom = expectedVdom(widget);
+			let expected = getExpectedVdom(widget);
 			widget.setProperties({
 				onChange
 			});
 
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			vdom = expectedVdom(widget, false, true);
-			widget.expectRender(vdom, 'dropdown does not render with no results');
+			expected = getExpectedVdom(widget, false, true);
+			widget.expectRender(expected, 'dropdown does not render with no results');
 
 			widget.callListener('onKeyDown', {
 				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
@@ -521,10 +523,10 @@ registerSuite('ComboBox', {
 				}
 			});
 
-			const vdom = expectedVdom(widget);
-			assignChildProperties(vdom, '0,0', { placeholder: 'foo' });
+			const expected = getExpectedVdom(widget);
+			assignProperties(findKey(expected, 'textinput')!, { placeholder: 'foo' });
 
-			widget.expectRender(vdom);
+			widget.expectRender(expected);
 		},
 
 		'input opens on focus with openOnFocus'() {
@@ -554,37 +556,43 @@ registerSuite('ComboBox', {
 				required: true
 			});
 
-			let vdom = expectedVdom(widget, true, false, true);
-			assignChildProperties(vdom, '0,0,0', {
+			let expected = getExpectedVdom(widget, true, false, true);
+			assignProperties(findKey(expected, 'textinput')!, {
 				disabled: true,
 				invalid: true,
 				readOnly: true,
 				required: true
 			});
-			assignChildProperties(vdom, '0,0,1', {
+			assignProperties(findKey(expected, 'label')!, {
+				disabled: true,
+				readOnly: true,
+				invalid: true,
+				required: true
+			});
+			assignProperties(findKey(expected, 'clear')!, {
 				disabled: true,
 				readOnly: true
 			});
-			assignChildProperties(vdom, '0,0,2', {
+			assignProperties(findKey(expected, 'trigger')!, {
 				disabled: true,
 				readOnly: true
 			});
-			assignProperties(vdom, {
+			assignProperties(expected, {
 				'aria-readonly': 'true',
 				'aria-required': 'true',
 				classes: [ css.root, null, css.invalid, null ]
 			});
-			widget.expectRender(vdom, 'disabled, invalid, readOnly, and required render');
+			widget.expectRender(expected, 'disabled, invalid, readOnly, and required render');
 
 			widget.setProperties({ invalid: false });
-			vdom = expectedVdom(widget);
-			assignChildProperties(vdom, '0,0', {
+			expected = getExpectedVdom(widget);
+			assignProperties(findKey(expected, 'textinput')!, {
 				invalid: false
 			});
-			assignProperties(vdom, {
+			assignProperties(expected, {
 				classes: [ css.root, null, null, css.valid ]
 			});
-			widget.expectRender(vdom, 'valid render');
+			widget.expectRender(expected, 'valid render');
 		},
 
 		'disabled state blocks menu opening'() {
@@ -637,8 +645,8 @@ registerSuite('ComboBox', {
 
 		'hover and keyboard events toggle visualFocus'() {
 			widget.setProperties({ ...testProperties, label: undefined });
-			let vdom = expectedVdom(widget, true, true, true);
-			vdom = expectedVdom(widget, true, true, true);
+			let expected = getExpectedVdom(widget, true, true, true);
+			expected = getExpectedVdom(widget, true, true, true);
 
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 
@@ -650,18 +658,18 @@ registerSuite('ComboBox', {
 				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
 				key: 'textinput'
 			});
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				visualFocus: true
 			});
 			// only necessary for label scoping issue
 			widget.setProperties(testProperties);
-			widget.expectRender(vdom, 'keydown event sets visualFocus to true');
+			widget.expectRender(expected, 'keydown event sets visualFocus to true');
 
 			widget.sendEvent('mouseover', { key: 'dropdown' });
-			assignChildProperties(vdom, '1,0', {
+			assignProperties(findKey(expected, 'listbox')!, {
 				visualFocus: false
 			});
-			widget.expectRender(vdom, 'mouseover event sets visualFocus to false');
+			widget.expectRender(expected, 'mouseover event sets visualFocus to false');
 		}
 	}
 });

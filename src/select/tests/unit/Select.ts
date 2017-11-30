@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty, findIndex, replaceChild } from '@dojo/test-extras/support/d';
+import { assignProperties, compareProperty, findKey, replaceChild } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -106,7 +106,7 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false) {
 	return v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
-		key: 'root'
+		key: 'wrapper'
 	}, [
 		v('button', {
 			'aria-controls': <any> compareId,
@@ -142,6 +142,7 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 				activeIndex: 0,
 				describedBy: useTestProperties ? 'foo' : undefined,
 				id: <any> compareId,
+				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
 				tabIndex: open ? 0 : -1,
 				getOptionDisabled: useTestProperties ? widget.listener : undefined,
@@ -158,24 +159,26 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 
 function isOpen(widget: any): boolean {
 	const vdom = widget.getRender();
-	const button = findIndex(vdom, '0,0');
+	const button = findKey(vdom, 'trigger');
 	return (<any> button)!.properties!['aria-expanded'] === 'true';
 }
 
 const expected = function(widget: Harness<Select>, selectVdom: any, label = false) {
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: css.root },
-			forId: <any> compareId,
-			label: 'foo',
-			theme: undefined
-		}, [ selectVdom ]);
-	}
-	else {
-		return v('div', {
-			classes: [ css.root, null, null, null, null, null ]
-		}, [ selectVdom ]);
-	}
+	return v('div', {
+		key: 'root',
+		classes: [ css.root, null, null, null, null, null ]
+	}, [
+		label ? w(Label, {
+			theme: undefined,
+			disabled: undefined,
+			hidden: undefined,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null,
+		selectVdom
+	]);
 };
 
 registerSuite('Select', {
@@ -278,7 +281,7 @@ registerSuite('Select', {
 				widget.setProperties(testStateProperties);
 
 				const selectVdom = expectedSingle(widget, true);
-				assignChildProperties(selectVdom, '0', {
+				assignProperties(findKey(selectVdom, 'trigger')!, {
 					'aria-invalid': 'true',
 					'aria-readonly': 'true',
 					'aria-required': 'true',
@@ -307,14 +310,14 @@ registerSuite('Select', {
 					placeholder: 'bar'
 				});
 
-				assignChildProperties(expectedVdom, '0,0', {
+				assignProperties(findKey(expectedVdom, 'trigger')!, {
 					classes: [ css.trigger, css.placeholder ]
 				});
 				expectedVdom = expected(widget, expectedSingle(widget, true));
-				assignChildProperties(expectedVdom, '0,0', {
+				assignProperties(findKey(expectedVdom, 'trigger')!, {
 					classes: [ css.trigger, css.placeholder ]
 				});
-				replaceChild(expectedVdom, '0,0,0', 'bar');
+				replaceChild(expectedVdom, '1,0,0', 'bar');
 
 				widget.expectRender(expectedVdom, 'placeholder is shown if no selected option');
 			},
@@ -361,10 +364,10 @@ registerSuite('Select', {
 			'change active option'() {
 				widget.setProperties(testProperties);
 				let selectVdom = expected(widget, expectedSingle(widget, true));
-				widget.callListener('onActiveIndexChange', { args: [ 1 ], index: '0,2,0' });
+				widget.callListener('onActiveIndexChange', { args: [ 1 ], key: 'listbox' });
 
 				selectVdom = expected(widget, expectedSingle(widget, true));
-				assignChildProperties(selectVdom, '0,2,0', { activeIndex: 1 });
+				assignProperties(findKey(selectVdom, 'listbox')!, { activeIndex: 1 });
 
 				widget.expectRender(selectVdom);
 			},
@@ -449,53 +452,6 @@ registerSuite('Select', {
 				widget.sendEvent('blur', { key: 'trigger' }); // first second blur to reset _ignoreBlur
 				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
 				assert.isTrue(onBlur.getCall(1).calledWith('foo'), 'Dropdown blur event called with foo key');
-			}
-		},
-
-		label: {
-			'default properties'() {
-				widget.setProperties({
-					label: 'foo'
-				});
-				const selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom, true), 'renders label with basic properties');
-			},
-
-			'state classes and form id'() {
-				widget.setProperties({
-					...testStateProperties,
-					label: 'foo'
-				});
-				const expectedVdom = expected(widget, expectedSingle(widget, true), true);
-				assignProperties(expectedVdom, {
-					extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
-				});
-				assignChildProperties(expectedVdom, '0,0', {
-					'aria-invalid': 'true',
-					'aria-readonly': 'true',
-					'aria-required': 'true',
-					disabled: true
-				});
-				widget.expectRender(expectedVdom);
-			},
-
-			'valid state class'() {
-				widget.setProperties({
-					...testStateProperties,
-					invalid: false,
-					label: 'foo'
-				});
-				const expectedVdom = expected(widget, expectedSingle(widget, true), true);
-				assignChildProperties(expectedVdom, '0,0', {
-					'aria-invalid': null,
-					'aria-readonly': 'true',
-					'aria-required': 'true',
-					disabled: true
-				});
-				assignProperties(expectedVdom, {
-					extraClasses: { root: `${css.root} ${css.disabled} ${css.valid} ${css.readonly} ${css.required}` }
-				});
-				widget.expectRender(expectedVdom);
 			}
 		}
 	}

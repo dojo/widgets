@@ -128,7 +128,3 @@
 	border-left-color: color(var(--color-success) saturation(-32%) lightness(+55%));
 	color: var(--color-success);
 }
-
-.required > span::after {
-	content: '*';
-}

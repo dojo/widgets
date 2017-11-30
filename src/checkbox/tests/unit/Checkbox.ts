@@ -5,12 +5,16 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Checkbox, { Mode } from '../../Checkbox';
 import * as css from '../../styles/checkbox.m.css';
+
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
 
 const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 	if (labels) {
@@ -43,44 +47,49 @@ const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 };
 
 const expected = function(widget: Harness<Checkbox>, label = false, toggle = false, toggleLabels = false) {
-	const checkboxVdom = v('div', { classes: css.inputWrapper }, [
-		...(toggle ? expectedToggle(widget, toggleLabels) : []),
-		v('input', {
-			classes: css.input,
-			checked: false,
-			'aria-describedby': undefined,
+	const children = [
+		v('div', { classes: css.inputWrapper }, [
+			...(toggle ? expectedToggle(widget, toggleLabels) : []),
+			v('input', {
+				id: <any> compareId,
+				classes: css.input,
+				checked: false,
+				'aria-describedby': undefined,
+				disabled: undefined,
+				'aria-invalid': null,
+				name: undefined,
+				readOnly: undefined,
+				'aria-readonly': null,
+				required: undefined,
+				type: 'checkbox',
+				value: undefined,
+				onblur: widget.listener,
+				onchange: widget.listener,
+				onclick: widget.listener,
+				onfocus: widget.listener,
+				onmousedown: widget.listener,
+				onmouseup: widget.listener,
+				ontouchstart: widget.listener,
+				ontouchend: widget.listener,
+				ontouchcancel: widget.listener
+			})
+		]),
+		label ? w(Label, {
+			theme: undefined,
 			disabled: undefined,
-			'aria-invalid': null,
-			name: undefined,
+			hidden: undefined,
+			invalid: undefined,
 			readOnly: undefined,
-			'aria-readonly': null,
 			required: undefined,
-			type: 'checkbox',
-			value: undefined,
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			onmousedown: widget.listener,
-			onmouseup: widget.listener,
-			ontouchstart: widget.listener,
-			ontouchend: widget.listener,
-			ontouchcancel: widget.listener
-		})
-	]);
+			forId: <any> compareId,
+			secondary: true
+		}, [ 'foo' ]) : null
+	];
 
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: css.root },
-			label: 'foo',
-			theme: undefined
-		}, [ checkboxVdom ]);
-	}
-	else {
-		return v('div', {
-			classes: [ css.root, null, null, null, null, null, null, null, null ]
-		}, [ checkboxVdom ]);
-	}
+	return v('div', {
+		key: 'root',
+		classes: [ css.root, null, null, null, null, null, null, null, null ]
+	}, children);
 };
 
 let widget: Harness<Checkbox>;
@@ -171,7 +180,7 @@ registerSuite('Checkbox', {
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
 		},
 
-		'state classes on label'() {
+		'state properties on label'() {
 			widget.setProperties({
 				label: 'foo',
 				invalid: true,
@@ -188,9 +197,28 @@ registerSuite('Checkbox', {
 				'aria-readonly': 'true',
 				required: true
 			});
-			assignProperties(expectedVdom, {
-				extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required}` }
+
+			assignChildProperties(expectedVdom, 1, {
+				disabled: true,
+				readOnly: true,
+				required: true,
+				invalid: true
 			});
+
+			assignProperties(expectedVdom, {
+				classes: [
+					css.root,
+					null,
+					null,
+					css.disabled,
+					null,
+					css.invalid,
+					null,
+					css.readonly,
+					css.required
+				]
+			});
+
 			widget.expectRender(expectedVdom);
 		},
 

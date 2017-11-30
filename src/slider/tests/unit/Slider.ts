@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties, compareProperty, replaceChild } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty, replaceChild, findKey } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
@@ -22,6 +22,7 @@ const expected = function(widget: any, label = false, tooltip = false) {
 		styles: {}
 	}, [
 		v('input', {
+			key: 'input',
 			classes: [ css.input, css.nativeInput ],
 			'aria-describedby': undefined,
 			disabled: undefined,
@@ -72,18 +73,21 @@ const expected = function(widget: any, label = false, tooltip = false) {
 		}, [ '0' ])
 	]);
 
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: `${css.root} ${css.rootFixed}` },
-			label: 'foo',
-			theme: undefined
-		}, [ sliderVdom ]);
-	}
-	else {
-		return v('div', {
-			classes: [ css.root, null, null, null, null, null, null, css.rootFixed ]
-		}, [ sliderVdom ]);
-	}
+	return v('div', {
+		key: 'root',
+		classes: [ css.root, null, null, null, null, null, null, css.rootFixed ]
+	}, [
+		label ? w(Label, {
+			theme: undefined,
+			disabled: undefined,
+			hidden: undefined,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null,
+		sliderVdom
+	]);
 };
 
 let widget: Harness<Slider>;
@@ -116,7 +120,7 @@ registerSuite('Slider', {
 			});
 
 			const expectedVdom = expected(widget, false, true);
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				'aria-describedby': 'foo',
 				max: '60',
 				min: '10',
@@ -124,16 +128,16 @@ registerSuite('Slider', {
 				step: '5',
 				value: '35'
 			});
-			assignChildProperties(expectedVdom, '0,1,0', {
+			assignChildProperties(expectedVdom, '1,1,0', {
 				styles: { width: '50%' }
 			});
-			assignChildProperties(expectedVdom, '0,1,1', {
+			assignChildProperties(expectedVdom, '1,1,1', {
 				styles: { left: '50%' }
 			});
-			assignChildProperties(expectedVdom, '0,2', {
+			assignChildProperties(expectedVdom, '1,2', {
 				styles: { left: '50%' }
 			});
-			replaceChild(expectedVdom, '0,2,0', 'tribbles');
+			replaceChild(expectedVdom, '1,2,0', 'tribbles');
 
 			widget.expectRender(expectedVdom);
 		},
@@ -145,13 +149,13 @@ registerSuite('Slider', {
 				});
 
 				const expectedVdom = expected(widget);
-				assignChildProperties(expectedVdom, '0', {
+				assignChildProperties(expectedVdom, '1', {
 					styles: { height: '200px' }
 				});
-				assignChildProperties(expectedVdom, '0,0', {
+				assignProperties(findKey(expectedVdom, 'input')!, {
 					styles: { width: '200px' }
 				});
-				assignChildProperties(expectedVdom, '0,1', {
+				assignChildProperties(expectedVdom, '1,1', {
 					styles: { width: '200px' }
 				});
 				assignProperties(expectedVdom, {
@@ -172,26 +176,26 @@ registerSuite('Slider', {
 				});
 
 				const expectedVdom = expected(widget, false, true);
-				assignChildProperties(expectedVdom, '0', {
+				assignChildProperties(expectedVdom, '1', {
 					styles: { height: '100px' }
 				});
-				assignChildProperties(expectedVdom, '0,0', {
+				assignProperties(findKey(expectedVdom, 'input')!, {
 					max: '10',
 					min: '5',
 					styles: { width: '100px' },
 					value: '6'
 				});
-				replaceChild(expectedVdom, '0,2,0', '6');
-				assignChildProperties(expectedVdom, '0,1', {
+				replaceChild(expectedVdom, '1,2,0', '6');
+				assignChildProperties(expectedVdom, '1,1', {
 					styles: { width: '100px' }
 				});
-				assignChildProperties(expectedVdom, '0,1,0', {
+				assignChildProperties(expectedVdom, '1,1,0', {
 					styles: { width: '20%' }
 				});
-				assignChildProperties(expectedVdom, '0,1,1', {
+				assignChildProperties(expectedVdom, '1,1,1', {
 					styles: { left: '20%' }
 				});
-				assignChildProperties(expectedVdom, '0,2', {
+				assignChildProperties(expectedVdom, '1,2', {
 					styles: { top: '80%' }
 				});
 				assignProperties(expectedVdom, {
@@ -209,15 +213,15 @@ registerSuite('Slider', {
 			});
 
 			let expectedVdom = expected(widget);
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				max: '40',
 				value: '40'
 			});
-			replaceChild(expectedVdom, '0,2,0', '40');
-			assignChildProperties(expectedVdom, '0,1,0', {
+			replaceChild(expectedVdom, '1,2,0', '40');
+			assignChildProperties(expectedVdom, '1,1,0', {
 				styles: { width: '100%' }
 			});
-			assignChildProperties(expectedVdom, '0,1,1', {
+			assignChildProperties(expectedVdom, '1,1,1', {
 				styles: { left: '100%' }
 			});
 
@@ -228,11 +232,11 @@ registerSuite('Slider', {
 				value: 20
 			});
 			expectedVdom = expected(widget);
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				min: '30',
 				value: '30'
 			});
-			replaceChild(expectedVdom, '0,2,0', '30');
+			replaceChild(expectedVdom, '1,2,0', '30');
 
 			widget.expectRender(expectedVdom, 'If value property is below min, value is set to min');
 		},
@@ -254,7 +258,7 @@ registerSuite('Slider', {
 			});
 
 			let expectedVdom = expected(widget);
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: true,
 				'aria-invalid': 'true',
 				readOnly: true,
@@ -275,7 +279,7 @@ registerSuite('Slider', {
 			});
 			expectedVdom = expected(widget);
 
-			assignChildProperties(expectedVdom, '0,0', {
+			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: false,
 				readOnly: false,
 				required: false
@@ -285,30 +289,6 @@ registerSuite('Slider', {
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
-		},
-
-		'state classes on label'() {
-			widget.setProperties({
-				label: 'foo',
-				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			});
-
-			const expectedVdom = expected(widget, true);
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-			assignProperties(expectedVdom, {
-				extraClasses: { root: `${css.root} ${css.disabled} ${css.invalid} ${css.readonly} ${css.required} ${css.rootFixed}` }
-			});
-
-			widget.expectRender(expectedVdom);
 		},
 
 		events() {

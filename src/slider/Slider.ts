@@ -1,9 +1,10 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import Label from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
+import { LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import * as css from './styles/slider.m.css';
 
 /**
@@ -11,63 +12,23 @@ import * as css from './styles/slider.m.css';
  *
  * Properties that can be set on a Slider component
  *
- * @property describedBy       ID of an element that provides more descriptive text
- * @property disabled          Prevents the user from interacting with the form field
- * @property invalid           Indicates the valid is invalid, or required and not filled in
- * @property label             Label settings for form label text, position, and visibility
  * @property max               The maximum value for the slider
  * @property min               The minimum value for the slider
- * @property name              The form widget's name
  * @property output            An optional function that returns a string or DNode for custom output format
- * @property readOnly          Allows or prevents user interaction
- * @property required          Whether or not a value is required
  * @property step              Size of the slider increment
- * @property value             The current value
  * @property vertical          Orients the slider vertically, false by default.
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
- * @property onBlur            Called when the input loses focus
- * @property onChange          Called when the node's 'change' event is fired
- * @property onClick           Called when the input is clicked
- * @property onFocus           Called when the input is focused
- * @property onInput           Called when the 'input' event is fired
- * @property onKeyDown         Called on the input's keydown event
- * @property onKeyPress        Called on the input's keypress event
- * @property onKeyUp           Called on the input's keyup event
- * @property onMouseDown       Called on the input's mousedown event
- * @property onMouseUp         Called on the input's mouseup event
- * @property onTouchStart      Called on the input's touchstart event
- * @property onTouchEnd        Called on the input's touchend event
- * @property onTouchCancel     Called on the input's touchcancel event
+ * @property value           The current value
  */
-export interface SliderProperties extends ThemedProperties {
-	describedBy?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	label?: string | LabelOptions;
+export interface SliderProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties {
 	max?: number;
 	min?: number;
-	name?: string;
 	output?(value: number): DNode;
 	outputIsTooltip?: boolean;
-	readOnly?: boolean;
-	required?: boolean;
 	step?: number;
-	value?: number;
 	vertical?: boolean;
 	verticalHeight?: string;
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
-	onInput?(event: Event): void;
-	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
+	value?: number;
 }
 
 export const SliderBase = ThemedMixin(WidgetBase);
@@ -91,7 +52,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses(): (string | null)[] {
+	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
 			invalid,
@@ -101,6 +62,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 		} = this.properties;
 
 		return [
+			css.root,
 			disabled ? css.disabled : null,
 			invalid ? css.invalid : null,
 			invalid === false ? css.valid : null,
@@ -149,7 +111,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 
 		return v('output', {
 			classes: [ this.theme(css.output), outputIsTooltip ? css.outputTooltip : null ],
-			for: `${this._inputId}`,
+			for: this._inputId,
 			styles: outputStyles
 		}, [ outputNode ]);
 	}
@@ -160,6 +122,8 @@ export default class Slider extends SliderBase<SliderProperties> {
 			disabled,
 			invalid,
 			label,
+			labelAfter,
+			labelHidden,
 			max = 100,
 			min = 0,
 			name,
@@ -167,8 +131,10 @@ export default class Slider extends SliderBase<SliderProperties> {
 			required,
 			step = 1,
 			vertical = false,
-			verticalHeight = '200px'
+			verticalHeight = '200px',
+			theme
 		} = this.properties;
+
 		let {
 			value = min
 		} = this.properties;
@@ -183,6 +149,7 @@ export default class Slider extends SliderBase<SliderProperties> {
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
+				key: 'input',
 				classes: [ this.theme(css.input), css.nativeInput ],
 				'aria-describedby': describedBy,
 				disabled,
@@ -216,21 +183,22 @@ export default class Slider extends SliderBase<SliderProperties> {
 			this.renderOutput(value, percentValue)
 		]);
 
-		let sliderWidget;
+		const children = [
+			label ? w(Label, {
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: this._inputId
+			}, [ label ]) : null,
+			slider
+		];
 
-		if (label) {
-			sliderWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses([ ...this.theme([ css.root, ...this.getModifierClasses() ]), css.rootFixed ]) },
-				label,
-				theme: this.properties.theme
-			}, [ slider ]);
-		}
-		else {
-			sliderWidget = v('div', {
-				classes: [ ...this.theme([ css.root, ...this.getModifierClasses() ]), css.rootFixed ]
-			}, [ slider ]);
-		}
-
-		return sliderWidget;
+		return v('div', {
+			key: 'root',
+			classes: [...this.theme(this.getRootClasses()), css.rootFixed]
+		}, labelAfter ? children.reverse() : children);
 	}
 }

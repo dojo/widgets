@@ -79,11 +79,9 @@ export class App extends WidgetBase<WidgetProperties> {
 					key: 't4',
 					columns: 40,
 					rows: 8,
-					label: {
-						content: 'Hidden label',
-						before: false,
-						hidden: true
-					}
+					label: 'Hidden label',
+					labelHidden: true,
+					labelAfter: true
 				})
 			])
 		]);

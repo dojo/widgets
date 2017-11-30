@@ -4,7 +4,6 @@ const { assert } = intern.getPlugin('chai');
 import keys from '@theintern/leadfoot/keys';
 import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/slider.m.css';
-import * as labelCss from '../../../label/styles/label.m.css';
 
 function getPage(test: any) {
 	const { browserName } = test.remote.environmentType;
@@ -199,14 +198,8 @@ registerSuite('Slider', {
 		'Input box should gain focus when clicking on the slider fill'() {
 			return clickToFocus(this, `.${css.fill}`);
 		},
-		'Input box should gain focus when clicking on the slider wrapper'() {
-			return clickToFocus(this, `.${css.inputWrapper}`);
-		},
 		'Input box should gain focus when clicking on the slider label'() {
-			return clickToFocus(this, `.${labelCss.labelText}`);
-		},
-		'Input box should gain focus when clicking on the slider output label'() {
-			return clickToFocus(this, `.${css.output}`);
+			return clickToFocus(this, `label`);
 		}
 	},
 	'vertical slider': {
@@ -277,32 +270,6 @@ registerSuite('Slider', {
 				.then(() => {
 					assert.lengthOf(sliderValues, 3);
 					assert.isTrue(sliderValues[1] > sliderValues[0] && sliderValues[2] > sliderValues[1]);
-				})
-				.end();
-		},
-		'slider should be functional with up and down arrow keys'(this: any) {
-			const { browserName, supportsKeysCommand } = this.remote.environmentType;
-			if (!supportsKeysCommand) {
-				this.skip('Arrow keys required for tests.');
-			}
-			if (browserName.toLowerCase() === 'safari' || browserName.toLowerCase() === 'internet explorer') {
-				this.skip('pressKeys with arrow keys doesn\'t work in iphone and IE.');
-			}
-
-			let sliderValues: number[] = [];
-			let command = getPage(this)
-				.findByCssSelector(`#example-s3 .${css.root}`);
-			command = checkValue(command, sliderValues)
-				.click()
-				.pressKeys([keys.ARROW_UP, keys.ARROW_UP]);
-
-			command = checkValue(command, sliderValues)
-				.pressKeys(keys.ARROW_DOWN);
-
-			return checkValue(command, sliderValues)
-				.then(() => {
-					assert.lengthOf(sliderValues, 3);
-					assert.isTrue(sliderValues[1] > sliderValues[2] && sliderValues[2] > sliderValues[0]);
 				})
 				.end();
 		}

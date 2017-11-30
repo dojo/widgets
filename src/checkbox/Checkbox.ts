@@ -1,8 +1,10 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Label, { LabelOptions, parseLabelClasses } from '../label/Label';
+import Label from '../label/Label';
+import { LabeledProperties, InputProperties, InputEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
+import uuid from '@dojo/core/uuid';
 import * as css from './styles/checkbox.m.css';
 
 /**
@@ -11,49 +13,17 @@ import * as css from './styles/checkbox.m.css';
  * Properties that can be set on a Checkbox component
  *
  * @property checked        Checked/unchecked property of the radio
- * @property describedBy    ID of an element that provides more descriptive text
- * @property disabled       Prevents the user from interacting with the form field
- * @property invalid        Indicates the valid is invalid, or required and not filled in
- * @property label          Label settings for form label text, position, and visibility
  * @property mode           The type of user interface to show for this Checkbox
- * @property name           The form widget's name
  * @property offLabel       Label to show in the "off" positin of a toggle
  * @property onLabel        Label to show in the "on" positin of a toggle
- * @property readOnly       Allows or prevents user interaction
- * @property required       Whether or not a value is required
- * @property value          The current value
- * @property onBlur         Called when the input loses focus
- * @property onChange       Called when the node's 'change' event is fired
- * @property onClick        Called when the input is clicked
- * @property onFocus        Called when the input is focused
- * @property onMouseDown    Called on the input's mousedown event
- * @property onMouseUp      Called on the input's mouseup event
- * @property onTouchStart   Called on the input's touchstart event
- * @property onTouchEnd     Called on the input's touchend event
- * @property onTouchCancel  Called on the input's touchcancel event
+ * @property value           The current value
  */
-export interface CheckboxProperties extends ThemedProperties {
+export interface CheckboxProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties {
 	checked?: boolean;
-	describedBy?: string;
-	disabled?: boolean;
-	invalid?: boolean;
-	label?: string | LabelOptions;
 	mode?: Mode;
-	name?: string;
 	offLabel?: DNode;
 	onLabel?: DNode;
-	readOnly?: boolean;
-	required?: boolean;
 	value?: string;
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
 }
 
 /**
@@ -87,7 +57,9 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
 	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
 
-	protected getModifierClasses(): (string | null)[] {
+	private _uuid = uuid();
+
+	protected getRootClasses(): (string | null)[] {
 		const {
 			checked = false,
 			disabled,
@@ -98,6 +70,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 		} = this.properties;
 
 		return [
+			css.root,
 			mode === Mode.toggle ? css.toggle : null,
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
@@ -142,6 +115,9 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			disabled,
 			invalid,
 			label,
+			labelAfter = true,
+			labelHidden,
+			theme,
 			name,
 			readOnly,
 			required,
@@ -152,6 +128,7 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				...this.renderToggle(),
 				v('input', {
+					id: this._uuid,
 					classes: this.theme(css.input),
 					checked,
 					'aria-describedby': describedBy,
@@ -173,24 +150,22 @@ export default class Checkbox extends CheckboxBase<CheckboxProperties> {
 					ontouchend: this._onTouchEnd,
 					ontouchcancel: this._onTouchCancel
 				})
-			])
+			]),
+			label ? w(Label, {
+				theme,
+				disabled,
+				invalid,
+				readOnly,
+				required,
+				hidden: labelHidden,
+				forId: this._uuid,
+				secondary: true
+			}, [ label ]) : null
 		];
 
-		let checkboxWidget;
-
-		if (label) {
-			checkboxWidget = w(Label, {
-				extraClasses: { root: parseLabelClasses(this.theme([ css.root, ...this.getModifierClasses() ])) },
-				label,
-				theme: this.properties.theme
-			}, children);
-		}
-		else {
-			checkboxWidget = v('div', {
-				classes: this.theme([ css.root, ...this.getModifierClasses() ])
-			}, children);
-		}
-
-		return checkboxWidget;
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, labelAfter ? children : children.reverse());
 	}
 }

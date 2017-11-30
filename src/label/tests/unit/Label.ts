@@ -1,10 +1,9 @@
 const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
 
 import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
-import Label, { parseLabelClasses } from '../../Label';
+import Label from '../../Label';
 import * as css from '../../styles/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
@@ -22,90 +21,44 @@ registerSuite('Label', {
 
 	tests: {
 		simple() {
-			widget.setProperties({
-				label: 'baz'
-			});
+			widget.setChildren([ 'baz' ]);
 
 			widget.expectRender(v('label', {
-				classes: css.root,
+				classes: [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				],
 				for: undefined
 			}, [
-				v('span', {
-					innerHTML: 'baz',
-					classes: [ css.labelText, null ]
-				})
+				'baz'
 			]));
 		},
 
 		hidden() {
 			widget.setProperties({
-				label: {
-					content: 'baz',
-					hidden: true
-				}
+				hidden: true
 			});
 
+			widget.setChildren([ 'baz' ]);
+
 			widget.expectRender(v('label', {
-				classes: css.root,
+				classes: [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					baseCss.visuallyHidden ],
 				for: undefined
 			}, [
-				v('span', {
-					classes: [ css.labelText, baseCss.visuallyHidden ],
-					innerHTML: 'baz'
-				})
+				'baz'
 			]));
-		},
-
-		'with children'() {
-			widget.setProperties({
-				forId: 'id',
-				label: 'baz'
-			});
-			widget.setChildren([
-				v('div', [ 'First' ]),
-				v('div', [ 'Second' ])
-			]);
-
-			widget.expectRender(v('label', {
-				classes: css.root,
-				for: 'id'
-			}, [
-				v('span', {
-					innerHTML: 'baz',
-					classes: [ css.labelText, null ]
-				}),
-				v('div', [ 'First' ]),
-				v('div', [ 'Second' ])
-			]));
-		},
-
-		'label after'() {
-			widget.setProperties({
-				label: {
-					content: 'baz',
-					before: false
-				}
-			});
-			widget.setChildren([
-				v('div', [ 'child' ])
-			]);
-
-			widget.expectRender(v('label', {
-				classes: css.root,
-				for: undefined
-			}, [
-				v('div', [ 'child' ]),
-				v('span', {
-					innerHTML: 'baz',
-					classes: [ css.labelText, null ]
-				})
-			]));
-		},
-
-		parseLabelClasses() {
-			const result = parseLabelClasses([ 'foo', null, 'baz' ]);
-
-			assert.strictEqual('foo baz', result);
 		}
 	}
 });

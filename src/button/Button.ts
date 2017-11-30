@@ -4,6 +4,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import * as css from './styles/button.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
+import { InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -19,19 +20,8 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property pressed        Indicates status of a toggle button
  * @property type           Button type can be "submit", "reset", "button", or "menu"
  * @property value          Defines a value for the button submitted with form data
- * @property onBlur         Called when the button loses focus
- * @property onClick        Called when the button is clicked
- * @property onFocus        Called when the button is focused
- * @property onKeyDown      Called on the button's keydown event
- * @property onKeyPress     Called on the button's keypress event
- * @property onKeyUp        Called on the button's keyup event
- * @property onMouseDown    Called on the button's mousedown event
- * @property onMouseUp      Called on the button's mouseup event
- * @property onTouchCancel  Called on the button's touchcancel event
- * @property onTouchEnd     Called on the button's touchend event
- * @property onTouchStart   Called on the button's touchstart event
  */
-export interface ButtonProperties extends ThemedProperties {
+export interface ButtonProperties extends ThemedProperties, InputEventProperties, PointerEventProperties, KeyEventProperties {
 	describedBy?: string;
 	disabled?: boolean;
 	id?: string;
@@ -40,17 +30,6 @@ export interface ButtonProperties extends ThemedProperties {
 	pressed?: boolean;
 	type?: ButtonType;
 	value?: string;
-	onBlur?(event: FocusEvent): void;
-	onClick?(event: MouseEvent): void;
-	onFocus?(event: FocusEvent): void;
-	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
 }
 
 export const ButtonBase = ThemedMixin(WidgetBase);
