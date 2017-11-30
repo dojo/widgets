@@ -171,14 +171,14 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 		return v('div', {
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
-			'aria-selected': active ? 'true' : 'false',
+			'aria-selected': active === true ? 'true' : 'false',
 			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown,
 			role: 'tab',
-			tabIndex: active ? 0 : -1
+			tabIndex: active === true ? 0 : -1
 		}, this.getContent());
 	}
 }

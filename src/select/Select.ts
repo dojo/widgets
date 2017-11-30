@@ -147,7 +147,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		return [
 			css.root,
 			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null

@@ -308,8 +308,8 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			v('input', {
 				id: this._uuid,
 				'aria-describedby': inputProperties && inputProperties.describedBy,
-				'aria-invalid': invalid ? 'true' : null,
-				'aria-readonly': readOnly ? 'true' : null,
+				'aria-invalid': invalid === true ? 'true' : null,
+				'aria-readonly': readOnly === true ? 'true' : null,
 				classes: this.theme(css.input),
 				disabled,
 				invalid,

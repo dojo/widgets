@@ -419,7 +419,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			classes: this.theme([
 				css.root,
 				this._open ? css.open : null,
-				invalid ? css.invalid : null,
+				invalid === true ? css.invalid : null,
 				invalid === false ? css.valid : null
 			]),
 			key: 'root',

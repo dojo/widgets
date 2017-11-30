@@ -65,7 +65,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 		return [
 			css.root,
 			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
+			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
