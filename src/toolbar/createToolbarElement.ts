@@ -22,7 +22,8 @@ export default function createToolbarElement(): CustomElementDescriptor {
 			}
 		],
 		properties: [
-			{ propertyName: 'actions' }
+			{ propertyName: 'actions' },
+			{ propertyName: 'theme' }
 		],
 		events: [
 			{
