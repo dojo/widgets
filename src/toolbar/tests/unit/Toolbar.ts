@@ -27,7 +27,20 @@ registerSuite('Toolbar', {
 					css.rootFixed
 				],
 				key: 'root'
-			}, [ null, null, null ]));
+			}, [
+				v('div', {
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [ null, null, null]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
+			]));
 		},
 
 		'expanded rendering'() {
@@ -48,7 +61,20 @@ registerSuite('Toolbar', {
 					css.rootFixed
 				],
 				key: 'root'
-			}, [ null, null, null ]));
+			}, [
+				v('div', {
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [ null, null, null]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
+			]));
 		},
 
 		'fixed rendering'() {
@@ -62,9 +88,18 @@ registerSuite('Toolbar', {
 				],
 				key: 'root'
 			}, [
-				null,
-				null,
-				null
+				v('div', {
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [ null, null, null]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
 			]));
 		},
 
@@ -78,15 +113,28 @@ registerSuite('Toolbar', {
 				key: 'root'
 			}, [
 				v('div', {
-					classes: [ css.title, css.titleFixed ]
-				}, [ 'test' ]),
-				null,
-				null
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [
+					v('div', {
+						classes: [ css.title, css.titleFixed ]
+					}, [ 'test' ]),
+					null,
+					null
+				]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
 			]));
 		},
 
 		'actions rendering'() {
-			toolbar.setChildren([ 'test' ]);
+			toolbar.setProperties({ actions: [ 'test' ] });
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -94,17 +142,30 @@ registerSuite('Toolbar', {
 				],
 				key: 'root'
 			}, [
-				null,
 				v('div', {
-					classes: [ css.actions, css.actionsFixed ],
-					key: 'menu'
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
 				}, [
+					null,
 					v('div', {
-						classes: [ css.action ],
-						key: 0
-					}, [ 'test' ])
+						classes: [ css.actions, css.actionsFixed ],
+						key: 'menu'
+					}, [
+						v('div', {
+							classes: [ css.action ],
+							key: 0
+						}, [ 'test' ])
+					]),
+					null
 				]),
-				null
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
 			]));
 		},
 
@@ -136,16 +197,28 @@ registerSuite('Toolbar', {
 				})
 			]);
 
-
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
 					css.rootFixed
 				],
 				key: 'root'
-			}, [ null, null, null ]));
+			}, [
+				v('div', {
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [ null, null, null]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
+			]));
 
-			toolbar.setChildren([ 'test' ]);
+			toolbar.setProperties({ actions: [ 'test' ] });
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -154,9 +227,22 @@ registerSuite('Toolbar', {
 				],
 				key: 'root'
 			}, [
-				null,
-				slidePaneVDom,
-				buttonVDom
+				v('div', {
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [
+					null,
+					slidePaneVDom,
+					buttonVDom
+				]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
 			]));
 
 			toolbar.sendEvent('click', { selector: `.${css.menuButton}` });
@@ -171,9 +257,22 @@ registerSuite('Toolbar', {
 				],
 				key: 'root'
 			}, [
-				null,
-				slidePaneVDom,
-				buttonVDom
+				v('div', {
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [
+					null,
+					slidePaneVDom,
+					buttonVDom
+				]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
 			]));
 		}
 	}

@@ -16,11 +16,11 @@ registerSuite('Toolbar', {
 	'Should show menu when button is clicked'() {
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
-			.findByCssSelector('#fixed > div > button')
+			.findByCssSelector('body > div:last-child > div:first-child > button')
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector('#fixed > div > div:nth-child(2) > div:last-child')
+			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div')
 				.isDisplayed()
 				.then(displayed => {
 					assert.isTrue(displayed);
@@ -30,15 +30,15 @@ registerSuite('Toolbar', {
 	'Should close menu when button is clicked'() {
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
-			.findByCssSelector('#fixed > div > button')
+			.findByCssSelector('body > div:last-child > div:first-child > button')
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector('#fixed > div > div:nth-child(2) > div:last-child button')
+			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div button')
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector('#fixed > div > div:nth-child(2) > div:last-child')
+			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div')
 				.isDisplayed()
 				.then(displayed => {
 					assert.isFalse(displayed);

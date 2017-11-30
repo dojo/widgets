@@ -1,6 +1,6 @@
 @import './variables.css';
 
-.root {
+.toolbar {
 	background: #FFF;
 	border: var(--border-width) solid var(--color-border);
 	box-sizing: border-box;

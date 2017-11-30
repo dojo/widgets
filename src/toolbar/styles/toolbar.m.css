@@ -14,25 +14,46 @@
 }
 
 .rootFixed {
-	display: flex;
-}
-
-.stickyFixed {
+	height: 100%;
 	left: 0;
+	overflow: hidden;
 	position: fixed;
 	top: 0;
 	width: 100%;
 	z-index: var(--zindex-fixed);
 }
 
+.toolbarFixed {
+	display: flex;
+	position: relative;
+}
+
+.stickyFixed .toolbarFixed {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.stickyFixed {
+	display: flex;
+	flex-direction: column;
+}
+
 .titleFixed {
-	flex: 0;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.stickyFixed .contentFixed {
+	flex: 1;
+	overflow-y: auto;
 }
 
 .action { }
 .actions { }
 .collapsed { }
+.content { }
 .menuButton { }
 .root { }
 .sticky { }
 .title { }
+.toolbar { }

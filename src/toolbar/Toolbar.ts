@@ -14,11 +14,13 @@ import * as iconCss from '../common/styles/icons.m.css';
  *
  * Properties that can be set on a Toolbar component
  *
+ * @property actions           Action elements to show in the toolbar
  * @property collapseWidth     Width at which to collapse actions into a SlidePane
  * @property fixed             Fixes the toolbar to the top of the viewport
  * @property title             Element to show as the toolbar title
  */
 export interface ToolbarProperties extends WidgetProperties {
+	actions?: DNode[];
 	collapseWidth?: number;
 	fixed?: boolean;
 	title?: DNode;
@@ -87,12 +89,14 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	}
 
 	protected renderActions(): DNode {
-		const actions = this.children.map((action, index) => v('div', {
+		const { actions = [], theme } = this.properties;
+
+		const actionsElements = actions.map((action, index) => v('div', {
 			classes: [ this.theme(css.action) ],
 			key: index
 		}, [ action ]));
 
-		if (actions.length === 0) {
+		if (actionsElements.length === 0) {
 			return null;
 		}
 
@@ -102,12 +106,12 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			key: 'menu',
 			onRequestClose: this._closeMenu,
 			open: this._open,
-			theme: this.properties.theme,
+			theme,
 			title: 'Menu'
-		}, actions) : v('div', {
+		}, actionsElements) : v('div', {
 			classes: [ this.theme(css.actions), css.actionsFixed ],
 			key: 'menu'
-		}, actions);
+		}, actionsElements);
 	}
 
 	protected renderButton(): DNode {
@@ -139,9 +143,16 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			classes: [ ...this.theme(classes), ...fixedClasses ],
 			key: 'root'
 		}, [
-			this.renderTitle(),
-			this.renderActions(),
-			this.renderButton()
+			v('div', {
+				classes: [ this.theme(css.toolbar), css.toolbarFixed ]
+			}, [
+				this.renderTitle(),
+				this.renderActions(),
+				this.renderButton()
+			]),
+			v('div', {
+				classes: [ this.theme(css.content), css.contentFixed ]
+			}, this.children)
 		]);
 	}
 }

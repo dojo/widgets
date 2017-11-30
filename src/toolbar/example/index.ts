@@ -14,8 +14,25 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
+	onAttach() {
+		const style = document.createElement('style');
+		document.head.appendChild(style);
+		const sheet = style.sheet as CSSStyleSheet;
+		sheet.insertRule('#moduleSelect { position: absolute; left: 0; top: 200px; } ');
+	}
+
 	render() {
-		return v('div', [
+		return w(Toolbar, {
+			actions: [
+				v('a', { href: '/#home' }, [ 'Home' ]),
+				v('a', { href: '/#about' }, [ 'About' ]),
+				v('a', { href: '/#contact' }, [ 'Contact' ])
+			],
+			collapseWidth: 700,
+			fixed: true,
+			theme: this._theme,
+			title: 'Foobar'
+		}, [
 			v('h2', [ 'Toolbar Examples' ]),
 			v('label', [
 				'Use Dojo Theme ',
@@ -23,18 +40,6 @@ export class App extends WidgetBase<WidgetProperties> {
 					type: 'checkbox',
 					onchange: this.themeChange
 				})
-			]),
-			v('div', { id: 'fixed' }, [
-				w(Toolbar, {
-					collapseWidth: 700,
-					fixed: true,
-					theme: this._theme,
-					title: 'Foobar'
-				}, [
-					v('a', { href: '/#home' }, [ 'Home' ]),
-					v('a', { href: '/#about' }, [ 'About' ]),
-					v('a', { href: '/#contact' }, [ 'Contact' ])
-				])
 			])
 		]);
 	}

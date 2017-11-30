@@ -20,6 +20,9 @@ export default function createToolbarElement(): CustomElementDescriptor {
 			{
 				attributeName: 'title'
 			}
+		],
+		properties: [
+			{ propertyName: 'actions' }
 		]
 	};
 }
