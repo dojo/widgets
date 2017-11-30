@@ -1,5 +1,4 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import * as css from './styles/progress.m.css';
@@ -43,7 +42,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 		];
 	}
 
-	render(): DNode {
+	render() {
 		const {
 			value,
 			showOutput = true,
