@@ -1,6 +1,7 @@
 @import '../styles/animations.m.css';
 @import '../styles/base.m.css';
 @import '../styles/icons.m.css';
+@import '../../accordionpane/styles/accordionPane.m.css';
 @import '../../button/styles/button.m.css';
 @import '../../calendar/styles/calendar.m.css';
 @import '../../checkbox/styles/checkbox.m.css';
@@ -18,5 +19,5 @@
 @import '../../textinput/styles/textinput.m.css';
 @import '../../timepicker/styles/timePicker.m.css';
 @import '../../titlepane/styles/titlePane.m.css';
-@import '../../accordionpane/styles/accordionPane.m.css';
+@import '../../toolbar/styles/toolbar.m.css';
 @import '../../tooltip/styles/tooltip.m.css';

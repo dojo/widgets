@@ -1,0 +1,38 @@
+@import '../../common/styles/variables.css';
+
+.actionsFixed {
+	display: flex;
+	flex: 1;
+	justify-content: flex-end;
+}
+
+.menuButtonFixed {
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.rootFixed {
+	display: flex;
+}
+
+.stickyFixed {
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: var(--zindex-fixed);
+}
+
+.titleFixed {
+	flex: 0;
+}
+
+.action { }
+.actions { }
+.collapsed { }
+.menuButton { }
+.root { }
+.sticky { }
+.title { }

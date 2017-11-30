@@ -31,4 +31,5 @@ import '../../../textarea/tests/unit/Textarea';
 import '../../../textinput/tests/unit/TextInput';
 import '../../../timepicker/tests/unit/TimePicker';
 import '../../../titlepane/tests/unit/TitlePane';
+import '../../../toolbar/tests/unit/Toolbar';
 import '../../../tooltip/tests/unit/Tooltip';
