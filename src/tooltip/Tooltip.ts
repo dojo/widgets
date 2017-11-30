@@ -12,7 +12,7 @@ import * as css from './styles/tooltip.m.css';
  *
  * @property content           Information to show within the tooltip
  * @property orientation       Where this tooltip should render relative to its child
- * @property open           Determines if this tooltip is visible
+ * @property open              Determines if this tooltip is visible
  */
 export interface TooltipProperties extends WidgetProperties {
 	content: DNode;
