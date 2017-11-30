@@ -4,9 +4,25 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import Progress from '../../Progress';
 import * as css from '../../styles/progress.m.css';
 
-const expectedVDom = function(width: number, output: string, showOutput = true) {
+const expectedVDom = function(args: any) {
+	const {
+		width,
+		output,
+		value,
+		showOutput = true,
+		max = 100,
+		min = 0
+	} = args;
+
 	return v('div', { classes: css.root }, [
-		v('div', { classes: css.bar }, [
+		v('div', {
+			classes: css.bar,
+			'aria-valuemax': `${max}`,
+			'aria-valuemin': `${min}`,
+			'aria-valuenow': `${value}`,
+			'aria-valuetext': `${output}`,
+			role: 'progressbar'
+		}, [
 			v('div', {
 				classes: css.progress,
 				styles: {
@@ -14,7 +30,7 @@ const expectedVDom = function(width: number, output: string, showOutput = true) 
 				}
 			})
 		]),
-		showOutput ? v('output', [ output ]) : null
+		showOutput ? v('span', [ output ]) : null
 	]);
 };
 
@@ -35,7 +51,7 @@ describe('Progress', () => {
 			value: 50
 		});
 
-		widget.expectRender(expectedVDom(50, '50%'));
+		widget.expectRender(expectedVDom({ width: 50, output: '50%', value: 50 }));
 	});
 
 	it('accepts a max to calculate width', () => {
@@ -44,7 +60,7 @@ describe('Progress', () => {
 			value: 50
 		});
 
-		widget.expectRender(expectedVDom(25, '25%'));
+		widget.expectRender(expectedVDom({ width: 25, output: '25%', value: 50, max: 200 }));
 	});
 
 	it('accepts decimal values', () => {
@@ -53,7 +69,17 @@ describe('Progress', () => {
 			value: 0.2
 		});
 
-		widget.expectRender(expectedVDom(20, '20%'));
+		widget.expectRender(expectedVDom({ width: 20, output: '20%', value: 0.2, max: 1 }));
+	});
+
+	it('accepts a min and max to calculate width', () => {
+		widget.setProperties({
+			min: 100,
+			max: 200,
+			value: 150
+		});
+
+		widget.expectRender(expectedVDom({ width: 50, output: '50%', value: 150, min: 100, max: 200 }));
 	});
 
 	it('accepts an output function', () => {
@@ -62,7 +88,7 @@ describe('Progress', () => {
 			output: (value, percent) => `${value}, ${percent}`
 		});
 
-		widget.expectRender(expectedVDom(50, '50, 50'));
+		widget.expectRender(expectedVDom({ width: 50, output: '50, 50', value: 50 }));
 	});
 
 	it('can hide output', () => {
@@ -71,6 +97,6 @@ describe('Progress', () => {
 			showOutput: false
 		});
 
-		widget.expectRender(expectedVDom(50, '', false));
+		widget.expectRender(expectedVDom({ width: 50, value: 50, output: '50%', showOutput: false }));
 	});
 });

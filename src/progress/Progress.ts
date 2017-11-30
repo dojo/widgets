@@ -13,12 +13,14 @@ import * as css from './styles/progress.m.css';
  * @property output...........A function used to determine the output display
  * @property showOutput.......Toggles visibility of progess bar output
  * @property max..............Value used to calculate percent width
+ * @property min..............Value used to calculate percent width
  */
 export interface ProgressProperties extends ThemedProperties {
 	value: number;
 	output?(value: number, percent: number): string;
 	showOutput?: boolean;
 	max?: number;
+	min?: number;
 }
 
 export const ProgressBase = ThemedMixin(WidgetBase);
@@ -30,25 +32,38 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 		return output ? output(value, percent) : `${percent}%`;
 	}
 
+	protected renderProgress(percent: number) {
+		return [
+			v('div', {
+				classes: this.theme(css.progress),
+				styles: {
+					width: `${percent}%`
+				}
+			})
+		];
+	}
+
 	render(): DNode {
 		const {
 			value,
 			showOutput = true,
-			max = 100
+			max = 100,
+			min = 0
 		} = this.properties;
 
-		const percent = Math.round((value / max) * 100);
+		const percent = Math.round(((value - min) / (max - min)) * 100);
+		const output = this._output(value, percent);
 
 		return v('div', { classes: this.theme(css.root) }, [
-			v('div', { classes: this.theme(css.bar) }, [
-				v('div', {
-					classes: this.theme(css.progress),
-					styles: {
-						width: `${percent}%`
-					}
-				})
-			]),
-			showOutput ? v('output', [ this._output(value, percent) ]) : null
+			v('div', {
+				classes: this.theme(css.bar),
+				role: 'progressbar',
+				'aria-valuemin': `${min}`,
+				'aria-valuemax': `${max}`,
+				'aria-valuenow': `${value}`,
+				'aria-valuetext': output
+			}, this.renderProgress(percent)),
+			showOutput ? v('span', [ output ]) : null
 		]);
 	}
 }
