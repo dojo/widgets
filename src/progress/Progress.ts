@@ -63,7 +63,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 				'aria-valuenow': `${value}`,
 				'aria-valuetext': output
 			}, this.renderProgress(percent)),
-			showOutput ? v('span', [ output ]) : null
+			showOutput ? v('span', { classes: this.theme(css.output) }, [ output ]) : null
 		]);
 	}
 }
