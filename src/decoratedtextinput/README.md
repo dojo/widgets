@@ -1,6 +1,6 @@
-# @dojo/widgets/decoratedtextinput/DecoratedTextInput widget
+# @dojo/widgets/enhancedtextinput/EnhancedTextInput widget
 
-Dojo 2's `DecoratedTextInput` widget extends `TextInput` to provide optional addons before or after the input, similar to those in (bootstrap)[https://v4-alpha.getbootstrap.com/components/input-group/#basic-example].
+Dojo 2's `EnhancedTextInput` widget extends `TextInput` to provide optional addons before or after the input, similar to those in (bootstrap)[https://v4-alpha.getbootstrap.com/components/input-group/#basic-example].
 
 
 ## Features
@@ -10,15 +10,15 @@ Dojo 2's `DecoratedTextInput` widget extends `TextInput` to provide optional add
 
 ### Accessibility Features
 
-The `DecoratedTextInput` does not add any built-in accessibility features above what is available in `TextInput`. If this widget is used, it should be done with careful consideration of what instructional text is needed to convey the information visually implied by the addon or addons. This should be done in the label text, and optionally supplemented by custom descriptive text and `aria-describedby`.
+The `EnhancedTextInput` does not add any built-in accessibility features above what is available in `TextInput`. If this widget is used, it should be done with attention to what instructional text is needed to convey the information visually implied by the addon or addons. This can be done in the label text, and optionally supplemented by custom descriptive text and `aria-describedby`.
 
-After careful consideration we decided not to automatically point the input's `aria-describedby` attribute to the `id` or `id`s of the addons, as Bootstrap does in their examples. In all the cases we examined, the text of the addon was insufficient to describe the input required of the user, and in many cases it was actually more confusing.
+After careful consideration we decided not to automatically point the input's `aria-describedby` attribute to the `id` or `id`s of the addons, as Bootstrap does in some of their examples. While this may be a helpful technique in a few select cases, many of the common addon text snippets -- e.g. `@` or `.00` -- were either insufficient to describe the user input required, or even potentially more confusing than nothing at all. Input addons rely so heavily on visual context to convey meaning that any programmatic attempt to generate good descriptive text will likely fail too often to be useful.
 
 ## Example Usage
 
 ```typescript
 // Basic usage
-w(DecoratedTextInput, {
+w(EnhancedTextInput, {
 	addonBefore: [ '@' ],
 	describedBy: 'twitter-desc',
 	label: 'Twitter Username',
@@ -33,7 +33,7 @@ v('span', {
 }, [ 'Not including the "@" symbol' ]);
 
 // Advanced usage
-w(DecoratedTextInput, {
+w(EnhancedTextInput, {
 	addonBefore: [ '$' ],
 	addonAfter: [ '.00' ],
 	label: 'Price, rounded to the nearest dollar',
@@ -47,7 +47,7 @@ w(DecoratedTextInput, {
 
 ## Theming
 
-The following CSS classes are available on the `DecoratedTextInput` widget for use with custom themes:
+The following CSS classes are available on the `EnhancedTextInput` widget for use with custom themes:
 
 - `addon`: Applied to the span that contains the addon
 - `inputWrapper`: Applied to the immediate parent of the `<input>`

@@ -1,8 +1,8 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties, TypedTargetEvent } from '@dojo/widget-core/interfaces';
+import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import DecoratedTextInput from '../DecoratedTextInput';
+import EnhancedTextInput from '../EnhancedTextInput';
 import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
@@ -11,7 +11,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value2: string;
 
 	themeChange(event: Event) {
-		const checked = (<HTMLInputElement> event.target).checked;
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
@@ -30,7 +30,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('div', { id: 'example-text' }, [
 				v('h3', {}, ['String label']),
-				w(DecoratedTextInput, {
+				w(EnhancedTextInput, {
 					key: 't1',
 					addonBefore: [ '@' ],
 					describedBy: 'twitter-desc',
@@ -38,8 +38,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					type: 'text',
 					placeholder: 'username',
 					value: this._value1,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-						this._value1 = event.target.value;
+					onChange: (event: Event) => {
+						this._value1 = (event.target as HTMLInputElement).value;
 						this.invalidate();
 					},
 					theme: this._theme
@@ -48,15 +48,15 @@ export class App extends WidgetBase<WidgetProperties> {
 					id: 'twitter-desc'
 				}, [ 'Not including the "@" symbol' ]),
 				v('br'),
-				w(DecoratedTextInput, {
+				w(EnhancedTextInput, {
 					key: 't2',
 					addonBefore: [ '$' ],
 					addonAfter: [ '.00' ],
 					label: 'Price, rounded to the nearest dollar',
 					type: 'number',
 					value: this._value2,
-					onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-						this._value2 = event.target.value;
+					onChange: (event: Event) => {
+						this._value2 = (event.target as HTMLInputElement).value;
 						this.invalidate();
 					},
 					theme: this._theme

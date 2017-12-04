@@ -8,9 +8,9 @@ import { v, w } from '@dojo/widget-core/d';
 import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
-import DecoratedTextInput from '../../DecoratedTextInput';
+import EnhancedTextInput from '../../EnhancedTextInput';
 import Label from '../../../label/Label';
-import * as css from '../../styles/decoratedtextinput.m.css';
+import * as css from '../../styles/enhancedtextinput.m.css';
 import * as textInputCss from '../../../textinput/styles/textinput.m.css';
 
 const expected = function(label = false, addonBefore = false, addonAfter = false, classes: (string | null)[] = [ textInputCss.root, null, null, null, null, null ]) {
@@ -70,12 +70,12 @@ const expected = function(label = false, addonBefore = false, addonAfter = false
 	}
 };
 
-let widget: Harness<DecoratedTextInput>;
+let widget: Harness<EnhancedTextInput>;
 
-registerSuite('DecoratedTextInput', {
+registerSuite('EnhancedTextInput', {
 
 	beforeEach() {
-		widget = harness(DecoratedTextInput);
+		widget = harness(EnhancedTextInput);
 	},
 
 	afterEach() {

@@ -15,7 +15,7 @@ import '../../../calendar/tests/unit/DatePicker';
 import '../../../checkbox/tests/unit/Checkbox';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';
-import '../../../decoratedtextinput/tests/unit/DecoratedTextInput';
+import '../../../enhancedtextinput/tests/unit/EnhancedTextInput';
 import '../../../label/tests/unit/Label';
 import '../../../listbox/tests/unit/Listbox';
 import '../../../listbox/tests/unit/ListboxOption';

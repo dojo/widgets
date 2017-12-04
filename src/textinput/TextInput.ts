@@ -85,8 +85,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 			readOnly,
 			required,
 			type = 'text',
-			value,
-			theme
+			value
 		} = this.properties;
 
 		return v('input', {
@@ -134,7 +133,8 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 			labelAfter = false,
 			labelHidden = false,
 			readOnly,
-			required
+			required,
+			theme
 		} = this.properties;
 
 		const children = [
