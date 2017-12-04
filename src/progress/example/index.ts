@@ -13,8 +13,8 @@ function customOutput(value: number, percent: number) {
 export class App extends WidgetBase<WidgetProperties> {
 	private _theme: {};
 
-	themeChange(event: TypedTargetEvent<HTMLInputElement>) {
-		const checked = event.target.checked;
+	themeChange(event: Event) {
+		const checked = (event.target as HTMLInputElement).checked;
 		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
