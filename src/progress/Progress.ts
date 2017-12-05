@@ -9,11 +9,11 @@ import { HNode } from '@dojo/widget-core/interfaces';
  *
  * Properties that can be set on a Progress component
  *
- * @property value            The current value
- * @property output...........A function used to determine the output display
- * @property showOutput.......Toggles visibility of progess bar output
- * @property max..............Value used to calculate percent width
- * @property min..............Value used to calculate percent width
+ * @property value          The current value
+ * @property output         A function used to determine the output display
+ * @property showOutput     Toggles visibility of progess bar output
+ * @property max            Value used to calculate percent width
+ * @property min            Value used to calculate percent width
  */
 export interface ProgressProperties extends ThemedProperties {
 	value: number;
