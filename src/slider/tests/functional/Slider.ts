@@ -33,7 +33,7 @@ function checkValue(command: any, values?: number[]) {
 					const absWidthRegex = /width:\s*(\d+)\.?\d*%/;
 					let result = style.match(absWidthRegex);
 					let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
-					assert.lengthOf(result, 2);
+					assert.lengthOf(result!, 2);
 					notIE && assert.closeTo(width, currentValue, 1);
 				})
 			.end()
@@ -43,7 +43,7 @@ function checkValue(command: any, values?: number[]) {
 					const absWidthRegex = /left:\s*(\d+)\.?\d*%/;
 					let result = style.match(absWidthRegex);
 					let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
-					assert.lengthOf(result, 2);
+					assert.lengthOf(result!, 2);
 					notIE && assert.closeTo(width, currentValue, 1);
 					values && values.push(width);
 				})
