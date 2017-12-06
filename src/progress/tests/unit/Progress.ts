@@ -11,7 +11,8 @@ const expectedVDom = function(args: any) {
 		value,
 		showOutput = true,
 		max = 100,
-		min = 0
+		min = 0,
+		id
 	} = args;
 
 	return v('div', { classes: css.root }, [
@@ -21,7 +22,8 @@ const expectedVDom = function(args: any) {
 			'aria-valuemin': `${min}`,
 			'aria-valuenow': `${value}`,
 			'aria-valuetext': `${output}`,
-			role: 'progressbar'
+			role: 'progressbar',
+			id
 		}, [
 			v('div', {
 				classes: css.progress,
@@ -98,5 +100,14 @@ describe('Progress', () => {
 		});
 
 		widget.expectRender(expectedVDom({ width: 50, value: 50, output: '50%', showOutput: false }));
+	});
+
+	it('can accept an id', () => {
+		widget.setProperties({
+			value: 50,
+			id: 'my-id'
+		});
+
+		widget.expectRender(expectedVDom({ width: 50, output: '50%', value: 50, id: 'my-id' }));
 	});
 });

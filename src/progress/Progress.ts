@@ -14,6 +14,7 @@ import { HNode } from '@dojo/widget-core/interfaces';
  * @property showOutput     Toggles visibility of progess bar output
  * @property max            Value used to calculate percent width
  * @property min            Value used to calculate percent width
+ * @property id             Value used to supply a dom id
  */
 export interface ProgressProperties extends ThemedProperties {
 	value: number;
@@ -21,6 +22,7 @@ export interface ProgressProperties extends ThemedProperties {
 	showOutput?: boolean;
 	max?: number;
 	min?: number;
+	id?: string;
 }
 
 export const ProgressBase = ThemedMixin(WidgetBase);
@@ -48,7 +50,8 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 			value,
 			showOutput = true,
 			max = 100,
-			min = 0
+			min = 0,
+			id
 		} = this.properties;
 
 		const percent = Math.round(((value - min) / (max - min)) * 100);
@@ -61,7 +64,8 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 				'aria-valuemin': `${min}`,
 				'aria-valuemax': `${max}`,
 				'aria-valuenow': `${value}`,
-				'aria-valuetext': output
+				'aria-valuetext': output,
+				id
 			}, this.renderProgress(percent)),
 			showOutput ? v('span', { classes: this.theme(css.output) }, [ output ]) : null
 		]);
