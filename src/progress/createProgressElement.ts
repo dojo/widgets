@@ -22,8 +22,7 @@ export default function createProgressElement(): CustomElementDescriptor {
 				value: value => Number(value)
 			},
 			{
-				attributeName: 'min',
-				value: value => Number(value)
+				attributeName: 'id'
 			},
 			{
 				attributeName: 'showOutput',
