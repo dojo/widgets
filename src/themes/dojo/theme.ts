@@ -7,6 +7,7 @@ import * as dialog from './dialog.m.css';
 import * as icons from './icons.m.css';
 import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
+import * as progress from './progress.m.css';
 import * as radio from './radio.m.css';
 import * as select from './select.m.css';
 import * as slidePane from './slidePane.m.css';
@@ -28,6 +29,7 @@ export default {
 	'dojo-icons': icons,
 	'dojo-label': label,
 	'dojo-listbox': listbox,
+	'dojo-progress': progress,
 	'dojo-radio': radio,
 	'dojo-select': select,
 	'dojo-slidePane': slidePane,
