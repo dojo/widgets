@@ -12,13 +12,13 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 
 @theme(css)
 export default class EnhancedTextInput extends TextInput<EnhancedTextInputProperties> {
-	protected renderAddon(addon: DNode, before = false) {
+	protected renderAddon(addon: DNode, before = false): DNode {
 		return v('span', {
 			classes: this.theme([css.addon, before ? css.addonBefore : css.addonAfter])
 		}, [ addon ]);
 	}
 
-	protected renderInputWrapper() {
+	protected renderInputWrapper(): DNode {
 		let {
 			addonAfter = [],
 			addonBefore = []
