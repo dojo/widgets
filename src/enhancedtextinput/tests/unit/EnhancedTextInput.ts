@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import EnhancedTextInput from '../../EnhancedTextInput';
@@ -13,14 +13,20 @@ import Label from '../../../label/Label';
 import * as css from '../../styles/enhancedtextinput.m.css';
 import * as textInputCss from '../../../textinput/styles/textinput.m.css';
 
+const compareId = compareProperty((value: any) => {
+	return typeof value === 'string';
+});
+
 const expected = function(label = false, addonBefore = false, addonAfter = false, classes: (string | null)[] = [ textInputCss.root, null, null, null, null, null ]) {
 	const children = [
 		v('input', {
-			classes: css.input,
 			'aria-controls': undefined,
 			'aria-describedby': undefined,
-			disabled: undefined,
 			'aria-invalid': null,
+			classes: css.input,
+			disabled: undefined,
+			id: <any> compareId,
+			key: 'input',
 			maxlength: null,
 			minlength: null,
 			name: undefined,
@@ -56,18 +62,21 @@ const expected = function(label = false, addonBefore = false, addonAfter = false
 		}, [ 'bar' ]));
 	}
 
-	if (label) {
-		return w(Label, {
-			extraClasses: { root: textInputCss.root },
-			label: 'foo',
-			theme: undefined
-		}, [ v('div', { classes: css.inputWrapper }, children) ]);
-	}
-	else {
-		return v('div', {
-			classes
-		}, [ v('div', { classes: css.inputWrapper }, children) ]);
-	}
+	return v('div', {
+		key: 'root',
+		classes
+	}, [
+		label ? w(Label, {
+			theme: undefined,
+			disabled: undefined,
+			hidden: false,
+			invalid: undefined,
+			readOnly: undefined,
+			required: undefined,
+			forId: <any> compareId
+		}, [ 'foo' ]) : null,
+		v('div', { classes: css.inputWrapper }, children)
+	]);
 };
 
 let widget: Harness<EnhancedTextInput>;
@@ -126,7 +135,7 @@ registerSuite('EnhancedTextInput', {
 				assignProperties(expectedVdom, {
 					classes: [ textInputCss.root, null, null, null, null, null ]
 				});
-				assignChildProperties(expectedVdom, '0,0', {
+				assignChildProperties(expectedVdom, '1,0', {
 					'aria-controls': 'foo',
 					'aria-describedby': 'bar',
 					maxlength: '50',
@@ -157,7 +166,7 @@ registerSuite('EnhancedTextInput', {
 				});
 
 				let expectedVdom = expected(false, false, false, [ textInputCss.root, textInputCss.disabled, textInputCss.invalid, null, textInputCss.readonly, textInputCss.required ]);
-				assignChildProperties(expectedVdom, '0,0', {
+				assignChildProperties(expectedVdom, '1,0', {
 					disabled: true,
 					'aria-invalid': 'true',
 					readOnly: true,
@@ -175,7 +184,7 @@ registerSuite('EnhancedTextInput', {
 				});
 				expectedVdom = expected();
 
-				assignChildProperties(expectedVdom, '0,0', {
+				assignChildProperties(expectedVdom, '1,0', {
 					disabled: false,
 					readOnly: false,
 					required: false
@@ -196,16 +205,19 @@ registerSuite('EnhancedTextInput', {
 					required: true
 				});
 
-				const expectedVdom = expected(true);
-				assignChildProperties(expectedVdom, '0,0', {
+				const expectedVdom = expected(true, false, false, [ textInputCss.root, textInputCss.disabled, textInputCss.invalid, null, textInputCss.readonly, textInputCss.required ]);
+				assignChildProperties(expectedVdom, '1,0', {
 					disabled: true,
 					'aria-invalid': 'true',
 					readOnly: true,
 					'aria-readonly': 'true',
 					required: true
 				});
-				assignProperties(expectedVdom, {
-					extraClasses: { root: `${textInputCss.root} ${textInputCss.disabled} ${textInputCss.invalid} ${textInputCss.readonly} ${textInputCss.required}` }
+				assignChildProperties(expectedVdom, '0', {
+					disabled: true,
+					invalid: true,
+					readOnly: true,
+					required: true
 				});
 				widget.expectRender(expectedVdom);
 			},

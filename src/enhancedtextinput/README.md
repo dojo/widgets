@@ -1,6 +1,6 @@
 # @dojo/widgets/enhancedtextinput/EnhancedTextInput widget
 
-Dojo 2's `EnhancedTextInput` widget extends `TextInput` to provide optional addons before or after the input, similar to those in (bootstrap)[https://v4-alpha.getbootstrap.com/components/input-group/#basic-example].
+Dojo 2's `EnhancedTextInput` widget extends `TextInput` to provide optional addons before or after the input, similar to those in [bootstrap](https://v4-alpha.getbootstrap.com/components/input-group/#basic-example).
 
 
 ## Features
@@ -50,5 +50,7 @@ w(EnhancedTextInput, {
 The following CSS classes are available on the `EnhancedTextInput` widget for use with custom themes:
 
 - `addon`: Applied to the span that contains the addon
+- `addonBefore`: Applied to addons that come before the input
+- `addonAfter`: Applied to addons positioned after the input
 - `inputWrapper`: Applied to the immediate parent of the `<input>`
 - `input`: Applied to the `<input>` element

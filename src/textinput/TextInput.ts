@@ -89,11 +89,13 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 		} = this.properties;
 
 		return v('input', {
-			classes: this.theme(css.input),
 			'aria-controls': controls,
 			'aria-describedby': describedBy,
-			disabled,
 			'aria-invalid': invalid ? 'true' : null,
+			classes: this.theme(css.input),
+			disabled,
+			id: this._uuid,
+			key: 'input',
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,
 			name,
