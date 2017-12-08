@@ -3,7 +3,7 @@ import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { v, w } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
-import Toolbar from '../../Toolbar';
+import Toolbar, { Position } from '../../Toolbar';
 import SlidePane, { Align } from '../../../slidepane/SlidePane';
 import * as css from '../../styles/toolbar.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
@@ -24,7 +24,33 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed
+					css.rootFixed,
+					css.onTopFixed
+				],
+				key: 'root'
+			}, [
+				v('div', {
+					classes: [
+						css.toolbar,
+						css.toolbarFixed
+					]
+				}, [ null, null, null]),
+				v('div', {
+					classes: [
+						css.content,
+						css.contentFixed
+					]
+				}, [])
+			]));
+		},
+
+		'bottom-positioned rendering'() {
+			toolbar.setProperties({ position: Position.bottom });
+			toolbar.expectRender(v('div', {
+				classes: [
+					css.root,
+					css.rootFixed,
+					css.onBottomFixed
 				],
 				key: 'root'
 			}, [
@@ -58,7 +84,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed
+					css.rootFixed,
+					css.onTopFixed
 				],
 				key: 'root'
 			}, [
@@ -83,6 +110,7 @@ registerSuite('Toolbar', {
 				classes: [
 					css.root,
 					css.rootFixed,
+					css.onTopFixed,
 					css.sticky,
 					css.stickyFixed
 				],
@@ -108,7 +136,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed
+					css.rootFixed,
+					css.onTopFixed
 				],
 				key: 'root'
 			}, [
@@ -138,7 +167,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed
+					css.rootFixed,
+					css.onTopFixed
 				],
 				key: 'root'
 			}, [
@@ -202,7 +232,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed
+					css.rootFixed,
+					css.onTopFixed
 				],
 				key: 'root'
 			}, [
@@ -225,7 +256,8 @@ registerSuite('Toolbar', {
 				classes: [
 					css.root,
 					css.rootFixed,
-					css.collapsed
+					css.collapsed,
+					css.onTopFixed
 				],
 				key: 'root'
 			}, [
@@ -255,7 +287,8 @@ registerSuite('Toolbar', {
 				classes: [
 					css.root,
 					css.rootFixed,
-					css.collapsed
+					css.collapsed,
+					css.onTopFixed
 				],
 				key: 'root'
 			}, [

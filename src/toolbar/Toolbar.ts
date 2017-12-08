@@ -9,6 +9,14 @@ import * as css from './styles/toolbar.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
 
 /**
+ * Enum for toolbar positioning
+ */
+export const enum Position {
+	bottom = 'onBottomFixed',
+	top = 'onTopFixed'
+};
+
+/**
  * @type ToolbarProperties
  *
  * Properties that can be set on a Toolbar component
@@ -17,6 +25,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property collapseWidth     Width at which to collapse actions into a SlidePane
  * @property fixed             Fixes the toolbar to the top of the viewport
  * @property onCollapse        Called when action items change their layout
+ * @property position          Determines toolbar position in relation to child contet
  * @property title             Element to show as the toolbar title
  */
 export interface ToolbarProperties extends WidgetProperties {
@@ -24,6 +33,7 @@ export interface ToolbarProperties extends WidgetProperties {
 	collapseWidth?: number;
 	fixed?: boolean;
 	onCollapse?(collapsed: boolean): void;
+	position?: Position;
 	title?: DNode;
 };
 
@@ -67,9 +77,11 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	}
 
 	protected getFixedRootClasses(): (string | null)[] {
+		const { fixed, position = Position.top } = this.properties;
 		return [
 			css.rootFixed,
-			this.properties.fixed ? css.stickyFixed : null
+			fixed ? css.stickyFixed : null,
+			(css as any)[position]
 		];
 	}
 

@@ -17,7 +17,7 @@
 	height: 100%;
 	left: 0;
 	overflow: hidden;
-	position: fixed;
+	position: absolute;
 	top: 0;
 	width: 100%;
 	z-index: var(--zindex-fixed);
@@ -33,6 +33,10 @@
 	flex-shrink: 0;
 }
 
+.onBottomFixed .toolbarFixed {
+	order: 1;
+}
+
 .stickyFixed {
 	display: flex;
 	flex-direction: column;
@@ -46,6 +50,10 @@
 .stickyFixed .contentFixed {
 	flex: 1;
 	overflow-y: auto;
+}
+
+.onBottomFixed .contentFixed {
+	order: 0;
 }
 
 .action { }
