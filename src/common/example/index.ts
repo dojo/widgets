@@ -22,6 +22,7 @@ const modules = [
 	'tabcontroller',
 	'textarea',
 	'textinput',
+	'enhancedtextinput',
 	'timepicker',
 	'titlepane',
 	'tooltip'

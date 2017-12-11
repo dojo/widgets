@@ -72,15 +72,12 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 		];
 	}
 
-	render(): DNode {
+	protected renderInput(): DNode {
 		const {
 			controls,
 			describedBy,
 			disabled,
 			invalid,
-			label,
-			labelAfter = false,
-			labelHidden = false,
 			maxLength,
 			minLength,
 			name,
@@ -88,7 +85,57 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 			readOnly,
 			required,
 			type = 'text',
+			value
+		} = this.properties;
+
+		return v('input', {
+			'aria-controls': controls,
+			'aria-describedby': describedBy,
+			'aria-invalid': invalid ? 'true' : null,
+			classes: this.theme(css.input),
+			disabled,
+			id: this._uuid,
+			key: 'input',
+			maxlength: maxLength ? `${maxLength}` : null,
+			minlength: minLength ? `${minLength}` : null,
+			name,
+			placeholder,
+			readOnly,
+			'aria-readonly': readOnly ? 'true' : null,
+			required,
+			type,
 			value,
+			onblur: this._onBlur,
+			onchange: this._onChange,
+			onclick: this._onClick,
+			onfocus: this._onFocus,
+			oninput: this._onInput,
+			onkeydown: this._onKeyDown,
+			onkeypress: this._onKeyPress,
+			onkeyup: this._onKeyUp,
+			onmousedown: this._onMouseDown,
+			onmouseup: this._onMouseUp,
+			ontouchstart: this._onTouchStart,
+			ontouchend: this._onTouchEnd,
+			ontouchcancel: this._onTouchCancel
+		});
+	}
+
+	protected renderInputWrapper(): DNode {
+		return v('div', { classes: this.theme(css.inputWrapper) }, [
+			this.renderInput()
+		]);
+	}
+
+	render(): DNode {
+		const {
+			disabled,
+			invalid,
+			label,
+			labelAfter = false,
+			labelHidden = false,
+			readOnly,
+			required,
 			theme
 		} = this.properties;
 
@@ -102,39 +149,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 				hidden: labelHidden,
 				forId: this._uuid
 			}, [ label ]) : null,
-			v('div', { classes: this.theme(css.inputWrapper) }, [
-				v('input', {
-					id: this._uuid,
-					key: 'input',
-					classes: this.theme(css.input),
-					'aria-controls': controls,
-					'aria-describedby': describedBy,
-					disabled,
-					'aria-invalid': invalid ? 'true' : null,
-					maxlength: maxLength ? `${maxLength}` : null,
-					minlength: minLength ? `${minLength}` : null,
-					name,
-					placeholder,
-					readOnly,
-					'aria-readonly': readOnly ? 'true' : null,
-					required,
-					type,
-					value,
-					onblur: this._onBlur,
-					onchange: this._onChange,
-					onclick: this._onClick,
-					onfocus: this._onFocus,
-					oninput: this._onInput,
-					onkeydown: this._onKeyDown,
-					onkeypress: this._onKeyPress,
-					onkeyup: this._onKeyUp,
-					onmousedown: this._onMouseDown,
-					onmouseup: this._onMouseUp,
-					ontouchstart: this._onTouchStart,
-					ontouchend: this._onTouchEnd,
-					ontouchcancel: this._onTouchCancel
-				})
-			])
+			this.renderInputWrapper()
 		];
 
 		return v('div', {
