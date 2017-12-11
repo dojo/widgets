@@ -31,8 +31,6 @@
 	z-index: calc(var(--zindex-base) + 1);
 }
 
-@import '../../common/styles/variables.css';
-
 .root, .root * {
 	box-sizing: border-box;
 }

@@ -210,8 +210,8 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 			'aria-haspopup': 'true',
 			id: `${this._idBase}_${type}_button`,
 			classes: this.theme([
-				(css as any)[`${type}Trigger`],
-				open ? (css as any)[`${type}TriggerActive`] : null
+				(themeCss as any)[`${type}Trigger`],
+				open ? (themeCss as any)[`${type}TriggerActive`] : null
 			]),
 			role: 'menuitem',
 			onclick
