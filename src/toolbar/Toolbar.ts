@@ -143,7 +143,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	protected renderTitle(): DNode {
 		const { title } = this.properties;
 
-		return title ? v('h1', {
+		return title ? v('div', {
 			classes: [ this.theme(css.title), css.titleFixed ]
 		}, [ title ]) : null;
 	}

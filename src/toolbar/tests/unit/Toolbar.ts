@@ -147,7 +147,7 @@ registerSuite('Toolbar', {
 						css.toolbarFixed
 					]
 				}, [
-					v('h1', {
+					v('div', {
 						classes: [ css.title, css.titleFixed ]
 					}, [ 'test' ]),
 					null,
