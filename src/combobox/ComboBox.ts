@@ -16,7 +16,7 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 // import * as css from './styles/comboBox.m.css';
 import * as themeCss from '../theme/combobox/comboBox.m.css';
-import * as iconCss from '../theme/common/styles/icons.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * @type ComboBoxProperties

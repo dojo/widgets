@@ -4,7 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/tooltip.m.css';
-import * as themeCss from './styles/tooltip.m.css';
+import * as themeCss from '../theme/tooltip/tooltip.m.css';
 
 /**
  * @type TooltipProperties

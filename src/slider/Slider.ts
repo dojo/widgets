@@ -80,16 +80,16 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		} = this.properties;
 
 		return v('div', {
-			classes: [ this.theme(cssTheme.track), css.trackFixed ],
+			classes: [ this.theme(themeCss.track), css.trackFixed ],
 			'aria-hidden': 'true',
 			styles: vertical ? { width: verticalHeight } : {}
 		}, [
 			v('span', {
-				classes: [ this.theme(cssTheme.fill), css.fillFixed ],
+				classes: [ this.theme(themeCss.fill), css.fillFixed ],
 				styles: { width: `${percentValue}%` }
 			}),
 			v('span', {
-				classes: [ this.theme(cssTheme.thumb), css.thumbFixed ],
+				classes: [ this.theme(themeCss.thumb), css.thumbFixed ],
 				styles: { left: `${percentValue}%` }
 			})
 		]);
@@ -111,7 +111,7 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		}
 
 		return v('output', {
-			classes: [ this.theme(cssTheme.output), outputIsTooltip ? css.outputTooltip : null ],
+			classes: [ this.theme(themeCss.output), outputIsTooltip ? css.outputTooltip : null ],
 			for: this._inputId,
 			styles: outputStyles
 		}, [ outputNode ]);
@@ -146,12 +146,12 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		const percentValue = (value - min) / (max - min) * 100;
 
 		const slider = v('div', {
-			classes: [ this.theme(cssTheme.inputWrapper), css.inputWrapperFixed ],
+			classes: [ this.theme(themeCss.inputWrapper), css.inputWrapperFixed ],
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
 				key: 'input',
-				classes: [ this.theme(cssTheme.input), css.nativeInput ],
+				classes: [ this.theme(themeCss.input), css.nativeInput ],
 				'aria-describedby': describedBy,
 				disabled,
 				id: this._inputId,

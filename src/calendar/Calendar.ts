@@ -12,7 +12,7 @@ import DatePicker, { Paging } from './DatePicker';
 import calendarBundle from './nls/Calendar';
 import * as calendarThemeCss from '../theme/calendar/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconThemeCss from '../common/styles/icons.m.css';
+import * as iconThemeCss from '../theme/common/icons.m.css';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 
