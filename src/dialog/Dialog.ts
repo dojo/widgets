@@ -8,7 +8,8 @@ import { Keys } from '../common/util';
 import commonBundle from '../common/nls/common';
 
 import * as css from './styles/dialog.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
+import * as themeCss from '../theme/dialog/dialog.m.css';
 import * as animations from '../common/styles/animations.m.css';
 
 /**
@@ -50,6 +51,7 @@ export interface DialogProperties extends ThemedProperties {
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
+@theme(themeCss)
 @theme(iconCss)
 export default class Dialog<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
 	private _titleId = uuid();
@@ -85,7 +87,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 
 	protected getContent(): DNode {
 		return v('div', {
-			classes: this.theme(css.content),
+			classes: this.theme(themeCss.content),
 			key: 'content'
 		}, this.children);
 	}
@@ -104,7 +106,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 	protected renderUnderlay(): DNode {
 		const { underlay } = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
+			classes: [ this.theme(underlay ? themeCss.underlayVisible : null), css.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay',
@@ -134,24 +136,24 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 		this._wasOpen = open;
 
 		return v('div', {
-			classes: this.theme(css.root)
+			classes: this.theme(themeCss.root)
 		}, open ? [
 			this.renderUnderlay(),
 			v('div', {
 				'aria-labelledby': this._titleId,
-				classes: this.theme(css.main),
+				classes: this.theme(themeCss.main),
 				enterAnimation,
 				exitAnimation,
 				key: 'main',
 				role
 			}, [
 				v('div', {
-					classes: this.theme(css.title),
+					classes: this.theme(themeCss.title),
 					key: 'title'
 				}, [
 					this.renderTitle(),
 					closeable ? v('button', {
-						classes: this.theme(css.close),
+						classes: this.theme(themeCss.close),
 						onclick: this._onCloseClick
 					}, [
 						closeText,

@@ -14,8 +14,9 @@ import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import commonBundle from '../common/nls/common';
 import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
-import * as css from './styles/comboBox.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+// import * as css from './styles/comboBox.m.css';
+import * as themeCss from '../theme/combobox/comboBox.m.css';
+import * as iconCss from '../theme/common/styles/icons.m.css';
 
 /**
  * @type ComboBoxProperties
@@ -69,7 +70,7 @@ export const enum Operation {
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
-@theme(css)
+@theme(themeCss)
 @theme(iconCss)
 @diffProperty('results', reference)
 export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
@@ -303,7 +304,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		return v('button', {
 			key: 'clear',
 			'aria-controls': this._getMenuId(),
-			classes: this.theme(css.clear),
+			classes: this.theme(themeCss.clear),
 			disabled,
 			readOnly,
 			onclick: this._onClearClick
@@ -324,7 +325,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 
 		return v('button', {
 			key: 'trigger',
-			classes: this.theme(css.trigger),
+			classes: this.theme(themeCss.trigger),
 			disabled,
 			readOnly,
 			tabIndex: -1,
@@ -348,7 +349,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 
 		return v('div', {
 			key: 'dropdown',
-			classes: this.theme(css.dropdown),
+			classes: this.theme(themeCss.dropdown),
 			onmouseover: this._onResultHover,
 			onmousedown: this._onResultMouseDown
 		}, [
@@ -406,7 +407,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 				forId: id
 			}, [ label ]) : null,
 			v('div', {
-				classes: this.theme(css.controls)
+				classes: this.theme(themeCss.controls)
 			}, [
 				this.renderInput(),
 				clearable ? this.renderClearButton(messages) : null,
@@ -422,10 +423,10 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			'aria-required': required ? 'true' : 'false',
 			id,
 			classes: this.theme([
-				css.root,
-				this._open ? css.open : null,
-				invalid === true ? css.invalid : null,
-				invalid === false ? css.valid : null
+				themeCss.root,
+				this._open ? themeCss.open : null,
+				invalid === true ? themeCss.invalid : null,
+				invalid === false ? themeCss.valid : null
 			]),
 			key: 'root',
 			role: 'combobox'

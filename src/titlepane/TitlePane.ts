@@ -5,7 +5,8 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/titlePane.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as themeCss from '../theme/titlepane/titlePane.m.css';
+import * as iconThemeCss from '../theme/common/icons.m.css';
 
 /**
  * @type TitlePaneProperties
@@ -30,8 +31,8 @@ export interface TitlePaneProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
-@theme(iconCss)
+@theme(themeCss)
+@theme(iconThemeCss)
 export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
 	private _contentId = uuid();
 	private _titleId = uuid();
@@ -96,7 +97,7 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 	protected getModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
 		return [
-			closeable ? css.closeable : null
+			closeable ? themeCss.closeable : null
 		];
 	}
 
@@ -108,9 +109,9 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 		const { open = true } = this.properties;
 		return v('i', {
 			classes: this.theme([
-				css.arrow,
-				iconCss.icon,
-				open ? iconCss.downIcon : iconCss.rightIcon
+				themeCss.arrow,
+				iconThemeCss.icon,
+				open ? iconThemeCss.downIcon : iconThemeCss.rightIcon
 			]),
 			role: 'presentation',
 			'aria-hidden': 'true'
@@ -126,20 +127,20 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 
 		return v('div', {
 			classes: [ ...this.theme([
-				css.root,
-				open ? css.open : null
+				themeCss.root,
+				open ? themeCss.open : null
 			]), css.rootFixed ]
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
-				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), css.titleFixed, ...this.getFixedModifierClasses() ],
+				classes: [ ...this.theme([ themeCss.title, ...this.getModifierClasses() ]), css.titleFixed, ...this.getFixedModifierClasses() ],
 				role: 'heading'
 			}, [
 				v('button', {
 					'aria-controls': this._contentId,
 					'aria-expanded': String(open),
 					disabled: !closeable,
-					classes: this.theme(css.titleButton),
+					classes: this.theme(themeCss.titleButton),
 					id: this._titleId,
 					onclick: this._onTitleClick
 				}, [
@@ -150,7 +151,7 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 			v('div', {
 				'aria-hidden': open ? null : 'true',
 				'aria-labelledby': this._titleId,
-				classes: this.theme(css.content),
+				classes: this.theme(themeCss.content),
 				id: this._contentId,
 				key: 'content'
 			}, this.getPaneContent())

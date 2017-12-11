@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import * as css from './styles/calendar.m.css';
+import * as cssTheme from '../theme/calendar/calendarCell.m.css';
 
 /**
  * @type CalendarCellProperties
@@ -33,7 +33,7 @@ export interface CalendarCellProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(cssTheme)
 export default class CalendarCell<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<P, null> {
 	protected onElementCreated(element: HTMLElement, key: string) {
 		this._callFocus(element);
@@ -73,9 +73,9 @@ export default class CalendarCell<P extends CalendarCellProperties = CalendarCel
 		} = this.properties;
 
 		return [
-			disabled ? css.inactiveDate : null,
-			selected ? css.selectedDate : null,
-			today ? css.todayDate : null
+			disabled ? cssTheme.inactiveDate : null,
+			selected ? cssTheme.selectedDate : null,
+			today ? cssTheme.todayDate : null
 		];
 	}
 
@@ -91,7 +91,7 @@ export default class CalendarCell<P extends CalendarCellProperties = CalendarCel
 			role: 'gridcell',
 			'aria-selected': `${selected}`,
 			tabIndex: focusable ? 0 : -1,
-			classes: this.theme([ css.date, ...this.getModifierClasses() ]),
+			classes: this.theme([ cssTheme.date, ...this.getModifierClasses() ]),
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown
 		}, [ this.formatDate(date) ]);

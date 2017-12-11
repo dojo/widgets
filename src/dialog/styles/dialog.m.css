@@ -1,19 +1,3 @@
-@import '../../common/styles/variables.css';
-
-.root {}
-
-.main {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: var(--component-background);
-	width: 450px;
-	overflow: hidden;
-	max-width: calc(100% - 30px);
-	z-index: calc(var(--zindex-dialog) + 1);
-}
-
 .underlay {
 	width: 100%;
 	position: fixed;
@@ -22,28 +6,4 @@
 	height: 100%;
 }
 
-.underlayVisible {
-	background: var(--underlay-background);
-	z-index: var(--zindex-dialog);
-}
 
-.title {
-	position: relative;
-}
-
-.content {}
-
-.close {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 35px;
-	cursor: pointer;
-	font-size: 0;
-	border: none;
-	background: none;
-}
-
-.close i {
-	font-size: 14px;
-}

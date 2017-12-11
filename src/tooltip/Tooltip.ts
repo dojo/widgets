@@ -4,6 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/tooltip.m.css';
+import * as themeCss from './styles/tooltip.m.css';
 
 /**
  * @type TooltipProperties
@@ -28,11 +29,11 @@ export const enum Orientation {
 	top = 'top'
 };
 
-const orientationCss: {[key: string]: any} = css;
+const orientationCss: {[key: string]: any} = themeCss;
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(themeCss)
 export default class Tooltip<P extends TooltipProperties = TooltipProperties> extends ThemedBase<P> {
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
@@ -53,7 +54,7 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 
 	protected renderContent(): DNode {
 		return v('div', {
-			classes: [ this.theme(css.content), css.contentFixed ],
+			classes: [ this.theme(themeCss.content), css.contentFixed ],
 			key: 'content'
 		}, [ this.properties.content ]);
 	}

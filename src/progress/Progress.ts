@@ -1,8 +1,8 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
-import * as css from './styles/progress.m.css';
 import { DNode } from '@dojo/widget-core/interfaces';
+import * as themeCss from '../theme/progress/progress.m.css';
 
 /**
  * @type ProgressProperties
@@ -27,7 +27,7 @@ export interface ProgressProperties extends ThemedProperties {
 
 export const ProgressBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(themeCss)
 export default class Progress extends ProgressBase<ProgressProperties> {
 	private _output(value: number, percent: number) {
 		const { output } = this.properties;
@@ -37,7 +37,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 	protected renderProgress(percent: number): DNode[] {
 		return [
 			v('div', {
-				classes: this.theme(css.progress),
+				classes: this.theme(themeCss.progress),
 				styles: {
 					width: `${percent}%`
 				}
@@ -57,9 +57,9 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 		const percent = Math.round(((value - min) / (max - min)) * 100);
 		const output = this._output(value, percent);
 
-		return v('div', { classes: this.theme(css.root) }, [
+		return v('div', { classes: this.theme(themeCss.root) }, [
 			v('div', {
-				classes: this.theme(css.bar),
+				classes: this.theme(themeCss.bar),
 				role: 'progressbar',
 				'aria-valuemin': `${min}`,
 				'aria-valuemax': `${max}`,
@@ -67,7 +67,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 				'aria-valuetext': output,
 				id
 			}, this.renderProgress(percent)),
-			showOutput ? v('span', { classes: this.theme(css.output) }, [ output ]) : null
+			showOutput ? v('span', { classes: this.theme(themeCss.output) }, [ output ]) : null
 		]);
 	}
 }

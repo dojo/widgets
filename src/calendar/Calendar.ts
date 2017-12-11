@@ -10,9 +10,9 @@ import { Keys } from '../common/util';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import calendarBundle from './nls/Calendar';
-import * as css from './styles/calendar.m.css';
+import * as calendarThemeCss from '../theme/calendar/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as iconThemeCss from '../common/styles/icons.m.css';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 
@@ -79,8 +79,8 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
-@theme(css)
-@theme(iconCss)
+@theme(calendarThemeCss)
+@theme(iconThemeCss)
 export default class Calendar<P extends CalendarProperties = CalendarProperties> extends ThemedBase<P, null> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
@@ -357,11 +357,11 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	protected renderPagingButtonContent(type: Paging, labels: CalendarMessages): DNode[] {
-		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
+		const iconClass = type === Paging.next ? iconThemeCss.rightIcon : iconThemeCss.leftIcon;
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),
+			v('i', { classes: this.theme([ iconThemeCss.icon, iconClass ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			}),
 			v('span', { classes: [ baseCss.visuallyHidden ] }, [ labelText ])
@@ -386,13 +386,13 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		for (const weekday in weekdayNames) {
 			weekdays.push(v('th', {
 				role: 'columnheader',
-				classes: this.theme(css.weekday)
+				classes: this.theme(calendarThemeCss.weekday)
 			}, [
 				this.renderWeekdayCell(weekdayNames[weekday])
 			]));
 		}
 
-		return v('div', { classes: this.theme(css.root) }, [
+		return v('div', { classes: this.theme(calendarThemeCss.root) }, [
 			// header
 			this.renderDatePicker(commonMessages, labels),
 			// date table
@@ -401,7 +401,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 				cellpadding: '0',
 				role: 'grid',
 				'aria-labelledby': this._monthLabelId,
-				classes: [ this.theme(css.dateGrid), this._popupOpen ? baseCss.visuallyHidden : null ]
+				classes: [ this.theme(calendarThemeCss.dateGrid), this._popupOpen ? baseCss.visuallyHidden : null ]
 			}, [
 				v('thead', [
 					v('tr', weekdays)
@@ -410,15 +410,15 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 			]),
 			// controls
 			v('div', {
-				classes: [ this.theme(css.controls), this._popupOpen ? baseCss.visuallyHidden : null ]
+				classes: [ this.theme(calendarThemeCss.controls), this._popupOpen ? baseCss.visuallyHidden : null ]
 			}, [
 				v('button', {
-					classes: this.theme(css.previous),
+					classes: this.theme(calendarThemeCss.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageDown
 				}, this.renderPagingButtonContent(Paging.previous, labels)),
 				v('button', {
-					classes: this.theme(css.next),
+					classes: this.theme(calendarThemeCss.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageUp
 				}, this.renderPagingButtonContent(Paging.next, labels))

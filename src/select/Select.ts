@@ -10,8 +10,8 @@ import { Keys } from '../common/util';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
 import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
-import * as css from './styles/select.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as themeCss from '../theme/select/select.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * @type SelectProperties
@@ -45,7 +45,7 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(themeCss)
 @theme(iconCss)
 @diffProperty('options', reference)
 export default class Select<P extends SelectProperties = SelectProperties> extends ThemedBase<P, null> {
@@ -150,12 +150,12 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		} = this.properties;
 
 		return [
-			css.root,
-			disabled ? css.disabled : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
+			themeCss.root,
+			disabled ? themeCss.disabled : null,
+			invalid === true ? themeCss.invalid : null,
+			invalid === false ? themeCss.valid : null,
+			readOnly ? themeCss.readonly : null,
+			required ? themeCss.required : null
 		];
 	}
 
@@ -173,7 +173,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 	}
 
 	protected renderExpandIcon(): DNode {
-		return v('span', { classes: this.theme(css.arrow) }, [
+		return v('span', { classes: this.theme(themeCss.arrow) }, [
 			v('i', { classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
@@ -204,9 +204,9 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
 		}, [ this._getOptionLabel(option) ]));
 
-		return v('div', { classes: this.theme(css.inputWrapper) }, [
+		return v('div', { classes: this.theme(themeCss.inputWrapper) }, [
 			v('select', {
-				classes: this.theme(css.input),
+				classes: this.theme(themeCss.input),
 				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
@@ -245,11 +245,11 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		// create dropdown trigger and select box
 		return v('div', {
 			key: 'wrapper',
-			classes: this.theme([ css.inputWrapper, _open ? css.open : null ])
+			classes: this.theme([ themeCss.inputWrapper, _open ? themeCss.open : null ])
 		}, [
 			...this.renderCustomTrigger(),
 			v('div', {
-				classes: this.theme(css.dropdown),
+				classes: this.theme(themeCss.dropdown),
 				onfocusout: this._onListboxBlur,
 				onkeydown: this._onDropdownKeyDown
 			}, [
@@ -315,7 +315,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
-				classes: this.theme([ css.trigger, isPlaceholder ? css.placeholder : null ]),
+				classes: this.theme([ themeCss.trigger, isPlaceholder ? themeCss.placeholder : null ]),
 				describedBy,
 				disabled,
 				key: 'trigger',

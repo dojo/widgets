@@ -2,8 +2,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
-import * as css from './styles/button.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as themeCss from '../theme/button/button.m.css';
+import * as iconThemeCss from '../theme/common/icons.m.css';
 import { InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
@@ -34,8 +34,8 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
-@theme(iconCss)
+@theme(themeCss)
+@theme(iconThemeCss)
 export default class Button<P extends ButtonProperties = ButtonProperties> extends ThemedBase<P> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
@@ -61,14 +61,14 @@ export default class Button<P extends ButtonProperties = ButtonProperties> exten
 		} = this.properties;
 
 		return [
-			disabled ? css.disabled : null,
-			popup ? css.popup : null,
-			pressed ? css.pressed : null
+			disabled ? themeCss.disabled : null,
+			popup ? themeCss.popup : null,
+			pressed ? themeCss.pressed : null
 		];
 	}
 
 	protected renderPopupIcon(): DNode {
-		return v('i', { classes: this.theme([ css.addon, iconCss.icon, iconCss.downIcon ]),
+		return v('i', { classes: this.theme([ themeCss.addon, iconThemeCss.icon, iconThemeCss.downIcon ]),
 			role: 'presentation', 'aria-hidden': 'true'
 		});
 	}
@@ -90,7 +90,7 @@ export default class Button<P extends ButtonProperties = ButtonProperties> exten
 		}
 
 		return v('button', {
-			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
+			classes: this.theme([ themeCss.root, ...this.getModifierClasses() ]),
 			disabled,
 			id,
 			name,

@@ -1,19 +1,18 @@
 @import '../../common/styles/variables.css';
 
-.root {
-	position: relative;
-	display: inline-block;
-	box-sizing: border-box;
-	width: 200px;
+/* Are these styles which the other imported widgets refer to used? */
+
+.option {
+	cursor: pointer;
 }
 
-.root * {
-	box-sizing: border-box;
+.disabledOption {
+	color: var(--disabled-color);
+	font-style: italic;
+	cursor: default;
 }
 
-.controls {
-	position: relative;
-}
+/* Are these styles actually used? */
 
 .input {
 	width: 100%;
@@ -31,53 +30,7 @@
 	padding-right: 4em;
 }
 
-.dropdown {
-	border: 1px solid var(--component-color);
-	background: var(--component-background);
-	position: absolute;
-	width: 100%;
-	z-index: var(--zindex-dropdown);
-}
-
-.option {
-	cursor: pointer;
-}
-
-.disabledOption {
-	color: var(--disabled-color);
-	font-style: italic;
-	cursor: default;
-}
-
 .selected {
 	background: var(--selected-background);
 	color: var(--selected-color);
 }
-
-.clear,
-.trigger {
-	position: absolute;
-	cursor: pointer;
-	font-size: 0;
-	border: none;
-	background: none;
-	top: 50%;
-	transform: translateY(-50%);
-	padding: 0;
-}
-
-.clear i, .trigger i {
-	font-size: initial;
-}
-
-.trigger {
-	right: 7px;
-}
-
-.clear {
-	right: 27px;
-}
-
-.valid { }
-.invalid { }
-.open { }

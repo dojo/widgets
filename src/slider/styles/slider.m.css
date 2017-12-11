@@ -1,34 +1,11 @@
 @import '../../common/styles/variables.css';
 
-.root {
-
-}
-
 .rootFixed {
 	display: block;
 }
 
-.inputWrapper {
-
-}
-
 .inputWrapperFixed {
 	position: relative;
-}
-
-.track {
-	background-color: var(--component-background);
-	border: 1px solid var(--component-color);
-	height: 0.75em;
-}
-
-.trackFixed {
-	position: relative;
-	width: 100%;
-}
-
-.fill {
-	background-color: var(--selected-background);
 }
 
 .fillFixed {
@@ -39,77 +16,19 @@
 	top: 0;
 }
 
-.thumb {
-	background-color: var(--component-background);
-	border: 1px solid var(--component-color);
-	height: 2em;
-	left: 50%;
-	margin-left: -1em;
-	top: -0.625em;
-	width: 2em;
+.trackFixed {
+	position: relative;
+	width: 100%;
 }
 
 .thumbFixed {
 	position: absolute;
 }
 
-.input {
-	height: 0.75em;
-}
-.input::-ms-thumb {
-	height: 2em;
-	width: 2em;
-}
-.input::-moz-range-thumb {
-	height: 2em;
-	width: 2em;
-}
-.input::-webkit-slider-thumb {
-	height: 2em;
-	width: 2em;
-}
-
-.output { }
-
 .outputTooltip {
 	left: 2.5em;
 	position: absolute;
 	top: 2.5em;
-}
-
-/* vertical slider */
-.vertical .input,
-.vertical .track {
-	transform-origin: 0 0;
-	transform: rotate(-90deg) translate(-100%, 0);
-}
-
-/* disabled and readonly styles */
-.disabled .track,
-.readonly .track {
-	background-color: var(--disabled-color);
-}
-
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
-	color: var(--error-color);
-}
-
-/* invalid style */
-.invalid .track {
-	border-color: var(--error-color);
-}
-.invalid .thumb::before {
-	background-color: var(--error-color);
-}
-
-/* valid style */
-.valid .inputWrapper::before {
-	border-color: var(--success-color);
-}
-.valid .inputWrapper::after {
-	background-color: var(--success-color);
 }
 
 /* Make native input invisible */

@@ -12,7 +12,7 @@
 /* Date grid */
 .dateGrid {}
 
-.weekday, .date {
+.weekday {
 	padding: 10px 20px;
 	text-align: center;
 }
@@ -22,25 +22,6 @@
 	font-weight: normal;
 	text-transform: uppercase;
 }
-
-.date {
-	cursor: pointer;
-}
-
-.date:hover {
-	background-color: var(--disabled-color); /* TODO: better hover color variable? */
-}
-
-.inactiveDate {
-	background-color: var(--disabled-color);
-}
-
-.selectedDate {
-	background-color: var(--selected-background);
-	color: var(--selected-color);
-}
-
-.todayDate {}
 
 /* Date picker  */
 .datePicker { }

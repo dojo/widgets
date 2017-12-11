@@ -5,12 +5,12 @@ import ThemedMixin, { theme, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
-import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { TextInputProperties } from '../textinput/TextInput';
 import Label from '../label/Label';
 import uuid from '@dojo/core/uuid';
+import * as themeCss from '../theme/timepicker/timePicker.m.css';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;
@@ -154,7 +154,7 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(themeCss)
 export class TimePicker<P extends TimePickerProperties = TimePickerProperties> extends ThemedBase<P, null> {
 	protected options: TimeUnits[] | null;
 
@@ -204,11 +204,11 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			required
 		} = this.properties;
 		return [
-			css.root,
-			disabled ? css.disabled : null,
-			invalid ? css.invalid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
+			themeCss.root,
+			disabled ? themeCss.disabled : null,
+			invalid ? themeCss.invalid : null,
+			readOnly ? themeCss.readonly : null,
+			required ? themeCss.required : null
 		];
 	}
 
@@ -310,7 +310,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 				'aria-describedby': inputProperties && inputProperties.describedBy,
 				'aria-invalid': invalid === true ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,
-				classes: this.theme(css.input),
+				classes: this.theme(themeCss.input),
 				disabled,
 				invalid,
 				key: 'native-input',

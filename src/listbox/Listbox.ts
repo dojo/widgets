@@ -10,6 +10,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/listbox.m.css';
+import * as themeCss from '../theme/listbox/listbox.m.css';
 import ListboxOption from './ListboxOption';
 
 /* Default scroll meta */
@@ -61,7 +62,7 @@ export interface ListboxProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(themeCss)
 @diffProperty('optionData', reference)
 export default class Listbox<P extends ListboxProperties = ListboxProperties> extends ThemedBase<P, null> {
 	private _boundRenderOption = this.renderOption.bind(this);
@@ -150,7 +151,7 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 	protected getModifierClasses() {
 		const { visualFocus } = this.properties;
 		return [
-			visualFocus ? css.focused : null
+			visualFocus ? themeCss.focused : null
 		];
 	}
 
@@ -215,7 +216,7 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 		return v('div', {
 			'aria-activedescendant': this._getOptionId(activeIndex),
 			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
+			classes: this.theme([ themeCss.root, ...this.getModifierClasses() ]),
 			describedBy,
 			id,
 			key: 'root',

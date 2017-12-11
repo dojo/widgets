@@ -3,7 +3,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as css from './styles/tabController.m.css';
+import * as themeCss from '../theme/tabcontroller/tabController.m.css';
 
 /**
  * @type TabProperties
@@ -28,7 +28,7 @@ export interface TabProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(themeCss)
 export default class Tab<P extends TabProperties = TabProperties> extends ThemedBase<P> {
 	render(): DNode {
 		const {
@@ -38,7 +38,7 @@ export default class Tab<P extends TabProperties = TabProperties> extends Themed
 
 		return v('div', {
 			'aria-labelledby': labelledBy,
-			classes: this.theme(css.tab),
+			classes: this.theme(themeCss.tab),
 			id,
 			role: 'tabpanel'
 		}, this.children);

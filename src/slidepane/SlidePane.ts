@@ -8,7 +8,8 @@ import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
 
 import * as css from './styles/slidePane.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as themeCss from '../theme/slidepane/slidePane.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * Enum for left / right alignment
@@ -62,7 +63,7 @@ const enum Plane {
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
-@theme(css)
+@theme(themeCss)
 @theme(iconCss)
 export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
 	private _content: HTMLElement;
@@ -176,7 +177,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	protected getContent(): DNode {
-		return v('div', { classes: this.theme(css.content) }, this.children);
+		return v('div', { classes: this.theme(themeCss.content) }, this.children);
 	}
 
 	protected getStyles(): { [key: string]: string | null } {
@@ -225,9 +226,9 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 		return [
 			alignCss[align],
-			open ? css.open : null,
-			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
-			!open && this._wasOpen ? css.slideOut : null
+			open ? themeCss.open : null,
+			this._slideIn || (open && !this._wasOpen) ? themeCss.slideIn : null,
+			!open && this._wasOpen ? themeCss.slideOut : null
 		];
 	}
 
@@ -245,7 +246,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	protected renderUnderlay(): DNode {
 		const { underlay = false } = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
+			classes: [ this.theme(underlay ? themeCss.underlayVisible : null), css.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay'
@@ -279,7 +280,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 		return v('div', {
 			'aria-labelledby': this._titleId,
-			classes: this.theme(css.root),
+			classes: this.theme(themeCss.root),
 			onmousedown: this._onSwipeStart,
 			onmousemove: this._onSwipeMove,
 			onmouseup: this._onSwipeEnd,
@@ -290,16 +291,16 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			open ? this.renderUnderlay() : null,
 			v('div', {
 				key: 'content',
-				classes: [ ...this.theme([ css.pane, ...contentClasses ]), css.paneFixed, ...fixedContentClasses ],
+				classes: [ ...this.theme([ themeCss.pane, ...contentClasses ]), css.paneFixed, ...fixedContentClasses ],
 				styles: contentStyles
 			}, [
 				title ? v('div', {
-					classes: this.theme(css.title),
+					classes: this.theme(themeCss.title),
 					key: 'title'
 				}, [
 					this.renderTitle(),
 					v('button', {
-						classes: this.theme(css.close),
+						classes: this.theme(themeCss.close),
 						onclick: this._onCloseClick
 					}, [
 						closeText,

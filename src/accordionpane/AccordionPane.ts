@@ -7,8 +7,7 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import TitlePane from '../titlepane/TitlePane';
-
-import * as css from './styles/accordionPane.m.css';
+import * as cssTheme from '../theme/accordionpane/accordionPane.m.css';
 
 /**
  * @type AccordionPaneProperties
@@ -27,7 +26,7 @@ export interface AccordionPaneProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(css)
+@theme(cssTheme)
 export default class AccordionPane<P extends AccordionPaneProperties = AccordionPaneProperties> extends ThemedBase<P, WNode<TitlePane>> {
 	private _assignCallback(child: WNode<TitlePane>, functionName: 'onRequestClose' | 'onRequestOpen', callback: (key: string) => void) {
 		const existingProperty = child.properties[functionName];
@@ -66,6 +65,6 @@ export default class AccordionPane<P extends AccordionPaneProperties = Accordion
 	}
 
 	render(): DNode {
-		return v('div', { classes: this.theme(css.root) }, this.renderChildren());
+		return v('div', { classes: this.theme(cssTheme.root) }, this.renderChildren());
 	}
 }

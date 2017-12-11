@@ -8,20 +8,6 @@
   font-style: normal;
 }
 
-.icon {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'dojo2' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 .plusIcon:before {
   content: "\f067";
 }
@@ -31,20 +17,9 @@
 .checkIcon:before {
   content: "\f00c";
 }
-.closeIcon:before {
-  content: "\f00d";
-}
-.leftIcon:before {
-  content: "\f053";
-}
-.rightIcon:before {
-  content: "\f054";
-}
+
 .upIcon:before {
   content: "\f077";
-}
-.downIcon:before {
-  content: "\f078";
 }
 .upAltIcon:before {
   content: "\f0d8";

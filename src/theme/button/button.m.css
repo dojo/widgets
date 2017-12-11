@@ -1,0 +1,27 @@
+@import '../../common/styles/variables.css';
+
+.root {
+	cursor: pointer;
+	display: inline-block;
+}
+
+.pressed::before {
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
+	box-sizing: border-box;
+	content: '';
+	display: inline-block;
+	height: 1em;
+	margin: -1em 0.5em 0 0;
+	transform: rotate(45deg);
+	width: 0.5em;
+}
+
+.popup { }
+
+.addon { }
+
+.disabled,
+.disabled:hover {
+	cursor: default;
+}
