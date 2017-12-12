@@ -5,7 +5,9 @@ export const DEFAULT_LABELS = {
 	chooseMonth: calendarBundle.messages.chooseMonth,
 	chooseYear: calendarBundle.messages.chooseYear,
 	previousMonth: calendarBundle.messages.previousMonth,
-	nextMonth: calendarBundle.messages.nextMonth
+	nextMonth: calendarBundle.messages.nextMonth,
+	previousYears: calendarBundle.messages.previousYears,
+	nextYears: calendarBundle.messages.nextYears
 };
 
 export const DEFAULT_WEEKDAYS = [ 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ]

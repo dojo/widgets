@@ -7,12 +7,14 @@ import uuid from '@dojo/core/uuid';
 import commonBundle from '../common/nls/common';
 import { Keys } from '../common/util';
 import CalendarCell from './CalendarCell';
-import { CalendarMessages as CalendarLabels } from './DatePicker';
 import DatePicker, { Paging } from './DatePicker';
 import calendarBundle from './nls/Calendar';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
+
+type CalendarMessages = typeof calendarBundle.messages | LocalizedMessages<typeof calendarBundle.messages>;
+type CommonMessages = LocalizedMessages<typeof commonBundle.messages>;
 
 /**
  * @type CalendarProperties
@@ -32,7 +34,7 @@ import * as iconCss from '../common/styles/icons.m.css';
  * @property onDateSelect      Function called when the user selects a date
  */
 export interface CalendarProperties extends ThemedProperties {
-	labels?: CalendarLabels;
+	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string; }[];
 	selectedDate?: Date;
@@ -74,9 +76,6 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 	{ short: 'friShort', long: 'friday' },
 	{ short: 'satShort', long: 'saturday' }
 ];
-
-type CalendarMessages = LocalizedMessages<typeof calendarBundle.messages>;
-type CommonMessages = LocalizedMessages<typeof commonBundle.messages>;
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
@@ -323,9 +322,8 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		});
 	}
 
-	protected renderDatePicker(commonMessages: CommonMessages, calendarMessages: CalendarMessages): DNode {
+	protected renderDatePicker(commonMessages: CommonMessages, labels: CalendarMessages): DNode {
 		const {
-			labels = calendarMessages,
 			monthNames = this._getMonths(commonMessages),
 			renderMonthLabel,
 			theme,
@@ -358,8 +356,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		});
 	}
 
-	protected renderPagingButtonContent(type: Paging, calendarMessages: CalendarMessages): DNode[] {
-		const { labels = calendarMessages } = this.properties;
+	protected renderPagingButtonContent(type: Paging, labels: CalendarMessages): DNode[] {
 		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
@@ -380,6 +377,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		const calendarMessages = this.localizeBundle(calendarBundle);
 		const commonMessages = this.localizeBundle(commonBundle);
 		const {
+			labels = calendarMessages,
 			selectedDate,
 			weekdayNames = this._getWeekdays(commonMessages)
 		} = this.properties;
@@ -397,7 +395,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 
 		return v('div', { classes: this.theme(css.root) }, [
 			// header
-			this.renderDatePicker(commonMessages, calendarMessages),
+			this.renderDatePicker(commonMessages, labels),
 			// date table
 			v('table', {
 				cellspacing: '0',
@@ -419,12 +417,12 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 					classes: this.theme(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageDown
-				}, this.renderPagingButtonContent(Paging.previous, calendarMessages)),
+				}, this.renderPagingButtonContent(Paging.previous, labels)),
 				v('button', {
 					classes: this.theme(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageUp
-				}, this.renderPagingButtonContent(Paging.next, calendarMessages))
+				}, this.renderPagingButtonContent(Paging.next, labels))
 			])
 		]);
 	}

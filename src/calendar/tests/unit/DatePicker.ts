@@ -121,7 +121,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousMonth ])
+				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
 			]),
 			v('button', {
 				classes: css.next,
@@ -131,7 +131,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextMonth ])
+				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
 			])
 		])
 	]);
