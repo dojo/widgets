@@ -288,7 +288,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	protected renderDateCell(date: number, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
-		const { theme = {} } = this.properties;
+		const { theme } = this.properties;
 
 		return w(CalendarCell, {
 			key: `date-${index}`,
@@ -310,7 +310,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 			labels = DEFAULT_LABELS,
 			monthNames = DEFAULT_MONTHS,
 			renderMonthLabel,
-			theme = {},
+			theme,
 			onMonthChange,
 			onYearChange
 		} = this.properties;

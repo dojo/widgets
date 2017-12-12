@@ -30,6 +30,7 @@ const expectedDateCell = function(widget: Harness<Calendar>, date: number, activ
 		disabled: !active,
 		focusable: date === 1 && active,
 		selected: false,
+		theme: undefined,
 		today: active && new Date().toDateString() === new Date(`June ${date} 2017`).toDateString(),
 		onClick: widget.listener,
 		onFocusCalled: widget.listener,
@@ -47,6 +48,7 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 			month: 5,
 			monthNames: DEFAULT_MONTHS,
 			renderMonthLabel: undefined,
+			theme: undefined,
 			year: 2017,
 			onPopupChange: widget.listener,
 			onRequestMonthChange: widget.listener,
@@ -164,7 +166,6 @@ registerSuite('Calendar', {
 	tests: {
 		'Render specific month with default props'() {
 			widget.setProperties({
-				theme: {},
 				month: testDate.getMonth(),
 				year: testDate.getFullYear()
 			});

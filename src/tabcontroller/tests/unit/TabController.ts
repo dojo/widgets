@@ -71,7 +71,7 @@ const expectedTabButtons = function(empty = false): DNode {
 			onLeftArrowPress: widget.listener,
 			onRightArrowPress: widget.listener,
 			onUpArrowPress: widget.listener,
-			theme: {}
+			theme: undefined
 		}, [ null ]),
 		w(TabButton, {
 			callFocus: false,
@@ -91,7 +91,7 @@ const expectedTabButtons = function(empty = false): DNode {
 			onLeftArrowPress: widget.listener,
 			onRightArrowPress: widget.listener,
 			onUpArrowPress: widget.listener,
-			theme: {}
+			theme: undefined
 		}, [ 'foo' ])
 	]);
 };
