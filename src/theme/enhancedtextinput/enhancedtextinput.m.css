@@ -9,7 +9,7 @@
 .addonBefore { }
 
 .input {
-	composes: input from '../../textinput/styles/textinput.m.css';
+	composes: input from '../textinput/textinput.m.css';
 	flex: 1 1 auto;
 }
 
