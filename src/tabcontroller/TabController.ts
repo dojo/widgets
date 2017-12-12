@@ -7,7 +7,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import TabButton from './TabButton';
 import uuid from '@dojo/core/uuid';
 
-import * as cssTheme from '../theme/tabcontroller/tabController.m.css';
+import * as css from '../theme/tabcontroller/tabController.m.css';
 
 /**
  * Enum for tab button alignment
@@ -38,7 +38,7 @@ export interface TabControllerProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(cssTheme)
+@theme(css)
 export default class TabController<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<P, WNode<Tab>> {
 	private _id = uuid();
 	private _callTabFocus = false;
@@ -207,11 +207,11 @@ export default class TabController<P extends TabControllerProperties = TabContro
 		const children = [
 			v('div', {
 				key: 'buttons',
-				classes: this.theme(cssTheme.tabButtons)
+				classes: this.theme(css.tabButtons)
 			}, this.renderTabButtons()),
 			tabs.length ? v('div', {
 				key: 'tabs',
-				classes: this.theme(cssTheme.tabs)
+				classes: this.theme(css.tabs)
 			}, tabs) : null
 		];
 
@@ -220,16 +220,16 @@ export default class TabController<P extends TabControllerProperties = TabContro
 
 		switch (this.properties.alignButtons) {
 			case Align.right:
-				alignClass = cssTheme.alignRight;
+				alignClass = css.alignRight;
 				orientation = 'vertical';
 				children.reverse();
 				break;
 			case Align.bottom:
-				alignClass = cssTheme.alignBottom;
+				alignClass = css.alignBottom;
 				children.reverse();
 				break;
 			case Align.left:
-				alignClass = cssTheme.alignLeft;
+				alignClass = css.alignLeft;
 				orientation = 'vertical';
 				break;
 		}
@@ -238,7 +238,7 @@ export default class TabController<P extends TabControllerProperties = TabContro
 			'aria-orientation': orientation,
 			classes: this.theme([
 				alignClass ? alignClass : null,
-				cssTheme.root
+				css.root
 			]),
 			role: 'tablist'
 		}, children);

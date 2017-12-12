@@ -6,7 +6,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from './styles/titlePane.m.css';
 import * as themeCss from '../theme/titlepane/titlePane.m.css';
-import * as iconThemeCss from '../theme/common/icons.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * @type TitlePaneProperties
@@ -32,7 +32,7 @@ export interface TitlePaneProperties extends ThemedProperties {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(themeCss)
-@theme(iconThemeCss)
+@theme(iconCss)
 export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
 	private _contentId = uuid();
 	private _titleId = uuid();
@@ -110,8 +110,8 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 		return v('i', {
 			classes: this.theme([
 				themeCss.arrow,
-				iconThemeCss.icon,
-				open ? iconThemeCss.downIcon : iconThemeCss.rightIcon
+				iconCss.icon,
+				open ? iconCss.downIcon : iconCss.rightIcon
 			]),
 			role: 'presentation',
 			'aria-hidden': 'true'

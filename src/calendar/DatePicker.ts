@@ -7,8 +7,8 @@ import calendarBundle from './nls/Calendar';
 import { Keys } from '../common/util';
 
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconThemeCss from '../theme/common/icons.m.css';
-import * as themeCss from '../theme/calendar/calendar.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
+import * as css from '../theme/calendar/calendar.m.css';
 
 /**
  * Enum for next/previous buttons
@@ -59,8 +59,8 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 const BASE_YEAR = 2000;
 
-@theme(themeCss)
-@theme(iconThemeCss)
+@theme(css)
+@theme(iconCss)
 export default class DatePicker<P extends DatePickerProperties = DatePickerProperties> extends ThemedBase<P, null> {
 	private _callMonthTriggerFocus = false;
 	private _callYearTriggerFocus = false;
@@ -210,8 +210,8 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 			'aria-haspopup': 'true',
 			id: `${this._idBase}_${type}_button`,
 			classes: this.theme([
-				(themeCss as any)[`${type}Trigger`],
-				open ? (themeCss as any)[`${type}TriggerActive`] : null
+				(css as any)[`${type}Trigger`],
+				open ? (css as any)[`${type}TriggerActive`] : null
 			]),
 			role: 'menuitem',
 			onclick
@@ -228,11 +228,11 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 
 		return this.properties.monthNames.map((monthName, i) => v('label', {
 			key: `${this._idBase}_month_radios_${i}`,
-			classes: this.theme([ themeCss.monthRadio, i === month ? themeCss.monthRadioChecked : null ])
+			classes: this.theme([ css.monthRadio, i === month ? css.monthRadioChecked : null ])
 		}, [
 			v('input', {
 				checked: i === month,
-				classes: this.theme(themeCss.monthRadioInput),
+				classes: this.theme(css.monthRadioInput),
 				name: `${this._idBase}_month_radios`,
 				tabIndex: this._monthPopupOpen ? 0 : -1,
 				type: 'radio',
@@ -241,7 +241,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				onmouseup: this._closeMonthPopup
 			}),
 			v('abbr', {
-				classes: this.theme(themeCss.monthRadioLabel),
+				classes: this.theme(css.monthRadioLabel),
 				title: monthName.long
 			}, [ monthName.short ])
 		]));
@@ -249,16 +249,11 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 
 	protected renderPagingButtonContent(type: Paging): DNode[] {
 		const { labels } = this.properties;
-<<<<<<< HEAD
 		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
 		const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
-=======
-		const iconClass = type === Paging.next ? iconThemeCss.rightIcon : iconThemeCss.leftIcon;
-		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
->>>>>>> Fixes for themes
 
 		return [
-			v('i', { classes: this.theme([ iconThemeCss.icon, iconClass ]),
+			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			}),
 			v('span', { classes: baseCss.visuallyHidden }, [ labelText ])
@@ -273,11 +268,11 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 		for (let i = yearLimits.first; i < yearLimits.last; i++) {
 			radios.push(v('label', {
 				key: `${this._idBase}_year_radios_${i}`,
-				classes: this.theme([ themeCss.yearRadio, i === year ? themeCss.yearRadioChecked : null ])
+				classes: this.theme([ css.yearRadio, i === year ? css.yearRadioChecked : null ])
 			}, [
 				v('input', {
 					checked: i === year,
-					classes: this.theme(themeCss.yearRadioInput),
+					classes: this.theme(css.yearRadioInput),
 					name: `${this._idBase}_year_radios`,
 					tabIndex: this._yearPopupOpen ? 0 : -1,
 					type: 'radio',
@@ -286,7 +281,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 					onmouseup: this._closeYearPopup
 				}),
 				v('abbr', {
-					classes: this.theme(themeCss.yearRadioLabel)
+					classes: this.theme(css.yearRadioLabel)
 				}, [ `${ i }` ])
 			]));
 		}
@@ -303,10 +298,10 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 		} = this.properties;
 
 		return v('div', {
-			classes: this.theme(themeCss.datePicker)
+			classes: this.theme(css.datePicker)
 		}, [
 			v('div', {
-				classes: this.theme(themeCss.topMatter),
+				classes: this.theme(css.topMatter),
 				role: 'menubar'
 			}, [
 				// hidden label
@@ -329,12 +324,12 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				key: 'month-grid',
 				'aria-hidden': `${!this._monthPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_month_button`,
-				classes: [ this.theme(themeCss.monthGrid), !this._monthPopupOpen ? baseCss.visuallyHidden : null ],
+				classes: [ this.theme(css.monthGrid), !this._monthPopupOpen ? baseCss.visuallyHidden : null ],
 				id: `${this._idBase}_month_dialog`,
 				role: 'dialog'
 			}, [
 				v('fieldset', {
-					classes: this.theme(themeCss.monthFields),
+					classes: this.theme(css.monthFields),
 					onkeydown: this._onPopupKeyDown
 				}, [
 					v('legend', { classes: baseCss.visuallyHidden }, [ labels.chooseMonth ]),
@@ -347,27 +342,27 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				key: 'year-grid',
 				'aria-hidden': `${!this._yearPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_year_button`,
-				classes: [ this.theme(themeCss.yearGrid), !this._yearPopupOpen ? baseCss.visuallyHidden : null ],
+				classes: [ this.theme(css.yearGrid), !this._yearPopupOpen ? baseCss.visuallyHidden : null ],
 				id: `${this._idBase}_year_dialog`,
 				role: 'dialog'
 			}, [
 				v('fieldset', {
-					classes: this.theme(themeCss.yearFields),
+					classes: this.theme(css.yearFields),
 					onkeydown: this._onPopupKeyDown
 				}, [
 					v('legend', { classes: [ baseCss.visuallyHidden ] }, [ labels.chooseYear ]),
 					...this.renderYearRadios()
 				]),
 				v('div', {
-					classes: this.theme(themeCss.controls)
+					classes: this.theme(css.controls)
 				}, [
 					v('button', {
-						classes: this.theme(themeCss.previous),
+						classes: this.theme(css.previous),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						onclick: this._onYearPageDown
 					}, this.renderPagingButtonContent(Paging.previous)),
 					v('button', {
-						classes: this.theme(themeCss.next),
+						classes: this.theme(css.next),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						onclick: this._onYearPageUp
 					}, this.renderPagingButtonContent(Paging.next))

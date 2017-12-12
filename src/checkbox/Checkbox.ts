@@ -5,7 +5,7 @@ import Label from '../label/Label';
 import { LabeledProperties, InputProperties, InputEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import * as themeCss from '../theme/checkbox/checkbox.m.css';
+import * as css from '../theme/checkbox/checkbox.m.css';
 
 /**
  * @type CheckboxProperties
@@ -36,7 +36,7 @@ export const enum Mode {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(themeCss)
+@theme(css)
 export default class Checkbox<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _onBlur (event: FocusEvent) {
@@ -70,15 +70,15 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 		} = this.properties;
 
 		return [
-			themeCss.root,
-			mode === Mode.toggle ? themeCss.toggle : null,
-			checked ? themeCss.checked : null,
-			disabled ? themeCss.disabled : null,
-			this._focused ? themeCss.focused : null,
-			invalid === true ? themeCss.invalid : null,
-			invalid === false ? themeCss.valid : null,
-			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null
+			css.root,
+			mode === Mode.toggle ? css.toggle : null,
+			checked ? css.checked : null,
+			disabled ? css.disabled : null,
+			this._focused ? css.focused : null,
+			invalid === true ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
 		];
 	}
 
@@ -93,16 +93,16 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 		return mode === Mode.toggle ? [
 			offLabel ? v('div', {
 				key: 'offLabel',
-				classes: this.theme(themeCss.offLabel),
+				classes: this.theme(css.offLabel),
 				'aria-hidden': checked ? 'true' : null
 			}, [ offLabel ]) : null,
 			v('div', {
 				key: 'toggle',
-				classes: this.theme(themeCss.toggleSwitch)
+				classes: this.theme(css.toggleSwitch)
 			}),
 			onLabel ? v('div', {
 				key: 'onLabel',
-				classes: this.theme(themeCss.onLabel),
+				classes: this.theme(css.onLabel),
 				'aria-hidden': checked ? null : 'true'
 			}, [ onLabel ]) : null
 		] : [];
@@ -125,11 +125,11 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 		} = this.properties;
 
 		const children = [
-			v('div', { classes: this.theme(themeCss.inputWrapper) }, [
+			v('div', { classes: this.theme(css.inputWrapper) }, [
 				...this.renderToggle(),
 				v('input', {
 					id: this._uuid,
-					classes: this.theme(themeCss.input),
+					classes: this.theme(css.input),
 					checked,
 					'aria-describedby': describedBy,
 					disabled,
