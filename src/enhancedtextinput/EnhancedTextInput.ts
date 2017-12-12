@@ -3,7 +3,7 @@ import { theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
-import * as css from './styles/enhancedtextinput.m.css';
+import * as css from '../theme/enhancedtextinput/enhancedtextinput.m.css';
 
 export interface EnhancedTextInputProperties extends TextInputProperties {
 	addonAfter?: DNode[];
