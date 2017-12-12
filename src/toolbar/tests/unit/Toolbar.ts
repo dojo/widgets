@@ -200,6 +200,18 @@ registerSuite('Toolbar', {
 		},
 
 		'open and close menu'() {
+			toolbar.setProperties({ collapseWidth: 1000 });
+			toolbar.mockMeta(Dimensions, {
+				get(key: string | number) {
+					return {
+						offset: { height: 100, left: 100, top: 100, width: 100 },
+						position: { bottom: 200, left: 100, right: 200, top: 100 },
+						scroll: { height: 100, left: 100, top: 100, width: 100 },
+						size: { width: 100, height: 100 }
+					};
+				}
+			});
+
 			const slidePaneVDom = w(SlidePane, {
 				align: Align.right,
 				closeText: 'close menu',
