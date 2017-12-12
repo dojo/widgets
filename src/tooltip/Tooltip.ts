@@ -3,7 +3,7 @@ import { ThemedMixin, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as css from './styles/tooltip.m.css';
+import * as fixedCss from './styles/tooltip.m.css';
 import * as themeCss from '../theme/tooltip/tooltip.m.css';
 
 /**
@@ -39,7 +39,7 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 		const { orientation = Orientation.right } = this.properties;
 
 		return [
-			css.rootFixed,
+			fixedCss.rootFixed,
 			orientationCss[`${orientation}Fixed`]
 		];
 	}
@@ -54,7 +54,7 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 
 	protected renderContent(): DNode {
 		return v('div', {
-			classes: [ this.theme(themeCss.content), css.contentFixed ],
+			classes: [ this.theme(themeCss.content), fixedCss.contentFixed ],
 			key: 'content'
 		}, [ this.properties.content ]);
 	}

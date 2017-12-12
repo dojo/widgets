@@ -3,8 +3,8 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as css from './styles/splitPane.m.css';
-import * as themeCss from '../theme/splitpane/splitPane.m.css';
+import * as fixedCss from './styles/splitPane.m.css';
+import * as css from '../theme/splitpane/splitPane.m.css';
 
 /**
  * Direction of this SplitPane
@@ -37,7 +37,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 const DEFAULT_SIZE = 100;
 
-@theme(themeCss)
+@theme(css)
 export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P, null> {
 	private _divider: HTMLElement;
 	private _dragging: boolean;
@@ -162,26 +162,26 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 		return v('div', {
 			classes: [
 				...this.theme([
-					themeCss.root,
-					direction === Direction.column ? themeCss.column : themeCss.row
+					css.root,
+					direction === Direction.column ? css.column : css.row
 				]),
-				css.rootFixed,
-				direction === Direction.column ? css.columnFixed : css.rowFixed
+				fixedCss.rootFixed,
+				direction === Direction.column ? fixedCss.columnFixed : fixedCss.rowFixed
 			],
 			key: 'root'
 		}, [
 			v('div', {
 				classes: [
-					this.theme(themeCss.leading),
-					css.leadingFixed
+					this.theme(css.leading),
+					fixedCss.leadingFixed
 				],
 				key: 'leading',
 				styles: this.getPaneStyles()
 			}, this.getPaneContent(leading)),
 			v('div', {
 				classes: [
-					this.theme(themeCss.divider),
-					css.dividerFixed
+					this.theme(css.divider),
+					fixedCss.dividerFixed
 				],
 				key: 'divider',
 				onmousedown: this._onDragStart,
@@ -190,8 +190,8 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 			}),
 			v('div', {
 				classes: [
-					this.theme(themeCss.trailing),
-					css.trailingFixed
+					this.theme(css.trailing),
+					fixedCss.trailingFixed
 				],
 				key: 'trailing'
 			}, this.getPaneContent(trailing))

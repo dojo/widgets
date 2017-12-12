@@ -5,8 +5,8 @@ import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import { LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
-import * as css from './styles/slider.m.css';
-import * as themeCss from '../theme/slider/slider.m.css';
+import * as fixedCss from './styles/slider.m.css';
+import * as css from '../theme/slider/slider.m.css';
 
 /**
  * @type SliderProperties
@@ -34,7 +34,7 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(themeCss)
+@theme(css)
 export default class Slider<P extends SliderProperties = SliderProperties> extends ThemedBase<P, null> {
 	// id used to associate input with output
 	private _inputId = uuid();
@@ -63,13 +63,13 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		} = this.properties;
 
 		return [
-			themeCss.root,
-			disabled ? themeCss.disabled : null,
-			invalid === true ? themeCss.invalid : null,
-			invalid === false ? themeCss.valid : null,
-			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null,
-			vertical ? themeCss.vertical : null
+			css.root,
+			disabled ? css.disabled : null,
+			invalid === true ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null,
+			vertical ? css.vertical : null
 		];
 	}
 
@@ -80,16 +80,16 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		} = this.properties;
 
 		return v('div', {
-			classes: [ this.theme(themeCss.track), css.trackFixed ],
+			classes: [ this.theme(css.track), fixedCss.trackFixed ],
 			'aria-hidden': 'true',
 			styles: vertical ? { width: verticalHeight } : {}
 		}, [
 			v('span', {
-				classes: [ this.theme(themeCss.fill), css.fillFixed ],
+				classes: [ this.theme(css.fill), fixedCss.fillFixed ],
 				styles: { width: `${percentValue}%` }
 			}),
 			v('span', {
-				classes: [ this.theme(themeCss.thumb), css.thumbFixed ],
+				classes: [ this.theme(css.thumb), fixedCss.thumbFixed ],
 				styles: { left: `${percentValue}%` }
 			})
 		]);
@@ -111,7 +111,7 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		}
 
 		return v('output', {
-			classes: [ this.theme(themeCss.output), outputIsTooltip ? css.outputTooltip : null ],
+			classes: [ this.theme(css.output), outputIsTooltip ? fixedCss.outputTooltip : null ],
 			for: this._inputId,
 			styles: outputStyles
 		}, [ outputNode ]);
@@ -146,12 +146,12 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		const percentValue = (value - min) / (max - min) * 100;
 
 		const slider = v('div', {
-			classes: [ this.theme(themeCss.inputWrapper), css.inputWrapperFixed ],
+			classes: [ this.theme(css.inputWrapper), fixedCss.inputWrapperFixed ],
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
 				key: 'input',
-				classes: [ this.theme(themeCss.input), css.nativeInput ],
+				classes: [ this.theme(css.input), fixedCss.nativeInput ],
 				'aria-describedby': describedBy,
 				disabled,
 				id: this._inputId,
@@ -199,7 +199,7 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 
 		return v('div', {
 			key: 'root',
-			classes: [...this.theme(this.getRootClasses()), css.rootFixed]
+			classes: [...this.theme(this.getRootClasses()), fixedCss.rootFixed]
 		}, labelAfter ? children.reverse() : children);
 	}
 }

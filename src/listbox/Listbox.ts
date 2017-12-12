@@ -9,8 +9,8 @@ import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as css from './styles/listbox.m.css';
-import * as themeCss from '../theme/listbox/listbox.m.css';
+import * as fixedCss from './styles/listbox.m.css';
+import * as css from '../theme/listbox/listbox.m.css';
 import ListboxOption from './ListboxOption';
 
 /* Default scroll meta */
@@ -62,7 +62,7 @@ export interface ListboxProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(themeCss)
+@theme(css)
 @diffProperty('optionData', reference)
 export default class Listbox<P extends ListboxProperties = ListboxProperties> extends ThemedBase<P, null> {
 	private _boundRenderOption = this.renderOption.bind(this);
@@ -151,16 +151,16 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 	protected getModifierClasses() {
 		const { visualFocus } = this.properties;
 		return [
-			visualFocus ? themeCss.focused : null
+			visualFocus ? css.focused : null
 		];
 	}
 
 	protected getOptionClasses(active: boolean, disabled: boolean, selected: boolean) {
 		return [
-			css.option,
-			active ? css.activeOption : null,
-			disabled ? css.disabledOption : null,
-			selected ? css.selectedOption : null
+			fixedCss.option,
+			active ? fixedCss.activeOption : null,
+			disabled ? fixedCss.disabledOption : null,
+			selected ? fixedCss.selectedOption : null
 		];
 	}
 
@@ -216,7 +216,7 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 		return v('div', {
 			'aria-activedescendant': this._getOptionId(activeIndex),
 			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.theme([ themeCss.root, ...this.getModifierClasses() ]),
+			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
 			describedBy,
 			id,
 			key: 'root',

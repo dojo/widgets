@@ -6,9 +6,8 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
-
-import * as css from './styles/slidePane.m.css';
-import * as themeCss from '../theme/slidepane/slidePane.m.css';
+import * as fixedCss from './styles/slidePane.m.css';
+import * as css from '../theme/slidepane/slidePane.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
 
 /**
@@ -63,7 +62,7 @@ const enum Plane {
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
-@theme(themeCss)
+@theme(css)
 @theme(iconCss)
 export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
 	private _content: HTMLElement;
@@ -177,7 +176,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	protected getContent(): DNode {
-		return v('div', { classes: this.theme(themeCss.content) }, this.children);
+		return v('div', { classes: this.theme(css.content) }, this.children);
 	}
 
 	protected getStyles(): { [key: string]: string | null } {
@@ -207,13 +206,13 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			align = Align.left,
 			open = false
 		} = this.properties;
-		const alignCss: {[key: string]: any} = css;
+		const alignCss: {[key: string]: any} = fixedCss;
 
 		return [
-			open ? css.openFixed : null,
+			open ? fixedCss.openFixed : null,
 			alignCss[`${align}Fixed`],
-			this._slideIn || (open && !this._wasOpen) ? css.slideInFixed : null,
-			!open && this._wasOpen ? css.slideOutFixed : null
+			this._slideIn || (open && !this._wasOpen) ? fixedCss.slideInFixed : null,
+			!open && this._wasOpen ? fixedCss.slideOutFixed : null
 		];
 	}
 
@@ -222,13 +221,13 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			align = Align.left,
 			open = false
 		} = this.properties;
-		const alignCss: {[key: string]: any} = css;
+		const alignCss: {[key: string]: any} = fixedCss;
 
 		return [
 			alignCss[align],
-			open ? themeCss.open : null,
-			this._slideIn || (open && !this._wasOpen) ? themeCss.slideIn : null,
-			!open && this._wasOpen ? themeCss.slideOut : null
+			open ? css.open : null,
+			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
+			!open && this._wasOpen ? css.slideOut : null
 		];
 	}
 
@@ -246,7 +245,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	protected renderUnderlay(): DNode {
 		const { underlay = false } = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? themeCss.underlayVisible : null), css.underlay ],
+			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay'
@@ -280,7 +279,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 		return v('div', {
 			'aria-labelledby': this._titleId,
-			classes: this.theme(themeCss.root),
+			classes: this.theme(css.root),
 			onmousedown: this._onSwipeStart,
 			onmousemove: this._onSwipeMove,
 			onmouseup: this._onSwipeEnd,
@@ -291,16 +290,16 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			open ? this.renderUnderlay() : null,
 			v('div', {
 				key: 'content',
-				classes: [ ...this.theme([ themeCss.pane, ...contentClasses ]), css.paneFixed, ...fixedContentClasses ],
+				classes: [ ...this.theme([ css.pane, ...contentClasses ]), fixedCss.paneFixed, ...fixedContentClasses ],
 				styles: contentStyles
 			}, [
 				title ? v('div', {
-					classes: this.theme(themeCss.title),
+					classes: this.theme(css.title),
 					key: 'title'
 				}, [
 					this.renderTitle(),
 					v('button', {
-						classes: this.theme(themeCss.close),
+						classes: this.theme(css.close),
 						onclick: this._onCloseClick
 					}, [
 						closeText,
