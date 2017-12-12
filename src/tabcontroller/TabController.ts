@@ -117,7 +117,7 @@ export default class TabController<P extends TabControllerProperties = TabContro
 				disabled,
 				key,
 				label,
-				theme = {}
+				theme
 			} = <TabProperties> tab.properties;
 
 			return w(TabButton, {
