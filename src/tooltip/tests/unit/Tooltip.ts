@@ -4,7 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Tooltip, { Orientation } from './../../Tooltip';
-import * as css from './../../styles/tooltip.m.css';
+import * as css from '../../../theme/tooltip/tooltip.m.css';
 
 let widget: Harness<Tooltip>;
 

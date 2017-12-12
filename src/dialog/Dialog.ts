@@ -50,7 +50,6 @@ export interface DialogProperties extends ThemedProperties {
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
-@theme(css)
 @theme(themeCss)
 @theme(iconCss)
 export default class Dialog<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {

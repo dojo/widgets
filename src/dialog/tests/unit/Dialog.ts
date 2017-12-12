@@ -8,8 +8,8 @@ import { assignChildProperties, compareProperty, replaceChild } from '@dojo/test
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Dialog from '../../Dialog';
-import * as css from '../../styles/dialog.m.css';
-import * as iconCss from '../../../common/styles/icons.m.css';
+import * as css from '../../../theme/dialog/dialog.m.css';
+import * as iconCss from '../../../theme/common/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
 

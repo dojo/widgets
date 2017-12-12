@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import Command from '@theintern/leadfoot/Command';
-import * as css from '../../styles/slidePane.m.css';
+import * as css from '../../../theme/slidepane/slidePane.m.css';
 
 const DELAY = 400;
 

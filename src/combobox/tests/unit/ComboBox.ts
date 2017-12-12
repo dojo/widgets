@@ -11,8 +11,8 @@ import ComboBox from '../../ComboBox';
 import Label from '../../../label/Label';
 import Listbox from '../../../listbox/Listbox';
 import TextInput from '../../../textinput/TextInput';
-import * as css from '../../styles/comboBox.m.css';
-import * as iconCss from '../../../common/styles/icons.m.css';
+import * as css from '../../../theme/combobox/comboBox.m.css';
+import * as iconCss from '../../../theme/common/icons.m.css';
 
 let widget: Harness<ComboBox>;
 

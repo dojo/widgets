@@ -5,8 +5,8 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { compareProperty } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
 import TitlePane from '../../TitlePane';
-import * as css from '../../styles/titlePane.m.css';
-import * as iconCss from '../../../common/styles/icons.m.css';
+import * as css from '../../../theme/titlepane/titlePane.m.css';
+import * as iconCss from '../../../theme/common/icons.m.css';
 
 const isNonEmptyString = compareProperty((value: any) => {
 	return typeof value === 'string' && value.length > 0;
