@@ -14,6 +14,10 @@ const WIDTH = 500;
 
 registerSuite('Toolbar', {
 	'Should show menu when button is clicked'() {
+		if (this.remote.session.capabilities.browserName === 'safari') {
+			this.skip('SafariDriver does not support setting a specific window size.');
+		}
+
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
 			.findByCssSelector('body > div:last-child > div:first-child > button')
@@ -28,6 +32,10 @@ registerSuite('Toolbar', {
 	},
 
 	'Should close menu when button is clicked'() {
+		if (this.remote.session.capabilities.browserName === 'safari') {
+			this.skip('SafariDriver does not support setting a specific window size.');
+		}
+
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
 			.findByCssSelector('body > div:last-child > div:first-child > button')
