@@ -25,6 +25,7 @@ const modules = [
 	'enhancedtextinput',
 	'timepicker',
 	'titlepane',
+	'toolbar',
 	'tooltip'
 ];
 
@@ -34,7 +35,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		return v('div', [
+		return v('div', { id: 'module-select' }, [
 			v('h2', {
 				innerHTML: 'Select a module to view'
 			}),

@@ -18,6 +18,7 @@ import * as tabController from './tabController.m.css';
 import * as textarea from './textarea.m.css';
 import * as textinput from './textinput.m.css';
 import * as titlePane from './titlePane.m.css';
+import * as toolbar from './toolbar.m.css';
 import * as tooltip from './tooltip.m.css';
 
 export default {
@@ -41,5 +42,6 @@ export default {
 	'dojo-textarea': textarea,
 	'dojo-textinput': textinput,
 	'dojo-titlePane': titlePane,
+	'dojo-toolbar': toolbar,
 	'dojo-tooltip': tooltip
 };

@@ -45,7 +45,7 @@
 	font-size: 0;
 	padding: var(--grid-base);
 	position: absolute;
-	right: calc(2 * var(--grid-base));
+	right: var(--grid-base);
 	top: 50%;
 	transform: translateY(-50%);
 }
