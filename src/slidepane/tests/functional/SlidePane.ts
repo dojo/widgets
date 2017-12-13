@@ -4,6 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import Command from '@theintern/leadfoot/Command';
 import * as css from '../../../theme/slidepane/slidePane.m.css';
+import * as fixedCss from '../../styles/slidePane.m.css';
 
 const DELAY = 400;
 
@@ -73,7 +74,7 @@ registerSuite('SlidePane', {
 				.then(({ height, width }) => {
 					viewportSize = { height, width };
 				})
-			.findByCssSelector(`.${css.underlay}`)
+			.findByCssSelector(`.${fixedCss.underlay}`)
 				.getSize()
 				.then(({ height, width }) => {
 					assert.closeTo(height, viewportSize.height, viewportSize.height * 0.2);
@@ -87,7 +88,7 @@ registerSuite('SlidePane', {
 				.click()
 				.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${css.underlay}`)
+			.findByCssSelector(`.${fixedCss.underlay}`)
 				.getAttribute('class')
 				.then((className: string) => {
 					assert.match(className, /slidePane-m__underlay/, 'the underlay should not be removed.');

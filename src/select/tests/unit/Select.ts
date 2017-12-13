@@ -11,8 +11,8 @@ import { Keys } from '../../../common/util';
 import Select, { SelectProperties } from '../../Select';
 import Listbox from '../../../listbox/Listbox';
 import Label from '../../../label/Label';
-import * as css from '../../styles/select.m.css';
-import * as iconCss from '../../../common/styles/icons.m.css';
+import * as css from '../../../theme/select/select.m.css';
+import * as iconCss from '../../../theme/common/icons.m.css';
 
 let widget: Harness<Select>;
 

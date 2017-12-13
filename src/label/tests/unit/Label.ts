@@ -4,7 +4,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
 import Label from '../../Label';
-import * as css from '../../styles/label.m.css';
+import * as css from '../../../theme/label/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
 let widget: Harness<Label>;
