@@ -20,7 +20,8 @@ registerSuite('Toolbar', {
 
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
-			.findByCssSelector('body > div:last-child > div:first-child > button')
+			.sleep(DELAY)
+			.findByCssSelector('button:nth-child(3)')
 				.click()
 			.end()
 			.sleep(DELAY)
@@ -47,9 +48,9 @@ registerSuite('Toolbar', {
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div')
-				.isDisplayed()
-				.then(displayed => {
-					assert.isFalse(displayed);
+				.getPosition()
+				.then(position => {
+					assert.isAbove(position.x, WIDTH - 50);
 				});
 	}
 });
