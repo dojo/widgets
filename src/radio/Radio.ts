@@ -5,7 +5,7 @@ import Label from '../label/Label';
 import { LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import * as themeCss from '../theme/radio/radio.m.css';
+import * as css from '../theme/radio/radio.m.css';
 
 /**
  * @type RadioProperties
@@ -22,7 +22,7 @@ export interface RadioProperties extends ThemedProperties, LabeledProperties, In
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(themeCss)
+@theme(css)
 export default class Radio<P extends RadioProperties = RadioProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _uuid = uuid();
@@ -55,14 +55,14 @@ export default class Radio<P extends RadioProperties = RadioProperties> extends 
 		} = this.properties;
 
 		return [
-			themeCss.root,
-			checked ? themeCss.checked : null,
-			disabled ? themeCss.disabled : null,
-			this._focused ? themeCss.focused : null,
-			invalid === true ? themeCss.invalid : null,
-			invalid === false ? themeCss.valid : null,
-			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null
+			css.root,
+			checked ? css.checked : null,
+			disabled ? css.disabled : null,
+			this._focused ? css.focused : null,
+			invalid === true ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
 		];
 	}
 
@@ -83,10 +83,10 @@ export default class Radio<P extends RadioProperties = RadioProperties> extends 
 		} = this.properties;
 
 		const children = [
-			v('div', { classes: this.theme(themeCss.inputWrapper) }, [
+			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('input', {
 					id: this._uuid,
-					classes: this.theme(themeCss.input),
+					classes: this.theme(css.input),
 					checked,
 					'aria-describedby': describedBy,
 					disabled,

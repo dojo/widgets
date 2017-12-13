@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import { InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
-import * as themeCss from '../theme/textarea/textarea.m.css';
+import * as css from '../theme/textarea/textarea.m.css';
 
 /**
  * @type TextareaProperties
@@ -32,7 +32,7 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, L
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(themeCss)
+@theme(css)
 export default class Textarea<P extends TextareaProperties = TextareaProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
@@ -63,12 +63,12 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 			required
 		} = this.properties;
 		return [
-			themeCss.root,
-			disabled ? themeCss.disabled : null,
-			invalid === true ? themeCss.invalid : null,
-			invalid === false ? themeCss.valid : null,
-			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null
+			css.root,
+			disabled ? css.disabled : null,
+			invalid === true ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
 		];
 	}
 
@@ -103,11 +103,11 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 				hidden: labelHidden,
 				forId: this._uuid
 			}, [ label ]) : null,
-			v('div', { classes: this.theme(themeCss.inputWrapper) }, [
+			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('textarea', {
 					id: this._uuid,
 					key: 'input',
-					classes: this.theme(themeCss.input),
+					classes: this.theme(css.input),
 					cols: columns ? `${columns}` : null,
 					'aria-describedby': describedBy,
 					disabled,

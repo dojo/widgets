@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
-import * as themeCss from '../theme/label/label.m.css';
+import * as css from '../theme/label/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 /**
@@ -30,7 +30,7 @@ export interface LabelProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(themeCss)
+@theme(css)
 export default class Label<P extends LabelProperties = LabelProperties> extends ThemedBase<P>  {
 
 	protected getRootClasses(): (string | null)[] {
@@ -42,13 +42,13 @@ export default class Label<P extends LabelProperties = LabelProperties> extends 
 			secondary
 		} = this.properties;
 		return [
-			themeCss.root,
-			disabled ? themeCss.disabled : null,
-			invalid === true ? themeCss.invalid : null,
-			invalid === false ? themeCss.valid : null,
-			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null,
-			secondary ? themeCss.secondary : null
+			css.root,
+			disabled ? css.disabled : null,
+			invalid === true ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null,
+			secondary ? css.secondary : null
 		];
 	}
 

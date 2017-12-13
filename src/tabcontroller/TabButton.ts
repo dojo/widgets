@@ -7,7 +7,7 @@ import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import { Keys } from '../common/util';
 
-import * as themeCss from '../theme/tabcontroller/tabController.m.css';
+import * as css from '../theme/tabcontroller/tabController.m.css';
 
 /**
  * @type TabButtonProperties
@@ -52,7 +52,7 @@ export interface TabButtonProperties extends ThemedProperties {
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
-@theme(themeCss)
+@theme(css)
 export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
 	private _onClick() {
 		const {
@@ -140,7 +140,7 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 			...this.children,
 			closeable ? v('button', {
 				tabIndex: active ? 0 : -1,
-				classes: this.theme(themeCss.close),
+				classes: this.theme(css.close),
 				onclick: this._onCloseClick
 			}, [
 				messages.close,
@@ -152,8 +152,8 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 	protected getModifierClasses(): (string | null)[] {
 		const { active, disabled } = this.properties;
 		return [
-			active ? themeCss.activeTabButton : null,
-			disabled ? themeCss.disabledTabButton : null
+			active ? css.activeTabButton : null,
+			disabled ? css.disabledTabButton : null
 		];
 	}
 
@@ -178,7 +178,7 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
 			'aria-selected': active === true ? 'true' : 'false',
-			classes: this.theme([ themeCss.tabButton, ...this.getModifierClasses() ]),
+			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,

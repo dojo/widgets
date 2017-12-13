@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import { InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
-import * as themeCss from '../theme/textinput/textinput.m.css';
+import * as css from '../theme/textinput/textinput.m.css';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
@@ -32,7 +32,7 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(themeCss)
+@theme(css)
 export default class TextInput<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
@@ -63,12 +63,12 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 			required
 		} = this.properties;
 		return [
-			themeCss.root,
-			disabled ? themeCss.disabled : null,
-			invalid === true ? themeCss.invalid : null,
-			invalid === false ? themeCss.valid : null,
-			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null
+			css.root,
+			disabled ? css.disabled : null,
+			invalid === true ? css.invalid : null,
+			invalid === false ? css.valid : null,
+			readOnly ? css.readonly : null,
+			required ? css.required : null
 		];
 	}
 
@@ -92,7 +92,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 			'aria-controls': controls,
 			'aria-describedby': describedBy,
 			'aria-invalid': invalid ? 'true' : null,
-			classes: this.theme(themeCss.input),
+			classes: this.theme(css.input),
 			disabled,
 			id: this._uuid,
 			key: 'input',
@@ -122,7 +122,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 	}
 
 	protected renderInputWrapper(): DNode {
-		return v('div', { classes: this.theme(themeCss.inputWrapper) }, [
+		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			this.renderInput()
 		]);
 	}
