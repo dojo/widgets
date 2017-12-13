@@ -29,6 +29,7 @@ export const enum Orientation {
 	top = 'top'
 };
 
+const fixedOrientationCss: {[key: string]: any} = fixedCss;
 const orientationCss: {[key: string]: any} = themeCss;
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -40,7 +41,7 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 
 		return [
 			fixedCss.rootFixed,
-			orientationCss[`${orientation}Fixed`]
+			fixedOrientationCss[`${orientation}Fixed`]
 		];
 	}
 
