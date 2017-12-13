@@ -8,6 +8,7 @@ import has from '@dojo/has/has';
 
 import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../../theme/slidepane/slidePane.m.css';
+import fixedCss from '../../styles/slidePane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 
 const compareId = compareProperty((value: any) => {
@@ -54,7 +55,7 @@ registerSuite('SlidePane', {
 				ontouchstart: widget.listener
 			}, [
 				v('div', {
-					classes: [ css.underlayVisible, css.underlay ],
+					classes: [ css.underlayVisible, fixedCss.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					key: 'underlay'
@@ -67,10 +68,10 @@ registerSuite('SlidePane', {
 						css.open,
 						css.slideIn,
 						null,
-						css.paneFixed,
-						css.openFixed,
-						css.leftFixed,
-						css.slideInFixed,
+						fixedCss.paneFixed,
+						fixedCss.openFixed,
+						fixedCss.leftFixed,
+						fixedCss.slideInFixed,
 						null
 					],
 					styles: {
@@ -114,9 +115,9 @@ registerSuite('SlidePane', {
 						null,
 						null,
 						null,
-						css.paneFixed,
+						fixedCss.paneFixed,
 						null,
-						css.leftFixed,
+						fixedCss.leftFixed,
 						null,
 						null
 					],
@@ -167,7 +168,7 @@ registerSuite('SlidePane', {
 				classes: css.root
 			}, [
 				v('div', {
-					classes: [ null, css.underlay ],
+					classes: [ null, fixedCss.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					key: 'underlay'
@@ -180,10 +181,10 @@ registerSuite('SlidePane', {
 						css.open,
 						css.slideIn,
 						null,
-						css.paneFixed,
-						css.openFixed,
-						css.leftFixed,
-						css.slideInFixed,
+						fixedCss.paneFixed,
+						fixedCss.openFixed,
+						fixedCss.leftFixed,
+						fixedCss.slideInFixed,
 						null
 					],
 					styles: {
@@ -224,11 +225,11 @@ registerSuite('SlidePane', {
 						null,
 						null,
 						css.slideOut,
-						css.paneFixed,
+						fixedCss.paneFixed,
 						null,
-						css.leftFixed,
+						fixedCss.leftFixed,
 						null,
-						css.slideOutFixed
+						fixedCss.slideOutFixed
 					],
 					styles: {
 						transform: '',
@@ -597,7 +598,7 @@ registerSuite('SlidePane', {
 					classes: css.root
 				}, [
 					open ? v('div', {
-						classes: [ null, css.underlay ],
+						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
@@ -610,11 +611,11 @@ registerSuite('SlidePane', {
 							open ? css.open : null,
 							transitionDone ? null : ( open ? css.slideIn : null),
 							transitionDone ? null : ( open ? null : css.slideOut),
-							css.paneFixed,
-							open ? css.openFixed : null,
-							css.leftFixed,
-							transitionDone ? null : ( open ? css.slideInFixed : null),
-							transitionDone ? null : ( open ? null : css.slideOutFixed)
+							fixedCss.paneFixed,
+							open ? fixedCss.openFixed : null,
+							fixedCss.leftFixed,
+							transitionDone ? null : ( open ? fixedCss.slideInFixed : null),
+							transitionDone ? null : ( open ? null : fixedCss.slideOutFixed)
 						],
 						styles: {
 							transform: '',
@@ -666,7 +667,7 @@ registerSuite('SlidePane', {
 					classes: css.root
 				}, [
 					closed ? null : v('div', {
-						classes: [ null, css.underlay ],
+						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
@@ -679,10 +680,10 @@ registerSuite('SlidePane', {
 							closed ? null : css.open,
 							css.slideIn,
 							null,
-							css.paneFixed,
-							closed ? null : css.openFixed,
-							css.leftFixed,
-							css.slideInFixed,
+							fixedCss.paneFixed,
+							closed ? null : fixedCss.openFixed,
+							fixedCss.leftFixed,
+							fixedCss.slideInFixed,
 							null
 						],
 						styles: swipeState.styles || {
@@ -733,11 +734,11 @@ registerSuite('SlidePane', {
 					null,
 					null,
 					css.slideOut,
-					css.paneFixed,
+					fixedCss.paneFixed,
 					null,
-					css.leftFixed,
+					fixedCss.leftFixed,
 					null,
-					css.slideOutFixed
+					fixedCss.slideOutFixed
 				],
 				styles: {
 					transform: 'translateX(-78.125%)',
@@ -769,7 +770,7 @@ registerSuite('SlidePane', {
 					classes: css.root
 				}, [
 					closed ? null : v('div', {
-						classes: [ null, css.underlay ],
+						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
@@ -782,10 +783,10 @@ registerSuite('SlidePane', {
 							css.open,
 							css.slideIn,
 							null,
-							css.paneFixed,
-							css.openFixed,
-							css.rightFixed,
-							css.slideInFixed,
+							fixedCss.paneFixed,
+							fixedCss.openFixed,
+							fixedCss.rightFixed,
+							fixedCss.slideInFixed,
 							null
 						],
 						styles: swipeState.styles || {
@@ -837,11 +838,11 @@ registerSuite('SlidePane', {
 					null,
 					null,
 					css.slideOut,
-					css.paneFixed,
+					fixedCss.paneFixed,
 					null,
-					css.rightFixed,
+					fixedCss.rightFixed,
 					null,
-					css.slideOutFixed
+					fixedCss.slideOutFixed
 				],
 				styles: {
 					transform: 'translateX(62.5%)',

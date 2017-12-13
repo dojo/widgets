@@ -4,6 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
 import * as css from '../../../theme/calendar/calendar.m.css';
+import * as cssCell from '../../../theme/calendar/calendarCell.m.css';
 import * as calendarCellCss from '../../../theme/calendar/calendarCell.m.css';
 
 const DELAY = 500;
@@ -208,7 +209,7 @@ registerSuite('Calendar', {
 	'Clicking disabled date moves focus'() {
 		let clickedDate = '';
 		return clickDate(this.remote)
-			.findByCssSelector(`.${css.inactiveDate}`)
+			.findByCssSelector(`.${cssCell.inactiveDate}`)
 				.getVisibleText()
 				.then(text => {
 					clickedDate = text;

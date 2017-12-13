@@ -9,6 +9,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Dialog from '../../Dialog';
 import * as css from '../../../theme/dialog/dialog.m.css';
+import * as fixedCss from '../../styles/dialog.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
@@ -38,7 +39,7 @@ const expected = function(widget: Harness<Dialog>, open = false, closeable = fal
 		lang: null
 	}, open ? [
 		v('div', {
-			classes: [ null, css.underlay ],
+			classes: [ null, fixedCss.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay',
@@ -111,13 +112,13 @@ registerSuite('Dialog', {
 
 			let expectedVdom = expected(widget, true, true);
 			assignChildProperties(expectedVdom, '0', {
-				classes: [ css.underlayVisible, css.underlay ] // do this here so the class is present in future renders
+				classes: [ css.underlayVisible, fixedCss.underlay ] // do this here so the class is present in future renders
 			});
 			expectedVdom = expected(widget, true, true);
 			replaceChild(expectedVdom, '1,0,1,0', 'foo');
 			replaceChild(expectedVdom, '1,0,0,0', 'foo');
 			assignChildProperties(expectedVdom, '0', {
-				classes: [ css.underlayVisible, css.underlay ]
+				classes: [ css.underlayVisible, fixedCss.underlay ]
 			});
 			assignChildProperties(expectedVdom, '1', {
 				enterAnimation: 'fooAnimation',
@@ -176,7 +177,7 @@ registerSuite('Dialog', {
 			});
 			widget.getRender();
 			widget.sendEvent('click', {
-				selector: `.${css.underlay}`
+				selector: `.${fixedCss.underlay}`
 			});
 			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler not called when closeable is false');
 		},
@@ -210,7 +211,7 @@ registerSuite('Dialog', {
 			});
 
 			widget.sendEvent('click', {
-				selector: `.${css.underlay}`
+				selector: `.${fixedCss.underlay}`
 			});
 			assert.isFalse(onRequestClose.called, 'onRequestClose should not be called when the underlay is clicked and modal is true');
 
@@ -222,7 +223,7 @@ registerSuite('Dialog', {
 			widget.getRender();
 
 			widget.sendEvent('click', {
-				selector: `.${css.underlay}`
+				selector: `.${fixedCss.underlay}`
 			});
 			assert.isTrue(onRequestClose.called, 'onRequestClose is called when the underlay is clicked and modal is false');
 		},

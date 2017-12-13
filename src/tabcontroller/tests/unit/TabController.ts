@@ -11,7 +11,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import TabController, { Align } from '../../TabController';
 import TabButton from '../../TabButton';
 import Tab from '../../Tab';
-import * as css from '../../styles/tabController.m.css';
+import * as css from '../../../theme/tabcontroller/tabController.m.css';
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';

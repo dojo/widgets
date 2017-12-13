@@ -6,6 +6,7 @@ import { compareProperty } from '@dojo/test-extras/support/d';
 import { v } from '@dojo/widget-core/d';
 import TitlePane from '../../TitlePane';
 import * as css from '../../../theme/titlepane/titlePane.m.css';
+import * as fixedCss from '../../styles/titlePane.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 
 const isNonEmptyString = compareProperty((value: any) => {
@@ -34,11 +35,11 @@ registerSuite('TitlePane', {
 			});
 
 			titlePane.expectRender(v('div', {
-				classes: [ css.root, css.open, css.rootFixed ]
+				classes: [ css.root, css.open, fixedCss.rootFixed ]
 			}, [
 				v('div', {
 					'aria-level': null,
-					classes: [ css.title, css.closeable, css.titleFixed, css.closeableFixed ],
+					classes: [ css.title, css.closeable, fixedCss.titleFixed, fixedCss.closeableFixed ],
 					role: 'heading'
 				}, [
 					v('button', {
@@ -80,11 +81,11 @@ registerSuite('TitlePane', {
 			});
 
 			titlePane.expectRender(v('div', {
-				classes: [ css.root, null, css.rootFixed ]
+				classes: [ css.root, null, fixedCss.rootFixed ]
 			}, [
 				v('div', {
 					'aria-level': '5',
-					classes: [ css.title, null, css.titleFixed, null ],
+					classes: [ css.title, null, fixedCss.titleFixed, null ],
 					role: 'heading'
 				}, [
 					v('button', {
