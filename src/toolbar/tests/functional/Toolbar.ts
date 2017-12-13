@@ -8,7 +8,7 @@ function getPage(remote: Remote) {
 		.setFindTimeout(5000);
 }
 
-const DELAY = 400;
+const DELAY = 1000;
 const HEIGHT = 500;
 const WIDTH = 500;
 
