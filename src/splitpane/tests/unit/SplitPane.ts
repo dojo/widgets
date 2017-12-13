@@ -6,7 +6,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import has from '@dojo/has/has';
 
 import * as css from '../../../theme/splitpane/splitPane.m.css';
-import fixedCss from '../../styles/splitPane.m.css';
+import * as fixedCss from '../../styles/splitPane.m.css';
 import SplitPane, { Direction } from '../../SplitPane';
 
 let widget: Harness<SplitPane>;
