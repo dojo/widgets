@@ -27,7 +27,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -52,7 +54,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onBottomFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -87,7 +91,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -114,7 +120,9 @@ registerSuite('Toolbar', {
 					css.sticky,
 					css.stickyFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -139,7 +147,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -170,7 +180,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -247,7 +259,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -271,7 +285,9 @@ registerSuite('Toolbar', {
 					css.collapsed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -302,7 +318,9 @@ registerSuite('Toolbar', {
 					css.collapsed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
