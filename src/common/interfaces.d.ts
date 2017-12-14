@@ -5,7 +5,7 @@ export type CommonMessages = typeof commonBundle.messages;
 export interface CustomAriaProperties {
 	aria?: {
 		[key: string]: string;
-	}
+	};
 }
 
 /**

@@ -20,8 +20,6 @@ const compareId = compareProperty((value: any) => {
 const expected = function(label = false, addonBefore = false, addonAfter = false, classes: (string | null)[] = [ textInputCss.root, null, null, null, null, null ]) {
 	const children = [
 		v('input', {
-			'aria-controls': undefined,
-			'aria-describedby': undefined,
 			'aria-invalid': null,
 			classes: css.input,
 			disabled: undefined,
@@ -121,8 +119,10 @@ registerSuite('EnhancedTextInput', {
 
 			'custom properties'() {
 				widget.setProperties({
-					controls: 'foo',
-					describedBy: 'bar',
+					aria: {
+						controls: 'foo',
+						describedBy: 'bar'
+					},
 					maxLength: 50,
 					minLength: 10,
 					name: 'baz',

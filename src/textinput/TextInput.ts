@@ -4,6 +4,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/textinput/textinput.m.css';
 
@@ -89,9 +90,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 		} = this.properties;
 
 		return v('input', {
-			...aria,
-			'aria-controls': controls,
-			'aria-describedby': describedBy,
+			...formatAriaProperties(aria),
 			'aria-invalid': invalid ? 'true' : null,
 			classes: this.theme(css.input),
 			disabled,

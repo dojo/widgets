@@ -12,3 +12,11 @@ export const enum Keys {
 	Tab = 9,
 	Up = 38
 }
+
+export function formatAriaProperties(aria: { [key: string]: string }): { [key: string]: string } {
+	const formattedAria: { [key: string]: string } = {};
+	Object.keys(aria).forEach((key: string) => {
+		formattedAria[`aria-${key.toLowerCase()}`] = aria[key];
+	});
+	return formattedAria;
+}

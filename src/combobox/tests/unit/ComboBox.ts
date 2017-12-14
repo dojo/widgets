@@ -53,9 +53,9 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 		w(TextInput, <any> {
 			key: 'textinput',
 			aria: {
-				'aria-activedescendant': <any> compareId,
-				'aria-controls': <any> compareId,
-				'aria-owns': <any> compareId
+				activedescendant: <any> compareId,
+				controls: <any> compareId,
+				owns: <any> compareId
 			},
 			disabled: undefined,
 			invalid: undefined,
@@ -597,7 +597,7 @@ registerSuite('ComboBox', {
 				invalid: false
 			});
 			assignProperties(expected, {
-				classes: [ css.root, null, null, css.valid ]
+				classes: [ css.root, null, null, null, css.valid ]
 			});
 			widget.expectRender(expected, 'valid render');
 		},

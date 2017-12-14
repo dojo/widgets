@@ -179,7 +179,6 @@ registerSuite('TimePicker', {
 			}, [
 				null,
 				v('input', {
-					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
 					classes: css.input,
@@ -278,7 +277,6 @@ registerSuite('TimePicker', {
 					forId: <any> compareId
 				}, [ 'foo' ]),
 				v('input', {
-					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
 					classes: css.input,

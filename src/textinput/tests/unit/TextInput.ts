@@ -35,8 +35,6 @@ const expected = function(label = false, classes: (string | null)[] = [ css.root
 				key: 'input',
 				classes: css.input,
 				id: <any> compareId,
-				'aria-controls': undefined,
-				'aria-describedby': undefined,
 				disabled: undefined,
 				'aria-invalid': null,
 				maxlength: null,

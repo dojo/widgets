@@ -265,7 +265,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		}
 	}
 
-	protected renderInput(): DNode {
+	protected renderInput(results: any[]): DNode {
 		const {
 			disabled,
 			inputProperties = {},
@@ -280,9 +280,9 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			...inputProperties,
 			key: 'textinput',
 			aria: {
-				'aria-activedescendant': this._getResultId(results[this._activeIndex], this._activeIndex),
-				'aria-controls': this._getMenuId(),
-				'aria-owns': this._getMenuId()
+				activedescendant: this._getResultId(results[this._activeIndex], this._activeIndex),
+				controls: this._getMenuId(),
+				owns: this._getMenuId()
 			},
 			disabled,
 			invalid,
@@ -380,7 +380,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 
 	render(): DNode {
 		const {
-			clearable,
+			clearable = false,
 			id,
 			invalid,
 			label,
@@ -428,6 +428,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			classes: this.theme([
 				css.root,
 				this._open ? css.open : null,
+				clearable ? css.clearable : null,
 				invalid === true ? css.invalid : null,
 				invalid === false ? css.valid : null
 			]),

@@ -7,6 +7,7 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
 import ComboBox from '../combobox/ComboBox';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import { TextInputProperties } from '../textinput/TextInput';
 import Label from '../label/Label';
 import uuid from '@dojo/core/uuid';
@@ -281,7 +282,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 		const {
 			disabled,
 			end,
-			inputProperties: { customAria } = { customAria: {} },
+			inputProperties = {},
 			invalid,
 			name,
 			readOnly,
@@ -295,6 +296,10 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			labelAfter = false
 		} = this.properties;
 
+		let { aria } = inputProperties;
+
+		aria = aria ? formatAriaProperties(aria) : {};
+
 		const children = [
 			label ? w(Label, {
 				theme,
@@ -307,7 +312,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			}, [ label ]) : null,
 			v('input', {
 				id: this._uuid,
-				'aria-describedby': customAria && customAria['aria-describedby'],
+				...aria,
 				'aria-invalid': invalid === true ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,
 				classes: this.theme(css.input),
