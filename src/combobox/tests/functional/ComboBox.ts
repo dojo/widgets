@@ -14,17 +14,12 @@ function getPage(remote: Remote) {
 
 registerSuite('ComboBox', {
 	'the results menu should be visible'() {
-		let inputWidth: number;
-
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
 			.click()
 			.end()
 			.findByCssSelector(`.${css.controls} input`)
 			.getSize()
-			.then(({ width }) => {
-				inputWidth = width;
-			})
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
