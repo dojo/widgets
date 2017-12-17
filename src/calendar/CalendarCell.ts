@@ -29,12 +29,15 @@ export interface CalendarCellProperties extends ThemedProperties {
 	onClick?(date: number, disabled: boolean): void;
 	onFocusCalled?(): void;
 	onKeyDown?(event: KeyboardEvent): void;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class CalendarCell<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<P, null> {
+export default class CalendarCell<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<
+	P,
+	null
+> {
 	protected onElementCreated(element: HTMLElement, key: string) {
 		this._callFocus(element);
 	}
@@ -62,38 +65,30 @@ export default class CalendarCell<P extends CalendarCellProperties = CalendarCel
 	}
 
 	protected formatDate(date: number): DNode {
-		return v('span', [ `${date}` ]);
+		return v('span', [`${date}`]);
 	}
 
 	protected getModifierClasses(): (string | null)[] {
-		const {
-			disabled = false,
-			selected = false,
-			today = false
-		} = this.properties;
+		const { disabled = false, selected = false, today = false } = this.properties;
 
-		return [
-			disabled ? css.inactiveDate : null,
-			selected ? css.selectedDate : null,
-			today ? css.todayDate : null
-		];
+		return [disabled ? css.inactiveDate : null, selected ? css.selectedDate : null, today ? css.todayDate : null];
 	}
 
 	protected render(): DNode {
-		const {
-			date,
-			focusable = false,
-			selected = false
-		} = this.properties;
+		const { date, focusable = false, selected = false } = this.properties;
 
-		return v('td', {
-			key: 'root',
-			role: 'gridcell',
-			'aria-selected': `${selected}`,
-			tabIndex: focusable ? 0 : -1,
-			classes: this.theme([ css.date, ...this.getModifierClasses() ]),
-			onclick: this._onClick,
-			onkeydown: this._onKeyDown
-		}, [ this.formatDate(date) ]);
+		return v(
+			'td',
+			{
+				key: 'root',
+				role: 'gridcell',
+				'aria-selected': `${selected}`,
+				tabIndex: focusable ? 0 : -1,
+				classes: this.theme([css.date, ...this.getModifierClasses()]),
+				onclick: this._onClick,
+				onkeydown: this._onKeyDown
+			},
+			[this.formatDate(date)]
+		);
 	}
 }

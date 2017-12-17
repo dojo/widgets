@@ -14,7 +14,7 @@ import * as iconCss from '../common/styles/icons.m.css';
 export const enum Position {
 	bottom = 'onBottomFixed',
 	top = 'onTopFixed'
-};
+}
 
 /**
  * @type ToolbarProperties
@@ -35,7 +35,7 @@ export interface ToolbarProperties extends WidgetProperties {
 	onCollapse?(collapsed: boolean): void;
 	position?: Position;
 	title?: DNode;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -63,13 +63,12 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			this._collapsed = false;
 			onCollapse && onCollapse(this._collapsed);
 			this.invalidate();
-		}
-		else if (width <= collapseWidth && this._collapsed === false) {
+		} else if (width <= collapseWidth && this._collapsed === false) {
 			this._collapsed = true;
 			onCollapse && onCollapse(this._collapsed);
 			this.invalidate();
 		}
-	}
+	};
 
 	private _toggleMenu() {
 		this._open = !this._open;
@@ -78,19 +77,11 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 
 	protected getFixedRootClasses(): (string | null)[] {
 		const { fixed, position = Position.top } = this.properties;
-		return [
-			css.rootFixed,
-			fixed ? css.stickyFixed : null,
-			(css as any)[position]
-		];
+		return [css.rootFixed, fixed ? css.stickyFixed : null, (css as any)[position]];
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		return [
-			css.root,
-			this._collapsed ? css.collapsed : null,
-			this.properties.fixed ? css.sticky : null
-		];
+		return [css.root, this._collapsed ? css.collapsed : null, this.properties.fixed ? css.sticky : null];
 	}
 
 	protected onAttach() {
@@ -104,68 +95,105 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	protected renderActions(): DNode {
 		const { actions = [], theme } = this.properties;
 
-		const actionsElements = actions.map((action, index) => v('div', {
-			classes: [ this.theme(css.action) ],
-			key: index
-		}, [ action ]));
+		const actionsElements = actions.map((action, index) =>
+			v(
+				'div',
+				{
+					classes: [this.theme(css.action)],
+					key: index
+				},
+				[action]
+			)
+		);
 
 		if (actionsElements.length === 0) {
 			return null;
 		}
 
-		return this._collapsed ? w(SlidePane, {
-			align: Align.right,
-			closeText: 'close menu',
-			key: 'slide-pane-menu',
-			onRequestClose: this._closeMenu,
-			open: this._open,
-			theme,
-			title: 'Menu'
-		}, actionsElements) : v('div', {
-			classes: [ this.theme(css.actions), css.actionsFixed ],
-			key: 'menu'
-		}, actionsElements);
+		return this._collapsed
+			? w(
+					SlidePane,
+					{
+						align: Align.right,
+						closeText: 'close menu',
+						key: 'slide-pane-menu',
+						onRequestClose: this._closeMenu,
+						open: this._open,
+						theme,
+						title: 'Menu'
+					},
+					actionsElements
+				)
+			: v(
+					'div',
+					{
+						classes: [this.theme(css.actions), css.actionsFixed],
+						key: 'menu'
+					},
+					actionsElements
+				);
 	}
 
 	protected renderButton(): DNode {
-		return this._collapsed ? v('button', {
-			classes: [ this.theme(css.menuButton), css.menuButtonFixed ],
-			onclick: this._toggleMenu
-		}, [
-			'open menu',
-			v('i', {
-				classes: this.theme([ iconCss.icon, iconCss.barsIcon ]),
-				role: 'presentation', 'aria-hidden': 'true'
-			})
-		]) : null;
+		return this._collapsed
+			? v(
+					'button',
+					{
+						classes: [this.theme(css.menuButton), css.menuButtonFixed],
+						onclick: this._toggleMenu
+					},
+					[
+						'open menu',
+						v('i', {
+							classes: this.theme([iconCss.icon, iconCss.barsIcon]),
+							role: 'presentation',
+							'aria-hidden': 'true'
+						})
+					]
+				)
+			: null;
 	}
 
 	protected renderTitle(): DNode {
 		const { title } = this.properties;
 
-		return title ? v('div', {
-			classes: [ this.theme(css.title), css.titleFixed ]
-		}, [ title ]) : null;
+		return title
+			? v(
+					'div',
+					{
+						classes: [this.theme(css.title), css.titleFixed]
+					},
+					[title]
+				)
+			: null;
 	}
 
 	render(): DNode {
 		const classes = this.getRootClasses();
 		const fixedClasses = this.getFixedRootClasses();
 
-		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ],
-			key: 'root'
-		}, [
-			v('div', {
-				classes: [ this.theme(css.toolbar), css.toolbarFixed ]
-			}, [
-				this.renderTitle(),
-				this.renderActions(),
-				this.renderButton()
-			]),
-			v('div', {
-				classes: [ this.theme(css.content), css.contentFixed ]
-			}, this.children)
-		]);
+		return v(
+			'div',
+			{
+				classes: [...this.theme(classes), ...fixedClasses],
+				key: 'root'
+			},
+			[
+				v(
+					'div',
+					{
+						classes: [this.theme(css.toolbar), css.toolbarFixed]
+					},
+					[this.renderTitle(), this.renderActions(), this.renderButton()]
+				),
+				v(
+					'div',
+					{
+						classes: [this.theme(css.content), css.contentFixed]
+					},
+					this.children
+				)
+			]
+		);
 	}
 }

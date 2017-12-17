@@ -106,7 +106,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('br'),
-			v('label', { for: 'listbox1' }, [ 'Single-select listbox example' ]),
+			v('label', { for: 'listbox1' }, ['Single-select listbox example']),
 			w(Listbox, {
 				key: 'listbox1',
 				activeIndex: this._listbox1Index,
@@ -122,12 +122,12 @@ export class App extends WidgetBase<WidgetProperties> {
 				},
 				onOptionSelect: (option: any, index: number) => {
 					this._listbox1Value = option.value;
-					this._options = [ ...this._options ];
+					this._options = [...this._options];
 					this.invalidate();
 				}
 			}),
 			v('br'),
-			v('label', { for: 'listbox2' }, [ 'Multi-select listbox example' ]),
+			v('label', { for: 'listbox2' }, ['Multi-select listbox example']),
 			w(Listbox, {
 				key: 'listbox2',
 				activeIndex: this._listbox2Index,
@@ -143,7 +143,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				},
 				onOptionSelect: (option: any, index: number) => {
 					this._moreOptions[index].selected = !this._moreOptions[index].selected;
-					this._moreOptions = [ ...this._moreOptions ];
+					this._moreOptions = [...this._moreOptions];
 					this.invalidate();
 				}
 			})

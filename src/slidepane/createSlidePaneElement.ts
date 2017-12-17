@@ -14,20 +14,18 @@ export default function createSlidePaneElement(): CustomElementDescriptor {
 			},
 			{
 				attributeName: 'open',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'underlay',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'width',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			}
 		],
-		properties: [
-			{ propertyName: 'theme' }
-		],
+		properties: [{ propertyName: 'theme' }],
 		events: [
 			{
 				propertyName: 'onOpen',
@@ -39,4 +37,4 @@ export default function createSlidePaneElement(): CustomElementDescriptor {
 			}
 		]
 	};
-};
+}

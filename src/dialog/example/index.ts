@@ -46,23 +46,27 @@ export class App extends WidgetBase<WidgetProperties> {
 				innerHTML: 'open dialog',
 				onclick: this.openDialog
 			}),
-			w(Dialog, {
-				key: 'dialog',
-				title: 'Dialog',
-				open: this._open,
-				modal: this._modal,
-				underlay: this._underlay,
-				closeable: this._closeable,
-				onRequestClose: () => {
-					this._open = false;
-					this.invalidate();
+			w(
+				Dialog,
+				{
+					key: 'dialog',
+					title: 'Dialog',
+					open: this._open,
+					modal: this._modal,
+					underlay: this._underlay,
+					closeable: this._closeable,
+					onRequestClose: () => {
+						this._open = false;
+						this.invalidate();
+					},
+					theme: this._theme
 				},
-				theme: this._theme
-			}, [
-				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+				[
+					`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-			]),
+				]
+			),
 			v('div', { classes: 'option' }, [
 				v('label', [
 					'Use Dojo Theme ',

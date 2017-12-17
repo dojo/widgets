@@ -30,19 +30,13 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('h3', {}, ['Progress with 50% value']),
-			v('div', { id: 'example-1'}, [
-				w(Progress, { value: 50, theme: this._theme })
-			]),
+			v('div', { id: 'example-1' }, [w(Progress, { value: 50, theme: this._theme })]),
 			v('h3', {}, ['Progress with an id']),
-			v('div', { id: 'example-2'}, [
-				w(Progress, { value: 80, id: 'progress-2', theme: this._theme })
-			]),
+			v('div', { id: 'example-2' }, [w(Progress, { value: 80, id: 'progress-2', theme: this._theme })]),
 			v('h3', {}, ['Progress with max']),
-			v('div', { id: 'example-3'}, [
-				w(Progress, { value: 0.3, max: 1, theme: this._theme })
-			]),
+			v('div', { id: 'example-3' }, [w(Progress, { value: 0.3, max: 1, theme: this._theme })]),
 			v('h3', {}, ['Progress with custom output']),
-			v('div', { id: 'example-4'}, [
+			v('div', { id: 'example-4' }, [
 				w(Progress, {
 					value: 250,
 					max: customOutputMax,
@@ -51,9 +45,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('h3', {}, ['Progress with no output']),
-			v('div', { id: 'example-5'}, [
-				w(Progress, { value: 10, showOutput: false, theme: this._theme })
-			])
+			v('div', { id: 'example-5' }, [w(Progress, { value: 10, showOutput: false, theme: this._theme })])
 		]);
 	}
 }

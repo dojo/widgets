@@ -140,18 +140,14 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 
 		if (optionOffset.top - scrollOffset < 0) {
 			this.animateScroll(optionOffset.top);
-		}
-
-		else if ((optionOffset.top + optionOffset.height) > (scrollOffset + menuHeight)) {
+		} else if (optionOffset.top + optionOffset.height > scrollOffset + menuHeight) {
 			this.animateScroll(optionOffset.top + optionOffset.height - menuHeight);
 		}
 	}
 
 	protected getModifierClasses() {
 		const { visualFocus } = this.properties;
-		return [
-			visualFocus ? css.focused : null
-		];
+		return [visualFocus ? css.focused : null];
 	}
 
 	protected getOptionClasses(active: boolean, disabled: boolean, selected: boolean) {
@@ -169,11 +165,7 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 	}
 
 	protected renderOption(option: any, index: number): DNode {
-		const {
-			activeIndex = 0,
-			getOptionSelected,
-			theme
-		} = this.properties;
+		const { activeIndex = 0, getOptionSelected, theme } = this.properties;
 
 		const disabled = this._getOptionDisabled(option, index);
 		const selected = getOptionSelected ? getOptionSelected(option, index) : false;
@@ -196,32 +188,28 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 	}
 
 	protected renderOptions(): DNode[] {
-		const {
-			optionData = []
-		} = this.properties;
+		const { optionData = [] } = this.properties;
 
 		return optionData.map(this._boundRenderOption);
 	}
 
 	protected render(): DNode {
-		const {
-			activeIndex = 0,
-			describedBy,
-			id,
-			multiselect = false,
-			tabIndex = 0
-		} = this.properties;
+		const { activeIndex = 0, describedBy, id, multiselect = false, tabIndex = 0 } = this.properties;
 
-		return v('div', {
-			'aria-activedescendant': this._getOptionId(activeIndex),
-			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
-			describedBy,
-			id,
-			key: 'root',
-			role: 'listbox',
-			tabIndex,
-			onkeydown: this._onKeyDown
-		}, this.renderOptions());
+		return v(
+			'div',
+			{
+				'aria-activedescendant': this._getOptionId(activeIndex),
+				'aria-multiselectable': multiselect ? 'true' : null,
+				classes: this.theme([css.root, ...this.getModifierClasses()]),
+				describedBy,
+				id,
+				key: 'root',
+				role: 'listbox',
+				tabIndex,
+				onkeydown: this._onKeyDown
+			},
+			this.renderOptions()
+		);
 	}
 }

@@ -10,7 +10,6 @@ import * as iconCss from '../../../common/styles/icons.m.css';
 
 let toolbar: Harness<Toolbar>;
 registerSuite('Toolbar', {
-
 	beforeEach() {
 		toolbar = harness(Toolbar);
 	},
@@ -21,52 +20,60 @@ registerSuite('Toolbar', {
 
 	tests: {
 		'default rendering'() {
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.onTopFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.onTopFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[null, null, null]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [ null, null, null]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 		},
 
 		'bottom-positioned rendering'() {
 			toolbar.setProperties({ position: Position.bottom });
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.onBottomFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.onBottomFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[null, null, null]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [ null, null, null]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 		},
 
 		'expanded rendering'() {
@@ -81,122 +88,148 @@ registerSuite('Toolbar', {
 					};
 				}
 			});
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.onTopFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.onTopFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[null, null, null]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [ null, null, null]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 		},
 
 		'fixed rendering'() {
 			toolbar.setProperties({ fixed: true });
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.onTopFixed,
-					css.sticky,
-					css.stickyFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.onTopFixed, css.sticky, css.stickyFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[null, null, null]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [ null, null, null]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 		},
 
 		'custom title rendering'() {
 			toolbar.setProperties({ title: 'test' });
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.onTopFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.onTopFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[
+								v(
+									'div',
+									{
+										classes: [css.title, css.titleFixed]
+									},
+									['test']
+								),
+								null,
+								null
+							]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [
-					v('div', {
-						classes: [ css.title, css.titleFixed ]
-					}, [ 'test' ]),
-					null,
-					null
-				]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 		},
 
 		'actions rendering'() {
-			toolbar.setProperties({ actions: [ 'test' ] });
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.onTopFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.setProperties({ actions: ['test'] });
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.onTopFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[
+								null,
+								v(
+									'div',
+									{
+										classes: [css.actions, css.actionsFixed],
+										key: 'menu'
+									},
+									[
+										v(
+											'div',
+											{
+												classes: [css.action],
+												key: 0
+											},
+											['test']
+										)
+									]
+								),
+								null
+							]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [
-					null,
-					v('div', {
-						classes: [ css.actions, css.actionsFixed ],
-						key: 'menu'
-					}, [
-						v('div', {
-							classes: [ css.action ],
-							key: 0
-						}, [ 'test' ])
-					]),
-					null
-				]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 		},
 
 		'open and close menu'() {
@@ -212,115 +245,129 @@ registerSuite('Toolbar', {
 				}
 			});
 
-			const slidePaneVDom = w(SlidePane, {
-				align: Align.right,
-				closeText: 'close menu',
-				key: 'slide-pane-menu',
-				onRequestClose: toolbar.listener,
-				open: false,
-				theme: undefined,
-				title: 'Menu'
-			}, [
-				v('div', {
-					classes: [ css.action ],
-					key: 0
-				}, [ 'test' ])
-			]);
+			const slidePaneVDom = w(
+				SlidePane,
+				{
+					align: Align.right,
+					closeText: 'close menu',
+					key: 'slide-pane-menu',
+					onRequestClose: toolbar.listener,
+					open: false,
+					theme: undefined,
+					title: 'Menu'
+				},
+				[
+					v(
+						'div',
+						{
+							classes: [css.action],
+							key: 0
+						},
+						['test']
+					)
+				]
+			);
 
-			const buttonVDom = v('button', {
-				classes: [ css.menuButton, css.menuButtonFixed ],
-				onclick: toolbar.listener
-			}, [
-				'open menu',
-				v('i', {
-					classes: [ iconCss.icon, iconCss.barsIcon ],
-					role: 'presentation',
-					'aria-hidden': 'true'
-				})
-			]);
+			const buttonVDom = v(
+				'button',
+				{
+					classes: [css.menuButton, css.menuButtonFixed],
+					onclick: toolbar.listener
+				},
+				[
+					'open menu',
+					v('i', {
+						classes: [iconCss.icon, iconCss.barsIcon],
+						role: 'presentation',
+						'aria-hidden': 'true'
+					})
+				]
+			);
 
 			toolbar.setProperties({ onCollapse: () => {} });
 
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.onTopFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.onTopFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[null, null, null]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [ null, null, null]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 
-			toolbar.setProperties({ actions: [ 'test' ] });
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.collapsed,
-					css.onTopFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.setProperties({ actions: ['test'] });
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.collapsed, css.onTopFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[null, slidePaneVDom, buttonVDom]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [
-					null,
-					slidePaneVDom,
-					buttonVDom
-				]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 
 			toolbar.sendEvent('click', { selector: `.${css.menuButton}` });
 			toolbar.getRender();
 
 			toolbar.callListener('onRequestClose', { key: 'slide-pane-menu' });
-			toolbar.expectRender(v('div', {
-				classes: [
-					css.root,
-					css.rootFixed,
-					css.collapsed,
-					css.onTopFixed
-				],
-				key: 'root'
-			}, [
-				v('div', {
-					classes: [
-						css.toolbar,
-						css.toolbarFixed
+			toolbar.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.rootFixed, css.collapsed, css.onTopFixed],
+						key: 'root'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [css.toolbar, css.toolbarFixed]
+							},
+							[null, slidePaneVDom, buttonVDom]
+						),
+						v(
+							'div',
+							{
+								classes: [css.content, css.contentFixed]
+							},
+							[]
+						)
 					]
-				}, [
-					null,
-					slidePaneVDom,
-					buttonVDom
-				]),
-				v('div', {
-					classes: [
-						css.content,
-						css.contentFixed
-					]
-				}, [])
-			]));
+				)
+			);
 		}
 	}
 });

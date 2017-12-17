@@ -31,16 +31,9 @@ export interface LabelProperties extends ThemedProperties {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Label<P extends LabelProperties = LabelProperties> extends ThemedBase<P>  {
-
+export default class Label<P extends LabelProperties = LabelProperties> extends ThemedBase<P> {
 	protected getRootClasses(): (string | null)[] {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required,
-			secondary
-		} = this.properties;
+		const { disabled, invalid, readOnly, required, secondary } = this.properties;
 		return [
 			css.root,
 			disabled ? css.disabled : null,
@@ -55,12 +48,13 @@ export default class Label<P extends LabelProperties = LabelProperties> extends 
 	render(): DNode {
 		const { forId, hidden } = this.properties;
 
-		return v('label', {
-			classes: [
-				...this.theme(this.getRootClasses()),
-				hidden ? baseCss.visuallyHidden : null
-			],
-			for: forId
-		}, this.children);
+		return v(
+			'label',
+			{
+				classes: [...this.theme(this.getRootClasses()), hidden ? baseCss.visuallyHidden : null],
+				for: forId
+			},
+			this.children
+		);
 	}
 }

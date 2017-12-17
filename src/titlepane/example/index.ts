@@ -18,70 +18,88 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		const {
-			_t2Open,
-			_t3Open
-		} = this;
+		const { _t2Open, _t3Open } = this;
 
-		return v('div', {
-			styles: {
-				margin: '20px',
-				maxWidth: '350px'
-			}
-		}, [
-			v('div', {
-				classes: 'option',
-				style: 'margin-bottom: 20px;'
-			}, [
-				v('label', [
-					'Use Dojo Theme ',
-					v('input', {
-						type: 'checkbox',
-						onchange: this.themeChange
-					})
-				])
-			]),
+		return v(
+			'div',
+			{
+				styles: {
+					margin: '20px',
+					maxWidth: '350px'
+				}
+			},
+			[
+				v(
+					'div',
+					{
+						classes: 'option',
+						style: 'margin-bottom: 20px;'
+					},
+					[
+						v('label', [
+							'Use Dojo Theme ',
+							v('input', {
+								type: 'checkbox',
+								onchange: this.themeChange
+							})
+						])
+					]
+				),
 
-			v('div', {
-				id: 'titlePane1',
-				styles: { 'margin-bottom': '15px' }
-			}, [
-				w(TitlePane, {
-					headingLevel: 1,
-					closeable: false,
-					key: 'titlePane1',
-					theme: this._theme,
-					title: 'TitlePanel Widget With closeable=false'
-				}, [
-					v('div', {
-						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+				v(
+					'div',
+					{
+						id: 'titlePane1',
+						styles: { 'margin-bottom': '15px' }
+					},
+					[
+						w(
+							TitlePane,
+							{
+								headingLevel: 1,
+								closeable: false,
+								key: 'titlePane1',
+								theme: this._theme,
+								title: 'TitlePanel Widget With closeable=false'
+							},
+							[
+								v('div', {
+									innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 							Quisque id purus ipsum. Aenean ac purus purus.
 							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-					})
-				])
-			]),
+								})
+							]
+						)
+					]
+				),
 
-			v('div', {
-				id: 'titlePane2',
-				styles: { 'margin-bottom': '15px' }
-			}, [
-				w(TitlePane, {
-					headingLevel: 2,
-					key: 'titlePane2',
-					open: _t2Open,
-					theme: this._theme,
-					title: 'TitlePanel Widget (closeable)',
-					onRequestClose: () => {
-						this._t2Open = false;
-						this.invalidate();
+				v(
+					'div',
+					{
+						id: 'titlePane2',
+						styles: { 'margin-bottom': '15px' }
 					},
-					onRequestOpen: () => {
-						this._t2Open = true;
-						this.invalidate();
-					}
-				}, [
-					v('div', {
-						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+					[
+						w(
+							TitlePane,
+							{
+								headingLevel: 2,
+								key: 'titlePane2',
+								open: _t2Open,
+								theme: this._theme,
+								title: 'TitlePanel Widget (closeable)',
+								onRequestClose: () => {
+									this._t2Open = false;
+									this.invalidate();
+								},
+								onRequestOpen: () => {
+									this._t2Open = true;
+									this.invalidate();
+								}
+							},
+							[
+								v('div', {
+									innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 							Quisque id purus ipsum. Aenean ac purus purus.
 							Nam sollicitudin varius augue, sed lacinia felis tempor in.
 							<br>
@@ -92,33 +110,40 @@ export class App extends WidgetBase<WidgetProperties> {
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 							Quisque id purus ipsum. Aenean ac purus purus.
 							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-					})
-				])
-			]),
+								})
+							]
+						)
+					]
+				),
 
-			v('div', { id: 'titlePane3' }, [
-				w(TitlePane, {
-					key: 'titlePane3',
-					open: _t3Open,
-					theme: this._theme,
-					title: 'TitlePanel Widget with open=false',
-					onRequestClose: () => {
-						this._t3Open = false;
-						this.invalidate();
-					},
-					onRequestOpen: () => {
-						this._t3Open = true;
-						this.invalidate();
-					}
-				}, [
-					v('div', {
-						innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+				v('div', { id: 'titlePane3' }, [
+					w(
+						TitlePane,
+						{
+							key: 'titlePane3',
+							open: _t3Open,
+							theme: this._theme,
+							title: 'TitlePanel Widget with open=false',
+							onRequestClose: () => {
+								this._t3Open = false;
+								this.invalidate();
+							},
+							onRequestOpen: () => {
+								this._t3Open = true;
+								this.invalidate();
+							}
+						},
+						[
+							v('div', {
+								innerHTML: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 							Quisque id purus ipsum. Aenean ac purus purus.
 							Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-					})
+							})
+						]
+					)
 				])
-			])
-		]);
+			]
+		);
 	}
 }
 

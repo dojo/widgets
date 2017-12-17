@@ -5,9 +5,7 @@ import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../styles/checkbox.m.css';
 
 function getPage(remote: Remote) {
-	return remote
-		.get('http://localhost:9000/_build/common/example/?module=checkbox')
-		.setFindTimeout(5000);
+	return remote.get('http://localhost:9000/_build/common/example/?module=checkbox').setFindTimeout(5000);
 }
 
 function nthCheckbox(n: number) {
@@ -29,17 +27,16 @@ registerSuite('Checkbox', {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-1 .${css.root}`)
 			.getVisibleText()
-			.then(text => {
+			.then((text) => {
 				assert.strictEqual(text, 'Sample checkbox that starts checked');
 			})
 			.end();
-
 	},
 	'checkbox should be disabled'() {
 		return getPage(this.remote)
 			.findByCssSelector(nthCheckbox(2))
 			.isEnabled()
-			.then(enabled => {
+			.then((enabled) => {
 				assert.isTrue(!enabled, 'The checkbox should be disabled.');
 			})
 			.end();
@@ -57,17 +54,17 @@ registerSuite('Checkbox', {
 		return getPage(this.remote)
 			.findByCssSelector(nthCheckbox(1))
 			.isSelected()
-			.then(checked => {
+			.then((checked) => {
 				assert.isTrue(checked, 'Initial state should be true');
 			})
 			.click()
 			.isSelected()
-			.then(checked => {
+			.then((checked) => {
 				assert.isFalse(checked);
 			})
 			.click()
 			.isSelected()
-			.then(checked => {
+			.then((checked) => {
 				assert.isTrue(checked);
 			})
 			.end();
@@ -76,36 +73,38 @@ registerSuite('Checkbox', {
 		return getPage(this.remote)
 			.findByCssSelector(nthCheckbox(4))
 			.isSelected()
-			.then(checked => {
+			.then((checked) => {
 				assert.isFalse(checked, 'Initial state should be false');
 			})
 			.click()
 			.isSelected()
-			.then(checked => {
+			.then((checked) => {
 				assert.isTrue(checked);
 			})
 			.click()
 			.isSelected()
-			.then(checked => {
+			.then((checked) => {
 				assert.isFalse(checked);
 			})
 			.end();
 	},
 
 	'disabled checkbox should not be toggle-able'() {
-		return getPage(this.remote)
-			.findByCssSelector(nthCheckbox(2))
-			.isSelected()
-			.then(checked => {
-				assert.isFalse(checked, 'Initial state should be false');
-			})
-			.click()
-		// the error callback is needed only in FireFox with Firefox Driver. See: https://github.com/dojo/meta/issues/182
-			.then(undefined, (err: Error) => {})
-			.isSelected()
-			.then(checked => {
-				assert.isFalse(checked);
-			})
-			.end();
+		return (
+			getPage(this.remote)
+				.findByCssSelector(nthCheckbox(2))
+				.isSelected()
+				.then((checked) => {
+					assert.isFalse(checked, 'Initial state should be false');
+				})
+				.click()
+				// the error callback is needed only in FireFox with Firefox Driver. See: https://github.com/dojo/meta/issues/182
+				.then(undefined, (err: Error) => {})
+				.isSelected()
+				.then((checked) => {
+					assert.isFalse(checked);
+				})
+				.end()
+		);
 	}
 });

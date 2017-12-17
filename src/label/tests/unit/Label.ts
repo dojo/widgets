@@ -10,7 +10,6 @@ import * as baseCss from '../../../common/styles/base.m.css';
 let widget: Harness<Label>;
 
 registerSuite('Label', {
-
 	beforeEach() {
 		widget = harness(Label);
 	},
@@ -21,22 +20,18 @@ registerSuite('Label', {
 
 	tests: {
 		simple() {
-			widget.setChildren([ 'baz' ]);
+			widget.setChildren(['baz']);
 
-			widget.expectRender(v('label', {
-				classes: [
-					css.root,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null
-				],
-				for: undefined
-			}, [
-				'baz'
-			]));
+			widget.expectRender(
+				v(
+					'label',
+					{
+						classes: [css.root, null, null, null, null, null, null],
+						for: undefined
+					},
+					['baz']
+				)
+			);
 		},
 
 		hidden() {
@@ -44,21 +39,18 @@ registerSuite('Label', {
 				hidden: true
 			});
 
-			widget.setChildren([ 'baz' ]);
+			widget.setChildren(['baz']);
 
-			widget.expectRender(v('label', {
-				classes: [
-					css.root,
-					null,
-					null,
-					null,
-					null,
-					null,
-					baseCss.visuallyHidden ],
-				for: undefined
-			}, [
-				'baz'
-			]));
+			widget.expectRender(
+				v(
+					'label',
+					{
+						classes: [css.root, null, null, null, null, null, baseCss.visuallyHidden],
+						for: undefined
+					},
+					['baz']
+				)
+			);
 		}
 	}
 });

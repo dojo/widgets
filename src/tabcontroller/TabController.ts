@@ -17,7 +17,7 @@ export const enum Align {
 	left,
 	right,
 	top
-};
+}
 
 /**
  * @type TabControllerProperties
@@ -34,17 +34,20 @@ export interface TabControllerProperties extends ThemedProperties {
 	alignButtons?: Align;
 	onRequestTabChange?(index: number, key: string): void;
 	onRequestTabClose?(index: number, key: string): void;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TabController<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<P, WNode<Tab>> {
+export default class TabController<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<
+	P,
+	WNode<Tab>
+> {
 	private _id = uuid();
 	private _callTabFocus = false;
 
 	private get _tabs(): WNode<Tab>[] {
-		return this.children.filter(child => child !== null) as WNode<Tab>[];
+		return this.children.filter((child) => child !== null) as WNode<Tab>[];
 	}
 
 	private _onDownArrowPress() {
@@ -78,7 +81,7 @@ export default class TabController<P extends TabControllerProperties = TabContro
 	private _validateIndex(currentIndex: number, backwards?: boolean) {
 		const tabs = this._tabs;
 
-		if (tabs.every(result => Boolean(result.properties.disabled))) {
+		if (tabs.every((result) => Boolean(result.properties.disabled))) {
 			return null;
 		}
 
@@ -107,39 +110,39 @@ export default class TabController<P extends TabControllerProperties = TabContro
 	}
 
 	protected renderButtonContent(label?: DNode): DNode[] {
-		return [ label || null ];
+		return [label || null];
 	}
 
 	protected renderTabButtons(): DNode[] {
 		return this._tabs.map((tab, i) => {
-			const {
-				closeable,
-				disabled,
-				key,
-				label,
-				theme
-			} = <TabProperties> tab.properties;
+			const { closeable, disabled, key, label, theme } = <TabProperties>tab.properties;
 
-			return w(TabButton, {
-				callFocus: this._callTabFocus &&  i === this.properties.activeIndex,
-				active: i === this.properties.activeIndex,
-				closeable,
-				controls: `${ this._id }-tab-${i}`,
-				disabled,
-				id: `${ this._id }-tabbutton-${i}`,
-				index: i,
-				key: `${ key }-tabbutton`,
-				onClick: this.selectIndex,
-				onCloseClick: this.closeIndex,
-				onDownArrowPress: this._onDownArrowPress,
-				onEndPress: this.selectLastIndex,
-				onFocusCalled: () => { this._callTabFocus = false; },
-				onHomePress: this.selectFirstIndex,
-				onLeftArrowPress: this._onLeftArrowPress,
-				onRightArrowPress: this._onRightArrowPress,
-				onUpArrowPress: this._onUpArrowPress,
-				theme
-			}, this.renderButtonContent(label));
+			return w(
+				TabButton,
+				{
+					callFocus: this._callTabFocus && i === this.properties.activeIndex,
+					active: i === this.properties.activeIndex,
+					closeable,
+					controls: `${this._id}-tab-${i}`,
+					disabled,
+					id: `${this._id}-tabbutton-${i}`,
+					index: i,
+					key: `${key}-tabbutton`,
+					onClick: this.selectIndex,
+					onCloseClick: this.closeIndex,
+					onDownArrowPress: this._onDownArrowPress,
+					onEndPress: this.selectLastIndex,
+					onFocusCalled: () => {
+						this._callTabFocus = false;
+					},
+					onHomePress: this.selectFirstIndex,
+					onLeftArrowPress: this._onLeftArrowPress,
+					onRightArrowPress: this._onRightArrowPress,
+					onUpArrowPress: this._onUpArrowPress,
+					theme
+				},
+				this.renderButtonContent(label)
+			);
 		});
 	}
 
@@ -152,8 +155,8 @@ export default class TabController<P extends TabControllerProperties = TabContro
 			})
 			.map((tab, i) => {
 				assign(tab.properties, {
-					id: `${ this._id }-tab-${i}`,
-					labelledBy: `${ this._id }-tabbutton-${i}`
+					id: `${this._id}-tab-${i}`,
+					labelledBy: `${this._id}-tabbutton-${i}`
 				});
 				return tab;
 			});
@@ -164,10 +167,7 @@ export default class TabController<P extends TabControllerProperties = TabContro
 	}
 
 	protected selectIndex(index: number, backwards?: boolean) {
-		const {
-			activeIndex,
-			onRequestTabChange
-		} = this.properties;
+		const { activeIndex, onRequestTabChange } = this.properties;
 
 		const validIndex = this._validateIndex(index, backwards);
 		this._callTabFocus = true;
@@ -205,14 +205,24 @@ export default class TabController<P extends TabControllerProperties = TabContro
 		}
 
 		const children = [
-			v('div', {
-				key: 'buttons',
-				classes: this.theme(css.tabButtons)
-			}, this.renderTabButtons()),
-			tabs.length ? v('div', {
-				key: 'tabs',
-				classes: this.theme(css.tabs)
-			}, tabs) : null
+			v(
+				'div',
+				{
+					key: 'buttons',
+					classes: this.theme(css.tabButtons)
+				},
+				this.renderTabButtons()
+			),
+			tabs.length
+				? v(
+						'div',
+						{
+							key: 'tabs',
+							classes: this.theme(css.tabs)
+						},
+						tabs
+					)
+				: null
 		];
 
 		let alignClass;
@@ -234,13 +244,14 @@ export default class TabController<P extends TabControllerProperties = TabContro
 				break;
 		}
 
-		return v('div', {
-			'aria-orientation': orientation,
-			classes: this.theme([
-				alignClass ? alignClass : null,
-				css.root
-			]),
-			role: 'tablist'
-		}, children);
+		return v(
+			'div',
+			{
+				'aria-orientation': orientation,
+				classes: this.theme([alignClass ? alignClass : null, css.root]),
+				role: 'tablist'
+			},
+			children
+		);
 	}
 }

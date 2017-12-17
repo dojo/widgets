@@ -22,9 +22,15 @@ registerSuite('AccordionPane', {
 
 	tests: {
 		'default rendering'() {
-			pane.expectRender(v('div', {
-				classes: css.root
-			}, []));
+			pane.expectRender(
+				v(
+					'div',
+					{
+						classes: css.root
+					},
+					[]
+				)
+			);
 		},
 
 		'default rendering with children'() {
@@ -37,34 +43,40 @@ registerSuite('AccordionPane', {
 				w(TitlePane, { title: 'baz', key: 'baz' })
 			]);
 
-			pane.expectRender(v('div', {
-				classes: css.root
-			}, [
-				w(TitlePane, {
-					key: 'foo',
-					onRequestClose: pane.listener,
-					onRequestOpen: pane.listener,
-					open: false,
-					theme: undefined,
-					title: 'foo'
-				}),
-				w(TitlePane, {
-					key: 'bar',
-					onRequestClose: pane.listener,
-					onRequestOpen: pane.listener,
-					open: false,
-					theme: undefined,
-					title: 'bar'
-				}),
-				w(TitlePane, {
-					key: 'baz',
-					onRequestClose: pane.listener,
-					onRequestOpen: pane.listener,
-					open: false,
-					theme: undefined,
-					title: 'baz'
-				})
-			]));
+			pane.expectRender(
+				v(
+					'div',
+					{
+						classes: css.root
+					},
+					[
+						w(TitlePane, {
+							key: 'foo',
+							onRequestClose: pane.listener,
+							onRequestOpen: pane.listener,
+							open: false,
+							theme: undefined,
+							title: 'foo'
+						}),
+						w(TitlePane, {
+							key: 'bar',
+							onRequestClose: pane.listener,
+							onRequestOpen: pane.listener,
+							open: false,
+							theme: undefined,
+							title: 'bar'
+						}),
+						w(TitlePane, {
+							key: 'baz',
+							onRequestClose: pane.listener,
+							onRequestOpen: pane.listener,
+							open: false,
+							theme: undefined,
+							title: 'baz'
+						})
+					]
+				)
+			);
 		},
 
 		'onRequestOpen should be called'() {
@@ -72,9 +84,7 @@ registerSuite('AccordionPane', {
 
 			pane.setProperties({ onRequestOpen });
 
-			pane.setChildren([
-				w(TitlePane, { title: 'foo', key: 'foo' })
-			]);
+			pane.setChildren([w(TitlePane, { title: 'foo', key: 'foo' })]);
 
 			pane.callListener('onRequestOpen', { key: 'foo' });
 			assert.isTrue(onRequestOpen.calledWith('foo'));
@@ -85,9 +95,7 @@ registerSuite('AccordionPane', {
 
 			pane.setProperties({ onRequestClose });
 
-			pane.setChildren([
-				w(TitlePane, { title: 'foo', key: 'foo' })
-			]);
+			pane.setChildren([w(TitlePane, { title: 'foo', key: 'foo' })]);
 
 			pane.callListener('onRequestClose', { key: 'foo' });
 			assert.isTrue(onRequestClose.calledWith('foo'));

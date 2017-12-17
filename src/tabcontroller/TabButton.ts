@@ -45,27 +45,20 @@ export interface TabButtonProperties extends ThemedProperties {
 	onLeftArrowPress?: () => void;
 	onRightArrowPress?: () => void;
 	onUpArrowPress?: () => void;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
 	private _onClick() {
-		const {
-			disabled,
-			index,
-			onClick
-		} = this.properties;
+		const { disabled, index, onClick } = this.properties;
 
 		!disabled && onClick && onClick(index);
 	}
 
 	private _onCloseClick(event: MouseEvent) {
-		const {
-			index,
-			onCloseClick
-		} = this.properties;
+		const { index, onCloseClick } = this.properties;
 
 		event.stopPropagation();
 		onCloseClick && onCloseClick(index);
@@ -135,21 +128,20 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 
 		return [
 			...this.children,
-			closeable ? v('button', {
-				tabIndex: active ? 0 : -1,
-				classes: this.theme(css.close),
-				innerHTML: 'close tab',
-				onclick: this._onCloseClick
-			}) : null
+			closeable
+				? v('button', {
+						tabIndex: active ? 0 : -1,
+						classes: this.theme(css.close),
+						innerHTML: 'close tab',
+						onclick: this._onCloseClick
+					})
+				: null
 		];
 	}
 
 	protected getModifierClasses(): (string | null)[] {
 		const { active, disabled } = this.properties;
-		return [
-			active ? css.activeTabButton : null,
-			disabled ? css.disabledTabButton : null
-		];
+		return [active ? css.activeTabButton : null, disabled ? css.disabledTabButton : null];
 	}
 
 	protected onElementCreated(element: HTMLElement, key: string) {
@@ -161,24 +153,23 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 	}
 
 	render(): DNode {
-		const {
-			active,
-			controls,
-			disabled,
-			id
-		} = this.properties;
+		const { active, controls, disabled, id } = this.properties;
 
-		return v('div', {
-			'aria-controls': controls,
-			'aria-disabled': disabled ? 'true' : 'false',
-			'aria-selected': active === true ? 'true' : 'false',
-			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
-			id,
-			key: 'tab-button',
-			onclick: this._onClick,
-			onkeydown: this._onKeyDown,
-			role: 'tab',
-			tabIndex: active === true ? 0 : -1
-		}, this.getContent());
+		return v(
+			'div',
+			{
+				'aria-controls': controls,
+				'aria-disabled': disabled ? 'true' : 'false',
+				'aria-selected': active === true ? 'true' : 'false',
+				classes: this.theme([css.tabButton, ...this.getModifierClasses()]),
+				id,
+				key: 'tab-button',
+				onclick: this._onClick,
+				onkeydown: this._onKeyDown,
+				role: 'tab',
+				tabIndex: active === true ? 0 : -1
+			},
+			this.getContent()
+		);
 	}
 }

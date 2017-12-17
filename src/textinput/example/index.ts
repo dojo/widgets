@@ -20,95 +20,99 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		return v('div', {
-			styles: { maxWidth: '256px' }
-		}, [
-			v('h2', {}, ['Text Input Examples']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
-			v('div', { id: 'example-text' }, [
-				v('h3', {}, ['String label']),
-				w(TextInput, {
-					key: 't1',
-					label: 'Name',
-					type: 'text',
-					placeholder: 'Hello, World',
-					value: this._value1,
-					onChange: (event: Event) => {
-						this._value1 = (event.target as HTMLInputElement).value;
-						this.invalidate();
-					},
-					theme: this._theme
-				})
-			]),
-			v('div', { id: 'example-email' }, [
-				v('h3', {}, ['Label before the input']),
-				w(TextInput, {
-					key: 't2',
-					type: 'email',
-					label: 'Email (required)',
-					required: true,
-					value: this._value2,
-					onChange: (event: Event) => {
-						this._value2 = (event.target as HTMLInputElement).value;
-						this.invalidate();
-					},
-					theme: this._theme
-				})
-			]),
-			v('div', { id: 'example-hidden-label' }, [
-				v('h3', {}, ['Hidden accessible label']),
-				w(TextInput, {
-					key: 't3',
-					type: 'text',
-					placeholder: 'Type something...',
-					label: 'Try listening to me!',
-					labelAfter: true,
-					labelHidden: true,
-					value: this._value3,
-					onChange: (event: Event) => {
-						this._value3 = (event.target as HTMLInputElement).value;
-						this.invalidate();
-					},
-					theme: this._theme
-				})
-			]),
-			v('div', { id: 'example-disabled' }, [
-				v('h3', {}, ['Disabled text input']),
-				w(TextInput, {
-					key: 't4',
-					type: 'text',
-					label: 'Can\'t type here',
-					value: 'Initial value',
-					disabled: true,
-					readOnly: true,
-					theme: this._theme
-				})
-			]),
-			v('div', { id: 'example-validated' }, [
-				v('h3', {}, ['Validated Input']),
-				w(TextInput, {
-					key: 't5',
-					type: 'text',
-					label: 'Type "foo" or "bar"',
-					value: this._value4,
-					invalid: this._invalid,
-					onInput: (event: Event) => {
-						const target = event.target as HTMLInputElement;
-						const value = target.value;
-						this._value4 = value;
-						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
-						this.invalidate();
-					},
-					theme: this._theme
-				})
-			])
-		]);
+		return v(
+			'div',
+			{
+				styles: { maxWidth: '256px' }
+			},
+			[
+				v('h2', {}, ['Text Input Examples']),
+				v('label', [
+					'Use Dojo Theme ',
+					v('input', {
+						type: 'checkbox',
+						onchange: this.themeChange
+					})
+				]),
+				v('div', { id: 'example-text' }, [
+					v('h3', {}, ['String label']),
+					w(TextInput, {
+						key: 't1',
+						label: 'Name',
+						type: 'text',
+						placeholder: 'Hello, World',
+						value: this._value1,
+						onChange: (event: Event) => {
+							this._value1 = (event.target as HTMLInputElement).value;
+							this.invalidate();
+						},
+						theme: this._theme
+					})
+				]),
+				v('div', { id: 'example-email' }, [
+					v('h3', {}, ['Label before the input']),
+					w(TextInput, {
+						key: 't2',
+						type: 'email',
+						label: 'Email (required)',
+						required: true,
+						value: this._value2,
+						onChange: (event: Event) => {
+							this._value2 = (event.target as HTMLInputElement).value;
+							this.invalidate();
+						},
+						theme: this._theme
+					})
+				]),
+				v('div', { id: 'example-hidden-label' }, [
+					v('h3', {}, ['Hidden accessible label']),
+					w(TextInput, {
+						key: 't3',
+						type: 'text',
+						placeholder: 'Type something...',
+						label: 'Try listening to me!',
+						labelAfter: true,
+						labelHidden: true,
+						value: this._value3,
+						onChange: (event: Event) => {
+							this._value3 = (event.target as HTMLInputElement).value;
+							this.invalidate();
+						},
+						theme: this._theme
+					})
+				]),
+				v('div', { id: 'example-disabled' }, [
+					v('h3', {}, ['Disabled text input']),
+					w(TextInput, {
+						key: 't4',
+						type: 'text',
+						label: "Can't type here",
+						value: 'Initial value',
+						disabled: true,
+						readOnly: true,
+						theme: this._theme
+					})
+				]),
+				v('div', { id: 'example-validated' }, [
+					v('h3', {}, ['Validated Input']),
+					w(TextInput, {
+						key: 't5',
+						type: 'text',
+						label: 'Type "foo" or "bar"',
+						value: this._value4,
+						invalid: this._invalid,
+						onInput: (event: Event) => {
+							const target = event.target as HTMLInputElement;
+							const value = target.value;
+							this._value4 = value;
+							this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
+							this.invalidate();
+						},
+						theme: this._theme
+					})
+				])
+			]
+		);
 	}
 }
 

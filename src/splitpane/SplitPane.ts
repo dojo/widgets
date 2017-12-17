@@ -11,7 +11,7 @@ import * as css from './styles/splitPane.m.css';
 export const enum Direction {
 	column,
 	row
-};
+}
 
 /**
  * @type SplitPaneProperties
@@ -30,7 +30,7 @@ export interface SplitPaneProperties extends ThemedProperties {
 	onResize?(size: number): void;
 	size?: number;
 	trailing?: DNode;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -60,14 +60,14 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 			{ event: 'mouseup', func: this._onDragEnd.bind(this) },
 			{ event: 'mousemove', func: this._onDragMove.bind(this) },
 			{ event: 'touchmove', func: this._onDragMove.bind(this) }
-		].forEach(object => {
+		].forEach((object) => {
 			document.addEventListener(object.event, object.func);
 			this._boundHandlers.push(object);
 		});
 	}
 
 	protected onDetach(): void {
-		this._boundHandlers.forEach(object => document.removeEventListener(object.event, object.func));
+		this._boundHandlers.forEach((object) => document.removeEventListener(object.event, object.func));
 	}
 
 	private _deselect() {
@@ -80,8 +80,7 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 
 		if (direction === Direction.row) {
 			return event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
-		}
-		else {
+		} else {
 			return event.changedTouches ? event.changedTouches[0].clientY : event.clientY;
 		}
 	}
@@ -99,18 +98,15 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 
 		this._deselect();
 
-		const {
-			direction = Direction.row,
-			onResize,
-			size = DEFAULT_SIZE
-		} = this.properties;
+		const { direction = Direction.row, onResize, size = DEFAULT_SIZE } = this.properties;
 
 		const currentPosition = this._getPosition(event);
 		let newSize = (this._lastSize === undefined ? size : this._lastSize) + currentPosition - this._position;
 
-		const maxSize = direction === Direction.row ?
-			this._root.offsetWidth - this._divider.offsetWidth :
-			this._root.offsetHeight - this._divider.offsetHeight;
+		const maxSize =
+			direction === Direction.row
+				? this._root.offsetWidth - this._divider.offsetWidth
+				: this._root.offsetHeight - this._divider.offsetHeight;
 
 		this._lastSize = newSize;
 
@@ -128,15 +124,12 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 	}
 
 	protected getPaneContent(content: DNode): DNode[] {
-		return [ content ];
+		return [content];
 	}
 
-	protected getPaneStyles(): {[key: string]: string} {
-		const {
-			direction = Direction.row,
-			size = DEFAULT_SIZE
-		} = this.properties;
-		const styles: {[key: string]: string} = {};
+	protected getPaneStyles(): { [key: string]: string } {
+		const { direction = Direction.row, size = DEFAULT_SIZE } = this.properties;
+		const styles: { [key: string]: string } = {};
 
 		styles[direction === Direction.row ? 'width' : 'height'] = `${size}px`;
 		return styles;
@@ -152,48 +145,44 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 	}
 
 	render(): DNode {
-		const {
-			direction = Direction.row,
-			leading = null,
-			trailing = null
-		} = this.properties;
+		const { direction = Direction.row, leading = null, trailing = null } = this.properties;
 
-		return v('div', {
-			classes: [
-				...this.theme([
-					css.root,
-					direction === Direction.column ? css.column : css.row
-				]),
-				css.rootFixed,
-				direction === Direction.column ? css.columnFixed : css.rowFixed
-			],
-			key: 'root'
-		}, [
-			v('div', {
+		return v(
+			'div',
+			{
 				classes: [
-					this.theme(css.leading),
-					css.leadingFixed
+					...this.theme([css.root, direction === Direction.column ? css.column : css.row]),
+					css.rootFixed,
+					direction === Direction.column ? css.columnFixed : css.rowFixed
 				],
-				key: 'leading',
-				styles: this.getPaneStyles()
-			}, this.getPaneContent(leading)),
-			v('div', {
-				classes: [
-					this.theme(css.divider),
-					css.dividerFixed
-				],
-				key: 'divider',
-				onmousedown: this._onDragStart,
-				ontouchend: this._onDragEnd,
-				ontouchstart: this._onDragStart
-			}),
-			v('div', {
-				classes: [
-					this.theme(css.trailing),
-					css.trailingFixed
-				],
-				key: 'trailing'
-			}, this.getPaneContent(trailing))
-		]);
+				key: 'root'
+			},
+			[
+				v(
+					'div',
+					{
+						classes: [this.theme(css.leading), css.leadingFixed],
+						key: 'leading',
+						styles: this.getPaneStyles()
+					},
+					this.getPaneContent(leading)
+				),
+				v('div', {
+					classes: [this.theme(css.divider), css.dividerFixed],
+					key: 'divider',
+					onmousedown: this._onDragStart,
+					ontouchend: this._onDragEnd,
+					ontouchstart: this._onDragStart
+				}),
+				v(
+					'div',
+					{
+						classes: [this.theme(css.trailing), css.trailingFixed],
+						key: 'trailing'
+					},
+					this.getPaneContent(trailing)
+				)
+			]
+		);
 	}
 }

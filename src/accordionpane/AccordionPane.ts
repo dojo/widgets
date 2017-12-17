@@ -23,15 +23,24 @@ export interface AccordionPaneProperties extends ThemedProperties {
 	onRequestClose?(key: string): void;
 	onRequestOpen?(key: string): void;
 	openKeys?: string[];
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class AccordionPane<P extends AccordionPaneProperties = AccordionPaneProperties> extends ThemedBase<P, WNode<TitlePane>> {
-	private _assignCallback(child: WNode<TitlePane>, functionName: 'onRequestClose' | 'onRequestOpen', callback: (key: string) => void) {
+export default class AccordionPane<P extends AccordionPaneProperties = AccordionPaneProperties> extends ThemedBase<
+	P,
+	WNode<TitlePane>
+> {
+	private _assignCallback(
+		child: WNode<TitlePane>,
+		functionName: 'onRequestClose' | 'onRequestOpen',
+		callback: (key: string) => void
+	) {
 		const existingProperty = child.properties[functionName];
-		const property = () => { callback.call(this, `${ child.properties.key }`); };
+		const property = () => {
+			callback.call(this, `${child.properties.key}`);
+		};
 
 		return existingProperty ? after(existingProperty, property) : property;
 	}
@@ -47,12 +56,9 @@ export default class AccordionPane<P extends AccordionPaneProperties = Accordion
 	}
 
 	protected renderChildren(): DNode[] {
-		const {
-			openKeys = [],
-			theme
-		} = this.properties;
+		const { openKeys = [], theme } = this.properties;
 
-		return this.children.filter((child) => child).map(child => {
+		return this.children.filter((child) => child).map((child) => {
 			// null checks skipped since children are filtered prior to mapping
 			assign(child!.properties, {
 				onRequestClose: this._assignCallback(child!, 'onRequestClose', this.onRequestClose),

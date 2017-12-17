@@ -18,7 +18,7 @@ export interface TooltipProperties extends WidgetProperties {
 	content: DNode;
 	orientation?: Orientation;
 	open?: boolean;
-};
+}
 
 // Enum used to position the Tooltip
 export const enum Orientation {
@@ -26,9 +26,9 @@ export const enum Orientation {
 	left = 'left',
 	right = 'right',
 	top = 'top'
-};
+}
 
-const orientationCss: {[key: string]: any} = css;
+const orientationCss: { [key: string]: any } = css;
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -37,25 +37,24 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
 
-		return [
-			css.rootFixed,
-			orientationCss[`${orientation}Fixed`]
-		];
+		return [css.rootFixed, orientationCss[`${orientation}Fixed`]];
 	}
 
 	protected getModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
 
-		return [
-			orientationCss[orientation]
-		];
+		return [orientationCss[orientation]];
 	}
 
 	protected renderContent(): DNode {
-		return v('div', {
-			classes: [ this.theme(css.content), css.contentFixed ],
-			key: 'content'
-		}, [ this.properties.content ]);
+		return v(
+			'div',
+			{
+				classes: [this.theme(css.content), css.contentFixed],
+				key: 'content'
+			},
+			[this.properties.content]
+		);
 	}
 
 	protected renderTarget(): DNode {
@@ -67,11 +66,12 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 		const classes = this.getModifierClasses();
 		const fixedClasses = this.getFixedModifierClasses();
 
-		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ]
-		}, [
-			this.renderTarget(),
-			open ? this.renderContent() : null
-		]);
+		return v(
+			'div',
+			{
+				classes: [...this.theme(classes), ...fixedClasses]
+			},
+			[this.renderTarget(), open ? this.renderContent() : null]
+		);
 	}
 }

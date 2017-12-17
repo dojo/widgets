@@ -11,23 +11,21 @@ export default function createTitlePaneElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'headinglevel',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			},
 			{
 				attributeName: 'closeable',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'open',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'title'
 			}
 		],
-		properties: [
-			{ propertyName: 'theme' }
-		],
+		properties: [{ propertyName: 'theme' }],
 		events: [
 			{
 				propertyName: 'onRequestClose',

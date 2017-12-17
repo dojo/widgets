@@ -8,12 +8,10 @@ import * as css from '../../styles/slider.m.css';
 function getPage(test: any) {
 	const { browserName } = test.remote.environmentType;
 	if (browserName.toLowerCase() === 'microsoftedge') {
-		test.skip('example page currently doesn\'t work in edge.');
+		test.skip("example page currently doesn't work in edge.");
 	}
 	const remote: Remote = test.remote;
-	return remote
-		.get('http://localhost:9000/_build/common/example/?module=slider')
-		.setFindTimeout(5000);
+	return remote.get('http://localhost:9000/_build/common/example/?module=slider').setFindTimeout(5000);
 }
 
 function checkValue(command: any, values?: number[]) {
@@ -21,33 +19,33 @@ function checkValue(command: any, values?: number[]) {
 	let currentValue: number;
 	return command
 		.findByCssSelector(`.${css.inputWrapper}`)
-			.findByCssSelector(`.${css.input}`)
-				.getProperty('value')
-				.then((value: string) => {
-					currentValue = parseInt(value, 10);
-				})
-			.end()
-			.findByCssSelector(`.${css.fill}`)
-				.getAttribute('style')
-				.then((style: string) => {
-					const absWidthRegex = /width:\s*(\d+)\.?\d*%/;
-					let result = style.match(absWidthRegex);
-					let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
-					assert.lengthOf(result!, 2);
-					notIE && assert.closeTo(width, currentValue, 1);
-				})
-			.end()
-			.findByCssSelector(`.${css.thumb}`)
-				.getAttribute('style')
-				.then((style: string) => {
-					const absWidthRegex = /left:\s*(\d+)\.?\d*%/;
-					let result = style.match(absWidthRegex);
-					let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
-					assert.lengthOf(result!, 2);
-					notIE && assert.closeTo(width, currentValue, 1);
-					values && values.push(width);
-				})
-			.end()
+		.findByCssSelector(`.${css.input}`)
+		.getProperty('value')
+		.then((value: string) => {
+			currentValue = parseInt(value, 10);
+		})
+		.end()
+		.findByCssSelector(`.${css.fill}`)
+		.getAttribute('style')
+		.then((style: string) => {
+			const absWidthRegex = /width:\s*(\d+)\.?\d*%/;
+			let result = style.match(absWidthRegex);
+			let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
+			assert.lengthOf(result!, 2);
+			notIE && assert.closeTo(width, currentValue, 1);
+		})
+		.end()
+		.findByCssSelector(`.${css.thumb}`)
+		.getAttribute('style')
+		.then((style: string) => {
+			const absWidthRegex = /left:\s*(\d+)\.?\d*%/;
+			let result = style.match(absWidthRegex);
+			let width = result && result.length > 0 ? parseInt(result[1], 10) : -1;
+			assert.lengthOf(result!, 2);
+			notIE && assert.closeTo(width, currentValue, 1);
+			values && values.push(width);
+		})
+		.end()
 		.end();
 }
 
@@ -66,36 +64,33 @@ function clickToFocus(test: any, selector: string) {
 	const remote = getPage(test);
 	return remote
 		.findByCssSelector(`#example-s1 .${css.root}`)
-			.findByCssSelector(selector)
-				.then((element) => {
-					return remote
-						.moveMouseTo(element)
-						.clickMouseButton(0);
-				})
-			.end()
+		.findByCssSelector(selector)
+		.then((element) => {
+			return remote.moveMouseTo(element).clickMouseButton(0);
+		})
+		.end()
 		.end()
 		.sleep(30)
 		.execute(`return document.activeElement === document.querySelector('#example-s1 .${css.root} input');`)
-		.then(isEqual => {
+		.then((isEqual) => {
 			assert.isTrue(isEqual);
 		});
 }
 
 function slide(command: any, x: number, y: number) {
-	return command.session.capabilities.brokenMouseEvents ?
-		command
-			.findByCssSelector(`.${css.thumb}`)
+	return command.session.capabilities.brokenMouseEvents
+		? command
+				.findByCssSelector(`.${css.thumb}`)
 				.moveMouseTo(x, y)
 				.pressMouseButton()
-			.end()
-		:
-		command
-			.findByCssSelector(`.${css.thumb}`)
+				.end()
+		: command
+				.findByCssSelector(`.${css.thumb}`)
 				.moveMouseTo()
 				.pressMouseButton()
 				.moveMouseTo(x, y)
 				.releaseMouseButton()
-			.end();
+				.end();
 }
 
 registerSuite('Slider', {
@@ -103,18 +98,18 @@ registerSuite('Slider', {
 		'each component of a slider should be visible'(this: any) {
 			return getPage(this)
 				.findByCssSelector(`#example-s1 .${css.root}`)
-					.isDisplayed()
-					.findByCssSelector(`.${css.input}`)
-					.isDisplayed()
+				.isDisplayed()
+				.findByCssSelector(`.${css.input}`)
+				.isDisplayed()
 				.end()
 				.findByCssSelector(`.${css.track}`)
-					.isDisplayed()
+				.isDisplayed()
 				.end()
 				.findByCssSelector(`.${css.output}`)
-					.isDisplayed()
+				.isDisplayed()
 				.end()
 				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height, width }: { height: number; width: number }) => {
 					assert.isAbove(height, 0, 'The height of the slider should be greater than zero.');
 					assert.isAbove(width, 0, 'The width of the slider should be greater than zero.');
 				})
@@ -123,10 +118,10 @@ registerSuite('Slider', {
 		'label should be as defined'(this: any) {
 			return getPage(this)
 				.findByCssSelector(`#example-s1 .${css.root}`)
-					.getVisibleText()
-					.then((text: string) => {
-						assert.include(text, 'How much do you like tribbles?');
-					})
+				.getVisibleText()
+				.then((text: string) => {
+					assert.include(text, 'How much do you like tribbles?');
+				})
 				.end();
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
@@ -139,7 +134,7 @@ registerSuite('Slider', {
 				this.skip('Test requires mouse interactions.');
 			}
 			if (browserName.toLowerCase() === 'internet explorer') {
-				this.skip('mouse movements doesn\'t work in IE.');
+				this.skip("mouse movements doesn't work in IE.");
 			}
 			if (browserName === 'firefox') {
 				this.skip('Fails in Firefox.');
@@ -171,12 +166,11 @@ registerSuite('Slider', {
 				this.skip('Arrow keys required for tests.');
 			}
 			if (browserName.toLowerCase() === 'safari' || browserName.toLowerCase() === 'internet explorer') {
-				this.skip('pressKeys with arrow keys doesn\'t work in iphone and IE.');
+				this.skip("pressKeys with arrow keys doesn't work in iphone and IE.");
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this)
-				.findByCssSelector(`#example-s1 .${css.root}`);
+			let command = getPage(this).findByCssSelector(`#example-s1 .${css.root}`);
 			command = checkValue(command, sliderValues)
 				.click()
 				.pressKeys(keys.ARROW_LEFT);
@@ -218,7 +212,7 @@ registerSuite('Slider', {
 				.end()
 
 				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
+				.then(({ height, width }: { height: number; width: number }) => {
 					assert.isAbove(height, 0, 'The height of the slider should be greater than zero.');
 					assert.isAbove(width, 0, 'The width of the slider should be greater than zero.');
 				})
@@ -235,10 +229,8 @@ registerSuite('Slider', {
 				.end();
 		},
 		'slider value should be consistent in different part of the UI'(this: any) {
-			let command = getPage(this)
-				.findByCssSelector(`#example-s2 .${css.root}`);
-			return checkValue(command)
-				.end();
+			let command = getPage(this).findByCssSelector(`#example-s2 .${css.root}`);
+			return checkValue(command).end();
 		},
 		'slider should be functional with mouse'(this: any) {
 			const { browserName, mouseEnabled } = this.remote.environmentType;
@@ -246,7 +238,7 @@ registerSuite('Slider', {
 				this.skip('Test requires mouse interactions.');
 			}
 			if (browserName.toLowerCase() === 'internet explorer') {
-				this.skip('mouse movements doesn\'t work in IE.');
+				this.skip("mouse movements doesn't work in IE.");
 			}
 			if (browserName === 'firefox') {
 				this.skip('Fails in Firefox.');
@@ -256,8 +248,7 @@ registerSuite('Slider', {
 			}
 
 			let sliderValues: number[] = [];
-			let command = getPage(this)
-				.findByCssSelector(`#example-s3 .${css.root}`);
+			let command = getPage(this).findByCssSelector(`#example-s3 .${css.root}`);
 			command = checkValue(command, sliderValues);
 
 			command = slide(command, 1, -30);

@@ -3,9 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 
 function getPage(remote: Remote) {
-	return remote
-		.get('http://localhost:9000/_build/common/example/?module=toolbar')
-		.setFindTimeout(5000);
+	return remote.get('http://localhost:9000/_build/common/example/?module=toolbar').setFindTimeout(5000);
 }
 
 const DELAY = 1000;
@@ -22,14 +20,14 @@ registerSuite('Toolbar', {
 			.setWindowSize(WIDTH, HEIGHT)
 			.sleep(DELAY)
 			.findByCssSelector('button:nth-child(3)')
-				.click()
+			.click()
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div')
-				.isDisplayed()
-				.then(displayed => {
-					assert.isTrue(displayed);
-				});
+			.isDisplayed()
+			.then((displayed) => {
+				assert.isTrue(displayed);
+			});
 	},
 
 	'Should close menu when button is clicked'() {
@@ -40,17 +38,17 @@ registerSuite('Toolbar', {
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
 			.findByCssSelector('body > div:last-child > div:first-child > button')
-				.click()
+			.click()
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div button')
-				.click()
+			.click()
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div')
-				.getPosition()
-				.then(position => {
-					assert.isAbove(position.x, WIDTH - 50);
-				});
+			.getPosition()
+			.then((position) => {
+				assert.isAbove(position.x, WIDTH - 50);
+			});
 	}
 });

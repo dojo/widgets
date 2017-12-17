@@ -24,23 +24,24 @@ export interface TabProperties extends ThemedProperties {
 	key: string;
 	label?: DNode;
 	labelledBy?: string;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class Tab<P extends TabProperties = TabProperties> extends ThemedBase<P> {
 	render(): DNode {
-		const {
-			id,
-			labelledBy
-		} = this.properties;
+		const { id, labelledBy } = this.properties;
 
-		return v('div', {
-			'aria-labelledby': labelledBy,
-			classes: this.theme(css.tab),
-			id,
-			role: 'tabpanel'
-		}, this.children);
+		return v(
+			'div',
+			{
+				'aria-labelledby': labelledBy,
+				classes: this.theme(css.tab),
+				id,
+				role: 'tabpanel'
+			},
+			this.children
+		);
 	}
 }

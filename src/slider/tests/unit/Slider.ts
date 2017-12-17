@@ -5,7 +5,13 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties, compareProperty, replaceChild, findKey } from '@dojo/test-extras/support/d';
+import {
+	assignProperties,
+	assignChildProperties,
+	compareProperty,
+	replaceChild,
+	findKey
+} from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
@@ -17,83 +23,104 @@ const compareId = compareProperty((value: any) => {
 });
 
 const expected = function(widget: any, label = false, tooltip = false) {
-	const sliderVdom = v('div', {
-		classes: [ css.inputWrapper, css.inputWrapperFixed ],
-		styles: {}
-	}, [
-		v('input', {
-			key: 'input',
-			classes: [ css.input, css.nativeInput ],
-			'aria-describedby': undefined,
-			disabled: undefined,
-			id: <any> compareId,
-			'aria-invalid': null,
-			max: '100',
-			min: '0',
-			name: undefined,
-			readOnly: undefined,
-			'aria-readonly': null,
-			required: undefined,
-			step: '1',
-			styles: {},
-			type: 'range',
-			value: '0',
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			oninput: widget.listener,
-			onkeydown: widget.listener,
-			onkeypress: widget.listener,
-			onkeyup: widget.listener,
-			onmousedown: widget.listener,
-			onmouseup: widget.listener,
-			ontouchstart: widget.listener,
-			ontouchend: widget.listener,
-			ontouchcancel: widget.listener
-		}),
-		v('div', {
-			classes: [ css.track, css.trackFixed ],
-			'aria-hidden': 'true',
+	const sliderVdom = v(
+		'div',
+		{
+			classes: [css.inputWrapper, css.inputWrapperFixed],
 			styles: {}
-		}, [
-			v('span', {
-				classes: [ css.fill, css.fillFixed ],
-				styles: { width: '0%' }
+		},
+		[
+			v('input', {
+				key: 'input',
+				classes: [css.input, css.nativeInput],
+				'aria-describedby': undefined,
+				disabled: undefined,
+				id: <any>compareId,
+				'aria-invalid': null,
+				max: '100',
+				min: '0',
+				name: undefined,
+				readOnly: undefined,
+				'aria-readonly': null,
+				required: undefined,
+				step: '1',
+				styles: {},
+				type: 'range',
+				value: '0',
+				onblur: widget.listener,
+				onchange: widget.listener,
+				onclick: widget.listener,
+				onfocus: widget.listener,
+				oninput: widget.listener,
+				onkeydown: widget.listener,
+				onkeypress: widget.listener,
+				onkeyup: widget.listener,
+				onmousedown: widget.listener,
+				onmouseup: widget.listener,
+				ontouchstart: widget.listener,
+				ontouchend: widget.listener,
+				ontouchcancel: widget.listener
 			}),
-			v('span', {
-				classes: [ css.thumb, css.thumbFixed ],
-				styles: { left: '0%' }
-			})
-		]),
-		v('output', {
-			classes: [ css.output, tooltip ? css.outputTooltip : null ],
-			for: <any> compareId,
-			styles: {}
-		}, [ '0' ])
-	]);
+			v(
+				'div',
+				{
+					classes: [css.track, css.trackFixed],
+					'aria-hidden': 'true',
+					styles: {}
+				},
+				[
+					v('span', {
+						classes: [css.fill, css.fillFixed],
+						styles: { width: '0%' }
+					}),
+					v('span', {
+						classes: [css.thumb, css.thumbFixed],
+						styles: { left: '0%' }
+					})
+				]
+			),
+			v(
+				'output',
+				{
+					classes: [css.output, tooltip ? css.outputTooltip : null],
+					for: <any>compareId,
+					styles: {}
+				},
+				['0']
+			)
+		]
+	);
 
-	return v('div', {
-		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, css.rootFixed ]
-	}, [
-		label ? w(Label, {
-			theme: undefined,
-			disabled: undefined,
-			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
-		}, [ 'foo' ]) : null,
-		sliderVdom
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			classes: [css.root, null, null, null, null, null, null, css.rootFixed]
+		},
+		[
+			label
+				? w(
+						Label,
+						{
+							theme: undefined,
+							disabled: undefined,
+							hidden: undefined,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							forId: <any>compareId
+						},
+						['foo']
+					)
+				: null,
+			sliderVdom
+		]
+	);
 };
 
 let widget: Harness<Slider>;
 
 registerSuite('Slider', {
-
 	beforeEach() {
 		widget = harness(Slider);
 	},
@@ -159,7 +186,7 @@ registerSuite('Slider', {
 					styles: { width: '200px' }
 				});
 				assignProperties(expectedVdom, {
-					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
+					classes: [css.root, null, null, null, null, null, css.vertical, css.rootFixed]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -199,7 +226,7 @@ registerSuite('Slider', {
 					styles: { top: '80%' }
 				});
 				assignProperties(expectedVdom, {
-					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
+					classes: [css.root, null, null, null, null, null, css.vertical, css.rootFixed]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -241,7 +268,7 @@ registerSuite('Slider', {
 			widget.expectRender(expectedVdom, 'If value property is below min, value is set to min');
 		},
 
-		'label'() {
+		label() {
 			widget.setProperties({
 				label: 'foo'
 			});
@@ -266,7 +293,7 @@ registerSuite('Slider', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, css.rootFixed ]
+				classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, css.rootFixed]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -285,7 +312,7 @@ registerSuite('Slider', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null, null, css.rootFixed ]
+				classes: [css.root, null, null, css.valid, null, null, null, css.rootFixed]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
