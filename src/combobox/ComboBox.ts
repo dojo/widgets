@@ -2,7 +2,7 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/widget-core/diff';
-import { I18nMixin, LocalizedMessages } from '@dojo/widget-core/mixins/I18n';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
@@ -67,7 +67,7 @@ export const enum Operation {
 	decrease = -1
 }
 
-type ComboBoxMessages = LocalizedMessages<typeof comboBoxBundle.messages>;
+export type ComboBoxMessages = typeof comboBoxBundle.messages;
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 

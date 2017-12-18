@@ -1,10 +1,11 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { I18nMixin, LocalizedMessages } from '@dojo/widget-core/mixins/I18n';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import commonBundle from '../common/nls/common';
+import { CommonMessages } from '../common/interfaces';
 import { Keys } from '../common/util';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
@@ -13,8 +14,7 @@ import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
 
-type CalendarMessages = typeof calendarBundle.messages | LocalizedMessages<typeof calendarBundle.messages>;
-type CommonMessages = LocalizedMessages<typeof commonBundle.messages>;
+export type CalendarMessages = typeof calendarBundle.messages;
 
 /**
  * @type CalendarProperties

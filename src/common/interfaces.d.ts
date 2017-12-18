@@ -1,3 +1,8 @@
+import commonBundle from './nls/common';
+import { LocalizedMessages } from '@dojo/widget-core/mixins/I18n';
+
+export type CommonMessages = typeof commonBundle.messages | LocalizedMessages<typeof commonBundle.messages>;
+
 export interface LabeledProperties {
 	labelAfter?: boolean;
 	labelHidden?: boolean;

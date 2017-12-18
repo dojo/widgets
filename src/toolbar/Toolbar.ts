@@ -1,6 +1,6 @@
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
-import { I18nMixin, LocalizedMessages } from '@dojo/widget-core/mixins/I18n';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
@@ -39,7 +39,7 @@ export interface ToolbarProperties extends WidgetProperties {
 	title?: DNode;
 };
 
-type ToolbarMessages = LocalizedMessages<typeof toolbarBundle.messages>;
+export type ToolbarMessages = typeof toolbarBundle.messages;
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 

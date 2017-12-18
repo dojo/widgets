@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import * as css from './styles/progress.m.css';
-import { HNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 
 /**
  * @type ProgressProperties
@@ -34,7 +34,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 		return output ? output(value, percent) : `${percent}%`;
 	}
 
-	protected renderProgress(percent: number): HNode[] {
+	protected renderProgress(percent: number): DNode[] {
 		return [
 			v('div', {
 				classes: this.theme(css.progress),
@@ -45,7 +45,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 		];
 	}
 
-	render() {
+	protected render(): DNode {
 		const {
 			value,
 			showOutput = true,

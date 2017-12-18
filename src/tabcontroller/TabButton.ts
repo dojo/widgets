@@ -1,5 +1,5 @@
 import { DNode } from '@dojo/widget-core/interfaces';
-import { I18nMixin, LocalizedMessages } from '@dojo/widget-core/mixins/I18n';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
@@ -49,7 +49,7 @@ export interface TabButtonProperties extends ThemedProperties {
 	onUpArrowPress?: () => void;
 };
 
-type TabButtonMessages = LocalizedMessages<typeof tabControllerBundle.messages>;
+export type TabButtonMessages = typeof tabControllerBundle.messages;
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
