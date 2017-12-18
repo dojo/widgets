@@ -23,26 +23,30 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		return w(Toolbar, {
-			actions: [
-				v('a', { href: '/#home' }, [ 'Home' ]),
-				v('a', { href: '/#about' }, [ 'About' ]),
-				v('a', { href: '/#contact' }, [ 'Contact' ])
-			],
-			collapseWidth: 700,
-			fixed: true,
-			theme: this._theme,
-			title: 'Foobar'
-		}, [
-			v('h2', [ 'Toolbar Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			])
-		]);
+		return w(
+			Toolbar,
+			{
+				actions: [
+					v('a', { href: '/#home' }, ['Home']),
+					v('a', { href: '/#about' }, ['About']),
+					v('a', { href: '/#contact' }, ['Contact'])
+				],
+				collapseWidth: 700,
+				fixed: true,
+				theme: this._theme,
+				title: 'Foobar'
+			},
+			[
+				v('h2', ['Toolbar Examples']),
+				v('label', [
+					'Use Dojo Theme ',
+					v('input', {
+						type: 'checkbox',
+						onchange: this.themeChange
+					})
+				])
+			]
+		);
 	}
 }
 

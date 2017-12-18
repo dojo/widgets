@@ -9,7 +9,6 @@ import * as css from '../../styles/tabController.m.css';
 let widget: Harness<Tab>;
 
 registerSuite('Tab', {
-
 	beforeEach() {
 		widget = harness(Tab);
 	},
@@ -21,19 +20,22 @@ registerSuite('Tab', {
 	tests: {
 		'default properties'() {
 			widget.setProperties({ key: 'foo' });
-			widget.expectRender(v('div', {
-				'aria-labelledby': undefined,
-				classes: css.tab,
-				id: undefined,
-				role: 'tabpanel'
-			}, []));
+			widget.expectRender(
+				v(
+					'div',
+					{
+						'aria-labelledby': undefined,
+						classes: css.tab,
+						id: undefined,
+						role: 'tabpanel'
+					},
+					[]
+				)
+			);
 		},
 
 		'custom properties and children'() {
-			const testChildren = [
-				v('p', ['lorem ipsum']),
-				v('a', { href: '#foo'}, [ 'foo' ])
-			];
+			const testChildren = [v('p', ['lorem ipsum']), v('a', { href: '#foo' }, ['foo'])];
 			widget.setProperties({
 				closeable: true,
 				disabled: true,
@@ -44,12 +46,18 @@ registerSuite('Tab', {
 			});
 			widget.setChildren(testChildren);
 
-			widget.expectRender(v('div', {
-				'aria-labelledby': 'id',
-				classes: css.tab,
-				id: 'foo',
-				role: 'tabpanel'
-			}, testChildren));
+			widget.expectRender(
+				v(
+					'div',
+					{
+						'aria-labelledby': 'id',
+						classes: css.tab,
+						id: 'foo',
+						role: 'tabpanel'
+					},
+					testChildren
+				)
+			);
 		}
 	}
 });

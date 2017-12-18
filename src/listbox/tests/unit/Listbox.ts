@@ -46,7 +46,7 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 		v('div', { key: 'first' }, [
 			w(ListboxOption, {
 				active: activeIndex === 0,
-				classes: [ css.option, css.activeOption, null, null ],
+				classes: [css.option, css.activeOption, null, null],
 				disabled: false,
 				id: 'first',
 				index: 0,
@@ -58,12 +58,12 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 				theme: undefined
 			})
 		]),
-		v('div', { key: <any> compareId }, [
+		v('div', { key: <any>compareId }, [
 			w(ListboxOption, {
 				active: activeIndex === 1,
-				classes: [ css.option, null, null, null ],
+				classes: [css.option, null, null, null],
 				disabled: false,
-				id: <any> compareId,
+				id: <any>compareId,
 				index: 1,
 				key: 'option-1',
 				label: '[object Object]',
@@ -73,12 +73,12 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 				theme: undefined
 			})
 		]),
-		v('div', { key: <any> compareId }, [
+		v('div', { key: <any>compareId }, [
 			w(ListboxOption, {
 				active: activeIndex === 2,
-				classes: [ css.option, null, null, null ],
+				classes: [css.option, null, null, null],
 				disabled: false,
-				id: <any> compareId,
+				id: <any>compareId,
 				index: 2,
 				key: 'option-2',
 				label: '[object Object]',
@@ -92,17 +92,21 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 };
 
 const expectedVdom = function(widget: Harness<Listbox>, options: DNode[]) {
-	return v('div', {
-		'aria-activedescendant': compareId,
-		'aria-multiselectable': null,
-		classes: [ css.root, null ],
-		describedBy: undefined,
-		id: undefined,
-		key: 'root',
-		role: 'listbox',
-		tabIndex: 0,
-		onkeydown: widget.listener
-	}, options);
+	return v(
+		'div',
+		{
+			'aria-activedescendant': compareId,
+			'aria-multiselectable': null,
+			classes: [css.root, null],
+			describedBy: undefined,
+			id: undefined,
+			key: 'root',
+			role: 'listbox',
+			tabIndex: 0,
+			onkeydown: widget.listener
+		},
+		options
+	);
 };
 
 registerSuite('Listbox', {
@@ -123,10 +127,10 @@ registerSuite('Listbox', {
 			widget.setProperties({ optionData: testOptions });
 			const vdom = expectedVdom(widget, expectedOptions(widget));
 			assignChildProperties(vdom, '0', {
-				key: <any> compareId
+				key: <any>compareId
 			});
 			assignChildProperties(vdom, '0,0', {
-				id: <any> compareId
+				id: <any>compareId
 			});
 			widget.expectRender(vdom);
 		},
@@ -151,7 +155,7 @@ registerSuite('Listbox', {
 			assignProperties(vdom, {
 				'aria-activedescendant': 'first',
 				'aria-multiselectable': 'true',
-				classes: [ css.root, css.focused ],
+				classes: [css.root, css.focused],
 				describedBy: 'foo',
 				id: 'bar',
 				tabIndex: -1
@@ -161,13 +165,13 @@ registerSuite('Listbox', {
 				theme: {}
 			});
 			assignChildProperties(vdom, '1,0', {
-				classes: <any> [ css.option, null, null, css.selectedOption ],
+				classes: <any>[css.option, null, null, css.selectedOption],
 				label: 'Two',
 				selected: true,
 				theme: {}
 			});
 			assignChildProperties(vdom, '2,0', {
-				classes: <any> [ css.option, null, css.disabledOption, null ],
+				classes: <any>[css.option, null, css.disabledOption, null],
 				disabled: true,
 				label: 'Three',
 				theme: {}
@@ -280,8 +284,7 @@ registerSuite('Listbox', {
 							scroll: { top: 0 },
 							offset: { height: 200 }
 						};
-					}
-					else {
+					} else {
 						return {
 							offset: {
 								top: 300,
@@ -295,7 +298,7 @@ registerSuite('Listbox', {
 				public scroll(key: string | number, scrollValue: number) {
 					scrollStub(key, scrollValue);
 				}
-			};
+			}
 			class ScrollListbox extends Listbox {
 				meta(MetaType: any): any {
 					return new StubMeta();
@@ -317,8 +320,7 @@ registerSuite('Listbox', {
 							scroll: { top: 300 },
 							offset: { height: 200 }
 						};
-					}
-					else {
+					} else {
 						return {
 							offset: {
 								top: 100,
@@ -332,7 +334,7 @@ registerSuite('Listbox', {
 				public scroll(key: string | number, scrollValue: number) {
 					scrollStub(key, scrollValue);
 				}
-			};
+			}
 			class ScrollListbox extends Listbox {
 				meta(MetaType: any): any {
 					return new StubDimensions();
@@ -354,15 +356,19 @@ registerSuite('Listbox', {
 			class TestWidget extends ProjectorMixin(WidgetBase) {
 				render() {
 					this.meta(ScrollMeta).scroll('root', 100);
-					return v('div', {
-						key: 'root',
-						classes: 'root',
-						styles: { height: '200px', 'overflow-y': 'scroll' }
-					}, [
-						v('div', {
-							styles: { height: '400px' }
-						})
-					]);
+					return v(
+						'div',
+						{
+							key: 'root',
+							classes: 'root',
+							styles: { height: '200px', 'overflow-y': 'scroll' }
+						},
+						[
+							v('div', {
+								styles: { height: '400px' }
+							})
+						]
+					);
 				}
 			}
 

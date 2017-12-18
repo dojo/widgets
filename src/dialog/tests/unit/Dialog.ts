@@ -18,55 +18,73 @@ const compareId = compareProperty((value: any) => {
 });
 
 const expectedCloseButton = function() {
-	return v('button', {
-		classes: css.close,
-		onclick: widget.listener
-	}, [
-		'close dialog',
-		v('i', {
-			classes: [ iconCss.icon, iconCss.closeIcon ],
-			role: 'presentation',
-			'aria-hidden': 'true'
-		})
-	]);
+	return v(
+		'button',
+		{
+			classes: css.close,
+			onclick: widget.listener
+		},
+		[
+			'close dialog',
+			v('i', {
+				classes: [iconCss.icon, iconCss.closeIcon],
+				role: 'presentation',
+				'aria-hidden': 'true'
+			})
+		]
+	);
 };
 
 const expected = function(widget: Harness<Dialog>, open = false, closeable = false, children: any[] = []) {
-	return v('div', { classes: css.root }, open ? [
-		v('div', {
-			classes: [ null, css.underlay ],
-			enterAnimation: animations.fadeIn,
-			exitAnimation: animations.fadeOut,
-			key: 'underlay',
-			onclick: widget.listener
-		}),
-		v('div', {
-			'aria-labelledby': compareId,
-			classes: css.main,
-			enterAnimation: animations.fadeIn,
-			exitAnimation: animations.fadeOut,
-			key: 'main',
-			role: 'dialog'
-		}, [
-			v('div', {
-				classes: css.title,
-				key: 'title'
-			}, [
-				v('div', { id: <any> compareId }, [ '' ]),
-				closeable ? expectedCloseButton() : null
-			]),
-			v('div', {
-				classes: css.content,
-				key: 'content'
-			}, children)
-		])
-	] : []);
+	return v(
+		'div',
+		{ classes: css.root },
+		open
+			? [
+					v('div', {
+						classes: [null, css.underlay],
+						enterAnimation: animations.fadeIn,
+						exitAnimation: animations.fadeOut,
+						key: 'underlay',
+						onclick: widget.listener
+					}),
+					v(
+						'div',
+						{
+							'aria-labelledby': compareId,
+							classes: css.main,
+							enterAnimation: animations.fadeIn,
+							exitAnimation: animations.fadeOut,
+							key: 'main',
+							role: 'dialog'
+						},
+						[
+							v(
+								'div',
+								{
+									classes: css.title,
+									key: 'title'
+								},
+								[v('div', { id: <any>compareId }, ['']), closeable ? expectedCloseButton() : null]
+							),
+							v(
+								'div',
+								{
+									classes: css.content,
+									key: 'content'
+								},
+								children
+							)
+						]
+					)
+				]
+			: []
+	);
 };
 
 let widget: Harness<Dialog>;
 
 registerSuite('Dialog', {
-
 	beforeEach() {
 		widget = harness(Dialog);
 	},
@@ -107,13 +125,13 @@ registerSuite('Dialog', {
 
 			let expectedVdom = expected(widget, true, true);
 			assignChildProperties(expectedVdom, '0', {
-				classes: [ css.underlayVisible, css.underlay ] // do this here so the class is present in future renders
+				classes: [css.underlayVisible, css.underlay] // do this here so the class is present in future renders
 			});
 			expectedVdom = expected(widget, true, true);
 			replaceChild(expectedVdom, '1,0,1,0', 'foo');
 			replaceChild(expectedVdom, '1,0,0,0', 'foo');
 			assignChildProperties(expectedVdom, '0', {
-				classes: [ css.underlayVisible, css.underlay ]
+				classes: [css.underlayVisible, css.underlay]
 			});
 			assignChildProperties(expectedVdom, '1', {
 				enterAnimation: 'fooAnimation',
@@ -125,10 +143,7 @@ registerSuite('Dialog', {
 		},
 
 		children() {
-			const testChildren = [
-				v('p', [ 'Lorem ipsum dolor sit amet' ]),
-				v('a', { href: '#foo' }, [ 'foo' ])
-			];
+			const testChildren = [v('p', ['Lorem ipsum dolor sit amet']), v('a', { href: '#foo' }, ['foo'])];
 
 			widget.setProperties({
 				open: true
@@ -195,7 +210,10 @@ registerSuite('Dialog', {
 			widget.sendEvent('click', {
 				selector: `.${css.underlay}`
 			});
-			assert.isFalse(onRequestClose.called, 'onRequestClose should not be called when the underlay is clicked and modal is true');
+			assert.isFalse(
+				onRequestClose.called,
+				'onRequestClose should not be called when the underlay is clicked and modal is true'
+			);
 
 			widget.setProperties({
 				open: true,
@@ -207,7 +225,10 @@ registerSuite('Dialog', {
 			widget.sendEvent('click', {
 				selector: `.${css.underlay}`
 			});
-			assert.isTrue(onRequestClose.called, 'onRequestClose is called when the underlay is clicked and modal is false');
+			assert.isTrue(
+				onRequestClose.called,
+				'onRequestClose is called when the underlay is clicked and modal is false'
+			);
 		},
 
 		escapeKey() {
@@ -220,7 +241,7 @@ registerSuite('Dialog', {
 			widget.getRender();
 
 			widget.sendEvent('keyup', {
-				eventInit: <KeyboardEventInit> {
+				eventInit: <KeyboardEventInit>{
 					which: Keys.Down
 				}
 			});
@@ -228,7 +249,7 @@ registerSuite('Dialog', {
 			assert.isTrue(onRequestClose.notCalled);
 
 			widget.sendEvent('keyup', {
-				eventInit: <KeyboardEventInit> {
+				eventInit: <KeyboardEventInit>{
 					which: Keys.Escape
 				}
 			});

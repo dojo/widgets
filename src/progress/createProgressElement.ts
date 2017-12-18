@@ -11,26 +11,24 @@ export default function createProgressElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'value',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			},
 			{
 				attributeName: 'max',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			},
 			{
 				attributeName: 'min',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			},
 			{
 				attributeName: 'id'
 			},
 			{
 				attributeName: 'showOutput',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			}
 		],
-		properties: [
-			{ propertyName: 'theme' }
-		]
+		properties: [{ propertyName: 'theme' }]
 	};
-};
+}

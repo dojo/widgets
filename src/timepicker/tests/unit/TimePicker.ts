@@ -15,7 +15,6 @@ const compareId = compareProperty((value: any) => {
 });
 
 registerSuite('TimePicker', {
-
 	getOptions: {
 		'Should include each minute for a full day by default'() {
 			const options = getOptions();
@@ -56,11 +55,15 @@ registerSuite('TimePicker', {
 			minute: 0,
 			second: 0
 		});
-		assert.deepEqual(parseUnits('55:98:72'), {
-			hour: 55,
-			minute: 98,
-			second: 72
-		}, 'does not check for invalid units');
+		assert.deepEqual(
+			parseUnits('55:98:72'),
+			{
+				hour: 55,
+				minute: 98,
+				second: 72
+			},
+			'does not check for invalid units'
+		);
 	},
 
 	'Custom input': {
@@ -81,7 +84,7 @@ registerSuite('TimePicker', {
 				w(ComboBox, {
 					clearable: true,
 					disabled: false,
-					getResultLabel: <any> picker.listener,
+					getResultLabel: <any>picker.listener,
 					inputProperties: undefined,
 					invalid: true,
 					isResultDisabled: undefined,
@@ -159,7 +162,11 @@ registerSuite('TimePicker', {
 			assert.sameDeepMembers(actualOptions, expectedOptions);
 
 			vnode.properties.onRequestResults('12:34:56');
-			assert.strictEqual(actualOptions, onRequestOptions.secondCall.args[1], 'The options array should be cached.');
+			assert.strictEqual(
+				actualOptions,
+				onRequestOptions.secondCall.args[1],
+				'The options array should be cached.'
+			);
 
 			picker.destroy();
 		}
@@ -173,33 +180,39 @@ registerSuite('TimePicker', {
 				name: 'some-field',
 				useNativeElement: true
 			});
-			picker.expectRender(v('div', {
-				classes: [ css.root, null, null, null, null ],
-				key: 'root'
-			}, [
-				null,
-				v('input', {
-					'aria-describedby': undefined,
-					'aria-invalid': null,
-					'aria-readonly': null,
-					classes: css.input,
-					disabled: undefined,
-					invalid: undefined,
-					key: 'native-input',
-					id: <any> compareId,
-					max: undefined,
-					min: undefined,
-					name: 'some-field',
-					onblur: picker.listener,
-					onchange: picker.listener,
-					onfocus: picker.listener,
-					readOnly: undefined,
-					required: undefined,
-					step: undefined,
-					type: 'time',
-					value: undefined
-				})
-			]));
+			picker.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, null, null, null, null],
+						key: 'root'
+					},
+					[
+						null,
+						v('input', {
+							'aria-describedby': undefined,
+							'aria-invalid': null,
+							'aria-readonly': null,
+							classes: css.input,
+							disabled: undefined,
+							invalid: undefined,
+							key: 'native-input',
+							id: <any>compareId,
+							max: undefined,
+							min: undefined,
+							name: 'some-field',
+							onblur: picker.listener,
+							onchange: picker.listener,
+							onfocus: picker.listener,
+							readOnly: undefined,
+							required: undefined,
+							step: undefined,
+							type: 'time',
+							value: undefined
+						})
+					]
+				)
+			);
 
 			picker.destroy();
 		},
@@ -220,38 +233,39 @@ registerSuite('TimePicker', {
 				value: '11:30'
 			});
 
-			picker.expectRender(v('div', {
-				classes: [ css.root,
-					css.disabled,
-					css.invalid,
-					css.readonly,
-					css.required
-				],
-				key: 'root'
-			}, [
-				null,
-				v('input', {
-					'aria-describedby': 'Some descriptive text',
-					'aria-invalid': 'true',
-					'aria-readonly': 'true',
-					classes: css.input,
-					id: <any> compareId,
-					disabled: true,
-					invalid: true,
-					key: 'native-input',
-					max: '12:00',
-					min: '10:00',
-					name: 'some-field',
-					onblur: picker.listener,
-					onchange: picker.listener,
-					onfocus: picker.listener,
-					readOnly: true,
-					required: true,
-					step: 60,
-					type: 'time',
-					value: '11:30'
-				})
-			]));
+			picker.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.disabled, css.invalid, css.readonly, css.required],
+						key: 'root'
+					},
+					[
+						null,
+						v('input', {
+							'aria-describedby': 'Some descriptive text',
+							'aria-invalid': 'true',
+							'aria-readonly': 'true',
+							classes: css.input,
+							id: <any>compareId,
+							disabled: true,
+							invalid: true,
+							key: 'native-input',
+							max: '12:00',
+							min: '10:00',
+							name: 'some-field',
+							onblur: picker.listener,
+							onchange: picker.listener,
+							onfocus: picker.listener,
+							readOnly: true,
+							required: true,
+							step: 60,
+							type: 'time',
+							value: '11:30'
+						})
+					]
+				)
+			);
 
 			picker.destroy();
 		},
@@ -262,41 +276,51 @@ registerSuite('TimePicker', {
 				label: 'foo',
 				useNativeElement: true
 			});
-			picker.expectRender(v('div', {
-				classes: [ css.root, null, null, null, null ],
-				key: 'root'
-			}, [
-				w(Label, {
-					theme: undefined,
-					disabled: undefined,
-					hidden: false,
-					invalid: undefined,
-					readOnly: undefined,
-					required: undefined,
-					forId: <any> compareId
-				}, [ 'foo' ]),
-				v('input', {
-					'aria-describedby': undefined,
-					'aria-invalid': null,
-					'aria-readonly': null,
-					classes: css.input,
-					disabled: undefined,
-					invalid: undefined,
-					key: 'native-input',
-					id: <any> compareId,
-					max: undefined,
-					min: undefined,
-					name: undefined,
-					onblur: picker.listener,
-					onchange: picker.listener,
-					onfocus: picker.listener,
-					readOnly: undefined,
-					required: undefined,
-					step: undefined,
-					type: 'time',
-					value: undefined
-				})
-			]));
+			picker.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, null, null, null, null],
+						key: 'root'
+					},
+					[
+						w(
+							Label,
+							{
+								theme: undefined,
+								disabled: undefined,
+								hidden: false,
+								invalid: undefined,
+								readOnly: undefined,
+								required: undefined,
+								forId: <any>compareId
+							},
+							['foo']
+						),
+						v('input', {
+							'aria-describedby': undefined,
+							'aria-invalid': null,
+							'aria-readonly': null,
+							classes: css.input,
+							disabled: undefined,
+							invalid: undefined,
+							key: 'native-input',
+							id: <any>compareId,
+							max: undefined,
+							min: undefined,
+							name: undefined,
+							onblur: picker.listener,
+							onchange: picker.listener,
+							onfocus: picker.listener,
+							readOnly: undefined,
+							required: undefined,
+							step: undefined,
+							type: 'time',
+							value: undefined
+						})
+					]
+				)
+			);
 
 			picker.destroy();
 		},

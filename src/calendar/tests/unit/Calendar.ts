@@ -2,7 +2,13 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { compareProperty, assignProperties, assignChildProperties, replaceChild, findKey } from '@dojo/test-extras/support/d';
+import {
+	compareProperty,
+	assignProperties,
+	assignChildProperties,
+	replaceChild,
+	findKey
+} from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -43,7 +49,7 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 	return v('div', { classes: css.root }, [
 		w(DatePicker, {
 			key: 'date-picker',
-			labelId: <any> compareId,
+			labelId: <any>compareId,
 			labels: DEFAULT_LABELS,
 			month: 5,
 			monthNames: DEFAULT_MONTHS,
@@ -54,103 +60,129 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 			onRequestMonthChange: widget.listener,
 			onRequestYearChange: widget.listener
 		}),
-		v('table', {
-			cellspacing: '0',
-			cellpadding: '0',
-			role: 'grid',
-			'aria-labelledby': compareId, // this._monthLabelId,
-			classes: [ css.dateGrid, popupOpen ? baseCss.visuallyHidden : null ]
-		}, [
-			v('thead', [
-				v('tr', DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string; }) => v('th', {
-						role: 'columnheader',
-						classes: css.weekday
-					}, [
-						v('abbr', { title: weekday.long }, [ weekday.short ])
+		v(
+			'table',
+			{
+				cellspacing: '0',
+				cellpadding: '0',
+				role: 'grid',
+				'aria-labelledby': compareId, // this._monthLabelId,
+				classes: [css.dateGrid, popupOpen ? baseCss.visuallyHidden : null]
+			},
+			[
+				v('thead', [
+					v(
+						'tr',
+						DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string }) =>
+							v(
+								'th',
+								{
+									role: 'columnheader',
+									classes: css.weekday
+								},
+								[v('abbr', { title: weekday.long }, [weekday.short])]
+							)
+						)
+					)
+				]),
+				v('tbody', [
+					v('tr', [
+						expectedDateCell(widget, 28, false),
+						expectedDateCell(widget, 29, false),
+						expectedDateCell(widget, 30, false),
+						expectedDateCell(widget, 31, false),
+						expectedDateCell(widget, 1, true),
+						expectedDateCell(widget, 2, true),
+						expectedDateCell(widget, 3, true)
+					]),
+					v('tr', [
+						expectedDateCell(widget, 4, true),
+						expectedDateCell(widget, 5, true),
+						expectedDateCell(widget, 6, true),
+						expectedDateCell(widget, 7, true),
+						expectedDateCell(widget, 8, true),
+						expectedDateCell(widget, 9, true),
+						expectedDateCell(widget, 10, true)
+					]),
+					v('tr', [
+						expectedDateCell(widget, 11, true),
+						expectedDateCell(widget, 12, true),
+						expectedDateCell(widget, 13, true),
+						expectedDateCell(widget, 14, true),
+						expectedDateCell(widget, 15, true),
+						expectedDateCell(widget, 16, true),
+						expectedDateCell(widget, 17, true)
+					]),
+					v('tr', [
+						expectedDateCell(widget, 18, true),
+						expectedDateCell(widget, 19, true),
+						expectedDateCell(widget, 20, true),
+						expectedDateCell(widget, 21, true),
+						expectedDateCell(widget, 22, true),
+						expectedDateCell(widget, 23, true),
+						expectedDateCell(widget, 24, true)
+					]),
+					v('tr', [
+						expectedDateCell(widget, 25, true),
+						expectedDateCell(widget, 26, true),
+						expectedDateCell(widget, 27, true),
+						expectedDateCell(widget, 28, true),
+						expectedDateCell(widget, 29, true),
+						expectedDateCell(widget, 30, true),
+						expectedDateCell(widget, 1, false)
+					]),
+					v('tr', [
+						expectedDateCell(widget, 2, false),
+						expectedDateCell(widget, 3, false),
+						expectedDateCell(widget, 4, false),
+						expectedDateCell(widget, 5, false),
+						expectedDateCell(widget, 6, false),
+						expectedDateCell(widget, 7, false),
+						expectedDateCell(widget, 8, false)
 					])
-				))
-			]),
-			v('tbody', [
-				v('tr', [
-					expectedDateCell(widget, 28, false),
-					expectedDateCell(widget, 29, false),
-					expectedDateCell(widget, 30, false),
-					expectedDateCell(widget, 31, false),
-					expectedDateCell(widget, 1, true),
-					expectedDateCell(widget, 2, true),
-					expectedDateCell(widget, 3, true)
-				]),
-				v('tr', [
-					expectedDateCell(widget, 4, true),
-					expectedDateCell(widget, 5, true),
-					expectedDateCell(widget, 6, true),
-					expectedDateCell(widget, 7, true),
-					expectedDateCell(widget, 8, true),
-					expectedDateCell(widget, 9, true),
-					expectedDateCell(widget, 10, true)
-				]),
-				v('tr', [
-					expectedDateCell(widget, 11, true),
-					expectedDateCell(widget, 12, true),
-					expectedDateCell(widget, 13, true),
-					expectedDateCell(widget, 14, true),
-					expectedDateCell(widget, 15, true),
-					expectedDateCell(widget, 16, true),
-					expectedDateCell(widget, 17, true)
-				]),
-				v('tr', [
-					expectedDateCell(widget, 18, true),
-					expectedDateCell(widget, 19, true),
-					expectedDateCell(widget, 20, true),
-					expectedDateCell(widget, 21, true),
-					expectedDateCell(widget, 22, true),
-					expectedDateCell(widget, 23, true),
-					expectedDateCell(widget, 24, true)
-				]),
-				v('tr', [
-					expectedDateCell(widget, 25, true),
-					expectedDateCell(widget, 26, true),
-					expectedDateCell(widget, 27, true),
-					expectedDateCell(widget, 28, true),
-					expectedDateCell(widget, 29, true),
-					expectedDateCell(widget, 30, true),
-					expectedDateCell(widget, 1, false)
-				]),
-				v('tr', [
-					expectedDateCell(widget, 2, false),
-					expectedDateCell(widget, 3, false),
-					expectedDateCell(widget, 4, false),
-					expectedDateCell(widget, 5, false),
-					expectedDateCell(widget, 6, false),
-					expectedDateCell(widget, 7, false),
-					expectedDateCell(widget, 8, false)
 				])
-			])
-		]),
-		v('div', {
-			classes: [ css.controls, popupOpen ? baseCss.visuallyHidden : null ]
-		}, [
-			v('button', {
-				classes: css.previous,
-				tabIndex: popupOpen ? -1 : 0,
-				onclick: widget.listener
-			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
-					role: 'presentation', 'aria-hidden': 'true'
-				}),
-				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Previous Month' ])
-			]),
-			v('button', {
-				classes: css.next,
-				tabIndex: popupOpen ? -1 : 0,
-				onclick: widget.listener
-			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
-					role: 'presentation', 'aria-hidden': 'true'
-				}),
-				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Next Month' ])
-			])
-		])
+			]
+		),
+		v(
+			'div',
+			{
+				classes: [css.controls, popupOpen ? baseCss.visuallyHidden : null]
+			},
+			[
+				v(
+					'button',
+					{
+						classes: css.previous,
+						tabIndex: popupOpen ? -1 : 0,
+						onclick: widget.listener
+					},
+					[
+						v('i', {
+							classes: [iconCss.icon, iconCss.leftIcon],
+							role: 'presentation',
+							'aria-hidden': 'true'
+						}),
+						v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
+					]
+				),
+				v(
+					'button',
+					{
+						classes: css.next,
+						tabIndex: popupOpen ? -1 : 0,
+						onclick: widget.listener
+					},
+					[
+						v('i', {
+							classes: [iconCss.icon, iconCss.rightIcon],
+							role: 'presentation',
+							'aria-hidden': 'true'
+						}),
+						v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
+					]
+				)
+			]
+		)
 	]);
 };
 
@@ -194,7 +226,7 @@ registerSuite('Calendar', {
 				weekdayNames: DEFAULT_WEEKDAYS,
 				year: testDate.getFullYear(),
 				renderMonthLabel: (month: number, year: number) => 'Foo',
-				renderWeekdayCell: (day: { short: string; long: string; }) => 'Bar'
+				renderWeekdayCell: (day: { short: string; long: string }) => 'Bar'
 			});
 
 			let expectedVdom = expected(widget);
@@ -282,10 +314,12 @@ registerSuite('Calendar', {
 
 			// right arrow, then select
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Right,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Right,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-4'
 			});
 			// not a good way to test this, but this would be called with the arrow key
@@ -293,10 +327,12 @@ registerSuite('Calendar', {
 				key: 'date-4'
 			});
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Enter,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Enter,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-5'
 			});
 			assert.strictEqual(selectedDate.getDate(), 2, 'Right arrow + enter selects second day');
@@ -304,17 +340,21 @@ registerSuite('Calendar', {
 
 			// down arrow
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Down,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Down,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-5'
 			});
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Enter,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Enter,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-12'
 			});
 			assert.strictEqual(selectedDate.getDate(), 9, 'Down arrow + enter selects one week down');
@@ -322,17 +362,21 @@ registerSuite('Calendar', {
 
 			// left arrow
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Left,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Left,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-12'
 			});
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Space,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-11'
 			});
 			assert.strictEqual(selectedDate.getDate(), 8, 'Left arrow + space selects previous day');
@@ -340,17 +384,21 @@ registerSuite('Calendar', {
 
 			// up arrow
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Up,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Up,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-11'
 			});
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Space,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-4'
 			});
 			assert.strictEqual(selectedDate.getDate(), 1, 'Left arrow + space selects previous day');
@@ -358,17 +406,21 @@ registerSuite('Calendar', {
 
 			// page down
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.PageDown,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.PageDown,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-4'
 			});
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Space,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-33'
 			});
 			assert.strictEqual(selectedDate.getDate(), 30, 'Page Down + space selects last day');
@@ -376,17 +428,21 @@ registerSuite('Calendar', {
 
 			// page up
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.PageUp,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.PageUp,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-33'
 			});
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Space,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-4'
 			});
 			assert.strictEqual(selectedDate.getDate(), 1, 'Page Up + space selects first day');
@@ -404,29 +460,43 @@ registerSuite('Calendar', {
 			});
 
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Left,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Left,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-4'
 			});
-			assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Going left from the first day goes to previous month');
+			assert.strictEqual(
+				currentMonth,
+				testDate.getMonth() - 1,
+				'Going left from the first day goes to previous month'
+			);
 
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.PageDown,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.PageDown,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-4'
 			});
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Right,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Right,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-4'
 			});
-			assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Going right from the last day goes to next month');
+			assert.strictEqual(
+				currentMonth,
+				testDate.getMonth() + 1,
+				'Going right from the last day goes to next month'
+			);
 		},
 
 		'Month changes wrap and change year'() {
@@ -444,10 +514,12 @@ registerSuite('Calendar', {
 			});
 
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Up,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Up,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-0'
 			});
 			assert.strictEqual(currentMonth, 11, 'Previous month wraps from January to December');
@@ -465,10 +537,12 @@ registerSuite('Calendar', {
 			});
 
 			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Down,
-					preventDefault: () => {}
-				}],
+				args: [
+					{
+						which: Keys.Down,
+						preventDefault: () => {}
+					}
+				],
 				key: 'date-35'
 			});
 			assert.strictEqual(currentMonth, 0, 'Next month wraps from December to January');

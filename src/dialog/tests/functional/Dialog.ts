@@ -14,35 +14,33 @@ interface Options {
 const DELAY = 400;
 
 function openDialog(remote: Remote, { closeable = true, modal, underlay }: Options = {}) {
-	let promise = remote
-		.get('http://localhost:9000/_build/common/example/?module=dialog')
-		.setFindTimeout(5000);
+	let promise = remote.get('http://localhost:9000/_build/common/example/?module=dialog').setFindTimeout(5000);
 
 	if (!closeable) {
 		promise = promise
 			.findById('closeable')
-				.click()
-				.end();
+			.click()
+			.end();
 	}
 
 	if (modal) {
 		promise = promise
 			.findById('modal')
-				.click()
-				.end();
+			.click()
+			.end();
 	}
 
 	if (underlay) {
 		promise = promise
 			.findById('underlay')
-				.click()
-				.end();
+			.click()
+			.end();
 	}
 
 	return promise
 		.findById('button')
-			.click()
-			.end()
+		.click()
+		.end()
 		.sleep(DELAY);
 }
 
@@ -72,22 +70,22 @@ registerSuite('Dialog', {
 
 		return openDialog(this.remote)
 			.getWindowSize()
-				.then(({ height, width }) => {
-					viewportSize = { height, width };
-				})
+			.then(({ height, width }) => {
+				viewportSize = { height, width };
+			})
 			.findByCssSelector(`.${css.main}`)
-				.getSize()
-					.then(({ height, width }) => {
-						dialogSize = { height, width };
-					})
-				.getPosition()
-					.then(({ x, y }) => {
-						const expectedX = (viewportSize.width - dialogSize.width) / 2;
-						const expectedY = (viewportSize.height - dialogSize.height) / 2;
+			.getSize()
+			.then(({ height, width }) => {
+				dialogSize = { height, width };
+			})
+			.getPosition()
+			.then(({ x, y }) => {
+				const expectedX = (viewportSize.width - dialogSize.width) / 2;
+				const expectedY = (viewportSize.height - dialogSize.height) / 2;
 
-						assert.closeTo(x, expectedX, expectedX * 0.2);
-						assert.closeTo(y, expectedY, expectedY * 0.2);
-					});
+				assert.closeTo(x, expectedX, expectedX * 0.2);
+				assert.closeTo(y, expectedY, expectedY * 0.2);
+			});
 	},
 
 	'The underlay should cover the entire visible screen'() {
@@ -95,56 +93,56 @@ registerSuite('Dialog', {
 
 		return openDialog(this.remote, { underlay: true })
 			.getWindowSize()
-				.then(({ height, width }) => {
-					viewportSize = { height, width };
-				})
+			.then(({ height, width }) => {
+				viewportSize = { height, width };
+			})
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.underlay}`)
-				.getSize()
-				.then(({ height, width }) => {
-					assert.isAtLeast(height, viewportSize.height * 0.8);
-					assert.isAtLeast(width, viewportSize.width * 0.9);
-				});
+			.getSize()
+			.then(({ height, width }) => {
+				assert.isAtLeast(height, viewportSize.height * 0.8);
+				assert.isAtLeast(width, viewportSize.width * 0.9);
+			});
 	},
 
 	'Clicking the underlay should destroy the dialog'() {
 		return clickUnderlay(this.remote)
 			.findByCssSelector(`.${css.root}`)
-				.getProperty('children')
-				.then((children: HTMLElement[]) => {
-					assert.lengthOf(children, 0);
-				});
+			.getProperty('children')
+			.then((children: HTMLElement[]) => {
+				assert.lengthOf(children, 0);
+			});
 	},
 
 	'Clicking the underlay should not destroy the dialog when "modal" is true'() {
 		return clickUnderlay(this.remote, { underlay: true, modal: true })
 			.findByCssSelector(`.${css.root}`)
-				.getProperty('children')
-				.then((children: HTMLElement[]) => {
-					assert.lengthOf(children, 2);
-				});
+			.getProperty('children')
+			.then((children: HTMLElement[]) => {
+				assert.lengthOf(children, 2);
+			});
 	},
 
 	'The dialog should not be closeable when "closeable" is false'() {
 		return clickUnderlay(this.remote, { underlay: true, closeable: false })
 			.findByCssSelector(`.${css.root}`)
-				.getProperty('children')
-				.then((children: HTMLElement[]) => {
-					assert.lengthOf(children, 2, 'The dialog should not be destroyed when the underlay is clicked.');
-				});
+			.getProperty('children')
+			.then((children: HTMLElement[]) => {
+				assert.lengthOf(children, 2, 'The dialog should not be destroyed when the underlay is clicked.');
+			});
 	},
 
 	'The dialog should be hidden when the close button is clicked'() {
 		return openDialog(this.remote)
 			.findByCssSelector(`.${css.close}`)
-				.click()
-				.sleep(DELAY)
-				.end()
+			.click()
+			.sleep(DELAY)
+			.end()
 			.findByCssSelector(`.${css.root}`)
-				.getProperty('children')
-				.then((children: HTMLElement[]) => {
-					assert.lengthOf(children, 0);
-				});
+			.getProperty('children')
+			.then((children: HTMLElement[]) => {
+				assert.lengthOf(children, 0);
+			});
 	},
 
 	'The dialog should be hidden when the close button is activated with the enter key'() {
@@ -162,9 +160,9 @@ registerSuite('Dialog', {
 			.pressKeys(keys.ENTER)
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.root}`)
-				.getProperty('children')
-				.then((children: HTMLElement[]) => {
-					assert.lengthOf(children, 0);
-				});
+			.getProperty('children')
+			.then((children: HTMLElement[]) => {
+				assert.lengthOf(children, 0);
+			});
 	}
 });

@@ -19,12 +19,15 @@ registerSuite('Tooltip', {
 
 	tests: {
 		'should construct Tooltip'() {
-			widget.expectRender(v('div', {
-				classes: [ css.right, css.rootFixed, css.rightFixed ]
-			}, [
-				v('div', { key: 'target' }, []),
-				null
-			]));
+			widget.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.right, css.rootFixed, css.rightFixed]
+					},
+					[v('div', { key: 'target' }, []), null]
+				)
+			);
 		},
 
 		'should render content if open'() {
@@ -33,15 +36,25 @@ registerSuite('Tooltip', {
 				open: true
 			});
 
-			widget.expectRender(v('div', {
-				classes: [ css.right, css.rootFixed, css.rightFixed ]
-			}, [
-				v('div', { key: 'target' }, []),
-				v('div', {
-					key: 'content',
-					classes: [ css.content, css.contentFixed ]
-				}, [ 'foobar' ])
-			]));
+			widget.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.right, css.rootFixed, css.rightFixed]
+					},
+					[
+						v('div', { key: 'target' }, []),
+						v(
+							'div',
+							{
+								key: 'content',
+								classes: [css.content, css.contentFixed]
+							},
+							['foobar']
+						)
+					]
+				)
+			);
 		},
 
 		'should render correct orientation'() {
@@ -50,12 +63,15 @@ registerSuite('Tooltip', {
 				content: 'foobar'
 			});
 
-			widget.expectRender(v('div', {
-				classes: [ css.bottom, css.rootFixed, css.bottomFixed ]
-			}, [
-				v('div', { key: 'target' }, []),
-				null
-			]));
+			widget.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.bottom, css.rootFixed, css.bottomFixed]
+					},
+					[v('div', { key: 'target' }, []), null]
+				)
+			);
 		}
 	}
 });

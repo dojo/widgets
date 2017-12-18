@@ -62,127 +62,166 @@ const testStateProperties: Partial<SelectProperties> = {
 
 const expectedNative = function(widget: Harness<Select>, useTestProperties = false) {
 	return v('div', { classes: css.inputWrapper }, [
-		v('select', {
-			classes: css.input,
-			'aria-describedby': useTestProperties ? 'foo' : undefined,
-			disabled: useTestProperties ? true : undefined,
-			'aria-invalid': useTestProperties ? 'true' : null,
-			name: useTestProperties ? 'foo' : undefined,
-			readOnly: useTestProperties ? true : undefined,
-			'aria-readonly': useTestProperties ? 'true' : null,
-			required: useTestProperties ? true : undefined,
-			value: useTestProperties ? 'two' : undefined,
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onfocus: widget.listener
-		}, [
-			v('option', {
-				value: useTestProperties ? 'one' : '',
-				id: useTestProperties ? 'one' : undefined,
-				disabled: useTestProperties ? false : undefined,
-				selected: useTestProperties ? false : undefined
-			}, [ useTestProperties ? 'One' : `${testOptions[0]}` ]),
-			v('option', {
-				value: useTestProperties ? 'two' : '',
-				id: useTestProperties ? 'two' : undefined,
-				disabled: useTestProperties ? false : undefined,
-				selected: useTestProperties ? true : undefined
-			}, [ useTestProperties ? 'Two' : `${testOptions[1]}` ]),
-			v('option', {
-				value: useTestProperties ? 'three' : '',
-				id: useTestProperties ? 'three' : undefined,
+		v(
+			'select',
+			{
+				classes: css.input,
+				'aria-describedby': useTestProperties ? 'foo' : undefined,
 				disabled: useTestProperties ? true : undefined,
-				selected: useTestProperties ? false : undefined
-			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ])
-		]),
+				'aria-invalid': useTestProperties ? 'true' : null,
+				name: useTestProperties ? 'foo' : undefined,
+				readOnly: useTestProperties ? true : undefined,
+				'aria-readonly': useTestProperties ? 'true' : null,
+				required: useTestProperties ? true : undefined,
+				value: useTestProperties ? 'two' : undefined,
+				onblur: widget.listener,
+				onchange: widget.listener,
+				onfocus: widget.listener
+			},
+			[
+				v(
+					'option',
+					{
+						value: useTestProperties ? 'one' : '',
+						id: useTestProperties ? 'one' : undefined,
+						disabled: useTestProperties ? false : undefined,
+						selected: useTestProperties ? false : undefined
+					},
+					[useTestProperties ? 'One' : `${testOptions[0]}`]
+				),
+				v(
+					'option',
+					{
+						value: useTestProperties ? 'two' : '',
+						id: useTestProperties ? 'two' : undefined,
+						disabled: useTestProperties ? false : undefined,
+						selected: useTestProperties ? true : undefined
+					},
+					[useTestProperties ? 'Two' : `${testOptions[1]}`]
+				),
+				v(
+					'option',
+					{
+						value: useTestProperties ? 'three' : '',
+						id: useTestProperties ? 'three' : undefined,
+						disabled: useTestProperties ? true : undefined,
+						selected: useTestProperties ? false : undefined
+					},
+					[useTestProperties ? 'Three' : `${testOptions[2]}`]
+				)
+			]
+		),
 		v('span', { classes: css.arrow }, [
-			v('i', { classes: [ iconCss.icon, iconCss.downIcon ],
-				role: 'presentation', 'aria-hidden': 'true'
+			v('i', {
+				classes: [iconCss.icon, iconCss.downIcon],
+				role: 'presentation',
+				'aria-hidden': 'true'
 			})
 		])
 	]);
 };
 
 const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false) {
-	return v('div', {
-		classes: [ css.inputWrapper, open ? css.open : null ],
-		key: 'wrapper'
-	}, [
-		v('button', {
-			'aria-controls': <any> compareId,
-			'aria-expanded': open ? 'true' : 'false',
-			'aria-haspopup': 'listbox',
-			'aria-invalid': null,
-			'aria-readonly': null,
-			'aria-required': null,
-			classes: [ css.trigger, useTestProperties ? null : css.placeholder ],
-			describedBy: useTestProperties ? 'foo' : undefined,
-			disabled: undefined,
-			key: 'trigger',
-			value: useTestProperties ? 'two' : undefined,
-			onblur: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			onkeydown: widget.listener,
-			onmousedown: widget.listener
-		}, [ useTestProperties ? 'Two' : '' ]),
-		v('span', { classes: css.arrow }, [
-			v('i', {
-				classes: [ iconCss.icon, iconCss.downIcon ],
-				role: 'presentation',
-				'aria-hidden': 'true'
-			})
-		]),
-		v('div', {
-			classes: css.dropdown,
-			onfocusout: widget.listener,
-			onkeydown: widget.listener
-		}, [
-			w(Listbox, {
-				activeIndex: 0,
-				describedBy: useTestProperties ? 'foo' : undefined,
-				id: <any> compareId,
-				key: 'listbox',
-				optionData: useTestProperties ? testOptions : [],
-				tabIndex: open ? 0 : -1,
-				getOptionDisabled: useTestProperties ? widget.listener : undefined,
-				getOptionId: useTestProperties ? (widget.listener as any) : undefined,
-				getOptionLabel: useTestProperties ? (widget.listener as any) : undefined,
-				getOptionSelected: useTestProperties ? widget.listener : undefined,
-				theme: undefined,
-				onActiveIndexChange: widget.listener,
-				onOptionSelect: widget.listener
-			})
-		])
-	]);
+	return v(
+		'div',
+		{
+			classes: [css.inputWrapper, open ? css.open : null],
+			key: 'wrapper'
+		},
+		[
+			v(
+				'button',
+				{
+					'aria-controls': <any>compareId,
+					'aria-expanded': open ? 'true' : 'false',
+					'aria-haspopup': 'listbox',
+					'aria-invalid': null,
+					'aria-readonly': null,
+					'aria-required': null,
+					classes: [css.trigger, useTestProperties ? null : css.placeholder],
+					describedBy: useTestProperties ? 'foo' : undefined,
+					disabled: undefined,
+					key: 'trigger',
+					value: useTestProperties ? 'two' : undefined,
+					onblur: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					onkeydown: widget.listener,
+					onmousedown: widget.listener
+				},
+				[useTestProperties ? 'Two' : '']
+			),
+			v('span', { classes: css.arrow }, [
+				v('i', {
+					classes: [iconCss.icon, iconCss.downIcon],
+					role: 'presentation',
+					'aria-hidden': 'true'
+				})
+			]),
+			v(
+				'div',
+				{
+					classes: css.dropdown,
+					onfocusout: widget.listener,
+					onkeydown: widget.listener
+				},
+				[
+					w(Listbox, {
+						activeIndex: 0,
+						describedBy: useTestProperties ? 'foo' : undefined,
+						id: <any>compareId,
+						key: 'listbox',
+						optionData: useTestProperties ? testOptions : [],
+						tabIndex: open ? 0 : -1,
+						getOptionDisabled: useTestProperties ? widget.listener : undefined,
+						getOptionId: useTestProperties ? (widget.listener as any) : undefined,
+						getOptionLabel: useTestProperties ? (widget.listener as any) : undefined,
+						getOptionSelected: useTestProperties ? widget.listener : undefined,
+						theme: undefined,
+						onActiveIndexChange: widget.listener,
+						onOptionSelect: widget.listener
+					})
+				]
+			)
+		]
+	);
 };
 
 function isOpen(widget: any): boolean {
 	const vdom = widget.getRender();
 	const button = findKey(vdom, 'trigger');
-	return (<any> button)!.properties!['aria-expanded'] === 'true';
+	return (<any>button)!.properties!['aria-expanded'] === 'true';
 }
 
 const expected = function(widget: Harness<Select>, selectVdom: any, label = false) {
-	return v('div', {
-		key: 'root',
-		classes: [ css.root, null, null, null, null, null ]
-	}, [
-		label ? w(Label, {
-			theme: undefined,
-			disabled: undefined,
-			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
-		}, [ 'foo' ]) : null,
-		selectVdom
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			classes: [css.root, null, null, null, null, null]
+		},
+		[
+			label
+				? w(
+						Label,
+						{
+							theme: undefined,
+							disabled: undefined,
+							hidden: undefined,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							forId: <any>compareId
+						},
+						['foo']
+					)
+				: null,
+			selectVdom
+		]
+	);
 };
 
 registerSuite('Select', {
-
 	beforeEach() {
 		widget = harness(Select);
 	},
@@ -192,7 +231,6 @@ registerSuite('Select', {
 	},
 
 	tests: {
-
 		'Native Single Select': {
 			'default properties'() {
 				widget.setProperties({
@@ -213,7 +251,7 @@ registerSuite('Select', {
 				const selectVdom = expectedNative(widget, true);
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+					classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -245,7 +283,10 @@ registerSuite('Select', {
 				});
 
 				widget.sendEvent('change', { selector: 'option' });
-				assert.isTrue(onChange.calledWith(testOptions[0]), 'onChange should be called with the first entry in the testOptions array');
+				assert.isTrue(
+					onChange.calledWith(testOptions[0]),
+					'onChange should be called with the first entry in the testOptions array'
+				);
 			},
 
 			'events called with widget key'() {
@@ -289,12 +330,12 @@ registerSuite('Select', {
 				});
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+					classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required]
 				});
 				widget.expectRender(expectedVdom);
 			},
 
-			'placeholder'() {
+			placeholder() {
 				widget.setProperties({
 					...testProperties,
 					placeholder: 'foo'
@@ -311,11 +352,11 @@ registerSuite('Select', {
 				});
 
 				assignProperties(findKey(expectedVdom, 'trigger')!, {
-					classes: [ css.trigger, css.placeholder ]
+					classes: [css.trigger, css.placeholder]
 				});
 				expectedVdom = expected(widget, expectedSingle(widget, true));
 				assignProperties(findKey(expectedVdom, 'trigger')!, {
-					classes: [ css.trigger, css.placeholder ]
+					classes: [css.trigger, css.placeholder]
 				});
 				replaceChild(expectedVdom, '1,0,0', 'bar');
 
@@ -348,7 +389,7 @@ registerSuite('Select', {
 				widget.sendEvent('click', { key: 'trigger' });
 				assert.isTrue(isOpen(widget), 'Widget opens on button click');
 
-				widget.callListener('onOptionSelect', { args: [ testOptions[1] ], index: '0,2,0' });
+				widget.callListener('onOptionSelect', { args: [testOptions[1]], index: '0,2,0' });
 				assert.isFalse(isOpen(widget), 'Widget closes on option select');
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
@@ -364,7 +405,7 @@ registerSuite('Select', {
 			'change active option'() {
 				widget.setProperties(testProperties);
 				let selectVdom = expected(widget, expectedSingle(widget, true));
-				widget.callListener('onActiveIndexChange', { args: [ 1 ], key: 'listbox' });
+				widget.callListener('onActiveIndexChange', { args: [1], key: 'listbox' });
 
 				selectVdom = expected(widget, expectedSingle(widget, true));
 				assignProperties(findKey(selectVdom, 'listbox')!, { activeIndex: 1 });

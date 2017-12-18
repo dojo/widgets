@@ -12,13 +12,8 @@ const isNonEmptyString = compareProperty((value: any) => {
 	return typeof value === 'string' && value.length > 0;
 });
 
-interface TestEventInit extends EventInit {
-	keyCode: number;
-}
-
 let titlePane: Harness<TitlePane>;
 registerSuite('TitlePane', {
-
 	beforeEach() {
 		titlePane = harness(TitlePane);
 	},
@@ -33,42 +28,56 @@ registerSuite('TitlePane', {
 				title: 'test'
 			});
 
-			titlePane.expectRender(v('div', {
-				classes: [ css.root, css.open, css.rootFixed ]
-			}, [
-				v('div', {
-					'aria-level': null,
-					classes: [ css.title, css.closeable, css.titleFixed, css.closeableFixed ],
-					role: 'heading'
-				}, [
-					v('button', {
-						'aria-controls': isNonEmptyString,
-						'aria-expanded': 'true',
-						classes: css.titleButton,
-						disabled: false,
-						id: <any> isNonEmptyString,
-						onclick: titlePane.listener
-					}, [
-						v('i', {
-							classes: [
-								css.arrow,
-								iconCss.icon,
-								iconCss.downIcon
-							],
-							role: 'presentation',
-							'aria-hidden': 'true'
-						}),
-						'test'
-					])
-				]),
-				v('div', {
-					'aria-hidden': null,
-					'aria-labelledby': isNonEmptyString,
-					classes: css.content,
-					id: <any> isNonEmptyString,
-					key: 'content'
-				}, [ ])
-			]));
+			titlePane.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, css.open, css.rootFixed]
+					},
+					[
+						v(
+							'div',
+							{
+								'aria-level': null,
+								classes: [css.title, css.closeable, css.titleFixed, css.closeableFixed],
+								role: 'heading'
+							},
+							[
+								v(
+									'button',
+									{
+										'aria-controls': isNonEmptyString,
+										'aria-expanded': 'true',
+										classes: css.titleButton,
+										disabled: false,
+										id: <any>isNonEmptyString,
+										onclick: titlePane.listener
+									},
+									[
+										v('i', {
+											classes: [css.arrow, iconCss.icon, iconCss.downIcon],
+											role: 'presentation',
+											'aria-hidden': 'true'
+										}),
+										'test'
+									]
+								)
+							]
+						),
+						v(
+							'div',
+							{
+								'aria-hidden': null,
+								'aria-labelledby': isNonEmptyString,
+								classes: css.content,
+								id: <any>isNonEmptyString,
+								key: 'content'
+							},
+							[]
+						)
+					]
+				)
+			);
 		},
 
 		'Should construct with the passed properties'() {
@@ -79,42 +88,56 @@ registerSuite('TitlePane', {
 				title: 'test'
 			});
 
-			titlePane.expectRender(v('div', {
-				classes: [ css.root, null, css.rootFixed ]
-			}, [
-				v('div', {
-					'aria-level': '5',
-					classes: [ css.title, null, css.titleFixed, null ],
-					role: 'heading'
-				}, [
-					v('button', {
-						'aria-controls': isNonEmptyString,
-						'aria-expanded': 'false',
-						classes: css.titleButton,
-						disabled: true,
-						id: <any> isNonEmptyString,
-						onclick: titlePane.listener
-					}, [
-						v('i', {
-							classes: [
-								css.arrow,
-								iconCss.icon,
-								iconCss.rightIcon
-							],
-							role: 'presentation',
-							'aria-hidden': 'true'
-						}),
-						'test'
-					])
-				]),
-				v('div', {
-					'aria-hidden': 'true',
-					'aria-labelledby': isNonEmptyString,
-					classes: css.content,
-					id: <any> isNonEmptyString,
-					key: 'content'
-				}, [])
-			]));
+			titlePane.expectRender(
+				v(
+					'div',
+					{
+						classes: [css.root, null, css.rootFixed]
+					},
+					[
+						v(
+							'div',
+							{
+								'aria-level': '5',
+								classes: [css.title, null, css.titleFixed, null],
+								role: 'heading'
+							},
+							[
+								v(
+									'button',
+									{
+										'aria-controls': isNonEmptyString,
+										'aria-expanded': 'false',
+										classes: css.titleButton,
+										disabled: true,
+										id: <any>isNonEmptyString,
+										onclick: titlePane.listener
+									},
+									[
+										v('i', {
+											classes: [css.arrow, iconCss.icon, iconCss.rightIcon],
+											role: 'presentation',
+											'aria-hidden': 'true'
+										}),
+										'test'
+									]
+								)
+							]
+						),
+						v(
+							'div',
+							{
+								'aria-hidden': 'true',
+								'aria-labelledby': isNonEmptyString,
+								classes: css.content,
+								id: <any>isNonEmptyString,
+								key: 'content'
+							},
+							[]
+						)
+					]
+				)
+			);
 		},
 
 		'click title to close'() {

@@ -11,16 +11,16 @@ export default function createCalendarElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'month',
-				value: value => value ? parseInt(value, 10) : undefined
+				value: (value) => (value ? parseInt(value, 10) : undefined)
 			},
 			{
 				attributeName: 'selecteddate',
 				propertyName: 'selectedDate',
-				value: value => value ? new Date(value) : undefined
+				value: (value) => (value ? new Date(value) : undefined)
 			},
 			{
 				attributeName: 'year',
-				value: value => value ? parseInt(value, 10) : undefined
+				value: (value) => (value ? parseInt(value, 10) : undefined)
 			}
 		],
 		properties: [
@@ -46,4 +46,4 @@ export default function createCalendarElement(): CustomElementDescriptor {
 			}
 		]
 	};
-};
+}

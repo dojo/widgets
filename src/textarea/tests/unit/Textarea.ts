@@ -17,60 +17,69 @@ const compareId = compareProperty((value: any) => {
 });
 
 const expected = function(label = false) {
-	return v('div', {
-		key: 'root',
-		classes: [ css.root, null, null, null, null, null ]
-	}, [
-		label ? w(Label, {
-			theme: undefined,
-			disabled: undefined,
-			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
-		}, [ 'foo' ]) : null,
-		v('div', { classes: css.inputWrapper }, [
-			v('textarea', {
-				classes: css.input,
-				id: <any> compareId,
-				key: 'input',
-				cols: null,
-				'aria-describedby': undefined,
-				disabled: undefined,
-				'aria-invalid': null,
-				maxlength: null,
-				minlength: null,
-				name: undefined,
-				placeholder: undefined,
-				readOnly: undefined,
-				'aria-readonly': null,
-				required: undefined,
-				rows: null,
-				value: undefined,
-				wrap: undefined,
-				onblur: widget.listener,
-				onchange: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				oninput: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener
-			})
-		])
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			classes: [css.root, null, null, null, null, null]
+		},
+		[
+			label
+				? w(
+						Label,
+						{
+							theme: undefined,
+							disabled: undefined,
+							hidden: undefined,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							forId: <any>compareId
+						},
+						['foo']
+					)
+				: null,
+			v('div', { classes: css.inputWrapper }, [
+				v('textarea', {
+					classes: css.input,
+					id: <any>compareId,
+					key: 'input',
+					cols: null,
+					'aria-describedby': undefined,
+					disabled: undefined,
+					'aria-invalid': null,
+					maxlength: null,
+					minlength: null,
+					name: undefined,
+					placeholder: undefined,
+					readOnly: undefined,
+					'aria-readonly': null,
+					required: undefined,
+					rows: null,
+					value: undefined,
+					wrap: undefined,
+					onblur: widget.listener,
+					onchange: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					oninput: widget.listener,
+					onkeydown: widget.listener,
+					onkeypress: widget.listener,
+					onkeyup: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener
+				})
+			])
+		]
+	);
 };
 
 let widget: Harness<Textarea>;
 
 registerSuite('Textarea', {
-
 	beforeEach() {
 		widget = harness(Textarea);
 	},
@@ -113,7 +122,7 @@ registerSuite('Textarea', {
 			widget.expectRender(expectedVdom);
 		},
 
-		'label'() {
+		label() {
 			widget.setProperties({
 				label: 'foo'
 			});
@@ -138,7 +147,7 @@ registerSuite('Textarea', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+				classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -157,7 +166,7 @@ registerSuite('Textarea', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null ]
+				classes: [css.root, null, null, css.valid, null, null]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');

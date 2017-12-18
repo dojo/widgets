@@ -99,10 +99,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	private _onArrowClick() {
-		const {
-			disabled,
-			readOnly
-		} = this.properties;
+		const { disabled, readOnly } = this.properties;
 
 		if (!disabled && !readOnly) {
 			this._callInputFocus = true;
@@ -121,7 +118,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	private _onInput(event: Event) {
 		const { key, onChange } = this.properties;
 
-		onChange && onChange((<HTMLInputElement> event.target).value, key);
+		onChange && onChange((<HTMLInputElement>event.target).value, key);
 		this._openMenu();
 	}
 
@@ -133,28 +130,19 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			return;
 		}
 
-		onBlur && onBlur((<HTMLInputElement> event.target).value, key);
+		onBlur && onBlur((<HTMLInputElement>event.target).value, key);
 		this._closeMenu();
 	}
 
 	private _onInputFocus(event: FocusEvent) {
-		const {
-			key,
-			onFocus,
-			openOnFocus
-		} = this.properties;
+		const { key, onFocus, openOnFocus } = this.properties;
 
-		onFocus && onFocus((<HTMLInputElement> event.target).value, key);
+		onFocus && onFocus((<HTMLInputElement>event.target).value, key);
 		openOnFocus && this._openMenu();
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
-		const {
-			disabled,
-			isResultDisabled = () => false,
-			readOnly,
-			results = []
-		} = this.properties;
+		const { disabled, isResultDisabled = () => false, readOnly, results = [] } = this.properties;
 		this._menuHasVisualFocus = true;
 
 		switch (event.which) {
@@ -166,8 +154,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 				event.preventDefault();
 				if (!this._open && !disabled && !readOnly) {
 					this._openMenu();
-				}
-				else if (this._open) {
+				} else if (this._open) {
 					this._moveActiveIndex(Operation.increase);
 				}
 				break;
@@ -216,10 +203,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	private _openMenu() {
-		const {
-			key,
-			onRequestResults
-		} = this.properties;
+		const { key, onRequestResults } = this.properties;
 
 		this._activeIndex = 0;
 		this._open = true;
@@ -228,11 +212,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	private _selectIndex(index: number) {
-		const {
-			key,
-			onChange,
-			results = []
-		} = this.properties;
+		const { key, onChange, results = [] } = this.properties;
 
 		this._callInputFocus = true;
 		this._closeMenu();
@@ -264,15 +244,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	protected renderInput(): DNode {
-		const {
-			disabled,
-			inputProperties = {},
-			invalid,
-			readOnly,
-			required,
-			value = '',
-			theme
-		} = this.properties;
+		const { disabled, inputProperties = {}, invalid, readOnly, required, value = '', theme } = this.properties;
 
 		return w(TextInput, {
 			...inputProperties,
@@ -292,47 +264,51 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	protected renderClearButton(): DNode {
-		const {
-			disabled,
-			readOnly
-		} = this.properties;
+		const { disabled, readOnly } = this.properties;
 
-		return v('button', {
-			key: 'clear',
-			'aria-controls': this._getMenuId(),
-			classes: this.theme(css.clear),
-			disabled,
-			readOnly,
-			onclick: this._onClearClick
-		}, [
-			'clear combo box',
-			v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
-				role: 'presentation', 'aria-hidden': 'true'
-			})
-		]);
+		return v(
+			'button',
+			{
+				key: 'clear',
+				'aria-controls': this._getMenuId(),
+				classes: this.theme(css.clear),
+				disabled,
+				readOnly,
+				onclick: this._onClearClick
+			},
+			[
+				'clear combo box',
+				v('i', {
+					classes: this.theme([iconCss.icon, iconCss.closeIcon]),
+					role: 'presentation',
+					'aria-hidden': 'true'
+				})
+			]
+		);
 	}
 
 	protected renderMenuButton(): DNode {
-		const {
-			disabled,
-			readOnly
-		} = this.properties;
+		const { disabled, readOnly } = this.properties;
 
-		return v('button', {
-			key: 'trigger',
-			classes: this.theme(css.trigger),
-			disabled,
-			readOnly,
-			tabIndex: -1,
-			onclick: this._onArrowClick
-		}, [
-			'open combo box',
-			v('i', {
-				'aria-hidden': 'true',
-				classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
-				role: 'presentation'
-			})
-		]);
+		return v(
+			'button',
+			{
+				key: 'trigger',
+				classes: this.theme(css.trigger),
+				disabled,
+				readOnly,
+				tabIndex: -1,
+				onclick: this._onArrowClick
+			},
+			[
+				'open combo box',
+				v('i', {
+					'aria-hidden': 'true',
+					classes: this.theme([iconCss.icon, iconCss.downIcon]),
+					role: 'presentation'
+				})
+			]
+		);
 	}
 
 	protected renderMenu(results: any[]): DNode {
@@ -342,32 +318,36 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			return null;
 		}
 
-		return v('div', {
-			key: 'dropdown',
-			classes: this.theme(css.dropdown),
-			onmouseover: this._onResultHover,
-			onmousedown: this._onResultMouseDown
-		}, [
-			w(Listbox, {
-				key: 'listbox',
-				activeIndex: this._activeIndex,
-				id: this._getMenuId(),
-				visualFocus: this._menuHasVisualFocus,
-				optionData: results,
-				tabIndex: -1,
-				getOptionDisabled: isResultDisabled,
-				getOptionId: this._getResultId,
-				getOptionLabel: this._getResultLabel,
-				onActiveIndexChange: (index: number) => {
-					this._activeIndex = index;
-					this.invalidate();
-				},
-				onOptionSelect: (option: any, index: number) => {
-					this._selectIndex(index);
-				},
-				theme
-			})
-		]);
+		return v(
+			'div',
+			{
+				key: 'dropdown',
+				classes: this.theme(css.dropdown),
+				onmouseover: this._onResultHover,
+				onmousedown: this._onResultMouseDown
+			},
+			[
+				w(Listbox, {
+					key: 'listbox',
+					activeIndex: this._activeIndex,
+					id: this._getMenuId(),
+					visualFocus: this._menuHasVisualFocus,
+					optionData: results,
+					tabIndex: -1,
+					getOptionDisabled: isResultDisabled,
+					getOptionId: this._getResultId,
+					getOptionLabel: this._getResultLabel,
+					onActiveIndexChange: (index: number) => {
+						this._activeIndex = index;
+						this.invalidate();
+					},
+					onOptionSelect: (option: any, index: number) => {
+						this._selectIndex(index);
+					},
+					theme
+				})
+			]
+		);
 	}
 
 	render(): DNode {
@@ -390,40 +370,50 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		this._wasOpen = this._open;
 
 		const controls = [
-			label ? w(Label, {
-				key: 'label',
-				theme,
-				disabled,
-				invalid,
-				readOnly,
-				required,
-				hidden: labelHidden,
-				forId: id
-			}, [ label ]) : null,
-			v('div', {
-				classes: this.theme(css.controls)
-			}, [
-				this.renderInput(),
-				clearable ? this.renderClearButton() : null,
-				this.renderMenuButton()
-			]),
+			label
+				? w(
+						Label,
+						{
+							key: 'label',
+							theme,
+							disabled,
+							invalid,
+							readOnly,
+							required,
+							hidden: labelHidden,
+							forId: id
+						},
+						[label]
+					)
+				: null,
+			v(
+				'div',
+				{
+					classes: this.theme(css.controls)
+				},
+				[this.renderInput(), clearable ? this.renderClearButton() : null, this.renderMenuButton()]
+			),
 			menu
 		];
 
-		return v('div', {
-			'aria-expanded': this._open ? 'true' : 'false',
-			'aria-haspopup': 'true',
-			'aria-readonly': readOnly ? 'true' : 'false',
-			'aria-required': required ? 'true' : 'false',
-			id,
-			classes: this.theme([
-				css.root,
-				this._open ? css.open : null,
-				invalid === true ? css.invalid : null,
-				invalid === false ? css.valid : null
-			]),
-			key: 'root',
-			role: 'combobox'
-		}, labelAfter ? controls.reverse() : controls);
+		return v(
+			'div',
+			{
+				'aria-expanded': this._open ? 'true' : 'false',
+				'aria-haspopup': 'true',
+				'aria-readonly': readOnly ? 'true' : 'false',
+				'aria-required': required ? 'true' : 'false',
+				id,
+				classes: this.theme([
+					css.root,
+					this._open ? css.open : null,
+					invalid === true ? css.invalid : null,
+					invalid === false ? css.valid : null
+				]),
+				key: 'root',
+				role: 'combobox'
+			},
+			labelAfter ? controls.reverse() : controls
+		);
 	}
 }

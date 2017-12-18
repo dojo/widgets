@@ -12,17 +12,15 @@ export default function createTabControllerElement(): CustomElementDescriptor {
 			{
 				attributeName: 'activeindex',
 				propertyName: 'activeIndex',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			},
 			{
 				attributeName: 'alignbuttons',
 				propertyName: 'alignButtons',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			}
 		],
-		properties: [
-			{ propertyName: 'theme' }
-		],
+		properties: [{ propertyName: 'theme' }],
 		events: [
 			{
 				propertyName: 'onRequestTabChange',
@@ -34,4 +32,4 @@ export default function createTabControllerElement(): CustomElementDescriptor {
 			}
 		]
 	};
-};
+}

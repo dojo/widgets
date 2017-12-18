@@ -28,20 +28,26 @@ registerSuite('ListboxOption', {
 				option: 'baz'
 			});
 
-			widget.expectRender(v('div', {
-				'aria-disabled': null,
-				'aria-selected': 'false',
-				classes: null,
-				id: 'bar',
-				role: 'option',
-				onclick: widget.listener
-			}, [ 'foo' ]));
+			widget.expectRender(
+				v(
+					'div',
+					{
+						'aria-disabled': null,
+						'aria-selected': 'false',
+						classes: null,
+						id: 'bar',
+						role: 'option',
+						onclick: widget.listener
+					},
+					['foo']
+				)
+			);
 		},
 
 		'custom properties'() {
 			widget.setProperties({
 				active: true,
-				classes: [ css.option ],
+				classes: [css.option],
 				disabled: true,
 				label: 'foo',
 				id: 'bar',
@@ -50,14 +56,20 @@ registerSuite('ListboxOption', {
 				selected: true
 			});
 
-			widget.expectRender(v('div', {
-				'aria-disabled': 'true',
-				'aria-selected': null,
-				classes: [ css.option ],
-				id: 'bar',
-				role: 'option',
-				onclick: widget.listener
-			}, [ 'foo' ]));
+			widget.expectRender(
+				v(
+					'div',
+					{
+						'aria-disabled': 'true',
+						'aria-selected': null,
+						classes: [css.option],
+						id: 'bar',
+						role: 'option',
+						onclick: widget.listener
+					},
+					['foo']
+				)
+			);
 		},
 
 		'option click'() {

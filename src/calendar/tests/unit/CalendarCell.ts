@@ -24,17 +24,21 @@ registerSuite('CalendarCell', {
 				date: 1
 			});
 
-			widget.expectRender(v('td', {
-				key: 'root',
-				role: 'gridcell',
-				'aria-selected': 'false',
-				tabIndex: -1,
-				classes: [ css.date, null, null, null ],
-				onclick: widget.listener,
-				onkeydown: widget.listener
-			}, [
-				v('span', {}, [ '1' ])
-			]));
+			widget.expectRender(
+				v(
+					'td',
+					{
+						key: 'root',
+						role: 'gridcell',
+						'aria-selected': 'false',
+						tabIndex: -1,
+						classes: [css.date, null, null, null],
+						onclick: widget.listener,
+						onkeydown: widget.listener
+					},
+					[v('span', {}, ['1'])]
+				)
+			);
 		},
 
 		'Calendar cell with custom properties'() {
@@ -46,21 +50,26 @@ registerSuite('CalendarCell', {
 				today: true
 			});
 
-			widget.expectRender(v('td', {
-				key: 'root',
-				role: 'gridcell',
-				'aria-selected': 'true',
-				tabIndex: 0,
-				classes: [ css.date, css.inactiveDate, css.selectedDate, css.todayDate ],
-				onclick: widget.listener,
-				onkeydown: widget.listener
-			}, [
-				v('span', {}, [ '2' ])
-			]));
+			widget.expectRender(
+				v(
+					'td',
+					{
+						key: 'root',
+						role: 'gridcell',
+						'aria-selected': 'true',
+						tabIndex: 0,
+						classes: [css.date, css.inactiveDate, css.selectedDate, css.todayDate],
+						onclick: widget.listener,
+						onkeydown: widget.listener
+					},
+					[v('span', {}, ['2'])]
+				)
+			);
 		},
 
 		'Click handler called with correct arguments'() {
-			let clickedDate = 0, clickedDisabled = false;
+			let clickedDate = 0,
+				clickedDisabled = false;
 			widget.setProperties({
 				date: 1,
 				disabled: true,

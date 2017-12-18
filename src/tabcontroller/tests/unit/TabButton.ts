@@ -17,46 +17,51 @@ interface KeyboardEventInit extends EventInit {
 }
 
 const props = function(props = {}) {
-	return assign({
-		controls: 'foo',
-		id: 'foo',
-		index: 0
-	}, props);
+	return assign(
+		{
+			controls: 'foo',
+			id: 'foo',
+			index: 0
+		},
+		props
+	);
 };
 
-const testChildren = [
-	v('p', ['lorem ipsum']),
-	v('a', { href: '#foo'}, [ 'foo' ])
-];
+const testChildren = [v('p', ['lorem ipsum']), v('a', { href: '#foo' }, ['foo'])];
 
 const expected = function(widget: any, closeable = false, children: any[] = []) {
 	children.push(
-		closeable ? v('button', {
-			tabIndex: -1,
-			classes: css.close,
-			innerHTML: 'close tab',
-			onclick: widget.listener
-		}) : null
+		closeable
+			? v('button', {
+					tabIndex: -1,
+					classes: css.close,
+					innerHTML: 'close tab',
+					onclick: widget.listener
+				})
+			: null
 	);
 
-	return v('div', {
-		'aria-controls': 'foo',
-		'aria-disabled': 'false',
-		'aria-selected': 'false',
-		classes: [ css.tabButton, null, null ],
-		id: 'foo',
-		key: 'tab-button',
-		onclick: widget.listener,
-		onkeydown: widget.listener,
-		role: 'tab',
-		tabIndex: -1
-	}, children);
+	return v(
+		'div',
+		{
+			'aria-controls': 'foo',
+			'aria-disabled': 'false',
+			'aria-selected': 'false',
+			classes: [css.tabButton, null, null],
+			id: 'foo',
+			key: 'tab-button',
+			onclick: widget.listener,
+			onkeydown: widget.listener,
+			role: 'tab',
+			tabIndex: -1
+		},
+		children
+	);
 };
 
 let widget: Harness<TabButton>;
 
 registerSuite('TabButton', {
-
 	beforeEach() {
 		widget = harness(TabButton);
 	},
@@ -72,39 +77,45 @@ registerSuite('TabButton', {
 		},
 
 		'custom properties'() {
-			widget.setProperties(props({
-				closeable: true,
-				disabled: true
-			}));
+			widget.setProperties(
+				props({
+					closeable: true,
+					disabled: true
+				})
+			);
 			widget.setChildren(testChildren);
 			const expectedVdom = expected(widget, true, [...testChildren]);
 			assignProperties(expectedVdom, {
 				'aria-disabled': 'true',
-				classes: [ css.tabButton, null, css.disabledTabButton ]
+				classes: [css.tabButton, null, css.disabledTabButton]
 			});
 			widget.expectRender(expectedVdom);
 		},
 
 		'active tab'() {
-			widget.setProperties(props({
-				active: true
-			}));
+			widget.setProperties(
+				props({
+					active: true
+				})
+			);
 			let expectedVdom = expected(widget);
 			assignProperties(expectedVdom, {
 				'aria-selected': 'true',
-				classes: [ css.tabButton, css.activeTabButton, null ],
+				classes: [css.tabButton, css.activeTabButton, null],
 				tabIndex: 0
 			});
 			widget.expectRender(expectedVdom, 'Selected tab render without close button');
 
-			widget.setProperties(props({
-				active: true,
-				closeable: true
-			}));
+			widget.setProperties(
+				props({
+					active: true,
+					closeable: true
+				})
+			);
 			expectedVdom = expected(widget, true);
 			assignProperties(expectedVdom, {
 				'aria-selected': 'true',
-				classes: [ css.tabButton, css.activeTabButton, null ],
+				classes: [css.tabButton, css.activeTabButton, null],
 				tabIndex: 0
 			});
 			assignChildProperties(expectedVdom, '0', {
@@ -115,10 +126,12 @@ registerSuite('TabButton', {
 
 		onCloseClick() {
 			const onCloseClick = sinon.stub();
-			widget.setProperties(props({
-				closeable: true,
-				onCloseClick
-			}));
+			widget.setProperties(
+				props({
+					closeable: true,
+					onCloseClick
+				})
+			);
 
 			widget.sendEvent('click', { selector: 'button' });
 			assert.isTrue(onCloseClick.called, 'onCloseClick handler called when close button clicked');
@@ -131,10 +144,12 @@ registerSuite('TabButton', {
 			assert.isTrue(onClick.calledOnce, 'onClick handler called when tab is clicked');
 			assert.isTrue(onClick.calledWith(0), 'onClick called with index as argument');
 
-			widget.setProperties(props({
-				disabled: true,
-				onClick
-			}));
+			widget.setProperties(
+				props({
+					disabled: true,
+					onClick
+				})
+			);
 			widget.getRender();
 			widget.sendEvent('click');
 			assert.isTrue(onClick.calledOnce, 'onClick handler not called when tab is disabled');
@@ -148,14 +163,16 @@ registerSuite('TabButton', {
 			const onRightArrowPress = sinon.stub();
 			const onUpArrowPress = sinon.stub();
 
-			widget.setProperties(props({
-				onDownArrowPress,
-				onEndPress,
-				onHomePress,
-				onLeftArrowPress,
-				onRightArrowPress,
-				onUpArrowPress
-			}));
+			widget.setProperties(
+				props({
+					onDownArrowPress,
+					onEndPress,
+					onHomePress,
+					onLeftArrowPress,
+					onRightArrowPress,
+					onUpArrowPress
+				})
+			);
 
 			widget.sendEvent<KeyboardEventInit>('keydown', {
 				eventInit: { which: Keys.Down }
@@ -182,15 +199,17 @@ registerSuite('TabButton', {
 			});
 			assert.isTrue(onUpArrowPress.calledOnce, 'Up arrow event handler called on up arrow press');
 
-			widget.setProperties(props({
-				disabled: true,
-				onDownArrowPress,
-				onEndPress,
-				onHomePress,
-				onLeftArrowPress,
-				onRightArrowPress,
-				onUpArrowPress
-			}));
+			widget.setProperties(
+				props({
+					disabled: true,
+					onDownArrowPress,
+					onEndPress,
+					onHomePress,
+					onLeftArrowPress,
+					onRightArrowPress,
+					onUpArrowPress
+				})
+			);
 			widget.getRender();
 			widget.sendEvent<KeyboardEventInit>('keydown', {
 				eventInit: { which: Keys.Down }
@@ -200,19 +219,23 @@ registerSuite('TabButton', {
 
 		'Escape should close tab'() {
 			const onCloseClick = sinon.stub();
-			widget.setProperties(props({
-				onCloseClick
-			}));
+			widget.setProperties(
+				props({
+					onCloseClick
+				})
+			);
 
 			widget.sendEvent<KeyboardEventInit>('keydown', {
 				eventInit: { which: Keys.Escape }
 			});
 			assert.isFalse(onCloseClick.called, 'onCloseClick not called if closeable is false');
 
-			widget.setProperties(props({
-				closeable: true,
-				onCloseClick
-			}));
+			widget.setProperties(
+				props({
+					closeable: true,
+					onCloseClick
+				})
+			);
 			widget.getRender();
 			widget.sendEvent<KeyboardEventInit>('keydown', {
 				eventInit: { which: Keys.Escape }
@@ -222,17 +245,21 @@ registerSuite('TabButton', {
 
 		'Focus is restored after render'() {
 			const onFocusCalled = sinon.stub();
-			widget.setProperties(props({
-				callFocus: true,
-				onFocusCalled
-			}));
+			widget.setProperties(
+				props({
+					callFocus: true,
+					onFocusCalled
+				})
+			);
 			widget.getRender();
 			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled called on render if callFocus is true');
 
-			widget.setProperties(props({
-				callFocus: false,
-				onFocusCalled
-			}));
+			widget.setProperties(
+				props({
+					callFocus: false,
+					onFocusCalled
+				})
+			);
 			widget.getRender();
 			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled not called if callFocus is false');
 		}

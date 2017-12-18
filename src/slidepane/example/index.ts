@@ -35,22 +35,26 @@ export class App extends WidgetBase<WidgetProperties> {
 
 	render(): DNode {
 		return v('div', [
-			w(SlidePane, {
-				title: 'SlidePane',
-				key: 'pane',
-				open: this._open,
-				underlay: this._underlay,
-				align: this._align,
-				onRequestClose: () => {
-					this._open = false;
-					this.invalidate();
+			w(
+				SlidePane,
+				{
+					title: 'SlidePane',
+					key: 'pane',
+					open: this._open,
+					underlay: this._underlay,
+					align: this._align,
+					onRequestClose: () => {
+						this._open = false;
+						this.invalidate();
+					},
+					theme: this._theme
 				},
-				theme: this._theme
-			}, [
-				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+				[
+					`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-			]),
+				]
+			),
 			v('button', {
 				id: 'button',
 				innerHTML: 'open slidepane',

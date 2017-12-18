@@ -47,59 +47,75 @@ const testProperties = {
 };
 
 const getExpectedControls = function(widget: Harness<ComboBox>, useTestProperties: boolean, label: boolean) {
-	const controlsVdom = v('div', {
-		classes: css.controls
-	}, [
-		w(TextInput, <any> {
-			key: 'textinput',
-			controls: <any> compareId,
-			disabled: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			theme: useTestProperties ? {} : undefined,
-			value: useTestProperties ? 'one' : '',
-			onBlur: widget.listener,
-			onFocus: widget.listener,
-			onInput: widget.listener,
-			onKeyDown: widget.listener
-		}),
-		useTestProperties ? v('button', {
-			'aria-controls': <any> compareId,
-			key: 'clear',
-			classes: css.clear,
-			disabled: undefined,
-			readOnly: undefined,
-			onclick: widget.listener
-		}, [
-			'clear combo box',
-			v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
-				role: 'presentation', 'aria-hidden': 'true'
-			})
-		]) : null,
-		v('button', {
-			key: 'trigger',
-			classes: css.trigger,
-			disabled: undefined,
-			readOnly: undefined,
-			tabIndex: -1,
-			onclick: widget.listener
-		}, [
-			'open combo box',
-			v('i', {
-				'aria-hidden': 'true',
-				classes: [ iconCss.icon, iconCss.downIcon ],
-				role: 'presentation'
-			})
-		])
-	]);
+	const controlsVdom = v(
+		'div',
+		{
+			classes: css.controls
+		},
+		[
+			w(TextInput, <any>{
+				key: 'textinput',
+				controls: <any>compareId,
+				disabled: undefined,
+				invalid: undefined,
+				readOnly: undefined,
+				required: undefined,
+				theme: useTestProperties ? {} : undefined,
+				value: useTestProperties ? 'one' : '',
+				onBlur: widget.listener,
+				onFocus: widget.listener,
+				onInput: widget.listener,
+				onKeyDown: widget.listener
+			}),
+			useTestProperties
+				? v(
+						'button',
+						{
+							'aria-controls': <any>compareId,
+							key: 'clear',
+							classes: css.clear,
+							disabled: undefined,
+							readOnly: undefined,
+							onclick: widget.listener
+						},
+						[
+							'clear combo box',
+							v('i', {
+								classes: [iconCss.icon, iconCss.closeIcon],
+								role: 'presentation',
+								'aria-hidden': 'true'
+							})
+						]
+					)
+				: null,
+			v(
+				'button',
+				{
+					key: 'trigger',
+					classes: css.trigger,
+					disabled: undefined,
+					readOnly: undefined,
+					tabIndex: -1,
+					onclick: widget.listener
+				},
+				[
+					'open combo box',
+					v('i', {
+						'aria-hidden': 'true',
+						classes: [iconCss.icon, iconCss.downIcon],
+						role: 'presentation'
+					})
+				]
+			)
+		]
+	);
 
 	return controlsVdom;
 };
 
 function isOpen(widget: Harness<ComboBox>): boolean {
 	const vdom = widget.getRender();
-	return (<any> vdom)!.properties!['aria-expanded'] === 'true';
+	return (<any>vdom)!.properties!['aria-expanded'] === 'true';
 }
 
 const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: boolean, open: boolean) {
@@ -107,61 +123,70 @@ const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: b
 		return null;
 	}
 
-	return v('div', {
-		key: 'dropdown',
-		classes: css.dropdown,
-		onmouseover: widget.listener,
-		onmousedown: widget.listener
-	}, [
-		w(Listbox, {
-			activeIndex: 0,
-			id: <any> compareId,
-			key: 'listbox',
-			visualFocus: false,
-			optionData: testOptions,
-			tabIndex: -1,
-			getOptionDisabled: undefined,
-			getOptionId: widget.listener as any,
-			getOptionLabel: widget.listener as any,
-			onActiveIndexChange: widget.listener,
-			onOptionSelect: widget.listener,
-			theme: useTestProperties ? {} : undefined
-		})
-	]);
+	return v(
+		'div',
+		{
+			key: 'dropdown',
+			classes: css.dropdown,
+			onmouseover: widget.listener,
+			onmousedown: widget.listener
+		},
+		[
+			w(Listbox, {
+				activeIndex: 0,
+				id: <any>compareId,
+				key: 'listbox',
+				visualFocus: false,
+				optionData: testOptions,
+				tabIndex: -1,
+				getOptionDisabled: undefined,
+				getOptionId: widget.listener as any,
+				getOptionLabel: widget.listener as any,
+				onActiveIndexChange: widget.listener,
+				onOptionSelect: widget.listener,
+				theme: useTestProperties ? {} : undefined
+			})
+		]
+	);
 };
 
 const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = false, open = false, label = false) {
 	const menuVdom = getExpectedMenu(widget, useTestProperties, open);
 	const controlsVdom = getExpectedControls(widget, useTestProperties, label);
 
-	return v('div', {
-		'aria-expanded': open ? 'true' : 'false',
-		'aria-haspopup': 'true',
-		'aria-readonly': 'false',
-		'aria-required': 'false',
-		id: useTestProperties ? 'foo' : undefined,
-		classes: [
-			css.root,
-			open ? css.open : null,
-			null,
-			null
-		],
-		key: 'root',
-		role: 'combobox'
-	}, [
-		label ? w(Label, {
-			key: 'label',
-			theme: undefined,
-			disabled: undefined,
-			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
-		}, [ 'foo' ]) : null,
-		controlsVdom,
-		menuVdom
-	]);
+	return v(
+		'div',
+		{
+			'aria-expanded': open ? 'true' : 'false',
+			'aria-haspopup': 'true',
+			'aria-readonly': 'false',
+			'aria-required': 'false',
+			id: useTestProperties ? 'foo' : undefined,
+			classes: [css.root, open ? css.open : null, null, null],
+			key: 'root',
+			role: 'combobox'
+		},
+		[
+			label
+				? w(
+						Label,
+						{
+							key: 'label',
+							theme: undefined,
+							disabled: undefined,
+							hidden: undefined,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							forId: <any>compareId
+						},
+						['foo']
+					)
+				: null,
+			controlsVdom,
+			menuVdom
+		]
+	);
 };
 
 registerSuite('ComboBox', {
@@ -222,7 +247,7 @@ registerSuite('ComboBox', {
 			});
 
 			widget.callListener('onInput', {
-				args: [ { target: { value: 'foo' } } ],
+				args: [{ target: { value: 'foo' } }],
 				key: 'textinput'
 			});
 
@@ -246,7 +271,7 @@ registerSuite('ComboBox', {
 			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
 
 			widget.callListener('onBlur', {
-				args: [ { target: { value: 'foo' } } ],
+				args: [{ target: { value: 'foo' } }],
 				key: 'textinput'
 			});
 			assert.isTrue(onBlur.calledWith('foo'), 'onBlur callback called with input value');
@@ -269,7 +294,7 @@ registerSuite('ComboBox', {
 
 			widget.sendEvent('mousedown', { key: 'dropdown' });
 			widget.callListener('onBlur', {
-				args: [ { target: { value: 'foo' } } ],
+				args: [{ target: { value: 'foo' } }],
 				key: 'textinput'
 			});
 
@@ -290,7 +315,7 @@ registerSuite('ComboBox', {
 			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
 
 			widget.callListener('onOptionSelect', {
-				args: [ testOptions[1], 1 ],
+				args: [testOptions[1], 1],
 				index: '1,0'
 			});
 			assert.isTrue(onChange.calledWith('Two'), 'onChange callback called with label of second option');
@@ -307,7 +332,7 @@ registerSuite('ComboBox', {
 			});
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault } ],
+				args: [{ which: Keys.Down, preventDefault }],
 				key: 'textinput'
 			});
 			assert.isTrue(isOpen(widget), 'widget is open after down key press');
@@ -315,7 +340,7 @@ registerSuite('ComboBox', {
 			assert.isTrue(preventDefault.calledOnce, 'down key press prevents default page scroll');
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Escape } ],
+				args: [{ which: Keys.Escape }],
 				key: 'textinput'
 			});
 			assert.isFalse(isOpen(widget), 'widget is closed after escape key press');
@@ -328,7 +353,7 @@ registerSuite('ComboBox', {
 			// open dropdown
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 			widget.callListener('onActiveIndexChange', {
-				args: [ 1 ],
+				args: [1],
 				key: 'listbox'
 			});
 
@@ -350,7 +375,7 @@ registerSuite('ComboBox', {
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault } ],
+				args: [{ which: Keys.Down, preventDefault }],
 				key: 'textinput'
 			});
 
@@ -360,12 +385,15 @@ registerSuite('ComboBox', {
 				activeIndex: 1,
 				visualFocus: true
 			});
-			widget.expectRender(expected, 'down arrow moves active index to second option and sets visualFocus to true');
+			widget.expectRender(
+				expected,
+				'down arrow moves active index to second option and sets visualFocus to true'
+			);
 
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault } ],
+				args: [{ which: Keys.Up, preventDefault }],
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
@@ -377,7 +405,7 @@ registerSuite('ComboBox', {
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault } ],
+				args: [{ which: Keys.Up, preventDefault }],
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
@@ -389,7 +417,7 @@ registerSuite('ComboBox', {
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault } ],
+				args: [{ which: Keys.Down, preventDefault }],
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
@@ -401,7 +429,7 @@ registerSuite('ComboBox', {
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.End, preventDefault } ],
+				args: [{ which: Keys.End, preventDefault }],
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
@@ -413,7 +441,7 @@ registerSuite('ComboBox', {
 			// shouldn't need this line with correct bind
 			widget.setProperties({ ...testProperties, label: undefined });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Home, preventDefault } ],
+				args: [{ which: Keys.Home, preventDefault }],
 				key: 'textinput'
 			});
 			widget.setProperties(testProperties);
@@ -435,26 +463,32 @@ registerSuite('ComboBox', {
 
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
+				args: [{ which: Keys.Enter }],
 				key: 'textinput'
 			});
-			assert.isTrue(onChange.calledWith('One'), 'enter triggers onChange callback called with label of first option');
+			assert.isTrue(
+				onChange.calledWith('One'),
+				'enter triggers onChange callback called with label of first option'
+			);
 			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
+				args: [{ which: Keys.Enter }],
 				key: 'textinput'
 			});
-			assert.isFalse(onChange.calledTwice, 'enter doesn\'t trigger onChange when menu is closed');
+			assert.isFalse(onChange.calledTwice, "enter doesn't trigger onChange when menu is closed");
 
 			onChange.reset();
 
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Space } ],
+				args: [{ which: Keys.Space }],
 				key: 'textinput'
 			});
-			assert.isTrue(onChange.calledWith('One'), 'space triggers onChange callback called with label of first option');
+			assert.isTrue(
+				onChange.calledWith('One'),
+				'space triggers onChange callback called with label of first option'
+			);
 			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
 		},
 
@@ -469,11 +503,11 @@ registerSuite('ComboBox', {
 
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault: sinon.stub() } ],
+				args: [{ which: Keys.Up, preventDefault: sinon.stub() }],
 				key: 'textinput'
 			});
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
+				args: [{ which: Keys.Enter }],
 				key: 'textinput'
 			});
 
@@ -493,11 +527,11 @@ registerSuite('ComboBox', {
 			widget.expectRender(expected, 'dropdown does not render with no results');
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				args: [{ which: Keys.Down, preventDefault: sinon.stub() }],
 				key: 'textinput'
 			});
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
+				args: [{ which: Keys.Enter }],
 				key: 'textinput'
 			});
 
@@ -539,7 +573,7 @@ registerSuite('ComboBox', {
 			});
 
 			widget.callListener('onFocus', {
-				args: [ { target: { value: 'foo' } } ],
+				args: [{ target: { value: 'foo' } }],
 				key: 'textinput'
 			});
 
@@ -580,7 +614,7 @@ registerSuite('ComboBox', {
 			assignProperties(expected, {
 				'aria-readonly': 'true',
 				'aria-required': 'true',
-				classes: [ css.root, null, css.invalid, null ]
+				classes: [css.root, null, css.invalid, null]
 			});
 			widget.expectRender(expected, 'disabled, invalid, readOnly, and required render');
 
@@ -590,7 +624,7 @@ registerSuite('ComboBox', {
 				invalid: false
 			});
 			assignProperties(expected, {
-				classes: [ css.root, null, null, css.valid ]
+				classes: [css.root, null, null, css.valid]
 			});
 			widget.expectRender(expected, 'valid render');
 		},
@@ -610,7 +644,7 @@ registerSuite('ComboBox', {
 			assert.isFalse(isOpen(widget), 'widget stays closed on arrow click');
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				args: [{ which: Keys.Down, preventDefault: sinon.stub() }],
 				key: 'textinput'
 			});
 			assert.isFalse(isOpen(widget), 'widget stays closed on key down');
@@ -634,7 +668,7 @@ registerSuite('ComboBox', {
 			assert.isFalse(isOpen(widget), 'widget stays closed on arrow click');
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				args: [{ which: Keys.Down, preventDefault: sinon.stub() }],
 				key: 'textinput'
 			});
 			assert.isFalse(isOpen(widget), 'widget stays closed on key down');
@@ -651,11 +685,11 @@ registerSuite('ComboBox', {
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault: sinon.stub() } ],
+				args: [{ which: Keys.Up, preventDefault: sinon.stub() }],
 				key: 'textinput'
 			});
 			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
+				args: [{ which: Keys.Down, preventDefault: sinon.stub() }],
 				key: 'textinput'
 			});
 			assignProperties(findKey(expected, 'listbox')!, {

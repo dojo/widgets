@@ -16,60 +16,69 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
-const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
-	return v('div', {
-		key: 'root',
-		classes
-	}, [
-		label ? w(Label, {
-			theme: undefined,
-			disabled: undefined,
-			hidden: false,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
-		}, [ 'foo' ]) : null,
-		v('div', { classes: css.inputWrapper }, [
-			v('input', {
-				key: 'input',
-				classes: css.input,
-				id: <any> compareId,
-				'aria-controls': undefined,
-				'aria-describedby': undefined,
-				disabled: undefined,
-				'aria-invalid': null,
-				maxlength: null,
-				minlength: null,
-				name: undefined,
-				placeholder: undefined,
-				readOnly: undefined,
-				'aria-readonly': null,
-				required: undefined,
-				type: 'text',
-				value: undefined,
-				onblur: widget.listener,
-				onchange: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				oninput: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener
-			})
-		])
-	]);
+const expected = function(label = false, classes: (string | null)[] = [css.root, null, null, null, null, null]) {
+	return v(
+		'div',
+		{
+			key: 'root',
+			classes
+		},
+		[
+			label
+				? w(
+						Label,
+						{
+							theme: undefined,
+							disabled: undefined,
+							hidden: false,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							forId: <any>compareId
+						},
+						['foo']
+					)
+				: null,
+			v('div', { classes: css.inputWrapper }, [
+				v('input', {
+					key: 'input',
+					classes: css.input,
+					id: <any>compareId,
+					'aria-controls': undefined,
+					'aria-describedby': undefined,
+					disabled: undefined,
+					'aria-invalid': null,
+					maxlength: null,
+					minlength: null,
+					name: undefined,
+					placeholder: undefined,
+					readOnly: undefined,
+					'aria-readonly': null,
+					required: undefined,
+					type: 'text',
+					value: undefined,
+					onblur: widget.listener,
+					onchange: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					oninput: widget.listener,
+					onkeydown: widget.listener,
+					onkeypress: widget.listener,
+					onkeyup: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener
+				})
+			])
+		]
+	);
 };
 
 let widget: Harness<TextInput>;
 
 registerSuite('TextInput', {
-
 	beforeEach() {
 		widget = harness(TextInput);
 	},
@@ -97,7 +106,7 @@ registerSuite('TextInput', {
 
 			const expectedVdom = expected();
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, null, null, null ]
+				classes: [css.root, null, null, null, null, null]
 			});
 			assignProperties(findKey(expectedVdom, 'input')!, {
 				'aria-controls': 'foo',
@@ -113,7 +122,7 @@ registerSuite('TextInput', {
 			widget.expectRender(expectedVdom);
 		},
 
-		'label'() {
+		label() {
 			widget.setProperties({
 				label: 'foo'
 			});
@@ -129,7 +138,7 @@ registerSuite('TextInput', {
 				required: true
 			});
 
-			let expectedVdom = expected(false, [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]);
+			let expectedVdom = expected(false, [css.root, css.disabled, css.invalid, null, css.readonly, css.required]);
 			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: true,
 				'aria-invalid': 'true',
@@ -154,7 +163,7 @@ registerSuite('TextInput', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null ]
+				classes: [css.root, null, null, css.valid, null, null]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
