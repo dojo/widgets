@@ -5,7 +5,6 @@ import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
 import * as css from '../../../theme/calendar/calendar.m.css';
 import * as cssCell from '../../../theme/calendar/calendarCell.m.css';
-import * as calendarCellCss from '../../../theme/calendar/calendarCell.m.css';
 
 const DELAY = 500;
 
@@ -128,7 +127,7 @@ registerSuite('Calendar', {
 			.findByCssSelector(disabledDateSelector)
 				.getAttribute('class')
 				.then((className: string) => {
-					assert.include(className, calendarCellCss.inactiveDate, 'Disabled date has correct css class');
+					assert.include(className, cssCell.inactiveDate, 'Disabled date has correct css class');
 				});
 	},
 
@@ -224,7 +223,7 @@ registerSuite('Calendar', {
 				})
 				.getAttribute('class')
 				.then((className: string) => {
-					assert.include(className, calendarCellCss.selectedDate, 'Clicked date has selected class');
+					assert.include(className, cssCell.selectedDate, 'Clicked date has selected class');
 				});
 	}
 });

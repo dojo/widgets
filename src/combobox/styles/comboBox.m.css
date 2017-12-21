@@ -1,36 +1,5 @@
 @import '../../common/styles/variables.css';
 
-/* Are these styles which the other imported widgets refer to used? */
-
-.option {
-	cursor: pointer;
-}
-
-.disabledOption {
-	color: var(--disabled-color);
-	font-style: italic;
-	cursor: default;
-}
-
-/* Are these styles actually used? */
-
-.input {
-	width: 100%;
-	padding: 2px 4px;
-	padding-right: 2em;
-	border: 1px solid var(--component-color);
-	background: var(--component-background);
-}
-
-.input::-ms-clear {
-	display: none;
-}
-
 .clearable {
 	padding-right: 4em;
-}
-
-.selected {
-	background: var(--selected-background);
-	color: var(--selected-color);
 }

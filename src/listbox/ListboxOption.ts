@@ -3,9 +3,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-// Is this `fixedCss` used?
-
-import * as fixedCss from './styles/listbox.m.css';
+import * as css from '../theme/listbox/listbox.m.css';
 
 export interface ListboxOptionProperties extends ThemedProperties {
 	active?: boolean;
@@ -21,7 +19,7 @@ export interface ListboxOptionProperties extends ThemedProperties {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(fixedCss)
+@theme(css)
 export default class ListboxOption<P extends ListboxOptionProperties = ListboxOptionProperties> extends ThemedBase<P, null> {
 	private _onClick(event: MouseEvent) {
 		const { index, key, option, onClick } = this.properties;

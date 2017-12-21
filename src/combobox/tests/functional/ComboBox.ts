@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
-import * as listboxCss from '../../../listbox/styles/listbox.m.css';
+import * as listboxCss from '../../../theme/listbox/listbox.m.css';
 import * as css from '../../../theme/combobox/comboBox.m.css';
 
 const DELAY = 300;

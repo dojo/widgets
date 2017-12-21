@@ -221,7 +221,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			align = Align.left,
 			open = false
 		} = this.properties;
-		const alignCss: {[key: string]: any} = fixedCss;
+		const alignCss: {[key: string]: any} = css;
 
 		return [
 			alignCss[align],

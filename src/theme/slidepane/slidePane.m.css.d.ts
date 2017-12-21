@@ -7,3 +7,7 @@ export const open: string;
 export const pane: string;
 export const title: string;
 export const close: string;
+export const left: string;
+export const right: string;
+export const top: string;
+export const bottom: string;

@@ -13,7 +13,6 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import Listbox, { ScrollMeta } from '../../Listbox';
 import ListboxOption from '../../ListboxOption';
 import * as css from '../../../theme/listbox/listbox.m.css';
-import * as fixedCss from '../../styles/listbox.m.css';
 
 let widget: Harness<Listbox>;
 
@@ -47,7 +46,7 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 		v('div', { key: 'first' }, [
 			w(ListboxOption, {
 				active: activeIndex === 0,
-				classes: [ fixedCss.option, fixedCss.activeOption, null, null ],
+				classes: [ css.option, css.activeOption, null, null ],
 				disabled: false,
 				id: 'first',
 				index: 0,
@@ -62,7 +61,7 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 		v('div', { key: <any> compareId }, [
 			w(ListboxOption, {
 				active: activeIndex === 1,
-				classes: [ fixedCss.option, null, null, null ],
+				classes: [ css.option, null, null, null ],
 				disabled: false,
 				id: <any> compareId,
 				index: 1,
@@ -77,7 +76,7 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 		v('div', { key: <any> compareId }, [
 			w(ListboxOption, {
 				active: activeIndex === 2,
-				classes: [ fixedCss.option, null, null, null ],
+				classes: [ css.option, null, null, null ],
 				disabled: false,
 				id: <any> compareId,
 				index: 2,
@@ -162,13 +161,13 @@ registerSuite('Listbox', {
 				theme: {}
 			});
 			assignChildProperties(vdom, '1,0', {
-				classes: <any> [ fixedCss.option, null, null, fixedCss.selectedOption ],
+				classes: <any> [ css.option, null, null, css.selectedOption ],
 				label: 'Two',
 				selected: true,
 				theme: {}
 			});
 			assignChildProperties(vdom, '2,0', {
-				classes: <any> [ fixedCss.option, null, fixedCss.disabledOption, null ],
+				classes: <any> [ css.option, null, css.disabledOption, null ],
 				disabled: true,
 				label: 'Three',
 				theme: {}

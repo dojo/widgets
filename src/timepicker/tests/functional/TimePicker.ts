@@ -6,7 +6,7 @@ import Command from '@theintern/leadfoot/Command';
 import Element from '@theintern/leadfoot/Element';
 import keys from '@theintern/leadfoot/keys';
 import * as comboBoxCss from '../../../theme/combobox/comboBox.m.css';
-import * as fixedListboxCss from '../../../listbox/styles/listbox.m.css';
+import * as listboxCss from '../../../theme/listbox/listBox.m.css';
 import * as textinputCss from '../../../theme/textinput/textinput.m.css';
 
 const DELAY = 300;
@@ -118,7 +118,7 @@ registerSuite('TimePicker', {
 					assert.isAbove(height, 0);
 				})
 			.end()
-			.findByCssSelector(`.${comboBoxCss.dropdown} .${fixedListboxCss.disabledOption}`)
+			.findByCssSelector(`.${comboBoxCss.dropdown} .${listboxCss.disabledOption}`)
 				.click()
 			.end()
 			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.input}`)

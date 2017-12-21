@@ -9,7 +9,6 @@ import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as fixedCss from './styles/listbox.m.css';
 import * as css from '../theme/listbox/listbox.m.css';
 import ListboxOption from './ListboxOption';
 
@@ -157,10 +156,10 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 
 	protected getOptionClasses(active: boolean, disabled: boolean, selected: boolean) {
 		return [
-			fixedCss.option,
-			active ? fixedCss.activeOption : null,
-			disabled ? fixedCss.disabledOption : null,
-			selected ? fixedCss.selectedOption : null
+			css.option,
+			active ? css.activeOption : null,
+			disabled ? css.disabledOption : null,
+			selected ? css.selectedOption : null
 		];
 	}
 
