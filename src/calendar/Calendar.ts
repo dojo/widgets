@@ -374,10 +374,9 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	protected render(): DNode {
-		const calendarMessages = this.localizeBundle(calendarBundle);
 		const commonMessages = this.localizeBundle(commonBundle);
 		const {
-			labels = calendarMessages,
+			labels = this.localizeBundle(calendarBundle),
 			selectedDate,
 			weekdayNames = this._getWeekdays(commonMessages)
 		} = this.properties;

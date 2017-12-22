@@ -253,8 +253,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	render(): DNode {
-		const messages = this.localizeBundle(commonBundle);
-		const {
+		let {
 			closeText,
 			onOpen,
 			open = false,
@@ -267,6 +266,11 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 		if (this._slideIn && this._content) {
 			this._content.style.transform = '';
+		}
+
+		if (!closeText) {
+			const messages = this.localizeBundle(commonBundle);
+			closeText = `${messages.close} ${title}`;
 		}
 
 		open && !this._wasOpen && onOpen && onOpen();
@@ -298,7 +302,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 						classes: this.theme(css.close),
 						onclick: this._onCloseClick
 					}, [
-						closeText ? closeText : `${messages.close} ${title}`,
+						closeText,
 						this.renderCloseIcon()
 					])
 				]) : null,

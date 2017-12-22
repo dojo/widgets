@@ -113,8 +113,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 	}
 
 	render(): DNode {
-		const messages = this.localizeBundle(commonBundle);
-		const {
+		let {
 			closeable = true,
 			closeText,
 			enterAnimation = animations.fadeIn,
@@ -126,6 +125,11 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 		} = this.properties;
 
 		open && !this._wasOpen && onOpen && onOpen();
+
+		if (!closeText) {
+			const messages = this.localizeBundle(commonBundle);
+			closeText = `${messages.close} ${title}`;
+		}
 
 		this._wasOpen = open;
 
@@ -150,7 +154,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 						classes: this.theme(css.close),
 						onclick: this._onCloseClick
 					}, [
-						closeText ? closeText : `${messages.close} ${title}`,
+						closeText,
 						this.renderCloseIcon()
 					]) : null
 				]),
