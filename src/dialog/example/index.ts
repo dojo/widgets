@@ -39,6 +39,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
+	// prettier-ignore
 	render(): DNode {
 		return v('div', [
 			v('button', {
@@ -46,27 +47,24 @@ export class App extends WidgetBase<WidgetProperties> {
 				innerHTML: 'open dialog',
 				onclick: this.openDialog
 			}),
-			w(
-				Dialog,
-				{
-					key: 'dialog',
-					title: 'Dialog',
-					open: this._open,
-					modal: this._modal,
-					underlay: this._underlay,
-					closeable: this._closeable,
-					onRequestClose: () => {
-						this._open = false;
-						this.invalidate();
-					},
-					theme: this._theme
+			w(Dialog, {
+				key: 'dialog',
+				title: 'Dialog',
+				open: this._open,
+				modal: this._modal,
+				underlay: this._underlay,
+				closeable: this._closeable,
+				onRequestClose: () => {
+					this._open = false;
+					this.invalidate();
 				},
-				[
-					`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-				]
-			),
+				theme: this._theme
+			},
+			[
+				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+			]),
 			v('div', { classes: 'option' }, [
 				v('label', [
 					'Use Dojo Theme ',
