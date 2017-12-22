@@ -17,6 +17,7 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+// prettier-ignore
 const expected = function(
 	label = false,
 	addonBefore = false,
@@ -57,40 +58,27 @@ const expected = function(
 		})
 	];
 	if (addonBefore) {
-		// prettier-ignore
 		children.unshift(
 			v('span', { classes: [css.addon, css.addonBefore] }, ['foo'])
 		);
 	}
 	if (addonAfter) {
-		// prettier-ignore
 		children.push(
 			v('span', { classes: [css.addon, css.addonAfter] }, ['bar'])
 		);
 	}
 
-	return v(
-		'div',
-		{
-			key: 'root',
-			classes
-		},
-		[
-			label
-				? w(
-						Label,
-						{
-							theme: undefined,
-							disabled: undefined,
-							hidden: false,
-							invalid: undefined,
-							readOnly: undefined,
-							required: undefined,
-							forId: <any>compareId
-						},
-						['foo']
-					)
-				: null,
+	return v('div', { key: 'root', classes }, [
+		label
+			? w(Label, { theme: undefined,
+				disabled: undefined,
+				hidden: false,
+				invalid: undefined,
+				readOnly: undefined,
+				required: undefined,
+				forId: <any>compareId
+			}, ['foo'])
+			: null,
 			v('div', { classes: css.inputWrapper }, children)
 		]
 	);

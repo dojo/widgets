@@ -17,22 +17,20 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+// prettier-ignore
 const expectedCloseButton = function() {
-	return v(
-		'button',
-		{
-			classes: css.close,
-			onclick: widget.listener
-		},
-		[
-			'close dialog',
-			v('i', {
-				classes: [iconCss.icon, iconCss.closeIcon],
-				role: 'presentation',
-				'aria-hidden': 'true'
-			})
-		]
-	);
+	return v('button', {
+		classes: css.close,
+		onclick: widget.listener
+	},
+	[
+		'close dialog',
+		v('i', {
+			classes: [iconCss.icon, iconCss.closeIcon],
+			role: 'presentation',
+			'aria-hidden': 'true'
+		})
+	]);
 };
 
 // prettier-ignore
