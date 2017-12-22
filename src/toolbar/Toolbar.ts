@@ -8,8 +8,9 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import SlidePane, { Align } from '../slidepane/SlidePane';
 import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
-import * as css from './styles/toolbar.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as fixedCss from './styles/toolbar.m.css';
+import * as css from '../theme/toolbar/toolbar.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * Enum for toolbar positioning
@@ -84,9 +85,9 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	protected getFixedRootClasses(): (string | null)[] {
 		const { fixed, position = Position.top } = this.properties;
 		return [
-			css.rootFixed,
-			fixed ? css.stickyFixed : null,
-			(css as any)[position]
+			fixedCss.rootFixed,
+			fixed ? fixedCss.stickyFixed : null,
+			(fixedCss as any)[position]
 		];
 	}
 
@@ -131,7 +132,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			theme,
 			title: menuTitle
 		}, actionsElements) : v('div', {
-			classes: [ this.theme(css.actions), css.actionsFixed ],
+			classes: [ this.theme(css.actions), fixedCss.actionsFixed ],
 			key: 'menu'
 		}, actionsElements);
 	}
@@ -139,7 +140,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	protected renderButton(messages: CommonMessages): DNode {
 		const { menuTitle = '' } = this.properties;
 		return this._collapsed ? v('button', {
-			classes: [ this.theme(css.menuButton), css.menuButtonFixed ],
+			classes: [ this.theme(css.menuButton), fixedCss.menuButtonFixed ],
 			onclick: this._toggleMenu
 		}, [
 			`${messages.open} ${menuTitle}`,
@@ -154,7 +155,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 		const { title } = this.properties;
 
 		return title ? v('div', {
-			classes: [ this.theme(css.title), css.titleFixed ]
+			classes: [ this.theme(css.title), fixedCss.titleFixed ]
 		}, [ title ]) : null;
 	}
 
@@ -168,14 +169,14 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			key: 'root'
 		}, [
 			v('div', {
-				classes: [ this.theme(css.toolbar), css.toolbarFixed ]
+				classes: [ this.theme(css.toolbar), fixedCss.toolbarFixed ]
 			}, [
 				this.renderTitle(),
 				this.renderActions(messages),
 				this.renderButton(messages)
 			]),
 			v('div', {
-				classes: [ this.theme(css.content), css.contentFixed ]
+				classes: [ this.theme(css.content), fixedCss.contentFixed ]
 			}, this.children)
 		]);
 	}
