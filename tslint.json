@@ -1,5 +1,7 @@
 {
+	"rulesDirectory": ["tslint-plugin-prettier"],
 	"rules": {
+		"prettier": true,
 		"align": false,
 		"ban": [],
 		"class-name": true,
@@ -35,7 +37,6 @@
 		"no-var-requires": false,
 		"object-literal-sort-keys": false,
 		"one-line": [ true, "check-open-brace", "check-whitespace" ],
-		"quotemark": [ true, "single" ],
 		"radix": true,
 		"trailing-comma": [ true, {
 			"multiline": "never",
