@@ -39,7 +39,10 @@ const messages = {
 	september: 'September',
 	october: 'October',
 	november: 'November',
-	december: 'December'
+	december: 'December',
+	clear: 'clear',
+	close: 'close',
+	open: 'open'
 };
 
 export default { bundlePath, locales, messages };

@@ -31,6 +31,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			],
 			collapseWidth: 700,
 			fixed: true,
+			menuTitle: 'Menu',
 			theme: this._theme,
 			title: 'Foobar'
 		}, [

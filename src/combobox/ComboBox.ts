@@ -11,8 +11,8 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import TextInput, { TextInputProperties } from '../textinput/TextInput';
-import comboBoxBundle from './nls/ComboBox';
-import { LabeledProperties } from '../common/interfaces';
+import commonBundle from '../common/nls/common';
+import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from './styles/comboBox.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -66,8 +66,6 @@ export const enum Operation {
 	increase = 1,
 	decrease = -1
 }
-
-export type ComboBoxMessages = typeof comboBoxBundle.messages;
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
@@ -295,9 +293,10 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		});
 	}
 
-	protected renderClearButton(messages: ComboBoxMessages): DNode {
+	protected renderClearButton(messages: CommonMessages): DNode {
 		const {
 			disabled,
+			label = '',
 			readOnly
 		} = this.properties;
 
@@ -309,16 +308,17 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			readOnly,
 			onclick: this._onClearClick
 		}, [
-			messages.clear,
+			`${messages.clear} ${label}`,
 			v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]);
 	}
 
-	protected renderMenuButton(messages: ComboBoxMessages): DNode {
+	protected renderMenuButton(messages: CommonMessages): DNode {
 		const {
 			disabled,
+			label = '',
 			readOnly
 		} = this.properties;
 
@@ -330,7 +330,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			tabIndex: -1,
 			onclick: this._onArrowClick
 		}, [
-			messages.open,
+			`${messages.open} ${label}`,
 			v('i', {
 				'aria-hidden': 'true',
 				classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
@@ -388,7 +388,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			results = [],
 			theme
 		} = this.properties;
-		const messages = this.localizeBundle(comboBoxBundle);
+		const messages = this.localizeBundle(commonBundle);
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();

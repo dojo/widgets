@@ -5,7 +5,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
-import slidePaneBundle from './nls/SlidePane';
+import commonBundle from '../common/nls/common';
 
 import * as css from './styles/slidePane.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -253,8 +253,9 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	render(): DNode {
+		const messages = this.localizeBundle(commonBundle);
 		const {
-			closeText = this.localizeBundle(slidePaneBundle).close,
+			closeText,
 			onOpen,
 			open = false,
 			title = ''
@@ -297,7 +298,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 						classes: this.theme(css.close),
 						onclick: this._onCloseClick
 					}, [
-						closeText,
+						closeText ? closeText : `${messages.close} ${title}`,
 						this.renderCloseIcon()
 					])
 				]) : null,

@@ -5,7 +5,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
-import dialogBundle from './nls/Dialog';
+import commonBundle from '../common/nls/common';
 
 import * as css from './styles/dialog.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -113,15 +113,16 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 	}
 
 	render(): DNode {
-		const messages = this.localizeBundle(dialogBundle);
+		const messages = this.localizeBundle(commonBundle);
 		const {
 			closeable = true,
-			closeText = messages.close,
+			closeText,
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
 			onOpen,
 			open = false,
-			role = 'dialog'
+			role = 'dialog',
+			title = ''
 		} = this.properties;
 
 		open && !this._wasOpen && onOpen && onOpen();
@@ -149,7 +150,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 						classes: this.theme(css.close),
 						onclick: this._onCloseClick
 					}, [
-						closeText,
+						closeText ? closeText : `${messages.close} ${title}`,
 						this.renderCloseIcon()
 					]) : null
 				]),
