@@ -34,9 +34,8 @@ const expected = function(widget: any, closeable = false, children: any[] = []) 
 		closeable ? v('button', {
 			tabIndex: -1,
 			classes: css.close,
-			innerHTML: 'close tab',
 			onclick: widget.listener
-		}) : null
+		}, [ 'close', ...children ]) : null
 	);
 
 	return v('div', {

@@ -226,12 +226,12 @@ registerSuite('Toolbar', {
 
 			const slidePaneVDom = w(SlidePane, {
 				align: Align.right,
-				closeText: 'close menu',
+				closeText: 'close foo',
 				key: 'slide-pane-menu',
 				onRequestClose: toolbar.listener,
 				open: false,
 				theme: undefined,
-				title: 'Menu'
+				title: 'foo'
 			}, [
 				v('div', {
 					classes: [ css.action ],
@@ -243,7 +243,7 @@ registerSuite('Toolbar', {
 				classes: [ css.menuButton, css.menuButtonFixed ],
 				onclick: toolbar.listener
 			}, [
-				'open menu',
+				'open foo',
 				v('i', {
 					classes: [ iconCss.icon, iconCss.barsIcon ],
 					role: 'presentation',
@@ -277,7 +277,7 @@ registerSuite('Toolbar', {
 				}, [])
 			]));
 
-			toolbar.setProperties({ actions: [ 'test' ] });
+			toolbar.setProperties({ actions: [ 'test' ], menuTitle: 'foo' });
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,

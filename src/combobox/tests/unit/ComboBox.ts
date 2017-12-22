@@ -72,7 +72,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 			readOnly: undefined,
 			onclick: widget.listener
 		}, [
-			'clear combo box',
+			useTestProperties ? 'clear foo' : 'clear ',
 			v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
 				role: 'presentation', 'aria-hidden': 'true'
 			})
@@ -85,7 +85,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 			tabIndex: -1,
 			onclick: widget.listener
 		}, [
-			'open combo box',
+			useTestProperties ? 'open foo' : 'open ',
 			v('i', {
 				'aria-hidden': 'true',
 				classes: [ iconCss.icon, iconCss.downIcon ],

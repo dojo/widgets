@@ -22,7 +22,7 @@ const expectedCloseButton = function() {
 		classes: css.close,
 		onclick: widget.listener
 	}, [
-		'close dialog',
+		'close ',
 		v('i', {
 			classes: [ iconCss.icon, iconCss.closeIcon ],
 			role: 'presentation',
@@ -124,6 +124,19 @@ registerSuite('Dialog', {
 				exitAnimation: 'barAnimation',
 				role: 'alertdialog'
 			});
+
+			widget.expectRender(expectedVdom);
+		},
+
+		'correct close text'() {
+			widget.setProperties({
+				closeable: true,
+				open: true,
+				title: 'foo'
+			});
+			const expectedVdom = expected(widget, true, true);
+			replaceChild(expectedVdom, '1,0,1,0', 'close foo');
+			replaceChild(expectedVdom, '1,0,0,0', 'foo');
 
 			widget.expectRender(expectedVdom);
 		},
