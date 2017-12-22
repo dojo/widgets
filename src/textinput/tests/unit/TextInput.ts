@@ -17,7 +17,7 @@ const compareId = compareProperty((value: any) => {
 });
 
 // prettier-ignore
-const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
+const expected = function(label = false, classes: (string | null)[] = [css.root, null, null, null, null, null]) {
 	return v('div', {
 		key: 'root',
 		classes
@@ -30,7 +30,7 @@ const expected = function(label = false, classes: (string | null)[] = [ css.root
 			readOnly: undefined,
 			required: undefined,
 			forId: <any> compareId
-		}, [ 'foo' ]) : null,
+		}, ['foo']) : null,
 		v('div', { classes: css.inputWrapper }, [
 			v('input', {
 				key: 'input',

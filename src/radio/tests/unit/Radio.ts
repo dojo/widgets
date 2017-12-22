@@ -46,7 +46,7 @@ const expected = function(widget: Harness<Radio>, label = false) {
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, null ]
+		classes: [css.root, null, null, null, null, null, null, null]
 	}, [
 		radioVdom,
 		label ? w(Label, {
@@ -58,7 +58,7 @@ const expected = function(widget: Harness<Radio>, label = false) {
 			required: undefined,
 			forId: <any> compareId,
 			secondary: true
-		}, [ 'foo' ]) : null
+		}, ['foo']) : null
 	]);
 };
 

@@ -222,7 +222,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 			]),
 			role: 'menuitem',
 			onclick
-		}, [ content ]);
+		}, [content]);
 	}
 
 	protected renderMonthLabel(month: number, year: number): DNode {
@@ -236,7 +236,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 		// prettier-ignore
 		return this.properties.monthNames.map((monthName, i) => v('label', {
 			key: `${this._idBase}_month_radios_${i}`,
-			classes: this.theme([ css.monthRadio, i === month ? css.monthRadioChecked : null ])
+			classes: this.theme([css.monthRadio, i === month ? css.monthRadioChecked : null])
 		}, [
 			v('input', {
 				checked: i === month,
@@ -251,7 +251,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 			v('abbr', {
 				classes: this.theme(css.monthRadioLabel),
 				title: monthName.long
-			}, [ monthName.short ])
+			}, [monthName.short])
 		]));
 	}
 
@@ -315,10 +315,10 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				// hidden label
 				v('label', {
 					id: labelId,
-					classes: [ baseCss.visuallyHidden ],
+					classes: [baseCss.visuallyHidden],
 					'aria-live': 'polite',
 					'aria-atomic': 'false'
-				}, [ this.renderMonthLabel(month, year) ]),
+				}, [this.renderMonthLabel(month, year)]),
 
 				// month trigger
 				this.renderControlsTrigger(Controls.month),
@@ -332,7 +332,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				key: 'month-grid',
 				'aria-hidden': `${!this._monthPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_month_button`,
-				classes: [ this.theme(css.monthGrid), !this._monthPopupOpen ? baseCss.visuallyHidden : null ],
+				classes: [this.theme(css.monthGrid), !this._monthPopupOpen ? baseCss.visuallyHidden : null],
 				id: `${this._idBase}_month_dialog`,
 				role: 'dialog'
 			}, [
@@ -340,7 +340,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 					classes: this.theme(css.monthFields),
 					onkeydown: this._onPopupKeyDown
 				}, [
-					v('legend', { classes: baseCss.visuallyHidden }, [ labels.chooseMonth ]),
+					v('legend', { classes: baseCss.visuallyHidden }, [labels.chooseMonth]),
 					...this.renderMonthRadios()
 				])
 			]),
@@ -350,7 +350,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				key: 'year-grid',
 				'aria-hidden': `${!this._yearPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_year_button`,
-				classes: [ this.theme(css.yearGrid), !this._yearPopupOpen ? baseCss.visuallyHidden : null ],
+				classes: [this.theme(css.yearGrid), !this._yearPopupOpen ? baseCss.visuallyHidden : null],
 				id: `${this._idBase}_year_dialog`,
 				role: 'dialog'
 			}, [
@@ -358,7 +358,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 					classes: this.theme(css.yearFields),
 					onkeydown: this._onPopupKeyDown
 				}, [
-					v('legend', { classes: [ baseCss.visuallyHidden ] }, [ labels.chooseYear ]),
+					v('legend', { classes: [baseCss.visuallyHidden] }, [labels.chooseYear]),
 					...this.renderYearRadios()
 				]),
 				v('div', {

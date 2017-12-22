@@ -300,7 +300,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 				required,
 				hidden: labelHidden,
 				forId: this._uuid
-			}, [ label ]) : null,
+			}, [label]) : null,
 			v('input', {
 				id: this._uuid,
 				'aria-describedby': inputProperties && inputProperties.describedBy,

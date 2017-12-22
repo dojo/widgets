@@ -97,9 +97,9 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 
 		// prettier-ignore
 		const actionsElements = actions.map((action, index) => v('div', {
-			classes: [ this.theme(css.action) ],
+			classes: [this.theme(css.action)],
 			key: index
-		}, [ action ]));
+		}, [action]));
 
 		if (actionsElements.length === 0) {
 			return null;
@@ -115,7 +115,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			theme,
 			title: 'Menu'
 		}, actionsElements) : v('div', {
-			classes: [ this.theme(css.actions), css.actionsFixed ],
+			classes: [this.theme(css.actions), css.actionsFixed],
 			key: 'menu'
 		}, actionsElements);
 	}
@@ -123,12 +123,12 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	// prettier-ignore
 	protected renderButton(): DNode {
 		return this._collapsed ? v('button', {
-			classes: [ this.theme(css.menuButton), css.menuButtonFixed ],
+			classes: [this.theme(css.menuButton), css.menuButtonFixed],
 			onclick: this._toggleMenu
 		}, [
 			'open menu',
 			v('i', {
-				classes: this.theme([ iconCss.icon, iconCss.barsIcon ]),
+				classes: this.theme([iconCss.icon, iconCss.barsIcon]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]) : null;
@@ -139,8 +139,8 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 
 		// prettier-ignore
 		return title ? v('div', {
-			classes: [ this.theme(css.title), css.titleFixed ]
-		}, [ title ]) : null;
+			classes: [this.theme(css.title), css.titleFixed]
+		}, [title]) : null;
 	}
 
 	render(): DNode {
@@ -149,18 +149,18 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 
 		// prettier-ignore
 		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ],
+			classes: [...this.theme(classes), ...fixedClasses],
 			key: 'root'
 		}, [
 			v('div', {
-				classes: [ this.theme(css.toolbar), css.toolbarFixed ]
+				classes: [this.theme(css.toolbar), css.toolbarFixed]
 			}, [
 				this.renderTitle(),
 				this.renderActions(),
 				this.renderButton()
 			]),
 			v('div', {
-				classes: [ this.theme(css.content), css.contentFixed ]
+				classes: [this.theme(css.content), css.contentFixed]
 			}, this.children)
 		]);
 	}

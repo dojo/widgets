@@ -34,7 +34,7 @@ registerSuite('CalendarCell', {
 					classes: [css.date, null, null, null],
 					onclick: widget.listener,
 					onkeydown: widget.listener
-				}, [v('span', {}, [ '1' ])])
+				}, [v('span', {}, ['1'])])
 			);
 		},
 
@@ -54,10 +54,10 @@ registerSuite('CalendarCell', {
 					role: 'gridcell',
 					'aria-selected': 'true',
 					tabIndex: 0,
-					classes: [ css.date, css.inactiveDate, css.selectedDate, css.todayDate ],
+					classes: [css.date, css.inactiveDate, css.selectedDate, css.todayDate],
 					onclick: widget.listener,
 					onkeydown: widget.listener
-				}, [v('span', {}, [ '2' ])])
+				}, [v('span', {}, ['2'])])
 			);
 		},
 

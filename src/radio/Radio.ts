@@ -131,7 +131,7 @@ export default class Radio<P extends RadioProperties = RadioProperties> extends 
 				hidden: labelHidden,
 				forId: this._uuid,
 				secondary: true
-			}, [ label ]) : null
+			}, [label]) : null
 		];
 
 		return v('div', {

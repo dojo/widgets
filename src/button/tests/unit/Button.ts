@@ -47,7 +47,7 @@ registerSuite('Button', {
 					ontouchcancel: widget.listener,
 					type: undefined,
 					value: undefined
-				}, [ null ])
+				}, [null])
 			);
 		},
 

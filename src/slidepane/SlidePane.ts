@@ -262,7 +262,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			open ? this.renderUnderlay() : null,
 			v('div', {
 				key: 'content',
-				classes: [ ...this.theme([ css.pane, ...contentClasses ]), css.paneFixed, ...fixedContentClasses ],
+				classes: [...this.theme([css.pane, ...contentClasses]), css.paneFixed, ...fixedContentClasses],
 				styles: contentStyles
 			}, [
 				title ? v('div', {

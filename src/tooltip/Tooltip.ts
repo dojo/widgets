@@ -49,9 +49,9 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 	// prettier-ignore
 	protected renderContent(): DNode {
 		return v('div', {
-			classes: [ this.theme(css.content), css.contentFixed ],
+			classes: [this.theme(css.content), css.contentFixed],
 			key: 'content'
-		}, [ this.properties.content ]);
+		}, [this.properties.content]);
 	}
 
 	protected renderTarget(): DNode {
@@ -65,7 +65,7 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 
 		// prettier-ignore
 		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ]
+			classes: [...this.theme(classes), ...fixedClasses]
 		}, [
 			this.renderTarget(),
 			open ? this.renderContent() : null

@@ -28,25 +28,25 @@ registerSuite('SplitPane', {
 		'Should construct SplitPane with passed properties'() {
 			// prettier-ignore
 			widget.expectRender(v('div', {
-				classes: [ css.root, css.row, css.rootFixed, css.rowFixed ],
+				classes: [css.root, css.row, css.rootFixed, css.rowFixed],
 				key: 'root'
 			}, [
 				v('div', {
-					classes: [ css.leading, css.leadingFixed ],
+					classes: [css.leading, css.leadingFixed],
 					key: 'leading',
 					styles: { width: '100px' }
-				}, [ null ]),
+				}, [null]),
 				v('div', {
-					classes: [ css.divider, css.dividerFixed ],
+					classes: [css.divider, css.dividerFixed],
 					key: 'divider',
 					onmousedown: widget.listener,
 					ontouchend: widget.listener,
 					ontouchstart: widget.listener
 				}),
 				v('div', {
-					classes: [ css.trailing, css.trailingFixed ],
+					classes: [css.trailing, css.trailingFixed],
 					key: 'trailing'
-				}, [ null ])
+				}, [null])
 			]));
 		},
 
@@ -61,25 +61,25 @@ registerSuite('SplitPane', {
 
 			// prettier-ignore
 			widget.expectRender(v('div', {
-				classes: [ css.root, css.column, css.rootFixed, css.columnFixed ],
+				classes: [css.root, css.column, css.rootFixed, css.columnFixed],
 				key: 'root'
 			}, [
 				v('div', {
-					classes: [ css.leading, css.leadingFixed ],
+					classes: [css.leading, css.leadingFixed],
 					key: 'leading',
 					styles: { height: '200px' }
-				}, [ 'abc' ]),
+				}, ['abc']),
 				v('div', {
-					classes: [ css.divider, css.dividerFixed ],
+					classes: [css.divider, css.dividerFixed],
 					key: 'divider',
 					onmousedown: widget.listener,
 					ontouchend: widget.listener,
 					ontouchstart: widget.listener
 				}),
 				v('div', {
-					classes: [ css.trailing, css.trailingFixed ],
+					classes: [css.trailing, css.trailingFixed],
 					key: 'trailing'
-				}, [ 'def' ])
+				}, ['def'])
 			]));
 		},
 

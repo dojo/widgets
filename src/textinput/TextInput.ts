@@ -183,7 +183,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 				required,
 				hidden: labelHidden,
 				forId: this._uuid
-			}, [ label ]) : null,
+			}, [label]) : null,
 			this.renderInputWrapper()
 		];
 

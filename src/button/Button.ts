@@ -102,7 +102,7 @@ export default class Button<P extends ButtonProperties = ButtonProperties> exten
 
 		// prettier-ignore
 		return v('button', {
-			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
+			classes: this.theme([css.root, ...this.getModifierClasses()]),
 			disabled,
 			id,
 			name,

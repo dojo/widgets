@@ -136,7 +136,7 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 				required,
 				hidden: labelHidden,
 				forId: this._uuid
-			}, [ label ]) : null,
+			}, [label]) : null,
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('textarea', {
 					id: this._uuid,

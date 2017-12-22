@@ -20,7 +20,7 @@ const compareId = compareProperty((value: any) => {
 const expected = function(label = false) {
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null ]
+		classes: [css.root, null, null, null, null, null]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -30,7 +30,7 @@ const expected = function(label = false) {
 			readOnly: undefined,
 			required: undefined,
 			forId: <any> compareId
-		}, [ 'foo' ]) : null,
+		}, ['foo']) : null,
 		v('div', { classes: css.inputWrapper }, [
 			v('textarea', {
 				classes: css.input,

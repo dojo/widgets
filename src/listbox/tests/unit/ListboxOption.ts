@@ -36,7 +36,7 @@ registerSuite('ListboxOption', {
 				id: 'bar',
 				role: 'option',
 				onclick: widget.listener
-			}, [ 'foo' ]));
+			}, ['foo']));
 		},
 
 		'custom properties'() {
@@ -55,11 +55,11 @@ registerSuite('ListboxOption', {
 			widget.expectRender(v('div', {
 				'aria-disabled': 'true',
 				'aria-selected': null,
-				classes: [ css.option ],
+				classes: [css.option],
 				id: 'bar',
 				role: 'option',
 				onclick: widget.listener
-			}, [ 'foo' ]));
+			}, ['foo']));
 		},
 
 		'option click'() {

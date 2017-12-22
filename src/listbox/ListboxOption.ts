@@ -40,6 +40,6 @@ export default class ListboxOption<P extends ListboxOptionProperties = ListboxOp
 			id,
 			role: 'option',
 			onclick: this._onClick
-		}, [ label ]);
+		}, [label]);
 	}
 }

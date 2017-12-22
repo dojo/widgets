@@ -52,7 +52,7 @@ registerSuite('SlidePane', {
 				ontouchstart: widget.listener
 			}, [
 				v('div', {
-					classes: [ css.underlayVisible, css.underlay ],
+					classes: [css.underlayVisible, css.underlay],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					key: 'underlay'
@@ -80,7 +80,7 @@ registerSuite('SlidePane', {
 					null,
 					v('div', {
 						classes: css.content
-					}, [ GREEKING ])
+					}, [GREEKING])
 				])
 			]));
 		},
@@ -163,7 +163,7 @@ registerSuite('SlidePane', {
 				classes: css.root
 			}, [
 				v('div', {
-					classes: [ null, css.underlay ],
+					classes: [null, css.underlay],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
 					key: 'underlay'
@@ -591,7 +591,7 @@ registerSuite('SlidePane', {
 					classes: css.root
 				}, [
 					open ? v('div', {
-						classes: [ null, css.underlay ],
+						classes: [null, css.underlay],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
@@ -619,7 +619,7 @@ registerSuite('SlidePane', {
 						null,
 						v('div', {
 							classes: css.content
-						}, [ GREEKING ])
+						}, [GREEKING])
 					])
 				]);
 			}
@@ -659,7 +659,7 @@ registerSuite('SlidePane', {
 					classes: css.root
 				}, [
 					closed ? null : v('div', {
-						classes: [ null, css.underlay ],
+						classes: [null, css.underlay],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
@@ -687,7 +687,7 @@ registerSuite('SlidePane', {
 						null,
 						v('div', {
 							classes: css.content
-						}, [ GREEKING ])
+						}, [GREEKING])
 					])
 				]);
 			}
@@ -762,7 +762,7 @@ registerSuite('SlidePane', {
 					classes: css.root
 				}, [
 					closed ? null : v('div', {
-						classes: [ null, css.underlay ],
+						classes: [null, css.underlay],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
 						key: 'underlay'
@@ -790,7 +790,7 @@ registerSuite('SlidePane', {
 						null,
 						v('div', {
 							classes: css.content
-						}, [ GREEKING ])
+						}, [GREEKING])
 					])
 				]);
 			}

@@ -182,7 +182,7 @@ registerSuite('TimePicker', {
 			});
 			// prettier-ignore
 			picker.expectRender(v('div', {
-				classes: [ css.root, null, null, null, null ],
+				classes: [css.root, null, null, null, null],
 				key: 'root'
 			}, [
 				null,
@@ -230,7 +230,7 @@ registerSuite('TimePicker', {
 
 			// prettier-ignore
 			picker.expectRender(v('div', {
-				classes: [ css.root,
+				classes: [css.root,
 					css.disabled,
 					css.invalid,
 					css.readonly,
@@ -273,7 +273,7 @@ registerSuite('TimePicker', {
 			});
 			// prettier-ignore
 			picker.expectRender(v('div', {
-				classes: [ css.root, null, null, null, null ],
+				classes: [css.root, null, null, null, null],
 				key: 'root'
 			}, [
 				w(Label, {
@@ -284,7 +284,7 @@ registerSuite('TimePicker', {
 					readOnly: undefined,
 					required: undefined,
 					forId: <any> compareId
-				}, [ 'foo' ]),
+				}, ['foo']),
 				v('input', {
 					'aria-describedby': undefined,
 					'aria-invalid': null,

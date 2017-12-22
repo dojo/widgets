@@ -22,20 +22,20 @@ const tabChildren = function(tabs = 2) {
 	const children = [
 		w(Tab, {
 			key: '0'
-		}, [ 'tab content 1' ]),
+		}, ['tab content 1']),
 		w(Tab, {
 			closeable: true,
 			disabled: true,
 			key: '1',
 			label: 'foo'
-		}, [ 'tab content 2' ])
+		}, ['tab content 2'])
 	];
 
 	if (tabs > 2) {
 		for (let i = 2; i < tabs; i++) {
 			children.push(w(Tab, {
 				key: `${i}`
-			}, [ `tab content ${i}` ]));
+			}, [`tab content ${i}`]));
 		}
 	}
 
@@ -48,7 +48,7 @@ const expectedTabButtons = function(empty = false): DNode {
 		return v('div', {
 			key: 'buttons',
 			classes: css.tabButtons
-		}, [ ]);
+		}, []);
 	}
 
 	return v('div', {
@@ -74,7 +74,7 @@ const expectedTabButtons = function(empty = false): DNode {
 			onRightArrowPress: widget.listener,
 			onUpArrowPress: widget.listener,
 			theme: undefined
-		}, [ null ]),
+		}, [null]),
 		w(TabButton, {
 			callFocus: false,
 			active: false,
@@ -94,7 +94,7 @@ const expectedTabButtons = function(empty = false): DNode {
 			onRightArrowPress: widget.listener,
 			onUpArrowPress: widget.listener,
 			theme: undefined
-		}, [ 'foo' ])
+		}, ['foo'])
 	]);
 };
 
@@ -109,7 +109,7 @@ const expectedTabContent = function(index = 0): DNode {
 			key: '0',
 			id: <any> compareId,
 			labelledBy: <any> compareId
-		}, [ 'tab content 1' ]),
+		}, ['tab content 1']),
 		w(Tab, {
 			closeable: true,
 			disabled: true,
@@ -117,19 +117,19 @@ const expectedTabContent = function(index = 0): DNode {
 			label: 'foo',
 			id: <any> compareId,
 			labelledBy: <any> compareId
-		}, [ 'tab content 2' ])
+		}, ['tab content 2'])
 	];
 	return v('div', {
 		key: 'tabs',
 		classes: css.tabs
-	}, [ tabs[index] ]);
+	}, [tabs[index]]);
 };
 
 // prettier-ignore
 const expected = function(children: DNode[] = []) {
 	return v('div', {
 		'aria-orientation': 'horizontal',
-		classes: [ null, css.root ],
+		classes: [null, css.root],
 		role: 'tablist'
 	}, children);
 };
@@ -409,12 +409,12 @@ registerSuite('TabController', {
 			widget.setChildren([
 				w(Tab, {
 					key: '0'
-				}, [ 'tab content 1' ]),
+				}, ['tab content 1']),
 				w(Tab, {
 					closeable: true,
 					key: '1',
 					label: 'foo'
-				}, [ 'tab content 2' ])
+				}, ['tab content 2'])
 			]);
 
 			let tabButtons = expectedTabButtons();

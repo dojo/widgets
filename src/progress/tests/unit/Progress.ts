@@ -25,7 +25,7 @@ const expectedVDom = function(args: any) {
 				}
 			})
 		]),
-		showOutput ? v('span', { classes: css.output }, [ output ]) : null
+		showOutput ? v('span', { classes: css.output }, [output]) : null
 	]);
 };
 

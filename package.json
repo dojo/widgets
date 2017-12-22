@@ -19,7 +19,7 @@
   "scripts": {
     "prepublish": "grunt peerDepInstall",
     "precommit": "lint-staged",
-    "prettier": "prettier --write 'src/**/*.ts' 'tests/**/*.ts'",
+    "prettier": "prettier --write 'src/**/*.ts' 'support/**/*.ts' ",
     "test": "grunt test"
   },
   "peerDependencies": {

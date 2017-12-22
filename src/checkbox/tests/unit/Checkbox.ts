@@ -24,7 +24,7 @@ const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 				key: 'offLabel',
 				classes: css.offLabel,
 				'aria-hidden': null
-			}, [ 'off' ]),
+			}, ['off']),
 			v('div', {
 				key: 'toggle',
 				classes: css.toggleSwitch
@@ -33,7 +33,7 @@ const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 				key: 'onLabel',
 				classes: css.onLabel,
 				'aria-hidden': 'true'
-			}, [ 'on' ])
+			}, ['on'])
 		];
 	}
 
@@ -85,12 +85,12 @@ const expected = function(widget: Harness<Checkbox>, label = false, toggle = fal
 			required: undefined,
 			forId: <any> compareId,
 			secondary: true
-		}, [ 'foo' ]) : null
+		}, ['foo']) : null
 	];
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, null, null ]
+		classes: [css.root, null, null, null, null, null, null, null, null]
 	}, children);
 };
 

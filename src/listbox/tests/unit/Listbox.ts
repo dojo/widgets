@@ -47,7 +47,7 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 		v('div', { key: 'first' }, [
 			w(ListboxOption, {
 				active: activeIndex === 0,
-				classes: [ css.option, css.activeOption, null, null ],
+				classes: [css.option, css.activeOption, null, null],
 				disabled: false,
 				id: 'first',
 				index: 0,
@@ -62,7 +62,7 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 		v('div', { key: <any> compareId }, [
 			w(ListboxOption, {
 				active: activeIndex === 1,
-				classes: [ css.option, null, null, null ],
+				classes: [css.option, null, null, null],
 				disabled: false,
 				id: <any> compareId,
 				index: 1,
@@ -77,7 +77,7 @@ const expectedOptions = function(widget: Harness<Listbox>, activeIndex = 0) {
 		v('div', { key: <any> compareId }, [
 			w(ListboxOption, {
 				active: activeIndex === 2,
-				classes: [ css.option, null, null, null ],
+				classes: [css.option, null, null, null],
 				disabled: false,
 				id: <any> compareId,
 				index: 2,
@@ -97,7 +97,7 @@ const expectedVdom = function(widget: Harness<Listbox>, options: DNode[]) {
 	return v('div', {
 		'aria-activedescendant': compareId,
 		'aria-multiselectable': null,
-		classes: [ css.root, null ],
+		classes: [css.root, null],
 		describedBy: undefined,
 		id: undefined,
 		key: 'root',

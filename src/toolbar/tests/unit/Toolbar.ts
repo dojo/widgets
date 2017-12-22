@@ -34,7 +34,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -60,7 +60,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -96,7 +96,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -124,7 +124,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -152,8 +152,8 @@ registerSuite('Toolbar', {
 					]
 				}, [
 					v('div', {
-						classes: [ css.title, css.titleFixed ]
-					}, [ 'test' ]),
+						classes: [css.title, css.titleFixed]
+					}, ['test']),
 					null,
 					null
 				]),
@@ -185,13 +185,13 @@ registerSuite('Toolbar', {
 				}, [
 					null,
 					v('div', {
-						classes: [ css.actions, css.actionsFixed ],
+						classes: [css.actions, css.actionsFixed],
 						key: 'menu'
 					}, [
 						v('div', {
-							classes: [ css.action ],
+							classes: [css.action],
 							key: 0
-						}, [ 'test' ])
+						}, ['test'])
 					]),
 					null
 				]),
@@ -228,19 +228,19 @@ registerSuite('Toolbar', {
 				title: 'Menu'
 			}, [
 				v('div', {
-					classes: [ css.action ],
+					classes: [css.action],
 					key: 0
-				}, [ 'test' ])
+				}, ['test'])
 			]);
 
 			// prettier-ignore
 			const buttonVDom = v('button', {
-				classes: [ css.menuButton, css.menuButtonFixed ],
+				classes: [css.menuButton, css.menuButtonFixed],
 				onclick: toolbar.listener
 			}, [
 				'open menu',
 				v('i', {
-					classes: [ iconCss.icon, iconCss.barsIcon ],
+					classes: [iconCss.icon, iconCss.barsIcon],
 					role: 'presentation',
 					'aria-hidden': 'true'
 				})
@@ -262,7 +262,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,

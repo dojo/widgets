@@ -109,16 +109,16 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 
 		// prettier-ignore
 		return v('div', {
-			classes: [ this.theme(css.track), css.trackFixed ],
+			classes: [this.theme(css.track), css.trackFixed],
 			'aria-hidden': 'true',
 			styles: vertical ? { width: verticalHeight } : {}
 		}, [
 			v('span', {
-				classes: [ this.theme(css.fill), css.fillFixed ],
+				classes: [this.theme(css.fill), css.fillFixed],
 				styles: { width: `${percentValue}%` }
 			}),
 			v('span', {
-				classes: [ this.theme(css.thumb), css.thumbFixed ],
+				classes: [this.theme(css.thumb), css.thumbFixed],
 				styles: { left: `${percentValue}%` }
 			})
 		]);
@@ -137,10 +137,10 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 
 		// prettier-ignore
 		return v('output', {
-			classes: [ this.theme(css.output), outputIsTooltip ? css.outputTooltip : null ],
+			classes: [this.theme(css.output), outputIsTooltip ? css.outputTooltip : null],
 			for: this._inputId,
 			styles: outputStyles
-		}, [ outputNode ]);
+		}, [outputNode]);
 	}
 
 	render(): DNode {
@@ -171,12 +171,12 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 
 		// prettier-ignore
 		const slider = v('div', {
-			classes: [ this.theme(css.inputWrapper), css.inputWrapperFixed ],
+			classes: [this.theme(css.inputWrapper), css.inputWrapperFixed],
 			styles: vertical ? { height: verticalHeight } : {}
 		}, [
 			v('input', {
 				key: 'input',
-				classes: [ this.theme(css.input), css.nativeInput ],
+				classes: [this.theme(css.input), css.nativeInput],
 				'aria-describedby': describedBy,
 				disabled,
 				id: this._inputId,
@@ -219,7 +219,7 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 				required,
 				hidden: labelHidden,
 				forId: this._inputId
-			}, [ label ]) : null,
+			}, [label]) : null,
 			slider
 		];
 

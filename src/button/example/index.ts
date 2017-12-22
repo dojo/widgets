@@ -23,7 +23,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	// prettier-ignore
 	render() {
 		return v('div', [
-			v('h2', [ 'Button Examples' ]),
+			v('h2', ['Button Examples']),
 			v('label', [
 				'Use Dojo Theme ',
 				v('input', {
@@ -32,37 +32,37 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('div', { id: 'example-1' }, [
-				v('p', [ 'Basic example:' ]),
+				v('p', ['Basic example:']),
 				w(Button, {
 					key: 'b1',
 					theme: this._theme
-				}, [ 'Basic Button' ])
+				}, ['Basic Button'])
 			]),
 			v('div', { id: 'example-2' }, [
-				v('p', [ 'Disabled submit button:' ]),
+				v('p', ['Disabled submit button:']),
 				w(Button, {
 					key: 'b2',
 					theme: this._theme,
 					disabled: true,
 					type: 'submit'
-				}, [ 'Submit' ])
+				}, ['Submit'])
 			]),
 			v('div', { id: 'example-3' }, [
-				v('p', [ 'Popup button:' ]),
+				v('p', ['Popup button:']),
 				w(Button, {
 					key: 'b3',
 					theme: this._theme,
 					popup: { expanded: false, id: 'fakeId' }
-				}, [ 'Open' ])
+				}, ['Open'])
 			]),
 			v('div', { id: 'example-4' }, [
-				v('p', [ 'Toggle Button' ]),
+				v('p', ['Toggle Button']),
 				w(Button, {
 					key: 'b4',
 					theme: this._theme,
 					pressed: this._buttonPressed,
 					onClick: this.toggleButton
-				}, [ 'Button state' ])
+				}, ['Button state'])
 			])
 		]);
 	}

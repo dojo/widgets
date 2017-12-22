@@ -44,7 +44,7 @@ const expected = function(widget: any, closeable = false, children: any[] = []) 
 		'aria-controls': 'foo',
 		'aria-disabled': 'false',
 		'aria-selected': 'false',
-		classes: [ css.tabButton, null, null ],
+		classes: [css.tabButton, null, null],
 		id: 'foo',
 		key: 'tab-button',
 		onclick: widget.listener,

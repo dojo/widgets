@@ -110,7 +110,7 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 				key: 'offLabel',
 				classes: this.theme(css.offLabel),
 				'aria-hidden': checked ? 'true' : null
-			}, [ offLabel ]) : null,
+			}, [offLabel]) : null,
 			v('div', {
 				key: 'toggle',
 				classes: this.theme(css.toggleSwitch)
@@ -119,7 +119,7 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 				key: 'onLabel',
 				classes: this.theme(css.onLabel),
 				'aria-hidden': checked ? null : 'true'
-			}, [ onLabel ]) : null
+			}, [onLabel]) : null
 		] : [];
 	}
 
@@ -176,7 +176,7 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 				hidden: labelHidden,
 				forId: this._uuid,
 				secondary: true
-			}, [ label ]) : null
+			}, [label]) : null
 		];
 
 		return v('div', {

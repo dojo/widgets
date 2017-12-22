@@ -25,12 +25,12 @@ const compareId = compareProperty((value: any) => {
 // prettier-ignore
 const expected = function(widget: any, label = false, tooltip = false) {
 	const sliderVdom = v('div', {
-		classes: [ css.inputWrapper, css.inputWrapperFixed ],
+		classes: [css.inputWrapper, css.inputWrapperFixed],
 		styles: {}
 	}, [
 		v('input', {
 			key: 'input',
-			classes: [ css.input, css.nativeInput ],
+			classes: [css.input, css.nativeInput],
 			'aria-describedby': undefined,
 			disabled: undefined,
 			id: <any> compareId,
@@ -60,29 +60,29 @@ const expected = function(widget: any, label = false, tooltip = false) {
 			ontouchcancel: widget.listener
 		}),
 		v('div', {
-			classes: [ css.track, css.trackFixed ],
+			classes: [css.track, css.trackFixed],
 			'aria-hidden': 'true',
 			styles: {}
 		}, [
 			v('span', {
-				classes: [ css.fill, css.fillFixed ],
+				classes: [css.fill, css.fillFixed],
 				styles: { width: '0%' }
 			}),
 			v('span', {
-				classes: [ css.thumb, css.thumbFixed ],
+				classes: [css.thumb, css.thumbFixed],
 				styles: { left: '0%' }
 			})
 		]),
 		v('output', {
-			classes: [ css.output, tooltip ? css.outputTooltip : null ],
+			classes: [css.output, tooltip ? css.outputTooltip : null],
 			for: <any> compareId,
 			styles: {}
-		}, [ '0' ])
+		}, ['0'])
 	]);
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, css.rootFixed ]
+		classes: [css.root, null, null, null, null, null, null, css.rootFixed]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -92,7 +92,7 @@ const expected = function(widget: any, label = false, tooltip = false) {
 			readOnly: undefined,
 			required: undefined,
 			forId: <any> compareId
-		}, [ 'foo' ]) : null,
+		}, ['foo']) : null,
 		sliderVdom
 	]);
 };

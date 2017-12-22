@@ -159,7 +159,7 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
 			'aria-selected': active === true ? 'true' : 'false',
-			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
+			classes: this.theme([css.tabButton, ...this.getModifierClasses()]),
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,

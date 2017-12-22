@@ -74,7 +74,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 			onclick: widget.listener
 		}, [
 			'clear combo box',
-			v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
+			v('i', { classes: [iconCss.icon, iconCss.closeIcon],
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]) : null,
@@ -89,7 +89,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 			'open combo box',
 			v('i', {
 				'aria-hidden': 'true',
-				classes: [ iconCss.icon, iconCss.downIcon ],
+				classes: [iconCss.icon, iconCss.downIcon],
 				role: 'presentation'
 			})
 		])
@@ -161,7 +161,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 			readOnly: undefined,
 			required: undefined,
 			forId: <any> compareId
-		}, [ 'foo' ]) : null,
+		}, ['foo']) : null,
 		controlsVdom,
 		menuVdom
 	]);

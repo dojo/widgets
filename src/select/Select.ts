@@ -197,7 +197,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 			id: getOptionId ? getOptionId(option, i) : undefined,
 			disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
 			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
-		}, [ this._getOptionLabel(option) ]));
+		}, [this._getOptionLabel(option)]));
 
 		// prettier-ignore
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
@@ -238,7 +238,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		// prettier-ignore
 		return v('div', {
 			key: 'wrapper',
-			classes: this.theme([ css.inputWrapper, _open ? css.open : null ])
+			classes: this.theme([css.inputWrapper, _open ? css.open : null])
 		}, [
 			...this.renderCustomTrigger(),
 			v('div', {
@@ -308,7 +308,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 				'aria-invalid': invalid ? 'true' : null,
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
-				classes: this.theme([ css.trigger, isPlaceholder ? css.placeholder : null ]),
+				classes: this.theme([css.trigger, isPlaceholder ? css.placeholder : null]),
 				describedBy,
 				disabled,
 				key: 'trigger',
@@ -318,7 +318,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 				onfocus: this._onFocus,
 				onkeydown: this._onTriggerKeyDown,
 				onmousedown: this._onTriggerMouseDown
-			}, [ label ]),
+			}, [label]),
 			this.renderExpandIcon()
 		];
 	}
@@ -346,7 +346,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 				required,
 				hidden: labelHidden,
 				forId: this._baseId
-			}, [ label ]) : null,
+			}, [label]) : null,
 			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect()
 		];
 

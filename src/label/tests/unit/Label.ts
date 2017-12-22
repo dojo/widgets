@@ -55,7 +55,7 @@ registerSuite('Label', {
 					null,
 					null,
 					null,
-					baseCss.visuallyHidden ],
+					baseCss.visuallyHidden],
 				for: undefined
 			}, [
 				'baz'

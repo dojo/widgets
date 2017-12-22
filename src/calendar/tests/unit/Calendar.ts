@@ -66,14 +66,14 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 			cellpadding: '0',
 			role: 'grid',
 			'aria-labelledby': compareId, // this._monthLabelId,
-			classes: [ css.dateGrid, popupOpen ? baseCss.visuallyHidden : null ]
+			classes: [css.dateGrid, popupOpen ? baseCss.visuallyHidden : null]
 		}, [
 			v('thead', [
 				v('tr', DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string; }) => v('th', {
 						role: 'columnheader',
 						classes: css.weekday
 					}, [
-						v('abbr', { title: weekday.long }, [ weekday.short ])
+						v('abbr', { title: weekday.long }, [weekday.short])
 					])
 				))
 			]),
@@ -135,27 +135,27 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 			])
 		]),
 		v('div', {
-			classes: [ css.controls, popupOpen ? baseCss.visuallyHidden : null ]
+			classes: [css.controls, popupOpen ? baseCss.visuallyHidden : null]
 		}, [
 			v('button', {
 				classes: css.previous,
 				tabIndex: popupOpen ? -1 : 0,
 				onclick: widget.listener
 			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
+				v('i', { classes: [iconCss.icon, iconCss.leftIcon],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Previous Month' ])
+				v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
 			]),
 			v('button', {
 				classes: css.next,
 				tabIndex: popupOpen ? -1 : 0,
 				onclick: widget.listener
 			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
+				v('i', { classes: [iconCss.icon, iconCss.rightIcon],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Next Month' ])
+				v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
 			])
 		])
 	]);

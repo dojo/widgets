@@ -83,9 +83,9 @@ export default class CalendarCell<P extends CalendarCellProperties = CalendarCel
 			role: 'gridcell',
 			'aria-selected': `${selected}`,
 			tabIndex: focusable ? 0 : -1,
-			classes: this.theme([ css.date, ...this.getModifierClasses() ]),
+			classes: this.theme([css.date, ...this.getModifierClasses()]),
 			onclick: this._onClick,
 			onkeydown: this._onKeyDown
-		}, [ this.formatDate(date) ]);
+		}, [this.formatDate(date)]);
 	}
 }

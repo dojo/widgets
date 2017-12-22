@@ -107,14 +107,14 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 
 		// prettier-ignore
 		return v('div', {
-			classes: [ ...this.theme([
+			classes: [...this.theme([
 				css.root,
 				open ? css.open : null
-			]), css.rootFixed ]
+			]), css.rootFixed]
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
-				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), css.titleFixed, ...this.getFixedModifierClasses() ],
+				classes: [...this.theme([css.title, ...this.getModifierClasses()]), css.titleFixed, ...this.getFixedModifierClasses()],
 				role: 'heading'
 			}, [
 				v('button', {

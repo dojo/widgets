@@ -30,11 +30,11 @@ registerSuite('TitlePane', {
 
 			// prettier-ignore
 			titlePane.expectRender(v('div', {
-				classes: [ css.root, css.open, css.rootFixed ]
+				classes: [css.root, css.open, css.rootFixed]
 			}, [
 				v('div', {
 					'aria-level': null,
-					classes: [ css.title, css.closeable, css.titleFixed, css.closeableFixed ],
+					classes: [css.title, css.closeable, css.titleFixed, css.closeableFixed],
 					role: 'heading'
 				}, [
 					v('button', {
@@ -63,7 +63,7 @@ registerSuite('TitlePane', {
 					classes: css.content,
 					id: <any> isNonEmptyString,
 					key: 'content'
-				}, [ ])
+				}, [])
 			]));
 		},
 
@@ -77,11 +77,11 @@ registerSuite('TitlePane', {
 
 			// prettier-ignore
 			titlePane.expectRender(v('div', {
-				classes: [ css.root, null, css.rootFixed ]
+				classes: [css.root, null, css.rootFixed]
 			}, [
 				v('div', {
 					'aria-level': '5',
-					classes: [ css.title, null, css.titleFixed, null ],
+					classes: [css.title, null, css.titleFixed, null],
 					role: 'heading'
 				}, [
 					v('button', {

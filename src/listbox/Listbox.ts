@@ -200,7 +200,7 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 		return v('div', {
 			'aria-activedescendant': this._getOptionId(activeIndex),
 			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
+			classes: this.theme([css.root, ...this.getModifierClasses()]),
 			describedBy,
 			id,
 			key: 'root',

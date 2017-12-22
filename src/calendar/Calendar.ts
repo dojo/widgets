@@ -360,7 +360,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 				cellpadding: '0',
 				role: 'grid',
 				'aria-labelledby': this._monthLabelId,
-				classes: [ this.theme(css.dateGrid), this._popupOpen ? baseCss.visuallyHidden : null ]
+				classes: [this.theme(css.dateGrid), this._popupOpen ? baseCss.visuallyHidden : null]
 			}, [
 				v('thead', [
 					v('tr', weekdays)
@@ -369,7 +369,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 			]),
 			// controls
 			v('div', {
-				classes: [ this.theme(css.controls), this._popupOpen ? baseCss.visuallyHidden : null ]
+				classes: [this.theme(css.controls), this._popupOpen ? baseCss.visuallyHidden : null]
 			}, [
 				v('button', {
 					classes: this.theme(css.previous),

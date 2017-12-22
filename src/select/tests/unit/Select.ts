@@ -82,22 +82,22 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 				id: useTestProperties ? 'one' : undefined,
 				disabled: useTestProperties ? false : undefined,
 				selected: useTestProperties ? false : undefined
-			}, [ useTestProperties ? 'One' : `${testOptions[0]}` ]),
+			}, [useTestProperties ? 'One' : `${testOptions[0]}`]),
 			v('option', {
 				value: useTestProperties ? 'two' : '',
 				id: useTestProperties ? 'two' : undefined,
 				disabled: useTestProperties ? false : undefined,
 				selected: useTestProperties ? true : undefined
-			}, [ useTestProperties ? 'Two' : `${testOptions[1]}` ]),
+			}, [useTestProperties ? 'Two' : `${testOptions[1]}`]),
 			v('option', {
 				value: useTestProperties ? 'three' : '',
 				id: useTestProperties ? 'three' : undefined,
 				disabled: useTestProperties ? true : undefined,
 				selected: useTestProperties ? false : undefined
-			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ])
+			}, [useTestProperties ? 'Three' : `${testOptions[2]}`])
 		]),
 		v('span', { classes: css.arrow }, [
-			v('i', { classes: [ iconCss.icon, iconCss.downIcon ],
+			v('i', { classes: [iconCss.icon, iconCss.downIcon],
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		])
@@ -107,7 +107,7 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 // prettier-ignore
 const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false) {
 	return v('div', {
-		classes: [ css.inputWrapper, open ? css.open : null ],
+		classes: [css.inputWrapper, open ? css.open : null],
 		key: 'wrapper'
 	}, [
 		v('button', {
@@ -117,7 +117,7 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 			'aria-invalid': null,
 			'aria-readonly': null,
 			'aria-required': null,
-			classes: [ css.trigger, useTestProperties ? null : css.placeholder ],
+			classes: [css.trigger, useTestProperties ? null : css.placeholder],
 			describedBy: useTestProperties ? 'foo' : undefined,
 			disabled: undefined,
 			key: 'trigger',
@@ -127,10 +127,10 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 			onfocus: widget.listener,
 			onkeydown: widget.listener,
 			onmousedown: widget.listener
-		}, [ useTestProperties ? 'Two' : '' ]),
+		}, [useTestProperties ? 'Two' : '']),
 		v('span', { classes: css.arrow }, [
 			v('i', {
-				classes: [ iconCss.icon, iconCss.downIcon ],
+				classes: [iconCss.icon, iconCss.downIcon],
 				role: 'presentation',
 				'aria-hidden': 'true'
 			})
@@ -169,7 +169,7 @@ function isOpen(widget: any): boolean {
 const expected = function(widget: Harness<Select>, selectVdom: any, label = false) {
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null ]
+		classes: [css.root, null, null, null, null, null]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -179,7 +179,7 @@ const expected = function(widget: Harness<Select>, selectVdom: any, label = fals
 			readOnly: undefined,
 			required: undefined,
 			forId: <any> compareId
-		}, [ 'foo' ]) : null,
+		}, ['foo']) : null,
 		selectVdom
 	]);
 };

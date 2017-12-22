@@ -276,7 +276,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			onclick: this._onClearClick
 		}, [
 			'clear combo box',
-			v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
+			v('i', { classes: this.theme([iconCss.icon, iconCss.closeIcon]),
 				role: 'presentation', 'aria-hidden': 'true'
 			})
 		]);
@@ -297,7 +297,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			'open combo box',
 			v('i', {
 				'aria-hidden': 'true',
-				classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
+				classes: this.theme([iconCss.icon, iconCss.downIcon]),
 				role: 'presentation'
 			})
 		]);
@@ -369,7 +369,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 				required,
 				hidden: labelHidden,
 				forId: id
-			}, [ label ]) : null,
+			}, [label]) : null,
 			v('div', {
 				classes: this.theme(css.controls)
 			}, [
