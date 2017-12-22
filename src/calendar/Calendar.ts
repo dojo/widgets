@@ -342,15 +342,11 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		// Calendar Weekday array
 		const weekdays = [];
 		for (const weekday in weekdayNames) {
+			// prettier-ignore
 			weekdays.push(
-				v(
-					'th',
-					{
-						role: 'columnheader',
-						classes: this.theme(css.weekday)
-					},
-					[this.renderWeekdayCell(weekdayNames[weekday])]
-				)
+				v('th', { role: 'columnheader', classes: this.theme(css.weekday) }, [
+					this.renderWeekdayCell(weekdayNames[weekday])
+				])
 			);
 		}
 

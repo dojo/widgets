@@ -35,6 +35,7 @@ const expectedCloseButton = function() {
 	);
 };
 
+// prettier-ignore
 const expected = function(widget: Harness<Dialog>, open = false, closeable = false, children: any[] = []) {
 	return v(
 		'div',
@@ -48,35 +49,19 @@ const expected = function(widget: Harness<Dialog>, open = false, closeable = fal
 						key: 'underlay',
 						onclick: widget.listener
 					}),
-					v(
-						'div',
-						{
-							'aria-labelledby': compareId,
-							classes: css.main,
-							enterAnimation: animations.fadeIn,
-							exitAnimation: animations.fadeOut,
-							key: 'main',
-							role: 'dialog'
-						},
-						[
-							v(
-								'div',
-								{
-									classes: css.title,
-									key: 'title'
-								},
-								[v('div', { id: <any>compareId }, ['']), closeable ? expectedCloseButton() : null]
-							),
-							v(
-								'div',
-								{
-									classes: css.content,
-									key: 'content'
-								},
-								children
-							)
-						]
-					)
+					v('div', {
+						'aria-labelledby': compareId,
+						classes: css.main,
+						enterAnimation: animations.fadeIn,
+						exitAnimation: animations.fadeOut,
+						key: 'main',
+						role: 'dialog'
+					}, [
+						v('div', { classes: css.title, key: 'title' }, [
+							v('div', { id: <any>compareId }, ['']), closeable ? expectedCloseButton() : null
+						]),
+						v('div', { classes: css.content, key: 'content' }, children)
+					])
 				]
 			: []
 	);

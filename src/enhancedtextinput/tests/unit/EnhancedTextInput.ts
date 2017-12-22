@@ -57,25 +57,15 @@ const expected = function(
 		})
 	];
 	if (addonBefore) {
+		// prettier-ignore
 		children.unshift(
-			v(
-				'span',
-				{
-					classes: [css.addon, css.addonBefore]
-				},
-				['foo']
-			)
+			v('span', { classes: [css.addon, css.addonBefore] }, ['foo'])
 		);
 	}
 	if (addonAfter) {
+		// prettier-ignore
 		children.push(
-			v(
-				'span',
-				{
-					classes: [css.addon, css.addonAfter]
-				},
-				['bar']
-			)
+			v('span', { classes: [css.addon, css.addonAfter] }, ['bar'])
 		);
 	}
 
