@@ -6,19 +6,20 @@ import Label from '../../label/Label';
 
 export class App extends WidgetBase<WidgetProperties> {
 	render() {
+		// prettier-ignore
 		return v('div', [
 			v('h1', {}, ['Label Examples']),
 			v('h3', {}, ['Label assigned as string without extra options']),
 			v('div', { id: 'example-1'}, [
-				w(Label, {}, [ 'Type Something' ])
+				w(Label, {}, ['Type Something'])
 			]),
 			v('h3', {}, ['Hidden label']),
 			v('div', { id: 'example-2'}, [
-				w(Label, { hidden: true }, [ 'Can\'t read me!' ])
+				w(Label, { hidden: true }, ['Can\'t read me!'])
 			]),
 			v('h3', {}, ['Label with Input']),
 			v('div', { id: 'example-3'}, [
-				w(Label, { forId: 'input-1' }, [ 'Type Something' ]),
+				w(Label, { forId: 'input-1' }, ['Type Something']),
 				v('input', { id: 'input-1' })
 			])
 		]);

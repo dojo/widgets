@@ -26,7 +26,7 @@ export interface TitlePaneProperties extends ThemedProperties {
 	onRequestOpen?(key: string | number | undefined): void;
 	open?: boolean;
 	title: string;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -45,7 +45,7 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 		requestAnimationFrame(() => {
 			const { open = true } = this.properties;
 			const height = element.offsetHeight;
-			element.style.marginTop = open ? '0px' : `-${ height }px`;
+			element.style.marginTop = open ? '0px' : `-${height}px`;
 		});
 	}
 
@@ -54,13 +54,7 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 	}
 
 	private _toggle() {
-		const {
-			closeable = true,
-			key,
-			onRequestClose,
-			onRequestOpen,
-			open = true
-		} = this.properties;
+		const { closeable = true, key, onRequestClose, onRequestOpen, open = true } = this.properties;
 
 		if (!closeable) {
 			return;
@@ -68,8 +62,7 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 
 		if (open) {
 			onRequestClose && onRequestClose(key);
-		}
-		else {
+		} else {
 			onRequestOpen && onRequestOpen(key);
 		}
 	}
@@ -88,16 +81,12 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
-		return [
-			closeable ? css.closeableFixed : null
-		];
+		return [closeable ? css.closeableFixed : null];
 	}
 
 	protected getModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
-		return [
-			closeable ? css.closeable : null
-		];
+		return [closeable ? css.closeable : null];
 	}
 
 	protected getPaneContent(): DNode[] {
@@ -107,32 +96,25 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 	protected renderExpandIcon(): DNode {
 		const { open = true } = this.properties;
 		return v('i', {
-			classes: this.theme([
-				css.arrow,
-				iconCss.icon,
-				open ? iconCss.downIcon : iconCss.rightIcon
-			]),
+			classes: this.theme([css.arrow, iconCss.icon, open ? iconCss.downIcon : iconCss.rightIcon]),
 			role: 'presentation',
 			'aria-hidden': 'true'
 		});
 	}
 
 	render(): DNode {
-		const {
-			closeable = true,
-			headingLevel,
-			open = true
-		} = this.properties;
+		const { closeable = true, headingLevel, open = true } = this.properties;
 
+		// prettier-ignore
 		return v('div', {
-			classes: [ ...this.theme([
+			classes: [...this.theme([
 				css.root,
 				open ? css.open : null
-			]), css.rootFixed ]
+			]), css.rootFixed]
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
-				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), css.titleFixed, ...this.getFixedModifierClasses() ],
+				classes: [...this.theme([css.title, ...this.getModifierClasses()]), css.titleFixed, ...this.getFixedModifierClasses()],
 				role: 'heading'
 			}, [
 				v('button', {

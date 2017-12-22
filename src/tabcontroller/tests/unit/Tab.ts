@@ -9,7 +9,6 @@ import * as css from '../../styles/tabController.m.css';
 let widget: Harness<Tab>;
 
 registerSuite('Tab', {
-
 	beforeEach() {
 		widget = harness(Tab);
 	},
@@ -21,6 +20,7 @@ registerSuite('Tab', {
 	tests: {
 		'default properties'() {
 			widget.setProperties({ key: 'foo' });
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-labelledby': undefined,
 				classes: css.tab,
@@ -30,10 +30,7 @@ registerSuite('Tab', {
 		},
 
 		'custom properties and children'() {
-			const testChildren = [
-				v('p', ['lorem ipsum']),
-				v('a', { href: '#foo'}, [ 'foo' ])
-			];
+			const testChildren = [v('p', ['lorem ipsum']), v('a', { href: '#foo' }, ['foo'])];
 			widget.setProperties({
 				closeable: true,
 				disabled: true,
@@ -44,6 +41,7 @@ registerSuite('Tab', {
 			});
 			widget.setChildren(testChildren);
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-labelledby': 'id',
 				classes: css.tab,

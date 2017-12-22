@@ -20,21 +20,19 @@ export interface ListboxOptionProperties extends ThemedProperties {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class ListboxOption<P extends ListboxOptionProperties = ListboxOptionProperties> extends ThemedBase<P, null> {
+export default class ListboxOption<P extends ListboxOptionProperties = ListboxOptionProperties> extends ThemedBase<
+	P,
+	null
+> {
 	private _onClick(event: MouseEvent) {
 		const { index, key, option, onClick } = this.properties;
 		onClick && onClick(option, index, key);
 	}
 
 	protected render(): DNode {
-		const {
-			classes = [],
-			disabled = false,
-			id,
-			label,
-			selected = false
-		} = this.properties;
+		const { classes = [], disabled = false, id, label, selected = false } = this.properties;
 
+		// prettier-ignore
 		return v('div', {
 			'aria-disabled': disabled ? 'true' : null,
 			'aria-selected': disabled ? null : String(selected),
@@ -42,6 +40,6 @@ export default class ListboxOption<P extends ListboxOptionProperties = ListboxOp
 			id,
 			role: 'option',
 			onclick: this._onClick
-		}, [ label ]);
+		}, [label]);
 	}
 }

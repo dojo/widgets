@@ -16,11 +16,7 @@ export default function createSplitPaneElement(): CustomElementDescriptor {
 				attributeName: 'size'
 			}
 		],
-		properties: [
-			{ propertyName: 'leading' },
-			{ propertyName: 'trailing' },
-			{ propertyName: 'theme' }
-		],
+		properties: [{ propertyName: 'leading' }, { propertyName: 'trailing' }, { propertyName: 'theme' }],
 		events: [
 			{
 				propertyName: 'onResize',
@@ -28,4 +24,4 @@ export default function createSplitPaneElement(): CustomElementDescriptor {
 			}
 		]
 	};
-};
+}

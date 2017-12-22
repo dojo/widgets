@@ -9,31 +9,24 @@ import * as css from '../../styles/comboBox.m.css';
 const DELAY = 300;
 
 function getPage(remote: Remote) {
-	return remote
-		.get('http://localhost:9000/_build/common/example/?module=combobox')
-		.setFindTimeout(5000);
+	return remote.get('http://localhost:9000/_build/common/example/?module=combobox').setFindTimeout(5000);
 }
 
 registerSuite('ComboBox', {
 	'the results menu should be visible'() {
-		let inputWidth: number;
-
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
-				.click()
-				.end()
+			.click()
+			.end()
 			.findByCssSelector(`.${css.controls} input`)
-				.getSize()
-					.then(({ width }) => {
-						inputWidth = width;
-					})
-				.end()
+			.getSize()
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
-				.getSize()
-				.then(({ height }) => {
-					assert.isAbove(height, 0);
-				});
+			.getSize()
+			.then(({ height }) => {
+				assert.isAbove(height, 0);
+			});
 	},
 
 	'the selected result menu should be visible'() {
@@ -51,33 +44,33 @@ registerSuite('ComboBox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
-				.click()
-				.end()
+			.click()
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.controls} input`)
-				.type(keys.ARROW_UP)
-				.end()
+			.type(keys.ARROW_UP)
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					menuTop = y;
-				})
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					menuBottom = menuTop + height;
-				})
-				.end()
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				menuTop = y;
+			})
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				menuBottom = menuTop + height;
+			})
+			.end()
 			.findByCssSelector(`.${listboxCss.activeOption}`)
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					itemHeight = height;
-				})
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					assert.isAtLeast(y, menuTop);
-					assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight));
-				});
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				itemHeight = height;
+			})
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				assert.isAtLeast(y, menuTop);
+				assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight));
+			});
 	},
 
 	'tab order'() {
@@ -92,26 +85,31 @@ registerSuite('ComboBox', {
 			this.skip('FirefoxDriver sends actual charcodes to the input.');
 		}
 
-		const initialTab = browserName === 'chrome' ?
-			() => this.remote.findByTagName('body').type(keys.TAB) :
-			() => this.remote.pressKeys(keys.TAB);
+		const initialTab =
+			browserName === 'chrome'
+				? () => this.remote.findByTagName('body').type(keys.TAB)
+				: () => this.remote.pressKeys(keys.TAB);
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
-				.click()
-				.sleep(DELAY)
-				.then(initialTab)
+			.click()
+			.sleep(DELAY)
+			.then(initialTab)
 			.getActiveElement()
-				.getProperty('textContent')
-				.then((text: string) => {
-					assert.strictEqual(text, 'clear combo box', 'The "clear" button should receive focus.');
-				})
-				.type(keys.TAB)
+			.getProperty('textContent')
+			.then((text: string) => {
+				assert.strictEqual(text, 'clear combo box', 'The "clear" button should receive focus.');
+			})
+			.type(keys.TAB)
 			.getActiveElement()
-				.getTagName()
-				.then((tag: string) => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The results menu and "open" button should not receive focus.');
-				});
+			.getTagName()
+			.then((tag: string) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The results menu and "open" button should not receive focus.'
+				);
+			});
 	},
 
 	'the input should receive focus when the "clear" button is activated'() {
@@ -122,22 +120,30 @@ registerSuite('ComboBox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.clear}`)
-				.click()
-				.sleep(30)
+			.click()
+			.sleep(30)
 			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "clear" button is clicked.');
-				})
-				.type(keys.TAB)
+			.getTagName()
+			.then((tag) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The input should receive focus when the "clear" button is clicked.'
+				);
+			})
+			.type(keys.TAB)
 			.getActiveElement()
-				.type(keys.ENTER)
-				.sleep(30)
+			.type(keys.ENTER)
+			.sleep(30)
 			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "clear" button is activated with the ENTER key.');
-				});
+			.getTagName()
+			.then((tag) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The input should receive focus when the "clear" button is activated with the ENTER key.'
+				);
+			});
 	},
 
 	'the input should receive focus when the "open" button is activated'() {
@@ -148,21 +154,29 @@ registerSuite('ComboBox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
-				.click()
-				.sleep(30)
+			.click()
+			.sleep(30)
 			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is clicked.');
-				})
-				.type(keys.TAB)
+			.getTagName()
+			.then((tag) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The input should receive focus when the "open" button is clicked.'
+				);
+			})
+			.type(keys.TAB)
 			.getActiveElement()
-				.type(keys.ENTER)
-				.sleep(30)
+			.type(keys.ENTER)
+			.sleep(30)
 			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is activated with the ENTER key.');
-				});
+			.getTagName()
+			.then((tag) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The input should receive focus when the "open" button is activated with the ENTER key.'
+				);
+			});
 	}
 });

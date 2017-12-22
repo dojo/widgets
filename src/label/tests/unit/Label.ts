@@ -10,7 +10,6 @@ import * as baseCss from '../../../common/styles/base.m.css';
 let widget: Harness<Label>;
 
 registerSuite('Label', {
-
 	beforeEach() {
 		widget = harness(Label);
 	},
@@ -21,8 +20,9 @@ registerSuite('Label', {
 
 	tests: {
 		simple() {
-			widget.setChildren([ 'baz' ]);
+			widget.setChildren(['baz']);
 
+			// prettier-ignore
 			widget.expectRender(v('label', {
 				classes: [
 					css.root,
@@ -44,8 +44,9 @@ registerSuite('Label', {
 				hidden: true
 			});
 
-			widget.setChildren([ 'baz' ]);
+			widget.setChildren(['baz']);
 
+			// prettier-ignore
 			widget.expectRender(v('label', {
 				classes: [
 					css.root,
@@ -54,7 +55,7 @@ registerSuite('Label', {
 					null,
 					null,
 					null,
-					baseCss.visuallyHidden ],
+					baseCss.visuallyHidden],
 				for: undefined
 			}, [
 				'baz'

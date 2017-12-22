@@ -10,7 +10,6 @@ import * as iconCss from '../../../common/styles/icons.m.css';
 
 let toolbar: Harness<Toolbar>;
 registerSuite('Toolbar', {
-
 	beforeEach() {
 		toolbar = harness(Toolbar);
 	},
@@ -21,6 +20,7 @@ registerSuite('Toolbar', {
 
 	tests: {
 		'default rendering'() {
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -34,7 +34,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -46,6 +46,7 @@ registerSuite('Toolbar', {
 
 		'bottom-positioned rendering'() {
 			toolbar.setProperties({ position: Position.bottom });
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -59,7 +60,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -81,6 +82,7 @@ registerSuite('Toolbar', {
 					};
 				}
 			});
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -94,7 +96,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -106,6 +108,7 @@ registerSuite('Toolbar', {
 
 		'fixed rendering'() {
 			toolbar.setProperties({ fixed: true });
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -121,7 +124,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -133,6 +136,7 @@ registerSuite('Toolbar', {
 
 		'custom title rendering'() {
 			toolbar.setProperties({ title: 'test' });
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -148,8 +152,8 @@ registerSuite('Toolbar', {
 					]
 				}, [
 					v('div', {
-						classes: [ css.title, css.titleFixed ]
-					}, [ 'test' ]),
+						classes: [css.title, css.titleFixed]
+					}, ['test']),
 					null,
 					null
 				]),
@@ -163,7 +167,8 @@ registerSuite('Toolbar', {
 		},
 
 		'actions rendering'() {
-			toolbar.setProperties({ actions: [ 'test' ] });
+			toolbar.setProperties({ actions: ['test'] });
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -180,13 +185,13 @@ registerSuite('Toolbar', {
 				}, [
 					null,
 					v('div', {
-						classes: [ css.actions, css.actionsFixed ],
+						classes: [css.actions, css.actionsFixed],
 						key: 'menu'
 					}, [
 						v('div', {
-							classes: [ css.action ],
+							classes: [css.action],
 							key: 0
-						}, [ 'test' ])
+						}, ['test'])
 					]),
 					null
 				]),
@@ -212,6 +217,7 @@ registerSuite('Toolbar', {
 				}
 			});
 
+			// prettier-ignore
 			const slidePaneVDom = w(SlidePane, {
 				align: Align.right,
 				closeText: 'close menu',
@@ -222,18 +228,19 @@ registerSuite('Toolbar', {
 				title: 'Menu'
 			}, [
 				v('div', {
-					classes: [ css.action ],
+					classes: [css.action],
 					key: 0
-				}, [ 'test' ])
+				}, ['test'])
 			]);
 
+			// prettier-ignore
 			const buttonVDom = v('button', {
-				classes: [ css.menuButton, css.menuButtonFixed ],
+				classes: [css.menuButton, css.menuButtonFixed],
 				onclick: toolbar.listener
 			}, [
 				'open menu',
 				v('i', {
-					classes: [ iconCss.icon, iconCss.barsIcon ],
+					classes: [iconCss.icon, iconCss.barsIcon],
 					role: 'presentation',
 					'aria-hidden': 'true'
 				})
@@ -241,6 +248,7 @@ registerSuite('Toolbar', {
 
 			toolbar.setProperties({ onCollapse: () => {} });
 
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -254,7 +262,7 @@ registerSuite('Toolbar', {
 						css.toolbar,
 						css.toolbarFixed
 					]
-				}, [ null, null, null]),
+				}, [null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
@@ -263,7 +271,8 @@ registerSuite('Toolbar', {
 				}, [])
 			]));
 
-			toolbar.setProperties({ actions: [ 'test' ] });
+			toolbar.setProperties({ actions: ['test'] });
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -295,6 +304,7 @@ registerSuite('Toolbar', {
 			toolbar.getRender();
 
 			toolbar.callListener('onRequestClose', { key: 'slide-pane-menu' });
+			// prettier-ignore
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,

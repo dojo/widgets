@@ -63,6 +63,7 @@ export class App extends WidgetBase<WidgetProperties> {
 
 		this.setState({ align: align });
 	}
+	// prettier-ignore
 	render(): DNode {
 		const {
 			activeIndex = 0,
@@ -85,10 +86,10 @@ export class App extends WidgetBase<WidgetProperties> {
 				styles: { marginBottom: '20px' },
 				onchange: this.onAlignChange
 			}, [
-				v('option', { selected: true, value: 'top' }, [ 'Top' ]),
-				v('option', { value: 'left' }, [ 'Left' ]),
-				v('option', { value: 'right' }, [ 'Right' ]),
-				v('option', { value: 'bottom' }, [ 'Bottom' ])
+				v('option', { selected: true, value: 'top' }, ['Top']),
+				v('option', { value: 'left' }, ['Left']),
+				v('option', { value: 'right' }, ['Right']),
+				v('option', { value: 'bottom' }, ['Bottom'])
 			]),
 			w(TabController, {
 				theme: this._theme,
@@ -107,8 +108,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						refresh = refreshData().then(() => {
 							this.setState({ loading: false });
 						});
-					}
-					else {
+					} else {
 						this.setState({ activeIndex: index });
 					}
 				}

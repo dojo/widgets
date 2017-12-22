@@ -16,10 +16,11 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+// prettier-ignore
 const expected = function(label = false) {
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null ]
+		classes: [css.root, null, null, null, null, null]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -29,7 +30,7 @@ const expected = function(label = false) {
 			readOnly: undefined,
 			required: undefined,
 			forId: <any> compareId
-		}, [ 'foo' ]) : null,
+		}, ['foo']) : null,
 		v('div', { classes: css.inputWrapper }, [
 			v('textarea', {
 				classes: css.input,
@@ -70,7 +71,6 @@ const expected = function(label = false) {
 let widget: Harness<Textarea>;
 
 registerSuite('Textarea', {
-
 	beforeEach() {
 		widget = harness(Textarea);
 	},
@@ -113,7 +113,7 @@ registerSuite('Textarea', {
 			widget.expectRender(expectedVdom);
 		},
 
-		'label'() {
+		label() {
 			widget.setProperties({
 				label: 'foo'
 			});
@@ -138,7 +138,7 @@ registerSuite('Textarea', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+				classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -157,7 +157,7 @@ registerSuite('Textarea', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null ]
+				classes: [css.root, null, null, css.valid, null, null]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');

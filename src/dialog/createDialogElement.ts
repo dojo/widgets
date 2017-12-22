@@ -11,7 +11,7 @@ export default function createDialogElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'closeable',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'closetext',
@@ -27,11 +27,11 @@ export default function createDialogElement(): CustomElementDescriptor {
 			},
 			{
 				attributeName: 'modal',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'open',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'role'
@@ -41,12 +41,10 @@ export default function createDialogElement(): CustomElementDescriptor {
 			},
 			{
 				attributeName: 'underlay',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			}
 		],
-		properties: [
-			{ propertyName: 'theme' }
-		],
+		properties: [{ propertyName: 'theme' }],
 		events: [
 			{
 				propertyName: 'onOpen',
@@ -58,4 +56,4 @@ export default function createDialogElement(): CustomElementDescriptor {
 			}
 		]
 	};
-};
+}

@@ -61,7 +61,7 @@ export interface DatePickerProperties extends ThemedProperties {
 	labelId?: string;
 	labels: CalendarMessages;
 	month: number;
-	monthNames: { short: string; long: string; }[];
+	monthNames: { short: string; long: string }[];
 	year: number;
 	yearRange?: number;
 	renderMonthLabel?(month: number, year: number): string;
@@ -110,10 +110,9 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 		const { year, yearRange = 20 } = this.properties;
 		const offset = (year - BASE_YEAR) % yearRange - yearRange * this._yearPage;
 
-		if ( year >= BASE_YEAR) {
+		if (year >= BASE_YEAR) {
 			return { first: year - offset, last: year + yearRange - offset };
-		}
-		else {
+		} else {
 			return { first: year - (yearRange + offset), last: year - offset };
 		}
 	}
@@ -135,14 +134,14 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 		if (this._callMonthPopupFocus && key.indexOf(`${this._idBase}_month_radios`) > -1) {
 			const month = key.split('_')[3];
 			if (this._monthPopupOpen && month === `${this.properties.month}`) {
-				(<HTMLInputElement> element.children[0]).focus();
+				(<HTMLInputElement>element.children[0]).focus();
 				this._callMonthPopupFocus = false;
 			}
 		}
 		if (this._callYearPopupFocus && key.indexOf(`${this._idBase}_year_radios`) > -1) {
 			const year = key.split('_')[3];
 			if (this._yearPopupOpen && year === `${this.properties.year}`) {
-				(<HTMLInputElement> element.children[0]).focus();
+				(<HTMLInputElement>element.children[0]).focus();
 				this._callYearPopupFocus = false;
 			}
 		}
@@ -159,11 +158,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 
 	private _onPopupKeyDown(event: KeyboardEvent) {
 		// close popup on escape, or if a value is selected with enter/space
-		if (
-			event.which === Keys.Escape ||
-			event.which === Keys.Enter ||
-			event.which === Keys.Space
-		) {
+		if (event.which === Keys.Escape || event.which === Keys.Enter || event.which === Keys.Space) {
 			this._closeMonthPopup();
 			this._closeYearPopup();
 		}
@@ -208,16 +203,13 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 	}
 
 	protected renderControlsTrigger(type: Controls): DNode {
-		const {
-			month,
-			monthNames,
-			year
-		} = this.properties;
+		const { month, monthNames, year } = this.properties;
 
 		const content = type === Controls.month ? monthNames[month].long : `${year}`;
 		const open = type === Controls.month ? this._monthPopupOpen : this._yearPopupOpen;
 		const onclick = type === Controls.month ? this._onMonthButtonClick : this._onYearButtonClick;
 
+		// prettier-ignore
 		return v('button', {
 			key: `${type}-button`,
 			'aria-controls': `${this._idBase}_${type}_dialog`,
@@ -230,7 +222,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 			]),
 			role: 'menuitem',
 			onclick
-		}, [ content ]);
+		}, [content]);
 	}
 
 	protected renderMonthLabel(month: number, year: number): DNode {
@@ -241,9 +233,10 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 	protected renderMonthRadios(): DNode[] {
 		const { month } = this.properties;
 
+		// prettier-ignore
 		return this.properties.monthNames.map((monthName, i) => v('label', {
 			key: `${this._idBase}_month_radios_${i}`,
-			classes: this.theme([ css.monthRadio, i === month ? css.monthRadioChecked : null ])
+			classes: this.theme([css.monthRadio, i === month ? css.monthRadioChecked : null])
 		}, [
 			v('input', {
 				checked: i === month,
@@ -258,7 +251,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 			v('abbr', {
 				classes: this.theme(css.monthRadioLabel),
 				title: monthName.long
-			}, [ monthName.short ])
+			}, [monthName.short])
 		]));
 	}
 
@@ -268,10 +261,12 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),
-				role: 'presentation', 'aria-hidden': 'true'
+			v('i', {
+				classes: this.theme([iconCss.icon, iconClass]),
+				role: 'presentation',
+				'aria-hidden': 'true'
 			}),
-			v('span', { classes: baseCss.visuallyHidden }, [ labelText ])
+			v('span', { classes: baseCss.visuallyHidden }, [labelText])
 		];
 	}
 
@@ -281,37 +276,35 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 
 		const yearLimits = this._getYearRange();
 		for (let i = yearLimits.first; i < yearLimits.last; i++) {
-			radios.push(v('label', {
-				key: `${this._idBase}_year_radios_${i}`,
-				classes: this.theme([ css.yearRadio, i === year ? css.yearRadioChecked : null ])
-			}, [
-				v('input', {
-					checked: i === year,
-					classes: this.theme(css.yearRadioInput),
-					name: `${this._idBase}_year_radios`,
-					tabIndex: this._yearPopupOpen ? 0 : -1,
-					type: 'radio',
-					value: `${i}`,
-					onchange: this._onYearRadioChange,
-					onmouseup: this._closeYearPopup
-				}),
-				v('abbr', {
-					classes: this.theme(css.yearRadioLabel)
-				}, [ `${ i }` ])
-			]));
+			// prettier-ignore
+			radios.push(
+				v('label', {
+					key: `${this._idBase}_year_radios_${i}`,
+					classes: this.theme([css.yearRadio, i === year ? css.yearRadioChecked : null])
+				},
+				[
+					v('input', {
+						checked: i === year,
+						classes: this.theme(css.yearRadioInput),
+						name: `${this._idBase}_year_radios`,
+						tabIndex: this._yearPopupOpen ? 0 : -1,
+						type: 'radio',
+						value: `${i}`,
+						onchange: this._onYearRadioChange,
+						onmouseup: this._closeYearPopup
+					}),
+					v('abbr', { classes: this.theme(css.yearRadioLabel) }, [`${ i }`])
+				])
+			);
 		}
 
 		return radios;
 	}
 
 	protected render(): DNode {
-		const {
-			labelId = `${this._idBase}_label`,
-			labels,
-			month,
-			year
-		} = this.properties;
+		const { labelId = `${this._idBase}_label`, labels, month, year } = this.properties;
 
+		// prettier-ignore
 		return v('div', {
 			classes: this.theme(css.datePicker)
 		}, [
@@ -322,10 +315,10 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				// hidden label
 				v('label', {
 					id: labelId,
-					classes: [ baseCss.visuallyHidden ],
+					classes: [baseCss.visuallyHidden],
 					'aria-live': 'polite',
 					'aria-atomic': 'false'
-				}, [ this.renderMonthLabel(month, year) ]),
+				}, [this.renderMonthLabel(month, year)]),
 
 				// month trigger
 				this.renderControlsTrigger(Controls.month),
@@ -339,7 +332,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				key: 'month-grid',
 				'aria-hidden': `${!this._monthPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_month_button`,
-				classes: [ this.theme(css.monthGrid), !this._monthPopupOpen ? baseCss.visuallyHidden : null ],
+				classes: [this.theme(css.monthGrid), !this._monthPopupOpen ? baseCss.visuallyHidden : null],
 				id: `${this._idBase}_month_dialog`,
 				role: 'dialog'
 			}, [
@@ -347,7 +340,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 					classes: this.theme(css.monthFields),
 					onkeydown: this._onPopupKeyDown
 				}, [
-					v('legend', { classes: baseCss.visuallyHidden }, [ labels.chooseMonth ]),
+					v('legend', { classes: baseCss.visuallyHidden }, [labels.chooseMonth]),
 					...this.renderMonthRadios()
 				])
 			]),
@@ -357,7 +350,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 				key: 'year-grid',
 				'aria-hidden': `${!this._yearPopupOpen}`,
 				'aria-labelledby': `${this._idBase}_year_button`,
-				classes: [ this.theme(css.yearGrid), !this._yearPopupOpen ? baseCss.visuallyHidden : null ],
+				classes: [this.theme(css.yearGrid), !this._yearPopupOpen ? baseCss.visuallyHidden : null],
 				id: `${this._idBase}_year_dialog`,
 				role: 'dialog'
 			}, [
@@ -365,7 +358,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 					classes: this.theme(css.yearFields),
 					onkeydown: this._onPopupKeyDown
 				}, [
-					v('legend', { classes: [ baseCss.visuallyHidden ] }, [ labels.chooseYear ]),
+					v('legend', { classes: [baseCss.visuallyHidden] }, [labels.chooseYear]),
 					...this.renderYearRadios()
 				]),
 				v('div', {

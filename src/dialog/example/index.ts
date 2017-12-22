@@ -39,6 +39,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
+	// prettier-ignore
 	render(): DNode {
 		return v('div', [
 			v('button', {
@@ -58,10 +59,11 @@ export class App extends WidgetBase<WidgetProperties> {
 					this.invalidate();
 				},
 				theme: this._theme
-			}, [
+			},
+			[
 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.`
 			]),
 			v('div', { classes: 'option' }, [
 				v('label', [

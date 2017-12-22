@@ -17,9 +17,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		return v('div', {
-			styles: { maxWidth: '256px' }
-		}, [
+		return v('div', { styles: { maxWidth: '256px' } }, [
 			v('h2', {}, ['Text Input Examples']),
 			v('label', [
 				'Use Dojo Theme ',
@@ -32,7 +30,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				v('h3', {}, ['String label']),
 				w(EnhancedTextInput, {
 					key: 't1',
-					addonBefore: [ '@' ],
+					addonBefore: ['@'],
 					describedBy: 'twitter-desc',
 					label: 'Twitter Username',
 					type: 'text',
@@ -44,14 +42,12 @@ export class App extends WidgetBase<WidgetProperties> {
 					},
 					theme: this._theme
 				}),
-				v('span', {
-					id: 'twitter-desc'
-				}, [ 'Not including the "@" symbol' ]),
+				v('span', { id: 'twitter-desc' }, ['Not including the "@" symbol']),
 				v('br'),
 				w(EnhancedTextInput, {
 					key: 't2',
-					addonBefore: [ '$' ],
-					addonAfter: [ '.00' ],
+					addonBefore: ['$'],
+					addonAfter: ['.00'],
 					label: 'Price, rounded to the nearest dollar',
 					type: 'number',
 					value: this._value2,

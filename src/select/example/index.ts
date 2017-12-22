@@ -56,7 +56,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		}
 	];
 
-	_evenMoreSelectOptions = [ 'Maru', 'Garfield', 'Grumpy Cat', 'Hobbes' ];
+	_evenMoreSelectOptions = ['Maru', 'Garfield', 'Grumpy Cat', 'Hobbes'];
 
 	getOptionSettings(): Partial<SelectProperties> {
 		return {
@@ -67,7 +67,6 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-
 		return v('div', [
 			v('label', [
 				'Use Dojo Theme ',

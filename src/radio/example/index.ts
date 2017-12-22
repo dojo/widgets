@@ -22,9 +22,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		const {
-			_inputValue = 'first'
-		} = this;
+		const { _inputValue = 'first' } = this;
 
 		return v('div', [
 			v('h2', {

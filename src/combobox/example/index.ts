@@ -86,21 +86,19 @@ export class App extends WidgetBase<WidgetProperties> {
 
 	onRequestResults(key: string) {
 		const value = (this as any)[`_value${key}`];
-		const results = data.filter(item => {
+		const results = data.filter((item) => {
 			const match = item.value.toLowerCase().match(new RegExp('^' + value.toLowerCase()));
 			return Boolean(match && match.length > 0);
 		});
 
-		this._results = results.sort((a, b) => a.value < b.value ? -1 : 1);
+		this._results = results.sort((a, b) => (a.value < b.value ? -1 : 1));
 		this.invalidate();
 	}
 
 	render(): DNode {
-		const {
-			onChange,
-			onRequestResults
-		} = this;
+		const { onChange, onRequestResults } = this;
 
+		// prettier-ignore
 		return v('div', {
 			styles: { maxWidth: '256px' }
 		}, [

@@ -43,7 +43,7 @@ export interface DialogProperties extends ThemedProperties {
 	role?: RoleType;
 	title?: string;
 	underlay?: boolean;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -54,10 +54,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 	private _wasOpen: boolean;
 
 	private _onCloseClick() {
-		const {
-			closeable = true,
-			onRequestClose
-		} = this.properties;
+		const { closeable = true, onRequestClose } = this.properties;
 
 		closeable && onRequestClose && onRequestClose();
 	}
@@ -70,7 +67,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 		if (event.which === Keys.Escape) {
 			this._onCloseClick();
 		}
-	}
+	};
 
 	constructor() {
 		super();
@@ -82,27 +79,33 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 	}
 
 	protected getContent(): DNode {
-		return v('div', {
-			classes: this.theme(css.content),
-			key: 'content'
-		}, this.children);
+		return v(
+			'div',
+			{
+				classes: this.theme(css.content),
+				key: 'content'
+			},
+			this.children
+		);
 	}
 
 	protected renderCloseIcon(): DNode {
-		return v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
-			role: 'presentation', 'aria-hidden': 'true'
+		return v('i', {
+			classes: this.theme([iconCss.icon, iconCss.closeIcon]),
+			role: 'presentation',
+			'aria-hidden': 'true'
 		});
 	}
 
 	protected renderTitle(): DNode {
 		const { title = '' } = this.properties;
-		return v('div', { id: this._titleId }, [ title ]);
+		return v('div', { id: this._titleId }, [title]);
 	}
 
 	protected renderUnderlay(): DNode {
 		const { underlay } = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
+			classes: [this.theme(underlay ? css.underlayVisible : null), css.underlay],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay',
@@ -125,33 +128,33 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 
 		this._wasOpen = open;
 
-		return v('div', {
-			classes: this.theme(css.root)
-		}, open ? [
-			this.renderUnderlay(),
-			v('div', {
-				'aria-labelledby': this._titleId,
-				classes: this.theme(css.main),
-				enterAnimation,
-				exitAnimation,
-				key: 'main',
-				role
-			}, [
-				v('div', {
-					classes: this.theme(css.title),
-					key: 'title'
-				}, [
-					this.renderTitle(),
-					closeable ? v('button', {
-						classes: this.theme(css.close),
-						onclick: this._onCloseClick
-					}, [
-						closeText,
-						this.renderCloseIcon()
-					]) : null
-				]),
-				this.getContent()
-			])
-		] : []);
+		// prettier-ignore
+		return v('div', { classes: this.theme(css.root) },
+			open
+				? [
+						this.renderUnderlay(),
+						v('div', {
+							'aria-labelledby': this._titleId,
+							classes: this.theme(css.main),
+							enterAnimation,
+							exitAnimation,
+							key: 'main',
+							role
+						},
+						[
+							v('div', { classes: this.theme(css.title), key: 'title' }, [
+								this.renderTitle(),
+								closeable
+									? v('button', {
+										classes: this.theme(css.close),
+										onclick: this._onCloseClick
+									}, [closeText, this.renderCloseIcon()])
+									: null
+							]),
+							this.getContent()
+						])
+					]
+				: []
+		);
 	}
 }

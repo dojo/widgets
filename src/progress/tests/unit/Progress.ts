@@ -1,20 +1,13 @@
-const { beforeEach, afterEach, describe, it} = intern.getInterface('bdd');
+const { beforeEach, afterEach, describe, it } = intern.getInterface('bdd');
 import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import Progress from '../../Progress';
 import * as css from '../../styles/progress.m.css';
 
 const expectedVDom = function(args: any) {
-	const {
-		width,
-		output,
-		value,
-		showOutput = true,
-		max = 100,
-		min = 0,
-		id
-	} = args;
+	const { width, output, value, showOutput = true, max = 100, min = 0, id } = args;
 
+	// prettier-ignore
 	return v('div', { classes: css.root }, [
 		v('div', {
 			classes: css.bar,
@@ -32,14 +25,13 @@ const expectedVDom = function(args: any) {
 				}
 			})
 		]),
-		showOutput ? v('span', { classes: css.output }, [ output ]) : null
+		showOutput ? v('span', { classes: css.output }, [output]) : null
 	]);
 };
 
 let widget: Harness<Progress>;
 
 describe('Progress', () => {
-
 	beforeEach(() => {
 		widget = harness(Progress);
 	});

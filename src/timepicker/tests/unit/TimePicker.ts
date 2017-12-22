@@ -15,7 +15,6 @@ const compareId = compareProperty((value: any) => {
 });
 
 registerSuite('TimePicker', {
-
 	getOptions: {
 		'Should include each minute for a full day by default'() {
 			const options = getOptions();
@@ -56,11 +55,15 @@ registerSuite('TimePicker', {
 			minute: 0,
 			second: 0
 		});
-		assert.deepEqual(parseUnits('55:98:72'), {
-			hour: 55,
-			minute: 98,
-			second: 72
-		}, 'does not check for invalid units');
+		assert.deepEqual(
+			parseUnits('55:98:72'),
+			{
+				hour: 55,
+				minute: 98,
+				second: 72
+			},
+			'does not check for invalid units'
+		);
 	},
 
 	'Custom input': {
@@ -81,7 +84,7 @@ registerSuite('TimePicker', {
 				w(ComboBox, {
 					clearable: true,
 					disabled: false,
-					getResultLabel: <any> picker.listener,
+					getResultLabel: <any>picker.listener,
 					inputProperties: undefined,
 					invalid: true,
 					isResultDisabled: undefined,
@@ -159,7 +162,11 @@ registerSuite('TimePicker', {
 			assert.sameDeepMembers(actualOptions, expectedOptions);
 
 			vnode.properties.onRequestResults('12:34:56');
-			assert.strictEqual(actualOptions, onRequestOptions.secondCall.args[1], 'The options array should be cached.');
+			assert.strictEqual(
+				actualOptions,
+				onRequestOptions.secondCall.args[1],
+				'The options array should be cached.'
+			);
 
 			picker.destroy();
 		}
@@ -173,8 +180,9 @@ registerSuite('TimePicker', {
 				name: 'some-field',
 				useNativeElement: true
 			});
+			// prettier-ignore
 			picker.expectRender(v('div', {
-				classes: [ css.root, null, null, null, null ],
+				classes: [css.root, null, null, null, null],
 				key: 'root'
 			}, [
 				null,
@@ -220,8 +228,9 @@ registerSuite('TimePicker', {
 				value: '11:30'
 			});
 
+			// prettier-ignore
 			picker.expectRender(v('div', {
-				classes: [ css.root,
+				classes: [css.root,
 					css.disabled,
 					css.invalid,
 					css.readonly,
@@ -262,8 +271,9 @@ registerSuite('TimePicker', {
 				label: 'foo',
 				useNativeElement: true
 			});
+			// prettier-ignore
 			picker.expectRender(v('div', {
-				classes: [ css.root, null, null, null, null ],
+				classes: [css.root, null, null, null, null],
 				key: 'root'
 			}, [
 				w(Label, {
@@ -274,7 +284,7 @@ registerSuite('TimePicker', {
 					readOnly: undefined,
 					required: undefined,
 					forId: <any> compareId
-				}, [ 'foo' ]),
+				}, ['foo']),
 				v('input', {
 					'aria-describedby': undefined,
 					'aria-invalid': null,

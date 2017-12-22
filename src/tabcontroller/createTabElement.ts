@@ -12,19 +12,16 @@ export default function createTabElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'closeable',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'disabled',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'key'
 			}
 		],
-		properties: [
-			{ propertyName: 'label' },
-			{ propertyName: 'theme' }
-		]
+		properties: [{ propertyName: 'label' }, { propertyName: 'theme' }]
 	};
-};
+}

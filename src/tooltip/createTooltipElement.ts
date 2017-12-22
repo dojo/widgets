@@ -11,15 +11,12 @@ export default function createTooltipElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'open',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'orientation'
 			}
 		],
-		properties: [
-			{ propertyName: 'content' },
-			{ propertyName: 'theme' }
-		]
+		properties: [{ propertyName: 'content' }, { propertyName: 'theme' }]
 	};
-};
+}

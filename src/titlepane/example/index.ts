@@ -18,11 +18,9 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		const {
-			_t2Open,
-			_t3Open
-		} = this;
+		const { _t2Open, _t3Open } = this;
 
+		// prettier-ignore
 		return v('div', {
 			styles: {
 				margin: '20px',

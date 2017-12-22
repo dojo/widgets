@@ -22,30 +22,33 @@ registerSuite('Button', {
 
 	tests: {
 		'no content'() {
-			widget.expectRender(v('button', {
-				'aria-controls': null,
-				'aria-describedby': undefined,
-				'aria-expanded': null,
-				'aria-haspopup': null,
-				'aria-pressed': null,
-				classes: [ css.root, null, null, null ],
-				disabled: undefined,
-				id: undefined,
-				name: undefined,
-				onblur: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener,
-				type: undefined,
-				value: undefined
-			}, [ null ]));
+			// prettier-ignore
+			widget.expectRender(
+				v('button', {
+					'aria-controls': null,
+					'aria-describedby': undefined,
+					'aria-expanded': null,
+					'aria-haspopup': null,
+					'aria-pressed': null,
+					classes: [css.root, null, null, null],
+					disabled: undefined,
+					id: undefined,
+					name: undefined,
+					onblur: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					onkeydown: widget.listener,
+					onkeypress: widget.listener,
+					onkeyup: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener,
+					type: undefined,
+					value: undefined
+				}, [null])
+			);
 		},
 
 		'properties and attributes'() {
@@ -65,37 +68,40 @@ registerSuite('Button', {
 			widget.setProperties(buttonProperties);
 			widget.setChildren(['foo']);
 
-			widget.expectRender(v('button', {
-				'aria-controls': (<any> buttonProperties.popup).id,
-				'aria-describedby': buttonProperties.describedBy,
-				'aria-expanded': String((<any> buttonProperties.popup).expanded),
-				'aria-haspopup': 'true',
-				'aria-pressed': String(buttonProperties.pressed),
-				classes: [ css.root, css.disabled, css.popup, css.pressed ],
-				disabled: buttonProperties.disabled,
-				name: buttonProperties.name,
-				id: buttonProperties.id,
-				onblur: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener,
-				type: buttonProperties.type,
-				value: buttonProperties.value
-			}, [
-				'foo',
-				v('i', {
-					classes: [ css.addon, iconCss.icon, iconCss.downIcon ],
-					role: 'presentation',
-					'aria-hidden': 'true'
-				})
-			]));
+			// prettier-ignore
+			widget.expectRender(
+				v('button', {
+					'aria-controls': (<any> buttonProperties.popup).id,
+					'aria-describedby': buttonProperties.describedBy,
+					'aria-expanded': String((<any> buttonProperties.popup).expanded),
+					'aria-haspopup': 'true',
+					'aria-pressed': String(buttonProperties.pressed),
+					classes: [css.root, css.disabled, css.popup, css.pressed],
+					disabled: buttonProperties.disabled,
+					name: buttonProperties.name,
+					id: buttonProperties.id,
+					onblur: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					onkeydown: widget.listener,
+					onkeypress: widget.listener,
+					onkeyup: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener,
+					type: buttonProperties.type,
+					value: buttonProperties.value
+				}, [
+					'foo',
+					v('i', {
+						classes: [css.addon, iconCss.icon, iconCss.downIcon],
+						role: 'presentation',
+						'aria-hidden': 'true'
+					})
+				])
+			);
 		},
 
 		'popup = true'() {
@@ -103,36 +109,39 @@ registerSuite('Button', {
 				popup: true
 			});
 
-			widget.expectRender(v('button', {
-				'aria-controls': '',
-				'aria-describedby': undefined,
-				'aria-expanded': 'false',
-				'aria-haspopup': 'true',
-				'aria-pressed': null,
-				classes: [ css.root, null, css.popup, null ],
-				disabled: undefined,
-				name: undefined,
-				id: undefined,
-				onblur: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener,
-				type: undefined,
-				value: undefined
-			}, [
-				v('i', {
-					classes: [ css.addon, iconCss.icon, iconCss.downIcon ],
-					role: 'presentation',
-					'aria-hidden': 'true'
-				})
-			]));
+			// prettier-ignore
+			widget.expectRender(
+				v('button', {
+					'aria-controls': '',
+					'aria-describedby': undefined,
+					'aria-expanded': 'false',
+					'aria-haspopup': 'true',
+					'aria-pressed': null,
+					classes: [css.root, null, css.popup, null],
+					disabled: undefined,
+					name: undefined,
+					id: undefined,
+					onblur: widget.listener,
+					onclick: widget.listener,
+					onfocus: widget.listener,
+					onkeydown: widget.listener,
+					onkeypress: widget.listener,
+					onkeyup: widget.listener,
+					onmousedown: widget.listener,
+					onmouseup: widget.listener,
+					ontouchstart: widget.listener,
+					ontouchend: widget.listener,
+					ontouchcancel: widget.listener,
+					type: undefined,
+					value: undefined
+				}, [
+					v('i', {
+						classes: [css.addon, iconCss.icon, iconCss.downIcon],
+						role: 'presentation',
+						'aria-hidden': 'true'
+					})
+				])
+			);
 		},
 
 		events() {
@@ -146,14 +155,30 @@ registerSuite('Button', {
 			let mouseup = false;
 
 			widget.setProperties({
-				onBlur: () => { blurred = true; },
-				onClick: () => { clicked = true; },
-				onFocus: () => { focused = true; },
-				onKeyDown: () => { keydown = true; },
-				onKeyPress: () => { keypress = true; },
-				onKeyUp: () => { keyup = true; },
-				onMouseDown: () => { mousedown = true; },
-				onMouseUp: () => { mouseup = true; }
+				onBlur: () => {
+					blurred = true;
+				},
+				onClick: () => {
+					clicked = true;
+				},
+				onFocus: () => {
+					focused = true;
+				},
+				onKeyDown: () => {
+					keydown = true;
+				},
+				onKeyPress: () => {
+					keypress = true;
+				},
+				onKeyUp: () => {
+					keyup = true;
+				},
+				onMouseDown: () => {
+					mousedown = true;
+				},
+				onMouseUp: () => {
+					mouseup = true;
+				}
 			});
 
 			widget.sendEvent('blur');
@@ -184,9 +209,15 @@ registerSuite('Button', {
 			let touchcancel = false;
 
 			widget.setProperties({
-				onTouchStart: () => { touchstart = true; },
-				onTouchEnd: () => { touchend = true; },
-				onTouchCancel: () => { touchcancel = true; }
+				onTouchStart: () => {
+					touchstart = true;
+				},
+				onTouchEnd: () => {
+					touchend = true;
+				},
+				onTouchCancel: () => {
+					touchcancel = true;
+				}
 			});
 
 			widget.sendEvent('touchstart');

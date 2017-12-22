@@ -31,40 +31,40 @@ import * as iconCss from '../common/styles/icons.m.css';
 export interface CalendarProperties extends ThemedProperties {
 	labels?: CalendarMessages;
 	month?: number;
-	monthNames?: { short: string; long: string; }[];
+	monthNames?: { short: string; long: string }[];
 	selectedDate?: Date;
-	weekdayNames?: { short: string; long: string; }[];
+	weekdayNames?: { short: string; long: string }[];
 	year?: number;
 	renderMonthLabel?(month: number, year: number): string;
-	renderWeekdayCell?(day: { short: string; long: string; }): DNode;
+	renderWeekdayCell?(day: { short: string; long: string }): DNode;
 	onMonthChange?(month: number): void;
 	onYearChange?(year: number): void;
 	onDateSelect?(date: Date): void;
 }
 
 export const DEFAULT_MONTHS = [
-	{short: 'Jan', long: 'January'},
-	{short: 'Feb', long: 'February'},
-	{short: 'Mar', long: 'March'},
-	{short: 'Apr', long: 'April'},
-	{short: 'May', long: 'May'},
-	{short: 'Jun', long: 'June'},
-	{short: 'Jul', long: 'July'},
-	{short: 'Aug', long: 'August'},
-	{short: 'Sep', long: 'September'},
-	{short: 'Oct', long: 'October'},
-	{short: 'Nov', long: 'November'},
-	{short: 'Dec', long: 'December'}
+	{ short: 'Jan', long: 'January' },
+	{ short: 'Feb', long: 'February' },
+	{ short: 'Mar', long: 'March' },
+	{ short: 'Apr', long: 'April' },
+	{ short: 'May', long: 'May' },
+	{ short: 'Jun', long: 'June' },
+	{ short: 'Jul', long: 'July' },
+	{ short: 'Aug', long: 'August' },
+	{ short: 'Sep', long: 'September' },
+	{ short: 'Oct', long: 'October' },
+	{ short: 'Nov', long: 'November' },
+	{ short: 'Dec', long: 'December' }
 ];
 
 export const DEFAULT_WEEKDAYS = [
-	{short: 'Sun', long: 'Sunday'},
-	{short: 'Mon', long: 'Monday'},
-	{short: 'Tue', long: 'Tuesday'},
-	{short: 'Wed', long: 'Wednesday'},
-	{short: 'Thu', long: 'Thursday'},
-	{short: 'Fri', long: 'Friday'},
-	{short: 'Sat', long: 'Saturday'}
+	{ short: 'Sun', long: 'Sunday' },
+	{ short: 'Mon', long: 'Monday' },
+	{ short: 'Tue', long: 'Tuesday' },
+	{ short: 'Wed', long: 'Wednesday' },
+	{ short: 'Thu', long: 'Thursday' },
+	{ short: 'Fri', long: 'Friday' },
+	{ short: 'Sat', long: 'Saturday' }
 ];
 
 export const DEFAULT_LABELS: CalendarMessages = {
@@ -91,11 +91,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	private _getMonthYear() {
-		const {
-			month,
-			selectedDate = this._defaultDate,
-			year
-		} = this.properties;
+		const { month, selectedDate = this._defaultDate, year } = this.properties;
 		return {
 			month: typeof month === 'number' ? month : selectedDate.getMonth(),
 			year: typeof year === 'number' ? year : selectedDate.getFullYear()
@@ -103,18 +99,14 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	private _goToDate(day: number) {
-		const {
-			month,
-			year
-		} = this._getMonthYear();
+		const { month, year } = this._getMonthYear();
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 
 		if (day < 1) {
 			this._onMonthDecrement();
 			day += previousMonthLength;
-		}
-		else if (day > currentMonthLength) {
+		} else if (day > currentMonthLength) {
 			this._onMonthIncrement();
 			day -= currentMonthLength;
 		}
@@ -131,8 +123,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		if (disabled && date < 15) {
 			({ month, year } = this._onMonthIncrement());
 			this._callDateFocus = true;
-		}
-		else if (disabled && date >= 15) {
+		} else if (disabled && date >= 15) {
 			({ month, year } = this._onMonthDecrement());
 			this._callDateFocus = true;
 		}
@@ -180,14 +171,8 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	private _onMonthDecrement() {
-		const {
-			month,
-			year
-		} = this._getMonthYear();
-		const {
-			onMonthChange,
-			onYearChange
-		} = this.properties;
+		const { month, year } = this._getMonthYear();
+		const { onMonthChange, onYearChange } = this.properties;
 
 		if (month === 0) {
 			onMonthChange && onMonthChange(11);
@@ -200,14 +185,8 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	private _onMonthIncrement() {
-		const {
-			month,
-			year
-		} = this._getMonthYear();
-		const {
-			onMonthChange,
-			onYearChange
-		} = this.properties;
+		const { month, year } = this._getMonthYear();
+		const { onMonthChange, onYearChange } = this.properties;
 
 		if (month === 11) {
 			onMonthChange && onMonthChange(0);
@@ -228,10 +207,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	private _renderDateGrid(selectedDate?: Date) {
-		const {
-			month,
-			year
-		} = this._getMonthYear();
+		const { month, year } = this._getMonthYear();
 
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
@@ -256,13 +232,11 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 				if (date > dayIndex && date >= previousMonthLength) {
 					date = 1;
 					isCurrentMonth = true;
-				}
-				// if we've reached the end of the current month, reset to 1
-				else if (date <= dayIndex && date >= currentMonthLength) {
+				} else if (date <= dayIndex && date >= currentMonthLength) {
+					// if we've reached the end of the current month, reset to 1
 					date = 1;
 					isCurrentMonth = false;
-				}
-				else {
+				} else {
 					date++;
 				}
 				dayIndex++;
@@ -271,8 +245,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 				dateString = new Date(year, month, date).toDateString();
 				if (isCurrentMonth && selectedDate && dateString === selectedDate.toDateString()) {
 					isSelectedDay = true;
-				}
-				else {
+				} else {
 					isSelectedDay = false;
 				}
 
@@ -287,7 +260,13 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		return weeks;
 	}
 
-	protected renderDateCell(date: number, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
+	protected renderDateCell(
+		date: number,
+		index: number,
+		selected: boolean,
+		currentMonth: boolean,
+		today: boolean
+	): DNode {
 		const { theme } = this.properties;
 
 		return w(CalendarCell, {
@@ -314,10 +293,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 			onMonthChange,
 			onYearChange
 		} = this.properties;
-		const {
-			month,
-			year
-		} = this._getMonthYear();
+		const { month, year } = this._getMonthYear();
 
 		return w(DatePicker, {
 			key: 'date-picker',
@@ -346,35 +322,35 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),
-				role: 'presentation', 'aria-hidden': 'true'
+			v('i', {
+				classes: this.theme([iconCss.icon, iconClass]),
+				role: 'presentation',
+				'aria-hidden': 'true'
 			}),
-			v('span', { classes: [ baseCss.visuallyHidden ] }, [ labelText ])
+			v('span', { classes: [baseCss.visuallyHidden] }, [labelText])
 		];
 	}
 
-	protected renderWeekdayCell(day: { short: string; long: string; }): DNode {
+	protected renderWeekdayCell(day: { short: string; long: string }): DNode {
 		const { renderWeekdayCell } = this.properties;
-		return renderWeekdayCell ? renderWeekdayCell(day) : v('abbr', { title: day.long }, [ day.short ]);
+		return renderWeekdayCell ? renderWeekdayCell(day) : v('abbr', { title: day.long }, [day.short]);
 	}
 
 	protected render(): DNode {
-		const {
-			selectedDate,
-			weekdayNames = DEFAULT_WEEKDAYS
-		} = this.properties;
+		const { selectedDate, weekdayNames = DEFAULT_WEEKDAYS } = this.properties;
 
 		// Calendar Weekday array
 		const weekdays = [];
 		for (const weekday in weekdayNames) {
-			weekdays.push(v('th', {
-				role: 'columnheader',
-				classes: this.theme(css.weekday)
-			}, [
-				this.renderWeekdayCell(weekdayNames[weekday])
-			]));
+			// prettier-ignore
+			weekdays.push(
+				v('th', { role: 'columnheader', classes: this.theme(css.weekday) }, [
+					this.renderWeekdayCell(weekdayNames[weekday])
+				])
+			);
 		}
 
+		// prettier-ignore
 		return v('div', { classes: this.theme(css.root) }, [
 			// header
 			this.renderDatePicker(),
@@ -384,7 +360,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 				cellpadding: '0',
 				role: 'grid',
 				'aria-labelledby': this._monthLabelId,
-				classes: [ this.theme(css.dateGrid), this._popupOpen ? baseCss.visuallyHidden : null ]
+				classes: [this.theme(css.dateGrid), this._popupOpen ? baseCss.visuallyHidden : null]
 			}, [
 				v('thead', [
 					v('tr', weekdays)
@@ -393,7 +369,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 			]),
 			// controls
 			v('div', {
-				classes: [ this.theme(css.controls), this._popupOpen ? baseCss.visuallyHidden : null ]
+				classes: [this.theme(css.controls), this._popupOpen ? baseCss.visuallyHidden : null]
 			}, [
 				v('button', {
 					classes: this.theme(css.previous),

@@ -45,27 +45,20 @@ export interface TabButtonProperties extends ThemedProperties {
 	onLeftArrowPress?: () => void;
 	onRightArrowPress?: () => void;
 	onUpArrowPress?: () => void;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
 	private _onClick() {
-		const {
-			disabled,
-			index,
-			onClick
-		} = this.properties;
+		const { disabled, index, onClick } = this.properties;
 
 		!disabled && onClick && onClick(index);
 	}
 
 	private _onCloseClick(event: MouseEvent) {
-		const {
-			index,
-			onCloseClick
-		} = this.properties;
+		const { index, onCloseClick } = this.properties;
 
 		event.stopPropagation();
 		onCloseClick && onCloseClick(index);
@@ -133,6 +126,7 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 	protected getContent(): DNode[] {
 		const { active, closeable } = this.properties;
 
+		// prettier-ignore
 		return [
 			...this.children,
 			closeable ? v('button', {
@@ -146,10 +140,7 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 
 	protected getModifierClasses(): (string | null)[] {
 		const { active, disabled } = this.properties;
-		return [
-			active ? css.activeTabButton : null,
-			disabled ? css.disabledTabButton : null
-		];
+		return [active ? css.activeTabButton : null, disabled ? css.disabledTabButton : null];
 	}
 
 	protected onElementCreated(element: HTMLElement, key: string) {
@@ -161,18 +152,14 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 	}
 
 	render(): DNode {
-		const {
-			active,
-			controls,
-			disabled,
-			id
-		} = this.properties;
+		const { active, controls, disabled, id } = this.properties;
 
+		// prettier-ignore
 		return v('div', {
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
 			'aria-selected': active === true ? 'true' : 'false',
-			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
+			classes: this.theme([css.tabButton, ...this.getModifierClasses()]),
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,

@@ -19,8 +19,9 @@ registerSuite('Tooltip', {
 
 	tests: {
 		'should construct Tooltip'() {
+			// prettier-ignore
 			widget.expectRender(v('div', {
-				classes: [ css.right, css.rootFixed, css.rightFixed ]
+				classes: [css.right, css.rootFixed, css.rightFixed]
 			}, [
 				v('div', { key: 'target' }, []),
 				null
@@ -33,14 +34,15 @@ registerSuite('Tooltip', {
 				open: true
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
-				classes: [ css.right, css.rootFixed, css.rightFixed ]
+				classes: [css.right, css.rootFixed, css.rightFixed]
 			}, [
 				v('div', { key: 'target' }, []),
 				v('div', {
 					key: 'content',
-					classes: [ css.content, css.contentFixed ]
-				}, [ 'foobar' ])
+					classes: [css.content, css.contentFixed]
+				}, ['foobar'])
 			]));
 		},
 
@@ -50,8 +52,9 @@ registerSuite('Tooltip', {
 				content: 'foobar'
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
-				classes: [ css.bottom, css.rootFixed, css.bottomFixed ]
+				classes: [css.bottom, css.rootFixed, css.bottomFixed]
 			}, [
 				v('div', { key: 'target' }, []),
 				null

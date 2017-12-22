@@ -28,6 +28,7 @@ registerSuite('ListboxOption', {
 				option: 'baz'
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-disabled': null,
 				'aria-selected': 'false',
@@ -35,13 +36,13 @@ registerSuite('ListboxOption', {
 				id: 'bar',
 				role: 'option',
 				onclick: widget.listener
-			}, [ 'foo' ]));
+			}, ['foo']));
 		},
 
 		'custom properties'() {
 			widget.setProperties({
 				active: true,
-				classes: [ css.option ],
+				classes: [css.option],
 				disabled: true,
 				label: 'foo',
 				id: 'bar',
@@ -50,14 +51,15 @@ registerSuite('ListboxOption', {
 				selected: true
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-disabled': 'true',
 				'aria-selected': null,
-				classes: [ css.option ],
+				classes: [css.option],
 				id: 'bar',
 				role: 'option',
 				onclick: widget.listener
-			}, [ 'foo' ]));
+			}, ['foo']));
 		},
 
 		'option click'() {

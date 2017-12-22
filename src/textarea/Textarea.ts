@@ -3,7 +3,13 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
-import { InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import {
+	InputProperties,
+	LabeledProperties,
+	InputEventProperties,
+	PointerEventProperties,
+	KeyEventProperties
+} from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
 import * as css from './styles/textarea.m.css';
 
@@ -20,7 +26,13 @@ import * as css from './styles/textarea.m.css';
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties {
+export interface TextareaProperties
+	extends ThemedProperties,
+		InputProperties,
+		LabeledProperties,
+		InputEventProperties,
+		KeyEventProperties,
+		PointerEventProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -34,19 +46,45 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export default class Textarea<P extends TextareaProperties = TextareaProperties> extends ThemedBase<P, null> {
-	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
-	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
-	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
-	private _onInput (event: Event) { this.properties.onInput && this.properties.onInput(event); }
-	private _onKeyDown (event: KeyboardEvent) { this.properties.onKeyDown && this.properties.onKeyDown(event); }
-	private _onKeyPress (event: KeyboardEvent) { this.properties.onKeyPress && this.properties.onKeyPress(event); }
-	private _onKeyUp (event: KeyboardEvent) { this.properties.onKeyUp && this.properties.onKeyUp(event); }
-	private _onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
-	private _onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
-	private _onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
-	private _onTouchEnd (event: TouchEvent) { this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
-	private _onTouchCancel (event: TouchEvent) { this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+	private _onBlur(event: FocusEvent) {
+		this.properties.onBlur && this.properties.onBlur(event);
+	}
+	private _onChange(event: Event) {
+		this.properties.onChange && this.properties.onChange(event);
+	}
+	private _onClick(event: MouseEvent) {
+		this.properties.onClick && this.properties.onClick(event);
+	}
+	private _onFocus(event: FocusEvent) {
+		this.properties.onFocus && this.properties.onFocus(event);
+	}
+	private _onInput(event: Event) {
+		this.properties.onInput && this.properties.onInput(event);
+	}
+	private _onKeyDown(event: KeyboardEvent) {
+		this.properties.onKeyDown && this.properties.onKeyDown(event);
+	}
+	private _onKeyPress(event: KeyboardEvent) {
+		this.properties.onKeyPress && this.properties.onKeyPress(event);
+	}
+	private _onKeyUp(event: KeyboardEvent) {
+		this.properties.onKeyUp && this.properties.onKeyUp(event);
+	}
+	private _onMouseDown(event: MouseEvent) {
+		this.properties.onMouseDown && this.properties.onMouseDown(event);
+	}
+	private _onMouseUp(event: MouseEvent) {
+		this.properties.onMouseUp && this.properties.onMouseUp(event);
+	}
+	private _onTouchStart(event: TouchEvent) {
+		this.properties.onTouchStart && this.properties.onTouchStart(event);
+	}
+	private _onTouchEnd(event: TouchEvent) {
+		this.properties.onTouchEnd && this.properties.onTouchEnd(event);
+	}
+	private _onTouchCancel(event: TouchEvent) {
+		this.properties.onTouchCancel && this.properties.onTouchCancel(event);
+	}
 
 	private _uuid: string;
 
@@ -56,12 +94,7 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
+		const { disabled, invalid, readOnly, required } = this.properties;
 		return [
 			css.root,
 			disabled ? css.disabled : null,
@@ -93,6 +126,7 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 			labelAfter
 		} = this.properties;
 
+		// prettier-ignore
 		const children = [
 			label ? w(Label, {
 				theme,
@@ -102,7 +136,7 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 				required,
 				hidden: labelHidden,
 				forId: this._uuid
-			}, [ label ]) : null,
+			}, [label]) : null,
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('textarea', {
 					id: this._uuid,
@@ -139,6 +173,7 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 			])
 		];
 
+		// prettier-ignore
 		return v('div', {
 			key: 'root',
 			classes: this.theme(this.getRootClasses())

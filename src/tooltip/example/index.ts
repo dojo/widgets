@@ -30,9 +30,10 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
+	// prettier-ignore
 	render() {
 		return v('div', [
-			v('h2', [ 'Tooltip Examples' ]),
+			v('h2', ['Tooltip Examples']),
 			v('label', [
 				'Use Dojo Theme ',
 				v('input', {
@@ -54,7 +55,7 @@ export class App extends WidgetBase<WidgetProperties> {
 							const exists = this._open.has('foo');
 							exists ? this.onHide('foo') : this.onShow('foo');
 						}
-					}, [ 'Click me' ])
+					}, ['Click me'])
 				])
 			]),
 			v('div', { id: 'example-2' }, [
