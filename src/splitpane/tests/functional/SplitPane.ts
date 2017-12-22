@@ -181,10 +181,6 @@ registerSuite('SplitPane', {
 	},
 	'a minimum size should not be exceeded'() {
 		let command: Command<Element | void> = getPage(this).findByCssSelector(`#example-max .${css.root}`);
-		let containerWidth = 0;
-		command = command.getSize().then(({ width }) => {
-			containerWidth = width;
-		});
 		command = testResizes(
 			command,
 			[{ x: 10, y: 0 }, { x: -9999, y: 0 }, { x: 10, y: 0 }],

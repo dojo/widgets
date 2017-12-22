@@ -12,10 +12,6 @@ const isNonEmptyString = compareProperty((value: any) => {
 	return typeof value === 'string' && value.length > 0;
 });
 
-interface TestEventInit extends EventInit {
-	keyCode: number;
-}
-
 let titlePane: Harness<TitlePane>;
 registerSuite('TitlePane', {
 	beforeEach() {
