@@ -16,6 +16,7 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+// prettier-ignore
 const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
 	return v('div', {
 		key: 'root',
@@ -69,7 +70,6 @@ const expected = function(label = false, classes: (string | null)[] = [ css.root
 let widget: Harness<TextInput>;
 
 registerSuite('TextInput', {
-
 	beforeEach() {
 		widget = harness(TextInput);
 	},
@@ -97,7 +97,7 @@ registerSuite('TextInput', {
 
 			const expectedVdom = expected();
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, null, null, null ]
+				classes: [css.root, null, null, null, null, null]
 			});
 			assignProperties(findKey(expectedVdom, 'input')!, {
 				'aria-controls': 'foo',
@@ -113,7 +113,7 @@ registerSuite('TextInput', {
 			widget.expectRender(expectedVdom);
 		},
 
-		'label'() {
+		label() {
 			widget.setProperties({
 				label: 'foo'
 			});
@@ -129,7 +129,7 @@ registerSuite('TextInput', {
 				required: true
 			});
 
-			let expectedVdom = expected(false, [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]);
+			let expectedVdom = expected(false, [css.root, css.disabled, css.invalid, null, css.readonly, css.required]);
 			assignProperties(findKey(expectedVdom, 'input')!, {
 				disabled: true,
 				'aria-invalid': 'true',
@@ -154,7 +154,7 @@ registerSuite('TextInput', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null ]
+				classes: [css.root, null, null, css.valid, null, null]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');

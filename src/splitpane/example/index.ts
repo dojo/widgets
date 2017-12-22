@@ -30,6 +30,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			border: '1px solid rgba(170, 170, 170, 0.5)'
 		};
 
+		// prettier-ignore
 		return v('div', {
 			styles: {
 				padding: '50px'

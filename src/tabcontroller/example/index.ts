@@ -63,6 +63,7 @@ export class App extends WidgetBase<WidgetProperties> {
 
 		this.setState({ align: align });
 	}
+	// prettier-ignore
 	render(): DNode {
 		const {
 			activeIndex = 0,

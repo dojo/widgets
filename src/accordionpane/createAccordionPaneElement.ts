@@ -8,10 +8,7 @@ export default function createAccordionPaneElement(): CustomElementDescriptor {
 	return {
 		tagName: 'dojo-accordion-pane',
 		widgetConstructor: AccordionPane,
-		properties: [
-			{ propertyName: 'openKeys' },
-			{ propertyName: 'theme' }
-		],
+		properties: [{ propertyName: 'openKeys' }, { propertyName: 'theme' }],
 		events: [
 			{
 				propertyName: 'onRequestClose',
@@ -23,4 +20,4 @@ export default function createAccordionPaneElement(): CustomElementDescriptor {
 			}
 		]
 	};
-};
+}

@@ -99,10 +99,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	private _onArrowClick() {
-		const {
-			disabled,
-			readOnly
-		} = this.properties;
+		const { disabled, readOnly } = this.properties;
 
 		if (!disabled && !readOnly) {
 			this._callInputFocus = true;
@@ -121,7 +118,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	private _onInput(event: Event) {
 		const { key, onChange } = this.properties;
 
-		onChange && onChange((<HTMLInputElement> event.target).value, key);
+		onChange && onChange((<HTMLInputElement>event.target).value, key);
 		this._openMenu();
 	}
 
@@ -133,28 +130,19 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			return;
 		}
 
-		onBlur && onBlur((<HTMLInputElement> event.target).value, key);
+		onBlur && onBlur((<HTMLInputElement>event.target).value, key);
 		this._closeMenu();
 	}
 
 	private _onInputFocus(event: FocusEvent) {
-		const {
-			key,
-			onFocus,
-			openOnFocus
-		} = this.properties;
+		const { key, onFocus, openOnFocus } = this.properties;
 
-		onFocus && onFocus((<HTMLInputElement> event.target).value, key);
+		onFocus && onFocus((<HTMLInputElement>event.target).value, key);
 		openOnFocus && this._openMenu();
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
-		const {
-			disabled,
-			isResultDisabled = () => false,
-			readOnly,
-			results = []
-		} = this.properties;
+		const { disabled, isResultDisabled = () => false, readOnly, results = [] } = this.properties;
 		this._menuHasVisualFocus = true;
 
 		switch (event.which) {
@@ -166,8 +154,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 				event.preventDefault();
 				if (!this._open && !disabled && !readOnly) {
 					this._openMenu();
-				}
-				else if (this._open) {
+				} else if (this._open) {
 					this._moveActiveIndex(Operation.increase);
 				}
 				break;
@@ -216,10 +203,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	private _openMenu() {
-		const {
-			key,
-			onRequestResults
-		} = this.properties;
+		const { key, onRequestResults } = this.properties;
 
 		this._activeIndex = 0;
 		this._open = true;
@@ -228,11 +212,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	private _selectIndex(index: number) {
-		const {
-			key,
-			onChange,
-			results = []
-		} = this.properties;
+		const { key, onChange, results = [] } = this.properties;
 
 		this._callInputFocus = true;
 		this._closeMenu();
@@ -264,15 +244,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	protected renderInput(): DNode {
-		const {
-			disabled,
-			inputProperties = {},
-			invalid,
-			readOnly,
-			required,
-			value = '',
-			theme
-		} = this.properties;
+		const { disabled, inputProperties = {}, invalid, readOnly, required, value = '', theme } = this.properties;
 
 		return w(TextInput, {
 			...inputProperties,
@@ -292,11 +264,9 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	protected renderClearButton(): DNode {
-		const {
-			disabled,
-			readOnly
-		} = this.properties;
+		const { disabled, readOnly } = this.properties;
 
+		// prettier-ignore
 		return v('button', {
 			key: 'clear',
 			'aria-controls': this._getMenuId(),
@@ -313,11 +283,9 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 	}
 
 	protected renderMenuButton(): DNode {
-		const {
-			disabled,
-			readOnly
-		} = this.properties;
+		const { disabled, readOnly } = this.properties;
 
+		// prettier-ignore
 		return v('button', {
 			key: 'trigger',
 			classes: this.theme(css.trigger),
@@ -342,6 +310,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			return null;
 		}
 
+		// prettier-ignore
 		return v('div', {
 			key: 'dropdown',
 			classes: this.theme(css.dropdown),
@@ -370,6 +339,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		]);
 	}
 
+	// prettier-ignore
 	render(): DNode {
 		const {
 			clearable,

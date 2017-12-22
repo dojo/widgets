@@ -14,7 +14,7 @@ import * as iconCss from '../common/styles/icons.m.css';
 export const enum Position {
 	bottom = 'onBottomFixed',
 	top = 'onTopFixed'
-};
+}
 
 /**
  * @type ToolbarProperties
@@ -35,7 +35,7 @@ export interface ToolbarProperties extends WidgetProperties {
 	onCollapse?(collapsed: boolean): void;
 	position?: Position;
 	title?: DNode;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -63,13 +63,12 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			this._collapsed = false;
 			onCollapse && onCollapse(this._collapsed);
 			this.invalidate();
-		}
-		else if (width <= collapseWidth && this._collapsed === false) {
+		} else if (width <= collapseWidth && this._collapsed === false) {
 			this._collapsed = true;
 			onCollapse && onCollapse(this._collapsed);
 			this.invalidate();
 		}
-	}
+	};
 
 	private _toggleMenu() {
 		this._open = !this._open;
@@ -78,19 +77,11 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 
 	protected getFixedRootClasses(): (string | null)[] {
 		const { fixed, position = Position.top } = this.properties;
-		return [
-			css.rootFixed,
-			fixed ? css.stickyFixed : null,
-			(css as any)[position]
-		];
+		return [css.rootFixed, fixed ? css.stickyFixed : null, (css as any)[position]];
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		return [
-			css.root,
-			this._collapsed ? css.collapsed : null,
-			this.properties.fixed ? css.sticky : null
-		];
+		return [css.root, this._collapsed ? css.collapsed : null, this.properties.fixed ? css.sticky : null];
 	}
 
 	protected onAttach() {
@@ -104,6 +95,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	protected renderActions(): DNode {
 		const { actions = [], theme } = this.properties;
 
+		// prettier-ignore
 		const actionsElements = actions.map((action, index) => v('div', {
 			classes: [ this.theme(css.action) ],
 			key: index
@@ -113,6 +105,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 			return null;
 		}
 
+		// prettier-ignore
 		return this._collapsed ? w(SlidePane, {
 			align: Align.right,
 			closeText: 'close menu',
@@ -127,6 +120,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 		}, actionsElements);
 	}
 
+	// prettier-ignore
 	protected renderButton(): DNode {
 		return this._collapsed ? v('button', {
 			classes: [ this.theme(css.menuButton), css.menuButtonFixed ],
@@ -143,6 +137,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	protected renderTitle(): DNode {
 		const { title } = this.properties;
 
+		// prettier-ignore
 		return title ? v('div', {
 			classes: [ this.theme(css.title), css.titleFixed ]
 		}, [ title ]) : null;
@@ -152,6 +147,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 		const classes = this.getRootClasses();
 		const fixedClasses = this.getFixedRootClasses();
 
+		// prettier-ignore
 		return v('div', {
 			classes: [ ...this.theme(classes), ...fixedClasses ],
 			key: 'root'

@@ -18,7 +18,6 @@ interface TestEventInit extends EventInit {
 
 let titlePane: Harness<TitlePane>;
 registerSuite('TitlePane', {
-
 	beforeEach() {
 		titlePane = harness(TitlePane);
 	},
@@ -33,6 +32,7 @@ registerSuite('TitlePane', {
 				title: 'test'
 			});
 
+			// prettier-ignore
 			titlePane.expectRender(v('div', {
 				classes: [ css.root, css.open, css.rootFixed ]
 			}, [
@@ -79,6 +79,7 @@ registerSuite('TitlePane', {
 				title: 'test'
 			});
 
+			// prettier-ignore
 			titlePane.expectRender(v('div', {
 				classes: [ css.root, null, css.rootFixed ]
 			}, [

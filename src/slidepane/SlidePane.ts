@@ -15,7 +15,7 @@ export const enum Align {
 	left = 'left',
 	right = 'right',
 	top = 'top'
-};
+}
 
 /**
  * @type SlidePaneProperties
@@ -40,7 +40,7 @@ export interface SlidePaneProperties extends ThemedProperties {
 	title?: string;
 	underlay?: boolean;
 	width?: number;
-};
+}
 
 /**
  * The default width of the slide pane
@@ -55,7 +55,7 @@ const SWIPE_THRESHOLD = 5;
 const enum Plane {
 	x,
 	y
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -81,8 +81,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 		if (this.plane === Plane.x) {
 			const currentX = event.type === eventType ? event.changedTouches[0].screenX : event.pageX;
 			return align === Align.right ? currentX - this._initialPosition : this._initialPosition - currentX;
-		}
-		else {
+		} else {
 			const currentY = event.type === eventType ? event.changedTouches[0].screenY : event.pageY;
 			return align === Align.bottom ? currentY - this._initialPosition : this._initialPosition - currentY;
 		}
@@ -98,8 +97,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 		// Cache initial pointer position
 		if (this.plane === Plane.x) {
 			this._initialPosition = event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
-		}
-		else {
+		} else {
 			this._initialPosition = event.type === 'touchstart' ? event.changedTouches[0].screenY : event.pageY;
 		}
 
@@ -113,10 +111,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			return;
 		}
 
-		const {
-			align = Align.left,
-			width = DEFAULT_WIDTH
-		} = this.properties;
+		const { align = Align.left, width = DEFAULT_WIDTH } = this.properties;
 
 		const delta = this._getDelta(event, 'touchmove');
 
@@ -130,20 +125,16 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 		// Move the pane
 		if (this.plane === Plane.x) {
-			this._content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
-		}
-		else {
-			this._content.style.transform = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
+			this._content.style.transform = `translateX(${align === Align.left ? '-' : ''}${this._transform}%)`;
+		} else {
+			this._content.style.transform = `translateY(${align === Align.top ? '-' : ''}${this._transform}%)`;
 		}
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
 		this._swiping = false;
 
-		const {
-			onRequestClose,
-			width = DEFAULT_WIDTH
-		} = this.properties;
+		const { onRequestClose, width = DEFAULT_WIDTH } = this.properties;
 
 		const delta = this._getDelta(event, 'touchend');
 
@@ -152,13 +143,14 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			// Cache the transform to apply on next render
 			this._transform = 100 * delta / width;
 			onRequestClose && onRequestClose();
-		}
-		// If the underlay was clicked
-		else if (Math.abs(delta) < SWIPE_THRESHOLD && (!this._content || !this._content.contains(event.target as HTMLElement))) {
+		} else if (
+			Math.abs(delta) < SWIPE_THRESHOLD &&
+			(!this._content || !this._content.contains(event.target as HTMLElement))
+		) {
+			// If the underlay was clicked
 			onRequestClose && onRequestClose();
-		}
-		// If pane was not swiped far enough to close
-		else if (delta > 0) {
+		} else if (delta > 0) {
+			// If pane was not swiped far enough to close
 			// Animate the pane back open
 			this._slideIn = true;
 			this.invalidate();
@@ -177,11 +169,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	protected getStyles(): { [key: string]: string | null } {
-		const {
-			align = Align.left,
-			open = false,
-			width = DEFAULT_WIDTH
-		} = this.properties;
+		const { align = Align.left, open = false, width = DEFAULT_WIDTH } = this.properties;
 
 		let translate = '';
 		const translateAxis = this.plane === Plane.x ? 'X' : 'Y';
@@ -193,17 +181,14 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 		return {
 			transform: translate ? `translate${translateAxis}(${translate}%)` : '',
-			width: this.plane === Plane.x ? `${ width }px` : null,
-			height: this.plane === Plane.y ? `${ width }px` : null
+			width: this.plane === Plane.x ? `${width}px` : null,
+			height: this.plane === Plane.y ? `${width}px` : null
 		};
 	}
 
 	protected getFixedModifierClasses(): (string | null)[] {
-		const {
-			align = Align.left,
-			open = false
-		} = this.properties;
-		const alignCss: {[key: string]: any} = css;
+		const { align = Align.left, open = false } = this.properties;
+		const alignCss: { [key: string]: any } = css;
 
 		return [
 			open ? css.openFixed : null,
@@ -214,11 +199,8 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	protected getModifierClasses(): (string | null)[] {
-		const {
-			align = Align.left,
-			open = false
-		} = this.properties;
-		const alignCss: {[key: string]: any} = css;
+		const { align = Align.left, open = false } = this.properties;
+		const alignCss: { [key: string]: any } = css;
 
 		return [
 			alignCss[align],
@@ -229,20 +211,22 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	protected renderCloseIcon(): DNode {
-		return v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
-			role: 'presentation', 'aria-hidden': 'true'
+		return v('i', {
+			classes: this.theme([iconCss.icon, iconCss.closeIcon]),
+			role: 'presentation',
+			'aria-hidden': 'true'
 		});
 	}
 
 	protected renderTitle(): DNode {
 		const { title = '' } = this.properties;
-		return v('div', { id: this._titleId }, [ title ]);
+		return v('div', { id: this._titleId }, [title]);
 	}
 
 	protected renderUnderlay(): DNode {
 		const { underlay = false } = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
+			classes: [this.theme(underlay ? css.underlayVisible : null), css.underlay],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay'
@@ -250,12 +234,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	}
 
 	render(): DNode {
-		const {
-			closeText = 'close pane',
-			onOpen,
-			open = false,
-			title = ''
-		} = this.properties;
+		const { closeText = 'close pane', onOpen, open = false, title = '' } = this.properties;
 
 		const contentStyles = this.getStyles();
 		const contentClasses = this.getModifierClasses();
@@ -269,6 +248,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 		this._wasOpen = open;
 		this._slideIn = false;
 
+		// prettier-ignore
 		return v('div', {
 			'aria-labelledby': this._titleId,
 			classes: this.theme(css.root),

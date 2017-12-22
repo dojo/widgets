@@ -16,6 +16,7 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+// prettier-ignore
 const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 	if (labels) {
 		return [
@@ -46,6 +47,7 @@ const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 	];
 };
 
+// prettier-ignore
 const expected = function(widget: Harness<Checkbox>, label = false, toggle = false, toggleLabels = false) {
 	const children = [
 		v('div', { classes: css.inputWrapper }, [
@@ -124,13 +126,13 @@ registerSuite('Checkbox', {
 				value: 'baz'
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, css.checked, null, null, null, null, null, null ]
+				classes: [css.root, null, css.checked, null, null, null, null, null, null]
 			});
 
 			widget.expectRender(expectedVdom);
 		},
 
-		'label'() {
+		label() {
 			widget.setProperties({
 				label: 'foo'
 			});
@@ -155,7 +157,7 @@ registerSuite('Checkbox', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
+				classes: [css.root, null, null, css.disabled, null, css.invalid, null, css.readonly, css.required]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -174,7 +176,7 @@ registerSuite('Checkbox', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, null, null, null, css.valid, null, null ]
+				classes: [css.root, null, null, null, null, null, css.valid, null, null]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
@@ -206,17 +208,7 @@ registerSuite('Checkbox', {
 			});
 
 			assignProperties(expectedVdom, {
-				classes: [
-					css.root,
-					null,
-					null,
-					css.disabled,
-					null,
-					css.invalid,
-					null,
-					css.readonly,
-					css.required
-				]
+				classes: [css.root, null, null, css.disabled, null, css.invalid, null, css.readonly, css.required]
 			});
 
 			widget.expectRender(expectedVdom);
@@ -229,7 +221,7 @@ registerSuite('Checkbox', {
 			widget.sendEvent('focus', { selector: 'input' });
 			expectedVdom = expected(widget);
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, null, css.focused, null, null, null, null ]
+				classes: [css.root, null, null, null, css.focused, null, null, null, null]
 			});
 			widget.expectRender(expectedVdom, 'Should have focused class after focus event');
 
@@ -244,7 +236,7 @@ registerSuite('Checkbox', {
 			});
 			let expectedVdom = expected(widget, false, true);
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.toggle, null, null, null, null, null, null, null ]
+				classes: [css.root, css.toggle, null, null, null, null, null, null, null]
 			});
 			widget.expectRender(expectedVdom, 'Toggle input without toggle labels');
 
@@ -255,7 +247,7 @@ registerSuite('Checkbox', {
 			});
 			expectedVdom = expected(widget, false, true, true);
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.toggle, null, null, null, null, null, null, null ]
+				classes: [css.root, css.toggle, null, null, null, null, null, null, null]
 			});
 			widget.expectRender(expectedVdom, 'Toggle input with toggle labels');
 
@@ -267,7 +259,7 @@ registerSuite('Checkbox', {
 			});
 			expectedVdom = expected(widget, false, true, true);
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.toggle, css.checked, null, null, null, null, null, null ]
+				classes: [css.root, css.toggle, css.checked, null, null, null, null, null, null]
 			});
 			assignChildProperties(expectedVdom, '0,3', {
 				checked: true

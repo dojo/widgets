@@ -11,12 +11,13 @@ import SplitPane, { Direction } from '../../SplitPane';
 let widget: Harness<SplitPane>;
 
 registerSuite('SplitPane', {
-
 	beforeEach() {
 		widget = harness(SplitPane);
-		window.getSelection = window.getSelection || (() => ({
-			removeAllRanges() { }
-		}));
+		window.getSelection =
+			window.getSelection ||
+			(() => ({
+				removeAllRanges() {}
+			}));
 	},
 
 	afterEach() {
@@ -25,6 +26,7 @@ registerSuite('SplitPane', {
 
 	tests: {
 		'Should construct SplitPane with passed properties'() {
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				classes: [ css.root, css.row, css.rootFixed, css.rowFixed ],
 				key: 'root'
@@ -57,6 +59,7 @@ registerSuite('SplitPane', {
 				trailing: 'def'
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				classes: [ css.root, css.column, css.rootFixed, css.columnFixed ],
 				key: 'root'
@@ -84,23 +87,23 @@ registerSuite('SplitPane', {
 			let setSize;
 
 			widget.setProperties({
-				onResize: size => setSize = size
+				onResize: (size) => (setSize = size)
 			});
 
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientX: 0
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientX: 500
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientX: 0
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
@@ -116,17 +119,17 @@ registerSuite('SplitPane', {
 			let setSize;
 
 			widget.setProperties({
-				onResize: size => setSize = size
+				onResize: (size) => (setSize = size)
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientX: 0
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientX: 500
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
@@ -142,17 +145,17 @@ registerSuite('SplitPane', {
 			let called = false;
 
 			widget.setProperties({
-				onResize: () => called = true
+				onResize: () => (called = true)
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientX: 110
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientX: 150
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
@@ -168,18 +171,18 @@ registerSuite('SplitPane', {
 			let called = false;
 
 			widget.setProperties({
-				onResize: () => called = true,
+				onResize: () => (called = true),
 				direction: Direction.column
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientY: 110
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					clientY: 150
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
@@ -199,25 +202,25 @@ registerSuite('SplitPane', {
 			let called = false;
 
 			widget.setProperties({
-				onResize: () => called = true,
+				onResize: () => (called = true),
 				direction: Direction.row,
 				size: 100
 			});
 
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					changedTouches: [{ clientX: 110 }]
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					changedTouches: [{ clientX: 150 }]
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					changedTouches: [{ clientX: 150 }]
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
@@ -242,13 +245,13 @@ registerSuite('SplitPane', {
 			});
 
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					changedTouches: [{ clientY: 110 }]
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					changedTouches: [{ clientY: 150 }]
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
@@ -257,13 +260,13 @@ registerSuite('SplitPane', {
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					changedTouches: [{ clientY: 150 }]
 				},
 				selector: ':nth-child(2)' /* this should be the divider */
 			});
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					changedTouches: [{ clientY: 110 }]
 				},
 				selector: ':nth-child(2)' /* this should be the divider */

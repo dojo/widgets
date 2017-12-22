@@ -30,6 +30,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
+	// prettier-ignore
 	render() {
 		return v('div', [
 			v('h2', [ 'Tooltip Examples' ]),

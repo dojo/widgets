@@ -21,7 +21,6 @@ const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 	Nam sollicitudin varius augue, sed lacinia felis tempor in.`;
 
 registerSuite('SlidePane', {
-
 	beforeEach() {
 		widget = harness(SlidePane);
 	},
@@ -39,8 +38,9 @@ registerSuite('SlidePane', {
 				underlay: true
 			});
 
-			widget.setChildren([ GREEKING ]);
+			widget.setChildren([GREEKING]);
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
 				classes: css.root,
@@ -91,6 +91,7 @@ registerSuite('SlidePane', {
 				underlay: false
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
 				onmousedown: widget.listener,
@@ -150,6 +151,7 @@ registerSuite('SlidePane', {
 				open: true
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
 				onmousedown: widget.listener,
@@ -197,6 +199,7 @@ registerSuite('SlidePane', {
 				open: false
 			});
 
+			// prettier-ignore
 			widget.expectRender(v('div', {
 				'aria-labelledby': compareId,
 				onmousedown: widget.listener,
@@ -247,14 +250,14 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 300
 				},
 				selector: ':first-child' /* this should be the underlay */
 			});
 
 			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 300
 				},
 				selector: ':first-child' /* this should be the underlay */
@@ -299,15 +302,15 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 300 }]
 				},
 				selector: ':first-child' /* this should be the underlay */
 			});
 
 			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 300 }]
 				},
 
 				selector: ':first-child' /* this should be the underlay */
@@ -327,19 +330,19 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 300
 				}
 			});
 
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 150
 				}
 			});
 
 			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 50
 				}
 			});
@@ -362,26 +365,26 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 150 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 150 }]
 				}
 			});
 
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 300 }]
 				}
 			});
 
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 150 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 150 }]
 				}
 			});
 
 			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 50 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 50 }]
 				}
 			});
 
@@ -404,26 +407,26 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 150 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenY: 150 }]
 				}
 			});
 
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 300 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenY: 300 }]
 				}
 			});
 
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 150 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenY: 150 }]
 				}
 			});
 
 			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 50 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenY: 50 }]
 				}
 			});
 
@@ -448,20 +451,20 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 300 }]
 				}
 			});
 
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 400 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 400 }]
 				}
 			});
 
 			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 500 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenX: 500 }]
 				}
 			});
 
@@ -486,20 +489,20 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 300 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenY: 300 }]
 				}
 			});
 
 			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 400 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenY: 400 }]
 				}
 			});
 
 			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 500 } ]
+				eventInit: <MouseEventInit>{
+					changedTouches: [{ screenY: 500 }]
 				}
 			});
 
@@ -518,19 +521,19 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 300
 				}
 			});
 
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 250
 				}
 			});
 
 			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 250
 				}
 			});
@@ -543,10 +546,10 @@ registerSuite('SlidePane', {
 				open: true
 			});
 
-			widget.setChildren([ GREEKING ]);
+			widget.setChildren([GREEKING]);
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 300
 				},
 
@@ -554,27 +557,28 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 400
 				},
 
 				selector: ':last-child :first-child' /* this should be the content */
 			});
 
-			assert(!((<HTMLElement> widget.getDom().lastChild).style.transform));
+			assert(!(<HTMLElement>widget.getDom().lastChild).style.transform);
 
 			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 500
 				},
 
 				selector: ':last-child :first-child' /* this should be the content */
 			});
 
-			assert(!((<HTMLElement> widget.getDom().lastChild).style.transform));
+			assert(!(<HTMLElement>widget.getDom().lastChild).style.transform);
 		},
 
 		'classes removed after transition'() {
+			// prettier-ignore
 			function expected(open: boolean, transitionDone?: boolean) {
 				return v('div', {
 					'aria-labelledby': compareId,
@@ -621,7 +625,7 @@ registerSuite('SlidePane', {
 			}
 
 			widget.setProperties({ open: true });
-			widget.setChildren([ GREEKING ]);
+			widget.setChildren([GREEKING]);
 			widget.expectRender(expected(true, false));
 			widget.sendEvent('transitionend', { selector: ':last-child' });
 			widget.expectRender(expected(true, true), '`css.slideIn` should be removed when the animation ends.');
@@ -640,8 +644,9 @@ registerSuite('SlidePane', {
 				open: true
 			});
 
-			widget.setChildren([ GREEKING ]);
+			widget.setChildren([GREEKING]);
 
+			// prettier-ignore
 			function expected(closed: boolean, swipeState: any = {}) {
 				return v('div', {
 					'aria-labelledby': compareId,
@@ -694,26 +699,27 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 300
 				},
 				selector: ':last-child'
 			});
 
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 150
 				},
 				selector: ':last-child'
 			});
 
 			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 50
 				},
 				selector: ':last-child'
 			});
 
+			// prettier-ignore
 			widget.expectRender(expected(true, {
 				classes: [
 					css.pane,
@@ -741,8 +747,9 @@ registerSuite('SlidePane', {
 				open: true
 			});
 
-			widget.setChildren([ GREEKING ]);
+			widget.setChildren([GREEKING]);
 
+			// prettier-ignore
 			function expected(closed: boolean, swipeState: any = {}) {
 				return v('div', {
 					'aria-labelledby': compareId,
@@ -796,26 +803,27 @@ registerSuite('SlidePane', {
 			});
 
 			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 300
 				},
 				selector: ':last-child'
 			});
 
 			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 400
 				},
 				selector: ':last-child'
 			});
 
 			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
+				eventInit: <MouseEventInit>{
 					pageX: 500
 				},
 				selector: ':last-child'
 			});
 
+			// prettier-ignore
 			widget.expectRender(expected(true, {
 				classes: [
 					css.pane,

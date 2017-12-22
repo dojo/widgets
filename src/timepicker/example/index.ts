@@ -37,6 +37,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 		this.invalidate();
 	}
 
+	// prettier-ignore
 	render(): DNode {
 		return v('div', [
 			v('h1', [ 'TimePicker Examples' ]),

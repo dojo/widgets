@@ -29,13 +29,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		const {
-			c1 = true,
-			c2 = false,
-			c3 = false,
-			c4 = false,
-			c5 = true
-		} = this._checkboxStates;
+		const { c1 = true, c2 = false, c3 = false, c4 = false, c5 = true } = this._checkboxStates;
 
 		return v('div', [
 			v('h2', {

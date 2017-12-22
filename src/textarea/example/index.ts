@@ -27,7 +27,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					onchange: this.themeChange
 				})
 			]),
-			v('div', { id: 'example-t1'}, [
+			v('div', { id: 'example-t1' }, [
 				w(Textarea, {
 					key: 't1',
 					columns: 40,
@@ -43,19 +43,19 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('h3', {}, ['Disabled Textarea']),
-			v('div', { id: 'example-t2'}, [
+			v('div', { id: 'example-t2' }, [
 				w(Textarea, {
 					key: 't2',
 					columns: 40,
 					rows: 3,
-					label: 'Can\'t type here',
+					label: "Can't type here",
 					value: 'Initial value',
 					disabled: true,
 					theme: this._theme
 				})
 			]),
 			v('h3', {}, ['Validated, Required Textarea']),
-			v('div', { id: 'example-t3'}, [
+			v('div', { id: 'example-t3' }, [
 				w(Textarea, {
 					key: 't3',
 					columns: 40,
@@ -74,7 +74,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				})
 			]),
 			v('h3', {}, ['Hidden Label Textarea']),
-			v('div', { id: 'example-t4'}, [
+			v('div', { id: 'example-t4' }, [
 				w(Textarea, {
 					key: 't4',
 					columns: 40,

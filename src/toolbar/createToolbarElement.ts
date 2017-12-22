@@ -11,20 +11,17 @@ export default function createToolbarElement(): CustomElementDescriptor {
 		attributes: [
 			{
 				attributeName: 'collapseWidth',
-				value: value => Number(value)
+				value: (value) => Number(value)
 			},
 			{
 				attributeName: 'fixed',
-				value: value => value === 'false' || value === '0' ? false : true
+				value: (value) => (value === 'false' || value === '0' ? false : true)
 			},
 			{
 				attributeName: 'title'
 			}
 		],
-		properties: [
-			{ propertyName: 'actions' },
-			{ propertyName: 'theme' }
-		],
+		properties: [{ propertyName: 'actions' }, { propertyName: 'theme' }],
 		events: [
 			{
 				propertyName: 'onCollapse',

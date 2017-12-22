@@ -42,7 +42,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					this.invalidate();
 				}
 			}),
-			this._selectedDate ? v('p', [ `Selected Date: ${this._selectedDate.toDateString()}` ]) : null
+			this._selectedDate ? v('p', [`Selected Date: ${this._selectedDate.toDateString()}`]) : null
 		]);
 	}
 }

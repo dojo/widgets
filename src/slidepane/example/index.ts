@@ -33,6 +33,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		this.invalidate();
 	}
 
+	// prettier-ignore
 	render(): DNode {
 		return v('div', [
 			w(SlidePane, {

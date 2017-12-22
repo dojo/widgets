@@ -6,6 +6,7 @@ import Label from '../../label/Label';
 
 export class App extends WidgetBase<WidgetProperties> {
 	render() {
+		// prettier-ignore
 		return v('div', [
 			v('h1', {}, ['Label Examples']),
 			v('h3', {}, ['Label assigned as string without extra options']),

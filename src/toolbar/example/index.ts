@@ -22,6 +22,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		sheet.insertRule('#module-select { position: absolute; left: 0; top: 200px; } ');
 	}
 
+	// prettier-ignore
 	render() {
 		return w(Toolbar, {
 			actions: [

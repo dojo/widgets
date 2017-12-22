@@ -26,6 +26,7 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+// prettier-ignore
 const monthRadios = function(widget: Harness<DatePicker>, open?: boolean) {
 	return DEFAULT_MONTHS.map((monthName, i) => v('label', {
 		key: <any> compareId,
@@ -48,6 +49,7 @@ const monthRadios = function(widget: Harness<DatePicker>, open?: boolean) {
 	]));
 };
 
+// prettier-ignore
 const yearRadios = function(widget: Harness<DatePicker>, open?: boolean, yearStart = 2000, yearEnd = 2020) {
 	const radios = [];
 	for (let i = yearStart; i < yearEnd; i++) {
@@ -73,6 +75,7 @@ const yearRadios = function(widget: Harness<DatePicker>, open?: boolean, yearSta
 	return radios;
 };
 
+// prettier-ignore
 const expectedMonthPopup = function(widget: Harness<DatePicker>, open: boolean) {
 	return v('div', {
 		key: 'month-grid',
@@ -94,6 +97,7 @@ const expectedMonthPopup = function(widget: Harness<DatePicker>, open: boolean) 
 	]);
 };
 
+// prettier-ignore
 const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, yearStart?: number, yearEnd?: number) {
 	return v('div', {
 		key: 'year-grid',
@@ -137,6 +141,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 	]);
 };
 
+// prettier-ignore
 const expected = function(widget: Harness<DatePicker>, monthOpen = false, yearOpen = false, yearStart?: number, yearEnd?: number) {
 	// new
 	return v('div', {
@@ -216,7 +221,9 @@ registerSuite('Calendar DatePicker', {
 				yearRange: 25
 			};
 			widget.setProperties({
-				renderMonthLabel: () => { return 'bar'; },
+				renderMonthLabel: () => {
+					return 'bar';
+				},
 				...customProps,
 				...requiredProps
 			});
@@ -243,7 +250,7 @@ registerSuite('Calendar DatePicker', {
 			const yearGridVdom = findKey(expectedVdom, 'year-grid');
 			replaceChild(expectedVdom, '0,0,0', 'June 1997');
 			replaceChild(expectedVdom, '0,2,0', '1997');
-			assignChildProperties(yearGridVdom!, '0,18', { classes: [ css.yearRadio, css.yearRadioChecked ] });
+			assignChildProperties(yearGridVdom!, '0,18', { classes: [css.yearRadio, css.yearRadioChecked] });
 			assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
 			widget.expectRender(expectedVdom);
 		},
@@ -251,7 +258,9 @@ registerSuite('Calendar DatePicker', {
 		'Month popup opens and closes on button click'() {
 			let isOpen;
 			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+				onPopupChange: (open) => {
+					isOpen = open;
+				},
 				...requiredProps
 			});
 
@@ -269,7 +278,9 @@ registerSuite('Calendar DatePicker', {
 		'Year popup opens and closes on button click'() {
 			let isOpen;
 			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+				onPopupChange: (open) => {
+					isOpen = open;
+				},
 				...requiredProps
 			});
 
@@ -288,7 +299,9 @@ registerSuite('Calendar DatePicker', {
 			let isOpen;
 			let expectedVdom = expected(widget, false, false);
 			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+				onPopupChange: (open) => {
+					isOpen = open;
+				},
 				...requiredProps
 			});
 			widget.expectRender(expectedVdom);
@@ -312,7 +325,9 @@ registerSuite('Calendar DatePicker', {
 			let isOpen;
 			let expectedVdom = expected(widget, false, false);
 			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+				onPopupChange: (open) => {
+					isOpen = open;
+				},
 				...requiredProps
 			});
 			widget.expectRender(expectedVdom);
@@ -361,7 +376,7 @@ registerSuite('Calendar DatePicker', {
 			});
 			expectedVdom = expected(widget, true, false);
 			widget.expectRender(expectedVdom);
-			assert.isTrue(isOpen, 'Other keys don\'t close popup');
+			assert.isTrue(isOpen, "Other keys don't close popup");
 		},
 
 		'year popup closes with correct keys'() {
@@ -369,7 +384,9 @@ registerSuite('Calendar DatePicker', {
 			let expectedVdom = expected(widget, false, false);
 			expectedVdom = expected(widget, false, false);
 			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+				onPopupChange: (open) => {
+					isOpen = open;
+				},
 				...requiredProps
 			});
 
@@ -416,7 +433,7 @@ registerSuite('Calendar DatePicker', {
 			});
 			expectedVdom = expected(widget, false, true);
 			widget.expectRender(expectedVdom);
-			assert.isTrue(isOpen, 'Other keys don\'t close popup');
+			assert.isTrue(isOpen, "Other keys don't close popup");
 		},
 
 		'Clicking buttons changes year page'() {
@@ -444,8 +461,12 @@ registerSuite('Calendar DatePicker', {
 			let isOpen = false;
 			widget.setProperties({
 				...requiredProps,
-				onPopupChange: (open: boolean) => { isOpen = open; },
-				onRequestMonthChange: (month: number) => { currentMonth = month; }
+				onPopupChange: (open: boolean) => {
+					isOpen = open;
+				},
+				onRequestMonthChange: (month: number) => {
+					currentMonth = month;
+				}
 			});
 
 			widget.sendEvent('click', { key: 'month-button' });
@@ -467,8 +488,12 @@ registerSuite('Calendar DatePicker', {
 			let isOpen = false;
 			widget.setProperties({
 				...requiredProps,
-				onPopupChange: (open: boolean) => { isOpen = open; },
-				onRequestYearChange: (year: number) => { currentYear = year; }
+				onPopupChange: (open: boolean) => {
+					isOpen = open;
+				},
+				onRequestYearChange: (year: number) => {
+					currentYear = year;
+				}
 			});
 
 			widget.sendEvent('click', { key: 'year-button' });

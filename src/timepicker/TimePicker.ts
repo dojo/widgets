@@ -139,13 +139,13 @@ function getTime(units: TimeUnits, date = new Date()) {
  * @param value   A standard time string or an object with `hour`, `minute`, and `second` properties.
  * @return        An object containing `hour`, `second`, and `number` properties.
  */
-export function parseUnits (value: string | TimeUnits): TimeUnits {
+export function parseUnits(value: string | TimeUnits): TimeUnits {
 	if (typeof value === 'string') {
 		if (!TIME_PATTERN.test(value)) {
 			throw new Error('Time strings must be in the format HH:mm or HH:mm:ss');
 		}
 
-		const [ hour, minute, second = 0 ] = value.split(':').map(unit => parseInt(unit, 10));
+		const [hour, minute, second = 0] = value.split(':').map((unit) => parseInt(unit, 10));
 		return { hour, minute, second } as TimeUnits;
 	}
 
@@ -169,8 +169,8 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 		const { step = 60 } = this.properties;
 		const { hour, minute, second } = units;
 
-		return (step >= 60 ? [ hour, minute ] : [ hour, minute, second ])
-			.map(unit => padStart(String(unit), 2, '0'))
+		return (step >= 60 ? [hour, minute] : [hour, minute, second])
+			.map((unit) => padStart(String(unit), 2, '0'))
 			.join(':');
 	}
 
@@ -197,12 +197,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
+		const { disabled, invalid, readOnly, required } = this.properties;
 		return [
 			css.root,
 			disabled ? css.disabled : null,
@@ -295,6 +290,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			labelAfter = false
 		} = this.properties;
 
+		// prettier-ignore
 		const children = [
 			label ? w(Label, {
 				theme,
@@ -328,6 +324,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			})
 		];
 
+		// prettier-ignore
 		return v('div', {
 			key: 'root',
 			classes: this.theme(this.getRootClasses())

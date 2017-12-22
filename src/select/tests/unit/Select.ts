@@ -60,6 +60,7 @@ const testStateProperties: Partial<SelectProperties> = {
 	required: true
 };
 
+// prettier-ignore
 const expectedNative = function(widget: Harness<Select>, useTestProperties = false) {
 	return v('div', { classes: css.inputWrapper }, [
 		v('select', {
@@ -103,6 +104,7 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 	]);
 };
 
+// prettier-ignore
 const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false) {
 	return v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
@@ -160,9 +162,10 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 function isOpen(widget: any): boolean {
 	const vdom = widget.getRender();
 	const button = findKey(vdom, 'trigger');
-	return (<any> button)!.properties!['aria-expanded'] === 'true';
+	return (<any>button)!.properties!['aria-expanded'] === 'true';
 }
 
+// prettier-ignore
 const expected = function(widget: Harness<Select>, selectVdom: any, label = false) {
 	return v('div', {
 		key: 'root',
@@ -182,7 +185,6 @@ const expected = function(widget: Harness<Select>, selectVdom: any, label = fals
 };
 
 registerSuite('Select', {
-
 	beforeEach() {
 		widget = harness(Select);
 	},
@@ -192,7 +194,6 @@ registerSuite('Select', {
 	},
 
 	tests: {
-
 		'Native Single Select': {
 			'default properties'() {
 				widget.setProperties({
@@ -213,7 +214,7 @@ registerSuite('Select', {
 				const selectVdom = expectedNative(widget, true);
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+					classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -245,7 +246,10 @@ registerSuite('Select', {
 				});
 
 				widget.sendEvent('change', { selector: 'option' });
-				assert.isTrue(onChange.calledWith(testOptions[0]), 'onChange should be called with the first entry in the testOptions array');
+				assert.isTrue(
+					onChange.calledWith(testOptions[0]),
+					'onChange should be called with the first entry in the testOptions array'
+				);
 			},
 
 			'events called with widget key'() {
@@ -289,12 +293,12 @@ registerSuite('Select', {
 				});
 				const expectedVdom = expected(widget, selectVdom);
 				assignProperties(expectedVdom, {
-					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+					classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required]
 				});
 				widget.expectRender(expectedVdom);
 			},
 
-			'placeholder'() {
+			placeholder() {
 				widget.setProperties({
 					...testProperties,
 					placeholder: 'foo'
@@ -311,11 +315,11 @@ registerSuite('Select', {
 				});
 
 				assignProperties(findKey(expectedVdom, 'trigger')!, {
-					classes: [ css.trigger, css.placeholder ]
+					classes: [css.trigger, css.placeholder]
 				});
 				expectedVdom = expected(widget, expectedSingle(widget, true));
 				assignProperties(findKey(expectedVdom, 'trigger')!, {
-					classes: [ css.trigger, css.placeholder ]
+					classes: [css.trigger, css.placeholder]
 				});
 				replaceChild(expectedVdom, '1,0,0', 'bar');
 
@@ -348,7 +352,7 @@ registerSuite('Select', {
 				widget.sendEvent('click', { key: 'trigger' });
 				assert.isTrue(isOpen(widget), 'Widget opens on button click');
 
-				widget.callListener('onOptionSelect', { args: [ testOptions[1] ], index: '0,2,0' });
+				widget.callListener('onOptionSelect', { args: [testOptions[1]], index: '0,2,0' });
 				assert.isFalse(isOpen(widget), 'Widget closes on option select');
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
@@ -364,7 +368,7 @@ registerSuite('Select', {
 			'change active option'() {
 				widget.setProperties(testProperties);
 				let selectVdom = expected(widget, expectedSingle(widget, true));
-				widget.callListener('onActiveIndexChange', { args: [ 1 ], key: 'listbox' });
+				widget.callListener('onActiveIndexChange', { args: [1], key: 'listbox' });
 
 				selectVdom = expected(widget, expectedSingle(widget, true));
 				assignProperties(findKey(selectVdom, 'listbox')!, { activeIndex: 1 });

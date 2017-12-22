@@ -46,17 +46,12 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 	}
 
 	render() {
-		const {
-			value,
-			showOutput = true,
-			max = 100,
-			min = 0,
-			id
-		} = this.properties;
+		const { value, showOutput = true, max = 100, min = 0, id } = this.properties;
 
-		const percent = Math.round(((value - min) / (max - min)) * 100);
+		const percent = Math.round((value - min) / (max - min) * 100);
 		const output = this._output(value, percent);
 
+		// prettier-ignore
 		return v('div', { classes: this.theme(css.root) }, [
 			v('div', {
 				classes: this.theme(css.bar),

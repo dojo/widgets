@@ -62,19 +62,21 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		return getOptionLabel ? getOptionLabel(option) : fallback;
 	}
 
-	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
-	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(this.properties.key || ''); }
+	private _onBlur(event: FocusEvent) {
+		this.properties.onBlur && this.properties.onBlur(this.properties.key || '');
+	}
+	private _onFocus(event: FocusEvent) {
+		this.properties.onFocus && this.properties.onFocus(this.properties.key || '');
+	}
 
 	// native select events
-	private _onNativeChange (event: Event) {
-		const {
-			key,
-			getOptionValue,
-			options = [],
-			onChange
-		} = this.properties;
-		const value = (<HTMLInputElement> event.target).value;
-		const option = find(options, (option: any, index: number) => getOptionValue ? getOptionValue(option, index) === value : false);
+	private _onNativeChange(event: Event) {
+		const { key, getOptionValue, options = [], onChange } = this.properties;
+		const value = (<HTMLInputElement>event.target).value;
+		const option = find(
+			options,
+			(option: any, index: number) => (getOptionValue ? getOptionValue(option, index) === value : false)
+		);
 		option && onChange && onChange(option, key);
 	}
 
@@ -137,12 +139,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 	}
 
 	protected getRootClasses() {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
+		const { disabled, invalid, readOnly, required } = this.properties;
 
 		return [
 			css.root,
@@ -157,7 +154,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 	protected onElementUpdated(element: HTMLElement, key: string) {
 		if (key === 'root' && this._callListboxFocus) {
 			this._callListboxFocus = false;
-			const listbox = <HTMLElement> element.querySelector('[role="listbox"]');
+			const listbox = <HTMLElement>element.querySelector('[role="listbox"]');
 			listbox && listbox.focus();
 		}
 
@@ -169,8 +166,10 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 
 	protected renderExpandIcon(): DNode {
 		return v('span', { classes: this.theme(css.arrow) }, [
-			v('i', { classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
-				role: 'presentation', 'aria-hidden': 'true'
+			v('i', {
+				classes: this.theme([iconCss.icon, iconCss.downIcon]),
+				role: 'presentation',
+				'aria-hidden': 'true'
 			})
 		]);
 	}
@@ -192,6 +191,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		} = this.properties;
 
 		/* create option nodes */
+		// prettier-ignore
 		const optionNodes = options.map((option, i) => v('option', {
 			value: getOptionValue ? getOptionValue(option, i) : '',
 			id: getOptionId ? getOptionId(option, i) : undefined,
@@ -199,6 +199,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
 		}, [ this._getOptionLabel(option) ]));
 
+		// prettier-ignore
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v('select', {
 				classes: this.theme(css.input),
@@ -231,13 +232,10 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 			onChange
 		} = this.properties;
 
-		const {
-			_open,
-			_focusedIndex,
-			_baseId
-		} = this;
+		const { _open, _focusedIndex, _baseId } = this;
 
 		// create dropdown trigger and select box
+		// prettier-ignore
 		return v('div', {
 			key: 'wrapper',
 			classes: this.theme([ css.inputWrapper, _open ? css.open : null ])
@@ -296,12 +294,12 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 
 		if (selectedOption) {
 			label = this._getOptionLabel(selectedOption);
-		}
-		else {
+		} else {
 			isPlaceholder = true;
 			label = placeholder ? placeholder : this._getOptionLabel(options[0]);
 		}
 
+		// prettier-ignore
 		return [
 			v('button', {
 				'aria-controls': this._baseId,
@@ -325,6 +323,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		];
 	}
 
+	// prettier-ignore
 	protected render(): DNode {
 		const {
 			label,

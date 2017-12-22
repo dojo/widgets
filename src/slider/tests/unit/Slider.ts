@@ -5,7 +5,13 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties, compareProperty, replaceChild, findKey } from '@dojo/test-extras/support/d';
+import {
+	assignProperties,
+	assignChildProperties,
+	compareProperty,
+	replaceChild,
+	findKey
+} from '@dojo/test-extras/support/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
@@ -16,6 +22,7 @@ const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
 });
 
+// prettier-ignore
 const expected = function(widget: any, label = false, tooltip = false) {
 	const sliderVdom = v('div', {
 		classes: [ css.inputWrapper, css.inputWrapperFixed ],
@@ -93,7 +100,6 @@ const expected = function(widget: any, label = false, tooltip = false) {
 let widget: Harness<Slider>;
 
 registerSuite('Slider', {
-
 	beforeEach() {
 		widget = harness(Slider);
 	},
@@ -159,7 +165,7 @@ registerSuite('Slider', {
 					styles: { width: '200px' }
 				});
 				assignProperties(expectedVdom, {
-					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
+					classes: [css.root, null, null, null, null, null, css.vertical, css.rootFixed]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -199,7 +205,7 @@ registerSuite('Slider', {
 					styles: { top: '80%' }
 				});
 				assignProperties(expectedVdom, {
-					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
+					classes: [css.root, null, null, null, null, null, css.vertical, css.rootFixed]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -241,7 +247,7 @@ registerSuite('Slider', {
 			widget.expectRender(expectedVdom, 'If value property is below min, value is set to min');
 		},
 
-		'label'() {
+		label() {
 			widget.setProperties({
 				label: 'foo'
 			});
@@ -266,7 +272,7 @@ registerSuite('Slider', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, css.rootFixed ]
+				classes: [css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, css.rootFixed]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -285,7 +291,7 @@ registerSuite('Slider', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null, null, css.rootFixed ]
+				classes: [css.root, null, null, css.valid, null, null, null, css.rootFixed]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
