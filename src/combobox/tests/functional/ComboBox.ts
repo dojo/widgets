@@ -104,7 +104,7 @@ registerSuite('ComboBox', {
 			.getActiveElement()
 				.getProperty('textContent')
 				.then((text: string) => {
-					assert.strictEqual(text, 'clear combo box', 'The "clear" button should receive focus.');
+					assert.strictEqual(text, 'clear ', 'The "clear" button should receive focus.');
 				})
 				.type(keys.TAB)
 			.getActiveElement()
