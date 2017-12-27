@@ -1,3 +1,7 @@
+import commonBundle from './nls/common';
+
+export type CommonMessages = typeof commonBundle.messages;
+
 export interface LabeledProperties {
 	labelAfter?: boolean;
 	labelHidden?: boolean;

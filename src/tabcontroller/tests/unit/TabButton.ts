@@ -34,9 +34,8 @@ const expected = function(widget: any, closeable = false, children: any[] = []) 
 		closeable ? v('button', {
 			tabIndex: -1,
 			classes: css.close,
-			innerHTML: 'close tab',
 			onclick: widget.listener
-		}) : null
+		}, [ 'close', ...children ]) : null
 	);
 
 	return v('div', {
@@ -44,8 +43,10 @@ const expected = function(widget: any, closeable = false, children: any[] = []) 
 		'aria-disabled': 'false',
 		'aria-selected': 'false',
 		classes: [ css.tabButton, null, null ],
+		dir: null,
 		id: 'foo',
 		key: 'tab-button',
+		lang: null,
 		onclick: widget.listener,
 		onkeydown: widget.listener,
 		role: 'tab',

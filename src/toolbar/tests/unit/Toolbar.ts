@@ -27,7 +27,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -52,7 +54,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onBottomFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -87,7 +91,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -114,7 +120,9 @@ registerSuite('Toolbar', {
 					css.sticky,
 					css.stickyFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -139,7 +147,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -170,7 +180,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -214,12 +226,12 @@ registerSuite('Toolbar', {
 
 			const slidePaneVDom = w(SlidePane, {
 				align: Align.right,
-				closeText: 'close menu',
+				closeText: 'close foo',
 				key: 'slide-pane-menu',
 				onRequestClose: toolbar.listener,
 				open: false,
 				theme: undefined,
-				title: 'Menu'
+				title: 'foo'
 			}, [
 				v('div', {
 					classes: [ css.action ],
@@ -231,7 +243,7 @@ registerSuite('Toolbar', {
 				classes: [ css.menuButton, css.menuButtonFixed ],
 				onclick: toolbar.listener
 			}, [
-				'open menu',
+				'open foo',
 				v('i', {
 					classes: [ iconCss.icon, iconCss.barsIcon ],
 					role: 'presentation',
@@ -247,7 +259,9 @@ registerSuite('Toolbar', {
 					css.rootFixed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -263,7 +277,7 @@ registerSuite('Toolbar', {
 				}, [])
 			]));
 
-			toolbar.setProperties({ actions: [ 'test' ] });
+			toolbar.setProperties({ actions: [ 'test' ], menuTitle: 'foo' });
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
@@ -271,7 +285,9 @@ registerSuite('Toolbar', {
 					css.collapsed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [
@@ -302,7 +318,9 @@ registerSuite('Toolbar', {
 					css.collapsed,
 					css.onTopFixed
 				],
-				key: 'root'
+				key: 'root',
+				dir: null,
+				lang: null
 			}, [
 				v('div', {
 					classes: [

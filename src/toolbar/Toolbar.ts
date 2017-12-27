@@ -1,10 +1,13 @@
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import SlidePane, { Align } from '../slidepane/SlidePane';
+import commonBundle from '../common/nls/common';
+import { CommonMessages } from '../common/interfaces';
 import * as css from './styles/toolbar.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
 
@@ -24,6 +27,7 @@ export const enum Position {
  * @property actions           Action elements to show in the toolbar
  * @property collapseWidth     Width at which to collapse actions into a SlidePane
  * @property fixed             Fixes the toolbar to the top of the viewport
+ * @property menuTitle         Title of the SlidePane that holds collapsed action items
  * @property onCollapse        Called when action items change their layout
  * @property position          Determines toolbar position in relation to child contet
  * @property title             Element to show as the toolbar title
@@ -32,12 +36,13 @@ export interface ToolbarProperties extends WidgetProperties {
 	actions?: DNode[];
 	collapseWidth?: number;
 	fixed?: boolean;
+	menuTitle?: string;
 	onCollapse?(collapsed: boolean): void;
 	position?: Position;
 	title?: DNode;
 };
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -101,8 +106,12 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 		window.removeEventListener('resize', this._collapseIfNecessary);
 	}
 
-	protected renderActions(): DNode {
-		const { actions = [], theme } = this.properties;
+	protected renderActions(messages: CommonMessages): DNode {
+		const {
+			actions = [],
+			theme,
+			menuTitle = ''
+		} = this.properties;
 
 		const actionsElements = actions.map((action, index) => v('div', {
 			classes: [ this.theme(css.action) ],
@@ -115,24 +124,25 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 
 		return this._collapsed ? w(SlidePane, {
 			align: Align.right,
-			closeText: 'close menu',
+			closeText: `${messages.close} ${menuTitle}`,
 			key: 'slide-pane-menu',
 			onRequestClose: this._closeMenu,
 			open: this._open,
 			theme,
-			title: 'Menu'
+			title: menuTitle
 		}, actionsElements) : v('div', {
 			classes: [ this.theme(css.actions), css.actionsFixed ],
 			key: 'menu'
 		}, actionsElements);
 	}
 
-	protected renderButton(): DNode {
+	protected renderButton(messages: CommonMessages): DNode {
+		const { menuTitle = '' } = this.properties;
 		return this._collapsed ? v('button', {
 			classes: [ this.theme(css.menuButton), css.menuButtonFixed ],
 			onclick: this._toggleMenu
 		}, [
-			'open menu',
+			`${messages.open} ${menuTitle}`,
 			v('i', {
 				classes: this.theme([ iconCss.icon, iconCss.barsIcon ]),
 				role: 'presentation', 'aria-hidden': 'true'
@@ -151,6 +161,7 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 	render(): DNode {
 		const classes = this.getRootClasses();
 		const fixedClasses = this.getFixedRootClasses();
+		const messages = this.localizeBundle(commonBundle);
 
 		return v('div', {
 			classes: [ ...this.theme(classes), ...fixedClasses ],
@@ -160,8 +171,8 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 				classes: [ this.theme(css.toolbar), css.toolbarFixed ]
 			}, [
 				this.renderTitle(),
-				this.renderActions(),
-				this.renderButton()
+				this.renderActions(messages),
+				this.renderButton(messages)
 			]),
 			v('div', {
 				classes: [ this.theme(css.content), css.contentFixed ]

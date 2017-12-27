@@ -1,15 +1,20 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
+import commonBundle from '../common/nls/common';
+import { CommonMessages } from '../common/interfaces';
 import { Keys } from '../common/util';
-import { CalendarMessages } from './DatePicker';
-import DatePicker, { Paging } from './DatePicker';
 import CalendarCell from './CalendarCell';
+import DatePicker, { Paging } from './DatePicker';
+import calendarBundle from './nls/Calendar';
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
+
+export type CalendarMessages = typeof calendarBundle.messages;
 
 /**
  * @type CalendarProperties
@@ -42,39 +47,37 @@ export interface CalendarProperties extends ThemedProperties {
 	onDateSelect?(date: Date): void;
 }
 
-export const DEFAULT_MONTHS = [
-	{short: 'Jan', long: 'January'},
-	{short: 'Feb', long: 'February'},
-	{short: 'Mar', long: 'March'},
-	{short: 'Apr', long: 'April'},
-	{short: 'May', long: 'May'},
-	{short: 'Jun', long: 'June'},
-	{short: 'Jul', long: 'July'},
-	{short: 'Aug', long: 'August'},
-	{short: 'Sep', long: 'September'},
-	{short: 'Oct', long: 'October'},
-	{short: 'Nov', long: 'November'},
-	{short: 'Dec', long: 'December'}
+interface ShortLong<T> {
+	short: keyof T;
+	long: keyof T;
+}
+
+const DEFAULT_MONTHS: ShortLong<typeof commonBundle.messages>[] = [
+	{ short: 'janShort', long: 'january' },
+	{ short: 'febShort', long: 'february' },
+	{ short: 'marShort', long: 'march' },
+	{ short: 'aprShort', long: 'april' },
+	{ short: 'mayShort', long: 'may' },
+	{ short: 'junShort', long: 'june' },
+	{ short: 'julShort', long: 'july' },
+	{ short: 'augShort', long: 'august' },
+	{ short: 'sepShort', long: 'september' },
+	{ short: 'octShort', long: 'october' },
+	{ short: 'novShort', long: 'november' },
+	{ short: 'decShort', long: 'december' }
 ];
 
-export const DEFAULT_WEEKDAYS = [
-	{short: 'Sun', long: 'Sunday'},
-	{short: 'Mon', long: 'Monday'},
-	{short: 'Tue', long: 'Tuesday'},
-	{short: 'Wed', long: 'Wednesday'},
-	{short: 'Thu', long: 'Thursday'},
-	{short: 'Fri', long: 'Friday'},
-	{short: 'Sat', long: 'Saturday'}
+const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
+	{ short: 'sunShort', long: 'sunday' },
+	{ short: 'monShort', long: 'monday' },
+	{ short: 'tueShort', long: 'tuesday' },
+	{ short: 'wedShort', long: 'wednesday' },
+	{ short: 'thuShort', long: 'thursday' },
+	{ short: 'friShort', long: 'friday' },
+	{ short: 'satShort', long: 'saturday' }
 ];
 
-export const DEFAULT_LABELS: CalendarMessages = {
-	chooseMonth: 'Choose Month',
-	chooseYear: 'Choose Year',
-	previousMonth: 'Previous Month',
-	nextMonth: 'Next Month'
-};
-
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -90,6 +93,13 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		return lastDate.getDate();
 	}
 
+	private _getMonths(commonMessages: CommonMessages) {
+		return DEFAULT_MONTHS.map((month) => ({
+			short: commonMessages[month.short],
+			long: commonMessages[month.long]
+		}));
+	}
+
 	private _getMonthYear() {
 		const {
 			month,
@@ -100,6 +110,13 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 			month: typeof month === 'number' ? month : selectedDate.getMonth(),
 			year: typeof year === 'number' ? year : selectedDate.getFullYear()
 		};
+	}
+
+	private _getWeekdays(commonMessages: CommonMessages) {
+		return DEFAULT_WEEKDAYS.map((weekday) => ({
+			short: commonMessages[weekday.short],
+			long: commonMessages[weekday.long]
+		}));
 	}
 
 	private _goToDate(day: number) {
@@ -305,10 +322,9 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		});
 	}
 
-	protected renderDatePicker(): DNode {
+	protected renderDatePicker(commonMessages: CommonMessages, labels: CalendarMessages): DNode {
 		const {
-			labels = DEFAULT_LABELS,
-			monthNames = DEFAULT_MONTHS,
+			monthNames = this._getMonths(commonMessages),
 			renderMonthLabel,
 			theme,
 			onMonthChange,
@@ -340,8 +356,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		});
 	}
 
-	protected renderPagingButtonContent(type: Paging): DNode[] {
-		const { labels = DEFAULT_LABELS } = this.properties;
+	protected renderPagingButtonContent(type: Paging, labels: CalendarMessages): DNode[] {
 		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
@@ -359,9 +374,11 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 	}
 
 	protected render(): DNode {
+		const commonMessages = this.localizeBundle(commonBundle);
 		const {
+			labels = this.localizeBundle(calendarBundle),
 			selectedDate,
-			weekdayNames = DEFAULT_WEEKDAYS
+			weekdayNames = this._getWeekdays(commonMessages)
 		} = this.properties;
 
 		// Calendar Weekday array
@@ -377,7 +394,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 
 		return v('div', { classes: this.theme(css.root) }, [
 			// header
-			this.renderDatePicker(),
+			this.renderDatePicker(commonMessages, labels),
 			// date table
 			v('table', {
 				cellspacing: '0',
@@ -399,12 +416,12 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 					classes: this.theme(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageDown
-				}, this.renderPagingButtonContent(Paging.previous)),
+				}, this.renderPagingButtonContent(Paging.previous, labels)),
 				v('button', {
 					classes: this.theme(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					onclick: this._onMonthPageUp
-				}, this.renderPagingButtonContent(Paging.next))
+				}, this.renderPagingButtonContent(Paging.next, labels))
 			])
 		]);
 	}

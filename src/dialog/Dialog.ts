@@ -1,9 +1,11 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
+import commonBundle from '../common/nls/common';
 
 import * as css from './styles/dialog.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -45,7 +47,7 @@ export interface DialogProperties extends ThemedProperties {
 	underlay?: boolean;
 };
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
@@ -111,17 +113,23 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 	}
 
 	render(): DNode {
-		const {
+		let {
 			closeable = true,
-			closeText = 'close dialog',
+			closeText,
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
 			onOpen,
 			open = false,
-			role = 'dialog'
+			role = 'dialog',
+			title = ''
 		} = this.properties;
 
 		open && !this._wasOpen && onOpen && onOpen();
+
+		if (!closeText) {
+			const messages = this.localizeBundle(commonBundle);
+			closeText = `${messages.close} ${title}`;
+		}
 
 		this._wasOpen = open;
 

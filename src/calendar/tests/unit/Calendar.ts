@@ -6,9 +6,10 @@ import { compareProperty, assignProperties, assignChildProperties, replaceChild,
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
+import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/defaults';
+import Calendar from '../../Calendar';
 import CalendarCell from '../../CalendarCell';
 import DatePicker from '../../DatePicker';
-import Calendar, { DEFAULT_MONTHS, DEFAULT_LABELS, DEFAULT_WEEKDAYS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
@@ -40,7 +41,11 @@ const expectedDateCell = function(widget: Harness<Calendar>, date: number, activ
 
 const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 	dateIndex = -1;
-	return v('div', { classes: css.root }, [
+	return v('div', {
+		classes: css.root,
+		dir: null,
+		lang: null
+	}, [
 		w(DatePicker, {
 			key: 'date-picker',
 			labelId: <any> compareId,

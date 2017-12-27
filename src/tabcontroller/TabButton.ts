@@ -1,7 +1,10 @@
 import { DNode } from '@dojo/widget-core/interfaces';
+import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import commonBundle from '../common/nls/common';
+import { CommonMessages } from '../common/interfaces';
 import { Keys } from '../common/util';
 
 import * as css from './styles/tabController.m.css';
@@ -47,7 +50,7 @@ export interface TabButtonProperties extends ThemedProperties {
 	onUpArrowPress?: () => void;
 };
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
@@ -130,7 +133,7 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 		}
 	}
 
-	protected getContent(): DNode[] {
+	protected getContent(messages: CommonMessages): DNode[] {
 		const { active, closeable } = this.properties;
 
 		return [
@@ -138,9 +141,11 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 			closeable ? v('button', {
 				tabIndex: active ? 0 : -1,
 				classes: this.theme(css.close),
-				innerHTML: 'close tab',
 				onclick: this._onCloseClick
-			}) : null
+			}, [
+				messages.close,
+				...this.children
+			]) : null
 		];
 	}
 
@@ -167,6 +172,7 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 			disabled,
 			id
 		} = this.properties;
+		const messages = this.localizeBundle(commonBundle);
 
 		return v('div', {
 			'aria-controls': controls,
@@ -179,6 +185,6 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 			onkeydown: this._onKeyDown,
 			role: 'tab',
 			tabIndex: active === true ? 0 : -1
-		}, this.getContent());
+		}, this.getContent(messages));
 	}
 }

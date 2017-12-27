@@ -2,8 +2,10 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import { Keys } from '../common/util';
 import { DNode } from '@dojo/widget-core/interfaces';
+import calendarBundle from './nls/Calendar';
+import { Keys } from '../common/util';
+
 import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../common/styles/icons.m.css';
@@ -25,23 +27,6 @@ export const enum Controls {
 }
 
 /**
- * @type CalendarMessages
- *
- * Accessible text for Month Picker controls. Messages can be localized by passing a CalendarMessages object into the Calendar widget's labels property
- *
- * @property chooseMonth          Labels the button that opens the month picker popup
- * @property chooseYear           Labels the year spinner within the popup
- * @property previousMonth        Labels the prvious month arrow button
- * @property nextMonth            Labels the next month arrow button
- */
-export interface CalendarMessages {
-	chooseMonth: string;
-	chooseYear: string;
-	previousMonth: string;
-	nextMonth: string;
-}
-
-/**
  * @type DatePickerProperties
  *
  * Properties that can be set on a Calendar component
@@ -59,7 +44,7 @@ export interface CalendarMessages {
  */
 export interface DatePickerProperties extends ThemedProperties {
 	labelId?: string;
-	labels: CalendarMessages;
+	labels: typeof calendarBundle.messages;
 	month: number;
 	monthNames: { short: string; long: string; }[];
 	year: number;
@@ -265,7 +250,7 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 	protected renderPagingButtonContent(type: Paging): DNode[] {
 		const { labels } = this.properties;
 		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
-		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
+		const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
 
 		return [
 			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),

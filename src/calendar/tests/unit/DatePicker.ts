@@ -6,8 +6,8 @@ import { compareProperty, findKey, assignChildProperties, replaceChild } from '@
 import { v } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
+import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
 import DatePicker from '../../DatePicker';
-import { DEFAULT_MONTHS, DEFAULT_LABELS } from '../../Calendar';
 import * as css from '../../styles/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../common/styles/icons.m.css';
@@ -121,7 +121,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousMonth ])
+				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
 			]),
 			v('button', {
 				classes: css.next,
@@ -131,7 +131,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
 				}),
-				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextMonth ])
+				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
 			])
 		])
 	]);
