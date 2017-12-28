@@ -13,7 +13,6 @@ export interface CustomAriaProperties {
  *
  * Properties that can be set on a input component
  *
- * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
  * @property invalid        Indicates the value entered in the form field is invalid
  * @property name           The form widget's name
@@ -21,7 +20,6 @@ export interface CustomAriaProperties {
  * @property required       Whether or not a value is required
  */
 export interface InputProperties {
-	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
 	name?: string;

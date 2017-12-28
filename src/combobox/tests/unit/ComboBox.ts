@@ -141,8 +141,8 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 	return v('div', {
 		'aria-expanded': open ? 'true' : 'false',
 		'aria-haspopup': 'true',
-		'aria-readonly': 'false',
-		'aria-required': 'false',
+		'aria-readonly': null,
+		'aria-required': null,
 		dir: null,
 		id: useTestProperties ? 'foo' : undefined,
 		classes: [

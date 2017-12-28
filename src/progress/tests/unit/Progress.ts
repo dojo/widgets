@@ -1,6 +1,7 @@
 const { beforeEach, afterEach, describe, it} = intern.getInterface('bdd');
 import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
+import { assignChildProperties } from '@dojo/test-extras/support/d';
 import Progress from '../../Progress';
 import * as css from '../../../theme/progress/progress.m.css';
 
@@ -109,5 +110,21 @@ describe('Progress', () => {
 		});
 
 		widget.expectRender(expectedVDom({ width: 50, output: '50%', value: 50, id: 'my-id' }));
+	});
+
+	it('accepts aria properties', () => {
+		widget.setProperties({
+			value: 50,
+			aria: {
+				describedBy: 'foo',
+				valueNow: 'overridden'
+			}
+		});
+
+		const expected = expectedVDom({ width: 50, output: '50%', value: 50 });
+		assignChildProperties(expected, '0', {
+			'aria-describedby': 'foo'
+		});
+		widget.expectRender(expected);
 	});
 });

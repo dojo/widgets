@@ -412,7 +412,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			v('div', {
 				classes: this.theme(css.controls)
 			}, [
-				this.renderInput(),
+				this.renderInput(results),
 				clearable ? this.renderClearButton(messages) : null,
 				this.renderMenuButton(messages)
 			]),

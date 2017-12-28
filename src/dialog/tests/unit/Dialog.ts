@@ -100,6 +100,7 @@ registerSuite('Dialog', {
 
 			// set tested properties
 			widget.setProperties({
+				aria: { describedBy: 'foo' },
 				closeable: true,
 				closeText: 'foo',
 				enterAnimation: 'fooAnimation',
@@ -121,6 +122,7 @@ registerSuite('Dialog', {
 				classes: [ css.underlayVisible, fixedCss.underlay ]
 			});
 			assignChildProperties(expectedVdom, '1', {
+				'aria-describedby': 'foo',
 				enterAnimation: 'fooAnimation',
 				exitAnimation: 'barAnimation',
 				role: 'alertdialog'

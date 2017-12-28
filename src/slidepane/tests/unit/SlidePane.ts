@@ -36,6 +36,7 @@ registerSuite('SlidePane', {
 			widget.setProperties({
 				key: 'foo',
 				align: Align.left,
+				aria: { describedBy: 'foo' },
 				open: true,
 				underlay: true
 			});
@@ -62,6 +63,7 @@ registerSuite('SlidePane', {
 				}),
 				v('div', {
 					key: 'content',
+					'aria-describedby': 'foo',
 					classes: [
 						css.pane,
 						css.left,

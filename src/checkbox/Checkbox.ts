@@ -2,7 +2,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Label from '../label/Label';
-import { LabeledProperties, InputProperties, InputEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, LabeledProperties, InputProperties, InputEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/checkbox/checkbox.m.css';
@@ -18,7 +19,7 @@ import * as css from '../theme/checkbox/checkbox.m.css';
  * @property onLabel        Label to show in the "on" positin of a toggle
  * @property value           The current value
  */
-export interface CheckboxProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties {
+export interface CheckboxProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
 	checked?: boolean;
 	mode?: Mode;
 	offLabel?: DNode;
@@ -110,8 +111,8 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 
 	protected render(): DNode {
 		const {
+			aria = {},
 			checked = false,
-			describedBy,
 			disabled,
 			invalid,
 			label,
@@ -129,9 +130,9 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 				...this.renderToggle(),
 				v('input', {
 					id: this._uuid,
+					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					checked,
-					'aria-describedby': describedBy,
 					disabled,
 					'aria-invalid': invalid === true ? 'true' : null,
 					name,

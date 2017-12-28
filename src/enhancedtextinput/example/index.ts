@@ -33,7 +33,9 @@ export class App extends WidgetBase<WidgetProperties> {
 				w(EnhancedTextInput, {
 					key: 't1',
 					addonBefore: [ '@' ],
-					describedBy: 'twitter-desc',
+					aria: {
+						describedBy: 'twitter-desc'
+					},
 					label: 'Twitter Username',
 					type: 'text',
 					placeholder: 'username',

@@ -35,6 +35,7 @@ registerSuite('Tab', {
 				v('a', { href: '#foo'}, [ 'foo' ])
 			];
 			widget.setProperties({
+				aria: { describedBy: 'foo' },
 				closeable: true,
 				disabled: true,
 				id: 'foo',
@@ -46,6 +47,7 @@ registerSuite('Tab', {
 
 			widget.expectRender(v('div', {
 				'aria-labelledby': 'id',
+				'aria-describedby': 'foo',
 				classes: css.tab,
 				id: 'foo',
 				role: 'tabpanel'

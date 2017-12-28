@@ -57,6 +57,25 @@ registerSuite('Tooltip', {
 				v('div', { key: 'target' }, []),
 				null
 			]));
+		},
+
+		'should render aria properties'() {
+			widget.setProperties({
+				aria: { describedBy: 'foo' },
+				content: 'bar',
+				open: true
+			});
+
+			widget.expectRender(v('div', {
+				classes: [ css.right, css.rootFixed, css.rightFixed ]
+			}, [
+				v('div', { key: 'target' }, []),
+				v('div', {
+					key: 'content',
+					'aria-describedby': 'foo',
+					classes: [ css.content, css.contentFixed ]
+				}, [ 'bar' ])
+			]));
 		}
 	}
 });

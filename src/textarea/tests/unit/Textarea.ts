@@ -36,7 +36,6 @@ const expected = function(label = false) {
 				id: <any> compareId,
 				key: 'input',
 				cols: null,
-				'aria-describedby': undefined,
 				disabled: undefined,
 				'aria-invalid': null,
 				maxlength: null,
@@ -86,8 +85,8 @@ registerSuite('Textarea', {
 
 		'custom properties'() {
 			widget.setProperties({
+				aria: { describedBy: 'foo' },
 				columns: 15,
-				describedBy: 'foo',
 				maxLength: 50,
 				minLength: 10,
 				name: 'bar',

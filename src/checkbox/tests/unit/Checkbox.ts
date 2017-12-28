@@ -54,7 +54,6 @@ const expected = function(widget: Harness<Checkbox>, label = false, toggle = fal
 				id: <any> compareId,
 				classes: css.input,
 				checked: false,
-				'aria-describedby': undefined,
 				disabled: undefined,
 				'aria-invalid': null,
 				name: undefined,
@@ -110,8 +109,10 @@ registerSuite('Checkbox', {
 
 		'custom properties'() {
 			widget.setProperties({
+				aria: {
+					describedBy: 'foo'
+				},
 				checked: true,
-				describedBy: 'foo',
 				name: 'bar',
 				value: 'baz'
 			});

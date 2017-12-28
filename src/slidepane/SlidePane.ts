@@ -4,6 +4,8 @@ import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
 import * as fixedCss from './styles/slidePane.m.css';
@@ -34,7 +36,7 @@ export const enum Align {
  * @property underlay         Determines whether a semi-transparent background shows behind the pane
  * @property width            Width of the pane in pixels
  */
-export interface SlidePaneProperties extends ThemedProperties {
+export interface SlidePaneProperties extends ThemedProperties, CustomAriaProperties {
 	align?: Align;
 	closeText?: string;
 	onOpen?(): void;
@@ -254,6 +256,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 
 	render(): DNode {
 		let {
+			aria = {},
 			closeText,
 			onOpen,
 			open = false,
@@ -289,6 +292,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 		}, [
 			open ? this.renderUnderlay() : null,
 			v('div', {
+				...formatAriaProperties(aria),
 				key: 'content',
 				classes: [ ...this.theme([ css.pane, ...contentClasses ]), fixedCss.paneFixed, ...fixedContentClasses ],
 				styles: contentStyles

@@ -192,6 +192,7 @@ registerSuite('Calendar', {
 
 		'Renders with custom properties'() {
 			widget.setProperties({
+				aria: { describedBy: 'foo' },
 				labels: DEFAULT_LABELS,
 				month: testDate.getMonth(),
 				monthNames: DEFAULT_MONTHS,
@@ -207,6 +208,9 @@ registerSuite('Calendar', {
 			for (let i = 0; i < 7; i++) {
 				replaceChild(expectedVdom, `1,0,0,${i},0`, 'Bar');
 			}
+			assignProperties(expectedVdom, {
+				'aria-describedby': 'foo'
+			});
 			assignProperties(findKey(expectedVdom, 'date-4')!, {
 				selected: true
 			});

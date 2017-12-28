@@ -296,9 +296,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			labelAfter = false
 		} = this.properties;
 
-		let { aria } = inputProperties;
-
-		aria = aria ? formatAriaProperties(aria) : {};
+		const { aria = {} } = inputProperties;
 
 		const children = [
 			label ? w(Label, {
@@ -312,7 +310,7 @@ export class TimePicker<P extends TimePickerProperties = TimePickerProperties> e
 			}, [ label ]) : null,
 			v('input', {
 				id: this._uuid,
-				...aria,
+				...formatAriaProperties(aria),
 				'aria-invalid': invalid === true ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,
 				classes: this.theme(css.input),
