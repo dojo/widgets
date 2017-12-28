@@ -97,7 +97,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			w(Select, {
 				key: 'select2',
 				...this.getOptionSettings(),
-				getOptionSelected: (option: any) => !!this._value2 && option.value === this._value2,
 				label: 'Custom select box',
 				options: this._moreSelectOptions,
 				value: this._value2,
