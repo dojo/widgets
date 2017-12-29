@@ -62,6 +62,11 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		return getOptionLabel ? getOptionLabel(option) : fallback;
 	}
 
+	private _getOptionSelected = (option: any, index: number) => {
+		const { getOptionValue, value } = this.properties;
+		return getOptionValue ? getOptionValue(option, index) === value : option === value;
+	}
+
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
 	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(this.properties.key || ''); }
 
@@ -224,7 +229,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 			getOptionDisabled,
 			getOptionId,
 			getOptionLabel,
-			getOptionSelected,
+			getOptionSelected = this._getOptionSelected,
 			key,
 			options = [],
 			theme,
@@ -278,7 +283,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		const {
 			describedBy,
 			disabled,
-			getOptionSelected,
+			getOptionSelected = this._getOptionSelected,
 			invalid,
 			options = [],
 			placeholder,
@@ -291,7 +296,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 		let isPlaceholder = false;
 
 		const selectedOption = find(options, (option: any, index: number) => {
-			return getOptionSelected ? getOptionSelected(option, index) : false;
+			return getOptionSelected(option, index);
 		});
 
 		if (selectedOption) {

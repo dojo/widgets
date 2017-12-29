@@ -148,7 +148,7 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 				getOptionDisabled: useTestProperties ? widget.listener : undefined,
 				getOptionId: useTestProperties ? (widget.listener as any) : undefined,
 				getOptionLabel: useTestProperties ? (widget.listener as any) : undefined,
-				getOptionSelected: useTestProperties ? widget.listener : undefined,
+				getOptionSelected: widget.listener,
 				theme: undefined,
 				onActiveIndexChange: widget.listener,
 				onOptionSelect: widget.listener
@@ -359,6 +359,77 @@ registerSuite('Select', {
 				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
 				widget.sendEvent('click', { key: 'trigger' });
 				assert.isFalse(isOpen(widget), 'Widget closes on second button click');
+			},
+
+			'default for getOptionSelected'() {
+				const modifiedTestProperties = { ...testProperties, getOptionSelected: undefined };
+				widget.setProperties(modifiedTestProperties);
+
+				const expectedVdom = expected(widget, expectedSingle(widget, true));
+				widget.expectRender(expectedVdom, 'defaults to checking against getOptionValue');
+
+				const simpleOptions = ['one', 'two', 'three'];
+				widget.setProperties({
+					options: simpleOptions,
+					value: 'two'
+				});
+				widget.expectRender(v('div', {
+					key: 'root',
+					classes: [ css.root, null, null, null, null, null ]
+				}, [
+					null,
+					v('div', {
+						classes: [ css.inputWrapper, null ],
+						key: 'wrapper'
+					}, [
+						v('button', {
+							'aria-controls': <any> compareId,
+							'aria-expanded': 'false',
+							'aria-haspopup': 'listbox',
+							'aria-invalid': null,
+							'aria-readonly': null,
+							'aria-required': null,
+							classes: [ css.trigger, null ],
+							describedBy: undefined,
+							disabled: undefined,
+							key: 'trigger',
+							value: 'two',
+							onblur: widget.listener,
+							onclick: widget.listener,
+							onfocus: widget.listener,
+							onkeydown: widget.listener,
+							onmousedown: widget.listener
+						}, [ 'two' ]),
+						v('span', { classes: css.arrow }, [
+							v('i', {
+								classes: [ iconCss.icon, iconCss.downIcon ],
+								role: 'presentation',
+								'aria-hidden': 'true'
+							})
+						]),
+						v('div', {
+							classes: css.dropdown,
+							onfocusout: widget.listener,
+							onkeydown: widget.listener
+						}, [
+							w(Listbox, {
+								activeIndex: 0,
+								describedBy: undefined,
+								id: <any> compareId,
+								key: 'listbox',
+								optionData: simpleOptions,
+								tabIndex: -1,
+								getOptionDisabled: undefined,
+								getOptionId: undefined,
+								getOptionLabel: undefined,
+								getOptionSelected: widget.listener,
+								theme: undefined,
+								onActiveIndexChange: widget.listener,
+								onOptionSelect: widget.listener
+							})
+						])
+					])
+				]), 'defaults to checking option === value');
 			},
 
 			'change active option'() {
