@@ -1,6 +1,6 @@
 const createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcessors;
 
-const fontFiles = [ 'common/styles/fonts/*.{svg,ttf,woff}', 'themes/dojo/fonts/*.{svg,ttf,woff}' ];
+const fontFiles = [ 'theme/common/fonts/*.{svg,ttf,woff}', 'themes/dojo/fonts/*.{svg,ttf,woff}' ];
 const staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
 const staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
 
@@ -77,7 +77,7 @@ export const intern3 = {
 	remote: {},
 	local: {
 		options: {
-			config: '<%= devDirectory %>/common/tests/intern-local',
+			config: '<%= devDirectory %>/common/tests/intern-local'
 		}
 	}
 };

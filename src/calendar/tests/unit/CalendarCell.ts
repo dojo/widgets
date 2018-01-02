@@ -5,7 +5,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
 import CalendarCell from '../../CalendarCell';
-import * as css from '../../../theme/calendar/calendarCell.m.css';
+import * as css from '../../../theme/calendar/calendar.m.css';
 
 let widget: Harness<CalendarCell>;
 
