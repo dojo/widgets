@@ -10,7 +10,7 @@ import { Keys } from '../../../common/util';
 import { assign } from '@dojo/core/lang';
 
 import TabButton from '../../TabButton';
-import * as css from '../../styles/tabController.m.css';
+import * as css from '../../../theme/tabcontroller/tabController.m.css';
 
 interface KeyboardEventInit extends EventInit {
 	which: number;

@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import { InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
-import * as css from './styles/textarea.m.css';
+import * as css from '../theme/textarea/textarea.m.css';
 
 /**
  * @type TextareaProperties

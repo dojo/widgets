@@ -4,7 +4,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
 import Tab from '../../Tab';
-import * as css from '../../styles/tabController.m.css';
+import * as css from '../../../theme/tabcontroller/tabController.m.css';
 
 let widget: Harness<Tab>;
 

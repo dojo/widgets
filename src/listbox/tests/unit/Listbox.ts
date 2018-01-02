@@ -12,7 +12,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import Listbox, { ScrollMeta } from '../../Listbox';
 import ListboxOption from '../../ListboxOption';
-import * as css from '../../styles/listbox.m.css';
+import * as css from '../../../theme/listbox/listbox.m.css';
 
 let widget: Harness<Listbox>;
 

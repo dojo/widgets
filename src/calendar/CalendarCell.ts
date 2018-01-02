@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import * as css from './styles/calendar.m.css';
+import * as css from '../theme/calendar/calendarCell.m.css';
 
 /**
  * @type CalendarCellProperties

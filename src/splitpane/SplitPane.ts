@@ -3,7 +3,8 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as css from './styles/splitPane.m.css';
+import * as fixedCss from './styles/splitPane.m.css';
+import * as css from '../theme/splitpane/splitPane.m.css';
 
 /**
  * Direction of this SplitPane
@@ -164,15 +165,15 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 					css.root,
 					direction === Direction.column ? css.column : css.row
 				]),
-				css.rootFixed,
-				direction === Direction.column ? css.columnFixed : css.rowFixed
+				fixedCss.rootFixed,
+				direction === Direction.column ? fixedCss.columnFixed : fixedCss.rowFixed
 			],
 			key: 'root'
 		}, [
 			v('div', {
 				classes: [
 					this.theme(css.leading),
-					css.leadingFixed
+					fixedCss.leadingFixed
 				],
 				key: 'leading',
 				styles: this.getPaneStyles()
@@ -180,7 +181,7 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 			v('div', {
 				classes: [
 					this.theme(css.divider),
-					css.dividerFixed
+					fixedCss.dividerFixed
 				],
 				key: 'divider',
 				onmousedown: this._onDragStart,
@@ -190,7 +191,7 @@ export default class SplitPane<P extends SplitPaneProperties = SplitPaneProperti
 			v('div', {
 				classes: [
 					this.theme(css.trailing),
-					css.trailingFixed
+					fixedCss.trailingFixed
 				],
 				key: 'trailing'
 			}, this.getPaneContent(trailing))

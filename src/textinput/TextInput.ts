@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import { InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
-import * as css from './styles/textinput.m.css';
+import * as css from '../theme/textinput/textinput.m.css';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 

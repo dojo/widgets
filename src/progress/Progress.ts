@@ -1,8 +1,8 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
-import * as css from './styles/progress.m.css';
 import { DNode } from '@dojo/widget-core/interfaces';
+import * as css from '../theme/progress/progress.m.css';
 
 /**
  * @type ProgressProperties

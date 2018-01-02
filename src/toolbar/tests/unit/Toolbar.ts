@@ -5,8 +5,10 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Toolbar, { Position } from '../../Toolbar';
 import SlidePane, { Align } from '../../../slidepane/SlidePane';
-import * as css from '../../styles/toolbar.m.css';
-import * as iconCss from '../../../common/styles/icons.m.css';
+
+import * as fixedCss from '../../styles/toolbar.m.css';
+import * as css from '../../../theme/toolbar/toolbar.m.css';
+import * as iconCss from '../../../theme/common/icons.m.css';
 
 let toolbar: Harness<Toolbar>;
 registerSuite('Toolbar', {
@@ -24,8 +26,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
-					css.onTopFixed
+					fixedCss.rootFixed,
+					fixedCss.onTopFixed
 				],
 				key: 'root',
 				dir: null,
@@ -34,13 +36,13 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [ null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -51,8 +53,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
-					css.onBottomFixed
+					fixedCss.rootFixed,
+					fixedCss.onBottomFixed
 				],
 				key: 'root',
 				dir: null,
@@ -61,13 +63,13 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [ null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -88,8 +90,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
-					css.onTopFixed
+					fixedCss.rootFixed,
+					fixedCss.onTopFixed
 				],
 				key: 'root',
 				dir: null,
@@ -98,13 +100,13 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [ null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -115,10 +117,10 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
-					css.onTopFixed,
+					fixedCss.rootFixed,
+					fixedCss.onTopFixed,
 					css.sticky,
-					css.stickyFixed
+					fixedCss.stickyFixed
 				],
 				key: 'root',
 				dir: null,
@@ -127,13 +129,13 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [ null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -144,8 +146,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
-					css.onTopFixed
+					fixedCss.rootFixed,
+					fixedCss.onTopFixed
 				],
 				key: 'root',
 				dir: null,
@@ -154,11 +156,11 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [
 					v('div', {
-						classes: [ css.title, css.titleFixed ]
+						classes: [ css.title, fixedCss.titleFixed ]
 					}, [ 'test' ]),
 					null,
 					null
@@ -166,7 +168,7 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -177,8 +179,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
-					css.onTopFixed
+					fixedCss.rootFixed,
+					fixedCss.onTopFixed
 				],
 				key: 'root',
 				dir: null,
@@ -187,12 +189,12 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [
 					null,
 					v('div', {
-						classes: [ css.actions, css.actionsFixed ],
+						classes: [ css.actions, fixedCss.actionsFixed ],
 						key: 'menu'
 					}, [
 						v('div', {
@@ -205,7 +207,7 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -240,7 +242,7 @@ registerSuite('Toolbar', {
 			]);
 
 			const buttonVDom = v('button', {
-				classes: [ css.menuButton, css.menuButtonFixed ],
+				classes: [ css.menuButton, fixedCss.menuButtonFixed ],
 				onclick: toolbar.listener
 			}, [
 				'open foo',
@@ -256,8 +258,8 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
-					css.onTopFixed
+					fixedCss.rootFixed,
+					fixedCss.onTopFixed
 				],
 				key: 'root',
 				dir: null,
@@ -266,13 +268,13 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [ null, null, null]),
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -281,9 +283,9 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
+					fixedCss.rootFixed,
 					css.collapsed,
-					css.onTopFixed
+					fixedCss.onTopFixed
 				],
 				key: 'root',
 				dir: null,
@@ -292,7 +294,7 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [
 					null,
@@ -302,7 +304,7 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));
@@ -314,9 +316,9 @@ registerSuite('Toolbar', {
 			toolbar.expectRender(v('div', {
 				classes: [
 					css.root,
-					css.rootFixed,
+					fixedCss.rootFixed,
 					css.collapsed,
-					css.onTopFixed
+					fixedCss.onTopFixed
 				],
 				key: 'root',
 				dir: null,
@@ -325,7 +327,7 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.toolbar,
-						css.toolbarFixed
+						fixedCss.toolbarFixed
 					]
 				}, [
 					null,
@@ -335,7 +337,7 @@ registerSuite('Toolbar', {
 				v('div', {
 					classes: [
 						css.content,
-						css.contentFixed
+						fixedCss.contentFixed
 					]
 				}, [])
 			]));

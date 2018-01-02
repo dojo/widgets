@@ -3,7 +3,8 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
-import * as css from '../../styles/dialog.m.css';
+import * as css from '../../../theme/dialog/dialog.m.css';
+import * as fixedCss from '../../styles/dialog.m.css';
 
 interface Options {
 	closeable?: boolean;
@@ -99,7 +100,7 @@ registerSuite('Dialog', {
 					viewportSize = { height, width };
 				})
 			.sleep(DELAY)
-			.findByCssSelector(`.${css.underlay}`)
+			.findByCssSelector(`.${fixedCss.underlay}`)
 				.getSize()
 				.then(({ height, width }) => {
 					assert.isAtLeast(height, viewportSize.height * 0.8);

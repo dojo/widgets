@@ -1,5 +1,36 @@
 @import '../../common/styles/variables.css';
 
+.tab {
+	position: relative;
+	border: 1px solid black;
+	background: #FFF;
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+	padding: 1px 3px;
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: 14px;
+}
+
+.activeTabButton {
+	background: #FFF;
+	border-color: black;
+	border-bottom-color: #FFF;
+	z-index: calc(var(--zindex-base) + 1);
+}
+
 .root, .root * {
 	box-sizing: border-box;
 }
@@ -23,41 +54,10 @@
 	font-weight: bold;
 }
 
-.activeTabButton {
-	background: #FFF;
-	border-color: black;
-	border-bottom-color: #FFF;
-	z-index: calc(var(--zindex-base) + 1);
-}
-
 .disabledTabButton {
 	font-style: italic;
 	cursor: default;
 	color: var(--disabled-color);
-}
-
-.close {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: 5px;
-	cursor: pointer;
-	font-size: 0;
-	border: none;
-	background: none;
-	padding: 1px 3px;
-}
-
-.close:after {
-	content: '✕';
-	display: block;
-	font-size: 14px;
-}
-
-.tab {
-	position: relative;
-	border: 1px solid black;
-	background: #FFF;
 }
 
 .alignLeft .tabs {

@@ -5,12 +5,12 @@ import ThemedMixin, { theme, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
-import * as css from './styles/timePicker.m.css';
 import ComboBox from '../combobox/ComboBox';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { TextInputProperties } from '../textinput/TextInput';
 import Label from '../label/Label';
 import uuid from '@dojo/core/uuid';
+import * as css from '../theme/timepicker/timePicker.m.css';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;

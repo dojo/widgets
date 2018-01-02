@@ -2,8 +2,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
-import * as css from './styles/button.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as css from '../theme/button/button.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 import { InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';

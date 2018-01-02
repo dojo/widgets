@@ -2,7 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
-import * as css from '../../styles/button.m.css';
+import * as css from '../../../theme/button/button.m.css';
 
 function getPage(remote: Remote) {
 	return remote

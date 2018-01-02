@@ -6,9 +6,9 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
-
-import * as css from './styles/slidePane.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as fixedCss from './styles/slidePane.m.css';
+import * as css from '../theme/slidepane/slidePane.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * Enum for left / right alignment
@@ -206,13 +206,13 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			align = Align.left,
 			open = false
 		} = this.properties;
-		const alignCss: {[key: string]: any} = css;
+		const alignCss: {[key: string]: any} = fixedCss;
 
 		return [
-			open ? css.openFixed : null,
+			open ? fixedCss.openFixed : null,
 			alignCss[`${align}Fixed`],
-			this._slideIn || (open && !this._wasOpen) ? css.slideInFixed : null,
-			!open && this._wasOpen ? css.slideOutFixed : null
+			this._slideIn || (open && !this._wasOpen) ? fixedCss.slideInFixed : null,
+			!open && this._wasOpen ? fixedCss.slideOutFixed : null
 		];
 	}
 
@@ -245,7 +245,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 	protected renderUnderlay(): DNode {
 		const { underlay = false } = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
+			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay'
@@ -290,7 +290,7 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 			open ? this.renderUnderlay() : null,
 			v('div', {
 				key: 'content',
-				classes: [ ...this.theme([ css.pane, ...contentClasses ]), css.paneFixed, ...fixedContentClasses ],
+				classes: [ ...this.theme([ css.pane, ...contentClasses ]), fixedCss.paneFixed, ...fixedContentClasses ],
 				styles: contentStyles
 			}, [
 				title ? v('div', {

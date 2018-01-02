@@ -4,8 +4,9 @@ import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as css from './styles/titlePane.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as fixedCss from './styles/titlePane.m.css';
+import * as css from '../theme/titlepane/titlePane.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * @type TitlePaneProperties
@@ -89,7 +90,7 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
 		return [
-			closeable ? css.closeableFixed : null
+			closeable ? fixedCss.closeableFixed : null
 		];
 	}
 
@@ -128,11 +129,11 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 			classes: [ ...this.theme([
 				css.root,
 				open ? css.open : null
-			]), css.rootFixed ]
+			]), fixedCss.rootFixed ]
 		}, [
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
-				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), css.titleFixed, ...this.getFixedModifierClasses() ],
+				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), fixedCss.titleFixed, ...this.getFixedModifierClasses() ],
 				role: 'heading'
 			}, [
 				v('button', {

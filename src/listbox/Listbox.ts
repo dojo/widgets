@@ -9,7 +9,7 @@ import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as css from './styles/listbox.m.css';
+import * as css from '../theme/listbox/listbox.m.css';
 import ListboxOption from './ListboxOption';
 
 /* Default scroll meta */

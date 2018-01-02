@@ -1,0 +1,25 @@
+@import '../../common/styles/variables.css';
+
+.inactiveDate {
+	background-color: var(--disabled-color);
+}
+
+.selectedDate {
+	background-color: var(--selected-background);
+	color: var(--selected-color);
+}
+
+.todayDate {}
+
+.date {
+	cursor: pointer;
+}
+
+.date:hover {
+	background-color: var(--disabled-color); /* TODO: better hover color variable? */
+}
+
+.date {
+	padding: 10px 20px;
+	text-align: center;
+}

@@ -10,9 +10,9 @@ import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/def
 import Calendar from '../../Calendar';
 import CalendarCell from '../../CalendarCell';
 import DatePicker from '../../DatePicker';
-import * as css from '../../styles/calendar.m.css';
+import * as css from '../../../theme/calendar/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
-import * as iconCss from '../../../common/styles/icons.m.css';
+import * as iconCss from '../../../theme/common/icons.m.css';
 
 let widget: Harness<Calendar>;
 const testDate = new Date('June 3 2017');

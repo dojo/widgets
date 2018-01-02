@@ -10,7 +10,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Textarea from '../../Textarea';
-import * as css from '../../styles/textarea.m.css';
+import * as css from '../../../theme/textarea/textarea.m.css';
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';

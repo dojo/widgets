@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
-import * as css from './styles/label.m.css';
+import * as css from '../theme/label/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 /**

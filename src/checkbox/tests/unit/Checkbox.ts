@@ -10,7 +10,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Checkbox, { Mode } from '../../Checkbox';
-import * as css from '../../styles/checkbox.m.css';
+import * as css from '../../../theme/checkbox/checkbox.m.css';
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';

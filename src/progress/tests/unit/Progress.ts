@@ -2,7 +2,7 @@ const { beforeEach, afterEach, describe, it} = intern.getInterface('bdd');
 import { v } from '@dojo/widget-core/d';
 import harness, { Harness } from '@dojo/test-extras/harness';
 import Progress from '../../Progress';
-import * as css from '../../styles/progress.m.css';
+import * as css from '../../../theme/progress/progress.m.css';
 
 const expectedVDom = function(args: any) {
 	const {

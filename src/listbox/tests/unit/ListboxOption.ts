@@ -6,7 +6,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
 import ListboxOption from '../../ListboxOption';
-import * as css from '../../styles/listbox.m.css';
+import * as css from '../../../theme/listbox/listbox.m.css';
 
 let widget: Harness<ListboxOption>;
 

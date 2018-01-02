@@ -7,7 +7,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import TabButton from './TabButton';
 import uuid from '@dojo/core/uuid';
 
-import * as css from './styles/tabController.m.css';
+import * as css from '../theme/tabcontroller/tabController.m.css';
 
 /**
  * Enum for tab button alignment

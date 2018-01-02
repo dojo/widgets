@@ -1,0 +1,15 @@
+@import '../../common/styles/variables.css';
+
+.root { }
+
+.column { }
+
+.divider {
+	background-color: var(--component-color);
+}
+
+.leading { }
+
+.row { }
+
+.trailing { }

@@ -6,8 +6,8 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 
 import Button, { ButtonProperties } from '../../Button';
-import * as css from '../../styles/button.m.css';
-import * as iconCss from '../../../common/styles/icons.m.css';
+import * as css from '../../../theme/button/button.m.css';
+import * as iconCss from '../../../theme/common/icons.m.css';
 
 let widget: Harness<Button>;
 

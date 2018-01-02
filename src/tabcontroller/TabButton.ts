@@ -7,7 +7,7 @@ import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import { Keys } from '../common/util';
 
-import * as css from './styles/tabController.m.css';
+import * as css from '../theme/tabcontroller/tabController.m.css';
 
 /**
  * @type TabButtonProperties

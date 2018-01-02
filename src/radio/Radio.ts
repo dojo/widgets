@@ -5,7 +5,7 @@ import Label from '../label/Label';
 import { LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import * as css from './styles/radio.m.css';
+import * as css from '../theme/radio/radio.m.css';
 
 /**
  * @type RadioProperties

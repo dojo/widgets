@@ -14,8 +14,8 @@ import TextInput, { TextInputProperties } from '../textinput/TextInput';
 import commonBundle from '../common/nls/common';
 import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
-import * as css from './styles/comboBox.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as css from '../theme/combobox/comboBox.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
 
 /**
  * @type ComboBoxProperties

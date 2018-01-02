@@ -7,6 +7,9 @@
 	overflow-y: auto;
 	position: relative;
 }
+
+.focused {}
+
 .option {
 	cursor: pointer;
 }

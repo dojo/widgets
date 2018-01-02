@@ -10,7 +10,8 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Slider from '../../Slider';
-import * as css from '../../styles/slider.m.css';
+import * as css from '../../../theme/slider/slider.m.css';
+import * as fixedCss from '../../styles/slider.m.css';
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
@@ -18,12 +19,12 @@ const compareId = compareProperty((value: any) => {
 
 const expected = function(widget: any, label = false, tooltip = false) {
 	const sliderVdom = v('div', {
-		classes: [ css.inputWrapper, css.inputWrapperFixed ],
+		classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
 		styles: {}
 	}, [
 		v('input', {
 			key: 'input',
-			classes: [ css.input, css.nativeInput ],
+			classes: [ css.input, fixedCss.nativeInput ],
 			'aria-describedby': undefined,
 			disabled: undefined,
 			id: <any> compareId,
@@ -53,21 +54,21 @@ const expected = function(widget: any, label = false, tooltip = false) {
 			ontouchcancel: widget.listener
 		}),
 		v('div', {
-			classes: [ css.track, css.trackFixed ],
+			classes: [ css.track, fixedCss.trackFixed ],
 			'aria-hidden': 'true',
 			styles: {}
 		}, [
 			v('span', {
-				classes: [ css.fill, css.fillFixed ],
+				classes: [ css.fill, fixedCss.fillFixed ],
 				styles: { width: '0%' }
 			}),
 			v('span', {
-				classes: [ css.thumb, css.thumbFixed ],
+				classes: [ css.thumb, fixedCss.thumbFixed ],
 				styles: { left: '0%' }
 			})
 		]),
 		v('output', {
-			classes: [ css.output, tooltip ? css.outputTooltip : null ],
+			classes: [ css.output, tooltip ? fixedCss.outputTooltip : null ],
 			for: <any> compareId,
 			styles: {}
 		}, [ '0' ])
@@ -75,7 +76,7 @@ const expected = function(widget: any, label = false, tooltip = false) {
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, css.rootFixed ]
+		classes: [ css.root, null, null, null, null, null, null, fixedCss.rootFixed ]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -159,7 +160,7 @@ registerSuite('Slider', {
 					styles: { width: '200px' }
 				});
 				assignProperties(expectedVdom, {
-					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
+					classes: [ css.root, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -199,7 +200,7 @@ registerSuite('Slider', {
 					styles: { top: '80%' }
 				});
 				assignProperties(expectedVdom, {
-					classes: [ css.root, null, null, null, null, null, css.vertical, css.rootFixed ]
+					classes: [ css.root, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
 				});
 
 				widget.expectRender(expectedVdom);
@@ -266,7 +267,7 @@ registerSuite('Slider', {
 				required: true
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, css.rootFixed ]
+				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, fixedCss.rootFixed ]
 			});
 
 			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
@@ -285,7 +286,7 @@ registerSuite('Slider', {
 				required: false
 			});
 			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null, null, css.rootFixed ]
+				classes: [ css.root, null, null, css.valid, null, null, null, fixedCss.rootFixed ]
 			});
 
 			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');

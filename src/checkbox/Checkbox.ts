@@ -5,7 +5,7 @@ import Label from '../label/Label';
 import { LabeledProperties, InputProperties, InputEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import * as css from './styles/checkbox.m.css';
+import * as css from '../theme/checkbox/checkbox.m.css';
 
 /**
  * @type CheckboxProperties

@@ -10,7 +10,7 @@ import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Radio from '../../Radio';
-import * as css from '../../styles/radio.m.css';
+import * as css from '../../../theme/radio/radio.m.css';
 
 const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';

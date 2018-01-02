@@ -7,8 +7,9 @@ import uuid from '@dojo/core/uuid';
 import { Keys } from '../common/util';
 import commonBundle from '../common/nls/common';
 
-import * as css from './styles/dialog.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as fixedCss from './styles/dialog.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
+import * as css from '../theme/dialog/dialog.m.css';
 import * as animations from '../common/styles/animations.m.css';
 
 /**
@@ -104,7 +105,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 	protected renderUnderlay(): DNode {
 		const { underlay } = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? css.underlayVisible : null), css.underlay ],
+			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay',

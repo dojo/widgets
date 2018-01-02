@@ -6,9 +6,9 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import calendarBundle from './nls/Calendar';
 import { Keys } from '../common/util';
 
-import * as css from './styles/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconCss from '../common/styles/icons.m.css';
+import * as iconCss from '../theme/common/icons.m.css';
+import * as css from '../theme/calendar/calendar.m.css';
 
 /**
  * Enum for next/previous buttons
