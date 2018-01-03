@@ -5,6 +5,8 @@ import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
 import { InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import uuid from '@dojo/core/uuid';
+
+import { validate, renderValidatedContent } from '../common/validate';
 import * as css from '../theme/textinput/textinput.m.css';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
@@ -33,6 +35,7 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@validate('input', 'onfocus', 'onblur', 'Uh oh! Something went wrong.')
 export default class TextInput<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
@@ -122,9 +125,9 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 	}
 
 	protected renderInputWrapper(): DNode {
-		return v('div', { classes: this.theme(css.inputWrapper) }, [
+		return renderValidatedContent.call(this, v('div', { classes: this.theme(css.inputWrapper) }, [
 			this.renderInput()
-		]);
+		]));
 	}
 
 	render(): DNode {
