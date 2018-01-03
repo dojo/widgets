@@ -48,18 +48,15 @@ export function renderValidatedContent(this: any, content: DNode) {
  */
 export function validate(key: string | number, showEvent: string, hideEvent: string, msg: DNode) {
 	function beforeRender(this: any, render: () => DNode, properties: any, children: DNode[]): () => DNode {
-		console.log('RENDER');
 		const results = render();
 		const dnode = findDNodeByKey(results, String(key));
 
 		const showInvalidMsg = () => {
-			console.log('SHOW');
 			this.invalidTextShowing = true;
 			this.invalidate();
 		};
 
 		const hideInvalidMsg = () => {
-			console.log('HIDE');
 			this.invalidTextShowing = false;
 			this.invalidate();
 		};
