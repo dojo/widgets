@@ -1,6 +1,4 @@
-import { LocaleLoaders, Bundle } from '@dojo/i18n/i18n';
-
-const locales: LocaleLoaders<typeof messages> = {};
+const locales = {};
 
 const messages = {
 	chooseMonth: 'Choose Month',
@@ -11,6 +9,4 @@ const messages = {
 	nextYears: 'Later years'
 };
 
-const bundle: Bundle<typeof messages> = { locales, messages };
-
-export default bundle;
+export default { locales, messages };
