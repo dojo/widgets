@@ -1,5 +1,6 @@
-const bundlePath = 'src/calendar/nls/common';
-const locales: string[] = [];
+import { LocaleLoaders, Bundle } from '@dojo/i18n/i18n';
+
+const locales: LocaleLoaders<typeof messages> = {};
 
 const messages = {
 	chooseMonth: 'Choose Month',
@@ -10,4 +11,6 @@ const messages = {
 	nextYears: 'Later years'
 };
 
-export default { bundlePath, locales, messages };
+const bundle: Bundle<typeof messages> = { locales, messages };
+
+export default bundle;

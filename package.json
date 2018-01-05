@@ -23,14 +23,14 @@
   "peerDependencies": {
     "@dojo/core": "~0.3.0",
     "@dojo/has": "~0.1.1",
-    "@dojo/i18n": "~0.3.0",
+    "@dojo/i18n": "~0.4.0",
     "@dojo/shim": "~0.2.3",
-    "@dojo/widget-core": "~0.4.0"
+    "@dojo/widget-core": "~0.5.0"
   },
   "devDependencies": {
     "@dojo/interfaces": "~0.2.0",
     "@dojo/loader": "~0.1.1",
-    "@dojo/test-extras": "~0.3.0",
+    "@dojo/test-extras": "file:../test-extras/dist/dojo-test-extras-0.3.1-rc.1.tgz",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
     "@types/jsdom": "^2.0.30",
