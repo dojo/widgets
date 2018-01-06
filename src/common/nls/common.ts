@@ -1,5 +1,4 @@
-const bundlePath = 'src/common/nls';
-const locales: string[] = [];
+const locales = {};
 
 const messages = {
 	sunShort: 'Sun',
@@ -45,4 +44,4 @@ const messages = {
 	open: 'open'
 };
 
-export default { bundlePath, locales, messages };
+export default { locales, messages };

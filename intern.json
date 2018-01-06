@@ -49,6 +49,7 @@
 		"./_build/**/*.js",
 		"!./_build/**/tests/**/*",
 		"!./_build/**/styles/**/*",
+		"!./_build/**/theme/**/*",
 		"!./_build/**/themes/**/*",
 		"!./_build/**/example/**/*",
 		"!./_build/**/*Element.js"

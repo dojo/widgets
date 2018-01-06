@@ -1,5 +1,4 @@
-const bundlePath = 'src/calendar/nls/common';
-const locales: string[] = [];
+const locales = {};
 
 const messages = {
 	chooseMonth: 'Choose Month',
@@ -10,4 +9,4 @@ const messages = {
 	nextYears: 'Later years'
 };
 
-export default { bundlePath, locales, messages };
+export default { locales, messages };
