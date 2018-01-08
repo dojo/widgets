@@ -67,13 +67,13 @@ registerSuite('Tooltip', {
 			});
 
 			widget.expectRender(v('div', {
-				classes: [ css.right, css.rootFixed, css.rightFixed ]
+				classes: [ css.right, fixedCss.rootFixed, fixedCss.rightFixed ]
 			}, [
 				v('div', { key: 'target' }, []),
 				v('div', {
 					key: 'content',
 					'aria-describedby': 'foo',
-					classes: [ css.content, css.contentFixed ]
+					classes: [ css.content, fixedCss.contentFixed ]
 				}, [ 'bar' ])
 			]));
 		}

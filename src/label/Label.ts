@@ -2,6 +2,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import * as css from '../theme/label/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
@@ -18,7 +20,7 @@ import * as baseCss from '../common/styles/base.m.css';
  * @property hidden
  * @property secondary
  */
-export interface LabelProperties extends ThemedProperties {
+export interface LabelProperties extends ThemedProperties, CustomAriaProperties {
 	forId?: string;
 	disabled?: boolean;
 	readOnly?: boolean;
@@ -53,9 +55,10 @@ export default class Label<P extends LabelProperties = LabelProperties> extends 
 	}
 
 	render(): DNode {
-		const { forId, hidden } = this.properties;
+		const { aria = {}, forId, hidden } = this.properties;
 
 		return v('label', {
+			...formatAriaProperties(aria),
 			classes: [
 				...this.theme(this.getRootClasses()),
 				hidden ? baseCss.visuallyHidden : null

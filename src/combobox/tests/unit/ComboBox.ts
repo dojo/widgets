@@ -50,12 +50,12 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 	const controlsVdom = v('div', {
 		classes: css.controls
 	}, [
-		w(TextInput, <any> {
+		w(TextInput, {
 			key: 'textinput',
 			aria: {
-				activedescendant: <any> compareId,
-				controls: <any> compareId,
-				owns: <any> compareId
+				activedescendant: compareId,
+				controls: compareId,
+				owns: compareId
 			},
 			disabled: undefined,
 			invalid: undefined,
@@ -69,7 +69,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 			onKeyDown: widget.listener
 		}),
 		useTestProperties ? v('button', {
-			'aria-controls': <any> compareId,
+			'aria-controls': compareId as any,
 			key: 'clear',
 			classes: css.clear,
 			disabled: undefined,
@@ -103,7 +103,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 
 function isOpen(widget: Harness<ComboBox>): boolean {
 	const vdom = widget.getRender();
-	return (<any> vdom)!.properties!['aria-expanded'] === 'true';
+	return (vdom as any)!.properties!['aria-expanded'] === 'true';
 }
 
 const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: boolean, open: boolean) {
@@ -119,7 +119,7 @@ const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: b
 	}, [
 		w(Listbox, {
 			activeIndex: 0,
-			id: <any> compareId,
+			id: compareId as any,
 			key: 'listbox',
 			visualFocus: false,
 			optionData: testOptions,
@@ -164,7 +164,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: <any> compareId
+			forId: compareId
 		}, [ 'foo' ]) : null,
 		controlsVdom,
 		menuVdom

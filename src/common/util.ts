@@ -1,3 +1,5 @@
+import { AriaPropertyObject } from './interfaces';
+
 export const enum Keys {
 	Down = 40,
 	End = 35,
@@ -13,10 +15,10 @@ export const enum Keys {
 	Up = 38
 }
 
-export function formatAriaProperties(aria: { [key: string]: string }): { [key: string]: string } {
-	const formattedAria: { [key: string]: string } = {};
-	Object.keys(aria).forEach((key: string) => {
-		formattedAria[`aria-${key.toLowerCase()}`] = aria[key];
-	});
+export function formatAriaProperties(aria: AriaPropertyObject): AriaPropertyObject {
+	const formattedAria = Object.keys(aria).reduce((a: AriaPropertyObject, key: string) => {
+		a[`aria-${key.toLowerCase()}`] = aria[key];
+		return a;
+	}, {});
 	return formattedAria;
 }

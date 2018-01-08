@@ -399,7 +399,6 @@ registerSuite('Select', {
 							'aria-readonly': null,
 							'aria-required': null,
 							classes: [ css.trigger, null ],
-							describedBy: undefined,
 							disabled: undefined,
 							key: 'trigger',
 							value: 'two',
@@ -423,7 +422,6 @@ registerSuite('Select', {
 						}, [
 							w(Listbox, {
 								activeIndex: 0,
-								describedBy: undefined,
 								id: <any> compareId,
 								key: 'listbox',
 								optionData: simpleOptions,

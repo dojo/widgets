@@ -2,10 +2,12 @@ import commonBundle from './nls/common';
 
 export type CommonMessages = typeof commonBundle.messages;
 
+export type AriaPropertyObject = {
+	[key: string]: string;
+};
+
 export interface CustomAriaProperties {
-	aria?: {
-		[key: string]: string;
-	};
+	aria?: AriaPropertyObject;
 }
 
 /**

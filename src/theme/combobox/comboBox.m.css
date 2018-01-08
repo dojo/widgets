@@ -11,6 +11,10 @@
 	box-sizing: border-box;
 }
 
+.clearable {
+	padding-right: 4em;
+}
+
 .controls {
 	position: relative;
 }
