@@ -60,14 +60,22 @@ In a future release we will ship with several official Dojo 2 themes that can be
 
 ## Widgets
 
+Live examples of current widgets are available in the [widget showcase](https://dojo.github.io/examples/widget-showcase/).
+
 ### Form widgets
 [Button](src/button/README.md)
+
+[Calendar](src/calendar/README.md)
 
 [Checkbox/Switch](src/checkbox/README.md)
 
 [ComboBox](src/combobox/README.md)
 
+[EnhancedTextInput](src/enhancedtextinput/README.md)
+
 [Label](src/label/README.md)
+
+[Listbox](src/listbox/README.md)
 
 [Radio](src/radio/README.md)
 
@@ -75,17 +83,31 @@ In a future release we will ship with several official Dojo 2 themes that can be
 
 [Slider](src/slider/README.md)
 
-[TextArea](src/TextArea/README.md)
+[TextArea](src/textarea/README.md)
 
-[TextInput](src/TextInput/README.md)
+[TextInput](src/textinput/README.md)
+
+[TimePicker](src/timepicker/README.md)
 
 ### Layout widgets
+[AccordionPane](src/accordionpane/README.md)
+
 [SlidePane](src/slidepane/README.md)
 
-[TabPane](src/tabpane/README.md)
+[SplitPane](src/splitpane/README.md)
+
+[TabController](src/tabcontroller/README.md)
+
+[TitlePane](src/titlepane/README.md)
 
 ### Misc widgets
 [Dialog](src/dialog/README.md)
+
+[Progress](src/progress/README.md)
+
+[Toolbar](src/toolbar/README.md)
+
+[Tooltip](src/tooltip/README.md)
 
 ## Conventions
 
