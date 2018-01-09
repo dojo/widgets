@@ -4,7 +4,8 @@ import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import { Keys } from '../common/util';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties, Keys } from '../common/util';
 import commonBundle from '../common/nls/common';
 
 import * as fixedCss from './styles/dialog.m.css';
@@ -34,7 +35,7 @@ export type RoleType = 'dialog' | 'alertdialog';
  * @property title              Title to show in the dialog title bar
  * @property underlay           Determines whether a semi-transparent background shows behind the dialog
  */
-export interface DialogProperties extends ThemedProperties {
+export interface DialogProperties extends ThemedProperties, CustomAriaProperties {
 	closeable?: boolean;
 	closeText?: string;
 	enterAnimation?: string;
@@ -115,6 +116,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 
 	render(): DNode {
 		let {
+			aria = {},
 			closeable = true,
 			closeText,
 			enterAnimation = animations.fadeIn,
@@ -139,6 +141,7 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 		}, open ? [
 			this.renderUnderlay(),
 			v('div', {
+				...formatAriaProperties(aria),
 				'aria-labelledby': this._titleId,
 				classes: this.theme(css.main),
 				enterAnimation,

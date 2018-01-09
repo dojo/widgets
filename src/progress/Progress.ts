@@ -1,6 +1,8 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import { DNode } from '@dojo/widget-core/interfaces';
 import * as css from '../theme/progress/progress.m.css';
 
@@ -16,7 +18,7 @@ import * as css from '../theme/progress/progress.m.css';
  * @property min            Value used to calculate percent width
  * @property id             Value used to supply a dom id
  */
-export interface ProgressProperties extends ThemedProperties {
+export interface ProgressProperties extends ThemedProperties, CustomAriaProperties {
 	value: number;
 	output?(value: number, percent: number): string;
 	showOutput?: boolean;
@@ -47,6 +49,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 
 	protected render(): DNode {
 		const {
+			aria = {},
 			value,
 			showOutput = true,
 			max = 100,
@@ -59,6 +62,7 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 
 		return v('div', { classes: this.theme(css.root) }, [
 			v('div', {
+				...formatAriaProperties(aria),
 				classes: this.theme(css.bar),
 				role: 'progressbar',
 				'aria-valuemin': `${min}`,

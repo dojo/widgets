@@ -22,7 +22,6 @@ const expected = function(widget: Harness<Radio>, label = false) {
 			id: <any> compareId,
 			classes: css.input,
 			checked: false,
-			'aria-describedby': undefined,
 			disabled: undefined,
 			'aria-invalid': null,
 			name: undefined,
@@ -80,8 +79,8 @@ registerSuite('Radio', {
 
 		'custom properties'() {
 			widget.setProperties({
+				aria: { describedBy: 'foo' },
 				checked: true,
-				describedBy: 'foo',
 				name: 'bar',
 				value: 'baz'
 			});

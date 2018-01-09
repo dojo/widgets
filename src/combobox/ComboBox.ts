@@ -265,7 +265,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		}
 	}
 
-	protected renderInput(): DNode {
+	protected renderInput(results: any[]): DNode {
 		const {
 			disabled,
 			inputProperties = {},
@@ -279,7 +279,11 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		return w(TextInput, {
 			...inputProperties,
 			key: 'textinput',
-			controls: this._getMenuId(),
+			aria: {
+				activedescendant: this._getResultId(results[this._activeIndex], this._activeIndex),
+				controls: this._getMenuId(),
+				owns: this._getMenuId()
+			},
 			disabled,
 			invalid,
 			onBlur: this._onInputBlur,
@@ -376,7 +380,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 
 	render(): DNode {
 		const {
-			clearable,
+			clearable = false,
 			id,
 			invalid,
 			label,
@@ -408,7 +412,7 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 			v('div', {
 				classes: this.theme(css.controls)
 			}, [
-				this.renderInput(),
+				this.renderInput(results),
 				clearable ? this.renderClearButton(messages) : null,
 				this.renderMenuButton(messages)
 			]),
@@ -418,12 +422,13 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		return v('div', {
 			'aria-expanded': this._open ? 'true' : 'false',
 			'aria-haspopup': 'true',
-			'aria-readonly': readOnly ? 'true' : 'false',
-			'aria-required': required ? 'true' : 'false',
+			'aria-readonly': readOnly ? 'true' : null,
+			'aria-required': required ? 'true' : null,
 			id,
 			classes: this.theme([
 				css.root,
 				this._open ? css.open : null,
+				clearable ? css.clearable : null,
 				invalid === true ? css.invalid : null,
 				invalid === false ? css.valid : null
 			]),

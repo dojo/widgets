@@ -1,4 +1,5 @@
 export const root: string;
+export const clearable: string;
 export const controls: string;
 export const dropdown: string;
 export const clear: string;

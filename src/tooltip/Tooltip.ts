@@ -1,7 +1,9 @@
-import { DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
-import { ThemedMixin, theme } from '@dojo/widget-core/mixins/Themed';
+import { DNode } from '@dojo/widget-core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 
 import * as fixedCss from './styles/tooltip.m.css';
 import * as css from '../theme/tooltip/tooltip.m.css';
@@ -15,7 +17,7 @@ import * as css from '../theme/tooltip/tooltip.m.css';
  * @property orientation       Where this tooltip should render relative to its child
  * @property open              Determines if this tooltip is visible
  */
-export interface TooltipProperties extends WidgetProperties {
+export interface TooltipProperties extends ThemedProperties, CustomAriaProperties {
 	content: DNode;
 	orientation?: Orientation;
 	open?: boolean;
@@ -54,7 +56,9 @@ export default class Tooltip<P extends TooltipProperties = TooltipProperties> ex
 	}
 
 	protected renderContent(): DNode {
+		const { aria = {} } = this.properties;
 		return v('div', {
+			...formatAriaProperties(aria),
 			classes: [ this.theme(css.content), fixedCss.contentFixed ],
 			key: 'content'
 		}, [ this.properties.content ]);

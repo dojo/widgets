@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, compareProperty, findKey, replaceChild } from '@dojo/test-extras/support/d';
+import { assignProperties, assignChildProperties, compareProperty, findKey, replaceChild } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -41,7 +41,7 @@ const testOptions: any[] = [
 ];
 
 const testProperties: Partial<SelectProperties> = {
-	describedBy: 'foo',
+	aria: { describedBy: 'foo' },
 	getOptionDisabled: (option: any, index: number) => !!option.disabled,
 	getOptionId: (option: any, index: number) => option.value,
 	getOptionLabel: (option: any) => option.label,
@@ -61,10 +61,9 @@ const testStateProperties: Partial<SelectProperties> = {
 };
 
 const expectedNative = function(widget: Harness<Select>, useTestProperties = false) {
-	return v('div', { classes: css.inputWrapper }, [
+	const vdom = v('div', { classes: css.inputWrapper }, [
 		v('select', {
 			classes: css.input,
-			'aria-describedby': useTestProperties ? 'foo' : undefined,
 			disabled: useTestProperties ? true : undefined,
 			'aria-invalid': useTestProperties ? 'true' : null,
 			name: useTestProperties ? 'foo' : undefined,
@@ -101,10 +100,16 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 			})
 		])
 	]);
+
+	if (useTestProperties) {
+		assignChildProperties(vdom, '0', {'aria-describedby': 'foo'});
+	}
+
+	return vdom;
 };
 
 const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false) {
-	return v('div', {
+	const vdom = v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
 		key: 'wrapper'
 	}, [
@@ -116,7 +121,6 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 			'aria-readonly': null,
 			'aria-required': null,
 			classes: [ css.trigger, useTestProperties ? null : css.placeholder ],
-			describedBy: useTestProperties ? 'foo' : undefined,
 			disabled: undefined,
 			key: 'trigger',
 			value: useTestProperties ? 'two' : undefined,
@@ -140,7 +144,6 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 		}, [
 			w(Listbox, {
 				activeIndex: 0,
-				describedBy: useTestProperties ? 'foo' : undefined,
 				id: <any> compareId,
 				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
@@ -155,6 +158,12 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 			})
 		])
 	]);
+
+	if (useTestProperties) {
+		assignProperties(findKey(vdom, 'trigger')!, {'aria-describedby': 'foo'});
+	}
+
+	return vdom;
 };
 
 function isOpen(widget: any): boolean {
@@ -390,7 +399,6 @@ registerSuite('Select', {
 							'aria-readonly': null,
 							'aria-required': null,
 							classes: [ css.trigger, null ],
-							describedBy: undefined,
 							disabled: undefined,
 							key: 'trigger',
 							value: 'two',
@@ -414,7 +422,6 @@ registerSuite('Select', {
 						}, [
 							w(Listbox, {
 								activeIndex: 0,
-								describedBy: undefined,
 								id: <any> compareId,
 								key: 'listbox',
 								optionData: simpleOptions,

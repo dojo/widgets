@@ -2,7 +2,8 @@ import { auto, reference } from '@dojo/widget-core/diff';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import Dimensions from '@dojo/widget-core/meta/Dimensions';
 import { DNode } from '@dojo/widget-core/interfaces';
-import { Keys } from '../common/util';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties, Keys } from '../common/util';
 import MetaBase from '@dojo/widget-core/meta/Base';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import uuid from '@dojo/core/uuid';
@@ -28,7 +29,6 @@ export class ScrollMeta extends MetaBase {
  * Properties that can be set on a Listbox component
  *
  * @property activeIndex          Index of the currently active listbox option
- * @property describedBy          ID of an element that provides more descriptive text
  * @property getOptionLabel       Function to return string label based on option data
  * @property getOptionDisabled    Function that accepts option data and returns a boolean for disabled/not disabled
  * @property getOptionId          Function that accepts option data and returns a string ID
@@ -42,9 +42,8 @@ export class ScrollMeta extends MetaBase {
  * @property onOptionSelect       Called with the option data of the new requested selected item
  */
 
-export interface ListboxProperties extends ThemedProperties {
+export interface ListboxProperties extends ThemedProperties, CustomAriaProperties {
 	activeIndex?: number;
-	describedBy?: string;
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any, index: number): DNode;
@@ -206,17 +205,17 @@ export default class Listbox<P extends ListboxProperties = ListboxProperties> ex
 	protected render(): DNode {
 		const {
 			activeIndex = 0,
-			describedBy,
+			aria = {},
 			id,
 			multiselect = false,
 			tabIndex = 0
 		} = this.properties;
 
 		return v('div', {
+			...formatAriaProperties(aria),
 			'aria-activedescendant': this._getOptionId(activeIndex),
 			'aria-multiselectable': multiselect ? 'true' : null,
 			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
-			describedBy,
 			id,
 			key: 'root',
 			role: 'listbox',

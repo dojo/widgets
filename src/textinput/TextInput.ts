@@ -3,7 +3,8 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
-import { InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/textinput/textinput.m.css';
 
@@ -21,7 +22,8 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties {
+
+export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
 	controls?: string;
 	type?: TextInputType;
 	maxLength?: number | string;
@@ -74,8 +76,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 
 	protected renderInput(): DNode {
 		const {
-			controls,
-			describedBy,
+			aria = {},
 			disabled,
 			invalid,
 			maxLength,
@@ -89,8 +90,7 @@ export default class TextInput<P extends TextInputProperties = TextInputProperti
 		} = this.properties;
 
 		return v('input', {
-			'aria-controls': controls,
-			'aria-describedby': describedBy,
+			...formatAriaProperties(aria),
 			'aria-invalid': invalid ? 'true' : null,
 			classes: this.theme(css.input),
 			disabled,

@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { Keys } from '../../util';
+import { formatAriaProperties, Keys } from '../../util';
 
 registerSuite('util', {
 
@@ -18,5 +18,18 @@ registerSuite('util', {
 		assert.strictEqual(Keys.Space, 32);
 		assert.strictEqual(Keys.Tab, 9);
 		assert.strictEqual(Keys.Up, 38);
+	},
+
+	formatAriaProperties() {
+		assert.deepEqual(formatAriaProperties({}), {}, 'handles empty object');
+
+		const aria = {
+			describedBy: 'foo',
+			controls: 'bar'
+		};
+		const formattedAria = formatAriaProperties(aria);
+		assert.strictEqual(Object.keys(formattedAria).length, 2);
+		assert.strictEqual(formattedAria['aria-describedby'], 'foo');
+		assert.strictEqual(formattedAria['aria-controls'], 'bar');
 	}
 });

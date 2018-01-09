@@ -6,6 +6,8 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import TabButton from './TabButton';
 import uuid from '@dojo/core/uuid';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tabcontroller/tabController.m.css';
 
@@ -29,7 +31,7 @@ export const enum Align {
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
-export interface TabControllerProperties extends ThemedProperties {
+export interface TabControllerProperties extends ThemedProperties, CustomAriaProperties {
 	activeIndex: number;
 	alignButtons?: Align;
 	onRequestTabChange?(index: number, key: string): void;
@@ -195,7 +197,7 @@ export default class TabController<P extends TabControllerProperties = TabContro
 	}
 
 	render(): DNode {
-		const { activeIndex } = this.properties;
+		const { activeIndex, aria = {} } = this.properties;
 		const validIndex = this._validateIndex(activeIndex);
 		const tabs = this.renderTabs();
 
@@ -235,6 +237,7 @@ export default class TabController<P extends TabControllerProperties = TabContro
 		}
 
 		return v('div', {
+			...formatAriaProperties(aria),
 			'aria-orientation': orientation,
 			classes: this.theme([
 				alignClass ? alignClass : null,

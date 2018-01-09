@@ -6,8 +6,8 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { find } from '@dojo/shim/array';
-import { Keys } from '../common/util';
-import { LabeledProperties, InputProperties } from '../common/interfaces';
+import { formatAriaProperties, Keys } from '../common/util';
+import { CustomAriaProperties, LabeledProperties, InputProperties } from '../common/interfaces';
 import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import * as css from '../theme/select/select.m.css';
@@ -28,7 +28,7 @@ import * as iconCss from '../theme/common/icons.m.css';
  * @property useNativeElement  Use the native <select> element if true
  * @property value           The current value
  */
-export interface SelectProperties extends ThemedProperties, InputProperties, LabeledProperties {
+export interface SelectProperties extends ThemedProperties, InputProperties, LabeledProperties, CustomAriaProperties {
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
@@ -182,7 +182,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 
 	protected renderNativeSelect(): DNode {
 		const {
-			describedBy,
+			aria = {},
 			disabled,
 			getOptionDisabled,
 			getOptionId,
@@ -206,8 +206,8 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v('select', {
+				...formatAriaProperties(aria),
 				classes: this.theme(css.input),
-				'aria-describedby': describedBy,
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
 				name,
@@ -225,7 +225,6 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 
 	protected renderCustomSelect(): DNode {
 		const {
-			describedBy,
 			getOptionDisabled,
 			getOptionId,
 			getOptionLabel,
@@ -256,7 +255,6 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 				w(Listbox, {
 					key: 'listbox',
 					activeIndex: _focusedIndex,
-					describedBy,
 					id: _baseId,
 					optionData: options,
 					tabIndex: _open ? 0 : -1,
@@ -281,7 +279,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 
 	protected renderCustomTrigger(): DNode[] {
 		const {
-			describedBy,
+			aria = {},
 			disabled,
 			getOptionSelected = this._getOptionSelected,
 			invalid,
@@ -309,6 +307,7 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 
 		return [
 			v('button', {
+				...formatAriaProperties(aria),
 				'aria-controls': this._baseId,
 				'aria-expanded': `${this._open}`,
 				'aria-haspopup': 'listbox',
@@ -316,7 +315,6 @@ export default class Select<P extends SelectProperties = SelectProperties> exten
 				'aria-readonly': readOnly ? 'true' : null,
 				'aria-required': required ? 'true' : null,
 				classes: this.theme([ css.trigger, isPlaceholder ? css.placeholder : null ]),
-				describedBy,
 				disabled,
 				key: 'trigger',
 				value,

@@ -50,9 +50,13 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 	const controlsVdom = v('div', {
 		classes: css.controls
 	}, [
-		w(TextInput, <any> {
+		w(TextInput, {
 			key: 'textinput',
-			controls: <any> compareId,
+			aria: {
+				activedescendant: compareId,
+				controls: compareId,
+				owns: compareId
+			},
 			disabled: undefined,
 			invalid: undefined,
 			readOnly: undefined,
@@ -65,7 +69,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 			onKeyDown: widget.listener
 		}),
 		useTestProperties ? v('button', {
-			'aria-controls': <any> compareId,
+			'aria-controls': compareId as any,
 			key: 'clear',
 			classes: css.clear,
 			disabled: undefined,
@@ -99,7 +103,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 
 function isOpen(widget: Harness<ComboBox>): boolean {
 	const vdom = widget.getRender();
-	return (<any> vdom)!.properties!['aria-expanded'] === 'true';
+	return (vdom as any)!.properties!['aria-expanded'] === 'true';
 }
 
 const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: boolean, open: boolean) {
@@ -115,7 +119,7 @@ const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: b
 	}, [
 		w(Listbox, {
 			activeIndex: 0,
-			id: <any> compareId,
+			id: compareId as any,
 			key: 'listbox',
 			visualFocus: false,
 			optionData: testOptions,
@@ -137,13 +141,14 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 	return v('div', {
 		'aria-expanded': open ? 'true' : 'false',
 		'aria-haspopup': 'true',
-		'aria-readonly': 'false',
-		'aria-required': 'false',
+		'aria-readonly': null,
+		'aria-required': null,
 		dir: null,
 		id: useTestProperties ? 'foo' : undefined,
 		classes: [
 			css.root,
 			open ? css.open : null,
+			useTestProperties ? css.clearable : null,
 			null,
 			null
 		],
@@ -159,7 +164,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: <any> compareId
+			forId: compareId
 		}, [ 'foo' ]) : null,
 		controlsVdom,
 		menuVdom
@@ -582,7 +587,7 @@ registerSuite('ComboBox', {
 			assignProperties(expected, {
 				'aria-readonly': 'true',
 				'aria-required': 'true',
-				classes: [ css.root, null, css.invalid, null ]
+				classes: [ css.root, null, css.clearable, css.invalid, null ]
 			});
 			widget.expectRender(expected, 'disabled, invalid, readOnly, and required render');
 
@@ -592,7 +597,7 @@ registerSuite('ComboBox', {
 				invalid: false
 			});
 			assignProperties(expected, {
-				classes: [ css.root, null, null, css.valid ]
+				classes: [ css.root, null, null, null, css.valid ]
 			});
 			widget.expectRender(expected, 'valid render');
 		},

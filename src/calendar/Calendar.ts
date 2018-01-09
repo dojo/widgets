@@ -6,7 +6,8 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
 import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
-import { Keys } from '../common/util';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties, Keys } from '../common/util';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import calendarBundle from './nls/Calendar';
@@ -33,7 +34,7 @@ export type CalendarMessages = typeof calendarBundle.messages;
  * @property onYearChange      Function called when the year changes
  * @property onDateSelect      Function called when the user selects a date
  */
-export interface CalendarProperties extends ThemedProperties {
+export interface CalendarProperties extends ThemedProperties, CustomAriaProperties {
 	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string; }[];
@@ -377,6 +378,7 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		const commonMessages = this.localizeBundle(commonBundle);
 		const {
 			labels = this.localizeBundle(calendarBundle),
+			aria = {},
 			selectedDate,
 			weekdayNames = this._getWeekdays(commonMessages)
 		} = this.properties;
@@ -392,7 +394,10 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 			]));
 		}
 
-		return v('div', { classes: this.theme(css.root) }, [
+		return v('div', {
+			classes: this.theme(css.root),
+			...formatAriaProperties(aria)
+		}, [
 			// header
 			this.renderDatePicker(commonMessages, labels),
 			// date table

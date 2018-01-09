@@ -96,7 +96,6 @@ const expectedVdom = function(widget: Harness<Listbox>, options: DNode[]) {
 		'aria-activedescendant': compareId,
 		'aria-multiselectable': null,
 		classes: [ css.root, null ],
-		describedBy: undefined,
 		id: undefined,
 		key: 'root',
 		role: 'listbox',
@@ -134,7 +133,7 @@ registerSuite('Listbox', {
 		'custom properties'() {
 			widget.setProperties({
 				activeIndex: 0,
-				describedBy: 'foo',
+				aria: { describedBy: 'foo' },
 				visualFocus: true,
 				id: 'bar',
 				multiselect: true,
@@ -150,9 +149,9 @@ registerSuite('Listbox', {
 			const vdom = expectedVdom(widget, expectedOptions(widget));
 			assignProperties(vdom, {
 				'aria-activedescendant': 'first',
+				'aria-describedby': 'foo',
 				'aria-multiselectable': 'true',
 				classes: [ css.root, css.focused ],
-				describedBy: 'foo',
 				id: 'bar',
 				tabIndex: -1
 			});

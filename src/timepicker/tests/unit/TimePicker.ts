@@ -179,7 +179,6 @@ registerSuite('TimePicker', {
 			}, [
 				null,
 				v('input', {
-					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
 					classes: css.input,
@@ -209,7 +208,9 @@ registerSuite('TimePicker', {
 			picker.setProperties({
 				disabled: true,
 				end: '12:00',
-				inputProperties: { describedBy: 'Some descriptive text' },
+				inputProperties: {
+					aria: { describedBy: 'Some descriptive text' }
+				},
 				invalid: true,
 				name: 'some-field',
 				readOnly: true,
@@ -276,7 +277,6 @@ registerSuite('TimePicker', {
 					forId: <any> compareId
 				}, [ 'foo' ]),
 				v('input', {
-					'aria-describedby': undefined,
 					'aria-invalid': null,
 					'aria-readonly': null,
 					classes: css.input,

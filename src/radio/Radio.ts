@@ -2,7 +2,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Label from '../label/Label';
-import { LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/radio/radio.m.css';
@@ -15,7 +16,7 @@ import * as css from '../theme/radio/radio.m.css';
  * @property checked          Checked/unchecked property of the radio
  * @property value           The current value
  */
-export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties {
+export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, CustomAriaProperties {
 	checked?: boolean;
 	value?: string;
 }
@@ -68,8 +69,8 @@ export default class Radio<P extends RadioProperties = RadioProperties> extends 
 
 	render(): DNode {
 		const {
+			aria = {},
 			checked = false,
-			describedBy,
 			disabled,
 			invalid,
 			label,
@@ -86,9 +87,9 @@ export default class Radio<P extends RadioProperties = RadioProperties> extends 
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('input', {
 					id: this._uuid,
+					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					checked,
-					'aria-describedby': describedBy,
 					disabled,
 					'aria-invalid': invalid === true ? 'true' : null,
 					name,

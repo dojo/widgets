@@ -35,8 +35,6 @@ const expected = function(label = false, classes: (string | null)[] = [ css.root
 				key: 'input',
 				classes: css.input,
 				id: <any> compareId,
-				'aria-controls': undefined,
-				'aria-describedby': undefined,
 				disabled: undefined,
 				'aria-invalid': null,
 				maxlength: null,
@@ -85,12 +83,14 @@ registerSuite('TextInput', {
 
 		'custom properties'() {
 			widget.setProperties({
-				controls: 'foo',
-				describedBy: 'bar',
+				aria: {
+					controls: 'foo',
+					describedBy: 'bar'
+				},
 				maxLength: 50,
 				minLength: 10,
-				name: 'baz',
-				placeholder: 'qux',
+				name: 'bar',
+				placeholder: 'baz',
 				type: 'email',
 				value: 'hello world'
 			});
@@ -104,8 +104,8 @@ registerSuite('TextInput', {
 				'aria-describedby': 'bar',
 				maxlength: '50',
 				minlength: '10',
-				name: 'baz',
-				placeholder: 'qux',
+				name: 'bar',
+				placeholder: 'baz',
 				type: 'email',
 				value: 'hello world'
 			});

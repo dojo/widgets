@@ -3,7 +3,8 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import Label from '../label/Label';
-import { InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/textarea/textarea.m.css';
 
@@ -20,7 +21,7 @@ import * as css from '../theme/textarea/textarea.m.css';
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties {
+export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -74,8 +75,8 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 
 	render(): DNode {
 		const {
+			aria = {},
 			columns,
-			describedBy,
 			disabled,
 			invalid,
 			label,
@@ -107,9 +108,9 @@ export default class Textarea<P extends TextareaProperties = TextareaProperties>
 				v('textarea', {
 					id: this._uuid,
 					key: 'input',
+					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					cols: columns ? `${columns}` : null,
-					'aria-describedby': describedBy,
 					disabled,
 					'aria-invalid': invalid ? 'true' : null,
 					maxlength: maxLength ? `${maxLength}` : null,

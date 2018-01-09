@@ -25,7 +25,6 @@ const expected = function(widget: any, label = false, tooltip = false) {
 		v('input', {
 			key: 'input',
 			classes: [ css.input, fixedCss.nativeInput ],
-			'aria-describedby': undefined,
 			disabled: undefined,
 			id: <any> compareId,
 			'aria-invalid': null,
@@ -110,7 +109,7 @@ registerSuite('Slider', {
 
 		'custom properties'() {
 			widget.setProperties({
-				describedBy: 'foo',
+				aria: { describedBy: 'foo' },
 				max: 60,
 				min: 10,
 				name: 'bar',

@@ -39,6 +39,37 @@ registerSuite('Label', {
 			]));
 		},
 
+		custom() {
+			widget.setProperties({
+				forId: 'foo',
+				aria: {
+					describedBy: 'bar'
+				},
+				disabled: true,
+				readOnly: true,
+				required: true,
+				invalid: true,
+				secondary: true
+			});
+			widget.setChildren([ 'baz' ]);
+
+			widget.expectRender(v('label', {
+				classes: [
+					css.root,
+					css.disabled,
+					css.invalid,
+					null,
+					css.readonly,
+					css.required,
+					css.secondary
+				],
+				for: 'foo',
+				'aria-describedby': 'bar'
+			}, [
+				'baz'
+			]));
+		},
+
 		hidden() {
 			widget.setProperties({
 				hidden: true

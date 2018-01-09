@@ -159,6 +159,21 @@ registerSuite('TabController', {
 			widget.expectRender(expected([ tabButtons, tabContent ]), 'Tab controller with tabs');
 		},
 
+		'aria properties'() {
+			widget.setProperties({
+				activeIndex: 0,
+				aria: {
+					describedBy: 'foo',
+					orientation: 'overridden'
+				}
+			});
+
+			const expectedVdom = expected([ expectedTabButtons(true), null ]);
+			assignProperties(expectedVdom, { 'aria-describedby': 'foo' });
+
+			widget.expectRender(expectedVdom);
+		},
+
 		'custom orientation'() {
 			widget.setProperties({
 				activeIndex: 0,

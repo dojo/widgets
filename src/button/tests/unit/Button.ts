@@ -24,7 +24,6 @@ registerSuite('Button', {
 		'no content'() {
 			widget.expectRender(v('button', {
 				'aria-controls': null,
-				'aria-describedby': undefined,
 				'aria-expanded': null,
 				'aria-haspopup': null,
 				'aria-pressed': null,
@@ -53,7 +52,9 @@ registerSuite('Button', {
 				type: 'submit',
 				name: 'bar',
 				id: 'qux',
-				describedBy: 'baz',
+				aria: {
+					describedBy: 'baz'
+				},
 				disabled: true,
 				popup: {
 					expanded: true,
@@ -67,7 +68,7 @@ registerSuite('Button', {
 
 			widget.expectRender(v('button', {
 				'aria-controls': (<any> buttonProperties.popup).id,
-				'aria-describedby': buttonProperties.describedBy,
+				'aria-describedby': 'baz',
 				'aria-expanded': String((<any> buttonProperties.popup).expanded),
 				'aria-haspopup': 'true',
 				'aria-pressed': String(buttonProperties.pressed),
@@ -105,7 +106,6 @@ registerSuite('Button', {
 
 			widget.expectRender(v('button', {
 				'aria-controls': '',
-				'aria-describedby': undefined,
 				'aria-expanded': 'false',
 				'aria-haspopup': 'true',
 				'aria-pressed': null,

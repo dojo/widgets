@@ -2,10 +2,12 @@ import commonBundle from './nls/common';
 
 export type CommonMessages = typeof commonBundle.messages;
 
-export interface LabeledProperties {
-	labelAfter?: boolean;
-	labelHidden?: boolean;
-	label?: string;
+export type AriaPropertyObject = {
+	[key: string]: string;
+};
+
+export interface CustomAriaProperties {
+	aria?: AriaPropertyObject;
 }
 
 /**
@@ -13,7 +15,6 @@ export interface LabeledProperties {
  *
  * Properties that can be set on a input component
  *
- * @property describedBy    ID of an element that provides more descriptive text
  * @property disabled       Prevents the user from interacting with the form field
  * @property invalid        Indicates the value entered in the form field is invalid
  * @property name           The form widget's name
@@ -21,7 +22,6 @@ export interface LabeledProperties {
  * @property required       Whether or not a value is required
  */
 export interface InputProperties {
-	describedBy?: string;
 	disabled?: boolean;
 	invalid?: boolean;
 	name?: string;
@@ -44,6 +44,30 @@ export interface InputEventProperties {
 }
 
 /**
+ * @type KeyEventProperties
+ * @property onKeyDown      Called on the input's keydown event
+ * @property onKeyPress     Called on the input's keypress event
+ * @property onKeyUp        Called on the input's keyup event
+ */
+export interface KeyEventProperties {
+	onKeyDown?(event: KeyboardEvent): void;
+	onKeyPress?(event: KeyboardEvent): void;
+	onKeyUp?(event: KeyboardEvent): void;
+}
+
+/**
+ * @type LabeledProperties
+ * @property labelAfter     If false, moves the label before the input
+ * @property labelHidden    If true, the label will be accessible but visually hidden
+ * @property label          String value for the label
+ */
+export interface LabeledProperties {
+	labelAfter?: boolean;
+	labelHidden?: boolean;
+	label?: string;
+}
+
+/**
  * @type PointerEventProperties
  * @property onClick        Called when the input is clicked
  * @property onMouseDown    Called on the input's mousedown event
@@ -59,16 +83,4 @@ export interface PointerEventProperties {
 	onTouchStart?(event: TouchEvent): void;
 	onTouchEnd?(event: TouchEvent): void;
 	onTouchCancel?(event: TouchEvent): void;
-}
-
-/**
- * @type KeyEventProperties
- * @property onKeyDown      Called on the input's keydown event
- * @property onKeyPress     Called on the input's keypress event
- * @property onKeyUp        Called on the input's keyup event
- */
-export interface KeyEventProperties {
-	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
 }

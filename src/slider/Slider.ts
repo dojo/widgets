@@ -4,7 +4,8 @@ import Label from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import uuid from '@dojo/core/uuid';
-import { LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
 import * as css from '../theme/slider/slider.m.css';
 
@@ -21,7 +22,7 @@ import * as css from '../theme/slider/slider.m.css';
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
  * @property value           The current value
  */
-export interface SliderProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties {
+export interface SliderProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
 	max?: number;
 	min?: number;
 	output?(value: number): DNode;
@@ -119,7 +120,7 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 
 	render(): DNode {
 		const {
-			describedBy,
+			aria = {},
 			disabled,
 			invalid,
 			label,
@@ -151,8 +152,8 @@ export default class Slider<P extends SliderProperties = SliderProperties> exten
 		}, [
 			v('input', {
 				key: 'input',
+				...formatAriaProperties(aria),
 				classes: [ this.theme(css.input), fixedCss.nativeInput ],
-				'aria-describedby': describedBy,
 				disabled,
 				id: this._inputId,
 				'aria-invalid': invalid === true ? 'true' : null,

@@ -2,6 +2,8 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { CustomAriaProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tabcontroller/tabController.m.css';
 
@@ -17,7 +19,7 @@ import * as css from '../theme/tabcontroller/tabController.m.css';
  * @property label        Content to show in the TabController control bar for this tab
  * @property labelledBy   ID of DOM element that serves as a label for this tab
  */
-export interface TabProperties extends ThemedProperties {
+export interface TabProperties extends ThemedProperties, CustomAriaProperties {
 	closeable?: boolean;
 	disabled?: boolean;
 	id?: string;
@@ -32,11 +34,13 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 export default class Tab<P extends TabProperties = TabProperties> extends ThemedBase<P> {
 	render(): DNode {
 		const {
+			aria = {},
 			id,
 			labelledBy
 		} = this.properties;
 
 		return v('div', {
+			...formatAriaProperties(aria),
 			'aria-labelledby': labelledBy,
 			classes: this.theme(css.tab),
 			id,

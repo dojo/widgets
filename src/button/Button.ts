@@ -4,7 +4,8 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import * as css from '../theme/button/button.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
-import { InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import { formatAriaProperties } from '../common/util';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -13,7 +14,6 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  *
  * Properties that can be set on a Button component
  *
- * @property describedBy    ID of element with descriptive text
  * @property disabled       Whether the button is disabled or clickable
  * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
  * @property name           The button's name attribute
@@ -21,8 +21,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property type           Button type can be "submit", "reset", "button", or "menu"
  * @property value          Defines a value for the button submitted with form data
  */
-export interface ButtonProperties extends ThemedProperties, InputEventProperties, PointerEventProperties, KeyEventProperties {
-	describedBy?: string;
+export interface ButtonProperties extends ThemedProperties, InputEventProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
 	disabled?: boolean;
 	id?: string;
 	popup?: { expanded?: boolean; id?: string; } | boolean;
@@ -75,7 +74,7 @@ export default class Button<P extends ButtonProperties = ButtonProperties> exten
 
 	render(): DNode {
 		let {
-			describedBy,
+			aria = {},
 			disabled,
 			id,
 			popup = false,
@@ -107,11 +106,11 @@ export default class Button<P extends ButtonProperties = ButtonProperties> exten
 			ontouchstart: this._onTouchStart,
 			ontouchend: this._onTouchEnd,
 			ontouchcancel: this._onTouchCancel,
+			...formatAriaProperties(aria),
 			'aria-haspopup': popup ? 'true' : null,
 			'aria-controls': popup ? popup.id : null,
 			'aria-expanded': popup ? popup.expanded + '' : null,
-			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null,
-			'aria-describedby': describedBy
+			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null
 		}, [
 			...this.getContent(),
 			popup ? this.renderPopupIcon() : null
