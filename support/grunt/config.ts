@@ -1,3 +1,4 @@
+const {join} = require('path');
 const createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcessors;
 
 const fontFiles = [ 'theme/common/fonts/*.{svg,ttf,woff}', 'themes/dojo/fonts/*.{svg,ttf,woff}' ];
@@ -57,7 +58,11 @@ export const postcss = {
 			cwd: 'src'
 		}],
 		options: {
-			processors: createProcessors('_build/', 'src')
+			processors: createProcessors({
+				dest: '_build/',
+				cwd: 'src',
+				packageJson: require(join(process.cwd(), '/package.json'))
+			})
 		}
 	}
 };
