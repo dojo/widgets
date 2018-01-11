@@ -43,5 +43,8 @@
     "sinon": "^1.17.6",
     "ts-node": "^3.3.0",
     "typescript": "~2.6.1"
+  },
+  "dependencies": {
+    "tslib": "~1.8.1"
   }
 }
