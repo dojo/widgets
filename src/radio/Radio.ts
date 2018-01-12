@@ -24,7 +24,7 @@ export interface RadioProperties extends ThemedProperties, LabeledProperties, In
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Radio<P extends RadioProperties = RadioProperties> extends ThemedBase<P, null> {
+export class RadioBase<P extends RadioProperties = RadioProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _uuid = uuid();
 
@@ -127,3 +127,5 @@ export default class Radio<P extends RadioProperties = RadioProperties> extends 
 		}, labelAfter ? children : children.reverse());
 	}
 }
+
+export default class Radio extends RadioBase<RadioProperties> {}

@@ -47,7 +47,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
-export default class Toolbar extends ThemedBase<ToolbarProperties> {
+export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extends ThemedBase<P> {
 	private _collapsed = false;
 	private _open = false;
 
@@ -181,3 +181,5 @@ export default class Toolbar extends ThemedBase<ToolbarProperties> {
 		]);
 	}
 }
+
+export default class Toolbar extends ToolbarBase<ToolbarProperties> {}

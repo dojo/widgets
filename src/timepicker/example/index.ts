@@ -57,7 +57,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 			v('div', { id: 'example-filter-on-input' }, [
 				w(TimePicker, {
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description1' },
+						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
 					key: '1',
@@ -92,7 +92,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 			v('div', { id: 'example-open-on-focus' }, [
 				w(TimePicker, {
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description1' },
+						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
 					key: '2',
@@ -116,7 +116,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 			v('div', { id: 'example-disabled-items' }, [
 				w(TimePicker, {
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description2' },
+						aria: { describedBy: 'description2' },
 						placeholder: 'Enter a value'
 					},
 					isOptionDisabled: (option: TimeUnits) => option.hour >= 12,
@@ -136,7 +136,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 			v('div', { id: 'example-disabled' }, [
 				w(TimePicker, {
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description1' },
+						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
 					key: '4',
@@ -149,7 +149,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 			v('div', { id: 'example-readonly' }, [
 				w(TimePicker, {
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description1' },
+						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
 					key: '5',
@@ -163,7 +163,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 				w(TimePicker, {
 					key: '6',
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description1' }
+						aria: { describedBy: 'description1' }
 					},
 					label: 'Enter a value',
 					onChange: (value: string) => {
@@ -181,7 +181,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 			v('div', { id: 'example-required-validated' }, [
 				w(TimePicker, {
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description1' },
+						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
 					invalid: this._invalid,
@@ -212,7 +212,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 				w(TimePicker, {
 					end: '12:00:59',
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description8' },
+						aria: { describedBy: 'description8' },
 						placeholder: 'Enter a value'
 					},
 					key: '8',
@@ -241,7 +241,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						return getEnglishTime(TODAY);
 					},
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description9' },
+						aria: { describedBy: 'description9' },
 						placeholder: 'Enter a value'
 					},
 					key: '9',
@@ -261,7 +261,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 				w(TimePicker, {
 					key: '10',
 					inputProperties: {
-						customAria: { 'aria-describedby': 'description1' },
+						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
 					onChange: (value: string) => {

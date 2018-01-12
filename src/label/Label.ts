@@ -33,8 +33,7 @@ export interface LabelProperties extends ThemedProperties, CustomAriaProperties 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Label<P extends LabelProperties = LabelProperties> extends ThemedBase<P>  {
-
+export class LabelBase<P extends LabelProperties = LabelProperties> extends ThemedBase<P> {
 	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
@@ -67,3 +66,5 @@ export default class Label<P extends LabelProperties = LabelProperties> extends 
 		}, this.children);
 	}
 }
+
+export default class Label extends LabelBase<LabelProperties> {}

@@ -53,7 +53,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
-export default class Dialog<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
+export class DialogBase<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
 	private _titleId = uuid();
 	private _wasOpen: boolean;
 
@@ -167,3 +167,5 @@ export default class Dialog<P extends DialogProperties = DialogProperties> exten
 		] : []);
 	}
 }
+
+export default class Dialog extends DialogBase<DialogProperties> {}

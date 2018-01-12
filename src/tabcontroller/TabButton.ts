@@ -53,7 +53,7 @@ export interface TabButtonProperties extends ThemedProperties {
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
-export default class TabButton<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
+export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
 	private _onClick() {
 		const {
 			disabled,
@@ -188,3 +188,5 @@ export default class TabButton<P extends TabButtonProperties = TabButtonProperti
 		}, this.getContent(messages));
 	}
 }
+
+export default class TabButton extends TabButtonBase<TabButtonProperties> {}

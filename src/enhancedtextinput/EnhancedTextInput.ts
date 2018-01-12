@@ -2,7 +2,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 
-import TextInput, { TextInputProperties } from '../textinput/TextInput';
+import { TextInputBase, TextInputProperties } from '../textinput/TextInput';
 import * as css from '../theme/enhancedtextinput/enhancedtextinput.m.css';
 
 export interface EnhancedTextInputProperties extends TextInputProperties {
@@ -11,7 +11,7 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 }
 
 @theme(css)
-export default class EnhancedTextInput extends TextInput<EnhancedTextInputProperties> {
+export default class EnhancedTextInput extends TextInputBase<EnhancedTextInputProperties> {
 	protected renderAddon(addon: DNode, before = false): DNode {
 		return v('span', {
 			classes: this.theme([css.addon, before ? css.addonBefore : css.addonAfter])

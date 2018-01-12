@@ -61,7 +61,7 @@ const BASE_YEAR = 2000;
 
 @theme(css)
 @theme(iconCss)
-export default class DatePicker<P extends DatePickerProperties = DatePickerProperties> extends ThemedBase<P, null> {
+export class DatePickerBase<P extends DatePickerProperties = DatePickerProperties> extends ThemedBase<P, null> {
 	private _callMonthTriggerFocus = false;
 	private _callYearTriggerFocus = false;
 	private _callMonthPopupFocus = false;
@@ -371,3 +371,5 @@ export default class DatePicker<P extends DatePickerProperties = DatePickerPrope
 		]);
 	}
 }
+
+export default class DatePicker extends DatePickerBase<DatePickerProperties> {}
