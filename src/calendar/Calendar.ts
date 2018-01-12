@@ -82,7 +82,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
-export default class Calendar<P extends CalendarProperties = CalendarProperties> extends ThemedBase<P, null> {
+export class CalendarBase<P extends CalendarProperties = CalendarProperties> extends ThemedBase<P, null> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
 	private _focusedDay = 1;
@@ -431,3 +431,5 @@ export default class Calendar<P extends CalendarProperties = CalendarProperties>
 		]);
 	}
 }
+
+export default class Calendar extends CalendarBase<CalendarProperties> {};

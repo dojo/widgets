@@ -41,7 +41,7 @@ export interface TabControllerProperties extends ThemedProperties, CustomAriaPro
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class TabController<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<P, WNode<Tab>> {
+export class TabControllerBase<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<P, WNode<Tab>> {
 	private _id = uuid();
 	private _callTabFocus = false;
 
@@ -247,3 +247,5 @@ export default class TabController<P extends TabControllerProperties = TabContro
 		}, children);
 	}
 }
+
+export default class TabController extends TabControllerBase<TabControllerProperties> {}

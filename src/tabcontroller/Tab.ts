@@ -31,7 +31,7 @@ export interface TabProperties extends ThemedProperties, CustomAriaProperties {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Tab<P extends TabProperties = TabProperties> extends ThemedBase<P> {
+export class TabBase<P extends TabProperties = TabProperties> extends ThemedBase<P> {
 	render(): DNode {
 		const {
 			aria = {},
@@ -48,3 +48,5 @@ export default class Tab<P extends TabProperties = TabProperties> extends Themed
 		}, this.children);
 	}
 }
+
+export default class Tab extends TabBase<TabProperties> {}

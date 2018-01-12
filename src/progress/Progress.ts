@@ -27,10 +27,10 @@ export interface ProgressProperties extends ThemedProperties, CustomAriaProperti
 	id?: string;
 }
 
-export const ProgressBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Progress extends ProgressBase<ProgressProperties> {
+export class ProgressBase<P extends ProgressProperties = ProgressProperties> extends ThemedBase<P, null> {
 	private _output(value: number, percent: number) {
 		const { output } = this.properties;
 		return output ? output(value, percent) : `${percent}%`;
@@ -75,3 +75,5 @@ export default class Progress extends ProgressBase<ProgressProperties> {
 		]);
 	}
 }
+
+export default class Progress extends ProgressBase<ProgressProperties> {}

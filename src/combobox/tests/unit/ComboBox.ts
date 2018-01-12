@@ -53,9 +53,9 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 		w(TextInput, {
 			key: 'textinput',
 			aria: {
-				activedescendant: compareId,
-				controls: compareId,
-				owns: compareId
+				activedescendant: compareId as any,
+				controls: compareId as any,
+				owns: compareId as any
 			},
 			disabled: undefined,
 			invalid: undefined,
@@ -164,7 +164,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: compareId
+			forId: compareId as any
 		}, [ 'foo' ]) : null,
 		controlsVdom,
 		menuVdom

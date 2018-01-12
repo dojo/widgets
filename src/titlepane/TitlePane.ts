@@ -33,7 +33,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
-export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
+export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
 	private _contentId = uuid();
 	private _titleId = uuid();
 
@@ -158,3 +158,5 @@ export default class TitlePane<P extends TitlePaneProperties = TitlePaneProperti
 		]);
 	}
 }
+
+export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {}

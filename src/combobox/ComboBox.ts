@@ -72,7 +72,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @theme(iconCss)
 @diffProperty('results', reference)
-export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
+export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
 	private _activeIndex = 0;
 	private _callInputFocus = false;
 	private _ignoreBlur: boolean;
@@ -437,3 +437,5 @@ export default class ComboBox<P extends ComboBoxProperties = ComboBoxProperties>
 		}, labelAfter ? controls.reverse() : controls);
 	}
 }
+
+export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {}

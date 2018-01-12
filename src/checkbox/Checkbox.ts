@@ -38,7 +38,7 @@ export const enum Mode {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-export default class Checkbox<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
+export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _onBlur (event: FocusEvent) {
 		this._focused = false;
@@ -170,3 +170,5 @@ export default class Checkbox<P extends CheckboxProperties = CheckboxProperties>
 		}, labelAfter ? children : children.reverse());
 	}
 }
+
+export default class Checkbox extends CheckboxBase<CheckboxProperties> {}

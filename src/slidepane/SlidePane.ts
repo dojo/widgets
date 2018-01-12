@@ -66,7 +66,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
-export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
+export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
 	private _content: HTMLElement;
 	private _initialPosition: number;
 	private _slideIn: boolean;
@@ -315,3 +315,5 @@ export default class SlidePane<P extends SlidePaneProperties = SlidePaneProperti
 		]);
 	}
 }
+
+export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {}
