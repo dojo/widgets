@@ -2,21 +2,10 @@
 
 .input {}
 .root {}
-
-.root span {
-	display: block;
-}
-
 .inputWrapper {}
-
 .disabled {}
 .readonly {}
 .required {}
-
-.required span::after {
-	content: '*';
-	color: var(--error-color);
-}
 
 .invalid .input {
 	border-color: var(--error-color);

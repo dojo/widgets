@@ -1,27 +1,14 @@
-.root {
+@import '../../common/styles/variables.css';
 
-}
+.root {}
+.readonly {}
+.invalid {}
+.valid {}
+.required {}
+.disabled {}
+.secondary {}
 
-.readonly {
-
-}
-
-.invalid {
-
-}
-
-.valid {
-
-}
-
-.required {
-
-}
-
-.disabled {
-
-}
-
-.secondary {
-
+.required::after {
+	content: '*';
+	color: var(--error-color);
 }

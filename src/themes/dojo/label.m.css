@@ -12,6 +12,7 @@
 
 .required::after {
 	content: '*';
+	color: var(--color-error);
 }
 
 
