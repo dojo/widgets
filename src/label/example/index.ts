@@ -20,6 +20,10 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('div', { id: 'example-3'}, [
 				w(Label, { forId: 'input-1' }, [ 'Type Something' ]),
 				v('input', { id: 'input-1' })
+			]),
+			v('h3', {}, ['Required Label']),
+			v('div', { id: 'example-4'}, [
+				w(Label, { required: true }, [ 'I\'m required' ])
 			])
 		]);
 	}
