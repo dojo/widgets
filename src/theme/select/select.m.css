@@ -106,8 +106,3 @@
 .valid .arrow {
 	background-color: var(--success-color);
 }
-
-.required > span::after {
-	content: '*';
-	color: var(--error-color);
-}

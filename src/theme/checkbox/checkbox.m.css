@@ -12,12 +12,6 @@
 .focused {}
 .readonly {}
 
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
-	color: var(--error-color);
-}
-
 /* invalid style */
 .invalid .inputWrapper::before {
 	border-color: var(--error-color);

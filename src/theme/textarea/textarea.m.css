@@ -2,10 +2,6 @@
 
 .root {}
 
-.root span {
-	display: block;
-}
-
 .input {
 	max-width: 100%;
 }
@@ -15,11 +11,6 @@
 .disabled {}
 .readonly {}
 .required {}
-
-.required span::after {
-	content: '*';
-	color: var(--error-color);
-}
 
 .invalid .input {
 	border-color: var(--error-color);
