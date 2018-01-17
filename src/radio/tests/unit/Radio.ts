@@ -81,6 +81,7 @@ registerSuite('Radio', {
 			widget.setProperties({
 				aria: { describedBy: 'foo' },
 				checked: true,
+				id: 'foo',
 				name: 'bar',
 				value: 'baz'
 			});
@@ -89,6 +90,7 @@ registerSuite('Radio', {
 			assignChildProperties(expectedVdom, '0,0', {
 				checked: true,
 				'aria-describedby': 'foo',
+				id: 'foo',
 				name: 'bar',
 				value: 'baz'
 			});

@@ -87,6 +87,7 @@ registerSuite('Textarea', {
 			widget.setProperties({
 				aria: { describedBy: 'foo' },
 				columns: 15,
+				id: 'foo',
 				maxLength: 50,
 				minLength: 10,
 				name: 'bar',
@@ -100,6 +101,7 @@ registerSuite('Textarea', {
 			assignProperties(findKey(expectedVdom, 'input')!, {
 				cols: '15',
 				'aria-describedby': 'foo',
+				id: 'foo',
 				maxlength: '50',
 				minlength: '10',
 				name: 'bar',

@@ -144,7 +144,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 		'aria-readonly': null,
 		'aria-required': null,
 		dir: null,
-		id: useTestProperties ? 'foo' : undefined,
+		id: useTestProperties ? 'foo' : compareId as any,
 		classes: [
 			css.root,
 			open ? css.open : null,
@@ -164,7 +164,7 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: compareId as any
+			forId: useTestProperties ? 'foo' : compareId as any
 		}, [ 'foo' ]) : null,
 		controlsVdom,
 		menuVdom

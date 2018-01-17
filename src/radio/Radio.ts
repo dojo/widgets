@@ -18,6 +18,7 @@ import * as css from '../theme/radio/radio.m.css';
  */
 export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, CustomAriaProperties {
 	checked?: boolean;
+	id?: string;
 	value?: string;
 }
 
@@ -72,6 +73,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 			aria = {},
 			checked = false,
 			disabled,
+			id = this._uuid,
 			invalid,
 			label,
 			labelAfter = true,
@@ -86,7 +88,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 		const children = [
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('input', {
-					id: this._uuid,
+					id,
 					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					checked,
@@ -116,7 +118,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: this._uuid,
+				forId: id,
 				secondary: true
 			}, [ label ]) : null
 		];

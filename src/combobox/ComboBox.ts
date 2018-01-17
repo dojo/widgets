@@ -381,7 +381,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	render(): DNode {
 		const {
 			clearable = false,
-			id,
+			id = this._idBase,
 			invalid,
 			label,
 			readOnly,

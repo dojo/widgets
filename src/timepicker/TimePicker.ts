@@ -47,6 +47,7 @@ export interface TimePickerProperties extends ThemedProperties, InputProperties,
 	clearable?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
+	id?: string;
 	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
 	onBlur?(value: string): void;
@@ -235,6 +236,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			clearable,
 			disabled,
 			extraClasses,
+			id = this._uuid,
 			inputProperties,
 			invalid,
 			isOptionDisabled,
@@ -258,6 +260,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			disabled,
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),
+			id,
 			inputProperties,
 			invalid,
 			isResultDisabled: isOptionDisabled,
@@ -282,6 +285,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 		const {
 			disabled,
 			end,
+			id = this._uuid,
 			inputProperties = {},
 			invalid,
 			name,
@@ -306,10 +310,10 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: this._uuid
+				forId: id
 			}, [ label ]) : null,
 			v('input', {
-				id: this._uuid,
+				id,
 				...formatAriaProperties(aria),
 				'aria-invalid': invalid === true ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,

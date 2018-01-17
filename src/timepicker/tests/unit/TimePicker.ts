@@ -69,6 +69,7 @@ registerSuite('TimePicker', {
 			picker.setProperties({
 				clearable: true,
 				disabled: false,
+				id: 'foo',
 				invalid: true,
 				label: 'Some Field',
 				openOnFocus: false,
@@ -82,6 +83,7 @@ registerSuite('TimePicker', {
 					clearable: true,
 					disabled: false,
 					getResultLabel: <any> picker.listener,
+					id: 'foo',
 					inputProperties: undefined,
 					invalid: true,
 					isResultDisabled: undefined,
