@@ -6,6 +6,7 @@ import keys from '@theintern/leadfoot/keys';
 import * as css from '../../../theme/listbox/listbox.m.css';
 
 const DELAY = 300;
+const ERROR_MARGIN = 5;
 
 function getPage(remote: Remote) {
 	return remote
@@ -76,8 +77,8 @@ registerSuite('Listbox', {
 				})
 				.getPosition()
 				.then(({ y }: { y: number; }) => {
-					assert.isAtLeast(y, menuTop);
-					assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight), 'scrolled down');
+					assert.isAtLeast(y, menuTop - ERROR_MARGIN);
+					assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight) + ERROR_MARGIN, 'scrolled down');
 				})
 				.end()
 			.pressKeys(keys.ARROW_DOWN)
@@ -91,7 +92,7 @@ registerSuite('Listbox', {
 			.findByCssSelector(`.${css.activeOption}`)
 				.getPosition()
 				.then(({ y }: { y: number; }) => {
-					assert.isAtLeast(y, menuTop, 'scroll back up');
+					assert.isAtLeast(y, menuTop - ERROR_MARGIN, 'scroll back up');
 				});
 	},
 
