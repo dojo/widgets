@@ -3,8 +3,10 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/listbox/listbox.m.css';
 
+const axe = services.axe;
 const DELAY = 300;
 
 function getPage(remote: Remote) {
@@ -139,5 +141,9 @@ registerSuite('Listbox', {
 				.then((id: string) => {
 					assert.strictEqual(id, 'listbox2');
 				});
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

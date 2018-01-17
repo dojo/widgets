@@ -115,6 +115,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Clearable']),
 			w(ComboBox, {
 				key: '2',
+				label: 'Combo:',
 				clearable: true,
 				onChange,
 				getResultLabel: (result: any) => result.value,
@@ -129,6 +130,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Open on focus']),
 			w(ComboBox, {
 				key: '1',
+				label: 'Combo:',
 				openOnFocus: true,
 				onChange,
 				getResultLabel: (result: any) => result.value,
@@ -143,6 +145,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Disabled menu items']),
 			w(ComboBox, {
 				key: '5',
+				label: 'Combo:',
 				onChange,
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
@@ -157,6 +160,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Disabled']),
 			w(ComboBox, {
 				key: '6',
+				label: 'Combo:',
 				disabled: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
@@ -166,6 +170,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Read Only']),
 			w(ComboBox, {
 				key: '7',
+				label: 'Combo:',
 				readOnly: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
@@ -186,6 +191,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h3', ['Required and validated']),
 			w(ComboBox, {
 				key: '9',
+				label: 'Combo:',
 				required: true,
 				onChange: (value: string) => {
 					this._value9 = value;

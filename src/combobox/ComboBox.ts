@@ -268,6 +268,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	protected renderInput(results: any[]): DNode {
 		const {
 			disabled,
+			id = this._idBase,
 			inputProperties = {},
 			invalid,
 			readOnly,
@@ -285,6 +286,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				owns: this._getMenuId()
 			},
 			disabled,
+			id,
 			invalid,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
@@ -424,7 +426,6 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			'aria-haspopup': 'true',
 			'aria-readonly': readOnly ? 'true' : null,
 			'aria-required': required ? 'true' : null,
-			id,
 			classes: this.theme([
 				css.root,
 				this._open ? css.open : null,

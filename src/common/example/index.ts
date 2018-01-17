@@ -42,6 +42,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			w(Select, {
 				onChange: this.onModuleChange,
 				useNativeElement: true,
+				label: 'Select a module to view',
 				options: modules,
 				getOptionValue: (module: any) => module,
 				getOptionLabel: (module: any) => module
