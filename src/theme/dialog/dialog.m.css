@@ -10,6 +10,7 @@
 	background: var(--component-background);
 	width: 450px;
 	overflow: hidden;
+	outline: none;
 	max-width: calc(100% - 30px);
 	z-index: calc(var(--zindex-dialog) + 1);
 }

@@ -228,14 +228,15 @@ registerSuite('TabButton', {
 				onFocusCalled
 			}));
 			widget.getRender();
-			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled called on render if callFocus is true');
+			assert.isTrue(onFocusCalled.called, 'onFocusCalled called on render if callFocus is true');
 
+			onFocusCalled.reset();
 			widget.setProperties(props({
 				callFocus: false,
 				onFocusCalled
 			}));
 			widget.getRender();
-			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled not called if callFocus is false');
+			assert.isFalse(onFocusCalled.called, 'onFocusCalled not called if callFocus is false');
 		}
 	}
 });
