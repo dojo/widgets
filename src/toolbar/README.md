@@ -31,7 +31,7 @@ The following CSS classes are used to style the `Toolbar` widget and should be p
 import Toolbar from '@dojo/widgets/toolbar/Toolbar';
 import { w } from '@dojo/widget-core/d';
 
-w(Titlepane, {
+w(Toolbar, {
 	title: 'My Site',
 	fixed: true,
 	collapseWidth: 720
