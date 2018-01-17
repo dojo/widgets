@@ -3,8 +3,11 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
+
+const axe = services.axe;
 
 const DELAY = 500;
 
@@ -235,5 +238,9 @@ registerSuite('Calendar', {
 				.then((className: string) => {
 					assert.include(className, css.selectedDate, 'Clicked date has selected class');
 				});
+	},
+
+	'check accessibility'() {
+		return openMonthPicker(this.remote).then(axe.createChecker());
 	}
 });

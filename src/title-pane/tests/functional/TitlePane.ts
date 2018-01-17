@@ -2,6 +2,9 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
+import { services } from '@theintern/a11y';
+
+const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
@@ -41,5 +44,9 @@ registerSuite('TitlePane', {
 				.then(marginTop => {
 					assert.closeTo(parseInt(marginTop, 10), -height, 2);
 				});
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

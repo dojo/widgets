@@ -2,8 +2,11 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import keys from '@theintern/leadfoot/keys';
+import { services } from '@theintern/a11y';
 import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../../theme/slider.m.css';
+
+const axe = services.axe;
 
 function getPage(test: any) {
 	const { browserName } = test.remote.environmentType;
@@ -273,5 +276,9 @@ registerSuite('Slider', {
 				})
 				.end();
 		}
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

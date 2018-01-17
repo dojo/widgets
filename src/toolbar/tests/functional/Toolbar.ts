@@ -1,8 +1,11 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/toolbar.m.css';
 import * as slidePaneCss from '../../../theme/slide-pane.m.css';
+
+const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
@@ -54,5 +57,9 @@ registerSuite('Toolbar', {
 				.then(position => {
 					assert.isAbove(position.x, WIDTH - 50);
 				});
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

@@ -58,6 +58,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '1',
+					label: 'Time: ',
 					onChange: this.onChange,
 					onRequestOptions: this.getFilteredOptions,
 					options: this._filteredOptions,
@@ -73,6 +74,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '2',
+					label: 'Time: ',
 					openOnFocus: true,
 					onChange: this.onChange,
 					step: 1800,
@@ -93,6 +95,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					},
 					isOptionDisabled: (option: TimeUnits) => option.hour >= 12,
 					key: '3',
+					label: 'Time: ',
 					onChange: this.onChange,
 					step: 3600,
 					value: this._values['3']
@@ -107,6 +110,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '4',
+					label: 'Time: ',
 					disabled: true
 				})
 			]),
@@ -119,6 +123,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '5',
+					label: 'Time: ',
 					readOnly: true
 				})
 			]),
@@ -155,6 +160,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._invalid = value.trim().length === 0;
 						this.onChange(value, key);
 					},
+					label: 'Time: ',
 					step: 1800,
 					value: this._values['7']
 				})
@@ -173,6 +179,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '8',
+					label: 'Time: ',
 					onChange: this.onChange,
 					start: '12:00:00',
 					step: 1,
@@ -197,6 +204,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '9',
+					label: 'Time: ',
 					onChange: this.onChange,
 					step: 1800,
 					value: this._values['9']

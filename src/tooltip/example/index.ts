@@ -47,7 +47,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					open: this._open.has('bar')
 				}, [
 					w(TextInput, {
-						placeholder: 'Focus me',
+						label: 'Focus me',
 						onFocus: () => { this.onShow('bar'); },
 						onBlur: () => { this.onHide('bar'); }
 					})

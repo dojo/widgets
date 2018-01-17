@@ -34,7 +34,8 @@ export class App extends WidgetBase<WidgetProperties> {
 				w(Button, {
 					key: 'b3',
 					popup: { expanded: false, id: 'fakeId' }
-				}, [ 'Open' ])
+				}, [ 'Open' ]),
+				v('div', { id: 'fakeId' })
 			]),
 			v('div', { id: 'example-4' }, [
 				v('p', [ 'Toggle Button' ]),
