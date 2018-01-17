@@ -1,5 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import * as css from '../theme/calendar/calendar.m.css';
@@ -35,22 +36,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<P, null> {
-	protected onElementCreated(element: HTMLElement, key: string) {
-		this._callFocus(element);
-	}
-
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		this._callFocus(element);
-	}
-
-	private _callFocus(element: HTMLElement) {
-		const { callFocus, onFocusCalled } = this.properties;
-		if (callFocus) {
-			element.focus();
-			onFocusCalled && onFocusCalled();
-		}
-	}
-
 	private _onClick(event: MouseEvent) {
 		const { date, disabled = false, onClick } = this.properties;
 		onClick && onClick(date, disabled);
@@ -81,10 +66,17 @@ export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellPro
 
 	protected render(): DNode {
 		const {
+			callFocus,
 			date,
 			focusable = false,
-			selected = false
+			selected = false,
+			onFocusCalled
 		} = this.properties;
+
+		if (callFocus) {
+			this.meta(Focus).set('root');
+			onFocusCalled && onFocusCalled();
+		}
 
 		return v('td', {
 			key: 'root',

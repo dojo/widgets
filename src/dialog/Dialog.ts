@@ -81,6 +81,13 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		document.addEventListener('keyup', this._onKeyUp);
 	}
 
+	protected onElementCreated(element: HTMLElement, key: string) {
+		if (key === 'main') {
+			const { open = false } = this.properties;
+			open && element.focus();
+		}
+	}
+
 	protected onDetach(): void {
 		document.removeEventListener('keyup', this._onKeyUp);
 	}
@@ -114,7 +121,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		});
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		let {
 			aria = {},
 			closeable = true,
@@ -128,13 +135,12 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		} = this.properties;
 
 		open && !this._wasOpen && onOpen && onOpen();
+		this._wasOpen = open;
 
 		if (!closeText) {
 			const messages = this.localizeBundle(commonBundle);
 			closeText = `${messages.close} ${title}`;
 		}
-
-		this._wasOpen = open;
 
 		return v('div', {
 			classes: this.theme(css.root)
@@ -147,7 +153,8 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 				enterAnimation,
 				exitAnimation,
 				key: 'main',
-				role
+				role,
+				tabIndex: -1
 			}, [
 				v('div', {
 					classes: this.theme(css.title),

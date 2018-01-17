@@ -3,6 +3,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 import Dialog from '../../dialog/Dialog';
 import dojoTheme from '../../themes/dojo/theme';
 
@@ -43,6 +44,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		return v('div', [
 			v('button', {
 				id: 'button',
+				key: 'button',
 				innerHTML: 'open dialog',
 				onclick: this.openDialog
 			}),
@@ -55,6 +57,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				closeable: this._closeable,
 				onRequestClose: () => {
 					this._open = false;
+					this.meta(Focus).set('button');
 					this.invalidate();
 				},
 				theme: this._theme
