@@ -84,8 +84,16 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
+	private _getMonthInputKey(month: number): string {
+		return `${this._idBase}_month_input_${month}`;
+	}
+
 	private _getPopupState() {
 		return this._monthPopupOpen || this._yearPopupOpen;
+	}
+
+	private _getYearInputKey(year: number): string {
+		return `${this._idBase}_year_input_${year}`;
 	}
 
 	private _getYearRange() {
@@ -144,7 +152,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	private _openMonthPopup() {
 		const { month, onPopupChange } = this.properties;
 		this._monthPopupOpen = true;
-		this.meta(Focus).set(`${this._idBase}_month_input_${month}`);
+		this.meta(Focus).set(this._getMonthInputKey(month));
 		this._yearPopupOpen = false;
 		this.invalidate();
 		onPopupChange && onPopupChange(this._getPopupState());
@@ -153,7 +161,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	private _openYearPopup() {
 		const { year, onPopupChange } = this.properties;
 		this._yearPopupOpen = true;
-		this.meta(Focus).set(`${this._idBase}_year_input_${year}`);
+		this.meta(Focus).set(this._getYearInputKey(year));
 		this._monthPopupOpen = false;
 		this.invalidate();
 		onPopupChange && onPopupChange(this._getPopupState());
@@ -200,7 +208,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 			v('input', {
 				checked: i === month,
 				classes: this.theme(css.monthRadioInput),
-				key: `${this._idBase}_month_input_${i}`,
+				key: this._getMonthInputKey(i),
 				name: `${this._idBase}_month_radios`,
 				tabIndex: this._monthPopupOpen ? 0 : -1,
 				type: 'radio',
@@ -241,7 +249,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 				v('input', {
 					checked: i === year,
 					classes: this.theme(css.yearRadioInput),
-					key: `${this._idBase}_year_input_${i}`,
+					key: this._getYearInputKey(i),
 					name: `${this._idBase}_year_radios`,
 					tabIndex: this._yearPopupOpen ? 0 : -1,
 					type: 'radio',
