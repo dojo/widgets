@@ -34,7 +34,6 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 	getOptionLabel?(option: any): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
-	id?: string;
 	options?: any[];
 	placeholder?: string;
 	useNativeElement?: boolean;

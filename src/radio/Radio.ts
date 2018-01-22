@@ -18,7 +18,6 @@ import * as css from '../theme/radio/radio.m.css';
  */
 export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, CustomAriaProperties {
 	checked?: boolean;
-	id?: string;
 	value?: string;
 }
 

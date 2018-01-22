@@ -23,7 +23,6 @@ import * as css from '../theme/slider/slider.m.css';
  * @property value           The current value
  */
 export interface SliderProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
-	id?: string;
 	max?: number;
 	min?: number;
 	output?(value: number): DNode;
