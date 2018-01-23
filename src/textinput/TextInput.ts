@@ -78,6 +78,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		const {
 			aria = {},
 			disabled,
+			id = this._uuid,
 			invalid,
 			maxLength,
 			minLength,
@@ -94,7 +95,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			'aria-invalid': invalid ? 'true' : null,
 			classes: this.theme(css.input),
 			disabled,
-			id: this._uuid,
+			id,
 			key: 'input',
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,
@@ -130,6 +131,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	render(): DNode {
 		const {
 			disabled,
+			id = this._uuid,
 			invalid,
 			label,
 			labelAfter = false,
@@ -147,7 +149,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: this._uuid
+				forId: id
 			}, [ label ]) : null,
 			this.renderInputWrapper()
 		];

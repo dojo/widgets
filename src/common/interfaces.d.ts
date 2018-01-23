@@ -16,6 +16,7 @@ export interface CustomAriaProperties {
  * Properties that can be set on a input component
  *
  * @property disabled       Prevents the user from interacting with the form field
+ * @property id             Adds an id property to the input node so custom labels are possible
  * @property invalid        Indicates the value entered in the form field is invalid
  * @property name           The form widget's name
  * @property readOnly       Allows or prevents user interaction
@@ -23,6 +24,7 @@ export interface CustomAriaProperties {
  */
 export interface InputProperties {
 	disabled?: boolean;
+	id?: string;
 	invalid?: boolean;
 	name?: string;
 	readOnly?: boolean;

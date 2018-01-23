@@ -87,6 +87,7 @@ registerSuite('TextInput', {
 					controls: 'foo',
 					describedBy: 'bar'
 				},
+				id: 'foo',
 				maxLength: 50,
 				minLength: 10,
 				name: 'bar',
@@ -102,6 +103,7 @@ registerSuite('TextInput', {
 			assignProperties(findKey(expectedVdom, 'input')!, {
 				'aria-controls': 'foo',
 				'aria-describedby': 'bar',
+				id: 'foo',
 				maxlength: '50',
 				minlength: '10',
 				name: 'bar',

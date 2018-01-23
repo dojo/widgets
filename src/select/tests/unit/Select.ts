@@ -47,6 +47,7 @@ const testProperties: Partial<SelectProperties> = {
 	getOptionLabel: (option: any) => option.label,
 	getOptionSelected: (option: any, index: number) => option.value === 'two',
 	getOptionValue: (option: any, index: number) => option.value,
+	id: 'foo',
 	name: 'foo',
 	options: testOptions,
 	value: 'two'
@@ -66,6 +67,7 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 			classes: css.input,
 			disabled: useTestProperties ? true : undefined,
 			'aria-invalid': useTestProperties ? 'true' : null,
+			id: useTestProperties ? 'foo' : compareId as any,
 			name: useTestProperties ? 'foo' : undefined,
 			readOnly: useTestProperties ? true : undefined,
 			'aria-readonly': useTestProperties ? 'true' : null,
@@ -144,7 +146,7 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 		}, [
 			w(Listbox, {
 				activeIndex: 0,
-				id: <any> compareId,
+				id: useTestProperties ? 'foo' : compareId as any,
 				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
 				tabIndex: open ? 0 : -1,

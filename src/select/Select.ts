@@ -188,6 +188,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionId,
 			getOptionSelected,
 			getOptionValue,
+			id = this._baseId,
 			invalid,
 			name,
 			options = [],
@@ -210,6 +211,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				classes: this.theme(css.input),
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
+				id,
 				name,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
@@ -229,6 +231,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionId,
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
+			id = this._baseId,
 			key,
 			options = [],
 			theme,
@@ -237,8 +240,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 
 		const {
 			_open,
-			_focusedIndex,
-			_baseId
+			_focusedIndex
 		} = this;
 
 		// create dropdown trigger and select box
@@ -255,7 +257,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				w(Listbox, {
 					key: 'listbox',
 					activeIndex: _focusedIndex,
-					id: _baseId,
+					id,
 					optionData: options,
 					tabIndex: _open ? 0 : -1,
 					getOptionDisabled,
@@ -334,6 +336,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			labelHidden,
 			labelAfter,
 			disabled,
+			id = this._baseId,
 			invalid,
 			readOnly,
 			required,
@@ -349,7 +352,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: this._baseId
+				forId: id
 			}, [ label ]) : null,
 			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect()
 		];

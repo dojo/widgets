@@ -110,6 +110,7 @@ registerSuite('Slider', {
 		'custom properties'() {
 			widget.setProperties({
 				aria: { describedBy: 'foo' },
+				id: 'foo',
 				max: 60,
 				min: 10,
 				name: 'bar',
@@ -122,6 +123,7 @@ registerSuite('Slider', {
 			const expectedVdom = expected(widget, false, true);
 			assignProperties(findKey(expectedVdom, 'input')!, {
 				'aria-describedby': 'foo',
+				id: 'foo',
 				max: '60',
 				min: '10',
 				name: 'bar',

@@ -113,6 +113,7 @@ registerSuite('Checkbox', {
 					describedBy: 'foo'
 				},
 				checked: true,
+				id: 'foo',
 				name: 'bar',
 				value: 'baz'
 			});
@@ -121,6 +122,7 @@ registerSuite('Checkbox', {
 			assignChildProperties(expectedVdom, '0,0', {
 				checked: true,
 				'aria-describedby': 'foo',
+				id: 'foo',
 				name: 'bar',
 				value: 'baz'
 			});

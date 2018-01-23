@@ -7,6 +7,7 @@ import Test from 'intern/lib/Test';
 import * as css from '../../../theme/splitpane/splitPane.m.css';
 
 const DELAY = 300;
+const ERROR_MARGIN = 5;
 
 function getPage(test: Test): Command<void> {
 	const { browserName = '' } = test.remote.environmentType!;
@@ -64,13 +65,13 @@ function testResizes(command: Command<Element | void>, resizes: Coord[], expecte
 						assert.isTrue(delta.x(x), `Resize ${i} should pass x test.`);
 					}
 					else {
-						assert.closeTo(x, currentX + delta.x, 1, `Resize ${i} should move x by ${move.x}.`);
+						assert.closeTo(x, currentX + delta.x, ERROR_MARGIN, `Resize ${i} should move x by ${move.x}.`);
 					}
 					if (typeof delta.y === 'function') {
 						assert.isTrue(delta.y(y), `Resize ${i} should pass y test.`);
 					}
 					else {
-						assert.closeTo(y, currentY + delta.y, 1, `Resize ${i} should move y by ${move.y}.`);
+						assert.closeTo(y, currentY + delta.y, ERROR_MARGIN, `Resize ${i} should move y by ${move.y}.`);
 					}
 					currentX = x;
 					currentY = y;

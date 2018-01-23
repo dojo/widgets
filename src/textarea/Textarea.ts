@@ -78,6 +78,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			aria = {},
 			columns,
 			disabled,
+			id = this._uuid,
 			invalid,
 			label,
 			maxLength,
@@ -102,11 +103,11 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: this._uuid
+				forId: id
 			}, [ label ]) : null,
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('textarea', {
-					id: this._uuid,
+					id,
 					key: 'input',
 					...formatAriaProperties(aria),
 					classes: this.theme(css.input),

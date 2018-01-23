@@ -122,6 +122,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 		const {
 			aria = {},
 			disabled,
+			id = this._inputId,
 			invalid,
 			label,
 			labelAfter,
@@ -155,7 +156,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				...formatAriaProperties(aria),
 				classes: [ this.theme(css.input), fixedCss.nativeInput ],
 				disabled,
-				id: this._inputId,
+				id,
 				'aria-invalid': invalid === true ? 'true' : null,
 				max: `${max}`,
 				min: `${min}`,
@@ -193,7 +194,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: this._inputId
+				forId: id
 			}, [ label ]) : null,
 			slider
 		];
