@@ -34,7 +34,8 @@ const monthRadios = function(widget: Harness<DatePicker>, open?: boolean) {
 		v('input', {
 			checked: i === 5,
 			classes: css.monthRadioInput,
-			name: <any> compareId,
+			key: compareId as any,
+			name: compareId as any,
 			tabIndex: open ? 0 : -1,
 			type: 'radio',
 			value: `${i}`,
@@ -58,7 +59,8 @@ const yearRadios = function(widget: Harness<DatePicker>, open?: boolean, yearSta
 			v('input', {
 				checked: i === 2017,
 				classes: css.yearRadioInput,
-				name: <any> compareId,
+				key: compareId as any,
+				name: compareId as any,
 				tabIndex: open ? 0 : -1,
 				type: 'radio',
 				value: `${ i }`,

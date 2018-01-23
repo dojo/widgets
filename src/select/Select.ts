@@ -3,6 +3,7 @@ import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { reference } from '@dojo/widget-core/diff';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { find } from '@dojo/shim/array';
@@ -49,7 +50,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(iconCss)
 @diffProperty('options', reference)
 export class SelectBase<P extends SelectProperties = SelectProperties> extends ThemedBase<P, null> {
-	private _callTriggerFocus = false;
 	private _callListboxFocus = false;
 	private _focusedIndex = 0;
 	private _ignoreBlur = false;
@@ -100,7 +100,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 
 	private _onDropdownKeyDown(event: KeyboardEvent) {
 		if (event.which === Keys.Escape) {
-			this._callTriggerFocus = true;
+			this.meta(Focus).set('trigger');
 			this._closeSelect();
 		}
 	}
@@ -164,11 +164,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			this._callListboxFocus = false;
 			const listbox = <HTMLElement> element.querySelector('[role="listbox"]');
 			listbox && listbox.focus();
-		}
-
-		if (key === 'trigger' && this._callTriggerFocus) {
-			this._callTriggerFocus = false;
-			element.focus();
 		}
 	}
 
@@ -271,7 +266,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					},
 					onOptionSelect: (option: any) => {
 						onChange && onChange(option, key);
-						this._callTriggerFocus = true;
+						this.meta(Focus).set('trigger');
 						this._closeSelect();
 					}
 				})

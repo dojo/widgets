@@ -51,7 +51,8 @@ const expected = function(widget: Harness<Dialog>, open = false, closeable = fal
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'main',
-			role: 'dialog'
+			role: 'dialog',
+			tabIndex: -1
 		}, [
 			v('div', {
 				classes: css.title,

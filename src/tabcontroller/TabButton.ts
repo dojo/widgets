@@ -1,6 +1,7 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import commonBundle from '../common/nls/common';
@@ -125,14 +126,6 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 		}
 	}
 
-	private _callFocus(element: HTMLElement) {
-		const { callFocus, onFocusCalled } = this.properties;
-		if (callFocus) {
-			element.focus();
-			onFocusCalled && onFocusCalled();
-		}
-	}
-
 	protected getContent(messages: CommonMessages): DNode[] {
 		const { active, closeable } = this.properties;
 
@@ -157,22 +150,21 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 		];
 	}
 
-	protected onElementCreated(element: HTMLElement, key: string) {
-		key === 'tab-button' && this._callFocus(element);
-	}
-
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		key === 'tab-button' && this._callFocus(element);
-	}
-
 	render(): DNode {
 		const {
 			active,
+			callFocus,
 			controls,
 			disabled,
-			id
+			id,
+			onFocusCalled
 		} = this.properties;
 		const messages = this.localizeBundle(commonBundle);
+
+		if (callFocus) {
+			this.meta(Focus).set('tab-button');
+			onFocusCalled && onFocusCalled();
+		}
 
 		return v('div', {
 			'aria-controls': controls,

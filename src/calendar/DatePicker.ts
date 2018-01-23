@@ -1,5 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { v } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { DNode } from '@dojo/widget-core/interfaces';
@@ -62,10 +63,6 @@ const BASE_YEAR = 2000;
 @theme(css)
 @theme(iconCss)
 export class DatePickerBase<P extends DatePickerProperties = DatePickerProperties> extends ThemedBase<P, null> {
-	private _callMonthTriggerFocus = false;
-	private _callYearTriggerFocus = false;
-	private _callMonthPopupFocus = false;
-	private _callYearPopupFocus = false;
 	private _idBase = uuid();
 	private _monthPopupOpen = false;
 	private _yearPopupOpen = false;
@@ -74,7 +71,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	private _closeMonthPopup() {
 		const { onPopupChange } = this.properties;
 		this._monthPopupOpen = false;
-		this._callMonthTriggerFocus = true;
+		this.meta(Focus).set('month-button');
 		this.invalidate();
 		onPopupChange && onPopupChange(this._getPopupState());
 	}
@@ -82,13 +79,21 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	private _closeYearPopup() {
 		const { onPopupChange } = this.properties;
 		this._yearPopupOpen = false;
-		this._callYearTriggerFocus = true;
+		this.meta(Focus).set('year-button');
 		this.invalidate();
 		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
+	private _getMonthInputKey(month: number): string {
+		return `${this._idBase}_month_input_${month}`;
+	}
+
 	private _getPopupState() {
 		return this._monthPopupOpen || this._yearPopupOpen;
+	}
+
+	private _getYearInputKey(year: number): string {
+		return `${this._idBase}_year_input_${year}`;
 	}
 
 	private _getYearRange() {
@@ -100,36 +105,6 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		}
 		else {
 			return { first: year - (yearRange + offset), last: year - offset };
-		}
-	}
-
-	// move focus when opening/closing the popup
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'month-button') {
-			if (!this._monthPopupOpen && this._callMonthTriggerFocus) {
-				element.focus();
-				this._callMonthTriggerFocus = false;
-			}
-		}
-		if (key === 'year-button') {
-			if (!this._yearPopupOpen && this._callYearTriggerFocus) {
-				element.focus();
-				this._callYearTriggerFocus = false;
-			}
-		}
-		if (this._callMonthPopupFocus && key.indexOf(`${this._idBase}_month_radios`) > -1) {
-			const month = key.split('_')[3];
-			if (this._monthPopupOpen && month === `${this.properties.month}`) {
-				(<HTMLInputElement> element.children[0]).focus();
-				this._callMonthPopupFocus = false;
-			}
-		}
-		if (this._callYearPopupFocus && key.indexOf(`${this._idBase}_year_radios`) > -1) {
-			const year = key.split('_')[3];
-			if (this._yearPopupOpen && year === `${this.properties.year}`) {
-				(<HTMLInputElement> element.children[0]).focus();
-				this._callYearPopupFocus = false;
-			}
 		}
 	}
 
@@ -149,8 +124,8 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 			event.which === Keys.Enter ||
 			event.which === Keys.Space
 		) {
-			this._closeMonthPopup();
-			this._closeYearPopup();
+			this._monthPopupOpen && this._closeMonthPopup();
+			this._yearPopupOpen && this._closeYearPopup();
 		}
 	}
 
@@ -175,18 +150,18 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	}
 
 	private _openMonthPopup() {
-		const { onPopupChange } = this.properties;
+		const { month, onPopupChange } = this.properties;
 		this._monthPopupOpen = true;
-		this._callMonthPopupFocus = true;
+		this.meta(Focus).set(this._getMonthInputKey(month));
 		this._yearPopupOpen = false;
 		this.invalidate();
 		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
 	private _openYearPopup() {
-		const { onPopupChange } = this.properties;
+		const { year, onPopupChange } = this.properties;
 		this._yearPopupOpen = true;
-		this._callYearPopupFocus = true;
+		this.meta(Focus).set(this._getYearInputKey(year));
 		this._monthPopupOpen = false;
 		this.invalidate();
 		onPopupChange && onPopupChange(this._getPopupState());
@@ -233,6 +208,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 			v('input', {
 				checked: i === month,
 				classes: this.theme(css.monthRadioInput),
+				key: this._getMonthInputKey(i),
 				name: `${this._idBase}_month_radios`,
 				tabIndex: this._monthPopupOpen ? 0 : -1,
 				type: 'radio',
@@ -273,6 +249,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 				v('input', {
 					checked: i === year,
 					classes: this.theme(css.yearRadioInput),
+					key: this._getYearInputKey(i),
 					name: `${this._idBase}_year_radios`,
 					tabIndex: this._yearPopupOpen ? 0 : -1,
 					type: 'radio',
