@@ -41,7 +41,7 @@ const expectedToggle = function(labels = false, checked = false) {
 
 const noop = () => {};
 const compareId = { selector: 'input', property: 'id', compare: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '*[key="label"]', property: 'forId', compare: (property: any) => typeof property === 'string' };
+const compareForId = { selector: '@label', property: 'forId', compare: (property: any) => typeof property === 'string' };
 
 const expected = function(label = false, toggle = false, toggleLabels = false, checked = false) {
 	return v('div', {
@@ -111,6 +111,7 @@ registerSuite('Checkbox', {
 			}, [
 				v('div', { classes: css.inputWrapper }, [
 					v('input', {
+						id: '',
 						'aria-describedby': 'foo',
 						name: 'bar',
 						classes: css.input,
@@ -162,12 +163,14 @@ registerSuite('Checkbox', {
 			}, [
 				v('div', { classes: css.inputWrapper }, [
 					v('input', {
+						id: '',
 						classes: css.input,
 						checked: false,
 						'aria-invalid': 'true',
 						'aria-readonly': 'true',
 						type: 'checkbox',
 						value: undefined,
+						name: undefined,
 						onblur: noop,
 						onchange: noop,
 						onclick: noop,
@@ -195,12 +198,14 @@ registerSuite('Checkbox', {
 			}, [
 				v('div', { classes: css.inputWrapper }, [
 					v('input', {
+						id: '',
 						classes: css.input,
 						checked: false,
 						'aria-invalid': null,
 						'aria-readonly': null,
 						type: 'checkbox',
 						value: undefined,
+						name: undefined,
 						onblur: noop,
 						onchange: noop,
 						onclick: noop,
@@ -253,6 +258,7 @@ registerSuite('Checkbox', {
 						name: undefined,
 						type: 'checkbox',
 						value: undefined,
+						id: '',
 						onblur: noop,
 						onchange: noop,
 						onclick: noop,
@@ -267,6 +273,7 @@ registerSuite('Checkbox', {
 				w(Label, {
 					key: 'label',
 					disabled: true,
+					theme: undefined,
 					readOnly: true,
 					required: true,
 					invalid: true,

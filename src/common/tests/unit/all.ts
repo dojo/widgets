@@ -9,8 +9,8 @@ add('touch', () => {
 /*import '../../../accordionpane/tests/unit/AccordionPane';*/
 import '../../../button/tests/unit/Button';
 // import '../../../calendar/tests/unit/Calendar';
-// import '../../../calendar/tests/unit/CalendarCell';
-// import '../../../calendar/tests/unit/DatePicker';
+import '../../../calendar/tests/unit/CalendarCell';
+import '../../../calendar/tests/unit/DatePicker';
 import '../../../checkbox/tests/unit/Checkbox';
 // import '../../../combobox/tests/unit/ComboBox';
 // import '../../../dialog/tests/unit/Dialog';
