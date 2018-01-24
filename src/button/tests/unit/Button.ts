@@ -1,28 +1,20 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import has from '@dojo/has/has';
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { v } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
 
-import Button, { ButtonProperties } from '../../Button';
+import Button from '../../Button';
 import * as css from '../../../theme/button/button.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 
-let widget: Harness<Button>;
+const noop = () => {};
 
 registerSuite('Button', {
-	beforeEach() {
-		widget = harness(Button);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'no content'() {
-			widget.expectRender(v('button', {
+			const h = harness(() => w(Button, {}));
+			h.expect(() => v('button', {
 				'aria-controls': null,
 				'aria-expanded': null,
 				'aria-haspopup': null,
@@ -31,24 +23,24 @@ registerSuite('Button', {
 				disabled: undefined,
 				id: undefined,
 				name: undefined,
-				onblur: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener,
+				onblur: noop,
+				onclick: noop,
+				onfocus: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop,
 				type: undefined,
 				value: undefined
 			}, [ null ]));
 		},
 
 		'properties and attributes'() {
-			const buttonProperties: ButtonProperties = {
+			const h = harness(() => w(Button, {
 				type: 'submit',
 				name: 'bar',
 				id: 'qux',
@@ -62,33 +54,31 @@ registerSuite('Button', {
 				},
 				pressed: true,
 				value: 'value'
-			};
-			widget.setProperties(buttonProperties);
-			widget.setChildren(['foo']);
+			}, ['foo']));
 
-			widget.expectRender(v('button', {
-				'aria-controls': (<any> buttonProperties.popup).id,
+			h.expect(() => v('button', {
+				'aria-controls': 'popupId',
 				'aria-describedby': 'baz',
-				'aria-expanded': String((<any> buttonProperties.popup).expanded),
+				'aria-expanded': 'true',
 				'aria-haspopup': 'true',
-				'aria-pressed': String(buttonProperties.pressed),
+				'aria-pressed': 'true',
 				classes: [ css.root, css.disabled, css.popup, css.pressed ],
-				disabled: buttonProperties.disabled,
-				name: buttonProperties.name,
-				id: buttonProperties.id,
-				onblur: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener,
-				type: buttonProperties.type,
-				value: buttonProperties.value
+				disabled: true,
+				name: 'bar',
+				id: 'qux',
+				onblur: noop,
+				onclick: noop,
+				onfocus: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop,
+				type: 'submit',
+				value: 'value'
 			}, [
 				'foo',
 				v('i', {
@@ -100,11 +90,11 @@ registerSuite('Button', {
 		},
 
 		'popup = true'() {
-			widget.setProperties({
+			const h = harness(() => w(Button, {
 				popup: true
-			});
+			}));
 
-			widget.expectRender(v('button', {
+			h.expect(() => v('button', {
 				'aria-controls': '',
 				'aria-expanded': 'false',
 				'aria-haspopup': 'true',
@@ -113,17 +103,17 @@ registerSuite('Button', {
 				disabled: undefined,
 				name: undefined,
 				id: undefined,
-				onblur: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener,
+				onblur: noop,
+				onclick: noop,
+				onfocus: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop,
 				type: undefined,
 				value: undefined
 			}, [
@@ -144,8 +134,11 @@ registerSuite('Button', {
 			let keyup = false;
 			let mousedown = false;
 			let mouseup = false;
+			let touchstart = false;
+			let touchend = false;
+			let touchcancel = false;
 
-			widget.setProperties({
+			const h = harness(() => w(Button, {
 				onBlur: () => { blurred = true; },
 				onClick: () => { clicked = true; },
 				onFocus: () => { focused = true; },
@@ -153,47 +146,34 @@ registerSuite('Button', {
 				onKeyPress: () => { keypress = true; },
 				onKeyUp: () => { keyup = true; },
 				onMouseDown: () => { mousedown = true; },
-				onMouseUp: () => { mouseup = true; }
-			});
-
-			widget.sendEvent('blur');
-			assert.isTrue(blurred);
-			widget.sendEvent('click');
-			assert.isTrue(clicked);
-			widget.sendEvent('focus');
-			assert.isTrue(focused);
-			widget.sendEvent('keydown');
-			assert.isTrue(keydown);
-			widget.sendEvent('keypress');
-			assert.isTrue(keypress);
-			widget.sendEvent('keyup');
-			assert.isTrue(keyup);
-			widget.sendEvent('mousedown');
-			assert.isTrue(mousedown);
-			widget.sendEvent('mouseup');
-			assert.isTrue(mouseup);
-		},
-
-		'touch events'() {
-			if (!has('touch')) {
-				this.skip('Touch events not supported');
-			}
-
-			let touchstart = false;
-			let touchend = false;
-			let touchcancel = false;
-
-			widget.setProperties({
+				onMouseUp: () => { mouseup = true; },
 				onTouchStart: () => { touchstart = true; },
 				onTouchEnd: () => { touchend = true; },
 				onTouchCancel: () => { touchcancel = true; }
-			});
+			}));
 
-			widget.sendEvent('touchstart');
+			h.trigger('button', 'onblur');
+			h.trigger('button', 'onclick');
+			h.trigger('button', 'onfocus');
+			h.trigger('button', 'onkeydown');
+			h.trigger('button', 'onkeypress');
+			h.trigger('button', 'onkeyup');
+			h.trigger('button', 'onmousedown');
+			h.trigger('button', 'onmouseup');
+			h.trigger('button', 'ontouchstart');
+			h.trigger('button', 'ontouchend');
+			h.trigger('button', 'ontouchcancel');
+
+			assert.isTrue(blurred);
+			assert.isTrue(clicked);
+			assert.isTrue(focused);
+			assert.isTrue(keydown);
+			assert.isTrue(keypress);
+			assert.isTrue(keyup);
+			assert.isTrue(mousedown);
+			assert.isTrue(mouseup);
 			assert.isTrue(touchstart);
-			widget.sendEvent('touchend');
 			assert.isTrue(touchend);
-			widget.sendEvent('touchcancel');
 			assert.isTrue(touchcancel);
 		}
 	}

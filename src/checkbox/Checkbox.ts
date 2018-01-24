@@ -154,6 +154,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 				})
 			]),
 			label ? w(Label, {
+				key: 'label',
 				theme,
 				disabled,
 				invalid,

@@ -1,8 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { compareProperty, findKey, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
+import harness from '@dojo/test-extras/harness';
 import { v } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -22,9 +21,9 @@ const requiredProps = {
 };
 let customProps: any = {};
 
-const compareId = compareProperty((value: any) => {
+/*const compareId = compareProperty((value: any) => {
 	return typeof value === 'string';
-});
+});*/
 
 const monthRadios = function(widget: Harness<DatePicker>, open?: boolean) {
 	return DEFAULT_MONTHS.map((monthName, i) => v('label', {
