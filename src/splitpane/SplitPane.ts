@@ -5,6 +5,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as fixedCss from './styles/splitPane.m.css';
 import * as css from '../theme/splitpane/splitPane.m.css';
+import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 
 /**
  * Direction of this SplitPane
@@ -39,11 +40,11 @@ const DEFAULT_SIZE = 100;
 
 @theme(css)
 export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P, null> {
-	private _divider: HTMLElement;
+	// private _divider: HTMLElement;
 	private _dragging: boolean;
 	private _lastSize?: number;
 	private _position: number;
-	private _root: HTMLElement;
+	// private _root: HTMLElement;
 	private _boundHandlers: any[];
 
 	constructor() {
@@ -109,9 +110,11 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		const currentPosition = this._getPosition(event);
 		let newSize = (this._lastSize === undefined ? size : this._lastSize) + currentPosition - this._position;
 
+		const rootDimensions = this.meta(Dimensions).get('root');
+		const dividerDimensions = this.meta(Dimensions).get('divider');
 		const maxSize = direction === Direction.row ?
-			this._root.offsetWidth - this._divider.offsetWidth :
-			this._root.offsetHeight - this._divider.offsetHeight;
+			rootDimensions.offset.width - dividerDimensions.offset.width :
+			rootDimensions.offset.height - dividerDimensions.offset.height;
 
 		this._lastSize = newSize;
 
@@ -143,16 +146,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		return styles;
 	}
 
-	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'root') {
-			this._root = element;
-		}
-		if (key === 'divider') {
-			this._divider = element;
-		}
-	}
-
-	render(): DNode {
+	protected render(): DNode {
 		const {
 			direction = Direction.row,
 			leading = null,

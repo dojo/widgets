@@ -341,7 +341,6 @@ registerSuite('Listbox', {
 			widget.setProperties({ activeIndex: 0 });
 			widget.getRender();
 
-			// onElementUpdated
 			scrollStub.reset();
 			widget.setProperties({});
 			widget.getRender();

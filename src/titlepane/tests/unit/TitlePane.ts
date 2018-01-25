@@ -66,6 +66,9 @@ registerSuite('TitlePane', {
 					'aria-hidden': null,
 					'aria-labelledby': isNonEmptyString,
 					classes: css.content,
+					styles: {
+						marginTop: '0px'
+					},
 					id: <any> isNonEmptyString,
 					key: 'content'
 				}, [ ])
@@ -113,6 +116,9 @@ registerSuite('TitlePane', {
 					'aria-labelledby': isNonEmptyString,
 					classes: css.content,
 					id: <any> isNonEmptyString,
+					styles: {
+						marginTop: '-0px'
+					},
 					key: 'content'
 				}, [])
 			]));

@@ -159,14 +159,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		];
 	}
 
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root' && this._callListboxFocus) {
-			this._callListboxFocus = false;
-			const listbox = <HTMLElement> element.querySelector('[role="listbox"]');
-			listbox && listbox.focus();
-		}
-	}
-
 	protected renderExpandIcon(): DNode {
 		return v('span', { classes: this.theme(css.arrow) }, [
 			v('i', { classes: this.theme([ iconCss.icon, iconCss.downIcon ]),

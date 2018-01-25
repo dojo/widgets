@@ -55,7 +55,7 @@ const DEFAULT_WIDTH = 320;
 /**
  * The minimum swipe delta in px required to be counted as a swipe and not a touch / click
  */
-const SWIPE_THRESHOLD = 5;
+/*const SWIPE_THRESHOLD = 5;*/
 
 const enum Plane {
 	x,
@@ -67,13 +67,15 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @theme(iconCss)
 export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
-	private _content: HTMLElement;
 	private _initialPosition: number;
 	private _slideIn: boolean;
 	private _swiping: boolean;
 	private _titleId = uuid();
 	private _transform: number;
 	private _wasOpen: boolean;
+	private _styles: Partial<CSSStyleDeclaration> = {};
+	private _attached = false;
+	private _hasMoved = false;
 
 	private get plane() {
 		const { align = Align.left } = this.properties;
@@ -117,6 +119,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		if (!this._swiping) {
 			return;
 		}
+		this._hasMoved = true;
 
 		const {
 			align = Align.left,
@@ -135,15 +138,17 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 
 		// Move the pane
 		if (this.plane === Plane.x) {
-			this._content.style.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
+			this._styles.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
 		}
 		else {
-			this._content.style.transform = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
+			this._styles.transform = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
 		}
+		this.invalidate();
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
 		this._swiping = false;
+		this._hasMoved = false;
 
 		const {
 			onRequestClose,
@@ -158,10 +163,6 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 			this._transform = 100 * delta / width;
 			onRequestClose && onRequestClose();
 		}
-		// If the underlay was clicked
-		else if (Math.abs(delta) < SWIPE_THRESHOLD && (!this._content || !this._content.contains(event.target as HTMLElement))) {
-			onRequestClose && onRequestClose();
-		}
 		// If pane was not swiped far enough to close
 		else if (delta > 0) {
 			// Animate the pane back open
@@ -170,18 +171,22 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		}
 	}
 
-	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'content') {
-			element.addEventListener('transitionend', this.invalidate.bind(this));
-			this._content = element;
+	private _onUnderlayMouseUp() {
+		const { onRequestClose } = this.properties;
+		if (this._hasMoved === false) {
+			onRequestClose && onRequestClose();
 		}
+	}
+
+	protected onAttach() {
+		this._attached = true;
 	}
 
 	protected getContent(): DNode {
 		return v('div', { classes: this.theme(css.content) }, this.children);
 	}
 
-	protected getStyles(): { [key: string]: string | null } {
+	protected getStyles(): Partial<CSSStyleDeclaration> {
 		const {
 			align = Align.left,
 			open = false,
@@ -197,7 +202,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		}
 
 		return {
-			transform: translate ? `translate${translateAxis}(${translate}%)` : '',
+			transform: translate ? `translate${translateAxis}(${translate}%)` : this._styles.transform,
 			width: this.plane === Plane.x ? `${ width }px` : null,
 			height: this.plane === Plane.y ? `${ width }px` : null
 		};
@@ -250,11 +255,13 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
+			onmouseup: this._onUnderlayMouseUp,
+			ontouchend: this._onUnderlayMouseUp,
 			key: 'underlay'
 		});
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		let {
 			aria = {},
 			closeText,
@@ -263,12 +270,12 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 			title = ''
 		} = this.properties;
 
-		const contentStyles = this.getStyles();
+		const contentStyles = this.getStyles() as any;
 		const contentClasses = this.getModifierClasses();
 		const fixedContentClasses = this.getFixedModifierClasses();
 
-		if (this._slideIn && this._content) {
-			this._content.style.transform = '';
+		if (this._slideIn && this._attached) {
+			this._styles.transform = '';
 		}
 
 		if (!closeText) {
@@ -295,6 +302,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 				...formatAriaProperties(aria),
 				key: 'content',
 				classes: [ ...this.theme([ css.pane, ...contentClasses ]), fixedCss.paneFixed, ...fixedContentClasses ],
+				transitionend: this.invalidate,
 				styles: contentStyles
 			}, [
 				title ? v('div', {

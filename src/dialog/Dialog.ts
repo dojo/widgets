@@ -3,6 +3,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 import uuid from '@dojo/core/uuid';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
@@ -81,11 +82,9 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		document.addEventListener('keyup', this._onKeyUp);
 	}
 
-	protected onElementCreated(element: HTMLElement, key: string) {
-		if (key === 'main') {
-			const { open = false } = this.properties;
-			open && element.focus();
-		}
+	protected onAttach() {
+		const { open = false } = this.properties;
+		open && this.meta(Focus).set('main');
 	}
 
 	protected onDetach(): void {

@@ -59,10 +59,13 @@ registerSuite('SlidePane', {
 					classes: [ css.underlayVisible, fixedCss.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
+					onmouseup: widget.listener,
+					ontouchend: widget.listener,
 					key: 'underlay'
 				}),
 				v('div', {
 					key: 'content',
+					transitionend: widget.listener,
 					'aria-describedby': 'foo',
 					classes: [
 						css.pane,
@@ -77,7 +80,7 @@ registerSuite('SlidePane', {
 						null
 					],
 					styles: {
-						transform: '',
+						transform: undefined,
 						width: '320px',
 						height: null
 					}
@@ -111,6 +114,7 @@ registerSuite('SlidePane', {
 				null,
 				v('div', {
 					key: 'content',
+					transitionend: widget.listener,
 					classes: [
 						css.pane,
 						css.left,
@@ -124,7 +128,7 @@ registerSuite('SlidePane', {
 						null
 					],
 					styles: {
-						transform: '',
+						transform: undefined,
 						width: '320px',
 						height: null
 					}
@@ -173,10 +177,13 @@ registerSuite('SlidePane', {
 					classes: [ null, fixedCss.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
+					onmouseup: widget.listener,
+					ontouchend: widget.listener,
 					key: 'underlay'
 				}),
 				v('div', {
 					key: 'content',
+					transitionend: widget.listener,
 					classes: [
 						css.pane,
 						css.left,
@@ -190,7 +197,7 @@ registerSuite('SlidePane', {
 						null
 					],
 					styles: {
-						transform: '',
+						transform: undefined,
 						width: '320px',
 						height: null
 					}
@@ -221,6 +228,7 @@ registerSuite('SlidePane', {
 				null,
 				v('div', {
 					key: 'content',
+					transitionend: widget.listener,
 					classes: [
 						css.pane,
 						css.left,
@@ -234,7 +242,7 @@ registerSuite('SlidePane', {
 						fixedCss.slideOutFixed
 					],
 					styles: {
-						transform: '',
+						transform: undefined,
 						width: '320px',
 						height: null
 					}
@@ -603,10 +611,13 @@ registerSuite('SlidePane', {
 						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
+						onmouseup: widget.listener,
+						ontouchend: widget.listener,
 						key: 'underlay'
 					}) : null,
 					v('div', {
 						key: 'content',
+						transitionend: widget.listener,
 						classes: [
 							css.pane,
 							css.left,
@@ -620,7 +631,7 @@ registerSuite('SlidePane', {
 							transitionDone ? null : ( open ? null : fixedCss.slideOutFixed)
 						],
 						styles: {
-							transform: '',
+							transform: undefined,
 							width: '320px',
 							height: null
 						}
@@ -672,10 +683,13 @@ registerSuite('SlidePane', {
 						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
+						onmouseup: widget.listener,
+						ontouchend: widget.listener,
 						key: 'underlay'
 					}),
 					v('div', {
 						key: 'content',
+						transitionend: widget.listener,
 						classes: swipeState.classes || [
 							css.pane,
 							css.left,
@@ -689,7 +703,7 @@ registerSuite('SlidePane', {
 							null
 						],
 						styles: swipeState.styles || {
-							transform: '',
+							transform: undefined,
 							width: '320px',
 							height: null
 						}
@@ -775,10 +789,13 @@ registerSuite('SlidePane', {
 						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
+						onmouseup: widget.listener,
+						ontouchend: widget.listener,
 						key: 'underlay'
 					}),
 					v('div', {
 						key: 'content',
+						transitionend: widget.listener,
 						classes: swipeState.classes || [
 							css.pane,
 							css.right,
@@ -792,7 +809,7 @@ registerSuite('SlidePane', {
 							null
 						],
 						styles: swipeState.styles || {
-							transform: '',
+							transform: undefined,
 							width: '320px',
 							height: null
 						}
