@@ -52,11 +52,6 @@ export interface SlidePaneProperties extends ThemedProperties, CustomAriaPropert
  */
 const DEFAULT_WIDTH = 320;
 
-/**
- * The minimum swipe delta in px required to be counted as a swipe and not a touch / click
- */
-/*const SWIPE_THRESHOLD = 5;*/
-
 const enum Plane {
 	x,
 	y
