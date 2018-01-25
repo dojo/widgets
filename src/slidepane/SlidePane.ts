@@ -265,7 +265,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 			title = ''
 		} = this.properties;
 
-		const contentStyles = this.getStyles() as any;
+		const contentStyles = this.getStyles();
 		const contentClasses = this.getModifierClasses();
 		const fixedContentClasses = this.getFixedModifierClasses();
 
