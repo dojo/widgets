@@ -68,7 +68,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	private _titleId = uuid();
 	private _transform: number;
 	private _wasOpen: boolean;
-	private _styles: Partial<CSSStyleDeclaration> = {};
+	private _stylesTransform: string;
 	private _attached = false;
 	private _hasMoved = false;
 
@@ -133,10 +133,10 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 
 		// Move the pane
 		if (this.plane === Plane.x) {
-			this._styles.transform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
+			this._stylesTransform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
 		}
 		else {
-			this._styles.transform = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
+			this._stylesTransform = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
 		}
 		this.invalidate();
 	}
@@ -181,7 +181,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		return v('div', { classes: this.theme(css.content) }, this.children);
 	}
 
-	protected getStyles(): Partial<CSSStyleDeclaration> {
+	protected getStyles(): {[index: string]: string | null } {
 		const {
 			align = Align.left,
 			open = false,
@@ -197,7 +197,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		}
 
 		return {
-			transform: translate ? `translate${translateAxis}(${translate}%)` : this._styles.transform,
+			transform: translate ? `translate${translateAxis}(${translate}%)` : this._stylesTransform,
 			width: this.plane === Plane.x ? `${ width }px` : null,
 			height: this.plane === Plane.y ? `${ width }px` : null
 		};
@@ -270,7 +270,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		const fixedContentClasses = this.getFixedModifierClasses();
 
 		if (this._slideIn && this._attached) {
-			this._styles.transform = '';
+			this._stylesTransform = '';
 		}
 
 		if (!closeText) {
