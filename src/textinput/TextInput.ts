@@ -7,6 +7,7 @@ import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventP
 import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/textinput/textinput.m.css';
+import { Focus } from '@dojo/widget-core/meta/Focus';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
@@ -30,6 +31,7 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	minLength?: number | string;
 	placeholder?: string;
 	value?: string;
+	focus?: boolean;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -87,8 +89,13 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			readOnly,
 			required,
 			type = 'text',
-			value
+			value,
+			focus
 		} = this.properties;
+
+		if (focus) {
+			this.meta(Focus).set('input');
+		}
 
 		return v('input', {
 			...formatAriaProperties(aria),
@@ -128,7 +135,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		]);
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		const {
 			disabled,
 			id = this._uuid,
