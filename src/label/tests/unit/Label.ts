@@ -1,31 +1,21 @@
 const { registerSuite } = intern.getInterface('object');
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { v } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
 
 import Label from '../../Label';
 import * as css from '../../../theme/label/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
-let widget: Harness<Label>;
-
 registerSuite('Label', {
-
-	beforeEach() {
-		widget = harness(Label);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
 
 	tests: {
 		simple() {
-			widget.setChildren([ 'baz' ]);
-
-			widget.expectRender(v('label', {
+			const h = harness(() => w(Label, {}, [ 'baz' ]));
+			h.expect(() => v('label', {
 				classes: [
 					css.root,
+					null,
 					null,
 					null,
 					null,
@@ -40,7 +30,7 @@ registerSuite('Label', {
 		},
 
 		custom() {
-			widget.setProperties({
+			const h = harness(() => w(Label, {
 				forId: 'foo',
 				aria: {
 					describedBy: 'bar'
@@ -50,10 +40,9 @@ registerSuite('Label', {
 				required: true,
 				invalid: true,
 				secondary: true
-			});
-			widget.setChildren([ 'baz' ]);
+			}, [ 'baz' ]));
 
-			widget.expectRender(v('label', {
+			h.expect(() => v('label', {
 				classes: [
 					css.root,
 					css.disabled,
@@ -61,23 +50,20 @@ registerSuite('Label', {
 					null,
 					css.readonly,
 					css.required,
-					css.secondary
+					css.secondary,
+					null
 				],
 				for: 'foo',
 				'aria-describedby': 'bar'
-			}, [
-				'baz'
-			]));
+			}, [ 'baz' ]));
 		},
 
 		hidden() {
-			widget.setProperties({
+			const h = harness(() => w(Label, {
 				hidden: true
-			});
+			}, [ 'baz' ]));
 
-			widget.setChildren([ 'baz' ]);
-
-			widget.expectRender(v('label', {
+			h.expect(() => (v('label', {
 				classes: [
 					css.root,
 					null,
@@ -85,11 +71,10 @@ registerSuite('Label', {
 					null,
 					null,
 					null,
+					null,
 					baseCss.visuallyHidden ],
 				for: undefined
-			}, [
-				'baz'
-			]));
+			}, [ 'baz' ])));
 		}
 	}
 });
