@@ -21,11 +21,11 @@ const requiredProps = {
 };
 let customProps: any = {};
 
-const compareId = { selector: '*', property: 'id', compare: (property: any) => typeof property === 'string' };
-const compareLabelledBy = { selector: '*', property: 'aria-labelledby', compare: (property: any) => typeof property === 'string' };
-const compareControls = { selector: '*', property: 'aria-controls', compare: (property: any) => typeof property === 'string' };
-const compareKey = { selector: 'label,input', property: 'key', compare: (property: any) => typeof property === 'string' };
-const compareName = { selector: 'input', property: 'name', compare: (property: any) => typeof property === 'string' };
+const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
+const compareLabelledBy = { selector: '*', property: 'aria-labelledby', comparator: (property: any) => typeof property === 'string' };
+const compareControls = { selector: '*', property: 'aria-controls', comparator: (property: any) => typeof property === 'string' };
+const compareKey = { selector: 'label,input', property: 'key', comparator: (property: any) => typeof property === 'string' };
+const compareName = { selector: 'input', property: 'name', comparator: (property: any) => typeof property === 'string' };
 
 const monthRadios = function(open?: boolean) {
 	return DEFAULT_MONTHS.map((monthName, i) => v('label', {

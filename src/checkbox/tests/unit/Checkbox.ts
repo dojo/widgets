@@ -40,8 +40,8 @@ const expectedToggle = function(labels = false, checked = false) {
 };
 
 const noop = () => {};
-const compareId = { selector: 'input', property: 'id', compare: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '@label', property: 'forId', compare: (property: any) => typeof property === 'string' };
+const compareId = { selector: 'input', property: 'id', comparator: (property: any) => typeof property === 'string' };
+const compareForId = { selector: '@label', property: 'forId', comparator: (property: any) => typeof property === 'string' };
 
 const expected = function(label = false, toggle = false, toggleLabels = false, checked = false) {
 	return v('div', {

@@ -2,8 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, compareProperty, findKey } from '@dojo/test-extras/support/d';
+import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -13,12 +12,17 @@ import Listbox from '../../../listbox/Listbox';
 import TextInput from '../../../textinput/TextInput';
 import * as css from '../../../theme/combobox/comboBox.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
+import { WNode } from '@dojo/widget-core/interfaces';
 
-let widget: Harness<ComboBox>;
-
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
+const compareAria = { selector: '*', property: 'aria', comparator: (value: any) => {
+	return Object.keys(value).every((key) => typeof value[key] === 'string');
+}};
+const compareAriaControls = { selector: '*', property: 'aria-controls', comparator: (property: any) => typeof property === 'string' };
+const noop = () => {};
+const createHarnessWithCompare = (renderFunction: () => WNode) => {
+	return harness(renderFunction, [ compareId, compareAria, compareAriaControls ]);
+};
 
 const testOptions: any[] = [
 	{
@@ -46,37 +50,44 @@ const testProperties = {
 	theme: {}
 };
 
-const getExpectedControls = function(widget: Harness<ComboBox>, useTestProperties: boolean, label: boolean, focus = false) {
+interface States {
+	disabled?: boolean;
+	invalid?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
+}
+
+const getExpectedControls = function(useTestProperties: boolean, label: boolean, states: States = {}) {
+	const { disabled, invalid, readOnly, required } = states;
 	const controlsVdom = v('div', {
 		classes: css.controls
 	}, [
 		w(TextInput, {
 			key: 'textinput',
 			aria: {
-				activedescendant: compareId as any,
-				controls: compareId as any,
-				owns: compareId as any
+				activedescendant: '',
+				controls: '',
+				owns: ''
 			},
-			disabled: undefined,
-			id: useTestProperties ? 'foo' : compareId as any,
-			invalid: undefined,
-			readOnly: undefined,
-			focus,
-			required: undefined,
+			disabled,
+			id: useTestProperties ? 'foo' : '',
+			invalid,
+			readOnly,
+			required,
 			theme: useTestProperties ? {} : undefined,
 			value: useTestProperties ? 'one' : '',
-			onBlur: widget.listener,
-			onFocus: widget.listener,
-			onInput: widget.listener,
-			onKeyDown: widget.listener
+			onBlur: noop,
+			onFocus: noop,
+			onInput: noop,
+			onKeyDown: noop
 		}),
 		useTestProperties ? v('button', {
-			'aria-controls': compareId as any,
+			'aria-controls': '',
 			key: 'clear',
 			classes: css.clear,
-			disabled: undefined,
-			readOnly: undefined,
-			onclick: widget.listener
+			disabled,
+			readOnly,
+			onclick: noop
 		}, [
 			useTestProperties ? 'clear foo' : 'clear ',
 			v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
@@ -86,10 +97,10 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 		v('button', {
 			key: 'trigger',
 			classes: css.trigger,
-			disabled: undefined,
-			readOnly: undefined,
+			disabled,
+			readOnly,
 			tabIndex: -1,
-			onclick: widget.listener
+			onclick: noop
 		}, [
 			useTestProperties ? 'open foo' : 'open ',
 			v('i', {
@@ -103,12 +114,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 	return controlsVdom;
 };
 
-function isOpen(widget: Harness<ComboBox>): boolean {
-	const vdom = widget.getRender();
-	return (vdom as any)!.properties!['aria-expanded'] === 'true';
-}
-
-const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: boolean, open: boolean) {
+const getExpectedMenu = function(useTestProperties: boolean, open: boolean, overrides = {}) {
 	if (!open || !useTestProperties) {
 		return null;
 	}
@@ -116,34 +122,36 @@ const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: b
 	return v('div', {
 		key: 'dropdown',
 		classes: css.dropdown,
-		onmouseover: widget.listener,
-		onmousedown: widget.listener
+		onmouseover: noop,
+		onmousedown: noop
 	}, [
 		w(Listbox, {
 			activeIndex: 0,
-			id: compareId as any,
+			id: '',
 			key: 'listbox',
 			visualFocus: false,
 			optionData: testOptions,
 			tabIndex: -1,
 			getOptionDisabled: undefined,
-			getOptionId: widget.listener as any,
-			getOptionLabel: widget.listener as any,
-			onActiveIndexChange: widget.listener,
-			onOptionSelect: widget.listener,
-			theme: useTestProperties ? {} : undefined
+			getOptionId: noop as any,
+			getOptionLabel: noop as any,
+			onActiveIndexChange: noop,
+			onOptionSelect: noop,
+			theme: useTestProperties ? {} : undefined,
+			...overrides
 		})
 	]);
 };
 
-const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = false, open = false, label = false, focus = false) {
-	const menuVdom = getExpectedMenu(widget, useTestProperties, open);
-	const controlsVdom = getExpectedControls(widget, useTestProperties, label, focus);
+const getExpectedVdom = function(useTestProperties = false, open = false, label = false, states: States = {}) {
+	const menuVdom = getExpectedMenu(useTestProperties, open);
+	const controlsVdom = getExpectedControls(useTestProperties, label, states);
+	const { disabled, invalid, readOnly, required } = states;
 
 	return v('div', {
 		'aria-expanded': open ? 'true' : 'false',
 		'aria-haspopup': 'true',
-		'aria-readonly': null,
+		'aria-readonly': readOnly ? `${readOnly}` : null,
 		'aria-required': null,
 		dir: null,
 		classes: [
@@ -159,13 +167,13 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 	}, [
 		label ? w(Label, {
 			key: 'label',
-			theme: undefined,
-			disabled: undefined,
+			theme: useTestProperties ? {} : undefined,
+			disabled,
 			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: useTestProperties ? 'foo' : compareId as any
+			invalid,
+			readOnly,
+			required,
+			forId: useTestProperties ? 'foo' : ''
 		}, [ 'foo' ]) : null,
 		controlsVdom,
 		menuVdom
@@ -173,45 +181,33 @@ const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = 
 };
 
 registerSuite('ComboBox', {
-	beforeEach() {
-		widget = harness(ComboBox);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'renders with default properties'() {
-			const expected = getExpectedVdom(widget);
-			widget.expectRender(expected);
+			const h = createHarnessWithCompare(() => w(ComboBox, {}));
+			h.expect(getExpectedVdom);
 		},
 
 		'renders with custom properties'() {
-			widget.setProperties(testProperties);
-			const expected = getExpectedVdom(widget, true, false, true);
-			widget.expectRender(expected);
+			const h = createHarnessWithCompare(() => w(ComboBox, testProperties));
+			h.expect(() => getExpectedVdom(true, false, true));
 		},
 
 		'dropdown renders correctly when open'() {
-			widget.setProperties(testProperties);
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-
-			let expected = getExpectedVdom(widget, true, true, true, true);
-			widget.expectRender(expected);
+			const h = createHarnessWithCompare(() => w(ComboBox, testProperties));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.expect(() => getExpectedVdom(true, true, true));
 		},
 
 		'arrow click opens menu'() {
 			const onRequestResults = sinon.stub();
 			const onMenuChange = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
 				onRequestResults,
 				onMenuChange
-			});
-
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
+			}));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.expect(() => getExpectedVdom(true, true, true));
 			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults called when menu is opened');
 			assert.isTrue(onMenuChange.calledOnce, 'onMenuChange called when menu is opened');
 		},
@@ -220,20 +216,17 @@ registerSuite('ComboBox', {
 			const onChange = sinon.stub();
 			const onRequestResults = sinon.stub();
 			const onMenuChange = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
 				label: undefined,
 				onChange,
 				onRequestResults,
 				onMenuChange
-			});
+			}));
 
-			widget.callListener('onInput', {
-				args: [ { target: { value: 'foo' } } ],
-				key: 'textinput'
-			});
+			h.trigger('@textinput', 'onInput', { target: { value: 'foo' } });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 
-			assert.isTrue(isOpen(widget), 'widget is open after input event');
 			assert.isTrue(onChange.calledWith('foo'), 'onChange callback called with input value');
 			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults callback called');
 			assert.isTrue(onMenuChange.calledOnce, 'onMenuChange called when menu is opened');
@@ -242,386 +235,311 @@ registerSuite('ComboBox', {
 		'menu closes on input blur'() {
 			const onBlur = sinon.stub();
 			const onMenuChange = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
-				label: undefined,
 				onBlur,
 				onMenuChange
-			});
+			}));
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 
-			widget.callListener('onBlur', {
-				args: [ { target: { value: 'foo' } } ],
-				key: 'textinput'
-			});
+			h.trigger('@textinput', 'onBlur', { target: { value: 'foo' } });
+			h.expect(() => getExpectedVdom(true, false, true));
 			assert.isTrue(onBlur.calledWith('foo'), 'onBlur callback called with input value');
-			assert.isFalse(isOpen(widget), 'widget is closed after input blur');
 			assert.isTrue(onMenuChange.calledTwice, 'onMenuChange called twice');
 		},
 
 		'blur ignored when clicking option'() {
 			const onBlur = sinon.stub();
 			const onMenuChange = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
-				label: undefined,
 				onBlur,
 				onMenuChange
-			});
+			}));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
+			h.trigger(`@dropdown`, 'onmousedown');
+			h.trigger('@textinput', 'onBlur', { target: { value: 'foo' } });
 
-			widget.sendEvent('mousedown', { key: 'dropdown' });
-			widget.callListener('onBlur', {
-				args: [ { target: { value: 'foo' } } ],
-				key: 'textinput'
-			});
-
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 			assert.isFalse(onBlur.called, 'onBlur not called for dropdown click');
-			assert.isTrue(isOpen(widget), 'dropdown not closed for dropdown click');
 			assert.isFalse(onMenuChange.calledTwice, 'onMenuChange only called once');
 		},
 
 		'menu closes on result selection'() {
 			const onChange = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
-				label: undefined,
 				onChange
-			});
+			}));
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			assert.isTrue(isOpen(widget), 'widget is open after arrow click');
-
-			widget.callListener('onOptionSelect', {
-				args: [ testOptions[1], 1 ],
-				index: '1,0'
-			});
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.trigger('@listbox', 'onOptionSelect', testOptions[1], 1);
 			assert.isTrue(onChange.calledWith('Two'), 'onChange callback called with label of second option');
-			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
+			h.expect(() => getExpectedVdom(true, false, true));
 		},
 
 		'keyboard opens and closes menu'() {
 			const onRequestResults = sinon.stub();
 			const preventDefault = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
-				label: undefined,
 				onRequestResults
-			});
+			}));
 
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault } ],
-				key: 'textinput'
-			});
-			assert.isTrue(isOpen(widget), 'widget is open after down key press');
+			h.trigger('@textinput', 'onKeyDown', { which: Keys.Down, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true }));
 			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults called when menu is opened');
 			assert.isTrue(preventDefault.calledOnce, 'down key press prevents default page scroll');
 
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Escape } ],
-				key: 'textinput'
-			});
-			assert.isFalse(isOpen(widget), 'widget is closed after escape key press');
+			h.trigger('@textinput', 'onKeyDown', { which: Keys.Escape });
+			h.expect(() => getExpectedVdom(true, false, true));
 		},
 
 		'listbox onActiveIndexChange'() {
-			widget.setProperties(testProperties);
-			let expected = getExpectedVdom(widget, true, true, true);
-
-			// open dropdown
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			widget.callListener('onActiveIndexChange', {
-				args: [ 1 ],
-				key: 'listbox'
-			});
-
-			expected = getExpectedVdom(widget, true, true, true);
-			assignProperties(findKey(expected, 'listbox')!, { activeIndex: 1 });
-
-			widget.expectRender(expected);
+			const h = createHarnessWithCompare(() => w(ComboBox, testProperties ));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.trigger(`@listbox`, 'onActiveIndexChange', 1);
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { activeIndex: 1 }));
 		},
 
 		'keyboard navigates options'() {
 			const preventDefault = sinon.stub();
-			const expected = getExpectedVdom(widget, true, true, true);
-
-			widget.setProperties({
-				...testProperties,
-				label: undefined
-			});
-			// open dropdown
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault } ],
-				key: 'textinput'
-			});
-
-			// shouldn't need this line with correct bind
-			widget.setProperties(testProperties);
-			assignProperties(findKey(expected, 'listbox')!, {
-				activeIndex: 1,
-				visualFocus: true
-			});
-			widget.expectRender(expected, 'down arrow moves active index to second option and sets visualFocus to true');
-
-			// shouldn't need this line with correct bind
-			widget.setProperties({ ...testProperties, label: undefined });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault } ],
-				key: 'textinput'
-			});
-			widget.setProperties(testProperties);
-			assignProperties(findKey(expected, 'listbox')!, {
-				activeIndex: 0
-			});
-			widget.expectRender(expected, 'up arrow moves active index to first option');
-
-			// shouldn't need this line with correct bind
-			widget.setProperties({ ...testProperties, label: undefined });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault } ],
-				key: 'textinput'
-			});
-			widget.setProperties(testProperties);
-			assignProperties(findKey(expected, 'listbox')!, {
-				activeIndex: 2
-			});
-			widget.expectRender(expected, 'up arrow wraps to last option');
-
-			// shouldn't need this line with correct bind
-			widget.setProperties({ ...testProperties, label: undefined });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault } ],
-				key: 'textinput'
-			});
-			widget.setProperties(testProperties);
-			assignProperties(findKey(expected, 'listbox')!, {
-				activeIndex: 0
-			});
-			widget.expectRender(expected, 'down arrow wraps to first option');
-
-			// shouldn't need this line with correct bind
-			widget.setProperties({ ...testProperties, label: undefined });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.End, preventDefault } ],
-				key: 'textinput'
-			});
-			widget.setProperties(testProperties);
-			assignProperties(findKey(expected, 'listbox')!, {
-				activeIndex: 2
-			});
-			widget.expectRender(expected, 'end moves to last option');
-
-			// shouldn't need this line with correct bind
-			widget.setProperties({ ...testProperties, label: undefined });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Home, preventDefault } ],
-				key: 'textinput'
-			});
-			widget.setProperties(testProperties);
-			assignProperties(findKey(expected, 'listbox')!, {
-				activeIndex: 0
-			});
-			widget.expectRender(expected, 'home moves to first option');
-
+			const h = createHarnessWithCompare(() => w(ComboBox, testProperties ));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Down, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true, activeIndex: 1 }));
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Up, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true, activeIndex: 0 }));
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Up, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true, activeIndex: 2 }));
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Down, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true, activeIndex: 0 }));
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.End, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true, activeIndex: 2 }));
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Home, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true, activeIndex: 0 }));
 			assert.strictEqual(preventDefault.callCount, 4, 'preventDefault called four times for up and down keys');
 		},
 
 		'enter and space select option'() {
 			const onChange = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
-				label: undefined,
 				onChange
-			});
+			}));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Enter });
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
-				key: 'textinput'
-			});
 			assert.isTrue(onChange.calledWith('One'), 'enter triggers onChange callback called with label of first option');
-			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
+			h.expect(() => getExpectedVdom(true, false, true));
 
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
-				key: 'textinput'
-			});
-			assert.isFalse(onChange.calledTwice, 'enter doesn\'t trigger onChange when menu is closed');
-
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Enter });
+			assert.isFalse(onChange.calledTwice, 'enter does not trigger onChange when menu is closed');
 			onChange.reset();
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Space } ],
-				key: 'textinput'
-			});
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Space });
 			assert.isTrue(onChange.calledWith('One'), 'space triggers onChange callback called with label of first option');
-			assert.isFalse(isOpen(widget), 'widget is closed after selecting option');
+			h.expect(() => getExpectedVdom(true, false, true));
 		},
 
 		'disabled options are not selected'() {
 			const onChange = sinon.stub();
-			widget.setProperties({
+			const preventDefault = sinon.stub();
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
-				label: undefined,
 				isResultDisabled: (result: any) => !!result.disabled,
 				onChange
-			});
-
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault: sinon.stub() } ],
-				key: 'textinput'
-			});
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
-				key: 'textinput'
-			});
+			}));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Up, preventDefault });
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Enter, preventDefault });
 
 			assert.isFalse(onChange.called, 'onChange not called for disabled option');
-			assert.isTrue(isOpen(widget), 'widget not closed after attempting to select disabled option');
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, {
+				visualFocus: true,
+				getOptionDisabled: noop,
+				activeIndex: 2
+			}));
 		},
 
 		'keyboard does not trigger onChange with no results'() {
 			const onChange = sinon.stub();
-			let expected = getExpectedVdom(widget);
-			widget.setProperties({
-				onChange
-			});
+			const preventDefault = sinon.stub();
+			const h = createHarnessWithCompare(() => w(ComboBox, { onChange }));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.expect(() => getExpectedVdom(false, true));
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			expected = getExpectedVdom(widget, false, true, false, true);
-			widget.expectRender(expected, 'dropdown does not render with no results');
-
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
-				key: 'textinput'
-			});
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Enter } ],
-				key: 'textinput'
-			});
+			h.trigger('@textinput', 'onKeyDown', { which: Keys.Down, preventDefault });
+			h.trigger('@textinput', 'onKeyDown', { which: Keys.Enter, preventDefault });
 
 			assert.isFalse(onChange.called, 'onChange not called for no results');
-			assert.isTrue(isOpen(widget), 'widget technically open with no results');
 		},
 
 		'clear button clears input'() {
 			const onChange = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
 				onChange
-			});
-
-			widget.sendEvent('click', { selector: `.${css.clear}` });
+			}));
+			h.trigger(`.${css.clear}`, 'onclick');
 			assert.isTrue(onChange.calledWith(''), 'clear button calls onChange with an empty string');
 		},
 
 		'inputProperties transferred to child input'() {
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				inputProperties: {
 					placeholder: 'foo'
 				}
-			});
+			}));
 
-			const expected = getExpectedVdom(widget);
-			assignProperties(findKey(expected, 'textinput')!, { placeholder: 'foo' });
-
-			widget.expectRender(expected);
+			h.expectPartial('@textinput', () => w(TextInput, {
+				key: 'textinput',
+				aria: {
+					activedescendant: '',
+					controls: '',
+					owns: ''
+				},
+				placeholder: 'foo',
+				disabled: undefined,
+				id: '',
+				invalid: undefined,
+				readOnly: undefined,
+				required: undefined,
+				theme: undefined,
+				value: '',
+				onBlur: noop,
+				onFocus: noop,
+				onInput: noop,
+				onKeyDown: noop
+			}));
 		},
 
 		'input opens on focus with openOnFocus'() {
 			const onFocus = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
-				label: undefined,
 				openOnFocus: true,
 				onFocus
-			});
-
-			widget.callListener('onFocus', {
-				args: [ { target: { value: 'foo' } } ],
-				key: 'textinput'
-			});
+			}));
+			h.trigger('@textinput', 'onFocus', { target: { value: 'foo' } });
 
 			assert.isTrue(onFocus.calledWith('foo'), 'onFocus handler called with input value');
-			assert.isTrue(isOpen(widget), 'widget opens on input focus');
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 		},
 
 		'widget states render correctly'() {
-			widget.setProperties({
+			let invalid = true;
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
 				disabled: true,
-				invalid: true,
+				invalid,
 				readOnly: true,
 				required: true
-			});
+			}));
 
-			let expected = getExpectedVdom(widget, true, false, true);
-			assignProperties(findKey(expected, 'textinput')!, {
+			h.expectPartial('@textinput', () => w(TextInput, {
+				key: 'textinput',
+				aria: {
+					activedescendant: '',
+					controls: '',
+					owns: ''
+				},
+				id: 'foo',
 				disabled: true,
 				invalid: true,
 				readOnly: true,
-				required: true
-			});
-			assignProperties(findKey(expected, 'label')!, {
-				disabled: true,
-				readOnly: true,
-				invalid: true,
-				required: true
-			});
-			assignProperties(findKey(expected, 'clear')!, {
-				disabled: true,
-				readOnly: true
-			});
-			assignProperties(findKey(expected, 'trigger')!, {
-				disabled: true,
-				readOnly: true
-			});
-			assignProperties(expected, {
-				'aria-readonly': 'true',
-				'aria-required': 'true',
-				classes: [ css.root, null, css.clearable, css.invalid, null ]
-			});
-			widget.expectRender(expected, 'disabled, invalid, readOnly, and required render');
+				required: true,
+				theme: {},
+				value: 'one',
+				onBlur: noop,
+				onFocus: noop,
+				onInput: noop,
+				onKeyDown: noop
+			}));
 
-			widget.setProperties({ invalid: false });
-			expected = getExpectedVdom(widget);
-			assignProperties(findKey(expected, 'textinput')!, {
-				invalid: false
-			});
-			assignProperties(expected, {
-				classes: [ css.root, null, null, null, css.valid ]
-			});
-			widget.expectRender(expected, 'valid render');
+			h.expectPartial('@label', () => w(Label, {
+				key: 'label',
+				theme: {},
+				disabled: true,
+				readOnly: true,
+				invalid: true,
+				required: true,
+				hidden: undefined,
+				forId: 'foo'
+			}, [ 'foo' ]));
+
+			h.expectPartial('@clear', () => v('button', {
+				'aria-controls': '',
+				key: 'clear',
+				classes: css.clear,
+				disabled: true,
+				readOnly: true,
+				onclick: noop
+			}, [
+				'clear foo',
+				v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
+					role: 'presentation', 'aria-hidden': 'true'
+				})
+			]));
+
+			h.expectPartial('@trigger', () => v('button', {
+				key: 'trigger',
+				classes: css.trigger,
+				disabled: true,
+				readOnly: true,
+				tabIndex: -1,
+				onclick: noop
+			}, [
+				'open foo',
+				v('i', {
+					'aria-hidden': 'true',
+					classes: [ iconCss.icon, iconCss.downIcon ],
+					role: 'presentation'
+				})
+			]));
+
+			invalid = false;
+
+			h.expectPartial('@textinput', () => w(TextInput, {
+				key: 'textinput',
+				aria: {
+					activedescendant: '',
+					controls: '',
+					owns: ''
+				},
+				id: 'foo',
+				disabled: true,
+				invalid: false,
+				readOnly: true,
+				required: true,
+				theme: {},
+				value: 'one',
+				onBlur: noop,
+				onFocus: noop,
+				onInput: noop,
+				onKeyDown: noop
+			}));
 		},
 
 		'disabled state blocks menu opening'() {
 			const onMenuChange = sinon.stub();
 			const onRequestResults = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
 				disabled: true,
-				label: undefined,
 				onMenuChange,
 				onRequestResults
-			});
+			}));
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			assert.isFalse(isOpen(widget), 'widget stays closed on arrow click');
-
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
-				key: 'textinput'
-			});
-			assert.isFalse(isOpen(widget), 'widget stays closed on key down');
-
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.expect(() => getExpectedVdom(true, false, true, { disabled: true }));
+			h.trigger('@textinput', 'onKeyDown', { which: Keys.Down, preventDefault: sinon.stub() });
+			h.expect(() => getExpectedVdom(true, false, true, { disabled: true }));
 			assert.isFalse(onMenuChange.called, 'onMenuChange never called');
 			assert.isFalse(onRequestResults.called, 'onRequestResults never called');
 		},
@@ -629,54 +547,32 @@ registerSuite('ComboBox', {
 		'readOnly state blocks menu opening'() {
 			const onMenuChange = sinon.stub();
 			const onRequestResults = sinon.stub();
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(ComboBox, {
 				...testProperties,
 				readOnly: true,
-				label: undefined,
 				onMenuChange,
 				onRequestResults
-			});
+			}));
 
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			assert.isFalse(isOpen(widget), 'widget stays closed on arrow click');
-
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
-				key: 'textinput'
-			});
-			assert.isFalse(isOpen(widget), 'widget stays closed on key down');
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.expect(() => getExpectedVdom(true, false, true, { readOnly: true }));
+			h.trigger('@textinput', 'onKeyDown', { which: Keys.Down, preventDefault: sinon.stub() });
+			h.expect(() => getExpectedVdom(true, false, true, { readOnly: true }));
 
 			assert.isFalse(onMenuChange.called, 'onMenuChange never called');
 			assert.isFalse(onRequestResults.called, 'onRequestResults never called');
 		},
 
 		'hover and keyboard events toggle visualFocus'() {
-			widget.setProperties({ ...testProperties, label: undefined });
-			let expected = getExpectedVdom(widget, true, true, true);
-			expected = getExpectedVdom(widget, true, true, true);
-
-			widget.sendEvent('click', { selector: `.${css.trigger}` });
-
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Up, preventDefault: sinon.stub() } ],
-				key: 'textinput'
-			});
-			widget.callListener('onKeyDown', {
-				args: [ { which: Keys.Down, preventDefault: sinon.stub() } ],
-				key: 'textinput'
-			});
-			assignProperties(findKey(expected, 'listbox')!, {
-				visualFocus: true
-			});
-			// only necessary for label scoping issue
-			widget.setProperties(testProperties);
-			widget.expectRender(expected, 'keydown event sets visualFocus to true');
-
-			widget.sendEvent('mouseover', { key: 'dropdown' });
-			assignProperties(findKey(expected, 'listbox')!, {
-				visualFocus: false
-			});
-			widget.expectRender(expected, 'mouseover event sets visualFocus to false');
+			const preventDefault = sinon.stub();
+			const h = createHarnessWithCompare(() => w(ComboBox, { ...testProperties }));
+			h.expect(() =>  getExpectedVdom(true, false, true));
+			h.trigger(`.${css.trigger}`, 'onclick');
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Up, preventDefault });
+			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Down, preventDefault });
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true }));
+			h.trigger(`@dropdown`, 'onmouseover');
+			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 		}
 	}
 });
