@@ -57,6 +57,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 export class DialogBase<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
 	private _titleId = uuid();
 	private _wasOpen: boolean;
+	private _callFocus = false;
 
 	private _onCloseClick() {
 		const {
@@ -77,14 +78,15 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		}
 	}
 
+	private _onOpen() {
+		const { onOpen } = this.properties;
+		this._callFocus = true;
+		onOpen && onOpen();
+	}
+
 	constructor() {
 		super();
 		document.addEventListener('keyup', this._onKeyUp);
-	}
-
-	protected onAttach() {
-		const { open = false } = this.properties;
-		open && this.meta(Focus).set('main');
 	}
 
 	protected onDetach(): void {
@@ -127,14 +129,21 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			closeText,
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
-			onOpen,
 			open = false,
 			role = 'dialog',
 			title = ''
 		} = this.properties;
 
-		open && !this._wasOpen && onOpen && onOpen();
+		open && !this._wasOpen && this._onOpen();
 		this._wasOpen = open;
+
+		if (this._callFocus) {
+			this.meta(Focus).set('main');
+			const dialogFocus = this.meta(Focus).get('main');
+			if (dialogFocus.active) {
+				this._callFocus = false;
+			}
+		}
 
 		if (!closeText) {
 			const messages = this.localizeBundle(commonBundle);

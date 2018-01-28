@@ -40,11 +40,9 @@ const DEFAULT_SIZE = 100;
 
 @theme(css)
 export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P, null> {
-	// private _divider: HTMLElement;
 	private _dragging: boolean;
 	private _lastSize?: number;
 	private _position: number;
-	// private _root: HTMLElement;
 	private _boundHandlers: any[];
 
 	constructor() {
