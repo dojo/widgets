@@ -4,8 +4,10 @@ const { assert } = intern.getPlugin('chai');
 import Command from '@theintern/leadfoot/Command';
 import Element from '@theintern/leadfoot/Element';
 import Test from 'intern/lib/Test';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/splitpane/splitPane.m.css';
 
+const axe = services.axe;
 const DELAY = 300;
 const ERROR_MARGIN = 5;
 
@@ -190,5 +192,9 @@ registerSuite('SplitPane', {
 			[ { x: 10, y: 0 }, { x: (x) => { return x > 10; } , y: 0 }, { x: 10, y: 0 } ]
 		);
 		return command;
+	},
+
+	'check accessibility'() {
+		return getPage(this).then(axe.createChecker());
 	}
 });

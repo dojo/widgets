@@ -23,6 +23,7 @@ import * as css from '../theme/textarea/textarea.m.css';
  */
 export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
 	columns?: number;
+	id?: string;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
 	maxLength?: number | string;

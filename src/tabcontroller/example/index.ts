@@ -81,14 +81,17 @@ export class App extends WidgetBase<WidgetProperties> {
 					onchange: this.themeChange
 				})
 			]),
-			v('select', {
-				styles: { marginBottom: '20px' },
-				onchange: this.onAlignChange
-			}, [
-				v('option', { selected: true, value: 'top' }, [ 'Top' ]),
-				v('option', { value: 'left' }, [ 'Left' ]),
-				v('option', { value: 'right' }, [ 'Right' ]),
-				v('option', { value: 'bottom' }, [ 'Bottom' ])
+			v('label', [
+				'Tab location',
+				v('select', {
+					styles: { marginBottom: '20px' },
+					onchange: this.onAlignChange
+				}, [
+					v('option', { selected: true, value: 'top' }, [ 'Top' ]),
+					v('option', { value: 'left' }, [ 'Left' ]),
+					v('option', { value: 'right' }, [ 'Right' ]),
+					v('option', { value: 'bottom' }, [ 'Bottom' ])
+				])
 			]),
 			w(TabController, {
 				theme: this._theme,

@@ -81,6 +81,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						}
 						this.invalidate();
 					},
+					label: 'Time: ',
 					options: this._options,
 					step: 1800,
 					theme: this._theme,
@@ -101,6 +102,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._setValue('value2', value);
 					},
 					onRequestOptions: this.onRequestOptions,
+					label: 'Time: ',
 					options: this._options,
 					step: 1800,
 					theme: this._theme,
@@ -125,6 +127,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._setValue('value3', value);
 					},
 					onRequestOptions: this.onRequestOptions,
+					label: 'Time: ',
 					options: this._options,
 					step: 3600,
 					theme: this._theme,
@@ -140,6 +143,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '4',
+					label: 'Time: ',
 					disabled: true,
 					theme: this._theme
 				})
@@ -153,6 +157,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '5',
+					label: 'Time: ',
 					readOnly: true,
 					theme: this._theme
 				})
@@ -196,6 +201,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._setValue('value7', value);
 					},
 					onRequestOptions: this.onRequestOptions,
+					label: 'Time: ',
 					options: this._options,
 					step: 1800,
 					theme: this._theme,
@@ -221,6 +227,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._setValue('value8', value);
 					},
 					onRequestOptions: this.onRequestOptions,
+					label: 'Time: ',
 					start: '12:00:00',
 					step: 1,
 					theme: this._theme,
@@ -249,6 +256,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._setValue('value9', value );
 					},
 					onRequestOptions: this.onRequestOptions,
+					label: 'Time: ',
 					options: this._options,
 					step: 1800,
 					theme: this._theme,

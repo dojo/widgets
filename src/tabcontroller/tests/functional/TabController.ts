@@ -2,7 +2,10 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/tabcontroller/tabController.m.css';
+
+const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
@@ -103,5 +106,9 @@ registerSuite('TabController', {
 					assert.strictEqual(count, childElementCount - 1);
 				})
 			.end();
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

@@ -2,7 +2,10 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/checkbox/checkbox.m.css';
+
+const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
@@ -107,5 +110,9 @@ registerSuite('Checkbox', {
 				assert.isFalse(checked);
 			})
 			.end();
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

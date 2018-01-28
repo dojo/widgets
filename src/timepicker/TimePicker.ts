@@ -47,6 +47,7 @@ export interface TimePickerProperties extends ThemedProperties, InputProperties,
 	clearable?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
+	id?: string;
 	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
 	onBlur?(value: string): void;

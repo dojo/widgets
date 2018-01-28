@@ -66,6 +66,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					theme: this._theme
 				}, [
 					w(TextInput, {
+						label: 'Focus me',
 						theme: this._theme,
 						placeholder: 'Focus me',
 						onFocus: () => { this.onShow('bar'); },

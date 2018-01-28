@@ -25,6 +25,7 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
 
 export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
 	controls?: string;
+	id?: string;
 	type?: TextInputType;
 	maxLength?: number | string;
 	minLength?: number | string;

@@ -21,6 +21,7 @@ import * as css from '../theme/checkbox/checkbox.m.css';
  */
 export interface CheckboxProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
 	checked?: boolean;
+	id?: string;
 	mode?: Mode;
 	offLabel?: DNode;
 	onLabel?: DNode;
