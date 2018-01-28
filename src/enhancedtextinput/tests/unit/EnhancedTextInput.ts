@@ -3,7 +3,6 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 
