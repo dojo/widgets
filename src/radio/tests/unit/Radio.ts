@@ -2,210 +2,162 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-
-import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
+import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Radio from '../../Radio';
 import * as css from '../../../theme/radio/radio.m.css';
+import { WNode } from '@dojo/widget-core/interfaces';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
+const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
+const noop = () => {};
+const createHarnessWithCompare = (renderFunction: () => WNode) => {
+	return harness(renderFunction, [ compareId, compareForId ]);
+};
 
-const expected = function(widget: Harness<Radio>, label = false) {
+interface States {
+	invalid?: boolean;
+	disabled?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
+}
+
+interface ExpectedOptions {
+	label?: boolean;
+	states?: States;
+	rootOverrides?: any;
+	inputOverrides?: any;
+}
+
+const expected = function({ label = false, rootOverrides = {}, inputOverrides = {}, states = {} }: ExpectedOptions = {}) {
+	const { disabled, invalid, required, readOnly } = states;
+
 	const radioVdom = v('div', { classes: css.inputWrapper }, [
 		v('input', {
-			id: <any> compareId,
+			id: '',
 			classes: css.input,
 			checked: false,
-			disabled: undefined,
-			'aria-invalid': null,
+			disabled: disabled,
+			'aria-invalid': invalid ? 'true' : null,
 			name: undefined,
-			readOnly: undefined,
-			'aria-readonly': null,
-			required: undefined,
+			readOnly: readOnly,
+			'aria-readonly': readOnly ? 'true' : null,
+			required: required,
 			type: 'radio',
 			value: undefined,
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			onmousedown: widget.listener,
-			onmouseup: widget.listener,
-			ontouchstart: widget.listener,
-			ontouchend: widget.listener,
-			ontouchcancel: widget.listener
+			onblur: noop,
+			onchange: noop,
+			onclick: noop,
+			onfocus: noop,
+			onmousedown: noop,
+			onmouseup: noop,
+			ontouchstart: noop,
+			ontouchend: noop,
+			ontouchcancel: noop,
+			...inputOverrides
 		})
 	]);
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, null ]
+		classes: [ css.root, null, null, null, null, null, null, null ],
+		...rootOverrides
 	}, [
 		radioVdom,
 		label ? w(Label, {
 			theme: undefined,
-			disabled: undefined,
+			disabled: disabled,
 			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId,
+			invalid: invalid,
+			readOnly: readOnly,
+			required: required,
+			forId: '',
 			secondary: true
 		}, [ 'foo' ]) : null
 	]);
 };
 
-let widget: Harness<Radio>;
-
 registerSuite('Radio', {
-
-	beforeEach() {
-		widget = harness(Radio);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
 
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected(widget));
+			const h = createHarnessWithCompare(() => w(Radio, {}));
+			h.expect(expected);
 		},
 
 		'custom properties'() {
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(Radio, {
 				aria: { describedBy: 'foo' },
 				checked: true,
 				id: 'foo',
 				name: 'bar',
 				value: 'baz'
-			});
+			}));
 
-			const expectedVdom = expected(widget);
-			assignChildProperties(expectedVdom, '0,0', {
-				checked: true,
-				'aria-describedby': 'foo',
-				id: 'foo',
-				name: 'bar',
-				value: 'baz'
-			});
-			assignProperties(expectedVdom, {
-				classes: [ css.root, css.checked, null, null, null, null, null, null ]
-			});
-
-			widget.expectRender(expectedVdom);
+			h.expect(() => expected({
+				inputOverrides: {
+					checked: true,
+					'aria-describedby': 'foo',
+					id: 'foo',
+					name: 'bar',
+					value: 'baz'
+				},
+				rootOverrides: {
+					classes: [ css.root, css.checked, null, null, null, null, null, null ]
+				}
+			}));
 		},
 
 		'label'() {
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(Radio, {
 				label: 'foo'
-			});
-
-			widget.expectRender(expected(widget, true));
+			}));
+			h.expect(() => expected({ label: true }));
 		},
 
 		'state classes'() {
-			widget.setProperties({
+			const properties = {
 				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			});
-
-			let expectedVdom = expected(widget);
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-			assignProperties(expectedVdom, {
-				classes: [ css.root, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
-			});
-
-			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
-
-			widget.setProperties({
-				invalid: false,
-				disabled: false,
-				readOnly: false,
-				required: false
-			});
-			expectedVdom = expected(widget);
-
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: false,
-				readOnly: false,
-				required: false
-			});
-			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, null, null, css.valid, null, null ]
-			});
-
-			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
-		},
-
-		'state properties on label'() {
-			widget.setProperties({
-				label: 'foo',
-				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			});
-
-			const expectedVdom = expected(widget, true);
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-
-			assignChildProperties(expectedVdom, 1, {
 				disabled: true,
 				readOnly: true,
 				required: true,
-				invalid: true
-			});
+				label: 'foo'
+			};
+			const h = createHarnessWithCompare(() => w(Radio, properties));
+			h.expect(() => expected({
+				label: true,
+				rootOverrides: {
+					classes: [ css.root, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
+				},
+				states: properties
+			}));
 
-			assignProperties(expectedVdom, {
-				classes: [
-					css.root,
-					null,
-					css.disabled,
-					null,
-					css.invalid,
-					null,
-					css.readonly,
-					css.required
-				]
-			});
+			properties.disabled = false;
+			properties.invalid = false;
+			properties.readOnly = false;
+			properties.required = false;
 
-			widget.expectRender(expectedVdom);
+			h.expect(() => expected({
+				label: true,
+				rootOverrides: {
+					classes: [ css.root, null, null, null, null, css.valid, null, null ]
+				},
+				states: properties
+			}));
 		},
 
 		'focused class'() {
-			let expectedVdom = expected(widget);
-			widget.expectRender(expectedVdom);
-
-			widget.sendEvent('focus', { selector: 'input' });
-			expectedVdom = expected(widget);
-			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.focused, null, null, null, null ]
-			});
-			widget.expectRender(expectedVdom, 'Should have focused class after focus event');
-
-			widget.sendEvent('blur', { selector: 'input' });
-			expectedVdom = expected(widget);
-			widget.expectRender(expectedVdom, 'Should not have focused class after blur event');
+			const h = createHarnessWithCompare(() => w(Radio, {}));
+			h.trigger('input', 'onfocus');
+			h.expect(() => expected({
+				rootOverrides: {
+					classes: [ css.root, null, null, css.focused, null, null, null, null ]
+				}
+			}));
+			h.trigger('input', 'onblur');
+			h.expect(expected);
 		},
 
 		events() {
@@ -215,50 +167,38 @@ registerSuite('Radio', {
 			const onFocus = sinon.stub();
 			const onMouseDown = sinon.stub();
 			const onMouseUp = sinon.stub();
+			const onTouchStart = sinon.stub();
+			const onTouchEnd = sinon.stub();
+			const onTouchCancel = sinon.stub();
 
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(Radio, {
 				onBlur,
 				onChange,
 				onClick,
 				onFocus,
 				onMouseDown,
-				onMouseUp
-			});
-
-			widget.sendEvent('blur', { selector: 'input' });
-			assert.isTrue(onBlur.called, 'onBlur called');
-			widget.sendEvent('change', { selector: 'input' });
-			assert.isTrue(onChange.called, 'onChange called');
-			widget.sendEvent('click', { selector: 'input' });
-			assert.isTrue(onClick.called, 'onClick called');
-			widget.sendEvent('focus', { selector: 'input' });
-			assert.isTrue(onFocus.called, 'onFocus called');
-			widget.sendEvent('mousedown', { selector: 'input' });
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			widget.sendEvent('mouseup', { selector: 'input' });
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-		},
-
-		'touch events'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
-
-			widget.setProperties({
+				onMouseUp,
 				onTouchStart,
 				onTouchEnd,
 				onTouchCancel
-			});
-
-			widget.sendEvent('touchstart', { selector: 'input' });
+			}));
+			h.trigger('input', 'onblur');
+			assert.isTrue(onBlur.called, 'onBlur called');
+			h.trigger('input', 'onchange');
+			assert.isTrue(onChange.called, 'onChange called');
+			h.trigger('input', 'onclick');
+			assert.isTrue(onClick.called, 'onClick called');
+			h.trigger('input', 'onfocus');
+			assert.isTrue(onFocus.called, 'onFocus called');
+			h.trigger('input', 'onmousedown');
+			assert.isTrue(onMouseDown.called, 'onMouseDown called');
+			h.trigger('input', 'onmouseup');
+			assert.isTrue(onMouseUp.called, 'onMouseUp called');
+			h.trigger('input', 'ontouchstart');
 			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			widget.sendEvent('touchend', { selector: 'input' });
+			h.trigger('input', 'ontouchend');
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			widget.sendEvent('touchcancel', { selector: 'input' });
+			h.trigger('input', 'ontouchcancel');
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}
