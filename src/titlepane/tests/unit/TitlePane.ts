@@ -59,6 +59,9 @@ registerSuite('TitlePane', {
 					'aria-hidden': null,
 					'aria-labelledby': '',
 					classes: css.content,
+					styles: {
+						marginTop: '0px'
+					},
 					id: '',
 					key: 'content'
 				}, [ ])
@@ -106,6 +109,9 @@ registerSuite('TitlePane', {
 					'aria-labelledby': '',
 					classes: css.content,
 					id: '',
+					styles: {
+						marginTop: '-0px'
+					},
 					key: 'content'
 				}, [])
 			]));

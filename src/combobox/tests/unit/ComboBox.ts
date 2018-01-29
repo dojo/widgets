@@ -57,7 +57,7 @@ interface States {
 	required?: boolean;
 }
 
-const getExpectedControls = function(useTestProperties: boolean, label: boolean, states: States = {}) {
+const getExpectedControls = function(useTestProperties: boolean, label: boolean, states: States = {}, focus = false) {
 	const { disabled, invalid, readOnly, required } = states;
 	const controlsVdom = v('div', {
 		classes: css.controls
@@ -70,6 +70,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 				owns: ''
 			},
 			disabled,
+			focus,
 			id: useTestProperties ? 'foo' : '',
 			invalid,
 			readOnly,
@@ -143,9 +144,9 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 	]);
 };
 
-const getExpectedVdom = function(useTestProperties = false, open = false, label = false, states: States = {}) {
+const getExpectedVdom = function(useTestProperties = false, open = false, label = false, states: States = {}, focus = false) {
 	const menuVdom = getExpectedMenu(useTestProperties, open);
-	const controlsVdom = getExpectedControls(useTestProperties, label, states);
+	const controlsVdom = getExpectedControls(useTestProperties, label, states, focus);
 	const { disabled, invalid, readOnly, required } = states;
 
 	return v('div', {
@@ -195,7 +196,7 @@ registerSuite('ComboBox', {
 		'dropdown renders correctly when open'() {
 			const h = createHarnessWithCompare(() => w(ComboBox, testProperties));
 			h.trigger(`.${css.trigger}`, 'onclick');
-			h.expect(() => getExpectedVdom(true, true, true));
+			h.expect(() => getExpectedVdom(true, true, true, {}, true));
 		},
 
 		'arrow click opens menu'() {
@@ -207,7 +208,7 @@ registerSuite('ComboBox', {
 				onMenuChange
 			}));
 			h.trigger(`.${css.trigger}`, 'onclick');
-			h.expect(() => getExpectedVdom(true, true, true));
+			h.expect(() => getExpectedVdom(true, true, true, {}, true));
 			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults called when menu is opened');
 			assert.isTrue(onMenuChange.calledOnce, 'onMenuChange called when menu is opened');
 		},
@@ -279,7 +280,7 @@ registerSuite('ComboBox', {
 			h.trigger(`.${css.trigger}`, 'onclick');
 			h.trigger('@listbox', 'onOptionSelect', testOptions[1], 1);
 			assert.isTrue(onChange.calledWith('Two'), 'onChange callback called with label of second option');
-			h.expect(() => getExpectedVdom(true, false, true));
+			h.expect(() => getExpectedVdom(true, false, true, {}, true));
 		},
 
 		'keyboard opens and closes menu'() {
@@ -335,7 +336,7 @@ registerSuite('ComboBox', {
 			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Enter });
 
 			assert.isTrue(onChange.calledWith('One'), 'enter triggers onChange callback called with label of first option');
-			h.expect(() => getExpectedVdom(true, false, true));
+			h.expect(() => getExpectedVdom(true, false, true, {}, true));
 
 			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Enter });
 			assert.isFalse(onChange.calledTwice, 'enter does not trigger onChange when menu is closed');
@@ -344,7 +345,7 @@ registerSuite('ComboBox', {
 			h.trigger(`.${css.trigger}`, 'onclick');
 			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Space });
 			assert.isTrue(onChange.calledWith('One'), 'space triggers onChange callback called with label of first option');
-			h.expect(() => getExpectedVdom(true, false, true));
+			h.expect(() => getExpectedVdom(true, false, true, {}, true));
 		},
 
 		'disabled options are not selected'() {
@@ -372,7 +373,7 @@ registerSuite('ComboBox', {
 			const preventDefault = sinon.stub();
 			const h = createHarnessWithCompare(() => w(ComboBox, { onChange }));
 			h.trigger(`.${css.trigger}`, 'onclick');
-			h.expect(() => getExpectedVdom(false, true));
+			h.expect(() => getExpectedVdom(false, true, false, {}, true));
 
 			h.trigger('@textinput', 'onKeyDown', { which: Keys.Down, preventDefault });
 			h.trigger('@textinput', 'onKeyDown', { which: Keys.Enter, preventDefault });
@@ -405,6 +406,7 @@ registerSuite('ComboBox', {
 					owns: ''
 				},
 				placeholder: 'foo',
+				focus: false,
 				disabled: undefined,
 				id: '',
 				invalid: undefined,
@@ -450,6 +452,7 @@ registerSuite('ComboBox', {
 					owns: ''
 				},
 				id: 'foo',
+				focus: false,
 				disabled: true,
 				invalid: true,
 				readOnly: true,
@@ -513,6 +516,7 @@ registerSuite('ComboBox', {
 					owns: ''
 				},
 				id: 'foo',
+				focus: false,
 				disabled: true,
 				invalid: false,
 				readOnly: true,

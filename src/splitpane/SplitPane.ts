@@ -44,32 +44,6 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	private _dragging: boolean;
 	private _lastSize?: number;
 	private _position: number;
-	private _boundHandlers: any[];
-
-	constructor() {
-		/* istanbul ignore next: disregard transpiled `super`'s "else" block */
-		super();
-
-		/**
-		 * `mouseup` and other events aren't triggered when a user's cursor leaves div.root, so
-		 * global handlers are need to listen to the document instead. SplitPane
-		 * uses a `_dragging` flag so no handlers will be erroneously executed
-		 * if a user isn't actually resizing this SplitPane instance.
-		 */
-		this._boundHandlers = [];
-		[
-			{ event: 'mouseup', func: this._onDragEnd.bind(this) },
-			{ event: 'mousemove', func: this._onDragMove.bind(this) },
-			{ event: 'touchmove', func: this._onDragMove.bind(this) }
-		].forEach(object => {
-			document.addEventListener(object.event, object.func);
-			this._boundHandlers.push(object);
-		});
-	}
-
-	protected onDetach(): void {
-		this._boundHandlers.forEach(object => document.removeEventListener(object.event, object.func));
-	}
 
 	private _getPosition(event: MouseEvent & TouchEvent) {
 		const { direction = Direction.row } = this.properties;

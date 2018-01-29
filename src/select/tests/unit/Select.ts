@@ -123,7 +123,7 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 	return vdom;
 };
 
-const expectedSingle = function(useTestProperties = false, withStates = false, open = false, placeholder = '', activeIndex = 0) {
+const expectedSingle = function(useTestProperties = false, withStates = false, open = false, placeholder = '', activeIndex = 0, focus = false) {
 	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
 	const vdom = v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
@@ -161,6 +161,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 		}, [
 			w(Listbox, {
 				activeIndex,
+				focus,
 				id: useTestProperties ? 'foo' : '',
 				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
@@ -302,7 +303,7 @@ registerSuite('Select', {
 				const h = createHarnessWithCompare(() => w(Select, testProperties));
 				h.expect(() => expected(expectedSingle(true)));
 				h.trigger('@trigger', 'onclick');
-				h.expect(() => expected(expectedSingle(true, false, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 				h.trigger('@trigger', 'onclick');
 				h.expect(() => expected(expectedSingle(true)));
 			},
@@ -317,14 +318,14 @@ registerSuite('Select', {
 				}));
 
 				h.trigger('@trigger', 'onclick');
-				h.expect(() => expected(expectedSingle(true, false, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 				h.trigger('@listbox', 'onOptionSelect', testOptions[1]);
 				h.expect(() => expected(expectedSingle(true)));
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
 				// open widget a second time
 				h.trigger('@trigger', 'onclick');
-				h.expect(() => expected(expectedSingle(true, false, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 				h.trigger('@trigger', 'onmousedown');
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				h.trigger('@trigger', 'onclick');
@@ -382,6 +383,7 @@ registerSuite('Select', {
 							w(Listbox, {
 								activeIndex: 0,
 								id: '',
+								focus: false,
 								key: 'listbox',
 								optionData: simpleOptions,
 								tabIndex: -1,
@@ -415,13 +417,13 @@ registerSuite('Select', {
 					which: Keys.Down
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Down
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Escape
@@ -445,7 +447,7 @@ registerSuite('Select', {
 				}));
 				h.trigger('@trigger', 'onclick');
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				h.expect(() => expected(expectedSingle(true)));
@@ -462,7 +464,7 @@ registerSuite('Select', {
 
 				h.trigger('@trigger', 'onclick');
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
 				h.trigger('@trigger', 'onblur');
 				h.expect(() => expected(expectedSingle(true)));
