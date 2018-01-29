@@ -157,6 +157,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		}, [
 			w(GlobalEvent, {
 				key: 'global',
+				type: 'window',
 				mouseup: this._onDragEnd.bind(this),
 				mousemove: this._onDragMove.bind(this),
 				touchmove: this._onDragMove.bind(this)

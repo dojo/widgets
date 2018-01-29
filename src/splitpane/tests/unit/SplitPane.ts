@@ -33,6 +33,7 @@ registerSuite('SplitPane', {
 			}, [
 				w(GlobalEvent, {
 					key: 'global',
+					type: 'window',
 					mouseup: noop,
 					mousemove: noop,
 					touchmove: noop
@@ -71,6 +72,7 @@ registerSuite('SplitPane', {
 			}, [
 				w(GlobalEvent, {
 					key: 'global',
+					type: 'window',
 					mouseup: noop,
 					mousemove: noop,
 					touchmove: noop
