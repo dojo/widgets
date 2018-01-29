@@ -3,12 +3,12 @@ import WidgetBase from '@dojo/widget-core/WidgetBase';
 
 export interface GlobalEventProperties {
 	type: 'window' | 'document';
-	[index: string]: (() => void) | string;
+	[index: string]: ((event?: any) => void) | string;
 }
 
 interface RegisteredListeners {
 	event: string;
-	listenerFunction: () => void;
+	listenerFunction: (event: any) => void;
 }
 
 export class GlobalEvent extends WidgetBase<GlobalEventProperties> {
