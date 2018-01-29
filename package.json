@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@dojo/loader": "~0.1.1",
-    "@dojo/test-extras": "file:../test-extras/dist/dojo-test-extras-0.4.2-rc.1.tgz",
+    "@dojo/test-extras": "file:deps/dojo-test-extras-0.4.2-rc.1.tgz",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
     "@types/jsdom": "^2.0.30",
