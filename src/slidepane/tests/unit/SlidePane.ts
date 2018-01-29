@@ -3,7 +3,6 @@ const { assert } = intern.getPlugin('chai');
 
 import { v, w } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
-import has from '@dojo/has/has';
 
 import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../../theme/slidepane/slidePane.m.css';
