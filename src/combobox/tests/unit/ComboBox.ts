@@ -46,7 +46,7 @@ const testProperties = {
 	theme: {}
 };
 
-const getExpectedControls = function(widget: Harness<ComboBox>, useTestProperties: boolean, label: boolean) {
+const getExpectedControls = function(widget: Harness<ComboBox>, useTestProperties: boolean, label: boolean, focus = false) {
 	const controlsVdom = v('div', {
 		classes: css.controls
 	}, [
@@ -61,6 +61,7 @@ const getExpectedControls = function(widget: Harness<ComboBox>, useTestPropertie
 			id: useTestProperties ? 'foo' : compareId as any,
 			invalid: undefined,
 			readOnly: undefined,
+			focus,
 			required: undefined,
 			theme: useTestProperties ? {} : undefined,
 			value: useTestProperties ? 'one' : '',
@@ -135,9 +136,9 @@ const getExpectedMenu = function(widget: Harness<ComboBox>, useTestProperties: b
 	]);
 };
 
-const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = false, open = false, label = false) {
+const getExpectedVdom = function(widget: Harness<ComboBox>, useTestProperties = false, open = false, label = false, focus = false) {
 	const menuVdom = getExpectedMenu(widget, useTestProperties, open);
-	const controlsVdom = getExpectedControls(widget, useTestProperties, label);
+	const controlsVdom = getExpectedControls(widget, useTestProperties, label, focus);
 
 	return v('div', {
 		'aria-expanded': open ? 'true' : 'false',
@@ -196,8 +197,7 @@ registerSuite('ComboBox', {
 			widget.setProperties(testProperties);
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
 
-			let expected = getExpectedVdom(widget, true, false, true);
-			expected = getExpectedVdom(widget, true, true, true);
+			let expected = getExpectedVdom(widget, true, true, true, true);
 			widget.expectRender(expected);
 		},
 
@@ -496,7 +496,7 @@ registerSuite('ComboBox', {
 			});
 
 			widget.sendEvent('click', { selector: `.${css.trigger}` });
-			expected = getExpectedVdom(widget, false, true);
+			expected = getExpectedVdom(widget, false, true, false, true);
 			widget.expectRender(expected, 'dropdown does not render with no results');
 
 			widget.callListener('onKeyDown', {

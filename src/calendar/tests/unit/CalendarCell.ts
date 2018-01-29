@@ -110,7 +110,7 @@ registerSuite('CalendarCell', {
 			});
 			widget.getRender();
 
-			assert.isFalse(callFocus, 'Focus callback should set callFocus to false in onElementCreated');
+			assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 
 			callFocus = true;
 			widget.setProperties({
@@ -122,7 +122,7 @@ registerSuite('CalendarCell', {
 			});
 			widget.getRender();
 
-			assert.isFalse(callFocus, 'Focus callback should set callFocus to false in onElementUpdated');
+			assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 		}
 	}
 });

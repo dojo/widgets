@@ -7,6 +7,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as fixedCss from './styles/titlePane.m.css';
 import * as css from '../theme/titlepane/titlePane.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
+import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 
 /**
  * @type TitlePaneProperties
@@ -37,19 +38,6 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 	private _contentId = uuid();
 	private _titleId = uuid();
 
-	private _afterRender(element: HTMLElement) {
-		// Conditionally adjust top margin. Done manually instead of through Maquette
-		// so the underlying DOM is accessible, as we need to know the content height.
-		// Put in a rAF to push this operation to the next tick, otherwise
-		// element.offsetHeight can be incorrect (e.g. before styling is applied)
-		// Note that this will go away when meta support is added to widget-core
-		requestAnimationFrame(() => {
-			const { open = true } = this.properties;
-			const height = element.offsetHeight;
-			element.style.marginTop = open ? '0px' : `-${ height }px`;
-		});
-	}
-
 	private _onTitleClick() {
 		this._toggle();
 	}
@@ -73,14 +61,6 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 		else {
 			onRequestOpen && onRequestOpen(key);
 		}
-	}
-
-	protected onElementCreated(element: HTMLElement, key: string) {
-		key === 'content' && this._afterRender(element);
-	}
-
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		key === 'content' && this._afterRender(element);
 	}
 
 	protected getButtonContent(): DNode {
@@ -118,12 +98,17 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 		});
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		const {
 			closeable = true,
 			headingLevel,
 			open = true
 		} = this.properties;
+
+		const contentDimensions = this.meta(Dimensions).get('content');
+		const contentStyles = {
+			marginTop: open ? '0px' : `-${ contentDimensions.offset.height }px`
+		};
 
 		return v('div', {
 			classes: [ ...this.theme([
@@ -153,6 +138,7 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 				'aria-labelledby': this._titleId,
 				classes: this.theme(css.content),
 				id: this._contentId,
+				styles: contentStyles,
 				key: 'content'
 			}, this.getPaneContent())
 		]);

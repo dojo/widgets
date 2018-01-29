@@ -159,14 +159,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		];
 	}
 
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root' && this._callListboxFocus) {
-			this._callListboxFocus = false;
-			const listbox = <HTMLElement> element.querySelector('[role="listbox"]');
-			listbox && listbox.focus();
-		}
-	}
-
 	protected renderExpandIcon(): DNode {
 		return v('span', { classes: this.theme(css.arrow) }, [
 			v('i', { classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
@@ -238,6 +230,12 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			_focusedIndex
 		} = this;
 
+		const focusListbox = this._callListboxFocus;
+
+		if (this._callListboxFocus) {
+			this._callListboxFocus = false;
+		}
+
 		// create dropdown trigger and select box
 		return v('div', {
 			key: 'wrapper',
@@ -253,6 +251,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					key: 'listbox',
 					activeIndex: _focusedIndex,
 					id,
+					focus: focusListbox,
 					optionData: options,
 					tabIndex: _open ? 0 : -1,
 					getOptionDisabled,

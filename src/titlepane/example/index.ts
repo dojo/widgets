@@ -44,7 +44,7 @@ export class App extends WidgetBase<WidgetProperties> {
 
 			v('div', {
 				id: 'titlePane1',
-				styles: { 'margin-bottom': '15px' }
+				styles: { marginBottom: '15px' }
 			}, [
 				w(TitlePane, {
 					headingLevel: 1,
@@ -63,7 +63,7 @@ export class App extends WidgetBase<WidgetProperties> {
 
 			v('div', {
 				id: 'titlePane2',
-				styles: { 'margin-bottom': '15px' }
+				styles: { marginBottom: '15px' }
 			}, [
 				w(TitlePane, {
 					headingLevel: 2,

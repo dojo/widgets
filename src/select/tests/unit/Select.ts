@@ -110,7 +110,7 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 	return vdom;
 };
 
-const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false) {
+const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false, focus = false) {
 	const vdom = v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
 		key: 'wrapper'
@@ -146,6 +146,7 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 		}, [
 			w(Listbox, {
 				activeIndex: 0,
+				focus,
 				id: useTestProperties ? 'foo' : compareId as any,
 				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
@@ -340,7 +341,7 @@ registerSuite('Select', {
 
 				widget.sendEvent('click', { selector: 'button' });
 
-				selectVdom = expected(widget, expectedSingle(widget, true, true));
+				selectVdom = expected(widget, expectedSingle(widget, true, true, true));
 				widget.expectRender(selectVdom, 'Open on first click');
 
 				widget.sendEvent('click', { selector: 'button' });
@@ -424,6 +425,7 @@ registerSuite('Select', {
 						}, [
 							w(Listbox, {
 								activeIndex: 0,
+								focus: false,
 								id: <any> compareId,
 								key: 'listbox',
 								optionData: simpleOptions,

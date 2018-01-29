@@ -3,8 +3,9 @@ const { registerSuite } = intern.getInterface('object');
 import * as sinon from 'sinon';
 
 import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { DNode, Constructor } from '@dojo/widget-core/interfaces';
 import harness, { Harness } from '@dojo/test-extras/harness';
+import { beforeRender } from '@dojo/widget-core/decorators/beforeRender';
 import { Keys } from '../../../common/util';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
@@ -104,9 +105,23 @@ const expectedVdom = function(widget: Harness<Listbox>, options: DNode[]) {
 	}, options);
 };
 
+export function MockDeferredProperties<T extends Constructor<WidgetBase<any>>>(Base: T): T {
+	class Mock extends Base {
+
+		@beforeRender()
+		protected runDeferredProperties(render: Function) {
+			const result = render();
+			result.properties = result.deferredPropertiesCallback();
+			return () => result;
+		}
+	};
+
+	return Mock;
+}
+
 registerSuite('Listbox', {
 	beforeEach() {
-		widget = harness(Listbox);
+		widget = harness(MockDeferredProperties(Listbox));
 	},
 
 	afterEach() {
@@ -341,7 +356,6 @@ registerSuite('Listbox', {
 			widget.setProperties({ activeIndex: 0 });
 			widget.getRender();
 
-			// onElementUpdated
 			scrollStub.reset();
 			widget.setProperties({});
 			widget.getRender();

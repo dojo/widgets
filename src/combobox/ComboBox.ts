@@ -257,14 +257,6 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		this.invalidate();
 	}
 
-	protected onElementUpdated(element: HTMLElement, key: string) {
-		if (key === 'root' && this._callInputFocus) {
-			this._callInputFocus = false;
-			const input = element.querySelector('input') as HTMLElement;
-			input && input.focus();
-		}
-	}
-
 	protected renderInput(results: any[]): DNode {
 		const {
 			disabled,
@@ -277,6 +269,12 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			theme
 		} = this.properties;
 
+		const focusInput = this._callInputFocus;
+
+		if (this._callInputFocus) {
+			this._callInputFocus = false;
+		}
+
 		return w(TextInput, {
 			...inputProperties,
 			key: 'textinput',
@@ -288,6 +286,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			disabled,
 			id,
 			invalid,
+			focus: focusInput,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
 			onInput: this._onInput,
