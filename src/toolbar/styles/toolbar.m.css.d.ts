@@ -6,3 +6,4 @@ export const stickyFixed: string;
 export const onBottomFixed: string;
 export const titleFixed: string;
 export const contentFixed: string;
+export const onTopFixed: string;
