@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
 import TimePicker, { TimeUnits } from '../TimePicker';
-import dojoTheme from '../../themes/dojo/theme';
+
 import * as baseCss from '../../common/styles/base.m.css';
 
 setLocaleData();
@@ -16,19 +16,12 @@ const getEnglishTime = getDateFormatter({ time: 'short' });
 
 @theme(baseCss)
 export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
-	private _theme: {};
 	private _options: TimeUnits[];
 	private _values: any = {};
 	private _invalid = false;
 
 	onRequestOptions(value: string, options: TimeUnits[]) {
 		this._options = options;
-		this.invalidate();
-	}
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
 		this.invalidate();
 	}
 
@@ -40,14 +33,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 	render(): DNode {
 		return v('div', [
 			v('h1', [ 'TimePicker Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
-
 			v('p', {
 				id: 'description1',
 				classes: baseCss.visuallyHidden
@@ -83,7 +68,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					},
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
 					value: this._values['value1']
 				})
 			]),
@@ -103,7 +87,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
 					value: this._values['value2']
 				})
 			]),
@@ -127,7 +110,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 3600,
-					theme: this._theme,
 					value: this._values['value3']
 				})
 			]),
@@ -140,8 +122,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '4',
-					disabled: true,
-					theme: this._theme
+					disabled: true
 				})
 			]),
 
@@ -153,8 +134,7 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '5',
-					readOnly: true,
-					theme: this._theme
+					readOnly: true
 				})
 			]),
 
@@ -172,7 +152,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
 					value: this._values['value6']
 				})
 			]),
@@ -198,7 +177,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
 					value: this._values['value7']
 				})
 			]),
@@ -223,7 +201,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					start: '12:00:00',
 					step: 1,
-					theme: this._theme,
 					value: this._values['value8']
 				})
 			]),
@@ -251,7 +228,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onRequestOptions: this.onRequestOptions,
 					options: this._options,
 					step: 1800,
-					theme: this._theme,
 					value: this._values['value9']
 				})
 			]),
@@ -268,7 +244,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._setValue('value10', value);
 					},
 					step: 1800,
-					theme: this._theme,
 					useNativeElement: true,
 					invalid: true,
 					label: 'foo',

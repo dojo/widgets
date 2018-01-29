@@ -5,20 +5,12 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import Dialog from '../../dialog/Dialog';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _modal = false;
 	private _underlay = false;
 	private _closeable = true;
 	private _open = false;
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	openDialog() {
 		this._open = true;
@@ -59,21 +51,11 @@ export class App extends WidgetBase<WidgetProperties> {
 					this._open = false;
 					this.meta(Focus).set('button');
 					this.invalidate();
-				},
-				theme: this._theme
+				}
 			}, [
 				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-			]),
-			v('div', { classes: 'option' }, [
-				v('label', [
-					'Use Dojo Theme ',
-					v('input', {
-						type: 'checkbox',
-						onchange: this.themeChange
-					})
-				])
 			]),
 			v('div', { classes: 'option' }, [
 				v('input', {

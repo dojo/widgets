@@ -3,30 +3,15 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Textarea from '../../textarea/Textarea';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _value1: string;
 	private _value2: string;
 	private _invalid: boolean;
 
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	render() {
 		return v('div', [
 			v('h2', {}, ['Textarea Example']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'example-t1'}, [
 				w(Textarea, {
 					key: 't1',
@@ -38,8 +23,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					onChange: (event: Event) => {
 						this._value1 = (event.target as HTMLInputElement).value;
 						this.invalidate();
-					},
-					theme: this._theme
+					}
 				})
 			]),
 			v('h3', {}, ['Disabled Textarea']),
@@ -50,8 +34,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					rows: 3,
 					label: 'Can\'t type here',
 					value: 'Initial value',
-					disabled: true,
-					theme: this._theme
+					disabled: true
 				})
 			]),
 			v('h3', {}, ['Validated, Required Textarea']),
@@ -69,8 +52,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._value2 = value;
 						this._invalid = value.trim().length === 0;
 						this.invalidate();
-					},
-					theme: this._theme
+					}
 				})
 			]),
 			v('h3', {}, ['Hidden Label Textarea']),

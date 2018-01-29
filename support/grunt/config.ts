@@ -4,7 +4,7 @@ const createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcess
 
 const packagePath = pkgDir.sync(process.cwd());
 
-const fontFiles = [ 'theme/common/fonts/*.{svg,ttf,woff}', 'themes/dojo/fonts/*.{svg,ttf,woff}' ];
+const fontFiles = 'theme/common/fonts/*.{svg,ttf,woff}';
 const staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
 const staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
 
@@ -41,14 +41,8 @@ export const copy = {
 	devStyles: {
 		expand: true,
 		cwd: 'src',
-		src: ['**/widgets.css', '**/example.css'],
+		src: '**/example.css',
 		dest: '<%= devDirectory %>'
-	},
-	distStyles: {
-		expand: true,
-		cwd: 'src',
-		src: '**/widgets.css',
-		dest: '<%= distDirectory %>'
 	}
 };
 

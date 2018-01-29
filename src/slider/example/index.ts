@@ -3,19 +3,11 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Slider from '../../slider/Slider';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _tribbleValue: number;
 	private _verticalValue: number;
 	private _verticalInvalid: boolean;
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onTribbleInput(event: Event) {
 		const value = (event.target as HTMLInputElement).value;
@@ -38,13 +30,6 @@ export class App extends WidgetBase<WidgetProperties> {
 		} = this;
 
 		return v('div', [
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('h1', {}, ['Slider with custom output']),
 			v('div', { id: 'example-s1'}, [
 				w(Slider, {
@@ -62,8 +47,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					step: 1,
 					value: tribbleValue,
 					onChange: this.onTribbleInput,
-					onInput: this.onTribbleInput,
-					theme: this._theme
+					onInput: this.onTribbleInput
 				})
 			]),
 			v('h1', {}, ['Disabled slider']),
@@ -75,8 +59,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					max: 100,
 					step: 1,
 					value: 30,
-					disabled: true,
-					theme: this._theme
+					disabled: true
 				})
 			]),
 			v('h1', {}, ['Vertical slider']),
@@ -94,8 +77,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					},
 					outputIsTooltip: true,
 					onChange: this.onVerticalInput,
-					onInput: this.onVerticalInput,
-					theme: this._theme
+					onInput: this.onVerticalInput
 				})
 			])
 		]);

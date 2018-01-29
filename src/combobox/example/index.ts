@@ -4,7 +4,6 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import ComboBox from '../ComboBox';
-import dojoTheme from '../../themes/dojo/theme';
 
 const data = [
 	{ value: 'Maine' },
@@ -60,7 +59,6 @@ const data = [
 ];
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _results: any[];
 	private _value1 = '';
 	private _value2 = '';
@@ -68,12 +66,6 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value8 = '';
 	private _value9 = '';
 	private _invalid: boolean;
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onChange(value: string, key?: string) {
 		if (!key) {
@@ -105,13 +97,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			styles: { maxWidth: '256px' }
 		}, [
 			v('h1', ['ComboBox Examples']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('h3', ['Clearable']),
 			w(ComboBox, {
 				key: '2',
@@ -123,8 +108,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				value: this._value2,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				},
-				theme: this._theme
+				}
 			}),
 			v('h3', ['Open on focus']),
 			w(ComboBox, {
@@ -137,8 +121,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				value: this._value1,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				},
-				theme: this._theme
+				}
 			}),
 			v('h3', ['Disabled menu items']),
 			w(ComboBox, {
@@ -151,8 +134,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				isResultDisabled: (result: any) => result.value.length > 9,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				},
-				theme: this._theme
+				}
 			}),
 			v('h3', ['Disabled']),
 			w(ComboBox, {
@@ -160,8 +142,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				disabled: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				},
-				theme: this._theme
+				}
 			}),
 			v('h3', ['Read Only']),
 			w(ComboBox, {
@@ -169,8 +150,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				readOnly: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				},
-				theme: this._theme
+				}
 			}),
 			v('h3', ['Label']),
 			w(ComboBox, {
@@ -180,8 +160,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				onRequestResults,
 				results: this._results,
 				value: this._value8,
-				label: 'Enter a value',
-				theme: this._theme
+				label: 'Enter a value'
 			}),
 			v('h3', ['Required and validated']),
 			w(ComboBox, {
@@ -199,8 +178,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				invalid: this._invalid,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				},
-				theme: this._theme
+				}
 			})
 		]);
 	}

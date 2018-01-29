@@ -8,17 +8,8 @@ import Button from '../../button/Button';
 import TextInput from '../../textinput/TextInput';
 import Tooltip, { Orientation } from '../Tooltip';
 
-import dojoTheme from '../../themes/dojo/theme';
-
 export class App extends WidgetBase<WidgetProperties> {
 	private _open = new Set<string>();
-	private _theme: {};
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onShow(key: string) {
 		this._open.add(key);
@@ -33,23 +24,14 @@ export class App extends WidgetBase<WidgetProperties> {
 	render() {
 		return v('div', [
 			v('h2', [ 'Tooltip Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'example-1' }, [
 				w(Tooltip, {
 					key: 'foo',
 					content: 'This is a right-oriented tooltip that opens and closes based on child click.',
 					orientation: Orientation.right,
-					open: this._open.has('foo'),
-					theme: this._theme
+					open: this._open.has('foo')
 				}, [
 					w(Button, {
-						theme: this._theme,
 						onClick: () => {
 							const exists = this._open.has('foo');
 							exists ? this.onHide('foo') : this.onShow('foo');
@@ -62,11 +44,9 @@ export class App extends WidgetBase<WidgetProperties> {
 					key: 'bar',
 					content: 'This is a right-oriented tooltip that opens and closes based on child focus.',
 					orientation: Orientation.right,
-					open: this._open.has('bar'),
-					theme: this._theme
+					open: this._open.has('bar')
 				}, [
 					w(TextInput, {
-						theme: this._theme,
 						placeholder: 'Focus me',
 						onFocus: () => { this.onShow('bar'); },
 						onBlur: () => { this.onHide('bar'); }

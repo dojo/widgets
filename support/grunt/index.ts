@@ -15,7 +15,6 @@ export = function (grunt: IGrunt) {
 	grunt.registerTask('dist', (grunt.config.get('distTasks') as string[]).concat([
 		'postcss:modules-dist',
 		'postcss:variables',
-		'copy:distStyles',
 		'copy:distFonts'
 	]));
 };

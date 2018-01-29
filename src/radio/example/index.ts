@@ -3,17 +3,9 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Radio from '../../radio/Radio';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _inputValue: string;
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onChange(event: Event) {
 		const value = (event.target as HTMLInputElement).value;
@@ -30,13 +22,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h2', {
 				innerHTML: 'Radio Examples'
 			}),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('fieldset', { id: 'example-1' }, [
 				v('legend', {}, ['Set of radio buttons with first option selected']),
 				w(Radio, {
@@ -45,8 +30,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					value: 'first',
 					label: 'First option',
 					name: 'sample-radios',
-					onChange: this.onChange,
-					theme: this._theme
+					onChange: this.onChange
 				}),
 				w(Radio, {
 					key: 'r2',
@@ -54,8 +38,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					value: 'second',
 					label: 'Second option',
 					name: 'sample-radios',
-					onChange: this.onChange,
-					theme: this._theme
+					onChange: this.onChange
 				}),
 				w(Radio, {
 					key: 'r3',
@@ -63,8 +46,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					value: 'third',
 					label: 'Third option',
 					name: 'sample-radios',
-					onChange: this.onChange,
-					theme: this._theme
+					onChange: this.onChange
 				})
 			]),
 			v('fieldset', { id: 'example-2' }, [
@@ -74,16 +56,14 @@ export class App extends WidgetBase<WidgetProperties> {
 					checked: false,
 					disabled: true,
 					label: 'First option',
-					name: 'sample-radios-disabled',
-					theme: this._theme
+					name: 'sample-radios-disabled'
 				}),
 				w(Radio, {
 					key: 'r5',
 					checked: true,
 					disabled: true,
 					label: 'Second option',
-					name: 'sample-radios-disabled',
-					theme: this._theme
+					name: 'sample-radios-disabled'
 				})
 			])
 		]);

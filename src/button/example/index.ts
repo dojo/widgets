@@ -3,17 +3,9 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
 import Button from '../../button/Button';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _buttonPressed: boolean;
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	toggleButton() {
 		this._buttonPressed = !this._buttonPressed;
@@ -23,25 +15,16 @@ export class App extends WidgetBase<WidgetProperties> {
 	render() {
 		return v('div', [
 			v('h2', [ 'Button Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'example-1' }, [
 				v('p', [ 'Basic example:' ]),
 				w(Button, {
-					key: 'b1',
-					theme: this._theme
+					key: 'b1'
 				}, [ 'Basic Button' ])
 			]),
 			v('div', { id: 'example-2' }, [
 				v('p', [ 'Disabled submit button:' ]),
 				w(Button, {
 					key: 'b2',
-					theme: this._theme,
 					disabled: true,
 					type: 'submit'
 				}, [ 'Submit' ])
@@ -50,7 +33,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				v('p', [ 'Popup button:' ]),
 				w(Button, {
 					key: 'b3',
-					theme: this._theme,
 					popup: { expanded: false, id: 'fakeId' }
 				}, [ 'Open' ])
 			]),
@@ -58,7 +40,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				v('p', [ 'Toggle Button' ]),
 				w(Button, {
 					key: 'b4',
-					theme: this._theme,
 					pressed: this._buttonPressed,
 					onClick: this.toggleButton
 				}, [ 'Button state' ])

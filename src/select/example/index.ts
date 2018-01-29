@@ -3,19 +3,11 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Select, { SelectProperties } from '../Select';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _value1: string;
 	private _value2: string;
 	private _value3: string;
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	_selectOptions = [
 		{
@@ -69,14 +61,6 @@ export class App extends WidgetBase<WidgetProperties> {
 	render() {
 
 		return v('div', [
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
-			v('br'),
 			w(Select, {
 				key: 'select1',
 				...this.getOptionSettings(),
@@ -85,7 +69,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				options: this._selectOptions,
 				useNativeElement: true,
 				value: this._value1,
-				theme: this._theme,
 				onChange: (option: any) => {
 					this._value1 = option.value;
 					this.invalidate();
@@ -100,7 +83,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				label: 'Custom select box',
 				options: this._moreSelectOptions,
 				value: this._value2,
-				theme: this._theme,
 				onChange: (option: any) => {
 					this._value2 = option.value;
 					this.invalidate();
@@ -114,7 +96,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				options: this._evenMoreSelectOptions,
 				placeholder: 'Choose a cat',
 				value: this._value3,
-				theme: this._theme,
 				onChange: (option: any) => {
 					this._value3 = option;
 					this.invalidate();

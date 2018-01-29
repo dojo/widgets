@@ -4,18 +4,10 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 
 import TitlePane from '../TitlePane';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _t2Open = true;
 	private _t3Open = false;
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	render() {
 		const {
@@ -30,19 +22,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			}
 		}, [
 			v('div', {
-				classes: 'option',
-				style: 'margin-bottom: 20px;'
-			}, [
-				v('label', [
-					'Use Dojo Theme ',
-					v('input', {
-						type: 'checkbox',
-						onchange: this.themeChange
-					})
-				])
-			]),
-
-			v('div', {
 				id: 'titlePane1',
 				styles: { marginBottom: '15px' }
 			}, [
@@ -50,7 +29,6 @@ export class App extends WidgetBase<WidgetProperties> {
 					headingLevel: 1,
 					closeable: false,
 					key: 'titlePane1',
-					theme: this._theme,
 					title: 'TitlePanel Widget With closeable=false'
 				}, [
 					v('div', {
@@ -69,7 +47,6 @@ export class App extends WidgetBase<WidgetProperties> {
 					headingLevel: 2,
 					key: 'titlePane2',
 					open: _t2Open,
-					theme: this._theme,
 					title: 'TitlePanel Widget (closeable)',
 					onRequestClose: () => {
 						this._t2Open = false;
@@ -100,7 +77,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				w(TitlePane, {
 					key: 'titlePane3',
 					open: _t3Open,
-					theme: this._theme,
 					title: 'TitlePanel Widget with open=false',
 					onRequestClose: () => {
 						this._t3Open = false;

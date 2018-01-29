@@ -3,34 +3,19 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import TextInput from '../../textinput/TextInput';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _value1: string;
 	private _value2: string;
 	private _value3: string;
 	private _value4: string;
 	private _invalid: boolean;
 
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	render() {
 		return v('div', {
 			styles: { maxWidth: '256px' }
 		}, [
 			v('h2', {}, ['Text Input Examples']),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'example-text' }, [
 				v('h3', {}, ['String label']),
 				w(TextInput, {
@@ -42,8 +27,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					onChange: (event: Event) => {
 						this._value1 = (event.target as HTMLInputElement).value;
 						this.invalidate();
-					},
-					theme: this._theme
+					}
 				})
 			]),
 			v('div', { id: 'example-email' }, [
@@ -57,8 +41,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					onChange: (event: Event) => {
 						this._value2 = (event.target as HTMLInputElement).value;
 						this.invalidate();
-					},
-					theme: this._theme
+					}
 				})
 			]),
 			v('div', { id: 'example-hidden-label' }, [
@@ -74,8 +57,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					onChange: (event: Event) => {
 						this._value3 = (event.target as HTMLInputElement).value;
 						this.invalidate();
-					},
-					theme: this._theme
+					}
 				})
 			]),
 			v('div', { id: 'example-disabled' }, [
@@ -86,8 +68,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Can\'t type here',
 					value: 'Initial value',
 					disabled: true,
-					readOnly: true,
-					theme: this._theme
+					readOnly: true
 				})
 			]),
 			v('div', { id: 'example-validated' }, [
@@ -104,8 +85,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._value4 = value;
 						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
 						this.invalidate();
-					},
-					theme: this._theme
+					}
 				})
 			])
 		]);
