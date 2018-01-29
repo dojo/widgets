@@ -1,40 +1,34 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { compareProperty } from '@dojo/test-extras/support/d';
-import { v } from '@dojo/widget-core/d';
-import TitlePane from '../../TitlePane';
+import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
+import TitlePane, { TitlePaneProperties } from '../../TitlePane';
 import * as css from '../../../theme/titlepane/titlePane.m.css';
 import * as fixedCss from '../../styles/titlePane.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
+import { WNode } from '@dojo/widget-core/interfaces';
 
-const isNonEmptyString = compareProperty((value: any) => {
-	return typeof value === 'string' && value.length > 0;
-});
+const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' && property.length > 0 };
+const compareAriaLabelledby = { selector: '*', property: 'aria-labelledby', comparator: (property: any) => typeof property === 'string' && property.length > 0 };
+const compareArialControls = { selector: '*', property: 'aria-controls', comparator: (property: any) => typeof property === 'string' && property.length > 0 };
+const noop: any = () => {};
+const createHarnessWithCompare = (renderFunction: () => WNode) => {
+	return harness(renderFunction, [ compareId, compareAriaLabelledby, compareArialControls ]);
+};
 
 interface TestEventInit extends EventInit {
 	keyCode: number;
 }
 
-let titlePane: Harness<TitlePane>;
 registerSuite('TitlePane', {
-
-	beforeEach() {
-		titlePane = harness(TitlePane);
-	},
-
-	afterEach() {
-		titlePane.destroy();
-	},
 
 	tests: {
 		'default rendering'() {
-			titlePane.setProperties({
-				title: 'test'
-			});
+			const h = createHarnessWithCompare(() => w(TitlePane, { title: 'test' }))
 
-			titlePane.expectRender(v('div', {
+
+			h.expect(() => v('div', {
 				classes: [ css.root, css.open, fixedCss.rootFixed ]
 			}, [
 				v('div', {
@@ -43,12 +37,12 @@ registerSuite('TitlePane', {
 					role: 'heading'
 				}, [
 					v('button', {
-						'aria-controls': isNonEmptyString,
+						'aria-controls': '',
 						'aria-expanded': 'true',
 						classes: css.titleButton,
 						disabled: false,
-						id: <any> isNonEmptyString,
-						onclick: titlePane.listener
+						id: '',
+						onclick: noop
 					}, [
 						v('i', {
 							classes: [
@@ -64,26 +58,23 @@ registerSuite('TitlePane', {
 				]),
 				v('div', {
 					'aria-hidden': null,
-					'aria-labelledby': isNonEmptyString,
+					'aria-labelledby': '',
 					classes: css.content,
-					styles: {
-						marginTop: '0px'
-					},
-					id: <any> isNonEmptyString,
+					id: '',
 					key: 'content'
 				}, [ ])
 			]));
 		},
 
 		'Should construct with the passed properties'() {
-			titlePane.setProperties({
+			const h = createHarnessWithCompare(() => w(TitlePane, {
 				closeable: false,
 				headingLevel: 5,
 				open: false,
 				title: 'test'
-			});
+			}));
 
-			titlePane.expectRender(v('div', {
+			h.expect(() => v('div', {
 				classes: [ css.root, null, fixedCss.rootFixed ]
 			}, [
 				v('div', {
@@ -92,12 +83,12 @@ registerSuite('TitlePane', {
 					role: 'heading'
 				}, [
 					v('button', {
-						'aria-controls': isNonEmptyString,
+						'aria-controls': '',
 						'aria-expanded': 'false',
 						classes: css.titleButton,
 						disabled: true,
-						id: <any> isNonEmptyString,
-						onclick: titlePane.listener
+						id: '',
+						onclick: noop
 					}, [
 						v('i', {
 							classes: [
@@ -113,12 +104,9 @@ registerSuite('TitlePane', {
 				]),
 				v('div', {
 					'aria-hidden': 'true',
-					'aria-labelledby': isNonEmptyString,
+					'aria-labelledby': '',
 					classes: css.content,
-					id: <any> isNonEmptyString,
-					styles: {
-						marginTop: '-0px'
-					},
+					id: '',
 					key: 'content'
 				}, [])
 			]));
@@ -126,64 +114,53 @@ registerSuite('TitlePane', {
 
 		'click title to close'() {
 			let called = false;
-			titlePane.setProperties({
+			const h = createHarnessWithCompare(() => w(TitlePane, {
 				closeable: true,
 				onRequestClose() {
 					called = true;
 				},
 				title: 'test'
-			});
+			}));
 
-			titlePane.sendEvent('click', {
-				selector: `.${css.titleButton}`
-			});
+			h.trigger(`.${css.titleButton}`, 'onclick');
 			assert.isTrue(called, 'onRequestClose should be called on title click');
 		},
 
 		'click title to open'() {
 			let called = false;
-			titlePane.setProperties({
+			const h = createHarnessWithCompare(() => w(TitlePane, {
 				closeable: true,
 				open: false,
 				onRequestOpen() {
 					called = true;
 				},
 				title: 'test'
-			});
-
-			titlePane.sendEvent('click', {
-				selector: `.${css.titleButton}`
-			});
+			}));
+			h.trigger(`.${css.titleButton}`, 'onclick');
 			assert.isTrue(called, 'onRequestOpen should be called on title click');
 		},
 
 		'can not open pane on click'() {
 			let called = 0;
-			titlePane.setProperties({
+			let properties: TitlePaneProperties = {
 				closeable: false,
 				open: true,
 				onRequestClose() {
 					called++;
 				},
 				title: 'test'
-			});
-			titlePane.getRender();
-			titlePane.sendEvent('click', {
-				selector: `.${css.titleButton}`
-			});
+			};
+			const h = createHarnessWithCompare(() => w(TitlePane, properties));
+			h.trigger(`.${css.titleButton}`, 'onclick');
 
-			titlePane.setProperties({
+			properties = {
 				open: true,
 				onRequestClose() {
 					called++;
 				},
 				title: 'test'
-			});
-			titlePane.getRender();
-			titlePane.sendEvent('click', {
-				selector: `.${css.titleButton}`
-			});
-
+			};
+			h.trigger(`.${css.titleButton}`, 'onclick');
 			assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
 		}
 	}
