@@ -2,8 +2,8 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
+import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
@@ -13,6 +13,7 @@ import * as fixedCss from './styles/dialog.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
 import * as css from '../theme/dialog/dialog.m.css';
 import * as animations from '../common/styles/animations.m.css';
+import { GlobalEvent } from '../global-event/GlobalEvent';
 
 /**
  * The role of this dialog, used for accessibility
@@ -72,7 +73,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		!this.properties.modal && this._onCloseClick();
 	}
 
-	private _onKeyUp = (event: KeyboardEvent) => {
+	private _onKeyUp = (event: KeyboardEvent): void => {
 		if (event.which === Keys.Escape) {
 			this._onCloseClick();
 		}
@@ -82,15 +83,6 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		const { onOpen } = this.properties;
 		this._callFocus = true;
 		onOpen && onOpen();
-	}
-
-	constructor() {
-		super();
-		document.addEventListener('keyup', this._onKeyUp);
-	}
-
-	protected onDetach(): void {
-		document.removeEventListener('keyup', this._onKeyUp);
 	}
 
 	protected getContent(): DNode {
@@ -153,6 +145,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		return v('div', {
 			classes: this.theme(css.root)
 		}, open ? [
+			w(GlobalEvent, { key: 'global', type: 'document', keyup: this._onKeyUp }),
 			this.renderUnderlay(),
 			v('div', {
 				...formatAriaProperties(aria),
