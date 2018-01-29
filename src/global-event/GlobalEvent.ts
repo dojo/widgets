@@ -1,5 +1,6 @@
 import global from '@dojo/shim/global';
 import WidgetBase from '@dojo/widget-core/WidgetBase';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { shallow } from '@dojo/widget-core/diff';
 
@@ -12,7 +13,7 @@ export interface GlobalEventProperties extends Partial<RegisteredListeners> {
 	document?: ListenerObject;
 }
 
-interface RegisteredListeners {
+export interface RegisteredListeners {
 	window: ListenerObject;
 	document: ListenerObject;
 }
@@ -68,7 +69,7 @@ export class GlobalEvent extends WidgetBase<GlobalEventProperties> {
 		this._removeAllRegisteredListeners('document');
 	}
 
-	protected render() {
+	protected render(): DNode | DNode[] {
 		if (this.children.length > 0) {
 			return this.children;
 		}

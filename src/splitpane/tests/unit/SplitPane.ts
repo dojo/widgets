@@ -2,14 +2,14 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import { stub, SinonStub } from 'sinon';
 
-import { v, w, isVNode, isWNode } from '@dojo/widget-core/d';
+import { v, w, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 
 import * as css from '../../../theme/splitpane/splitPane.m.css';
 import * as fixedCss from '../../styles/splitPane.m.css';
 import SplitPane, { Direction } from '../../SplitPane';
 import { GlobalEvent } from '../../../global-event/GlobalEvent';
-import { Constructor, WidgetMetaBase, WidgetMetaConstructor, VNode } from '@dojo/widget-core/interfaces';
+import { Constructor, WidgetMetaBase, WidgetMetaConstructor } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 
