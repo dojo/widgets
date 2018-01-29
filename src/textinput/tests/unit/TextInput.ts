@@ -5,84 +5,87 @@ import * as sinon from 'sinon';
 
 import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, compareProperty, findKey } from '@dojo/test-extras/support/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
+import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import TextInput from '../../TextInput';
 import * as css from '../../../theme/textinput/textinput.m.css';
+import { WNode } from '@dojo/widget-core/interfaces';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
+const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
+const noop: any = () => {};
+const createHarnessWithCompare = (renderFunction: () => WNode) => {
+	return harness(renderFunction, [ compareId, compareForId ]);
+};
 
-const expected = function(label = false, classes: (string | null)[] = [ css.root, null, null, null, null, null ]) {
+interface States {
+	disabled?: boolean;
+	required?: boolean;
+	invalid?: boolean;
+	readOnly?: boolean;
+}
+
+const expected = function(label = false, inputOverrides = {}, states: States = {}) {
+	const { disabled, required, readOnly, invalid } = states;
+
 	return v('div', {
 		key: 'root',
-		classes
+		classes: [ css.root, disabled ? css.disabled : null, invalid ? css.invalid : null, invalid === false ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
-			disabled: undefined,
+			disabled,
 			hidden: false,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
+			invalid,
+			readOnly,
+			required,
+			forId: ''
 		}, [ 'foo' ]) : null,
 		v('div', { classes: css.inputWrapper }, [
 			v('input', {
 				key: 'input',
 				classes: css.input,
-				id: <any> compareId,
-				disabled: undefined,
-				'aria-invalid': null,
+				id: '',
+				disabled,
+				'aria-invalid': invalid ? 'true' : null,
 				maxlength: null,
 				minlength: null,
 				name: undefined,
 				placeholder: undefined,
-				readOnly: undefined,
-				'aria-readonly': null,
-				required: undefined,
+				readOnly,
+				'aria-readonly': readOnly ? 'true' : null,
+				required,
 				type: 'text',
 				value: undefined,
-				onblur: widget.listener,
-				onchange: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				oninput: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener
+				onblur: noop,
+				onchange: noop,
+				onclick: noop,
+				onfocus: noop,
+				oninput: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop,
+				...inputOverrides
 			})
 		])
 	]);
 };
 
-let widget: Harness<TextInput>;
-
 registerSuite('TextInput', {
-
-	beforeEach() {
-		widget = harness(TextInput);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected());
+			const h = createHarnessWithCompare(() => w(TextInput, {}));
+			h.expect(expected);
 		},
 
 		'custom properties'() {
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(TextInput, {
 				aria: {
 					controls: 'foo',
 					describedBy: 'bar'
@@ -94,13 +97,9 @@ registerSuite('TextInput', {
 				placeholder: 'baz',
 				type: 'email',
 				value: 'hello world'
-			});
+			}));
 
-			const expectedVdom = expected();
-			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, null, null, null ]
-			});
-			assignProperties(findKey(expectedVdom, 'input')!, {
+			h.expect(() => expected(false, {
 				'aria-controls': 'foo',
 				'aria-describedby': 'bar',
 				id: 'foo',
@@ -110,56 +109,34 @@ registerSuite('TextInput', {
 				placeholder: 'baz',
 				type: 'email',
 				value: 'hello world'
-			});
-
-			widget.expectRender(expectedVdom);
+			}));
 		},
 
 		'label'() {
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(TextInput, {
 				label: 'foo'
-			});
+			}));
 
-			widget.expectRender(expected(true));
+			h.expect(() => expected(true));
 		},
 
 		'state classes'() {
-			widget.setProperties({
+			let properties = {
 				invalid: true,
 				disabled: true,
 				readOnly: true,
 				required: true
-			});
+			};
+			const h = createHarnessWithCompare(() => w(TextInput, properties));
+			h.expect(() => expected(false, {}, properties));
 
-			let expectedVdom = expected(false, [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]);
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-
-			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
-
-			widget.setProperties({
+			properties = {
 				invalid: false,
 				disabled: false,
 				readOnly: false,
 				required: false
-			});
-			expectedVdom = expected();
-
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				disabled: false,
-				readOnly: false,
-				required: false
-			});
-			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null ]
-			});
-
-			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+			};
+			h.expect(() => expected(false, {}, properties));
 		},
 
 		events() {
@@ -173,8 +150,11 @@ registerSuite('TextInput', {
 			const onKeyUp = sinon.stub();
 			const onMouseDown = sinon.stub();
 			const onMouseUp = sinon.stub();
+			const onTouchStart = sinon.stub();
+			const onTouchEnd = sinon.stub();
+			const onTouchCancel = sinon.stub();
 
-			widget.setProperties({
+			const h = createHarnessWithCompare(() => w(TextInput, {
 				onBlur,
 				onChange,
 				onClick,
@@ -184,51 +164,37 @@ registerSuite('TextInput', {
 				onKeyPress,
 				onKeyUp,
 				onMouseDown,
-				onMouseUp
-			});
-
-			widget.sendEvent('blur', { selector: 'input' });
-			assert.isTrue(onBlur.called, 'onBlur called');
-			widget.sendEvent('change', { selector: 'input' });
-			assert.isTrue(onChange.called, 'onChange called');
-			widget.sendEvent('click', { selector: 'input' });
-			assert.isTrue(onClick.called, 'onClick called');
-			widget.sendEvent('focus', { selector: 'input' });
-			assert.isTrue(onFocus.called, 'onFocus called');
-			widget.sendEvent('input', { selector: 'input' });
-			assert.isTrue(onInput.called, 'onInput called');
-			widget.sendEvent('keydown', { selector: 'input' });
-			assert.isTrue(onKeyDown.called, 'onKeyDown called');
-			widget.sendEvent('keypress', { selector: 'input' });
-			assert.isTrue(onKeyPress.called, 'onKeyPress called');
-			widget.sendEvent('keyup', { selector: 'input' });
-			assert.isTrue(onKeyUp.called, 'onKeyUp called');
-			widget.sendEvent('mousedown', { selector: 'input' });
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			widget.sendEvent('mouseup', { selector: 'input' });
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-		},
-
-		'touch events'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
-
-			widget.setProperties({
+				onMouseUp,
 				onTouchStart,
 				onTouchEnd,
 				onTouchCancel
-			});
+			}));
 
-			widget.sendEvent('touchstart', { selector: 'input' });
+			h.trigger('@input', 'onblur');
+			assert.isTrue(onBlur.called, 'onBlur called');
+			h.trigger('@input', 'onchange');
+			assert.isTrue(onChange.called, 'onChange called');
+			h.trigger('@input', 'onclick');
+			assert.isTrue(onClick.called, 'onClick called');
+			h.trigger('@input', 'onfocus');
+			assert.isTrue(onFocus.called, 'onFocus called');
+			h.trigger('@input', 'oninput');
+			assert.isTrue(onInput.called, 'onInput called');
+			h.trigger('@input', 'onkeydown');
+			assert.isTrue(onKeyDown.called, 'onKeyDown called');
+			h.trigger('@input', 'onkeypress');
+			assert.isTrue(onKeyPress.called, 'onKeyPress called');
+			h.trigger('@input', 'onkeyup');
+			assert.isTrue(onKeyUp.called, 'onKeyUp called');
+			h.trigger('@input', 'onmousedown');
+			assert.isTrue(onMouseDown.called, 'onMouseDown called');
+			h.trigger('@input', 'onmouseup');
+			assert.isTrue(onMouseUp.called, 'onMouseUp called');
+			h.trigger('@input', 'ontouchstart');
 			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			widget.sendEvent('touchend', { selector: 'input' });
+			h.trigger('@input', 'ontouchend');
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			widget.sendEvent('touchcancel', { selector: 'input' });
+			h.trigger('@input', 'ontouchcancel');
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}
