@@ -49,7 +49,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._exclusiveKey = undefined;
 						this.invalidate();
 					},
-					openKeys: this._exclusiveKey ? [ this._exclusiveKey ] : [],
+					openKeys: this._exclusiveKey ? [ this._exclusiveKey ] : []
 				}, [
 					w(TitlePane, {
 						title: 'Pane 1',
