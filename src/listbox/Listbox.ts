@@ -12,6 +12,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as css from '../theme/listbox/listbox.m.css';
 import ListboxOption from './ListboxOption';
+import { Focus } from '@dojo/widget-core/meta/Focus';
 
 /* Default scroll meta */
 export class ScrollMeta extends MetaBase {
@@ -34,6 +35,7 @@ export class ScrollMeta extends MetaBase {
  * @property getOptionId          Function that accepts option data and returns a string ID
  * @property getOptionSelected    Function that accepts option data and returns a boolean for selected/unselected
  * @property id                   Optional custom id for the listbox
+ * @property focus                Indicates if the listbox needs focusing
  * @property multiselect          Adds currect semantics for a multiselect listbox
  * @property optionData           Array of data for listbox options
  * @property tabIndex             Listbox is in the focus order by default, but setting tabIndex: -1 will remove it
@@ -49,6 +51,7 @@ export interface ListboxProperties extends ThemedProperties, CustomAriaPropertie
 	getOptionLabel?(option: any, index: number): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
 	id?: string;
+	focus?: boolean;
 	multiselect?: boolean;
 	optionData?: any[];
 	tabIndex?: number;
@@ -208,19 +211,26 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 			aria = {},
 			id,
 			multiselect = false,
+			focus,
 			tabIndex = 0
 		} = this.properties;
 
-		return v('div', {
-			...formatAriaProperties(aria),
-			'aria-activedescendant': this._getOptionId(activeIndex),
-			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
-			id,
-			key: 'root',
-			role: 'listbox',
-			tabIndex,
-			onkeydown: this._onKeyDown
+		return v('div', () => {
+			if (focus) {
+				this.meta(Focus).set('root');
+			}
+
+			return {
+				...formatAriaProperties(aria),
+				'aria-activedescendant': this._getOptionId(activeIndex),
+				'aria-multiselectable': multiselect ? 'true' : null,
+				classes: this.theme([ css.root, ...this.getModifierClasses() ]),
+				id,
+				key: 'root',
+				role: 'listbox',
+				tabIndex,
+				onkeydown: this._onKeyDown
+			};
 		}, this.renderOptions());
 	}
 }

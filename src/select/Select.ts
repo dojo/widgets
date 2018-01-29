@@ -230,6 +230,12 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			_focusedIndex
 		} = this;
 
+		const focusListbox = this._callListboxFocus;
+
+		if (this._callListboxFocus) {
+			this._callListboxFocus = false;
+		}
+
 		// create dropdown trigger and select box
 		return v('div', {
 			key: 'wrapper',
@@ -245,6 +251,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					key: 'listbox',
 					activeIndex: _focusedIndex,
 					id,
+					focus: focusListbox,
 					optionData: options,
 					tabIndex: _open ? 0 : -1,
 					getOptionDisabled,
