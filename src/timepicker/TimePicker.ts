@@ -255,6 +255,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 		} = this.properties;
 
 		return w(ComboBox, {
+			key: 'combo',
 			clearable,
 			disabled,
 			extraClasses,
