@@ -11,6 +11,7 @@
 .disabled {}
 .focused {}
 .readonly {}
+.required {}
 
 /* invalid style */
 .invalid .inputWrapper::before {

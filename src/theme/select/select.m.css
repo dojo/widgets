@@ -28,7 +28,8 @@
 	color: var(--selected-background);
 }
 
-.placeholder { }
+.placeholder {}
+.required {}
 
 .dropdown {
 	background: var(--component-background);
@@ -40,7 +41,7 @@
 	width: 100%;
 }
 
-.open { }
+.open {}
 
 .open .dropdown {
 	display: block;
