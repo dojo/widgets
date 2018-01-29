@@ -132,7 +132,7 @@ registerSuite('Dialog', {
 				v('div', {
 					role: 'alertdialog',
 					'aria-describedby': 'foo',
-					"aria-labelledby": '',
+					'aria-labelledby': '',
 					classes: css.main,
 					enterAnimation: 'fooAnimation',
 					exitAnimation: 'barAnimation',
@@ -189,7 +189,7 @@ registerSuite('Dialog', {
 				}),
 				v('div', {
 					role: 'dialog',
-					"aria-labelledby": '',
+					'aria-labelledby': '',
 					classes: css.main,
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,

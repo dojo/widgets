@@ -43,7 +43,7 @@ const expectedDateCell = function(date: number, active: boolean, selectedIndex =
 };
 
 const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = '', customMonthLabel = false, describedby = '') {
-	const overrides = describedby ? { 'aria-describedby': describedby } : {}
+	const overrides = describedby ? { 'aria-describedby': describedby } : {};
 	dateIndex = -1;
 	return v('div', {
 		classes: css.root,
@@ -447,7 +447,6 @@ registerSuite('Calendar', {
 		},
 
 		'onPopupChange should control visibility'() {
-			// Needed to get initial CSS classes on the component to then falsify
 			let properties: any = {};
 			const h = createHarnessWithCompare(() => w(Calendar, properties));
 			h.trigger('@date-picker', 'onPopupChange', true);

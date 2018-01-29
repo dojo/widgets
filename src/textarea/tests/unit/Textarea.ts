@@ -132,7 +132,6 @@ registerSuite('Textarea', {
 
 			h.expect(() => expected(false, {}, properties));
 
-
 			properties = {
 				invalid: false,
 				disabled: false,

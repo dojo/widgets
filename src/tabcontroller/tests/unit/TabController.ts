@@ -126,7 +126,7 @@ const expectedTabContent = function(index = 0): DNode {
 };
 
 const expected = function(children: DNode[] = [], describedby = '', classes = [ null, css.root ], vertical = false) {
-	const overrides = describedby ?{
+	const overrides = describedby ? {
 		'aria-describedby': describedby
 	} : null;
 	return v('div', {

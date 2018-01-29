@@ -25,8 +25,7 @@ registerSuite('TitlePane', {
 
 	tests: {
 		'default rendering'() {
-			const h = createHarnessWithCompare(() => w(TitlePane, { title: 'test' }))
-
+			const h = createHarnessWithCompare(() => w(TitlePane, { title: 'test' }));
 
 			h.expect(() => v('div', {
 				classes: [ css.root, css.open, fixedCss.rootFixed ]

@@ -339,37 +339,6 @@ registerSuite('Listbox', {
 			}
 			createHarnessWithCompare(() =>  w(ScrollListbox, { activeIndex: 0 }));
 			assert.isTrue(scrollStub.calledWith('root', 100));
-		},
-
-		// Needs JSDOM
-		// 'scroll meta'() {
-		// 	class TestWidget extends ProjectorMixin(WidgetBase) {
-		// 		render() {
-		// 			this.meta(ScrollMeta).scroll('root', 100);
-		// 			return v('div', {
-		// 				key: 'root',
-		// 				classes: 'root',
-		// 				styles: { height: '200px', 'overflow-y': 'scroll' }
-		// 			}, [
-		// 				v('div', {
-		// 					styles: { height: '400px' }
-		// 				})
-		// 			]);
-		// 		}
-		// 	}
-
-		// 	const div = document.createElement('div');
-		// 	document.body.appendChild(div);
-
-		// 	const widget = new TestWidget();
-		// 	widget.async = false;
-		// 	widget.append(div);
-		// 	widget.setProperties({
-		// 		key: 'root'
-		// 	});
-
-		// 	const widgetDiv = document.querySelector('.root');
-		// 	assert.strictEqual(widgetDiv!.scrollTop, 100);
-		// }
+		}
 	}
 });
