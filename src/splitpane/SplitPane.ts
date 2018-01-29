@@ -61,7 +61,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		this._position = this._getPosition(event);
 	}
 
-	private _onDragMove(event: MouseEvent & TouchEvent) {
+	private _onDragMove = (event: MouseEvent & TouchEvent) => {
 		if (!this._dragging) {
 			return;
 		}
@@ -91,7 +91,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		onResize && onResize(newSize);
 	}
 
-	private _onDragEnd(event: MouseEvent & TouchEvent) {
+	private _onDragEnd = (event: MouseEvent & TouchEvent) => {
 		this._dragging = false;
 		this._lastSize = undefined;
 	}
@@ -131,10 +131,11 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		}, [
 			w(GlobalEvent, {
 				key: 'global',
-				type: 'window',
-				mouseup: this._onDragEnd.bind(this),
-				mousemove: this._onDragMove.bind(this),
-				touchmove: this._onDragMove.bind(this)
+				window: {
+					mouseup: this._onDragEnd,
+					mousemove: this._onDragMove,
+					touchmove: this._onDragMove
+				}
 			}),
 			v('div', {
 				classes: [

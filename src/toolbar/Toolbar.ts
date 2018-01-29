@@ -160,7 +160,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			classes: [ ...this.theme(classes), ...fixedClasses ],
 			key: 'root'
 		}, [
-			w(GlobalEvent, { key: 'global', type: 'window', resize: this._collapseIfNecessary }),
+			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
 			v('div', {
 				classes: [ this.theme(css.toolbar), fixedCss.toolbarFixed ]
 			}, [

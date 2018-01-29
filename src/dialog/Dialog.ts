@@ -145,7 +145,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		return v('div', {
 			classes: this.theme(css.root)
 		}, open ? [
-			w(GlobalEvent, { key: 'global', type: 'document', keyup: this._onKeyUp }),
+			w(GlobalEvent, { key: 'global', document: { keyup: this._onKeyUp } }),
 			this.renderUnderlay(),
 			v('div', {
 				...formatAriaProperties(aria),

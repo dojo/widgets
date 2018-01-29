@@ -2,7 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/widget-core/d';
+import { v, w, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 
 import Dialog, { DialogProperties } from '../../Dialog';
@@ -43,8 +43,9 @@ const expected = function(open = false, closeable = false, children: any[] = [])
 	}, open ? [
 		w(GlobalEvent, {
 			key: 'global',
-			keyup: noop,
-			type: 'document'
+			document: {
+				keyup: noop
+			}
 		}),
 		v('div', {
 			classes: [ null, fixedCss.underlay ],
@@ -119,8 +120,9 @@ registerSuite('Dialog', {
 			}, [
 				w(GlobalEvent, {
 					key: 'global',
-					keyup: noop,
-					type: 'document'
+					document: {
+						keyup: noop
+					}
 				}),
 				v('div', {
 					classes: [ css.underlayVisible, fixedCss.underlay ],
@@ -177,8 +179,9 @@ registerSuite('Dialog', {
 			}, [
 				w(GlobalEvent, {
 					key: 'global',
-					keyup: noop,
-					type: 'document'
+					document: {
+						keyup: noop
+					}
 				}),
 				v('div', {
 					classes: [ null, fixedCss.underlay ],
@@ -300,9 +303,17 @@ registerSuite('Dialog', {
 				open: true,
 				onRequestClose
 			}));
-			h.trigger(`@global`, 'keyup', { which: Keys.Down });
+			h.trigger(`@global`, (node: any) => {
+				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
+					return node.properties.document.keyup;
+				}
+			}, { which: Keys.Down });
 			assert.isTrue(onRequestClose.notCalled);
-			h.trigger(`@global`, 'keyup', { which: Keys.Escape });
+			h.trigger(`@global`, (node: any) => {
+				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
+					return node.properties.document.keyup;
+				}
+			}, { which: Keys.Escape });
 			assert.isTrue(onRequestClose.calledOnce);
 		}
 	}

@@ -2,14 +2,14 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import { stub, SinonStub } from 'sinon';
 
-import { v, w } from '@dojo/widget-core/d';
+import { v, w, isVNode, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 
 import * as css from '../../../theme/splitpane/splitPane.m.css';
 import * as fixedCss from '../../styles/splitPane.m.css';
 import SplitPane, { Direction } from '../../SplitPane';
 import { GlobalEvent } from '../../../global-event/GlobalEvent';
-import { Constructor, WidgetMetaBase, WidgetMetaConstructor } from '@dojo/widget-core/interfaces';
+import { Constructor, WidgetMetaBase, WidgetMetaConstructor, VNode } from '@dojo/widget-core/interfaces';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 
@@ -18,6 +18,15 @@ export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(Base: T, m
 	return class extends Base {
 		protected meta<T extends WidgetMetaBase>(MetaType: WidgetMetaConstructor<T>): T {
 			return mockStub(MetaType);
+		}
+	};
+}
+
+function createVNodeSelector(type: 'window' | 'document', name: string) {
+	return (node: any) => {
+		if (isWNode<GlobalEvent>(node) && node.properties[type] !== undefined) {
+			const globalFuncs = node.properties[type];
+			return globalFuncs ? globalFuncs[name] : undefined;
 		}
 	};
 }
@@ -33,10 +42,11 @@ registerSuite('SplitPane', {
 			}, [
 				w(GlobalEvent, {
 					key: 'global',
-					type: 'window',
-					mouseup: noop,
-					mousemove: noop,
-					touchmove: noop
+					window: {
+						mouseup: noop,
+						mousemove: noop,
+						touchmove: noop
+					}
 				}),
 				v('div', {
 					classes: [ css.leading, fixedCss.leadingFixed ],
@@ -72,10 +82,11 @@ registerSuite('SplitPane', {
 			}, [
 				w(GlobalEvent, {
 					key: 'global',
-					type: 'window',
-					mouseup: noop,
-					mousemove: noop,
-					touchmove: noop
+					window: {
+						mouseup: noop,
+						mousemove: noop,
+						touchmove: noop
+					}
 				}),
 				v('div', {
 					classes: [ css.leading, fixedCss.leadingFixed ],
@@ -118,10 +129,10 @@ registerSuite('SplitPane', {
 				onResize: (size: number) => setSize = size
 			}));
 
-			h.trigger('@global', 'mousemove', { clientX: 0 });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0 });
 			h.trigger('@divider', 'onmousedown', { clientX: 500 });
-			h.trigger('@global', 'mousemove', { clientX: 0 });
-			h.trigger('@global', 'mouseup');
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0 });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'));
 			assert.strictEqual(setSize, 0);
 		},
 
@@ -132,8 +143,8 @@ registerSuite('SplitPane', {
 			}));
 
 			h.trigger('@divider', 'onmousedown', { clientX: 0 });
-			h.trigger('@global', 'mousemove', { clientX: 500 });
-			h.trigger('@global', 'mouseup', { clientX: 0 });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 500 });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'), { clientX: 0 });
 			assert.strictEqual(setSize, 0);
 		},
 
@@ -145,8 +156,8 @@ registerSuite('SplitPane', {
 			}));
 
 			h.trigger('@divider', 'onmousedown', { clientX: 110 });
-			h.trigger('@global', 'mousemove', { clientX: 150 });
-			h.trigger('@global', 'mouseup');
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150 });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'));
 			assert.isTrue(called);
 		},
 
@@ -159,8 +170,8 @@ registerSuite('SplitPane', {
 			}));
 
 			h.trigger('@divider', 'onmousedown', { clientX: 110 });
-			h.trigger('@global', 'mousemove', { clientX: 150 });
-			h.trigger('@global', 'mouseup');
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150 });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'));
 
 			assert.isTrue(called);
 		},
@@ -175,8 +186,8 @@ registerSuite('SplitPane', {
 			}));
 
 			h.trigger('@divider', 'ontouchstart', { clientX: 110 });
-			h.trigger('@global', 'touchmove', { clientX: 150 });
-			h.trigger('@global', 'touchend');
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150 });
+			h.trigger('@global', createVNodeSelector('window', 'touchend'));
 
 			assert.isTrue(called);
 		},
@@ -190,11 +201,11 @@ registerSuite('SplitPane', {
 			}));
 
 			h.trigger('@divider', 'ontouchstart', { clientX: 110 });
-			h.trigger('@global', 'touchmove', { clientX: 150 });
-			h.trigger('@global', 'touchend');
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150 });
+			h.trigger('@global', createVNodeSelector('window', 'touchend'));
 			h.trigger('@divider', 'ontouchstart', { clientX: 110 });
-			h.trigger('@global', 'touchmove', { clientX: 150 });
-			h.trigger('@global', 'touchend');
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150 });
+			h.trigger('@global', createVNodeSelector('window', 'touchend'));
 
 			assert.strictEqual(called, 2);
 		}

@@ -1,6 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
-import { v, w } from '@dojo/widget-core/d';
+import { v, w, isVNode, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 import { stub } from 'sinon';
 
@@ -41,7 +41,7 @@ registerSuite('Toolbar', {
 				dir: null,
 				lang: null
 			}, [
-				w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
 						css.toolbar,
@@ -73,7 +73,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
@@ -118,7 +118,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
@@ -150,7 +150,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
@@ -182,7 +182,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
@@ -220,7 +220,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
@@ -306,7 +306,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
@@ -322,7 +322,11 @@ registerSuite('Toolbar', {
 				]));
 
 			properties = { actions: [ 'test' ], menuTitle: 'foo' };
-			h.trigger('@global', 'resize');
+			h.trigger('@global', (node: any) => {
+				if (isWNode<GlobalEvent>(node) && node.properties.window !== undefined) {
+					return node.properties.window ? node.properties.window.resize : undefined;
+				}
+			});
 			h.expect(() =>
 				v('div', {
 					classes: [
@@ -337,7 +341,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
@@ -372,7 +376,7 @@ registerSuite('Toolbar', {
 					dir: null,
 					lang: null
 				}, [
-					w(GlobalEvent, { type: 'window', key: 'global', resize: noop }),
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
 						classes: [
 							css.toolbar,
