@@ -67,7 +67,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	private _swiping: boolean;
 	private _titleId = uuid();
 	private _transform: number;
-	private _wasOpen: boolean;
+	private _wasOpen = false;
 	private _stylesTransform: string;
 	private _attached = false;
 	private _hasMoved = false;
