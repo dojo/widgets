@@ -1,11 +1,12 @@
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import * as fixedCss from './styles/splitPane.m.css';
 import * as css from '../theme/splitpane/splitPane.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
+import { GlobalEvent } from '../global-event/GlobalEvent';
 
 /**
  * Direction of this SplitPane
@@ -70,11 +71,6 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		this._boundHandlers.forEach(object => document.removeEventListener(object.event, object.func));
 	}
 
-	private _deselect() {
-		const selection = window.getSelection();
-		selection.removeAllRanges();
-	}
-
 	private _getPosition(event: MouseEvent & TouchEvent) {
 		const { direction = Direction.row } = this.properties;
 
@@ -89,15 +85,12 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	private _onDragStart(event: MouseEvent & TouchEvent) {
 		this._dragging = true;
 		this._position = this._getPosition(event);
-		this._deselect();
 	}
 
 	private _onDragMove(event: MouseEvent & TouchEvent) {
 		if (!this._dragging) {
 			return;
 		}
-
-		this._deselect();
 
 		const {
 			direction = Direction.row,
@@ -162,6 +155,12 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			],
 			key: 'root'
 		}, [
+			w(GlobalEvent, {
+				key: 'global',
+				mouseup: this._onDragEnd.bind(this),
+				mousemove: this._onDragMove.bind(this),
+				touchmove: this._onDragMove.bind(this)
+			}),
 			v('div', {
 				classes: [
 					this.theme(css.leading),
