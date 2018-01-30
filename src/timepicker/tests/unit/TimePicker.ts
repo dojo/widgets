@@ -113,14 +113,14 @@ registerSuite('TimePicker', {
 
 		'Should format options as `HH:mm` by default'() {
 			const h = harness(() => w(TimePicker, {}));
-			h.trigger('@combo', 'getResultLabel', { hour: 4, minute: 22, second: 0 });
-			// can't test this at the moment - don't get the result back
+			const result = h.trigger('@combo', 'getResultLabel', { hour: 4, minute: 22, second: 0 });
+			assert.strictEqual(result, '04:22');
 		},
 
 		'Should format options as `HH:mm:ss` when the step is less than 60 seconds'() {
 			const h = harness(() => w(TimePicker, { step: 1 }));
-			h.trigger('@combo', 'getResultLabel', { hour: 4, minute: 22, second: 0 });
-			// can't test this at the moment - don't get the result back
+			const result = h.trigger('@combo', 'getResultLabel', { hour: 4, minute: 22, second: 0 });
+			assert.strictEqual(result, '04:22:00');
 		},
 
 		'Should call onRequestOptions'() {

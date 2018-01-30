@@ -52,15 +52,15 @@ const monthRadios = function(open?: boolean) {
 	]));
 };
 
-const yearRadios = function(open?: boolean, yearStart = 2000, yearEnd = 2020) {
+const yearRadios = function(open?: boolean, yearStart = 2000, yearEnd = 2020, checkedYear = 2017) {
 	const radios = [];
 	for (let i = yearStart; i < yearEnd; i++) {
 		radios.push(v('label', {
 			key: '',
-			classes: [ css.yearRadio, i === 2017 ? css.yearRadioChecked : null ]
+			classes: [ css.yearRadio, i === checkedYear ? css.yearRadioChecked : null ]
 		}, [
 			v('input', {
-				checked: i === 2017,
+				checked: i === checkedYear,
 				classes: css.yearRadioInput,
 				tabIndex: open ? 0 : -1,
 				type: 'radio',
@@ -222,26 +222,145 @@ registerSuite('Calendar DatePicker', {
 			h.expect(() => expected(false, false, { yearStart: 2000, yearEnd: 2025, monthLabel: 'bar'}));
 		},
 
-		// 'Year below 2000 calculates correctly'() {
-		// 	// classes are easier to replace if we do this twice
-		// 	widget.setProperties({
-		// 		...requiredProps
-		// 	});
-		// 	let expectedVdom = expected(widget);
-		// 	widget.expectRender(expectedVdom);
+		'Year below 2000 calculates correctly'() {
+			let properties = {
+				...requiredProps
+			};
+			const h = harness(() => w(DatePicker, properties), [
+				compareKey, compareName, compareId, compareAriaLabelledBy, compareAriaControls
+			]);
+			h.expect(expected);
 
-		// 	widget.setProperties({
-		// 		...requiredProps,
-		// 		year: 1997
-		// 	});
-		// 	expectedVdom = expected(widget, false, false, 1980, 2000);
-		// 	const yearGridVdom = findKey(expectedVdom, 'year-grid');
-		// 	replaceChild(expectedVdom, '0,0,0', 'June 1997');
-		// 	replaceChild(expectedVdom, '0,2,0', '1997');
-		// 	assignChildProperties(yearGridVdom!, '0,18', { classes: [ css.yearRadio, css.yearRadioChecked ] });
-		// 	assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
-		// 	widget.expectRender(expectedVdom);
-		// },
+			properties = {
+				...requiredProps,
+				year: 1997
+			};
+
+			h.expect(() => v('div', {
+				classes: css.datePicker
+			}, [
+				v('div', {
+					classes: css.topMatter,
+					role: 'menubar'
+				}, [
+					// hidden label
+					v('label', {
+						id: '',
+						classes: [ baseCss.visuallyHidden ],
+						'aria-live': 'polite',
+						'aria-atomic': 'false'
+					}, [ 'June 1997' ]),
+
+					// month trigger
+					v('button', {
+						key: 'month-button',
+						'aria-controls': '',
+						'aria-expanded': 'false',
+						'aria-haspopup': 'true',
+						id: '',
+						classes: [ css.monthTrigger, null ],
+						role: 'menuitem',
+						onclick: noop
+					}, [ 'June' ]),
+
+					// year trigger
+					v('button', {
+						key: 'year-button',
+						'aria-controls': '',
+						'aria-expanded': 'false',
+						'aria-haspopup': 'true',
+						id: '',
+						classes: [ css.yearTrigger, null ],
+						role: 'menuitem',
+						onclick: noop
+					}, [ '1997' ])
+				]),
+				v('div', {
+					id: '',
+					key: 'month-grid',
+					'aria-hidden': 'true',
+					'aria-labelledby': '',
+					classes: [ css.monthGrid, baseCss.visuallyHidden ],
+					role: 'dialog'
+				}, [
+					v('fieldset', {
+						classes: css.monthFields,
+						onkeydown: noop
+					}, [
+						v('legend', {
+							classes: baseCss.visuallyHidden
+						}, [ DEFAULT_LABELS.chooseMonth ]),
+						...DEFAULT_MONTHS.map((monthName, i) => v('label', {
+							key: '',
+							classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ]
+						}, [
+							v('input', {
+								checked: i === 5,
+								classes: css.monthRadioInput,
+								key: '',
+								name: '',
+								tabIndex:  -1,
+								type: 'radio',
+								value: `${i}`,
+								onchange: noop,
+								onmouseup: noop
+							}),
+							v('abbr', {
+								classes: css.monthRadioLabel,
+								title: monthName.long
+							}, [ monthName.short ])
+						]))
+					])
+				]),
+				v('div', {
+					key: 'year-grid',
+					'aria-hidden': 'true',
+					'aria-labelledby': '',
+					classes: [ css.yearGrid, baseCss.visuallyHidden ],
+					id: '',
+					role: 'dialog'
+				}, [
+					v('fieldset', {
+						classes: css.yearFields,
+						onkeydown: noop
+					}, [
+						v('legend', { classes: [ baseCss.visuallyHidden ] }, [ DEFAULT_LABELS.chooseYear ]),
+						...yearRadios(false, 1980, 2000, 1997)
+					]),
+					v('div', {
+						classes: css.controls
+					}, [
+						v('button', {
+							classes: css.previous,
+							tabIndex:  -1,
+							onclick: noop
+						}, [
+							v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
+								role: 'presentation', 'aria-hidden': 'true'
+							}),
+							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
+						]),
+						v('button', {
+							classes: css.next,
+							tabIndex: -1,
+							onclick: noop
+						}, [
+							v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
+								role: 'presentation', 'aria-hidden': 'true'
+							}),
+							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
+						])
+					])
+				])
+			]));
+			// expectedVdom = expected(widget, false, false, 1980, 2000);
+			// const yearGridVdom = findKey(expectedVdom, 'year-grid');
+			// replaceChild(expectedVdom, '0,0,0', 'June 1997');
+			// replaceChild(expectedVdom, '0,2,0', '1997');
+			// assignChildProperties(yearGridVdom!, '0,18', { classes: [ css.yearRadio, css.yearRadioChecked ] });
+			// assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
+			// widget.expectRender(expectedVdom);
+		},
 
 		'Month popup opens and closes on button click'() {
 			let isOpen;
