@@ -14,7 +14,7 @@ import { createHarness, compareId, noop } from '../../../common/tests/support/te
 const compareKey = { selector: '*', property: 'key', comparator: (property: any) => typeof property === 'string' };
 const compareAriaActiveDescendant = { selector: '*', property: 'aria-activedescendant', comparator: (property: any) => typeof property === 'string' };
 
-const harness = createHarness([ compareId, compareKey, compareAriaActiveDescendant ]);
+const harness = createHarness([ compareId, compareAriaActiveDescendant ]);
 
 interface TestEventInit extends EventInit {
 	which: number;
