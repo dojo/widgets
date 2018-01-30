@@ -3,7 +3,6 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w, isWNode } from '@dojo/widget-core/d';
-import harness from '@dojo/test-extras/harness';
 
 import Dialog, { DialogProperties } from '../../Dialog';
 import * as css from '../../../theme/dialog/dialog.m.css';
@@ -11,15 +10,15 @@ import * as fixedCss from '../../styles/dialog.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
-import { WNode } from '@dojo/widget-core/interfaces';
 import { GlobalEvent } from '../../../global-event/GlobalEvent';
+import {
+	createHarness,
+	compareId,
+	compareAriaLabelledBy,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareAriaLabelledBy = { selector: '*', property: 'aria-labelledby', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareAriaLabelledBy ]);
-};
+const harness = createHarness([ compareId, compareAriaLabelledBy ]);
 
 const expectedCloseButton = function() {
 	return v('button', {
@@ -83,7 +82,7 @@ registerSuite('Dialog', {
 	tests: {
 		'default properties'() {
 			let properties: DialogProperties = {};
-			const h = createHarnessWithCompare(() => w(Dialog, properties));
+			const h = harness(() => w(Dialog, properties));
 			h.expect(expected);
 
 			properties = {
@@ -97,7 +96,7 @@ registerSuite('Dialog', {
 			let properties: DialogProperties = {
 				open: true
 			};
-			const h = createHarnessWithCompare(() => w(Dialog, properties));
+			const h = harness(() => w(Dialog, properties));
 			h.trigger('', '');
 
 			// set tested properties
@@ -167,7 +166,7 @@ registerSuite('Dialog', {
 		},
 
 		'correct close text'() {
-			const h = createHarnessWithCompare(() => w(Dialog, {
+			const h = harness(() => w(Dialog, {
 				closeable: true,
 				open: true,
 				title: 'foo'
@@ -225,7 +224,7 @@ registerSuite('Dialog', {
 		},
 
 		children() {
-			const h = createHarnessWithCompare(() => w(Dialog, { open: true }, [
+			const h = harness(() => w(Dialog, { open: true }, [
 				v('p', [ 'Lorem ipsum dolor sit amet' ]),
 				v('a', { href: '#foo' }, [ 'foo' ])
 			]));
@@ -243,7 +242,7 @@ registerSuite('Dialog', {
 				open: true,
 				onRequestClose
 			};
-			const h = createHarnessWithCompare(() => w(Dialog, properties));
+			const h = harness(() => w(Dialog, properties));
 			h.trigger(`.${css.close}`, 'onclick');
 			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler called when close button is clicked');
 
@@ -262,7 +261,7 @@ registerSuite('Dialog', {
 				open: true,
 				onOpen
 			};
-			const h = createHarnessWithCompare(() => w(Dialog, properties));
+			const h = harness(() => w(Dialog, properties));
 			h.trigger('', '');
 			assert.isTrue(onOpen.calledOnce, 'onOpen handler called when open is initially set to true');
 
@@ -282,7 +281,7 @@ registerSuite('Dialog', {
 				modal: true,
 				onRequestClose
 			};
-			const h = createHarnessWithCompare(() => w(Dialog, properties));
+			const h = harness(() => w(Dialog, properties));
 			h.trigger(`.${fixedCss.underlay}`, 'onclick');
 
 			assert.isFalse(onRequestClose.called, 'onRequestClose should not be called when the underlay is clicked and modal is true');
@@ -299,7 +298,7 @@ registerSuite('Dialog', {
 
 		escapeKey() {
 			const onRequestClose = sinon.stub();
-			const h = createHarnessWithCompare(() => w(Dialog, {
+			const h = harness(() => w(Dialog, {
 				open: true,
 				onRequestClose
 			}));

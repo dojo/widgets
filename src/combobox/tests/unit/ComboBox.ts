@@ -2,7 +2,6 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -12,17 +11,15 @@ import Listbox from '../../../listbox/Listbox';
 import TextInput from '../../../textinput/TextInput';
 import * as css from '../../../theme/combobox/comboBox.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import {
+	createHarness,
+	compareId,
+	compareAria,
+	compareAriaControls,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareAria = { selector: '*', property: 'aria', comparator: (value: any) => {
-	return Object.keys(value).every((key) => typeof value[key] === 'string');
-}};
-const compareAriaControls = { selector: '*', property: 'aria-controls', comparator: (property: any) => typeof property === 'string' };
-const noop = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareAria, compareAriaControls ]);
-};
+const harness = createHarness([ compareId, compareAria, compareAriaControls ]);
 
 const testOptions: any[] = [
 	{
@@ -184,17 +181,17 @@ const getExpectedVdom = function(useTestProperties = false, open = false, label 
 registerSuite('ComboBox', {
 	tests: {
 		'renders with default properties'() {
-			const h = createHarnessWithCompare(() => w(ComboBox, {}));
+			const h = harness(() => w(ComboBox, {}));
 			h.expect(getExpectedVdom);
 		},
 
 		'renders with custom properties'() {
-			const h = createHarnessWithCompare(() => w(ComboBox, testProperties));
+			const h = harness(() => w(ComboBox, testProperties));
 			h.expect(() => getExpectedVdom(true, false, true));
 		},
 
 		'dropdown renders correctly when open'() {
-			const h = createHarnessWithCompare(() => w(ComboBox, testProperties));
+			const h = harness(() => w(ComboBox, testProperties));
 			h.trigger(`.${css.trigger}`, 'onclick');
 			h.expect(() => getExpectedVdom(true, true, true, {}, true));
 		},
@@ -202,7 +199,7 @@ registerSuite('ComboBox', {
 		'arrow click opens menu'() {
 			const onRequestResults = sinon.stub();
 			const onMenuChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				onRequestResults,
 				onMenuChange
@@ -217,7 +214,7 @@ registerSuite('ComboBox', {
 			const onChange = sinon.stub();
 			const onRequestResults = sinon.stub();
 			const onMenuChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				label: undefined,
 				onChange,
@@ -236,7 +233,7 @@ registerSuite('ComboBox', {
 		'menu closes on input blur'() {
 			const onBlur = sinon.stub();
 			const onMenuChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				onBlur,
 				onMenuChange
@@ -254,7 +251,7 @@ registerSuite('ComboBox', {
 		'blur ignored when clicking option'() {
 			const onBlur = sinon.stub();
 			const onMenuChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				onBlur,
 				onMenuChange
@@ -272,7 +269,7 @@ registerSuite('ComboBox', {
 
 		'menu closes on result selection'() {
 			const onChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				onChange
 			}));
@@ -286,7 +283,7 @@ registerSuite('ComboBox', {
 		'keyboard opens and closes menu'() {
 			const onRequestResults = sinon.stub();
 			const preventDefault = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				onRequestResults
 			}));
@@ -301,7 +298,7 @@ registerSuite('ComboBox', {
 		},
 
 		'listbox onActiveIndexChange'() {
-			const h = createHarnessWithCompare(() => w(ComboBox, testProperties ));
+			const h = harness(() => w(ComboBox, testProperties ));
 			h.trigger(`.${css.trigger}`, 'onclick');
 			h.trigger(`@listbox`, 'onActiveIndexChange', 1);
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { activeIndex: 1 }));
@@ -309,7 +306,7 @@ registerSuite('ComboBox', {
 
 		'keyboard navigates options'() {
 			const preventDefault = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, testProperties ));
+			const h = harness(() => w(ComboBox, testProperties ));
 			h.trigger(`.${css.trigger}`, 'onclick');
 			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Down, preventDefault });
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true, activeIndex: 1 }));
@@ -328,7 +325,7 @@ registerSuite('ComboBox', {
 
 		'enter and space select option'() {
 			const onChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				onChange
 			}));
@@ -351,7 +348,7 @@ registerSuite('ComboBox', {
 		'disabled options are not selected'() {
 			const onChange = sinon.stub();
 			const preventDefault = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				isResultDisabled: (result: any) => !!result.disabled,
 				onChange
@@ -371,7 +368,7 @@ registerSuite('ComboBox', {
 		'keyboard does not trigger onChange with no results'() {
 			const onChange = sinon.stub();
 			const preventDefault = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, { onChange }));
+			const h = harness(() => w(ComboBox, { onChange }));
 			h.trigger(`.${css.trigger}`, 'onclick');
 			h.expect(() => getExpectedVdom(false, true, false, {}, true));
 
@@ -383,7 +380,7 @@ registerSuite('ComboBox', {
 
 		'clear button clears input'() {
 			const onChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				onChange
 			}));
@@ -392,7 +389,7 @@ registerSuite('ComboBox', {
 		},
 
 		'inputProperties transferred to child input'() {
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				inputProperties: {
 					placeholder: 'foo'
 				}
@@ -423,7 +420,7 @@ registerSuite('ComboBox', {
 
 		'input opens on focus with openOnFocus'() {
 			const onFocus = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				openOnFocus: true,
 				onFocus
@@ -436,7 +433,7 @@ registerSuite('ComboBox', {
 
 		'widget states render correctly'() {
 			let invalid = true;
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				disabled: true,
 				invalid,
@@ -533,7 +530,7 @@ registerSuite('ComboBox', {
 		'disabled state blocks menu opening'() {
 			const onMenuChange = sinon.stub();
 			const onRequestResults = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				disabled: true,
 				onMenuChange,
@@ -551,7 +548,7 @@ registerSuite('ComboBox', {
 		'readOnly state blocks menu opening'() {
 			const onMenuChange = sinon.stub();
 			const onRequestResults = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, {
+			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				readOnly: true,
 				onMenuChange,
@@ -569,7 +566,7 @@ registerSuite('ComboBox', {
 
 		'hover and keyboard events toggle visualFocus'() {
 			const preventDefault = sinon.stub();
-			const h = createHarnessWithCompare(() => w(ComboBox, { ...testProperties }));
+			const h = harness(() => w(ComboBox, { ...testProperties }));
 			h.expect(() =>  getExpectedVdom(true, false, true));
 			h.trigger(`.${css.trigger}`, 'onclick');
 			h.trigger(`@textinput`, 'onKeyDown', { which: Keys.Up, preventDefault });

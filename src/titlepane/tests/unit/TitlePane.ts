@@ -1,21 +1,20 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import TitlePane, { TitlePaneProperties } from '../../TitlePane';
 import * as css from '../../../theme/titlepane/titlePane.m.css';
 import * as fixedCss from '../../styles/titlePane.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import {
+	compareId,
+	compareAriaControls,
+	compareAriaLabelledBy,
+	createHarness,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' && property.length > 0 };
-const compareAriaLabelledby = { selector: '*', property: 'aria-labelledby', comparator: (property: any) => typeof property === 'string' && property.length > 0 };
-const compareArialControls = { selector: '*', property: 'aria-controls', comparator: (property: any) => typeof property === 'string' && property.length > 0 };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareAriaLabelledby, compareArialControls ]);
-};
+const harness = createHarness([ compareId, compareAriaLabelledBy, compareAriaControls ]);
 
 interface TestEventInit extends EventInit {
 	keyCode: number;
@@ -25,7 +24,7 @@ registerSuite('TitlePane', {
 
 	tests: {
 		'default rendering'() {
-			const h = createHarnessWithCompare(() => w(TitlePane, { title: 'test' }));
+			const h = harness(() => w(TitlePane, { title: 'test' }));
 
 			h.expect(() => v('div', {
 				classes: [ css.root, css.open, fixedCss.rootFixed ]
@@ -69,7 +68,7 @@ registerSuite('TitlePane', {
 		},
 
 		'Should construct with the passed properties'() {
-			const h = createHarnessWithCompare(() => w(TitlePane, {
+			const h = harness(() => w(TitlePane, {
 				closeable: false,
 				headingLevel: 5,
 				open: false,
@@ -119,7 +118,7 @@ registerSuite('TitlePane', {
 
 		'click title to close'() {
 			let called = false;
-			const h = createHarnessWithCompare(() => w(TitlePane, {
+			const h = harness(() => w(TitlePane, {
 				closeable: true,
 				onRequestClose() {
 					called = true;
@@ -133,7 +132,7 @@ registerSuite('TitlePane', {
 
 		'click title to open'() {
 			let called = false;
-			const h = createHarnessWithCompare(() => w(TitlePane, {
+			const h = harness(() => w(TitlePane, {
 				closeable: true,
 				open: false,
 				onRequestOpen() {
@@ -155,7 +154,7 @@ registerSuite('TitlePane', {
 				},
 				title: 'test'
 			};
-			const h = createHarnessWithCompare(() => w(TitlePane, properties));
+			const h = harness(() => w(TitlePane, properties));
 			h.trigger(`.${css.titleButton}`, 'onclick');
 
 			properties = {

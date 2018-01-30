@@ -3,19 +3,13 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
-import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Radio from '../../Radio';
 import * as css from '../../../theme/radio/radio.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import { createHarness, compareId, compareForId, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
-const noop = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareForId ]);
-};
+const harness = createHarness([ compareId, compareForId ]);
 
 interface States {
 	invalid?: boolean;
@@ -83,12 +77,12 @@ registerSuite('Radio', {
 
 	tests: {
 		'default properties'() {
-			const h = createHarnessWithCompare(() => w(Radio, {}));
+			const h = harness(() => w(Radio, {}));
 			h.expect(expected);
 		},
 
 		'custom properties'() {
-			const h = createHarnessWithCompare(() => w(Radio, {
+			const h = harness(() => w(Radio, {
 				aria: { describedBy: 'foo' },
 				checked: true,
 				id: 'foo',
@@ -111,7 +105,7 @@ registerSuite('Radio', {
 		},
 
 		'label'() {
-			const h = createHarnessWithCompare(() => w(Radio, {
+			const h = harness(() => w(Radio, {
 				label: 'foo'
 			}));
 			h.expect(() => expected({ label: true }));
@@ -125,7 +119,7 @@ registerSuite('Radio', {
 				required: true,
 				label: 'foo'
 			};
-			const h = createHarnessWithCompare(() => w(Radio, properties));
+			const h = harness(() => w(Radio, properties));
 			h.expect(() => expected({
 				label: true,
 				rootOverrides: {
@@ -149,7 +143,7 @@ registerSuite('Radio', {
 		},
 
 		'focused class'() {
-			const h = createHarnessWithCompare(() => w(Radio, {}));
+			const h = harness(() => w(Radio, {}));
 			h.trigger('input', 'onfocus');
 			h.expect(() => expected({
 				rootOverrides: {
@@ -171,7 +165,7 @@ registerSuite('Radio', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = createHarnessWithCompare(() => w(Radio, {
+			const h = harness(() => w(Radio, {
 				onBlur,
 				onChange,
 				onClick,

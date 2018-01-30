@@ -4,20 +4,15 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
-import harness from '@dojo/test-extras/harness';
 
 import EnhancedTextInput from '../../EnhancedTextInput';
 import Label from '../../../label/Label';
 import * as css from '../../../theme/enhancedtextinput/enhancedtextinput.m.css';
 import * as textInputCss from '../../../theme/textinput/textinput.m.css';
-import { WNode, VNodeProperties } from '@dojo/widget-core/interfaces';
+import { VNodeProperties } from '@dojo/widget-core/interfaces';
+import { createHarness, compareId, compareForId, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
-const noop = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareForId ]);
-};
+const harness = createHarness([ compareId, compareForId ]);
 
 interface States {
 	invalid?: boolean;
@@ -114,17 +109,17 @@ registerSuite('EnhancedTextInput', {
 
 	tests: {
 		'addon before'() {
-			const h = createHarnessWithCompare(() => w(EnhancedTextInput, { addonBefore: [ 'foo' ]}));
+			const h = harness(() => w(EnhancedTextInput, { addonBefore: [ 'foo' ]}));
 			h.expect(() => expected({ addonBefore: true }));
 		},
 
 		'addon after'() {
-			const h = createHarnessWithCompare(() => w(EnhancedTextInput, { addonAfter: [ 'bar' ]}));
+			const h = harness(() => w(EnhancedTextInput, { addonAfter: [ 'bar' ]}));
 			h.expect(() => expected({ addonAfter: true }));
 		},
 
 		'addons before and after'() {
-			const h = createHarnessWithCompare(() => w(EnhancedTextInput, {
+			const h = harness(() => w(EnhancedTextInput, {
 				addonBefore: [ 'foo' ],
 				addonAfter: [ 'bar' ]
 			}));
@@ -133,12 +128,12 @@ registerSuite('EnhancedTextInput', {
 
 		'preserves TextInput functionality': {
 			'default properties'() {
-				const h = createHarnessWithCompare(() => w(EnhancedTextInput, {}));
+				const h = harness(() => w(EnhancedTextInput, {}));
 				h.expect(expected);
 			},
 
 			'custom properties'() {
-				const h = createHarnessWithCompare(() => w(EnhancedTextInput, {
+				const h = harness(() => w(EnhancedTextInput, {
 					aria: {
 						controls: 'foo',
 						describedBy: 'bar'
@@ -166,7 +161,7 @@ registerSuite('EnhancedTextInput', {
 			},
 
 			'label'() {
-				const h = createHarnessWithCompare(() => w(EnhancedTextInput, {
+				const h = harness(() => w(EnhancedTextInput, {
 					label: 'foo'
 				}));
 				h.expect(() => expected({ label: true }));
@@ -179,7 +174,7 @@ registerSuite('EnhancedTextInput', {
 					readOnly: true,
 					required: true
 				};
-				const h = createHarnessWithCompare(() => w(EnhancedTextInput, states));
+				const h = harness(() => w(EnhancedTextInput, states));
 				h.expect(() => expected({
 					states
 				}));
@@ -199,7 +194,7 @@ registerSuite('EnhancedTextInput', {
 					readOnly: true,
 					required: true
 				};
-				const h = createHarnessWithCompare(() => w(EnhancedTextInput, { label: 'foo', ...states }));
+				const h = harness(() => w(EnhancedTextInput, { label: 'foo', ...states }));
 				h.expect(() => expected({ label: true, states }));
 			},
 
@@ -218,7 +213,7 @@ registerSuite('EnhancedTextInput', {
 				const onTouchEnd = sinon.stub();
 				const onTouchCancel = sinon.stub();
 
-				const h = createHarnessWithCompare(() => w(EnhancedTextInput, {
+				const h = harness(() => w(EnhancedTextInput, {
 					onBlur,
 					onChange,
 					onClick,

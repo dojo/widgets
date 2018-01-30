@@ -6,8 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 
 import CalendarCell from '../../CalendarCell';
 import * as css from '../../../theme/calendar/calendar.m.css';
-
-const noop = () => {};
+import { noop } from '../../../common/tests/support/test-helpers';
 
 registerSuite('CalendarCell', {
 	tests: {

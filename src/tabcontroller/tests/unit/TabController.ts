@@ -4,21 +4,22 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
-import harness from '@dojo/test-extras/harness';
+import { DNode } from '@dojo/widget-core/interfaces';
 
 import TabController, { Align } from '../../TabController';
 import TabButton from '../../TabButton';
 import Tab from '../../Tab';
 import * as css from '../../../theme/tabcontroller/tabController.m.css';
+import {
+	createHarness,
+	compareId,
+	isStringComparator,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareAriaControls = { selector: '*', property: 'controls', comparator: (property: any) => typeof property === 'string' };
-const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareAriaControls, compareLabelledBy ]);
-};
+const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
+const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
+const harness = createHarness([ compareId, compareControls, compareLabelledBy ]);
 
 const tabChildren = function(tabs = 2) {
 	const children = [
@@ -142,7 +143,7 @@ registerSuite('TabController', {
 	tests: {
 		'default properties'() {
 			let children: any[] = [];
-			const h = createHarnessWithCompare(() => w(TabController, {
+			const h = harness(() => w(TabController, {
 				activeIndex: 0
 			}, children));
 			let tabButtons = expectedTabButtons(true);
@@ -156,7 +157,7 @@ registerSuite('TabController', {
 		},
 
 		'aria properties'() {
-			const h = createHarnessWithCompare(() => w(TabController, {
+			const h = harness(() => w(TabController, {
 				activeIndex: 0,
 				aria: {
 					describedBy: 'foo',
@@ -172,7 +173,7 @@ registerSuite('TabController', {
 				activeIndex: 0,
 				alignButtons: Align.bottom
 			};
-			const h = createHarnessWithCompare(() => w(TabController, properties, tabChildren()));
+			const h = harness(() => w(TabController, properties, tabChildren()));
 
 			let tabButtons = expectedTabButtons();
 			let tabContent = expectedTabContent();
@@ -196,7 +197,7 @@ registerSuite('TabController', {
 
 		'Clicking tab should change activeIndex'() {
 			const onRequestTabChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(TabController, {
+			const h = harness(() => w(TabController, {
 				activeIndex: 2,
 				onRequestTabChange
 			}, tabChildren(3)));
@@ -213,7 +214,7 @@ registerSuite('TabController', {
 
 		'Closing a tab should change tabs'() {
 			const onRequestTabClose = sinon.stub();
-			const h = createHarnessWithCompare(() => w(TabController, {
+			const h = harness(() => w(TabController, {
 				activeIndex: 2,
 				onRequestTabClose
 			}, tabChildren(3)));
@@ -225,7 +226,7 @@ registerSuite('TabController', {
 
 		'Basic keyboard navigation'() {
 			const onRequestTabChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(TabController, {
+			const h = harness(() => w(TabController, {
 				activeIndex: 2,
 				onRequestTabChange
 			}, tabChildren(5)));
@@ -255,7 +256,7 @@ registerSuite('TabController', {
 				activeIndex: 0,
 				onRequestTabChange
 			};
-			const h = createHarnessWithCompare(() => w(TabController, properties, tabChildren(3)));
+			const h = harness(() => w(TabController, properties, tabChildren(3)));
 
 			h.trigger('@0-tabbutton', 'onLeftArrowPress', 2);
 			assert.isTrue(onRequestTabChange.calledWith(2), 'Left arrow wraps from first to last tab');
@@ -275,7 +276,7 @@ registerSuite('TabController', {
 				alignButtons: Align.right,
 				onRequestTabChange
 			};
-			const h = createHarnessWithCompare(() => w(TabController, properties, tabChildren(5)));
+			const h = harness(() => w(TabController, properties, tabChildren(5)));
 
 			h.trigger('@0-tabbutton', 'onDownArrowPress', 0);
 			assert.strictEqual(onRequestTabChange.getCall(0).args[0], 2, 'Down arrow moves to next tab, skipping disabled tab');
@@ -300,7 +301,7 @@ registerSuite('TabController', {
 
 		'Should default to last tab if invalid activeIndex passed'() {
 			const onRequestTabChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(TabController, {
+			const h = harness(() => w(TabController, {
 				activeIndex: 5,
 				onRequestTabChange
 			}, tabChildren(5)));
@@ -311,7 +312,7 @@ registerSuite('TabController', {
 
 		'Should skip tab if activeIndex is disabled'() {
 			const onRequestTabChange = sinon.stub();
-			const h = createHarnessWithCompare(() => w(TabController, {
+			const h = harness(() => w(TabController, {
 				activeIndex: 1,
 				onRequestTabChange
 			}, tabChildren(5)));
@@ -334,7 +335,7 @@ registerSuite('TabController', {
 					label: 'foo'
 				}, [ 'tab content 2' ])
 			];
-			const h = createHarnessWithCompare(() => w(TabController, properties, children));
+			const h = harness(() => w(TabController, properties, children));
 
 			let tabButtons = v('div', {
 				key: 'buttons',

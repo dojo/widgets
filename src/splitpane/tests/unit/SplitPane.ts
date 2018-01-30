@@ -1,6 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-import { stub, SinonStub } from 'sinon';
+import { stub } from 'sinon';
 
 import { v, w, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
@@ -9,18 +9,8 @@ import * as css from '../../../theme/splitpane/splitPane.m.css';
 import * as fixedCss from '../../styles/splitPane.m.css';
 import SplitPane, { Direction } from '../../SplitPane';
 import { GlobalEvent } from '../../../global-event/GlobalEvent';
-import { Constructor, WidgetMetaBase, WidgetMetaConstructor } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
-
-const noop: any = () => {};
-export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(Base: T, mockStub: SinonStub): T {
-	return class extends Base {
-		protected meta<T extends WidgetMetaBase>(MetaType: WidgetMetaConstructor<T>): T {
-			return mockStub(MetaType);
-		}
-	};
-}
+import { noop, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
 function createVNodeSelector(type: 'window' | 'document', name: string) {
 	return (node: any) => {

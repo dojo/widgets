@@ -10,12 +10,11 @@ import { assign } from '@dojo/core/lang';
 
 import TabButton, { TabButtonProperties } from '../../TabButton';
 import * as css from '../../../theme/tabcontroller/tabController.m.css';
+import { noop } from '../../../common/tests/support/test-helpers';
 
 interface KeyboardEventInit extends EventInit {
 	which: number;
 }
-
-const noop: any = () => {};
 
 const props = function(props = {}) {
 	return assign({

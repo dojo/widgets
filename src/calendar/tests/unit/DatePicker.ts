@@ -10,6 +10,11 @@ import DatePicker from '../../DatePicker';
 import * as css from '../../../theme/calendar/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
+import {
+	compareAriaLabelledBy,
+	compareAriaControls,
+	compareId
+} from '../../../common/tests/support/test-helpers';
 
 const noop = () => {};
 const testDate = new Date('June 3 2017');
@@ -21,9 +26,6 @@ const requiredProps = {
 };
 let customProps: any = {};
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareLabelledBy = { selector: '*', property: 'aria-labelledby', comparator: (property: any) => typeof property === 'string' };
-const compareControls = { selector: '*', property: 'aria-controls', comparator: (property: any) => typeof property === 'string' };
 const compareKey = { selector: 'label,input', property: 'key', comparator: (property: any) => typeof property === 'string' };
 const compareName = { selector: 'input', property: 'name', comparator: (property: any) => typeof property === 'string' };
 
@@ -200,7 +202,7 @@ registerSuite('Calendar DatePicker', {
 		'Popup should render with default properties'() {
 			const h = harness(() => w(DatePicker, {
 				...requiredProps
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
 			h.expect(() => expected());
 		},
@@ -215,7 +217,7 @@ registerSuite('Calendar DatePicker', {
 				renderMonthLabel: () => { return 'bar'; },
 				...customProps,
 				...requiredProps
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
 			h.expect(() => expected(false, false, { yearStart: 2000, yearEnd: 2025, monthLabel: 'bar'}));
 		},
@@ -273,7 +275,7 @@ registerSuite('Calendar DatePicker', {
 			const h = harness(() => w(DatePicker, {
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 			h.expect(() => expected(false, false));
 
 			h.trigger('@month-button', 'onclick');
@@ -290,7 +292,7 @@ registerSuite('Calendar DatePicker', {
 			const h = harness(() => w(DatePicker, {
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 			h.expect(() => expected(false, false));
 
 			// escape key
@@ -328,7 +330,7 @@ registerSuite('Calendar DatePicker', {
 			const h = harness(() => w(DatePicker, {
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 			h.expect(() => expected(false, false));
 
 			// escape key
@@ -364,7 +366,7 @@ registerSuite('Calendar DatePicker', {
 		'Clicking buttons changes year page'() {
 			const h = harness(() => w(DatePicker, {
 				...requiredProps
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 			h.trigger('@year-button', 'onclick');
 			h.expect(() => expected(false, true));
 
@@ -382,7 +384,7 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps,
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				onRequestMonthChange: (month: number) => { currentMonth = month; }
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
 			h.trigger('@month-button', 'onclick');
 			assert.isTrue(isOpen, 'Month popup opens when clicking month button');
@@ -401,7 +403,7 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps,
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				onRequestYearChange: (year: number) => { currentYear = year; }
-			}), [ compareId, compareLabelledBy, compareControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
 			h.trigger('@year-button', 'onclick');
 			assert.isTrue(isOpen, 'Year popup opens when clicking month button');

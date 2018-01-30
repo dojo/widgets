@@ -8,6 +8,7 @@ import harness from '@dojo/test-extras/harness';
 import Label from '../../../label/Label';
 import Checkbox, { Mode, CheckboxProperties } from '../../Checkbox';
 import * as css from '../../../theme/checkbox/checkbox.m.css';
+import { noop } from '../../../common/tests/support/test-helpers';
 
 const expectedToggle = function(labels = false, checked = false) {
 	if (labels) {
@@ -39,7 +40,6 @@ const expectedToggle = function(labels = false, checked = false) {
 	];
 };
 
-const noop = () => {};
 const compareId = { selector: 'input', property: 'id', comparator: (property: any) => typeof property === 'string' };
 const compareForId = { selector: '@label', property: 'forId', comparator: (property: any) => typeof property === 'string' };
 

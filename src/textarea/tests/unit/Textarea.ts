@@ -3,19 +3,13 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
-import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Textarea from '../../Textarea';
 import * as css from '../../../theme/textarea/textarea.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import { compareForId, compareId, createHarness, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareForId ]);
-};
+const harness = createHarness([ compareId, compareForId ]);
 
 interface States {
 	disabled?: boolean;
@@ -80,12 +74,12 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 registerSuite('Textarea', {
 	tests: {
 		'default properties'() {
-			const h = createHarnessWithCompare(() => w(Textarea, {}));
+			const h = harness(() => w(Textarea, {}));
 			h.expect(expected);
 		},
 
 		'custom properties'() {
-			const h = createHarnessWithCompare(() => w(Textarea, {
+			const h = harness(() => w(Textarea, {
 				aria: { describedBy: 'foo' },
 				columns: 15,
 				id: 'foo',
@@ -113,7 +107,7 @@ registerSuite('Textarea', {
 		},
 
 		'label'() {
-			const h = createHarnessWithCompare(() => w(Textarea, {
+			const h = harness(() => w(Textarea, {
 				label: 'foo'
 			}));
 
@@ -128,7 +122,7 @@ registerSuite('Textarea', {
 				required: true
 			};
 
-			const h = createHarnessWithCompare(() => w(Textarea, properties));
+			const h = harness(() => w(Textarea, properties));
 
 			h.expect(() => expected(false, {}, properties));
 
@@ -156,7 +150,7 @@ registerSuite('Textarea', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = createHarnessWithCompare(() => w(Textarea, {
+			const h = harness(() => w(Textarea, {
 				onBlur,
 				onChange,
 				onClick,

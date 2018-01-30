@@ -2,24 +2,19 @@ const { assert } = intern.getPlugin('chai');
 const { registerSuite } = intern.getInterface('object');
 import * as sinon from 'sinon';
 
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
-import harness, { CustomComparator } from '@dojo/test-extras/harness';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../../../common/util';
-// import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-// import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import Listbox from '../../Listbox';
 import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';
 import * as css from '../../../theme/listbox/listbox.m.css';
+import { createHarness, compareId, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
 const compareKey = { selector: '*', property: 'key', comparator: (property: any) => typeof property === 'string' };
 const compareAriaActiveDescendant = { selector: '*', property: 'aria-activedescendant', comparator: (property: any) => typeof property === 'string' };
-const noop = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode, comparators: CustomComparator[] = []) => {
-	return harness(renderFunction, [ compareId, compareAriaActiveDescendant, ...comparators ]);
-};
+
+const harness = createHarness([ compareId, compareKey, compareAriaActiveDescendant ]);
 
 interface TestEventInit extends EventInit {
 	which: number;
@@ -123,19 +118,19 @@ const expectedVdom = function(options: DNode[] = []) {
 registerSuite('Listbox', {
 	tests: {
 		'empty listbox'() {
-			const h = createHarnessWithCompare(() =>  w(Listbox, {}));
+			const h = harness(() =>  w(Listbox, {}));
 			h.expect(() => expectedVdom());
 		},
 
 		'options with default properties'() {
-			const h = createHarnessWithCompare(() =>  w(Listbox, {
+			const h = harness(() =>  w(Listbox, {
 				optionData: testOptions
 			}), [ compareKey ]);
 			h.expect(() => expectedVdom(expectedOptions()));
 		},
 
 		'custom properties'() {
-			const h = createHarnessWithCompare(() =>  w(Listbox, {
+			const h = harness(() =>  w(Listbox, {
 				activeIndex: 0,
 				aria: { describedBy: 'foo' },
 				visualFocus: true,
@@ -183,14 +178,14 @@ registerSuite('Listbox', {
 
 		'onkeydown event'() {
 			const onKeyDown = sinon.stub();
-			const h = createHarnessWithCompare(() =>  w(Listbox, { onKeyDown }));
+			const h = harness(() => w(Listbox, { onKeyDown }));
 			h.trigger('@root', 'onkeydown', { eventInit: { which: Keys.Down } });
 			assert.isTrue(onKeyDown.called);
 		},
 
 		'arrow keys move active index'() {
 			const onActiveIndexChange = sinon.stub();
-			const h = createHarnessWithCompare(() =>  w(Listbox, {
+			const h = harness(() =>  w(Listbox, {
 				optionData: testOptions,
 				onActiveIndexChange
 			}));
@@ -202,7 +197,7 @@ registerSuite('Listbox', {
 
 		'home and end move active index'() {
 			const onActiveIndexChange = sinon.stub();
-			const h = createHarnessWithCompare(() =>  w(Listbox, {
+			const h = harness(() =>  w(Listbox, {
 				activeIndex: 1,
 				optionData: testOptions,
 				onActiveIndexChange
@@ -218,7 +213,7 @@ registerSuite('Listbox', {
 		'clicking selects option and moves active index'() {
 			const onActiveIndexChange = sinon.stub();
 			const onOptionSelect = sinon.stub();
-			const h = createHarnessWithCompare(() =>  w(Listbox, {
+			const h = harness(() =>  w(Listbox, {
 				activeIndex: 1,
 				optionData: testOptions,
 				onActiveIndexChange,
@@ -238,7 +233,7 @@ registerSuite('Listbox', {
 				optionData: testOptions,
 				onOptionSelect
 			};
-			const h = createHarnessWithCompare(() =>  w(Listbox, properties));
+			const h = harness(() =>  w(Listbox, properties));
 
 			h.trigger('@root', 'onkeydown', { which: Keys.Enter, preventDefault: sinon.stub() });
 			assert.isTrue(onOptionSelect.calledWith(testOptions[1], 1, 'foo'), 'Enter key selects option');
@@ -255,7 +250,7 @@ registerSuite('Listbox', {
 
 		'disabled options are not selected'() {
 			const onOptionSelect = sinon.stub();
-			const h = createHarnessWithCompare(() =>  w(Listbox, {
+			const h = harness(() =>  w(Listbox, {
 				activeIndex: 2,
 				optionData: testOptions,
 				getOptionDisabled: (option: any) => !!option.disabled,
@@ -303,7 +298,7 @@ registerSuite('Listbox', {
 					return new StubMeta();
 				}
 			}
-			createHarnessWithCompare(() =>  w(ScrollListbox, { activeIndex: 3 }));
+			harness(() =>  w(ScrollListbox, { activeIndex: 3 }));
 			assert.isTrue(scrollStub.calledWith('root', 150));
 		},
 
@@ -337,7 +332,7 @@ registerSuite('Listbox', {
 					return new StubDimensions();
 				}
 			}
-			createHarnessWithCompare(() =>  w(ScrollListbox, { activeIndex: 0 }));
+			harness(() =>  w(ScrollListbox, { activeIndex: 0 }));
 			assert.isTrue(scrollStub.calledWith('root', 100));
 		}
 	}

@@ -4,19 +4,13 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
-import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import TextInput from '../../TextInput';
 import * as css from '../../../theme/textinput/textinput.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import { compareForId, compareId, createHarness, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareForId ]);
-};
+const harness = createHarness([ compareId, compareForId ]);
 
 interface States {
 	disabled?: boolean;
@@ -79,12 +73,12 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 registerSuite('TextInput', {
 	tests: {
 		'default properties'() {
-			const h = createHarnessWithCompare(() => w(TextInput, {}));
+			const h = harness(() => w(TextInput, {}));
 			h.expect(expected);
 		},
 
 		'custom properties'() {
-			const h = createHarnessWithCompare(() => w(TextInput, {
+			const h = harness(() => w(TextInput, {
 				aria: {
 					controls: 'foo',
 					describedBy: 'bar'
@@ -112,7 +106,7 @@ registerSuite('TextInput', {
 		},
 
 		'label'() {
-			const h = createHarnessWithCompare(() => w(TextInput, {
+			const h = harness(() => w(TextInput, {
 				label: 'foo'
 			}));
 
@@ -126,7 +120,7 @@ registerSuite('TextInput', {
 				readOnly: true,
 				required: true
 			};
-			const h = createHarnessWithCompare(() => w(TextInput, properties));
+			const h = harness(() => w(TextInput, properties));
 			h.expect(() => expected(false, {}, properties));
 
 			properties = {
@@ -153,7 +147,7 @@ registerSuite('TextInput', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = createHarnessWithCompare(() => w(TextInput, {
+			const h = harness(() => w(TextInput, {
 				onBlur,
 				onChange,
 				onClick,

@@ -8,10 +8,7 @@ import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
 import * as css from '../../../theme/timepicker/timePicker.m.css';
 import ComboBox from '../../../combobox/ComboBox';
 import Label from '../../../label/Label';
-
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
+import { noop, compareId, compareForId } from '../../../common/tests/support/test-helpers';
 
 registerSuite('TimePicker', {
 

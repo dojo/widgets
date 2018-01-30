@@ -7,8 +7,7 @@ import { v, w } from '@dojo/widget-core/d';
 
 import ListboxOption from '../../ListboxOption';
 import * as css from '../../../theme/listbox/listbox.m.css';
-
-const noop = () => {};
+import { noop } from '../../../common/tests/support/test-helpers';
 
 registerSuite('ListboxOption', {
 	tests: {

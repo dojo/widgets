@@ -1,7 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -12,17 +11,16 @@ import DatePicker from '../../DatePicker';
 import * as css from '../../../theme/calendar/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import {
+	compareId,
+	createHarness,
+	compareAriaLabelledBy,
+	compareLabelId,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
 const testDate = new Date('June 3 2017');
-
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareLabelId = { selector: '*', property: 'labelId', comparator: (property: any) => typeof property === 'string' };
-const compareAriaLabelledBy = { selector: '*', property: 'aria-labelledby', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareLabelId, compareAriaLabelledBy ]);
-};
+const harness = createHarness([ compareId, compareLabelId, compareAriaLabelledBy ]);
 
 let dateIndex = -1;
 const expectedDateCell = function(date: number, active: boolean, selectedIndex = 0) {
@@ -167,7 +165,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 registerSuite('Calendar', {
 	tests: {
 		'Render specific month with default props'() {
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear()
 			}));
@@ -175,7 +173,7 @@ registerSuite('Calendar', {
 		},
 
 		'Render specific month and year with selectedDate'() {
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				selectedDate: testDate
 			}));
 
@@ -194,7 +192,7 @@ registerSuite('Calendar', {
 				renderMonthLabel: (month: number, year: number) => 'Foo',
 				renderWeekdayCell: (day: { short: string; long: string; }) => 'Bar'
 			};
-			const h = createHarnessWithCompare(() => w(Calendar, properties));
+			const h = harness(() => w(Calendar, properties));
 
 			h.expect(() => expected(false, 4, 'Bar', true, 'foo'));
 			properties = {
@@ -206,7 +204,7 @@ registerSuite('Calendar', {
 
 		'Click to select date'() {
 			let selectedDate = testDate;
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear(),
 				onDateSelect: (date: Date) => {
@@ -233,7 +231,7 @@ registerSuite('Calendar', {
 					selectedDate = date;
 				}
 			};
-			const h = createHarnessWithCompare(() => w(Calendar, properties));
+			const h = harness(() => w(Calendar, properties));
 
 			h.trigger('@date-34', 'onClick', 1, true);
 			assert.strictEqual(currentMonth, 6, 'Month changes to July');
@@ -248,7 +246,7 @@ registerSuite('Calendar', {
 
 		'Keyboard date select'() {
 			let selectedDate = testDate;
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear(),
 				onDateSelect: (date: Date) => {
@@ -331,7 +329,7 @@ registerSuite('Calendar', {
 
 		'Arrow keys can change month'() {
 			let currentMonth = testDate.getMonth();
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				year: testDate.getFullYear(),
 				onMonthChange: (month: number) => {
@@ -369,7 +367,7 @@ registerSuite('Calendar', {
 					currentYear = year;
 				}
 			};
-			const h = createHarnessWithCompare(() => w(Calendar, properties));
+			const h = harness(() => w(Calendar, properties));
 
 			h.trigger('@date-0', 'onKeyDown', {
 				which: Keys.Up,
@@ -402,7 +400,7 @@ registerSuite('Calendar', {
 		'Month popup events change month and year'() {
 			let currentMonth = testDate.getMonth();
 			let currentYear = testDate.getFullYear();
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				year: currentYear,
 				onMonthChange: (month: number) => {
@@ -422,7 +420,7 @@ registerSuite('Calendar', {
 
 		'Previous button should decrement month'() {
 			let currentMonth = testDate.getMonth();
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				onMonthChange: (month: number) => {
 					currentMonth = month;
@@ -435,7 +433,7 @@ registerSuite('Calendar', {
 
 		'Next button should increment month'() {
 			let currentMonth = testDate.getMonth();
-			const h = createHarnessWithCompare(() => w(Calendar, {
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				onMonthChange: (month: number) => {
 					currentMonth = month;
@@ -448,7 +446,7 @@ registerSuite('Calendar', {
 
 		'onPopupChange should control visibility'() {
 			let properties: any = {};
-			const h = createHarnessWithCompare(() => w(Calendar, properties));
+			const h = harness(() => w(Calendar, properties));
 			h.trigger('@date-picker', 'onPopupChange', true);
 			properties = {
 				month: testDate.getMonth(),

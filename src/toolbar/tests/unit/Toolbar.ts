@@ -10,19 +10,8 @@ import SlidePane, { Align } from '../../../slidepane/SlidePane';
 import * as fixedCss from '../../styles/toolbar.m.css';
 import * as css from '../../../theme/toolbar/toolbar.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
-import { Constructor, WidgetMetaBase, WidgetMetaConstructor } from '@dojo/widget-core/interfaces';
-import { SinonStub } from 'sinon';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { GlobalEvent } from '../../../global-event/GlobalEvent';
-
-const noop: any = () => {};
-export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(Base: T, mockStub: SinonStub): T {
-	return class extends Base {
-		protected meta<T extends WidgetMetaBase>(MetaType: WidgetMetaConstructor<T>): T {
-			return mockStub(MetaType);
-		}
-	};
-}
+import { noop, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
 registerSuite('Toolbar', {
 	tests: {

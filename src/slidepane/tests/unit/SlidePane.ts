@@ -2,20 +2,19 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { v, w } from '@dojo/widget-core/d';
-import harness from '@dojo/test-extras/harness';
 
 import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../../theme/slidepane/slidePane.m.css';
 import * as fixedCss from '../../styles/slidePane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import {
+	createHarness,
+	compareId,
+	compareAriaLabelledBy,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareAriaLabelledBy = { selector: '*', property: 'aria-labelledby', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareAriaLabelledBy ]);
-};
+const harness = createHarness([ compareId, compareAriaLabelledBy ]);
 
 const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 	Quisque id purus ipsum. Aenean ac purus purus.
@@ -25,7 +24,7 @@ registerSuite('SlidePane', {
 
 	tests: {
 		'Should construct SlidePane with passed properties'() {
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				key: 'foo',
 				align: Align.left,
 				aria: { describedBy: 'foo' },
@@ -80,11 +79,11 @@ registerSuite('SlidePane', {
 						classes: css.content
 					}, [ GREEKING ])
 				])
-			]));
+			]), () => h.getRender());
 		},
 
 		'Render correct children'() {
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				key: 'foo',
 				underlay: false
 			}));
@@ -133,7 +132,7 @@ registerSuite('SlidePane', {
 
 		onOpen() {
 			let called = false;
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onOpen() {
 					called = true;
@@ -148,7 +147,7 @@ registerSuite('SlidePane', {
 			let properties = {
 				open: true
 			};
-			const h = createHarnessWithCompare(() => w(SlidePane, properties));
+			const h = harness(() => w(SlidePane, properties));
 
 			h.expect(() => v('div', {
 				'aria-labelledby': '',
@@ -243,7 +242,7 @@ registerSuite('SlidePane', {
 
 		'click underlay to close'() {
 			let called = false;
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
@@ -261,7 +260,7 @@ registerSuite('SlidePane', {
 		'click close button to close'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				title: 'foo',
 				closeText: 'close',
@@ -277,7 +276,7 @@ registerSuite('SlidePane', {
 		'tap underlay to close'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
@@ -296,7 +295,7 @@ registerSuite('SlidePane', {
 		'drag to close'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
@@ -319,7 +318,7 @@ registerSuite('SlidePane', {
 		'swipe to close'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
@@ -348,7 +347,7 @@ registerSuite('SlidePane', {
 		'swipe to close top'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				align: Align.top,
 				onRequestClose() {
@@ -378,7 +377,7 @@ registerSuite('SlidePane', {
 		'swipe to close right'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				align: Align.right,
 				open: true,
 				width: 320,
@@ -405,7 +404,7 @@ registerSuite('SlidePane', {
 		'swipe to close bottom'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				align: Align.bottom,
 				open: true,
 				width: 320,
@@ -432,7 +431,7 @@ registerSuite('SlidePane', {
 		'not dragged far enough to close'() {
 			let called = false;
 
-			const h = createHarnessWithCompare(() => w(SlidePane, {
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
@@ -507,8 +506,8 @@ registerSuite('SlidePane', {
 			let properties = {
 				open: true
 			};
-			const h = createHarnessWithCompare(() => w(SlidePane, properties, [ GREEKING ]));
-			h.expect(() => expected(true, false));
+			const h = harness(() => w(SlidePane, properties, [ GREEKING ]));
+			h.expect(() => expected(true, false), () => h.getRender());
 			h.trigger('@content', 'transitionend');
 			h.expect(() => expected(true, true));
 			properties.open = false;
@@ -522,7 +521,7 @@ registerSuite('SlidePane', {
 			let properties = {
 				open: true
 			};
-			const h = createHarnessWithCompare(() => w(SlidePane, properties, [ GREEKING ]));
+			const h = harness(() => w(SlidePane, properties, [ GREEKING ]));
 
 			function expected(closed: boolean, swipeState: any = {}) {
 				return v('div', {
@@ -574,7 +573,7 @@ registerSuite('SlidePane', {
 				]);
 			}
 
-			h.expect(() => expected(false));
+			h.expect(() => expected(false), () => h.getRender());
 			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300 });
 			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 150 });
 			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 50 });
@@ -656,7 +655,7 @@ registerSuite('SlidePane', {
 				align: Align.right,
 				open: true
 			};
-			const h = createHarnessWithCompare(() => w(SlidePane, properties));
+			const h = harness(() => w(SlidePane, properties));
 
 			h.expect(expected);
 			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300 });

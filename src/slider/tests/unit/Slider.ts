@@ -2,21 +2,15 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
-import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Slider from '../../Slider';
 import * as css from '../../../theme/slider/slider.m.css';
 import * as fixedCss from '../../styles/slider.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import { compareId, compareForId, createHarness, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '*', property: 'forId', comparator: (property: any) => typeof property === 'string' };
 const compareFor = { selector: '*', property: 'for', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareForId, compareFor ]);
-};
+const harness = createHarness([ compareId, compareForId, compareFor ]);
 
 const expected = function(label = false, tooltip = false, overrides = {}, child = '0', progress = '0%') {
 
@@ -95,12 +89,12 @@ registerSuite('Slider', {
 
 	tests: {
 		'default properties'() {
-			const h = createHarnessWithCompare(() => w(Slider, {}));
+			const h = harness(() => w(Slider, {}));
 			h.expect(expected);
 		},
 
 		'custom properties'() {
-			const h = createHarnessWithCompare(() => w(Slider, {
+			const h = harness(() => w(Slider, {
 				aria: { describedBy: 'foo' },
 				id: 'foo',
 				max: 60,
@@ -125,7 +119,7 @@ registerSuite('Slider', {
 
 		'vertical slider': {
 			'default properties'() {
-				const h = createHarnessWithCompare(() => w(Slider, {
+				const h = harness(() => w(Slider, {
 					vertical: true
 				}));
 
@@ -198,7 +192,7 @@ registerSuite('Slider', {
 			},
 
 			'custom properties'() {
-				const h = createHarnessWithCompare(() => w(Slider, {
+				const h = harness(() => w(Slider, {
 					max: 10,
 					min: 5,
 					outputIsTooltip: true,
@@ -275,7 +269,7 @@ registerSuite('Slider', {
 		},
 
 		'max value should be respected'() {
-			const h = createHarnessWithCompare(() => w(Slider, {
+			const h = harness(() => w(Slider, {
 				max: 40,
 				value: 100
 			}));
@@ -343,7 +337,7 @@ registerSuite('Slider', {
 		},
 
 		'min value should be respected'() {
-			const h = createHarnessWithCompare(() => w(Slider, {
+			const h = harness(() => w(Slider, {
 				min: 30,
 				value: 20
 			}));
@@ -411,7 +405,7 @@ registerSuite('Slider', {
 		},
 
 		'label'() {
-			const h = createHarnessWithCompare(() => w(Slider, {
+			const h = harness(() => w(Slider, {
 				label: 'foo'
 			}));
 
@@ -425,7 +419,7 @@ registerSuite('Slider', {
 				readOnly: true,
 				required: true
 			};
-			const h = createHarnessWithCompare(() => w(Slider, properties));
+			const h = harness(() => w(Slider, properties));
 
 			h.expect(() => v('div', {
 				key: 'root',
@@ -572,7 +566,7 @@ registerSuite('Slider', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = createHarnessWithCompare(() => w(Slider, {
+			const h = harness(() => w(Slider, {
 				onBlur,
 				onChange,
 				onClick,

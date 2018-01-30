@@ -3,7 +3,6 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -12,14 +11,14 @@ import Listbox from '../../../listbox/Listbox';
 import Label from '../../../label/Label';
 import * as css from '../../../theme/select/select.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
-import { WNode } from '@dojo/widget-core/interfaces';
+import {
+	createHarness,
+	compareId,
+	noop,
+	compareAriaControls
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = { selector: '*', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareAriaControls = { selector: '*', property: 'aria-controls', comparator: (property: any) => typeof property === 'string' };
-const noop: any = () => {};
-const createHarnessWithCompare = (renderFunction: () => WNode) => {
-	return harness(renderFunction, [ compareId, compareAriaControls ]);
-};
+const harness = createHarness([ compareId, compareAriaControls ]);
 
 interface TestEventInit extends EventInit {
 	which: number;
@@ -204,7 +203,7 @@ registerSuite('Select', {
 
 		'Native Single Select': {
 			'default properties'() {
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					options: testOptions,
 					useNativeElement: true
 				}));
@@ -212,7 +211,7 @@ registerSuite('Select', {
 			},
 
 			'custom properties'() {
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					...testStateProperties,
 					useNativeElement: true
 				}));
@@ -225,7 +224,7 @@ registerSuite('Select', {
 				const onBlur = sinon.stub();
 				const onFocus = sinon.stub();
 
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					useNativeElement: true,
 					onBlur,
 					onFocus
@@ -238,7 +237,7 @@ registerSuite('Select', {
 
 			'onChange called with correct option'() {
 				const onChange = sinon.stub();
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					getOptionValue: testProperties.getOptionValue,
 					options: testOptions,
 					useNativeElement: true,
@@ -252,7 +251,7 @@ registerSuite('Select', {
 				const onBlur = sinon.stub();
 				const onFocus = sinon.stub();
 				const onChange = sinon.stub();
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					key: 'foo',
 					getOptionValue: testProperties.getOptionValue,
 					useNativeElement: true,
@@ -273,12 +272,12 @@ registerSuite('Select', {
 
 		'Custom Single-select': {
 			'default properties'() {
-				const h = createHarnessWithCompare(() => w(Select, {}));
+				const h = harness(() => w(Select, {}));
 				h.expect(() => expected(expectedSingle()));
 			},
 
 			'custom properties'() {
-				const h = createHarnessWithCompare(() => w(Select, testStateProperties));
+				const h = harness(() => w(Select, testStateProperties));
 				h.expect(() => expected(expectedSingle(true, true), {
 					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
 				}));
@@ -289,7 +288,7 @@ registerSuite('Select', {
 					...testProperties,
 					placeholder: 'foo'
 				};
-				const h = createHarnessWithCompare(() => w(Select, properties));
+				const h = harness(() => w(Select, properties));
 				h.expect(() => expected(expectedSingle(true)));
 				properties = {
 					...testProperties,
@@ -300,7 +299,7 @@ registerSuite('Select', {
 			},
 
 			'open/close on trigger click'() {
-				const h = createHarnessWithCompare(() => w(Select, testProperties));
+				const h = harness(() => w(Select, testProperties));
 				h.expect(() => expected(expectedSingle(true)));
 				h.trigger('@trigger', 'onclick');
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
@@ -311,7 +310,7 @@ registerSuite('Select', {
 			'select options'() {
 				const onChange = sinon.stub();
 
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					...testProperties,
 					options: testOptions,
 					onChange
@@ -334,7 +333,7 @@ registerSuite('Select', {
 
 			'default for getOptionSelected'() {
 				let properties: SelectProperties = { ...testProperties, getOptionSelected: undefined };
-				const h = createHarnessWithCompare(() => w(Select, properties));
+				const h = harness(() => w(Select, properties));
 				h.expect(() => expected(expectedSingle(true)));
 
 				const simpleOptions = ['one', 'two', 'three'];
@@ -401,14 +400,14 @@ registerSuite('Select', {
 			},
 
 			'change active option'() {
-				const h = createHarnessWithCompare(() => w(Select, testProperties));
+				const h = harness(() => w(Select, testProperties));
 				h.expect(() => expected(expectedSingle(true)));
 				h.trigger('@listbox', 'onActiveIndexChange', 1);
 				h.expect(() => expected(expectedSingle(true, false, false, '', 1)));
 			},
 
 			'open/close with keyboard'() {
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					...testProperties,
 					options: testOptions
 				}));
@@ -440,7 +439,7 @@ registerSuite('Select', {
 
 			'close on listbox blur'() {
 				const onBlur = sinon.stub();
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					...testProperties,
 					options: testOptions,
 					onBlur
@@ -456,7 +455,7 @@ registerSuite('Select', {
 
 			'close on trigger blur'() {
 				const onBlur = sinon.stub();
-				const h = createHarnessWithCompare(() => w(Select, {
+				const h = harness(() => w(Select, {
 					...testProperties,
 					options: testOptions,
 					onBlur
@@ -473,7 +472,7 @@ registerSuite('Select', {
 
 			'events called with widget key'() {
 				const onBlur = sinon.stub();
-				const h = createHarnessWithCompare(() => w(Select, { key: 'foo', onBlur }));
+				const h = harness(() => w(Select, { key: 'foo', onBlur }));
 
 				h.trigger('@trigger', 'onblur');
 				assert.isTrue(onBlur.calledWith('foo'), 'Trigger blur event called with foo key');
