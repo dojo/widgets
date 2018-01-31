@@ -56,29 +56,37 @@ registerSuite('GlobalEvent', {
 		'Registers window listeners on attach'() {
 			const widget = new TestGlobalEvent();
 			const globalEvent = () => {};
+			const focusEvent = () => {};
 			widget.__setProperties__({ window: { focus: globalEvent }, key: 'global' });
 			assert.strictEqual(windowAddEventlistenerStub.callCount, 1);
 			widget.__setProperties__({ window: { focus: globalEvent }, key: 'global' });
 			assert.strictEqual(windowAddEventlistenerStub.callCount, 1);
-			widget.__setProperties__({ window: { focus: () => {} }, key: 'global' });
-			assert.strictEqual(windowAddEventlistenerStub.callCount, 2);
+			widget.__setProperties__({ window: { focus: focusEvent, keydown: () => {} }, key: 'global' });
+			assert.strictEqual(windowAddEventlistenerStub.callCount, 3);
 			assert.strictEqual(windowRemoveEventlistenerStub.callCount, 1);
-			widget.onDetach();
+			widget.__setProperties__({ window: { focus: focusEvent }, key: 'global' });
+			assert.strictEqual(windowAddEventlistenerStub.callCount, 3);
 			assert.strictEqual(windowRemoveEventlistenerStub.callCount, 2);
+			widget.onDetach();
+			assert.strictEqual(windowRemoveEventlistenerStub.callCount, 3);
 		},
 
 		'Registers document listeners on attach'() {
 			const widget = new TestGlobalEvent();
 			const globalEvent = () => {};
+			const focusEvent = () => {};
 			widget.__setProperties__({ document: { focus: globalEvent }, key: 'global' });
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 1);
 			widget.__setProperties__({ document: { focus: globalEvent }, key: 'global' });
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 1);
-			widget.__setProperties__({ document: { focus: () => {} }, key: 'global' });
-			assert.strictEqual(documentAddEventlistenerStub.callCount, 2);
+			widget.__setProperties__({ document: { focus: focusEvent, keydown: () => {} }, key: 'global' });
+			assert.strictEqual(documentAddEventlistenerStub.callCount, 3);
 			assert.strictEqual(documentRemoveEventlistenerStub.callCount, 1);
-			widget.onDetach();
+			widget.__setProperties__({ document: { focus: focusEvent }, key: 'global' });
+			assert.strictEqual(documentAddEventlistenerStub.callCount, 3);
 			assert.strictEqual(documentRemoveEventlistenerStub.callCount, 2);
+			widget.onDetach();
+			assert.strictEqual(documentRemoveEventlistenerStub.callCount, 3);
 		},
 
 		'Returns null when there are no children'() {

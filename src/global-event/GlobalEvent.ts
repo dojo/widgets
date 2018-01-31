@@ -37,6 +37,9 @@ export class GlobalEvent extends WidgetBase<GlobalEventProperties> {
 				global[type].addEventListener(eventName, newListener);
 				registeredListeners[eventName] = newListener;
 			}
+			else {
+				registeredListeners[eventName] = newListener;
+			}
 		});
 
 		newListeners[type] && Object.keys(newListeners[type]).forEach((eventName) => {
