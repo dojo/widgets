@@ -132,7 +132,7 @@ registerSuite('SlidePane', {
 
 		onOpen() {
 			let called = false;
-			const h = harness(() => w(SlidePane, {
+			harness(() => w(SlidePane, {
 				open: true,
 				onOpen() {
 					called = true;
@@ -281,10 +281,10 @@ registerSuite('SlidePane', {
 				}
 			}));
 
-			h.trigger(`@underlay`, 'ontouchstart', {
+			h.trigger('@underlay', 'ontouchstart', {
 				changedTouches: [ { screenX: 300 } ]
 			});
-			h.trigger(`@underlay`, 'ontouchend', {
+			h.trigger('@underlay', 'ontouchend', {
 				changedTouches: [ { screenX: 300 } ]
 			});
 			assert.isTrue(called, 'onRequestClose should be called on underlay tap');
@@ -300,13 +300,13 @@ registerSuite('SlidePane', {
 				}
 			}));
 
-			h.trigger(`@underlay`, 'onmousedown', {
+			h.trigger('@underlay', 'onmousedown', {
 				changedTouches: [ { screenX: 300 } ]
 			});
-			h.trigger(`@underlay`, 'onmousemove', {
+			h.trigger('@underlay', 'onmousemove', {
 				changedTouches: [ { screenX: 300 } ]
 			});
-			h.trigger(`@underlay`, 'onmouseup', {
+			h.trigger('@underlay', 'onmouseup', {
 				changedTouches: [ { screenX: 300 } ]
 			});
 
@@ -323,19 +323,19 @@ registerSuite('SlidePane', {
 				}
 			}));
 
-			h.trigger(`@underlay`, 'ontouchmove', {
+			h.trigger('@underlay', 'ontouchmove', {
 				changedTouches: [ { screenX: 150 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchstart', {
+			h.trigger('@underlay', 'ontouchstart', {
 				changedTouches: [ { screenX: 300 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchmove', {
+			h.trigger('@underlay', 'ontouchmove', {
 				changedTouches: [ { screenX: 300 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchend', {
+			h.trigger('@underlay', 'ontouchend', {
 				changedTouches: [ { screenX: 300 } ]
 			});
 
@@ -353,19 +353,19 @@ registerSuite('SlidePane', {
 				}
 			}));
 
-			h.trigger(`@underlay`, 'ontouchmove', {
+			h.trigger('@underlay', 'ontouchmove', {
 				changedTouches: [ { screenY: 150 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchstart', {
+			h.trigger('@underlay', 'ontouchstart', {
 				changedTouches: [ { screenY: 300 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchmove', {
+			h.trigger('@underlay', 'ontouchmove', {
 				changedTouches: [ { screenY: 150 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchend', {
+			h.trigger('@underlay', 'ontouchend', {
 				changedTouches: [ { screenY: 50 } ]
 			});
 
@@ -384,15 +384,15 @@ registerSuite('SlidePane', {
 				}
 			}));
 
-			h.trigger(`@underlay`, 'ontouchstart', {
+			h.trigger('@underlay', 'ontouchstart', {
 				changedTouches: [ { screenX: 300 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchmove', {
+			h.trigger('@underlay', 'ontouchmove', {
 				changedTouches: [ { screenX: 400 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchend', {
+			h.trigger('@underlay', 'ontouchend', {
 				changedTouches: [ { screenX: 500 } ]
 			});
 
@@ -411,15 +411,15 @@ registerSuite('SlidePane', {
 				}
 			}));
 
-			h.trigger(`@underlay`, 'ontouchstart', {
+			h.trigger('@underlay', 'ontouchstart', {
 				changedTouches: [ { screenY: 300 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchmove', {
+			h.trigger('@underlay', 'ontouchmove', {
 				changedTouches: [ { screenY: 400 } ]
 			});
 
-			h.trigger(`@underlay`, 'ontouchend', {
+			h.trigger('@underlay', 'ontouchend', {
 				changedTouches: [ { screenY: 500 } ]
 			});
 

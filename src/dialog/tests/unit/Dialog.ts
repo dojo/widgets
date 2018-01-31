@@ -300,13 +300,13 @@ registerSuite('Dialog', {
 				open: true,
 				onRequestClose
 			}));
-			h.trigger(`@global`, (node: any) => {
+			h.trigger('@global', (node: any) => {
 				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
 					return node.properties.document.keyup;
 				}
 			}, { which: Keys.Down });
 			assert.isTrue(onRequestClose.notCalled);
-			h.trigger(`@global`, (node: any) => {
+			h.trigger('@global', (node: any) => {
 				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
 					return node.properties.document.keyup;
 				}

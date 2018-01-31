@@ -301,7 +301,7 @@ registerSuite('TabController', {
 
 		'Should default to last tab if invalid activeIndex passed'() {
 			const onRequestTabChange = sinon.stub();
-			const h = harness(() => w(TabController, {
+			harness(() => w(TabController, {
 				activeIndex: 5,
 				onRequestTabChange
 			}, tabChildren(5)));
@@ -310,7 +310,7 @@ registerSuite('TabController', {
 
 		'Should skip tab if activeIndex is disabled'() {
 			const onRequestTabChange = sinon.stub();
-			const h = harness(() => w(TabController, {
+			harness(() => w(TabController, {
 				activeIndex: 1,
 				onRequestTabChange
 			}, tabChildren(5)));

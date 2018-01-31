@@ -353,13 +353,6 @@ registerSuite('Calendar DatePicker', {
 					])
 				])
 			]));
-			// expectedVdom = expected(widget, false, false, 1980, 2000);
-			// const yearGridVdom = findKey(expectedVdom, 'year-grid');
-			// replaceChild(expectedVdom, '0,0,0', 'June 1997');
-			// replaceChild(expectedVdom, '0,2,0', '1997');
-			// assignChildProperties(yearGridVdom!, '0,18', { classes: [ css.yearRadio, css.yearRadioChecked ] });
-			// assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
-			// widget.expectRender(expectedVdom);
 		},
 
 		'Month popup opens and closes on button click'() {

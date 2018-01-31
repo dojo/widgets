@@ -1,11 +1,4 @@
-import has, { add } from '@dojo/has/has';
 import './util';
-
-add('touch', () => {
-	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
-	return Boolean('ontouchstart' in window || has('host-node'));
-});
-
 import '../../../accordionpane/tests/unit/AccordionPane';
 import '../../../button/tests/unit/Button';
 import '../../../calendar/tests/unit/Calendar';
