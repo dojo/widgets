@@ -97,7 +97,6 @@ registerSuite('Dialog', {
 				open: true
 			};
 			const h = harness(() => w(Dialog, properties));
-			h.trigger('', '');
 
 			// set tested properties
 			properties = {
@@ -262,7 +261,6 @@ registerSuite('Dialog', {
 				onOpen
 			};
 			const h = harness(() => w(Dialog, properties));
-			h.trigger('', '');
 			assert.isTrue(onOpen.calledOnce, 'onOpen handler called when open is initially set to true');
 
 			properties = {
@@ -270,7 +268,7 @@ registerSuite('Dialog', {
 				open: true,
 				onOpen
 			};
-			h.trigger('', '');
+			h.expect(() => expected(true, true));
 			assert.isTrue(onOpen.calledOnce, 'onOpen handler not called if dialog was previously open');
 		},
 

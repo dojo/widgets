@@ -138,8 +138,6 @@ registerSuite('SlidePane', {
 					called = true;
 				}
 			}));
-			// should we add an API to actually render
-			h.trigger('', '');
 			assert.isTrue(called, 'onOpen should be called');
 		},
 

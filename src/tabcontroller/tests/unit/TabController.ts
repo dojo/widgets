@@ -305,8 +305,6 @@ registerSuite('TabController', {
 				activeIndex: 5,
 				onRequestTabChange
 			}, tabChildren(5)));
-			// fake a render
-			h.trigger('', '');
 			assert.isTrue(onRequestTabChange.calledWith(4));
 		},
 
@@ -316,8 +314,6 @@ registerSuite('TabController', {
 				activeIndex: 1,
 				onRequestTabChange
 			}, tabChildren(5)));
-			// fake a render
-			h.trigger('', '');
 			assert.isTrue(onRequestTabChange.calledWith(2));
 		},
 

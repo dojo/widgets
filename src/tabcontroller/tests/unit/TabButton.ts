@@ -67,7 +67,7 @@ registerSuite('TabButton', {
 				closeable: true,
 				disabled: true
 			}), testChildren));
-			h.expect(() => expected(true, true, -1, [...testChildren]));
+			h.expect(() => expected(true, true, -1, testChildren));
 		},
 
 		'active tab'() {
@@ -183,13 +183,12 @@ registerSuite('TabButton', {
 				callFocus: true
 			};
 			const h = harness(() => w(TabButton, props(extraProps)));
-			h.trigger('', '');
 			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled called on render if callFocus is true');
 			extraProps = {
 				callFocus: false,
 				onFocusCalled
 			};
-			h.trigger('', '');
+			h.expect(() => expected(false, false));
 			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled not called if callFocus is false');
 		}
 	}
