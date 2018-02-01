@@ -133,7 +133,7 @@ registerSuite('Toolbar', {
 						css.sticky,
 						fixedCss.rootFixed,
 						fixedCss.stickyFixed,
-						undefined
+						fixedCss.onTopFixed
 					],
 					key: 'root',
 					dir: null,
