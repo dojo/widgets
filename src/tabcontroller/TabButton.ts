@@ -134,6 +134,7 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 			closeable ? v('button', {
 				tabIndex: active ? 0 : -1,
 				classes: this.theme(css.close),
+				type: 'button',
 				onclick: this._onCloseClick
 			}, [
 				messages.close,

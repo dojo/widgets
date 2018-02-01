@@ -189,6 +189,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 				open ? (css as any)[`${type}TriggerActive`] : null
 			]),
 			role: 'menuitem',
+			type: 'button',
 			onclick
 		}, [ content ]);
 	}
@@ -336,11 +337,13 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 					v('button', {
 						classes: this.theme(css.previous),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
+						type: 'button',
 						onclick: this._onYearPageDown
 					}, this.renderPagingButtonContent(Paging.previous)),
 					v('button', {
 						classes: this.theme(css.next),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
+						type: 'button',
 						onclick: this._onYearPageUp
 					}, this.renderPagingButtonContent(Paging.next))
 				])

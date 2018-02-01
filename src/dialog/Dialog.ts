@@ -164,6 +164,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 					this.renderTitle(),
 					closeable ? v('button', {
 						classes: this.theme(css.close),
+						type: 'button',
 						onclick: this._onCloseClick
 					}, [
 						closeText,

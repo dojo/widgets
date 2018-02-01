@@ -85,6 +85,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			classes: css.clear,
 			disabled,
 			readOnly,
+			type: 'button',
 			onclick: noop
 		}, [
 			useTestProperties ? 'clear foo' : 'clear ',
@@ -98,6 +99,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			disabled,
 			readOnly,
 			tabIndex: -1,
+			type: 'button',
 			onclick: noop
 		}, [
 			useTestProperties ? 'open foo' : 'open ',
@@ -479,6 +481,7 @@ registerSuite('ComboBox', {
 				classes: css.clear,
 				disabled: true,
 				readOnly: true,
+				type: 'button',
 				onclick: noop
 			}, [
 				'clear foo',
@@ -493,6 +496,7 @@ registerSuite('ComboBox', {
 				disabled: true,
 				readOnly: true,
 				tabIndex: -1,
+				type: 'button',
 				onclick: noop
 			}, [
 				'open foo',

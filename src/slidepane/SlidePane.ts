@@ -307,6 +307,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 					this.renderTitle(),
 					v('button', {
 						classes: this.theme(css.close),
+						type: 'button',
 						onclick: this._onCloseClick
 					}, [
 						closeText,

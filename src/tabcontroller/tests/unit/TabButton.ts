@@ -34,6 +34,7 @@ const expected = function(closeable = false, disabled = false, activeTab: number
 		closeable ? v('button', {
 			tabIndex: activeTab,
 			classes: css.close,
+			type: 'button',
 			onclick: noop
 		}, [ 'close', ...children ]) : null
 	);
