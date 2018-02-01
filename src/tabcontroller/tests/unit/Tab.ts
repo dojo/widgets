@@ -1,27 +1,17 @@
 const { registerSuite } = intern.getInterface('object');
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { v } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
 
 import Tab from '../../Tab';
 import * as css from '../../../theme/tabcontroller/tabController.m.css';
 
-let widget: Harness<Tab>;
-
 registerSuite('Tab', {
-
-	beforeEach() {
-		widget = harness(Tab);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
 
 	tests: {
 		'default properties'() {
-			widget.setProperties({ key: 'foo' });
-			widget.expectRender(v('div', {
+			const h = harness(() => w(Tab, { key: 'foo' }));
+			h.expect(() => v('div', {
 				'aria-labelledby': undefined,
 				classes: css.tab,
 				id: undefined,
@@ -34,7 +24,7 @@ registerSuite('Tab', {
 				v('p', ['lorem ipsum']),
 				v('a', { href: '#foo'}, [ 'foo' ])
 			];
-			widget.setProperties({
+			const h = harness(() => w(Tab, {
 				aria: { describedBy: 'foo' },
 				closeable: true,
 				disabled: true,
@@ -42,10 +32,9 @@ registerSuite('Tab', {
 				key: 'bar',
 				label: 'baz',
 				labelledBy: 'id'
-			});
-			widget.setChildren(testChildren);
+			}, testChildren));
 
-			widget.expectRender(v('div', {
+			h.expect(() => v('div', {
 				'aria-labelledby': 'id',
 				'aria-describedby': 'foo',
 				classes: css.tab,

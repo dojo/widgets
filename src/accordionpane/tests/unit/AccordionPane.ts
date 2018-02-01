@@ -3,63 +3,53 @@ const { registerSuite } = intern.getInterface('object');
 
 import { v, w } from '@dojo/widget-core/d';
 import * as sinon from 'sinon';
-import harness, { Harness } from '@dojo/test-extras/harness';
+import harness from '@dojo/test-extras/harness';
 
 import * as css from '../../../theme/accordionpane/accordionPane.m.css';
 import AccordionPane from '../../AccordionPane';
 import TitlePane from '../../../titlepane/TitlePane';
-
-let pane: Harness<AccordionPane>;
+import { noop } from '../../../common/tests/support/test-helpers';
 
 registerSuite('AccordionPane', {
-	beforeEach() {
-		pane = harness(AccordionPane);
-	},
-
-	afterEach() {
-		pane.destroy();
-	},
-
 	tests: {
 		'default rendering'() {
-			pane.expectRender(v('div', {
+			const h = harness(() => w(AccordionPane, {}));
+			h.expect(() => v('div', {
 				classes: css.root
 			}, []));
 		},
 
 		'default rendering with children'() {
-			pane.setProperties({ openKeys: [] });
-
-			pane.setChildren([
+			const h = harness(() => w(AccordionPane, { openKeys: [] }, [
 				w(TitlePane, { title: 'foo', key: 'foo', onRequestOpen: () => {} }),
 				null,
 				w(TitlePane, { title: 'bar', key: 'bar', onRequestClose: () => {} }),
 				w(TitlePane, { title: 'baz', key: 'baz' })
-			]);
+			]));
 
-			pane.expectRender(v('div', {
+			h.expect(() => v('div', {
 				classes: css.root
 			}, [
 				w(TitlePane, {
 					key: 'foo',
-					onRequestClose: pane.listener,
-					onRequestOpen: pane.listener,
+					onRequestClose: noop,
+					onRequestOpen: noop,
 					open: false,
 					theme: undefined,
 					title: 'foo'
 				}),
 				w(TitlePane, {
 					key: 'bar',
-					onRequestClose: pane.listener,
-					onRequestOpen: pane.listener,
+					onRequestClose: noop,
+					onRequestOpen: noop,
 					open: false,
 					theme: undefined,
 					title: 'bar'
 				}),
 				w(TitlePane, {
 					key: 'baz',
-					onRequestClose: pane.listener,
-					onRequestOpen: pane.listener,
+					onRequestClose: noop,
+					onRequestOpen: noop,
 					open: false,
 					theme: undefined,
 					title: 'baz'
@@ -69,27 +59,20 @@ registerSuite('AccordionPane', {
 
 		'onRequestOpen should be called'() {
 			const onRequestOpen = sinon.stub();
-
-			pane.setProperties({ onRequestOpen });
-
-			pane.setChildren([
+			const h = harness(() => w(AccordionPane, { onRequestOpen }, [
 				w(TitlePane, { title: 'foo', key: 'foo' })
-			]);
-
-			pane.callListener('onRequestOpen', { key: 'foo' });
+			]));
+			h.trigger('@foo', 'onRequestOpen');
 			assert.isTrue(onRequestOpen.calledWith('foo'));
 		},
 
 		'onRequestClose should be called'() {
 			const onRequestClose = sinon.stub();
-
-			pane.setProperties({ onRequestClose });
-
-			pane.setChildren([
+			const h = harness(() => w(AccordionPane, { onRequestClose }, [
 				w(TitlePane, { title: 'foo', key: 'foo' })
-			]);
+			]));
 
-			pane.callListener('onRequestClose', { key: 'foo' });
+			h.trigger('@foo', 'onRequestClose');
 			assert.isTrue(onRequestClose.calledWith('foo'));
 		}
 	}

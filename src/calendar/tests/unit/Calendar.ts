@@ -1,8 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { compareProperty, assignProperties, assignChildProperties, replaceChild, findKey } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -13,16 +11,19 @@ import DatePicker from '../../DatePicker';
 import * as css from '../../../theme/calendar/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
+import {
+	compareId,
+	createHarness,
+	compareAriaLabelledBy,
+	compareLabelId,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-let widget: Harness<Calendar>;
 const testDate = new Date('June 3 2017');
-
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const harness = createHarness([ compareId, compareLabelId, compareAriaLabelledBy ]);
 
 let dateIndex = -1;
-const expectedDateCell = function(widget: Harness<Calendar>, date: number, active: boolean) {
+const expectedDateCell = function(date: number, active: boolean, selectedIndex = 0) {
 	dateIndex++;
 	return w(CalendarCell, {
 		key: `date-${dateIndex}`,
@@ -30,40 +31,42 @@ const expectedDateCell = function(widget: Harness<Calendar>, date: number, activ
 		date,
 		disabled: !active,
 		focusable: date === 1 && active,
-		selected: false,
+		selected: dateIndex === selectedIndex,
 		theme: undefined,
 		today: active && new Date().toDateString() === new Date(`June ${date} 2017`).toDateString(),
-		onClick: widget.listener,
-		onFocusCalled: widget.listener,
-		onKeyDown: widget.listener
+		onClick: noop,
+		onFocusCalled: noop,
+		onKeyDown: noop
 	});
 };
 
-const expected = function(widget: Harness<Calendar>, popupOpen = false) {
+const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = '', customMonthLabel = false, describedby = '') {
+	const overrides = describedby ? { 'aria-describedby': describedby } : {};
 	dateIndex = -1;
 	return v('div', {
 		classes: css.root,
 		dir: null,
-		lang: null
+		lang: null,
+		...overrides
 	}, [
 		w(DatePicker, {
 			key: 'date-picker',
-			labelId: <any> compareId,
+			labelId: '',
 			labels: DEFAULT_LABELS,
 			month: 5,
 			monthNames: DEFAULT_MONTHS,
-			renderMonthLabel: undefined,
+			renderMonthLabel: customMonthLabel ? noop : undefined,
 			theme: undefined,
 			year: 2017,
-			onPopupChange: widget.listener,
-			onRequestMonthChange: widget.listener,
-			onRequestYearChange: widget.listener
+			onPopupChange: noop,
+			onRequestMonthChange: noop,
+			onRequestYearChange: noop
 		}),
 		v('table', {
 			cellspacing: '0',
 			cellpadding: '0',
 			role: 'grid',
-			'aria-labelledby': compareId, // this._monthLabelId,
+			'aria-labelledby': '', // this._monthLabelId,
 			classes: [ css.dateGrid, popupOpen ? baseCss.visuallyHidden : null ]
 		}, [
 			v('thead', [
@@ -71,64 +74,64 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 						role: 'columnheader',
 						classes: css.weekday
 					}, [
-						v('abbr', { title: weekday.long }, [ weekday.short ])
+						weekdayLabel ? weekdayLabel : v('abbr', { title: weekday.long }, [ weekday.short ])
 					])
 				))
 			]),
 			v('tbody', [
 				v('tr', [
-					expectedDateCell(widget, 28, false),
-					expectedDateCell(widget, 29, false),
-					expectedDateCell(widget, 30, false),
-					expectedDateCell(widget, 31, false),
-					expectedDateCell(widget, 1, true),
-					expectedDateCell(widget, 2, true),
-					expectedDateCell(widget, 3, true)
+					expectedDateCell(28, false, selectedIndex),
+					expectedDateCell(29, false, selectedIndex),
+					expectedDateCell(30, false, selectedIndex),
+					expectedDateCell(31, false, selectedIndex),
+					expectedDateCell(1, true, selectedIndex),
+					expectedDateCell(2, true, selectedIndex),
+					expectedDateCell(3, true, selectedIndex)
 				]),
 				v('tr', [
-					expectedDateCell(widget, 4, true),
-					expectedDateCell(widget, 5, true),
-					expectedDateCell(widget, 6, true),
-					expectedDateCell(widget, 7, true),
-					expectedDateCell(widget, 8, true),
-					expectedDateCell(widget, 9, true),
-					expectedDateCell(widget, 10, true)
+					expectedDateCell(4, true, selectedIndex),
+					expectedDateCell(5, true, selectedIndex),
+					expectedDateCell(6, true, selectedIndex),
+					expectedDateCell(7, true, selectedIndex),
+					expectedDateCell(8, true, selectedIndex),
+					expectedDateCell(9, true, selectedIndex),
+					expectedDateCell(10, true, selectedIndex)
 				]),
 				v('tr', [
-					expectedDateCell(widget, 11, true),
-					expectedDateCell(widget, 12, true),
-					expectedDateCell(widget, 13, true),
-					expectedDateCell(widget, 14, true),
-					expectedDateCell(widget, 15, true),
-					expectedDateCell(widget, 16, true),
-					expectedDateCell(widget, 17, true)
+					expectedDateCell(11, true, selectedIndex),
+					expectedDateCell(12, true, selectedIndex),
+					expectedDateCell(13, true, selectedIndex),
+					expectedDateCell(14, true, selectedIndex),
+					expectedDateCell(15, true, selectedIndex),
+					expectedDateCell(16, true, selectedIndex),
+					expectedDateCell(17, true, selectedIndex)
 				]),
 				v('tr', [
-					expectedDateCell(widget, 18, true),
-					expectedDateCell(widget, 19, true),
-					expectedDateCell(widget, 20, true),
-					expectedDateCell(widget, 21, true),
-					expectedDateCell(widget, 22, true),
-					expectedDateCell(widget, 23, true),
-					expectedDateCell(widget, 24, true)
+					expectedDateCell(18, true, selectedIndex),
+					expectedDateCell(19, true, selectedIndex),
+					expectedDateCell(20, true, selectedIndex),
+					expectedDateCell(21, true, selectedIndex),
+					expectedDateCell(22, true, selectedIndex),
+					expectedDateCell(23, true, selectedIndex),
+					expectedDateCell(24, true, selectedIndex)
 				]),
 				v('tr', [
-					expectedDateCell(widget, 25, true),
-					expectedDateCell(widget, 26, true),
-					expectedDateCell(widget, 27, true),
-					expectedDateCell(widget, 28, true),
-					expectedDateCell(widget, 29, true),
-					expectedDateCell(widget, 30, true),
-					expectedDateCell(widget, 1, false)
+					expectedDateCell(25, true, selectedIndex),
+					expectedDateCell(26, true, selectedIndex),
+					expectedDateCell(27, true, selectedIndex),
+					expectedDateCell(28, true, selectedIndex),
+					expectedDateCell(29, true, selectedIndex),
+					expectedDateCell(30, true, selectedIndex),
+					expectedDateCell(1, false, selectedIndex)
 				]),
 				v('tr', [
-					expectedDateCell(widget, 2, false),
-					expectedDateCell(widget, 3, false),
-					expectedDateCell(widget, 4, false),
-					expectedDateCell(widget, 5, false),
-					expectedDateCell(widget, 6, false),
-					expectedDateCell(widget, 7, false),
-					expectedDateCell(widget, 8, false)
+					expectedDateCell(2, false, selectedIndex),
+					expectedDateCell(3, false, selectedIndex),
+					expectedDateCell(4, false, selectedIndex),
+					expectedDateCell(5, false, selectedIndex),
+					expectedDateCell(6, false, selectedIndex),
+					expectedDateCell(7, false, selectedIndex),
+					expectedDateCell(8, false, selectedIndex)
 				])
 			])
 		]),
@@ -138,7 +141,7 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 			v('button', {
 				classes: css.previous,
 				tabIndex: popupOpen ? -1 : 0,
-				onclick: widget.listener
+				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
@@ -148,7 +151,7 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 			v('button', {
 				classes: css.next,
 				tabIndex: popupOpen ? -1 : 0,
-				onclick: widget.listener
+				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
@@ -160,38 +163,25 @@ const expected = function(widget: Harness<Calendar>, popupOpen = false) {
 };
 
 registerSuite('Calendar', {
-	beforeEach() {
-		widget = harness(Calendar);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'Render specific month with default props'() {
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear()
-			});
-			widget.expectRender(expected(widget), 'Renders June 2017 by setting month and year props');
+			}));
+			h.expect(expected);
 		},
 
 		'Render specific month and year with selectedDate'() {
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				selectedDate: testDate
-			});
+			}));
 
-			const expectedVdom = expected(widget);
-			assignProperties(findKey(expectedVdom, 'date-6')!, {
-				selected: true
-			});
-
-			widget.expectRender(expectedVdom, 'Renders June 2017 with correct selected date');
+			h.expect(() => expected(false, 6));
 		},
 
 		'Renders with custom properties'() {
-			widget.setProperties({
+			let properties: any = {
 				aria: { describedBy: 'foo' },
 				labels: DEFAULT_LABELS,
 				month: testDate.getMonth(),
@@ -201,47 +191,27 @@ registerSuite('Calendar', {
 				year: testDate.getFullYear(),
 				renderMonthLabel: (month: number, year: number) => 'Foo',
 				renderWeekdayCell: (day: { short: string; long: string; }) => 'Bar'
-			});
+			};
+			const h = harness(() => w(Calendar, properties));
 
-			let expectedVdom = expected(widget);
-
-			for (let i = 0; i < 7; i++) {
-				replaceChild(expectedVdom, `1,0,0,${i},0`, 'Bar');
-			}
-			assignProperties(expectedVdom, {
-				'aria-describedby': 'foo'
-			});
-			assignProperties(findKey(expectedVdom, 'date-4')!, {
-				selected: true
-			});
-			assignChildProperties(expectedVdom, '0', {
-				renderMonthLabel: widget.listener
-			});
-
-			widget.expectRender(expectedVdom);
-
-			widget.setProperties({
+			h.expect(() => expected(false, 4, 'Bar', true, 'foo'));
+			properties = {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear()
-			});
-			expectedVdom = expected(widget);
-			widget.expectRender(expectedVdom, 'renders with updated properties');
+			};
+			h.expect(expected);
 		},
 
 		'Click to select date'() {
 			let selectedDate = testDate;
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear(),
 				onDateSelect: (date: Date) => {
 					selectedDate = date;
 				}
-			});
-
-			widget.callListener('onClick', {
-				args: [1, false],
-				key: 'date-4'
-			});
+			}));
+			h.trigger('@date-4', 'onClick', 1, false);
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Clicking cell selects correct date');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Clicking active date has correct month');
@@ -251,7 +221,7 @@ registerSuite('Calendar', {
 		'Clicking on disabled dates changes month'() {
 			let currentMonth = testDate.getMonth();
 			let selectedDate = testDate;
-			widget.setProperties({
+			let properties = {
 				month: currentMonth,
 				year: testDate.getFullYear(),
 				onMonthChange: (month: number) => {
@@ -260,20 +230,15 @@ registerSuite('Calendar', {
 				onDateSelect: (date: Date) => {
 					selectedDate = date;
 				}
-			});
+			};
+			const h = harness(() => w(Calendar, properties));
 
-			widget.callListener('onClick', {
-				args: [1, true],
-				key: 'date-34'
-			});
+			h.trigger('@date-34', 'onClick', 1, true);
 			assert.strictEqual(currentMonth, 6, 'Month changes to July');
 			assert.strictEqual(selectedDate.getMonth(), 6, 'selected date in July');
 			assert.strictEqual(selectedDate.getDate(), 1, 'selected correct date in July');
 
-			widget.callListener('onClick', {
-				args: [30, true],
-				key: 'date-2'
-			});
+			h.trigger('@date-2', 'onClick', 30, true);
 			assert.strictEqual(currentMonth, 4, 'Month changes to May');
 			assert.strictEqual(selectedDate.getMonth(), 4, 'selected date in May');
 			assert.strictEqual(selectedDate.getDate(), 30, 'selected correct date in May');
@@ -281,167 +246,118 @@ registerSuite('Calendar', {
 
 		'Keyboard date select'() {
 			let selectedDate = testDate;
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear(),
 				onDateSelect: (date: Date) => {
 					selectedDate = date;
 				}
-			});
+			}));
 
 			// right arrow, then select
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Right,
-					preventDefault: () => {}
-				}],
-				key: 'date-4'
+			h.trigger('@date-4', 'onKeyDown', {
+				which: Keys.Right,
+				preventDefault: () => {}
 			});
-			// not a good way to test this, but this would be called with the arrow key
-			widget.callListener('onFocusCalled', {
-				key: 'date-4'
-			});
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Enter,
-					preventDefault: () => {}
-				}],
-				key: 'date-5'
+			h.trigger('@date-4', 'onFocusCalled');
+			h.trigger('@date-5', 'onKeyDown', {
+				which: Keys.Enter,
+				preventDefault: () => {}
 			});
 			assert.strictEqual(selectedDate.getDate(), 2, 'Right arrow + enter selects second day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			// down arrow
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Down,
-					preventDefault: () => {}
-				}],
-				key: 'date-5'
+			h.trigger('@date-5', 'onKeyDown', {
+				which: Keys.Down,
+				preventDefault: () => {}
 			});
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Enter,
-					preventDefault: () => {}
-				}],
-				key: 'date-12'
+			h.trigger('@date-12', 'onKeyDown', {
+				which: Keys.Enter,
+				preventDefault: () => {}
 			});
 			assert.strictEqual(selectedDate.getDate(), 9, 'Down arrow + enter selects one week down');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			// left arrow
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Left,
-					preventDefault: () => {}
-				}],
-				key: 'date-12'
+			h.trigger('@date-12', 'onKeyDown', {
+				which: Keys.Left,
+				preventDefault: () => {}
 			});
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
-				key: 'date-11'
+			h.trigger('@date-11', 'onKeyDown', {
+				which: Keys.Space,
+				preventDefault: () => {}
 			});
+
 			assert.strictEqual(selectedDate.getDate(), 8, 'Left arrow + space selects previous day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			// up arrow
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Up,
-					preventDefault: () => {}
-				}],
-				key: 'date-11'
+			h.trigger('@date-11', 'onKeyDown', {
+				which: Keys.Up,
+				preventDefault: () => {}
 			});
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
-				key: 'date-4'
+			h.trigger('@date-4', 'onKeyDown', {
+				which: Keys.Space,
+				preventDefault: () => {}
 			});
+
 			assert.strictEqual(selectedDate.getDate(), 1, 'Left arrow + space selects previous day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			// page down
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.PageDown,
-					preventDefault: () => {}
-				}],
-				key: 'date-4'
+			h.trigger('@date-4', 'onKeyDown', {
+				which: Keys.PageDown,
+				preventDefault: () => {}
 			});
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
-				key: 'date-33'
+			h.trigger('@date-33', 'onKeyDown', {
+				which: Keys.Space,
+				preventDefault: () => {}
 			});
+
 			assert.strictEqual(selectedDate.getDate(), 30, 'Page Down + space selects last day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			// page up
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.PageUp,
-					preventDefault: () => {}
-				}],
-				key: 'date-33'
+			h.trigger('@date-33', 'onKeyDown', {
+				which: Keys.PageUp,
+				preventDefault: () => {}
 			});
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Space,
-					preventDefault: () => {}
-				}],
-				key: 'date-4'
+			h.trigger('@date-4', 'onKeyDown', {
+				which: Keys.Space,
+				preventDefault: () => {}
 			});
+
 			assert.strictEqual(selectedDate.getDate(), 1, 'Page Up + space selects first day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 		},
 
 		'Arrow keys can change month'() {
 			let currentMonth = testDate.getMonth();
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				year: testDate.getFullYear(),
 				onMonthChange: (month: number) => {
 					currentMonth = month;
 				}
-			});
+			}));
 
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Left,
-					preventDefault: () => {}
-				}],
-				key: 'date-4'
+			h.trigger('@date-4', 'onKeyDown', {
+				which: Keys.Left,
+				preventDefault: () => {}
 			});
 			assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Going left from the first day goes to previous month');
 
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.PageDown,
-					preventDefault: () => {}
-				}],
-				key: 'date-4'
+			h.trigger('@date-4', 'onKeyDown', {
+				which: Keys.PageDown,
+				preventDefault: () => {}
 			});
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Right,
-					preventDefault: () => {}
-				}],
-				key: 'date-4'
+			h.trigger('@date-4', 'onKeyDown', {
+				which: Keys.Right,
+				preventDefault: () => {}
 			});
-			assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Going right from the last day goes to next month');
+			assert.strictEqual(currentMonth, testDate.getMonth(), 'Going right from the last day goes to next month');
 		},
 
 		'Month changes wrap and change year'() {
 			let currentMonth = 0;
 			let currentYear = 2017;
-			widget.setProperties({
+			let properties = {
 				month: currentMonth,
 				year: currentYear,
 				onMonthChange: (month: number) => {
@@ -450,19 +366,18 @@ registerSuite('Calendar', {
 				onYearChange: (year: number) => {
 					currentYear = year;
 				}
+			};
+			const h = harness(() => w(Calendar, properties));
+
+			h.trigger('@date-0', 'onKeyDown', {
+				which: Keys.Up,
+				preventDefault: () => {}
 			});
 
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Up,
-					preventDefault: () => {}
-				}],
-				key: 'date-0'
-			});
 			assert.strictEqual(currentMonth, 11, 'Previous month wraps from January to December');
 			assert.strictEqual(currentYear, 2016, 'Year decrements when month wraps');
 
-			widget.setProperties({
+			properties = {
 				month: 11,
 				year: 2017,
 				onMonthChange: (month: number) => {
@@ -471,15 +386,13 @@ registerSuite('Calendar', {
 				onYearChange: (year: number) => {
 					currentYear = year;
 				}
+			};
+
+			h.trigger('@date-35', 'onKeyDown', {
+				which: Keys.Down,
+				preventDefault: () => {}
 			});
 
-			widget.callListener('onKeyDown', {
-				args: [{
-					which: Keys.Down,
-					preventDefault: () => {}
-				}],
-				key: 'date-35'
-			});
 			assert.strictEqual(currentMonth, 0, 'Next month wraps from December to January');
 			assert.strictEqual(currentYear, 2018, 'Year increments when month wraps');
 		},
@@ -487,7 +400,7 @@ registerSuite('Calendar', {
 		'Month popup events change month and year'() {
 			let currentMonth = testDate.getMonth();
 			let currentYear = testDate.getFullYear();
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				year: currentYear,
 				onMonthChange: (month: number) => {
@@ -496,65 +409,50 @@ registerSuite('Calendar', {
 				onYearChange: (year: number) => {
 					currentYear = year;
 				}
-			});
+			}));
 
-			widget.callListener('onRequestMonthChange', {
-				args: [2],
-				index: '0'
-			});
+			h.trigger('@date-picker', 'onRequestMonthChange', 2);
 			assert.strictEqual(currentMonth, 2, 'Popup month change event triggers calendar month change event');
 
-			widget.callListener('onRequestYearChange', {
-				args: [2018],
-				index: '0'
-			});
+			h.trigger('@date-picker', 'onRequestYearChange', 2018);
 			assert.strictEqual(currentYear, 2018, 'Popup year change triggers calendar year change');
 		},
 
 		'Previous button should decrement month'() {
 			let currentMonth = testDate.getMonth();
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				onMonthChange: (month: number) => {
 					currentMonth = month;
 				}
-			});
+			}));
 
-			widget.sendEvent('click', {
-				selector: `.${css.previous}`
-			});
-
+			h.trigger(`.${css.previous}`, 'onclick');
 			assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Previous button decrements month');
 		},
 
 		'Next button should increment month'() {
 			let currentMonth = testDate.getMonth();
-			widget.setProperties({
+			const h = harness(() => w(Calendar, {
 				month: currentMonth,
 				onMonthChange: (month: number) => {
 					currentMonth = month;
 				}
-			});
+			}));
 
-			widget.sendEvent('click', {
-				selector: `.${css.next}`
-			});
-
+			h.trigger(`.${css.next}`, 'onclick');
 			assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Next button increments month');
 		},
 
 		'onPopupChange should control visibility'() {
-			// Needed to get initial CSS classes on the component to then falsify
-			expected(widget);
-			widget.callListener('onPopupChange', {
-				args: [true],
-				key: 'date-picker'
-			});
-			widget.setProperties({
+			let properties: any = {};
+			const h = harness(() => w(Calendar, properties));
+			h.trigger('@date-picker', 'onPopupChange', true);
+			properties = {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear()
-			});
-			widget.expectRender(expected(widget, true), 'Date grid is hidden when onPopupOpen is called');
+			};
+			h.expect(() => expected(true));
 		}
 	}
 });

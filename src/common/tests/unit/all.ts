@@ -1,12 +1,4 @@
-import has, { add } from '@dojo/has/has';
-import '@dojo/test-extras/support/loadJsdom';
 import './util';
-
-add('touch', () => {
-	/* Since jsdom will fake it anyways, no problem pretending we can do touch in NodeJS */
-	return Boolean('ontouchstart' in window || has('host-node'));
-});
-
 import '../../../accordionpane/tests/unit/AccordionPane';
 import '../../../button/tests/unit/Button';
 import '../../../calendar/tests/unit/Calendar';
@@ -16,6 +8,7 @@ import '../../../checkbox/tests/unit/Checkbox';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../enhancedtextinput/tests/unit/EnhancedTextInput';
+import '../../../global-event/tests/unit/GlobalEvent';
 import '../../../label/tests/unit/Label';
 import '../../../listbox/tests/unit/Listbox';
 import '../../../listbox/tests/unit/ListboxOption';

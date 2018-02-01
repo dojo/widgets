@@ -1,26 +1,17 @@
 const { registerSuite } = intern.getInterface('object');
 
-import { v } from '@dojo/widget-core/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
 
 import Tooltip, { Orientation } from './../../Tooltip';
 import * as css from '../../../theme/tooltip/tooltip.m.css';
 import * as fixedCss from '../../styles/tooltip.m.css';
 
-let widget: Harness<Tooltip>;
-
 registerSuite('Tooltip', {
-	beforeEach() {
-		widget = harness(Tooltip);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'should construct Tooltip'() {
-			widget.expectRender(v('div', {
+			const h = harness(() => w(Tooltip, { content: '' }));
+			h.expect(() => v('div', {
 				classes: [ css.right, fixedCss.rootFixed, fixedCss.rightFixed ]
 			}, [
 				v('div', { key: 'target' }, []),
@@ -29,12 +20,12 @@ registerSuite('Tooltip', {
 		},
 
 		'should render content if open'() {
-			widget.setProperties({
+			const h = harness(() => w(Tooltip, {
 				content: 'foobar',
 				open: true
-			});
+			}));
 
-			widget.expectRender(v('div', {
+			h.expect(() => v('div', {
 				classes: [ css.right, fixedCss.rootFixed, fixedCss.rightFixed ]
 			}, [
 				v('div', { key: 'target' }, []),
@@ -46,12 +37,12 @@ registerSuite('Tooltip', {
 		},
 
 		'should render correct orientation'() {
-			widget.setProperties({
+			const h = harness(() => w(Tooltip, {
 				orientation: Orientation.bottom,
 				content: 'foobar'
-			});
+			}));
 
-			widget.expectRender(v('div', {
+			h.expect(() => v('div', {
 				classes: [ css.bottom, fixedCss.rootFixed, fixedCss.bottomFixed ]
 			}, [
 				v('div', { key: 'target' }, []),
@@ -60,13 +51,13 @@ registerSuite('Tooltip', {
 		},
 
 		'should render aria properties'() {
-			widget.setProperties({
+			const h = harness(() => w(Tooltip, {
 				aria: { describedBy: 'foo' },
 				content: 'bar',
 				open: true
-			});
+			}));
 
-			widget.expectRender(v('div', {
+			h.expect(() => v('div', {
 				classes: [ css.right, fixedCss.rootFixed, fixedCss.rightFixed ]
 			}, [
 				v('div', { key: 'target' }, []),

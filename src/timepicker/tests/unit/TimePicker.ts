@@ -5,14 +5,10 @@ import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
-import { compareProperty } from '@dojo/test-extras/support/d';
 import * as css from '../../../theme/timepicker/timePicker.m.css';
 import ComboBox from '../../../combobox/ComboBox';
 import Label from '../../../label/Label';
-
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+import { noop, compareId, compareForId } from '../../../common/tests/support/test-helpers';
 
 registerSuite('TimePicker', {
 
@@ -65,8 +61,7 @@ registerSuite('TimePicker', {
 
 	'Custom input': {
 		'Should delegate to ComboBox'() {
-			const picker = harness(TimePicker);
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				clearable: true,
 				disabled: false,
 				id: 'foo',
@@ -76,13 +71,14 @@ registerSuite('TimePicker', {
 				readOnly: false,
 				required: true,
 				value: 'some value'
-			});
+			}));
 
-			picker.expectRender(
+			h.expect(() =>
 				w(ComboBox, {
+					key: 'combo',
 					clearable: true,
 					disabled: false,
-					getResultLabel: <any> picker.listener,
+					getResultLabel: noop,
 					id: 'foo',
 					inputProperties: undefined,
 					invalid: true,
@@ -94,7 +90,7 @@ registerSuite('TimePicker', {
 					onChange: undefined,
 					onFocus: undefined,
 					onMenuChange: undefined,
-					onRequestResults: picker.listener,
+					onRequestResults: noop,
 					openOnFocus: false,
 					extraClasses: undefined,
 					readOnly: false,
@@ -104,78 +100,55 @@ registerSuite('TimePicker', {
 					value: 'some value'
 				})
 			);
-
-			picker.destroy();
 		},
 
 		'Should use `getOptionLabel` to format menu options'() {
-			const picker = harness(TimePicker);
 			const getOptionLabel = sinon.spy();
 			const option = { hour: 0 };
 
-			picker.setProperties({ getOptionLabel });
-			const vnode: any = picker.getRender();
-
-			vnode.properties.getResultLabel(option);
+			const h = harness(() => w(TimePicker, { getOptionLabel }));
+			h.trigger('@combo', 'getResultLabel', option);
 			assert.isTrue(getOptionLabel.calledWith(option));
-			picker.destroy();
 		},
 
 		'Should format options as `HH:mm` by default'() {
-			const picker = harness(TimePicker);
-			const vnode: any = picker.getRender();
-			const label = vnode.properties.getResultLabel({ hour: 4, minute: 22, second: 0 });
-
-			assert.strictEqual(label, '04:22');
-
-			picker.destroy();
+			const h = harness(() => w(TimePicker, {}));
+			const result = h.trigger('@combo', 'getResultLabel', { hour: 4, minute: 22, second: 0 });
+			assert.strictEqual(result, '04:22');
 		},
 
 		'Should format options as `HH:mm:ss` when the step is less than 60 seconds'() {
-			const picker = harness(TimePicker);
-			picker.setProperties({ step: 1 });
-			const vnode: any = picker.getRender();
-			const label = vnode.properties.getResultLabel({ hour: 4, minute: 22, second: 0 });
-
-			assert.strictEqual(label, '04:22:00');
-
-			picker.destroy();
+			const h = harness(() => w(TimePicker, { step: 1 }));
+			const result = h.trigger('@combo', 'getResultLabel', { hour: 4, minute: 22, second: 0 });
+			assert.strictEqual(result, '04:22:00');
 		},
 
 		'Should call onRequestOptions'() {
-			const picker = harness(TimePicker);
 			const onRequestOptions = sinon.spy();
-
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				onRequestOptions,
 				step: 3600
-			});
-
-			const vnode: any = picker.getRender();
-			vnode.properties.onRequestResults('12:34:56');
-
+			}));
+			h.trigger('@combo', 'onRequestResults', '12:34:56');
 			assert.isTrue(onRequestOptions.calledWith('12:34:56'));
 
 			const expectedOptions = getOptions('00:00:00', '23:00', 3600);
 			const actualOptions = onRequestOptions.firstCall.args[1];
 			assert.sameDeepMembers(actualOptions, expectedOptions);
 
-			vnode.properties.onRequestResults('12:34:56');
+			h.trigger('@combo', 'onRequestResults', '12:34:56');
 			assert.strictEqual(actualOptions, onRequestOptions.secondCall.args[1], 'The options array should be cached.');
-
-			picker.destroy();
 		}
 	},
 
 	'Native input': {
 		basic() {
-			const picker = harness(TimePicker);
-
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				name: 'some-field',
 				useNativeElement: true
-			});
-			picker.expectRender(v('div', {
+			}), [ compareId ]);
+
+			h.expect(() => v('div', {
 				classes: [ css.root, null, null, null, null ],
 				key: 'root'
 			}, [
@@ -187,13 +160,13 @@ registerSuite('TimePicker', {
 					disabled: undefined,
 					invalid: undefined,
 					key: 'native-input',
-					id: <any> compareId,
+					id: '',
 					max: undefined,
 					min: undefined,
 					name: 'some-field',
-					onblur: picker.listener,
-					onchange: picker.listener,
-					onfocus: picker.listener,
+					onblur: noop,
+					onchange: noop,
+					onfocus: noop,
 					readOnly: undefined,
 					required: undefined,
 					step: undefined,
@@ -201,13 +174,10 @@ registerSuite('TimePicker', {
 					value: undefined
 				})
 			]));
-
-			picker.destroy();
 		},
 
 		'Attributes added'() {
-			const picker = harness(TimePicker);
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				disabled: true,
 				end: '12:00',
 				inputProperties: {
@@ -221,9 +191,9 @@ registerSuite('TimePicker', {
 				step: 60,
 				useNativeElement: true,
 				value: '11:30'
-			});
+			}), [ compareId ]);
 
-			picker.expectRender(v('div', {
+			h.expect(() => v('div', {
 				classes: [ css.root,
 					css.disabled,
 					css.invalid,
@@ -238,16 +208,16 @@ registerSuite('TimePicker', {
 					'aria-invalid': 'true',
 					'aria-readonly': 'true',
 					classes: css.input,
-					id: <any> compareId,
+					id: '',
 					disabled: true,
 					invalid: true,
 					key: 'native-input',
 					max: '12:00',
 					min: '10:00',
 					name: 'some-field',
-					onblur: picker.listener,
-					onchange: picker.listener,
-					onfocus: picker.listener,
+					onblur: noop,
+					onchange: noop,
+					onfocus: noop,
 					readOnly: true,
 					required: true,
 					step: 60,
@@ -255,17 +225,14 @@ registerSuite('TimePicker', {
 					value: '11:30'
 				})
 			]));
-
-			picker.destroy();
 		},
 
 		'Label should render'() {
-			const picker = harness(TimePicker);
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				label: 'foo',
 				useNativeElement: true
-			});
-			picker.expectRender(v('div', {
+			}), [ compareId, compareForId ]);
+			h.expect(() => v('div', {
 				classes: [ css.root, null, null, null, null ],
 				key: 'root'
 			}, [
@@ -276,7 +243,7 @@ registerSuite('TimePicker', {
 					invalid: undefined,
 					readOnly: undefined,
 					required: undefined,
-					forId: <any> compareId
+					forId: ''
 				}, [ 'foo' ]),
 				v('input', {
 					'aria-invalid': null,
@@ -285,13 +252,13 @@ registerSuite('TimePicker', {
 					disabled: undefined,
 					invalid: undefined,
 					key: 'native-input',
-					id: <any> compareId,
+					id: '',
 					max: undefined,
 					min: undefined,
 					name: undefined,
-					onblur: picker.listener,
-					onchange: picker.listener,
-					onfocus: picker.listener,
+					onblur: noop,
+					onchange: noop,
+					onfocus: noop,
 					readOnly: undefined,
 					required: undefined,
 					step: undefined,
@@ -299,60 +266,41 @@ registerSuite('TimePicker', {
 					value: undefined
 				})
 			]));
-
-			picker.destroy();
 		},
 
 		'`onBlur` should be called'() {
-			const picker = harness(TimePicker);
 			const onBlur = sinon.spy();
-
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				onBlur,
 				useNativeElement: true,
 				value: '12:34:56'
-			});
-			picker.sendEvent('blur', {
-				selector: 'input[type=time]'
-			});
-
+			}));
+			h.trigger('input[type=time]', 'onblur', { target: { value: '12:34:56' }});
 			assert.isTrue(onBlur.calledWith('12:34:56'), '`onBlur` should be called with the value');
-			picker.destroy();
 		},
 
 		'`onChange` should be called'() {
-			const picker = harness(TimePicker);
 			const onChange = sinon.spy();
 
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				onChange,
 				useNativeElement: true,
 				value: '12:34:56'
-			});
-			picker.sendEvent('change', {
-				selector: 'input[type=time]'
-			});
-
+			}));
+			h.trigger('input[type=time]', 'onchange', { target: { value: '12:34:56' }});
 			assert.isTrue(onChange.calledWith('12:34:56'), '`onChange` should be called with the value');
-
-			picker.destroy();
 		},
 
 		'`onFocus` should be called'() {
-			const picker = harness(TimePicker);
 			const onFocus = sinon.spy();
-			picker.setProperties({
+			const h = harness(() => w(TimePicker, {
 				onFocus,
 				useNativeElement: true,
 				value: '12:34:56'
-			});
+			}));
 
-			picker.sendEvent('focus', {
-				selector: 'input[type=time]'
-			});
-
+			h.trigger('input[type=time]', 'onfocus', { target: { value: '12:34:56' }});
 			assert.isTrue(onFocus.calledWith('12:34:56'), '`onFocus` should be called with the value');
-			picker.destroy();
 		}
 	}
 });

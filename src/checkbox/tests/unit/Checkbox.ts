@@ -2,27 +2,21 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-
-import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
+import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
-import Checkbox, { Mode } from '../../Checkbox';
+import Checkbox, { Mode, CheckboxProperties } from '../../Checkbox';
 import * as css from '../../../theme/checkbox/checkbox.m.css';
+import { noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
-
-const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
+const expectedToggle = function(labels = false, checked = false) {
 	if (labels) {
 		return [
 			v('div', {
 				key: 'offLabel',
 				classes: css.offLabel,
-				'aria-hidden': null
+				'aria-hidden': checked ? 'true' : null
 			}, [ 'off' ]),
 			v('div', {
 				key: 'toggle',
@@ -31,7 +25,7 @@ const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 			v('div', {
 				key: 'onLabel',
 				classes: css.onLabel,
-				'aria-hidden': 'true'
+				'aria-hidden': checked ? null : 'true'
 			}, [ 'on' ])
 		];
 	}
@@ -46,14 +40,20 @@ const expectedToggle = function(widget: Harness<Checkbox>, labels = false) {
 	];
 };
 
-const expected = function(widget: Harness<Checkbox>, label = false, toggle = false, toggleLabels = false) {
-	const children = [
+const compareId = { selector: 'input', property: 'id', comparator: (property: any) => typeof property === 'string' };
+const compareForId = { selector: '@label', property: 'forId', comparator: (property: any) => typeof property === 'string' };
+
+const expected = function(label = false, toggle = false, toggleLabels = false, checked = false) {
+	return v('div', {
+		key: 'root',
+		classes: [ css.root, toggle ? css.toggle : null, checked ? css.checked : null, null, null, null, null, null, null ]
+	}, [
 		v('div', { classes: css.inputWrapper }, [
-			...(toggle ? expectedToggle(widget, toggleLabels) : []),
+			...(toggle ? expectedToggle(toggleLabels, checked) : []),
 			v('input', {
-				id: <any> compareId,
+				id: '',
 				classes: css.input,
-				checked: false,
+				checked,
 				disabled: undefined,
 				'aria-invalid': null,
 				name: undefined,
@@ -62,53 +62,40 @@ const expected = function(widget: Harness<Checkbox>, label = false, toggle = fal
 				required: undefined,
 				type: 'checkbox',
 				value: undefined,
-				onblur: widget.listener,
-				onchange: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener
+				onblur: noop,
+				onchange: noop,
+				onclick: noop,
+				onfocus: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop
 			})
 		]),
 		label ? w(Label, {
+			key: 'label',
 			theme: undefined,
 			disabled: undefined,
 			hidden: undefined,
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: <any> compareId,
+			forId: '',
 			secondary: true
 		}, [ 'foo' ]) : null
-	];
-
-	return v('div', {
-		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, null, null ]
-	}, children);
+	]);
 };
 
-let widget: Harness<Checkbox>;
-
 registerSuite('Checkbox', {
-	beforeEach() {
-		widget = harness(Checkbox);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected(widget));
+			const h = harness(() => w(Checkbox, {}), [ compareId ]);
+			h.expect(() => expected());
 		},
 
 		'custom properties'() {
-			widget.setProperties({
+			const h = harness(() => w(Checkbox, {
 				aria: {
 					describedBy: 'foo'
 				},
@@ -116,99 +103,137 @@ registerSuite('Checkbox', {
 				id: 'foo',
 				name: 'bar',
 				value: 'baz'
-			});
+			}), [ compareId ]);
 
-			const expectedVdom = expected(widget);
-			assignChildProperties(expectedVdom, '0,0', {
-				checked: true,
-				'aria-describedby': 'foo',
-				id: 'foo',
-				name: 'bar',
-				value: 'baz'
-			});
-			assignProperties(expectedVdom, {
+			h.expect(() => v('div', {
+				key: 'root',
 				classes: [ css.root, null, css.checked, null, null, null, null, null, null ]
-			});
-
-			widget.expectRender(expectedVdom);
+			}, [
+				v('div', { classes: css.inputWrapper }, [
+					v('input', {
+						id: '',
+						'aria-describedby': 'foo',
+						name: 'bar',
+						classes: css.input,
+						checked: true,
+						disabled: undefined,
+						'aria-invalid': null,
+						readOnly: undefined,
+						'aria-readonly': null,
+						required: undefined,
+						type: 'checkbox',
+						value: 'baz',
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop
+					})
+				])
+			]));
 		},
 
 		'label'() {
-			widget.setProperties({
+			const h = harness(() => w(Checkbox, {
 				label: 'foo'
-			});
+			}), [ compareId, compareForId ]);
 
-			widget.expectRender(expected(widget, true));
+			h.expect(() => expected(true));
 		},
 
 		'state classes'() {
-			widget.setProperties({
-				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			});
+			let invalid = true;
+			let disabled = true;
+			let readOnly = true;
+			let required = true;
+			const h = harness(() => w(Checkbox, {
+				invalid,
+				disabled,
+				readOnly,
+				required
+			}), [ compareForId, compareId ]);
 
-			let expectedVdom = expected(widget);
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-			assignProperties(expectedVdom, {
+			h.expect(() => v('div', {
+				key: 'root',
 				classes: [ css.root, null, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
-			});
+			}, [
+				v('div', { classes: css.inputWrapper }, [
+					v('input', {
+						id: '',
+						classes: css.input,
+						checked: false,
+						'aria-invalid': 'true',
+						'aria-readonly': 'true',
+						type: 'checkbox',
+						value: undefined,
+						name: undefined,
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop,
+						disabled: true,
+						readOnly: true,
+						required: true
+					})
+				])
+			]));
 
-			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
+			invalid = false;
+			disabled = false;
+			readOnly = false;
+			required = false;
 
-			widget.setProperties({
-				invalid: false,
-				disabled: false,
-				readOnly: false,
-				required: false
-			});
-			expectedVdom = expected(widget);
-
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: false,
-				readOnly: false,
-				required: false
-			});
-			assignProperties(expectedVdom, {
+			h.expect(() => v('div', {
+				key: 'root',
 				classes: [ css.root, null, null, null, null, null, css.valid, null, null ]
-			});
-
-			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+			}, [
+				v('div', { classes: css.inputWrapper }, [
+					v('input', {
+						id: '',
+						classes: css.input,
+						checked: false,
+						'aria-invalid': null,
+						'aria-readonly': null,
+						type: 'checkbox',
+						value: undefined,
+						name: undefined,
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop,
+						disabled: false,
+						readOnly: false,
+						required: false
+					})
+				])
+			]));
 		},
 
 		'state properties on label'() {
-			widget.setProperties({
+			const h = harness(() => w(Checkbox, {
 				label: 'foo',
 				invalid: true,
 				disabled: true,
 				readOnly: true,
 				required: true
-			});
+			}), [ compareId, compareForId ]);
 
-			const expectedVdom = expected(widget, true);
-			assignChildProperties(expectedVdom, '0,0', {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-
-			assignChildProperties(expectedVdom, 1, {
-				disabled: true,
-				readOnly: true,
-				required: true,
-				invalid: true
-			});
-
-			assignProperties(expectedVdom, {
+			h.expect(() => v('div', {
+				key: 'root',
 				classes: [
 					css.root,
 					null,
@@ -220,68 +245,105 @@ registerSuite('Checkbox', {
 					css.readonly,
 					css.required
 				]
-			});
-
-			widget.expectRender(expectedVdom);
+			}, [
+				v('div', { classes: css.inputWrapper }, [
+					v('input', {
+						disabled: true,
+						classes: css.input,
+						'aria-invalid': 'true',
+						readOnly: true,
+						'aria-readonly': 'true',
+						required: true,
+						checked: false,
+						name: undefined,
+						type: 'checkbox',
+						value: undefined,
+						id: '',
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop
+					})
+				]),
+				w(Label, {
+					key: 'label',
+					disabled: true,
+					theme: undefined,
+					readOnly: true,
+					required: true,
+					invalid: true,
+					hidden: undefined,
+					forId: '',
+					secondary: true
+				}, [ 'foo' ])
+			]));
 		},
 
 		'focused class'() {
-			let expectedVdom = expected(widget);
-			widget.expectRender(expectedVdom);
-
-			widget.sendEvent('focus', { selector: 'input' });
-			expectedVdom = expected(widget);
-			assignProperties(expectedVdom, {
+			const h = harness(() => w(Checkbox, {}), [ compareId ]);
+			h.expect(() => expected());
+			h.trigger('input', 'onfocus');
+			h.expect(() => v('div', {
+				key: 'root',
 				classes: [ css.root, null, null, null, css.focused, null, null, null, null ]
-			});
-			widget.expectRender(expectedVdom, 'Should have focused class after focus event');
+			}, [
+				v('div', { classes: css.inputWrapper }, [
+					v('input', {
+						id: '',
+						classes: css.input,
+						checked: false,
+						disabled: undefined,
+						'aria-invalid': null,
+						name: undefined,
+						readOnly: undefined,
+						'aria-readonly': null,
+						required: undefined,
+						type: 'checkbox',
+						value: undefined,
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop
+					})
+				])
+			]));
 
-			widget.sendEvent('blur', { selector: 'input' });
-			expectedVdom = expected(widget);
-			widget.expectRender(expectedVdom, 'Should not have focused class after blur event');
+			h.trigger('input', 'onblur');
+			h.expect(() => expected());
 		},
 
 		'toggle mode'() {
-			widget.setProperties({
+			let properties: CheckboxProperties = {
 				mode: Mode.toggle
-			});
-			let expectedVdom = expected(widget, false, true);
-			assignProperties(expectedVdom, {
-				classes: [ css.root, css.toggle, null, null, null, null, null, null, null ]
-			});
-			widget.expectRender(expectedVdom, 'Toggle input without toggle labels');
+			};
+			const h = harness(() => w(Checkbox, properties), [ compareId, compareForId ]);
 
-			widget.setProperties({
+			h.expect(() => expected(false, true));
+
+			properties = {
 				mode: Mode.toggle,
 				offLabel: 'off',
 				onLabel: 'on'
-			});
-			expectedVdom = expected(widget, false, true, true);
-			assignProperties(expectedVdom, {
-				classes: [ css.root, css.toggle, null, null, null, null, null, null, null ]
-			});
-			widget.expectRender(expectedVdom, 'Toggle input with toggle labels');
+			};
+			h.expect(() => expected(false, true, true));
 
-			widget.setProperties({
+			properties = {
 				checked: true,
 				mode: Mode.toggle,
 				offLabel: 'off',
 				onLabel: 'on'
-			});
-			expectedVdom = expected(widget, false, true, true);
-			assignProperties(expectedVdom, {
-				classes: [ css.root, css.toggle, css.checked, null, null, null, null, null, null ]
-			});
-			assignChildProperties(expectedVdom, '0,3', {
-				checked: true
-			});
-			assignChildProperties(expectedVdom, '0,0', {
-				'aria-hidden': 'true'
-			});
-			assignChildProperties(expectedVdom, '0,2', {
-				'aria-hidden': null
-			});
-			widget.expectRender(expectedVdom, 'Checked toggle input with toggle labels');
+			};
+			h.expect(() => expected(false, true, true, true));
 		},
 
 		events() {
@@ -291,50 +353,39 @@ registerSuite('Checkbox', {
 			const onFocus = sinon.stub();
 			const onMouseDown = sinon.stub();
 			const onMouseUp = sinon.stub();
+			const onTouchStart = sinon.stub();
+			const onTouchEnd = sinon.stub();
+			const onTouchCancel = sinon.stub();
 
-			widget.setProperties({
+			const h = harness(() => w(Checkbox, {
 				onBlur,
 				onChange,
 				onClick,
 				onFocus,
 				onMouseDown,
-				onMouseUp
-			});
-
-			widget.sendEvent('blur', { selector: 'input' });
-			assert.isTrue(onBlur.called, 'onBlur called');
-			widget.sendEvent('change', { selector: 'input' });
-			assert.isTrue(onChange.called, 'onChange called');
-			widget.sendEvent('click', { selector: 'input' });
-			assert.isTrue(onClick.called, 'onClick called');
-			widget.sendEvent('focus', { selector: 'input' });
-			assert.isTrue(onFocus.called, 'onFocus called');
-			widget.sendEvent('mousedown', { selector: 'input' });
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			widget.sendEvent('mouseup', { selector: 'input' });
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-		},
-
-		'touch events'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
-
-			widget.setProperties({
+				onMouseUp,
 				onTouchStart,
 				onTouchEnd,
 				onTouchCancel
-			});
+			}));
 
-			widget.sendEvent('touchstart', { selector: 'input' });
+			h.trigger('input', 'onblur');
+			assert.isTrue(onBlur.called, 'onBlur called');
+			h.trigger('input', 'onchange');
+			assert.isTrue(onChange.called, 'onChange called');
+			h.trigger('input', 'onclick');
+			assert.isTrue(onClick.called, 'onClick called');
+			h.trigger('input', 'onfocus');
+			assert.isTrue(onFocus.called, 'onFocus called');
+			h.trigger('input', 'onmousedown');
+			assert.isTrue(onMouseDown.called, 'onMouseDown called');
+			h.trigger('input', 'onmouseup');
+			assert.isTrue(onMouseUp.called, 'onMouseUp called');
+			h.trigger('input', 'ontouchstart');
 			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			widget.sendEvent('touchend', { selector: 'input' });
+			h.trigger('input', 'ontouchend');
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			widget.sendEvent('touchcancel', { selector: 'input' });
+			h.trigger('input', 'ontouchcancel');
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}

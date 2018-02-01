@@ -1,7 +1,6 @@
-const { beforeEach, afterEach, describe, it} = intern.getInterface('bdd');
-import { v } from '@dojo/widget-core/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignChildProperties } from '@dojo/test-extras/support/d';
+const { describe, it} = intern.getInterface('bdd');
+import { v, w } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
 import Progress from '../../Progress';
 import * as css from '../../../theme/progress/progress.m.css';
 
@@ -13,7 +12,8 @@ const expectedVDom = function(args: any) {
 		showOutput = true,
 		max = 100,
 		min = 0,
-		id
+		id,
+		describedBy
 	} = args;
 
 	return v('div', { classes: css.root }, [
@@ -24,7 +24,8 @@ const expectedVDom = function(args: any) {
 			'aria-valuenow': `${value}`,
 			'aria-valuetext': `${output}`,
 			role: 'progressbar',
-			id
+			id,
+			...(describedBy ? { 'aria-describedby': describedBy } : {})
 		}, [
 			v('div', {
 				classes: css.progress,
@@ -37,94 +38,78 @@ const expectedVDom = function(args: any) {
 	]);
 };
 
-let widget: Harness<Progress>;
-
 describe('Progress', () => {
-
-	beforeEach(() => {
-		widget = harness(Progress);
-	});
-
-	afterEach(() => {
-		widget.destroy();
-	});
-
 	it('defaults max width to 100', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			value: 50
-		});
-
-		widget.expectRender(expectedVDom({ width: 50, output: '50%', value: 50 }));
+		}));
+		h.expect(() => expectedVDom({ width: 50, output: '50%', value: 50 }));
 	});
 
 	it('accepts a max to calculate width', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			max: 200,
 			value: 50
-		});
+		}));
 
-		widget.expectRender(expectedVDom({ width: 25, output: '25%', value: 50, max: 200 }));
+		h.expect(() => expectedVDom({ width: 25, output: '25%', value: 50, max: 200 }));
 	});
 
 	it('accepts decimal values', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			max: 1,
 			value: 0.2
-		});
+		}));
 
-		widget.expectRender(expectedVDom({ width: 20, output: '20%', value: 0.2, max: 1 }));
+		h.expect(() => expectedVDom({ width: 20, output: '20%', value: 0.2, max: 1 }));
 	});
 
 	it('accepts a min and max to calculate width', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			min: 100,
 			max: 200,
 			value: 150
-		});
+		}));
 
-		widget.expectRender(expectedVDom({ width: 50, output: '50%', value: 150, min: 100, max: 200 }));
+		h.expect(() => expectedVDom({ width: 50, output: '50%', value: 150, min: 100, max: 200 }));
 	});
 
 	it('accepts an output function', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			value: 50,
-			output: (value, percent) => `${value}, ${percent}`
-		});
+			output: (value: any, percent: any) => `${value}, ${percent}`
+		}));
 
-		widget.expectRender(expectedVDom({ width: 50, output: '50, 50', value: 50 }));
+		h.expect(() => expectedVDom({ width: 50, output: '50, 50', value: 50 }));
 	});
 
 	it('can hide output', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			value: 50,
 			showOutput: false
-		});
+		}));
 
-		widget.expectRender(expectedVDom({ width: 50, value: 50, output: '50%', showOutput: false }));
+		h.expect(() => expectedVDom({ width: 50, value: 50, output: '50%', showOutput: false }));
 	});
 
 	it('can accept an id', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			value: 50,
 			id: 'my-id'
-		});
+		}));
 
-		widget.expectRender(expectedVDom({ width: 50, output: '50%', value: 50, id: 'my-id' }));
+		h.expect(() => expectedVDom({ width: 50, output: '50%', value: 50, id: 'my-id' }));
 	});
 
 	it('accepts aria properties', () => {
-		widget.setProperties({
+		const h = harness(() => w(Progress, {
 			value: 50,
 			aria: {
 				describedBy: 'foo',
 				valueNow: 'overridden'
 			}
-		});
+		}));
 
-		const expected = expectedVDom({ width: 50, output: '50%', value: 50 });
-		assignChildProperties(expected, '0', {
-			'aria-describedby': 'foo'
-		});
-		widget.expectRender(expected);
+		h.expect(() => expectedVDom({ width: 50, output: '50%', value: 50, describedBy: 'foo' }));
 	});
 });

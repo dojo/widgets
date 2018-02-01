@@ -1,27 +1,29 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-
 import * as sinon from 'sinon';
 
-import { v } from '@dojo/widget-core/d';
-import { assignChildProperties, compareProperty, replaceChild } from '@dojo/test-extras/support/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
+import { v, w, isWNode } from '@dojo/widget-core/d';
 
-import Dialog from '../../Dialog';
+import Dialog, { DialogProperties } from '../../Dialog';
 import * as css from '../../../theme/dialog/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
+import { GlobalEvent } from '../../../global-event/GlobalEvent';
+import {
+	createHarness,
+	compareId,
+	compareAriaLabelledBy,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const harness = createHarness([ compareId, compareAriaLabelledBy ]);
 
 const expectedCloseButton = function() {
 	return v('button', {
 		classes: css.close,
-		onclick: widget.listener
+		onclick: noop
 	}, [
 		'close ',
 		v('i', {
@@ -32,21 +34,27 @@ const expectedCloseButton = function() {
 	]);
 };
 
-const expected = function(widget: Harness<Dialog>, open = false, closeable = false, children: any[] = []) {
+const expected = function(open = false, closeable = false, children: any[] = []) {
 	return v('div', {
 		classes: css.root,
 		dir: null,
 		lang: null
 	}, open ? [
+		w(GlobalEvent, {
+			key: 'global',
+			document: {
+				keyup: noop
+			}
+		}),
 		v('div', {
 			classes: [ null, fixedCss.underlay ],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
 			key: 'underlay',
-			onclick: widget.listener
+			onclick: noop
 		}),
 		v('div', {
-			'aria-labelledby': compareId,
+			'aria-labelledby': '',
 			classes: css.main,
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
@@ -58,7 +66,7 @@ const expected = function(widget: Harness<Dialog>, open = false, closeable = fal
 				classes: css.title,
 				key: 'title'
 			}, [
-				v('div', { id: <any> compareId }, [ '' ]),
+				v('div', { id: '' }, [ '' ]),
 				closeable ? expectedCloseButton() : null
 			]),
 			v('div', {
@@ -69,38 +77,29 @@ const expected = function(widget: Harness<Dialog>, open = false, closeable = fal
 	] : []);
 };
 
-let widget: Harness<Dialog>;
-
 registerSuite('Dialog', {
-
-	beforeEach() {
-		widget = harness(Dialog);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
 
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected(widget), 'closed dialog renders correctly');
+			let properties: DialogProperties = {};
+			const h = harness(() => w(Dialog, properties));
+			h.expect(expected);
 
-			widget.setProperties({
+			properties = {
 				open: true,
 				closeable: false
-			});
-			widget.expectRender(expected(widget, true), 'open dialog renders correctly');
+			};
+			h.expect(() => expected(true));
 		},
 
 		'custom properties'() {
-			// force an initial render so all classes are present
-			widget.setProperties({
+			let properties: DialogProperties = {
 				open: true
-			});
-			widget.getRender();
+			};
+			const h = harness(() => w(Dialog, properties));
 
 			// set tested properties
-			widget.setProperties({
+			properties = {
 				aria: { describedBy: 'foo' },
 				closeable: true,
 				closeText: 'foo',
@@ -110,150 +109,208 @@ registerSuite('Dialog', {
 				role: 'alertdialog',
 				title: 'foo',
 				underlay: true
-			});
+			};
 
-			let expectedVdom = expected(widget, true, true);
-			assignChildProperties(expectedVdom, '0', {
-				classes: [ css.underlayVisible, fixedCss.underlay ] // do this here so the class is present in future renders
-			});
-			expectedVdom = expected(widget, true, true);
-			replaceChild(expectedVdom, '1,0,1,0', 'foo');
-			replaceChild(expectedVdom, '1,0,0,0', 'foo');
-			assignChildProperties(expectedVdom, '0', {
-				classes: [ css.underlayVisible, fixedCss.underlay ]
-			});
-			assignChildProperties(expectedVdom, '1', {
-				'aria-describedby': 'foo',
-				enterAnimation: 'fooAnimation',
-				exitAnimation: 'barAnimation',
-				role: 'alertdialog'
-			});
-
-			widget.expectRender(expectedVdom);
+			h.expect(() => v('div', {
+				classes: css.root,
+				dir: null,
+				lang: null
+			}, [
+				w(GlobalEvent, {
+					key: 'global',
+					document: {
+						keyup: noop
+					}
+				}),
+				v('div', {
+					classes: [ css.underlayVisible, fixedCss.underlay ],
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut,
+					key: 'underlay',
+					onclick: noop
+				}),
+				v('div', {
+					role: 'alertdialog',
+					'aria-describedby': 'foo',
+					'aria-labelledby': '',
+					classes: css.main,
+					enterAnimation: 'fooAnimation',
+					exitAnimation: 'barAnimation',
+					key: 'main',
+					tabIndex: -1
+				}, [
+					v('div', {
+						classes: css.title,
+						key: 'title'
+					}, [
+						v('div', { id: '' }, [ 'foo' ]),
+						v('button', {
+							classes: css.close,
+							onclick: noop
+						}, [
+							'foo',
+							v('i', {
+								classes: [ iconCss.icon, iconCss.closeIcon ],
+								role: 'presentation',
+								'aria-hidden': 'true'
+							})
+						])
+					]),
+					v('div', {
+						classes: css.content,
+						key: 'content'
+					}, [])
+				])
+			]));
 		},
 
 		'correct close text'() {
-			widget.setProperties({
+			const h = harness(() => w(Dialog, {
 				closeable: true,
 				open: true,
 				title: 'foo'
-			});
-			const expectedVdom = expected(widget, true, true);
-			replaceChild(expectedVdom, '1,0,1,0', 'close foo');
-			replaceChild(expectedVdom, '1,0,0,0', 'foo');
-
-			widget.expectRender(expectedVdom);
+			}));
+			h.expect(() => v('div', {
+				classes: css.root,
+				dir: null,
+				lang: null
+			}, [
+				w(GlobalEvent, {
+					key: 'global',
+					document: {
+						keyup: noop
+					}
+				}),
+				v('div', {
+					classes: [ null, fixedCss.underlay ],
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut,
+					key: 'underlay',
+					onclick: noop
+				}),
+				v('div', {
+					role: 'dialog',
+					'aria-labelledby': '',
+					classes: css.main,
+					enterAnimation: animations.fadeIn,
+					exitAnimation: animations.fadeOut,
+					key: 'main',
+					tabIndex: -1
+				}, [
+					v('div', {
+						classes: css.title,
+						key: 'title'
+					}, [
+						v('div', { id: '' }, [ 'foo' ]),
+						v('button', {
+							classes: css.close,
+							onclick: noop
+						}, [
+							'close foo',
+							v('i', {
+								classes: [ iconCss.icon, iconCss.closeIcon ],
+								role: 'presentation',
+								'aria-hidden': 'true'
+							})
+						])
+					]),
+					v('div', {
+						classes: css.content,
+						key: 'content'
+					}, [])
+				])
+			]));
 		},
 
 		children() {
-			const testChildren = [
+			const h = harness(() => w(Dialog, { open: true }, [
 				v('p', [ 'Lorem ipsum dolor sit amet' ]),
 				v('a', { href: '#foo' }, [ 'foo' ])
-			];
+			]));
 
-			widget.setProperties({
-				open: true
-			});
-			widget.setChildren(testChildren);
-
-			const expectedVdom = expected(widget, true, true, testChildren);
-			widget.expectRender(expectedVdom);
+			h.expect(() => expected(true, true, [
+				v('p', [ 'Lorem ipsum dolor sit amet' ]),
+				v('a', { href: '#foo' }, [ 'foo' ])
+			]));
 		},
 
 		onRequestClose() {
 			const onRequestClose = sinon.stub();
-
-			widget.setProperties({
+			let properties = {
 				closeable: true,
 				open: true,
 				onRequestClose
-			});
-			widget.sendEvent('click', {
-				selector: `.${css.close}`
-			});
+			};
+			const h = harness(() => w(Dialog, properties));
+			h.trigger(`.${css.close}`, 'onclick');
 			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler called when close button is clicked');
 
-			widget.setProperties({
+			properties = {
 				closeable: false,
 				open: true,
 				onRequestClose
-			});
-			widget.getRender();
-			widget.sendEvent('click', {
-				selector: `.${fixedCss.underlay}`
-			});
+			};
+			h.trigger(`.${css.close}`, 'onclick');
 			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler not called when closeable is false');
 		},
 
 		onOpen() {
 			const onOpen = sinon.stub();
-
-			widget.setProperties({
+			let properties: any = {
 				open: true,
 				onOpen
-			});
-			widget.getRender();
+			};
+			const h = harness(() => w(Dialog, properties));
 			assert.isTrue(onOpen.calledOnce, 'onOpen handler called when open is initially set to true');
 
-			widget.setProperties({
+			properties = {
 				closeable: true,
 				open: true,
 				onOpen
-			});
-			widget.getRender();
+			};
+			h.expect(() => expected(true, true));
 			assert.isTrue(onOpen.calledOnce, 'onOpen handler not called if dialog was previously open');
 		},
 
 		modal() {
 			const onRequestClose = sinon.stub();
-
-			widget.setProperties({
+			let properties: any = {
 				open: true,
 				modal: true,
 				onRequestClose
-			});
+			};
+			const h = harness(() => w(Dialog, properties));
+			h.trigger(`.${fixedCss.underlay}`, 'onclick');
 
-			widget.sendEvent('click', {
-				selector: `.${fixedCss.underlay}`
-			});
 			assert.isFalse(onRequestClose.called, 'onRequestClose should not be called when the underlay is clicked and modal is true');
 
-			widget.setProperties({
+			properties = {
 				open: true,
 				modal: false,
 				onRequestClose
-			});
-			widget.getRender();
+			};
 
-			widget.sendEvent('click', {
-				selector: `.${fixedCss.underlay}`
-			});
+			h.trigger(`.${fixedCss.underlay}`, 'onclick');
 			assert.isTrue(onRequestClose.called, 'onRequestClose is called when the underlay is clicked and modal is false');
 		},
 
 		escapeKey() {
 			const onRequestClose = sinon.stub();
-
-			widget.setProperties({
+			const h = harness(() => w(Dialog, {
 				open: true,
 				onRequestClose
-			});
-			widget.getRender();
-
-			widget.sendEvent('keyup', {
-				eventInit: <KeyboardEventInit> {
-					which: Keys.Down
+			}));
+			h.trigger('@global', (node: any) => {
+				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
+					return node.properties.document.keyup;
 				}
-			});
-
+			}, { which: Keys.Down });
 			assert.isTrue(onRequestClose.notCalled);
-
-			widget.sendEvent('keyup', {
-				eventInit: <KeyboardEventInit> {
-					which: Keys.Escape
+			h.trigger('@global', (node: any) => {
+				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
+					return node.properties.document.keyup;
 				}
-			});
-
+			}, { which: Keys.Escape });
 			assert.isTrue(onRequestClose.calledOnce);
 		}
 	}

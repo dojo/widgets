@@ -1,9 +1,8 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { compareProperty, findKey, assignChildProperties, replaceChild } from '@dojo/test-extras/support/d';
-import { v } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
@@ -11,8 +10,13 @@ import DatePicker from '../../DatePicker';
 import * as css from '../../../theme/calendar/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
+import {
+	compareAriaLabelledBy,
+	compareAriaControls,
+	compareId
+} from '../../../common/tests/support/test-helpers';
 
-let widget: Harness<DatePicker>;
+const noop = () => {};
 const testDate = new Date('June 3 2017');
 const requiredProps = {
 	labels: DEFAULT_LABELS,
@@ -22,25 +26,24 @@ const requiredProps = {
 };
 let customProps: any = {};
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const compareKey = { selector: 'label,input', property: 'key', comparator: (property: any) => typeof property === 'string' };
+const compareName = { selector: 'input', property: 'name', comparator: (property: any) => typeof property === 'string' };
 
-const monthRadios = function(widget: Harness<DatePicker>, open?: boolean) {
+const monthRadios = function(open?: boolean) {
 	return DEFAULT_MONTHS.map((monthName, i) => v('label', {
-		key: <any> compareId,
+		key: '',
 		classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ]
 	}, [
 		v('input', {
 			checked: i === 5,
 			classes: css.monthRadioInput,
-			key: compareId as any,
-			name: compareId as any,
+			key: '',
+			name: '',
 			tabIndex: open ? 0 : -1,
 			type: 'radio',
 			value: `${i}`,
-			onchange: widget.listener,
-			onmouseup: widget.listener
+			onchange: noop,
+			onmouseup: noop
 		}),
 		v('abbr', {
 			classes: css.monthRadioLabel,
@@ -49,23 +52,23 @@ const monthRadios = function(widget: Harness<DatePicker>, open?: boolean) {
 	]));
 };
 
-const yearRadios = function(widget: Harness<DatePicker>, open?: boolean, yearStart = 2000, yearEnd = 2020) {
+const yearRadios = function(open?: boolean, yearStart = 2000, yearEnd = 2020, checkedYear = 2017) {
 	const radios = [];
 	for (let i = yearStart; i < yearEnd; i++) {
 		radios.push(v('label', {
-			key: <any> compareId,
-			classes: [ css.yearRadio, i === 2017 ? css.yearRadioChecked : null ]
+			key: '',
+			classes: [ css.yearRadio, i === checkedYear ? css.yearRadioChecked : null ]
 		}, [
 			v('input', {
-				checked: i === 2017,
+				checked: i === checkedYear,
 				classes: css.yearRadioInput,
-				key: compareId as any,
-				name: compareId as any,
 				tabIndex: open ? 0 : -1,
 				type: 'radio',
+				key: '',
+				name: '',
 				value: `${ i }`,
-				onchange: widget.listener,
-				onmouseup: widget.listener
+				onchange: noop,
+				onmouseup: noop
 			}),
 			v('abbr', {
 				classes: css.yearRadioLabel
@@ -75,42 +78,42 @@ const yearRadios = function(widget: Harness<DatePicker>, open?: boolean, yearSta
 	return radios;
 };
 
-const expectedMonthPopup = function(widget: Harness<DatePicker>, open: boolean) {
+const expectedMonthPopup = function(open: boolean) {
 	return v('div', {
+		id: '',
 		key: 'month-grid',
 		'aria-hidden': `${!open}`,
-		'aria-labelledby': <any> compareId,
+		'aria-labelledby': '',
 		classes: [ css.monthGrid, !open ? baseCss.visuallyHidden : null ],
-		id: <any> compareId,
 		role: 'dialog'
 	}, [
 		v('fieldset', {
 			classes: css.monthFields,
-			onkeydown: widget.listener
+			onkeydown: noop
 		}, [
 			v('legend', {
 				classes: baseCss.visuallyHidden
 			}, [ DEFAULT_LABELS.chooseMonth ]),
-			...monthRadios(widget, open)
+			...monthRadios(open)
 		])
 	]);
 };
 
-const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, yearStart?: number, yearEnd?: number) {
+const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: number) {
 	return v('div', {
 		key: 'year-grid',
 		'aria-hidden': `${!open}`,
-		'aria-labelledby': <any> compareId,
+		'aria-labelledby': '',
 		classes: [ css.yearGrid, !open ? baseCss.visuallyHidden : null ],
-		id: <any> compareId,
+		id: '',
 		role: 'dialog'
 	}, [
 		v('fieldset', {
 			classes: css.yearFields,
-			onkeydown: widget.listener
+			onkeydown: noop
 		}, [
 			v('legend', { classes: [ baseCss.visuallyHidden ] }, [ DEFAULT_LABELS.chooseYear ]),
-			...yearRadios(widget, open, yearStart, yearEnd)
+			...yearRadios(open, yearStart, yearEnd)
 		]),
 		v('div', {
 			classes: css.controls
@@ -118,7 +121,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 			v('button', {
 				classes: css.previous,
 				tabIndex: open ? 0 : -1,
-				onclick: widget.listener
+				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
@@ -128,7 +131,7 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 			v('button', {
 				classes: css.next,
 				tabIndex: open ? 0 : -1,
-				onclick: widget.listener
+				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
 					role: 'presentation', 'aria-hidden': 'true'
@@ -139,7 +142,8 @@ const expectedYearPopup = function(widget: Harness<DatePicker>, open: boolean, y
 	]);
 };
 
-const expected = function(widget: Harness<DatePicker>, monthOpen = false, yearOpen = false, yearStart?: number, yearEnd?: number) {
+const expected = function(monthOpen = false, yearOpen = false, options: { yearStart?: number; yearEnd?: number; monthLabel?: string; } = {}) {
+	const { yearStart, yearEnd, monthLabel = 'June 2017' } = options;
 	// new
 	return v('div', {
 		classes: css.datePicker
@@ -150,42 +154,42 @@ const expected = function(widget: Harness<DatePicker>, monthOpen = false, yearOp
 		}, [
 			// hidden label
 			v('label', {
-				id: customProps.labelId ? customProps.labelId : <any> compareId,
+				id: customProps.labelId ? customProps.labelId : '',
 				classes: [ baseCss.visuallyHidden ],
 				'aria-live': 'polite',
 				'aria-atomic': 'false'
-			}, [ 'June 2017' ]),
+			}, [ monthLabel ]),
 
 			// month trigger
 			v('button', {
 				key: 'month-button',
-				'aria-controls': <any> compareId,
+				'aria-controls': '',
 				'aria-expanded': `${monthOpen}`,
 				'aria-haspopup': 'true',
-				id: <any> compareId,
+				id: '',
 				classes: [ css.monthTrigger, monthOpen ? css.monthTriggerActive : null ],
 				role: 'menuitem',
-				onclick: widget.listener
+				onclick: noop
 			}, [ 'June' ]),
 
 			// year trigger
 			v('button', {
 				key: 'year-button',
-				'aria-controls': <any> compareId,
+				'aria-controls': '',
 				'aria-expanded': `${yearOpen}`,
 				'aria-haspopup': 'true',
-				id: <any> compareId,
+				id: '',
 				classes: [ css.yearTrigger, yearOpen ? css.yearTriggerActive : null ],
 				role: 'menuitem',
-				onclick: widget.listener
+				onclick: noop
 			}, [ '2017' ])
 		]),
 
 		// month picker
-		expectedMonthPopup(widget, monthOpen),
+		expectedMonthPopup(monthOpen),
 
 		// year picker
-		expectedYearPopup(widget, yearOpen, yearStart, yearEnd)
+		expectedYearPopup(yearOpen, yearStart, yearEnd)
 	]);
 };
 
@@ -194,22 +198,13 @@ interface TestEventInit extends EventInit {
 }
 
 registerSuite('Calendar DatePicker', {
-	beforeEach() {
-		widget = harness(DatePicker);
-	},
-
-	afterEach() {
-		customProps = {};
-		widget.destroy();
-	},
-
 	tests: {
 		'Popup should render with default properties'() {
-			widget.setProperties({
+			const h = harness(() => w(DatePicker, {
 				...requiredProps
-			});
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
-			widget.expectRender(expected(widget));
+			h.expect(() => expected());
 		},
 
 		'Popup should render with custom properties'() {
@@ -217,273 +212,318 @@ registerSuite('Calendar DatePicker', {
 				labelId: 'foo',
 				yearRange: 25
 			};
-			widget.setProperties({
+
+			const h = harness(() => w(DatePicker, {
 				renderMonthLabel: () => { return 'bar'; },
 				...customProps,
 				...requiredProps
-			});
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
-			let expectedVdom = expected(widget, false, false, 2000, 2025);
-			replaceChild(expectedVdom, '0,0,0', 'bar');
-
-			widget.expectRender(expectedVdom);
+			h.expect(() => expected(false, false, { yearStart: 2000, yearEnd: 2025, monthLabel: 'bar'}));
 		},
 
 		'Year below 2000 calculates correctly'() {
-			// classes are easier to replace if we do this twice
-			widget.setProperties({
+			let properties = {
 				...requiredProps
-			});
-			let expectedVdom = expected(widget);
-			widget.expectRender(expectedVdom);
+			};
+			const h = harness(() => w(DatePicker, properties), [
+				compareKey, compareName, compareId, compareAriaLabelledBy, compareAriaControls
+			]);
+			h.expect(expected);
 
-			widget.setProperties({
+			properties = {
 				...requiredProps,
 				year: 1997
-			});
-			expectedVdom = expected(widget, false, false, 1980, 2000);
-			const yearGridVdom = findKey(expectedVdom, 'year-grid');
-			replaceChild(expectedVdom, '0,0,0', 'June 1997');
-			replaceChild(expectedVdom, '0,2,0', '1997');
-			assignChildProperties(yearGridVdom!, '0,18', { classes: [ css.yearRadio, css.yearRadioChecked ] });
-			assignChildProperties(yearGridVdom!, '0,18,0', { checked: true });
-			widget.expectRender(expectedVdom);
+			};
+
+			h.expect(() => v('div', {
+				classes: css.datePicker
+			}, [
+				v('div', {
+					classes: css.topMatter,
+					role: 'menubar'
+				}, [
+					// hidden label
+					v('label', {
+						id: '',
+						classes: [ baseCss.visuallyHidden ],
+						'aria-live': 'polite',
+						'aria-atomic': 'false'
+					}, [ 'June 1997' ]),
+
+					// month trigger
+					v('button', {
+						key: 'month-button',
+						'aria-controls': '',
+						'aria-expanded': 'false',
+						'aria-haspopup': 'true',
+						id: '',
+						classes: [ css.monthTrigger, null ],
+						role: 'menuitem',
+						onclick: noop
+					}, [ 'June' ]),
+
+					// year trigger
+					v('button', {
+						key: 'year-button',
+						'aria-controls': '',
+						'aria-expanded': 'false',
+						'aria-haspopup': 'true',
+						id: '',
+						classes: [ css.yearTrigger, null ],
+						role: 'menuitem',
+						onclick: noop
+					}, [ '1997' ])
+				]),
+				v('div', {
+					id: '',
+					key: 'month-grid',
+					'aria-hidden': 'true',
+					'aria-labelledby': '',
+					classes: [ css.monthGrid, baseCss.visuallyHidden ],
+					role: 'dialog'
+				}, [
+					v('fieldset', {
+						classes: css.monthFields,
+						onkeydown: noop
+					}, [
+						v('legend', {
+							classes: baseCss.visuallyHidden
+						}, [ DEFAULT_LABELS.chooseMonth ]),
+						...DEFAULT_MONTHS.map((monthName, i) => v('label', {
+							key: '',
+							classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ]
+						}, [
+							v('input', {
+								checked: i === 5,
+								classes: css.monthRadioInput,
+								key: '',
+								name: '',
+								tabIndex:  -1,
+								type: 'radio',
+								value: `${i}`,
+								onchange: noop,
+								onmouseup: noop
+							}),
+							v('abbr', {
+								classes: css.monthRadioLabel,
+								title: monthName.long
+							}, [ monthName.short ])
+						]))
+					])
+				]),
+				v('div', {
+					key: 'year-grid',
+					'aria-hidden': 'true',
+					'aria-labelledby': '',
+					classes: [ css.yearGrid, baseCss.visuallyHidden ],
+					id: '',
+					role: 'dialog'
+				}, [
+					v('fieldset', {
+						classes: css.yearFields,
+						onkeydown: noop
+					}, [
+						v('legend', { classes: [ baseCss.visuallyHidden ] }, [ DEFAULT_LABELS.chooseYear ]),
+						...yearRadios(false, 1980, 2000, 1997)
+					]),
+					v('div', {
+						classes: css.controls
+					}, [
+						v('button', {
+							classes: css.previous,
+							tabIndex:  -1,
+							onclick: noop
+						}, [
+							v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
+								role: 'presentation', 'aria-hidden': 'true'
+							}),
+							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
+						]),
+						v('button', {
+							classes: css.next,
+							tabIndex: -1,
+							onclick: noop
+						}, [
+							v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
+								role: 'presentation', 'aria-hidden': 'true'
+							}),
+							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
+						])
+					])
+				])
+			]));
 		},
 
 		'Month popup opens and closes on button click'() {
 			let isOpen;
-			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+			const h = harness(() => w(DatePicker, {
+				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			});
+			}));
 
-			widget.sendEvent('click', {
-				key: 'month-button'
-			});
+			h.trigger('@month-button', 'onclick');
 			assert.isTrue(isOpen, 'First click should open popup');
-
-			widget.sendEvent('click', {
-				key: 'month-button'
-			});
+			h.trigger('@month-button', 'onclick');
 			assert.isFalse(isOpen, 'Second click should close popup');
 		},
 
 		'Year popup opens and closes on button click'() {
 			let isOpen;
-			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+			const h = harness(() => w(DatePicker, {
+				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			});
+			}));
 
-			widget.sendEvent('click', {
-				key: 'year-button'
-			});
+			h.trigger('@year-button', 'onclick');
 			assert.isTrue(isOpen, 'First click should open popup');
 
-			widget.sendEvent('click', {
-				key: 'year-button'
-			});
+			h.trigger('@year-button', 'onclick');
 			assert.isFalse(isOpen, 'Second click should close popup');
 		},
 
 		'Popup switches between month and year'() {
 			let isOpen;
-			let expectedVdom = expected(widget, false, false);
-			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+			const h = harness(() => w(DatePicker, {
+				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			});
-			widget.expectRender(expectedVdom);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			h.expect(() => expected(false, false));
 
-			widget.sendEvent('click', {
-				key: 'month-button'
-			});
-			expectedVdom = expected(widget, true, false);
+			h.trigger('@month-button', 'onclick');
+			h.expect(() => expected(true, false));
 			assert.isTrue(isOpen, 'Month button opens popup');
-			widget.expectRender(expectedVdom);
 
-			widget.sendEvent('click', {
-				key: 'year-button'
-			});
-			expectedVdom = expected(widget, false, true);
+			h.trigger('@year-button', 'onclick');
+			h.expect(() => expected(false, true));
 			assert.isTrue(isOpen, 'After clicking year button, popup is still open');
-			widget.expectRender(expectedVdom);
 		},
 
 		'Month popup closes with correct keys'() {
-			let isOpen;
-			let expectedVdom = expected(widget, false, false);
-			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+			let isOpen = true;
+			const h = harness(() => w(DatePicker, {
+				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			});
-			widget.expectRender(expectedVdom);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			h.expect(() => expected(false, false));
 
 			// escape key
-			widget.sendEvent('click', { key: 'month-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.Escape
-				},
-				selector: `.${css.monthGrid} fieldset`
-			});
-			expectedVdom = expected(widget, false, false);
-			widget.expectRender(expectedVdom);
+			assert.isTrue(isOpen);
+			h.trigger('@month-button', 'onclick');
+			h.expect(() => expected(true, false));
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Escape });
+			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
-			widget.sendEvent('click', { key: 'month-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.Enter
-				},
-				selector: `.${css.monthGrid} fieldset`
-			});
-			widget.expectRender(expectedVdom);
+			h.trigger('@month-button', 'onclick');
+			h.expect(() => expected(true, false));
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Enter });
+			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
-			widget.sendEvent('click', { key: 'month-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.Space
-				},
-				selector: `.${css.monthGrid} fieldset`
-			});
-			widget.expectRender(expectedVdom);
+			h.trigger('@month-button', 'onclick');
+			h.expect(() => expected(true, false));
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Space });
+			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
-			widget.sendEvent('click', { key: 'month-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.PageDown
-				},
-				selector: `.${css.monthGrid} fieldset`
-			});
-			expectedVdom = expected(widget, true, false);
-			widget.expectRender(expectedVdom);
+			h.trigger('@month-button', 'onclick');
+			h.expect(() => expected(true, false));
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.PageDown });
+			h.expect(() => expected(true, false));
 			assert.isTrue(isOpen, 'Other keys don\'t close popup');
 		},
 
 		'year popup closes with correct keys'() {
-			let isOpen;
-			let expectedVdom = expected(widget, false, false);
-			expectedVdom = expected(widget, false, false);
-			widget.setProperties({
-				onPopupChange: open => { isOpen = open; },
+			let isOpen = true;
+			const h = harness(() => w(DatePicker, {
+				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			});
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			h.expect(() => expected(false, false));
 
 			// escape key
-			widget.sendEvent('click', { key: 'year-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.Escape
-				},
-				selector: `.${css.yearGrid} fieldset`
-			});
-			widget.expectRender(expectedVdom);
+			assert.isTrue(isOpen);
+			h.trigger('@year-button', 'onclick');
+			h.expect(() => expected(false, true));
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Escape });
+			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
-			widget.sendEvent('click', { key: 'year-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.Enter
-				},
-				selector: `.${css.yearGrid} fieldset`
-			});
-			widget.expectRender(expectedVdom);
+			h.trigger('@year-button', 'onclick');
+			h.expect(() => expected(false, true));
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Enter });
+			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
-			widget.sendEvent('click', { key: 'year-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.Space
-				},
-				selector: `.${css.yearGrid} fieldset`
-			});
-			widget.expectRender(expectedVdom);
+			h.trigger('@year-button', 'onclick');
+			h.expect(() => expected(false, true));
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Space });
+			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
-			widget.sendEvent('click', { key: 'year-button' });
-			widget.sendEvent<TestEventInit>('keydown', {
-				eventInit: {
-					which: Keys.PageDown
-				},
-				selector: `.${css.yearGrid} fieldset`
-			});
-			expectedVdom = expected(widget, false, true);
-			widget.expectRender(expectedVdom);
+			h.trigger('@year-button', 'onclick');
+			h.expect(() => expected(false, true));
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.PageDown });
+			h.expect(() => expected(false, true));
 			assert.isTrue(isOpen, 'Other keys don\'t close popup');
 		},
 
 		'Clicking buttons changes year page'() {
-			let expectedVdom = expected(widget);
-			widget.setProperties({
+			const h = harness(() => w(DatePicker, {
 				...requiredProps
-			});
-			widget.sendEvent('click', { key: 'year-button' });
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			h.trigger('@year-button', 'onclick');
+			h.expect(() => expected(false, true));
 
-			widget.sendEvent('click', {
-				selector: `.${css.next}`
-			});
-			expectedVdom = expected(widget, false, true, 2020, 2040);
-			widget.expectRender(expectedVdom);
+			h.trigger(`.${css.next}`, 'onclick');
+			h.expect(() => expected(false, true, { yearStart: 2020, yearEnd: 2040 }));
 
-			widget.sendEvent('click', {
-				selector: '.' + css.previous
-			});
-			expectedVdom = expected(widget, false, true, 2000, 2020);
-			widget.expectRender(expectedVdom);
+			h.trigger(`.${css.previous}`, 'onclick');
+			h.expect(() => expected(false, true, { yearStart: 2000, yearEnd: 2020 }));
 		},
 
 		'Change month radios'() {
 			let currentMonth = testDate.getMonth();
 			let isOpen = false;
-			widget.setProperties({
+			const h = harness(() => w(DatePicker, {
 				...requiredProps,
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				onRequestMonthChange: (month: number) => { currentMonth = month; }
-			});
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
-			widget.sendEvent('click', { key: 'month-button' });
+			h.trigger('@month-button', 'onclick');
 			assert.isTrue(isOpen, 'Month popup opens when clicking month button');
 
-			widget.sendEvent('change', {
-				selector: `.${css.monthRadio}:nth-of-type(7) input`
-			});
+			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onchange', { target: { value: 6 } });
 			assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
 
-			widget.sendEvent('mouseup', {
-				selector: `.${css.monthRadio}:nth-of-type(7) input`
-			});
+			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onmouseup');
 			assert.isFalse(isOpen, 'Clicking radios closes popup');
 		},
 
 		'Change year radios'() {
 			let currentYear = testDate.getMonth();
 			let isOpen = false;
-			widget.setProperties({
+			const h = harness(() => w(DatePicker, {
 				...requiredProps,
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				onRequestYearChange: (year: number) => { currentYear = year; }
-			});
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
-			widget.sendEvent('click', { key: 'year-button' });
-			assert.isTrue(isOpen, 'Year popup opens when clicking year button');
+			h.trigger('@year-button', 'onclick');
+			assert.isTrue(isOpen, 'Year popup opens when clicking month button');
 
-			widget.sendEvent('change', {
-				selector: `.${css.yearRadio}:nth-of-type(2) input`
-			});
+			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onchange', { target: { value: 2001 } });
 			assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
 
-			widget.sendEvent('mouseup', {
-				selector: `.${css.yearRadio}:nth-of-type(2) input`
-			});
+			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onmouseup');
 			assert.isFalse(isOpen, 'Clicking radios closes popup');
 		}
 	}

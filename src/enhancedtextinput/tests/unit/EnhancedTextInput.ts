@@ -3,50 +3,71 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties, compareProperty } from '@dojo/test-extras/support/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
 
 import EnhancedTextInput from '../../EnhancedTextInput';
 import Label from '../../../label/Label';
 import * as css from '../../../theme/enhancedtextinput/enhancedtextinput.m.css';
 import * as textInputCss from '../../../theme/textinput/textinput.m.css';
+import { VNodeProperties } from '@dojo/widget-core/interfaces';
+import { createHarness, compareId, compareForId, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const harness = createHarness([ compareId, compareForId ]);
 
-const expected = function(label = false, addonBefore = false, addonAfter = false, classes: (string | null)[] = [ textInputCss.root, null, null, null, null, null ]) {
+interface States {
+	invalid?: boolean;
+	disabled?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
+}
+
+interface ExpectedOptions {
+	inputOverrides?: VNodeProperties;
+	addonBefore?: boolean;
+	addonAfter?: boolean;
+	label?: boolean;
+	states?: States;
+}
+
+const expected = (options: ExpectedOptions = {}) => {
+	const {
+		inputOverrides = {},
+		addonBefore = false,
+		addonAfter = false,
+		label = false,
+		states = {}
+	} = options;
+	const { readOnly, disabled, required, invalid } = states;
 	const children = [
 		v('input', {
-			'aria-invalid': null,
+			'aria-invalid': invalid ? 'true' : null,
 			classes: css.input,
-			disabled: undefined,
-			id: <any> compareId,
+			disabled,
+			id: '',
 			key: 'input',
 			maxlength: null,
 			minlength: null,
 			name: undefined,
 			placeholder: undefined,
-			readOnly: undefined,
-			'aria-readonly': null,
-			required: undefined,
+			readOnly,
+			'aria-readonly': readOnly ? 'true' : null,
+			required,
 			type: 'text',
 			value: undefined,
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			oninput: widget.listener,
-			onkeydown: widget.listener,
-			onkeypress: widget.listener,
-			onkeyup: widget.listener,
-			onmousedown: widget.listener,
-			onmouseup: widget.listener,
-			ontouchstart: widget.listener,
-			ontouchend: widget.listener,
-			ontouchcancel: widget.listener
+			onblur: noop,
+			onchange: noop,
+			onclick: noop,
+			onfocus: noop,
+			oninput: noop,
+			onkeydown: noop,
+			onkeypress: noop,
+			onkeyup: noop,
+			onmousedown: noop,
+			onmouseup: noop,
+			ontouchstart: noop,
+			ontouchend: noop,
+			ontouchcancel: noop,
+			...inputOverrides
 		})
 	];
 	if (addonBefore) {
@@ -62,63 +83,57 @@ const expected = function(label = false, addonBefore = false, addonAfter = false
 
 	return v('div', {
 		key: 'root',
-		classes
+		classes: [
+			textInputCss.root,
+			disabled ? textInputCss.disabled : null,
+			invalid ? textInputCss.invalid : null,
+			invalid === false ? textInputCss.valid : null,
+			readOnly ? textInputCss.readonly : null,
+			required ? textInputCss.required : null
+		]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
-			disabled: undefined,
+			disabled,
 			hidden: false,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
+			invalid,
+			readOnly,
+			required,
+			forId: ''
 		}, [ 'foo' ]) : null,
 		v('div', { classes: css.inputWrapper }, children)
 	]);
 };
 
-let widget: Harness<EnhancedTextInput>;
-
 registerSuite('EnhancedTextInput', {
-
-	beforeEach() {
-		widget = harness(EnhancedTextInput);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
 
 	tests: {
 		'addon before'() {
-			widget.setProperties({
-				addonBefore: [ 'foo' ]
-			});
-			widget.expectRender(expected(false, true));
+			const h = harness(() => w(EnhancedTextInput, { addonBefore: [ 'foo' ]}));
+			h.expect(() => expected({ addonBefore: true }));
 		},
 
 		'addon after'() {
-			widget.setProperties({
-				addonAfter: [ 'bar' ]
-			});
-			widget.expectRender(expected(false, false, true));
+			const h = harness(() => w(EnhancedTextInput, { addonAfter: [ 'bar' ]}));
+			h.expect(() => expected({ addonAfter: true }));
 		},
 
 		'addons before and after'() {
-			widget.setProperties({
+			const h = harness(() => w(EnhancedTextInput, {
 				addonBefore: [ 'foo' ],
 				addonAfter: [ 'bar' ]
-			});
-			widget.expectRender(expected(false, true, true));
+			}));
+			h.expect(() => expected({ addonAfter: true, addonBefore: true }));
 		},
 
 		'preserves TextInput functionality': {
 			'default properties'() {
-				widget.expectRender(expected());
+				const h = harness(() => w(EnhancedTextInput, {}));
+				h.expect(expected);
 			},
 
 			'custom properties'() {
-				widget.setProperties({
+				const h = harness(() => w(EnhancedTextInput, {
 					aria: {
 						controls: 'foo',
 						describedBy: 'bar'
@@ -129,97 +144,58 @@ registerSuite('EnhancedTextInput', {
 					placeholder: 'qux',
 					type: 'email',
 					value: 'hello world'
-				});
+				}));
 
-				const expectedVdom = expected();
-				assignProperties(expectedVdom, {
-					classes: [ textInputCss.root, null, null, null, null, null ]
-				});
-				assignChildProperties(expectedVdom, '1,0', {
-					'aria-controls': 'foo',
-					'aria-describedby': 'bar',
-					maxlength: '50',
-					minlength: '10',
-					name: 'baz',
-					placeholder: 'qux',
-					type: 'email',
-					value: 'hello world'
-				});
-
-				widget.expectRender(expectedVdom);
+				h.expect(() => expected({
+					inputOverrides: {
+						'aria-controls': 'foo',
+						'aria-describedby': 'bar',
+						maxlength: '50',
+						minlength: '10',
+						name: 'baz',
+						placeholder: 'qux',
+						type: 'email',
+						value: 'hello world'
+					}
+				}));
 			},
 
 			'label'() {
-				widget.setProperties({
+				const h = harness(() => w(EnhancedTextInput, {
 					label: 'foo'
-				});
-
-				widget.expectRender(expected(true));
+				}));
+				h.expect(() => expected({ label: true }));
 			},
 
 			'state classes'() {
-				widget.setProperties({
+				let states: States = {
 					invalid: true,
 					disabled: true,
 					readOnly: true,
 					required: true
-				});
-
-				let expectedVdom = expected(false, false, false, [ textInputCss.root, textInputCss.disabled, textInputCss.invalid, null, textInputCss.readonly, textInputCss.required ]);
-				assignChildProperties(expectedVdom, '1,0', {
-					disabled: true,
-					'aria-invalid': 'true',
-					readOnly: true,
-					'aria-readonly': 'true',
-					required: true
-				});
-
-				widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
-
-				widget.setProperties({
+				};
+				const h = harness(() => w(EnhancedTextInput, states));
+				h.expect(() => expected({
+					states
+				}));
+				states = {
 					invalid: false,
 					disabled: false,
 					readOnly: false,
 					required: false
-				});
-				expectedVdom = expected();
-
-				assignChildProperties(expectedVdom, '1,0', {
-					disabled: false,
-					readOnly: false,
-					required: false
-				});
-				assignProperties(expectedVdom, {
-					classes: [ textInputCss.root, null, null, textInputCss.valid, null, null ]
-				});
-
-				widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+				};
+				h.expect(() => expected({ states }));
 			},
 
 			'state classes on label'() {
-				widget.setProperties({
-					label: 'foo',
+				let states: States = {
 					invalid: true,
 					disabled: true,
 					readOnly: true,
 					required: true
-				});
-
-				const expectedVdom = expected(true, false, false, [ textInputCss.root, textInputCss.disabled, textInputCss.invalid, null, textInputCss.readonly, textInputCss.required ]);
-				assignChildProperties(expectedVdom, '1,0', {
-					disabled: true,
-					'aria-invalid': 'true',
-					readOnly: true,
-					'aria-readonly': 'true',
-					required: true
-				});
-				assignChildProperties(expectedVdom, '0', {
-					disabled: true,
-					invalid: true,
-					readOnly: true,
-					required: true
-				});
-				widget.expectRender(expectedVdom);
+				};
+				const h = harness(() => w(EnhancedTextInput, { label: 'foo', ...states }));
+				h.expect(() => expected({ label: true, states }));
 			},
 
 			events() {
@@ -233,8 +209,11 @@ registerSuite('EnhancedTextInput', {
 				const onKeyUp = sinon.stub();
 				const onMouseDown = sinon.stub();
 				const onMouseUp = sinon.stub();
+				const onTouchStart = sinon.stub();
+				const onTouchEnd = sinon.stub();
+				const onTouchCancel = sinon.stub();
 
-				widget.setProperties({
+				const h = harness(() => w(EnhancedTextInput, {
 					onBlur,
 					onChange,
 					onClick,
@@ -244,51 +223,37 @@ registerSuite('EnhancedTextInput', {
 					onKeyPress,
 					onKeyUp,
 					onMouseDown,
-					onMouseUp
-				});
-
-				widget.sendEvent('blur', { selector: 'input' });
-				assert.isTrue(onBlur.called, 'onBlur called');
-				widget.sendEvent('change', { selector: 'input' });
-				assert.isTrue(onChange.called, 'onChange called');
-				widget.sendEvent('click', { selector: 'input' });
-				assert.isTrue(onClick.called, 'onClick called');
-				widget.sendEvent('focus', { selector: 'input' });
-				assert.isTrue(onFocus.called, 'onFocus called');
-				widget.sendEvent('input', { selector: 'input' });
-				assert.isTrue(onInput.called, 'onInput called');
-				widget.sendEvent('keydown', { selector: 'input' });
-				assert.isTrue(onKeyDown.called, 'onKeyDown called');
-				widget.sendEvent('keypress', { selector: 'input' });
-				assert.isTrue(onKeyPress.called, 'onKeyPress called');
-				widget.sendEvent('keyup', { selector: 'input' });
-				assert.isTrue(onKeyUp.called, 'onKeyUp called');
-				widget.sendEvent('mousedown', { selector: 'input' });
-				assert.isTrue(onMouseDown.called, 'onMouseDown called');
-				widget.sendEvent('mouseup', { selector: 'input' });
-				assert.isTrue(onMouseUp.called, 'onMouseUp called');
-			},
-
-			'touch events'() {
-				if (!has('touch')) {
-					this.skip('Environment not support touch events');
-				}
-
-				const onTouchStart = sinon.stub();
-				const onTouchEnd = sinon.stub();
-				const onTouchCancel = sinon.stub();
-
-				widget.setProperties({
+					onMouseUp,
 					onTouchStart,
 					onTouchEnd,
 					onTouchCancel
-				});
+				}));
 
-				widget.sendEvent('touchstart', { selector: 'input' });
+				h.trigger('@input', 'onblur');
+				assert.isTrue(onBlur.called, 'onBlur called');
+				h.trigger('@input', 'onchange');
+				assert.isTrue(onChange.called, 'onChange called');
+				h.trigger('@input', 'onclick');
+				assert.isTrue(onClick.called, 'onClick called');
+				h.trigger('@input', 'onfocus');
+				assert.isTrue(onFocus.called, 'onFocus called');
+				h.trigger('@input', 'oninput');
+				assert.isTrue(onInput.called, 'onInput called');
+				h.trigger('@input', 'onkeydown');
+				assert.isTrue(onKeyDown.called, 'onKeyDown called');
+				h.trigger('@input', 'onkeypress');
+				assert.isTrue(onKeyPress.called, 'onKeyPress called');
+				h.trigger('@input', 'onkeyup');
+				assert.isTrue(onKeyUp.called, 'onKeyUp called');
+				h.trigger('@input', 'onmousedown');
+				assert.isTrue(onMouseDown.called, 'onMouseDown called');
+				h.trigger('@input', 'onmouseup');
+				assert.isTrue(onMouseUp.called, 'onMouseUp called');
+				h.trigger('@input', 'ontouchstart');
 				assert.isTrue(onTouchStart.called, 'onTouchStart called');
-				widget.sendEvent('touchend', { selector: 'input' });
+				h.trigger('@input', 'ontouchend');
 				assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-				widget.sendEvent('touchcancel', { selector: 'input' });
+				h.trigger('@input', 'ontouchcancel');
 				assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 			}
 		}

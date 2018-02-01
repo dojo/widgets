@@ -1,126 +1,130 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { v } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
 
 import CalendarCell from '../../CalendarCell';
 import * as css from '../../../theme/calendar/calendar.m.css';
-
-let widget: Harness<CalendarCell>;
+import { noop } from '../../../common/tests/support/test-helpers';
 
 registerSuite('CalendarCell', {
-	beforeEach() {
-		widget = harness(CalendarCell);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'Calendar cell with default properties'() {
-			widget.setProperties({
+			const h = harness(() => w(CalendarCell, {
 				date: 1
-			});
+			}));
 
-			widget.expectRender(v('td', {
+			h.expect(() => v('td', {
 				key: 'root',
 				role: 'gridcell',
 				'aria-selected': 'false',
 				tabIndex: -1,
 				classes: [ css.date, null, null, null ],
-				onclick: widget.listener,
-				onkeydown: widget.listener
+				onclick: noop,
+				onkeydown: noop
 			}, [
 				v('span', {}, [ '1' ])
 			]));
 		},
 
 		'Calendar cell with custom properties'() {
-			widget.setProperties({
+			const h = harness(() => w(CalendarCell, {
 				date: 2,
 				disabled: true,
 				focusable: true,
 				selected: true,
 				today: true
-			});
+			}));
 
-			widget.expectRender(v('td', {
+			h.expect(() => v('td', {
 				key: 'root',
 				role: 'gridcell',
 				'aria-selected': 'true',
 				tabIndex: 0,
 				classes: [ css.date, css.inactiveDate, css.selectedDate, css.todayDate ],
-				onclick: widget.listener,
-				onkeydown: widget.listener
+				onclick: noop,
+				onkeydown: noop
 			}, [
 				v('span', {}, [ '2' ])
 			]));
 		},
 
 		'Click handler called with correct arguments'() {
-			let clickedDate = 0, clickedDisabled = false;
-			widget.setProperties({
-				date: 1,
-				disabled: true,
+			let clickedDate = 0;
+			let clickedDisabled = false;
+			let date = 1;
+			let disabled = true;
+			const h = harness(() => w(CalendarCell, {
+				date,
+				disabled,
 				onClick: (date: number, disabled: boolean) => {
 					clickedDate = date;
 					clickedDisabled = disabled;
 				}
-			});
-			widget.sendEvent('click');
+			}));
+
+			h.trigger('td', 'onclick');
 			assert.strictEqual(clickedDate, 1);
 			assert.isTrue(clickedDisabled);
 
-			widget.setProperties({
-				date: 2,
-				onClick: (date: number, disabled: boolean) => {
-					clickedDate = date;
-					clickedDisabled = disabled;
-				}
-			});
-			widget.getRender();
-			widget.sendEvent('click');
+			disabled = false;
+			date = 2;
+			h.trigger('td', 'onclick');
 			assert.strictEqual(clickedDate, 2);
 			assert.isFalse(clickedDisabled, 'disabled defaults to false');
 		},
 
 		'Keydown handler called'() {
 			let called = false;
-			widget.setProperties({
+			const h = harness(() => w(CalendarCell, {
 				date: 1,
 				onKeyDown: () => {
 					called = true;
 				}
-			});
-			widget.sendEvent('keydown');
-
+			}));
+			h.trigger('td', 'onkeydown');
 			assert.isTrue(called);
 		},
 
 		'Focus is set with callback'() {
 			let callFocus = true;
-			widget.setProperties({
+			let date = 1;
+			const h = harness(() => w(CalendarCell, {
 				callFocus,
-				date: 1,
+				date,
 				onFocusCalled: () => {
 					callFocus = false;
 				}
-			});
-			widget.getRender();
+			}));
+
+			h.expect(() => v('td', {
+				key: 'root',
+				role: 'gridcell',
+				'aria-selected': 'false',
+				tabIndex: -1,
+				classes: [ css.date, null, null, null ],
+				onclick: noop,
+				onkeydown: noop
+			}, [
+				v('span', {}, [ '1' ])
+			]));
 
 			assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 
 			callFocus = true;
-			widget.setProperties({
-				callFocus,
-				date: 2,
-				onFocusCalled: () => {
-					callFocus = false;
-				}
-			});
-			widget.getRender();
+			date = 2;
+			h.expect(() => v('td', {
+				key: 'root',
+				role: 'gridcell',
+				'aria-selected': 'false',
+				tabIndex: -1,
+				classes: [ css.date, null, null, null ],
+				onclick: noop,
+				onkeydown: noop
+			}, [
+				v('span', {}, [ '2' ])
+			]));
 
 			assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 		}

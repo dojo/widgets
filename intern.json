@@ -25,7 +25,9 @@
 					{ "name": "src", "location": "_build" },
 					{ "name": "maquette", "location": "node_modules/maquette/dist", "main": "maquette" },
 					{ "name": "cldrjs", "location": "node_modules/cldrjs" },
-					{ "name": "globalize", "location": "node_modules/globalize", "main": "dist/globalize" }
+					{ "name": "globalize", "location": "node_modules/globalize", "main": "dist/globalize" },
+					{ "name": "css-select-umd", "location": "node_modules/css-select-umd", "main": "dist/index.js" },
+					{ "name": "diff", "location": "node_modules/diff", "main": "dist/diff.js" }
 				],
 				"map": {
 					"globalize": {

@@ -11,6 +11,7 @@ import { CommonMessages } from '../common/interfaces';
 import * as fixedCss from './styles/toolbar.m.css';
 import * as css from '../theme/toolbar/toolbar.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
+import { GlobalEvent } from '../global-event/GlobalEvent';
 
 /**
  * Enum for toolbar positioning
@@ -50,11 +51,6 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extends ThemedBase<P> {
 	private _collapsed = false;
 	private _open = false;
-
-	constructor() {
-		super();
-		window.addEventListener('resize', this._collapseIfNecessary);
-	}
 
 	private _closeMenu() {
 		this._open = false;
@@ -101,10 +97,6 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 
 	protected onAttach() {
 		this._collapseIfNecessary();
-	}
-
-	protected onDetach() {
-		window.removeEventListener('resize', this._collapseIfNecessary);
 	}
 
 	protected renderActions(messages: CommonMessages): DNode {
@@ -168,6 +160,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			classes: [ ...this.theme(classes), ...fixedClasses ],
 			key: 'root'
 		}, [
+			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
 			v('div', {
 				classes: [ this.theme(css.toolbar), fixedCss.toolbarFixed ]
 			}, [

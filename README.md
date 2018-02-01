@@ -109,6 +109,8 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [Tooltip](src/tooltip/README.md)
 
+[GlobalEvent](src/global-event/README.md)
+
 ## Conventions
 
 ### EventHandlers

@@ -2,89 +2,84 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-
-import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, compareProperty, findKey } from '@dojo/test-extras/support/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Textarea from '../../Textarea';
 import * as css from '../../../theme/textarea/textarea.m.css';
+import { compareForId, compareId, createHarness, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const harness = createHarness([ compareId, compareForId ]);
 
-const expected = function(label = false) {
+interface States {
+	disabled?: boolean;
+	required?: boolean;
+	invalid?: boolean;
+	readOnly?: boolean;
+}
+
+const expected = function(label = false, inputOverrides = {}, states: States = {}) {
+	const { disabled, required, readOnly, invalid } = states;
+
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null ]
+		classes: [ css.root, disabled ? css.disabled : null, invalid ? css.invalid : null, invalid === false ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
-			disabled: undefined,
+			disabled,
 			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: <any> compareId
+			invalid,
+			readOnly,
+			required,
+			forId: ''
 		}, [ 'foo' ]) : null,
 		v('div', { classes: css.inputWrapper }, [
 			v('textarea', {
 				classes: css.input,
-				id: <any> compareId,
+				id: '',
 				key: 'input',
 				cols: null,
-				disabled: undefined,
-				'aria-invalid': null,
+				disabled,
+				'aria-invalid': invalid ? 'true' : null,
 				maxlength: null,
 				minlength: null,
 				name: undefined,
 				placeholder: undefined,
-				readOnly: undefined,
-				'aria-readonly': null,
-				required: undefined,
+				readOnly,
+				'aria-readonly': readOnly ? 'true' : null,
+				required,
 				rows: null,
 				value: undefined,
 				wrap: undefined,
-				onblur: widget.listener,
-				onchange: widget.listener,
-				onclick: widget.listener,
-				onfocus: widget.listener,
-				oninput: widget.listener,
-				onkeydown: widget.listener,
-				onkeypress: widget.listener,
-				onkeyup: widget.listener,
-				onmousedown: widget.listener,
-				onmouseup: widget.listener,
-				ontouchstart: widget.listener,
-				ontouchend: widget.listener,
-				ontouchcancel: widget.listener
+				onblur: noop,
+				onchange: noop,
+				onclick: noop,
+				onfocus: noop,
+				oninput: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop,
+				...inputOverrides
 			})
 		])
 	]);
 };
 
-let widget: Harness<Textarea>;
-
 registerSuite('Textarea', {
-
-	beforeEach() {
-		widget = harness(Textarea);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected());
+			const h = harness(() => w(Textarea, {}));
+			h.expect(expected);
 		},
 
 		'custom properties'() {
-			widget.setProperties({
+			const h = harness(() => w(Textarea, {
 				aria: { describedBy: 'foo' },
 				columns: 15,
 				id: 'foo',
@@ -95,10 +90,9 @@ registerSuite('Textarea', {
 				rows: 42,
 				value: 'qux',
 				wrapText: 'soft'
-			});
+			}));
 
-			const expectedVdom = expected();
-			assignProperties(findKey(expectedVdom, 'input')!, {
+			h.expect(() => expected(false, {
 				cols: '15',
 				'aria-describedby': 'foo',
 				id: 'foo',
@@ -109,59 +103,36 @@ registerSuite('Textarea', {
 				rows: '42',
 				value: 'qux',
 				wrap: 'soft'
-			});
-
-			widget.expectRender(expectedVdom);
+			}));
 		},
 
 		'label'() {
-			widget.setProperties({
+			const h = harness(() => w(Textarea, {
 				label: 'foo'
-			});
+			}));
 
-			widget.expectRender(expected(true));
+			h.expect(() => expected(true));
 		},
 
 		'state classes'() {
-			widget.setProperties({
+			let properties = {
 				invalid: true,
 				disabled: true,
 				readOnly: true,
 				required: true
-			});
+			};
 
-			let expectedVdom = expected();
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-			assignProperties(expectedVdom, {
-				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
-			});
+			const h = harness(() => w(Textarea, properties));
 
-			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
+			h.expect(() => expected(false, {}, properties));
 
-			widget.setProperties({
+			properties = {
 				invalid: false,
 				disabled: false,
 				readOnly: false,
 				required: false
-			});
-			expectedVdom = expected();
-
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				disabled: false,
-				readOnly: false,
-				required: false
-			});
-			assignProperties(expectedVdom, {
-				classes: [ css.root, null, null, css.valid, null, null ]
-			});
-
-			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+			};
+			h.expect(() => expected(false, {}, properties));
 		},
 
 		events() {
@@ -175,8 +146,11 @@ registerSuite('Textarea', {
 			const onKeyUp = sinon.stub();
 			const onMouseDown = sinon.stub();
 			const onMouseUp = sinon.stub();
+			const onTouchStart = sinon.stub();
+			const onTouchEnd = sinon.stub();
+			const onTouchCancel = sinon.stub();
 
-			widget.setProperties({
+			const h = harness(() => w(Textarea, {
 				onBlur,
 				onChange,
 				onClick,
@@ -186,51 +160,37 @@ registerSuite('Textarea', {
 				onKeyPress,
 				onKeyUp,
 				onMouseDown,
-				onMouseUp
-			});
-
-			widget.sendEvent('blur', { selector: 'textarea' });
-			assert.isTrue(onBlur.called, 'onBlur called');
-			widget.sendEvent('change', { selector: 'textarea' });
-			assert.isTrue(onChange.called, 'onChange called');
-			widget.sendEvent('click', { selector: 'textarea' });
-			assert.isTrue(onClick.called, 'onClick called');
-			widget.sendEvent('focus', { selector: 'textarea' });
-			assert.isTrue(onFocus.called, 'onFocus called');
-			widget.sendEvent('input', { selector: 'textarea' });
-			assert.isTrue(onInput.called, 'onInput called');
-			widget.sendEvent('keydown', { selector: 'textarea' });
-			assert.isTrue(onKeyDown.called, 'onKeyDown called');
-			widget.sendEvent('keypress', { selector: 'textarea' });
-			assert.isTrue(onKeyPress.called, 'onKeyPress called');
-			widget.sendEvent('keyup', { selector: 'textarea' });
-			assert.isTrue(onKeyUp.called, 'onKeyUp called');
-			widget.sendEvent('mousedown', { selector: 'textarea' });
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			widget.sendEvent('mouseup', { selector: 'textarea' });
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-		},
-
-		'touch events'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
-
-			widget.setProperties({
+				onMouseUp,
 				onTouchStart,
 				onTouchEnd,
 				onTouchCancel
-			});
+			}));
 
-			widget.sendEvent('touchstart', { selector: 'textarea' });
+			h.trigger('@input', 'onblur');
+			assert.isTrue(onBlur.called, 'onBlur called');
+			h.trigger('@input', 'onchange');
+			assert.isTrue(onChange.called, 'onChange called');
+			h.trigger('@input', 'onclick');
+			assert.isTrue(onClick.called, 'onClick called');
+			h.trigger('@input', 'onfocus');
+			assert.isTrue(onFocus.called, 'onFocus called');
+			h.trigger('@input', 'oninput');
+			assert.isTrue(onInput.called, 'onInput called');
+			h.trigger('@input', 'onkeydown');
+			assert.isTrue(onKeyDown.called, 'onKeyDown called');
+			h.trigger('@input', 'onkeypress');
+			assert.isTrue(onKeyPress.called, 'onKeyPress called');
+			h.trigger('@input', 'onkeyup');
+			assert.isTrue(onKeyUp.called, 'onKeyUp called');
+			h.trigger('@input', 'onmousedown');
+			assert.isTrue(onMouseDown.called, 'onMouseDown called');
+			h.trigger('@input', 'onmouseup');
+			assert.isTrue(onMouseUp.called, 'onMouseUp called');
+			h.trigger('@input', 'ontouchstart');
 			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			widget.sendEvent('touchend', { selector: 'textarea' });
+			h.trigger('@input', 'ontouchend');
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			widget.sendEvent('touchcancel', { selector: 'textarea' });
+			h.trigger('@input', 'ontouchcancel');
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}

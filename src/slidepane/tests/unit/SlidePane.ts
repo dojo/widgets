@@ -1,21 +1,20 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { compareProperty } from '@dojo/test-extras/support/d';
-import { v } from '@dojo/widget-core/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
-import has from '@dojo/has/has';
+import { v, w } from '@dojo/widget-core/d';
 
 import SlidePane, { Align } from '../../SlidePane';
 import * as css from '../../../theme/slidepane/slidePane.m.css';
 import * as fixedCss from '../../styles/slidePane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
+import {
+	createHarness,
+	compareId,
+	compareAriaLabelledBy,
+	noop
+} from '../../../common/tests/support/test-helpers';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
-
-let widget: Harness<SlidePane>;
+const harness = createHarness([ compareId, compareAriaLabelledBy ]);
 
 const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 	Quisque id purus ipsum. Aenean ac purus purus.
@@ -23,49 +22,38 @@ const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 registerSuite('SlidePane', {
 
-	beforeEach() {
-		widget = harness(SlidePane);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'Should construct SlidePane with passed properties'() {
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				key: 'foo',
 				align: Align.left,
 				aria: { describedBy: 'foo' },
 				open: true,
 				underlay: true
-			});
+			}, [ GREEKING ]));
 
-			widget.setChildren([ GREEKING ]);
-
-			widget.expectRender(v('div', {
-				'aria-labelledby': compareId,
+			h.expect(() => v('div', {
+				'aria-labelledby': '',
 				classes: css.root,
 				dir: null,
 				lang: null,
-				onmousedown: widget.listener,
-				onmousemove: widget.listener,
-				onmouseup: widget.listener,
-				ontouchend: widget.listener,
-				ontouchmove: widget.listener,
-				ontouchstart: widget.listener
+				onmousedown: noop,
+				onmousemove: noop,
+				onmouseup: noop,
+				ontouchend: noop,
+				ontouchmove: noop,
+				ontouchstart: noop
 			}, [
 				v('div', {
 					classes: [ css.underlayVisible, fixedCss.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
-					onmouseup: widget.listener,
-					ontouchend: widget.listener,
+					onmouseup: noop,
+					ontouchend: noop,
 					key: 'underlay'
 				}),
 				v('div', {
 					key: 'content',
-					transitionend: widget.listener,
 					'aria-describedby': 'foo',
 					classes: [
 						css.pane,
@@ -79,6 +67,7 @@ registerSuite('SlidePane', {
 						fixedCss.slideInFixed,
 						null
 					],
+					transitionend: noop,
 					styles: {
 						transform: undefined,
 						width: '320px',
@@ -90,31 +79,30 @@ registerSuite('SlidePane', {
 						classes: css.content
 					}, [ GREEKING ])
 				])
-			]));
+			]), () => h.getRender());
 		},
 
 		'Render correct children'() {
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				key: 'foo',
 				underlay: false
-			});
+			}));
 
-			widget.expectRender(v('div', {
-				'aria-labelledby': compareId,
+			h.expect(() => v('div', {
+				'aria-labelledby': '',
 				dir: null,
 				lang: null,
-				onmousedown: widget.listener,
-				onmousemove: widget.listener,
-				onmouseup: widget.listener,
-				ontouchend: widget.listener,
-				ontouchmove: widget.listener,
-				ontouchstart: widget.listener,
+				onmousedown: noop,
+				onmousemove: noop,
+				onmouseup: noop,
+				ontouchend: noop,
+				ontouchmove: noop,
+				ontouchstart: noop,
 				classes: css.root
 			}, [
 				null,
 				v('div', {
 					key: 'content',
-					transitionend: widget.listener,
 					classes: [
 						css.pane,
 						css.left,
@@ -127,6 +115,7 @@ registerSuite('SlidePane', {
 						null,
 						null
 					],
+					transitionend: noop,
 					styles: {
 						transform: undefined,
 						width: '320px',
@@ -143,47 +132,43 @@ registerSuite('SlidePane', {
 
 		onOpen() {
 			let called = false;
-
-			widget.setProperties({
+			harness(() => w(SlidePane, {
 				open: true,
 				onOpen() {
 					called = true;
 				}
-			});
-
-			widget.getRender();
-
+			}));
 			assert.isTrue(called, 'onOpen should be called');
 		},
 
 		'change property to close'() {
-			widget.setProperties({
+			let properties = {
 				open: true
-			});
+			};
+			const h = harness(() => w(SlidePane, properties));
 
-			widget.expectRender(v('div', {
-				'aria-labelledby': compareId,
+			h.expect(() => v('div', {
+				'aria-labelledby': '',
 				dir: null,
 				lang: null,
-				onmousedown: widget.listener,
-				onmousemove: widget.listener,
-				onmouseup: widget.listener,
-				ontouchend: widget.listener,
-				ontouchmove: widget.listener,
-				ontouchstart: widget.listener,
+				onmousedown: noop,
+				onmousemove: noop,
+				onmouseup: noop,
+				ontouchend: noop,
+				ontouchmove: noop,
+				ontouchstart: noop,
 				classes: css.root
 			}, [
 				v('div', {
 					classes: [ null, fixedCss.underlay ],
 					enterAnimation: animations.fadeIn,
 					exitAnimation: animations.fadeOut,
-					onmouseup: widget.listener,
-					ontouchend: widget.listener,
+					onmouseup: noop,
+					ontouchend: noop,
 					key: 'underlay'
 				}),
 				v('div', {
 					key: 'content',
-					transitionend: widget.listener,
 					classes: [
 						css.pane,
 						css.left,
@@ -196,6 +181,7 @@ registerSuite('SlidePane', {
 						fixedCss.slideInFixed,
 						null
 					],
+					transitionend: noop,
 					styles: {
 						transform: undefined,
 						width: '320px',
@@ -209,26 +195,22 @@ registerSuite('SlidePane', {
 				])
 			]));
 
-			widget.setProperties({
-				open: false
-			});
-
-			widget.expectRender(v('div', {
-				'aria-labelledby': compareId,
+			properties.open = false;
+			h.expect(() => v('div', {
+				'aria-labelledby': '',
 				dir: null,
 				lang: null,
-				onmousedown: widget.listener,
-				onmousemove: widget.listener,
-				onmouseup: widget.listener,
-				ontouchend: widget.listener,
-				ontouchmove: widget.listener,
-				ontouchstart: widget.listener,
+				onmousedown: noop,
+				onmousemove: noop,
+				onmouseup: noop,
+				ontouchend: noop,
+				ontouchmove: noop,
+				ontouchstart: noop,
 				classes: css.root
 			}, [
 				null,
 				v('div', {
 					key: 'content',
-					transitionend: widget.listener,
 					classes: [
 						css.pane,
 						css.left,
@@ -241,6 +223,7 @@ registerSuite('SlidePane', {
 						null,
 						fixedCss.slideOutFixed
 					],
+					transitionend: noop,
 					styles: {
 						transform: undefined,
 						width: '320px',
@@ -257,269 +240,187 @@ registerSuite('SlidePane', {
 
 		'click underlay to close'() {
 			let called = false;
-
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
 				}
+			}));
+			h.trigger('@underlay', 'onmousedown', {
+				pageX: 300
 			});
-
-			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
-					pageX: 300
-				},
-				selector: ':first-child' /* this should be the underlay */
+			h.trigger('@underlay', 'onmouseup', {
+				pageX: 300
 			});
-
-			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
-					pageX: 300
-				},
-				selector: ':first-child' /* this should be the underlay */
-			});
-
 			assert.isTrue(called, 'onRequestClose should have been called');
 		},
 
 		'click close button to close'() {
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				title: 'foo',
 				closeText: 'close',
 				onRequestClose() {
 					called = true;
 				}
-			});
+			}));
 
-			widget.getRender();
-
-			widget.sendEvent('click', {
-				selector: `.${css.close}`
-			});
-
+			h.trigger(`.${css.close}`, 'onclick');
 			assert.isTrue(called, 'onRequestClose should have been called');
 		},
 
 		'tap underlay to close'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
 				}
+			}));
+
+			h.trigger('@underlay', 'ontouchstart', {
+				changedTouches: [ { screenX: 300 } ]
 			});
-
-			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
-				},
-				selector: ':first-child' /* this should be the underlay */
+			h.trigger('@underlay', 'ontouchend', {
+				changedTouches: [ { screenX: 300 } ]
 			});
-
-			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
-				},
-
-				selector: ':first-child' /* this should be the underlay */
-			});
-
 			assert.isTrue(called, 'onRequestClose should be called on underlay tap');
 		},
 
 		'drag to close'() {
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
 				}
-			});
+			}));
 
-			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
-					pageX: 300
-				}
+			h.trigger('@underlay', 'onmousedown', {
+				changedTouches: [ { screenX: 300 } ]
 			});
-
-			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
-					pageX: 150
-				}
+			h.trigger('@underlay', 'onmousemove', {
+				changedTouches: [ { screenX: 300 } ]
 			});
-
-			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
-					pageX: 50
-				}
+			h.trigger('@underlay', 'onmouseup', {
+				changedTouches: [ { screenX: 300 } ]
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
 		},
 
 		'swipe to close'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				onRequestClose() {
 					called = true;
 				}
+			}));
+
+			h.trigger('@underlay', 'ontouchmove', {
+				changedTouches: [ { screenX: 150 } ]
 			});
 
-			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 150 } ]
-				}
+			h.trigger('@underlay', 'ontouchstart', {
+				changedTouches: [ { screenX: 300 } ]
 			});
 
-			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
-				}
+			h.trigger('@underlay', 'ontouchmove', {
+				changedTouches: [ { screenX: 300 } ]
 			});
 
-			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 150 } ]
-				}
-			});
-
-			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 50 } ]
-				}
+			h.trigger('@underlay', 'ontouchend', {
+				changedTouches: [ { screenX: 300 } ]
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
 		},
 
 		'swipe to close top'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				open: true,
 				align: Align.top,
 				onRequestClose() {
 					called = true;
 				}
+			}));
+
+			h.trigger('@underlay', 'ontouchmove', {
+				changedTouches: [ { screenY: 150 } ]
 			});
 
-			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 150 } ]
-				}
+			h.trigger('@underlay', 'ontouchstart', {
+				changedTouches: [ { screenY: 300 } ]
 			});
 
-			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 300 } ]
-				}
+			h.trigger('@underlay', 'ontouchmove', {
+				changedTouches: [ { screenY: 150 } ]
 			});
 
-			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 150 } ]
-				}
-			});
-
-			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 50 } ]
-				}
+			h.trigger('@underlay', 'ontouchend', {
+				changedTouches: [ { screenY: 50 } ]
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough up');
 		},
 
 		'swipe to close right'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				align: Align.right,
 				open: true,
 				width: 320,
-
 				onRequestClose() {
 					called = true;
 				}
+			}));
+
+			h.trigger('@underlay', 'ontouchstart', {
+				changedTouches: [ { screenX: 300 } ]
 			});
 
-			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 300 } ]
-				}
+			h.trigger('@underlay', 'ontouchmove', {
+				changedTouches: [ { screenX: 400 } ]
 			});
 
-			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 400 } ]
-				}
-			});
-
-			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenX: 500 } ]
-				}
+			h.trigger('@underlay', 'ontouchend', {
+				changedTouches: [ { screenX: 500 } ]
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
 		},
 
 		'swipe to close bottom'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				align: Align.bottom,
 				open: true,
 				width: 320,
-
 				onRequestClose() {
 					called = true;
 				}
+			}));
+
+			h.trigger('@underlay', 'ontouchstart', {
+				changedTouches: [ { screenY: 300 } ]
 			});
 
-			widget.sendEvent('touchstart', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 300 } ]
-				}
+			h.trigger('@underlay', 'ontouchmove', {
+				changedTouches: [ { screenY: 400 } ]
 			});
 
-			widget.sendEvent('touchmove', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 400 } ]
-				}
-			});
-
-			widget.sendEvent('touchend', {
-				eventInit: <MouseEventInit> {
-					changedTouches: [ { screenY: 500 } ]
-				}
+			h.trigger('@underlay', 'ontouchend', {
+				changedTouches: [ { screenY: 500 } ]
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close bottom');
@@ -528,96 +429,52 @@ registerSuite('SlidePane', {
 		'not dragged far enough to close'() {
 			let called = false;
 
-			widget.setProperties({
+			const h = harness(() => w(SlidePane, {
 				open: true,
-
 				onRequestClose() {
 					called = true;
 				}
+			}));
+
+			h.trigger(`.${css.root}`, 'onmousedown', {
+				pageX: 300
 			});
 
-			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
-					pageX: 300
-				}
+			h.trigger(`.${css.root}`, 'onmousemove', {
+				pageX: 250
 			});
 
-			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
-					pageX: 250
-				}
-			});
-
-			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
-					pageX: 250
-				}
+			h.trigger(`.${css.root}`, 'onmouseup', {
+				pageX: 250
 			});
 
 			assert.isFalse(called, 'onRequestClose should not be called if not swiped far enough to close');
 		},
 
-		'pane cannot be moved past screen edge'() {
-			widget.setProperties({
-				open: true
-			});
-
-			widget.setChildren([ GREEKING ]);
-
-			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
-					pageX: 300
-				},
-
-				selector: ':last-child :first-child' /* this should be the content */
-			});
-
-			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
-					pageX: 400
-				},
-
-				selector: ':last-child :first-child' /* this should be the content */
-			});
-
-			assert(!((<HTMLElement> widget.getDom().lastChild).style.transform));
-
-			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
-					pageX: 500
-				},
-
-				selector: ':last-child :first-child' /* this should be the content */
-			});
-
-			assert(!((<HTMLElement> widget.getDom().lastChild).style.transform));
-		},
-
 		'classes removed after transition'() {
 			function expected(open: boolean, transitionDone?: boolean) {
 				return v('div', {
-					'aria-labelledby': compareId,
+					'aria-labelledby': '',
 					dir: null,
 					lang: null,
-					onmousedown: widget.listener,
-					onmousemove: widget.listener,
-					onmouseup: widget.listener,
-					ontouchend: widget.listener,
-					ontouchmove: widget.listener,
-					ontouchstart: widget.listener,
+					onmousedown: noop,
+					onmousemove: noop,
+					onmouseup: noop,
+					ontouchend: noop,
+					ontouchmove: noop,
+					ontouchstart: noop,
 					classes: css.root
 				}, [
 					open ? v('div', {
 						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
-						onmouseup: widget.listener,
-						ontouchend: widget.listener,
+						onmouseup: noop,
+						ontouchend: noop,
 						key: 'underlay'
 					}) : null,
 					v('div', {
 						key: 'content',
-						transitionend: widget.listener,
 						classes: [
 							css.pane,
 							css.left,
@@ -630,6 +487,7 @@ registerSuite('SlidePane', {
 							transitionDone ? null : ( open ? fixedCss.slideInFixed : null),
 							transitionDone ? null : ( open ? null : fixedCss.slideOutFixed)
 						],
+						transitionend: noop,
 						styles: {
 							transform: undefined,
 							width: '320px',
@@ -643,53 +501,49 @@ registerSuite('SlidePane', {
 					])
 				]);
 			}
+			let properties = {
+				open: true
+			};
+			const h = harness(() => w(SlidePane, properties, [ GREEKING ]));
+			h.expect(() => expected(true, false), () => h.getRender());
+			h.trigger('@content', 'transitionend');
+			h.expect(() => expected(true, true));
+			properties.open = false;
+			h.expect(() => expected(false, false));
 
-			widget.setProperties({ open: true });
-			widget.setChildren([ GREEKING ]);
-			widget.expectRender(expected(true, false));
-			widget.sendEvent('transitionend', { selector: ':last-child' });
-			widget.expectRender(expected(true, true), '`css.slideIn` should be removed when the animation ends.');
-			widget.setProperties({ open: false });
-			widget.expectRender(expected(false, false));
-
-			widget.sendEvent('transitionend', {
-				selector: ':last-child'
-			});
-
-			widget.expectRender(expected(false, true), '`css.slideOut` should be removed when the animation ends.');
+			h.trigger('@content', 'transitionend');
+			h.expect(() => expected(false, true));
 		},
 
 		'last transform is applied on next render if being swiped closed'() {
-			widget.setProperties({
+			let properties = {
 				open: true
-			});
-
-			widget.setChildren([ GREEKING ]);
+			};
+			const h = harness(() => w(SlidePane, properties, [ GREEKING ]));
 
 			function expected(closed: boolean, swipeState: any = {}) {
 				return v('div', {
-					'aria-labelledby': compareId,
+					'aria-labelledby': '',
 					dir: null,
 					lang: null,
-					onmousedown: widget.listener,
-					onmousemove: widget.listener,
-					onmouseup: widget.listener,
-					ontouchend: widget.listener,
-					ontouchmove: widget.listener,
-					ontouchstart: widget.listener,
+					onmousedown: noop,
+					onmousemove: noop,
+					onmouseup: noop,
+					ontouchend: noop,
+					ontouchmove: noop,
+					ontouchstart: noop,
 					classes: css.root
 				}, [
 					closed ? null : v('div', {
 						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
-						onmouseup: widget.listener,
-						ontouchend: widget.listener,
+						onmouseup: noop,
+						ontouchend: noop,
 						key: 'underlay'
 					}),
 					v('div', {
 						key: 'content',
-						transitionend: widget.listener,
 						classes: swipeState.classes || [
 							css.pane,
 							css.left,
@@ -702,6 +556,7 @@ registerSuite('SlidePane', {
 							fixedCss.slideInFixed,
 							null
 						],
+						transitionend: noop,
 						styles: swipeState.styles || {
 							transform: undefined,
 							width: '320px',
@@ -716,34 +571,13 @@ registerSuite('SlidePane', {
 				]);
 			}
 
-			widget.expectRender(expected(false));
+			h.expect(() => expected(false), () => h.getRender());
+			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300 });
+			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 150 });
+			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 50 });
+			properties.open = false;
 
-			widget.setProperties({
-				open: false
-			});
-
-			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
-					pageX: 300
-				},
-				selector: ':last-child'
-			});
-
-			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
-					pageX: 150
-				},
-				selector: ':last-child'
-			});
-
-			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
-					pageX: 50
-				},
-				selector: ':last-child'
-			});
-
-			widget.expectRender(expected(true, {
+			h.expect(() => expected(true, {
 				classes: [
 					css.pane,
 					css.left,
@@ -765,37 +599,29 @@ registerSuite('SlidePane', {
 		},
 
 		'last transform is applied on next render if being swiped closed right'() {
-			widget.setProperties({
-				align: Align.right,
-				open: true
-			});
-
-			widget.setChildren([ GREEKING ]);
-
-			function expected(closed: boolean, swipeState: any = {}) {
+			function expected(closed = false, swipeState: any = {}) {
 				return v('div', {
-					'aria-labelledby': compareId,
+					'aria-labelledby': '',
 					dir: null,
 					lang: null,
-					onmousedown: widget.listener,
-					onmousemove: widget.listener,
-					onmouseup: widget.listener,
-					ontouchend: widget.listener,
-					ontouchmove: widget.listener,
-					ontouchstart: widget.listener,
+					onmousedown: noop,
+					onmousemove: noop,
+					onmouseup: noop,
+					ontouchend: noop,
+					ontouchmove: noop,
+					ontouchstart: noop,
 					classes: css.root
 				}, [
 					closed ? null : v('div', {
 						classes: [ null, fixedCss.underlay ],
 						enterAnimation: animations.fadeIn,
 						exitAnimation: animations.fadeOut,
-						onmouseup: widget.listener,
-						ontouchend: widget.listener,
+						onmouseup: noop,
+						ontouchend: noop,
 						key: 'underlay'
 					}),
 					v('div', {
 						key: 'content',
-						transitionend: widget.listener,
 						classes: swipeState.classes || [
 							css.pane,
 							css.right,
@@ -808,6 +634,7 @@ registerSuite('SlidePane', {
 							fixedCss.slideInFixed,
 							null
 						],
+						transitionend: noop,
 						styles: swipeState.styles || {
 							transform: undefined,
 							width: '320px',
@@ -817,40 +644,26 @@ registerSuite('SlidePane', {
 						null,
 						v('div', {
 							classes: css.content
-						}, [ GREEKING ])
+						})
 					])
 				]);
 			}
 
-			widget.expectRender(expected(false));
+			let properties = {
+				align: Align.right,
+				open: true
+			};
+			const h = harness(() => w(SlidePane, properties));
 
-			widget.setProperties({
+			h.expect(expected);
+			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300 });
+			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 400 });
+			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 500 });
+			properties = {
 				align: Align.right,
 				open: false
-			});
-
-			widget.sendEvent('mousedown', {
-				eventInit: <MouseEventInit> {
-					pageX: 300
-				},
-				selector: ':last-child'
-			});
-
-			widget.sendEvent('mousemove', {
-				eventInit: <MouseEventInit> {
-					pageX: 400
-				},
-				selector: ':last-child'
-			});
-
-			widget.sendEvent('mouseup', {
-				eventInit: <MouseEventInit> {
-					pageX: 500
-				},
-				selector: ':last-child'
-			});
-
-			widget.expectRender(expected(true, {
+			};
+			h.expect(() => expected(true, {
 				classes: [
 					css.pane,
 					css.right,

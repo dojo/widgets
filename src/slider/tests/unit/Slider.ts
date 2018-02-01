@@ -1,77 +1,18 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-
 import * as sinon from 'sinon';
-
-import has from '@dojo/has/has';
 import { v, w } from '@dojo/widget-core/d';
-import { assignProperties, assignChildProperties, compareProperty, replaceChild, findKey } from '@dojo/test-extras/support/d';
-import harness, { Harness } from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Slider from '../../Slider';
 import * as css from '../../../theme/slider/slider.m.css';
 import * as fixedCss from '../../styles/slider.m.css';
+import { compareId, compareForId, createHarness, noop } from '../../../common/tests/support/test-helpers';
 
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const compareFor = { selector: '*', property: 'for', comparator: (property: any) => typeof property === 'string' };
+const harness = createHarness([ compareId, compareForId, compareFor ]);
 
-const expected = function(widget: any, label = false, tooltip = false) {
-	const sliderVdom = v('div', {
-		classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
-		styles: {}
-	}, [
-		v('input', {
-			key: 'input',
-			classes: [ css.input, fixedCss.nativeInput ],
-			disabled: undefined,
-			id: <any> compareId,
-			'aria-invalid': null,
-			max: '100',
-			min: '0',
-			name: undefined,
-			readOnly: undefined,
-			'aria-readonly': null,
-			required: undefined,
-			step: '1',
-			styles: {},
-			type: 'range',
-			value: '0',
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			oninput: widget.listener,
-			onkeydown: widget.listener,
-			onkeypress: widget.listener,
-			onkeyup: widget.listener,
-			onmousedown: widget.listener,
-			onmouseup: widget.listener,
-			ontouchstart: widget.listener,
-			ontouchend: widget.listener,
-			ontouchcancel: widget.listener
-		}),
-		v('div', {
-			classes: [ css.track, fixedCss.trackFixed ],
-			'aria-hidden': 'true',
-			styles: {}
-		}, [
-			v('span', {
-				classes: [ css.fill, fixedCss.fillFixed ],
-				styles: { width: '0%' }
-			}),
-			v('span', {
-				classes: [ css.thumb, fixedCss.thumbFixed ],
-				styles: { left: '0%' }
-			})
-		]),
-		v('output', {
-			classes: [ css.output, tooltip ? fixedCss.outputTooltip : null ],
-			for: <any> compareId,
-			styles: {}
-		}, [ '0' ])
-	]);
+const expected = function(label = false, tooltip = false, overrides = {}, child = '0', progress = '0%') {
 
 	return v('div', {
 		key: 'root',
@@ -84,31 +25,76 @@ const expected = function(widget: any, label = false, tooltip = false) {
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: <any> compareId
+			forId: ''
 		}, [ 'foo' ]) : null,
-		sliderVdom
+		v('div', {
+			classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
+			styles: {}
+		}, [
+			v('input', {
+				key: 'input',
+				classes: [ css.input, fixedCss.nativeInput ],
+				disabled: undefined,
+				id: '',
+				'aria-invalid': null,
+				max: '100',
+				min: '0',
+				name: undefined,
+				readOnly: undefined,
+				'aria-readonly': null,
+				required: undefined,
+				step: '1',
+				styles: {},
+				type: 'range',
+				value: '0',
+				onblur: noop,
+				onchange: noop,
+				onclick: noop,
+				onfocus: noop,
+				oninput: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop,
+				...overrides
+			}),
+			v('div', {
+				classes: [ css.track, fixedCss.trackFixed ],
+				'aria-hidden': 'true',
+				styles: {}
+			}, [
+				v('span', {
+					classes: [ css.fill, fixedCss.fillFixed ],
+					styles: { width: progress }
+				}),
+				v('span', {
+					classes: [ css.thumb, fixedCss.thumbFixed ],
+					styles: { left: progress }
+				})
+			]),
+			v('output', {
+				classes: [ css.output, tooltip ? fixedCss.outputTooltip : null ],
+				for: '',
+				styles: progress !== '0%' ? { left: progress } : {}
+			}, [ child ])
+		])
 	]);
 };
 
-let widget: Harness<Slider>;
-
 registerSuite('Slider', {
-
-	beforeEach() {
-		widget = harness(Slider);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
 
 	tests: {
 		'default properties'() {
-			widget.expectRender(expected(widget));
+			const h = harness(() => w(Slider, {}));
+			h.expect(expected);
 		},
 
 		'custom properties'() {
-			widget.setProperties({
+			const h = harness(() => w(Slider, {
 				aria: { describedBy: 'foo' },
 				id: 'foo',
 				max: 60,
@@ -118,10 +104,9 @@ registerSuite('Slider', {
 				outputIsTooltip: true,
 				step: 5,
 				value: 35
-			});
+			}));
 
-			const expectedVdom = expected(widget, false, true);
-			assignProperties(findKey(expectedVdom, 'input')!, {
+			h.expect(() => expected(false, true, {
 				'aria-describedby': 'foo',
 				id: 'foo',
 				max: '60',
@@ -129,168 +114,441 @@ registerSuite('Slider', {
 				name: 'bar',
 				step: '5',
 				value: '35'
-			});
-			assignChildProperties(expectedVdom, '1,1,0', {
-				styles: { width: '50%' }
-			});
-			assignChildProperties(expectedVdom, '1,1,1', {
-				styles: { left: '50%' }
-			});
-			assignChildProperties(expectedVdom, '1,2', {
-				styles: { left: '50%' }
-			});
-			replaceChild(expectedVdom, '1,2,0', 'tribbles');
-
-			widget.expectRender(expectedVdom);
+			}, 'tribbles', '50%'));
 		},
 
 		'vertical slider': {
 			'default properties'() {
-				widget.setProperties({
+				const h = harness(() => w(Slider, {
 					vertical: true
-				});
+				}));
 
-				const expectedVdom = expected(widget);
-				assignChildProperties(expectedVdom, '1', {
-					styles: { height: '200px' }
-				});
-				assignProperties(findKey(expectedVdom, 'input')!, {
-					styles: { width: '200px' }
-				});
-				assignChildProperties(expectedVdom, '1,1', {
-					styles: { width: '200px' }
-				});
-				assignProperties(expectedVdom, {
+				h.expect(() => v('div', {
+					key: 'root',
 					classes: [ css.root, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
-				});
-
-				widget.expectRender(expectedVdom);
+				}, [
+					null,
+					v('div', {
+						classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
+						styles: {
+							height: '200px'
+						}
+					}, [
+						v('input', {
+							key: 'input',
+							classes: [ css.input, fixedCss.nativeInput ],
+							disabled: undefined,
+							id: '',
+							'aria-invalid': null,
+							max: '100',
+							min: '0',
+							name: undefined,
+							readOnly: undefined,
+							'aria-readonly': null,
+							required: undefined,
+							step: '1',
+							styles: {
+								width: '200px'
+							},
+							type: 'range',
+							value: '0',
+							onblur: noop,
+							onchange: noop,
+							onclick: noop,
+							onfocus: noop,
+							oninput: noop,
+							onkeydown: noop,
+							onkeypress: noop,
+							onkeyup: noop,
+							onmousedown: noop,
+							onmouseup: noop,
+							ontouchstart: noop,
+							ontouchend: noop,
+							ontouchcancel: noop
+						}),
+						v('div', {
+							classes: [ css.track, fixedCss.trackFixed ],
+							'aria-hidden': 'true',
+							styles: {
+								width: '200px'
+							}
+						}, [
+							v('span', {
+								classes: [ css.fill, fixedCss.fillFixed ],
+								styles: { width: '0%' }
+							}),
+							v('span', {
+								classes: [ css.thumb, fixedCss.thumbFixed ],
+								styles: { left: '0%' }
+							})
+						]),
+						v('output', {
+							classes: [ css.output, null ],
+							for: '',
+							styles: {}
+						}, [ '0' ])
+					])
+				]));
 			},
 
 			'custom properties'() {
-				widget.setProperties({
+				const h = harness(() => w(Slider, {
 					max: 10,
 					min: 5,
 					outputIsTooltip: true,
 					value: 6,
 					vertical: true,
 					verticalHeight: '100px'
-				});
+				}));
 
-				const expectedVdom = expected(widget, false, true);
-				assignChildProperties(expectedVdom, '1', {
-					styles: { height: '100px' }
-				});
-				assignProperties(findKey(expectedVdom, 'input')!, {
-					max: '10',
-					min: '5',
-					styles: { width: '100px' },
-					value: '6'
-				});
-				replaceChild(expectedVdom, '1,2,0', '6');
-				assignChildProperties(expectedVdom, '1,1', {
-					styles: { width: '100px' }
-				});
-				assignChildProperties(expectedVdom, '1,1,0', {
-					styles: { width: '20%' }
-				});
-				assignChildProperties(expectedVdom, '1,1,1', {
-					styles: { left: '20%' }
-				});
-				assignChildProperties(expectedVdom, '1,2', {
-					styles: { top: '80%' }
-				});
-				assignProperties(expectedVdom, {
+				h.expect(() => v('div', {
+					key: 'root',
 					classes: [ css.root, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
-				});
-
-				widget.expectRender(expectedVdom);
+				}, [
+					null,
+					v('div', {
+						classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
+						styles: {
+							height: '100px'
+						}
+					}, [
+						v('input', {
+							key: 'input',
+							classes: [ css.input, fixedCss.nativeInput ],
+							disabled: undefined,
+							id: '',
+							'aria-invalid': null,
+							max: '10',
+							min: '5',
+							name: undefined,
+							readOnly: undefined,
+							'aria-readonly': null,
+							required: undefined,
+							step: '1',
+							styles: { width: '100px' },
+							type: 'range',
+							value: '6',
+							onblur: noop,
+							onchange: noop,
+							onclick: noop,
+							onfocus: noop,
+							oninput: noop,
+							onkeydown: noop,
+							onkeypress: noop,
+							onkeyup: noop,
+							onmousedown: noop,
+							onmouseup: noop,
+							ontouchstart: noop,
+							ontouchend: noop,
+							ontouchcancel: noop
+						}),
+						v('div', {
+							classes: [ css.track, fixedCss.trackFixed ],
+							'aria-hidden': 'true',
+							styles: {
+								width: '100px'
+							}
+						}, [
+							v('span', {
+								classes: [ css.fill, fixedCss.fillFixed ],
+								styles: { width: '20%' }
+							}),
+							v('span', {
+								classes: [ css.thumb, fixedCss.thumbFixed ],
+								styles: { left: '20%' }
+							})
+						]),
+						v('output', {
+							classes: [ css.output, fixedCss.outputTooltip ],
+							for: '',
+							styles: { top: '80%' }
+						}, [ '6' ])
+					])
+				]));
 			}
 		},
 
-		'min and max should be respected'() {
-			widget.setProperties({
+		'max value should be respected'() {
+			const h = harness(() => w(Slider, {
 				max: 40,
 				value: 100
-			});
+			}));
 
-			let expectedVdom = expected(widget);
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				max: '40',
-				value: '40'
-			});
-			replaceChild(expectedVdom, '1,2,0', '40');
-			assignChildProperties(expectedVdom, '1,1,0', {
-				styles: { width: '100%' }
-			});
-			assignChildProperties(expectedVdom, '1,1,1', {
-				styles: { left: '100%' }
-			});
+			h.expect(() => v('div', {
+				key: 'root',
+				classes: [ css.root, null, null, null, null, null, null, fixedCss.rootFixed ]
+			}, [
+				null,
+				v('div', {
+					classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
+					styles: {}
+				}, [
+					v('input', {
+						key: 'input',
+						classes: [ css.input, fixedCss.nativeInput ],
+						disabled: undefined,
+						id: '',
+						'aria-invalid': null,
+						max: '40',
+						min: '0',
+						name: undefined,
+						readOnly: undefined,
+						'aria-readonly': null,
+						required: undefined,
+						step: '1',
+						styles: {},
+						type: 'range',
+						value: '40',
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						oninput: noop,
+						onkeydown: noop,
+						onkeypress: noop,
+						onkeyup: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop
+					}),
+					v('div', {
+						classes: [ css.track, fixedCss.trackFixed ],
+						'aria-hidden': 'true',
+						styles: {}
+					}, [
+						v('span', {
+							classes: [ css.fill, fixedCss.fillFixed ],
+							styles: { width: '100%' }
+						}),
+						v('span', {
+							classes: [ css.thumb, fixedCss.thumbFixed ],
+							styles: { left: '100%' }
+						})
+					]),
+					v('output', {
+						classes: [ css.output, null ],
+						for: '',
+						styles: {}
+					}, [ '40' ])
+				])
+			]));
+		},
 
-			widget.expectRender(expectedVdom, 'If value property exceeds max, value is set to max');
-
-			widget.setProperties({
+		'min value should be respected'() {
+			const h = harness(() => w(Slider, {
 				min: 30,
 				value: 20
-			});
-			expectedVdom = expected(widget);
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				min: '30',
-				value: '30'
-			});
-			replaceChild(expectedVdom, '1,2,0', '30');
+			}));
 
-			widget.expectRender(expectedVdom, 'If value property is below min, value is set to min');
+			h.expect(() => v('div', {
+				key: 'root',
+				classes: [ css.root, null, null, null, null, null, null, fixedCss.rootFixed ]
+			}, [
+				null,
+				v('div', {
+					classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
+					styles: {}
+				}, [
+					v('input', {
+						key: 'input',
+						classes: [ css.input, fixedCss.nativeInput ],
+						disabled: undefined,
+						id: '',
+						'aria-invalid': null,
+						max: '100',
+						min: '30',
+						name: undefined,
+						readOnly: undefined,
+						'aria-readonly': null,
+						required: undefined,
+						step: '1',
+						styles: {},
+						type: 'range',
+						value: '30',
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						oninput: noop,
+						onkeydown: noop,
+						onkeypress: noop,
+						onkeyup: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop
+					}),
+					v('div', {
+						classes: [ css.track, fixedCss.trackFixed ],
+						'aria-hidden': 'true',
+						styles: {}
+					}, [
+						v('span', {
+							classes: [ css.fill, fixedCss.fillFixed ],
+							styles: { width: '0%' }
+						}),
+						v('span', {
+							classes: [ css.thumb, fixedCss.thumbFixed ],
+							styles: { left: '0%' }
+						})
+					]),
+					v('output', {
+						classes: [ css.output, null ],
+						for: '',
+						styles: {}
+					}, [ '30' ])
+				])
+			]));
 		},
 
 		'label'() {
-			widget.setProperties({
+			const h = harness(() => w(Slider, {
 				label: 'foo'
-			});
+			}));
 
-			widget.expectRender(expected(widget, true));
+			h.expect(() => expected(true));
 		},
 
 		'state classes'() {
-			widget.setProperties({
+			let properties = {
 				invalid: true,
 				disabled: true,
 				readOnly: true,
 				required: true
-			});
+			};
+			const h = harness(() => w(Slider, properties));
 
-			let expectedVdom = expected(widget);
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				disabled: true,
-				'aria-invalid': 'true',
-				readOnly: true,
-				'aria-readonly': 'true',
-				required: true
-			});
-			assignProperties(expectedVdom, {
+			h.expect(() => v('div', {
+				key: 'root',
 				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, fixedCss.rootFixed ]
-			});
+			}, [
+				null,
+				v('div', {
+					classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
+					styles: {}
+				}, [
+					v('input', {
+						disabled: true,
+						'aria-invalid': 'true',
+						readOnly: true,
+						'aria-readonly': 'true',
+						required: true,
+						key: 'input',
+						classes: [ css.input, fixedCss.nativeInput ],
+						id: '',
+						max: '100',
+						min: '0',
+						name: undefined,
+						step: '1',
+						styles: {},
+						type: 'range',
+						value: '0',
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						oninput: noop,
+						onkeydown: noop,
+						onkeypress: noop,
+						onkeyup: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop
+					}),
+					v('div', {
+						classes: [ css.track, fixedCss.trackFixed ],
+						'aria-hidden': 'true',
+						styles: {}
+					}, [
+						v('span', {
+							classes: [ css.fill, fixedCss.fillFixed ],
+							styles: { width: '0%' }
+						}),
+						v('span', {
+							classes: [ css.thumb, fixedCss.thumbFixed ],
+							styles: { left: '0%' }
+						})
+					]),
+					v('output', {
+						classes: [ css.output, null ],
+						for: '',
+						styles: {}
+					}, [ '0' ])
+				])
+			]));
 
-			widget.expectRender(expectedVdom, 'Widget should be invalid, disabled, read-only, and required');
-
-			widget.setProperties({
+			properties = {
 				invalid: false,
 				disabled: false,
 				readOnly: false,
 				required: false
-			});
-			expectedVdom = expected(widget);
+			};
 
-			assignProperties(findKey(expectedVdom, 'input')!, {
-				disabled: false,
-				readOnly: false,
-				required: false
-			});
-			assignProperties(expectedVdom, {
+			h.expect(() => v('div', {
+				key: 'root',
 				classes: [ css.root, null, null, css.valid, null, null, null, fixedCss.rootFixed ]
-			});
-
-			widget.expectRender(expectedVdom, 'State classes should be false, css.valid should be true');
+			}, [
+				null,
+				v('div', {
+					classes: [ css.inputWrapper, fixedCss.inputWrapperFixed ],
+					styles: {}
+				}, [
+					v('input', {
+						disabled: false,
+						'aria-invalid': null,
+						readOnly: false,
+						'aria-readonly': null,
+						required: false,
+						key: 'input',
+						classes: [ css.input, fixedCss.nativeInput ],
+						id: '',
+						max: '100',
+						min: '0',
+						name: undefined,
+						step: '1',
+						styles: {},
+						type: 'range',
+						value: '0',
+						onblur: noop,
+						onchange: noop,
+						onclick: noop,
+						onfocus: noop,
+						oninput: noop,
+						onkeydown: noop,
+						onkeypress: noop,
+						onkeyup: noop,
+						onmousedown: noop,
+						onmouseup: noop,
+						ontouchstart: noop,
+						ontouchend: noop,
+						ontouchcancel: noop
+					}),
+					v('div', {
+						classes: [ css.track, fixedCss.trackFixed ],
+						'aria-hidden': 'true',
+						styles: {}
+					}, [
+						v('span', {
+							classes: [ css.fill, fixedCss.fillFixed ],
+							styles: { width: '0%' }
+						}),
+						v('span', {
+							classes: [ css.thumb, fixedCss.thumbFixed ],
+							styles: { left: '0%' }
+						})
+					]),
+					v('output', {
+						classes: [ css.output, null ],
+						for: '',
+						styles: {}
+					}, [ '0' ])
+				])
+			]));
 		},
 
 		events() {
@@ -304,8 +562,11 @@ registerSuite('Slider', {
 			const onKeyUp = sinon.stub();
 			const onMouseDown = sinon.stub();
 			const onMouseUp = sinon.stub();
+			const onTouchStart = sinon.stub();
+			const onTouchEnd = sinon.stub();
+			const onTouchCancel = sinon.stub();
 
-			widget.setProperties({
+			const h = harness(() => w(Slider, {
 				onBlur,
 				onChange,
 				onClick,
@@ -315,51 +576,49 @@ registerSuite('Slider', {
 				onKeyPress,
 				onKeyUp,
 				onMouseDown,
-				onMouseUp
-			});
-
-			widget.sendEvent('blur', { selector: 'input' });
-			assert.isTrue(onBlur.called, 'onBlur called');
-			widget.sendEvent('change', { selector: 'input' });
-			assert.isTrue(onChange.called, 'onChange called');
-			widget.sendEvent('click', { selector: 'input' });
-			assert.isTrue(onClick.called, 'onClick called');
-			widget.sendEvent('focus', { selector: 'input' });
-			assert.isTrue(onFocus.called, 'onFocus called');
-			widget.sendEvent('input', { selector: 'input' });
-			assert.isTrue(onInput.called, 'onInput called');
-			widget.sendEvent('keydown', { selector: 'input' });
-			assert.isTrue(onKeyDown.called, 'onKeyDown called');
-			widget.sendEvent('keypress', { selector: 'input' });
-			assert.isTrue(onKeyPress.called, 'onKeyPress called');
-			widget.sendEvent('keyup', { selector: 'input' });
-			assert.isTrue(onKeyUp.called, 'onKeyUp called');
-			widget.sendEvent('mousedown', { selector: 'input' });
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			widget.sendEvent('mouseup', { selector: 'input' });
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-		},
-
-		'touch events'() {
-			if (!has('touch')) {
-				this.skip('Environment not support touch events');
-			}
-
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
-
-			widget.setProperties({
+				onMouseUp,
 				onTouchStart,
 				onTouchEnd,
 				onTouchCancel
-			});
+			}));
 
-			widget.sendEvent('touchstart', { selector: 'input' });
+			h.trigger('@input', 'onblur');
+			assert.isTrue(onBlur.called, 'onBlur called');
+
+			h.trigger('@input', 'onchange');
+			assert.isTrue(onChange.called, 'onChange called');
+
+			h.trigger('@input', 'onclick');
+			assert.isTrue(onClick.called, 'onClick called');
+
+			h.trigger('@input', 'onfocus');
+			assert.isTrue(onFocus.called, 'onFocus called');
+
+			h.trigger('@input', 'oninput');
+			assert.isTrue(onInput.called, 'onInput called');
+
+			h.trigger('@input', 'onkeydown');
+			assert.isTrue(onKeyDown.called, 'onKeyDown called');
+
+			h.trigger('@input', 'onkeypress');
+			assert.isTrue(onKeyPress.called, 'onKeyPress called');
+
+			h.trigger('@input', 'onkeyup');
+			assert.isTrue(onKeyUp.called, 'onKeyUp called');
+
+			h.trigger('@input', 'onmousedown');
+			assert.isTrue(onMouseDown.called, 'onMouseDown called');
+
+			h.trigger('@input', 'onmouseup');
+			assert.isTrue(onMouseUp.called, 'onMouseUp called');
+
+			h.trigger('@input', 'ontouchstart');
 			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			widget.sendEvent('touchend', { selector: 'input' });
+
+			h.trigger('@input', 'ontouchend');
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			widget.sendEvent('touchcancel', { selector: 'input' });
+
+			h.trigger('@input', 'ontouchcancel');
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}

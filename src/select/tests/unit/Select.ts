@@ -3,8 +3,6 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { assignProperties, assignChildProperties, compareProperty, findKey, replaceChild } from '@dojo/test-extras/support/d';
 import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
@@ -13,15 +11,31 @@ import Listbox from '../../../listbox/Listbox';
 import Label from '../../../label/Label';
 import * as css from '../../../theme/select/select.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
+import {
+	createHarness,
+	compareId,
+	noop,
+	compareAriaControls
+} from '../../../common/tests/support/test-helpers';
 
-let widget: Harness<Select>;
-
-const compareId = compareProperty((value: any) => {
-	return typeof value === 'string';
-});
+const harness = createHarness([ compareId, compareAriaControls ]);
 
 interface TestEventInit extends EventInit {
 	which: number;
+}
+
+interface States {
+	invalid?: boolean;
+	disabled?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
+}
+
+interface ExpectedOptions {
+	label?: boolean;
+	states?: States;
+	classes?: any[];
+	overrides?: any;
 }
 
 const testOptions: any[] = [
@@ -61,7 +75,8 @@ const testStateProperties: Partial<SelectProperties> = {
 	required: true
 };
 
-const expectedNative = function(widget: Harness<Select>, useTestProperties = false) {
+const expectedNative = function(useTestProperties = false, withStates = false) {
+	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
 	const vdom = v('div', { classes: css.inputWrapper }, [
 		v('select', {
 			classes: css.input,
@@ -73,9 +88,10 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 			'aria-readonly': useTestProperties ? 'true' : null,
 			required: useTestProperties ? true : undefined,
 			value: useTestProperties ? 'two' : undefined,
-			onblur: widget.listener,
-			onchange: widget.listener,
-			onfocus: widget.listener
+			onblur: noop,
+			onchange: noop,
+			onfocus: noop,
+			...describedBy
 		}, [
 			v('option', {
 				value: useTestProperties ? 'one' : '',
@@ -103,35 +119,33 @@ const expectedNative = function(widget: Harness<Select>, useTestProperties = fal
 		])
 	]);
 
-	if (useTestProperties) {
-		assignChildProperties(vdom, '0', {'aria-describedby': 'foo'});
-	}
-
 	return vdom;
 };
 
-const expectedSingle = function(widget: Harness<Select>, useTestProperties = false, open = false, focus = false) {
+const expectedSingle = function(useTestProperties = false, withStates = false, open = false, placeholder = '', activeIndex = 0, focus = false) {
+	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
 	const vdom = v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
 		key: 'wrapper'
 	}, [
 		v('button', {
-			'aria-controls': <any> compareId,
+			'aria-controls': '',
 			'aria-expanded': open ? 'true' : 'false',
 			'aria-haspopup': 'listbox',
-			'aria-invalid': null,
-			'aria-readonly': null,
-			'aria-required': null,
-			classes: [ css.trigger, useTestProperties ? null : css.placeholder ],
-			disabled: undefined,
+			'aria-invalid': withStates ? 'true' : null,
+			'aria-readonly': withStates ? 'true' : null,
+			'aria-required': withStates ? 'true' : null,
+			classes: [ css.trigger, useTestProperties && !placeholder ? null : css.placeholder ],
+			disabled: withStates ? true : undefined,
 			key: 'trigger',
 			value: useTestProperties ? 'two' : undefined,
-			onblur: widget.listener,
-			onclick: widget.listener,
-			onfocus: widget.listener,
-			onkeydown: widget.listener,
-			onmousedown: widget.listener
-		}, [ useTestProperties ? 'Two' : '' ]),
+			onblur: noop,
+			onclick: noop,
+			onfocus: noop,
+			onkeydown: noop,
+			onmousedown: noop,
+			...describedBy
+		}, [ placeholder ? placeholder : useTestProperties ? 'Two' : '' ]),
 		v('span', { classes: css.arrow }, [
 			v('i', {
 				classes: [ iconCss.icon, iconCss.downIcon ],
@@ -141,44 +155,34 @@ const expectedSingle = function(widget: Harness<Select>, useTestProperties = fal
 		]),
 		v('div', {
 			classes: css.dropdown,
-			onfocusout: widget.listener,
-			onkeydown: widget.listener
+			onfocusout: noop,
+			onkeydown: noop
 		}, [
 			w(Listbox, {
-				activeIndex: 0,
+				activeIndex,
 				focus,
-				id: useTestProperties ? 'foo' : compareId as any,
+				id: useTestProperties ? 'foo' : '',
 				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
 				tabIndex: open ? 0 : -1,
-				getOptionDisabled: useTestProperties ? widget.listener : undefined,
-				getOptionId: useTestProperties ? (widget.listener as any) : undefined,
-				getOptionLabel: useTestProperties ? (widget.listener as any) : undefined,
-				getOptionSelected: widget.listener,
+				getOptionDisabled: useTestProperties ? noop : undefined,
+				getOptionId: useTestProperties ? noop : undefined,
+				getOptionLabel: useTestProperties ? noop : undefined,
+				getOptionSelected: noop,
 				theme: undefined,
-				onActiveIndexChange: widget.listener,
-				onOptionSelect: widget.listener
+				onActiveIndexChange: noop,
+				onOptionSelect: noop
 			})
 		])
 	]);
 
-	if (useTestProperties) {
-		assignProperties(findKey(vdom, 'trigger')!, {'aria-describedby': 'foo'});
-	}
-
 	return vdom;
 };
 
-function isOpen(widget: any): boolean {
-	const vdom = widget.getRender();
-	const button = findKey(vdom, 'trigger');
-	return (<any> button)!.properties!['aria-expanded'] === 'true';
-}
-
-const expected = function(widget: Harness<Select>, selectVdom: any, label = false) {
+const expected = function(selectVdom: any, { classes = [ css.root, null, null, null, null, null ], label = false, states }: ExpectedOptions = {}) {
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null ]
+		classes
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -187,7 +191,7 @@ const expected = function(widget: Harness<Select>, selectVdom: any, label = fals
 			invalid: undefined,
 			readOnly: undefined,
 			required: undefined,
-			forId: <any> compareId
+			forId: ''
 		}, [ 'foo' ]) : null,
 		selectVdom
 	]);
@@ -195,68 +199,51 @@ const expected = function(widget: Harness<Select>, selectVdom: any, label = fals
 
 registerSuite('Select', {
 
-	beforeEach() {
-		widget = harness(Select);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 
 		'Native Single Select': {
 			'default properties'() {
-				widget.setProperties({
+				const h = harness(() => w(Select, {
 					options: testOptions,
 					useNativeElement: true
-				});
-
-				let selectVdom = expectedNative(widget);
-				widget.expectRender(expected(widget, selectVdom));
+				}));
+				h.expect(() => expected(expectedNative()));
 			},
 
 			'custom properties'() {
-				widget.setProperties({
+				const h = harness(() => w(Select, {
 					...testStateProperties,
 					useNativeElement: true
-				});
-
-				const selectVdom = expectedNative(widget, true);
-				const expectedVdom = expected(widget, selectVdom);
-				assignProperties(expectedVdom, {
+				}));
+				h.expect(() => expected(expectedNative(true), {
 					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
-				});
-
-				widget.expectRender(expectedVdom);
+				}));
 			},
 
 			'basic events'() {
 				const onBlur = sinon.stub();
 				const onFocus = sinon.stub();
 
-				widget.setProperties({
+				const h = harness(() => w(Select, {
 					useNativeElement: true,
 					onBlur,
 					onFocus
-				});
-
-				widget.sendEvent('blur', { selector: 'select' });
+				}));
+				h.trigger('select', 'onblur');
+				h.trigger('select', 'onfocus');
 				assert.isTrue(onBlur.called, 'onBlur called');
-				widget.sendEvent('focus', { selector: 'select' });
 				assert.isTrue(onFocus.called, 'onFocus called');
 			},
 
 			'onChange called with correct option'() {
 				const onChange = sinon.stub();
-				widget.setProperties({
+				const h = harness(() => w(Select, {
 					getOptionValue: testProperties.getOptionValue,
 					options: testOptions,
 					useNativeElement: true,
 					onChange
-				});
-
-				widget.sendEvent('change', { selector: 'option' });
+				}));
+				h.trigger('select', 'onchange', { target: { value: 'one' } });
 				assert.isTrue(onChange.calledWith(testOptions[0]), 'onChange should be called with the first entry in the testOptions array');
 			},
 
@@ -264,7 +251,7 @@ registerSuite('Select', {
 				const onBlur = sinon.stub();
 				const onFocus = sinon.stub();
 				const onChange = sinon.stub();
-				widget.setProperties({
+				const h = harness(() => w(Select, {
 					key: 'foo',
 					getOptionValue: testProperties.getOptionValue,
 					useNativeElement: true,
@@ -272,120 +259,89 @@ registerSuite('Select', {
 					onBlur,
 					onFocus,
 					onChange
-				});
+				}));
 
-				widget.sendEvent('blur', { selector: 'select' });
+				h.trigger('select', 'onblur', { target: { value: 'one' } });
 				assert.isTrue(onBlur.calledWith('foo'), 'onBlur called with foo key');
-				widget.sendEvent('focus', { selector: 'select' });
+				h.trigger('select', 'onfocus', { target: { value: 'one' } });
 				assert.isTrue(onFocus.calledWith('foo'), 'onFocus called with foo key');
-				widget.sendEvent('change', { selector: 'option' });
+				h.trigger('select', 'onchange', { target: { value: 'one' } });
 				assert.isTrue(onChange.calledWith(testOptions[0], 'foo'), 'onChange called with foo key');
 			}
 		},
 
 		'Custom Single-select': {
 			'default properties'() {
-				let selectVdom = expectedSingle(widget);
-				widget.expectRender(expected(widget, selectVdom));
+				const h = harness(() => w(Select, {}));
+				h.expect(() => expected(expectedSingle()));
 			},
 
 			'custom properties'() {
-				widget.setProperties(testStateProperties);
-
-				const selectVdom = expectedSingle(widget, true);
-				assignProperties(findKey(selectVdom, 'trigger')!, {
-					'aria-invalid': 'true',
-					'aria-readonly': 'true',
-					'aria-required': 'true',
-					disabled: true
-				});
-				const expectedVdom = expected(widget, selectVdom);
-				assignProperties(expectedVdom, {
+				const h = harness(() => w(Select, testStateProperties));
+				h.expect(() => expected(expectedSingle(true, true), {
 					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
-				});
-				widget.expectRender(expectedVdom);
+				}));
 			},
 
 			'placeholder'() {
-				widget.setProperties({
+				let properties = {
 					...testProperties,
 					placeholder: 'foo'
-				});
-
-				let expectedVdom = expected(widget, expectedSingle(widget, true));
-
-				widget.expectRender(expectedVdom, 'placeholder not shown if selected option is present');
-
-				widget.setProperties({
+				};
+				const h = harness(() => w(Select, properties));
+				h.expect(() => expected(expectedSingle(true)));
+				properties = {
 					...testProperties,
 					getOptionSelected: () => false,
 					placeholder: 'bar'
-				});
-
-				assignProperties(findKey(expectedVdom, 'trigger')!, {
-					classes: [ css.trigger, css.placeholder ]
-				});
-				expectedVdom = expected(widget, expectedSingle(widget, true));
-				assignProperties(findKey(expectedVdom, 'trigger')!, {
-					classes: [ css.trigger, css.placeholder ]
-				});
-				replaceChild(expectedVdom, '1,0,0', 'bar');
-
-				widget.expectRender(expectedVdom, 'placeholder is shown if no selected option');
+				};
+				h.expect(() => expected(expectedSingle(true, false, false, 'bar')));
 			},
 
 			'open/close on trigger click'() {
-				widget.setProperties(testProperties);
-				let selectVdom = expected(widget, expectedSingle(widget, true));
-				widget.expectRender(selectVdom, 'Dropdown is closed before click');
-
-				widget.sendEvent('click', { selector: 'button' });
-
-				selectVdom = expected(widget, expectedSingle(widget, true, true, true));
-				widget.expectRender(selectVdom, 'Open on first click');
-
-				widget.sendEvent('click', { selector: 'button' });
-				selectVdom = expected(widget, expectedSingle(widget, true));
-				widget.expectRender(selectVdom, 'Close on second click');
+				const h = harness(() => w(Select, testProperties));
+				h.expect(() => expected(expectedSingle(true)));
+				h.trigger('@trigger', 'onclick');
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.trigger('@trigger', 'onclick');
+				h.expect(() => expected(expectedSingle(true)));
 			},
 
 			'select options'() {
 				const onChange = sinon.stub();
 
-				widget.setProperties({
+				const h = harness(() => w(Select, {
+					...testProperties,
 					options: testOptions,
 					onChange
-				});
+				}));
 
-				widget.sendEvent('click', { key: 'trigger' });
-				assert.isTrue(isOpen(widget), 'Widget opens on button click');
-
-				widget.callListener('onOptionSelect', { args: [ testOptions[1] ], index: '0,2,0' });
-				assert.isFalse(isOpen(widget), 'Widget closes on option select');
+				h.trigger('@trigger', 'onclick');
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.trigger('@listbox', 'onOptionSelect', testOptions[1]);
+				h.expect(() => expected(expectedSingle(true)));
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
 				// open widget a second time
-				widget.sendEvent('click', { key: 'trigger' });
-
-				widget.sendEvent('mousedown', { key: 'trigger' });
-				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
-				widget.sendEvent('click', { key: 'trigger' });
-				assert.isFalse(isOpen(widget), 'Widget closes on second button click');
+				h.trigger('@trigger', 'onclick');
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.trigger('@trigger', 'onmousedown');
+				h.trigger(`.${css.dropdown}`, 'onfocusout');
+				h.trigger('@trigger', 'onclick');
+				h.expect(() => expected(expectedSingle(true)));
 			},
 
 			'default for getOptionSelected'() {
-				const modifiedTestProperties = { ...testProperties, getOptionSelected: undefined };
-				widget.setProperties(modifiedTestProperties);
-
-				const expectedVdom = expected(widget, expectedSingle(widget, true));
-				widget.expectRender(expectedVdom, 'defaults to checking against getOptionValue');
+				let properties: SelectProperties = { ...testProperties, getOptionSelected: undefined };
+				const h = harness(() => w(Select, properties));
+				h.expect(() => expected(expectedSingle(true)));
 
 				const simpleOptions = ['one', 'two', 'three'];
-				widget.setProperties({
+				properties = {
 					options: simpleOptions,
 					value: 'two'
-				});
-				widget.expectRender(v('div', {
+				};
+				h.expect(() => v('div', {
 					key: 'root',
 					classes: [ css.root, null, null, null, null, null ]
 				}, [
@@ -395,7 +351,7 @@ registerSuite('Select', {
 						key: 'wrapper'
 					}, [
 						v('button', {
-							'aria-controls': <any> compareId,
+							'aria-controls': '',
 							'aria-expanded': 'false',
 							'aria-haspopup': 'listbox',
 							'aria-invalid': null,
@@ -405,11 +361,11 @@ registerSuite('Select', {
 							disabled: undefined,
 							key: 'trigger',
 							value: 'two',
-							onblur: widget.listener,
-							onclick: widget.listener,
-							onfocus: widget.listener,
-							onkeydown: widget.listener,
-							onmousedown: widget.listener
+							onblur: noop,
+							onclick: noop,
+							onfocus: noop,
+							onkeydown: noop,
+							onmousedown: noop
 						}, [ 'two' ]),
 						v('span', { classes: css.arrow }, [
 							v('i', {
@@ -420,119 +376,109 @@ registerSuite('Select', {
 						]),
 						v('div', {
 							classes: css.dropdown,
-							onfocusout: widget.listener,
-							onkeydown: widget.listener
+							onfocusout: noop,
+							onkeydown: noop
 						}, [
 							w(Listbox, {
 								activeIndex: 0,
+								id: '',
 								focus: false,
-								id: <any> compareId,
 								key: 'listbox',
 								optionData: simpleOptions,
 								tabIndex: -1,
 								getOptionDisabled: undefined,
 								getOptionId: undefined,
 								getOptionLabel: undefined,
-								getOptionSelected: widget.listener,
+								getOptionSelected: noop,
 								theme: undefined,
-								onActiveIndexChange: widget.listener,
-								onOptionSelect: widget.listener
+								onActiveIndexChange: noop,
+								onOptionSelect: noop
 							})
 						])
 					])
-				]), 'defaults to checking option === value');
+				]));
 			},
 
 			'change active option'() {
-				widget.setProperties(testProperties);
-				let selectVdom = expected(widget, expectedSingle(widget, true));
-				widget.callListener('onActiveIndexChange', { args: [ 1 ], key: 'listbox' });
-
-				selectVdom = expected(widget, expectedSingle(widget, true));
-				assignProperties(findKey(selectVdom, 'listbox')!, { activeIndex: 1 });
-
-				widget.expectRender(selectVdom);
+				const h = harness(() => w(Select, testProperties));
+				h.expect(() => expected(expectedSingle(true)));
+				h.trigger('@listbox', 'onActiveIndexChange', 1);
+				h.expect(() => expected(expectedSingle(true, false, false, '', 1)));
 			},
 
 			'open/close with keyboard'() {
-				widget.setProperties({
+				const h = harness(() => w(Select, {
+					...testProperties,
 					options: testOptions
+				}));
+
+				h.trigger('@trigger', 'onkeydown', {
+					which: Keys.Down
 				});
 
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Down
-					},
-					key: 'trigger'
-				});
-				assert.isTrue(isOpen(widget), 'Dropdown opens with down arrow on button');
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Enter
-					},
-					selector: `.${css.dropdown}`
+				h.trigger(`.${css.dropdown}`, 'onkeydown', {
+					which: Keys.Down
 				});
-				assert.isTrue(isOpen(widget), 'Dropdown does not close with any key');
 
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Escape
-					},
-					selector: `.${css.dropdown}`
-				});
-				assert.isFalse(isOpen(widget), 'Dropdown closes with escape key on dropdown');
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
-				widget.sendEvent<TestEventInit>('keydown', {
-					eventInit: {
-						which: Keys.Up
-					},
-					key: 'trigger'
+				h.trigger(`.${css.dropdown}`, 'onkeydown', {
+					which: Keys.Escape
 				});
-				assert.isFalse(isOpen(widget), 'Dropdown does not open with any key');
+
+				h.expect(() => expected(expectedSingle(true)));
+
+				h.trigger(`.${css.dropdown}`, 'onkeydown', {
+					which: Keys.Down
+				});
+
+				h.expect(() => expected(expectedSingle(true)));
 			},
 
 			'close on listbox blur'() {
 				const onBlur = sinon.stub();
-				widget.setProperties({
+				const h = harness(() => w(Select, {
+					...testProperties,
 					options: testOptions,
 					onBlur
-				});
+				}));
+				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onblur');
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
-				widget.sendEvent('click', { key: 'trigger' });
-				widget.sendEvent('blur', { key: 'trigger' }); // fake trigger blur after opening dropdown
-				assert.isTrue(isOpen(widget), 'Dropdown opens with click on button');
-
-				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
-				assert.isFalse(isOpen(widget), 'Dropdown closes on listbox blur');
+				h.trigger(`.${css.dropdown}`, 'onfocusout');
+				h.expect(() => expected(expectedSingle(true)));
 				assert.isTrue(onBlur.calledOnce, 'onBlur callback should only be called once for last blur event');
 			},
 
 			'close on trigger blur'() {
 				const onBlur = sinon.stub();
-				widget.setProperties({
+				const h = harness(() => w(Select, {
+					...testProperties,
 					options: testOptions,
 					onBlur
-				});
+				}));
 
-				widget.sendEvent('click', { key: 'trigger' });
-				widget.sendEvent('blur', { key: 'trigger' }); // fake trigger blur after opening dropdown
-				assert.isTrue(isOpen(widget), 'Dropdown opens with click on button');
+				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onblur');
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
-				widget.sendEvent('blur', { key: 'trigger' });
-				assert.isFalse(isOpen(widget), 'Dropdown closes on trigger blur');
+				h.trigger('@trigger', 'onblur');
+				h.expect(() => expected(expectedSingle(true)));
 				assert.isTrue(onBlur.calledOnce, 'onBlur callback should only be called once for last blur event');
 			},
 
 			'events called with widget key'() {
 				const onBlur = sinon.stub();
-				widget.setProperties({ key: 'foo', onBlur });
+				const h = harness(() => w(Select, { key: 'foo', onBlur }));
 
-				widget.sendEvent('blur', { key: 'trigger' });
+				h.trigger('@trigger', 'onblur');
 				assert.isTrue(onBlur.calledWith('foo'), 'Trigger blur event called with foo key');
 
-				widget.sendEvent('blur', { key: 'trigger' }); // first second blur to reset _ignoreBlur
-				widget.sendEvent('focusout', { selector: `.${css.dropdown}` });
+				h.trigger('@trigger', 'onblur');
+				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				assert.isTrue(onBlur.getCall(1).calledWith('foo'), 'Dropdown blur event called with foo key');
 			}
 		}

@@ -2,44 +2,35 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import harness, { Harness } from '@dojo/test-extras/harness';
-import { v } from '@dojo/widget-core/d';
+import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/widget-core/d';
 
 import ListboxOption from '../../ListboxOption';
 import * as css from '../../../theme/listbox/listbox.m.css';
-
-let widget: Harness<ListboxOption>;
+import { noop } from '../../../common/tests/support/test-helpers';
 
 registerSuite('ListboxOption', {
-	beforeEach() {
-		widget = harness(ListboxOption);
-	},
-
-	afterEach() {
-		widget.destroy();
-	},
-
 	tests: {
 		'default render'() {
-			widget.setProperties({
+			const h = harness(() => w(ListboxOption, {
 				label: 'foo',
 				id: 'bar',
 				index: 0,
 				option: 'baz'
-			});
+			}));
 
-			widget.expectRender(v('div', {
+			h.expect(() => v('div', {
 				'aria-disabled': null,
 				'aria-selected': 'false',
-				classes: null,
+				classes: [],
 				id: 'bar',
 				role: 'option',
-				onclick: widget.listener
+				onclick: noop
 			}, [ 'foo' ]));
 		},
 
 		'custom properties'() {
-			widget.setProperties({
+			const h = harness(() => w(ListboxOption, {
 				active: true,
 				classes: [ css.option ],
 				disabled: true,
@@ -48,29 +39,30 @@ registerSuite('ListboxOption', {
 				index: 1,
 				option: 'baz',
 				selected: true
-			});
+			}));
 
-			widget.expectRender(v('div', {
+			h.expect(() => v('div', {
 				'aria-disabled': 'true',
 				'aria-selected': null,
 				classes: [ css.option ],
 				id: 'bar',
 				role: 'option',
-				onclick: widget.listener
+				onclick: noop
 			}, [ 'foo' ]));
 		},
 
 		'option click'() {
 			const onClick = sinon.stub();
-			widget.setProperties({
+			const h = harness(() => w(ListboxOption, {
 				label: 'foo',
 				id: 'bar',
+				classes: [ css.option ],
 				index: 1,
 				option: 'baz',
 				onClick
-			});
+			}));
 
-			widget.sendEvent('click');
+			h.trigger(`.${css.option}`, 'onclick');
 			assert.isTrue(onClick.calledWith('baz', 1));
 		}
 	}
