@@ -311,6 +311,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			classes: this.theme(css.clear),
 			disabled,
 			readOnly,
+			type: 'button',
 			onclick: this._onClearClick
 		}, [
 			`${messages.clear} ${label}`,
@@ -333,6 +334,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			disabled,
 			readOnly,
 			tabIndex: -1,
+			type: 'button',
 			onclick: this._onArrowClick
 		}, [
 			`${messages.open} ${label}`,

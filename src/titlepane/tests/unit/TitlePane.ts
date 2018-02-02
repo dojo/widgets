@@ -40,6 +40,7 @@ registerSuite('TitlePane', {
 						classes: css.titleButton,
 						disabled: false,
 						id: '',
+						type: 'button',
 						onclick: noop
 					}, [
 						v('i', {
@@ -89,6 +90,7 @@ registerSuite('TitlePane', {
 						classes: css.titleButton,
 						disabled: true,
 						id: '',
+						type: 'button',
 						onclick: noop
 					}, [
 						v('i', {

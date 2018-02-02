@@ -141,6 +141,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 			v('button', {
 				classes: css.previous,
 				tabIndex: popupOpen ? -1 : 0,
+				type: 'button',
 				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
@@ -151,6 +152,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 			v('button', {
 				classes: css.next,
 				tabIndex: popupOpen ? -1 : 0,
+				type: 'button',
 				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],

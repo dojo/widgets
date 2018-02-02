@@ -121,6 +121,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 			v('button', {
 				classes: css.previous,
 				tabIndex: open ? 0 : -1,
+				type: 'button',
 				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
@@ -131,6 +132,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 			v('button', {
 				classes: css.next,
 				tabIndex: open ? 0 : -1,
+				type: 'button',
 				onclick: noop
 			}, [
 				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
@@ -169,6 +171,7 @@ const expected = function(monthOpen = false, yearOpen = false, options: { yearSt
 				id: '',
 				classes: [ css.monthTrigger, monthOpen ? css.monthTriggerActive : null ],
 				role: 'menuitem',
+				type: 'button',
 				onclick: noop
 			}, [ 'June' ]),
 
@@ -181,6 +184,7 @@ const expected = function(monthOpen = false, yearOpen = false, options: { yearSt
 				id: '',
 				classes: [ css.yearTrigger, yearOpen ? css.yearTriggerActive : null ],
 				role: 'menuitem',
+				type: 'button',
 				onclick: noop
 			}, [ '2017' ])
 		]),
@@ -260,6 +264,7 @@ registerSuite('Calendar DatePicker', {
 						id: '',
 						classes: [ css.monthTrigger, null ],
 						role: 'menuitem',
+						type: 'button',
 						onclick: noop
 					}, [ 'June' ]),
 
@@ -272,6 +277,7 @@ registerSuite('Calendar DatePicker', {
 						id: '',
 						classes: [ css.yearTrigger, null ],
 						role: 'menuitem',
+						type: 'button',
 						onclick: noop
 					}, [ '1997' ])
 				]),
@@ -333,6 +339,7 @@ registerSuite('Calendar DatePicker', {
 						v('button', {
 							classes: css.previous,
 							tabIndex:  -1,
+							type: 'button',
 							onclick: noop
 						}, [
 							v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
@@ -343,6 +350,7 @@ registerSuite('Calendar DatePicker', {
 						v('button', {
 							classes: css.next,
 							tabIndex: -1,
+							type: 'button',
 							onclick: noop
 						}, [
 							v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],

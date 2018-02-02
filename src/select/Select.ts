@@ -313,6 +313,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				classes: this.theme([ css.trigger, isPlaceholder ? css.placeholder : null ]),
 				disabled,
 				key: 'trigger',
+				type: 'button',
 				value,
 				onblur: this._onTriggerBlur,
 				onclick: this._onTriggerClick,

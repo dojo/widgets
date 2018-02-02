@@ -420,11 +420,13 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 				v('button', {
 					classes: this.theme(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
+					type: 'button',
 					onclick: this._onMonthPageDown
 				}, this.renderPagingButtonContent(Paging.previous, labels)),
 				v('button', {
 					classes: this.theme(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
+					type: 'button',
 					onclick: this._onMonthPageUp
 				}, this.renderPagingButtonContent(Paging.next, labels))
 			])

@@ -23,6 +23,7 @@ const harness = createHarness([ compareId, compareAriaLabelledBy ]);
 const expectedCloseButton = function() {
 	return v('button', {
 		classes: css.close,
+		type: 'button',
 		onclick: noop
 	}, [
 		'close ',
@@ -146,6 +147,7 @@ registerSuite('Dialog', {
 						v('div', { id: '' }, [ 'foo' ]),
 						v('button', {
 							classes: css.close,
+							type: 'button',
 							onclick: noop
 						}, [
 							'foo',
@@ -204,6 +206,7 @@ registerSuite('Dialog', {
 						v('div', { id: '' }, [ 'foo' ]),
 						v('button', {
 							classes: css.close,
+							type: 'button',
 							onclick: noop
 						}, [
 							'close foo',

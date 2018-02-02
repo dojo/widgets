@@ -133,6 +133,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		const { menuTitle = '' } = this.properties;
 		return this._collapsed ? v('button', {
 			classes: [ this.theme(css.menuButton), fixedCss.menuButtonFixed ],
+			type: 'button',
 			onclick: this._toggleMenu
 		}, [
 			`${messages.open} ${menuTitle}`,

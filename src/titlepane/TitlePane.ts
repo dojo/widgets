@@ -127,6 +127,7 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 					disabled: !closeable,
 					classes: this.theme(css.titleButton),
 					id: this._titleId,
+					type: 'button',
 					onclick: this._onTitleClick
 				}, [
 					this.renderExpandIcon(),

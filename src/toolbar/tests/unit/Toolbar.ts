@@ -271,6 +271,7 @@ registerSuite('Toolbar', {
 
 			const buttonVDom = v('button', {
 				classes: [ css.menuButton, fixedCss.menuButtonFixed ],
+				type: 'button',
 				onclick: noop
 			}, [
 				'open foo',
