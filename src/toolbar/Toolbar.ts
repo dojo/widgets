@@ -1,5 +1,5 @@
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
-import { DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/widget-core/interfaces';
 import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, theme, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
