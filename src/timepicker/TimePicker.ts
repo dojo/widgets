@@ -12,6 +12,7 @@ import { TextInputProperties } from '../textinput/TextInput';
 import Label from '../label/Label';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/timepicker/timePicker.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;
@@ -155,7 +156,51 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
+export interface TimePickerProperties extends ThemedProperties, InputProperties, LabeledProperties {
+	autoBlur?: boolean;
+	clearable?: boolean;
+	end?: string;
+	getOptionLabel?(option: TimeUnits): string;
+	inputProperties?: TextInputProperties;
+	isOptionDisabled?(result: any): boolean;
+	onBlur?(value: string): void;
+	onChange?(value: string): void;
+	onFocus?(value: string): void;
+	onMenuChange?(open: boolean): void;
+	onRequestOptions?(value: string, options: TimeUnits[]): void;
+	openOnFocus?: boolean;
+	options?: TimeUnits[];
+	start?: string;
+	step?: number;
+	useNativeElement?: boolean;
+	value?: string;
+}
+
 @theme(css)
+@customElement<TimePickerProperties>({
+	tag: 'dojo-time-picker',
+	properties: [
+		'theme',
+		'extraClasses',
+		'isOptionDisabled',
+		'getOptionLabel',
+		'autoBlur',
+		'clearable',
+		'inputProperties',
+		'openOnFocus',
+		'options',
+		'useNativeElement',
+		'step'
+	],
+	attributes: [ 'value', 'start', 'end' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onFocus',
+		'onMenuChange',
+		'onRequestOptions'
+	]
+})
 export class TimePickerBase<P extends TimePickerProperties = TimePickerProperties> extends ThemedBase<P, null> {
 	protected options: TimeUnits[] | null;
 

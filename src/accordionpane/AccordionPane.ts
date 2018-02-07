@@ -1,6 +1,7 @@
 import { after } from '@dojo/core/aspect';
 import { assign } from '@dojo/core/lang';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 import { includes } from '@dojo/shim/array';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
@@ -27,6 +28,11 @@ export interface AccordionPaneProperties extends ThemedProperties {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<AccordionPaneProperties>({
+	tag: 'dojo-accordion-pane',
+	properties: [ 'openKeys', 'theme' ],
+	events: [ 'onRequestClose', 'onRequestOpen' ]
+})
 export class AccordionPaneBase<P extends AccordionPaneProperties = AccordionPaneProperties> extends ThemedBase<P, WNode<TitlePane>> {
 	private _assignCallback(child: WNode<TitlePane>, functionName: 'onRequestClose' | 'onRequestOpen', callback: (key: string) => void) {
 		const existingProperty = child.properties[functionName];

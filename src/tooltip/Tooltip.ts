@@ -7,6 +7,7 @@ import { formatAriaProperties } from '../common/util';
 
 import * as fixedCss from './styles/tooltip.m.css';
 import * as css from '../theme/tooltip/tooltip.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type TooltipProperties
@@ -37,6 +38,12 @@ const orientationCss: {[key: string]: any} = css;
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<TooltipProperties>({
+	tag: 'dojo-tooltip',
+	properties: [ 'theme', 'aria', 'extraClasses', 'content', 'open' ],
+	attributes: [ 'orientation' ],
+	events: [ ]
+})
 export class TooltipBase<P extends TooltipProperties = TooltipProperties> extends ThemedBase<P> {
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;

@@ -16,6 +16,7 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox/comboBox.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type ComboBoxProperties
@@ -72,6 +73,32 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @theme(iconCss)
 @diffProperty('results', reference)
+@customElement<ComboBoxProperties>({
+	tag: 'dojo-combo-box',
+	properties: [
+		'theme',
+		'extraClasses',
+		'labelAfter',
+		'labelHidden',
+		'clearable',
+		'disabled',
+		'inputProperties',
+		'invalid',
+		'isResultDisabled',
+		'openOnFocus',
+		'readOnly',
+		'required',
+		'results'
+	],
+	attributes: [ 'id', 'label', 'value' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onFocus',
+		'onMenuChange',
+		'onRequestResults'
+	]
+})
 export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
 	private _activeIndex = 0;
 	private _callInputFocus = false;

@@ -13,6 +13,7 @@ import Label from '../label/Label';
 import Listbox from '../listbox/Listbox';
 import * as css from '../theme/select/select.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type SelectProperties
@@ -49,6 +50,33 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @theme(iconCss)
 @diffProperty('options', reference)
+@customElement<SelectProperties>({
+	tag: 'dojo-select',
+	properties: [
+		'theme',
+		'aria',
+		'extraClasses',
+		'options',
+		'useNativeElement',
+		'getOptionDisabled',
+		'getOptionId',
+		'getOptionLabel',
+		'getOptionSelected',
+		'getOptionValue',
+		'readOnly',
+		'required',
+		'invalid',
+		'disabled',
+		'labelAfter',
+		'labelHidden'
+	],
+	attributes: [ 'placeholder', 'label' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onFocus'
+	]
+})
 export class SelectBase<P extends SelectProperties = SelectProperties> extends ThemedBase<P, null> {
 	private _callListboxFocus = false;
 	private _focusedIndex = 0;

@@ -6,6 +6,7 @@ import * as css from '../theme/button/button.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
 import { CustomAriaProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -35,6 +36,26 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
+@customElement<ButtonProperties>({
+	tag: 'dojo-button',
+	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses' ],
+	attributes: [ 'id', 'name', 'value' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onClick',
+		'onFocus',
+		'onInput',
+		'onKeyDown',
+		'onKeyPress',
+		'onKeyUp',
+		'onMouseDown',
+		'onMouseUp',
+		'onTouchCancel',
+		'onTouchEnd',
+		'onTouchStart'
+	]
+})
 export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends ThemedBase<P> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }

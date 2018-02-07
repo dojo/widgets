@@ -7,6 +7,7 @@ import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/radio/radio.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type RadioProperties
@@ -24,6 +25,23 @@ export interface RadioProperties extends ThemedProperties, LabeledProperties, In
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<RadioProperties>({
+	tag: 'dojo-radio',
+	properties: [ 'theme', 'aria', 'extraClasses', 'checked' ],
+	attributes: [ 'value' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onClick',
+		'onFocus',
+		'onInput',
+		'onMouseDown',
+		'onMouseUp',
+		'onTouchCancel',
+		'onTouchEnd',
+		'onTouchStart'
+	]
+})
 export class RadioBase<P extends RadioProperties = RadioProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _uuid = uuid();

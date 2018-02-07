@@ -8,6 +8,7 @@ import { CustomAriaProperties, LabeledProperties, InputEventProperties, InputPro
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
 import * as css from '../theme/slider/slider.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type SliderProperties
@@ -36,6 +37,40 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<SliderProperties>({
+	tag: 'dojo-slider',
+	properties: [
+		'theme',
+		'aria',
+		'extraClasses',
+		'disabled',
+		'invalid',
+		'required',
+		'readOnly',
+		'max',
+		'min',
+		'outputIsTooltip',
+		'step',
+		'vertical',
+		'value'
+	],
+	attributes: [ 'verticalHeight' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onClick',
+		'onFocus',
+		'onInput',
+		'onKeyDown',
+		'onKeyPress',
+		'onKeyUp',
+		'onMouseDown',
+		'onMouseUp',
+		'onTouchCancel',
+		'onTouchEnd',
+		'onTouchStart'
+	]
+})
 export class SliderBase<P extends SliderProperties = SliderProperties> extends ThemedBase<P, null> {
 	// id used to associate input with output
 	private _inputId = uuid();

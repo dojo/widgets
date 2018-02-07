@@ -1,7 +1,7 @@
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
 import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
-import { ThemedMixin, theme } from '@dojo/widget-core/mixins/Themed';
+import { ThemedMixin, theme, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
@@ -12,6 +12,7 @@ import * as fixedCss from './styles/toolbar.m.css';
 import * as css from '../theme/toolbar/toolbar.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
 import { GlobalEvent } from '../global-event/GlobalEvent';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * Enum for toolbar positioning
@@ -34,7 +35,7 @@ export const enum Position {
  * @property position          Determines toolbar position in relation to child contet
  * @property title             Element to show as the toolbar title
  */
-export interface ToolbarProperties extends WidgetProperties {
+export interface ToolbarProperties extends ThemedProperties {
 	actions?: DNode[];
 	collapseWidth?: number;
 	fixed?: boolean;
@@ -48,6 +49,14 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
+@customElement<ToolbarProperties>({
+	tag: 'dojo-toolbar',
+	properties: [ 'theme', 'extraClasses', 'actions', 'collapseWidth', 'fixed', 'title' ],
+	attributes: [ 'key', 'menuTitle', 'position' ],
+	events: [
+		'onCollapse'
+	]
+})
 export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extends ThemedBase<P> {
 	private _collapsed = false;
 	private _open = false;

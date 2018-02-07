@@ -8,6 +8,7 @@ import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/textinput/textinput.m.css';
 import { Focus } from '@dojo/widget-core/meta/Focus';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
@@ -37,6 +38,35 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<TextInputProperties>({
+	tag: 'dojo-text-input',
+	properties: [
+		'theme',
+		'aria',
+		'extraClasses',
+		'aria',
+		'focus',
+		'disabled',
+		'invalid',
+		'readOnly'
+	],
+	attributes: [ 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onClick',
+		'onFocus',
+		'onInput',
+		'onKeyDown',
+		'onKeyPress',
+		'onKeyUp',
+		'onMouseDown',
+		'onMouseUp',
+		'onTouchCancel',
+		'onTouchEnd',
+		'onTouchStart'
+	]
+})
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
