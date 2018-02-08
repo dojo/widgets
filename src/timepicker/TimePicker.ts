@@ -5,6 +5,7 @@ import ThemedMixin, { theme, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/widget-core/diff';
+import Focus from '@dojo/widget-core/meta/Focus';
 import ComboBox from '../combobox/ComboBox';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
@@ -229,9 +230,11 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			readOnly,
 			required
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
 			disabled ? css.disabled : null,
+			focus.containsFocus ? css.focused : null,
 			invalid ? css.invalid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null

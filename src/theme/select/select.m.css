@@ -89,6 +89,7 @@
 }
 
 /* State classes */
+.focused { }
 .disabled .input,
 .readonly .input {
 	background-color: var(--disabled-color);
@@ -100,7 +101,7 @@
 .invalid .arrow {
 	background-color: var(--error-color);
 }
-
+.required { }
 .valid .input {
 	border-color: var(--success-color);
 }

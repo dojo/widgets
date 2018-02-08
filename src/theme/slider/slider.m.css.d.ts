@@ -9,5 +9,6 @@ export const invalid: string;
 export const thumb: string;
 export const valid: string;
 export const inputWrapper: string;
+export const focused: string;
 export const fill: string;
 export const output: string;

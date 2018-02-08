@@ -4,11 +4,12 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 
 import Label from '../../../label/Label';
 import TextInput from '../../TextInput';
 import * as css from '../../../theme/textinput/textinput.m.css';
-import { compareForId, compareId, createHarness, noop } from '../../../common/tests/support/test-helpers';
+import { compareForId, compareId, createHarness, MockMetaMixin, noop } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);
 
@@ -19,12 +20,12 @@ interface States {
 	readOnly?: boolean;
 }
 
-const expected = function(label = false, inputOverrides = {}, states: States = {}) {
+const expected = function(label = false, inputOverrides = {}, states: States = {}, focused = false) {
 	const { disabled, required, readOnly, invalid } = states;
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, disabled ? css.disabled : null, invalid ? css.invalid : null, invalid === false ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
+		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, invalid ? css.invalid : null, invalid === false ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -130,6 +131,19 @@ registerSuite('TextInput', {
 				required: false
 			};
 			h.expect(() => expected(false, {}, properties));
+		},
+
+		'focused class'() {
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: false,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {}));
+			h.expect(() => expected(false, {}, {}, true));
 		},
 
 		events() {

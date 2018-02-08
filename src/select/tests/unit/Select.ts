@@ -4,6 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
 import Select, { SelectProperties } from '../../Select';
@@ -14,6 +15,7 @@ import * as iconCss from '../../../theme/common/icons.m.css';
 import {
 	createHarness,
 	compareId,
+	MockMetaMixin,
 	noop,
 	compareAriaControls
 } from '../../../common/tests/support/test-helpers';
@@ -180,7 +182,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 	return vdom;
 };
 
-const expected = function(selectVdom: any, { classes = [ css.root, null, null, null, null, null ], label = false, states }: ExpectedOptions = {}) {
+const expected = function(selectVdom: any, { classes = [ css.root, null, null, null, null, null, null ], label = false, states }: ExpectedOptions = {}) {
 	return v('div', {
 		key: 'root',
 		classes
@@ -217,7 +219,25 @@ registerSuite('Select', {
 					useNativeElement: true
 				}));
 				h.expect(() => expected(expectedNative(true), {
-					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+					classes: [ css.root, css.disabled, null, css.invalid, null, css.readonly, css.required ]
+				}));
+			},
+
+			'focused class'() {
+				const mockMeta = sinon.stub();
+				const mockFocusGet = sinon.stub().returns({
+					active: false,
+					containsFocus: true
+				});
+				mockMeta.withArgs(Focus).returns({
+					get: mockFocusGet
+				});
+				const h = harness(() => w(MockMetaMixin(Select, mockMeta), {
+					options: testOptions,
+					useNativeElement: true
+				}));
+				h.expect(() => expected(expectedNative(), {
+					classes: [ css.root, null, css.focused, null, null, null, null ]
 				}));
 			},
 
@@ -280,7 +300,7 @@ registerSuite('Select', {
 			'custom properties'() {
 				const h = harness(() => w(Select, testStateProperties));
 				h.expect(() => expected(expectedSingle(true, true), {
-					classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required ]
+					classes: [ css.root, css.disabled, null, css.invalid, null, css.readonly, css.required ]
 				}));
 			},
 
@@ -344,7 +364,7 @@ registerSuite('Select', {
 				};
 				h.expect(() => v('div', {
 					key: 'root',
-					classes: [ css.root, null, null, null, null, null ]
+					classes: [ css.root, null, null, null, null, null, null ]
 				}, [
 					null,
 					v('div', {

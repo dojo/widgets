@@ -176,10 +176,12 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			readOnly,
 			required
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		return [
 			css.root,
 			disabled ? css.disabled : null,
+			focus.containsFocus ? css.focused : null,
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,

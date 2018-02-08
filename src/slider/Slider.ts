@@ -3,6 +3,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import Label from '../label/Label';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
+import Focus from '@dojo/widget-core/meta/Focus';
 import uuid from '@dojo/core/uuid';
 import { CustomAriaProperties, LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
@@ -97,10 +98,12 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 			required,
 			vertical = false
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		return [
 			css.root,
 			disabled ? css.disabled : null,
+			focus.containsFocus ? css.focused : null,
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,

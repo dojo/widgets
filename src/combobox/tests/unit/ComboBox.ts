@@ -3,6 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
 import ComboBox from '../../ComboBox';
@@ -16,7 +17,8 @@ import {
 	compareId,
 	compareAria,
 	compareAriaControls,
-	noop
+	noop,
+	MockMetaMixin
 } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareAria, compareAriaControls ]);
@@ -54,7 +56,7 @@ interface States {
 	required?: boolean;
 }
 
-const getExpectedControls = function(useTestProperties: boolean, label: boolean, states: States = {}, focus = false) {
+const getExpectedControls = function(useTestProperties: boolean, label: boolean, states: States = {}, callFocus = false) {
 	const { disabled, invalid, readOnly, required } = states;
 	const controlsVdom = v('div', {
 		classes: css.controls
@@ -67,7 +69,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 				owns: ''
 			},
 			disabled,
-			focus,
+			focus: callFocus,
 			id: useTestProperties ? 'foo' : '',
 			invalid,
 			readOnly,
@@ -143,9 +145,9 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 	]);
 };
 
-const getExpectedVdom = function(useTestProperties = false, open = false, label = false, states: States = {}, focus = false) {
+const getExpectedVdom = function(useTestProperties = false, open = false, label = false, states: States = {}, callFocus = false, focused = false) {
 	const menuVdom = getExpectedMenu(useTestProperties, open);
-	const controlsVdom = getExpectedControls(useTestProperties, label, states, focus);
+	const controlsVdom = getExpectedControls(useTestProperties, label, states, callFocus);
 	const { disabled, invalid, readOnly, required } = states;
 
 	return v('div', {
@@ -158,6 +160,7 @@ const getExpectedVdom = function(useTestProperties = false, open = false, label 
 			css.root,
 			open ? css.open : null,
 			useTestProperties ? css.clearable : null,
+			focused ? css.focused : null,
 			null,
 			null
 		],
@@ -529,6 +532,19 @@ registerSuite('ComboBox', {
 				onInput: noop,
 				onKeyDown: noop
 			}));
+		},
+
+		'focused widget renders correctly'() {
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: false,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(ComboBox, mockMeta), {}), [ compareId ]);
+			h.expect(() => getExpectedVdom(false, false, false, {}, false, true));
 		},
 
 		'disabled state blocks menu opening'() {

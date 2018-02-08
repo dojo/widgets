@@ -3,12 +3,13 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/Label';
 import Checkbox, { Mode, CheckboxProperties } from '../../Checkbox';
 import * as css from '../../../theme/checkbox/checkbox.m.css';
-import { noop } from '../../../common/tests/support/test-helpers';
+import { noop, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
 const expectedToggle = function(labels = false, checked = false) {
 	if (labels) {
@@ -285,9 +286,15 @@ registerSuite('Checkbox', {
 		},
 
 		'focused class'() {
-			const h = harness(() => w(Checkbox, {}), [ compareId ]);
-			h.expect(() => expected());
-			h.trigger('input', 'onfocus');
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: false,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(Checkbox, mockMeta), {}), [ compareId ]);
 			h.expect(() => v('div', {
 				key: 'root',
 				classes: [ css.root, null, null, null, css.focused, null, null, null, null ]
@@ -317,9 +324,6 @@ registerSuite('Checkbox', {
 					})
 				])
 			]));
-
-			h.trigger('input', 'onblur');
-			h.expect(() => expected());
 		},
 
 		'toggle mode'() {

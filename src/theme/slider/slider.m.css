@@ -37,6 +37,8 @@
 	background-color: var(--success-color);
 }
 
+.focused { }
+
 .inputWrapper {
 
 }

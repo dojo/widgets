@@ -3,11 +3,12 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 
 import Label from '../../../label/Label';
 import Radio from '../../Radio';
 import * as css from '../../../theme/radio/radio.m.css';
-import { createHarness, compareId, compareForId, noop } from '../../../common/tests/support/test-helpers';
+import { createHarness, compareId, compareForId, MockMetaMixin, noop } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);
 
@@ -143,15 +144,20 @@ registerSuite('Radio', {
 		},
 
 		'focused class'() {
-			const h = harness(() => w(Radio, {}));
-			h.trigger('input', 'onfocus');
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: false,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(Radio, mockMeta), {}), [ compareId ]);
 			h.expect(() => expected({
 				rootOverrides: {
 					classes: [ css.root, null, null, css.focused, null, null, null, null ]
 				}
 			}));
-			h.trigger('input', 'onblur');
-			h.expect(expected);
 		},
 
 		events() {
