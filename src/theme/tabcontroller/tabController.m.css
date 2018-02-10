@@ -24,6 +24,8 @@
 	font-size: 14px;
 }
 
+.closeable {}
+
 .activeTabButton {
 	background: #FFF;
 	border-color: black;

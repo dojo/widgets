@@ -43,7 +43,12 @@ const expected = function(closeable = false, disabled = false, activeTab: number
 		'aria-controls': 'foo',
 		'aria-disabled': disabled ? 'true' : 'false',
 		'aria-selected': activeTab !== -1 ? 'true' : 'false',
-		classes: [ css.tabButton, activeTab !== -1 ? css.activeTabButton : null, disabled ? css.disabledTabButton : null ],
+		classes: [
+			css.tabButton,
+			activeTab !== -1 ? css.activeTabButton : null,
+			closeable ? css.closeable : null,
+			disabled ? css.disabledTabButton : null
+		],
 		dir: null,
 		id: 'foo',
 		key: 'tab-button',

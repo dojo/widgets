@@ -13,10 +13,6 @@
 	outline: none;
 }
 
-.arrow:after {
-	content: '\1F557';
-}
-
 /* State classes */
 .disabled {}
 .invalid {}

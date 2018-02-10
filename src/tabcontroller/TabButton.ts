@@ -144,9 +144,10 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 	}
 
 	protected getModifierClasses(): (string | null)[] {
-		const { active, disabled } = this.properties;
+		const { active, closeable, disabled } = this.properties;
 		return [
 			active ? css.activeTabButton : null,
+			closeable ? css.closeable : null,
 			disabled ? css.disabledTabButton : null
 		];
 	}
