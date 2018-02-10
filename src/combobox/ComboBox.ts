@@ -27,6 +27,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property clearable          Determines whether the input should be able to be cleared
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
+ * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label.
  * @property id                 Optional id string for the combobox
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
@@ -47,6 +48,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties 
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
+	getResultSelected?(result: any): boolean;
 	id?: string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
@@ -122,6 +124,12 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		const { getResultLabel } = this.properties;
 
 		return getResultLabel ? getResultLabel(result) : `${result}`;
+	}
+
+	private _getResultSelected(result: any) {
+		const { getResultSelected, value } = this.properties;
+
+		return getResultSelected ? getResultSelected(result) : this._getResultLabel(result) === value;
 	}
 
 	private _getResultId(result: any, index: number) {
@@ -394,9 +402,9 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	protected renderMenu(results: any[]): DNode {
 		const { theme, isResultDisabled } = this.properties;
 
-		if (results.length === 0 || !this._open) {
-			return null;
-		}
+		// if (results.length === 0 || !this._open) {
+		// 	return null;
+		// }
 
 		return v('div', {
 			key: 'dropdown',
@@ -414,6 +422,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				getOptionDisabled: isResultDisabled,
 				getOptionId: this._getResultId,
 				getOptionLabel: this._getResultLabel,
+				getOptionSelected: this._getResultSelected,
 				onActiveIndexChange: (index: number) => {
 					this._activeIndex = index;
 					this.invalidate();
