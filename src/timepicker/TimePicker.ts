@@ -242,7 +242,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 		onFocus && onFocus(event.target.value, key);
 	}
 
-	private _onRequestOptions(value: string) {
+	private _onRequestOptions() {
 		const { onRequestOptions, key } = this.properties;
 		onRequestOptions && onRequestOptions(key);
 	}

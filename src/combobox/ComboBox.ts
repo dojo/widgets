@@ -402,9 +402,9 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	protected renderMenu(results: any[]): DNode {
 		const { theme, isResultDisabled } = this.properties;
 
-		// if (results.length === 0 || !this._open) {
-		// 	return null;
-		// }
+		if (results.length === 0 || !this._open) {
+			return null;
+		}
 
 		return v('div', {
 			key: 'dropdown',

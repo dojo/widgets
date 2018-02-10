@@ -61,7 +61,6 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					onChange: this.onChange,
 					onRequestOptions: this.getFilteredOptions,
 					options: this._filteredOptions,
-					step: 1800,
 					value: this._values['1']
 				})
 			]),

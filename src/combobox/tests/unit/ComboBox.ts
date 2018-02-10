@@ -137,6 +137,7 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 			getOptionDisabled: undefined,
 			getOptionId: noop as any,
 			getOptionLabel: noop as any,
+			getOptionSelected: noop as any,
 			onActiveIndexChange: noop,
 			onOptionSelect: noop,
 			theme: useTestProperties ? {} : undefined,
