@@ -5,8 +5,7 @@ import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
-import TimePicker, { TimeUnits } from '../TimePicker';
-
+import TimePicker, { getOptions, TimeUnits } from '../TimePicker';
 import * as baseCss from '../../common/styles/base.m.css';
 
 setLocaleData();
@@ -16,16 +15,29 @@ const getEnglishTime = getDateFormatter({ time: 'short' });
 
 @theme(baseCss)
 export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
-	private _options: TimeUnits[];
+	private _options: TimeUnits[] = getOptions();
+	private _filteredOptions: TimeUnits[];
 	private _values: any = {};
 	private _invalid = false;
 
-	onRequestOptions(value: string, options: TimeUnits[]) {
-		this._options = options;
+	getFilteredOptions(key: string | number) {
+		const value = this._values[key];
+		let matching: TimeUnits[] = [];
+
+		if (value) {
+			matching = this._options.filter(option => {
+				const { hour, minute = 0 } = option;
+				const hours = hour >= 10 ? hour : `0${hour}`;
+				const minutes = minute >= 10 ? minute : `0${minute}`;
+				return `${hours}:${minutes}`.indexOf(value) === 0;
+			});
+		}
+
+		this._filteredOptions = matching.length ? matching : this._options;
 		this.invalidate();
 	}
 
-	private _setValue(key: string, value: string) {
+	onChange(value: string, key: string | number) {
 		this._values[key] = value;
 		this.invalidate();
 	}
@@ -46,29 +58,11 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '1',
-					onChange: (value: string) => {
-						this._setValue('value1', value);
-					},
-					onRequestOptions: (value: string, options: TimeUnits[]) => {
-						if (!value) {
-							this._options = options;
-						}
-						else {
-
-							const matching = options.filter(option => {
-								const { hour, minute = 0 } = option;
-								const hours = hour >= 10 ? hour : `0${hour}`;
-								const minutes = minute >= 10 ? minute : `0${minute}`;
-								return `${hours}:${minutes}`.indexOf(value) === 0;
-							});
-
-							this._options = matching.length ? matching : options;
-						}
-						this.invalidate();
-					},
-					options: this._options,
+					onChange: this.onChange,
+					onRequestOptions: this.getFilteredOptions,
+					options: this._filteredOptions,
 					step: 1800,
-					value: this._values['value1']
+					value: this._values['1']
 				})
 			]),
 
@@ -81,13 +75,9 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					},
 					key: '2',
 					openOnFocus: true,
-					onChange: (value: string) => {
-						this._setValue('value2', value);
-					},
-					onRequestOptions: this.onRequestOptions,
-					options: this._options,
+					onChange: this.onChange,
 					step: 1800,
-					value: this._values['value2']
+					value: this._values['2']
 				})
 			]),
 
@@ -104,13 +94,9 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 					},
 					isOptionDisabled: (option: TimeUnits) => option.hour >= 12,
 					key: '3',
-					onChange: (value: string) => {
-						this._setValue('value3', value);
-					},
-					onRequestOptions: this.onRequestOptions,
-					options: this._options,
+					onChange: this.onChange,
 					step: 3600,
-					value: this._values['value3']
+					value: this._values['3']
 				})
 			]),
 
@@ -146,13 +132,9 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						aria: { describedBy: 'description1' }
 					},
 					label: 'Enter a value',
-					onChange: (value: string) => {
-						this._setValue('value6', value);
-					},
-					onRequestOptions: this.onRequestOptions,
-					options: this._options,
+					onChange: this.onChange,
 					step: 1800,
-					value: this._values['value6']
+					value: this._values['6']
 				})
 			]),
 
@@ -170,14 +152,12 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						this._invalid = value.trim().length === 0;
 						this.invalidate();
 					},
-					onChange: (value: string) => {
+					onChange: (value: string, key: string | number) => {
 						this._invalid = value.trim().length === 0;
-						this._setValue('value7', value);
+						this.onChange(value, key);
 					},
-					onRequestOptions: this.onRequestOptions,
-					options: this._options,
 					step: 1800,
-					value: this._values['value7']
+					value: this._values['7']
 				})
 			]),
 
@@ -194,14 +174,10 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '8',
-					options: this._options,
-					onChange: (value: string) => {
-						this._setValue('value8', value);
-					},
-					onRequestOptions: this.onRequestOptions,
+					onChange: this.onChange,
 					start: '12:00:00',
 					step: 1,
-					value: this._values['value8']
+					value: this._values['8']
 				})
 			]),
 
@@ -222,13 +198,9 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						placeholder: 'Enter a value'
 					},
 					key: '9',
-					onChange: (value: string) => {
-						this._setValue('value9', value );
-					},
-					onRequestOptions: this.onRequestOptions,
-					options: this._options,
+					onChange: this.onChange,
 					step: 1800,
-					value: this._values['value9']
+					value: this._values['9']
 				})
 			]),
 
@@ -240,14 +212,12 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
-					onChange: (value: string) => {
-						this._setValue('value10', value);
-					},
+					onChange: this.onChange,
 					step: 1800,
 					useNativeElement: true,
 					invalid: true,
 					label: 'foo',
-					value: this._values['value10']
+					value: this._values['10']
 				})
 			])
 		]);
