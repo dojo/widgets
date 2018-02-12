@@ -18,7 +18,7 @@ function getPage(remote: Remote, exampleId: string) {
 		.findById(exampleId);
 }
 
-function testDisabledPicker(remote: Remote, exampleId: string) {
+function testDisabledPicker(remote: Remote, exampleId: string, readOnly = false) {
 	return getPage(remote, exampleId)
 		.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.input}`)
 			.click()
@@ -49,7 +49,9 @@ function testDisabledPicker(remote: Remote, exampleId: string) {
 		.sleep(DELAY)
 		.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboBoxCss.controls} .${textinputCss.input}');`)
 		.then(isEqual => {
-			assert.isFalse(isEqual, 'Input should not gain focus when dropdown trigger is clicked.');
+			if (!readOnly) {
+				assert.isFalse(isEqual, 'Input should not gain focus when dropdown trigger is clicked.');
+			}
 		})
 		.setFindTimeout(100)
 		.findAllByCssSelector(`.${comboBoxCss.dropdown}`)
@@ -143,7 +145,7 @@ registerSuite('TimePicker', {
 		return testDisabledPicker(this.remote, 'example-disabled');
 	},
 	'readonly timepickers cannot be opened'() {
-		return testDisabledPicker(this.remote, 'example-readonly');
+		return testDisabledPicker(this.remote, 'example-readonly', true);
 	},
 	'validated inputs update on input'() {
 		const { browserName } = this.remote.session.capabilities;

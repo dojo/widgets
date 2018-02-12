@@ -362,8 +362,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			key: 'clear',
 			'aria-controls': this._getMenuId(),
 			classes: this.theme(css.clear),
-			disabled,
-			readOnly,
+			disabled: disabled || readOnly,
 			type: 'button',
 			onclick: this._onClearClick
 		}, [
@@ -384,8 +383,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		return v('button', {
 			key: 'trigger',
 			classes: this.theme(css.trigger),
-			disabled,
-			readOnly,
+			disabled: disabled || readOnly,
 			tabIndex: -1,
 			type: 'button',
 			onclick: this._onArrowClick
