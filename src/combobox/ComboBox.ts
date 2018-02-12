@@ -178,12 +178,14 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	private _onInputFocus(event: FocusEvent) {
 		const {
 			key,
+			disabled,
+			readOnly,
 			onFocus,
 			openOnFocus
 		} = this.properties;
 
 		onFocus && onFocus((<HTMLInputElement> event.target).value, key);
-		openOnFocus && this._openMenu();
+		!disabled && !readOnly && openOnFocus && this._openMenu();
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
