@@ -11,6 +11,7 @@ import commonBundle from '../common/nls/common';
 import * as fixedCss from './styles/slidePane.m.css';
 import * as css from '../theme/slidepane/slidePane.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * Enum for left / right alignment
@@ -61,6 +62,15 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
+@customElement<SlidePaneProperties>({
+	tag: 'dojo-slide-pane',
+	properties: [ 'theme', 'aria', 'extraClasses', 'open', 'underlay' ],
+	attributes: [ 'align', 'closeText', 'title' ],
+	events: [
+		'onOpen',
+		'onRequestClose'
+	]
+})
 export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
 	private _initialPosition: number;
 	private _slideIn: boolean;

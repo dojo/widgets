@@ -7,6 +7,7 @@ import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/checkbox/checkbox.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type CheckboxProperties
@@ -38,6 +39,26 @@ export const enum Mode {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<CheckboxProperties>({
+	tag: 'dojo-checkbox',
+	properties: [ 'theme', 'aria', 'extraClasses', 'labelAfter', 'labelHidden', 'checked', 'mode', 'offLabel', 'onLabel' ],
+	attributes: [ 'label', 'value' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onClick',
+		'onFocus',
+		'onInput',
+		'onKeyDown',
+		'onKeyPress',
+		'onKeyUp',
+		'onMouseDown',
+		'onMouseUp',
+		'onTouchCancel',
+		'onTouchEnd',
+		'onTouchStart'
+	]
+})
 export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
 	private _focused = false;
 	private _onBlur (event: FocusEvent) {

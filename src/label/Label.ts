@@ -6,6 +6,7 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as css from '../theme/label/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type LabelProperties
@@ -33,6 +34,12 @@ export interface LabelProperties extends ThemedProperties, CustomAriaProperties 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<LabelProperties>({
+	tag: 'dojo-label',
+	properties: [ 'theme', 'aria', 'extraClasses', 'disabled', 'readOnly', 'required', 'invalid', 'hidden', 'secondary' ],
+	attributes: [],
+	events: []
+})
 export class LabelBase<P extends LabelProperties = LabelProperties> extends ThemedBase<P> {
 	protected getRootClasses(): (string | null)[] {
 		const {

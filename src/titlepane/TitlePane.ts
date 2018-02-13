@@ -8,6 +8,7 @@ import * as fixedCss from './styles/titlePane.m.css';
 import * as css from '../theme/titlepane/titlePane.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type TitlePaneProperties
@@ -34,6 +35,15 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @theme(iconCss)
+@customElement<TitlePaneProperties>({
+	tag: 'dojo-title-pane',
+	properties: [ 'theme', 'extraClasses', 'open', 'closeable', 'headingLevel' ],
+	attributes: [ 'title' ],
+	events: [
+		'onRequestClose',
+		'onRequestOpen'
+	]
+})
 export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
 	private _contentId = uuid();
 	private _titleId = uuid();

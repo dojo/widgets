@@ -13,6 +13,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import * as css from '../theme/listbox/listbox.m.css';
 import ListboxOption from './ListboxOption';
 import { Focus } from '@dojo/widget-core/meta/Focus';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /* Default scroll meta */
 export class ScrollMeta extends MetaBase {
@@ -65,6 +66,29 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @diffProperty('optionData', reference)
+@customElement<ListboxProperties>({
+	tag: 'dojo-listbox',
+	properties: [
+		'activeIndex',
+		'focus',
+		'multiselect',
+		'tabIndex',
+		'visualFocus',
+		'optionData',
+		'getOptionDisabled',
+		'getOptionId',
+		'getOptionLabel',
+		'getOptionSelected'
+	],
+	attributes: [
+		'id'
+	],
+	events: [
+		'onActiveIndexChange',
+		'onKeyDown',
+		'onOptionSelect'
+	]
+})
 export class ListboxBase<P extends ListboxProperties = ListboxProperties> extends ThemedBase<P, null> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();

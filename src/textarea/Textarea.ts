@@ -7,6 +7,7 @@ import { CustomAriaProperties, InputProperties, LabeledProperties, InputEventPro
 import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/textarea/textarea.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * @type TextareaProperties
@@ -34,6 +35,26 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, L
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<TextareaProperties>({
+	tag: 'dojo-text-area',
+	properties: [ 'theme', 'aria', 'extraClasses', 'columns', 'rows', 'columns', 'required', 'readOnly', 'disabled', 'invalid' ],
+	attributes: [ 'minLength', 'maxLength', 'placeholder', 'value' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onClick',
+		'onFocus',
+		'onInput',
+		'onKeyDown',
+		'onKeyPress',
+		'onKeyUp',
+		'onMouseDown',
+		'onMouseUp',
+		'onTouchCancel',
+		'onTouchEnd',
+		'onTouchStart'
+	]
+})
 export class TextareaBase<P extends TextareaProperties = TextareaProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }

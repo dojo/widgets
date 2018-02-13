@@ -14,6 +14,7 @@ import * as iconCss from '../theme/common/icons.m.css';
 import * as css from '../theme/dialog/dialog.m.css';
 import * as animations from '../common/styles/animations.m.css';
 import { GlobalEvent } from '../global-event/GlobalEvent';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
  * The role of this dialog, used for accessibility
@@ -55,6 +56,29 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 @theme(iconCss)
+@customElement<DialogProperties>({
+	tag: 'dojo-dialog',
+	properties: [
+		'theme',
+		'aria',
+		'extraClasses',
+		'closeable',
+		'modal',
+		'open',
+		'underlay'
+	],
+	attributes: [
+		'title',
+		'role',
+		'exitAnimation',
+		'enterAnimation',
+		'closeText'
+	],
+	events: [
+		'onOpen',
+		'onRequestClose'
+	]
+})
 export class DialogBase<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
 	private _titleId = uuid();
 	private _wasOpen: boolean;

@@ -12,6 +12,7 @@ import { TextInputProperties } from '../textinput/TextInput';
 import Label from '../label/Label';
 import uuid from '@dojo/core/uuid';
 import * as css from '../theme/timepicker/timePicker.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;
@@ -156,6 +157,30 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
+@customElement<TimePickerProperties>({
+	tag: 'dojo-time-picker',
+	properties: [
+		'theme',
+		'extraClasses',
+		'isOptionDisabled',
+		'getOptionLabel',
+		'autoBlur',
+		'clearable',
+		'inputProperties',
+		'openOnFocus',
+		'options',
+		'useNativeElement',
+		'step'
+	],
+	attributes: [ 'value', 'start', 'end' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onFocus',
+		'onMenuChange',
+		'onRequestOptions'
+	]
+})
 export class TimePickerBase<P extends TimePickerProperties = TimePickerProperties> extends ThemedBase<P, null> {
 	protected options: TimeUnits[] | null;
 

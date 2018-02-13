@@ -4,6 +4,7 @@ import { v } from '@dojo/widget-core/d';
 
 import { TextInputBase, TextInputProperties } from '../textinput/TextInput';
 import * as css from '../theme/enhancedtextinput/enhancedtextinput.m.css';
+import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 export interface EnhancedTextInputProperties extends TextInputProperties {
 	addonAfter?: DNode[];
@@ -11,6 +12,37 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 }
 
 @theme(css)
+@customElement<EnhancedTextInputProperties>({
+	tag: 'dojo-enhanced-text-input',
+	properties: [
+		'theme',
+		'aria',
+		'extraClasses',
+		'addonAfter',
+		'addonBefore',
+		'aria',
+		'focus',
+		'disabled',
+		'invalid',
+		'readOnly'
+	],
+	attributes: [ 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	events: [
+		'onBlur',
+		'onChange',
+		'onClick',
+		'onFocus',
+		'onInput',
+		'onKeyDown',
+		'onKeyPress',
+		'onKeyUp',
+		'onMouseDown',
+		'onMouseUp',
+		'onTouchCancel',
+		'onTouchEnd',
+		'onTouchStart'
+	]
+})
 export default class EnhancedTextInput extends TextInputBase<EnhancedTextInputProperties> {
 	protected renderAddon(addon: DNode, before = false): DNode {
 		return v('span', {
