@@ -156,26 +156,6 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-export interface TimePickerProperties extends ThemedProperties, InputProperties, LabeledProperties {
-	autoBlur?: boolean;
-	clearable?: boolean;
-	end?: string;
-	getOptionLabel?(option: TimeUnits): string;
-	inputProperties?: TextInputProperties;
-	isOptionDisabled?(result: any): boolean;
-	onBlur?(value: string): void;
-	onChange?(value: string): void;
-	onFocus?(value: string): void;
-	onMenuChange?(open: boolean): void;
-	onRequestOptions?(value: string, options: TimeUnits[]): void;
-	openOnFocus?: boolean;
-	options?: TimeUnits[];
-	start?: string;
-	step?: number;
-	useNativeElement?: boolean;
-	value?: string;
-}
-
 @theme(css)
 @customElement<TimePickerProperties>({
 	tag: 'dojo-time-picker',
