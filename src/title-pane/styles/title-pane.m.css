@@ -1,5 +1,6 @@
 .rootFixed {
 	overflow: hidden;
+	position: relative;
 	box-sizing: border-box;
 }
 
@@ -9,6 +10,11 @@
 
 .titleFixed {
 	position: relative;
+}
+
+.contentFixed {
+	position: relative;
+	z-index: -1;
 }
 
 .closeableFixed {

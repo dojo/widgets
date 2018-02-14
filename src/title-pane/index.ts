@@ -141,7 +141,7 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 			v('div', {
 				'aria-hidden': open ? null : 'true',
 				'aria-labelledby': this._titleId,
-				classes: this.theme(css.content),
+				classes: [ this.theme(css.content), fixedCss.contentFixed ],
 				id: this._contentId,
 				styles: contentStyles,
 				key: 'content'
