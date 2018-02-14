@@ -58,15 +58,12 @@ registerSuite('TextInput', {
 	'TextInput should allow input to be typed'() {
 		const testInput = 'test text';
 		return getPage(this.remote)
-			.findByCssSelector(`#example-hidden-label .${css.root}`)
-				.click()
-				.findByCssSelector(`.${css.input}`)
-					.type(testInput)
-					.getProperty('value')
-					.then((value: string) => {
-						assert.strictEqual(value, testInput);
-					})
-				.end()
+			.findByCssSelector(`#example-validated .${css.input}`)
+				.type(testInput)
+				.getProperty('value')
+				.then((value: string) => {
+					assert.strictEqual(value, testInput);
+				})
 			.end();
 	},
 	'Hidden label should not be displayed'() {

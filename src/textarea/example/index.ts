@@ -20,7 +20,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					placeholder: 'Hello, World',
 					label: 'Type Something',
 					value: this._value1,
-					onChange: (event: Event) => {
+					onInput: (event: Event) => {
 						this._value1 = (event.target as HTMLInputElement).value;
 						this.invalidate();
 					}
