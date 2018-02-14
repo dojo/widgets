@@ -15,6 +15,7 @@ import {
 	noop,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
+import { GlobalEvent } from '../../../global-event/GlobalEvent';
 
 const harness = createHarness([ compareId, compareAriaLabelledBy, compareAriaControls ]);
 
@@ -31,6 +32,7 @@ registerSuite('TitlePane', {
 			h.expect(() => v('div', {
 				classes: [ css.root, css.open, fixedCss.rootFixed ]
 			}, [
+				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					'aria-level': null,
 					classes: [ css.title, css.closeable, fixedCss.titleFixed, fixedCss.closeableFixed ],
@@ -54,7 +56,7 @@ registerSuite('TitlePane', {
 				v('div', {
 					'aria-hidden': null,
 					'aria-labelledby': '',
-					classes: css.content,
+					classes: [ css.content, fixedCss.contentFixed ],
 					styles: {
 						marginTop: '0px'
 					},
@@ -75,6 +77,7 @@ registerSuite('TitlePane', {
 			h.expect(() => v('div', {
 				classes: [ css.root, null, fixedCss.rootFixed ]
 			}, [
+				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					'aria-level': '5',
 					classes: [ css.title, null, fixedCss.titleFixed, null ],
@@ -98,7 +101,7 @@ registerSuite('TitlePane', {
 				v('div', {
 					'aria-hidden': 'true',
 					'aria-labelledby': '',
-					classes: css.content,
+					classes: [ css.content, fixedCss.contentFixed ],
 					id: '',
 					styles: {
 						marginTop: '-0px'

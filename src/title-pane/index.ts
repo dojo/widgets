@@ -9,6 +9,7 @@ import * as fixedCss from './styles/title-pane.m.css';
 import * as css from '../theme/title-pane.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { GlobalEvent } from '../global-event/GlobalEvent';
 
 /**
  * @type TitlePaneProperties
@@ -46,6 +47,10 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
 	private _contentId = uuid();
 	private _titleId = uuid();
+
+	private _onWindowResize = () => {
+		this.invalidate();
+	}
 
 	private _onTitleClick(event: MouseEvent) {
 		event.stopPropagation();
@@ -120,6 +125,7 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 				open ? css.open : null
 			]), fixedCss.rootFixed ]
 		}, [
+			w(GlobalEvent, { key: 'global', window: { resize: this._onWindowResize } }),
 			v('div', {
 				'aria-level': headingLevel ? String(headingLevel) : null,
 				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), fixedCss.titleFixed, ...this.getFixedModifierClasses() ],
