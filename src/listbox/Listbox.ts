@@ -104,6 +104,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
 		const {
 			activeIndex = 0,
 			key,

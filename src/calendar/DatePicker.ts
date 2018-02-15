@@ -68,7 +68,10 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	private _yearPopupOpen = false;
 	private _yearPage = 0;
 
-	private _closeMonthPopup() {
+	private _closeMonthPopup(event?: MouseEvent) {
+		if (event) {
+			event.stopPropagation();
+		}
 		const { onPopupChange } = this.properties;
 		this._monthPopupOpen = false;
 		this.meta(Focus).set('month-button');
@@ -76,7 +79,10 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		onPopupChange && onPopupChange(this._getPopupState());
 	}
 
-	private _closeYearPopup() {
+	private _closeYearPopup(event?: MouseEvent) {
+		if (event) {
+			event.stopPropagation();
+		}
 		const { onPopupChange } = this.properties;
 		this._yearPopupOpen = false;
 		this.meta(Focus).set('year-button');
@@ -108,16 +114,19 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		}
 	}
 
-	private _onMonthButtonClick() {
+	private _onMonthButtonClick(event: MouseEvent) {
+		event.stopPropagation();
 		this._monthPopupOpen ? this._closeMonthPopup() : this._openMonthPopup();
 	}
 
 	private _onMonthRadioChange(event: Event) {
+		event.stopPropagation();
 		const { onRequestMonthChange } = this.properties;
 		onRequestMonthChange && onRequestMonthChange(parseInt((event.target as HTMLInputElement).value, 10));
 	}
 
 	private _onPopupKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
 		// close popup on escape, or if a value is selected with enter/space
 		if (
 			event.which === Keys.Escape ||
@@ -129,21 +138,25 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		}
 	}
 
-	private _onYearButtonClick() {
+	private _onYearButtonClick(event: MouseEvent) {
+		event.stopPropagation();
 		this._yearPopupOpen ? this._closeYearPopup() : this._openYearPopup();
 	}
 
-	private _onYearPageDown() {
+	private _onYearPageDown(event: MouseEvent) {
+		event.stopPropagation();
 		this._yearPage--;
 		this._yearPopupOpen && this.invalidate();
 	}
 
-	private _onYearPageUp() {
+	private _onYearPageUp(event: MouseEvent) {
+		event.stopPropagation();
 		this._yearPage++;
 		this._yearPopupOpen && this.invalidate();
 	}
 
 	private _onYearRadioChange(event: Event) {
+		event.stopPropagation();
 		const { onRequestYearChange } = this.properties;
 		this._yearPage = 0;
 		onRequestYearChange && onRequestYearChange(parseInt((event.target as HTMLInputElement).value, 10));
