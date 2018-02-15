@@ -53,7 +53,7 @@ This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make 
 
 - All widgets support accessibility (`a11y`) out of the box.
 
-- All widgets are fully themeable. Example themes are available in the [@dojo/themes](https://github.com/dojo/themes) repo.
+- All widgets are fully themeable. Example themes are available in the [@dojo/themes](https://github.com/dojo/themes) repository.
 
 - All widgets support internationalization (`i18n`)
 
