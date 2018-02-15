@@ -179,11 +179,13 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			required,
 			theme
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			label ? w(Label, {
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

@@ -175,6 +175,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 			verticalHeight = '200px',
 			theme
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		let {
 			value = min
@@ -228,6 +229,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 			label ? w(Label, {
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

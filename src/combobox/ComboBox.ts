@@ -441,6 +441,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			theme
 		} = this.properties;
 		const messages = this.localizeBundle(commonBundle);
+		const focus = this.meta(Focus).get('root');
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();
@@ -451,6 +452,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				key: 'label',
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

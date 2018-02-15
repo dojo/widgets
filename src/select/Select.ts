@@ -368,11 +368,13 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			useNativeElement = false,
 			theme
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			label ? w(Label, {
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

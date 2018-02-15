@@ -6,6 +6,7 @@
 .valid {}
 .required {}
 .disabled {}
+.focused {}
 .secondary {}
 
 .required::after {

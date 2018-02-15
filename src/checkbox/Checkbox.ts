@@ -139,6 +139,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 			required,
 			value
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			v('div', { classes: this.theme(css.inputWrapper) }, [
@@ -171,6 +172,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 				key: 'label',
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

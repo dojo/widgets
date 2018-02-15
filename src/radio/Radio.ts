@@ -94,6 +94,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 			required,
 			value
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			v('div', { classes: this.theme(css.inputWrapper) }, [
@@ -124,6 +125,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 			label ? w(Label, {
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

@@ -29,6 +29,7 @@ interface TestEventInit extends EventInit {
 interface States {
 	invalid?: boolean;
 	disabled?: boolean;
+	focused?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
 }
@@ -182,7 +183,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 	return vdom;
 };
 
-const expected = function(selectVdom: any, { classes = [ css.root, null, null, null, null, null, null ], label = false, states }: ExpectedOptions = {}) {
+const expected = function(selectVdom: any, { classes = [ css.root, null, null, null, null, null, null ], label = false, states, focus = false }: ExpectedOptions = {}) {
 	return v('div', {
 		key: 'root',
 		classes
@@ -190,6 +191,7 @@ const expected = function(selectVdom: any, { classes = [ css.root, null, null, n
 		label ? w(Label, {
 			theme: undefined,
 			disabled: undefined,
+			focused: focus,
 			hidden: undefined,
 			invalid: undefined,
 			readOnly: undefined,
@@ -237,7 +239,8 @@ registerSuite('Select', {
 					useNativeElement: true
 				}));
 				h.expect(() => expected(expectedNative(), {
-					classes: [ css.root, null, css.focused, null, null, null, null ]
+					classes: [ css.root, null, css.focused, null, null, null, null ],
+					focus: true
 				}));
 			},
 

@@ -78,6 +78,7 @@ const expected = function(label = false, toggle = false, toggleLabels = false, c
 			key: 'label',
 			theme: undefined,
 			disabled: undefined,
+			focused: false,
 			hidden: undefined,
 			invalid: undefined,
 			readOnly: undefined,
@@ -274,6 +275,7 @@ registerSuite('Checkbox', {
 				w(Label, {
 					key: 'label',
 					disabled: true,
+					focused: false,
 					theme: undefined,
 					readOnly: true,
 					required: true,

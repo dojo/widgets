@@ -26,7 +26,7 @@ interface ExpectedOptions {
 	inputOverrides?: any;
 }
 
-const expected = function({ label = false, rootOverrides = {}, inputOverrides = {}, states = {} }: ExpectedOptions = {}) {
+const expected = function({ label = false, rootOverrides = {}, inputOverrides = {}, states = {}, focused = false }: ExpectedOptions = {}) {
 	const { disabled, invalid, required, readOnly } = states;
 
 	const radioVdom = v('div', { classes: css.inputWrapper }, [
@@ -63,11 +63,12 @@ const expected = function({ label = false, rootOverrides = {}, inputOverrides = 
 		radioVdom,
 		label ? w(Label, {
 			theme: undefined,
-			disabled: disabled,
+			disabled,
+			focused,
 			hidden: undefined,
-			invalid: invalid,
-			readOnly: readOnly,
-			required: required,
+			invalid,
+			readOnly,
+			required,
 			forId: '',
 			secondary: true
 		}, [ 'foo' ]) : null
@@ -156,7 +157,8 @@ registerSuite('Radio', {
 			h.expect(() => expected({
 				rootOverrides: {
 					classes: [ css.root, null, null, css.focused, null, null, null, null ]
-				}
+				},
+				focused: true
 			}));
 		},
 

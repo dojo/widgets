@@ -283,6 +283,7 @@ registerSuite('TimePicker', {
 				w(Label, {
 					theme: undefined,
 					disabled: undefined,
+					focused: false,
 					hidden: false,
 					invalid: undefined,
 					readOnly: undefined,

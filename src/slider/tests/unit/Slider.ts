@@ -22,6 +22,7 @@ const expected = function(label = false, tooltip = false, overrides = {}, child 
 		label ? w(Label, {
 			theme: undefined,
 			disabled: undefined,
+			focused,
 			hidden: undefined,
 			invalid: undefined,
 			readOnly: undefined,

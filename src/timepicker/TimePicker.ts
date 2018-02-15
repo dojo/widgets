@@ -327,6 +327,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			labelHidden = false,
 			labelAfter = false
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		const { aria = {} } = inputProperties;
 
@@ -334,6 +335,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			label ? w(Label, {
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,
