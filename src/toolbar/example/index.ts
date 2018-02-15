@@ -4,17 +4,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 
 import Toolbar from '../Toolbar';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
-
 	onAttach() {
 		const style = document.createElement('style');
 		document.head.appendChild(style);
@@ -32,17 +23,9 @@ export class App extends WidgetBase<WidgetProperties> {
 			collapseWidth: 700,
 			fixed: true,
 			menuTitle: 'Menu',
-			theme: this._theme,
 			title: 'Foobar'
 		}, [
-			v('h2', [ 'Toolbar Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			])
+			v('h2', [ 'Toolbar Examples' ])
 		]);
 	}
 }

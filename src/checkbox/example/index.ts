@@ -3,10 +3,8 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Checkbox, { Mode } from '../../checkbox/Checkbox';
-import dojoTheme from '../../themes/dojo/theme';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _theme: {};
 	private _checkboxStates: { [key: string]: boolean } = {
 		c1: true,
 		c2: false,
@@ -14,12 +12,6 @@ export class App extends WidgetBase<WidgetProperties> {
 		c4: false,
 		c5: true
 	};
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	onChange(event: Event) {
 		const value = (event.target as HTMLInputElement).value;
@@ -41,13 +33,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h2', {
 				innerHTML: 'Checkbox Examples'
 			}),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('fieldset', [
 				v('legend', {}, ['Checkbox Example']),
 				v('div', { id: 'example-1' }, [
@@ -56,8 +41,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						checked: c1,
 						label: 'Sample checkbox that starts checked',
 						value: 'c1',
-						onChange: this.onChange,
-						theme: this._theme
+						onChange: this.onChange
 					})
 				]),
 
@@ -68,8 +52,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						label: 'Sample disabled checkbox',
 						disabled: true,
 						value: 'c2',
-						onChange: this.onChange,
-						theme: this._theme
+						onChange: this.onChange
 					})
 				]),
 
@@ -80,8 +63,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						label: 'Required checkbox',
 						required: true,
 						value: 'c3',
-						onChange: this.onChange,
-						theme: this._theme
+						onChange: this.onChange
 					})
 				]),
 
@@ -92,8 +74,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						label: 'Checkbox in "toggle" mode',
 						mode: Mode.toggle,
 						value: 'c4',
-						onChange: this.onChange,
-						theme: this._theme
+						onChange: this.onChange
 					})
 				]),
 
@@ -107,8 +88,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						mode: Mode.toggle,
 						disabled: true,
 						value: 'c5',
-						onChange: this.onChange,
-						theme: this._theme
+						onChange: this.onChange
 					})
 				])
 			])

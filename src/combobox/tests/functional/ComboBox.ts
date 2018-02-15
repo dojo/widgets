@@ -76,7 +76,7 @@ registerSuite('ComboBox', {
 				.getPosition()
 				.then(({ y }: { y: number; }) => {
 					assert.isAtLeast(y, menuTop);
-					assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight));
+					assert.isAtMost(Math.floor(y), Math.ceil((menuBottom - itemHeight) * 1.05));
 				});
 	},
 

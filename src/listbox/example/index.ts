@@ -3,7 +3,6 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Listbox from '../Listbox';
-import dojoTheme from '../../themes/dojo/theme';
 
 interface CustomOption {
 	disabled?: boolean;
@@ -16,13 +15,6 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _listbox1Index = 0;
 	private _listbox1Value: string;
 	private _listbox2Index = 0;
-	private _theme: {};
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	_options: CustomOption[] = [
 		{ value: 'Maine' },
@@ -98,21 +90,12 @@ export class App extends WidgetBase<WidgetProperties> {
 
 	render() {
 		return v('div', [
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
-			v('br'),
 			v('label', { for: 'listbox1' }, [ 'Single-select listbox example' ]),
 			w(Listbox, {
 				key: 'listbox1',
 				activeIndex: this._listbox1Index,
 				id: 'listbox1',
 				optionData: this._options,
-				theme: this._theme,
 				getOptionLabel: (option: CustomOption) => option.value,
 				getOptionDisabled: (option: CustomOption) => !!option.disabled,
 				getOptionSelected: (option: CustomOption) => option.value === this._listbox1Value,
@@ -133,7 +116,6 @@ export class App extends WidgetBase<WidgetProperties> {
 				activeIndex: this._listbox2Index,
 				id: 'listbox2',
 				optionData: this._moreOptions,
-				theme: this._theme,
 				getOptionLabel: (option: CustomOption) => option.label,
 				getOptionDisabled: (option: CustomOption) => !!option.disabled,
 				getOptionSelected: (option: CustomOption) => !!option.selected,

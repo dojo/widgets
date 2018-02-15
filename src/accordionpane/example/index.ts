@@ -8,29 +8,13 @@ import { from } from '@dojo/shim/array';
 import AccordionPane from '../../accordionpane/AccordionPane';
 import TitlePane from '../../titlepane/TitlePane';
 
-import dojoTheme from '../../themes/dojo/theme';
-
 export class App extends WidgetBase<WidgetProperties> {
 	private _exclusiveKey: string | undefined;
 	private _openKeys = new Set<string>();
-	private _theme: {};
-
-	themeChange(event: Event) {
-		const checked = (event.target as HTMLInputElement).checked;
-		this._theme = checked ? dojoTheme : {};
-		this.invalidate();
-	}
 
 	render() {
 		return v('div', { styles: { maxWidth: '350px' } }, [
 			v('h2', [ 'AccordionPane Examples' ]),
-			v('label', [
-				'Use Dojo Theme ',
-				v('input', {
-					type: 'checkbox',
-					onchange: this.themeChange
-				})
-			]),
 			v('div', { id: 'pane' }, [
 				v('h3', [ 'Normal AccordionPane' ]),
 				w(AccordionPane, {
@@ -42,8 +26,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._openKeys.delete(key);
 						this.invalidate();
 					},
-					openKeys: from(this._openKeys),
-					theme: this._theme
+					openKeys: from(this._openKeys)
 				}, [
 					w(TitlePane, {
 						title: 'Pane 1',
@@ -66,8 +49,7 @@ export class App extends WidgetBase<WidgetProperties> {
 						this._exclusiveKey = undefined;
 						this.invalidate();
 					},
-					openKeys: this._exclusiveKey ? [ this._exclusiveKey ] : [],
-					theme: this._theme
+					openKeys: this._exclusiveKey ? [ this._exclusiveKey ] : []
 				}, [
 					w(TitlePane, {
 						title: 'Pane 1',
