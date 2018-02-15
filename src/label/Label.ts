@@ -15,6 +15,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  *
  * @property forId     ID to explicitly associate the label with an input element
  * @property disabled
+ * @property focused
  * @property readOnly
  * @property required
  * @property invalid
@@ -24,6 +25,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
 export interface LabelProperties extends ThemedProperties, CustomAriaProperties {
 	forId?: string;
 	disabled?: boolean;
+	focused?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
 	invalid?: boolean;
@@ -36,7 +38,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<LabelProperties>({
 	tag: 'dojo-label',
-	properties: [ 'theme', 'aria', 'extraClasses', 'disabled', 'readOnly', 'required', 'invalid', 'hidden', 'secondary' ],
+	properties: [ 'theme', 'aria', 'extraClasses', 'disabled', 'focused', 'readOnly', 'required', 'invalid', 'hidden', 'secondary' ],
 	attributes: [],
 	events: []
 })
@@ -44,6 +46,7 @@ export class LabelBase<P extends LabelProperties = LabelProperties> extends Them
 	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
+			focused,
 			invalid,
 			readOnly,
 			required,
@@ -52,6 +55,7 @@ export class LabelBase<P extends LabelProperties = LabelProperties> extends Them
 		return [
 			css.root,
 			disabled ? css.disabled : null,
+			focused ? css.focused : null,
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,

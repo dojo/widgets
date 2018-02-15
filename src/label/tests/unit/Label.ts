@@ -21,6 +21,7 @@ registerSuite('Label', {
 					null,
 					null,
 					null,
+					null,
 					null
 				],
 				for: undefined
@@ -36,6 +37,7 @@ registerSuite('Label', {
 					describedBy: 'bar'
 				},
 				disabled: true,
+				focused: true,
 				readOnly: true,
 				required: true,
 				invalid: true,
@@ -46,6 +48,7 @@ registerSuite('Label', {
 				classes: [
 					css.root,
 					css.disabled,
+					css.focused,
 					css.invalid,
 					null,
 					css.readonly,
@@ -66,6 +69,7 @@ registerSuite('Label', {
 			h.expect(() => (v('label', {
 				classes: [
 					css.root,
+					null,
 					null,
 					null,
 					null,

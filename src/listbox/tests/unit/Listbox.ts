@@ -4,12 +4,13 @@ import * as sinon from 'sinon';
 
 import { DNode } from '@dojo/widget-core/interfaces';
 import { Keys } from '../../../common/util';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { v, w } from '@dojo/widget-core/d';
 
 import Listbox from '../../Listbox';
 import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';
 import * as css from '../../../theme/listbox/listbox.m.css';
-import { createHarness, compareId, noop } from '../../../common/tests/support/test-helpers';
+import { createHarness, compareId, noop, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
 const compareKey = { selector: '*', property: 'key', comparator: (property: any) => typeof property === 'string' };
 const compareAriaActiveDescendant = { selector: '*', property: 'aria-activedescendant', comparator: (property: any) => typeof property === 'string' };
@@ -174,6 +175,28 @@ registerSuite('Listbox', {
 					theme: {}
 				})
 			]));
+		},
+
+		'focused class'() {
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: true,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(Listbox, mockMeta), {}));
+			h.expect(() => v('div', {
+				'aria-activedescendant': '',
+				'aria-multiselectable': null,
+				classes: [ css.root, css.focused ],
+				id: undefined,
+				key: 'root',
+				role: 'listbox',
+				tabIndex: 0,
+				onkeydown: noop
+			}, []));
 		},
 
 		'onkeydown event'() {

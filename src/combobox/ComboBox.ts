@@ -4,6 +4,7 @@ import { Keys } from '../common/util';
 import { reference } from '@dojo/widget-core/diff';
 import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
+import Focus from '@dojo/widget-core/meta/Focus';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
@@ -284,6 +285,23 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		this.invalidate();
 	}
 
+	protected getRootClasses(): (string | null)[] {
+		const {
+			clearable,
+			invalid
+		} = this.properties;
+		const focus = this.meta(Focus).get('root');
+
+		return [
+			css.root,
+			this._open ? css.open : null,
+			clearable ? css.clearable : null,
+			focus.containsFocus ? css.focused : null,
+			invalid === true ? css.invalid : null,
+			invalid === false ? css.valid : null
+		];
+	}
+
 	protected renderInput(results: any[]): DNode {
 		const {
 			disabled,
@@ -423,6 +441,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			theme
 		} = this.properties;
 		const messages = this.localizeBundle(commonBundle);
+		const focus = this.meta(Focus).get('root');
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();
@@ -433,6 +452,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				key: 'label',
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,
@@ -454,13 +474,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			'aria-haspopup': 'true',
 			'aria-readonly': readOnly ? 'true' : null,
 			'aria-required': required ? 'true' : null,
-			classes: this.theme([
-				css.root,
-				this._open ? css.open : null,
-				clearable ? css.clearable : null,
-				invalid === true ? css.invalid : null,
-				invalid === false ? css.valid : null
-			]),
+			classes: this.theme(this.getRootClasses()),
 			key: 'root',
 			role: 'combobox'
 		}, labelAfter ? controls.reverse() : controls);

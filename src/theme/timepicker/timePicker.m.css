@@ -15,6 +15,7 @@
 
 /* State classes */
 .disabled {}
+.focused {}
 .invalid {}
 .readonly {}
 .required {}

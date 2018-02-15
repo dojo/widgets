@@ -175,8 +175,9 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 
 	protected getModifierClasses() {
 		const { visualFocus } = this.properties;
+		const focus = this.meta(Focus).get('root');
 		return [
-			visualFocus ? css.focused : null
+			(visualFocus || focus.containsFocus) ? css.focused : null
 		];
 	}
 
@@ -238,6 +239,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 			focus,
 			tabIndex = 0
 		} = this.properties;
+		const themeClasses = this.getModifierClasses();
 
 		return v('div', () => {
 			if (focus) {
@@ -248,7 +250,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 				...formatAriaProperties(aria),
 				'aria-activedescendant': this._getOptionId(activeIndex),
 				'aria-multiselectable': multiselect ? 'true' : null,
-				classes: this.theme([ css.root, ...this.getModifierClasses() ]),
+				classes: this.theme([ css.root, ...themeClasses ]),
 				id,
 				key: 'root',
 				role: 'listbox',

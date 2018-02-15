@@ -2,25 +2,27 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 
 import Label from '../../../label/Label';
 import Slider from '../../Slider';
 import * as css from '../../../theme/slider/slider.m.css';
 import * as fixedCss from '../../styles/slider.m.css';
-import { compareId, compareForId, createHarness, noop } from '../../../common/tests/support/test-helpers';
+import { compareId, compareForId, createHarness, MockMetaMixin, noop } from '../../../common/tests/support/test-helpers';
 
 const compareFor = { selector: '*', property: 'for', comparator: (property: any) => typeof property === 'string' };
 const harness = createHarness([ compareId, compareForId, compareFor ]);
 
-const expected = function(label = false, tooltip = false, overrides = {}, child = '0', progress = '0%') {
+const expected = function(label = false, tooltip = false, overrides = {}, child = '0', progress = '0%', focused = false) {
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, fixedCss.rootFixed ]
+		classes: [ css.root, null, focused ? css.focused : null, null, null, null, null, null, fixedCss.rootFixed ]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
 			disabled: undefined,
+			focused,
 			hidden: undefined,
 			invalid: undefined,
 			readOnly: undefined,
@@ -117,6 +119,19 @@ registerSuite('Slider', {
 			}, 'tribbles', '50%'));
 		},
 
+		'focussed class'() {
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: false,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(Slider, mockMeta), {}));
+			h.expect(() => expected(false, false, {}, '0', '0%', true));
+		},
+
 		'vertical slider': {
 			'default properties'() {
 				const h = harness(() => w(Slider, {
@@ -125,7 +140,7 @@ registerSuite('Slider', {
 
 				h.expect(() => v('div', {
 					key: 'root',
-					classes: [ css.root, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
+					classes: [ css.root, null, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
 				}, [
 					null,
 					v('div', {
@@ -203,7 +218,7 @@ registerSuite('Slider', {
 
 				h.expect(() => v('div', {
 					key: 'root',
-					classes: [ css.root, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
+					classes: [ css.root, null, null, null, null, null, null, css.vertical, fixedCss.rootFixed ]
 				}, [
 					null,
 					v('div', {
@@ -276,7 +291,7 @@ registerSuite('Slider', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, null, null, null, null, null, null, fixedCss.rootFixed ]
+				classes: [ css.root, null, null, null, null, null, null, null, fixedCss.rootFixed ]
 			}, [
 				null,
 				v('div', {
@@ -344,7 +359,7 @@ registerSuite('Slider', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, null, null, null, null, null, null, fixedCss.rootFixed ]
+				classes: [ css.root, null, null, null, null, null, null, null, fixedCss.rootFixed ]
 			}, [
 				null,
 				v('div', {
@@ -423,7 +438,7 @@ registerSuite('Slider', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, css.disabled, css.invalid, null, css.readonly, css.required, null, fixedCss.rootFixed ]
+				classes: [ css.root, css.disabled, null, css.invalid, null, css.readonly, css.required, null, fixedCss.rootFixed ]
 			}, [
 				null,
 				v('div', {
@@ -491,7 +506,7 @@ registerSuite('Slider', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, null, null, css.valid, null, null, null, fixedCss.rootFixed ]
+				classes: [ css.root, null, null, null, css.valid, null, null, null, fixedCss.rootFixed ]
 			}, [
 				null,
 				v('div', {

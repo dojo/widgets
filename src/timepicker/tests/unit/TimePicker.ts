@@ -3,12 +3,13 @@ const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
 import * as css from '../../../theme/timepicker/timePicker.m.css';
 import ComboBox from '../../../combobox/ComboBox';
 import Label from '../../../label/Label';
-import { noop, compareId, compareForId } from '../../../common/tests/support/test-helpers';
+import { noop, compareId, compareForId, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
 registerSuite('TimePicker', {
 
@@ -149,7 +150,7 @@ registerSuite('TimePicker', {
 			}), [ compareId ]);
 
 			h.expect(() => v('div', {
-				classes: [ css.root, null, null, null, null ],
+				classes: [ css.root, null, null, null, null, null ],
 				key: 'root'
 			}, [
 				null,
@@ -196,6 +197,7 @@ registerSuite('TimePicker', {
 			h.expect(() => v('div', {
 				classes: [ css.root,
 					css.disabled,
+					null,
 					css.invalid,
 					css.readonly,
 					css.required
@@ -227,18 +229,61 @@ registerSuite('TimePicker', {
 			]));
 		},
 
+		'focused class'() {
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: false,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(TimePicker, mockMeta), {
+				name: 'some-field',
+				useNativeElement: true
+			}), [ compareId ]);
+
+			h.expect(() => v('div', {
+				classes: [ css.root, null, css.focused, null, null, null ],
+				key: 'root'
+			}, [
+				null,
+				v('input', {
+					'aria-invalid': null,
+					'aria-readonly': null,
+					classes: css.input,
+					disabled: undefined,
+					invalid: undefined,
+					key: 'native-input',
+					id: '',
+					max: undefined,
+					min: undefined,
+					name: 'some-field',
+					onblur: noop,
+					onchange: noop,
+					onfocus: noop,
+					readOnly: undefined,
+					required: undefined,
+					step: undefined,
+					type: 'time',
+					value: undefined
+				})
+			]));
+		},
+
 		'Label should render'() {
 			const h = harness(() => w(TimePicker, {
 				label: 'foo',
 				useNativeElement: true
 			}), [ compareId, compareForId ]);
 			h.expect(() => v('div', {
-				classes: [ css.root, null, null, null, null ],
+				classes: [ css.root, null, null, null, null, null ],
 				key: 'root'
 			}, [
 				w(Label, {
 					theme: undefined,
 					disabled: undefined,
+					focused: false,
 					hidden: false,
 					invalid: undefined,
 					readOnly: undefined,

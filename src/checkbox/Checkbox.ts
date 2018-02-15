@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
+import Focus from '@dojo/widget-core/meta/Focus';
 import Label from '../label/Label';
 import { CustomAriaProperties, LabeledProperties, InputProperties, InputEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
@@ -60,19 +61,10 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	]
 })
 export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
-	private _focused = false;
-	private _onBlur (event: FocusEvent) {
-		this._focused = false;
-		this.properties.onBlur && this.properties.onBlur(event);
-		this.invalidate();
-	}
+	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
 	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
 	private _onClick (event: MouseEvent) { this.properties.onClick && this.properties.onClick(event); }
-	private _onFocus (event: FocusEvent) {
-		this._focused = true;
-		this.properties.onFocus && this.properties.onFocus(event);
-		this.invalidate();
-	}
+	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(event); }
 	private _onMouseDown (event: MouseEvent) { this.properties.onMouseDown && this.properties.onMouseDown(event); }
 	private _onMouseUp (event: MouseEvent) { this.properties.onMouseUp && this.properties.onMouseUp(event); }
 	private _onTouchStart (event: TouchEvent) { this.properties.onTouchStart && this.properties.onTouchStart(event); }
@@ -90,13 +82,14 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 			readOnly,
 			required
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		return [
 			css.root,
 			mode === Mode.toggle ? css.toggle : null,
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
-			this._focused ? css.focused : null,
+			focus.containsFocus ? css.focused : null,
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
@@ -146,6 +139,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 			required,
 			value
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			v('div', { classes: this.theme(css.inputWrapper) }, [
@@ -178,6 +172,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 				key: 'label',
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

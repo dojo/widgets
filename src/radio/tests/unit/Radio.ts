@@ -3,11 +3,12 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 
 import Label from '../../../label/Label';
 import Radio from '../../Radio';
 import * as css from '../../../theme/radio/radio.m.css';
-import { createHarness, compareId, compareForId, noop } from '../../../common/tests/support/test-helpers';
+import { createHarness, compareId, compareForId, MockMetaMixin, noop } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);
 
@@ -21,11 +22,12 @@ interface States {
 interface ExpectedOptions {
 	label?: boolean;
 	states?: States;
+	focused?: boolean;
 	rootOverrides?: any;
 	inputOverrides?: any;
 }
 
-const expected = function({ label = false, rootOverrides = {}, inputOverrides = {}, states = {} }: ExpectedOptions = {}) {
+const expected = function({ label = false, rootOverrides = {}, inputOverrides = {}, states = {}, focused = false }: ExpectedOptions = {}) {
 	const { disabled, invalid, required, readOnly } = states;
 
 	const radioVdom = v('div', { classes: css.inputWrapper }, [
@@ -62,11 +64,12 @@ const expected = function({ label = false, rootOverrides = {}, inputOverrides = 
 		radioVdom,
 		label ? w(Label, {
 			theme: undefined,
-			disabled: disabled,
+			disabled,
+			focused,
 			hidden: undefined,
-			invalid: invalid,
-			readOnly: readOnly,
-			required: required,
+			invalid,
+			readOnly,
+			required,
 			forId: '',
 			secondary: true
 		}, [ 'foo' ]) : null
@@ -143,15 +146,21 @@ registerSuite('Radio', {
 		},
 
 		'focused class'() {
-			const h = harness(() => w(Radio, {}));
-			h.trigger('input', 'onfocus');
+			const mockMeta = sinon.stub();
+			const mockFocusGet = sinon.stub().returns({
+				active: false,
+				containsFocus: true
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: mockFocusGet
+			});
+			const h = harness(() => w(MockMetaMixin(Radio, mockMeta), {}), [ compareId ]);
 			h.expect(() => expected({
 				rootOverrides: {
 					classes: [ css.root, null, null, css.focused, null, null, null, null ]
-				}
+				},
+				focused: true
 			}));
-			h.trigger('input', 'onblur');
-			h.expect(expected);
 		},
 
 		events() {

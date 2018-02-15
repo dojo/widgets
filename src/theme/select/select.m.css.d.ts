@@ -7,6 +7,7 @@ export const dropdown: string;
 export const open: string;
 export const input: string;
 export const arrow: string;
+export const focused: string;
 export const disabled: string;
 export const readonly: string;
 export const invalid: string;

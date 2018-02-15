@@ -2,6 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 import Label from '../label/Label';
 import { CustomAriaProperties, InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
@@ -84,9 +85,11 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			readOnly,
 			required
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
 			disabled ? css.disabled : null,
+			focus.containsFocus ? css.focused : null,
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
@@ -115,11 +118,13 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			labelHidden,
 			labelAfter
 		} = this.properties;
+		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			label ? w(Label, {
 				theme,
 				disabled,
+				focused: focus.containsFocus,
 				invalid,
 				readOnly,
 				required,

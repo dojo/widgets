@@ -4,13 +4,14 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 
 import EnhancedTextInput from '../../EnhancedTextInput';
 import Label from '../../../label/Label';
 import * as css from '../../../theme/enhancedtextinput/enhancedtextinput.m.css';
 import * as textInputCss from '../../../theme/textinput/textinput.m.css';
 import { VNodeProperties } from '@dojo/widget-core/interfaces';
-import { createHarness, compareId, compareForId, noop } from '../../../common/tests/support/test-helpers';
+import { createHarness, compareId, compareForId, MockMetaMixin, noop } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);
 
@@ -27,6 +28,7 @@ interface ExpectedOptions {
 	addonAfter?: boolean;
 	label?: boolean;
 	states?: States;
+	focused?: boolean;
 }
 
 const expected = (options: ExpectedOptions = {}) => {
@@ -35,7 +37,8 @@ const expected = (options: ExpectedOptions = {}) => {
 		addonBefore = false,
 		addonAfter = false,
 		label = false,
-		states = {}
+		states = {},
+		focused = false
 	} = options;
 	const { readOnly, disabled, required, invalid } = states;
 	const children = [
@@ -86,6 +89,7 @@ const expected = (options: ExpectedOptions = {}) => {
 		classes: [
 			textInputCss.root,
 			disabled ? textInputCss.disabled : null,
+			focused ? textInputCss.focused : null,
 			invalid ? textInputCss.invalid : null,
 			invalid === false ? textInputCss.valid : null,
 			readOnly ? textInputCss.readonly : null,
@@ -95,6 +99,7 @@ const expected = (options: ExpectedOptions = {}) => {
 		label ? w(Label, {
 			theme: undefined,
 			disabled,
+			focused,
 			hidden: false,
 			invalid,
 			readOnly,
@@ -196,6 +201,19 @@ registerSuite('EnhancedTextInput', {
 				};
 				const h = harness(() => w(EnhancedTextInput, { label: 'foo', ...states }));
 				h.expect(() => expected({ label: true, states }));
+			},
+
+			'focused class'() {
+				const mockMeta = sinon.stub();
+				const mockFocusGet = sinon.stub().returns({
+					active: false,
+					containsFocus: true
+				});
+				mockMeta.withArgs(Focus).returns({
+					get: mockFocusGet
+				});
+				const h = harness(() => w(MockMetaMixin(EnhancedTextInput, mockMeta), {}));
+				h.expect(() => expected({ focused: true }));
 			},
 
 			events() {
