@@ -149,7 +149,8 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			v('div', {
 				classes: [
 					this.theme(css.leading),
-					fixedCss.leadingFixed
+					fixedCss.leadingFixed,
+					fixedCss.pane
 				],
 				key: 'leading',
 				styles: this.getPaneStyles()
@@ -167,7 +168,8 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			v('div', {
 				classes: [
 					this.theme(css.trailing),
-					fixedCss.trailingFixed
+					fixedCss.trailingFixed,
+					fixedCss.pane
 				],
 				key: 'trailing'
 			}, this.getPaneContent(trailing))
