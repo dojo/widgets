@@ -36,6 +36,6 @@
 	flex: 1 1 0%;
 }
 
-.pane {
+.trailingFixed, .leadingFixed {
 	overflow: auto;
 }
