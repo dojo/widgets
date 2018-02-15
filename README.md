@@ -53,8 +53,7 @@ This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make 
 
 - All widgets support accessibility (`a11y`) out of the box.
 
-- All widgets are fully themeable.
-In a future release we will ship with several official Dojo 2 themes that can be applied to the widgets.
+- All widgets are fully themeable. Example themes are available in the [@dojo/themes](https://github.com/dojo/themes) repo.
 
 - All widgets support internationalization (`i18n`)
 
