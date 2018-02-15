@@ -39,6 +39,7 @@ interface ExpectedOptions {
 	states?: States;
 	classes?: any[];
 	overrides?: any;
+	focus?: boolean;
 }
 
 const testOptions: any[] = [

@@ -22,6 +22,7 @@ interface States {
 interface ExpectedOptions {
 	label?: boolean;
 	states?: States;
+	focused?: boolean;
 	rootOverrides?: any;
 	inputOverrides?: any;
 }
