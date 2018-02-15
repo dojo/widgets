@@ -15,7 +15,7 @@ import {
 	noop,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
-import { GlobalEvent } from '../../../global-event/GlobalEvent';
+import { GlobalEvent } from '../../../global-event/index';
 
 const harness = createHarness([ compareId, compareAriaLabelledBy, compareAriaControls ]);
 

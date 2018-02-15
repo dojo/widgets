@@ -12,8 +12,6 @@
 
 .open { }
 
-.content {
-	transition: margin-top ease-in-out var(--short-animation-duration);
-}
+.content { }
 
 .titleButton { }

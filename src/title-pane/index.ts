@@ -3,6 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import WebAnimation from '@dojo/widget-core/meta/WebAnimation';
 
 import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
@@ -45,8 +46,8 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	]
 })
 export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
-	private _contentId = uuid();
-	private _titleId = uuid();
+	private _id = uuid();
+	private _open: boolean;
 
 	private _onWindowResize = () => {
 		this.invalidate();
@@ -76,6 +77,30 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 		else {
 			onRequestOpen && onRequestOpen(key);
 		}
+	}
+
+	protected animate(effects: any[]) {
+		const { open = true } = this.properties;
+		this.meta(WebAnimation).animate('content', {
+			id: this._id,
+			effects,
+			timing: {
+				duration: 250,
+				fill: 'both'
+			},
+			controls: {
+				play: true,
+				playbackRate: open ? -1 : 1
+			}
+		});
+	}
+
+	protected getAnimationKeyframes(): any[] {
+		const contentDimensions = this.meta(Dimensions).get('content');
+		return [
+			{ marginTop: '0px' },
+			{ marginTop: `-${ contentDimensions.offset.height }px` }
+		];
 	}
 
 	protected getButtonContent(): DNode {
@@ -113,11 +138,12 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 			headingLevel,
 			open = true
 		} = this.properties;
+		const effects = this.getAnimationKeyframes();
 
-		const contentDimensions = this.meta(Dimensions).get('content');
-		const contentStyles = {
-			marginTop: open ? '0px' : `-${ contentDimensions.offset.height }px`
-		};
+		if (open !== this._open) {
+			this.animate(effects);
+			this._open = open;
+		}
 
 		return v('div', {
 			classes: [ ...this.theme([
@@ -132,11 +158,11 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 				role: 'heading'
 			}, [
 				v('button', {
-					'aria-controls': this._contentId,
+					'aria-controls': `${this._id}-content`,
 					'aria-expanded': String(open),
 					disabled: !closeable,
 					classes: this.theme(css.titleButton),
-					id: this._titleId,
+					id: `${this._id}-title`,
 					type: 'button',
 					onclick: this._onTitleClick
 				}, [
@@ -146,11 +172,11 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 			]),
 			v('div', {
 				'aria-hidden': open ? null : 'true',
-				'aria-labelledby': this._titleId,
+				'aria-labelledby': `${this._id}-title`,
 				classes: [ this.theme(css.content), fixedCss.contentFixed ],
-				id: this._contentId,
-				styles: contentStyles,
-				key: 'content'
+				id: `${this._id}-content`,
+				key: 'content',
+				styles: open ? effects[0] : effects[1]
 			}, this.getPaneContent())
 		]);
 	}
