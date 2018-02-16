@@ -61,30 +61,40 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	]
 })
 export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
-	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(event); }
-	private _onChange (event: Event) { this.properties.onChange && this.properties.onChange(event); }
+	private _onBlur (event: FocusEvent) {
+		this.properties.onBlur && this.properties.onBlur(event);
+	}
+	private _onChange (event: Event) {
+		this.properties.onChange && this.properties.onChange(event);
+	}
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick(event); }
+		this.properties.onClick && this.properties.onClick(event);
+	}
 	private _onFocus (event: FocusEvent) {
 		this.properties.onFocus && this.properties.onFocus(event);
 		this.invalidate();
 	}
 	private _onMouseDown (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown(event); }
+		this.properties.onMouseDown && this.properties.onMouseDown(event);
+	}
 	private _onMouseUp (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp(event); }
+		this.properties.onMouseUp && this.properties.onMouseUp(event);
+	}
 	private _onTouchStart (event: TouchEvent) {
 		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart(event); }
+		this.properties.onTouchStart && this.properties.onTouchStart(event);
+	}
 	private _onTouchEnd (event: TouchEvent) {
 		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd(event); }
+		this.properties.onTouchEnd && this.properties.onTouchEnd(event);
+	}
 	private _onTouchCancel (event: TouchEvent) {
 		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel(event); }
+		this.properties.onTouchCancel && this.properties.onTouchCancel(event);
+	}
 
 	private _uuid = uuid();
 
