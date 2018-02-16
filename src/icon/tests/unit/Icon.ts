@@ -15,11 +15,11 @@ import {
 
 const harness = createHarness([ compareAria, compareAriaControls ]);
 
-const expected = function(icon: keyof typeof iconCss = 'downIcon', overrides = {}) {
+const expected = function(icon: keyof typeof iconCss, overrides = {}) {
 	return v('i', {
 		classes: [
 			iconCss.icon,
-			iconCss[icon]
+			icon && iconCss[icon]
 		],
 		onclick: noop,
 		...overrides

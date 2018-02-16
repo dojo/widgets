@@ -11,7 +11,10 @@ import Icon from '@dojo/widgets/icon/Icon';
 import { w } from '@dojo/widget-core/d';
 
 w(Icon, {
-	type: 'downIcon'
+	type: 'downIcon',
+	aria: {
+		hidden: 'true'
+	}
 });
 ```
 

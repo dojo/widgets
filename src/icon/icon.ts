@@ -16,9 +16,8 @@ export type IconType = keyof typeof iconCss;
  *
  * @property type           Icon type, e.g. downIcon, searchIcon, etc.
  */
-
 export interface IconProperties extends ThemedProperties, CustomAriaProperties {
-	type?: IconType;
+	type: IconType;
 	onClick?(): void;
 }
 
@@ -43,19 +42,15 @@ export class IconBase<P extends IconProperties = IconProperties> extends ThemedB
 		this.properties.onClick && this.properties.onClick();
 	}
 
-	constructor() {
-		super();
-	}
-
 	protected render(): DNode {
 		const {
 			aria = {},
-			type = 'downIcon'
+			type
 		} = this.properties;
 
 		return v('i', {
 			...formatAriaProperties(aria),
-			classes: this.theme([iconCss.icon, iconCss[type]]),
+			classes: this.theme([iconCss.icon, type && iconCss[type]]),
 			onclick: this._onClick
 		});
 	}
