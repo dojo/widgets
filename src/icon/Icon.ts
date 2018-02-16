@@ -50,7 +50,7 @@ export class IconBase<P extends IconProperties = IconProperties> extends ThemedB
 
 		return v('i', {
 			...formatAriaProperties(aria),
-			classes: this.theme([iconCss.icon, type && iconCss[type]]),
+			classes: this.theme([iconCss.icon, iconCss[type]]),
 			onclick: this._onClick
 		});
 	}
