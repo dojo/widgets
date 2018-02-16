@@ -29,5 +29,14 @@ registerSuite('Icon', {
 					assert.isAbove(height, 0);
 					assert.isAbove(width, 0);
 				});
+	},
+
+	'alt text should not be visible'() {
+		return getPage(this.remote)
+			.findByCssSelector(`.${iconCss.leftIcon}`)
+			.getVisibleText()
+			.then(text => {
+				assert.equal(text, '');
+			});
 	}
 });

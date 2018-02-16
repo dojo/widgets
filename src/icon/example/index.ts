@@ -14,7 +14,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				w(Icon, { type: 'downIcon' })
 			]),
 			v('div', {}, [
-				w(Icon, { type: 'leftIcon' })
+				w(Icon, { type: 'leftIcon', altText: 'alt text' })
 			]),
 			v('div', {}, [
 				w(Icon, { type: 'rightIcon' })
