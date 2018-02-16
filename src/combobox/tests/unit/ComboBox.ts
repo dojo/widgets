@@ -85,8 +85,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			'aria-controls': '',
 			key: 'clear',
 			classes: css.clear,
-			disabled,
-			readOnly,
+			disabled: disabled || readOnly,
 			type: 'button',
 			onclick: noop
 		}, [
@@ -98,8 +97,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 		v('button', {
 			key: 'trigger',
 			classes: css.trigger,
-			disabled,
-			readOnly,
+			disabled: disabled || readOnly,
 			tabIndex: -1,
 			type: 'button',
 			onclick: noop
@@ -137,6 +135,7 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 			getOptionDisabled: undefined,
 			getOptionId: noop as any,
 			getOptionLabel: noop as any,
+			getOptionSelected: noop as any,
 			onActiveIndexChange: noop,
 			onOptionSelect: noop,
 			theme: useTestProperties ? {} : undefined,
@@ -485,7 +484,6 @@ registerSuite('ComboBox', {
 				key: 'clear',
 				classes: css.clear,
 				disabled: true,
-				readOnly: true,
 				type: 'button',
 				onclick: noop
 			}, [
@@ -499,7 +497,6 @@ registerSuite('ComboBox', {
 				key: 'trigger',
 				classes: css.trigger,
 				disabled: true,
-				readOnly: true,
 				tabIndex: -1,
 				type: 'button',
 				onclick: noop

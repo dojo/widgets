@@ -27,6 +27,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property clearable          Determines whether the input should be able to be cleared
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
+ * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label.
  * @property id                 Optional id string for the combobox
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
@@ -47,6 +48,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties 
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
+	getResultSelected?(result: any): boolean;
 	id?: string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
@@ -124,6 +126,12 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		return getResultLabel ? getResultLabel(result) : `${result}`;
 	}
 
+	private _getResultSelected(result: any) {
+		const { getResultSelected, value } = this.properties;
+
+		return getResultSelected ? getResultSelected(result) : this._getResultLabel(result) === value;
+	}
+
 	private _getResultId(result: any, index: number) {
 		return `${this._idBase}-result${index}`;
 	}
@@ -149,10 +157,10 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	}
 
 	private _onInput(event: Event) {
-		const { key, onChange } = this.properties;
+		const { key, disabled, readOnly, onChange } = this.properties;
 
 		onChange && onChange((<HTMLInputElement> event.target).value, key);
-		this._openMenu();
+		!disabled && !readOnly && this._openMenu();
 	}
 
 	private _onInputBlur(event: FocusEvent) {
@@ -170,12 +178,14 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	private _onInputFocus(event: FocusEvent) {
 		const {
 			key,
+			disabled,
+			readOnly,
 			onFocus,
 			openOnFocus
 		} = this.properties;
 
 		onFocus && onFocus((<HTMLInputElement> event.target).value, key);
-		openOnFocus && this._openMenu();
+		!disabled && !readOnly && openOnFocus && this._openMenu();
 	}
 
 	private _onInputKeyDown(event: KeyboardEvent) {
@@ -354,8 +364,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			key: 'clear',
 			'aria-controls': this._getMenuId(),
 			classes: this.theme(css.clear),
-			disabled,
-			readOnly,
+			disabled: disabled || readOnly,
 			type: 'button',
 			onclick: this._onClearClick
 		}, [
@@ -376,8 +385,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		return v('button', {
 			key: 'trigger',
 			classes: this.theme(css.trigger),
-			disabled,
-			readOnly,
+			disabled: disabled || readOnly,
 			tabIndex: -1,
 			type: 'button',
 			onclick: this._onArrowClick
@@ -414,6 +422,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				getOptionDisabled: isResultDisabled,
 				getOptionId: this._getResultId,
 				getOptionLabel: this._getResultLabel,
+				getOptionSelected: this._getResultSelected,
 				onActiveIndexChange: (index: number) => {
 					this._activeIndex = index;
 					this.invalidate();

@@ -51,11 +51,11 @@ export interface TimePickerProperties extends ThemedProperties, InputProperties,
 	getOptionLabel?(option: TimeUnits): string;
 	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
-	onBlur?(value: string): void;
-	onChange?(value: string): void;
-	onFocus?(value: string): void;
-	onMenuChange?(open: boolean): void;
-	onRequestOptions?(value: string, options: TimeUnits[]): void;
+	onBlur?(value: string, key?: string | number): void;
+	onChange?(value: string, key?: string | number): void;
+	onFocus?(value: string, key?: string | number): void;
+	onMenuChange?(open: boolean, key?: string | number): void;
+	onRequestOptions?(key?: string | number): void;
 	openOnFocus?: boolean;
 	options?: TimeUnits[];
 	start?: string;
@@ -207,20 +207,44 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
 	}
 
+	private _onBlur(value: string) {
+		const { key, onBlur } = this.properties;
+		onBlur && onBlur(value, key);
+	}
+
+	private _onChange(value: string) {
+		const { key, onChange } = this.properties;
+		onChange && onChange(value, key);
+	}
+
+	private _onFocus(value: string) {
+		const { key, onFocus } = this.properties;
+		onFocus && onFocus(value, key);
+	}
+
+	private _onMenuChange(open: boolean) {
+		const { key, onMenuChange } = this.properties;
+		onMenuChange && onMenuChange(open, key);
+	}
+
 	private _onNativeBlur(event: FocusInputEvent) {
-		this.properties.onBlur && this.properties.onBlur(event.target.value);
+		const { key, onBlur } = this.properties;
+		onBlur && onBlur(event.target.value, key);
 	}
 
 	private _onNativeChange(event: FocusInputEvent) {
-		this.properties.onChange && this.properties.onChange(event.target.value);
+		const { key, onChange } = this.properties;
+		onChange && onChange(event.target.value, key);
 	}
 
 	private _onNativeFocus(event: FocusInputEvent) {
-		this.properties.onFocus && this.properties.onFocus(event.target.value);
+		const { key, onFocus } = this.properties;
+		onFocus && onFocus(event.target.value, key);
 	}
 
-	private _onRequestOptions(value: string) {
-		this.properties.onRequestOptions && this.properties.onRequestOptions(value, this.getOptions());
+	private _onRequestOptions() {
+		const { onRequestOptions, key } = this.properties;
+		onRequestOptions && onRequestOptions(key);
 	}
 
 	protected getRootClasses(): (string | null)[] {
@@ -270,12 +294,8 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			label,
 			labelAfter,
 			labelHidden,
-			onBlur,
-			onChange,
-			onFocus,
-			onMenuChange,
 			openOnFocus,
-			options,
+			options = this.getOptions(),
 			readOnly,
 			required,
 			theme,
@@ -295,10 +315,10 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			label,
 			labelAfter,
 			labelHidden,
-			onBlur,
-			onChange,
-			onFocus,
-			onMenuChange,
+			onBlur: this._onBlur,
+			onChange: this._onChange,
+			onFocus: this._onFocus,
+			onMenuChange: this._onMenuChange,
 			onRequestResults: this._onRequestOptions.bind(this),
 			openOnFocus,
 			readOnly,

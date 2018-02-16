@@ -11,6 +11,47 @@ import ComboBox from '../../../combobox/ComboBox';
 import Label from '../../../label/Label';
 import { noop, compareId, compareForId, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
+const testProperties = {
+	clearable: true,
+	disabled: false,
+	id: 'foo',
+	invalid: true,
+	label: 'Some Field',
+	openOnFocus: false,
+	readOnly: false,
+	required: true,
+	value: 'some value'
+};
+
+const getExpectedCombobox = function(useTestProperties = false, results?: any[]) {
+	results = results ? results : getOptions();
+	return w(ComboBox, {
+		key: 'combo',
+		clearable: useTestProperties ? true : undefined,
+		disabled: useTestProperties ? false : undefined,
+		getResultLabel: noop,
+		id: useTestProperties ? 'foo' : '',
+		inputProperties: undefined,
+		invalid: useTestProperties ? true : undefined,
+		isResultDisabled: undefined,
+		label: useTestProperties ? 'Some Field' : undefined,
+		labelAfter: undefined,
+		labelHidden: undefined,
+		onBlur: noop,
+		onChange: noop,
+		onFocus: noop,
+		onMenuChange: noop,
+		onRequestResults: noop,
+		openOnFocus: useTestProperties ? false : undefined,
+		extraClasses: undefined,
+		readOnly: useTestProperties ? false : undefined,
+		required: useTestProperties ? true : undefined,
+		results,
+		theme: undefined,
+		value: useTestProperties ? 'some value' : undefined
+	});
+};
+
 registerSuite('TimePicker', {
 
 	getOptions: {
@@ -62,45 +103,8 @@ registerSuite('TimePicker', {
 
 	'Custom input': {
 		'Should delegate to ComboBox'() {
-			const h = harness(() => w(TimePicker, {
-				clearable: true,
-				disabled: false,
-				id: 'foo',
-				invalid: true,
-				label: 'Some Field',
-				openOnFocus: false,
-				readOnly: false,
-				required: true,
-				value: 'some value'
-			}));
-
-			h.expect(() =>
-				w(ComboBox, {
-					key: 'combo',
-					clearable: true,
-					disabled: false,
-					getResultLabel: noop,
-					id: 'foo',
-					inputProperties: undefined,
-					invalid: true,
-					isResultDisabled: undefined,
-					label: 'Some Field',
-					labelAfter: undefined,
-					labelHidden: undefined,
-					onBlur: undefined,
-					onChange: undefined,
-					onFocus: undefined,
-					onMenuChange: undefined,
-					onRequestResults: noop,
-					openOnFocus: false,
-					extraClasses: undefined,
-					readOnly: false,
-					required: true,
-					results: undefined,
-					theme: undefined,
-					value: 'some value'
-				})
-			);
+			const h = harness(() => w(TimePicker, testProperties));
+			h.expect(() => getExpectedCombobox(true));
 		},
 
 		'Should use `getOptionLabel` to format menu options'() {
@@ -124,21 +128,29 @@ registerSuite('TimePicker', {
 			assert.strictEqual(result, '04:22:00');
 		},
 
+		'Should set options with step and default start and end'() {
+			const h = harness(() => w(TimePicker, { step: 3600 }), [ compareId ]);
+			const expectedOptions = getOptions(undefined, undefined, 3600);
+
+			h.expect(() => getExpectedCombobox(false, expectedOptions));
+		},
+
+		'Should set options with start, end, and step'() {
+			const h = harness(() => w(TimePicker, { end: '01:00', start: '00:00' }), [ compareId ]);
+			const expectedOptions = getOptions('00:00', '01:00');
+
+			h.expect(() => getExpectedCombobox(false, expectedOptions));
+		},
+
 		'Should call onRequestOptions'() {
 			const onRequestOptions = sinon.spy();
 			const h = harness(() => w(TimePicker, {
+				key: 'foo',
 				onRequestOptions,
 				step: 3600
 			}));
-			h.trigger('@combo', 'onRequestResults', '12:34:56');
-			assert.isTrue(onRequestOptions.calledWith('12:34:56'));
-
-			const expectedOptions = getOptions('00:00:00', '23:00', 3600);
-			const actualOptions = onRequestOptions.firstCall.args[1];
-			assert.sameDeepMembers(actualOptions, expectedOptions);
-
-			h.trigger('@combo', 'onRequestResults', '12:34:56');
-			assert.strictEqual(actualOptions, onRequestOptions.secondCall.args[1], 'The options array should be cached.');
+			h.trigger('@combo', 'onRequestResults');
+			assert.isTrue(onRequestOptions.calledWith('foo'));
 		}
 	},
 

@@ -63,6 +63,8 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value1 = '';
 	private _value2 = '';
 	private _value5 = '';
+	private _value6 = '';
+	private _value7 = '';
 	private _value8 = '';
 	private _value9 = '';
 	private _invalid: boolean;
@@ -142,7 +144,10 @@ export class App extends WidgetBase<WidgetProperties> {
 				disabled: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				onChange,
+				onRequestResults,
+				value: this._value6
 			}),
 			v('h3', ['Read Only']),
 			w(ComboBox, {
@@ -150,7 +155,10 @@ export class App extends WidgetBase<WidgetProperties> {
 				readOnly: true,
 				inputProperties: {
 					placeholder: 'Enter a value'
-				}
+				},
+				onChange,
+				onRequestResults,
+				value: this._value7
 			}),
 			v('h3', ['Label']),
 			w(ComboBox, {
