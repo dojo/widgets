@@ -308,13 +308,13 @@ registerSuite('Dialog', {
 				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
 					return node.properties.document.keyup;
 				}
-			}, { which: Keys.Down , ...stubEvent});
+			}, { which: Keys.Down , ...stubEvent });
 			assert.isTrue(onRequestClose.notCalled);
 			h.trigger('@global', (node: any) => {
 				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
 					return node.properties.document.keyup;
 				}
-			}, { which: Keys.Escape , ...stubEvent});
+			}, { which: Keys.Escape , ...stubEvent });
 			assert.isTrue(onRequestClose.calledOnce);
 		}
 	}

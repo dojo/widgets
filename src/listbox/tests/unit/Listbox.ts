@@ -212,9 +212,9 @@ registerSuite('Listbox', {
 				optionData: testOptions,
 				onActiveIndexChange
 			}));
-			h.trigger('@root', 'onkeydown', { which: Keys.Down, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.Down, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isTrue(onActiveIndexChange.calledWith(1), 'Down arrow moves to second option');
-			h.trigger('@root', 'onkeydown', { which: Keys.Up, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.Up, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isTrue(onActiveIndexChange.calledWith(1), 'Up arrow moves to last option');
 		},
 
@@ -226,10 +226,10 @@ registerSuite('Listbox', {
 				onActiveIndexChange
 			}));
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Home, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.Home, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isTrue(onActiveIndexChange.calledWith(0), 'Home key moves to first option');
 
-			h.trigger('@root', 'onkeydown', { which: Keys.End, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.End, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isTrue(onActiveIndexChange.calledWith(2), 'End key moves to last option');
 		},
 
@@ -258,7 +258,7 @@ registerSuite('Listbox', {
 			};
 			const h = harness(() =>  w(Listbox, properties));
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Enter, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.Enter, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isTrue(onOptionSelect.calledWith(testOptions[1], 1, 'foo'), 'Enter key selects option');
 
 			properties = {
@@ -267,7 +267,7 @@ registerSuite('Listbox', {
 				optionData: testOptions,
 				onOptionSelect
 			};
-			h.trigger('@root', 'onkeydown', { which: Keys.Space, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.Space, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0, 'foo'), 'Space key selects option');
 		},
 
@@ -280,10 +280,10 @@ registerSuite('Listbox', {
 				onOptionSelect
 			}));
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Enter, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.Enter, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isFalse(onOptionSelect.called, 'Enter key does not select disabled option');
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Space, preventDefault: sinon.stub() , ...stubEvent});
+			h.trigger('@root', 'onkeydown', { which: Keys.Space, preventDefault: sinon.stub() , ...stubEvent });
 			assert.isFalse(onOptionSelect.called, 'Space key does not select disabled option');
 
 			h.trigger('@option-0', 'onClick', testOptions[2], 2);

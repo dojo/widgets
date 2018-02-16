@@ -420,28 +420,28 @@ registerSuite('Calendar DatePicker', {
 			assert.isTrue(isOpen);
 			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Escape, ...stubEvent});
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Escape, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
 			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Enter, ...stubEvent});
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Enter, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
 			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Space, ...stubEvent});
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Space, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
 			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.PageDown, ...stubEvent});
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.PageDown, ...stubEvent });
 			h.expect(() => expected(true, false));
 			assert.isTrue(isOpen, 'Other keys don\'t close popup');
 		},
@@ -458,28 +458,28 @@ registerSuite('Calendar DatePicker', {
 			assert.isTrue(isOpen);
 			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Escape, ...stubEvent});
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Escape, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
 			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Enter, ...stubEvent});
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Enter, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
 			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Space, ...stubEvent});
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Space, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
 			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.PageDown, ...stubEvent});
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.PageDown, ...stubEvent });
 			h.expect(() => expected(false, true));
 			assert.isTrue(isOpen, 'Other keys don\'t close popup');
 		},
