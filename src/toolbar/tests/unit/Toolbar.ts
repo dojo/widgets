@@ -1,4 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
+const { assert } = intern.getPlugin('chai');
+
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { v, w, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
@@ -31,23 +33,44 @@ registerSuite('Toolbar', {
 				lang: null
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: [
-						css.toolbar,
-						fixedCss.toolbarFixed
-					]
-				}, [ null, null, null]),
-				v('div', {
-					classes: [
-						css.content,
-						fixedCss.contentFixed
-					]
-				}, [])
+				null,
+				null,
+				null
 			]));
 		},
 
 		'bottom-positioned rendering'() {
-			const h = harness(() => w(Toolbar, { position: Position.bottom }));
+			const h = harness(() => w(Toolbar, {
+				fixed: true,
+				position: Position.bottom
+			}));
+			h.expect(() =>
+				v('div', {
+					classes: [
+						css.root,
+						null,
+						css.sticky,
+						fixedCss.rootFixed,
+						fixedCss.stickyFixed,
+						fixedCss.onBottomFixed
+					],
+					key: 'root',
+					dir: '',
+					lang: null
+				}, [
+					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+					null,
+					null,
+					null
+				]));
+		},
+
+		'bottom-position rendering without `fixed: true`'() {
+			stub(console, 'warn');
+			const h = harness(() => w(Toolbar, {
+				fixed: false,
+				position: Position.bottom
+			}));
 			h.expect(() =>
 				v('div', {
 					classes: [
@@ -56,26 +79,19 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.rootFixed,
 						null,
-						fixedCss.onBottomFixed
+						fixedCss.onTopFixed
 					],
 					key: 'root',
 					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
-					}, [ null, null, null]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+					null,
+					null,
+					null
 				]));
+			assert.isTrue((console as any).warn.calledWith('Bottom positioning can be used only when `fixed` is `true`.'));
+			(console as any).warn.restore();
 		},
 
 		'expanded rendering'() {
@@ -108,18 +124,9 @@ registerSuite('Toolbar', {
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
-					}, [ null, null, null]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+					null,
+					null,
+					null
 				]));
 		},
 
@@ -140,18 +147,9 @@ registerSuite('Toolbar', {
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
-					}, [ null, null, null]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+					null,
+					null,
+					null
 				]));
 		},
 
@@ -173,23 +171,10 @@ registerSuite('Toolbar', {
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
-					}, [
-						v('div', {
-							classes: [ css.title, fixedCss.titleFixed ]
-						}, [ 'test' ]),
-						null,
-						null
-					]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+						classes: [ css.title, fixedCss.titleFixed ]
+					}, [ 'test' ]),
+					null,
+					null
 				]));
 		},
 
@@ -210,30 +195,17 @@ registerSuite('Toolbar', {
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+					null,
 					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
+						classes: [ css.actions, fixedCss.actionsFixed ],
+						key: 'menu'
 					}, [
-						null,
 						v('div', {
-							classes: [ css.actions, fixedCss.actionsFixed ],
-							key: 'menu'
-						}, [
-							v('div', {
-								classes: [ css.action ],
-								key: 0
-							}, [ 'test' ])
-						]),
-						null
+							classes: [ css.action ],
+							key: 0
+						}, [ 'test' ])
 					]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+					null
 				]));
 		},
 
@@ -293,22 +265,9 @@ registerSuite('Toolbar', {
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
-					}, [
-						null,
-						null,
-						null
-					]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+					null,
+					null,
+					null
 				]));
 
 			properties = { actions: [ 'test' ], heading: 'foo' };
@@ -333,23 +292,10 @@ registerSuite('Toolbar', {
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
-					}, [
-						v('div', {
-							classes: [ css.title, fixedCss.titleFixed ]
-						}, [ 'foo' ]),
-						slidePaneVDom,
-						buttonVDom
-					]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+						classes: [ css.title, fixedCss.titleFixed ]
+					}, [ 'foo' ]),
+					slidePaneVDom,
+					buttonVDom
 				]));
 
 			h.trigger(`.${css.menuButton}`, 'onclick', stubEvent);
@@ -370,23 +316,10 @@ registerSuite('Toolbar', {
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 					v('div', {
-						classes: [
-							css.toolbar,
-							fixedCss.toolbarFixed
-						]
-					}, [
-						v('div', {
-							classes: [ css.title, fixedCss.titleFixed ]
-						}, [ 'foo' ]),
-						slidePaneVDom,
-						buttonVDom
-					]),
-					v('div', {
-						classes: [
-							css.content,
-							fixedCss.contentFixed
-						]
-					}, [])
+						classes: [ css.title, fixedCss.titleFixed ]
+					}, [ 'foo' ]),
+					slidePaneVDom,
+					buttonVDom
 				]));
 		}
 	}

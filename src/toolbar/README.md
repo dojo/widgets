@@ -6,6 +6,7 @@ Dojo 2's `Toolbar` component can be used to display an application navigation ba
 
 - Capable of auto-collapsing action elements into `SlidePane`
 - Capable of rendering either a fixed or statically positioned root element
+- Capable of positioning a _fixed_ toolbar at the top or the bottom of the viewport. Note that statically positioning a toolbar at the bottom is not supported.
 - Customizable `title` element
 
 ### Accessibility Features

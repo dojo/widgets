@@ -86,7 +86,14 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 
 	protected getFixedRootClasses(): (string | null)[] {
-		const { fixed, position = Position.top } = this.properties;
+		const { fixed } = this.properties;
+		let { position = Position.top } = this.properties;
+
+		if (position === Position.bottom && !fixed) {
+			console.warn('Bottom positioning can be used only when `fixed` is `true`.');
+			position = Position.top;
+		}
+
 		return [
 			fixedCss.rootFixed,
 			fixed ? fixedCss.stickyFixed : null,
@@ -158,18 +165,11 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			key: 'root'
 		}, [
 			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
-			v('div', {
-				classes: [ this.theme(css.toolbar), fixedCss.toolbarFixed ]
-			}, [
-				heading ? v('div', {
-					classes: [ this.theme(css.title), fixedCss.titleFixed ]
-				}, [ heading ]) : null,
-				this.renderActions(messages),
-				this.renderButton(messages)
-			]),
-			v('div', {
-				classes: [ this.theme(css.content), fixedCss.contentFixed ]
-			}, this.children)
+			heading ? v('div', {
+				classes: [ this.theme(css.title), fixedCss.titleFixed ]
+			}, [ heading ]) : null,
+			this.renderActions(messages),
+			this.renderButton(messages)
 		]);
 	}
 }
