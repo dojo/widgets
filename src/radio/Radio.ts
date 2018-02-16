@@ -52,7 +52,6 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 		event.stopPropagation();
 		this.properties.onClick && this.properties.onClick(event); }
 	private _onFocus (event: FocusEvent) {
-		this._focused = true;
 		this.properties.onFocus && this.properties.onFocus(event);
 		this.invalidate();
 	}
