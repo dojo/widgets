@@ -157,10 +157,10 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	}
 
 	private _onInput(event: Event) {
-		const { key, onChange } = this.properties;
+		const { key, disabled, readOnly, onChange } = this.properties;
 
 		onChange && onChange((<HTMLInputElement> event.target).value, key);
-		this._openMenu();
+		!disabled && !readOnly && this._openMenu();
 	}
 
 	private _onInputBlur(event: FocusEvent) {
