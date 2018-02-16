@@ -1,4 +1,3 @@
-
 const { registerSuite } = intern.getInterface('object');
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { v, w, isWNode } from '@dojo/widget-core/d';
