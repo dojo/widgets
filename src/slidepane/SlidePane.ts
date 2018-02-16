@@ -88,7 +88,6 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	}
 
 	private _getDelta(event: MouseEvent & TouchEvent, eventType: string) {
-		event.stopPropagation();
 		const { align = Align.left } = this.properties;
 
 		if (this.plane === Plane.x) {
@@ -182,7 +181,6 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	}
 
 	private _onUnderlayMouseUp(event: MouseEvent & TouchEvent) {
-		event.stopPropagation();
 		const { onRequestClose } = this.properties;
 		if (this._hasMoved === false) {
 			onRequestClose && onRequestClose();
