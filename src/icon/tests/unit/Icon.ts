@@ -20,7 +20,6 @@ const expected = function(icon: keyof typeof css = 'downIcon', overrides = {}, a
 				css.icon,
 				css[icon]
 			],
-			role: 'presentation',
 			'aria-hidden': 'true',
 			...overrides
 		})
@@ -56,13 +55,10 @@ registerSuite('Input', {
 			const altText = 'Secure something';
 			const h = harness(() => w(Icon, {
 				type: 'secureIcon',
-				aria: {
-					hidden: 'false'
-				},
 				altText
 			}));
 
-			h.expect(() => expected('secureIcon', { 'aria-hidden': 'false', role: undefined }, altText));
+			h.expect(() => expected('secureIcon', {}, altText));
 		}
 	}
 });
