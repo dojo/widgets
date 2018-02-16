@@ -81,6 +81,7 @@ const expected = function(label = false, tooltip = false, overrides = {}, child 
 			v('output', {
 				classes: [ css.output, tooltip ? fixedCss.outputTooltip : null ],
 				for: '',
+				tabIndex: -1,
 				styles: progress !== '0%' ? { left: progress } : {}
 			}, [ child ])
 		])
@@ -200,7 +201,8 @@ registerSuite('Slider', {
 						v('output', {
 							classes: [ css.output, null ],
 							for: '',
-							styles: {}
+							styles: {},
+							tabIndex: -1
 						}, [ '0' ])
 					])
 				]));
@@ -276,7 +278,8 @@ registerSuite('Slider', {
 						v('output', {
 							classes: [ css.output, fixedCss.outputTooltip ],
 							for: '',
-							styles: { top: '80%' }
+							styles: { top: '80%' },
+							tabIndex: -1
 						}, [ '6' ])
 					])
 				]));
@@ -345,7 +348,8 @@ registerSuite('Slider', {
 					v('output', {
 						classes: [ css.output, null ],
 						for: '',
-						styles: {}
+						styles: {},
+						tabIndex: -1
 					}, [ '40' ])
 				])
 			]));
@@ -413,7 +417,8 @@ registerSuite('Slider', {
 					v('output', {
 						classes: [ css.output, null ],
 						for: '',
-						styles: {}
+						styles: {},
+						tabIndex: -1
 					}, [ '30' ])
 				])
 			]));
@@ -492,7 +497,8 @@ registerSuite('Slider', {
 					v('output', {
 						classes: [ css.output, null ],
 						for: '',
-						styles: {}
+						styles: {},
+						tabIndex: -1
 					}, [ '0' ])
 				])
 			]));
@@ -560,7 +566,8 @@ registerSuite('Slider', {
 					v('output', {
 						classes: [ css.output, null ],
 						for: '',
-						styles: {}
+						styles: {},
+						tabIndex: -1
 					}, [ '0' ])
 				])
 			]));
