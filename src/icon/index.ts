@@ -4,7 +4,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import * as iconCss from '../theme/common/icons.m.css';
+import * as iconCss from '../theme/icon.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 export type IconType = keyof typeof iconCss;
@@ -44,14 +44,17 @@ export class IconBase<P extends IconProperties = IconProperties> extends ThemedB
 
 	protected render(): DNode {
 		const {
-			aria = {},
+			aria = {
+				hidden: 'true'
+			},
 			type
 		} = this.properties;
 
 		return v('i', {
 			...formatAriaProperties(aria),
 			classes: this.theme([iconCss.icon, iconCss[type]]),
-			onclick: this._onClick
+			onclick: this._onClick,
+			role: 'presentation'
 		});
 	}
 }

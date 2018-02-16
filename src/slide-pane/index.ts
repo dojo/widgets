@@ -2,15 +2,15 @@ import uuid from '@dojo/core/uuid';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
+import Icon from '../icon/index';
 import * as fixedCss from './styles/slide-pane.m.css';
 import * as css from '../theme/slide-pane.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
@@ -61,7 +61,6 @@ const enum Plane {
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
-@theme(iconCss)
 @customElement<SlidePaneProperties>({
 	tag: 'dojo-slide-pane',
 	properties: [ 'theme', 'aria', 'extraClasses', 'open', 'underlay' ],
@@ -247,12 +246,6 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		];
 	}
 
-	protected renderCloseIcon(): DNode {
-		return v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
-			role: 'presentation', 'aria-hidden': 'true'
-		});
-	}
-
 	protected renderTitle(): DNode {
 		const { title = '' } = this.properties;
 		return v('div', { id: this._titleId }, [ title ]);
@@ -325,7 +318,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						this.renderCloseIcon()
+						w(Icon, { type: 'closeIcon' })
 					])
 				]) : null,
 				this.getContent()

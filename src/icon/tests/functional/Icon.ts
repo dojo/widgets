@@ -2,7 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import * as iconCss from '../../../theme/icon.m.css';
 
 const DELAY = 300;
 

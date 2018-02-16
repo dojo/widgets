@@ -4,8 +4,8 @@ import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
 
-import Icon from '../../Icon';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import Icon from '../../index';
+import * as iconCss from '../../../theme/icon.m.css';
 import {
 	createHarness,
 	compareAria,
@@ -22,6 +22,8 @@ const expected = function(icon: keyof typeof iconCss = 'downIcon', overrides = {
 			iconCss[icon]
 		],
 		onclick: noop,
+		role: 'presentation',
+		'aria-hidden': 'true',
 		...overrides
 	});
 };
@@ -29,7 +31,9 @@ const expected = function(icon: keyof typeof iconCss = 'downIcon', overrides = {
 registerSuite('Input', {
 	tests: {
 		'renders with default properties'() {
-			const h = harness(() => w(Icon, { type: 'downIcon' }));
+			const h = harness(() => w<Icon>(Icon, {
+				type: 'downIcon'
+			}));
 			h.expect(expected);
 		},
 
@@ -37,10 +41,10 @@ registerSuite('Input', {
 			const h = harness(() => w(Icon, {
 				type: 'mailIcon',
 				aria: {
-					hidden: 'true'
+					hidden: 'false'
 				}
 			}));
-			h.expect(() => expected('mailIcon', { 'aria-hidden': 'true' }));
+			h.expect(() => expected('mailIcon', { 'aria-hidden': 'false' }));
 		},
 
 		events() {

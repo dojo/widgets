@@ -1,3 +1,4 @@
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -7,9 +8,9 @@ import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
 import DatePicker from '../../DatePicker';
+import Icon from '../../../icon/index';
 import * as css from '../../../theme/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import {
 	compareAriaLabelledBy,
 	compareAriaControls,
@@ -125,9 +126,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 				type: 'button',
 				onclick: noop
 			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
-					role: 'presentation', 'aria-hidden': 'true'
-				}),
+				w(Icon, { type: 'leftIcon' }),
 				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
 			]),
 			v('button', {
@@ -136,9 +135,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 				type: 'button',
 				onclick: noop
 			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
-					role: 'presentation', 'aria-hidden': 'true'
-				}),
+				w(Icon, { type: 'rightIcon' }),
 				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
 			])
 		])
@@ -343,9 +340,7 @@ registerSuite('Calendar DatePicker', {
 							type: 'button',
 							onclick: noop
 						}, [
-							v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
-								role: 'presentation', 'aria-hidden': 'true'
-							}),
+							w(Icon, { type: 'leftIcon' }),
 							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
 						]),
 						v('button', {
@@ -354,9 +349,7 @@ registerSuite('Calendar DatePicker', {
 							type: 'button',
 							onclick: noop
 						}, [
-							v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
-								role: 'presentation', 'aria-hidden': 'true'
-							}),
+							w(Icon, { type: 'rightIcon' }),
 							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
 						])
 					])

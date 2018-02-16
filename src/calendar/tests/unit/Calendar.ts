@@ -1,3 +1,4 @@
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -8,9 +9,9 @@ import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/def
 import Calendar from '../../index';
 import CalendarCell from '../../CalendarCell';
 import DatePicker from '../../DatePicker';
+import Icon from '../../../icon/index';
 import * as css from '../../../theme/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import {
 	compareId,
 	createHarness,
@@ -145,9 +146,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 				type: 'button',
 				onclick: noop
 			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.leftIcon ],
-					role: 'presentation', 'aria-hidden': 'true'
-				}),
+				w(Icon, { type: 'leftIcon' }),
 				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Previous Month' ])
 			]),
 			v('button', {
@@ -156,9 +155,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 				type: 'button',
 				onclick: noop
 			}, [
-				v('i', { classes: [ iconCss.icon, iconCss.rightIcon ],
-					role: 'presentation', 'aria-hidden': 'true'
-				}),
+				w(Icon, { type: 'rightIcon' }),
 				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Next Month' ])
 			])
 		])
