@@ -192,7 +192,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						w(Icon, { type: 'closeIcon' })
+						w(Icon, { type: 'closeIcon', onClick: this._onCloseClick })
 					]) : null
 				]),
 				this.getContent()

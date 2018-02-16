@@ -371,7 +371,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			onclick: this._onClearClick
 		}, [
 			`${messages.clear} ${label}`,
-			w(Icon, { type: 'closeIcon' })
+			w(Icon, { type: 'closeIcon', onClick: this._onClearClick })
 		]);
 	}
 
@@ -391,7 +391,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			onclick: this._onArrowClick
 		}, [
 			`${messages.open} ${label}`,
-			w(Icon, { type: 'downIcon' })
+			w(Icon, { type: 'downIcon', onClick: this._onArrowClick })
 		]);
 	}
 
