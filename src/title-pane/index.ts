@@ -97,10 +97,9 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 
 	protected renderExpandIcon(): DNode {
 		const { open = true } = this.properties;
-		return w(Icon, {
-			type: open ? 'downIcon' : 'rightIcon',
-			extraClasses: { root: css.arrow }
-		});
+		return v('span', { classes: this.theme(css.arrow) }, [
+			w(Icon, { type: open ? 'downIcon' : 'rightIcon' })
+		]);
 	}
 
 	protected render(): DNode {

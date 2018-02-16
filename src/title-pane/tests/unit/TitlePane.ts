@@ -45,10 +45,9 @@ registerSuite('TitlePane', {
 						type: 'button',
 						onclick: noop
 					}, [
-						w(Icon, {
-							extraClasses: { root: css.arrow },
-							type: 'downIcon'
-						}),
+						v('span', { classes: css.arrow }, [
+							w(Icon, { type: 'downIcon' })
+						]),
 						'test'
 					])
 				]),
@@ -90,12 +89,9 @@ registerSuite('TitlePane', {
 						type: 'button',
 						onclick: noop
 					}, [
-						w(Icon, {
-							extraClasses: {
-								root: css.arrow
-							},
-							type: 'rightIcon'
-						}),
+						v('span', { classes: css.arrow }, [
+							w(Icon, { type: 'rightIcon' })
+						]),
 						'test'
 					])
 				]),
