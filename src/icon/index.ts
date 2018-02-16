@@ -4,10 +4,11 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import * as iconCss from '../theme/icon.m.css';
+import * as css from '../theme/icon.m.css';
+import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
-export type IconType = keyof typeof iconCss;
+export type IconType = keyof typeof css;
 
 /**
  * @type IconProperties
@@ -18,12 +19,12 @@ export type IconType = keyof typeof iconCss;
  */
 export interface IconProperties extends ThemedProperties, CustomAriaProperties {
 	type: IconType;
-	onClick?(): void;
+	altText?: string;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
-@theme(iconCss)
+@theme(css)
 @customElement<IconProperties>({
 	tag: 'dojo-icon',
 	properties: [
@@ -31,15 +32,19 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'aria',
 		'extraClasses'
 	],
-	attributes: [ 'type' ],
-	events: [
-		'onClick'
-	]
+	attributes: [ 'type' ]
 })
 export class IconBase<P extends IconProperties = IconProperties> extends ThemedBase<P, null> {
-	private _onClick (event: MouseEvent) {
-		event && event.stopPropagation();
-		this.properties.onClick && this.properties.onClick();
+	protected renderAltText(altText?: string) {
+		return altText && v('span', { classes: [ baseCss.visuallyHidden ] }, [ altText ]);
+	}
+
+	protected renderIcon(type: IconType, role: 'presentation' | undefined, aria: {}) {
+		return v('i', {
+			...formatAriaProperties(aria),
+			classes: this.theme([ css.icon, css[type] ]),
+			role
+		});
 	}
 
 	protected render(): DNode {
@@ -47,15 +52,17 @@ export class IconBase<P extends IconProperties = IconProperties> extends ThemedB
 			aria = {
 				hidden: 'true'
 			},
-			type
+			type,
+			altText
 		} = this.properties;
 
-		return v('i', {
-			...formatAriaProperties(aria),
-			classes: this.theme([iconCss.icon, iconCss[type]]),
-			onclick: this._onClick,
-			role: 'presentation'
-		});
+		const altTextNode = this.renderAltText(altText);
+		const icon = this.renderIcon(type, altTextNode ? undefined : 'presentation', aria);
+
+		return v('span', { classes: this.theme(css.root) }, [
+			icon,
+			altTextNode
+		]);
 	}
 }
 

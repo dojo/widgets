@@ -8,6 +8,8 @@
 	font-style: normal;
 }
 
+.root {}
+
 .icon {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'dojo2' !important;

@@ -1,37 +1,42 @@
 const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
-import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/widget-core/d';
 
 import Icon from '../../index';
 import * as iconCss from '../../../theme/icon.m.css';
+import * as baseCss from '../../../common/styles/base.m.css';
 import {
 	createHarness,
 	compareAria,
-	compareAriaControls,
-	noop
+	compareAriaControls
 } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareAria, compareAriaControls ]);
 
-const expected = function(icon: keyof typeof iconCss = 'downIcon', overrides = {}) {
-	return v('i', {
-		classes: [
-			iconCss.icon,
-			iconCss[icon]
-		],
-		onclick: noop,
-		role: 'presentation',
-		'aria-hidden': 'true',
-		...overrides
-	});
+const expected = function(icon: keyof typeof css = 'downIcon', overrides = {}, altText?: string) {
+	const children = [
+		v('i', {
+			classes: [
+				css.icon,
+				css[icon]
+			],
+			role: 'presentation',
+			'aria-hidden': 'true',
+			...overrides
+		})
+	];
+
+	if (altText) {
+		children.push(v('span', { classes: [ baseCss.visuallyHidden ] }, [ altText ]));
+	}
+
+	return v('span', { classes: css.root }, children);
 };
 
 registerSuite('Input', {
 	tests: {
 		'renders with default properties'() {
-			const h = harness(() => w<Icon>(Icon, {
+			const h = harness(() => w(Icon, {
 				type: 'downIcon'
 			}));
 			h.expect(expected);
@@ -47,18 +52,17 @@ registerSuite('Input', {
 			h.expect(() => expected('mailIcon', { 'aria-hidden': 'false' }));
 		},
 
-		events() {
-			const onClick = sinon.stub();
-			const stopPropagation = sinon.stub();
-
+		'alt text'() {
+			const altText = 'Secure something';
 			const h = harness(() => w(Icon, {
-				onClick,
-				type: 'downIcon'
+				type: 'secureIcon',
+				aria: {
+					hidden: 'false'
+				},
+				altText
 			}));
 
-			h.trigger('i', 'onclick', { stopPropagation });
-			assert.isTrue(onClick.called, 'onClick called');
-
+			h.expect(() => expected('secureIcon', { 'aria-hidden': 'false', role: undefined }, altText));
 		}
 	}
 });
