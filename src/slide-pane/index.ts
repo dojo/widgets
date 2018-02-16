@@ -318,7 +318,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						w(Icon, { type: 'closeIcon' })
+						w(Icon, { type: 'closeIcon', onClick: this._onCloseClick })
 					])
 				]) : null,
 				this.getContent()

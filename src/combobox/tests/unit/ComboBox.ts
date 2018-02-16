@@ -92,7 +92,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			onclick: noop
 		}, [
 			useTestProperties ? 'clear foo' : 'clear ',
-			w(Icon, { type: 'closeIcon' })
+			w(Icon, { type: 'closeIcon', onClick: noop })
 		]) : null,
 		v('button', {
 			key: 'trigger',
@@ -103,7 +103,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			onclick: noop
 		}, [
 			useTestProperties ? 'open foo' : 'open ',
-			w(Icon, { type: 'downIcon' })
+			w(Icon, { type: 'downIcon', onClick: noop })
 		])
 	]);
 
@@ -484,7 +484,7 @@ registerSuite('ComboBox', {
 				onclick: noop
 			}, [
 				'clear foo',
-				w(Icon, { type: 'closeIcon' })
+				w(Icon, { type: 'closeIcon', onClick: noop })
 			]));
 
 			h.expectPartial('@trigger', () => v('button', {
@@ -496,7 +496,7 @@ registerSuite('ComboBox', {
 				onclick: noop
 			}, [
 				'open foo',
-				w(Icon, { type: 'downIcon' })
+				w(Icon, { type: 'downIcon', onClick: noop })
 			]));
 
 			invalid = false;
