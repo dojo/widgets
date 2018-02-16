@@ -88,6 +88,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	}
 
 	private _getDelta(event: MouseEvent & TouchEvent, eventType: string) {
+		event.stopPropagation();
 		const { align = Align.left } = this.properties;
 
 		if (this.plane === Plane.x) {
@@ -100,12 +101,14 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		}
 	}
 
-	private _onCloseClick() {
+	private _onCloseClick(event: MouseEvent) {
+		event.stopPropagation();
 		const { onRequestClose } = this.properties;
 		onRequestClose && onRequestClose();
 	}
 
 	private _onSwipeStart(event: MouseEvent & TouchEvent) {
+		event.stopPropagation();
 		this._swiping = true;
 		// Cache initial pointer position
 		if (this.plane === Plane.x) {
@@ -120,6 +123,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	}
 
 	private _onSwipeMove(event: MouseEvent & TouchEvent) {
+		event.stopPropagation();
 		// Ignore mouse movement when not clicking
 		if (!this._swiping) {
 			return;
@@ -152,6 +156,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
+		event.stopPropagation();
 		this._swiping = false;
 		this._hasMoved = false;
 
@@ -176,7 +181,8 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		}
 	}
 
-	private _onUnderlayMouseUp() {
+	private _onUnderlayMouseUp(event: MouseEvent & TouchEvent) {
+		event.stopPropagation();
 		const { onRequestClose } = this.properties;
 		if (this._hasMoved === false) {
 			onRequestClose && onRequestClose();

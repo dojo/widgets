@@ -55,7 +55,8 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
 export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
-	private _onClick() {
+	private _onClick(event: MouseEvent) {
+		event.stopPropagation();
 		const {
 			disabled,
 			index,
@@ -66,16 +67,17 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 	}
 
 	private _onCloseClick(event: MouseEvent) {
+		event.stopPropagation();
 		const {
 			index,
 			onCloseClick
 		} = this.properties;
 
-		event.stopPropagation();
 		onCloseClick && onCloseClick(index);
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
 		const {
 			closeable,
 			disabled,

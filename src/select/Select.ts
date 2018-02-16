@@ -127,6 +127,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	private _onDropdownKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
 		if (event.which === Keys.Escape) {
 			this.meta(Focus).set('trigger');
 			this._closeSelect();
@@ -134,6 +135,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	private _onTriggerClick(event: MouseEvent) {
+		event.stopPropagation();
 		this._open ? this._closeSelect() : this._openSelect();
 	}
 
@@ -149,6 +151,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
 		if (event.which === Keys.Down) {
 			this._openSelect();
 		}
