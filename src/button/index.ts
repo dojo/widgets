@@ -159,7 +159,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 		}, [
 			...this.getContent(),
 			popup ? v('span', { classes: this.theme(css.addon) }, [
-				w(Icon, { extraClasses: { root: css.addon }, type: 'downIcon' })
+				w(Icon, { type: 'downIcon' })
 			]) : null
 		]);
 	}
