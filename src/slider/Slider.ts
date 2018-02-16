@@ -153,7 +153,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 			classes: [ this.theme(css.output), outputIsTooltip ? fixedCss.outputTooltip : null ],
 			for: this._inputId,
 			styles: outputStyles,
-			tabIndex: -1
+			tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
 		}, [ outputNode ]);
 	}
 
