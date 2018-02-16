@@ -10,10 +10,10 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
+import Icon from '../icon/index';
 import calendarBundle from './nls/Calendar';
 import * as css from '../theme/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import customElement from '@dojo/widget-core/decorators/customElement';
 
 export type CalendarMessages = typeof calendarBundle.messages;
@@ -82,7 +82,6 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
-@theme(iconCss)
 @customElement<CalendarProperties>({
 	tag: 'dojo-calendar',
 	properties: [
@@ -377,13 +376,11 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 
 	protected renderPagingButtonContent(type: Paging, labels: CalendarMessages): DNode[] {
-		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
+		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),
-				role: 'presentation', 'aria-hidden': 'true'
-			}),
+			w(Icon, { type: iconType }),
 			v('span', { classes: [ baseCss.visuallyHidden ] }, [ labelText ])
 		];
 	}

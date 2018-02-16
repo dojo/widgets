@@ -1,3 +1,4 @@
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
@@ -7,11 +8,11 @@ import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
 import ComboBox from '../../index';
+import Icon from '../../../icon/index';
 import Label from '../../../label/index';
 import Listbox from '../../../listbox/index';
 import TextInput from '../../../text-input/index';
 import * as css from '../../../theme/combobox.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import {
 	createHarness,
 	compareId,
@@ -91,9 +92,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			onclick: noop
 		}, [
 			useTestProperties ? 'clear foo' : 'clear ',
-			v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
-				role: 'presentation', 'aria-hidden': 'true'
-			})
+			w(Icon, { type: 'closeIcon' })
 		]) : null,
 		v('button', {
 			key: 'trigger',
@@ -104,11 +103,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			onclick: noop
 		}, [
 			useTestProperties ? 'open foo' : 'open ',
-			v('i', {
-				'aria-hidden': 'true',
-				classes: [ iconCss.icon, iconCss.downIcon ],
-				role: 'presentation'
-			})
+			w(Icon, { type: 'downIcon' })
 		])
 	]);
 
@@ -489,9 +484,7 @@ registerSuite('ComboBox', {
 				onclick: noop
 			}, [
 				'clear foo',
-				v('i', { classes: [ iconCss.icon, iconCss.closeIcon ],
-					role: 'presentation', 'aria-hidden': 'true'
-				})
+				w(Icon, { type: 'closeIcon' })
 			]));
 
 			h.expectPartial('@trigger', () => v('button', {
@@ -503,11 +496,7 @@ registerSuite('ComboBox', {
 				onclick: noop
 			}, [
 				'open foo',
-				v('i', {
-					'aria-hidden': 'true',
-					classes: [ iconCss.icon, iconCss.downIcon ],
-					role: 'presentation'
-				})
+				w(Icon, { type: 'downIcon' })
 			]));
 
 			invalid = false;

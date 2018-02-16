@@ -5,12 +5,12 @@ import { ThemedMixin, theme, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
+import Icon from '../icon/index';
 import SlidePane, { Align } from '../slide-pane/index';
 import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import * as fixedCss from './styles/toolbar.m.css';
 import * as css from '../theme/toolbar.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import { GlobalEvent } from '../global-event/index';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
@@ -48,7 +48,6 @@ export interface ToolbarProperties extends ThemedProperties {
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
-@theme(iconCss)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
 	properties: [ 'theme', 'extraClasses', 'actions', 'collapseWidth', 'fixed', 'title' ],
@@ -147,10 +146,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			onclick: this._toggleMenu
 		}, [
 			`${messages.open} ${menuTitle}`,
-			v('i', {
-				classes: this.theme([ iconCss.icon, iconCss.barsIcon ]),
-				role: 'presentation', 'aria-hidden': 'true'
-			})
+			w(Icon, { type: 'barsIcon' })
 		]) : null;
 	}
 

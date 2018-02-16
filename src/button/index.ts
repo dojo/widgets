@@ -1,12 +1,11 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/widget-core/d';
 import * as css from '../theme/button.m.css';
-import * as iconCss from '../theme/icons.m.css';
-import { CustomAriaProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
+import Icon from '../icon/index';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -36,7 +35,6 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-@theme(iconCss)
 @customElement<ButtonProperties>({
 	tag: 'dojo-button',
 	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses' ],
@@ -119,12 +117,6 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 		];
 	}
 
-	protected renderPopupIcon(): DNode {
-		return v('i', { classes: this.theme([ css.addon, iconCss.icon, iconCss.downIcon ]),
-			role: 'presentation', 'aria-hidden': 'true'
-		});
-	}
-
 	render(): DNode {
 		let {
 			aria = {},
@@ -166,7 +158,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null
 		}, [
 			...this.getContent(),
-			popup ? this.renderPopupIcon() : null
+			popup ? w(Icon, { extraClasses: { root: css.addon }, type: 'downIcon' }) : null
 		]);
 	}
 }

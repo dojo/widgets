@@ -13,7 +13,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
 /**
- * @type TextInputProperties
+ * @type IconProperties
  *
  * Properties that can be set on a TextInput component
  *

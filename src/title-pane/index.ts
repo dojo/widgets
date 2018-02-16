@@ -1,12 +1,12 @@
 import uuid from '@dojo/core/uuid';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
+import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
 import * as css from '../theme/title-pane.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
@@ -34,7 +34,6 @@ export interface TitlePaneProperties extends ThemedProperties {
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-@theme(iconCss)
 @customElement<TitlePaneProperties>({
 	tag: 'dojo-title-pane',
 	properties: [ 'theme', 'extraClasses', 'open', 'closeable', 'headingLevel' ],
@@ -98,14 +97,9 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 
 	protected renderExpandIcon(): DNode {
 		const { open = true } = this.properties;
-		return v('i', {
-			classes: this.theme([
-				css.arrow,
-				iconCss.icon,
-				open ? iconCss.downIcon : iconCss.rightIcon
-			]),
-			role: 'presentation',
-			'aria-hidden': 'true'
+		return w(Icon, {
+			type: open ? 'downIcon' : 'rightIcon',
+			extraClasses: { root: css.arrow }
 		});
 	}
 

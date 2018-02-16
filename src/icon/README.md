@@ -7,17 +7,29 @@ Dojo 2's `Icon` widget renders an icon.
 
 *Basic Example*
 ```typescript
-import Icon from '@dojo/widgets/icon/Icon';
+import Icon from '@dojo/widgets/icon/index';
+import { w } from '@dojo/widget-core/d';
+
+w(Icon, { type: 'downIcon', });
+```
+
+By default the icon will be rendered with `role="presentation"` and
+`aria-hidden="true"`. Custom aria attributes can be specified to
+override the default.
+
+*Custom aria attributes Example*
+```typescript
+import Icon from '@dojo/widgets/icon/index';
 import { w } from '@dojo/widget-core/d';
 
 w(Icon, {
 	type: 'downIcon',
 	aria: {
-		hidden: 'true'
+		hidden: 'false',
+		label: 'label'
 	}
 });
 ```
-
 ## Theming
 
 The following CSS classes are used to style the `Icon` widget and should be provided by custom themes:

@@ -9,8 +9,8 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import commonBundle from '../common/nls/common';
 
+import Icon from '../icon/index';
 import * as fixedCss from './styles/dialog.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import * as css from '../theme/dialog.m.css';
 import * as animations from '../common/styles/animations.m.css';
 import { GlobalEvent } from '../global-event/index';
@@ -55,7 +55,6 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
-@theme(iconCss)
 @customElement<DialogProperties>({
 	tag: 'dojo-dialog',
 	properties: [
@@ -121,12 +120,6 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			classes: this.theme(css.content),
 			key: 'content'
 		}, this.children);
-	}
-
-	protected renderCloseIcon(): DNode {
-		return v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
-			role: 'presentation', 'aria-hidden': 'true'
-		});
 	}
 
 	protected renderTitle(): DNode {
@@ -199,7 +192,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						this.renderCloseIcon()
+						w(Icon, { type: 'closeIcon' })
 					]) : null
 				]),
 				this.getContent()
