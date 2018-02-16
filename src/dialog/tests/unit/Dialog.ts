@@ -15,7 +15,8 @@ import {
 	createHarness,
 	compareId,
 	compareAriaLabelledBy,
-	noop
+	noop,
+	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareAriaLabelledBy ]);
@@ -245,7 +246,7 @@ registerSuite('Dialog', {
 				onRequestClose
 			};
 			const h = harness(() => w(Dialog, properties));
-			h.trigger(`.${css.close}`, 'onclick');
+			h.trigger(`.${css.close}`, 'onclick', stubEvent);
 			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler called when close button is clicked');
 
 			properties = {
@@ -253,7 +254,7 @@ registerSuite('Dialog', {
 				open: true,
 				onRequestClose
 			};
-			h.trigger(`.${css.close}`, 'onclick');
+			h.trigger(`.${css.close}`, 'onclick', stubEvent);
 			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler not called when closeable is false');
 		},
 
@@ -283,7 +284,7 @@ registerSuite('Dialog', {
 				onRequestClose
 			};
 			const h = harness(() => w(Dialog, properties));
-			h.trigger(`.${fixedCss.underlay}`, 'onclick');
+			h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
 
 			assert.isFalse(onRequestClose.called, 'onRequestClose should not be called when the underlay is clicked and modal is true');
 
@@ -293,7 +294,7 @@ registerSuite('Dialog', {
 				onRequestClose
 			};
 
-			h.trigger(`.${fixedCss.underlay}`, 'onclick');
+			h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
 			assert.isTrue(onRequestClose.called, 'onRequestClose is called when the underlay is clicked and modal is false');
 		},
 
@@ -307,13 +308,13 @@ registerSuite('Dialog', {
 				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
 					return node.properties.document.keyup;
 				}
-			}, { which: Keys.Down });
+			}, { which: Keys.Down , ...stubEvent});
 			assert.isTrue(onRequestClose.notCalled);
 			h.trigger('@global', (node: any) => {
 				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
 					return node.properties.document.keyup;
 				}
-			}, { which: Keys.Escape });
+			}, { which: Keys.Escape , ...stubEvent});
 			assert.isTrue(onRequestClose.calledOnce);
 		}
 	}

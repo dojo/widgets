@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 
 import CalendarCell from '../../CalendarCell';
 import * as css from '../../../theme/calendar/calendar.m.css';
-import { noop } from '../../../common/tests/support/test-helpers';
+import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('CalendarCell', {
 	tests: {
@@ -64,13 +64,13 @@ registerSuite('CalendarCell', {
 				}
 			}));
 
-			h.trigger('td', 'onclick');
+			h.trigger('td', 'onclick', stubEvent);
 			assert.strictEqual(clickedDate, 1);
 			assert.isTrue(clickedDisabled);
 
 			disabled = false;
 			date = 2;
-			h.trigger('td', 'onclick');
+			h.trigger('td', 'onclick', stubEvent);
 			assert.strictEqual(clickedDate, 2);
 			assert.isFalse(clickedDisabled, 'disabled defaults to false');
 		},
@@ -83,7 +83,7 @@ registerSuite('CalendarCell', {
 					called = true;
 				}
 			}));
-			h.trigger('td', 'onkeydown');
+			h.trigger('td', 'onkeydown', stubEvent);
 			assert.isTrue(called);
 		},
 

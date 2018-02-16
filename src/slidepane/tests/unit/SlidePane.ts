@@ -11,7 +11,8 @@ import {
 	createHarness,
 	compareId,
 	compareAriaLabelledBy,
-	noop
+	noop,
+	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareAriaLabelledBy ]);
@@ -247,10 +248,10 @@ registerSuite('SlidePane', {
 				}
 			}));
 			h.trigger('@underlay', 'onmousedown', {
-				pageX: 300
+				pageX: 300, ...stubEvent
 			});
 			h.trigger('@underlay', 'onmouseup', {
-				pageX: 300
+				pageX: 300, ...stubEvent
 			});
 			assert.isTrue(called, 'onRequestClose should have been called');
 		},
@@ -267,7 +268,7 @@ registerSuite('SlidePane', {
 				}
 			}));
 
-			h.trigger(`.${css.close}`, 'onclick');
+			h.trigger(`.${css.close}`, 'onclick', stubEvent);
 			assert.isTrue(called, 'onRequestClose should have been called');
 		},
 
@@ -282,10 +283,10 @@ registerSuite('SlidePane', {
 			}));
 
 			h.trigger('@underlay', 'ontouchstart', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 			h.trigger('@underlay', 'ontouchend', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 			assert.isTrue(called, 'onRequestClose should be called on underlay tap');
 		},
@@ -301,13 +302,13 @@ registerSuite('SlidePane', {
 			}));
 
 			h.trigger('@underlay', 'onmousedown', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 			h.trigger('@underlay', 'onmousemove', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 			h.trigger('@underlay', 'onmouseup', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if dragged far enough');
@@ -324,19 +325,19 @@ registerSuite('SlidePane', {
 			}));
 
 			h.trigger('@underlay', 'ontouchmove', {
-				changedTouches: [ { screenX: 150 } ]
+				changedTouches: [ { screenX: 150 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchstart', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchmove', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchend', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough');
@@ -354,19 +355,19 @@ registerSuite('SlidePane', {
 			}));
 
 			h.trigger('@underlay', 'ontouchmove', {
-				changedTouches: [ { screenY: 150 } ]
+				changedTouches: [ { screenY: 150 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchstart', {
-				changedTouches: [ { screenY: 300 } ]
+				changedTouches: [ { screenY: 300 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchmove', {
-				changedTouches: [ { screenY: 150 } ]
+				changedTouches: [ { screenY: 150 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchend', {
-				changedTouches: [ { screenY: 50 } ]
+				changedTouches: [ { screenY: 50 } ], ...stubEvent
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough up');
@@ -385,15 +386,15 @@ registerSuite('SlidePane', {
 			}));
 
 			h.trigger('@underlay', 'ontouchstart', {
-				changedTouches: [ { screenX: 300 } ]
+				changedTouches: [ { screenX: 300 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchmove', {
-				changedTouches: [ { screenX: 400 } ]
+				changedTouches: [ { screenX: 400 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchend', {
-				changedTouches: [ { screenX: 500 } ]
+				changedTouches: [ { screenX: 500 } ], ...stubEvent
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close right');
@@ -412,15 +413,15 @@ registerSuite('SlidePane', {
 			}));
 
 			h.trigger('@underlay', 'ontouchstart', {
-				changedTouches: [ { screenY: 300 } ]
+				changedTouches: [ { screenY: 300 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchmove', {
-				changedTouches: [ { screenY: 400 } ]
+				changedTouches: [ { screenY: 400 } ], ...stubEvent
 			});
 
 			h.trigger('@underlay', 'ontouchend', {
-				changedTouches: [ { screenY: 500 } ]
+				changedTouches: [ { screenY: 500 } ], ...stubEvent
 			});
 
 			assert.isTrue(called, 'onRequestClose should be called if swiped far enough to close bottom');
@@ -437,15 +438,15 @@ registerSuite('SlidePane', {
 			}));
 
 			h.trigger(`.${css.root}`, 'onmousedown', {
-				pageX: 300
+				pageX: 300, ...stubEvent
 			});
 
 			h.trigger(`.${css.root}`, 'onmousemove', {
-				pageX: 250
+				pageX: 250, ...stubEvent
 			});
 
 			h.trigger(`.${css.root}`, 'onmouseup', {
-				pageX: 250
+				pageX: 250, ...stubEvent
 			});
 
 			assert.isFalse(called, 'onRequestClose should not be called if not swiped far enough to close');
@@ -572,9 +573,9 @@ registerSuite('SlidePane', {
 			}
 
 			h.expect(() => expected(false), () => h.getRender());
-			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300 });
-			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 150 });
-			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 50 });
+			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 150, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 50, ...stubEvent });
 			properties.open = false;
 
 			h.expect(() => expected(true, {
@@ -656,9 +657,9 @@ registerSuite('SlidePane', {
 			const h = harness(() => w(SlidePane, properties));
 
 			h.expect(expected);
-			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300 });
-			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 400 });
-			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 500 });
+			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 400, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 500, ...stubEvent });
 			properties = {
 				align: Align.right,
 				open: false

@@ -7,7 +7,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Button from '../../Button';
 import * as css from '../../../theme/button/button.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
-import { noop } from '../../../common/tests/support/test-helpers';
+import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('Button', {
 	tests: {
@@ -152,16 +152,16 @@ registerSuite('Button', {
 			}));
 
 			h.trigger('button', 'onblur');
-			h.trigger('button', 'onclick');
+			h.trigger('button', 'onclick', stubEvent);
 			h.trigger('button', 'onfocus');
-			h.trigger('button', 'onkeydown');
-			h.trigger('button', 'onkeypress');
-			h.trigger('button', 'onkeyup');
-			h.trigger('button', 'onmousedown');
-			h.trigger('button', 'onmouseup');
-			h.trigger('button', 'ontouchstart');
-			h.trigger('button', 'ontouchend');
-			h.trigger('button', 'ontouchcancel');
+			h.trigger('button', 'onkeydown', stubEvent);
+			h.trigger('button', 'onkeypress', stubEvent);
+			h.trigger('button', 'onkeyup', stubEvent);
+			h.trigger('button', 'onmousedown', stubEvent);
+			h.trigger('button', 'onmouseup', stubEvent);
+			h.trigger('button', 'ontouchstart', stubEvent);
+			h.trigger('button', 'ontouchend', stubEvent);
+			h.trigger('button', 'ontouchcancel', stubEvent);
 
 			assert.isTrue(blurred);
 			assert.isTrue(clicked);

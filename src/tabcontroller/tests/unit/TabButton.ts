@@ -10,7 +10,7 @@ import { assign } from '@dojo/core/lang';
 
 import TabButton, { TabButtonProperties } from '../../TabButton';
 import * as css from '../../../theme/tabcontroller/tabController.m.css';
-import { noop } from '../../../common/tests/support/test-helpers';
+import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 interface KeyboardEventInit extends EventInit {
 	which: number;
@@ -117,7 +117,7 @@ registerSuite('TabButton', {
 				disabled: true,
 				onClick
 			};
-			h.trigger('@tab-button', 'onclick');
+			h.trigger('@tab-button', 'onclick', stubEvent);
 			assert.isTrue(onClick.calledOnce, 'onClick handler not called when tab is disabled');
 		},
 
@@ -138,17 +138,17 @@ registerSuite('TabButton', {
 				onUpArrowPress
 			};
 			const h = harness(() => w(TabButton, props(extraProps)));
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Down, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Down, stopPropagation , ...stubEvent});
 			assert.isTrue(onDownArrowPress.calledOnce, 'Down arrow event handler called on down arrow press');
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.End, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.End, stopPropagation , ...stubEvent});
 			assert.isTrue(onEndPress.calledOnce, 'End key event handler called on end key press');
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Home, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Home, stopPropagation , ...stubEvent});
 			assert.isTrue(onHomePress.calledOnce, 'Home event handler called on home key press');
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Left, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Left, stopPropagation , ...stubEvent});
 			assert.isTrue(onLeftArrowPress.calledOnce, 'Left arrow event handler called on left arrow press');
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Right, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Right, stopPropagation , ...stubEvent});
 			assert.isTrue(onRightArrowPress.calledOnce, 'Right arrow event handler called on right arrow press');
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Up, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Up, stopPropagation , ...stubEvent});
 			assert.isTrue(onUpArrowPress.calledOnce, 'Up arrow event handler called on up arrow press');
 
 			extraProps = {
@@ -160,7 +160,7 @@ registerSuite('TabButton', {
 				onRightArrowPress,
 				onUpArrowPress
 			};
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Down, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Down, stopPropagation , ...stubEvent});
 			assert.isTrue(onDownArrowPress.calledOnce, 'key handlers not called when tab is disabled');
 		},
 
@@ -171,14 +171,14 @@ registerSuite('TabButton', {
 				onCloseClick
 			};
 			const h = harness(() => w(TabButton, props(extraProps)));
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Escape, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Escape, stopPropagation , ...stubEvent});
 			assert.isFalse(onCloseClick.called, 'onCloseClick not called if closeable is false');
 
 			extraProps = {
 				closeable: true,
 				onCloseClick
 			};
-			h.trigger('@tab-button', 'onkeydown', { which: Keys.Escape, stopPropagation });
+			h.trigger('@tab-button', 'onkeydown', { which: Keys.Escape, stopPropagation , ...stubEvent});
 			assert.isTrue(onCloseClick.called, 'onCloseClick handler called on escape keydown if closeable');
 		},
 

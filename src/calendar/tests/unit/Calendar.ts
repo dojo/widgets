@@ -16,7 +16,8 @@ import {
 	createHarness,
 	compareAriaLabelledBy,
 	compareLabelId,
-	noop
+	noop,
+	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
 const testDate = new Date('June 3 2017');
@@ -429,7 +430,7 @@ registerSuite('Calendar', {
 				}
 			}));
 
-			h.trigger(`.${css.previous}`, 'onclick');
+			h.trigger(`.${css.previous}`, 'onclick', stubEvent);
 			assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Previous button decrements month');
 		},
 
@@ -442,7 +443,7 @@ registerSuite('Calendar', {
 				}
 			}));
 
-			h.trigger(`.${css.next}`, 'onclick');
+			h.trigger(`.${css.next}`, 'onclick', stubEvent);
 			assert.strictEqual(currentMonth, testDate.getMonth() + 1, 'Next button increments month');
 		},
 

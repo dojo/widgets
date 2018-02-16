@@ -11,7 +11,8 @@ import {
 	compareAriaControls,
 	compareAriaLabelledBy,
 	createHarness,
-	noop
+	noop,
+	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareAriaLabelledBy, compareAriaControls ]);
@@ -128,7 +129,7 @@ registerSuite('TitlePane', {
 				title: 'test'
 			}));
 
-			h.trigger(`.${css.titleButton}`, 'onclick');
+			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
 			assert.isTrue(called, 'onRequestClose should be called on title click');
 		},
 
@@ -142,7 +143,7 @@ registerSuite('TitlePane', {
 				},
 				title: 'test'
 			}));
-			h.trigger(`.${css.titleButton}`, 'onclick');
+			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
 			assert.isTrue(called, 'onRequestOpen should be called on title click');
 		},
 
@@ -157,7 +158,7 @@ registerSuite('TitlePane', {
 				title: 'test'
 			};
 			const h = harness(() => w(TitlePane, properties));
-			h.trigger(`.${css.titleButton}`, 'onclick');
+			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
 
 			properties = {
 				open: true,
@@ -166,7 +167,7 @@ registerSuite('TitlePane', {
 				},
 				title: 'test'
 			};
-			h.trigger(`.${css.titleButton}`, 'onclick');
+			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
 			assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
 		}
 	}

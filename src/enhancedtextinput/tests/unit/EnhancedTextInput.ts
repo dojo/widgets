@@ -11,7 +11,7 @@ import Label from '../../../label/Label';
 import * as css from '../../../theme/enhancedtextinput/enhancedtextinput.m.css';
 import * as textInputCss from '../../../theme/textinput/textinput.m.css';
 import { VNodeProperties } from '@dojo/widget-core/interfaces';
-import { createHarness, compareId, compareForId, MockMetaMixin, noop } from '../../../common/tests/support/test-helpers';
+import { createHarness, compareId, compareForId, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);
 
@@ -251,27 +251,27 @@ registerSuite('EnhancedTextInput', {
 				assert.isTrue(onBlur.called, 'onBlur called');
 				h.trigger('@input', 'onchange');
 				assert.isTrue(onChange.called, 'onChange called');
-				h.trigger('@input', 'onclick');
+				h.trigger('@input', 'onclick', stubEvent);
 				assert.isTrue(onClick.called, 'onClick called');
 				h.trigger('@input', 'onfocus');
 				assert.isTrue(onFocus.called, 'onFocus called');
 				h.trigger('@input', 'oninput');
 				assert.isTrue(onInput.called, 'onInput called');
-				h.trigger('@input', 'onkeydown');
+				h.trigger('@input', 'onkeydown', stubEvent);
 				assert.isTrue(onKeyDown.called, 'onKeyDown called');
-				h.trigger('@input', 'onkeypress');
+				h.trigger('@input', 'onkeypress', stubEvent);
 				assert.isTrue(onKeyPress.called, 'onKeyPress called');
-				h.trigger('@input', 'onkeyup');
+				h.trigger('@input', 'onkeyup', stubEvent);
 				assert.isTrue(onKeyUp.called, 'onKeyUp called');
-				h.trigger('@input', 'onmousedown');
+				h.trigger('@input', 'onmousedown', stubEvent);
 				assert.isTrue(onMouseDown.called, 'onMouseDown called');
-				h.trigger('@input', 'onmouseup');
+				h.trigger('@input', 'onmouseup', stubEvent);
 				assert.isTrue(onMouseUp.called, 'onMouseUp called');
-				h.trigger('@input', 'ontouchstart');
+				h.trigger('@input', 'ontouchstart', stubEvent);
 				assert.isTrue(onTouchStart.called, 'onTouchStart called');
-				h.trigger('@input', 'ontouchend');
+				h.trigger('@input', 'ontouchend', stubEvent);
 				assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-				h.trigger('@input', 'ontouchcancel');
+				h.trigger('@input', 'ontouchcancel', stubEvent);
 				assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 			}
 		}
