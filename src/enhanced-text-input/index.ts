@@ -21,7 +21,7 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 		'addonAfter',
 		'addonBefore',
 		'aria',
-		'focus',
+		'shouldFocus',
 		'disabled',
 		'invalid',
 		'readOnly'

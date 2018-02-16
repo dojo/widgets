@@ -50,7 +50,7 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 	role?: RoleType;
 	title?: string;
 	underlay?: boolean;
-};
+}
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 

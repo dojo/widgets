@@ -1,5 +1,6 @@
 export const tab: string;
 export const close: string;
+export const hidden: string;
 export const closeable: string;
 export const activeTabButton: string;
 export const root: string;

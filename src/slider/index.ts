@@ -54,6 +54,7 @@ function extractValue(event: Event): number {
 		'invalid',
 		'required',
 		'readOnly',
+		'output',
 		'max',
 		'min',
 		'outputIsTooltip',

@@ -21,7 +21,7 @@ export const enum Align {
 	left = 'left',
 	right = 'right',
 	top = 'top'
-};
+}
 
 /**
  * @type SlidePaneProperties
@@ -46,7 +46,7 @@ export interface SlidePaneProperties extends ThemedProperties, CustomAriaPropert
 	title?: string;
 	underlay?: boolean;
 	width?: number;
-};
+}
 
 /**
  * The default width of the slide pane
@@ -56,7 +56,7 @@ const DEFAULT_WIDTH = 320;
 const enum Plane {
 	x,
 	y
-};
+}
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 

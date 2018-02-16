@@ -4,6 +4,7 @@
 /html-report
 node_modules
 /typings
+/output
 .baseDir.ts
 .tscache
 coverage-unmapped.json

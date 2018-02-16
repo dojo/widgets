@@ -35,14 +35,28 @@ export interface CheckboxProperties extends ThemedProperties, InputProperties, L
 export const enum Mode {
 	normal,
 	toggle
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @customElement<CheckboxProperties>({
 	tag: 'dojo-checkbox',
-	properties: [ 'theme', 'aria', 'extraClasses', 'labelAfter', 'labelHidden', 'checked', 'mode', 'offLabel', 'onLabel' ],
+	properties: [
+		'required',
+		'invalid',
+		'readOnly',
+		'disabled',
+		'theme',
+		'aria',
+		'extraClasses',
+		'labelAfter',
+		'labelHidden',
+		'checked',
+		'mode',
+		'offLabel',
+		'onLabel'
+	],
 	attributes: [ 'label', 'value' ],
 	events: [
 		'onBlur',

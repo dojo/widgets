@@ -22,7 +22,7 @@ export interface TooltipProperties extends ThemedProperties, CustomAriaPropertie
 	content: DNode;
 	orientation?: Orientation;
 	open?: boolean;
-};
+}
 
 // Enum used to position the Tooltip
 export const enum Orientation {
@@ -30,7 +30,7 @@ export const enum Orientation {
 	left = 'left',
 	right = 'right',
 	top = 'top'
-};
+}
 
 const fixedOrientationCss: {[key: string]: any} = fixedCss;
 const orientationCss: {[key: string]: any} = css;

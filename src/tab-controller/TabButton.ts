@@ -49,7 +49,7 @@ export interface TabButtonProperties extends ThemedProperties {
 	onLeftArrowPress?: () => void;
 	onRightArrowPress?: () => void;
 	onUpArrowPress?: () => void;
-};
+}
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 

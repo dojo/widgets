@@ -1,0 +1,31 @@
+{
+	"build-widget": {
+		"elements": [
+			"src/accordionpane/AccordionPane",
+			"src/button/Button",
+			"src/calendar/Calendar",
+			"src/calendar/CalendarCell",
+			"src/checkbox/Checkbox",
+			"src/combobox/ComboBox",
+			"src/dialog/Dialog",
+			"src/DomWidget",
+			"src/enhancedtextinput/EnhancedTextInput",
+			"src/label/Label",
+			"src/listbox/Listbox",
+			"src/progress/Progress",
+			"src/radio/Radio",
+			"src/select/Select",
+			"src/slidepane/SlidePane",
+			"src/slider/Slider",
+			"src/splitpane/SplitPane",
+			"src/tabcontroller/Tab",
+			"src/tabcontroller/TabController",
+			"src/textarea/Textarea",
+			"src/textinput/TextInput",
+			"src/timepicker/TimePicker",
+			"src/titlepane/TitlePane",
+			"src/toolbar/Toolbar",
+			"src/tooltip/Tooltip"
+		]
+	}
+}

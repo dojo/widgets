@@ -315,7 +315,7 @@ registerSuite('Listbox', {
 				public scroll(key: string | number, scrollValue: number) {
 					scrollStub(key, scrollValue);
 				}
-			};
+			}
 			class ScrollListbox extends Listbox {
 				meta(MetaType: any): any {
 					return new StubMeta();
@@ -349,7 +349,7 @@ registerSuite('Listbox', {
 				public scroll(key: string | number, scrollValue: number) {
 					scrollStub(key, scrollValue);
 				}
-			};
+			}
 			class ScrollListbox extends Listbox {
 				meta(MetaType: any): any {
 					return new StubDimensions();
