@@ -16,6 +16,7 @@ export type IconType = keyof typeof css;
  * Properties that can be set on an Icon component
  *
  * @property type           Icon type, e.g. downIcon, searchIcon, etc.
+ * @property altText        An optional, visually hidden label for the icon
  */
 export interface IconProperties extends ThemedProperties, CustomAriaProperties {
 	type: IconType;
@@ -32,22 +33,21 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'aria',
 		'extraClasses'
 	],
-	attributes: [ 'type' ]
+	attributes: [ 'type', 'altText' ]
 })
 export class IconBase<P extends IconProperties = IconProperties> extends ThemedBase<P, null> {
-	protected renderAltText(altText?: string) {
+	protected renderAltText(altText?: string): DNode | undefined {
 		return altText && v('span', { classes: [ baseCss.visuallyHidden ] }, [ altText ]);
 	}
 
-	protected renderIcon(type: IconType, role: 'presentation' | undefined, aria: {}) {
+	protected renderIcon(type: IconType, aria: {}): DNode {
 		return v('i', {
 			...formatAriaProperties(aria),
-			classes: this.theme([ css.icon, css[type] ]),
-			role
+			classes: this.theme([ css.icon, css[type] ])
 		});
 	}
 
-	protected render(): DNode {
+	render(): DNode {
 		const {
 			aria = {
 				hidden: 'true'
@@ -57,7 +57,7 @@ export class IconBase<P extends IconProperties = IconProperties> extends ThemedB
 		} = this.properties;
 
 		const altTextNode = this.renderAltText(altText);
-		const icon = this.renderIcon(type, altTextNode ? undefined : 'presentation', aria);
+		const icon = this.renderIcon(type, aria);
 
 		return v('span', { classes: this.theme(css.root) }, [
 			icon,

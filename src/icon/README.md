@@ -13,9 +13,9 @@ import { w } from '@dojo/widget-core/d';
 w(Icon, { type: 'downIcon', });
 ```
 
-By default the icon will be rendered with `role="presentation"` and
-`aria-hidden="true"`. Custom aria attributes can be specified to
-override the default.
+By default the icon will be rendered with `aria-hidden="true"`.
+Custom aria attributes can be specified to override the default, and
+text for screen readers can be provided via the `altText` property.
 
 *Custom aria attributes Example*
 ```typescript
@@ -28,6 +28,18 @@ w(Icon, {
 		hidden: 'false',
 		label: 'label'
 	}
+});
+```
+
+
+*Example with altText*
+```typescript
+import Icon from '@dojo/widgets/icon/Icon';
+import { w } from '@dojo/widget-core/d';
+
+w(Icon, {
+	type: 'downIcon',
+	altText: 'Go down'
 });
 ```
 ## Theming

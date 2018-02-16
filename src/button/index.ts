@@ -158,7 +158,9 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null
 		}, [
 			...this.getContent(),
-			popup ? w(Icon, { extraClasses: { root: css.addon }, type: 'downIcon' }) : null
+			popup ? v('span', { classes: this.theme(css.addon) }, [
+				w(Icon, { extraClasses: { root: css.addon }, type: 'downIcon' })
+			]) : null
 		]);
 	}
 }
