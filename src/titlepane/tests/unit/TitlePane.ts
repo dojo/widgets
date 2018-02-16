@@ -2,7 +2,6 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { v, w } from '@dojo/widget-core/d';
-import global from '@dojo/shim/global';
 import TitlePane, { TitlePaneProperties } from '../../TitlePane';
 import * as css from '../../../theme/titlepane/titlePane.m.css';
 import * as fixedCss from '../../styles/titlePane.m.css';
