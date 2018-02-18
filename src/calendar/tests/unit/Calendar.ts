@@ -260,34 +260,40 @@ registerSuite('Calendar', {
 			// right arrow, then select
 			h.trigger('@date-4', 'onKeyDown', {
 				which: Keys.Right,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			h.trigger('@date-4', 'onFocusCalled');
 			h.trigger('@date-5', 'onKeyDown', {
 				which: Keys.Enter,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			assert.strictEqual(selectedDate.getDate(), 2, 'Right arrow + enter selects second day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
 			h.trigger('@date-5', 'onKeyDown', {
 				which: Keys.Down,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			h.trigger('@date-12', 'onKeyDown', {
 				which: Keys.Enter,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			assert.strictEqual(selectedDate.getDate(), 9, 'Down arrow + enter selects one week down');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
 			h.trigger('@date-12', 'onKeyDown', {
 				which: Keys.Left,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			h.trigger('@date-11', 'onKeyDown', {
 				which: Keys.Space,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 
 			assert.strictEqual(selectedDate.getDate(), 8, 'Left arrow + space selects previous day');
@@ -295,11 +301,13 @@ registerSuite('Calendar', {
 
 			h.trigger('@date-11', 'onKeyDown', {
 				which: Keys.Up,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			h.trigger('@date-4', 'onKeyDown', {
 				which: Keys.Space,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Left arrow + space selects previous day');
@@ -307,11 +315,13 @@ registerSuite('Calendar', {
 
 			h.trigger('@date-4', 'onKeyDown', {
 				which: Keys.PageDown,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			h.trigger('@date-33', 'onKeyDown', {
 				which: Keys.Space,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 
 			assert.strictEqual(selectedDate.getDate(), 30, 'Page Down + space selects last day');
@@ -319,11 +329,13 @@ registerSuite('Calendar', {
 
 			h.trigger('@date-33', 'onKeyDown', {
 				which: Keys.PageUp,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			h.trigger('@date-4', 'onKeyDown', {
 				which: Keys.Space,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Page Up + space selects first day');
@@ -342,17 +354,20 @@ registerSuite('Calendar', {
 
 			h.trigger('@date-4', 'onKeyDown', {
 				which: Keys.Left,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Going left from the first day goes to previous month');
 
 			h.trigger('@date-4', 'onKeyDown', {
 				which: Keys.PageDown,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			h.trigger('@date-4', 'onKeyDown', {
 				which: Keys.Right,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 			assert.strictEqual(currentMonth, testDate.getMonth(), 'Going right from the last day goes to next month');
 		},
@@ -374,7 +389,8 @@ registerSuite('Calendar', {
 
 			h.trigger('@date-0', 'onKeyDown', {
 				which: Keys.Up,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 
 			assert.strictEqual(currentMonth, 11, 'Previous month wraps from January to December');
@@ -393,7 +409,8 @@ registerSuite('Calendar', {
 
 			h.trigger('@date-35', 'onKeyDown', {
 				which: Keys.Down,
-				preventDefault: () => {}
+				preventDefault: () => {},
+				...stubEvent
 			});
 
 			assert.strictEqual(currentMonth, 0, 'Next month wraps from December to January');
