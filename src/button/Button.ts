@@ -30,7 +30,7 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 	pressed?: boolean;
 	type?: ButtonType;
 	value?: string;
-	onClick?(value?: string | number | boolean): void;
+	onClick?(): void;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
