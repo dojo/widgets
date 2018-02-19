@@ -39,10 +39,10 @@ export interface InputProperties {
  * @property onInput        Called when the 'input' event is fired
  */
 export interface InputEventProperties {
-	onBlur?(event: FocusEvent): void;
-	onChange?(event: Event): void;
-	onFocus?(event: FocusEvent): void;
-	onInput?(event: Event): void;
+	onBlur?(): void;
+	onChange?(): void;
+	onFocus?(): void;
+	onInput?(): void;
 }
 
 /**
@@ -52,9 +52,9 @@ export interface InputEventProperties {
  * @property onKeyUp        Called on the input's keyup event
  */
 export interface KeyEventProperties {
-	onKeyDown?(event: KeyboardEvent): void;
-	onKeyPress?(event: KeyboardEvent): void;
-	onKeyUp?(event: KeyboardEvent): void;
+	onKeyDown?(): void;
+	onKeyPress?(): void;
+	onKeyUp?(): void;
 }
 
 /**
@@ -79,10 +79,10 @@ export interface LabeledProperties {
  * @property onTouchCancel  Called on the input's touchcancel event
  */
 export interface PointerEventProperties {
-	onClick?(event: MouseEvent): void;
-	onMouseDown?(event: MouseEvent): void;
-	onMouseUp?(event: MouseEvent): void;
-	onTouchStart?(event: TouchEvent): void;
-	onTouchEnd?(event: TouchEvent): void;
-	onTouchCancel?(event: TouchEvent): void;
+	onClick?(): void;
+	onMouseDown?(): void;
+	onMouseUp?(): void;
+	onTouchStart?(): void;
+	onTouchEnd?(): void;
+	onTouchCancel?(): void;
 }
