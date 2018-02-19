@@ -46,20 +46,20 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 	private _uuid = uuid();
 
 	private _onBlur (event: FocusEvent) {
-		const radio = (event.target as HTMLInputElement);
+		const radio = event.target as HTMLInputElement;
 		this.properties.onBlur && this.properties.onBlur(radio.value, radio.checked);
 	}
 	private _onChange (event: Event) {
-		const radio = (event.target as HTMLInputElement);
+		const radio = event.target as HTMLInputElement;
 		this.properties.onChange && this.properties.onChange(radio.value, radio.checked);
 	}
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		const radio = (event.target as HTMLInputElement);
+		const radio = event.target as HTMLInputElement;
 		this.properties.onClick && this.properties.onClick(radio.value, radio.checked);
 	}
 	private _onFocus (event: FocusEvent) {
-		const radio = (event.target as HTMLInputElement);
+		const radio = event.target as HTMLInputElement;
 		this.properties.onFocus && this.properties.onFocus(radio.value, radio.checked);
 	}
 	private _onMouseDown (event: MouseEvent) {

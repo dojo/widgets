@@ -61,20 +61,20 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 })
 export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) {
-		const checkbox = (event.target as HTMLInputElement);
+		const checkbox = event.target as HTMLInputElement;
 		this.properties.onBlur && this.properties.onBlur(checkbox.value, checkbox.checked);
 	}
 	private _onChange (event: Event) {
-		const checkbox = (event.target as HTMLInputElement);
+		const checkbox = event.target as HTMLInputElement;
 		this.properties.onChange && this.properties.onChange(checkbox.value, checkbox.checked);
 	}
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		const checkbox = (event.target as HTMLInputElement);
+		const checkbox = event.target as HTMLInputElement;
 		this.properties.onClick && this.properties.onClick(checkbox.value, checkbox.checked);
 	}
 	private _onFocus (event: FocusEvent) {
-		const checkbox = (event.target as HTMLInputElement);
+		const checkbox = event.target as HTMLInputElement;
 		this.properties.onFocus && this.properties.onFocus(checkbox.value, checkbox.checked);
 	}
 	private _onMouseDown (event: MouseEvent) {
