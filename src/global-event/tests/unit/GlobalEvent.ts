@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import { stub, SinonStub } from 'sinon';
 
 import global from '@dojo/shim/global';
-import { GlobalEvent } from './../../GlobalEvent';
+import { GlobalEvent } from './../../index';
 import { harness } from '@dojo/test-extras/harness';
 import { w } from '@dojo/widget-core/d';
 

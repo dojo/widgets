@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import Tab from '../Tab';
-import TabController, { Align } from '../TabController';
+import TabController, { Align } from '../../tab-controller';
 import Task from '@dojo/core/async/Task';
 
 let refresh: Task<any>;

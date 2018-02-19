@@ -6,8 +6,8 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import harness from '@dojo/test-extras/harness';
 
-import Label from '../../../label/Label';
-import Checkbox, { Mode, CheckboxProperties } from '../../Checkbox';
+import Label from '../../../label';
+import Checkbox, { Mode, CheckboxProperties } from '../../index';
 import * as css from '../../../theme/checkbox/checkbox.m.css';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 

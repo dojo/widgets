@@ -7,7 +7,7 @@ import { Keys } from '../../../common/util';
 import Focus from '@dojo/widget-core/meta/Focus';
 import { v, w } from '@dojo/widget-core/d';
 
-import Listbox from '../../Listbox';
+import Listbox from '../../index';
 import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';
 import * as css from '../../../theme/listbox/listbox.m.css';
 import { createHarness, compareId, noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';

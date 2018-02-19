@@ -5,10 +5,10 @@ import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import * as sinon from 'sinon';
-import TimePicker, { getOptions, parseUnits } from '../../TimePicker';
+import TimePicker, { getOptions, parseUnits } from '../../index';
 import * as css from '../../../theme/timepicker/timePicker.m.css';
-import ComboBox from '../../../combobox/ComboBox';
-import Label from '../../../label/Label';
+import ComboBox from '../../../combobox';
+import Label from '../../../label';
 import { noop, compareId, compareForId, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
 const testProperties = {

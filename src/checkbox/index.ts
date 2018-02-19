@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Focus from '@dojo/widget-core/meta/Focus';
-import Label from '../label/Label';
+import Label from '../label/index';
 import { CustomAriaProperties, LabeledProperties, InputProperties, CheckboxRadioEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';

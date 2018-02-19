@@ -6,8 +6,8 @@ import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 
-import EnhancedTextInput from '../../EnhancedTextInput';
-import Label from '../../../label/Label';
+import EnhancedTextInput from '../../index';
+import Label from '../../../label';
 import * as css from '../../../theme/enhancedtextinput/enhancedtextinput.m.css';
 import * as textInputCss from '../../../theme/textinput/textinput.m.css';
 import { VNodeProperties } from '@dojo/widget-core/interfaces';

@@ -5,7 +5,7 @@ import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
-import TimePicker, { getOptions, TimeUnits } from '../TimePicker';
+import TimePicker, { getOptions, TimeUnits } from '../../time-picker';
 import * as baseCss from '../../common/styles/base.m.css';
 
 setLocaleData();

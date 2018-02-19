@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Progress from '../../progress/Progress';
+import Progress from '../../progress';
 
 const customOutputMax = 750;
 function customOutput(value: number, percent: number) {

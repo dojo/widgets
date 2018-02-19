@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { w, v } from '@dojo/widget-core/d';
-import Button from '../../button/Button';
+import Button from '../../button';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _buttonPressed: boolean;

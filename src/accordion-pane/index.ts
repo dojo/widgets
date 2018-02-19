@@ -7,7 +7,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import TitlePane from '../titlepane/TitlePane';
+import TitlePane from '../title-pane';
 import * as css from '../theme/accordionpane/accordionPane.m.css';
 
 /**

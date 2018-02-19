@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import Select from '../../select/Select';
+import Select from '../../select';
 import { v, w } from '@dojo/widget-core/d';
 
 const modules = [

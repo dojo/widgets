@@ -5,8 +5,8 @@ import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 
-import Label from '../../../label/Label';
-import Radio from '../../Radio';
+import Label from '../../../label';
+import Radio from '../../../radio';
 import * as css from '../../../theme/radio/radio.m.css';
 import { createHarness, compareId, compareForId, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 

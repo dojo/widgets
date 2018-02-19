@@ -4,8 +4,8 @@ import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 
-import Label from '../../../label/Label';
-import Slider from '../../Slider';
+import Label from '../../../label';
+import Slider from '../../index';
 import * as css from '../../../theme/slider/slider.m.css';
 import * as fixedCss from '../../styles/slider.m.css';
 import { compareId, compareForId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';

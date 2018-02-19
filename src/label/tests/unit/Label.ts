@@ -3,7 +3,7 @@ const { registerSuite } = intern.getInterface('object');
 import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 
-import Label from '../../Label';
+import Label from '../../index';
 import * as css from '../../../theme/label/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 

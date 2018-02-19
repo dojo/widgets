@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Slider from '../../slider/Slider';
+import Slider from '../../slider';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _tribbleValue: number;

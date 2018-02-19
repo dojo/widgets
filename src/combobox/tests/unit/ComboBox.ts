@@ -6,10 +6,10 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
-import ComboBox from '../../ComboBox';
-import Label from '../../../label/Label';
-import Listbox from '../../../listbox/Listbox';
-import TextInput from '../../../textinput/TextInput';
+import ComboBox from '../../index';
+import Label from '../../../label';
+import Listbox from '../../../listbox';
+import TextInput from '../../../text-input';
 import * as css from '../../../theme/combobox/comboBox.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 import {

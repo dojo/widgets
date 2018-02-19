@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 
-import TabController, { Align } from '../../TabController';
+import TabController, { Align } from '../../index';
 import TabButton from '../../TabButton';
 import Tab from '../../Tab';
 import * as css from '../../../theme/tabcontroller/tabController.m.css';

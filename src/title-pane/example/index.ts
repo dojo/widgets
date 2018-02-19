@@ -3,7 +3,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 
-import TitlePane from '../TitlePane';
+import TitlePane from '../../title-pane';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _t2Open = true;

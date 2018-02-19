@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Radio from '../../radio/Radio';
+import Radio from '../../radio';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _inputValue: string;

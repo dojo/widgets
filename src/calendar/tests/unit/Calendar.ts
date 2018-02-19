@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/defaults';
-import Calendar from '../../Calendar';
+import Calendar from '../../index';
 import CalendarCell from '../../CalendarCell';
 import DatePicker from '../../DatePicker';
 import * as css from '../../../theme/calendar/calendar.m.css';

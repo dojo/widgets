@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Textarea from '../../textarea/Textarea';
+import Textarea from '../../text-area';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _value1: string;

@@ -5,13 +5,13 @@ import { ThemedMixin, theme, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import SlidePane, { Align } from '../slidepane/SlidePane';
+import SlidePane, { Align } from '../slide-pane';
 import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import * as fixedCss from './styles/toolbar.m.css';
 import * as css from '../theme/toolbar/toolbar.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
-import { GlobalEvent } from '../global-event/GlobalEvent';
+import { GlobalEvent } from '../global-event';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

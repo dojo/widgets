@@ -3,7 +3,7 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import ComboBox from '../ComboBox';
+import ComboBox from '../../combobox';
 
 const data = [
 	{ value: 'Maine' },

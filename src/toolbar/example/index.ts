@@ -3,7 +3,7 @@ import { w, v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 
-import Toolbar from '../Toolbar';
+import Toolbar from '../../toolbar';
 
 export class App extends WidgetBase<WidgetProperties> {
 	onAttach() {

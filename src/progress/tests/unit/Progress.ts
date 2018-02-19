@@ -1,7 +1,7 @@
 const { describe, it} = intern.getInterface('bdd');
 import { v, w } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
-import Progress from '../../Progress';
+import Progress from '../../index';
 import * as css from '../../../theme/progress/progress.m.css';
 
 const expectedVDom = function(args: any) {

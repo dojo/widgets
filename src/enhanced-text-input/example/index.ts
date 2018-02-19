@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import EnhancedTextInput from '../EnhancedTextInput';
+import EnhancedTextInput from '../../enhanced-text-input';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _value1: string;

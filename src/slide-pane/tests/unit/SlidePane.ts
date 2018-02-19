@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { v, w } from '@dojo/widget-core/d';
 
-import SlidePane, { Align } from '../../SlidePane';
+import SlidePane, { Align } from '../../index';
 import * as css from '../../../theme/slidepane/slidePane.m.css';
 import * as fixedCss from '../../styles/slidePane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';

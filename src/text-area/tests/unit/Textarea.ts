@@ -5,8 +5,8 @@ import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 
-import Label from '../../../label/Label';
-import Textarea from '../../Textarea';
+import Label from '../../../label';
+import Textarea from '../../index';
 import * as css from '../../../theme/textarea/textarea.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
