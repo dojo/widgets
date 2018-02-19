@@ -84,7 +84,12 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 	private _wasOpen: boolean;
 	private _callFocus = false;
 
-	private _onCloseClick() {
+	private _onCloseClick(event: MouseEvent) {
+		event.stopPropagation();
+		this._close();
+	}
+
+	private _close() {
 		const {
 			closeable = true,
 			onRequestClose
@@ -93,13 +98,15 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		closeable && onRequestClose && onRequestClose();
 	}
 
-	private _onUnderlayClick() {
-		!this.properties.modal && this._onCloseClick();
+	private _onUnderlayClick(event: MouseEvent) {
+		event.stopPropagation();
+		!this.properties.modal && this._close();
 	}
 
 	private _onKeyUp = (event: KeyboardEvent): void => {
+		event.stopPropagation();
 		if (event.which === Keys.Escape) {
-			this._onCloseClick();
+			this._close();
 		}
 	}
 

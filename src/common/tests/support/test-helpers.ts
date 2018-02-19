@@ -5,6 +5,10 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 export const noop: any = () => {};
 
+export const stubEvent = {
+	stopPropagation: noop
+};
+
 export const isStringComparator = (value: any) => typeof value === 'string';
 export const isStringObjectComparator = (value: any) => Object.keys(value).every((key) => typeof value[key] === 'string');
 

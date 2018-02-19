@@ -7,7 +7,7 @@ import { v, w } from '@dojo/widget-core/d';
 
 import ListboxOption from '../../ListboxOption';
 import * as css from '../../../theme/listbox/listbox.m.css';
-import { noop } from '../../../common/tests/support/test-helpers';
+import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('ListboxOption', {
 	tests: {
@@ -62,7 +62,7 @@ registerSuite('ListboxOption', {
 				onClick
 			}));
 
-			h.trigger(`.${css.option}`, 'onclick');
+			h.trigger(`.${css.option}`, 'onclick', stubEvent);
 			assert.isTrue(onClick.calledWith('baz', 1));
 		}
 	}

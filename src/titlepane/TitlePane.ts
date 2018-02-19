@@ -48,7 +48,8 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 	private _contentId = uuid();
 	private _titleId = uuid();
 
-	private _onTitleClick() {
+	private _onTitleClick(event: MouseEvent) {
+		event.stopPropagation();
 		this._toggle();
 	}
 

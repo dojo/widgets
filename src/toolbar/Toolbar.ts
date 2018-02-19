@@ -82,7 +82,8 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		}
 	}
 
-	private _toggleMenu() {
+	private _toggleMenu(event: MouseEvent) {
+		event.stopPropagation();
 		this._open = !this._open;
 		this.invalidate();
 	}

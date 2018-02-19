@@ -11,7 +11,7 @@ import * as fixedCss from '../../styles/toolbar.m.css';
 import * as css from '../../../theme/toolbar/toolbar.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 import { GlobalEvent } from '../../../global-event/GlobalEvent';
-import { noop, MockMetaMixin } from '../../../common/tests/support/test-helpers';
+import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('Toolbar', {
 	tests: {
@@ -350,7 +350,7 @@ registerSuite('Toolbar', {
 					}, [])
 				]));
 
-			h.trigger(`.${css.menuButton}`, 'onclick');
+			h.trigger(`.${css.menuButton}`, 'onclick', stubEvent);
 			h.trigger('@slide-pane-menu', 'onRequestClose');
 			h.expect(() =>
 				v('div', {

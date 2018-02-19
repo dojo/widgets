@@ -13,10 +13,11 @@ import * as iconCss from '../../../theme/common/icons.m.css';
 import {
 	compareAriaLabelledBy,
 	compareAriaControls,
-	compareId
+	compareId,
+	stubEvent,
+	noop
 } from '../../../common/tests/support/test-helpers';
 
-const noop = () => {};
 const testDate = new Date('June 3 2017');
 const requiredProps = {
 	labels: DEFAULT_LABELS,
@@ -370,9 +371,9 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps
 			}));
 
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'First click should open popup');
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			assert.isFalse(isOpen, 'Second click should close popup');
 		},
 
@@ -383,10 +384,10 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps
 			}));
 
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'First click should open popup');
 
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			assert.isFalse(isOpen, 'Second click should close popup');
 		},
 
@@ -398,11 +399,11 @@ registerSuite('Calendar DatePicker', {
 			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 			h.expect(() => expected(false, false));
 
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
 			assert.isTrue(isOpen, 'Month button opens popup');
 
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
 			assert.isTrue(isOpen, 'After clicking year button, popup is still open');
 		},
@@ -417,30 +418,30 @@ registerSuite('Calendar DatePicker', {
 
 			// escape key
 			assert.isTrue(isOpen);
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Escape });
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Escape, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Enter });
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Enter, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Space });
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.Space, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			h.expect(() => expected(true, false));
-			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.PageDown });
+			h.trigger(`.${css.monthGrid} fieldset`, 'onkeydown', { which: Keys.PageDown, ...stubEvent });
 			h.expect(() => expected(true, false));
 			assert.isTrue(isOpen, 'Other keys don\'t close popup');
 		},
@@ -455,30 +456,30 @@ registerSuite('Calendar DatePicker', {
 
 			// escape key
 			assert.isTrue(isOpen);
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Escape });
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Escape, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Enter });
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Enter, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Space });
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.Space, ...stubEvent });
 			h.expect(() => expected(false, false));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
-			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.PageDown });
+			h.trigger(`.${css.yearGrid} fieldset`, 'onkeydown', { which: Keys.PageDown, ...stubEvent });
 			h.expect(() => expected(false, true));
 			assert.isTrue(isOpen, 'Other keys don\'t close popup');
 		},
@@ -487,13 +488,13 @@ registerSuite('Calendar DatePicker', {
 			const h = harness(() => w(DatePicker, {
 				...requiredProps
 			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
 
-			h.trigger(`.${css.next}`, 'onclick');
+			h.trigger(`.${css.next}`, 'onclick', stubEvent);
 			h.expect(() => expected(false, true, { yearStart: 2020, yearEnd: 2040 }));
 
-			h.trigger(`.${css.previous}`, 'onclick');
+			h.trigger(`.${css.previous}`, 'onclick', stubEvent);
 			h.expect(() => expected(false, true, { yearStart: 2000, yearEnd: 2020 }));
 		},
 
@@ -506,13 +507,13 @@ registerSuite('Calendar DatePicker', {
 				onRequestMonthChange: (month: number) => { currentMonth = month; }
 			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
-			h.trigger('@month-button', 'onclick');
+			h.trigger('@month-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'Month popup opens when clicking month button');
 
 			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onchange', { target: { value: 6 } });
 			assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
 
-			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onmouseup');
+			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onmouseup', stubEvent);
 			assert.isFalse(isOpen, 'Clicking radios closes popup');
 		},
 
@@ -525,13 +526,13 @@ registerSuite('Calendar DatePicker', {
 				onRequestYearChange: (year: number) => { currentYear = year; }
 			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
 
-			h.trigger('@year-button', 'onclick');
+			h.trigger('@year-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'Year popup opens when clicking month button');
 
 			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onchange', { target: { value: 2001 } });
 			assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
 
-			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onmouseup');
+			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onmouseup', stubEvent);
 			assert.isFalse(isOpen, 'Clicking radios closes popup');
 		}
 	}

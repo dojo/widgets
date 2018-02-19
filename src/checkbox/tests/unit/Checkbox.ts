@@ -9,7 +9,7 @@ import harness from '@dojo/test-extras/harness';
 import Label from '../../../label/Label';
 import Checkbox, { Mode, CheckboxProperties } from '../../Checkbox';
 import * as css from '../../../theme/checkbox/checkbox.m.css';
-import { noop, MockMetaMixin } from '../../../common/tests/support/test-helpers';
+import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const expectedToggle = function(labels = false, checked = false) {
 	if (labels) {
@@ -379,19 +379,19 @@ registerSuite('Checkbox', {
 			assert.isTrue(onBlur.called, 'onBlur called');
 			h.trigger('input', 'onchange');
 			assert.isTrue(onChange.called, 'onChange called');
-			h.trigger('input', 'onclick');
+			h.trigger('input', 'onclick', stubEvent);
 			assert.isTrue(onClick.called, 'onClick called');
 			h.trigger('input', 'onfocus');
 			assert.isTrue(onFocus.called, 'onFocus called');
-			h.trigger('input', 'onmousedown');
+			h.trigger('input', 'onmousedown', stubEvent);
 			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			h.trigger('input', 'onmouseup');
+			h.trigger('input', 'onmouseup', stubEvent);
 			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-			h.trigger('input', 'ontouchstart');
+			h.trigger('input', 'ontouchstart', stubEvent);
 			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			h.trigger('input', 'ontouchend');
+			h.trigger('input', 'ontouchend', stubEvent);
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			h.trigger('input', 'ontouchcancel');
+			h.trigger('input', 'ontouchcancel', stubEvent);
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}

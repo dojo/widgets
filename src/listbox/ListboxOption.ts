@@ -22,6 +22,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 export class ListboxOptionBase<P extends ListboxOptionProperties = ListboxOptionProperties> extends ThemedBase<P, null> {
 	private _onClick(event: MouseEvent) {
+		event.stopPropagation();
 		const { index, key, option, onClick } = this.properties;
 		onClick && onClick(option, index, key);
 	}

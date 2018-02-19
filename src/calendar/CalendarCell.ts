@@ -37,11 +37,13 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<P, null> {
 	private _onClick(event: MouseEvent) {
+		event.stopPropagation();
 		const { date, disabled = false, onClick } = this.properties;
 		onClick && onClick(date, disabled);
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
 		const { onKeyDown } = this.properties;
 		onKeyDown && onKeyDown(event);
 	}

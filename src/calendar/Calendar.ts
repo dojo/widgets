@@ -180,6 +180,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 
 	private _onDateKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
 		const { month, year } = this._getMonthYear();
 		switch (event.which) {
 			case Keys.Up:
@@ -254,11 +255,13 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		return { month: month + 1, year: year };
 	}
 
-	private _onMonthPageDown() {
+	private _onMonthPageDown(event: MouseEvent) {
+		event.stopPropagation();
 		this._onMonthDecrement();
 	}
 
-	private _onMonthPageUp() {
+	private _onMonthPageUp(event: MouseEvent) {
+		event.stopPropagation();
 		this._onMonthIncrement();
 	}
 

@@ -10,7 +10,7 @@ import * as fixedCss from '../../styles/splitPane.m.css';
 import SplitPane, { Direction } from '../../SplitPane';
 import { GlobalEvent } from '../../../global-event/GlobalEvent';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
-import { noop, MockMetaMixin } from '../../../common/tests/support/test-helpers';
+import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
 function createVNodeSelector(type: 'window' | 'document', name: string) {
 	return (node: any) => {
@@ -119,10 +119,10 @@ registerSuite('SplitPane', {
 				onResize: (size: number) => setSize = size
 			}));
 
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0 });
-			h.trigger('@divider', 'onmousedown', { clientX: 500 });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0 });
-			h.trigger('@global', createVNodeSelector('window', 'mouseup'));
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0, ...stubEvent });
+			h.trigger('@divider', 'onmousedown', { clientX: 500, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'), stubEvent);
 			assert.strictEqual(setSize, 0);
 		},
 
@@ -132,9 +132,9 @@ registerSuite('SplitPane', {
 				onResize: (size: number) => setSize = size
 			}));
 
-			h.trigger('@divider', 'onmousedown', { clientX: 0 });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 500 });
-			h.trigger('@global', createVNodeSelector('window', 'mouseup'), { clientX: 0 });
+			h.trigger('@divider', 'onmousedown', { clientX: 0, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 500, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'), { clientX: 0, ...stubEvent });
 			assert.strictEqual(setSize, 0);
 		},
 
@@ -145,9 +145,9 @@ registerSuite('SplitPane', {
 				onResize: () => called = true
 			}));
 
-			h.trigger('@divider', 'onmousedown', { clientX: 110 });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150 });
-			h.trigger('@global', createVNodeSelector('window', 'mouseup'));
+			h.trigger('@divider', 'onmousedown', { clientX: 110, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'), stubEvent);
 			assert.isTrue(called);
 		},
 
@@ -159,9 +159,9 @@ registerSuite('SplitPane', {
 				direction: Direction.column
 			}));
 
-			h.trigger('@divider', 'onmousedown', { clientX: 110 });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150 });
-			h.trigger('@global', createVNodeSelector('window', 'mouseup'));
+			h.trigger('@divider', 'onmousedown', { clientX: 110, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'), stubEvent);
 
 			assert.isTrue(called);
 		},
@@ -175,9 +175,9 @@ registerSuite('SplitPane', {
 				size: 100
 			}));
 
-			h.trigger('@divider', 'ontouchstart', { clientX: 110 });
-			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150 });
-			h.trigger('@global', createVNodeSelector('window', 'touchend'));
+			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchend'), stubEvent);
 
 			assert.isTrue(called);
 		},
@@ -190,12 +190,12 @@ registerSuite('SplitPane', {
 				direction: Direction.column
 			}));
 
-			h.trigger('@divider', 'ontouchstart', { clientX: 110 });
-			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150 });
-			h.trigger('@global', createVNodeSelector('window', 'touchend'));
-			h.trigger('@divider', 'ontouchstart', { clientX: 110 });
-			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150 });
-			h.trigger('@global', createVNodeSelector('window', 'touchend'));
+			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchend'), stubEvent);
+			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchend'), stubEvent);
 
 			assert.strictEqual(called, 2);
 		}
