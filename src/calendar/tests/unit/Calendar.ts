@@ -258,85 +258,37 @@ registerSuite('Calendar', {
 			}));
 
 			// right arrow, then select
-			h.trigger('@date-4', 'onKeyDown', {
-				which: Keys.Right,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-4', 'onKeyDown', Keys.Right, () => {});
 			h.trigger('@date-4', 'onFocusCalled');
-			h.trigger('@date-5', 'onKeyDown', {
-				which: Keys.Enter,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-5', 'onKeyDown', Keys.Enter, () => {});
 			assert.strictEqual(selectedDate.getDate(), 2, 'Right arrow + enter selects second day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			h.trigger('@date-5', 'onKeyDown', {
-				which: Keys.Down,
-				preventDefault: () => {},
-				...stubEvent
-			});
-			h.trigger('@date-12', 'onKeyDown', {
-				which: Keys.Enter,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-5', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-12', 'onKeyDown', Keys.Enter, () => {});
 			assert.strictEqual(selectedDate.getDate(), 9, 'Down arrow + enter selects one week down');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			h.trigger('@date-12', 'onKeyDown', {
-				which: Keys.Left,
-				preventDefault: () => {},
-				...stubEvent
-			});
-			h.trigger('@date-11', 'onKeyDown', {
-				which: Keys.Space,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-12', 'onKeyDown', Keys.Left, () => {});
+			h.trigger('@date-11', 'onKeyDown', Keys.Space, () => {});
 
 			assert.strictEqual(selectedDate.getDate(), 8, 'Left arrow + space selects previous day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			h.trigger('@date-11', 'onKeyDown', {
-				which: Keys.Up,
-				preventDefault: () => {},
-				...stubEvent
-			});
-			h.trigger('@date-4', 'onKeyDown', {
-				which: Keys.Space,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-11', 'onKeyDown', Keys.Up, () => {});
+			h.trigger('@date-4', 'onKeyDown', Keys.Space, () => {});
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Left arrow + space selects previous day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			h.trigger('@date-4', 'onKeyDown', {
-				which: Keys.PageDown,
-				preventDefault: () => {},
-				...stubEvent
-			});
-			h.trigger('@date-33', 'onKeyDown', {
-				which: Keys.Space,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-4', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-33', 'onKeyDown', Keys.Space, () => {});
 
 			assert.strictEqual(selectedDate.getDate(), 30, 'Page Down + space selects last day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
 
-			h.trigger('@date-33', 'onKeyDown', {
-				which: Keys.PageUp,
-				preventDefault: () => {},
-				...stubEvent
-			});
-			h.trigger('@date-4', 'onKeyDown', {
-				which: Keys.Space,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-33', 'onKeyDown', Keys.PageUp, () => {});
+			h.trigger('@date-4', 'onKeyDown', Keys.Space, () => {});
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Page Up + space selects first day');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Selected date is same month');
@@ -352,23 +304,11 @@ registerSuite('Calendar', {
 				}
 			}));
 
-			h.trigger('@date-4', 'onKeyDown', {
-				which: Keys.Left,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-4', 'onKeyDown', Keys.Left, () => {});
 			assert.strictEqual(currentMonth, testDate.getMonth() - 1, 'Going left from the first day goes to previous month');
 
-			h.trigger('@date-4', 'onKeyDown', {
-				which: Keys.PageDown,
-				preventDefault: () => {},
-				...stubEvent
-			});
-			h.trigger('@date-4', 'onKeyDown', {
-				which: Keys.Right,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-4', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-4', 'onKeyDown', Keys.Right, () => {});
 			assert.strictEqual(currentMonth, testDate.getMonth(), 'Going right from the last day goes to next month');
 		},
 
@@ -387,11 +327,7 @@ registerSuite('Calendar', {
 			};
 			const h = harness(() => w(Calendar, properties));
 
-			h.trigger('@date-0', 'onKeyDown', {
-				which: Keys.Up,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
 
 			assert.strictEqual(currentMonth, 11, 'Previous month wraps from January to December');
 			assert.strictEqual(currentYear, 2016, 'Year decrements when month wraps');
@@ -407,11 +343,7 @@ registerSuite('Calendar', {
 				}
 			};
 
-			h.trigger('@date-35', 'onKeyDown', {
-				which: Keys.Down,
-				preventDefault: () => {},
-				...stubEvent
-			});
+			h.trigger('@date-35', 'onKeyDown', Keys.Down, () => {});
 
 			assert.strictEqual(currentMonth, 0, 'Next month wraps from December to January');
 			assert.strictEqual(currentYear, 2018, 'Year increments when month wraps');
