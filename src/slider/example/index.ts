@@ -9,14 +9,12 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _verticalValue: number;
 	private _verticalInvalid: boolean;
 
-	onTribbleInput(event: Event) {
-		const value = (event.target as HTMLInputElement).value;
-		this._tribbleValue = parseFloat(value);
+	onTribbleInput(value: number) {
+		this._tribbleValue = value;
 		this.invalidate();
 	}
 
-	onVerticalInput(event: Event) {
-		const value = parseFloat((event.target as HTMLInputElement).value);
+	onVerticalInput(value: number) {
 		this._verticalValue = value;
 		this._verticalInvalid = value > 50;
 		this.invalidate();

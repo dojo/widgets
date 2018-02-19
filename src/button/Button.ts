@@ -30,6 +30,7 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 	pressed?: boolean;
 	type?: ButtonType;
 	value?: string;
+	onClick?(value?: string | number | boolean): void;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -69,15 +70,15 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 	}
 	private _onKeyDown (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown();
+		this.properties.onKeyDown && this.properties.onKeyDown(event.which, event.preventDefault);
 	}
 	private _onKeyPress (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress();
+		this.properties.onKeyPress && this.properties.onKeyPress(event.which, event.preventDefault);
 	}
 	private _onKeyUp (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp();
+		this.properties.onKeyUp && this.properties.onKeyUp(event.which, event.preventDefault);
 	}
 	private _onMouseDown (event: MouseEvent) {
 		event.stopPropagation();

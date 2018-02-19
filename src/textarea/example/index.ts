@@ -20,8 +20,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					placeholder: 'Hello, World',
 					label: 'Type Something',
 					value: this._value1,
-					onInput: (event: Event) => {
-						this._value1 = (event.target as HTMLInputElement).value;
+					onInput: (value: string) => {
+						this._value1 = value;
 						this.invalidate();
 					}
 				})
@@ -47,8 +47,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					required: true,
 					value: this._value2,
 					invalid: this._invalid,
-					onChange: (event: Event) => {
-						const value = (event.target as HTMLInputElement).value;
+					onChange: (value: string) => {
 						this._value2 = value;
 						this._invalid = value.trim().length === 0;
 						this.invalidate();

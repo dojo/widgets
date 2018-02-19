@@ -33,6 +33,7 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	placeholder?: string;
 	value?: string;
 	focus?: boolean;
+	onClick?(value: string): void;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -69,32 +70,32 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 })
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur();
+		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
 	private _onChange (event: Event) {
-		this.properties.onChange && this.properties.onChange();
+		this.properties.onChange && this.properties.onChange((event.target as HTMLInputElement).value);
 	}
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick();
+		this.properties.onClick && this.properties.onClick((event.target as HTMLInputElement).value);
 	}
 	private _onFocus (event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus();
+		this.properties.onFocus && this.properties.onFocus((event.target as HTMLInputElement).value);
 	}
 	private _onInput (event: Event) {
-		this.properties.onInput && this.properties.onInput();
+		this.properties.onInput && this.properties.onInput((event.target as HTMLInputElement).value);
 	}
 	private _onKeyDown (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown();
+		this.properties.onKeyDown && this.properties.onKeyDown(event.which, event.preventDefault);
 	}
 	private _onKeyPress (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress();
+		this.properties.onKeyPress && this.properties.onKeyPress(event.which, event.preventDefault);
 	}
 	private _onKeyUp (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp();
+		this.properties.onKeyUp && this.properties.onKeyUp(event.which, event.preventDefault);
 	}
 	private _onMouseDown (event: MouseEvent) {
 		event.stopPropagation();

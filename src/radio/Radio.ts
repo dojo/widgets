@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Focus from '@dojo/widget-core/meta/Focus';
 import Label from '../label/Label';
-import { CustomAriaProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, LabeledProperties, InputProperties, CheckboxRadioEventProperties, PointerEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
@@ -18,7 +18,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property checked          Checked/unchecked property of the radio
  * @property value           The current value
  */
-export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, CustomAriaProperties {
+export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
 	checked?: boolean;
 	value?: string;
 }
@@ -35,7 +35,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'onChange',
 		'onClick',
 		'onFocus',
-		'onInput',
 		'onMouseDown',
 		'onMouseUp',
 		'onTouchCancel',
@@ -47,18 +46,21 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 	private _uuid = uuid();
 
 	private _onBlur (event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur();
+		const radio = (event.target as HTMLInputElement);
+		this.properties.onBlur && this.properties.onBlur(radio.value, radio.checked);
 	}
 	private _onChange (event: Event) {
-		this.properties.onChange && this.properties.onChange();
+		const radio = (event.target as HTMLInputElement);
+		this.properties.onChange && this.properties.onChange(radio.value, radio.checked);
 	}
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick();
+		const radio = (event.target as HTMLInputElement);
+		this.properties.onClick && this.properties.onClick(radio.value, radio.checked);
 	}
 	private _onFocus (event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus();
-		this.invalidate();
+		const radio = (event.target as HTMLInputElement);
+		this.properties.onFocus && this.properties.onFocus(radio.value, radio.checked);
 	}
 	private _onMouseDown (event: MouseEvent) {
 		event.stopPropagation();

@@ -29,7 +29,7 @@ export interface CalendarCellProperties extends ThemedProperties {
 	today?: boolean;
 	onClick?(date: number, disabled: boolean): void;
 	onFocusCalled?(): void;
-	onKeyDown?(): void;
+	onKeyDown?(key: number, preventDefault: () => void): void;
 };
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -45,7 +45,7 @@ export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellPro
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
 		const { onKeyDown } = this.properties;
-		onKeyDown && onKeyDown();
+		onKeyDown && onKeyDown(event.which, event.preventDefault);
 	}
 
 	protected formatDate(date: number): DNode {

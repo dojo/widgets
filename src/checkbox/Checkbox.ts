@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Focus from '@dojo/widget-core/meta/Focus';
 import Label from '../label/Label';
-import { CustomAriaProperties, LabeledProperties, InputProperties, InputEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, LabeledProperties, InputProperties, CheckboxRadioEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
@@ -21,7 +21,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property onLabel        Label to show in the "on" positin of a toggle
  * @property value           The current value
  */
-export interface CheckboxProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
+export interface CheckboxProperties extends ThemedProperties, InputProperties, LabeledProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
 	checked?: boolean;
 	mode?: Mode;
 	offLabel?: DNode;
@@ -49,7 +49,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'onChange',
 		'onClick',
 		'onFocus',
-		'onInput',
 		'onKeyDown',
 		'onKeyPress',
 		'onKeyUp',
@@ -62,18 +61,21 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 })
 export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur();
+		const checkbox = (event.target as HTMLInputElement);
+		this.properties.onBlur && this.properties.onBlur(checkbox.value, checkbox.checked);
 	}
 	private _onChange (event: Event) {
-		this.properties.onChange && this.properties.onChange();
+		const checkbox = (event.target as HTMLInputElement);
+		this.properties.onChange && this.properties.onChange(checkbox.value, checkbox.checked);
 	}
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick();
+		const checkbox = (event.target as HTMLInputElement);
+		this.properties.onClick && this.properties.onClick(checkbox.value, checkbox.checked);
 	}
 	private _onFocus (event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus();
-		this.invalidate();
+		const checkbox = (event.target as HTMLInputElement);
+		this.properties.onFocus && this.properties.onFocus(checkbox.value, checkbox.checked);
 	}
 	private _onMouseDown (event: MouseEvent) {
 		event.stopPropagation();

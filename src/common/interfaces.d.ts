@@ -39,10 +39,17 @@ export interface InputProperties {
  * @property onInput        Called when the 'input' event is fired
  */
 export interface InputEventProperties {
-	onBlur?(): void;
-	onChange?(): void;
-	onFocus?(): void;
-	onInput?(): void;
+	onBlur?(value?: string | number | boolean): void;
+	onChange?(value?: string | number | boolean): void;
+	onFocus?(value?: string | number | boolean): void;
+	onInput?(value?: string | number | boolean): void;
+}
+
+export interface CheckboxRadioEventProperties {
+	onBlur?(value: string, checked: boolean): void;
+	onChange?(value: string, checked: boolean): void;
+	onFocus?(value: string, checked: boolean): void;
+	onClick?(value: string, checked: boolean): void;
 }
 
 /**
@@ -52,9 +59,9 @@ export interface InputEventProperties {
  * @property onKeyUp        Called on the input's keyup event
  */
 export interface KeyEventProperties {
-	onKeyDown?(): void;
-	onKeyPress?(): void;
-	onKeyUp?(): void;
+	onKeyDown?(key: number, preventDefault: () => void): void;
+	onKeyPress?(key: number, preventDefault: () => void): void;
+	onKeyUp?(key: number, preventDefault: () => void): void;
 }
 
 /**
@@ -71,7 +78,6 @@ export interface LabeledProperties {
 
 /**
  * @type PointerEventProperties
- * @property onClick        Called when the input is clicked
  * @property onMouseDown    Called on the input's mousedown event
  * @property onMouseUp      Called on the input's mouseup event
  * @property onTouchStart   Called on the input's touchstart event
@@ -79,7 +85,6 @@ export interface LabeledProperties {
  * @property onTouchCancel  Called on the input's touchcancel event
  */
 export interface PointerEventProperties {
-	onClick?(): void;
 	onMouseDown?(): void;
 	onMouseUp?(): void;
 	onTouchStart?(): void;
