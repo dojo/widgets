@@ -153,13 +153,13 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 		}, [
 			w(GlobalEvent, { key: 'global', window: { resize: this._onWindowResize } }),
 			v('div', {
-				'aria-level': headingLevel ? String(headingLevel) : null,
+				'aria-level': headingLevel ? `${headingLevel}` : null,
 				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), fixedCss.titleFixed, ...this.getFixedModifierClasses() ],
 				role: 'heading'
 			}, [
 				v('button', {
 					'aria-controls': `${this._id}-content`,
-					'aria-expanded': String(open),
+					'aria-expanded': `${open}`,
 					disabled: !closeable,
 					classes: this.theme(css.titleButton),
 					id: `${this._id}-title`,
@@ -176,7 +176,7 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 				classes: [ this.theme(css.content), fixedCss.contentFixed ],
 				id: `${this._id}-content`,
 				key: 'content',
-				styles: open ? effects[0] : effects[1]
+				styles: open ? effects[0] : effects[effects.length - 1]
 			}, this.getPaneContent())
 		]);
 	}
