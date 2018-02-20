@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Checkbox, { Mode } from '../../checkbox';
+import Checkbox, { Mode } from '../../checkbox/index';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _checkboxStates: { [key: string]: boolean } = {

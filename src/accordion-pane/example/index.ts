@@ -5,8 +5,8 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { from } from '@dojo/shim/array';
 
-import AccordionPane from '../../accordion-pane';
-import TitlePane from '../../title-pane';
+import AccordionPane from '../../accordion-pane/index';
+import TitlePane from '../../title-pane/index';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _exclusiveKey: string | undefined;

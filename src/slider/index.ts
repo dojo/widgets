@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Label from '../label';
+import Label from '../label/index';
 import { v, w } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
 import Focus from '@dojo/widget-core/meta/Focus';

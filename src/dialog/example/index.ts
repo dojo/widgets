@@ -4,7 +4,7 @@ import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
-import Dialog from '../../dialog';
+import Dialog from '../../dialog/index';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _modal = false;

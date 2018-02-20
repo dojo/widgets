@@ -9,9 +9,9 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 
-import Label from '../label';
-import Listbox from '../listbox';
-import TextInput, { TextInputProperties } from '../text-input';
+import Label from '../label/index';
+import Listbox from '../listbox/index';
+import TextInput, { TextInputProperties } from '../text-input/index';
 import commonBundle from '../common/nls/common';
 import { CommonMessages, LabeledProperties } from '../common/interfaces';
 

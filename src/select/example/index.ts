@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Select, { SelectProperties } from '../../select';
+import Select, { SelectProperties } from '../../select/index';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _value1: string;
