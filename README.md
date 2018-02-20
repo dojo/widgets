@@ -49,7 +49,7 @@ This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make 
 
 ## Features
 
-- All widgets are supported in all evergreen browsers (Chrome, Edge, Firefox, IE11+ and Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
+- All widgets are supported in all evergreen browsers (Chrome, Edge, Firefox, IE11+, and Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
 
 - All widgets support accessibility (`a11y`) out of the box.
 
@@ -114,7 +114,7 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 ### EventHandlers
 
-You can register event handlers that get called when the corresponding events occur, by passing the handlers into a widget, in their `properties`.
+You can register event handlers that get called when the corresponding events occur by passing the handlers into a widget, in their `properties`.
 The naming convention for event handlers is as follows:
 
 - if the parent of the widget has the power to decide *if* an event is successful, i.e. can cancel the event, then the child widget will call an event handler in the following format:
@@ -125,7 +125,7 @@ Here the child widget is requesting that the `close` event take place.
 
 - for events that will occur regardless of child/parent interaction, then the `Request` naming convention is dropped:
 
-`on[X]`, e.g. for a `dismiss` event, then event handler called by the child widget must be called `onDismiss`
+`on[X]`, e.g. for a `dismiss` event, the event handler called by the child widget must be called `onDismiss`
 
 
 ### Icons
@@ -140,7 +140,7 @@ When creating a widget, spacing (margin, padding) should be specified using `px`
 
 ### Z-index layering
 
-Widgets adhere to a basic convention for using specific ranges of z-index values based on function and visual context. This convention is followed in both individual widget CSS and in the Dojo theme styles. These values can be overridden in a custom theme if necessary, since no `z-index` values are set in fixed styles.
+Widgets adhere to a basic convention for using specific ranges of z-index values based on function and visual context. This convention is followed in both individual widget CSS and in the Dojo theme styles. These values can be overridden in a custom theme if necessary since no `z-index` values are set in fixed styles.
 
 The range definitions are as follows:
 
@@ -154,7 +154,7 @@ The range definitions are as follows:
 
 ## How to customize a widget
 
-There are may ways in which you can customize the behavior and appearance of Dojo 2 widgets.
+There are many ways in which you can customize the behavior and appearance of Dojo 2 widgets.
 See the [`widget-core`](https://github.com/dojo/widget-core) README for examples of how to customize the theme or a specific CSS class of a widget.
 
 Or can you write your own widget that extends an official widget.
@@ -169,7 +169,7 @@ export class MyWidget extends Button {
 }
 ```
 
-Dojo 2 widgets provide standard extension points to allow you to customise their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/widget-core).
+Dojo 2 widgets provide standard extension points to allow you to customize their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/widget-core).
 
 
 ## How do I contribute?
@@ -207,4 +207,4 @@ or
 
 ## Licensing information
 
-© 2017 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
+© 2018 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
