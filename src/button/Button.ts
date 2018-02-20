@@ -70,15 +70,15 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 	}
 	private _onKeyDown (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown(event.which, event.preventDefault);
+		this.properties.onKeyDown && this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
 	}
 	private _onKeyPress (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress(event.which, event.preventDefault);
+		this.properties.onKeyPress && this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
 	}
 	private _onKeyUp (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp(event.which, event.preventDefault);
+		this.properties.onKeyUp && this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
 	}
 	private _onMouseDown (event: MouseEvent) {
 		event.stopPropagation();

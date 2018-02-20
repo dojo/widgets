@@ -45,7 +45,7 @@ export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellPro
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
 		const { onKeyDown } = this.properties;
-		onKeyDown && onKeyDown(event.which, event.preventDefault);
+		onKeyDown && onKeyDown(event.which, () => { event.preventDefault(); });
 	}
 
 	protected formatDate(date: number): DNode {
