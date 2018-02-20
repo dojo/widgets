@@ -5,7 +5,7 @@ import Select from '../../select';
 import { v, w } from '@dojo/widget-core/d';
 
 const modules = [
-	'accordionpane',
+	'accordion-pane',
 	'button',
 	'calendar',
 	'checkbox',
@@ -16,15 +16,15 @@ const modules = [
 	'progress',
 	'radio',
 	'select',
-	'slidepane',
+	'slide-pane',
 	'slider',
-	'splitpane',
-	'tabcontroller',
-	'textarea',
-	'textinput',
-	'enhancedtextinput',
-	'timepicker',
-	'titlepane',
+	'split-pane',
+	'tab-controller',
+	'text-area',
+	'text-input',
+	'enhanced-text-input',
+	'time-picker',
+	'title-pane',
 	'toolbar',
 	'tooltip'
 ];
