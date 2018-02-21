@@ -114,7 +114,7 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 ### EventHandlers
 
-You can register event handlers that get called when the corresponding events occur by passing the handlers into a widget, in their `properties`.
+You can register event handlers that get called when the corresponding events occur by passing the handlers into a widget's `properties`.
 The naming convention for event handlers is as follows:
 
 - if the parent of the widget has the power to decide *if* an event is successful, i.e. can cancel the event, then the child widget will call an event handler in the following format:
