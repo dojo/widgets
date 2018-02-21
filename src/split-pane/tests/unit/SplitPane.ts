@@ -8,7 +8,7 @@ import harness from '@dojo/test-extras/harness';
 import * as css from '../../../theme/splitpane/splitPane.m.css';
 import * as fixedCss from '../../styles/splitPane.m.css';
 import SplitPane, { Direction } from '../../index';
-import { GlobalEvent } from '../../../global-event';
+import { GlobalEvent } from '../../../global-event/index';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 

@@ -7,7 +7,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 
 import EnhancedTextInput from '../../index';
-import Label from '../../../label';
+import Label from '../../../label/index';
 import * as css from '../../../theme/enhancedtextinput/enhancedtextinput.m.css';
 import * as textInputCss from '../../../theme/textinput/textinput.m.css';
 import { VNodeProperties } from '@dojo/widget-core/interfaces';

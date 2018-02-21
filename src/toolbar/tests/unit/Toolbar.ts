@@ -5,12 +5,12 @@ import harness from '@dojo/test-extras/harness';
 import { stub } from 'sinon';
 
 import Toolbar, { Position, ToolbarProperties } from '../../index';
-import SlidePane, { Align } from '../../../slide-pane';
+import SlidePane, { Align } from '../../../slide-pane/index';
 
 import * as fixedCss from '../../styles/toolbar.m.css';
 import * as css from '../../../theme/toolbar/toolbar.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
-import { GlobalEvent } from '../../../global-event';
+import { GlobalEvent } from '../../../global-event/index';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('Toolbar', {

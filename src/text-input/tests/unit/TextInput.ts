@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 
-import Label from '../../../label';
+import Label from '../../../label/index';
 import TextInput from '../../index';
 import * as css from '../../../theme/textinput/textinput.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';

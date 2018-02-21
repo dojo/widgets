@@ -7,7 +7,7 @@ import harness from '@dojo/test-extras/harness';
 
 import * as css from '../../../theme/accordionpane/accordionPane.m.css';
 import AccordionPane from '../../index';
-import TitlePane from '../../../title-pane';
+import TitlePane from '../../../title-pane/index';
 import { noop } from '../../../common/tests/support/test-helpers';
 
 registerSuite('AccordionPane', {

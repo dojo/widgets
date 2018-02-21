@@ -10,7 +10,7 @@ import * as fixedCss from '../../styles/dialog.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
-import { GlobalEvent } from '../../../global-event';
+import { GlobalEvent } from '../../../global-event/index';
 import {
 	createHarness,
 	compareId,

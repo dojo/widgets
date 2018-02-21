@@ -8,8 +8,8 @@ import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
 import Select, { SelectProperties } from '../../index';
-import Listbox from '../../../listbox';
-import Label from '../../../label';
+import Listbox from '../../../listbox/index';
+import Label from '../../../label/index';
 import * as css from '../../../theme/select/select.m.css';
 import * as iconCss from '../../../theme/common/icons.m.css';
 import {
