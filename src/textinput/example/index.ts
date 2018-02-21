@@ -24,8 +24,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					type: 'text',
 					placeholder: 'Hello, World',
 					value: this._value1,
-					onChange: (event: Event) => {
-						this._value1 = (event.target as HTMLInputElement).value;
+					onChange: (value: string) => {
+						this._value1 = value;
 						this.invalidate();
 					}
 				})
@@ -38,8 +38,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Email (required)',
 					required: true,
 					value: this._value2,
-					onChange: (event: Event) => {
-						this._value2 = (event.target as HTMLInputElement).value;
+					onChange: (value: string) => {
+						this._value2 = value;
 						this.invalidate();
 					}
 				})
@@ -54,8 +54,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					labelAfter: true,
 					labelHidden: true,
 					value: this._value3,
-					onChange: (event: Event) => {
-						this._value3 = (event.target as HTMLInputElement).value;
+					onChange: (value: string) => {
+						this._value3 = value;
 						this.invalidate();
 					}
 				})
@@ -79,9 +79,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Type "foo" or "bar"',
 					value: this._value4,
 					invalid: this._invalid,
-					onInput: (event: Event) => {
-						const target = event.target as HTMLInputElement;
-						const value = target.value;
+					onInput: (value: string) => {
 						this._value4 = value;
 						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
 						this.invalidate();

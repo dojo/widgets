@@ -7,8 +7,7 @@ import Radio from '../../radio/Radio';
 export class App extends WidgetBase<WidgetProperties> {
 	private _inputValue: string;
 
-	onChange(event: Event) {
-		const value = (event.target as HTMLInputElement).value;
+	onChange(value: string) {
 		this._inputValue = value;
 		this.invalidate();
 	}

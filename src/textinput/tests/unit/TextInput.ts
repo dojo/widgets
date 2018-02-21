@@ -178,15 +178,15 @@ registerSuite('TextInput', {
 				onTouchCancel
 			}));
 
-			h.trigger('@input', 'onblur');
+			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
-			h.trigger('@input', 'onchange');
+			h.trigger('@input', 'onchange', stubEvent);
 			assert.isTrue(onChange.called, 'onChange called');
 			h.trigger('@input', 'onclick', stubEvent);
 			assert.isTrue(onClick.called, 'onClick called');
-			h.trigger('@input', 'onfocus');
+			h.trigger('@input', 'onfocus', stubEvent);
 			assert.isTrue(onFocus.called, 'onFocus called');
-			h.trigger('@input', 'oninput');
+			h.trigger('@input', 'oninput', stubEvent);
 			assert.isTrue(onInput.called, 'onInput called');
 			h.trigger('@input', 'onkeydown', stubEvent);
 			assert.isTrue(onKeyDown.called, 'onKeyDown called');

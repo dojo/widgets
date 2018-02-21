@@ -25,8 +25,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					type: 'text',
 					placeholder: 'username',
 					value: this._value1,
-					onChange: (event: Event) => {
-						this._value1 = (event.target as HTMLInputElement).value;
+					onChange: (value: string) => {
+						this._value1 = value;
 						this.invalidate();
 					}
 				}),
@@ -41,8 +41,8 @@ export class App extends WidgetBase<WidgetProperties> {
 					label: 'Price, rounded to the nearest dollar',
 					type: 'number',
 					value: this._value2,
-					onChange: (event: Event) => {
-						this._value2 = (event.target as HTMLInputElement).value;
+					onChange: (value: string) => {
+						this._value2 = value;
 						this.invalidate();
 					}
 				})

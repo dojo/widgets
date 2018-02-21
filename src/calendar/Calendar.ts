@@ -179,32 +179,31 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		this._callDateFocus = false;
 	}
 
-	private _onDateKeyDown(event: KeyboardEvent) {
-		event.stopPropagation();
+	private _onDateKeyDown(key: number, preventDefault: () => void) {
 		const { month, year } = this._getMonthYear();
-		switch (event.which) {
+		switch (key) {
 			case Keys.Up:
-				event.preventDefault();
+				preventDefault();
 				this._goToDate(this._focusedDay - 7);
 				break;
 			case Keys.Down:
-				event.preventDefault();
+				preventDefault();
 				this._goToDate(this._focusedDay + 7);
 				break;
 			case Keys.Left:
-				event.preventDefault();
+				preventDefault();
 				this._goToDate(this._focusedDay - 1);
 				break;
 			case Keys.Right:
-				event.preventDefault();
+				preventDefault();
 				this._goToDate(this._focusedDay + 1);
 				break;
 			case Keys.PageUp:
-				event.preventDefault();
+				preventDefault();
 				this._goToDate(1);
 				break;
 			case Keys.PageDown:
-				event.preventDefault();
+				preventDefault();
 				const monthLengh = this._getMonthLength(month, year);
 				this._goToDate(monthLengh);
 				break;

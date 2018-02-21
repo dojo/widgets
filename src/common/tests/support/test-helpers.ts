@@ -6,7 +6,9 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 export const noop: any = () => {};
 
 export const stubEvent = {
-	stopPropagation: noop
+	stopPropagation: noop,
+	preventDefault: noop,
+	target: {}
 };
 
 export const isStringComparator = (value: any) => typeof value === 'string';

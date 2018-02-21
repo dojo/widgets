@@ -33,9 +33,15 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 	vertical?: boolean;
 	verticalHeight?: string;
 	value?: number;
+	onClick?(value: number): void;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
+
+function extractValue(event: Event): number {
+	const value = (event.target as HTMLInputElement).value;
+	return parseFloat(value);
+}
 
 @theme(css)
 @customElement<SliderProperties>({
@@ -77,52 +83,52 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 	private _inputId = uuid();
 
 	private _onBlur (event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur(event);
+		this.properties.onBlur && this.properties.onBlur(extractValue(event));
 	}
 	private _onChange (event: Event) {
-		this.properties.onChange && this.properties.onChange(event);
+		this.properties.onChange && this.properties.onChange(extractValue(event));
 	}
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick(event);
+		this.properties.onClick && this.properties.onClick(extractValue(event));
 	}
 	private _onFocus (event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus(event);
+		this.properties.onFocus && this.properties.onFocus(extractValue(event));
 	}
 	private _onInput (event: Event) {
-		this.properties.onInput && this.properties.onInput(event);
+		this.properties.onInput && this.properties.onInput(extractValue(event));
 	}
 	private _onKeyDown (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown(event);
+		this.properties.onKeyDown && this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
 	}
 	private _onKeyPress (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress(event);
+		this.properties.onKeyPress && this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
 	}
 	private _onKeyUp (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp(event);
+		this.properties.onKeyUp && this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
 	}
 	private _onMouseDown (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown(event);
+		this.properties.onMouseDown && this.properties.onMouseDown();
 	}
 	private _onMouseUp (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp(event);
+		this.properties.onMouseUp && this.properties.onMouseUp();
 	}
 	private _onTouchStart (event: TouchEvent) {
 		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart(event);
+		this.properties.onTouchStart && this.properties.onTouchStart();
 	}
 	private _onTouchEnd (event: TouchEvent) {
 		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd(event);
+		this.properties.onTouchEnd && this.properties.onTouchEnd();
 	}
 	private _onTouchCancel (event: TouchEvent) {
 		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel(event);
+		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
 	protected getRootClasses(): (string | null)[] {

@@ -158,14 +158,14 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		onChange && onChange('', key);
 	}
 
-	private _onInput(event: Event) {
+	private _onInput(value: string) {
 		const { key, disabled, readOnly, onChange } = this.properties;
 
-		onChange && onChange((<HTMLInputElement> event.target).value, key);
+		onChange && onChange(value, key);
 		!disabled && !readOnly && this._openMenu();
 	}
 
-	private _onInputBlur(event: FocusEvent) {
+	private _onInputBlur(value: string) {
 		const { key, onBlur } = this.properties;
 
 		if (this._ignoreBlur) {
@@ -173,11 +173,11 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			return;
 		}
 
-		onBlur && onBlur((<HTMLInputElement> event.target).value, key);
+		onBlur && onBlur(value, key);
 		this._closeMenu();
 	}
 
-	private _onInputFocus(event: FocusEvent) {
+	private _onInputFocus(value: string) {
 		const {
 			key,
 			disabled,
@@ -186,11 +186,11 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			openOnFocus
 		} = this.properties;
 
-		onFocus && onFocus((<HTMLInputElement> event.target).value, key);
+		onFocus && onFocus(value, key);
 		!disabled && !readOnly && openOnFocus && this._openMenu();
 	}
 
-	private _onInputKeyDown(event: KeyboardEvent) {
+	private _onInputKeyDown(key: number, preventDefault: () => void) {
 		const {
 			disabled,
 			isResultDisabled = () => false,
@@ -199,13 +199,13 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		} = this.properties;
 		this._menuHasVisualFocus = true;
 
-		switch (event.which) {
+		switch (key) {
 			case Keys.Up:
-				event.preventDefault();
+				preventDefault();
 				this._moveActiveIndex(Operation.decrease);
 				break;
 			case Keys.Down:
-				event.preventDefault();
+				preventDefault();
 				if (!this._open && !disabled && !readOnly) {
 					this._openMenu();
 				}

@@ -13,9 +13,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		c5: true
 	};
 
-	onChange(event: Event) {
-		const value = (event.target as HTMLInputElement).value;
-		const checked = (event.target as HTMLInputElement).checked;
+	onChange(value: string, checked: boolean) {
 		this._checkboxStates[value] = checked;
 		this.invalidate();
 	}
