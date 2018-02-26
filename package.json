@@ -29,9 +29,10 @@
     "@dojo/widget-core": "~0.9.3"
   },
   "devDependencies": {
-    "@dojo/cli-build-widget": "file:../cli-build-widget/dist/dojo-cli-build-widget.tgz",
+    "@dojo/cli-build-widget": "~0.2.0",
     "@dojo/loader": "~0.1.1",
     "@dojo/test-extras": "~0.6.0",
+    "@types/execa": "^0.8.1",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",
     "@types/jsdom": "^2.0.30",
