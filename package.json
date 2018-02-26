@@ -37,6 +37,7 @@
     "grunt": "^1.0.1",
     "grunt-dojo2": "~0.1.1",
     "intern": "~4.1.0",
+    "jsdom": "^9.5.0",
     "load-grunt-tasks": "^3.5.2",
     "pkg-dir": "^2.0.0",
     "sinon": "^1.17.6",

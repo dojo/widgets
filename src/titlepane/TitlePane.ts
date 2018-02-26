@@ -1,14 +1,16 @@
 import uuid from '@dojo/core/uuid';
 import { DNode } from '@dojo/widget-core/interfaces';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import WebAnimation from '@dojo/widget-core/meta/WebAnimation';
 
 import * as fixedCss from './styles/titlePane.m.css';
 import * as css from '../theme/titlepane/titlePane.m.css';
 import * as iconCss from '../theme/common/icons.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { GlobalEvent } from '../global-event/GlobalEvent';
 
 /**
  * @type TitlePaneProperties
@@ -45,8 +47,12 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	]
 })
 export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
-	private _contentId = uuid();
-	private _titleId = uuid();
+	private _id = uuid();
+	private _open: boolean;
+
+	private _onWindowResize = () => {
+		this.invalidate();
+	}
 
 	private _onTitleClick(event: MouseEvent) {
 		event.stopPropagation();
@@ -72,6 +78,30 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 		else {
 			onRequestOpen && onRequestOpen(key);
 		}
+	}
+
+	protected animate(effects: any[]) {
+		const { open = true } = this.properties;
+		this.meta(WebAnimation).animate('content', {
+			id: this._id,
+			effects,
+			timing: {
+				duration: 250,
+				fill: 'both'
+			},
+			controls: {
+				play: true,
+				playbackRate: open ? -1 : 1
+			}
+		});
+	}
+
+	protected getAnimationKeyframes(): any[] {
+		const contentDimensions = this.meta(Dimensions).get('content');
+		return [
+			{ marginTop: '0px' },
+			{ marginTop: `-${ contentDimensions.offset.height }px` }
+		];
 	}
 
 	protected getButtonContent(): DNode {
@@ -115,11 +145,12 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 			headingLevel,
 			open = true
 		} = this.properties;
+		const effects = this.getAnimationKeyframes();
 
-		const contentDimensions = this.meta(Dimensions).get('content');
-		const contentStyles = {
-			marginTop: open ? '0px' : `-${ contentDimensions.offset.height }px`
-		};
+		if (open !== this._open) {
+			this.animate(effects);
+			this._open = open;
+		}
 
 		return v('div', {
 			classes: [ ...this.theme([
@@ -127,17 +158,18 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 				open ? css.open : null
 			]), fixedCss.rootFixed ]
 		}, [
+			w(GlobalEvent, { key: 'global', window: { resize: this._onWindowResize } }),
 			v('div', {
-				'aria-level': headingLevel ? String(headingLevel) : null,
+				'aria-level': headingLevel ? `${headingLevel}` : null,
 				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), fixedCss.titleFixed, ...this.getFixedModifierClasses() ],
 				role: 'heading'
 			}, [
 				v('button', {
-					'aria-controls': this._contentId,
-					'aria-expanded': String(open),
+					'aria-controls': `${this._id}-content`,
+					'aria-expanded': `${open}`,
 					disabled: !closeable,
 					classes: this.theme(css.titleButton),
-					id: this._titleId,
+					id: `${this._id}-title`,
 					type: 'button',
 					onclick: this._onTitleClick
 				}, [
@@ -147,11 +179,11 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 			]),
 			v('div', {
 				'aria-hidden': open ? null : 'true',
-				'aria-labelledby': this._titleId,
-				classes: this.theme(css.content),
-				id: this._contentId,
-				styles: contentStyles,
-				key: 'content'
+				'aria-labelledby': `${this._id}-title`,
+				classes: [ this.theme(css.content), fixedCss.contentFixed ],
+				id: `${this._id}-content`,
+				key: 'content',
+				styles: open ? effects[0] : effects[effects.length - 1]
 			}, this.getPaneContent())
 		]);
 	}
