@@ -39,7 +39,7 @@ const expectedCloseButton = function() {
 const expected = function(open = false, closeable = false, children: any[] = []) {
 	return v('div', {
 		classes: css.root,
-		dir: null,
+		dir: '',
 		lang: null
 	}, open ? [
 		w(GlobalEvent, {
@@ -115,7 +115,7 @@ registerSuite('Dialog', {
 
 			h.expect(() => v('div', {
 				classes: css.root,
-				dir: null,
+				dir: '',
 				lang: null
 			}, [
 				w(GlobalEvent, {
@@ -175,7 +175,7 @@ registerSuite('Dialog', {
 			}));
 			h.expect(() => v('div', {
 				classes: css.root,
-				dir: null,
+				dir: '',
 				lang: null
 			}, [
 				w(GlobalEvent, {

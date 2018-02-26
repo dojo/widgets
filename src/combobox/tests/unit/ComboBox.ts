@@ -155,7 +155,7 @@ const getExpectedVdom = function(useTestProperties = false, open = false, label 
 		'aria-haspopup': 'true',
 		'aria-readonly': readOnly ? `${readOnly}` : null,
 		'aria-required': null,
-		dir: null,
+		dir: '',
 		classes: [
 			css.root,
 			open ? css.open : null,

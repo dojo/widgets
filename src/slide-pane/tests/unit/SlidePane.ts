@@ -36,7 +36,7 @@ registerSuite('SlidePane', {
 			h.expect(() => v('div', {
 				'aria-labelledby': '',
 				classes: css.root,
-				dir: null,
+				dir: '',
 				lang: null,
 				onmousedown: noop,
 				onmousemove: noop,
@@ -91,7 +91,7 @@ registerSuite('SlidePane', {
 
 			h.expect(() => v('div', {
 				'aria-labelledby': '',
-				dir: null,
+				dir: '',
 				lang: null,
 				onmousedown: noop,
 				onmousemove: noop,
@@ -150,7 +150,7 @@ registerSuite('SlidePane', {
 
 			h.expect(() => v('div', {
 				'aria-labelledby': '',
-				dir: null,
+				dir: '',
 				lang: null,
 				onmousedown: noop,
 				onmousemove: noop,
@@ -199,7 +199,7 @@ registerSuite('SlidePane', {
 			properties.open = false;
 			h.expect(() => v('div', {
 				'aria-labelledby': '',
-				dir: null,
+				dir: '',
 				lang: null,
 				onmousedown: noop,
 				onmousemove: noop,
@@ -456,7 +456,7 @@ registerSuite('SlidePane', {
 			function expected(open: boolean, transitionDone?: boolean) {
 				return v('div', {
 					'aria-labelledby': '',
-					dir: null,
+					dir: '',
 					lang: null,
 					onmousedown: noop,
 					onmousemove: noop,
@@ -525,7 +525,7 @@ registerSuite('SlidePane', {
 			function expected(closed: boolean, swipeState: any = {}) {
 				return v('div', {
 					'aria-labelledby': '',
-					dir: null,
+					dir: '',
 					lang: null,
 					onmousedown: noop,
 					onmousemove: noop,
@@ -603,7 +603,7 @@ registerSuite('SlidePane', {
 			function expected(closed = false, swipeState: any = {}) {
 				return v('div', {
 					'aria-labelledby': '',
-					dir: null,
+					dir: '',
 					lang: null,
 					onmousedown: noop,
 					onmousemove: noop,
