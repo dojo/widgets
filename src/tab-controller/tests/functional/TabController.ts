@@ -6,7 +6,7 @@ import * as css from '../../../theme/tabcontroller/tabController.m.css';
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=tabcontroller')
+		.get('http://localhost:9000/_build/common/example/?module=tab-controller')
 		.setFindTimeout(5000);
 }
 

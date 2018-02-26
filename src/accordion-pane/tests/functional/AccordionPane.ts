@@ -5,7 +5,7 @@ import { Remote } from 'intern/lib/executors/Node';
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=accordionpane')
+		.get('http://localhost:9000/_build/common/example/?module=accordion-pane')
 		.setFindTimeout(5000);
 }
 

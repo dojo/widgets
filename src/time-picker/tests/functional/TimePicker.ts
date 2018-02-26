@@ -13,7 +13,7 @@ const DELAY = 300;
 
 function getPage(remote: Remote, exampleId: string) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=timepicker')
+		.get('http://localhost:9000/_build/common/example/?module=time-picker')
 		.setFindTimeout(5000)
 		.findById(exampleId);
 }

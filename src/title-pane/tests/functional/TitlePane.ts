@@ -5,7 +5,7 @@ import { Remote } from 'intern/lib/executors/Node';
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=titlepane')
+		.get('http://localhost:9000/_build/common/example/?module=title-pane')
 		.setFindTimeout(5000);
 }
 

@@ -7,7 +7,7 @@ import * as baseCss from '../../../common/styles/base.m.css';
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=textinput')
+		.get('http://localhost:9000/_build/common/example/?module=text-input')
 		.setFindTimeout(5000);
 }
 

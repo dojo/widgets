@@ -15,7 +15,7 @@ function getPage(test: Test): Command<void> {
 		test.skip('Tests do not run in these browsers.');
 	}
 	return test.remote
-		.get('http://localhost:9000/_build/common/example/?module=splitpane')
+		.get('http://localhost:9000/_build/common/example/?module=split-pane')
 		.setFindTimeout(5000);
 }
 
