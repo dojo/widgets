@@ -36,7 +36,7 @@ const expected = function(closeable = false, disabled = false, activeTab: number
 			classes: css.close,
 			type: 'button',
 			onclick: noop
-		}, [ 'close', ...children ]) : null
+		}, [ 'close' ]) : null
 	);
 
 	return v('div', {
