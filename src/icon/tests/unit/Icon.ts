@@ -3,7 +3,7 @@ const { registerSuite } = intern.getInterface('object');
 import { v, w } from '@dojo/widget-core/d';
 
 import Icon from '../../index';
-import * as iconCss from '../../../theme/icon.m.css';
+import * as css from '../../../theme/icon.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import {
 	createHarness,
@@ -32,7 +32,7 @@ const expected = function(icon: keyof typeof css = 'downIcon', overrides = {}, a
 	return v('span', { classes: css.root }, children);
 };
 
-registerSuite('Input', {
+registerSuite('Icon', {
 	tests: {
 		'renders with default properties'() {
 			const h = harness(() => w(Icon, {
