@@ -5,8 +5,8 @@ import { stub } from 'sinon';
 import { v, w, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 
-import * as css from '../../../theme/splitpane/splitPane.m.css';
-import * as fixedCss from '../../styles/splitPane.m.css';
+import * as css from '../../../theme/split-pane.m.css';
+import * as fixedCss from '../../styles/split-pane.m.css';
 import SplitPane, { Direction } from '../../index';
 import { GlobalEvent } from '../../../global-event/index';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';

@@ -15,8 +15,8 @@ import TextInput, { TextInputProperties } from '../text-input/index';
 import commonBundle from '../common/nls/common';
 import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
-import * as css from '../theme/combobox/comboBox.m.css';
-import * as iconCss from '../theme/common/icons.m.css';
+import * as css from '../theme/comboBox.m.css';
+import * as iconCss from '../theme/icons.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

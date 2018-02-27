@@ -8,7 +8,7 @@ import uuid from '@dojo/core/uuid';
 import { CustomAriaProperties, LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
-import * as css from '../theme/slider/slider.m.css';
+import * as css from '../theme/slider.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

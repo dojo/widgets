@@ -12,7 +12,7 @@ import { formatAriaProperties } from '../common/util';
 import { TextInputProperties } from '../text-input/index';
 import Label from '../label/index';
 import uuid from '@dojo/core/uuid';
-import * as css from '../theme/timepicker/timePicker.m.css';
+import * as css from '../theme/time-picker.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 interface FocusInputEvent extends FocusEvent {

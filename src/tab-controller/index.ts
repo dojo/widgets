@@ -9,7 +9,7 @@ import uuid from '@dojo/core/uuid';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
-import * as css from '../theme/tabcontroller/tabController.m.css';
+import * as css from '../theme/tab-controller.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import Command from '@theintern/leadfoot/Command';
 import Element from '@theintern/leadfoot/Element';
 import Test from 'intern/lib/Test';
-import * as css from '../../../theme/splitpane/splitPane.m.css';
+import * as css from '../../../theme/split-pane.m.css';
 
 const DELAY = 300;
 const ERROR_MARGIN = 5;

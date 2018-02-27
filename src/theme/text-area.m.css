@@ -1,8 +1,13 @@
-@import '../../common/styles/variables.css';
+@import '../common/styles/variables.css';
 
-.input {}
 .root {}
+
+.input {
+	max-width: 100%;
+}
+
 .inputWrapper {}
+
 .disabled {}
 .focused {}
 .readonly {}

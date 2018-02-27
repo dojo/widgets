@@ -10,8 +10,8 @@ import { formatAriaProperties, Keys } from '../common/util';
 import commonBundle from '../common/nls/common';
 
 import * as fixedCss from './styles/dialog.m.css';
-import * as iconCss from '../theme/common/icons.m.css';
-import * as css from '../theme/dialog/dialog.m.css';
+import * as iconCss from '../theme/icons.m.css';
+import * as css from '../theme/dialog.m.css';
 import * as animations from '../common/styles/animations.m.css';
 import { GlobalEvent } from '../global-event/index';
 import { customElement } from '@dojo/widget-core/decorators/customElement';

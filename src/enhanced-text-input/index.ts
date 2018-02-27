@@ -3,7 +3,7 @@ import { theme } from '@dojo/widget-core/mixins/Themed';
 import { v } from '@dojo/widget-core/d';
 
 import { TextInputBase, TextInputProperties } from '../text-input/index';
-import * as css from '../theme/enhancedtextinput/enhancedtextinput.m.css';
+import * as css from '../theme/enhanced-text-input.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 export interface EnhancedTextInputProperties extends TextInputProperties {

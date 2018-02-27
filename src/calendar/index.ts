@@ -11,9 +11,9 @@ import { formatAriaProperties, Keys } from '../common/util';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import calendarBundle from './nls/Calendar';
-import * as css from '../theme/calendar/calendar.m.css';
+import * as css from '../theme/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconCss from '../theme/common/icons.m.css';
+import * as iconCss from '../theme/icons.m.css';
 import customElement from '@dojo/widget-core/decorators/customElement';
 
 export type CalendarMessages = typeof calendarBundle.messages;

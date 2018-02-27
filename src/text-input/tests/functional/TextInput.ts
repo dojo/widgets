@@ -2,7 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
-import * as css from '../../../theme/textinput/textinput.m.css';
+import * as css from '../../../theme/text-input.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
 function getPage(remote: Remote) {

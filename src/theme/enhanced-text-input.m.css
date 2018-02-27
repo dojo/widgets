@@ -1,4 +1,4 @@
-@import '../../common/styles/variables.css';
+@import '../common/styles/variables.css';
 
 .addon {
 	flex: 0 0 auto;
@@ -9,7 +9,7 @@
 .addonBefore { }
 
 .input {
-	composes: input from '../textinput/textinput.m.css';
+	composes: input from './text-input.m.css';
 	flex: 1 1 auto;
 }
 

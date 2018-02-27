@@ -4,7 +4,7 @@ import { v } from '@dojo/widget-core/d';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { DNode } from '@dojo/widget-core/interfaces';
-import * as css from '../theme/progress/progress.m.css';
+import * as css from '../theme/progress.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

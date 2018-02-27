@@ -8,7 +8,7 @@ import Focus from '@dojo/widget-core/meta/Focus';
 
 import Label from '../../../label/index';
 import TextInput from '../../index';
-import * as css from '../../../theme/textinput/textinput.m.css';
+import * as css from '../../../theme/text-input.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);

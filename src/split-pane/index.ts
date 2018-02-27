@@ -3,8 +3,8 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as fixedCss from './styles/splitPane.m.css';
-import * as css from '../theme/splitpane/splitPane.m.css';
+import * as fixedCss from './styles/split-pane.m.css';
+import * as css from '../theme/split-pane.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { GlobalEvent } from '../global-event/index';
 import { customElement } from '@dojo/widget-core/decorators/customElement';

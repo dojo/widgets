@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
-import * as css from '../../../theme/textarea/textarea.m.css';
+import * as css from '../../../theme/text-area.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
 function getPage(remote: Remote) {

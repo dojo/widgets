@@ -9,7 +9,7 @@ import { Keys } from '../../../common/util';
 import { assign } from '@dojo/core/lang';
 
 import TabButton, { TabButtonProperties } from '../../TabButton';
-import * as css from '../../../theme/tabcontroller/tabController.m.css';
+import * as css from '../../../theme/tab-controller.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 interface KeyboardEventInit extends EventInit {

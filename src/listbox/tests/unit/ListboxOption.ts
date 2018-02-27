@@ -6,7 +6,7 @@ import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 
 import ListboxOption from '../../ListboxOption';
-import * as css from '../../../theme/listbox/listbox.m.css';
+import * as css from '../../../theme/listbox.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('ListboxOption', {

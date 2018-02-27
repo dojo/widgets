@@ -4,9 +4,9 @@ import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
-import * as fixedCss from './styles/titlePane.m.css';
-import * as css from '../theme/titlepane/titlePane.m.css';
-import * as iconCss from '../theme/common/icons.m.css';
+import * as fixedCss from './styles/title-pane.m.css';
+import * as css from '../theme/title-pane.m.css';
+import * as iconCss from '../theme/icons.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 

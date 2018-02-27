@@ -5,9 +5,9 @@ import * as sinon from 'sinon';
 import { v, w, isWNode } from '@dojo/widget-core/d';
 
 import Dialog, { DialogProperties } from '../../index';
-import * as css from '../../../theme/dialog/dialog.m.css';
+import * as css from '../../../theme/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import * as iconCss from '../../../theme/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
 import { GlobalEvent } from '../../../global-event/index';

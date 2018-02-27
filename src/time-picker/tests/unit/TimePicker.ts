@@ -6,7 +6,7 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../index';
-import * as css from '../../../theme/timepicker/timePicker.m.css';
+import * as css from '../../../theme/time-picker.m.css';
 import ComboBox from '../../../combobox/index';
 import Label from '../../../label/index';
 import { noop, compareId, compareForId, MockMetaMixin } from '../../../common/tests/support/test-helpers';

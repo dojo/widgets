@@ -8,9 +8,9 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
-import * as fixedCss from './styles/slidePane.m.css';
-import * as css from '../theme/slidepane/slidePane.m.css';
-import * as iconCss from '../theme/common/icons.m.css';
+import * as fixedCss from './styles/slide-pane.m.css';
+import * as css from '../theme/slide-pane.m.css';
+import * as iconCss from '../theme/icons.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

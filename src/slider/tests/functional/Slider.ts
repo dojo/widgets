@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import keys from '@theintern/leadfoot/keys';
 import { Remote } from 'intern/lib/executors/Node';
-import * as css from '../../../theme/slider/slider.m.css';
+import * as css from '../../../theme/slider.m.css';
 
 function getPage(test: any) {
 	const { browserName } = test.remote.environmentType;

@@ -6,7 +6,7 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as fixedCss from './styles/tooltip.m.css';
-import * as css from '../theme/tooltip/tooltip.m.css';
+import * as css from '../theme/tooltip.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

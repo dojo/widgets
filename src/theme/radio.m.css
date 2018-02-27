@@ -1,4 +1,4 @@
-@import '../../common/styles/variables.css';
+@import '../common/styles/variables.css';
 
 .root {
 	display: block;
@@ -8,8 +8,8 @@
 .input {}
 .inputWrapper {}
 .checked {}
-.disabled {}
 .focused {}
+.disabled {}
 .readonly {}
 .required {}
 
@@ -28,8 +28,3 @@
 .valid .inputWrapper::after {
 	background-color: var(--success-color);
 }
-
-.toggle {}
-.onLabel {}
-.offLabel {}
-.toggleSwitch {}

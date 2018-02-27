@@ -10,8 +10,8 @@ import ComboBox from '../../index';
 import Label from '../../../label/index';
 import Listbox from '../../../listbox/index';
 import TextInput from '../../../text-input/index';
-import * as css from '../../../theme/combobox/comboBox.m.css';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import * as css from '../../../theme/comboBox.m.css';
+import * as iconCss from '../../../theme/icons.m.css';
 import {
 	createHarness,
 	compareId,

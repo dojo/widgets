@@ -4,7 +4,7 @@ import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 
 import Tab from '../../Tab';
-import * as css from '../../../theme/tabcontroller/tabController.m.css';
+import * as css from '../../../theme/tab-controller.m.css';
 
 registerSuite('Tab', {
 

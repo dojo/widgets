@@ -5,7 +5,7 @@ import { v, w } from '@dojo/widget-core/d';
 import * as sinon from 'sinon';
 import harness from '@dojo/test-extras/harness';
 
-import * as css from '../../../theme/accordionpane/accordionPane.m.css';
+import * as css from '../../../theme/accordion-pane.m.css';
 import AccordionPane from '../../index';
 import TitlePane from '../../../title-pane/index';
 import { noop } from '../../../common/tests/support/test-helpers';

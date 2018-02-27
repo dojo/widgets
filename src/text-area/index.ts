@@ -7,7 +7,7 @@ import Label from '../label/index';
 import { CustomAriaProperties, InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
-import * as css from '../theme/textarea/textarea.m.css';
+import * as css from '../theme/text-area.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

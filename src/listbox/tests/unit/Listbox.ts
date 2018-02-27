@@ -9,7 +9,7 @@ import { v, w } from '@dojo/widget-core/d';
 
 import Listbox from '../../index';
 import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';
-import * as css from '../../../theme/listbox/listbox.m.css';
+import * as css from '../../../theme/listbox.m.css';
 import { createHarness, compareId, noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const compareKey = { selector: '*', property: 'key', comparator: (property: any) => typeof property === 'string' };

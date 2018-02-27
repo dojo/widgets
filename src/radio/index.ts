@@ -7,7 +7,7 @@ import { CustomAriaProperties, LabeledProperties, InputProperties, CheckboxRadio
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
-import * as css from '../theme/radio/radio.m.css';
+import * as css from '../theme/radio.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**

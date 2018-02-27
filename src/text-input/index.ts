@@ -7,7 +7,7 @@ import Label from '../label/index';
 import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import uuid from '@dojo/core/uuid';
-import * as css from '../theme/textinput/textinput.m.css';
+import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';

@@ -4,7 +4,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import { v } from '@dojo/widget-core/d';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import * as css from '../theme/label/label.m.css';
+import * as css from '../theme/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 

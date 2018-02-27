@@ -8,8 +8,8 @@ import calendarBundle from './nls/Calendar';
 import { Keys } from '../common/util';
 
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconCss from '../theme/common/icons.m.css';
-import * as css from '../theme/calendar/calendar.m.css';
+import * as iconCss from '../theme/icons.m.css';
+import * as css from '../theme/calendar.m.css';
 
 /**
  * Enum for next/previous buttons

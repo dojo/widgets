@@ -8,7 +8,7 @@ import { v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 
 import TitlePane from '../title-pane/index';
-import * as css from '../theme/accordionpane/accordionPane.m.css';
+import * as css from '../theme/accordion-pane.m.css';
 
 /**
  * @type AccordionPaneProperties

@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
-import * as css from '../../../theme/dialog/dialog.m.css';
+import * as css from '../../../theme/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
 
 interface Options {
