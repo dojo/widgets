@@ -5,7 +5,7 @@ import { Remote } from 'intern/lib/executors/Node';
 import Command from '@theintern/leadfoot/Command';
 import Element from '@theintern/leadfoot/Element';
 import keys from '@theintern/leadfoot/keys';
-import * as comboBoxCss from '../../../theme/comboBox.m.css';
+import * as comboBoxCss from '../../../theme/combobox.m.css';
 import * as listboxCss from '../../../theme/listbox.m.css';
 import * as textinputCss from '../../../theme/text-input.m.css';
 
