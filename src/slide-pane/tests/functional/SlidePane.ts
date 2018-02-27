@@ -91,7 +91,7 @@ registerSuite('SlidePane', {
 			.findByCssSelector(`.${fixedCss.underlay}`)
 				.getAttribute('class')
 				.then((className: string) => {
-					assert.match(className, /slidePane-m__underlay/, 'the underlay should not be removed.');
+					assert.match(className, new RegExp(fixedCss.underlay), 'the underlay should not be removed.');
 				});
 	},
 
