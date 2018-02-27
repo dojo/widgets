@@ -113,7 +113,7 @@ registerSuite('SlidePane', {
 			this.skip('Test requires mouse or touch interactions.');
 		}
 
-		if (browserName.toLowerCase() === 'microsoftedge') {
+		if (browserName.toLowerCase() === 'microsoftedge' || browserName.toLowerCase() === 'internet explorer') {
 			// TODO: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11469232/
 			this.skip('Edge driver does not handle mouse movements correctly.');
 		}
@@ -138,7 +138,7 @@ registerSuite('SlidePane', {
 			this.skip('Test requires mouse or touch interactions.');
 		}
 
-		if (browserName.toLowerCase() === 'microsoftedge') {
+		if (browserName.toLowerCase() === 'microsoftedge' || browserName.toLowerCase() === 'internet explorer') {
 			// TODO: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11469232/
 			this.skip('Edge driver does not handle mouse movements correctly.');
 		}
