@@ -62,12 +62,7 @@
 			"tunnel": "browserstack",
 
 			"environments+": [
-				{ "browserName": "internet explorer", "version": "11" },
-				{ "browserName": "edge" },
-				{ "browserName": "firefox", "os": "Windows", "os_version": "10" },
-				{ "browserName": "chrome", "os": "Windows", "os_version": "10" },
-				{ "browserName": "safari", "version": "9.1", "platform": "MAC" },
-				{ "browserName": "iPhone", "version": "9.1" }
+				{ "browserName": "chrome", "os": "Windows", "os_version": "10" }
 			],
 
 			"maxConcurrency": 5
@@ -91,12 +86,7 @@
 
 			"defaultTimeout": 10000,
 			"environments+": [
-				{ "browserName": "internet explorer", "version": [ "11.0" ], "platform": "Windows 7" },
-				{ "browserName": "firefox", "version": "43", "platform": "Windows 10" },
-				{ "browserName": "chrome", "platform": "Windows 10" },
-				{ "browserName": "chrome", "platform": "Windows 10" },
-				{ "browserName": "safari", "version": "9.0", "platform": "OS X 10.11" },
-				{ "browserName": "iphone", "version": "9.3" }
+				{ "browserName": "chrome", "platform": "Windows 10" }
 			],
 			"maxConcurrency": 4
 		}
