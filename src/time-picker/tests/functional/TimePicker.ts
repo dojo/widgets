@@ -5,7 +5,7 @@ import { Remote } from 'intern/lib/executors/Node';
 import Command from '@theintern/leadfoot/Command';
 import Element from '@theintern/leadfoot/Element';
 import keys from '@theintern/leadfoot/keys';
-import * as comboBoxCss from '../../../theme/combobox.m.css';
+import * as comboboxCss from '../../../theme/combobox.m.css';
 import * as listboxCss from '../../../theme/listbox.m.css';
 import * as textinputCss from '../../../theme/text-input.m.css';
 
@@ -20,10 +20,10 @@ function getPage(remote: Remote, exampleId: string) {
 
 function testDisabledPicker(remote: Remote, exampleId: string, readOnly = false) {
 	return getPage(remote, exampleId)
-		.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.input}`)
+		.findByCssSelector(`.${comboboxCss.controls} .${textinputCss.input}`)
 			.click()
 			.sleep(DELAY)
-			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboBoxCss.controls} .${textinputCss.input}');`)
+			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboboxCss.controls} .${textinputCss.input}');`)
 			.then(function (this: Command<Element>, isEqual) {
 				if (isEqual) {
 					return (<Command<Element>> this.parent)
@@ -37,24 +37,24 @@ function testDisabledPicker(remote: Remote, exampleId: string, readOnly = false)
 			})
 		.end()
 		.setFindTimeout(100)
-		.findAllByCssSelector(`.${comboBoxCss.dropdown}`)
+		.findAllByCssSelector(`.${comboboxCss.dropdown}`)
 			.then((elements) => {
 				assert.strictEqual(elements.length, 0);
 			})
 		.end()
 		.setFindTimeout(5000)
-		.findByCssSelector(`.${comboBoxCss.controls} .${comboBoxCss.trigger}`)
+		.findByCssSelector(`.${comboboxCss.controls} .${comboboxCss.trigger}`)
 			.click()
 		.end()
 		.sleep(DELAY)
-		.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboBoxCss.controls} .${textinputCss.input}');`)
+		.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboboxCss.controls} .${textinputCss.input}');`)
 		.then(isEqual => {
 			if (!readOnly) {
 				assert.isFalse(isEqual, 'Input should not gain focus when dropdown trigger is clicked.');
 			}
 		})
 		.setFindTimeout(100)
-		.findAllByCssSelector(`.${comboBoxCss.dropdown}`)
+		.findAllByCssSelector(`.${comboboxCss.dropdown}`)
 			.then((elements) => {
 				assert.strictEqual(elements.length, 0);
 			})
@@ -65,15 +65,15 @@ registerSuite('TimePicker', {
 	'picker opens on input'() {
 		const exampleId = 'example-filter-on-input';
 		return getPage(this.remote, exampleId)
-			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.input}`)
+			.findByCssSelector(`.${comboboxCss.controls} .${textinputCss.input}`)
 				.type('1')
 			.end()
 			.sleep(DELAY)
-			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboBoxCss.controls} .${textinputCss.input}');`)
+			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboboxCss.controls} .${textinputCss.input}');`)
 			.then(isEqual => {
 				assert.isTrue(isEqual);
 			})
-			.findByCssSelector(`.${comboBoxCss.dropdown}`)
+			.findByCssSelector(`.${comboboxCss.dropdown}`)
 				.getSize()
 				.then(({ height }) => {
 					assert.isAbove(height, 0);
@@ -88,15 +88,15 @@ registerSuite('TimePicker', {
 
 		const exampleId = 'example-open-on-focus';
 		return getPage(this.remote, exampleId)
-			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.input}`)
+			.findByCssSelector(`.${comboboxCss.controls} .${textinputCss.input}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboBoxCss.controls} .${textinputCss.input}');`)
+			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboboxCss.controls} .${textinputCss.input}');`)
 			.then(isEqual => {
 				assert.isTrue(isEqual);
 			})
-			.findByCssSelector(`.${comboBoxCss.dropdown}`)
+			.findByCssSelector(`.${comboboxCss.dropdown}`)
 				.getSize()
 				.then(({ height }) => {
 					assert.isAbove(height, 0);
@@ -106,30 +106,30 @@ registerSuite('TimePicker', {
 	'disabled menu items cannot be clicked'() {
 		const exampleId = 'example-disabled-items';
 		return getPage(this.remote, exampleId)
-			.findByCssSelector(`.${comboBoxCss.controls} .${comboBoxCss.trigger}`)
+			.findByCssSelector(`.${comboboxCss.controls} .${comboboxCss.trigger}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboBoxCss.controls} .${textinputCss.input}');`)
+			.execute(`return document.activeElement === document.querySelector('#${exampleId} .${comboboxCss.controls} .${textinputCss.input}');`)
 			.then(isEqual => {
 				assert.isTrue(isEqual);
 			})
-			.findByCssSelector(`.${comboBoxCss.dropdown}`)
+			.findByCssSelector(`.${comboboxCss.dropdown}`)
 				.getSize()
 				.then(({ height }) => {
 					assert.isAbove(height, 0);
 				})
 			.end()
-			.findByCssSelector(`.${comboBoxCss.dropdown} .${listboxCss.disabledOption}`)
+			.findByCssSelector(`.${comboboxCss.dropdown} .${listboxCss.disabledOption}`)
 				.click()
 			.end()
-			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.input}`)
+			.findByCssSelector(`.${comboboxCss.controls} .${textinputCss.input}`)
 				.getProperty('value')
 				.then((value) => {
 					assert.strictEqual(value, '', 'The input value should not contain the disabled value.');
 				})
 			.end()
-			.findByCssSelector(`.${comboBoxCss.dropdown}`)
+			.findByCssSelector(`.${comboboxCss.dropdown}`)
 				.getSize()
 				.then(({ height }) => {
 					assert.isAbove(height, 0, 'The dropdown should remain open.');
@@ -155,7 +155,7 @@ registerSuite('TimePicker', {
 
 		const exampleId = 'example-required-validated';
 		return getPage(this.remote, exampleId)
-			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.root}`)
+			.findByCssSelector(`.${comboboxCss.controls} .${textinputCss.root}`)
 				.findByCssSelector(`.${textinputCss.input}`)
 					.click()
 				.end()
@@ -193,7 +193,7 @@ registerSuite('TimePicker', {
 
 		const exampleId = 'example-required-validated';
 		return getPage(this.remote, exampleId)
-			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.root}`)
+			.findByCssSelector(`.${comboboxCss.controls} .${textinputCss.root}`)
 				.findByCssSelector(`.${textinputCss.input}`)
 					.click()
 				.end()
@@ -204,12 +204,12 @@ registerSuite('TimePicker', {
 				})
 			.end()
 		.end()
-		.findByCssSelector(`#example-filter-on-input .${comboBoxCss.controls} .${textinputCss.root}`)
+		.findByCssSelector(`#example-filter-on-input .${comboboxCss.controls} .${textinputCss.root}`)
 			.click()
 		.end()
 		.sleep(DELAY)
 		.findById(exampleId)
-			.findByCssSelector(`.${comboBoxCss.controls} .${textinputCss.root}`)
+			.findByCssSelector(`.${comboboxCss.controls} .${textinputCss.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.include(className, textinputCss.invalid);
