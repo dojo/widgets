@@ -4,9 +4,9 @@ import { w, v } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 
-import Button from '../../button/Button';
-import TextInput from '../../textinput/TextInput';
-import Tooltip, { Orientation } from '../Tooltip';
+import Button from '../../button/index';
+import TextInput from '../../text-input/index';
+import Tooltip, { Orientation } from '../../tooltip/index';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _open = new Set<string>();

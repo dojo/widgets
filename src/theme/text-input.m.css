@@ -1,0 +1,17 @@
+@import '../common/styles/variables.css';
+
+.input {}
+.root {}
+.inputWrapper {}
+.disabled {}
+.focused {}
+.readonly {}
+.required {}
+
+.invalid .input {
+	border-color: var(--error-color);
+}
+
+.valid .input {
+	border-color: var(--success-color);
+}

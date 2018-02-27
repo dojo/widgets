@@ -4,7 +4,7 @@ const createProcessors = require('grunt-dojo2/tasks/util/postcss').createProcess
 
 const packagePath = pkgDir.sync(process.cwd());
 
-const fontFiles = 'theme/common/fonts/*.{svg,ttf,woff}';
+const fontFiles = 'theme/fonts/*.{svg,ttf,woff}';
 const staticExampleFiles = [ '*/example/**', '!*/example/**/*.js' ];
 const staticTestFiles = '*/tests/**/*.{html,css,json,xml,js,txt}';
 

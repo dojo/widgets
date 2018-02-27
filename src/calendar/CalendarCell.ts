@@ -3,7 +3,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/T
 import Focus from '@dojo/widget-core/meta/Focus';
 import { v } from '@dojo/widget-core/d';
 import { DNode } from '@dojo/widget-core/interfaces';
-import * as css from '../theme/calendar/calendar.m.css';
+import * as css from '../theme/calendar.m.css';
 
 /**
  * @type CalendarCellProperties

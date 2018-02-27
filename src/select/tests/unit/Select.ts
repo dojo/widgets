@@ -7,11 +7,11 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
-import Select, { SelectProperties } from '../../Select';
-import Listbox from '../../../listbox/Listbox';
-import Label from '../../../label/Label';
-import * as css from '../../../theme/select/select.m.css';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import Select, { SelectProperties } from '../../index';
+import Listbox from '../../../listbox/index';
+import Label from '../../../label/index';
+import * as css from '../../../theme/select.m.css';
+import * as iconCss from '../../../theme/icons.m.css';
 import {
 	createHarness,
 	compareId,

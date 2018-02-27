@@ -4,9 +4,9 @@ const { assert } = intern.getPlugin('chai');
 import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 
-import Button from '../../Button';
-import * as css from '../../../theme/button/button.m.css';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import Button from '../../index';
+import * as css from '../../../theme/button.m.css';
+import * as iconCss from '../../../theme/icons.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('Button', {

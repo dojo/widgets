@@ -6,9 +6,9 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import harness from '@dojo/test-extras/harness';
 
-import Label from '../../../label/Label';
-import Checkbox, { Mode, CheckboxProperties } from '../../Checkbox';
-import * as css from '../../../theme/checkbox/checkbox.m.css';
+import Label from '../../../label/index';
+import Checkbox, { Mode, CheckboxProperties } from '../../index';
+import * as css from '../../../theme/checkbox.m.css';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const expectedToggle = function(labels = false, checked = false) {

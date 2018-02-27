@@ -1,0 +1,21 @@
+@import '../common/styles/variables.css';
+
+.root,
+.root * {
+	box-sizing: border-box;
+}
+
+.root {
+	display: inline-block;
+}
+
+.input:focus {
+	outline: none;
+}
+
+/* State classes */
+.disabled {}
+.focused {}
+.invalid {}
+.readonly {}
+.required {}

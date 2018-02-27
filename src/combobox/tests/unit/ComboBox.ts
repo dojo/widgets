@@ -6,12 +6,12 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
-import ComboBox from '../../ComboBox';
-import Label from '../../../label/Label';
-import Listbox from '../../../listbox/Listbox';
-import TextInput from '../../../textinput/TextInput';
-import * as css from '../../../theme/combobox/comboBox.m.css';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import ComboBox from '../../index';
+import Label from '../../../label/index';
+import Listbox from '../../../listbox/index';
+import TextInput from '../../../text-input/index';
+import * as css from '../../../theme/combobox.m.css';
+import * as iconCss from '../../../theme/icons.m.css';
 import {
 	createHarness,
 	compareId,

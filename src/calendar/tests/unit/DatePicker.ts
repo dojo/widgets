@@ -7,9 +7,9 @@ import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
 import DatePicker from '../../DatePicker';
-import * as css from '../../../theme/calendar/calendar.m.css';
+import * as css from '../../../theme/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
-import * as iconCss from '../../../theme/common/icons.m.css';
+import * as iconCss from '../../../theme/icons.m.css';
 import {
 	compareAriaLabelledBy,
 	compareAriaControls,

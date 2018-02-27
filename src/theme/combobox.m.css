@@ -1,0 +1,57 @@
+@import '../common/styles/variables.css';
+
+.root {
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;
+	width: 200px;
+}
+
+.root * {
+	box-sizing: border-box;
+}
+
+.clearable {
+	padding-right: 4em;
+}
+
+.controls {
+	position: relative;
+}
+
+.dropdown {
+	border: 1px solid var(--component-color);
+	background: var(--component-background);
+	position: absolute;
+	width: 100%;
+	z-index: var(--zindex-dropdown);
+}
+
+.clear,
+.trigger {
+	position: absolute;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0;
+}
+
+.clear i, .trigger i {
+	font-size: initial;
+}
+
+.trigger {
+	right: 7px;
+}
+
+.clear {
+	right: 27px;
+}
+
+.focused { }
+.valid { }
+.invalid { }
+.open { }
