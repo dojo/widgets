@@ -30,6 +30,7 @@
     "@dojo/widget-core": "~0.9.4"
   },
   "devDependencies": {
+    "@dojo/cli": "^0.5.0",
     "@dojo/cli-build-widget": "~0.2.1",
     "@dojo/loader": "~0.1.1",
     "@dojo/test-extras": "~0.6.0",
