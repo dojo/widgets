@@ -4,7 +4,6 @@
 			"src/accordion-pane",
 			"src/button",
 			"src/calendar",
-			"src/calendar/CalendarCell",
 			"src/checkbox",
 			"src/combobox",
 			"src/dialog",
