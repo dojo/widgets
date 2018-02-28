@@ -1,5 +1,7 @@
 sudo: false
 language: node_js
+addons:
+  chrome: stable
 node_js:
 - '6'
 env:
@@ -17,7 +19,7 @@ install:
 - travis_retry npm install
 script:
 - grunt
-- grunt intern:browserstack --test-reporter
+- grunt intern:headless --test-reporter
 - grunt uploadCoverage
 - grunt dist
 - grunt doc
