@@ -5,7 +5,7 @@ import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import Tab from '../Tab';
+import Tab from '../../tab/index';
 import TabController, { Align } from '../../tab-controller/index';
 import Task from '@dojo/core/async/Task';
 

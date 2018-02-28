@@ -19,7 +19,7 @@ import '../../../select/tests/unit/Select';
 import '../../../slide-pane/tests/unit/SlidePane';
 import '../../../slider/tests/unit/Slider';
 import '../../../split-pane/tests/unit/SplitPane';
-import '../../../tab-controller/tests/unit/Tab';
+import '../../../tab/tests/unit/Tab';
 import '../../../tab-controller/tests/unit/TabButton';
 import '../../../tab-controller/tests/unit/TabController';
 import '../../../text-area/tests/unit/Textarea';
