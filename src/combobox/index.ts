@@ -9,6 +9,7 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import uuid from '@dojo/core/uuid';
 import { v, w } from '@dojo/widget-core/d';
 
+import Icon from '../icon/index';
 import Label from '../label/index';
 import Listbox from '../listbox/index';
 import TextInput, { TextInputProperties } from '../text-input/index';
@@ -16,7 +17,6 @@ import commonBundle from '../common/nls/common';
 import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
@@ -74,7 +74,6 @@ export const enum Operation {
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 
 @theme(css)
-@theme(iconCss)
 @diffProperty('results', reference)
 @customElement<ComboBoxProperties>({
 	tag: 'dojo-combo-box',
@@ -372,9 +371,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			onclick: this._onClearClick
 		}, [
 			`${messages.clear} ${label}`,
-			v('i', { classes: this.theme([ iconCss.icon, iconCss.closeIcon ]),
-				role: 'presentation', 'aria-hidden': 'true'
-			})
+			w(Icon, { type: 'closeIcon' })
 		]);
 	}
 
@@ -394,11 +391,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			onclick: this._onArrowClick
 		}, [
 			`${messages.open} ${label}`,
-			v('i', {
-				'aria-hidden': 'true',
-				classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
-				role: 'presentation'
-			})
+			w(Icon, { type: 'downIcon' })
 		]);
 	}
 

@@ -4,6 +4,7 @@ import '../../../calendar/tests/functional/Calendar';
 import '../../../checkbox/tests/functional/Checkbox';
 import '../../../combobox/tests/functional/ComboBox';
 import '../../../dialog/tests/functional/Dialog';
+import '../../../icon/tests/functional/Icon';
 import '../../../label/tests/functional/Label';
 import '../../../listbox/tests/functional/Listbox';
 import '../../../radio/tests/functional/Radio';

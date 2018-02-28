@@ -9,10 +9,10 @@ import uuid from '@dojo/core/uuid';
 import { find } from '@dojo/shim/array';
 import { formatAriaProperties, Keys } from '../common/util';
 import { CustomAriaProperties, LabeledProperties, InputProperties } from '../common/interfaces';
+import Icon from '../icon/index';
 import Label from '../label/index';
 import Listbox from '../listbox/index';
 import * as css from '../theme/select.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
@@ -48,7 +48,6 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
-@theme(iconCss)
 @diffProperty('options', reference)
 @customElement<SelectProperties>({
 	tag: 'dojo-select',
@@ -194,9 +193,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 
 	protected renderExpandIcon(): DNode {
 		return v('span', { classes: this.theme(css.arrow) }, [
-			v('i', { classes: this.theme([ iconCss.icon, iconCss.downIcon ]),
-				role: 'presentation', 'aria-hidden': 'true'
-			})
+			w(Icon, { type: 'downIcon' })
 		]);
 	}
 

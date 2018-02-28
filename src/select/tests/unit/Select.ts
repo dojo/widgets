@@ -7,11 +7,11 @@ import { v, w } from '@dojo/widget-core/d';
 import Focus from '@dojo/widget-core/meta/Focus';
 import { Keys } from '../../../common/util';
 
+import Icon from '../../../icon/index';
 import Select, { SelectProperties } from '../../index';
 import Listbox from '../../../listbox/index';
 import Label from '../../../label/index';
 import * as css from '../../../theme/select.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import {
 	createHarness,
 	compareId,
@@ -118,9 +118,7 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ])
 		]),
 		v('span', { classes: css.arrow }, [
-			v('i', { classes: [ iconCss.icon, iconCss.downIcon ],
-				role: 'presentation', 'aria-hidden': 'true'
-			})
+			w(Icon, { type: 'downIcon' })
 		])
 	]);
 
@@ -152,11 +150,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 			...describedBy
 		}, [ placeholder ? placeholder : useTestProperties ? 'Two' : '' ]),
 		v('span', { classes: css.arrow }, [
-			v('i', {
-				classes: [ iconCss.icon, iconCss.downIcon ],
-				role: 'presentation',
-				'aria-hidden': 'true'
-			})
+			w(Icon, { type: 'downIcon' })
 		]),
 		v('div', {
 			classes: css.dropdown,
@@ -393,11 +387,7 @@ registerSuite('Select', {
 							onmousedown: noop
 						}, [ 'two' ]),
 						v('span', { classes: css.arrow }, [
-							v('i', {
-								classes: [ iconCss.icon, iconCss.downIcon ],
-								role: 'presentation',
-								'aria-hidden': 'true'
-							})
+							w(Icon, { type: 'downIcon' })
 						]),
 						v('div', {
 							classes: css.dropdown,

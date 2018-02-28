@@ -9,6 +9,7 @@ import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../enhanced-text-input/tests/unit/EnhancedTextInput';
 import '../../../global-event/tests/unit/GlobalEvent';
+import '../../../icon/tests/unit/Icon';
 import '../../../label/tests/unit/Label';
 import '../../../listbox/tests/unit/Listbox';
 import '../../../listbox/tests/unit/ListboxOption';
