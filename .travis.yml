@@ -22,7 +22,6 @@ script:
 - grunt intern:headless --test-reporter
 - grunt uploadCoverage
 - grunt dist
-- npm run build-custom-elements
 - grunt doc
 notifications:
   slack:
