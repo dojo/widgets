@@ -19,7 +19,7 @@
   "scripts": {
     "prepublish": "grunt peerDepInstall",
     "test": "grunt test",
-    "build-custom-elements": "shx cp -r output && dojo build widget",
+    "build-custom-elements": "shx rm -rf output && dojo build widget",
     "dist-custom-elements": "npm run build-custom-elements && shx rm -rf dist/all/dist && shx cp -r output/dist dist/all/"
   },
   "peerDependencies": {
