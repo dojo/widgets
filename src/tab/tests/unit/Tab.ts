@@ -3,7 +3,7 @@ const { registerSuite } = intern.getInterface('object');
 import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 
-import Tab from '../../Tab';
+import Tab from '../../index';
 import * as css from '../../../theme/tab-controller.m.css';
 
 registerSuite('Tab', {

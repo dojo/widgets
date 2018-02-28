@@ -1,6 +1,6 @@
 import { assign } from '@dojo/core/lang';
 import { DNode, WNode } from '@dojo/widget-core/interfaces';
-import Tab, { TabProperties } from './Tab';
+import Tab, { TabProperties } from '../tab/index';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';

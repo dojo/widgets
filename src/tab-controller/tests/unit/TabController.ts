@@ -8,7 +8,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 
 import TabController, { Align } from '../../index';
 import TabButton from '../../TabButton';
-import Tab from '../../Tab';
+import Tab from '../../../tab/index';
 import * as css from '../../../theme/tab-controller.m.css';
 import {
 	createHarness,
