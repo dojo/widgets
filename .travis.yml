@@ -19,7 +19,7 @@ install:
 - travis_retry npm install
 script:
 - grunt
-- grunt intern:local --test-reporter
+- grunt intern:headless --test-reporter
 - grunt uploadCoverage
 - grunt dist
 - grunt doc
