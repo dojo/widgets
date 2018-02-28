@@ -76,7 +76,7 @@
 			},
 
 			"environments+": [
-				{ "browserName": "chrome", "chromeOptions": { "args": ["headless", "disable-gpu"] } }
+				{ "browserName": "chrome", "chromeOptions": { "args": ["headless", "disable-gpu", "no-sandbox"] } }
 			]
 		},
 
