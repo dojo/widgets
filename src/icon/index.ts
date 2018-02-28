@@ -36,15 +36,9 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	attributes: [ 'type', 'altText' ]
 })
 export class IconBase<P extends IconProperties = IconProperties> extends ThemedBase<P, null> {
-	protected renderAltText(altText?: string): DNode | undefined {
-		return altText && v('span', { classes: [ baseCss.visuallyHidden ] }, [ altText ]);
-	}
 
-	protected renderIcon(type: IconType, aria: {}): DNode {
-		return v('i', {
-			...formatAriaProperties(aria),
-			classes: this.theme([ css.icon, css[type] ])
-		});
+	protected renderAltText(altText: string): DNode {
+		return v('span', { classes: [ baseCss.visuallyHidden ] }, [ altText ]);
 	}
 
 	render(): DNode {
@@ -56,12 +50,12 @@ export class IconBase<P extends IconProperties = IconProperties> extends ThemedB
 			altText
 		} = this.properties;
 
-		const altTextNode = this.renderAltText(altText);
-		const icon = this.renderIcon(type, aria);
-
 		return v('span', { classes: this.theme(css.root) }, [
-			icon,
-			altTextNode
+			v('i', {
+				...formatAriaProperties(aria),
+				classes: this.theme([ css.icon, css[type] ])
+			}),
+			altText ? this.renderAltText(altText) : null
 		]);
 	}
 }

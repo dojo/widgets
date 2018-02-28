@@ -1,4 +1,4 @@
-# @dojo/widgets/icon/Icon widget
+# @dojo/widgets/icon widget
 
 Dojo 2's `Icon` widget renders an icon.
 
@@ -7,7 +7,7 @@ Dojo 2's `Icon` widget renders an icon.
 
 *Basic Example*
 ```typescript
-import Icon from '@dojo/widgets/icon/index';
+import Icon from '@dojo/widgets/icon';
 import { w } from '@dojo/widget-core/d';
 
 w(Icon, { type: 'downIcon', });
@@ -19,7 +19,7 @@ text for screen readers can be provided via the `altText` property.
 
 *Custom aria attributes Example*
 ```typescript
-import Icon from '@dojo/widgets/icon/index';
+import Icon from '@dojo/widgets/icon';
 import { w } from '@dojo/widget-core/d';
 
 w(Icon, {
@@ -34,7 +34,7 @@ w(Icon, {
 
 *Example with altText*
 ```typescript
-import Icon from '@dojo/widgets/icon/Icon';
+import Icon from '@dojo/widgets/icon';
 import { w } from '@dojo/widget-core/d';
 
 w(Icon, {
