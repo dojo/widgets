@@ -5,8 +5,8 @@ import harness from '@dojo/test-extras/harness';
 import { v, w } from '@dojo/widget-core/d';
 
 import Button from '../../index';
+import Icon from '../../../icon/index';
 import * as css from '../../../theme/button.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('Button', {
@@ -80,11 +80,9 @@ registerSuite('Button', {
 				value: 'value'
 			}, [
 				'foo',
-				v('i', {
-					classes: [ css.addon, iconCss.icon, iconCss.downIcon ],
-					role: 'presentation',
-					'aria-hidden': 'true'
-				})
+				v('span', { classes: css.addon }, [
+					w(Icon, { type: 'downIcon' })
+				])
 			]));
 		},
 
@@ -116,11 +114,9 @@ registerSuite('Button', {
 				type: undefined,
 				value: undefined
 			}, [
-				v('i', {
-					classes: [ css.addon, iconCss.icon, iconCss.downIcon ],
-					role: 'presentation',
-					'aria-hidden': 'true'
-				})
+				v('span', { classes: css.addon }, [
+					w(Icon, { type: 'downIcon' })
+				])
 			]));
 		},
 

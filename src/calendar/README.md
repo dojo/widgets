@@ -49,7 +49,7 @@ class MyCalendarCell extends CalendarCell {
 		const { selected } = this.properties;
 		return v('div', [
 			`${date}`,
-			selected ? v('span', { classes: this.classes(iconCss.checkMark) }) : null
+			selected ? w(Icon, { type: 'checkMark' }) : null
 		]);
 	}
 }

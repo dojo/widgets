@@ -1,14 +1,14 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Focus from '@dojo/widget-core/meta/Focus';
-import { v } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
 import { DNode } from '@dojo/widget-core/interfaces';
 import calendarBundle from './nls/Calendar';
 import { Keys } from '../common/util';
 
+import Icon from '../icon/index';
 import * as baseCss from '../common/styles/base.m.css';
-import * as iconCss from '../theme/icons.m.css';
 import * as css from '../theme/calendar.m.css';
 
 /**
@@ -61,7 +61,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 const BASE_YEAR = 2000;
 
 @theme(css)
-@theme(iconCss)
 export class DatePickerBase<P extends DatePickerProperties = DatePickerProperties> extends ThemedBase<P, null> {
 	private _idBase = uuid();
 	private _monthPopupOpen = false;
@@ -237,13 +236,11 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 
 	protected renderPagingButtonContent(type: Paging): DNode[] {
 		const { labels } = this.properties;
-		const iconClass = type === Paging.next ? iconCss.rightIcon : iconCss.leftIcon;
+		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
 
 		return [
-			v('i', { classes: this.theme([ iconCss.icon, iconClass ]),
-				role: 'presentation', 'aria-hidden': 'true'
-			}),
+			w(Icon, { type: iconType }),
 			v('span', { classes: baseCss.visuallyHidden }, [ labelText ])
 		];
 	}

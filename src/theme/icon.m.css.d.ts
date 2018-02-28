@@ -1,3 +1,4 @@
+export const root: string;
 export const icon: string;
 export const downIcon: string;
 export const leftIcon: string;

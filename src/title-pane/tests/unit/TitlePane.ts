@@ -1,11 +1,12 @@
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { v, w } from '@dojo/widget-core/d';
+import Icon from '../../../icon/index';
 import TitlePane, { TitlePaneProperties } from '../../index';
 import * as css from '../../../theme/title-pane.m.css';
 import * as fixedCss from '../../styles/title-pane.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import {
 	compareId,
 	compareAriaControls,
@@ -44,15 +45,9 @@ registerSuite('TitlePane', {
 						type: 'button',
 						onclick: noop
 					}, [
-						v('i', {
-							classes: [
-								css.arrow,
-								iconCss.icon,
-								iconCss.downIcon
-							],
-							role: 'presentation',
-							'aria-hidden': 'true'
-						}),
+						v('span', { classes: css.arrow }, [
+							w(Icon, { type: 'downIcon' })
+						]),
 						'test'
 					])
 				]),
@@ -94,15 +89,9 @@ registerSuite('TitlePane', {
 						type: 'button',
 						onclick: noop
 					}, [
-						v('i', {
-							classes: [
-								css.arrow,
-								iconCss.icon,
-								iconCss.rightIcon
-							],
-							role: 'presentation',
-							'aria-hidden': 'true'
-						}),
+						v('span', { classes: css.arrow }, [
+							w(Icon, { type: 'rightIcon' })
+						]),
 						'test'
 					])
 				]),

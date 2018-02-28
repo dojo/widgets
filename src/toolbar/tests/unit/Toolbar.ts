@@ -4,12 +4,12 @@ import { v, w, isWNode } from '@dojo/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 import { stub } from 'sinon';
 
+import Icon from '../../../icon/index';
 import Toolbar, { Position, ToolbarProperties } from '../../index';
 import SlidePane, { Align } from '../../../slide-pane/index';
 
 import * as fixedCss from '../../styles/toolbar.m.css';
 import * as css from '../../../theme/toolbar.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import { GlobalEvent } from '../../../global-event/index';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
@@ -275,11 +275,7 @@ registerSuite('Toolbar', {
 				onclick: noop
 			}, [
 				'open foo',
-				v('i', {
-					classes: [ iconCss.icon, iconCss.barsIcon ],
-					role: 'presentation',
-					'aria-hidden': 'true'
-				})
+				w(Icon, { type: 'barsIcon' })
 			]);
 
 			h.expect(() =>

@@ -5,9 +5,9 @@ import * as sinon from 'sinon';
 import { v, w, isWNode } from '@dojo/widget-core/d';
 
 import Dialog, { DialogProperties } from '../../index';
+import Icon from '../../../icon/index';
 import * as css from '../../../theme/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
-import * as iconCss from '../../../theme/icons.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
 import { GlobalEvent } from '../../../global-event/index';
@@ -28,11 +28,7 @@ const expectedCloseButton = function() {
 		onclick: noop
 	}, [
 		'close ',
-		v('i', {
-			classes: [ iconCss.icon, iconCss.closeIcon ],
-			role: 'presentation',
-			'aria-hidden': 'true'
-		})
+		w(Icon, { type: 'closeIcon' })
 	]);
 };
 
@@ -152,11 +148,7 @@ registerSuite('Dialog', {
 							onclick: noop
 						}, [
 							'foo',
-							v('i', {
-								classes: [ iconCss.icon, iconCss.closeIcon ],
-								role: 'presentation',
-								'aria-hidden': 'true'
-							})
+							w(Icon, { type: 'closeIcon' })
 						])
 					]),
 					v('div', {
@@ -211,11 +203,7 @@ registerSuite('Dialog', {
 							onclick: noop
 						}, [
 							'close foo',
-							v('i', {
-								classes: [ iconCss.icon, iconCss.closeIcon ],
-								role: 'presentation',
-								'aria-hidden': 'true'
-							})
+							w(Icon, { type: 'closeIcon' })
 						])
 					]),
 					v('div', {
