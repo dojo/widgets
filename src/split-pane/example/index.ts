@@ -69,7 +69,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					},
 					size: this.state.nestedSizeA
 				}, [
-					null,
+					v('div'),
 					w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => {
@@ -92,7 +92,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					},
 					size: this.state.nestedSizeC
 				}, [
-					null,
+					v('div'),
 					w(SplitPane, {
 						direction: Direction.row,
 						onResize: (size: number) => {
@@ -115,7 +115,7 @@ export class App extends WidgetBase<WidgetProperties> {
 					},
 					size: this.state.nestedSizeE
 				}, [
-					null,
+					v('div'),
 					w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => {
