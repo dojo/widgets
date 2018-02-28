@@ -70,15 +70,9 @@ const expected = function(options: {open?: boolean, closeable?: boolean, heading
 				type: 'button',
 				onclick: noop
 			}, [
-				v('i', {
-					classes: [
-						css.arrow,
-						iconCss.icon,
-						open ? iconCss.downIcon : iconCss.rightIcon
-					],
-					role: 'presentation',
-					'aria-hidden': 'true'
-				}),
+				v('span', { classes: css.arrow }, [
+					w(Icon, { type: open ? 'downIcon' : 'rightIcon' })
+				]),
 				'test'
 			])
 		]),
