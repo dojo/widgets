@@ -10,7 +10,7 @@ import * as fixedCss from './styles/title-pane.m.css';
 import * as css from '../theme/title-pane.m.css';
 import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
-import { GlobalEvent } from '../global-event/GlobalEvent';
+import GlobalEvent from '../global-event/index';
 
 /**
  * @type TitlePaneProperties
