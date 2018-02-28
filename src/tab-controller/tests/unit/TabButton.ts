@@ -36,7 +36,7 @@ const expected = function(closeable = false, disabled = false, activeTab: number
 			classes: css.close,
 			type: 'button',
 			onclick: noop
-		}, [ 'close', ...children ]) : null
+		}, [ 'close' ]) : null
 	);
 
 	return v('div', {
@@ -49,7 +49,7 @@ const expected = function(closeable = false, disabled = false, activeTab: number
 			closeable ? css.closeable : null,
 			disabled ? css.disabledTabButton : null
 		],
-		dir: null,
+		dir: '',
 		id: 'foo',
 		key: 'tab-button',
 		lang: null,

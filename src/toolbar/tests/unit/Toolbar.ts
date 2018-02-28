@@ -27,7 +27,7 @@ registerSuite('Toolbar', {
 					fixedCss.onTopFixed
 				],
 				key: 'root',
-				dir: null,
+				dir: '',
 				lang: null
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -59,7 +59,7 @@ registerSuite('Toolbar', {
 						fixedCss.onBottomFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -104,7 +104,7 @@ registerSuite('Toolbar', {
 						fixedCss.onTopFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -136,7 +136,7 @@ registerSuite('Toolbar', {
 						fixedCss.onTopFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -168,7 +168,7 @@ registerSuite('Toolbar', {
 						fixedCss.onTopFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -206,7 +206,7 @@ registerSuite('Toolbar', {
 						fixedCss.onTopFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -293,7 +293,7 @@ registerSuite('Toolbar', {
 						fixedCss.onTopFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -328,7 +328,7 @@ registerSuite('Toolbar', {
 						fixedCss.onTopFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -363,7 +363,7 @@ registerSuite('Toolbar', {
 						fixedCss.onTopFixed
 					],
 					key: 'root',
-					dir: null,
+					dir: '',
 					lang: null
 				}, [
 					w(GlobalEvent, { window: { resize: noop }, key: 'global' }),

@@ -49,7 +49,7 @@
 				}
 			}
 
-			require(['@dojo/shim/main'], function () {
+			require(['@dojo/shim/main', '@dojo/shim/browser'], function () {
 				require([ 'src/common/example/index' ], function () {});
 				if (module) {
 					require([ 'src/' + module + '/example/index' ], function () {});

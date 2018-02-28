@@ -139,8 +139,7 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 				type: 'button',
 				onclick: this._onCloseClick
 			}, [
-				messages.close,
-				...this.children
+				messages.close
 			]) : null
 		];
 	}
