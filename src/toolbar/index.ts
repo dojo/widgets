@@ -20,7 +20,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
 export const enum Position {
 	bottom = 'onBottomFixed',
 	top = 'onTopFixed'
-};
+}
 
 /**
  * @type ToolbarProperties
@@ -43,7 +43,7 @@ export interface ToolbarProperties extends ThemedProperties {
 	onCollapse?(collapsed: boolean): void;
 	position?: Position;
 	title?: DNode;
-};
+}
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 

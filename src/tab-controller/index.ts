@@ -20,7 +20,7 @@ export const enum Align {
 	left,
 	right,
 	top
-};
+}
 
 /**
  * @type TabControllerProperties
@@ -37,7 +37,7 @@ export interface TabControllerProperties extends ThemedProperties, CustomAriaPro
 	alignButtons?: Align;
 	onRequestTabChange?(index: number, key: string): void;
 	onRequestTabClose?(index: number, key: string): void;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -159,13 +159,11 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 		const { activeIndex } = this.properties;
 
 		return this._tabs
-			.filter((tab, i) => {
-				return i === activeIndex && tab.children.length;
-			})
 			.map((tab, i) => {
 				assign(tab.properties, {
 					id: `${ this._id }-tab-${i}`,
-					labelledBy: `${ this._id }-tabbutton-${i}`
+					labelledBy: `${ this._id }-tabbutton-${i}`,
+					show: i === activeIndex
 				});
 				return tab;
 			});

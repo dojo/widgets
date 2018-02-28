@@ -54,6 +54,7 @@ function extractValue(event: Event): number {
 		'invalid',
 		'required',
 		'readOnly',
+		'output',
 		'max',
 		'min',
 		'outputIsTooltip',
@@ -86,6 +87,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 		this.properties.onBlur && this.properties.onBlur(extractValue(event));
 	}
 	private _onChange (event: Event) {
+		event.stopPropagation();
 		this.properties.onChange && this.properties.onChange(extractValue(event));
 	}
 	private _onClick (event: MouseEvent) {
@@ -96,6 +98,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 		this.properties.onFocus && this.properties.onFocus(extractValue(event));
 	}
 	private _onInput (event: Event) {
+		event.stopPropagation();
 		this.properties.onInput && this.properties.onInput(extractValue(event));
 	}
 	private _onKeyDown (event: KeyboardEvent) {

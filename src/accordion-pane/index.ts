@@ -23,14 +23,14 @@ export interface AccordionPaneProperties extends ThemedProperties {
 	onRequestClose?(key: string): void;
 	onRequestOpen?(key: string): void;
 	openKeys?: string[];
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
 @theme(css)
 @customElement<AccordionPaneProperties>({
 	tag: 'dojo-accordion-pane',
-	properties: [ 'openKeys', 'theme' ],
+	properties: [ 'openKeys', 'theme', 'extraClasses' ],
 	events: [ 'onRequestClose', 'onRequestOpen' ]
 })
 export class AccordionPaneBase<P extends AccordionPaneProperties = AccordionPaneProperties> extends ThemedBase<P, WNode<TitlePane>> {
@@ -70,7 +70,7 @@ export class AccordionPaneBase<P extends AccordionPaneProperties = AccordionPane
 		});
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		return v('div', { classes: this.theme(css.root) }, this.renderChildren());
 	}
 }

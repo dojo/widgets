@@ -450,4 +450,4 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 }
 
-export default class Calendar extends CalendarBase<CalendarProperties> {};
+export default class Calendar extends CalendarBase<CalendarProperties> {}

@@ -67,15 +67,17 @@ export class App extends WidgetBase<WidgetProperties> {
 					onResize: (size: number) => {
 						this.setState({ nestedSizeA: size });
 					},
-					size: this.state.nestedSizeA,
-					trailing: w(SplitPane, {
+					size: this.state.nestedSizeA
+				}, [
+					v('div'),
+					w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeB: size });
 						},
 						size: this.state.nestedSizeB
 					})
-				})
+				])
 			]),
 			v('h3', ['Multiple vertical nested']),
 			v('div', {
@@ -88,15 +90,17 @@ export class App extends WidgetBase<WidgetProperties> {
 					onResize: (size: number) => {
 						this.setState({ nestedSizeC: size });
 					},
-					size: this.state.nestedSizeC,
-					trailing: w(SplitPane, {
+					size: this.state.nestedSizeC
+				}, [
+					v('div'),
+					w(SplitPane, {
 						direction: Direction.row,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeD: size });
 						},
 						size: this.state.nestedSizeD
 					})
-				})
+				])
 			]),
 			v('h3', ['Multiple horizontal nested']),
 			v('div', {
@@ -109,15 +113,17 @@ export class App extends WidgetBase<WidgetProperties> {
 					onResize: (size: number) => {
 						this.setState({ nestedSizeE: size });
 					},
-					size: this.state.nestedSizeE,
-					trailing: w(SplitPane, {
+					size: this.state.nestedSizeE
+				}, [
+					v('div'),
+					w(SplitPane, {
 						direction: Direction.column,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeF: size });
 						},
 						size: this.state.nestedSizeF
 					})
-				})
+				])
 			]),
 			v('h3', ['Maximum size']),
 			v('div', {

@@ -60,11 +60,12 @@ registerSuite('SplitPane', {
 		'Should construct SplitPane with default properties'() {
 			const h = harness(() => w(SplitPane, {
 				direction: Direction.column,
-				leading: 'abc',
 				onResize: noop,
-				size: 200,
-				trailing: 'def'
-			}));
+				size: 200
+			}, [
+				'abc',
+				'def'
+			]));
 
 			h.expect(() => v('div', {
 				classes: [ css.root, css.column, fixedCss.rootFixed, fixedCss.columnFixed ],

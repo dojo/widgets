@@ -30,7 +30,7 @@ export interface CalendarCellProperties extends ThemedProperties {
 	onClick?(date: number, disabled: boolean): void;
 	onFocusCalled?(): void;
 	onKeyDown?(key: number, preventDefault: () => void): void;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -92,4 +92,4 @@ export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellPro
 	}
 }
 
-export default class CalendarCell extends CalendarCellBase<CalendarCellProperties> {};
+export default class CalendarCell extends CalendarCellBase<CalendarCellProperties> {}

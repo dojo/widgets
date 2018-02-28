@@ -29,7 +29,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @customElement<RadioProperties>({
 	tag: 'dojo-radio',
 	properties: [ 'theme', 'aria', 'extraClasses', 'checked' ],
-	attributes: [ 'value' ],
+	attributes: [ 'label', 'value' ],
 	events: [
 		'onBlur',
 		'onChange',

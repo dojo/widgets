@@ -1,0 +1,29 @@
+{
+	"build-widget": {
+		"elements": [
+			"src/accordion-pane",
+			"src/button",
+			"src/calendar",
+			"src/checkbox",
+			"src/combobox",
+			"src/dialog",
+			"src/enhanced-text-input",
+			"src/label",
+			"src/listbox",
+			"src/progress",
+			"src/radio",
+			"src/select",
+			"src/slide-pane",
+			"src/slider",
+			"src/split-pane",
+			"src/tab",
+			"src/tab-controller",
+			"src/text-area",
+			"src/text-input",
+			"src/time-picker",
+			"src/title-pane",
+			"src/toolbar",
+			"src/tooltip"
+		]
+	}
+}

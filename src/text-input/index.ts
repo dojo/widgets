@@ -32,7 +32,7 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	minLength?: number | string;
 	placeholder?: string;
 	value?: string;
-	focus?: boolean;
+	shouldFocus?: boolean;
 	onClick?(value: string): void;
 }
 
@@ -46,12 +46,12 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'aria',
 		'extraClasses',
 		'aria',
-		'focus',
+		'shouldFocus',
 		'disabled',
 		'invalid',
 		'readOnly'
 	],
-	attributes: [ 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	attributes: [ 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -158,10 +158,10 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			required,
 			type = 'text',
 			value,
-			focus
+			shouldFocus
 		} = this.properties;
 
-		if (focus) {
+		if (shouldFocus) {
 			this.meta(Focus).set('input');
 		}
 

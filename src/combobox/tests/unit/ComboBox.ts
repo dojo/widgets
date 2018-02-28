@@ -70,7 +70,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 				owns: ''
 			},
 			disabled,
-			focus: callFocus,
+			shouldFocus: callFocus,
 			id: useTestProperties ? 'foo' : '',
 			invalid,
 			readOnly,
@@ -403,7 +403,7 @@ registerSuite('ComboBox', {
 					owns: ''
 				},
 				placeholder: 'foo',
-				focus: false,
+				shouldFocus: false,
 				disabled: undefined,
 				id: '',
 				invalid: undefined,
@@ -418,7 +418,7 @@ registerSuite('ComboBox', {
 			}));
 		},
 
-		'input opens on focus with openOnFocus'() {
+		'input opens on shouldFocus with openOnFocus'() {
 			const onFocus = sinon.stub();
 			const h = harness(() => w(ComboBox, {
 				...testProperties,
@@ -449,7 +449,7 @@ registerSuite('ComboBox', {
 					owns: ''
 				},
 				id: 'foo',
-				focus: false,
+				shouldFocus: false,
 				disabled: true,
 				invalid: true,
 				readOnly: true,
@@ -508,7 +508,7 @@ registerSuite('ComboBox', {
 					owns: ''
 				},
 				id: 'foo',
-				focus: false,
+				shouldFocus: false,
 				disabled: true,
 				invalid: false,
 				readOnly: true,

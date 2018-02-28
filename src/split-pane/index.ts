@@ -15,7 +15,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
 export const enum Direction {
 	column,
 	row
-};
+}
 
 /**
  * @type SplitPaneProperties
@@ -30,11 +30,9 @@ export const enum Direction {
  */
 export interface SplitPaneProperties extends ThemedProperties {
 	direction?: Direction;
-	leading?: DNode;
 	onResize?(size: number): void;
 	size?: number;
-	trailing?: DNode;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -43,13 +41,13 @@ const DEFAULT_SIZE = 100;
 @theme(css)
 @customElement<SplitPaneProperties>({
 	tag: 'dojo-split-pane',
-	properties: [ 'theme', 'extraClasses', 'leading', 'size', 'trailing' ],
+	properties: [ 'theme', 'extraClasses', 'size', 'direction' ],
 	attributes: [ 'direction' ],
 	events: [
 		'onResize'
 	]
 })
-export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P, null> {
+export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P> {
 	private _dragging: boolean;
 	private _lastSize?: number;
 	private _position: number;
@@ -126,9 +124,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 
 	protected render(): DNode {
 		const {
-			direction = Direction.row,
-			leading = null,
-			trailing = null
+			direction = Direction.row
 		} = this.properties;
 
 		return v('div', {
@@ -157,7 +153,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 				],
 				key: 'leading',
 				styles: this.getPaneStyles()
-			}, this.getPaneContent(leading)),
+			}, this.getPaneContent(this.children[0])),
 			v('div', {
 				classes: [
 					this.theme(css.divider),
@@ -174,7 +170,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 					fixedCss.trailingFixed
 				],
 				key: 'trailing'
-			}, this.getPaneContent(trailing))
+			}, this.getPaneContent(this.children[1]))
 		]);
 	}
 }

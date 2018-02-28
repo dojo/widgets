@@ -109,7 +109,8 @@ const expectedTabContent = function(index = 0): DNode {
 		w(Tab, {
 			key: '0',
 			id: '',
-			labelledBy: ''
+			labelledBy: '',
+			show: index === 0
 		}, [ 'tab content 1' ]),
 		w(Tab, {
 			closeable: true,
@@ -117,13 +118,14 @@ const expectedTabContent = function(index = 0): DNode {
 			key: '1',
 			label: 'foo',
 			id: '',
+			show: index === 1,
 			labelledBy: ''
 		}, [ 'tab content 2' ])
 	];
 	return v('div', {
 		key: 'tabs',
 		classes: css.tabs
-	}, [ tabs[index] ]);
+	}, tabs);
 };
 
 const expected = function(children: DNode[] = [], describedby = '', classes = [ null, css.root ], vertical = false) {
@@ -323,12 +325,14 @@ registerSuite('TabController', {
 			};
 			let children = [
 				w(Tab, {
-					key: '0'
+					key: '0',
+					show: false
 				}, [ 'tab content 1' ]),
 				w(Tab, {
 					closeable: true,
 					key: '1',
-					label: 'foo'
+					label: 'foo',
+					show: true
 				}, [ 'tab content 2' ])
 			];
 			const h = harness(() => w(TabController, properties, children));
@@ -385,9 +389,16 @@ registerSuite('TabController', {
 			}, [
 				w(Tab, {
 					id: '',
+					key: '0',
+					labelledBy: '',
+					show: false
+				}, [ 'tab content 1' ]),
+				w(Tab, {
+					id: '',
 					labelledBy: '',
 					closeable: true,
 					key: '1',
+					show: true,
 					label: 'foo'
 				}, [ 'tab content 2' ])
 			]);
@@ -406,8 +417,17 @@ registerSuite('TabController', {
 				w(Tab, {
 					id: '',
 					labelledBy: '',
+					show: true,
 					key: '0'
-				}, [ 'tab content 1' ])
+				}, [ 'tab content 1' ]),
+				w(Tab, {
+					id: '',
+					labelledBy: '',
+					closeable: true,
+					key: '1',
+					label: 'foo',
+					show: false
+				}, [ 'tab content 2' ])
 			]);
 			tabButtons = v('div', {
 				key: 'buttons',
@@ -465,8 +485,17 @@ registerSuite('TabController', {
 				w(Tab, {
 					id: '',
 					labelledBy: '',
-					key: '0'
-				}, [ 'tab content 1' ])
+					key: '0',
+					show: true
+				}, [ 'tab content 1' ]),
+				w(Tab, {
+					id: '',
+					labelledBy: '',
+					closeable: true,
+					key: '1',
+					label: 'foo',
+					show: false
+				}, [ 'tab content 2' ])
 			]);
 			tabButtons = v('div', {
 				key: 'buttons',

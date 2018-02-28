@@ -343,7 +343,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			disabled,
 			id,
 			invalid,
-			focus: focusInput,
+			shouldFocus: focusInput,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
 			onInput: this._onInput,

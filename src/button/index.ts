@@ -7,6 +7,7 @@ import { CustomAriaProperties, InputEventProperties, PointerEventProperties, Key
 import { formatAriaProperties } from '../common/util';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 import Icon from '../icon/index';
+import { CustomElementChildType } from '@dojo/widget-core/registerCustomElement';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -38,6 +39,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<ButtonProperties>({
 	tag: 'dojo-button',
+	childType: CustomElementChildType.TEXT,
 	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses' ],
 	attributes: [ 'id', 'name', 'value' ],
 	events: [

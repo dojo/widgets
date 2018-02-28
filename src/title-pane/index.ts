@@ -29,7 +29,7 @@ export interface TitlePaneProperties extends ThemedProperties {
 	onRequestOpen?(key: string | number | undefined): void;
 	open?: boolean;
 	title: string;
-};
+}
 
 export const ThemedBase = ThemedMixin(WidgetBase);
 
@@ -37,7 +37,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @customElement<TitlePaneProperties>({
 	tag: 'dojo-title-pane',
 	properties: [ 'theme', 'extraClasses', 'open', 'closeable', 'headingLevel' ],
-	attributes: [ 'title' ],
+	attributes: [ 'title', 'key' ],
 	events: [
 		'onRequestClose',
 		'onRequestOpen'
