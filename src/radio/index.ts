@@ -50,6 +50,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 		this.properties.onBlur && this.properties.onBlur(radio.value, radio.checked);
 	}
 	private _onChange (event: Event) {
+		event.stopPropagation();
 		const radio = event.target as HTMLInputElement;
 		this.properties.onChange && this.properties.onChange(radio.value, radio.checked);
 	}

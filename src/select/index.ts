@@ -105,6 +105,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			options = [],
 			onChange
 		} = this.properties;
+		event.stopPropagation();
 		const value = (<HTMLInputElement> event.target).value;
 		const option = find(options, (option: any, index: number) => getOptionValue ? getOptionValue(option, index) === value : false);
 		option && onChange && onChange(option, key);

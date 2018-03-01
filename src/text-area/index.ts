@@ -62,6 +62,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
 	private _onChange (event: Event) {
+		event.stopPropagation();
 		this.properties.onChange && this.properties.onChange((event.target as HTMLInputElement).value);
 	}
 	private _onClick (event: MouseEvent) {
@@ -72,6 +73,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 		this.properties.onFocus && this.properties.onFocus((event.target as HTMLInputElement).value);
 	}
 	private _onInput (event: Event) {
+		event.stopPropagation();
 		this.properties.onInput && this.properties.onInput((event.target as HTMLInputElement).value);
 	}
 	private _onKeyDown (event: KeyboardEvent) {

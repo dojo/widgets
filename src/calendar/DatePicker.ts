@@ -119,6 +119,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	}
 
 	private _onMonthRadioChange(event: Event) {
+		event.stopPropagation();
 		const { onRequestMonthChange } = this.properties;
 		onRequestMonthChange && onRequestMonthChange(parseInt((event.target as HTMLInputElement).value, 10));
 	}
@@ -154,6 +155,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	}
 
 	private _onYearRadioChange(event: Event) {
+		event.stopPropagation();
 		const { onRequestYearChange } = this.properties;
 		this._yearPage = 0;
 		onRequestYearChange && onRequestYearChange(parseInt((event.target as HTMLInputElement).value, 10));
