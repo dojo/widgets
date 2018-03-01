@@ -38,7 +38,7 @@ class StubMeta {
 		const { effects, controls } = options;
 		animateStub({key, effects, playbackRate: controls.playbackRate});
 	}
-};
+}
 
 class StubbedTitlePane extends TitlePane {
 	meta(MetaType: any): any {
@@ -64,7 +64,7 @@ const expected = function(options: {open?: boolean, closeable?: boolean, heading
 			v('button', {
 				'aria-controls': '',
 				'aria-expanded': `${open}`,
-				classes: css.titleButton,
+				classes: [ fixedCss.titleButtonFixed, css.titleButton ],
 				disabled: !closeable,
 				id: '',
 				type: 'button',
