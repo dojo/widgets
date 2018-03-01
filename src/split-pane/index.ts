@@ -23,10 +23,8 @@ export const enum Direction {
  * Properties that can be set on a SplitPane component
  *
  * @property direction      Orientation of this SplitPane, can be `row` or `column`
- * @property leading        Content to show in the primary pane
  * @property onResize       Called when the divider is dragged; should be used to update `size`
  * @property size           Size of the primary pane
- * @property trailing       Content to show in the secondary pane
  */
 export interface SplitPaneProperties extends ThemedProperties {
 	direction?: Direction;

@@ -156,7 +156,7 @@ registerSuite('Toolbar', {
 		},
 
 		'custom title rendering'() {
-			const h = harness(() => w(Toolbar, { title: 'test' }));
+			const h = harness(() => w(Toolbar, { heading: 'test' }));
 			h.expect(() =>
 				v('div', {
 					classes: [
@@ -256,7 +256,7 @@ registerSuite('Toolbar', {
 			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), properties));
 			const slidePaneVDom = w(SlidePane, {
 				align: Align.right,
-				closeText: 'close foo',
+				closeText: 'close',
 				key: 'slide-pane-menu',
 				onRequestClose: noop,
 				open: false,
@@ -274,7 +274,7 @@ registerSuite('Toolbar', {
 				type: 'button',
 				onclick: noop
 			}, [
-				'open foo',
+				'open',
 				w(Icon, { type: 'barsIcon' })
 			]);
 
@@ -298,7 +298,11 @@ registerSuite('Toolbar', {
 							css.toolbar,
 							fixedCss.toolbarFixed
 						]
-					}, [ null, null, null]),
+					}, [
+						null,
+						null,
+						null
+					]),
 					v('div', {
 						classes: [
 							css.content,
@@ -307,7 +311,7 @@ registerSuite('Toolbar', {
 					}, [])
 				]));
 
-			properties = { actions: [ 'test' ], menuTitle: 'foo' };
+			properties = { actions: [ 'test' ], heading: 'foo' };
 			h.trigger('@global', (node: any) => {
 				if (isWNode<GlobalEvent>(node) && node.properties.window !== undefined) {
 					return node.properties.window ? node.properties.window.resize : undefined;
@@ -334,7 +338,9 @@ registerSuite('Toolbar', {
 							fixedCss.toolbarFixed
 						]
 					}, [
-						null,
+						v('div', {
+							classes: [ css.title, fixedCss.titleFixed ]
+						}, [ 'foo' ]),
 						slidePaneVDom,
 						buttonVDom
 					]),
@@ -369,7 +375,9 @@ registerSuite('Toolbar', {
 							fixedCss.toolbarFixed
 						]
 					}, [
-						null,
+						v('div', {
+							classes: [ css.title, fixedCss.titleFixed ]
+						}, [ 'foo' ]),
 						slidePaneVDom,
 						buttonVDom
 					]),
