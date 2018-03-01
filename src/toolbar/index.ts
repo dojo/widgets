@@ -147,7 +147,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		]) : null;
 	}
 
-	render(): DNode {
+	protected render(): DNode {
 		const { heading } = this.properties;
 		const classes = this.getRootClasses();
 		const fixedClasses = this.getFixedRootClasses();
