@@ -32,7 +32,7 @@ import Toolbar from '@dojo/widgets/toolbar/Toolbar';
 import { w } from '@dojo/widget-core/d';
 
 w(Toolbar, {
-	toolbarTitle: 'My Site',
+	heading: 'My Site',
 	fixed: true,
 	collapseWidth: 720
 }, [
