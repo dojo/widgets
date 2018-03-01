@@ -33,7 +33,7 @@ export const enum Position {
  * @property menuTitle         Title of the SlidePane that holds collapsed action items
  * @property onCollapse        Called when action items change their layout
  * @property position          Determines toolbar position in relation to child contet
- * @property title             Element to show as the toolbar title
+ * @property toolbarTitle      Element to show as the toolbar title
  */
 export interface ToolbarProperties extends ThemedProperties {
 	actions?: DNode[];
@@ -42,7 +42,7 @@ export interface ToolbarProperties extends ThemedProperties {
 	menuTitle?: string;
 	onCollapse?(collapsed: boolean): void;
 	position?: Position;
-	title?: DNode;
+	toolbarTitle?: DNode;
 }
 
 export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
@@ -50,7 +50,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
-	properties: [ 'theme', 'extraClasses', 'actions', 'collapseWidth', 'fixed', 'title' ],
+	properties: [ 'theme', 'extraClasses', 'actions', 'collapseWidth', 'fixed', 'toolbarTitle' ],
 	attributes: [ 'key', 'menuTitle', 'position' ],
 	events: [
 		'onCollapse'
@@ -151,11 +151,11 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 
 	protected renderTitle(): DNode {
-		const { title } = this.properties;
+		const { toolbarTitle } = this.properties;
 
-		return title ? v('div', {
+		return toolbarTitle ? v('div', {
 			classes: [ this.theme(css.title), fixedCss.titleFixed ]
-		}, [ title ]) : null;
+		}, [ toolbarTitle ]) : null;
 	}
 
 	render(): DNode {

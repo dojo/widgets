@@ -156,7 +156,7 @@ registerSuite('Toolbar', {
 		},
 
 		'custom title rendering'() {
-			const h = harness(() => w(Toolbar, { title: 'test' }));
+			const h = harness(() => w(Toolbar, { toolbarTitle: 'test' }));
 			h.expect(() =>
 				v('div', {
 					classes: [

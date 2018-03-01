@@ -23,7 +23,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			collapseWidth: 700,
 			fixed: true,
 			menuTitle: 'Menu',
-			title: 'Foobar'
+			toolbarTitle: 'Foobar'
 		}, [
 			v('h2', [ 'Toolbar Examples' ])
 		]);

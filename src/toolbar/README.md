@@ -19,10 +19,10 @@ The following CSS classes are used to style the `Toolbar` widget and should be p
 - `action`: Applied to the parent of each action item
 - `actions`: Applied to the parent of the actions container
 - `collapsed`: Applied to the root node if the root width is less than `collapseWidth`
-- `menuButton`: Applied to the menu trigger
+- `menuTitle`: Applied to the menu trigger
 - `root`: Applied to the top-level wrapper node
 - `sticky`: Applied to the root node if `fixed` is `true`
-- `title`: Applied to the node containing the title element
+- `toolbarTitle`: Applied to the node containing the title element
 
 ## Example Usage
 
@@ -32,7 +32,7 @@ import Toolbar from '@dojo/widgets/toolbar/Toolbar';
 import { w } from '@dojo/widget-core/d';
 
 w(Toolbar, {
-	title: 'My Site',
+	toolbarTitle: 'My Site',
 	fixed: true,
 	collapseWidth: 720
 }, [
