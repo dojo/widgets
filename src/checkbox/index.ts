@@ -79,6 +79,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 		this.properties.onBlur && this.properties.onBlur(checkbox.value, checkbox.checked);
 	}
 	private _onChange (event: Event) {
+		event.stopPropagation();
 		const checkbox = event.target as HTMLInputElement;
 		this.properties.onChange && this.properties.onChange(checkbox.value, checkbox.checked);
 	}

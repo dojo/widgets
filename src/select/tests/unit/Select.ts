@@ -262,7 +262,7 @@ registerSuite('Select', {
 					useNativeElement: true,
 					onChange
 				}));
-				h.trigger('select', 'onchange', { target: { value: 'one' } });
+				h.trigger('select', 'onchange', {...stubEvent, target: { value: 'one' } });
 				assert.isTrue(onChange.calledWith(testOptions[0]), 'onChange should be called with the first entry in the testOptions array');
 			},
 
@@ -284,7 +284,7 @@ registerSuite('Select', {
 				assert.isTrue(onBlur.calledWith('foo'), 'onBlur called with foo key');
 				h.trigger('select', 'onfocus', { target: { value: 'one' } });
 				assert.isTrue(onFocus.calledWith('foo'), 'onFocus called with foo key');
-				h.trigger('select', 'onchange', { target: { value: 'one' } });
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				assert.isTrue(onChange.calledWith(testOptions[0], 'foo'), 'onChange called with foo key');
 			}
 		},

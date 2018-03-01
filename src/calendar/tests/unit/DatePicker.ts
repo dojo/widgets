@@ -502,7 +502,7 @@ registerSuite('Calendar DatePicker', {
 			h.trigger('@month-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'Month popup opens when clicking month button');
 
-			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onchange', { target: { value: 6 } });
+			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onchange', { ...stubEvent, target: { value: 6 } });
 			assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
 
 			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onmouseup', stubEvent);
@@ -521,7 +521,7 @@ registerSuite('Calendar DatePicker', {
 			h.trigger('@year-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'Year popup opens when clicking month button');
 
-			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onchange', { target: { value: 2001 } });
+			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onchange', { ...stubEvent, target: { value: 2001 } });
 			assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
 
 			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onmouseup', stubEvent);
