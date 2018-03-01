@@ -12,9 +12,13 @@
 	position: relative;
 }
 
+.titleButtonFixed {
+	position: relative;
+	z-index: 1;
+}
+
 .contentFixed {
 	position: relative;
-	z-index: -1;
 }
 
 .closeableFixed {

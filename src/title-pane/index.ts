@@ -161,7 +161,7 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 					'aria-controls': `${this._id}-content`,
 					'aria-expanded': `${open}`,
 					disabled: !closeable,
-					classes: this.theme(css.titleButton),
+					classes: [ fixedCss.titleButtonFixed, ...this.theme([css.titleButton]) ],
 					id: `${this._id}-title`,
 					type: 'button',
 					onclick: this._onTitleClick
