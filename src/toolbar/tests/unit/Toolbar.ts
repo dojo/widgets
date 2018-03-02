@@ -22,12 +22,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `0px`,
-					height: `0px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -57,10 +54,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
 				styles: {
-					width: `0px`,
 					height: `0px`
 				}
 			}, [
@@ -93,12 +89,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `0px`,
-					height: `0px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -140,12 +133,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `100px`,
-					height: `100px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -172,10 +162,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
 				styles: {
-					width: `0px`,
 					height: `0px`
 				}
 			}, [
@@ -203,12 +192,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `0px`,
-					height: `0px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -236,12 +222,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `0px`,
-					height: `0px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -314,12 +297,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `100px`,
-					height: `100px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -349,12 +329,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `100px`,
-					height: `100px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -382,12 +359,9 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				class: fixedCss.containerFixed,
+				classes: fixedCss.containerFixed,
 				dir: '',
-				styles: {
-					width: `100px`,
-					height: `100px`
-				}
+				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {

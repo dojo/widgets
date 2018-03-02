@@ -22,7 +22,6 @@
 	left: 0;
 	overflow: hidden;
 	position: absolute;
-	top: 0;
 	width: 100%;
 	z-index: var(--zindex-fixed);
 }
@@ -41,4 +40,6 @@
 	flex-shrink: 0;
 }
 
-.onTopFixed {}
+.onTopFixed {
+	top: 0;
+}
