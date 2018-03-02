@@ -1,4 +1,4 @@
-# @dojo/widgets/textinput/TextInput widget
+# @dojo/widgets/text-input widget
 
 Dojo 2's `TextInput` widget provides a basic text input widget, optionally wrapped in a label.
 

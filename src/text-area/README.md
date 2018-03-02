@@ -1,4 +1,4 @@
-# @dojo/widgets/textarea/Textarea widget
+# @dojo/widgets/text-area widget
 
 Dojo 2's `Textarea` widget provides a wrapped native `textarea` input, optionally with a label.
 

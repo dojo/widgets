@@ -1,4 +1,4 @@
-# @dojo/widgets/global-event/GlobalEvent widget
+# @dojo/widgets/global-event widget
 
 Dojo 2's `GlobalEvent` enables events to be registered on `document` and `window` reactively.
 

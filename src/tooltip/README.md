@@ -1,4 +1,4 @@
-# @dojo/widgets/tooltip/Tooltip widget
+# @dojo/widgets/tooltip widget
 
 Dojo 2's `Tooltip` component can be used to show or hide content around a child component based on specific events.
 
@@ -23,8 +23,8 @@ The following CSS classes are used to style the `Tooltip` widget and should be p
 
 *Basic Example*
 ```typescript
-import TextInput from '@dojo/widgets/textinput/TextInput';
-import Tooltip from '@dojo/widgets/tooltip/Tooltip';
+import TextInput from '@dojo/widgets/text-input';
+import Tooltip from '@dojo/widgets/tooltip';
 import { w } from '@dojo/widget-core/d';
 
 w(Tooltip, {

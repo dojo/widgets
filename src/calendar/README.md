@@ -1,4 +1,4 @@
-# @dojo/widgets/calendar/Calendar widget
+# @dojo/widgets/calendar widget
 Dojo 2's `Calendar` renders a date grid with a dropdown month and year picker. The displayed month and year are controlled via properties, defaulting to the current day. Given the limitations of scaling date grid while maintaining usability, the calendar is not fully responsive at small screen sizes; it is instead recommended to switch to an alternative date picker for mobile.
 
 ## Features

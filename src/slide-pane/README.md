@@ -1,4 +1,4 @@
-# @dojo/widgets/slidepane/SlidePane widget
+# @dojo/widgets/slide-pane widget
 
 Dojo 2's `SlidePane` widget provides a component capable of moving content into or out of the viewport, as is commonly used for mobile navigation menus.
 
@@ -14,7 +14,7 @@ Dojo 2's `SlidePane` widget provides a component capable of moving content into 
 *Basic Example*
 ```typescript
 import { w } from '@dojo/widget-core/d';
-import SlidePane from '@dojo/widgets/slidepane/SlidePane';
+import SlidePane from '@dojo/widgets/slide-pane';
 
 w(SlidePane, {
 	open: this.state.open,
@@ -26,7 +26,7 @@ w(SlidePane, {
 *Right-aligned*
 ```typescript
 import { w } from '@dojo/widget-core/d';
-import SlidePane, { Align } from '@dojo/widgets/slidepane/SlidePane';
+import SlidePane, { Align } from '@dojo/widgets/slide-pane';
 
 w(SlidePane, {
 	open: this.state.open,
