@@ -218,7 +218,7 @@ registerSuite('Toolbar', {
 		},
 
 		'actions rendering'() {
-			const h = harness(() => w(Toolbar, { actions: [ 'test' ] }));
+			const h = harness(() => w(Toolbar, {}, [ 'test' ]));
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
@@ -243,10 +243,7 @@ registerSuite('Toolbar', {
 						classes: [ css.actions, fixedCss.actionsFixed ],
 						key: 'menu'
 					}, [
-						v('div', {
-							classes: [ css.action ],
-							key: 0
-						}, [ 'test' ])
+						'test'
 					]),
 					null
 				])
@@ -269,7 +266,7 @@ registerSuite('Toolbar', {
 				collapseWidth: 1000,
 				onCollapse: () => {}
 			};
-			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), properties));
+			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), properties, [ 'test' ]));
 			const slidePaneVDom = w(SlidePane, {
 				align: Align.right,
 				closeText: 'close',
@@ -279,10 +276,7 @@ registerSuite('Toolbar', {
 				theme: undefined,
 				title: 'foo'
 			}, [
-				v('div', {
-					classes: [ css.action ],
-					key: 0
-				}, [ 'test' ])
+				'test'
 			]);
 
 			const buttonVDom = v('button', {
@@ -314,12 +308,17 @@ registerSuite('Toolbar', {
 					key: 'toolbar'
 				}, [
 					null,
-					null,
+					v('div', {
+						classes: [ css.actions, fixedCss.actionsFixed ],
+						key: 'menu'
+					}, [
+						'test'
+					]),
 					null
 				])
 			]));
 
-			properties = { actions: [ 'test' ], heading: 'foo' };
+			properties = { heading: 'foo' };
 			h.trigger('@global', (node: any) => {
 				if (isWNode<GlobalEvent>(node) && node.properties.window !== undefined) {
 					return node.properties.window ? node.properties.window.resize : undefined;

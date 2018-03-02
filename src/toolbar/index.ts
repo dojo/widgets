@@ -27,7 +27,6 @@ export const enum Position {
  *
  * Properties that can be set on a Toolbar component
  *
- * @property actions           Action elements to show in the toolbar
  * @property collapseWidth     Width at which to collapse actions into a SlidePane
  * @property fixed             Fixes the toolbar to the top of the viewport
  * @property onCollapse        Called when action items change their layout
@@ -35,7 +34,6 @@ export const enum Position {
  * @property heading           The toolbar heading
  */
 export interface ToolbarProperties extends ThemedProperties {
-	actions?: DNode[];
 	collapseWidth?: number;
 	fixed?: boolean;
 	onCollapse?(collapsed: boolean): void;
@@ -48,7 +46,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
-	properties: [ 'theme', 'extraClasses', 'actions', 'collapseWidth', 'fixed' ],
+	properties: [ 'theme', 'extraClasses', 'collapseWidth', 'fixed' ],
 	attributes: [ 'key', 'heading', 'position' ],
 	events: [
 		'onCollapse'
@@ -117,15 +115,9 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		const { close } = this.localizeBundle(commonBundle);
 
 		const {
-			actions = [],
 			theme,
 			heading
 		} = this.properties;
-
-		const actionsElements = actions.map((action, index) => v('div', {
-			classes: [ this.theme(css.action) ],
-			key: index
-		}, [ action ]));
 
 		return this._collapsed ? w(SlidePane, {
 			align: Align.right,
@@ -135,10 +127,10 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			open: this._open,
 			theme,
 			title: heading
-		}, actionsElements) : v('div', {
+		}, this.children) : v('div', {
 			classes: [ this.theme(css.actions), fixedCss.actionsFixed ],
 			key: 'menu'
-		}, actionsElements);
+		}, this.children);
 	}
 
 	protected renderButton(): DNode {
@@ -157,7 +149,6 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	protected render(): DNode {
 		const {
 			heading,
-			actions = [],
 			fixed
 		} = this.properties;
 
@@ -166,6 +157,8 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			const { height } = this.meta(Dimensions).get('toolbar').size;
 			styles = { height: `${height}px` };
 		}
+
+		const hasActions = this.children && this.children.length;
 
 		return v('div', {
 			key: 'root',
@@ -183,8 +176,8 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 				heading ? v('div', {
 					classes: [ this.theme(css.title), fixedCss.titleFixed ]
 				}, [ heading ]) : null,
-				actions.length ? this.renderActions() : null,
-				actions.length && this._collapsed ? this.renderButton() : null
+				hasActions ? this.renderActions() : null,
+				hasActions && this._collapsed ? this.renderButton() : null
 			])
 		]);
 
