@@ -159,18 +159,29 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		const classes = this.getRootClasses();
 		const fixedClasses = this.getFixedRootClasses();
 		const messages = this.localizeBundle(commonBundle);
+		const { width, height } = this.meta(Dimensions).get('toolbar').size;
 
 		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ],
-			key: 'root'
+			key: 'root',
+			class: fixedCss.containerFixed,
+			styles: {
+				width: `${width}px`,
+				height: `${height}px`
+			}
 		}, [
 			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
-			heading ? v('div', {
-				classes: [ this.theme(css.title), fixedCss.titleFixed ]
-			}, [ heading ]) : null,
-			this.renderActions(messages),
-			this.renderButton(messages)
+			v('div', {
+				classes: [ ...this.theme(classes), ...fixedClasses ],
+				key: 'toolbar'
+			}, [
+				heading ? v('div', {
+					classes: [ this.theme(css.title), fixedCss.titleFixed ]
+				}, [ heading ]) : null,
+				this.renderActions(messages),
+				this.renderButton(messages)
+			])
 		]);
+
 	}
 }
 

@@ -1,5 +1,9 @@
 @import '../../common/styles/variables.css';
 
+.containerFixed {
+	position: static;
+}
+
 .actionsFixed {
 	display: flex;
 	flex: 1;

@@ -1,3 +1,4 @@
+export const containerFixed: string;
 export const actionsFixed: string;
 export const menuButtonFixed: string;
 export const rootFixed: string;
