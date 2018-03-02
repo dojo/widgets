@@ -35,13 +35,13 @@ Minor releases may include new widgets and/or features, whereas patch releases m
 To use a widget in your application, you will need to import each widget individually:
 
 ```ts
-import Button from '@dojo/widgets/button/Button';
+import Button from '@dojo/widgets/button';
 ```
 
 Each widget module has a default export of the widget itself, as well as named exports for things such as properties specific to the widget:
 
 ```ts
-import Button, { ButtonProperties } from '@dojo/widgets/button/Button';
+import Button, { ButtonProperties } from '@dojo/widgets/button';
 ```
 
 Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported.

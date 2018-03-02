@@ -1,4 +1,4 @@
-# @dojo/widgets/progress/Progress widget
+# @dojo/widgets/progress widget
 
 Dojo 2's `progress` widget provides a themeable progress bar with a customisable output display.
 

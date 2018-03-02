@@ -1,4 +1,4 @@
-# @dojo/widgets/toolbar/Toolbar widget
+# @dojo/widgets/toolbar widget
 
 Dojo 2's `Toolbar` component can be used to display an application navigation bar that can show a title and action items. Action elements can be configured to automatically collapse into a `SlidePane` component, and the `Toolbar` itself can be configured to either be fixed or statically positioned.
 
@@ -28,7 +28,7 @@ The following CSS classes are used to style the `Toolbar` widget and should be p
 
 *Basic Example*
 ```typescript
-import Toolbar from '@dojo/widgets/toolbar/Toolbar';
+import Toolbar from '@dojo/widgets/toolbar';
 import { w } from '@dojo/widget-core/d';
 
 w(Toolbar, {

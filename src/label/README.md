@@ -1,4 +1,4 @@
-# @dojo/widgets/label/Label widget
+# @dojo/widgets/label widget
 
 Dojo 2's `Label` widget creates a `<label>` element that wraps its children and inserts a text node as either the first or last child.
 

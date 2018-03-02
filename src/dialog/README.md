@@ -1,4 +1,4 @@
-# @dojo/widgets/dialog/Dialog widget
+# @dojo/widgets/dialog widget
 
 Dojo 2's `Dialog` component can be used to show content inside a window over top the application content. It provides default styling for a titlebar, content area, underlay, and a close button, and will respond to different screen sizes responsively.
 
@@ -33,7 +33,7 @@ The following CSS classes are used to style the `Dialog` widget and should be pr
 
 *Basic Example*
 ```typescript
-import Dialog from '@dojo/widgets/dialog/Dialog';
+import Dialog from '@dojo/widgets/dialog';
 import { w } from '@dojo/widget-core/d';
 
 w(Dialog, {
@@ -45,7 +45,7 @@ w(Dialog, {
 
 *Modal with underlay*
 ```typescript
-import Dialog from '@dojo/widgets/dialog/Dialog';
+import Dialog from '@dojo/widgets/dialog';
 import { w } from '@dojo/widget-core/d';
 
 w(Dialog, {
@@ -59,7 +59,7 @@ w(Dialog, {
 
 *Custom animations*
 ```typescript
-import Dialog from '@dojo/widgets/dialog/Dialog';
+import Dialog from '@dojo/widgets/dialog';
 import { w } from '@dojo/widget-core/d';
 
 w(Dialog, {
@@ -73,7 +73,7 @@ w(Dialog, {
 
 *Dialog that can't be closed*
 ```typescript
-import Dialog from '@dojo/widgets/dialog/Dialog';
+import Dialog from '@dojo/widgets/dialog';
 import { w } from '@dojo/widget-core/d';
 
 w(Dialog, {

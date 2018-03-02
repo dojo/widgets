@@ -1,4 +1,4 @@
-# @dojo/widgets/checkbox/Checkbox widget
+# @dojo/widgets/checkbox widget
 
 Dojo 2's `Checkbox` widget provides either a wrapped, styleable checkbox widget or an on/off toggle. Both the normal and toggle `Checkbox` modes use the native `<input type="checkbox">` as a base.
 
