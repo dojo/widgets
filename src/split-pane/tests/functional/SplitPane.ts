@@ -85,14 +85,14 @@ function testResizes(command: Command<Element | void>, resizes: Coord[], expecte
 registerSuite('SplitPane', {
 	'can slide horizontally'() {
 		return testResizes(
-			getPage(this).findByCssSelector(`#example-row .${css.root}`),
+			getPage(this).findByCssSelector(`#example-column .${css.root}`),
 			[ { x: -10, y: 0 }, { x: 20, y: 0 } ],
 			[ { x: -10, y: 0 }, { x: 20, y: 0 } ]
 		);
 	},
 	'can slide vertically'() {
 		return testResizes(
-			getPage(this).findByCssSelector(`#example-column .${css.root}`),
+			getPage(this).findByCssSelector(`#example-row .${css.root}`),
 			[ { x: 0, y: -10 }, { x: 0, y: 20 } ],
 			[ { x: 0, y: -10 }, { x: 0, y: 20 } ]
 		);

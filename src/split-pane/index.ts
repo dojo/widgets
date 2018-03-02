@@ -132,9 +132,9 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	}
 
 	private _collapseIfNecessary = () => {
-		const { collapseWidth = 800, onCollapse, direction } = this.properties;
+		const { collapseWidth = 600, onCollapse, direction } = this.properties;
 
-		if (direction === Direction.column) {
+		if (direction === Direction.row) {
 			return;
 		}
 
