@@ -23,11 +23,11 @@ registerSuite('Toolbar', {
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
 			.sleep(DELAY)
-			.findByCssSelector(`.${css.menuButton}`)
+			.findByCssSelector(`body .${css.menuButton}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${slidePaneCss.root}`)
+			.findByCssSelector(`body .${slidePaneCss.root}`)
 				.isDisplayed()
 				.then(displayed => {
 					assert.isTrue(displayed);
@@ -41,15 +41,15 @@ registerSuite('Toolbar', {
 
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
-			.findByCssSelector(`.${css.menuButton}`)
+			.findByCssSelector(`body .${css.menuButton}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${slidePaneCss.close}`)
+			.findByCssSelector(`body .${slidePaneCss.close}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector(`.${slidePaneCss.root}`)
+			.findByCssSelector(`body .${slidePaneCss.title}`)
 				.getPosition()
 				.then(position => {
 					assert.isAbove(position.x, WIDTH - 50);
