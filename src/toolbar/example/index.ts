@@ -14,16 +14,17 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 
 	render() {
-		return w(Toolbar, {
-			actions: [
-				v('a', { href: '/#home' }, [ 'Home' ]),
-				v('a', { href: '/#about' }, [ 'About' ]),
-				v('a', { href: '/#contact' }, [ 'Contact' ])
-			],
-			collapseWidth: 700,
-			fixed: true,
-			heading: 'Foobar'
-		}, [
+		return v('div', [
+			w(Toolbar, {
+				actions: [
+					v('a', { href: '/#home' }, [ 'Home' ]),
+					v('a', { href: '/#about' }, [ 'About' ]),
+					v('a', { href: '/#contact' }, [ 'Contact' ])
+				],
+				collapseWidth: 700,
+				fixed: true,
+				heading: 'Foobar'
+			}),
 			v('h2', [ 'Toolbar Examples' ])
 		]);
 	}

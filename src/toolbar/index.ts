@@ -86,7 +86,14 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 
 	protected getFixedRootClasses(): (string | null)[] {
-		const { fixed, position = Position.top } = this.properties;
+		const { fixed } = this.properties;
+		let { position = Position.top } = this.properties;
+
+		if (position === Position.bottom && !fixed) {
+			console.warn('Bottom positioning can be used only when `fixed` is `true`.');
+			position = Position.top;
+		}
+
 		return [
 			fixedCss.rootFixed,
 			fixed ? fixedCss.stickyFixed : null,
@@ -152,25 +159,29 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		const classes = this.getRootClasses();
 		const fixedClasses = this.getFixedRootClasses();
 		const messages = this.localizeBundle(commonBundle);
+		const { width, height } = this.meta(Dimensions).get('toolbar').size;
 
 		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ],
-			key: 'root'
+			key: 'root',
+			class: fixedCss.containerFixed,
+			styles: {
+				width: `${width}px`,
+				height: `${height}px`
+			}
 		}, [
 			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
 			v('div', {
-				classes: [ this.theme(css.toolbar), fixedCss.toolbarFixed ]
+				classes: [ ...this.theme(classes), ...fixedClasses ],
+				key: 'toolbar'
 			}, [
 				heading ? v('div', {
 					classes: [ this.theme(css.title), fixedCss.titleFixed ]
 				}, [ heading ]) : null,
 				this.renderActions(messages),
 				this.renderButton(messages)
-			]),
-			v('div', {
-				classes: [ this.theme(css.content), fixedCss.contentFixed ]
-			}, this.children)
+			])
 		]);
+
 	}
 }
 
