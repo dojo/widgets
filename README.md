@@ -35,13 +35,13 @@ Minor releases may include new widgets and/or features, whereas patch releases m
 To use a widget in your application, you will need to import each widget individually:
 
 ```ts
-import Button from '@dojo/widgets/button';
+import Button from '@dojo/widgets/button/Button';
 ```
 
 Each widget module has a default export of the widget itself, as well as named exports for things such as properties specific to the widget:
 
 ```ts
-import Button, { ButtonProperties } from '@dojo/widgets/button';
+import Button, { ButtonProperties } from '@dojo/widgets/button/Button';
 ```
 
 Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported.
@@ -70,7 +70,7 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [ComboBox](src/combobox/README.md)
 
-[EnhancedTextInput](src/enhanced-text-input/README.md)
+[EnhancedTextInput](src/enhancedtextinput/README.md)
 
 [Label](src/label/README.md)
 
@@ -82,22 +82,22 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [Slider](src/slider/README.md)
 
-[TextArea](src/text-area/README.md)
+[TextArea](src/textarea/README.md)
 
-[TextInput](src/text-input/README.md)
+[TextInput](src/textinput/README.md)
 
-[TimePicker](src/time-picker/README.md)
+[TimePicker](src/timepicker/README.md)
 
 ### Layout widgets
-[AccordionPane](src/accordion-pane/README.md)
+[AccordionPane](src/accordionpane/README.md)
 
-[SlidePane](src/slide-pane/README.md)
+[SlidePane](src/slidepane/README.md)
 
-[SplitPane](src/split-pane/README.md)
+[SplitPane](src/splitpane/README.md)
 
-[TabController](src/tab-controller/README.md)
+[TabController](src/tabcontroller/README.md)
 
-[TitlePane](src/title-pane/README.md)
+[TitlePane](src/titlepane/README.md)
 
 ### Misc widgets
 [Dialog](src/dialog/README.md)
