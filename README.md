@@ -70,7 +70,7 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [ComboBox](src/combobox/README.md)
 
-[EnhancedTextInput](src/enhancedtextinput/README.md)
+[EnhancedTextInput](src/enhanced-text-input/README.md)
 
 [Label](src/label/README.md)
 
@@ -82,22 +82,22 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [Slider](src/slider/README.md)
 
-[TextArea](src/textarea/README.md)
+[TextArea](src/text-area/README.md)
 
-[TextInput](src/textinput/README.md)
+[TextInput](src/text-input/README.md)
 
-[TimePicker](src/timepicker/README.md)
+[TimePicker](src/time-picker/README.md)
 
 ### Layout widgets
-[AccordionPane](src/accordionpane/README.md)
+[AccordionPane](src/accordion-pane/README.md)
 
-[SlidePane](src/slidepane/README.md)
+[SlidePane](src/slide-pane/README.md)
 
-[SplitPane](src/splitpane/README.md)
+[SplitPane](src/split-pane/README.md)
 
-[TabController](src/tabcontroller/README.md)
+[TabController](src/tab-controller/README.md)
 
-[TitlePane](src/titlepane/README.md)
+[TitlePane](src/title-pane/README.md)
 
 ### Misc widgets
 [Dialog](src/dialog/README.md)
@@ -204,6 +204,25 @@ To test against BrowserStack or Sauce Labs run:
 or
 
 `grunt test:saucelabs`
+
+### Viewing widget examples locally
+
+Each Dojo 2 widget includes functioning example code so you can view the widget. To view individual widget example:
+
+1. Run `grunt dev` in your terminal
+2. Open the newly built file `_build/common/example/index.html` in your web browser
+3. By default, no widget is selected, open the dropdown to select a widget
+4. Observe the page reloads and the selected widget displays
+
+#### To modify/debug widget examples
+
+Running `grunt dev` each time you wish to view a small change takes more time than simply running this command in your terminal:
+
+```
+tsc -w
+```
+
+With that command, TypeScript watches for changes and recompiles when necessary.
 
 ## Licensing information
 
