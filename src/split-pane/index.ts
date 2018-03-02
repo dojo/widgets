@@ -30,6 +30,8 @@ export interface SplitPaneProperties extends ThemedProperties {
 	direction?: Direction;
 	onResize?(size: number): void;
 	size?: number;
+	collapseWidth?: number;
+	onCollapse?(collapsed: boolean): void;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -49,6 +51,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	private _dragging: boolean;
 	private _lastSize?: number;
 	private _position: number;
+	private _collapsed = false;
 
 	private _getPosition(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
@@ -120,6 +123,22 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		return styles;
 	}
 
+	private _collapseIfNecessary = () => {
+		const { collapseWidth = 800, onCollapse } = this.properties;
+		const { width } = this.meta(Dimensions).get('root').size;
+
+		if (width > collapseWidth && this._collapsed === true) {
+			this._collapsed = false;
+			onCollapse && onCollapse(this._collapsed);
+			this.invalidate();
+		}
+		else if (width <= collapseWidth && this._collapsed === false) {
+			this._collapsed = true;
+			onCollapse && onCollapse(this._collapsed);
+			this.invalidate();
+		}
+	}
+
 	protected render(): DNode {
 		const {
 			direction = Direction.row
@@ -129,10 +148,12 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			classes: [
 				...this.theme([
 					css.root,
+					this._collapsed ? css.collapsed : null,
 					direction === Direction.column ? css.column : css.row
 				]),
 				fixedCss.rootFixed,
-				direction === Direction.column ? fixedCss.columnFixed : fixedCss.rowFixed
+				direction === Direction.column ? fixedCss.columnFixed : fixedCss.rowFixed,
+				this._collapsed ? fixedCss.collapsedFixed : null
 			],
 			key: 'root'
 		}, [
@@ -141,7 +162,8 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 				window: {
 					mouseup: this._onDragEnd,
 					mousemove: this._onDragMove,
-					touchmove: this._onDragMove
+					touchmove: this._onDragMove,
+					resize: this._collapseIfNecessary
 				}
 			}),
 			v('div', {

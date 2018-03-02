@@ -39,3 +39,7 @@
 .trailingFixed, .leadingFixed {
 	overflow: auto;
 }
+
+.rootFixed.collapsedFixed {
+	display: block;
+}
