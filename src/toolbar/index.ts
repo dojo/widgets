@@ -155,13 +155,22 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 
 	protected render(): DNode {
-		const { heading, actions = [] } = this.properties;
-		const { height } = this.meta(Dimensions).get('toolbar').size;
+		const {
+			heading,
+			actions = [],
+			fixed
+		} = this.properties;
+
+		let styles = {};
+		if (fixed) {
+			const { height } = this.meta(Dimensions).get('toolbar').size;
+			styles = { height: `${height}px` };
+		}
 
 		return v('div', {
 			key: 'root',
-			class: fixedCss.containerFixed,
-			styles: { height: `${height}px` }
+			classes: fixedCss.containerFixed,
+			styles
 		}, [
 			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
 			v('div', {
