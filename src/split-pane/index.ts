@@ -117,10 +117,18 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			direction = Direction.row,
 			size = DEFAULT_SIZE
 		} = this.properties;
+
 		const styles: {[key: string]: string} = {};
 
-		styles[direction === Direction.row ? 'width' : 'height'] = `${size}px`;
+		let computedSize: string | number = this._collapsed ? 'auto' : size;
+
+		styles[direction === Direction.row ? 'width' : 'height'] = `${computedSize}px`;
+
 		return styles;
+	}
+
+	protected onAttach() {
+		this._collapseIfNecessary();
 	}
 
 	private _collapseIfNecessary = () => {

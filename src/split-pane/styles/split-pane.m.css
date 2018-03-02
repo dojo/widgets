@@ -42,4 +42,5 @@
 
 .rootFixed.collapsedFixed {
 	display: block;
+	overflow: auto;
 }
