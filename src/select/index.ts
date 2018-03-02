@@ -69,7 +69,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'placeholder', 'label' ],
+	attributes: [ 'placeholder', 'label', 'value' ],
 	events: [
 		'onBlur',
 		'onChange',
