@@ -7,39 +7,9 @@ import Focus from '@dojo/widget-core/meta/Focus';
 import harness from '@dojo/test-extras/harness';
 
 import Label from '../../../label/index';
-import Checkbox, { Mode, CheckboxProperties } from '../../index';
+import Checkbox, { CheckboxProperties } from '../../index';
 import * as css from '../../../theme/checkbox.m.css';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
-
-const expectedToggle = function(labels = false, checked = false) {
-	if (labels) {
-		return [
-			v('div', {
-				key: 'offLabel',
-				classes: css.offLabel,
-				'aria-hidden': checked ? 'true' : null
-			}, [ 'off' ]),
-			v('div', {
-				key: 'toggle',
-				classes: css.toggleSwitch
-			}),
-			v('div', {
-				key: 'onLabel',
-				classes: css.onLabel,
-				'aria-hidden': checked ? null : 'true'
-			}, [ 'on' ])
-		];
-	}
-
-	return [
-		null,
-		v('div', {
-			key: 'toggle',
-			classes: css.toggleSwitch
-		}),
-		null
-	];
-};
 
 const compareId = { selector: 'input', property: 'id', comparator: (property: any) => typeof property === 'string' };
 const compareForId = { selector: '@label', property: 'forId', comparator: (property: any) => typeof property === 'string' };
@@ -47,10 +17,9 @@ const compareForId = { selector: '@label', property: 'forId', comparator: (prope
 const expected = function(label = false, toggle = false, toggleLabels = false, checked = false) {
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, toggle ? css.toggle : null, checked ? css.checked : null, null, null, null, null, null, null ]
+		classes: [ css.root, checked ? css.checked : null, null, null, null, null, null, null ]
 	}, [
 		v('div', { classes: css.inputWrapper }, [
-			...(toggle ? expectedToggle(toggleLabels, checked) : []),
 			v('input', {
 				id: '',
 				classes: css.input,
@@ -109,7 +78,7 @@ registerSuite('Checkbox', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, null, css.checked, null, null, null, null, null, null ]
+				classes: [ css.root, css.checked, null, null, null, null, null, null ]
 			}, [
 				v('div', { classes: css.inputWrapper }, [
 					v('input', {
@@ -161,7 +130,7 @@ registerSuite('Checkbox', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, null, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
+				classes: [ css.root, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
 			}, [
 				v('div', { classes: css.inputWrapper }, [
 					v('input', {
@@ -196,7 +165,7 @@ registerSuite('Checkbox', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, null, null, null, null, null, css.valid, null, null ]
+				classes: [ css.root, null, null, null, null, css.valid, null, null ]
 			}, [
 				v('div', { classes: css.inputWrapper }, [
 					v('input', {
@@ -238,7 +207,6 @@ registerSuite('Checkbox', {
 				key: 'root',
 				classes: [
 					css.root,
-					null,
 					null,
 					css.disabled,
 					null,
@@ -299,7 +267,7 @@ registerSuite('Checkbox', {
 			const h = harness(() => w(MockMetaMixin(Checkbox, mockMeta), {}), [ compareId ]);
 			h.expect(() => v('div', {
 				key: 'root',
-				classes: [ css.root, null, null, null, css.focused, null, null, null, null ]
+				classes: [ css.root, null, null, css.focused, null, null, null, null ]
 			}, [
 				v('div', { classes: css.inputWrapper }, [
 					v('input', {
@@ -326,30 +294,6 @@ registerSuite('Checkbox', {
 					})
 				])
 			]));
-		},
-
-		'toggle mode'() {
-			let properties: CheckboxProperties = {
-				mode: Mode.toggle
-			};
-			const h = harness(() => w(Checkbox, properties), [ compareId, compareForId ]);
-
-			h.expect(() => expected(false, true));
-
-			properties = {
-				mode: Mode.toggle,
-				offLabel: 'off',
-				onLabel: 'on'
-			};
-			h.expect(() => expected(false, true, true));
-
-			properties = {
-				checked: true,
-				mode: Mode.toggle,
-				offLabel: 'off',
-				onLabel: 'on'
-			};
-			h.expect(() => expected(false, true, true, true));
 		},
 
 		events() {

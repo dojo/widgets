@@ -26,5 +26,6 @@ import '../../../text-area/tests/unit/Textarea';
 import '../../../text-input/tests/unit/TextInput';
 import '../../../time-picker/tests/unit/TimePicker';
 import '../../../title-pane/tests/unit/TitlePane';
+import '../../../toggle/tests/unit/Toggle';
 import '../../../toolbar/tests/unit/Toolbar';
 import '../../../tooltip/tests/unit/Tooltip';
