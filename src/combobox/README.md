@@ -1,4 +1,4 @@
-# @dojo/widgets/combobox/ComboBox widget
+# @dojo/widgets/combobox widget
 
 Dojo 2's `ComboBox` widget provides a form control that allows users to either enter a value manually or to select a value from a list of results.
 
@@ -45,7 +45,7 @@ The `ComboBox` makes no assumptions about the format of its underlying data. A f
 
 *Basic Example*
 ```typescript
-import ComboBox from '@dojo/widgets/combobox/ComboBox';
+import ComboBox from '@dojo/widgets/combobox';
 import { w } from '@dojo/widget-core/d';
 
 w(ComboBox, {
@@ -57,7 +57,7 @@ w(ComboBox, {
 
 *Filtered results*
 ```typescript
-import ComboBox from '@dojo/widgets/combobox/ComboBox';
+import ComboBox from '@dojo/widgets/combobox';
 import { w } from '@dojo/widget-core/d';
 
 const data = ['foo', 'bar', 'baz'];
@@ -83,7 +83,7 @@ w(ComboBox, {
 
 *Custom Data Format / Provider*
 ```typescript
-import ComboBox from '@dojo/widgets/combobox/ComboBox';
+import ComboBox from '@dojo/widgets/combobox';
 import { w } from '@dojo/widget-core/d';
 // A fictional store for example purposes only; this can be any data provider
 import MyAwesomeStore from 'some/amazing/package';
@@ -104,7 +104,7 @@ w(ComboBox, {
 
 *Validation*
 ```typescript
-import ComboBox from '@dojo/widgets/combobox/ComboBox';
+import ComboBox from '@dojo/widgets/combobox';
 import { w } from '@dojo/widget-core/d';
 
 w(ComboBox, {
@@ -121,9 +121,9 @@ w(ComboBox, {
 
 *Custom Result Component*
 ```typescript
-import ComboBox from '@dojo/widgets/combobox/ComboBox';
+import ComboBox from '@dojo/widgets/combobox';
 // The component used by default to render a result item
-import ResultItem from '@dojo/widfgets/combobox/ResultItem';
+import ResultItem from '@dojo/widgets/combobox/ResultItem';
 import { w } from '@dojo/widget-core/d';
 
 // Extend default ResultItem component to show an icon next to each label

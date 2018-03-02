@@ -1,4 +1,4 @@
-# @dojo/widgets/timepicker/TimePicker widget
+# @dojo/widgets/time-picker widget
 
 Dojo 2's `TimePicker` widget provides a form control that allows users to manually enter a time or select a valid time from a dropdown of options.
 
@@ -43,7 +43,7 @@ By default, all options are formatted in 24-hour standard time (`HHmmss`, or `HH
 ```typescript
 import { getDateFormatter } from '@dojo/i18n/date';
 import { w } from '@dojo/widget-core/d';
-import TimePicker, { TimeUnits } from '@dojo/widgets/timepicker/TimePicker';
+import TimePicker, { TimeUnits } from '@dojo/widgets/time-picker';
 
 const getShorTime = getDateFormatter({ time: 'short' });
 const date = new Date();
@@ -62,7 +62,7 @@ w(TimePicker, {
 
 ```typescript
 import { w } from '@dojo/widget-core/d';
-import TimePicker from '@dojo/widgets/timepicker/TimePicker';
+import TimePicker from '@dojo/widgets/time-picker';
 
 // Custom (Non-Native) TimePicker
 w(TimePicker, {

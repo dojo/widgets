@@ -1,4 +1,4 @@
-# @dojo/widgets/tabcontroller/TabController widget
+# @dojo/widgets/tab-controller widget
 
 Dojo 2's `TabController` widget provides a user interface capable of displaying tabbed content. The content shown at any given time is based on the currently-selected tab button.
 
@@ -17,9 +17,9 @@ Dojo 2's `TabController` widget provides a user interface capable of displaying 
 **Tab Button Events**
 
 - Escape key: closes a closeable tab
-- Left Arrow: If tab buttons are aligned above or below content, requests to select the previous tab 
+- Left Arrow: If tab buttons are aligned above or below content, requests to select the previous tab
 - Right Arrow: If tab buttons are aligned above or below content, requests to select the next tab
-- Up Arrow: If tab buttons are aligned before or after content, requests to select the previous tab 
+- Up Arrow: If tab buttons are aligned before or after content, requests to select the previous tab
 - Down Arrow: If tab buttons are aligned before or after content, requests to select the next tab
 - Home key: Requests to select the first tab
 - End key: Requests to select the last tab
@@ -32,8 +32,8 @@ Beyond complete keyboard accessibility, `TabController` ensures that all appropr
 
 *Basic Example*
 ```typescript
-import TabController from '@dojo/widgets/tabcontroller/TabController';
-import Tab from '@dojo/widgets/tabcontroller/Tab';
+import TabController from '@dojo/widgets/tab-controller';
+import Tab from '@dojo/widgets/tab';
 import { w } from '@dojo/widget-core/d';
 
 w(TabController, {
@@ -54,8 +54,8 @@ w(TabController, {
 
 *Closeable Tab*
 ```typescript
-import TabController from '@dojo/widgets/tabcontroller/TabController';
-import Tab from '@dojo/widgets/tabcontroller/Tab';
+import TabController from '@dojo/widgets/tab-controller';
+import Tab from '@dojo/widgets/tab';
 import { w } from '@dojo/widget-core/d';
 
 w(TabController, {
@@ -79,8 +79,8 @@ w(TabController, {
 
 *Align Buttons Under Content*
 ```typescript
-import TabController, { Align } from '@dojo/widgets/tabcontroller/TabController';
-import Tab from '@dojo/widgets/tabcontroller/Tab';
+import TabController, { Align } from '@dojo/widgets/tab-controller';
+import Tab from '@dojo/widgets/tab';
 import { w } from '@dojo/widget-core/d';
 
 w(TabController, {
@@ -106,7 +106,7 @@ The following CSS classes are used to style the `TabController` widget and shoul
 - `activeTabButton`: Applied to the button associated with the currently-active tab
 - `alignBottom`: Applied to the top-level wrapper node when buttons are positioned under content
 - `alignLeft`: Applied to the top-level wrapper node when buttons are positioned before content
-- `alignRight`: Applied to the top-level wrapper node when buttons are positioned after content 
+- `alignRight`: Applied to the top-level wrapper node when buttons are positioned after content
 - `close`: Applied to a closeable tab button's close icon
 - `disabledTabButton`: Applied to the button associated with a disabled tab
 - `root`: Applied to the top-level wrapper node

@@ -1,4 +1,4 @@
-# @dojo/widgets/titlepane/TitlePane widget
+# @dojo/widgets/title-pane widget
 
 Dojo 2's `TitlePane` component can be used to display content inside a window with a titlebar. When the titlebar is clicked, the content collapses. This component provides default styling for the titlebar, and content area, and will respond to different screen sizes responsively.
 
@@ -37,7 +37,7 @@ The following CSS classes are used to style the `TitlePane` widget and should be
 
 *Basic Example*
 ```typescript
-import TitlePane from '@dojo/widgets/titlepane/TitlePane';
+import TitlePane from '@dojo/widgets/title-pane';
 import { w } from '@dojo/widget-core/d';
 
 w(Titlepane, {
@@ -51,7 +51,7 @@ w(Titlepane, {
 *TitlePane that can't be closed*
 *Basic Example*
 ```typescript
-import TitlePane from '@dojo/widgets/titlepane/TitlePane';
+import TitlePane from '@dojo/widgets/title-pane';
 import { w } from '@dojo/widget-core/d';
 
 w(Titlepane, {

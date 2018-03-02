@@ -1,4 +1,4 @@
-# @dojo/widgets/enhancedtextinput/EnhancedTextInput widget
+# @dojo/widgets/enhanced-text-input widget
 
 Dojo 2's `EnhancedTextInput` widget extends `TextInput` to provide optional addons before or after the input, similar to those in [bootstrap](https://v4-alpha.getbootstrap.com/components/input-group/#basic-example).
 
