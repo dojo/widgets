@@ -27,7 +27,7 @@ registerSuite('SplitPane', {
 		'Should construct SplitPane with passed properties'() {
 			const h = harness(() => w(SplitPane, {}));
 			h.expect(() => v('div', {
-				classes: [ css.root, css.row, fixedCss.rootFixed, fixedCss.rowFixed ],
+				classes: [ css.root, null, css.row, fixedCss.rootFixed, fixedCss.rowFixed, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {
@@ -35,7 +35,8 @@ registerSuite('SplitPane', {
 					window: {
 						mouseup: noop,
 						mousemove: noop,
-						touchmove: noop
+						touchmove: noop,
+						resize: noop
 					}
 				}),
 				v('div', {
@@ -68,7 +69,7 @@ registerSuite('SplitPane', {
 			]));
 
 			h.expect(() => v('div', {
-				classes: [ css.root, css.column, fixedCss.rootFixed, fixedCss.columnFixed ],
+				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {
@@ -76,7 +77,8 @@ registerSuite('SplitPane', {
 					window: {
 						mouseup: noop,
 						mousemove: noop,
-						touchmove: noop
+						touchmove: noop,
+						resize: noop
 					}
 				}),
 				v('div', {
