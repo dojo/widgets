@@ -27,7 +27,6 @@ export const enum Position {
  *
  * Properties that can be set on a Toolbar component
  *
- * @property actions           Action elements to show in the toolbar
  * @property collapseWidth     Width at which to collapse actions into a SlidePane
  * @property fixed             Fixes the toolbar to the top of the viewport
  * @property onCollapse        Called when action items change their layout
@@ -35,7 +34,6 @@ export const enum Position {
  * @property heading           The toolbar heading
  */
 export interface ToolbarProperties extends ThemedProperties {
-	actions?: DNode[];
 	collapseWidth?: number;
 	fixed?: boolean;
 	onCollapse?(collapsed: boolean): void;
@@ -48,7 +46,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
-	properties: [ 'theme', 'extraClasses', 'actions', 'collapseWidth', 'fixed' ],
+	properties: [ 'theme', 'extraClasses', 'collapseWidth', 'fixed' ],
 	attributes: [ 'key', 'heading', 'position' ],
 	events: [
 		'onCollapse'
@@ -86,7 +84,14 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 
 	protected getFixedRootClasses(): (string | null)[] {
-		const { fixed, position = Position.top } = this.properties;
+		const { fixed } = this.properties;
+		let { position = Position.top } = this.properties;
+
+		if (position === Position.bottom && !fixed) {
+			console.warn('Bottom positioning can be used only when `fixed` is `true`.');
+			position = Position.top;
+		}
+
 		return [
 			fixedCss.rootFixed,
 			fixed ? fixedCss.stickyFixed : null,
@@ -106,71 +111,76 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		this._collapseIfNecessary();
 	}
 
-	protected renderActions(messages: CommonMessages): DNode {
+	protected renderActions(): DNode {
+		const { close } = this.localizeBundle(commonBundle);
+
 		const {
-			actions = [],
 			theme,
 			heading
 		} = this.properties;
 
-		const actionsElements = actions.map((action, index) => v('div', {
-			classes: [ this.theme(css.action) ],
-			key: index
-		}, [ action ]));
-
-		if (actionsElements.length === 0) {
-			return null;
-		}
-
 		return this._collapsed ? w(SlidePane, {
 			align: Align.right,
-			closeText: messages.close,
+			closeText: close,
 			key: 'slide-pane-menu',
 			onRequestClose: this._closeMenu,
 			open: this._open,
 			theme,
 			title: heading
-		}, actionsElements) : v('div', {
+		}, this.children) : v('div', {
 			classes: [ this.theme(css.actions), fixedCss.actionsFixed ],
 			key: 'menu'
-		}, actionsElements);
+		}, this.children);
 	}
 
-	protected renderButton(messages: CommonMessages): DNode {
-		return this._collapsed ? v('button', {
+	protected renderButton(): DNode {
+		const { open } = this.localizeBundle(commonBundle);
+
+		return v('button', {
 			classes: [ this.theme(css.menuButton), fixedCss.menuButtonFixed ],
 			type: 'button',
 			onclick: this._toggleMenu
 		}, [
-			messages.open,
+			open,
 			w(Icon, { type: 'barsIcon' })
-		]) : null;
+		]);
 	}
 
 	protected render(): DNode {
-		const { heading } = this.properties;
-		const classes = this.getRootClasses();
-		const fixedClasses = this.getFixedRootClasses();
-		const messages = this.localizeBundle(commonBundle);
+		const {
+			heading,
+			fixed
+		} = this.properties;
+
+		let styles = {};
+		if (fixed) {
+			const { height } = this.meta(Dimensions).get('toolbar').size;
+			styles = { height: `${height}px` };
+		}
+
+		const hasActions = this.children && this.children.length;
 
 		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ],
-			key: 'root'
+			key: 'root',
+			classes: fixedCss.containerFixed,
+			styles
 		}, [
 			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
 			v('div', {
-				classes: [ this.theme(css.toolbar), fixedCss.toolbarFixed ]
+				classes: [
+					...this.theme(this.getRootClasses()),
+					...this.getFixedRootClasses()
+				],
+				key: 'toolbar'
 			}, [
 				heading ? v('div', {
 					classes: [ this.theme(css.title), fixedCss.titleFixed ]
 				}, [ heading ]) : null,
-				this.renderActions(messages),
-				this.renderButton(messages)
-			]),
-			v('div', {
-				classes: [ this.theme(css.content), fixedCss.contentFixed ]
-			}, this.children)
+				hasActions ? this.renderActions() : null,
+				hasActions && this._collapsed ? this.renderButton() : null
+			])
 		]);
+
 	}
 }
 

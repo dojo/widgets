@@ -1,6 +1,8 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
+import * as css from '../../../theme/toolbar.m.css';
+import * as slidePaneCss from '../../../theme/slide-pane.m.css';
 
 function getPage(remote: Remote) {
 	return remote
@@ -21,11 +23,11 @@ registerSuite('Toolbar', {
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
 			.sleep(DELAY)
-			.findByCssSelector('button:nth-child(3)')
+			.findByCssSelector(`body .${css.menuButton}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div')
+			.findByCssSelector(`body .${slidePaneCss.root}`)
 				.isDisplayed()
 				.then(displayed => {
 					assert.isTrue(displayed);
@@ -39,15 +41,15 @@ registerSuite('Toolbar', {
 
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
-			.findByCssSelector('body > div:last-child > div:first-child > button')
+			.findByCssSelector(`body .${css.menuButton}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div button')
+			.findByCssSelector(`body .${slidePaneCss.close}`)
 				.click()
 			.end()
 			.sleep(DELAY)
-			.findByCssSelector('body > div:last-child > div:first-child > div:nth-child(2) > div')
+			.findByCssSelector(`body .${slidePaneCss.title}`)
 				.getPosition()
 				.then(position => {
 					assert.isAbove(position.x, WIDTH - 50);

@@ -1,5 +1,9 @@
 @import '../../common/styles/variables.css';
 
+.containerFixed {
+	position: static;
+}
+
 .actionsFixed {
 	display: flex;
 	flex: 1;
@@ -14,32 +18,21 @@
 }
 
 .rootFixed {
-	height: 100%;
+	display: flex;
 	left: 0;
 	overflow: hidden;
 	position: absolute;
-	top: 0;
 	width: 100%;
 	z-index: var(--zindex-fixed);
 }
 
-.toolbarFixed {
-	display: flex;
-	position: relative;
-}
-
-.stickyFixed .toolbarFixed {
-	flex-grow: 0;
-	flex-shrink: 0;
-}
-
-.onBottomFixed .toolbarFixed {
-	order: 1;
+.onBottomFixed {
+	bottom: 0;
+	top: auto;
 }
 
 .stickyFixed {
-	display: flex;
-	flex-direction: column;
+	position: fixed;
 }
 
 .titleFixed {
@@ -47,13 +40,6 @@
 	flex-shrink: 0;
 }
 
-.stickyFixed .contentFixed {
-	flex: 1;
-	overflow-y: auto;
+.onTopFixed {
+	top: 0;
 }
-
-.onBottomFixed .contentFixed {
-	order: 0;
-}
-
-.onTopFixed {}
