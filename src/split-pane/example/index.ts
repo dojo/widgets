@@ -28,20 +28,6 @@ export class App extends WidgetBase<WidgetProperties> {
 			}
 		}, [
 			v('h1', ['SplitPane Examples']),
-			v('h3', ['Row']),
-			v('div', {
-				id: 'example-row',
-				styles: containerStyles
-			}, [
-				w(SplitPane, {
-					key: 'row',
-					direction: Direction.row,
-					onResize: (size: number) => {
-						this.setState({ rowSize: size });
-					},
-					size: this.state.rowSize
-				})
-			]),
 			v('h3', ['Column']),
 			v('div', {
 				id: 'example-column',
@@ -56,6 +42,20 @@ export class App extends WidgetBase<WidgetProperties> {
 					size: this.state.columnSize
 				})
 			]),
+			v('h3', ['Row']),
+			v('div', {
+				id: 'example-row',
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					key: 'row',
+					direction: Direction.row,
+					onResize: (size: number) => {
+						this.setState({ rowSize: size });
+					},
+					size: this.state.rowSize
+				})
+			]),
 			v('h3', ['Nested']),
 			v('div', {
 				id: 'example-nested',
@@ -63,7 +63,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}, [
 				w(SplitPane, {
 					key: 'nested',
-					direction: Direction.row,
+					direction: Direction.column,
 					onResize: (size: number) => {
 						this.setState({ nestedSizeA: size });
 					},
@@ -71,7 +71,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				}, [
 					v('div'),
 					w(SplitPane, {
-						direction: Direction.column,
+						direction: Direction.row,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeB: size });
 						},
@@ -86,7 +86,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}, [
 				w(SplitPane, {
 					key: 'verticalNested',
-					direction: Direction.row,
+					direction: Direction.column,
 					onResize: (size: number) => {
 						this.setState({ nestedSizeC: size });
 					},
@@ -94,7 +94,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				}, [
 					v('div'),
 					w(SplitPane, {
-						direction: Direction.row,
+						direction: Direction.column,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeD: size });
 						},
@@ -109,7 +109,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}, [
 				w(SplitPane, {
 					key: 'horizontalNested',
-					direction: Direction.column,
+					direction: Direction.row,
 					onResize: (size: number) => {
 						this.setState({ nestedSizeE: size });
 					},
@@ -117,7 +117,7 @@ export class App extends WidgetBase<WidgetProperties> {
 				}, [
 					v('div'),
 					w(SplitPane, {
-						direction: Direction.column,
+						direction: Direction.row,
 						onResize: (size: number) => {
 							this.setState({ nestedSizeF: size });
 						},
@@ -132,7 +132,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}, [
 				w(SplitPane, {
 					key: 'maxSize',
-					direction: Direction.row,
+					direction: Direction.column,
 					onResize: (size: number) => {
 						size = size > 300 ? 300 : size;
 						this.setState({ maxSize: size });
@@ -147,7 +147,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			}, [
 				w(SplitPane, {
 					key: 'minSize',
-					direction: Direction.row,
+					direction: Direction.column,
 					onResize: (size: number) => {
 						size = size < 100 ? 100 : size;
 						this.setState({ minSize: size });

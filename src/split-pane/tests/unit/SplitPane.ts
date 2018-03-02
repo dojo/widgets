@@ -27,7 +27,7 @@ registerSuite('SplitPane', {
 		'Should construct SplitPane with passed properties'() {
 			const h = harness(() => w(SplitPane, {}));
 			h.expect(() => v('div', {
-				classes: [ css.root, null, css.row, fixedCss.rootFixed, fixedCss.rowFixed, null ],
+				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {
@@ -60,7 +60,7 @@ registerSuite('SplitPane', {
 
 		'Should construct SplitPane with default properties'() {
 			const h = harness(() => w(SplitPane, {
-				direction: Direction.column,
+				direction: Direction.row,
 				onResize: noop,
 				size: 200
 			}, [
@@ -69,7 +69,7 @@ registerSuite('SplitPane', {
 			]));
 
 			h.expect(() => v('div', {
-				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null ],
+				classes: [ css.root, null, css.row, fixedCss.rootFixed, fixedCss.rowFixed, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {
@@ -141,7 +141,7 @@ registerSuite('SplitPane', {
 			assert.strictEqual(setSize, 0);
 		},
 
-		'Mouse move should call onResize for row'() {
+		'Mouse move should call onResize for column'() {
 			let called = false;
 
 			const h = harness(() => w(SplitPane, {
@@ -154,12 +154,12 @@ registerSuite('SplitPane', {
 			assert.isTrue(called);
 		},
 
-		'Mouse move should call onResize for column'() {
+		'Mouse move should call onResize for row'() {
 			let called = false;
 
 			const h = harness(() => w(SplitPane, {
 				onResize: () => called = true,
-				direction: Direction.column
+				direction: Direction.row
 			}));
 
 			h.trigger('@divider', 'onmousedown', { clientX: 110, ...stubEvent });
@@ -169,12 +169,12 @@ registerSuite('SplitPane', {
 			assert.isTrue(called);
 		},
 
-		'Touch move should call onResize for row'() {
+		'Touch move should call onResize for column'() {
 			let called = false;
 
 			const h = harness(() => w(SplitPane, {
 				onResize: () => called = true,
-				direction: Direction.row,
+				direction: Direction.column,
 				size: 100
 			}));
 
@@ -185,12 +185,12 @@ registerSuite('SplitPane', {
 			assert.isTrue(called);
 		},
 
-		'Touch move should call onResize for column'() {
+		'Touch move should call onResize for row'() {
 			let called = 0;
 
 			const h = harness(() => w(SplitPane, {
 				onResize: () => called++,
-				direction: Direction.column
+				direction: Direction.row
 			}));
 
 			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });
