@@ -163,11 +163,15 @@ registerSuite('SplitPane', {
 					width: 500
 				}
 			});
-			mockMeta.withArgs(Dimensions).returns({
-				get: mockDimensionsGet
-			});
+
+			const metaReturn = {
+				get: mockDimensionsGet,
+				has: () => false
+			};
+			mockMeta.withArgs(Dimensions).returns(metaReturn);
 
 			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse }));
+			metaReturn.has = () => true;
 			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
 			assert.isTrue(onCollapse.calledOnce);
 			assert.isTrue(onCollapse.calledWith(true));
@@ -179,27 +183,24 @@ registerSuite('SplitPane', {
 			const onCollapse = stub();
 			const mockMeta = stub();
 			let mockDimensionsGet = stub();
-			mockDimensionsGet.withArgs('root').returns({
+			let dimensions = {
 				size: {
 					width: 500
 				}
-			});
-			const meta = {
-				get: mockDimensionsGet
 			};
-			mockMeta.withArgs(Dimensions).returns(meta);
+			mockDimensionsGet.withArgs('root').returns(dimensions);
+			const metaReturn = {
+				get: mockDimensionsGet,
+				has: () => false
+			};
+			mockMeta.withArgs(Dimensions).returns(metaReturn);
 
 			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse }));
+			metaReturn.has = () => true;
 			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
 			assert.isTrue(onCollapse.calledOnce);
 			assert.isTrue(onCollapse.calledWith(true));
-			mockDimensionsGet = stub();
-			mockDimensionsGet.withArgs('root').returns({
-				size: {
-					width: 700
-				}
-			});
-			meta.get = mockDimensionsGet;
+			dimensions.size.width = 700;
 			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
 			assert.isTrue(onCollapse.calledTwice);
 			assert.isTrue(onCollapse.calledWith(false));
@@ -209,16 +210,21 @@ registerSuite('SplitPane', {
 			const onCollapse = stub();
 			const mockMeta = stub();
 			const mockDimensionsGet = stub();
-			mockDimensionsGet.withArgs('root').returns({
+			let dimensions = {
 				size: {
-					width: 300
+					width: 500
 				}
-			});
-			mockMeta.withArgs(Dimensions).returns({
-				get: mockDimensionsGet
-			});
+			};
+			mockDimensionsGet.withArgs('root').returns(dimensions);
+			const metaReturn = {
+				get: mockDimensionsGet,
+				has: () => false
+			};
+			mockMeta.withArgs(Dimensions).returns(metaReturn);
 
 			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, collapseWidth: 400 }));
+			metaReturn.has = () => true;
+			dimensions.size.width = 300;
 			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
 			assert.isTrue(onCollapse.calledOnce);
 			assert.isTrue(onCollapse.calledWith(true));

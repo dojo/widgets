@@ -2,6 +2,8 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { auto } from '@dojo/widget-core/diff';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 
 import * as fixedCss from './styles/split-pane.m.css';
 import * as css from '../theme/split-pane.m.css';
@@ -102,6 +104,20 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		onResize && onResize(newSize);
 	}
 
+	@diffProperty('collapseWidth', auto)
+	protected collapseWidthReaction(oldProperty: any, newProperty: any) {
+		const { direction = Direction.column } = this.properties;
+		const { collapseWidth = 600 } = newProperty;
+		this._collapseIfNecessary(collapseWidth, direction);
+	}
+
+	@diffProperty('direction', auto)
+	protected directionReaction(oldProperty: any, newProperty: any) {
+		const { collapseWidth = 600 } = this.properties;
+		const { direction = Direction.column } = newProperty;
+		this._collapseIfNecessary(collapseWidth, direction);
+	}
+
 	private _onDragEnd = (event: MouseEvent & TouchEvent) => {
 		event.stopPropagation();
 		this._dragging = false;
@@ -128,13 +144,13 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	}
 
 	protected onAttach() {
-		this._collapseIfNecessary();
+		this._onResize();
 	}
 
-	private _collapseIfNecessary = () => {
-		const { collapseWidth = 600, onCollapse, direction } = this.properties;
+	private _collapseIfNecessary(collapseWidth: number, direction: Direction) {
+		const { onCollapse } = this.properties;
 
-		if (direction === Direction.row) {
+		if (direction === Direction.row || !this.meta(Dimensions).has('root')) {
 			return;
 		}
 
@@ -143,11 +159,18 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		if (width > collapseWidth && this._collapsed === true) {
 			this._collapsed = false;
 			onCollapse && onCollapse(this._collapsed);
-			this.invalidate();
 		}
 		else if (width <= collapseWidth && this._collapsed === false) {
 			this._collapsed = true;
 			onCollapse && onCollapse(this._collapsed);
+		}
+	}
+
+	private _onResize = () => {
+		const { collapseWidth = 600, direction = Direction.column } = this.properties;
+		const isCollapsed = this._collapsed;
+		this._collapseIfNecessary(collapseWidth, direction);
+		if (isCollapsed !== this._collapsed) {
 			this.invalidate();
 		}
 	}
@@ -176,7 +199,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 					mouseup: this._onDragEnd,
 					mousemove: this._onDragMove,
 					touchmove: this._onDragMove,
-					resize: this._collapseIfNecessary
+					resize: this._onResize
 				}
 			}),
 			v('div', {

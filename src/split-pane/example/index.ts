@@ -4,13 +4,33 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
+import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
 import SplitPane, { Direction } from '../../split-pane/index';
+import GlobalEvent from '../../global-event/index';
 
 export class App extends WidgetBase<WidgetProperties> {
 	private state: any = {};
 
 	public setState(state: any) {
 		this.state = deepAssign(this.state, state);
+		this.invalidate();
+	}
+
+	private _direction = Direction.column;
+
+	private _collapseWidth = 600;
+
+	private _changeToRow() {
+		this._direction = this._direction === Direction.row ? Direction.column : Direction.row;
+		this.invalidate();
+	}
+
+	private _changeCollapseWidth() {
+		this._collapseWidth = this._collapseWidth === 600 ? 350 : 600;
+		this.invalidate();
+	}
+
+	private _onResize = () => {
 		this.invalidate();
 	}
 
@@ -22,25 +42,36 @@ export class App extends WidgetBase<WidgetProperties> {
 			border: '1px solid rgba(170, 170, 170, 0.5)'
 		};
 
+		const { width } = this.meta(Dimensions).get('example-column').size;
+
 		return v('div', {
 			styles: {
 				padding: '50px'
 			}
 		}, [
+			w(GlobalEvent, { key: 'global', window: { resize: this._onResize } }),
 			v('h1', ['SplitPane Examples']),
 			v('h3', ['Column']),
+			v('div', { styles: { marginBottom: '10px' } }, [
+				v('div', { styles: { marginBottom: '5px' } }, [ `Current Collapse Width: ${this._collapseWidth}` ]),
+				v('div', { styles: { marginBottom: '5px' } }, [ `Current Size: ${width}` ]),
+				v('button', { onclick: this._changeToRow }, [ 'Change to row' ]),
+				v('button', { onclick: this._changeCollapseWidth }, [ `Change collapse width to ${this._collapseWidth === 600 ? '350' : '600' }` ])
+			]),
 			v('div', {
+				key: 'example-column',
 				id: 'example-column',
 				styles: containerStyles
 			}, [
-				w(SplitPane, {
-					key: 'column',
-					direction: Direction.column,
-					onResize: (size: number) => {
-						this.setState({ columnSize: size });
-					},
-					size: this.state.columnSize
-				})
+					w(SplitPane, {
+						key: 'column',
+						collapseWidth: this._collapseWidth,
+						direction: this._direction,
+						onResize: (size: number) => {
+							this.setState({ columnSize: size });
+						},
+						size: this.state.columnSize
+					}, [ v('div', [ 'left' ]), v('div', [ 'right' ])])
 			]),
 			v('h3', ['Row']),
 			v('div', {
