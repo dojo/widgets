@@ -2,10 +2,10 @@ import { WidgetBase } from '@dojo/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
-import Checkbox from '../../checkbox/index';
+import Toggle from '../../toggle/index';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _checkboxStates: { [key: string]: boolean } = {
+	private _toggleStates: { [key: string]: boolean } = {
 		c1: true,
 		c2: false,
 		c3: false,
@@ -14,7 +14,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	};
 
 	onChange(value: string, checked: boolean) {
-		this._checkboxStates[value] = checked;
+		this._toggleStates[value] = checked;
 		this.invalidate();
 	}
 
@@ -23,29 +23,33 @@ export class App extends WidgetBase<WidgetProperties> {
 			c1 = true,
 			c2 = false,
 			c3 = false
-		} = this._checkboxStates;
+		} = this._toggleStates;
 
 		return v('div', [
 			v('h2', {
-				innerHTML: 'Checkbox Examples'
+				innerHTML: 'Toggle Examples'
 			}),
 			v('fieldset', [
-				v('legend', {}, ['Checkbox Example']),
+				v('legend', {}, ['Toggle Example']),
 				v('div', { id: 'example-1' }, [
-					w(Checkbox, {
+					w(Toggle, {
 						key: 'c1',
 						checked: c1,
-						label: 'Sample checkbox that starts checked',
+						label: 'Sample toggle that starts checked',
+						onLabel: 'On',
+						offLabel: 'Off',
 						value: 'c1',
 						onChange: this.onChange
 					})
 				]),
 
 				v('div', { id: 'example-2' }, [
-					w(Checkbox, {
+					w(Toggle, {
 						key: 'c2',
 						checked: c2,
-						label: 'Sample disabled checkbox',
+						label: 'Sample disabled toggle',
+						onLabel: 'On',
+						offLabel: 'Off',
 						disabled: true,
 						value: 'c2',
 						onChange: this.onChange
@@ -53,10 +57,12 @@ export class App extends WidgetBase<WidgetProperties> {
 				]),
 
 				v('div', { id: 'example-3' }, [
-					w(Checkbox, {
+					w(Toggle, {
 						key: 'c3',
 						checked: c3,
-						label: 'Required checkbox',
+						label: 'Required toggle',
+						onLabel: 'On',
+						offLabel: 'Off',
 						required: true,
 						value: 'c3',
 						onChange: this.onChange

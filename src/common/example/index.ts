@@ -26,6 +26,7 @@ const modules = [
 	'enhanced-text-input',
 	'time-picker',
 	'title-pane',
+	'toggle',
 	'toolbar',
 	'tooltip'
 ];

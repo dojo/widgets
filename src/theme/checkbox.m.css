@@ -28,8 +28,3 @@
 .valid .inputWrapper::after {
 	background-color: var(--success-color);
 }
-
-.toggle {}
-.onLabel {}
-.offLabel {}
-.toggleSwitch {}

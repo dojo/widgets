@@ -72,26 +72,6 @@ registerSuite('Checkbox', {
 			})
 			.end();
 	},
-	'`toggle` mode checkbox should be toggle-able'() {
-		return getPage(this.remote)
-			.findByCssSelector(nthCheckbox(4))
-			.isSelected()
-			.then(checked => {
-				assert.isFalse(checked, 'Initial state should be false');
-			})
-			.click()
-			.isSelected()
-			.then(checked => {
-				assert.isTrue(checked);
-			})
-			.click()
-			.isSelected()
-			.then(checked => {
-				assert.isFalse(checked);
-			})
-			.end();
-	},
-
 	'disabled checkbox should not be toggle-able'() {
 		return getPage(this.remote)
 			.findByCssSelector(nthCheckbox(2))
