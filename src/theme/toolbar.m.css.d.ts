@@ -1,7 +1,5 @@
-export const action: string;
 export const actions: string;
 export const collapsed: string;
-export const content: string;
 export const menuButton: string;
 export const root: string;
 export const sticky: string;

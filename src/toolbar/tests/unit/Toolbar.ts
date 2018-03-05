@@ -22,17 +22,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
@@ -54,7 +54,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {
 					height: `0px`
@@ -63,10 +63,10 @@ registerSuite('Toolbar', {
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						css.sticky,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						fixedCss.stickyFixed,
 						fixedCss.onBottomFixed
 					],
@@ -89,17 +89,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
@@ -133,17 +133,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
@@ -162,7 +162,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {
 					height: `0px`
@@ -171,10 +171,10 @@ registerSuite('Toolbar', {
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						css.sticky,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						fixedCss.stickyFixed,
 						fixedCss.onTopFixed
 					],
@@ -192,17 +192,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
@@ -222,17 +222,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
@@ -291,17 +291,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						null,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
@@ -328,17 +328,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						css.collapsed,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
@@ -358,17 +358,17 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: fixedCss.containerFixed,
+				classes: [ css.root, fixedCss.rootFixed ],
 				dir: '',
 				styles: {}
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
 					classes: [
-						css.root,
+						css.toolbar,
 						css.collapsed,
 						null,
-						fixedCss.rootFixed,
+						fixedCss.toolbarFixed,
 						null,
 						fixedCss.onTopFixed
 					],
