@@ -124,8 +124,8 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		this._lastSize = undefined;
 	}
 
-	protected getPaneContent(content: DNode): DNode[] {
-		return [ content ];
+	protected getPaneContent(content: DNode | undefined): DNode[] {
+		return content ? [ content ] : [];
 	}
 
 	protected getPaneStyles(): {[key: string]: string} {
