@@ -8,6 +8,7 @@
 			"src/combobox",
 			"src/dialog",
 			"src/enhanced-text-input",
+			"src/icon",
 			"src/label",
 			"src/listbox",
 			"src/progress",
