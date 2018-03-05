@@ -15,8 +15,8 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * Direction of this SplitPane
  */
 export const enum Direction {
-	column,
-	row
+	column = 'column',
+	row = 'row'
 }
 
 /**

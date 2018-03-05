@@ -18,8 +18,8 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * Enum for toolbar positioning
  */
 export const enum Position {
-	bottom = 'onBottomFixed',
-	top = 'onTopFixed'
+	bottom = 'bottom',
+	top = 'top'
 }
 
 /**
