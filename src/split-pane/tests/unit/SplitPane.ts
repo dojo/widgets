@@ -43,7 +43,7 @@ registerSuite('SplitPane', {
 					classes: [ css.leading, fixedCss.leadingFixed ],
 					key: 'leading',
 					styles: { width: '100px' }
-				}, [ null ]),
+				}, []),
 				v('div', {
 					classes: [ css.divider, fixedCss.dividerFixed ],
 					key: 'divider',
@@ -54,7 +54,7 @@ registerSuite('SplitPane', {
 				v('div', {
 					classes: [ css.trailing, fixedCss.trailingFixed ],
 					key: 'trailing'
-				}, [ null ])
+				}, [])
 			]));
 		},
 
@@ -228,6 +228,15 @@ registerSuite('SplitPane', {
 			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
 			assert.isTrue(onCollapse.calledOnce);
 			assert.isTrue(onCollapse.calledWith(true));
+
+			h.expectPartial('@leading', () => v('div', {
+				classes: [
+					css.leading,
+					fixedCss.leadingFixed
+				],
+				key: 'leading',
+				styles: { width: 'auto' }
+			}, []));
 		},
 
 		'collapse is ignored when using Direction.Row configuration'() {

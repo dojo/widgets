@@ -124,8 +124,8 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		this._lastSize = undefined;
 	}
 
-	protected getPaneContent(content: DNode): DNode[] {
-		return [ content ];
+	protected getPaneContent(content: DNode | undefined): DNode[] {
+		return content ? [ content ] : [];
 	}
 
 	protected getPaneStyles(): {[key: string]: string} {
@@ -136,9 +136,9 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 
 		const styles: {[key: string]: string} = {};
 
-		let computedSize: string | number = this._collapsed ? 'auto' : size;
+		let computedSize = this._collapsed ? 'auto' : `${size}px`;
 
-		styles[direction === Direction.column ? 'width' : 'height'] = `${computedSize}px`;
+		styles[direction === Direction.column ? 'width' : 'height'] = computedSize;
 
 		return styles;
 	}
