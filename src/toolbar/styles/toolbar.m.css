@@ -1,6 +1,6 @@
 @import '../../common/styles/variables.css';
 
-.containerFixed {
+.rootFixed {
 	position: static;
 }
 
@@ -17,7 +17,7 @@
 	transform: translateY(-50%);
 }
 
-.rootFixed {
+.toolbarFixed {
 	display: flex;
 	left: 0;
 	overflow: hidden;
