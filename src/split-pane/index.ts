@@ -136,9 +136,9 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 
 		const styles: {[key: string]: string} = {};
 
-		let computedSize: string | number = this._collapsed ? 'auto' : size;
+		let computedSize = this._collapsed ? 'auto' : `${size}px`;
 
-		styles[direction === Direction.column ? 'width' : 'height'] = `${computedSize}px`;
+		styles[direction === Direction.column ? 'width' : 'height'] = computedSize;
 
 		return styles;
 	}
