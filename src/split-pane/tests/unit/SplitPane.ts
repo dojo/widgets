@@ -27,7 +27,7 @@ registerSuite('SplitPane', {
 		'Should construct SplitPane with passed properties'() {
 			const h = harness(() => w(SplitPane, {}));
 			h.expect(() => v('div', {
-				classes: [ css.root, css.row, fixedCss.rootFixed, fixedCss.rowFixed ],
+				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {
@@ -35,7 +35,8 @@ registerSuite('SplitPane', {
 					window: {
 						mouseup: noop,
 						mousemove: noop,
-						touchmove: noop
+						touchmove: noop,
+						resize: noop
 					}
 				}),
 				v('div', {
@@ -59,7 +60,7 @@ registerSuite('SplitPane', {
 
 		'Should construct SplitPane with default properties'() {
 			const h = harness(() => w(SplitPane, {
-				direction: Direction.column,
+				direction: Direction.row,
 				onResize: noop,
 				size: 200
 			}, [
@@ -68,7 +69,7 @@ registerSuite('SplitPane', {
 			]));
 
 			h.expect(() => v('div', {
-				classes: [ css.root, css.column, fixedCss.rootFixed, fixedCss.columnFixed ],
+				classes: [ css.root, null, css.row, fixedCss.rootFixed, fixedCss.rowFixed, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {
@@ -76,7 +77,8 @@ registerSuite('SplitPane', {
 					window: {
 						mouseup: noop,
 						mousemove: noop,
-						touchmove: noop
+						touchmove: noop,
+						resize: noop
 					}
 				}),
 				v('div', {
@@ -139,7 +141,7 @@ registerSuite('SplitPane', {
 			assert.strictEqual(setSize, 0);
 		},
 
-		'Mouse move should call onResize for row'() {
+		'Mouse move should call onResize for column'() {
 			let called = false;
 
 			const h = harness(() => w(SplitPane, {
@@ -152,12 +154,106 @@ registerSuite('SplitPane', {
 			assert.isTrue(called);
 		},
 
-		'Mouse move should call onResize for column'() {
+		'Should collapse when width is less than collapse width'() {
+			const onCollapse = stub();
+			const mockMeta = stub();
+			const mockDimensionsGet = stub();
+			mockDimensionsGet.withArgs('root').returns({
+				size: {
+					width: 500
+				}
+			});
+
+			const metaReturn = {
+				get: mockDimensionsGet,
+				has: () => false
+			};
+			mockMeta.withArgs(Dimensions).returns(metaReturn);
+
+			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse }));
+			metaReturn.has = () => true;
+			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
+			assert.isTrue(onCollapse.calledOnce);
+			assert.isTrue(onCollapse.calledWith(true));
+			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
+			assert.isTrue(onCollapse.calledOnce);
+		},
+
+		'Should expand when width is greater than collapse width'() {
+			const onCollapse = stub();
+			const mockMeta = stub();
+			let mockDimensionsGet = stub();
+			let dimensions = {
+				size: {
+					width: 500
+				}
+			};
+			mockDimensionsGet.withArgs('root').returns(dimensions);
+			const metaReturn = {
+				get: mockDimensionsGet,
+				has: () => false
+			};
+			mockMeta.withArgs(Dimensions).returns(metaReturn);
+
+			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse }));
+			metaReturn.has = () => true;
+			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
+			assert.isTrue(onCollapse.calledOnce);
+			assert.isTrue(onCollapse.calledWith(true));
+			dimensions.size.width = 700;
+			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
+			assert.isTrue(onCollapse.calledTwice);
+			assert.isTrue(onCollapse.calledWith(false));
+		},
+
+		'Should collapse when width is less than custom collapse width'() {
+			const onCollapse = stub();
+			const mockMeta = stub();
+			const mockDimensionsGet = stub();
+			let dimensions = {
+				size: {
+					width: 500
+				}
+			};
+			mockDimensionsGet.withArgs('root').returns(dimensions);
+			const metaReturn = {
+				get: mockDimensionsGet,
+				has: () => false
+			};
+			mockMeta.withArgs(Dimensions).returns(metaReturn);
+
+			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, collapseWidth: 400 }));
+			metaReturn.has = () => true;
+			dimensions.size.width = 300;
+			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
+			assert.isTrue(onCollapse.calledOnce);
+			assert.isTrue(onCollapse.calledWith(true));
+		},
+
+		'collapse is ignored when using Direction.Row configuration'() {
+			const onCollapse = stub();
+			const mockMeta = stub();
+			const mockDimensionsGet = stub();
+			mockDimensionsGet.withArgs('root').returns({
+				size: {
+					width: 500
+				}
+			});
+			mockMeta.withArgs(Dimensions).returns({
+				get: mockDimensionsGet
+			});
+
+			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, direction: Direction.row }));
+			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
+			assert.isTrue(onCollapse.notCalled);
+		},
+
+		'Mouse move should call onResize for row'() {
 			let called = false;
 
 			const h = harness(() => w(SplitPane, {
 				onResize: () => called = true,
-				direction: Direction.column
+				direction: Direction.row
 			}));
 
 			h.trigger('@divider', 'onmousedown', { clientX: 110, ...stubEvent });
@@ -167,12 +263,12 @@ registerSuite('SplitPane', {
 			assert.isTrue(called);
 		},
 
-		'Touch move should call onResize for row'() {
+		'Touch move should call onResize for column'() {
 			let called = false;
 
 			const h = harness(() => w(SplitPane, {
 				onResize: () => called = true,
-				direction: Direction.row,
+				direction: Direction.column,
 				size: 100
 			}));
 
@@ -183,12 +279,12 @@ registerSuite('SplitPane', {
 			assert.isTrue(called);
 		},
 
-		'Touch move should call onResize for column'() {
+		'Touch move should call onResize for row'() {
 			let called = 0;
 
 			const h = harness(() => w(SplitPane, {
 				onResize: () => called++,
-				direction: Direction.column
+				direction: Direction.row
 			}));
 
 			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });

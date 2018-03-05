@@ -2,6 +2,8 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { auto } from '@dojo/widget-core/diff';
+import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
 
 import * as fixedCss from './styles/split-pane.m.css';
 import * as css from '../theme/split-pane.m.css';
@@ -30,6 +32,8 @@ export interface SplitPaneProperties extends ThemedProperties {
 	direction?: Direction;
 	onResize?(size: number): void;
 	size?: number;
+	collapseWidth?: number;
+	onCollapse?(collapsed: boolean): void;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -49,12 +53,13 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	private _dragging: boolean;
 	private _lastSize?: number;
 	private _position: number;
+	private _collapsed = false;
 
 	private _getPosition(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
-		const { direction = Direction.row } = this.properties;
+		const { direction = Direction.column } = this.properties;
 
-		if (direction === Direction.row) {
+		if (direction === Direction.column) {
 			return event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
 		}
 		else {
@@ -75,7 +80,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		}
 
 		const {
-			direction = Direction.row,
+			direction = Direction.column,
 			onResize,
 			size = DEFAULT_SIZE
 		} = this.properties;
@@ -85,7 +90,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 
 		const rootDimensions = this.meta(Dimensions).get('root');
 		const dividerDimensions = this.meta(Dimensions).get('divider');
-		const maxSize = direction === Direction.row ?
+		const maxSize = direction === Direction.column ?
 			rootDimensions.offset.width - dividerDimensions.offset.width :
 			rootDimensions.offset.height - dividerDimensions.offset.height;
 
@@ -97,6 +102,20 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		this._position = currentPosition;
 
 		onResize && onResize(newSize);
+	}
+
+	@diffProperty('collapseWidth', auto)
+	protected collapseWidthReaction(oldProperty: any, newProperty: any) {
+		const { direction = Direction.column } = this.properties;
+		const { collapseWidth = 600 } = newProperty;
+		this._collapseIfNecessary(collapseWidth, direction);
+	}
+
+	@diffProperty('direction', auto)
+	protected directionReaction(oldProperty: any, newProperty: any) {
+		const { collapseWidth = 600 } = this.properties;
+		const { direction = Direction.column } = newProperty;
+		this._collapseIfNecessary(collapseWidth, direction);
 	}
 
 	private _onDragEnd = (event: MouseEvent & TouchEvent) => {
@@ -111,28 +130,66 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 
 	protected getPaneStyles(): {[key: string]: string} {
 		const {
-			direction = Direction.row,
+			direction = Direction.column,
 			size = DEFAULT_SIZE
 		} = this.properties;
+
 		const styles: {[key: string]: string} = {};
 
-		styles[direction === Direction.row ? 'width' : 'height'] = `${size}px`;
+		let computedSize: string | number = this._collapsed ? 'auto' : size;
+
+		styles[direction === Direction.column ? 'width' : 'height'] = `${computedSize}px`;
+
 		return styles;
+	}
+
+	protected onAttach() {
+		this._onResize();
+	}
+
+	private _collapseIfNecessary(collapseWidth: number, direction: Direction) {
+		const { onCollapse } = this.properties;
+
+		if (direction === Direction.row || !this.meta(Dimensions).has('root')) {
+			return;
+		}
+
+		const { width } = this.meta(Dimensions).get('root').size;
+
+		if (width > collapseWidth && this._collapsed === true) {
+			this._collapsed = false;
+			onCollapse && onCollapse(this._collapsed);
+		}
+		else if (width <= collapseWidth && this._collapsed === false) {
+			this._collapsed = true;
+			onCollapse && onCollapse(this._collapsed);
+		}
+	}
+
+	private _onResize = () => {
+		const { collapseWidth = 600, direction = Direction.column } = this.properties;
+		const isCollapsed = this._collapsed;
+		this._collapseIfNecessary(collapseWidth, direction);
+		if (isCollapsed !== this._collapsed) {
+			this.invalidate();
+		}
 	}
 
 	protected render(): DNode {
 		const {
-			direction = Direction.row
+			direction = Direction.column
 		} = this.properties;
 
 		return v('div', {
 			classes: [
 				...this.theme([
 					css.root,
-					direction === Direction.column ? css.column : css.row
+					this._collapsed ? css.collapsed : null,
+					direction === Direction.row ? css.row : css.column
 				]),
 				fixedCss.rootFixed,
-				direction === Direction.column ? fixedCss.columnFixed : fixedCss.rowFixed
+				direction === Direction.row ? fixedCss.rowFixed : fixedCss.columnFixed,
+				this._collapsed ? fixedCss.collapsedFixed : null
 			],
 			key: 'root'
 		}, [
@@ -141,7 +198,8 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 				window: {
 					mouseup: this._onDragEnd,
 					mousemove: this._onDragMove,
-					touchmove: this._onDragMove
+					touchmove: this._onDragMove,
+					resize: this._onResize
 				}
 			}),
 			v('div', {

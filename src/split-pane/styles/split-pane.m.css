@@ -8,7 +8,7 @@
 	width: 100%;
 }
 
-.columnFixed {
+.rowFixed {
 	flex-direction: column;
 }
 
@@ -22,12 +22,12 @@
 	flex: 0 0 auto;
 }
 
-.rowFixed > .dividerFixed {
+.columnFixed > .dividerFixed {
 	width: 1px;
 	cursor: ew-resize;
 }
 
-.columnFixed > .dividerFixed {
+.rowFixed > .dividerFixed {
 	height: 1px;
 	cursor: ns-resize;
 }
@@ -37,5 +37,10 @@
 }
 
 .trailingFixed, .leadingFixed {
+	overflow: auto;
+}
+
+.rootFixed.collapsedFixed {
+	display: block;
 	overflow: auto;
 }
