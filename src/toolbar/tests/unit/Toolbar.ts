@@ -34,7 +34,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -68,7 +68,7 @@ registerSuite('Toolbar', {
 						css.sticky,
 						fixedCss.toolbarFixed,
 						fixedCss.stickyFixed,
-						fixedCss.onBottomFixed
+						fixedCss.bottom
 					],
 					key: 'toolbar'
 				}, [
@@ -101,7 +101,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -145,7 +145,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -176,7 +176,7 @@ registerSuite('Toolbar', {
 						css.sticky,
 						fixedCss.toolbarFixed,
 						fixedCss.stickyFixed,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -204,7 +204,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -234,7 +234,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -303,7 +303,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -340,7 +340,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [
@@ -370,7 +370,7 @@ registerSuite('Toolbar', {
 						null,
 						fixedCss.toolbarFixed,
 						null,
-						fixedCss.onTopFixed
+						fixedCss.top
 					],
 					key: 'toolbar'
 				}, [

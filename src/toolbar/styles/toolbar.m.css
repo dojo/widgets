@@ -26,7 +26,7 @@
 	z-index: var(--zindex-fixed);
 }
 
-.onBottomFixed {
+.bottom {
 	bottom: 0;
 	top: auto;
 }
@@ -40,6 +40,6 @@
 	flex-shrink: 0;
 }
 
-.onTopFixed {
+.top {
 	top: 0;
 }
