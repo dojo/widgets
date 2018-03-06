@@ -25,13 +25,13 @@
   "peerDependencies": {
     "@dojo/core": "~0.4.0",
     "@dojo/has": "~0.1.1",
-    "@dojo/i18n": "~0.5.0",
+    "@dojo/i18n": "~0.5.1",
     "@dojo/shim": "~0.2.6",
-    "@dojo/widget-core": "~0.9.4"
+    "@dojo/widget-core": "~0.9.5"
   },
   "devDependencies": {
-    "@dojo/cli": "^0.5.0",
-    "@dojo/cli-build-widget": "~0.2.1",
+    "@dojo/cli": "~0.6.1",
+    "@dojo/cli-build-widget": "~0.2.2",
     "@dojo/loader": "~0.1.1",
     "@dojo/test-extras": "~0.6.0",
     "@types/execa": "^0.8.1",
