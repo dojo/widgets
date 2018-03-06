@@ -43,7 +43,7 @@ const DEFAULT_SIZE = 100;
 @theme(css)
 @customElement<SplitPaneProperties>({
 	tag: 'dojo-split-pane',
-	properties: [ 'theme', 'extraClasses', 'size', 'direction' ],
+	properties: [ 'theme', 'extraClasses', 'size' ],
 	attributes: [ 'direction' ],
 	events: [
 		'onResize'
