@@ -53,11 +53,10 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'labelAfter',
 		'labelHidden',
 		'checked',
-		'mode',
 		'offLabel',
 		'onLabel'
 	],
-	attributes: [ 'label', 'value' ],
+	attributes: [ 'label', 'value', 'mode' ],
 	events: [
 		'onBlur',
 		'onChange',
