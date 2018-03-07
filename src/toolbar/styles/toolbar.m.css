@@ -1,45 +1,6 @@
-@import '../../common/styles/variables.css';
-
 .rootFixed {
-	position: static;
-}
-
-.actionsFixed {
 	display: flex;
-	flex: 1;
-	justify-content: flex-end;
-}
-
-.menuButtonFixed {
-	position: absolute;
-	right: 0;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.toolbarFixed {
-	display: flex;
-	left: 0;
 	overflow: hidden;
-	position: absolute;
+	justify-content: space-between;
 	width: 100%;
-	z-index: var(--zindex-fixed);
-}
-
-.bottom {
-	bottom: 0;
-	top: auto;
-}
-
-.stickyFixed {
-	position: fixed;
-}
-
-.titleFixed {
-	flex-grow: 0;
-	flex-shrink: 0;
-}
-
-.top {
-	top: 0;
 }

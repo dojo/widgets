@@ -15,29 +15,17 @@ import { GlobalEvent } from '../global-event/index';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
- * Enum for toolbar positioning
- */
-export const enum Position {
-	bottom = 'bottom',
-	top = 'top'
-}
-
-/**
  * @type ToolbarProperties
  *
  * Properties that can be set on a Toolbar component
  *
  * @property collapseWidth     Width at which to collapse actions into a SlidePane
- * @property fixed             Fixes the toolbar to the top of the viewport
  * @property onCollapse        Called when action items change their layout
- * @property position          Determines toolbar position in relation to child contet
  * @property heading           The toolbar heading
  */
 export interface ToolbarProperties extends ThemedProperties {
 	collapseWidth?: number;
-	fixed?: boolean;
 	onCollapse?(collapsed: boolean): void;
-	position?: Position;
 	heading?: string;
 }
 
@@ -46,8 +34,8 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
-	properties: [ 'theme', 'extraClasses', 'collapseWidth', 'fixed' ],
-	attributes: [ 'key', 'heading', 'position' ],
+	properties: [ 'theme', 'extraClasses', 'collapseWidth' ],
+	attributes: [ 'key', 'heading' ],
 	events: [
 		'onCollapse'
 	]
@@ -83,27 +71,6 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		this.invalidate();
 	}
 
-	protected getToolbarClasses(): (string | null)[] {
-		const { fixed } = this.properties;
-		let { position = Position.top } = this.properties;
-
-		if (position === Position.bottom && !fixed) {
-			console.warn('Bottom positioning can be used only when `fixed` is `true`.');
-			position = Position.top;
-		}
-
-		return [
-			...this.theme([
-				css.toolbar,
-				this._collapsed ? css.collapsed : null,
-				this.properties.fixed ? css.sticky : null
-			]),
-			fixedCss.toolbarFixed,
-			fixed ? fixedCss.stickyFixed : null,
-			(fixedCss as any)[position]
-		];
-	}
-
 	protected onAttach() {
 		this._collapseIfNecessary();
 	}
@@ -125,7 +92,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			theme,
 			title: heading
 		}, this.children) : v('div', {
-			classes: [ this.theme(css.actions), fixedCss.actionsFixed ],
+			classes: this.theme(css.actions),
 			key: 'menu'
 		}, this.children);
 	}
@@ -134,7 +101,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 		const { open } = this.localizeBundle(commonBundle);
 
 		return v('button', {
-			classes: [ this.theme(css.menuButton), fixedCss.menuButtonFixed ],
+			classes: this.theme(css.menuButton),
 			type: 'button',
 			onclick: this._toggleMenu
 		}, [
@@ -145,36 +112,28 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 
 	protected render(): DNode {
 		const {
-			heading,
-			fixed
+			heading
 		} = this.properties;
-
-		let styles = {};
-		if (fixed) {
-			const { height } = this.meta(Dimensions).get('toolbar').size;
-			styles = { height: `${height}px` };
-		}
 
 		const hasActions = this.children && this.children.length;
 
 		return v('div', {
 			key: 'root',
-			classes: [ this.theme(css.root), fixedCss.rootFixed ],
-			styles
+			classes: [
+				fixedCss.rootFixed,
+				...this.theme([
+					css.root,
+					this._collapsed ? css.collapsed : null
+				])
+			]
 		}, [
 			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
-			v('div', {
-				classes: this.getToolbarClasses(),
-				key: 'toolbar'
-			}, [
-				heading ? v('div', {
-					classes: [ this.theme(css.title), fixedCss.titleFixed ]
-				}, [ heading ]) : null,
-				hasActions ? this.renderActions() : null,
-				hasActions && this._collapsed ? this.renderButton() : null
-			])
+			heading ? v('div', {
+				classes: this.theme(css.title)
+			}, [ heading ]) : null,
+			hasActions ? this.renderActions() : null,
+			hasActions && this._collapsed ? this.renderButton() : null
 		]);
-
 	}
 }
 

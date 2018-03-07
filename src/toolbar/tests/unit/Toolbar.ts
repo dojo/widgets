@@ -7,7 +7,7 @@ import harness from '@dojo/test-extras/harness';
 import { stub } from 'sinon';
 
 import Icon from '../../../icon/index';
-import Toolbar, { Position, ToolbarProperties } from '../../index';
+import Toolbar, { ToolbarProperties } from '../../index';
 import SlidePane, { Align } from '../../../slide-pane/index';
 
 import * as fixedCss from '../../styles/toolbar.m.css';
@@ -22,97 +22,14 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
+				classes: [ fixedCss.rootFixed, css.root, null ],
+				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
-				}, [
-					null,
-					null,
-					null
-				])
+				null,
+				null,
+				null
 			]));
-		},
-
-		'bottom-positioned rendering'() {
-			const h = harness(() => w(Toolbar, {
-				fixed: true,
-				position: Position.bottom
-			}));
-
-			h.expect(() => v('div', {
-				key: 'root',
-				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {
-					height: `0px`
-				}
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						css.sticky,
-						fixedCss.toolbarFixed,
-						fixedCss.stickyFixed,
-						fixedCss.bottom
-					],
-					key: 'toolbar'
-				}, [
-					null,
-					null,
-					null
-				])
-			]));
-		},
-
-		'bottom-position rendering without `fixed: true`'() {
-			stub(console, 'warn');
-			const h = harness(() => w(Toolbar, {
-				fixed: false,
-				position: Position.bottom
-			}));
-
-			h.expect(() => v('div', {
-				key: 'root',
-				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
-				}, [
-					null,
-					null,
-					null
-				])
-			]));
-
-			assert.isTrue((console as any).warn.calledWith('Bottom positioning can be used only when `fixed` is `true`.'));
-			(console as any).warn.restore();
 		},
 
 		'expanded rendering'() {
@@ -133,57 +50,13 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
+				classes: [ fixedCss.rootFixed, css.root, null ],
+				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
-				}, [
-					null,
-					null,
-					null
-				])
-			]));
-		},
-
-		'fixed rendering'() {
-			const h = harness(() => w(Toolbar, { fixed: true }));
-
-			h.expect(() => v('div', {
-				key: 'root',
-				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {
-					height: `0px`
-				}
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						css.sticky,
-						fixedCss.toolbarFixed,
-						fixedCss.stickyFixed,
-						fixedCss.top
-					],
-					key: 'toolbar'
-				}, [
-					null,
-					null,
-					null
-				])
+				null,
+				null,
+				null
 			]));
 		},
 
@@ -192,28 +65,15 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
+				classes: [ fixedCss.rootFixed, css.root, null ],
+				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
-				}, [
-					v('div', {
-						classes: [ css.title, fixedCss.titleFixed ]
-					}, [ 'test' ]),
-					null,
-					null
-				])
+					classes: css.title
+				}, [ 'test' ]),
+				null,
+				null
 			]));
 		},
 
@@ -222,31 +82,18 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
+				classes: [ fixedCss.rootFixed, css.root, null ],
+				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+				null,
 				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
+					classes: css.actions,
+					key: 'menu'
 				}, [
-					null,
-					v('div', {
-						classes: [ css.actions, fixedCss.actionsFixed ],
-						key: 'menu'
-					}, [
-						'test'
-					]),
-					null
-				])
+					'test'
+				]),
+				null
 			]));
 		},
 
@@ -280,7 +127,7 @@ registerSuite('Toolbar', {
 			]);
 
 			const buttonVDom = v('button', {
-				classes: [ css.menuButton, fixedCss.menuButtonFixed ],
+				classes: css.menuButton,
 				type: 'button',
 				onclick: noop
 			}, [
@@ -291,31 +138,18 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
+				classes: [ fixedCss.rootFixed, css.root, null ],
+				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+				null,
 				v('div', {
-					classes: [
-						css.toolbar,
-						null,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
+					classes: css.actions,
+					key: 'menu'
 				}, [
-					null,
-					v('div', {
-						classes: [ css.actions, fixedCss.actionsFixed ],
-						key: 'menu'
-					}, [
-						'test'
-					]),
-					null
-				])
+					'test'
+				]),
+				null
 			]));
 
 			properties = { heading: 'foo' };
@@ -328,28 +162,15 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
+				classes: [ fixedCss.rootFixed, css.root, css.collapsed ],
+				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
-					classes: [
-						css.toolbar,
-						css.collapsed,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
-				}, [
-					v('div', {
-						classes: [ css.title, fixedCss.titleFixed ]
-					}, [ 'foo' ]),
-					slidePaneVDom,
-					buttonVDom
-				])
+					classes: css.title
+				}, [ 'foo' ]),
+				slidePaneVDom,
+				buttonVDom
 			]));
 
 			h.trigger(`.${css.menuButton}`, 'onclick', stubEvent);
@@ -358,28 +179,15 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ css.root, fixedCss.rootFixed ],
-				dir: '',
-				styles: {}
+				classes: [ fixedCss.rootFixed, css.root, css.collapsed ],
+				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
-					classes: [
-						css.toolbar,
-						css.collapsed,
-						null,
-						fixedCss.toolbarFixed,
-						null,
-						fixedCss.top
-					],
-					key: 'toolbar'
-				}, [
-					v('div', {
-						classes: [ css.title, fixedCss.titleFixed ]
-					}, [ 'foo' ]),
-					slidePaneVDom,
-					buttonVDom
-				])
+					classes: css.title
+				}, [ 'foo' ]),
+				slidePaneVDom,
+				buttonVDom
 			]));
 		}
 	}
