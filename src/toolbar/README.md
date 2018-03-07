@@ -36,3 +36,22 @@ w(Toolbar, {
 	v('a', { href: '/#contact' }, [ 'Contact' ])
 ])
 ```
+
+*Fixed position Example*
+```typescript
+import Toolbar from '@dojo/widgets/toolbar';
+import { w } from '@dojo/widget-core/d';
+
+// wrap toolbar in a fixed element
+v('div', { styles: { position: fixed, top: 0 } }, [
+	w(Toolbar, {
+		heading: 'My Site',
+		collapseWidth: 720
+	}, [
+		v('a', { href: '/#home' }, [ 'Home' ]),
+		v('a', { href: '/#about' }, [ 'About' ]),
+		v('a', { href: '/#contact' }, [ 'Contact' ])
+	])
+]);
+
+```
