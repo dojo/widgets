@@ -89,7 +89,13 @@
 			"tunnel": "selenium",
 			"tunnelOptions": {
 				"hostname": "localhost",
-				"port": 4444
+				"port": 4444,
+				"drivers": [
+					{
+						"name": "chrome",
+						"version": "2.36"
+					}
+				]
 			},
 
 			"environments+": [
