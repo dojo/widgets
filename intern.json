@@ -89,11 +89,17 @@
 			"tunnel": "selenium",
 			"tunnelOptions": {
 				"hostname": "localhost",
-				"port": 4444
+				"port": 4444,
+				"drivers": [
+					{
+						"name": "chrome",
+						"version": "2.36"
+					}
+				]
 			},
 
 			"environments+": [
-				{ "browserName": "chrome", "chromeOptions": { "version": "2.36", "args": ["headless", "disable-gpu", "no-sandbox", "window-size=1280,1024"] } }
+				{ "browserName": "chrome", "chromeOptions": { "args": ["headless", "disable-gpu", "no-sandbox", "window-size=1280,1024"] } }
 			]
 		},
 
