@@ -17,7 +17,6 @@ export class App extends WidgetBase<WidgetProperties> {
 		return v('div', [
 			w(Toolbar, {
 				collapseWidth: 700,
-				fixed: true,
 				heading: 'Foobar'
 			}, [
 				v('a', { href: '/#home' }, [ 'Home' ]),
