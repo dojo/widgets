@@ -123,6 +123,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 				fixedCss.rootFixed,
 				...this.theme([
 					css.root,
+					css.toolbar,
 					this._collapsed ? css.collapsed : null
 				])
 			]

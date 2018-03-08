@@ -22,7 +22,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
+				classes: [ fixedCss.rootFixed, css.root, css.toolbar, null ],
 				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -50,7 +50,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
+				classes: [ fixedCss.rootFixed, css.root, css.toolbar, null ],
 				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -65,7 +65,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
+				classes: [ fixedCss.rootFixed, css.root, css.toolbar, null ],
 				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -82,7 +82,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
+				classes: [ fixedCss.rootFixed, css.root, css.toolbar, null ],
 				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -138,7 +138,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
+				classes: [ fixedCss.rootFixed, css.root, css.toolbar, null ],
 				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -162,7 +162,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ],
+				classes: [ fixedCss.rootFixed, css.root, css.toolbar, css.collapsed ],
 				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
@@ -179,7 +179,7 @@ registerSuite('Toolbar', {
 			h.expect(() => v('div', {
 				key: 'root',
 				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ],
+				classes: [ fixedCss.rootFixed, css.root, css.toolbar, css.collapsed ],
 				dir: ''
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
