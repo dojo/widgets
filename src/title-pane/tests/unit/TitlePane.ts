@@ -3,7 +3,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/widget-core/d';
+import { v, w, isWNode } from '@dojo/widget-core/d';
 import Icon from '../../../icon/index';
 import TitlePane, { TitlePaneProperties } from '../../index';
 import * as css from '../../../theme/title-pane.m.css';
@@ -24,19 +24,12 @@ interface TestEventInit extends EventInit {
 	keyCode: number;
 }
 
-const animateStub = sinon.spy();
 class StubMeta {
 	// dimensions .get()
 	public get(key: any) {
 		return {
-				offset: { height: 100 }
+			offset: { height: 100 }
 		};
-	}
-
-	// scroll meta
-	public animate(key: string | number, options: any) {
-		const { effects, controls } = options;
-		animateStub({key, effects, playbackRate: controls.playbackRate});
 	}
 }
 
@@ -46,11 +39,21 @@ class StubbedTitlePane extends TitlePane {
 	}
 }
 
-const expected = function(options: {open?: boolean, closeable?: boolean, heading?: string} = {}) {
+function createVNodeSelector(type: 'window' | 'document', name: string) {
+	return (node: any) => {
+		if (isWNode<GlobalEvent>(node) && node.properties[type] !== undefined) {
+			const globalFuncs = node.properties[type];
+			return globalFuncs ? globalFuncs[name] : undefined;
+		}
+	};
+}
+
+const expected = function(options: {open?: boolean, closeable?: boolean, heading?: string, transition?: boolean} = {}) {
 	const {
 		open = true,
 		closeable = true,
-		heading = null
+		heading = null,
+		transition = true
 	} = options;
 	return v('div', {
 		classes: [ css.root, open ? css.open : null, fixedCss.rootFixed ]
@@ -79,7 +82,7 @@ const expected = function(options: {open?: boolean, closeable?: boolean, heading
 		v('div', {
 			'aria-hidden': open ? null : 'true',
 			'aria-labelledby': '',
-			classes: [ css.content, fixedCss.contentFixed ],
+			classes: [ css.content, transition ? css.contentTransition : null, fixedCss.contentFixed ],
 			styles: {
 				marginTop: open ? '0px' : '-100px'
 			},
@@ -90,10 +93,6 @@ const expected = function(options: {open?: boolean, closeable?: boolean, heading
 };
 
 registerSuite('TitlePane', {
-	beforeEach() {
-		animateStub.reset();
-	},
-
 	tests: {
 		'default rendering'() {
 			const h = harness(() => w(StubbedTitlePane, { title: 'test' }));
@@ -164,32 +163,25 @@ registerSuite('TitlePane', {
 			assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
 		},
 
-		'Calls animate with correct effects'() {
+		'Can animate closed'() {
 			let open = true;
 			const h = harness(() => w(StubbedTitlePane, {
 				title: 'test',
 				open
 			}));
-
-			assert.isTrue(animateStub.getCall(0).calledWith({
-				key: 'content',
-				effects: [
-					{ marginTop: '0px' },
-					{ marginTop: '-100px' }
-				],
-				playbackRate: -1
-			}));
-
+			h.expect(() => expected({ open: true }));
 			open = false;
 			h.expect(() => expected({ open: false }));
-			assert.isTrue(animateStub.getCall(1).calledWith({
-				key: 'content',
-				effects: [
-					{ marginTop: '0px' },
-					{ marginTop: '-100px' }
-				],
-				playbackRate: 1
+		},
+
+		'Global resize event removes transition class'() {
+			const h = harness(() => w(StubbedTitlePane, {
+				title: 'test'
 			}));
+
+			h.expect(() => expected({ open: true, transition: true }));
+			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
+			h.expect(() => expected({ open: true, transition: false }));
 		}
 	}
 });

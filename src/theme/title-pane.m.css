@@ -15,3 +15,7 @@
 .content { }
 
 .titleButton { }
+
+.contentTransition {
+	transition: margin-top ease-in-out var(--short-animation-duration);
+}
