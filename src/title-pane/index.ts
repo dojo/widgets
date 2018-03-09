@@ -3,7 +3,6 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
 import { v, w } from '@dojo/widget-core/d';
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import WebAnimation from '@dojo/widget-core/meta/WebAnimation';
 
 import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
@@ -79,30 +78,6 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 		}
 	}
 
-	protected animate(effects: any[]) {
-		const { open = true } = this.properties;
-		this.meta(WebAnimation).animate('content', {
-			id: this._id,
-			effects,
-			timing: {
-				duration: 250,
-				fill: 'both'
-			},
-			controls: {
-				play: true,
-				playbackRate: open ? -1 : 1
-			}
-		});
-	}
-
-	protected getAnimationKeyframes(): any[] {
-		const contentDimensions = this.meta(Dimensions).get('content');
-		return [
-			{ marginTop: '0px' },
-			{ marginTop: `-${ contentDimensions.offset.height }px` }
-		];
-	}
-
 	protected getButtonContent(): DNode {
 		return this.properties.title;
 	}
@@ -132,16 +107,23 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 		]);
 	}
 
+	protected getPaneStyles(): any {
+		const { open = true } = this.properties;
+		const contentDimensions = this.meta(Dimensions).get('content');
+		return { marginTop: open ? '0px' : `-${contentDimensions.offset.height}px` };
+	}
+
 	protected render(): DNode {
 		const {
 			closeable = true,
 			headingLevel,
 			open = true
 		} = this.properties;
-		const effects = this.getAnimationKeyframes();
+
+		let transition = false;
 
 		if (open !== this._open) {
-			this.animate(effects);
+			transition = true;
 			this._open = open;
 		}
 
@@ -173,10 +155,10 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 			v('div', {
 				'aria-hidden': open ? null : 'true',
 				'aria-labelledby': `${this._id}-title`,
-				classes: [ this.theme(css.content), fixedCss.contentFixed ],
+				classes: [ ...this.theme([ css.content, transition ? css.contentTransition : null ]), fixedCss.contentFixed ],
 				id: `${this._id}-content`,
 				key: 'content',
-				styles: open ? effects[0] : effects[effects.length - 1]
+				styles: this.getPaneStyles()
 			}, this.getPaneContent())
 		]);
 	}
