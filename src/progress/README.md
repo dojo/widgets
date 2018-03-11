@@ -1,6 +1,6 @@
 # @dojo/widgets/progress widget
 
-Dojo 2's `progress` widget provides a themeable progress bar with a customisable output display.
+Dojo 2's `progress` widget provides a themeable progress bar with a customizable output display.
 
 
 ## Features
@@ -9,7 +9,7 @@ Dojo 2's `progress` widget provides a themeable progress bar with a customisable
 - Displays progress
 - Defaults to percentages
 - Can specify min / max
-- Customisable output
+- Customizable output
 
 ### Accessibility Features
 
