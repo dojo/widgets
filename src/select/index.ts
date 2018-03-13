@@ -193,8 +193,9 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	protected renderExpandIcon(): DNode {
+		const { theme } = this.properties;
 		return v('span', { classes: this.theme(css.arrow) }, [
-			w(Icon, { type: 'downIcon' })
+			w(Icon, { type: 'downIcon', theme })
 		]);
 	}
 

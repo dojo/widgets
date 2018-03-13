@@ -129,7 +129,8 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 			name,
 			pressed,
 			type,
-			value
+			value,
+			theme
 		} = this.properties;
 
 		if (popup === true) {
@@ -162,7 +163,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 		}, [
 			...this.getContent(),
 			popup ? v('span', { classes: this.theme(css.addon) }, [
-				w(Icon, { type: 'downIcon' })
+				w(Icon, { type: 'downIcon', theme })
 			]) : null
 		]);
 	}

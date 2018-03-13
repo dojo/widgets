@@ -147,7 +147,8 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			exitAnimation = animations.fadeOut,
 			open = false,
 			role = 'dialog',
-			title = ''
+			title = '',
+			theme
 		} = this.properties;
 
 		open && !this._wasOpen && this._onOpen();
@@ -192,7 +193,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						w(Icon, { type: 'closeIcon' })
+						w(Icon, { type: 'closeIcon', theme })
 					]) : null
 				]),
 				this.getContent()

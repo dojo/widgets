@@ -359,7 +359,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		const {
 			disabled,
 			label = '',
-			readOnly
+			readOnly,
+			theme
 		} = this.properties;
 
 		return v('button', {
@@ -371,7 +372,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			onclick: this._onClearClick
 		}, [
 			`${messages.clear} ${label}`,
-			w(Icon, { type: 'closeIcon' })
+			w(Icon, { type: 'closeIcon', theme })
 		]);
 	}
 
@@ -379,7 +380,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		const {
 			disabled,
 			label = '',
-			readOnly
+			readOnly,
+			theme
 		} = this.properties;
 
 		return v('button', {
@@ -391,7 +393,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			onclick: this._onArrowClick
 		}, [
 			`${messages.open} ${label}`,
-			w(Icon, { type: 'downIcon' })
+			w(Icon, { type: 'downIcon', theme })
 		]);
 	}
 

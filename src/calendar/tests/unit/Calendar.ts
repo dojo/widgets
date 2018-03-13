@@ -145,7 +145,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 				type: 'button',
 				onclick: noop
 			}, [
-				w(Icon, { type: 'leftIcon' }),
+				w(Icon, { type: 'leftIcon', theme: undefined }),
 				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Previous Month' ])
 			]),
 			v('button', {
@@ -154,7 +154,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 				type: 'button',
 				onclick: noop
 			}, [
-				w(Icon, { type: 'rightIcon' }),
+				w(Icon, { type: 'rightIcon', theme: undefined }),
 				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Next Month' ])
 			])
 		])

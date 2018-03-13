@@ -242,7 +242,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
 
 		return [
-			w(Icon, { type: iconType }),
+			w(Icon, { type: iconType, theme: undefined }),
 			v('span', { classes: baseCss.visuallyHidden }, [ labelText ])
 		];
 	}
