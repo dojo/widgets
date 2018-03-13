@@ -376,11 +376,12 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 
 	protected renderPagingButtonContent(type: Paging, labels: CalendarMessages): DNode[] {
+		const { theme } = this.properties;
 		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			w(Icon, { type: iconType }),
+			w(Icon, { type: iconType, theme: undefined }),
 			v('span', { classes: [ baseCss.visuallyHidden ] }, [ labelText ])
 		];
 	}

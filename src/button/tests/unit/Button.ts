@@ -81,7 +81,7 @@ registerSuite('Button', {
 			}, [
 				'foo',
 				v('span', { classes: css.addon }, [
-					w(Icon, { type: 'downIcon' })
+					w(Icon, { type: 'downIcon', theme: undefined })
 				])
 			]));
 		},
@@ -115,7 +115,7 @@ registerSuite('Button', {
 				value: undefined
 			}, [
 				v('span', { classes: css.addon }, [
-					w(Icon, { type: 'downIcon' })
+					w(Icon, { type: 'downIcon', theme: undefined })
 				])
 			]));
 		},

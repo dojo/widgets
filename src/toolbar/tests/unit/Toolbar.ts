@@ -132,7 +132,7 @@ registerSuite('Toolbar', {
 				onclick: noop
 			}, [
 				'open',
-				w(Icon, { type: 'barsIcon' })
+				w(Icon, { type: 'barsIcon', theme: undefined })
 			]);
 
 			h.expect(() => v('div', {

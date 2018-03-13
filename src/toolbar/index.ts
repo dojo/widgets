@@ -99,6 +99,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 
 	protected renderButton(): DNode {
 		const { open } = this.localizeBundle(commonBundle);
+		const { theme } = this.properties;
 
 		return v('button', {
 			classes: this.theme(css.menuButton),
@@ -106,7 +107,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			onclick: this._toggleMenu
 		}, [
 			open,
-			w(Icon, { type: 'barsIcon' })
+			w(Icon, { type: 'barsIcon', theme })
 		]);
 	}
 

@@ -118,7 +118,7 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ])
 		]),
 		v('span', { classes: css.arrow }, [
-			w(Icon, { type: 'downIcon' })
+			w(Icon, { type: 'downIcon', theme: undefined })
 		])
 	]);
 
@@ -150,7 +150,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 			...describedBy
 		}, [ placeholder ? placeholder : useTestProperties ? 'Two' : '' ]),
 		v('span', { classes: css.arrow }, [
-			w(Icon, { type: 'downIcon' })
+			w(Icon, { type: 'downIcon', theme: undefined })
 		]),
 		v('div', {
 			classes: css.dropdown,
@@ -387,7 +387,7 @@ registerSuite('Select', {
 							onmousedown: noop
 						}, [ 'two' ]),
 						v('span', { classes: css.arrow }, [
-							w(Icon, { type: 'downIcon' })
+							w(Icon, { type: 'downIcon', theme: undefined })
 						]),
 						v('div', {
 							classes: css.dropdown,

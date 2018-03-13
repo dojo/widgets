@@ -269,7 +269,8 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 			closeText,
 			onOpen,
 			open = false,
-			title = ''
+			title = '',
+			theme
 		} = this.properties;
 
 		const contentStyles = this.getStyles();
@@ -318,7 +319,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						w(Icon, { type: 'closeIcon' })
+						w(Icon, { type: 'closeIcon', theme })
 					])
 				]) : null,
 				this.getContent()
