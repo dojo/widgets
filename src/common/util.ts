@@ -1,6 +1,6 @@
 import { AriaPropertyObject } from './interfaces';
 
-export const enum Keys {
+export enum Keys {
 	Down = 40,
 	End = 35,
 	Enter = 13,

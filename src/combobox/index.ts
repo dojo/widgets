@@ -66,7 +66,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties 
 }
 
 // Enum used when traversing items using arrow keys
-export const enum Operation {
+export enum Operation {
 	increase = 1,
 	decrease = -1
 }

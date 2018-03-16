@@ -15,7 +15,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
 /**
  * Enum for tab button alignment
  */
-export const enum Align {
+export enum Align {
 	bottom = 'bottom',
 	left = 'left',
 	right = 'right',

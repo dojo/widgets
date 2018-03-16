@@ -25,7 +25,7 @@ export interface TooltipProperties extends ThemedProperties, CustomAriaPropertie
 }
 
 // Enum used to position the Tooltip
-export const enum Orientation {
+export enum Orientation {
 	bottom = 'bottom',
 	left = 'left',
 	right = 'right',
