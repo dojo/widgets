@@ -14,7 +14,7 @@ import * as css from '../theme/calendar.m.css';
 /**
  * Enum for next/previous buttons
  */
-export const enum Paging {
+export enum Paging {
 	next = 'next',
 	previous = 'previous'
 }
@@ -22,7 +22,7 @@ export const enum Paging {
 /**
  * Enum for month or year controls
  */
-export const enum Controls {
+export enum Controls {
 	month = 'month',
 	year = 'year'
 }

@@ -32,7 +32,7 @@ export interface CheckboxProperties extends ThemedProperties, InputProperties, L
 /**
  * The type of UI to show for this Checkbox
  */
-export const enum Mode {
+export enum Mode {
 	normal = 'normal',
 	toggle = 'toggle'
 }
