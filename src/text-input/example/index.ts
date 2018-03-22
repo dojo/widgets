@@ -5,11 +5,11 @@ import { v, w } from '@dojo/widget-core/d';
 import TextInput from '../../text-input/index';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _value1: string;
-	private _value2: string;
-	private _value3: string;
-	private _value4: string;
-	private _invalid: boolean;
+	private _value1: string | undefined;
+	private _value2: string | undefined;
+	private _value3: string | undefined;
+	private _value4: string | undefined;
+	private _invalid = false;
 
 	render() {
 		return v('div', {

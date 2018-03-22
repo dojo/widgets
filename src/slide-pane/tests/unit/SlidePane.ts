@@ -70,7 +70,7 @@ registerSuite('SlidePane', {
 					],
 					transitionend: noop,
 					styles: {
-						transform: undefined,
+						transform: null,
 						width: '320px',
 						height: null
 					}
@@ -118,7 +118,7 @@ registerSuite('SlidePane', {
 					],
 					transitionend: noop,
 					styles: {
-						transform: undefined,
+						transform: null,
 						width: '320px',
 						height: null
 					}
@@ -184,7 +184,7 @@ registerSuite('SlidePane', {
 					],
 					transitionend: noop,
 					styles: {
-						transform: undefined,
+						transform: null,
 						width: '320px',
 						height: null
 					}
@@ -226,7 +226,7 @@ registerSuite('SlidePane', {
 					],
 					transitionend: noop,
 					styles: {
-						transform: undefined,
+						transform: null,
 						width: '320px',
 						height: null
 					}
@@ -490,7 +490,7 @@ registerSuite('SlidePane', {
 						],
 						transitionend: noop,
 						styles: {
-							transform: undefined,
+							transform: null,
 							width: '320px',
 							height: null
 						}
@@ -559,7 +559,7 @@ registerSuite('SlidePane', {
 						],
 						transitionend: noop,
 						styles: swipeState.styles || {
-							transform: undefined,
+							transform: null,
 							width: '320px',
 							height: null
 						}
@@ -637,7 +637,7 @@ registerSuite('SlidePane', {
 						],
 						transitionend: noop,
 						styles: swipeState.styles || {
-							transform: undefined,
+							transform: null,
 							width: '320px',
 							height: null
 						}

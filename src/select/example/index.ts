@@ -5,9 +5,9 @@ import { v, w } from '@dojo/widget-core/d';
 import Select, { SelectProperties } from '../../select/index';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _value1: string;
-	private _value2: string;
-	private _value3: string;
+	private _value1: string | undefined;
+	private _value2: string | undefined;
+	private _value3: string | undefined;
 
 	_selectOptions = [
 		{

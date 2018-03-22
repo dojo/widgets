@@ -5,9 +5,9 @@ import { v, w } from '@dojo/widget-core/d';
 import Calendar from '../../calendar/index';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _month: number;
-	private _year: number;
-	private _selectedDate: Date;
+	private _month: number | undefined;
+	private _year: number | undefined;
+	private _selectedDate: Date | undefined;
 
 	render() {
 		return v('div', {}, [

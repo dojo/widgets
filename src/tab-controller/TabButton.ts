@@ -162,7 +162,7 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 			id,
 			onFocusCalled
 		} = this.properties;
-		const messages = this.localizeBundle(commonBundle);
+		const { messages } = this.localizeBundle(commonBundle);
 
 		if (callFocus) {
 			this.meta(Focus).set('tab-button');

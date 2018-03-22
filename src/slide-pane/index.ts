@@ -71,13 +71,13 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 	]
 })
 export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
-	private _initialPosition: number;
-	private _slideIn: boolean;
-	private _swiping: boolean;
+	private _initialPosition = 0;
+	private _slideIn: boolean | undefined;
+	private _swiping: boolean | undefined;
 	private _titleId = uuid();
-	private _transform: number;
+	private _transform: number | undefined;
 	private _wasOpen = false;
-	private _stylesTransform: string;
+	private _stylesTransform: string | null = null;
 	private _attached = false;
 	private _hasMoved = false;
 
@@ -282,7 +282,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 		}
 
 		if (!closeText) {
-			const messages = this.localizeBundle(commonBundle);
+			const { messages } = this.localizeBundle(commonBundle);
 			closeText = `${messages.close} ${title}`;
 		}
 

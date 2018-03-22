@@ -50,9 +50,9 @@ const DEFAULT_SIZE = 100;
 	]
 })
 export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P> {
-	private _dragging: boolean;
+	private _dragging: boolean | undefined;
 	private _lastSize?: number;
-	private _position: number;
+	private _position = 0;
 	private _collapsed = false;
 
 	private _getPosition(event: MouseEvent & TouchEvent) {

@@ -13,7 +13,7 @@ interface CustomOption {
 
 export class App extends WidgetBase<WidgetProperties> {
 	private _listbox1Index = 0;
-	private _listbox1Value: string;
+	private _listbox1Value: string | undefined;
 	private _listbox2Index = 0;
 
 	_options: CustomOption[] = [
