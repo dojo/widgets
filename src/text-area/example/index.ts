@@ -7,7 +7,7 @@ import Textarea from '../../text-area/index';
 export class App extends WidgetBase<WidgetProperties> {
 	private _value1: string | undefined;
 	private _value2: string | undefined;
-	private _invalid = false;
+	private _invalid: boolean | undefined;
 
 	render() {
 		return v('div', [

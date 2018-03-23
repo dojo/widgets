@@ -9,7 +9,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value2: string | undefined;
 	private _value3: string | undefined;
 	private _value4: string | undefined;
-	private _invalid = false;
+	private _invalid: boolean | undefined;
 
 	render() {
 		return v('div', {
