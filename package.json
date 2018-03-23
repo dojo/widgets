@@ -25,9 +25,9 @@
   "peerDependencies": {
     "@dojo/core": "~0.5.0",
     "@dojo/has": "~0.1.1",
-    "@dojo/i18n": "~0.5.1",
-    "@dojo/shim": "~0.2.6",
-    "@dojo/widget-core": "./../widget-core/dist/dojo-widget-core-0.9.7-rc.1.tgz"
+    "@dojo/i18n": "~0.6.0",
+    "@dojo/shim": "~0.2.7",
+    "@dojo/widget-core": "~0.10.0"
   },
   "devDependencies": {
     "@dojo/cli": "~0.6.1",
