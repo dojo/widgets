@@ -5,7 +5,7 @@ import { w, v } from '@dojo/widget-core/d';
 import Button from '../../button/index';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _buttonPressed: boolean;
+	private _buttonPressed: boolean | undefined;
 
 	toggleButton() {
 		this._buttonPressed = !this._buttonPressed;

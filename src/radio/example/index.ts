@@ -1,11 +1,10 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import Radio from '../../radio/index';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _inputValue: string;
+export class App extends WidgetBase {
+	private _inputValue: string | undefined;
 
 	onChange(value: string) {
 		this._inputValue = value;

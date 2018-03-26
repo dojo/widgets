@@ -46,7 +46,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 })
 export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
 	private _id = uuid();
-	private _open: boolean;
+	private _open: boolean | undefined;
 
 	private _onWindowResize = () => {
 		this.invalidate();

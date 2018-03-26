@@ -5,9 +5,9 @@ import { v, w } from '@dojo/widget-core/d';
 import Slider from '../../slider/index';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _tribbleValue: number;
-	private _verticalValue: number;
-	private _verticalInvalid: boolean;
+	private _tribbleValue: number | undefined;
+	private _verticalValue: number | undefined;
+	private _verticalInvalid: boolean | undefined;
 
 	onTribbleInput(value: number) {
 		this._tribbleValue = value;

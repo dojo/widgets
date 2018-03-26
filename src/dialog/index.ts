@@ -80,7 +80,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 })
 export class DialogBase<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
 	private _titleId = uuid();
-	private _wasOpen: boolean;
+	private _wasOpen: boolean | undefined;
 	private _callFocus = false;
 
 	private _onCloseClick(event: MouseEvent) {
@@ -163,7 +163,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		}
 
 		if (!closeText) {
-			const messages = this.localizeBundle(commonBundle);
+			const { messages } = this.localizeBundle(commonBundle);
 			closeText = `${messages.close} ${title}`;
 		}
 

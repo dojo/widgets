@@ -76,7 +76,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 
 	protected renderActions(): DNode {
-		const { close } = this.localizeBundle(commonBundle);
+		const { close } = this.localizeBundle(commonBundle).messages;
 
 		const {
 			theme,
@@ -98,7 +98,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 
 	protected renderButton(): DNode {
-		const { open } = this.localizeBundle(commonBundle);
+		const { open } = this.localizeBundle(commonBundle).messages;
 		const { theme } = this.properties;
 
 		return v('button', {

@@ -183,7 +183,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	]
 })
 export class TimePickerBase<P extends TimePickerProperties = TimePickerProperties> extends ThemedBase<P, null> {
-	protected options: TimeUnits[] | null;
+	protected options: TimeUnits[] | null = null;
 
 	private _uuid: string;
 

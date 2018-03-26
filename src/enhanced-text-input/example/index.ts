@@ -1,12 +1,11 @@
 import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { v, w } from '@dojo/widget-core/d';
 import EnhancedTextInput from '../../enhanced-text-input/index';
 
-export class App extends WidgetBase<WidgetProperties> {
-	private _value1: string;
-	private _value2: string;
+export class App extends WidgetBase {
+	private _value1: string | undefined;
+	private _value2: string | undefined;
 
 	render() {
 		return v('div', {

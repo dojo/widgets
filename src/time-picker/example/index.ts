@@ -16,7 +16,7 @@ const getEnglishTime = getDateFormatter({ time: 'short' });
 @theme(baseCss)
 export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 	private _options: TimeUnits[] = getOptions();
-	private _filteredOptions: TimeUnits[];
+	private _filteredOptions: TimeUnits[] = [];
 	private _values: any = {};
 	private _invalid = false;
 

@@ -59,7 +59,7 @@ const data = [
 ];
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _results: any[];
+	private _results: any[] = [];
 	private _value1 = '';
 	private _value2 = '';
 	private _value5 = '';
@@ -67,7 +67,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _value7 = '';
 	private _value8 = '';
 	private _value9 = '';
-	private _invalid: boolean;
+	private _invalid = false;
 
 	onChange(value: string, key?: string) {
 		if (!key) {

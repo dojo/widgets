@@ -104,11 +104,11 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
 	private _activeIndex = 0;
 	private _callInputFocus = false;
-	private _ignoreBlur: boolean;
+	private _ignoreBlur: boolean | undefined;
 	private _idBase = uuid();
 	private _menuHasVisualFocus = false;
-	private _open: boolean;
-	private _wasOpen: boolean;
+	private _open: boolean | undefined;
+	private _wasOpen: boolean | undefined;
 
 	private _closeMenu() {
 		this._open = false;
@@ -447,7 +447,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			results = [],
 			theme
 		} = this.properties;
-		const messages = this.localizeBundle(commonBundle);
+		const { messages } = this.localizeBundle(commonBundle);
 		const focus = this.meta(Focus).get('root');
 
 		const menu = this.renderMenu(results);

@@ -5,9 +5,9 @@ import { v, w } from '@dojo/widget-core/d';
 import Textarea from '../../text-area/index';
 
 export class App extends WidgetBase<WidgetProperties> {
-	private _value1: string;
-	private _value2: string;
-	private _invalid: boolean;
+	private _value1: string | undefined;
+	private _value2: string | undefined;
+	private _invalid: boolean | undefined;
 
 	render() {
 		return v('div', [
