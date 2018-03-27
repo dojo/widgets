@@ -51,7 +51,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'invalid',
 		'readOnly'
 	],
-	attributes: [ 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	attributes: [ 'inputId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -150,7 +150,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		const {
 			aria = {},
 			disabled,
-			id = this._uuid,
+			inputId = this._uuid,
 			invalid,
 			maxLength,
 			minLength,
@@ -172,7 +172,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			'aria-invalid': invalid ? 'true' : null,
 			classes: this.theme(css.input),
 			disabled,
-			id,
+			id: inputId,
 			key: 'input',
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,
@@ -208,7 +208,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	protected render(): DNode {
 		const {
 			disabled,
-			id = this._uuid,
+			inputId = this._uuid,
 			invalid,
 			label,
 			labelAfter = false,
@@ -228,7 +228,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id
+				forId: inputId
 			}, [ label ]) : null,
 			this.renderInputWrapper()
 		];

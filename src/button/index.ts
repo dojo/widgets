@@ -17,6 +17,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * Properties that can be set on a Button component
  *
  * @property disabled       Whether the button is disabled or clickable
+ * @property rootId         DOM id set on the root button node
  * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
  * @property name           The button's name attribute
  * @property pressed        Indicates status of a toggle button
@@ -25,7 +26,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  */
 export interface ButtonProperties extends ThemedProperties, InputEventProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
 	disabled?: boolean;
-	id?: string;
+	rootId?: string;
 	popup?: { expanded?: boolean; id?: string; } | boolean;
 	name?: string;
 	pressed?: boolean;
@@ -41,7 +42,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	tag: 'dojo-button',
 	childType: CustomElementChildType.TEXT,
 	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses' ],
-	attributes: [ 'id', 'name', 'value' ],
+	attributes: [ 'rootId', 'name', 'value' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -124,7 +125,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 		let {
 			aria = {},
 			disabled,
-			id,
+			rootId,
 			popup = false,
 			name,
 			pressed,
@@ -140,7 +141,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 		return v('button', {
 			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
 			disabled,
-			id,
+			id: rootId,
 			name,
 			type,
 			value,

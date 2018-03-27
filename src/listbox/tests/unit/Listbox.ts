@@ -135,7 +135,7 @@ registerSuite('Listbox', {
 				activeIndex: 0,
 				aria: { describedBy: 'foo' },
 				visualFocus: true,
-				id: 'bar',
+				rootId: 'bar',
 				multiselect: true,
 				optionData: testOptions,
 				tabIndex: -1,

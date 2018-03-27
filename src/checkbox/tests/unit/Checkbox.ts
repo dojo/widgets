@@ -102,7 +102,7 @@ registerSuite('Checkbox', {
 					describedBy: 'foo'
 				},
 				checked: true,
-				id: 'foo',
+				inputId: 'foo',
 				name: 'bar',
 				value: 'baz'
 			}), [ compareId ]);

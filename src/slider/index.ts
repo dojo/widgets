@@ -62,7 +62,7 @@ function extractValue(event: Event): number {
 		'vertical',
 		'value'
 	],
-	attributes: [ 'verticalHeight' ],
+	attributes: [ 'inputId', 'verticalHeight' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -205,7 +205,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 		const {
 			aria = {},
 			disabled,
-			id = this._inputId,
+			inputId = this._inputId,
 			invalid,
 			label,
 			labelAfter,
@@ -240,7 +240,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				...formatAriaProperties(aria),
 				classes: [ this.theme(css.input), fixedCss.nativeInput ],
 				disabled,
-				id,
+				id: inputId,
 				'aria-invalid': invalid === true ? 'true' : null,
 				max: `${max}`,
 				min: `${min}`,
@@ -279,7 +279,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id
+				forId: inputId
 			}, [ label ]) : null,
 			slider
 		];

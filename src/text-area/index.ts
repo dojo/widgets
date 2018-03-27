@@ -40,7 +40,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @customElement<TextareaProperties>({
 	tag: 'dojo-text-area',
 	properties: [ 'theme', 'aria', 'extraClasses', 'columns', 'rows', 'columns', 'required', 'readOnly', 'disabled', 'invalid' ],
-	attributes: [ 'minLength', 'maxLength', 'placeholder', 'value' ],
+	attributes: [ 'inputId', 'minLength', 'maxLength', 'placeholder', 'value' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -140,7 +140,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			aria = {},
 			columns,
 			disabled,
-			id = this._uuid,
+			inputId = this._uuid,
 			invalid,
 			label,
 			maxLength,
@@ -167,11 +167,11 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id
+				forId: inputId
 			}, [ label ]) : null,
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('textarea', {
-					id,
+					id: inputId,
 					key: 'input',
 					...formatAriaProperties(aria),
 					classes: this.theme(css.input),

@@ -88,7 +88,7 @@ registerSuite('Radio', {
 			const h = harness(() => w(Radio, {
 				aria: { describedBy: 'foo' },
 				checked: true,
-				id: 'foo',
+				inputId: 'foo',
 				name: 'bar',
 				value: 'baz'
 			}));

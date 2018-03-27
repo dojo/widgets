@@ -29,7 +29,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @customElement<RadioProperties>({
 	tag: 'dojo-radio',
 	properties: [ 'theme', 'aria', 'extraClasses', 'checked' ],
-	attributes: [ 'label', 'value', 'name' ],
+	attributes: [ 'inputId', 'label', 'value', 'name' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -111,7 +111,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 			aria = {},
 			checked = false,
 			disabled,
-			id = this._uuid,
+			inputId = this._uuid,
 			invalid,
 			label,
 			labelAfter = true,
@@ -127,7 +127,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 		const children = [
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('input', {
-					id,
+					id: inputId,
 					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					checked,
@@ -158,7 +158,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id,
+				forId: inputId,
 				secondary: true
 			}, [ label ]) : null
 		];

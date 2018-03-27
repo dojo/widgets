@@ -173,7 +173,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'useNativeElement',
 		'step'
 	],
-	attributes: [ 'value', 'start', 'end' ],
+	attributes: [ 'inputId', 'value', 'start', 'end' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -287,7 +287,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			clearable,
 			disabled,
 			extraClasses,
-			id = this._uuid,
+			inputId = this._uuid,
 			inputProperties,
 			invalid,
 			isOptionDisabled,
@@ -308,7 +308,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			disabled,
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),
-			id,
+			inputId,
 			inputProperties,
 			invalid,
 			isResultDisabled: isOptionDisabled,
@@ -333,7 +333,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 		const {
 			disabled,
 			end,
-			id = this._uuid,
+			inputId = this._uuid,
 			inputProperties = {},
 			invalid,
 			name,
@@ -360,10 +360,10 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id
+				forId: inputId
 			}, [ label ]) : null,
 			v('input', {
-				id,
+				id: inputId,
 				...formatAriaProperties(aria),
 				'aria-invalid': invalid === true ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,

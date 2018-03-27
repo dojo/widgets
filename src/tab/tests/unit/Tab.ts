@@ -29,7 +29,7 @@ registerSuite('Tab', {
 				closeable: true,
 				disabled: true,
 				show: true,
-				id: 'foo',
+				rootId: 'foo',
 				key: 'bar',
 				label: 'baz',
 				labelledBy: 'id'

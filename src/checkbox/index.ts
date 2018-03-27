@@ -54,7 +54,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'labelHidden',
 		'checked'
 	],
-	attributes: [ 'label', 'value', 'mode', 'offLabel', 'onLabel' ],
+	attributes: [ 'inputId', 'label', 'value', 'mode', 'offLabel', 'onLabel' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -167,7 +167,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 			aria = {},
 			checked = false,
 			disabled,
-			id = this._uuid,
+			inputId = this._uuid,
 			invalid,
 			label,
 			labelAfter = true,
@@ -184,7 +184,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				...this.renderToggle(),
 				v('input', {
-					id,
+					id: inputId,
 					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					checked,
@@ -216,7 +216,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id,
+				forId: inputId,
 				secondary: true
 			}, [ label ]) : null
 		];
