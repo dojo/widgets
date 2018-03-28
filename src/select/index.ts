@@ -69,7 +69,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'inputId', 'placeholder', 'label', 'value' ],
+	attributes: [ 'widgetId', 'placeholder', 'label', 'value' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -207,7 +207,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionId,
 			getOptionSelected,
 			getOptionValue,
-			inputId = this._baseId,
+			widgetId = this._baseId,
 			invalid,
 			name,
 			options = [],
@@ -230,7 +230,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				classes: this.theme(css.input),
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
-				id: inputId,
+				id: widgetId,
 				name,
 				readOnly,
 				'aria-readonly': readOnly ? 'true' : null,
@@ -250,7 +250,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionId,
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
-			inputId = this._baseId,
+			widgetId = this._baseId,
 			key,
 			options = [],
 			theme,
@@ -282,7 +282,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				w(Listbox, {
 					key: 'listbox',
 					activeIndex: _focusedIndex,
-					rootId: inputId,
+					widgetId: widgetId,
 					focus: focusListbox,
 					optionData: options,
 					tabIndex: _open ? 0 : -1,
@@ -362,7 +362,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			labelHidden,
 			labelAfter,
 			disabled,
-			inputId = this._baseId,
+			widgetId = this._baseId,
 			invalid,
 			readOnly,
 			required,
@@ -380,7 +380,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: inputId
+				forId: widgetId
 			}, [ label ]) : null,
 			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect()
 		];

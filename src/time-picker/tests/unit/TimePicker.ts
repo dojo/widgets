@@ -9,12 +9,12 @@ import TimePicker, { getOptions, parseUnits } from '../../index';
 import * as css from '../../../theme/time-picker.m.css';
 import ComboBox from '../../../combobox/index';
 import Label from '../../../label/index';
-import { noop, compareId, compareInputId, compareForId, MockMetaMixin } from '../../../common/tests/support/test-helpers';
+import { noop, compareId, comparewidgetId, compareForId, MockMetaMixin } from '../../../common/tests/support/test-helpers';
 
 const testProperties = {
 	clearable: true,
 	disabled: false,
-	inputId: 'foo',
+	widgetId: 'foo',
 	invalid: true,
 	label: 'Some Field',
 	openOnFocus: false,
@@ -30,7 +30,7 @@ const getExpectedCombobox = function(useTestProperties = false, results?: any[])
 		clearable: useTestProperties ? true : undefined,
 		disabled: useTestProperties ? false : undefined,
 		getResultLabel: noop,
-		inputId: useTestProperties ? 'foo' : '',
+		widgetId: useTestProperties ? 'foo' : '',
 		inputProperties: undefined,
 		invalid: useTestProperties ? true : undefined,
 		isResultDisabled: undefined,
@@ -129,14 +129,14 @@ registerSuite('TimePicker', {
 		},
 
 		'Should set options with step and default start and end'() {
-			const h = harness(() => w(TimePicker, { step: 3600 }), [ compareInputId ]);
+			const h = harness(() => w(TimePicker, { step: 3600 }), [ comparewidgetId ]);
 			const expectedOptions = getOptions(undefined, undefined, 3600);
 
 			h.expect(() => getExpectedCombobox(false, expectedOptions));
 		},
 
 		'Should set options with start, end, and step'() {
-			const h = harness(() => w(TimePicker, { end: '01:00', start: '00:00' }), [ compareInputId ]);
+			const h = harness(() => w(TimePicker, { end: '01:00', start: '00:00' }), [ comparewidgetId ]);
 			const expectedOptions = getOptions('00:00', '01:00');
 
 			h.expect(() => getExpectedCombobox(false, expectedOptions));

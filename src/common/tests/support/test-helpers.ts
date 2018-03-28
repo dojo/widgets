@@ -20,15 +20,9 @@ export const compareId = {
 	comparator: isStringComparator
 };
 
-export const compareInputId = {
+export const comparewidgetId = {
 	selector: '*',
-	property: 'inputId',
-	comparator: isStringComparator
-};
-
-export const compareRootId = {
-	selector: '*',
-	property: 'rootId',
+	property: 'widgetId',
 	comparator: isStringComparator
 };
 

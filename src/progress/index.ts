@@ -17,7 +17,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property showOutput     Toggles visibility of progess bar output
  * @property max            Value used to calculate percent width
  * @property min            Value used to calculate percent width
- * @property barId          Value used to supply a dom id to the element with role="progressbar"
+ * @property widgetId       Value used to supply a dom id to the element with role="progressbar"
  */
 export interface ProgressProperties extends ThemedProperties, CustomAriaProperties {
 	value: number;
@@ -25,7 +25,7 @@ export interface ProgressProperties extends ThemedProperties, CustomAriaProperti
 	showOutput?: boolean;
 	max?: number;
 	min?: number;
-	barId?: string;
+	widgetId?: string;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -34,7 +34,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @customElement<ProgressProperties>({
 	tag: 'dojo-progress',
 	properties: [ 'theme', 'aria', 'extraClasses', 'output', 'showOutput', 'max', 'min', 'value' ],
-	attributes: [ 'barId' ],
+	attributes: [ 'widgetId' ],
 	events: [ ]
 })
 export class ProgressBase<P extends ProgressProperties = ProgressProperties> extends ThemedBase<P, null> {
@@ -61,7 +61,7 @@ export class ProgressBase<P extends ProgressProperties = ProgressProperties> ext
 			showOutput = true,
 			max = 100,
 			min = 0,
-			barId
+			widgetId
 		} = this.properties;
 
 		const percent = Math.round(((value - min) / (max - min)) * 100);
@@ -76,7 +76,7 @@ export class ProgressBase<P extends ProgressProperties = ProgressProperties> ext
 				'aria-valuemax': `${max}`,
 				'aria-valuenow': `${value}`,
 				'aria-valuetext': output,
-				id: barId
+				id: widgetId
 			}, this.renderProgress(percent)),
 			showOutput ? v('span', { classes: this.theme(css.output) }, [ output ]) : null
 		]);

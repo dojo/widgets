@@ -15,15 +15,14 @@ import * as css from '../../../theme/select.m.css';
 import {
 	createHarness,
 	compareId,
-	compareInputId,
-	compareRootId,
+	comparewidgetId,
 	MockMetaMixin,
 	noop,
 	compareAriaControls,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
-const harness = createHarness([ compareId, compareInputId, compareRootId, compareAriaControls ]);
+const harness = createHarness([ compareId, comparewidgetId, compareAriaControls ]);
 
 interface TestEventInit extends EventInit {
 	which: number;
@@ -68,7 +67,7 @@ const testProperties: Partial<SelectProperties> = {
 	getOptionLabel: (option: any) => option.label,
 	getOptionSelected: (option: any, index: number) => option.value === 'two',
 	getOptionValue: (option: any, index: number) => option.value,
-	inputId: 'foo',
+	widgetId: 'foo',
 	name: 'foo',
 	options: testOptions,
 	value: 'two'
@@ -162,7 +161,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 			w(Listbox, {
 				activeIndex,
 				focus,
-				rootId: useTestProperties ? 'foo' : '',
+				widgetId: useTestProperties ? 'foo' : '',
 				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
 				tabIndex: open ? 0 : -1,
@@ -398,7 +397,7 @@ registerSuite('Select', {
 						}, [
 							w(Listbox, {
 								activeIndex: 0,
-								rootId: '',
+								widgetId: '',
 								focus: false,
 								key: 'listbox',
 								optionData: simpleOptions,

@@ -15,8 +15,7 @@ import * as css from '../../../theme/combobox.m.css';
 import {
 	createHarness,
 	compareId,
-	compareInputId,
-	compareRootId,
+	comparewidgetId,
 	compareAria,
 	compareAriaControls,
 	noop,
@@ -24,7 +23,7 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
-const harness = createHarness([ compareId, compareInputId, compareRootId, compareAria, compareAriaControls ]);
+const harness = createHarness([ compareId, comparewidgetId, compareAria, compareAriaControls ]);
 
 const testOptions: any[] = [
 	{
@@ -45,7 +44,7 @@ const testOptions: any[] = [
 const testProperties = {
 	clearable: true,
 	getResultLabel: (result: any) => result.label,
-	inputId: 'foo',
+	widgetId: 'foo',
 	label: 'foo',
 	results: testOptions,
 	value: 'one',
@@ -73,7 +72,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			},
 			disabled,
 			shouldFocus: callFocus,
-			inputId: useTestProperties ? 'foo' : '',
+			widgetId: useTestProperties ? 'foo' : '',
 			invalid,
 			readOnly,
 			required,
@@ -124,7 +123,7 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 	}, [
 		w(Listbox, {
 			activeIndex: 0,
-			rootId: '',
+			widgetId: '',
 			key: 'listbox',
 			visualFocus: false,
 			optionData: testOptions,
@@ -407,7 +406,7 @@ registerSuite('ComboBox', {
 				placeholder: 'foo',
 				shouldFocus: false,
 				disabled: undefined,
-				inputId: '',
+				widgetId: '',
 				invalid: undefined,
 				readOnly: undefined,
 				required: undefined,
@@ -450,7 +449,7 @@ registerSuite('ComboBox', {
 					controls: '',
 					owns: ''
 				},
-				inputId: 'foo',
+				widgetId: 'foo',
 				shouldFocus: false,
 				disabled: true,
 				invalid: true,
@@ -509,7 +508,7 @@ registerSuite('ComboBox', {
 					controls: '',
 					owns: ''
 				},
-				inputId: 'foo',
+				widgetId: 'foo',
 				shouldFocus: false,
 				disabled: true,
 				invalid: false,

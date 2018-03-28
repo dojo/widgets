@@ -84,7 +84,7 @@ registerSuite('Textarea', {
 			const h = harness(() => w(Textarea, {
 				aria: { describedBy: 'foo' },
 				columns: 15,
-				inputId: 'foo',
+				widgetId: 'foo',
 				maxLength: 50,
 				minLength: 10,
 				name: 'bar',

@@ -99,7 +99,7 @@ registerSuite('Slider', {
 		'custom properties'() {
 			const h = harness(() => w(Slider, {
 				aria: { describedBy: 'foo' },
-				inputId: 'foo',
+				widgetId: 'foo',
 				max: 60,
 				min: 10,
 				name: 'bar',

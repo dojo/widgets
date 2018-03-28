@@ -13,14 +13,14 @@ import * as css from '../../../theme/tab-controller.m.css';
 import {
 	createHarness,
 	compareId,
-	compareRootId,
+	comparewidgetId,
 	isStringComparator,
 	noop
 } from '../../../common/tests/support/test-helpers';
 
 const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
 const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
-const harness = createHarness([ compareId, compareRootId, compareControls, compareLabelledBy ]);
+const harness = createHarness([ compareId, comparewidgetId, compareControls, compareLabelledBy ]);
 
 const tabChildren = function(tabs = 2) {
 	const children = [
@@ -109,7 +109,7 @@ const expectedTabContent = function(index = 0): DNode {
 	const tabs = [
 		w(Tab, {
 			key: '0',
-			rootId: '',
+			widgetId: '',
 			labelledBy: '',
 			show: index === 0
 		}, [ 'tab content 1' ]),
@@ -118,7 +118,7 @@ const expectedTabContent = function(index = 0): DNode {
 			disabled: true,
 			key: '1',
 			label: 'foo',
-			rootId: '',
+			widgetId: '',
 			show: index === 1,
 			labelledBy: ''
 		}, [ 'tab content 2' ])
@@ -389,13 +389,13 @@ registerSuite('TabController', {
 				classes: css.tabs
 			}, [
 				w(Tab, {
-					rootId: '',
+					widgetId: '',
 					key: '0',
 					labelledBy: '',
 					show: false
 				}, [ 'tab content 1' ]),
 				w(Tab, {
-					rootId: '',
+					widgetId: '',
 					labelledBy: '',
 					closeable: true,
 					key: '1',
@@ -416,13 +416,13 @@ registerSuite('TabController', {
 				classes: css.tabs
 			}, [
 				w(Tab, {
-					rootId: '',
+					widgetId: '',
 					labelledBy: '',
 					show: true,
 					key: '0'
 				}, [ 'tab content 1' ]),
 				w(Tab, {
-					rootId: '',
+					widgetId: '',
 					labelledBy: '',
 					closeable: true,
 					key: '1',
@@ -484,13 +484,13 @@ registerSuite('TabController', {
 				classes: css.tabs
 			}, [
 				w(Tab, {
-					rootId: '',
+					widgetId: '',
 					labelledBy: '',
 					key: '0',
 					show: true
 				}, [ 'tab content 1' ]),
 				w(Tab, {
-					rootId: '',
+					widgetId: '',
 					labelledBy: '',
 					closeable: true,
 					key: '1',
