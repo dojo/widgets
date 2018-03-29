@@ -13,14 +13,14 @@ import * as css from '../../../theme/tab-controller.m.css';
 import {
 	createHarness,
 	compareId,
-	comparewidgetId,
+	compareWidgetId,
 	isStringComparator,
 	noop
 } from '../../../common/tests/support/test-helpers';
 
 const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
 const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
-const harness = createHarness([ compareId, comparewidgetId, compareControls, compareLabelledBy ]);
+const harness = createHarness([ compareId, compareWidgetId, compareControls, compareLabelledBy ]);
 
 const tabChildren = function(tabs = 2) {
 	const children = [

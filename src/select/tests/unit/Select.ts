@@ -15,14 +15,14 @@ import * as css from '../../../theme/select.m.css';
 import {
 	createHarness,
 	compareId,
-	comparewidgetId,
+	compareWidgetId,
 	MockMetaMixin,
 	noop,
 	compareAriaControls,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
-const harness = createHarness([ compareId, comparewidgetId, compareAriaControls ]);
+const harness = createHarness([ compareId, compareWidgetId, compareAriaControls ]);
 
 interface TestEventInit extends EventInit {
 	which: number;

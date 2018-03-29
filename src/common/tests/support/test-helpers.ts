@@ -20,7 +20,7 @@ export const compareId = {
 	comparator: isStringComparator
 };
 
-export const comparewidgetId = {
+export const compareWidgetId = {
 	selector: '*',
 	property: 'widgetId',
 	comparator: isStringComparator

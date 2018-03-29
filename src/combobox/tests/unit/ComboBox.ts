@@ -15,7 +15,7 @@ import * as css from '../../../theme/combobox.m.css';
 import {
 	createHarness,
 	compareId,
-	comparewidgetId,
+	compareWidgetId,
 	compareAria,
 	compareAriaControls,
 	noop,
@@ -23,7 +23,7 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
-const harness = createHarness([ compareId, comparewidgetId, compareAria, compareAriaControls ]);
+const harness = createHarness([ compareId, compareWidgetId, compareAria, compareAriaControls ]);
 
 const testOptions: any[] = [
 	{
