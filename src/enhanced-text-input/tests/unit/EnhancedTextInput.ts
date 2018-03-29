@@ -143,7 +143,7 @@ registerSuite('EnhancedTextInput', {
 						controls: 'foo',
 						describedBy: 'bar'
 					},
-					widgetId: 'textwidgetId',
+					widgetId: 'textinputId',
 					maxLength: 50,
 					minLength: 10,
 					name: 'baz',
@@ -156,7 +156,7 @@ registerSuite('EnhancedTextInput', {
 					inputOverrides: {
 						'aria-controls': 'foo',
 						'aria-describedby': 'bar',
-						id: 'textwidgetId',
+						id: 'textinputId',
 						maxlength: '50',
 						minlength: '10',
 						name: 'baz',
