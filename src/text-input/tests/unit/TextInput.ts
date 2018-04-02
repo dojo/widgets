@@ -85,7 +85,7 @@ registerSuite('TextInput', {
 					controls: 'foo',
 					describedBy: 'bar'
 				},
-				id: 'foo',
+				widgetId: 'foo',
 				maxLength: 50,
 				minLength: 10,
 				name: 'bar',

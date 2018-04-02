@@ -95,7 +95,7 @@ describe('Progress', () => {
 	it('can accept an id', () => {
 		const h = harness(() => w(Progress, {
 			value: 50,
-			id: 'my-id'
+			widgetId: 'my-id'
 		}));
 
 		h.expect(() => expectedVDom({ width: 50, output: '50%', value: 50, id: 'my-id' }));

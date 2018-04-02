@@ -26,7 +26,7 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 		'invalid',
 		'readOnly'
 	],
-	attributes: [ 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
 	events: [
 		'onBlur',
 		'onChange',

@@ -28,7 +28,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label.
- * @property id                 Optional id string for the combobox
+ * @property widgetId            Optional id string for the combobox, set on the text input
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
  * @property isResultDisabled   Used to determine if an item should be disabled
@@ -49,7 +49,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties 
 	disabled?: boolean;
 	getResultLabel?(result: any): string;
 	getResultSelected?(result: any): boolean;
-	id?: string;
+	widgetId?: string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
@@ -92,7 +92,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'required',
 		'results'
 	],
-	attributes: [ 'id', 'label', 'value' ],
+	attributes: [ 'widgetId', 'label', 'value' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -317,7 +317,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	protected renderInput(results: any[]): DNode {
 		const {
 			disabled,
-			id = this._idBase,
+			widgetId = this._idBase,
 			inputProperties = {},
 			invalid,
 			readOnly,
@@ -341,7 +341,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				owns: this._getMenuId()
 			},
 			disabled,
-			id,
+			widgetId,
 			invalid,
 			shouldFocus: focusInput,
 			onBlur: this._onInputBlur,
@@ -413,7 +413,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			w(Listbox, {
 				key: 'listbox',
 				activeIndex: this._activeIndex,
-				id: this._getMenuId(),
+				widgetId: this._getMenuId(),
 				visualFocus: this._menuHasVisualFocus,
 				optionData: results,
 				tabIndex: -1,
@@ -436,7 +436,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	render(): DNode {
 		const {
 			clearable = false,
-			id = this._idBase,
+			widgetId = this._idBase,
 			invalid,
 			label,
 			readOnly,
@@ -464,7 +464,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id
+				forId: widgetId
 			}, [ label ]) : null,
 			v('div', {
 				classes: this.theme(css.controls)

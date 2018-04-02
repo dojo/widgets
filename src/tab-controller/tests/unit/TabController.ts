@@ -13,13 +13,14 @@ import * as css from '../../../theme/tab-controller.m.css';
 import {
 	createHarness,
 	compareId,
+	compareWidgetId,
 	isStringComparator,
 	noop
 } from '../../../common/tests/support/test-helpers';
 
 const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
 const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
-const harness = createHarness([ compareId, compareControls, compareLabelledBy ]);
+const harness = createHarness([ compareId, compareWidgetId, compareControls, compareLabelledBy ]);
 
 const tabChildren = function(tabs = 2) {
 	const children = [
@@ -108,7 +109,7 @@ const expectedTabContent = function(index = 0): DNode {
 	const tabs = [
 		w(Tab, {
 			key: '0',
-			id: '',
+			widgetId: '',
 			labelledBy: '',
 			show: index === 0
 		}, [ 'tab content 1' ]),
@@ -117,7 +118,7 @@ const expectedTabContent = function(index = 0): DNode {
 			disabled: true,
 			key: '1',
 			label: 'foo',
-			id: '',
+			widgetId: '',
 			show: index === 1,
 			labelledBy: ''
 		}, [ 'tab content 2' ])
@@ -388,13 +389,13 @@ registerSuite('TabController', {
 				classes: css.tabs
 			}, [
 				w(Tab, {
-					id: '',
+					widgetId: '',
 					key: '0',
 					labelledBy: '',
 					show: false
 				}, [ 'tab content 1' ]),
 				w(Tab, {
-					id: '',
+					widgetId: '',
 					labelledBy: '',
 					closeable: true,
 					key: '1',
@@ -415,13 +416,13 @@ registerSuite('TabController', {
 				classes: css.tabs
 			}, [
 				w(Tab, {
-					id: '',
+					widgetId: '',
 					labelledBy: '',
 					show: true,
 					key: '0'
 				}, [ 'tab content 1' ]),
 				w(Tab, {
-					id: '',
+					widgetId: '',
 					labelledBy: '',
 					closeable: true,
 					key: '1',
@@ -483,13 +484,13 @@ registerSuite('TabController', {
 				classes: css.tabs
 			}, [
 				w(Tab, {
-					id: '',
+					widgetId: '',
 					labelledBy: '',
 					key: '0',
 					show: true
 				}, [ 'tab content 1' ]),
 				w(Tab, {
-					id: '',
+					widgetId: '',
 					labelledBy: '',
 					closeable: true,
 					key: '1',

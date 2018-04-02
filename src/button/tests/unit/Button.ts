@@ -42,7 +42,7 @@ registerSuite('Button', {
 			const h = harness(() => w(Button, {
 				type: 'submit',
 				name: 'bar',
-				id: 'qux',
+				widgetId: 'qux',
 				aria: {
 					describedBy: 'baz'
 				},

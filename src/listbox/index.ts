@@ -35,7 +35,7 @@ export class ScrollMeta extends MetaBase {
  * @property getOptionDisabled    Function that accepts option data and returns a boolean for disabled/not disabled
  * @property getOptionId          Function that accepts option data and returns a string ID
  * @property getOptionSelected    Function that accepts option data and returns a boolean for selected/unselected
- * @property id                   Optional custom id for the listbox
+ * @property widgetId               Optional custom id for the root node of the listbox
  * @property focus                Indicates if the listbox needs focusing
  * @property multiselect          Adds currect semantics for a multiselect listbox
  * @property optionData           Array of data for listbox options
@@ -51,7 +51,7 @@ export interface ListboxProperties extends ThemedProperties, CustomAriaPropertie
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any, index: number): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
-	id?: string;
+	widgetId?: string;
 	focus?: boolean;
 	multiselect?: boolean;
 	optionData?: any[];
@@ -81,7 +81,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'getOptionSelected'
 	],
 	attributes: [
-		'id'
+		'widgetId'
 	],
 	events: [
 		'onActiveIndexChange',
@@ -235,7 +235,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		const {
 			activeIndex = 0,
 			aria = {},
-			id,
+			widgetId,
 			multiselect = false,
 			focus,
 			tabIndex = 0
@@ -252,7 +252,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 				'aria-activedescendant': this._getOptionId(activeIndex),
 				'aria-multiselectable': multiselect ? 'true' : null,
 				classes: this.theme([ css.root, ...themeClasses ]),
-				id,
+				id: widgetId,
 				key: 'root',
 				role: 'listbox',
 				tabIndex,

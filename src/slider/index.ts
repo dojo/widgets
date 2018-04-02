@@ -62,7 +62,7 @@ function extractValue(event: Event): number {
 		'vertical',
 		'value'
 	],
-	attributes: [ 'verticalHeight' ],
+	attributes: [ 'widgetId', 'verticalHeight' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -81,7 +81,7 @@ function extractValue(event: Event): number {
 })
 export class SliderBase<P extends SliderProperties = SliderProperties> extends ThemedBase<P, null> {
 	// id used to associate input with output
-	private _inputId = uuid();
+	private _widgetId = uuid();
 
 	private _onBlur (event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur(extractValue(event));
@@ -195,7 +195,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 
 		return v('output', {
 			classes: [ this.theme(css.output), outputIsTooltip ? fixedCss.outputTooltip : null ],
-			for: this._inputId,
+			for: this._widgetId,
 			styles: outputStyles,
 			tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
 		}, [ outputNode ]);
@@ -205,7 +205,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 		const {
 			aria = {},
 			disabled,
-			id = this._inputId,
+			widgetId = this._widgetId,
 			invalid,
 			label,
 			labelAfter,
@@ -240,7 +240,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				...formatAriaProperties(aria),
 				classes: [ this.theme(css.input), fixedCss.nativeInput ],
 				disabled,
-				id,
+				id: widgetId,
 				'aria-invalid': invalid === true ? 'true' : null,
 				max: `${max}`,
 				min: `${min}`,
@@ -279,7 +279,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: id
+				forId: widgetId
 			}, [ label ]) : null,
 			slider
 		];

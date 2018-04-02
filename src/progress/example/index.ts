@@ -19,7 +19,7 @@ export class App extends WidgetBase<WidgetProperties> {
 			]),
 			v('h3', {}, ['Progress with an id']),
 			v('div', { id: 'example-2'}, [
-				w(Progress, { value: 80, id: 'progress-2' })
+				w(Progress, { value: 80, widgetId: 'progress-2' })
 			]),
 			v('h3', {}, ['Progress with max']),
 			v('div', { id: 'example-3'}, [

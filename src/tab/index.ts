@@ -16,7 +16,7 @@ import { CustomElementChildType } from '@dojo/widget-core/registerCustomElement'
  *
  * @property closeable    Determines whether this tab can be closed
  * @property disabled     Determines whether this tab can become active
- * @property id           ID of this underlying DOM element
+ * @property widgetId       ID of this underlying DOM element
  * @property key          A unique identifier for this Tab within the TabController
  * @property label        Content to show in the TabController control bar for this tab
  * @property labelledBy   ID of DOM element that serves as a label for this tab
@@ -24,7 +24,7 @@ import { CustomElementChildType } from '@dojo/widget-core/registerCustomElement'
 export interface TabProperties extends ThemedProperties, CustomAriaProperties {
 	closeable?: boolean;
 	disabled?: boolean;
-	id?: string;
+	widgetId?: string;
 	key: string;
 	label?: DNode;
 	show?: boolean;
@@ -38,14 +38,14 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	tag: 'dojo-tab',
 	childType: CustomElementChildType.NODE,
 	properties: [ 'theme', 'aria', 'extraClasses', 'closeable', 'disabled', 'label', 'show' ],
-	attributes: [ 'key', 'labelledBy', 'id', 'label' ],
+	attributes: [ 'key', 'labelledBy', 'widgetId', 'label' ],
 	events: [ ]
 })
 export class TabBase<P extends TabProperties = TabProperties> extends ThemedBase<P> {
 	render(): DNode {
 		const {
 			aria = {},
-			id,
+			widgetId,
 			labelledBy,
 			show = false
 		} = this.properties;
@@ -54,7 +54,7 @@ export class TabBase<P extends TabProperties = TabProperties> extends ThemedBase
 			...formatAriaProperties(aria),
 			'aria-labelledby': labelledBy,
 			classes: this.theme([css.tab, !show ? css.hidden : null]),
-			id,
+			id: widgetId,
 			role: 'tabpanel'
 		}, this.children);
 	}
