@@ -194,7 +194,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 		}
 
 		return v('output', {
-			classes: [ this.theme(css.output), outputIsTooltip ? fixedCss.outputTooltip : null ],
+			classes: this.theme([css.output, outputIsTooltip ? css.outputTooltip : null]),
 			for: this._widgetId,
 			styles: outputStyles,
 			tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */

@@ -1,4 +1,5 @@
 export const root: string;
+export const outputTooltip: string;
 export const vertical: string;
 export const input: string;
 export const track: string;
