@@ -79,7 +79,7 @@ const expected = function(label = false, tooltip = false, overrides = {}, child 
 				})
 			]),
 			v('output', {
-				classes: [ css.output, tooltip ? fixedCss.outputTooltip : null ],
+				classes: [ css.output, tooltip ? css.outputTooltip : null ],
 				for: '',
 				tabIndex: -1,
 				styles: progress !== '0%' ? { left: progress } : {}
@@ -276,7 +276,7 @@ registerSuite('Slider', {
 							})
 						]),
 						v('output', {
-							classes: [ css.output, fixedCss.outputTooltip ],
+							classes: [ css.output, css.outputTooltip ],
 							for: '',
 							styles: { top: '80%' },
 							tabIndex: -1

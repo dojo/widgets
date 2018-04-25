@@ -2,6 +2,12 @@
 
 .root { }
 
+.outputTooltip {
+	left: 2.5em;
+	position: absolute;
+	top: 2.5em;
+}
+
 /* vertical slider */
 .vertical .input,
 .vertical .track {

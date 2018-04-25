@@ -25,12 +25,6 @@
 	position: absolute;
 }
 
-.outputTooltip {
-	left: 2.5em;
-	position: absolute;
-	top: 2.5em;
-}
-
 /* Make native input invisible */
 .nativeInput {
 	appearance: none;
