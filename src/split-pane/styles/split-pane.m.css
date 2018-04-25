@@ -16,6 +16,13 @@
 	background-clip: padding-box;
 	cursor: pointer;
 	flex: 0 0 auto;
+	position: relative;
+	z-index: calc(var(--zindex-tooltip) - 1);
+}
+
+.dividerFixed::after {
+	content: "";
+	position: absolute;
 }
 
 .leadingFixed {
@@ -27,9 +34,23 @@
 	cursor: ew-resize;
 }
 
+.columnFixed > .dividerFixed::after {
+	height: 100%;
+	left: -10px;
+	top: 0;
+	width: 21px;
+}
+
 .rowFixed > .dividerFixed {
 	height: 1px;
 	cursor: ns-resize;
+}
+
+.rowFixed > .dividerFixed::after {
+	height: 21px;
+	top: -10px;
+	left: 0;
+	width: 100%;
 }
 
 .trailingFixed {
