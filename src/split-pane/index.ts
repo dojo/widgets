@@ -69,6 +69,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 
 	private _onDragStart(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
+		event.preventDefault();
 		this._dragging = true;
 		this._position = this._getPosition(event);
 	}
