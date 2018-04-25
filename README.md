@@ -227,3 +227,9 @@ With that command, TypeScript watches for changes and recompiles when necessary.
 ## Licensing information
 
 © 2018 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
+
+<!-- doc-viewer-config
+{
+	"api": "docs/api.json"
+}
+-->
