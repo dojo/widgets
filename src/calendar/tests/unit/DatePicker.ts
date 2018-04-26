@@ -28,23 +28,26 @@ const requiredProps = {
 let customProps: any = {};
 
 const compareKey = { selector: 'label,input', property: 'key', comparator: (property: any) => typeof property === 'string' };
+const compareFor = { selector: 'label', property: 'for', comparator: (property: any) => typeof property === 'string' };
 const compareName = { selector: 'input', property: 'name', comparator: (property: any) => typeof property === 'string' };
 
 const monthRadios = function(open?: boolean) {
 	return DEFAULT_MONTHS.map((monthName, i) => v('label', {
 		key: '',
-		classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ]
+		classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ],
+		for: '',
+		onmouseup: noop
 	}, [
 		v('input', {
 			checked: i === 5,
 			classes: css.monthRadioInput,
+			id: '',
 			key: '',
 			name: '',
 			tabIndex: open ? 0 : -1,
 			type: 'radio',
 			value: `${i}`,
-			onchange: noop,
-			onmouseup: noop
+			onchange: noop
 		}),
 		v('abbr', {
 			classes: css.monthRadioLabel,
@@ -58,18 +61,20 @@ const yearRadios = function(open?: boolean, yearStart = 2000, yearEnd = 2020, ch
 	for (let i = yearStart; i < yearEnd; i++) {
 		radios.push(v('label', {
 			key: '',
-			classes: [ css.yearRadio, i === checkedYear ? css.yearRadioChecked : null ]
+			classes: [ css.yearRadio, i === checkedYear ? css.yearRadioChecked : null ],
+			for: '',
+			onmouseup: noop
 		}, [
 			v('input', {
 				checked: i === checkedYear,
 				classes: css.yearRadioInput,
+				id: '',
 				tabIndex: open ? 0 : -1,
 				type: 'radio',
 				key: '',
 				name: '',
 				value: `${ i }`,
-				onchange: noop,
-				onmouseup: noop
+				onchange: noop
 			}),
 			v('abbr', {
 				classes: css.yearRadioLabel
@@ -203,7 +208,7 @@ registerSuite('Calendar DatePicker', {
 		'Popup should render with default properties'() {
 			const h = harness(() => w(DatePicker, {
 				...requiredProps
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 
 			h.expect(() => expected());
 		},
@@ -218,7 +223,7 @@ registerSuite('Calendar DatePicker', {
 				renderMonthLabel: () => { return 'bar'; },
 				...customProps,
 				...requiredProps
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 
 			h.expect(() => expected(false, false, { yearStart: 2000, yearEnd: 2025, monthLabel: 'bar'}));
 		},
@@ -228,7 +233,7 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps
 			};
 			const h = harness(() => w(DatePicker, properties), [
-				compareKey, compareName, compareId, compareAriaLabelledBy, compareAriaControls
+				compareKey, compareFor, compareName, compareId, compareAriaLabelledBy, compareAriaControls
 			]);
 			h.expect(expected);
 
@@ -294,19 +299,21 @@ registerSuite('Calendar DatePicker', {
 							classes: baseCss.visuallyHidden
 						}, [ DEFAULT_LABELS.chooseMonth ]),
 						...DEFAULT_MONTHS.map((monthName, i) => v('label', {
+							for: '',
 							key: '',
-							classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ]
+							classes: [ css.monthRadio, i === 5 ? css.monthRadioChecked : null ],
+							onmouseup: noop
 						}, [
 							v('input', {
 								checked: i === 5,
 								classes: css.monthRadioInput,
+								id: '',
 								key: '',
 								name: '',
 								tabIndex:  -1,
 								type: 'radio',
 								value: `${i}`,
-								onchange: noop,
-								onmouseup: noop
+								onchange: noop
 							}),
 							v('abbr', {
 								classes: css.monthRadioLabel,
@@ -388,7 +395,7 @@ registerSuite('Calendar DatePicker', {
 			const h = harness(() => w(DatePicker, {
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 			h.expect(() => expected(false, false));
 
 			h.trigger('@month-button', 'onclick', stubEvent);
@@ -405,7 +412,7 @@ registerSuite('Calendar DatePicker', {
 			const h = harness(() => w(DatePicker, {
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 			h.expect(() => expected(false, false));
 
 			// escape key
@@ -443,7 +450,7 @@ registerSuite('Calendar DatePicker', {
 			const h = harness(() => w(DatePicker, {
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				...requiredProps
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 			h.expect(() => expected(false, false));
 
 			// escape key
@@ -479,7 +486,7 @@ registerSuite('Calendar DatePicker', {
 		'Clicking buttons changes year page'() {
 			const h = harness(() => w(DatePicker, {
 				...requiredProps
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
 
@@ -497,7 +504,7 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps,
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				onRequestMonthChange: (month: number) => { currentMonth = month; }
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 
 			h.trigger('@month-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'Month popup opens when clicking month button');
@@ -505,7 +512,7 @@ registerSuite('Calendar DatePicker', {
 			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onchange', { ...stubEvent, target: { value: 6 } });
 			assert.strictEqual(currentMonth, 6, 'Change event on July sets month value');
 
-			h.trigger(`.${css.monthRadio}:nth-of-type(7) input`, 'onmouseup', stubEvent);
+			h.trigger(`.${css.monthRadio}:nth-of-type(7)`, 'onmouseup', stubEvent);
 			assert.isFalse(isOpen, 'Clicking radios closes popup');
 		},
 
@@ -516,7 +523,7 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps,
 				onPopupChange: (open: boolean) => { isOpen = open; },
 				onRequestYearChange: (year: number) => { currentYear = year; }
-			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareName ]);
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 
 			h.trigger('@year-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'Year popup opens when clicking month button');
@@ -524,7 +531,7 @@ registerSuite('Calendar DatePicker', {
 			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onchange', { ...stubEvent, target: { value: 2001 } });
 			assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
 
-			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onmouseup', stubEvent);
+			h.trigger(`.${css.yearRadio}:nth-of-type(2)`, 'onmouseup', stubEvent);
 			assert.isFalse(isOpen, 'Clicking radios closes popup');
 		}
 	}

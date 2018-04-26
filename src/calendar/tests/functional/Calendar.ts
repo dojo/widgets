@@ -4,6 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
 import * as css from '../../../theme/calendar.m.css';
+import * as baseCss from '../../../common/styles/base.m.css';
 
 const DELAY = 500;
 
@@ -49,6 +50,11 @@ registerSuite('Calendar', {
 					assert.strictEqual(hidden, 'false', 'The month dialog should open on first click');
 				})
 				.end()
+			.findByCssSelector(`.${css.dateGrid}`)
+				.getAttribute('class')
+				.then((className: string) => {
+					assert.include(className, baseCss.visuallyHidden, 'date grid is hidden when month popup is open');
+				})
 			.getActiveElement()
 				.getAttribute('value')
 				.then((value: string) => {
@@ -83,6 +89,11 @@ registerSuite('Calendar', {
 					assert.strictEqual(hidden, 'false', 'The month dialog should open on first click');
 				})
 				.end()
+			.findByCssSelector(`.${css.dateGrid}`)
+				.getAttribute('class')
+				.then((className: string) => {
+					assert.include(className, baseCss.visuallyHidden, 'date grid is hidden when month popup is open');
+				})
 			.getActiveElement()
 				.getAttribute('value')
 				.then((value: string) => {
@@ -101,10 +112,10 @@ registerSuite('Calendar', {
 				.click()
 				.sleep(DELAY)
 				.end()
-			.findByCssSelector(`.${css.monthTrigger}`)
+			.getActiveElement()
 				.getVisibleText()
 				.then(label => {
-					assert.include(label, 'January', 'Clicking first month radio changes label text to January');
+					assert.include(label, 'January', 'Clicking first month radio focuses button and changes text to January');
 				})
 				.end()
 			.findByCssSelector(`.${css.monthGrid}`)
