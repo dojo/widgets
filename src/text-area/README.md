@@ -7,11 +7,13 @@ Dojo 2's `Textarea` widget provides a wrapped native `textarea` input, optionall
 
 - Provides an API for valid `<textarea>` attributes
 - Correctly handles a11y attributes
-- Wraps the input in a visible or invisible but accessible `<label>` if the `label` property is added
+- Associates a visible or invisible but accessible `<label>` with the `textarea` if the `label` property is added
 
 ### Accessibility Features
 
 `Textarea` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used. It provides the property `describedBy` to reference an element with additional descriptive text with `aria-describedby`.
+
+If the `label` property is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
 
 ## Example Usage
 
@@ -29,12 +31,10 @@ w(Textarea, {
 w(Textarea, {
 	columns: 20,
 	rows: 8,
-	describedBy: 'instructions',
+	aria: { describedBy: 'descriptionId' },
 	invalid: this.state.messageValid,
-	label: {
-		content: 'Your Message',
-		before: false
-	},
+	label: 'Your Message',
+	labelAfter: true,
 	maxLength: 500,
 	minLength: 100,
 	name: 'message',
@@ -48,7 +48,7 @@ w(Textarea, {
 	}
 }),
 v('p', {
-	id: 'instructions'
+	id: 'descriptionId'
 }, [ 'Enter a message between 100 and 500 characters' ]);
 ```
 

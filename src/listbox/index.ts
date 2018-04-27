@@ -138,9 +138,11 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 				onActiveIndexChange && onActiveIndexChange(newIndex, key);
 				break;
 			case Keys.Home:
+			case Keys.PageUp:
 				onActiveIndexChange && onActiveIndexChange(0, key);
 				break;
 			case Keys.End:
+			case Keys.PageDown:
 				onActiveIndexChange && onActiveIndexChange(optionData.length - 1, key);
 				break;
 		}

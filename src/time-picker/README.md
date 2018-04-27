@@ -1,11 +1,10 @@
 # @dojo/widgets/time-picker widget
 
-Dojo 2's `TimePicker` widget provides a form control that allows users to manually enter a time or select a valid time from a dropdown of options.
-
+Dojo 2's `TimePicker` widget provides a form control that allows users to manually enter a time or select a valid time from a dropdown of options. The non-native option wraps the `ComboBox` widget.
 
 ## Features
 
-- Allows delegating to a native `<input type="time">` when needed.
+- Provides an option to use a native `<input type="time">` when needed.
 - Automatically generates all possible valid options based on the starting time, ending time, and step.
 - Completely keyboard accessible.
 
@@ -32,9 +31,21 @@ Dojo 2's `TimePicker` widget provides a form control that allows users to manual
 
 ### Accessibility Features
 
-Beyond complete keyboard accessibility, `TimePicker` ensures that all appropriate ARIA attributes are included. To guarantee an excellent experience for all users, however, the following should be included with every `TimePicker`:
+Beyond complete keyboard accessibility, `TimePicker` ensures that all appropriate ARIA attributes are included. To guarantee an excellent experience for all users `TimePicker` should always have a text label, either through its `label` property or created separately and associated with its `widgetId`.
 
-- `inputProperties.describedBy`: the ID of an element that provides descriptive text for the input value's expected format. For example, if the input value should be in 24-hour time and in 30-minute increments, an element with the same ID as `inputProperties.describedBy` might be, "Accepts 24-hour time with a leading zero, rounded to the nearest half hour.".
+Additional user hints like the accepted time format can be added using `inputProperties.aria.describedBy`:
+
+```typescript
+v('div', {
+	id: 'descriptionId'
+}, [ 'Accepts 24-hour time' ]),
+w(TimePicker, {
+	// ...
+	inputProperties: {
+		aria: { describedBy: 'descriptionId' }
+	}
+})
+```
 
 ### Internationalization Features
 
@@ -70,7 +81,7 @@ w(TimePicker, {
 	disabled: false,
 	end: '23:59',
 	inputProperties: {
-		describedBy: 'timePickerDescription'
+		aria: { describedBy: 'descriptionId' }
 	},
 	invalid: this.state.timeInvalid,
 	// prevent `12:00` and `12:30` from being selected
@@ -93,7 +104,7 @@ w(TimePicker, {
 	disabled: false,
 	end: '23:59',
 	inputProperties: {
-		describedBy: 'timePickerDescription'
+		aria: { describedBy: 'descriptionId' }
 	},
 	invalid: this.state.timeInvalid,
 	label: 'Meeting Time',

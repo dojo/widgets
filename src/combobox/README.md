@@ -5,10 +5,7 @@ Dojo 2's `ComboBox` widget provides a form control that allows users to either e
 ## Features
 
 - Compatible with any underlying data provider, data format, or store
-- Custom components can be used for the list of results and each individual result
-- Completely keyboard accessible
-
-![Image of basic combobox](http://placekitten.com/450/300)
+- Keyboard accessible
 
 ### Keyboard Usage
 
@@ -33,9 +30,7 @@ Dojo 2's `ComboBox` widget provides a form control that allows users to either e
 
 ### Accessibility Features
 
-Beyond complete keyboard accessibility, `ComboBox` ensures that all appropriate ARIA attributes are included. To guarantee an excellent experience for all users, however, the following should be included with every `ComboBox`:
-
-- `inputProperties.describedBy`: the ID of an element that provides descriptive text for the input value's expected format. For example, if the input value should be the name of a US state, an element with the same ID as `inputProperties.describedBy` might be, "Accepts any valid US state name.".
+Beyond complete keyboard accessibility, `ComboBox` ensures that all appropriate ARIA attributes are included. All instances of this widget should make use of the `label` property or a separate `label` node associated with the combobox's `widgetId` property.
 
 ### Internationalization Features
 
@@ -119,29 +114,15 @@ w(ComboBox, {
 });
 ```
 
-*Custom Result Component*
+*Custom formatted option*
 ```typescript
 import ComboBox from '@dojo/widgets/combobox';
-// The component used by default to render a result item
-import ResultItem from '@dojo/widgets/combobox/ResultItem';
-import { w } from '@dojo/widget-core/d';
-
-// Extend default ResultItem component to show an icon next to each label
-class CustomResultItem extends ResultItem {
-	// We only need to override one method. Normally this method just returns
-	// the result; In this case, let's return an <img> and the result
-	renderResult(result: any) {
-		return v('div', [
-			v('img', { src: 'icon.png' }),
-			result
-		]);
-	}
-}
+import { v, w } from '@dojo/widget-core/d';
 
 w(ComboBox, {
+	getResultLabel: (result: string) => v('span', { style: 'color: blue' }, [ result ]),
 	results: ['foo', 'bar', 'baz'],
 	value: this.state.currentValue,,
-	CustomResultItem: CustomResultItem,
 	onChange: (value: string) => this.setState({ currentValue: value })
 });
 ```

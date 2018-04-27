@@ -8,8 +8,6 @@ Dojo 2's `TabController` widget provides a user interface capable of displaying 
 - Tabs can be closeable, disabled, and can fetch data asynchronously
 - Completely keyboard accessible
 
-![Image of basic tabcontroller](http://placekitten.com/450/300)
-
 ### Keyboard Usage
 
 `TabController` supports standard keyboard navigation for switching between and closing tabs.

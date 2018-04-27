@@ -48,7 +48,7 @@ This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make 
 
 - All widgets are supported in all evergreen browsers (Chrome, Edge, Firefox, IE11+, and Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
 
-- All widgets are designed to be accessible.
+- All widgets are designed to be accessible. If custom ARIA semantics are required, widgets have an `aria` property that may be passed an object with custom `aria-*` attributes.
 
 - All widgets are fully themeable. Example themes are available in the [@dojo/themes](https://github.com/dojo/themes) repository.
 

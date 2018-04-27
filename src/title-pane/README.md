@@ -6,8 +6,6 @@ Dojo 2's `TitlePane` component can be used to display content inside a window wi
 
 - Content can be prevented from collapsing
 
-![Image of basic title pane](http://placekitten.com/450/300)
-
 ### Keyboard Usage
 
 `TitlePane` supports standard keyboard navigation for toggling the content open or closed.
