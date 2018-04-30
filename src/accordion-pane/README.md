@@ -1,6 +1,6 @@
 # @dojo/widgets/accordion-pane widget
 
-Dojo 2's `AccordionPane` component can be used to show multiple pieces of content inside collapsible panes within a common parent component. It provides responsive styling and a mechanism of control over multiple child `TitlePane` components.
+Dojo 2's `AccordionPane` component can be used to show multiple pieces of content inside collapsible panes within a common parent component. It provides a mechanism of control over multiple child `TitlePane` components.
 
 ## Features
 

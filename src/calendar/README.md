@@ -5,11 +5,11 @@ Dojo 2's `Calendar` renders a date grid with a dropdown month and year picker. T
 
 - Renders a date grid with weekday headers, defaulting to the current month
 
-![Image of basic calendar](http://placekitten.com/450/300)
+![Image of basic calendar](../../.github/calendar-dategrid.png)
 
 - Clicking on the current month label opens a month picker that allows you to infinitely cycle through years and choose a month
 
-![Image of open month picker](http://placekitten.com/450/300)
+![Image of open month picker](../../.github/calendar-months.png)
 
 ### Keyboard Usage
 - All controls are in the tab order and accessible by keyboard

@@ -62,3 +62,4 @@ The following CSS classes are available on the root node of the `Button` widget 
 - `disabled`: Applied if `properties.disabled` is true
 - `popup`: Applied if `properties.popup` has a non-false value
 - `pressed`: Applied if `properties.pressed` is true
+- `addon`: Applied to the popup icon container if `properties.popup` has a non-false value

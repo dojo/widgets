@@ -1,17 +1,19 @@
 # @dojo/widgets/text-input widget
 
-Dojo 2's `TextInput` widget provides a basic text input widget, optionally wrapped in a label.
+Dojo 2's `TextInput` widget provides a basic text input widget with an optional label.
 
 
 ## Features
 
 - Allows specification of input type (e.g. `text`, `email`, `number`, etc)
 - Correctly handles a11y attributes
-- Wraps the input in a visible or invisible but accessible `<label>` if the `label` property is added
+- Associates a visible or invisible but accessible `<label>` with the input if the `label` property is added
 
 ### Accessibility Features
 
 `TextInput` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used. It also provides an API for custom ARIA implementations of `aria-describedby` and `aria-controls`.
+
+If the `label` property is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
 
 ## Example Usage
 
@@ -27,7 +29,7 @@ w(TextInput, {
 
 // Advanced usage
 w(TextInput, {
-	describedBy: 'instructions',
+	aria: { describedBy: 'instructions' },
 	invalid: this.state.passwordValid,
 	label: 'Create Password',
 	maxLength: 20,
