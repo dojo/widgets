@@ -1,13 +1,13 @@
 # @dojo/widgets/listbox widget
 
-Dojo 2's `Listbox` provides a base widget that can be used as an options menu within a Select or ComboBox component, or as a standalone multi-select component
+Dojo 2's `Listbox` provides a base widget that can be used as an options menu within a `Select` or `ComboBox` component, or as a standalone multi-select component
 
 ## Features
 
 - Compatible with any underlying data provider, data format, or store
 - Allows customization of option state and vdom through reactive patterns
 - Handles all keyboard interactions if given focus
-- Can be controlled through `activeIndex` and `visualFocus`, e.g. in a ComboBox where focus stays on the text input
+- Can be controlled through `activeIndex` and `visualFocus`, e.g. in a `ComboBox` where focus stays on the text input
 
 ### Keyboard Usage
 
@@ -107,7 +107,7 @@ w(Listbox, {
 
 ## Theming
 
-The following CSS classes are used to style the `Select` widget and should be provided by custom themes:
+The following CSS classes are used to style the `Listbox` widget and should be provided by custom themes:
 
 - `focused`: Applied to both the root node if the component is focused or contains focus
 - `option`: Applied to the option nodes
