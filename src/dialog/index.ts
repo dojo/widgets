@@ -100,7 +100,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			return;
 		}
 
-		let dialogFocus = this.meta(Focus).get('main');
+		const dialogFocus = this.meta(Focus).get('main');
 		if (dialogFocus.containsFocus) {
 			this._callFocus = false;
 			this._initialFocusSet = true;
