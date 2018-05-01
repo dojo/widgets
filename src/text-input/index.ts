@@ -45,11 +45,12 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'theme',
 		'aria',
 		'extraClasses',
-		'aria',
 		'shouldFocus',
 		'disabled',
 		'invalid',
-		'readOnly'
+		'readOnly',
+		'labelAfter',
+		'labelHidden'
 	],
 	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
 	events: [

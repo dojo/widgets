@@ -42,7 +42,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	tag: 'dojo-button',
 	childType: CustomElementChildType.TEXT,
 	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses' ],
-	attributes: [ 'widgetId', 'name', 'value' ],
+	attributes: [ 'widgetId', 'name', 'type', 'value' ],
 	events: [
 		'onBlur',
 		'onChange',
