@@ -1,3 +1,5 @@
+@import '../../common/styles/variables.css';
+
 .rootFixed {
 	align-content: stretch;
 	align-items: stretch;

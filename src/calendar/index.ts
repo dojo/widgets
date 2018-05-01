@@ -365,6 +365,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			year,
 			onPopupChange: (open: boolean) => {
 				this._popupOpen = open;
+				this.invalidate();
 			},
 			onRequestMonthChange: (requestMonth: number) => {
 				onMonthChange && onMonthChange(requestMonth);

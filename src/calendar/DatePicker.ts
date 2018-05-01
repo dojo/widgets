@@ -132,6 +132,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 			event.which === Keys.Enter ||
 			event.which === Keys.Space
 		) {
+			event.preventDefault();
 			this._monthPopupOpen && this._closeMonthPopup();
 			this._yearPopupOpen && this._closeYearPopup();
 		}
@@ -216,18 +217,20 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 
 		return this.properties.monthNames.map((monthName, i) => v('label', {
 			key: `${this._idBase}_month_radios_${i}`,
-			classes: this.theme([ css.monthRadio, i === month ? css.monthRadioChecked : null ])
+			classes: this.theme([ css.monthRadio, i === month ? css.monthRadioChecked : null ]),
+			for: this._getMonthInputKey(i),
+			onmouseup: this._closeMonthPopup
 		}, [
 			v('input', {
 				checked: i === month,
 				classes: this.theme(css.monthRadioInput),
+				id: this._getMonthInputKey(i),
 				key: this._getMonthInputKey(i),
 				name: `${this._idBase}_month_radios`,
 				tabIndex: this._monthPopupOpen ? 0 : -1,
 				type: 'radio',
 				value: `${i}`,
-				onchange: this._onMonthRadioChange,
-				onmouseup: this._closeMonthPopup
+				onchange: this._onMonthRadioChange
 			}),
 			v('abbr', {
 				classes: this.theme(css.monthRadioLabel),
@@ -255,18 +258,20 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		for (let i = yearLimits.first; i < yearLimits.last; i++) {
 			radios.push(v('label', {
 				key: `${this._idBase}_year_radios_${i}`,
-				classes: this.theme([ css.yearRadio, i === year ? css.yearRadioChecked : null ])
+				classes: this.theme([ css.yearRadio, i === year ? css.yearRadioChecked : null ]),
+				for: this._getYearInputKey(i),
+				onmouseup: this._closeYearPopup
 			}, [
 				v('input', {
 					checked: i === year,
 					classes: this.theme(css.yearRadioInput),
+					id: this._getYearInputKey(i),
 					key: this._getYearInputKey(i),
 					name: `${this._idBase}_year_radios`,
 					tabIndex: this._yearPopupOpen ? 0 : -1,
 					type: 'radio',
 					value: `${i}`,
-					onchange: this._onYearRadioChange,
-					onmouseup: this._closeYearPopup
+					onchange: this._onYearRadioChange
 				}),
 				v('abbr', {
 					classes: this.theme(css.yearRadioLabel)
