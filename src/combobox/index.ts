@@ -87,6 +87,8 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'inputProperties',
 		'invalid',
 		'isResultDisabled',
+		'labelAfter',
+		'labelHidden',
 		'openOnFocus',
 		'readOnly',
 		'required',

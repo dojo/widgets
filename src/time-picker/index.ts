@@ -171,9 +171,15 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'openOnFocus',
 		'options',
 		'useNativeElement',
-		'step'
+		'step',
+		'labelAfter',
+		'labelHidden',
+		'required',
+		'invalid',
+		'readOnly',
+		'disabled'
 	],
-	attributes: [ 'widgetId', 'value', 'start', 'end' ],
+	attributes: [ 'widgetId', 'label', 'name', 'value', 'start', 'end' ],
 	events: [
 		'onBlur',
 		'onChange',

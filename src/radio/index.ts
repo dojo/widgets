@@ -3,7 +3,7 @@ import { DNode } from '@dojo/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
 import Focus from '@dojo/widget-core/meta/Focus';
 import Label from '../label/index';
-import { CustomAriaProperties, LabeledProperties, InputProperties, CheckboxRadioEventProperties, PointerEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, LabeledProperties, InputProperties, KeyEventProperties, CheckboxRadioEventProperties, PointerEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/widget-core/d';
 import uuid from '@dojo/core/uuid';
@@ -18,7 +18,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property checked          Checked/unchecked property of the radio
  * @property value           The current value
  */
-export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
+export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
 	checked?: boolean;
 	value?: string;
 }
@@ -28,13 +28,27 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<RadioProperties>({
 	tag: 'dojo-radio',
-	properties: [ 'theme', 'aria', 'extraClasses', 'checked' ],
+	properties: [
+		'required',
+		'invalid',
+		'readOnly',
+		'disabled',
+		'theme',
+		'aria',
+		'extraClasses',
+		'checked',
+		'labelAfter',
+		'labelHidden'
+	],
 	attributes: [ 'widgetId', 'label', 'value', 'name' ],
 	events: [
 		'onBlur',
 		'onChange',
 		'onClick',
 		'onFocus',
+		'onKeyDown',
+		'onKeyPress',
+		'onKeyUp',
 		'onMouseDown',
 		'onMouseUp',
 		'onTouchCancel',

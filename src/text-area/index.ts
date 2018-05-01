@@ -39,8 +39,20 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<TextareaProperties>({
 	tag: 'dojo-text-area',
-	properties: [ 'theme', 'aria', 'extraClasses', 'columns', 'rows', 'columns', 'required', 'readOnly', 'disabled', 'invalid' ],
-	attributes: [ 'widgetId', 'minLength', 'maxLength', 'placeholder', 'value' ],
+	properties: [
+		'theme',
+		'aria',
+		'extraClasses',
+		'columns',
+		'rows',
+		'required',
+		'readOnly',
+		'disabled',
+		'invalid',
+		'labelAfter',
+		'labelHidden'
+	],
+	attributes: [ 'widgetId', 'label', 'minLength', 'maxLength', 'name', 'placeholder', 'value', 'wrapText' ],
 	events: [
 		'onBlur',
 		'onChange',
