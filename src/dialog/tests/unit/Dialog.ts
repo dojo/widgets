@@ -3,6 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w, isWNode } from '@dojo/widget-core/d';
+import Focus from '@dojo/widget-core/meta/Focus';
 
 import Dialog, { DialogProperties } from '../../index';
 import Icon from '../../../icon/index';
@@ -15,6 +16,7 @@ import {
 	createHarness,
 	compareId,
 	compareAriaLabelledBy,
+	MockMetaMixin,
 	noop,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
@@ -304,6 +306,128 @@ registerSuite('Dialog', {
 				}
 			}, { which: Keys.Escape , ...stubEvent });
 			assert.isTrue(onRequestClose.calledOnce);
+		},
+
+		focus: {
+			'set initial focus'() {
+				const mockMeta = sinon.stub();
+				const mockFocusGet = sinon.stub().returns({
+					active: false,
+					containsFocus: false
+				});
+				const mockFocusSet = sinon.stub();
+				mockMeta.withArgs(Focus).returns({
+					get: mockFocusGet,
+					set: mockFocusSet
+				});
+				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
+				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog is opened');
+			},
+
+			'set initial focus only once'() {
+				const mockMeta = sinon.stub();
+				const mockFocusGet = sinon.stub().returns({
+					active: true,
+					containsFocus: true
+				});
+				const mockFocusSet = sinon.stub();
+				mockMeta.withArgs(Focus).returns({
+					get: mockFocusGet,
+					set: mockFocusSet
+				});
+				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
+				assert.isFalse(mockFocusSet.called, 'focus not set when dialog is already focused');
+			},
+
+			'keep focus in modal dialog'() {
+				const mockMeta = sinon.stub();
+				const mockFocusGet = sinon.stub().returns({
+					active: false,
+					containsFocus: false
+				});
+				const mockFocusSet = sinon.stub();
+				mockMeta.withArgs(Focus).returns({
+					get: mockFocusGet,
+					set: mockFocusSet
+				});
+				let properties: any = {
+					open: true,
+					modal: true
+				};
+				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), properties));
+				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog is opened');
+
+				// force render
+				properties = {
+					open: true,
+					modal: false
+				};
+				mockFocusGet.returns({
+					active: true,
+					containsFocus: true
+				});
+				mockFocusSet.reset();
+				h.expect(() => expected(true, true));
+				assert.isFalse(mockFocusSet.called, 'set focus not called when dialog contains focus');
+
+				// force render
+				properties = {
+					open: true,
+					modal: true
+				};
+				mockFocusGet.returns({
+					active: false,
+					containsFocus: false
+				});
+				h.expect(() => expected(true, true));
+				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog loses focus while open');
+			},
+
+			'close non-modal dialog when focus leaves'() {
+				const mockMeta = sinon.stub();
+				const mockFocusGet = sinon.stub().returns({
+					active: false,
+					containsFocus: false
+				});
+				const mockFocusSet = sinon.stub();
+				mockMeta.withArgs(Focus).returns({
+					get: mockFocusGet,
+					set: mockFocusSet
+				});
+				const mockRequestClose = sinon.stub();
+				let properties: any = {
+					open: true,
+					modal: false
+				};
+				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), properties));
+				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog is opened');
+
+				// force render
+				properties = {
+					open: true,
+					modal: true
+				};
+				mockFocusGet.returns({
+					active: true,
+					containsFocus: true
+				});
+				mockFocusSet.reset();
+				h.expect(() => expected(true, true));
+				assert.isFalse(mockFocusSet.called, 'set focus not called when dialog contains focus');
+
+				// force render
+				properties = {
+					open: true,
+					modal: false,
+					onRequestClose: mockRequestClose
+				};
+				mockFocusGet.returns({
+					active: false,
+					containsFocus: false
+				});
+				h.expect(() => expected(true, true));
+				assert.isTrue(mockRequestClose.calledOnce, 'onRequestClose called when focus leaves');
+			}
 		}
 	}
 });

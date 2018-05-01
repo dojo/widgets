@@ -82,10 +82,38 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 	private _titleId = uuid();
 	private _wasOpen: boolean | undefined;
 	private _callFocus = false;
+	private _initialFocusSet = false;
 
 	private _onCloseClick(event: MouseEvent) {
 		event.stopPropagation();
 		this._close();
+	}
+
+	private _checkFocus() {
+		const {
+			modal,
+			open
+		} = this.properties;
+
+		// only handle focus for open dialog
+		if (!open) {
+			return;
+		}
+
+		const dialogFocus = this.meta(Focus).get('main');
+		if (dialogFocus.containsFocus) {
+			this._callFocus = false;
+			this._initialFocusSet = true;
+		}
+
+		// handle if the dialog is open and loses focus
+		if (this._initialFocusSet && !dialogFocus.containsFocus) {
+			modal ? this._callFocus = true : this._close();
+		}
+
+		if (this._callFocus) {
+			this.meta(Focus).set('main');
+		}
 	}
 
 	private _close() {
@@ -112,6 +140,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 	private _onOpen() {
 		const { onOpen } = this.properties;
 		this._callFocus = true;
+		this._initialFocusSet = false;
 		onOpen && onOpen();
 	}
 
@@ -145,6 +174,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			closeText,
 			enterAnimation = animations.fadeIn,
 			exitAnimation = animations.fadeOut,
+			modal,
 			open = false,
 			role = 'dialog',
 			title = '',
@@ -154,13 +184,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		open && !this._wasOpen && this._onOpen();
 		this._wasOpen = open;
 
-		if (this._callFocus) {
-			this.meta(Focus).set('main');
-			const dialogFocus = this.meta(Focus).get('main');
-			if (dialogFocus.active) {
-				this._callFocus = false;
-			}
-		}
+		this._checkFocus();
 
 		if (!closeText) {
 			const { messages } = this.localizeBundle(commonBundle);
