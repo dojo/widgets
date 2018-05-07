@@ -12,6 +12,7 @@ import Label from '../../../label/index';
 import Listbox from '../../../listbox/index';
 import TextInput from '../../../text-input/index';
 import * as css from '../../../theme/combobox.m.css';
+import * as baseCss from '../../../common/styles/base.m.css';
 import {
 	createHarness,
 	compareId,
@@ -91,7 +92,9 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			type: 'button',
 			onclick: noop
 		}, [
-			useTestProperties ? 'clear foo' : 'clear ',
+			v('span', { classes: baseCss.visuallyHidden }, [
+				useTestProperties ? 'clear foo' : 'clear '
+			]),
 			w(Icon, { type: 'closeIcon', theme: useTestProperties ? {} : undefined })
 		]) : null,
 		v('button', {
@@ -102,7 +105,9 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			type: 'button',
 			onclick: noop
 		}, [
-			useTestProperties ? 'open foo' : 'open ',
+			v('span', { classes: baseCss.visuallyHidden }, [
+				useTestProperties ? 'open foo' : 'open '
+			]),
 			w(Icon, { type: 'downIcon', theme: useTestProperties ? {} : undefined })
 		])
 	]);
@@ -483,7 +488,9 @@ registerSuite('ComboBox', {
 				type: 'button',
 				onclick: noop
 			}, [
-				'clear foo',
+				v('span', { classes: baseCss.visuallyHidden }, [
+					'clear foo'
+				]),
 				w(Icon, { type: 'closeIcon', theme: {} })
 			]));
 
@@ -495,7 +502,9 @@ registerSuite('ComboBox', {
 				type: 'button',
 				onclick: noop
 			}, [
-				'open foo',
+				v('span', { classes: baseCss.visuallyHidden }, [
+					'open foo'
+				]),
 				w(Icon, { type: 'downIcon', theme: {} })
 			]));
 
