@@ -17,6 +17,7 @@ import commonBundle from '../common/nls/common';
 import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
+import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/widget-core/decorators/customElement';
 
 /**
@@ -373,7 +374,9 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			type: 'button',
 			onclick: this._onClearClick
 		}, [
-			`${messages.clear} ${label}`,
+			v('span', { classes: baseCss.visuallyHidden }, [
+				`${messages.clear} ${label}`
+			]),
 			w(Icon, { type: 'closeIcon', theme })
 		]);
 	}
@@ -394,7 +397,9 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			type: 'button',
 			onclick: this._onArrowClick
 		}, [
-			`${messages.open} ${label}`,
+			v('span', { classes: baseCss.visuallyHidden }, [
+				`${messages.open} ${label}`
+			]),
 			w(Icon, { type: 'downIcon', theme })
 		]);
 	}
