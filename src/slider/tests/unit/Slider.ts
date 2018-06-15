@@ -13,7 +13,7 @@ import { compareId, compareForId, createHarness, MockMetaMixin, noop, stubEvent 
 const compareFor = { selector: '*', property: 'for', comparator: (property: any) => typeof property === 'string' };
 const harness = createHarness([ compareId, compareForId, compareFor ]);
 
-const expected = function(label = false, tooltip = false, overrides = {}, child = '0', progress = '0%', focused = false) {
+const expected = function(label = false, tooltip = false, overrides = {}, child = '0', progress = '0%', focused = false, showOutput = true) {
 
 	return v('div', {
 		key: 'root',
@@ -78,12 +78,12 @@ const expected = function(label = false, tooltip = false, overrides = {}, child 
 					styles: { left: progress }
 				})
 			]),
-			v('output', {
+			showOutput ? v('output', {
 				classes: [ css.output, tooltip ? css.outputTooltip : null ],
 				for: '',
 				tabIndex: -1,
 				styles: progress !== '0%' ? { left: progress } : {}
-			}, [ child ])
+			}, [ child ]) : null
 		])
 	]);
 };
@@ -118,6 +118,13 @@ registerSuite('Slider', {
 				step: '5',
 				value: '35'
 			}, 'tribbles', '50%'));
+		},
+
+		'with showOutput false'() {
+			const h = harness(() => w(Slider, {
+				showOutput: false
+			}));
+			h.expect(() => expected(undefined, undefined, {}, undefined, undefined, undefined, false));
 		},
 
 		'focussed class'() {
