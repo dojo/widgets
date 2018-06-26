@@ -161,6 +161,130 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 	]);
 };
 
+const expectedMondayStart = function(popupOpen = false, selectedIndex = -1, weekdayLabel = '', customMonthLabel = false, describedby = '') {
+	const overrides = describedby ? { 'aria-describedby': describedby } : {};
+	dateIndex = -1;
+	let weekdayNames = [];
+	for (let i = 0; i < DEFAULT_WEEKDAYS.length; i++) {
+		weekdayNames.push(DEFAULT_WEEKDAYS[(i + 1) % 7]);
+	}
+	return v('div', {
+		classes: css.root,
+		dir: '',
+		lang: null,
+		...overrides
+	}, [
+		w(DatePicker, {
+			key: 'date-picker',
+			labelId: '',
+			labels: DEFAULT_LABELS,
+			month: 5,
+			monthNames: DEFAULT_MONTHS,
+			renderMonthLabel: customMonthLabel ? noop : undefined,
+			theme: undefined,
+			year: 2017,
+			onPopupChange: noop,
+			onRequestMonthChange: noop,
+			onRequestYearChange: noop
+		}),
+		v('table', {
+			cellspacing: '0',
+			cellpadding: '0',
+			role: 'grid',
+			'aria-labelledby': '', // this._monthLabelId,
+			classes: [ css.dateGrid, popupOpen ? baseCss.visuallyHidden : null ]
+		}, [
+			v('thead', [
+				v('tr', weekdayNames.map((weekday: { short: string; long: string; }) => v('th', {
+						role: 'columnheader',
+						classes: css.weekday
+					}, [
+						weekdayLabel ? weekdayLabel : v('abbr', { title: weekday.long }, [ weekday.short ])
+					])
+				))
+			]),
+			v('tbody', [
+				v('tr', [
+					expectedDateCell(29, false, selectedIndex),
+					expectedDateCell(30, false, selectedIndex),
+					expectedDateCell(31, false, selectedIndex),
+					expectedDateCell(1, true, selectedIndex),
+					expectedDateCell(2, true, selectedIndex),
+					expectedDateCell(3, true, selectedIndex),
+					expectedDateCell(4, true, selectedIndex)
+				]),
+				v('tr', [
+					expectedDateCell(5, true, selectedIndex),
+					expectedDateCell(6, true, selectedIndex),
+					expectedDateCell(7, true, selectedIndex),
+					expectedDateCell(8, true, selectedIndex),
+					expectedDateCell(9, true, selectedIndex),
+					expectedDateCell(10, true, selectedIndex),
+					expectedDateCell(11, true, selectedIndex)
+				]),
+				v('tr', [
+					expectedDateCell(12, true, selectedIndex),
+					expectedDateCell(13, true, selectedIndex),
+					expectedDateCell(14, true, selectedIndex),
+					expectedDateCell(15, true, selectedIndex),
+					expectedDateCell(16, true, selectedIndex),
+					expectedDateCell(17, true, selectedIndex),
+					expectedDateCell(18, true, selectedIndex)
+				]),
+				v('tr', [
+					expectedDateCell(19, true, selectedIndex),
+					expectedDateCell(20, true, selectedIndex),
+					expectedDateCell(21, true, selectedIndex),
+					expectedDateCell(22, true, selectedIndex),
+					expectedDateCell(23, true, selectedIndex),
+					expectedDateCell(24, true, selectedIndex),
+					expectedDateCell(25, true, selectedIndex)
+				]),
+				v('tr', [
+					expectedDateCell(26, true, selectedIndex),
+					expectedDateCell(27, true, selectedIndex),
+					expectedDateCell(28, true, selectedIndex),
+					expectedDateCell(29, true, selectedIndex),
+					expectedDateCell(30, true, selectedIndex),
+					expectedDateCell(1, false, selectedIndex),
+					expectedDateCell(2, false, selectedIndex)
+				]),
+				v('tr', [
+					expectedDateCell(3, false, selectedIndex),
+					expectedDateCell(4, false, selectedIndex),
+					expectedDateCell(5, false, selectedIndex),
+					expectedDateCell(6, false, selectedIndex),
+					expectedDateCell(7, false, selectedIndex),
+					expectedDateCell(8, false, selectedIndex),
+					expectedDateCell(9, false, selectedIndex)
+				])
+			])
+		]),
+		v('div', {
+			classes: [ css.controls, popupOpen ? baseCss.visuallyHidden : null ]
+		}, [
+			v('button', {
+				classes: css.previous,
+				tabIndex: popupOpen ? -1 : 0,
+				type: 'button',
+				onclick: noop
+			}, [
+				w(Icon, { type: 'leftIcon', theme: undefined }),
+				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Previous Month' ])
+			]),
+			v('button', {
+				classes: css.next,
+				tabIndex: popupOpen ? -1 : 0,
+				type: 'button',
+				onclick: noop
+			}, [
+				w(Icon, { type: 'rightIcon', theme: undefined }),
+				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Next Month' ])
+			])
+		])
+	]);
+};
+
 registerSuite('Calendar', {
 	tests: {
 		'Render specific month with default props'() {
@@ -169,6 +293,15 @@ registerSuite('Calendar', {
 				year: testDate.getFullYear()
 			}));
 			h.expect(expected);
+		},
+
+		'Render month with a Monday firstDayOfTheWeek'() {
+			const h = harness(() => w(Calendar, {
+				month: testDate.getMonth(),
+				year: testDate.getFullYear(),
+				firstDayOfTheWeek: 1
+			}));
+			h.expect(expectedMondayStart);
 		},
 
 		'Render specific month and year with selectedDate'() {
