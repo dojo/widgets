@@ -26,6 +26,7 @@ export type CalendarMessages = typeof calendarBundle.messages;
  * @property labels            Customize or internationalize accessible text for the Calendar widget
  * @property month             Set the currently displayed month, 0-based
  * @property monthNames        Customize or internationalize full month names and abbreviations
+ * @property firstDayOfTheWeek Customize or internationalize the first day of the week
  * @property selectedDate      The currently selected date
  * @property weekdayNames      Customize or internationalize weekday names and abbreviations
  * @property year              Set the currently displayed year
@@ -39,6 +40,7 @@ export interface CalendarProperties extends ThemedProperties, CustomAriaProperti
 	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string; }[];
+	firstDayOfTheWeek?: number;
 	selectedDate?: Date;
 	weekdayNames?: { short: string; long: string; }[];
 	year?: number;
@@ -94,6 +96,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'labels',
 		'monthNames',
 		'weekdayNames',
+		'firstDayOfTheWeek',
 		'theme'
 	],
 	events: [ 'onDateSelect', 'onMonthChange', 'onYearChange' ]
@@ -263,6 +266,20 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		this._onMonthIncrement();
 	}
 
+	private _adjustDay(day: number): number {
+		const {
+			firstDayOfTheWeek = 0
+		} = this.properties;
+
+		if (firstDayOfTheWeek > 0) {
+			day -= firstDayOfTheWeek;
+			if (day < 0) {
+				day += 7;
+			}
+		}
+		return day;
+	}
+
 	private _renderDateGrid(selectedDate?: Date) {
 		const {
 			month,
@@ -271,7 +288,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
-		const initialWeekday = new Date(year, month, 1).getDay();
+		const initialWeekday = this._adjustDay(new Date(year, month, 1).getDay());
 		const todayString = new Date().toDateString();
 
 		let dayIndex = 0;
@@ -398,12 +415,14 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			labels = this.localizeBundle(calendarBundle).messages,
 			aria = {},
 			selectedDate,
-			weekdayNames = this._getWeekdays(commonMessages)
+			weekdayNames = this._getWeekdays(commonMessages),
+			firstDayOfTheWeek = 0
 		} = this.properties;
 
-		// Calendar Weekday array
 		const weekdays = [];
-		for (const weekday in weekdayNames) {
+		const weekLength = weekdayNames.length + firstDayOfTheWeek;
+		for (let i = firstDayOfTheWeek; i < weekLength; i++) {
+			let weekday = i % 7;
 			weekdays.push(v('th', {
 				role: 'columnheader',
 				classes: this.theme(css.weekday)
