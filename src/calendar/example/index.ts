@@ -17,6 +17,8 @@ export default class App extends WidgetBase {
 			w(Calendar, {
 				key: 'calendar-start-sunday',
 				month: this._month,
+				// minDate: new Date(2014, 4, 9),
+				// maxDate: new Date(2018, 9, 4),
 				selectedDate: this._selectedDate,
 				year: this._year,
 				onMonthChange: (month: number) => {

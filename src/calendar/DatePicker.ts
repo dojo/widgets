@@ -39,6 +39,8 @@ export enum Controls {
  * @property year                 Currently displayed year
  * @property yearRange            Number of years to display in a single page of the year popup
  * @property renderMonthLabel     Format the displayed current month and year
+ * @property minDate              Minimum date to be picked
+ * @property maxDate              Maximum date to be picked
  * @property onPopupChange        Called when a user action occurs that triggers a change in the month or year popup state
  * @property onRequestMonthChange Called when a month should change; receives the zero-based month number
  * @property onRequestYearChange  Called when a year should change; receives the year as an integer
@@ -50,6 +52,8 @@ export interface DatePickerProperties extends ThemedProperties {
 	monthNames: { short: string; long: string; }[];
 	year: number;
 	yearRange?: number;
+	minDate?: Date;
+	maxDate?: Date;
 	renderMonthLabel?(month: number, year: number): string;
 	onPopupChange?(open: boolean): void;
 	onRequestMonthChange?(month: number): void;
@@ -157,9 +161,20 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 
 	private _onYearRadioChange(event: Event) {
 		event.stopPropagation();
-		const { onRequestYearChange } = this.properties;
+		const { onRequestYearChange, month } = this.properties;
+		const newYear = parseInt((event.target as HTMLInputElement).value, 10);
+		if (!this._monthInMinMax(newYear, month)) {
+			// we know the year is valid but the month is out of range
+			const { minDate, maxDate, onRequestMonthChange } = this.properties;
+			if (minDate && newYear === minDate.getFullYear()) {
+				onRequestMonthChange && onRequestMonthChange(minDate.getMonth());
+			}
+			else if (maxDate && newYear === maxDate.getFullYear()) {
+				onRequestMonthChange && onRequestMonthChange(maxDate.getMonth());
+			}
+		}
 		this._yearPage = 0;
-		onRequestYearChange && onRequestYearChange(parseInt((event.target as HTMLInputElement).value, 10));
+		onRequestYearChange && onRequestYearChange(newYear);
 	}
 
 	private _openMonthPopup() {
@@ -178,6 +193,28 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 		this._monthPopupOpen = false;
 		this.invalidate();
 		onPopupChange && onPopupChange(this._getPopupState());
+	}
+
+	private _monthInMinMax(year: number, month: number) {
+		let {
+			minDate,
+			maxDate
+		} = this.properties;
+
+		const date = new Date(year, month, 1);
+		minDate = minDate ? new Date(minDate.getFullYear(), minDate.getMonth(), 1) : date;
+		maxDate = maxDate ? new Date(maxDate.getFullYear(), maxDate.getMonth(), 1) : date;
+		return date >= minDate && date <= maxDate;
+	}
+
+	private _yearInMinMax(year: number) {
+		const {
+			minDate,
+			maxDate
+		} = this.properties;
+		const minYear = minDate ? minDate.getFullYear() : year;
+		const maxYear = maxDate ? maxDate.getFullYear() : year;
+		return year >= minYear && year <= maxYear;
 	}
 
 	protected renderControlsTrigger(type: Controls): DNode {
@@ -213,7 +250,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	}
 
 	protected renderMonthRadios(): DNode[] {
-		const { month } = this.properties;
+		const { year, month } = this.properties;
 
 		return this.properties.monthNames.map((monthName, i) => v('label', {
 			key: `${this._idBase}_month_radios_${i}`,
@@ -230,6 +267,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 				tabIndex: this._monthPopupOpen ? 0 : -1,
 				type: 'radio',
 				value: `${i}`,
+				disabled: !this._monthInMinMax(year, i),
 				onchange: this._onMonthRadioChange
 			}),
 			v('abbr', {
@@ -271,6 +309,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 					tabIndex: this._yearPopupOpen ? 0 : -1,
 					type: 'radio',
 					value: `${i}`,
+					disabled: !this._yearInMinMax(i),
 					onchange: this._onYearRadioChange
 				}),
 				v('abbr', {
@@ -289,6 +328,11 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 			month,
 			year
 		} = this.properties;
+
+		const {
+			first: minYear,
+			last: maxYear
+		} = this._getYearRange();
 
 		return v('div', {
 			classes: this.theme(css.datePicker)
@@ -353,13 +397,15 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 						classes: this.theme(css.previous),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						type: 'button',
-						onclick: this._onYearPageDown
+						onclick: this._onYearPageDown,
+						disabled: !this._yearInMinMax(minYear - 1)
 					}, this.renderPagingButtonContent(Paging.previous)),
 					v('button', {
 						classes: this.theme(css.next),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						type: 'button',
-						onclick: this._onYearPageUp
+						onclick: this._onYearPageUp,
+						disabled: !this._yearInMinMax(maxYear + 1)
 					}, this.renderPagingButtonContent(Paging.next))
 				])
 			])
