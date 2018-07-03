@@ -21,9 +21,7 @@ registerSuite('Toolbar', {
 			const h = harness(() => w(Toolbar, {}));
 			h.expect(() => v('div', {
 				key: 'root',
-				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
-				dir: ''
+				classes: [ fixedCss.rootFixed, css.root, null ]
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				null,
@@ -49,9 +47,7 @@ registerSuite('Toolbar', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
-				dir: ''
+				classes: [ fixedCss.rootFixed, css.root, null ]
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				null,
@@ -64,9 +60,7 @@ registerSuite('Toolbar', {
 			const h = harness(() => w(Toolbar, { heading: 'test' }));
 			h.expect(() => v('div', {
 				key: 'root',
-				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
-				dir: ''
+				classes: [ fixedCss.rootFixed, css.root, null ]
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -81,9 +75,7 @@ registerSuite('Toolbar', {
 			const h = harness(() => w(Toolbar, {}, [ 'test' ]));
 			h.expect(() => v('div', {
 				key: 'root',
-				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
-				dir: ''
+				classes: [ fixedCss.rootFixed, css.root, null ]
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				null,
@@ -137,9 +129,7 @@ registerSuite('Toolbar', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, null ],
-				dir: ''
+				classes: [ fixedCss.rootFixed, css.root, null ]
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				null,
@@ -161,9 +151,7 @@ registerSuite('Toolbar', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ],
-				dir: ''
+				classes: [ fixedCss.rootFixed, css.root, css.collapsed ]
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
@@ -178,9 +166,7 @@ registerSuite('Toolbar', {
 
 			h.expect(() => v('div', {
 				key: 'root',
-				lang: null,
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ],
-				dir: ''
+				classes: [ fixedCss.rootFixed, css.root, css.collapsed ]
 			}, [
 				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
 				v('div', {
