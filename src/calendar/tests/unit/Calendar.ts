@@ -46,8 +46,6 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 	dateIndex = -1;
 	return v('div', {
 		classes: css.root,
-		dir: '',
-		lang: null,
 		...overrides
 	}, [
 		w(DatePicker, {
