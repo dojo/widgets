@@ -8,6 +8,7 @@ export class App extends WidgetBase<WidgetProperties> {
 	private _tribbleValue: number | undefined;
 	private _verticalValue: number | undefined;
 	private _verticalInvalid: boolean | undefined;
+	private _outputlessValue: number | undefined;
 
 	onTribbleInput(value: number) {
 		this._tribbleValue = value;
@@ -17,6 +18,11 @@ export class App extends WidgetBase<WidgetProperties> {
 	onVerticalInput(value: number) {
 		this._verticalValue = value;
 		this._verticalInvalid = value > 50;
+		this.invalidate();
+	}
+
+	onOutputlessInput(value: number) {
+		this._outputlessValue = value;
 		this.invalidate();
 	}
 
@@ -76,6 +82,14 @@ export class App extends WidgetBase<WidgetProperties> {
 					outputIsTooltip: true,
 					onChange: this.onVerticalInput,
 					onInput: this.onVerticalInput
+				})
+			]),
+			v('h1', {}, ['Slider with no output']),
+			v('div', { id: 'example-s4' }, [
+				w(Slider, {
+					showOutput: false,
+					value: this._outputlessValue,
+					onInput: this.onOutputlessInput
 				})
 			])
 		]);

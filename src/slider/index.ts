@@ -19,6 +19,7 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property max               The maximum value for the slider
  * @property min               The minimum value for the slider
  * @property output            An optional function that returns a string or DNode for custom output format
+ * @property showOutput        Toggles visibility of slider output
  * @property step              Size of the slider increment
  * @property vertical          Orients the slider vertically, false by default.
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
@@ -29,6 +30,7 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 	min?: number;
 	output?(value: number): DNode;
 	outputIsTooltip?: boolean;
+	showOutput?: boolean;
 	step?: number;
 	vertical?: boolean;
 	verticalHeight?: string;
@@ -60,6 +62,7 @@ function extractValue(event: Event): number {
 		'min',
 		'output',
 		'outputIsTooltip',
+		'showOutput',
 		'step',
 		'vertical',
 		'value'
@@ -217,6 +220,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 			name,
 			readOnly,
 			required,
+			showOutput = true,
 			step = 1,
 			vertical = false,
 			verticalHeight = '200px',
@@ -269,7 +273,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				ontouchcancel: this._onTouchCancel
 			}),
 			this.renderControls(percentValue),
-			this.renderOutput(value, percentValue)
+			showOutput ? this.renderOutput(value, percentValue) : null
 		]);
 
 		const children = [
