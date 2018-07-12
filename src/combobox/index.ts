@@ -48,14 +48,14 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
 export interface ComboBoxProperties extends ThemedProperties, LabeledProperties {
 	clearable?: boolean;
 	disabled?: boolean;
-	getResultLabel?(result: any): string;
+	getResultLabel?(result: any): DNode;
 	getResultSelected?(result: any): boolean;
 	widgetId?: string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string, key?: string | number): void;
-	onChange?(value: string, key?: string | number): void;
+	onChange?(value: DNode, key?: string | number): void;
 	onFocus?(value: string, key?: string | number): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestResults?(key?: string | number): void;
