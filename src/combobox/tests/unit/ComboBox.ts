@@ -382,6 +382,19 @@ registerSuite('ComboBox', {
 			assert.isFalse(onChange.called, 'onChange not called for no results');
 		},
 
+		'onChange uses custom getResultValue'() {
+			const onChange = sinon.stub();
+			const h = harness(() => w(ComboBox, {
+				...testProperties,
+				onChange,
+				getResultValue: (result: any) => result.value
+			}));
+
+			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
+			h.trigger('@listbox', 'onOptionSelect', testOptions[1], 1);
+			assert.isTrue(onChange.calledWith('two'), 'onChange callback called with value of second option');
+		},
+
 		'clear button clears input'() {
 			const onChange = sinon.stub();
 			const h = harness(() => w(ComboBox, {
