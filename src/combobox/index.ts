@@ -28,8 +28,9 @@ import { customElement } from '@dojo/widget-core/decorators/customElement';
  * @property clearable          Determines whether the input should be able to be cleared
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
- * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label.
- * @property widgetId            Optional id string for the combobox, set on the text input
+ * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label
+ * @property getResultValue     Can be used to define a value returned by onChange when a given result is selected. Defaults to getResultLabel
+ * @property widgetId           Optional id string for the combobox, set on the text input
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
  * @property isResultDisabled   Used to determine if an item should be disabled
@@ -50,12 +51,13 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties 
 	disabled?: boolean;
 	getResultLabel?(result: any): DNode;
 	getResultSelected?(result: any): boolean;
+	getResultValue?(result: any): string;
 	widgetId?: string;
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string, key?: string | number): void;
-	onChange?(value: DNode, key?: string | number): void;
+	onChange?(value: string, key?: string | number): void;
 	onFocus?(value: string, key?: string | number): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestResults?(key?: string | number): void;
@@ -132,6 +134,12 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		const { getResultSelected, value } = this.properties;
 
 		return getResultSelected ? getResultSelected(result) : this._getResultLabel(result) === value;
+	}
+
+	private _getResultValue(result: any) {
+		const { getResultValue = this.properties.getResultLabel } = this.properties;
+
+		return getResultValue ? `${getResultValue(result)}` : `${result}`;
 	}
 
 	private _getResultId(result: any, index: number) {
@@ -281,7 +289,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 
 		this._callInputFocus = true;
 		this._closeMenu();
-		onChange && onChange(this._getResultLabel(results[index]), key);
+		onChange && onChange(this._getResultValue(results[index]), key);
 	}
 
 	private _moveActiveIndex(operation: Operation) {
