@@ -1,8 +1,8 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
-import { v, w, isWNode } from '@dojo/widget-core/d';
+import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
+import { v, w, isWNode } from '@dojo/framework/widget-core/d';
 import harness from '@dojo/test-extras/harness';
 import { stub } from 'sinon';
 

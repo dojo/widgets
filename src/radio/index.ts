@@ -1,14 +1,14 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Focus from '@dojo/widget-core/meta/Focus';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
 import { CustomAriaProperties, LabeledProperties, InputProperties, KeyEventProperties, CheckboxRadioEventProperties, PointerEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import { v, w } from '@dojo/widget-core/d';
-import uuid from '@dojo/core/uuid';
+import { v, w } from '@dojo/framework/widget-core/d';
+import uuid from '@dojo/framework/core/uuid';
 import * as css from '../theme/radio.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * @type RadioProperties

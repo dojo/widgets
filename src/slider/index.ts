@@ -1,15 +1,15 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import Label from '../label/index';
-import { v, w } from '@dojo/widget-core/d';
-import { DNode } from '@dojo/widget-core/interfaces';
-import Focus from '@dojo/widget-core/meta/Focus';
-import uuid from '@dojo/core/uuid';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
+import uuid from '@dojo/framework/core/uuid';
 import { CustomAriaProperties, LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
 import * as css from '../theme/slider.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * @type SliderProperties

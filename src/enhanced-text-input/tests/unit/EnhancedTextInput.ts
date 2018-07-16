@@ -3,14 +3,14 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/widget-core/d';
-import Focus from '@dojo/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/widget-core/d';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
 
 import EnhancedTextInput from '../../index';
 import Label from '../../../label/index';
 import * as css from '../../../theme/enhanced-text-input.m.css';
 import * as textInputCss from '../../../theme/text-input.m.css';
-import { VNodeProperties } from '@dojo/widget-core/interfaces';
+import { VNodeProperties } from '@dojo/framework/widget-core/interfaces';
 import { createHarness, compareId, compareForId, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);

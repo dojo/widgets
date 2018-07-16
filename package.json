@@ -23,17 +23,13 @@
     "dist-custom-elements": "npm run build-custom-elements && shx rm -rf dist/all/dist && shx cp -r output/dist dist/all/"
   },
   "peerDependencies": {
-    "@dojo/core": "^2.0.0",
-    "@dojo/has": "^2.0.0",
-    "@dojo/i18n": "^2.0.0",
-    "@dojo/shim": "^2.0.0",
-    "@dojo/widget-core": "^2.0.0"
+    "@dojo/framework": "file:./deps/framework"
   },
   "devDependencies": {
     "@dojo/cli": "^2.0.0",
     "@dojo/cli-build-widget": "^2.0.0",
     "@dojo/loader": "^2.0.0",
-    "@dojo/test-extras": "^2.0.0",
+    "@dojo/test-extras": "file:./deps/dojo-test-extras-2.0.1-rc.1.tgz",
     "@types/execa": "^0.8.1",
     "@types/glob": "5.0.*",
     "@types/grunt": "0.4.*",

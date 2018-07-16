@@ -1,16 +1,16 @@
-import { assign } from '@dojo/core/lang';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
+import { assign } from '@dojo/framework/core/lang';
+import { DNode, WNode } from '@dojo/framework/widget-core/interfaces';
 import Tab, { TabProperties } from '../tab/index';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import TabButton from './TabButton';
-import uuid from '@dojo/core/uuid';
+import uuid from '@dojo/framework/core/uuid';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * Enum for tab button alignment

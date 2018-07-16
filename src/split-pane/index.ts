@@ -1,15 +1,15 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { auto } from '@dojo/widget-core/diff';
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { auto } from '@dojo/framework/widget-core/diff';
+import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
 
 import * as fixedCss from './styles/split-pane.m.css';
 import * as css from '../theme/split-pane.m.css';
-import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
+import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
 import { GlobalEvent } from '../global-event/index';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * Direction of this SplitPane

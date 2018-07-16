@@ -1,10 +1,10 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { v } from '@dojo/framework/widget-core/d';
 
 import { TextInputBase, TextInputProperties } from '../text-input/index';
 import * as css from '../theme/enhanced-text-input.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 export interface EnhancedTextInputProperties extends TextInputProperties {
 	addonAfter?: DNode[];

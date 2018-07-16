@@ -1,19 +1,19 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { reference } from '@dojo/widget-core/diff';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Focus from '@dojo/widget-core/meta/Focus';
-import { v, w } from '@dojo/widget-core/d';
-import uuid from '@dojo/core/uuid';
-import { find } from '@dojo/shim/array';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
+import { reference } from '@dojo/framework/widget-core/diff';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/widget-core/d';
+import uuid from '@dojo/framework/core/uuid';
+import { find } from '@dojo/framework/shim/array';
 import { formatAriaProperties, Keys } from '../common/util';
 import { CustomAriaProperties, LabeledProperties, InputProperties } from '../common/interfaces';
 import Icon from '../icon/index';
 import Label from '../label/index';
 import Listbox from '../listbox/index';
 import * as css from '../theme/select.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * @type SelectProperties

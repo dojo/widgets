@@ -1,13 +1,13 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { v } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
-import { CustomElementChildType } from '@dojo/widget-core/registerCustomElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { CustomElementChildType } from '@dojo/framework/widget-core/registerCustomElement';
 
 /**
  * @type TabProperties

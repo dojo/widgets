@@ -1,9 +1,9 @@
-import uuid from '@dojo/core/uuid';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import uuid from '@dojo/framework/core/uuid';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as animations from '../common/styles/animations.m.css';
@@ -11,7 +11,7 @@ import commonBundle from '../common/nls/common';
 import Icon from '../icon/index';
 import * as fixedCss from './styles/slide-pane.m.css';
 import * as css from '../theme/slide-pane.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * Enum for left / right alignment

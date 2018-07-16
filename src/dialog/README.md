@@ -32,7 +32,7 @@ The following CSS classes are used to style the `Dialog` widget and should be pr
 *Basic Example*
 ```typescript
 import Dialog from '@dojo/widgets/dialog';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 w(Dialog, {
 	title: 'My Dialog',
@@ -44,7 +44,7 @@ w(Dialog, {
 *Modal with underlay*
 ```typescript
 import Dialog from '@dojo/widgets/dialog';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 w(Dialog, {
 	title: 'My Dialog',
@@ -58,7 +58,7 @@ w(Dialog, {
 *Custom animations*
 ```typescript
 import Dialog from '@dojo/widgets/dialog';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 w(Dialog, {
 	title: 'My Dialog',
@@ -72,7 +72,7 @@ w(Dialog, {
 *Dialog that can't be closed*
 ```typescript
 import Dialog from '@dojo/widgets/dialog';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 w(Dialog, {
 	title: 'My Dialog',

@@ -1,9 +1,9 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Focus from '@dojo/widget-core/meta/Focus';
-import { v } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import { Keys } from '../common/util';

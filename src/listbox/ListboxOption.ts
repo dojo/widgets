@@ -1,7 +1,7 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { v } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 
 import * as css from '../theme/listbox.m.css';
 

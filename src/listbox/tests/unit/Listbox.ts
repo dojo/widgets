@@ -2,10 +2,10 @@ const { assert } = intern.getPlugin('chai');
 const { registerSuite } = intern.getInterface('object');
 import * as sinon from 'sinon';
 
-import { DNode } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { Keys } from '../../../common/util';
-import Focus from '@dojo/widget-core/meta/Focus';
-import { v, w } from '@dojo/widget-core/d';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/widget-core/d';
 
 import Listbox from '../../index';
 import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';

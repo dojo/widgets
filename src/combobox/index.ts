@@ -1,13 +1,13 @@
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { Keys } from '../common/util';
-import { reference } from '@dojo/widget-core/diff';
-import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Focus from '@dojo/widget-core/meta/Focus';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import uuid from '@dojo/core/uuid';
-import { v, w } from '@dojo/widget-core/d';
+import { reference } from '@dojo/framework/widget-core/diff';
+import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import uuid from '@dojo/framework/core/uuid';
+import { v, w } from '@dojo/framework/widget-core/d';
 
 import Icon from '../icon/index';
 import Label from '../label/index';
@@ -18,7 +18,7 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * @type ComboBoxProperties

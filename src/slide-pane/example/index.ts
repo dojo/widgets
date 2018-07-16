@@ -1,8 +1,8 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 import SlidePane, { Align } from '../../slide-pane/index';
 
 export class App extends WidgetBase<WidgetProperties> {

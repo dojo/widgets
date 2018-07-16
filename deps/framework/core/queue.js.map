@@ -1,0 +1,1 @@
+{"version":3,"file":"queue.js","sourceRoot":"","sources":["../../../../src/core/queue.ts"],"names":[],"mappings":";;;;;;;;;;;;IAAA,gEAAsC","sourcesContent":["export * from '../shim/support/queue';\n"]}

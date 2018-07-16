@@ -2,7 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/test-extras/harness';
-import { v, w } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/framework/widget-core/d';
 
 import CalendarCell from '../../CalendarCell';
 import * as css from '../../../theme/calendar.m.css';

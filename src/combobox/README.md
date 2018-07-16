@@ -41,7 +41,7 @@ The `ComboBox` makes no assumptions about the format of its underlying data. A f
 *Basic Example*
 ```typescript
 import ComboBox from '@dojo/widgets/combobox';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 w(ComboBox, {
 	results: ['foo', 'bar', 'baz'],
@@ -53,7 +53,7 @@ w(ComboBox, {
 *Filtered results*
 ```typescript
 import ComboBox from '@dojo/widgets/combobox';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 const data = ['foo', 'bar', 'baz'];
 
@@ -79,7 +79,7 @@ w(ComboBox, {
 *Custom Data Format / Provider*
 ```typescript
 import ComboBox from '@dojo/widgets/combobox';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 // A fictional store for example purposes only; this can be any data provider
 import MyAwesomeStore from 'some/amazing/package';
 
@@ -100,7 +100,7 @@ w(ComboBox, {
 *Validation*
 ```typescript
 import ComboBox from '@dojo/widgets/combobox';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 w(ComboBox, {
 	results: ['foo', 'bar', 'baz'],
@@ -117,7 +117,7 @@ w(ComboBox, {
 *Custom formatted option*
 ```typescript
 import ComboBox from '@dojo/widgets/combobox';
-import { v, w } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/framework/widget-core/d';
 
 w(ComboBox, {
 	getResultLabel: (result: string) => v('span', { style: 'color: blue' }, [ result ]),

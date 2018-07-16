@@ -1,6 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 
-import { v, w } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/framework/widget-core/d';
 
 import Icon from '../../index';
 import * as css from '../../../theme/icon.m.css';

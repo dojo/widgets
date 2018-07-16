@@ -1,10 +1,10 @@
-import { deepAssign } from '@dojo/core/lang';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { v, w } from '@dojo/widget-core/d';
-import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
+import { deepAssign } from '@dojo/framework/core/lang';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
+import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
 import SplitPane, { Direction } from '../../split-pane/index';
 import GlobalEvent from '../../global-event/index';
 

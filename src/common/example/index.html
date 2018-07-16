@@ -16,7 +16,7 @@
 	</style>
 </head>
 <body>
-	<script src="../../../node_modules/@dojo/shim/util/amd.js"></script>
+	<script src="../../../node_modules/@dojo/framework/shim/util/amd.js"></script>
 	<script src="../../../node_modules/@dojo/loader/loader.js"></script>
 	<link rel="stylesheet" href="./example.css">
 	<script>
@@ -49,7 +49,7 @@
 				}
 			}
 
-			require(['@dojo/shim/main', '@dojo/shim/browser'], function () {
+			require(['@dojo/framework/shim/main', '@dojo/framework/shim/browser'], function () {
 				require([ 'src/common/example/index' ], function () {});
 				if (module) {
 					require([ 'src/' + module + '/example/index' ], function () {});
