@@ -1,3 +1,4 @@
+import 'globalize/dist/globalize/message';
 import { Handle } from '../core/interfaces';
 /**
  * A default bundle used as basis for loading locale-specific bundles.

@@ -4,22 +4,24 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "tslib", "../shim/global", "../shim/Map", "../core/Evented", "../core/has", "../core/uuid", "../core/load/util", "globalize/dist/globalize/message", "./cldr/load", "./util/main"], factory);
+        define(["require", "exports", "tslib", "globalize/dist/globalize/message", "../shim/global", "../shim/Map", "../core/Evented", "../core/has", "../core/uuid", "../core/load/util", "./cldr/load", "./util/main"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = require("tslib");
     /* tslint:disable:interface-name */
+    require("globalize/dist/globalize/message");
     var global_1 = require("../shim/global");
     var Map_1 = require("../shim/Map");
     var Evented_1 = require("../core/Evented");
     var has_1 = require("../core/has");
     var uuid_1 = require("../core/uuid");
     var util_1 = require("../core/load/util");
-    var Globalize = require("globalize/dist/globalize/message");
     var load_1 = require("./cldr/load");
     var main_1 = require("./util/main");
+    // TODO: use normal imports after landing https://github.com/DefinitelyTyped/DefinitelyTyped/pull/27271
+    var Globalize = require('globalize/dist/globalize');
     var TOKEN_PATTERN = /\{([a-z0-9_]+)\}/gi;
     var bundleMap = new Map_1.default();
     var formatterMap = new Map_1.default();

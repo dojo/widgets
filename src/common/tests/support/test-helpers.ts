@@ -1,5 +1,5 @@
 import { WNode, WidgetBaseInterface, Constructor, WidgetMetaBase, WidgetMetaConstructor } from '@dojo/framework/widget-core/interfaces';
-import { CustomComparator, harness } from '@dojo/test-extras/harness';
+import { CustomComparator, harness } from '@dojo/framework/testing/harness';
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 

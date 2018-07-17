@@ -1,4 +1,5 @@
-import * as Globalize from 'globalize/dist/globalize';
+import 'globalize/dist/globalize';
+import * as GlobalizeType from 'globalize';
 export interface DelegatorOptions<O> {
     locale?: string;
     optionsOrLocale?: O | string;
@@ -17,7 +18,7 @@ export interface FormatterDelegatorOptions<T, O> extends DelegatorOptions<O> {
  * @return
  * The localized Globalize.js object.
  */
-export default function getGlobalize(locale?: string): Globalize.Static;
+export default function getGlobalize(locale?: string): GlobalizeType.Static;
 /**
  * Call the specified Globalize.js method with the specified value, unit, and options, for the specified locale.
  *

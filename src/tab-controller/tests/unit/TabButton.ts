@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/framework/widget-core/d';
-import harness from '@dojo/test-extras/harness';
+import harness from '@dojo/framework/testing/harness';
 import { Keys } from '../../../common/util';
 import { assign } from '@dojo/framework/core/lang';
 

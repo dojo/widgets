@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import { stub } from 'sinon';
 
 import { v, w, isWNode } from '@dojo/framework/widget-core/d';
-import harness from '@dojo/test-extras/harness';
+import harness from '@dojo/framework/testing/harness';
 
 import * as css from '../../../theme/split-pane.m.css';
 import * as fixedCss from '../../styles/split-pane.m.css';

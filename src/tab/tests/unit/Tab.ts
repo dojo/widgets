@@ -1,6 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 
-import harness from '@dojo/test-extras/harness';
+import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
 
 import Tab from '../../index';

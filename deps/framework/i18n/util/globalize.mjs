@@ -1,5 +1,7 @@
-import * as Globalize from 'globalize/dist/globalize';
+import 'globalize/dist/globalize';
 import i18n from '../i18n';
+// TODO: use normal imports after landing https://github.com/DefinitelyTyped/DefinitelyTyped/pull/27271
+const Globalize = require('globalize/dist/globalize');
 /**
  * @private
  * Normalize an array of formatter arguments into a discrete object with `locale`, `options`, `value` and

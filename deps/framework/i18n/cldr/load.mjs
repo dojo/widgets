@@ -1,8 +1,8 @@
-// required for Globalize/Cldr to properly resolve locales in the browser.
 import 'cldrjs/dist/cldr/unresolved';
-import * as Globalize from 'globalize/dist/globalize';
 import supportedLocales from './locales';
 import { generateLocales, validateLocale } from '../util/main';
+// TODO: use normal imports after landing https://github.com/DefinitelyTyped/DefinitelyTyped/pull/27271
+const Globalize = require('globalize/dist/globalize');
 /**
  * A list of all required CLDR packages for an individual locale.
  */

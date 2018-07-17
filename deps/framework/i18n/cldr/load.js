@@ -4,16 +4,16 @@
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "cldrjs/dist/cldr/unresolved", "globalize/dist/globalize", "./locales", "../util/main"], factory);
+        define(["require", "exports", "cldrjs/dist/cldr/unresolved", "./locales", "../util/main"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    // required for Globalize/Cldr to properly resolve locales in the browser.
     require("cldrjs/dist/cldr/unresolved");
-    var Globalize = require("globalize/dist/globalize");
     var locales_1 = require("./locales");
     var main_1 = require("../util/main");
+    // TODO: use normal imports after landing https://github.com/DefinitelyTyped/DefinitelyTyped/pull/27271
+    var Globalize = require('globalize/dist/globalize');
     /**
      * A list of all required CLDR packages for an individual locale.
      */

@@ -4,7 +4,7 @@ import { stub, SinonStub } from 'sinon';
 
 import global from '@dojo/framework/shim/global';
 import { GlobalEvent } from './../../index';
-import { harness } from '@dojo/test-extras/harness';
+import { harness } from '@dojo/framework/testing/harness';
 import { w } from '@dojo/framework/widget-core/d';
 
 let windowAddEventlistenerStub: SinonStub;

@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 
 import { v, w } from '@dojo/framework/widget-core/d';
-import harness from '@dojo/test-extras/harness';
+import harness from '@dojo/framework/testing/harness';
 
 import Tooltip, { Orientation } from '../../index';
 import * as css from '../../../theme/tooltip.m.css';

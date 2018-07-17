@@ -9,8 +9,10 @@
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var Globalize = require("globalize/dist/globalize");
+    require("globalize/dist/globalize");
     var i18n_1 = require("../i18n");
+    // TODO: use normal imports after landing https://github.com/DefinitelyTyped/DefinitelyTyped/pull/27271
+    var Globalize = require('globalize/dist/globalize');
     /**
      * @private
      * Normalize an array of formatter arguments into a discrete object with `locale`, `options`, `value` and
