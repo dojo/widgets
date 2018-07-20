@@ -23,7 +23,7 @@
     "dist-custom-elements": "npm run build-custom-elements && shx rm -rf dist/all/dist && shx cp -r output/dist dist/all/"
   },
   "peerDependencies": {
-    "@dojo/framework": "file:./deps/framework"
+    "@dojo/framework": "3.0.0-alpha.1"
   },
   "devDependencies": {
     "@dojo/cli": "^2.0.0",
