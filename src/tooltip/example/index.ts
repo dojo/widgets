@@ -1,8 +1,8 @@
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { Set } from '@dojo/shim/Set';
-import { w, v } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import { Set } from '@dojo/framework/shim/Set';
+import { w, v } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 
 import Button from '../../button/index';
 import TextInput from '../../text-input/index';

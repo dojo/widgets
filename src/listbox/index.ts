@@ -1,19 +1,19 @@
-import { auto, reference } from '@dojo/widget-core/diff';
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import Dimensions from '@dojo/widget-core/meta/Dimensions';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { auto, reference } from '@dojo/framework/widget-core/diff';
+import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
+import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
-import MetaBase from '@dojo/widget-core/meta/Base';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import uuid from '@dojo/core/uuid';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import MetaBase from '@dojo/framework/widget-core/meta/Base';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import uuid from '@dojo/framework/core/uuid';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 
 import * as css from '../theme/listbox.m.css';
 import ListboxOption from './ListboxOption';
-import { Focus } from '@dojo/widget-core/meta/Focus';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { Focus } from '@dojo/framework/widget-core/meta/Focus';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /* Default scroll meta */
 export class ScrollMeta extends MetaBase {

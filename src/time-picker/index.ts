@@ -1,19 +1,19 @@
-import { padStart } from '@dojo/shim/string';
-import { v, w } from '@dojo/widget-core/d';
-import { DNode } from '@dojo/widget-core/interfaces';
-import ThemedMixin, { theme, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { diffProperty } from '@dojo/widget-core/decorators/diffProperty';
-import { auto } from '@dojo/widget-core/diff';
-import Focus from '@dojo/widget-core/meta/Focus';
+import { padStart } from '@dojo/framework/shim/string';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
+import { auto } from '@dojo/framework/widget-core/diff';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
 import ComboBox from '../combobox/index';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { TextInputProperties } from '../text-input/index';
 import Label from '../label/index';
-import uuid from '@dojo/core/uuid';
+import uuid from '@dojo/framework/core/uuid';
 import * as css from '../theme/time-picker.m.css';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;

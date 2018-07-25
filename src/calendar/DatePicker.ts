@@ -1,9 +1,9 @@
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import Focus from '@dojo/widget-core/meta/Focus';
-import { v, w } from '@dojo/widget-core/d';
-import uuid from '@dojo/core/uuid';
-import { DNode } from '@dojo/widget-core/interfaces';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/widget-core/d';
+import uuid from '@dojo/framework/core/uuid';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
 import calendarBundle from './nls/Calendar';
 import { Keys } from '../common/util';
 

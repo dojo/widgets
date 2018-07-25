@@ -2,9 +2,9 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/widget-core/d';
-import Focus from '@dojo/widget-core/meta/Focus';
-import harness from '@dojo/test-extras/harness';
+import { v, w } from '@dojo/framework/widget-core/d';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
+import harness from '@dojo/framework/testing/harness';
 
 import Label from '../../../label/index';
 import Checkbox, { Mode, CheckboxProperties } from '../../index';

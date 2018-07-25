@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 
-import harness from '@dojo/test-extras/harness';
-import { v, w } from '@dojo/widget-core/d';
+import harness from '@dojo/framework/testing/harness';
+import { v, w } from '@dojo/framework/widget-core/d';
 
 import Label from '../../index';
 import * as css from '../../../theme/label.m.css';

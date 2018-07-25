@@ -1,9 +1,9 @@
-import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { I18nMixin } from '@dojo/widget-core/mixins/I18n';
-import { ThemedMixin, theme, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
+import { ThemedMixin, theme, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 
 import Icon from '../icon/index';
 import SlidePane, { Align } from '../slide-pane/index';
@@ -12,7 +12,7 @@ import { CommonMessages } from '../common/interfaces';
 import * as fixedCss from './styles/toolbar.m.css';
 import * as css from '../theme/toolbar.m.css';
 import { GlobalEvent } from '../global-event/index';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /**
  * @type ToolbarProperties

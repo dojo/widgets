@@ -1,9 +1,9 @@
 const { assert } = intern.getPlugin('chai');
 const { registerSuite } = intern.getInterface('object');
 
-import { v, w } from '@dojo/widget-core/d';
+import { v, w } from '@dojo/framework/widget-core/d';
 import * as sinon from 'sinon';
-import harness from '@dojo/test-extras/harness';
+import harness from '@dojo/framework/testing/harness';
 
 import * as css from '../../../theme/accordion-pane.m.css';
 import AccordionPane from '../../index';

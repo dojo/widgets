@@ -2,10 +2,10 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import { stub, SinonStub } from 'sinon';
 
-import global from '@dojo/shim/global';
+import global from '@dojo/framework/shim/global';
 import { GlobalEvent } from './../../index';
-import { harness } from '@dojo/test-extras/harness';
-import { w } from '@dojo/widget-core/d';
+import { harness } from '@dojo/framework/testing/harness';
+import { w } from '@dojo/framework/widget-core/d';
 
 let windowAddEventlistenerStub: SinonStub;
 let documentAddEventlistenerStub: SinonStub;

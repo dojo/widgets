@@ -1,5 +1,6 @@
 /_build
 /bower_components
+/coverage
 /dist
 /html-report
 node_modules

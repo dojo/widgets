@@ -25,7 +25,7 @@ The following CSS classes are used to style the `Tooltip` widget and should be p
 ```typescript
 import TextInput from '@dojo/widgets/text-input';
 import Tooltip from '@dojo/widgets/tooltip';
-import { w } from '@dojo/widget-core/d';
+import { w } from '@dojo/framework/widget-core/d';
 
 w(Tooltip, {
 	key: 'foo',

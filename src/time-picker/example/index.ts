@@ -1,9 +1,9 @@
-import { getDateFormatter } from '@dojo/i18n/date';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { getDateFormatter } from '@dojo/framework/i18n/date';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
 import TimePicker, { getOptions, TimeUnits } from '../../time-picker/index';
 import * as baseCss from '../../common/styles/base.m.css';

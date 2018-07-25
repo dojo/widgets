@@ -1,14 +1,14 @@
-import uuid from '@dojo/core/uuid';
-import { DNode } from '@dojo/widget-core/interfaces';
-import { theme, ThemedMixin, ThemedProperties } from '@dojo/widget-core/mixins/Themed';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import uuid from '@dojo/framework/core/uuid';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 
 import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
 import * as css from '../theme/title-pane.m.css';
-import { Dimensions } from '@dojo/widget-core/meta/Dimensions';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
+import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import GlobalEvent from '../global-event/index';
 
 /**

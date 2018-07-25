@@ -1,9 +1,9 @@
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { Set } from '@dojo/shim/Set';
-import { w, v } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
-import { from } from '@dojo/shim/array';
+import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import { Set } from '@dojo/framework/shim/Set';
+import { w, v } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
+import { from } from '@dojo/framework/shim/array';
 
 import AccordionPane from '../../accordion-pane/index';
 import TitlePane from '../../title-pane/index';

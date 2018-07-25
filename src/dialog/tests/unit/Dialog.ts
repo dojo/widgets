@@ -2,8 +2,8 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import { v, w, isWNode } from '@dojo/widget-core/d';
-import Focus from '@dojo/widget-core/meta/Focus';
+import { v, w, isWNode } from '@dojo/framework/widget-core/d';
+import Focus from '@dojo/framework/widget-core/meta/Focus';
 
 import Dialog, { DialogProperties } from '../../index';
 import Icon from '../../../icon/index';

@@ -1,5 +1,5 @@
-import loadCldrData, { CldrData } from '@dojo/i18n/cldr/load';
-import { switchLocale } from '@dojo/i18n/i18n';
+import loadCldrData, { CldrData } from '@dojo/framework/i18n/cldr/load';
+import { switchLocale } from '@dojo/framework/i18n/i18n';
 
 // The following is the minimum CLDR data required to render 12-hour time in English.
 const cldrData: CldrData = {

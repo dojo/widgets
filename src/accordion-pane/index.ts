@@ -1,11 +1,11 @@
-import { after } from '@dojo/core/aspect';
-import { assign } from '@dojo/core/lang';
-import { DNode, WNode } from '@dojo/widget-core/interfaces';
-import { customElement } from '@dojo/widget-core/decorators/customElement';
-import { includes } from '@dojo/shim/array';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/widget-core/mixins/Themed';
-import { v } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { after } from '@dojo/framework/core/aspect';
+import { assign } from '@dojo/framework/core/lang';
+import { DNode, WNode } from '@dojo/framework/widget-core/interfaces';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { includes } from '@dojo/framework/shim/array';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { v } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 
 import TitlePane from '../title-pane/index';
 import * as css from '../theme/accordion-pane.m.css';

@@ -1,13 +1,13 @@
-import { DNode } from '@dojo/widget-core/interfaces';
-import { includes } from '@dojo/shim/array';
-import { deepAssign } from '@dojo/core/lang';
-import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
-import { v, w } from '@dojo/widget-core/d';
-import { WidgetBase } from '@dojo/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/widget-core/interfaces';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { includes } from '@dojo/framework/shim/array';
+import { deepAssign } from '@dojo/framework/core/lang';
+import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 import Tab from '../../tab/index';
 import TabController, { Align } from '../../tab-controller/index';
-import Task from '@dojo/core/async/Task';
+import Task from '@dojo/framework/core/async/Task';
 
 let refresh: Task<any>;
 
