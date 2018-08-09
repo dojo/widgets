@@ -1,6 +1,6 @@
 # @dojo/widgets/time-picker widget
 
-Dojo 2's `TimePicker` widget provides a form control that allows users to manually enter a time or select a valid time from a dropdown of options. The non-native option wraps the `ComboBox` widget.
+Dojo's `TimePicker` widget provides a form control that allows users to manually enter a time or select a valid time from a dropdown of options. The non-native option wraps the `ComboBox` widget.
 
 ## Features
 

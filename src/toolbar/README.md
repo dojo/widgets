@@ -1,6 +1,6 @@
 # @dojo/widgets/toolbar widget
 
-Dojo 2's `Toolbar` component can be used to display an application navigation bar that can show a title and action items. Action elements can be configured to automatically collapse into a `SlidePane` component.
+Dojo's `Toolbar` component can be used to display an application navigation bar that can show a title and action items. Action elements can be configured to automatically collapse into a `SlidePane` component.
 
 ## Features
 

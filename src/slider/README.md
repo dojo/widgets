@@ -1,6 +1,6 @@
 # @dojo/widgets/slider widget
 
-Dojo 2's `Slider` widget creates a range slider control with a styleable track, fill, and draggable thumb control.
+Dojo's `Slider` widget creates a range slider control with a styleable track, fill, and draggable thumb control.
 
 
 ## Features

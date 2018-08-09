@@ -1,6 +1,6 @@
 # @dojo/widgets/button widget
 
-Dojo 2's `Button` widget creates a `<button>` element
+Dojo's `Button` widget creates a `<button>` element
 
 
 ## Features

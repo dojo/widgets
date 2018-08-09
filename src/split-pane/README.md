@@ -1,6 +1,6 @@
 # @dojo/widgets/split-pane widget
 
-Dojo 2's `SplitPane` component divides a container into two resizable panes that can oriented horizontally or vertically. It expects two child nodes.
+Dojo's `SplitPane` component divides a container into two resizable panes that can oriented horizontally or vertically. It expects two child nodes.
 
 ## Features
 

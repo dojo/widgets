@@ -1,6 +1,6 @@
 # @dojo/widgets/select widget
 
-Dojo 2's `Select` provides a dropdown menu form control using either the native `<select>` element or a fully custom component. The custom version uses the `Listbox` widget as its list of options.
+Dojo's `Select` provides a dropdown menu form control using either the native `<select>` element or a fully custom component. The custom version uses the `Listbox` widget as its list of options.
 
 ## Features
 

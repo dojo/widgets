@@ -1,6 +1,6 @@
 # @dojo/widgets/listbox widget
 
-Dojo 2's `Listbox` provides a base widget that can be used as an options menu within a `Select` or `ComboBox` component, or as a standalone multi-select component
+Dojo's `Listbox` provides a base widget that can be used as an options menu within a `Select` or `ComboBox` component, or as a standalone multi-select component
 
 ## Features
 
