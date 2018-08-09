@@ -1,6 +1,6 @@
 # @dojo/widgets/tooltip widget
 
-Dojo 2's `Tooltip` component can be used to show or hide content around a child component based on specific events.
+Dojo's `Tooltip` component can be used to show or hide content around a child component based on specific events.
 
 ## Features
 

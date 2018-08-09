@@ -1,6 +1,6 @@
 # @dojo/widgets/icon widget
 
-Dojo 2's `Icon` widget renders an icon.
+Dojo's `Icon` widget renders an icon.
 
 
 ## Example Usage

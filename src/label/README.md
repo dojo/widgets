@@ -1,6 +1,6 @@
 # @dojo/widgets/label widget
 
-Dojo 2's `Label` widget creates a `<label>` element that wraps its children and inserts a text node as either the first or last child. It is included by default in all form input widgets, including `ComboBox` and `TimePicker`. Input widgets control the text, visibility, and placement of the label through the following properties:
+Dojo's `Label` widget creates a `<label>` element that wraps its children and inserts a text node as either the first or last child. It is included by default in all form input widgets, including `ComboBox` and `TimePicker`. Input widgets control the text, visibility, and placement of the label through the following properties:
 - `label`: String used as label text
 - `labelAfter`: If true, the label node follows the input node in the generated vdom
 - `labelHidden`: This corresponds to the `hidden` class on the Label widget.

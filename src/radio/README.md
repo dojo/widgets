@@ -1,6 +1,6 @@
 # @dojo/widgets/radio widget
 
-Dojo 2's `Radio` widget provides a styleable radio widget with an optional label.
+Dojo's `Radio` widget provides a styleable radio widget with an optional label.
 
 
 ## Features

@@ -1,6 +1,6 @@
 {
 	"capabilities+": {
-		"project": "Dojo 2",
+		"project": "Dojo",
 		"name": "@dojo/widgets",
 		"browserstack.debug": false
 	},

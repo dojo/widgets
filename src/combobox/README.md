@@ -1,6 +1,6 @@
 # @dojo/widgets/combobox widget
 
-Dojo 2's `ComboBox` widget provides a form control that allows users to either enter a value manually or to select a value from a list of results.
+Dojo's `ComboBox` widget provides a form control that allows users to either enter a value manually or to select a value from a list of results.
 
 ## Features
 

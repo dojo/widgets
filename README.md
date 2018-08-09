@@ -4,8 +4,8 @@
 [![codecov](https://codecov.io/gh/dojo/widgets/branch/master/graph/badge.svg)](https://codecov.io/gh/dojo/widgets)
 [![npm version](https://badge.fury.io/js/%40dojo%2Fwidgets.svg)](https://badge.fury.io/js/%40dojo%2Fwidgets)
 
-A suite of pre-built Dojo 2 widgets, ready to use in your web application.
-These widgets are built using Dojo 2's widget authoring system [(@dojo/widget-core)](https://github.com/dojo/widget-core).
+A suite of pre-built Dojo widgets, ready to use in your web application.
+These widgets are built using Dojo's widget authoring system [(@dojo/framework/widget-core)](https://github.com/dojo/framework/blob/master/src/widget-core/README.md).
 
 - [Usage](#usage)
 - [Features](#features)
@@ -155,14 +155,14 @@ The range definitions are as follows:
 
 ## How to customize a widget
 
-There are many ways in which you can customize the behavior and appearance of Dojo 2 widgets.
-See the [`widget-core`](https://github.com/dojo/widget-core) README for examples of how to customize the theme or a specific CSS class of a widget.
+There are many ways in which you can customize the behavior and appearance of Dojo widgets.
+See the [`widget-core`](https://github.com/dojo/framework/blob/master/src/widget-core/README.md) README for examples of how to customize the theme or a specific CSS class of a widget.
 
 Or can you write your own widget that extends an official widget.
 
 ### Extending widgets
 
-Because all Dojo 2 widgets are Classes, you can simply extend the Class to add or change its behavior.
+Because all Dojo widgets are Classes, you can simply extend the Class to add or change its behavior.
 
 ```ts
 export class MyWidget extends Button {
@@ -170,7 +170,7 @@ export class MyWidget extends Button {
 }
 ```
 
-Dojo 2 widgets provide standard extension points to allow you to customize their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/widget-core#decorator-lifecycle-hooks).
+Dojo widgets provide standard extension points to allow you to customize their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/framework/blob/master/src/widget-core/README.md#decorator-lifecycle-hooks).
 
 Individual widgets also provide certain types of extension points where applicable:
 - `render*`: Large render functions are split up into multiple smaller pieces that can be more easily overridden to create custom vdom.
@@ -180,7 +180,7 @@ Not all widgets include these extension points, and some have additional overrid
 
 ## How do I contribute?
 
-We appreciate your interest!  Please see the [Dojo 2 Meta Repository](https://github.com/dojo/meta#readme) for the
+We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
 Contributing Guidelines and Style Guide.
 
 ### Installation
@@ -213,7 +213,7 @@ or
 
 ### Viewing widget examples locally
 
-Each Dojo 2 widget includes functioning example code so you can view the widget. To view individual widget example:
+Each Dojo widget includes functioning example code so you can view the widget. To view individual widget example:
 
 1. Run `grunt dev` in your terminal
 2. Open the newly built file `_build/common/example/index.html` in your web browser

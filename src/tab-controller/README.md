@@ -1,6 +1,6 @@
 # @dojo/widgets/tab-controller widget
 
-Dojo 2's `TabController` widget provides a user interface capable of displaying tabbed content. The content shown at any given time is based on the currently-selected tab button.
+Dojo's `TabController` widget provides a user interface capable of displaying tabbed content. The content shown at any given time is based on the currently-selected tab button.
 
 ## Features
 
