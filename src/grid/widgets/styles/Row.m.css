@@ -1,0 +1,5 @@
+.root {
+	display: flex;
+	height: 30px;
+	border-left-style: none;
+}
