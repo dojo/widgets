@@ -63,7 +63,7 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [Calendar](src/calendar/README.md)
 
-[Checkbox/Switch](src/checkbox/README.md)
+[Checkbox/Toggle](src/checkbox/README.md)
 
 [ComboBox](src/combobox/README.md)
 
