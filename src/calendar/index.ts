@@ -295,7 +295,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		} = this._getMonthYear();
 		const {
 			onMonthChange,
-			onYearChange,
+			onYearChange
 		} = this.properties;
 
 		if (!this._monthInMin(month === 0 ? year - 1 : year, month === 0 ? 11 : month - 1)) {
