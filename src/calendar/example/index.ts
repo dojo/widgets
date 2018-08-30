@@ -7,18 +7,18 @@ export default class App extends WidgetBase {
 	private _month: number | undefined;
 	private _year: number | undefined;
 	private _selectedDate: Date | undefined;
-
-	private _month2: number | undefined;
-	private _year2: number | undefined;
-	private _selectedDate2: Date | undefined;
+	private _today = new Date();
+	private _minDate = new Date(2017, 3, 16);
+	private _maxDate = new Date(this._today.getFullYear(), this._today.getMonth() + 1, 15);
 
 	render() {
 		return v('div', {}, [
+			v('p', [`You may select days between ${this._minDate.toDateString()} and ${this._maxDate.toDateString()}`]),
 			w(Calendar, {
 				key: 'calendar-start-sunday',
 				month: this._month,
-				// minDate: new Date(2014, 4, 9),
-				// maxDate: new Date(2018, 9, 4),
+				minDate: this._minDate,
+				maxDate: this._maxDate,
 				selectedDate: this._selectedDate,
 				year: this._year,
 				onMonthChange: (month: number) => {
@@ -34,29 +34,7 @@ export default class App extends WidgetBase {
 					this.invalidate();
 				}
 			}),
-			this._selectedDate ? v('p', [ `Selected Date: ${this._selectedDate.toDateString()}` ]) : null,
-			v('hr'),
-			v('p', {}, ['Calendar starts on Monday']),
-			w(Calendar, {
-				key: 'calendar-start-monday',
-				month: this._month2,
-				selectedDate: this._selectedDate2,
-				firstDayOfTheWeek: 1,
-				year: this._year2,
-				onMonthChange: (month: number) => {
-					this._month2 = month;
-					this.invalidate();
-				},
-				onYearChange: (year: number) => {
-					this._year2 = year;
-					this.invalidate();
-				},
-				onDateSelect: (date: Date) => {
-					this._selectedDate2 = date;
-					this.invalidate();
-				}
-			}),
-			this._selectedDate2 ? v('p', [ `Selected Date: ${this._selectedDate2.toDateString()}` ]) : null
+			this._selectedDate ? v('p', {key: 'sunday-selected'}, [ `Selected Date: ${this._selectedDate.toDateString()}` ]) : null
 		]);
 	}
 }

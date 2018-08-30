@@ -6,6 +6,7 @@ import { uuid } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import calendarBundle from './nls/Calendar';
 import { Keys } from '../common/util';
+import { monthInMin, monthInMax } from './date-utils';
 
 import Icon from '../icon/index';
 import * as baseCss from '../common/styles/base.m.css';
@@ -201,10 +202,7 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 			maxDate
 		} = this.properties;
 
-		const date = new Date(year, month, 1);
-		minDate = minDate ? new Date(minDate.getFullYear(), minDate.getMonth(), 1) : date;
-		maxDate = maxDate ? new Date(maxDate.getFullYear(), maxDate.getMonth(), 1) : date;
-		return date >= minDate && date <= maxDate;
+		return monthInMin(year, month, minDate) && monthInMax(year, month, maxDate);
 	}
 
 	private _yearInMinMax(year: number) {
@@ -398,14 +396,14 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						type: 'button',
 						onclick: this._onYearPageDown,
-						disabled: !this._yearInMinMax(minYear - 1)
+						disabled: !this._yearInMinMax(year - 1)
 					}, this.renderPagingButtonContent(Paging.previous)),
 					v('button', {
 						classes: this.theme(css.next),
 						tabIndex: this._yearPopupOpen ? 0 : -1,
 						type: 'button',
 						onclick: this._onYearPageUp,
-						disabled: !this._yearInMinMax(maxYear + 1)
+						disabled: !this._yearInMinMax(year + 1)
 					}, this.renderPagingButtonContent(Paging.next))
 				])
 			])

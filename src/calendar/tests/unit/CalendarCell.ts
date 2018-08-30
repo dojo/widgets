@@ -50,29 +50,48 @@ registerSuite('CalendarCell', {
 			]));
 		},
 
+		'Calendar cells for other months display as inactive'() {
+			const h = harness(() => w(CalendarCell, {
+				date: 30,
+				currentMonth: false
+			}));
+
+			h.expect(() => v('td', {
+				key: 'root',
+				role: 'gridcell',
+				'aria-selected': 'false',
+				tabIndex: -1,
+				classes: [ css.date, css.inactiveDate, null, null ],
+				onclick: noop,
+				onkeydown: noop
+			}, [
+				v('span', {}, [ '30' ])
+			]));
+		},
+
 		'Click handler called with correct arguments'() {
 			let clickedDate = 0;
-			let clickedDisabled = false;
+			let clickedCurrentMonth = false;
 			let date = 1;
-			let disabled = true;
+			let currentMonth = false;
 			const h = harness(() => w(CalendarCell, {
 				date,
-				disabled,
-				onClick: (date: number, disabled: boolean) => {
-					clickedDate = date;
-					clickedDisabled = disabled;
+				currentMonth,
+				onClick: (callbackDate: number, callbackCurrentMonth: boolean) => {
+					clickedDate = callbackDate;
+					clickedCurrentMonth = callbackCurrentMonth;
 				}
 			}));
 
 			h.trigger('td', 'onclick', stubEvent);
 			assert.strictEqual(clickedDate, 1);
-			assert.isTrue(clickedDisabled);
+			assert.isFalse(clickedCurrentMonth);
 
-			disabled = false;
 			date = 2;
+			currentMonth = true;
 			h.trigger('td', 'onclick', stubEvent);
 			assert.strictEqual(clickedDate, 2);
-			assert.isFalse(clickedDisabled, 'disabled defaults to false');
+			assert.isTrue(clickedCurrentMonth);
 		},
 
 		'Keydown handler called'() {

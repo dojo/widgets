@@ -8,6 +8,7 @@ import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
+import { monthInMin, monthInMax } from './date-utils';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import Icon from '../icon/index';
@@ -127,21 +128,13 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			month,
 			selectedDate = this._defaultDate,
 			year,
-			minDate = this._defaultDate,
-			maxDate = this._defaultDate
+			minDate,
+			maxDate
 		} = this.properties;
 
-		let selected = selectedDate;
-		if (selectedDate > maxDate) {
-			selected = maxDate;
-		}
-		else if (selectedDate < minDate) {
-			selected = minDate;
-		}
-
 		return {
-			month: typeof month === 'number' ? month : selected.getMonth(),
-			year: typeof year === 'number' ? year : selected.getFullYear()
+			month: typeof month === 'number' ? month : selectedDate.getMonth(),
+			year: typeof year === 'number' ? year : selectedDate.getFullYear()
 		};
 	}
 
@@ -160,6 +153,10 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 
+		if (!this._dateInMinMax(new Date(year, month, day))) {
+			return;
+		}
+
 		if (day < 1) {
 			this._onMonthDecrement();
 			day += previousMonthLength;
@@ -174,16 +171,12 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		this.invalidate();
 	}
 
-	private _onDateClick(date: number, disabled: boolean) {
+	private _onDateClick(date: number, currentMonth: boolean) {
 		const { onDateSelect } = this.properties;
 		let { month, year } = this._getMonthYear();
 
-		if (disabled && date < 15) {
-			({ month, year } = this._onMonthIncrement());
-			this._callDateFocus = true;
-		}
-		else if (disabled && date >= 15) {
-			({ month, year } = this._onMonthDecrement());
+		if (!currentMonth) {
+			({ month, year } = (date < 15) ? this._onMonthIncrement() : this._onMonthDecrement());
 			this._callDateFocus = true;
 		}
 		this._focusedDay = date;
@@ -225,32 +218,11 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			case Keys.Enter:
 			case Keys.Space:
 				const { onDateSelect } = this.properties;
-				onDateSelect && onDateSelect(new Date(year, month, this._focusedDay));
+				const date = new Date(year, month, this._focusedDay);
+				if (this._dateInMinMax(date)) {
+					onDateSelect && onDateSelect(date);
+				}
 		}
-	}
-
-	private _monthInMin(year: number, month: number) {
-		const {
-			minDate
-		} = this.properties;
-
-		if (minDate) {
-			return new Date(year, month, 1) >= new Date(minDate.getFullYear(), minDate.getMonth(), 1);
-		}
-		return true;
-	}
-
-	private _monthInMax(year: number, month: number) {
-		const {
-			maxDate
-		} = this.properties;
-
-		if (maxDate) {
-			const thisMonth = new Date(year, month, 1);
-			const max = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
-			return thisMonth <= max;
-		}
-		return true;
 	}
 
 	private _lastMonthInMin() {
@@ -258,11 +230,9 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			year,
 			month
 		} = this._getMonthYear();
+		let { minDate } = this.properties;
 
-		year = month === 0 ? year - 1 : year;
-		month = month === 0 ? 11 : month - 1;
-
-		return this._monthInMin(year, month);
+		return monthInMin(year, month - 1, minDate);
 	}
 
 	private _nextMonthInMax() {
@@ -270,11 +240,9 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			year,
 			month
 		} = this._getMonthYear();
+		const { maxDate } = this.properties;
 
-		year = month === 11 ? year + 1 : year;
-		month = month === 11 ? 0 : month + 1;
-
-		return this._monthInMax(year, month);
+		return monthInMax(year, month + 1, maxDate);
 	}
 
 	private _dateInMinMax(date: Date): boolean {
@@ -284,7 +252,6 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		} = this.properties;
 
 		const inRange = date >= minDate && date <= maxDate;
-		console.log(inRange, minDate.toDateString(), '<=', date.toDateString(), '<=', maxDate.toDateString());
 		return inRange;
 	}
 
@@ -295,10 +262,11 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		} = this._getMonthYear();
 		const {
 			onMonthChange,
-			onYearChange
+			onYearChange,
+			minDate
 		} = this.properties;
 
-		if (!this._monthInMin(month === 0 ? year - 1 : year, month === 0 ? 11 : month - 1)) {
+		if (!monthInMin(year, month - 1, minDate)) {
 			return { month, year };
 		}
 
@@ -319,10 +287,11 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		} = this._getMonthYear();
 		const {
 			onMonthChange,
-			onYearChange
+			onYearChange,
+			maxDate
 		} = this.properties;
 
-		if (!this._monthInMax(month === 11 ? year + 1 : year, month === 11 ? 0 : month + 1)) {
+		if (!monthInMax(year, month + 1, maxDate)) {
 			return { month, year };
 		}
 
@@ -358,51 +327,44 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		const todayString = new Date().toDateString();
 
 		let dayIndex = 0;
-		let date = initialWeekday > 0 ? previousMonthLength - initialWeekday : 0;
-		let isCurrentMonth = initialWeekday > 0 ? false : true;
+		let isCurrentMonth = initialWeekday === 0;
+		let cellMonth = isCurrentMonth ? month : month - 1;
+		let date = isCurrentMonth ? 0 : previousMonthLength - initialWeekday;
 		let isSelectedDay: boolean;
+		let isToday: boolean;
 		let weeks: DNode[] = [];
 		let days: DNode[];
 		let dateObj: Date;
 		let dateString: string;
-		let i: number;
-		let realMonth = isCurrentMonth ? month : month === 0 ? 11 : month - 1;
-		let realYear = isCurrentMonth ? year : month === 0 ? year - 1 : year;
+		let weekday: number;
 
 		for (let week = 0; week < 6; week++) {
 			days = [];
 
-			for (i = 0; i < 7; i++) {
+			for (weekday = 0; weekday < 7; weekday++) {
 				// find the next date
 				// if we've reached the end of the previous month, reset to 1
 				if (date > dayIndex && date >= previousMonthLength) {
 					date = 1;
-					isCurrentMonth = true;
+					cellMonth++;
 				}
 				// if we've reached the end of the current month, reset to 1
 				else if (date <= dayIndex && date >= currentMonthLength) {
 					date = 1;
-					isCurrentMonth = false;
+					cellMonth++;
 				}
 				else {
 					date++;
 				}
-				dayIndex++;
 
 				// set isSelectedDay if the dates match
-				// FIXME `month` is wrong for last/next month!
-				dateObj = new Date(realYear, realMonth, date);
+				dateObj = new Date(year, cellMonth, date);
 				dateString = dateObj.toDateString();
-				if (isCurrentMonth && selectedDate && dateString === selectedDate.toDateString()) {
-					isSelectedDay = true;
-				}
-				else {
-					isSelectedDay = false;
-				}
+				isSelectedDay = Boolean(selectedDate && dateString === selectedDate.toDateString());
+				isCurrentMonth = month === cellMonth;
+				isToday = dateString === todayString;
 
-				const isToday = isCurrentMonth && dateString === todayString;
-
-				days.push(this.renderDateCell(date, week * 7 + i, isSelectedDay, isCurrentMonth, isToday, dateObj));
+				days.push(this.renderDateCell(dateObj, dayIndex++, isSelectedDay, isCurrentMonth, isToday));
 			}
 
 			weeks.push(v('tr', days));
@@ -411,20 +373,24 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		return weeks;
 	}
 
-	protected renderDateCell(date: number, index: number, selected: boolean, currentMonth: boolean, today: boolean, dateObj: Date): DNode {
+	protected renderDateCell(dateObj: Date, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
+		const date = dateObj.getDate();
 		const { theme, classes } = this.properties;
+		const disabled = !this._dateInMinMax(dateObj);
+		const focusable = currentMonth && date === this._focusedDay;
 
 		return w(CalendarCell, {
 			classes,
 			key: `date-${index}`,
-			callFocus: this._callDateFocus && currentMonth && date === this._focusedDay,
+			callFocus: this._callDateFocus && focusable,
 			date,
-			disabled: !currentMonth, // && !this._dateInMinMax(dateObj),
-			focusable: currentMonth && date === this._focusedDay,
+			disabled,
+			focusable,
+			currentMonth,
 			selected,
 			theme,
 			today,
-			onClick: this._onDateClick,
+			onClick: disabled ? undefined : this._onDateClick,
 			onFocusCalled: this._onDateFocusCalled,
 			onKeyDown: this._onDateKeyDown
 		});

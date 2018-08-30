@@ -6,7 +6,7 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
-import DatePicker from '../../DatePicker';
+import DatePicker, { DatePickerProperties } from '../../DatePicker';
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
@@ -19,13 +19,13 @@ import {
 } from '../../../common/tests/support/test-helpers';
 
 const testDate = new Date('June 3 2017');
-const requiredProps = {
+const requiredProps: DatePickerProperties = {
 	labels: DEFAULT_LABELS,
 	month: testDate.getMonth(),
 	monthNames: DEFAULT_MONTHS,
 	year: testDate.getFullYear()
 };
-let customProps: any = {};
+let customProps: Partial<DatePickerProperties> = {};
 
 const compareKey = { selector: 'label,input', property: 'key', comparator: (property: any) => typeof property === 'string' };
 const compareFor = { selector: 'label', property: 'for', comparator: (property: any) => typeof property === 'string' };
@@ -46,6 +46,7 @@ const monthRadios = function(open?: boolean) {
 			name: '',
 			tabIndex: open ? 0 : -1,
 			type: 'radio',
+			disabled: false,
 			value: `${i}`,
 			onchange: noop
 		}),
@@ -56,7 +57,14 @@ const monthRadios = function(open?: boolean) {
 	]));
 };
 
-const yearRadios = function(open?: boolean, yearStart = 2000, yearEnd = 2020, checkedYear = 2017) {
+const yearRadios = function(
+	open?: boolean,
+	yearStart = 2000,
+	yearEnd = 2020,
+	checkedYear = 2017,
+	minYear = yearStart,
+	maxYear = yearEnd
+) {
 	const radios = [];
 	for (let i = yearStart; i < yearEnd; i++) {
 		radios.push(v('label', {
@@ -73,6 +81,7 @@ const yearRadios = function(open?: boolean, yearStart = 2000, yearEnd = 2020, ch
 				type: 'radio',
 				key: '',
 				name: '',
+				disabled: i < minYear || i > maxYear,
 				value: `${ i }`,
 				onchange: noop
 			}),
@@ -105,7 +114,13 @@ const expectedMonthPopup = function(open: boolean) {
 	]);
 };
 
-const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: number) {
+const expectedYearPopup = function(
+	open: boolean,
+	yearStart?: number,
+	yearEnd?: number,
+	minYear?: number,
+	maxYear?: number
+) {
 	return v('div', {
 		key: 'year-grid',
 		'aria-hidden': `${!open}`,
@@ -119,7 +134,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 			onkeydown: noop
 		}, [
 			v('legend', { classes: [ baseCss.visuallyHidden ] }, [ DEFAULT_LABELS.chooseYear ]),
-			...yearRadios(open, yearStart, yearEnd)
+			...yearRadios(open, yearStart, yearEnd, undefined, minYear, maxYear)
 		]),
 		v('div', {
 			classes: css.controls
@@ -128,6 +143,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 				classes: css.previous,
 				tabIndex: open ? 0 : -1,
 				type: 'button',
+				disabled: false,
 				onclick: noop
 			}, [
 				w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
@@ -137,6 +153,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 				classes: css.next,
 				tabIndex: open ? 0 : -1,
 				type: 'button',
+				disabled: false,
 				onclick: noop
 			}, [
 				w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
@@ -145,9 +162,16 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 		])
 	]);
 };
+interface ExpectedOptions {
+	yearStart?: number;
+	yearEnd?: number;
+	monthLabel?: string;
+	minDate?: Date;
+	maxDate?: Date;
+}
 
-const expected = function(monthOpen = false, yearOpen = false, options: { yearStart?: number; yearEnd?: number; monthLabel?: string; } = {}) {
-	const { yearStart, yearEnd, monthLabel = 'June 2017' } = options;
+const expected = function(monthOpen = false, yearOpen = false, options: ExpectedOptions = {}) {
+	const { yearStart, yearEnd, monthLabel = 'June 2017', minDate, maxDate } = options;
 	// new
 	return v('div', {
 		classes: css.datePicker
@@ -195,7 +219,13 @@ const expected = function(monthOpen = false, yearOpen = false, options: { yearSt
 		expectedMonthPopup(monthOpen),
 
 		// year picker
-		expectedYearPopup(yearOpen, yearStart, yearEnd)
+		expectedYearPopup(
+			yearOpen,
+			yearStart,
+			yearEnd,
+			minDate && minDate.getFullYear(),
+			maxDate && maxDate.getFullYear()
+		)
 	]);
 };
 
@@ -216,7 +246,9 @@ registerSuite('Calendar DatePicker', {
 		'Popup should render with custom properties'() {
 			customProps = {
 				labelId: 'foo',
-				yearRange: 25
+				yearRange: 25,
+				minDate: new Date('Oct 5, 2001'),
+				maxDate: new Date('March 14, 2019')
 			};
 
 			const h = harness(() => w(DatePicker, {
@@ -225,7 +257,13 @@ registerSuite('Calendar DatePicker', {
 				...requiredProps
 			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 
-			h.expect(() => expected(false, false, { yearStart: 2000, yearEnd: 2025, monthLabel: 'bar'}));
+			h.expect(() => expected(false, false, {
+				yearStart: 2000,
+				yearEnd: 2025,
+				monthLabel: 'bar',
+				minDate: customProps.minDate,
+				maxDate: customProps.maxDate
+			}));
 		},
 
 		'Year below 2000 calculates correctly'() {
@@ -307,6 +345,7 @@ registerSuite('Calendar DatePicker', {
 							v('input', {
 								checked: i === 5,
 								classes: css.monthRadioInput,
+								disabled: false,
 								id: '',
 								key: '',
 								name: '',
@@ -342,6 +381,7 @@ registerSuite('Calendar DatePicker', {
 					}, [
 						v('button', {
 							classes: css.previous,
+							disabled: false,
 							tabIndex:  -1,
 							type: 'button',
 							onclick: noop
@@ -351,6 +391,7 @@ registerSuite('Calendar DatePicker', {
 						]),
 						v('button', {
 							classes: css.next,
+							disabled: false,
 							tabIndex: -1,
 							type: 'button',
 							onclick: noop
@@ -526,12 +567,40 @@ registerSuite('Calendar DatePicker', {
 			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
 
 			h.trigger('@year-button', 'onclick', stubEvent);
-			assert.isTrue(isOpen, 'Year popup opens when clicking month button');
+			assert.isTrue(isOpen, 'Year popup opens when clicking year button');
 
 			h.trigger(`.${css.yearRadio}:nth-of-type(2) input`, 'onchange', { ...stubEvent, target: { value: 2001 } });
 			assert.strictEqual(currentYear, 2001, 'Change event on second year radio changes year to 2001');
 
 			h.trigger(`.${css.yearRadio}:nth-of-type(2)`, 'onmouseup', stubEvent);
+			assert.isFalse(isOpen, 'Clicking radios closes popup');
+		},
+
+		'Change year radios with invalid month'() {
+			let currentMonth = testDate.getMonth();
+			let currentYear = testDate.getFullYear();
+			let isOpen = false;
+			const h = harness(() => w(DatePicker, {
+				minDate: new Date('Nov 20, 2016'),
+				maxDate: new Date('Feb 2, 2018'),
+				...requiredProps,
+				onPopupChange: (open: boolean) => { isOpen = open; },
+				onRequestMonthChange: (month: number) => { currentMonth = month; },
+				onRequestYearChange: (year: number) => { currentYear = year; }
+			}), [ compareId, compareAriaLabelledBy, compareAriaControls, compareKey, compareFor, compareName ]);
+
+			h.trigger('@year-button', 'onclick', stubEvent);
+			h.trigger(`.${css.yearRadio}:nth-of-type(17) input`, 'onchange', { ...stubEvent, target: { value: 2016 } });
+			assert.strictEqual(currentMonth, 10, 'Change event changed the month to November');
+			assert.strictEqual(currentYear, 2016, 'Change event on second year radio changes year to 2016');
+			h.trigger(`.${css.yearRadio}:nth-of-type(17) input`, 'onmouseup', stubEvent);
+
+			h.trigger('@year-button', 'onclick', stubEvent);
+			h.trigger(`.${css.yearRadio}:nth-of-type(19) input`, 'onchange', { ...stubEvent, target: { value: 2018 } });
+			assert.strictEqual(currentMonth, 1, 'Change event changed the month to February');
+			assert.strictEqual(currentYear, 2018, 'Change event on second year radio changes year to 2018');
+			h.trigger(`.${css.yearRadio}:nth-of-type(19) input`, 'onmouseup', stubEvent);
+
 			assert.isFalse(isOpen, 'Clicking radios closes popup');
 		}
 	}
