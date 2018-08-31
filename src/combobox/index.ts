@@ -40,7 +40,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestResults   Called when results are shown; should be used to set `results`
- * @property onResultSelect		Called when result is selected
+ * @property onResultSelect     Called when result is selected
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property readOnly           Prevents user interaction
  * @property required           Determines if this input is required, styles accordingly
