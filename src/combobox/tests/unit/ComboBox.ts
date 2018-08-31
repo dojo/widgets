@@ -217,12 +217,14 @@ registerSuite('ComboBox', {
 		'menu opens on input'() {
 			const onChange = sinon.stub();
 			const onRequestResults = sinon.stub();
+			const onResultSelect = sinon.stub();
 			const onMenuChange = sinon.stub();
 			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				label: undefined,
 				onChange,
 				onRequestResults,
+				onResultSelect,
 				onMenuChange
 			}));
 
@@ -231,6 +233,7 @@ registerSuite('ComboBox', {
 
 			assert.isTrue(onChange.calledWith('foo'), 'onChange callback called with input value');
 			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults callback called');
+			assert.isFalse(onResultSelect.called, 'onResultSelect is not called on input');
 			assert.isTrue(onMenuChange.calledOnce, 'onMenuChange called when menu is opened');
 		},
 
@@ -273,14 +276,17 @@ registerSuite('ComboBox', {
 
 		'menu closes on result selection'() {
 			const onChange = sinon.stub();
+			const onResultSelect = sinon.stub();
 			const h = harness(() => w(ComboBox, {
 				...testProperties,
-				onChange
+				onChange,
+				onResultSelect
 			}));
 
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@listbox', 'onOptionSelect', testOptions[1], 1);
 			assert.isTrue(onChange.calledWith('Two'), 'onChange callback called with label of second option');
+			assert.isTrue(onResultSelect.calledWith(testOptions[1]), 'onResultSelect callback called with second option');
 			h.expect(() => getExpectedVdom(true, false, true, {}, true));
 		},
 
@@ -329,39 +335,47 @@ registerSuite('ComboBox', {
 
 		'enter and space select option'() {
 			const onChange = sinon.stub();
+			const onResultSelect = sinon.stub();
 			const h = harness(() => w(ComboBox, {
 				...testProperties,
-				onChange
+				onChange,
+				onResultSelect
 			}));
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@textinput', 'onKeyDown', Keys.Enter, () => {});
 
 			assert.isTrue(onChange.calledWith('One'), 'enter triggers onChange callback called with label of first option');
+			assert.isTrue(onResultSelect.calledWith(testOptions[0]), 'enter triggers onResultSelect callback called with first option');
 			h.expect(() => getExpectedVdom(true, false, true, {}, true));
 
 			h.trigger('@textinput', 'onKeyDown', Keys.Enter, () => {});
 			assert.isFalse(onChange.calledTwice, 'enter does not trigger onChange when menu is closed');
+			assert.isFalse(onResultSelect.calledTwice, 'enter does not trigger onResultSelect when menu is closed');
 			onChange.reset();
 
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@textinput', 'onKeyDown', Keys.Space, () => {});
 			assert.isTrue(onChange.calledWith('One'), 'space triggers onChange callback called with label of first option');
+			assert.isTrue(onResultSelect.calledWith(testOptions[0]), 'space triggers onResultSelect callback called with first option');
 			h.expect(() => getExpectedVdom(true, false, true, {}, true));
 		},
 
 		'disabled options are not selected'() {
 			const onChange = sinon.stub();
+			const onResultSelect = sinon.stub();
 			const preventDefault = sinon.stub();
 			const h = harness(() => w(ComboBox, {
 				...testProperties,
 				isResultDisabled: (result: any) => !!result.disabled,
-				onChange
+				onChange,
+				onResultSelect
 			}));
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@textinput', 'onKeyDown', Keys.Up, preventDefault);
 			h.trigger('@textinput', 'onKeyDown', Keys.Enter, preventDefault);
 
 			assert.isFalse(onChange.called, 'onChange not called for disabled option');
+			assert.isFalse(onResultSelect.called, 'onResultSelect not called for disabled option');
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, {
 				visualFocus: true,
 				getOptionDisabled: noop,
@@ -397,12 +411,15 @@ registerSuite('ComboBox', {
 
 		'clear button clears input'() {
 			const onChange = sinon.stub();
+			const onResultSelect = sinon.stub();
 			const h = harness(() => w(ComboBox, {
 				...testProperties,
-				onChange
+				onChange,
+				onResultSelect
 			}));
 			h.trigger(`.${css.clear}`, 'onclick', stubEvent);
 			assert.isTrue(onChange.calledWith(''), 'clear button calls onChange with an empty string');
+			assert.isFalse(onResultSelect.called, 'clear button does not call onResultSelect');
 		},
 
 		'inputProperties transferred to child input'() {

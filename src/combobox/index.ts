@@ -40,6 +40,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestResults   Called when results are shown; should be used to set `results`
+ * @property onResultSelect		Called when result is selected
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property readOnly           Prevents user interaction
  * @property required           Determines if this input is required, styles accordingly
@@ -61,6 +62,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties 
 	onFocus?(value: string, key?: string | number): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestResults?(key?: string | number): void;
+	onResultSelect?(result: any, key?: string | number): void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -103,7 +105,8 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'onChange',
 		'onFocus',
 		'onMenuChange',
-		'onRequestResults'
+		'onRequestResults',
+		'onResultSelect'
 	]
 })
 export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
@@ -284,11 +287,13 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		const {
 			key,
 			onChange,
+			onResultSelect,
 			results = []
 		} = this.properties;
 
 		this._callInputFocus = true;
 		this._closeMenu();
+		onResultSelect && onResultSelect(results[index], key);
 		onChange && onChange(this._getResultValue(results[index]), key);
 	}
 
