@@ -1,0 +1,28 @@
+@import './variables.css';
+
+.root {
+	height: 30px;
+	line-height: 30px;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.loading {
+	margin: 6px;
+	width: 12px;
+	height: 12px;
+	border: 3px solid var(--header-background-color);
+	border-radius: 50%;
+	border-top-color: var(--header-color);
+	animation: spin 1s ease-in-out infinite;
+	will-change: auto;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

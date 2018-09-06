@@ -1,0 +1,12 @@
+:root {
+	--background-color: #fff;
+	--border-color: #dbdfe1;
+	--header-background-color: #edeef1;
+	--header-color: #455361;
+	--font-family: arial;
+	--body-color: #455361;
+	--sort-color: #2974c2;
+	--cell-padding: 2px 4px;
+	--header-padding: 6px 4px;
+	--font-size: 16px;
+}

@@ -9,6 +9,7 @@
 			"src/dialog",
 			"src/enhanced-text-input",
 			"src/icon",
+			"src/grid",
 			"src/label",
 			"src/listbox",
 			"src/progress",

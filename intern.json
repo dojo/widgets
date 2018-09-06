@@ -30,7 +30,11 @@
 
 	"node": {
 		"plugins": [
-			"_build/common/tests/node-css-plugin.js"
+			"_build/common/tests/node-css-plugin.js",
+			{
+				"script": "./_build/common/tests/loadJsdom.js",
+				"useLoader": true
+			}
 		]
 	},
 
