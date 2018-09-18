@@ -40,7 +40,7 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 		this._editingValue = target.value;
 	}
 
-	private _onKeyup(event: KeyboardEvent) {
+	private _onKeyDown(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
 			this._onSave();
 		}
@@ -81,7 +81,7 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 				value: this._editingValue,
 				oninput: this._onInput,
 				onblur: this._onBlur,
-				onkeyup: this._onKeyup
+				onkeydown: this._onKeyDown
 			}) : this.renderContent(),
 			editable && !this._editing ? v('button', {
 				key: 'editButton',

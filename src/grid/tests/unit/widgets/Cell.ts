@@ -21,12 +21,13 @@ const expectedEditing = function() {
 	}, [
 		v('input', {
 			key: 'editInput',
+			'aria-label': 'Edit id',
 			classes: [css.root, css.input],
 			focus: true,
 			value: 'id',
 			oninput: noop,
 			onblur: noop,
-			onkeyup: noop
+			onkeydown: noop
 		})
 	]);
 };
@@ -186,7 +187,7 @@ describe('Cell', () => {
 		h.expect(expectedEditing);
 
 		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
-		h.trigger('@editInput', 'onkeyup', { key: 'Enter' });
+		h.trigger('@editInput', 'onkeydown', { key: 'Enter' });
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
 		h.expect(() => expectedEditable(true));
@@ -208,7 +209,7 @@ describe('Cell', () => {
 		h.expect(expectedEditing);
 
 		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
-		h.trigger('@editInput', 'onkeyup', { key: 'Escape' });
+		h.trigger('@editInput', 'onkeydown', { key: 'Escape' });
 
 		assert.isFalse(updaterStub.called);
 		h.expect(() => expectedEditable(true));
