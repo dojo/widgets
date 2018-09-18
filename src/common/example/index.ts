@@ -12,6 +12,7 @@ const modules = [
 	'checkbox',
 	'combobox',
 	'dialog',
+	'grid',
 	'label',
 	'listbox',
 	'progress',

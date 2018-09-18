@@ -55,7 +55,6 @@
 	margin-top: 4px;
 	width: 100%;
 	box-sizing: border-box;
-	outline: none;
 	font-family: var(--font-family);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
