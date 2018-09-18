@@ -1,11 +1,11 @@
-import { assign } from '@dojo/framework/core/lang';
+import { assign } from '@dojo/framework/shim/object';
 import { DNode, WNode } from '@dojo/framework/widget-core/interfaces';
 import Tab, { TabProperties } from '../tab/index';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import TabButton from './TabButton';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 

@@ -1,18 +1,17 @@
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { includes } from '@dojo/framework/shim/array';
-import { deepAssign } from '@dojo/framework/core/lang';
+import { deepAssign } from '@dojo/framework/core/util';
 import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 import Tab from '../../tab/index';
 import TabController, { Align } from '../../tab-controller/index';
-import Task from '@dojo/framework/core/async/Task';
 
-let refresh: Task<any>;
+let refresh: Promise<any>;
 
 function refreshData() {
-	return new Task((resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		setTimeout(resolve, 1500);
 	});
 }
@@ -84,7 +83,6 @@ export class App extends WidgetBase<WidgetProperties> {
 					this.setState({ closedKeys: [...closedKeys, key] });
 				},
 				onRequestTabChange: (index: number, key: string) => {
-					refresh && refresh.cancel();
 					if (key === 'async') {
 						this.setState({
 							activeIndex: 2,

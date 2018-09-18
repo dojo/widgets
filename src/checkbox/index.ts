@@ -6,7 +6,7 @@ import Label from '../label/index';
 import { CustomAriaProperties, LabeledProperties, InputProperties, CheckboxRadioEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/widget-core/d';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/checkbox.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 

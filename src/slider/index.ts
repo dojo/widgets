@@ -4,7 +4,7 @@ import Label from '../label/index';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import { CustomAriaProperties, LabeledProperties, InputEventProperties, InputProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';

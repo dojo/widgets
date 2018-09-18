@@ -1,4 +1,4 @@
-import { deepAssign } from '@dojo/framework/core/lang';
+import { deepAssign } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';

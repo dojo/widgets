@@ -1,5 +1,4 @@
-import { after } from '@dojo/framework/core/aspect';
-import { assign } from '@dojo/framework/core/lang';
+import { assign } from '@dojo/framework/shim/object';
 import { DNode, WNode } from '@dojo/framework/widget-core/interfaces';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import { includes } from '@dojo/framework/shim/array';
@@ -38,7 +37,10 @@ export class AccordionPaneBase<P extends AccordionPaneProperties = AccordionPane
 		const existingProperty = child.properties[functionName];
 		const property = () => { callback.call(this, `${ child.properties.key }`); };
 
-		return existingProperty ? after(existingProperty, property) : property;
+		return existingProperty ? (key: string) => {
+			existingProperty(key);
+			property();
+		} : property;
 	}
 
 	protected onRequestClose(key: string) {

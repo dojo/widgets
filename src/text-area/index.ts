@@ -6,7 +6,7 @@ import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
 import { CustomAriaProperties, InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 

@@ -6,7 +6,7 @@ import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import { v, w } from '@dojo/framework/widget-core/d';
 
 import Icon from '../icon/index';

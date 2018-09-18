@@ -1,4 +1,4 @@
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
