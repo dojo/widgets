@@ -1,11 +1,11 @@
 import { getDateFormatter } from '@dojo/framework/i18n/date';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import renderer from '@dojo/framework/widget-core/vdom';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
-import TimePicker, { getOptions, TimeUnits } from '../../time-picker/index';
+import TimePicker, { getOptions, TimeUnits } from '../../time-picker/index'
 import * as baseCss from '../../common/styles/base.m.css';
 
 setLocaleData();
@@ -231,7 +231,5 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 	}
 }
 
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();
+const r = renderer(() => w(App, {}));
+r.mount();

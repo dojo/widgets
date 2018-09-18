@@ -2,8 +2,8 @@ import global from '@dojo/framework/shim/global';
 import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v, w } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { DNode, VNodeProperties } from '@dojo/framework/widget-core/interfaces';
+import renderer from '@dojo/framework/widget-core/vdom';
 
 import { GridPages, ColumnConfig } from './../interfaces';
 import PlaceholderRow from './PlaceholderRow';
@@ -27,21 +27,16 @@ export interface BodyProperties<S> {
 }
 
 const offscreen = (dnode: DNode) => {
-	const Projector = ProjectorMixin(
-		class extends WidgetBase {
-			render() {
-				return dnode;
-			}
+	const r = renderer(() => w(class extends WidgetBase {
+		render() {
+			return dnode;
 		}
-	);
+	}, {}));
 	const div = global.document.createElement('div');
 	div.style.position = 'absolute';
 	global.document.body.appendChild(div);
-	const projector = new Projector();
-	projector.async = false;
-	projector.append(div);
+	r.mount({ domNode: div, sync: true});
 	const dimensions = div.getBoundingClientRect();
-	projector.destroy();
 	global.document.body.removeChild(div);
 	return dimensions;
 };

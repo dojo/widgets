@@ -1,8 +1,8 @@
 import { deepAssign } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
+import renderer from '@dojo/framework/widget-core/vdom';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
 import SplitPane, { Direction } from '../../split-pane/index';
@@ -190,7 +190,5 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 }
 
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();
+const r = renderer(() => w(App, {}));
+r.mount();

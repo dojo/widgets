@@ -11,7 +11,8 @@ A reactive lightweight, customizable grid widget built with Dojo.
 ## Example Usage
 
 ```ts
-import { ProjectorMixin } from '@dojo/widget-core/framework/mixins/Projector';
+import renderer from '@dojo/framework/widget-core/vdom';
+import { w } from '@dojo/framework/widget-core/d';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 import Grid from '@dojo/widgets/grid';
 
@@ -38,14 +39,8 @@ const gridData: any[] = [
 	{ one: '6', two: '6' }
 ];
 
-const Projector = ProjectorMixin(Grid);
-const projector = new Projector();
-projector.setProperties({
-	columnConfig,
-	fetcher: createFetcher(gridData),
-  height: 400
-});
-projector.append();
+const r = renderer(() => w(Grid, { columnConfig, fetcher: createFetcher(gridData), height: 400 });
+r.mount();
 ```
 
 ## Properties

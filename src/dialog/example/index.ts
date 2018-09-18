@@ -1,7 +1,7 @@
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import renderer from '@dojo/framework/widget-core/vdom';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Dialog from '../../dialog/index';
@@ -95,7 +95,5 @@ export class App extends WidgetBase<WidgetProperties> {
 	}
 }
 
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();
+const r = renderer(() => w(App, {}));
+r.mount();
