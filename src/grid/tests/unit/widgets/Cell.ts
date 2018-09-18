@@ -1,14 +1,57 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
-import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { stub } from 'sinon';
-
+import {
+	compareId,
+	createHarness,
+	compareAriaDescribedBy,
+	noop
+} from '../../../../common/tests/support/test-helpers';
 import * as css from '../../../widgets/styles/Cell.m.css';
 import Cell from '../../../widgets/Cell';
 
-const noop = () => {};
+const harness = createHarness([ compareId, compareAriaDescribedBy ]);
+
+const expectedEditing = function() {
+	return v('div', {
+		role: 'cell',
+		classes: css.root
+	}, [
+		v('input', {
+			key: 'editInput',
+			'aria-label': 'Edit id',
+			classes: [css.root, css.input],
+			focus: true,
+			value: 'id',
+			oninput: noop,
+			onblur: noop,
+			onkeydown: noop
+		})
+	]);
+};
+
+const expectedEditable = function(focusButton = false) {
+	return v('div', {
+		role: 'cell',
+		classes: css.root
+	}, [
+		v('div', {
+			key: 'content',
+			id: '',
+			ondblclick: noop
+		}, [ 'id' ]),
+		v('button', {
+			key: 'editButton',
+			focus: focusButton,
+			type: 'button',
+			'aria-describedby': '',
+			classes: css.edit,
+			onclick: noop
+		}, [ 'Edit' ])
+	]);
+};
 
 describe('Cell', () => {
 	it('should render string value', () => {
@@ -19,17 +62,16 @@ describe('Cell', () => {
 				updater: noop
 			})
 		);
-		h.expect(() =>
-			v(
-				'div',
-				{
-					classes: css.root,
-					key: 'cell',
-					role: 'cell',
+		h.expect(() => v('div', {
+				classes: css.root,
+				role: 'cell'
+			}, [
+				v('div', {
+					key: 'content',
+					id: '',
 					ondblclick: noop
-				},
-				['id']
-			)
+				}, [ 'id' ])
+			])
 		);
 	});
 
@@ -41,17 +83,16 @@ describe('Cell', () => {
 				updater: noop
 			})
 		);
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
+		h.expect(() => v('div', {
+				classes: css.root,
+				role: 'cell'
+			}, [
+				v('div', {
+					key: 'content',
+					id: '',
 					ondblclick: noop
-				},
-				[v('div', ['id'])]
-			)
+				}, [ v('div', ['id']) ])
+			])
 		);
 	});
 
@@ -64,32 +105,30 @@ describe('Cell', () => {
 				updater: updaterStub
 			})
 		);
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
+		h.expect(() => v('div', {
+				classes: css.root,
+				role: 'cell'
+			}, [
+				v('div', {
+					key: 'content',
+					id: '',
 					ondblclick: noop
-				},
-				['id']
-			)
+				}, [ 'id' ])
+			])
 		);
 
-		h.trigger('@cell', 'ondblclick');
+		h.trigger('@content', 'ondblclick');
 
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
+		h.expect(() => v('div', {
+				classes: css.root,
+				role: 'cell'
+			}, [
+				v('div', {
+					key: 'content',
+					id: '',
 					ondblclick: noop
-				},
-				['id']
-			)
+				}, [ 'id' ])
+			])
 		);
 	});
 
@@ -103,46 +142,11 @@ describe('Cell', () => {
 				editable: true
 			})
 		);
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
-					ondblclick: noop
-				},
-				['id']
-			)
-		);
+		h.expect(expectedEditable);
 
-		h.trigger('@cell', 'ondblclick');
+		h.trigger('@content', 'ondblclick');
 
-		h.expect(() =>
-			v('input', {
-				key: 'editing',
-				classes: [css.root, css.input],
-				focus: true,
-				value: 'id',
-				oninput: noop,
-				onblur: noop,
-				onkeyup: noop
-			})
-		);
-
-		h.trigger('@editing', 'oninput', { target: { value: 'typed value' } });
-
-		h.expect(() =>
-			v('input', {
-				key: 'editing',
-				classes: [css.root, css.input],
-				focus: true,
-				value: 'typed value',
-				oninput: noop,
-				onblur: noop,
-				onkeyup: noop
-			})
-		);
+		h.expect(expectedEditing);
 	});
 
 	it('should save edit on blur', () => {
@@ -155,63 +159,16 @@ describe('Cell', () => {
 				editable: true
 			})
 		);
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
-					ondblclick: noop
-				},
-				['id']
-			)
-		);
+		h.expect(expectedEditable);
 
-		h.trigger('@cell', 'ondblclick');
+		h.trigger('@editButton', 'onclick');
+		h.expect(expectedEditing);
 
-		h.expect(() =>
-			v('input', {
-				key: 'editing',
-				classes: [css.root, css.input],
-				focus: true,
-				value: 'id',
-				oninput: noop,
-				onblur: noop,
-				onkeyup: noop
-			})
-		);
+		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
+		h.trigger('@editInput', 'onblur');
 
-		h.trigger('@editing', 'oninput', { target: { value: 'typed value' } });
-
-		h.expect(() =>
-			v('input', {
-				key: 'editing',
-				classes: [css.root, css.input],
-				focus: true,
-				value: 'typed value',
-				oninput: noop,
-				onblur: noop,
-				onkeyup: noop
-			})
-		);
-
-		h.trigger('@editing', 'onblur');
-
-		assert.isTrue(updaterStub.called);
-
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
-					ondblclick: noop
-				},
-				['id']
-			)
-		);
+		assert.isTrue(updaterStub.calledWith('typed value'));
+		h.expect(() => expectedEditable(true));
 	});
 
 	it('should save edit on enter', () => {
@@ -224,62 +181,37 @@ describe('Cell', () => {
 				editable: true
 			})
 		);
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
-					ondblclick: noop
-				},
-				['id']
-			)
-		);
+		h.expect(expectedEditable);
 
-		h.trigger('@cell', 'ondblclick');
+		h.trigger('@content', 'ondblclick');
+		h.expect(expectedEditing);
 
-		h.expect(() =>
-			v('input', {
-				key: 'editing',
-				classes: [css.root, css.input],
-				focus: true,
+		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
+		h.trigger('@editInput', 'onkeydown', { key: 'Enter' });
+
+		assert.isTrue(updaterStub.calledWith('typed value'));
+		h.expect(() => expectedEditable(true));
+	});
+
+	it('should exit editing without saving on escape', () => {
+		const updaterStub = stub();
+		const h = harness(() =>
+			w(Cell, {
 				value: 'id',
-				oninput: noop,
-				onblur: noop,
-				onkeyup: noop
+				rawValue: 'id',
+				updater: updaterStub,
+				editable: true
 			})
 		);
+		h.expect(expectedEditable);
 
-		h.trigger('@editing', 'oninput', { target: { value: 'typed value' } });
+		h.trigger('@editButton', 'onclick');
+		h.expect(expectedEditing);
 
-		h.expect(() =>
-			v('input', {
-				key: 'editing',
-				classes: [css.root, css.input],
-				focus: true,
-				value: 'typed value',
-				oninput: noop,
-				onblur: noop,
-				onkeyup: noop
-			})
-		);
+		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
+		h.trigger('@editInput', 'onkeydown', { key: 'Escape' });
 
-		h.trigger('@editing', 'onkeyup', { key: 'Enter' });
-
-		assert.isTrue(updaterStub.called);
-
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'cell',
-					classes: css.root,
-					role: 'cell',
-					ondblclick: noop
-				},
-				['id']
-			)
-		);
+		assert.isFalse(updaterStub.called);
+		h.expect(() => expectedEditable(true));
 	});
 });

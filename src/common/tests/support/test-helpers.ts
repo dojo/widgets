@@ -50,10 +50,16 @@ export const compareAriaLabelledBy = {
 	comparator: isStringComparator
 };
 
+export const compareAriaDescribedBy = {
+	selector: '*',
+	property: 'aria-describedby',
+	comparator: isStringComparator
+};
+
 export const compareLabelId = {
 	selector: '*',
 	property: 'labelId',
-	comparator: (property: any) => typeof property === 'string'
+	comparator: isStringComparator
 };
 
 export const createHarness = (globalCompares: CustomComparator[]) => {

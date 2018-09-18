@@ -2,6 +2,7 @@ import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
+import uuid from '@dojo/framework/core/uuid';
 
 import * as css from './styles/Cell.m.css';
 
@@ -14,8 +15,10 @@ export interface CellProperties {
 
 @theme(css)
 export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
+	private _callButtonFocus = false;
 	private _editing = false;
 	private _editingValue = '';
+	private _idBase = uuid();
 
 	private _onEdit = () => {
 		const { editable } = this.properties;
@@ -28,40 +31,66 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 
 	private _onBlur() {
 		if (this._editing) {
-			this._editing = false;
-			this.properties.updater(this._editingValue);
-			this.invalidate();
+			this._onSave();
 		}
 	}
 
 	private _onInput(event: KeyboardEvent) {
 		const target = event.target as HTMLInputElement;
 		this._editingValue = target.value;
-		this.invalidate();
 	}
 
-	private _onKeyup(event: KeyboardEvent) {
-		if (event.key === 'Enter' && this._editing) {
+	private _onKeyDown(event: KeyboardEvent) {
+		if (event.key === 'Enter') {
+			this._onSave();
+		}
+		else if (event.key === 'Escape') {
 			this._editing = false;
-			this.properties.updater(this._editingValue);
+			this._callButtonFocus = true;
 			this.invalidate();
 		}
 	}
 
+	private _onSave() {
+		this._editing = false;
+		this._callButtonFocus = true;
+		this.properties.updater(this._editingValue);
+		this.invalidate();
+	}
+
+	protected renderContent(): DNode {
+		const { value } = this.properties;
+		return v('div', {
+			key: 'content',
+			id: this._idBase,
+			ondblclick: this._onEdit
+		}, [ value ]);
+	}
+
 	protected render(): DNode {
-		let { value } = this.properties;
-		if (this._editing) {
-			return v('input', {
-				key: 'editing',
+		let { editable, rawValue, value } = this.properties;
+		const focusButton = this._callButtonFocus;
+		this._callButtonFocus = false;
+
+		return v('div', { role: 'cell', classes: css.root }, [
+			this._editing ? v('input', {
+				key: 'editInput',
+				'aria-label': `Edit ${rawValue}`,
 				classes: [css.root, css.input],
 				focus: true,
 				value: this._editingValue,
 				oninput: this._onInput,
 				onblur: this._onBlur,
-				onkeyup: this._onKeyup
-			});
-		}
-
-		return v('div', { key: 'cell', classes: css.root, role: 'cell', ondblclick: this._onEdit }, [value]);
+				onkeydown: this._onKeyDown
+			}) : this.renderContent(),
+			editable && !this._editing ? v('button', {
+				key: 'editButton',
+				focus: focusButton,
+				type: 'button',
+				'aria-describedby': this._idBase,
+				classes: css.edit,
+				onclick: this._onEdit
+			}, [ 'Edit' ]) : null
+		]);
 	}
 }
