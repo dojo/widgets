@@ -1,4 +1,5 @@
 .root {
+	box-sizing: border-box;
 	display: flex;
 	height: 30px;
 	border-left-style: none;

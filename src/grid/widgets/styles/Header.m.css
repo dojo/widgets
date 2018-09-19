@@ -1,19 +1,5 @@
 @import './variables.css';
 
-.root {
-	overflow-y: scroll;
-	overflow-x: hidden;
-	border-bottom: 1px solid var(--border-color);
-	background: var(--header-background-color);
-	color: var(--header-color);
-	height: 32px;
-	box-sizing: border-box;
-}
-
-.filterGroup {
-	height: 64px;
-}
-
 .cell {
 	flex: 1 100%;
 	border: 1px solid var(--border-color);

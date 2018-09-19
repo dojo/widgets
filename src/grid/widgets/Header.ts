@@ -14,7 +14,6 @@ export interface HeaderProperties {
 	filterer: (columnId: string, value: any) => void;
 	filter?: FilterOptions;
 	sort?: SortOptions;
-	scrollLeft: number;
 }
 
 @theme(css)
@@ -28,64 +27,62 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 	}
 
 	protected render(): DNode {
-		const { columnConfig, sorter, sort, filterer, scrollLeft, filter } = this.properties;
+		const { columnConfig, sorter, sort, filterer, filter } = this.properties;
 		const hasFilters = columnConfig.some((config) => !!config.filterable);
-		return v('div', { scrollLeft, classes: [css.root, hasFilters ? css.filterGroup : null], row: 'rowgroup' }, [
-			v('div', { classes: css.row, role: 'row' },
-				columnConfig.map((column) => {
-					let title: string | DNode;
-					if (typeof column.title === 'function') {
-						title = column.title();
-					} else {
-						title = column.title;
-					}
-					let headerProperties = {};
-					if (column.sortable) {
-						headerProperties = {
-							classes: [
-								css.sortable,
-								sort && sort.columnId === column.id ? css.sorted : null,
-								sort && sort.columnId === column.id && sort.direction === 'desc' ? css.desc : null,
-								sort && sort.columnId === column.id && sort.direction === 'asc' ? css.asc : null
-							],
+		return v('div', { classes: css.row, role: 'row' },
+			columnConfig.map((column) => {
+				let title: string | DNode;
+				if (typeof column.title === 'function') {
+					title = column.title();
+				} else {
+					title = column.title;
+				}
+				let headerProperties = {};
+				if (column.sortable) {
+					headerProperties = {
+						classes: [
+							css.sortable,
+							sort && sort.columnId === column.id ? css.sorted : null,
+							sort && sort.columnId === column.id && sort.direction === 'desc' ? css.desc : null,
+							sort && sort.columnId === column.id && sort.direction === 'asc' ? css.asc : null
+						],
+						onclick: () => {
+							this._sortColumn(column.id);
+						}
+					};
+				}
+
+				return v('div', { classes: css.cell, role: 'columnheader' }, [
+					v('div', headerProperties, [
+						title,
+						column.sortable ? v('button', {
+							classes: css.sort,
 							onclick: () => {
 								this._sortColumn(column.id);
 							}
-						};
-					}
-
-					return v('div', { classes: css.cell, role: 'columnheader' }, [
-						v('div', headerProperties, [
-							title,
-							column.sortable ? v('button', {
-								classes: css.sort,
-								onclick: () => {
-									this._sortColumn(column.id);
-								}
-							}, [
-								w(Icon, {
-									type: sort && sort.columnId === column.id && sort.direction === 'asc' ? 'upIcon' : 'downIcon',
-									altText: `Sort by ${title}`
-								})
-							])
-							: null
-						]),
-						column.filterable
-							? w(TextInput, {
-								key: 'filter',
-								extraClasses: { root: css.filter },
-								label: `Filter by ${title}`,
-								labelHidden: true,
-								type: 'search',
-								value: filter && filter.columnId === column.id ? filter.value : '',
-								onInput: (value: string) => {
-									filterer(column.id, value);
-								}
+						}, [
+							w(Icon, {
+								type: sort && sort.columnId === column.id && sort.direction === 'asc' ? 'upIcon' : 'downIcon',
+								altText: `Sort by ${title}`
 							})
-							: null
-					]);
-				})
-			)
-		]);
+						])
+						: null
+					]),
+					column.filterable
+						? w(TextInput, {
+							key: 'filter',
+							extraClasses: { root: css.filter },
+							label: `Filter by ${title}`,
+							labelHidden: true,
+							type: 'search',
+							value: filter && filter.columnId === column.id ? filter.value : '',
+							onInput: (value: string) => {
+								filterer(column.id, value);
+							}
+						})
+						: null
+				]);
+			})
+		);
 	}
 }

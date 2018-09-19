@@ -1,6 +1,7 @@
 @import './variables.css';
 
 .root {
+	box-sizing: border-box;
 	height: 30px;
 	line-height: 30px;
 	border-left: 1px solid #ccc;
