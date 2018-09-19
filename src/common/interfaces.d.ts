@@ -3,7 +3,7 @@ import commonBundle from './nls/common';
 export type CommonMessages = typeof commonBundle.messages;
 
 export type AriaPropertyObject = {
-	[key: string]: string;
+	[key: string]: string | null;
 };
 
 export interface CustomAriaProperties {

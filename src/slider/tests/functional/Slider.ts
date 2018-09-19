@@ -4,12 +4,13 @@ const { assert } = intern.getPlugin('chai');
 import keys from '@theintern/leadfoot/keys';
 import { services } from '@theintern/a11y';
 import { Remote } from 'intern/lib/executors/Node';
+import Test from 'intern/lib/Test';
 import * as css from '../../../theme/slider.m.css';
 
 const axe = services.axe;
 
-function getPage(test: any) {
-	const { browserName } = test.remote.environmentType;
+function getPage(test: Test) {
+	const { browserName = '' } = test.remote.environmentType!;
 	if (browserName.toLowerCase() === 'microsoftedge') {
 		test.skip('example page currently doesn\'t work in edge.');
 	}
@@ -279,6 +280,6 @@ registerSuite('Slider', {
 	},
 
 	'check accessibility'() {
-		return getPage(this.remote).then(axe.createChecker());
+		return getPage(this).then(axe.createChecker());
 	}
 });

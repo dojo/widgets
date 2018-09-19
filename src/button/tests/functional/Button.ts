@@ -62,6 +62,7 @@ registerSuite('Button', {
 					assert.strictEqual(pressed, 'true');
 				})
 				.click()
+				.sleep(DELAY)
 			.end()
 			.findByCssSelector(`#example-4 .${css.root}`)
 				.getAttribute('aria-pressed')

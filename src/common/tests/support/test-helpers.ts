@@ -11,8 +11,8 @@ export const stubEvent = {
 	target: {}
 };
 
-export const isStringComparator = (value: any) => typeof value === 'string';
-export const isStringObjectComparator = (value: any) => Object.keys(value).every((key) => typeof value[key] === 'string');
+export const isStringComparator = (value: any) => value === null || typeof value === 'string';
+export const isStringObjectComparator = (value: any) => Object.keys(value).every((key) => value[key] === null || typeof value[key] === 'string');
 
 export const compareId = {
 	selector: '*',

@@ -66,7 +66,7 @@ export class App extends WidgetBase<WidgetProperties> {
 		return v('div', {
 			classes: 'example'
 		}, [
-			v('label', { for: 'tab-settings' } [ 'Tab location' ]),
+			v('label', { for: 'tab-settings' }, [ 'Tab location' ]),
 			v('select', {
 				id: 'tab-settings',
 				styles: { marginBottom: '20px' },

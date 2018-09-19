@@ -87,6 +87,8 @@ export class App extends WidgetBase<WidgetProperties> {
 			v('h1', {}, ['Slider with no output']),
 			v('div', { id: 'example-s4' }, [
 				w(Slider, {
+					key: 's4',
+					label: 'Slider with default values and no output',
 					showOutput: false,
 					value: this._outputlessValue,
 					onInput: this.onOutputlessInput
