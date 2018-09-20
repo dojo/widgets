@@ -42,7 +42,8 @@ const Projector = ProjectorMixin(Grid);
 const projector = new Projector();
 projector.setProperties({
 	columnConfig,
-	fetcher: createFetcher(gridData)
+	fetcher: createFetcher(gridData),
+  height: 400
 });
 projector.append();
 ```
@@ -98,6 +99,10 @@ export interface FetcherOptions {
 * `columnId` - `id` from `columnConfig` of the column that sort has been requested for
 * `direction` - value to filter on
 
+### height
+
+The `height` property sets the overall height of the grid and allows the grid to calculate how many rows to render to the DOM.
+
 ### updater
 
 The `updater` is an optional function responsible for performing updates made by `editable` columns.
@@ -110,7 +115,7 @@ The updated `item` is passed to the function, if an error occurs during the upda
 
 ### store
 
-le-grid is backed by stores from `@dojo/framework/stores` and by default, dynamically creates a private store as required. However it is also possible to pass an existing store used by other areas of the application.
+Grid is backed by stores from `@dojo/framework/stores` and by default, dynamically creates a private store as required. However it is also possible to pass an existing store used by other areas of the application.
 
 This option will often be used in combination with `id` that determines the root path location that all grid data will be stored.
 

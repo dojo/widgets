@@ -67,7 +67,7 @@ describe('Body', () => {
 					classes: css.root,
 					role: 'rowgroup',
 					onscroll: noop,
-					styles: { height: '346px' }
+					styles: { height: '400px' }
 				},
 				[
 					v('div', { key: 'top', styles: { height: '0px' } }),
@@ -119,7 +119,7 @@ describe('Body', () => {
 					classes: css.root,
 					role: 'rowgroup',
 					onscroll: noop,
-					styles: { height: '346px' }
+					styles: { height: '400px' }
 				},
 				[
 					v('div', { key: 'top', styles: { height: '0px' } }),
@@ -158,7 +158,7 @@ describe('Body', () => {
 					classes: css.root,
 					role: 'rowgroup',
 					onscroll: noop,
-					styles: { height: '346px' }
+					styles: { height: '400px' }
 				},
 				[
 					v('div', { key: 'top', styles: { height: '0px' } }),
@@ -213,7 +213,7 @@ describe('Body', () => {
 					classes: css.root,
 					role: 'rowgroup',
 					onscroll: noop,
-					styles: { height: '346px' }
+					styles: { height: '400px' }
 				},
 				[
 					v('div', { key: 'top', styles: { height: '0px' } }),
@@ -231,7 +231,7 @@ describe('Body', () => {
 		});
 
 		rows = [];
-		for (let i = 286; i < 326; i++) {
+		for (let i = 286; i < 334; i++) {
 			rows.push(w(PlaceholderRow, { key: i }));
 		}
 
@@ -243,12 +243,12 @@ describe('Body', () => {
 					classes: css.root,
 					role: 'rowgroup',
 					onscroll: noop,
-					styles: { height: '346px' }
+					styles: { height: '400px' }
 				},
 				[
 					v('div', { key: 'top', styles: { height: '10010px' } }),
 					...rows,
-					v('div', { key: 'bottom', styles: { height: '23590px' } })
+					v('div', { key: 'bottom', styles: { height: '23310px' } })
 				]
 			)
 		);
@@ -264,12 +264,12 @@ describe('Body', () => {
 					classes: css.root,
 					role: 'rowgroup',
 					onscroll: noop,
-					styles: { height: '346px' }
+					styles: { height: '400px' }
 				},
 				[
 					v('div', { key: 'top', styles: { height: '10010px' } }),
 					...rows,
-					v('div', { key: 'bottom', styles: { height: '23590px' } })
+					v('div', { key: 'bottom', styles: { height: '23310px' } })
 				]
 			)
 		);

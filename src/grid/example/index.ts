@@ -48,7 +48,8 @@ export class App extends WidgetBase {
 			v('h2', ['Grid Example']),
 			w(Grid, {
 				columnConfig: this.columnConfig,
-				fetcher: createFetcher(this.gridData)
+				fetcher: createFetcher(this.gridData),
+				height: 500
 			})
 		]);
 	}
