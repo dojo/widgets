@@ -41,14 +41,18 @@
 	color: var(--sort-color);
 }
 
-.sorted.desc:after {
-	content: '▼';
+.desc {}
+
+.asc {}
+
+.sort {
 	margin-left: 4px;
+	opacity: 0;
 }
 
-.sorted.asc:after {
-	content: '▲';
-	margin-left: 4px;
+.sort:focus,
+.sorted .sort {
+	opacity: 1;
 }
 
 .filter {
