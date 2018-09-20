@@ -65,7 +65,7 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table', 'aria-rowcount': null }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
@@ -132,7 +132,7 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table', 'aria-rowcount': '100' }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
@@ -191,7 +191,7 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table', 'aria-rowcount': null }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
@@ -242,7 +242,7 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table', 'aria-rowcount': null }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
@@ -284,7 +284,7 @@ describe('Grid', () => {
 		h.trigger('@body', 'onScroll', 10);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table', 'aria-rowcount': null }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 10,

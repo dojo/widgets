@@ -112,7 +112,8 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			if (!endData.length) {
 				fetcher(endPage, pageSize);
 			}
-			pageChange(endPage);
+			const midScreenPage = Math.max(Math.ceil((start + this._rowsInView / 2) / pageSize), 1);
+			pageChange(midScreenPage);
 			data = [...data, ...endData];
 		} else {
 			pageChange(startPage);
