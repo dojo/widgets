@@ -1,5 +1,9 @@
 @import './variables.css';
 
+.root {
+	display: flex;
+}
+
 .cell {
 	flex: 1 100%;
 	border: 1px solid var(--border-color);
@@ -17,10 +21,6 @@
 
 .sortable {
 	cursor: pointer;
-}
-
-.row {
-	display: flex;
 }
 
 .sorted {

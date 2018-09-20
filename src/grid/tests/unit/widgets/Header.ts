@@ -45,16 +45,13 @@ describe('Header', () => {
 			w(Header, {
 				columnConfig,
 				sorter: sorterStub,
-				filterer: filtererStub,
-				scrollLeft: 0
+				filterer: filtererStub
 			})
 		);
 		h.expect(() =>
-			v('div', { scrollLeft: 0, classes: [css.root, null], row: 'rowgroup' }, [
-				v('div', { classes: css.row, role: 'row' }, [
-					v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-					v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['First Name'])])
-				])
+			v('div', { classes: css.root, role: 'row' }, [
+				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['First Name'])])
 			])
 		);
 	});
@@ -66,41 +63,38 @@ describe('Header', () => {
 			w(Header, {
 				columnConfig: advancedColumnConfig,
 				sorter: sorterStub,
-				filterer: filtererStub,
-				scrollLeft: 0
+				filterer: filtererStub
 			})
 		);
 
 		h.expect(() =>
-			v('div', { scrollLeft: 0, classes: [css.root, css.filterGroup], row: 'rowgroup' }, [
-				v('div', { classes: css.row, role: 'row' }, [
-					v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-					v('div', { classes: css.cell, role: 'columnheader' }, [
-						v('div', {
-							classes: [css.sortable, null, null, null],
+			v('div', { classes: css.root, role: 'row' }, [
+				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: css.cell, role: 'columnheader' }, [
+					v('div', {
+						classes: [css.sortable, null, null, null],
+						onclick: noop
+					}, [
+						'Custom Title',
+						v('button', {
+							classes: css.sort,
 							onclick: noop
 						}, [
-							'Custom Title',
-							v('button', {
-								classes: css.sort,
-								onclick: noop
-							}, [
-								w(Icon, {
-									type: 'downIcon',
-									altText: 'Sort by Custom Title'
-								})
-							])
-						]),
-						w(TextInput, {
-							key: 'filter',
-							extraClasses: { root: css.filter },
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							value: '',
-							onInput: noop
-						})
-					])
+							w(Icon, {
+								type: 'downIcon',
+								altText: 'Sort by Custom Title'
+							})
+						])
+					]),
+					w(TextInput, {
+						key: 'filter',
+						extraClasses: { root: css.filter },
+						label: 'Filter by Custom Title',
+						labelHidden: true,
+						type: 'search',
+						value: '',
+						onInput: noop
+					})
 				])
 			])
 		);
@@ -114,7 +108,6 @@ describe('Header', () => {
 				columnConfig: advancedColumnConfig,
 				sorter: sorterStub,
 				filterer: filtererStub,
-				scrollLeft: 0,
 				sort: {
 					columnId: 'firstName',
 					direction: 'asc'
@@ -123,35 +116,33 @@ describe('Header', () => {
 		);
 
 		h.expect(() =>
-			v('div', { scrollLeft: 0, classes: [css.root, css.filterGroup], row: 'rowgroup' }, [
-				v('div', { classes: css.row, role: 'row' }, [
-					v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-					v('div', { classes: css.cell, role: 'columnheader' }, [
-						v('div', {
-							classes: [css.sortable, css.sorted, null, css.asc],
+			v('div', { classes: css.root, role: 'row' }, [
+				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: css.cell, role: 'columnheader' }, [
+					v('div', {
+						classes: [css.sortable, css.sorted, null, css.asc],
+						onclick: noop
+					}, [
+						'Custom Title',
+						v('button', {
+							classes: css.sort,
 							onclick: noop
 						}, [
-							'Custom Title',
-							v('button', {
-								classes: css.sort,
-								onclick: noop
-							}, [
-								w(Icon, {
-									type: 'upIcon',
-									altText: 'Sort by Custom Title'
-								})
-							])
-						]),
-						w(TextInput, {
-							key: 'filter',
-							extraClasses: { root: css.filter },
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							value: '',
-							onInput: noop
-						})
-					])
+							w(Icon, {
+								type: 'upIcon',
+								altText: 'Sort by Custom Title'
+							})
+						])
+					]),
+					w(TextInput, {
+						key: 'filter',
+						extraClasses: { root: css.filter },
+						label: 'Filter by Custom Title',
+						labelHidden: true,
+						type: 'search',
+						value: '',
+						onInput: noop
+					})
 				])
 			])
 		);
@@ -165,7 +156,6 @@ describe('Header', () => {
 				columnConfig: advancedColumnConfig,
 				sorter: sorterStub,
 				filterer: filtererStub,
-				scrollLeft: 0,
 				sort: {
 					columnId: 'firstName',
 					direction: 'desc'
@@ -174,35 +164,33 @@ describe('Header', () => {
 		);
 
 		h.expect(() =>
-			v('div', { scrollLeft: 0, classes: [css.root, css.filterGroup], row: 'rowgroup' }, [
-				v('div', { classes: css.row, role: 'row' }, [
-					v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-					v('div', { classes: css.cell, role: 'columnheader' }, [
-					v('div', {
-							classes: [css.sortable, css.sorted, css.desc, null],
+			v('div', { classes: css.root, role: 'row' }, [
+				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: css.cell, role: 'columnheader' }, [
+				v('div', {
+						classes: [css.sortable, css.sorted, css.desc, null],
+						onclick: noop
+					}, [
+						'Custom Title',
+						v('button', {
+							classes: css.sort,
 							onclick: noop
 						}, [
-							'Custom Title',
-							v('button', {
-								classes: css.sort,
-								onclick: noop
-							}, [
-								w(Icon, {
-									type: 'downIcon',
-									altText: 'Sort by Custom Title'
-								})
-							])
-						]),
-						w(TextInput, {
-							key: 'filter',
-							extraClasses: { root: css.filter },
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							value: '',
-							onInput: noop
-						})
-					])
+							w(Icon, {
+								type: 'downIcon',
+								altText: 'Sort by Custom Title'
+							})
+						])
+					]),
+					w(TextInput, {
+						key: 'filter',
+						extraClasses: { root: css.filter },
+						label: 'Filter by Custom Title',
+						labelHidden: true,
+						type: 'search',
+						value: '',
+						onInput: noop
+					})
 				])
 			])
 		);
@@ -216,7 +204,6 @@ describe('Header', () => {
 				columnConfig: advancedColumnConfig,
 				sorter: sorterStub,
 				filterer: filtererStub,
-				scrollLeft: 0,
 				filter: {
 					columnId: 'firstName',
 					value: 'my filter'
@@ -225,35 +212,33 @@ describe('Header', () => {
 		);
 
 		h.expect(() =>
-			v('div', { scrollLeft: 0, classes: [css.root, css.filterGroup], row: 'rowgroup' }, [
-				v('div', { classes: css.row, role: 'row' }, [
-					v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-					v('div', { classes: css.cell, role: 'columnheader' }, [
-						v('div', {
-							classes: [css.sortable, null, null, null],
+			v('div', { classes: css.root, role: 'row' }, [
+				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: css.cell, role: 'columnheader' }, [
+					v('div', {
+						classes: [css.sortable, null, null, null],
+						onclick: noop
+					}, [
+						'Custom Title',
+						v('button', {
+							classes: css.sort,
 							onclick: noop
 						}, [
-							'Custom Title',
-							v('button', {
-								classes: css.sort,
-								onclick: noop
-							}, [
-								w(Icon, {
-									type: 'downIcon',
-									altText: 'Sort by Custom Title'
-								})
-							])
-						]),
-						w(TextInput, {
-							key: 'filter',
-							extraClasses: { root: css.filter },
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							value: 'my filter',
-							onInput: noop
-						})
-					])
+							w(Icon, {
+								type: 'downIcon',
+								altText: 'Sort by Custom Title'
+							})
+						])
+					]),
+					w(TextInput, {
+						key: 'filter',
+						extraClasses: { root: css.filter },
+						label: 'Filter by Custom Title',
+						labelHidden: true,
+						type: 'search',
+						value: 'my filter',
+						onInput: noop
+					})
 				])
 			])
 		);
@@ -266,8 +251,7 @@ describe('Header', () => {
 			w(Header, {
 				columnConfig: advancedColumnConfig,
 				sorter: sorterStub,
-				filterer: filtererStub,
-				scrollLeft: 0
+				filterer: filtererStub
 			})
 		);
 
@@ -283,8 +267,7 @@ describe('Header', () => {
 				w(Header, {
 					columnConfig: advancedColumnConfig,
 					sorter: sorterStub,
-					filterer: filtererStub,
-					scrollLeft: 0
+					filterer: filtererStub
 				})
 			);
 
@@ -304,7 +287,6 @@ describe('Header', () => {
 					columnConfig: advancedColumnConfig,
 					sorter: sorterStub,
 					filterer: filtererStub,
-					scrollLeft: 0,
 					sort: {
 						columnId: 'firstName',
 						direction: 'desc'
@@ -328,7 +310,6 @@ describe('Header', () => {
 					columnConfig: advancedColumnConfig,
 					sorter: sorterStub,
 					filterer: filtererStub,
-					scrollLeft: 0,
 					sort: {
 						columnId: 'firstName',
 						direction: 'asc'

@@ -28,8 +28,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 
 	protected render(): DNode {
 		const { columnConfig, sorter, sort, filterer, filter } = this.properties;
-		const hasFilters = columnConfig.some((config) => !!config.filterable);
-		return v('div', { classes: css.row, role: 'row' },
+		return v('div', { classes: css.root, role: 'row' },
 			columnConfig.map((column) => {
 				let title: string | DNode;
 				if (typeof column.title === 'function') {

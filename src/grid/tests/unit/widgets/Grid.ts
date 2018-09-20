@@ -3,6 +3,7 @@ const { describe, it } = intern.getInterface('bdd');
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
+import Resize from '@dojo/framework/widget-core/meta/Resize';
 import { Store } from '@dojo/framework/stores/Store';
 import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
@@ -19,19 +20,20 @@ import Footer from '../../../widgets/Footer';
 const noop: any = () => {};
 
 const columnConfig: ColumnConfig[] = [];
+
 let mockDimensionsGet = stub();
-const mockMeta = stub();
-let dimensions = {
-	size: {
-		height: 500
-	}
-};
-mockDimensionsGet.withArgs('root').returns(dimensions);
-const metaReturn = {
+mockDimensionsGet.withArgs('header').returns({ size: { height: 150 } });
+mockDimensionsGet.withArgs('footer').returns({ size: { height: 50 } });
+const metaDimensionsReturn = {
 	get: mockDimensionsGet,
 	has: () => false
 };
-mockMeta.withArgs(Dimensions).returns(metaReturn);
+const metaResizeReturn = {
+	get: () => {}
+};
+const mockMeta = stub();
+mockMeta.withArgs(Dimensions).returns(metaDimensionsReturn);
+mockMeta.withArgs(Resize).returns(metaResizeReturn);
 
 describe('Grid', () => {
 	it('should render only the container when no dimensions', () => {
@@ -40,7 +42,8 @@ describe('Grid', () => {
 				fetcher: noop,
 				updater: noop,
 				columnConfig,
-				storeId: 'id'
+				storeId: 'id',
+				height: 0
 			})
 		);
 
@@ -49,44 +52,54 @@ describe('Grid', () => {
 
 	it('should use store from properties when passed', () => {
 		const store = new Store();
+		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
 		const h = harness(() =>
 			w(MockMetaMixin(Grid, mockMeta), {
 				fetcher: noop,
 				updater: noop,
-				columnConfig,
-				store
+				columnConfig: filterableConfig,
+				store,
+				height: 500
 			})
 		);
 
 		h.expect(() =>
 			v('div', { key: 'root', classes: css.root, role: 'table' }, [
-				w(Header, {
+				v('div', {
 					key: 'header',
-					columnConfig,
-					sorter: noop,
-					sort: undefined,
-					filter: undefined,
-					filterer: noop,
-					scrollLeft: 0
-				}),
+					scrollLeft: 0,
+					classes: [css.header, css.filterGroup],
+					row: 'rowgroup'
+				}, [
+					w(Header, {
+						key: 'header-row',
+						columnConfig: filterableConfig,
+						sorter: noop,
+						sort: undefined,
+						filter: undefined,
+						filterer: noop
+					})
+				]),
 				w(Body, {
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
 					pageSize: 100,
-					columnConfig,
+					columnConfig: filterableConfig,
 					pageChange: noop,
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 500
+					height: 300
 				}),
-				w(Footer, {
-					key: 'footer',
-					total: undefined,
-					page: 1,
-					pageSize: 100
-				})
+				v('div', { key: 'footer' }, [
+					w(Footer, {
+						key: 'footer-row',
+						total: undefined,
+						page: 1,
+						pageSize: 100
+					})
+				])
 			])
 		);
 
@@ -119,21 +132,27 @@ describe('Grid', () => {
 
 		h.expect(() =>
 			v('div', { key: 'root', classes: css.root, role: 'table' }, [
-				w(Header, {
+				v('div', {
 					key: 'header',
-					columnConfig,
-					sorter: noop,
-					sort: {
-						columnId: 'id',
-						direction: 'asc'
-					},
-					filter: {
-						columnId: 'id',
-						value: 'id'
-					},
-					filterer: noop,
-					scrollLeft: 0
-				}),
+					scrollLeft: 0,
+					classes: [css.header, css.filterGroup],
+					row: 'rowgroup'
+				}, [
+					w(Header, {
+						key: 'header-row',
+						columnConfig: filterableConfig,
+						sorter: noop,
+						sort: {
+							columnId: 'id',
+							direction: 'asc'
+						},
+						filter: {
+							columnId: 'id',
+							value: 'id'
+						},
+						filterer: noop
+					})
+				]),
 				w(Body, {
 					key: 'body',
 					pages: {
@@ -141,19 +160,21 @@ describe('Grid', () => {
 					},
 					totalRows: 100,
 					pageSize: 100,
-					columnConfig,
+					columnConfig: filterableConfig,
 					pageChange: noop,
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 500
+					height: 300
 				}),
-				w(Footer, {
-					key: 'footer',
-					total: 100,
-					page: 10,
-					pageSize: 100
-				})
+				v('div', { key: 'footer' }, [
+					w(Footer, {
+						key: 'footer-row',
+						total: 100,
+						page: 10,
+						pageSize: 100
+					})
+				])
 			])
 		);
 	});
@@ -163,21 +184,28 @@ describe('Grid', () => {
 			w(MockMetaMixin(Grid, mockMeta), {
 				fetcher: noop,
 				updater: noop,
-				columnConfig
+				columnConfig,
+				height: 250
 			})
 		);
 
 		h.expect(() =>
 			v('div', { key: 'root', classes: css.root, role: 'table' }, [
-				w(Header, {
+				v('div', {
 					key: 'header',
-					columnConfig,
-					sorter: noop,
-					sort: undefined,
-					filter: undefined,
-					filterer: noop,
-					scrollLeft: 0
-				}),
+					scrollLeft: 0,
+					classes: [css.header, null],
+					row: 'rowgroup'
+				}, [
+					w(Header, {
+						key: 'header-row',
+						columnConfig,
+						sorter: noop,
+						sort: undefined,
+						filter: undefined,
+						filterer: noop
+					})
+				]),
 				w(Body, {
 					key: 'body',
 					pages: {},
@@ -188,14 +216,16 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 500
+					height: 50
 				}),
-				w(Footer, {
-					key: 'footer',
-					total: undefined,
-					page: 1,
-					pageSize: 100
-				})
+				v('div', { key: 'footer' }, [
+					w(Footer, {
+						key: 'footer-row',
+						total: undefined,
+						page: 1,
+						pageSize: 100
+					})
+				])
 			])
 		);
 	});
@@ -205,21 +235,28 @@ describe('Grid', () => {
 			w(MockMetaMixin(Grid, mockMeta), {
 				fetcher: noop,
 				updater: noop,
-				columnConfig
+				columnConfig,
+				height: 500
 			})
 		);
 
 		h.expect(() =>
 			v('div', { key: 'root', classes: css.root, role: 'table' }, [
-				w(Header, {
+				v('div', {
 					key: 'header',
-					columnConfig,
-					sorter: noop,
-					sort: undefined,
-					filter: undefined,
-					filterer: noop,
-					scrollLeft: 0
-				}),
+					scrollLeft: 0,
+					classes: [css.header, null],
+					row: 'rowgroup'
+				}, [
+					w(Header, {
+						key: 'header-row',
+						columnConfig,
+						sorter: noop,
+						sort: undefined,
+						filter: undefined,
+						filterer: noop
+					})
+				]),
 				w(Body, {
 					key: 'body',
 					pages: {},
@@ -230,14 +267,16 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 500
+					height: 300
 				}),
-				w(Footer, {
-					key: 'footer',
-					total: undefined,
-					page: 1,
-					pageSize: 100
-				})
+				v('div', { key: 'footer' }, [
+					w(Footer, {
+						key: 'footer-row',
+						total: undefined,
+						page: 1,
+						pageSize: 100
+					})
+				])
 			])
 		);
 
@@ -245,15 +284,21 @@ describe('Grid', () => {
 
 		h.expect(() =>
 			v('div', { key: 'root', classes: css.root, role: 'table' }, [
-				w(Header, {
+				v('div', {
 					key: 'header',
-					columnConfig,
-					sorter: noop,
-					sort: undefined,
-					filter: undefined,
-					filterer: noop,
-					scrollLeft: 10
-				}),
+					scrollLeft: 10,
+					classes: [css.header, null],
+					row: 'rowgroup'
+				}, [
+					w(Header, {
+						key: 'header-row',
+						columnConfig,
+						sorter: noop,
+						sort: undefined,
+						filter: undefined,
+						filterer: noop
+					})
+				]),
 				w(Body, {
 					key: 'body',
 					pages: {},
@@ -264,14 +309,16 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 500
+					height: 300
 				}),
-				w(Footer, {
-					key: 'footer',
-					total: undefined,
-					page: 1,
-					pageSize: 100
-				})
+				v('div', { key: 'footer' }, [
+					w(Footer, {
+						key: 'footer-row',
+						total: undefined,
+						page: 1,
+						pageSize: 100
+					})
+				])
 			])
 		);
 	});
