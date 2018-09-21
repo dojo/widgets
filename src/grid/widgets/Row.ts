@@ -5,7 +5,8 @@ import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 
 import { ColumnConfig } from './../interfaces';
 import Cell from './Cell';
-import * as css from './styles/Row.m.css';
+import * as fixedCss from '../styles/row.m.css';
+import * as css from '../../theme/grid-row.m.css';
 
 export interface RowProperties {
 	id: number;
@@ -37,6 +38,6 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 			[] as DNode[]
 		);
 
-		return v('div', { classes: css.root, role: 'row' }, columns);
+		return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' }, columns);
 	}
 }

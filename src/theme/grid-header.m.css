@@ -1,17 +1,14 @@
-@import './variables.css';
+@import '../common/styles/variables.css';
 
-.root {
-	display: flex;
-}
+.root {}
 
 .cell {
-	flex: 1 100%;
-	border: 1px solid var(--border-color);
+	border: 1px solid var(--component-color);
 	border-top-style: none;
 	border-right-style: none;
 	border-bottom-style: none;
 	font-weight: 600;
-	padding: var(--header-padding);
+	padding: 6px 4px;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -24,7 +21,7 @@
 }
 
 .sorted {
-	color: var(--sort-color);
+	color: var(--success-color);
 }
 
 .desc {}
@@ -45,11 +42,6 @@
 	margin-top: 4px;
 	width: 100%;
 	box-sizing: border-box;
-	font-family: var(--font-family);
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	font-weight: 200;
-	font-size: var(--font-size);
-	color: var(--header-color);
+	color: var(--component-color);
 	padding: 2px 4px;
 }

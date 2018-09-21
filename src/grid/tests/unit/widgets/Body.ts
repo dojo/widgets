@@ -4,7 +4,8 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
 import global from '@dojo/framework/shim/global';
 
-import * as css from '../../../widgets/styles/Body.m.css';
+import * as fixedCss from '../../../styles/body.m.css';
+import * as css from '../../../../theme/grid-body.m.css';
 import Body from '../../../widgets/Body';
 import PlaceholderRow from '../../../widgets/PlaceholderRow';
 import Row from '../../../widgets/Row';
@@ -64,7 +65,7 @@ describe('Body', () => {
 				'div',
 				{
 					key: 'root',
-					classes: css.root,
+					classes: [css.root, fixedCss.rootFixed],
 					role: 'rowgroup',
 					onscroll: noop,
 					styles: { height: '400px' }
@@ -116,7 +117,7 @@ describe('Body', () => {
 				'div',
 				{
 					key: 'root',
-					classes: css.root,
+					classes: [css.root, fixedCss.rootFixed],
 					role: 'rowgroup',
 					onscroll: noop,
 					styles: { height: '400px' }
@@ -155,7 +156,7 @@ describe('Body', () => {
 				'div',
 				{
 					key: 'root',
-					classes: css.root,
+					classes: [css.root, fixedCss.rootFixed],
 					role: 'rowgroup',
 					onscroll: noop,
 					styles: { height: '400px' }
@@ -210,7 +211,7 @@ describe('Body', () => {
 				'div',
 				{
 					key: 'root',
-					classes: css.root,
+					classes: [css.root, fixedCss.rootFixed],
 					role: 'rowgroup',
 					onscroll: noop,
 					styles: { height: '400px' }
@@ -240,7 +241,7 @@ describe('Body', () => {
 				'div',
 				{
 					key: 'root',
-					classes: css.root,
+					classes: [css.root, fixedCss.rootFixed],
 					role: 'rowgroup',
 					onscroll: noop,
 					styles: { height: '400px' }
@@ -261,7 +262,7 @@ describe('Body', () => {
 				'div',
 				{
 					key: 'root',
-					classes: css.root,
+					classes: [css.root, fixedCss.rootFixed],
 					role: 'rowgroup',
 					onscroll: noop,
 					styles: { height: '400px' }

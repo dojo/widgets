@@ -7,7 +7,8 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import TextInput from '../../../../text-input/index';
 import Icon from '../../../../icon/index';
 
-import * as css from '../../../widgets/styles/Header.m.css';
+import * as css from '../../../../theme/grid-header.m.css';
+import * as fixedCss from '../../../styles/header.m.css';
 import Header from '../../../widgets/Header';
 
 const noop = () => {};
@@ -49,9 +50,9 @@ describe('Header', () => {
 			})
 		);
 		h.expect(() =>
-			v('div', { classes: css.root, role: 'row' }, [
-				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['First Name'])])
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['First Name'])])
 			])
 		);
 	});
@@ -68,9 +69,9 @@ describe('Header', () => {
 		);
 
 		h.expect(() =>
-			v('div', { classes: css.root, role: 'row' }, [
-				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: css.cell, role: 'columnheader' }, [
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
 					v('div', {
 						classes: [css.sortable, null, null, null],
 						onclick: noop
@@ -116,9 +117,9 @@ describe('Header', () => {
 		);
 
 		h.expect(() =>
-			v('div', { classes: css.root, role: 'row' }, [
-				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: css.cell, role: 'columnheader' }, [
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
 					v('div', {
 						classes: [css.sortable, css.sorted, null, css.asc],
 						onclick: noop
@@ -164,9 +165,9 @@ describe('Header', () => {
 		);
 
 		h.expect(() =>
-			v('div', { classes: css.root, role: 'row' }, [
-				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: css.cell, role: 'columnheader' }, [
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
 				v('div', {
 						classes: [css.sortable, css.sorted, css.desc, null],
 						onclick: noop
@@ -212,9 +213,9 @@ describe('Header', () => {
 		);
 
 		h.expect(() =>
-			v('div', { classes: css.root, role: 'row' }, [
-				v('div', { classes: css.cell, role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: css.cell, role: 'columnheader' }, [
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
 					v('div', {
 						classes: [css.sortable, null, null, null],
 						onclick: noop

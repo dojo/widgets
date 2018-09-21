@@ -1,0 +1,10 @@
+.rootFixed {
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.headerFixed {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	box-sizing: border-box;
+}

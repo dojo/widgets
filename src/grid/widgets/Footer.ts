@@ -3,7 +3,7 @@ import { v } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 
-import * as css from './styles/Footer.m.css';
+import * as css from '../../theme/grid-footer.m.css';
 
 export interface FooterProperties {
 	total?: number;
@@ -19,6 +19,6 @@ export default class Footer extends ThemedMixin(WidgetBase)<FooterProperties> {
 			total !== undefined
 				? `Page ${page} of ${Math.ceil(total / pageSize)}. Total rows ${total}`
 				: `Page ${page} of ?`;
-		return v('div', { classes: css.root }, [footer]);
+		return v('div', { classes: this.theme(css.root) }, [footer]);
 	}
 }

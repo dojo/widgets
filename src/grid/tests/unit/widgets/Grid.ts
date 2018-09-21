@@ -9,7 +9,8 @@ import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
 
 import Grid from '../../../widgets/Grid';
-import * as css from '../../../widgets/styles/Grid.m.css';
+import * as css from '../../../../theme/grid.m.css';
+import * as fixedCss from '../../../styles/grid.m.css';
 import { ColumnConfig } from '../../../interfaces';
 import { stub } from 'sinon';
 import { MockMetaMixin } from '../../../../common/tests/support/test-helpers';
@@ -47,7 +48,7 @@ describe('Grid', () => {
 			})
 		);
 
-		h.expect(() => v('div', { key: 'root', classes: css.root, role: 'table' }));
+		h.expect(() => v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }));
 	});
 
 	it('should use store from properties when passed', () => {
@@ -64,11 +65,11 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: css.root, role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
-					classes: [css.header, css.filterGroup],
+					classes: [css.header, fixedCss.headerFixed, css.filterGroup],
 					row: 'rowgroup'
 				}, [
 					w(Header, {
@@ -131,11 +132,11 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: css.root, role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
-					classes: [css.header, css.filterGroup],
+					classes: [css.header, fixedCss.headerFixed, css.filterGroup],
 					row: 'rowgroup'
 				}, [
 					w(Header, {
@@ -190,11 +191,11 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: css.root, role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
-					classes: [css.header, null],
+					classes: [css.header, fixedCss.headerFixed, null],
 					row: 'rowgroup'
 				}, [
 					w(Header, {
@@ -241,11 +242,11 @@ describe('Grid', () => {
 		);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: css.root, role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 0,
-					classes: [css.header, null],
+					classes: [css.header, fixedCss.headerFixed, null],
 					row: 'rowgroup'
 				}, [
 					w(Header, {
@@ -283,11 +284,11 @@ describe('Grid', () => {
 		h.trigger('@body', 'onScroll', 10);
 
 		h.expect(() =>
-			v('div', { key: 'root', classes: css.root, role: 'table' }, [
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' }, [
 				v('div', {
 					key: 'header',
 					scrollLeft: 10,
-					classes: [css.header, null],
+					classes: [css.header, fixedCss.headerFixed, null],
 					row: 'rowgroup'
 				}, [
 					w(Header, {

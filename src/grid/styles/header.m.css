@@ -1,0 +1,7 @@
+.rootFixed {
+	display: flex;
+}
+
+.cellFixed {
+	flex: 1 100%;
+}
