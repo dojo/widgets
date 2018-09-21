@@ -6,6 +6,7 @@ import keys from '@theintern/leadfoot/keys';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
@@ -19,7 +20,7 @@ const DELAY = 400;
 
 function openDialog(remote: Remote, { closeable = true, modal, underlay }: Options = {}) {
 	let promise = remote
-		.get('http://localhost:9000/_build/common/example/?module=dialog')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#dialog`)
 		.setFindTimeout(5000);
 
 	if (!closeable) {

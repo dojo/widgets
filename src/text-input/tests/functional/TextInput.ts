@@ -5,12 +5,13 @@ import { Remote } from 'intern/lib/executors/Node';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/text-input.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=text-input')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#text-input`)
 		.setFindTimeout(5000);
 }
 

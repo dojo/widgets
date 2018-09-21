@@ -1,7 +1,6 @@
 import { getDateFormatter } from '@dojo/framework/i18n/date';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import renderer from '@dojo/framework/widget-core/vdom';
-import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
+import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
@@ -14,7 +13,7 @@ const TODAY = new Date();
 const getEnglishTime = getDateFormatter({ time: 'short' });
 
 @theme(baseCss)
-export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
+export default class App extends ThemedMixin(WidgetBase) {
 	private _options: TimeUnits[] = getOptions();
 	private _filteredOptions: TimeUnits[] = [];
 	private _values: any = {};
@@ -230,6 +229,3 @@ export class App extends ThemedMixin(WidgetBase)<ThemedProperties> {
 		]);
 	}
 }
-
-const r = renderer(() => w(App, {}));
-r.mount();

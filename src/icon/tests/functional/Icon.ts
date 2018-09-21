@@ -3,12 +3,13 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import * as iconCss from '../../../theme/icon.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const DELAY = 300;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=icon')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#icon`)
 		.setFindTimeout(5000);
 }
 

@@ -1,11 +1,9 @@
-import renderer from '@dojo/framework/widget-core/vdom';
 import { w, v } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 
 import Toolbar from '../../toolbar/index';
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	onAttach() {
 		const style = document.createElement('style');
 		document.head.appendChild(style);
@@ -27,6 +25,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const r = renderer(() => w(App, {}));
-r.mount();

@@ -1,14 +1,12 @@
-import renderer from '@dojo/framework/widget-core/vdom';
 import { Set } from '@dojo/framework/shim/Set';
 import { w, v } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 import { from } from '@dojo/framework/shim/array';
 
 import AccordionPane from '../../accordion-pane/index';
 import TitlePane from '../../title-pane/index';
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	private _exclusiveKey: string | undefined;
 	private _openKeys = new Set<string>();
 
@@ -64,6 +62,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const r = renderer(() => w(App, {}));
-r.mount();

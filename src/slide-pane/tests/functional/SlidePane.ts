@@ -6,13 +6,14 @@ import Command from '@theintern/leadfoot/Command';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/slide-pane.m.css';
 import * as fixedCss from '../../styles/slide-pane.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 const DELAY = 400;
 
 function openSlidePane(remote: Remote, alignRight?: boolean) {
 	let promise = remote
-		.get('http://localhost:9000/_build/common/example/?module=slide-pane')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#slide-pane`)
 		.setFindTimeout(5000)
 		.findById('underlay')
 			.click()

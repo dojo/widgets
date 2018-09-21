@@ -1,14 +1,12 @@
 import { deepAssign } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import renderer from '@dojo/framework/widget-core/vdom';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
 import SplitPane, { Direction } from '../../split-pane/index';
 import GlobalEvent from '../../global-event/index';
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	private state: any = {};
 
 	public setState(state: any) {
@@ -189,6 +187,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const r = renderer(() => w(App, {}));
-r.mount();

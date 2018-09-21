@@ -1,6 +1,4 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
-import renderer from '@dojo/framework/widget-core/vdom';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Listbox from '../../listbox/index';
 
@@ -11,7 +9,7 @@ interface CustomOption {
 	value: string;
 }
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	private _listbox1Index = 0;
 	private _listbox1Value: string | undefined;
 	private _listbox2Index = 0;
@@ -132,6 +130,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const r = renderer(() => w(App, {}));
-r.mount();

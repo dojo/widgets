@@ -1,11 +1,10 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import renderer from '@dojo/framework/widget-core/vdom';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Grid from '../../grid/index';
 import { createFetcher } from '../../grid/utils';
 import mockData from './mockData';
 
-export class App extends WidgetBase {
+export default class App extends WidgetBase {
 	private columnConfig = [
 		{
 			id: 'id',
@@ -54,6 +53,3 @@ export class App extends WidgetBase {
 		]);
 	}
 }
-
-const r = renderer(() => w(App, {}));
-r.mount();

@@ -4,12 +4,13 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/checkbox.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=checkbox')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#checkbox`)
 		.setFindTimeout(5000);
 }
 

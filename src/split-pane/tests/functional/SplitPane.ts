@@ -6,6 +6,7 @@ import Element from '@theintern/leadfoot/Element';
 import { services } from '@theintern/a11y';
 import Test from 'intern/lib/Test';
 import * as css from '../../../theme/split-pane.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 const DELAY = 300;
@@ -17,7 +18,7 @@ function getPage(test: Test): Command<void> {
 		test.skip('Tests do not run in these browsers.');
 	}
 	return test.remote
-		.get('http://localhost:9000/_build/common/example/?module=split-pane')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#split-pane`)
 		.setFindTimeout(5000);
 }
 

@@ -6,13 +6,14 @@ import keys from '@theintern/leadfoot/keys';
 import { services } from '@theintern/a11y';
 import * as listboxCss from '../../../theme/listbox.m.css';
 import * as css from '../../../theme/combobox.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 const DELAY = 300;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=combobox')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#combobox`)
 		.setFindTimeout(5000);
 }
 

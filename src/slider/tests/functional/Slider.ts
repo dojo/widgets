@@ -6,6 +6,7 @@ import { services } from '@theintern/a11y';
 import { Remote } from 'intern/lib/executors/Node';
 import Test from 'intern/lib/Test';
 import * as css from '../../../theme/slider.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
@@ -16,7 +17,7 @@ function getPage(test: Test) {
 	}
 	const remote: Remote = test.remote;
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=slider')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#slider`)
 		.setFindTimeout(5000);
 }
 

@@ -1,9 +1,8 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import renderer from '@dojo/framework/widget-core/vdom';
 import { v, w } from '@dojo/framework/widget-core/d';
 import EnhancedTextInput from '../../enhanced-text-input/index';
 
-export class App extends WidgetBase {
+export default class App extends WidgetBase {
 	private _value1: string | undefined;
 	private _value2: string | undefined;
 
@@ -49,6 +48,3 @@ export class App extends WidgetBase {
 		]);
 	}
 }
-
-const r = renderer(() => w(App, {}));
-r.mount();
