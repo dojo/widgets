@@ -2,8 +2,11 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/text-input.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
+
+const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
@@ -125,5 +128,9 @@ registerSuite('TextInput', {
 					assert.include(className, css.invalid);
 				})
 			.end();
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

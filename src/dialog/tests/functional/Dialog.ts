@@ -3,8 +3,11 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
+
+const axe = services.axe;
 
 interface Options {
 	closeable?: boolean;
@@ -167,5 +170,9 @@ registerSuite('Dialog', {
 				.then((children: HTMLElement[]) => {
 					assert.lengthOf(children, 0);
 				});
+	},
+
+	'check accessibility'() {
+		return openDialog(this.remote).then(axe.createChecker());
 	}
 });

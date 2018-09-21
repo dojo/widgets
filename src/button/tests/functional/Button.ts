@@ -3,6 +3,9 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import * as css from '../../../theme/button.m.css';
+import { services } from '@theintern/a11y';
+
+const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
@@ -59,6 +62,7 @@ registerSuite('Button', {
 					assert.strictEqual(pressed, 'true');
 				})
 				.click()
+				.sleep(DELAY)
 			.end()
 			.findByCssSelector(`#example-4 .${css.root}`)
 				.getAttribute('aria-pressed')
@@ -66,5 +70,9 @@ registerSuite('Button', {
 					assert.strictEqual(pressed, 'false');
 				})
 			.end();
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

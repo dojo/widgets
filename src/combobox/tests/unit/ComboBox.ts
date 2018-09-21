@@ -152,8 +152,7 @@ const getExpectedVdom = function(useTestProperties = false, open = false, label 
 
 	return v('div', {
 		'aria-expanded': open ? 'true' : 'false',
-		'aria-haspopup': 'true',
-		'aria-readonly': readOnly ? `${readOnly}` : null,
+		'aria-haspopup': 'listbox',
 		'aria-required': null,
 		classes: [
 			css.root,
@@ -509,7 +508,7 @@ registerSuite('ComboBox', {
 			}, [ 'foo' ]));
 
 			h.expectPartial('@clear', () => v('button', {
-				'aria-controls': '',
+				'aria-controls': null,
 				key: 'clear',
 				classes: css.clear,
 				disabled: true,

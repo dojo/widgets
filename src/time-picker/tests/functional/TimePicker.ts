@@ -5,10 +5,12 @@ import { Remote } from 'intern/lib/executors/Node';
 import Command from '@theintern/leadfoot/Command';
 import Element from '@theintern/leadfoot/Element';
 import keys from '@theintern/leadfoot/keys';
+import { services } from '@theintern/a11y';
 import * as comboboxCss from '../../../theme/combobox.m.css';
 import * as listboxCss from '../../../theme/listbox.m.css';
 import * as textinputCss from '../../../theme/text-input.m.css';
 
+const axe = services.axe;
 const DELAY = 300;
 
 function getPage(remote: Remote, exampleId: string) {
@@ -215,5 +217,10 @@ registerSuite('TimePicker', {
 					assert.include(className, textinputCss.invalid);
 				})
 			.end();
+	},
+
+	'check accessibility'() {
+		const exampleId = 'example-filter-on-input';
+		return getPage(this.remote, exampleId).then(axe.createChecker());
 	}
 });

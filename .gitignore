@@ -3,6 +3,7 @@
 /coverage
 /dist
 /html-report
+/a11y-report
 node_modules
 /typings
 /output

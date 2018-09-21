@@ -3,9 +3,11 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
+import { services } from '@theintern/a11y';
 import * as listboxCss from '../../../theme/listbox.m.css';
 import * as css from '../../../theme/combobox.m.css';
 
+const axe = services.axe;
 const DELAY = 300;
 
 function getPage(remote: Remote) {
@@ -104,7 +106,7 @@ registerSuite('ComboBox', {
 			.getActiveElement()
 				.getProperty('textContent')
 				.then((text: string) => {
-					assert.strictEqual(text, 'clear ', 'The "clear" button should receive focus.');
+					assert.strictEqual(text, 'clear Combo:', 'The "clear" button should receive focus.');
 				})
 				.type(keys.TAB)
 			.getActiveElement()
@@ -164,5 +166,9 @@ registerSuite('ComboBox', {
 				.then(tag => {
 					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is activated with the ENTER key.');
 				});
+	},
+
+	'check accessibility'() {
+		return getPage(this.remote).then(axe.createChecker());
 	}
 });

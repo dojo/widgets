@@ -352,9 +352,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			...inputProperties,
 			key: 'textinput',
 			aria: {
-				activedescendant: this._getResultId(results[this._activeIndex], this._activeIndex),
-				controls: this._getMenuId(),
-				owns: this._getMenuId()
+				activedescendant: this._open ? this._getResultId(results[this._activeIndex], this._activeIndex) : null,
+				controls: this._open ? this._getMenuId() : null
 			},
 			disabled,
 			widgetId,
@@ -381,7 +380,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 
 		return v('button', {
 			key: 'clear',
-			'aria-controls': this._getMenuId(),
+			'aria-controls': this._open ? this._getMenuId() : null,
 			classes: this.theme(css.clear),
 			disabled: disabled || readOnly,
 			type: 'button',
@@ -498,8 +497,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 
 		return v('div', {
 			'aria-expanded': this._open ? 'true' : 'false',
-			'aria-haspopup': 'true',
-			'aria-readonly': readOnly ? 'true' : null,
+			'aria-haspopup': 'listbox',
 			'aria-required': required ? 'true' : null,
 			classes: this.theme(this.getRootClasses()),
 			key: 'root',

@@ -3,9 +3,11 @@ const { assert } = intern.getPlugin('chai');
 
 import { Remote } from 'intern/lib/executors/Node';
 import Command from '@theintern/leadfoot/Command';
+import { services } from '@theintern/a11y';
 import * as css from '../../../theme/slide-pane.m.css';
 import * as fixedCss from '../../styles/slide-pane.m.css';
 
+const axe = services.axe;
 const DELAY = 400;
 
 function openSlidePane(remote: Remote, alignRight?: boolean) {
@@ -177,5 +179,9 @@ registerSuite('SlidePane', {
 					.then(({ x }) => {
 						assert.strictEqual(x, 0, 'The slidepane should be open.');
 					});
+	},
+
+	'check accessibility'() {
+		return openSlidePane(this.remote).then(axe.createChecker());
 	}
 });
