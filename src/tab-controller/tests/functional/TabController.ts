@@ -4,12 +4,13 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/tab-controller.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=tab-controller')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#tab-controller`)
 		.setFindTimeout(5000);
 }
 

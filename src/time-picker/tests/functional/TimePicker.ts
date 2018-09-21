@@ -9,13 +9,14 @@ import { services } from '@theintern/a11y';
 import * as comboboxCss from '../../../theme/combobox.m.css';
 import * as listboxCss from '../../../theme/listbox.m.css';
 import * as textinputCss from '../../../theme/text-input.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 const DELAY = 300;
 
 function getPage(remote: Remote, exampleId: string) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=time-picker')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#time-picker`)
 		.setFindTimeout(5000)
 		.findById(exampleId);
 }

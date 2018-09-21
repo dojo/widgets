@@ -36,26 +36,11 @@
 				}
 			}
 		}));
-
-		(function () {
-			var query = window.location.search.substring(1).split('&');
-			var module;
-
-			for (var i = 0; i < query.length; i++) {
-				var pair = query[i].split('=');
-				if (pair[0].toLowerCase() === 'module') {
-					module = pair[1].toLowerCase();
-					break;
-				}
-			}
-
-			require(['@dojo/framework/shim/main', '@dojo/framework/shim/browser'], function () {
-				require([ 'src/common/example/index' ], function () {});
-				if (module) {
-					require([ 'src/' + module + '/example/index' ], function () {});
-				}
-			});
-		})();
+		require([
+			'@dojo/framework/shim/main',
+			'@dojo/framework/shim/browser',
+			'src/common/example/index'
+		], function () {});
 	</script>
 </body>
 </html>

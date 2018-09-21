@@ -1,10 +1,8 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Label from '../../label/index';
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	render() {
 		return v('div', [
 			v('h1', {}, ['Label Examples']),
@@ -28,8 +26,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

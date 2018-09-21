@@ -2,7 +2,7 @@ import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 
 import * as css from './styles/Cell.m.css';
 

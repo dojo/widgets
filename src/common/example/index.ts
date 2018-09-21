@@ -1,8 +1,12 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
+import renderer from '@dojo/framework/widget-core/vdom';
 import Select from '../../select/index';
 import { v, w } from '@dojo/framework/widget-core/d';
+import { watch } from '@dojo/framework/widget-core/decorators/watch';
+import Outlet from '@dojo/framework/routing/Outlet';
+import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
+import Registry from '@dojo/framework/widget-core/Registry';
+import Router from '@dojo/framework/routing/Router';
 
 const modules = [
 	'',
@@ -31,29 +35,43 @@ const modules = [
 	'tooltip'
 ];
 
-export class App extends WidgetBase<WidgetProperties> {
-	onModuleChange(module: any) {
-		window.location.search = `?module=${module}`;
+const registry = new Registry();
+registerRouterInjector([{ path: '{module}', outlet: 'module'}], registry);
+
+export default class App extends WidgetBase {
+
+	@watch()
+	private _module = '';
+
+	private _onModuleChange(module: string) {
+		const item = this.registry.getInjector<Router>('router')!;
+		const router = item.injector();
+		router.setPath(module);
+	}
+
+	private _renderItem = async () => {
+		return import('src/' + this._module + '/example/index');
 	}
 
 	render() {
 		return v('div', { id: 'module-select' }, [
-			v('h2', {
-				innerHTML: 'Select a module to view'
-			}),
+			v('h2', ['Select a module to view']),
 			w(Select, {
-				onChange: this.onModuleChange,
+				onChange: this._onModuleChange,
 				useNativeElement: true,
 				label: 'Select a module to view',
 				options: modules,
+				value: this._module,
 				getOptionValue: (module: any) => module,
 				getOptionLabel: (module: any) => module
-			})
+			}),
+			w(Outlet, { id: 'module', renderer: (matchDetail: any) => {
+				this._module = matchDetail.params.module;
+				return w({ label: this._module, registryItem: this._renderItem }, { key: this._module });
+			}})
 		]);
 	}
 }
 
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();
+const r = renderer(() => w(App, {}));
+r.mount({ registry });

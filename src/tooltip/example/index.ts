@@ -1,14 +1,12 @@
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { Set } from '@dojo/framework/shim/Set';
 import { w, v } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 
 import Button from '../../button/index';
 import TextInput from '../../text-input/index';
 import Tooltip, { Orientation } from '../../tooltip/index';
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	private _open = new Set<string>();
 
 	onShow(key: string) {
@@ -56,8 +54,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

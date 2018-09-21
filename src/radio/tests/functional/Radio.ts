@@ -4,12 +4,13 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/radio.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=radio')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#radio`)
 		.setFindTimeout(5000);
 }
 

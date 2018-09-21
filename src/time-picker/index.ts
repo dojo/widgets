@@ -11,7 +11,7 @@ import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { TextInputProperties } from '../text-input/index';
 import Label from '../label/index';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/time-picker.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 

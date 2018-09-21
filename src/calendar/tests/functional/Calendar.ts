@@ -6,6 +6,7 @@ import keys from '@theintern/leadfoot/keys';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
@@ -16,7 +17,7 @@ const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
 
 function openMonthPicker(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=calendar')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#calendar`)
 		.setFindTimeout(5000)
 		.findByCssSelector(`.${css.monthTrigger}`)
 			.click()
@@ -26,7 +27,7 @@ function openMonthPicker(remote: Remote) {
 
 function openYearPicker(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=calendar')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#calendar`)
 		.setFindTimeout(5000)
 		.findByCssSelector(`.${css.yearTrigger}`)
 			.click()
@@ -36,7 +37,7 @@ function openYearPicker(remote: Remote) {
 
 function clickDate(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=calendar')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#calendar`)
 		.setFindTimeout(5000)
 		.findByCssSelector(`tbody > tr:first-child > td:nth-child(${firstDay + 1})`)
 			.click()

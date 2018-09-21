@@ -1,9 +1,8 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Radio from '../../radio/index';
 
-export class App extends WidgetBase {
+export default class App extends WidgetBase {
 	private _inputValue: string | undefined;
 
 	onChange(value: string) {
@@ -67,8 +66,3 @@ export class App extends WidgetBase {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

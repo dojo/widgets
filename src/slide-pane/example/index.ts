@@ -1,11 +1,9 @@
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 import SlidePane, { Align } from '../../slide-pane/index';
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	private _open = false;
 	private _underlay = false;
 	private _align: Align = Align.left;
@@ -72,8 +70,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

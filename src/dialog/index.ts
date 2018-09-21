@@ -4,7 +4,7 @@ import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import commonBundle from '../common/nls/common';

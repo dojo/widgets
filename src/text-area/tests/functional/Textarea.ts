@@ -6,12 +6,13 @@ import keys from '@theintern/leadfoot/keys';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/text-area.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=text-area')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#text-area`)
 		.setFindTimeout(5000);
 }
 

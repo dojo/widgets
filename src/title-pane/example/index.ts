@@ -1,11 +1,9 @@
-import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { WidgetProperties } from '@dojo/framework/widget-core/interfaces';
 
 import TitlePane from '../../title-pane/index';
 
-export class App extends WidgetBase<WidgetProperties> {
+export default class App extends WidgetBase {
 	private _t2Open = true;
 	private _t3Open = false;
 
@@ -97,8 +95,3 @@ export class App extends WidgetBase<WidgetProperties> {
 		]);
 	}
 }
-
-const Projector = ProjectorMixin(App);
-const projector = new Projector();
-
-projector.append();

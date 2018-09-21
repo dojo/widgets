@@ -3,7 +3,7 @@ import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import { CustomAriaProperties } from '../common/interfaces';

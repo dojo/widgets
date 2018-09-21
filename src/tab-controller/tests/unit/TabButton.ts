@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import { v, w } from '@dojo/framework/widget-core/d';
 import harness from '@dojo/framework/testing/harness';
 import { Keys } from '../../../common/util';
-import { assign } from '@dojo/framework/core/lang';
+import { assign } from '@dojo/framework/shim/object';
 
 import TabButton, { TabButtonProperties } from '../../TabButton';
 import * as css from '../../../theme/tab-controller.m.css';

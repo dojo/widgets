@@ -5,7 +5,7 @@ import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
-import uuid from '@dojo/framework/core/uuid';
+import { uuid } from '@dojo/framework/core/util';
 import { find } from '@dojo/framework/shim/array';
 import { formatAriaProperties, Keys } from '../common/util';
 import { CustomAriaProperties, LabeledProperties, InputProperties } from '../common/interfaces';

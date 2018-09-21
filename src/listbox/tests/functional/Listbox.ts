@@ -5,6 +5,7 @@ import { Remote } from 'intern/lib/executors/Node';
 import keys from '@theintern/leadfoot/keys';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/listbox.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 const DELAY = 300;
@@ -12,7 +13,7 @@ const ERROR_MARGIN = 5;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=listbox')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#listbox`)
 		.setFindTimeout(5000);
 }
 

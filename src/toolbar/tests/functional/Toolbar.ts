@@ -4,12 +4,13 @@ import { Remote } from 'intern/lib/executors/Node';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/toolbar.m.css';
 import * as slidePaneCss from '../../../theme/slide-pane.m.css';
+import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get('http://localhost:9000/_build/common/example/?module=toolbar')
+		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#toolbar`)
 		.setFindTimeout(5000);
 }
 
