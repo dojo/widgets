@@ -9,7 +9,8 @@ import { GridPages, ColumnConfig } from './../interfaces';
 import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
 
-import * as css from './styles/Body.m.css';
+import * as fixedCss from '../styles/body.m.css';
+import * as css from '../../theme/grid-body.m.css';
 import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
 import { auto, reference } from '@dojo/framework/widget-core/diff';
 
@@ -170,7 +171,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 
 		let containerProperties: VNodeProperties = {
 			key: 'root',
-			classes: css.root,
+			classes: [this.theme(css.root), fixedCss.rootFixed],
 			role: 'rowgroup',
 			onscroll: this._onScroll,
 			styles: { height: `${height}px` }

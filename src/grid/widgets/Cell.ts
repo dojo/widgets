@@ -4,7 +4,8 @@ import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 
-import * as css from './styles/Cell.m.css';
+import * as fixedCss from '../styles/cell.m.css';
+import * as css from '../../theme/grid-cell.m.css';
 
 export interface CellProperties {
 	value: string | DNode;
@@ -72,11 +73,11 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 		const focusButton = this._callButtonFocus;
 		this._callButtonFocus = false;
 
-		return v('div', { role: 'cell', classes: css.root }, [
+		return v('div', { role: 'cell', classes: [this.theme(css.root), fixedCss.rootFixed] }, [
 			this._editing ? v('input', {
 				key: 'editInput',
 				'aria-label': `Edit ${rawValue}`,
-				classes: [css.root, css.input],
+				classes: this.theme(css.input),
 				focus: true,
 				value: this._editingValue,
 				oninput: this._onInput,
@@ -88,7 +89,7 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 				focus: focusButton,
 				type: 'button',
 				'aria-describedby': this._idBase,
-				classes: css.edit,
+				classes: this.theme(css.edit),
 				onclick: this._onEdit
 			}, [ 'Edit' ]) : null
 		]);

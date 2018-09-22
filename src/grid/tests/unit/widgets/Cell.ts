@@ -9,7 +9,8 @@ import {
 	compareAriaDescribedBy,
 	noop
 } from '../../../../common/tests/support/test-helpers';
-import * as css from '../../../widgets/styles/Cell.m.css';
+import * as fixedCss from '../../../styles/cell.m.css';
+import * as css from '../../../../theme/grid-cell.m.css';
 import Cell from '../../../widgets/Cell';
 
 const harness = createHarness([ compareId, compareAriaDescribedBy ]);
@@ -17,12 +18,12 @@ const harness = createHarness([ compareId, compareAriaDescribedBy ]);
 const expectedEditing = function() {
 	return v('div', {
 		role: 'cell',
-		classes: css.root
+		classes: [css.root, fixedCss.rootFixed]
 	}, [
 		v('input', {
 			key: 'editInput',
 			'aria-label': 'Edit id',
-			classes: [css.root, css.input],
+			classes: css.input,
 			focus: true,
 			value: 'id',
 			oninput: noop,
@@ -35,7 +36,7 @@ const expectedEditing = function() {
 const expectedEditable = function(focusButton = false) {
 	return v('div', {
 		role: 'cell',
-		classes: css.root
+		classes: [css.root, fixedCss.rootFixed]
 	}, [
 		v('div', {
 			key: 'content',
@@ -63,7 +64,7 @@ describe('Cell', () => {
 			})
 		);
 		h.expect(() => v('div', {
-				classes: css.root,
+				classes: [css.root, fixedCss.rootFixed],
 				role: 'cell'
 			}, [
 				v('div', {
@@ -84,7 +85,7 @@ describe('Cell', () => {
 			})
 		);
 		h.expect(() => v('div', {
-				classes: css.root,
+				classes: [css.root, fixedCss.rootFixed],
 				role: 'cell'
 			}, [
 				v('div', {
@@ -106,7 +107,7 @@ describe('Cell', () => {
 			})
 		);
 		h.expect(() => v('div', {
-				classes: css.root,
+				classes: [css.root, fixedCss.rootFixed],
 				role: 'cell'
 			}, [
 				v('div', {
@@ -120,7 +121,7 @@ describe('Cell', () => {
 		h.trigger('@content', 'ondblclick');
 
 		h.expect(() => v('div', {
-				classes: css.root,
+				classes: [css.root, fixedCss.rootFixed],
 				role: 'cell'
 			}, [
 				v('div', {

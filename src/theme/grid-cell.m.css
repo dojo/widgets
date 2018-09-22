@@ -1,0 +1,19 @@
+@import '../common/styles/variables.css';
+
+.root {
+	border: 1px solid var(--component-color);
+	border-top-style: none;
+	border-right-style: none;
+	padding: 2px 4px;
+	align-items: center;
+	min-width: 100px;
+}
+
+.input {
+	background: var(--component-background);
+	color: var(--component-color);
+}
+
+.edit {
+	composes: visuallyHidden focusable from '../common/styles/base.m.css';
+}

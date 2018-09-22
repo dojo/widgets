@@ -6,7 +6,8 @@ import { DNode } from '@dojo/framework/widget-core/interfaces';
 import TextInput from '../../text-input/index';
 import Icon from '../../icon/index';
 
-import * as css from './styles/Header.m.css';
+import * as css from '../../theme/grid-header.m.css';
+import * as fixedCss from '../styles/header.m.css';
 
 export interface HeaderProperties {
 	columnConfig: ColumnConfig[];
@@ -28,7 +29,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 
 	protected render(): DNode {
 		const { columnConfig, sorter, sort, filterer, filter } = this.properties;
-		return v('div', { classes: css.root, role: 'row' },
+		return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' },
 			columnConfig.map((column) => {
 				let title: string | DNode;
 				if (typeof column.title === 'function') {
@@ -40,10 +41,10 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 				if (column.sortable) {
 					headerProperties = {
 						classes: [
-							css.sortable,
-							sort && sort.columnId === column.id ? css.sorted : null,
-							sort && sort.columnId === column.id && sort.direction === 'desc' ? css.desc : null,
-							sort && sort.columnId === column.id && sort.direction === 'asc' ? css.asc : null
+							this.theme(css.sortable),
+							sort && sort.columnId === column.id ? this.theme(css.sorted) : null,
+							sort && sort.columnId === column.id && sort.direction === 'desc' ? this.theme(css.desc) : null,
+							sort && sort.columnId === column.id && sort.direction === 'asc' ? this.theme(css.asc) : null
 						],
 						onclick: () => {
 							this._sortColumn(column.id);
@@ -51,11 +52,11 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					};
 				}
 
-				return v('div', { classes: css.cell, role: 'columnheader' }, [
+				return v('div', { classes: [this.theme(css.cell), fixedCss.cellFixed], role: 'columnheader' }, [
 					v('div', headerProperties, [
 						title,
 						column.sortable ? v('button', {
-							classes: css.sort,
+							classes: this.theme(css.sort),
 							onclick: () => {
 								this._sortColumn(column.id);
 							}

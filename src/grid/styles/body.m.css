@@ -1,0 +1,7 @@
+.rootFixed {
+	box-sizing: border-box;
+	height: 100%;
+	overflow-x: auto;
+	overflow-y: scroll;
+	width: 100%;
+}

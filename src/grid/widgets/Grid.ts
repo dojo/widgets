@@ -1,6 +1,7 @@
 import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v, w } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
+import customElement from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { reference } from '@dojo/framework/widget-core/diff';
@@ -14,8 +15,8 @@ import { fetcherProcess, pageChangeProcess, sortProcess, filterProcess, updaterP
 import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
-import * as css from './styles/Grid.m.css';
-import customElement from '@dojo/framework/widget-core/decorators/customElement';
+import * as css from '../../theme/grid.m.css';
+import * as fixedCss from '../styles/grid.m.css';
 
 const defaultGridMeta = {
 	page: 1,
@@ -123,14 +124,14 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		this.meta(Resize).get('root');
 
 		if (bodyHeight <= 0) {
-			return v('div', { key: 'root', classes: css.root, role: 'table' });
+			return v('div', { key: 'root', classes: [this.theme(css.root), fixedCss.rootFixed], role: 'table' });
 		}
 
-		return v('div', { key: 'root', classes: css.root, role: 'table' }, [
+		return v('div', { key: 'root', classes: [this.theme(css.root), fixedCss.rootFixed], role: 'table' }, [
 			v('div', {
 				key: 'header',
 				scrollLeft: this._scrollLeft,
-				classes: [css.header, hasFilters ? css.filterGroup : null],
+				classes: [this.theme(css.header), fixedCss.headerFixed, hasFilters ? this.theme(css.filterGroup) : null],
 				row: 'rowgroup'
 			}, [
 				w(Header, {

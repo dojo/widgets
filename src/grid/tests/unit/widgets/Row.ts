@@ -4,7 +4,8 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Row from '../../../widgets/Row';
 
-import * as css from '../../../widgets/styles/Row.m.css';
+import * as fixedCss from '../../../styles/row.m.css';
+import * as css from '../../../../theme/grid-row.m.css';
 import { ColumnConfig } from '../../../interfaces';
 import Cell from '../../../widgets/Cell';
 
@@ -13,7 +14,7 @@ const noop = () => {};
 describe('Row', () => {
 	it('should render without columns', () => {
 		const h = harness(() => w(Row, { id: 1, item: {}, columnConfig: [] as any, updater: noop }));
-		h.expect(() => v('div', { classes: css.root, role: 'row' }, []));
+		h.expect(() => v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, []));
 	});
 
 	it('should render items for column config', () => {
@@ -23,7 +24,7 @@ describe('Row', () => {
 		};
 		const h = harness(() => w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop }));
 		h.expect(() =>
-			v('div', { classes: css.root, role: 'row' }, [
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
 				w(Cell, { key: 'id', updater: noop, value: 'id', editable: undefined, rawValue: 'id' })
 			])
 		);
@@ -37,7 +38,7 @@ describe('Row', () => {
 		};
 		const h = harness(() => w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop }));
 		h.expect(() =>
-			v('div', { classes: css.root, role: 'row' }, [
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
 				w(Cell, { key: 'id', updater: noop, value: 'transformed', editable: undefined, rawValue: 'id' })
 			])
 		);
