@@ -127,7 +127,12 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			return v('div', { key: 'root', classes: [this.theme(css.root), fixedCss.rootFixed], role: 'table' });
 		}
 
-		return v('div', { key: 'root', classes: [this.theme(css.root), fixedCss.rootFixed], role: 'table' }, [
+		return v('div', {
+			key: 'root',
+			classes: [this.theme(css.root), fixedCss.rootFixed],
+			role: 'table',
+			'aria-rowcount': meta.total ? `${meta.total}` : null
+		}, [
 			v('div', {
 				key: 'header',
 				scrollLeft: this._scrollLeft,

@@ -51,8 +51,8 @@ describe('Header', () => {
 		);
 		h.expect(() =>
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['First Name'])])
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['First Name'])])
 			])
 		);
 	});
@@ -70,8 +70,8 @@ describe('Header', () => {
 
 		h.expect(() =>
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [
 					v('div', {
 						classes: [css.sortable, null, null, null],
 						onclick: noop
@@ -118,8 +118,8 @@ describe('Header', () => {
 
 		h.expect(() =>
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': 'ascending' }, [
 					v('div', {
 						classes: [css.sortable, css.sorted, null, css.asc],
 						onclick: noop
@@ -166,8 +166,8 @@ describe('Header', () => {
 
 		h.expect(() =>
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': 'descending' }, [
 				v('div', {
 						classes: [css.sortable, css.sorted, css.desc, null],
 						onclick: noop
@@ -214,8 +214,8 @@ describe('Header', () => {
 
 		h.expect(() =>
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [v('div', {}, ['Title'])]),
-				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader' }, [
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [
 					v('div', {
 						classes: [css.sortable, null, null, null],
 						onclick: noop

@@ -38,13 +38,15 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					title = column.title;
 				}
 				let headerProperties = {};
+				const isSorted = sort && sort.columnId === column.id;
+				const isSortedAsc = sort && sort.columnId === column.id && sort.direction === 'asc';
 				if (column.sortable) {
 					headerProperties = {
 						classes: [
 							this.theme(css.sortable),
-							sort && sort.columnId === column.id ? this.theme(css.sorted) : null,
-							sort && sort.columnId === column.id && sort.direction === 'desc' ? this.theme(css.desc) : null,
-							sort && sort.columnId === column.id && sort.direction === 'asc' ? this.theme(css.asc) : null
+							isSorted ? this.theme(css.sorted) : null,
+							isSorted && !isSortedAsc ? this.theme(css.desc) : null,
+							isSortedAsc ? this.theme(css.asc) : null
 						],
 						onclick: () => {
 							this._sortColumn(column.id);
@@ -52,7 +54,11 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					};
 				}
 
-				return v('div', { classes: [this.theme(css.cell), fixedCss.cellFixed], role: 'columnheader' }, [
+				return v('div', {
+					'aria-sort': isSorted ? isSortedAsc ? 'ascending' : 'descending' : null,
+					classes: [this.theme(css.cell), fixedCss.cellFixed],
+					role: 'columnheader'
+				}, [
 					v('div', headerProperties, [
 						title,
 						column.sortable ? v('button', {

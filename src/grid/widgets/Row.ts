@@ -38,6 +38,6 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 			[] as DNode[]
 		);
 
-		return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' }, columns);
+		return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row', 'aria-rowindex': `${id + 1}` }, columns);
 	}
 }

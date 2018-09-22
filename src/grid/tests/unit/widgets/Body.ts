@@ -275,4 +275,75 @@ describe('Body', () => {
 			)
 		);
 	});
+
+	describe('pageChange', () => {
+		it('should call pageChange with first page at scroll 0', () => {
+			const pageChangeStub = stub();
+			const page: any[] = [];
+			for (let i = 0; i < 100; i++) {
+				const item = { id: 'id' };
+				page.push(item);
+			}
+
+			const h = harness(() =>
+				w(Body, {
+					totalRows: 1000,
+					pageSize: 100,
+					height: 400,
+					pages: {
+						'page-1': page
+					},
+					columnConfig: [] as any,
+					fetcher: noop,
+					updater: noop,
+					pageChange: pageChangeStub,
+					onScroll: noop
+				})
+			);
+
+			h.trigger('@root', 'onscroll', {
+				target: {
+					scrollTop: 0,
+					scrollLeft: 0
+				}
+			});
+			h.expect(() => h.getRender());
+			assert.isTrue(pageChangeStub.calledWith(1));
+		});
+
+		it('should use middle row if start and end pages are different', () => {
+			const pageChangeStub = stub();
+			const page: any[] = [];
+			for (let i = 0; i < 100; i++) {
+				const item = { id: 'id' };
+				page.push(item);
+			}
+
+			const h = harness(() =>
+				w(Body, {
+					totalRows: 1000,
+					pageSize: 100,
+					height: 400,
+					pages: {
+						'page-1': page
+					},
+					columnConfig: [] as any,
+					fetcher: noop,
+					updater: noop,
+					pageChange: pageChangeStub,
+					onScroll: noop
+				})
+			);
+			// scroll to row 286
+			h.trigger('@root', 'onscroll', {
+				target: {
+					scrollTop: 10000,
+					scrollLeft: 0
+				}
+			});
+			// force a render
+			h.expect(() => h.getRender());
+			assert.isTrue(pageChangeStub.calledWith(3));
+		});
+	});
 });
