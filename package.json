@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@dojo/cli": "~3.0.0",
-    "@dojo/cli-build-widget": "~3.0.0",
+    "@dojo/cli-build-widget": "next",
     "@dojo/loader": "^2.0.0",
     "@theintern/a11y": "~0.2.0",
     "@types/execa": "^0.8.1",
