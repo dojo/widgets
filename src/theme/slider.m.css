@@ -49,6 +49,15 @@
 
 }
 
+.focused input {
+	outline: none;
+}
+
+.focused .thumb {
+	box-shadow: 0 0 7px 3px var(--selected-background);
+	border-color: white;
+}
+
 .track {
 	background-color: var(--component-background);
 	border: 1px solid var(--component-color);
