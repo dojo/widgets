@@ -1,6 +1,7 @@
 @import '../common/styles/variables.css';
 
-.root { }
+.root {
+}
 
 .outputTooltip {
 	left: 2.5em;
@@ -31,6 +32,7 @@
 .invalid .track {
 	border-color: var(--error-color);
 }
+
 .invalid .thumb::before {
 	background-color: var(--error-color);
 }
@@ -39,14 +41,25 @@
 .valid .inputWrapper::before {
 	border-color: var(--success-color);
 }
+
 .valid .inputWrapper::after {
 	background-color: var(--success-color);
 }
 
-.focused { }
+.focused {
+}
 
 .inputWrapper {
 
+}
+
+.focused input {
+	outline: none;
+}
+
+.focused .thumb {
+	box-shadow: 0 0 7px 3px var(--selected-background);
+	border-color: white;
 }
 
 .track {
@@ -88,4 +101,5 @@
 	width: 2em;
 }
 
-.output { }
+.output {
+}
