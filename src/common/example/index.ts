@@ -21,6 +21,7 @@ const modules = [
 	'listbox',
 	'progress',
 	'radio',
+	'range-slider',
 	'select',
 	'slide-pane',
 	'slider',

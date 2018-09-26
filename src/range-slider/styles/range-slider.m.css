@@ -1,0 +1,119 @@
+@import "../../common/styles/variables.css";
+
+:root {
+	--slider-height: 13px;
+}
+
+.rootFixed {
+	padding-bottom: calc(var(--slider-height) / 2)
+}
+
+.hasOutput {
+	padding-bottom: calc(calc(var(--slider-height) / 2) + var(--slider-height));
+}
+
+.inputWrapperFixed {
+	position: relative;
+	height: var(--slider-height);
+	background-color: var(--component-background);
+	border: 1px solid var(--selected-background);
+}
+
+.thumbFixed {
+	position: absolute;
+	width: calc(var(--slider-height) * 2);
+	height: calc(var(--slider-height) * 2);
+	transform: translate(-50%, -25%);
+}
+
+.filledFixed {
+	position: absolute;
+	height: 100%;
+	top: 0;
+}
+
+/* Make native input invisible */
+.nativeInput {
+	appearance: none;
+	background: transparent;
+	border: 0 none;
+	color: transparent;
+	font-size: inherit;
+	left: 0;
+	margin: 0px;
+	overflow: visible;
+	padding: 0px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: var(--slider-height);
+	z-index: calc(var(--zindex-base) + 1);
+}
+
+/* invisible native track */
+.nativeInput::-ms-track {
+	appearance: none;
+	background: transparent;
+	border: 0 none;
+	color: transparent;
+	height: 100%;
+	margin: 0px;
+	overflow: visible;
+	padding: 0px;
+	width: 100%;
+}
+
+.nativeInput::-moz-range-track {
+	appearance: none;
+	background: transparent;
+	border: 0 none;
+	color: transparent;
+	height: 100%;
+	margin: 0px;
+	overflow: visible;
+	padding: 0px;
+	width: 100%;
+}
+
+.nativeInput:focus::-webkit-slider-runnable-track {
+	background: transparent;
+	border: transparent;
+}
+
+/* thumb needs to be invisible and same size as custom thumb */
+.nativeInput::-ms-thumb {
+	border-radius: 50%;
+	border: 0 none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.nativeInput::-moz-range-thumb {
+	border-radius: 50%;
+	border: 0 none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.nativeInput::-webkit-slider-thumb {
+	appearance: none;
+	border-radius: 50%;
+	border: 0 none;
+	background: transparent;
+	cursor: pointer;
+}
+
+/* microsoft IE10+ and Edge - eliminates default fills before and after thumb */
+.nativeInput::-ms-fill-lower {
+	background: transparent;
+	border: 0 none;
+}
+
+.nativeInput::-ms-fill-upper {
+	background: transparent;
+	border: 0 none;
+}
+
+.nativeInput::-ms-tooltip {
+	display: none;
+}

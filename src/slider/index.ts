@@ -37,6 +37,7 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 	verticalHeight?: string;
 	value?: number;
 	onClick?(value: number): void;
+	inputStyles?: Partial<CSSStyleDeclaration>;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -225,7 +226,8 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 			step = 1,
 			vertical = false,
 			verticalHeight = '200px',
-			theme
+			theme,
+			inputStyles = {}
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -257,7 +259,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				'aria-readonly': readOnly === true ? 'true' : null,
 				required,
 				step: `${step}`,
-				styles: vertical ? { width: verticalHeight } : {},
+				styles: { ...inputStyles, ...(vertical ? { width: verticalHeight } : {}) },
 				type: 'range',
 				value: `${value}`,
 				onblur: this._onBlur,
