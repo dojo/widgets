@@ -1,8 +1,12 @@
 import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { v } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
+import { Keys } from '../../common/util';
+import TextInput from '../../text-input/index';
+import Button from '../../button/index';
+import Icon from '../../icon/index';
 
 import * as fixedCss from '../styles/cell.m.css';
 import * as css from '../../theme/grid-cell.m.css';
@@ -36,16 +40,15 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 		}
 	}
 
-	private _onInput(event: KeyboardEvent) {
-		const target = event.target as HTMLInputElement;
-		this._editingValue = target.value;
+	private _onInput(value: string) {
+		this._editingValue = value;
 	}
 
-	private _onKeyDown(event: KeyboardEvent) {
-		if (event.key === 'Enter') {
+	private _onKeyDown(key: number) {
+		if (key === Keys.Enter) {
 			this._onSave();
 		}
-		else if (event.key === 'Escape') {
+		else if (key === Keys.Escape) {
 			this._editing = false;
 			this._callButtonFocus = true;
 			this.invalidate();
@@ -74,24 +77,27 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 		this._callButtonFocus = false;
 
 		return v('div', { role: 'cell', classes: [this.theme(css.root), fixedCss.rootFixed] }, [
-			this._editing ? v('input', {
+			this._editing ? w(TextInput, {
 				key: 'editInput',
-				'aria-label': `Edit ${rawValue}`,
-				classes: this.theme(css.input),
-				focus: true,
+				label: `Edit ${rawValue}`,
+				labelHidden:  true,
+				extraClasses: { input: this.theme(css.input) } as any,
+				// focus: true,
 				value: this._editingValue,
-				oninput: this._onInput,
-				onblur: this._onBlur,
-				onkeydown: this._onKeyDown
+				onInput: this._onInput,
+				onBlur: this._onBlur,
+				onKeyDown: this._onKeyDown
 			}) : this.renderContent(),
-			editable && !this._editing ? v('button', {
+			editable && !this._editing ? w(Button, {
 				key: 'editButton',
-				focus: focusButton,
+				aria: { describedby: this._idBase },
+				focus: () => focusButton,
 				type: 'button',
-				'aria-describedby': this._idBase,
-				classes: this.theme(css.edit),
-				onclick: this._onEdit
-			}, [ 'Edit' ]) : null
+				extraClasses: { root: this.theme(css.edit) } as any,
+				onClick: this._onEdit
+			}, [
+				w(Icon, { type: 'editIcon', altText: 'Edit' })
+			]) : null
 		]);
 	}
 }

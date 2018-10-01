@@ -5,6 +5,7 @@ import { reference } from '@dojo/framework/widget-core/diff';
 import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { uuid } from '@dojo/framework/core/util';
 import { v, w } from '@dojo/framework/widget-core/d';
@@ -47,7 +48,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
  * @property value              Value to set on the input
  */
-export interface ComboBoxProperties extends ThemedProperties, LabeledProperties {
+export interface ComboBoxProperties extends ThemedProperties, LabeledProperties, FocusProperties {
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): DNode;
@@ -76,7 +77,7 @@ export enum Operation {
 	decrease = -1
 }
 
-export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
+export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
 
 @theme(css)
 @diffProperty('results', reference)
@@ -111,7 +112,6 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 })
 export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
 	private _activeIndex = 0;
-	private _callInputFocus = false;
 	private _ignoreBlur: boolean | undefined;
 	private _idBase = uuid();
 	private _menuHasVisualFocus = false;
@@ -157,7 +157,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		} = this.properties;
 
 		if (!disabled && !readOnly) {
-			this._callInputFocus = true;
+			this.focus();
 			this._openMenu();
 		}
 	}
@@ -166,7 +166,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		event.stopPropagation();
 		const { key, onChange } = this.properties;
 
-		this._callInputFocus = true;
+		this.focus();
 		this.invalidate();
 		onChange && onChange('', key);
 	}
@@ -291,7 +291,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			results = []
 		} = this.properties;
 
-		this._callInputFocus = true;
+		this.focus();
 		this._closeMenu();
 		onResultSelect && onResultSelect(results[index], key);
 		onChange && onChange(this._getResultValue(results[index]), key);
@@ -342,12 +342,6 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			theme
 		} = this.properties;
 
-		const focusInput = this._callInputFocus;
-
-		if (this._callInputFocus) {
-			this._callInputFocus = false;
-		}
-
 		return w(TextInput, {
 			...inputProperties,
 			key: 'textinput',
@@ -358,7 +352,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			disabled,
 			widgetId,
 			invalid,
-			shouldFocus: focusInput,
+			focus: this.shouldFocus,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
 			onInput: this._onInput,

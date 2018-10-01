@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
 import * as css from '../theme/button.m.css';
 import { CustomAriaProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
@@ -24,7 +25,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property type           Button type can be "submit", "reset", "button", or "menu"
  * @property value          Defines a value for the button submitted with form data
  */
-export interface ButtonProperties extends ThemedProperties, InputEventProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
+export interface ButtonProperties extends ThemedProperties, InputEventProperties, FocusProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
 	disabled?: boolean;
 	widgetId?: string;
 	popup?: { expanded?: boolean; id?: string; } | boolean;
@@ -35,7 +36,7 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 	onClick?(): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<ButtonProperties>({
@@ -142,6 +143,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
 			disabled,
 			id: widgetId,
+			focus: this.shouldFocus(),
 			name,
 			type,
 			value,
