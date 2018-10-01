@@ -1,5 +1,6 @@
 import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v, w } from '@dojo/framework/widget-core/d';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
@@ -11,7 +12,7 @@ import Icon from '../../icon/index';
 import * as fixedCss from '../styles/cell.m.css';
 import * as css from '../../theme/grid-cell.m.css';
 
-export interface CellProperties {
+export interface CellProperties extends FocusProperties {
 	value: string | DNode;
 	editable?: boolean;
 	rawValue: string;
@@ -19,16 +20,22 @@ export interface CellProperties {
 }
 
 @theme(css)
-export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
-	private _callButtonFocus = false;
+export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProperties> {
 	private _editing = false;
 	private _editingValue = '';
+	private _focusKey: string;
 	private _idBase = uuid();
+
+	private _callFocus(key: string) {
+		this._focusKey = key;
+		this.focus();
+	}
 
 	private _onEdit = () => {
 		const { editable } = this.properties;
 		if (editable) {
 			this._editing = true;
+			this._callFocus('input');
 			this._editingValue = this.properties.rawValue;
 			this.invalidate();
 		}
@@ -47,17 +54,17 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 	private _onKeyDown(key: number) {
 		if (key === Keys.Enter) {
 			this._onSave();
+			this._callFocus('button');
 		}
 		else if (key === Keys.Escape) {
 			this._editing = false;
-			this._callButtonFocus = true;
+			this._callFocus('button');
 			this.invalidate();
 		}
 	}
 
 	private _onSave() {
 		this._editing = false;
-		this._callButtonFocus = true;
 		this.properties.updater(this._editingValue);
 		this.invalidate();
 	}
@@ -73,25 +80,23 @@ export default class Cell extends ThemedMixin(WidgetBase)<CellProperties> {
 
 	protected render(): DNode {
 		let { editable, rawValue, value } = this.properties;
-		const focusButton = this._callButtonFocus;
-		this._callButtonFocus = false;
 
 		return v('div', { role: 'cell', classes: [this.theme(css.root), fixedCss.rootFixed] }, [
 			this._editing ? w(TextInput, {
-				key: 'editInput',
+				key: 'input',
 				label: `Edit ${rawValue}`,
 				labelHidden:  true,
 				extraClasses: { input: this.theme(css.input) } as any,
-				// focus: true,
+				focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
 				value: this._editingValue,
 				onInput: this._onInput,
 				onBlur: this._onBlur,
 				onKeyDown: this._onKeyDown
 			}) : this.renderContent(),
 			editable && !this._editing ? w(Button, {
-				key: 'editButton',
+				key: 'button',
 				aria: { describedby: this._idBase },
-				focus: () => focusButton,
+				focus: this._focusKey === 'button' ? this.shouldFocus : () => false,
 				type: 'button',
 				extraClasses: { root: this.theme(css.edit) } as any,
 				onClick: this._onEdit
