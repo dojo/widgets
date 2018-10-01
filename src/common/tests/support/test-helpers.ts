@@ -13,6 +13,8 @@ export const stubEvent = {
 
 export const isStringComparator = (value: any) => value === null || typeof value === 'string';
 export const isStringObjectComparator = (value: any) => Object.keys(value).every((key) => value[key] === null || typeof value[key] === 'string');
+export const isFocusedComparator = (value: () => boolean) => value() === true;
+export const isNotFocusedComparator = (value: () => boolean) => value() === false;
 
 export const compareId = {
 	selector: '*',

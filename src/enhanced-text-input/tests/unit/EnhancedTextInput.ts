@@ -57,6 +57,7 @@ const expected = (options: ExpectedOptions = {}) => {
 			required,
 			type: 'text',
 			value: undefined,
+			focus: noop,
 			onblur: noop,
 			onchange: noop,
 			onclick: noop,

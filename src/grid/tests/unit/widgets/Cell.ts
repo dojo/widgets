@@ -1,34 +1,53 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
+import TextInput from '../../../../text-input/index';
+import Button from '../../../../button/index';
+import Icon from '../../../../icon/index';
+import { Keys } from '../../../../common/util';
 
 import { v, w } from '@dojo/framework/widget-core/d';
 import { stub } from 'sinon';
 import {
 	compareId,
+	compareAria,
 	createHarness,
 	compareAriaDescribedBy,
+	isFocusedComparator,
 	noop
 } from '../../../../common/tests/support/test-helpers';
 import * as fixedCss from '../../../styles/cell.m.css';
 import * as css from '../../../../theme/grid-cell.m.css';
 import Cell from '../../../widgets/Cell';
 
-const harness = createHarness([ compareId, compareAriaDescribedBy ]);
+const harness = createHarness([ compareId, compareAria, compareAriaDescribedBy ]);
+
+const compareInputFocused = {
+	selector: '@input',
+	property: 'focus',
+	comparator: isFocusedComparator
+};
+
+const compareButtonFocused = {
+	selector: '@button',
+	property: 'focus',
+	comparator: isFocusedComparator
+};
 
 const expectedEditing = function() {
 	return v('div', {
 		role: 'cell',
 		classes: [css.root, fixedCss.rootFixed]
 	}, [
-		v('input', {
-			key: 'editInput',
-			'aria-label': 'Edit id',
-			classes: css.input,
-			focus: true,
+		w(TextInput, {
+			key: 'input',
+			label: 'Edit id',
+			labelHidden:  true,
+			extraClasses: { input: css.input },
+			focus: noop,
 			value: 'id',
-			oninput: noop,
-			onblur: noop,
-			onkeydown: noop
+			onInput: noop,
+			onBlur: noop,
+			onKeyDown: noop
 		})
 	]);
 };
@@ -43,14 +62,16 @@ const expectedEditable = function(focusButton = false) {
 			id: '',
 			ondblclick: noop
 		}, [ 'id' ]),
-		v('button', {
-			key: 'editButton',
-			focus: focusButton,
+		w(Button, {
+			key: 'button',
+			aria: { describedby: '' },
+			focus: noop,
 			type: 'button',
-			'aria-describedby': '',
-			classes: css.edit,
-			onclick: noop
-		}, [ 'Edit' ])
+			extraClasses: { root: css.edit },
+			onClick: noop
+		}, [
+			w(Icon, { type: 'editIcon', altText: 'Edit' })
+		])
 	]);
 };
 
@@ -162,11 +183,11 @@ describe('Cell', () => {
 		);
 		h.expect(expectedEditable);
 
-		h.trigger('@editButton', 'onclick');
+		h.trigger('@button', 'onClick');
 		h.expect(expectedEditing);
 
-		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
-		h.trigger('@editInput', 'onblur');
+		h.trigger('@input', 'onInput', 'typed value');
+		h.trigger('@input', 'onBlur');
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
 		h.expect(() => expectedEditable(true));
@@ -187,8 +208,8 @@ describe('Cell', () => {
 		h.trigger('@content', 'ondblclick');
 		h.expect(expectedEditing);
 
-		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
-		h.trigger('@editInput', 'onkeydown', { key: 'Enter' });
+		h.trigger('@input', 'onInput', 'typed value');
+		h.trigger('@input', 'onKeyDown', Keys.Enter);
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
 		h.expect(() => expectedEditable(true));
@@ -206,13 +227,63 @@ describe('Cell', () => {
 		);
 		h.expect(expectedEditable);
 
-		h.trigger('@editButton', 'onclick');
+		h.trigger('@button', 'onClick');
 		h.expect(expectedEditing);
 
-		h.trigger('@editInput', 'oninput', { target: { value: 'typed value' } });
-		h.trigger('@editInput', 'onkeydown', { key: 'Escape' });
+		h.trigger('@input', 'onInput', 'typed value');
+		h.trigger('@input', 'onKeyDown', Keys.Escape);
 
 		assert.isFalse(updaterStub.called);
+		h.expect(() => expectedEditable(true));
+	});
+
+	it('should focus input on edit', () => {
+		const updaterStub = stub();
+		const h = harness(() => {
+			return w(Cell, {
+				value: 'id',
+				rawValue: 'id',
+				updater: updaterStub,
+				editable: true
+			});
+		}, [ compareInputFocused ]);
+		h.trigger('@content', 'ondblclick');
+		h.expect(expectedEditing);
+	});
+
+	it('should focus button on enter and save', () => {
+		const updaterStub = stub();
+		const h = harness(() => {
+			return w(Cell, {
+				value: 'id',
+				rawValue: 'id',
+				updater: updaterStub,
+				editable: true
+			});
+		}, [ compareButtonFocused ]);
+
+		h.trigger('@content', 'ondblclick');
+		h.trigger('@input', 'onInput', 'typed value');
+		h.trigger('@input', 'onKeyDown', Keys.Enter);
+
+		assert.isTrue(updaterStub.calledWith('typed value'));
+		h.expect(() => expectedEditable(true));
+	});
+
+	it('should focus button on escape', () => {
+		const updaterStub = stub();
+		const h = harness(() => {
+			return w(Cell, {
+				value: 'id',
+				rawValue: 'id',
+				updater: updaterStub,
+				editable: true
+			});
+		}, [ compareButtonFocused ]);
+
+		h.trigger('@button', 'onClick');
+		h.trigger('@input', 'onKeyDown', Keys.Escape);
+
 		h.expect(() => expectedEditable(true));
 	});
 });

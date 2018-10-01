@@ -143,7 +143,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
 			disabled,
 			id: widgetId,
-			focus: this.shouldFocus(),
+			focus: this.shouldFocus,
 			name,
 			type,
 			value,

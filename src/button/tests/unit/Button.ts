@@ -7,12 +7,24 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import Button from '../../index';
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/button.m.css';
-import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import { isFocusedComparator, isNotFocusedComparator, noop, stubEvent } from '../../../common/tests/support/test-helpers';
+
+const compareFocusFalse = {
+	selector: 'button',
+	property: 'focus',
+	comparator: isNotFocusedComparator
+};
+
+const compareFocusTrue = {
+	selector: 'button',
+	property: 'focus',
+	comparator: isFocusedComparator
+};
 
 registerSuite('Button', {
 	tests: {
 		'no content'() {
-			const h = harness(() => w(Button, {}));
+			const h = harness(() => w(Button, {}), [ compareFocusFalse ]);
 			h.expect(() => v('button', {
 				'aria-controls': null,
 				'aria-expanded': null,
@@ -22,6 +34,7 @@ registerSuite('Button', {
 				disabled: undefined,
 				id: undefined,
 				name: undefined,
+				focus: noop,
 				onblur: noop,
 				onclick: noop,
 				onfocus: noop,
@@ -53,7 +66,7 @@ registerSuite('Button', {
 				},
 				pressed: true,
 				value: 'value'
-			}, ['foo']));
+			}, ['foo']), [ compareFocusFalse ]);
 
 			h.expect(() => v('button', {
 				'aria-controls': 'popupId',
@@ -65,6 +78,7 @@ registerSuite('Button', {
 				disabled: true,
 				name: 'bar',
 				id: 'qux',
+				focus: noop,
 				onblur: noop,
 				onclick: noop,
 				onfocus: noop,
@@ -89,7 +103,7 @@ registerSuite('Button', {
 		'popup = true'() {
 			const h = harness(() => w(Button, {
 				popup: true
-			}));
+			}), [ compareFocusFalse ]);
 
 			h.expect(() => v('button', {
 				'aria-controls': '',
@@ -100,6 +114,7 @@ registerSuite('Button', {
 				disabled: undefined,
 				name: undefined,
 				id: undefined,
+				focus: noop,
 				onblur: noop,
 				onclick: noop,
 				onfocus: noop,
@@ -118,6 +133,34 @@ registerSuite('Button', {
 					w(Icon, { type: 'downIcon', theme: undefined })
 				])
 			]));
+		},
+
+		'call focus on button node'() {
+			const h = harness(() => w(Button, { focus: () => true }), [ compareFocusTrue ]);
+			h.expect(() => v('button', {
+				'aria-controls': null,
+				'aria-expanded': null,
+				'aria-haspopup': null,
+				'aria-pressed': null,
+				classes: [ css.root, null, null, null ],
+				disabled: undefined,
+				id: undefined,
+				name: undefined,
+				focus: noop,
+				onblur: noop,
+				onclick: noop,
+				onfocus: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop,
+				type: undefined,
+				value: undefined
+			}, [ null ]));
 		},
 
 		events() {

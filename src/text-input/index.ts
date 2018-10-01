@@ -168,7 +168,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			classes: this.theme(css.input),
 			disabled,
 			id: widgetId,
-			focus: this.shouldFocus(),
+			focus: this.shouldFocus,
 			key: 'input',
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,
