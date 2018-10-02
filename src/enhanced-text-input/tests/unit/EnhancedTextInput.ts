@@ -44,6 +44,7 @@ const expected = (options: ExpectedOptions = {}) => {
 	const children = [
 		v('input', {
 			'aria-invalid': invalid ? 'true' : null,
+			autocomplete: undefined,
 			classes: css.input,
 			disabled,
 			id: '',
@@ -52,6 +53,7 @@ const expected = (options: ExpectedOptions = {}) => {
 			minlength: null,
 			name: undefined,
 			placeholder: undefined,
+			pattern: undefined,
 			readOnly,
 			'aria-readonly': readOnly ? 'true' : null,
 			required,

@@ -44,6 +44,7 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				id: '',
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
+				autocomplete: undefined,
 				maxlength: null,
 				minlength: null,
 				name: undefined,
@@ -54,6 +55,7 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				type: 'text',
 				value: undefined,
 				focus: noop,
+				pattern: undefined,
 				onblur: noop,
 				onchange: noop,
 				onclick: noop,
@@ -86,6 +88,7 @@ registerSuite('TextInput', {
 					controls: 'foo',
 					describedBy: 'bar'
 				},
+				autocomplete: 'on',
 				widgetId: 'foo',
 				maxLength: 50,
 				minLength: 10,
@@ -98,6 +101,7 @@ registerSuite('TextInput', {
 			h.expect(() => expected(false, {
 				'aria-controls': 'foo',
 				'aria-describedby': 'bar',
+				autocomplete: 'on',
 				id: 'foo',
 				maxlength: '50',
 				minlength: '10',
@@ -114,6 +118,27 @@ registerSuite('TextInput', {
 			}));
 
 			h.expect(() => expected(true));
+		},
+
+		'pattern': {
+			'string'() {
+				const h = harness(() => w(TextInput, {
+					pattern: '^foo|bar$'
+				}));
+
+				h.expect(() => expected(false, {
+					pattern: '^foo|bar$'
+				}));
+			},
+			'regexp'() {
+				const h = harness(() => w(TextInput, {
+					pattern: /^foo|bar$/
+				}));
+
+				h.expect(() => expected(false, {
+					pattern: '^foo|bar$'
+				}));
+			}
 		},
 
 		'state classes'() {

@@ -33,6 +33,8 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	minLength?: number | string;
 	placeholder?: string;
 	value?: string;
+	pattern?: string | RegExp;
+	autocomplete?: string;
 	onClick?(value: string): void;
 }
 
@@ -51,7 +53,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name', 'pattern', 'autocomplete' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -159,12 +161,15 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			readOnly,
 			required,
 			type = 'text',
-			value
+			value,
+			pattern,
+			autocomplete
 		} = this.properties;
 
 		return v('input', {
 			...formatAriaProperties(aria),
 			'aria-invalid': invalid ? 'true' : null,
+			autocomplete,
 			classes: this.theme(css.input),
 			disabled,
 			id: widgetId,
@@ -173,6 +178,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,
 			name,
+			pattern: pattern instanceof RegExp ? pattern.source : pattern,
 			placeholder,
 			readOnly,
 			'aria-readonly': readOnly ? 'true' : null,
