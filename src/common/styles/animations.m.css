@@ -29,3 +29,15 @@
 	animation-fill-mode: both;
 	animation-name: fadeOut;
 }
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.spin {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: spin;
+}

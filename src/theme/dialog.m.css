@@ -1,4 +1,5 @@
 @import '../common/styles/variables.css';
+@import '../common/styles/animations.m.css';
 
 .root {}
 
@@ -39,4 +40,18 @@
 .underlayVisible {
 	background: var(--underlay-background);
 	z-index: var(--zindex-dialog);
+}
+
+.enter,
+.underlayEnter {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: fadeIn;
+}
+
+.exit,
+.underlayExit {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: fadeOut;
 }

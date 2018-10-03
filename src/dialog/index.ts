@@ -160,8 +160,8 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		const { underlay } = this.properties;
 		return v('div', {
 			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
-			enterAnimation: animations.fadeIn,
-			exitAnimation: animations.fadeOut,
+			enterAnimation: this.theme(css.underlayEnter) || animations.fadeIn,
+			exitAnimation: this.theme(css.underlayExit) || animations.fadeOut,
 			key: 'underlay',
 			onclick: this._onUnderlayClick
 		});
@@ -172,8 +172,8 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			aria = {},
 			closeable = true,
 			closeText,
-			enterAnimation = animations.fadeIn,
-			exitAnimation = animations.fadeOut,
+			enterAnimation = this.theme(css.enter) || animations.fadeIn,
+			exitAnimation = this.theme(css.exit) || animations.fadeOut,
 			modal,
 			open = false,
 			role = 'dialog',
