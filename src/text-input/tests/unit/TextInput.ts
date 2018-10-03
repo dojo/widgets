@@ -88,7 +88,6 @@ registerSuite('TextInput', {
 					controls: 'foo',
 					describedBy: 'bar'
 				},
-				autocomplete: 'on',
 				widgetId: 'foo',
 				maxLength: 50,
 				minLength: 10,
@@ -101,7 +100,6 @@ registerSuite('TextInput', {
 			h.expect(() => expected(false, {
 				'aria-controls': 'foo',
 				'aria-describedby': 'bar',
-				autocomplete: 'on',
 				id: 'foo',
 				maxlength: '50',
 				minlength: '10',
@@ -137,6 +135,36 @@ registerSuite('TextInput', {
 
 				h.expect(() => expected(false, {
 					pattern: '^foo|bar$'
+				}));
+			}
+		},
+
+		'autocomplete': {
+			'true'() {
+				const h = harness(() => w(TextInput, {
+					autocomplete: true
+				}));
+
+				h.expect(() => expected(false, {
+					autocomplete: 'on'
+				}));
+			},
+			'false'() {
+				const h = harness(() => w(TextInput, {
+					autocomplete: false
+				}));
+
+				h.expect(() => expected(false, {
+					autocomplete: 'off'
+				}));
+			},
+			'string'() {
+				const h = harness(() => w(TextInput, {
+					autocomplete: 'name'
+				}));
+
+				h.expect(() => expected(false, {
+					autocomplete: 'name'
 				}));
 			}
 		},

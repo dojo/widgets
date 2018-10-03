@@ -34,11 +34,18 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	placeholder?: string;
 	value?: string;
 	pattern?: string | RegExp;
-	autocomplete?: string;
+	autocomplete?: boolean | string;
 	onClick?(value: string): void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
+
+function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {
+	if (typeof autocomplete === 'boolean') {
+		return autocomplete ? 'on' : 'off';
+	}
+	return autocomplete;
+}
 
 @theme(css)
 @customElement<TextInputProperties>({
@@ -169,7 +176,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		return v('input', {
 			...formatAriaProperties(aria),
 			'aria-invalid': invalid ? 'true' : null,
-			autocomplete,
+			autocomplete: formatAutocomplete(autocomplete),
 			classes: this.theme(css.input),
 			disabled,
 			id: widgetId,
