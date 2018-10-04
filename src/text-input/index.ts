@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { DNode, PropertyChangeRecord } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
@@ -10,6 +10,7 @@ import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
@@ -47,6 +48,14 @@ function formatAutocomplete(autocomplete: string | boolean | undefined): string 
 	return autocomplete;
 }
 
+function patternDiffer(previousProperty: string | undefined, newProperty: string | RegExp | undefined): PropertyChangeRecord {
+	const value = newProperty instanceof RegExp ? newProperty.source : newProperty;
+	return {
+		changed: previousProperty !== value,
+		value
+	};
+}
+
 @theme(css)
 @customElement<TextInputProperties>({
 	tag: 'dojo-text-input',
@@ -60,7 +69,19 @@ function formatAutocomplete(autocomplete: string | boolean | undefined): string 
 		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name', 'pattern', 'autocomplete' ],
+	attributes: [
+		'widgetId',
+		'label',
+		'placeholder',
+		'controls',
+		'type',
+		'minLength',
+		'maxLength',
+		'value',
+		'name',
+		'pattern',
+		'autocomplete'
+	],
 	events: [
 		'onBlur',
 		'onChange',
@@ -77,6 +98,7 @@ function formatAutocomplete(autocomplete: string | boolean | undefined): string 
 		'onTouchStart'
 	]
 })
+@diffProperty('pattern', patternDiffer)
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
@@ -185,7 +207,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,
 			name,
-			pattern: pattern instanceof RegExp ? pattern.source : pattern,
+			pattern,
 			placeholder,
 			readOnly,
 			'aria-readonly': readOnly ? 'true' : null,

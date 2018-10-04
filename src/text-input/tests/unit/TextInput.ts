@@ -129,12 +129,25 @@ registerSuite('TextInput', {
 				}));
 			},
 			'regexp'() {
-				const h = harness(() => w(TextInput, {
+				const properties = {
 					pattern: /^foo|bar$/
-				}));
+				};
+				const h = harness(() => w(TextInput, properties));
 
 				h.expect(() => expected(false, {
 					pattern: '^foo|bar$'
+				}));
+
+				(properties.pattern.compile as any)('^bar|baz$');
+
+				h.expect(() => expected(false, {
+					pattern: '^bar|baz$'
+				}));
+
+				properties.pattern = /^ham|spam$/;
+
+				h.expect(() => expected(false, {
+					pattern: '^ham|spam$'
 				}));
 			}
 		},
