@@ -20,3 +20,9 @@
 	animation: spin 1s ease-in-out infinite;
 	will-change: auto;
 }
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

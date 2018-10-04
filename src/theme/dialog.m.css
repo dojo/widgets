@@ -1,5 +1,4 @@
 @import '../common/styles/variables.css';
-@import '../common/styles/animations.m.css';
 
 .root {}
 
@@ -42,11 +41,29 @@
 	z-index: var(--zindex-dialog);
 }
 
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
 .enter,
 .underlayEnter {
 	animation-duration: var(--short-animation-duration);
 	animation-fill-mode: both;
 	animation-name: fadeIn;
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
 }
 
 .exit,

@@ -9,7 +9,6 @@ import Dialog, { DialogProperties } from '../../index';
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
-import * as animations from '../../../common/styles/animations.m.css';
 import { Keys } from '../../../common/util';
 import { GlobalEvent } from '../../../global-event/index';
 import {
@@ -46,16 +45,16 @@ const expected = function(open = false, closeable = false, children: any[] = [])
 		}),
 		v('div', {
 			classes: [ null, fixedCss.underlay ],
-			enterAnimation: animations.fadeIn,
-			exitAnimation: animations.fadeOut,
+			enterAnimation: css.underlayEnter,
+			exitAnimation: css.underlayExit,
 			key: 'underlay',
 			onclick: noop
 		}),
 		v('div', {
 			'aria-labelledby': '',
 			classes: css.main,
-			enterAnimation: animations.fadeIn,
-			exitAnimation: animations.fadeOut,
+			enterAnimation: css.enter,
+			exitAnimation: css.exit,
 			key: 'main',
 			role: 'dialog',
 			tabIndex: -1
@@ -120,8 +119,8 @@ registerSuite('Dialog', {
 				}),
 				v('div', {
 					classes: [ css.underlayVisible, fixedCss.underlay ],
-					enterAnimation: animations.fadeIn,
-					exitAnimation: animations.fadeOut,
+					enterAnimation: css.underlayEnter,
+					exitAnimation: css.underlayExit,
 					key: 'underlay',
 					onclick: noop
 				}),
@@ -174,8 +173,8 @@ registerSuite('Dialog', {
 				}),
 				v('div', {
 					classes: [ null, fixedCss.underlay ],
-					enterAnimation: animations.fadeIn,
-					exitAnimation: animations.fadeOut,
+					enterAnimation: css.underlayEnter,
+					exitAnimation: css.underlayExit,
 					key: 'underlay',
 					onclick: noop
 				}),
@@ -183,8 +182,8 @@ registerSuite('Dialog', {
 					role: 'dialog',
 					'aria-labelledby': '',
 					classes: css.main,
-					enterAnimation: animations.fadeIn,
-					exitAnimation: animations.fadeOut,
+					enterAnimation: css.enter,
+					exitAnimation: css.exit,
 					key: 'main',
 					tabIndex: -1
 				}, [
