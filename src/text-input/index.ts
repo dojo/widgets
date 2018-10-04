@@ -3,6 +3,7 @@ import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Label from '../label/index';
 import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
@@ -25,18 +26,17 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property value           The current value
  */
 
-export interface TextInputProperties extends ThemedProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+export interface TextInputProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
 	controls?: string;
 	type?: TextInputType;
 	maxLength?: number | string;
 	minLength?: number | string;
 	placeholder?: string;
 	value?: string;
-	shouldFocus?: boolean;
 	onClick?(value: string): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<TextInputProperties>({
@@ -45,7 +45,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'theme',
 		'aria',
 		'extraClasses',
-		'shouldFocus',
 		'disabled',
 		'invalid',
 		'readOnly',
@@ -160,13 +159,8 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			readOnly,
 			required,
 			type = 'text',
-			value,
-			shouldFocus
+			value
 		} = this.properties;
-
-		if (shouldFocus) {
-			this.meta(Focus).set('input');
-		}
 
 		return v('input', {
 			...formatAriaProperties(aria),
@@ -174,6 +168,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			classes: this.theme(css.input),
 			disabled,
 			id: widgetId,
+			focus: this.shouldFocus,
 			key: 'input',
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,

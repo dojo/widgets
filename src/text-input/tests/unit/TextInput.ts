@@ -53,6 +53,7 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				required,
 				type: 'text',
 				value: undefined,
+				focus: noop,
 				onblur: noop,
 				onchange: noop,
 				onclick: noop,

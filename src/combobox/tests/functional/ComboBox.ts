@@ -152,20 +152,11 @@ registerSuite('ComboBox', {
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
 				.click()
-				.sleep(30)
+				.sleep(DELAY)
 			.getActiveElement()
 				.getTagName()
 				.then(tag => {
 					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is clicked.');
-				})
-				.type(keys.TAB)
-			.getActiveElement()
-				.type(keys.ENTER)
-				.sleep(30)
-			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is activated with the ENTER key.');
 				});
 	},
 
