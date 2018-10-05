@@ -40,6 +40,7 @@ export interface GridProperties<S> {
 @customElement<GridProperties<any>>({
 	tag: 'dojo-grid',
 	properties: [
+		'height',
 		'fetcher',
 		'updater',
 		'columnConfig',
