@@ -34,6 +34,8 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
+	getOptionText?(option: any): string;
+	getSelectedIndexByInput?(keyboardKey: string): number | undefined;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
 	options?: any[];
@@ -60,6 +62,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'getOptionDisabled',
 		'getOptionId',
 		'getOptionLabel',
+		'getOptionText',
 		'getOptionSelected',
 		'getOptionValue',
 		'readOnly',
@@ -92,6 +95,21 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	private _getOptionSelected = (option: any, index: number) => {
 		const { getOptionValue, value } = this.properties;
 		return getOptionValue ? getOptionValue(option, index) === value : option === value;
+	}
+
+	private _getSelectedIndexByInput(key: string) {
+		const { getOptionText, options = [] } = this.properties;
+		let index;
+		if (getOptionText) {
+			options.some((option, i) => {
+				if (getOptionText(option).indexOf(key) === 0) {
+					index = i;
+					return true;
+				}
+				return false;
+			});
+		}
+		return index;
 	}
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
@@ -250,6 +268,8 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionId,
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
+			getOptionText,
+			getSelectedIndexByInput,
 			widgetId = this._baseId,
 			key,
 			options = [],
@@ -291,6 +311,13 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					getOptionLabel,
 					getOptionSelected,
 					theme,
+					onKeyDown: (evt: KeyboardEvent) => {
+						const index = getSelectedIndexByInput ? getSelectedIndexByInput(evt.key) : this._getSelectedIndexByInput(evt.key);
+						if (index !== undefined) {
+							this._focusedIndex = index;
+							this.invalidate();
+						}
+					},
 					onActiveIndexChange: (index: number) => {
 						this._focusedIndex = index;
 						this.invalidate();

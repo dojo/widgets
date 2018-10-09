@@ -84,7 +84,8 @@ export default class App extends WidgetBase {
 				onChange: (option: any) => {
 					this._value2 = option.value;
 					this.invalidate();
-				}
+				},
+				getOptionText: (option: any) => option.value
 			}),
 			v('br'),
 			w(Select, {
