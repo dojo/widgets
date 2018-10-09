@@ -55,7 +55,11 @@ const testOptions: any[] = [
 	},
 	{
 		label: 'Three',
-		value: 'three',
+		value: 'three'
+	},
+	{
+		label: 'Four',
+		value: 'four',
 		disabled: true
 	}
 ];
@@ -115,9 +119,15 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 			v('option', {
 				value: useTestProperties ? 'three' : '',
 				id: useTestProperties ? 'three' : undefined,
+				disabled: useTestProperties ? false : undefined,
+				selected: useTestProperties ? false : undefined
+			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ]),
+			v('option', {
+				value: useTestProperties ? 'four' : '',
+				id: useTestProperties ? 'four' : undefined,
 				disabled: useTestProperties ? true : undefined,
 				selected: useTestProperties ? false : undefined
-			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ])
+			}, [ useTestProperties ? 'Four' : `${testOptions[3]}` ])
 		]),
 		v('span', { classes: css.arrow }, [
 			w(Icon, { type: 'downIcon', theme: undefined })
@@ -533,6 +543,48 @@ registerSuite('Select', {
 				});
 
 				h.expect(() => expected(expectedSingle(true, false, true, '', 1, false)));
+			},
+
+			'select option in menu based on multiple input keys'() {
+				const h = harness(() => w(Select, {
+					...testProperties,
+					options: testOptions
+				}));
+
+				h.trigger('@trigger', 'onkeydown', {
+					...stubEvent, which: Keys.Down
+				});
+
+				h.trigger('@listbox', 'onKeyDown', {
+					...stubEvent, key: 'T'
+				});
+
+				h.trigger('@listbox', 'onKeyDown', {
+					...stubEvent, key: 'h'
+				});
+
+				h.trigger('@trigger', 'onkeydown', {
+					...stubEvent, which: Keys.Enter
+				});
+
+				h.expect(() => expected(expectedSingle(true, false, true, '', 2, false)));
+			},
+
+			'does not select disabled options based on input key'() {
+				const h = harness(() => w(Select, {
+					...testProperties,
+					options: testOptions
+				}));
+
+				h.trigger('@trigger', 'onkeydown', {
+					...stubEvent, key: 'f'
+				});
+
+				h.trigger('@trigger', 'onkeydown', {
+					...stubEvent, key: 'o'
+				});
+
+				h.expect(() => expected(expectedSingle(true, false, false, '', 0, false)));
 			}
 		}
 	}
