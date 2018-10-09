@@ -501,32 +501,23 @@ registerSuite('Select', {
 				assert.isTrue(onBlur.getCall(1).calledWith('foo'), 'Dropdown blur event called with foo key');
 			},
 
-			'select option based on input key'() {
+			'select option with menu closed on input key'() {
 				const h = harness(() => w(Select, {
 					...testProperties,
 					options: testOptions
 				}));
 
 				h.trigger('@trigger', 'onkeydown', {
-					...stubEvent, which: Keys.Down
-				});
-
-				h.trigger('@listbox', 'onKeyDown', {
 					...stubEvent, key: 'T'
 				});
 
-				h.trigger('@trigger', 'onkeydown', {
-					...stubEvent, which: Keys.Enter
-				});
-
-				h.expect(() => expected(expectedSingle(true, false, true, '', 1, false)));
+				h.expect(() => expected(expectedSingle(true, false, false, '', 1, false)));
 			},
 
-			'select option based on input key with custom select function'() {
+			'select option in menu based on input key'() {
 				const h = harness(() => w(Select, {
 					...testProperties,
-					options: testOptions,
-					getSelectedIndexOnInput: () => 1
+					options: testOptions
 				}));
 
 				h.trigger('@trigger', 'onkeydown', {

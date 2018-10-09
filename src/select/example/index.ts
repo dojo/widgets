@@ -46,7 +46,8 @@ export default class App extends WidgetBase {
 		},
 		{
 			value: 'boston',
-			label: 'Boston'
+			label: 'Boston',
+			disabled: true
 		}
 	];
 

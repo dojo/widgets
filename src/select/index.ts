@@ -24,7 +24,6 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property getOptionId       Function that accepts an option's data and index and returns a string id
  * @property getOptionLabel    Function that accepts an option's data and returns a DNode label
  * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
- * @property getSelectedIndexOnInput Function that accepts a KeyboardEvent key and returns a matching option index
  * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
  * @property getOptionValue    Function that accepts an option's data and index and returns a string value
  * @property options           Array of any type of data for the options
@@ -37,7 +36,6 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
 	getOptionText?(option: any): string;
-	getSelectedIndexOnInput?(eventKey: string): number | undefined;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
 	options?: any[];
@@ -101,19 +99,29 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		return getOptionValue ? getOptionValue(option, index) === value : option === value;
 	}
 
-	private _getSelectedIndexOnInput(input: string) {
-		const { getOptionText, options = [] } = this.properties;
-		let index;
-		if (getOptionText) {
-			options.some((option, i) => {
-				if (getOptionText(option).toLowerCase().indexOf(input) === 0) {
-					index = i;
-					return true;
-				}
-				return false;
-			});
+	private _getSelectedIndexOnInput(event: KeyboardEvent) {
+		const { key, options = [], getOptionDisabled, getOptionText } = this.properties;
+		if (event.key !== undefined && event.key.length === 1) {
+			clearInterval(this._resetInputTextTimer);
+			this._resetInputTextTimer = setTimeout(() => {
+				this._inputText = '';
+			}, 800);
+			this._inputText += `${event.key}`;
+			let index;
+			if (getOptionText) {
+				options.some((option, i) => {
+					if (getOptionDisabled && getOptionDisabled(option, i)) {
+						return false;
+					}
+					if (getOptionText(option).toLowerCase().indexOf(this._inputText.toLowerCase()) === 0) {
+						index = i;
+						return true;
+					}
+					return false;
+				});
+			}
+			return index;
 		}
-		return index;
 	}
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
@@ -175,7 +183,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	private _onTriggerKeyDown(event: KeyboardEvent) {
 		const { key, options = [], onChange } = this.properties;
 		event.stopPropagation();
-		const index = this._getIndexOnInput(event);
+		const index = this._getSelectedIndexOnInput(event);
 		if (index !== undefined) {
 			this._focusedIndex = index;
 			onChange && onChange(options[index], key);
@@ -183,18 +191,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		}
 		if (event.which === Keys.Down) {
 			this._openSelect();
-		}
-	}
-
-	private _getIndexOnInput(event: KeyboardEvent) {
-		const { key, getSelectedIndexOnInput } = this.properties;
-		if (event.key.length === 1) {
-			clearInterval(this._resetInputTextTimer);
-			this._resetInputTextTimer = setTimeout(() => {
-				this._inputText = '';
-			}, 800);
-			this._inputText += `${event.key}`;
-			return getSelectedIndexOnInput ? getSelectedIndexOnInput(this._inputText) : this._getSelectedIndexOnInput(this._inputText);
 		}
 	}
 
@@ -291,7 +287,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionId,
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
-			getOptionText,
 			widgetId = this._baseId,
 			key,
 			options = [],
@@ -343,7 +338,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 						this._closeSelect();
 					},
 					onKeyDown: (event: KeyboardEvent) => {
-						const index = this._getIndexOnInput(event);
+						const index = this._getSelectedIndexOnInput(event);
 						if (index !== undefined) {
 							this._focusedIndex = index;
 							this.invalidate();
