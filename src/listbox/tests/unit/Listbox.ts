@@ -109,6 +109,7 @@ const expectedVdom = function(options: DNode[] = []) {
 		'aria-multiselectable': null,
 		classes: [ css.root, null ],
 		id: undefined,
+		focus: noop,
 		key: 'root',
 		role: 'listbox',
 		tabIndex: 0,
@@ -153,6 +154,7 @@ registerSuite('Listbox', {
 				classes: [ css.root, css.focused ],
 				id: 'bar',
 				tabIndex: -1,
+				focus: noop,
 				key: 'root',
 				role: 'listbox',
 				onkeydown: noop
@@ -192,6 +194,7 @@ registerSuite('Listbox', {
 				'aria-multiselectable': null,
 				classes: [ css.root, css.focused ],
 				id: undefined,
+				focus: noop,
 				key: 'root',
 				role: 'listbox',
 				tabIndex: 0,

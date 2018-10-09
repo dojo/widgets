@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
 import { CustomAriaProperties, LabeledProperties, InputProperties, KeyEventProperties, CheckboxRadioEventProperties, PointerEventProperties } from '../common/interfaces';
@@ -18,12 +19,12 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property checked          Checked/unchecked property of the radio
  * @property value           The current value
  */
-export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
+export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, FocusProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
 	checked?: boolean;
 	value?: string;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<RadioProperties>({
@@ -146,6 +147,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 					classes: this.theme(css.input),
 					checked,
 					disabled,
+					focus: this.shouldFocus,
 					'aria-invalid': invalid === true ? 'true' : null,
 					name,
 					readOnly,

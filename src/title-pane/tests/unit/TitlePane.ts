@@ -69,6 +69,7 @@ const expected = function(options: {open?: boolean, closeable?: boolean, heading
 				'aria-expanded': `${open}`,
 				classes: [ fixedCss.titleButtonFixed, css.titleButton ],
 				disabled: !closeable,
+				focus: noop,
 				id: '',
 				type: 'button',
 				onclick: noop

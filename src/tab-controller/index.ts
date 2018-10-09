@@ -2,6 +2,7 @@ import { assign } from '@dojo/framework/shim/object';
 import { DNode, WNode } from '@dojo/framework/widget-core/interfaces';
 import Tab, { TabProperties } from '../tab/index';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import TabButton from './TabButton';
@@ -32,14 +33,14 @@ export enum Align {
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
-export interface TabControllerProperties extends ThemedProperties, CustomAriaProperties {
+export interface TabControllerProperties extends ThemedProperties, FocusProperties, CustomAriaProperties {
 	activeIndex: number;
 	alignButtons?: Align;
 	onRequestTabChange?(index: number, key: string): void;
 	onRequestTabClose?(index: number, key: string): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<TabControllerProperties>({
@@ -53,7 +54,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 })
 export class TabControllerBase<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<P, WNode<Tab>> {
 	private _id = uuid();
-	private _callTabFocus = false;
 
 	private get _tabs(): WNode<Tab>[] {
 		return this.children.filter(child => child !== null) as WNode<Tab>[];
@@ -113,7 +113,7 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 	protected closeIndex(index: number) {
 		const { onRequestTabClose } = this.properties;
 		const key = this._tabs[index].properties.key;
-		this._callTabFocus = true;
+		this.focus();
 
 		onRequestTabClose && onRequestTabClose(index, key);
 	}
@@ -133,11 +133,11 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 			} = <TabProperties> tab.properties;
 
 			return w(TabButton, {
-				callFocus: this._callTabFocus &&  i === this.properties.activeIndex,
 				active: i === this.properties.activeIndex,
 				closeable,
 				controls: `${ this._id }-tab-${i}`,
 				disabled,
+				focus: i === this.properties.activeIndex ? this.shouldFocus : () => false,
 				id: `${ this._id }-tabbutton-${i}`,
 				index: i,
 				key: `${ key }-tabbutton`,
@@ -145,7 +145,6 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 				onCloseClick: this.closeIndex,
 				onDownArrowPress: this._onDownArrowPress,
 				onEndPress: this.selectLastIndex,
-				onFocusCalled: () => { this._callTabFocus = false; },
 				onHomePress: this.selectFirstIndex,
 				onLeftArrowPress: this._onLeftArrowPress,
 				onRightArrowPress: this._onRightArrowPress,
@@ -180,7 +179,7 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 		} = this.properties;
 
 		const validIndex = this._validateIndex(index, backwards);
-		this._callTabFocus = true;
+		this.focus();
 
 		if (validIndex !== null && validIndex !== activeIndex) {
 			const key = this._tabs[validIndex].properties.key;

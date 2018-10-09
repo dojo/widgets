@@ -3,6 +3,7 @@ import { diffProperty } from '@dojo/framework/widget-core/decorators/diffPropert
 import { reference } from '@dojo/framework/widget-core/diff';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { uuid } from '@dojo/framework/core/util';
@@ -31,7 +32,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property useNativeElement  Use the native <select> element if true
  * @property value           The current value
  */
-export interface SelectProperties extends ThemedProperties, InputProperties, LabeledProperties, CustomAriaProperties {
+export interface SelectProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, CustomAriaProperties {
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
@@ -47,7 +48,7 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 	value?: string;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @diffProperty('options', reference)
@@ -80,8 +81,8 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	]
 })
 export class SelectBase<P extends SelectProperties = SelectProperties> extends ThemedBase<P, null> {
-	private _callListboxFocus = false;
 	private _focusedIndex = 0;
+	private _focusNode = 'trigger';
 	private _ignoreBlur = false;
 	private _open = false;
 	private _baseId = uuid();
@@ -142,7 +143,8 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 
 	// custom select events
 	private _openSelect() {
-		this._callListboxFocus = true;
+		this.focus();
+		this._focusNode = 'listbox';
 		this._ignoreBlur = true;
 		this._open = true;
 		this._focusedIndex = this._focusedIndex || 0;
@@ -150,6 +152,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	private _closeSelect() {
+		this._focusNode = 'trigger';
 		this._ignoreBlur = true;
 		this._open = false;
 		this.invalidate();
@@ -158,8 +161,8 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	private _onDropdownKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
 		if (event.which === Keys.Escape) {
-			this.meta(Focus).set('trigger');
 			this._closeSelect();
+			this.focus();
 		}
 	}
 
@@ -265,6 +268,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				...formatAriaProperties(aria),
 				classes: this.theme(css.input),
 				disabled,
+				focus: this.shouldFocus,
 				'aria-invalid': invalid ? 'true' : null,
 				id: widgetId,
 				name,
@@ -298,12 +302,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			_focusedIndex
 		} = this;
 
-		const focusListbox = this._callListboxFocus;
-
-		if (this._callListboxFocus) {
-			this._callListboxFocus = false;
-		}
-
 		// create dropdown trigger and select box
 		return v('div', {
 			key: 'wrapper',
@@ -319,7 +317,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					key: 'listbox',
 					activeIndex: _focusedIndex,
 					widgetId: widgetId,
-					focus: focusListbox,
+					focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
 					optionData: options,
 					tabIndex: _open ? 0 : -1,
 					getOptionDisabled,
@@ -333,8 +331,8 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					},
 					onOptionSelect: (option: any) => {
 						onChange && onChange(option, key);
-						this.meta(Focus).set('trigger');
 						this._closeSelect();
+						this.focus();
 					},
 					onKeyDown: (event: KeyboardEvent) => {
 						const index = this._getSelectedIndexOnInput(event);
@@ -386,6 +384,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 				'aria-required': required ? 'true' : null,
 				classes: this.theme([ css.trigger, isPlaceholder ? css.placeholder : null ]),
 				disabled: disabled || readOnly,
+				focus: this._focusNode === 'trigger' ? this.shouldFocus : () => false,
 				key: 'trigger',
 				type: 'button',
 				value,

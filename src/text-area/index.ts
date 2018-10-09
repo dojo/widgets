@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
@@ -23,7 +24,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
+export interface TextareaProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -34,7 +35,7 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, L
 	onClick?(value: string): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<TextareaProperties>({
@@ -189,6 +190,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 					classes: this.theme(css.input),
 					cols: columns ? `${columns}` : null,
 					disabled,
+					focus: this.shouldFocus,
 					'aria-invalid': invalid ? 'true' : null,
 					maxlength: maxLength ? `${maxLength}` : null,
 					minlength: minLength ? `${minLength}` : null,

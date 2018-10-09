@@ -1,5 +1,6 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Label from '../label/index';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
@@ -25,7 +26,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
  * @property value           The current value
  */
-export interface SliderProperties extends ThemedProperties, LabeledProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
+export interface SliderProperties extends ThemedProperties, LabeledProperties, InputProperties, FocusProperties, InputEventProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
 	max?: number;
 	min?: number;
 	output?(value: number): DNode;
@@ -38,7 +39,7 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 	onClick?(value: number): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 function extractValue(event: Event): number {
 	const value = (event.target as HTMLInputElement).value;
@@ -247,6 +248,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 				classes: [ this.theme(css.input), fixedCss.nativeInput ],
 				disabled,
 				id: widgetId,
+				focus: this.shouldFocus,
 				'aria-invalid': invalid === true ? 'true' : null,
 				max: `${max}`,
 				min: `${min}`,

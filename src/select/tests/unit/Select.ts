@@ -16,6 +16,7 @@ import {
 	createHarness,
 	compareId,
 	compareWidgetId,
+	isFocusedComparator,
 	MockMetaMixin,
 	noop,
 	compareAriaControls,
@@ -23,6 +24,18 @@ import {
 } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareWidgetId, compareAriaControls ]);
+
+const compareListboxFocused = {
+	selector: '@listbox',
+	property: 'focus',
+	comparator: isFocusedComparator
+};
+
+const compareTriggerFocused = {
+	selector: '@trigger',
+	property: 'focus',
+	comparator: isFocusedComparator
+};
 
 interface TestEventInit extends EventInit {
 	which: number;
@@ -92,6 +105,7 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 		v('select', {
 			classes: css.input,
 			disabled: useTestProperties ? true : undefined,
+			focus: noop,
 			'aria-invalid': useTestProperties ? 'true' : null,
 			id: useTestProperties ? 'foo' : compareId as any,
 			name: useTestProperties ? 'foo' : undefined,
@@ -137,7 +151,7 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 	return vdom;
 };
 
-const expectedSingle = function(useTestProperties = false, withStates = false, open = false, placeholder = '', activeIndex = 0, focus = false) {
+const expectedSingle = function(useTestProperties = false, withStates = false, open = false, placeholder = '', activeIndex = 0) {
 	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
 	const vdom = v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
@@ -151,6 +165,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 			'aria-required': withStates ? 'true' : null,
 			classes: [ css.trigger, useTestProperties && !placeholder ? null : css.placeholder ],
 			disabled: withStates ? true : undefined,
+			focus: noop,
 			key: 'trigger',
 			type: 'button',
 			value: useTestProperties ? 'two' : undefined,
@@ -171,7 +186,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 		}, [
 			w(Listbox, {
 				activeIndex,
-				focus,
+				focus: noop,
 				widgetId: useTestProperties ? 'foo' : '',
 				key: 'listbox',
 				optionData: useTestProperties ? testOptions : [],
@@ -334,8 +349,34 @@ registerSuite('Select', {
 				const h = harness(() => w(Select, testProperties));
 				h.expect(() => expected(expectedSingle(true)));
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 				h.trigger('@trigger', 'onclick', stubEvent);
+				h.expect(() => expected(expectedSingle(true)));
+			},
+
+			'focus listbox on open'() {
+				const h = harness(() => w(Select, testProperties), [ compareListboxFocused ]);
+				h.trigger('@trigger', 'onclick', stubEvent);
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+			},
+
+			'focus trigger on escape to close'() {
+				const h = harness(() => w(Select, testProperties), [ compareTriggerFocused ]);
+				h.trigger('@trigger', 'onclick', stubEvent);
+				h.trigger(`.${css.dropdown}`, 'onkeydown', {
+					which: Keys.Escape, ...stubEvent
+				});
+				h.expect(() => expected(expectedSingle(true)));
+			},
+
+			'focus trigger when selecting an option and closing'() {
+				const h = harness(() => w(Select, {
+					...testProperties,
+					options: testOptions
+				}), [ compareTriggerFocused ]);
+
+				h.trigger('@trigger', 'onclick', stubEvent);
+				h.trigger('@listbox', 'onOptionSelect', testOptions[1]);
 				h.expect(() => expected(expectedSingle(true)));
 			},
 
@@ -349,14 +390,14 @@ registerSuite('Select', {
 				}));
 
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 				h.trigger('@listbox', 'onOptionSelect', testOptions[1]);
 				h.expect(() => expected(expectedSingle(true)));
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
 				// open widget a second time
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 				h.trigger('@trigger', 'onmousedown');
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				h.trigger('@trigger', 'onclick', stubEvent);
@@ -390,6 +431,7 @@ registerSuite('Select', {
 							'aria-required': null,
 							classes: [ css.trigger, null ],
 							disabled: undefined,
+							focus: noop,
 							key: 'trigger',
 							type: 'button',
 							value: 'two',
@@ -410,7 +452,7 @@ registerSuite('Select', {
 							w(Listbox, {
 								activeIndex: 0,
 								widgetId: '',
-								focus: false,
+								focus: noop,
 								key: 'listbox',
 								optionData: simpleOptions,
 								tabIndex: -1,
@@ -445,13 +487,13 @@ registerSuite('Select', {
 					which: Keys.Down, ...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Down, ...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Escape, ...stubEvent
@@ -475,7 +517,7 @@ registerSuite('Select', {
 				}));
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				h.expect(() => expected(expectedSingle(true)));
@@ -492,7 +534,7 @@ registerSuite('Select', {
 
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 
 				h.trigger('@trigger', 'onblur');
 				h.expect(() => expected(expectedSingle(true)));

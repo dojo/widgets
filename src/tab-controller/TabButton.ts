@@ -1,6 +1,7 @@
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { v } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
@@ -16,7 +17,6 @@ import * as css from '../theme/tab-controller.m.css';
  * Properties that can be set on a TabButton component
  *
  * @property active             Determines whether this tab button is active
- * @property callFocus          Used to immediately call focus on the cell
  * @property closeable          Determines whether this tab can be closed
  * @property controls           ID of the DOM element this tab button controls
  * @property disabled           Determines whether this tab can become active
@@ -26,15 +26,13 @@ import * as css from '../theme/tab-controller.m.css';
  * @property onCloseClick       Called when this tab button's close icon is clicked
  * @property onDownArrowPress   Called when the down arrow button is pressed
  * @property onEndPress         Called when the end button is pressed
- * @property onFocusCalled      Callback function when the cell receives focus
  * @property onHomePress        Called when the home button is pressed
  * @property onLeftArrowPress   Called when the left arrow button is pressed
  * @property onRightArrowPress  Called when the right arrow button is pressed
  * @property onUpArrowPress     Called when the up arrow button is pressed
  */
-export interface TabButtonProperties extends ThemedProperties {
+export interface TabButtonProperties extends ThemedProperties, FocusProperties {
 	active?: boolean;
-	callFocus?: boolean;
 	closeable?: boolean;
 	controls: string;
 	disabled?: boolean;
@@ -44,14 +42,13 @@ export interface TabButtonProperties extends ThemedProperties {
 	onCloseClick?: (index: number) => void;
 	onDownArrowPress?: () => void;
 	onEndPress?: () => void;
-	onFocusCalled?: () => void;
 	onHomePress?: () => void;
 	onLeftArrowPress?: () => void;
 	onRightArrowPress?: () => void;
 	onUpArrowPress?: () => void;
 }
 
-export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
+export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
 
 @theme(css)
 export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
@@ -156,24 +153,18 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 	render(): DNode {
 		const {
 			active,
-			callFocus,
 			controls,
 			disabled,
-			id,
-			onFocusCalled
+			id
 		} = this.properties;
 		const { messages } = this.localizeBundle(commonBundle);
-
-		if (callFocus) {
-			this.meta(Focus).set('tab-button');
-			onFocusCalled && onFocusCalled();
-		}
 
 		return v('div', {
 			'aria-controls': controls,
 			'aria-disabled': disabled ? 'true' : 'false',
 			'aria-selected': active === true ? 'true' : 'false',
 			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
+			focus: this.shouldFocus,
 			id,
 			key: 'tab-button',
 			onclick: this._onClick,

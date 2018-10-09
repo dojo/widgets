@@ -1,6 +1,7 @@
 import { uuid } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 
@@ -23,7 +24,7 @@ import GlobalEvent from '../global-event/index';
  * @property open               If true the pane is opened and content is visible
  * @property title              Title to display above the content
  */
-export interface TitlePaneProperties extends ThemedProperties {
+export interface TitlePaneProperties extends ThemedProperties, FocusProperties {
 	closeable?: boolean;
 	headingLevel?: number;
 	onRequestClose?(key: string | number | undefined): void;
@@ -32,7 +33,7 @@ export interface TitlePaneProperties extends ThemedProperties {
 	title: string;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<TitlePaneProperties>({
@@ -144,6 +145,7 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 					'aria-expanded': `${open}`,
 					disabled: !closeable,
 					classes: [ fixedCss.titleButtonFixed, ...this.theme([css.titleButton]) ],
+					focus: this.shouldFocus,
 					id: `${this._id}-title`,
 					type: 'button',
 					onclick: this._onTitleClick
