@@ -67,6 +67,7 @@ const testProperties: Partial<SelectProperties> = {
 	getOptionLabel: (option: any) => option.label,
 	getOptionSelected: (option: any, index: number) => option.value === 'two',
 	getOptionValue: (option: any, index: number) => option.value,
+	getOptionText: (option: any) => option.label,
 	widgetId: 'foo',
 	name: 'foo',
 	options: testOptions,
@@ -168,6 +169,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 				getOptionDisabled: useTestProperties ? noop : undefined,
 				getOptionId: useTestProperties ? noop : undefined,
 				getOptionLabel: useTestProperties ? noop : undefined,
+				onKeyDown: noop,
 				getOptionSelected: noop,
 				theme: undefined,
 				onActiveIndexChange: noop,
@@ -406,6 +408,7 @@ registerSuite('Select', {
 								getOptionId: undefined,
 								getOptionLabel: undefined,
 								getOptionSelected: noop,
+								onKeyDown: noop,
 								theme: undefined,
 								onActiveIndexChange: noop,
 								onOptionSelect: noop
@@ -496,6 +499,27 @@ registerSuite('Select', {
 				h.trigger('@trigger', 'onblur');
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				assert.isTrue(onBlur.getCall(1).calledWith('foo'), 'Dropdown blur event called with foo key');
+			},
+
+			'select option based on input key'() {
+				const h = harness(() => w(Select, {
+					...testProperties,
+					options: testOptions
+				}));
+
+				h.trigger('@trigger', 'onkeydown', {
+					...stubEvent, which: Keys.Down
+				});
+
+				h.trigger('@listbox', 'onKeyDown', {
+					...stubEvent, key: 'T'
+				});
+
+				h.trigger('@trigger', 'onkeydown', {
+					...stubEvent, which: Keys.Enter
+				});
+
+				h.expect(() => expected(expectedSingle(true, false, true, '', 1, false)));
 			}
 		}
 	}
