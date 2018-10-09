@@ -13,10 +13,6 @@ export default class App extends WidgetBase {
 			label: 'Cat'
 		},
 		{
-			value: 'cot',
-			label: 'Cot'
-		},
-		{
 			value: 'dog',
 			label: 'Dog'
 		},
@@ -35,6 +31,10 @@ export default class App extends WidgetBase {
 		{
 			value: 'seattle',
 			label: 'Seattle'
+		},
+		{
+			value: 'san diego',
+			label: 'San Diego'
 		},
 		{
 			value: 'los-angeles',
@@ -89,8 +89,7 @@ export default class App extends WidgetBase {
 				onChange: (option: any) => {
 					this._value2 = option.value;
 					this.invalidate();
-				},
-				getOptionText: (option: any) => option.value
+				}
 			}),
 			v('br'),
 			w(Select, {

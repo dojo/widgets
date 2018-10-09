@@ -108,18 +108,17 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			}, 800);
 			this._inputText += `${event.key}`;
 			let index;
-			if (getOptionText) {
-				options.some((option, i) => {
-					if (getOptionDisabled && getOptionDisabled(option, i)) {
-						return false;
-					}
-					if (getOptionText(option).toLowerCase().indexOf(this._inputText.toLowerCase()) === 0) {
-						index = i;
-						return true;
-					}
+			options.some((option, i) => {
+				if (getOptionDisabled && getOptionDisabled(option, i)) {
 					return false;
-				});
-			}
+				}
+				const optionText = getOptionText ? getOptionText(option) : this._getOptionLabel(option);
+				if (typeof optionText === 'string' && optionText.toLowerCase().indexOf(this._inputText.toLowerCase()) === 0) {
+					index = i;
+					return true;
+				}
+				return false;
+			});
 			return index;
 		}
 	}
