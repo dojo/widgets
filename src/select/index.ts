@@ -87,6 +87,8 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	private _ignoreBlur = false;
 	private _open = false;
 	private _baseId = uuid();
+	private _inputText = '';
+	private _resetInputTextTimer: any;
 
 	private _getOptionLabel(option: any) {
 		const { getOptionLabel } = this.properties;
@@ -99,12 +101,12 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		return getOptionValue ? getOptionValue(option, index) === value : option === value;
 	}
 
-	private _getSelectedIndexOnInput(key: string) {
+	private _getSelectedIndexOnInput(input: string) {
 		const { getOptionText, options = [] } = this.properties;
 		let index;
 		if (getOptionText) {
 			options.some((option, i) => {
-				if (getOptionText(option).toLowerCase().indexOf(key) === 0) {
+				if (getOptionText(option).toLowerCase().indexOf(input) === 0) {
 					index = i;
 					return true;
 				}
@@ -171,9 +173,9 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
+		const { key, options = [], onChange } = this.properties;
 		event.stopPropagation();
-		const { key, getSelectedIndexOnInput, onChange, options = [] } = this.properties;
-		const index = getSelectedIndexOnInput ? getSelectedIndexOnInput(event.key) : this._getSelectedIndexOnInput(event.key);
+		const index = this._getIndexOnInput(event);
 		if (index !== undefined) {
 			this._focusedIndex = index;
 			onChange && onChange(options[index], key);
@@ -181,6 +183,18 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		}
 		if (event.which === Keys.Down) {
 			this._openSelect();
+		}
+	}
+
+	private _getIndexOnInput(event: KeyboardEvent) {
+		const { key, getSelectedIndexOnInput } = this.properties;
+		if (event.key.length === 1) {
+			clearInterval(this._resetInputTextTimer);
+			this._resetInputTextTimer = setTimeout(() => {
+				this._inputText = '';
+			}, 800);
+			this._inputText += `${event.key}`;
+			return getSelectedIndexOnInput ? getSelectedIndexOnInput(this._inputText) : this._getSelectedIndexOnInput(this._inputText);
 		}
 	}
 
@@ -327,6 +341,13 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 						onChange && onChange(option, key);
 						this.meta(Focus).set('trigger');
 						this._closeSelect();
+					},
+					onKeyDown: (event: KeyboardEvent) => {
+						const index = this._getIndexOnInput(event);
+						if (index !== undefined) {
+							this._focusedIndex = index;
+							this.invalidate();
+						}
 					}
 				})
 			])
