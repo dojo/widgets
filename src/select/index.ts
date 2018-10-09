@@ -22,7 +22,9 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  *
  * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
  * @property getOptionId       Function that accepts an option's data and index and returns a string id
- * @property getOptionLabel    Function that accepts an option's data and index and returns a DNode label
+ * @property getOptionLabel    Function that accepts an option's data and returns a DNode label
+ * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
+ * @property getSelectedIndexOnInput Function that accepts a KeyboardEvent key and returns a matching option index
  * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
  * @property getOptionValue    Function that accepts an option's data and index and returns a string value
  * @property options           Array of any type of data for the options
@@ -35,7 +37,7 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
 	getOptionText?(option: any): string;
-	getSelectedIndexOnInput?(keyboardKey: string): number | undefined;
+	getSelectedIndexOnInput?(eventKey: string): number | undefined;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
 	options?: any[];
@@ -102,7 +104,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		let index;
 		if (getOptionText) {
 			options.some((option, i) => {
-				if (getOptionText(option).indexOf(key) === 0) {
+				if (getOptionText(option).toLowerCase().indexOf(key) === 0) {
 					index = i;
 					return true;
 				}
@@ -170,6 +172,13 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
+		const { key, getSelectedIndexOnInput, onChange, options = [] } = this.properties;
+		const index = getSelectedIndexOnInput ? getSelectedIndexOnInput(event.key) : this._getSelectedIndexOnInput(event.key);
+		if (index !== undefined) {
+			this._focusedIndex = index;
+			onChange && onChange(options[index], key);
+			this.invalidate();
+		}
 		if (event.which === Keys.Down) {
 			this._openSelect();
 		}
@@ -269,7 +278,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
 			getOptionText,
-			getSelectedIndexOnInput,
 			widgetId = this._baseId,
 			key,
 			options = [],
@@ -311,13 +319,6 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					getOptionLabel,
 					getOptionSelected,
 					theme,
-					onKeyDown: (evt: KeyboardEvent) => {
-						const index = getSelectedIndexOnInput ? getSelectedIndexOnInput(evt.key) : this._getSelectedIndexOnInput(evt.key);
-						if (index !== undefined) {
-							this._focusedIndex = index;
-							this.invalidate();
-						}
-					},
 					onActiveIndexChange: (index: number) => {
 						this._focusedIndex = index;
 						this.invalidate();

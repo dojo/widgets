@@ -13,6 +13,10 @@ export default class App extends WidgetBase {
 			label: 'Cat'
 		},
 		{
+			value: 'cot',
+			label: 'Cot'
+		},
+		{
 			value: 'dog',
 			label: 'Dog'
 		},
