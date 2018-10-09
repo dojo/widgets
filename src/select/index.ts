@@ -35,7 +35,7 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
 	getOptionText?(option: any): string;
-	getSelectedIndexByInput?(keyboardKey: string): number | undefined;
+	getSelectedIndexOnInput?(keyboardKey: string): number | undefined;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
 	options?: any[];
@@ -97,7 +97,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		return getOptionValue ? getOptionValue(option, index) === value : option === value;
 	}
 
-	private _getSelectedIndexByInput(key: string) {
+	private _getSelectedIndexOnInput(key: string) {
 		const { getOptionText, options = [] } = this.properties;
 		let index;
 		if (getOptionText) {
@@ -269,7 +269,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
 			getOptionText,
-			getSelectedIndexByInput,
+			getSelectedIndexOnInput,
 			widgetId = this._baseId,
 			key,
 			options = [],
@@ -312,7 +312,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					getOptionSelected,
 					theme,
 					onKeyDown: (evt: KeyboardEvent) => {
-						const index = getSelectedIndexByInput ? getSelectedIndexByInput(evt.key) : this._getSelectedIndexByInput(evt.key);
+						const index = getSelectedIndexOnInput ? getSelectedIndexOnInput(evt.key) : this._getSelectedIndexOnInput(evt.key);
 						if (index !== undefined) {
 							this._focusedIndex = index;
 							this.invalidate();
