@@ -100,9 +100,9 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	private _getSelectedIndexOnInput(event: KeyboardEvent) {
-		const { key, options = [], getOptionDisabled, getOptionText } = this.properties;
+		const { options = [], getOptionDisabled, getOptionText } = this.properties;
 		if (event.key !== undefined && event.key.length === 1) {
-			clearInterval(this._resetInputTextTimer);
+			clearTimeout(this._resetInputTextTimer);
 			this._resetInputTextTimer = setTimeout(() => {
 				this._inputText = '';
 			}, 800);
