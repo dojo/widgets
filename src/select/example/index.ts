@@ -33,6 +33,10 @@ export default class App extends WidgetBase {
 			label: 'Seattle'
 		},
 		{
+			value: 'san diego',
+			label: 'San Diego'
+		},
+		{
 			value: 'los-angeles',
 			label: 'Los Angeles'
 		},
@@ -42,7 +46,8 @@ export default class App extends WidgetBase {
 		},
 		{
 			value: 'boston',
-			label: 'Boston'
+			label: 'Boston',
+			disabled: true
 		}
 	];
 

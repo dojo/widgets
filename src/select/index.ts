@@ -22,7 +22,8 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  *
  * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
  * @property getOptionId       Function that accepts an option's data and index and returns a string id
- * @property getOptionLabel    Function that accepts an option's data and index and returns a DNode label
+ * @property getOptionLabel    Function that accepts an option's data and returns a DNode label
+ * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
  * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
  * @property getOptionValue    Function that accepts an option's data and index and returns a string value
  * @property options           Array of any type of data for the options
@@ -34,6 +35,7 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Lab
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
+	getOptionText?(option: any): string;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
 	options?: any[];
@@ -60,6 +62,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 		'getOptionDisabled',
 		'getOptionId',
 		'getOptionLabel',
+		'getOptionText',
 		'getOptionSelected',
 		'getOptionValue',
 		'readOnly',
@@ -82,6 +85,8 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	private _ignoreBlur = false;
 	private _open = false;
 	private _baseId = uuid();
+	private _inputText = '';
+	private _resetInputTextTimer: any;
 
 	private _getOptionLabel(option: any) {
 		const { getOptionLabel } = this.properties;
@@ -92,6 +97,30 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	private _getOptionSelected = (option: any, index: number) => {
 		const { getOptionValue, value } = this.properties;
 		return getOptionValue ? getOptionValue(option, index) === value : option === value;
+	}
+
+	private _getSelectedIndexOnInput(event: KeyboardEvent) {
+		const { options = [], getOptionDisabled, getOptionText } = this.properties;
+		if (event.key !== undefined && event.key.length === 1) {
+			clearTimeout(this._resetInputTextTimer);
+			this._resetInputTextTimer = setTimeout(() => {
+				this._inputText = '';
+			}, 800);
+			this._inputText += `${event.key}`;
+			let index;
+			options.some((option, i) => {
+				if (getOptionDisabled && getOptionDisabled(option, i)) {
+					return false;
+				}
+				const optionText = getOptionText ? getOptionText(option) : this._getOptionLabel(option);
+				if (typeof optionText === 'string' && optionText.toLowerCase().indexOf(this._inputText.toLowerCase()) === 0) {
+					index = i;
+					return true;
+				}
+				return false;
+			});
+			return index;
+		}
 	}
 
 	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
@@ -151,7 +180,14 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
+		const { key, options = [], onChange } = this.properties;
 		event.stopPropagation();
+		const index = this._getSelectedIndexOnInput(event);
+		if (index !== undefined) {
+			this._focusedIndex = index;
+			onChange && onChange(options[index], key);
+			this.invalidate();
+		}
 		if (event.which === Keys.Down) {
 			this._openSelect();
 		}
@@ -299,6 +335,13 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 						onChange && onChange(option, key);
 						this.meta(Focus).set('trigger');
 						this._closeSelect();
+					},
+					onKeyDown: (event: KeyboardEvent) => {
+						const index = this._getSelectedIndexOnInput(event);
+						if (index !== undefined) {
+							this._focusedIndex = index;
+							this.invalidate();
+						}
 					}
 				})
 			])
