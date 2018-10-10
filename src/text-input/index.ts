@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { DNode, PropertyChangeRecord } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
@@ -10,6 +10,7 @@ import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
@@ -33,10 +34,27 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	minLength?: number | string;
 	placeholder?: string;
 	value?: string;
+	pattern?: string | RegExp;
+	autocomplete?: boolean | string;
 	onClick?(value: string): void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
+
+function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {
+	if (typeof autocomplete === 'boolean') {
+		return autocomplete ? 'on' : 'off';
+	}
+	return autocomplete;
+}
+
+function patternDiffer(previousProperty: string | undefined, newProperty: string | RegExp | undefined): PropertyChangeRecord {
+	const value = newProperty instanceof RegExp ? newProperty.source : newProperty;
+	return {
+		changed: previousProperty !== value,
+		value
+	};
+}
 
 @theme(css)
 @customElement<TextInputProperties>({
@@ -51,7 +69,19 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	attributes: [
+		'widgetId',
+		'label',
+		'placeholder',
+		'controls',
+		'type',
+		'minLength',
+		'maxLength',
+		'value',
+		'name',
+		'pattern',
+		'autocomplete'
+	],
 	events: [
 		'onBlur',
 		'onChange',
@@ -68,6 +98,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onTouchStart'
 	]
 })
+@diffProperty('pattern', patternDiffer)
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
@@ -159,12 +190,15 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			readOnly,
 			required,
 			type = 'text',
-			value
+			value,
+			pattern,
+			autocomplete
 		} = this.properties;
 
 		return v('input', {
 			...formatAriaProperties(aria),
 			'aria-invalid': invalid ? 'true' : null,
+			autocomplete: formatAutocomplete(autocomplete),
 			classes: this.theme(css.input),
 			disabled,
 			id: widgetId,
@@ -173,6 +207,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			maxlength: maxLength ? `${maxLength}` : null,
 			minlength: minLength ? `${minLength}` : null,
 			name,
+			pattern,
 			placeholder,
 			readOnly,
 			'aria-readonly': readOnly ? 'true' : null,

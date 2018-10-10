@@ -44,6 +44,7 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				id: '',
 				disabled,
 				'aria-invalid': invalid ? 'true' : null,
+				autocomplete: undefined,
 				maxlength: null,
 				minlength: null,
 				name: undefined,
@@ -54,6 +55,7 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				type: 'text',
 				value: undefined,
 				focus: noop,
+				pattern: undefined,
 				onblur: noop,
 				onchange: noop,
 				onclick: noop,
@@ -114,6 +116,70 @@ registerSuite('TextInput', {
 			}));
 
 			h.expect(() => expected(true));
+		},
+
+		'pattern': {
+			'string'() {
+				const h = harness(() => w(TextInput, {
+					pattern: '^foo|bar$'
+				}));
+
+				h.expect(() => expected(false, {
+					pattern: '^foo|bar$'
+				}));
+			},
+			'regexp'() {
+				const properties = {
+					pattern: /^foo|bar$/
+				};
+				const h = harness(() => w(TextInput, properties));
+
+				h.expect(() => expected(false, {
+					pattern: '^foo|bar$'
+				}));
+
+				(properties.pattern.compile as any)('^bar|baz$');
+
+				h.expect(() => expected(false, {
+					pattern: '^bar|baz$'
+				}));
+
+				properties.pattern = /^ham|spam$/;
+
+				h.expect(() => expected(false, {
+					pattern: '^ham|spam$'
+				}));
+			}
+		},
+
+		'autocomplete': {
+			'true'() {
+				const h = harness(() => w(TextInput, {
+					autocomplete: true
+				}));
+
+				h.expect(() => expected(false, {
+					autocomplete: 'on'
+				}));
+			},
+			'false'() {
+				const h = harness(() => w(TextInput, {
+					autocomplete: false
+				}));
+
+				h.expect(() => expected(false, {
+					autocomplete: 'off'
+				}));
+			},
+			'string'() {
+				const h = harness(() => w(TextInput, {
+					autocomplete: 'name'
+				}));
+
+				h.expect(() => expected(false, {
+					autocomplete: 'name'
+				}));
+			}
 		},
 
 		'state classes'() {
