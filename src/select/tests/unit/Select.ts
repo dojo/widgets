@@ -563,7 +563,7 @@ registerSuite('Select', {
 					...stubEvent, key: 'T'
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, false, '', 1, false)));
+				h.expect(() => expected(expectedSingle(true, false, false, '', 1)));
 			},
 
 			'select option in menu based on input key'() {
@@ -584,7 +584,7 @@ registerSuite('Select', {
 					...stubEvent, which: Keys.Enter
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 1, false)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 1)));
 			},
 
 			'select option in menu based on multiple input keys'() {
@@ -609,7 +609,7 @@ registerSuite('Select', {
 					...stubEvent, which: Keys.Enter
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 2, false)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 2)));
 			},
 
 			'does not select disabled options based on input key'() {
@@ -626,7 +626,7 @@ registerSuite('Select', {
 					...stubEvent, key: 'o'
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, false, '', 0, false)));
+				h.expect(() => expected(expectedSingle(true, false, false, '', 0)));
 			}
 		}
 	}

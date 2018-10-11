@@ -126,7 +126,7 @@ registerSuite('ComboBox', {
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.clear}`)
 				.click()
-				.sleep(30)
+				.sleep(DELAY)
 			.getActiveElement()
 				.getTagName()
 				.then(tag => {
@@ -135,7 +135,7 @@ registerSuite('ComboBox', {
 				.type(keys.TAB)
 			.getActiveElement()
 				.type(keys.ENTER)
-				.sleep(30)
+				.sleep(DELAY)
 			.getActiveElement()
 				.getTagName()
 				.then(tag => {
