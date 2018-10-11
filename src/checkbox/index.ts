@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
 import { CustomAriaProperties, LabeledProperties, InputProperties, CheckboxRadioEventProperties, KeyEventProperties, PointerEventProperties } from '../common/interfaces';
@@ -21,7 +22,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property onLabel        Label to show in the "on" positin of a toggle
  * @property value           The current value
  */
-export interface CheckboxProperties extends ThemedProperties, InputProperties, LabeledProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
+export interface CheckboxProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
 	checked?: boolean;
 	mode?: Mode;
 	offLabel?: DNode;
@@ -37,7 +38,7 @@ export enum Mode {
 	toggle = 'toggle'
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<CheckboxProperties>({
@@ -189,6 +190,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 					classes: this.theme(css.input),
 					checked,
 					disabled,
+					focus: this.shouldFocus,
 					'aria-invalid': invalid === true ? 'true' : null,
 					name,
 					readOnly,

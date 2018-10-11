@@ -14,6 +14,7 @@ import {
 	createHarness,
 	compareId,
 	compareWidgetId,
+	isFocusedComparator,
 	isStringComparator,
 	noop
 } from '../../../common/tests/support/test-helpers';
@@ -46,7 +47,7 @@ const tabChildren = function(tabs = 2) {
 	return children;
 };
 
-const expectedTabButtons = function(empty = false, activeIndex = 0, callFocus = false): DNode {
+const expectedTabButtons = function(empty = false, activeIndex = 0): DNode {
 	if (empty) {
 		return v('div', {
 			key: 'buttons',
@@ -59,19 +60,18 @@ const expectedTabButtons = function(empty = false, activeIndex = 0, callFocus = 
 		classes: css.tabButtons
 	}, [
 		w(TabButton, {
-			callFocus: false,
 			active: activeIndex === 0,
 			closeable: undefined,
 			controls: '',
 			disabled: undefined,
 			id: '',
 			index: 0,
+			focus: noop,
 			key: '0-tabbutton',
 			onClick: noop,
 			onCloseClick: noop,
 			onDownArrowPress: noop,
 			onEndPress: noop,
-			onFocusCalled: noop,
 			onHomePress: noop,
 			onLeftArrowPress: noop,
 			onRightArrowPress: noop,
@@ -79,19 +79,18 @@ const expectedTabButtons = function(empty = false, activeIndex = 0, callFocus = 
 			theme: undefined
 		}, [ null ]),
 		w(TabButton, {
-			callFocus: false,
 			active: activeIndex === 1,
 			closeable: true,
 			controls: '',
 			disabled: true,
 			id: '',
 			index: 1,
+			focus: noop,
 			key: '1-tabbutton',
 			onClick: noop,
 			onCloseClick: noop,
 			onDownArrowPress: noop,
 			onEndPress: noop,
-			onFocusCalled: noop,
 			onHomePress: noop,
 			onLeftArrowPress: noop,
 			onRightArrowPress: noop,
@@ -320,229 +319,33 @@ registerSuite('TabController', {
 			assert.isTrue(onRequestTabChange.calledWith(2));
 		},
 
-		'Clicking on tab button sets callFocus to true'() {
-			let properties = {
-				activeIndex: 1
-			};
-			let children = [
-				w(Tab, {
-					key: '0',
-					show: false
-				}, [ 'tab content 1' ]),
-				w(Tab, {
-					closeable: true,
-					key: '1',
-					label: 'foo',
-					show: true
-				}, [ 'tab content 2' ])
-			];
-			const h = harness(() => w(TabController, properties, children));
-
-			let tabButtons = v('div', {
-				key: 'buttons',
-				classes: css.tabButtons
-			}, [
-				w(TabButton, {
-					callFocus: false,
-					active: false,
-					closeable: undefined,
-					controls: '',
-					disabled: undefined,
-					id: '',
-					index: 0,
-					key: '0-tabbutton',
-					onClick: noop,
-					onCloseClick: noop,
-					onDownArrowPress: noop,
-					onEndPress: noop,
-					onFocusCalled: noop,
-					onHomePress: noop,
-					onLeftArrowPress: noop,
-					onRightArrowPress: noop,
-					onUpArrowPress: noop,
-					theme: undefined
-				}, [ null ]),
-				w(TabButton, {
-					callFocus: false,
-					active: true,
-					closeable: true,
-					controls: '',
-					disabled: undefined,
-					id: '',
-					index: 1,
-					key: '1-tabbutton',
-					onClick: noop,
-					onCloseClick: noop,
-					onDownArrowPress: noop,
-					onEndPress: noop,
-					onFocusCalled: noop,
-					onHomePress: noop,
-					onLeftArrowPress: noop,
-					onRightArrowPress: noop,
-					onUpArrowPress: noop,
-					theme: undefined
-				}, [ 'foo' ])
-			]);
-
-			let tabContent = v('div', {
-				key: 'tabs',
-				classes: css.tabs
-			}, [
-				w(Tab, {
-					widgetId: '',
-					key: '0',
-					labelledBy: '',
-					show: false
-				}, [ 'tab content 1' ]),
-				w(Tab, {
-					widgetId: '',
-					labelledBy: '',
-					closeable: true,
-					key: '1',
-					show: true,
-					label: 'foo'
-				}, [ 'tab content 2' ])
-			]);
-
-			h.expect(() => expected([ tabButtons, tabContent ]));
-
-			h.trigger('@0-tabbutton', 'onClick', 0);
-			properties = {
+		'Calls focus when arrowing through tabs'() {
+			const h = harness(() => w(TabController, {
 				activeIndex: 0
-			};
+			}, tabChildren()), [{
+				selector: '@0-tabbutton',
+				property: 'focus',
+				comparator: isFocusedComparator
+			}]);
+			h.trigger('@0-tabbutton', 'onRightArrowPress');
+			let tabButtons = expectedTabButtons();
+			let tabContent = expectedTabContent();
 
-			tabContent = v('div', {
-				key: 'tabs',
-				classes: css.tabs
-			}, [
-				w(Tab, {
-					widgetId: '',
-					labelledBy: '',
-					show: true,
-					key: '0'
-				}, [ 'tab content 1' ]),
-				w(Tab, {
-					widgetId: '',
-					labelledBy: '',
-					closeable: true,
-					key: '1',
-					label: 'foo',
-					show: false
-				}, [ 'tab content 2' ])
-			]);
-			tabButtons = v('div', {
-				key: 'buttons',
-				classes: css.tabButtons
-			}, [
-				w(TabButton, {
-					callFocus: true,
-					active: true,
-					closeable: undefined,
-					controls: '',
-					disabled: undefined,
-					id: '',
-					index: 0,
-					key: '0-tabbutton',
-					onClick: noop,
-					onCloseClick: noop,
-					onDownArrowPress: noop,
-					onEndPress: noop,
-					onFocusCalled: noop,
-					onHomePress: noop,
-					onLeftArrowPress: noop,
-					onRightArrowPress: noop,
-					onUpArrowPress: noop,
-					theme: undefined
-				}, [ null ]),
-				w(TabButton, {
-					callFocus: false,
-					active: false,
-					closeable: true,
-					controls: '',
-					disabled: undefined,
-					id: '',
-					index: 1,
-					key: '1-tabbutton',
-					onClick: noop,
-					onCloseClick: noop,
-					onDownArrowPress: noop,
-					onEndPress: noop,
-					onFocusCalled: noop,
-					onHomePress: noop,
-					onLeftArrowPress: noop,
-					onRightArrowPress: noop,
-					onUpArrowPress: noop,
-					theme: undefined
-				}, [ 'foo' ])
-			]);
 			h.expect(() => expected([ tabButtons, tabContent ]));
+		},
 
-			h.trigger('@0-tabbutton', 'onFocusCalled', 0);
+		'Calls focus when closing a tab'() {
+			const h = harness(() => w(TabController, {
+				activeIndex: 0
+			}, tabChildren()), [{
+				selector: '@0-tabbutton',
+				property: 'focus',
+				comparator: isFocusedComparator
+			}]);
+			h.trigger('@1-tabbutton', 'onCloseClick', 1);
+			let tabButtons = expectedTabButtons();
+			let tabContent = expectedTabContent();
 
-			tabContent = v('div', {
-				key: 'tabs',
-				classes: css.tabs
-			}, [
-				w(Tab, {
-					widgetId: '',
-					labelledBy: '',
-					key: '0',
-					show: true
-				}, [ 'tab content 1' ]),
-				w(Tab, {
-					widgetId: '',
-					labelledBy: '',
-					closeable: true,
-					key: '1',
-					label: 'foo',
-					show: false
-				}, [ 'tab content 2' ])
-			]);
-			tabButtons = v('div', {
-				key: 'buttons',
-				classes: css.tabButtons
-			}, [
-				w(TabButton, {
-					callFocus: false,
-					active: true,
-					closeable: undefined,
-					controls: '',
-					disabled: undefined,
-					id: '',
-					index: 0,
-					key: '0-tabbutton',
-					onClick: noop,
-					onCloseClick: noop,
-					onDownArrowPress: noop,
-					onEndPress: noop,
-					onFocusCalled: noop,
-					onHomePress: noop,
-					onLeftArrowPress: noop,
-					onRightArrowPress: noop,
-					onUpArrowPress: noop,
-					theme: undefined
-				}, [ null ]),
-				w(TabButton, {
-					callFocus: false,
-					active: false,
-					closeable: true,
-					controls: '',
-					disabled: undefined,
-					id: '',
-					index: 1,
-					key: '1-tabbutton',
-					onClick: noop,
-					onCloseClick: noop,
-					onDownArrowPress: noop,
-					onEndPress: noop,
-					onFocusCalled: noop,
-					onHomePress: noop,
-					onLeftArrowPress: noop,
-					onRightArrowPress: noop,
-					onUpArrowPress: noop,
-					theme: undefined
-				}, [ 'foo' ])
-			]);
 			h.expect(() => expected([ tabButtons, tabContent ]));
 		}
 	}

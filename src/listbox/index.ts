@@ -6,6 +6,7 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import MetaBase from '@dojo/framework/widget-core/meta/Base';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { uuid } from '@dojo/framework/core/util';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
@@ -45,14 +46,13 @@ export class ScrollMeta extends MetaBase {
  * @property onOptionSelect       Called with the option data of the new requested selected item
  */
 
-export interface ListboxProperties extends ThemedProperties, CustomAriaProperties {
+export interface ListboxProperties extends ThemedProperties, FocusProperties, CustomAriaProperties {
 	activeIndex?: number;
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any, index: number): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
 	widgetId?: string;
-	focus?: boolean;
 	multiselect?: boolean;
 	optionData?: any[];
 	tabIndex?: number;
@@ -62,7 +62,7 @@ export interface ListboxProperties extends ThemedProperties, CustomAriaPropertie
 	onOptionSelect?(option: any, index: number, key?: string | number): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @diffProperty('optionData', reference)
@@ -70,7 +70,6 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	tag: 'dojo-listbox',
 	properties: [
 		'activeIndex',
-		'focus',
 		'multiselect',
 		'tabIndex',
 		'visualFocus',
@@ -239,27 +238,21 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 			aria = {},
 			widgetId,
 			multiselect = false,
-			focus,
 			tabIndex = 0
 		} = this.properties;
 		const themeClasses = this.getModifierClasses();
 
-		return v('div', () => {
-			if (focus) {
-				this.meta(Focus).set('root');
-			}
-
-			return {
-				...formatAriaProperties(aria),
-				'aria-activedescendant': this._getOptionId(activeIndex),
-				'aria-multiselectable': multiselect ? 'true' : null,
-				classes: this.theme([ css.root, ...themeClasses ]),
-				id: widgetId,
-				key: 'root',
-				role: 'listbox',
-				tabIndex,
-				onkeydown: this._onKeyDown
-			};
+		return v('div', {
+			...formatAriaProperties(aria),
+			'aria-activedescendant': this._getOptionId(activeIndex),
+			'aria-multiselectable': multiselect ? 'true' : null,
+			classes: this.theme([ css.root, ...themeClasses ]),
+			id: widgetId,
+			focus: this.shouldFocus,
+			key: 'root',
+			role: 'listbox',
+			tabIndex,
+			onkeydown: this._onKeyDown
 		}, this.renderOptions());
 	}
 }

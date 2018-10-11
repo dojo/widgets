@@ -36,6 +36,7 @@ const expected = function({ label = false, rootOverrides = {}, inputOverrides = 
 			classes: css.input,
 			checked: false,
 			disabled: disabled,
+			focus: noop,
 			'aria-invalid': invalid ? 'true' : null,
 			name: undefined,
 			readOnly: readOnly,

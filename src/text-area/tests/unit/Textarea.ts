@@ -43,6 +43,7 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				key: 'input',
 				cols: null,
 				disabled,
+				focus: noop,
 				'aria-invalid': invalid ? 'true' : null,
 				maxlength: null,
 				minlength: null,

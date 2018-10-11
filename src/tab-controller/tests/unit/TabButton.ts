@@ -50,6 +50,7 @@ const expected = function(closeable = false, disabled = false, activeTab: number
 			disabled ? css.disabledTabButton : null
 		],
 		id: 'foo',
+		focus: noop,
 		key: 'tab-button',
 		onclick: noop,
 		onkeydown: noop,
@@ -178,22 +179,6 @@ registerSuite('TabButton', {
 			};
 			h.trigger('@tab-button', 'onkeydown', { which: Keys.Escape, stopPropagation , ...stubEvent });
 			assert.isTrue(onCloseClick.called, 'onCloseClick handler called on escape keydown if closeable');
-		},
-
-		'Focus is restored after render'() {
-			const onFocusCalled = sinon.stub();
-			let extraProps: Partial<TabButtonProperties> = {
-				onFocusCalled,
-				callFocus: true
-			};
-			const h = harness(() => w(TabButton, props(extraProps)));
-			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled called on render if callFocus is true');
-			extraProps = {
-				callFocus: false,
-				onFocusCalled
-			};
-			h.expect(() => expected(false, false));
-			assert.isTrue(onFocusCalled.calledOnce, 'onFocusCalled not called if callFocus is false');
 		}
 	}
 });

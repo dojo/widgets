@@ -2,6 +2,7 @@ import { padStart } from '@dojo/framework/shim/string';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
 import { auto } from '@dojo/framework/widget-core/diff';
@@ -44,7 +45,7 @@ interface FocusInputEvent extends FocusEvent {
  * @property useNativeElement   Use the native <input type="time"> element if true
  * @property value           The current value
  */
-export interface TimePickerProperties extends ThemedProperties, InputProperties, LabeledProperties {
+export interface TimePickerProperties extends ThemedProperties, FocusProperties, InputProperties, LabeledProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
 	end?: string;
@@ -155,7 +156,7 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 	return value;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
+export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
 @theme(css)
 @customElement<TimePickerProperties>({
@@ -315,6 +316,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),
 			widgetId,
+			focus: this.shouldFocus,
 			inputProperties,
 			invalid,
 			isResultDisabled: isOptionDisabled,
@@ -375,6 +377,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 				'aria-readonly': readOnly === true ? 'true' : null,
 				classes: this.theme(css.input),
 				disabled,
+				focus: this.shouldFocus,
 				invalid,
 				key: 'native-input',
 				max: end,
