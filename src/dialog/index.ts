@@ -12,7 +12,6 @@ import commonBundle from '../common/nls/common';
 import Icon from '../icon/index';
 import * as fixedCss from './styles/dialog.m.css';
 import * as css from '../theme/dialog.m.css';
-import * as animations from '../common/styles/animations.m.css';
 import { GlobalEvent } from '../global-event/index';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
@@ -160,8 +159,8 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 		const { underlay } = this.properties;
 		return v('div', {
 			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
-			enterAnimation: animations.fadeIn,
-			exitAnimation: animations.fadeOut,
+			enterAnimation: this.theme(css.underlayEnter) || undefined,
+			exitAnimation: this.theme(css.underlayExit) || undefined,
 			key: 'underlay',
 			onclick: this._onUnderlayClick
 		});
@@ -172,8 +171,8 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			aria = {},
 			closeable = true,
 			closeText,
-			enterAnimation = animations.fadeIn,
-			exitAnimation = animations.fadeOut,
+			enterAnimation = this.theme(css.enter) || undefined,
+			exitAnimation = this.theme(css.exit) || undefined,
 			modal,
 			open = false,
 			role = 'dialog',

@@ -40,3 +40,35 @@
 	background: var(--underlay-background);
 	z-index: var(--zindex-dialog);
 }
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.enter,
+.underlayEnter {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: fadeIn;
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.exit,
+.underlayExit {
+	animation-duration: var(--short-animation-duration);
+	animation-fill-mode: both;
+	animation-name: fadeOut;
+}
