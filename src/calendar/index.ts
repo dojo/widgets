@@ -382,7 +382,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			w(Icon, { type: iconType, theme: undefined }),
+			w(Icon, { type: iconType, theme }),
 			v('span', { classes: [ baseCss.visuallyHidden ] }, [ labelText ])
 		];
 	}

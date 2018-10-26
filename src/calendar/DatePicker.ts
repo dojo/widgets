@@ -240,12 +240,12 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	}
 
 	protected renderPagingButtonContent(type: Paging): DNode[] {
-		const { labels } = this.properties;
+		const { labels, theme } = this.properties;
 		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
 
 		return [
-			w(Icon, { type: iconType, theme: undefined }),
+			w(Icon, { type: iconType, theme }),
 			v('span', { classes: baseCss.visuallyHidden }, [ labelText ])
 		];
 	}
