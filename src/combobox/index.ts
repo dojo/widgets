@@ -115,25 +115,25 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	private _open: boolean | undefined;
 	private _wasOpen: boolean | undefined;
 
-	private _closeMenu() {
+	protected closeMenu() {
 		this._open = false;
 		this.invalidate();
 	}
 
-	private _getMenuId() {
+	protected getMenuId() {
 		return `${this._idBase}-menu`;
 	}
 
-	private _getResultLabel(result: any) {
+	protected getResultLabel(result: any) {
 		const { getResultLabel } = this.properties;
 
 		return getResultLabel ? getResultLabel(result) : `${result}`;
 	}
 
-	private _getResultSelected(result: any) {
+	protected getResultSelected(result: any) {
 		const { getResultSelected, value } = this.properties;
 
-		return getResultSelected ? getResultSelected(result) : this._getResultLabel(result) === value;
+		return getResultSelected ? getResultSelected(result) : this.getResultLabel(result) === value;
 	}
 
 	private _getResultValue(result: any) {
@@ -142,11 +142,11 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		return getResultValue ? `${getResultValue(result)}` : `${result}`;
 	}
 
-	private _getResultId(result: any, index: number) {
+	protected getResultId(result: any, index: number) {
 		return `${this._idBase}-result${index}`;
 	}
 
-	private _onArrowClick(event: MouseEvent) {
+	protected onArrowClick(event: MouseEvent) {
 		event.stopPropagation();
 		const {
 			disabled,
@@ -155,11 +155,11 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 
 		if (!disabled && !readOnly) {
 			this._callInputFocus = true;
-			this._openMenu();
+			this.openMenu();
 		}
 	}
 
-	private _onClearClick(event: MouseEvent) {
+	protected onClearClick(event: MouseEvent) {
 		event.stopPropagation();
 		const { key, onChange } = this.properties;
 
@@ -172,7 +172,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		const { key, disabled, readOnly, onChange } = this.properties;
 
 		onChange && onChange(value, key);
-		!disabled && !readOnly && this._openMenu();
+		!disabled && !readOnly && this.openMenu();
 	}
 
 	private _onInputBlur(value: string) {
@@ -184,7 +184,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		}
 
 		onBlur && onBlur(value, key);
-		this._closeMenu();
+		this.closeMenu();
 	}
 
 	private _onInputFocus(value: string) {
@@ -197,7 +197,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		} = this.properties;
 
 		onFocus && onFocus(value, key);
-		!disabled && !readOnly && openOnFocus && this._openMenu();
+		!disabled && !readOnly && openOnFocus && this.openMenu();
 	}
 
 	private _onInputKeyDown(key: number, preventDefault: () => void) {
@@ -217,14 +217,14 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			case Keys.Down:
 				preventDefault();
 				if (!this._open && !disabled && !readOnly) {
-					this._openMenu();
+					this.openMenu();
 				}
 				else if (this._open) {
 					this._moveActiveIndex(Operation.increase);
 				}
 				break;
 			case Keys.Escape:
-				this._open && this._closeMenu();
+				this._open && this.closeMenu();
 				break;
 			case Keys.Enter:
 			case Keys.Space:
@@ -232,7 +232,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 					if (isResultDisabled(results[this._activeIndex])) {
 						return;
 					}
-					this._selectIndex(this._activeIndex);
+					this.selectIndex(this._activeIndex);
 				}
 				break;
 			case Keys.Home:
@@ -246,7 +246,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		}
 	}
 
-	private _onMenuChange() {
+	protected onMenuChange() {
 		const { key, onMenuChange } = this.properties;
 
 		if (!onMenuChange) {
@@ -257,18 +257,18 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		!this._open && this._wasOpen && onMenuChange(false, key);
 	}
 
-	private _onResultHover(): void {
+	protected onResultHover(): void {
 		this._menuHasVisualFocus = false;
 		this.invalidate();
 	}
 
-	private _onResultMouseDown(event: MouseEvent) {
+	protected onResultMouseDown(event: MouseEvent) {
 		event.stopPropagation();
 		// Maintain underlying input focus on next render
 		this._ignoreBlur = true;
 	}
 
-	private _openMenu() {
+	protected openMenu() {
 		const {
 			key,
 			onRequestResults
@@ -280,7 +280,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		this.invalidate();
 	}
 
-	private _selectIndex(index: number) {
+	protected selectIndex(index: number) {
 		const {
 			key,
 			onChange,
@@ -288,7 +288,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		} = this.properties;
 
 		this._callInputFocus = true;
-		this._closeMenu();
+		this.closeMenu();
 		onChange && onChange(this._getResultValue(results[index]), key);
 	}
 
@@ -347,9 +347,9 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			...inputProperties,
 			key: 'textinput',
 			aria: {
-				activedescendant: this._getResultId(results[this._activeIndex], this._activeIndex),
-				controls: this._getMenuId(),
-				owns: this._getMenuId()
+				activedescendant: this.getResultId(results[this._activeIndex], this._activeIndex),
+				controls: this.getMenuId(),
+				owns: this.getMenuId()
 			},
 			disabled,
 			widgetId,
@@ -376,11 +376,11 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 
 		return v('button', {
 			key: 'clear',
-			'aria-controls': this._getMenuId(),
+			'aria-controls': this.getMenuId(),
 			classes: this.theme(css.clear),
 			disabled: disabled || readOnly,
 			type: 'button',
-			onclick: this._onClearClick
+			onclick: this.onClearClick
 		}, [
 			v('span', { classes: baseCss.visuallyHidden }, [
 				`${messages.clear} ${label}`
@@ -403,7 +403,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			disabled: disabled || readOnly,
 			tabIndex: -1,
 			type: 'button',
-			onclick: this._onArrowClick
+			onclick: this.onArrowClick
 		}, [
 			v('span', { classes: baseCss.visuallyHidden }, [
 				`${messages.open} ${label}`
@@ -422,26 +422,26 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		return v('div', {
 			key: 'dropdown',
 			classes: this.theme(css.dropdown),
-			onmouseover: this._onResultHover,
-			onmousedown: this._onResultMouseDown
+			onmouseover: this.onResultHover,
+			onmousedown: this.onResultMouseDown
 		}, [
 			w(Listbox, {
 				key: 'listbox',
 				activeIndex: this._activeIndex,
-				widgetId: this._getMenuId(),
+				widgetId: this.getMenuId(),
 				visualFocus: this._menuHasVisualFocus,
 				optionData: results,
 				tabIndex: -1,
 				getOptionDisabled: isResultDisabled,
-				getOptionId: this._getResultId,
-				getOptionLabel: this._getResultLabel,
-				getOptionSelected: this._getResultSelected,
+				getOptionId: this.getResultId,
+				getOptionLabel: this.getResultLabel,
+				getOptionSelected: this.getResultSelected,
 				onActiveIndexChange: (index: number) => {
 					this._activeIndex = index;
 					this.invalidate();
 				},
 				onOptionSelect: (option: any, index: number) => {
-					this._selectIndex(index);
+					this.selectIndex(index);
 				},
 				theme
 			})
@@ -466,7 +466,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		const focus = this.meta(Focus).get('root');
 
 		const menu = this.renderMenu(results);
-		this._onMenuChange();
+		this.onMenuChange();
 		this._wasOpen = this._open;
 
 		const controls = [
