@@ -43,7 +43,7 @@ function checkValue(command: any, values?: number[][]) {
 		.end();
 }
 
-function slideLeft(command: any, x: number, y: number) {
+function slideMin(command: any, x: number, y: number) {
 	return command.session.capabilities.brokenMouseEvents ?
 		command
 			.findByCssSelector(`.${css.leftThumb}`)
@@ -60,7 +60,7 @@ function slideLeft(command: any, x: number, y: number) {
 			.end();
 }
 
-function slideRight(command: any, x: number, y: number) {
+function slideMax(command: any, x: number, y: number) {
 	return command.session.capabilities.brokenMouseEvents ?
 		command
 			.findByCssSelector(`.${css.rightThumb}`)
@@ -121,14 +121,24 @@ registerSuite('Range Slider', {
 		let sliderValues: number[][] = [];
 		let command = getPage(this).findByCssSelector(`#example-rs1 .${css.root}`);
 		command = checkValue(command, sliderValues);
-		command = slideLeft(command, -30, 0);
-		command = slideRight(command, 30, 0);
+		command = slideMin(command, -100, 0);
+		command = checkValue(command, sliderValues);
+		command = slideMin(command, 100, 0);
+		command = checkValue(command, sliderValues);
+
+		command = slideMax(command, -100, 0);
+		command = checkValue(command, sliderValues);
+		command = slideMax(command, 100, 0);
 		command = checkValue(command, sliderValues);
 
 		return command.then(() => {
-			assert.lengthOf(sliderValues, 2);
-			assert.deepEqual(sliderValues[0], [25, 75]);
-			assert.deepEqual(sliderValues[1], [23, 76]);
+			assert.lengthOf(sliderValues, 5);
+
+			assert.isBelow(sliderValues[1][0], sliderValues[0][0]);
+			assert.isAbove(sliderValues[2][0], sliderValues[1][0]);
+
+			assert.isBelow(sliderValues[3][1], sliderValues[2][1]);
+			assert.isAbove(sliderValues[4][1], sliderValues[3][1]);
 		});
 	},
 
