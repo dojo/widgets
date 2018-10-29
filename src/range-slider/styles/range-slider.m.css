@@ -51,19 +51,7 @@
 }
 
 /* invisible native track */
-.nativeInput::-ms-track {
-	appearance: none;
-	background: transparent;
-	border: 0 none;
-	color: transparent;
-	height: 100%;
-	margin: 0px;
-	overflow: visible;
-	padding: 0px;
-	width: 100%;
-}
-
-.nativeInput::-moz-range-track {
+.nativeInput::-ms-track, .nativeInput::-moz-range-track {
 	appearance: none;
 	background: transparent;
 	border: 0 none;
@@ -81,14 +69,7 @@
 }
 
 /* thumb needs to be invisible and same size as custom thumb */
-.nativeInput::-ms-thumb {
-	border-radius: 50%;
-	border: 0 none;
-	background: transparent;
-	cursor: pointer;
-}
-
-.nativeInput::-moz-range-thumb {
+.nativeInput::-ms-thumb, .nativeInput::-moz-range-thumb, .nativeInput::-webkit-slider-thumb {
 	border-radius: 50%;
 	border: 0 none;
 	background: transparent;
@@ -97,19 +78,10 @@
 
 .nativeInput::-webkit-slider-thumb {
 	appearance: none;
-	border-radius: 50%;
-	border: 0 none;
-	background: transparent;
-	cursor: pointer;
 }
 
 /* microsoft IE10+ and Edge - eliminates default fills before and after thumb */
-.nativeInput::-ms-fill-lower {
-	background: transparent;
-	border: 0 none;
-}
-
-.nativeInput::-ms-fill-upper {
+.nativeInput::-ms-fill-lower, .nativeInput::-ms-fill-upper {
 	background: transparent;
 	border: 0 none;
 }

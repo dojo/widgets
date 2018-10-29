@@ -73,7 +73,7 @@ type MinMaxCallback = (minValue: number, maxValue: number) => void;
 		'minimumLabel',
 		'maximumLabel'
 	],
-	attributes: [ 'widgetId', 'label', 'name' ],
+	attributes: ['widgetId', 'label', 'name'],
 	events: [
 		'onBlur',
 		'onChange',
@@ -335,14 +335,22 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 				}),
 				v('div', {
 					key: 'leftThumb',
-					classes: [...this.theme([css.thumb, css.leftThumb, slider1Focus.active ? css.focused : undefined]), fixedCss.thumbFixed],
+					classes: [...this.theme([
+						css.thumb,
+						css.leftThumb,
+						slider1Focus.active ? css.focused : undefined
+					]), fixedCss.thumbFixed],
 					styles: {
 						left: Math.round(slider1Percent * 100) + '%'
 					}
 				}),
 				v('div', {
 					key: 'rightThumb',
-					classes: [...this.theme([css.thumb, css.rightThumb, slider2Focus.active ? css.focused : undefined]), fixedCss.thumbFixed],
+					classes: [...this.theme([
+						css.thumb,
+						css.rightThumb,
+						slider2Focus.active ? css.focused : undefined
+					]), fixedCss.thumbFixed],
 					styles: {
 						left: Math.round(slider2Percent * 100) + '%'
 					}

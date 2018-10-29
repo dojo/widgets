@@ -115,7 +115,7 @@ registerSuite('Range Slider', {
 			this.skip('Fails in Firefox.');
 		}
 		if (browserName === 'safari') {
-			this.skip('Fails in Firefox.');
+			this.skip('Fails in Safari.');
 		}
 
 		let sliderValues: number[][] = [];
