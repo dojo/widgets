@@ -157,13 +157,13 @@ registerSuite('Range Slider', {
 		command = command.findByCssSelector(`.${css.leftThumb}`)
 			.moveMouseTo()
 			.pressMouseButton()
-			.pressKeys([keys.ARROW_LEFT])
+			.pressKeys([keys.ARROW_LEFT, keys.ARROW_LEFT])
 			.end();
 		command = checkValue(command, sliderValues);
 		command = command.findByCssSelector(`.${css.leftThumb}`)
 			.moveMouseTo()
 			.pressMouseButton()
-			.pressKeys([keys.ARROW_RIGHT])
+			.pressKeys([keys.ARROW_RIGHT, keys.ARROW_RIGHT])
 			.end();
 		command = checkValue(command, sliderValues);
 
