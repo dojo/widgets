@@ -37,6 +37,8 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
+	leading?: DNode;
+	trailing?: DNode;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -48,7 +50,7 @@ function formatAutocomplete(autocomplete: string | boolean | undefined): string 
 	return autocomplete;
 }
 
-function patternDiffer(previousProperty: string | undefined, newProperty: string | RegExp | undefined): PropertyChangeRecord {
+function patternDiff(previousProperty: string | undefined, newProperty: string | RegExp | undefined): PropertyChangeRecord {
 	const value = newProperty instanceof RegExp ? newProperty.source : newProperty;
 	return {
 		changed: previousProperty !== value,
@@ -99,75 +101,98 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'onTouchStart'
 	]
 })
-@diffProperty('pattern', patternDiffer)
+@diffProperty('pattern', patternDiff)
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
+
 	private _onBlur (event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
+		if (this.properties.onBlur) {
+			const target = event.target as HTMLInputElement;
+			this.properties.onBlur(target.value);
+		}
 	}
+
 	private _onChange (event: Event) {
 		event.stopPropagation();
-		this.properties.onChange && this.properties.onChange((event.target as HTMLInputElement).value);
+		if (this.properties.onChange) {
+			const target = event.target as HTMLInputElement;
+			this.properties.onChange(target.value);
+		}
 	}
+
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick((event.target as HTMLInputElement).value);
+		if (this.properties.onClick) {
+			const target = event.target as HTMLInputElement;
+			this.properties.onClick(target.value);
+		}
 	}
+
 	private _onFocus (event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus((event.target as HTMLInputElement).value);
+		if (this.properties.onFocus) {
+			const target = event.target as HTMLInputElement;
+			this.properties.onFocus(target.value);
+		}
 	}
+
 	private _onInput (event: Event) {
 		event.stopPropagation();
-		this.properties.onInput && this.properties.onInput((event.target as HTMLInputElement).value);
+		if (this.properties.onInput) {
+			const target = event.target as HTMLInputElement;
+			this.properties.onInput(target.value);
+		}
 	}
+
 	private _onKeyDown (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
+		if (this.properties.onKeyDown) {
+			this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
+		}
 	}
+
 	private _onKeyPress (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
+		if (this.properties.onKeyPress) {
+			this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
+		}
 	}
+
 	private _onKeyUp (event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
-	}
-	private _onMouseDown (event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown();
-	}
-	private _onMouseUp (event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp();
-	}
-	private _onTouchStart (event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart();
-	}
-	private _onTouchEnd (event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd();
-	}
-	private _onTouchCancel (event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel();
+		if (this.properties.onKeyUp) {
+			this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
+		}
 	}
 
-	private _uuid: string;
+	private _uuid = uuid();
 
-	constructor() {
-		super();
-		this._uuid = uuid();
-	}
-
-	protected getRootClasses(): (string | null)[] {
+	protected render(): DNode {
 		const {
-			disabled,
-			invalid,
-			readOnly,
-			required
+			classes,
+			disabled = false,
+			widgetId = this._uuid,
+			invalid = false,
+			label,
+			labelAfter = false,
+			labelHidden = false,
+			readOnly = false,
+			required = false,
+			theme,
+			aria = {},
+			maxLength,
+			minLength,
+			name,
+			placeholder,
+			type = 'text',
+			value,
+			pattern,
+			autocomplete,
+			leading,
+			trailing
 		} = this.properties;
+
 		const focus = this.meta(Focus).get('root');
-		return [
+
+		const rootClasses =  this.theme([
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
@@ -175,87 +200,26 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
-		];
-	}
-
-	protected renderInput(): DNode {
-		const {
-			aria = {},
-			disabled,
-			widgetId = this._uuid,
-			invalid,
-			maxLength,
-			minLength,
-			name,
-			placeholder,
-			readOnly,
-			required,
-			type = 'text',
-			value,
-			pattern,
-			autocomplete
-		} = this.properties;
-
-		return v('input', {
-			...formatAriaProperties(aria),
-			'aria-invalid': invalid ? 'true' : null,
-			autocomplete: formatAutocomplete(autocomplete),
-			classes: this.theme(css.input),
-			disabled,
-			id: widgetId,
-			focus: this.shouldFocus,
-			key: 'input',
-			maxlength: maxLength ? `${maxLength}` : null,
-			minlength: minLength ? `${minLength}` : null,
-			name,
-			pattern,
-			placeholder,
-			readOnly,
-			'aria-readonly': readOnly ? 'true' : null,
-			required,
-			type,
-			value,
-			onblur: this._onBlur,
-			onchange: this._onChange,
-			onclick: this._onClick,
-			onfocus: this._onFocus,
-			oninput: this._onInput,
-			onkeydown: this._onKeyDown,
-			onkeypress: this._onKeyPress,
-			onkeyup: this._onKeyUp,
-			onmousedown: this._onMouseDown,
-			onmouseup: this._onMouseUp,
-			ontouchstart: this._onTouchStart,
-			ontouchend: this._onTouchEnd,
-			ontouchcancel: this._onTouchCancel
-		});
-	}
-
-	protected renderInputWrapper(): DNode {
-		return v('div', { classes: this.theme(css.inputWrapper) }, [
-			this.renderInput()
 		]);
-	}
 
-	protected render(): DNode {
-		const {
-			disabled,
-			widgetId = this._uuid,
-			invalid,
-			label,
-			labelAfter = false,
-			labelHidden = false,
-			readOnly,
-			required,
-			theme,
-			classes
-		} = this.properties;
-		const focus = this.meta(Focus).get('root');
+		const inputClasses = this.theme(css.input);
 
-		const children = [
+		const inputWrapperClasses = this.theme(css.inputWrapper);
+
+		const leadingClasses = this.theme(css.leading);
+
+		const trailingClasses = this.theme(css.trailing);
+
+		const extraLabelClasses = value ? { root: `${this.theme(css.label)} ${this.theme(css.hasValue)}` } : { root: this.theme(css.label)! };
+
+		return v('div', {
+			key: 'root',
+			classes: rootClasses
+		}, [
 			label ? w(Label, {
 				theme,
 				classes,
+				extraClasses: extraLabelClasses,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,
@@ -264,13 +228,39 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				hidden: labelHidden,
 				forId: widgetId
 			}, [ label ]) : null,
-			this.renderInputWrapper()
-		];
-
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children.reverse() : children);
+			v('div', { classes: inputWrapperClasses }, [
+				leading ? v('span', { classes: leadingClasses }, [ leading ]) : null,
+				v('input', {
+					id: widgetId,
+					key: 'input',
+					name,
+					classes: inputClasses,
+					autocomplete: formatAutocomplete(autocomplete),
+					disabled,
+					focus: this.shouldFocus,
+					maxlength: maxLength ? `${maxLength}` : null,
+					minlength: minLength ? `${minLength}` : null,
+					pattern,
+					placeholder,
+					readOnly,
+					required,
+					type,
+					value,
+					onblur: this._onBlur,
+					onchange: this._onChange,
+					onclick: this._onClick,
+					onfocus: this._onFocus,
+					oninput: this._onInput,
+					onkeydown: this._onKeyDown,
+					onkeypress: this._onKeyPress,
+					onkeyup: this._onKeyUp,
+					...formatAriaProperties(aria),
+					'aria-invalid': invalid ? 'true' : null,
+					'aria-readonly': readOnly ? 'true' : null
+				}),
+				trailing ? v('span', { classes: trailingClasses }, [ trailing ]) : null
+			])
+		]);
 	}
 }
 

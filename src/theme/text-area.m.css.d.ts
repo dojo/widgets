@@ -7,3 +7,5 @@ export const readonly: string;
 export const required: string;
 export const invalid: string;
 export const valid: string;
+export const hasValue: string;
+export const label: string;

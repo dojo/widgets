@@ -15,3 +15,17 @@
 .valid .input {
 	border-color: var(--success-color);
 }
+
+.label {}
+
+.leading {
+
+}
+
+.trailing {
+
+}
+
+.hasValue {
+
+}
