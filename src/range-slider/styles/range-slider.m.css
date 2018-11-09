@@ -1,29 +1,12 @@
 @import "../../common/styles/variables.css";
 
-:root {
-	--slider-height: 13px;
-}
-
-.rootFixed {
-	padding-bottom: calc(var(--slider-height) / 2)
-}
-
-.hasOutput {
-	padding-bottom: calc(calc(var(--slider-height) / 2) + var(--slider-height));
-}
 
 .inputWrapperFixed {
 	position: relative;
-	height: var(--slider-height);
-	background-color: var(--component-background);
-	border: 1px solid var(--selected-background);
 }
 
 .thumbFixed {
 	position: absolute;
-	width: calc(var(--slider-height) * 2);
-	height: calc(var(--slider-height) * 2);
-	transform: translate(-50%, -25%);
 }
 
 .filledFixed {
@@ -46,7 +29,7 @@
 	position: absolute;
 	top: 0;
 	width: 100%;
-	height: var(--slider-height);
+	height: 100%;
 	z-index: calc(var(--zindex-base) + 1);
 }
 

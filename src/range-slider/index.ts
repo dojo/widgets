@@ -99,7 +99,8 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			disabled,
 			invalid,
 			readOnly,
-			required
+			required,
+			showOutput
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -110,7 +111,8 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null
+			required ? css.required : null,
+			showOutput ? css.hasOutput : null
 		];
 	}
 
@@ -321,7 +323,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 				forId: widgetId
 			}, [label]) : null,
 			v('div', {
-				classes: [css.inputWrapper, fixedCss.inputWrapperFixed]
+				classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed]
 			}, [
 				slider1,
 				slider2,
@@ -362,7 +364,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 		return v('div', {
 			key: 'root',
 			id: this._widgetId,
-			classes: [...this.theme(this.getRootClasses()), fixedCss.rootFixed, showOutput ? fixedCss.hasOutput : undefined]
+			classes: this.theme(this.getRootClasses())
 		}, labelAfter ? children.reverse() : children);
 	}
 }

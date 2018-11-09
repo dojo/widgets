@@ -1,6 +1,21 @@
 @import "../common/styles/variables.css";
 
+:root {
+	--slider-height: 13px;
+}
+
 .root {
+	padding-bottom: calc(var(--slider-height) / 2)
+}
+
+.hasOutput {
+	padding-bottom: calc(calc(var(--slider-height) / 2) + var(--slider-height));
+}
+
+.inputWrapper {
+	height: var(--slider-height);
+	background-color: var(--component-background);
+	border: 1px solid var(--selected-background);
 }
 
 .focused { }
@@ -44,6 +59,9 @@
 .thumb {
 	background-color: #ffffff;
 	border: 1px solid var(--selected-background);
+	width: calc(var(--slider-height) * 2);
+	height: calc(var(--slider-height) * 2);
+	transform: translate(-50%, -25%);
 }
 
 .filled {
