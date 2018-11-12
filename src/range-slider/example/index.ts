@@ -39,6 +39,7 @@ export default class App extends WidgetBase {
 			v('h3', {}, ['Value']),
 			w(RangeSlider, {
 				key: 'value1',
+				label: 'mostly default settings',
 				min: 0,
 				max: 50,
 				minValue: this._state.value1Min,
@@ -116,7 +117,8 @@ export default class App extends WidgetBase {
 					this.invalidate();
 				},
 				minValue: this._state.eventMin,
-				maxValue: this._state.eventMax
+				maxValue: this._state.eventMax,
+				label: 'event example'
 			}),
 			v('div', {}, [`Focused: ${this._state.eventFocus}, Clicks: ${this._state.eventClick}`]),
 			v('h3', {}, ['Validation']),
