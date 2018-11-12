@@ -197,7 +197,8 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			name = '',
 			readOnly,
 			required,
-			step = 1
+			step = 1,
+			widgetId = this._widgetId
 		} = this.properties;
 		const {
 			minName = `${name}_min`,
@@ -215,6 +216,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			'aria-invalid': invalid === true ? 'true' : null,
 			'aria-readonly': readOnly === true ? 'true' : null,
 			'aria-describedby': isSlider1 ? this._minLabelId : this._maxLabelId,
+			'aria-labelledby': `${widgetId}-label`,
 			type: 'range',
 			min: `${min}`,
 			max: `${max}`,
@@ -323,7 +325,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 				readOnly,
 				required,
 				hidden: labelHidden,
-				forId: widgetId
+				widgetId: `${widgetId}-label`
 			}, [label]) : null,
 			v('div', {
 				classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed]
@@ -376,7 +378,6 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 
 		return v('div', {
 			key: 'root',
-			id: this._widgetId,
 			classes: this.theme(this.getRootClasses())
 		}, labelAfter ? children.reverse() : children);
 	}

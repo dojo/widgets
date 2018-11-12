@@ -13,7 +13,7 @@ import {
 	compareForId,
 	createHarness,
 	MockMetaMixin,
-	stubEvent, compareAriaDescribedBy
+	stubEvent, compareAriaDescribedBy, compareWidgetId, compareAriaLabelledBy
 } from '../../../common/tests/support/test-helpers';
 import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 
@@ -24,6 +24,7 @@ const sliderProps = {
 	'aria-invalid': null,
 	'aria-readonly': null,
 	'aria-describedby': 'mock-uuid',
+	'aria-labelledby': '',
 	type: 'range',
 	min: '0',
 	max: '100',
@@ -50,7 +51,7 @@ const sliderProps = {
 registerSuite('RangeSlider', {
 	tests: {
 		'renders two sliders'() {
-			const h = harness(() => w(RangeSlider, {}), [compareAriaDescribedBy]);
+			const h = harness(() => w(RangeSlider, {}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				key: 'slider1',
@@ -106,7 +107,7 @@ registerSuite('RangeSlider', {
 			'uses a default name'() {
 				const h = harness(() => w(RangeSlider, {
 					name: 'test'
-				}), [compareAriaDescribedBy]);
+				}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 				h.expectPartial('@slider1', () => v('input', {
 					...sliderProps,
 					key: 'slider1',
@@ -131,7 +132,7 @@ registerSuite('RangeSlider', {
 				const h = harness(() => w(RangeSlider, {
 					minName: 'minValue',
 					maxName: 'maxValue'
-				}), [compareAriaDescribedBy]);
+				}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 				h.expectPartial('@slider1', () => v('input', {
 					...sliderProps,
 					key: 'slider1',
@@ -156,7 +157,7 @@ registerSuite('RangeSlider', {
 		'disabled'() {
 			const h = harness(() => w(RangeSlider, {
 				disabled: true
-			}), [compareAriaDescribedBy]);
+			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				key: 'slider1',
@@ -182,7 +183,7 @@ registerSuite('RangeSlider', {
 		'readonly'() {
 			const h = harness(() => w(RangeSlider, {
 				readOnly: true
-			}), [compareAriaDescribedBy]);
+			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				'aria-readonly': 'true',
@@ -210,7 +211,7 @@ registerSuite('RangeSlider', {
 		'required'() {
 			const h = harness(() => w(RangeSlider, {
 				required: true
-			}), [compareAriaDescribedBy]);
+			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				key: 'slider1',
@@ -236,7 +237,7 @@ registerSuite('RangeSlider', {
 		'invalid'() {
 			const h = harness(() => w(RangeSlider, {
 				invalid: true
-			}), [compareAriaDescribedBy]);
+			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				'aria-invalid': 'true',
@@ -266,7 +267,7 @@ registerSuite('RangeSlider', {
 				minValue: 25,
 				maxValue: 50,
 				step: 5
-			}), [compareAriaDescribedBy]);
+			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
 
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
@@ -624,7 +625,7 @@ registerSuite('RangeSlider', {
 			'plain label'() {
 				const h = harness(() => w(RangeSlider, {
 					label: 'Test'
-				}));
+				}), [compareWidgetId]);
 
 				h.expectPartial('@label', () => w(Label, {
 					key: 'label',
@@ -635,7 +636,7 @@ registerSuite('RangeSlider', {
 					readOnly: undefined,
 					required: undefined,
 					hidden: undefined,
-					forId: ''
+					widgetId: ''
 				}, ['Test']));
 			},
 
@@ -645,7 +646,7 @@ registerSuite('RangeSlider', {
 					disabled: true,
 					required: true,
 					readOnly: true
-				}));
+				}), [compareWidgetId]);
 
 				h.expectPartial('@label', () => w(Label, {
 					key: 'label',
@@ -656,7 +657,7 @@ registerSuite('RangeSlider', {
 					readOnly: true,
 					required: true,
 					hidden: undefined,
-					forId: ''
+					widgetId: ''
 				}, ['Test']));
 			}
 		},
@@ -682,7 +683,7 @@ registerSuite('RangeSlider', {
 
 				const h = harness(() => w(MockMetaMixin(RangeSlider, mockMeta), {
 					label: 'Test'
-				}));
+				}), [compareWidgetId]);
 				h.expectPartial('@label', () => w(Label, {
 					key: 'label',
 					theme: undefined,
@@ -692,7 +693,7 @@ registerSuite('RangeSlider', {
 					readOnly: undefined,
 					required: undefined,
 					hidden: undefined,
-					forId: ''
+					widgetId: ''
 				}, ['Test']));
 
 				h.expectPartial('@leftThumb', () => v('div', {
