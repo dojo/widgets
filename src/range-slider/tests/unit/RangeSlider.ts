@@ -13,8 +13,7 @@ import {
 	compareForId,
 	createHarness,
 	MockMetaMixin,
-	noop,
-	stubEvent
+	stubEvent, compareAriaDescribedBy
 } from '../../../common/tests/support/test-helpers';
 import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 
@@ -24,6 +23,7 @@ const harness = createHarness([compareId, compareForId, compareFor]);
 const sliderProps = {
 	'aria-invalid': null,
 	'aria-readonly': null,
+	'aria-describedby': 'mock-uuid',
 	type: 'range',
 	min: '0',
 	max: '100',
@@ -50,12 +50,11 @@ const sliderProps = {
 registerSuite('RangeSlider', {
 	tests: {
 		'renders two sliders'() {
-			const h = harness(() => w(RangeSlider, {}));
+			const h = harness(() => w(RangeSlider, {}), [compareAriaDescribedBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				key: 'slider1',
 				name: '_min',
-				'aria-label': 'Minimum',
 				value: '0',
 				styles: {
 					clip: 'rect(auto, 0px, auto, auto)'
@@ -66,7 +65,6 @@ registerSuite('RangeSlider', {
 				...sliderProps,
 				key: 'slider2',
 				name: '_max',
-				'aria-label': 'Maximum',
 				value: '100',
 				styles: {
 					clip: 'rect(auto, auto, auto, 0px)'
@@ -108,12 +106,11 @@ registerSuite('RangeSlider', {
 			'uses a default name'() {
 				const h = harness(() => w(RangeSlider, {
 					name: 'test'
-				}));
+				}), [compareAriaDescribedBy]);
 				h.expectPartial('@slider1', () => v('input', {
 					...sliderProps,
 					key: 'slider1',
 					name: 'test_min',
-					'aria-label': 'Minimum',
 					value: '0',
 					styles: {
 						clip: 'rect(auto, 0px, auto, auto)'
@@ -124,7 +121,6 @@ registerSuite('RangeSlider', {
 					...sliderProps,
 					key: 'slider2',
 					name: 'test_max',
-					'aria-label': 'Maximum',
 					value: '100',
 					styles: {
 						clip: 'rect(auto, auto, auto, 0px)'
@@ -135,12 +131,11 @@ registerSuite('RangeSlider', {
 				const h = harness(() => w(RangeSlider, {
 					minName: 'minValue',
 					maxName: 'maxValue'
-				}));
+				}), [compareAriaDescribedBy]);
 				h.expectPartial('@slider1', () => v('input', {
 					...sliderProps,
 					key: 'slider1',
 					name: 'minValue',
-					'aria-label': 'Minimum',
 					value: '0',
 					styles: {
 						clip: 'rect(auto, 0px, auto, auto)'
@@ -151,7 +146,6 @@ registerSuite('RangeSlider', {
 					...sliderProps,
 					key: 'slider2',
 					name: 'maxValue',
-					'aria-label': 'Maximum',
 					value: '100',
 					styles: {
 						clip: 'rect(auto, auto, auto, 0px)'
@@ -162,13 +156,12 @@ registerSuite('RangeSlider', {
 		'disabled'() {
 			const h = harness(() => w(RangeSlider, {
 				disabled: true
-			}));
+			}), [compareAriaDescribedBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				key: 'slider1',
 				disabled: true,
 				name: '_min',
-				'aria-label': 'Minimum',
 				value: '0',
 				styles: {
 					clip: 'rect(auto, 0px, auto, auto)'
@@ -180,7 +173,6 @@ registerSuite('RangeSlider', {
 				key: 'slider2',
 				disabled: true,
 				name: '_max',
-				'aria-label': 'Maximum',
 				value: '100',
 				styles: {
 					clip: 'rect(auto, auto, auto, 0px)'
@@ -190,14 +182,13 @@ registerSuite('RangeSlider', {
 		'readonly'() {
 			const h = harness(() => w(RangeSlider, {
 				readOnly: true
-			}));
+			}), [compareAriaDescribedBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				'aria-readonly': 'true',
 				key: 'slider1',
 				readonly: true,
 				name: '_min',
-				'aria-label': 'Minimum',
 				value: '0',
 				styles: {
 					clip: 'rect(auto, 0px, auto, auto)'
@@ -210,7 +201,6 @@ registerSuite('RangeSlider', {
 				key: 'slider2',
 				readonly: true,
 				name: '_max',
-				'aria-label': 'Maximum',
 				value: '100',
 				styles: {
 					clip: 'rect(auto, auto, auto, 0px)'
@@ -220,13 +210,12 @@ registerSuite('RangeSlider', {
 		'required'() {
 			const h = harness(() => w(RangeSlider, {
 				required: true
-			}));
+			}), [compareAriaDescribedBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				key: 'slider1',
 				required: true,
 				name: '_min',
-				'aria-label': 'Minimum',
 				value: '0',
 				styles: {
 					clip: 'rect(auto, 0px, auto, auto)'
@@ -238,7 +227,6 @@ registerSuite('RangeSlider', {
 				key: 'slider2',
 				required: true,
 				name: '_max',
-				'aria-label': 'Maximum',
 				value: '100',
 				styles: {
 					clip: 'rect(auto, auto, auto, 0px)'
@@ -248,13 +236,12 @@ registerSuite('RangeSlider', {
 		'invalid'() {
 			const h = harness(() => w(RangeSlider, {
 				invalid: true
-			}));
+			}), [compareAriaDescribedBy]);
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				'aria-invalid': 'true',
 				key: 'slider1',
 				name: '_min',
-				'aria-label': 'Minimum',
 				value: '0',
 				styles: {
 					clip: 'rect(auto, 0px, auto, auto)'
@@ -266,7 +253,6 @@ registerSuite('RangeSlider', {
 				'aria-invalid': 'true',
 				key: 'slider2',
 				name: '_max',
-				'aria-label': 'Maximum',
 				value: '100',
 				styles: {
 					clip: 'rect(auto, auto, auto, 0px)'
@@ -280,13 +266,12 @@ registerSuite('RangeSlider', {
 				minValue: 25,
 				maxValue: 50,
 				step: 5
-			}));
+			}), [compareAriaDescribedBy]);
 
 			h.expectPartial('@slider1', () => v('input', {
 				...sliderProps,
 				key: 'slider1',
 				name: '_min',
-				'aria-label': 'Minimum',
 				value: '25',
 				min: '25',
 				max: '50',
@@ -300,7 +285,6 @@ registerSuite('RangeSlider', {
 				...sliderProps,
 				key: 'slider2',
 				name: '_max',
-				'aria-label': 'Maximum',
 				value: '50',
 				min: '25',
 				max: '50',

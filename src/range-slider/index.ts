@@ -16,6 +16,7 @@ import { formatAriaProperties } from '../common/util';
 import Label from '../label/index';
 import * as fixedCss from './styles/range-slider.m.css';
 import * as css from '../theme/range-slider.m.css';
+import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 export interface RangeSliderProperties extends ThemedProperties, LabeledProperties, InputProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
@@ -93,6 +94,8 @@ type MinMaxCallback = (minValue: number, maxValue: number) => void;
 export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProperties> extends ThemedBase<P, null> {
 	// id used to associate input with output
 	private _widgetId = uuid();
+	private _minLabelId = uuid();
+	private _maxLabelId = uuid();
 
 	protected getRootClasses(): (string | null)[] {
 		const {
@@ -194,9 +197,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			name = '',
 			readOnly,
 			required,
-			step = 1,
-			minimumLabel = 'Minimum',
-			maximumLabel = 'Maximum'
+			step = 1
 		} = this.properties;
 		const {
 			minName = `${name}_min`,
@@ -213,7 +214,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			...formatAriaProperties(aria),
 			'aria-invalid': invalid === true ? 'true' : null,
 			'aria-readonly': readOnly === true ? 'true' : null,
-			'aria-label': isSlider1 ? minimumLabel : maximumLabel,
+			'aria-describedby': isSlider1 ? this._minLabelId : this._maxLabelId,
 			type: 'range',
 			min: `${min}`,
 			max: `${max}`,
@@ -274,7 +275,9 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			readOnly,
 			required,
 			theme,
-			showOutput = false
+			showOutput = false,
+			minimumLabel = 'Minimum',
+			maximumLabel = 'Maximum'
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 		let { minValue = min, maxValue = max } = this.properties;
@@ -326,7 +329,17 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 				classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed]
 			}, [
 				slider1,
+				v('div', {
+					key: 'minimumLabel',
+					classes: [baseCss.visuallyHidden],
+					id: this._minLabelId
+				}, [minimumLabel]),
 				slider2,
+				v('div', {
+					key: 'maximumLabel',
+					classes: [baseCss.visuallyHidden],
+					id: this._maxLabelId
+				}, [maximumLabel]),
 				v('div', {
 					key: 'track',
 					classes: [this.theme(css.filled), fixedCss.filledFixed],
