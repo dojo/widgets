@@ -32,7 +32,7 @@ function checkValue(command: any, values?: number[][]) {
 			minValue = parseInt(value, 10);
 		})
 		.end()
-		.findByCssSelector(`.${css.input}:nth-child(2)`)
+		.findByCssSelector(`.${css.input}:nth-child(3)`)
 		.getProperty('value')
 		.then((value: string) => {
 			maxValue = parseInt(value, 10);
