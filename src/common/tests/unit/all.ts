@@ -7,7 +7,6 @@ import '../../../calendar/tests/unit/DatePicker';
 import '../../../checkbox/tests/unit/Checkbox';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';
-import '../../../enhanced-text-input/tests/unit/EnhancedTextInput';
 import '../../../global-event/tests/unit/GlobalEvent';
 import '../../../grid/tests/unit/all';
 import '../../../icon/tests/unit/Icon';

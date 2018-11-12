@@ -12,39 +12,71 @@ import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 
-export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
+export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url' | 'date';
 
 /**
- * @type IconProperties
+ * @type TextInputProperties
  *
- * Properties that can be set on a TextInput component
+ * Properties that can be set on a TextInput widget *
+ * @property autocomplete
+ * @property controls
+ * @property disabled
+ * @property invalid
+ * @property label
+ * @property labelHidden
+ * @property leading
+ * @property maxLength
+ * @property minLength
+ * @property name
+ * @property pattern
+ * @property placeholder
+ * @property readOnly
+ * @property required
+ * @property trailing
+ * @property type
+ * @property value
+ * @property widgetId
  *
- * @property controls       ID of an element that this input controls
- * @property type           Input type, e.g. text, email, tel, etc.
- * @property maxLength      Maximum number of characters allowed in the input
- * @property minLength      Minimum number of characters allowed in the input
- * @property placeholder    Placeholder text
- * @property value           The current value
+ * Callbacks from TextInput Widget *
+ * @property onBlur(): void;
+ * @property onClick(): void;
+ * @property onFocus(): void;
+ * @property onKey(key: number, preventDefault: () => void): void;
+ * @property onValue(value: string): void; *
  */
 
-export interface TextInputProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+export interface TextInputProperties extends CustomAriaProperties, ThemedProperties {
+	// properties
+	autocomplete?: boolean | string;
 	controls?: string;
-	type?: TextInputType;
+	disabled?: boolean;
+	invalid?: boolean;
+	label?: string;
+	labelHidden?: boolean;
+	leading?: DNode;
 	maxLength?: number | string;
 	minLength?: number | string;
-	placeholder?: string;
-	value?: string;
+	name?: string;
 	pattern?: string | RegExp;
-	autocomplete?: boolean | string;
-	onClick?(value: string): void;
-	leading?: DNode;
+	placeholder?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	trailing?: DNode;
-	onPointer?: () => void;
+	type?: TextInputType;
+	value?: string;
+	widgetId?: string;
+
+	// callbacks
+	onBlur?(): void;
+	onClick?(): void;
+	onFocus?(): void;
+	onKey?(key: number, preventDefault: () => void): void;
+	onValue?(value: string): void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 
-function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {
+function formatAutocomplete(autocomplete: boolean | string | undefined): string | undefined {
 	if (typeof autocomplete === 'boolean') {
 		return autocomplete ? 'on' : 'off';
 	}
@@ -63,141 +95,103 @@ function patternDiff(previousProperty: string | undefined, newProperty: string |
 @customElement<TextInputProperties>({
 	tag: 'dojo-text-input',
 	properties: [
-		'theme',
-		'classes',
 		'aria',
-		'extraClasses',
+		'classes',
 		'disabled',
+		'extraClasses',
 		'invalid',
+		'labelHidden',
 		'readOnly',
-		'labelAfter',
-		'labelHidden'
+		'required',
+		'theme',
+		'leading',
+		'trailing'
 	],
 	attributes: [
-		'widgetId',
-		'label',
-		'placeholder',
+		'autocomplete',
 		'controls',
-		'type',
-		'minLength',
+		'label',
 		'maxLength',
-		'value',
+		'minLength',
 		'name',
 		'pattern',
-		'autocomplete'
+		'placeholder',
+		'type',
+		'value',
+		'widgetId'
 	],
 	events: [
 		'onBlur',
-		'onChange',
 		'onClick',
 		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onPointer'
+		'onKey',
+		'onValue'
 	]
 })
 @diffProperty('pattern', patternDiff)
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 
 	private _onBlur (event: FocusEvent) {
-		if (this.properties.onBlur) {
-			const target = event.target as HTMLInputElement;
-			this.properties.onBlur(target.value);
-		}
-	}
-
-	private _onChange (event: Event) {
-		event.stopPropagation();
-		if (this.properties.onChange) {
-			const target = event.target as HTMLInputElement;
-			this.properties.onChange(target.value);
-		}
+		this.properties.onBlur && this.properties.onBlur();
 	}
 
 	private _onClick (event: MouseEvent) {
 		event.stopPropagation();
-		if (this.properties.onClick) {
-			const target = event.target as HTMLInputElement;
-			this.properties.onClick(target.value);
-		}
+		this.properties.onClick && this.properties.onClick();
 	}
 
 	private _onFocus (event: FocusEvent) {
-		if (this.properties.onFocus) {
-			const target = event.target as HTMLInputElement;
-			this.properties.onFocus(target.value);
-		}
+		this.properties.onFocus && this.properties.onFocus();
 	}
 
 	private _onInput (event: Event) {
 		event.stopPropagation();
-		if (this.properties.onInput) {
+		if (this.properties.onValue) {
 			const target = event.target as HTMLInputElement;
-			this.properties.onInput(target.value);
-		}
-	}
-
-	private _onKeyDown (event: KeyboardEvent) {
-		event.stopPropagation();
-		if (this.properties.onKeyDown) {
-			this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
+			this.properties.onValue(target.value);
 		}
 	}
 
 	private _onKeyPress (event: KeyboardEvent) {
 		event.stopPropagation();
-		if (this.properties.onKeyPress) {
-			this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
+		if (this.properties.onKey) {
+			this.properties.onKey
+			(event.which, () => { event.preventDefault(); });
 		}
-	}
-
-	private _onKeyUp (event: KeyboardEvent) {
-		event.stopPropagation();
-		if (this.properties.onKeyUp) {
-			this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
-		}
-	}
-
-	private _onPointer (event: PointerEvent) {
-		event.stopPropagation();
-		this.properties.onPointer && this.properties.onPointer();
 	}
 
 	private _uuid = uuid();
 
 	protected render(): DNode {
 		const {
+			aria = {},
+			autocomplete,
 			classes,
 			disabled = false,
-			widgetId = this._uuid,
 			invalid = false,
 			label,
-			labelAfter = false,
 			labelHidden = false,
-			readOnly = false,
-			required = false,
-			theme,
-			aria = {},
+			leading,
 			maxLength,
 			minLength,
 			name,
+			pattern,
 			placeholder,
+			readOnly = false,
+			required = false,
+			theme,
+			trailing,
 			type = 'text',
 			value,
-			pattern,
-			autocomplete,
-			leading,
-			trailing
+			widgetId = this._uuid
 		} = this.properties;
 
-		const focus = this.meta(Focus).get('root');
+		const { containsFocus } = this.meta(Focus).get('root');
 
 		const rootClasses =  this.theme([
 			css.root,
 			disabled ? css.disabled : null,
-			focus.containsFocus ? css.focused : null,
+			containsFocus ? css.focused : null,
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
@@ -215,54 +209,43 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			classes: rootClasses
 		}, [
 			label ? w(Label, {
-				theme,
 				classes,
-				extraClasses: extraLabelClasses,
 				disabled,
-				focused: focus.containsFocus,
+				extraClasses: extraLabelClasses,
+				focused: containsFocus,
+				forId: widgetId,
+				hidden: labelHidden,
 				invalid,
 				readOnly,
 				required,
-				hidden: labelHidden,
-				forId: widgetId
+				theme
 			}, [ label ]) : null,
 			v('div', { classes: inputWrapperClasses }, [
 				leading ? v('span', { classes: leadingClasses }, [ leading ]) : null,
 				v('input', {
-					id: widgetId,
-					key: 'input',
-					name,
-					classes: inputClasses,
+					'aria-invalid': invalid ? 'true' : null,
+					'aria-readonly': readOnly ? 'true' : null,
 					autocomplete: formatAutocomplete(autocomplete),
+					classes: inputClasses,
 					disabled,
 					focus: this.shouldFocus,
+					id: widgetId,
+					key: 'input',
 					maxlength: maxLength ? `${maxLength}` : null,
 					minlength: minLength ? `${minLength}` : null,
+					name,
+					onblur: this._onBlur,
+					onclick: this._onClick,
+					onfocus: this._onFocus,
+					oninput: this._onInput,
+					onkeypress: this._onKeyPress,
 					pattern,
 					placeholder,
 					readOnly,
 					required,
 					type,
 					value,
-					onblur: this._onBlur,
-					onchange: this._onChange,
-					onclick: this._onClick,
-					onfocus: this._onFocus,
-					oninput: this._onInput,
-					onkeydown: this._onKeyDown,
-					onkeypress: this._onKeyPress,
-					onkeyup: this._onKeyUp,
-					onpointercancel: this._onPointer,
-					onpointerdown: this._onPointer,
-					onpointerenter: this._onPointer,
-					onpointerleave: this._onPointer,
-					onpointerup: this._onPointer,
-					onpointermove: this._onPointer,
-					onpointerout: this._onPointer,
-					onpointerover: this._onPointer,
-					...formatAriaProperties(aria),
-					'aria-invalid': invalid ? 'true' : null,
-					'aria-readonly': readOnly ? 'true' : null
+					...formatAriaProperties(aria)
 				}),
 				trailing ? v('span', { classes: trailingClasses }, [ trailing ]) : null
 			])
