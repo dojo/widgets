@@ -39,6 +39,7 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	onClick?(value: string): void;
 	leading?: DNode;
 	trailing?: DNode;
+	onPointer?: () => void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -94,11 +95,7 @@ function patternDiff(previousProperty: string | undefined, newProperty: string |
 		'onKeyDown',
 		'onKeyPress',
 		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
+		'onPointer'
 	]
 })
 @diffProperty('pattern', patternDiff)
@@ -163,6 +160,11 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		}
 	}
 
+	private _onPointer (event: PointerEvent) {
+		event.stopPropagation();
+		this.properties.onPointer && this.properties.onPointer();
+	}
+
 	private _uuid = uuid();
 
 	protected render(): DNode {
@@ -203,13 +205,9 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		]);
 
 		const inputClasses = this.theme(css.input);
-
 		const inputWrapperClasses = this.theme(css.inputWrapper);
-
 		const leadingClasses = this.theme(css.leading);
-
 		const trailingClasses = this.theme(css.trailing);
-
 		const extraLabelClasses = value ? { root: `${this.theme(css.label)} ${this.theme(css.hasValue)}` } : { root: this.theme(css.label)! };
 
 		return v('div', {
@@ -254,6 +252,14 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 					onkeydown: this._onKeyDown,
 					onkeypress: this._onKeyPress,
 					onkeyup: this._onKeyUp,
+					onpointercancel: this._onPointer,
+					onpointerdown: this._onPointer,
+					onpointerenter: this._onPointer,
+					onpointerleave: this._onPointer,
+					onpointerup: this._onPointer,
+					onpointermove: this._onPointer,
+					onpointerout: this._onPointer,
+					onpointerover: this._onPointer,
 					...formatAriaProperties(aria),
 					'aria-invalid': invalid ? 'true' : null,
 					'aria-readonly': readOnly ? 'true' : null
