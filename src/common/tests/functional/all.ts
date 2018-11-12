@@ -11,6 +11,7 @@ import '../../../radio/tests/functional/Radio';
 import '../../../slide-pane/tests/functional/SlidePane';
 import '../../../slider/tests/functional/Slider';
 import '../../../split-pane/tests/functional/SplitPane';
+import '../../../range-slider/tests/functional/RangeSlider';
 import '../../../tab-controller/tests/functional/TabController';
 import '../../../text-area/tests/functional/Textarea';
 import '../../../text-input/tests/functional/TextInput';

@@ -24,7 +24,8 @@ registerSuite('Label', {
 					null,
 					null
 				],
-				for: undefined
+				for: undefined,
+				id: undefined
 			}, [
 				'baz'
 			]));
@@ -57,6 +58,7 @@ registerSuite('Label', {
 					null
 				],
 				for: 'foo',
+				id: undefined,
 				'aria-describedby': 'bar'
 			}, [ 'baz' ]));
 		},
@@ -77,7 +79,8 @@ registerSuite('Label', {
 					null,
 					null,
 					baseCss.visuallyHidden ],
-				for: undefined
+				for: undefined,
+				id: undefined
 			}, [ 'baz' ])));
 		}
 	}

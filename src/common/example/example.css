@@ -10,6 +10,8 @@
 @import '../../theme/progress.m.css';
 @import '../../theme/listbox.m.css';
 @import '../../theme/radio.m.css';
+@import '../../range-slider/styles/range-slider.m.css';
+@import '../../theme/range-slider.m.css';
 @import '../../theme/select.m.css';
 @import '../../slide-pane/styles/slide-pane.m.css';
 @import '../../theme/slide-pane.m.css';

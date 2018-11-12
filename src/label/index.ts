@@ -1,3 +1,4 @@
+import { uuid } from '@dojo/framework/core/util';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
@@ -31,6 +32,7 @@ export interface LabelProperties extends ThemedProperties, CustomAriaProperties 
 	invalid?: boolean;
 	hidden?: boolean;
 	secondary?: boolean;
+	widgetId?: string;
 }
 
 export const ThemedBase = ThemedMixin(WidgetBase);
@@ -65,10 +67,11 @@ export class LabelBase<P extends LabelProperties = LabelProperties> extends Them
 	}
 
 	render(): DNode {
-		const { aria = {}, forId, hidden } = this.properties;
+		const { aria = {}, forId, hidden, widgetId } = this.properties;
 
 		return v('label', {
 			...formatAriaProperties(aria),
+			id: widgetId,
 			classes: [
 				...this.theme(this.getRootClasses()),
 				hidden ? baseCss.visuallyHidden : null

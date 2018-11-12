@@ -75,6 +75,8 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [Radio](src/radio/README.md)
 
+[RangeSlider](src/range-slider/README.md)
+
 [Select](src/select/README.md)
 
 [Slider](src/slider/README.md)
