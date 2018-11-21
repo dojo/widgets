@@ -151,7 +151,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 	render(): DNode {
 		const {
 			aria = {},
-			columns,
+			columns = 20,
 			disabled,
 			widgetId = this._uuid,
 			invalid,
@@ -162,7 +162,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			placeholder,
 			readOnly,
 			required,
-			rows,
+			rows = 2,
 			value,
 			wrapText,
 			theme,
