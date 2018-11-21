@@ -120,7 +120,7 @@ An object that is keyed by the column Id with the filter as the value
 
 ```ts
 const filter = {
-	columnId: 'filter-value
+	columnId: 'filter-value'
 };
 ```
 
