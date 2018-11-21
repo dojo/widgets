@@ -66,7 +66,6 @@ export interface FilterCommandPayload {
 	id: string;
 	fetcher: Fetcher;
 	filterOptions: FilterOptions;
-	multipleFilters?: boolean;
 }
 
 export interface UpdaterCommandPayload {

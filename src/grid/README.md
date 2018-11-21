@@ -70,7 +70,7 @@ r.mount();
 
 ## Properties
 
-### columnConfig
+### `columnConfig`
 
 The column configuration defines how the grid will be built and what capabilities will be enabled per column.
 
@@ -92,7 +92,7 @@ export interface ColumnConfig {
  * `editable` - Optional property that indicates if the column is editable, defaults to `false`
  * `renderer` - Optional custom renderer function for the column cell, defaults to `undefined`
 
-### fetcher
+### `fetcher`
 
 The fetcher is a function responsible for returning data to the grid for the requested offset and size.
 
@@ -124,15 +124,11 @@ const filter = {
 };
 ```
 
-### multipleFilters
-
-Indicates is the grid should supports filtering across multiple columns.
-
-### height
+### `height`
 
 The `height` property sets the overall height of the grid and allows the grid to calculate how many rows to render to the DOM.
 
-### updater
+### `updater`
 
 The `updater` is an optional function responsible for performing updates made by `editable` columns.
 
@@ -142,12 +138,12 @@ The `updater` is an optional function responsible for performing updates made by
 
 The updated `item` is passed to the function, if an error occurs during the updater the changes will be reverted in the grid.
 
-### store
+### `store`
 
 Grid is backed by stores from `@dojo/framework/stores` and by default, dynamically creates a private store as required. However it is also possible to pass an existing store used by other areas of the application.
 
 This option will often be used in combination with `id` that determines the root path location that all grid data will be stored.
 
-### id
+### `id`
 
 Optional `id` that specifies the root path that of the store that the grid data will be stored.

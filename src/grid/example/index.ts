@@ -49,8 +49,7 @@ export default class App extends WidgetBase {
 			w(Grid, {
 				columnConfig: this.columnConfig,
 				fetcher: createFetcher(this.gridData),
-				height: 500,
-				multipleFilters: true
+				height: 500
 			})
 		]);
 	}

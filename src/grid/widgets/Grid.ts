@@ -34,7 +34,6 @@ export interface GridProperties<S> {
 	updater?: Updater<S>;
 	store?: Store<S>;
 	storeId?: string;
-	multipleFilters?: boolean;
 }
 
 @theme(css)
@@ -92,8 +91,8 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	private _filterer(columnId: string, value: any) {
-		const { storeId, fetcher, multipleFilters } = this._getProperties();
-		filterProcess(this._store)({ id: storeId, fetcher, filterOptions: { columnId, value }, multipleFilters });
+		const { storeId, fetcher } = this._getProperties();
+		filterProcess(this._store)({ id: storeId, fetcher, filterOptions: { columnId, value } });
 	}
 
 	private _updater(page: number, rowNumber: number, columnId: string, value: string) {

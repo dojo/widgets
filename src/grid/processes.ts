@@ -63,12 +63,11 @@ const preSortCommand = commandFactory<SortCommandPayload>(({ at, path, get, payl
 	];
 });
 
-const preFilterCommand = commandFactory<FilterCommandPayload>(({ at, path, get, payload: { id, filterOptions, multipleFilters } }) => {
-	const existingFilters = get(path(id, 'meta', 'filter'));
+const preFilterCommand = commandFactory<FilterCommandPayload>(({ at, path, get, payload: { id, filterOptions } }) => {
 	return [
 		remove(path(id, 'data', 'pages')),
 		replace(path(id, 'meta', 'fetchedPages'), [1]),
-		replace(path(id, 'meta', 'filter', filterOptions.columnId ), filterOptions.value),
+		replace(path(id, 'meta', 'filter', filterOptions.columnId), filterOptions.value),
 		replace(path(id, 'meta', 'currentFilter'), filterOptions),
 		replace(path(id, 'meta', 'page'), 1),
 		replace(path(id, 'meta', 'isSorting'), true)
