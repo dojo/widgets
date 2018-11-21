@@ -7,8 +7,7 @@ import {
 	PageChangeCommandPayload,
 	SortCommandPayload,
 	FilterCommandPayload,
-	UpdaterCommandPayload,
-	FetcherOptions
+	UpdaterCommandPayload
 } from './interfaces';
 
 const commandFactory = createCommandFactory<GridState>();
@@ -136,9 +135,8 @@ const filterCommand = commandFactory<FilterCommandPayload>(
 		const sortOptions = get(path(id, 'meta', 'sort'));
 		const currentFilters = get(path(id, 'meta', 'filter'));
 		let result: FetcherResult;
-		let options: FetcherOptions = { sort: sortOptions, filter: currentFilters };
 		try {
-			result = await fetcher(1, pageSize, options);
+			result = await fetcher(1, pageSize, { sort: sortOptions, filter: currentFilters });
 		} catch (err) {
 			return [];
 		}

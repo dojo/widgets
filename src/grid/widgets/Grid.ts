@@ -9,7 +9,7 @@ import { Store } from '@dojo/framework/stores/Store';
 import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 import Resize from '@dojo/framework/widget-core/meta/Resize';
 
-import { Fetcher, ColumnConfig, GridState, Updater, FilterCommandPayload } from './../interfaces';
+import { Fetcher, ColumnConfig, GridState, Updater } from './../interfaces';
 import { fetcherProcess, pageChangeProcess, sortProcess, filterProcess, updaterProcess } from './../processes';
 
 import Header from './Header';
