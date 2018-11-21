@@ -7,7 +7,8 @@ import {
 	PageChangeCommandPayload,
 	SortCommandPayload,
 	FilterCommandPayload,
-	UpdaterCommandPayload
+	UpdaterCommandPayload,
+	FetcherOptions
 } from './interfaces';
 
 const commandFactory = createCommandFactory<GridState>();
@@ -62,12 +63,13 @@ const preSortCommand = commandFactory<SortCommandPayload>(({ at, path, get, payl
 	];
 });
 
-const preFilterCommand = commandFactory<FilterCommandPayload>(({ at, path, get, payload: { id, columnId, value } }) => {
+const preFilterCommand = commandFactory<FilterCommandPayload>(({ at, path, get, payload: { id, filterOptions, multipleFilters } }) => {
+	const existingFilters = get(path(id, 'meta', 'filter'));
 	return [
 		remove(path(id, 'data', 'pages')),
 		replace(path(id, 'meta', 'fetchedPages'), [1]),
-		replace(path(id, 'meta', 'filter', 'columnId'), columnId),
-		replace(path(id, 'meta', 'filter', 'value'), value),
+		replace(path(id, 'meta', 'filter', filterOptions.columnId ), filterOptions.value),
+		replace(path(id, 'meta', 'currentFilter'), filterOptions),
 		replace(path(id, 'meta', 'page'), 1),
 		replace(path(id, 'meta', 'isSorting'), true)
 	];
@@ -130,24 +132,25 @@ const sortForFirstPage = commandFactory<SortCommandPayload>(
 );
 
 const filterCommand = commandFactory<FilterCommandPayload>(
-	async ({ at, path, get, payload: { id, fetcher, columnId, value } }) => {
+	async ({ at, path, get, payload: { id, fetcher, filterOptions } }) => {
 		const pageSize = get(path(id, 'meta', 'pageSize'));
 		const sortOptions = get(path(id, 'meta', 'sort'));
+		const currentFilters = get(path(id, 'meta', 'filter'));
 		let result: FetcherResult;
+		let options: FetcherOptions = { sort: sortOptions, filter: currentFilters };
 		try {
-			result = await fetcher(1, pageSize, { sort: sortOptions, filter: { columnId, value } });
+			result = await fetcher(1, pageSize, options);
 		} catch (err) {
 			return [];
 		}
-		const filterOptions = get(path(id, 'meta', 'filter'));
-		if (filterOptions.columnId !== columnId || filterOptions.value !== value) {
+
+		const filters = get(path(id, 'meta', 'filter'));
+		if (filterOptions !== get(path(id, 'meta', 'currentFilter'))) {
 			throw new Error();
 		}
 		return [
 			remove(path(id, 'data', 'pages')),
 			replace(path(id, 'data', 'pages', 'page-1'), result.data),
-			replace(path(id, 'meta', 'filter', 'columnId'), columnId),
-			replace(path(id, 'meta', 'filter', 'value'), value),
 			replace(path(id, 'meta', 'total'), result.meta.total),
 			replace(path(id, 'meta', 'isSorting'), false)
 		];

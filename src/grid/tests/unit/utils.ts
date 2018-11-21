@@ -29,9 +29,16 @@ describe('Grid Utils', () => {
 
 	it('Should clone and filter data with filter options', () => {
 		const data = [{ id: 'A' }, { id: 'Z' }, { id: 'B' }];
-		const filteredData = filterer(data, { filter: { columnId: 'id', value: 'A' } });
+		const filteredData = filterer(data, { filter: { id: 'A' } });
 		assert.notStrictEqual(filteredData, data);
 		assert.deepEqual(filteredData, [{ id: 'A' }]);
+	});
+
+	it('Should clone and filter across multiple columns with filter options', () => {
+		const data = [{ id: 'A', foo: 'bar' }, { id: 'Z', foo: 'bar' }, { id: 'B', foo: 'bar' }, { id: 'A', foo: 'foobar' }];
+		const filteredData = filterer(data, { filter: { id: 'A', foo: 'bar'} });
+		assert.notStrictEqual(filteredData, data);
+		assert.deepEqual(filteredData, [{ id: 'A', foo: 'bar' }, { id: 'A', foo: 'foobar' }]);
 	});
 
 	it('Should return a fetcher result from the data for the page and pageSize', async () => {
@@ -49,7 +56,7 @@ describe('Grid Utils', () => {
 		const fetcher = createFetcher(data);
 		const fetcherResult = await fetcher(1, 2, {
 			sort: { columnId: 'id', direction: 'asc' },
-			filter: { columnId: 'id', value: 'A' }
+			filter: { 'id': 'A' }
 		});
 		assert.notStrictEqual(fetcherResult.data, data);
 		assert.deepEqual(fetcherResult.data, [{ id: 'Aa' }, { id: 'Ab' }]);

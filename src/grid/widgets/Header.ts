@@ -13,7 +13,9 @@ export interface HeaderProperties {
 	columnConfig: ColumnConfig[];
 	sorter: (columnId: string, direction: 'asc' | 'desc') => void;
 	filterer: (columnId: string, value: any) => void;
-	filter?: FilterOptions;
+	filter?: {
+		[index: string]: string;
+	};
 	sort?: SortOptions;
 }
 
@@ -28,7 +30,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 	}
 
 	protected render(): DNode {
-		const { columnConfig, sorter, sort, filterer, filter, theme } = this.properties;
+		const { columnConfig, sorter, sort, filterer, filter = {}, theme } = this.properties;
 		return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' },
 			columnConfig.map((column) => {
 				let title: string | DNode;
@@ -53,6 +55,8 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 						}
 					};
 				}
+
+				const filterKeys = Object.keys(filter);
 
 				return v('div', {
 					'aria-sort': isSorted ? isSortedAsc ? 'ascending' : 'descending' : null,
@@ -83,7 +87,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 							label: `Filter by ${title}`,
 							labelHidden: true,
 							type: 'search',
-							value: filter && filter.columnId === column.id ? filter.value : '',
+							value: filterKeys.indexOf(column.id) > -1 ? filter[column.id] : '',
 							onInput: (value: string) => {
 								filterer(column.id, value);
 							}

@@ -25,7 +25,8 @@ export default class App extends WidgetBase {
 		{
 			id: 'job',
 			title: 'Job Title',
-			editable: true
+			editable: true,
+			filterable: true
 		},
 		{
 			id: 'gender',
@@ -48,7 +49,8 @@ export default class App extends WidgetBase {
 			w(Grid, {
 				columnConfig: this.columnConfig,
 				fetcher: createFetcher(this.gridData),
-				height: 500
+				height: 500,
+				multipleFilters: true
 			})
 		]);
 	}

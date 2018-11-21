@@ -116,8 +116,17 @@ export interface FetcherOptions {
 
 #### Filter Options
 
-* `columnId` - `id` from `columnConfig` of the column that sort has been requested for
-* `direction` - value to filter on
+An object that is keyed by the column Id with the filter as the value
+
+```ts
+const filter = {
+	columnId: 'filter-value
+};
+```
+
+### multipleFilters
+
+Indicates is the grid should supports filtering across multiple columns.
 
 ### height
 
