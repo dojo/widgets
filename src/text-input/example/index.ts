@@ -22,7 +22,7 @@ export default class App extends WidgetBase {
 					type: 'text',
 					placeholder: 'Hello, World',
 					value: this._value1,
-					onChange: (value: string) => {
+					onValue: (value: string) => {
 						this._value1 = value;
 						this.invalidate();
 					}
@@ -36,7 +36,7 @@ export default class App extends WidgetBase {
 					label: 'Email (required)',
 					required: true,
 					value: this._value2,
-					onChange: (value: string) => {
+					onValue: (value: string) => {
 						this._value2 = value;
 						this.invalidate();
 					}
@@ -52,7 +52,7 @@ export default class App extends WidgetBase {
 					labelAfter: true,
 					labelHidden: true,
 					value: this._value3,
-					onChange: (value: string) => {
+					onValue: (value: string) => {
 						this._value3 = value;
 						this.invalidate();
 					}
@@ -77,7 +77,7 @@ export default class App extends WidgetBase {
 					label: 'Type "foo" or "bar"',
 					value: this._value4,
 					invalid: this._invalid,
-					onInput: (value: string) => {
+					onValue: (value: string) => {
 						this._value4 = value;
 						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
 						this.invalidate();
