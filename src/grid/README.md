@@ -30,10 +30,16 @@ if (!global.ResizeObserver) {
 ## Example Usage
 
 ```ts
+import global from "@dojo/framework/shim/global";
+import ResizeObserver from 'resize-observer-polyfill';
 import renderer from '@dojo/framework/widget-core/vdom';
 import { w } from '@dojo/framework/widget-core/d';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 import Grid from '@dojo/widgets/grid';
+
+if (!global.ResizeObserver) {
+	global.ResizeObserver = ResizeObserver;
+}
 
 const columnConfig = [
 	{
