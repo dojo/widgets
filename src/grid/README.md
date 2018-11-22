@@ -8,13 +8,38 @@ A reactive lightweight, customizable grid widget built with Dojo.
  * Filtering and Sorting by column
  * Custom cell renderers
 
+## Requirements
+
+The grid uses the `Resize` meta from `@dojo/framework/widget-core/meta/Resize` internally. For browsers that do not support the `ResizeObserver` API, currently [all except Chrome](https://caniuse.com/#feat=resizeobserver), a polyfill is required:
+
+```shell
+npm install resize-observer-polyfill@1.5.0 --save-exact
+```
+
+In your application's `main.ts`, the `resize-observer-polyfill` needs to be imported and added to the global if the `ResizeObserver` global does not already exist:
+
+```ts
+import ResizeObserver from 'resize-observer-polyfill';
+import global from "@dojo/framework/shim/global";
+
+if (!global.ResizeObserver) {
+	global.ResizeObserver = ResizeObserver;
+}
+```
+
 ## Example Usage
 
 ```ts
+import global from "@dojo/framework/shim/global";
+import ResizeObserver from 'resize-observer-polyfill';
 import renderer from '@dojo/framework/widget-core/vdom';
 import { w } from '@dojo/framework/widget-core/d';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 import Grid from '@dojo/widgets/grid';
+
+if (!global.ResizeObserver) {
+	global.ResizeObserver = ResizeObserver;
+}
 
 const columnConfig = [
 	{
