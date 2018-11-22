@@ -10,13 +10,13 @@ A reactive lightweight, customizable grid widget built with Dojo.
 
 ## Requirements
 
-The grid uses the `Resize` meta from `@dojo/framework/widget-core/meta/Resize` internally. For browsers (all but chrome, https://caniuse.com/#feat=resizeobserver) that do not support the `ResizeObserver` API a polyfill is required:
+The grid uses the `Resize` meta from `@dojo/framework/widget-core/meta/Resize` internally. For browsers that do not support the `ResizeObserver` API, currently [all except Chrome](https://caniuse.com/#feat=resizeobserver), a polyfill is required:
 
 ```shell
 npm install resize-observer-polyfill@1.5.0 --save-exact
 ```
 
-In your application's `main.ts`, this needs to be imported and added to the global if it doesn't already exist:
+In your application's `main.ts`, the `Resize` meta needs to be imported and added to the global if the ResizeObserver global does not already exist:
 
 ```ts
 import ResizeObserver from 'resize-observer-polyfill';
