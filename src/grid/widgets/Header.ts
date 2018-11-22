@@ -28,7 +28,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 	}
 
 	protected render(): DNode {
-		const { columnConfig, sorter, sort, filterer, filter } = this.properties;
+		const { columnConfig, sorter, sort, filterer, filter, theme } = this.properties;
 		return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' },
 			columnConfig.map((column) => {
 				let title: string | DNode;
@@ -68,6 +68,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 							}
 						}, [
 							w(Icon, {
+								theme,
 								type: sort && sort.columnId === column.id && sort.direction === 'asc' ? 'upIcon' : 'downIcon',
 								altText: `Sort by ${title}`
 							})
@@ -76,6 +77,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					]),
 					column.filterable
 						? w(TextInput, {
+							theme,
 							key: 'filter',
 							extraClasses: { root: css.filter },
 							label: `Filter by ${title}`,
