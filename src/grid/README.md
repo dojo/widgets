@@ -16,7 +16,7 @@ The grid uses the `Resize` meta from `@dojo/framework/widget-core/meta/Resize` i
 npm install resize-observer-polyfill@1.5.0 --save-exact
 ```
 
-In your application's `main.ts`, the `Resize` meta needs to be imported and added to the global if the ResizeObserver global does not already exist:
+In your application's `main.ts`, the `resize-observer-polyfill` needs to be imported and added to the global if the `ResizeObserver` global does not already exist:
 
 ```ts
 import ResizeObserver from 'resize-observer-polyfill';
