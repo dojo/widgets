@@ -87,6 +87,7 @@ describe('Body', () => {
 			page.push(item);
 			rows.push(
 				w(Row, {
+					theme: undefined,
 					id: i,
 					key: i,
 					item,
@@ -178,6 +179,7 @@ describe('Body', () => {
 			page.push(item);
 			rows.push(
 				w(Row, {
+					theme: undefined,
 					id: i,
 					key: i,
 					item,
