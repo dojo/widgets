@@ -111,7 +111,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	protected render(): DNode {
-		const { columnConfig, storeId } = this._getProperties();
+		const { columnConfig, storeId, theme } = this._getProperties();
 
 		if (!columnConfig || !this.properties.fetcher) {
 			return null;
@@ -141,6 +141,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				row: 'rowgroup'
 			}, [
 				w(Header, {
+					theme,
 					key: 'header-row',
 					columnConfig,
 					sorter: this._sorter,
@@ -150,6 +151,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				})
 			]),
 			w(Body, {
+				theme,
 				key: 'body',
 				pages,
 				totalRows: meta.total,
@@ -163,6 +165,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			}),
 			v('div', { key: 'footer' }, [
 				w(Footer, {
+					theme,
 					key: 'footer-row',
 					total: meta.total,
 					page: meta.page,

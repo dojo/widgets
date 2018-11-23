@@ -82,12 +82,14 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
+								theme: undefined,
 								type: 'downIcon',
 								altText: 'Sort by Custom Title'
 							})
 						])
 					]),
 					w(TextInput, {
+						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',
@@ -130,12 +132,14 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
+								theme: undefined,
 								type: 'upIcon',
 								altText: 'Sort by Custom Title'
 							})
 						])
 					]),
 					w(TextInput, {
+						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',
@@ -178,12 +182,14 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
+								theme: undefined,
 								type: 'downIcon',
 								altText: 'Sort by Custom Title'
 							})
 						])
 					]),
 					w(TextInput, {
+						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',
@@ -226,12 +232,14 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
+								theme: undefined,
 								type: 'downIcon',
 								altText: 'Sort by Custom Title'
 							})
 						])
 					]),
 					w(TextInput, {
+						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',

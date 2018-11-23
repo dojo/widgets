@@ -73,6 +73,7 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
+						theme: undefined,
 						key: 'header-row',
 						columnConfig: filterableConfig,
 						sorter: noop,
@@ -82,6 +83,7 @@ describe('Grid', () => {
 					})
 				]),
 				w(Body, {
+					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -95,6 +97,7 @@ describe('Grid', () => {
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
+						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,
@@ -140,6 +143,7 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
+						theme: undefined,
 						key: 'header-row',
 						columnConfig: filterableConfig,
 						sorter: noop,
@@ -155,6 +159,7 @@ describe('Grid', () => {
 					})
 				]),
 				w(Body, {
+					theme: undefined,
 					key: 'body',
 					pages: {
 						'page-1': [{ id: 'id' }]
@@ -170,6 +175,7 @@ describe('Grid', () => {
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
+						theme: undefined,
 						key: 'footer-row',
 						total: 100,
 						page: 10,
@@ -199,6 +205,7 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
+						theme: undefined,
 						key: 'header-row',
 						columnConfig,
 						sorter: noop,
@@ -208,6 +215,7 @@ describe('Grid', () => {
 					})
 				]),
 				w(Body, {
+					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -221,6 +229,7 @@ describe('Grid', () => {
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
+						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,
@@ -250,6 +259,7 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
+						theme: undefined,
 						key: 'header-row',
 						columnConfig,
 						sorter: noop,
@@ -259,6 +269,7 @@ describe('Grid', () => {
 					})
 				]),
 				w(Body, {
+					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -272,6 +283,7 @@ describe('Grid', () => {
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
+						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,
@@ -292,6 +304,7 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
+						theme: undefined,
 						key: 'header-row',
 						columnConfig,
 						sorter: noop,
@@ -301,6 +314,7 @@ describe('Grid', () => {
 					})
 				]),
 				w(Body, {
+					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -314,6 +328,7 @@ describe('Grid', () => {
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
+						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,

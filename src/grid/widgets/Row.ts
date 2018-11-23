@@ -18,7 +18,7 @@ export interface RowProperties {
 @theme(css)
 export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 	protected render(): DNode {
-		const { item, columnConfig, id } = this.properties;
+		const { item, columnConfig, id, theme } = this.properties;
 		let columns = columnConfig.map(
 			(config) => {
 				let value: string | DNode = `${item[config.id]}`;
@@ -26,6 +26,7 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 					value = config.renderer({ value });
 				}
 				return w(Cell, {
+					theme,
 					key: config.id,
 					updater: (updatedValue: string) => {
 						this.properties.updater(id, config.id, updatedValue);
