@@ -20,7 +20,7 @@ w(GlobalEvent, {
 
 // Used in the DNode tree
 v('div', { key: 'root' }, [
-	w(GlobalEvent, { window: click: () => {} }),
+	w(GlobalEvent, { window: { click: () => {} } }),
 	w(Button, { /* button options */ })
 ]);
 ```
