@@ -44,7 +44,7 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property onKey(key: number, preventDefault: () => void): void;
  * @property onValue(value: string): void;
  * @property onOver(): void;
- * @property onLeave(): void;
+ * @property onOut(): void;
  */
 
 export interface TextInputProperties extends CustomAriaProperties, ThemedProperties {
@@ -73,9 +73,9 @@ export interface TextInputProperties extends CustomAriaProperties, ThemedPropert
 	onClick?(): void;
 	onFocus?(): void;
 	onKey?(key: number, preventDefault: () => void): void;
-	onValue?(value: string): void;
-	onOver?(): void;
 	onOut?(): void;
+	onOver?(): void;
+	onValue?(value: string): void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -129,6 +129,8 @@ function patternDiff(previousProperty: string | undefined, newProperty: string |
 		'onClick',
 		'onFocus',
 		'onKey',
+		'onOut',
+		'onOver',
 		'onValue'
 	]
 })
@@ -148,7 +150,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		this.properties.onFocus && this.properties.onFocus();
 	}
 
-	private _onInput(event: Event) {
+	private _onValue(event: Event) {
 		event.stopPropagation();
 		if (this.properties.onValue) {
 			const target = event.target as HTMLInputElement;
@@ -156,7 +158,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		}
 	}
 
-	private _onKeyPress(event: KeyboardEvent) {
+	private _onKey(event: KeyboardEvent) {
 		event.stopPropagation();
 		if (this.properties.onKey) {
 			this.properties.onKey
@@ -215,7 +217,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		const inputWrapperClasses = this.theme(css.inputWrapper);
 		const leadingClasses = this.theme(css.leading);
 		const trailingClasses = this.theme(css.trailing);
-		const extraLabelClasses = { root: this.theme(css.label)! };
+		const extraLabelClasses = { root: `${this.theme(css.label)} ${this.theme(value ? css.labelHasValue : null)}` };
 
 		return v('div', {
 			key: 'root',
@@ -250,8 +252,8 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 					onblur: this._onBlur,
 					onclick: this._onClick,
 					onfocus: this._onFocus,
-					oninput: this._onInput,
-					onkeypress: this._onKeyPress,
+					oninput: this._onValue,
+					onkeydown: this._onKey,
 					onpointerover: this._onOver,
 					onpointerout: this._onOut,
 					pattern,
