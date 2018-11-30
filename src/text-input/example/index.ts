@@ -49,7 +49,6 @@ export default class App extends WidgetBase {
 					type: 'text',
 					placeholder: 'Type something...',
 					label: 'Try listening to me!',
-					labelAfter: true,
 					labelHidden: true,
 					value: this._value3,
 					onValue: (value: string) => {

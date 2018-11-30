@@ -37,12 +37,14 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property value
  * @property widgetId
  *
- * Callbacks from TextInput Widget *
+ * Callbacks from TextInput Widget
  * @property onBlur(): void;
  * @property onClick(): void;
  * @property onFocus(): void;
  * @property onKey(key: number, preventDefault: () => void): void;
- * @property onValue(value: string): void; *
+ * @property onValue(value: string): void;
+ * @property onOver(): void;
+ * @property onLeave(): void;
  */
 
 export interface TextInputProperties extends CustomAriaProperties, ThemedProperties {
@@ -72,6 +74,8 @@ export interface TextInputProperties extends CustomAriaProperties, ThemedPropert
 	onFocus?(): void;
 	onKey?(key: number, preventDefault: () => void): void;
 	onValue?(value: string): void;
+	onOver?(): void;
+	onOut?(): void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -131,20 +135,20 @@ function patternDiff(previousProperty: string | undefined, newProperty: string |
 @diffProperty('pattern', patternDiff)
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 
-	private _onBlur (event: FocusEvent) {
+	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur();
 	}
 
-	private _onClick (event: MouseEvent) {
+	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onClick && this.properties.onClick();
 	}
 
-	private _onFocus (event: FocusEvent) {
+	private _onFocus(event: FocusEvent) {
 		this.properties.onFocus && this.properties.onFocus();
 	}
 
-	private _onInput (event: Event) {
+	private _onInput(event: Event) {
 		event.stopPropagation();
 		if (this.properties.onValue) {
 			const target = event.target as HTMLInputElement;
@@ -152,12 +156,20 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		}
 	}
 
-	private _onKeyPress (event: KeyboardEvent) {
+	private _onKeyPress(event: KeyboardEvent) {
 		event.stopPropagation();
 		if (this.properties.onKey) {
 			this.properties.onKey
 			(event.which, () => { event.preventDefault(); });
 		}
+	}
+
+	private _onOver(event: PointerEvent) {
+		this.properties.onOver && this.properties.onOver();
+	}
+
+	private _onOut(event: PointerEvent) {
+		this.properties.onOut && this.properties.onOut();
 	}
 
 	private _uuid = uuid();
@@ -195,14 +207,15 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			invalid === true ? css.invalid : null,
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null
+			required ? css.required : null,
+			value ? css.hasValue : null
 		]);
 
 		const inputClasses = this.theme(css.input);
 		const inputWrapperClasses = this.theme(css.inputWrapper);
 		const leadingClasses = this.theme(css.leading);
 		const trailingClasses = this.theme(css.trailing);
-		const extraLabelClasses = value ? { root: `${this.theme(css.label)} ${this.theme(css.hasValue)}` } : { root: this.theme(css.label)! };
+		const extraLabelClasses = { root: this.theme(css.label)! };
 
 		return v('div', {
 			key: 'root',
@@ -239,6 +252,8 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 					onfocus: this._onFocus,
 					oninput: this._onInput,
 					onkeypress: this._onKeyPress,
+					onpointerover: this._onOver,
+					onpointerout: this._onOut,
 					pattern,
 					placeholder,
 					readOnly,
