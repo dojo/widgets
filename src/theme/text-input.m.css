@@ -17,17 +17,8 @@
 }
 
 .label {}
-
-.leading {
-
-}
-
-.trailing {
-
-}
-
-.hasValue {
-
-}
-
+.icon {}
+.hasLeading {}
+.hasTrailing {}
+.hasValue {}
 .labelHasValue {}

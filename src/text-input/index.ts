@@ -5,7 +5,7 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Label from '../label/index';
-import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
+import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
@@ -78,8 +78,6 @@ export interface TextInputProperties extends CustomAriaProperties, ThemedPropert
 	onValue?(value: string): void;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 function formatAutocomplete(autocomplete: boolean | string | undefined): string | undefined {
 	if (typeof autocomplete === 'boolean') {
 		return autocomplete ? 'on' : 'off';
@@ -135,7 +133,7 @@ function patternDiff(previousProperty: string | undefined, newProperty: string |
 	]
 })
 @diffProperty('pattern', patternDiff)
-export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
+export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProperties> {
 
 	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur();
@@ -182,7 +180,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			autocomplete,
 			classes,
 			disabled = false,
-			invalid = false,
+			invalid,
 			label,
 			labelHidden = false,
 			leading,
@@ -202,7 +200,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 
 		const { containsFocus } = this.meta(Focus).get('root');
 
-		const rootClasses =  this.theme([
+		const rootClasses =  [
 			css.root,
 			disabled ? css.disabled : null,
 			containsFocus ? css.focused : null,
@@ -210,18 +208,16 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			invalid === false ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null,
-			value ? css.hasValue : null
-		]);
+			value ? css.hasValue : null,
+			leading ? css.hasLeading : null,
+			trailing ? css.hasTrailing : null
+		];
 
-		const inputClasses = this.theme(css.input);
-		const inputWrapperClasses = this.theme(css.inputWrapper);
-		const leadingClasses = this.theme(css.leading);
-		const trailingClasses = this.theme(css.trailing);
 		const extraLabelClasses = { root: `${this.theme(css.label)} ${this.theme(value ? css.labelHasValue : null)}` };
 
 		return v('div', {
 			key: 'root',
-			classes: rootClasses
+			classes: this.theme(rootClasses)
 		}, [
 			label ? w(Label, {
 				classes,
@@ -235,13 +231,13 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				required,
 				theme
 			}, [ label ]) : null,
-			v('div', { classes: inputWrapperClasses }, [
-				leading ? v('span', { classes: leadingClasses }, [ leading ]) : null,
+			v('div', { classes: this.theme(css.inputWrapper) }, [
+				leading ? v('span', { classes: this.theme(css.icon) }, [ leading ]) : null,
 				v('input', {
 					'aria-invalid': invalid ? 'true' : null,
 					'aria-readonly': readOnly ? 'true' : null,
 					autocomplete: formatAutocomplete(autocomplete),
-					classes: inputClasses,
+					classes: this.theme(css.input),
 					disabled,
 					focus: this.shouldFocus,
 					id: widgetId,
@@ -264,10 +260,10 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 					value,
 					...formatAriaProperties(aria)
 				}),
-				trailing ? v('span', { classes: trailingClasses }, [ trailing ]) : null
+				trailing ? v('span', { classes: this.theme(css.icon) }, [ trailing ]) : null
 			])
 		]);
 	}
 }
 
-export default class TextInput extends TextInputBase<TextInputProperties> {}
+export default TextInput;
