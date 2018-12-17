@@ -21,7 +21,9 @@ export interface FilterOptions {
 
 export interface FetcherOptions {
 	sort?: SortOptions;
-	filter?: FilterOptions;
+	filter?: {
+		[index: string]: string;
+	};
 }
 
 export interface Fetcher<S = any> {
@@ -63,8 +65,7 @@ export interface SortCommandPayload {
 export interface FilterCommandPayload {
 	id: string;
 	fetcher: Fetcher;
-	columnId: string;
-	value: any;
+	filterOptions: FilterOptions;
 }
 
 export interface UpdaterCommandPayload {
@@ -91,7 +92,10 @@ export interface GridMeta<S> {
 	total: number;
 	pageSize: number;
 	sort: SortOptions;
-	filter: FilterOptions;
+	filter: {
+		[index: string]: string;
+	};
+	currentFilter: FilterOptions;
 	isSorting: boolean;
 	editedRow: GridEditedRow<S>;
 	fetchedPages: number[];

@@ -212,8 +212,7 @@ describe('Header', () => {
 				sorter: sorterStub,
 				filterer: filtererStub,
 				filter: {
-					columnId: 'firstName',
-					value: 'my filter'
+					firstName: 'my filter'
 				}
 			})
 		);

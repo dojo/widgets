@@ -22,7 +22,13 @@ export function sorter(data: any[], { sort }: FetcherOptions): any[] {
 export function filterer(data: any[], { filter }: FetcherOptions): any[] {
 	if (filter) {
 		return data.filter((item) => {
-			return item[filter.columnId].toLowerCase().indexOf(filter.value.toLowerCase()) > -1;
+			let match = true;
+			Object.keys(filter).forEach((columnId) => {
+				if (item[columnId].toLowerCase().indexOf(filter[columnId].toLowerCase()) === -1) {
+					match = false;
+				}
+			});
+			return match;
 		});
 	}
 	return [...data];

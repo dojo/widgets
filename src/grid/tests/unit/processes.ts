@@ -90,13 +90,17 @@ describe('Grid Processes', () => {
 				}
 			});
 			store.apply([{ op: OperationType.REPLACE, path: new Pointer(['grid', 'meta', 'page']), value: 10 }]);
-			await filterProcess(store)({ columnId: 'id', value: '', id: 'grid', fetcher: fetcherStub });
+			await filterProcess(store)({ filterOptions:  { columnId: 'id', value: 'filter' }, id: 'grid', fetcher: fetcherStub });
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-1': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
 			assert.deepEqual(meta, {
+				currentFilter: {
+					columnId: 'id',
+					value: 'filter'
+				},
 				page: 1,
-				filter: { columnId: 'id', value: '' },
+				filter: { id: 'filter' },
 				fetchedPages: [1],
 				isSorting: false,
 				total: 10000

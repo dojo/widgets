@@ -92,7 +92,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 
 	private _filterer(columnId: string, value: any) {
 		const { storeId, fetcher } = this._getProperties();
-		filterProcess(this._store)({ id: storeId, fetcher, columnId, value });
+		filterProcess(this._store)({ id: storeId, fetcher, filterOptions: { columnId, value } });
 	}
 
 	private _updater(page: number, rowNumber: number, columnId: string, value: string) {

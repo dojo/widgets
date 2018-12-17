@@ -25,7 +25,8 @@ export default class App extends WidgetBase {
 		{
 			id: 'job',
 			title: 'Job Title',
-			editable: true
+			editable: true,
+			filterable: true
 		},
 		{
 			id: 'gender',
