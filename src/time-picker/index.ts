@@ -52,9 +52,9 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties,
 	getOptionLabel?(option: TimeUnits): string;
 	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
-	onBlur?(value: string, key?: string | number): void;
-	onChange?(value: string, key?: string | number): void;
-	onFocus?(value: string, key?: string | number): void;
+	onBlur?(): void;
+	onValue?(value: string): void;
+	onFocus?(): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestOptions?(key?: string | number): void;
 	openOnFocus?: boolean;
@@ -184,7 +184,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 	attributes: [ 'widgetId', 'label', 'name', 'value', 'start', 'end' ],
 	events: [
 		'onBlur',
-		'onChange',
+		'onValue',
 		'onFocus',
 		'onMenuChange',
 		'onRequestOptions'
@@ -215,39 +215,24 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
 	}
 
-	private _onBlur(value: string) {
-		const { key, onBlur } = this.properties;
-		onBlur && onBlur(value, key);
+	private _onBlur() {
+		const { onBlur } = this.properties;
+		onBlur && onBlur();
 	}
 
-	private _onChange(value: string) {
-		const { key, onChange } = this.properties;
-		onChange && onChange(value, key);
+	private _onValue(value: string) {
+		const { onValue } = this.properties;
+		onValue && onValue(value);
 	}
 
-	private _onFocus(value: string) {
-		const { key, onFocus } = this.properties;
-		onFocus && onFocus(value, key);
+	private _onFocus() {
+		const { onFocus } = this.properties;
+		onFocus && onFocus();
 	}
 
 	private _onMenuChange(open: boolean) {
 		const { key, onMenuChange } = this.properties;
 		onMenuChange && onMenuChange(open, key);
-	}
-
-	private _onNativeBlur(event: FocusInputEvent) {
-		const { key, onBlur } = this.properties;
-		onBlur && onBlur(event.target.value, key);
-	}
-
-	private _onNativeChange(event: FocusInputEvent) {
-		const { key, onChange } = this.properties;
-		onChange && onChange(event.target.value, key);
-	}
-
-	private _onNativeFocus(event: FocusInputEvent) {
-		const { key, onFocus } = this.properties;
-		onFocus && onFocus(event.target.value, key);
 	}
 
 	private _onRequestOptions() {
@@ -326,7 +311,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			labelAfter,
 			labelHidden,
 			onBlur: this._onBlur,
-			onChange: this._onChange,
+			onValue: this._onValue,
 			onFocus: this._onFocus,
 			onMenuChange: this._onMenuChange,
 			onRequestResults: this._onRequestOptions.bind(this),
@@ -388,9 +373,12 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 				max: end,
 				min: start,
 				name,
-				onblur: this._onNativeBlur,
-				onchange: this._onNativeChange,
-				onfocus: this._onNativeFocus,
+				onblur: this._onBlur,
+				oninput: (event: Event) => {
+					const target = event.target as HTMLInputElement;
+					this._onValue(target.value);
+				},
+				onfocus: this._onFocus,
 				readOnly,
 				required,
 				step,

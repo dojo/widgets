@@ -67,7 +67,7 @@ export default class App extends WidgetBase {
 	private _value9 = '';
 	private _invalid = false;
 
-	onChange(value: string, key?: string) {
+	onValue(value: string, key?: string) {
 		if (!key) {
 			return;
 		}
@@ -89,7 +89,7 @@ export default class App extends WidgetBase {
 
 	render(): DNode {
 		const {
-			onChange,
+			onValue,
 			onRequestResults
 		} = this;
 
@@ -102,7 +102,9 @@ export default class App extends WidgetBase {
 				key: '2',
 				label: 'Combo:',
 				clearable: true,
-				onValue,
+				onValue: (value: string) => {
+					onValue(value, '2');
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,
@@ -116,7 +118,9 @@ export default class App extends WidgetBase {
 				key: '1',
 				label: 'Combo:',
 				openOnFocus: true,
-				onValue,
+				onValue: (value: string) => {
+					onValue(value, '1');
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,
@@ -129,7 +133,9 @@ export default class App extends WidgetBase {
 			w(ComboBox, {
 				key: '5',
 				label: 'Combo:',
-				onValue,
+				onValue: (value: string) => {
+					onValue(value, '5');
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,
@@ -147,7 +153,9 @@ export default class App extends WidgetBase {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				onValue,
+				onValue: (value: string) => {
+					onValue(value, '6');
+				},
 				onRequestResults,
 				value: this._value6
 			}),
@@ -159,14 +167,18 @@ export default class App extends WidgetBase {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				onValue,
+				onValue: (value: string) => {
+					onValue(value, '7');
+				},
 				onRequestResults,
 				value: this._value7
 			}),
 			v('h3', ['Label']),
 			w(ComboBox, {
 				key: '8',
-				onValue,
+				onValue: (value: string) => {
+					onValue(value, '8');
+				},
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,

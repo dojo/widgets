@@ -181,7 +181,7 @@ registerSuite('TimePicker', {
 					min: undefined,
 					name: 'some-field',
 					onblur: noop,
-					onchange: noop,
+					oninput: noop,
 					onfocus: noop,
 					readOnly: undefined,
 					required: undefined,
@@ -234,7 +234,7 @@ registerSuite('TimePicker', {
 					min: '10:00',
 					name: 'some-field',
 					onblur: noop,
-					onchange: noop,
+					oninput: noop,
 					onfocus: noop,
 					readOnly: true,
 					required: true,
@@ -277,7 +277,7 @@ registerSuite('TimePicker', {
 					min: undefined,
 					name: 'some-field',
 					onblur: noop,
-					onchange: noop,
+					oninput: noop,
 					onfocus: noop,
 					readOnly: undefined,
 					required: undefined,
@@ -321,7 +321,7 @@ registerSuite('TimePicker', {
 					min: undefined,
 					name: undefined,
 					onblur: noop,
-					onchange: noop,
+					oninput: noop,
 					onfocus: noop,
 					readOnly: undefined,
 					required: undefined,
@@ -344,15 +344,15 @@ registerSuite('TimePicker', {
 		},
 
 		'`onChange` should be called'() {
-			const onChange = sinon.spy();
+			const onValue = sinon.spy();
 
 			const h = harness(() => w(TimePicker, {
-				onChange,
+				onValue,
 				useNativeElement: true,
 				value: '12:34:56'
 			}));
-			h.trigger('input[type=time]', 'onchange', { target: { value: '12:34:56' }});
-			assert.isTrue(onChange.calledWith('12:34:56'), '`onChange` should be called with the value');
+			h.trigger('input[type=time]', 'oninput', { target: { value: '12:34:56' }});
+			assert.isTrue(onValue.calledWith('12:34:56'), '`onChange` should be called with the value');
 		},
 
 		'`onFocus` should be called'() {

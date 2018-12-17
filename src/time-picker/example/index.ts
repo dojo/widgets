@@ -36,7 +36,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 		this.invalidate();
 	}
 
-	onChange(value: string, key: string | number) {
+	onValue(value: string, key: string | number) {
 		this._values[key] = value;
 		this.invalidate();
 	}
@@ -58,7 +58,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 					},
 					key: '1',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value: string) => {
+						this.onValue(value, '1');
+					},
 					onRequestOptions: this.getFilteredOptions,
 					options: this._filteredOptions,
 					value: this._values['1']
@@ -75,7 +77,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 					key: '2',
 					label: 'Time: ',
 					openOnFocus: true,
-					onChange: this.onChange,
+					onValue: (value: string) => {
+						this.onValue(value, '2');
+					},
 					step: 1800,
 					value: this._values['2']
 				})
@@ -95,7 +99,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 					isOptionDisabled: (option: TimeUnits) => option.hour >= 12,
 					key: '3',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value: string) => {
+						this.onValue(value, '3');
+					},
 					step: 3600,
 					value: this._values['3']
 				})
@@ -135,7 +141,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 						aria: { describedBy: 'description1' }
 					},
 					label: 'Enter a value',
-					onChange: this.onChange,
+					onValue: (value: string) => {
+						this.onValue(value, '6');
+					},
 					step: 1800,
 					value: this._values['6']
 				})
@@ -151,13 +159,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 					invalid: this._invalid,
 					key: '7',
 					required: true,
-					onBlur: (value: string) => {
+					onValue: (value: string) => {
 						this._invalid = value.trim().length === 0;
-						this.invalidate();
-					},
-					onChange: (value: string, key: string | number) => {
-						this._invalid = value.trim().length === 0;
-						this.onChange(value, key);
+						this.onValue(value, '7');
 					},
 					label: 'Time: ',
 					step: 1800,
@@ -179,7 +183,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 					},
 					key: '8',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value: string) => {
+						this.onValue(value, '8');
+					},
 					start: '12:00:00',
 					step: 1,
 					value: this._values['8']
@@ -204,7 +210,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 					},
 					key: '9',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value: string) => {
+						this.onValue(value, '9');
+					},
 					step: 1800,
 					value: this._values['9']
 				})
@@ -218,7 +226,9 @@ export default class App extends ThemedMixin(WidgetBase) {
 						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
-					onChange: this.onChange,
+					onValue: (value: string) => {
+						this.onValue(value, '10');
+					},
 					step: 1800,
 					useNativeElement: true,
 					invalid: true,
