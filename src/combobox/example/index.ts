@@ -102,7 +102,7 @@ export default class App extends WidgetBase {
 				key: '2',
 				label: 'Combo:',
 				clearable: true,
-				onChange,
+				onValue,
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,
@@ -116,7 +116,7 @@ export default class App extends WidgetBase {
 				key: '1',
 				label: 'Combo:',
 				openOnFocus: true,
-				onChange,
+				onValue,
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,
@@ -129,7 +129,7 @@ export default class App extends WidgetBase {
 			w(ComboBox, {
 				key: '5',
 				label: 'Combo:',
-				onChange,
+				onValue,
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,
@@ -147,7 +147,7 @@ export default class App extends WidgetBase {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				onChange,
+				onValue,
 				onRequestResults,
 				value: this._value6
 			}),
@@ -159,14 +159,14 @@ export default class App extends WidgetBase {
 				inputProperties: {
 					placeholder: 'Enter a value'
 				},
-				onChange,
+				onValue,
 				onRequestResults,
 				value: this._value7
 			}),
 			v('h3', ['Label']),
 			w(ComboBox, {
 				key: '8',
-				onChange,
+				onValue,
 				getResultLabel: (result: any) => result.value,
 				onRequestResults,
 				results: this._results,
@@ -178,7 +178,7 @@ export default class App extends WidgetBase {
 				key: '9',
 				label: 'Combo:',
 				required: true,
-				onChange: (value: string) => {
+				onValue: (value: string) => {
 					this._value9 = value;
 					this._invalid = value.trim().length === 0;
 					this.invalidate();

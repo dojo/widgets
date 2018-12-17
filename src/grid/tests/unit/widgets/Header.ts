@@ -97,7 +97,7 @@ describe('Header', () => {
 						labelHidden: true,
 						type: 'search',
 						value: '',
-						onInput: noop,
+						onValue: noop,
 						classes: undefined,
 						theme: undefined
 					})
@@ -149,7 +149,7 @@ describe('Header', () => {
 						labelHidden: true,
 						type: 'search',
 						value: '',
-						onInput: noop,
+						onValue: noop,
 						classes: undefined,
 						theme: undefined
 					})
@@ -201,7 +201,7 @@ describe('Header', () => {
 						labelHidden: true,
 						type: 'search',
 						value: '',
-						onInput: noop,
+						onValue: noop,
 						classes: undefined,
 						theme: undefined
 					})
@@ -252,7 +252,7 @@ describe('Header', () => {
 						labelHidden: true,
 						type: 'search',
 						value: 'my filter',
-						onInput: noop,
+						onValue: noop,
 						classes: undefined,
 						theme: undefined
 					})
@@ -379,7 +379,7 @@ describe('Header', () => {
 							labelHidden: true,
 							type: 'search',
 							value: '',
-							onInput: noop,
+							onValue: noop,
 							classes: undefined,
 							theme: undefined
 						})
@@ -425,7 +425,7 @@ describe('Header', () => {
 							labelHidden: true,
 							type: 'search',
 							value: '',
-							onInput: noop,
+							onValue: noop,
 							classes: undefined,
 							theme: undefined
 						})

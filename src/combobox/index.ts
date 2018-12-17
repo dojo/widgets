@@ -58,9 +58,9 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	inputProperties?: TextInputProperties;
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
-	onBlur?(value: string, key?: string | number): void;
-	onChange?(value: string, key?: string | number): void;
-	onFocus?(value: string, key?: string | number): void;
+	onBlur?(): void;
+	onValue?(value: string, key?: string | number): void;
+	onFocus?(): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestResults?(key?: string | number): void;
 	onResultSelect?(result: any, key?: string | number): void;
@@ -104,7 +104,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
 	attributes: [ 'widgetId', 'label', 'value' ],
 	events: [
 		'onBlur',
-		'onChange',
+		'onValue',
 		'onFocus',
 		'onMenuChange',
 		'onRequestResults',
@@ -165,21 +165,21 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 
 	private _onClearClick(event: MouseEvent) {
 		event.stopPropagation();
-		const { key, onChange } = this.properties;
+		const { key, onValue } = this.properties;
 
 		this.focus();
 		this.invalidate();
-		onChange && onChange('', key);
+		onValue && onValue('', key);
 	}
 
 	private _onInput(value: string) {
-		const { key, disabled, readOnly, onChange } = this.properties;
+		const { key, disabled, readOnly, onValue } = this.properties;
 
-		onChange && onChange(value, key);
+		onValue && onValue(value, key);
 		!disabled && !readOnly && this._openMenu();
 	}
 
-	private _onInputBlur(value: string) {
+	private _onInputBlur() {
 		const { key, onBlur } = this.properties;
 
 		if (this._ignoreBlur) {
@@ -187,20 +187,19 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			return;
 		}
 
-		onBlur && onBlur(value, key);
+		onBlur && onBlur();
 		this._closeMenu();
 	}
 
-	private _onInputFocus(value: string) {
+	private _onInputFocus() {
 		const {
-			key,
 			disabled,
 			readOnly,
 			onFocus,
 			openOnFocus
 		} = this.properties;
 
-		onFocus && onFocus(value, key);
+		onFocus && onFocus();
 		!disabled && !readOnly && openOnFocus && this._openMenu();
 	}
 
@@ -287,7 +286,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	private _selectIndex(index: number) {
 		const {
 			key,
-			onChange,
+			onValue,
 			onResultSelect,
 			results = []
 		} = this.properties;
@@ -295,7 +294,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		this.focus();
 		this._closeMenu();
 		onResultSelect && onResultSelect(results[index], key);
-		onChange && onChange(this._getResultValue(results[index]), key);
+		onValue && onValue(this._getResultValue(results[index]), key);
 	}
 
 	private _moveActiveIndex(operation: Operation) {
@@ -358,8 +357,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			focus: this.shouldFocus,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
-			onInput: this._onInput,
-			onKeyDown: this._onInputKeyDown,
+			onValue: this._onInput,
+			onKey: this._onInputKeyDown,
 			readOnly,
 			required,
 			theme,

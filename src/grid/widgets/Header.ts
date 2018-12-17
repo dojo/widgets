@@ -102,7 +102,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 								labelHidden: true,
 								type: 'search',
 								value: filterKeys.indexOf(column.id) > -1 ? filter[column.id] : '',
-								onInput: (value: string) => {
+								onValue: (value: string) => {
 									filterer(column.id, value);
 								}
 							})
