@@ -85,6 +85,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
 	tag: 'dojo-combo-box',
 	properties: [
 		'theme',
+		'classes',
 		'extraClasses',
 		'labelAfter',
 		'labelHidden',
@@ -332,6 +333,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 
 	protected renderInput(results: any[]): DNode {
 		const {
+			classes,
 			disabled,
 			widgetId = this._idBase,
 			inputProperties = {},
@@ -345,6 +347,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		return w(TextInput, {
 			...inputProperties,
 			key: 'textinput',
+			classes,
 			aria: {
 				activedescendant: this._open ? this._getResultId(results[this._activeIndex], this._activeIndex) : null,
 				controls: this._open ? this._getMenuId() : null
@@ -369,7 +372,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			disabled,
 			label = '',
 			readOnly,
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		return v('button', {
@@ -383,7 +387,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			v('span', { classes: baseCss.visuallyHidden }, [
 				`${messages.clear} ${label}`
 			]),
-			w(Icon, { type: 'closeIcon', theme })
+			w(Icon, { type: 'closeIcon', theme, classes })
 		]);
 	}
 
@@ -392,7 +396,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			disabled,
 			label = '',
 			readOnly,
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		return v('button', {
@@ -406,12 +411,12 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			v('span', { classes: baseCss.visuallyHidden }, [
 				`${messages.open} ${label}`
 			]),
-			w(Icon, { type: 'downIcon', theme })
+			w(Icon, { type: 'downIcon', theme, classes })
 		]);
 	}
 
 	protected renderMenu(results: any[]): DNode {
-		const { theme, isResultDisabled } = this.properties;
+		const { theme, isResultDisabled, classes } = this.properties;
 
 		if (results.length === 0 || !this._open) {
 			return null;
@@ -425,6 +430,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		}, [
 			w(Listbox, {
 				key: 'listbox',
+				classes,
 				activeIndex: this._activeIndex,
 				widgetId: this._getMenuId(),
 				visualFocus: this._menuHasVisualFocus,
@@ -458,7 +464,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			labelHidden,
 			labelAfter,
 			results = [],
-			theme
+			theme,
+			classes
 		} = this.properties;
 		const { messages } = this.localizeBundle(commonBundle);
 		const focus = this.meta(Focus).get('root');
@@ -471,6 +478,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			label ? w(Label, {
 				key: 'label',
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,

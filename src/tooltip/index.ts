@@ -40,7 +40,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<TooltipProperties>({
 	tag: 'dojo-tooltip',
-	properties: [ 'theme', 'aria', 'extraClasses', 'content', 'open' ],
+	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'content', 'open' ],
 	attributes: [ 'orientation' ],
 	events: [ ]
 })

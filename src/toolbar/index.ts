@@ -34,7 +34,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
-	properties: [ 'theme', 'extraClasses', 'collapseWidth' ],
+	properties: [ 'theme', 'classes', 'extraClasses', 'collapseWidth' ],
 	attributes: [ 'key', 'heading' ],
 	events: [
 		'onCollapse'
@@ -80,6 +80,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 
 		const {
 			theme,
+			classes,
 			heading
 		} = this.properties;
 
@@ -90,6 +91,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			onRequestClose: this._closeMenu,
 			open: this._open,
 			theme,
+			classes,
 			title: heading
 		}, this.children) : v('div', {
 			classes: this.theme(css.actions),
@@ -99,7 +101,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 
 	protected renderButton(): DNode {
 		const { open } = this.localizeBundle(commonBundle).messages;
-		const { theme } = this.properties;
+		const { theme, classes } = this.properties;
 
 		return v('button', {
 			classes: this.theme(css.menuButton),
@@ -107,7 +109,7 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 			onclick: this._toggleMenu
 		}, [
 			open,
-			w(Icon, { type: 'barsIcon', theme })
+			w(Icon, { type: 'barsIcon', theme, classes })
 		]);
 	}
 

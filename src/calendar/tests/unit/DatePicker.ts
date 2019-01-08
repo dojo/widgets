@@ -130,7 +130,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 				type: 'button',
 				onclick: noop
 			}, [
-				w(Icon, { type: 'leftIcon', theme: undefined }),
+				w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
 				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
 			]),
 			v('button', {
@@ -139,7 +139,7 @@ const expectedYearPopup = function(open: boolean, yearStart?: number, yearEnd?: 
 				type: 'button',
 				onclick: noop
 			}, [
-				w(Icon, { type: 'rightIcon', theme: undefined }),
+				w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
 				v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
 			])
 		])
@@ -346,7 +346,7 @@ registerSuite('Calendar DatePicker', {
 							type: 'button',
 							onclick: noop
 						}, [
-							w(Icon, { type: 'leftIcon', theme: undefined }),
+							w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
 							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.previousYears ])
 						]),
 						v('button', {
@@ -355,7 +355,7 @@ registerSuite('Calendar DatePicker', {
 							type: 'button',
 							onclick: noop
 						}, [
-							w(Icon, { type: 'rightIcon', theme: undefined }),
+							w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
 							v('span', { classes: baseCss.visuallyHidden }, [ DEFAULT_LABELS.nextYears ])
 						])
 					])

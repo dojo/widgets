@@ -82,21 +82,23 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
-								theme: undefined,
 								type: 'downIcon',
-								altText: 'Sort by Custom Title'
+								altText: 'Sort by Custom Title',
+								classes: undefined,
+								theme: undefined
 							})
 						])
 					]),
 					w(TextInput, {
-						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',
 						labelHidden: true,
 						type: 'search',
 						value: '',
-						onInput: noop
+						onInput: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])
@@ -132,21 +134,23 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
-								theme: undefined,
 								type: 'upIcon',
-								altText: 'Sort by Custom Title'
+								altText: 'Sort by Custom Title',
+								classes: undefined,
+								theme: undefined
 							})
 						])
 					]),
 					w(TextInput, {
-						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',
 						labelHidden: true,
 						type: 'search',
 						value: '',
-						onInput: noop
+						onInput: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])
@@ -182,21 +186,23 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
-								theme: undefined,
 								type: 'downIcon',
-								altText: 'Sort by Custom Title'
+								altText: 'Sort by Custom Title',
+								classes: undefined,
+								theme: undefined
 							})
 						])
 					]),
 					w(TextInput, {
-						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',
 						labelHidden: true,
 						type: 'search',
 						value: '',
-						onInput: noop
+						onInput: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])
@@ -231,21 +237,23 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 							w(Icon, {
-								theme: undefined,
 								type: 'downIcon',
-								altText: 'Sort by Custom Title'
+								altText: 'Sort by Custom Title',
+								classes: undefined,
+								theme: undefined
 							})
 						])
 					]),
 					w(TextInput, {
-						theme: undefined,
 						key: 'filter',
 						extraClasses: { root: css.filter },
 						label: 'Filter by Custom Title',
 						labelHidden: true,
 						type: 'search',
 						value: 'my filter',
-						onInput: noop
+						onInput: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])

@@ -76,7 +76,8 @@ const expectedTabButtons = function(empty = false, activeIndex = 0): DNode {
 			onLeftArrowPress: noop,
 			onRightArrowPress: noop,
 			onUpArrowPress: noop,
-			theme: undefined
+			theme: undefined,
+			classes: undefined
 		}, [ null ]),
 		w(TabButton, {
 			active: activeIndex === 1,
@@ -95,7 +96,8 @@ const expectedTabButtons = function(empty = false, activeIndex = 0): DNode {
 			onLeftArrowPress: noop,
 			onRightArrowPress: noop,
 			onUpArrowPress: noop,
-			theme: undefined
+			theme: undefined,
+			classes: undefined
 		}, [ 'foo' ])
 	]);
 };

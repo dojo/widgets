@@ -16,6 +16,7 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 	tag: 'dojo-enhanced-text-input',
 	properties: [
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses',
 		'addonAfter',

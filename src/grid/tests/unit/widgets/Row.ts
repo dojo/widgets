@@ -25,7 +25,15 @@ describe('Row', () => {
 		const h = harness(() => w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop }));
 		h.expect(() =>
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' }, [
-				w(Cell, { theme: undefined, key: 'id', updater: noop, value: 'id', editable: undefined, rawValue: 'id' })
+				w(Cell, {
+					key: 'id',
+					updater: noop,
+					value: 'id',
+					editable: undefined,
+					rawValue: 'id',
+					classes: undefined,
+					theme: undefined
+				})
 			])
 		);
 	});
@@ -39,7 +47,15 @@ describe('Row', () => {
 		const h = harness(() => w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop }));
 		h.expect(() =>
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' }, [
-				w(Cell, { theme: undefined, key: 'id', updater: noop, value: 'transformed', editable: undefined, rawValue: 'id' })
+				w(Cell, {
+					key: 'id',
+					updater: noop,
+					value: 'transformed',
+					editable: undefined,
+					rawValue: 'id',
+					classes: undefined,
+					theme: undefined
+				})
 			])
 		);
 	});

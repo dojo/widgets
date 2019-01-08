@@ -35,6 +35,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'readOnly',
 		'disabled',
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses',
 		'checked',
@@ -132,6 +133,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 			labelAfter = true,
 			labelHidden,
 			theme,
+			classes,
 			name,
 			readOnly,
 			required,
@@ -168,6 +170,7 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 			]),
 			label ? w(Label, {
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,

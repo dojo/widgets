@@ -1,6 +1,6 @@
 import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v, w } from '@dojo/framework/widget-core/d';
-import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
+import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
 import customElement from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
@@ -27,7 +27,7 @@ const defaultGridMeta = {
 	editedRow: undefined
 };
 
-export interface GridProperties<S> {
+export interface GridProperties<S> extends ThemedProperties {
 	columnConfig: ColumnConfig[];
 	fetcher: Fetcher<S>;
 	height: number;
@@ -40,6 +40,8 @@ export interface GridProperties<S> {
 @customElement<GridProperties<any>>({
 	tag: 'dojo-grid',
 	properties: [
+		'theme',
+		'classes',
 		'height',
 		'fetcher',
 		'updater',
@@ -111,7 +113,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	protected render(): DNode {
-		const { columnConfig, storeId, theme } = this._getProperties();
+		const { columnConfig, storeId, theme, classes } = this._getProperties();
 
 		if (!columnConfig || !this.properties.fetcher) {
 			return null;
@@ -141,8 +143,9 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				row: 'rowgroup'
 			}, [
 				w(Header, {
-					theme,
 					key: 'header-row',
+					theme,
+					classes,
 					columnConfig,
 					sorter: this._sorter,
 					sort: meta.sort,
@@ -151,8 +154,9 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				})
 			]),
 			w(Body, {
-				theme,
 				key: 'body',
+				theme,
+				classes,
 				pages,
 				totalRows: meta.total,
 				pageSize: this._pageSize,
@@ -165,8 +169,9 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			}),
 			v('div', { key: 'footer' }, [
 				w(Footer, {
-					theme,
 					key: 'footer-row',
+					theme,
+					classes,
 					total: meta.total,
 					page: meta.page,
 					pageSize: this._pageSize

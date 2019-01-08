@@ -42,7 +42,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 @customElement<ButtonProperties>({
 	tag: 'dojo-button',
 	childType: CustomElementChildType.TEXT,
-	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses' ],
+	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes' ],
 	attributes: [ 'widgetId', 'name', 'type', 'value' ],
 	events: [
 		'onBlur',
@@ -132,7 +132,8 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 			pressed,
 			type,
 			value,
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		if (popup === true) {
@@ -166,7 +167,7 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 		}, [
 			...this.getContent(),
 			popup ? v('span', { classes: this.theme(css.addon) }, [
-				w(Icon, { type: 'downIcon', theme })
+				w(Icon, { type: 'downIcon', theme, classes })
 			]) : null
 		]);
 	}

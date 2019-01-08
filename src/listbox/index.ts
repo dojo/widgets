@@ -69,6 +69,8 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 @customElement<ListboxProperties>({
 	tag: 'dojo-listbox',
 	properties: [
+		'theme',
+		'classes',
 		'activeIndex',
 		'multiselect',
 		'tabIndex',
@@ -201,7 +203,8 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		const {
 			activeIndex = 0,
 			getOptionSelected,
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		const disabled = this._getOptionDisabled(option, index);
@@ -210,7 +213,8 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		return v('div', { key: this._getOptionId(index) }, [
 			w(ListboxOption, {
 				active: activeIndex === index,
-				classes: this.getOptionClasses(activeIndex === index, disabled, selected),
+				css: this.getOptionClasses(activeIndex === index, disabled, selected),
+				classes,
 				disabled,
 				label: this.renderOptionLabel(option, index),
 				id: this._getOptionId(index),

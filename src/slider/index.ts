@@ -52,6 +52,7 @@ function extractValue(event: Event): number {
 	tag: 'dojo-slider',
 	properties: [
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses',
 		'disabled',
@@ -227,6 +228,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 			vertical = false,
 			verticalHeight = '200px',
 			theme,
+			classes,
 			inputStyles = {}
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
@@ -283,6 +285,7 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 		const children = [
 			label ? w(Label, {
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,

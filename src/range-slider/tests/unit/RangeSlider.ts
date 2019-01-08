@@ -630,6 +630,7 @@ registerSuite('RangeSlider', {
 				h.expectPartial('@label', () => w(Label, {
 					key: 'label',
 					theme: undefined,
+					classes: undefined,
 					disabled: undefined,
 					focused: false,
 					invalid: undefined,
@@ -651,6 +652,7 @@ registerSuite('RangeSlider', {
 				h.expectPartial('@label', () => w(Label, {
 					key: 'label',
 					theme: undefined,
+					classes: undefined,
 					disabled: true,
 					focused: false,
 					invalid: undefined,
@@ -687,6 +689,7 @@ registerSuite('RangeSlider', {
 				h.expectPartial('@label', () => w(Label, {
 					key: 'label',
 					theme: undefined,
+					classes: undefined,
 					disabled: undefined,
 					focused: true,
 					invalid: undefined,

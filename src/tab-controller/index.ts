@@ -45,7 +45,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 @theme(css)
 @customElement<TabControllerProperties>({
 	tag: 'dojo-tab-controller',
-	properties: [ 'theme', 'aria', 'extraClasses', 'activeIndex' ],
+	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'activeIndex' ],
 	attributes: [ 'alignButtons' ],
 	events: [
 		'onRequestTabChange',
@@ -129,7 +129,8 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 				disabled,
 				key,
 				label,
-				theme
+				theme,
+				classes
 			} = <TabProperties> tab.properties;
 
 			return w(TabButton, {
@@ -149,7 +150,8 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 				onLeftArrowPress: this._onLeftArrowPress,
 				onRightArrowPress: this._onRightArrowPress,
 				onUpArrowPress: this._onUpArrowPress,
-				theme
+				theme,
+				classes
 			}, this.renderButtonContent(label));
 		});
 	}

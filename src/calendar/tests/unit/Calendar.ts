@@ -34,6 +34,7 @@ const expectedDateCell = function(date: number, active: boolean, selectedIndex =
 		focusable: date === 1 && active,
 		selected: dateIndex === selectedIndex,
 		theme: undefined,
+		classes: undefined,
 		today: active && new Date().toDateString() === new Date(`June ${date} 2017`).toDateString(),
 		onClick: noop,
 		onFocusCalled: noop,
@@ -56,6 +57,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 			monthNames: DEFAULT_MONTHS,
 			renderMonthLabel: customMonthLabel ? noop : undefined,
 			theme: undefined,
+			classes: undefined,
 			year: 2017,
 			onPopupChange: noop,
 			onRequestMonthChange: noop,
@@ -143,7 +145,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 				type: 'button',
 				onclick: noop
 			}, [
-				w(Icon, { type: 'leftIcon', theme: undefined }),
+				w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
 				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Previous Month' ])
 			]),
 			v('button', {
@@ -152,7 +154,7 @@ const expected = function(popupOpen = false, selectedIndex = -1, weekdayLabel = 
 				type: 'button',
 				onclick: noop
 			}, [
-				w(Icon, { type: 'rightIcon', theme: undefined }),
+				w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
 				v('span', { classes: [ baseCss.visuallyHidden ] }, [ 'Next Month' ])
 			])
 		])

@@ -61,6 +61,7 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 	tag: 'dojo-text-input',
 	properties: [
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses',
 		'disabled',
@@ -246,13 +247,15 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			labelHidden = false,
 			readOnly,
 			required,
-			theme
+			theme,
+			classes
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			label ? w(Label, {
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,

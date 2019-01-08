@@ -86,6 +86,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 	tag: 'dojo-calendar',
 	properties: [
 		'aria',
+		'classes',
 		'selectedDate',
 		'month',
 		'year',
@@ -324,9 +325,10 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 
 	protected renderDateCell(date: number, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
-		const { theme } = this.properties;
+		const { theme, classes } = this.properties;
 
 		return w(CalendarCell, {
+			classes,
 			key: `date-${index}`,
 			callFocus: this._callDateFocus && currentMonth && date === this._focusedDay,
 			date,
@@ -346,6 +348,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			monthNames = this._getMonths(commonMessages),
 			renderMonthLabel,
 			theme,
+			classes,
 			onMonthChange,
 			onYearChange
 		} = this.properties;
@@ -356,6 +359,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 
 		return w(DatePicker, {
 			key: 'date-picker',
+			classes,
 			labelId: this._monthLabelId,
 			labels,
 			month,
@@ -377,12 +381,12 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 
 	protected renderPagingButtonContent(type: Paging, labels: CalendarMessages): DNode[] {
-		const { theme } = this.properties;
+		const { theme, classes } = this.properties;
 		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			w(Icon, { type: iconType, theme }),
+			w(Icon, { type: iconType, theme, classes }),
 			v('span', { classes: [ baseCss.visuallyHidden ] }, [ labelText ])
 		];
 	}
