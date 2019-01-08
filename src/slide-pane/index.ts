@@ -63,7 +63,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 @theme(css)
 @customElement<SlidePaneProperties>({
 	tag: 'dojo-slide-pane',
-	properties: [ 'theme', 'aria', 'extraClasses', 'open', 'underlay' ],
+	properties: [ 'theme', 'aria', 'extraClasses', 'open', 'underlay', 'classes' ],
 	attributes: [ 'align', 'closeText', 'title' ],
 	events: [
 		'onOpen',
@@ -270,7 +270,8 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 			onOpen,
 			open = false,
 			title = '',
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		const contentStyles = this.getStyles();
@@ -319,7 +320,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						w(Icon, { type: 'closeIcon', theme })
+						w(Icon, { type: 'closeIcon', theme, classes })
 					])
 				]) : null,
 				this.getContent()

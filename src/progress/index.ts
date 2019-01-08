@@ -33,7 +33,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<ProgressProperties>({
 	tag: 'dojo-progress',
-	properties: [ 'theme', 'aria', 'extraClasses', 'output', 'showOutput', 'max', 'min', 'value' ],
+	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'output', 'showOutput', 'max', 'min', 'value' ],
 	attributes: [ 'widgetId' ],
 	events: [ ]
 })

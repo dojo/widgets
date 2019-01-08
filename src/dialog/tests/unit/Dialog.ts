@@ -29,7 +29,7 @@ const expectedCloseButton = function() {
 		onclick: noop
 	}, [
 		'close ',
-		w(Icon, { type: 'closeIcon', theme: undefined })
+		w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
 	]);
 };
 
@@ -145,7 +145,7 @@ registerSuite('Dialog', {
 							onclick: noop
 						}, [
 							'foo',
-							w(Icon, { type: 'closeIcon', theme: undefined })
+							w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
 						])
 					]),
 					v('div', {
@@ -198,7 +198,7 @@ registerSuite('Dialog', {
 							onclick: noop
 						}, [
 							'close foo',
-							w(Icon, { type: 'closeIcon', theme: undefined })
+							w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
 						])
 					]),
 					v('div', {

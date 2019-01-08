@@ -36,6 +36,7 @@ registerSuite('AccordionPane', {
 					onRequestOpen: noop,
 					open: false,
 					theme: undefined,
+					classes: undefined,
 					title: 'foo'
 				}),
 				w(TitlePane, {
@@ -44,6 +45,7 @@ registerSuite('AccordionPane', {
 					onRequestOpen: noop,
 					open: false,
 					theme: undefined,
+					classes: undefined,
 					title: 'bar'
 				}),
 				w(TitlePane, {
@@ -52,6 +54,7 @@ registerSuite('AccordionPane', {
 					onRequestOpen: noop,
 					open: false,
 					theme: undefined,
+					classes: undefined,
 					title: 'baz'
 				})
 			]));

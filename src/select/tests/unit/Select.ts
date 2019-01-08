@@ -144,7 +144,7 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 			}, [ useTestProperties ? 'Four' : `${testOptions[3]}` ])
 		]),
 		v('span', { classes: css.arrow }, [
-			w(Icon, { type: 'downIcon', theme: undefined })
+			w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
 		])
 	]);
 
@@ -177,7 +177,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 			...describedBy
 		}, [ placeholder ? placeholder : useTestProperties ? 'Two' : '' ]),
 		v('span', { classes: css.arrow }, [
-			w(Icon, { type: 'downIcon', theme: undefined })
+			w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
 		]),
 		v('div', {
 			classes: css.dropdown,
@@ -197,6 +197,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 				onKeyDown: noop,
 				getOptionSelected: noop,
 				theme: undefined,
+				classes: undefined,
 				onActiveIndexChange: noop,
 				onOptionSelect: noop
 			})
@@ -442,7 +443,7 @@ registerSuite('Select', {
 							onmousedown: noop
 						}, [ 'two' ]),
 						v('span', { classes: css.arrow }, [
-							w(Icon, { type: 'downIcon', theme: undefined })
+							w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
 						]),
 						v('div', {
 							classes: css.dropdown,
@@ -462,6 +463,7 @@ registerSuite('Select', {
 								getOptionSelected: noop,
 								onKeyDown: noop,
 								theme: undefined,
+								classes: undefined,
 								onActiveIndexChange: noop,
 								onOptionSelect: noop
 							})

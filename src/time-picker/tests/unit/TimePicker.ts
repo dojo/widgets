@@ -49,6 +49,7 @@ const getExpectedCombobox = function(useTestProperties = false, results?: any[])
 		required: useTestProperties ? true : undefined,
 		results,
 		theme: undefined,
+		classes: undefined,
 		value: useTestProperties ? 'some value' : undefined
 	});
 };
@@ -298,6 +299,7 @@ registerSuite('TimePicker', {
 			}, [
 				w(Label, {
 					theme: undefined,
+					classes: undefined,
 					disabled: undefined,
 					focused: false,
 					hidden: false,

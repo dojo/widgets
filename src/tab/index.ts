@@ -37,7 +37,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @customElement<TabProperties>({
 	tag: 'dojo-tab',
 	childType: CustomElementChildType.NODE,
-	properties: [ 'theme', 'aria', 'extraClasses', 'closeable', 'disabled', 'show' ],
+	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'closeable', 'disabled', 'show' ],
 	attributes: [ 'key', 'labelledBy', 'widgetId', 'label' ],
 	events: [ ]
 })

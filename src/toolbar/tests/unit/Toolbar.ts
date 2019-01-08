@@ -113,6 +113,7 @@ registerSuite('Toolbar', {
 				onRequestClose: noop,
 				open: false,
 				theme: undefined,
+				classes: undefined,
 				title: 'foo'
 			}, [
 				'test'
@@ -124,7 +125,7 @@ registerSuite('Toolbar', {
 				onclick: noop
 			}, [
 				'open',
-				w(Icon, { type: 'barsIcon', theme: undefined })
+				w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })
 			]);
 
 			h.expect(() => v('div', {

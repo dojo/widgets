@@ -56,6 +56,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 	tag: 'dojo-select',
 	properties: [
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses',
 		'options',
@@ -232,9 +233,9 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 
 	protected renderExpandIcon(): DNode {
-		const { theme } = this.properties;
+		const { theme, classes } = this.properties;
 		return v('span', { classes: this.theme(css.arrow) }, [
-			w(Icon, { type: 'downIcon', theme })
+			w(Icon, { type: 'downIcon', theme, classes })
 		]);
 	}
 
@@ -294,6 +295,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			key,
 			options = [],
 			theme,
+			classes,
 			onChange
 		} = this.properties;
 
@@ -325,6 +327,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 					getOptionLabel,
 					getOptionSelected,
 					theme,
+					classes,
 					onActiveIndexChange: (index: number) => {
 						this._focusedIndex = index;
 						this.invalidate();
@@ -409,13 +412,15 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			readOnly,
 			required,
 			useNativeElement = false,
-			theme
+			theme,
+			classes
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		const children = [
 			label ? w(Label, {
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,

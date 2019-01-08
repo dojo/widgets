@@ -1,4 +1,4 @@
-import { WNode, WidgetBaseInterface, Constructor, WidgetMetaBase, WidgetMetaConstructor } from '@dojo/framework/widget-core/interfaces';
+import { WNode, WidgetBaseInterface, Constructor, MetaBase, WidgetMetaConstructor } from '@dojo/framework/widget-core/interfaces';
 import { CustomComparator, harness } from '@dojo/framework/testing/harness';
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
@@ -72,7 +72,7 @@ export const createHarness = (globalCompares: CustomComparator[]) => {
 
 export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(Base: T, mockStub: SinonStub): T {
 	return class extends Base {
-		protected meta<T extends WidgetMetaBase>(MetaType: WidgetMetaConstructor<T>): T {
+		protected meta<T extends MetaBase>(MetaType: WidgetMetaConstructor<T>): T {
 			return mockStub(MetaType);
 		}
 	};

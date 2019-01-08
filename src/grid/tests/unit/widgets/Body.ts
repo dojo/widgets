@@ -87,12 +87,13 @@ describe('Body', () => {
 			page.push(item);
 			rows.push(
 				w(Row, {
-					theme: undefined,
 					id: i,
 					key: i,
 					item,
 					columnConfig: [] as any,
-					updater: noop
+					updater: noop,
+					classes: undefined,
+					theme: undefined
 				})
 			);
 		}
@@ -179,12 +180,13 @@ describe('Body', () => {
 			page.push(item);
 			rows.push(
 				w(Row, {
-					theme: undefined,
 					id: i,
 					key: i,
 					item,
 					columnConfig: [] as any,
-					updater: noop
+					updater: noop,
+					classes: undefined,
+					theme: undefined
 				})
 			);
 		}

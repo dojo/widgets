@@ -75,7 +75,7 @@ const expected = function(options: {open?: boolean, closeable?: boolean, heading
 				onclick: noop
 			}, [
 				v('span', { classes: css.arrow }, [
-					w(Icon, { type: open ? 'downIcon' : 'rightIcon', theme: undefined })
+					w(Icon, { type: open ? 'downIcon' : 'rightIcon', theme: undefined, classes: undefined })
 				]),
 				'test'
 			])

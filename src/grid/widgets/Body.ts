@@ -96,7 +96,8 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			placeholderRowRenderer = defaultPlaceholderRowRenderer,
 			pageChange,
 			totalRows,
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		const startPage = Math.max(Math.ceil(start / pageSize), 1);
@@ -128,9 +129,10 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			if (item) {
 				rows.push(
 					w(Row, {
-						theme,
 						id: i,
 						key: i,
+						theme,
+						classes,
 						item,
 						columnConfig,
 						updater: this._updater

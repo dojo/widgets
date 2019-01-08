@@ -42,7 +42,7 @@ const expectedFirstOption = (overrides: Partial<ListboxOptionProperties> = {}) =
 	return v('div', { key: 'first' }, [
 		w(ListboxOption, {
 			active: false,
-			classes: [ css.option, css.activeOption, null, null ],
+			css: [ css.option, css.activeOption, null, null ],
 			disabled: false,
 			id: 'first',
 			index: 0,
@@ -52,6 +52,7 @@ const expectedFirstOption = (overrides: Partial<ListboxOptionProperties> = {}) =
 			selected: false,
 			onClick: noop,
 			theme: undefined,
+			classes: undefined,
 			...overrides
 		})
 	]);
@@ -61,7 +62,7 @@ const expectedSecondOption = (overrides: Partial<ListboxOptionProperties> = {}) 
 	return v('div', { key: '1' }, [
 		w(ListboxOption, {
 			active: false,
-			classes: [ css.option, null, null, null ],
+			css: [ css.option, null, null, null ],
 			disabled: false,
 			id: '',
 			index: 1,
@@ -71,6 +72,7 @@ const expectedSecondOption = (overrides: Partial<ListboxOptionProperties> = {}) 
 			selected: false,
 			onClick: noop,
 			theme: undefined,
+			classes: undefined,
 			...overrides
 		})
 	]);
@@ -80,7 +82,7 @@ const expectedThirdOption = (overrides: Partial<ListboxOptionProperties> = {}) =
 	return v('div', { key: '2' }, [
 		w(ListboxOption, {
 			active: false,
-			classes: [ css.option, null, null, null ],
+			css: [ css.option, null, null, null ],
 			disabled: false,
 			id: '',
 			index: 2,
@@ -90,6 +92,7 @@ const expectedThirdOption = (overrides: Partial<ListboxOptionProperties> = {}) =
 			selected: false,
 			onClick: noop,
 			theme: undefined,
+			classes: undefined,
 			...overrides
 		})
 	]);
@@ -165,13 +168,13 @@ registerSuite('Listbox', {
 					theme: {}
 				}),
 				expectedSecondOption({
-					classes: [ css.option, null, null, css.selectedOption ],
+					css: [ css.option, null, null, css.selectedOption ],
 					label: 'Two',
 					selected: true,
 					theme: {}
 				}),
 				expectedThirdOption({
-					classes: <any> [ css.option, null, css.disabledOption, null ],
+					css: <any> [ css.option, null, css.disabledOption, null ],
 					disabled: true,
 					label: 'Three',
 					theme: {}

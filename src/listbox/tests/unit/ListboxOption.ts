@@ -32,7 +32,7 @@ registerSuite('ListboxOption', {
 		'custom properties'() {
 			const h = harness(() => w(ListboxOption, {
 				active: true,
-				classes: [ css.option ],
+				css: [ css.option ],
 				disabled: true,
 				label: 'foo',
 				id: 'bar',
@@ -56,7 +56,7 @@ registerSuite('ListboxOption', {
 			const h = harness(() => w(ListboxOption, {
 				label: 'foo',
 				id: 'bar',
-				classes: [ css.option ],
+				css: [ css.option ],
 				index: 1,
 				option: 'baz',
 				onClick

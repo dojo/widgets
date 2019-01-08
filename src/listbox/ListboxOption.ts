@@ -7,7 +7,7 @@ import * as css from '../theme/listbox.m.css';
 
 export interface ListboxOptionProperties extends ThemedProperties {
 	active?: boolean;
-	classes?: (string | null)[];
+	css?: (string | null)[];
 	disabled?: boolean;
 	id: string;
 	index: number;
@@ -29,7 +29,7 @@ export class ListboxOptionBase<P extends ListboxOptionProperties = ListboxOption
 
 	protected render(): DNode {
 		const {
-			classes = [],
+			css = [],
 			disabled = false,
 			id,
 			label,
@@ -39,7 +39,7 @@ export class ListboxOptionBase<P extends ListboxOptionProperties = ListboxOption
 		return v('div', {
 			'aria-disabled': disabled ? 'true' : null,
 			'aria-selected': disabled ? null : String(selected),
-			classes: this.theme(classes),
+			classes: this.theme(css),
 			id,
 			role: 'option',
 			onclick: this._onClick

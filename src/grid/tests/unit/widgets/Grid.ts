@@ -73,17 +73,17 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
-						theme: undefined,
 						key: 'header-row',
 						columnConfig: filterableConfig,
 						sorter: noop,
 						sort: undefined,
 						filter: undefined,
-						filterer: noop
+						filterer: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				]),
 				w(Body, {
-					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -93,15 +93,18 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 300
+					height: 300,
+					classes: undefined,
+					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
-						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,
-						pageSize: 100
+						pageSize: 100,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])
@@ -143,7 +146,6 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
-						theme: undefined,
 						key: 'header-row',
 						columnConfig: filterableConfig,
 						sorter: noop,
@@ -155,11 +157,12 @@ describe('Grid', () => {
 							columnId: 'id',
 							value: 'id'
 						},
-						filterer: noop
+						filterer: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				]),
 				w(Body, {
-					theme: undefined,
 					key: 'body',
 					pages: {
 						'page-1': [{ id: 'id' }]
@@ -171,15 +174,18 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 300
+					height: 300,
+					classes: undefined,
+					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
-						theme: undefined,
 						key: 'footer-row',
 						total: 100,
 						page: 10,
-						pageSize: 100
+						pageSize: 100,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])
@@ -205,17 +211,17 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
-						theme: undefined,
 						key: 'header-row',
 						columnConfig,
 						sorter: noop,
 						sort: undefined,
 						filter: undefined,
-						filterer: noop
+						filterer: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				]),
 				w(Body, {
-					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -225,15 +231,18 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 50
+					height: 50,
+					classes: undefined,
+					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
-						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,
-						pageSize: 100
+						pageSize: 100,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])
@@ -259,17 +268,17 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
-						theme: undefined,
 						key: 'header-row',
 						columnConfig,
 						sorter: noop,
 						sort: undefined,
 						filter: undefined,
-						filterer: noop
+						filterer: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				]),
 				w(Body, {
-					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -279,15 +288,18 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 300
+					height: 300,
+					classes: undefined,
+					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
-						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,
-						pageSize: 100
+						pageSize: 100,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])
@@ -304,17 +316,17 @@ describe('Grid', () => {
 					row: 'rowgroup'
 				}, [
 					w(Header, {
-						theme: undefined,
 						key: 'header-row',
 						columnConfig,
 						sorter: noop,
 						sort: undefined,
 						filter: undefined,
-						filterer: noop
+						filterer: noop,
+						classes: undefined,
+						theme: undefined
 					})
 				]),
 				w(Body, {
-					theme: undefined,
 					key: 'body',
 					pages: {},
 					totalRows: undefined,
@@ -324,15 +336,18 @@ describe('Grid', () => {
 					updater: noop,
 					fetcher: noop,
 					onScroll: noop,
-					height: 300
+					height: 300,
+					classes: undefined,
+					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
-						theme: undefined,
 						key: 'footer-row',
 						total: undefined,
 						page: 1,
-						pageSize: 100
+						pageSize: 100,
+						classes: undefined,
+						theme: undefined
 					})
 				])
 			])

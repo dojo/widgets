@@ -79,12 +79,13 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 	}
 
 	protected render(): DNode {
-		let { editable, rawValue, value, theme } = this.properties;
+		let { editable, rawValue, value, theme, classes } = this.properties;
 
 		return v('div', { role: 'cell', classes: [this.theme(css.root), fixedCss.rootFixed] }, [
 			this._editing ? w(TextInput, {
-				theme,
 				key: 'input',
+				theme,
+				classes,
 				label: `Edit ${rawValue}`,
 				labelHidden:  true,
 				extraClasses: { input: this.theme(css.input) } as any,
@@ -95,15 +96,16 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 				onKeyDown: this._onKeyDown
 			}) : this.renderContent(),
 			editable && !this._editing ? w(Button, {
-				theme,
 				key: 'button',
+				theme,
+				classes,
 				aria: { describedby: this._idBase },
 				focus: this._focusKey === 'button' ? this.shouldFocus : () => false,
 				type: 'button',
 				extraClasses: { root: this.theme(css.edit) } as any,
 				onClick: this._onEdit
 			}, [
-				w(Icon, { theme, type: 'editIcon', altText: 'Edit' })
+				w(Icon, { type: 'editIcon', altText: 'Edit', classes, theme })
 			]) : null
 		]);
 	}

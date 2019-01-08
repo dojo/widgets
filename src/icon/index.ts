@@ -30,6 +30,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	tag: 'dojo-icon',
 	properties: [
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses'
 	],

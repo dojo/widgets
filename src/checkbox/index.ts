@@ -53,7 +53,8 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'extraClasses',
 		'labelAfter',
 		'labelHidden',
-		'checked'
+		'checked',
+		'classes'
 	],
 	attributes: [ 'widgetId', 'label', 'value', 'name', 'mode', 'offLabel', 'onLabel' ],
 	events: [
@@ -166,6 +167,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 	protected render(): DNode {
 		const {
 			aria = {},
+			classes,
 			checked = false,
 			disabled,
 			widgetId = this._uuid,
@@ -211,6 +213,7 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 			]),
 			label ? w(Label, {
 				key: 'label',
+				classes,
 				theme,
 				disabled,
 				focused: focus.containsFocus,

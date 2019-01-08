@@ -101,6 +101,7 @@ const expected = (options: ExpectedOptions = {}) => {
 	}, [
 		label ? w(Label, {
 			theme: undefined,
+			classes: undefined,
 			disabled,
 			focused,
 			hidden: false,

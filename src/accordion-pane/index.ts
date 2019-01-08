@@ -29,7 +29,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<AccordionPaneProperties>({
 	tag: 'dojo-accordion-pane',
-	properties: [ 'openKeys', 'theme', 'extraClasses' ],
+	properties: [ 'openKeys', 'theme', 'extraClasses', 'classes' ],
 	events: [ 'onRequestClose', 'onRequestOpen' ]
 })
 export class AccordionPaneBase<P extends AccordionPaneProperties = AccordionPaneProperties> extends ThemedBase<P, WNode<TitlePane>> {
@@ -56,7 +56,8 @@ export class AccordionPaneBase<P extends AccordionPaneProperties = AccordionPane
 	protected renderChildren(): DNode[] {
 		const {
 			openKeys = [],
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		return this.children.filter((child) => child).map(child => {
@@ -65,7 +66,8 @@ export class AccordionPaneBase<P extends AccordionPaneProperties = AccordionPane
 				onRequestClose: this._assignCallback(child!, 'onRequestClose', this.onRequestClose),
 				onRequestOpen: this._assignCallback(child!, 'onRequestOpen', this.onRequestOpen),
 				open: includes(openKeys, child!.properties.key),
-				theme
+				theme,
+				classes
 			});
 
 			return child;

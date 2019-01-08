@@ -40,7 +40,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 @theme(css)
 @customElement<LabelProperties>({
 	tag: 'dojo-label',
-	properties: [ 'theme', 'aria', 'extraClasses', 'disabled', 'focused', 'readOnly', 'required', 'invalid', 'hidden', 'secondary' ],
+	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'disabled', 'focused', 'readOnly', 'required', 'invalid', 'hidden', 'secondary' ],
 	attributes: [],
 	events: []
 })

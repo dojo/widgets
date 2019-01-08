@@ -53,6 +53,7 @@ type MinMaxCallback = (minValue: number, maxValue: number) => void;
 	tag: 'dojo-range-slider',
 	properties: [
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses',
 		'disabled',
@@ -277,6 +278,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			readOnly,
 			required,
 			theme,
+			classes,
 			showOutput = false,
 			minimumLabel = 'Minimum',
 			maximumLabel = 'Maximum'
@@ -319,6 +321,7 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 			label ? w(Label, {
 				key: 'label',
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,

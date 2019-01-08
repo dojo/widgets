@@ -39,7 +39,6 @@ const expectedEditing = function() {
 		classes: [css.root, fixedCss.rootFixed]
 	}, [
 		w(TextInput, {
-			theme: undefined,
 			key: 'input',
 			label: 'Edit id',
 			labelHidden:  true,
@@ -48,7 +47,9 @@ const expectedEditing = function() {
 			value: 'id',
 			onInput: noop,
 			onBlur: noop,
-			onKeyDown: noop
+			onKeyDown: noop,
+			classes: undefined,
+			theme: undefined
 		})
 	]);
 };
@@ -64,15 +65,16 @@ const expectedEditable = function(focusButton = false) {
 			ondblclick: noop
 		}, [ 'id' ]),
 		w(Button, {
-			theme: undefined,
 			key: 'button',
 			aria: { describedby: '' },
 			focus: noop,
 			type: 'button',
 			extraClasses: { root: css.edit },
-			onClick: noop
+			onClick: noop,
+			classes: undefined,
+			theme: undefined
 		}, [
-			w(Icon, { theme: undefined, type: 'editIcon', altText: 'Edit' })
+			w(Icon, { type: 'editIcon', altText: 'Edit', theme: undefined, classes: undefined })
 		])
 	]);
 };

@@ -38,7 +38,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 @theme(css)
 @customElement<TitlePaneProperties>({
 	tag: 'dojo-title-pane',
-	properties: [ 'theme', 'extraClasses', 'open', 'closeable', 'headingLevel' ],
+	properties: [ 'theme', 'classes', 'extraClasses', 'open', 'closeable', 'headingLevel' ],
 	attributes: [ 'title', 'key' ],
 	events: [
 		'onRequestClose',
@@ -102,9 +102,9 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 	}
 
 	protected renderExpandIcon(): DNode {
-		const { open = true, theme } = this.properties;
+		const { open = true, theme, classes } = this.properties;
 		return v('span', { classes: this.theme(css.arrow) }, [
-			w(Icon, { type: open ? 'downIcon' : 'rightIcon', theme })
+			w(Icon, { type: open ? 'downIcon' : 'rightIcon', theme, classes })
 		]);
 	}
 

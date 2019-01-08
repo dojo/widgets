@@ -29,6 +29,7 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 	}, [
 		label ? w(Label, {
 			theme: undefined,
+			classes: undefined,
 			disabled,
 			focused,
 			hidden: false,

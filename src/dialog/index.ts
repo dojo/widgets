@@ -63,7 +63,8 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'closeable',
 		'modal',
 		'open',
-		'underlay'
+		'underlay',
+		'classes'
 	],
 	attributes: [
 		'title',
@@ -177,7 +178,8 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 			open = false,
 			role = 'dialog',
 			title = '',
-			theme
+			theme,
+			classes
 		} = this.properties;
 
 		open && !this._wasOpen && this._onOpen();
@@ -216,7 +218,7 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 						onclick: this._onCloseClick
 					}, [
 						closeText,
-						w(Icon, { type: 'closeIcon', theme })
+						w(Icon, { type: 'closeIcon', theme, classes })
 					]) : null
 				]),
 				this.getContent()

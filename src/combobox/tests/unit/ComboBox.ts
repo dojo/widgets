@@ -92,6 +92,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			readOnly,
 			required,
 			theme: useTestProperties ? {} : undefined,
+			classes: undefined,
 			value: useTestProperties ? 'one' : '',
 			onBlur: noop,
 			onFocus: noop,
@@ -109,7 +110,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			v('span', { classes: baseCss.visuallyHidden }, [
 				useTestProperties ? 'clear foo' : 'clear '
 			]),
-			w(Icon, { type: 'closeIcon', theme: useTestProperties ? {} : undefined })
+			w(Icon, { type: 'closeIcon', theme: useTestProperties ? {} : undefined, classes: undefined })
 		]) : null,
 		v('button', {
 			key: 'trigger',
@@ -122,7 +123,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			v('span', { classes: baseCss.visuallyHidden }, [
 				useTestProperties ? 'open foo' : 'open '
 			]),
-			w(Icon, { type: 'downIcon', theme: useTestProperties ? {} : undefined })
+			w(Icon, { type: 'downIcon', theme: useTestProperties ? {} : undefined, classes: undefined })
 		])
 	]);
 
@@ -154,6 +155,7 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 			onActiveIndexChange: noop,
 			onOptionSelect: noop,
 			theme: useTestProperties ? {} : undefined,
+			classes: undefined,
 			...overrides
 		})
 	]);
@@ -182,6 +184,7 @@ const getExpectedVdom = function(useTestProperties = false, open = false, label 
 		label ? w(Label, {
 			key: 'label',
 			theme: useTestProperties ? {} : undefined,
+			classes: undefined,
 			disabled,
 			focused,
 			hidden: undefined,
@@ -457,6 +460,7 @@ registerSuite('ComboBox', {
 				readOnly: undefined,
 				required: undefined,
 				theme: undefined,
+				classes: undefined,
 				value: '',
 				onBlur: noop,
 				onFocus: noop,
@@ -502,6 +506,7 @@ registerSuite('ComboBox', {
 				readOnly: true,
 				required: true,
 				theme: {},
+				classes: undefined,
 				value: 'one',
 				onBlur: noop,
 				onFocus: noop,
@@ -512,6 +517,7 @@ registerSuite('ComboBox', {
 			h.expectPartial('@label', () => w(Label, {
 				key: 'label',
 				theme: {},
+				classes: undefined,
 				disabled: true,
 				focused: false,
 				readOnly: true,
@@ -532,7 +538,7 @@ registerSuite('ComboBox', {
 				v('span', { classes: baseCss.visuallyHidden }, [
 					'clear foo'
 				]),
-				w(Icon, { type: 'closeIcon', theme: {} })
+				w(Icon, { type: 'closeIcon', theme: {}, classes: undefined })
 			]));
 
 			h.expectPartial('@trigger', () => v('button', {
@@ -546,13 +552,14 @@ registerSuite('ComboBox', {
 				v('span', { classes: baseCss.visuallyHidden }, [
 					'open foo'
 				]),
-				w(Icon, { type: 'downIcon', theme: {} })
+				w(Icon, { type: 'downIcon', theme: {}, classes: undefined })
 			]));
 
 			invalid = false;
 
 			h.expectPartial('@textinput', () => w(TextInput, {
 				key: 'textinput',
+				classes: undefined,
 				aria: {
 					activedescendant: '',
 					controls: '',

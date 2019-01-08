@@ -42,6 +42,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 	tag: 'dojo-text-area',
 	properties: [
 		'theme',
+		'classes',
 		'aria',
 		'extraClasses',
 		'columns',
@@ -166,6 +167,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			value,
 			wrapText,
 			theme,
+			classes,
 			labelHidden,
 			labelAfter
 		} = this.properties;
@@ -174,6 +176,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 		const children = [
 			label ? w(Label, {
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,

@@ -163,6 +163,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 	tag: 'dojo-time-picker',
 	properties: [
 		'theme',
+		'classes',
 		'extraClasses',
 		'isOptionDisabled',
 		'getOptionLabel',
@@ -306,6 +307,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			readOnly,
 			required,
 			theme,
+			classes,
 			value
 		} = this.properties;
 
@@ -333,6 +335,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			required,
 			results: options,
 			theme,
+			classes,
 			value
 		});
 	}
@@ -352,6 +355,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 			value,
 			label,
 			theme,
+			classes,
 			labelHidden = false,
 			labelAfter = false
 		} = this.properties;
@@ -362,6 +366,7 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 		const children = [
 			label ? w(Label, {
 				theme,
+				classes,
 				disabled,
 				focused: focus.containsFocus,
 				invalid,
