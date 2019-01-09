@@ -43,18 +43,14 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 
 	private _sortRenderer(column: ColumnConfig, ascending: boolean, sorter: () => void) {
 		const { columnConfig, sort, filterer, filter = {}, theme, classes } = this.properties;
-		return v('button', { classes: this.theme(css.sort),
-			onclick: () => {
-				this._sortColumn(column.id);
-			}
-		}, [
-				w(Icon, {
-					theme,
-					classes,
-					type: ascending ? 'upIcon' : 'downIcon',
-					altText: `Sort by ${this._getColumnTitle(column)}`
-				})
-			]);
+		return v('button', { classes: this.theme(css.sort), onclick: sorter }, [
+			w(Icon, {
+				theme,
+				classes,
+				type: ascending ? 'upIcon' : 'downIcon',
+				altText: `Sort by ${this._getColumnTitle(column)}`
+			})
+		]);
 	}
 
 	protected render(): DNode {
