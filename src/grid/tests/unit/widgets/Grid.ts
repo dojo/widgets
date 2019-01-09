@@ -80,7 +80,8 @@ describe('Grid', () => {
 						filter: undefined,
 						filterer: noop,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						sortRenderer: undefined
 					})
 				]),
 				w(Body, {
@@ -159,7 +160,8 @@ describe('Grid', () => {
 						},
 						filterer: noop,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						sortRenderer: undefined
 					})
 				]),
 				w(Body, {
@@ -218,7 +220,8 @@ describe('Grid', () => {
 						filter: undefined,
 						filterer: noop,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						sortRenderer: undefined
 					})
 				]),
 				w(Body, {
@@ -275,7 +278,8 @@ describe('Grid', () => {
 						filter: undefined,
 						filterer: noop,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						sortRenderer: undefined
 					})
 				]),
 				w(Body, {
@@ -323,7 +327,8 @@ describe('Grid', () => {
 						filter: undefined,
 						filterer: noop,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						sortRenderer: undefined
 					})
 				]),
 				w(Body, {
