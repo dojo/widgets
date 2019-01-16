@@ -58,18 +58,12 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				focus: noop,
 				pattern: undefined,
 				onblur: noop,
-				onchange: noop,
 				onclick: noop,
 				onfocus: noop,
 				oninput: noop,
 				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop,
+				onpointerover: noop,
+				onpointerout: noop,
 				...inputOverrides
 			})
 		])

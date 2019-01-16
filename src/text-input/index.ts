@@ -231,8 +231,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 				required,
 				theme
 			}, [ label ]) : null,
-			v('div', { classes: this.theme(css.inputWrapper) }, [
-				leading ? v('span', { classes: this.theme(css.icon) }, [ leading ]) : null,
+			v('div', { key: 'wrapper', classes: this.theme(css.inputWrapper) }, [
+				leading ? v('span', { key: 'leading', classes: this.theme(css.icon) }, [ leading ]) : null,
 				v('input', {
 					'aria-invalid': invalid ? 'true' : null,
 					'aria-readonly': readOnly ? 'true' : null,
@@ -260,7 +260,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 					value,
 					...formatAriaProperties(aria)
 				}),
-				trailing ? v('span', { classes: this.theme(css.icon) }, [ trailing ]) : null
+				trailing ? v('span', { key: 'trailing', classes: this.theme(css.icon) }, [ trailing ]) : null
 			])
 		]);
 	}
