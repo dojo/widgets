@@ -9,7 +9,13 @@
 .paneFixed {
 	position: fixed;
 	box-sizing: border-box;
+}
+
+.contentFixed {
 	overflow-y: auto;
+	position: fixed;
+	margin-top: 5px;
+	height: 100%;
 }
 
 .leftFixed,
