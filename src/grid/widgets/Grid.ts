@@ -68,9 +68,10 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 
 	@diffProperty('store', reference)
 	protected onStoreProperty(previous: any, current: any) {
+		const { storeId = '_grid' } = current;
 		this._handle.remove();
 		this._store = current.store;
-		this._handle = this._store.onChange(this._store.path('_grid'), () => {
+		this._handle = this._store.onChange(this._store.path(storeId), () => {
 			this.invalidate();
 		});
 	}

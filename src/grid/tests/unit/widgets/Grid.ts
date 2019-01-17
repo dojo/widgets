@@ -1,4 +1,5 @@
 const { describe, it } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
@@ -12,7 +13,7 @@ import Grid from '../../../widgets/Grid';
 import * as css from '../../../../theme/grid.m.css';
 import * as fixedCss from '../../../styles/grid.m.css';
 import { ColumnConfig } from '../../../interfaces';
-import { stub } from 'sinon';
+import { stub, spy } from 'sinon';
 import { MockMetaMixin } from '../../../../common/tests/support/test-helpers';
 import Header from '../../../widgets/Header';
 import Body from '../../../widgets/Body';
@@ -53,6 +54,7 @@ describe('Grid', () => {
 
 	it('should use store from properties when passed', () => {
 		const store = new Store();
+		const storeSpy = spy(store, 'onChange');
 		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
 		const h = harness(() =>
 			w(MockMetaMixin(Grid, mockMeta), {
@@ -110,6 +112,8 @@ describe('Grid', () => {
 				])
 			])
 		);
+
+		assert.isTrue(storeSpy.calledWithMatch(store.path('_grid')));
 
 		store.apply(
 			[
@@ -192,6 +196,71 @@ describe('Grid', () => {
 				])
 			])
 		);
+	});
+
+	it('should subscribe to the store id passed when using an external store', () => {
+		const store = new Store();
+		const storeSpy = spy(store, 'onChange');
+		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
+		const h = harness(() =>
+			w(MockMetaMixin(Grid, mockMeta), {
+				fetcher: noop,
+				updater: noop,
+				columnConfig: filterableConfig,
+				store,
+				storeId: 'test-id',
+				height: 500
+			})
+		);
+
+		h.expect(() =>
+			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table', 'aria-rowcount': null }, [
+				v('div', {
+					key: 'header',
+					scrollLeft: 0,
+					classes: [css.header, fixedCss.headerFixed, css.filterGroup],
+					row: 'rowgroup'
+				}, [
+					w(Header, {
+						key: 'header-row',
+						columnConfig: filterableConfig,
+						sorter: noop,
+						sort: undefined,
+						filter: undefined,
+						filterer: noop,
+						classes: undefined,
+						theme: undefined,
+						sortRenderer: undefined
+					})
+				]),
+				w(Body, {
+					key: 'body',
+					pages: {},
+					totalRows: undefined,
+					pageSize: 100,
+					columnConfig: filterableConfig,
+					pageChange: noop,
+					updater: noop,
+					fetcher: noop,
+					onScroll: noop,
+					height: 300,
+					classes: undefined,
+					theme: undefined
+				}),
+				v('div', { key: 'footer' }, [
+					w(Footer, {
+						key: 'footer-row',
+						total: undefined,
+						page: 1,
+						pageSize: 100,
+						classes: undefined,
+						theme: undefined
+					})
+				])
+			])
+		);
+
+		assert.isTrue(storeSpy.calledWithMatch(store.path('test-id')));
 	});
 
 	it('should render the grid when the dimension are known', () => {
