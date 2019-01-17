@@ -50,13 +50,15 @@ export class TabBase<P extends TabProperties = TabProperties> extends ThemedBase
 			show = false
 		} = this.properties;
 
-		return v('div', {
-			...formatAriaProperties(aria),
-			'aria-labelledby': labelledBy,
-			classes: this.theme([css.tab, !show ? css.hidden : null]),
-			id: widgetId,
-			role: 'tabpanel'
-		}, this.children);
+		return v('div', [
+			v('div', {
+				...formatAriaProperties(aria),
+				'aria-labelledby': labelledBy,
+				classes: this.theme([css.tab, !show ? css.hidden : null]),
+				id: widgetId,
+				role: 'tabpanel'
+			}, this.children)
+		]);
 	}
 }
 
