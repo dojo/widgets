@@ -191,7 +191,7 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	}
 
 	protected getContent(): DNode {
-		return v('div', { classes: this.theme(css.content) }, this.children);
+		return v('div', { classes: [this.theme(css.content), fixedCss.contentFixed] }, this.children);
 	}
 
 	protected getStyles(): {[index: string]: string | null } {

@@ -75,7 +75,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: css.content
+						classes: [css.content, fixedCss.contentFixed]
 					}, [ GREEKING ])
 				])
 			]), () => h.getRender());
@@ -121,7 +121,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: css.content
+						classes: [css.content, fixedCss.contentFixed]
 					}, [])
 				])
 			]));
@@ -185,7 +185,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: css.content
+						classes: [css.content, fixedCss.contentFixed]
 					}, [])
 				])
 			]));
@@ -225,7 +225,7 @@ registerSuite('SlidePane', {
 				}, [
 					null,
 					v('div', {
-						classes: css.content
+						classes: [css.content, fixedCss.contentFixed]
 					}, [])
 				])
 			]));
@@ -487,7 +487,7 @@ registerSuite('SlidePane', {
 					}, [
 						null,
 						v('div', {
-							classes: css.content
+							classes: [css.content, fixedCss.contentFixed]
 						}, [ GREEKING ])
 					])
 				]);
@@ -554,7 +554,7 @@ registerSuite('SlidePane', {
 					}, [
 						null,
 						v('div', {
-							classes: css.content
+							classes: [css.content, fixedCss.contentFixed]
 						}, [ GREEKING ])
 					])
 				]);
@@ -630,7 +630,7 @@ registerSuite('SlidePane', {
 					}, [
 						null,
 						v('div', {
-							classes: css.content
+							classes: [css.content, fixedCss.contentFixed]
 						})
 					])
 				]);
