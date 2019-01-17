@@ -10,6 +10,7 @@ import Icon from '../../../../icon/index';
 import * as css from '../../../../theme/grid-header.m.css';
 import * as fixedCss from '../../../styles/header.m.css';
 import Header from '../../../widgets/Header';
+import { ColumnConfig } from '../../../interfaces';
 
 const noop = () => {};
 
@@ -339,6 +340,98 @@ describe('Header', () => {
 
 			h.trigger(`.${css.sortable}`, 'onclick', {});
 			assert.isTrue(sorterStub.calledWith('firstName', 'desc'));
+		});
+
+		it('should use a custom sort renderer for asc', () => {
+			const sorterStub = stub();
+			const filtererStub = stub();
+			const h = harness(() =>
+				w(Header, {
+					columnConfig: advancedColumnConfig,
+					sorter: sorterStub,
+					filterer: filtererStub,
+					sort: {
+						columnId: 'firstName',
+						direction: 'asc'
+					},
+					sortRenderer: (column: ColumnConfig, ascending: boolean, sorter: () => void) => {
+						const title = typeof column.title === 'string' ? column.title : column.title();
+						return v('div', { key: 'sort', onclick: sorter }, [`custom renderer - ${ascending} - ${title}`]);
+					}
+				})
+			);
+
+			h.expect(() =>
+				v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+					v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+					v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': 'ascending' }, [
+						v('div', {
+							classes: [css.sortable, css.sorted, null, css.asc],
+							onclick: noop
+						}, [
+								'Custom Title',
+								v('div', { key: 'sort', onclick: noop }, ['custom renderer - true - Custom Title'])
+							]),
+						w(TextInput, {
+							key: 'filter',
+							extraClasses: { root: css.filter },
+							label: 'Filter by Custom Title',
+							labelHidden: true,
+							type: 'search',
+							value: '',
+							onInput: noop,
+							classes: undefined,
+							theme: undefined
+						})
+					])
+				])
+			);
+		});
+
+		it('should use a custom sort renderer for desc', () => {
+			const sorterStub = stub();
+			const filtererStub = stub();
+			const h = harness(() =>
+				w(Header, {
+					columnConfig: advancedColumnConfig,
+					sorter: sorterStub,
+					filterer: filtererStub,
+					sort: {
+						columnId: 'firstName',
+						direction: 'desc'
+					},
+					sortRenderer: (column: ColumnConfig, ascending: boolean, sorter: () => void) => {
+						const title = typeof column.title === 'string' ? column.title : column.title();
+						return v('div', { key: 'sort', onclick: sorter }, [`custom renderer - ${ascending} - ${title}`]);
+					}
+				})
+			);
+
+			h.expect(() =>
+				v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+					v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+					v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': 'descending' }, [
+						v('div', {
+							classes: [css.sortable, css.sorted, css.desc, null],
+							onclick: noop
+						}, [
+								'Custom Title',
+								v('div', { key: 'sort', onclick: noop }, ['custom renderer - false - Custom Title'])
+							]),
+						w(TextInput, {
+							key: 'filter',
+							extraClasses: { root: css.filter },
+							label: 'Filter by Custom Title',
+							labelHidden: true,
+							type: 'search',
+							value: '',
+							onInput: noop,
+							classes: undefined,
+							theme: undefined
+						})
+					])
+				])
+			);
 		});
 	});
 });
