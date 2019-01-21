@@ -141,14 +141,8 @@ interface SortRenderer {
 Example:
 
 ```ts
-function sortRenderer(
-	column: ColumnConfig,
-	ascending: boolean,
-	sorter: () => void
-) {
-	return v('button', {
-		onclick: sorter
-	}, [ `sort - ${ascending ? 'asc' : 'desc'}` ]);
+function sortRenderer(column: ColumnConfig, ascending: boolean, sorter: () => void) {
+	return v('button', { onclick: sorter }, [ `sort - ${ascending ? 'asc' : 'desc'}` ]);
 }
 ```
 
