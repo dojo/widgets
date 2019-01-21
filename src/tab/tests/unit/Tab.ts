@@ -12,11 +12,13 @@ registerSuite('Tab', {
 		'default properties'() {
 			const h = harness(() => w(Tab, { key: 'foo' }));
 			h.expect(() => v('div', {
-				'aria-labelledby': undefined,
-				classes: [ css.tab, css.hidden ],
-				id: undefined,
-				role: 'tabpanel'
-			}, []));
+					'aria-labelledby': undefined,
+					classes: [ css.tab ],
+					id: undefined,
+					role: 'tabpanel'
+			}, [
+				v('div', { classes: [ css.hidden ] }, [])
+			]));
 		},
 
 		'custom properties and children'() {
@@ -38,10 +40,12 @@ registerSuite('Tab', {
 			h.expect(() => v('div', {
 				'aria-labelledby': 'id',
 				'aria-describedby': 'foo',
-				classes: [ css.tab, null ],
+				classes: [ css.tab ],
 				id: 'foo',
 				role: 'tabpanel'
-			}, testChildren));
+			}, [
+				v('div', { classes: [ null ] }, testChildren)
+			]));
 		}
 	}
 });
