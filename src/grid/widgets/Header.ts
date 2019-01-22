@@ -10,7 +10,7 @@ import * as css from '../../theme/grid-header.m.css';
 import * as fixedCss from '../styles/header.m.css';
 
 export interface SortRenderer {
-	(column: ColumnConfig, ascending: boolean, sorter: () => void): DNode;
+	(column: ColumnConfig, direction: undefined | 'asc' | 'desc', sorter: () => void): DNode;
 }
 
 export interface HeaderProperties {
@@ -41,13 +41,13 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 		sorter(id, direction);
 	}
 
-	private _sortRenderer = (column: ColumnConfig, ascending: boolean, sorter: () => void) => {
+	private _sortRenderer = (column: ColumnConfig, direction: undefined | 'asc' | 'desc', sorter: () => void) => {
 		const { theme, classes } = this.properties;
 		return v('button', { classes: this.theme(css.sort), onclick: sorter }, [
 			w(Icon, {
 				theme,
 				classes,
-				type: ascending ? 'upIcon' : 'downIcon',
+				type: direction === 'asc' ? 'upIcon' : 'downIcon',
 				altText: `Sort by ${this._getColumnTitle(column)}`
 			})
 		]);
@@ -76,6 +76,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 				}
 
 				const filterKeys = Object.keys(filter);
+				const direction = !isSorted ? undefined : isSortedAsc ? 'asc' : 'desc';
 
 				return v('div', {
 					'aria-sort': isSorted ? isSortedAsc ? 'ascending' : 'descending' : null,
@@ -86,7 +87,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 							title,
 							column.sortable ? sortRenderer(
 								column,
-								isSortedAsc,
+								direction,
 								() => {
 									this._sortColumn(column.id);
 								}) : null

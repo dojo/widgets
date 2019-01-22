@@ -354,9 +354,9 @@ describe('Header', () => {
 						columnId: 'firstName',
 						direction: 'asc'
 					},
-					sortRenderer: (column: ColumnConfig, ascending: boolean, sorter: () => void) => {
+					sortRenderer: (column: ColumnConfig, direction: any, sorter: () => void) => {
 						const title = typeof column.title === 'string' ? column.title : column.title();
-						return v('div', { key: 'sort', onclick: sorter }, [`custom renderer - ${ascending} - ${title}`]);
+						return v('div', { key: 'sort', onclick: sorter }, [`custom renderer - ${direction} - ${title}`]);
 					}
 				})
 			);
@@ -370,7 +370,7 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 								'Custom Title',
-								v('div', { key: 'sort', onclick: noop }, ['custom renderer - true - Custom Title'])
+								v('div', { key: 'sort', onclick: noop }, ['custom renderer - asc - Custom Title'])
 							]),
 						w(TextInput, {
 							key: 'filter',
@@ -400,9 +400,9 @@ describe('Header', () => {
 						columnId: 'firstName',
 						direction: 'desc'
 					},
-					sortRenderer: (column: ColumnConfig, ascending: boolean, sorter: () => void) => {
+					sortRenderer: (column: ColumnConfig, direction: any, sorter: () => void) => {
 						const title = typeof column.title === 'string' ? column.title : column.title();
-						return v('div', { key: 'sort', onclick: sorter }, [`custom renderer - ${ascending} - ${title}`]);
+						return v('div', { key: 'sort', onclick: sorter }, [`custom renderer - ${direction} - ${title}`]);
 					}
 				})
 			);
@@ -416,7 +416,7 @@ describe('Header', () => {
 							onclick: noop
 						}, [
 								'Custom Title',
-								v('div', { key: 'sort', onclick: noop }, ['custom renderer - false - Custom Title'])
+								v('div', { key: 'sort', onclick: noop }, ['custom renderer - desc - Custom Title'])
 							]),
 						w(TextInput, {
 							key: 'filter',
