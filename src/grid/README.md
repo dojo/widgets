@@ -134,15 +134,15 @@ The sort renderer receives the column configuration, the sort order and a functi
 
 ```ts
 interface SortRenderer {
-	(column: ColumnConfig, ascending: boolean, sorter: () => void): DNode;
+	(column: ColumnConfig, direction: 'asc' | 'desc' | undefined, sorter: () => void): DNode;
 }
 ```
 
 Example:
 
 ```ts
-function sortRenderer(column: ColumnConfig, ascending: boolean, sorter: () => void) {
-	return v('button', { onclick: sorter }, [ `sort - ${ascending ? 'asc' : 'desc'}` ]);
+function sortRenderer(column: ColumnConfig, direction: 'asc' | 'desc' | undefined, sorter: () => void) {
+	return v('button', { onclick: sorter }, [ `sort - ${direction || 'unsorted'}` ]);
 }
 ```
 
