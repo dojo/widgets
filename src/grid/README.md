@@ -8,38 +8,14 @@ A reactive lightweight, customizable grid widget built with Dojo.
  * Filtering and Sorting by column
  * Custom cell renderers
 
-## Requirements
-
-The grid uses the `Resize` meta from `@dojo/framework/widget-core/meta/Resize` internally. For browsers that do not support the `ResizeObserver` API, currently [all except Chrome](https://caniuse.com/#feat=resizeobserver), a polyfill is required:
-
-```shell
-npm install resize-observer-polyfill@1.5.0 --save-exact
-```
-
-In your application's `main.ts`, the `resize-observer-polyfill` needs to be imported and added to the global if the `ResizeObserver` global does not already exist:
-
-```ts
-import ResizeObserver from 'resize-observer-polyfill';
-import global from "@dojo/framework/shim/global";
-
-if (!global.ResizeObserver) {
-	global.ResizeObserver = ResizeObserver;
-}
-```
-
 ## Example Usage
 
 ```ts
 import global from "@dojo/framework/shim/global";
-import ResizeObserver from 'resize-observer-polyfill';
 import renderer from '@dojo/framework/widget-core/vdom';
 import { w } from '@dojo/framework/widget-core/d';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 import Grid from '@dojo/widgets/grid';
-
-if (!global.ResizeObserver) {
-	global.ResizeObserver = ResizeObserver;
-}
 
 const columnConfig = [
 	{
@@ -147,3 +123,145 @@ This option will often be used in combination with `id` that determines the root
 ### `id`
 
 Optional `id` that specifies the root path that of the store that the grid data will be stored.
+
+### `CustomRenderers`
+
+Exposes an advanced set of options that enable you to customize the rendering of various sections of the grid.
+
+#### `sortRenderer`
+
+The sort renderer receives the column configuration, the sort order and a function to perform the sort action. This can be used to override the default sort button.
+
+```ts
+interface SortRenderer {
+	(column: ColumnConfig, ascending: boolean, sorter: () => void): DNode;
+}
+```
+
+Example:
+
+```ts
+function sortRenderer(column: ColumnConfig, ascending: boolean, sorter: () => void) {
+	return v('button', { onclick: sorter }, [ `sort - ${ascending ? 'asc' : 'desc'}` ]);
+}
+```
+
+## Helpers
+
+A collection of helpers are available in the `@dojo/widgets/grid/utils` module that can be used to create custom `fetcher` and `updater` from a known data set.
+
+#### `createFetcher`
+
+Creates a fetch from an array of data that can be used to load the grid.
+
+```ts
+import { createFetcher } from '@dojo/widgets/grid/utils';
+
+const data = [];
+const fetcher = createFetcher(data);
+
+// Example usage
+render() {
+	return w(Grid, { fetcher: fetcher });
+}
+```
+
+#### `createUpdater`
+
+Creates an updater from an array of data that can be used to edit data in the grid.
+
+```ts
+import { createUpdater } from '@dojo/widgets/grid/utils';
+
+const data = [];
+const updater = createUpdater(data);
+
+// Example usage
+render() {
+	return w(Grid, { updater: updater });
+}
+```
+
+## Theming
+
+The grid can be customized by creating a custom theme, each of the grid widgets can be themed:
+
+#### @dojo/widgets/grid/widgets/Grid
+
+Theme Key: `@dojo/widgets/grid`
+
+Classes:
+
+* `root`
+* `header`
+* `filterGroup`
+
+#### @dojo/widgets/grid/widgets/Body
+
+Theme Key: `@dojo/widgets/grid-body`
+
+Classes:
+
+* `root`
+
+#### @dojo/widgets/grid/widgets/Header
+
+Theme Key: `@dojo/widgets/grid-header`
+
+Classes:
+
+* `root`
+* `cell`
+* `sortable`
+* `sorted`
+* `desc`
+* `asc`
+* `sort`
+* `filter`
+
+Other used `@dojo/widgets`:
+
+* [@dojo/widgets/text-input](../text-input/README.md)
+* [@dojo/widgets/icon](../icon/README.md)
+
+#### @dojo/widgets/grid/widgets/Footer
+
+Theme Key: `@dojo/widgets/grid-footer`
+
+Classes:
+
+* `root`
+
+#### @dojo/widgets/grid/widgets/PlaceholderRow
+
+Theme Key: `@dojo/widgets/grid-placeholder-row`
+
+Classes:
+
+* `root`
+* `loading`
+* `spin`
+
+#### @dojo/widgets/grid/widgets/Row
+
+Theme Key: `@dojo/widgets/grid-row`
+
+Classes:
+
+* `root`
+
+#### @dojo/widgets/grid/widgets/Cell
+
+Theme Key: `@dojo/widgets/grid-cell`
+
+Classes:
+
+* `root`
+* `input`
+* `edit`
+
+Other used `@dojo/widgets`:
+
+* [@dojo/widgets/text-input](../text-input/README.md)
+* [@dojo/widgets/button](../button/README.md)
+* [@dojo/widgets/icon](../icon/README.md)
