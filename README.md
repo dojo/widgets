@@ -99,6 +99,8 @@ Live examples of current widgets are available in the [widget showcase](https://
 [TitlePane](src/title-pane/README.md)
 
 ### Misc widgets
+[Grid](src/grid/README.md)
+
 [Dialog](src/dialog/README.md)
 
 [GlobalEvent](src/global-event/README.md)
