@@ -272,7 +272,7 @@ describe('Header', () => {
 			})
 		);
 
-		h.trigger('@filter', 'onInput', 'trillian');
+		h.trigger('@filter', 'onValue', 'trillian');
 		assert.isTrue(filtererStub.calledWith('firstName', 'trillian'));
 	});
 

@@ -190,7 +190,7 @@ describe('Cell', () => {
 		h.trigger('@button', 'onClick');
 		h.expect(expectedEditing);
 
-		h.trigger('@input', 'onInput', 'typed value');
+		h.trigger('@input', 'onValue', 'typed value');
 		h.trigger('@input', 'onBlur');
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
@@ -212,8 +212,8 @@ describe('Cell', () => {
 		h.trigger('@content', 'ondblclick');
 		h.expect(expectedEditing);
 
-		h.trigger('@input', 'onInput', 'typed value');
-		h.trigger('@input', 'onKeyDown', Keys.Enter);
+		h.trigger('@input', 'onValue', 'typed value');
+		h.trigger('@input', 'onKey', Keys.Enter);
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
 		h.expect(() => expectedEditable(true));
@@ -234,8 +234,8 @@ describe('Cell', () => {
 		h.trigger('@button', 'onClick');
 		h.expect(expectedEditing);
 
-		h.trigger('@input', 'onInput', 'typed value');
-		h.trigger('@input', 'onKeyDown', Keys.Escape);
+		h.trigger('@input', 'onValue', 'typed value');
+		h.trigger('@input', 'onKey', Keys.Escape);
 
 		assert.isFalse(updaterStub.called);
 		h.expect(() => expectedEditable(true));
@@ -267,8 +267,8 @@ describe('Cell', () => {
 		}, [ compareButtonFocused ]);
 
 		h.trigger('@content', 'ondblclick');
-		h.trigger('@input', 'onInput', 'typed value');
-		h.trigger('@input', 'onKeyDown', Keys.Enter);
+		h.trigger('@input', 'onValue', 'typed value');
+		h.trigger('@input', 'onKey', Keys.Enter);
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
 		h.expect(() => expectedEditable(true));
@@ -286,7 +286,7 @@ describe('Cell', () => {
 		}, [ compareButtonFocused ]);
 
 		h.trigger('@button', 'onClick');
-		h.trigger('@input', 'onKeyDown', Keys.Escape);
+		h.trigger('@input', 'onKey', Keys.Escape);
 
 		h.expect(() => expectedEditable(true));
 	});
