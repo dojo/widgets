@@ -9,6 +9,7 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
+import * as fixedCss from './styles/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 
@@ -55,6 +56,7 @@ export interface TextInputProperties extends CustomAriaProperties, ThemedPropert
 	invalid?: boolean;
 	label?: string;
 	labelHidden?: boolean;
+	labelPosition?: 'before' | 'after' | 'above' | 'below';
 	leading?: DNode;
 	maxLength?: number | string;
 	minLength?: number | string;
@@ -113,6 +115,7 @@ function patternDiff(previousProperty: string | undefined, newProperty: string |
 		'autocomplete',
 		'controls',
 		'label',
+		'labelPosition',
 		'maxLength',
 		'minLength',
 		'name',
@@ -174,6 +177,13 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 	private _uuid = uuid();
 
+	private _labelPositionClasses = {
+		before: fixedCss.labelBeforeFixed,
+		after: fixedCss.labelAfterFixed,
+		above: fixedCss.labelAboveFixed,
+		below: fixedCss.labelBelowFixed
+	};
+
 	protected render(): DNode {
 		const {
 			aria = {},
@@ -183,6 +193,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			invalid,
 			label,
 			labelHidden = false,
+			labelPosition = 'before',
 			leading,
 			maxLength,
 			minLength,
@@ -202,6 +213,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 		const rootClasses =  [
 			css.root,
+			fixedCss.rootFixed,
 			disabled ? css.disabled : null,
 			containsFocus ? css.focused : null,
 			invalid === true ? css.invalid : null,
@@ -210,7 +222,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			required ? css.required : null,
 			value ? css.hasValue : null,
 			leading ? css.hasLeading : null,
-			trailing ? css.hasTrailing : null
+			trailing ? css.hasTrailing : null,
+			this._labelPositionClasses[labelPosition]
 		];
 
 		const extraLabelClasses = { root: `${this.theme(css.label)} ${this.theme(value ? css.labelHasValue : null)}` };

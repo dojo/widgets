@@ -82,6 +82,29 @@ export default class App extends WidgetBase {
 						this.invalidate();
 					}
 				})
+			]),
+			v('div', { id: 'label-positioning' }, [
+				v('h3', {}, ['Label Positioning']),
+				w(TextInput, {
+					type: 'text',
+					label: 'Before label',
+					labelPosition: 'before'
+				}),
+				w(TextInput, {
+					type: 'text',
+					label: 'After label',
+					labelPosition: 'after'
+				}),
+				w(TextInput, {
+					type: 'text',
+					label: 'Above label',
+					labelPosition: 'above'
+				}),
+				w(TextInput, {
+					type: 'text',
+					label: 'BefBeloveore label',
+					labelPosition: 'below'
+				})
 			])
 		]);
 	}

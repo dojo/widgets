@@ -1,0 +1,15 @@
+.rootFixed {
+	display: flex;
+}
+.labelBeforeFixed {
+	flex-direction: row;
+}
+.labelAfterFixed {
+	flex-direction: row-reverse;
+}
+.labelAboveFixed {
+	flex-direction: column;
+}
+.labelBelowFixed {
+	flex-direction: column-reverse;
+}
