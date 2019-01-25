@@ -146,6 +146,27 @@ function sortRenderer(column: ColumnConfig, direction: 'asc' | 'desc' | undefine
 }
 ```
 
+#### `filterRenderer`
+
+The filter renderer can be used to render a custom column filter. The renderer receives the current filter value, `doFilter` function and an optional column title.
+
+```ts
+export interface FilterRenderer {
+	(filterValue: string, doFilter: (value: string) => void, title?: string | DNode): DNode;
+}
+```
+
+Example:
+
+```ts
+function filterRenderer(filterValue: string, doFilter: Function, title?: string | DNode) => {
+	return v('div', [
+		v('input', { value: filterValue, onInput: doFilter }),
+		v('span', [ title ])
+	]);
+}
+```
+
 ## Helpers
 
 A collection of helpers are available in the `@dojo/widgets/grid/utils` module that can be used to create custom `fetcher` and `updater` from a known data set.

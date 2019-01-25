@@ -12,7 +12,7 @@ import Resize from '@dojo/framework/widget-core/meta/Resize';
 import { Fetcher, ColumnConfig, GridState, Updater } from './../interfaces';
 import { fetcherProcess, pageChangeProcess, sortProcess, filterProcess, updaterProcess } from './../processes';
 
-import Header, { SortRenderer } from './Header';
+import Header, { SortRenderer, FilterRenderer } from './Header';
 import Body from './Body';
 import Footer from './Footer';
 import * as css from '../../theme/grid.m.css';
@@ -29,6 +29,7 @@ const defaultGridMeta = {
 
 export interface CustomRenderers {
 	sortRenderer?: SortRenderer;
+	filterRenderer?: FilterRenderer;
 }
 
 export interface GridProperties<S> extends ThemedProperties {
@@ -120,7 +121,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 
 	protected render(): DNode {
 		const { columnConfig, storeId, theme, classes, customRenderers = {} } = this._getProperties();
-		const { sortRenderer } = customRenderers;
+		const { sortRenderer, filterRenderer } = customRenderers;
 
 		if (!columnConfig || !this.properties.fetcher) {
 			return null;
@@ -158,7 +159,8 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 					sort: meta.sort,
 					filter: meta.filter,
 					filterer: this._filterer,
-					sortRenderer
+					sortRenderer,
+					filterRenderer
 				})
 			]),
 			w(Body, {

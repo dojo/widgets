@@ -83,6 +83,7 @@ describe('Grid', () => {
 						filterer: noop,
 						classes: undefined,
 						theme: undefined,
+						filterRenderer: undefined,
 						sortRenderer: undefined
 					})
 				]),
@@ -165,6 +166,7 @@ describe('Grid', () => {
 						filterer: noop,
 						classes: undefined,
 						theme: undefined,
+						filterRenderer: undefined,
 						sortRenderer: undefined
 					})
 				]),
@@ -230,6 +232,7 @@ describe('Grid', () => {
 						filterer: noop,
 						classes: undefined,
 						theme: undefined,
+						filterRenderer: undefined,
 						sortRenderer: undefined
 					})
 				]),
@@ -290,6 +293,7 @@ describe('Grid', () => {
 						filterer: noop,
 						classes: undefined,
 						theme: undefined,
+						filterRenderer: undefined,
 						sortRenderer: undefined
 					})
 				]),
@@ -348,6 +352,7 @@ describe('Grid', () => {
 						filterer: noop,
 						classes: undefined,
 						theme: undefined,
+						filterRenderer: undefined,
 						sortRenderer: undefined
 					})
 				]),
@@ -397,6 +402,7 @@ describe('Grid', () => {
 						filterer: noop,
 						classes: undefined,
 						theme: undefined,
+						filterRenderer: undefined,
 						sortRenderer: undefined
 					})
 				]),
