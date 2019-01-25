@@ -1,5 +1,6 @@
 @import '../styles/animations.m.css';
 @import '../styles/base.m.css';
+@import '../../text-input/styles/text-input.m.css';
 @import '../../theme/icon.m.css';
 @import '../../theme/button.m.css';
 @import '../../theme/calendar.m.css';

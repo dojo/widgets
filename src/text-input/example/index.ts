@@ -102,7 +102,7 @@ export default class App extends WidgetBase {
 				}),
 				w(TextInput, {
 					type: 'text',
-					label: 'BefBeloveore label',
+					label: 'Below label',
 					labelPosition: 'below'
 				})
 			])

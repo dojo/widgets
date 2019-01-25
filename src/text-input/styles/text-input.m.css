@@ -6,6 +6,7 @@
 }
 .labelAfterFixed {
 	flex-direction: row-reverse;
+	justify-content: flex-end;
 }
 .labelAboveFixed {
 	flex-direction: column;

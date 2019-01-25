@@ -211,9 +211,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 		const { containsFocus } = this.meta(Focus).get('root');
 
-		const rootClasses =  [
+		const themedRootClasses =  this.theme([
 			css.root,
-			fixedCss.rootFixed,
 			disabled ? css.disabled : null,
 			containsFocus ? css.focused : null,
 			invalid === true ? css.invalid : null,
@@ -222,15 +221,14 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			required ? css.required : null,
 			value ? css.hasValue : null,
 			leading ? css.hasLeading : null,
-			trailing ? css.hasTrailing : null,
-			this._labelPositionClasses[labelPosition]
-		];
+			trailing ? css.hasTrailing : null
+		]);
 
 		const extraLabelClasses = { root: `${this.theme(css.label)} ${this.theme(value ? css.labelHasValue : null)}` };
 
 		return v('div', {
 			key: 'root',
-			classes: this.theme(rootClasses)
+			classes: [...themedRootClasses, fixedCss.rootFixed, this._labelPositionClasses[labelPosition] ]
 		}, [
 			label ? w(Label, {
 				classes,
