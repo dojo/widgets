@@ -5,10 +5,11 @@ import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
-
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Label from '../../../label/index';
 import TextInput from '../../index';
 import * as css from '../../../theme/text-input.m.css';
+import * as fixedCss from '../../styles/text-input.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);
@@ -20,43 +21,24 @@ interface States {
 	readOnly?: boolean;
 }
 
-const expected = function(label = false, inputOverrides = {}, states: States = {}, focused = false) {
-	const { disabled, required, readOnly, invalid } = states;
-
+const baseAssertion = assertionTemplate(() => {
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, invalid ? css.invalid : null, invalid === false ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
+		classes: []
 	}, [
-		label ? w(Label, {
-			theme: undefined,
-			classes: undefined,
-			disabled,
-			focused,
-			hidden: false,
-			invalid,
-			readOnly,
-			required,
-			forId: ''
-		}, [ 'foo' ]) : null,
-		v('div', { classes: css.inputWrapper }, [
+		v('div', { key: 'wrapper', classes: css.inputWrapper }, [
 			v('input', {
-				key: 'input',
-				classes: css.input,
-				id: '',
-				disabled,
-				'aria-invalid': invalid ? 'true' : null,
+				'aria-invalid': null,
+				'aria-readonly': null,
 				autocomplete: undefined,
+				classes: css.input,
+				disabled: false,
+				focus: noop,
+				id: '',
+				key: 'input',
 				maxlength: null,
 				minlength: null,
 				name: undefined,
-				placeholder: undefined,
-				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
-				required,
-				type: 'text',
-				value: undefined,
-				focus: noop,
-				pattern: undefined,
 				onblur: noop,
 				onclick: noop,
 				onfocus: noop,
@@ -64,86 +46,116 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				onkeydown: noop,
 				onpointerover: noop,
 				onpointerout: noop,
-				...inputOverrides
+				pattern: undefined,
+				placeholder: undefined,
+				readOnly: false,
+				required: false,
+				type: 'text',
+				value: undefined
 			})
 		])
 	]);
-};
+});
+
+const rootChildren = baseAssertion.getChildren('@root');
+
+const withLabelAssertion = baseAssertion
+.setChildren('@root', [
+	w(Label, {
+		key: 'label',
+		classes: {
+			'@dojo/widgets/label': {
+				root: [css.label, null]
+			}
+		},
+		disabled: false,
+		focused: false,
+		forId: 'id',
+		hidden: false,
+		invalid: undefined,
+		readOnly: false,
+		required: false,
+		theme: undefined
+	}, [ 'test label' ]),
+	...rootChildren
+]);
+
+function createClassesComparator(key: string, expectedClasses: string[]) {
+	return {
+		selector: key,
+		property: 'classes',
+		comparator: (actualClasses: string | string[]) => {
+			if (!Array.isArray(actualClasses)) {
+				actualClasses = [ actualClasses ];
+			}
+			const filteredClasses = actualClasses.filter(className => className);
+			return filteredClasses.length === expectedClasses.length &&
+				filteredClasses.every((className: string, index: number) => className === expectedClasses[index]);
+		}
+	};
+}
+
+const defaultRootClassComparator = createClassesComparator('@root', [
+	css.root,
+	fixedCss.rootFixed,
+	fixedCss.labelBeforeFixed
+]);
 
 registerSuite('TextInput', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => w(TextInput, {}));
-			h.expect(expected);
+			const h = harness(() => w(TextInput, {}), [ defaultRootClassComparator ]);
+			h.expect(baseAssertion);
 		},
 
 		'custom properties'() {
+			const rootClassComparator = createClassesComparator('@root', [
+				css.root,
+				css.hasValue,
+				fixedCss.rootFixed,
+				fixedCss.labelBeforeFixed
+			]);
+
 			const h = harness(() => w(TextInput, {
-				aria: {
-					controls: 'foo',
-					describedBy: 'bar'
-				},
-				widgetId: 'foo',
 				maxLength: 50,
 				minLength: 10,
 				name: 'bar',
 				placeholder: 'baz',
 				type: 'email',
 				value: 'hello world'
-			}));
+			}), [ rootClassComparator ]);
 
-			h.expect(() => expected(false, {
-				'aria-controls': 'foo',
-				'aria-describedby': 'bar',
-				id: 'foo',
-				maxlength: '50',
-				minlength: '10',
-				name: 'bar',
-				placeholder: 'baz',
-				type: 'email',
-				value: 'hello world'
-			}));
-		},
+			const assertion = baseAssertion
+				.setProperty('@input', 'maxlength', '50')
+				.setProperty('@input', 'minlength', '10')
+				.setProperty('@input', 'name', 'bar')
+				.setProperty('@input', 'placeholder', 'baz')
+				.setProperty('@input', 'type', 'email')
+				.setProperty('@input', 'value', 'hello world');
 
-		'label'() {
-			const h = harness(() => w(TextInput, {
-				label: 'foo'
-			}));
-
-			h.expect(() => expected(true));
+			h.expect(assertion);
 		},
 
 		'pattern': {
 			'string'() {
 				const h = harness(() => w(TextInput, {
 					pattern: '^foo|bar$'
-				}));
+				}), [ defaultRootClassComparator ]);
 
-				h.expect(() => expected(false, {
-					pattern: '^foo|bar$'
-				}));
+				const assertion = baseAssertion
+					.setProperty('@input', 'pattern', '^foo|bar$');
+
+				h.expect(assertion);
 			},
 			'regexp'() {
-				const properties = {
-					pattern: /^foo|bar$/
-				};
-				const h = harness(() => w(TextInput, properties));
+				const h = harness(() => w(TextInput, {
+					pattern: /^ham|spam$/
+				}), [ defaultRootClassComparator ]);
 
-				h.expect(() => expected(false, {
-					pattern: '^foo|bar$'
-				}));
+				const assertion = baseAssertion
+					.setProperty('@input', 'pattern', '^ham|spam$');
 
-				(properties.pattern.compile as any)('^bar|baz$');
-
-				h.expect(() => expected(false, {
-					pattern: '^bar|baz$'
-				}));
-
-				properties.pattern = /^ham|spam$/;
-
-				h.expect(() => expected(false, {
-					pattern: '^ham|spam$'
-				}));
+				h.expect(assertion);
 			}
 		},
 
@@ -151,65 +163,92 @@ registerSuite('TextInput', {
 			'true'() {
 				const h = harness(() => w(TextInput, {
 					autocomplete: true
-				}));
+				}), [ defaultRootClassComparator ]);
 
-				h.expect(() => expected(false, {
-					autocomplete: 'on'
-				}));
+				const assertion = baseAssertion
+					.setProperty('@input', 'autocomplete', 'on');
+
+				h.expect(assertion);
 			},
 			'false'() {
 				const h = harness(() => w(TextInput, {
 					autocomplete: false
-				}));
+				}), [ defaultRootClassComparator ]);
 
-				h.expect(() => expected(false, {
-					autocomplete: 'off'
-				}));
+				const assertion = baseAssertion
+					.setProperty('@input', 'autocomplete', 'off');
+
+				h.expect(assertion);
 			},
 			'string'() {
 				const h = harness(() => w(TextInput, {
 					autocomplete: 'name'
-				}));
+				}), [ defaultRootClassComparator ]);
 
-				h.expect(() => expected(false, {
-					autocomplete: 'name'
-				}));
+				const assertion = baseAssertion
+					.setProperty('@input', 'autocomplete', 'name');
+
+				h.expect(assertion);
 			}
 		},
 
-		'state classes'() {
-			let properties = {
-				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			};
-			const h = harness(() => w(TextInput, properties));
-			h.expect(() => expected(false, {}, properties));
+		'label': {
+			'before label'() {
+				const h = harness(() => w(TextInput, {
+					label: 'test label',
+					labelPosition: 'before'
+				}), [ defaultRootClassComparator ]);
 
-			properties = {
-				invalid: false,
-				disabled: false,
-				readOnly: false,
-				required: false
-			};
-			h.expect(() => expected(false, {}, properties));
+				h.expect(withLabelAssertion);
+			},
+
+			'after label'() {
+				const rootClassComparator = createClassesComparator('@root', [
+					css.root,
+					fixedCss.rootFixed,
+					fixedCss.labelAfterFixed
+				]);
+
+				const h = harness(() => w(TextInput, {
+					label: 'test label',
+					labelPosition: 'after'
+				}), [ rootClassComparator ]);
+
+				h.expect(withLabelAssertion);
+			},
+
+			'above label'() {
+				const rootClassComparator = createClassesComparator('@root', [
+					css.root,
+					fixedCss.rootFixed,
+					fixedCss.labelAboveFixed
+				]);
+
+				const h = harness(() => w(TextInput, {
+					label: 'test label',
+					labelPosition: 'above'
+				}), [ rootClassComparator ]);
+
+				h.expect(withLabelAssertion);
+			},
+
+			'below label'() {
+				const rootClassComparator = createClassesComparator('@root', [
+					css.root,
+					fixedCss.rootFixed,
+					fixedCss.labelBelowFixed
+				]);
+
+				const h = harness(() => w(TextInput, {
+					label: 'test label',
+					labelPosition: 'below'
+				}), [ rootClassComparator ]);
+
+				h.expect(withLabelAssertion);
+			}
 		},
 
-		'focused class'() {
-			const mockMeta = sinon.stub();
-			const mockFocusGet = sinon.stub().returns({
-				active: false,
-				containsFocus: true
-			});
-			mockMeta.withArgs(Focus).returns({
-				get: mockFocusGet
-			});
-			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {}));
-			h.expect(() => expected(false, {}, {}, true));
-		},
-
-		events() {
+		'events'() {
 			const onBlur = sinon.stub();
 			const onChange = sinon.stub();
 			const onClick = sinon.stub();
@@ -233,7 +272,7 @@ registerSuite('TextInput', {
 			assert.isTrue(onFocus.called, 'onFocus called');
 			h.trigger('@input', 'oninput', stubEvent);
 			assert.isTrue(onValue.called, 'onValue called');
-			h.trigger('@input', 'onkeypress', stubEvent);
+			h.trigger('@input', 'onkeydown', stubEvent);
 			assert.isTrue(onKey.called, 'onKey called');
 		}
 	}

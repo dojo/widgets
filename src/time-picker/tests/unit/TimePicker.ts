@@ -339,8 +339,8 @@ registerSuite('TimePicker', {
 				useNativeElement: true,
 				value: '12:34:56'
 			}));
-			h.trigger('input[type=time]', 'onblur', { target: { value: '12:34:56' }});
-			assert.isTrue(onBlur.calledWith('12:34:56'), '`onBlur` should be called with the value');
+			h.trigger('input[type=time]', 'onblur');
+			assert.isTrue(onBlur.called, '`onBlur` should be called');
 		},
 
 		'`onChange` should be called'() {
@@ -363,8 +363,8 @@ registerSuite('TimePicker', {
 				value: '12:34:56'
 			}));
 
-			h.trigger('input[type=time]', 'onfocus', { target: { value: '12:34:56' }});
-			assert.isTrue(onFocus.calledWith('12:34:56'), '`onFocus` should be called with the value');
+			h.trigger('input[type=time]', 'onfocus');
+			assert.isTrue(onFocus.called, '`onFocus` should be called');
 		}
 	}
 });

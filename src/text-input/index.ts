@@ -211,7 +211,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 		const { containsFocus } = this.meta(Focus).get('root');
 
-		const themedRootClasses =  this.theme([
+		const themedRootClasses = this.theme([
 			css.root,
 			disabled ? css.disabled : null,
 			containsFocus ? css.focused : null,
@@ -224,16 +224,18 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			trailing ? css.hasTrailing : null
 		]);
 
-		const extraLabelClasses = { root: `${this.theme(css.label)} ${this.theme(value ? css.labelHasValue : null)}` };
-
 		return v('div', {
 			key: 'root',
 			classes: [...themedRootClasses, fixedCss.rootFixed, this._labelPositionClasses[labelPosition] ]
 		}, [
 			label ? w(Label, {
-				classes,
+				key: 'label',
+				classes: {
+					'@dojo/widgets/label': {
+						root: this.theme([css.label, value ? css.labelHasValue : null])
+					}
+				},
 				disabled,
-				extraClasses: extraLabelClasses,
 				focused: containsFocus,
 				forId: widgetId,
 				hidden: labelHidden,
