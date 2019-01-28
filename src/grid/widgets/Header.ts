@@ -14,7 +14,7 @@ export interface SortRenderer {
 }
 
 export interface FilterRenderer {
-	(filterValue: string, doFilter: (value: string) => void, title?: string | DNode): DNode;
+	(column: ColumnConfig, filterValue: string, doFilter: (value: string) => void, title?: string | DNode): DNode;
 }
 
 export interface HeaderProperties {
@@ -58,7 +58,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 		]);
 	}
 
-	private _filterRenderer = (filterValue: string, doFilter: (value: string) => void, title?: string | DNode) => {
+	private _filterRenderer = (columnConfig: ColumnConfig, filterValue: string, doFilter: (value: string) => void, title?: string | DNode) => {
 		const { theme, classes } = this.properties;
 		return w(TextInput, {
 			key: 'filter',
@@ -127,7 +127,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 									this._sortColumn(column.id);
 								}) : null
 						]),
-						column.filterable ? filterRenderer(filterValue, doFilter, title) : null
+						column.filterable ? filterRenderer(column, filterValue, doFilter, title) : null
 					]);
 			})
 		);

@@ -442,10 +442,10 @@ describe('Header', () => {
 					columnConfig: advancedColumnConfig,
 					sorter: sorterStub,
 					filterer: filtererStub,
-					filterRenderer: (filterValue: string, doFilter: Function, title?: any) => {
+					filterRenderer: (columnConfig: ColumnConfig, filterValue: string, doFilter: Function, title?: any) => {
 						return v('div', [
 							v('input', { value: filterValue, onInput: doFilter }),
-							v('span', [ title ])
+							v('span', [ `${title} - ${columnConfig.id}` ])
 						]);
 					}
 				})
@@ -474,7 +474,7 @@ describe('Header', () => {
 						]),
 						v('div', [
 							v('input', { value: '', onInput: noop }),
-							v('span', [ 'Custom Title' ])
+							v('span', [ 'Custom Title - firstName' ])
 						])
 					])
 				])

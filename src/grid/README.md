@@ -152,14 +152,14 @@ The filter renderer can be used to render a custom column filter. The renderer r
 
 ```ts
 export interface FilterRenderer {
-	(filterValue: string, doFilter: (value: string) => void, title?: string | DNode): DNode;
+	(columnConfig: ColumnConfig, filterValue: string, doFilter: (value: string) => void, title?: string | DNode): DNode;
 }
 ```
 
 Example:
 
 ```ts
-function filterRenderer(filterValue: string, doFilter: Function, title?: string | DNode) => {
+function filterRenderer(columnConfig: ColumnConfig, filterValue: string, doFilter: Function, title?: string | DNode) => {
 	return v('div', [
 		v('input', { value: filterValue, onInput: doFilter }),
 		v('span', [ title ])
