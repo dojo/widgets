@@ -177,7 +177,7 @@ describe('Header', () => {
 			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
 				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
 				v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': 'descending' }, [
-				v('div', {
+					v('div', {
 						classes: [css.sortable, css.sorted, css.desc, null],
 						onclick: noop
 					}, [
@@ -369,9 +369,9 @@ describe('Header', () => {
 							classes: [css.sortable, css.sorted, null, css.asc],
 							onclick: noop
 						}, [
-								'Custom Title',
-								v('div', { key: 'sort', onclick: noop }, ['custom renderer - asc - Custom Title'])
-							]),
+							'Custom Title',
+							v('div', { key: 'sort', onclick: noop }, ['custom renderer - asc - Custom Title'])
+						]),
 						w(TextInput, {
 							key: 'filter',
 							extraClasses: { root: css.filter },
@@ -415,9 +415,9 @@ describe('Header', () => {
 							classes: [css.sortable, css.sorted, css.desc, null],
 							onclick: noop
 						}, [
-								'Custom Title',
-								v('div', { key: 'sort', onclick: noop }, ['custom renderer - desc - Custom Title'])
-							]),
+							'Custom Title',
+							v('div', { key: 'sort', onclick: noop }, ['custom renderer - desc - Custom Title'])
+						]),
 						w(TextInput, {
 							key: 'filter',
 							extraClasses: { root: css.filter },
@@ -432,6 +432,54 @@ describe('Header', () => {
 					])
 				])
 			);
+		});
+
+		it('should use custom filter renderer', () => {
+			const sorterStub = stub();
+			const filtererStub = stub();
+			const h = harness(() =>
+				w(Header, {
+					columnConfig: advancedColumnConfig,
+					sorter: sorterStub,
+					filterer: filtererStub,
+					filterRenderer: (columnConfig: ColumnConfig, filterValue: string, doFilter: Function, title?: any) => {
+						return v('div', [
+							v('input', { value: filterValue, onInput: doFilter }),
+							v('span', [ `${title} - ${columnConfig.id}` ])
+						]);
+					}
+				})
+			);
+
+			h.expect(() =>
+				v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row' }, [
+					v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [v('div', {}, ['Title'])]),
+					v('div', { classes: [css.cell, fixedCss.cellFixed], role: 'columnheader', 'aria-sort': null }, [
+						v('div', {
+							classes: [css.sortable, null, null, null],
+							onclick: noop
+						}, [
+							'Custom Title',
+							v('button', {
+								classes: css.sort,
+								onclick: noop
+							}, [
+								w(Icon, {
+									type: 'downIcon',
+									altText: 'Sort by Custom Title',
+									classes: undefined,
+									theme: undefined
+								})
+							])
+						]),
+						v('div', [
+							v('input', { value: '', onInput: noop }),
+							v('span', [ 'Custom Title - firstName' ])
+						])
+					])
+				])
+			);
+
 		});
 	});
 });
