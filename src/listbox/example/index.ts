@@ -13,6 +13,8 @@ export default class App extends WidgetBase {
 	private _listbox1Index = 0;
 	private _listbox1Value: string | undefined;
 	private _listbox2Index = 0;
+	private _listbox3Index = 49;
+	private _listbox3Value: string | undefined = 'West Virginia';
 
 	_options: CustomOption[] = [
 		{ value: 'Maine' },
@@ -124,6 +126,26 @@ export default class App extends WidgetBase {
 				onOptionSelect: (option: any, index: number) => {
 					this._moreOptions[index].selected = !this._moreOptions[index].selected;
 					this._moreOptions = [ ...this._moreOptions ];
+					this.invalidate();
+				}
+			}),
+			v('br'),
+			v('label', { for: 'listbox3' }, [ 'Pre-selected value listbox example' ]),
+			w(Listbox, {
+				key: 'listbox3',
+				activeIndex: this._listbox3Index,
+				widgetId: 'listbox3',
+				optionData: this._options,
+				getOptionLabel: (option: CustomOption) => option.value,
+				getOptionDisabled: (option: CustomOption) => !!option.disabled,
+				getOptionSelected: (option: CustomOption) => option.value === this._listbox3Value,
+				onActiveIndexChange: (index: number) => {
+					this._listbox3Index = index;
+					this.invalidate();
+				},
+				onOptionSelect: (option: any) => {
+					this._listbox3Value = option.value;
+					this._options = [ ...this._options ];
 					this.invalidate();
 				}
 			})

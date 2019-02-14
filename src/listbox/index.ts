@@ -1,5 +1,6 @@
 import { auto, reference } from '@dojo/framework/widget-core/diff';
 import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
+import { afterRender } from '@dojo/framework/widget-core/decorators/afterRender';
 import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { CustomAriaProperties } from '../common/interfaces';
@@ -93,6 +94,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 export class ListboxBase<P extends ListboxProperties = ListboxProperties> extends ThemedBase<P, null> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();
+	private _rendered = false;
 
 	private _getOptionDisabled(option: any, index: number) {
 		const { getOptionDisabled } = this.properties;
@@ -157,12 +159,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		}
 	}
 
-	protected animateScroll(scrollValue: number) {
-		this.meta(ScrollMeta).scroll('root', scrollValue);
-	}
-
-	@diffProperty('activeIndex', auto)
-	protected calculateScroll(previousProperties: ListboxProperties, { activeIndex = 0 }: ListboxProperties) {
+	private _calculateScroll({ activeIndex = 0 }: ListboxProperties) {
 		const menuDimensions = this.meta(Dimensions).get('root');
 		const scrollOffset = menuDimensions.scroll.top;
 		const menuHeight = menuDimensions.offset.height;
@@ -175,6 +172,28 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		else if ((optionOffset.top + optionOffset.height) > (scrollOffset + menuHeight)) {
 			this.animateScroll(optionOffset.top + optionOffset.height - menuHeight);
 		}
+	}
+
+	protected animateScroll(scrollValue: number) {
+		this.meta(ScrollMeta).scroll('root', scrollValue);
+	}
+
+	@diffProperty('activeIndex', auto)
+	protected calculateScroll(previousProperties: ListboxProperties, newProperties: ListboxProperties) {
+		this._calculateScroll(newProperties);
+	}
+
+	@afterRender()
+	protected afterRender(dNode: DNode) {
+		if (!this._rendered) {
+			const dimensionMeta = this.meta(Dimensions);
+			if (dimensionMeta && dimensionMeta.get('root').offset.height) {
+				this._rendered = true;
+				this._calculateScroll(this.properties);
+			}
+		}
+
+		return dNode;
 	}
 
 	protected getModifierClasses() {

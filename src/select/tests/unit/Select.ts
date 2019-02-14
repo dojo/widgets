@@ -119,25 +119,25 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 			...describedBy
 		}, [
 			v('option', {
-				value: useTestProperties ? 'one' : '',
+				value: useTestProperties ? 'one' : undefined,
 				id: useTestProperties ? 'one' : undefined,
 				disabled: useTestProperties ? false : undefined,
 				selected: useTestProperties ? false : undefined
 			}, [ useTestProperties ? 'One' : `${testOptions[0]}` ]),
 			v('option', {
-				value: useTestProperties ? 'two' : '',
+				value: useTestProperties ? 'two' : undefined,
 				id: useTestProperties ? 'two' : undefined,
 				disabled: useTestProperties ? false : undefined,
 				selected: useTestProperties ? true : undefined
 			}, [ useTestProperties ? 'Two' : `${testOptions[1]}` ]),
 			v('option', {
-				value: useTestProperties ? 'three' : '',
+				value: useTestProperties ? 'three' : undefined,
 				id: useTestProperties ? 'three' : undefined,
 				disabled: useTestProperties ? false : undefined,
 				selected: useTestProperties ? false : undefined
 			}, [ useTestProperties ? 'Three' : `${testOptions[2]}` ]),
 			v('option', {
-				value: useTestProperties ? 'four' : '',
+				value: useTestProperties ? 'four' : undefined,
 				id: useTestProperties ? 'four' : undefined,
 				disabled: useTestProperties ? true : undefined,
 				selected: useTestProperties ? false : undefined
@@ -151,7 +151,8 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 	return vdom;
 };
 
-const expectedSingle = function(useTestProperties = false, withStates = false, open = false, placeholder = '', activeIndex = 0) {
+const expectedSingle = function(useTestProperties = false, withStates = false, open = false, placeholder = '', activeIndex = -1) {
+	activeIndex = activeIndex >= 0 ? activeIndex : useTestProperties ? 1 : 0;
 	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
 	const vdom = v('div', {
 		classes: [ css.inputWrapper, open ? css.open : null ],
@@ -350,7 +351,7 @@ registerSuite('Select', {
 				const h = harness(() => w(Select, testProperties));
 				h.expect(() => expected(expectedSingle(true)));
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.expect(() => expected(expectedSingle(true)));
 			},
@@ -358,7 +359,7 @@ registerSuite('Select', {
 			'focus listbox on open'() {
 				const h = harness(() => w(Select, testProperties), [ compareListboxFocused ]);
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
 			},
 
 			'focus trigger on escape to close'() {
@@ -391,14 +392,14 @@ registerSuite('Select', {
 				}));
 
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
-				h.trigger('@listbox', 'onOptionSelect', testOptions[1]);
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.trigger('@listbox', 'onOptionSelect', testOptions[2]);
 				h.expect(() => expected(expectedSingle(true)));
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
 				// open widget a second time
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
 				h.trigger('@trigger', 'onmousedown');
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				h.trigger('@trigger', 'onclick', stubEvent);
@@ -451,7 +452,7 @@ registerSuite('Select', {
 							onkeydown: noop
 						}, [
 							w(Listbox, {
-								activeIndex: 0,
+								activeIndex: 1,
 								widgetId: '',
 								focus: noop,
 								key: 'listbox',
@@ -475,8 +476,8 @@ registerSuite('Select', {
 			'change active option'() {
 				const h = harness(() => w(Select, testProperties));
 				h.expect(() => expected(expectedSingle(true)));
-				h.trigger('@listbox', 'onActiveIndexChange', 1);
-				h.expect(() => expected(expectedSingle(true, false, false, '', 1)));
+				h.trigger('@listbox', 'onActiveIndexChange', 2);
+				h.expect(() => expected(expectedSingle(true, false, false, '', 2)));
 			},
 
 			'open/close with keyboard'() {
@@ -489,13 +490,13 @@ registerSuite('Select', {
 					which: Keys.Down, ...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Down, ...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Escape, ...stubEvent
@@ -519,7 +520,7 @@ registerSuite('Select', {
 				}));
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
 
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				h.expect(() => expected(expectedSingle(true)));
@@ -536,7 +537,7 @@ registerSuite('Select', {
 
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, true, '')));
 
 				h.trigger('@trigger', 'onblur');
 				h.expect(() => expected(expectedSingle(true)));
@@ -562,10 +563,10 @@ registerSuite('Select', {
 				}));
 
 				h.trigger('@trigger', 'onkeydown', {
-					...stubEvent, key: 'T'
+					...stubEvent, key: 'O'
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, false, '', 1)));
+				h.expect(() => expected(expectedSingle(true, false, false, '', 0)));
 			},
 
 			'select option in menu based on input key'() {
@@ -579,14 +580,14 @@ registerSuite('Select', {
 				});
 
 				h.trigger('@listbox', 'onKeyDown', {
-					...stubEvent, key: 'T'
+					...stubEvent, key: 'O'
 				});
 
 				h.trigger('@trigger', 'onkeydown', {
 					...stubEvent, which: Keys.Enter
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 1)));
+				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
 			},
 
 			'select option in menu based on multiple input keys'() {
@@ -628,7 +629,7 @@ registerSuite('Select', {
 					...stubEvent, key: 'o'
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, false, '', 0)));
+				h.expect(() => expected(expectedSingle(true, false, false, '', 1)));
 			}
 		}
 	}

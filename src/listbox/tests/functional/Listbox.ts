@@ -10,6 +10,7 @@ import { uuid } from '@dojo/framework/core/util';
 const axe = services.axe;
 const DELAY = 300;
 const ERROR_MARGIN = 5;
+const LIST_BOX_3_SELECTOR = '#listbox3';
 
 function getPage(remote: Remote) {
 	return remote
@@ -97,6 +98,40 @@ registerSuite('Listbox', {
 				.then(({ y }: { y: number; }) => {
 					assert.isAtLeast(y, menuTop - ERROR_MARGIN, 'scroll back up');
 				});
+	},
+
+	'an initial selected value should be visible'() {
+		const { touchEnabled } = this.remote.session.capabilities;
+		let menuBottom: number;
+		let menuTop: number;
+		let itemHeight: number;
+
+		if (touchEnabled) {
+			this.skip('Arrow keys required for tests.');
+		}
+
+		return getPage(this.remote)
+			.findByCssSelector(LIST_BOX_3_SELECTOR)
+				.getPosition()
+				.then(({ y }: { y: number; }) => {
+					menuTop = y;
+				})
+				.getSize()
+				.then(({ height }: { height: number }) => {
+					menuBottom = menuTop + height;
+				})
+				.end()
+			.findByCssSelector(`${LIST_BOX_3_SELECTOR} .${css.activeOption}`)
+				.getSize()
+				.then(({ height }: { height: number }) => {
+					itemHeight = height;
+				})
+				.getPosition()
+				.then(({ y }: { y: number; }) => {
+					assert.isAtLeast(y, menuTop - ERROR_MARGIN);
+					assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight) + ERROR_MARGIN, 'scrolled down');
+				})
+				.end();
 	},
 
 	'keys move and select active option'() {
