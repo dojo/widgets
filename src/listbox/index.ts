@@ -174,17 +174,8 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		}
 	}
 
-	protected animateScroll(scrollValue: number) {
-		this.meta(ScrollMeta).scroll('root', scrollValue);
-	}
-
-	@diffProperty('activeIndex', auto)
-	protected calculateScroll(previousProperties: ListboxProperties, newProperties: ListboxProperties) {
-		this._calculateScroll(newProperties);
-	}
-
 	@afterRender()
-	protected afterRender(dNode: DNode) {
+	private afterRender(dNode: DNode) {
 		if (!this._rendered) {
 			const dimensionMeta = this.meta(Dimensions);
 			if (dimensionMeta && dimensionMeta.get('root').offset.height) {
@@ -194,6 +185,15 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		}
 
 		return dNode;
+	}
+
+	protected animateScroll(scrollValue: number) {
+		this.meta(ScrollMeta).scroll('root', scrollValue);
+	}
+
+	@diffProperty('activeIndex', auto)
+	protected calculateScroll(previousProperties: ListboxProperties, newProperties: ListboxProperties) {
+		this._calculateScroll(newProperties);
 	}
 
 	protected getModifierClasses() {
