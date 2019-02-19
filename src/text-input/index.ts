@@ -11,8 +11,11 @@ import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
+import ValidityMeta from './ValidityMeta';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
+
+type TextInputInternalState = any;
 
 /**
  * @type IconProperties
@@ -37,6 +40,8 @@ export interface TextInputProperties extends ThemedProperties, InputProperties, 
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
+	validate?: ((value: string) => { message: string; valid: boolean; }) | boolean;
+	onValidate?: (valid: boolean, message?: string) => void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -118,6 +123,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	private _onInput (event: Event) {
 		event.stopPropagation();
 		this.properties.onInput && this.properties.onInput((event.target as HTMLInputElement).value);
+		this._validate();
 	}
 	private _onKeyDown (event: KeyboardEvent) {
 		event.stopPropagation();
@@ -152,6 +158,36 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
+	private _validate(): void {
+		const { validate, onValidate } = this.properties;
+		if (!validate) {
+			return;
+		}
+
+		let { valid, message, value } = this.meta(ValidityMeta).get('input');
+
+		if (typeof validate === 'function') {
+			const { valid: customValid, message: customMessage } = validate(value);
+			valid = valid && customValid;
+			message = customMessage || message;
+		}
+
+		this._state = {
+			...this._state,
+			valid,
+			message
+		};
+
+		if (onValidate) {
+			onValidate(valid, message);
+		}
+
+		this.invalidate();
+	}
+
+	private _state: TextInputInternalState = {
+	};
+
 	private _uuid: string;
 
 	constructor() {
@@ -166,13 +202,14 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			readOnly,
 			required
 		} = this.properties;
+		const { valid } = this._state;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
+			invalid === true || valid === false ? css.invalid : null,
+			invalid === false || valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
