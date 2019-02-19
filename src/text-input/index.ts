@@ -17,6 +17,9 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
 
 type TextInputInternalState = any;
 
+type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
+type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
+
 /**
  * @type IconProperties
  *
@@ -30,7 +33,7 @@ type TextInputInternalState = any;
  * @property value           The current value
  */
 
-export interface TextInputProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+export interface TextInputProperties extends ThemedProperties, Omit<InputProperties, 'invalid'>, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
 	controls?: string;
 	type?: TextInputType;
 	maxLength?: number | string;
@@ -70,7 +73,6 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'aria',
 		'extraClasses',
 		'disabled',
-		'invalid',
 		'readOnly',
 		'labelAfter',
 		'labelHidden'
@@ -123,7 +125,6 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	private _onInput (event: Event) {
 		event.stopPropagation();
 		this.properties.onInput && this.properties.onInput((event.target as HTMLInputElement).value);
-		this._validate();
 	}
 	private _onKeyDown (event: KeyboardEvent) {
 		event.stopPropagation();
@@ -158,18 +159,24 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
-	private _validate(): void {
-		const { validate, onValidate } = this.properties;
-		if (!validate) {
+	private _validate() {
+		const { validate, onValidate, value } = this.properties;
+		if (!validate || value === undefined || value === null) {
 			return;
 		}
 
-		let { valid, message, value } = this.meta(ValidityMeta).get('input');
+		let { valid, message } = this.meta(ValidityMeta).get('input', value);
 
 		if (typeof validate === 'function') {
-			const { valid: customValid, message: customMessage } = validate(value);
+			const { valid: customValid, message: customMessage } = validate(value!);
 			valid = valid && customValid;
 			message = customMessage || message;
+		}
+
+		if (onValidate) {
+			if (this._state.valid !== valid || this._state.message !== message) {
+				onValidate(valid, message);
+			}
 		}
 
 		this._state = {
@@ -177,28 +184,18 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			valid,
 			message
 		};
-
-		if (onValidate) {
-			onValidate(valid, message);
-		}
-
-		this.invalidate();
 	}
 
 	private _state: TextInputInternalState = {
+		valid: undefined,
+		message: ''
 	};
 
-	private _uuid: string;
-
-	constructor() {
-		super();
-		this._uuid = uuid();
-	}
+	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
-			invalid,
 			readOnly,
 			required
 		} = this.properties;
@@ -208,8 +205,8 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true || valid === false ? css.invalid : null,
-			invalid === false || valid === true ? css.valid : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
@@ -220,7 +217,6 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			aria = {},
 			disabled,
 			widgetId = this._uuid,
-			invalid,
 			maxLength,
 			minLength,
 			name,
@@ -233,9 +229,11 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			autocomplete
 		} = this.properties;
 
+		const { valid } = this._state;
+
 		return v('input', {
 			...formatAriaProperties(aria),
-			'aria-invalid': invalid ? 'true' : null,
+			'aria-invalid': valid === false ? 'true' : null,
 			autocomplete: formatAutocomplete(autocomplete),
 			classes: this.theme(css.input),
 			disabled,
@@ -278,16 +276,19 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		const {
 			disabled,
 			widgetId = this._uuid,
-			invalid,
 			label,
 			labelAfter = false,
 			labelHidden = false,
 			readOnly,
 			required,
 			theme,
-			classes
+			classes,
+			value
 		} = this.properties;
+
 		const focus = this.meta(Focus).get('root');
+
+		this._validate();
 
 		const children = [
 			label ? w(Label, {
@@ -295,7 +296,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				classes,
 				disabled,
 				focused: focus.containsFocus,
-				invalid,
+				invalid: this._state.valid === false,
 				readOnly,
 				required,
 				hidden: labelHidden,

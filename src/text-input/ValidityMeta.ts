@@ -1,19 +1,25 @@
 import Base from '@dojo/framework/widget-core/meta/Base';
 
-export class Validity extends Base {
-	get(key: string | number) {
-		const node = this.getNode(key) as HTMLInputElement | undefined;
+export class InputValidity extends Base {
+	get(key: string | number, value: string) {
+		const node = this.getNode(key) as HTMLFormElement | undefined;
 
 		if (!node) {
-			return { valid: true, message: '', value: undefined };
+			return { valid: undefined, message: '' };
+		}
+
+		if (value !== node.value) {
+			// if the vdom is out of sync with the real dom our
+			// validation check will be one render behind.
+			// Call invalidate on the next loop.
+			setTimeout(() => this.invalidate());
 		}
 
 		return {
-			value: node.value,
 			valid: node.validity.valid,
 			message: node.validationMessage
 		};
 	}
 }
 
-export default Validity;
+export default InputValidity;
