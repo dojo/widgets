@@ -16,7 +16,6 @@ import { createHarness, compareId, compareForId, MockMetaMixin, noop, stubEvent 
 const harness = createHarness([ compareId, compareForId ]);
 
 interface States {
-	invalid?: boolean;
 	disabled?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -29,6 +28,7 @@ interface ExpectedOptions {
 	label?: boolean;
 	states?: States;
 	focused?: boolean;
+	invalid?: boolean;
 }
 
 const expected = (options: ExpectedOptions = {}) => {
@@ -38,9 +38,10 @@ const expected = (options: ExpectedOptions = {}) => {
 		addonAfter = false,
 		label = false,
 		states = {},
-		focused = false
+		focused = false,
+		invalid
 	} = options;
-	const { readOnly, disabled, required, invalid } = states;
+	const { readOnly, disabled, required } = states;
 	const children = [
 		v('input', {
 			'aria-invalid': invalid ? 'true' : null,
@@ -105,7 +106,6 @@ const expected = (options: ExpectedOptions = {}) => {
 			disabled,
 			focused,
 			hidden: false,
-			invalid,
 			readOnly,
 			required,
 			forId: ''
@@ -180,7 +180,6 @@ registerSuite('EnhancedTextInput', {
 
 			'state classes'() {
 				let states: States = {
-					invalid: true,
 					disabled: true,
 					readOnly: true,
 					required: true
@@ -190,7 +189,6 @@ registerSuite('EnhancedTextInput', {
 					states
 				}));
 				states = {
-					invalid: false,
 					disabled: false,
 					readOnly: false,
 					required: false
@@ -200,7 +198,6 @@ registerSuite('EnhancedTextInput', {
 
 			'state classes on label'() {
 				let states: States = {
-					invalid: true,
 					disabled: true,
 					readOnly: true,
 					required: true

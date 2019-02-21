@@ -17,6 +17,7 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
 
 type TextInputInternalState = any;
 
+// This should be able to be replaced with Exclude in TypeScript 2.8
 type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
 type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
 
@@ -296,7 +297,6 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				classes,
 				disabled,
 				focused: focus.containsFocus,
-				invalid: this._state.valid === false,
 				readOnly,
 				required,
 				hidden: labelHidden,

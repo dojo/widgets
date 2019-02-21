@@ -7,21 +7,30 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 
 import Label from '../../../label/index';
-import TextInput from '../../index';
+import TextInput, { TextInputProperties } from '../../index';
 import * as css from '../../../theme/text-input.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareForId ]);
 
+const sleep = (time: number = 0) => new Promise((resolve) => setTimeout(resolve, time));
+
 interface States {
 	disabled?: boolean;
 	required?: boolean;
-	invalid?: boolean;
 	readOnly?: boolean;
 }
 
-const expected = function(label = false, inputOverrides = {}, states: States = {}, focused = false) {
-	const { disabled, required, readOnly, invalid } = states;
+interface ExpectedOptions {
+	label?: boolean;
+	inputOverrides?: any;
+	states?: States;
+	focused?: boolean;
+	invalid?: boolean;
+}
+
+const expected = function({ label = false, inputOverrides = {}, states = {}, focused = false, invalid }: ExpectedOptions = {}) {
+	const { disabled, required, readOnly } = states;
 
 	return v('div', {
 		key: 'root',
@@ -33,7 +42,6 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 			disabled,
 			focused,
 			hidden: false,
-			invalid,
 			readOnly,
 			required,
 			forId: ''
@@ -98,16 +106,18 @@ registerSuite('TextInput', {
 				value: 'hello world'
 			}));
 
-			h.expect(() => expected(false, {
-				'aria-controls': 'foo',
-				'aria-describedby': 'bar',
-				id: 'foo',
-				maxlength: '50',
-				minlength: '10',
-				name: 'bar',
-				placeholder: 'baz',
-				type: 'email',
-				value: 'hello world'
+			h.expect(() => expected({
+				inputOverrides: {
+					'aria-controls': 'foo',
+					'aria-describedby': 'bar',
+					id: 'foo',
+					maxlength: '50',
+					minlength: '10',
+					name: 'bar',
+					placeholder: 'baz',
+					type: 'email',
+					value: 'hello world'
+				}
 			}));
 		},
 
@@ -116,7 +126,7 @@ registerSuite('TextInput', {
 				label: 'foo'
 			}));
 
-			h.expect(() => expected(true));
+			h.expect(() => expected({ label: true }));
 		},
 
 		'pattern': {
@@ -125,8 +135,10 @@ registerSuite('TextInput', {
 					pattern: '^foo|bar$'
 				}));
 
-				h.expect(() => expected(false, {
-					pattern: '^foo|bar$'
+				h.expect(() => expected({
+					inputOverrides: {
+						pattern: '^foo|bar$'
+					}
 				}));
 			},
 			'regexp'() {
@@ -135,20 +147,26 @@ registerSuite('TextInput', {
 				};
 				const h = harness(() => w(TextInput, properties));
 
-				h.expect(() => expected(false, {
-					pattern: '^foo|bar$'
+				h.expect(() => expected({
+						inputOverrides: {
+						pattern: '^foo|bar$'
+					}
 				}));
 
 				(properties.pattern.compile as any)('^bar|baz$');
 
-				h.expect(() => expected(false, {
-					pattern: '^bar|baz$'
+				h.expect(() => expected({
+					inputOverrides: {
+						pattern: '^bar|baz$'
+					}
 				}));
 
 				properties.pattern = /^ham|spam$/;
 
-				h.expect(() => expected(false, {
-					pattern: '^ham|spam$'
+				h.expect(() => expected({
+					inputOverrides: {
+						pattern: '^ham|spam$'
+					}
 				}));
 			}
 		},
@@ -159,8 +177,10 @@ registerSuite('TextInput', {
 					autocomplete: true
 				}));
 
-				h.expect(() => expected(false, {
-					autocomplete: 'on'
+				h.expect(() => expected({
+					inputOverrides: {
+						autocomplete: 'on'
+					}
 				}));
 			},
 			'false'() {
@@ -168,8 +188,10 @@ registerSuite('TextInput', {
 					autocomplete: false
 				}));
 
-				h.expect(() => expected(false, {
-					autocomplete: 'off'
+				h.expect(() => expected({
+					inputOverrides: {
+						autocomplete: 'off'
+					}
 				}));
 			},
 			'string'() {
@@ -177,29 +199,34 @@ registerSuite('TextInput', {
 					autocomplete: 'name'
 				}));
 
-				h.expect(() => expected(false, {
-					autocomplete: 'name'
+				h.expect(() => expected({
+					inputOverrides: {
+						autocomplete: 'name'
+					}
 				}));
 			}
 		},
 
 		'state classes'() {
-			let properties = {
-				invalid: true,
+			let properties: any = {
 				disabled: true,
 				readOnly: true,
 				required: true
 			};
+
 			const h = harness(() => w(TextInput, properties));
-			h.expect(() => expected(false, {}, properties));
+			h.expect(() => expected({
+				states: properties
+			}));
 
 			properties = {
-				invalid: false,
 				disabled: false,
 				readOnly: false,
 				required: false
 			};
-			h.expect(() => expected(false, {}, properties));
+			h.expect(() => expected({
+				states: properties
+			}));
 		},
 
 		'focused class'() {
@@ -212,7 +239,7 @@ registerSuite('TextInput', {
 				get: mockFocusGet
 			});
 			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {}));
-			h.expect(() => expected(false, {}, {}, true));
+			h.expect(() => expected({ focused: true }));
 		},
 
 		events() {
