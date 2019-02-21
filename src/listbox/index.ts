@@ -94,7 +94,6 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 export class ListboxBase<P extends ListboxProperties = ListboxProperties> extends ThemedBase<P, null> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();
-	private _rendered = false;
 
 	private _getOptionDisabled(option: any, index: number) {
 		const { getOptionDisabled } = this.properties;
@@ -159,7 +158,11 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		}
 	}
 
-	private _calculateScroll({ activeIndex = 0 }: ListboxProperties) {
+	protected animateScroll(scrollValue: number) {
+		this.meta(ScrollMeta).scroll('root', scrollValue);
+	}
+
+	private _calculateScroll({ activeIndex = 0}: ListboxProperties) {
 		const menuDimensions = this.meta(Dimensions).get('root');
 		const scrollOffset = menuDimensions.scroll.top;
 		const menuHeight = menuDimensions.offset.height;
@@ -174,26 +177,13 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		}
 	}
 
-	@afterRender()
-	private afterRender(dNode: DNode) {
-		if (!this._rendered) {
-			const dimensionMeta = this.meta(Dimensions);
-			if (dimensionMeta && dimensionMeta.get('root').offset.height) {
-				this._rendered = true;
-				this._calculateScroll(this.properties);
-			}
-		}
-
-		return dNode;
-	}
-
-	protected animateScroll(scrollValue: number) {
-		this.meta(ScrollMeta).scroll('root', scrollValue);
-	}
-
 	@diffProperty('activeIndex', auto)
-	protected calculateScroll(previousProperties: ListboxProperties, newProperties: ListboxProperties) {
-		this._calculateScroll(newProperties);
+	protected calculateScroll(previousProperties: ListboxProperties, properties: ListboxProperties) {
+		this._calculateScroll(properties);
+	}
+
+	protected onAttach() {
+		this._calculateScroll(this.properties);
 	}
 
 	protected getModifierClasses() {
