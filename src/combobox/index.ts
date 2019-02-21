@@ -354,7 +354,6 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 			},
 			disabled,
 			widgetId,
-			invalid,
 			focus: this.shouldFocus,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,

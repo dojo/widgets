@@ -24,7 +24,6 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 		'labelAfter',
 		'labelHidden',
 		'disabled',
-		'invalid',
 		'readOnly'
 	],
 	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],

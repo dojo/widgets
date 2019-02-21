@@ -42,6 +42,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 			disabled,
 			focused,
 			hidden: false,
+			invalid,
 			readOnly,
 			required,
 			forId: ''

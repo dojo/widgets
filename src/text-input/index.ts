@@ -40,6 +40,7 @@ export interface TextInputProperties extends ThemedProperties, Omit<InputPropert
 	maxLength?: number | string;
 	minLength?: number | string;
 	placeholder?: string;
+	helperText?: string;
 	value?: string;
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
@@ -82,6 +83,7 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'widgetId',
 		'label',
 		'placeholder',
+		'helperText',
 		'controls',
 		'type',
 		'minLength',
@@ -267,9 +269,29 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		});
 	}
 
+	protected renderHelperText(): DNode {
+		const { properties: { helperText }, _state: { message } } = this;
+		const text = message || helperText;
+		const invalid = !!message;
+
+		return text ? v('div', {
+			classes: this.theme([
+				css.helperTextWrapper,
+				invalid ? css.invalid : null
+			])
+		}, [
+			v('div', {
+				classes: this.theme([
+					css.helperText
+				])
+			}, [text])
+		]) : null;
+	}
+
 	protected renderInputWrapper(): DNode {
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
-			this.renderInput()
+			this.renderInput(),
+			this.renderHelperText()
 		]);
 	}
 
@@ -287,6 +309,8 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			value
 		} = this.properties;
 
+		const { valid } = this._state;
+
 		const focus = this.meta(Focus).get('root');
 
 		this._validate();
@@ -296,6 +320,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				theme,
 				classes,
 				disabled,
+				invalid: typeof valid === 'undefined' ? valid : !valid,
 				focused: focus.containsFocus,
 				readOnly,
 				required,

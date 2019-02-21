@@ -8,6 +8,16 @@
 .readonly {}
 .required {}
 
+.helperTextWrapper {
+}
+
+.helperText {
+}
+
+.invalid .helperText {
+	color: var(--error-color);
+}
+
 .invalid .input {
 	border-color: var(--error-color);
 }
@@ -15,3 +25,4 @@
 .valid .input {
 	border-color: var(--success-color);
 }
+

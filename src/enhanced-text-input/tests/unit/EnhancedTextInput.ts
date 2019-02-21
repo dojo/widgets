@@ -106,6 +106,7 @@ const expected = (options: ExpectedOptions = {}) => {
 			disabled,
 			focused,
 			hidden: false,
+			invalid,
 			readOnly,
 			required,
 			forId: ''
