@@ -8,6 +8,7 @@ import { diffProperty } from '@dojo/framework/widget-core/decorators/diffPropert
 import * as fixedCss from './styles/split-pane.m.css';
 import * as css from '../theme/split-pane.m.css';
 import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
+import { Resize, ContentRect } from '@dojo/framework/widget-core/meta/Resize';
 import { GlobalEvent } from '../global-event/index';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
@@ -106,20 +107,6 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		onResize && onResize(newSize);
 	}
 
-	@diffProperty('collapseWidth', auto)
-	protected collapseWidthReaction(oldProperty: any, newProperty: any) {
-		const { direction = Direction.column } = this.properties;
-		const { collapseWidth = 600 } = newProperty;
-		this._collapseIfNecessary(collapseWidth, direction);
-	}
-
-	@diffProperty('direction', auto)
-	protected directionReaction(oldProperty: any, newProperty: any) {
-		const { collapseWidth = 600 } = this.properties;
-		const { direction = Direction.column } = newProperty;
-		this._collapseIfNecessary(collapseWidth, direction);
-	}
-
 	private _onDragEnd = (event: MouseEvent & TouchEvent) => {
 		event.stopPropagation();
 		this._dragging = false;
@@ -130,57 +117,44 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		return content ? [ content ] : [];
 	}
 
-	protected getPaneStyles(): {[key: string]: string} {
-		const {
-			direction = Direction.column,
-			size = DEFAULT_SIZE
-		} = this.properties;
+	private _shouldCollapse(dimensions: ContentRect) {
+		const { onCollapse, direction, collapseWidth } = this.properties;
 
-		const styles: {[key: string]: string} = {};
-
-		let computedSize = this._collapsed ? 'auto' : `${size}px`;
-
-		styles[direction === Direction.column ? 'width' : 'height'] = computedSize;
-
-		return styles;
-	}
-
-	protected onAttach() {
-		this._onResize();
-	}
-
-	private _collapseIfNecessary(collapseWidth: number, direction: Direction) {
-		const { onCollapse } = this.properties;
-
-		if (direction === Direction.row || !this.meta(Dimensions).has('root')) {
-			return;
+		if (direction === Direction.row) {
+			return false;
 		}
 
-		const { width } = this.meta(Dimensions).get('root').size;
+		const { width } = dimensions;
+		const shouldCollapse = width <= collapseWidth;
 
-		if (width > collapseWidth && this._collapsed === true) {
-			this._collapsed = false;
-			onCollapse && onCollapse(this._collapsed);
+		if (shouldCollapse !== this._collapsed) {
+			onCollapse && onCollapse(shouldCollapse);
 		}
-		else if (width <= collapseWidth && this._collapsed === false) {
-			this._collapsed = true;
-			onCollapse && onCollapse(this._collapsed);
-		}
-	}
 
-	private _onResize = () => {
-		const { collapseWidth = 600, direction = Direction.column } = this.properties;
-		const isCollapsed = this._collapsed;
-		this._collapseIfNecessary(collapseWidth, direction);
-		if (isCollapsed !== this._collapsed) {
-			this.invalidate();
-		}
+		return shouldCollapse;
 	}
 
 	protected render(): DNode {
 		const {
-			direction = Direction.column
+			direction = Direction.column,
+			size = DEFAULT_SIZE,
+			collapseWidth
 		} = this.properties;
+
+		if (collapseWidth) {
+			const { shouldCollapse } = this.meta(Resize).get('root', {
+				shouldCollapse: (dimensions) => {
+					return this._shouldCollapse(dimensions);
+				}
+			});
+
+			// update this._collapsed for check in next render
+			this._collapsed = shouldCollapse;
+		}
+
+		const paneStyles: {[key: string]: string} = {};
+		let computedSize = this._collapsed ? 'auto' : `${size}px`;
+		paneStyles[direction === Direction.column ? 'width' : 'height'] = computedSize;
 
 		return v('div', {
 			classes: [
@@ -200,8 +174,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 				window: {
 					mouseup: this._onDragEnd,
 					mousemove: this._onDragMove,
-					touchmove: this._onDragMove,
-					resize: this._onResize
+					touchmove: this._onDragMove
 				}
 			}),
 			v('div', {
@@ -210,7 +183,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 					fixedCss.leadingFixed
 				],
 				key: 'leading',
-				styles: this.getPaneStyles()
+				styles: paneStyles
 			}, this.getPaneContent(this.children[0])),
 			v('div', {
 				classes: [

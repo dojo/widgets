@@ -23,11 +23,6 @@ export default class App extends WidgetBase {
 		this.invalidate();
 	}
 
-	private _changeCollapseWidth() {
-		this._collapseWidth = this._collapseWidth === 600 ? 350 : 600;
-		this.invalidate();
-	}
-
 	private _onResize = () => {
 		this.invalidate();
 	}
@@ -53,8 +48,7 @@ export default class App extends WidgetBase {
 			v('div', { styles: { marginBottom: '10px' } }, [
 				v('div', { styles: { marginBottom: '5px' } }, [ `Current Collapse Width: ${this._collapseWidth}` ]),
 				v('div', { styles: { marginBottom: '5px' } }, [ `Current Size: ${width}` ]),
-				v('button', { onclick: this._changeToRow }, [ 'Change to row' ]),
-				v('button', { onclick: this._changeCollapseWidth }, [ `Change collapse width to ${this._collapseWidth === 600 ? '350' : '600' }` ])
+				v('button', { onclick: this._changeToRow }, [ 'Change to row' ])
 			]),
 			v('div', {
 				key: 'example-column',
