@@ -8,6 +8,7 @@ import Focus from '@dojo/framework/widget-core/meta/Focus';
 
 import Label from '../../../label/index';
 import TextInput, { TextInputProperties } from '../../index';
+import InputValidity from '../../ValidityMeta';
 import * as css from '../../../theme/text-input.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
@@ -27,9 +28,10 @@ interface ExpectedOptions {
 	states?: States;
 	focused?: boolean;
 	invalid?: boolean;
+	helperText?: string;
 }
 
-const expected = function({ label = false, inputOverrides = {}, states = {}, focused = false, invalid }: ExpectedOptions = {}) {
+const expected = function({ label = false, inputOverrides = {}, states = {}, focused = false, invalid, helperText }: ExpectedOptions = {}) {
 	const { disabled, required, readOnly } = states;
 
 	return v('div', {
@@ -80,7 +82,19 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 				ontouchend: noop,
 				ontouchcancel: noop,
 				...inputOverrides
-			})
+			}),
+			invalid === true || helperText ? v('div', {
+				classes: [
+					css.helperTextWrapper,
+					invalid ? css.invalid : null
+				]
+			}, [
+				v('div', {
+					classes: [
+						css.helperText
+					]
+				}, [helperText])
+			]) : null
 		])
 	]);
 };
@@ -241,6 +255,77 @@ registerSuite('TextInput', {
 			});
 			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {}));
 			h.expect(() => expected({ focused: true }));
+		},
+
+		'helperText'() {
+			const helperText = 'test';
+			const h = harness(() => w(TextInput, {
+				helperText
+			}));
+
+			h.expect(() => expected({ helperText }));
+		},
+
+		'validation'() {
+			const mockMeta = sinon.stub();
+			const mockValidityGet = sinon.stub().returns({
+				valid: false,
+				message: 'pattern'
+			});
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: mockValidityGet
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'tst',
+				validate: true,
+				pattern: 'test'
+			}));
+
+			h.expect(() => expected({
+				invalid: true,
+				inputOverrides: {
+					value: 'tst',
+					pattern: 'test'
+				},
+				helperText: 'pattern'
+			}));
+		},
+
+		'custom validation'() {
+			const mockMeta = sinon.stub();
+			const mockValidityGet = sinon.stub().returns({
+				valid: undefined,
+				message: ''
+			});
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: mockValidityGet
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				validate: () => {
+					return { valid: false, message: 'test' };
+				}
+			}));
+
+			h.expect(() => expected({
+				invalid: true,
+				inputOverrides: {
+					value: 'test value'
+				},
+				helperText: 'test'
+			}));
 		},
 
 		events() {

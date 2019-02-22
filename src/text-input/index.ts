@@ -171,9 +171,9 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		let { valid, message } = this.meta(ValidityMeta).get('input', value);
 
 		if (typeof validate === 'function') {
-			const { valid: customValid, message: customMessage } = validate(value!);
-			valid = valid && customValid;
-			message = customMessage || message;
+			const { valid: customValid, message: customMessage } = validate(value);
+			valid = customValid;
+			message = customMessage;
 		}
 
 		if (onValidate) {
