@@ -117,6 +117,9 @@ registerSuite('SplitPane', {
 			mockDimensionsGet.withArgs('root').returns({
 				offset: {
 					width: 200
+				},
+				size: {
+					width: 200
 				}
 			});
 			mockDimensionsGet.withArgs('divider').returns({
@@ -167,12 +170,22 @@ registerSuite('SplitPane', {
 		'Should collapse when width is less than collapse width'() {
 			const onCollapse = stub();
 			const mockMeta = stub();
+			const mockDimensionsGet = stub();
 
 			const metaReturn = {
 				get: generateMockResizeGet(300),
 				has: () => false
 			};
 			mockMeta.withArgs(Resize).returns(metaReturn);
+
+			mockDimensionsGet.returns({
+				size: {
+					width: 200
+				}
+			});
+			mockMeta.withArgs(Dimensions).returns({
+				get: mockDimensionsGet
+			});
 
 			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, collapseWidth: 400 }));
 			metaReturn.has = () => true;
@@ -192,9 +205,19 @@ registerSuite('SplitPane', {
 		'collapse is ignored when using Direction.Row configuration'() {
 			const onCollapse = stub();
 			const mockMeta = stub();
+			const mockDimensionsGet = stub();
 
 			mockMeta.withArgs(Resize).returns({
 				get: generateMockResizeGet(500)
+			});
+
+			mockDimensionsGet.returns({
+				size: {
+					width: 200
+				}
+			});
+			mockMeta.withArgs(Dimensions).returns({
+				get: mockDimensionsGet
 			});
 
 			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, direction: Direction.row }));
