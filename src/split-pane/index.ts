@@ -56,6 +56,22 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	private _lastSize?: number;
 	private _position = 0;
 	private _collapsed = false;
+	private _resizeResultOverridden = false;
+	private _width = 0;
+
+	@diffProperty('collapseWidth')
+	@diffProperty('direction')
+	private collapseWidthDiff(oldProperties: SplitPaneProperties, { collapseWidth, direction }: SplitPaneProperties) {
+		if (collapseWidth) {
+			if (direction === Direction.row || collapseWidth < this._width && this._collapsed) {
+				this._collapsed = false;
+				this._resizeResultOverridden = true;
+			} else if (collapseWidth > this._width && !this._collapsed) {
+				this._collapsed = true;
+				this._resizeResultOverridden = true;
+			}
+		}
+	}
 
 	private _getPosition(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
@@ -141,15 +157,21 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			collapseWidth
 		} = this.properties;
 
+		const rootDimensions = this.meta(Dimensions).get('root');
+		this._width = rootDimensions.size.width;
+
 		if (collapseWidth) {
 			const { shouldCollapse } = this.meta(Resize).get('root', {
 				shouldCollapse: (dimensions) => {
+					this._resizeResultOverridden = false;
 					return this._shouldCollapse(dimensions);
 				}
 			});
 
-			// update this._collapsed for check in next render
-			this._collapsed = shouldCollapse;
+			if (!this._resizeResultOverridden) {
+				// update this._collapsed for check in next render
+				this._collapsed = shouldCollapse;
+			}
 		}
 
 		const paneStyles: {[key: string]: string} = {};
