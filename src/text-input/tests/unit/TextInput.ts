@@ -92,7 +92,8 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 				v('div', {
 					classes: [
 						css.helperText
-					]
+					],
+					title: helperText
 				}, [helperText])
 			]) : null
 		])
