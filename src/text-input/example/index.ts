@@ -7,7 +7,8 @@ export default class App extends WidgetBase {
 	private _value2: string | undefined;
 	private _value3: string | undefined;
 	private _value4: string | undefined;
-	private _invalid: boolean | undefined;
+	private _value5: string | undefined;
+	private _value6: string | undefined;
 
 	render() {
 		return v('div', {
@@ -70,16 +71,31 @@ export default class App extends WidgetBase {
 				})
 			]),
 			v('div', { id: 'example-validated' }, [
+				v('h3', {}, ['Helper Text']),
+				w(TextInput, {
+					key: 't5',
+					type: 'text',
+					label: 'input with helper text',
+					value: this._value5,
+					helperText: 'helper text',
+					onInput: (value: string) => {
+						this._value5 = value;
+						this.invalidate();
+					}
+				})
+			]),
+			v('div', { id: 'example-validated' }, [
 				v('h3', {}, ['Validated Input']),
 				w(TextInput, {
 					key: 't5',
 					type: 'text',
 					label: 'Type "foo" or "bar"',
-					value: this._value4,
-					invalid: this._invalid,
+					value: this._value6,
+					helperText: 'helper text',
+					validate: true,
+					pattern: 'foo|bar',
 					onInput: (value: string) => {
-						this._value4 = value;
-						this._invalid = value.toLowerCase() !== 'foo' && value.toLowerCase() !== 'bar';
+						this._value6 = value;
 						this.invalidate();
 					}
 				})
