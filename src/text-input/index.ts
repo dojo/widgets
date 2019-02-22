@@ -15,7 +15,10 @@ import ValidityMeta from './ValidityMeta';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
-type TextInputInternalState = any;
+interface TextInputInternalState {
+	valid: boolean | undefined;
+	message: string;
+}
 
 // This should be able to be replaced with Exclude in TypeScript 2.8
 type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
