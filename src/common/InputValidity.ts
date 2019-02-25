@@ -1,3 +1,5 @@
+// NOTE: This module will be deleted in favor of
+// https://github.com/dojo/framework/pull/264
 import Base from '@dojo/framework/widget-core/meta/Base';
 
 export class InputValidity extends Base {

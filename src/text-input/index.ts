@@ -11,7 +11,7 @@ import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
-import ValidityMeta from './ValidityMeta';
+import InputValidity from '../common/InputValidity';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
@@ -171,7 +171,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			return;
 		}
 
-		let { valid, message } = this.meta(ValidityMeta).get('input', value);
+		let { valid, message } = this.meta(InputValidity).get('input', value);
 
 		if (typeof validate === 'function') {
 			const { valid: customValid, message: customMessage } = validate(value);

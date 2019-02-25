@@ -8,7 +8,7 @@ import Focus from '@dojo/framework/widget-core/meta/Focus';
 
 import Label from '../../../label/index';
 import TextInput, { TextInputProperties } from '../../index';
-import InputValidity from '../../ValidityMeta';
+import InputValidity from '../../../common/InputValidity';
 import * as css from '../../../theme/text-input.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
