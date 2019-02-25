@@ -20,8 +20,10 @@ If the `label` property is not used, we recommend creating a separate `label` an
 ```typescript
 // Basic usage
 w(TextInput, {
-	label: 'First Name',
+	label: 'Email Address',
 	value: this.state.firstName,
+    type: 'email',
+    validate: true,
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ firstName: event.target.value });
 	},
@@ -30,7 +32,13 @@ w(TextInput, {
 // Advanced usage
 w(TextInput, {
 	aria: { describedBy: 'instructions' },
-	invalid: this.state.passwordValid,
+    validate(value: string) {
+        if (value.length < 8) {
+            return { valid: false, message: 'Password must be at least 8 characters.' };
+        }
+        
+        return { valid: true, message: '' };
+    },
 	label: 'Create Password',
 	maxLength: 20,
 	name: 'password',
