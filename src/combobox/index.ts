@@ -352,6 +352,7 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 				activedescendant: this._open ? this._getResultId(results[this._activeIndex], this._activeIndex) : null,
 				controls: this._open ? this._getMenuId() : null
 			},
+			validate: typeof invalid === 'boolean' ? () => ({ valid: !invalid, message: '' }) : undefined,
 			disabled,
 			widgetId,
 			focus: this.shouldFocus,
