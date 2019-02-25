@@ -274,14 +274,13 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	protected renderHelperText(): DNode {
-		const { properties: { helperText }, _state: { message } } = this;
+		const { properties: { helperText }, _state: { valid, message } } = this;
 		const text = message || helperText;
-		const invalid = !!message;
 
 		return text ? v('div', {
 			classes: this.theme([
 				css.helperTextWrapper,
-				invalid ? css.invalid : null
+				valid === false ? css.invalid : null
 			])
 		}, [
 			v('div', {
