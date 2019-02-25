@@ -14,8 +14,6 @@ import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent 
 
 const harness = createHarness([ compareId, compareForId ]);
 
-const sleep = (time: number = 0) => new Promise((resolve) => setTimeout(resolve, time));
-
 interface States {
 	disabled?: boolean;
 	required?: boolean;
