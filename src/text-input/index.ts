@@ -20,10 +20,6 @@ interface TextInputInternalState {
 	message: string;
 }
 
-// This should be able to be replaced with Exclude in TypeScript 2.8
-type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
-type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
-
 /**
  * @type IconProperties
  *
@@ -37,7 +33,12 @@ type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>;
  * @property value           The current value
  */
 
-export interface TextInputProperties extends ThemedProperties, Omit<InputProperties, 'invalid'>, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+export interface TextInputProperties extends ThemedProperties, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+	disabled?: boolean;
+	widgetId?: string;
+	name?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	controls?: string;
 	type?: TextInputType;
 	maxLength?: number | string;
