@@ -81,7 +81,8 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'disabled',
 		'readOnly',
 		'labelAfter',
-		'labelHidden'
+		'labelHidden',
+		'validate'
 	],
 	attributes: [
 		'widgetId',
@@ -110,7 +111,8 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValidate'
 	]
 })
 @diffProperty('pattern', patternDiffer)
@@ -167,7 +169,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	private _validate() {
-		const { validate, onValidate, value } = this.properties;
+		const { properties: { validate, onValidate, value }, _state: state } = this;
 		if (!validate || value === undefined || value === null) {
 			return;
 		}
@@ -180,10 +182,8 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			message = customMessage;
 		}
 
-		if (onValidate) {
-			if (this._state.valid !== valid || this._state.message !== message) {
-				onValidate(valid, message);
-			}
+		if (onValidate && (state.valid !== valid || state.message !== message)) {
+			onValidate(valid, message);
 		}
 
 		this._state = {
