@@ -11,7 +11,7 @@ Dojo's `TextInput` widget provides a basic text input widget with an optional la
 
 ### Accessibility Features
 
-`TextInput` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used. It also provides an API for custom ARIA implementations of `aria-describedby` and `aria-controls`.
+`TextInput` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, etc. are used. It also provides an API for custom ARIA implementations of `aria-describedby` and `aria-controls`. It also sets `aria-invalid` when validation fails.
 
 If the `label` property is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
 
@@ -20,8 +20,10 @@ If the `label` property is not used, we recommend creating a separate `label` an
 ```typescript
 // Basic usage
 w(TextInput, {
-	label: 'First Name',
+	label: 'Email Address',
 	value: this.state.firstName,
+    type: 'email',
+    validate: true,
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ firstName: event.target.value });
 	},
@@ -30,7 +32,13 @@ w(TextInput, {
 // Advanced usage
 w(TextInput, {
 	aria: { describedBy: 'instructions' },
-	invalid: this.state.passwordValid,
+    validate(value: string) {
+        if (value.length < 8) {
+            return { valid: false, message: 'Password must be at least 8 characters.' };
+        }
+        
+        return { valid: true, message: '' };
+    },
 	label: 'Create Password',
 	maxLength: 20,
 	name: 'password',
@@ -48,6 +56,12 @@ v('p', {
 }, [ 'Password must be at least 6 characters' ]);
 ```
 
+## Validation
+
+Validation using the built-in browser validation capabilities can be enabled by passing `validate: true` to the component. For example, if the component's `type` property is set to `'email`' and `validate` is true, the browser will validate and automatically display the error message from the browser.
+
+Alternatively, a custom validation method can be used by passing a function to the `validate` property. This function accepts the current value as an argument and returns `{ valid: boolean; message: string; }`.
+
 ## Theming
 
 The following CSS classes are available on the `TextInput` widget for use with custom themes:
@@ -56,7 +70,7 @@ The following CSS classes are available on the `TextInput` widget for use with c
 - `disabled`: Applied to the same level as `root` if `properties.disabled` is true
 - `readonly`: Applied to the same level as `root` if `properties.readOnly` is true
 - `required`: Applied to the same level as `root` if `properties.required` is true
-- `invalid`: Applied to the same level as `root` if `properties.invalid` is true
-- `valid`: Applied to the same level as `root` if `properties.invalid` is set false (i.e. not only undefined)
+- `invalid`: Applied to the same level as `root` if validation is enabled and returns `{ valid: false }`.
+- `valid`: Applied to the same level as `root` if validation is enabled and returns `{ valid: true }`.
 - `inputWrapper`: Applied to the immediate parent of the `<input>`
 - `input`: Applied to the `<input>` element

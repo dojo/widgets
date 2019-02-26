@@ -8,6 +8,19 @@
 .readonly {}
 .required {}
 
+.helperTextWrapper {
+}
+
+.helperText {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.invalid .helperText {
+	color: var(--error-color);
+}
+
 .invalid .input {
 	border-color: var(--error-color);
 }
@@ -15,3 +28,4 @@
 .valid .input {
 	border-color: var(--success-color);
 }
+

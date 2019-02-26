@@ -11,8 +11,14 @@ import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
+import InputValidity from '../common/InputValidity';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
+
+interface TextInputInternalState {
+	valid: boolean | undefined;
+	message: string;
+}
 
 /**
  * @type IconProperties
@@ -27,16 +33,24 @@ export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' 
  * @property value           The current value
  */
 
-export interface TextInputProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+export interface TextInputProperties extends ThemedProperties, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+	disabled?: boolean;
+	widgetId?: string;
+	name?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	controls?: string;
 	type?: TextInputType;
 	maxLength?: number | string;
 	minLength?: number | string;
 	placeholder?: string;
+	helperText?: string;
 	value?: string;
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
+	validate?: ((value: string) => { message: string; valid: boolean; }) | boolean;
+	onValidate?: (valid: boolean, message?: string) => void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -65,15 +79,16 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'aria',
 		'extraClasses',
 		'disabled',
-		'invalid',
 		'readOnly',
 		'labelAfter',
-		'labelHidden'
+		'labelHidden',
+		'validate'
 	],
 	attributes: [
 		'widgetId',
 		'label',
 		'placeholder',
+		'helperText',
 		'controls',
 		'type',
 		'minLength',
@@ -96,7 +111,8 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValidate'
 	]
 })
 @diffProperty('pattern', patternDiffer)
@@ -152,27 +168,52 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
-	private _uuid: string;
+	private _validate() {
+		const { properties: { validate, onValidate, value }, _state: state } = this;
+		if (!validate || value === undefined || value === null) {
+			return;
+		}
 
-	constructor() {
-		super();
-		this._uuid = uuid();
+		let { valid, message } = this.meta(InputValidity).get('input', value);
+
+		if (typeof validate === 'function') {
+			const { valid: customValid, message: customMessage } = validate(value);
+			valid = customValid;
+			message = customMessage;
+		}
+
+		if (onValidate && (state.valid !== valid || state.message !== message)) {
+			onValidate(valid, message);
+		}
+
+		this._state = {
+			...this._state,
+			valid,
+			message
+		};
 	}
+
+	private _state: TextInputInternalState = {
+		valid: undefined,
+		message: ''
+	};
+
+	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
-			invalid,
 			readOnly,
 			required
 		} = this.properties;
+		const { valid } = this._state;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
@@ -183,7 +224,6 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			aria = {},
 			disabled,
 			widgetId = this._uuid,
-			invalid,
 			maxLength,
 			minLength,
 			name,
@@ -196,9 +236,11 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			autocomplete
 		} = this.properties;
 
+		const { valid } = this._state;
+
 		return v('input', {
 			...formatAriaProperties(aria),
-			'aria-invalid': invalid ? 'true' : null,
+			'aria-invalid': valid === false ? 'true' : null,
 			autocomplete: formatAutocomplete(autocomplete),
 			classes: this.theme(css.input),
 			disabled,
@@ -231,9 +273,29 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		});
 	}
 
+	protected renderHelperText(): DNode {
+		const { properties: { helperText }, _state: { valid, message } } = this;
+		const text = message || helperText;
+
+		return text ? v('div', {
+			classes: this.theme([
+				css.helperTextWrapper,
+				valid === false ? css.invalid : null
+			])
+		}, [
+			v('div', {
+				classes: this.theme([
+					css.helperText
+				]),
+				title: text
+			}, [text])
+		]) : null;
+	}
+
 	protected renderInputWrapper(): DNode {
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
-			this.renderInput()
+			this.renderInput(),
+			this.renderHelperText()
 		]);
 	}
 
@@ -241,24 +303,29 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		const {
 			disabled,
 			widgetId = this._uuid,
-			invalid,
 			label,
 			labelAfter = false,
 			labelHidden = false,
 			readOnly,
 			required,
 			theme,
-			classes
+			classes,
+			value
 		} = this.properties;
+
+		const { valid } = this._state;
+
 		const focus = this.meta(Focus).get('root');
+
+		this._validate();
 
 		const children = [
 			label ? w(Label, {
 				theme,
 				classes,
 				disabled,
+				invalid: typeof valid === 'undefined' ? valid : !valid,
 				focused: focus.containsFocus,
-				invalid,
 				readOnly,
 				required,
 				hidden: labelHidden,

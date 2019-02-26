@@ -24,10 +24,21 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 		'labelAfter',
 		'labelHidden',
 		'disabled',
-		'invalid',
-		'readOnly'
+		'readOnly',
+		'validate'
 	],
-	attributes: [ 'widgetId', 'label', 'placeholder', 'controls', 'type', 'minLength', 'maxLength', 'value', 'name' ],
+	attributes: [
+		'widgetId',
+		'label',
+		'placeholder',
+		'controls',
+		'type',
+		'minLength',
+		'maxLength',
+		'value',
+		'name',
+		'helperText'
+	],
 	events: [
 		'onBlur',
 		'onChange',
@@ -41,7 +52,8 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValidate'
 	]
 })
 export default class EnhancedTextInput extends TextInputBase<EnhancedTextInputProperties> {
