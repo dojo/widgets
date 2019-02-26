@@ -661,14 +661,14 @@ registerSuite('Calendar with min-max', {
 			);
 		},
 
-		'Sets the selected date to the minimum if outside the min/max'() {
+		'Allows the selected date even if outside the min/max'() {
 			const h = harness(() => w(Calendar, {
 				selectedDate: new Date('June 1, 2017'),
 				minDate: minDateInMonth,
 				maxDate: maxDateInMonth
 			}));
 
-			h.expect(baseMinMaxTemplate.setProperty('@date-6', 'selected', true));
+			h.expect(baseMinMaxTemplate.setProperty('@date-4', 'selected', true));
 		},
 
 		'Click to select date does not click disabled dates'() {
