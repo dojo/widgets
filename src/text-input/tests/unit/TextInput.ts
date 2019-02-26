@@ -327,6 +327,48 @@ registerSuite('TextInput', {
 			}));
 		},
 
+		'onValidate'() {
+			let valid = false;
+			let message = 'test';
+			const mockMeta = sinon.stub();
+			const validateSpy = sinon.spy();
+			const mockValidityGet = sinon.stub().returns({
+				valid: undefined,
+				message: ''
+			});
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: mockValidityGet
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				validate: () => {
+					return { valid, message };
+				},
+				onValidate: validateSpy
+			}));
+
+			assert.isTrue(validateSpy.calledWith(false, 'test'));
+
+			valid = true;
+			message = '';
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				validate: () => {
+					return { valid, message };
+				},
+				onValidate: validateSpy
+			}));
+
+			assert.isTrue(validateSpy.calledWith(true, ''));
+		},
+
 		events() {
 			const onBlur = sinon.stub();
 			const onChange = sinon.stub();
