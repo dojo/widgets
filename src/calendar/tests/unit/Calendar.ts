@@ -5,7 +5,7 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/defaults';
-import Calendar from '../../index';
+import Calendar, { CalendarProperties } from '../../index';
 import CalendarCell from '../../CalendarCell';
 import DatePicker from '../../DatePicker';
 import Icon from '../../../icon/index';
@@ -549,6 +549,8 @@ const baseMinMaxTemplate = baseTemplate
 		expectedDateCell(5, 2, true, true),
 		expectedDateCell(6, 3, true, false)
 	])
+	.setProperty('@date-4', 'focusable', false)
+	.setProperty('@date-6', 'focusable', true)
 	.replace('tbody tr:nth-child(5)', [
 		expectedDateCell(dateIndex++, 25, true, false),
 		expectedDateCell(dateIndex++, 26, true, false),
@@ -568,7 +570,6 @@ const baseMinMaxTemplate = baseTemplate
 	])
 	.setProperty('~previousMonth', 'disabled', true)
 	.setProperty('~nextMonth', 'disabled', true);
-
 
 registerSuite('Calendar with min-max', {
 	tests: {
@@ -596,6 +597,68 @@ registerSuite('Calendar with min-max', {
 			}));
 
 			h.expect(baseMinMaxTemplate.setProperty('@date-8', 'selected', true));
+		},
+
+		'Set the focusable date when the month change makes it invalid'() {
+			const maxDate = new Date('June 24, 2017');
+			const calendarProperties: CalendarProperties = {
+				month: testDate.getMonth() - 1,
+				year: testDate.getFullYear(),
+				maxDate
+			};
+
+			const h = harness(() => w(Calendar, calendarProperties));
+
+			h.trigger('@date-1', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-8', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-15', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-22', 'onKeyDown', Keys.Down, () => {});
+
+			h.expectPartial('@date-29', () => w(CalendarCell, {
+				key: `date-29`,
+				callFocus: true,
+				date: 29,
+				disabled: false,
+				currentMonth: true,
+				focusable: true, // 29nd is focused
+				selected: false,
+				theme: undefined,
+				classes: undefined,
+				today: false,
+				onClick: noop,
+				onFocusCalled: noop,
+				onKeyDown: noop
+			}));
+
+			// Change to next month so 29th cell is invalid
+			calendarProperties.month = testDate.getMonth();
+
+			dateIndex = 28;
+			h.expect(baseTemplate
+				.setProperty('@date-picker', 'maxDate', maxDate)
+				.setProperty('@date-4', 'focusable', false)
+				.replace('tbody tr:nth-child(5)', [
+					expectedDateCell(dateIndex++, 25, true, true),
+					expectedDateCell(dateIndex++, 26, true, true),
+					expectedDateCell(dateIndex++, 27, true, true),
+					expectedDateCell(dateIndex++, 28, true, true),
+					expectedDateCell(dateIndex++, 29, true, true),
+					expectedDateCell(dateIndex++, 30, true, true),
+					expectedDateCell(dateIndex++, 1, false, true)
+				])
+				.replace('tbody tr:last-child', [
+					expectedDateCell(dateIndex++, 2, false, true),
+					expectedDateCell(dateIndex++, 3, false, true),
+					expectedDateCell(dateIndex++, 4, false, true),
+					expectedDateCell(dateIndex++, 5, false, true),
+					expectedDateCell(dateIndex++, 6, false, true),
+					expectedDateCell(dateIndex++, 7, false, true),
+					expectedDateCell(dateIndex++, 8, false, true)
+				])
+				.setProperty('@date-27', 'focusable', true)
+				.setProperty('@date-27', 'callFocus', true)
+				.setProperty('~nextMonth', 'disabled', true)
+			);
 		},
 
 		'Sets the selected date to the minimum if outside the min/max'() {
@@ -656,7 +719,6 @@ registerSuite('Calendar with min-max', {
 			h.trigger('@date-4', 'onKeyDown', Keys.PageDown, () => {});
 			h.trigger('@date-4', 'onKeyDown', Keys.Right, () => {});
 			assert.strictEqual(currentMonth, testDate.getMonth(), 'Going right from the last day does not change the month');
-		},
-
+		}
 	}
 });

@@ -315,7 +315,30 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		this._onMonthIncrement();
 	}
 
+	private _checkFocusedDate() {
+		const {
+			month,
+			year
+		} = this._getMonthYear();
+		const {
+			minDate,
+			maxDate
+		} = this.properties;
+		const focusedDate = new Date(year, month, this._focusedDay);
+
+		if (!this._dateInMinMax(focusedDate)) {
+			if (minDate && minDate.getFullYear() === year && minDate.getMonth() === month) {
+				this._focusedDay = minDate.getDate();
+			}
+			else if (maxDate && maxDate.getFullYear() === year && maxDate.getMonth() === month) {
+				this._focusedDay = maxDate.getDate();
+			}
+		}
+
+	}
+
 	private _renderDateGrid(selectedDate?: Date) {
+		this._checkFocusedDate();
 		const {
 			month,
 			year
