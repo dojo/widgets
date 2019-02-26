@@ -70,7 +70,7 @@ export default class App extends WidgetBase {
 					readOnly: true
 				})
 			]),
-			v('div', { id: 'example-validated' }, [
+			v('div', { id: 'helper-text' }, [
 				v('h3', {}, ['Helper Text']),
 				w(TextInput, {
 					key: 't5',
