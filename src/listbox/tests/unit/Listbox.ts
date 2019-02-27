@@ -5,6 +5,8 @@ import * as sinon from 'sinon';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { Keys } from '../../../common/util';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
+import Resize from '@dojo/framework/widget-core/meta/Resize';
+import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 import { v, w } from '@dojo/framework/widget-core/d';
 
 import Listbox from '../../index';
@@ -190,6 +192,22 @@ registerSuite('Listbox', {
 			});
 			mockMeta.withArgs(Focus).returns({
 				get: mockFocusGet
+			});
+			mockMeta.withArgs(Resize).returns({
+				get: () => {}
+			});
+			mockMeta.withArgs(Dimensions).returns({
+				get: sinon.stub().returns({
+					scroll: {
+						height: 0,
+						top: 0
+					},
+					offset: {
+						height: 0,
+						top: 0
+					}
+				}),
+				has: () => false
 			});
 			const h = harness(() => w(MockMetaMixin(Listbox, mockMeta), {}));
 			h.expect(() => v('div', {

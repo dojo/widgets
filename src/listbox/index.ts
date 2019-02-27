@@ -1,6 +1,5 @@
-import { auto, reference } from '@dojo/framework/widget-core/diff';
+import { reference } from '@dojo/framework/widget-core/diff';
 import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
-import { afterRender } from '@dojo/framework/widget-core/decorators/afterRender';
 import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { CustomAriaProperties } from '../common/interfaces';
@@ -15,6 +14,7 @@ import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import * as css from '../theme/listbox.m.css';
 import ListboxOption from './ListboxOption';
 import { Focus } from '@dojo/framework/widget-core/meta/Focus';
+import Resize from '@dojo/framework/widget-core/meta/Resize';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
 /* Default scroll meta */
@@ -177,15 +177,6 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		}
 	}
 
-	@diffProperty('activeIndex', auto)
-	protected calculateScroll(previousProperties: ListboxProperties, properties: ListboxProperties) {
-		this._calculateScroll(properties);
-	}
-
-	protected onAttach() {
-		this._calculateScroll(this.properties);
-	}
-
 	protected getModifierClasses() {
 		const { visualFocus } = this.properties;
 		const focus = this.meta(Focus).get('root');
@@ -254,6 +245,9 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 			tabIndex = 0
 		} = this.properties;
 		const themeClasses = this.getModifierClasses();
+
+		this.meta(Resize).get('root');
+		this._calculateScroll(this.properties);
 
 		return v('div', {
 			...formatAriaProperties(aria),
