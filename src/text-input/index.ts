@@ -170,7 +170,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 
 	private _validate() {
 		const { properties: { validate, onValidate, value }, _state: state } = this;
-		if (!validate || value === undefined || value === null) {
+		if (!validate || value === undefined || value === null || (state.valid === undefined && !value)) {
 			return;
 		}
 
