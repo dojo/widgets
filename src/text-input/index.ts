@@ -284,9 +284,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			])
 		}, [
 			v('div', {
-				classes: this.theme([
-					css.helperText
-				]),
+				classes: this.theme(css.helperText),
 				title: text
 			}, [text])
 		]) : null;
