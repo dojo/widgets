@@ -13,6 +13,20 @@
 	flex: 1 1 auto;
 }
 
-.inputWrapper {
+.invalid {
+	composes: invalid from './text-input.m.css';
+}
+
+.helperTextWrapper {
+	composes: helperTextWrapper from './text-input.m.css';
+}
+
+.helperText {
+	composes: helperText from './text-input.m.css';
+}
+
+.inputWrapper { }
+
+.inputWrapperInner {
 	display: flex;
 }

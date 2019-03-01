@@ -49,7 +49,7 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
-	validate?: ((value: string) => { message: string; valid: boolean; }) | boolean;
+	validate?: ((value: string) => { message: string; valid: boolean; } | void) | boolean;
 	onValidate?: (valid: boolean, message?: string) => void;
 }
 
@@ -177,7 +177,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		let { valid, message } = this.meta(InputValidity).get('input', value);
 
 		if (typeof validate === 'function') {
-			const { valid: customValid, message: customMessage } = validate(value);
+			const { valid: customValid = valid, message: customMessage = message } = validate(value) || {};
 			valid = customValid;
 			message = customMessage;
 		}
@@ -284,9 +284,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			])
 		}, [
 			v('div', {
-				classes: this.theme([
-					css.helperText
-				]),
+				classes: this.theme(css.helperText),
 				title: text
 			}, [text])
 		]) : null;

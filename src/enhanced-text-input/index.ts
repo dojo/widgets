@@ -70,9 +70,12 @@ export default class EnhancedTextInput extends TextInputBase<EnhancedTextInputPr
 		} = this.properties;
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
-			...addonBefore.map((addon: DNode) => this.renderAddon(addon, true)),
-			this.renderInput(),
-			...addonAfter.map((addon: DNode) => this.renderAddon(addon))
+			v('div', { classes: this.theme(css.inputWrapperInner) }, [
+				...addonBefore.map((addon: DNode) => this.renderAddon(addon, true)),
+				this.renderInput(),
+				...addonAfter.map((addon: DNode) => this.renderAddon(addon))
+			]),
+			this.renderHelperText()
 		]);
 	}
 }

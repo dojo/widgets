@@ -29,6 +29,7 @@ interface ExpectedOptions {
 	states?: States;
 	focused?: boolean;
 	invalid?: boolean;
+	helperText?: string;
 }
 
 const expected = (options: ExpectedOptions = {}) => {
@@ -39,7 +40,8 @@ const expected = (options: ExpectedOptions = {}) => {
 		label = false,
 		states = {},
 		focused = false,
-		invalid
+		invalid,
+		helperText
 	} = options;
 	const { readOnly, disabled, required } = states;
 	const children = [
@@ -111,7 +113,20 @@ const expected = (options: ExpectedOptions = {}) => {
 			required,
 			forId: ''
 		}, [ 'foo' ]) : null,
-		v('div', { classes: css.inputWrapper }, children)
+		v('div', { classes: css.inputWrapper }, [
+			v('div', { classes: css.inputWrapperInner }, children),
+			helperText ? v('div', {
+				classes: [
+					css.helperTextWrapper,
+					invalid ? css.invalid : null
+				]
+			}, [
+				v('div', {
+					classes: css.helperText,
+					title: helperText
+				}, [helperText])
+			]) : null
+		])
 	]);
 };
 
@@ -218,6 +233,14 @@ registerSuite('EnhancedTextInput', {
 				});
 				const h = harness(() => w(MockMetaMixin(EnhancedTextInput, mockMeta), {}));
 				h.expect(() => expected({ focused: true }));
+			},
+
+			'helperText'() {
+				const h = harness(() => w(EnhancedTextInput, {
+					label: 'foo',
+					helperText: 'test'
+				}));
+				h.expect(() => expected({ label: true, helperText: 'test' }));
 			},
 
 			events() {
