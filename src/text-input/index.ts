@@ -49,7 +49,7 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
-	validate?: ((value: string) => { message: string; valid: boolean; }) | boolean;
+	validate?: ((value: string) => { message: string; valid: boolean; } | void) | boolean;
 	onValidate?: (valid: boolean, message?: string) => void;
 }
 
@@ -170,14 +170,14 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 
 	private _validate() {
 		const { properties: { validate, onValidate, value }, _state: state } = this;
-		if (!validate || value === undefined || value === null || (state.valid === undefined && !value)) {
+		if (!validate || value === undefined || value === null) {
 			return;
 		}
 
 		let { valid, message } = this.meta(InputValidity).get('input', value);
 
 		if (typeof validate === 'function') {
-			const { valid: customValid, message: customMessage } = validate(value);
+			const { valid: customValid = valid, message: customMessage = message } = validate(value) || {};
 			valid = customValid;
 			message = customMessage;
 		}
