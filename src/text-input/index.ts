@@ -46,10 +46,10 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	placeholder?: string;
 	helperText?: string;
 	value?: string;
+	valid?: boolean;
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
-	validate?: ((value: string) => { message: string; valid: boolean; } | void) | boolean;
 	onValidate?: (valid: boolean, message?: string) => void;
 }
 
@@ -82,7 +82,7 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'readOnly',
 		'labelAfter',
 		'labelHidden',
-		'validate'
+		'valid'
 	],
 	attributes: [
 		'widgetId',
@@ -168,35 +168,17 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
-	private _validate() {
-		const { properties: { validate, onValidate, value }, _state: state } = this;
-		if (!validate || value === undefined || value === null) {
+	private _onValidate() {
+		const { onValidate, value } = this.properties;
+
+		if (!onValidate || value === undefined) {
 			return;
 		}
 
-		let { valid, message } = this.meta(InputValidity).get('input', value);
+		const { valid, message } = this.meta(InputValidity).get('input', value);
 
-		if (typeof validate === 'function') {
-			const { valid: customValid = valid, message: customMessage = message } = validate(value) || {};
-			valid = customValid;
-			message = customMessage;
-		}
-
-		if (onValidate && (state.valid !== valid || state.message !== message)) {
-			onValidate(valid, message);
-		}
-
-		this._state = {
-			...this._state,
-			valid,
-			message
-		};
+		onValidate(valid, message);
 	}
-
-	private _state: TextInputInternalState = {
-		valid: undefined,
-		message: ''
-	};
 
 	private _uuid = uuid();
 
@@ -204,9 +186,9 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		const {
 			disabled,
 			readOnly,
-			required
+			required,
+			valid
 		} = this.properties;
-		const { valid } = this._state;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
@@ -232,11 +214,10 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			required,
 			type = 'text',
 			value,
+			valid,
 			pattern,
 			autocomplete
 		} = this.properties;
-
-		const { valid } = this._state;
 
 		return v('input', {
 			...formatAriaProperties(aria),
@@ -274,19 +255,20 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	protected renderHelperText(): DNode {
-		const { properties: { helperText }, _state: { valid, message } } = this;
-		const text = message || helperText;
+		const { helperText, valid } = this.properties;
 
-		return text ? v('div', {
+		return helperText ? v('div', {
+			key: 'helperTextWrapper',
 			classes: this.theme([
 				css.helperTextWrapper,
 				valid === false ? css.invalid : null
 			])
 		}, [
 			v('div', {
+				key: 'helperText',
 				classes: this.theme(css.helperText),
-				title: text
-			}, [text])
+				title: helperText
+			}, [helperText])
 		]) : null;
 	}
 
@@ -308,21 +290,20 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			required,
 			theme,
 			classes,
-			value
+			value,
+			valid
 		} = this.properties;
-
-		const { valid } = this._state;
 
 		const focus = this.meta(Focus).get('root');
 
-		this._validate();
+		this._onValidate();
 
 		const children = [
 			label ? w(Label, {
 				theme,
 				classes,
 				disabled,
-				invalid: typeof valid === 'undefined' ? valid : !valid,
+				invalid: valid === false || undefined,
 				focused: focus.containsFocus,
 				readOnly,
 				required,
