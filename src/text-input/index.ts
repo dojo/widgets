@@ -46,7 +46,7 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	placeholder?: string;
 	helperText?: string;
 	value?: string;
-	valid?: boolean;
+	valid?: { valid?: boolean; message?: string; } | boolean;
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
@@ -180,15 +180,28 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		onValidate(valid, message);
 	}
 
+	private get validity() {
+		const { valid = { valid: undefined, message: undefined } } = this.properties;
+
+		if (typeof valid === 'boolean') {
+			return { valid, message: undefined };
+		}
+
+		return {
+			valid: valid.valid,
+			message: valid.message
+		};
+	}
+
 	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
 			readOnly,
-			required,
-			valid
+			required
 		} = this.properties;
+		const { valid } = this.validity;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
@@ -214,10 +227,11 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			required,
 			type = 'text',
 			value,
-			valid,
 			pattern,
 			autocomplete
 		} = this.properties;
+
+		const { valid } = this.validity;
 
 		return v('input', {
 			...formatAriaProperties(aria),
@@ -255,9 +269,10 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	protected renderHelperText(): DNode {
-		const { helperText, valid } = this.properties;
+		const { properties: { helperText }, validity: { valid, message } } = this;
+		const text = (valid && message) || helperText;
 
-		return helperText ? v('div', {
+		return text ? v('div', {
 			key: 'helperTextWrapper',
 			classes: this.theme([
 				css.helperTextWrapper,
@@ -267,8 +282,8 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			v('div', {
 				key: 'helperText',
 				classes: this.theme(css.helperText),
-				title: helperText
-			}, [helperText])
+				title: text
+			}, [text])
 		]) : null;
 	}
 
@@ -290,9 +305,9 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			required,
 			theme,
 			classes,
-			value,
-			valid
+			value
 		} = this.properties;
+		const { valid } = this.validity;
 
 		const focus = this.meta(Focus).get('root');
 
