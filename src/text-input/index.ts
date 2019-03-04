@@ -180,7 +180,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		onValidate(valid, message);
 	}
 
-	private get validity() {
+	protected get validity() {
 		const { valid = { valid: undefined, message: undefined } } = this.properties;
 
 		if (typeof valid === 'boolean') {
@@ -270,7 +270,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 
 	protected renderHelperText(): DNode {
 		const { properties: { helperText }, validity: { valid, message } } = this;
-		const text = (valid && message) || helperText;
+		const text = (valid === false && message) || helperText;
 
 		return text ? v('div', {
 			key: 'helperTextWrapper',

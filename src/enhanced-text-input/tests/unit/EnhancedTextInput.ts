@@ -116,12 +116,14 @@ const expected = (options: ExpectedOptions = {}) => {
 		v('div', { classes: css.inputWrapper }, [
 			v('div', { classes: css.inputWrapperInner }, children),
 			helperText ? v('div', {
+				key: 'helperTextWrapper',
 				classes: [
 					css.helperTextWrapper,
 					invalid ? css.invalid : null
 				]
 			}, [
 				v('div', {
+					key: 'helperText',
 					classes: css.helperText,
 					title: helperText
 				}, [helperText])

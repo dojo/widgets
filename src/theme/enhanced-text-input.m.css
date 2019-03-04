@@ -10,7 +10,7 @@
 
 .input {
 	composes: input from './text-input.m.css';
-	flex: 1 1 auto;
+	flex: 0 1 auto;
 }
 
 .invalid {

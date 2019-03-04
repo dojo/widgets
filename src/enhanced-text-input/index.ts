@@ -25,7 +25,7 @@ export interface EnhancedTextInputProperties extends TextInputProperties {
 		'labelHidden',
 		'disabled',
 		'readOnly',
-		'validate'
+		'valid'
 	],
 	attributes: [
 		'widgetId',
