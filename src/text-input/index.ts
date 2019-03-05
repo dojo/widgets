@@ -16,8 +16,9 @@ import InputValidity from '../common/InputValidity';
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
 interface TextInputInternalState {
-	valid: boolean | undefined;
-	message: string;
+	value?: string;
+	valid?: boolean;
+	message?: string;
 }
 
 /**
@@ -47,10 +48,11 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	helperText?: string;
 	value?: string;
 	valid?: { valid?: boolean; message?: string; } | boolean;
+	customValidator?: (value: string) => { valid?: boolean; message?: string; } | void;
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
-	onValidate?: (valid: boolean, message?: string) => void;
+	onValidate?: (valid?: boolean, message?: string) => void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -168,14 +170,31 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
-	private _onValidate() {
-		const { onValidate, value } = this.properties;
+	private _validate() {
+		const { _state: state, properties: {  onValidate, value, customValidator } } = this;
 
-		if (!onValidate || value === undefined) {
+		if (!onValidate || value === undefined || value === null || state.value === value) {
 			return;
 		}
 
-		const { valid, message } = this.meta(InputValidity).get('input', value);
+		state.value = value;
+
+		let { valid, message } = this.meta(InputValidity).get('input', value);
+
+		if (valid && customValidator) {
+			const customValid = customValidator(value);
+			if (customValid) {
+				valid = customValid.valid;
+				message = customValid.message;
+			}
+		}
+
+		if (valid === state.valid && message === state.message) {
+			return;
+		}
+
+		state.valid = valid;
+		state.message = message;
 
 		onValidate(valid, message);
 	}
@@ -194,6 +213,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	private _uuid = uuid();
+	private _state: TextInputInternalState = {};
 
 	protected getRootClasses(): (string | null)[] {
 		const {
@@ -269,7 +289,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	protected renderHelperText(): DNode {
-		const { properties: { helperText }, validity: { valid, message } } = this;
+		const { properties: { helperText = '' }, validity: { valid, message = '' } } = this;
 		const text = (valid === false && message) || helperText;
 
 		return text ? v('div', {
@@ -311,7 +331,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 
 		const focus = this.meta(Focus).get('root');
 
-		this._onValidate();
+		this._validate();
 
 		const children = [
 			label ? w(Label, {

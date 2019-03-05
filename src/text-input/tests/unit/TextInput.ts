@@ -321,6 +321,72 @@ registerSuite('TextInput', {
 			assert.isTrue(validateSpy.calledWith(true, ''));
 		},
 
+		'customValidator not called when native validation fails'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: false, message: 'test' })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				onValidate: validateSpy,
+				customValidator: customValidatorSpy
+			}));
+
+			assert.isFalse(customValidatorSpy.called);
+		},
+
+		'customValidator called when native validation succeeds'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				onValidate: validateSpy,
+				customValidator: customValidatorSpy
+			}));
+
+			assert.isTrue(customValidatorSpy.called);
+		},
+
+		'customValidator can change the validation outcome'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.stub().returns({ valid: false, message: 'custom message' });
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				onValidate: validateSpy,
+				customValidator: customValidatorSpy
+			}));
+
+			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
+		},
+
 		events() {
 			const onBlur = sinon.stub();
 			const onChange = sinon.stub();
