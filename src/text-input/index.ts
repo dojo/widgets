@@ -16,8 +16,9 @@ import InputValidity from '../common/InputValidity';
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
 interface TextInputInternalState {
-	valid: boolean | undefined;
-	message: string;
+	previousValue?: string;
+	previousValid?: boolean;
+	previousMessage?: string;
 }
 
 /**
@@ -46,11 +47,12 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	placeholder?: string;
 	helperText?: string;
 	value?: string;
+	valid?: { valid?: boolean; message?: string; } | boolean;
+	customValidator?: (value: string) => { valid?: boolean; message?: string; } | void;
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
-	validate?: ((value: string) => { message: string; valid: boolean; } | void) | boolean;
-	onValidate?: (valid: boolean, message?: string) => void;
+	onValidate?: (valid: boolean | undefined, message: string) => void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -82,7 +84,7 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'readOnly',
 		'labelAfter',
 		'labelHidden',
-		'validate'
+		'valid'
 	],
 	attributes: [
 		'widgetId',
@@ -169,36 +171,49 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	private _validate() {
-		const { properties: { validate, onValidate, value }, _state: state } = this;
-		if (!validate || value === undefined || value === null) {
+		const { _state: state, properties: {  onValidate, value, customValidator } } = this;
+
+		if (!onValidate || value === undefined || value === null || state.previousValue === value) {
 			return;
 		}
 
-		let { valid, message } = this.meta(InputValidity).get('input', value);
+		state.previousValue = value;
 
-		if (typeof validate === 'function') {
-			const { valid: customValid = valid, message: customMessage = message } = validate(value) || {};
-			valid = customValid;
-			message = customMessage;
+		let { valid, message = '' } = this.meta(InputValidity).get('input', value);
+
+		if (valid && customValidator) {
+			const customValid = customValidator(value);
+			if (customValid) {
+				valid = customValid.valid;
+				message = customValid.message || '';
+			}
 		}
 
-		if (onValidate && (state.valid !== valid || state.message !== message)) {
-			onValidate(valid, message);
+		if (valid === state.previousValid && message === state.previousMessage) {
+			return;
 		}
 
-		this._state = {
-			...this._state,
-			valid,
-			message
+		state.previousValid = valid;
+		state.previousMessage = message;
+
+		onValidate(valid, message);
+	}
+
+	protected get validity() {
+		const { valid = { valid: undefined, message: undefined } } = this.properties;
+
+		if (typeof valid === 'boolean') {
+			return { valid, message: undefined };
+		}
+
+		return {
+			valid: valid.valid,
+			message: valid.message
 		};
 	}
 
-	private _state: TextInputInternalState = {
-		valid: undefined,
-		message: ''
-	};
-
 	private _uuid = uuid();
+	private _state: TextInputInternalState = {};
 
 	protected getRootClasses(): (string | null)[] {
 		const {
@@ -206,7 +221,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			readOnly,
 			required
 		} = this.properties;
-		const { valid } = this._state;
+		const { valid } = this.validity;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
@@ -236,7 +251,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			autocomplete
 		} = this.properties;
 
-		const { valid } = this._state;
+		const { valid } = this.validity;
 
 		return v('input', {
 			...formatAriaProperties(aria),
@@ -274,16 +289,18 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 
 	protected renderHelperText(): DNode {
-		const { properties: { helperText }, _state: { valid, message } } = this;
-		const text = message || helperText;
+		const { properties: { helperText = '' }, validity: { valid, message = '' } } = this;
+		const text = (valid === false && message) || helperText;
 
 		return text ? v('div', {
+			key: 'helperTextWrapper',
 			classes: this.theme([
 				css.helperTextWrapper,
 				valid === false ? css.invalid : null
 			])
 		}, [
 			v('div', {
+				key: 'helperText',
 				classes: this.theme(css.helperText),
 				title: text
 			}, [text])
@@ -310,8 +327,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			classes,
 			value
 		} = this.properties;
-
-		const { valid } = this._state;
+		const { valid } = this.validity;
 
 		const focus = this.meta(Focus).get('root');
 
@@ -322,7 +338,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				theme,
 				classes,
 				disabled,
-				invalid: typeof valid === 'undefined' ? valid : !valid,
+				invalid: valid === false || undefined,
 				focused: focus.containsFocus,
 				readOnly,
 				required,

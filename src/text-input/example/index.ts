@@ -9,6 +9,7 @@ export default class App extends WidgetBase {
 	private _value4: string | undefined;
 	private _value5: string | undefined;
 	private _value6: string | undefined;
+	private _value6Valid: boolean | { valid?: boolean; message?: string; };
 
 	render() {
 		return v('div', {
@@ -91,8 +92,13 @@ export default class App extends WidgetBase {
 					type: 'text',
 					label: 'Type "foo" or "bar"',
 					value: this._value6,
+					valid: this._value6Valid,
+					required: true,
 					helperText: 'helper text',
-					validate: true,
+					onValidate: (valid?: boolean, message?: string) => {
+						this._value6Valid = { valid, message };
+						this.invalidate();
+					},
 					pattern: 'foo|bar',
 					onInput: (value: string) => {
 						this._value6 = value;

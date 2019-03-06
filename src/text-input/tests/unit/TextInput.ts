@@ -18,6 +18,7 @@ interface States {
 	disabled?: boolean;
 	required?: boolean;
 	readOnly?: boolean;
+	valid?: { valid?: boolean; message?: string; } | boolean;
 }
 
 interface ExpectedOptions {
@@ -25,16 +26,26 @@ interface ExpectedOptions {
 	inputOverrides?: any;
 	states?: States;
 	focused?: boolean;
-	invalid?: boolean;
 	helperText?: string;
 }
 
-const expected = function({ label = false, inputOverrides = {}, states = {}, focused = false, invalid, helperText }: ExpectedOptions = {}) {
-	const { disabled, required, readOnly } = states;
+const expected = function({ label = false, inputOverrides = {}, states = {}, focused = false, helperText }: ExpectedOptions = {}) {
+	const { disabled, required, readOnly, valid: validState } = states;
+	let valid: boolean | undefined;
+	let message: string | undefined;
+
+	if (validState !== undefined && typeof validState !== 'boolean') {
+		valid = validState.valid;
+		message = validState.message;
+	} else {
+		valid = validState;
+	}
+
+	const helperTextValue = (valid === false && message) || helperText;
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, invalid ? css.invalid : null, invalid === false ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
+		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, valid === false ? css.invalid : null, valid === true ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -42,7 +53,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 			disabled,
 			focused,
 			hidden: false,
-			invalid,
+			invalid: valid === false || undefined,
 			readOnly,
 			required,
 			forId: ''
@@ -53,7 +64,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 				classes: css.input,
 				id: '',
 				disabled,
-				'aria-invalid': invalid ? 'true' : null,
+				'aria-invalid': valid === false ? 'true' : null,
 				autocomplete: undefined,
 				maxlength: null,
 				minlength: null,
@@ -81,16 +92,18 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 				ontouchcancel: noop,
 				...inputOverrides
 			}),
-			invalid === true || helperText ? v('div', {
+			helperTextValue ? v('div', {
+				key: 'helperTextWrapper',
 				classes: [
 					css.helperTextWrapper,
-					invalid ? css.invalid : null
+					valid === false ? css.invalid : null
 				]
 			}, [
 				v('div', {
+					key: 'helperText',
 					classes: css.helperText,
-					title: helperText
-				}, [helperText])
+					title: helperTextValue
+				}, [helperTextValue])
 			]) : null
 		])
 	]);
@@ -223,10 +236,11 @@ registerSuite('TextInput', {
 			let properties: any = {
 				disabled: true,
 				readOnly: true,
-				required: true
+				required: true,
+				valid: true
 			};
-
 			const h = harness(() => w(TextInput, properties));
+
 			h.expect(() => expected({
 				states: properties
 			}));
@@ -234,8 +248,21 @@ registerSuite('TextInput', {
 			properties = {
 				disabled: false,
 				readOnly: false,
-				required: false
+				required: false,
+				valid: false
 			};
+
+			h.expect(() => expected({
+				states: properties
+			}));
+
+			properties = {
+				disabled: false,
+				readOnly: false,
+				required: false,
+				valid: { valid: false, message: 'test' }
+			};
+
 			h.expect(() => expected({
 				states: properties
 			}));
@@ -263,80 +290,12 @@ registerSuite('TextInput', {
 			h.expect(() => expected({ helperText }));
 		},
 
-		'validation'() {
-			const mockMeta = sinon.stub();
-			const mockValidityGet = sinon.stub().returns({
-				valid: false,
-				message: 'pattern'
-			});
-
-			mockMeta.withArgs(InputValidity).returns({
-				get: mockValidityGet
-			});
-
-			mockMeta.withArgs(Focus).returns({
-				get: () => ({ active: false, containsFocus: false })
-			});
-
-			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {
-				value: 'tst',
-				validate: true,
-				pattern: 'test'
-			}));
-
-			h.expect(() => expected({
-				invalid: true,
-				inputOverrides: {
-					value: 'tst',
-					pattern: 'test'
-				},
-				helperText: 'pattern'
-			}));
-		},
-
-		'custom validation'() {
-			const mockMeta = sinon.stub();
-			const mockValidityGet = sinon.stub().returns({
-				valid: undefined,
-				message: ''
-			});
-
-			mockMeta.withArgs(InputValidity).returns({
-				get: mockValidityGet
-			});
-
-			mockMeta.withArgs(Focus).returns({
-				get: () => ({ active: false, containsFocus: false })
-			});
-
-			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {
-				value: 'test value',
-				validate: () => {
-					return { valid: false, message: 'test' };
-				}
-			}));
-
-			h.expect(() => expected({
-				invalid: true,
-				inputOverrides: {
-					value: 'test value'
-				},
-				helperText: 'test'
-			}));
-		},
-
 		'onValidate'() {
-			let valid = false;
-			let message = 'test';
 			const mockMeta = sinon.stub();
-			const validateSpy = sinon.spy();
-			const mockValidityGet = sinon.stub().returns({
-				valid: undefined,
-				message: ''
-			});
+			let validateSpy = sinon.spy();
 
 			mockMeta.withArgs(InputValidity).returns({
-				get: mockValidityGet
+				get: sinon.stub().returns({ valid: false, message: 'test' })
 			});
 
 			mockMeta.withArgs(Focus).returns({
@@ -345,26 +304,87 @@ registerSuite('TextInput', {
 
 			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
 				value: 'test value',
-				validate: () => {
-					return { valid, message };
-				},
 				onValidate: validateSpy
 			}));
 
 			assert.isTrue(validateSpy.calledWith(false, 'test'));
 
-			valid = true;
-			message = '';
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true, message: '' })
+			});
 
 			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
 				value: 'test value',
-				validate: () => {
-					return { valid, message };
-				},
 				onValidate: validateSpy
 			}));
 
 			assert.isTrue(validateSpy.calledWith(true, ''));
+		},
+
+		'customValidator not called when native validation fails'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: false, message: 'test' })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				onValidate: validateSpy,
+				customValidator: customValidatorSpy
+			}));
+
+			assert.isFalse(customValidatorSpy.called);
+		},
+
+		'customValidator called when native validation succeeds'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				onValidate: validateSpy,
+				customValidator: customValidatorSpy
+			}));
+
+			assert.isTrue(customValidatorSpy.called);
+		},
+
+		'customValidator can change the validation outcome'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.stub().returns({ valid: false, message: 'custom message' });
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
+				value: 'test value',
+				onValidate: validateSpy,
+				customValidator: customValidatorSpy
+			}));
+
+			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
 		},
 
 		events() {

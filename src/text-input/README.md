@@ -23,7 +23,6 @@ w(TextInput, {
 	label: 'Email Address',
 	value: this.state.firstName,
     type: 'email',
-    validate: true,
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ firstName: event.target.value });
 	},
@@ -32,20 +31,15 @@ w(TextInput, {
 // Advanced usage
 w(TextInput, {
 	aria: { describedBy: 'instructions' },
-    validate(value: string) {
-        if (value.length < 8) {
-            return { valid: false, message: 'Password must be at least 8 characters.' };
-        }
-        
-        return { valid: true, message: '' };
-    },
 	label: 'Create Password',
 	maxLength: 20,
 	name: 'password',
 	placeholder: 'Type password',
 	required: true,
 	type: 'password',
+	helperText: 'Password must contain letters and numbers',
 	value: this.state.password,
+    valid: this.state.valid,
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ password: event.target.value });
 		this.setState({ passwordValid: this._validatePassword() });
@@ -58,9 +52,56 @@ v('p', {
 
 ## Validation
 
-Validation using the built-in browser validation capabilities can be enabled by passing `validate: true` to the component. For example, if the component's `type` property is set to `'email`' and `validate` is true, the browser will validate and automatically display the error message from the browser.
+Native validation information is provided to the `onValidate` callback via two arguments: `(valid?: boolean, message?: string)`. This does not have any affect on how the input is rendered, though. To set validation state, pass `valid: boolean` to the widget, or for a more advanced use case, pass `valid: { valid: boolean; message: string}` to render the error message as custom helperText below the input.
 
-Alternatively, a custom validation method can be used by passing a function to the `validate` property. This function accepts the current value as an argument and returns `{ valid: boolean; message: string; }`.
+```typescript
+w(TextInput, {
+	type: 'text',
+	label: 'Type "foo" or "bar"',
+	value: this.state.value,
+	valid: this.state.valid,
+	required: true,
+	helperText: 'helper text',
+	onValidate: (valid?: boolean, message?: string) => {
+		this.setState(valid: { valid, message });
+		this.invalidate();
+	},
+	pattern: 'foo|bar',
+	onInput: (value: string) => {
+		this.setState({ value });
+		this.invalidate();
+	}
+})
+```
+
+### Custom validation
+
+By default, the values passed to the `onValidate` callback are from the native browser validation APIs, `element.valdiity.valid` and `element.validationMessage`, respectively. A `customValdiator` property can be defined as a function which receives the current value and can optionally return `{ valid?: boolean; message?: string; }` to override the values passed to `onValidate`. Note that `customValidator` will only be called after the native validation returns `valid: true`.
+
+```typescript
+w(TextInput, {
+	type: 'text',
+	value: this.state.value,
+	valid: this.state.valid,
+	required: true,
+	minLength: 6,
+	valid: this.state.valid,
+	customValidator(value) {
+		if (value.includes('foo')) {
+			return { valid: false, message: 'string must contain "foo"' };
+		}
+	},
+	onValidate: (valid?: boolean, message?: string) => {
+		this.setState(valid: { valid, message });
+		this.invalidate();
+	},
+	pattern: 'foo|bar',
+	onInput: (value: string) => {
+		this.setState({ value });
+		this.invalidate();
+	}
+})
+```
 
 ## Theming
 
