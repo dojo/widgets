@@ -16,9 +16,9 @@ import InputValidity from '../common/InputValidity';
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
 interface TextInputInternalState {
-	value?: string;
-	valid?: boolean;
-	message?: string;
+	previousValue?: string;
+	previousValid?: boolean;
+	previousMessage?: string;
 }
 
 /**
@@ -173,11 +173,11 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	private _validate() {
 		const { _state: state, properties: {  onValidate, value, customValidator } } = this;
 
-		if (!onValidate || value === undefined || value === null || state.value === value) {
+		if (!onValidate || value === undefined || value === null || state.previousValue === value) {
 			return;
 		}
 
-		state.value = value;
+		state.previousValue = value;
 
 		let { valid, message } = this.meta(InputValidity).get('input', value);
 
@@ -189,12 +189,12 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			}
 		}
 
-		if (valid === state.valid && message === state.message) {
+		if (valid === state.previousValid && message === state.previousMessage) {
 			return;
 		}
 
-		state.valid = valid;
-		state.message = message;
+		state.previousValid = valid;
+		state.previousMessage = message;
 
 		onValidate(valid, message);
 	}
