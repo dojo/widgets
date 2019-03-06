@@ -74,6 +74,35 @@ w(TextInput, {
 })
 ```
 
+### Custom validation
+
+By default, the values passed to the `onValidate` callback are from the native browser validation APIs, `element.valdiity.valid` and `element.validationMessage`, respectively. A `customValdiator` property can be defined as a function which receives the current value and can optionally return `{ valid?: boolean; message?: string; }` to override the values passed to `onValidate`. Note that `customValidator` will only be called after the native validation returns `valid: true`.
+
+```typescript
+w(TextInput, {
+	type: 'text',
+	value: this.state.value,
+	valid: this.state.valid,
+	required: true,
+	minLength: 6,
+	valid: this.state.valid,
+	customValidator(value) {
+		if (value.includes('foo')) {
+			return { valid: false, message: 'string must contain "foo"' };
+		}
+	},
+	onValidate: (valid?: boolean, message?: string) => {
+		this.setState(valid: { valid, message });
+		this.invalidate();
+	},
+	pattern: 'foo|bar',
+	onInput: (value: string) => {
+		this.setState({ value });
+		this.invalidate();
+	}
+})
+```
+
 ## Theming
 
 The following CSS classes are available on the `TextInput` widget for use with custom themes:
