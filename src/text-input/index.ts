@@ -52,7 +52,7 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
-	onValidate?: (valid?: boolean, message?: string) => void;
+	onValidate?: (valid: boolean | undefined, message: string) => void;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -179,13 +179,13 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 
 		state.previousValue = value;
 
-		let { valid, message } = this.meta(InputValidity).get('input', value);
+		let { valid, message = '' } = this.meta(InputValidity).get('input', value);
 
 		if (valid && customValidator) {
 			const customValid = customValidator(value);
 			if (customValid) {
 				valid = customValid.valid;
-				message = customValid.message;
+				message = customValid.message || '';
 			}
 		}
 
