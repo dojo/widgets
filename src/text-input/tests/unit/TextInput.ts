@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
+import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
 import TextInput, { TextInputProperties } from '../../index';
@@ -58,7 +59,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 			required,
 			forId: ''
 		}, [ 'foo' ]) : null,
-		v('div', { classes: css.inputWrapper }, [
+		v('div', { key: 'inputWrapper', classes: css.inputWrapper }, [
 			v('input', {
 				key: 'input',
 				classes: css.input,
@@ -108,6 +109,48 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 		])
 	]);
 };
+
+const baseTemplate = assertationTemplate(() => {
+	return v('div', {
+		key: 'root',
+		classes: [ css.root, null, null, null, null, null, null, null, null ]
+	}, [
+		v('div', { key: 'inputWrapper', classes: css.inputWrapper }, [
+			v('input', {
+				key: 'input',
+				classes: css.input,
+				id: '',
+				disabled: undefined,
+				'aria-invalid': null,
+				autocomplete: undefined,
+				maxlength: null,
+				minlength: null,
+				name: undefined,
+				placeholder: undefined,
+				readOnly: undefined,
+				'aria-readonly': null,
+				required: undefined,
+				type: 'text',
+				value: undefined,
+				focus: noop,
+				pattern: undefined,
+				onblur: noop,
+				onchange: noop,
+				onclick: noop,
+				onfocus: noop,
+				oninput: noop,
+				onkeydown: noop,
+				onkeypress: noop,
+				onkeyup: noop,
+				onmousedown: noop,
+				onmouseup: noop,
+				ontouchstart: noop,
+				ontouchend: noop,
+				ontouchcancel: noop
+			})
+		])
+	]);
+});
 
 registerSuite('TextInput', {
 	tests: {
@@ -385,6 +428,30 @@ registerSuite('TextInput', {
 			}));
 
 			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
+		},
+
+		'leading property'() {
+			const leading = () => v('span', {}, ['A']);
+			const leadingTemplate = baseTemplate
+				.setProperty('@root', 'classes', [ css.root, null, null, null, null, null, null, css.hasLeading, null ])
+				.setChildren('@inputWrapper', [
+					v('span', { key: 'leading', classes: css.leading }, [ leading() ]),
+					...baseTemplate.getChildren('@inputWrapper')
+				]);
+			const h = harness(() => w(TextInput, { leading }));
+			h.expect(leadingTemplate);
+		},
+
+		'trailing property'() {
+			const trailing = () => v('span', {}, ['Z']);
+			const trailingTemplate = baseTemplate
+				.setProperty('@root', 'classes', [ css.root, null, null, null, null, null, null, null, css.hasTrailing ])
+				.setChildren('@inputWrapper', [
+					...baseTemplate.getChildren('@inputWrapper'),
+					v('span', { key: 'trailing', classes: css.trailing }, [ trailing() ])
+				]);
+			const h = harness(() => w(TextInput, { trailing }));
+			h.expect(trailingTemplate);
 		},
 
 		events() {

@@ -308,7 +308,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				hidden: labelHidden,
 				forId: widgetId
 			}, [ label ]),
-			v('div', { classes: this.theme(css.inputWrapper) }, [
+			v('div', { key: 'inputWrapper', classes: this.theme(css.inputWrapper) }, [
 				leading && v('span', { key: 'leading', classes: this.theme(css.leading) }, [ leading() ]),
 				v('input', {
 					...formatAriaProperties(aria),
