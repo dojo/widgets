@@ -221,7 +221,7 @@ registerSuite('SplitPane', {
 			});
 
 			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, direction: Direction.row }));
-			assert.isTrue(onCollapse.notCalled);
+			assert.isTrue(onCollapse.calledWith(false));
 		},
 
 		'Mouse move should call onResize for row'() {
