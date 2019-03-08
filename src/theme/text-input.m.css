@@ -8,6 +8,10 @@
 .readonly {}
 .required {}
 .invalid {}
+.leading {}
+.trailing {}
+.hasLeading {}
+.hasTrailing {}
 
 .helperTextWrapper {
 }
