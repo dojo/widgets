@@ -162,7 +162,8 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		this.meta(ScrollMeta).scroll('root', scrollValue);
 	}
 
-	private _calculateScroll({ activeIndex = 0}: ListboxProperties) {
+	private _calculateScroll() {
+		const activeIndex = typeof this.properties.activeIndex === 'undefined' ? 0 : this.properties.activeIndex;
 		const menuDimensions = this.meta(Dimensions).get('root');
 		const scrollOffset = menuDimensions.scroll.top;
 		const menuHeight = menuDimensions.offset.height;
@@ -247,7 +248,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 		const themeClasses = this.getModifierClasses();
 
 		this.meta(Resize).get('root');
-		this._calculateScroll(this.properties);
+		this._calculateScroll();
 
 		return v('div', {
 			...formatAriaProperties(aria),
