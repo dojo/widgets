@@ -61,16 +61,15 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 
 	@diffProperty('collapseWidth')
 	@diffProperty('direction')
-	private collapseWidthDiff(oldProperties: SplitPaneProperties, { collapseWidth, direction, onCollapse }: SplitPaneProperties) {
-		if (collapseWidth) {
-			if (direction === Direction.row || collapseWidth < this._width && this._collapsed) {
-				this._collapsed = false;
-				this._resizeResultOverridden = true;
-			} else if (collapseWidth > this._width && !this._collapsed) {
-				this._collapsed = true;
-				this._resizeResultOverridden = true;
-				onCollapse && onCollapse(true);
-			}
+	private collapseWidthDiff(oldProperties: SplitPaneProperties, { collapseWidth = 600, direction, onCollapse }: SplitPaneProperties) {
+		if (direction === Direction.row || collapseWidth < this._width && this._collapsed) {
+			this._collapsed = false;
+			this._resizeResultOverridden = true;
+			onCollapse && onCollapse(false);
+		} else if (collapseWidth > this._width && !this._collapsed) {
+			this._collapsed = true;
+			this._resizeResultOverridden = true;
+			onCollapse && onCollapse(true);
 		}
 	}
 
