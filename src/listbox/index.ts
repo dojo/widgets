@@ -163,7 +163,7 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 	}
 
 	private _calculateScroll() {
-		const activeIndex = typeof this.properties.activeIndex === 'undefined' ? 0 : this.properties.activeIndex;
+		const { activeIndex = 0 } = this.properties;
 		const menuDimensions = this.meta(Dimensions).get('root');
 		const scrollOffset = menuDimensions.scroll.top;
 		const menuHeight = menuDimensions.offset.height;
