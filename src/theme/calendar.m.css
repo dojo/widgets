@@ -13,6 +13,8 @@
 	background-color: var(--disabled-color);
 }
 
+.outOfRange {}
+
 .selectedDate {
 	background-color: var(--selected-background);
 	color: var(--selected-color);

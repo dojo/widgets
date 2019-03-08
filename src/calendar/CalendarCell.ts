@@ -12,9 +12,9 @@ import * as css from '../theme/calendar.m.css';
  *
  * @property callFocus        Used to immediately call focus on the cell
  * @property date             Integer date value
- * @property disabled         Boolean, whether the date selectable
- * @property currentMonth     Boolean, whether the date is in the displayed month
+ * @property disabled         Boolean, whether the date is in the displayed month
  * @property focusable        Boolean, whether the date can receive tab focus
+ * @property outOfRange       Boolean, true if the date is outside the min/max
  * @property selected         True if the date is currently selected
  * @property today            True if the date the same as the current day
  * @property onClick          Callback function for the click event
@@ -24,12 +24,12 @@ import * as css from '../theme/calendar.m.css';
 export interface CalendarCellProperties extends ThemedProperties {
 	callFocus?: boolean;
 	date: number;
-	currentMonth?: boolean;
 	disabled?: boolean;
 	focusable?: boolean;
+	outOfRange?: boolean;
 	selected?: boolean;
 	today?: boolean;
-	onClick?(date: number, currentMonth: boolean): void;
+	onClick?(date: number, disabled: boolean): void;
 	onFocusCalled?(): void;
 	onKeyDown?(key: number, preventDefault: () => void): void;
 }
@@ -40,8 +40,8 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<P, null> {
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
-		const { date, currentMonth = true, onClick } = this.properties;
-		onClick && onClick(date, currentMonth);
+		const { date, disabled = false, onClick } = this.properties;
+		onClick && onClick(date, disabled);
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
@@ -57,13 +57,14 @@ export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellPro
 	protected getModifierClasses(): (string | null)[] {
 		const {
 			disabled = false,
+			outOfRange = false,
 			selected = false,
-			currentMonth = true,
 			today = false
 		} = this.properties;
 
 		return [
-			(disabled || !currentMonth) ? css.inactiveDate : null,
+			(disabled || outOfRange) ? css.inactiveDate : null,
+			outOfRange ? css.outOfRange : null,
 			selected ? css.selectedDate : null,
 			today ? css.todayDate : null
 		];

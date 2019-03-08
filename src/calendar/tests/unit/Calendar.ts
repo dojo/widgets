@@ -26,19 +26,19 @@ const testDate = new Date('June 5 2017');
 const harness = createHarness([ compareId, compareLabelId, compareAriaLabelledBy ]);
 
 /** Index of current expected date cell. Used by date cell factory function */
-const expectedDateCell = function(dateIndex: number, date: number, currentMonth: boolean, disabled = false, selectedIndex = -1) {
+const expectedDateCell = function(dateIndex: number, date: number, currentMonth: boolean, outOfRange = false, selectedIndex = -1) {
 	return w(CalendarCell, {
 		key: `date-${dateIndex}`,
 		callFocus: false,
 		date,
-		disabled,
-		currentMonth,
+		outOfRange,
+		disabled: !currentMonth,
 		focusable: date === 1 && currentMonth,
 		selected: dateIndex === selectedIndex,
 		theme: undefined,
 		classes: undefined,
 		today: false,
-		onClick: disabled ? undefined : noop,
+		onClick: outOfRange ? undefined : noop,
 		onFocusCalled: noop,
 		onKeyDown: noop
 	});
@@ -338,7 +338,7 @@ registerSuite('Calendar', {
 					selectedDate = date;
 				}
 			}));
-			h.trigger('@date-4', 'onClick', 1, true);
+			h.trigger('@date-4', 'onClick', 1, false);
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Clicking cell selects correct date');
 			assert.strictEqual(selectedDate.getMonth(), 5, 'Clicking active date maintains current month');
@@ -360,12 +360,12 @@ registerSuite('Calendar', {
 			};
 			const h = harness(() => w(Calendar, properties));
 
-			h.trigger('@date-34', 'onClick', 1, false);
+			h.trigger('@date-34', 'onClick', 1, true);
 			assert.strictEqual(currentMonth, 6, 'Month changes to July');
 			assert.strictEqual(selectedDate.getMonth(), 6, 'selected date in July');
 			assert.strictEqual(selectedDate.getDate(), 1, 'selected correct date in July');
 
-			h.trigger('@date-2', 'onClick', 30, false);
+			h.trigger('@date-2', 'onClick', 30, true);
 			assert.strictEqual(currentMonth, 4, 'Month changes to May');
 			assert.strictEqual(selectedDate.getMonth(), 4, 'selected date in May');
 			assert.strictEqual(selectedDate.getDate(), 30, 'selected correct date in May');
@@ -618,8 +618,8 @@ registerSuite('Calendar with min-max', {
 				key: `date-29`,
 				callFocus: true,
 				date: 29,
+				outOfRange: false,
 				disabled: false,
-				currentMonth: true,
 				focusable: true, // 29nd is focused
 				selected: false,
 				theme: undefined,
@@ -671,7 +671,7 @@ registerSuite('Calendar with min-max', {
 			h.expect(baseMinMaxTemplate.setProperty('@date-4', 'selected', true));
 		},
 
-		'Click to select date does not click disabled dates'() {
+		'Click to select date does not click outOfRange dates'() {
 			const defaultDate = testDate.toDateString();
 			let selectedDate = testDate.toDateString();
 			const h = harness(() => w(Calendar, {
@@ -684,20 +684,25 @@ registerSuite('Calendar with min-max', {
 				}
 			}));
 
-			h.trigger('@date-2', 'onClick', 30, false);
-			assert.strictEqual(selectedDate, defaultDate, 'Clicking disabled date from last month does not select');
+			h.trigger('@date-2', 'onClick', 30, true);
+			assert.strictEqual(selectedDate, defaultDate,
+				'Clicking outOfRange date from last month does not select');
 
-			h.trigger('@date-5', 'onClick', 2, true);
-			assert.strictEqual(selectedDate, defaultDate, 'Clicking disabled date at beginning of the month does not select');
+			h.trigger('@date-5', 'onClick', 2, false);
+			assert.strictEqual(selectedDate, defaultDate,
+				'Clicking outOfRange date at beginning of the month does not select');
 
-			h.trigger('@date-33', 'onClick', 30, true);
-			assert.strictEqual(selectedDate, defaultDate, 'Clicking disabled date at end of the month does not select');
+			h.trigger('@date-33', 'onClick', 30, false);
+			assert.strictEqual(selectedDate, defaultDate,
+				'Clicking outOfRange date at end of the month does not select');
 
-			h.trigger('@date-35', 'onClick', 2, false);
-			assert.strictEqual(selectedDate, defaultDate, 'Clicking disabled date in next month does not select');
+			h.trigger('@date-35', 'onClick', 2, true);
+			assert.strictEqual(selectedDate, defaultDate,
+				'Clicking outOfRange date in next month does not select');
 
-			h.trigger('@date-20', 'onClick', 17, true);
-			assert.strictEqual(selectedDate, new Date('June 17, 2017').toDateString(), 'Clicking active selects');
+			h.trigger('@date-20', 'onClick', 17, false);
+			assert.strictEqual(selectedDate, new Date('June 17, 2017').toDateString(),
+				'Clicking in range date selects');
 		},
 
 		'Arrow keys keep month in min/max'() {

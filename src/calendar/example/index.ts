@@ -34,7 +34,7 @@ export default class App extends WidgetBase {
 					this.invalidate();
 				}
 			}),
-			this._selectedDate ? v('p', {key: 'sunday-selected'}, [ `Selected Date: ${this._selectedDate.toDateString()}` ]) : null
+			this._selectedDate ? v('p', [ `Selected Date: ${this._selectedDate.toDateString()}` ]) : null
 		]);
 	}
 }

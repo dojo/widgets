@@ -153,9 +153,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 
-		if (!this._dateInMinMax(new Date(year, month, day))) {
-			return;
-		}
+		this._ensureDayIsInMinMax(new Date(year, month, day), (updatedDay) => day = updatedDay);
 
 		if (day < 1) {
 			this._onMonthDecrement();
@@ -171,11 +169,11 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		this.invalidate();
 	}
 
-	private _onDateClick(date: number, currentMonth: boolean) {
+	private _onDateClick(date: number, disabled: boolean) {
 		const { onDateSelect } = this.properties;
 		let { month, year } = this._getMonthYear();
 
-		if (!currentMonth) {
+		if (disabled) {
 			({ month, year } = (date < 15) ? this._onMonthIncrement() : this._onMonthDecrement());
 			this._callDateFocus = true;
 		}
@@ -218,41 +216,8 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			case Keys.Enter:
 			case Keys.Space:
 				const { onDateSelect } = this.properties;
-				const date = new Date(year, month, this._focusedDay);
-				if (this._dateInMinMax(date)) {
-					onDateSelect && onDateSelect(date);
-				}
+				onDateSelect && onDateSelect(new Date(year, month, this._focusedDay));
 		}
-	}
-
-	private _lastMonthInMin() {
-		let {
-			year,
-			month
-		} = this._getMonthYear();
-		let { minDate } = this.properties;
-
-		return monthInMin(year, month - 1, minDate);
-	}
-
-	private _nextMonthInMax() {
-		let {
-			year,
-			month
-		} = this._getMonthYear();
-		const { maxDate } = this.properties;
-
-		return monthInMax(year, month + 1, maxDate);
-	}
-
-	private _dateInMinMax(date: Date): boolean {
-		const {
-			minDate = date,
-			maxDate = date
-		} = this.properties;
-
-		const inRange = date >= minDate && date <= maxDate;
-		return inRange;
 	}
 
 	private _onMonthDecrement() {
@@ -262,13 +227,8 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		} = this._getMonthYear();
 		const {
 			onMonthChange,
-			onYearChange,
-			minDate
+			onYearChange
 		} = this.properties;
-
-		if (!monthInMin(year, month - 1, minDate)) {
-			return { month, year };
-		}
 
 		if (month === 0) {
 			onMonthChange && onMonthChange(11);
@@ -287,13 +247,8 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		} = this._getMonthYear();
 		const {
 			onMonthChange,
-			onYearChange,
-			maxDate
+			onYearChange
 		} = this.properties;
-
-		if (!monthInMax(year, month + 1, maxDate)) {
-			return { month, year };
-		}
 
 		if (month === 11) {
 			onMonthChange && onMonthChange(0);
@@ -315,35 +270,27 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 		this._onMonthIncrement();
 	}
 
-	private _checkFocusedDate() {
+	private _ensureDayIsInMinMax(newDate: Date, update: (day: number) => void) {
 		const {
-			month,
-			year
-		} = this._getMonthYear();
-		const {
-			minDate,
-			maxDate
+			minDate = newDate,
+			maxDate = newDate
 		} = this.properties;
-		const focusedDate = new Date(year, month, this._focusedDay);
 
-		if (!this._dateInMinMax(focusedDate)) {
-			if (minDate && minDate.getFullYear() === year && minDate.getMonth() === month) {
-				this._focusedDay = minDate.getDate();
-			}
-			else if (maxDate && maxDate.getFullYear() === year && maxDate.getMonth() === month) {
-				this._focusedDay = maxDate.getDate();
-			}
+		if (newDate < minDate) {
+			update(minDate.getDate());
 		}
-
+		else if (newDate > maxDate) {
+			update(maxDate.getDate());
+		}
 	}
 
 	private _renderDateGrid(selectedDate?: Date) {
-		this._checkFocusedDate();
 		const {
 			month,
 			year
 		} = this._getMonthYear();
 
+		this._ensureDayIsInMinMax(new Date(year, month, this._focusedDay), (newDay) => this._focusedDay = newDay);
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 		const initialWeekday = new Date(year, month, 1).getDay();
@@ -397,9 +344,14 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 
 	protected renderDateCell(dateObj: Date, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
+		const {
+			minDate = dateObj,
+			maxDate = dateObj
+		} = this.properties;
+
 		const date = dateObj.getDate();
 		const { theme, classes } = this.properties;
-		const disabled = !this._dateInMinMax(dateObj);
+		const outOfRange = (dateObj < minDate || dateObj > maxDate);
 		const focusable = currentMonth && date === this._focusedDay;
 
 		return w(CalendarCell, {
@@ -407,13 +359,13 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			key: `date-${index}`,
 			callFocus: this._callDateFocus && focusable,
 			date,
-			disabled,
+			outOfRange,
 			focusable,
-			currentMonth,
+			disabled: !currentMonth,
 			selected,
 			theme,
 			today,
-			onClick: disabled ? undefined : this._onDateClick,
+			onClick: outOfRange ? undefined : this._onDateClick,
 			onFocusCalled: this._onDateFocusCalled,
 			onKeyDown: this._onDateKeyDown
 		});
@@ -482,8 +434,11 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 			labels = this.localizeBundle(calendarBundle).messages,
 			aria = {},
 			selectedDate,
+			minDate,
+			maxDate,
 			weekdayNames = this._getWeekdays(commonMessages)
 		} = this.properties;
+		const { year, month } = this._getMonthYear();
 
 		// Calendar Weekday array
 		const weekdays = [];
@@ -523,14 +478,14 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 					classes: this.theme(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					type: 'button',
-					disabled: !this._lastMonthInMin(),
+					disabled: !monthInMin(year, month - 1, minDate),
 					onclick: this._onMonthPageDown
 				}, this.renderPagingButtonContent(Paging.previous, labels)),
 				v('button', {
 					classes: this.theme(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					type: 'button',
-					disabled: !this._nextMonthInMax(),
+					disabled: !monthInMax(year, month + 1, maxDate),
 					onclick: this._onMonthPageUp
 				}, this.renderPagingButtonContent(Paging.next, labels))
 			])

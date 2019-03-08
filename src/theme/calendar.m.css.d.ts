@@ -1,5 +1,6 @@
 export const root: string;
 export const inactiveDate: string;
+export const outOfRange: string;
 export const selectedDate: string;
 export const todayDate: string;
 export const date: string;
