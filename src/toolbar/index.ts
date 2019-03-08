@@ -24,6 +24,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property heading           The toolbar heading
  */
 export interface ToolbarProperties extends ThemedProperties {
+	align?: Align;
 	collapseWidth?: number;
 	onCollapse?(collapsed: boolean): void;
 	heading?: string;
@@ -77,6 +78,7 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 		const { close } = this.localizeBundle(commonBundle).messages;
 
 		const {
+			align = Align.right,
 			theme,
 			classes,
 			heading
@@ -87,7 +89,7 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 		}, this.children);
 
 		return this._collapsed ? w(SlidePane, {
-			align: Align.right,
+			align,
 			closeText: close,
 			key: 'slide-pane-menu',
 			onRequestClose: this._closeMenu,
