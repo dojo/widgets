@@ -82,7 +82,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 	]
 })
 export class SelectBase<P extends SelectProperties = SelectProperties> extends ThemedBase<P, null> {
-	private _focusedIndex = 0;
+	private _focusedIndex: number;
 	private _focusNode = 'trigger';
 	private _ignoreBlur = false;
 	private _open = false;
@@ -138,7 +138,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 		} = this.properties;
 		event.stopPropagation();
 		const value = (<HTMLInputElement> event.target).value;
-		const option = find(options, (option: any, index: number) => getOptionValue ? getOptionValue(option, index) === value : false);
+		const option = find(options, (option: any, index: number) => getOptionValue ? getOptionValue(option, index) === value : option === value);
 		option && onChange && onChange(option, key);
 	}
 
@@ -258,7 +258,7 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 
 		/* create option nodes */
 		const optionNodes = options.map((option, i) => v('option', {
-			value: getOptionValue ? getOptionValue(option, i) : '',
+			value: getOptionValue ? getOptionValue(option, i) : undefined,
 			id: getOptionId ? getOptionId(option, i) : undefined,
 			disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
 			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
@@ -299,11 +299,18 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 			onChange
 		} = this.properties;
 
+		if (this._focusedIndex === undefined) {
+			options.map(getOptionSelected).forEach((isSelected, index) => {
+				if (isSelected) {
+					this._focusedIndex = index;
+				}
+			});
+		}
+
 		const {
 			_open,
-			_focusedIndex
+			_focusedIndex = 0
 		} = this;
-
 		// create dropdown trigger and select box
 		return v('div', {
 			key: 'wrapper',
