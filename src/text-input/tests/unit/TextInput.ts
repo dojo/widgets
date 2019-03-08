@@ -45,7 +45,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 
 	return v('div', {
 		key: 'root',
-		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, valid === false ? css.invalid : null, valid === true ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
+		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, valid === false ? css.invalid : null, valid === true ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null, null, null ]
 	}, [
 		label ? w(Label, {
 			theme: undefined,
@@ -91,20 +91,20 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 				ontouchend: noop,
 				ontouchcancel: noop,
 				...inputOverrides
-			}),
-			helperTextValue ? v('div', {
-				key: 'helperTextWrapper',
-				classes: [
-					css.helperTextWrapper,
-					valid === false ? css.invalid : null
-				]
-			}, [
-				v('div', {
-					key: 'helperText',
-					classes: css.helperText,
-					title: helperTextValue
-				}, [helperTextValue])
-			]) : null
+			})
+		]),
+		helperTextValue && v('div', {
+			key: 'helperTextWrapper',
+			classes: [
+				css.helperTextWrapper,
+				valid === false ? css.invalid : null
+			]
+		}, [
+			v('div', {
+				key: 'helperText',
+				classes: css.helperText,
+				title: helperTextValue
+			}, [helperTextValue])
 		])
 	]);
 };
