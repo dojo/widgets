@@ -1,4 +1,8 @@
-.actions { }
+.actions {
+	display: flex;
+	flex-direction: row;
+}
+
 .collapsed { }
 .menuButton { }
 .root { }
