@@ -12,7 +12,7 @@ import TextInput, { TextInputProperties } from '../../index';
 import InputValidity from '../../../common/InputValidity';
 import * as css from '../../../theme/text-input.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
-import HelperText from '../../../helper-text';
+import HelperText from '../../../helper-text/index';
 
 const harness = createHarness([ compareId, compareForId ]);
 

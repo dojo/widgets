@@ -10,7 +10,7 @@ import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
-import HelperText from '../helper-text';
+import HelperText from '../helper-text/index';
 
 /**
  * @type TextareaProperties

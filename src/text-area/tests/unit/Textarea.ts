@@ -9,7 +9,7 @@ import Label from '../../../label/index';
 import Textarea from '../../index';
 import * as css from '../../../theme/text-area.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
-import HelperText from '../../../helper-text';
+import HelperText from '../../../helper-text/index';
 
 const harness = createHarness([ compareId, compareForId ]);
 
