@@ -16,7 +16,6 @@ export default class HelperText extends ThemedMixin(WidgetBase)<HelperTextProper
 
 		return v('div', {
 			key: 'root',
-
 			classes: this.theme([
 				css.root,
 				valid === true ? css.valid : null,
