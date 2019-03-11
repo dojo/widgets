@@ -67,8 +67,6 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [ComboBox](src/combobox/README.md)
 
-[EnhancedTextInput](src/enhanced-text-input/README.md)
-
 [Label](src/label/README.md)
 
 [Listbox](src/listbox/README.md)

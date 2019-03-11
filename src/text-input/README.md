@@ -8,6 +8,7 @@ Dojo's `TextInput` widget provides a basic text input widget with an optional la
 - Allows specification of input type (e.g. `text`, `email`, `number`, etc)
 - Correctly handles a11y attributes
 - Associates a visible or invisible but accessible `<label>` with the input if the `label` property is added
+- Allows leading / trailing icons / text to be added
 
 ### Accessibility Features
 
@@ -100,6 +101,23 @@ w(TextInput, {
 		this.setState({ value });
 		this.invalidate();
 	}
+})
+```
+
+### Leading / Trailing icons
+
+The `TextInput` widget can display a `leading` or `trailing` `Dnode` passed via the appropriate render property. These could be used to display an icon or a unit of measurement etc.
+
+```typescript
+w(TextInput, {
+	type: 'number',
+	value: this.state.value,
+	onInput: (value: string) => {
+		this.setState({ value });
+		this.invalidate();
+	},
+	leading: () => v('span', {}, [ '£' ]),
+	trailing: () => v('span', {}, [ '.00' ]),
 })
 ```
 
