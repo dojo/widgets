@@ -104,6 +104,17 @@ export default class App extends WidgetBase {
 						this.invalidate();
 					}
 				})
+			]),
+			v('div', { id: 'example-leading-trailing' }, [
+				v('h3', {}, ['leading / trailing icon text input']),
+				w(TextInput, {
+					key: 't4',
+					type: 'text',
+					label: 'Can\'t type here',
+					value: 'Initial value',
+					leading: () => v('span', {}, ['A']),
+					trailing: () => v('span', {}, ['Z'])
+				})
 			])
 		]);
 	}
