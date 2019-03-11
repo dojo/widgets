@@ -5,7 +5,7 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Label from '../label/index';
-import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, InputProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
