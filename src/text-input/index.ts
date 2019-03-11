@@ -12,7 +12,7 @@ import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 import InputValidity from '../common/InputValidity';
-import HelperText from '../helper-text/HelperText';
+import HelperText from '../helper-text';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
