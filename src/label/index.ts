@@ -35,8 +35,6 @@ export interface LabelProperties extends ThemedProperties, CustomAriaProperties 
 	widgetId?: string;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 @theme(css)
 @customElement<LabelProperties>({
 	tag: 'dojo-label',
@@ -44,7 +42,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	attributes: [],
 	events: []
 })
-export class LabelBase<P extends LabelProperties = LabelProperties> extends ThemedBase<P> {
+export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
 	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
@@ -81,4 +79,4 @@ export class LabelBase<P extends LabelProperties = LabelProperties> extends Them
 	}
 }
 
-export default class Label extends LabelBase<LabelProperties> {}
+export default Label;

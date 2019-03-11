@@ -29,8 +29,6 @@ export interface ToolbarProperties extends ThemedProperties {
 	heading?: string;
 }
 
-export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
-
 @theme(css)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
@@ -40,7 +38,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'onCollapse'
 	]
 })
-export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extends ThemedBase<P> {
+export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarProperties> {
 	private _collapsed = false;
 	private _open = false;
 
@@ -140,4 +138,4 @@ export class ToolbarBase<P extends ToolbarProperties = ToolbarProperties> extend
 	}
 }
 
-export default class Toolbar extends ToolbarBase<ToolbarProperties> {}
+export default Toolbar;

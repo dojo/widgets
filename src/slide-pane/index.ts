@@ -58,8 +58,6 @@ enum Plane {
 	y
 }
 
-export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
-
 @theme(css)
 @customElement<SlidePaneProperties>({
 	tag: 'dojo-slide-pane',
@@ -70,7 +68,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'onRequestClose'
 	]
 })
-export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> extends ThemedBase<P> {
+export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePaneProperties> {
 	private _initialPosition = 0;
 	private _slideIn: boolean | undefined;
 	private _swiping: boolean | undefined;
@@ -329,4 +327,4 @@ export class SlidePaneBase<P extends SlidePaneProperties = SlidePaneProperties> 
 	}
 }
 
-export default class SlidePane extends SlidePaneBase<SlidePaneProperties> {}
+export default SlidePane;

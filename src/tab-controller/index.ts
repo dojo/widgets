@@ -40,8 +40,6 @@ export interface TabControllerProperties extends ThemedProperties, FocusProperti
 	onRequestTabClose?(index: number, key: string): void;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @customElement<TabControllerProperties>({
 	tag: 'dojo-tab-controller',
@@ -52,7 +50,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onRequestTabClose'
 	]
 })
-export class TabControllerBase<P extends TabControllerProperties = TabControllerProperties> extends ThemedBase<P, WNode<Tab>> {
+export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<TabControllerProperties, WNode<Tab>> {
 	private _id = uuid();
 
 	private get _tabs(): WNode<Tab>[] {
@@ -257,4 +255,4 @@ export class TabControllerBase<P extends TabControllerProperties = TabController
 	}
 }
 
-export default class TabController extends TabControllerBase<TabControllerProperties> {}
+export default TabController;

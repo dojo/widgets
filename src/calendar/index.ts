@@ -79,8 +79,6 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 	{ short: 'satShort', long: 'saturday' }
 ];
 
-export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
-
 @theme(css)
 @customElement<CalendarProperties>({
 	tag: 'dojo-calendar',
@@ -99,7 +97,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 	],
 	events: [ 'onDateSelect', 'onMonthChange', 'onYearChange' ]
 })
-export class CalendarBase<P extends CalendarProperties = CalendarProperties> extends ThemedBase<P, null> {
+export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarProperties> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
 	private _focusedDay = 1;
@@ -456,4 +454,4 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 	}
 }
 
-export default class Calendar extends CalendarBase<CalendarProperties> {}
+export default Calendar;

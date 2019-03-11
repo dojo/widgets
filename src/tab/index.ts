@@ -31,8 +31,6 @@ export interface TabProperties extends ThemedProperties, CustomAriaProperties {
 	labelledBy?: string;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 @theme(css)
 @customElement<TabProperties>({
 	tag: 'dojo-tab',
@@ -41,7 +39,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	attributes: [ 'key', 'labelledBy', 'widgetId', 'label' ],
 	events: [ ]
 })
-export class TabBase<P extends TabProperties = TabProperties> extends ThemedBase<P> {
+export class Tab extends ThemedMixin(WidgetBase)<TabProperties> {
 	render(): DNode {
 		const {
 			aria = {},
@@ -62,4 +60,4 @@ export class TabBase<P extends TabProperties = TabProperties> extends ThemedBase
 	}
 }
 
-export default class Tab extends TabBase<TabProperties> {}
+export default Tab;

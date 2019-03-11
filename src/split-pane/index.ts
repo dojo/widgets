@@ -37,8 +37,6 @@ export interface SplitPaneProperties extends ThemedProperties {
 	onCollapse?(collapsed: boolean): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 const DEFAULT_SIZE = 100;
 
 @theme(css)
@@ -51,7 +49,7 @@ const DEFAULT_SIZE = 100;
 		'onResize'
 	]
 })
-export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P> {
+export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 	private _dragging: boolean | undefined;
 	private _lastSize?: number;
 	private _position = 0;
@@ -228,4 +226,4 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	}
 }
 
-export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {}
+export default SplitPane;

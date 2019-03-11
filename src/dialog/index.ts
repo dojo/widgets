@@ -51,8 +51,6 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 	underlay?: boolean;
 }
 
-export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
-
 @theme(css)
 @customElement<DialogProperties>({
 	tag: 'dojo-dialog',
@@ -78,7 +76,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(WidgetBase));
 		'onRequestClose'
 	]
 })
-export class DialogBase<P extends DialogProperties = DialogProperties> extends ThemedBase<P> {
+export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties> {
 	private _titleId = uuid();
 	private _wasOpen: boolean | undefined;
 	private _callFocus = false;
@@ -227,4 +225,4 @@ export class DialogBase<P extends DialogProperties = DialogProperties> extends T
 	}
 }
 
-export default class Dialog extends DialogBase<DialogProperties> {}
+export default Dialog;

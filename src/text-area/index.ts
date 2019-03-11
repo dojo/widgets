@@ -39,8 +39,6 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, F
 	helperText?: string;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @customElement<TextareaProperties>({
 	tag: 'dojo-text-area',
@@ -74,7 +72,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onTouchStart'
 	]
 })
-export class TextareaBase<P extends TextareaProperties = TextareaProperties> extends ThemedBase<P, null> {
+export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
 	private _onBlur (event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
@@ -226,4 +224,4 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 	}
 }
 
-export default class Textarea extends TextareaBase<TextareaProperties> {}
+export default Textarea;

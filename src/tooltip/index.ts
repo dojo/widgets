@@ -35,8 +35,6 @@ export enum Orientation {
 const fixedOrientationCss: {[key: string]: any} = fixedCss;
 const orientationCss: {[key: string]: any} = css;
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 @theme(css)
 @customElement<TooltipProperties>({
 	tag: 'dojo-tooltip',
@@ -44,7 +42,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	attributes: [ 'orientation' ],
 	events: [ ]
 })
-export class TooltipBase<P extends TooltipProperties = TooltipProperties> extends ThemedBase<P> {
+export class Tooltip extends ThemedMixin(WidgetBase)<TooltipProperties> {
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
 
@@ -89,4 +87,4 @@ export class TooltipBase<P extends TooltipProperties = TooltipProperties> extend
 	}
 }
 
-export default class Tooltip extends TooltipBase<TooltipProperties> {}
+export default Tooltip;

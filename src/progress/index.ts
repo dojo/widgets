@@ -28,8 +28,6 @@ export interface ProgressProperties extends ThemedProperties, CustomAriaProperti
 	widgetId?: string;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 @theme(css)
 @customElement<ProgressProperties>({
 	tag: 'dojo-progress',
@@ -37,7 +35,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	attributes: [ 'widgetId' ],
 	events: [ ]
 })
-export class ProgressBase<P extends ProgressProperties = ProgressProperties> extends ThemedBase<P, null> {
+export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
 	private _output(value: number, percent: number) {
 		const { output } = this.properties;
 		return output ? output(value, percent) : `${percent}%`;
@@ -83,4 +81,4 @@ export class ProgressBase<P extends ProgressProperties = ProgressProperties> ext
 	}
 }
 
-export default class Progress extends ProgressBase<ProgressProperties> {}
+export default Progress;

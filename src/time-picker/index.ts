@@ -156,8 +156,6 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 	return value;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @customElement<TimePickerProperties>({
 	tag: 'dojo-time-picker',
@@ -190,7 +188,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onRequestOptions'
 	]
 })
-export class TimePickerBase<P extends TimePickerProperties = TimePickerProperties> extends ThemedBase<P, null> {
+export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerProperties> {
 	protected options: TimeUnits[] | null = null;
 
 	private _uuid: string;
@@ -412,4 +410,4 @@ export class TimePickerBase<P extends TimePickerProperties = TimePickerPropertie
 	}
 }
 
-export default class TimePicker extends TimePickerBase<TimePickerProperties> {}
+export default TimePicker;

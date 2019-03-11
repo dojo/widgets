@@ -63,8 +63,6 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	label?: string;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {
 	if (typeof autocomplete === 'boolean') {
 		return autocomplete ? 'on' : 'off';
@@ -129,7 +127,7 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 @diffProperty('pattern', patternDiffer)
 @diffProperty('leading', reference)
 @diffProperty('trailing', reference)
-export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
+export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProperties> {
 	private _onBlur (event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
@@ -336,4 +334,4 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 	}
 }
 
-export default class TextInput extends TextInputBase<TextInputProperties> {}
+export default TextInput;
