@@ -9,6 +9,7 @@ import Label from '../../../label/index';
 import Textarea from '../../index';
 import * as css from '../../../theme/text-area.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import HelperText from '../../../helper-text/HelperText';
 
 const harness = createHarness([ compareId, compareForId ]);
 
@@ -19,7 +20,7 @@ interface States {
 	readOnly?: boolean;
 }
 
-const expected = function(label = false, inputOverrides = {}, states: States = {}, focused = false) {
+const expected = function(label = false, inputOverrides = {}, states: States = {}, focused = false, helperText?: string) {
 	const { disabled, required, readOnly, invalid } = states;
 
 	return v('div', {
@@ -71,7 +72,8 @@ const expected = function(label = false, inputOverrides = {}, states: States = {
 				ontouchcancel: noop,
 				...inputOverrides
 			})
-		])
+		]),
+		w(HelperText, { text: helperText })
 	]);
 };
 
@@ -150,6 +152,11 @@ registerSuite('Textarea', {
 			});
 			const h = harness(() => w(MockMetaMixin(Textarea, mockMeta), {}));
 			h.expect(() => expected(false, {}, {}, true));
+		},
+
+		'helperText'() {
+			const h = harness(() => w(Textarea, { helperText: 'test' }));
+			h.expect(() => expected(false, {}, {}, false, 'test'));
 		},
 
 		events() {

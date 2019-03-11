@@ -10,6 +10,7 @@ import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import HelperText from '../helper-text/HelperText';
 
 /**
  * @type TextareaProperties
@@ -52,10 +53,9 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'readOnly',
 		'disabled',
 		'invalid',
-		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'label', 'minLength', 'maxLength', 'name', 'placeholder', 'value', 'wrapText' ],
+	attributes: [ 'widgetId', 'label', 'helperText', 'minLength', 'maxLength', 'name', 'placeholder', 'value', 'wrapText' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -126,10 +126,6 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 
 	private _uuid = uuid();
 
-	private _renderHelperText(): DNode | undefined {
-		return undefined;
-	}
-
 	protected getRootClasses(): (string | null)[] {
 		const {
 			disabled,
@@ -168,7 +164,8 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			wrapText,
 			theme,
 			classes,
-			labelHidden
+			labelHidden,
+			helperText
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -220,9 +217,9 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 					ontouchstart: this._onTouchStart,
 					ontouchend: this._onTouchEnd,
 					ontouchcancel: this._onTouchCancel
-				}),
-				this._renderHelperText()
-			])
+				})
+			]),
+			w(HelperText, { text: helperText })
 		]);
 	}
 }
