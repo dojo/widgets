@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import { v, w } from '@dojo/framework/widget-core/d';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 import * as css from '../../../theme/helper-text.m.css';
-import HelperText from '../../../helper-text/HelperText';
+import HelperText from '../../index';
 import harness from '@dojo/framework/testing/harness';
 
 const baseTemplate = assertationTemplate(() => {
