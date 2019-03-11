@@ -33,6 +33,7 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, F
 	placeholder?: string;
 	value?: string;
 	onClick?(value: string): void;
+	helperText?: string;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -169,7 +170,8 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			theme,
 			classes,
 			labelHidden,
-			labelAfter
+			labelAfter,
+			helperText
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
