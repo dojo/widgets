@@ -124,11 +124,10 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
-	private _uuid: string;
+	private _uuid = uuid();
 
-	constructor() {
-		super();
-		this._uuid = uuid();
+	private _renderHelperText(): DNode | undefined {
+		return undefined;
 	}
 
 	protected getRootClasses(): (string | null)[] {
@@ -169,13 +168,14 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			wrapText,
 			theme,
 			classes,
-			labelHidden,
-			labelAfter,
-			helperText
+			labelHidden
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
-		const children = [
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, [
 			label ? w(Label, {
 				theme,
 				classes,
@@ -220,14 +220,10 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 					ontouchstart: this._onTouchStart,
 					ontouchend: this._onTouchEnd,
 					ontouchcancel: this._onTouchCancel
-				})
+				}),
+				this._renderHelperText()
 			])
-		];
-
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children.reverse() : children);
+		]);
 	}
 }
 
