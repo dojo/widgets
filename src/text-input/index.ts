@@ -5,13 +5,14 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Label from '../label/index';
-import { CustomAriaProperties, InputProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, InputProperties, PointerEventProperties, KeyEventProperties, InputEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 import InputValidity from '../common/InputValidity';
+import HelperText from '../helper-text/index';
 
 export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
 
@@ -245,25 +246,6 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		];
 	}
 
-	protected renderHelperText(): DNode {
-		const { properties: { helperText = '' }, validity: { valid, message = '' } } = this;
-		const text = (valid === false && message) || helperText;
-
-		return text ? v('div', {
-			key: 'helperTextWrapper',
-			classes: this.theme([
-				css.helperTextWrapper,
-				valid === false ? css.invalid : null
-			])
-		}, [
-			v('div', {
-				key: 'helperText',
-				classes: this.theme(css.helperText),
-				title: text
-			}, [text])
-		]) : null;
-	}
-
 	protected render(): DNode {
 		const {
 			aria = {},
@@ -284,14 +266,15 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			trailing,
 			type = 'text',
 			value,
-			widgetId = this._uuid
+			widgetId = this._uuid,
+			helperText
 		} = this.properties;
 
-		const { valid } = this.validity;
-
+		this._validate();
+		const { valid, message } = this.validity;
 		const focus = this.meta(Focus).get('root');
 
-		this._validate();
+		const computedHelperText = (valid === false && message) || helperText;
 
 		return v('div', {
 			key: 'root',
@@ -345,7 +328,7 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				}),
 				trailing && v('span', { key: 'trailing', classes: this.theme(css.trailing) }, [ trailing() ])
 			]),
-			this.renderHelperText()
+			w(HelperText, { text: computedHelperText, valid })
 		]);
 	}
 }

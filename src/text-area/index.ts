@@ -5,11 +5,12 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
-import { CustomAriaProperties, InputProperties, LabeledProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import { CustomAriaProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import HelperText from '../helper-text/index';
 
 /**
  * @type TextareaProperties
@@ -24,7 +25,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
+export interface TextareaProperties extends ThemedProperties, InputProperties, FocusProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -33,6 +34,9 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, F
 	placeholder?: string;
 	value?: string;
 	onClick?(value: string): void;
+	label?: string;
+	labelHidden?: boolean;
+	helperText?: string;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -51,10 +55,9 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'readOnly',
 		'disabled',
 		'invalid',
-		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'label', 'minLength', 'maxLength', 'name', 'placeholder', 'value', 'wrapText' ],
+	attributes: [ 'widgetId', 'label', 'helperText', 'minLength', 'maxLength', 'name', 'placeholder', 'value', 'wrapText' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -123,12 +126,7 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
-	private _uuid: string;
-
-	constructor() {
-		super();
-		this._uuid = uuid();
-	}
+	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
 		const {
@@ -169,11 +167,14 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 			theme,
 			classes,
 			labelHidden,
-			labelAfter
+			helperText
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
-		const children = [
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, [
 			label ? w(Label, {
 				theme,
 				classes,
@@ -219,13 +220,9 @@ export class TextareaBase<P extends TextareaProperties = TextareaProperties> ext
 					ontouchend: this._onTouchEnd,
 					ontouchcancel: this._onTouchCancel
 				})
-			])
-		];
-
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children.reverse() : children);
+			]),
+			w(HelperText, { text: helperText })
+		]);
 	}
 }
 

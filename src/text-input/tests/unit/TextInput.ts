@@ -12,6 +12,7 @@ import TextInput, { TextInputProperties } from '../../index';
 import InputValidity from '../../../common/InputValidity';
 import * as css from '../../../theme/text-input.m.css';
 import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import HelperText from '../../../helper-text/index';
 
 const harness = createHarness([ compareId, compareForId ]);
 
@@ -94,19 +95,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 				...inputOverrides
 			})
 		]),
-		helperTextValue && v('div', {
-			key: 'helperTextWrapper',
-			classes: [
-				css.helperTextWrapper,
-				valid === false ? css.invalid : null
-			]
-		}, [
-			v('div', {
-				key: 'helperText',
-				classes: css.helperText,
-				title: helperTextValue
-			}, [helperTextValue])
-		])
+		w(HelperText, { text: helperTextValue, valid })
 	]);
 };
 
@@ -148,7 +137,8 @@ const baseTemplate = assertationTemplate(() => {
 				ontouchend: noop,
 				ontouchcancel: noop
 			})
-		])
+		]),
+		w(HelperText, { text: undefined, valid: undefined })
 	]);
 });
 
