@@ -64,7 +64,7 @@ export default class App extends WidgetBase {
 				})
 			]),
 			v('h3', {}, ['Helper Text Textarea']),
-			v('div', { id: 'example-t4'}, [
+			v('div', { id: 'example-helperText'}, [
 				w(Textarea, {
 					key: 't4',
 					columns: 40,

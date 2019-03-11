@@ -3,6 +3,7 @@ import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
 import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
 import * as css from '../theme/helper-text.m.css';
 import { v } from '@dojo/framework/widget-core/d';
+import { VNode } from '@dojo/framework/widget-core/interfaces';
 
 export interface HelperTextProperties {
 	text?: string;
@@ -11,7 +12,7 @@ export interface HelperTextProperties {
 
 @theme(css)
 export default class HelperText extends ThemedMixin(WidgetBase)<HelperTextProperties> {
-	protected render() {
+	protected render(): VNode {
 		const { text, valid } = this.properties;
 
 		return v('div', {
