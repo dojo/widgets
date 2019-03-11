@@ -32,9 +32,11 @@ interface TextInputInternalState {
  * @property minLength      Minimum number of characters allowed in the input
  * @property placeholder    Placeholder text
  * @property value           The current value
+ * @property leading		Renderer for leading icon content
+ * @property trailing		Renderer for trailing icon content
  */
 
-export interface TextInputProperties extends ThemedProperties, FocusProperties, LabeledProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
+export interface TextInputProperties extends ThemedProperties, FocusProperties, PointerEventProperties, KeyEventProperties, InputEventProperties, CustomAriaProperties {
 	disabled?: boolean;
 	widgetId?: string;
 	name?: string;
@@ -53,6 +55,10 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties, 
 	autocomplete?: boolean | string;
 	onClick?(value: string): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	leading?: () => DNode;
+	trailing?: () => DNode;
+	labelHidden?: boolean;
+	label?: string;
 }
 
 export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
@@ -82,9 +88,10 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 		'extraClasses',
 		'disabled',
 		'readOnly',
-		'labelAfter',
 		'labelHidden',
-		'valid'
+		'valid',
+		'leading',
+		'trailing'
 	],
 	attributes: [
 		'widgetId',
@@ -219,7 +226,9 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		const {
 			disabled,
 			readOnly,
-			required
+			required,
+			leading,
+			trailing
 		} = this.properties;
 		const { valid } = this.validity;
 		const focus = this.meta(Focus).get('root');
@@ -230,62 +239,10 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 			valid === false ? css.invalid : null,
 			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null
+			required ? css.required : null,
+			leading ? css.hasLeading : null,
+			trailing ? css.hasTrailing : null
 		];
-	}
-
-	protected renderInput(): DNode {
-		const {
-			aria = {},
-			disabled,
-			widgetId = this._uuid,
-			maxLength,
-			minLength,
-			name,
-			placeholder,
-			readOnly,
-			required,
-			type = 'text',
-			value,
-			pattern,
-			autocomplete
-		} = this.properties;
-
-		const { valid } = this.validity;
-
-		return v('input', {
-			...formatAriaProperties(aria),
-			'aria-invalid': valid === false ? 'true' : null,
-			autocomplete: formatAutocomplete(autocomplete),
-			classes: this.theme(css.input),
-			disabled,
-			id: widgetId,
-			focus: this.shouldFocus,
-			key: 'input',
-			maxlength: maxLength ? `${maxLength}` : null,
-			minlength: minLength ? `${minLength}` : null,
-			name,
-			pattern,
-			placeholder,
-			readOnly,
-			'aria-readonly': readOnly ? 'true' : null,
-			required,
-			type,
-			value,
-			onblur: this._onBlur,
-			onchange: this._onChange,
-			onclick: this._onClick,
-			onfocus: this._onFocus,
-			oninput: this._onInput,
-			onkeydown: this._onKeyDown,
-			onkeypress: this._onKeyPress,
-			onkeyup: this._onKeyUp,
-			onmousedown: this._onMouseDown,
-			onmouseup: this._onMouseUp,
-			ontouchstart: this._onTouchStart,
-			ontouchend: this._onTouchEnd,
-			ontouchcancel: this._onTouchCancel
-		});
 	}
 
 	protected renderHelperText(): DNode {
@@ -307,34 +264,40 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 		]) : null;
 	}
 
-	protected renderInputWrapper(): DNode {
-		return v('div', { classes: this.theme(css.inputWrapper) }, [
-			this.renderInput(),
-			this.renderHelperText()
-		]);
-	}
-
 	protected render(): DNode {
 		const {
+			aria = {},
+			autocomplete,
+			classes,
 			disabled,
-			widgetId = this._uuid,
 			label,
-			labelAfter = false,
 			labelHidden = false,
+			leading,
+			maxLength,
+			minLength,
+			name,
+			pattern,
+			placeholder,
 			readOnly,
 			required,
 			theme,
-			classes,
-			value
+			trailing,
+			type = 'text',
+			value,
+			widgetId = this._uuid
 		} = this.properties;
+
 		const { valid } = this.validity;
 
 		const focus = this.meta(Focus).get('root');
 
 		this._validate();
 
-		const children = [
-			label ? w(Label, {
+		return v('div', {
+			key: 'root',
+			classes: this.theme(this.getRootClasses())
+		}, [
+			label && w(Label, {
 				theme,
 				classes,
 				disabled,
@@ -344,14 +307,46 @@ export class TextInputBase<P extends TextInputProperties = TextInputProperties> 
 				required,
 				hidden: labelHidden,
 				forId: widgetId
-			}, [ label ]) : null,
-			this.renderInputWrapper()
-		];
-
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children.reverse() : children);
+			}, [ label ]),
+			v('div', { key: 'inputWrapper', classes: this.theme(css.inputWrapper) }, [
+				leading && v('span', { key: 'leading', classes: this.theme(css.leading) }, [ leading() ]),
+				v('input', {
+					...formatAriaProperties(aria),
+					'aria-invalid': valid === false ? 'true' : null,
+					autocomplete: formatAutocomplete(autocomplete),
+					classes: this.theme(css.input),
+					disabled,
+					id: widgetId,
+					focus: this.shouldFocus,
+					key: 'input',
+					maxlength: maxLength ? `${maxLength}` : null,
+					minlength: minLength ? `${minLength}` : null,
+					name,
+					pattern,
+					placeholder,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					type,
+					value,
+					onblur: this._onBlur,
+					onchange: this._onChange,
+					onclick: this._onClick,
+					onfocus: this._onFocus,
+					oninput: this._onInput,
+					onkeydown: this._onKeyDown,
+					onkeypress: this._onKeyPress,
+					onkeyup: this._onKeyUp,
+					onmousedown: this._onMouseDown,
+					onmouseup: this._onMouseUp,
+					ontouchstart: this._onTouchStart,
+					ontouchend: this._onTouchEnd,
+					ontouchcancel: this._onTouchCancel
+				}),
+				trailing && v('span', { key: 'trailing', classes: this.theme(css.trailing) }, [ trailing() ])
+			]),
+			this.renderHelperText()
+		]);
 	}
 }
 

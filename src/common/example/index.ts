@@ -29,7 +29,6 @@ const modules = [
 	'tab-controller',
 	'text-area',
 	'text-input',
-	'enhanced-text-input',
 	'time-picker',
 	'title-pane',
 	'toolbar',

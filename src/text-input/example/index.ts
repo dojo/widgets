@@ -51,7 +51,6 @@ export default class App extends WidgetBase {
 					type: 'text',
 					placeholder: 'Type something...',
 					label: 'Try listening to me!',
-					labelAfter: true,
 					labelHidden: true,
 					value: this._value3,
 					onChange: (value: string) => {
@@ -104,6 +103,17 @@ export default class App extends WidgetBase {
 						this._value6 = value;
 						this.invalidate();
 					}
+				})
+			]),
+			v('div', { id: 'example-leading-trailing' }, [
+				v('h3', {}, ['leading / trailing icon text input']),
+				w(TextInput, {
+					key: 't4',
+					type: 'text',
+					label: 'Can\'t type here',
+					value: 'Initial value',
+					leading: () => v('span', {}, ['A']),
+					trailing: () => v('span', {}, ['Z'])
 				})
 			])
 		]);
