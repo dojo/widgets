@@ -131,8 +131,8 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 		return content ? [ content ] : [];
 	}
 
-	private _shouldCollapse(dimensions: ContentRect) {
-		const { onCollapse, direction, collapseWidth } = this.properties;
+	private _shouldCollapse(dimensions: ContentRect, collapseWidth: number) {
+		const { onCollapse, direction } = this.properties;
 
 		if (direction === Direction.row) {
 			return false;
@@ -162,7 +162,7 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 			const { shouldCollapse } = this.meta(Resize).get('root', {
 				shouldCollapse: (dimensions) => {
 					this._resizeResultOverridden = false;
-					return this._shouldCollapse(dimensions);
+					return this._shouldCollapse(dimensions, collapseWidth);
 				}
 			});
 
