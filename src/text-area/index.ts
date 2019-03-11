@@ -25,7 +25,7 @@ import HelperText from '../helper-text/HelperText';
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
+export interface TextareaProperties extends ThemedProperties, InputProperties, FocusProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -34,6 +34,8 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, F
 	placeholder?: string;
 	value?: string;
 	onClick?(value: string): void;
+	label?: string;
+	labelHidden?: boolean;
 	helperText?: string;
 }
 
