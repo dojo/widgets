@@ -5,7 +5,7 @@ import * as css from '../theme/helper-text.m.css';
 import { v } from '@dojo/framework/widget-core/d';
 
 export interface HelperTextProperties {
-	text: string;
+	text?: string;
 	valid?: boolean;
 }
 
@@ -14,10 +14,21 @@ export default class HelperText extends ThemedMixin(WidgetBase)<HelperTextProper
 	protected render() {
 		const { text, valid } = this.properties;
 
-		return (
-			v('div', { classes: this.theme(css.root)}, [
-				text
+		return v('div', {
+			key: 'root',
+
+			classes: this.theme([
+				css.root,
+				valid === true ? css.valid : null,
+				valid === false ? css.invalid : null
 			])
-		);
+		}, [
+			text && v('p', {
+				key: 'text',
+				classes: this.theme(css.text),
+				'aria-hidden': 'true',
+				title: text
+			}, [text])
+		]);
 	}
 }

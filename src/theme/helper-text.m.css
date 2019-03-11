@@ -1,3 +1,10 @@
+@import '../common/styles/variables.css';
+
 .root {}
-.valid{}
-.invalid {}
+.text {}
+.valid{
+	color: var(--success-color);
+}
+.invalid {
+	color: var(--error-color);
+}
