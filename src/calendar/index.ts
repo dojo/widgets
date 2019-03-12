@@ -272,14 +272,14 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 
 	private _ensureDayIsInMinMax(newDate: Date, update: (day: number) => void) {
 		const {
-			minDate = newDate,
-			maxDate = newDate
+			minDate,
+			maxDate
 		} = this.properties;
 
-		if (newDate < minDate) {
+		if (minDate && newDate < minDate) {
 			update(minDate.getDate());
 		}
-		else if (newDate > maxDate) {
+		else if (maxDate && newDate > maxDate) {
 			update(maxDate.getDate());
 		}
 	}
@@ -345,13 +345,13 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 
 	protected renderDateCell(dateObj: Date, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
 		const {
-			minDate = dateObj,
-			maxDate = dateObj
+			minDate,
+			maxDate
 		} = this.properties;
 
 		const date = dateObj.getDate();
 		const { theme, classes } = this.properties;
-		const outOfRange = (dateObj < minDate || dateObj > maxDate);
+		const outOfRange = ((minDate && dateObj < minDate) || (maxDate && dateObj > maxDate));
 		const focusable = currentMonth && date === this._focusedDay;
 
 		return w(CalendarCell, {
