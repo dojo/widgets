@@ -351,7 +351,7 @@ export class CalendarBase<P extends CalendarProperties = CalendarProperties> ext
 
 		const date = dateObj.getDate();
 		const { theme, classes } = this.properties;
-		const outOfRange = ((minDate && dateObj < minDate) || (maxDate && dateObj > maxDate));
+		const outOfRange = Boolean((minDate && dateObj < minDate) || (maxDate && dateObj > maxDate));
 		const focusable = currentMonth && date === this._focusedDay;
 
 		return w(CalendarCell, {
