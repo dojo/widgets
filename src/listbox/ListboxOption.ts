@@ -17,10 +17,8 @@ export interface ListboxOptionProperties extends ThemedProperties {
 	onClick?(option: any, index: number, key?: string | number): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 @theme(css)
-export class ListboxOptionBase<P extends ListboxOptionProperties = ListboxOptionProperties> extends ThemedBase<P, null> {
+export class ListboxOption extends ThemedMixin(WidgetBase)<ListboxOptionProperties> {
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
 		const { index, key, option, onClick } = this.properties;
@@ -47,4 +45,4 @@ export class ListboxOptionBase<P extends ListboxOptionProperties = ListboxOption
 	}
 }
 
-export default class ListboxOption extends ListboxOptionBase<ListboxOptionProperties> {}
+export default ListboxOption;

@@ -37,8 +37,6 @@ export interface SplitPaneProperties extends ThemedProperties {
 	onCollapse?(collapsed: boolean): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 const DEFAULT_SIZE = 100;
 
 @theme(css)
@@ -51,7 +49,7 @@ const DEFAULT_SIZE = 100;
 		'onResize'
 	]
 })
-export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> extends ThemedBase<P> {
+export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 	private _dragging: boolean | undefined;
 	private _lastSize?: number;
 	private _position = 0;
@@ -133,8 +131,8 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 		return content ? [ content ] : [];
 	}
 
-	private _shouldCollapse(dimensions: ContentRect) {
-		const { onCollapse, direction, collapseWidth } = this.properties;
+	private _shouldCollapse(dimensions: ContentRect, collapseWidth: number) {
+		const { onCollapse, direction } = this.properties;
 
 		if (direction === Direction.row) {
 			return false;
@@ -164,7 +162,7 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			const { shouldCollapse } = this.meta(Resize).get('root', {
 				shouldCollapse: (dimensions) => {
 					this._resizeResultOverridden = false;
-					return this._shouldCollapse(dimensions);
+					return this._shouldCollapse(dimensions, collapseWidth);
 				}
 			});
 
@@ -228,4 +226,4 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	}
 }
 
-export default class SplitPane extends SplitPaneBase<SplitPaneProperties> {}
+export default SplitPane;

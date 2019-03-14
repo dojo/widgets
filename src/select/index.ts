@@ -48,8 +48,6 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Foc
 	value?: string;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @diffProperty('options', reference)
 @customElement<SelectProperties>({
@@ -81,7 +79,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onFocus'
 	]
 })
-export class SelectBase<P extends SelectProperties = SelectProperties> extends ThemedBase<P, null> {
+export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
 	private _focusedIndex: number;
 	private _focusNode = 'trigger';
 	private _ignoreBlur = false;
@@ -446,4 +444,4 @@ export class SelectBase<P extends SelectProperties = SelectProperties> extends T
 	}
 }
 
-export default class Select extends SelectBase<SelectProperties> {}
+export default Select;

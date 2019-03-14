@@ -63,8 +63,6 @@ export interface ListboxProperties extends ThemedProperties, FocusProperties, Cu
 	onOptionSelect?(option: any, index: number, key?: string | number): void;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @diffProperty('optionData', reference)
 @customElement<ListboxProperties>({
@@ -91,7 +89,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onOptionSelect'
 	]
 })
-export class ListboxBase<P extends ListboxProperties = ListboxProperties> extends ThemedBase<P, null> {
+export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperties> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();
 
@@ -265,4 +263,4 @@ export class ListboxBase<P extends ListboxProperties = ListboxProperties> extend
 	}
 }
 
-export default class Listbox extends ListboxBase<ListboxProperties> {}
+export default Listbox;

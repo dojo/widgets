@@ -39,8 +39,6 @@ export interface RangeSliderProperties extends ThemedProperties, LabeledProperti
 	onFocus?(value?: string | number | boolean): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 function extractValue(event: Event): number {
 	const value = (event.target as HTMLInputElement).value;
 	return parseFloat(value);
@@ -92,7 +90,7 @@ type MinMaxCallback = (minValue: number, maxValue: number) => void;
 		'onTouchStart'
 	]
 })
-export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProperties> extends ThemedBase<P, null> {
+export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> {
 	// id used to associate input with output
 	private _widgetId = uuid();
 	private _minLabelId = uuid();
@@ -386,4 +384,4 @@ export class RangeSliderBase<P extends RangeSliderProperties = RangeSliderProper
 	}
 }
 
-export default class RangeSlider extends RangeSliderBase<RangeSliderProperties> {}
+export default RangeSlider;

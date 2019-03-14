@@ -56,12 +56,10 @@ export interface DatePickerProperties extends ThemedProperties {
 	onRequestYearChange?(year: number): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 const BASE_YEAR = 2000;
 
 @theme(css)
-export class DatePickerBase<P extends DatePickerProperties = DatePickerProperties> extends ThemedBase<P, null> {
+export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 	private _idBase = uuid();
 	private _monthPopupOpen = false;
 	private _yearPopupOpen = false;
@@ -367,4 +365,4 @@ export class DatePickerBase<P extends DatePickerProperties = DatePickerPropertie
 	}
 }
 
-export default class DatePicker extends DatePickerBase<DatePickerProperties> {}
+export default DatePicker;

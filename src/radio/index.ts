@@ -24,8 +24,6 @@ export interface RadioProperties extends ThemedProperties, LabeledProperties, In
 	value?: string;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @customElement<RadioProperties>({
 	tag: 'dojo-radio',
@@ -58,7 +56,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onTouchStart'
 	]
 })
-export class RadioBase<P extends RadioProperties = RadioProperties> extends ThemedBase<P, null> {
+export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> {
 	private _uuid = uuid();
 
 	private _onBlur (event: FocusEvent) {
@@ -189,4 +187,4 @@ export class RadioBase<P extends RadioProperties = RadioProperties> extends Them
 	}
 }
 
-export default class Radio extends RadioBase<RadioProperties> {}
+export default Radio;

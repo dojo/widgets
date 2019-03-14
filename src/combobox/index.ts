@@ -77,8 +77,6 @@ export enum Operation {
 	decrease = -1
 }
 
-export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
-
 @theme(css)
 @diffProperty('results', reference)
 @customElement<ComboBoxProperties>({
@@ -111,7 +109,7 @@ export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
 		'onResultSelect'
 	]
 })
-export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> extends ThemedBase<P, null> {
+export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
 	private _activeIndex = 0;
 	private _ignoreBlur: boolean | undefined;
 	private _idBase = uuid();
@@ -508,4 +506,4 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 	}
 }
 
-export default class ComboBox extends ComboBoxBase<ComboBoxProperties> {}
+export default ComboBox;

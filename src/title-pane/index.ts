@@ -33,8 +33,6 @@ export interface TitlePaneProperties extends ThemedProperties, FocusProperties {
 	title: string;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @customElement<TitlePaneProperties>({
 	tag: 'dojo-title-pane',
@@ -45,7 +43,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onRequestOpen'
 	]
 })
-export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> extends ThemedBase<P> {
+export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProperties> {
 	private _id = uuid();
 	private _open: boolean | undefined;
 
@@ -166,4 +164,4 @@ export class TitlePaneBase<P extends TitlePaneProperties = TitlePaneProperties> 
 	}
 }
 
-export default class TitlePane extends TitlePaneBase<TitlePaneProperties> {}
+export default TitlePane;

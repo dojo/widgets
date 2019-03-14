@@ -32,10 +32,8 @@ export interface CalendarCellProperties extends ThemedProperties {
 	onKeyDown?(key: number, preventDefault: () => void): void;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 @theme(css)
-export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellProperties> extends ThemedBase<P, null> {
+export class CalendarCell extends ThemedMixin(WidgetBase)<CalendarCellProperties> {
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
 		const { date, disabled = false, onClick } = this.properties;
@@ -92,4 +90,4 @@ export class CalendarCellBase<P extends CalendarCellProperties = CalendarCellPro
 	}
 }
 
-export default class CalendarCell extends CalendarCellBase<CalendarCellProperties> {}
+export default CalendarCell;

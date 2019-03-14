@@ -38,8 +38,6 @@ export enum Mode {
 	toggle = 'toggle'
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @customElement<CheckboxProperties>({
 	tag: 'dojo-checkbox',
@@ -72,7 +70,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onTouchStart'
 	]
 })
-export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> extends ThemedBase<P, null> {
+export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProperties> {
 	private _onBlur (event: FocusEvent) {
 		const checkbox = event.target as HTMLInputElement;
 		this.properties.onBlur && this.properties.onBlur(checkbox.value, checkbox.checked);
@@ -233,4 +231,4 @@ export class CheckboxBase<P extends CheckboxProperties = CheckboxProperties> ext
 	}
 }
 
-export default class Checkbox extends CheckboxBase<CheckboxProperties> {}
+export default Checkbox;

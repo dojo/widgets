@@ -23,8 +23,6 @@ export interface IconProperties extends ThemedProperties, CustomAriaProperties {
 	altText?: string;
 }
 
-export const ThemedBase = ThemedMixin(WidgetBase);
-
 @theme(css)
 @customElement<IconProperties>({
 	tag: 'dojo-icon',
@@ -36,7 +34,7 @@ export const ThemedBase = ThemedMixin(WidgetBase);
 	],
 	attributes: [ 'type', 'altText' ]
 })
-export class IconBase<P extends IconProperties = IconProperties> extends ThemedBase<P, null> {
+export class Icon extends ThemedMixin(WidgetBase)<IconProperties> {
 
 	protected renderAltText(altText: string): DNode {
 		return v('span', { classes: [ baseCss.visuallyHidden ] }, [ altText ]);
@@ -61,4 +59,4 @@ export class IconBase<P extends IconProperties = IconProperties> extends ThemedB
 	}
 }
 
-export default class Icon extends IconBase<IconProperties> {}
+export default Icon;

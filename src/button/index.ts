@@ -36,8 +36,6 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 	onClick?(): void;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 @theme(css)
 @customElement<ButtonProperties>({
 	tag: 'dojo-button',
@@ -60,7 +58,7 @@ export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
 		'onTouchStart'
 	]
 })
-export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends ThemedBase<P> {
+export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties> {
 	private _onBlur (event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur();
 	}
@@ -173,4 +171,4 @@ export class ButtonBase<P extends ButtonProperties = ButtonProperties> extends T
 	}
 }
 
-export default class Button extends ButtonBase<ButtonProperties> {}
+export default Button;

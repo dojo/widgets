@@ -40,8 +40,6 @@ export interface SliderProperties extends ThemedProperties, LabeledProperties, I
 	inputStyles?: Partial<CSSStyleDeclaration>;
 }
 
-export const ThemedBase = ThemedMixin(FocusMixin(WidgetBase));
-
 function extractValue(event: Event): number {
 	const value = (event.target as HTMLInputElement).value;
 	return parseFloat(value);
@@ -87,7 +85,7 @@ function extractValue(event: Event): number {
 		'onTouchStart'
 	]
 })
-export class SliderBase<P extends SliderProperties = SliderProperties> extends ThemedBase<P, null> {
+export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties> {
 	// id used to associate input with output
 	private _widgetId = uuid();
 
@@ -304,4 +302,4 @@ export class SliderBase<P extends SliderProperties = SliderProperties> extends T
 	}
 }
 
-export default class Slider extends SliderBase<SliderProperties> {}
+export default Slider;
