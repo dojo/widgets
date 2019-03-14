@@ -11,6 +11,7 @@ import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
+import { reference } from '@dojo/framework/widget-core/diff';
 import InputValidity from '../common/InputValidity';
 import HelperText from '../helper-text/index';
 
@@ -126,6 +127,8 @@ function patternDiffer(previousProperty: string | undefined, newProperty: string
 	]
 })
 @diffProperty('pattern', patternDiffer)
+@diffProperty('leading', reference)
+@diffProperty('trailing', reference)
 export class TextInputBase<P extends TextInputProperties = TextInputProperties> extends ThemedBase<P, null> {
 	private _onBlur (event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
