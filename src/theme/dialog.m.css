@@ -19,6 +19,10 @@
 	position: relative;
 }
 
+.open {
+
+}
+
 .close {
 	position: absolute;
 	top: 50%;

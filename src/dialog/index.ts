@@ -191,7 +191,7 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 		}
 
 		return v('div', {
-			classes: this.theme(css.root)
+			classes: this.theme([css.root, open ? css.open : null])
 		}, open ? [
 			w(GlobalEvent, { key: 'global', document: { keyup: this._onKeyUp } }),
 			this.renderUnderlay(),
