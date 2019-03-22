@@ -27,8 +27,10 @@ export type RoleType = 'dialog' | 'alertdialog';
  *
  * @property closeable          Determines whether the dialog can be closed
  * @property closeText          Hidden text used by screen readers to display for the close button
- * @property enterAnimation     CSS class to apply to the dialog when opened
- * @property exitAnimation      CSS class to apply to the dialog when closed
+ * @property enterAnimation     css class to be used when animating the dialog entering, or null to disable the animation
+ * @property exitAnimation      css class to be used when animating the dialog exiting, or null to disable the animation
+ * @property underlayEnterAnimation     css class to be used when animating the dialog underlay entering, or null to disable the animation
+ * @property underlayExitAnimation      css class to be used when animating the dialog underlay exiting, or null to disable the animation
  * @property modal              Determines whether the dialog can be closed by clicking outside its content
  * @property onOpen             Called when the dialog opens
  * @property onRequestClose     Called when the dialog is closed
@@ -40,8 +42,10 @@ export type RoleType = 'dialog' | 'alertdialog';
 export interface DialogProperties extends ThemedProperties, CustomAriaProperties {
 	closeable?: boolean;
 	closeText?: string;
-	enterAnimation?: string;
-	exitAnimation?: string;
+	enterAnimation?: string | null;
+	exitAnimation?: string | null;
+	underlayEnterAnimation?: string | null;
+	underlayExitAnimation?: string | null;
 	modal?: boolean;
 	onOpen?(): void;
 	onRequestClose?(): void;
@@ -58,6 +62,10 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 		'theme',
 		'aria',
 		'extraClasses',
+		'exitAnimation',
+		'enterAnimation',
+		'underlayEnterAnimation',
+		'underlayExitAnimation',
 		'closeable',
 		'modal',
 		'open',
@@ -67,8 +75,6 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 	attributes: [
 		'title',
 		'role',
-		'exitAnimation',
-		'enterAnimation',
 		'closeText'
 	],
 	events: [
@@ -155,11 +161,11 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 	}
 
 	protected renderUnderlay(): DNode {
-		const { underlay } = this.properties;
+		const { underlay, underlayEnterAnimation = this.theme(css.underlayEnter), underlayExitAnimation = this.theme(css.underlayExit) } = this.properties;
 		return v('div', {
 			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
-			enterAnimation: this.theme(css.underlayEnter) || undefined,
-			exitAnimation: this.theme(css.underlayExit) || undefined,
+			enterAnimation: underlayEnterAnimation,
+			exitAnimation: underlayExitAnimation,
 			key: 'underlay',
 			onclick: this._onUnderlayClick
 		});
@@ -170,8 +176,8 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 			aria = {},
 			closeable = true,
 			closeText,
-			enterAnimation = this.theme(css.enter) || undefined,
-			exitAnimation = this.theme(css.exit) || undefined,
+			enterAnimation = this.theme(css.enter),
+			exitAnimation = this.theme(css.exit),
 			modal,
 			open = false,
 			role = 'dialog',

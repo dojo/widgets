@@ -156,6 +156,70 @@ registerSuite('Dialog', {
 			]));
 		},
 
+		'turn off animations'() {
+			let properties: DialogProperties = {
+				open: true
+			};
+			const h = harness(() => w(Dialog, properties));
+
+			// set tested properties
+			properties = {
+				enterAnimation: null,
+				exitAnimation: null,
+				underlayEnterAnimation: null,
+				underlayExitAnimation: null,
+				open: true,
+				underlay: true,
+				title: 'foo'
+			};
+
+			h.expect(() => v('div', {
+				classes: [css.root, css.open]
+			}, [
+				w(GlobalEvent, {
+					key: 'global',
+					document: {
+						keyup: noop
+					}
+				}),
+				v('div', {
+					classes: [ css.underlayVisible, fixedCss.underlay ],
+					enterAnimation: null,
+					exitAnimation: null,
+					key: 'underlay',
+					onclick: noop
+				}),
+				v('div', {
+					role: 'dialog',
+					'aria-labelledby': '',
+					classes: css.main,
+					enterAnimation: null,
+					exitAnimation: null,
+					key: 'main',
+					tabIndex: -1
+				}, [
+					v('div', {
+						classes: css.title,
+						key: 'title'
+					}, [
+						v('div', { id: '' }, [ 'foo' ]),
+						v('button', {
+							classes: css.close,
+							type: 'button',
+							onclick: noop
+						}, [
+							'close foo',
+							w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
+						])
+					]),
+					v('div', {
+						classes: css.content,
+						key: 'content'
+					}, [])
+				])
+			]));
+		},
+
 		'correct close text'() {
 			const h = harness(() => w(Dialog, {
 				closeable: true,
