@@ -20,7 +20,7 @@ registerSuite('CalendarCell', {
 				role: 'gridcell',
 				'aria-selected': 'false',
 				tabIndex: -1,
-				classes: [ css.date, null, null, null ],
+				classes: [ css.date, null, null, null, null ],
 				onclick: noop,
 				onkeydown: noop
 			}, [
@@ -31,7 +31,7 @@ registerSuite('CalendarCell', {
 		'Calendar cell with custom properties'() {
 			const h = harness(() => w(CalendarCell, {
 				date: 2,
-				disabled: true,
+				outOfRange: true,
 				focusable: true,
 				selected: true,
 				today: true
@@ -42,7 +42,7 @@ registerSuite('CalendarCell', {
 				role: 'gridcell',
 				'aria-selected': 'true',
 				tabIndex: 0,
-				classes: [ css.date, css.inactiveDate, css.selectedDate, css.todayDate ],
+				classes: [ css.date, css.inactiveDate, css.outOfRange, css.selectedDate, css.todayDate ],
 				onclick: noop,
 				onkeydown: noop
 			}, [
@@ -50,29 +50,67 @@ registerSuite('CalendarCell', {
 			]));
 		},
 
+		'Calendar cells for other months display as inactive'() {
+			const h = harness(() => w(CalendarCell, {
+				date: 30,
+				disabled: true
+			}));
+
+			h.expect(() => v('td', {
+				key: 'root',
+				role: 'gridcell',
+				'aria-selected': 'false',
+				tabIndex: -1,
+				classes: [ css.date, css.inactiveDate, null, null, null ],
+				onclick: noop,
+				onkeydown: noop
+			}, [
+				v('span', {}, [ '30' ])
+			]));
+		},
+
+		'Calendar cells for out of range dates display as inactive'() {
+			const h = harness(() => w(CalendarCell, {
+				date: 30,
+				outOfRange: true
+			}));
+
+			h.expect(() => v('td', {
+				key: 'root',
+				role: 'gridcell',
+				'aria-selected': 'false',
+				tabIndex: -1,
+				classes: [ css.date, css.inactiveDate, css.outOfRange, null, null ],
+				onclick: noop,
+				onkeydown: noop
+			}, [
+				v('span', {}, [ '30' ])
+			]));
+		},
+
 		'Click handler called with correct arguments'() {
 			let clickedDate = 0;
-			let clickedDisabled = false;
+			let clickedCurrentMonth = false;
 			let date = 1;
 			let disabled = true;
 			const h = harness(() => w(CalendarCell, {
 				date,
 				disabled,
-				onClick: (date: number, disabled: boolean) => {
-					clickedDate = date;
-					clickedDisabled = disabled;
+				onClick: (callbackDate: number, callbackCurrentMonth: boolean) => {
+					clickedDate = callbackDate;
+					clickedCurrentMonth = callbackCurrentMonth;
 				}
 			}));
 
 			h.trigger('td', 'onclick', stubEvent);
 			assert.strictEqual(clickedDate, 1);
-			assert.isTrue(clickedDisabled);
+			assert.isTrue(clickedCurrentMonth);
 
 			disabled = false;
 			date = 2;
 			h.trigger('td', 'onclick', stubEvent);
 			assert.strictEqual(clickedDate, 2);
-			assert.isFalse(clickedDisabled, 'disabled defaults to false');
+			assert.isFalse(clickedCurrentMonth);
 		},
 
 		'Keydown handler called'() {
@@ -103,7 +141,7 @@ registerSuite('CalendarCell', {
 				role: 'gridcell',
 				'aria-selected': 'false',
 				tabIndex: -1,
-				classes: [ css.date, null, null, null ],
+				classes: [ css.date, null, null, null, null ],
 				onclick: noop,
 				onkeydown: noop
 			}, [
@@ -119,7 +157,7 @@ registerSuite('CalendarCell', {
 				role: 'gridcell',
 				'aria-selected': 'false',
 				tabIndex: -1,
-				classes: [ css.date, null, null, null ],
+				classes: [ css.date, null, null, null, null ],
 				onclick: noop,
 				onkeydown: noop
 			}, [

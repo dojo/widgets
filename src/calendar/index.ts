@@ -8,6 +8,7 @@ import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
+import { monthInMin, monthInMax } from './date-utils';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import Icon from '../icon/index';
@@ -29,6 +30,8 @@ export type CalendarMessages = typeof calendarBundle.messages;
  * @property selectedDate      The currently selected date
  * @property weekdayNames      Customize or internationalize weekday names and abbreviations
  * @property year              Set the currently displayed year
+ * @property minDate           Set the earliest date the calendar will display (it will show the whole month but not allow previous selections)
+ * @property maxDate           Set the latest date the calendar will display (it will show the whole month but not allow later selections)
  * @property renderMonthLabel  Format the displayed current month and year
  * @property renderWeekdayCell Format the weekday column headers
  * @property onMonthChange     Function called when the month changes
@@ -42,6 +45,8 @@ export interface CalendarProperties extends ThemedProperties, CustomAriaProperti
 	selectedDate?: Date;
 	weekdayNames?: { short: string; long: string; }[];
 	year?: number;
+	minDate?: Date;
+	maxDate?: Date;
 	renderMonthLabel?(month: number, year: number): string;
 	renderWeekdayCell?(day: { short: string; long: string; }): DNode;
 	onMonthChange?(month: number): void;
@@ -120,8 +125,11 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const {
 			month,
 			selectedDate = this._defaultDate,
-			year
+			year,
+			minDate,
+			maxDate
 		} = this.properties;
+
 		return {
 			month: typeof month === 'number' ? month : selectedDate.getMonth(),
 			year: typeof year === 'number' ? year : selectedDate.getFullYear()
@@ -143,6 +151,8 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 
+		this._ensureDayIsInMinMax(new Date(year, month, day), (updatedDay) => day = updatedDay);
+
 		if (day < 1) {
 			this._onMonthDecrement();
 			day += previousMonthLength;
@@ -161,12 +171,8 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const { onDateSelect } = this.properties;
 		let { month, year } = this._getMonthYear();
 
-		if (disabled && date < 15) {
-			({ month, year } = this._onMonthIncrement());
-			this._callDateFocus = true;
-		}
-		else if (disabled && date >= 15) {
-			({ month, year } = this._onMonthDecrement());
+		if (disabled) {
+			({ month, year } = (date < 15) ? this._onMonthIncrement() : this._onMonthDecrement());
 			this._callDateFocus = true;
 		}
 		this._focusedDay = date;
@@ -262,58 +268,71 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		this._onMonthIncrement();
 	}
 
+	private _ensureDayIsInMinMax(newDate: Date, update: (day: number) => void) {
+		const {
+			minDate,
+			maxDate
+		} = this.properties;
+
+		if (minDate && newDate < minDate) {
+			update(minDate.getDate());
+		}
+		else if (maxDate && newDate > maxDate) {
+			update(maxDate.getDate());
+		}
+	}
+
 	private _renderDateGrid(selectedDate?: Date) {
 		const {
 			month,
 			year
 		} = this._getMonthYear();
 
+		this._ensureDayIsInMinMax(new Date(year, month, this._focusedDay), (newDay) => this._focusedDay = newDay);
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
 		const initialWeekday = new Date(year, month, 1).getDay();
 		const todayString = new Date().toDateString();
 
 		let dayIndex = 0;
-		let date = initialWeekday > 0 ? previousMonthLength - initialWeekday : 0;
-		let isCurrentMonth = initialWeekday > 0 ? false : true;
+		let isCurrentMonth = initialWeekday === 0;
+		let cellMonth = isCurrentMonth ? month : month - 1;
+		let date = isCurrentMonth ? 0 : previousMonthLength - initialWeekday;
 		let isSelectedDay: boolean;
+		let isToday: boolean;
 		let weeks: DNode[] = [];
 		let days: DNode[];
+		let dateObj: Date;
 		let dateString: string;
-		let i: number;
+		let weekday: number;
 
 		for (let week = 0; week < 6; week++) {
 			days = [];
 
-			for (i = 0; i < 7; i++) {
+			for (weekday = 0; weekday < 7; weekday++) {
 				// find the next date
 				// if we've reached the end of the previous month, reset to 1
 				if (date > dayIndex && date >= previousMonthLength) {
 					date = 1;
-					isCurrentMonth = true;
+					cellMonth++;
 				}
 				// if we've reached the end of the current month, reset to 1
 				else if (date <= dayIndex && date >= currentMonthLength) {
 					date = 1;
-					isCurrentMonth = false;
+					cellMonth++;
 				}
 				else {
 					date++;
 				}
-				dayIndex++;
 
 				// set isSelectedDay if the dates match
-				dateString = new Date(year, month, date).toDateString();
-				if (isCurrentMonth && selectedDate && dateString === selectedDate.toDateString()) {
-					isSelectedDay = true;
-				}
-				else {
-					isSelectedDay = false;
-				}
+				dateObj = new Date(year, cellMonth, date);
+				dateString = dateObj.toDateString();
+				isSelectedDay = Boolean(selectedDate && dateString === selectedDate.toDateString());
+				isCurrentMonth = month === cellMonth;
+				isToday = dateString === todayString;
 
-				const isToday = isCurrentMonth && dateString === todayString;
-
-				days.push(this.renderDateCell(date, week * 7 + i, isSelectedDay, isCurrentMonth, isToday));
+				days.push(this.renderDateCell(dateObj, dayIndex++, isSelectedDay, isCurrentMonth, isToday));
 			}
 
 			weeks.push(v('tr', days));
@@ -322,20 +341,29 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		return weeks;
 	}
 
-	protected renderDateCell(date: number, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
+	protected renderDateCell(dateObj: Date, index: number, selected: boolean, currentMonth: boolean, today: boolean): DNode {
+		const {
+			minDate,
+			maxDate
+		} = this.properties;
+
+		const date = dateObj.getDate();
 		const { theme, classes } = this.properties;
+		const outOfRange = Boolean((minDate && dateObj < minDate) || (maxDate && dateObj > maxDate));
+		const focusable = currentMonth && date === this._focusedDay;
 
 		return w(CalendarCell, {
 			classes,
 			key: `date-${index}`,
-			callFocus: this._callDateFocus && currentMonth && date === this._focusedDay,
+			callFocus: this._callDateFocus && focusable,
 			date,
+			outOfRange,
+			focusable,
 			disabled: !currentMonth,
-			focusable: currentMonth && date === this._focusedDay,
 			selected,
 			theme,
 			today,
-			onClick: this._onDateClick,
+			onClick: outOfRange ? undefined : this._onDateClick,
 			onFocusCalled: this._onDateFocusCalled,
 			onKeyDown: this._onDateKeyDown
 		});
@@ -348,7 +376,9 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			theme,
 			classes,
 			onMonthChange,
-			onYearChange
+			onYearChange,
+			minDate,
+			maxDate
 		} = this.properties;
 		const {
 			month,
@@ -365,6 +395,8 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			renderMonthLabel,
 			theme,
 			year,
+			minDate,
+			maxDate,
 			onPopupChange: (open: boolean) => {
 				this._popupOpen = open;
 				this.invalidate();
@@ -400,8 +432,11 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			labels = this.localizeBundle(calendarBundle).messages,
 			aria = {},
 			selectedDate,
+			minDate,
+			maxDate,
 			weekdayNames = this._getWeekdays(commonMessages)
 		} = this.properties;
+		const { year, month } = this._getMonthYear();
 
 		// Calendar Weekday array
 		const weekdays = [];
@@ -441,12 +476,14 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 					classes: this.theme(css.previous),
 					tabIndex: this._popupOpen ? -1 : 0,
 					type: 'button',
+					disabled: !monthInMin(year, month - 1, minDate),
 					onclick: this._onMonthPageDown
 				}, this.renderPagingButtonContent(Paging.previous, labels)),
 				v('button', {
 					classes: this.theme(css.next),
 					tabIndex: this._popupOpen ? -1 : 0,
 					type: 'button',
+					disabled: !monthInMax(year, month + 1, maxDate),
 					onclick: this._onMonthPageUp
 				}, this.renderPagingButtonContent(Paging.next, labels))
 			])
