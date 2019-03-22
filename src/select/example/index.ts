@@ -103,6 +103,33 @@ export default class App extends WidgetBase {
 					this._value3 = option;
 					this.invalidate();
 				}
+			}),
+			v('br'),
+			w(Select, {
+				key: 'select4',
+				...this.getOptionSettings(),
+				getOptionSelected: (option: any) => !!this._value1 && option.value === this._value1,
+				label: 'Native select with helper text',
+				options: this._selectOptions,
+				useNativeElement: true,
+				value: this._value1,
+				onChange: (option: any) => {
+					this._value1 = option.value;
+					this.invalidate();
+				},
+				helperText: 'pick a value'
+			}),
+			w(Select, {
+				key: 'select5',
+				...this.getOptionSettings(),
+				label: 'Custom select box with helper text',
+				options: this._moreSelectOptions,
+				value: this._value2,
+				onChange: (option: any) => {
+					this._value2 = option.value;
+					this.invalidate();
+				},
+				helperText: 'pick a value'
 			})
 		]);
 	}
