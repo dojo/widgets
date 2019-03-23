@@ -25,6 +25,7 @@
 @import '../../theme/time-picker.m.css';
 @import '../../title-pane/styles/title-pane.m.css';
 @import '../../toolbar/styles/toolbar.m.css';
+@import '../../theme/toolbar.m.css';
 @import '../../theme/title-pane.m.css';
 @import '../../theme/accordion-pane.m.css';
 @import '../../tooltip/styles/tooltip.m.css';
