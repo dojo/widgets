@@ -116,7 +116,12 @@ registerSuite('Toolbar', {
 				classes: undefined,
 				title: 'foo'
 			}, [
+				v('div', {
+					classes: css.slidePaneActions,
+					key: 'menu'
+				}, [
 				'test'
+				])
 			]);
 
 			const buttonVDom = v('button', {
