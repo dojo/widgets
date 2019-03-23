@@ -238,7 +238,11 @@ registerSuite('Toolbar', {
 				null
 			]));
 
-			properties = { heading: 'foo' };
+			properties = {
+				align: Align.left,
+				heading: 'foo'
+			};
+
 			h.trigger('@global', (node: any) => {
 				if (isWNode<GlobalEvent>(node) && node.properties.window !== undefined) {
 					return node.properties.window ? node.properties.window.resize : undefined;
