@@ -183,6 +183,38 @@ export default class App extends WidgetBase {
 					},
 					size: this.state.minSize
 				})
+			]),
+			v('h3', ['Size applies to the second pane (column)']),
+			v('div', {
+				id: 'example-second',
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					key: 'secondSize',
+					direction: Direction.column,
+					sizeAppliesTo: 1,
+					onResize: (size: number) => {
+						size = size < 100 ? 100 : size;
+						this.setState({ secondSize: size });
+					},
+					size: this.state.secondSize
+				})
+			]),
+			v('h3', ['Size applies to the second pane (row)']),
+			v('div', {
+				id: 'example-secondRow',
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					key: 'secondSizeRow',
+					direction: Direction.row,
+					sizeAppliesTo: 1,
+					onResize: (size: number) => {
+						size = size < 100 ? 100 : size;
+						this.setState({ secondSizeRow: size });
+					},
+					size: this.state.secondSizeRow
+				})
 			])
 		]);
 	}
