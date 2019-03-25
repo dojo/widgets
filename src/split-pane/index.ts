@@ -106,12 +106,6 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 
 		const currentPosition = this._getPosition(event);
 		const positionDelta = currentPosition - this._position;
-		/*
-		let newSize = (this._lastSize === undefined ? size : this._lastSize) + currentPosition - this._position;
-		if (sizeAppliesTo === 1) {
-			newSize = (this._lastSize === undefined ? size : this._lastSize) - currentPosition + this._position;
-		}
-		*/
 		let newSize = (this._lastSize === undefined ? size : this._lastSize) +
 			(sizeAppliesTo === 0 ? positionDelta : -positionDelta);
 
