@@ -64,7 +64,8 @@ registerSuite('SplitPane', {
 				}),
 				v('div', {
 					classes: [ css.trailing, fixedCss.trailingFixed ],
-					key: 'trailing'
+					key: 'trailing',
+					styles: ''
 				}, [])
 			]));
 		},
@@ -105,7 +106,8 @@ registerSuite('SplitPane', {
 				}),
 				v('div', {
 					classes: [ css.trailing, fixedCss.trailingFixed ],
-					key: 'trailing'
+					key: 'trailing',
+					styles: ''
 				}, [ 'def' ])
 			]));
 		},
