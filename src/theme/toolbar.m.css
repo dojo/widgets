@@ -3,12 +3,12 @@
 	flex-direction: row;
 }
 
-.slidePaneActions {
-	display: flex;
-	flex-direction: column;
+.collapsed {
+	& .actions {
+		flex-direction: column;
+	}
 }
 
-.collapsed { }
 .menuButton { }
 .root { }
 .title { }

@@ -82,7 +82,7 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 			heading
 		} = this.properties;
 		const actions = v('div', {
-			classes: this.theme(this._collapsed ? css.slidePaneActions : css.actions),
+			classes: this.theme(css.actions),
 			key: 'menu'
 		}, this.children);
 
