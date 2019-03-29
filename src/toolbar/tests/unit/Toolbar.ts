@@ -117,7 +117,7 @@ registerSuite('Toolbar', {
 				title: 'foo'
 			}, [
 				v('div', {
-					classes: css.slidePaneActions,
+					classes: css.actions,
 					key: 'menu'
 				}, [
 				'test'
