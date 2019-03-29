@@ -39,7 +39,7 @@ registerSuite('SplitPane', {
 		'Should construct SplitPane with passed properties'() {
 			const h = harness(() => w(SplitPane, {}));
 			h.expect(() => v('div', {
-				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null ],
+				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {
@@ -81,7 +81,7 @@ registerSuite('SplitPane', {
 			]));
 
 			h.expect(() => v('div', {
-				classes: [ css.root, null, css.row, fixedCss.rootFixed, fixedCss.rowFixed, null ],
+				classes: [ css.root, null, css.row, fixedCss.rootFixed, fixedCss.rowFixed, null, null ],
 				key: 'root'
 			}, [
 				w(GlobalEvent, {

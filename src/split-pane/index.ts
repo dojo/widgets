@@ -33,7 +33,7 @@ export interface SplitPaneProperties extends ThemedProperties {
 	direction?: Direction;
 	onResize?(size: number): void;
 	size?: number;
-	sizeAppliesTo?: 0 | 1;
+	sizeTrailing?: boolean;
 	collapseWidth?: number;
 	onCollapse?(collapsed: boolean): void;
 }
@@ -43,7 +43,7 @@ const DEFAULT_SIZE = 100;
 @theme(css)
 @customElement<SplitPaneProperties>({
 	tag: 'dojo-split-pane',
-	properties: [ 'theme', 'classes', 'extraClasses', 'size', 'collapseWidth', 'sizeAppliesTo' ],
+	properties: [ 'theme', 'classes', 'extraClasses', 'size', 'collapseWidth', 'sizeTrailing' ],
 	attributes: [ 'direction' ],
 	events: [
 		'onCollapse',
@@ -101,13 +101,13 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 			direction = Direction.column,
 			onResize,
 			size = DEFAULT_SIZE,
-			sizeAppliesTo = 0
+			sizeTrailing = false
 		} = this.properties;
 
 		const currentPosition = this._getPosition(event);
 		const positionDelta = currentPosition - this._position;
 		let newSize = (this._lastSize === undefined ? size : this._lastSize) +
-			(sizeAppliesTo === 0 ? positionDelta : -positionDelta);
+			(sizeTrailing ? -positionDelta : positionDelta);
 
 		const rootDimensions = this.meta(Dimensions).get('root');
 		const dividerDimensions = this.meta(Dimensions).get('divider');
@@ -156,7 +156,7 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 		const {
 			direction = Direction.column,
 			size = DEFAULT_SIZE,
-			sizeAppliesTo = 0,
+			sizeTrailing = false,
 			collapseWidth
 		} = this.properties;
 
@@ -181,15 +181,17 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 		let computedSize = this._collapsed ? 'auto' : `${size}px`;
 		paneStyles[direction === Direction.column ? 'width' : 'height'] = computedSize;
 
-		const leadingClasses = [
-			this.theme(css.leading),
-			fixedCss.leadingFixed
-		];
-
-		const trailingClasses = [
-			this.theme(css.trailing),
-			fixedCss.trailingFixed
-		];
+		sizeTrailing && console.log('sizeTrailing =', sizeTrailing, [
+				...this.theme([
+					css.root,
+					this._collapsed ? css.collapsed : null,
+					direction === Direction.row ? css.row : css.column
+				]),
+				fixedCss.rootFixed,
+				direction === Direction.row ? fixedCss.rowFixed : fixedCss.columnFixed,
+				this._collapsed ? fixedCss.collapsedFixed : null,
+				sizeTrailing ? fixedCss.sizeTrailing : null
+			]);
 
 		return v('div', {
 			classes: [
@@ -200,7 +202,8 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 				]),
 				fixedCss.rootFixed,
 				direction === Direction.row ? fixedCss.rowFixed : fixedCss.columnFixed,
-				this._collapsed ? fixedCss.collapsedFixed : null
+				this._collapsed ? fixedCss.collapsedFixed : null,
+				sizeTrailing ? fixedCss.sizeTrailing : null
 			],
 			key: 'root'
 		}, [
@@ -213,9 +216,12 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 				}
 			}),
 			v('div', {
-				classes: sizeAppliesTo === 0 ? leadingClasses : trailingClasses,
+				classes: [
+					this.theme(css.leading),
+					fixedCss.leadingFixed
+				],
 				key: 'leading',
-				styles: sizeAppliesTo === 0 ? paneStyles : ''
+				styles: sizeTrailing ? '' : paneStyles
 			}, this.getPaneContent(this.children[0])),
 			v('div', {
 				classes: [
@@ -228,9 +234,12 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 				ontouchstart: this._onDragStart
 			}),
 			v('div', {
-				classes: sizeAppliesTo === 1 ? leadingClasses : trailingClasses,
+				classes: [
+					this.theme(css.trailing),
+					fixedCss.trailingFixed
+				],
 				key: 'trailing',
-				styles: sizeAppliesTo === 1 ? paneStyles : ''
+				styles: sizeTrailing ? paneStyles : ''
 			}, this.getPaneContent(this.children[1]))
 		]);
 	}

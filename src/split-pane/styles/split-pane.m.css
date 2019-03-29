@@ -27,7 +27,8 @@
 	position: absolute;
 }
 
-.leadingFixed {
+.leadingFixed,
+.sizeTrailing .trailingFixed {
 	flex: 0 0 auto;
 }
 
@@ -55,7 +56,8 @@
 	width: 100%;
 }
 
-.trailingFixed {
+.trailingFixed,
+.sizeTrailing .leadingFixed {
 	flex: 1 1 0%;
 }
 

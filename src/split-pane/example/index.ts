@@ -184,37 +184,55 @@ export default class App extends WidgetBase {
 					size: this.state.minSize
 				})
 			]),
-			v('h3', ['Size applies to the second pane (column)']),
+			v('h3', ['Size applies to the trailing pane (column)']),
 			v('div', {
-				id: 'example-second',
+				id: 'example-trailing',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
-					key: 'secondSize',
+					key: 'trailingSize',
 					direction: Direction.column,
-					sizeAppliesTo: 1,
+					sizeTrailing: true,
 					onResize: (size: number) => {
 						size = size < 100 ? 100 : size;
-						this.setState({ secondSize: size });
+						this.setState({ trailingSize: size });
 					},
-					size: this.state.secondSize
+					size: this.state.trailingSize
 				})
 			]),
-			v('h3', ['Size applies to the second pane (row)']),
+			v('h3', ['Size applies to the trailing pane (row)']),
 			v('div', {
-				id: 'example-secondRow',
+				id: 'example-trailingRow',
 				styles: containerStyles
 			}, [
 				w(SplitPane, {
-					key: 'secondSizeRow',
+					key: 'trailingSizeRow',
 					direction: Direction.row,
-					sizeAppliesTo: 1,
+					sizeTrailing: true,
 					onResize: (size: number) => {
 						size = size < 100 ? 100 : size;
-						this.setState({ secondSizeRow: size });
+						this.setState({ trailingSizeRow: size });
 					},
-					size: this.state.secondSizeRow
+					size: this.state.trailingSizeRow
 				})
+			]),
+			v('h3', ['Size applies to the trailing pane (with collapse)']),
+			v('div', {
+				id: 'example-trailingCollapse',
+				styles: containerStyles
+			}, [
+				w(SplitPane, {
+					key: 'trailingSizeCollapse',
+					sizeTrailing: true,
+					collapseWidth: 400,
+					onResize: (size: number) => {
+						this.setState({ trailingSizeCollapse: size });
+					},
+					size: this.state.trailingSizeCollapse
+				}, [
+					v('div', ['One']),
+					v('div', ['Two'])
+				])
 			])
 		]);
 	}
