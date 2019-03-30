@@ -12,6 +12,7 @@ import Icon from '../icon/index';
 import * as fixedCss from './styles/slide-pane.m.css';
 import * as css from '../theme/slide-pane.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
 
 /**
  * Enum for left / right alignment
@@ -58,6 +59,11 @@ enum Plane {
 	y
 }
 
+enum Slide {
+	in,
+	out
+}
+
 @theme(css)
 @customElement<SlidePaneProperties>({
 	tag: 'dojo-slide-pane',
@@ -70,18 +76,29 @@ enum Plane {
 })
 export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePaneProperties> {
 	private _initialPosition = 0;
-	private _slideIn: boolean | undefined;
+	private _slide: Slide | undefined;
 	private _swiping: boolean | undefined;
 	private _titleId = uuid();
-	private _transform: number | undefined;
-	private _wasOpen = false;
-	private _stylesTransform: string | null = null;
-	private _attached = false;
+	private _transform = 0;
 	private _hasMoved = false;
 
 	private get plane() {
 		const { align = Align.left } = this.properties;
 		return align === Align.left || align === Align.right ? Plane.x : Plane.y;
+	}
+
+	@diffProperty('open')
+	private _onOpenChange(oldProperties: Partial<SlidePaneProperties>, newProperties: Partial<SlidePaneProperties>) {
+		const wasOpen = oldProperties.open;
+		const { open, onOpen } = newProperties;
+
+		if (open && !wasOpen) {
+			this._slide = Slide.in;
+			onOpen && onOpen();
+		}
+		else if (!open && wasOpen) {
+			this._slide = Slide.out;
+		}
 	}
 
 	private _getDelta(event: MouseEvent & TouchEvent, eventType: string) {
@@ -120,7 +137,7 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 
 	private _onSwipeMove(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
-		// Ignore mouse movement when not clicking
+		// Ignore mouse movement when not swiping
 		if (!this._swiping) {
 			return;
 		}
@@ -133,22 +150,12 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 
 		const delta = this._getDelta(event, 'touchmove');
 
-		// Transform to apply
-		this._transform = 100 * delta / width;
-
 		// Prevent pane from sliding past screen edge
-		if (delta <= 0) {
-			return;
+		if (delta >= 0) {
+			this._transform = 100 * delta / width;
+			this.invalidate();
 		}
 
-		// Move the pane
-		if (this.plane === Plane.x) {
-			this._stylesTransform = `translateX(${ align === Align.left ? '-' : '' }${ this._transform }%)`;
-		}
-		else {
-			this._stylesTransform = `translateY(${ align === Align.top ? '-' : '' }${ this._transform }%)`;
-		}
-		this.invalidate();
 	}
 
 	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
@@ -165,14 +172,12 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 
 		// If the pane was swiped far enough to close
 		if (delta > width / 2) {
-			// Cache the transform to apply on next render
-			this._transform = 100 * delta / width;
 			onRequestClose && onRequestClose();
 		}
 		// If pane was not swiped far enough to close
 		else if (delta > 0) {
 			// Animate the pane back open
-			this._slideIn = true;
+			this._slide = Slide.in;
 			this.invalidate();
 		}
 	}
@@ -184,10 +189,6 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		}
 	}
 
-	protected onAttach() {
-		this._attached = true;
-	}
-
 	protected getContent(): DNode {
 		return v('div', { classes: [this.theme(css.content), fixedCss.contentFixed] }, this.children);
 	}
@@ -195,20 +196,18 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 	protected getStyles(): {[index: string]: string | null } {
 		const {
 			align = Align.left,
-			open = false,
 			width = DEFAULT_WIDTH
 		} = this.properties;
 
 		let translate = '';
 		const translateAxis = this.plane === Plane.x ? 'X' : 'Y';
 
-		// If pane is closing because of swipe
-		if (!open && this._wasOpen && this._transform) {
+		if (this._swiping) {
 			translate = align === Align.left || align === Align.top ? `-${this._transform}` : `${this._transform}`;
 		}
 
 		return {
-			transform: translate ? `translate${translateAxis}(${translate}%)` : this._stylesTransform,
+			transform: translate ? `translate${translateAxis}(${translate}%)` : null,
 			width: this.plane === Plane.x ? `${ width }px` : null,
 			height: this.plane === Plane.y ? `${ width }px` : null
 		};
@@ -224,8 +223,8 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		return [
 			open ? fixedCss.openFixed : null,
 			alignCss[`${align}Fixed`],
-			this._slideIn || (open && !this._wasOpen) ? fixedCss.slideInFixed : null,
-			!open && this._wasOpen ? fixedCss.slideOutFixed : null
+			this._slide === Slide.in ? fixedCss.slideInFixed : null,
+			this._slide === Slide.out ? fixedCss.slideOutFixed : null
 		];
 	}
 
@@ -239,8 +238,8 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		return [
 			alignCss[align],
 			open ? css.open : null,
-			this._slideIn || (open && !this._wasOpen) ? css.slideIn : null,
-			!open && this._wasOpen ? css.slideOut : null
+			this._slide === Slide.in ? css.slideIn : null,
+			this._slide === Slide.out ? css.slideOut : null
 		];
 	}
 
@@ -276,18 +275,12 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		const contentClasses = this.getModifierClasses();
 		const fixedContentClasses = this.getFixedModifierClasses();
 
-		if (this._slideIn && this._attached) {
-			this._stylesTransform = '';
-		}
-
 		if (!closeText) {
 			const { messages } = this.localizeBundle(commonBundle);
 			closeText = `${messages.close} ${title}`;
 		}
 
-		open && !this._wasOpen && onOpen && onOpen();
-		this._wasOpen = open;
-		this._slideIn = false;
+		this._slide = undefined;
 
 		return v('div', {
 			'aria-labelledby': this._titleId,
