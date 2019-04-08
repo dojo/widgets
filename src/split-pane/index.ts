@@ -28,14 +28,17 @@ export enum Direction {
  * @property direction      Orientation of this SplitPane, can be `row` or `column`
  * @property onResize       Called when the divider is dragged; should be used to update `size`
  * @property size           Size of the primary pane
+ * @property collapseWidth  The pixel width at which the SplitPane should collapse columns
+ * @property onCollapse     Called when the SplitPane is collapsed
+ * @property sizeTrailing   Set to `true` to apply `size` to the trailing pane
  */
 export interface SplitPaneProperties extends ThemedProperties {
 	direction?: Direction;
 	onResize?(size: number): void;
 	size?: number;
-	sizeTrailing?: boolean;
 	collapseWidth?: number;
 	onCollapse?(collapsed: boolean): void;
+	sizeTrailing?: boolean;
 }
 
 const DEFAULT_SIZE = 100;
@@ -180,18 +183,6 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 		const paneStyles: {[key: string]: string} = {};
 		let computedSize = this._collapsed ? 'auto' : `${size}px`;
 		paneStyles[direction === Direction.column ? 'width' : 'height'] = computedSize;
-
-		sizeTrailing && console.log('sizeTrailing =', sizeTrailing, [
-				...this.theme([
-					css.root,
-					this._collapsed ? css.collapsed : null,
-					direction === Direction.row ? css.row : css.column
-				]),
-				fixedCss.rootFixed,
-				direction === Direction.row ? fixedCss.rowFixed : fixedCss.columnFixed,
-				this._collapsed ? fixedCss.collapsedFixed : null,
-				sizeTrailing ? fixedCss.sizeTrailing : null
-			]);
 
 		return v('div', {
 			classes: [

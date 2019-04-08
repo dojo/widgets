@@ -83,3 +83,21 @@ w(SplitPane, {
 	})
 ])
 ```
+
+*SplitPane with size applied to the trailing pane*
+```typescript
+import SplitPane, { Direction } from '@dojo/widgets/split-pane';
+import { w } from '@dojo/framework/widget-core/d';
+
+w(SplitPane, {
+	key: 'sizeTrailing',
+	direction: Direction.column,
+	onResize: (size: number) => {
+		this.setState({ size: size });
+	},
+	size: this.state.size
+}, [
+	v('div', ['left: main content']),
+	v('div', ['right: sidebar'])
+])
+```
