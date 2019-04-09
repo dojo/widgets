@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { v, w } from '@dojo/framework/widget-core/d';
 
-import SlidePane, { Align } from '../../index';
+import SlidePane, { Align, SlidePaneProperties } from '../../index';
 import * as css from '../../../theme/slide-pane.m.css';
 import * as fixedCss from '../../styles/slide-pane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
@@ -14,12 +14,102 @@ import {
 	noop,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
+import { assertionTemplate } from '@dojo/framework/testing/assertionTemplate';
 
 const harness = createHarness([ compareId, compareAriaLabelledBy ]);
 
 const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 	Quisque id purus ipsum. Aenean ac purus purus.
 	Nam sollicitudin varius augue, sed lacinia felis tempor in.`;
+
+const closedTemplate = assertionTemplate(() => v('div', {
+		'aria-labelledby': '',
+		onmousedown: noop,
+		onmousemove: noop,
+		onmouseup: noop,
+		ontouchend: noop,
+		ontouchmove: noop,
+		ontouchstart: noop,
+		classes: css.root
+	}, [
+		v('div', {
+			key: 'content',
+			classes: [
+				css.pane,
+				css.left,
+				null,
+				null,
+				null,
+				fixedCss.paneFixed,
+				null,
+				fixedCss.leftFixed,
+				null,
+				null
+			],
+			transitionend: noop,
+			styles: {
+				transform: null,
+				width: '320px',
+				height: null
+			}
+		}, [
+			null,
+			v('div', {
+				'~key': 'textContent',
+				classes: [css.content, fixedCss.contentFixed]
+			}, [ GREEKING ])
+		])
+	]));
+const closedTemplateRight = closedTemplate
+	.setProperty('@content', 'classes', [
+		css.pane,
+		css.right,
+		null,
+		null,
+		null,
+		fixedCss.paneFixed,
+		null,
+		fixedCss.rightFixed,
+		null,
+		null
+	]);
+
+const openTemplate = closedTemplate
+	.insertBefore('@content', [
+		v('div', {
+			classes: [null, fixedCss.underlay],
+			enterAnimation: animations.fadeIn,
+			exitAnimation: animations.fadeOut,
+			onmouseup: noop,
+			ontouchend: noop,
+			key: 'underlay'
+		})
+	])
+	.setProperty('@content', 'classes', [
+		css.pane,
+		css.left,
+		css.open,
+		null,
+		null,
+		fixedCss.paneFixed,
+		fixedCss.openFixed,
+		fixedCss.leftFixed,
+		null,
+		null
+	]);
+const openTemplateRight = openTemplate
+	.setProperty('@content', 'classes', [
+		css.pane,
+		css.right,
+		css.open,
+		null,
+		null,
+		fixedCss.paneFixed,
+		fixedCss.openFixed,
+		fixedCss.rightFixed,
+		null,
+		null
+	]);
 
 registerSuite('SlidePane', {
 
@@ -87,44 +177,7 @@ registerSuite('SlidePane', {
 				underlay: false
 			}));
 
-			h.expect(() => v('div', {
-				'aria-labelledby': '',
-				onmousedown: noop,
-				onmousemove: noop,
-				onmouseup: noop,
-				ontouchend: noop,
-				ontouchmove: noop,
-				ontouchstart: noop,
-				classes: css.root
-			}, [
-				null,
-				v('div', {
-					key: 'content',
-					classes: [
-						css.pane,
-						css.left,
-						null,
-						null,
-						null,
-						fixedCss.paneFixed,
-						null,
-						fixedCss.leftFixed,
-						null,
-						null
-					],
-					transitionend: noop,
-					styles: {
-						transform: null,
-						width: '320px',
-						height: null
-					}
-				}, [
-					null,
-					v('div', {
-						classes: [css.content, fixedCss.contentFixed]
-					}, [])
-				])
-			]));
+			h.expect(closedTemplate.setChildren('~textContent', []));
 		},
 
 		onOpen() {
@@ -506,68 +559,41 @@ registerSuite('SlidePane', {
 			h.expect(() => expected(false, true));
 		},
 
-		'last transform is applied on next render if being swiped closed'() {
-			let properties = {
+		'transform styles are applied on next render if being swiped closed'() {
+			let properties: SlidePaneProperties = {
 				open: true
 			};
+			properties.onRequestClose = () => properties.open = false;
+
 			const h = harness(() => w(SlidePane, properties, [ GREEKING ]));
+			h.expect(openTemplate.setProperty('@content', 'classes', [
+				css.pane,
+				css.left,
+				css.open,
+				css.slideIn,
+				null,
+				fixedCss.paneFixed,
+				fixedCss.openFixed,
+				fixedCss.leftFixed,
+				fixedCss.slideInFixed,
+				null
+			]), () => h.getRender());
 
-			function expected(closed: boolean, swipeState: any = {}) {
-				return v('div', {
-					'aria-labelledby': '',
-					onmousedown: noop,
-					onmousemove: noop,
-					onmouseup: noop,
-					ontouchend: noop,
-					ontouchmove: noop,
-					ontouchstart: noop,
-					classes: css.root
-				}, [
-					closed ? null : v('div', {
-						classes: [ null, fixedCss.underlay ],
-						enterAnimation: animations.fadeIn,
-						exitAnimation: animations.fadeOut,
-						onmouseup: noop,
-						ontouchend: noop,
-						key: 'underlay'
-					}),
-					v('div', {
-						key: 'content',
-						classes: swipeState.classes || [
-							css.pane,
-							css.left,
-							closed ? null : css.open,
-							css.slideIn,
-							null,
-							fixedCss.paneFixed,
-							closed ? null : fixedCss.openFixed,
-							fixedCss.leftFixed,
-							fixedCss.slideInFixed,
-							null
-						],
-						transitionend: noop,
-						styles: swipeState.styles || {
-							transform: null,
-							width: '320px',
-							height: null
-						}
-					}, [
-						null,
-						v('div', {
-							classes: [css.content, fixedCss.contentFixed]
-						}, [ GREEKING ])
-					])
-				]);
-			}
-
-			h.expect(() => expected(false), () => h.getRender());
 			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
 			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 150, ...stubEvent });
-			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 50, ...stubEvent });
-			properties.open = false;
 
-			h.expect(() => expected(true, {
-				classes: [
+			h.expect(openTemplate
+				.setProperty('@content', 'styles', {
+					transform: 'translateX(-46.875%)',
+					width: '320px',
+					height: null
+				})
+			);
+
+			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 50, ...stubEvent });
+			assert(!properties.open);
+			h.expect(closedTemplate
+				.setProperty('@content', 'classes', [
 					css.pane,
 					css.left,
 					null,
@@ -578,80 +604,61 @@ registerSuite('SlidePane', {
 					fixedCss.leftFixed,
 					null,
 					fixedCss.slideOutFixed
-				],
-				styles: {
-					transform: 'translateX(-78.125%)',
-					width: '320px',
-					height: null
-				}
-			}));
+				])
+			);
+
+			// Next render does not have the slide styles
+			h.expect(closedTemplate);
 		},
 
-		'last transform is applied on next render if being swiped closed right'() {
-			function expected(closed = false, swipeState: any = {}) {
-				return v('div', {
-					'aria-labelledby': '',
-					onmousedown: noop,
-					onmousemove: noop,
-					onmouseup: noop,
-					ontouchend: noop,
-					ontouchmove: noop,
-					ontouchstart: noop,
-					classes: css.root
-				}, [
-					closed ? null : v('div', {
-						classes: [ null, fixedCss.underlay ],
-						enterAnimation: animations.fadeIn,
-						exitAnimation: animations.fadeOut,
-						onmouseup: noop,
-						ontouchend: noop,
-						key: 'underlay'
-					}),
-					v('div', {
-						key: 'content',
-						classes: swipeState.classes || [
-							css.pane,
-							css.right,
-							css.open,
-							css.slideIn,
-							null,
-							fixedCss.paneFixed,
-							fixedCss.openFixed,
-							fixedCss.rightFixed,
-							fixedCss.slideInFixed,
-							null
-						],
-						transitionend: noop,
-						styles: swipeState.styles || {
-							transform: null,
-							width: '320px',
-							height: null
-						}
-					}, [
-						null,
-						v('div', {
-							classes: [css.content, fixedCss.contentFixed]
-						})
-					])
-				]);
-			}
-
-			let properties = {
+		'transform styles are applied on next render if being swiped closed right'() {
+			let properties: SlidePaneProperties = {
 				align: Align.right,
 				open: true
 			};
-			const h = harness(() => w(SlidePane, properties));
+			properties.onRequestClose = () => properties.open = false;
 
-			h.expect(expected);
+			const h = harness(() => w(SlidePane, properties, [ GREEKING ]));
+			h.expect(openTemplateRight.setProperty('@content', 'classes', [
+				css.pane,
+				css.right,
+				css.open,
+				css.slideIn,
+				null,
+				fixedCss.paneFixed,
+				fixedCss.openFixed,
+				fixedCss.rightFixed,
+				fixedCss.slideInFixed,
+				null
+			]), () => h.getRender());
+
 			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
 			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 400, ...stubEvent });
+
+			h.expect(openTemplateRight
+				.setProperty('@content', 'classes', [
+					css.pane,
+					css.right,
+					css.open,
+					null,
+					null,
+					fixedCss.paneFixed,
+					fixedCss.openFixed,
+					fixedCss.rightFixed,
+					null,
+					null
+				])
+				.setProperty('@content', 'styles', {
+					transform: 'translateX(31.25%)',
+					width: '320px',
+					height: null
+				})
+			);
+
 			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 500, ...stubEvent });
-			properties = {
-				align: Align.right,
-				open: false
-			};
-			h.expect(() => expected(true, {
-				classes: [
+
+			h.expect(closedTemplateRight
+				.setProperty('@content', 'classes', [
 					css.pane,
 					css.right,
 					null,
@@ -662,13 +669,12 @@ registerSuite('SlidePane', {
 					fixedCss.rightFixed,
 					null,
 					fixedCss.slideOutFixed
-				],
-				styles: {
-					transform: 'translateX(62.5%)',
-					width: '320px',
-					height: null
-				}
-			}));
+				])
+			);
+			assert(!properties.open);
+
+			// Next render does not have the slide styles
+			h.expect(closedTemplateRight);
 		}
 	}
 });
