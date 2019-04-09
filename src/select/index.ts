@@ -9,10 +9,11 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import { uuid } from '@dojo/framework/core/util';
 import { find } from '@dojo/framework/shim/array';
 import { formatAriaProperties, Keys } from '../common/util';
-import { CustomAriaProperties, LabeledProperties, InputProperties } from '../common/interfaces';
+import { CustomAriaProperties, InputProperties } from '../common/interfaces';
 import Icon from '../icon/index';
 import Label from '../label/index';
 import Listbox from '../listbox/index';
+import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
@@ -32,13 +33,14 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property useNativeElement  Use the native <select> element if true
  * @property value           The current value
  */
-export interface SelectProperties extends ThemedProperties, InputProperties, FocusProperties, LabeledProperties, CustomAriaProperties {
+export interface SelectProperties extends ThemedProperties, InputProperties, FocusProperties, CustomAriaProperties {
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
 	getOptionText?(option: any): string;
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
+	helperText?: string;
 	options?: any[];
 	placeholder?: string;
 	useNativeElement?: boolean;
@@ -46,6 +48,8 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Foc
 	onChange?(option: any, key?: string | number): void;
 	onFocus?(key?: string | number): void;
 	value?: string;
+	labelHidden?: boolean;
+	label?: string;
 }
 
 @theme(css)
@@ -69,10 +73,9 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Foc
 		'required',
 		'invalid',
 		'disabled',
-		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'placeholder', 'label', 'value' ],
+	attributes: [ 'widgetId', 'placeholder', 'label', 'value', 'helperText' ],
 	events: [
 		'onBlur',
 		'onChange',
@@ -208,26 +211,6 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		const { key, onBlur } = this.properties;
 		onBlur && onBlur(key);
 		this._closeSelect();
-	}
-
-	protected getRootClasses() {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
-		const focus = this.meta(Focus).get('root');
-
-		return [
-			css.root,
-			disabled ? css.disabled : null,
-			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
 	}
 
 	protected renderExpandIcon(): DNode {
@@ -410,8 +393,8 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		const {
 			label,
 			labelHidden,
-			labelAfter,
 			disabled,
+			helperText,
 			widgetId = this._baseId,
 			invalid,
 			readOnly,
@@ -420,9 +403,21 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			theme,
 			classes
 		} = this.properties;
+
 		const focus = this.meta(Focus).get('root');
 
-		const children = [
+		return v('div', {
+			key: 'root',
+			classes: this.theme([
+				css.root,
+				disabled ? css.disabled : null,
+				focus.containsFocus ? css.focused : null,
+				invalid === true ? css.invalid : null,
+				invalid === false ? css.valid : null,
+				readOnly ? css.readonly : null,
+				required ? css.required : null
+			])
+		}, [
 			label ? w(Label, {
 				theme,
 				classes,
@@ -434,13 +429,9 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 				hidden: labelHidden,
 				forId: widgetId
 			}, [ label ]) : null,
-			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect()
-		];
-
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children.reverse() : children);
+			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect(),
+			w(HelperText, { theme, text: helperText })
+		]);
 	}
 }
 

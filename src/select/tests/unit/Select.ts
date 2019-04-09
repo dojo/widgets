@@ -22,6 +22,7 @@ import {
 	compareAriaControls,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
+import HelperText from '../../../helper-text/index';
 
 const harness = createHarness([ compareId, compareWidgetId, compareAriaControls ]);
 
@@ -55,6 +56,7 @@ interface ExpectedOptions {
 	classes?: any[];
 	overrides?: any;
 	focus?: boolean;
+	helperText?: string;
 }
 
 const testOptions: any[] = [
@@ -208,7 +210,7 @@ const expectedSingle = function(useTestProperties = false, withStates = false, o
 	return vdom;
 };
 
-const expected = function(selectVdom: any, { classes = [ css.root, null, null, null, null, null, null ], label = false, states, focus = false }: ExpectedOptions = {}) {
+const expected = function(selectVdom: any, { classes = [ css.root, null, null, null, null, null, null ], label = false, states, focus = false, helperText }: ExpectedOptions = {}) {
 	return v('div', {
 		key: 'root',
 		classes
@@ -223,7 +225,8 @@ const expected = function(selectVdom: any, { classes = [ css.root, null, null, n
 			required: undefined,
 			forId: ''
 		}, [ 'foo' ]) : null,
-		selectVdom
+		selectVdom,
+		w(HelperText, { theme: undefined, text: helperText })
 	]);
 };
 
@@ -238,6 +241,15 @@ registerSuite('Select', {
 					useNativeElement: true
 				}));
 				h.expect(() => expected(expectedNative()));
+			},
+
+			'helperText'() {
+				const h = harness(() => w(Select, {
+					options: testOptions,
+					useNativeElement: true,
+					helperText: 'foo'
+				}));
+				h.expect(() => expected(expectedNative(), { helperText: 'foo' }));
 			},
 
 			'custom properties'() {
@@ -323,6 +335,11 @@ registerSuite('Select', {
 			'default properties'() {
 				const h = harness(() => w(Select, {}));
 				h.expect(() => expected(expectedSingle()));
+			},
+
+			'helperText'() {
+				const h = harness(() => w(Select, { helperText: 'foo' }));
+				h.expect(() => expected(expectedSingle(), { helperText: 'foo' }));
 			},
 
 			'custom properties'() {
@@ -469,7 +486,8 @@ registerSuite('Select', {
 								onOptionSelect: noop
 							})
 						])
-					])
+					]),
+					w(HelperText, { theme: undefined, text: undefined})
 				]));
 			},
 
