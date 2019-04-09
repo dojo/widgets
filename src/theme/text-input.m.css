@@ -13,15 +13,6 @@
 .hasLeading {}
 .hasTrailing {}
 
-.helperTextWrapper {
-}
-
-.helperText {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-
 .invalid .helperText {
 	color: var(--error-color);
 }

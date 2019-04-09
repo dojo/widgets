@@ -1,7 +1,6 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Textarea from '../../text-area/index';
-import { helperText } from '../../theme/text-input.m.css';
 
 export default class App extends WidgetBase {
 	private _value1: string | undefined;

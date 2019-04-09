@@ -16,7 +16,6 @@ import Listbox from '../listbox/index';
 import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
-import { helperText } from '../theme/text-input.m.css';
 
 /**
  * @type SelectProperties
