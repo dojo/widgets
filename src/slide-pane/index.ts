@@ -280,6 +280,7 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 			closeText = `${messages.close} ${title}`;
 		}
 
+		// This is a side-effect of rendering, it clears the slide styles for the next render.
 		this._slide = undefined;
 
 		return v('div', {
