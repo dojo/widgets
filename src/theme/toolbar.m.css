@@ -3,10 +3,8 @@
 	flex-direction: row;
 }
 
-.collapsed {
-	& .actions {
-		flex-direction: column;
-	}
+.collapsed .actions {
+	flex-direction: column;
 }
 
 .menuButton { }
