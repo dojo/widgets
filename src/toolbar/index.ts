@@ -14,6 +14,8 @@ import * as css from '../theme/toolbar.m.css';
 import { GlobalEvent } from '../global-event/index';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
+export { Align };
+
 /**
  * @type ToolbarProperties
  *

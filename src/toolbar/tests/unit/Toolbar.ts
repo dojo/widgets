@@ -7,8 +7,8 @@ import harness from '@dojo/framework/testing/harness';
 import { stub } from 'sinon';
 
 import Icon from '../../../icon/index';
-import Toolbar, { ToolbarProperties } from '../../index';
-import SlidePane, { Align } from '../../../slide-pane/index';
+import Toolbar, { Align, ToolbarProperties } from '../../index';
+import SlidePane from '../../../slide-pane/index';
 
 import * as fixedCss from '../../styles/toolbar.m.css';
 import * as css from '../../../theme/toolbar.m.css';
