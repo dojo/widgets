@@ -1,5 +1,12 @@
-.actions { }
-.collapsed { }
+.actions {
+	display: flex;
+	flex-direction: row;
+}
+
+.collapsed .actions {
+	flex-direction: column;
+}
+
 .menuButton { }
 .root { }
 .title { }

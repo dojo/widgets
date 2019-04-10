@@ -81,6 +81,10 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 			classes,
 			heading
 		} = this.properties;
+		const actions = v('div', {
+			classes: this.theme(css.actions),
+			key: 'menu'
+		}, this.children);
 
 		return this._collapsed ? w(SlidePane, {
 			align: Align.right,
@@ -91,10 +95,7 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 			theme,
 			classes,
 			title: heading
-		}, this.children) : v('div', {
-			classes: this.theme(css.actions),
-			key: 'menu'
-		}, this.children);
+		}, [ actions ]) : actions;
 	}
 
 	protected renderButton(): DNode {
