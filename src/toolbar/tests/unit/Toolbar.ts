@@ -211,7 +211,12 @@ registerSuite('Toolbar', {
 				classes: undefined,
 				title: 'foo'
 			}, [
-				'test'
+				v('div', {
+					classes: css.actions,
+					key: 'menu'
+				}, [
+					'test'
+				])
 			]);
 
 			const buttonVDom = v('button', {
