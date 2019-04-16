@@ -112,6 +112,86 @@ registerSuite('SplitPane', {
 			]));
 		},
 
+		'Should apply size to trailing pane when sizeTrailing is true (rows)'() {
+			const h = harness(() => w(SplitPane, {
+				sizeTrailing: true,
+				size: 200
+			}, [ 'first', 'second' ]));
+
+			h.expect(() => v('div', {
+				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null, fixedCss.sizeTrailing ],
+				key: 'root'
+			}, [
+				w(GlobalEvent, {
+					key: 'global',
+					window: {
+						mouseup: noop,
+						mousemove: noop,
+						touchmove: noop
+					}
+				}),
+				v('div', {
+					classes: [ css.leading, fixedCss.leadingFixed ],
+					key: 'leading',
+					styles: ''
+				}, [ 'first' ]),
+				v('div', {
+					classes: [ css.divider, fixedCss.dividerFixed ],
+					key: 'divider',
+					onmousedown: noop,
+					ontouchend: noop,
+					ontouchstart: noop
+				}),
+				v('div', {
+					classes: [ css.trailing, fixedCss.trailingFixed ],
+					key: 'trailing',
+					styles: { width: '200px' }
+				}, [ 'second' ])
+			]));
+		},
+
+		'Should apply size to trailing pane when sizeTrailing is true (columns)'() {
+			const h = harness(() => w(SplitPane, {
+				direction: Direction.column,
+				onResize: noop,
+				size: 200
+			}, [
+				'abc',
+				'def'
+			]));
+
+			h.expect(() => v('div', {
+				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null, null ],
+				key: 'root'
+			}, [
+				w(GlobalEvent, {
+					key: 'global',
+					window: {
+						mouseup: noop,
+						mousemove: noop,
+						touchmove: noop
+					}
+				}),
+				v('div', {
+					classes: [ css.leading, fixedCss.leadingFixed ],
+					key: 'leading',
+					styles: { width: '200px' }
+				}, [ 'abc' ]),
+				v('div', {
+					classes: [ css.divider, fixedCss.dividerFixed ],
+					key: 'divider',
+					onmousedown: noop,
+					ontouchend: noop,
+					ontouchstart: noop
+				}),
+				v('div', {
+					classes: [ css.trailing, fixedCss.trailingFixed ],
+					key: 'trailing',
+					styles: ''
+				}, [ 'def' ])
+			]));
+		},
+
 		'Pane should not be a negative size'() {
 			let setSize;
 			const mockMeta = stub();
