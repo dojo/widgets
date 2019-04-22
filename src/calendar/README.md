@@ -76,3 +76,40 @@ w(Calendar, {
 	}
 })
 ```
+
+## Theming
+
+The following css classes are used to style the `Calendar` widget and should be provided by custom themes:
+
+- `root`: Applied to the calendar container
+- `inacitveDate`: Applied to disabled or out of range dates
+- `outOfRange`: Applied to out of range dates
+- `selectedDate`: Applied to currently selected date
+- `todayDay`: Applied to today's date
+- `date`: Applied to all date cells
+- `dateGrid`: Applied to grid containing the calendar
+- `weekday`: Applied to weekday headers
+
+### DatePicker themes
+
+- `datePicker`: Applied to date picker container
+- `topMatter`: Applied to wrapper of controls
+- `controls`: Applied to wrapper of previous/next paging buttons
+- `previous`: Applied to previous month paging button
+- `next`: Applied to next month paging button
+- `monthGrid`: Applied to wrapper of month selector
+- `monthFields`: Applied to month selector fieldset
+- `yearGrid`: Applied to wrapper of year selector
+- `yearFields`: Applied to year selector fieldset
+- `monthRadio`: Applied to the month selector radio label wrapper
+- `yearRadio`: Applied to the year selector radio label wrapper
+- `monthRadioChecked`: Applied to the active month's radio label
+- `yearRadioChecked`: Applied to the active year's radio label
+- `monthRadioInput`: Applied to the month selector radio input
+- `monthRadioLabel`: Applied to the month selector radio label text
+- `yearRadioInput`: Applied to the year selector radio input
+- `yearRadioLabel`: Applied to the year selector radio label text
+- `monthTrigger`: Applied to the button which opens the month selector
+- `yearTrigger`: Applied to the button which opens the year selector
+- `monthTriggerActive`: Applied to when the `monthTrigger` is active
+- `yearTriggerActive`: Applied to when the `yearTrigger` is active
