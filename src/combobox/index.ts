@@ -20,6 +20,7 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import HelperText from '../helper-text';
 
 /**
  * @type ComboBoxProperties
@@ -54,9 +55,10 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	getResultLabel?(result: any): DNode;
 	getResultSelected?(result: any): boolean;
 	getResultValue?(result: any): string;
+	helperText?: string;
 	widgetId?: string;
 	inputProperties?: TextInputProperties;
-	invalid?: boolean;
+	valid?: { valid?: boolean; message?: string; } | boolean;
 	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string, key?: string | number): void;
 	onChange?(value: string, key?: string | number): void;
@@ -64,6 +66,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestResults?(key?: string | number): void;
 	onResultSelect?(result: any, key?: string | number): void;
+	onValidate?: (valid: boolean | undefined, message: string) => void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -90,8 +93,9 @@ export enum Operation {
 		'clearable',
 		'disabled',
 		'inputProperties',
-		'invalid',
+		'valid',
 		'isResultDisabled',
+		'helperText',
 		'labelAfter',
 		'labelHidden',
 		'openOnFocus',
@@ -100,7 +104,7 @@ export enum Operation {
 		'results'
 	],
 	attributes: ['widgetId', 'label', 'value'],
-	events: ['onBlur', 'onChange', 'onFocus', 'onMenuChange', 'onRequestResults', 'onResultSelect']
+	events: ['onBlur', 'onChange', 'onFocus', 'onMenuChange', 'onRequestResults', 'onResultSelect', 'onValidate']
 })
 export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
 	private _activeIndex = 0;
@@ -290,7 +294,13 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const { clearable, invalid } = this.properties;
+		const {
+			clearable
+		} = this.properties;
+
+		const {
+			valid
+		} = this.validity;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -298,9 +308,22 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			this._open ? css.open : null,
 			clearable ? css.clearable : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null
 		];
+	}
+
+	protected get validity() {
+		const { valid = { valid: undefined, message: undefined } } = this.properties;
+
+		if (typeof valid === 'boolean') {
+			return { valid, message: undefined };
+		}
+
+		return {
+			valid: valid.valid,
+			message: valid.message
+		};
 	}
 
 	protected renderInput(results: any[]): DNode {
@@ -309,12 +332,15 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			disabled,
 			widgetId = this._idBase,
 			inputProperties = {},
-			invalid,
 			readOnly,
 			required,
 			value = '',
-			theme
+			theme,
+			helperText,
+			onValidate
 		} = this.properties;
+
+		const { valid, message } = this.validity;
 
 		return w(TextInput, {
 			...inputProperties,
@@ -326,14 +352,16 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					: null,
 				autocomplete: 'list'
 			},
-			valid: typeof invalid === 'boolean' ? !invalid : undefined,
+			valid: { valid, message: this._open ? undefined : message },
 			disabled,
 			widgetId,
+			helperText: this._open ? undefined : helperText,
 			focus: this.shouldFocus,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
 			onInput: this._onInput,
 			onKeyDown: this._onInputKeyDown,
+			onValidate,
 			readOnly,
 			required,
 			theme,
@@ -428,7 +456,6 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		const {
 			clearable = false,
 			widgetId = this._idBase,
-			invalid,
 			label,
 			readOnly,
 			required,
@@ -439,11 +466,22 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			theme,
 			classes
 		} = this.properties;
+
+		const {
+			valid
+		} = this.validity;
+
 		const { messages } = this.localizeBundle(commonBundle);
 		const focus = this.meta(Focus).get('root');
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();
+
+		if (results.length === 0 && this._open === true) {
+			this._open = false;
+			this.invalidate();
+		}
+
 		this._wasOpen = this._open;
 
 		const controls = [
@@ -456,7 +494,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 							classes,
 							disabled,
 							focused: focus.containsFocus,
-							invalid,
+							invalid: !valid,
 							readOnly,
 							required,
 							hidden: labelHidden,

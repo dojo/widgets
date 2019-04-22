@@ -35,6 +35,9 @@ const harness = createHarness([
 	compareAriaOwns
 ]);
 
+const helperText = 'This is helpertext';
+const invalidMessage = 'This input is invalid';
+
 const testOptions: any[] = [
 	{
 		label: 'One',
@@ -63,7 +66,6 @@ const testProperties = {
 
 interface States {
 	disabled?: boolean;
-	invalid?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
 }
@@ -84,9 +86,11 @@ const getExpectedControls = function(
 	useTestProperties: boolean,
 	label: boolean,
 	open: boolean,
-	states: States = {}
+	states: States = {},
+	validity?: { valid: boolean | undefined, message: string | undefined},
+	helperText?: string
 ) {
-	const { disabled, invalid, readOnly, required } = states;
+	const { disabled, readOnly, required } = states;
 	const controlsVdom = v(
 		'div',
 		{
@@ -105,8 +109,9 @@ const getExpectedControls = function(
 				},
 				disabled,
 				focus: noop,
+				helperText: helperText || undefined,
 				widgetId: useTestProperties ? 'foo' : '',
-				valid: invalid === false || undefined,
+				valid: validity || undefined,
 				readOnly,
 				required,
 				theme: useTestProperties ? {} : undefined,
@@ -115,7 +120,8 @@ const getExpectedControls = function(
 				onBlur: noop,
 				onFocus: noop,
 				onInput: noop,
-				onKeyDown: noop
+				onKeyDown: noop,
+				onValidate: undefined,
 			}),
 			useTestProperties
 				? v(
@@ -209,11 +215,13 @@ const getExpectedVdom = function(
 	open = false,
 	label = false,
 	states: States = {},
-	focused = false
+	focused = false,
+	validity: { valid: boolean | undefined, message: string | undefined} = {valid: undefined, message: undefined},
+	helperText?: string
 ) {
 	const menuVdom = getExpectedMenu(useTestProperties, open);
-	const controlsVdom = getExpectedControls(useTestProperties, label, open, states);
-	const { disabled, invalid, readOnly, required } = states;
+	const controlsVdom = getExpectedControls(useTestProperties, label, open, states, validity, helperText);
+	const { disabled, readOnly, required } = states;
 
 	return v(
 		'div',
@@ -223,8 +231,8 @@ const getExpectedVdom = function(
 				open ? css.open : null,
 				useTestProperties ? css.clearable : null,
 				focused ? css.focused : null,
-				null,
-				null
+				validity.valid === false ? css.invalid : null,
+				validity.valid === true ? css.valid : null
 			],
 			key: 'root'
 		},
@@ -239,7 +247,7 @@ const getExpectedVdom = function(
 							disabled,
 							focused,
 							hidden: undefined,
-							invalid,
+							invalid: !validity.valid,
 							readOnly,
 							required,
 							forId: useTestProperties ? 'foo' : ''
@@ -533,7 +541,7 @@ registerSuite('ComboBox', {
 			const preventDefault = sinon.stub();
 			const h = harness(() => w(ComboBox, { onChange }));
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
-			h.expect(() => getExpectedVdom(false, true, false, {}));
+			h.expect(() => getExpectedVdom(false, false, false, {}));
 
 			h.trigger('@textinput', 'onKeyDown', Keys.Down, preventDefault);
 			h.trigger('@textinput', 'onKeyDown', Keys.Enter, preventDefault);
@@ -597,17 +605,22 @@ registerSuite('ComboBox', {
 					placeholder: 'foo',
 					focus: noop,
 					disabled: undefined,
-					valid: undefined,
+					valid: {
+						valid: undefined,
+						message: undefined
+					},
 					widgetId: '',
 					readOnly: undefined,
 					required: undefined,
 					theme: undefined,
 					classes: undefined,
+					helperText: undefined,
 					value: '',
 					onBlur: noop,
 					onFocus: noop,
 					onInput: noop,
-					onKeyDown: noop
+					onKeyDown: noop,
+					onValidate: undefined
 				})
 			);
 		},
@@ -628,12 +641,10 @@ registerSuite('ComboBox', {
 		},
 
 		'widget states render correctly'() {
-			let invalid = true;
 			const h = harness(() =>
 				w(ComboBox, {
 					...testProperties,
 					disabled: true,
-					invalid,
 					readOnly: true,
 					required: true
 				})
@@ -648,18 +659,23 @@ registerSuite('ComboBox', {
 						owns: ''
 					},
 					widgetId: 'foo',
-					valid: false,
+					valid: {
+						valid: undefined,
+						message: undefined
+					},
 					focus: noop,
 					disabled: true,
 					readOnly: true,
 					required: true,
 					theme: {},
 					classes: undefined,
+					helperText: undefined,
 					value: 'one',
 					onBlur: noop,
 					onFocus: noop,
 					onInput: noop,
-					onKeyDown: noop
+					onKeyDown: noop,
+					onValidate: undefined
 				})
 			);
 
@@ -720,8 +736,6 @@ registerSuite('ComboBox', {
 				)
 			);
 
-			invalid = false;
-
 			h.expectPartial('@textinput', () =>
 				w(TextInput, {
 					key: 'textinput',
@@ -732,17 +746,22 @@ registerSuite('ComboBox', {
 						owns: ''
 					},
 					widgetId: 'foo',
-					valid: true,
+					valid: {
+						valid: undefined,
+						message: undefined
+					},
 					focus: noop,
 					disabled: true,
 					readOnly: true,
 					required: true,
+					helperText: undefined,
 					theme: {},
 					value: 'one',
 					onBlur: noop,
 					onFocus: noop,
 					onInput: noop,
-					onKeyDown: noop
+					onKeyDown: noop,
+					onValidate: undefined
 				})
 			);
 		},
@@ -811,6 +830,52 @@ registerSuite('ComboBox', {
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true }));
 			h.trigger('@dropdown', 'onmouseover', stubEvent);
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
+		},
+
+		'renders helpertext'() {
+			const h = harness(() => w(ComboBox, {
+				...testProperties,
+				helperText: helperText
+			}));
+			h.expect(() =>  getExpectedVdom(true, false, true, {}, false, {valid: undefined, message: undefined}, helperText));
+		},
+
+		'renders validity correctly'() {
+			let h = harness(() => w(ComboBox, {
+				...testProperties,
+				valid: undefined
+			}));
+			h.expect(() =>  getExpectedVdom(true, false, true, {}, false, {valid: undefined, message: undefined}));
+
+			h = harness(() => w(ComboBox, {
+				...testProperties,
+				valid: true
+			}));
+			h.expect(() =>  getExpectedVdom(true, false, true, {}, false, {valid: true, message: undefined}));
+
+			h = harness(() => w(ComboBox, {
+				...testProperties,
+				valid: false
+			}));
+			h.expect(() =>  getExpectedVdom(true, false, true, {}, false, {valid: false, message: undefined}));
+
+			h = harness(() => w(ComboBox, {
+				...testProperties,
+				valid: {valid: true, message: invalidMessage}
+			}));
+			h.expect(() =>  getExpectedVdom(true, false, true, {}, false, {valid: true, message: invalidMessage}));
+
+			h = harness(() => w(ComboBox, {
+				...testProperties,
+				valid: {valid: false, message: invalidMessage}
+			}));
+			h.expect(() =>  getExpectedVdom(true, false, true, {}, false, {valid: false, message: invalidMessage}));
+
+			h = harness(() => w(ComboBox, {
+				...testProperties,
+				valid: {valid: false, message: undefined}
+			}));
+			h.expect(() =>  getExpectedVdom(true, false, true, {}, false, {valid: false, message: undefined}));
 		}
 	}
 });

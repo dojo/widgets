@@ -65,7 +65,7 @@ export default class App extends WidgetBase {
 	private _value7 = '';
 	private _value8 = '';
 	private _value9 = '';
-	private _invalid = false;
+	private _valid = true;
 
 	onChange(value: string, key?: string) {
 		if (!key) {
@@ -89,7 +89,6 @@ export default class App extends WidgetBase {
 
 	render(): DNode {
 		const { onChange, onRequestResults } = this;
-
 		return v(
 			'div',
 			{
@@ -180,14 +179,18 @@ export default class App extends WidgetBase {
 					required: true,
 					onChange: (value: string) => {
 						this._value9 = value;
-						this._invalid = value.trim().length === 0;
+						this._valid = value.trim().length !== 0;
 						this.invalidate();
 					},
 					getResultLabel: (result: any) => result.value,
 					onRequestResults,
 					results: this._results,
 					value: this._value9,
-					invalid: this._invalid,
+					valid: { valid: this._valid, message: 'Please enter value of state' },
+					helperText: 'helper text',
+					onValidate: (valid: boolean | undefined, message: string) => {
+						console.log('onValidate called', valid, message);
+					},
 					inputProperties: {
 						placeholder: 'Enter a value'
 					}
