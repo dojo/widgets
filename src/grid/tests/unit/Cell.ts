@@ -1,9 +1,9 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-import TextInput from '../../../../text-input/index';
-import Button from '../../../../button/index';
-import Icon from '../../../../icon/index';
-import { Keys } from '../../../../common/util';
+import TextInput from '../../../text-input/index';
+import Button from '../../../button/index';
+import Icon from '../../../icon/index';
+import { Keys } from '../../../common/util';
 
 import { v, w } from '@dojo/framework/widget-core/d';
 import { stub } from 'sinon';
@@ -14,10 +14,10 @@ import {
 	compareAriaDescribedBy,
 	isFocusedComparator,
 	noop
-} from '../../../../common/tests/support/test-helpers';
-import * as fixedCss from '../../../styles/cell.m.css';
-import * as css from '../../../../theme/grid-cell.m.css';
-import Cell from '../../../widgets/Cell';
+} from '../../../common/tests/support/test-helpers';
+import * as fixedCss from '../../styles/cell.m.css';
+import * as css from '../../../theme/grid-cell.m.css';
+import Cell from '../../Cell';
 
 const harness = createHarness([ compareId, compareAria, compareAriaDescribedBy ]);
 

@@ -4,13 +4,13 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
-import { Keys } from '../../common/util';
-import TextInput from '../../text-input/index';
-import Button from '../../button/index';
-import Icon from '../../icon/index';
+import { Keys } from '../common/util';
+import TextInput from '../text-input/index';
+import Button from '../button/index';
+import Icon from '../icon/index';
 
-import * as fixedCss from '../styles/cell.m.css';
-import * as css from '../../theme/grid-cell.m.css';
+import * as fixedCss from './styles/cell.m.css';
+import * as css from '../theme/grid-cell.m.css';
 
 export interface CellProperties extends FocusProperties {
 	value: string | DNode;

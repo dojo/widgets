@@ -4,11 +4,11 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
 import global from '@dojo/framework/shim/global';
 
-import * as fixedCss from '../../../styles/body.m.css';
-import * as css from '../../../../theme/grid-body.m.css';
-import Body from '../../../widgets/Body';
-import PlaceholderRow from '../../../widgets/PlaceholderRow';
-import Row from '../../../widgets/Row';
+import * as fixedCss from '../../styles/body.m.css';
+import * as css from '../../../theme/grid-body.m.css';
+import Body from '../../Body';
+import PlaceholderRow from '../../PlaceholderRow';
+import Row from '../../Row';
 import { stub } from 'sinon';
 
 const noop = () => {};

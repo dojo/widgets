@@ -1,13 +1,13 @@
 import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v, w } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { ColumnConfig, FilterOptions, SortOptions } from './../interfaces';
+import { ColumnConfig, FilterOptions, SortOptions } from './interfaces';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import TextInput from '../../text-input/index';
-import Icon from '../../icon/index';
+import TextInput from '../text-input/index';
+import Icon from '../icon/index';
 
-import * as css from '../../theme/grid-header.m.css';
-import * as fixedCss from '../styles/header.m.css';
+import * as css from '../theme/grid-header.m.css';
+import * as fixedCss from './styles/header.m.css';
 
 export interface SortRenderer {
 	(column: ColumnConfig, direction: undefined | 'asc' | 'desc', sorter: () => void): DNode;
