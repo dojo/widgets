@@ -12,6 +12,11 @@
 .disabled {}
 .readonly {}
 .required {}
+.controlIndicator {
+	display: none;
+}
+.controlIndicatorOuter {}
+.controlIndicatorInner {}
 
 /* invalid style */
 .invalid .inputWrapper::before {

@@ -54,7 +54,13 @@ const expected = function({ label = false, rootOverrides = {}, inputOverrides = 
 			ontouchend: noop,
 			ontouchcancel: noop,
 			...inputOverrides
-		})
+		}),
+		v('div', {
+			classes: css.controlIndicator
+		}, [
+			v('div', { classes: css.controlIndicatorOuter }),
+			v('div', { classes: css.controlIndicatorInner })
+		])
 	]);
 
 	return v('div', {

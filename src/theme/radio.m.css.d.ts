@@ -6,5 +6,8 @@ export const focused: string;
 export const disabled: string;
 export const readonly: string;
 export const required: string;
+export const controlIndicator: string;
+export const controlIndicatorOuter: string;
+export const controlIndicatorInner: string;
 export const invalid: string;
 export const valid: string;
