@@ -348,7 +348,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			classes,
 			aria: {
 				activedescendant: this._open ? this._getResultId(results[this._activeIndex], this._activeIndex) : null,
-				controls: this._open ? this._getMenuId() : null
+				autocomplete: 'list'
 			},
 			valid: typeof invalid === 'boolean' ? !invalid : undefined,
 			disabled,
@@ -376,9 +376,9 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 		return v('button', {
 			key: 'clear',
-			'aria-controls': this._open ? this._getMenuId() : null,
 			classes: this.theme(css.clear),
 			disabled: disabled || readOnly,
+			tabIndex: -1,
 			type: 'button',
 			onclick: this._onClearClick
 		}, [
@@ -400,6 +400,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 		return v('button', {
 			key: 'trigger',
+			'aria-controls': this._open ? this._getMenuId() : null,
 			classes: this.theme(css.trigger),
 			disabled: disabled || readOnly,
 			tabIndex: -1,
@@ -486,7 +487,11 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 				forId: widgetId
 			}, [ label ]) : null,
 			v('div', {
-				classes: this.theme(css.controls)
+				'aria-expanded': this._open ? 'true' : 'false',
+				'aria-haspopup': 'listbox',
+				'aria-owns': this._open ? this._getMenuId() : '',
+				classes: this.theme(css.controls),
+				role: 'combobox'
 			}, [
 				this.renderInput(results),
 				clearable ? this.renderClearButton(messages) : null,
@@ -496,12 +501,8 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		];
 
 		return v('div', {
-			'aria-expanded': this._open ? 'true' : 'false',
-			'aria-haspopup': 'listbox',
-			'aria-required': required ? 'true' : null,
 			classes: this.theme(this.getRootClasses()),
 			key: 'root',
-			role: 'combobox'
 		}, labelAfter ? controls.reverse() : controls);
 	}
 }
