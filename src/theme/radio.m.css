@@ -12,11 +12,11 @@
 .disabled {}
 .readonly {}
 .required {}
-.controlIndicator {
+.radioBackground {
 	display: none;
 }
-.controlIndicatorOuter {}
-.controlIndicatorInner {}
+.radioOuter {}
+.radioInner {}
 
 /* invalid style */
 .invalid .inputWrapper::before {

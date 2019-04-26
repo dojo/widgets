@@ -56,10 +56,10 @@ const expected = function({ label = false, rootOverrides = {}, inputOverrides = 
 			...inputOverrides
 		}),
 		v('div', {
-			classes: css.controlIndicator
+			classes: css.radioBackground
 		}, [
-			v('div', { classes: css.controlIndicatorOuter }),
-			v('div', { classes: css.controlIndicatorInner })
+			v('div', { classes: css.radioOuter }),
+			v('div', { classes: css.radioInner })
 		])
 	]);
 

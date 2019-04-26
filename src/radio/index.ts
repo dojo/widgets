@@ -166,10 +166,10 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 					ontouchcancel: this._onTouchCancel
 				}),
 				v('div', {
-					classes: this.theme(css.controlIndicator)
+					classes: this.theme(css.radioBackground)
 				}, [
-					v('div', { classes: this.theme(css.controlIndicatorOuter) }),
-					v('div', { classes: this.theme(css.controlIndicatorInner) })
+					v('div', { classes: this.theme(css.radioOuter) }),
+					v('div', { classes: this.theme(css.radioInner) })
 				])
 			]),
 			label ? w(Label, {
