@@ -52,6 +52,12 @@ export const compareAriaLabelledBy = {
 	comparator: isStringComparator
 };
 
+export const compareAriaOwns = {
+	selector: '*',
+	property: 'aria-owns',
+	comparator: isStringComparator
+};
+
 export const compareAriaDescribedBy = {
 	selector: '*',
 	property: 'aria-describedby',

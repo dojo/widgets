@@ -209,7 +209,7 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 		const disabled = this._getOptionDisabled(option, index);
 		const selected = getOptionSelected ? getOptionSelected(option, index) : false;
 
-		return v('div', { key: this._getOptionId(index) }, [
+		return v('div', { key: this._getOptionId(index), role: 'presentation' }, [
 			w(ListboxOption, {
 				active: activeIndex === index,
 				css: this.getOptionClasses(activeIndex === index, disabled, selected),

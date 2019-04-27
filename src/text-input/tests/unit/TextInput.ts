@@ -47,6 +47,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 
 	return v('div', {
 		key: 'root',
+		role: 'presentation',
 		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, valid === false ? css.invalid : null, valid === true ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null, null, null ]
 	}, [
 		label ? w(Label, {
@@ -60,7 +61,7 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 			required,
 			forId: ''
 		}, [ 'foo' ]) : null,
-		v('div', { key: 'inputWrapper', classes: css.inputWrapper }, [
+		v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
 			v('input', {
 				key: 'input',
 				classes: css.input,
@@ -102,9 +103,10 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 const baseTemplate = assertationTemplate(() => {
 	return v('div', {
 		key: 'root',
+		role: 'presentation',
 		classes: [ css.root, null, null, null, null, null, null, null, null ]
 	}, [
-		v('div', { key: 'inputWrapper', classes: css.inputWrapper }, [
+		v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
 			v('input', {
 				key: 'input',
 				classes: css.input,

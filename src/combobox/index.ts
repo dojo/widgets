@@ -376,6 +376,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 		return v('button', {
 			key: 'clear',
+			'aria-hidden': 'true',
 			classes: this.theme(css.clear),
 			disabled: disabled || readOnly,
 			tabIndex: -1,
@@ -400,7 +401,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 		return v('button', {
 			key: 'trigger',
-			'aria-controls': this._open ? this._getMenuId() : null,
+			'aria-hidden': 'true',
 			classes: this.theme(css.trigger),
 			disabled: disabled || readOnly,
 			tabIndex: -1,
@@ -489,7 +490,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			v('div', {
 				'aria-expanded': this._open ? 'true' : 'false',
 				'aria-haspopup': 'listbox',
-				'aria-owns': this._open ? this._getMenuId() : '',
+				'aria-owns': this._open ? this._getMenuId() : null,
 				classes: this.theme(css.controls),
 				role: 'combobox'
 			}, [
@@ -502,7 +503,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 		return v('div', {
 			classes: this.theme(this.getRootClasses()),
-			key: 'root',
+			key: 'root'
 		}, labelAfter ? controls.reverse() : controls);
 	}
 }
