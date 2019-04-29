@@ -100,20 +100,14 @@ registerSuite('ComboBox', {
 			() => this.remote.pressKeys(keys.TAB);
 
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.trigger}`)
+			.findByCssSelector(`input[type=text]`)
 				.click()
 				.sleep(DELAY)
 				.then(initialTab)
 			.getActiveElement()
-				.getProperty('textContent')
-				.then((text: string) => {
-					assert.strictEqual(text, 'clear Combo:', 'The "clear" button should receive focus.');
-				})
-				.type(keys.TAB)
-			.getActiveElement()
 				.getTagName()
 				.then((tag: string) => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The results menu and "open" button should not receive focus.');
+					assert.strictEqual(tag.toLowerCase(), 'input', 'Only the input should be in the tab order');
 				});
 	},
 

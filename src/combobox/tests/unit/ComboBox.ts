@@ -19,6 +19,7 @@ import {
 	compareWidgetId,
 	compareAria,
 	compareAriaControls,
+	compareAriaOwns,
 	isFocusedComparator,
 	isNotFocusedComparator,
 	noop,
@@ -26,7 +27,7 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
-const harness = createHarness([ compareId, compareWidgetId, compareAria, compareAriaControls ]);
+const harness = createHarness([ compareId, compareWidgetId, compareAria, compareAriaControls, compareAriaOwns ]);
 
 const testOptions: any[] = [
 	{
@@ -73,17 +74,20 @@ const compareFocusTrue = {
 	comparator: isFocusedComparator
 };
 
-const getExpectedControls = function(useTestProperties: boolean, label: boolean, states: States = {}) {
+const getExpectedControls = function(useTestProperties: boolean, label: boolean, open: boolean, states: States = {}) {
 	const { disabled, invalid, readOnly, required } = states;
 	const controlsVdom = v('div', {
-		classes: css.controls
+		'aria-expanded': open ? 'true' : 'false',
+		'aria-haspopup': 'listbox',
+		'aria-owns': '',
+		classes: css.controls,
+		role: 'combobox'
 	}, [
 		w(TextInput, {
 			key: 'textinput',
 			aria: {
 				activedescendant: '',
-				controls: '',
-				owns: ''
+				autocomplete: 'list'
 			},
 			disabled,
 			focus: noop,
@@ -100,10 +104,11 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 			onKeyDown: noop
 		}),
 		useTestProperties ? v('button', {
-			'aria-controls': '',
+			'aria-hidden': 'true',
 			key: 'clear',
 			classes: css.clear,
 			disabled: disabled || readOnly,
+			tabIndex: -1,
 			type: 'button',
 			onclick: noop
 		}, [
@@ -114,6 +119,7 @@ const getExpectedControls = function(useTestProperties: boolean, label: boolean,
 		]) : null,
 		v('button', {
 			key: 'trigger',
+			'aria-hidden': 'true',
 			classes: css.trigger,
 			disabled: disabled || readOnly,
 			tabIndex: -1,
@@ -163,13 +169,10 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 
 const getExpectedVdom = function(useTestProperties = false, open = false, label = false, states: States = {}, focused = false) {
 	const menuVdom = getExpectedMenu(useTestProperties, open);
-	const controlsVdom = getExpectedControls(useTestProperties, label, states);
+	const controlsVdom = getExpectedControls(useTestProperties, label, open, states);
 	const { disabled, invalid, readOnly, required } = states;
 
 	return v('div', {
-		'aria-expanded': open ? 'true' : 'false',
-		'aria-haspopup': 'listbox',
-		'aria-required': null,
 		classes: [
 			css.root,
 			open ? css.open : null,
@@ -178,8 +181,7 @@ const getExpectedVdom = function(useTestProperties = false, open = false, label 
 			null,
 			null
 		],
-		key: 'root',
-		role: 'combobox'
+		key: 'root'
 	}, [
 		label ? w(Label, {
 			key: 'label',
@@ -528,10 +530,11 @@ registerSuite('ComboBox', {
 			}, [ 'foo' ]));
 
 			h.expectPartial('@clear', () => v('button', {
-				'aria-controls': null,
 				key: 'clear',
+				'aria-hidden': 'true',
 				classes: css.clear,
 				disabled: true,
+				tabIndex: -1,
 				type: 'button',
 				onclick: noop
 			}, [
@@ -543,6 +546,7 @@ registerSuite('ComboBox', {
 
 			h.expectPartial('@trigger', () => v('button', {
 				key: 'trigger',
+				'aria-hidden': 'true',
 				classes: css.trigger,
 				disabled: true,
 				tabIndex: -1,

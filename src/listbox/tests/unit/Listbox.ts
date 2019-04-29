@@ -41,7 +41,7 @@ const testOptions: any[] = [
 ];
 
 const expectedFirstOption = (overrides: Partial<ListboxOptionProperties> = {}) => {
-	return v('div', { key: 'first' }, [
+	return v('div', { key: 'first', role: 'presentation' }, [
 		w(ListboxOption, {
 			active: false,
 			css: [ css.option, css.activeOption, null, null ],
@@ -61,7 +61,7 @@ const expectedFirstOption = (overrides: Partial<ListboxOptionProperties> = {}) =
 };
 
 const expectedSecondOption = (overrides: Partial<ListboxOptionProperties> = {}) => {
-	return v('div', { key: '1' }, [
+	return v('div', { key: '1', role: 'presentation' }, [
 		w(ListboxOption, {
 			active: false,
 			css: [ css.option, null, null, null ],
@@ -81,7 +81,7 @@ const expectedSecondOption = (overrides: Partial<ListboxOptionProperties> = {}) 
 };
 
 const expectedThirdOption = (overrides: Partial<ListboxOptionProperties> = {}) => {
-	return v('div', { key: '2' }, [
+	return v('div', { key: '2', role: 'presentation' }, [
 		w(ListboxOption, {
 			active: false,
 			css: [ css.option, null, null, null ],

@@ -279,7 +279,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 		return v('div', {
 			key: 'root',
-			classes: this.theme(this.getRootClasses())
+			classes: this.theme(this.getRootClasses()),
+			role: 'presentation'
 		}, [
 			label && w(Label, {
 				theme,
@@ -292,7 +293,11 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 				hidden: labelHidden,
 				forId: widgetId
 			}, [ label ]),
-			v('div', { key: 'inputWrapper', classes: this.theme(css.inputWrapper) }, [
+			v('div', {
+				key: 'inputWrapper',
+				classes: this.theme(css.inputWrapper),
+				role: 'presentation'
+			}, [
 				leading && v('span', { key: 'leading', classes: this.theme(css.leading) }, [ leading() ]),
 				v('input', {
 					...formatAriaProperties(aria),
