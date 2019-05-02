@@ -54,7 +54,13 @@ const expected = function({ label = false, rootOverrides = {}, inputOverrides = 
 			ontouchend: noop,
 			ontouchcancel: noop,
 			...inputOverrides
-		})
+		}),
+		v('div', {
+			classes: css.radioBackground
+		}, [
+			v('div', { classes: css.radioOuter }),
+			v('div', { classes: css.radioInner })
+		])
 	]);
 
 	return v('div', {

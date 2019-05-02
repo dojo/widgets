@@ -164,7 +164,13 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 					ontouchstart: this._onTouchStart,
 					ontouchend: this._onTouchEnd,
 					ontouchcancel: this._onTouchCancel
-				})
+				}),
+				v('div', {
+					classes: this.theme(css.radioBackground)
+				}, [
+					v('div', { classes: this.theme(css.radioOuter) }),
+					v('div', { classes: this.theme(css.radioInner) })
+				])
 			]),
 			label ? w(Label, {
 				theme,
