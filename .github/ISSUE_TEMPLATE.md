@@ -1,12 +1,12 @@
 <!--
-Thank you for contributing to Dojo 2.
+Thank you for contributing to Dojo.
 
-Our issue tracker is for bugs for Dojo 2.
+Our issue tracker is for bugs for Dojo.
 
 Please make sure you have read our Contributing Guidelines
-available at: https://github.com/dojo/meta/blob/master/CONTRIBUTING.md
+available at: https://github.com/dojo/framework/blob/master/CONTRIBUTING.md
 
-For general questions and discussion, join us on Gitter.im at: https://gitter.im/dojo/dojo2
+For general questions and discussion, join us on Discord at: https://discordapp.com/invite/M7yRngE
 -->
 
 **Bug / Enhancement** <!-- delete as appropriate -->
