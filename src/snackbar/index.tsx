@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import I18nMixin from '@dojo/framework/widget-core/mixins/I18n';
-import Button from '../button';
+import Button from '../button/index';
 import * as css from '../theme/snackbar.m.css';
 import bundle from './nls/Snackbar';
 

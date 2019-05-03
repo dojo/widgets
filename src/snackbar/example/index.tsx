@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import watch from '@dojo/framework/widget-core/decorators/watch';
 import Snackbar from '../index';
-import Button from '../../button';
+import Button from '../../button/index';
 
 export default class App extends WidgetBase {
 	@watch()
@@ -13,6 +13,9 @@ export default class App extends WidgetBase {
 
 	@watch()
 	private _showPlain = false;
+
+	@watch()
+	private _showAutoclose = false;
 
 	render() {
 		return (
@@ -45,6 +48,25 @@ export default class App extends WidgetBase {
 						open={this._showError}
 						onDismiss={() => (this._showError = false)}
 						title="Test Snackbar Error"
+					/>
+				</div>
+				<div id="example-aurtoclose">
+					<h3>Auto close Snackbar</h3>
+					<Button
+						onClick={() => {
+							this._showAutoclose = true;
+							setTimeout(() => {
+								this._showAutoclose = false;
+							}, 5000);
+						}}
+					>
+						Show Snackbar
+					</Button>
+					<Snackbar
+						success={true}
+						open={this._showAutoclose}
+						onDismiss={() => (this._showAutoclose = false)}
+						title="Test Snackbar auto close"
 					/>
 				</div>
 			</div>
