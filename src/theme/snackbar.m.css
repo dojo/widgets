@@ -1,5 +1,6 @@
+@import '../common/styles/variables.css';
+
 .root {
-	/* composes: mdc-snackbar from '@material/snackbar/dist/mdc.snackbar.css'; */
 	display: none;
 	position: fixed;
 	right: 0;
@@ -14,17 +15,14 @@
 }
 
 .content {
-	/* composes: mdc-snackbar__surface from '@material/snackbar/dist/mdc.snackbar.css'; */
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
 	box-sizing: border-box;
-	transform: scale(0.8);
 	opacity: 0;
 }
 
 .label {
-	/* composes: mdc-snackbar__label from '@material/snackbar/dist/mdc.snackbar.css'; */
 	flex-grow: 1;
 	box-sizing: border-box;
 	margin: 0;
@@ -32,7 +30,6 @@
 }
 
 .actions {
-	/* composes: mdc-snackbar__actions from '@material/snackbar/dist/mdc.snackbar.css'; */
 	display: flex;
 	flex-shrink: 0;
 	align-items: center;
@@ -40,20 +37,18 @@
 }
 
 .open {
-	/* composes: mdc-snackbar--open from '@material/snackbar/dist/mdc.snackbar.css'; */
 	display: flex;
 }
 
 .open .content {
-	transform: scale(1);
 	opacity: 1;
 	pointer-events: auto;
 }
 
-.success .actions {
-	/* --mdc-theme-primary: var(--color-success); */
+.success .label {
+	color: var(--success-color);
 }
 
-.error .actions {
-	/* --mdc-theme-primary: var(--color-error); */
+.error .label {
+	color: var(--error-color);
 }
