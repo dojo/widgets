@@ -23,20 +23,20 @@ registerSuite('ComboBox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
-				.click()
-				.end()
+			.click()
+			.end()
 			.findByCssSelector(`.${css.controls} input`)
-				.getSize()
-					.then(({ width }) => {
-						inputWidth = width;
-					})
-				.end()
+			.getSize()
+			.then(({ width }) => {
+				inputWidth = width;
+			})
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
-				.getSize()
-				.then(({ height }) => {
-					assert.isAbove(height, 0);
-				});
+			.getSize()
+			.then(({ height }) => {
+				assert.isAbove(height, 0);
+			});
 	},
 
 	'the selected result menu should be visible'() {
@@ -54,33 +54,33 @@ registerSuite('ComboBox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
-				.click()
-				.end()
+			.click()
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.controls} input`)
-				.type(keys.ARROW_UP)
-				.end()
+			.type(keys.ARROW_UP)
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.dropdown}`)
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					menuTop = y;
-				})
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					menuBottom = menuTop + height;
-				})
-				.end()
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				menuTop = y;
+			})
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				menuBottom = menuTop + height;
+			})
+			.end()
 			.findByCssSelector(`.${listboxCss.activeOption}`)
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					itemHeight = height;
-				})
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					assert.isAtLeast(y, menuTop);
-					assert.isAtMost(Math.floor(y), Math.ceil((menuBottom - itemHeight) * 1.05));
-				});
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				itemHeight = height;
+			})
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				assert.isAtLeast(y, menuTop);
+				assert.isAtMost(Math.floor(y), Math.ceil((menuBottom - itemHeight) * 1.05));
+			});
 	},
 
 	'tab order'() {
@@ -95,20 +95,25 @@ registerSuite('ComboBox', {
 			this.skip('FirefoxDriver sends actual charcodes to the input.');
 		}
 
-		const initialTab = browserName === 'chrome' ?
-			() => this.remote.findByTagName('body').type(keys.TAB) :
-			() => this.remote.pressKeys(keys.TAB);
+		const initialTab =
+			browserName === 'chrome'
+				? () => this.remote.findByTagName('body').type(keys.TAB)
+				: () => this.remote.pressKeys(keys.TAB);
 
 		return getPage(this.remote)
 			.findByCssSelector(`input[type=text]`)
-				.click()
-				.sleep(DELAY)
-				.then(initialTab)
+			.click()
+			.sleep(DELAY)
+			.then(initialTab)
 			.getActiveElement()
-				.getTagName()
-				.then((tag: string) => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'Only the input should be in the tab order');
-				});
+			.getTagName()
+			.then((tag: string) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'Only the input should be in the tab order'
+				);
+			});
 	},
 
 	'the input should receive focus when the "clear" button is activated'() {
@@ -119,22 +124,30 @@ registerSuite('ComboBox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.clear}`)
-				.click()
-				.sleep(DELAY)
+			.click()
+			.sleep(DELAY)
 			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "clear" button is clicked.');
-				})
-				.type(keys.TAB)
+			.getTagName()
+			.then((tag) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The input should receive focus when the "clear" button is clicked.'
+				);
+			})
+			.type(keys.TAB)
 			.getActiveElement()
-				.type(keys.ENTER)
-				.sleep(DELAY)
+			.type(keys.ENTER)
+			.sleep(DELAY)
 			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "clear" button is activated with the ENTER key.');
-				});
+			.getTagName()
+			.then((tag) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The input should receive focus when the "clear" button is activated with the ENTER key.'
+				);
+			});
 	},
 
 	'the input should receive focus when the "open" button is activated'() {
@@ -145,13 +158,17 @@ registerSuite('ComboBox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.trigger}`)
-				.click()
-				.sleep(DELAY)
+			.click()
+			.sleep(DELAY)
 			.getActiveElement()
-				.getTagName()
-				.then(tag => {
-					assert.strictEqual(tag.toLowerCase(), 'input', 'The input should receive focus when the "open" button is clicked.');
-				});
+			.getTagName()
+			.then((tag) => {
+				assert.strictEqual(
+					tag.toLowerCase(),
+					'input',
+					'The input should receive focus when the "open" button is clicked.'
+				);
+			});
 	},
 
 	'check accessibility'() {

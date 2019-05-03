@@ -14,20 +14,28 @@ import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/te
 const expectedToggle = function(labels = false, checked = false) {
 	if (labels) {
 		return [
-			v('div', {
-				key: 'offLabel',
-				classes: css.offLabel,
-				'aria-hidden': checked ? 'true' : null
-			}, [ 'off' ]),
+			v(
+				'div',
+				{
+					key: 'offLabel',
+					classes: css.offLabel,
+					'aria-hidden': checked ? 'true' : null
+				},
+				['off']
+			),
 			v('div', {
 				key: 'toggle',
 				classes: css.toggleSwitch
 			}),
-			v('div', {
-				key: 'onLabel',
-				classes: css.onLabel,
-				'aria-hidden': checked ? null : 'true'
-			}, [ 'on' ])
+			v(
+				'div',
+				{
+					key: 'onLabel',
+					classes: css.onLabel,
+					'aria-hidden': checked ? null : 'true'
+				},
+				['on']
+			)
 		];
 	}
 
@@ -41,111 +49,153 @@ const expectedToggle = function(labels = false, checked = false) {
 	];
 };
 
-const compareId = { selector: 'input', property: 'id', comparator: (property: any) => typeof property === 'string' };
-const compareForId = { selector: '@label', property: 'forId', comparator: (property: any) => typeof property === 'string' };
+const compareId = {
+	selector: 'input',
+	property: 'id',
+	comparator: (property: any) => typeof property === 'string'
+};
+const compareForId = {
+	selector: '@label',
+	property: 'forId',
+	comparator: (property: any) => typeof property === 'string'
+};
 
 const expected = function(label = false, toggle = false, toggleLabels = false, checked = false) {
-	return v('div', {
-		key: 'root',
-		classes: [ css.root, toggle ? css.toggle : null, checked ? css.checked : null, null, null, null, null, null, null ]
-	}, [
-		v('div', { classes: css.inputWrapper }, [
-			...(toggle ? expectedToggle(toggleLabels, checked) : []),
-			v('input', {
-				id: '',
-				classes: css.input,
-				checked,
-				disabled: undefined,
-				focus: noop,
-				'aria-invalid': null,
-				name: undefined,
-				readOnly: undefined,
-				'aria-readonly': null,
-				required: undefined,
-				type: 'checkbox',
-				value: undefined,
-				onblur: noop,
-				onchange: noop,
-				onclick: noop,
-				onfocus: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop
-			})
-		]),
-		label ? w(Label, {
-			key: 'label',
-			theme: undefined,
-			classes: undefined,
-			disabled: undefined,
-			focused: false,
-			hidden: undefined,
-			invalid: undefined,
-			readOnly: undefined,
-			required: undefined,
-			forId: '',
-			secondary: true
-		}, [ 'foo' ]) : null
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			classes: [
+				css.root,
+				toggle ? css.toggle : null,
+				checked ? css.checked : null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			]
+		},
+		[
+			v('div', { classes: css.inputWrapper }, [
+				...(toggle ? expectedToggle(toggleLabels, checked) : []),
+				v('input', {
+					id: '',
+					classes: css.input,
+					checked,
+					disabled: undefined,
+					focus: noop,
+					'aria-invalid': null,
+					name: undefined,
+					readOnly: undefined,
+					'aria-readonly': null,
+					required: undefined,
+					type: 'checkbox',
+					value: undefined,
+					onblur: noop,
+					onchange: noop,
+					onclick: noop,
+					onfocus: noop,
+					onmousedown: noop,
+					onmouseup: noop,
+					ontouchstart: noop,
+					ontouchend: noop,
+					ontouchcancel: noop
+				})
+			]),
+			label
+				? w(
+						Label,
+						{
+							key: 'label',
+							theme: undefined,
+							classes: undefined,
+							disabled: undefined,
+							focused: false,
+							hidden: undefined,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							forId: '',
+							secondary: true
+						},
+						['foo']
+				  )
+				: null
+		]
+	);
 };
 
 registerSuite('Checkbox', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => w(Checkbox, {}), [ compareId ]);
+			const h = harness(() => w(Checkbox, {}), [compareId]);
 			h.expect(() => expected());
 		},
 
 		'custom properties'() {
-			const h = harness(() => w(Checkbox, {
-				aria: {
-					describedBy: 'foo'
-				},
-				checked: true,
-				widgetId: 'foo',
-				name: 'bar',
-				value: 'baz'
-			}), [ compareId ]);
-
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ css.root, null, css.checked, null, null, null, null, null, null ]
-			}, [
-				v('div', { classes: css.inputWrapper }, [
-					v('input', {
-						id: '',
-						'aria-describedby': 'foo',
-						name: 'bar',
-						classes: css.input,
+			const h = harness(
+				() =>
+					w(Checkbox, {
+						aria: {
+							describedBy: 'foo'
+						},
 						checked: true,
-						disabled: undefined,
-						focus: noop,
-						'aria-invalid': null,
-						readOnly: undefined,
-						'aria-readonly': null,
-						required: undefined,
-						type: 'checkbox',
-						value: 'baz',
-						onblur: noop,
-						onchange: noop,
-						onclick: noop,
-						onfocus: noop,
-						onmousedown: noop,
-						onmouseup: noop,
-						ontouchstart: noop,
-						ontouchend: noop,
-						ontouchcancel: noop
-					})
-				])
-			]));
+						widgetId: 'foo',
+						name: 'bar',
+						value: 'baz'
+					}),
+				[compareId]
+			);
+
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [css.root, null, css.checked, null, null, null, null, null, null]
+					},
+					[
+						v('div', { classes: css.inputWrapper }, [
+							v('input', {
+								id: '',
+								'aria-describedby': 'foo',
+								name: 'bar',
+								classes: css.input,
+								checked: true,
+								disabled: undefined,
+								focus: noop,
+								'aria-invalid': null,
+								readOnly: undefined,
+								'aria-readonly': null,
+								required: undefined,
+								type: 'checkbox',
+								value: 'baz',
+								onblur: noop,
+								onchange: noop,
+								onclick: noop,
+								onfocus: noop,
+								onmousedown: noop,
+								onmouseup: noop,
+								ontouchstart: noop,
+								ontouchend: noop,
+								ontouchcancel: noop
+							})
+						])
+					]
+				)
+			);
 		},
 
-		'label'() {
-			const h = harness(() => w(Checkbox, {
-				label: 'foo'
-			}), [ compareId, compareForId ]);
+		label() {
+			const h = harness(
+				() =>
+					w(Checkbox, {
+						label: 'foo'
+					}),
+				[compareId, compareForId]
+			);
 
 			h.expect(() => expected(true));
 		},
@@ -155,143 +205,183 @@ registerSuite('Checkbox', {
 			let disabled = true;
 			let readOnly = true;
 			let required = true;
-			const h = harness(() => w(Checkbox, {
-				invalid,
-				disabled,
-				readOnly,
-				required
-			}), [ compareForId, compareId ]);
+			const h = harness(
+				() =>
+					w(Checkbox, {
+						invalid,
+						disabled,
+						readOnly,
+						required
+					}),
+				[compareForId, compareId]
+			);
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ css.root, null, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
-			}, [
-				v('div', { classes: css.inputWrapper }, [
-					v('input', {
-						id: '',
-						classes: css.input,
-						checked: false,
-						focus: noop,
-						'aria-invalid': 'true',
-						'aria-readonly': 'true',
-						type: 'checkbox',
-						value: undefined,
-						name: undefined,
-						onblur: noop,
-						onchange: noop,
-						onclick: noop,
-						onfocus: noop,
-						onmousedown: noop,
-						onmouseup: noop,
-						ontouchstart: noop,
-						ontouchend: noop,
-						ontouchcancel: noop,
-						disabled: true,
-						readOnly: true,
-						required: true
-					})
-				])
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [
+							css.root,
+							null,
+							null,
+							css.disabled,
+							null,
+							css.invalid,
+							null,
+							css.readonly,
+							css.required
+						]
+					},
+					[
+						v('div', { classes: css.inputWrapper }, [
+							v('input', {
+								id: '',
+								classes: css.input,
+								checked: false,
+								focus: noop,
+								'aria-invalid': 'true',
+								'aria-readonly': 'true',
+								type: 'checkbox',
+								value: undefined,
+								name: undefined,
+								onblur: noop,
+								onchange: noop,
+								onclick: noop,
+								onfocus: noop,
+								onmousedown: noop,
+								onmouseup: noop,
+								ontouchstart: noop,
+								ontouchend: noop,
+								ontouchcancel: noop,
+								disabled: true,
+								readOnly: true,
+								required: true
+							})
+						])
+					]
+				)
+			);
 
 			invalid = false;
 			disabled = false;
 			readOnly = false;
 			required = false;
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ css.root, null, null, null, null, null, css.valid, null, null ]
-			}, [
-				v('div', { classes: css.inputWrapper }, [
-					v('input', {
-						id: '',
-						classes: css.input,
-						checked: false,
-						focus: noop,
-						'aria-invalid': null,
-						'aria-readonly': null,
-						type: 'checkbox',
-						value: undefined,
-						name: undefined,
-						onblur: noop,
-						onchange: noop,
-						onclick: noop,
-						onfocus: noop,
-						onmousedown: noop,
-						onmouseup: noop,
-						ontouchstart: noop,
-						ontouchend: noop,
-						ontouchcancel: noop,
-						disabled: false,
-						readOnly: false,
-						required: false
-					})
-				])
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [css.root, null, null, null, null, null, css.valid, null, null]
+					},
+					[
+						v('div', { classes: css.inputWrapper }, [
+							v('input', {
+								id: '',
+								classes: css.input,
+								checked: false,
+								focus: noop,
+								'aria-invalid': null,
+								'aria-readonly': null,
+								type: 'checkbox',
+								value: undefined,
+								name: undefined,
+								onblur: noop,
+								onchange: noop,
+								onclick: noop,
+								onfocus: noop,
+								onmousedown: noop,
+								onmouseup: noop,
+								ontouchstart: noop,
+								ontouchend: noop,
+								ontouchcancel: noop,
+								disabled: false,
+								readOnly: false,
+								required: false
+							})
+						])
+					]
+				)
+			);
 		},
 
 		'state properties on label'() {
-			const h = harness(() => w(Checkbox, {
-				label: 'foo',
-				invalid: true,
-				disabled: true,
-				readOnly: true,
-				required: true
-			}), [ compareId, compareForId ]);
-
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [
-					css.root,
-					null,
-					null,
-					css.disabled,
-					null,
-					css.invalid,
-					null,
-					css.readonly,
-					css.required
-				]
-			}, [
-				v('div', { classes: css.inputWrapper }, [
-					v('input', {
+			const h = harness(
+				() =>
+					w(Checkbox, {
+						label: 'foo',
+						invalid: true,
 						disabled: true,
-						classes: css.input,
-						focus: noop,
-						'aria-invalid': 'true',
 						readOnly: true,
-						'aria-readonly': 'true',
-						required: true,
-						checked: false,
-						name: undefined,
-						type: 'checkbox',
-						value: undefined,
-						id: '',
-						onblur: noop,
-						onchange: noop,
-						onclick: noop,
-						onfocus: noop,
-						onmousedown: noop,
-						onmouseup: noop,
-						ontouchstart: noop,
-						ontouchend: noop,
-						ontouchcancel: noop
-					})
-				]),
-				w(Label, {
-					key: 'label',
-					disabled: true,
-					focused: false,
-					theme: undefined,
-					classes: undefined,
-					readOnly: true,
-					required: true,
-					invalid: true,
-					hidden: undefined,
-					forId: '',
-					secondary: true
-				}, [ 'foo' ])
-			]));
+						required: true
+					}),
+				[compareId, compareForId]
+			);
+
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [
+							css.root,
+							null,
+							null,
+							css.disabled,
+							null,
+							css.invalid,
+							null,
+							css.readonly,
+							css.required
+						]
+					},
+					[
+						v('div', { classes: css.inputWrapper }, [
+							v('input', {
+								disabled: true,
+								classes: css.input,
+								focus: noop,
+								'aria-invalid': 'true',
+								readOnly: true,
+								'aria-readonly': 'true',
+								required: true,
+								checked: false,
+								name: undefined,
+								type: 'checkbox',
+								value: undefined,
+								id: '',
+								onblur: noop,
+								onchange: noop,
+								onclick: noop,
+								onfocus: noop,
+								onmousedown: noop,
+								onmouseup: noop,
+								ontouchstart: noop,
+								ontouchend: noop,
+								ontouchcancel: noop
+							})
+						]),
+						w(
+							Label,
+							{
+								key: 'label',
+								disabled: true,
+								focused: false,
+								theme: undefined,
+								classes: undefined,
+								readOnly: true,
+								required: true,
+								invalid: true,
+								hidden: undefined,
+								forId: '',
+								secondary: true
+							},
+							['foo']
+						)
+					]
+				)
+			);
 		},
 
 		'focused class'() {
@@ -303,44 +393,50 @@ registerSuite('Checkbox', {
 			mockMeta.withArgs(Focus).returns({
 				get: mockFocusGet
 			});
-			const h = harness(() => w(MockMetaMixin(Checkbox, mockMeta), {}), [ compareId ]);
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ css.root, null, null, null, css.focused, null, null, null, null ]
-			}, [
-				v('div', { classes: css.inputWrapper }, [
-					v('input', {
-						id: '',
-						classes: css.input,
-						checked: false,
-						disabled: undefined,
-						focus: noop,
-						'aria-invalid': null,
-						name: undefined,
-						readOnly: undefined,
-						'aria-readonly': null,
-						required: undefined,
-						type: 'checkbox',
-						value: undefined,
-						onblur: noop,
-						onchange: noop,
-						onclick: noop,
-						onfocus: noop,
-						onmousedown: noop,
-						onmouseup: noop,
-						ontouchstart: noop,
-						ontouchend: noop,
-						ontouchcancel: noop
-					})
-				])
-			]));
+			const h = harness(() => w(MockMetaMixin(Checkbox, mockMeta), {}), [compareId]);
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [css.root, null, null, null, css.focused, null, null, null, null]
+					},
+					[
+						v('div', { classes: css.inputWrapper }, [
+							v('input', {
+								id: '',
+								classes: css.input,
+								checked: false,
+								disabled: undefined,
+								focus: noop,
+								'aria-invalid': null,
+								name: undefined,
+								readOnly: undefined,
+								'aria-readonly': null,
+								required: undefined,
+								type: 'checkbox',
+								value: undefined,
+								onblur: noop,
+								onchange: noop,
+								onclick: noop,
+								onfocus: noop,
+								onmousedown: noop,
+								onmouseup: noop,
+								ontouchstart: noop,
+								ontouchend: noop,
+								ontouchcancel: noop
+							})
+						])
+					]
+				)
+			);
 		},
 
 		'toggle mode'() {
 			let properties: CheckboxProperties = {
 				mode: Mode.toggle
 			};
-			const h = harness(() => w(Checkbox, properties), [ compareId, compareForId ]);
+			const h = harness(() => w(Checkbox, properties), [compareId, compareForId]);
 
 			h.expect(() => expected(false, true));
 
@@ -371,17 +467,19 @@ registerSuite('Checkbox', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = harness(() => w(Checkbox, {
-				onBlur,
-				onChange,
-				onClick,
-				onFocus,
-				onMouseDown,
-				onMouseUp,
-				onTouchStart,
-				onTouchEnd,
-				onTouchCancel
-			}));
+			const h = harness(() =>
+				w(Checkbox, {
+					onBlur,
+					onChange,
+					onClick,
+					onFocus,
+					onMouseDown,
+					onMouseUp,
+					onTouchStart,
+					onTouchEnd,
+					onTouchCancel
+				})
+			);
 
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');

@@ -33,18 +33,27 @@ export default class App extends WidgetBase {
 
 		return v('div', [
 			v('h1', {}, ['Slider with custom output']),
-			v('div', { id: 'example-s1'}, [
+			v('div', { id: 'example-s1' }, [
 				w(Slider, {
 					key: 's1',
 					label: 'How much do you like tribbles?',
 					min: 0,
 					max: 100,
 					output: (value: number) => {
-						if (value < 20) { return 'I am a Klingon'; }
-						if (value < 40) { return 'Tribbles only cause trouble'; }
-						if (value < 60) { return 'They\`re kind of cute'; }
-						if (value < 80) { return 'Most of my salary goes to tribble food'; }
-						else { return 'I permanently altered the ecology of a planet for my tribbles'; }
+						if (value < 20) {
+							return 'I am a Klingon';
+						}
+						if (value < 40) {
+							return 'Tribbles only cause trouble';
+						}
+						if (value < 60) {
+							return 'They\`re kind of cute';
+						}
+						if (value < 80) {
+							return 'Most of my salary goes to tribble food';
+						} else {
+							return 'I permanently altered the ecology of a planet for my tribbles';
+						}
 					},
 					step: 1,
 					value: tribbleValue,
@@ -53,7 +62,7 @@ export default class App extends WidgetBase {
 				})
 			]),
 			v('h1', {}, ['Disabled slider']),
-			v('div', { id: 'example-s2'}, [
+			v('div', { id: 'example-s2' }, [
 				w(Slider, {
 					key: 's2',
 					label: 'Stuck at 30',
@@ -65,7 +74,7 @@ export default class App extends WidgetBase {
 				})
 			]),
 			v('h1', {}, ['Vertical slider']),
-			v('div', { id: 'example-s3'}, [
+			v('div', { id: 'example-s3' }, [
 				w(Slider, {
 					key: 's3',
 					label: 'Vertical Slider with default properties. Anything over 50 is invalid:',

@@ -28,14 +28,14 @@ registerSuite('Toolbar', {
 			.setWindowSize(WIDTH, HEIGHT)
 			.sleep(DELAY)
 			.findByCssSelector(`body .${css.menuButton}`)
-				.click()
+			.click()
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`body .${slidePaneCss.root}`)
-				.isDisplayed()
-				.then(displayed => {
-					assert.isTrue(displayed);
-				});
+			.isDisplayed()
+			.then((displayed) => {
+				assert.isTrue(displayed);
+			});
 	},
 
 	'Should close menu when button is clicked'() {
@@ -46,18 +46,18 @@ registerSuite('Toolbar', {
 		return getPage(this.remote)
 			.setWindowSize(WIDTH, HEIGHT)
 			.findByCssSelector(`body .${css.menuButton}`)
-				.click()
+			.click()
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`body .${slidePaneCss.close}`)
-				.click()
+			.click()
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`body .${slidePaneCss.title}`)
-				.getPosition()
-				.then(position => {
-					assert.isAbove(position.x, WIDTH - 50);
-				});
+			.getPosition()
+			.then((position) => {
+				assert.isAbove(position.x, WIDTH - 50);
+			});
 	},
 
 	'check accessibility'() {

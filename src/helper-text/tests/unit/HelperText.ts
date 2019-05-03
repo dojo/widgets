@@ -10,21 +10,21 @@ import harness from '@dojo/framework/testing/harness';
 const baseTemplate = assertationTemplate(() => {
 	return v('div', {
 		key: 'root',
-		classes: [
-			css.root,
-			null,
-			null
-		]
+		classes: [css.root, null, null]
 	});
 });
 
 const textTemplate = baseTemplate.setChildren('@root', [
-	v('p', {
-		key: 'text',
-		classes: css.text,
-		'aria-hidden': 'true',
-		title: 'test'
-	}, ['test'])
+	v(
+		'p',
+		{
+			key: 'text',
+			classes: css.text,
+			'aria-hidden': 'true',
+			title: 'test'
+		},
+		['test']
+	)
 ]);
 
 registerSuite('HelperText', {
@@ -37,20 +37,23 @@ registerSuite('HelperText', {
 			const h = harness(() => w(HelperText, { text: 'test' }));
 			h.expect(textTemplate);
 		},
-		'valid'() {
+		valid() {
 			const validTemplate = textTemplate.setProperty('@root', 'classes', [
-				css.root, css.valid, null
+				css.root,
+				css.valid,
+				null
 			]);
 			const h = harness(() => w(HelperText, { text: 'test', valid: true }));
 			h.expect(validTemplate);
 		},
-		'invalid'() {
+		invalid() {
 			const invalidTemplate = textTemplate.setProperty('@root', 'classes', [
-				css.root, null, css.invalid
+				css.root,
+				null,
+				css.invalid
 			]);
 			const h = harness(() => w(HelperText, { text: 'test', valid: false }));
 			h.expect(invalidTemplate);
 		}
-
 	}
 });

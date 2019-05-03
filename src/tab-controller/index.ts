@@ -33,7 +33,10 @@ export enum Align {
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
-export interface TabControllerProperties extends ThemedProperties, FocusProperties, CustomAriaProperties {
+export interface TabControllerProperties
+	extends ThemedProperties,
+		FocusProperties,
+		CustomAriaProperties {
 	activeIndex: number;
 	alignButtons?: Align;
 	onRequestTabChange?(index: number, key: string): void;
@@ -43,18 +46,18 @@ export interface TabControllerProperties extends ThemedProperties, FocusProperti
 @theme(css)
 @customElement<TabControllerProperties>({
 	tag: 'dojo-tab-controller',
-	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'activeIndex' ],
-	attributes: [ 'alignButtons' ],
-	events: [
-		'onRequestTabChange',
-		'onRequestTabClose'
-	]
+	properties: ['theme', 'classes', 'aria', 'extraClasses', 'activeIndex'],
+	attributes: ['alignButtons'],
+	events: ['onRequestTabChange', 'onRequestTabClose']
 })
-export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<TabControllerProperties, WNode<Tab>> {
+export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<
+	TabControllerProperties,
+	WNode<Tab>
+> {
 	private _id = uuid();
 
 	private get _tabs(): WNode<Tab>[] {
-		return this.children.filter(child => child !== null) as WNode<Tab>[];
+		return this.children.filter((child) => child !== null) as WNode<Tab>[];
 	}
 
 	private _onDownArrowPress() {
@@ -88,7 +91,7 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<TabContro
 	private _validateIndex(currentIndex: number, backwards?: boolean) {
 		const tabs = this._tabs;
 
-		if (tabs.every(result => Boolean(result.properties.disabled))) {
+		if (tabs.every((result) => Boolean(result.properties.disabled))) {
 			return null;
 		}
 
@@ -117,55 +120,53 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<TabContro
 	}
 
 	protected renderButtonContent(label?: DNode): DNode[] {
-		return [ label || null ];
+		return [label || null];
 	}
 
 	protected renderTabButtons(): DNode[] {
 		return this._tabs.map((tab, i) => {
-			const {
-				closeable,
-				disabled,
-				key,
-				label,
-				theme,
-				classes
-			} = <TabProperties> tab.properties;
+			const { closeable, disabled, key, label, theme, classes } = <TabProperties>(
+				tab.properties
+			);
 
-			return w(TabButton, {
-				active: i === this.properties.activeIndex,
-				closeable,
-				controls: `${ this._id }-tab-${i}`,
-				disabled,
-				focus: i === this.properties.activeIndex ? this.shouldFocus : () => false,
-				id: `${ this._id }-tabbutton-${i}`,
-				index: i,
-				key: `${ key }-tabbutton`,
-				onClick: this.selectIndex,
-				onCloseClick: this.closeIndex,
-				onDownArrowPress: this._onDownArrowPress,
-				onEndPress: this.selectLastIndex,
-				onHomePress: this.selectFirstIndex,
-				onLeftArrowPress: this._onLeftArrowPress,
-				onRightArrowPress: this._onRightArrowPress,
-				onUpArrowPress: this._onUpArrowPress,
-				theme,
-				classes
-			}, this.renderButtonContent(label));
+			return w(
+				TabButton,
+				{
+					active: i === this.properties.activeIndex,
+					closeable,
+					controls: `${this._id}-tab-${i}`,
+					disabled,
+					focus: i === this.properties.activeIndex ? this.shouldFocus : () => false,
+					id: `${this._id}-tabbutton-${i}`,
+					index: i,
+					key: `${key}-tabbutton`,
+					onClick: this.selectIndex,
+					onCloseClick: this.closeIndex,
+					onDownArrowPress: this._onDownArrowPress,
+					onEndPress: this.selectLastIndex,
+					onHomePress: this.selectFirstIndex,
+					onLeftArrowPress: this._onLeftArrowPress,
+					onRightArrowPress: this._onRightArrowPress,
+					onUpArrowPress: this._onUpArrowPress,
+					theme,
+					classes
+				},
+				this.renderButtonContent(label)
+			);
 		});
 	}
 
 	protected renderTabs(): DNode[] {
 		const { activeIndex } = this.properties;
 
-		return this._tabs
-			.map((tab, i) => {
-				assign(tab.properties, {
-					widgetId: `${ this._id }-tab-${i}`,
-					labelledBy: `${ this._id }-tabbutton-${i}`,
-					show: i === activeIndex
-				});
-				return tab;
+		return this._tabs.map((tab, i) => {
+			assign(tab.properties, {
+				widgetId: `${this._id}-tab-${i}`,
+				labelledBy: `${this._id}-tabbutton-${i}`,
+				show: i === activeIndex
 			});
+			return tab;
+		});
 	}
 
 	protected selectFirstIndex() {
@@ -173,10 +174,7 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<TabContro
 	}
 
 	protected selectIndex(index: number, backwards?: boolean) {
-		const {
-			activeIndex,
-			onRequestTabChange
-		} = this.properties;
+		const { activeIndex, onRequestTabChange } = this.properties;
 
 		const validIndex = this._validateIndex(index, backwards);
 		this.focus();
@@ -214,14 +212,24 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<TabContro
 		}
 
 		const children = [
-			v('div', {
-				key: 'buttons',
-				classes: this.theme(css.tabButtons)
-			}, this.renderTabButtons()),
-			tabs.length ? v('div', {
-				key: 'tabs',
-				classes: this.theme(css.tabs)
-			}, tabs) : null
+			v(
+				'div',
+				{
+					key: 'buttons',
+					classes: this.theme(css.tabButtons)
+				},
+				this.renderTabButtons()
+			),
+			tabs.length
+				? v(
+						'div',
+						{
+							key: 'tabs',
+							classes: this.theme(css.tabs)
+						},
+						tabs
+				  )
+				: null
 		];
 
 		let alignClass;
@@ -243,15 +251,16 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<TabContro
 				break;
 		}
 
-		return v('div', {
-			...formatAriaProperties(aria),
-			'aria-orientation': orientation,
-			classes: this.theme([
-				alignClass ? alignClass : null,
-				css.root
-			]),
-			role: 'tablist'
-		}, children);
+		return v(
+			'div',
+			{
+				...formatAriaProperties(aria),
+				'aria-orientation': orientation,
+				classes: this.theme([alignClass ? alignClass : null, css.root]),
+				role: 'tablist'
+			},
+			children
+		);
 	}
 }
 

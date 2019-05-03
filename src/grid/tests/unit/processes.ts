@@ -5,7 +5,13 @@ import { Store } from '@dojo/framework/stores/Store';
 import { stub } from 'sinon';
 import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
-import { pageChangeProcess, fetcherProcess, sortProcess, filterProcess, updaterProcess } from '../../processes';
+import {
+	pageChangeProcess,
+	fetcherProcess,
+	sortProcess,
+	filterProcess,
+	updaterProcess
+} from '../../processes';
 
 let store: Store;
 
@@ -40,7 +46,12 @@ describe('Grid Processes', () => {
 					total: 10000
 				}
 			});
-			await fetcherProcess(store)({ id: 'grid', page: 2, fetcher: fetcherStub, pageSize: 100 });
+			await fetcherProcess(store)({
+				id: 'grid',
+				page: 2,
+				fetcher: fetcherStub,
+				pageSize: 100
+			});
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-2': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
@@ -55,28 +66,51 @@ describe('Grid Processes', () => {
 					total: 10000
 				}
 			});
-			await fetcherProcess(store)({ id: 'grid', page: 2, fetcher: fetcherStub, pageSize: 100 });
+			await fetcherProcess(store)({
+				id: 'grid',
+				page: 2,
+				fetcher: fetcherStub,
+				pageSize: 100
+			});
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-2': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
 			assert.deepEqual(meta, { fetchedPages: [2], total: 10000, pageSize: 100 });
-			return fetcherProcess(store)({ id: 'grid', page: 2, fetcher: fetcherStub, pageSize: 100 }).then(
-				(result) => {
-					assert.isOk(result.error);
-					assert.strictEqual((result as any).error.error.message, 'The page has already been requested');
-				}
-			);
+			return fetcherProcess(store)({
+				id: 'grid',
+				page: 2,
+				fetcher: fetcherStub,
+				pageSize: 100
+			}).then((result) => {
+				assert.isOk(result.error);
+				assert.strictEqual(
+					(result as any).error.error.message,
+					'The page has already been requested'
+				);
+			});
 		});
 
 		it('Should throw an error if the grid is sorting', async () => {
 			const fetcherStub = stub();
-			store.apply([{ op: OperationType.REPLACE, path: new Pointer(['grid', 'meta', 'isSorting']), value: true }]);
-			return fetcherProcess(store)({ id: 'grid', page: 2, fetcher: fetcherStub, pageSize: 100 }).then(
-				(result) => {
-					assert.isOk(result.error);
-					assert.strictEqual((result as any).error.error.message, 'The grid is being sorted or filtered');
+			store.apply([
+				{
+					op: OperationType.REPLACE,
+					path: new Pointer(['grid', 'meta', 'isSorting']),
+					value: true
 				}
-			);
+			]);
+			return fetcherProcess(store)({
+				id: 'grid',
+				page: 2,
+				fetcher: fetcherStub,
+				pageSize: 100
+			}).then((result) => {
+				assert.isOk(result.error);
+				assert.strictEqual(
+					(result as any).error.error.message,
+					'The grid is being sorted or filtered'
+				);
+			});
 		});
 	});
 
@@ -89,8 +123,18 @@ describe('Grid Processes', () => {
 					total: 10000
 				}
 			});
-			store.apply([{ op: OperationType.REPLACE, path: new Pointer(['grid', 'meta', 'page']), value: 10 }]);
-			await filterProcess(store)({ filterOptions:  { columnId: 'id', value: 'filter' }, id: 'grid', fetcher: fetcherStub });
+			store.apply([
+				{
+					op: OperationType.REPLACE,
+					path: new Pointer(['grid', 'meta', 'page']),
+					value: 10
+				}
+			]);
+			await filterProcess(store)({
+				filterOptions: { columnId: 'id', value: 'filter' },
+				id: 'grid',
+				fetcher: fetcherStub
+			});
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-1': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
@@ -117,8 +161,15 @@ describe('Grid Processes', () => {
 					total: 10000
 				}
 			});
-			store.apply([{ op: OperationType.REPLACE, path: new Pointer(['grid', 'meta', 'page']), value: 1 }]);
-			await sortProcess(store)({ columnId: 'id', direction: 'asc', id: 'grid', fetcher: fetcherStub });
+			store.apply([
+				{ op: OperationType.REPLACE, path: new Pointer(['grid', 'meta', 'page']), value: 1 }
+			]);
+			await sortProcess(store)({
+				columnId: 'id',
+				direction: 'asc',
+				id: 'grid',
+				fetcher: fetcherStub
+			});
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-1': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
@@ -139,10 +190,23 @@ describe('Grid Processes', () => {
 					total: 10000
 				}
 			});
-			store.apply([{ op: OperationType.REPLACE, path: new Pointer(['grid', 'meta', 'page']), value: 10 }]);
-			await sortProcess(store)({ columnId: 'id', direction: 'asc', id: 'grid', fetcher: fetcherStub });
+			store.apply([
+				{
+					op: OperationType.REPLACE,
+					path: new Pointer(['grid', 'meta', 'page']),
+					value: 10
+				}
+			]);
+			await sortProcess(store)({
+				columnId: 'id',
+				direction: 'asc',
+				id: 'grid',
+				fetcher: fetcherStub
+			});
 			const pages = store.get(store.path('grid', 'data'));
-			assert.deepEqual(pages, { pages: { 'page-9': [{ id: '1' }], 'page-10': [{ id: '1' }] } });
+			assert.deepEqual(pages, {
+				pages: { 'page-9': [{ id: '1' }], 'page-10': [{ id: '1' }] }
+			});
 			const meta = store.get(store.path('grid', 'meta'));
 			assert.deepEqual(meta, {
 				page: 10,

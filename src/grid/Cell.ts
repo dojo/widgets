@@ -39,7 +39,7 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 			this._editingValue = this.properties.rawValue;
 			this.invalidate();
 		}
-	}
+	};
 
 	private _onBlur() {
 		if (this._editing) {
@@ -55,8 +55,7 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 		if (key === Keys.Enter) {
 			this._onSave();
 			this._callFocus('button');
-		}
-		else if (key === Keys.Escape) {
+		} else if (key === Keys.Escape) {
 			this._editing = false;
 			this._callFocus('button');
 			this.invalidate();
@@ -71,42 +70,52 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 
 	protected renderContent(): DNode {
 		const { value } = this.properties;
-		return v('div', {
-			key: 'content',
-			id: this._idBase,
-			ondblclick: this._onEdit
-		}, [ value ]);
+		return v(
+			'div',
+			{
+				key: 'content',
+				id: this._idBase,
+				ondblclick: this._onEdit
+			},
+			[value]
+		);
 	}
 
 	protected render(): DNode {
 		let { editable, rawValue, value, theme, classes } = this.properties;
 
 		return v('div', { role: 'cell', classes: [this.theme(css.root), fixedCss.rootFixed] }, [
-			this._editing ? w(TextInput, {
-				key: 'input',
-				theme,
-				classes,
-				label: `Edit ${rawValue}`,
-				labelHidden:  true,
-				extraClasses: { input: this.theme(css.input) } as any,
-				focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
-				value: this._editingValue,
-				onInput: this._onInput,
-				onBlur: this._onBlur,
-				onKeyDown: this._onKeyDown
-			}) : this.renderContent(),
-			editable && !this._editing ? w(Button, {
-				key: 'button',
-				theme,
-				classes,
-				aria: { describedby: this._idBase },
-				focus: this._focusKey === 'button' ? this.shouldFocus : () => false,
-				type: 'button',
-				extraClasses: { root: this.theme(css.edit) } as any,
-				onClick: this._onEdit
-			}, [
-				w(Icon, { type: 'editIcon', altText: 'Edit', classes, theme })
-			]) : null
+			this._editing
+				? w(TextInput, {
+						key: 'input',
+						theme,
+						classes,
+						label: `Edit ${rawValue}`,
+						labelHidden: true,
+						extraClasses: { input: this.theme(css.input) } as any,
+						focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
+						value: this._editingValue,
+						onInput: this._onInput,
+						onBlur: this._onBlur,
+						onKeyDown: this._onKeyDown
+				  })
+				: this.renderContent(),
+			editable && !this._editing
+				? w(
+						Button,
+						{
+							key: 'button',
+							theme,
+							classes,
+							aria: { describedby: this._idBase },
+							focus: this._focusKey === 'button' ? this.shouldFocus : () => false,
+							type: 'button',
+							extraClasses: { root: this.theme(css.edit) } as any,
+							onClick: this._onEdit
+						},
+						[w(Icon, { type: 'editIcon', altText: 'Edit', classes, theme })]
+				  )
+				: null
 		]);
 	}
 }

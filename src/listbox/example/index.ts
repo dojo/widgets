@@ -90,7 +90,7 @@ export default class App extends WidgetBase {
 
 	render() {
 		return v('div', [
-			v('label', { for: 'listbox1' }, [ 'Single-select listbox example' ]),
+			v('label', { for: 'listbox1' }, ['Single-select listbox example']),
 			w(Listbox, {
 				key: 'listbox1',
 				activeIndex: this._listbox1Index,
@@ -105,12 +105,12 @@ export default class App extends WidgetBase {
 				},
 				onOptionSelect: (option: any, index: number) => {
 					this._listbox1Value = option.value;
-					this._options = [ ...this._options ];
+					this._options = [...this._options];
 					this.invalidate();
 				}
 			}),
 			v('br'),
-			v('label', { for: 'listbox2' }, [ 'Multi-select listbox example' ]),
+			v('label', { for: 'listbox2' }, ['Multi-select listbox example']),
 			w(Listbox, {
 				key: 'listbox2',
 				activeIndex: this._listbox2Index,
@@ -125,12 +125,12 @@ export default class App extends WidgetBase {
 				},
 				onOptionSelect: (option: any, index: number) => {
 					this._moreOptions[index].selected = !this._moreOptions[index].selected;
-					this._moreOptions = [ ...this._moreOptions ];
+					this._moreOptions = [...this._moreOptions];
 					this.invalidate();
 				}
 			}),
 			v('br'),
-			v('label', { for: 'listbox3' }, [ 'Pre-selected value listbox example' ]),
+			v('label', { for: 'listbox3' }, ['Pre-selected value listbox example']),
 			w(Listbox, {
 				key: 'listbox3',
 				activeIndex: this._listbox3Index,
@@ -145,7 +145,7 @@ export default class App extends WidgetBase {
 				},
 				onOptionSelect: (option: any) => {
 					this._listbox3Value = option.value;
-					this._options = [ ...this._options ];
+					this._options = [...this._options];
 					this.invalidate();
 				}
 			})

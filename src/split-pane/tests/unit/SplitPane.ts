@@ -26,7 +26,7 @@ function generateMockResizeGet(width: number) {
 	return (key: string, predicates: any) => {
 		const keys = Object.keys(predicates);
 		const response: any = {};
-		keys.forEach(key => {
+		keys.forEach((key) => {
 			response[key] = predicates[key]({ width });
 		});
 		return response;
@@ -34,80 +34,124 @@ function generateMockResizeGet(width: number) {
 }
 
 registerSuite('SplitPane', {
-
 	tests: {
 		'Should construct SplitPane with passed properties'() {
 			const h = harness(() => w(SplitPane, {}));
-			h.expect(() => v('div', {
-				classes: [ css.root, null, css.column, fixedCss.rootFixed, fixedCss.columnFixed, null ],
-				key: 'root'
-			}, [
-				w(GlobalEvent, {
-					key: 'global',
-					window: {
-						mouseup: noop,
-						mousemove: noop,
-						touchmove: noop
-					}
-				}),
-				v('div', {
-					classes: [ css.leading, fixedCss.leadingFixed ],
-					key: 'leading',
-					styles: { width: '100px' }
-				}, []),
-				v('div', {
-					classes: [ css.divider, fixedCss.dividerFixed ],
-					key: 'divider',
-					onmousedown: noop,
-					ontouchend: noop,
-					ontouchstart: noop
-				}),
-				v('div', {
-					classes: [ css.trailing, fixedCss.trailingFixed ],
-					key: 'trailing'
-				}, [])
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						classes: [
+							css.root,
+							null,
+							css.column,
+							fixedCss.rootFixed,
+							fixedCss.columnFixed,
+							null
+						],
+						key: 'root'
+					},
+					[
+						w(GlobalEvent, {
+							key: 'global',
+							window: {
+								mouseup: noop,
+								mousemove: noop,
+								touchmove: noop
+							}
+						}),
+						v(
+							'div',
+							{
+								classes: [css.leading, fixedCss.leadingFixed],
+								key: 'leading',
+								styles: { width: '100px' }
+							},
+							[]
+						),
+						v('div', {
+							classes: [css.divider, fixedCss.dividerFixed],
+							key: 'divider',
+							onmousedown: noop,
+							ontouchend: noop,
+							ontouchstart: noop
+						}),
+						v(
+							'div',
+							{
+								classes: [css.trailing, fixedCss.trailingFixed],
+								key: 'trailing'
+							},
+							[]
+						)
+					]
+				)
+			);
 		},
 
 		'Should construct SplitPane with default properties'() {
-			const h = harness(() => w(SplitPane, {
-				direction: Direction.row,
-				onResize: noop,
-				size: 200
-			}, [
-				'abc',
-				'def'
-			]));
+			const h = harness(() =>
+				w(
+					SplitPane,
+					{
+						direction: Direction.row,
+						onResize: noop,
+						size: 200
+					},
+					['abc', 'def']
+				)
+			);
 
-			h.expect(() => v('div', {
-				classes: [ css.root, null, css.row, fixedCss.rootFixed, fixedCss.rowFixed, null ],
-				key: 'root'
-			}, [
-				w(GlobalEvent, {
-					key: 'global',
-					window: {
-						mouseup: noop,
-						mousemove: noop,
-						touchmove: noop
-					}
-				}),
-				v('div', {
-					classes: [ css.leading, fixedCss.leadingFixed ],
-					key: 'leading',
-					styles: { height: '200px' }
-				}, [ 'abc' ]),
-				v('div', {
-					classes: [ css.divider, fixedCss.dividerFixed ],
-					key: 'divider',
-					onmousedown: noop,
-					ontouchend: noop,
-					ontouchstart: noop
-				}),
-				v('div', {
-					classes: [ css.trailing, fixedCss.trailingFixed ],
-					key: 'trailing'
-				}, [ 'def' ])
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						classes: [
+							css.root,
+							null,
+							css.row,
+							fixedCss.rootFixed,
+							fixedCss.rowFixed,
+							null
+						],
+						key: 'root'
+					},
+					[
+						w(GlobalEvent, {
+							key: 'global',
+							window: {
+								mouseup: noop,
+								mousemove: noop,
+								touchmove: noop
+							}
+						}),
+						v(
+							'div',
+							{
+								classes: [css.leading, fixedCss.leadingFixed],
+								key: 'leading',
+								styles: { height: '200px' }
+							},
+							['abc']
+						),
+						v('div', {
+							classes: [css.divider, fixedCss.dividerFixed],
+							key: 'divider',
+							onmousedown: noop,
+							ontouchend: noop,
+							ontouchstart: noop
+						}),
+						v(
+							'div',
+							{
+								classes: [css.trailing, fixedCss.trailingFixed],
+								key: 'trailing'
+							},
+							['def']
+						)
+					]
+				)
+			);
 		},
 
 		'Pane should not be a negative size'() {
@@ -131,38 +175,59 @@ registerSuite('SplitPane', {
 				get: mockDimensionsGet
 			});
 
-			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), {
-				onResize: (size: number) => setSize = size
-			}));
+			const h = harness(() =>
+				w(MockMetaMixin(SplitPane, mockMeta), {
+					onResize: (size: number) => (setSize = size)
+				})
+			);
 
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), {
+				clientX: 0,
+				...stubEvent
+			});
 			h.trigger('@divider', 'onmousedown', { clientX: 500, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 0, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), {
+				clientX: 0,
+				...stubEvent
+			});
 			h.trigger('@global', createVNodeSelector('window', 'mouseup'), stubEvent);
 			assert.strictEqual(setSize, 0);
 		},
 
 		'Pane should not be greater than root widget'() {
 			let setSize;
-			const h = harness(() => w(SplitPane, {
-				onResize: (size: number) => setSize = size
-			}));
+			const h = harness(() =>
+				w(SplitPane, {
+					onResize: (size: number) => (setSize = size)
+				})
+			);
 
 			h.trigger('@divider', 'onmousedown', { clientX: 0, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 500, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'mouseup'), { clientX: 0, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), {
+				clientX: 500,
+				...stubEvent
+			});
+			h.trigger('@global', createVNodeSelector('window', 'mouseup'), {
+				clientX: 0,
+				...stubEvent
+			});
 			assert.strictEqual(setSize, 0);
 		},
 
 		'Mouse move should call onResize for column'() {
 			let called = false;
 
-			const h = harness(() => w(SplitPane, {
-				onResize: () => called = true
-			}));
+			const h = harness(() =>
+				w(SplitPane, {
+					onResize: () => (called = true)
+				})
+			);
 
 			h.trigger('@divider', 'onmousedown', { clientX: 110, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), {
+				clientX: 150,
+				...stubEvent
+			});
 			h.trigger('@global', createVNodeSelector('window', 'mouseup'), stubEvent);
 			assert.isTrue(called);
 		},
@@ -187,19 +252,24 @@ registerSuite('SplitPane', {
 				get: mockDimensionsGet
 			});
 
-			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, collapseWidth: 400 }));
+			const h = harness(() =>
+				w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, collapseWidth: 400 })
+			);
 			metaReturn.has = () => true;
 			assert.isTrue(onCollapse.calledOnce);
 			assert.isTrue(onCollapse.calledWith(true));
 
-			h.expectPartial('@leading', () => v('div', {
-				classes: [
-					css.leading,
-					fixedCss.leadingFixed
-				],
-				key: 'leading',
-				styles: { width: 'auto' }
-			}, []));
+			h.expectPartial('@leading', () =>
+				v(
+					'div',
+					{
+						classes: [css.leading, fixedCss.leadingFixed],
+						key: 'leading',
+						styles: { width: 'auto' }
+					},
+					[]
+				)
+			);
 		},
 
 		'collapse is ignored when using Direction.Row configuration'() {
@@ -220,20 +290,27 @@ registerSuite('SplitPane', {
 				get: mockDimensionsGet
 			});
 
-			const h = harness(() => w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, direction: Direction.row }));
+			const h = harness(() =>
+				w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, direction: Direction.row })
+			);
 			assert.isTrue(onCollapse.calledWith(false));
 		},
 
 		'Mouse move should call onResize for row'() {
 			let called = false;
 
-			const h = harness(() => w(SplitPane, {
-				onResize: () => called = true,
-				direction: Direction.row
-			}));
+			const h = harness(() =>
+				w(SplitPane, {
+					onResize: () => (called = true),
+					direction: Direction.row
+				})
+			);
 
 			h.trigger('@divider', 'onmousedown', { clientX: 110, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'mousemove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'mousemove'), {
+				clientX: 150,
+				...stubEvent
+			});
 			h.trigger('@global', createVNodeSelector('window', 'mouseup'), stubEvent);
 
 			assert.isTrue(called);
@@ -242,14 +319,19 @@ registerSuite('SplitPane', {
 		'Touch move should call onResize for column'() {
 			let called = false;
 
-			const h = harness(() => w(SplitPane, {
-				onResize: () => called = true,
-				direction: Direction.column,
-				size: 100
-			}));
+			const h = harness(() =>
+				w(SplitPane, {
+					onResize: () => (called = true),
+					direction: Direction.column,
+					size: 100
+				})
+			);
 
 			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), {
+				clientX: 150,
+				...stubEvent
+			});
 			h.trigger('@global', createVNodeSelector('window', 'touchend'), stubEvent);
 
 			assert.isTrue(called);
@@ -258,16 +340,24 @@ registerSuite('SplitPane', {
 		'Touch move should call onResize for row'() {
 			let called = 0;
 
-			const h = harness(() => w(SplitPane, {
-				onResize: () => called++,
-				direction: Direction.row
-			}));
+			const h = harness(() =>
+				w(SplitPane, {
+					onResize: () => called++,
+					direction: Direction.row
+				})
+			);
 
 			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), {
+				clientX: 150,
+				...stubEvent
+			});
 			h.trigger('@global', createVNodeSelector('window', 'touchend'), stubEvent);
 			h.trigger('@divider', 'ontouchstart', { clientX: 110, ...stubEvent });
-			h.trigger('@global', createVNodeSelector('window', 'touchmove'), { clientX: 150, ...stubEvent });
+			h.trigger('@global', createVNodeSelector('window', 'touchmove'), {
+				clientX: 150,
+				...stubEvent
+			});
 			h.trigger('@global', createVNodeSelector('window', 'touchend'), stubEvent);
 
 			assert.strictEqual(called, 2);

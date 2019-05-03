@@ -14,66 +14,80 @@ registerSuite('AccordionPane', {
 	tests: {
 		'default rendering'() {
 			const h = harness(() => w(AccordionPane, {}));
-			h.expect(() => v('div', {
-				classes: css.root
-			}, []));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						classes: css.root
+					},
+					[]
+				)
+			);
 		},
 
 		'default rendering with children'() {
-			const h = harness(() => w(AccordionPane, { openKeys: [] }, [
-				w(TitlePane, { title: 'foo', key: 'foo', onRequestOpen: () => {} }),
-				null,
-				w(TitlePane, { title: 'bar', key: 'bar', onRequestClose: () => {} }),
-				w(TitlePane, { title: 'baz', key: 'baz' })
-			]));
+			const h = harness(() =>
+				w(AccordionPane, { openKeys: [] }, [
+					w(TitlePane, { title: 'foo', key: 'foo', onRequestOpen: () => {} }),
+					null,
+					w(TitlePane, { title: 'bar', key: 'bar', onRequestClose: () => {} }),
+					w(TitlePane, { title: 'baz', key: 'baz' })
+				])
+			);
 
-			h.expect(() => v('div', {
-				classes: css.root
-			}, [
-				w(TitlePane, {
-					key: 'foo',
-					onRequestClose: noop,
-					onRequestOpen: noop,
-					open: false,
-					theme: undefined,
-					classes: undefined,
-					title: 'foo'
-				}),
-				w(TitlePane, {
-					key: 'bar',
-					onRequestClose: noop,
-					onRequestOpen: noop,
-					open: false,
-					theme: undefined,
-					classes: undefined,
-					title: 'bar'
-				}),
-				w(TitlePane, {
-					key: 'baz',
-					onRequestClose: noop,
-					onRequestOpen: noop,
-					open: false,
-					theme: undefined,
-					classes: undefined,
-					title: 'baz'
-				})
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						classes: css.root
+					},
+					[
+						w(TitlePane, {
+							key: 'foo',
+							onRequestClose: noop,
+							onRequestOpen: noop,
+							open: false,
+							theme: undefined,
+							classes: undefined,
+							title: 'foo'
+						}),
+						w(TitlePane, {
+							key: 'bar',
+							onRequestClose: noop,
+							onRequestOpen: noop,
+							open: false,
+							theme: undefined,
+							classes: undefined,
+							title: 'bar'
+						}),
+						w(TitlePane, {
+							key: 'baz',
+							onRequestClose: noop,
+							onRequestOpen: noop,
+							open: false,
+							theme: undefined,
+							classes: undefined,
+							title: 'baz'
+						})
+					]
+				)
+			);
 		},
 
 		'onRequestOpen should be called'() {
 			const onRequestOpen = sinon.stub();
-			const h = harness(() => w(AccordionPane, { onRequestOpen }, [
-				w(TitlePane, { title: 'foo', key: 'foo' })
-			]));
+			const h = harness(() =>
+				w(AccordionPane, { onRequestOpen }, [w(TitlePane, { title: 'foo', key: 'foo' })])
+			);
 			h.trigger('@foo', 'onRequestOpen');
 			assert.isTrue(onRequestOpen.calledWith('foo'));
 		},
 
 		'onRequestClose should be called'() {
 			const onRequestClose = sinon.stub();
-			const h = harness(() => w(AccordionPane, { onRequestClose }, [
-				w(TitlePane, { title: 'foo', key: 'foo' })
-			]));
+			const h = harness(() =>
+				w(AccordionPane, { onRequestClose }, [w(TitlePane, { title: 'foo', key: 'foo' })])
+			);
 
 			h.trigger('@foo', 'onRequestClose');
 			assert.isTrue(onRequestClose.calledWith('foo'));

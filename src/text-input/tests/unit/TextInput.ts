@@ -11,16 +11,23 @@ import Label from '../../../label/index';
 import TextInput, { TextInputProperties } from '../../index';
 import InputValidity from '../../../common/InputValidity';
 import * as css from '../../../theme/text-input.m.css';
-import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import {
+	compareForId,
+	compareId,
+	createHarness,
+	MockMetaMixin,
+	noop,
+	stubEvent
+} from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
 
-const harness = createHarness([ compareId, compareForId ]);
+const harness = createHarness([compareId, compareForId]);
 
 interface States {
 	disabled?: boolean;
 	required?: boolean;
 	readOnly?: boolean;
-	valid?: { valid?: boolean; message?: string; } | boolean;
+	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
 interface ExpectedOptions {
@@ -31,7 +38,13 @@ interface ExpectedOptions {
 	helperText?: string;
 }
 
-const expected = function({ label = false, inputOverrides = {}, states = {}, focused = false, helperText }: ExpectedOptions = {}) {
+const expected = function({
+	label = false,
+	inputOverrides = {},
+	states = {},
+	focused = false,
+	helperText
+}: ExpectedOptions = {}) {
 	const { disabled, required, readOnly, valid: validState } = states;
 	let valid: boolean | undefined;
 	let message: string | undefined;
@@ -45,103 +58,127 @@ const expected = function({ label = false, inputOverrides = {}, states = {}, foc
 
 	const helperTextValue = (valid === false && message) || helperText;
 
-	return v('div', {
-		key: 'root',
-		role: 'presentation',
-		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, valid === false ? css.invalid : null, valid === true ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null, null, null ]
-	}, [
-		label ? w(Label, {
-			theme: undefined,
-			classes: undefined,
-			disabled,
-			focused,
-			hidden: false,
-			invalid: valid === false || undefined,
-			readOnly,
-			required,
-			forId: ''
-		}, [ 'foo' ]) : null,
-		v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
-			v('input', {
-				key: 'input',
-				classes: css.input,
-				id: '',
-				disabled,
-				'aria-invalid': valid === false ? 'true' : null,
-				autocomplete: undefined,
-				maxlength: null,
-				minlength: null,
-				name: undefined,
-				placeholder: undefined,
-				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
-				required,
-				type: 'text',
-				value: undefined,
-				focus: noop,
-				pattern: undefined,
-				onblur: noop,
-				onchange: noop,
-				onclick: noop,
-				onfocus: noop,
-				oninput: noop,
-				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop,
-				...inputOverrides
-			})
-		]),
-		w(HelperText, { text: helperTextValue, valid })
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			role: 'presentation',
+			classes: [
+				css.root,
+				disabled ? css.disabled : null,
+				focused ? css.focused : null,
+				valid === false ? css.invalid : null,
+				valid === true ? css.valid : null,
+				readOnly ? css.readonly : null,
+				required ? css.required : null,
+				null,
+				null
+			]
+		},
+		[
+			label
+				? w(
+						Label,
+						{
+							theme: undefined,
+							classes: undefined,
+							disabled,
+							focused,
+							hidden: false,
+							invalid: valid === false || undefined,
+							readOnly,
+							required,
+							forId: ''
+						},
+						['foo']
+				  )
+				: null,
+			v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
+				v('input', {
+					key: 'input',
+					classes: css.input,
+					id: '',
+					disabled,
+					'aria-invalid': valid === false ? 'true' : null,
+					autocomplete: undefined,
+					maxlength: null,
+					minlength: null,
+					name: undefined,
+					placeholder: undefined,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					type: 'text',
+					value: undefined,
+					focus: noop,
+					pattern: undefined,
+					onblur: noop,
+					onchange: noop,
+					onclick: noop,
+					onfocus: noop,
+					oninput: noop,
+					onkeydown: noop,
+					onkeypress: noop,
+					onkeyup: noop,
+					onmousedown: noop,
+					onmouseup: noop,
+					ontouchstart: noop,
+					ontouchend: noop,
+					ontouchcancel: noop,
+					...inputOverrides
+				})
+			]),
+			w(HelperText, { text: helperTextValue, valid })
+		]
+	);
 };
 
 const baseTemplate = assertationTemplate(() => {
-	return v('div', {
-		key: 'root',
-		role: 'presentation',
-		classes: [ css.root, null, null, null, null, null, null, null, null ]
-	}, [
-		v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
-			v('input', {
-				key: 'input',
-				classes: css.input,
-				id: '',
-				disabled: undefined,
-				'aria-invalid': null,
-				autocomplete: undefined,
-				maxlength: null,
-				minlength: null,
-				name: undefined,
-				placeholder: undefined,
-				readOnly: undefined,
-				'aria-readonly': null,
-				required: undefined,
-				type: 'text',
-				value: undefined,
-				focus: noop,
-				pattern: undefined,
-				onblur: noop,
-				onchange: noop,
-				onclick: noop,
-				onfocus: noop,
-				oninput: noop,
-				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop
-			})
-		]),
-		w(HelperText, { text: undefined, valid: undefined })
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			role: 'presentation',
+			classes: [css.root, null, null, null, null, null, null, null, null]
+		},
+		[
+			v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
+				v('input', {
+					key: 'input',
+					classes: css.input,
+					id: '',
+					disabled: undefined,
+					'aria-invalid': null,
+					autocomplete: undefined,
+					maxlength: null,
+					minlength: null,
+					name: undefined,
+					placeholder: undefined,
+					readOnly: undefined,
+					'aria-readonly': null,
+					required: undefined,
+					type: 'text',
+					value: undefined,
+					focus: noop,
+					pattern: undefined,
+					onblur: noop,
+					onchange: noop,
+					onclick: noop,
+					onfocus: noop,
+					oninput: noop,
+					onkeydown: noop,
+					onkeypress: noop,
+					onkeyup: noop,
+					onmousedown: noop,
+					onmouseup: noop,
+					ontouchstart: noop,
+					ontouchend: noop,
+					ontouchcancel: noop
+				})
+			]),
+			w(HelperText, { text: undefined, valid: undefined })
+		]
+	);
 });
 
 registerSuite('TextInput', {
@@ -152,118 +189,146 @@ registerSuite('TextInput', {
 		},
 
 		'custom properties'() {
-			const h = harness(() => w(TextInput, {
-				aria: {
-					controls: 'foo',
-					describedBy: 'bar'
-				},
-				widgetId: 'foo',
-				maxLength: 50,
-				minLength: 10,
-				name: 'bar',
-				placeholder: 'baz',
-				type: 'email',
-				value: 'hello world'
-			}));
-
-			h.expect(() => expected({
-				inputOverrides: {
-					'aria-controls': 'foo',
-					'aria-describedby': 'bar',
-					id: 'foo',
-					maxlength: '50',
-					minlength: '10',
+			const h = harness(() =>
+				w(TextInput, {
+					aria: {
+						controls: 'foo',
+						describedBy: 'bar'
+					},
+					widgetId: 'foo',
+					maxLength: 50,
+					minLength: 10,
 					name: 'bar',
 					placeholder: 'baz',
 					type: 'email',
 					value: 'hello world'
-				}
-			}));
+				})
+			);
+
+			h.expect(() =>
+				expected({
+					inputOverrides: {
+						'aria-controls': 'foo',
+						'aria-describedby': 'bar',
+						id: 'foo',
+						maxlength: '50',
+						minlength: '10',
+						name: 'bar',
+						placeholder: 'baz',
+						type: 'email',
+						value: 'hello world'
+					}
+				})
+			);
 		},
 
-		'label'() {
-			const h = harness(() => w(TextInput, {
-				label: 'foo'
-			}));
+		label() {
+			const h = harness(() =>
+				w(TextInput, {
+					label: 'foo'
+				})
+			);
 
 			h.expect(() => expected({ label: true }));
 		},
 
-		'pattern': {
-			'string'() {
-				const h = harness(() => w(TextInput, {
-					pattern: '^foo|bar$'
-				}));
-
-				h.expect(() => expected({
-					inputOverrides: {
+		pattern: {
+			string() {
+				const h = harness(() =>
+					w(TextInput, {
 						pattern: '^foo|bar$'
-					}
-				}));
+					})
+				);
+
+				h.expect(() =>
+					expected({
+						inputOverrides: {
+							pattern: '^foo|bar$'
+						}
+					})
+				);
 			},
-			'regexp'() {
+			regexp() {
 				const properties = {
 					pattern: /^foo|bar$/
 				};
 				const h = harness(() => w(TextInput, properties));
 
-				h.expect(() => expected({
+				h.expect(() =>
+					expected({
 						inputOverrides: {
-						pattern: '^foo|bar$'
-					}
-				}));
+							pattern: '^foo|bar$'
+						}
+					})
+				);
 
 				(properties.pattern.compile as any)('^bar|baz$');
 
-				h.expect(() => expected({
-					inputOverrides: {
-						pattern: '^bar|baz$'
-					}
-				}));
+				h.expect(() =>
+					expected({
+						inputOverrides: {
+							pattern: '^bar|baz$'
+						}
+					})
+				);
 
 				properties.pattern = /^ham|spam$/;
 
-				h.expect(() => expected({
-					inputOverrides: {
-						pattern: '^ham|spam$'
-					}
-				}));
+				h.expect(() =>
+					expected({
+						inputOverrides: {
+							pattern: '^ham|spam$'
+						}
+					})
+				);
 			}
 		},
 
-		'autocomplete': {
-			'true'() {
-				const h = harness(() => w(TextInput, {
-					autocomplete: true
-				}));
+		autocomplete: {
+			true() {
+				const h = harness(() =>
+					w(TextInput, {
+						autocomplete: true
+					})
+				);
 
-				h.expect(() => expected({
-					inputOverrides: {
-						autocomplete: 'on'
-					}
-				}));
+				h.expect(() =>
+					expected({
+						inputOverrides: {
+							autocomplete: 'on'
+						}
+					})
+				);
 			},
-			'false'() {
-				const h = harness(() => w(TextInput, {
-					autocomplete: false
-				}));
+			false() {
+				const h = harness(() =>
+					w(TextInput, {
+						autocomplete: false
+					})
+				);
 
-				h.expect(() => expected({
-					inputOverrides: {
-						autocomplete: 'off'
-					}
-				}));
+				h.expect(() =>
+					expected({
+						inputOverrides: {
+							autocomplete: 'off'
+						}
+					})
+				);
 			},
-			'string'() {
-				const h = harness(() => w(TextInput, {
-					autocomplete: 'name'
-				}));
-
-				h.expect(() => expected({
-					inputOverrides: {
+			string() {
+				const h = harness(() =>
+					w(TextInput, {
 						autocomplete: 'name'
-					}
-				}));
+					})
+				);
+
+				h.expect(() =>
+					expected({
+						inputOverrides: {
+							autocomplete: 'name'
+						}
+					})
+				);
 			}
 		},
 
@@ -276,9 +341,11 @@ registerSuite('TextInput', {
 			};
 			const h = harness(() => w(TextInput, properties));
 
-			h.expect(() => expected({
-				states: properties
-			}));
+			h.expect(() =>
+				expected({
+					states: properties
+				})
+			);
 
 			properties = {
 				disabled: false,
@@ -287,9 +354,11 @@ registerSuite('TextInput', {
 				valid: false
 			};
 
-			h.expect(() => expected({
-				states: properties
-			}));
+			h.expect(() =>
+				expected({
+					states: properties
+				})
+			);
 
 			properties = {
 				disabled: false,
@@ -298,9 +367,11 @@ registerSuite('TextInput', {
 				valid: { valid: false, message: 'test' }
 			};
 
-			h.expect(() => expected({
-				states: properties
-			}));
+			h.expect(() =>
+				expected({
+					states: properties
+				})
+			);
 		},
 
 		'focused class'() {
@@ -316,16 +387,18 @@ registerSuite('TextInput', {
 			h.expect(() => expected({ focused: true }));
 		},
 
-		'helperText'() {
+		helperText() {
 			const helperText = 'test';
-			const h = harness(() => w(TextInput, {
-				helperText
-			}));
+			const h = harness(() =>
+				w(TextInput, {
+					helperText
+				})
+			);
 
 			h.expect(() => expected({ helperText }));
 		},
 
-		'onValidate'() {
+		onValidate() {
 			const mockMeta = sinon.stub();
 			let validateSpy = sinon.spy();
 
@@ -337,10 +410,12 @@ registerSuite('TextInput', {
 				get: () => ({ active: false, containsFocus: false })
 			});
 
-			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
-				value: 'test value',
-				onValidate: validateSpy
-			}));
+			harness(() =>
+				w(MockMetaMixin(TextInput, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy
+				})
+			);
 
 			assert.isTrue(validateSpy.calledWith(false, 'test'));
 
@@ -348,10 +423,12 @@ registerSuite('TextInput', {
 				get: sinon.stub().returns({ valid: true, message: '' })
 			});
 
-			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
-				value: 'test value',
-				onValidate: validateSpy
-			}));
+			harness(() =>
+				w(MockMetaMixin(TextInput, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy
+				})
+			);
 
 			assert.isTrue(validateSpy.calledWith(true, ''));
 		},
@@ -369,11 +446,13 @@ registerSuite('TextInput', {
 				get: () => ({ active: false, containsFocus: false })
 			});
 
-			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
-				value: 'test value',
-				onValidate: validateSpy,
-				customValidator: customValidatorSpy
-			}));
+			harness(() =>
+				w(MockMetaMixin(TextInput, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
+			);
 
 			assert.isFalse(customValidatorSpy.called);
 		},
@@ -391,11 +470,13 @@ registerSuite('TextInput', {
 				get: () => ({ active: false, containsFocus: false })
 			});
 
-			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
-				value: 'test value',
-				onValidate: validateSpy,
-				customValidator: customValidatorSpy
-			}));
+			harness(() =>
+				w(MockMetaMixin(TextInput, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
+			);
 
 			assert.isTrue(customValidatorSpy.called);
 		},
@@ -403,7 +484,9 @@ registerSuite('TextInput', {
 		'customValidator can change the validation outcome'() {
 			const mockMeta = sinon.stub();
 			let validateSpy = sinon.spy();
-			let customValidatorSpy = sinon.stub().returns({ valid: false, message: 'custom message' });
+			let customValidatorSpy = sinon
+				.stub()
+				.returns({ valid: false, message: 'custom message' });
 
 			mockMeta.withArgs(InputValidity).returns({
 				get: sinon.stub().returns({ valid: true })
@@ -413,11 +496,13 @@ registerSuite('TextInput', {
 				get: () => ({ active: false, containsFocus: false })
 			});
 
-			harness(() => w(MockMetaMixin(TextInput, mockMeta), {
-				value: 'test value',
-				onValidate: validateSpy,
-				customValidator: customValidatorSpy
-			}));
+			harness(() =>
+				w(MockMetaMixin(TextInput, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
+			);
 
 			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
 		},
@@ -425,9 +510,19 @@ registerSuite('TextInput', {
 		'leading property'() {
 			const leading = () => v('span', {}, ['A']);
 			const leadingTemplate = baseTemplate
-				.setProperty('@root', 'classes', [ css.root, null, null, null, null, null, null, css.hasLeading, null ])
+				.setProperty('@root', 'classes', [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					css.hasLeading,
+					null
+				])
 				.setChildren('@inputWrapper', [
-					v('span', { key: 'leading', classes: css.leading }, [ leading() ]),
+					v('span', { key: 'leading', classes: css.leading }, [leading()]),
 					...baseTemplate.getChildren('@inputWrapper')
 				]);
 			const h = harness(() => w(TextInput, { leading }));
@@ -437,10 +532,20 @@ registerSuite('TextInput', {
 		'trailing property'() {
 			const trailing = () => v('span', {}, ['Z']);
 			const trailingTemplate = baseTemplate
-				.setProperty('@root', 'classes', [ css.root, null, null, null, null, null, null, null, css.hasTrailing ])
+				.setProperty('@root', 'classes', [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					css.hasTrailing
+				])
 				.setChildren('@inputWrapper', [
 					...baseTemplate.getChildren('@inputWrapper'),
-					v('span', { key: 'trailing', classes: css.trailing }, [ trailing() ])
+					v('span', { key: 'trailing', classes: css.trailing }, [trailing()])
 				]);
 			const h = harness(() => w(TextInput, { trailing }));
 			h.expect(trailingTemplate);
@@ -461,21 +566,23 @@ registerSuite('TextInput', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = harness(() => w(TextInput, {
-				onBlur,
-				onChange,
-				onClick,
-				onFocus,
-				onInput,
-				onKeyDown,
-				onKeyPress,
-				onKeyUp,
-				onMouseDown,
-				onMouseUp,
-				onTouchStart,
-				onTouchEnd,
-				onTouchCancel
-			}));
+			const h = harness(() =>
+				w(TextInput, {
+					onBlur,
+					onChange,
+					onClick,
+					onFocus,
+					onInput,
+					onKeyDown,
+					onKeyPress,
+					onKeyUp,
+					onMouseDown,
+					onMouseUp,
+					onTouchStart,
+					onTouchEnd,
+					onTouchCancel
+				})
+			);
 
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');

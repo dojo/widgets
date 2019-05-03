@@ -19,7 +19,13 @@ import * as css from '../theme/range-slider.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
-export interface RangeSliderProperties extends ThemedProperties, LabeledProperties, InputProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
+export interface RangeSliderProperties
+	extends ThemedProperties,
+		LabeledProperties,
+		InputProperties,
+		PointerEventProperties,
+		KeyEventProperties,
+		CustomAriaProperties {
 	max?: number;
 	min?: number;
 	output?(min: number, max: number): DNode;
@@ -97,13 +103,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	private _maxLabelId = uuid();
 
 	protected getRootClasses(): (string | null)[] {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required,
-			showOutput
-		} = this.properties;
+		const { disabled, invalid, readOnly, required, showOutput } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -125,10 +125,11 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		const { min = 0, max = 100 } = this.properties;
 		const { minValue = min, maxValue = max } = this.properties;
 
-		callback && callback(
-			minEvent ? extractValue(minEvent) : minValue,
-			maxEvent ? extractValue(maxEvent) : maxValue
-		);
+		callback &&
+			callback(
+				minEvent ? extractValue(minEvent) : minValue,
+				maxEvent ? extractValue(maxEvent) : maxValue
+			);
 	}
 
 	private _genericChangeCallback(callback?: MinMaxCallback, minEvent?: Event, maxEvent?: Event) {
@@ -140,25 +141,33 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 
 		if (minEvent) {
 			callback && callback(Math.min(extractValue(minEvent), maxValue), maxValue);
-		}
-		else if (maxEvent) {
+		} else if (maxEvent) {
 			callback && callback(minValue, Math.max(minValue, extractValue(maxEvent)));
 		}
 	}
 
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyDown &&
+			this.properties.onKeyDown(event.which, () => {
+				event.preventDefault();
+			});
 	}
 
 	private _onKeyPress(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyPress &&
+			this.properties.onKeyPress(event.which, () => {
+				event.preventDefault();
+			});
 	}
 
 	private _onKeyUp(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyUp &&
+			this.properties.onKeyUp(event.which, () => {
+				event.preventDefault();
+			});
 	}
 
 	private _onMouseDown(event: MouseEvent) {
@@ -199,12 +208,12 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			step = 1,
 			widgetId = this._widgetId
 		} = this.properties;
-		const {
-			minName = `${name}_min`,
-			maxName = `${name}_max`
-		} = this.properties;
+		const { minName = `${name}_min`, maxName = `${name}_max` } = this.properties;
 
-		const prepareCallback = (callback: (callback?: MinMaxCallback, minEvent?: Event, maxEvent?: Event) => void, property?: MinMaxCallback) => {
+		const prepareCallback = (
+			callback: (callback?: MinMaxCallback, minEvent?: Event, maxEvent?: Event) => void,
+			property?: MinMaxCallback
+		) => {
 			return (e?: Event) => {
 				callback(property, ...[isSlider1 ? e : undefined, !isSlider1 ? e : undefined]);
 			};
@@ -224,11 +233,26 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			required,
 			disabled,
 			name: isSlider1 ? minName : maxName,
-			onblur: prepareCallback((prop, e1, e2) => this._genericCallback(prop, e1, e2), this.properties.onBlur),
-			onclick: prepareCallback((prop, e1, e2) => this._genericCallback(prop, e1, e2), this.properties.onClick),
-			onfocus: prepareCallback((prop, e1, e2) => this._genericCallback(prop, e1, e2), this.properties.onFocus),
-			onchange: prepareCallback((prop, e1, e2) => this._genericChangeCallback(prop, e1, e2), this.properties.onChange),
-			oninput: prepareCallback((prop, e1, e2) => this._genericChangeCallback(prop, e1, e2), this.properties.onInput),
+			onblur: prepareCallback(
+				(prop, e1, e2) => this._genericCallback(prop, e1, e2),
+				this.properties.onBlur
+			),
+			onclick: prepareCallback(
+				(prop, e1, e2) => this._genericCallback(prop, e1, e2),
+				this.properties.onClick
+			),
+			onfocus: prepareCallback(
+				(prop, e1, e2) => this._genericCallback(prop, e1, e2),
+				this.properties.onFocus
+			),
+			onchange: prepareCallback(
+				(prop, e1, e2) => this._genericChangeCallback(prop, e1, e2),
+				this.properties.onChange
+			),
+			oninput: prepareCallback(
+				(prop, e1, e2) => this._genericChangeCallback(prop, e1, e2),
+				this.properties.onInput
+			),
 			onkeydown: this._onKeyDown,
 			onkeypress: this._onKeyPress,
 			onkeyup: this._onKeyUp,
@@ -242,25 +266,30 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	}
 
 	protected renderOutput(minValue: number, maxValue: number, percentValue: number[]): DNode {
-		const {
-			output,
-			outputIsTooltip = false
-		} = this.properties;
+		const { output, outputIsTooltip = false } = this.properties;
 
 		const outputNode = output ? output(minValue, maxValue) : `${minValue}, ${maxValue}`;
 
 		// output styles
 		let outputStyles: { left?: string; top?: string } = {};
 		if (outputIsTooltip) {
-			outputStyles = { left: `${Math.round((percentValue[0] + (percentValue[1] - percentValue[0]) / 2) * 100)}%` };
+			outputStyles = {
+				left: `${Math.round(
+					(percentValue[0] + (percentValue[1] - percentValue[0]) / 2) * 100
+				)}%`
+			};
 		}
 
-		return v('output', {
-			classes: this.theme([css.output, outputIsTooltip ? css.outputTooltip : null]),
-			for: this._widgetId,
-			styles: outputStyles,
-			tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
-		}, [outputNode]);
+		return v(
+			'output',
+			{
+				classes: this.theme([css.output, outputIsTooltip ? css.outputTooltip : null]),
+				for: this._widgetId,
+				styles: outputStyles,
+				tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
+			},
+			[outputNode]
+		);
 	}
 
 	render(): DNode {
@@ -303,7 +332,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			key: 'slider1',
 			value: `${minValue}`,
 			styles: {
-				clip: `rect(auto, ${Math.round((slider1Size) * size.client.width)}px, auto, auto)`
+				clip: `rect(auto, ${Math.round(slider1Size * size.client.width)}px, auto, auto)`
 			}
 		});
 		const slider2 = v('input', {
@@ -311,76 +340,108 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			key: 'slider2',
 			value: `${maxValue}`,
 			styles: {
-				clip: `rect(auto, auto, auto, ${Math.round((1 - slider2Size) * size.client.width)}px)`
+				clip: `rect(auto, auto, auto, ${Math.round(
+					(1 - slider2Size) * size.client.width
+				)}px)`
 			}
 		});
 
 		const children = [
-			label ? w(Label, {
-				key: 'label',
-				theme,
-				classes,
-				disabled,
-				focused: focus.containsFocus,
-				invalid,
-				readOnly,
-				required,
-				hidden: labelHidden,
-				widgetId: `${widgetId}-label`
-			}, [label]) : null,
-			v('div', {
-				classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed]
-			}, [
-				slider1,
-				v('div', {
-					key: 'minimumLabel',
-					classes: [baseCss.visuallyHidden],
-					id: this._minLabelId
-				}, [minimumLabel]),
-				slider2,
-				v('div', {
-					key: 'maximumLabel',
-					classes: [baseCss.visuallyHidden],
-					id: this._maxLabelId
-				}, [maximumLabel]),
-				v('div', {
-					key: 'track',
-					classes: [this.theme(css.filled), fixedCss.filledFixed],
-					styles: {
-						left: Math.round(slider1Percent * 100) + '%',
-						width: Math.round((slider2Percent - slider1Percent) * 100) + '%'
-					}
-				}),
-				v('div', {
-					key: 'leftThumb',
-					classes: [...this.theme([
-						css.thumb,
-						css.leftThumb,
-						slider1Focus.active ? css.focused : undefined
-					]), fixedCss.thumbFixed],
-					styles: {
-						left: Math.round(slider1Percent * 100) + '%'
-					}
-				}),
-				v('div', {
-					key: 'rightThumb',
-					classes: [...this.theme([
-						css.thumb,
-						css.rightThumb,
-						slider2Focus.active ? css.focused : undefined
-					]), fixedCss.thumbFixed],
-					styles: {
-						left: Math.round(slider2Percent * 100) + '%'
-					}
-				}),
-				showOutput ? this.renderOutput(minValue, maxValue, [slider1Percent, slider2Percent]) : null
-			])
+			label
+				? w(
+						Label,
+						{
+							key: 'label',
+							theme,
+							classes,
+							disabled,
+							focused: focus.containsFocus,
+							invalid,
+							readOnly,
+							required,
+							hidden: labelHidden,
+							widgetId: `${widgetId}-label`
+						},
+						[label]
+				  )
+				: null,
+			v(
+				'div',
+				{
+					classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed]
+				},
+				[
+					slider1,
+					v(
+						'div',
+						{
+							key: 'minimumLabel',
+							classes: [baseCss.visuallyHidden],
+							id: this._minLabelId
+						},
+						[minimumLabel]
+					),
+					slider2,
+					v(
+						'div',
+						{
+							key: 'maximumLabel',
+							classes: [baseCss.visuallyHidden],
+							id: this._maxLabelId
+						},
+						[maximumLabel]
+					),
+					v('div', {
+						key: 'track',
+						classes: [this.theme(css.filled), fixedCss.filledFixed],
+						styles: {
+							left: Math.round(slider1Percent * 100) + '%',
+							width: Math.round((slider2Percent - slider1Percent) * 100) + '%'
+						}
+					}),
+					v('div', {
+						key: 'leftThumb',
+						classes: [
+							...this.theme([
+								css.thumb,
+								css.leftThumb,
+								slider1Focus.active ? css.focused : undefined
+							]),
+							fixedCss.thumbFixed
+						],
+						styles: {
+							left: Math.round(slider1Percent * 100) + '%'
+						}
+					}),
+					v('div', {
+						key: 'rightThumb',
+						classes: [
+							...this.theme([
+								css.thumb,
+								css.rightThumb,
+								slider2Focus.active ? css.focused : undefined
+							]),
+							fixedCss.thumbFixed
+						],
+						styles: {
+							left: Math.round(slider2Percent * 100) + '%'
+						}
+					}),
+					showOutput
+						? this.renderOutput(minValue, maxValue, [slider1Percent, slider2Percent])
+						: null
+				]
+			)
 		];
 
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children.reverse() : children);
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: this.theme(this.getRootClasses())
+			},
+			labelAfter ? children.reverse() : children
+		);
 	}
 }
 

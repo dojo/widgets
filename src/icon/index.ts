@@ -26,18 +26,12 @@ export interface IconProperties extends ThemedProperties, CustomAriaProperties {
 @theme(css)
 @customElement<IconProperties>({
 	tag: 'dojo-icon',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses'
-	],
-	attributes: [ 'type', 'altText' ]
+	properties: ['theme', 'classes', 'aria', 'extraClasses'],
+	attributes: ['type', 'altText']
 })
 export class Icon extends ThemedMixin(WidgetBase)<IconProperties> {
-
 	protected renderAltText(altText: string): DNode {
-		return v('span', { classes: [ baseCss.visuallyHidden ] }, [ altText ]);
+		return v('span', { classes: [baseCss.visuallyHidden] }, [altText]);
 	}
 
 	render(): DNode {
@@ -52,7 +46,7 @@ export class Icon extends ThemedMixin(WidgetBase)<IconProperties> {
 		return v('span', { classes: this.theme(css.root) }, [
 			v('i', {
 				...formatAriaProperties(aria),
-				classes: this.theme([ css.icon, css[type] ])
+				classes: this.theme([css.icon, css[type]])
 			}),
 			altText ? this.renderAltText(altText) : null
 		]);

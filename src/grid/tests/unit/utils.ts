@@ -14,10 +14,24 @@ describe('Grid Utils', () => {
 		const data = [{ id: 'Z' }, { id: 'A' }, { id: 'A' }, { id: 'Z' }, { id: 'B' }];
 		const ascSortedData = sorter(data, { sort: { columnId: 'id', direction: 'asc' } });
 		assert.notStrictEqual(ascSortedData, data);
-		assert.deepEqual(ascSortedData, [{ id: 'A' }, { id: 'A' }, { id: 'B' }, { id: 'Z' }, { id: 'Z' }]);
-		const descSortedData = sorter(ascSortedData, { sort: { columnId: 'id', direction: 'desc' } });
+		assert.deepEqual(ascSortedData, [
+			{ id: 'A' },
+			{ id: 'A' },
+			{ id: 'B' },
+			{ id: 'Z' },
+			{ id: 'Z' }
+		]);
+		const descSortedData = sorter(ascSortedData, {
+			sort: { columnId: 'id', direction: 'desc' }
+		});
 		assert.notStrictEqual(descSortedData, ascSortedData);
-		assert.deepEqual(descSortedData, [{ id: 'Z' }, { id: 'Z' }, { id: 'B' }, { id: 'A' }, { id: 'A' }]);
+		assert.deepEqual(descSortedData, [
+			{ id: 'Z' },
+			{ id: 'Z' },
+			{ id: 'B' },
+			{ id: 'A' },
+			{ id: 'A' }
+		]);
 	});
 
 	it('Should clone but not filter data when no filter options are passed', () => {
@@ -35,8 +49,13 @@ describe('Grid Utils', () => {
 	});
 
 	it('Should clone and filter across multiple columns with filter options', () => {
-		const data = [{ id: 'A', foo: 'bar' }, { id: 'Z', foo: 'bar' }, { id: 'B', foo: 'bar' }, { id: 'A', foo: 'foobar' }];
-		const filteredData = filterer(data, { filter: { id: 'A', foo: 'bar'} });
+		const data = [
+			{ id: 'A', foo: 'bar' },
+			{ id: 'Z', foo: 'bar' },
+			{ id: 'B', foo: 'bar' },
+			{ id: 'A', foo: 'foobar' }
+		];
+		const filteredData = filterer(data, { filter: { id: 'A', foo: 'bar' } });
 		assert.notStrictEqual(filteredData, data);
 		assert.deepEqual(filteredData, [{ id: 'A', foo: 'bar' }, { id: 'A', foo: 'foobar' }]);
 	});
@@ -56,7 +75,7 @@ describe('Grid Utils', () => {
 		const fetcher = createFetcher(data);
 		const fetcherResult = await fetcher(1, 2, {
 			sort: { columnId: 'id', direction: 'asc' },
-			filter: { 'id': 'A' }
+			filter: { id: 'A' }
 		});
 		assert.notStrictEqual(fetcherResult.data, data);
 		assert.deepEqual(fetcherResult.data, [{ id: 'Aa' }, { id: 'Ab' }]);
@@ -77,16 +96,32 @@ describe('Grid Utils', () => {
 	});
 
 	it('Updater should replace the item using the default `id` value', () => {
-		const data = [{ id: 'A', name: 'bob' }, { id: 'Z', name: 'bill' }, { id: 'B', name: 'ben' }];
+		const data = [
+			{ id: 'A', name: 'bob' },
+			{ id: 'Z', name: 'bill' },
+			{ id: 'B', name: 'ben' }
+		];
 		const updater = createUpdater(data);
 		updater({ id: 'A', name: 'zane' });
-		assert.deepEqual(data, [{ id: 'A', name: 'zane' }, { id: 'Z', name: 'bill' }, { id: 'B', name: 'ben' }]);
+		assert.deepEqual(data, [
+			{ id: 'A', name: 'zane' },
+			{ id: 'Z', name: 'bill' },
+			{ id: 'B', name: 'ben' }
+		]);
 	});
 
 	it('Updater should replace the item using a custom `id` property', () => {
-		const data = [{ idd: 'A', name: 'bob' }, { idd: 'Z', name: 'bill' }, { idd: 'B', name: 'ben' }];
+		const data = [
+			{ idd: 'A', name: 'bob' },
+			{ idd: 'Z', name: 'bill' },
+			{ idd: 'B', name: 'ben' }
+		];
 		const updater = createUpdater(data, 'idd');
 		updater({ idd: 'A', name: 'zane' });
-		assert.deepEqual(data, [{ idd: 'A', name: 'zane' }, { idd: 'Z', name: 'bill' }, { idd: 'B', name: 'ben' }]);
+		assert.deepEqual(data, [
+			{ idd: 'A', name: 'zane' },
+			{ idd: 'Z', name: 'bill' },
+			{ idd: 'B', name: 'ben' }
+		]);
 	});
 });

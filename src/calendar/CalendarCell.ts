@@ -45,11 +45,14 @@ export class CalendarCell extends ThemedMixin(WidgetBase)<CalendarCellProperties
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
 		const { onKeyDown } = this.properties;
-		onKeyDown && onKeyDown(event.which, () => { event.preventDefault(); });
+		onKeyDown &&
+			onKeyDown(event.which, () => {
+				event.preventDefault();
+			});
 	}
 
 	protected formatDate(date: number): DNode {
-		return v('span', [ `${date}` ]);
+		return v('span', [`${date}`]);
 	}
 
 	protected getModifierClasses(): (string | null)[] {
@@ -61,7 +64,7 @@ export class CalendarCell extends ThemedMixin(WidgetBase)<CalendarCellProperties
 		} = this.properties;
 
 		return [
-			(disabled || outOfRange) ? css.inactiveDate : null,
+			disabled || outOfRange ? css.inactiveDate : null,
 			outOfRange ? css.outOfRange : null,
 			selected ? css.selectedDate : null,
 			today ? css.todayDate : null
@@ -82,15 +85,19 @@ export class CalendarCell extends ThemedMixin(WidgetBase)<CalendarCellProperties
 			onFocusCalled && onFocusCalled();
 		}
 
-		return v('td', {
-			key: 'root',
-			role: 'gridcell',
-			'aria-selected': `${selected}`,
-			tabIndex: focusable ? 0 : -1,
-			classes: this.theme([ css.date, ...this.getModifierClasses() ]),
-			onclick: this._onClick,
-			onkeydown: this._onKeyDown
-		}, [ this.formatDate(date) ]);
+		return v(
+			'td',
+			{
+				key: 'root',
+				role: 'gridcell',
+				'aria-selected': `${selected}`,
+				tabIndex: focusable ? 0 : -1,
+				classes: this.theme([css.date, ...this.getModifierClasses()]),
+				onclick: this._onClick,
+				onkeydown: this._onKeyDown
+			},
+			[this.formatDate(date)]
+		);
 	}
 }
 

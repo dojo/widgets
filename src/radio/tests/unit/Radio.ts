@@ -8,9 +8,16 @@ import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../../../label/index';
 import Radio from '../../../radio/index';
 import * as css from '../../../theme/radio.m.css';
-import { createHarness, compareId, compareForId, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import {
+	createHarness,
+	compareId,
+	compareForId,
+	MockMetaMixin,
+	noop,
+	stubEvent
+} from '../../../common/tests/support/test-helpers';
 
-const harness = createHarness([ compareId, compareForId ]);
+const harness = createHarness([compareId, compareForId]);
 
 interface States {
 	invalid?: boolean;
@@ -27,7 +34,13 @@ interface ExpectedOptions {
 	inputOverrides?: any;
 }
 
-const expected = function({ label = false, rootOverrides = {}, inputOverrides = {}, states = {}, focused = false }: ExpectedOptions = {}) {
+const expected = function({
+	label = false,
+	rootOverrides = {},
+	inputOverrides = {},
+	states = {},
+	focused = false
+}: ExpectedOptions = {}) {
 	const { disabled, invalid, required, readOnly } = states;
 
 	const radioVdom = v('div', { classes: css.inputWrapper }, [
@@ -55,37 +68,47 @@ const expected = function({ label = false, rootOverrides = {}, inputOverrides = 
 			ontouchcancel: noop,
 			...inputOverrides
 		}),
-		v('div', {
-			classes: css.radioBackground
-		}, [
-			v('div', { classes: css.radioOuter }),
-			v('div', { classes: css.radioInner })
-		])
+		v(
+			'div',
+			{
+				classes: css.radioBackground
+			},
+			[v('div', { classes: css.radioOuter }), v('div', { classes: css.radioInner })]
+		)
 	]);
 
-	return v('div', {
-		key: 'root',
-		classes: [ css.root, null, null, null, null, null, null, null ],
-		...rootOverrides
-	}, [
-		radioVdom,
-		label ? w(Label, {
-			theme: undefined,
-			classes: undefined,
-			disabled,
-			focused,
-			hidden: undefined,
-			invalid,
-			readOnly,
-			required,
-			forId: '',
-			secondary: true
-		}, [ 'foo' ]) : null
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			classes: [css.root, null, null, null, null, null, null, null],
+			...rootOverrides
+		},
+		[
+			radioVdom,
+			label
+				? w(
+						Label,
+						{
+							theme: undefined,
+							classes: undefined,
+							disabled,
+							focused,
+							hidden: undefined,
+							invalid,
+							readOnly,
+							required,
+							forId: '',
+							secondary: true
+						},
+						['foo']
+				  )
+				: null
+		]
+	);
 };
 
 registerSuite('Radio', {
-
 	tests: {
 		'default properties'() {
 			const h = harness(() => w(Radio, {}));
@@ -93,32 +116,38 @@ registerSuite('Radio', {
 		},
 
 		'custom properties'() {
-			const h = harness(() => w(Radio, {
-				aria: { describedBy: 'foo' },
-				checked: true,
-				widgetId: 'foo',
-				name: 'bar',
-				value: 'baz'
-			}));
-
-			h.expect(() => expected({
-				inputOverrides: {
+			const h = harness(() =>
+				w(Radio, {
+					aria: { describedBy: 'foo' },
 					checked: true,
-					'aria-describedby': 'foo',
-					id: 'foo',
+					widgetId: 'foo',
 					name: 'bar',
 					value: 'baz'
-				},
-				rootOverrides: {
-					classes: [ css.root, css.checked, null, null, null, null, null, null ]
-				}
-			}));
+				})
+			);
+
+			h.expect(() =>
+				expected({
+					inputOverrides: {
+						checked: true,
+						'aria-describedby': 'foo',
+						id: 'foo',
+						name: 'bar',
+						value: 'baz'
+					},
+					rootOverrides: {
+						classes: [css.root, css.checked, null, null, null, null, null, null]
+					}
+				})
+			);
 		},
 
-		'label'() {
-			const h = harness(() => w(Radio, {
-				label: 'foo'
-			}));
+		label() {
+			const h = harness(() =>
+				w(Radio, {
+					label: 'foo'
+				})
+			);
 			h.expect(() => expected({ label: true }));
 		},
 
@@ -131,26 +160,39 @@ registerSuite('Radio', {
 				label: 'foo'
 			};
 			const h = harness(() => w(Radio, properties));
-			h.expect(() => expected({
-				label: true,
-				rootOverrides: {
-					classes: [ css.root, null, css.disabled, null, css.invalid, null, css.readonly, css.required ]
-				},
-				states: properties
-			}));
+			h.expect(() =>
+				expected({
+					label: true,
+					rootOverrides: {
+						classes: [
+							css.root,
+							null,
+							css.disabled,
+							null,
+							css.invalid,
+							null,
+							css.readonly,
+							css.required
+						]
+					},
+					states: properties
+				})
+			);
 
 			properties.disabled = false;
 			properties.invalid = false;
 			properties.readOnly = false;
 			properties.required = false;
 
-			h.expect(() => expected({
-				label: true,
-				rootOverrides: {
-					classes: [ css.root, null, null, null, null, css.valid, null, null ]
-				},
-				states: properties
-			}));
+			h.expect(() =>
+				expected({
+					label: true,
+					rootOverrides: {
+						classes: [css.root, null, null, null, null, css.valid, null, null]
+					},
+					states: properties
+				})
+			);
 		},
 
 		'focused class'() {
@@ -162,13 +204,15 @@ registerSuite('Radio', {
 			mockMeta.withArgs(Focus).returns({
 				get: mockFocusGet
 			});
-			const h = harness(() => w(MockMetaMixin(Radio, mockMeta), {}), [ compareId ]);
-			h.expect(() => expected({
-				rootOverrides: {
-					classes: [ css.root, null, null, css.focused, null, null, null, null ]
-				},
-				focused: true
-			}));
+			const h = harness(() => w(MockMetaMixin(Radio, mockMeta), {}), [compareId]);
+			h.expect(() =>
+				expected({
+					rootOverrides: {
+						classes: [css.root, null, null, css.focused, null, null, null, null]
+					},
+					focused: true
+				})
+			);
 		},
 
 		events() {
@@ -182,17 +226,19 @@ registerSuite('Radio', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = harness(() => w(Radio, {
-				onBlur,
-				onChange,
-				onClick,
-				onFocus,
-				onMouseDown,
-				onMouseUp,
-				onTouchStart,
-				onTouchEnd,
-				onTouchCancel
-			}));
+			const h = harness(() =>
+				w(Radio, {
+					onBlur,
+					onChange,
+					onClick,
+					onFocus,
+					onMouseDown,
+					onMouseUp,
+					onTouchStart,
+					onTouchEnd,
+					onTouchCancel
+				})
+			);
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
 			h.trigger('input', 'onchange', stubEvent);

@@ -15,20 +15,29 @@ export default class HelperText extends ThemedMixin(WidgetBase)<HelperTextProper
 	protected render(): VNode {
 		const { text, valid } = this.properties;
 
-		return v('div', {
-			key: 'root',
-			classes: this.theme([
-				css.root,
-				valid === true ? css.valid : null,
-				valid === false ? css.invalid : null
-			])
-		}, [
-			text && v('p', {
-				key: 'text',
-				classes: this.theme(css.text),
-				'aria-hidden': 'true',
-				title: text
-			}, [text])
-		]);
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: this.theme([
+					css.root,
+					valid === true ? css.valid : null,
+					valid === false ? css.invalid : null
+				])
+			},
+			[
+				text &&
+					v(
+						'p',
+						{
+							key: 'text',
+							classes: this.theme(css.text),
+							'aria-hidden': 'true',
+							title: text
+						},
+						[text]
+					)
+			]
+		);
 	}
 }

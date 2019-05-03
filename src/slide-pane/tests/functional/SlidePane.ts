@@ -16,20 +16,20 @@ function openSlidePane(remote: Remote, alignRight?: boolean) {
 		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#slide-pane`)
 		.setFindTimeout(5000)
 		.findById('underlay')
-			.click()
-			.end();
+		.click()
+		.end();
 
 	if (alignRight) {
 		promise = promise
 			.findById('alignRight')
-				.click()
-				.end();
+			.click()
+			.end();
 	}
 
 	return promise
 		.findById('button')
-			.click()
-			.end()
+		.click()
+		.end()
 		.sleep(DELAY);
 }
 
@@ -40,8 +40,7 @@ function swipeSlidePane(remote: Remote, distance?: number | boolean, alignRight?
 	if (typeof distance === 'boolean') {
 		alignRight = distance;
 		distance = 250;
-	}
-	else if (typeof distance === 'undefined') {
+	} else if (typeof distance === 'undefined') {
 		alignRight = undefined;
 		distance = 250;
 	}
@@ -68,45 +67,48 @@ function swipeSlidePane(remote: Remote, distance?: number | boolean, alignRight?
 }
 
 registerSuite('SlidePane', {
-
 	'the underlay should cover the screen'() {
-		let viewportSize: { height: number; width: number; };
+		let viewportSize: { height: number; width: number };
 
 		return openSlidePane(this.remote)
 			.getWindowSize()
-				.then(({ height, width }) => {
-					viewportSize = { height, width };
-				})
+			.then(({ height, width }) => {
+				viewportSize = { height, width };
+			})
 			.findByCssSelector(`.${fixedCss.underlay}`)
-				.getSize()
-				.then(({ height, width }) => {
-					assert.closeTo(height, viewportSize.height, viewportSize.height * 0.2);
-					assert.closeTo(width, viewportSize.width, viewportSize.width * 0.2);
-				});
+			.getSize()
+			.then(({ height, width }) => {
+				assert.closeTo(height, viewportSize.height, viewportSize.height * 0.2);
+				assert.closeTo(width, viewportSize.width, viewportSize.width * 0.2);
+			});
 	},
 
 	'the underlay should not be destroyed when the slidepane is clicked'() {
 		return openSlidePane(this.remote)
 			.findByCssSelector(`.${css.content}`)
-				.click()
-				.end()
+			.click()
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${fixedCss.underlay}`)
-				.getAttribute('class')
-				.then((className: string) => {
-					assert.match(className, new RegExp(fixedCss.underlay), 'the underlay should not be removed.');
-				});
+			.getAttribute('class')
+			.then((className: string) => {
+				assert.match(
+					className,
+					new RegExp(fixedCss.underlay),
+					'the underlay should not be removed.'
+				);
+			});
 	},
 
 	'the slidepane should not be hidden when it is clicked'() {
 		return openSlidePane(this.remote)
 			.findByCssSelector(`.${css.content}`)
-				.click()
-				.sleep(DELAY)
-				.getPosition()
-					.then(({ x }) => {
-						assert.strictEqual(x, 0, 'The slidepane should be visible.');
-					});
+			.click()
+			.sleep(DELAY)
+			.getPosition()
+			.then(({ x }) => {
+				assert.strictEqual(x, 0, 'The slidepane should be visible.');
+			});
 	},
 
 	'a left-aligned slidepane should close when swiping from right to left'() {
@@ -116,7 +118,10 @@ registerSuite('SlidePane', {
 			this.skip('Test requires mouse or touch interactions.');
 		}
 
-		if (browserName.toLowerCase() === 'microsoftedge' || browserName.toLowerCase() === 'internet explorer') {
+		if (
+			browserName.toLowerCase() === 'microsoftedge' ||
+			browserName.toLowerCase() === 'internet explorer'
+		) {
 			// TODO: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11469232/
 			this.skip('Edge driver does not handle mouse movements correctly.');
 		}
@@ -124,14 +129,14 @@ registerSuite('SlidePane', {
 		let width = 0;
 		return swipeSlidePane(this.remote)
 			.findByCssSelector(`.${css.content}`)
-				.getSize()
-					.then(size => {
-						width = size.width;
-					})
-				.getPosition()
-					.then(({ x }) => {
-						assert.closeTo(x, -width, 15);
-					});
+			.getSize()
+			.then((size) => {
+				width = size.width;
+			})
+			.getPosition()
+			.then(({ x }) => {
+				assert.closeTo(x, -width, 15);
+			});
 	},
 
 	'a right-aligned slidepane should close when swiping from left to right'() {
@@ -141,7 +146,10 @@ registerSuite('SlidePane', {
 			this.skip('Test requires mouse or touch interactions.');
 		}
 
-		if (browserName.toLowerCase() === 'microsoftedge' || browserName.toLowerCase() === 'internet explorer') {
+		if (
+			browserName.toLowerCase() === 'microsoftedge' ||
+			browserName.toLowerCase() === 'internet explorer'
+		) {
 			// TODO: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11469232/
 			this.skip('Edge driver does not handle mouse movements correctly.');
 		}
@@ -149,17 +157,17 @@ registerSuite('SlidePane', {
 		let viewportWidth = 0;
 		return swipeSlidePane(this.remote, true)
 			.getWindowSize()
-				.then(({ width }) => {
-					viewportWidth = width;
-				})
+			.then(({ width }) => {
+				viewportWidth = width;
+			})
 			.findByCssSelector(`.${css.content}`)
-				.getPosition()
-				.then(({ x }) => {
-					// Edge/IE11/Chrome on Windows visually hide the slidepane correctly, but the position
-					// is slightly less than expected (the viewport width).
-					const expected = viewportWidth * 0.95;
-					assert.isAtLeast(x, expected, 'The slidepane should be hidden off to the right.');
-				});
+			.getPosition()
+			.then(({ x }) => {
+				// Edge/IE11/Chrome on Windows visually hide the slidepane correctly, but the position
+				// is slightly less than expected (the viewport width).
+				const expected = viewportWidth * 0.95;
+				assert.isAtLeast(x, expected, 'The slidepane should be hidden off to the right.');
+			});
 	},
 
 	'minor swipe movements should not close the slidepane'() {
@@ -176,10 +184,10 @@ registerSuite('SlidePane', {
 
 		return swipeSlidePane(this.remote, 50)
 			.findByCssSelector(`.${css.content}`)
-				.getPosition()
-					.then(({ x }) => {
-						assert.strictEqual(x, 0, 'The slidepane should be open.');
-					});
+			.getPosition()
+			.then(({ x }) => {
+				assert.strictEqual(x, 0, 'The slidepane should be open.');
+			});
 	},
 
 	'check accessibility'() {

@@ -7,6 +7,8 @@ import * as css from '../theme/grid-placeholder-row.m.css';
 @theme(css)
 export default class PlaceholderRow extends ThemedMixin(WidgetBase) {
 	protected render(): DNode {
-		return v('div', { classes: this.theme(css.root) }, [v('div', { classes: this.theme(css.loading) })]);
+		return v('div', { classes: this.theme(css.root) }, [
+			v('div', { classes: this.theme(css.loading) })
+		]);
 	}
 }

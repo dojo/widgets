@@ -12,12 +12,26 @@ import { v, w } from '@dojo/framework/widget-core/d';
 import Listbox from '../../index';
 import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';
 import * as css from '../../../theme/listbox.m.css';
-import { createHarness, compareId, noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
+import {
+	createHarness,
+	compareId,
+	noop,
+	MockMetaMixin,
+	stubEvent
+} from '../../../common/tests/support/test-helpers';
 
-const compareKey = { selector: '*', property: 'key', comparator: (property: any) => typeof property === 'string' };
-const compareAriaActiveDescendant = { selector: '*', property: 'aria-activedescendant', comparator: (property: any) => typeof property === 'string' };
+const compareKey = {
+	selector: '*',
+	property: 'key',
+	comparator: (property: any) => typeof property === 'string'
+};
+const compareAriaActiveDescendant = {
+	selector: '*',
+	property: 'aria-activedescendant',
+	comparator: (property: any) => typeof property === 'string'
+};
 
-const harness = createHarness([ compareId, compareAriaActiveDescendant ]);
+const harness = createHarness([compareId, compareAriaActiveDescendant]);
 
 interface TestEventInit extends EventInit {
 	which: number;
@@ -44,7 +58,7 @@ const expectedFirstOption = (overrides: Partial<ListboxOptionProperties> = {}) =
 	return v('div', { key: 'first', role: 'presentation' }, [
 		w(ListboxOption, {
 			active: false,
-			css: [ css.option, css.activeOption, null, null ],
+			css: [css.option, css.activeOption, null, null],
 			disabled: false,
 			id: 'first',
 			index: 0,
@@ -64,7 +78,7 @@ const expectedSecondOption = (overrides: Partial<ListboxOptionProperties> = {}) 
 	return v('div', { key: '1', role: 'presentation' }, [
 		w(ListboxOption, {
 			active: false,
-			css: [ css.option, null, null, null ],
+			css: [css.option, null, null, null],
 			disabled: false,
 			id: '',
 			index: 1,
@@ -84,7 +98,7 @@ const expectedThirdOption = (overrides: Partial<ListboxOptionProperties> = {}) =
 	return v('div', { key: '2', role: 'presentation' }, [
 		w(ListboxOption, {
 			active: false,
-			css: [ css.option, null, null, null ],
+			css: [css.option, null, null, null],
 			disabled: false,
 			id: '',
 			index: 2,
@@ -109,79 +123,95 @@ const expectedOptions = function(activeIndex = 0) {
 };
 
 const expectedVdom = function(options: DNode[] = []) {
-	return v('div', {
-		'aria-activedescendant': '',
-		'aria-multiselectable': null,
-		classes: [ css.root, null ],
-		id: undefined,
-		focus: noop,
-		key: 'root',
-		role: 'listbox',
-		tabIndex: 0,
-		onkeydown: noop
-	}, options);
+	return v(
+		'div',
+		{
+			'aria-activedescendant': '',
+			'aria-multiselectable': null,
+			classes: [css.root, null],
+			id: undefined,
+			focus: noop,
+			key: 'root',
+			role: 'listbox',
+			tabIndex: 0,
+			onkeydown: noop
+		},
+		options
+	);
 };
 
 registerSuite('Listbox', {
 	tests: {
 		'empty listbox'() {
-			const h = harness(() =>  w(Listbox, {}));
+			const h = harness(() => w(Listbox, {}));
 			h.expect(() => expectedVdom());
 		},
 
 		'options with default properties'() {
-			const h = harness(() =>  w(Listbox, {
-				optionData: testOptions
-			}), [ compareKey ]);
+			const h = harness(
+				() =>
+					w(Listbox, {
+						optionData: testOptions
+					}),
+				[compareKey]
+			);
 			h.expect(() => expectedVdom(expectedOptions()));
 		},
 
 		'custom properties'() {
-			const h = harness(() =>  w(Listbox, {
-				activeIndex: 0,
-				aria: { describedBy: 'foo' },
-				visualFocus: true,
-				widgetId: 'bar',
-				multiselect: true,
-				optionData: testOptions,
-				tabIndex: -1,
-				theme: {},
-				getOptionDisabled: (option: any) => !!option.disabled,
-				getOptionId: (option: any, index: number) => option.id || `${index}`,
-				getOptionLabel: (option: any) => option.label,
-				getOptionSelected: (option: any, index: number) => index === 1
-			}));
-
-			h.expect(() => v('div', {
-				'aria-activedescendant': 'first',
-				'aria-describedby': 'foo',
-				'aria-multiselectable': 'true',
-				classes: [ css.root, css.focused ],
-				id: 'bar',
-				tabIndex: -1,
-				focus: noop,
-				key: 'root',
-				role: 'listbox',
-				onkeydown: noop
-			}, [
-				expectedFirstOption({
-					label: 'One',
-					active: true,
-					theme: {}
-				}),
-				expectedSecondOption({
-					css: [ css.option, null, null, css.selectedOption ],
-					label: 'Two',
-					selected: true,
-					theme: {}
-				}),
-				expectedThirdOption({
-					css: <any> [ css.option, null, css.disabledOption, null ],
-					disabled: true,
-					label: 'Three',
-					theme: {}
+			const h = harness(() =>
+				w(Listbox, {
+					activeIndex: 0,
+					aria: { describedBy: 'foo' },
+					visualFocus: true,
+					widgetId: 'bar',
+					multiselect: true,
+					optionData: testOptions,
+					tabIndex: -1,
+					theme: {},
+					getOptionDisabled: (option: any) => !!option.disabled,
+					getOptionId: (option: any, index: number) => option.id || `${index}`,
+					getOptionLabel: (option: any) => option.label,
+					getOptionSelected: (option: any, index: number) => index === 1
 				})
-			]));
+			);
+
+			h.expect(() =>
+				v(
+					'div',
+					{
+						'aria-activedescendant': 'first',
+						'aria-describedby': 'foo',
+						'aria-multiselectable': 'true',
+						classes: [css.root, css.focused],
+						id: 'bar',
+						tabIndex: -1,
+						focus: noop,
+						key: 'root',
+						role: 'listbox',
+						onkeydown: noop
+					},
+					[
+						expectedFirstOption({
+							label: 'One',
+							active: true,
+							theme: {}
+						}),
+						expectedSecondOption({
+							css: [css.option, null, null, css.selectedOption],
+							label: 'Two',
+							selected: true,
+							theme: {}
+						}),
+						expectedThirdOption({
+							css: <any>[css.option, null, css.disabledOption, null],
+							disabled: true,
+							label: 'Three',
+							theme: {}
+						})
+					]
+				)
+			);
 		},
 
 		'focused class'() {
@@ -210,17 +240,23 @@ registerSuite('Listbox', {
 				has: () => false
 			});
 			const h = harness(() => w(MockMetaMixin(Listbox, mockMeta), {}));
-			h.expect(() => v('div', {
-				'aria-activedescendant': '',
-				'aria-multiselectable': null,
-				classes: [ css.root, css.focused ],
-				id: undefined,
-				focus: noop,
-				key: 'root',
-				role: 'listbox',
-				tabIndex: 0,
-				onkeydown: noop
-			}, []));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						'aria-activedescendant': '',
+						'aria-multiselectable': null,
+						classes: [css.root, css.focused],
+						id: undefined,
+						focus: noop,
+						key: 'root',
+						role: 'listbox',
+						tabIndex: 0,
+						onkeydown: noop
+					},
+					[]
+				)
+			);
 		},
 
 		'onkeydown event'() {
@@ -232,44 +268,72 @@ registerSuite('Listbox', {
 
 		'arrow keys move active index'() {
 			const onActiveIndexChange = sinon.stub();
-			const h = harness(() =>  w(Listbox, {
-				optionData: testOptions,
-				onActiveIndexChange
-			}));
-			h.trigger('@root', 'onkeydown', { which: Keys.Down, preventDefault: sinon.stub() , ...stubEvent });
+			const h = harness(() =>
+				w(Listbox, {
+					optionData: testOptions,
+					onActiveIndexChange
+				})
+			);
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.Down,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
 			assert.isTrue(onActiveIndexChange.calledWith(1), 'Down arrow moves to second option');
-			h.trigger('@root', 'onkeydown', { which: Keys.Up, preventDefault: sinon.stub() , ...stubEvent });
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.Up,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
 			assert.isTrue(onActiveIndexChange.calledWith(1), 'Up arrow moves to last option');
 		},
 
 		'home and end move active index'() {
 			const onActiveIndexChange = sinon.stub();
-			const h = harness(() =>  w(Listbox, {
-				activeIndex: 1,
-				optionData: testOptions,
-				onActiveIndexChange
-			}));
+			const h = harness(() =>
+				w(Listbox, {
+					activeIndex: 1,
+					optionData: testOptions,
+					onActiveIndexChange
+				})
+			);
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Home, preventDefault: sinon.stub() , ...stubEvent });
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.Home,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
 			assert.isTrue(onActiveIndexChange.calledWith(0), 'Home key moves to first option');
 
-			h.trigger('@root', 'onkeydown', { which: Keys.End, preventDefault: sinon.stub() , ...stubEvent });
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.End,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
 			assert.isTrue(onActiveIndexChange.calledWith(2), 'End key moves to last option');
 		},
 
 		'clicking selects option and moves active index'() {
 			const onActiveIndexChange = sinon.stub();
 			const onOptionSelect = sinon.stub();
-			const h = harness(() =>  w(Listbox, {
-				activeIndex: 1,
-				optionData: testOptions,
-				onActiveIndexChange,
-				onOptionSelect
-			}));
+			const h = harness(() =>
+				w(Listbox, {
+					activeIndex: 1,
+					optionData: testOptions,
+					onActiveIndexChange,
+					onOptionSelect
+				})
+			);
 
 			h.trigger('@option-0', 'onClick', testOptions[0], 0);
-			assert.isTrue(onActiveIndexChange.calledWith(0), 'Clicking first option moves active index');
-			assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0), 'Clicking first option selects it');
+			assert.isTrue(
+				onActiveIndexChange.calledWith(0),
+				'Clicking first option moves active index'
+			);
+			assert.isTrue(
+				onOptionSelect.calledWith(testOptions[0], 0),
+				'Clicking first option selects it'
+			);
 		},
 
 		'keyboard selects active option'() {
@@ -280,10 +344,17 @@ registerSuite('Listbox', {
 				optionData: testOptions,
 				onOptionSelect
 			};
-			const h = harness(() =>  w(Listbox, properties));
+			const h = harness(() => w(Listbox, properties));
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Enter, preventDefault: sinon.stub() , ...stubEvent });
-			assert.isTrue(onOptionSelect.calledWith(testOptions[1], 1, 'foo'), 'Enter key selects option');
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.Enter,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
+			assert.isTrue(
+				onOptionSelect.calledWith(testOptions[1], 1, 'foo'),
+				'Enter key selects option'
+			);
 
 			properties = {
 				activeIndex: 0,
@@ -291,23 +362,40 @@ registerSuite('Listbox', {
 				optionData: testOptions,
 				onOptionSelect
 			};
-			h.trigger('@root', 'onkeydown', { which: Keys.Space, preventDefault: sinon.stub() , ...stubEvent });
-			assert.isTrue(onOptionSelect.calledWith(testOptions[0], 0, 'foo'), 'Space key selects option');
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.Space,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
+			assert.isTrue(
+				onOptionSelect.calledWith(testOptions[0], 0, 'foo'),
+				'Space key selects option'
+			);
 		},
 
 		'disabled options are not selected'() {
 			const onOptionSelect = sinon.stub();
-			const h = harness(() =>  w(Listbox, {
-				activeIndex: 2,
-				optionData: testOptions,
-				getOptionDisabled: (option: any) => !!option.disabled,
-				onOptionSelect
-			}));
+			const h = harness(() =>
+				w(Listbox, {
+					activeIndex: 2,
+					optionData: testOptions,
+					getOptionDisabled: (option: any) => !!option.disabled,
+					onOptionSelect
+				})
+			);
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Enter, preventDefault: sinon.stub() , ...stubEvent });
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.Enter,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
 			assert.isFalse(onOptionSelect.called, 'Enter key does not select disabled option');
 
-			h.trigger('@root', 'onkeydown', { which: Keys.Space, preventDefault: sinon.stub() , ...stubEvent });
+			h.trigger('@root', 'onkeydown', {
+				which: Keys.Space,
+				preventDefault: sinon.stub(),
+				...stubEvent
+			});
 			assert.isFalse(onOptionSelect.called, 'Space key does not select disabled option');
 
 			h.trigger('@option-0', 'onClick', testOptions[2], 2);
@@ -324,8 +412,7 @@ registerSuite('Listbox', {
 							scroll: { top: 0 },
 							offset: { height: 200 }
 						};
-					}
-					else {
+					} else {
 						return {
 							offset: {
 								top: 300,
@@ -345,7 +432,7 @@ registerSuite('Listbox', {
 					return new StubMeta();
 				}
 			}
-			harness(() =>  w(ScrollListbox, { activeIndex: 3 }));
+			harness(() => w(ScrollListbox, { activeIndex: 3 }));
 			assert.isTrue(scrollStub.calledWith('root', 150));
 		},
 
@@ -358,8 +445,7 @@ registerSuite('Listbox', {
 							scroll: { top: 300 },
 							offset: { height: 200 }
 						};
-					}
-					else {
+					} else {
 						return {
 							offset: {
 								top: 100,
@@ -379,7 +465,7 @@ registerSuite('Listbox', {
 					return new StubDimensions();
 				}
 			}
-			harness(() =>  w(ScrollListbox, { activeIndex: 0 }));
+			harness(() => w(ScrollListbox, { activeIndex: 0 }));
 			assert.isTrue(scrollStub.calledWith('root', 100));
 		}
 	}

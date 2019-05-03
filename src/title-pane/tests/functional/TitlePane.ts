@@ -16,14 +16,13 @@ function getPage(remote: Remote) {
 const DELAY = 400;
 
 registerSuite('TitlePane', {
-
 	'Should be fully visible when `open`'() {
 		return getPage(this.remote)
 			.findByCssSelector('#titlePane2 > div > :last-child')
-				.getComputedStyle('margin-top')
-				.then(marginTop => {
-					assert.strictEqual(marginTop, '0px');
-				});
+			.getComputedStyle('margin-top')
+			.then((marginTop) => {
+				assert.strictEqual(marginTop, '0px');
+			});
 	},
 
 	'Should be hidden when not `open`'() {
@@ -31,20 +30,20 @@ registerSuite('TitlePane', {
 
 		return getPage(this.remote)
 			.findByCssSelector('#titlePane2 > div > :last-child')
-				.getSize()
-				.then(size => {
-					height = size.height;
-				})
+			.getSize()
+			.then((size) => {
+				height = size.height;
+			})
 			.end()
 			.findByCssSelector('#titlePane2 button')
-				.click()
+			.click()
 			.end()
 			.sleep(DELAY)
 			.findByCssSelector('#titlePane2 > div > :last-child')
-				.getComputedStyle('margin-top')
-				.then(marginTop => {
-					assert.closeTo(parseInt(marginTop, 10), -height, 2);
-				});
+			.getComputedStyle('margin-top')
+			.then((marginTop) => {
+				assert.closeTo(parseInt(marginTop, 10), -height, 2);
+			});
 	},
 
 	'check accessibility'() {

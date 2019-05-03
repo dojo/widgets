@@ -37,7 +37,6 @@ class TestGlobalEvent extends GlobalEvent {
 }
 
 registerSuite('GlobalEvent', {
-
 	beforeEach() {
 		windowAddEventlistenerStub = stub(global.window, 'addEventListener');
 		documentAddEventlistenerStub = stub(global.document, 'addEventListener');
@@ -61,7 +60,10 @@ registerSuite('GlobalEvent', {
 			assert.strictEqual(windowAddEventlistenerStub.callCount, 1);
 			widget.__setProperties__({ window: { focus: globalEvent }, key: 'global' });
 			assert.strictEqual(windowAddEventlistenerStub.callCount, 1);
-			widget.__setProperties__({ window: { focus: focusEvent, keydown: () => {} }, key: 'global' });
+			widget.__setProperties__({
+				window: { focus: focusEvent, keydown: () => {} },
+				key: 'global'
+			});
 			assert.strictEqual(windowAddEventlistenerStub.callCount, 3);
 			assert.strictEqual(windowRemoveEventlistenerStub.callCount, 1);
 			widget.__setProperties__({ window: { focus: focusEvent }, key: 'global' });
@@ -79,7 +81,10 @@ registerSuite('GlobalEvent', {
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 1);
 			widget.__setProperties__({ document: { focus: globalEvent }, key: 'global' });
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 1);
-			widget.__setProperties__({ document: { focus: focusEvent, keydown: () => {} }, key: 'global' });
+			widget.__setProperties__({
+				document: { focus: focusEvent, keydown: () => {} },
+				key: 'global'
+			});
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 3);
 			assert.strictEqual(documentRemoveEventlistenerStub.callCount, 1);
 			widget.__setProperties__({ document: { focus: focusEvent }, key: 'global' });
@@ -95,8 +100,8 @@ registerSuite('GlobalEvent', {
 		},
 
 		'Returns children if they exist'() {
-			const h = harness(() => w(GlobalEvent, {}, [ 'child' ]));
-			h.expect(() => [ 'child' ]);
+			const h = harness(() => w(GlobalEvent, {}, ['child']));
+			h.expect(() => ['child']);
 		}
 	}
 });

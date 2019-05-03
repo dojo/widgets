@@ -38,20 +38,25 @@ export interface LabelProperties extends ThemedProperties, CustomAriaProperties 
 @theme(css)
 @customElement<LabelProperties>({
 	tag: 'dojo-label',
-	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'disabled', 'focused', 'readOnly', 'required', 'invalid', 'hidden', 'secondary' ],
+	properties: [
+		'theme',
+		'classes',
+		'aria',
+		'extraClasses',
+		'disabled',
+		'focused',
+		'readOnly',
+		'required',
+		'invalid',
+		'hidden',
+		'secondary'
+	],
 	attributes: [],
 	events: []
 })
 export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
 	protected getRootClasses(): (string | null)[] {
-		const {
-			disabled,
-			focused,
-			invalid,
-			readOnly,
-			required,
-			secondary
-		} = this.properties;
+		const { disabled, focused, invalid, readOnly, required, secondary } = this.properties;
 		return [
 			css.root,
 			disabled ? css.disabled : null,
@@ -67,15 +72,19 @@ export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
 	render(): DNode {
 		const { aria = {}, forId, hidden, widgetId } = this.properties;
 
-		return v('label', {
-			...formatAriaProperties(aria),
-			id: widgetId,
-			classes: [
-				...this.theme(this.getRootClasses()),
-				hidden ? baseCss.visuallyHidden : null
-			],
-			for: forId
-		}, this.children);
+		return v(
+			'label',
+			{
+				...formatAriaProperties(aria),
+				id: widgetId,
+				classes: [
+					...this.theme(this.getRootClasses()),
+					hidden ? baseCss.visuallyHidden : null
+				],
+				for: forId
+			},
+			this.children
+		);
 	}
 }
 

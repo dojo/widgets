@@ -13,36 +13,52 @@ export default class App extends WidgetBase {
 
 	render() {
 		return v('div', [
-			v('h2', [ 'Button Examples' ]),
+			v('h2', ['Button Examples']),
 			v('div', { id: 'example-1' }, [
-				v('p', [ 'Basic example:' ]),
-				w(Button, {
-					key: 'b1'
-				}, [ 'Basic Button' ])
+				v('p', ['Basic example:']),
+				w(
+					Button,
+					{
+						key: 'b1'
+					},
+					['Basic Button']
+				)
 			]),
 			v('div', { id: 'example-2' }, [
-				v('p', [ 'Disabled submit button:' ]),
-				w(Button, {
-					key: 'b2',
-					disabled: true,
-					type: 'submit'
-				}, [ 'Submit' ])
+				v('p', ['Disabled submit button:']),
+				w(
+					Button,
+					{
+						key: 'b2',
+						disabled: true,
+						type: 'submit'
+					},
+					['Submit']
+				)
 			]),
 			v('div', { id: 'example-3' }, [
-				v('p', [ 'Popup button:' ]),
-				w(Button, {
-					key: 'b3',
-					popup: { expanded: false, id: 'fakeId' }
-				}, [ 'Open' ]),
+				v('p', ['Popup button:']),
+				w(
+					Button,
+					{
+						key: 'b3',
+						popup: { expanded: false, id: 'fakeId' }
+					},
+					['Open']
+				),
 				v('div', { id: 'fakeId' })
 			]),
 			v('div', { id: 'example-4' }, [
-				v('p', [ 'Toggle Button' ]),
-				w(Button, {
-					key: 'b4',
-					pressed: this._buttonPressed,
-					onClick: this.toggleButton
-				}, [ 'Button state' ])
+				v('p', ['Toggle Button']),
+				w(
+					Button,
+					{
+						key: 'b4',
+						pressed: this._buttonPressed,
+						onClick: this.toggleButton
+					},
+					['Button state']
+				)
 			])
 		]);
 	}

@@ -36,10 +36,9 @@ const modules = [
 ];
 
 const registry = new Registry();
-registerRouterInjector([{ path: '{module}', outlet: 'module'}], registry);
+registerRouterInjector([{ path: '{module}', outlet: 'module' }], registry);
 
 export default class App extends WidgetBase {
-
 	@watch()
 	private _module = '';
 
@@ -51,7 +50,7 @@ export default class App extends WidgetBase {
 
 	private _renderItem = async () => {
 		return import('src/' + this._module + '/example/index');
-	}
+	};
 
 	render() {
 		return v('div', { id: 'module-select' }, [
@@ -65,10 +64,16 @@ export default class App extends WidgetBase {
 				getOptionValue: (module: any) => module,
 				getOptionLabel: (module: any) => module
 			}),
-			w(Outlet, { id: 'module', renderer: (matchDetail: any) => {
-				this._module = matchDetail.params.module;
-				return w({ label: this._module, registryItem: this._renderItem }, { key: this._module });
-			}})
+			w(Outlet, {
+				id: 'module',
+				renderer: (matchDetail: any) => {
+					this._module = matchDetail.params.module;
+					return w(
+						{ label: this._module, registryItem: this._renderItem },
+						{ key: this._module }
+					);
+				}
+			})
 		]);
 	}
 }

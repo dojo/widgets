@@ -25,18 +25,21 @@ export default class App extends WidgetBase {
 
 	render(): DNode {
 		return v('div', [
-			w(SlidePane, {
-				title: 'SlidePane',
-				key: 'pane',
-				open: this._open,
-				underlay: this._underlay,
-				align: this._align,
-				onRequestClose: () => {
-					this._open = false;
-					this.invalidate();
-				}
-			}, [
-				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			w(
+				SlidePane,
+				{
+					title: 'SlidePane',
+					key: 'pane',
+					open: this._open,
+					underlay: this._underlay,
+					align: this._align,
+					onRequestClose: () => {
+						this._open = false;
+						this.invalidate();
+					}
+				},
+				[
+					`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -60,7 +63,8 @@ export default class App extends WidgetBase {
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-			]),
+				]
+			),
 			v('button', {
 				id: 'button',
 				innerHTML: 'open slidepane',

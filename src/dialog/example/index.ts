@@ -38,23 +38,27 @@ export default class App extends WidgetBase {
 				innerHTML: 'open dialog',
 				onclick: this.openDialog
 			}),
-			w(Dialog, {
-				key: 'dialog',
-				title: 'Dialog',
-				open: this._open,
-				modal: this._modal,
-				underlay: this._underlay,
-				closeable: this._closeable,
-				onRequestClose: () => {
-					this._open = false;
-					this.meta(Focus).set('button');
-					this.invalidate();
-				}
-			}, [
-				`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			w(
+				Dialog,
+				{
+					key: 'dialog',
+					title: 'Dialog',
+					open: this._open,
+					modal: this._modal,
+					underlay: this._underlay,
+					closeable: this._closeable,
+					onRequestClose: () => {
+						this._open = false;
+						this.meta(Focus).set('button');
+						this.invalidate();
+					}
+				},
+				[
+					`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				Quisque id purus ipsum. Aenean ac purus purus.
 				Nam sollicitudin varius augue, sed lacinia felis tempor in.`
-			]),
+				]
+			),
 			v('div', { classes: 'option' }, [
 				v('input', {
 					type: 'checkbox',

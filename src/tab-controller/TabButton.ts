@@ -51,24 +51,19 @@ export interface TabButtonProperties extends ThemedProperties, FocusProperties {
 export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
 
 @theme(css)
-export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<P> {
+export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<
+	P
+> {
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
-		const {
-			disabled,
-			index,
-			onClick
-		} = this.properties;
+		const { disabled, index, onClick } = this.properties;
 
 		!disabled && onClick && onClick(index);
 	}
 
 	private _onCloseClick(event: MouseEvent) {
 		event.stopPropagation();
-		const {
-			index,
-			onCloseClick
-		} = this.properties;
+		const { index, onCloseClick } = this.properties;
 
 		onCloseClick && onCloseClick(index);
 	}
@@ -130,14 +125,18 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 
 		return [
 			...this.children,
-			closeable ? v('button', {
-				tabIndex: active ? 0 : -1,
-				classes: this.theme(css.close),
-				type: 'button',
-				onclick: this._onCloseClick
-			}, [
-				messages.close
-			]) : null
+			closeable
+				? v(
+						'button',
+						{
+							tabIndex: active ? 0 : -1,
+							classes: this.theme(css.close),
+							type: 'button',
+							onclick: this._onCloseClick
+						},
+						[messages.close]
+				  )
+				: null
 		];
 	}
 
@@ -151,27 +150,26 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 	}
 
 	render(): DNode {
-		const {
-			active,
-			controls,
-			disabled,
-			id
-		} = this.properties;
+		const { active, controls, disabled, id } = this.properties;
 		const { messages } = this.localizeBundle(commonBundle);
 
-		return v('div', {
-			'aria-controls': controls,
-			'aria-disabled': disabled ? 'true' : 'false',
-			'aria-selected': active === true ? 'true' : 'false',
-			classes: this.theme([ css.tabButton, ...this.getModifierClasses() ]),
-			focus: this.shouldFocus,
-			id,
-			key: 'tab-button',
-			onclick: this._onClick,
-			onkeydown: this._onKeyDown,
-			role: 'tab',
-			tabIndex: active === true ? 0 : -1
-		}, this.getContent(messages));
+		return v(
+			'div',
+			{
+				'aria-controls': controls,
+				'aria-disabled': disabled ? 'true' : 'false',
+				'aria-selected': active === true ? 'true' : 'false',
+				classes: this.theme([css.tabButton, ...this.getModifierClasses()]),
+				focus: this.shouldFocus,
+				id,
+				key: 'tab-button',
+				onclick: this._onClick,
+				onkeydown: this._onKeyDown,
+				role: 'tab',
+				tabIndex: active === true ? 0 : -1
+			},
+			this.getContent(messages)
+		);
 	}
 }
 

@@ -17,26 +17,26 @@ registerSuite('Icon', {
 	'the icons should be visible'() {
 		return getPage(this.remote)
 			.findByCssSelector(`.${iconCss.icon}`)
-				.getSize()
-					.then(({ height, width }) => {
-						assert.isAbove(height, 0);
-						assert.isAbove(width, 0);
-					})
-				.end()
+			.getSize()
+			.then(({ height, width }) => {
+				assert.isAbove(height, 0);
+				assert.isAbove(width, 0);
+			})
+			.end()
 			.sleep(DELAY)
 			.findByCssSelector(`.${iconCss.alertIcon}`)
-				.getSize()
-				.then(({ width, height }) => {
-					assert.isAbove(height, 0);
-					assert.isAbove(width, 0);
-				});
+			.getSize()
+			.then(({ width, height }) => {
+				assert.isAbove(height, 0);
+				assert.isAbove(width, 0);
+			});
 	},
 
 	'alt text should not be visible'() {
 		return getPage(this.remote)
 			.findByCssSelector(`.${iconCss.leftIcon}`)
 			.getVisibleText()
-			.then(text => {
+			.then((text) => {
 				assert.equal(text, '');
 			});
 	}

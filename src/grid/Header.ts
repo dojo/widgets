@@ -14,7 +14,12 @@ export interface SortRenderer {
 }
 
 export interface FilterRenderer {
-	(column: ColumnConfig, filterValue: string, doFilter: (value: string) => void, title?: string | DNode): DNode;
+	(
+		column: ColumnConfig,
+		filterValue: string,
+		doFilter: (value: string) => void,
+		title?: string | DNode
+	): DNode;
 }
 
 export interface HeaderProperties {
@@ -41,12 +46,20 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 	private _sortColumn(id: string) {
 		const { sort, sorter } = this.properties;
 		const direction = sort
-			? sort.columnId !== id ? 'desc' : sort.direction === 'desc' ? 'asc' : 'desc'
+			? sort.columnId !== id
+				? 'desc'
+				: sort.direction === 'desc'
+				? 'asc'
+				: 'desc'
 			: 'desc';
 		sorter(id, direction);
 	}
 
-	private _sortRenderer = (column: ColumnConfig, direction: undefined | 'asc' | 'desc', sorter: () => void) => {
+	private _sortRenderer = (
+		column: ColumnConfig,
+		direction: undefined | 'asc' | 'desc',
+		sorter: () => void
+	) => {
 		const { theme, classes } = this.properties;
 		return v('button', { classes: this.theme(css.sort), onclick: sorter }, [
 			w(Icon, {
@@ -56,9 +69,14 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 				altText: `Sort by ${this._getColumnTitle(column)}`
 			})
 		]);
-	}
+	};
 
-	private _filterRenderer = (columnConfig: ColumnConfig, filterValue: string, doFilter: (value: string) => void, title?: string | DNode) => {
+	private _filterRenderer = (
+		columnConfig: ColumnConfig,
+		filterValue: string,
+		doFilter: (value: string) => void,
+		title?: string | DNode
+	) => {
 		const { theme, classes } = this.properties;
 		return w(TextInput, {
 			key: 'filter',
@@ -71,7 +89,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 			value: filterValue,
 			onInput: doFilter
 		});
-	}
+	};
 
 	protected render(): DNode {
 		const {
@@ -86,12 +104,16 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 			filterRenderer = this._filterRenderer
 		} = this.properties;
 
-		return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' },
+		return v(
+			'div',
+			{ classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' },
 			columnConfig.map((column) => {
 				const title = this._getColumnTitle(column);
 				let headerProperties = {};
 				const isSorted = sort && sort.columnId === column.id;
-				const isSortedAsc = Boolean(sort && sort.columnId === column.id && sort.direction === 'asc');
+				const isSortedAsc = Boolean(
+					sort && sort.columnId === column.id && sort.direction === 'asc'
+				);
 				if (column.sortable) {
 					headerProperties = {
 						classes: [
@@ -113,22 +135,27 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					filterer(column.id, value);
 				};
 
-				return v('div', {
-					'aria-sort': isSorted ? isSortedAsc ? 'ascending' : 'descending' : null,
-					classes: [this.theme(css.cell), fixedCss.cellFixed],
-					role: 'columnheader'
-				}, [
+				return v(
+					'div',
+					{
+						'aria-sort': isSorted ? (isSortedAsc ? 'ascending' : 'descending') : null,
+						classes: [this.theme(css.cell), fixedCss.cellFixed],
+						role: 'columnheader'
+					},
+					[
 						v('div', headerProperties, [
 							title,
-							column.sortable ? sortRenderer(
-								column,
-								direction,
-								() => {
-									this._sortColumn(column.id);
-								}) : null
+							column.sortable
+								? sortRenderer(column, direction, () => {
+										this._sortColumn(column.id);
+								  })
+								: null
 						]),
-						column.filterable ? filterRenderer(column, filterValue, doFilter, title) : null
-					]);
+						column.filterable
+							? filterRenderer(column, filterValue, doFilter, title)
+							: null
+					]
+				);
 			})
 		);
 	}

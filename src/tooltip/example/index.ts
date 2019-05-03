@@ -21,35 +21,53 @@ export default class App extends WidgetBase {
 
 	render() {
 		return v('div', [
-			v('h2', [ 'Tooltip Examples' ]),
+			v('h2', ['Tooltip Examples']),
 			v('div', { id: 'example-1' }, [
-				w(Tooltip, {
-					key: 'foo',
-					content: 'This is a right-oriented tooltip that opens and closes based on child click.',
-					orientation: Orientation.right,
-					open: this._open.has('foo')
-				}, [
-					w(Button, {
-						onClick: () => {
-							const exists = this._open.has('foo');
-							exists ? this.onHide('foo') : this.onShow('foo');
-						}
-					}, [ 'Click me' ])
-				])
+				w(
+					Tooltip,
+					{
+						key: 'foo',
+						content:
+							'This is a right-oriented tooltip that opens and closes based on child click.',
+						orientation: Orientation.right,
+						open: this._open.has('foo')
+					},
+					[
+						w(
+							Button,
+							{
+								onClick: () => {
+									const exists = this._open.has('foo');
+									exists ? this.onHide('foo') : this.onShow('foo');
+								}
+							},
+							['Click me']
+						)
+					]
+				)
 			]),
 			v('div', { id: 'example-2' }, [
-				w(Tooltip, {
-					key: 'bar',
-					content: 'This is a right-oriented tooltip that opens and closes based on child focus.',
-					orientation: Orientation.right,
-					open: this._open.has('bar')
-				}, [
-					w(TextInput, {
-						label: 'Focus me',
-						onFocus: () => { this.onShow('bar'); },
-						onBlur: () => { this.onHide('bar'); }
-					})
-				])
+				w(
+					Tooltip,
+					{
+						key: 'bar',
+						content:
+							'This is a right-oriented tooltip that opens and closes based on child focus.',
+						orientation: Orientation.right,
+						open: this._open.has('bar')
+					},
+					[
+						w(TextInput, {
+							label: 'Focus me',
+							onFocus: () => {
+								this.onShow('bar');
+							},
+							onBlur: () => {
+								this.onHide('bar');
+							}
+						})
+					]
+				)
 			])
 		]);
 	}
