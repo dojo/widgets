@@ -5,12 +5,6 @@ import Button from '../button';
 import * as css from '../theme/snackbar.m.css';
 import bundle from './nls/Snackbar';
 
-export interface InfoMessage<S = string> {
-	success?: boolean;
-	title: S;
-	id?: number;
-}
-
 export interface SnackbarProperties {
 	success?: boolean;
 	open?: boolean;

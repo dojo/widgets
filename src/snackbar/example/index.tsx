@@ -1,8 +1,8 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import watch from '@dojo/framework/widget-core/decorators/watch';
-import Snackbar from '../Snackbar';
-import Button from '../../button/index';
+import Snackbar from '../index';
+import Button from '../../button';
 
 export default class App extends WidgetBase {
 	@watch()
