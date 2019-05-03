@@ -51,7 +51,7 @@ export default class App extends WidgetBase {
 		}
 	];
 
-	_evenMoreSelectOptions = [ 'Maru', 'Garfield', 'Grumpy Cat', 'Hobbes' ];
+	_evenMoreSelectOptions = ['Maru', 'Garfield', 'Grumpy Cat', 'Hobbes'];
 
 	getOptionSettings(): Partial<SelectProperties> {
 		return {
@@ -62,7 +62,6 @@ export default class App extends WidgetBase {
 	}
 
 	render() {
-
 		return v('div', [
 			w(Select, {
 				key: 'select1',

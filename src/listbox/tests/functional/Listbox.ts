@@ -28,23 +28,35 @@ registerSuite('Listbox', {
 		let selectedId = '';
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root} > div:nth-child(2) > div`)
-				.getAttribute('id')
-				.then((id: string) => {
-					selectedId = id;
-				})
-				.click()
-				.sleep(DELAY)
-				.getAttribute('class')
-				.then((className: string) => {
-					assert.include(className, css.activeOption, 'clicked option has activeOption class');
-					assert.include(className, css.selectedOption, 'clicked option has selectedOption class');
-				})
-				.end()
+			.getAttribute('id')
+			.then((id: string) => {
+				selectedId = id;
+			})
+			.click()
+			.sleep(DELAY)
+			.getAttribute('class')
+			.then((className: string) => {
+				assert.include(
+					className,
+					css.activeOption,
+					'clicked option has activeOption class'
+				);
+				assert.include(
+					className,
+					css.selectedOption,
+					'clicked option has selectedOption class'
+				);
+			})
+			.end()
 			.findByCssSelector(`.${css.root}`)
-				.getAttribute('aria-activedescendant')
-				.then((id: string) => {
-					assert.strictEqual(id, selectedId, 'listbox aria-activedescendant is equal to clicked option id');
-				});
+			.getAttribute('aria-activedescendant')
+			.then((id: string) => {
+				assert.strictEqual(
+					id,
+					selectedId,
+					'listbox aria-activedescendant is equal to clicked option id'
+				);
+			});
 	},
 
 	'the selected option should be visible'() {
@@ -59,45 +71,49 @@ registerSuite('Listbox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root} > div:first-child > div`)
-				.click()
-				.end()
+			.click()
+			.end()
 			.sleep(DELAY)
 			.pressKeys(keys.ARROW_UP)
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.root}`)
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					menuTop = y;
-				})
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					menuBottom = menuTop + height;
-				})
-				.end()
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				menuTop = y;
+			})
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				menuBottom = menuTop + height;
+			})
+			.end()
 			.findByCssSelector(`.${css.activeOption}`)
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					itemHeight = height;
-				})
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					assert.isAtLeast(y, menuTop - ERROR_MARGIN);
-					assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight) + ERROR_MARGIN, 'scrolled down');
-				})
-				.end()
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				itemHeight = height;
+			})
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				assert.isAtLeast(y, menuTop - ERROR_MARGIN);
+				assert.isAtMost(
+					Math.floor(y),
+					Math.ceil(menuBottom - itemHeight) + ERROR_MARGIN,
+					'scrolled down'
+				);
+			})
+			.end()
 			.pressKeys(keys.ARROW_DOWN)
 			.sleep(DELAY)
 			.findByCssSelector(`.${css.root}`)
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					menuTop = y;
-				})
-				.end()
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				menuTop = y;
+			})
+			.end()
 			.findByCssSelector(`.${css.activeOption}`)
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					assert.isAtLeast(y, menuTop - ERROR_MARGIN, 'scroll back up');
-				});
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				assert.isAtLeast(y, menuTop - ERROR_MARGIN, 'scroll back up');
+			});
 	},
 
 	'an initial selected value should be visible'() {
@@ -112,26 +128,30 @@ registerSuite('Listbox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(LIST_BOX_3_SELECTOR)
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					menuTop = y;
-				})
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					menuBottom = menuTop + height;
-				})
-				.end()
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				menuTop = y;
+			})
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				menuBottom = menuTop + height;
+			})
+			.end()
 			.findByCssSelector(`${LIST_BOX_3_SELECTOR} .${css.activeOption}`)
-				.getSize()
-				.then(({ height }: { height: number }) => {
-					itemHeight = height;
-				})
-				.getPosition()
-				.then(({ y }: { y: number; }) => {
-					assert.isAtLeast(y, menuTop - ERROR_MARGIN);
-					assert.isAtMost(Math.floor(y), Math.ceil(menuBottom - itemHeight) + ERROR_MARGIN, 'scrolled down');
-				})
-				.end();
+			.getSize()
+			.then(({ height }: { height: number }) => {
+				itemHeight = height;
+			})
+			.getPosition()
+			.then(({ y }: { y: number }) => {
+				assert.isAtLeast(y, menuTop - ERROR_MARGIN);
+				assert.isAtMost(
+					Math.floor(y),
+					Math.ceil(menuBottom - itemHeight) + ERROR_MARGIN,
+					'scrolled down'
+				);
+			})
+			.end();
 	},
 
 	'keys move and select active option'() {
@@ -143,20 +163,20 @@ registerSuite('Listbox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root} > div:nth-child(2) > div`)
-				.click()
-				.sleep(DELAY)
-				.end()
+			.click()
+			.sleep(DELAY)
+			.end()
 			.findByCssSelector(`.${css.root}`)
-				.type(keys.ARROW_DOWN)
-				.type(keys.ENTER)
-				.sleep(DELAY)
-				.end()
+			.type(keys.ARROW_DOWN)
+			.type(keys.ENTER)
+			.sleep(DELAY)
+			.end()
 			.findByCssSelector(`.${css.root} > div:nth-child(3) > div`)
-				.getAttribute('class')
-				.then((className: string) => {
-					assert.include(className, css.activeOption, 'down arrow moves active option');
-					assert.include(className, css.selectedOption, 'enter selects option');
-				});
+			.getAttribute('class')
+			.then((className: string) => {
+				assert.include(className, css.activeOption, 'down arrow moves active option');
+				assert.include(className, css.selectedOption, 'enter selects option');
+			});
 	},
 
 	'listbox is in tab order'() {
@@ -168,16 +188,16 @@ registerSuite('Listbox', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root}`)
-				.click()
-				.sleep(DELAY)
-				.type(keys.TAB)
-				.sleep(DELAY)
-				.end()
+			.click()
+			.sleep(DELAY)
+			.type(keys.TAB)
+			.sleep(DELAY)
+			.end()
 			.getActiveElement()
-				.getAttribute('id')
-				.then((id: string) => {
-					assert.strictEqual(id, 'listbox2');
-				});
+			.getAttribute('id')
+			.then((id: string) => {
+				assert.strictEqual(id, 'listbox2');
+			});
 	},
 
 	'check accessibility'() {

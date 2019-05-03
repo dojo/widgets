@@ -45,7 +45,11 @@ interface FocusInputEvent extends FocusEvent {
  * @property useNativeElement   Use the native <input type="time"> element if true
  * @property value           The current value
  */
-export interface TimePickerProperties extends ThemedProperties, FocusProperties, InputProperties, LabeledProperties {
+export interface TimePickerProperties
+	extends ThemedProperties,
+		FocusProperties,
+		InputProperties,
+		LabeledProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
 	end?: string;
@@ -92,7 +96,11 @@ const TIME_PATTERN = /^\d{2}:\d{2}(:\d{2})?$/;
  * @param step     The amount of time in seconds between each step. Defaults to 60.
  * @return         An array of time unit objects.
  */
-export function getOptions(start: string = '00:00:00', end: string = '23:59:59', step = 60): TimeUnits[] {
+export function getOptions(
+	start: string = '00:00:00',
+	end: string = '23:59:59',
+	step = 60
+): TimeUnits[] {
 	const endUnits = parseUnits(end);
 	const startUnits = parseUnits(start);
 	const endTime = getTime(endUnits);
@@ -143,13 +151,13 @@ function getTime(units: TimeUnits, date = new Date()) {
  * @param value   A standard time string or an object with `hour`, `minute`, and `second` properties.
  * @return        An object containing `hour`, `second`, and `number` properties.
  */
-export function parseUnits (value: string | TimeUnits): TimeUnits {
+export function parseUnits(value: string | TimeUnits): TimeUnits {
 	if (typeof value === 'string') {
 		if (!TIME_PATTERN.test(value)) {
 			throw new Error('Time strings must be in the format HH:mm or HH:mm:ss');
 		}
 
-		const [ hour, minute, second = 0 ] = value.split(':').map(unit => parseInt(unit, 10));
+		const [hour, minute, second = 0] = value.split(':').map((unit) => parseInt(unit, 10));
 		return { hour, minute, second } as TimeUnits;
 	}
 
@@ -179,14 +187,8 @@ export function parseUnits (value: string | TimeUnits): TimeUnits {
 		'readOnly',
 		'disabled'
 	],
-	attributes: [ 'widgetId', 'label', 'name', 'value', 'start', 'end' ],
-	events: [
-		'onBlur',
-		'onChange',
-		'onFocus',
-		'onMenuChange',
-		'onRequestOptions'
-	]
+	attributes: ['widgetId', 'label', 'name', 'value', 'start', 'end'],
+	events: ['onBlur', 'onChange', 'onFocus', 'onMenuChange', 'onRequestOptions']
 })
 export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerProperties> {
 	protected options: TimeUnits[] | null = null;
@@ -202,8 +204,8 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		const { step = 60 } = this.properties;
 		const { hour, minute, second } = units;
 
-		return (step >= 60 ? [ hour, minute ] : [ hour, minute, second ])
-			.map(unit => padStart(String(unit), 2, '0'))
+		return (step >= 60 ? [hour, minute] : [hour, minute, second])
+			.map((unit) => padStart(String(unit), 2, '0'))
 			.join(':');
 	}
 
@@ -254,12 +256,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
+		const { disabled, invalid, readOnly, required } = this.properties;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
@@ -362,17 +359,23 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		const { aria = {} } = inputProperties;
 
 		const children = [
-			label ? w(Label, {
-				theme,
-				classes,
-				disabled,
-				focused: focus.containsFocus,
-				invalid,
-				readOnly,
-				required,
-				hidden: labelHidden,
-				forId: widgetId
-			}, [ label ]) : null,
+			label
+				? w(
+						Label,
+						{
+							theme,
+							classes,
+							disabled,
+							focused: focus.containsFocus,
+							invalid,
+							readOnly,
+							required,
+							hidden: labelHidden,
+							forId: widgetId
+						},
+						[label]
+				  )
+				: null,
 			v('input', {
 				id: widgetId,
 				...formatAriaProperties(aria),
@@ -397,10 +400,14 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			})
 		];
 
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children.reverse() : children);
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: this.theme(this.getRootClasses())
+			},
+			labelAfter ? children.reverse() : children
+		);
 	}
 
 	render(): DNode {

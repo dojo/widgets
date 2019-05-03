@@ -32,41 +32,40 @@ export enum Orientation {
 	top = 'top'
 }
 
-const fixedOrientationCss: {[key: string]: any} = fixedCss;
-const orientationCss: {[key: string]: any} = css;
+const fixedOrientationCss: { [key: string]: any } = fixedCss;
+const orientationCss: { [key: string]: any } = css;
 
 @theme(css)
 @customElement<TooltipProperties>({
 	tag: 'dojo-tooltip',
-	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'content', 'open' ],
-	attributes: [ 'orientation' ],
-	events: [ ]
+	properties: ['theme', 'classes', 'aria', 'extraClasses', 'content', 'open'],
+	attributes: ['orientation'],
+	events: []
 })
 export class Tooltip extends ThemedMixin(WidgetBase)<TooltipProperties> {
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
 
-		return [
-			fixedCss.rootFixed,
-			fixedOrientationCss[`${orientation}Fixed`]
-		];
+		return [fixedCss.rootFixed, fixedOrientationCss[`${orientation}Fixed`]];
 	}
 
 	protected getModifierClasses(): (string | null)[] {
 		const { orientation = Orientation.right } = this.properties;
 
-		return [
-			orientationCss[orientation]
-		];
+		return [orientationCss[orientation]];
 	}
 
 	protected renderContent(): DNode {
 		const { aria = {} } = this.properties;
-		return v('div', {
-			...formatAriaProperties(aria),
-			classes: [ this.theme(css.content), fixedCss.contentFixed ],
-			key: 'content'
-		}, [ this.properties.content ]);
+		return v(
+			'div',
+			{
+				...formatAriaProperties(aria),
+				classes: [this.theme(css.content), fixedCss.contentFixed],
+				key: 'content'
+			},
+			[this.properties.content]
+		);
 	}
 
 	protected renderTarget(): DNode {
@@ -78,12 +77,13 @@ export class Tooltip extends ThemedMixin(WidgetBase)<TooltipProperties> {
 		const classes = this.getModifierClasses();
 		const fixedClasses = this.getFixedModifierClasses();
 
-		return v('div', {
-			classes: [ ...this.theme(classes), ...fixedClasses ]
-		}, [
-			this.renderTarget(),
-			open ? this.renderContent() : null
-		]);
+		return v(
+			'div',
+			{
+				classes: [...this.theme(classes), ...fixedClasses]
+			},
+			[this.renderTarget(), open ? this.renderContent() : null]
+		);
 	}
 }
 

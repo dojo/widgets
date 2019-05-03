@@ -13,8 +13,16 @@ const noop = () => {};
 
 describe('Row', () => {
 	it('should render without columns', () => {
-		const h = harness(() => w(Row, { id: 1, item: {}, columnConfig: [] as any, updater: noop }));
-		h.expect(() => v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' }, []));
+		const h = harness(() =>
+			w(Row, { id: 1, item: {}, columnConfig: [] as any, updater: noop })
+		);
+		h.expect(() =>
+			v(
+				'div',
+				{ classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' },
+				[]
+			)
+		);
 	});
 
 	it('should render items for column config', () => {
@@ -22,19 +30,25 @@ describe('Row', () => {
 			id: 'id',
 			title: 'id'
 		};
-		const h = harness(() => w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop }));
+		const h = harness(() =>
+			w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop })
+		);
 		h.expect(() =>
-			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' }, [
-				w(Cell, {
-					key: 'id',
-					updater: noop,
-					value: 'id',
-					editable: undefined,
-					rawValue: 'id',
-					classes: undefined,
-					theme: undefined
-				})
-			])
+			v(
+				'div',
+				{ classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' },
+				[
+					w(Cell, {
+						key: 'id',
+						updater: noop,
+						value: 'id',
+						editable: undefined,
+						rawValue: 'id',
+						classes: undefined,
+						theme: undefined
+					})
+				]
+			)
 		);
 	});
 
@@ -44,19 +58,25 @@ describe('Row', () => {
 			title: 'id',
 			renderer: () => 'transformed'
 		};
-		const h = harness(() => w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop }));
+		const h = harness(() =>
+			w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop })
+		);
 		h.expect(() =>
-			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' }, [
-				w(Cell, {
-					key: 'id',
-					updater: noop,
-					value: 'transformed',
-					editable: undefined,
-					rawValue: 'id',
-					classes: undefined,
-					theme: undefined
-				})
-			])
+			v(
+				'div',
+				{ classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' },
+				[
+					w(Cell, {
+						key: 'id',
+						updater: noop,
+						value: 'transformed',
+						editable: undefined,
+						rawValue: 'id',
+						classes: undefined,
+						theme: undefined
+					})
+				]
+			)
 		);
 	});
 });

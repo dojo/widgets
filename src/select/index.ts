@@ -33,7 +33,11 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property useNativeElement  Use the native <select> element if true
  * @property value           The current value
  */
-export interface SelectProperties extends ThemedProperties, InputProperties, FocusProperties, CustomAriaProperties {
+export interface SelectProperties
+	extends ThemedProperties,
+		InputProperties,
+		FocusProperties,
+		CustomAriaProperties {
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any): DNode;
@@ -75,12 +79,8 @@ export interface SelectProperties extends ThemedProperties, InputProperties, Foc
 		'disabled',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'placeholder', 'label', 'value', 'helperText' ],
-	events: [
-		'onBlur',
-		'onChange',
-		'onFocus'
-	]
+	attributes: ['widgetId', 'placeholder', 'label', 'value', 'helperText'],
+	events: ['onBlur', 'onChange', 'onFocus']
 })
 export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
 	private _focusedIndex: number;
@@ -100,7 +100,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 	private _getOptionSelected = (option: any, index: number) => {
 		const { getOptionValue, value } = this.properties;
 		return getOptionValue ? getOptionValue(option, index) === value : option === value;
-	}
+	};
 
 	private _getSelectedIndexOnInput(event: KeyboardEvent) {
 		const { options = [], getOptionDisabled, getOptionText } = this.properties;
@@ -115,8 +115,13 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 				if (getOptionDisabled && getOptionDisabled(option, i)) {
 					return false;
 				}
-				const optionText = getOptionText ? getOptionText(option) : this._getOptionLabel(option);
-				if (typeof optionText === 'string' && optionText.toLowerCase().indexOf(this._inputText.toLowerCase()) === 0) {
+				const optionText = getOptionText
+					? getOptionText(option)
+					: this._getOptionLabel(option);
+				if (
+					typeof optionText === 'string' &&
+					optionText.toLowerCase().indexOf(this._inputText.toLowerCase()) === 0
+				) {
 					index = i;
 					return true;
 				}
@@ -126,20 +131,21 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		}
 	}
 
-	private _onBlur (event: FocusEvent) { this.properties.onBlur && this.properties.onBlur(this.properties.key || ''); }
-	private _onFocus (event: FocusEvent) { this.properties.onFocus && this.properties.onFocus(this.properties.key || ''); }
+	private _onBlur(event: FocusEvent) {
+		this.properties.onBlur && this.properties.onBlur(this.properties.key || '');
+	}
+	private _onFocus(event: FocusEvent) {
+		this.properties.onFocus && this.properties.onFocus(this.properties.key || '');
+	}
 
 	// native select events
-	private _onNativeChange (event: Event) {
-		const {
-			key,
-			getOptionValue,
-			options = [],
-			onChange
-		} = this.properties;
+	private _onNativeChange(event: Event) {
+		const { key, getOptionValue, options = [], onChange } = this.properties;
 		event.stopPropagation();
-		const value = (<HTMLInputElement> event.target).value;
-		const option = find(options, (option: any, index: number) => getOptionValue ? getOptionValue(option, index) === value : option === value);
+		const value = (<HTMLInputElement>event.target).value;
+		const option = find(options, (option: any, index: number) =>
+			getOptionValue ? getOptionValue(option, index) === value : option === value
+		);
 		option && onChange && onChange(option, key);
 	}
 
@@ -238,30 +244,40 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		} = this.properties;
 
 		/* create option nodes */
-		const optionNodes = options.map((option, i) => v('option', {
-			value: getOptionValue ? getOptionValue(option, i) : undefined,
-			id: getOptionId ? getOptionId(option, i) : undefined,
-			disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
-			selected: getOptionSelected ? getOptionSelected(option, i) : undefined
-		}, [ this._getOptionLabel(option) ]));
+		const optionNodes = options.map((option, i) =>
+			v(
+				'option',
+				{
+					value: getOptionValue ? getOptionValue(option, i) : undefined,
+					id: getOptionId ? getOptionId(option, i) : undefined,
+					disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
+					selected: getOptionSelected ? getOptionSelected(option, i) : undefined
+				},
+				[this._getOptionLabel(option)]
+			)
+		);
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
-			v('select', {
-				...formatAriaProperties(aria),
-				classes: this.theme(css.input),
-				disabled,
-				focus: this.shouldFocus,
-				'aria-invalid': invalid ? 'true' : null,
-				id: widgetId,
-				name,
-				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
-				required,
-				value,
-				onblur: this._onBlur,
-				onchange: this._onNativeChange,
-				onfocus: this._onFocus
-			}, optionNodes),
+			v(
+				'select',
+				{
+					...formatAriaProperties(aria),
+					classes: this.theme(css.input),
+					disabled,
+					focus: this.shouldFocus,
+					'aria-invalid': invalid ? 'true' : null,
+					id: widgetId,
+					name,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					value,
+					onblur: this._onBlur,
+					onchange: this._onNativeChange,
+					onfocus: this._onFocus
+				},
+				optionNodes
+			),
 			this.renderExpandIcon()
 		]);
 	}
@@ -288,53 +304,58 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			});
 		}
 
-		const {
-			_open,
-			_focusedIndex = 0
-		} = this;
+		const { _open, _focusedIndex = 0 } = this;
 		// create dropdown trigger and select box
-		return v('div', {
-			key: 'wrapper',
-			classes: this.theme([ css.inputWrapper, _open ? css.open : null ])
-		}, [
-			...this.renderCustomTrigger(),
-			v('div', {
-				classes: this.theme(css.dropdown),
-				onfocusout: this._onListboxBlur,
-				onkeydown: this._onDropdownKeyDown
-			}, [
-				w(Listbox, {
-					key: 'listbox',
-					activeIndex: _focusedIndex,
-					widgetId: widgetId,
-					focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
-					optionData: options,
-					tabIndex: _open ? 0 : -1,
-					getOptionDisabled,
-					getOptionId,
-					getOptionLabel,
-					getOptionSelected,
-					theme,
-					classes,
-					onActiveIndexChange: (index: number) => {
-						this._focusedIndex = index;
-						this.invalidate();
+		return v(
+			'div',
+			{
+				key: 'wrapper',
+				classes: this.theme([css.inputWrapper, _open ? css.open : null])
+			},
+			[
+				...this.renderCustomTrigger(),
+				v(
+					'div',
+					{
+						classes: this.theme(css.dropdown),
+						onfocusout: this._onListboxBlur,
+						onkeydown: this._onDropdownKeyDown
 					},
-					onOptionSelect: (option: any) => {
-						onChange && onChange(option, key);
-						this._closeSelect();
-						this.focus();
-					},
-					onKeyDown: (event: KeyboardEvent) => {
-						const index = this._getSelectedIndexOnInput(event);
-						if (index !== undefined) {
-							this._focusedIndex = index;
-							this.invalidate();
-						}
-					}
-				})
-			])
-		]);
+					[
+						w(Listbox, {
+							key: 'listbox',
+							activeIndex: _focusedIndex,
+							widgetId: widgetId,
+							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
+							optionData: options,
+							tabIndex: _open ? 0 : -1,
+							getOptionDisabled,
+							getOptionId,
+							getOptionLabel,
+							getOptionSelected,
+							theme,
+							classes,
+							onActiveIndexChange: (index: number) => {
+								this._focusedIndex = index;
+								this.invalidate();
+							},
+							onOptionSelect: (option: any) => {
+								onChange && onChange(option, key);
+								this._closeSelect();
+								this.focus();
+							},
+							onKeyDown: (event: KeyboardEvent) => {
+								const index = this._getSelectedIndexOnInput(event);
+								if (index !== undefined) {
+									this._focusedIndex = index;
+									this.invalidate();
+								}
+							}
+						})
+					]
+				)
+			]
+		);
 	}
 
 	protected renderCustomTrigger(): DNode[] {
@@ -359,32 +380,35 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 
 		if (selectedOption) {
 			label = this._getOptionLabel(selectedOption);
-		}
-		else {
+		} else {
 			isPlaceholder = true;
 			label = placeholder ? placeholder : this._getOptionLabel(options[0]);
 		}
 
 		return [
-			v('button', {
-				...formatAriaProperties(aria),
-				'aria-controls': this._baseId,
-				'aria-expanded': `${this._open}`,
-				'aria-haspopup': 'listbox',
-				'aria-invalid': invalid ? 'true' : null,
-				'aria-required': required ? 'true' : null,
-				classes: this.theme([ css.trigger, isPlaceholder ? css.placeholder : null ]),
-				disabled: disabled || readOnly,
-				focus: this._focusNode === 'trigger' ? this.shouldFocus : () => false,
-				key: 'trigger',
-				type: 'button',
-				value,
-				onblur: this._onTriggerBlur,
-				onclick: this._onTriggerClick,
-				onfocus: this._onFocus,
-				onkeydown: this._onTriggerKeyDown,
-				onmousedown: this._onTriggerMouseDown
-			}, [ label ]),
+			v(
+				'button',
+				{
+					...formatAriaProperties(aria),
+					'aria-controls': this._baseId,
+					'aria-expanded': `${this._open}`,
+					'aria-haspopup': 'listbox',
+					'aria-invalid': invalid ? 'true' : null,
+					'aria-required': required ? 'true' : null,
+					classes: this.theme([css.trigger, isPlaceholder ? css.placeholder : null]),
+					disabled: disabled || readOnly,
+					focus: this._focusNode === 'trigger' ? this.shouldFocus : () => false,
+					key: 'trigger',
+					type: 'button',
+					value,
+					onblur: this._onTriggerBlur,
+					onclick: this._onTriggerClick,
+					onfocus: this._onFocus,
+					onkeydown: this._onTriggerKeyDown,
+					onmousedown: this._onTriggerMouseDown
+				},
+				[label]
+			),
 			this.renderExpandIcon()
 		];
 	}
@@ -406,32 +430,42 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 
 		const focus = this.meta(Focus).get('root');
 
-		return v('div', {
-			key: 'root',
-			classes: this.theme([
-				css.root,
-				disabled ? css.disabled : null,
-				focus.containsFocus ? css.focused : null,
-				invalid === true ? css.invalid : null,
-				invalid === false ? css.valid : null,
-				readOnly ? css.readonly : null,
-				required ? css.required : null
-			])
-		}, [
-			label ? w(Label, {
-				theme,
-				classes,
-				disabled,
-				focused: focus.containsFocus,
-				invalid,
-				readOnly,
-				required,
-				hidden: labelHidden,
-				forId: widgetId
-			}, [ label ]) : null,
-			useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect(),
-			w(HelperText, { theme, text: helperText })
-		]);
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: this.theme([
+					css.root,
+					disabled ? css.disabled : null,
+					focus.containsFocus ? css.focused : null,
+					invalid === true ? css.invalid : null,
+					invalid === false ? css.valid : null,
+					readOnly ? css.readonly : null,
+					required ? css.required : null
+				])
+			},
+			[
+				label
+					? w(
+							Label,
+							{
+								theme,
+								classes,
+								disabled,
+								focused: focus.containsFocus,
+								invalid,
+								readOnly,
+								required,
+								hidden: labelHidden,
+								forId: widgetId
+							},
+							[label]
+					  )
+					: null,
+				useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect(),
+				w(HelperText, { theme, text: helperText })
+			]
+		);
 	}
 }
 

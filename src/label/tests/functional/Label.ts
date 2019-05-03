@@ -19,7 +19,7 @@ registerSuite('Label', {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-1 .${css.root}`)
 			.getSize()
-			.then(({ height, width }: { height: number; width: number; }) => {
+			.then(({ height, width }: { height: number; width: number }) => {
 				assert.isAbove(height, 0, 'The label height should be greater than zero.');
 				assert.isAbove(width, 0, 'The label width should be greater than zero.');
 			})
@@ -28,37 +28,38 @@ registerSuite('Label', {
 	'Label text should be as defined'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-1 .${css.root}`)
-				.getVisibleText()
-				.then((text: string) => {
-					assert.strictEqual(text, 'Type Something');
-				})
+			.getVisibleText()
+			.then((text: string) => {
+				assert.strictEqual(text, 'Type Something');
+			})
 			.end();
-
 	},
 	'Input box should gain focus when clicking on the label'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-3 .${css.root}`)
-				.click()
+			.click()
 			.end()
 			.sleep(250)
-			.execute(`return document.activeElement === document.querySelector('#example-3 input');`)
-			.then(isEqual => {
+			.execute(
+				`return document.activeElement === document.querySelector('#example-3 input');`
+			)
+			.then((isEqual) => {
 				assert.isTrue(isEqual);
 			});
 	},
 	'Hidden label text should not be displayed'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-2 .${css.root}`)
-				.getVisibleText()
-				.then((text: string) => {
-					assert.strictEqual(text, 'Can\'t read me!');
-				})
+			.getVisibleText()
+			.then((text: string) => {
+				assert.strictEqual(text, "Can't read me!");
+			})
 
-				.getSize()
-				.then(({ height, width }: { height: number; width: number; }) => {
-					assert.isAtMost(height, 1, 'The label text height should be no more than 1px.');
-					assert.isAtMost(width, 1, 'The label text width should be no more than 1px.');
-				})
+			.getSize()
+			.then(({ height, width }: { height: number; width: number }) => {
+				assert.isAtMost(height, 1, 'The label text height should be no more than 1px.');
+				assert.isAtMost(width, 1, 'The label text width should be no more than 1px.');
+			})
 			.end();
 	},
 

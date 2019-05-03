@@ -20,18 +20,18 @@ registerSuite('AccordionPane', {
 		return getPage(this.remote)
 			.sleep(DELAY)
 			.findByCssSelector('#pane > div > :first-child')
-				.getSize()
-				.then((size: { height: number }) => {
-					assert.isBelow(size.height, 50);
-				})
-				.findByCssSelector('button')
-					.click()
-				.end()
-				.sleep(DELAY)
-				.getSize()
-				.then((size: { height: number }) => {
-					assert.isAbove(size.height, 50);
-				});
+			.getSize()
+			.then((size: { height: number }) => {
+				assert.isBelow(size.height, 50);
+			})
+			.findByCssSelector('button')
+			.click()
+			.end()
+			.sleep(DELAY)
+			.getSize()
+			.then((size: { height: number }) => {
+				assert.isAbove(size.height, 50);
+			});
 	},
 
 	'check accessibility'() {

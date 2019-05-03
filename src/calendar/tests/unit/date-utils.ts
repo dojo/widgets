@@ -37,6 +37,5 @@ registerSuite('Calendar date utils', {
 			assert.isFalse(monthInMin(2019, -1, janFirst2019));
 			assert.isTrue(monthInMin(2020, -2, janFirst2019));
 		}
-
 	}
 });

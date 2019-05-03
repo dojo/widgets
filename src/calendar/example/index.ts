@@ -13,7 +13,9 @@ export default class App extends WidgetBase {
 
 	render() {
 		return v('div', {}, [
-			v('p', [`You may select days between ${this._minDate.toDateString()} and ${this._maxDate.toDateString()}`]),
+			v('p', [
+				`You may select days between ${this._minDate.toDateString()} and ${this._maxDate.toDateString()}`
+			]),
 			w(Calendar, {
 				key: 'calendar-start-sunday',
 				month: this._month,
@@ -34,7 +36,9 @@ export default class App extends WidgetBase {
 					this.invalidate();
 				}
 			}),
-			this._selectedDate ? v('p', [ `Selected Date: ${this._selectedDate.toDateString()}` ]) : null
+			this._selectedDate
+				? v('p', [`Selected Date: ${this._selectedDate.toDateString()}`])
+				: null
 		]);
 	}
 }

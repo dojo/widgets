@@ -27,18 +27,29 @@ export interface AccordionPaneProperties extends ThemedProperties {
 @theme(css)
 @customElement<AccordionPaneProperties>({
 	tag: 'dojo-accordion-pane',
-	properties: [ 'openKeys', 'theme', 'extraClasses', 'classes' ],
-	events: [ 'onRequestClose', 'onRequestOpen' ]
+	properties: ['openKeys', 'theme', 'extraClasses', 'classes'],
+	events: ['onRequestClose', 'onRequestOpen']
 })
-export class AccordionPane extends ThemedMixin(WidgetBase)<AccordionPaneProperties, WNode<TitlePane>> {
-	private _assignCallback(child: WNode<TitlePane>, functionName: 'onRequestClose' | 'onRequestOpen', callback: (key: string) => void) {
+export class AccordionPane extends ThemedMixin(WidgetBase)<
+	AccordionPaneProperties,
+	WNode<TitlePane>
+> {
+	private _assignCallback(
+		child: WNode<TitlePane>,
+		functionName: 'onRequestClose' | 'onRequestOpen',
+		callback: (key: string) => void
+	) {
 		const existingProperty = child.properties[functionName];
-		const property = () => { callback.call(this, `${ child.properties.key }`); };
+		const property = () => {
+			callback.call(this, `${child.properties.key}`);
+		};
 
-		return existingProperty ? (key: string) => {
-			existingProperty(key);
-			property();
-		} : property;
+		return existingProperty
+			? (key: string) => {
+					existingProperty(key);
+					property();
+			  }
+			: property;
 	}
 
 	protected onRequestClose(key: string) {
@@ -52,24 +63,30 @@ export class AccordionPane extends ThemedMixin(WidgetBase)<AccordionPaneProperti
 	}
 
 	protected renderChildren(): DNode[] {
-		const {
-			openKeys = [],
-			theme,
-			classes
-		} = this.properties;
+		const { openKeys = [], theme, classes } = this.properties;
 
-		return this.children.filter((child) => child).map(child => {
-			// null checks skipped since children are filtered prior to mapping
-			assign(child!.properties, {
-				onRequestClose: this._assignCallback(child!, 'onRequestClose', this.onRequestClose),
-				onRequestOpen: this._assignCallback(child!, 'onRequestOpen', this.onRequestOpen),
-				open: includes(openKeys, child!.properties.key),
-				theme,
-				classes
+		return this.children
+			.filter((child) => child)
+			.map((child) => {
+				// null checks skipped since children are filtered prior to mapping
+				assign(child!.properties, {
+					onRequestClose: this._assignCallback(
+						child!,
+						'onRequestClose',
+						this.onRequestClose
+					),
+					onRequestOpen: this._assignCallback(
+						child!,
+						'onRequestOpen',
+						this.onRequestOpen
+					),
+					open: includes(openKeys, child!.properties.key),
+					theme,
+					classes
+				});
+
+				return child;
 			});
-
-			return child;
-		});
 	}
 
 	protected render(): DNode {

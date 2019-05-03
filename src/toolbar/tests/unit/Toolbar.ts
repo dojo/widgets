@@ -19,15 +19,16 @@ registerSuite('Toolbar', {
 	tests: {
 		'default rendering'() {
 			const h = harness(() => w(Toolbar, {}));
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, null ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				null,
-				null,
-				null
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, null]
+					},
+					[w(GlobalEvent, { window: { resize: noop }, key: 'global' }), null, null, null]
+				)
+			);
 		},
 
 		'expanded rendering'() {
@@ -45,48 +46,67 @@ registerSuite('Toolbar', {
 
 			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), { collapseWidth: 10 }));
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, null ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				null,
-				null,
-				null
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, null]
+					},
+					[w(GlobalEvent, { window: { resize: noop }, key: 'global' }), null, null, null]
+				)
+			);
 		},
 
 		'custom title rendering'() {
 			const h = harness(() => w(Toolbar, { heading: 'test' }));
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, null ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: css.title
-				}, [ 'test' ]),
-				null,
-				null
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, null]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						v(
+							'div',
+							{
+								classes: css.title
+							},
+							['test']
+						),
+						null,
+						null
+					]
+				)
+			);
 		},
 
 		'actions rendering'() {
-			const h = harness(() => w(Toolbar, {}, [ 'test' ]));
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, null ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				null,
-				v('div', {
-					classes: css.actions,
-					key: 'menu'
-				}, [
-					'test'
-				]),
-				null
-			]));
+			const h = harness(() => w(Toolbar, {}, ['test']));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, null]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						null,
+						v(
+							'div',
+							{
+								classes: css.actions,
+								key: 'menu'
+							},
+							['test']
+						),
+						null
+					]
+				)
+			);
 		},
 
 		'open and close menu'() {
@@ -105,48 +125,63 @@ registerSuite('Toolbar', {
 				collapseWidth: 1000,
 				onCollapse: () => {}
 			};
-			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), properties, [ 'test' ]));
-			const slidePaneVDom = w(SlidePane, {
-				align: Align.right,
-				closeText: 'close',
-				key: 'slide-pane-menu',
-				onRequestClose: noop,
-				open: false,
-				theme: undefined,
-				classes: undefined,
-				title: 'foo'
-			}, [
-				v('div', {
-					classes: css.actions,
-					key: 'menu'
-				}, [
-				'test'
-				])
-			]);
+			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), properties, ['test']));
+			const slidePaneVDom = w(
+				SlidePane,
+				{
+					align: Align.right,
+					closeText: 'close',
+					key: 'slide-pane-menu',
+					onRequestClose: noop,
+					open: false,
+					theme: undefined,
+					classes: undefined,
+					title: 'foo'
+				},
+				[
+					v(
+						'div',
+						{
+							classes: css.actions,
+							key: 'menu'
+						},
+						['test']
+					)
+				]
+			);
 
-			const buttonVDom = v('button', {
-				classes: css.menuButton,
-				type: 'button',
-				onclick: noop
-			}, [
-				'open',
-				w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })
-			]);
+			const buttonVDom = v(
+				'button',
+				{
+					classes: css.menuButton,
+					type: 'button',
+					onclick: noop
+				},
+				['open', w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })]
+			);
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, null ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				null,
-				v('div', {
-					classes: css.actions,
-					key: 'menu'
-				}, [
-					'test'
-				]),
-				null
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, null]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						null,
+						v(
+							'div',
+							{
+								classes: css.actions,
+								key: 'menu'
+							},
+							['test']
+						),
+						null
+					]
+				)
+			);
 
 			properties = { heading: 'foo' };
 			h.trigger('@global', (node: any) => {
@@ -155,32 +190,52 @@ registerSuite('Toolbar', {
 				}
 			});
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: css.title
-				}, [ 'foo' ]),
-				slidePaneVDom,
-				buttonVDom
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, css.collapsed]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						v(
+							'div',
+							{
+								classes: css.title
+							},
+							['foo']
+						),
+						slidePaneVDom,
+						buttonVDom
+					]
+				)
+			);
 
 			h.trigger(`.${css.menuButton}`, 'onclick', stubEvent);
 			h.trigger('@slide-pane-menu', 'onRequestClose');
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: css.title
-				}, [ 'foo' ]),
-				slidePaneVDom,
-				buttonVDom
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, css.collapsed]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						v(
+							'div',
+							{
+								classes: css.title
+							},
+							['foo']
+						),
+						slidePaneVDom,
+						buttonVDom
+					]
+				)
+			);
 		},
 
 		'menu on left'() {
@@ -200,48 +255,63 @@ registerSuite('Toolbar', {
 				collapseWidth: 1000,
 				onCollapse: () => {}
 			};
-			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), properties, [ 'test' ]));
-			const slidePaneVDom = w(SlidePane, {
-				align: Align.left,
-				closeText: 'close',
-				key: 'slide-pane-menu',
-				onRequestClose: noop,
-				open: false,
-				theme: undefined,
-				classes: undefined,
-				title: 'foo'
-			}, [
-				v('div', {
-					classes: css.actions,
-					key: 'menu'
-				}, [
-					'test'
-				])
-			]);
+			const h = harness(() => w(MockMetaMixin(Toolbar, mockMeta), properties, ['test']));
+			const slidePaneVDom = w(
+				SlidePane,
+				{
+					align: Align.left,
+					closeText: 'close',
+					key: 'slide-pane-menu',
+					onRequestClose: noop,
+					open: false,
+					theme: undefined,
+					classes: undefined,
+					title: 'foo'
+				},
+				[
+					v(
+						'div',
+						{
+							classes: css.actions,
+							key: 'menu'
+						},
+						['test']
+					)
+				]
+			);
 
-			const buttonVDom = v('button', {
-				classes: css.menuButton,
-				type: 'button',
-				onclick: noop
-			}, [
-				'open',
-				w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })
-			]);
+			const buttonVDom = v(
+				'button',
+				{
+					classes: css.menuButton,
+					type: 'button',
+					onclick: noop
+				},
+				['open', w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })]
+			);
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, null ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				null,
-				v('div', {
-					classes: css.actions,
-					key: 'menu'
-				}, [
-					'test'
-				]),
-				null
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, null]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						null,
+						v(
+							'div',
+							{
+								classes: css.actions,
+								key: 'menu'
+							},
+							['test']
+						),
+						null
+					]
+				)
+			);
 
 			properties = {
 				align: Align.left,
@@ -254,32 +324,52 @@ registerSuite('Toolbar', {
 				}
 			});
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: css.title
-				}, [ 'foo' ]),
-				slidePaneVDom,
-				buttonVDom
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, css.collapsed]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						v(
+							'div',
+							{
+								classes: css.title
+							},
+							['foo']
+						),
+						slidePaneVDom,
+						buttonVDom
+					]
+				)
+			);
 
 			h.trigger(`.${css.menuButton}`, 'onclick', stubEvent);
 			h.trigger('@slide-pane-menu', 'onRequestClose');
 
-			h.expect(() => v('div', {
-				key: 'root',
-				classes: [ fixedCss.rootFixed, css.root, css.collapsed ]
-			}, [
-				w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-				v('div', {
-					classes: css.title
-				}, [ 'foo' ]),
-				slidePaneVDom,
-				buttonVDom
-			]));
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [fixedCss.rootFixed, css.root, css.collapsed]
+					},
+					[
+						w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
+						v(
+							'div',
+							{
+								classes: css.title
+							},
+							['foo']
+						),
+						slidePaneVDom,
+						buttonVDom
+					]
+				)
+			);
 		}
 	}
 });

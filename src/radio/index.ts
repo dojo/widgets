@@ -4,7 +4,14 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-cor
 import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
-import { CustomAriaProperties, LabeledProperties, InputProperties, KeyEventProperties, CheckboxRadioEventProperties, PointerEventProperties } from '../common/interfaces';
+import {
+	CustomAriaProperties,
+	LabeledProperties,
+	InputProperties,
+	KeyEventProperties,
+	CheckboxRadioEventProperties,
+	PointerEventProperties
+} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { uuid } from '@dojo/framework/core/util';
@@ -19,7 +26,15 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property checked          Checked/unchecked property of the radio
  * @property value           The current value
  */
-export interface RadioProperties extends ThemedProperties, LabeledProperties, InputProperties, FocusProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties, CheckboxRadioEventProperties {
+export interface RadioProperties
+	extends ThemedProperties,
+		LabeledProperties,
+		InputProperties,
+		FocusProperties,
+		KeyEventProperties,
+		PointerEventProperties,
+		CustomAriaProperties,
+		CheckboxRadioEventProperties {
 	checked?: boolean;
 	value?: string;
 }
@@ -40,7 +55,7 @@ export interface RadioProperties extends ThemedProperties, LabeledProperties, In
 		'labelAfter',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'label', 'value', 'name' ],
+	attributes: ['widgetId', 'label', 'value', 'name'],
 	events: [
 		'onBlur',
 		'onChange',
@@ -59,53 +74,47 @@ export interface RadioProperties extends ThemedProperties, LabeledProperties, In
 export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> {
 	private _uuid = uuid();
 
-	private _onBlur (event: FocusEvent) {
+	private _onBlur(event: FocusEvent) {
 		const radio = event.target as HTMLInputElement;
 		this.properties.onBlur && this.properties.onBlur(radio.value, radio.checked);
 	}
-	private _onChange (event: Event) {
+	private _onChange(event: Event) {
 		event.stopPropagation();
 		const radio = event.target as HTMLInputElement;
 		this.properties.onChange && this.properties.onChange(radio.value, radio.checked);
 	}
-	private _onClick (event: MouseEvent) {
+	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
 		const radio = event.target as HTMLInputElement;
 		this.properties.onClick && this.properties.onClick(radio.value, radio.checked);
 	}
-	private _onFocus (event: FocusEvent) {
+	private _onFocus(event: FocusEvent) {
 		const radio = event.target as HTMLInputElement;
 		this.properties.onFocus && this.properties.onFocus(radio.value, radio.checked);
 	}
-	private _onMouseDown (event: MouseEvent) {
+	private _onMouseDown(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onMouseDown && this.properties.onMouseDown();
 	}
-	private _onMouseUp (event: MouseEvent) {
+	private _onMouseUp(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onMouseUp && this.properties.onMouseUp();
 	}
-	private _onTouchStart (event: TouchEvent) {
+	private _onTouchStart(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchStart && this.properties.onTouchStart();
 	}
-	private _onTouchEnd (event: TouchEvent) {
+	private _onTouchEnd(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchEnd && this.properties.onTouchEnd();
 	}
-	private _onTouchCancel (event: TouchEvent) {
+	private _onTouchCancel(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const {
-			checked = false,
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
+		const { checked = false, disabled, invalid, readOnly, required } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -165,31 +174,45 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 					ontouchend: this._onTouchEnd,
 					ontouchcancel: this._onTouchCancel
 				}),
-				v('div', {
-					classes: this.theme(css.radioBackground)
-				}, [
-					v('div', { classes: this.theme(css.radioOuter) }),
-					v('div', { classes: this.theme(css.radioInner) })
-				])
+				v(
+					'div',
+					{
+						classes: this.theme(css.radioBackground)
+					},
+					[
+						v('div', { classes: this.theme(css.radioOuter) }),
+						v('div', { classes: this.theme(css.radioInner) })
+					]
+				)
 			]),
-			label ? w(Label, {
-				theme,
-				classes,
-				disabled,
-				focused: focus.containsFocus,
-				invalid,
-				readOnly,
-				required,
-				hidden: labelHidden,
-				forId: widgetId,
-				secondary: true
-			}, [ label ]) : null
+			label
+				? w(
+						Label,
+						{
+							theme,
+							classes,
+							disabled,
+							focused: focus.containsFocus,
+							invalid,
+							readOnly,
+							required,
+							hidden: labelHidden,
+							forId: widgetId,
+							secondary: true
+						},
+						[label]
+				  )
+				: null
 		];
 
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, labelAfter ? children : children.reverse());
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: this.theme(this.getRootClasses())
+			},
+			labelAfter ? children : children.reverse()
+		);
 	}
 }
 

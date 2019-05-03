@@ -13,11 +13,18 @@ import {
 	compareForId,
 	createHarness,
 	MockMetaMixin,
-	stubEvent, compareAriaDescribedBy, compareWidgetId, compareAriaLabelledBy
+	stubEvent,
+	compareAriaDescribedBy,
+	compareWidgetId,
+	compareAriaLabelledBy
 } from '../../../common/tests/support/test-helpers';
 import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 
-const compareFor = { selector: '*', property: 'for', comparator: (property: any) => typeof property === 'string' };
+const compareFor = {
+	selector: '*',
+	property: 'for',
+	comparator: (property: any) => typeof property === 'string'
+};
 const harness = createHarness([compareId, compareForId, compareFor]);
 
 const sliderProps = {
@@ -51,257 +58,328 @@ const sliderProps = {
 registerSuite('RangeSlider', {
 	tests: {
 		'renders two sliders'() {
-			const h = harness(() => w(RangeSlider, {}), [compareAriaDescribedBy, compareAriaLabelledBy]);
-			h.expectPartial('@slider1', () => v('input', {
-				...sliderProps,
-				key: 'slider1',
-				name: '_min',
-				value: '0',
-				styles: {
-					clip: 'rect(auto, 0px, auto, auto)'
-				}
-			}));
+			const h = harness(() => w(RangeSlider, {}), [
+				compareAriaDescribedBy,
+				compareAriaLabelledBy
+			]);
+			h.expectPartial('@slider1', () =>
+				v('input', {
+					...sliderProps,
+					key: 'slider1',
+					name: '_min',
+					value: '0',
+					styles: {
+						clip: 'rect(auto, 0px, auto, auto)'
+					}
+				})
+			);
 
-			h.expectPartial('@slider2', () => v('input', {
-				...sliderProps,
-				key: 'slider2',
-				name: '_max',
-				value: '100',
-				styles: {
-					clip: 'rect(auto, auto, auto, 0px)'
-				}
-			}));
+			h.expectPartial('@slider2', () =>
+				v('input', {
+					...sliderProps,
+					key: 'slider2',
+					name: '_max',
+					value: '100',
+					styles: {
+						clip: 'rect(auto, auto, auto, 0px)'
+					}
+				})
+			);
 		},
 
 		'renders two thumbs'() {
 			const h = harness(() => w(RangeSlider, {}));
-			h.expectPartial('@leftThumb', () => v('div', {
-				key: 'leftThumb',
-				classes: [css.thumb, css.leftThumb, undefined, fixedCss.thumbFixed],
-				styles: {
-					left: '0%'
-				}
-			}));
-			h.expectPartial('@rightThumb', () => v('div', {
-				key: 'rightThumb',
-				classes: [css.thumb, css.rightThumb, undefined, fixedCss.thumbFixed],
-				styles: {
-					left: '100%'
-				}
-			}));
+			h.expectPartial('@leftThumb', () =>
+				v('div', {
+					key: 'leftThumb',
+					classes: [css.thumb, css.leftThumb, undefined, fixedCss.thumbFixed],
+					styles: {
+						left: '0%'
+					}
+				})
+			);
+			h.expectPartial('@rightThumb', () =>
+				v('div', {
+					key: 'rightThumb',
+					classes: [css.thumb, css.rightThumb, undefined, fixedCss.thumbFixed],
+					styles: {
+						left: '100%'
+					}
+				})
+			);
 		},
 
 		'renders a track'() {
 			const h = harness(() => w(RangeSlider, {}));
-			h.expectPartial('@track', () => v('div', {
-				key: 'track',
-				classes: [css.filled, fixedCss.filledFixed],
-				styles: {
-					left: '0%',
-					width: '100%'
-				}
-			}));
+			h.expectPartial('@track', () =>
+				v('div', {
+					key: 'track',
+					classes: [css.filled, fixedCss.filledFixed],
+					styles: {
+						left: '0%',
+						width: '100%'
+					}
+				})
+			);
 		},
 
-		'name': {
+		name: {
 			'uses a default name'() {
-				const h = harness(() => w(RangeSlider, {
-					name: 'test'
-				}), [compareAriaDescribedBy, compareAriaLabelledBy]);
-				h.expectPartial('@slider1', () => v('input', {
-					...sliderProps,
-					key: 'slider1',
-					name: 'test_min',
-					value: '0',
-					styles: {
-						clip: 'rect(auto, 0px, auto, auto)'
-					}
-				}));
+				const h = harness(
+					() =>
+						w(RangeSlider, {
+							name: 'test'
+						}),
+					[compareAriaDescribedBy, compareAriaLabelledBy]
+				);
+				h.expectPartial('@slider1', () =>
+					v('input', {
+						...sliderProps,
+						key: 'slider1',
+						name: 'test_min',
+						value: '0',
+						styles: {
+							clip: 'rect(auto, 0px, auto, auto)'
+						}
+					})
+				);
 
-				h.expectPartial('@slider2', () => v('input', {
-					...sliderProps,
-					key: 'slider2',
-					name: 'test_max',
-					value: '100',
-					styles: {
-						clip: 'rect(auto, auto, auto, 0px)'
-					}
-				}));
+				h.expectPartial('@slider2', () =>
+					v('input', {
+						...sliderProps,
+						key: 'slider2',
+						name: 'test_max',
+						value: '100',
+						styles: {
+							clip: 'rect(auto, auto, auto, 0px)'
+						}
+					})
+				);
 			},
 			'uses custom names'() {
-				const h = harness(() => w(RangeSlider, {
-					minName: 'minValue',
-					maxName: 'maxValue'
-				}), [compareAriaDescribedBy, compareAriaLabelledBy]);
-				h.expectPartial('@slider1', () => v('input', {
+				const h = harness(
+					() =>
+						w(RangeSlider, {
+							minName: 'minValue',
+							maxName: 'maxValue'
+						}),
+					[compareAriaDescribedBy, compareAriaLabelledBy]
+				);
+				h.expectPartial('@slider1', () =>
+					v('input', {
+						...sliderProps,
+						key: 'slider1',
+						name: 'minValue',
+						value: '0',
+						styles: {
+							clip: 'rect(auto, 0px, auto, auto)'
+						}
+					})
+				);
+
+				h.expectPartial('@slider2', () =>
+					v('input', {
+						...sliderProps,
+						key: 'slider2',
+						name: 'maxValue',
+						value: '100',
+						styles: {
+							clip: 'rect(auto, auto, auto, 0px)'
+						}
+					})
+				);
+			}
+		},
+		disabled() {
+			const h = harness(
+				() =>
+					w(RangeSlider, {
+						disabled: true
+					}),
+				[compareAriaDescribedBy, compareAriaLabelledBy]
+			);
+			h.expectPartial('@slider1', () =>
+				v('input', {
 					...sliderProps,
 					key: 'slider1',
-					name: 'minValue',
+					disabled: true,
+					name: '_min',
 					value: '0',
 					styles: {
 						clip: 'rect(auto, 0px, auto, auto)'
 					}
-				}));
+				})
+			);
 
-				h.expectPartial('@slider2', () => v('input', {
+			h.expectPartial('@slider2', () =>
+				v('input', {
 					...sliderProps,
 					key: 'slider2',
-					name: 'maxValue',
+					disabled: true,
+					name: '_max',
 					value: '100',
 					styles: {
 						clip: 'rect(auto, auto, auto, 0px)'
 					}
-				}));
-			}
+				})
+			);
 		},
-		'disabled'() {
-			const h = harness(() => w(RangeSlider, {
-				disabled: true
-			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
-			h.expectPartial('@slider1', () => v('input', {
-				...sliderProps,
-				key: 'slider1',
-				disabled: true,
-				name: '_min',
-				value: '0',
-				styles: {
-					clip: 'rect(auto, 0px, auto, auto)'
-				}
-			}));
+		readonly() {
+			const h = harness(
+				() =>
+					w(RangeSlider, {
+						readOnly: true
+					}),
+				[compareAriaDescribedBy, compareAriaLabelledBy]
+			);
+			h.expectPartial('@slider1', () =>
+				v('input', {
+					...sliderProps,
+					'aria-readonly': 'true',
+					key: 'slider1',
+					readonly: true,
+					name: '_min',
+					value: '0',
+					styles: {
+						clip: 'rect(auto, 0px, auto, auto)'
+					}
+				})
+			);
 
-			h.expectPartial('@slider2', () => v('input', {
-				...sliderProps,
-				key: 'slider2',
-				disabled: true,
-				name: '_max',
-				value: '100',
-				styles: {
-					clip: 'rect(auto, auto, auto, 0px)'
-				}
-			}));
+			h.expectPartial('@slider2', () =>
+				v('input', {
+					...sliderProps,
+					'aria-readonly': 'true',
+					key: 'slider2',
+					readonly: true,
+					name: '_max',
+					value: '100',
+					styles: {
+						clip: 'rect(auto, auto, auto, 0px)'
+					}
+				})
+			);
 		},
-		'readonly'() {
-			const h = harness(() => w(RangeSlider, {
-				readOnly: true
-			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
-			h.expectPartial('@slider1', () => v('input', {
-				...sliderProps,
-				'aria-readonly': 'true',
-				key: 'slider1',
-				readonly: true,
-				name: '_min',
-				value: '0',
-				styles: {
-					clip: 'rect(auto, 0px, auto, auto)'
-				}
-			}));
+		required() {
+			const h = harness(
+				() =>
+					w(RangeSlider, {
+						required: true
+					}),
+				[compareAriaDescribedBy, compareAriaLabelledBy]
+			);
+			h.expectPartial('@slider1', () =>
+				v('input', {
+					...sliderProps,
+					key: 'slider1',
+					required: true,
+					name: '_min',
+					value: '0',
+					styles: {
+						clip: 'rect(auto, 0px, auto, auto)'
+					}
+				})
+			);
 
-			h.expectPartial('@slider2', () => v('input', {
-				...sliderProps,
-				'aria-readonly': 'true',
-				key: 'slider2',
-				readonly: true,
-				name: '_max',
-				value: '100',
-				styles: {
-					clip: 'rect(auto, auto, auto, 0px)'
-				}
-			}));
+			h.expectPartial('@slider2', () =>
+				v('input', {
+					...sliderProps,
+					key: 'slider2',
+					required: true,
+					name: '_max',
+					value: '100',
+					styles: {
+						clip: 'rect(auto, auto, auto, 0px)'
+					}
+				})
+			);
 		},
-		'required'() {
-			const h = harness(() => w(RangeSlider, {
-				required: true
-			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
-			h.expectPartial('@slider1', () => v('input', {
-				...sliderProps,
-				key: 'slider1',
-				required: true,
-				name: '_min',
-				value: '0',
-				styles: {
-					clip: 'rect(auto, 0px, auto, auto)'
-				}
-			}));
+		invalid() {
+			const h = harness(
+				() =>
+					w(RangeSlider, {
+						invalid: true
+					}),
+				[compareAriaDescribedBy, compareAriaLabelledBy]
+			);
+			h.expectPartial('@slider1', () =>
+				v('input', {
+					...sliderProps,
+					'aria-invalid': 'true',
+					key: 'slider1',
+					name: '_min',
+					value: '0',
+					styles: {
+						clip: 'rect(auto, 0px, auto, auto)'
+					}
+				})
+			);
 
-			h.expectPartial('@slider2', () => v('input', {
-				...sliderProps,
-				key: 'slider2',
-				required: true,
-				name: '_max',
-				value: '100',
-				styles: {
-					clip: 'rect(auto, auto, auto, 0px)'
-				}
-			}));
-		},
-		'invalid'() {
-			const h = harness(() => w(RangeSlider, {
-				invalid: true
-			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
-			h.expectPartial('@slider1', () => v('input', {
-				...sliderProps,
-				'aria-invalid': 'true',
-				key: 'slider1',
-				name: '_min',
-				value: '0',
-				styles: {
-					clip: 'rect(auto, 0px, auto, auto)'
-				}
-			}));
-
-			h.expectPartial('@slider2', () => v('input', {
-				...sliderProps,
-				'aria-invalid': 'true',
-				key: 'slider2',
-				name: '_max',
-				value: '100',
-				styles: {
-					clip: 'rect(auto, auto, auto, 0px)'
-				}
-			}));
+			h.expectPartial('@slider2', () =>
+				v('input', {
+					...sliderProps,
+					'aria-invalid': 'true',
+					key: 'slider2',
+					name: '_max',
+					value: '100',
+					styles: {
+						clip: 'rect(auto, auto, auto, 0px)'
+					}
+				})
+			);
 		},
 		'slider values'() {
-			const h = harness(() => w(RangeSlider, {
-				min: 25,
-				max: 50,
-				minValue: 25,
-				maxValue: 50,
-				step: 5
-			}), [compareAriaDescribedBy, compareAriaLabelledBy]);
+			const h = harness(
+				() =>
+					w(RangeSlider, {
+						min: 25,
+						max: 50,
+						minValue: 25,
+						maxValue: 50,
+						step: 5
+					}),
+				[compareAriaDescribedBy, compareAriaLabelledBy]
+			);
 
-			h.expectPartial('@slider1', () => v('input', {
-				...sliderProps,
-				key: 'slider1',
-				name: '_min',
-				value: '25',
-				min: '25',
-				max: '50',
-				step: '5',
-				styles: {
-					clip: 'rect(auto, 0px, auto, auto)'
-				}
-			}));
+			h.expectPartial('@slider1', () =>
+				v('input', {
+					...sliderProps,
+					key: 'slider1',
+					name: '_min',
+					value: '25',
+					min: '25',
+					max: '50',
+					step: '5',
+					styles: {
+						clip: 'rect(auto, 0px, auto, auto)'
+					}
+				})
+			);
 
-			h.expectPartial('@slider2', () => v('input', {
-				...sliderProps,
-				key: 'slider2',
-				name: '_max',
-				value: '50',
-				min: '25',
-				max: '50',
-				step: '5',
-				styles: {
-					clip: 'rect(auto, auto, auto, 0px)'
-				}
-			}));
+			h.expectPartial('@slider2', () =>
+				v('input', {
+					...sliderProps,
+					key: 'slider2',
+					name: '_max',
+					value: '50',
+					min: '25',
+					max: '50',
+					step: '5',
+					styles: {
+						clip: 'rect(auto, auto, auto, 0px)'
+					}
+				})
+			);
 		},
-		'events': {
-			'onChange'() {
+		events: {
+			onChange() {
 				const onChange = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onChange
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onChange
+					})
+				);
 
 				h.trigger('@slider1', 'onchange', {
 					stopPropagation: sinon.stub(),
@@ -321,12 +399,14 @@ registerSuite('RangeSlider', {
 
 				assert(onChange.calledWith(0, 50));
 			},
-			'onInput'() {
+			onInput() {
 				const onInput = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onInput
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onInput
+					})
+				);
 
 				h.trigger('@slider1', 'oninput', {
 					stopPropagation: sinon.stub(),
@@ -347,12 +427,14 @@ registerSuite('RangeSlider', {
 				assert(onInput.calledWith(0, 50));
 			},
 
-			'onBlur'() {
+			onBlur() {
 				const onBlur = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onBlur
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onBlur
+					})
+				);
 
 				h.trigger('@slider1', 'onblur', {
 					stopPropagation: sinon.stub(),
@@ -372,12 +454,14 @@ registerSuite('RangeSlider', {
 
 				assert(onBlur.calledWith(0, 50));
 			},
-			'onFocus'() {
+			onFocus() {
 				const onFocus = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onFocus
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onFocus
+					})
+				);
 
 				h.trigger('@slider1', 'onfocus', {
 					stopPropagation: sinon.stub(),
@@ -397,12 +481,14 @@ registerSuite('RangeSlider', {
 
 				assert(onFocus.calledWith(0, 50));
 			},
-			'onClick'() {
+			onClick() {
 				const onClick = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onClick
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onClick
+					})
+				);
 
 				h.trigger('@slider1', 'onclick', {
 					stopPropagation: sinon.stub(),
@@ -422,12 +508,14 @@ registerSuite('RangeSlider', {
 
 				assert(onClick.calledWith(0, 50));
 			},
-			'onKeyDown'() {
+			onKeyDown() {
 				const onKeyDown = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onKeyDown
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onKeyDown
+					})
+				);
 
 				h.trigger('@slider1', 'onkeydown', {
 					preventDefault: sinon.stub(),
@@ -444,12 +532,14 @@ registerSuite('RangeSlider', {
 				assert(onKeyDown.calledTwice);
 			},
 
-			'onKeyUp'() {
+			onKeyUp() {
 				const onKeyUp = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onKeyUp
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onKeyUp
+					})
+				);
 
 				h.trigger('@slider1', 'onkeyup', {
 					preventDefault: sinon.stub(),
@@ -466,12 +556,14 @@ registerSuite('RangeSlider', {
 				assert(onKeyUp.calledTwice);
 			},
 
-			'onKeyPress'() {
+			onKeyPress() {
 				const onKeyPress = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onKeyPress
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onKeyPress
+					})
+				);
 
 				h.trigger('@slider1', 'onkeypress', {
 					preventDefault: sinon.stub(),
@@ -488,12 +580,14 @@ registerSuite('RangeSlider', {
 				assert(onKeyPress.calledTwice);
 			},
 
-			'onMouseDown'() {
+			onMouseDown() {
 				const onMouseDown = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onMouseDown
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onMouseDown
+					})
+				);
 
 				h.trigger('@slider1', 'onmousedown', {
 					preventDefault: sinon.stub(),
@@ -510,12 +604,14 @@ registerSuite('RangeSlider', {
 				assert(onMouseDown.calledTwice);
 			},
 
-			'onMouseUp'() {
+			onMouseUp() {
 				const onMouseUp = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onMouseUp
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onMouseUp
+					})
+				);
 
 				h.trigger('@slider1', 'onmouseup', {
 					preventDefault: sinon.stub(),
@@ -532,12 +628,14 @@ registerSuite('RangeSlider', {
 				assert(onMouseUp.calledTwice);
 			},
 
-			'onTouchStart'() {
+			onTouchStart() {
 				const onTouchStart = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onTouchStart
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onTouchStart
+					})
+				);
 
 				h.trigger('@slider1', 'ontouchstart', {
 					preventDefault: sinon.stub(),
@@ -554,12 +652,14 @@ registerSuite('RangeSlider', {
 				assert(onTouchStart.calledTwice);
 			},
 
-			'onTouchEnd'() {
+			onTouchEnd() {
 				const onTouchEnd = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onTouchEnd
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onTouchEnd
+					})
+				);
 
 				h.trigger('@slider1', 'ontouchend', {
 					preventDefault: sinon.stub(),
@@ -576,12 +676,14 @@ registerSuite('RangeSlider', {
 				assert(onTouchEnd.calledTwice);
 			},
 
-			'onTouchCancel'() {
+			onTouchCancel() {
 				const onTouchCancel = sinon.stub();
 
-				const h = harness(() => w(RangeSlider, {
-					onTouchCancel
-				}));
+				const h = harness(() =>
+					w(RangeSlider, {
+						onTouchCancel
+					})
+				);
 
 				h.trigger('@slider1', 'ontouchcancel', {
 					preventDefault: sinon.stub(),
@@ -615,56 +717,76 @@ registerSuite('RangeSlider', {
 					'ontouchstart',
 					'ontouchend',
 					'ontouchcancel'
-				].forEach(key => {
+				].forEach((key) => {
 					h.trigger('@slider1', key, stubEvent);
 					h.trigger('@slider2', key, stubEvent);
 				});
 			}
 		},
-		'label': {
+		label: {
 			'plain label'() {
-				const h = harness(() => w(RangeSlider, {
-					label: 'Test'
-				}), [compareWidgetId]);
+				const h = harness(
+					() =>
+						w(RangeSlider, {
+							label: 'Test'
+						}),
+					[compareWidgetId]
+				);
 
-				h.expectPartial('@label', () => w(Label, {
-					key: 'label',
-					theme: undefined,
-					classes: undefined,
-					disabled: undefined,
-					focused: false,
-					invalid: undefined,
-					readOnly: undefined,
-					required: undefined,
-					hidden: undefined,
-					widgetId: ''
-				}, ['Test']));
+				h.expectPartial('@label', () =>
+					w(
+						Label,
+						{
+							key: 'label',
+							theme: undefined,
+							classes: undefined,
+							disabled: undefined,
+							focused: false,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							hidden: undefined,
+							widgetId: ''
+						},
+						['Test']
+					)
+				);
 			},
 
 			'disabled/required/readonly label'() {
-				const h = harness(() => w(RangeSlider, {
-					label: 'Test',
-					disabled: true,
-					required: true,
-					readOnly: true
-				}), [compareWidgetId]);
+				const h = harness(
+					() =>
+						w(RangeSlider, {
+							label: 'Test',
+							disabled: true,
+							required: true,
+							readOnly: true
+						}),
+					[compareWidgetId]
+				);
 
-				h.expectPartial('@label', () => w(Label, {
-					key: 'label',
-					theme: undefined,
-					classes: undefined,
-					disabled: true,
-					focused: false,
-					invalid: undefined,
-					readOnly: true,
-					required: true,
-					hidden: undefined,
-					widgetId: ''
-				}, ['Test']));
+				h.expectPartial('@label', () =>
+					w(
+						Label,
+						{
+							key: 'label',
+							theme: undefined,
+							classes: undefined,
+							disabled: true,
+							focused: false,
+							invalid: undefined,
+							readOnly: true,
+							required: true,
+							hidden: undefined,
+							widgetId: ''
+						},
+						['Test']
+					)
+				);
 			}
 		},
 
-		'focus': {
+		focus: {
 			'detects focus'() {
 				const mockMeta = sinon.stub();
 				const mockFocusGet = sinon.stub().returns({
@@ -683,37 +805,51 @@ registerSuite('RangeSlider', {
 					get: mockDimensionsGet
 				});
 
-				const h = harness(() => w(MockMetaMixin(RangeSlider, mockMeta), {
-					label: 'Test'
-				}), [compareWidgetId]);
-				h.expectPartial('@label', () => w(Label, {
-					key: 'label',
-					theme: undefined,
-					classes: undefined,
-					disabled: undefined,
-					focused: true,
-					invalid: undefined,
-					readOnly: undefined,
-					required: undefined,
-					hidden: undefined,
-					widgetId: ''
-				}, ['Test']));
+				const h = harness(
+					() =>
+						w(MockMetaMixin(RangeSlider, mockMeta), {
+							label: 'Test'
+						}),
+					[compareWidgetId]
+				);
+				h.expectPartial('@label', () =>
+					w(
+						Label,
+						{
+							key: 'label',
+							theme: undefined,
+							classes: undefined,
+							disabled: undefined,
+							focused: true,
+							invalid: undefined,
+							readOnly: undefined,
+							required: undefined,
+							hidden: undefined,
+							widgetId: ''
+						},
+						['Test']
+					)
+				);
 
-				h.expectPartial('@leftThumb', () => v('div', {
-					key: 'leftThumb',
-					classes: [css.thumb, css.leftThumb, css.focused, fixedCss.thumbFixed],
-					styles: {
-						left: '0%'
-					}
-				}));
+				h.expectPartial('@leftThumb', () =>
+					v('div', {
+						key: 'leftThumb',
+						classes: [css.thumb, css.leftThumb, css.focused, fixedCss.thumbFixed],
+						styles: {
+							left: '0%'
+						}
+					})
+				);
 
-				h.expectPartial('@rightThumb', () => v('div', {
-					key: 'rightThumb',
-					classes: [css.thumb, css.rightThumb, css.focused, fixedCss.thumbFixed],
-					styles: {
-						left: '100%'
-					}
-				}));
+				h.expectPartial('@rightThumb', () =>
+					v('div', {
+						key: 'rightThumb',
+						classes: [css.thumb, css.rightThumb, css.focused, fixedCss.thumbFixed],
+						styles: {
+							left: '100%'
+						}
+					})
+				);
 			}
 		}
 	}

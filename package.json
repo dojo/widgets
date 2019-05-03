@@ -18,9 +18,15 @@
   },
   "scripts": {
     "prepublish": "grunt peerDepInstall",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "grunt test",
     "build-custom-elements": "shx rm -rf output && dojo build widget",
     "dist-custom-elements": "npm run build-custom-elements && shx rm -rf dist/all/dist && shx cp -r output/dist dist/all/"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "peerDependencies": {
     "@dojo/framework": "^5.0.0"
@@ -46,9 +52,25 @@
     "shx": "^0.2.2",
     "sinon": "^1.17.6",
     "ts-node": "^3.3.0",
-    "typescript": "~2.6.1"
+    "typescript": "~2.6.1",
+    "husky": "2.2.0",
+    "lint-staged": "8.1.6",
+    "prettier": "1.17.0"
   },
   "dependencies": {
     "tslib": "~1.8.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 4,
+    "useTabs": true,
+    "printWidth": 100,
+    "arrowParens": "always"
   }
 }

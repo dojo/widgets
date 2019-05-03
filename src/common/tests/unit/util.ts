@@ -4,7 +4,6 @@ const { assert } = intern.getPlugin('chai');
 import { formatAriaProperties, Keys } from '../../util';
 
 registerSuite('util', {
-
 	keys() {
 		assert.strictEqual(Keys.Down, 40);
 		assert.strictEqual(Keys.End, 35);

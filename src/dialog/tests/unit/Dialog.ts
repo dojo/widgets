@@ -20,62 +20,80 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
-const harness = createHarness([ compareId, compareAriaLabelledBy ]);
+const harness = createHarness([compareId, compareAriaLabelledBy]);
 
 const expectedCloseButton = function() {
-	return v('button', {
-		classes: css.close,
-		type: 'button',
-		onclick: noop
-	}, [
-		'close ',
-		w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
-	]);
+	return v(
+		'button',
+		{
+			classes: css.close,
+			type: 'button',
+			onclick: noop
+		},
+		['close ', w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })]
+	);
 };
 
 const expected = function(open = false, closeable = false, children: any[] = []) {
-	return v('div', {
-		classes: [css.root, open ? css.open : null]
-	}, open ? [
-		w(GlobalEvent, {
-			key: 'global',
-			document: {
-				keyup: noop
-			}
-		}),
-		v('div', {
-			classes: [ null, fixedCss.underlay ],
-			enterAnimation: css.underlayEnter,
-			exitAnimation: css.underlayExit,
-			key: 'underlay',
-			onclick: noop
-		}),
-		v('div', {
-			'aria-labelledby': '',
-			classes: css.main,
-			enterAnimation: css.enter,
-			exitAnimation: css.exit,
-			key: 'main',
-			role: 'dialog',
-			tabIndex: -1
-		}, [
-			v('div', {
-				classes: css.title,
-				key: 'title'
-			}, [
-				v('div', { id: '' }, [ '' ]),
-				closeable ? expectedCloseButton() : null
-			]),
-			v('div', {
-				classes: css.content,
-				key: 'content'
-			}, children)
-		])
-	] : []);
+	return v(
+		'div',
+		{
+			classes: [css.root, open ? css.open : null]
+		},
+		open
+			? [
+					w(GlobalEvent, {
+						key: 'global',
+						document: {
+							keyup: noop
+						}
+					}),
+					v('div', {
+						classes: [null, fixedCss.underlay],
+						enterAnimation: css.underlayEnter,
+						exitAnimation: css.underlayExit,
+						key: 'underlay',
+						onclick: noop
+					}),
+					v(
+						'div',
+						{
+							'aria-labelledby': '',
+							classes: css.main,
+							enterAnimation: css.enter,
+							exitAnimation: css.exit,
+							key: 'main',
+							role: 'dialog',
+							tabIndex: -1
+						},
+						[
+							v(
+								'div',
+								{
+									classes: css.title,
+									key: 'title'
+								},
+								[
+									v('div', { id: '' }, ['']),
+									closeable ? expectedCloseButton() : null
+								]
+							),
+							v(
+								'div',
+								{
+									classes: css.content,
+									key: 'content'
+								},
+								children
+							)
+						]
+					)
+			  ]
+			: []
+	);
 };
 
 registerSuite('Dialog', {
-
 	tests: {
 		'default properties'() {
 			let properties: DialogProperties = {};
@@ -108,52 +126,78 @@ registerSuite('Dialog', {
 				underlay: true
 			};
 
-			h.expect(() => v('div', {
-				classes: [css.root, css.open]
-			}, [
-				w(GlobalEvent, {
-					key: 'global',
-					document: {
-						keyup: noop
-					}
-				}),
-				v('div', {
-					classes: [ css.underlayVisible, fixedCss.underlay ],
-					enterAnimation: css.underlayEnter,
-					exitAnimation: css.underlayExit,
-					key: 'underlay',
-					onclick: noop
-				}),
-				v('div', {
-					role: 'alertdialog',
-					'aria-describedby': 'foo',
-					'aria-labelledby': '',
-					classes: css.main,
-					enterAnimation: 'fooAnimation',
-					exitAnimation: 'barAnimation',
-					key: 'main',
-					tabIndex: -1
-				}, [
-					v('div', {
-						classes: css.title,
-						key: 'title'
-					}, [
-						v('div', { id: '' }, [ 'foo' ]),
-						v('button', {
-							classes: css.close,
-							type: 'button',
+			h.expect(() =>
+				v(
+					'div',
+					{
+						classes: [css.root, css.open]
+					},
+					[
+						w(GlobalEvent, {
+							key: 'global',
+							document: {
+								keyup: noop
+							}
+						}),
+						v('div', {
+							classes: [css.underlayVisible, fixedCss.underlay],
+							enterAnimation: css.underlayEnter,
+							exitAnimation: css.underlayExit,
+							key: 'underlay',
 							onclick: noop
-						}, [
-							'foo',
-							w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
-						])
-					]),
-					v('div', {
-						classes: css.content,
-						key: 'content'
-					}, [])
-				])
-			]));
+						}),
+						v(
+							'div',
+							{
+								role: 'alertdialog',
+								'aria-describedby': 'foo',
+								'aria-labelledby': '',
+								classes: css.main,
+								enterAnimation: 'fooAnimation',
+								exitAnimation: 'barAnimation',
+								key: 'main',
+								tabIndex: -1
+							},
+							[
+								v(
+									'div',
+									{
+										classes: css.title,
+										key: 'title'
+									},
+									[
+										v('div', { id: '' }, ['foo']),
+										v(
+											'button',
+											{
+												classes: css.close,
+												type: 'button',
+												onclick: noop
+											},
+											[
+												'foo',
+												w(Icon, {
+													type: 'closeIcon',
+													theme: undefined,
+													classes: undefined
+												})
+											]
+										)
+									]
+								),
+								v(
+									'div',
+									{
+										classes: css.content,
+										key: 'content'
+									},
+									[]
+								)
+							]
+						)
+					]
+				)
+			);
 		},
 
 		'turn off animations'() {
@@ -173,116 +217,174 @@ registerSuite('Dialog', {
 				title: 'foo'
 			};
 
-			h.expect(() => v('div', {
-				classes: [css.root, css.open]
-			}, [
-				w(GlobalEvent, {
-					key: 'global',
-					document: {
-						keyup: noop
-					}
-				}),
-				v('div', {
-					classes: [ css.underlayVisible, fixedCss.underlay ],
-					enterAnimation: null,
-					exitAnimation: null,
-					key: 'underlay',
-					onclick: noop
-				}),
-				v('div', {
-					role: 'dialog',
-					'aria-labelledby': '',
-					classes: css.main,
-					enterAnimation: null,
-					exitAnimation: null,
-					key: 'main',
-					tabIndex: -1
-				}, [
-					v('div', {
-						classes: css.title,
-						key: 'title'
-					}, [
-						v('div', { id: '' }, [ 'foo' ]),
-						v('button', {
-							classes: css.close,
-							type: 'button',
+			h.expect(() =>
+				v(
+					'div',
+					{
+						classes: [css.root, css.open]
+					},
+					[
+						w(GlobalEvent, {
+							key: 'global',
+							document: {
+								keyup: noop
+							}
+						}),
+						v('div', {
+							classes: [css.underlayVisible, fixedCss.underlay],
+							enterAnimation: null,
+							exitAnimation: null,
+							key: 'underlay',
 							onclick: noop
-						}, [
-							'close foo',
-							w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
-						])
-					]),
-					v('div', {
-						classes: css.content,
-						key: 'content'
-					}, [])
-				])
-			]));
+						}),
+						v(
+							'div',
+							{
+								role: 'dialog',
+								'aria-labelledby': '',
+								classes: css.main,
+								enterAnimation: null,
+								exitAnimation: null,
+								key: 'main',
+								tabIndex: -1
+							},
+							[
+								v(
+									'div',
+									{
+										classes: css.title,
+										key: 'title'
+									},
+									[
+										v('div', { id: '' }, ['foo']),
+										v(
+											'button',
+											{
+												classes: css.close,
+												type: 'button',
+												onclick: noop
+											},
+											[
+												'close foo',
+												w(Icon, {
+													type: 'closeIcon',
+													theme: undefined,
+													classes: undefined
+												})
+											]
+										)
+									]
+								),
+								v(
+									'div',
+									{
+										classes: css.content,
+										key: 'content'
+									},
+									[]
+								)
+							]
+						)
+					]
+				)
+			);
 		},
 
 		'correct close text'() {
-			const h = harness(() => w(Dialog, {
-				closeable: true,
-				open: true,
-				title: 'foo'
-			}));
-			h.expect(() => v('div', {
-				classes: [css.root, css.open]
-			}, [
-				w(GlobalEvent, {
-					key: 'global',
-					document: {
-						keyup: noop
-					}
-				}),
-				v('div', {
-					classes: [ null, fixedCss.underlay ],
-					enterAnimation: css.underlayEnter,
-					exitAnimation: css.underlayExit,
-					key: 'underlay',
-					onclick: noop
-				}),
-				v('div', {
-					role: 'dialog',
-					'aria-labelledby': '',
-					classes: css.main,
-					enterAnimation: css.enter,
-					exitAnimation: css.exit,
-					key: 'main',
-					tabIndex: -1
-				}, [
-					v('div', {
-						classes: css.title,
-						key: 'title'
-					}, [
-						v('div', { id: '' }, [ 'foo' ]),
-						v('button', {
-							classes: css.close,
-							type: 'button',
+			const h = harness(() =>
+				w(Dialog, {
+					closeable: true,
+					open: true,
+					title: 'foo'
+				})
+			);
+			h.expect(() =>
+				v(
+					'div',
+					{
+						classes: [css.root, css.open]
+					},
+					[
+						w(GlobalEvent, {
+							key: 'global',
+							document: {
+								keyup: noop
+							}
+						}),
+						v('div', {
+							classes: [null, fixedCss.underlay],
+							enterAnimation: css.underlayEnter,
+							exitAnimation: css.underlayExit,
+							key: 'underlay',
 							onclick: noop
-						}, [
-							'close foo',
-							w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })
-						])
-					]),
-					v('div', {
-						classes: css.content,
-						key: 'content'
-					}, [])
-				])
-			]));
+						}),
+						v(
+							'div',
+							{
+								role: 'dialog',
+								'aria-labelledby': '',
+								classes: css.main,
+								enterAnimation: css.enter,
+								exitAnimation: css.exit,
+								key: 'main',
+								tabIndex: -1
+							},
+							[
+								v(
+									'div',
+									{
+										classes: css.title,
+										key: 'title'
+									},
+									[
+										v('div', { id: '' }, ['foo']),
+										v(
+											'button',
+											{
+												classes: css.close,
+												type: 'button',
+												onclick: noop
+											},
+											[
+												'close foo',
+												w(Icon, {
+													type: 'closeIcon',
+													theme: undefined,
+													classes: undefined
+												})
+											]
+										)
+									]
+								),
+								v(
+									'div',
+									{
+										classes: css.content,
+										key: 'content'
+									},
+									[]
+								)
+							]
+						)
+					]
+				)
+			);
 		},
 
 		children() {
-			const h = harness(() => w(Dialog, { open: true }, [
-				v('p', [ 'Lorem ipsum dolor sit amet' ]),
-				v('a', { href: '#foo' }, [ 'foo' ])
-			]));
+			const h = harness(() =>
+				w(Dialog, { open: true }, [
+					v('p', ['Lorem ipsum dolor sit amet']),
+					v('a', { href: '#foo' }, ['foo'])
+				])
+			);
 
-			h.expect(() => expected(true, true, [
-				v('p', [ 'Lorem ipsum dolor sit amet' ]),
-				v('a', { href: '#foo' }, [ 'foo' ])
-			]));
+			h.expect(() =>
+				expected(true, true, [
+					v('p', ['Lorem ipsum dolor sit amet']),
+					v('a', { href: '#foo' }, ['foo'])
+				])
+			);
 		},
 
 		onRequestClose() {
@@ -294,7 +396,10 @@ registerSuite('Dialog', {
 			};
 			const h = harness(() => w(Dialog, properties));
 			h.trigger(`.${css.close}`, 'onclick', stubEvent);
-			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler called when close button is clicked');
+			assert.isTrue(
+				onRequestClose.calledOnce,
+				'onRequestClose handler called when close button is clicked'
+			);
 
 			properties = {
 				closeable: false,
@@ -302,7 +407,10 @@ registerSuite('Dialog', {
 				onRequestClose
 			};
 			h.trigger(`.${css.close}`, 'onclick', stubEvent);
-			assert.isTrue(onRequestClose.calledOnce, 'onRequestClose handler not called when closeable is false');
+			assert.isTrue(
+				onRequestClose.calledOnce,
+				'onRequestClose handler not called when closeable is false'
+			);
 		},
 
 		onOpen() {
@@ -312,7 +420,10 @@ registerSuite('Dialog', {
 				onOpen
 			};
 			const h = harness(() => w(Dialog, properties));
-			assert.isTrue(onOpen.calledOnce, 'onOpen handler called when open is initially set to true');
+			assert.isTrue(
+				onOpen.calledOnce,
+				'onOpen handler called when open is initially set to true'
+			);
 
 			properties = {
 				closeable: true,
@@ -320,7 +431,10 @@ registerSuite('Dialog', {
 				onOpen
 			};
 			h.expect(() => expected(true, true));
-			assert.isTrue(onOpen.calledOnce, 'onOpen handler not called if dialog was previously open');
+			assert.isTrue(
+				onOpen.calledOnce,
+				'onOpen handler not called if dialog was previously open'
+			);
 		},
 
 		modal() {
@@ -333,7 +447,10 @@ registerSuite('Dialog', {
 			const h = harness(() => w(Dialog, properties));
 			h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
 
-			assert.isFalse(onRequestClose.called, 'onRequestClose should not be called when the underlay is clicked and modal is true');
+			assert.isFalse(
+				onRequestClose.called,
+				'onRequestClose should not be called when the underlay is clicked and modal is true'
+			);
 
 			properties = {
 				open: true,
@@ -342,26 +459,39 @@ registerSuite('Dialog', {
 			};
 
 			h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
-			assert.isTrue(onRequestClose.called, 'onRequestClose is called when the underlay is clicked and modal is false');
+			assert.isTrue(
+				onRequestClose.called,
+				'onRequestClose is called when the underlay is clicked and modal is false'
+			);
 		},
 
 		escapeKey() {
 			const onRequestClose = sinon.stub();
-			const h = harness(() => w(Dialog, {
-				open: true,
-				onRequestClose
-			}));
-			h.trigger('@global', (node: any) => {
-				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
-					return node.properties.document.keyup;
-				}
-			}, { which: Keys.Down , ...stubEvent });
+			const h = harness(() =>
+				w(Dialog, {
+					open: true,
+					onRequestClose
+				})
+			);
+			h.trigger(
+				'@global',
+				(node: any) => {
+					if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
+						return node.properties.document.keyup;
+					}
+				},
+				{ which: Keys.Down, ...stubEvent }
+			);
 			assert.isTrue(onRequestClose.notCalled);
-			h.trigger('@global', (node: any) => {
-				if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
-					return node.properties.document.keyup;
-				}
-			}, { which: Keys.Escape , ...stubEvent });
+			h.trigger(
+				'@global',
+				(node: any) => {
+					if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
+						return node.properties.document.keyup;
+					}
+				},
+				{ which: Keys.Escape, ...stubEvent }
+			);
 			assert.isTrue(onRequestClose.calledOnce);
 		},
 
@@ -425,7 +555,10 @@ registerSuite('Dialog', {
 				});
 				mockFocusSet.reset();
 				h.expect(() => expected(true, true));
-				assert.isFalse(mockFocusSet.called, 'set focus not called when dialog contains focus');
+				assert.isFalse(
+					mockFocusSet.called,
+					'set focus not called when dialog contains focus'
+				);
 
 				// force render
 				properties = {
@@ -437,7 +570,10 @@ registerSuite('Dialog', {
 					containsFocus: false
 				});
 				h.expect(() => expected(true, true));
-				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog loses focus while open');
+				assert.isTrue(
+					mockFocusSet.calledOnce,
+					'focus set when dialog loses focus while open'
+				);
 			},
 
 			'close non-modal dialog when focus leaves'() {
@@ -470,7 +606,10 @@ registerSuite('Dialog', {
 				});
 				mockFocusSet.reset();
 				h.expect(() => expected(true, true));
-				assert.isFalse(mockFocusSet.called, 'set focus not called when dialog contains focus');
+				assert.isFalse(
+					mockFocusSet.called,
+					'set focus not called when dialog contains focus'
+				);
 
 				// force render
 				properties = {
@@ -483,7 +622,10 @@ registerSuite('Dialog', {
 					containsFocus: false
 				});
 				h.expect(() => expected(true, true));
-				assert.isTrue(mockRequestClose.calledOnce, 'onRequestClose called when focus leaves');
+				assert.isTrue(
+					mockRequestClose.calledOnce,
+					'onRequestClose called when focus leaves'
+				);
 			}
 		}
 	}

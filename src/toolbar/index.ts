@@ -35,11 +35,9 @@ export interface ToolbarProperties extends ThemedProperties {
 @theme(css)
 @customElement<ToolbarProperties>({
 	tag: 'dojo-toolbar',
-	properties: [ 'theme', 'classes', 'extraClasses', 'collapseWidth' ],
-	attributes: [ 'key', 'heading' ],
-	events: [
-		'onCollapse'
-	]
+	properties: ['theme', 'classes', 'extraClasses', 'collapseWidth'],
+	attributes: ['key', 'heading'],
+	events: ['onCollapse']
 })
 export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarProperties> {
 	private _collapsed = false;
@@ -58,13 +56,12 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 			this._collapsed = false;
 			onCollapse && onCollapse(this._collapsed);
 			this.invalidate();
-		}
-		else if (width <= collapseWidth && this._collapsed === false) {
+		} else if (width <= collapseWidth && this._collapsed === false) {
 			this._collapsed = true;
 			onCollapse && onCollapse(this._collapsed);
 			this.invalidate();
 		}
-	}
+	};
 
 	private _toggleMenu(event: MouseEvent) {
 		event.stopPropagation();
@@ -79,67 +76,78 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 	protected renderActions(): DNode {
 		const { close } = this.localizeBundle(commonBundle).messages;
 
-		const {
-			align = Align.right,
-			theme,
-			classes,
-			heading
-		} = this.properties;
-		const actions = v('div', {
-			classes: this.theme(css.actions),
-			key: 'menu'
-		}, this.children);
+		const { align = Align.right, theme, classes, heading } = this.properties;
+		const actions = v(
+			'div',
+			{
+				classes: this.theme(css.actions),
+				key: 'menu'
+			},
+			this.children
+		);
 
-		return this._collapsed ? w(SlidePane, {
-			align,
-			closeText: close,
-			key: 'slide-pane-menu',
-			onRequestClose: this._closeMenu,
-			open: this._open,
-			theme,
-			classes,
-			title: heading
-		}, [ actions ]) : actions;
+		return this._collapsed
+			? w(
+					SlidePane,
+					{
+						align,
+						closeText: close,
+						key: 'slide-pane-menu',
+						onRequestClose: this._closeMenu,
+						open: this._open,
+						theme,
+						classes,
+						title: heading
+					},
+					[actions]
+			  )
+			: actions;
 	}
 
 	protected renderButton(): DNode {
 		const { open } = this.localizeBundle(commonBundle).messages;
 		const { theme, classes } = this.properties;
 
-		return v('button', {
-			classes: this.theme(css.menuButton),
-			type: 'button',
-			onclick: this._toggleMenu
-		}, [
-			open,
-			w(Icon, { type: 'barsIcon', theme, classes })
-		]);
+		return v(
+			'button',
+			{
+				classes: this.theme(css.menuButton),
+				type: 'button',
+				onclick: this._toggleMenu
+			},
+			[open, w(Icon, { type: 'barsIcon', theme, classes })]
+		);
 	}
 
 	protected render(): DNode {
-		const {
-			heading
-		} = this.properties;
+		const { heading } = this.properties;
 
 		const hasActions = this.children && this.children.length;
 
-		return v('div', {
-			key: 'root',
-			classes: [
-				fixedCss.rootFixed,
-				...this.theme([
-					css.root,
-					this._collapsed ? css.collapsed : null
-				])
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: [
+					fixedCss.rootFixed,
+					...this.theme([css.root, this._collapsed ? css.collapsed : null])
+				]
+			},
+			[
+				w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
+				heading
+					? v(
+							'div',
+							{
+								classes: this.theme(css.title)
+							},
+							[heading]
+					  )
+					: null,
+				hasActions ? this.renderActions() : null,
+				hasActions && this._collapsed ? this.renderButton() : null
 			]
-		}, [
-			w(GlobalEvent, { key: 'global', window: { resize: this._collapseIfNecessary } }),
-			heading ? v('div', {
-				classes: this.theme(css.title)
-			}, [ heading ]) : null,
-			hasActions ? this.renderActions() : null,
-			hasActions && this._collapsed ? this.renderButton() : null
-		]);
+		);
 	}
 }
 

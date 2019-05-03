@@ -10,7 +10,13 @@ import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
 import Resize from '@dojo/framework/widget-core/meta/Resize';
 
 import { Fetcher, ColumnConfig, GridState, Updater } from './interfaces';
-import { fetcherProcess, pageChangeProcess, sortProcess, filterProcess, updaterProcess } from './processes';
+import {
+	fetcherProcess,
+	pageChangeProcess,
+	sortProcess,
+	filterProcess,
+	updaterProcess
+} from './processes';
 
 import Header, { SortRenderer, FilterRenderer } from './Header';
 import Body from './Body';
@@ -45,16 +51,8 @@ export interface GridProperties<S> extends ThemedProperties {
 @theme(css)
 @customElement<GridProperties<any>>({
 	tag: 'dojo-grid',
-	properties: [
-		'theme',
-		'classes',
-		'height',
-		'fetcher',
-		'updater',
-		'columnConfig',
-		'store'
-	],
-	attributes: [ 'storeId' ]
+	properties: ['theme', 'classes', 'height', 'fetcher', 'updater', 'columnConfig', 'store'],
+	attributes: ['storeId']
 })
 export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> {
 	private _store = new Store<GridState<S>>();
@@ -120,7 +118,13 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	protected render(): DNode {
-		const { columnConfig, storeId, theme, classes, customRenderers = {} } = this._getProperties();
+		const {
+			columnConfig,
+			storeId,
+			theme,
+			classes,
+			customRenderers = {}
+		} = this._getProperties();
 		const { sortRenderer, filterRenderer } = customRenderers;
 
 		if (!columnConfig || !this.properties.fetcher) {
@@ -135,58 +139,74 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		this.meta(Resize).get('root');
 
 		if (bodyHeight <= 0) {
-			return v('div', { key: 'root', classes: [this.theme(css.root), fixedCss.rootFixed], role: 'table' });
+			return v('div', {
+				key: 'root',
+				classes: [this.theme(css.root), fixedCss.rootFixed],
+				role: 'table'
+			});
 		}
 
-		return v('div', {
-			key: 'root',
-			classes: [this.theme(css.root), fixedCss.rootFixed],
-			role: 'table',
-			'aria-rowcount': meta.total ? `${meta.total}` : null
-		}, [
-			v('div', {
-				key: 'header',
-				scrollLeft: this._scrollLeft,
-				classes: [this.theme(css.header), fixedCss.headerFixed, hasFilters ? this.theme(css.filterGroup) : null],
-				row: 'rowgroup'
-			}, [
-				w(Header, {
-					key: 'header-row',
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: [this.theme(css.root), fixedCss.rootFixed],
+				role: 'table',
+				'aria-rowcount': meta.total ? `${meta.total}` : null
+			},
+			[
+				v(
+					'div',
+					{
+						key: 'header',
+						scrollLeft: this._scrollLeft,
+						classes: [
+							this.theme(css.header),
+							fixedCss.headerFixed,
+							hasFilters ? this.theme(css.filterGroup) : null
+						],
+						row: 'rowgroup'
+					},
+					[
+						w(Header, {
+							key: 'header-row',
+							theme,
+							classes,
+							columnConfig,
+							sorter: this._sorter,
+							sort: meta.sort,
+							filter: meta.filter,
+							filterer: this._filterer,
+							sortRenderer,
+							filterRenderer
+						})
+					]
+				),
+				w(Body, {
+					key: 'body',
 					theme,
 					classes,
+					pages,
+					totalRows: meta.total,
+					pageSize: this._pageSize,
 					columnConfig,
-					sorter: this._sorter,
-					sort: meta.sort,
-					filter: meta.filter,
-					filterer: this._filterer,
-					sortRenderer,
-					filterRenderer
-				})
-			]),
-			w(Body, {
-				key: 'body',
-				theme,
-				classes,
-				pages,
-				totalRows: meta.total,
-				pageSize: this._pageSize,
-				columnConfig,
-				fetcher: this._fetcher,
-				pageChange: this._pageChange,
-				updater: this._updater,
-				onScroll: this._onScroll,
-				height: bodyHeight
-			}),
-			v('div', { key: 'footer' }, [
-				w(Footer, {
-					key: 'footer-row',
-					theme,
-					classes,
-					total: meta.total,
-					page: meta.page,
-					pageSize: this._pageSize
-				})
-			])
-		]);
+					fetcher: this._fetcher,
+					pageChange: this._pageChange,
+					updater: this._updater,
+					onScroll: this._onScroll,
+					height: bodyHeight
+				}),
+				v('div', { key: 'footer' }, [
+					w(Footer, {
+						key: 'footer-row',
+						theme,
+						classes,
+						total: meta.total,
+						page: meta.page,
+						pageSize: this._pageSize
+					})
+				])
+			]
+		);
 	}
 }

@@ -50,7 +50,7 @@ export interface DatePickerProperties extends ThemedProperties {
 	labelId?: string;
 	labels: typeof calendarBundle.messages;
 	month: number;
-	monthNames: { short: string; long: string; }[];
+	monthNames: { short: string; long: string }[];
 	year: number;
 	yearRange?: number;
 	minDate?: Date;
@@ -106,12 +106,11 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 
 	private _getYearRange() {
 		const { year, yearRange = 20 } = this.properties;
-		const offset = (year - BASE_YEAR) % yearRange - yearRange * this._yearPage;
+		const offset = ((year - BASE_YEAR) % yearRange) - yearRange * this._yearPage;
 
-		if ( year >= BASE_YEAR) {
+		if (year >= BASE_YEAR) {
 			return { first: year - offset, last: year + yearRange - offset };
-		}
-		else {
+		} else {
 			return { first: year - (yearRange + offset), last: year - offset };
 		}
 	}
@@ -124,7 +123,8 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 	private _onMonthRadioChange(event: Event) {
 		event.stopPropagation();
 		const { onRequestMonthChange } = this.properties;
-		onRequestMonthChange && onRequestMonthChange(parseInt((event.target as HTMLInputElement).value, 10));
+		onRequestMonthChange &&
+			onRequestMonthChange(parseInt((event.target as HTMLInputElement).value, 10));
 	}
 
 	private _onPopupKeyDown(event: KeyboardEvent) {
@@ -167,8 +167,7 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 			const { minDate, maxDate, onRequestMonthChange } = this.properties;
 			if (minDate && newYear === minDate.getFullYear()) {
 				onRequestMonthChange && onRequestMonthChange(minDate.getMonth());
-			}
-			else if (maxDate && newYear === maxDate.getFullYear()) {
+			} else if (maxDate && newYear === maxDate.getFullYear()) {
 				onRequestMonthChange && onRequestMonthChange(maxDate.getMonth());
 			}
 		}
@@ -195,82 +194,92 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 	}
 
 	private _monthInMinMax(year: number, month: number) {
-		let {
-			minDate,
-			maxDate
-		} = this.properties;
+		let { minDate, maxDate } = this.properties;
 
 		return monthInMin(year, month, minDate) && monthInMax(year, month, maxDate);
 	}
 
 	private _yearInMinMax(year: number) {
-		const {
-			minDate,
-			maxDate
-		} = this.properties;
+		const { minDate, maxDate } = this.properties;
 		const minYear = minDate ? minDate.getFullYear() : year;
 		const maxYear = maxDate ? maxDate.getFullYear() : year;
 		return year >= minYear && year <= maxYear;
 	}
 
 	protected renderControlsTrigger(type: Controls): DNode {
-		const {
-			month,
-			monthNames,
-			year
-		} = this.properties;
+		const { month, monthNames, year } = this.properties;
 
 		const content = type === Controls.month ? monthNames[month].long : `${year}`;
 		const open = type === Controls.month ? this._monthPopupOpen : this._yearPopupOpen;
-		const onclick = type === Controls.month ? this._onMonthButtonClick : this._onYearButtonClick;
+		const onclick =
+			type === Controls.month ? this._onMonthButtonClick : this._onYearButtonClick;
 
-		return v('button', {
-			key: `${type}-button`,
-			'aria-controls': `${this._idBase}_${type}_dialog`,
-			'aria-expanded': `${open}`,
-			'aria-haspopup': 'true',
-			id: `${this._idBase}_${type}_button`,
-			classes: this.theme([
-				(css as any)[`${type}Trigger`],
-				open ? (css as any)[`${type}TriggerActive`] : null
-			]),
-			role: 'menuitem',
-			type: 'button',
-			onclick
-		}, [ content ]);
+		return v(
+			'button',
+			{
+				key: `${type}-button`,
+				'aria-controls': `${this._idBase}_${type}_dialog`,
+				'aria-expanded': `${open}`,
+				'aria-haspopup': 'true',
+				id: `${this._idBase}_${type}_button`,
+				classes: this.theme([
+					(css as any)[`${type}Trigger`],
+					open ? (css as any)[`${type}TriggerActive`] : null
+				]),
+				role: 'menuitem',
+				type: 'button',
+				onclick
+			},
+			[content]
+		);
 	}
 
 	protected renderMonthLabel(month: number, year: number): DNode {
 		const { monthNames, renderMonthLabel } = this.properties;
-		return renderMonthLabel ? renderMonthLabel(month, year) : `${monthNames[month].long} ${year}`;
+		return renderMonthLabel
+			? renderMonthLabel(month, year)
+			: `${monthNames[month].long} ${year}`;
 	}
 
 	protected renderMonthRadios(): DNode[] {
 		const { year, month } = this.properties;
 
-		return this.properties.monthNames.map((monthName, i) => v('label', {
-			key: `${this._idBase}_month_radios_${i}`,
-			classes: this.theme([ css.monthRadio, i === month ? css.monthRadioChecked : null ]),
-			for: this._getMonthInputKey(i),
-			onmouseup: this._closeMonthPopup
-		}, [
-			v('input', {
-				checked: i === month,
-				classes: this.theme(css.monthRadioInput),
-				id: this._getMonthInputKey(i),
-				key: this._getMonthInputKey(i),
-				name: `${this._idBase}_month_radios`,
-				tabIndex: this._monthPopupOpen ? 0 : -1,
-				type: 'radio',
-				value: `${i}`,
-				disabled: !this._monthInMinMax(year, i),
-				onchange: this._onMonthRadioChange
-			}),
-			v('abbr', {
-				classes: this.theme(css.monthRadioLabel),
-				title: monthName.long
-			}, [ monthName.short ])
-		]));
+		return this.properties.monthNames.map((monthName, i) =>
+			v(
+				'label',
+				{
+					key: `${this._idBase}_month_radios_${i}`,
+					classes: this.theme([
+						css.monthRadio,
+						i === month ? css.monthRadioChecked : null
+					]),
+					for: this._getMonthInputKey(i),
+					onmouseup: this._closeMonthPopup
+				},
+				[
+					v('input', {
+						checked: i === month,
+						classes: this.theme(css.monthRadioInput),
+						id: this._getMonthInputKey(i),
+						key: this._getMonthInputKey(i),
+						name: `${this._idBase}_month_radios`,
+						tabIndex: this._monthPopupOpen ? 0 : -1,
+						type: 'radio',
+						value: `${i}`,
+						disabled: !this._monthInMinMax(year, i),
+						onchange: this._onMonthRadioChange
+					}),
+					v(
+						'abbr',
+						{
+							classes: this.theme(css.monthRadioLabel),
+							title: monthName.long
+						},
+						[monthName.short]
+					)
+				]
+			)
+		);
 	}
 
 	protected renderPagingButtonContent(type: Paging): DNode[] {
@@ -280,7 +289,7 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 
 		return [
 			w(Icon, { type: iconType, theme, classes }),
-			v('span', { classes: baseCss.visuallyHidden }, [ labelText ])
+			v('span', { classes: baseCss.visuallyHidden }, [labelText])
 		];
 	}
 
@@ -290,122 +299,177 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 
 		const yearLimits = this._getYearRange();
 		for (let i = yearLimits.first; i < yearLimits.last; i++) {
-			radios.push(v('label', {
-				key: `${this._idBase}_year_radios_${i}`,
-				classes: this.theme([ css.yearRadio, i === year ? css.yearRadioChecked : null ]),
-				for: this._getYearInputKey(i),
-				onmouseup: this._closeYearPopup
-			}, [
-				v('input', {
-					checked: i === year,
-					classes: this.theme(css.yearRadioInput),
-					id: this._getYearInputKey(i),
-					key: this._getYearInputKey(i),
-					name: `${this._idBase}_year_radios`,
-					tabIndex: this._yearPopupOpen ? 0 : -1,
-					type: 'radio',
-					value: `${i}`,
-					disabled: !this._yearInMinMax(i),
-					onchange: this._onYearRadioChange
-				}),
-				v('abbr', {
-					classes: this.theme(css.yearRadioLabel)
-				}, [ `${ i }` ])
-			]));
+			radios.push(
+				v(
+					'label',
+					{
+						key: `${this._idBase}_year_radios_${i}`,
+						classes: this.theme([
+							css.yearRadio,
+							i === year ? css.yearRadioChecked : null
+						]),
+						for: this._getYearInputKey(i),
+						onmouseup: this._closeYearPopup
+					},
+					[
+						v('input', {
+							checked: i === year,
+							classes: this.theme(css.yearRadioInput),
+							id: this._getYearInputKey(i),
+							key: this._getYearInputKey(i),
+							name: `${this._idBase}_year_radios`,
+							tabIndex: this._yearPopupOpen ? 0 : -1,
+							type: 'radio',
+							value: `${i}`,
+							disabled: !this._yearInMinMax(i),
+							onchange: this._onYearRadioChange
+						}),
+						v(
+							'abbr',
+							{
+								classes: this.theme(css.yearRadioLabel)
+							},
+							[`${i}`]
+						)
+					]
+				)
+			);
 		}
 
 		return radios;
 	}
 
 	protected render(): DNode {
-		const {
-			labelId = `${this._idBase}_label`,
-			labels,
-			month,
-			year
-		} = this.properties;
+		const { labelId = `${this._idBase}_label`, labels, month, year } = this.properties;
 
-		const {
-			first: minYear,
-			last: maxYear
-		} = this._getYearRange();
+		const { first: minYear, last: maxYear } = this._getYearRange();
 
-		return v('div', {
-			classes: this.theme(css.datePicker)
-		}, [
-			v('div', {
-				classes: this.theme(css.topMatter),
-				role: 'menubar'
-			}, [
-				// hidden label
-				v('label', {
-					id: labelId,
-					classes: [ baseCss.visuallyHidden ],
-					'aria-live': 'polite',
-					'aria-atomic': 'false'
-				}, [ this.renderMonthLabel(month, year) ]),
+		return v(
+			'div',
+			{
+				classes: this.theme(css.datePicker)
+			},
+			[
+				v(
+					'div',
+					{
+						classes: this.theme(css.topMatter),
+						role: 'menubar'
+					},
+					[
+						// hidden label
+						v(
+							'label',
+							{
+								id: labelId,
+								classes: [baseCss.visuallyHidden],
+								'aria-live': 'polite',
+								'aria-atomic': 'false'
+							},
+							[this.renderMonthLabel(month, year)]
+						),
 
-				// month trigger
-				this.renderControlsTrigger(Controls.month),
+						// month trigger
+						this.renderControlsTrigger(Controls.month),
 
-				// year trigger
-				this.renderControlsTrigger(Controls.year)
-			]),
+						// year trigger
+						this.renderControlsTrigger(Controls.year)
+					]
+				),
 
-			// month grid
-			v('div', {
-				key: 'month-grid',
-				'aria-hidden': `${!this._monthPopupOpen}`,
-				'aria-labelledby': `${this._idBase}_month_button`,
-				classes: [ this.theme(css.monthGrid), !this._monthPopupOpen ? baseCss.visuallyHidden : null ],
-				id: `${this._idBase}_month_dialog`,
-				role: 'dialog'
-			}, [
-				v('fieldset', {
-					classes: this.theme(css.monthFields),
-					onkeydown: this._onPopupKeyDown
-				}, [
-					v('legend', { classes: baseCss.visuallyHidden }, [ labels.chooseMonth ]),
-					...this.renderMonthRadios()
-				])
-			]),
+				// month grid
+				v(
+					'div',
+					{
+						key: 'month-grid',
+						'aria-hidden': `${!this._monthPopupOpen}`,
+						'aria-labelledby': `${this._idBase}_month_button`,
+						classes: [
+							this.theme(css.monthGrid),
+							!this._monthPopupOpen ? baseCss.visuallyHidden : null
+						],
+						id: `${this._idBase}_month_dialog`,
+						role: 'dialog'
+					},
+					[
+						v(
+							'fieldset',
+							{
+								classes: this.theme(css.monthFields),
+								onkeydown: this._onPopupKeyDown
+							},
+							[
+								v('legend', { classes: baseCss.visuallyHidden }, [
+									labels.chooseMonth
+								]),
+								...this.renderMonthRadios()
+							]
+						)
+					]
+				),
 
-			// year grid
-			v('div', {
-				key: 'year-grid',
-				'aria-hidden': `${!this._yearPopupOpen}`,
-				'aria-labelledby': `${this._idBase}_year_button`,
-				classes: [ this.theme(css.yearGrid), !this._yearPopupOpen ? baseCss.visuallyHidden : null ],
-				id: `${this._idBase}_year_dialog`,
-				role: 'dialog'
-			}, [
-				v('fieldset', {
-					classes: this.theme(css.yearFields),
-					onkeydown: this._onPopupKeyDown
-				}, [
-					v('legend', { classes: [ baseCss.visuallyHidden ] }, [ labels.chooseYear ]),
-					...this.renderYearRadios()
-				]),
-				v('div', {
-					classes: this.theme(css.controls)
-				}, [
-					v('button', {
-						classes: this.theme(css.previous),
-						tabIndex: this._yearPopupOpen ? 0 : -1,
-						type: 'button',
-						onclick: this._onYearPageDown,
-						disabled: !this._yearInMinMax(year - 1)
-					}, this.renderPagingButtonContent(Paging.previous)),
-					v('button', {
-						classes: this.theme(css.next),
-						tabIndex: this._yearPopupOpen ? 0 : -1,
-						type: 'button',
-						onclick: this._onYearPageUp,
-						disabled: !this._yearInMinMax(year + 1)
-					}, this.renderPagingButtonContent(Paging.next))
-				])
-			])
-		]);
+				// year grid
+				v(
+					'div',
+					{
+						key: 'year-grid',
+						'aria-hidden': `${!this._yearPopupOpen}`,
+						'aria-labelledby': `${this._idBase}_year_button`,
+						classes: [
+							this.theme(css.yearGrid),
+							!this._yearPopupOpen ? baseCss.visuallyHidden : null
+						],
+						id: `${this._idBase}_year_dialog`,
+						role: 'dialog'
+					},
+					[
+						v(
+							'fieldset',
+							{
+								classes: this.theme(css.yearFields),
+								onkeydown: this._onPopupKeyDown
+							},
+							[
+								v('legend', { classes: [baseCss.visuallyHidden] }, [
+									labels.chooseYear
+								]),
+								...this.renderYearRadios()
+							]
+						),
+						v(
+							'div',
+							{
+								classes: this.theme(css.controls)
+							},
+							[
+								v(
+									'button',
+									{
+										classes: this.theme(css.previous),
+										tabIndex: this._yearPopupOpen ? 0 : -1,
+										type: 'button',
+										onclick: this._onYearPageDown,
+										disabled: !this._yearInMinMax(year - 1)
+									},
+									this.renderPagingButtonContent(Paging.previous)
+								),
+								v(
+									'button',
+									{
+										classes: this.theme(css.next),
+										tabIndex: this._yearPopupOpen ? 0 : -1,
+										type: 'button',
+										onclick: this._onYearPageUp,
+										disabled: !this._yearInMinMax(year + 1)
+									},
+									this.renderPagingButtonContent(Paging.next)
+								)
+							]
+						)
+					]
+				)
+			]
+		);
 	}
 }
 

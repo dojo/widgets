@@ -31,9 +31,19 @@ export interface ProgressProperties extends ThemedProperties, CustomAriaProperti
 @theme(css)
 @customElement<ProgressProperties>({
 	tag: 'dojo-progress',
-	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'output', 'showOutput', 'max', 'min', 'value' ],
-	attributes: [ 'widgetId' ],
-	events: [ ]
+	properties: [
+		'theme',
+		'classes',
+		'aria',
+		'extraClasses',
+		'output',
+		'showOutput',
+		'max',
+		'min',
+		'value'
+	],
+	attributes: ['widgetId'],
+	events: []
 })
 export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
 	private _output(value: number, percent: number) {
@@ -66,17 +76,21 @@ export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
 		const output = this._output(value, percent);
 
 		return v('div', { classes: this.theme(css.root) }, [
-			v('div', {
-				...formatAriaProperties(aria),
-				classes: this.theme(css.bar),
-				role: 'progressbar',
-				'aria-valuemin': `${min}`,
-				'aria-valuemax': `${max}`,
-				'aria-valuenow': `${value}`,
-				'aria-valuetext': output,
-				id: widgetId
-			}, this.renderProgress(percent)),
-			showOutput ? v('span', { classes: this.theme(css.output) }, [ output ]) : null
+			v(
+				'div',
+				{
+					...formatAriaProperties(aria),
+					classes: this.theme(css.bar),
+					role: 'progressbar',
+					'aria-valuemin': `${min}`,
+					'aria-valuemax': `${max}`,
+					'aria-valuenow': `${value}`,
+					'aria-valuetext': output,
+					id: widgetId
+				},
+				this.renderProgress(percent)
+			),
+			showOutput ? v('span', { classes: this.theme(css.output) }, [output]) : null
 		]);
 	}
 }

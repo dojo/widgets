@@ -72,15 +72,8 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 		'underlay',
 		'classes'
 	],
-	attributes: [
-		'title',
-		'role',
-		'closeText'
-	],
-	events: [
-		'onOpen',
-		'onRequestClose'
-	]
+	attributes: ['title', 'role', 'closeText'],
+	events: ['onOpen', 'onRequestClose']
 })
 export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties> {
 	private _titleId = uuid();
@@ -94,10 +87,7 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 	}
 
 	private _checkFocus() {
-		const {
-			modal,
-			open
-		} = this.properties;
+		const { modal, open } = this.properties;
 
 		// only handle focus for open dialog
 		if (!open) {
@@ -112,7 +102,7 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 
 		// handle if the dialog is open and loses focus
 		if (this._initialFocusSet && !dialogFocus.containsFocus) {
-			modal ? this._callFocus = true : this._close();
+			modal ? (this._callFocus = true) : this._close();
 		}
 
 		if (this._callFocus) {
@@ -121,10 +111,7 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 	}
 
 	private _close() {
-		const {
-			closeable = true,
-			onRequestClose
-		} = this.properties;
+		const { closeable = true, onRequestClose } = this.properties;
 
 		closeable && onRequestClose && onRequestClose();
 	}
@@ -139,7 +126,7 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 		if (event.which === Keys.Escape) {
 			this._close();
 		}
-	}
+	};
 
 	private _onOpen() {
 		const { onOpen } = this.properties;
@@ -149,21 +136,29 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 	}
 
 	protected getContent(): DNode {
-		return v('div', {
-			classes: this.theme(css.content),
-			key: 'content'
-		}, this.children);
+		return v(
+			'div',
+			{
+				classes: this.theme(css.content),
+				key: 'content'
+			},
+			this.children
+		);
 	}
 
 	protected renderTitle(): DNode {
 		const { title = '' } = this.properties;
-		return v('div', { id: this._titleId }, [ title ]);
+		return v('div', { id: this._titleId }, [title]);
 	}
 
 	protected renderUnderlay(): DNode {
-		const { underlay, underlayEnterAnimation = this.theme(css.underlayEnter), underlayExitAnimation = this.theme(css.underlayExit) } = this.properties;
+		const {
+			underlay,
+			underlayEnterAnimation = this.theme(css.underlayEnter),
+			underlayExitAnimation = this.theme(css.underlayExit)
+		} = this.properties;
 		return v('div', {
-			classes: [ this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay ],
+			classes: [this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay],
 			enterAnimation: underlayEnterAnimation,
 			exitAnimation: underlayExitAnimation,
 			key: 'underlay',
@@ -196,38 +191,62 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 			closeText = `${messages.close} ${title}`;
 		}
 
-		return v('div', {
-			classes: this.theme([css.root, open ? css.open : null])
-		}, open ? [
-			w(GlobalEvent, { key: 'global', document: { keyup: this._onKeyUp } }),
-			this.renderUnderlay(),
-			v('div', {
-				...formatAriaProperties(aria),
-				'aria-labelledby': this._titleId,
-				classes: this.theme(css.main),
-				enterAnimation,
-				exitAnimation,
-				key: 'main',
-				role,
-				tabIndex: -1
-			}, [
-				v('div', {
-					classes: this.theme(css.title),
-					key: 'title'
-				}, [
-					this.renderTitle(),
-					closeable ? v('button', {
-						classes: this.theme(css.close),
-						type: 'button',
-						onclick: this._onCloseClick
-					}, [
-						closeText,
-						w(Icon, { type: 'closeIcon', theme, classes })
-					]) : null
-				]),
-				this.getContent()
-			])
-		] : []);
+		return v(
+			'div',
+			{
+				classes: this.theme([css.root, open ? css.open : null])
+			},
+			open
+				? [
+						w(GlobalEvent, { key: 'global', document: { keyup: this._onKeyUp } }),
+						this.renderUnderlay(),
+						v(
+							'div',
+							{
+								...formatAriaProperties(aria),
+								'aria-labelledby': this._titleId,
+								classes: this.theme(css.main),
+								enterAnimation,
+								exitAnimation,
+								key: 'main',
+								role,
+								tabIndex: -1
+							},
+							[
+								v(
+									'div',
+									{
+										classes: this.theme(css.title),
+										key: 'title'
+									},
+									[
+										this.renderTitle(),
+										closeable
+											? v(
+													'button',
+													{
+														classes: this.theme(css.close),
+														type: 'button',
+														onclick: this._onCloseClick
+													},
+													[
+														closeText,
+														w(Icon, {
+															type: 'closeIcon',
+															theme,
+															classes
+														})
+													]
+											  )
+											: null
+									]
+								),
+								this.getContent()
+							]
+						)
+				  ]
+				: []
+		);
 	}
 }
 

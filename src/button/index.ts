@@ -4,7 +4,12 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-cor
 import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
 import { v, w } from '@dojo/framework/widget-core/d';
 import * as css from '../theme/button.m.css';
-import { CustomAriaProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import {
+	CustomAriaProperties,
+	InputEventProperties,
+	PointerEventProperties,
+	KeyEventProperties
+} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import Icon from '../icon/index';
@@ -25,10 +30,16 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property type           Button type can be "submit", "reset", "button", or "menu"
  * @property value          Defines a value for the button submitted with form data
  */
-export interface ButtonProperties extends ThemedProperties, InputEventProperties, FocusProperties, PointerEventProperties, KeyEventProperties, CustomAriaProperties {
+export interface ButtonProperties
+	extends ThemedProperties,
+		InputEventProperties,
+		FocusProperties,
+		PointerEventProperties,
+		KeyEventProperties,
+		CustomAriaProperties {
 	disabled?: boolean;
 	widgetId?: string;
-	popup?: { expanded?: boolean; id?: string; } | boolean;
+	popup?: { expanded?: boolean; id?: string } | boolean;
 	name?: string;
 	pressed?: boolean;
 	type?: ButtonType;
@@ -40,8 +51,8 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 @customElement<ButtonProperties>({
 	tag: 'dojo-button',
 	childType: CustomElementChildType.TEXT,
-	properties: [ 'disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes' ],
-	attributes: [ 'widgetId', 'name', 'type', 'value' ],
+	properties: ['disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes'],
+	attributes: ['widgetId', 'name', 'type', 'value'],
 	events: [
 		'onBlur',
 		'onChange',
@@ -59,45 +70,54 @@ export interface ButtonProperties extends ThemedProperties, InputEventProperties
 	]
 })
 export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties> {
-	private _onBlur (event: FocusEvent) {
+	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur();
 	}
-	private _onClick (event: MouseEvent) {
+	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onClick && this.properties.onClick();
 	}
-	private _onFocus (event: FocusEvent) {
+	private _onFocus(event: FocusEvent) {
 		this.properties.onFocus && this.properties.onFocus();
 	}
-	private _onKeyDown (event: KeyboardEvent) {
+	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyDown &&
+			this.properties.onKeyDown(event.which, () => {
+				event.preventDefault();
+			});
 	}
-	private _onKeyPress (event: KeyboardEvent) {
+	private _onKeyPress(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyPress &&
+			this.properties.onKeyPress(event.which, () => {
+				event.preventDefault();
+			});
 	}
-	private _onKeyUp (event: KeyboardEvent) {
+	private _onKeyUp(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyUp &&
+			this.properties.onKeyUp(event.which, () => {
+				event.preventDefault();
+			});
 	}
-	private _onMouseDown (event: MouseEvent) {
+	private _onMouseDown(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onMouseDown && this.properties.onMouseDown();
 	}
-	private _onMouseUp (event: MouseEvent) {
+	private _onMouseUp(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onMouseUp && this.properties.onMouseUp();
 	}
-	private _onTouchStart (event: TouchEvent) {
+	private _onTouchStart(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchStart && this.properties.onTouchStart();
 	}
-	private _onTouchEnd (event: TouchEvent) {
+	private _onTouchEnd(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchEnd && this.properties.onTouchEnd();
 	}
-	private _onTouchCancel (event: TouchEvent) {
+	private _onTouchCancel(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
@@ -107,11 +127,7 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 	}
 
 	protected getModifierClasses(): (string | null)[] {
-		const {
-			disabled,
-			popup = false,
-			pressed
-		} = this.properties;
+		const { disabled, popup = false, pressed } = this.properties;
 
 		return [
 			disabled ? css.disabled : null,
@@ -138,36 +154,42 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 			popup = { expanded: false, id: '' };
 		}
 
-		return v('button', {
-			classes: this.theme([ css.root, ...this.getModifierClasses() ]),
-			disabled,
-			id: widgetId,
-			focus: this.shouldFocus,
-			name,
-			type,
-			value,
-			onblur: this._onBlur,
-			onclick: this._onClick,
-			onfocus: this._onFocus,
-			onkeydown: this._onKeyDown,
-			onkeypress: this._onKeyPress,
-			onkeyup: this._onKeyUp,
-			onmousedown: this._onMouseDown,
-			onmouseup: this._onMouseUp,
-			ontouchstart: this._onTouchStart,
-			ontouchend: this._onTouchEnd,
-			ontouchcancel: this._onTouchCancel,
-			...formatAriaProperties(aria),
-			'aria-haspopup': popup ? 'true' : null,
-			'aria-controls': popup ? popup.id : null,
-			'aria-expanded': popup ? popup.expanded + '' : null,
-			'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null
-		}, [
-			...this.getContent(),
-			popup ? v('span', { classes: this.theme(css.addon) }, [
-				w(Icon, { type: 'downIcon', theme, classes })
-			]) : null
-		]);
+		return v(
+			'button',
+			{
+				classes: this.theme([css.root, ...this.getModifierClasses()]),
+				disabled,
+				id: widgetId,
+				focus: this.shouldFocus,
+				name,
+				type,
+				value,
+				onblur: this._onBlur,
+				onclick: this._onClick,
+				onfocus: this._onFocus,
+				onkeydown: this._onKeyDown,
+				onkeypress: this._onKeyPress,
+				onkeyup: this._onKeyUp,
+				onmousedown: this._onMouseDown,
+				onmouseup: this._onMouseUp,
+				ontouchstart: this._onTouchStart,
+				ontouchend: this._onTouchEnd,
+				ontouchcancel: this._onTouchCancel,
+				...formatAriaProperties(aria),
+				'aria-haspopup': popup ? 'true' : null,
+				'aria-controls': popup ? popup.id : null,
+				'aria-expanded': popup ? popup.expanded + '' : null,
+				'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null
+			},
+			[
+				...this.getContent(),
+				popup
+					? v('span', { classes: this.theme(css.addon) }, [
+							w(Icon, { type: 'downIcon', theme, classes })
+					  ])
+					: null
+			]
+		);
 	}
 }
 

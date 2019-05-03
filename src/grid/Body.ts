@@ -28,15 +28,20 @@ export interface BodyProperties<S> {
 }
 
 const offscreen = (dnode: DNode) => {
-	const r = renderer(() => w(class extends WidgetBase {
-		render() {
-			return dnode;
-		}
-	}, {}));
+	const r = renderer(() =>
+		w(
+			class extends WidgetBase {
+				render() {
+					return dnode;
+				}
+			},
+			{}
+		)
+	);
 	const div = global.document.createElement('div');
 	div.style.position = 'absolute';
 	global.document.body.appendChild(div);
-	r.mount({ domNode: div, sync: true});
+	r.mount({ domNode: div, sync: true });
 	const dimensions = div.getBoundingClientRect();
 	global.document.body.removeChild(div);
 	return dimensions;
@@ -171,7 +176,9 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 		let bottomPaddingHeight = 0;
 		if (totalRows >= pageSize) {
 			bottomPaddingHeight =
-				totalRows * this._rowHeight - topPaddingHeight - (this._end - this._start) * this._rowHeight;
+				totalRows * this._rowHeight -
+				topPaddingHeight -
+				(this._end - this._start) * this._rowHeight;
 		}
 
 		let containerProperties: VNodeProperties = {

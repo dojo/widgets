@@ -35,28 +35,27 @@ export interface TabProperties extends ThemedProperties, CustomAriaProperties {
 @customElement<TabProperties>({
 	tag: 'dojo-tab',
 	childType: CustomElementChildType.NODE,
-	properties: [ 'theme', 'classes', 'aria', 'extraClasses', 'closeable', 'disabled', 'show' ],
-	attributes: [ 'key', 'labelledBy', 'widgetId', 'label' ],
-	events: [ ]
+	properties: ['theme', 'classes', 'aria', 'extraClasses', 'closeable', 'disabled', 'show'],
+	attributes: ['key', 'labelledBy', 'widgetId', 'label'],
+	events: []
 })
 export class Tab extends ThemedMixin(WidgetBase)<TabProperties> {
 	render(): DNode {
-		const {
-			aria = {},
-			widgetId,
-			labelledBy,
-			show = false
-		} = this.properties;
+		const { aria = {}, widgetId, labelledBy, show = false } = this.properties;
 
 		const hidden = this.theme(!show ? css.hidden : null);
 
-		return v('div', {
-			...formatAriaProperties(aria),
-			'aria-labelledby': labelledBy,
-			classes: this.theme([css.tab]),
-			id: widgetId,
-			role: 'tabpanel'
-		}, [ v('div', { classes: [ hidden ] }, this.children) ]);
+		return v(
+			'div',
+			{
+				...formatAriaProperties(aria),
+				'aria-labelledby': labelledBy,
+				classes: this.theme([css.tab]),
+				id: widgetId,
+				role: 'tabpanel'
+			},
+			[v('div', { classes: [hidden] }, this.children)]
+		);
 	}
 }
 

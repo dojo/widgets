@@ -24,7 +24,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 		let matching: TimeUnits[] = [];
 
 		if (value) {
-			matching = this._options.filter(option => {
+			matching = this._options.filter((option) => {
 				const { hour, minute = 0 } = option;
 				const hours = hour >= 10 ? hour : `0${hour}`;
 				const minutes = minute >= 10 ? minute : `0${minute}`;
@@ -43,13 +43,17 @@ export default class App extends ThemedMixin(WidgetBase) {
 
 	render(): DNode {
 		return v('div', [
-			v('h1', [ 'TimePicker Examples' ]),
-			v('p', {
-				id: 'description1',
-				classes: baseCss.visuallyHidden
-			}, [ 'Accepts 24-hour time with a leading zero, rounded to the nearest half hour.' ]),
+			v('h1', ['TimePicker Examples']),
+			v(
+				'p',
+				{
+					id: 'description1',
+					classes: baseCss.visuallyHidden
+				},
+				['Accepts 24-hour time with a leading zero, rounded to the nearest half hour.']
+			),
 
-			v('h3', [ 'Filter options on input' ]),
+			v('h3', ['Filter options on input']),
 			v('div', { id: 'example-filter-on-input' }, [
 				w(TimePicker, {
 					inputProperties: {
@@ -65,7 +69,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Open on focus' ]),
+			v('h3', ['Open on focus']),
 			v('div', { id: 'example-open-on-focus' }, [
 				w(TimePicker, {
 					inputProperties: {
@@ -81,11 +85,15 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Disabled menu items' ]),
-			v('p', {
-				id: 'description2',
-				classes: baseCss.visuallyHidden
-			}, [ 'Accepts 24-hour time with a leading zero, rounded to the nearest hour.' ]),
+			v('h3', ['Disabled menu items']),
+			v(
+				'p',
+				{
+					id: 'description2',
+					classes: baseCss.visuallyHidden
+				},
+				['Accepts 24-hour time with a leading zero, rounded to the nearest hour.']
+			),
 			v('div', { id: 'example-disabled-items' }, [
 				w(TimePicker, {
 					inputProperties: {
@@ -101,7 +109,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Disabled' ]),
+			v('h3', ['Disabled']),
 			v('div', { id: 'example-disabled' }, [
 				w(TimePicker, {
 					inputProperties: {
@@ -114,7 +122,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Read Only' ]),
+			v('h3', ['Read Only']),
 			v('div', { id: 'example-readonly' }, [
 				w(TimePicker, {
 					inputProperties: {
@@ -127,7 +135,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Labeled' ]),
+			v('h3', ['Labeled']),
 			v('div', { id: 'example-labeled' }, [
 				w(TimePicker, {
 					key: '6',
@@ -141,7 +149,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Required and validated' ]),
+			v('h3', ['Required and validated']),
 			v('div', { id: 'example-required-validated' }, [
 				w(TimePicker, {
 					inputProperties: {
@@ -165,11 +173,15 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'One second increment' ]),
-			v('p', {
-				id: 'description8',
-				classes: baseCss.visuallyHidden
-			}, [ 'Accepts 24-hour time with a leading zero, rounded to the nearest second.' ]),
+			v('h3', ['One second increment']),
+			v(
+				'p',
+				{
+					id: 'description8',
+					classes: baseCss.visuallyHidden
+				},
+				['Accepts 24-hour time with a leading zero, rounded to the nearest second.']
+			),
 			v('div', { id: 'example-every-second' }, [
 				w(TimePicker, {
 					end: '12:00:59',
@@ -186,11 +198,15 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Use 12-hour time' ]),
-			v('p', {
-				id: 'description9',
-				classes: baseCss.visuallyHidden
-			}, [ 'Accepts 12-hour time without a leading zero, rounded to the nearest half hour.' ]),
+			v('h3', ['Use 12-hour time']),
+			v(
+				'p',
+				{
+					id: 'description9',
+					classes: baseCss.visuallyHidden
+				},
+				['Accepts 12-hour time without a leading zero, rounded to the nearest half hour.']
+			),
 			v('div', { id: 'example-12-hour' }, [
 				w(TimePicker, {
 					getOptionLabel: (option: TimeUnits) => {
@@ -210,7 +226,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 				})
 			]),
 
-			v('h3', [ 'Native `<input type="time">`' ]),
+			v('h3', ['Native `<input type="time">`']),
 			v('div', { id: 'example-native' }, [
 				w(TimePicker, {
 					key: '10',

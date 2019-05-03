@@ -11,9 +11,7 @@ export default class App extends WidgetBase {
 	}
 
 	render() {
-		const {
-			_inputValue = 'first'
-		} = this;
+		const { _inputValue = 'first' } = this;
 
 		return v('div', [
 			v('h2', {

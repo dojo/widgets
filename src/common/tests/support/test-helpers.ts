@@ -1,4 +1,10 @@
-import { WNode, WidgetBaseInterface, Constructor, MetaBase, WidgetMetaConstructor } from '@dojo/framework/widget-core/interfaces';
+import {
+	WNode,
+	WidgetBaseInterface,
+	Constructor,
+	MetaBase,
+	WidgetMetaConstructor
+} from '@dojo/framework/widget-core/interfaces';
 import { CustomComparator, harness } from '@dojo/framework/testing/harness';
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
@@ -12,7 +18,8 @@ export const stubEvent = {
 };
 
 export const isStringComparator = (value: any) => value === null || typeof value === 'string';
-export const isStringObjectComparator = (value: any) => Object.keys(value).every((key) => value[key] === null || typeof value[key] === 'string');
+export const isStringObjectComparator = (value: any) =>
+	Object.keys(value).every((key) => value[key] === null || typeof value[key] === 'string');
 export const isFocusedComparator = (value: () => boolean) => value() === true;
 export const isNotFocusedComparator = (value: () => boolean) => value() === false;
 
@@ -71,12 +78,18 @@ export const compareLabelId = {
 };
 
 export const createHarness = (globalCompares: CustomComparator[]) => {
-	return (renderFunction: () => WNode<WidgetBaseInterface>, compares: CustomComparator[] = []) => {
-		return harness(renderFunction, [ ...globalCompares, ...compares ]);
+	return (
+		renderFunction: () => WNode<WidgetBaseInterface>,
+		compares: CustomComparator[] = []
+	) => {
+		return harness(renderFunction, [...globalCompares, ...compares]);
 	};
 };
 
-export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(Base: T, mockStub: SinonStub): T {
+export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(
+	Base: T,
+	mockStub: SinonStub
+): T {
 	return class extends Base {
 		protected meta<T extends MetaBase>(MetaType: WidgetMetaConstructor<T>): T {
 			return mockStub(MetaType);

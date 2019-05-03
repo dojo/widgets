@@ -5,7 +5,13 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/
 import { v, w } from '@dojo/framework/widget-core/d';
 import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../label/index';
-import { CustomAriaProperties, InputProperties, InputEventProperties, PointerEventProperties, KeyEventProperties } from '../common/interfaces';
+import {
+	CustomAriaProperties,
+	InputProperties,
+	InputEventProperties,
+	PointerEventProperties,
+	KeyEventProperties
+} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
@@ -25,7 +31,14 @@ import HelperText from '../helper-text/index';
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextareaProperties extends ThemedProperties, InputProperties, FocusProperties, InputEventProperties, KeyEventProperties, PointerEventProperties, CustomAriaProperties {
+export interface TextareaProperties
+	extends ThemedProperties,
+		InputProperties,
+		FocusProperties,
+		InputEventProperties,
+		KeyEventProperties,
+		PointerEventProperties,
+		CustomAriaProperties {
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -55,7 +68,17 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, F
 		'invalid',
 		'labelHidden'
 	],
-	attributes: [ 'widgetId', 'label', 'helperText', 'minLength', 'maxLength', 'name', 'placeholder', 'value', 'wrapText' ],
+	attributes: [
+		'widgetId',
+		'label',
+		'helperText',
+		'minLength',
+		'maxLength',
+		'name',
+		'placeholder',
+		'value',
+		'wrapText'
+	],
 	events: [
 		'onBlur',
 		'onChange',
@@ -73,53 +96,66 @@ export interface TextareaProperties extends ThemedProperties, InputProperties, F
 	]
 })
 export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
-	private _onBlur (event: FocusEvent) {
+	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
-	private _onChange (event: Event) {
+	private _onChange(event: Event) {
 		event.stopPropagation();
-		this.properties.onChange && this.properties.onChange((event.target as HTMLInputElement).value);
+		this.properties.onChange &&
+			this.properties.onChange((event.target as HTMLInputElement).value);
 	}
-	private _onClick (event: MouseEvent) {
+	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick((event.target as HTMLInputElement).value);
+		this.properties.onClick &&
+			this.properties.onClick((event.target as HTMLInputElement).value);
 	}
-	private _onFocus (event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus((event.target as HTMLInputElement).value);
+	private _onFocus(event: FocusEvent) {
+		this.properties.onFocus &&
+			this.properties.onFocus((event.target as HTMLInputElement).value);
 	}
-	private _onInput (event: Event) {
+	private _onInput(event: Event) {
 		event.stopPropagation();
-		this.properties.onInput && this.properties.onInput((event.target as HTMLInputElement).value);
+		this.properties.onInput &&
+			this.properties.onInput((event.target as HTMLInputElement).value);
 	}
-	private _onKeyDown (event: KeyboardEvent) {
+	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown && this.properties.onKeyDown(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyDown &&
+			this.properties.onKeyDown(event.which, () => {
+				event.preventDefault();
+			});
 	}
-	private _onKeyPress (event: KeyboardEvent) {
+	private _onKeyPress(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyPress && this.properties.onKeyPress(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyPress &&
+			this.properties.onKeyPress(event.which, () => {
+				event.preventDefault();
+			});
 	}
-	private _onKeyUp (event: KeyboardEvent) {
+	private _onKeyUp(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyUp && this.properties.onKeyUp(event.which, () => { event.preventDefault(); });
+		this.properties.onKeyUp &&
+			this.properties.onKeyUp(event.which, () => {
+				event.preventDefault();
+			});
 	}
-	private _onMouseDown (event: MouseEvent) {
+	private _onMouseDown(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onMouseDown && this.properties.onMouseDown();
 	}
-	private _onMouseUp (event: MouseEvent) {
+	private _onMouseUp(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onMouseUp && this.properties.onMouseUp();
 	}
-	private _onTouchStart (event: TouchEvent) {
+	private _onTouchStart(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchStart && this.properties.onTouchStart();
 	}
-	private _onTouchEnd (event: TouchEvent) {
+	private _onTouchEnd(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchEnd && this.properties.onTouchEnd();
 	}
-	private _onTouchCancel (event: TouchEvent) {
+	private _onTouchCancel(event: TouchEvent) {
 		event.stopPropagation();
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
@@ -127,12 +163,7 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
-		const {
-			disabled,
-			invalid,
-			readOnly,
-			required
-		} = this.properties;
+		const { disabled, invalid, readOnly, required } = this.properties;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
@@ -169,58 +200,68 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
-		return v('div', {
-			key: 'root',
-			classes: this.theme(this.getRootClasses())
-		}, [
-			label ? w(Label, {
-				theme,
-				classes,
-				disabled,
-				focused: focus.containsFocus,
-				invalid,
-				readOnly,
-				required,
-				hidden: labelHidden,
-				forId: widgetId
-			}, [ label ]) : null,
-			v('div', { classes: this.theme(css.inputWrapper) }, [
-				v('textarea', {
-					id: widgetId,
-					key: 'input',
-					...formatAriaProperties(aria),
-					classes: this.theme(css.input),
-					cols: `${columns}`,
-					disabled,
-					focus: this.shouldFocus,
-					'aria-invalid': invalid ? 'true' : null,
-					maxlength: maxLength ? `${maxLength}` : null,
-					minlength: minLength ? `${minLength}` : null,
-					name,
-					placeholder,
-					readOnly,
-					'aria-readonly': readOnly ? 'true' : null,
-					required,
-					rows: `${rows}`,
-					value,
-					wrap: wrapText,
-					onblur: this._onBlur,
-					onchange: this._onChange,
-					onclick: this._onClick,
-					onfocus: this._onFocus,
-					oninput: this._onInput,
-					onkeydown: this._onKeyDown,
-					onkeypress: this._onKeyPress,
-					onkeyup: this._onKeyUp,
-					onmousedown: this._onMouseDown,
-					onmouseup: this._onMouseUp,
-					ontouchstart: this._onTouchStart,
-					ontouchend: this._onTouchEnd,
-					ontouchcancel: this._onTouchCancel
-				})
-			]),
-			w(HelperText, { text: helperText })
-		]);
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: this.theme(this.getRootClasses())
+			},
+			[
+				label
+					? w(
+							Label,
+							{
+								theme,
+								classes,
+								disabled,
+								focused: focus.containsFocus,
+								invalid,
+								readOnly,
+								required,
+								hidden: labelHidden,
+								forId: widgetId
+							},
+							[label]
+					  )
+					: null,
+				v('div', { classes: this.theme(css.inputWrapper) }, [
+					v('textarea', {
+						id: widgetId,
+						key: 'input',
+						...formatAriaProperties(aria),
+						classes: this.theme(css.input),
+						cols: `${columns}`,
+						disabled,
+						focus: this.shouldFocus,
+						'aria-invalid': invalid ? 'true' : null,
+						maxlength: maxLength ? `${maxLength}` : null,
+						minlength: minLength ? `${minLength}` : null,
+						name,
+						placeholder,
+						readOnly,
+						'aria-readonly': readOnly ? 'true' : null,
+						required,
+						rows: `${rows}`,
+						value,
+						wrap: wrapText,
+						onblur: this._onBlur,
+						onchange: this._onChange,
+						onclick: this._onClick,
+						onfocus: this._onFocus,
+						oninput: this._onInput,
+						onkeydown: this._onKeyDown,
+						onkeypress: this._onKeyPress,
+						onkeyup: this._onKeyUp,
+						onmousedown: this._onMouseDown,
+						onmouseup: this._onMouseUp,
+						ontouchstart: this._onTouchStart,
+						ontouchend: this._onTouchEnd,
+						ontouchcancel: this._onTouchCancel
+					})
+				]),
+				w(HelperText, { text: helperText })
+			]
+		);
 	}
 }
 

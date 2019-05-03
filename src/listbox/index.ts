@@ -80,14 +80,8 @@ export interface ListboxProperties extends ThemedProperties, FocusProperties, Cu
 		'getOptionLabel',
 		'getOptionSelected'
 	],
-	attributes: [
-		'widgetId'
-	],
-	events: [
-		'onActiveIndexChange',
-		'onKeyDown',
-		'onOptionSelect'
-	]
+	attributes: ['widgetId'],
+	events: ['onActiveIndexChange', 'onKeyDown', 'onOptionSelect']
 })
 export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperties> {
 	private _boundRenderOption = this.renderOption.bind(this);
@@ -169,9 +163,7 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 
 		if (optionOffset.top - scrollOffset < 0) {
 			this.animateScroll(optionOffset.top);
-		}
-
-		else if ((optionOffset.top + optionOffset.height) > (scrollOffset + menuHeight)) {
+		} else if (optionOffset.top + optionOffset.height > scrollOffset + menuHeight) {
 			this.animateScroll(optionOffset.top + optionOffset.height - menuHeight);
 		}
 	}
@@ -179,9 +171,7 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 	protected getModifierClasses() {
 		const { visualFocus } = this.properties;
 		const focus = this.meta(Focus).get('root');
-		return [
-			(visualFocus || focus.containsFocus) ? css.focused : null
-		];
+		return [visualFocus || focus.containsFocus ? css.focused : null];
 	}
 
 	protected getOptionClasses(active: boolean, disabled: boolean, selected: boolean) {
@@ -199,12 +189,7 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 	}
 
 	protected renderOption(option: any, index: number): DNode {
-		const {
-			activeIndex = 0,
-			getOptionSelected,
-			theme,
-			classes
-		} = this.properties;
+		const { activeIndex = 0, getOptionSelected, theme, classes } = this.properties;
 
 		const disabled = this._getOptionDisabled(option, index);
 		const selected = getOptionSelected ? getOptionSelected(option, index) : false;
@@ -228,9 +213,7 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 	}
 
 	protected renderOptions(): DNode[] {
-		const {
-			optionData = []
-		} = this.properties;
+		const { optionData = [] } = this.properties;
 
 		return optionData.map(this._boundRenderOption);
 	}
@@ -248,18 +231,22 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 		this.meta(Resize).get('root');
 		this._calculateScroll();
 
-		return v('div', {
-			...formatAriaProperties(aria),
-			'aria-activedescendant': this._getOptionId(activeIndex),
-			'aria-multiselectable': multiselect ? 'true' : null,
-			classes: this.theme([ css.root, ...themeClasses ]),
-			id: widgetId,
-			focus: this.shouldFocus,
-			key: 'root',
-			role: 'listbox',
-			tabIndex,
-			onkeydown: this._onKeyDown
-		}, this.renderOptions());
+		return v(
+			'div',
+			{
+				...formatAriaProperties(aria),
+				'aria-activedescendant': this._getOptionId(activeIndex),
+				'aria-multiselectable': multiselect ? 'true' : null,
+				classes: this.theme([css.root, ...themeClasses]),
+				id: widgetId,
+				focus: this.shouldFocus,
+				key: 'root',
+				role: 'listbox',
+				tabIndex,
+				onkeydown: this._onKeyDown
+			},
+			this.renderOptions()
+		);
 	}
 }
 

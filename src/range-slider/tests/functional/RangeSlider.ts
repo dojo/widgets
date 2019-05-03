@@ -13,7 +13,7 @@ const axe = services.axe;
 function getPage(test: Test) {
 	const { browserName = '' } = test.remote.environmentType!;
 	if (browserName.toLowerCase() === 'microsoftedge') {
-		test.skip('example page currently doesn\'t work in edge.');
+		test.skip("example page currently doesn't work in edge.");
 	}
 	const remote: Remote = test.remote;
 	return remote
@@ -44,37 +44,35 @@ function checkValue(command: any, values?: number[][]) {
 }
 
 function slideMin(command: any, x: number, y: number) {
-	return command.session.capabilities.brokenMouseEvents ?
-		command
-			.findByCssSelector(`.${css.leftThumb}`)
-			.moveMouseTo(x, y)
-			.pressMouseButton()
-			.end()
-		:
-		command
-			.findByCssSelector(`.${css.leftThumb}`)
-			.moveMouseTo()
-			.pressMouseButton()
-			.moveMouseTo(x, y)
-			.releaseMouseButton()
-			.end();
+	return command.session.capabilities.brokenMouseEvents
+		? command
+				.findByCssSelector(`.${css.leftThumb}`)
+				.moveMouseTo(x, y)
+				.pressMouseButton()
+				.end()
+		: command
+				.findByCssSelector(`.${css.leftThumb}`)
+				.moveMouseTo()
+				.pressMouseButton()
+				.moveMouseTo(x, y)
+				.releaseMouseButton()
+				.end();
 }
 
 function slideMax(command: any, x: number, y: number) {
-	return command.session.capabilities.brokenMouseEvents ?
-		command
-			.findByCssSelector(`.${css.rightThumb}`)
-			.moveMouseTo(x, y)
-			.pressMouseButton()
-			.end()
-		:
-		command
-			.findByCssSelector(`.${css.rightThumb}`)
-			.moveMouseTo()
-			.pressMouseButton()
-			.moveMouseTo(x, y)
-			.releaseMouseButton()
-			.end();
+	return command.session.capabilities.brokenMouseEvents
+		? command
+				.findByCssSelector(`.${css.rightThumb}`)
+				.moveMouseTo(x, y)
+				.pressMouseButton()
+				.end()
+		: command
+				.findByCssSelector(`.${css.rightThumb}`)
+				.moveMouseTo()
+				.pressMouseButton()
+				.moveMouseTo(x, y)
+				.releaseMouseButton()
+				.end();
 }
 
 registerSuite('Range Slider', {
@@ -97,7 +95,7 @@ registerSuite('Range Slider', {
 		return getPage(this)
 			.findByCssSelector(`#example-rs1 .${css.root}`)
 			.getVisibleText()
-			.then(text => {
+			.then((text) => {
 				assert.include(text, 'min = 0, max = 100, step = 1');
 			})
 			.end();
@@ -109,7 +107,7 @@ registerSuite('Range Slider', {
 			this.skip('Test requires mouse interactions.');
 		}
 		if (browserName.toLowerCase() === 'internet explorer') {
-			this.skip('mouse movements doesn\'t work in IE.');
+			this.skip("mouse movements doesn't work in IE.");
 		}
 		if (browserName === 'firefox') {
 			this.skip('Fails in Firefox.');
@@ -147,20 +145,25 @@ registerSuite('Range Slider', {
 		if (!supportsKeysCommand) {
 			this.skip('Arrow keys required for tests.');
 		}
-		if (browserName.toLowerCase() === 'safari' || browserName.toLowerCase() === 'internet explorer') {
-			this.skip('pressKeys with arrow keys doesn\'t work in iphone and IE.');
+		if (
+			browserName.toLowerCase() === 'safari' ||
+			browserName.toLowerCase() === 'internet explorer'
+		) {
+			this.skip("pressKeys with arrow keys doesn't work in iphone and IE.");
 		}
 
 		let sliderValues: number[][] = [];
 		let command: any = getPage(this).findByCssSelector(`#example-rs1 .${css.root}`);
 		command = checkValue(command, sliderValues);
-		command = command.findByCssSelector(`.${css.leftThumb}`)
+		command = command
+			.findByCssSelector(`.${css.leftThumb}`)
 			.moveMouseTo()
 			.pressMouseButton()
 			.pressKeys([keys.ARROW_LEFT, keys.ARROW_LEFT])
 			.end();
 		command = checkValue(command, sliderValues);
-		command = command.findByCssSelector(`.${css.leftThumb}`)
+		command = command
+			.findByCssSelector(`.${css.leftThumb}`)
 			.moveMouseTo()
 			.pressMouseButton()
 			.pressKeys([keys.ARROW_RIGHT, keys.ARROW_RIGHT])
@@ -181,20 +184,25 @@ registerSuite('Range Slider', {
 		if (!supportsKeysCommand) {
 			this.skip('Arrow keys required for tests.');
 		}
-		if (browserName.toLowerCase() === 'safari' || browserName.toLowerCase() === 'internet explorer') {
-			this.skip('pressKeys with arrow keys doesn\'t work in iphone and IE.');
+		if (
+			browserName.toLowerCase() === 'safari' ||
+			browserName.toLowerCase() === 'internet explorer'
+		) {
+			this.skip("pressKeys with arrow keys doesn't work in iphone and IE.");
 		}
 
 		let sliderValues: number[][] = [];
 		let command: any = getPage(this).findByCssSelector(`#example-rs1 .${css.root}`);
 		command = checkValue(command, sliderValues);
-		command = command.findByCssSelector(`.${css.rightThumb}`)
+		command = command
+			.findByCssSelector(`.${css.rightThumb}`)
 			.moveMouseTo()
 			.pressMouseButton()
 			.pressKeys([keys.ARROW_LEFT])
 			.end();
 		command = checkValue(command, sliderValues);
-		command = command.findByCssSelector(`.${css.rightThumb}`)
+		command = command
+			.findByCssSelector(`.${css.rightThumb}`)
 			.moveMouseTo()
 			.pressMouseButton()
 			.pressKeys([keys.ARROW_RIGHT])

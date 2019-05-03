@@ -20,15 +20,17 @@ registerSuite('Tooltip', {
 		return getPage(this.remote)
 			.sleep(DELAY)
 			.findByCssSelector('#example-1 button')
-				.click()
-				.sleep(DELAY)
-				.end()
+			.click()
+			.sleep(DELAY)
+			.end()
 			.findByCssSelector('#example-1 > div:first-child > div:last-child')
-				.getVisibleText()
-				.then((text: string) => {
-					assert.strictEqual(text,
-						'This is a right-oriented tooltip that opens and closes based on child click.');
-				});
+			.getVisibleText()
+			.then((text: string) => {
+				assert.strictEqual(
+					text,
+					'This is a right-oriented tooltip that opens and closes based on child click.'
+				);
+			});
 	},
 
 	'check accessibility'() {

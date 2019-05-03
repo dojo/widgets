@@ -36,12 +36,9 @@ export interface TitlePaneProperties extends ThemedProperties, FocusProperties {
 @theme(css)
 @customElement<TitlePaneProperties>({
 	tag: 'dojo-title-pane',
-	properties: [ 'theme', 'classes', 'extraClasses', 'open', 'closeable', 'headingLevel' ],
-	attributes: [ 'title', 'key' ],
-	events: [
-		'onRequestClose',
-		'onRequestOpen'
-	]
+	properties: ['theme', 'classes', 'extraClasses', 'open', 'closeable', 'headingLevel'],
+	attributes: ['title', 'key'],
+	events: ['onRequestClose', 'onRequestOpen']
 })
 export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProperties> {
 	private _id = uuid();
@@ -49,7 +46,7 @@ export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProp
 
 	private _onWindowResize = () => {
 		this.invalidate();
-	}
+	};
 
 	private _onTitleClick(event: MouseEvent) {
 		event.stopPropagation();
@@ -71,8 +68,7 @@ export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProp
 
 		if (open) {
 			onRequestClose && onRequestClose(key);
-		}
-		else {
+		} else {
 			onRequestOpen && onRequestOpen(key);
 		}
 	}
@@ -83,16 +79,12 @@ export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProp
 
 	protected getFixedModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
-		return [
-			closeable ? fixedCss.closeableFixed : null
-		];
+		return [closeable ? fixedCss.closeableFixed : null];
 	}
 
 	protected getModifierClasses(): (string | null)[] {
 		const { closeable = true } = this.properties;
-		return [
-			closeable ? css.closeable : null
-		];
+		return [closeable ? css.closeable : null];
 	}
 
 	protected getPaneContent(): DNode[] {
@@ -113,11 +105,7 @@ export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProp
 	}
 
 	protected render(): DNode {
-		const {
-			closeable = true,
-			headingLevel,
-			open = true
-		} = this.properties;
+		const { closeable = true, headingLevel, open = true } = this.properties;
 
 		let transition = false;
 
@@ -126,41 +114,61 @@ export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProp
 			this._open = open;
 		}
 
-		return v('div', {
-			classes: [ ...this.theme([
-				css.root,
-				open ? css.open : null
-			]), fixedCss.rootFixed ]
-		}, [
-			w(GlobalEvent, { key: 'global', window: { resize: this._onWindowResize } }),
-			v('div', {
-				'aria-level': headingLevel ? `${headingLevel}` : null,
-				classes: [ ...this.theme([ css.title, ...this.getModifierClasses() ]), fixedCss.titleFixed, ...this.getFixedModifierClasses() ],
-				role: 'heading'
-			}, [
-				v('button', {
-					'aria-controls': `${this._id}-content`,
-					'aria-expanded': `${open}`,
-					disabled: !closeable,
-					classes: [ fixedCss.titleButtonFixed, ...this.theme([css.titleButton]) ],
-					focus: this.shouldFocus,
-					id: `${this._id}-title`,
-					type: 'button',
-					onclick: this._onTitleClick
-				}, [
-					this.renderExpandIcon(),
-					this.getButtonContent()
-				])
-			]),
-			v('div', {
-				'aria-hidden': open ? null : 'true',
-				'aria-labelledby': `${this._id}-title`,
-				classes: [ ...this.theme([ css.content, transition ? css.contentTransition : null ]), fixedCss.contentFixed ],
-				id: `${this._id}-content`,
-				key: 'content',
-				styles: this.getPaneStyles()
-			}, this.getPaneContent())
-		]);
+		return v(
+			'div',
+			{
+				classes: [...this.theme([css.root, open ? css.open : null]), fixedCss.rootFixed]
+			},
+			[
+				w(GlobalEvent, { key: 'global', window: { resize: this._onWindowResize } }),
+				v(
+					'div',
+					{
+						'aria-level': headingLevel ? `${headingLevel}` : null,
+						classes: [
+							...this.theme([css.title, ...this.getModifierClasses()]),
+							fixedCss.titleFixed,
+							...this.getFixedModifierClasses()
+						],
+						role: 'heading'
+					},
+					[
+						v(
+							'button',
+							{
+								'aria-controls': `${this._id}-content`,
+								'aria-expanded': `${open}`,
+								disabled: !closeable,
+								classes: [
+									fixedCss.titleButtonFixed,
+									...this.theme([css.titleButton])
+								],
+								focus: this.shouldFocus,
+								id: `${this._id}-title`,
+								type: 'button',
+								onclick: this._onTitleClick
+							},
+							[this.renderExpandIcon(), this.getButtonContent()]
+						)
+					]
+				),
+				v(
+					'div',
+					{
+						'aria-hidden': open ? null : 'true',
+						'aria-labelledby': `${this._id}-title`,
+						classes: [
+							...this.theme([css.content, transition ? css.contentTransition : null]),
+							fixedCss.contentFixed
+						],
+						id: `${this._id}-content`,
+						key: 'content',
+						styles: this.getPaneStyles()
+					},
+					this.getPaneContent()
+				)
+			]
+		);
 	}
 }
 

@@ -99,15 +99,8 @@ export enum Operation {
 		'required',
 		'results'
 	],
-	attributes: [ 'widgetId', 'label', 'value' ],
-	events: [
-		'onBlur',
-		'onChange',
-		'onFocus',
-		'onMenuChange',
-		'onRequestResults',
-		'onResultSelect'
-	]
+	attributes: ['widgetId', 'label', 'value'],
+	events: ['onBlur', 'onChange', 'onFocus', 'onMenuChange', 'onRequestResults', 'onResultSelect']
 })
 export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
 	private _activeIndex = 0;
@@ -135,7 +128,9 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	private _getResultSelected(result: any) {
 		const { getResultSelected, value } = this.properties;
 
-		return getResultSelected ? getResultSelected(result) : this._getResultLabel(result) === value;
+		return getResultSelected
+			? getResultSelected(result)
+			: this._getResultLabel(result) === value;
 	}
 
 	private _getResultValue(result: any) {
@@ -150,10 +145,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 	private _onArrowClick(event: MouseEvent) {
 		event.stopPropagation();
-		const {
-			disabled,
-			readOnly
-		} = this.properties;
+		const { disabled, readOnly } = this.properties;
 
 		if (!disabled && !readOnly) {
 			this.focus();
@@ -190,13 +182,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	private _onInputFocus(value: string) {
-		const {
-			key,
-			disabled,
-			readOnly,
-			onFocus,
-			openOnFocus
-		} = this.properties;
+		const { key, disabled, readOnly, onFocus, openOnFocus } = this.properties;
 
 		onFocus && onFocus(value, key);
 		!disabled && !readOnly && openOnFocus && this._openMenu();
@@ -220,8 +206,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 				preventDefault();
 				if (!this._open && !disabled && !readOnly) {
 					this._openMenu();
-				}
-				else if (this._open) {
+				} else if (this._open) {
 					this._moveActiveIndex(Operation.increase);
 				}
 				break;
@@ -271,10 +256,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	private _openMenu() {
-		const {
-			key,
-			onRequestResults
-		} = this.properties;
+		const { key, onRequestResults } = this.properties;
 
 		this._activeIndex = 0;
 		this._open = true;
@@ -283,12 +265,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	private _selectIndex(index: number) {
-		const {
-			key,
-			onChange,
-			onResultSelect,
-			results = []
-		} = this.properties;
+		const { key, onChange, onResultSelect, results = [] } = this.properties;
 
 		this.focus();
 		this._closeMenu();
@@ -313,10 +290,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const {
-			clearable,
-			invalid
-		} = this.properties;
+		const { clearable, invalid } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -347,7 +321,9 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			key: 'textinput',
 			classes,
 			aria: {
-				activedescendant: this._open ? this._getResultId(results[this._activeIndex], this._activeIndex) : null,
+				activedescendant: this._open
+					? this._getResultId(results[this._activeIndex], this._activeIndex)
+					: null,
 				autocomplete: 'list'
 			},
 			valid: typeof invalid === 'boolean' ? !invalid : undefined,
@@ -366,53 +342,45 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	protected renderClearButton(messages: CommonMessages): DNode {
-		const {
-			disabled,
-			label = '',
-			readOnly,
-			theme,
-			classes
-		} = this.properties;
+		const { disabled, label = '', readOnly, theme, classes } = this.properties;
 
-		return v('button', {
-			key: 'clear',
-			'aria-hidden': 'true',
-			classes: this.theme(css.clear),
-			disabled: disabled || readOnly,
-			tabIndex: -1,
-			type: 'button',
-			onclick: this._onClearClick
-		}, [
-			v('span', { classes: baseCss.visuallyHidden }, [
-				`${messages.clear} ${label}`
-			]),
-			w(Icon, { type: 'closeIcon', theme, classes })
-		]);
+		return v(
+			'button',
+			{
+				key: 'clear',
+				'aria-hidden': 'true',
+				classes: this.theme(css.clear),
+				disabled: disabled || readOnly,
+				tabIndex: -1,
+				type: 'button',
+				onclick: this._onClearClick
+			},
+			[
+				v('span', { classes: baseCss.visuallyHidden }, [`${messages.clear} ${label}`]),
+				w(Icon, { type: 'closeIcon', theme, classes })
+			]
+		);
 	}
 
 	protected renderMenuButton(messages: CommonMessages): DNode {
-		const {
-			disabled,
-			label = '',
-			readOnly,
-			theme,
-			classes
-		} = this.properties;
+		const { disabled, label = '', readOnly, theme, classes } = this.properties;
 
-		return v('button', {
-			key: 'trigger',
-			'aria-hidden': 'true',
-			classes: this.theme(css.trigger),
-			disabled: disabled || readOnly,
-			tabIndex: -1,
-			type: 'button',
-			onclick: this._onArrowClick
-		}, [
-			v('span', { classes: baseCss.visuallyHidden }, [
-				`${messages.open} ${label}`
-			]),
-			w(Icon, { type: 'downIcon', theme, classes })
-		]);
+		return v(
+			'button',
+			{
+				key: 'trigger',
+				'aria-hidden': 'true',
+				classes: this.theme(css.trigger),
+				disabled: disabled || readOnly,
+				tabIndex: -1,
+				type: 'button',
+				onclick: this._onArrowClick
+			},
+			[
+				v('span', { classes: baseCss.visuallyHidden }, [`${messages.open} ${label}`]),
+				w(Icon, { type: 'downIcon', theme, classes })
+			]
+		);
 	}
 
 	protected renderMenu(results: any[]): DNode {
@@ -422,34 +390,38 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			return null;
 		}
 
-		return v('div', {
-			key: 'dropdown',
-			classes: this.theme(css.dropdown),
-			onmouseover: this._onResultHover,
-			onmousedown: this._onResultMouseDown
-		}, [
-			w(Listbox, {
-				key: 'listbox',
-				classes,
-				activeIndex: this._activeIndex,
-				widgetId: this._getMenuId(),
-				visualFocus: this._menuHasVisualFocus,
-				optionData: results,
-				tabIndex: -1,
-				getOptionDisabled: isResultDisabled,
-				getOptionId: this._getResultId,
-				getOptionLabel: this._getResultLabel,
-				getOptionSelected: this._getResultSelected,
-				onActiveIndexChange: (index: number) => {
-					this._activeIndex = index;
-					this.invalidate();
-				},
-				onOptionSelect: (option: any, index: number) => {
-					this._selectIndex(index);
-				},
-				theme
-			})
-		]);
+		return v(
+			'div',
+			{
+				key: 'dropdown',
+				classes: this.theme(css.dropdown),
+				onmouseover: this._onResultHover,
+				onmousedown: this._onResultMouseDown
+			},
+			[
+				w(Listbox, {
+					key: 'listbox',
+					classes,
+					activeIndex: this._activeIndex,
+					widgetId: this._getMenuId(),
+					visualFocus: this._menuHasVisualFocus,
+					optionData: results,
+					tabIndex: -1,
+					getOptionDisabled: isResultDisabled,
+					getOptionId: this._getResultId,
+					getOptionLabel: this._getResultLabel,
+					getOptionSelected: this._getResultSelected,
+					onActiveIndexChange: (index: number) => {
+						this._activeIndex = index;
+						this.invalidate();
+					},
+					onOptionSelect: (option: any, index: number) => {
+						this._selectIndex(index);
+					},
+					theme
+				})
+			]
+		);
 	}
 
 	render(): DNode {
@@ -475,36 +447,50 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		this._wasOpen = this._open;
 
 		const controls = [
-			label ? w(Label, {
-				key: 'label',
-				theme,
-				classes,
-				disabled,
-				focused: focus.containsFocus,
-				invalid,
-				readOnly,
-				required,
-				hidden: labelHidden,
-				forId: widgetId
-			}, [ label ]) : null,
-			v('div', {
-				'aria-expanded': this._open ? 'true' : 'false',
-				'aria-haspopup': 'listbox',
-				'aria-owns': this._open ? this._getMenuId() : null,
-				classes: this.theme(css.controls),
-				role: 'combobox'
-			}, [
-				this.renderInput(results),
-				clearable ? this.renderClearButton(messages) : null,
-				this.renderMenuButton(messages)
-			]),
+			label
+				? w(
+						Label,
+						{
+							key: 'label',
+							theme,
+							classes,
+							disabled,
+							focused: focus.containsFocus,
+							invalid,
+							readOnly,
+							required,
+							hidden: labelHidden,
+							forId: widgetId
+						},
+						[label]
+				  )
+				: null,
+			v(
+				'div',
+				{
+					'aria-expanded': this._open ? 'true' : 'false',
+					'aria-haspopup': 'listbox',
+					'aria-owns': this._open ? this._getMenuId() : null,
+					classes: this.theme(css.controls),
+					role: 'combobox'
+				},
+				[
+					this.renderInput(results),
+					clearable ? this.renderClearButton(messages) : null,
+					this.renderMenuButton(messages)
+				]
+			),
 			menu
 		];
 
-		return v('div', {
-			classes: this.theme(this.getRootClasses()),
-			key: 'root'
-		}, labelAfter ? controls.reverse() : controls);
+		return v(
+			'div',
+			{
+				classes: this.theme(this.getRootClasses()),
+				key: 'root'
+			},
+			labelAfter ? controls.reverse() : controls
+		);
 	}
 }
 

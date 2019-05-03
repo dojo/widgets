@@ -20,14 +20,18 @@ registerSuite('Textarea', {
 	'should be visible'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t1 .${css.root}`)
-				.isDisplayed()
-				.findByCssSelector(`.${css.input}`)
-					.getSize()
-					.then(({ height, width }) => {
-						assert.isAbove(height, 0, 'The height of the textarea should be greater than zero.');
-						assert.isAbove(width, 0, 'The width of the textarea should be greater than zero.');
-					})
-				.end()
+			.isDisplayed()
+			.findByCssSelector(`.${css.input}`)
+			.getSize()
+			.then(({ height, width }) => {
+				assert.isAbove(
+					height,
+					0,
+					'The height of the textarea should be greater than zero.'
+				);
+				assert.isAbove(width, 0, 'The width of the textarea should be greater than zero.');
+			})
+			.end()
 			.end();
 	},
 	'label should be as defined'() {
@@ -38,10 +42,10 @@ registerSuite('Textarea', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t1 .${css.root}`)
-				.getVisibleText()
-				.then(text => {
-					assert.strictEqual(text, 'Type Something');
-				})
+			.getVisibleText()
+			.then((text) => {
+				assert.strictEqual(text, 'Type Something');
+			})
 			.end();
 	},
 	'should gain focus when clicking on the label'() {
@@ -52,11 +56,15 @@ registerSuite('Textarea', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t1 .${css.root} label`)
-				.click()
-				.sleep(1000)
+			.click()
+			.sleep(1000)
 			.end()
-			.execute(`return document.activeElement === document.querySelector('#example-t1 .${css.input}');`)
-			.then(isEqual => {
+			.execute(
+				`return document.activeElement === document.querySelector('#example-t1 .${
+					css.input
+				}');`
+			)
+			.then((isEqual) => {
 				assert.isTrue(isEqual);
 			});
 	},
@@ -69,33 +77,36 @@ registerSuite('Textarea', {
 		const testInput = 'test text';
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t1 .${css.input}`)
-				.click()
-				.type(testInput)
-				.getProperty('value')
-				.then((value: string) => {
-					assert.strictEqual(value, testInput);
-				})
+			.click()
+			.type(testInput)
+			.getProperty('value')
+			.then((value: string) => {
+				assert.strictEqual(value, testInput);
+			})
 			.end();
 	},
 	'disabled should not allow input to be typed'() {
 		const initValue = 'Initial value';
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t2 .${css.root} .${css.input}`)
-				.click()
-				.then(null, () => {})
-				.type('text')
-				.then(null, () => {})
-				.getProperty('value')
-				.then((value: string) => {
-					assert.strictEqual(value, initValue);
-				})
+			.click()
+			.then(null, () => {})
+			.type('text')
+			.then(null, () => {})
+			.getProperty('value')
+			.then((value: string) => {
+				assert.strictEqual(value, initValue);
+			})
 			.end();
 	},
 	'validated should update style based on validity'() {
 		const { browserName, version } = this.remote.session.capabilities;
 		// Validated working manually in both safari and edge but functional just does not work
 		if (browserName === 'safari' || browserName!.toLowerCase() === 'microsoftedge') {
-			this.skip('Classes are not being updated for this unit test in Safari or Edge, have been validated manually' + version);
+			this.skip(
+				'Classes are not being updated for this unit test in Safari or Edge, have been validated manually' +
+					version
+			);
 		}
 
 		const validText = 'exists';
@@ -104,60 +115,62 @@ registerSuite('Textarea', {
 			backspaces.push(keys.BACKSPACE);
 		}
 
-		return getPage(this.remote)
-			.findByCssSelector(`#example-t3 .${css.root}`)
+		return (
+			getPage(this.remote)
+				.findByCssSelector(`#example-t3 .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.invalid);
 					assert.notInclude(className, css.valid);
 				})
 				.findByCssSelector(`.${css.input}`)
-					.click()
-					.type(validText)
-				.end()
-			.end()
-			// focus another input
-			.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
 				.click()
-			.end()
-			.sleep(500)
-			// enter invalid value
-			.findByCssSelector(`#example-t3 .${css.root}`)
+				.type(validText)
+				.end()
+				.end()
+				// focus another input
+				.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
+				.click()
+				.end()
+				.sleep(500)
+				// enter invalid value
+				.findByCssSelector(`#example-t3 .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.invalid);
 					assert.include(className, css.valid);
 				})
 				.findByCssSelector(`.${css.input}`)
-					.click()
-					.type(backspaces)
-				.end()
-			.end()
-			// focus another input
-			.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
 				.click()
-			.end()
-			.sleep(500)
-			.findByCssSelector(`#example-t3 .${css.root}`)
+				.type(backspaces)
+				.end()
+				.end()
+				// focus another input
+				.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
+				.click()
+				.end()
+				.sleep(500)
+				.findByCssSelector(`#example-t3 .${css.root}`)
 				.getProperty('className')
 				.then((className: string) => {
 					assert.notInclude(className, css.valid);
 					assert.include(className, css.invalid);
 				})
-			.end();
+				.end()
+		);
 	},
 	'hidden label should not be displayed'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t4 .${css.root}`)
-				.getVisibleText()
-				.then(text => {
-					assert.isTrue(text && text.length > 0);
-				})
-				.findByCssSelector(`.${baseCss.visuallyHidden}`)
-					.then(element => {
-						assert(element, 'element with specified class "visuallyHidden" should exist.`');
-					})
-				.end()
+			.getVisibleText()
+			.then((text) => {
+				assert.isTrue(text && text.length > 0);
+			})
+			.findByCssSelector(`.${baseCss.visuallyHidden}`)
+			.then((element) => {
+				assert(element, 'element with specified class "visuallyHidden" should exist.`');
+			})
+			.end()
 			.end();
 	},
 

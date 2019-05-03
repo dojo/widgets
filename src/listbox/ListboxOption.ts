@@ -26,22 +26,20 @@ export class ListboxOption extends ThemedMixin(WidgetBase)<ListboxOptionProperti
 	}
 
 	protected render(): DNode {
-		const {
-			css = [],
-			disabled = false,
-			id,
-			label,
-			selected = false
-		} = this.properties;
+		const { css = [], disabled = false, id, label, selected = false } = this.properties;
 
-		return v('div', {
-			'aria-disabled': disabled ? 'true' : null,
-			'aria-selected': disabled ? null : String(selected),
-			classes: this.theme(css),
-			id,
-			role: 'option',
-			onclick: this._onClick
-		}, [ label ]);
+		return v(
+			'div',
+			{
+				'aria-disabled': disabled ? 'true' : null,
+				'aria-selected': disabled ? null : String(selected),
+				classes: this.theme(css),
+				id,
+				role: 'option',
+				onclick: this._onClick
+			},
+			[label]
+		);
 	}
 }
 

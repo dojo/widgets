@@ -8,10 +8,17 @@ import Focus from '@dojo/framework/widget-core/meta/Focus';
 import Label from '../../../label/index';
 import Textarea from '../../index';
 import * as css from '../../../theme/text-area.m.css';
-import { compareForId, compareId, createHarness, MockMetaMixin, noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import {
+	compareForId,
+	compareId,
+	createHarness,
+	MockMetaMixin,
+	noop,
+	stubEvent
+} from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
 
-const harness = createHarness([ compareId, compareForId ]);
+const harness = createHarness([compareId, compareForId]);
 
 interface States {
 	disabled?: boolean;
@@ -20,61 +27,85 @@ interface States {
 	readOnly?: boolean;
 }
 
-const expected = function(label = false, inputOverrides = {}, states: States = {}, focused = false, helperText?: string) {
+const expected = function(
+	label = false,
+	inputOverrides = {},
+	states: States = {},
+	focused = false,
+	helperText?: string
+) {
 	const { disabled, required, readOnly, invalid } = states;
 
-	return v('div', {
-		key: 'root',
-		classes: [ css.root, disabled ? css.disabled : null, focused ? css.focused : null, invalid ? css.invalid : null, invalid === false ? css.valid : null, readOnly ? css.readonly : null, required ? css.required : null ]
-	}, [
-		label ? w(Label, {
-			theme: undefined,
-			classes: undefined,
-			disabled,
-			focused,
-			hidden: undefined,
-			invalid,
-			readOnly,
-			required,
-			forId: ''
-		}, [ 'foo' ]) : null,
-		v('div', { classes: css.inputWrapper }, [
-			v('textarea', {
-				classes: css.input,
-				id: '',
-				key: 'input',
-				cols: '20',
-				disabled,
-				focus: noop,
-				'aria-invalid': invalid ? 'true' : null,
-				maxlength: null,
-				minlength: null,
-				name: undefined,
-				placeholder: undefined,
-				readOnly,
-				'aria-readonly': readOnly ? 'true' : null,
-				required,
-				rows: '2',
-				value: undefined,
-				wrap: undefined,
-				onblur: noop,
-				onchange: noop,
-				onclick: noop,
-				onfocus: noop,
-				oninput: noop,
-				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop,
-				...inputOverrides
-			})
-		]),
-		w(HelperText, { text: helperText })
-	]);
+	return v(
+		'div',
+		{
+			key: 'root',
+			classes: [
+				css.root,
+				disabled ? css.disabled : null,
+				focused ? css.focused : null,
+				invalid ? css.invalid : null,
+				invalid === false ? css.valid : null,
+				readOnly ? css.readonly : null,
+				required ? css.required : null
+			]
+		},
+		[
+			label
+				? w(
+						Label,
+						{
+							theme: undefined,
+							classes: undefined,
+							disabled,
+							focused,
+							hidden: undefined,
+							invalid,
+							readOnly,
+							required,
+							forId: ''
+						},
+						['foo']
+				  )
+				: null,
+			v('div', { classes: css.inputWrapper }, [
+				v('textarea', {
+					classes: css.input,
+					id: '',
+					key: 'input',
+					cols: '20',
+					disabled,
+					focus: noop,
+					'aria-invalid': invalid ? 'true' : null,
+					maxlength: null,
+					minlength: null,
+					name: undefined,
+					placeholder: undefined,
+					readOnly,
+					'aria-readonly': readOnly ? 'true' : null,
+					required,
+					rows: '2',
+					value: undefined,
+					wrap: undefined,
+					onblur: noop,
+					onchange: noop,
+					onclick: noop,
+					onfocus: noop,
+					oninput: noop,
+					onkeydown: noop,
+					onkeypress: noop,
+					onkeyup: noop,
+					onmousedown: noop,
+					onmouseup: noop,
+					ontouchstart: noop,
+					ontouchend: noop,
+					ontouchcancel: noop,
+					...inputOverrides
+				})
+			]),
+			w(HelperText, { text: helperText })
+		]
+	);
 };
 
 registerSuite('Textarea', {
@@ -85,37 +116,43 @@ registerSuite('Textarea', {
 		},
 
 		'custom properties'() {
-			const h = harness(() => w(Textarea, {
-				aria: { describedBy: 'foo' },
-				columns: 15,
-				widgetId: 'foo',
-				maxLength: 50,
-				minLength: 10,
-				name: 'bar',
-				placeholder: 'baz',
-				rows: 42,
-				value: 'qux',
-				wrapText: 'soft'
-			}));
+			const h = harness(() =>
+				w(Textarea, {
+					aria: { describedBy: 'foo' },
+					columns: 15,
+					widgetId: 'foo',
+					maxLength: 50,
+					minLength: 10,
+					name: 'bar',
+					placeholder: 'baz',
+					rows: 42,
+					value: 'qux',
+					wrapText: 'soft'
+				})
+			);
 
-			h.expect(() => expected(false, {
-				cols: '15',
-				'aria-describedby': 'foo',
-				id: 'foo',
-				maxlength: '50',
-				minlength: '10',
-				name: 'bar',
-				placeholder: 'baz',
-				rows: '42',
-				value: 'qux',
-				wrap: 'soft'
-			}));
+			h.expect(() =>
+				expected(false, {
+					cols: '15',
+					'aria-describedby': 'foo',
+					id: 'foo',
+					maxlength: '50',
+					minlength: '10',
+					name: 'bar',
+					placeholder: 'baz',
+					rows: '42',
+					value: 'qux',
+					wrap: 'soft'
+				})
+			);
 		},
 
-		'label'() {
-			const h = harness(() => w(Textarea, {
-				label: 'foo'
-			}));
+		label() {
+			const h = harness(() =>
+				w(Textarea, {
+					label: 'foo'
+				})
+			);
 
 			h.expect(() => expected(true));
 		},
@@ -154,7 +191,7 @@ registerSuite('Textarea', {
 			h.expect(() => expected(false, {}, {}, true));
 		},
 
-		'helperText'() {
+		helperText() {
 			const h = harness(() => w(Textarea, { helperText: 'test' }));
 			h.expect(() => expected(false, {}, {}, false, 'test'));
 		},
@@ -174,21 +211,23 @@ registerSuite('Textarea', {
 			const onTouchEnd = sinon.stub();
 			const onTouchCancel = sinon.stub();
 
-			const h = harness(() => w(Textarea, {
-				onBlur,
-				onChange,
-				onClick,
-				onFocus,
-				onInput,
-				onKeyDown,
-				onKeyPress,
-				onKeyUp,
-				onMouseDown,
-				onMouseUp,
-				onTouchStart,
-				onTouchEnd,
-				onTouchCancel
-			}));
+			const h = harness(() =>
+				w(Textarea, {
+					onBlur,
+					onChange,
+					onClick,
+					onFocus,
+					onInput,
+					onKeyDown,
+					onKeyPress,
+					onKeyUp,
+					onMouseDown,
+					onMouseUp,
+					onTouchStart,
+					onTouchEnd,
+					onTouchCancel
+				})
+			);
 
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');

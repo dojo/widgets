@@ -10,7 +10,7 @@ export default class App extends WidgetBase {
 	render() {
 		return v('div', [
 			v('h2', {}, ['Textarea Example']),
-			v('div', { id: 'example-t1'}, [
+			v('div', { id: 'example-t1' }, [
 				w(Textarea, {
 					key: 't1',
 					columns: 40,
@@ -25,18 +25,18 @@ export default class App extends WidgetBase {
 				})
 			]),
 			v('h3', {}, ['Disabled Textarea']),
-			v('div', { id: 'example-t2'}, [
+			v('div', { id: 'example-t2' }, [
 				w(Textarea, {
 					key: 't2',
 					columns: 40,
 					rows: 3,
-					label: 'Can\'t type here',
+					label: "Can't type here",
 					value: 'Initial value',
 					disabled: true
 				})
 			]),
 			v('h3', {}, ['Validated, Required Textarea']),
-			v('div', { id: 'example-t3'}, [
+			v('div', { id: 'example-t3' }, [
 				w(Textarea, {
 					key: 't3',
 					columns: 40,
@@ -53,7 +53,7 @@ export default class App extends WidgetBase {
 				})
 			]),
 			v('h3', {}, ['Hidden Label Textarea']),
-			v('div', { id: 'example-t4'}, [
+			v('div', { id: 'example-t4' }, [
 				w(Textarea, {
 					key: 't4',
 					columns: 40,
@@ -63,7 +63,7 @@ export default class App extends WidgetBase {
 				})
 			]),
 			v('h3', {}, ['Helper Text Textarea']),
-			v('div', { id: 'example-helperText'}, [
+			v('div', { id: 'example-helperText' }, [
 				w(Textarea, {
 					key: 't4',
 					columns: 40,
