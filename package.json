@@ -18,11 +18,15 @@
   },
   "scripts": {
     "prepublish": "grunt peerDepInstall",
-    "precommit": "lint-staged",
     "prettier": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "grunt test",
     "build-custom-elements": "shx rm -rf output && dojo build widget",
     "dist-custom-elements": "npm run build-custom-elements && shx rm -rf dist/all/dist && shx cp -r output/dist dist/all/"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "peerDependencies": {
     "@dojo/framework": "^5.0.0"
