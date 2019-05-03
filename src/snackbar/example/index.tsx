@@ -50,7 +50,7 @@ export default class App extends WidgetBase {
 						title="Test Snackbar Error"
 					/>
 				</div>
-				<div id="example-aurtoclose">
+				<div id="example-autoclose">
 					<h3>Auto close Snackbar</h3>
 					<Button
 						onClick={() => {
