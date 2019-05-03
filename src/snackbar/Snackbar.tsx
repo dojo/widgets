@@ -40,13 +40,13 @@ export class Snackbar extends I18nMixin(WidgetBase)<SnackbarProperties> {
 						{title}
 					</div>
 					<div key="actions" classes={css.actions}>
-						<button
+						<Button
 							name="snackbar-dismiss"
 							key="dismiss"
-							onclick={() => this._onDismiss()}
+							onClick={() => this._onDismiss()}
 						>
 							{messages.dismiss}
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>
