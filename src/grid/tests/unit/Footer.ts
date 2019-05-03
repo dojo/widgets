@@ -3,8 +3,8 @@ const { describe, it } = intern.getInterface('bdd');
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
 
-import * as css from '../../../../theme/grid-footer.m.css';
-import Footer from '../../../widgets/Footer';
+import * as css from '../../../theme/grid-footer.m.css';
+import Footer from '../../Footer';
 
 describe('Footer', () => {
 	it('should render footer without total', () => {

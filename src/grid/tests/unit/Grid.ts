@@ -9,15 +9,15 @@ import { Store } from '@dojo/framework/stores/Store';
 import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
 
-import Grid from '../../../widgets/Grid';
-import * as css from '../../../../theme/grid.m.css';
-import * as fixedCss from '../../../styles/grid.m.css';
-import { ColumnConfig } from '../../../interfaces';
+import Grid from '../../index';
+import * as css from '../../../theme/grid.m.css';
+import * as fixedCss from '../../styles/grid.m.css';
+import { ColumnConfig } from '../../interfaces';
 import { stub, spy } from 'sinon';
-import { MockMetaMixin } from '../../../../common/tests/support/test-helpers';
-import Header from '../../../widgets/Header';
-import Body from '../../../widgets/Body';
-import Footer from '../../../widgets/Footer';
+import { MockMetaMixin } from '../../../common/tests/support/test-helpers';
+import Header from '../../Header';
+import Body from '../../Body';
+import Footer from '../../Footer';
 
 const noop: any = () => {};
 

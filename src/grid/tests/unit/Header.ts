@@ -4,13 +4,13 @@ const { assert } = intern.getPlugin('chai');
 import { stub } from 'sinon';
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
-import TextInput from '../../../../text-input/index';
-import Icon from '../../../../icon/index';
+import TextInput from '../../../text-input/index';
+import Icon from '../../../icon/index';
 
-import * as css from '../../../../theme/grid-header.m.css';
-import * as fixedCss from '../../../styles/header.m.css';
-import Header from '../../../widgets/Header';
-import { ColumnConfig } from '../../../interfaces';
+import * as css from '../../../theme/grid-header.m.css';
+import * as fixedCss from '../../styles/header.m.css';
+import Header from '../../Header';
+import { ColumnConfig } from '../../interfaces';
 
 const noop = () => {};
 

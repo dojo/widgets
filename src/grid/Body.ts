@@ -5,12 +5,12 @@ import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { DNode, VNodeProperties } from '@dojo/framework/widget-core/interfaces';
 import renderer from '@dojo/framework/widget-core/vdom';
 
-import { GridPages, ColumnConfig } from './../interfaces';
+import { GridPages, ColumnConfig } from './interfaces';
 import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
 
-import * as fixedCss from '../styles/body.m.css';
-import * as css from '../../theme/grid-body.m.css';
+import * as fixedCss from './styles/body.m.css';
+import * as css from '../theme/grid-body.m.css';
 import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
 import { auto, reference } from '@dojo/framework/widget-core/diff';
 

@@ -2,12 +2,12 @@ const { describe, it } = intern.getInterface('bdd');
 
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
-import Row from '../../../widgets/Row';
+import Row from '../../Row';
 
-import * as fixedCss from '../../../styles/row.m.css';
-import * as css from '../../../../theme/grid-row.m.css';
-import { ColumnConfig } from '../../../interfaces';
-import Cell from '../../../widgets/Cell';
+import * as fixedCss from './../../styles/row.m.css';
+import * as css from '../../../theme/grid-row.m.css';
+import { ColumnConfig } from '../../interfaces';
+import Cell from '../../Cell';
 
 const noop = () => {};
 
