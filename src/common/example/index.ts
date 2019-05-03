@@ -25,6 +25,7 @@ const modules = [
 	'select',
 	'slide-pane',
 	'slider',
+	'snackbar',
 	'split-pane',
 	'tab-controller',
 	'text-area',
