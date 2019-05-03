@@ -4,6 +4,8 @@
 		"declaration": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
+		"jsx": "react",
+		"jsxFactory": "tsx",
 		"lib": [
 			"dom",
 			"es5",
@@ -30,6 +32,7 @@
 		"types": [ "intern" ]
 	},
 	"include": [
-		"./src/**/*.ts"
+		"./src/**/*.ts",
+		"./src/**/*.tsx"
 	]
 }
