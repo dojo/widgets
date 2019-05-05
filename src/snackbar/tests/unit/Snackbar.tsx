@@ -7,7 +7,7 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import Snackbar from '../../index';
 import * as css from '../../../theme/snackbar.m.css';
-import Button from '../../../button';
+import Button from '../../../button/index';
 import bundle from '../../nls/Snackbar';
 import { Store } from '@dojo/framework/stores/Store';
 import { createProcess } from '@dojo/framework/stores/process';
