@@ -16,7 +16,7 @@ import { replace } from '@dojo/framework/stores/state/operations';
 describe('Snackbar', () => {
 	const template = assertationTemplate(() => {
 		return (
-			<div key="root" classes={[css.root, null, null]}>
+			<div key="root" classes={[css.root]}>
 				<div key="content" classes={css.content}>
 					<div key="label" classes={css.label} role="status" aria-live="polite">
 						test
@@ -32,13 +32,13 @@ describe('Snackbar', () => {
 	});
 
 	it('renders', () => {
-		const h = harness(() => <Snackbar title="test" />);
+		const h = harness(() => <Snackbar title="test" open={false} />);
 		h.expect(template);
 	});
 
 	it('renders open', () => {
 		const h = harness(() => <Snackbar title="test" open={true} />);
-		const openTemplate = template.setProperty('@root', 'classes', [css.root, css.open, null]);
+		const openTemplate = template.setProperty('@root', 'classes', [css.root, css.open]);
 		h.expect(openTemplate);
 	});
 
@@ -64,7 +64,7 @@ describe('Snackbar', () => {
 
 	it('calls the onDismiss property when the dismiss button is triggered', () => {
 		const dismissSpy = sinon.spy();
-		const h = harness(() => <Snackbar title="test" onDismiss={dismissSpy} />);
+		const h = harness(() => <Snackbar title="test" open={false} onDismiss={dismissSpy} />);
 		h.trigger('@dismiss', 'onClick');
 		assert.isTrue(dismissSpy.calledOnce);
 	});

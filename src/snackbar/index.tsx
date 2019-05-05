@@ -7,7 +7,7 @@ import bundle from './nls/Snackbar';
 
 export interface SnackbarProperties {
 	success?: boolean;
-	open?: boolean;
+	open: boolean;
 	title: string;
 	onDismiss?: () => void;
 }
@@ -17,18 +17,24 @@ export class Snackbar extends I18nMixin(WidgetBase)<SnackbarProperties> {
 		const { onDismiss } = this.properties;
 		onDismiss && onDismiss();
 	}
+
 	protected render() {
-		const { messages } = this.localizeBundle(bundle) as { messages: { [key: string]: string } };
+		const { messages } = this.localizeBundle(bundle);
 		const { success, open, title } = this.properties;
+		const classes = [css.root];
+
+		if (open) {
+			classes.push(css.open);
+		}
+
+		if (success === true) {
+			classes.push(css.success);
+		} else if (success === false) {
+			classes.push(css.error);
+		}
+
 		return (
-			<div
-				key="root"
-				classes={[
-					css.root,
-					open ? css.open : null,
-					success === true ? css.success : success === false ? css.error : null
-				]}
-			>
+			<div key="root" classes={classes}>
 				<div key="content" classes={css.content}>
 					<div key="label" classes={css.label} role="status" aria-live="polite">
 						{title}
