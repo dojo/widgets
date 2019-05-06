@@ -218,13 +218,14 @@ or
 Each Dojo widget includes functioning example code so you can view the widget. To view individual widget example:
 
 1. Run `grunt dev` in your terminal
-2. Open the newly built file `_build/common/example/index.html` in your web browser
+2. Run `npm start`
+2. Open the newly built project at `http://localhost:5000/_build/common/example/` in your web browser
 3. By default, no widget is selected, open the dropdown to select a widget
 4. Observe the page reloads and the selected widget displays
 
-#### To modify/debug widget examples
+#### Watching widget example code
 
-Running `grunt dev` each time you wish to view a small change takes more time than simply running this command in your terminal:
+Running `grunt dev` each time you wish to view a small change can be tedious, instead to have your files watched run:
 
 ```
 tsc -w

@@ -17,6 +17,7 @@
     "url": "https://github.com/dojo/widgets.git"
   },
   "scripts": {
+    "start": "serve",
     "prepublish": "grunt peerDepInstall",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "grunt test",
@@ -46,16 +47,17 @@
     "grunt": "^1.0.1",
     "grunt-dojo2": "~4.0.0",
     "grunt-tslint": "^5.0.1",
+    "husky": "2.2.0",
     "jsdom": "^9.5.0",
+    "lint-staged": "8.1.6",
     "load-grunt-tasks": "^3.5.2",
     "pkg-dir": "^2.0.0",
+    "prettier": "1.17.0",
+    "serve": "^11.0.0",
     "shx": "^0.2.2",
     "sinon": "^1.17.6",
     "ts-node": "^3.3.0",
-    "typescript": "~2.6.1",
-    "husky": "2.2.0",
-    "lint-staged": "8.1.6",
-    "prettier": "1.17.0"
+    "typescript": "~2.6.1"
   },
   "dependencies": {
     "tslib": "~1.8.1"
