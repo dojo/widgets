@@ -13,32 +13,30 @@ Dojo's `Snackbar` widget creates a brief display message that is positioned at t
 // Basic usage
 w(Snackbar, {
 	open: true,
-	title: 'Text to display'
+	message: 'Text to display'
 });
 
 // Display a success-styled message
 w(Snackbar, {
 	open: true,
-	title: 'Text to display',
-	success: true
+	message: 'Text to display',
+	type: 'success'
 });
 
 // Display an error-styled message
 w(Snackbar, {
 	open: true,
-	title: 'Text to display',
-	success: false
+	message: 'Text to display',
+	type: 'error'
 });
 
 // Handle closing the message
 let open = true;
 w(Snackbar, {
 	open,
-	title: 'Text to display',
-	success: false,
-	onDismiss: () => {
-		open = false;
-	}
+	message: 'Text to display',
+	type: 'error',
+	actions: w(Button, { onClick: () => dismiss() }, 'Dismiss')
 });
 ```
 
@@ -54,5 +52,5 @@ The following CSS classes are available on the `Snackbar` widget for use with cu
 *Conditional classes*
 
 - `open` - Applied to the top-level element of the widget when the Snackbar is displayed
-- `success` - Applied to the top-level element of the widget when `success: true`
-- `error`  - Applied to the top-level element of the widget when `success: false`
+- `success` - Applied to the top-level element of the widget when `type` is `success`
+- `error`  - Applied to the top-level element of the widget when `type` is `error`
