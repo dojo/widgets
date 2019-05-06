@@ -39,7 +39,7 @@ interface TextInputInternalState {
  * @property maxLength      Maximum number of characters allowed in the input
  * @property minLength      Minimum number of characters allowed in the input
  * @property placeholder    Placeholder text
- * @property value           The current value
+ * @property value          The current value
  * @property leading		Renderer for leading icon content
  * @property trailing		Renderer for trailing icon content
  */

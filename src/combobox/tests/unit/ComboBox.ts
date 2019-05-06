@@ -111,7 +111,7 @@ const getExpectedControls = function(
 				focus: noop,
 				helperText: helperText || undefined,
 				widgetId: useTestProperties ? 'foo' : '',
-				valid: validity || undefined,
+				valid: validity,
 				readOnly,
 				required,
 				theme: useTestProperties ? {} : undefined,
