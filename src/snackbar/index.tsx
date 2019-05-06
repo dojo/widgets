@@ -1,21 +1,18 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { tsx } from '@dojo/framework/widget-core/tsx';
-import I18nMixin from '@dojo/framework/widget-core/mixins/I18n';
 import Button from '../button/index';
 import * as css from '../theme/snackbar.m.css';
-
-export type SnackbarType = 'success' | 'error';
 
 export interface SnackbarProperties {
 	open: boolean;
 	message: string;
 	actions?: DNode | DNode[];
-	type?: SnackbarType;
+	type?: 'success' | 'error';
 }
 
-export class Snackbar extends I18nMixin(WidgetBase)<SnackbarProperties> {
-	protected render() {
+export class Snackbar extends WidgetBase<SnackbarProperties> {
+	protected render(): DNode {
 		const { type, open, message, actions = null } = this.properties;
 		const classes = [css.root];
 
