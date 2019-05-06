@@ -17,6 +17,8 @@ export default class App extends WidgetBase {
 	@watch()
 	private _showAutoclose = false;
 
+	private _timeoutHandle: any;
+
 	render() {
 		return (
 			<div>
@@ -26,36 +28,31 @@ export default class App extends WidgetBase {
 					<Button onClick={() => (this._showPlain = true)}>Show Plain Snackbar</Button>
 					<Snackbar
 						open={this._showPlain}
-						onDismiss={() => (this._showPlain = false)}
-						title="Test Snackbar"
+						message="Test Snackbar"
+						actions={<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>}
 					/>
 				</div>
 				<div id="example-success">
 					<h3>Success Snackbar</h3>
 					<Button onClick={() => (this._showSuccess = true)}>Show Success</Button>
 					<Snackbar
-						success={true}
+						type="success"
 						open={this._showSuccess}
-						onDismiss={() => (this._showSuccess = false)}
-						title="Test Snackbar Success"
+						message="Test Snackbar Success"
+						actions={<Button onClick={() => (this._showSuccess = false)}>X</Button>}
 					/>
 				</div>
 				<div id="example-error">
 					<h3>Error Snackbar</h3>
 					<Button onClick={() => (this._showError = true)}>Show Error</Button>
-					<Snackbar
-						success={false}
-						open={this._showError}
-						onDismiss={() => (this._showError = false)}
-						title="Test Snackbar Error"
-					/>
+					<Snackbar type="error" open={this._showError} message="Test Snackbar Error" />
 				</div>
 				<div id="example-autoclose">
-					<h3>Auto close Snackbar</h3>
+					<h3>Multiple Actions</h3>
 					<Button
 						onClick={() => {
 							this._showAutoclose = true;
-							setTimeout(() => {
+							this._timeoutHandle = setTimeout(() => {
 								this._showAutoclose = false;
 							}, 5000);
 						}}
@@ -63,10 +60,15 @@ export default class App extends WidgetBase {
 						Show Snackbar
 					</Button>
 					<Snackbar
-						success={true}
+						type="success"
 						open={this._showAutoclose}
-						onDismiss={() => (this._showAutoclose = false)}
-						title="Test Snackbar auto close"
+						message="Test Snackbar auto close"
+						actions={[
+							<Button onClick={() => clearTimeout(this._timeoutHandle)}>
+								Clear Timeout
+							</Button>,
+							<Button onClick={() => (this._showAutoclose = false)}>Close</Button>
+						]}
 					/>
 				</div>
 			</div>
