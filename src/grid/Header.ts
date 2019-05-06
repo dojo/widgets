@@ -1,7 +1,7 @@
 import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
 import { v, w } from '@dojo/framework/widget-core/d';
 import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { ColumnConfig, FilterOptions, SortOptions } from './interfaces';
+import { ColumnConfig, SortOptions } from './interfaces';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import TextInput from '../text-input/index';
 import Icon from '../icon/index';
@@ -94,12 +94,9 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 	protected render(): DNode {
 		const {
 			columnConfig,
-			sorter,
 			sort,
 			filterer,
 			filter = {},
-			theme,
-			classes,
 			sortRenderer = this._sortRenderer,
 			filterRenderer = this._filterRenderer
 		} = this.properties;

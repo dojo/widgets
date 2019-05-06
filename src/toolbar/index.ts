@@ -8,7 +8,6 @@ import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import Icon from '../icon/index';
 import SlidePane, { Align } from '../slide-pane/index';
 import commonBundle from '../common/nls/common';
-import { CommonMessages } from '../common/interfaces';
 import * as fixedCss from './styles/toolbar.m.css';
 import * as css from '../theme/toolbar.m.css';
 import { GlobalEvent } from '../global-event/index';

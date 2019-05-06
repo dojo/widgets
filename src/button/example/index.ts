@@ -1,5 +1,4 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import renderer from '@dojo/framework/widget-core/vdom';
 import { w, v } from '@dojo/framework/widget-core/d';
 import Button from '../../button/index';
 

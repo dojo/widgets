@@ -6,8 +6,6 @@ import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import Tab from '../../tab/index';
 import TabController, { Align } from '../../tab-controller/index';
 
-let refresh: Promise<any>;
-
 function refreshData() {
 	return new Promise((resolve, reject) => {
 		setTimeout(resolve, 1500);
@@ -90,7 +88,7 @@ export default class App extends WidgetBase {
 									activeIndex: 2,
 									loading: true
 								});
-								refresh = refreshData().then(() => {
+								refreshData().then(() => {
 									this.setState({ loading: false });
 								});
 							} else {

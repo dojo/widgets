@@ -134,7 +134,6 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		const meta = this._store.get(this._store.path(storeId, 'meta')) || defaultGridMeta;
 		const pages = this._store.get(this._store.path(storeId, 'data', 'pages')) || {};
 		const hasFilters = columnConfig.some((config) => !!config.filterable);
-		const containerDimensions = this.meta(Dimensions).get('root');
 		const bodyHeight = this._getBodyHeight();
 		this.meta(Resize).get('root');
 

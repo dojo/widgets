@@ -1,5 +1,4 @@
 const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
 
 import { v, w } from '@dojo/framework/widget-core/d';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';

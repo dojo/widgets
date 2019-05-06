@@ -507,7 +507,7 @@ registerSuite('Dialog', {
 					get: mockFocusGet,
 					set: mockFocusSet
 				});
-				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
+				harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
 				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog is opened');
 			},
 
@@ -522,7 +522,7 @@ registerSuite('Dialog', {
 					get: mockFocusGet,
 					set: mockFocusSet
 				});
-				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
+				harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
 				assert.isFalse(mockFocusSet.called, 'focus not set when dialog is already focused');
 			},
 

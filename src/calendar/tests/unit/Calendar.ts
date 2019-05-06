@@ -20,7 +20,6 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import { register } from '@dojo/framework/widget-core/registerCustomElement';
 
 const testDate = new Date('June 5 2017');
 const harness = createHarness([compareId, compareLabelId, compareAriaLabelledBy]);

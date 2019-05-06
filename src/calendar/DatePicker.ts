@@ -342,8 +342,6 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 	protected render(): DNode {
 		const { labelId = `${this._idBase}_label`, labels, month, year } = this.properties;
 
-		const { first: minYear, last: maxYear } = this._getYearRange();
-
 		return v(
 			'div',
 			{

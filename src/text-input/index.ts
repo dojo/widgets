@@ -7,7 +7,6 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/
 import Label from '../label/index';
 import {
 	CustomAriaProperties,
-	InputProperties,
 	PointerEventProperties,
 	KeyEventProperties,
 	InputEventProperties

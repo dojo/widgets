@@ -290,7 +290,7 @@ registerSuite('SplitPane', {
 				get: mockDimensionsGet
 			});
 
-			const h = harness(() =>
+			harness(() =>
 				w(MockMetaMixin(SplitPane, mockMeta), { onCollapse, direction: Direction.row })
 			);
 			assert.isTrue(onCollapse.calledWith(false));

@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { monthInMin, monthInMax } from '../../date-utils';
+import { monthInMin } from '../../date-utils';
 
 registerSuite('Calendar date utils', {
 	tests: {
