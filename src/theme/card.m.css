@@ -1,33 +1,5 @@
 .root {
-	/* composes: mdc-card from '@material/card/dist/mdc.card.css'; */
 }
 
 .actions {
-	/* composes: mdc-card__actions from '@material/card/dist/mdc.card.css' */
-}
-
-.actionButtons {
-	/* composes: mdc-card__action-buttons from '@material/card/dist/mdc.card.css' */
-}
-
-.actionIcons {
-	/* composes: mdc-card__action-icons from '@material/card/dist/mdc.card.css' */
-}
-
-.primaryAction {
-	/* composes: mdc-card__primary-action from '@material/card/dist/mdc.card.css' */
-}
-
-.media {
-	/* composes: mdc-card__media from '@material/card/dist/mdc.card.css' */
-}
-
-.primary {
-	/* margin: calc(var(--grid-size) * 2); */
-}
-
-.secondary {
-	/* margin-bottom: calc(var(--grid-size) * 2); */
-	/* margin-left: calc(var(--grid-size) * 2); */
-	/* margin-right: calc(var(--grid-size) * 2); */
 }
