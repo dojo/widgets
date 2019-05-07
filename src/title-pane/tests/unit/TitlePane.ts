@@ -1,6 +1,5 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-import * as sinon from 'sinon';
 
 import { v, w, isWNode } from '@dojo/framework/widget-core/d';
 import Icon from '../../../icon/index';
@@ -18,10 +17,6 @@ import {
 import { GlobalEvent } from '../../../global-event/index';
 
 const harness = createHarness([compareId, compareAriaLabelledBy, compareAriaControls]);
-
-interface TestEventInit extends EventInit {
-	keyCode: number;
-}
 
 class StubMeta {
 	// dimensions .get()

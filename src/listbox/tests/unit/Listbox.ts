@@ -33,10 +33,6 @@ const compareAriaActiveDescendant = {
 
 const harness = createHarness([compareId, compareAriaActiveDescendant]);
 
-interface TestEventInit extends EventInit {
-	which: number;
-}
-
 const testOptions: any[] = [
 	{
 		label: 'One',

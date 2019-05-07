@@ -152,7 +152,6 @@ const filterCommand = commandFactory<FilterCommandPayload>(
 			return [];
 		}
 
-		const filters = get(path(id, 'meta', 'filter'));
 		if (filterOptions !== get(path(id, 'meta', 'currentFilter'))) {
 			throw new Error();
 		}

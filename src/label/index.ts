@@ -1,4 +1,3 @@
-import { uuid } from '@dojo/framework/core/util';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';

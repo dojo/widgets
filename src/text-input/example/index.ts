@@ -6,7 +6,6 @@ export default class App extends WidgetBase {
 	private _value1: string | undefined;
 	private _value2: string | undefined;
 	private _value3: string | undefined;
-	private _value4: string | undefined;
 	private _value5: string | undefined;
 	private _value6: string | undefined;
 	private _value6Valid: boolean | { valid?: boolean; message?: string };

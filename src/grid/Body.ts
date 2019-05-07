@@ -158,12 +158,10 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			placeholderRowRenderer = defaultPlaceholderRowRenderer,
 			totalRows = 0,
 			pageSize,
-			columnConfig,
 			height
 		} = this.properties;
 
 		if (!this._rowHeight) {
-			const hasFilters = columnConfig.some((config) => !!config.filterable);
 			const firstRow = placeholderRowRenderer(0);
 			const dimensions = offscreen(firstRow);
 			this._rowHeight = dimensions.height;

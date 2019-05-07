@@ -1,5 +1,4 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import renderer from '@dojo/framework/widget-core/vdom';
 import { v, w } from '@dojo/framework/widget-core/d';
 import Calendar from '../../calendar/index';
 

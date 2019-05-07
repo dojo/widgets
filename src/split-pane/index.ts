@@ -2,7 +2,6 @@ import { DNode } from '@dojo/framework/widget-core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { auto } from '@dojo/framework/widget-core/diff';
 import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
 
 import * as fixedCss from './styles/split-pane.m.css';
@@ -56,7 +55,7 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 
 	@diffProperty('collapseWidth')
 	@diffProperty('direction')
-	private collapseWidthDiff(
+	protected collapseWidthDiff(
 		oldProperties: SplitPaneProperties,
 		{ collapseWidth, direction, onCollapse }: SplitPaneProperties
 	) {

@@ -8,7 +8,7 @@ import Focus from '@dojo/framework/widget-core/meta/Focus';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
-import TextInput, { TextInputProperties } from '../../index';
+import TextInput from '../../index';
 import InputValidity from '../../../common/InputValidity';
 import * as css from '../../../theme/text-input.m.css';
 import {

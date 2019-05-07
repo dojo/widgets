@@ -317,10 +317,6 @@ const expected = function(monthOpen = false, yearOpen = false, options: Expected
 	);
 };
 
-interface TestEventInit extends EventInit {
-	which: number;
-}
-
 registerSuite('Calendar DatePicker', {
 	tests: {
 		'Popup should render with default properties'() {

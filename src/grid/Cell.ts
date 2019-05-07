@@ -82,7 +82,7 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 	}
 
 	protected render(): DNode {
-		let { editable, rawValue, value, theme, classes } = this.properties;
+		let { editable, rawValue, theme, classes } = this.properties;
 
 		return v('div', { role: 'cell', classes: [this.theme(css.root), fixedCss.rootFixed] }, [
 			this._editing

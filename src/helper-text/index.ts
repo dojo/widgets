@@ -1,5 +1,4 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
 import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
 import * as css from '../theme/helper-text.m.css';
 import { v } from '@dojo/framework/widget-core/d';

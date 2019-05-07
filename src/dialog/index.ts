@@ -173,7 +173,6 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 			closeText,
 			enterAnimation = this.theme(css.enter),
 			exitAnimation = this.theme(css.exit),
-			modal,
 			open = false,
 			role = 'dialog',
 			title = '',

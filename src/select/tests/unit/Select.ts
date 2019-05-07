@@ -38,10 +38,6 @@ const compareTriggerFocused = {
 	comparator: isFocusedComparator
 };
 
-interface TestEventInit extends EventInit {
-	which: number;
-}
-
 interface States {
 	invalid?: boolean;
 	disabled?: boolean;

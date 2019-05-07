@@ -1,5 +1,4 @@
 const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
 
 import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
 import { v, w, isWNode } from '@dojo/framework/widget-core/d';

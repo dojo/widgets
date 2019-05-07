@@ -85,7 +85,7 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 	}
 
 	@diffProperty('open')
-	private _onOpenChange(
+	protected _onOpenChange(
 		oldProperties: Partial<SlidePaneProperties>,
 		newProperties: Partial<SlidePaneProperties>
 	) {
@@ -148,7 +148,7 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		}
 		this._hasMoved = true;
 
-		const { align = Align.left, width = DEFAULT_WIDTH } = this.properties;
+		const { width = DEFAULT_WIDTH } = this.properties;
 
 		const delta = this._getDelta(event, 'touchmove');
 
@@ -257,15 +257,7 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 	}
 
 	protected render(): DNode {
-		let {
-			aria = {},
-			closeText,
-			onOpen,
-			open = false,
-			title = '',
-			theme,
-			classes
-		} = this.properties;
+		let { aria = {}, closeText, open = false, title = '', theme, classes } = this.properties;
 
 		const contentStyles = this.getStyles();
 		const contentClasses = this.getModifierClasses();

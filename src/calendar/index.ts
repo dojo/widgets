@@ -122,7 +122,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 	}
 
 	private _getMonthYear() {
-		const { month, selectedDate = this._defaultDate, year, minDate, maxDate } = this.properties;
+		const { month, selectedDate = this._defaultDate, year } = this.properties;
 
 		return {
 			month: typeof month === 'number' ? month : selectedDate.getMonth(),
