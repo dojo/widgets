@@ -30,7 +30,9 @@ export default class App extends WidgetBase {
 					<Snackbar
 						open={this._showPlain}
 						message="Test Snackbar"
-						actions={<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>}
+						actionsRenderer={() => (
+							<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
+						)}
 					/>
 				</div>
 				<div id="example-success">
@@ -40,7 +42,9 @@ export default class App extends WidgetBase {
 						type="success"
 						open={this._showSuccess}
 						message="Test Snackbar Success"
-						actions={<Button onClick={() => (this._showSuccess = false)}>X</Button>}
+						actionsRenderer={() => (
+							<Button onClick={() => (this._showSuccess = false)}>X</Button>
+						)}
 					/>
 				</div>
 				<div id="example-error">
@@ -64,7 +68,7 @@ export default class App extends WidgetBase {
 						type="success"
 						open={this._showAutoclose}
 						message="Test Snackbar auto close"
-						actions={[
+						actionsRenderer={() => [
 							<Button onClick={() => clearTimeout(this._timeoutHandle)}>
 								Clear Timeout
 							</Button>,

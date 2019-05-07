@@ -59,7 +59,7 @@ describe('Snackbar', () => {
 
 	it('renders a single action', () => {
 		const h = harness(() => (
-			<Snackbar message="test" open={true} actions={<Button>Dismiss</Button>} />
+			<Snackbar message="test" open={true} actionsRenderer={() => <Button>Dismiss</Button>} />
 		));
 		const actionsTemplate = template.setChildren('@actions', [<Button>Dismiss</Button>]);
 		h.expect(actionsTemplate);
@@ -70,7 +70,7 @@ describe('Snackbar', () => {
 			<Snackbar
 				message="test"
 				open={true}
-				actions={[<Button>Retry</Button>, <Button>Close</Button>]}
+				actionsRenderer={() => [<Button>Retry</Button>, <Button>Close</Button>]}
 			/>
 		));
 		const actionsTemplate = template.setChildren('@actions', [

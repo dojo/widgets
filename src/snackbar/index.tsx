@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { DNode, RenderResult } from '@dojo/framework/widget-core/interfaces';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import Button from '../button/index';
 import * as css from '../theme/snackbar.m.css';
@@ -7,13 +7,13 @@ import * as css from '../theme/snackbar.m.css';
 export interface SnackbarProperties {
 	open: boolean;
 	message: string;
-	actions?: DNode | DNode[];
+	actionsRenderer?: () => RenderResult;
 	type?: 'success' | 'error';
 }
 
 export class Snackbar extends WidgetBase<SnackbarProperties> {
 	protected render(): DNode {
-		const { type, open, message, actions = null } = this.properties;
+		const { type, open, message, actionsRenderer } = this.properties;
 		const classes = [css.root];
 
 		if (open) {
@@ -31,7 +31,7 @@ export class Snackbar extends WidgetBase<SnackbarProperties> {
 						{message}
 					</div>
 					<div key="actions" classes={css.actions}>
-						{actions}
+						{actionsRenderer && actionsRenderer()}
 					</div>
 				</div>
 			</div>
