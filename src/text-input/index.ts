@@ -59,6 +59,7 @@ export interface TextInputProperties
 	type?: TextInputType;
 	maxLength?: number | string;
 	minLength?: number | string;
+	size?: number;
 	placeholder?: string;
 	helperText?: string;
 	value?: string;
@@ -116,6 +117,7 @@ function patternDiffer(
 		'type',
 		'minLength',
 		'maxLength',
+		'size',
 		'value',
 		'name',
 		'pattern',
@@ -274,6 +276,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 	protected render(): DNode {
 		const {
 			aria = {},
+			size = 1,
 			autocomplete,
 			classes,
 			disabled,
@@ -354,6 +357,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							readOnly,
 							'aria-readonly': readOnly ? 'true' : null,
 							required,
+							size,
 							type,
 							value,
 							onblur: this._onBlur,
