@@ -12,6 +12,7 @@ const modules = [
 	'',
 	'accordion-pane',
 	'button',
+	'outlined-button',
 	'calendar',
 	'checkbox',
 	'combobox',

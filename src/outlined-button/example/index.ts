@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { w, v } from '@dojo/framework/widget-core/d';
-import OutlinedButton from '../../button/index';
+import OutlinedButton from '../../outlined-button/index';
 
 export default class App extends WidgetBase {
 	private _buttonPressed: boolean | undefined;

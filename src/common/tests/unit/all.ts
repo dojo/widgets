@@ -1,6 +1,7 @@
 import './util';
 import '../../../accordion-pane/tests/unit/AccordionPane';
 import '../../../button/tests/unit/Button';
+import '../../../outlined-button/tests/unit/OutlinedButton';
 import '../../../calendar/tests/unit/Calendar';
 import '../../../calendar/tests/unit/CalendarCell';
 import '../../../calendar/tests/unit/DatePicker';
