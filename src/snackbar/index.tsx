@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode, RenderResult } from '@dojo/framework/widget-core/interfaces';
+import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
 import { tsx } from '@dojo/framework/widget-core/tsx';
-import Button from '../button/index';
 import * as css from '../theme/snackbar.m.css';
 
 export interface SnackbarProperties {
@@ -11,7 +11,8 @@ export interface SnackbarProperties {
 	type?: 'success' | 'error';
 }
 
-export class Snackbar extends WidgetBase<SnackbarProperties> {
+@theme(css)
+export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
 	protected render(): DNode {
 		const { type, open, message, actionsRenderer } = this.properties;
 		const classes = [css.root];
