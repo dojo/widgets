@@ -2,38 +2,21 @@
 
 .root {
 	display: none;
-	position: fixed;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	align-items: center;
-	justify-content: center;
-	box-sizing: border-box;
-	pointer-events: none;
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-	margin: 8px;
 }
 
 .content {
 	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	box-sizing: border-box;
 	opacity: 0;
 }
 
 .label {
 	flex-grow: 1;
-	box-sizing: border-box;
 	margin: 0;
-	padding: 14px 16px;
 }
 
 .actions {
 	display: flex;
 	flex-shrink: 0;
-	align-items: center;
-	box-sizing: border-box;
 }
 
 .open {
@@ -42,7 +25,6 @@
 
 .open .content {
 	opacity: 1;
-	pointer-events: auto;
 }
 
 .success .label {
@@ -51,4 +33,13 @@
 
 .error .label {
 	color: var(--error-color);
+}
+
+.leading {
+	justify-content: flex-start;
+}
+
+.stacked {
+	flex-direction: column;
+	align-items: flex-start;
 }

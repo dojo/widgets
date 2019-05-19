@@ -5,3 +5,5 @@ export const actions: string;
 export const open: string;
 export const success: string;
 export const error: string;
+export const leading: string;
+export const stacked: string;
