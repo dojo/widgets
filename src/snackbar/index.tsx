@@ -10,17 +10,19 @@ export interface SnackbarProperties {
 	message: string;
 	actionsRenderer?: () => RenderResult;
 	type?: 'success' | 'error';
+	leading?: boolean;
+	stacked?: boolean;
 }
 
 @theme(css)
 @customElement<SnackbarProperties>({
 	tag: 'dojo-snackbar',
-	properties: ['open', 'actionsRenderer'],
+	properties: ['actionsRenderer', 'leading', 'open', 'stacked'],
 	attributes: ['message', 'type']
 })
 export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
 	protected render(): DNode {
-		const { type, open, message, actionsRenderer } = this.properties;
+		const { type, open, leading, stacked, message, actionsRenderer } = this.properties;
 		const classes = [css.root];
 
 		if (open) {
@@ -29,6 +31,14 @@ export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
 
 		if (type) {
 			classes.push(css[type]);
+		}
+
+		if (leading) {
+			classes.push(css.leading);
+		}
+
+		if (stacked) {
+			classes.push(css.stacked);
 		}
 
 		return (

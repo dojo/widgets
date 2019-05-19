@@ -10,6 +10,12 @@ export default class App extends WidgetBase {
 	private _showSuccess = false;
 
 	@watch()
+	private _showLeading = false;
+
+	@watch()
+	private _showStacked = false;
+
+	@watch()
 	private _showError = false;
 
 	@watch()
@@ -50,7 +56,38 @@ export default class App extends WidgetBase {
 				<div id="example-error">
 					<h3>Error Snackbar</h3>
 					<Button onClick={() => (this._showError = true)}>Show Error</Button>
-					<Snackbar type="error" open={this._showError} message="Test Snackbar Error" />
+					<Snackbar
+						type="error"
+						open={this._showError}
+						message="Test Snackbar Error"
+						actionsRenderer={() => (
+							<Button onClick={() => (this._showError = false)}>X</Button>
+						)}
+					/>
+				</div>
+				<div id="example-leading">
+					<h3>Leading Snackbar</h3>
+					<Button onClick={() => (this._showLeading = true)}>Show Leading</Button>
+					<Snackbar
+						leading={true}
+						open={this._showLeading}
+						message="Test leading snackbar"
+						actionsRenderer={() => (
+							<Button onClick={() => (this._showLeading = false)}>X</Button>
+						)}
+					/>
+				</div>
+				<div id="example-stacked">
+					<h3>Stacked Snackbar</h3>
+					<Button onClick={() => (this._showStacked = true)}>Show Stacked</Button>
+					<Snackbar
+						stacked={true}
+						open={this._showStacked}
+						message="Test stacked Snackbar"
+						actionsRenderer={() => (
+							<Button onClick={() => (this._showStacked = false)}>Close</Button>
+						)}
+					/>
 				</div>
 				<div id="example-autoclose">
 					<h3>Multiple Actions</h3>

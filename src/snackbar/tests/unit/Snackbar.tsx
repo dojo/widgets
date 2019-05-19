@@ -42,6 +42,26 @@ describe('Snackbar', () => {
 		h.expect(successTemplate);
 	});
 
+	it('renders leading', () => {
+		const h = harness(() => <Snackbar leading message="test" open={true} />);
+		const successTemplate = template.setProperty('@root', 'classes', [
+			css.root,
+			css.open,
+			css.leading
+		]);
+		h.expect(successTemplate);
+	});
+
+	it('renders stacked', () => {
+		const h = harness(() => <Snackbar stacked message="test" open={true} />);
+		const successTemplate = template.setProperty('@root', 'classes', [
+			css.root,
+			css.open,
+			css.stacked
+		]);
+		h.expect(successTemplate);
+	});
+
 	it('renders error', () => {
 		const h = harness(() => <Snackbar message="test" type="error" open={true} />);
 		const errorTemplate = template.setProperty('@root', 'classes', [
