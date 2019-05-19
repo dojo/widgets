@@ -36,10 +36,7 @@
 }
 
 .leading {
-	justify-content: flex-start;
 }
 
 .stacked {
-	flex-direction: column;
-	align-items: flex-start;
 }
