@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { DNode, RenderResult } from '@dojo/framework/widget-core/interfaces';
 import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
+import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import * as css from '../theme/snackbar.m.css';
 
@@ -12,6 +13,11 @@ export interface SnackbarProperties {
 }
 
 @theme(css)
+@customElement<SnackbarProperties>({
+	tag: 'dojo-snackbar',
+	properties: ['open', 'actionsRenderer'],
+	attributes: ['message', 'type']
+})
 export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
 	protected render(): DNode {
 		const { type, open, message, actionsRenderer } = this.properties;
