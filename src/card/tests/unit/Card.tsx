@@ -1,5 +1,4 @@
 const { describe, it } = intern.getInterface('bdd');
-const { assert } = intern.getPlugin('chai');
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/widget-core/tsx';
