@@ -29,6 +29,16 @@ let open = true;
 />
 ```
 
+## Properties
+
+
+- `open: boolean` - Whether the snackbar is open and displayed
+- `message: string` - The message to display on the snackbar
+- `actionsRenderer?: () => RenderResult` -  A callback that returns what to render in the snackbar's actions section
+- `type?: 'success' | 'error'` - The variant of snackbar to render. Can be `"success"` or `"error"`
+- `leading?: boolean` - If true, render the snackbar on the leading side of the page
+- `stacked?: boolean` - If true, stack the snackbar's message on top of the actions
+
 ## Theming
 
 The following CSS classes are available on the `Snackbar` widget for use with custom themes:
@@ -36,10 +46,12 @@ The following CSS classes are available on the `Snackbar` widget for use with cu
 - `root`: Applied to the top-level wrapping of the Snackbar
 - `content` - Applied to the wrapper around the label and actions of the Snackbar
 - `label` - Applied to the element displaying the message portion of the Snackbar
-- `actionsRenderer` - Callback whose return value is added to the actions wrapper
+- `actions` - Applied to the wrapper around the content rendered in the `actionsRenderer` property.
 
 *Conditional classes*
 
 - `open` - Applied to the top-level element of the widget when the Snackbar is displayed
 - `success` - Applied to the top-level element of the widget when `type` is `success`
 - `error`  - Applied to the top-level element of the widget when `type` is `error`
+- `leading` - When applied, the Snackbar will be aligned to the leading side of the screen
+- `stacked` - When applied, the snackbar actions will appear below the message instead of beside it
