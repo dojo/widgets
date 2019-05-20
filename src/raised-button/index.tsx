@@ -10,7 +10,7 @@ import { DNode } from '@dojo/framework/widget-core/interfaces';
 export interface RaisedButtonProperties extends ButtonProperties {}
 
 @theme(css)
-@customElement<ButtonProperties>({
+@customElement<RaisedButtonProperties>({
 	tag: 'dojo-raised-button',
 	childType: CustomElementChildType.TEXT,
 	properties: ['disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes'],
