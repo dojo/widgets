@@ -58,7 +58,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	helperText?: string;
 	widgetId?: string;
 	inputProperties?: TextInputProperties;
-	valid?: { valid?: boolean; message?: string; } | boolean;
+	valid?: { valid?: boolean; message?: string } | boolean;
 	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string, key?: string | number): void;
 	onChange?(value: string, key?: string | number): void;
@@ -104,7 +104,15 @@ export enum Operation {
 		'results'
 	],
 	attributes: ['widgetId', 'label', 'value'],
-	events: ['onBlur', 'onChange', 'onFocus', 'onMenuChange', 'onRequestResults', 'onResultSelect', 'onValidate']
+	events: [
+		'onBlur',
+		'onChange',
+		'onFocus',
+		'onMenuChange',
+		'onRequestResults',
+		'onResultSelect',
+		'onValidate'
+	]
 })
 export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
 	private _activeIndex = 0;
@@ -293,26 +301,6 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		this.invalidate();
 	}
 
-	protected getRootClasses(): (string | null)[] {
-		const {
-			clearable
-		} = this.properties;
-
-		const {
-			valid
-		} = this.validity;
-		const focus = this.meta(Focus).get('root');
-
-		return [
-			css.root,
-			this._open ? css.open : null,
-			clearable ? css.clearable : null,
-			focus.containsFocus ? css.focused : null,
-			valid === false ? css.invalid : null,
-			valid === true ? css.valid : null
-		];
-	}
-
 	protected get validity() {
 		const { valid = { valid: undefined, message: undefined } } = this.properties;
 
@@ -467,9 +455,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			classes
 		} = this.properties;
 
-		const {
-			valid
-		} = this.validity;
+		const { valid } = this.validity;
 
 		const { messages } = this.localizeBundle(commonBundle);
 		const focus = this.meta(Focus).get('root');
@@ -481,6 +467,15 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			this._open = false;
 			this.invalidate();
 		}
+
+		const rootClasses = [
+			css.root,
+			this._open ? css.open : null,
+			clearable ? css.clearable : null,
+			focus.containsFocus ? css.focused : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null
+		];
 
 		this._wasOpen = this._open;
 
@@ -524,7 +519,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		return v(
 			'div',
 			{
-				classes: this.theme(this.getRootClasses()),
+				classes: this.theme(rootClasses),
 				key: 'root'
 			},
 			labelAfter ? controls.reverse() : controls
