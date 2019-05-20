@@ -30,7 +30,7 @@ export default class App extends WidgetBase {
 					this._year = year;
 					this.invalidate();
 				},
-				onDateSelect: (date: Date) => {
+				onValue: (date: Date) => {
 					this._selectedDate = date;
 					this.invalidate();
 				}

@@ -321,7 +321,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			labelAfter,
 			labelHidden,
 			onBlur: this._onBlur,
-			onChange: this._onChange,
+			onValue: this._onChange,
 			onFocus: this._onFocus,
 			onMenuChange: this._onMenuChange,
 			onRequestResults: this._onRequestOptions.bind(this),

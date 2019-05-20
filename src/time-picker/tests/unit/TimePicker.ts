@@ -45,7 +45,7 @@ const getExpectedCombobox = function(useTestProperties = false, results?: any[])
 		labelAfter: undefined,
 		labelHidden: undefined,
 		onBlur: noop,
-		onChange: noop,
+		onValue: noop,
 		onFocus: noop,
 		onMenuChange: noop,
 		onRequestResults: noop,

@@ -27,7 +27,7 @@ w(RangeSlider, {
 	step: 1,
 	minValue: this.state.min,
     maxValue: this.state.max,
-	onInput: (min: number, max: number) => {
+	onValue: (min: number, max: number) => {
 		this.setState({ min, max });
 	},
 });

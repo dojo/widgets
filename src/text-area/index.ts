@@ -47,6 +47,7 @@ export interface TextareaProperties
 	placeholder?: string;
 	value?: string;
 	onClick?(value: string): void;
+	onValue?(value: string): void;
 	label?: string;
 	labelHidden?: boolean;
 	helperText?: string;
@@ -81,10 +82,8 @@ export interface TextareaProperties
 	],
 	events: [
 		'onBlur',
-		'onChange',
 		'onClick',
 		'onFocus',
-		'onInput',
 		'onKeyDown',
 		'onKeyPress',
 		'onKeyUp',
@@ -92,17 +91,18 @@ export interface TextareaProperties
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValue'
 	]
 })
 export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
 	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
-	private _onChange(event: Event) {
+	private _onValue(event: Event) {
 		event.stopPropagation();
-		this.properties.onChange &&
-			this.properties.onChange((event.target as HTMLInputElement).value);
+		this.properties.onValue &&
+			this.properties.onValue((event.target as HTMLInputElement).value);
 	}
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
@@ -112,11 +112,6 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 	private _onFocus(event: FocusEvent) {
 		this.properties.onFocus &&
 			this.properties.onFocus((event.target as HTMLInputElement).value);
-	}
-	private _onInput(event: Event) {
-		event.stopPropagation();
-		this.properties.onInput &&
-			this.properties.onInput((event.target as HTMLInputElement).value);
 	}
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
@@ -245,10 +240,10 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 						value,
 						wrap: wrapText,
 						onblur: this._onBlur,
-						onchange: this._onChange,
+						onchange: this._onValue,
 						onclick: this._onClick,
 						onfocus: this._onFocus,
-						oninput: this._onInput,
+						oninput: this._onValue,
 						onkeydown: this._onKeyDown,
 						onkeypress: this._onKeyPress,
 						onkeyup: this._onKeyUp,

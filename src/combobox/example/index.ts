@@ -67,7 +67,7 @@ export default class App extends WidgetBase {
 	private _value9 = '';
 	private _invalid = false;
 
-	onChange(value: string, key?: string) {
+	onValue(value: string, key?: string) {
 		if (!key) {
 			return;
 		}
@@ -88,7 +88,7 @@ export default class App extends WidgetBase {
 	}
 
 	render(): DNode {
-		const { onChange, onRequestResults } = this;
+		const { onValue, onRequestResults } = this;
 
 		return v(
 			'div',
@@ -102,7 +102,7 @@ export default class App extends WidgetBase {
 					key: '2',
 					label: 'Combo:',
 					clearable: true,
-					onChange,
+					onValue: onValue,
 					getResultLabel: (result: any) => result.value,
 					onRequestResults,
 					results: this._results,
@@ -116,7 +116,7 @@ export default class App extends WidgetBase {
 					key: '1',
 					label: 'Combo:',
 					openOnFocus: true,
-					onChange,
+					onValue: onValue,
 					getResultLabel: (result: any) => result.value,
 					onRequestResults,
 					results: this._results,
@@ -129,7 +129,7 @@ export default class App extends WidgetBase {
 				w(ComboBox, {
 					key: '5',
 					label: 'Combo:',
-					onChange,
+					onValue: onValue,
 					getResultLabel: (result: any) => result.value,
 					onRequestResults,
 					results: this._results,
@@ -147,7 +147,7 @@ export default class App extends WidgetBase {
 					inputProperties: {
 						placeholder: 'Enter a value'
 					},
-					onChange,
+					onValue: onValue,
 					onRequestResults,
 					value: this._value6
 				}),
@@ -159,14 +159,14 @@ export default class App extends WidgetBase {
 					inputProperties: {
 						placeholder: 'Enter a value'
 					},
-					onChange,
+					onValue: onValue,
 					onRequestResults,
 					value: this._value7
 				}),
 				v('h3', ['Label']),
 				w(ComboBox, {
 					key: '8',
-					onChange,
+					onValue: onValue,
 					getResultLabel: (result: any) => result.value,
 					onRequestResults,
 					results: this._results,
@@ -178,7 +178,7 @@ export default class App extends WidgetBase {
 					key: '9',
 					label: 'Combo:',
 					required: true,
-					onChange: (value: string) => {
+					onValue: (value: string) => {
 						this._value9 = value;
 						this._invalid = value.trim().length === 0;
 						this.invalidate();

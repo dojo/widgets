@@ -411,7 +411,7 @@ registerSuite('Select', {
 				assert.isTrue(onFocus.calledWith('foo'), 'onFocus called with foo key');
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				assert.isTrue(
-					onChange.calledWith(testOptions[0], 'foo'),
+					onChange.calledWith(testOptions[0].label, 'foo'),
 					'onChange called with foo key'
 				);
 			}
@@ -501,13 +501,13 @@ registerSuite('Select', {
 			},
 
 			'select options'() {
-				const onChange = sinon.stub();
+				const onValue = sinon.stub();
 
 				const h = harness(() =>
 					w(Select, {
 						...testProperties,
 						options: testOptions,
-						onChange
+						onValue
 					})
 				);
 
@@ -515,7 +515,7 @@ registerSuite('Select', {
 				h.expect(() => expected(expectedSingle(true, false, true, '')));
 				h.trigger('@listbox', 'onOptionSelect', testOptions[2]);
 				h.expect(() => expected(expectedSingle(true)));
-				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
+				assert.isTrue(onValue.calledOnce, 'onValue handler called when option selected');
 
 				// open widget a second time
 				h.trigger('@trigger', 'onclick', stubEvent);

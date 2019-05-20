@@ -27,7 +27,8 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property mode           The type of user interface to show for this Checkbox
  * @property offLabel       Label to show in the "off" positin of a toggle
  * @property onLabel        Label to show in the "on" positin of a toggle
- * @property value           The current value
+ * @property onValue        Function called when the user toggles the checkbox
+ * @property value          The current value
  */
 export interface CheckboxProperties
 	extends ThemedProperties,
@@ -42,6 +43,7 @@ export interface CheckboxProperties
 	mode?: Mode;
 	offLabel?: DNode;
 	onLabel?: DNode;
+	onValue?: (checked: boolean, value: string) => void;
 	value?: string;
 }
 
@@ -72,7 +74,6 @@ export enum Mode {
 	attributes: ['widgetId', 'label', 'value', 'name', 'mode', 'offLabel', 'onLabel'],
 	events: [
 		'onBlur',
-		'onChange',
 		'onClick',
 		'onFocus',
 		'onKeyDown',
@@ -82,7 +83,8 @@ export enum Mode {
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValue'
 	]
 })
 export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProperties> {
@@ -90,10 +92,10 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 		const checkbox = event.target as HTMLInputElement;
 		this.properties.onBlur && this.properties.onBlur(checkbox.value, checkbox.checked);
 	}
-	private _onChange(event: Event) {
+	private _onValue(event: Event) {
 		event.stopPropagation();
 		const checkbox = event.target as HTMLInputElement;
-		this.properties.onChange && this.properties.onChange(checkbox.value, checkbox.checked);
+		this.properties.onValue && this.properties.onValue(checkbox.checked, checkbox.value);
 	}
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
@@ -216,7 +218,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 					type: 'checkbox',
 					value,
 					onblur: this._onBlur,
-					onchange: this._onChange,
+					onchange: this._onValue,
 					onclick: this._onClick,
 					onfocus: this._onFocus,
 					onmousedown: this._onMouseDown,

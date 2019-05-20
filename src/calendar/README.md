@@ -36,7 +36,7 @@ w(Calendar, {
 	year: this.state.year,
 	onMonthChange: (month: number) => { this.setState({ 'month': month }); },
 	onYearChange: (year: number) => { this.setState({ 'year': year }); },
-	onDateSelect: (date: Date) => {
+	onValue: (date: Date) => {
 		this.setState({ 'selectedDate': date });
 	}
 })
@@ -71,7 +71,7 @@ w(Calendar, {
 	},
 	onMonthChange: (month: number) => { this.setState({ 'month': month }); },
 	onYearChange: (year: number) => { this.setState({ 'year': year }); },
-	onDateSelect: (date: Date) => {
+	onValue: (date: Date) => {
 		this.setState({ 'selectedDate': date });
 	}
 })

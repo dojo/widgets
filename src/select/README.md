@@ -64,6 +64,11 @@ w(Select, {
 	onChange: (option: OptionData) => {
 		value = option.value;
 	}
+	// The wrapped select also participates in the onValue protocol.
+	// This is commented out because it's equivalent to the previous onChange handler.
+	//     onValue: (option: string) => {
+    //         value = option;
+	//     }
 });
 ```
 
@@ -79,7 +84,7 @@ w(Select, {
 	label: 'Option label defaults to option data',
 	options,
 	value,
-	onChange: (option: string) => {
+	onValue: (option: string) => {
 		value = option;
 	}
 });
@@ -101,7 +106,7 @@ w(Select, {
 	options,
 	placeholder: 'Choose one',
 	value,
-	onChange: (option: string) => {
+	onValue: (option: string) => {
 		value = option;
 	}
 });

@@ -22,8 +22,8 @@ If the `label` property is not used, we recommend creating a separate `label` an
 w(Textarea, {
 	label: 'Your Message',
 	value: this.state.textareaValue,
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ textareaValue: event.target.value });
+	onValue: (value: string) => {
+		this.setState({ textareaValue: value });
 	},
 });
 
@@ -42,8 +42,8 @@ w(Textarea, {
 	required: true,
 	value: this.state.message,
 	wrapText: 'hard',
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ message: event.target.value });
+	onValue: (value: string) => {
+		this.setState({ message: value });
 		this.setState({ messageValid: this._validatePassword() });
 	}
 }),

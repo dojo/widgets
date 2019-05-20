@@ -30,14 +30,14 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label
- * @property getResultValue     Can be used to define a value returned by onChange when a given result is selected. Defaults to getResultLabel
+ * @property getResultValue     Can be used to define a value returned by onValue when a given result is selected. Defaults to getResultLabel
  * @property widgetId           Optional id string for the combobox, set on the text input
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
  * @property isResultDisabled   Used to determine if an item should be disabled
  * @property label              Label to show for this input
  * @property onBlur             Called when the input is blurred
- * @property onChange           Called when the value changes
+ * @property onValue            Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestResults   Called when results are shown; should be used to set `results`
@@ -59,7 +59,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	invalid?: boolean;
 	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string, key?: string | number): void;
-	onChange?(value: string, key?: string | number): void;
+	onValue?(value: string, key?: string | number): void;
 	onFocus?(value: string, key?: string | number): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestResults?(key?: string | number): void;
@@ -100,7 +100,7 @@ export enum Operation {
 		'results'
 	],
 	attributes: ['widgetId', 'label', 'value'],
-	events: ['onBlur', 'onChange', 'onFocus', 'onMenuChange', 'onRequestResults', 'onResultSelect']
+	events: ['onBlur', 'onValue', 'onFocus', 'onMenuChange', 'onRequestResults', 'onResultSelect']
 })
 export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
 	private _activeIndex = 0;
@@ -155,17 +155,17 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 	private _onClearClick(event: MouseEvent) {
 		event.stopPropagation();
-		const { key, onChange } = this.properties;
+		const { key, onValue: onValue } = this.properties;
 
 		this.focus();
 		this.invalidate();
-		onChange && onChange('', key);
+		onValue && onValue('', key);
 	}
 
 	private _onInput(value: string) {
-		const { key, disabled, readOnly, onChange } = this.properties;
+		const { key, disabled, readOnly, onValue } = this.properties;
 
-		onChange && onChange(value, key);
+		onValue && onValue(value, key);
 		!disabled && !readOnly && this._openMenu();
 	}
 
@@ -265,12 +265,12 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	private _selectIndex(index: number) {
-		const { key, onChange, onResultSelect, results = [] } = this.properties;
+		const { key, onValue: onValue, onResultSelect, results = [] } = this.properties;
 
 		this.focus();
 		this._closeMenu();
 		onResultSelect && onResultSelect(results[index], key);
-		onChange && onChange(this._getResultValue(results[index]), key);
+		onValue && onValue(this._getResultValue(results[index]), key);
 	}
 
 	private _moveActiveIndex(operation: Operation) {

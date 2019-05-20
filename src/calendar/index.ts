@@ -36,7 +36,7 @@ export type CalendarMessages = typeof calendarBundle.messages;
  * @property renderWeekdayCell Format the weekday column headers
  * @property onMonthChange     Function called when the month changes
  * @property onYearChange      Function called when the year changes
- * @property onDateSelect      Function called when the user selects a date
+ * @property onValue      Function called when the user selects a date or changes the year/month
  */
 export interface CalendarProperties extends ThemedProperties, CustomAriaProperties {
 	labels?: CalendarMessages;
@@ -51,7 +51,7 @@ export interface CalendarProperties extends ThemedProperties, CustomAriaProperti
 	renderWeekdayCell?(day: { short: string; long: string }): DNode;
 	onMonthChange?(month: number): void;
 	onYearChange?(year: number): void;
-	onDateSelect?(date: Date): void;
+	onValue?(date: Date): void;
 }
 
 interface ShortLong<T> {
@@ -100,7 +100,7 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 		'weekdayNames',
 		'theme'
 	],
-	events: ['onDateSelect', 'onMonthChange', 'onYearChange']
+	events: ['onValue', 'onMonthChange', 'onYearChange']
 })
 export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarProperties> {
 	private _callDateFocus = false;
@@ -158,7 +158,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 	}
 
 	private _onDateClick(date: number, disabled: boolean) {
-		const { onDateSelect } = this.properties;
+		const { onValue } = this.properties;
 		let { month, year } = this._getMonthYear();
 
 		if (disabled) {
@@ -166,7 +166,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			this._callDateFocus = true;
 		}
 		this._focusedDay = date;
-		onDateSelect && onDateSelect(new Date(year, month, date));
+		onValue && onValue(new Date(year, month, date));
 	}
 
 	private _onDateFocusCalled() {
@@ -203,36 +203,40 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 				break;
 			case Keys.Enter:
 			case Keys.Space:
-				const { onDateSelect } = this.properties;
-				onDateSelect && onDateSelect(new Date(year, month, this._focusedDay));
+				const { onValue } = this.properties;
+				onValue && onValue(new Date(year, month, this._focusedDay));
 		}
 	}
 
 	private _onMonthDecrement() {
 		const { month, year } = this._getMonthYear();
-		const { onMonthChange, onYearChange } = this.properties;
+		const { onValue, onMonthChange, onYearChange } = this.properties;
 
 		if (month === 0) {
 			onMonthChange && onMonthChange(11);
 			onYearChange && onYearChange(year - 1);
+			onValue && onValue(new Date(year - 1, 11));
 			return { month: 11, year: year - 1 };
 		}
 
 		onMonthChange && onMonthChange(month - 1);
+		onValue && onValue(new Date(year, month - 1));
 		return { month: month - 1, year: year };
 	}
 
 	private _onMonthIncrement() {
 		const { month, year } = this._getMonthYear();
-		const { onMonthChange, onYearChange } = this.properties;
+		const { onValue, onMonthChange, onYearChange } = this.properties;
 
 		if (month === 11) {
 			onMonthChange && onMonthChange(0);
 			onYearChange && onYearChange(year + 1);
+			onValue && onValue(new Date(year + 1, month));
 			return { month: 0, year: year + 1 };
 		}
 
 		onMonthChange && onMonthChange(month + 1);
+		onValue && onValue(new Date(year, month + 1));
 		return { month: month + 1, year: year };
 	}
 

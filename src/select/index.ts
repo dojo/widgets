@@ -50,6 +50,7 @@ export interface SelectProperties
 	useNativeElement?: boolean;
 	onBlur?(key?: string | number): void;
 	onChange?(option: any, key?: string | number): void;
+	onValue?(option: string): void;
 	onFocus?(key?: string | number): void;
 	value?: string;
 	labelHidden?: boolean;
@@ -80,7 +81,7 @@ export interface SelectProperties
 		'labelHidden'
 	],
 	attributes: ['widgetId', 'placeholder', 'label', 'value', 'helperText'],
-	events: ['onBlur', 'onChange', 'onFocus']
+	events: ['onBlur', 'onChange', 'onFocus', 'onValue']
 })
 export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
 	private _focusedIndex: number;
@@ -140,13 +141,14 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 
 	// native select events
 	private _onNativeChange(event: Event) {
-		const { key, getOptionValue, options = [], onChange } = this.properties;
+		const { key, getOptionValue, options = [], onChange, onValue } = this.properties;
 		event.stopPropagation();
 		const value = (<HTMLInputElement>event.target).value;
 		const option = find(options, (option: any, index: number) =>
 			getOptionValue ? getOptionValue(option, index) === value : option === value
 		);
 		option && onChange && onChange(option, key);
+		option && onValue && onValue(option.value);
 	}
 
 	// custom select events
@@ -191,12 +193,13 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 	}
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
-		const { key, options = [], onChange } = this.properties;
+		const { key, options = [], onChange, onValue } = this.properties;
 		event.stopPropagation();
 		const index = this._getSelectedIndexOnInput(event);
 		if (index !== undefined) {
 			this._focusedIndex = index;
 			onChange && onChange(options[index], key);
+			onValue && onValue(options[index].value);
 			this.invalidate();
 		}
 		if (event.which === Keys.Down) {
@@ -293,7 +296,8 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			options = [],
 			theme,
 			classes,
-			onChange
+			onChange,
+			onValue
 		} = this.properties;
 
 		if (this._focusedIndex === undefined) {
@@ -341,6 +345,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 							},
 							onOptionSelect: (option: any) => {
 								onChange && onChange(option, key);
+								onValue && onValue(option.value);
 								this._closeSelect();
 								this.focus();
 							},

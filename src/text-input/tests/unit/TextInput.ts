@@ -553,10 +553,9 @@ registerSuite('TextInput', {
 
 		events() {
 			const onBlur = sinon.stub();
-			const onChange = sinon.stub();
+			const onValue = sinon.stub();
 			const onClick = sinon.stub();
 			const onFocus = sinon.stub();
-			const onInput = sinon.stub();
 			const onKeyDown = sinon.stub();
 			const onKeyPress = sinon.stub();
 			const onKeyUp = sinon.stub();
@@ -569,10 +568,9 @@ registerSuite('TextInput', {
 			const h = harness(() =>
 				w(TextInput, {
 					onBlur,
-					onChange,
+					onValue,
 					onClick,
 					onFocus,
-					onInput,
 					onKeyDown,
 					onKeyPress,
 					onKeyUp,
@@ -587,13 +585,14 @@ registerSuite('TextInput', {
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
 			h.trigger('@input', 'onchange', stubEvent);
-			assert.isTrue(onChange.called, 'onChange called');
+			assert.isTrue(onValue.called, 'onValue called');
 			h.trigger('@input', 'onclick', stubEvent);
 			assert.isTrue(onClick.called, 'onClick called');
 			h.trigger('@input', 'onfocus', stubEvent);
 			assert.isTrue(onFocus.called, 'onFocus called');
+			onValue.reset();
 			h.trigger('@input', 'oninput', stubEvent);
-			assert.isTrue(onInput.called, 'onInput called');
+			assert.isTrue(onValue.called, 'onValue called for input event');
 			h.trigger('@input', 'onkeydown', stubEvent);
 			assert.isTrue(onKeyDown.called, 'onKeyDown called');
 			h.trigger('@input', 'onkeypress', stubEvent);

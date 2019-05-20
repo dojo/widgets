@@ -372,12 +372,12 @@ registerSuite('RangeSlider', {
 			);
 		},
 		events: {
-			onChange() {
-				const onChange = sinon.stub();
+			onValue() {
+				const onValue = sinon.stub();
 
 				const h = harness(() =>
 					w(RangeSlider, {
-						onChange
+						onValue: onValue
 					})
 				);
 
@@ -388,7 +388,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onChange.calledWith(25, 100));
+				assert(onValue.calledWith(25, 100));
 
 				h.trigger('@slider2', 'onchange', {
 					stopPropagation: sinon.stub(),
@@ -397,16 +397,9 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onChange.calledWith(0, 50));
-			},
-			onInput() {
-				const onInput = sinon.stub();
+				assert(onValue.calledWith(0, 50));
 
-				const h = harness(() =>
-					w(RangeSlider, {
-						onInput
-					})
-				);
+				onValue.reset()
 
 				h.trigger('@slider1', 'oninput', {
 					stopPropagation: sinon.stub(),
@@ -415,7 +408,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onInput.calledWith(25, 100));
+				assert(onValue.calledWith(25, 100));
 
 				h.trigger('@slider2', 'oninput', {
 					stopPropagation: sinon.stub(),
@@ -424,7 +417,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onInput.calledWith(0, 50));
+				assert(onValue.calledWith(0, 50));
 			},
 
 			onBlur() {

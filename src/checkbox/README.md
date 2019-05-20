@@ -26,7 +26,7 @@ w(Checkbox, {
 	name: 'update-checkbox'
 	checked: this.state.checked,
 	value: 'updates',
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
+	onValue: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ checked: event.target.checked });
 	},
 });
@@ -40,7 +40,7 @@ w(Checkbox, {
 	name: 'music',
 	onLabel: 'On',
 	offLabel: 'Off',
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
+	onValue: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ musicChecked: event.target.checked });
 	}
 }),

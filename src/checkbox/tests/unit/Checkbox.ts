@@ -458,7 +458,7 @@ registerSuite('Checkbox', {
 
 		events() {
 			const onBlur = sinon.stub();
-			const onChange = sinon.stub();
+			const onValue = sinon.stub();
 			const onClick = sinon.stub();
 			const onFocus = sinon.stub();
 			const onMouseDown = sinon.stub();
@@ -470,7 +470,7 @@ registerSuite('Checkbox', {
 			const h = harness(() =>
 				w(Checkbox, {
 					onBlur,
-					onChange,
+					onValue,
 					onClick,
 					onFocus,
 					onMouseDown,
@@ -484,7 +484,7 @@ registerSuite('Checkbox', {
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
 			h.trigger('input', 'onchange', stubEvent);
-			assert.isTrue(onChange.called, 'onChange called');
+			assert.isTrue(onValue.called, 'onValue called');
 			h.trigger('input', 'onclick', stubEvent);
 			assert.isTrue(onClick.called, 'onClick called');
 			h.trigger('input', 'onfocus', stubEvent);

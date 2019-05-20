@@ -406,7 +406,7 @@ registerSuite('Calendar', {
 				w(Calendar, {
 					month: testDate.getMonth(),
 					year: testDate.getFullYear(),
-					onDateSelect: (date: Date) => {
+					onValue: (date: Date) => {
 						selectedDate = date;
 					}
 				})
@@ -435,7 +435,7 @@ registerSuite('Calendar', {
 				onMonthChange: (month: number) => {
 					currentMonth = month;
 				},
-				onDateSelect: (date: Date) => {
+				onValue: (date: Date) => {
 					selectedDate = date;
 				}
 			};
@@ -458,7 +458,7 @@ registerSuite('Calendar', {
 				w(Calendar, {
 					month: testDate.getMonth(),
 					year: testDate.getFullYear(),
-					onDateSelect: (date: Date) => {
+					onValue: (date: Date) => {
 						selectedDate = date;
 					}
 				})
@@ -818,7 +818,7 @@ registerSuite('Calendar with min-max', {
 					year: testDate.getFullYear(),
 					minDate: minDateInMonth,
 					maxDate: maxDateInMonth,
-					onDateSelect: (date: Date) => {
+					onValue: (date: Date) => {
 						selectedDate = date.toDateString();
 					}
 				})

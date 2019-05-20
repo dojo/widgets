@@ -24,8 +24,8 @@ w(Slider, {
 	max: 100,
 	step: 1,
 	value: this.state.sliderValue,
-	onInput: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ sliderValue: parseFloat(event.target.value) });
+	onChange: (value: number) => {
+		this.setState({ sliderValue: value });
 	},
 });
 
@@ -43,8 +43,8 @@ w(Slider, {
 	},
 	step: 1,
 	value: this.state.tribbleValue,
-	onInput: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ tribbleValue: parseFloat(event.target.value) });
+	onChange: (value: string) => {
+		this.setState({ tribbleValue: value });
 	}
 });
 
@@ -56,8 +56,7 @@ w(Slider, {
 	value: verticalValue,
 	vertical: true,
 	invalid: verticalInvalid,
-	onInput: (event: TypedTargetEvent<HTMLInputElement>) => {
-		const value = parseFloat(event.target.value);
+	onChange: (value: string) => {
 		this.setState({
 			verticalValue: value,
 			verticalInvalid: value > 50 ? true : false

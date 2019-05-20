@@ -39,8 +39,7 @@ export interface RangeSliderProperties
 	minimumLabel?: string;
 	maximumLabel?: string;
 	onClick?(minValue: number, maxValue: number): void;
-	onInput?(minValue: number, maxValue: number): void;
-	onChange?(minValue: number, maxValue: number): void;
+	onValue?(minValue: number, maxValue: number): void;
 	onBlur?(value?: string | number | boolean): void;
 	onFocus?(value?: string | number | boolean): void;
 }
@@ -82,10 +81,8 @@ type MinMaxCallback = (minValue: number, maxValue: number) => void;
 	attributes: ['widgetId', 'label', 'name'],
 	events: [
 		'onBlur',
-		'onChange',
 		'onClick',
 		'onFocus',
-		'onInput',
 		'onKeyDown',
 		'onKeyPress',
 		'onKeyUp',
@@ -93,7 +90,8 @@ type MinMaxCallback = (minValue: number, maxValue: number) => void;
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValue'
 	]
 })
 export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> {
@@ -247,11 +245,11 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			),
 			onchange: prepareCallback(
 				(prop, e1, e2) => this._genericChangeCallback(prop, e1, e2),
-				this.properties.onChange
+				this.properties.onValue
 			),
 			oninput: prepareCallback(
 				(prop, e1, e2) => this._genericChangeCallback(prop, e1, e2),
-				this.properties.onInput
+				this.properties.onValue
 			),
 			onkeydown: this._onKeyDown,
 			onkeypress: this._onKeyPress,

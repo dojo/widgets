@@ -24,8 +24,8 @@ w(Radio, {
 	label: 'Choice A',
 	name: 'radio1'
 	value: 'radio1-1',
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ radioValue: event.target.value });
+	onValue: (value: string) => {
+		this.setState({ radioValue: value });
 	},
 }),
 w(Radio, {
@@ -34,8 +34,8 @@ w(Radio, {
 	label: 'Choice B',
 	name: 'radio1'
 	value: 'radio1-2',
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ radioValue: event.target.value });
+	onValue: (value: string) => {
+		this.setState({ radioValue: value });
 	},
 }),
 v('p', {

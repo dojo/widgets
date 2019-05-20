@@ -24,6 +24,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * Properties that can be set on a Radio component
  *
  * @property checked          Checked/unchecked property of the radio
+ * @property onValue          Called when the value changes
  * @property value           The current value
  */
 export interface RadioProperties
@@ -36,6 +37,7 @@ export interface RadioProperties
 		CustomAriaProperties,
 		CheckboxRadioEventProperties {
 	checked?: boolean;
+	onValue?: (checked: boolean, value: string) => void;
 	value?: string;
 }
 
@@ -58,7 +60,6 @@ export interface RadioProperties
 	attributes: ['widgetId', 'label', 'value', 'name'],
 	events: [
 		'onBlur',
-		'onChange',
 		'onClick',
 		'onFocus',
 		'onKeyDown',
@@ -68,7 +69,8 @@ export interface RadioProperties
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValue'
 	]
 })
 export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> {
@@ -78,10 +80,11 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 		const radio = event.target as HTMLInputElement;
 		this.properties.onBlur && this.properties.onBlur(radio.value, radio.checked);
 	}
-	private _onChange(event: Event) {
+	private _onValue(event: Event) {
+		const { onValue } = this.properties;
 		event.stopPropagation();
 		const radio = event.target as HTMLInputElement;
-		this.properties.onChange && this.properties.onChange(radio.value, radio.checked);
+		onValue && onValue(radio.checked, radio.value);
 	}
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
@@ -165,7 +168,7 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 					type: 'radio',
 					value,
 					onblur: this._onBlur,
-					onchange: this._onChange,
+					onchange: this._onValue,
 					onclick: this._onClick,
 					onfocus: this._onFocus,
 					onmousedown: this._onMouseDown,

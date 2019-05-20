@@ -55,7 +55,6 @@ export interface ButtonProperties
 	attributes: ['widgetId', 'name', 'type', 'value'],
 	events: [
 		'onBlur',
-		'onChange',
 		'onClick',
 		'onFocus',
 		'onInput',

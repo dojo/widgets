@@ -11,7 +11,7 @@ export default class App extends WidgetBase {
 		c5: true
 	};
 
-	onChange(value: string, checked: boolean) {
+	onValue(checked: boolean, value: string) {
 		this._checkboxStates[value] = checked;
 		this.invalidate();
 	}
@@ -31,7 +31,7 @@ export default class App extends WidgetBase {
 						checked: c1,
 						label: 'Sample checkbox that starts checked',
 						value: 'c1',
-						onChange: this.onChange
+						onValue: this.onValue
 					})
 				]),
 
@@ -42,7 +42,7 @@ export default class App extends WidgetBase {
 						label: 'Sample disabled checkbox',
 						disabled: true,
 						value: 'c2',
-						onChange: this.onChange
+						onValue: this.onValue
 					})
 				]),
 
@@ -53,7 +53,7 @@ export default class App extends WidgetBase {
 						label: 'Required checkbox',
 						required: true,
 						value: 'c3',
-						onChange: this.onChange
+						onValue: this.onValue
 					})
 				]),
 
@@ -64,7 +64,7 @@ export default class App extends WidgetBase {
 						label: 'Checkbox in "toggle" mode',
 						mode: Mode.toggle,
 						value: 'c4',
-						onChange: this.onChange
+						onValue: this.onValue
 					})
 				]),
 
@@ -78,7 +78,7 @@ export default class App extends WidgetBase {
 						mode: Mode.toggle,
 						disabled: true,
 						value: 'c5',
-						onChange: this.onChange
+						onValue: this.onValue
 					})
 				])
 			])
