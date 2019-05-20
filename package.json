@@ -17,7 +17,7 @@
     "url": "https://github.com/dojo/widgets.git"
   },
   "scripts": {
-    "start": "serve",
+    "examples": "serve",
     "prepublish": "grunt peerDepInstall",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "grunt test",
