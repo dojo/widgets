@@ -20,7 +20,6 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
-import HelperText from '../helper-text';
 
 /**
  * @type ComboBoxProperties
