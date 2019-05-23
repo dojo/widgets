@@ -37,6 +37,9 @@ interface TextInputInternalState {
  * @property type           Input type, e.g. text, email, tel, etc.
  * @property maxLength      Maximum number of characters allowed in the input
  * @property minLength      Minimum number of characters allowed in the input
+ * @property min            Minimum numeric value, valid for type 'number' only
+ * @property max			Maximum numeric value, valid for type 'number' only
+ * @property step			Legal number intervals, valid for type 'number' only
  * @property placeholder    Placeholder text
  * @property value           The current value
  * @property leading		Renderer for leading icon content
@@ -72,6 +75,9 @@ export interface TextInputProperties
 	trailing?: () => DNode;
 	labelHidden?: boolean;
 	label?: string;
+	min?: number;
+	max?: number;
+	step?: number;
 }
 
 function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {
@@ -119,7 +125,10 @@ function patternDiffer(
 		'value',
 		'name',
 		'pattern',
-		'autocomplete'
+		'autocomplete',
+		'min',
+		'max',
+		'step'
 	],
 	events: [
 		'onBlur',
@@ -292,7 +301,10 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			type = 'text',
 			value,
 			widgetId = this._uuid,
-			helperText
+			helperText,
+			min,
+			max,
+			step
 		} = this.properties;
 
 		this._validate();
@@ -356,6 +368,9 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							required,
 							type,
 							value,
+							min,
+							max,
+							step,
 							onblur: this._onBlur,
 							onchange: this._onChange,
 							onclick: this._onClick,
