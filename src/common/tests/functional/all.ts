@@ -1,5 +1,6 @@
 import '../../../accordion-pane/tests/functional/AccordionPane';
 import '../../../button/tests/functional/Button';
+import '../../../outlined-button/tests/functional/OutlinedButton';
 import '../../../calendar/tests/functional/Calendar';
 import '../../../checkbox/tests/functional/Checkbox';
 import '../../../combobox/tests/functional/ComboBox';

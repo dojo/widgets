@@ -2,6 +2,7 @@
 @import '../styles/base.m.css';
 @import '../../theme/icon.m.css';
 @import '../../theme/button.m.css';
+@import '../../theme/outlined-button.m.css';
 @import '../../theme/calendar.m.css';
 @import '../../theme/checkbox.m.css';
 @import '../../theme/combobox.m.css';
