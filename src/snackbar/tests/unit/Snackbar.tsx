@@ -10,12 +10,17 @@ import Button from '../../../button/index';
 describe('Snackbar', () => {
 	const template = assertationTemplate(() => {
 		return (
-			<div key="root" classes={[css.root, css.open]}>
+			<div key="root" classes={[css.root, css.open, null, null, null]}>
 				<div key="content" classes={css.content}>
-					<div key="label" classes={css.label} role="status" aria-live="polite">
+					<div
+						key="label"
+						assertion-key="label"
+						classes={css.label}
+						role="status"
+						aria-live="polite"
+					>
 						test
 					</div>
-					<div key="actions" classes={css.actions} />
 				</div>
 			</div>
 		);
@@ -28,7 +33,13 @@ describe('Snackbar', () => {
 
 	it('renders closed', () => {
 		const h = harness(() => <Snackbar message="test" open={false} />);
-		const openTemplate = template.setProperty('@root', 'classes', [css.root]);
+		const openTemplate = template.setProperty('@root', 'classes', [
+			css.root,
+			null,
+			null,
+			null,
+			null
+		]);
 		h.expect(openTemplate);
 	});
 
@@ -37,7 +48,9 @@ describe('Snackbar', () => {
 		const successTemplate = template.setProperty('@root', 'classes', [
 			css.root,
 			css.open,
-			css.success
+			css.success,
+			null,
+			null
 		]);
 		h.expect(successTemplate);
 	});
@@ -47,7 +60,9 @@ describe('Snackbar', () => {
 		const successTemplate = template.setProperty('@root', 'classes', [
 			css.root,
 			css.open,
-			css.leading
+			null,
+			css.leading,
+			null
 		]);
 		h.expect(successTemplate);
 	});
@@ -57,6 +72,8 @@ describe('Snackbar', () => {
 		const successTemplate = template.setProperty('@root', 'classes', [
 			css.root,
 			css.open,
+			null,
+			null,
 			css.stacked
 		]);
 		h.expect(successTemplate);
@@ -67,7 +84,9 @@ describe('Snackbar', () => {
 		const errorTemplate = template.setProperty('@root', 'classes', [
 			css.root,
 			css.open,
-			css.error
+			css.error,
+			null,
+			null
 		]);
 		h.expect(errorTemplate);
 	});
@@ -76,7 +95,11 @@ describe('Snackbar', () => {
 		const h = harness(() => (
 			<Snackbar message="test" open={true} actionsRenderer={() => <Button>Dismiss</Button>} />
 		));
-		const actionsTemplate = template.setChildren('@actions', [<Button>Dismiss</Button>]);
+		const actionsTemplate = template.insertAfter('~label', [
+			<div key="actions" classes={css.actions}>
+				<Button>Dismiss</Button>
+			</div>
+		]);
 		h.expect(actionsTemplate);
 	});
 
@@ -88,9 +111,11 @@ describe('Snackbar', () => {
 				actionsRenderer={() => [<Button>Retry</Button>, <Button>Close</Button>]}
 			/>
 		));
-		const actionsTemplate = template.setChildren('@actions', [
-			<Button>Retry</Button>,
-			<Button>Close</Button>
+		const actionsTemplate = template.insertAfter('~label', [
+			<div key="actions" classes={css.actions}>
+				<Button>Retry</Button>
+				<Button>Close</Button>
+			</div>
 		]);
 		h.expect(actionsTemplate);
 	});

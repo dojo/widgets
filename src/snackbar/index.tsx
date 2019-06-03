@@ -23,33 +23,27 @@ export interface SnackbarProperties {
 export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
 	protected render(): DNode {
 		const { type, open, leading, stacked, message, actionsRenderer } = this.properties;
-		const classes = [css.root];
-
-		if (open) {
-			classes.push(css.open);
-		}
-
-		if (type) {
-			classes.push(css[type]);
-		}
-
-		if (leading) {
-			classes.push(css.leading);
-		}
-
-		if (stacked) {
-			classes.push(css.stacked);
-		}
 
 		return (
-			<div key="root" classes={classes}>
+			<div
+				key="root"
+				classes={[
+					css.root,
+					open ? css.open : null,
+					type ? css[type] : null,
+					leading ? css.leading : null,
+					stacked ? css.stacked : null
+				]}
+			>
 				<div key="content" classes={css.content}>
 					<div key="label" classes={css.label} role="status" aria-live="polite">
 						{message}
 					</div>
-					<div key="actions" classes={css.actions}>
-						{actionsRenderer && actionsRenderer()}
-					</div>
+					{actionsRenderer && (
+						<div key="actions" classes={css.actions}>
+							{actionsRenderer()}
+						</div>
+					)}
 				</div>
 			</div>
 		);
