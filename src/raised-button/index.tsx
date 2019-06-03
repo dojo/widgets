@@ -35,7 +35,12 @@ export class RaisedButton extends ThemedMixin(WidgetBase)<RaisedButtonProperties
 	protected render(): DNode {
 		return (
 			<Button
-				classes={{ '@dojo/widgets/button': { root: this.theme([css.root]) } }}
+				classes={{
+					'@dojo/widgets/button': {
+						root: this.theme([css.root]),
+						disabled: this.theme([css.disabled])
+					}
+				}}
 				{...this.properties}
 			>
 				{this.children}

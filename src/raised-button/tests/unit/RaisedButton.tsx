@@ -9,7 +9,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Button from '../../../button/index';
 
 const baseTemplate = assertionTemplate(() => (
-	<Button classes={{ '@dojo/widgets/button': { root: [css.root] } }} />
+	<Button classes={{ '@dojo/widgets/button': { root: [css.root], disabled: [css.disabled] } }} />
 ));
 
 registerSuite('RaisedButton', {
@@ -24,7 +24,9 @@ registerSuite('RaisedButton', {
 
 			h.expect(() => (
 				<Button
-					classes={{ '@dojo/widgets/button': { root: [css.root] } }}
+					classes={{
+						'@dojo/widgets/button': { root: [css.root], disabled: [css.disabled] }
+					}}
 					type="submit"
 					name="bar"
 					disabled={true}

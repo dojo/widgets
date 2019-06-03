@@ -1,6 +1,7 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import RaisedButton from '../../raised-button/index';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
 
 export default class App extends WidgetBase {
 	private _buttonPressed: boolean | undefined;
@@ -10,7 +11,7 @@ export default class App extends WidgetBase {
 		this.invalidate();
 	}
 
-	render() {
+	render(): DNode {
 		return (
 			<div>
 				<h2>Raised Button Examples</h2>
