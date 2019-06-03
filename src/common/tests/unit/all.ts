@@ -21,6 +21,7 @@ import '../../../radio/tests/unit/Radio';
 import '../../../select/tests/unit/Select';
 import '../../../slide-pane/tests/unit/SlidePane';
 import '../../../slider/tests/unit/Slider';
+import '../../../snackbar/tests/unit/Snackbar';
 import '../../../split-pane/tests/unit/SplitPane';
 import '../../../range-slider/tests/unit/RangeSlider';
 import '../../../tab/tests/unit/Tab';
