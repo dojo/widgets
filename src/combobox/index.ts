@@ -31,6 +31,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label
  * @property getResultValue     Can be used to define a value returned by onChange when a given result is selected. Defaults to getResultLabel
+ * @property helpertext			Displays text at bottom of widget
  * @property widgetId           Optional id string for the combobox, set on the text input
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
