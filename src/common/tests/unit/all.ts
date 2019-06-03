@@ -5,6 +5,7 @@ import '../../../outlined-button/tests/unit/OutlinedButton';
 import '../../../calendar/tests/unit/Calendar';
 import '../../../calendar/tests/unit/CalendarCell';
 import '../../../calendar/tests/unit/DatePicker';
+import '../../../card/tests/unit/Card';
 import '../../../checkbox/tests/unit/Checkbox';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';

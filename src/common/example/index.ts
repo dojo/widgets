@@ -14,6 +14,7 @@ const modules = [
 	'button',
 	'outlined-button',
 	'calendar',
+	'card',
 	'checkbox',
 	'combobox',
 	'dialog',
