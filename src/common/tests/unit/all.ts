@@ -18,6 +18,7 @@ import '../../../listbox/tests/unit/Listbox';
 import '../../../listbox/tests/unit/ListboxOption';
 import '../../../progress/tests/unit/Progress';
 import '../../../radio/tests/unit/Radio';
+import '../../../raised-button/tests/unit/RaisedButton';
 import '../../../select/tests/unit/Select';
 import '../../../slide-pane/tests/unit/SlidePane';
 import '../../../slider/tests/unit/Slider';

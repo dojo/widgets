@@ -9,6 +9,7 @@ import '../../../icon/tests/functional/Icon';
 import '../../../label/tests/functional/Label';
 import '../../../listbox/tests/functional/Listbox';
 import '../../../radio/tests/functional/Radio';
+import '../../../raised-button/tests/functional/RaisedButton';
 import '../../../slide-pane/tests/functional/SlidePane';
 import '../../../slider/tests/functional/Slider';
 import '../../../split-pane/tests/functional/SplitPane';
