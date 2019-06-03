@@ -87,7 +87,6 @@ export enum Operation {
 		'theme',
 		'classes',
 		'extraClasses',
-		'labelAfter',
 		'labelHidden',
 		'clearable',
 		'disabled',
@@ -95,7 +94,6 @@ export enum Operation {
 		'valid',
 		'isResultDisabled',
 		'helperText',
-		'labelAfter',
 		'labelHidden',
 		'openOnFocus',
 		'readOnly',
@@ -448,7 +446,6 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			required,
 			disabled,
 			labelHidden,
-			labelAfter,
 			results = [],
 			theme,
 			classes
@@ -521,7 +518,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 				classes: this.theme(rootClasses),
 				key: 'root'
 			},
-			labelAfter ? controls.reverse() : controls
+			controls
 		);
 	}
 }
