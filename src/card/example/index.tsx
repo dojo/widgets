@@ -1,12 +1,13 @@
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { tsx } from '@dojo/framework/widget-core/tsx';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
 import Card from '../index';
 import * as cardCss from './../../theme/card.m.css';
 import Button from '../../button/index';
 import Icon from '../../icon/index';
 
 export class App extends WidgetBase {
-	protected render() {
+	protected render(): DNode {
 		return (
 			<div>
 				<h2>Card Examples</h2>

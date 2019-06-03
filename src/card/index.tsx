@@ -5,6 +5,7 @@ import { alwaysRender } from '@dojo/framework/widget-core/decorators/alwaysRende
 import { ThemedMixin, theme } from '@dojo/framework/widget-core/mixins/Themed';
 import * as css from '../theme/card.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { DNode } from '@dojo/framework/widget-core/interfaces';
 
 export interface CardProperties {
 	actionsRenderer?(): RenderResult;
@@ -17,7 +18,7 @@ export interface CardProperties {
 @theme(css)
 @alwaysRender()
 export class Card extends ThemedMixin(WidgetBase)<CardProperties> {
-	protected render() {
+	protected render(): DNode {
 		const { actionsRenderer } = this.properties;
 		const actionsResult = actionsRenderer && actionsRenderer();
 		return (
