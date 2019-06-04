@@ -39,13 +39,13 @@ export interface SelectProperties
 		FocusProperties,
 		CustomAriaProperties {
 	getOptionDisabled?(option: any, index: number): boolean;
-	getOptionId?(option: any, index: number): string;
-	getOptionLabel?(option: any): DNode;
-	getOptionText?(option: any): string;
-	getOptionSelected?(option: any, index: number): boolean;
-	getOptionValue?(option: any, index: number): string;
+	getOptionId?(option: { value: string; label?: string }, index: number): string;
+	getOptionLabel?(option: { value: string; label?: string }): DNode;
+	getOptionText?(option: { value: string; label?: string }): string;
+	getOptionSelected?(option: { value: string; label?: string }, index: number): boolean;
+	getOptionValue?(option: { value: string; label?: string }, index: number): string;
 	helperText?: string;
-	options?: any[];
+	options?: { value: string; label?: string }[];
 	placeholder?: string;
 	useNativeElement?: boolean;
 	onBlur?(key?: string | number): void;
@@ -83,7 +83,7 @@ export interface SelectProperties
 	events: ['onBlur', 'onChange', 'onFocus']
 })
 export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
-	private _focusedIndex: number;
+	private _focusedIndex: number = 0;
 	private _focusNode = 'trigger';
 	private _ignoreBlur = false;
 	private _open = false;
@@ -92,14 +92,12 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 	private _resetInputTextTimer: any;
 
 	private _getOptionLabel(option: any) {
-		const { getOptionLabel } = this.properties;
-		const fallback = option ? `${option}` : '';
-		return getOptionLabel ? getOptionLabel(option) : fallback;
+		return option.label ? option.label : option.value;
 	}
 
-	private _getOptionSelected = (option: any, index: number) => {
-		const { getOptionValue, value } = this.properties;
-		return getOptionValue ? getOptionValue(option, index) === value : option === value;
+	private _getOptionSelected = (option: any) => {
+		const { value } = this.properties;
+		return option.value === value;
 	};
 
 	private _getSelectedIndexOnInput(event: KeyboardEvent) {
@@ -140,12 +138,10 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 
 	// native select events
 	private _onNativeChange(event: Event) {
-		const { key, getOptionValue, options = [], onChange } = this.properties;
+		const { key, options = [], onChange } = this.properties;
 		event.stopPropagation();
 		const value = (<HTMLInputElement>event.target).value;
-		const option = find(options, (option: any, index: number) =>
-			getOptionValue ? getOptionValue(option, index) === value : option === value
-		);
+		const option = find(options, (option: any) => option.value === value);
 		option && onChange && onChange(option, key);
 	}
 
@@ -233,7 +229,6 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			getOptionDisabled,
 			getOptionId,
 			getOptionSelected,
-			getOptionValue,
 			widgetId = this._baseId,
 			invalid,
 			name,
@@ -248,7 +243,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			v(
 				'option',
 				{
-					value: getOptionValue ? getOptionValue(option, i) : undefined,
+					value: option.value,
 					id: getOptionId ? getOptionId(option, i) : undefined,
 					disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
 					selected: getOptionSelected ? getOptionSelected(option, i) : undefined
@@ -286,7 +281,6 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		const {
 			getOptionDisabled,
 			getOptionId,
-			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
 			widgetId = this._baseId,
 			key,
@@ -331,7 +325,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 							tabIndex: _open ? 0 : -1,
 							getOptionDisabled,
 							getOptionId,
-							getOptionLabel,
+							getOptionLabel: this._getOptionLabel,
 							getOptionSelected,
 							theme,
 							classes,

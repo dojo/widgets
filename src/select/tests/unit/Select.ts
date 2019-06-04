@@ -534,7 +534,7 @@ registerSuite('Select', {
 				const h = harness(() => w(Select, properties));
 				h.expect(() => expected(expectedSingle(true)));
 
-				const simpleOptions = ['one', 'two', 'three'];
+				const simpleOptions = [{ value: 'one' }, { value: 'two' }, { value: 'three' }];
 				properties = {
 					options: simpleOptions,
 					value: 'two'

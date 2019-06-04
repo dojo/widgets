@@ -9,33 +9,33 @@ import Registry from '@dojo/framework/widget-core/Registry';
 import Router from '@dojo/framework/routing/Router';
 
 const modules = [
-	'',
-	'accordion-pane',
-	'button',
-	'outlined-button',
-	'calendar',
-	'card',
-	'checkbox',
-	'combobox',
-	'dialog',
-	'grid',
-	'label',
-	'listbox',
-	'progress',
-	'radio',
-	'range-slider',
-	'select',
-	'slide-pane',
-	'slider',
-	'snackbar',
-	'split-pane',
-	'tab-controller',
-	'text-area',
-	'text-input',
-	'time-picker',
-	'title-pane',
-	'toolbar',
-	'tooltip'
+	{ value: '' },
+	{ value: 'accordion-pane' },
+	{ value: 'button' },
+	{ value: 'outlined-button' },
+	{ value: 'calendar' },
+	{ value: 'card' },
+	{ value: 'checkbox' },
+	{ value: 'combobox' },
+	{ value: 'dialog' },
+	{ value: 'grid' },
+	{ value: 'label' },
+	{ value: 'listbox' },
+	{ value: 'progress' },
+	{ value: 'radio' },
+	{ value: 'range-slider' },
+	{ value: 'select' },
+	{ value: 'slide-pane' },
+	{ value: 'slider' },
+	{ value: 'snackbar' },
+	{ value: 'split-pane' },
+	{ value: 'tab-controller' },
+	{ value: 'text-area' },
+	{ value: 'text-input' },
+	{ value: 'time-picker' },
+	{ value: 'title-pane' },
+	{ value: 'toolbar' },
+	{ value: 'tooltip' }
 ];
 
 const registry = new Registry();
@@ -45,10 +45,10 @@ export default class App extends WidgetBase {
 	@watch()
 	private _module = '';
 
-	private _onModuleChange(module: string) {
+	private _onModuleChange(module: { value: string; label: string }) {
 		const item = this.registry.getInjector<Router>('router')!;
 		const router = item.injector();
-		router.setPath(module);
+		router.setPath(module.value);
 	}
 
 	private _renderItem = async () => {
