@@ -1,8 +1,8 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import Focus from '@dojo/framework/core/meta/Focus';
 import Label from '../label/index';
 import {
 	CustomAriaProperties,
@@ -13,10 +13,10 @@ import {
 	PointerEventProperties
 } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/checkbox.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type CheckboxProperties

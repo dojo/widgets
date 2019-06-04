@@ -1,9 +1,9 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode, PropertyChangeRecord } from '@dojo/framework/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { v, w } from '@dojo/framework/widget-core/d';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { DNode, PropertyChangeRecord } from '@dojo/framework/core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { v, w } from '@dojo/framework/core/vdom';
+import Focus from '@dojo/framework/core/meta/Focus';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
 import {
 	CustomAriaProperties,
@@ -14,9 +14,9 @@ import {
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
-import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
-import { reference } from '@dojo/framework/widget-core/diff';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
+import diffProperty from '@dojo/framework/core/decorators/diffProperty';
+import { reference } from '@dojo/framework/core/diff';
 import InputValidity from '../common/InputValidity';
 import HelperText from '../helper-text/index';
 

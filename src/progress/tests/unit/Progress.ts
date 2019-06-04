@@ -1,5 +1,5 @@
 const { describe, it } = intern.getInterface('bdd');
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 import Progress from '../../index';
 import * as css from '../../../theme/progress.m.css';

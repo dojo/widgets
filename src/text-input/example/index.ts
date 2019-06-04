@@ -1,5 +1,5 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
 import TextInput from '../../text-input/index';
 
 export default class App extends WidgetBase {
@@ -8,7 +8,7 @@ export default class App extends WidgetBase {
 	private _value3: string | undefined;
 	private _value5: string | undefined;
 	private _value6: string | undefined;
-	private _value6Valid: boolean | { valid?: boolean; message?: string };
+	private _value6Valid!: boolean | { valid?: boolean; message?: string };
 
 	render() {
 		return v(

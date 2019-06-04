@@ -1,7 +1,7 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { tsx } from '@dojo/framework/widget-core/tsx';
-import watch from '@dojo/framework/widget-core/decorators/watch';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { tsx } from '@dojo/framework/core/vdom';
+import watch from '@dojo/framework/core/decorators/watch';
 import Snackbar from '../index';
 import Button from '../../button/index';
 

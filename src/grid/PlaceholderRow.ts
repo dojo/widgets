@@ -1,7 +1,7 @@
-import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { v } from '@dojo/framework/widget-core/d';
-import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { v } from '@dojo/framework/core/vdom';
+import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
+import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/grid-placeholder-row.m.css';
 
 @theme(css)

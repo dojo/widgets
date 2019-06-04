@@ -1,13 +1,13 @@
-import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
-import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
-import customElement from '@dojo/framework/widget-core/decorators/customElement';
-import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { reference } from '@dojo/framework/widget-core/diff';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import customElement from '@dojo/framework/core/decorators/customElement';
+import diffProperty from '@dojo/framework/core/decorators/diffProperty';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { reference } from '@dojo/framework/core/diff';
 import { Store } from '@dojo/framework/stores/Store';
-import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
-import Resize from '@dojo/framework/widget-core/meta/Resize';
+import Dimensions from '@dojo/framework/core/meta/Dimensions';
+import Resize from '@dojo/framework/core/meta/Resize';
 
 import { Fetcher, ColumnConfig, GridState, Updater } from './interfaces';
 import {

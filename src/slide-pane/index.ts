@@ -1,9 +1,9 @@
 import { uuid } from '@dojo/framework/core/util';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { v, w } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as animations from '../common/styles/animations.m.css';
@@ -11,8 +11,8 @@ import commonBundle from '../common/nls/common';
 import Icon from '../icon/index';
 import * as fixedCss from './styles/slide-pane.m.css';
 import * as css from '../theme/slide-pane.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
-import diffProperty from '@dojo/framework/widget-core/decorators/diffProperty';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
+import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 
 /**
  * Enum for left / right alignment
@@ -195,7 +195,7 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		);
 	}
 
-	protected getStyles(): { [index: string]: string | null } {
+	protected getStyles(): { [index: string]: string | undefined } {
 		const { align = Align.left, width = DEFAULT_WIDTH } = this.properties;
 
 		let translate = '';
@@ -209,9 +209,9 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		}
 
 		return {
-			transform: translate ? `translate${translateAxis}(${translate}%)` : null,
-			width: this.plane === Plane.x ? `${width}px` : null,
-			height: this.plane === Plane.y ? `${width}px` : null
+			transform: translate ? `translate${translateAxis}(${translate}%)` : undefined,
+			width: this.plane === Plane.x ? `${width}px` : undefined,
+			height: this.plane === Plane.y ? `${width}px` : undefined
 		};
 	}
 

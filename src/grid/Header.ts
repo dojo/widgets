@@ -1,8 +1,8 @@
-import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
-import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { ColumnConfig, SortOptions } from './interfaces';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { DNode } from '@dojo/framework/core/interfaces';
 import TextInput from '../text-input/index';
 import Icon from '../icon/index';
 

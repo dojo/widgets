@@ -1,9 +1,9 @@
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import Focus from '@dojo/framework/core/meta/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
@@ -13,7 +13,7 @@ import Icon from '../icon/index';
 import * as fixedCss from './styles/dialog.m.css';
 import * as css from '../theme/dialog.m.css';
 import { GlobalEvent } from '../global-event/index';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * The role of this dialog, used for accessibility

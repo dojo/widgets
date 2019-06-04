@@ -1,6 +1,6 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { tsx } from '@dojo/framework/widget-core/tsx';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { tsx } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
 import Card from '../index';
 import * as cardCss from './../../theme/card.m.css';
 import Button from '../../button/index';

@@ -3,8 +3,8 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/widget-core/d';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
+import Focus from '@dojo/framework/core/meta/Focus';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';

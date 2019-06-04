@@ -1,11 +1,11 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
-import { reference } from '@dojo/framework/widget-core/diff';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { reference } from '@dojo/framework/core/diff';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import Focus from '@dojo/framework/core/meta/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import { find } from '@dojo/framework/shim/array';
 import { formatAriaProperties, Keys } from '../common/util';
@@ -15,7 +15,7 @@ import Label from '../label/index';
 import Listbox from '../listbox/index';
 import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type SelectProperties
@@ -83,7 +83,7 @@ export interface SelectProperties
 	events: ['onBlur', 'onChange', 'onFocus']
 })
 export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
-	private _focusedIndex: number;
+	private _focusedIndex!: number;
 	private _focusNode = 'trigger';
 	private _ignoreBlur = false;
 	private _open = false;

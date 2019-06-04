@@ -1,8 +1,8 @@
 import global from '@dojo/framework/shim/global';
-import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
-import { shallow } from '@dojo/framework/widget-core/diff';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { shallow } from '@dojo/framework/core/diff';
 
 export interface ListenerObject {
 	[index: string]: (event?: any) => void;

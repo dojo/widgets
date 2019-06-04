@@ -1,10 +1,10 @@
 import { assign } from '@dojo/framework/shim/object';
-import { DNode, WNode } from '@dojo/framework/widget-core/interfaces';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { DNode, WNode } from '@dojo/framework/core/interfaces';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 import { includes } from '@dojo/framework/shim/array';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { v } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { v } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 import TitlePane from '../title-pane/index';
 import * as css from '../theme/accordion-pane.m.css';

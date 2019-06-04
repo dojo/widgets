@@ -1,8 +1,8 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
 import * as css from '../theme/button.m.css';
 import {
 	CustomAriaProperties,
@@ -11,9 +11,9 @@ import {
 	KeyEventProperties
 } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 import Icon from '../icon/index';
-import { CustomElementChildType } from '@dojo/framework/widget-core/registerCustomElement';
+import { CustomElementChildType } from '@dojo/framework/core/registerCustomElement';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 

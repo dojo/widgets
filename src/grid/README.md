@@ -12,8 +12,8 @@ A reactive lightweight, customizable grid widget built with Dojo.
 
 ```ts
 import global from "@dojo/framework/shim/global";
-import renderer from '@dojo/framework/widget-core/vdom';
-import { w } from '@dojo/framework/widget-core/d';
+import renderer from '@dojo/framework/core/vdom';
+import { w } from '@dojo/framework/core/vdom';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 import Grid from '@dojo/widgets/grid';
 

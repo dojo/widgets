@@ -1,14 +1,14 @@
-import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { DNode } from '@dojo/framework/core/interfaces';
 import { Keys } from '../common/util';
-import { reference } from '@dojo/framework/widget-core/diff';
-import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { reference } from '@dojo/framework/core/diff';
+import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import Focus from '@dojo/framework/core/meta/Focus';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { uuid } from '@dojo/framework/core/util';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 
 import Icon from '../icon/index';
 import Label from '../label/index';
@@ -19,7 +19,7 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 import HelperText from '../helper-text/index';
 
 /**

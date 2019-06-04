@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { stub } from 'sinon';
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input/index';
 import Icon from '../../../icon/index';
 

@@ -2,9 +2,9 @@ const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/widget-core/d';
-import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
-import Resize from '@dojo/framework/widget-core/meta/Resize';
+import { v, w } from '@dojo/framework/core/vdom';
+import Dimensions from '@dojo/framework/core/meta/Dimensions';
+import Resize from '@dojo/framework/core/meta/Resize';
 import { Store } from '@dojo/framework/stores/Store';
 import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';

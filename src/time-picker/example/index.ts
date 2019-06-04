@@ -1,7 +1,7 @@
 import { getDateFormatter } from '@dojo/framework/i18n/date';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { v, w } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import setLocaleData from './setLocaleData';
 import TimePicker, { getOptions, TimeUnits } from '../../time-picker/index';
 

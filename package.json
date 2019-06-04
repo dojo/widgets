@@ -30,7 +30,7 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "^5.0.0"
+    "@dojo/framework": "6.0.0-alpha.2"
   },
   "devDependencies": {
     "@dojo/cli": "^5.0.0",
@@ -58,10 +58,10 @@
     "shx": "^0.2.2",
     "sinon": "^1.17.6",
     "ts-node": "^3.3.0",
-    "typescript": "~2.6.1"
+    "typescript": "~3.4.5"
   },
   "dependencies": {
-    "tslib": "~1.8.1"
+    "tslib": "~1.9.1"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

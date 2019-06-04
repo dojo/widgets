@@ -32,7 +32,7 @@ Beyond complete keyboard accessibility, `TabController` ensures that all appropr
 ```typescript
 import TabController from '@dojo/widgets/tab-controller';
 import Tab from '@dojo/widgets/tab';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(TabController, {
 	activeIndex: this.state.activeIndex,
@@ -54,7 +54,7 @@ w(TabController, {
 ```typescript
 import TabController from '@dojo/widgets/tab-controller';
 import Tab from '@dojo/widgets/tab';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(TabController, {
 	activeIndex: this.state.activeIndex,
@@ -79,7 +79,7 @@ w(TabController, {
 ```typescript
 import TabController, { Align } from '@dojo/widgets/tab-controller';
 import Tab from '@dojo/widgets/tab';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(TabController, {
 	activeIndex: this.state.activeIndex,

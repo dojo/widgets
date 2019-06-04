@@ -1,7 +1,7 @@
 const { assert } = intern.getPlugin('chai');
 const { registerSuite } = intern.getInterface('object');
 
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 import * as sinon from 'sinon';
 import harness from '@dojo/framework/testing/harness';
 
