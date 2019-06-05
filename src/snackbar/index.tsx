@@ -27,20 +27,20 @@ export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
 		return (
 			<div
 				key="root"
-				classes={[
+				classes={this.theme([
 					css.root,
 					open ? css.open : null,
 					type ? css[type] : null,
 					leading ? css.leading : null,
 					stacked ? css.stacked : null
-				]}
+				])}
 			>
-				<div key="content" classes={css.content}>
-					<div key="label" classes={css.label} role="status" aria-live="polite">
+				<div key="content" classes={this.theme(css.content)}>
+					<div key="label" classes={this.theme(css.label)} role="status" aria-live="polite">
 						{message}
 					</div>
 					{actionsRenderer && (
-						<div key="actions" classes={css.actions}>
+						<div key="actions" classes={this.theme(css.actions)}>
 							{actionsRenderer()}
 						</div>
 					)}

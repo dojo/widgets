@@ -22,9 +22,9 @@ export class Card extends ThemedMixin(WidgetBase)<CardProperties> {
 		const { actionsRenderer } = this.properties;
 		const actionsResult = actionsRenderer && actionsRenderer();
 		return (
-			<div key="root" classes={css.root}>
+			<div key="root" classes={this.theme(css.root)}>
 				{this.children}
-				{actionsResult && <div classes={css.actions}>{actionsResult}</div>}
+				{actionsResult && <div classes={this.theme(css.actions)}>{actionsResult}</div>}
 			</div>
 		);
 	}
