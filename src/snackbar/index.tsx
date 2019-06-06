@@ -7,7 +7,7 @@ import * as css from '../theme/snackbar.m.css';
 
 export interface SnackbarProperties {
 	open: boolean;
-	message: string;
+	message: DNode | DNode[];
 	actionsRenderer?: () => RenderResult;
 	type?: 'success' | 'error';
 	leading?: boolean;

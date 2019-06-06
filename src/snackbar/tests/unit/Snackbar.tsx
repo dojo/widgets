@@ -31,6 +31,24 @@ describe('Snackbar', () => {
 		h.expect(template);
 	});
 
+	it('renders non string message', () => {
+		const h = harness(() => <Snackbar message={<div>test</div>} open={true} />);
+		const nonStringTemplate = template.setChildren('@label', [<div>test</div>]);
+		h.expect(nonStringTemplate);
+	});
+
+	it('renders an array of non string messages', () => {
+		const h = harness(() => <Snackbar message={[
+			<div>test</div>,
+			<div>test2</div>
+		]} open={true} />);
+		const multipleNonStringTemplate = template.setChildren('@label', [
+			<div>test</div>,
+			<div>test2</div>
+		]);
+		h.expect(multipleNonStringTemplate);
+	});
+
 	it('renders closed', () => {
 		const h = harness(() => <Snackbar message="test" open={false} />);
 		const openTemplate = template.setProperty('@root', 'classes', [

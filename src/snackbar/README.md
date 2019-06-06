@@ -13,6 +13,14 @@ Dojo's `Snackbar` widget creates a brief display message that is positioned at t
 // basic usage
 <Snackbar open={true} message="Text to display"/>
 
+// Display a non text message
+<Snackbar open={true} message={(
+	<div>
+		<Icon icon="check" />
+		Text to display
+	</div>
+)} type="success"/>
+
 // Display a success-styled message
 <Snackbar open={true} message="Text to display" type="success"/>
 
@@ -31,9 +39,8 @@ let open = true;
 
 ## Properties
 
-
 - `open: boolean` - Whether the snackbar is open and displayed
-- `message: string` - The message to display on the snackbar
+- `message: DNode | DNode[]` - The message to display on the snackbar.
 - `actionsRenderer?: () => RenderResult` -  A callback that returns what to render in the snackbar's actions section
 - `type?: 'success' | 'error'` - The variant of snackbar to render. Can be `"success"` or `"error"`
 - `leading?: boolean` - If true, render the snackbar on the leading side of the page
