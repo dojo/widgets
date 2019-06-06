@@ -4,6 +4,7 @@ import { tsx } from '@dojo/framework/widget-core/tsx';
 import watch from '@dojo/framework/widget-core/decorators/watch';
 import Snackbar from '../index';
 import Button from '../../button/index';
+import Icon from '../../icon';
 
 export default class App extends WidgetBase {
 	@watch()
@@ -35,7 +36,7 @@ export default class App extends WidgetBase {
 					<Button onClick={() => (this._showPlain = true)}>Show Plain Snackbar</Button>
 					<Snackbar
 						open={this._showPlain}
-						message="Test Snackbar"
+						messageRenderer={() => "Test Snackbar"}
 						actionsRenderer={() => (
 							<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
 						)}
@@ -47,7 +48,7 @@ export default class App extends WidgetBase {
 					<Snackbar
 						type="success"
 						open={this._showSuccess}
-						message="Test Snackbar Success"
+						messageRenderer={() => "Test Snackbar Success"}
 						actionsRenderer={() => (
 							<Button onClick={() => (this._showSuccess = false)}>X</Button>
 						)}
@@ -59,7 +60,7 @@ export default class App extends WidgetBase {
 					<Snackbar
 						type="error"
 						open={this._showError}
-						message="Test Snackbar Error"
+						messageRenderer={() => "Test Snackbar Error"}
 						actionsRenderer={() => (
 							<Button onClick={() => (this._showError = false)}>X</Button>
 						)}
@@ -71,7 +72,7 @@ export default class App extends WidgetBase {
 					<Snackbar
 						leading={true}
 						open={this._showLeading}
-						message="Test leading snackbar"
+						messageRenderer={() => "Test leading snackbar"}
 						actionsRenderer={() => (
 							<Button onClick={() => (this._showLeading = false)}>X</Button>
 						)}
@@ -83,7 +84,7 @@ export default class App extends WidgetBase {
 					<Snackbar
 						stacked={true}
 						open={this._showStacked}
-						message="Test stacked Snackbar"
+						messageRenderer={() => "Test stacked Snackbar"}
 						actionsRenderer={() => (
 							<Button onClick={() => (this._showStacked = false)}>Close</Button>
 						)}
@@ -104,13 +105,45 @@ export default class App extends WidgetBase {
 					<Snackbar
 						type="success"
 						open={this._showAutoclose}
-						message="Test Snackbar auto close"
+						messageRenderer={() => "Test Snackbar auto close"}
 						actionsRenderer={() => [
 							<Button onClick={() => clearTimeout(this._timeoutHandle)}>
 								Clear Timeout
 							</Button>,
 							<Button onClick={() => (this._showAutoclose = false)}>Close</Button>
 						]}
+					/>
+				</div>
+				<div id="example-non-test-message">
+					<h3>Snackbar</h3>
+					<Button onClick={() => (this._showPlain = true)}>Show Non-Text Message Snackbar</Button>
+					<Snackbar
+						open={this._showPlain}
+						messageRenderer={() => (
+							<div>
+								<Icon type="checkIcon" />
+								Text to display
+							</div>
+						)}
+						actionsRenderer={() => (
+							<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
+						)}
+					/>
+				</div>
+				<div id="example-non-test-array-message">
+					<h3>Snackbar</h3>
+					<Button onClick={() => (this._showPlain = true)}>Show Non-Text Message Array Snackbar</Button>
+					<Snackbar
+						open={this._showPlain}
+						messageRenderer={() => [
+							<div>
+								<Icon type="checkIcon" />
+								Text to display
+							</div>
+						]}
+						actionsRenderer={() => (
+							<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
+						)}
 					/>
 				</div>
 			</div>
