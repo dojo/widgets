@@ -7,6 +7,9 @@ import Outlet from '@dojo/framework/routing/Outlet';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import Registry from '@dojo/framework/widget-core/Registry';
 import Router from '@dojo/framework/routing/Router';
+import dojo from '../../../node_modules/@dojo/themes/dojo/index';
+import { registerThemeInjector } from '@dojo/framework/widget-core/mixins/Themed';
+import Radio from '../../radio/index';
 
 const modules = [
 	'',
@@ -39,12 +42,26 @@ const modules = [
 	'tooltip'
 ];
 
+interface ThemeOption {
+	value: any;
+	label: string;
+}
+
+let themes: ThemeOption[] = [
+	{ label: 'dojo', value: dojo },
+	{ label: 'vanilla', value: undefined }
+];
+
 const registry = new Registry();
 registerRouterInjector([{ path: '{module}', outlet: 'module' }], registry);
+const themeInjector = registerThemeInjector(dojo, registry);
 
 export default class App extends WidgetBase {
 	@watch()
 	private _module = '';
+
+	@watch()
+	private _theme = themes[0].label;
 
 	private _onModuleChange(module: string) {
 		const item = this.registry.getInjector<Router>('router')!;
@@ -56,8 +73,31 @@ export default class App extends WidgetBase {
 		return import('src/' + this._module + '/example/index');
 	};
 
+	private _onThemeChange(label: string) {
+		const [theme] = themes.filter((theme: ThemeOption) => theme.label === label);
+		if (theme) {
+			themeInjector.set(theme.value);
+			this._theme = theme.label;
+		}
+	}
+
 	render() {
 		return v('div', { id: 'module-select' }, [
+			v('fieldset', [
+				v('legend', {}, ['Select Theme']),
+				v(
+					'div',
+					themes.map((theme, index) => {
+						return w(Radio, {
+							key: theme.label.concat(index.toString()),
+							checked: this._theme === theme.label,
+							value: theme.label,
+							label: theme.label,
+							onChange: this._onThemeChange
+						});
+					})
+				)
+			]),
 			v('h2', ['Select a module to view']),
 			w(Select, {
 				onChange: this._onModuleChange,
