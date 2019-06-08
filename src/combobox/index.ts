@@ -20,6 +20,7 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import HelperText from '../helper-text/index';
 
 /**
  * @type ComboBoxProperties
@@ -322,11 +323,10 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			required,
 			value = '',
 			theme,
-			helperText,
 			onValidate
 		} = this.properties;
 
-		const { valid, message } = this.validity;
+		const { valid } = this.validity;
 
 		return w(TextInput, {
 			...inputProperties,
@@ -338,10 +338,9 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					: null,
 				autocomplete: 'list'
 			},
-			valid: { valid, message: this._open ? undefined : message },
+			valid,
 			disabled,
 			widgetId,
-			helperText: this._open ? undefined : helperText,
 			focus: this.shouldFocus,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
@@ -449,10 +448,11 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			labelHidden,
 			results = [],
 			theme,
-			classes
+			classes,
+			helperText
 		} = this.properties;
 
-		const { valid } = this.validity;
+		const { valid, message } = this.validity;
 
 		const { messages } = this.localizeBundle(commonBundle);
 		const focus = this.meta(Focus).get('root');
@@ -510,6 +510,11 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					this.renderMenuButton(messages)
 				]
 			),
+			!this._open &&
+				w(HelperText, {
+					text: valid ? helperText : message,
+					valid
+				}),
 			menu
 		];
 
