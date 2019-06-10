@@ -39,7 +39,7 @@ const getExpectedCombobox = function(useTestProperties = false, results?: any[])
 		widgetId: useTestProperties ? 'foo' : '',
 		focus: noop,
 		inputProperties: undefined,
-		invalid: useTestProperties ? true : undefined,
+		valid: useTestProperties ? false : true,
 		isResultDisabled: undefined,
 		label: useTestProperties ? 'Some Field' : undefined,
 		labelAfter: undefined,

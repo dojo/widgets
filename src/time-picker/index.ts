@@ -315,7 +315,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			widgetId,
 			focus: this.shouldFocus,
 			inputProperties,
-			invalid,
+			valid: !invalid,
 			isResultDisabled: isOptionDisabled,
 			label,
 			labelAfter,
