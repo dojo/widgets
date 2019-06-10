@@ -244,6 +244,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 				'option',
 				{
 					value: option.value,
+					label: option.label ? option.label : option.value,
 					id: getOptionId ? getOptionId(option, i) : undefined,
 					disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
 					selected: getOptionSelected ? getOptionSelected(option, i) : undefined
@@ -251,6 +252,22 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 				[this._getOptionLabel(option)]
 			)
 		);
+
+		const childrenNodes = this.children
+			.filter((child: any) => child.tag === 'option')
+			.map((child: any, i) => {
+				const { value, label = undefined } = child;
+				const option = { value, label };
+				return v('option', {
+					value: child.value,
+					label: child.label ? child.label : child.value,
+					id: getOptionId ? getOptionId(option, i) : undefined,
+					disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
+					selected: getOptionSelected ? getOptionSelected(option, i) : undefined
+				});
+			});
+
+		const combinedNodes = optionNodes.concat(childrenNodes);
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v(
@@ -271,7 +288,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 					onchange: this._onNativeChange,
 					onfocus: this._onFocus
 				},
-				optionNodes
+				combinedNodes
 			),
 			this.renderExpandIcon()
 		]);
@@ -423,6 +440,8 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		} = this.properties;
 
 		const focus = this.meta(Focus).get('root');
+
+		console.log('select children', this.children);
 
 		return v(
 			'div',

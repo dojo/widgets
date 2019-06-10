@@ -68,19 +68,29 @@ export default class App extends WidgetBase {
 
 	render() {
 		return v('div', [
-			w(Select, {
-				key: 'select1',
-				...this.getOptionSettings(),
-				getOptionSelected: (option: any) => !!this._value1 && option.value === this._value1,
-				label: 'Native select',
-				options: this._selectOptions,
-				useNativeElement: true,
-				value: this._value1,
-				onChange: (option: any) => {
-					this._value1 = option.value;
-					this.invalidate();
-				}
-			}),
+			w(
+				Select,
+				{
+					key: 'select1',
+					...this.getOptionSettings(),
+					getOptionSelected: (option: any) =>
+						!!this._value1 && option.value === this._value1,
+					label: 'Native select',
+					options: this._selectOptions,
+					useNativeElement: true,
+					value: this._value1,
+					onChange: (option: any) => {
+						this._value1 = option.value;
+						this.invalidate();
+					}
+				},
+				[
+					v('option', {
+						value: 'brooklyn',
+						label: 'Brooklyn'
+					})
+				]
+			),
 			v('p', {
 				innerHTML: 'Result value: ' + this._value1
 			}),
