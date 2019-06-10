@@ -7,7 +7,7 @@ import Outlet from '@dojo/framework/routing/Outlet';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import Registry from '@dojo/framework/widget-core/Registry';
 import Router from '@dojo/framework/routing/Router';
-import dojo from '../../../node_modules/@dojo/themes/dojo/index';
+import dojoTheme from '../../../node_modules/@dojo/themes/dojo/index';
 import { registerThemeInjector } from '@dojo/framework/widget-core/mixins/Themed';
 import Radio from '../../radio/index';
 
@@ -48,13 +48,13 @@ interface ThemeOption {
 }
 
 let themes: ThemeOption[] = [
-	{ label: 'dojo', value: dojo },
-	{ label: 'vanilla', value: undefined }
+	{ label: 'dojoTheme', value: dojoTheme },
+	{ label: 'none', value: undefined }
 ];
 
 const registry = new Registry();
 registerRouterInjector([{ path: '{module}', outlet: 'module' }], registry);
-const themeInjector = registerThemeInjector(dojo, registry);
+const themeInjector = registerThemeInjector(dojoTheme, registry);
 
 export default class App extends WidgetBase {
 	@watch()
