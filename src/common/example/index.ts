@@ -48,8 +48,8 @@ interface ThemeOption {
 }
 
 let themes: ThemeOption[] = [
-	{ label: 'dojoTheme', value: dojoTheme },
-	{ label: 'none', value: undefined }
+	{ label: 'none', value: undefined },
+	{ label: 'dojoTheme', value: dojoTheme }
 ];
 
 const registry = new Registry();
