@@ -12,7 +12,7 @@ import * as textinputCss from '../../../theme/text-input.m.css';
 import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
-const DELAY = 300;
+const DELAY = 500;
 
 function getPage(remote: Remote, exampleId: string) {
 	return remote
