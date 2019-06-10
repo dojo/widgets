@@ -26,7 +26,7 @@ import {
 	MockMetaMixin,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
-import HelperText from '../../../helper-text';
+import HelperText from '../../../helper-text/index';
 
 const harness = createHarness([
 	compareId,
