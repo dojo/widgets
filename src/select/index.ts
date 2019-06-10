@@ -253,21 +253,32 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			)
 		);
 
+		console.log('children', this.children);
+
 		const childrenNodes = this.children
 			.filter((child: any) => child.tag === 'option')
 			.map((child: any, i) => {
-				const { value, label = undefined } = child;
+				const { value, label = undefined } = child.properties;
 				const option = { value, label };
-				return v('option', {
-					value: child.value,
-					label: child.label ? child.label : child.value,
-					id: getOptionId ? getOptionId(option, i) : undefined,
-					disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
-					selected: getOptionSelected ? getOptionSelected(option, i) : undefined
-				});
+				console.log('option', option);
+				return v(
+					'option',
+					{
+						value,
+						label: label ? label : value,
+						id: getOptionId ? getOptionId(option, i) : undefined,
+						disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
+						selected: getOptionSelected ? getOptionSelected(option, i) : undefined
+					},
+					[label ? label : value]
+				);
 			});
 
+		console.log('childrenNodes', childrenNodes);
+
 		const combinedNodes = optionNodes.concat(childrenNodes);
+
+		console.log('combinedNodes', combinedNodes);
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v(
