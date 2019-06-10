@@ -54,7 +54,7 @@ let themes: ThemeOption[] = [
 
 const registry = new Registry();
 registerRouterInjector([{ path: '{module}', outlet: 'module' }], registry);
-const themeInjector = registerThemeInjector(dojoTheme, registry);
+const themeInjector = registerThemeInjector(undefined, registry);
 
 export default class App extends WidgetBase {
 	@watch()
@@ -82,7 +82,7 @@ export default class App extends WidgetBase {
 	}
 
 	render() {
-		return v('div', { id: 'module-select' }, [
+		return v('div', [
 			v('fieldset', [
 				v('legend', {}, ['Select Theme']),
 				v(
@@ -98,26 +98,28 @@ export default class App extends WidgetBase {
 					})
 				)
 			]),
-			v('h2', ['Select a module to view']),
-			w(Select, {
-				onChange: this._onModuleChange,
-				useNativeElement: true,
-				label: 'Select a module to view',
-				options: modules,
-				value: this._module,
-				getOptionValue: (module: any) => module,
-				getOptionLabel: (module: any) => module
-			}),
-			w(Outlet, {
-				id: 'module',
-				renderer: (matchDetail: any) => {
-					this._module = matchDetail.params.module;
-					return w(
-						{ label: this._module, registryItem: this._renderItem },
-						{ key: this._module }
-					);
-				}
-			})
+			v('div', { id: 'module-select' }, [
+				v('h2', ['Select a module to view']),
+				w(Select, {
+					onChange: this._onModuleChange,
+					useNativeElement: true,
+					label: 'Select a module to view',
+					options: modules,
+					value: this._module,
+					getOptionValue: (module: any) => module,
+					getOptionLabel: (module: any) => module
+				}),
+				w(Outlet, {
+					id: 'module',
+					renderer: (matchDetail: any) => {
+						this._module = matchDetail.params.module;
+						return w(
+							{ label: this._module, registryItem: this._renderItem },
+							{ key: this._module }
+						);
+					}
+				})
+			])
 		]);
 	}
 }
