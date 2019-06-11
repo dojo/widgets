@@ -49,7 +49,7 @@ interface ThemeOption {
 
 let themes: ThemeOption[] = [
 	{ label: 'none', value: undefined },
-	{ label: 'dojoTheme', value: dojoTheme }
+	{ label: 'dojo', value: dojoTheme }
 ];
 
 const registry = new Registry();
