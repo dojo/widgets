@@ -36,6 +36,7 @@
     "@dojo/cli": "^5.0.0",
     "@dojo/cli-build-widget": "^5.0.0",
     "@dojo/loader": "^2.0.0",
+    "@dojo/themes": "^5.0.1",
     "@theintern/a11y": "~0.2.0",
     "@types/execa": "^0.8.1",
     "@types/glob": "5.0.*",

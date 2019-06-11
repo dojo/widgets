@@ -132,7 +132,7 @@ registerSuite('Calendar', {
 		}
 
 		return openMonthPicker(this.remote)
-			.findByCssSelector('input[type=radio]')
+			.findByCssSelector(`.${css.monthRadioInput}`)
 			.click()
 			.sleep(DELAY)
 			.end()

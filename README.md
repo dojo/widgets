@@ -185,6 +185,8 @@ Not all widgets include these extension points, and some have additional overrid
 We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
 Contributing Guidelines and Style Guide.
 
+Note that all changes to widgets should work with the [dojo theme](https://github.com/dojo/themes/). To test this start the example page (instructions at [Installation](#installation) section) and select the dojo option at the top of the page.
+
 ### Installation
 
 To start working with this package, clone the repository and run `npm install`.
