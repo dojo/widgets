@@ -24,8 +24,7 @@ export default class App extends WidgetBase {
 		},
 		{
 			value: 'goat',
-			label: 'Goat',
-			disabled: true
+			label: 'Goat'
 		}
 	];
 
