@@ -20,6 +20,8 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
 interface Option {
 	value: string;
 	label?: string;
+	disabled?: boolean;
+	selected?: boolean;
 }
 
 /**
@@ -96,11 +98,6 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 	private _getOptionLabel(option: any) {
 		return option.label ? option.label : option.value;
 	}
-
-	private _getOptionSelected = (option: any) => {
-		const { value } = this.properties;
-		return option.value === value;
-	};
 
 	private _getSelectedIndexOnInput(event: KeyboardEvent) {
 		const { options = [], getOptionDisabled, getOptionText } = this.properties;
@@ -224,13 +221,26 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		]);
 	}
 
+	private _getOptionDisabled(option: any, index: number) {
+		const { getOptionDisabled } = this.properties;
+		const { disabled = getOptionDisabled ? getOptionDisabled(option, index) : false } = option;
+		return disabled;
+	}
+
+	private _getOptionSelected(option: any, index: number) {
+		const { getOptionSelected, value = undefined } = this.properties;
+		if (value) {
+			return option.value === value;
+		}
+		const { selected = getOptionSelected ? getOptionSelected(option, index) : false } = option;
+		return selected;
+	}
+
 	protected renderNativeSelect(): DNode {
 		const {
 			aria = {},
 			disabled,
-			getOptionDisabled,
 			getOptionId,
-			getOptionSelected,
 			widgetId = this._baseId,
 			invalid,
 			name,
@@ -240,19 +250,19 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		} = this.properties;
 
 		/* create option nodes */
-		const optionNodes = this.combinedOptions.map((option, i) =>
-			v(
+		const optionNodes = this.combinedOptions.map((option, i) => {
+			return v(
 				'option',
 				{
 					value: option.value,
 					label: option.label ? option.label : option.value,
 					id: getOptionId ? getOptionId(option, i) : undefined,
-					disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
-					selected: getOptionSelected ? getOptionSelected(option, i) : undefined
+					disabled: this._getOptionDisabled(option, i),
+					selected: this._getOptionSelected(option, i)
 				},
 				[this._getOptionLabel(option)]
-			)
-		);
+			);
+		});
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v(
@@ -281,18 +291,19 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 
 	protected renderCustomSelect(): DNode {
 		const {
-			getOptionDisabled,
 			getOptionId,
-			getOptionSelected = this._getOptionSelected,
+			getOptionSelected,
 			widgetId = this._baseId,
 			key,
 			theme,
 			classes,
-			onChange
+			onChange,
+			getOptionDisabled,
+			value
 		} = this.properties;
 
 		if (this._focusedIndex === undefined) {
-			this.combinedOptions.map(getOptionSelected).forEach((isSelected, index) => {
+			this.combinedOptions.map(this._getOptionSelected).forEach((isSelected, index) => {
 				if (isSelected) {
 					this._focusedIndex = index;
 				}
@@ -324,10 +335,27 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
 							optionData: this.combinedOptions,
 							tabIndex: _open ? 0 : -1,
-							getOptionDisabled,
+							getOptionDisabled: function(option: Option, i: number) {
+								const {
+									disabled = getOptionDisabled
+										? getOptionDisabled(option, i)
+										: false
+								} = option;
+								return disabled;
+							},
 							getOptionId,
-							getOptionLabel: this._getOptionLabel,
-							getOptionSelected,
+							getOptionSelected: function(option: Option, i: number) {
+								if (value) {
+									return option.value === value;
+								}
+								const {
+									selected = getOptionSelected
+										? getOptionSelected(option, i)
+										: false
+								} = option;
+								return selected;
+							},
+							getOptionLabel: (option) => option.label,
 							theme,
 							classes,
 							onActiveIndexChange: (index: number) => {
@@ -357,7 +385,6 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		const {
 			aria = {},
 			disabled,
-			getOptionSelected = this._getOptionSelected,
 			invalid,
 			placeholder,
 			readOnly,
@@ -369,7 +396,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		let isPlaceholder = false;
 
 		const selectedOption = find(this.combinedOptions, (option: Option, index: number) => {
-			return getOptionSelected(option, index);
+			return this._getOptionSelected(option, index);
 		});
 
 		if (selectedOption) {
