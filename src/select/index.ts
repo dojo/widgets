@@ -91,6 +91,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 	private _baseId = uuid();
 	private _inputText = '';
 	private _resetInputTextTimer: any;
+	private combinedOptions: Option[] = [];
 
 	private _getOptionLabel(option: any) {
 		return option.label ? option.label : option.value;
@@ -139,10 +140,10 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 
 	// native select events
 	private _onNativeChange(event: Event) {
-		const { key, options = [], onChange } = this.properties;
+		const { key, onChange } = this.properties;
 		event.stopPropagation();
 		const value = (<HTMLInputElement>event.target).value;
-		const option = find(options, (option: any) => option.value === value);
+		const option = find(this.combinedOptions, (option: any) => option.value === value);
 		option && onChange && onChange(option, key);
 	}
 
@@ -233,14 +234,13 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			widgetId = this._baseId,
 			invalid,
 			name,
-			options = [],
 			readOnly,
 			required,
 			value
 		} = this.properties;
 
 		/* create option nodes */
-		const optionNodes = options.map((option, i) =>
+		const optionNodes = this.combinedOptions.map((option, i) =>
 			v(
 				'option',
 				{
@@ -253,28 +253,6 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 				[this._getOptionLabel(option)]
 			)
 		);
-
-		const childrenNodes = this.children
-			.filter((child: any) => child.tag === 'option')
-			.map((child: any, i) => {
-				const { value, label = undefined } = child.properties;
-				const option = { value, label };
-				return v(
-					'option',
-					{
-						value,
-						label: label ? label : value,
-						id: getOptionId ? getOptionId(option, i) : undefined,
-						disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
-						selected: getOptionSelected ? getOptionSelected(option, i) : undefined
-					},
-					[this._getOptionLabel(option)]
-				);
-			});
-
-		const combinedNodes = optionNodes.concat(childrenNodes);
-
-		console.log('combinedNodes', combinedNodes);
 
 		return v('div', { classes: this.theme(css.inputWrapper) }, [
 			v(
@@ -295,7 +273,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 					onchange: this._onNativeChange,
 					onfocus: this._onFocus
 				},
-				combinedNodes
+				optionNodes
 			),
 			this.renderExpandIcon()
 		]);
@@ -308,23 +286,13 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			getOptionSelected = this._getOptionSelected,
 			widgetId = this._baseId,
 			key,
-			options = [],
 			theme,
 			classes,
 			onChange
 		} = this.properties;
 
-		const childrenOptions = this.children
-			.filter((child: any) => child.tag === 'option')
-			.map((child: any, i) => {
-				const { value, label = undefined } = child.properties;
-				return { value, label };
-			});
-
-		const combinedOptions: Option[] = options.concat(childrenOptions);
-
 		if (this._focusedIndex === undefined) {
-			combinedOptions.map(getOptionSelected).forEach((isSelected, index) => {
+			this.combinedOptions.map(getOptionSelected).forEach((isSelected, index) => {
 				if (isSelected) {
 					this._focusedIndex = index;
 				}
@@ -340,7 +308,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 				classes: this.theme([css.inputWrapper, _open ? css.open : null])
 			},
 			[
-				...this.renderCustomTrigger(combinedOptions),
+				...this.renderCustomTrigger(),
 				v(
 					'div',
 					{
@@ -354,7 +322,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 							activeIndex: _focusedIndex,
 							widgetId: widgetId,
 							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
-							optionData: combinedOptions,
+							optionData: this.combinedOptions,
 							tabIndex: _open ? 0 : -1,
 							getOptionDisabled,
 							getOptionId,
@@ -385,7 +353,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		);
 	}
 
-	protected renderCustomTrigger(combinedOptions: Option[]): DNode[] {
+	protected renderCustomTrigger(): DNode[] {
 		const {
 			aria = {},
 			disabled,
@@ -400,7 +368,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		let label: DNode;
 		let isPlaceholder = false;
 
-		const selectedOption = find(combinedOptions, (option: Option, index: number) => {
+		const selectedOption = find(this.combinedOptions, (option: Option, index: number) => {
 			return getOptionSelected(option, index);
 		});
 
@@ -411,7 +379,10 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			if (placeholder) {
 				label = placeholder;
 			} else {
-				label = combinedOptions.length > 0 ? this._getOptionLabel(combinedOptions[0]) : '';
+				label =
+					this.combinedOptions.length > 0
+						? this._getOptionLabel(this.combinedOptions[0])
+						: '';
 			}
 		}
 
@@ -453,12 +424,22 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			invalid,
 			readOnly,
 			required,
+			options = [],
 			useNativeElement = false,
 			theme,
 			classes
 		} = this.properties;
 
 		const focus = this.meta(Focus).get('root');
+
+		const childrenOptions = this.children
+			.filter((child: any) => child.tag === 'option')
+			.map((child: any, i) => {
+				const { value, label = undefined } = child.properties;
+				return { value, label };
+			});
+
+		this.combinedOptions = options.concat(childrenOptions);
 
 		return v(
 			'div',
