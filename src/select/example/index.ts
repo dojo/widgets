@@ -6,6 +6,8 @@ export default class App extends WidgetBase {
 	private _value1: string | undefined;
 	private _value2: string | undefined;
 	private _value3: string | undefined;
+	private _value4: string | undefined;
+	private _value5: string | undefined;
 
 	_selectOptions = [
 		{
@@ -60,37 +62,25 @@ export default class App extends WidgetBase {
 
 	getOptionSettings(): Partial<SelectProperties> {
 		return {
-			getOptionDisabled: (option) => option.disabled,
-			getOptionLabel: (option) => option.label,
-			getOptionValue: (option) => option.value
+			getOptionDisabled: (option) => option.disabled
 		};
 	}
 
 	render() {
 		return v('div', [
-			w(
-				Select,
-				{
-					key: 'select1',
-					...this.getOptionSettings(),
-					getOptionSelected: (option: any) =>
-						!!this._value1 && option.value === this._value1,
-					label: 'Native select',
-					options: this._selectOptions,
-					useNativeElement: true,
-					value: this._value1,
-					onChange: (option: any) => {
-						this._value1 = option.value;
-						this.invalidate();
-					}
-				},
-				[
-					v('option', {
-						value: 'brooklyn',
-						label: 'Brooklyn'
-					})
-				]
-			),
+			w(Select, {
+				key: 'select1',
+				...this.getOptionSettings(),
+				getOptionSelected: (option: any) => !!this._value1 && option.value === this._value1,
+				label: 'Native select',
+				options: this._selectOptions,
+				useNativeElement: true,
+				value: this._value1,
+				onChange: (option: any) => {
+					this._value1 = option.value;
+					this.invalidate();
+				}
+			}),
 			v('p', {
 				innerHTML: 'Result value: ' + this._value1
 			}),
@@ -128,6 +118,7 @@ export default class App extends WidgetBase {
 				useNativeElement: true,
 				value: this._value1,
 				onChange: (option: any) => {
+					console.log('Native select option with helper text', option);
 					this._value1 = option.value;
 					this.invalidate();
 				},
@@ -144,7 +135,52 @@ export default class App extends WidgetBase {
 					this.invalidate();
 				},
 				helperText: 'pick a value'
-			})
+			}),
+			w(
+				Select,
+				{
+					key: 'select5',
+					...this.getOptionSettings(),
+					getOptionSelected: (option: any) =>
+						!!this._value1 && option.value === this._value1,
+					label: 'Native select with children option tags',
+					useNativeElement: true,
+					value: this._value4,
+					onChange: (option: any) => {
+						console.log('native example option', option);
+						this._value4 = option.value;
+						this.invalidate();
+					},
+					helperText: 'pick a value'
+				},
+				this._selectOptions.map((option) =>
+					v('option', {
+						value: option.value,
+						label: option.label
+					})
+				)
+			),
+			v('br'),
+			w(
+				Select,
+				{
+					key: 'select6',
+					getOptionSelected: (option: any) => !!this._value3 && option === this._value3,
+					label: 'Custom select with children option tags',
+					value: this._value5,
+					onChange: (option: any) => {
+						console.log('custom example option', option);
+						this._value5 = option;
+						this.invalidate();
+					}
+				},
+				this._selectOptions.map((option) =>
+					v('option', {
+						value: option.value,
+						label: option.label
+					})
+				)
+			)
 		]);
 	}
 }

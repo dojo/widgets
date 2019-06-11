@@ -64,8 +64,7 @@ export default class App extends WidgetBase {
 				label: 'Select a module to view',
 				options: modules,
 				value: this._module,
-				getOptionValue: (module: any) => module,
-				getOptionLabel: (module: any) => module
+				getOptionValue: (module: any) => module
 			}),
 			w(Outlet, {
 				id: 'module',

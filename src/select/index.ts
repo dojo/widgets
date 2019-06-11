@@ -17,6 +17,11 @@ import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
 import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
 
+interface Option {
+	value: string;
+	label?: string;
+}
+
 /**
  * @type SelectProperties
  *
@@ -24,7 +29,6 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  *
  * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
  * @property getOptionId       Function that accepts an option's data and index and returns a string id
- * @property getOptionLabel    Function that accepts an option's data and returns a DNode label
  * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
  * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
  * @property getOptionValue    Function that accepts an option's data and index and returns a string value
@@ -39,13 +43,12 @@ export interface SelectProperties
 		FocusProperties,
 		CustomAriaProperties {
 	getOptionDisabled?(option: any, index: number): boolean;
-	getOptionId?(option: { value: string; label?: string }, index: number): string;
-	getOptionLabel?(option: { value: string; label?: string }): DNode;
-	getOptionText?(option: { value: string; label?: string }): string;
-	getOptionSelected?(option: { value: string; label?: string }, index: number): boolean;
-	getOptionValue?(option: { value: string; label?: string }, index: number): string;
+	getOptionId?(option: Option, index: number): string;
+	getOptionText?(option: Option): string;
+	getOptionSelected?(option: Option, index: number): boolean;
+	getOptionValue?(option: Option, index: number): string;
 	helperText?: string;
-	options?: { value: string; label?: string }[];
+	options?: Option[];
 	placeholder?: string;
 	useNativeElement?: boolean;
 	onBlur?(key?: string | number): void;
@@ -69,10 +72,8 @@ export interface SelectProperties
 		'useNativeElement',
 		'getOptionDisabled',
 		'getOptionId',
-		'getOptionLabel',
 		'getOptionText',
 		'getOptionSelected',
-		'getOptionValue',
 		'readOnly',
 		'required',
 		'invalid',
@@ -83,7 +84,7 @@ export interface SelectProperties
 	events: ['onBlur', 'onChange', 'onFocus']
 })
 export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
-	private _focusedIndex: number = 0;
+	private _focusedIndex = 0;
 	private _focusNode = 'trigger';
 	private _ignoreBlur = false;
 	private _open = false;
@@ -253,14 +254,11 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			)
 		);
 
-		console.log('children', this.children);
-
 		const childrenNodes = this.children
 			.filter((child: any) => child.tag === 'option')
 			.map((child: any, i) => {
 				const { value, label = undefined } = child.properties;
 				const option = { value, label };
-				console.log('option', option);
 				return v(
 					'option',
 					{
@@ -270,11 +268,9 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 						disabled: getOptionDisabled ? getOptionDisabled(option, i) : undefined,
 						selected: getOptionSelected ? getOptionSelected(option, i) : undefined
 					},
-					[label ? label : value]
+					[this._getOptionLabel(option)]
 				);
 			});
-
-		console.log('childrenNodes', childrenNodes);
 
 		const combinedNodes = optionNodes.concat(childrenNodes);
 
@@ -318,8 +314,17 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			onChange
 		} = this.properties;
 
+		const childrenOptions = this.children
+			.filter((child: any) => child.tag === 'option')
+			.map((child: any, i) => {
+				const { value, label = undefined } = child.properties;
+				return { value, label };
+			});
+
+		const combinedOptions: Option[] = options.concat(childrenOptions);
+
 		if (this._focusedIndex === undefined) {
-			options.map(getOptionSelected).forEach((isSelected, index) => {
+			combinedOptions.map(getOptionSelected).forEach((isSelected, index) => {
 				if (isSelected) {
 					this._focusedIndex = index;
 				}
@@ -335,7 +340,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 				classes: this.theme([css.inputWrapper, _open ? css.open : null])
 			},
 			[
-				...this.renderCustomTrigger(),
+				...this.renderCustomTrigger(combinedOptions),
 				v(
 					'div',
 					{
@@ -349,7 +354,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 							activeIndex: _focusedIndex,
 							widgetId: widgetId,
 							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
-							optionData: options,
+							optionData: combinedOptions,
 							tabIndex: _open ? 0 : -1,
 							getOptionDisabled,
 							getOptionId,
@@ -380,13 +385,12 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		);
 	}
 
-	protected renderCustomTrigger(): DNode[] {
+	protected renderCustomTrigger(combinedOptions: Option[]): DNode[] {
 		const {
 			aria = {},
 			disabled,
 			getOptionSelected = this._getOptionSelected,
 			invalid,
-			options = [],
 			placeholder,
 			readOnly,
 			required,
@@ -396,7 +400,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		let label: DNode;
 		let isPlaceholder = false;
 
-		const selectedOption = find(options, (option: any, index: number) => {
+		const selectedOption = find(combinedOptions, (option: Option, index: number) => {
 			return getOptionSelected(option, index);
 		});
 
@@ -404,7 +408,11 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			label = this._getOptionLabel(selectedOption);
 		} else {
 			isPlaceholder = true;
-			label = placeholder ? placeholder : this._getOptionLabel(options[0]);
+			if (placeholder) {
+				label = placeholder;
+			} else {
+				label = combinedOptions.length > 0 ? this._getOptionLabel(combinedOptions[0]) : '';
+			}
 		}
 
 		return [
@@ -451,8 +459,6 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		} = this.properties;
 
 		const focus = this.meta(Focus).get('root');
-
-		console.log('select children', this.children);
 
 		return v(
 			'div',

@@ -79,7 +79,6 @@ const testProperties: Partial<SelectProperties> = {
 	aria: { describedBy: 'foo' },
 	getOptionDisabled: (option: any, index: number) => !!option.disabled,
 	getOptionId: (option: any, index: number) => option.value,
-	getOptionLabel: (option: any) => option.label,
 	getOptionSelected: (option: any, index: number) => option.value === 'two',
 	getOptionValue: (option: any, index: number) => option.value,
 	getOptionText: (option: any) => option.label,
