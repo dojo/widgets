@@ -36,7 +36,7 @@ export class ListboxOption extends ThemedMixin(WidgetBase)<ListboxOptionProperti
 				classes: this.theme(css),
 				id,
 				role: 'option',
-				onpointerdown: this._onClick
+				onmousedown: this._onClick
 			},
 			[label]
 		);

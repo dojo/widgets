@@ -30,7 +30,7 @@ registerSuite('ListboxOption', {
 						classes: [],
 						id: 'bar',
 						role: 'option',
-						onpointerdown: noop
+						onmousedown: noop
 					},
 					['foo']
 				)
@@ -60,7 +60,7 @@ registerSuite('ListboxOption', {
 						classes: [css.option],
 						id: 'bar',
 						role: 'option',
-						onpointerdown: noop
+						onmousedown: noop
 					},
 					['foo']
 				)
@@ -80,7 +80,7 @@ registerSuite('ListboxOption', {
 				})
 			);
 
-			h.trigger(`.${css.option}`, 'onpointerdown', stubEvent);
+			h.trigger(`.${css.option}`, 'onmousedown', stubEvent);
 			assert.isTrue(onClick.calledWith('baz', 1));
 		}
 	}
