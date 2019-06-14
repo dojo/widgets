@@ -140,6 +140,7 @@ registerSuite('TimePicker', {
 			.then((isEqual) => {
 				assert.isTrue(isEqual);
 			})
+			.setFindTimeout(DELAY)
 			.findByCssSelector(`.${comboboxCss.dropdown}`)
 			.getSize()
 			.then(({ height }) => {

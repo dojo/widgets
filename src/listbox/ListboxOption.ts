@@ -19,7 +19,7 @@ export interface ListboxOptionProperties extends ThemedProperties {
 
 @theme(css)
 export class ListboxOption extends ThemedMixin(WidgetBase)<ListboxOptionProperties> {
-	private _onClick(event: MouseEvent) {
+	private _onClick(event: PointerEvent) {
 		event.stopPropagation();
 		const { index, key, option, onClick } = this.properties;
 		onClick && onClick(option, index, key);
@@ -36,7 +36,7 @@ export class ListboxOption extends ThemedMixin(WidgetBase)<ListboxOptionProperti
 				classes: this.theme(css),
 				id,
 				role: 'option',
-				onmousedown: this._onClick
+				onpointerdown: this._onClick
 			},
 			[label]
 		);
