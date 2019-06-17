@@ -8,7 +8,7 @@ import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import Registry from '@dojo/framework/core/Registry';
 import Router from '@dojo/framework/routing/Router';
 import dojoTheme from '../../../node_modules/@dojo/themes/dojo/index';
-import { registerThemeInjector } from '@dojo/framework/widget-core/mixins/Themed';
+import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
 import Radio from '../../radio/index';
 
 const modules = [
