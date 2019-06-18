@@ -1,19 +1,16 @@
 import { getDateFormatter } from '@dojo/framework/i18n/date';
 import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
 import { v, w } from '@dojo/framework/widget-core/d';
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import setLocaleData from './setLocaleData';
 import TimePicker, { getOptions, TimeUnits } from '../../time-picker/index';
-import * as baseCss from '../../common/styles/base.m.css';
 
 setLocaleData();
 
 const TODAY = new Date();
 const getEnglishTime = getDateFormatter({ time: 'short' });
 
-@theme(baseCss)
-export default class App extends ThemedMixin(WidgetBase) {
+export default class App extends WidgetBase {
 	private _options: TimeUnits[] = getOptions();
 	private _filteredOptions: TimeUnits[] = [];
 	private _values: any = {};
@@ -47,8 +44,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 			v(
 				'p',
 				{
-					id: 'description1',
-					classes: baseCss.visuallyHidden
+					id: 'description1'
 				},
 				['Accepts 24-hour time with a leading zero, rounded to the nearest half hour.']
 			),
@@ -89,8 +85,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 			v(
 				'p',
 				{
-					id: 'description2',
-					classes: baseCss.visuallyHidden
+					id: 'description2'
 				},
 				['Accepts 24-hour time with a leading zero, rounded to the nearest hour.']
 			),
@@ -177,8 +172,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 			v(
 				'p',
 				{
-					id: 'description8',
-					classes: baseCss.visuallyHidden
+					id: 'description8'
 				},
 				['Accepts 24-hour time with a leading zero, rounded to the nearest second.']
 			),
@@ -202,8 +196,7 @@ export default class App extends ThemedMixin(WidgetBase) {
 			v(
 				'p',
 				{
-					id: 'description9',
-					classes: baseCss.visuallyHidden
+					id: 'description9'
 				},
 				['Accepts 12-hour time without a leading zero, rounded to the nearest half hour.']
 			),
