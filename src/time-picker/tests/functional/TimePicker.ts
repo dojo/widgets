@@ -12,7 +12,7 @@ import * as textinputCss from '../../../theme/text-input.m.css';
 import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
-const DELAY = 500;
+const DELAY = 1000;
 
 function getPage(remote: Remote, exampleId: string) {
 	return remote
@@ -140,6 +140,7 @@ registerSuite('TimePicker', {
 			.then((isEqual) => {
 				assert.isTrue(isEqual);
 			})
+			.setFindTimeout(DELAY)
 			.findByCssSelector(`.${comboboxCss.dropdown}`)
 			.getSize()
 			.then(({ height }) => {
