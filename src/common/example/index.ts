@@ -112,7 +112,9 @@ export default class App extends WidgetBase {
 				w(Outlet, {
 					id: 'module',
 					renderer: (matchDetail: any) => {
-						this._module = matchDetail.params.module;
+						if (this._module !== matchDetail.params.module) {
+							this._module = matchDetail.params.module;
+						}
 						return w(
 							{ label: this._module, registryItem: this._renderItem },
 							{ key: this._module }
