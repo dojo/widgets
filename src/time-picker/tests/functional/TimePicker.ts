@@ -159,12 +159,6 @@ registerSuite('TimePicker', {
 					'The input value should not contain the disabled value.'
 				);
 			})
-			.end()
-			.findByCssSelector(`.${comboboxCss.dropdown}`)
-			.getSize()
-			.then(({ height }) => {
-				assert.isAbove(height, 0, 'The dropdown should remain open.');
-			})
 			.end();
 	},
 	'disabled timepickers cannot be opened'() {
