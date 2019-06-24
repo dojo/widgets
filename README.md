@@ -201,11 +201,11 @@ Test cases MUST be written using [Intern](https://theintern.github.io) using the
 
 To test locally in node run:
 
-`grunt test`
+`npm run test`
 
 To test against browsers with a local selenium server run:
 
-`grunt test:local`
+`npm run test:functional`
 
 To test against BrowserStack or Sauce Labs run:
 
