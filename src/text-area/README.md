@@ -11,7 +11,7 @@ Dojo's `Textarea` widget provides a wrapped native `textarea` input, optionally 
 
 ### Accessibility Features
 
-`Textarea` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used. It provides the property `describedBy` to reference an element with additional descriptive text with `aria-describedby`.
+`Textarea` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used. It also provides an API for custom ARIA implementations of `aria-describedby` and `aria-controls`. It also sets `aria-invalid` when validation fails.
 
 If the `label` property is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
 
