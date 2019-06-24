@@ -1,9 +1,9 @@
 import global from '@dojo/framework/shim/global';
-import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
-import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { DNode, VNodeProperties } from '@dojo/framework/widget-core/interfaces';
-import renderer from '@dojo/framework/widget-core/vdom';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
+import { DNode, VNodeProperties } from '@dojo/framework/core/interfaces';
+import renderer from '@dojo/framework/core/vdom';
 
 import { GridPages, ColumnConfig } from './interfaces';
 import PlaceholderRow from './PlaceholderRow';
@@ -11,8 +11,8 @@ import Row from './Row';
 
 import * as fixedCss from './styles/body.m.css';
 import * as css from '../theme/grid-body.m.css';
-import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
-import { auto, reference } from '@dojo/framework/widget-core/diff';
+import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { auto, reference } from '@dojo/framework/core/diff';
 
 export interface BodyProperties<S> {
 	totalRows?: number;
@@ -54,9 +54,9 @@ const defaultPlaceholderRowRenderer = (index: number) => {
 @theme(css)
 @diffProperty('pages', reference)
 export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> {
-	private _rowHeight: number;
-	private _rowsInView: number;
-	private _renderPageSize: number;
+	private _rowHeight!: number;
+	private _rowsInView!: number;
+	private _renderPageSize!: number;
 	private _start = 0;
 	private _end = 100;
 	private _resetScroll = false;

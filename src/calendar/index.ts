@@ -1,8 +1,8 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { v, w } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import commonBundle from '../common/nls/common';
 import { CommonMessages } from '../common/interfaces';
@@ -15,7 +15,7 @@ import Icon from '../icon/index';
 import calendarBundle from './nls/Calendar';
 import * as css from '../theme/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import customElement from '@dojo/framework/widget-core/decorators/customElement';
+import customElement from '@dojo/framework/core/decorators/customElement';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 

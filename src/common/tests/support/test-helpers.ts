@@ -1,13 +1,12 @@
 import {
 	WNode,
-	WidgetBaseInterface,
 	Constructor,
 	MetaBase,
 	WidgetMetaConstructor
-} from '@dojo/framework/widget-core/interfaces';
+} from '@dojo/framework/core/interfaces';
 import { CustomComparator, harness } from '@dojo/framework/testing/harness';
 import { SinonStub } from 'sinon';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 export const noop: any = () => {};
 
@@ -78,10 +77,7 @@ export const compareLabelId = {
 };
 
 export const createHarness = (globalCompares: CustomComparator[]) => {
-	return (
-		renderFunction: () => WNode<WidgetBaseInterface>,
-		compares: CustomComparator[] = []
-	) => {
+	return (renderFunction: () => WNode, compares: CustomComparator[] = []) => {
 		return harness(renderFunction, [...globalCompares, ...compares]);
 	};
 };

@@ -1,10 +1,10 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
+import Focus from '@dojo/framework/core/meta/Focus';
 import { uuid } from '@dojo/framework/core/util';
 import {
 	CustomAriaProperties,
@@ -17,7 +17,7 @@ import {
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
 import * as css from '../theme/slider.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type SliderProperties

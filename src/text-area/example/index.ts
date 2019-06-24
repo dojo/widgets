@@ -1,5 +1,5 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
 import Textarea from '../../text-area/index';
 
 export default class App extends WidgetBase {

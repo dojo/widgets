@@ -53,7 +53,7 @@ By default, all options are formatted in 24-hour standard time (`HHmmss`, or `HH
 
 ```typescript
 import { getDateFormatter } from '@dojo/framework/i18n/date';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 import TimePicker, { TimeUnits } from '@dojo/widgets/time-picker';
 
 const getShorTime = getDateFormatter({ time: 'short' });
@@ -72,7 +72,7 @@ w(TimePicker, {
 ## Example Usage
 
 ```typescript
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 import TimePicker from '@dojo/widgets/time-picker';
 
 // Custom (Non-Native) TimePicker

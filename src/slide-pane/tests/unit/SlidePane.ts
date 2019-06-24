@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 
 import SlidePane, { Align, SlidePaneProperties } from '../../index';
 import * as css from '../../../theme/slide-pane.m.css';
@@ -54,9 +54,9 @@ const closedTemplate = assertionTemplate(() =>
 					],
 					transitionend: noop,
 					styles: {
-						transform: null,
+						transform: undefined,
 						width: '320px',
-						height: null
+						height: undefined
 					}
 				},
 				[
@@ -182,9 +182,9 @@ registerSuite('SlidePane', {
 									],
 									transitionend: noop,
 									styles: {
-										transform: null,
+										transform: undefined,
 										width: '320px',
-										height: null
+										height: undefined
 									}
 								},
 								[
@@ -274,9 +274,9 @@ registerSuite('SlidePane', {
 								],
 								transitionend: noop,
 								styles: {
-									transform: null,
+									transform: undefined,
 									width: '320px',
-									height: null
+									height: undefined
 								}
 							},
 							[
@@ -328,9 +328,9 @@ registerSuite('SlidePane', {
 								],
 								transitionend: noop,
 								styles: {
-									transform: null,
+									transform: undefined,
 									width: '320px',
-									height: null
+									height: undefined
 								}
 							},
 							[
@@ -656,9 +656,9 @@ registerSuite('SlidePane', {
 								],
 								transitionend: noop,
 								styles: {
-									transform: null,
+									transform: undefined,
 									width: '320px',
-									height: null
+									height: undefined
 								}
 							},
 							[
@@ -719,7 +719,7 @@ registerSuite('SlidePane', {
 				openTemplate.setProperty('@content', 'styles', {
 					transform: 'translateX(-46.875%)',
 					width: '320px',
-					height: null
+					height: undefined
 				})
 			);
 
@@ -788,7 +788,7 @@ registerSuite('SlidePane', {
 					.setProperty('@content', 'styles', {
 						transform: 'translateX(31.25%)',
 						width: '320px',
-						height: null
+						height: undefined
 					})
 			);
 

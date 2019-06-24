@@ -1,8 +1,8 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { DNode, RenderResult } from '@dojo/framework/widget-core/interfaces';
-import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
-import { tsx } from '@dojo/framework/widget-core/tsx';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
+import { theme, ThemedMixin } from '@dojo/framework/core/mixins/Themed';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
+import { tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/snackbar.m.css';
 
 export interface SnackbarProperties {

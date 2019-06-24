@@ -1,5 +1,5 @@
-import { w, v } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { w, v } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 import Toolbar from '../../toolbar/index';
 

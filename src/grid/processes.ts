@@ -84,37 +84,39 @@ const preFilterCommand = commandFactory<FilterCommandPayload>(
 	}
 );
 
-const sortCommand = commandFactory<SortCommandPayload>(async ({ at, path, get, payload }) => {
-	const { id, fetcher, columnId, direction } = payload;
-	const page = get(path(id, 'meta', 'page'));
-	if (page === 1) {
-		return sortForFirstPage({ at, get, path, payload });
-	}
-	const pageSize = get(path(id, 'meta', 'pageSize'));
-	const filterOptions = get(path(id, 'meta', 'filter'));
-	let result: FetcherResult[];
-	try {
-		const options = {
-			sort: { columnId, direction },
-			filter: filterOptions
-		};
-		const previousPage = fetcher(page - 1, pageSize, options);
-		const currentPage = fetcher(page, pageSize, options);
-		result = await Promise.all([previousPage, currentPage]);
-	} catch (err) {
-		return [];
-	}
+const sortCommand = commandFactory<SortCommandPayload>(
+	async ({ at, path, get, payload, state }) => {
+		const { id, fetcher, columnId, direction } = payload;
+		const page = get(path(id, 'meta', 'page'));
+		if (page === 1) {
+			return sortForFirstPage({ at, get, path, payload, state });
+		}
+		const pageSize = get(path(id, 'meta', 'pageSize'));
+		const filterOptions = get(path(id, 'meta', 'filter'));
+		let result: FetcherResult[];
+		try {
+			const options = {
+				sort: { columnId, direction },
+				filter: filterOptions
+			};
+			const previousPage = fetcher(page - 1, pageSize, options);
+			const currentPage = fetcher(page, pageSize, options);
+			result = await Promise.all([previousPage, currentPage]);
+		} catch (err) {
+			return [];
+		}
 
-	return [
-		replace(path(id, 'data', 'pages', `page-${page - 1}`), result[0].data),
-		replace(path(id, 'data', 'pages', `page-${page}`), result[1].data),
-		replace(path(id, 'meta', 'sort', 'columnId'), columnId),
-		replace(path(id, 'meta', 'sort', 'direction'), direction),
-		replace(path(id, 'meta', 'total'), result[1].meta.total),
-		replace(path(id, 'meta', 'page'), page),
-		replace(path(id, 'meta', 'isSorting'), false)
-	];
-});
+		return [
+			replace(path(id, 'data', 'pages', `page-${page - 1}`), result[0].data),
+			replace(path(id, 'data', 'pages', `page-${page}`), result[1].data),
+			replace(path(id, 'meta', 'sort', 'columnId'), columnId),
+			replace(path(id, 'meta', 'sort', 'direction'), direction),
+			replace(path(id, 'meta', 'total'), result[1].meta.total),
+			replace(path(id, 'meta', 'page'), page),
+			replace(path(id, 'meta', 'isSorting'), false)
+		];
+	}
+);
 
 const sortForFirstPage = commandFactory<SortCommandPayload>(
 	async ({ at, path, get, payload: { id, fetcher, columnId, direction } }) => {

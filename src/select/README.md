@@ -42,7 +42,7 @@ Option text is handled through the `getOptionLabel` property. Localization is ha
 *Wrapped Native Select*
 ```typescript
 import Select from '@dojo/widgets/select';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 interface OptionData {
 	disabled: boolean;
@@ -70,7 +70,7 @@ w(Select, {
 *Custom select using default option calculations*
 ```typescript
 import Select from '@dojo/widgets/select';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 const options = ['foo', 'bar', 'baz'];
 let value: string;
@@ -88,7 +88,7 @@ w(Select, {
 *Custom select with formatted option text and placeholder*
 ```typescript
 import Select from '@dojo/widgets/select';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 const options = ['foo', 'bar', 'baz'];
 let value: string;

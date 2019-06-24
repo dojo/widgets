@@ -8,7 +8,7 @@ Dojo's `Icon` widget renders an icon.
 *Basic Example*
 ```typescript
 import Icon from '@dojo/widgets/icon';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(Icon, { type: 'downIcon', });
 ```
@@ -20,7 +20,7 @@ text for screen readers can be provided via the `altText` property.
 *Custom aria attributes Example*
 ```typescript
 import Icon from '@dojo/widgets/icon';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(Icon, {
 	type: 'downIcon',
@@ -35,7 +35,7 @@ w(Icon, {
 *Example with altText*
 ```typescript
 import Icon from '@dojo/widgets/icon';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(Icon, {
 	type: 'downIcon',

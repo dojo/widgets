@@ -1,15 +1,15 @@
 import { uuid } from '@dojo/framework/core/util';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
 import * as css from '../theme/title-pane.m.css';
-import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 import GlobalEvent from '../global-event/index';
 
 /**

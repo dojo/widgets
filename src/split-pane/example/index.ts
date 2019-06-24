@@ -1,8 +1,8 @@
 import { deepAssign } from '@dojo/framework/core/util';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
 import SplitPane, { Direction } from '../../split-pane/index';
 import GlobalEvent from '../../global-event/index';
 

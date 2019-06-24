@@ -1,14 +1,14 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import renderer from '@dojo/framework/widget-core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import renderer from '@dojo/framework/core/vdom';
 import Select from '../../select/index';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { watch } from '@dojo/framework/widget-core/decorators/watch';
+import { v, w } from '@dojo/framework/core/vdom';
+import { watch } from '@dojo/framework/core/decorators/watch';
 import Outlet from '@dojo/framework/routing/Outlet';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
-import Registry from '@dojo/framework/widget-core/Registry';
+import Registry from '@dojo/framework/core/Registry';
 import Router from '@dojo/framework/routing/Router';
 import dojoTheme from '../../../node_modules/@dojo/themes/dojo/index';
-import { registerThemeInjector } from '@dojo/framework/widget-core/mixins/Themed';
+import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
 import Radio from '../../radio/index';
 
 const modules = [

@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 
-import { Dimensions } from '@dojo/framework/widget-core/meta/Dimensions';
-import { v, w, isWNode } from '@dojo/framework/widget-core/d';
+import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
+import { v, w, isWNode } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 import { stub } from 'sinon';
 

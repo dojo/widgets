@@ -1,10 +1,10 @@
 import { uuid } from '@dojo/framework/core/util';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
-import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
+import Dimensions from '@dojo/framework/core/meta/Dimensions';
+import Focus from '@dojo/framework/core/meta/Focus';
+import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import {
 	CustomAriaProperties,
 	InputProperties,
@@ -17,7 +17,7 @@ import Label from '../label/index';
 import * as fixedCss from './styles/range-slider.m.css';
 import * as css from '../theme/range-slider.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 export interface RangeSliderProperties
 	extends ThemedProperties,

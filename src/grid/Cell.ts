@@ -1,8 +1,8 @@
-import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
+import { DNode } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import { Keys } from '../common/util';
 import TextInput from '../text-input/index';
@@ -23,7 +23,7 @@ export interface CellProperties extends FocusProperties {
 export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProperties> {
 	private _editing = false;
 	private _editingValue = '';
-	private _focusKey: string;
+	private _focusKey!: string;
 	private _idBase = uuid();
 
 	private _callFocus(key: string) {

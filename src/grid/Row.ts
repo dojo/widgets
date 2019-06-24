@@ -1,7 +1,7 @@
-import WidgetBase from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import ThemedMixin, { theme } from '@dojo/framework/widget-core/mixins/Themed';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
+import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 
 import { ColumnConfig } from './interfaces';
 import Cell from './Cell';

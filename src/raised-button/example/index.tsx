@@ -1,7 +1,7 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { tsx } from '@dojo/framework/widget-core/tsx';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { tsx } from '@dojo/framework/core/vdom';
 import RaisedButton from '../../raised-button/index';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { DNode } from '@dojo/framework/core/interfaces';
 
 export default class App extends WidgetBase {
 	private _buttonPressed: boolean | undefined;
