@@ -23,7 +23,7 @@ If the `label` property is not used, we recommend creating a separate `label` an
 // Normal usage
 w(Checkbox, {
 	label: 'Sign up for updates',
-	name: 'update-checkbox'
+	name: 'update-checkbox',
 	checked: this.state.checked,
 	value: 'updates',
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ w(Checkbox, {
 // Toggle mode with description
 w(Checkbox, {
 	checked: this.state.musicChecked,
-	describedBy: 'instructions',
+	aria: { describedBy: 'instructions' },
 	label: 'Play music',
 	mode: Mode.toggle,
 	name: 'music',
