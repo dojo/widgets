@@ -20,7 +20,15 @@ import { reference } from '@dojo/framework/core/diff';
 import InputValidity from '../common/InputValidity';
 import HelperText from '../helper-text/index';
 
-export type TextInputType = 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
+export type TextInputType =
+	| 'text'
+	| 'email'
+	| 'number'
+	| 'password'
+	| 'search'
+	| 'tel'
+	| 'url'
+	| 'date';
 
 interface TextInputInternalState {
 	previousValue?: string;
