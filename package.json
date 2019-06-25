@@ -21,6 +21,7 @@
     "prepublish": "grunt peerDepInstall",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "test": "grunt test",
+    "test:functional": "grunt intern:headless --test-reporter",
     "build-custom-elements": "shx rm -rf output && dojo build widget",
     "dist-custom-elements": "npm run build-custom-elements && shx rm -rf dist/all/dist && shx cp -r output/dist dist/all/"
   },
