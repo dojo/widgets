@@ -31,11 +31,11 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "6.0.0-alpha.4"
+    "@dojo/framework": "6.0.0-alpha.7"
   },
   "devDependencies": {
     "@dojo/cli": "^5.0.0",
-    "@dojo/cli-build-widget": "^5.0.0",
+    "@dojo/cli-build-widget": "6.0.0-alpha.1",
     "@dojo/loader": "^2.0.0",
     "@dojo/themes": "^5.0.1",
     "@theintern/a11y": "~0.2.0",
