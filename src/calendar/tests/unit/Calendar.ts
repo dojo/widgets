@@ -667,7 +667,7 @@ let dateIndex = 28;
 const baseMinMaxTemplate = baseTemplate
 	.setProperty('@date-picker', 'minDate', minDateInMonth)
 	.setProperty('@date-picker', 'maxDate', maxDateInMonth)
-	.replace('tbody tr:first-child', [
+	.replaceChildren('tbody tr:first-child', () => [
 		expectedDateCell(0, 28, false, true),
 		expectedDateCell(1, 29, false, true),
 		expectedDateCell(2, 30, false, true),
@@ -678,7 +678,7 @@ const baseMinMaxTemplate = baseTemplate
 	])
 	.setProperty('@date-4', 'focusable', false)
 	.setProperty('@date-6', 'focusable', true)
-	.replace('tbody tr:nth-child(5)', [
+	.replaceChildren('tbody tr:nth-child(5)', () => [
 		expectedDateCell(dateIndex++, 25, true, false),
 		expectedDateCell(dateIndex++, 26, true, false),
 		expectedDateCell(dateIndex++, 27, true, false),
@@ -687,7 +687,7 @@ const baseMinMaxTemplate = baseTemplate
 		expectedDateCell(dateIndex++, 30, true, true),
 		expectedDateCell(dateIndex++, 1, false, true)
 	])
-	.replace('tbody tr:last-child', [
+	.replaceChildren('tbody tr:last-child', () => [
 		expectedDateCell(dateIndex++, 2, false, true),
 		expectedDateCell(dateIndex++, 3, false, true),
 		expectedDateCell(dateIndex++, 4, false, true),
@@ -773,7 +773,7 @@ registerSuite('Calendar with min-max', {
 				baseTemplate
 					.setProperty('@date-picker', 'maxDate', maxDate)
 					.setProperty('@date-4', 'focusable', false)
-					.replace('tbody tr:nth-child(5)', [
+					.replaceChildren('tbody tr:nth-child(5)', () => [
 						expectedDateCell(dateIndex++, 25, true, true),
 						expectedDateCell(dateIndex++, 26, true, true),
 						expectedDateCell(dateIndex++, 27, true, true),
@@ -782,7 +782,7 @@ registerSuite('Calendar with min-max', {
 						expectedDateCell(dateIndex++, 30, true, true),
 						expectedDateCell(dateIndex++, 1, false, true)
 					])
-					.replace('tbody tr:last-child', [
+					.replaceChildren('tbody tr:last-child', () => [
 						expectedDateCell(dateIndex++, 2, false, true),
 						expectedDateCell(dateIndex++, 3, false, true),
 						expectedDateCell(dateIndex++, 4, false, true),

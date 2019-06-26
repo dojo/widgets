@@ -36,7 +36,12 @@ export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
 				])}
 			>
 				<div key="content" classes={this.theme(css.content)}>
-					<div key="label" classes={this.theme(css.label)} role="status" aria-live="polite">
+					<div
+						key="label"
+						classes={this.theme(css.label)}
+						role="status"
+						aria-live="polite"
+					>
 						{message}
 					</div>
 					{actionsRenderer && (
