@@ -20,7 +20,7 @@ const DELAY = 400;
 
 function openDialog(remote: Remote, { closeable = true, modal, underlay }: Options = {}) {
 	let promise = remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#dialog`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#dialog`)
 		.setFindTimeout(5000);
 
 	if (!closeable) {

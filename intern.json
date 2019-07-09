@@ -19,7 +19,7 @@
 
 	"browser": {
 		"loader": {
-			"script": "./node_modules/grunt-dojo2/lib/intern/internLoader.js",
+			"script": "./node_modules/@dojo/scripts/intern/loader.js",
 			"options": {
 				"packages": [
 					{ "name": "src", "location": "_build" }
