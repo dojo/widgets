@@ -1,9 +1,10 @@
 {
 	"build-widget": {
-		"elements": [
+		"widgets": [
 			"src/accordion-pane",
 			"src/button",
 			"src/calendar",
+			"src/card",
 			"src/checkbox",
 			"src/combobox",
 			"src/dialog",
@@ -11,11 +12,15 @@
 			"src/grid",
 			"src/label",
 			"src/listbox",
+			"src/outlined-button",
 			"src/progress",
 			"src/radio",
+			"src/raised-button",
+			"src/range-slider",
 			"src/select",
 			"src/slide-pane",
 			"src/slider",
+			"src/snackbar",
 			"src/split-pane",
 			"src/tab",
 			"src/tab-controller",
