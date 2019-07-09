@@ -19,7 +19,7 @@
   "scripts": {
     "examples": "serve",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "copy:test": "cpx \"src/**/*.{html,png,jpg,gif,json,xml,css,txt,d.ts}\" dist/dev/src",
+    "copy:test": "cpx \"src/**/*.{html}\" dist/dev/src",
     "dojo-package": "dojo-package",
     "dojo-release": "dojo-release",
     "version:update": "shx cp package.json package.json.bk && node scripts/version",
