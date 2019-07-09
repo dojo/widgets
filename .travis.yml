@@ -18,11 +18,8 @@ install:
 - travis_retry npm install grunt-cli
 - travis_retry npm install
 script:
-- grunt
-- grunt intern:headless --test-reporter
-- grunt uploadCoverage
-- grunt dist
-- grunt doc
+- npm run build
+- npm run test:functional
 notifications:
   slack:
     secure: PqGYaEK7YF0ZbGJzKCYiyE5bK1qDz8SDMUeo5xisAkDIhUADdbgCnV+nF5DeHnY2cekkhwtmAqwvsgVvHvi44o89I1di5hTJCpwtlizfC/gWXZ3/CbkLebeTOVwbElKqRdx8E2iF/SnGH7ObSISDebGmFp/dYXVb6Jlbnx/qzTeesH2PqF2hmFNmBkaLjkkENqSFaPqpS9PJQdFrlxMSgC8Ff8Jy6h2G8IxUS7yofryZauoJY0JyYVhMm/IqY+O6QnzMNz/n1pYLnJPvmKBSd5jv/SC6LDxTpt37CwHiPF7HBEG/bUO6T+S+gUig+3WP+PCnE5u8iAQfKAFM4lx8XdlWYihI0F4RlBatY8d/05lqUU6yMfen6GUz8xOq00Hzcdh1hO7eApRWqWbdD1jFIUdR8Gy5h5AqkWsz2IvtpA9UJQfscYnfKBEN6goAbKyKG6wjcoyuq3EycR0PmH8BJQCL/EEg6f1QWoele9PToSbwfbI9QWYb0T1qyj8/FuGM+KZVXoJUDfIbu5H+UBYWuT/vSisKSFEVDX+syciHcvmfYN0l5U6miok6MwWgwaIPHEg/BO32iMa99Kqu1BE2TIBub88NS19iwwZq9Ersv6Z/DjJjzgfTKjzFUz7byRy6e8/ZKW2KEE8KBR3HmvgCAXeo+e8tEIP67socX0eU5pM=
