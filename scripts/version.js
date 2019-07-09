@@ -15,6 +15,3 @@ if (!version) {
 const packageJson = require('../package.json');
 packageJson.version = version;
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2), 'utf8');
-console.log(packageJson.version);
-
-
