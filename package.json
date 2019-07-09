@@ -34,7 +34,7 @@
     "build:lib:legacy": "dojo build widget -t lib -l && shx cp -r output/dist dist/umd/src && shx cp -r output/dist dist/dev/src",
     "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce && dojo-package",
     "clean": "shx rm -rf dist && shx mkdir dist && shx mkdir dist/umd && shx mkdir dist/esm && shx mkdir dist/dev",
-    "release": "run-s \"version:update -- {@}\" version:reset \"dojo-release -- {@}\" --",
+    "release": "run-s \"version:update -- {@}\" build version:reset \"dojo-release -- {@}\" --",
     "dist-custom-elements": "npm run build-custom-elements && shx rm -rf dist/all/dist && shx cp -r output/dist dist/all/"
   },
   "husky": {
