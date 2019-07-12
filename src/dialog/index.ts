@@ -13,7 +13,6 @@ import Icon from '../icon/index';
 import * as fixedCss from './styles/dialog.m.css';
 import * as css from '../theme/dialog.m.css';
 import { GlobalEvent } from '../global-event/index';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * The role of this dialog, used for accessibility
@@ -56,25 +55,6 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 }
 
 @theme(css)
-@customElement<DialogProperties>({
-	tag: 'dojo-dialog',
-	properties: [
-		'theme',
-		'aria',
-		'extraClasses',
-		'exitAnimation',
-		'enterAnimation',
-		'underlayEnterAnimation',
-		'underlayExitAnimation',
-		'closeable',
-		'modal',
-		'open',
-		'underlay',
-		'classes'
-	],
-	attributes: ['title', 'role', 'closeText'],
-	events: ['onOpen', 'onRequestClose']
-})
 export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties> {
 	private _titleId = uuid();
 	private _wasOpen: boolean | undefined;

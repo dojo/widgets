@@ -11,25 +11,7 @@ export interface RaisedButtonProperties extends ButtonProperties {}
 
 @theme(css)
 @customElement<RaisedButtonProperties>({
-	tag: 'dojo-raised-button',
-	childType: CustomElementChildType.TEXT,
-	properties: ['disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes'],
-	attributes: ['widgetId', 'name', 'type', 'value'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
+	childType: CustomElementChildType.TEXT
 })
 export class RaisedButton extends ThemedMixin(WidgetBase)<RaisedButtonProperties> {
 	protected render(): DNode {

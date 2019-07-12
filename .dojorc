@@ -1,9 +1,11 @@
 {
 	"build-widget": {
-		"elements": [
+		"prefix": "dojo",
+		"widgets": [
 			"src/accordion-pane",
 			"src/button",
 			"src/calendar",
+			"src/card",
 			"src/checkbox",
 			"src/combobox",
 			"src/dialog",

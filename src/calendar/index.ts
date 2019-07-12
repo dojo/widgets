@@ -15,7 +15,6 @@ import Icon from '../icon/index';
 import calendarBundle from './nls/Calendar';
 import * as css from '../theme/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import customElement from '@dojo/framework/core/decorators/customElement';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 
@@ -85,23 +84,6 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 ];
 
 @theme(css)
-@customElement<CalendarProperties>({
-	tag: 'dojo-calendar',
-	properties: [
-		'aria',
-		'classes',
-		'selectedDate',
-		'month',
-		'year',
-		'renderMonthLabel',
-		'renderWeekdayCell',
-		'labels',
-		'monthNames',
-		'weekdayNames',
-		'theme'
-	],
-	events: ['onDateSelect', 'onMonthChange', 'onYearChange']
-})
 export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarProperties> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();

@@ -15,7 +15,6 @@ import * as css from '../theme/listbox.m.css';
 import ListboxOption from './ListboxOption';
 import { Focus } from '@dojo/framework/core/meta/Focus';
 import Resize from '@dojo/framework/core/meta/Resize';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /* Default scroll meta */
 export class ScrollMeta extends MetaBase {
@@ -65,24 +64,6 @@ export interface ListboxProperties extends ThemedProperties, FocusProperties, Cu
 
 @theme(css)
 @diffProperty('optionData', reference)
-@customElement<ListboxProperties>({
-	tag: 'dojo-listbox',
-	properties: [
-		'theme',
-		'classes',
-		'activeIndex',
-		'multiselect',
-		'tabIndex',
-		'visualFocus',
-		'optionData',
-		'getOptionDisabled',
-		'getOptionId',
-		'getOptionLabel',
-		'getOptionSelected'
-	],
-	attributes: ['widgetId'],
-	events: ['onActiveIndexChange', 'onKeyDown', 'onOptionSelect']
-})
 export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperties> {
 	private _boundRenderOption = this.renderOption.bind(this);
 	private _idBase = uuid();

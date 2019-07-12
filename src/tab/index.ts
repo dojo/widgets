@@ -33,11 +33,7 @@ export interface TabProperties extends ThemedProperties, CustomAriaProperties {
 
 @theme(css)
 @customElement<TabProperties>({
-	tag: 'dojo-tab',
-	childType: CustomElementChildType.NODE,
-	properties: ['theme', 'classes', 'aria', 'extraClasses', 'closeable', 'disabled', 'show'],
-	attributes: ['key', 'labelledBy', 'widgetId', 'label'],
-	events: []
+	childType: CustomElementChildType.NODE
 })
 export class Tab extends ThemedMixin(WidgetBase)<TabProperties> {
 	render(): DNode {

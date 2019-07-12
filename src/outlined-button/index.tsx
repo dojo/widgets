@@ -11,25 +11,7 @@ export interface OutlinedButtonProperties extends ButtonProperties {}
 
 @theme(css)
 @customElement<OutlinedButtonProperties>({
-	tag: 'dojo-outlined-button',
-	childType: CustomElementChildType.TEXT,
-	properties: ['disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes'],
-	attributes: ['widgetId', 'name', 'type', 'value'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
+	childType: CustomElementChildType.TEXT
 })
 export class OutlinedButton extends ThemedMixin(WidgetBase)<OutlinedButtonProperties> {
 	protected render(): DNode {

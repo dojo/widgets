@@ -9,7 +9,6 @@ import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
 import * as css from '../theme/title-pane.m.css';
 import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import GlobalEvent from '../global-event/index';
 
 /**
@@ -34,12 +33,6 @@ export interface TitlePaneProperties extends ThemedProperties, FocusProperties {
 }
 
 @theme(css)
-@customElement<TitlePaneProperties>({
-	tag: 'dojo-title-pane',
-	properties: ['theme', 'classes', 'extraClasses', 'open', 'closeable', 'headingLevel'],
-	attributes: ['title', 'key'],
-	events: ['onRequestClose', 'onRequestOpen']
-})
 export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProperties> {
 	private _id = uuid();
 	private _open: boolean | undefined;

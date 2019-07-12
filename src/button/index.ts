@@ -49,25 +49,7 @@ export interface ButtonProperties
 
 @theme(css)
 @customElement<ButtonProperties>({
-	tag: 'dojo-button',
-	childType: CustomElementChildType.TEXT,
-	properties: ['disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes'],
-	attributes: ['widgetId', 'name', 'type', 'value'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
+	childType: CustomElementChildType.TEXT
 })
 export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties> {
 	private _onBlur(event: FocusEvent) {
