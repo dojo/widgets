@@ -22,7 +22,7 @@
 			"script": "./node_modules/@dojo/scripts/intern/loader.js",
 			"options": {
 				"packages": [
-					{ "name": "src", "location": "_build" }
+					{ "name": "src", "location": "dist/dev/src" }
 				]
 			}
 		}
