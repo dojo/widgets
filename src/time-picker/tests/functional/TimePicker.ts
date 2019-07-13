@@ -16,7 +16,7 @@ const DELAY = 1000;
 
 function getPage(remote: Remote, exampleId: string) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#time-picker`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#time-picker`)
 		.setFindTimeout(5000)
 		.findById(exampleId);
 }

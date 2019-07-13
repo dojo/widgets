@@ -22,7 +22,7 @@ function getPage(test: Test): Command<void> {
 		test.skip('Tests do not run in these browsers.');
 	}
 	return test.remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#split-pane`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#split-pane`)
 		.setFindTimeout(5000);
 }
 

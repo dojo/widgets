@@ -13,7 +13,7 @@ const DELAY = 400;
 
 function openSlidePane(remote: Remote, alignRight?: boolean) {
 	let promise = remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#slide-pane`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#slide-pane`)
 		.setFindTimeout(5000)
 		.findById('underlay')
 		.click()

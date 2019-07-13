@@ -21,7 +21,7 @@ function firstDayCssSelector(firstDayOfMonth = firstDay) {
 
 function openMonthPicker(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#calendar`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#calendar`)
 		.setFindTimeout(5000)
 		.findByClassName(css.monthTrigger)
 		.click()
@@ -31,7 +31,7 @@ function openMonthPicker(remote: Remote) {
 
 function openYearPicker(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#calendar`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#calendar`)
 		.setFindTimeout(5000)
 		.findByClassName(css.yearTrigger)
 		.click()
@@ -41,7 +41,7 @@ function openYearPicker(remote: Remote) {
 
 function clickDate(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#calendar`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#calendar`)
 		.setFindTimeout(5000)
 		.findByCssSelector(firstDayCssSelector())
 		.click()

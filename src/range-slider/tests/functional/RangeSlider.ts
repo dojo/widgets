@@ -17,7 +17,7 @@ function getPage(test: Test) {
 	}
 	const remote: Remote = test.remote;
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#range-slider`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#range-slider`)
 		.setFindTimeout(5000);
 }
 

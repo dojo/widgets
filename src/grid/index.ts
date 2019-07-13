@@ -8,6 +8,7 @@ import { reference } from '@dojo/framework/core/diff';
 import { Store } from '@dojo/framework/stores/Store';
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import Resize from '@dojo/framework/core/meta/Resize';
+import './utils';
 
 import { Fetcher, ColumnConfig, GridState, Updater } from './interfaces';
 import {

@@ -19,7 +19,7 @@
 		"noUnusedLocals": true,
 		"importHelpers": true,
 		"downlevelIteration": true,
-		"outDir": "_build/",
+		"outDir": "dist/dev/src/",
 		"plugins": [
 			{
 				"name": "tslint-language-service",

@@ -10,19 +10,19 @@
 	],
 
 	"suites": [
-		"./_build/common/tests/unit/all.js"
+		"./dist/dev/src/common/tests/unit/all.js"
 	],
 
 	"functionalSuites": [
-		"./_build/common/tests/functional/all.js"
+		"./dist/dev/src/common/tests/functional/all.js"
 	],
 
 	"browser": {
 		"loader": {
-			"script": "./node_modules/grunt-dojo2/lib/intern/internLoader.js",
+			"script": "./node_modules/@dojo/scripts/intern/loader.js",
 			"options": {
 				"packages": [
-					{ "name": "src", "location": "_build" }
+					{ "name": "src", "location": "dist/dev/src" }
 				]
 			}
 		}
@@ -30,22 +30,22 @@
 
 	"node": {
 		"plugins": [
-			"_build/common/tests/node-css-plugin.js",
+			"./dist/dev/src/common/tests/node-css-plugin.js",
 			{
-				"script": "./_build/common/tests/loadJsdom.js",
+				"script": "./dist/dev/src/common/tests/loadJsdom.js",
 				"useLoader": true
 			}
 		]
 	},
 
 	"coverage": [
-		"./_build/**/*.js",
-		"!./_build/**/tests/**/*",
-		"!./_build/**/styles/**/*",
-		"!./_build/**/theme/**/*",
-		"!./_build/**/themes/**/*",
-		"!./_build/**/example/**/*",
-		"!./_build/**/*Element.js"
+		"./dist/dev/src/**/*.js",
+		"!./dist/dev/src/**/tests/**/*",
+		"!./dist/dev/src/**/styles/**/*",
+		"!./dist/dev/src/**/theme/**/*",
+		"!./dist/dev/src/**/themes/**/*",
+		"!./dist/dev/src/**/example/**/*",
+		"!./dist/dev/src/**/*Element.js"
 	],
 
 	"configs": {
