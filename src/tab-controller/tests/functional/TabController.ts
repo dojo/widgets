@@ -7,6 +7,7 @@ import * as css from '../../../theme/tab-controller.m.css';
 import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
+const DELAY = 1000;
 
 function getPage(remote: Remote) {
 	return remote
@@ -27,9 +28,9 @@ registerSuite('TabController', {
 	},
 	'tabs should be changable'() {
 		return getPage(this.remote)
-			.findByCssSelector(`.${css.root}`)
-			.findByCssSelector(`.${css.tabButton}:last-child`)
-			.getProperty('className')
+			.find('css selector', `.${css.root}`)
+			.find('css selector', `.${css.tabButton}:last-child`)
+			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(
 					className,
@@ -39,8 +40,9 @@ registerSuite('TabController', {
 			})
 			.click()
 			.end()
+			.sleep(DELAY)
 			.findByCssSelector(`.${css.tabButton}:last-child`)
-			.getProperty('className')
+			.getAttribute('class')
 			.then((className: string) => {
 				assert.include(
 					className,

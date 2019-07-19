@@ -111,6 +111,7 @@ registerSuite('Textarea', {
 
 		const validText = 'exists';
 		const backspaces = [];
+		const space = keys.SPACE;
 		for (let i = 0; i < validText.length; i++) {
 			backspaces.push(keys.BACKSPACE);
 		}
@@ -146,15 +147,19 @@ registerSuite('Textarea', {
 				.end()
 				.end()
 				// focus another input
-				.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
+				.find('css selector', `#example-t3 .${css.root} .${css.input}`)
 				.click()
+				.type(space)
 				.end()
 				.sleep(500)
-				.findByCssSelector(`#example-t3 .${css.root}`)
-				.getProperty('className')
+				.find('css selector', `#example-t3 .${css.root}`)
+				.getAttribute('class')
 				.then((className: string) => {
-					assert.notInclude(className, css.valid);
-					assert.include(className, css.invalid);
+					assert.include(
+						className,
+						css.invalid,
+						'The third text area should be invalid until a user types'
+					);
 				})
 				.end()
 		);

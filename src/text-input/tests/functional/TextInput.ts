@@ -8,6 +8,7 @@ import * as baseCss from '../../../common/styles/base.m.css';
 import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
+const DELAY = 1000;
 
 function getPage(remote: Remote) {
 	return remote
@@ -110,27 +111,27 @@ registerSuite('TextInput', {
 		const invalidText = 'foobar';
 
 		return getPage(this.remote)
-			.findByCssSelector(`#example-validated .${css.root}`)
-			.getProperty('className')
+			.find('css selector', `#example-validated .${css.root}`)
+			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(className, css.invalid);
 				assert.notInclude(className, css.valid);
 			})
-			.findByCssSelector(`.${css.input}`)
+			.find('css selector', `.${css.input}`)
 			.click()
 			.type(validText)
 			.end()
-			.sleep(10)
-			.getProperty('className')
+			.sleep(DELAY)
+			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(className, css.invalid);
 				assert.include(className, css.valid);
 			})
-			.findByCssSelector(`.${css.input}`)
+			.find('css selector', `.${css.input}`)
 			.type(invalidText)
 			.end()
-			.sleep(10)
-			.getProperty('className')
+			.sleep(DELAY)
+			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(className, css.valid);
 				assert.include(className, css.invalid);

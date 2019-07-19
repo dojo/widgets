@@ -45,7 +45,7 @@ export default class App extends WidgetBase {
 					required: true,
 					value: this._value2,
 					invalid: this._invalid,
-					onChange: (value: string) => {
+					onInput: (value: string) => {
 						this._value2 = value;
 						this._invalid = value.trim().length === 0;
 						this.invalidate();
