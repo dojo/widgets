@@ -6,9 +6,11 @@ import { services } from '@theintern/a11y';
 import * as css from '../../../theme/text-input.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import { uuid } from '@dojo/framework/core/util';
+import pollUntilTruthy from '@theintern/leadfoot/helpers/pollUntilTruthy';
 
 const axe = services.axe;
-const DELAY = 1000;
+const CLICK_WAIT_TIMEOUT = 1000;
+const POLL_INTERVAL = 20;
 
 function getPage(remote: Remote) {
 	return remote
@@ -121,22 +123,36 @@ registerSuite('TextInput', {
 			.click()
 			.type(validText)
 			.end()
-			.sleep(DELAY)
-			.getAttribute('class')
-			.then((className: string) => {
-				assert.notInclude(className, css.invalid);
-				assert.include(className, css.valid);
-			})
-			.find('css selector', `.${css.input}`)
-			.type(invalidText)
 			.end()
-			.sleep(DELAY)
-			.getAttribute('class')
-			.then((className: string) => {
-				assert.notInclude(className, css.valid);
-				assert.include(className, css.invalid);
+			.then(
+				pollUntilTruthy(
+					function(validClass) {
+						return !!document.querySelector(`#example-validated .${validClass}`);
+					},
+					[css.valid],
+					CLICK_WAIT_TIMEOUT,
+					POLL_INTERVAL
+				)
+			)
+			.then((isEqual) => {
+				assert.isTrue(isEqual);
 			})
-			.end();
+			.find('css selector', `#example-validated .${css.root} .${css.input}`)
+			.click()
+			.type(invalidText)
+			.then(
+				pollUntilTruthy(
+					function(invalidClass) {
+						return !!document.querySelector(`#example-validated .${invalidClass}`);
+					},
+					[css.invalid],
+					CLICK_WAIT_TIMEOUT,
+					POLL_INTERVAL
+				)
+			)
+			.then((isEqual) => {
+				assert.isTrue(isEqual);
+			});
 	},
 
 	'check accessibility'() {
