@@ -6,11 +6,8 @@ import { services } from '@theintern/a11y';
 import * as css from '../../../theme/text-input.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import { uuid } from '@dojo/framework/core/util';
-import pollUntilTruthy from '@theintern/leadfoot/helpers/pollUntilTruthy';
 
 const axe = services.axe;
-const CLICK_WAIT_TIMEOUT = 1000;
-const POLL_INTERVAL = 20;
 
 function getPage(remote: Remote) {
 	return remote
@@ -120,39 +117,16 @@ registerSuite('TextInput', {
 				assert.notInclude(className, css.valid);
 			})
 			.findByCssSelector(`.${css.input}`)
-			.click()
 			.type(validText)
 			.end()
 			.end()
-			.then(
-				pollUntilTruthy(
-					function(validClass) {
-						return !!document.querySelector(`#example-validated .${validClass}`);
-					},
-					[css.valid],
-					CLICK_WAIT_TIMEOUT,
-					POLL_INTERVAL
-				)
-			)
-			.then((isEqual) => {
-				assert.isTrue(isEqual);
-			})
-			.findByCssSelector(`#example-validated .${css.root} .${css.input}`)
-			.click()
+			.findByCssSelector(`#example-validated .${css.valid}`)
+			.findByCssSelector(`.${css.input}`)
 			.type(invalidText)
-			.then(
-				pollUntilTruthy(
-					function(invalidClass) {
-						return !!document.querySelector(`#example-validated .${invalidClass}`);
-					},
-					[css.invalid],
-					CLICK_WAIT_TIMEOUT,
-					POLL_INTERVAL
-				)
-			)
-			.then((isEqual) => {
-				assert.isTrue(isEqual);
-			});
+			.end()
+			.end()
+			.findByCssSelector(`#example-validated .${css.invalid}`)
+			.end();
 	},
 
 	'check accessibility'() {
