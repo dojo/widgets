@@ -5,9 +5,11 @@ import { Remote } from 'intern/lib/executors/Node';
 import { services } from '@theintern/a11y';
 import * as css from '../../../theme/tab-controller.m.css';
 import { uuid } from '@dojo/framework/core/util';
+import pollUntilTruthy from '@theintern/leadfoot/helpers/pollUntilTruthy';
 
 const axe = services.axe;
-const DELAY = 1000;
+const CLICK_WAIT_TIMEOUT = 1000;
+const POLL_INTERVAL = 20;
 
 function getPage(remote: Remote) {
 	return remote
@@ -40,15 +42,21 @@ registerSuite('TabController', {
 			})
 			.click()
 			.end()
-			.sleep(DELAY)
-			.findByCssSelector(`.${css.tabButton}:last-child`)
-			.getAttribute('class')
-			.then((className: string) => {
-				assert.include(
-					className,
-					css.activeTabButton,
-					'The last tab should be selected after being clicked.'
-				);
+			.then(
+				pollUntilTruthy(
+					function(rootClass, activeTabButtonClass) {
+						const activeTab = document.querySelector(
+							`.${rootClass} .${activeTabButtonClass}`
+						);
+						return document.activeElement === activeTab;
+					},
+					[css.root, css.activeTabButton],
+					CLICK_WAIT_TIMEOUT,
+					POLL_INTERVAL
+				)
+			)
+			.then((isEqual) => {
+				assert.isTrue(isEqual);
 			})
 			.end()
 			.end();
