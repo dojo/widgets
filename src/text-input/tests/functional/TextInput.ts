@@ -111,30 +111,21 @@ registerSuite('TextInput', {
 
 		return getPage(this.remote)
 			.findByCssSelector(`#example-validated .${css.root}`)
-			.getProperty('className')
+			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(className, css.invalid);
 				assert.notInclude(className, css.valid);
 			})
 			.findByCssSelector(`.${css.input}`)
-			.click()
 			.type(validText)
 			.end()
-			.sleep(10)
-			.getProperty('className')
-			.then((className: string) => {
-				assert.notInclude(className, css.invalid);
-				assert.include(className, css.valid);
-			})
+			.end()
+			.findByCssSelector(`#example-validated .${css.valid}`)
 			.findByCssSelector(`.${css.input}`)
 			.type(invalidText)
 			.end()
-			.sleep(10)
-			.getProperty('className')
-			.then((className: string) => {
-				assert.notInclude(className, css.valid);
-				assert.include(className, css.invalid);
-			})
+			.end()
+			.findByCssSelector(`#example-validated .${css.invalid}`)
 			.end();
 	},
 
