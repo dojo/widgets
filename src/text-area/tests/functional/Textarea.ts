@@ -111,7 +111,6 @@ registerSuite('Textarea', {
 
 		const validText = 'exists';
 		const backspaces = [];
-		const space = keys.SPACE;
 		for (let i = 0; i < validText.length; i++) {
 			backspaces.push(keys.BACKSPACE);
 		}
@@ -149,7 +148,7 @@ registerSuite('Textarea', {
 				// focus another input
 				.findByCssSelector(`#example-t3 .${css.root} .${css.input}`)
 				.click()
-				.type(space)
+				.type(keys.SPACE)
 				.end()
 				.sleep(500)
 				.findByCssSelector(`#example-t3 .${css.root}`)
