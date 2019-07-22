@@ -30,8 +30,8 @@ registerSuite('TabController', {
 	},
 	'tabs should be changable'() {
 		return getPage(this.remote)
-			.find('css selector', `.${css.root}`)
-			.find('css selector', `.${css.tabButton}:last-child`)
+			.findByCssSelector(`.${css.root}`)
+			.findByCssSelector(`.${css.tabButton}:last-child`)
 			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(

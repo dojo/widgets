@@ -113,13 +113,13 @@ registerSuite('TextInput', {
 		const invalidText = 'foobar';
 
 		return getPage(this.remote)
-			.find('css selector', `#example-validated .${css.root}`)
+			.findByCssSelector(`#example-validated .${css.root}`)
 			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(className, css.invalid);
 				assert.notInclude(className, css.valid);
 			})
-			.find('css selector', `.${css.input}`)
+			.findByCssSelector(`.${css.input}`)
 			.click()
 			.type(validText)
 			.end()
@@ -137,7 +137,7 @@ registerSuite('TextInput', {
 			.then((isEqual) => {
 				assert.isTrue(isEqual);
 			})
-			.find('css selector', `#example-validated .${css.root} .${css.input}`)
+			.findByCssSelector(`#example-validated .${css.root} .${css.input}`)
 			.click()
 			.type(invalidText)
 			.then(

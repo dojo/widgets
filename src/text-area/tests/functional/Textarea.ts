@@ -147,12 +147,12 @@ registerSuite('Textarea', {
 				.end()
 				.end()
 				// focus another input
-				.find('css selector', `#example-t3 .${css.root} .${css.input}`)
+				.findByCssSelector(`#example-t3 .${css.root} .${css.input}`)
 				.click()
 				.type(space)
 				.end()
 				.sleep(500)
-				.find('css selector', `#example-t3 .${css.root}`)
+				.findByCssSelector(`#example-t3 .${css.root}`)
 				.getAttribute('class')
 				.then((className: string) => {
 					assert.include(
