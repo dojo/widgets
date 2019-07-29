@@ -114,7 +114,8 @@ function patternDiffer(
 		'labelHidden',
 		'valid',
 		'leading',
-		'trailing'
+		'trailing',
+		'helperTextHidden'
 	],
 	attributes: [
 		'widgetId',

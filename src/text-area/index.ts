@@ -67,7 +67,8 @@ export interface TextareaProperties
 		'readOnly',
 		'disabled',
 		'invalid',
-		'labelHidden'
+		'labelHidden',
+		'helperTextHidden'
 	],
 	attributes: [
 		'widgetId',

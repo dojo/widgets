@@ -78,7 +78,8 @@ export interface SelectProperties
 		'required',
 		'invalid',
 		'disabled',
-		'labelHidden'
+		'labelHidden',
+		'helperTextHidden'
 	],
 	attributes: ['widgetId', 'placeholder', 'label', 'value', 'helperText'],
 	events: ['onBlur', 'onChange', 'onFocus']

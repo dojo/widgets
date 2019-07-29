@@ -101,7 +101,8 @@ export enum Operation {
 		'openOnFocus',
 		'readOnly',
 		'required',
-		'results'
+		'results',
+		'helperTextHidden'
 	],
 	attributes: ['widgetId', 'label', 'value'],
 	events: [
