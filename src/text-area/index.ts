@@ -18,6 +18,12 @@ import * as css from '../theme/text-area.m.css';
 import { customElement } from '@dojo/framework/core/decorators/customElement';
 import HelperText from '../helper-text/index';
 
+interface TextareaInternalState {
+	previousValid?: boolean;
+	previousValue?: string;
+	previousRequired?: string;
+}
+
 /**
  * @type TextareaProperties
  *
@@ -47,6 +53,7 @@ export interface TextareaProperties
 	placeholder?: string;
 	value?: string;
 	onClick?(value: string): void;
+	onValidate?: (valid: boolean | undefined) => void;
 	label?: string;
 	labelHidden?: boolean;
 	helperText?: string;
@@ -92,10 +99,13 @@ export interface TextareaProperties
 		'onMouseUp',
 		'onTouchCancel',
 		'onTouchEnd',
-		'onTouchStart'
+		'onTouchStart',
+		'onValidate'
 	]
 })
 export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
+	private _state: TextareaInternalState = {};
+
 	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
@@ -160,6 +170,40 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
+	private _validate() {
+		const {
+			_state: state,
+			properties: { onValidate, value, required }
+		} = this;
+
+		if (!onValidate) {
+			return;
+		}
+
+		if (
+			value === undefined ||
+			value === null ||
+			(state.previousRequired === required && state.previousValue === value)
+		) {
+			return;
+		}
+
+		state.previousValue = value;
+
+		let valid = true;
+		if (required && !value) {
+			valid = false;
+		}
+
+		if (valid === state.previousValid) {
+			return;
+		}
+
+		state.previousValid = valid;
+
+		onValidate(valid);
+	}
+
 	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
@@ -199,6 +243,8 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 			helperText
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
+
+		this._validate();
 
 		return v(
 			'div',
@@ -259,7 +305,7 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 						ontouchcancel: this._onTouchCancel
 					})
 				]),
-				w(HelperText, { text: helperText })
+				w(HelperText, { text: helperText, valid: !invalid })
 			]
 		);
 	}

@@ -2,8 +2,9 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
 import Textarea from '../../index';
@@ -103,10 +104,54 @@ const expected = function(
 					...inputOverrides
 				})
 			]),
-			w(HelperText, { text: helperText })
+			w(HelperText, { text: helperText, valid: true })
 		]
 	);
 };
+
+const baseAssertion = assertionTemplate(() => (
+	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
+		{textarea()}
+		<HelperText assertion-key="helperText" text={undefined} valid={true} />
+	</div>
+));
+
+const textarea = () => (
+	<div classes={css.inputWrapper}>
+		<textarea
+			classes={css.input}
+			id=""
+			key="input"
+			cols="20"
+			disabled={undefined}
+			focus={noop}
+			aria-invalid={null}
+			maxlength={null}
+			minlength={null}
+			name={undefined}
+			placeholder={undefined}
+			readOnly={undefined}
+			aria-readonly={null}
+			required={undefined}
+			rows="2"
+			value={undefined}
+			wrap={undefined}
+			onblur={noop}
+			onchange={noop}
+			onclick={noop}
+			onfocus={noop}
+			oninput={noop}
+			onkeydown={noop}
+			onkeypress={noop}
+			onkeyup={noop}
+			onmousedown={noop}
+			onmouseup={noop}
+			ontouchstart={noop}
+			ontouchend={noop}
+			ontouchcancel={noop}
+		/>
+	</div>
+);
 
 registerSuite('Textarea', {
 	tests: {
@@ -167,7 +212,24 @@ registerSuite('Textarea', {
 
 			const h = harness(() => w(Textarea, properties));
 
-			h.expect(() => expected(false, {}, properties));
+			h.expect(
+				baseAssertion
+					.setProperty(':root', 'classes', [
+						css.root,
+						css.disabled,
+						null,
+						css.invalid,
+						null,
+						css.readonly,
+						css.required
+					])
+					.setProperty('@input', 'aria-invalid', 'true')
+					.setProperty('@input', 'aria-readonly', 'true')
+					.setProperty('@input', 'disabled', true)
+					.setProperty('@input', 'readOnly', true)
+					.setProperty('@input', 'required', true)
+					.setProperty('~helperText', 'valid', false)
+			);
 
 			properties = {
 				invalid: false,
@@ -175,7 +237,23 @@ registerSuite('Textarea', {
 				readOnly: false,
 				required: false
 			};
-			h.expect(() => expected(false, {}, properties));
+			h.expect(
+				baseAssertion
+					.setProperty(':root', 'classes', [
+						css.root,
+						null,
+						null,
+						null,
+						css.valid,
+						null,
+						null
+					])
+					.setProperty('@input', 'aria-invalid', null)
+					.setProperty('@input', 'aria-readonly', null)
+					.setProperty('@input', 'disabled', false)
+					.setProperty('@input', 'readOnly', false)
+					.setProperty('@input', 'required', false)
+			);
 		},
 
 		'focused class'() {
@@ -255,6 +333,112 @@ registerSuite('Textarea', {
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
 			h.trigger('@input', 'ontouchcancel', stubEvent);
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
+		},
+
+		'onValidate called with correct value'() {
+			const onValidate = sinon.stub();
+			let value: string | undefined = undefined;
+			const h = harness(() => <Textarea onValidate={onValidate} value={value} />);
+			h.expect(baseAssertion);
+			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: 'oSome valuene' } });
+			value = 'Some value';
+			h.expect(baseAssertion.setProperty('@input', 'value', 'Some value'));
+			assert.isTrue(
+				onValidate.firstCall.calledWith(true),
+				'onValidate should be called with true'
+			);
+			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: '' } });
+			value = '';
+			h.expect(baseAssertion.setProperty('@input', 'value', ''));
+			assert.equal(
+				onValidate.callCount,
+				1,
+				'onValidate should not have been called a second time'
+			);
+		},
+
+		'onValidate called with correct value on required select'() {
+			const onValidate = sinon.stub();
+			let value: string | undefined = undefined;
+			const h = harness(() => <Textarea onValidate={onValidate} value={value} required />);
+			let assertion = baseAssertion
+				.setProperty('@input', 'required', true)
+				.setProperty(':root', 'classes', [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					css.required
+				]);
+			h.expect(assertion);
+			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: 'Some value' } });
+			value = 'Some value';
+			h.expect(assertion.setProperty('@input', 'value', 'Some value'));
+			assert.isTrue(
+				onValidate.firstCall.calledWith(true),
+				'onValidate should be called with true'
+			);
+			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: '' } });
+			value = '';
+			h.expect(assertion.setProperty('@input', 'value', ''));
+			assert.isTrue(
+				onValidate.secondCall.calledWith(false),
+				'onValidate should be called with false'
+			);
+			assert.equal(onValidate.callCount, 2, 'onValidate should have been called two times');
+		},
+
+		'onValidate called with correct value when required value changes'() {
+			const onValidate = sinon.stub();
+			let value: string | undefined = undefined;
+			let required = false;
+			const h = harness(() => (
+				<Textarea onValidate={onValidate} value={value} required={required} />
+			));
+			let assertion = baseAssertion.setProperty('@input', 'required', false);
+			h.expect(assertion);
+			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: 'one' } });
+			value = 'one';
+			h.expect(assertion.setProperty('@input', 'value', 'one'));
+			assert.isTrue(
+				onValidate.firstCall.calledWith(true),
+				'onValidate should be called with true'
+			);
+			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: '' } });
+			value = '';
+			assertion = assertion.setProperty('@input', 'value', '');
+			h.expect(assertion);
+			assert.equal(
+				onValidate.callCount,
+				1,
+				'onValidate should not have been called a second time'
+			);
+			required = true;
+			h.expect(
+				assertion
+					.setProperty('@input', 'required', true)
+					.setProperty(':root', 'classes', [
+						css.root,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.required
+					])
+			);
+			assert.isTrue(
+				onValidate.secondCall.calledWith(false),
+				'onValidate should be called with false'
+			);
+			required = false;
+			h.expect(assertion);
+			assert.isTrue(
+				onValidate.thirdCall.calledWith(true),
+				'onValidate should be called with true'
+			);
 		}
 	}
 });
