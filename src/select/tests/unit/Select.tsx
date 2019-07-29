@@ -4,14 +4,13 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import { v, w, tsx } from '@dojo/framework/core/vdom';
+import { w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
 import { Keys } from '../../../common/util';
 
 import Icon from '../../../icon/index';
 import Select, { SelectProperties } from '../../index';
 import Listbox from '../../../listbox/index';
-import Label from '../../../label/index';
 import * as css from '../../../theme/select.m.css';
 import {
 	createHarness,
@@ -38,23 +37,6 @@ const compareTriggerFocused = {
 	property: 'focus',
 	comparator: isFocusedComparator
 };
-
-interface States {
-	invalid?: boolean;
-	disabled?: boolean;
-	focused?: boolean;
-	readOnly?: boolean;
-	required?: boolean;
-}
-
-interface ExpectedOptions {
-	label?: boolean;
-	states?: States;
-	classes?: any[];
-	overrides?: any;
-	focus?: boolean;
-	helperText?: string;
-}
 
 const testOptions: any[] = [
 	{
@@ -100,252 +82,142 @@ const testStateProperties: Partial<SelectProperties> = {
 
 const baseNativeAssertion = assertionTemplate(() => (
 	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
-		<div classes={css.inputWrapper}>
-			<select
-				assertion-key="select"
-				classes={css.input}
-				disabled={undefined}
-				focus={noop}
-				aria-invalid={null}
-				id={compareId as any}
-				name={undefined}
-				readOnly={undefined}
-				aria-readonly={null}
-				required={undefined}
-				value={undefined}
-				onblur={noop}
-				onchange={noop}
-				onfocus={noop}
-			>
-				<option
-					value={testOptions[0].value}
-					id={undefined}
-					disabled={undefined}
-					selected={undefined}
-				>
-					{testOptions[0].label}
-				</option>
-				<option
-					value={testOptions[1].value}
-					id={undefined}
-					disabled={undefined}
-					selected={undefined}
-				>
-					{testOptions[1].label}
-				</option>
-				<option
-					value={testOptions[2].value}
-					id={undefined}
-					disabled={undefined}
-					selected={undefined}
-				>
-					{testOptions[2].label}
-				</option>
-				<option
-					value={testOptions[3].value}
-					id={undefined}
-					disabled={undefined}
-					selected={undefined}
-				>
-					{testOptions[3].label}
-				</option>
-			</select>
-			<span classes={css.arrow}>
-				<Icon type="downIcon" theme={undefined} classes={undefined} />
-			</span>
+		<div assertion-key="wrapper" classes={css.inputWrapper}>
+			{nativeSelect()}
 		</div>
-		<HelperText theme={undefined} text={undefined} />
+		<HelperText assertion-key="helperText" theme={undefined} text={undefined} valid={true} />
 	</div>
 ));
 
-const expectedNative = function(useTestProperties = false, withStates = false) {
-	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
-	const vdom = v('div', { classes: css.inputWrapper }, [
-		v(
-			'select',
-			{
-				classes: css.input,
-				disabled: useTestProperties ? true : undefined,
-				focus: noop,
-				'aria-invalid': useTestProperties ? 'true' : null,
-				id: useTestProperties ? 'foo' : (compareId as any),
-				name: useTestProperties ? 'foo' : undefined,
-				readOnly: useTestProperties ? true : undefined,
-				'aria-readonly': useTestProperties ? 'true' : null,
-				required: useTestProperties ? true : undefined,
-				value: useTestProperties ? 'two' : undefined,
-				onblur: noop,
-				onchange: noop,
-				onfocus: noop,
-				...describedBy
-			},
-			[
-				v(
-					'option',
-					{
-						value: useTestProperties ? 'one' : undefined,
-						id: useTestProperties ? 'one' : undefined,
-						disabled: useTestProperties ? false : undefined,
-						selected: useTestProperties ? false : undefined
-					},
-					[useTestProperties ? 'One' : `${testOptions[0]}`]
-				),
-				v(
-					'option',
-					{
-						value: useTestProperties ? 'two' : undefined,
-						id: useTestProperties ? 'two' : undefined,
-						disabled: useTestProperties ? false : undefined,
-						selected: useTestProperties ? true : undefined
-					},
-					[useTestProperties ? 'Two' : `${testOptions[1]}`]
-				),
-				v(
-					'option',
-					{
-						value: useTestProperties ? 'three' : undefined,
-						id: useTestProperties ? 'three' : undefined,
-						disabled: useTestProperties ? false : undefined,
-						selected: useTestProperties ? false : undefined
-					},
-					[useTestProperties ? 'Three' : `${testOptions[2]}`]
-				),
-				v(
-					'option',
-					{
-						value: useTestProperties ? 'four' : undefined,
-						id: useTestProperties ? 'four' : undefined,
-						disabled: useTestProperties ? true : undefined,
-						selected: useTestProperties ? false : undefined
-					},
-					[useTestProperties ? 'Four' : `${testOptions[3]}`]
-				)
-			]
-		),
-		v('span', { classes: css.arrow }, [
-			w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
-		])
-	]);
-
-	return vdom;
+const nativeSelect = (extraSelectProperties: { 'aria-describedby'?: string } = {}) => {
+	return [
+		<select
+			classes={css.input}
+			disabled={undefined}
+			focus={noop}
+			aria-invalid={null}
+			id={compareId as any}
+			name={undefined}
+			readOnly={undefined}
+			aria-readonly={null}
+			required={undefined}
+			value={undefined}
+			onblur={noop}
+			onchange={noop}
+			onfocus={noop}
+			{...extraSelectProperties}
+		>
+			<option
+				value={testOptions[0].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[0].label}
+			</option>
+			<option
+				value={testOptions[1].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[1].label}
+			</option>
+			<option
+				value={testOptions[2].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[2].label}
+			</option>
+			<option
+				value={testOptions[3].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[3].label}
+			</option>
+		</select>,
+		<span classes={css.arrow}>
+			<Icon type="downIcon" theme={undefined} classes={undefined} />
+		</span>
+	];
 };
 
-const expectedSingle = function(
-	useTestProperties = false,
-	withStates = false,
-	open = false,
-	placeholder = '',
-	activeIndex = -1
-) {
-	activeIndex = activeIndex >= 0 ? activeIndex : useTestProperties ? 1 : 0;
-	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
-	const vdom = v(
-		'div',
-		{
-			classes: [css.inputWrapper, open ? css.open : null],
-			key: 'wrapper'
-		},
-		[
-			v(
-				'button',
-				{
-					'aria-controls': '',
-					'aria-expanded': open ? 'true' : 'false',
-					'aria-haspopup': 'listbox',
-					'aria-invalid': withStates ? 'true' : null,
-					'aria-required': withStates ? 'true' : null,
-					classes: [
-						css.trigger,
-						useTestProperties && !placeholder ? null : css.placeholder
-					],
-					disabled: withStates ? true : undefined,
-					focus: noop,
-					key: 'trigger',
-					type: 'button',
-					value: useTestProperties ? 'two' : undefined,
-					onblur: noop,
-					onclick: noop,
-					onfocus: noop,
-					onkeydown: noop,
-					onmousedown: noop,
-					...describedBy
-				},
-				[placeholder ? placeholder : useTestProperties ? 'Two' : '']
-			),
-			v('span', { classes: css.arrow }, [
-				w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
-			]),
-			v(
-				'div',
-				{
-					classes: css.dropdown,
-					onfocusout: noop,
-					onkeydown: noop
-				},
-				[
-					w(Listbox, {
-						activeIndex,
-						focus: noop,
-						widgetId: useTestProperties ? 'foo' : '',
-						key: 'listbox',
-						optionData: useTestProperties ? testOptions : [],
-						tabIndex: open ? 0 : -1,
-						getOptionDisabled: useTestProperties ? noop : undefined,
-						getOptionId: useTestProperties ? noop : undefined,
-						getOptionLabel: useTestProperties ? noop : undefined,
-						onKeyDown: noop,
-						getOptionSelected: noop,
-						theme: undefined,
-						classes: undefined,
-						onActiveIndexChange: noop,
-						onOptionSelect: noop
-					})
-				]
-			)
-		]
-	);
+const baseCustomAssertion = assertionTemplate(() => (
+	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
+		<div key="wrapper" classes={[css.inputWrapper, null]}>
+			{customSelect({ 'aria-describedby': 'foo' })}
+		</div>
+		<HelperText assertion-key="helperText" theme={undefined} text={undefined} valid={true} />
+	</div>
+));
 
-	return vdom;
+const emptyCustomAssertion = baseCustomAssertion
+	.setChildren('@wrapper', () => customSelect())
+	.setProperty('@listbox', 'optionData', [])
+	.setProperty('@listbox', 'activeIndex', 0)
+	.setProperty('@listbox', 'getOptionDisabled', undefined)
+	.setProperty('@listbox', 'getOptionId', undefined)
+	.setProperty('@listbox', 'getOptionLabel', undefined)
+	.setProperty('@trigger', 'value', undefined)
+	.setProperty('@trigger', 'classes', [css.trigger, css.placeholder])
+	.setChildren('@trigger', () => []);
+
+const customSelect = (extraButtonProperties: { 'aria-describedby'?: string } = {}) => {
+	return [
+		<button
+			aria-controls=""
+			aria-expanded="false"
+			aria-haspopup="listbox"
+			aria-invalid={null}
+			aria-required={null}
+			classes={[css.trigger, null]}
+			disabled={undefined}
+			focus={noop}
+			key="trigger"
+			type="button"
+			value="two"
+			onblur={noop}
+			onclick={noop}
+			onfocus={noop}
+			onkeydown={noop}
+			onmousedown={noop}
+			{...extraButtonProperties}
+		>
+			Two
+		</button>,
+		<span classes={css.arrow}>
+			<Icon type="downIcon" theme={undefined} classes={undefined} />
+		</span>,
+		<div classes={css.dropdown} onfocusout={noop} onkeydown={noop}>
+			<Listbox
+				activeIndex={1}
+				focus={noop}
+				widgetId=""
+				key="listbox"
+				optionData={testOptions}
+				tabIndex={-1}
+				getOptionDisabled={noop}
+				getOptionId={noop}
+				getOptionLabel={noop}
+				onKeyDown={noop}
+				getOptionSelected={noop}
+				theme={undefined}
+				classes={undefined}
+				onActiveIndexChange={noop}
+				onOptionSelect={noop}
+			/>
+		</div>
+	];
 };
 
-const expected = function(
-	selectVdom: any,
-	{
-		classes = [css.root, null, null, null, null, null, null],
-		label = false,
-		states,
-		focus = false,
-		helperText
-	}: ExpectedOptions = {}
-) {
-	return v(
-		'div',
-		{
-			key: 'root',
-			classes
-		},
-		[
-			label
-				? w(
-						Label,
-						{
-							theme: undefined,
-							disabled: undefined,
-							focused: focus,
-							hidden: undefined,
-							invalid: undefined,
-							readOnly: undefined,
-							required: undefined,
-							forId: ''
-						},
-						['foo']
-				  )
-				: null,
-			selectVdom,
-			w(HelperText, { theme: undefined, text: helperText })
-		]
-	);
-};
+const baseCustomOpenAssertion = baseCustomAssertion
+	.setProperty('@wrapper', 'classes', [css.inputWrapper, css.open])
+	.setProperty('@trigger', 'aria-expanded', 'true')
+	.setProperty('@listbox', 'tabIndex', 0);
 
 registerSuite('Select', {
 	tests: {
@@ -353,22 +225,24 @@ registerSuite('Select', {
 			'default properties'() {
 				const h = harness(() =>
 					w(Select, {
-						options: testOptions,
 						useNativeElement: true
 					})
 				);
-				h.expect(() => expected(expectedNative()));
+				h.expect(baseNativeAssertion.setChildren('select', () => []));
 			},
 
 			helperText() {
 				const h = harness(() =>
 					w(Select, {
-						options: testOptions,
 						useNativeElement: true,
 						helperText: 'foo'
 					})
 				);
-				h.expect(() => expected(expectedNative(), { helperText: 'foo' }));
+				h.expect(
+					baseNativeAssertion
+						.setChildren('select', () => [])
+						.setProperty('~helperText', 'text', 'foo')
+				);
 			},
 
 			'custom properties'() {
@@ -378,9 +252,52 @@ registerSuite('Select', {
 						useNativeElement: true
 					})
 				);
-				h.expect(() =>
-					expected(expectedNative(true), {
-						classes: [
+				h.expect(
+					baseNativeAssertion
+						.setChildren('~wrapper', () => nativeSelect({ 'aria-describedby': 'foo' }))
+						.setChildren('select', () => [
+							<option
+								value={testOptions[0].value}
+								id="one"
+								disabled={false}
+								selected={false}
+							>
+								{testOptions[0].label}
+							</option>,
+							<option
+								value={testOptions[1].value}
+								id="two"
+								disabled={false}
+								selected={true}
+							>
+								{testOptions[1].label}
+							</option>,
+							<option
+								value={testOptions[2].value}
+								id="three"
+								disabled={false}
+								selected={false}
+							>
+								{testOptions[2].label}
+							</option>,
+							<option
+								value={testOptions[3].value}
+								id="four"
+								disabled={true}
+								selected={false}
+							>
+								{testOptions[3].label}
+							</option>
+						])
+						.setProperty('select', 'aria-invalid', 'true')
+						.setProperty('select', 'aria-readonly', 'true')
+						.setProperty('select', 'disabled', true)
+						.setProperty('select', 'readOnly', true)
+						.setProperty('select', 'required', true)
+						.setProperty('select', 'value', 'two')
+						.setProperty('select', 'name', 'foo')
+						.setProperty('~helperText', 'valid', false)
+						.setProperty(':root', 'classes', [
 							css.root,
 							css.disabled,
 							null,
@@ -388,8 +305,7 @@ registerSuite('Select', {
 							null,
 							css.readonly,
 							css.required
-						]
-					})
+						])
 				);
 			},
 
@@ -404,15 +320,22 @@ registerSuite('Select', {
 				});
 				const h = harness(() =>
 					w(MockMetaMixin(Select, mockMeta), {
-						options: testOptions,
+						options: [],
 						useNativeElement: true
 					})
 				);
-				h.expect(() =>
-					expected(expectedNative(), {
-						classes: [css.root, null, css.focused, null, null, null, null],
-						focus: true
-					})
+				h.expect(
+					baseNativeAssertion
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							css.focused,
+							null,
+							null,
+							null,
+							null
+						])
+						.setChildren('select', () => [])
 				);
 			},
 
@@ -466,14 +389,14 @@ registerSuite('Select', {
 				h.expect(baseNativeAssertion);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				value = 'one';
-				h.expect(baseNativeAssertion.setProperty('~select', 'value', 'one'));
+				h.expect(baseNativeAssertion.setProperty('select', 'value', 'one'));
 				assert.isTrue(
 					onValidate.firstCall.calledWith(true),
 					'onValidate should be called with true'
 				);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
 				value = '';
-				h.expect(baseNativeAssertion.setProperty('~select', 'value', ''));
+				h.expect(baseNativeAssertion.setProperty('select', 'value', ''));
 				assert.equal(
 					onValidate.callCount,
 					1,
@@ -484,6 +407,7 @@ registerSuite('Select', {
 			'onValidate called with correct value on required select'() {
 				const onValidate = sinon.stub();
 				let value: string | undefined = undefined;
+				let invalid = false;
 				const h = harness(() => (
 					<Select
 						getOptionValue={testProperties.getOptionValue}
@@ -493,30 +417,46 @@ registerSuite('Select', {
 						onValidate={onValidate}
 						value={value}
 						required
+						invalid={invalid}
 					/>
 				));
 				let assertion = baseNativeAssertion
-					.setProperty('~select', 'required', true)
+					.setProperty('select', 'required', true)
 					.setProperty(':root', 'classes', [
 						css.root,
 						null,
 						null,
 						null,
-						null,
+						css.valid,
 						null,
 						css.required
 					]);
 				h.expect(assertion);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				value = 'one';
-				h.expect(assertion.setProperty('~select', 'value', 'one'));
+				h.expect(assertion.setProperty('select', 'value', 'one'));
 				assert.isTrue(
 					onValidate.firstCall.calledWith(true),
 					'onValidate should be called with true'
 				);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
 				value = '';
-				h.expect(assertion.setProperty('~select', 'value', ''));
+				invalid = true;
+				h.expect(
+					assertion
+						.setProperty('select', 'value', '')
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							css.invalid,
+							null,
+							null,
+							css.required
+						])
+						.setProperty('select', 'aria-invalid', 'true')
+						.setProperty('~helperText', 'valid', false)
+				);
 				assert.isTrue(
 					onValidate.secondCall.calledWith(false),
 					'onValidate should be called with false'
@@ -532,6 +472,7 @@ registerSuite('Select', {
 				const onValidate = sinon.stub();
 				let value: string | undefined = undefined;
 				let required = false;
+				let invalid = false;
 				const h = harness(() => (
 					<Select
 						getOptionValue={testProperties.getOptionValue}
@@ -541,36 +482,48 @@ registerSuite('Select', {
 						onValidate={onValidate}
 						value={value}
 						required={required}
+						invalid={invalid}
 					/>
 				));
-				let assertion = baseNativeAssertion.setProperty('~select', 'required', false);
+				let assertion = baseNativeAssertion
+					.setProperty(':root', 'classes', [
+						css.root,
+						null,
+						null,
+						null,
+						css.valid,
+						null,
+						null
+					])
+					.setProperty('select', 'required', false);
 				h.expect(assertion);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				value = 'one';
-				h.expect(assertion.setProperty('~select', 'value', 'one'));
+				h.expect(assertion.setProperty('select', 'value', 'one'));
 				assert.isTrue(
 					onValidate.firstCall.calledWith(true),
 					'onValidate should be called with true'
 				);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
 				value = '';
-				assertion = assertion.setProperty('~select', 'value', '');
+				assertion = assertion.setProperty('select', 'value', '');
 				h.expect(assertion);
 				assert.equal(
 					onValidate.callCount,
 					1,
 					'onValidate should not have been called a second time'
 				);
+
 				required = true;
 				h.expect(
 					assertion
-						.setProperty('~select', 'required', true)
+						.setProperty('select', 'required', true)
 						.setProperty(':root', 'classes', [
 							css.root,
 							null,
 							null,
 							null,
-							null,
+							css.valid,
 							null,
 							css.required
 						])
@@ -579,12 +532,46 @@ registerSuite('Select', {
 					onValidate.secondCall.calledWith(false),
 					'onValidate should be called with false'
 				);
+
+				invalid = true;
+				h.expect(
+					assertion
+						.setProperty('select', 'required', true)
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							css.invalid,
+							null,
+							null,
+							css.required
+						])
+						.setProperty('select', 'aria-invalid', 'true')
+						.setProperty('~helperText', 'valid', false)
+				);
+
 				required = false;
-				h.expect(assertion);
+				h.expect(
+					assertion
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							css.invalid,
+							null,
+							null,
+							null
+						])
+						.setProperty('select', 'aria-invalid', 'true')
+						.setProperty('~helperText', 'valid', false)
+				);
 				assert.isTrue(
 					onValidate.thirdCall.calledWith(true),
 					'onValidate should be called with true'
 				);
+
+				invalid = false;
+				h.expect(assertion);
 			},
 
 			'events called with widget key'() {
@@ -618,19 +605,19 @@ registerSuite('Select', {
 		'Custom Single-select': {
 			'default properties'() {
 				const h = harness(() => w(Select, {}));
-				h.expect(() => expected(expectedSingle()));
+				h.expect(emptyCustomAssertion);
 			},
 
 			helperText() {
 				const h = harness(() => w(Select, { helperText: 'foo' }));
-				h.expect(() => expected(expectedSingle(), { helperText: 'foo' }));
+				h.expect(emptyCustomAssertion.setProperty('~helperText', 'text', 'foo'));
 			},
 
 			'custom properties'() {
 				const h = harness(() => w(Select, testStateProperties));
-				h.expect(() =>
-					expected(expectedSingle(true, true), {
-						classes: [
+				h.expect(
+					baseCustomAssertion
+						.setProperty(':root', 'classes', [
 							css.root,
 							css.disabled,
 							null,
@@ -638,8 +625,11 @@ registerSuite('Select', {
 							null,
 							css.readonly,
 							css.required
-						]
-					})
+						])
+						.setProperty('~helperText', 'valid', false)
+						.setProperty('@trigger', 'disabled', true)
+						.setProperty('@trigger', 'aria-invalid', 'true')
+						.setProperty('@trigger', 'aria-required', 'true')
 				);
 			},
 
@@ -649,28 +639,32 @@ registerSuite('Select', {
 					placeholder: 'foo'
 				};
 				const h = harness(() => w(Select, properties));
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 				properties = {
 					...testProperties,
 					getOptionSelected: () => false,
 					placeholder: 'bar'
 				};
-				h.expect(() => expected(expectedSingle(true, false, false, 'bar')));
+				h.expect(
+					baseCustomAssertion
+						.setProperty('@trigger', 'classes', [css.trigger, css.placeholder])
+						.setChildren('@trigger', () => ['bar'])
+				);
 			},
 
 			'open/close on trigger click'() {
 				const h = harness(() => w(Select, testProperties));
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion.setProperty('~helperText', 'valid', true));
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 			},
 
 			'focus listbox on open'() {
 				const h = harness(() => w(Select, testProperties), [compareListboxFocused]);
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 			},
 
 			'focus trigger on escape to close'() {
@@ -680,7 +674,7 @@ registerSuite('Select', {
 					which: Keys.Escape,
 					...stubEvent
 				});
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 			},
 
 			'focus trigger when selecting an option and closing'() {
@@ -695,7 +689,7 @@ registerSuite('Select', {
 
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@listbox', 'onOptionSelect', testOptions[1]);
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 			},
 
 			'select options'() {
@@ -710,18 +704,18 @@ registerSuite('Select', {
 				);
 
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 				h.trigger('@listbox', 'onOptionSelect', testOptions[2]);
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
 				// open widget a second time
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 				h.trigger('@trigger', 'onmousedown');
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
 				h.trigger('@trigger', 'onclick', stubEvent);
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 			},
 
 			'default for getOptionSelected'() {
@@ -730,98 +724,29 @@ registerSuite('Select', {
 					getOptionSelected: undefined
 				};
 				const h = harness(() => w(Select, properties));
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 
 				const simpleOptions = ['one', 'two', 'three'];
 				properties = {
 					options: simpleOptions,
 					value: 'two'
 				};
-				h.expect(() =>
-					v(
-						'div',
-						{
-							key: 'root',
-							classes: [css.root, null, null, null, null, null, null]
-						},
-						[
-							null,
-							v(
-								'div',
-								{
-									classes: [css.inputWrapper, null],
-									key: 'wrapper'
-								},
-								[
-									v(
-										'button',
-										{
-											'aria-controls': '',
-											'aria-expanded': 'false',
-											'aria-haspopup': 'listbox',
-											'aria-invalid': null,
-											'aria-required': null,
-											classes: [css.trigger, null],
-											disabled: undefined,
-											focus: noop,
-											key: 'trigger',
-											type: 'button',
-											value: 'two',
-											onblur: noop,
-											onclick: noop,
-											onfocus: noop,
-											onkeydown: noop,
-											onmousedown: noop
-										},
-										['two']
-									),
-									v('span', { classes: css.arrow }, [
-										w(Icon, {
-											type: 'downIcon',
-											theme: undefined,
-											classes: undefined
-										})
-									]),
-									v(
-										'div',
-										{
-											classes: css.dropdown,
-											onfocusout: noop,
-											onkeydown: noop
-										},
-										[
-											w(Listbox, {
-												activeIndex: 1,
-												widgetId: '',
-												focus: noop,
-												key: 'listbox',
-												optionData: simpleOptions,
-												tabIndex: -1,
-												getOptionDisabled: undefined,
-												getOptionId: undefined,
-												getOptionLabel: undefined,
-												getOptionSelected: noop,
-												onKeyDown: noop,
-												theme: undefined,
-												classes: undefined,
-												onActiveIndexChange: noop,
-												onOptionSelect: noop
-											})
-										]
-									)
-								]
-							),
-							w(HelperText, { theme: undefined, text: undefined })
-						]
-					)
+				h.expect(
+					baseCustomAssertion
+						.setChildren('@wrapper', () => customSelect())
+						.setProperty('@listbox', 'optionData', simpleOptions)
+						.setProperty('@listbox', 'getOptionDisabled', undefined)
+						.setProperty('@listbox', 'getOptionId', undefined)
+						.setProperty('@listbox', 'getOptionLabel', undefined)
+						.setChildren('@trigger', () => ['two'])
 				);
 			},
 
 			'change active option'() {
 				const h = harness(() => w(Select, testProperties));
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 				h.trigger('@listbox', 'onActiveIndexChange', 2);
-				h.expect(() => expected(expectedSingle(true, false, false, '', 2)));
+				h.expect(baseCustomAssertion.setProperty('@listbox', 'activeIndex', 2));
 			},
 
 			'open/close with keyboard'() {
@@ -837,28 +762,28 @@ registerSuite('Select', {
 					...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Down,
 					...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Escape,
 					...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
 					which: Keys.Down,
 					...stubEvent
 				});
 
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 			},
 
 			'close on listbox blur'() {
@@ -872,10 +797,10 @@ registerSuite('Select', {
 				);
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 				assert.isTrue(
 					onBlur.calledOnce,
 					'onBlur callback should only be called once for last blur event'
@@ -894,10 +819,10 @@ registerSuite('Select', {
 
 				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true, false, true, '')));
+				h.expect(baseCustomOpenAssertion);
 
 				h.trigger('@trigger', 'onblur');
-				h.expect(() => expected(expectedSingle(true)));
+				h.expect(baseCustomAssertion);
 				assert.isTrue(
 					onBlur.calledOnce,
 					'onBlur callback should only be called once for last blur event'
@@ -932,7 +857,7 @@ registerSuite('Select', {
 					key: 'O'
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, false, '', 0)));
+				h.expect(baseCustomAssertion.setProperty('@listbox', 'activeIndex', 0));
 			},
 
 			'select option in menu based on input key'() {
@@ -958,7 +883,7 @@ registerSuite('Select', {
 					which: Keys.Enter
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 0)));
+				h.expect(baseCustomOpenAssertion.setProperty('@listbox', 'activeIndex', 0));
 			},
 
 			'select option in menu based on multiple input keys'() {
@@ -989,7 +914,7 @@ registerSuite('Select', {
 					which: Keys.Enter
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, true, '', 2)));
+				h.expect(baseCustomOpenAssertion.setProperty('@listbox', 'activeIndex', 2));
 			},
 
 			'does not select disabled options based on input key'() {
@@ -1010,7 +935,7 @@ registerSuite('Select', {
 					key: 'o'
 				});
 
-				h.expect(() => expected(expectedSingle(true, false, false, '', 1)));
+				h.expect(baseCustomAssertion.setProperty('@listbox', 'activeIndex', 1));
 			}
 		}
 	}
