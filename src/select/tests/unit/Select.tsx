@@ -3,7 +3,8 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/core/vdom';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
 import { Keys } from '../../../common/util';
 
@@ -96,6 +97,66 @@ const testStateProperties: Partial<SelectProperties> = {
 	readOnly: true,
 	required: true
 };
+
+const baseNativeAssertion = assertionTemplate(() => (
+	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
+		<div classes={css.inputWrapper}>
+			<select
+				assertion-key="select"
+				classes={css.input}
+				disabled={undefined}
+				focus={noop}
+				aria-invalid={null}
+				id={compareId as any}
+				name={undefined}
+				readOnly={undefined}
+				aria-readonly={null}
+				required={undefined}
+				value={undefined}
+				onblur={noop}
+				onchange={noop}
+				onfocus={noop}
+			>
+				<option
+					value={testOptions[0].value}
+					id={undefined}
+					disabled={undefined}
+					selected={undefined}
+				>
+					{testOptions[0].label}
+				</option>
+				<option
+					value={testOptions[1].value}
+					id={undefined}
+					disabled={undefined}
+					selected={undefined}
+				>
+					{testOptions[1].label}
+				</option>
+				<option
+					value={testOptions[2].value}
+					id={undefined}
+					disabled={undefined}
+					selected={undefined}
+				>
+					{testOptions[2].label}
+				</option>
+				<option
+					value={testOptions[3].value}
+					id={undefined}
+					disabled={undefined}
+					selected={undefined}
+				>
+					{testOptions[3].label}
+				</option>
+			</select>
+			<span classes={css.arrow}>
+				<Icon type="downIcon" theme={undefined} classes={undefined} />
+			</span>
+		</div>
+		<HelperText theme={undefined} text={undefined} />
+	</div>
+));
 
 const expectedNative = function(useTestProperties = false, withStates = false) {
 	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
@@ -386,6 +447,143 @@ registerSuite('Select', {
 				assert.isTrue(
 					onChange.calledWith(testOptions[0]),
 					'onChange should be called with the first entry in the testOptions array'
+				);
+			},
+
+			'onValidate called with correct value'() {
+				const onValidate = sinon.stub();
+				let value: string | undefined = undefined;
+				const h = harness(() => (
+					<Select
+						getOptionValue={testProperties.getOptionValue}
+						getOptionLabel={testProperties.getOptionLabel}
+						options={testOptions}
+						useNativeElement={true}
+						onValidate={onValidate}
+						value={value}
+					/>
+				));
+				h.expect(baseNativeAssertion);
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
+				value = 'one';
+				h.expect(baseNativeAssertion.setProperty('~select', 'value', 'one'));
+				assert.isTrue(
+					onValidate.firstCall.calledWith(true),
+					'onValidate should be called with true'
+				);
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
+				value = '';
+				h.expect(baseNativeAssertion.setProperty('~select', 'value', ''));
+				assert.equal(
+					onValidate.callCount,
+					1,
+					'onValidate should not have been called a second time'
+				);
+			},
+
+			'onValidate called with correct value on required select'() {
+				const onValidate = sinon.stub();
+				let value: string | undefined = undefined;
+				const h = harness(() => (
+					<Select
+						getOptionValue={testProperties.getOptionValue}
+						getOptionLabel={testProperties.getOptionLabel}
+						options={testOptions}
+						useNativeElement={true}
+						onValidate={onValidate}
+						value={value}
+						required
+					/>
+				));
+				let assertion = baseNativeAssertion
+					.setProperty('~select', 'required', true)
+					.setProperty(':root', 'classes', [
+						css.root,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.required
+					]);
+				h.expect(assertion);
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
+				value = 'one';
+				h.expect(assertion.setProperty('~select', 'value', 'one'));
+				assert.isTrue(
+					onValidate.firstCall.calledWith(true),
+					'onValidate should be called with true'
+				);
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
+				value = '';
+				h.expect(assertion.setProperty('~select', 'value', ''));
+				assert.isTrue(
+					onValidate.secondCall.calledWith(false),
+					'onValidate should be called with false'
+				);
+				assert.equal(
+					onValidate.callCount,
+					2,
+					'onValidate should have been called two times'
+				);
+			},
+
+			'onValidate called with correct value when required value changes'() {
+				const onValidate = sinon.stub();
+				let value: string | undefined = undefined;
+				let required = false;
+				const h = harness(() => (
+					<Select
+						getOptionValue={testProperties.getOptionValue}
+						getOptionLabel={testProperties.getOptionLabel}
+						options={testOptions}
+						useNativeElement={true}
+						onValidate={onValidate}
+						value={value}
+						required={required}
+					/>
+				));
+				let assertion = baseNativeAssertion.setProperty('~select', 'required', false);
+				h.expect(assertion);
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
+				value = 'one';
+				h.expect(assertion.setProperty('~select', 'value', 'one'));
+				assert.isTrue(
+					onValidate.firstCall.calledWith(true),
+					'onValidate should be called with true'
+				);
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
+				value = '';
+				assertion = assertion.setProperty('~select', 'value', '');
+				h.expect(assertion);
+				assert.equal(
+					onValidate.callCount,
+					1,
+					'onValidate should not have been called a second time'
+				);
+				required = true;
+				h.expect(
+					assertion
+						.setProperty('~select', 'required', true)
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							null,
+							null,
+							null,
+							css.required
+						])
+				);
+				assert.isTrue(
+					onValidate.secondCall.calledWith(false),
+					'onValidate should be called with false'
+				);
+				required = false;
+				h.expect(assertion);
+				assert.isTrue(
+					onValidate.thirdCall.calledWith(true),
+					'onValidate should be called with true'
 				);
 			},
 

@@ -17,6 +17,12 @@ import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
 import { customElement } from '@dojo/framework/core/decorators/customElement';
 
+interface SelectInternalState {
+	previousValid?: boolean;
+	previousValue?: string;
+	previousRequired?: string;
+}
+
 /**
  * @type SelectProperties
  *
@@ -51,6 +57,7 @@ export interface SelectProperties
 	onBlur?(key?: string | number): void;
 	onChange?(option: any, key?: string | number): void;
 	onFocus?(key?: string | number): void;
+	onValidate?: (valid: boolean | undefined) => void;
 	value?: string;
 	labelHidden?: boolean;
 	label?: string;
@@ -80,7 +87,7 @@ export interface SelectProperties
 		'labelHidden'
 	],
 	attributes: ['widgetId', 'placeholder', 'label', 'value', 'helperText'],
-	events: ['onBlur', 'onChange', 'onFocus']
+	events: ['onBlur', 'onChange', 'onFocus', 'onValidate']
 })
 export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
 	private _focusedIndex!: number;
@@ -90,6 +97,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 	private _baseId = uuid();
 	private _inputText = '';
 	private _resetInputTextTimer: any;
+	private _state: SelectInternalState = {};
 
 	private _getOptionLabel(option: any) {
 		const { getOptionLabel } = this.properties;
@@ -147,6 +155,40 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			getOptionValue ? getOptionValue(option, index) === value : option === value
 		);
 		option && onChange && onChange(option, key);
+	}
+
+	private _validate() {
+		const {
+			_state: state,
+			properties: { onValidate, value, required }
+		} = this;
+
+		if (!onValidate) {
+			return;
+		}
+
+		if (
+			value === undefined ||
+			value === null ||
+			(state.previousRequired === required && state.previousValue === value)
+		) {
+			return;
+		}
+
+		state.previousValue = value;
+
+		let valid = true;
+		if (required && !value) {
+			valid = false;
+		}
+
+		if (valid === state.previousValid) {
+			return;
+		}
+
+		state.previousValid = valid;
+
+		onValidate(valid);
 	}
 
 	// custom select events
@@ -242,6 +284,8 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			required,
 			value
 		} = this.properties;
+
+		this._validate();
 
 		/* create option nodes */
 		const optionNodes = options.map((option, i) =>
