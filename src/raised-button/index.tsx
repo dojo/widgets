@@ -6,6 +6,7 @@ import Button, { ButtonProperties } from '../button/index';
 import * as css from '../theme/raised-button.m.css';
 import { CustomElementChildType } from '@dojo/framework/core/registerCustomElement';
 import { DNode } from '@dojo/framework/core/interfaces';
+import { mergeClasses } from '../common/util';
 
 export interface RaisedButtonProperties extends ButtonProperties {}
 
@@ -35,13 +36,16 @@ export class RaisedButton extends ThemedMixin(WidgetBase)<RaisedButtonProperties
 	protected render(): DNode {
 		return (
 			<Button
-				classes={{
-					'@dojo/widgets/button': {
-						root: this.theme([css.root]),
-						disabled: this.theme([css.disabled])
-					}
-				}}
 				{...this.properties}
+				classes={mergeClasses(
+					{
+						'@dojo/widgets/button': {
+							root: this.theme([css.root]),
+							disabled: this.theme([css.disabled])
+						}
+					},
+					this.properties.classes
+				)}
 			>
 				{this.children}
 			</Button>

@@ -1,7 +1,9 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { formatAriaProperties, Keys } from '../../util';
+import { Classes } from '@dojo/framework/core/mixins/Themed';
+
+import { formatAriaProperties, Keys, mergeClasses } from '../../util';
 
 registerSuite('util', {
 	keys() {
@@ -30,5 +32,45 @@ registerSuite('util', {
 		assert.strictEqual(Object.keys(formattedAria).length, 2);
 		assert.strictEqual(formattedAria['aria-describedby'], 'foo');
 		assert.strictEqual(formattedAria['aria-controls'], 'bar');
+	},
+
+	mergeClasses() {
+		const target: Classes = {
+			'@dojo/widgets/button': {
+				root: ['someClass']
+			}
+		};
+
+		const source: Classes = {
+			'@dojo/widgets/button': {
+				root: ['someOtherClass']
+			},
+			'@dojo/widgets/raised-button': {
+				root: ['aClassForRaise']
+			}
+		};
+
+		assert.deepEqual(mergeClasses(target, source), {
+			'@dojo/widgets/button': {
+				root: ['someClass', 'someOtherClass']
+			},
+			'@dojo/widgets/raised-button': {
+				root: ['aClassForRaise']
+			}
+		});
+	},
+
+	'mergeClasses returns copy of target with no changes if source is undefined'() {
+		const target: Classes = {
+			'@dojo/widgets/button': {
+				root: ['someClass']
+			}
+		};
+
+		assert.deepEqual(mergeClasses(target, undefined), {
+			'@dojo/widgets/button': {
+				root: ['someClass']
+			}
+		});
 	}
 });

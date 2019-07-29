@@ -7,7 +7,7 @@ import harness from '@dojo/framework/testing/harness';
 
 import OutlinedButton from '../../index';
 import * as css from '../../../theme/outlined-button.m.css';
-import Button, { ButtonProperties } from '../../../button/index';
+import Button from '../../../button/index';
 
 const baseAssertion = assertionTemplate(() => (
 	<Button classes={{ '@dojo/widgets/button': { root: [css.root] } }} />
@@ -21,22 +21,32 @@ registerSuite('OutlinedButton', {
 		},
 
 		'properties and children'() {
-			const properties: ButtonProperties = {
-				type: 'submit',
-				name: 'bar',
-				disabled: true
-			};
 			const children = ['foo', 'bar'];
-			const h = harness(() => <OutlinedButton {...properties}>{children}</OutlinedButton>);
+			const h = harness(() => (
+				<OutlinedButton
+					type="submit"
+					name="bar"
+					disabled={true}
+					classes={{
+						'@dojo/widgets/button': {
+							root: ['someOtherClass']
+						}
+					}}
+				>
+					{children}
+				</OutlinedButton>
+			));
 
-			const assertion = Object.keys(properties)
-				.reduce(
-					(assertion, key) =>
-						assertion.setProperty(':root', key, (properties as any)[key]),
-					baseAssertion
-				)
-				.setChildren(':root', children);
-			h.expect(assertion);
+			h.expect(
+				baseAssertion
+					.setProperty(':root', 'classes', {
+						'@dojo/widgets/button': { root: [css.root, 'someOtherClass'] }
+					})
+					.setProperty(':root', 'type', 'submit')
+					.setProperty(':root', 'name', 'bar')
+					.setProperty(':root', 'disabled', true)
+					.setChildren(':root', () => children)
+			);
 		}
 	}
 });

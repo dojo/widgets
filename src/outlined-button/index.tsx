@@ -6,6 +6,7 @@ import Button, { ButtonProperties } from '../button/index';
 import * as css from '../theme/outlined-button.m.css';
 import { CustomElementChildType } from '@dojo/framework/core/registerCustomElement';
 import { DNode } from '@dojo/framework/core/interfaces';
+import { mergeClasses } from '../common/util';
 
 export interface OutlinedButtonProperties extends ButtonProperties {}
 
@@ -35,8 +36,11 @@ export class OutlinedButton extends ThemedMixin(WidgetBase)<OutlinedButtonProper
 	protected render(): DNode {
 		return (
 			<Button
-				classes={{ '@dojo/widgets/button': { root: this.theme([css.root]) } }}
 				{...this.properties}
+				classes={mergeClasses(
+					{ '@dojo/widgets/button': { root: this.theme([css.root]) } },
+					this.properties.classes
+				)}
 			>
 				{this.children}
 			</Button>
