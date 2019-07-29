@@ -45,6 +45,7 @@ export interface SelectProperties
 	getOptionSelected?(option: any, index: number): boolean;
 	getOptionValue?(option: any, index: number): string;
 	helperText?: string;
+	helperTextHidden?: boolean;
 	options?: any[];
 	placeholder?: string;
 	useNativeElement?: boolean;
@@ -419,6 +420,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 			labelHidden,
 			disabled,
 			helperText,
+			helperTextHidden,
 			widgetId = this._baseId,
 			invalid,
 			readOnly,
@@ -463,7 +465,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 					  )
 					: null,
 				useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect(),
-				w(HelperText, { theme, text: helperText })
+				!helperTextHidden && w(HelperText, { theme, text: helperText })
 			]
 		);
 	}

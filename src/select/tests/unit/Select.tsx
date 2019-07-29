@@ -3,8 +3,9 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import { Keys } from '../../../common/util';
 
 import Icon from '../../../icon/index';
@@ -96,6 +97,70 @@ const testStateProperties: Partial<SelectProperties> = {
 	readOnly: true,
 	required: true
 };
+
+const baseNativeAssertion = assertionTemplate(() => (
+	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
+		{nativeSelect()}
+		<HelperText theme={undefined} text={undefined} />
+	</div>
+));
+
+const nativeSelect = () => (
+	<div classes={css.inputWrapper}>
+		<select
+			assertion-key="select"
+			classes={css.input}
+			disabled={undefined}
+			focus={noop}
+			aria-invalid={null}
+			id={compareId as any}
+			name={undefined}
+			readOnly={undefined}
+			aria-readonly={null}
+			required={undefined}
+			value={undefined}
+			onblur={noop}
+			onchange={noop}
+			onfocus={noop}
+		>
+			<option
+				value={testOptions[0].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[0].label}
+			</option>
+			<option
+				value={testOptions[1].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[1].label}
+			</option>
+			<option
+				value={testOptions[2].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[2].label}
+			</option>
+			<option
+				value={testOptions[3].value}
+				id={undefined}
+				disabled={undefined}
+				selected={undefined}
+			>
+				{testOptions[3].label}
+			</option>
+		</select>
+		<span classes={css.arrow}>
+			<Icon type="downIcon" theme={undefined} classes={undefined} />
+		</span>
+	</div>
+);
 
 const expectedNative = function(useTestProperties = false, withStates = false) {
 	const describedBy = useTestProperties ? { 'aria-describedby': 'foo' } : {};
@@ -308,6 +373,20 @@ registerSuite('Select', {
 					})
 				);
 				h.expect(() => expected(expectedNative(), { helperText: 'foo' }));
+			},
+
+			'helperText can be hidden'() {
+				const h = harness(() => (
+					<Select
+						getOptionValue={testProperties.getOptionValue}
+						getOptionLabel={testProperties.getOptionLabel}
+						options={testOptions}
+						useNativeElement={true}
+						helperTextHidden={true}
+					/>
+				));
+
+				h.expect(baseNativeAssertion.setChildren('@root', () => [nativeSelect()]));
 			},
 
 			'custom properties'() {

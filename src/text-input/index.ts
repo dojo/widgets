@@ -68,6 +68,7 @@ export interface TextInputProperties
 	maxLength?: number | string;
 	minLength?: number | string;
 	placeholder?: string;
+	helperTextHidden?: boolean;
 	helperText?: string;
 	value?: string;
 	valid?: { valid?: boolean; message?: string } | boolean;
@@ -300,7 +301,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			type = 'text',
 			value,
 			widgetId = this._uuid,
-			helperText
+			helperText,
+			helperTextHidden = false
 		} = this.properties;
 
 		this._validate();
@@ -384,7 +386,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							])
 					]
 				),
-				w(HelperText, { text: computedHelperText, valid })
+				!helperTextHidden && w(HelperText, { text: computedHelperText, valid })
 			]
 		);
 	}

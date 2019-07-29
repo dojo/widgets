@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 
@@ -133,53 +133,55 @@ const expected = function({
 	);
 };
 
-const baseTemplate = assertationTemplate(() => {
-	return v(
-		'div',
-		{
-			key: 'root',
-			role: 'presentation',
-			classes: [css.root, null, null, null, null, null, null, null, null]
-		},
-		[
-			v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
-				v('input', {
-					key: 'input',
-					classes: css.input,
-					id: '',
-					disabled: undefined,
-					'aria-invalid': null,
-					autocomplete: undefined,
-					maxlength: null,
-					minlength: null,
-					name: undefined,
-					placeholder: undefined,
-					readOnly: undefined,
-					'aria-readonly': null,
-					required: undefined,
-					type: 'text',
-					value: undefined,
-					focus: noop,
-					pattern: undefined,
-					onblur: noop,
-					onchange: noop,
-					onclick: noop,
-					onfocus: noop,
-					oninput: noop,
-					onkeydown: noop,
-					onkeypress: noop,
-					onkeyup: noop,
-					onmousedown: noop,
-					onmouseup: noop,
-					ontouchstart: noop,
-					ontouchend: noop,
-					ontouchcancel: noop
-				})
-			]),
-			w(HelperText, { text: undefined, valid: undefined })
-		]
+const baseAssertion = assertationTemplate(() => {
+	return (
+		<div
+			key="root"
+			role="presentation"
+			classes={[css.root, null, null, null, null, null, null, null, null]}
+		>
+			{input()}
+			<HelperText text={undefined} valid={undefined} />
+		</div>
 	);
 });
+
+const input = () => (
+	<div key="inputWrapper" role="presentation" classes={css.inputWrapper}>
+		<input
+			key="input"
+			classes={css.input}
+			id=""
+			disabled={undefined}
+			aria-invalid={null}
+			autocomplete={undefined}
+			maxlength={null}
+			minlength={null}
+			name={undefined}
+			placeholder={undefined}
+			readOnly={undefined}
+			aria-readonly={null}
+			required={undefined}
+			type="text"
+			value={undefined}
+			focus={noop}
+			pattern={undefined}
+			onblur={noop}
+			onchange={noop}
+			onclick={noop}
+			onfocus={noop}
+			oninput={noop}
+			onkeydown={noop}
+			onkeypress={noop}
+			onkeyup={noop}
+			onmousedown={noop}
+			onmouseup={noop}
+			ontouchstart={noop}
+			ontouchend={noop}
+			ontouchcancel={noop}
+		/>
+	</div>
+);
 
 registerSuite('TextInput', {
 	tests: {
@@ -398,6 +400,12 @@ registerSuite('TextInput', {
 			h.expect(() => expected({ helperText }));
 		},
 
+		'helperText can be hidden'() {
+			const h = harness(() => <TextInput helperTextHidden={true} />);
+
+			h.expect(baseAssertion.setChildren('@root', () => [input()]));
+		},
+
 		onValidate() {
 			const mockMeta = sinon.stub();
 			let validateSpy = sinon.spy();
@@ -509,7 +517,7 @@ registerSuite('TextInput', {
 
 		'leading property'() {
 			const leading = () => v('span', {}, ['A']);
-			const leadingTemplate = baseTemplate
+			const leadingTemplate = baseAssertion
 				.setProperty('@root', 'classes', [
 					css.root,
 					null,
@@ -521,9 +529,8 @@ registerSuite('TextInput', {
 					css.hasLeading,
 					null
 				])
-				.setChildren('@inputWrapper', [
-					v('span', { key: 'leading', classes: css.leading }, [leading()]),
-					...baseTemplate.getChildren('@inputWrapper')
+				.prepend('@inputWrapper', () => [
+					v('span', { key: 'leading', classes: css.leading }, [leading()])
 				]);
 			const h = harness(() => w(TextInput, { leading }));
 			h.expect(leadingTemplate);
@@ -531,7 +538,7 @@ registerSuite('TextInput', {
 
 		'trailing property'() {
 			const trailing = () => v('span', {}, ['Z']);
-			const trailingTemplate = baseTemplate
+			const trailingTemplate = baseAssertion
 				.setProperty('@root', 'classes', [
 					css.root,
 					null,
@@ -543,8 +550,7 @@ registerSuite('TextInput', {
 					null,
 					css.hasTrailing
 				])
-				.setChildren('@inputWrapper', [
-					...baseTemplate.getChildren('@inputWrapper'),
+				.append('@inputWrapper', () => [
 					v('span', { key: 'trailing', classes: css.trailing }, [trailing()])
 				]);
 			const h = harness(() => w(TextInput, { trailing }));

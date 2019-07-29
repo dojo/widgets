@@ -57,6 +57,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	getResultSelected?(result: any): boolean;
 	getResultValue?(result: any): string;
 	helperText?: string;
+	helperTextHidden?: boolean;
 	widgetId?: string;
 	inputProperties?: TextInputProperties;
 	valid?: { valid?: boolean; message?: string } | boolean;
@@ -323,7 +324,8 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			required,
 			value = '',
 			theme,
-			onValidate
+			onValidate,
+			helperTextHidden
 		} = this.properties;
 
 		const { valid } = this.validity;
@@ -350,7 +352,8 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			readOnly,
 			required,
 			theme,
-			value
+			value,
+			helperTextHidden
 		});
 	}
 
@@ -449,7 +452,8 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			results = [],
 			theme,
 			classes,
-			helperText
+			helperText,
+			helperTextHidden = false
 		} = this.properties;
 
 		const { valid, message } = this.validity;
@@ -510,7 +514,8 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					this.renderMenuButton(messages)
 				]
 			),
-			!this._open &&
+			!helperTextHidden &&
+				!this._open &&
 				w(HelperText, {
 					text: valid ? helperText : message,
 					valid

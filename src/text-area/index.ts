@@ -50,6 +50,7 @@ export interface TextareaProperties
 	label?: string;
 	labelHidden?: boolean;
 	helperText?: string;
+	helperTextHidden?: boolean;
 }
 
 @theme(css)
@@ -196,7 +197,8 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 			theme,
 			classes,
 			labelHidden,
-			helperText
+			helperText,
+			helperTextHidden = false
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -259,7 +261,7 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 						ontouchcancel: this._onTouchCancel
 					})
 				]),
-				w(HelperText, { text: helperText })
+				!helperTextHidden && w(HelperText, { text: helperText })
 			]
 		);
 	}

@@ -2,8 +2,9 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
 import Textarea from '../../index';
@@ -108,6 +109,50 @@ const expected = function(
 	);
 };
 
+const baseAssertion = assertionTemplate(() => (
+	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
+		{textarea()}
+		<HelperText text="" />
+	</div>
+));
+
+const textarea = () => (
+	<div classes={css.inputWrapper}>
+		<textarea
+			classes={css.input}
+			id=""
+			key="input"
+			cols="20"
+			disabled={undefined}
+			focus={noop}
+			aria-invalid={null}
+			maxlength={null}
+			minlength={null}
+			name={undefined}
+			placeholder={undefined}
+			readOnly={undefined}
+			aria-readonly={null}
+			required={undefined}
+			rows="2"
+			value={undefined}
+			wrap={undefined}
+			onblur={noop}
+			onchange={noop}
+			onclick={noop}
+			onfocus={noop}
+			oninput={noop}
+			onkeydown={noop}
+			onkeypress={noop}
+			onkeyup={noop}
+			onmousedown={noop}
+			onmouseup={noop}
+			ontouchstart={noop}
+			ontouchend={noop}
+			ontouchcancel={noop}
+		/>
+	</div>
+);
+
 registerSuite('Textarea', {
 	tests: {
 		'default properties'() {
@@ -194,6 +239,12 @@ registerSuite('Textarea', {
 		helperText() {
 			const h = harness(() => w(Textarea, { helperText: 'test' }));
 			h.expect(() => expected(false, {}, {}, false, 'test'));
+		},
+
+		'helperText can be hidden'() {
+			const h = harness(() => <Textarea helperTextHidden={true} />);
+
+			h.expect(baseAssertion.setChildren('@root', () => [textarea()]));
 		},
 
 		events() {

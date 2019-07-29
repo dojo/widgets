@@ -2,8 +2,9 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import { Keys } from '../../../common/util';
 
 import ComboBox from '../../index';
@@ -122,7 +123,8 @@ const getExpectedControls = function(
 				onFocus: noop,
 				onInput: noop,
 				onKeyDown: noop,
-				onValidate: undefined
+				onValidate: undefined,
+				helperTextHidden: undefined
 			}),
 			useTestProperties
 				? v(
@@ -277,6 +279,118 @@ const getExpectedVdom = function(
 		]
 	);
 };
+
+const baseAssertion = assertionTemplate(() => (
+	<div key="root" classes={[css.root, null, css.clearable, null, null, null]}>
+		{label()}
+		{controls()}
+		{helperTextNode()}
+	</div>
+));
+
+const label = () => (
+	<Label
+		classes={undefined}
+		disabled={undefined}
+		focused={false}
+		forId="foo"
+		hidden={undefined}
+		invalid={true}
+		key="label"
+		readOnly={undefined}
+		required={undefined}
+		theme={{}}
+	>
+		foo
+	</Label>
+);
+
+interface ControlOptions {
+	expanded?: boolean;
+	helperTextHidden?: boolean;
+}
+const controls = (options: ControlOptions = {}) => {
+	const { expanded = false, helperTextHidden } = options;
+	return (
+		<div
+			aria-expanded={`${expanded}`}
+			aria-haspopup="listbox"
+			aria-owns=""
+			classes={css.controls}
+			role="combobox"
+		>
+			<TextInput
+				key="textinput"
+				aria={{
+					activedescendant: '',
+					autocomplete: 'list'
+				}}
+				disabled={undefined}
+				focus={noop}
+				widgetId=""
+				valid={undefined}
+				readOnly={undefined}
+				required={undefined}
+				theme={{}}
+				classes={undefined}
+				value="one"
+				onBlur={noop}
+				onFocus={noop}
+				onInput={noop}
+				onKeyDown={noop}
+				onValidate={undefined}
+				helperTextHidden={helperTextHidden}
+			/>
+			<button
+				aria-hidden="true"
+				key="clear"
+				classes={css.clear}
+				disabled={undefined}
+				tabIndex={-1}
+				type="button"
+				onclick={noop}
+			>
+				<span classes={baseCss.visuallyHidden}>clear foo</span>
+				<Icon type="closeIcon" theme={{}} classes={undefined} />
+			</button>
+			<button
+				key="trigger"
+				aria-hidden="true"
+				classes={css.trigger}
+				disabled={undefined}
+				tabIndex={-1}
+				type="button"
+				onclick={noop}
+			>
+				<span classes={baseCss.visuallyHidden}>open foo</span>
+				<Icon type="downIcon" theme={{}} classes={undefined} />
+			</button>
+		</div>
+	);
+};
+
+const helperTextNode = (text?: string, valid?: boolean) => <HelperText text={text} valid={valid} />;
+
+const menu = () => (
+	<div key="dropdown" classes={css.dropdown} onmouseover={noop} onmousedown={noop}>
+		<Listbox
+			activeIndex={0}
+			widgetId=""
+			key="listbox"
+			visualFocus={false}
+			optionData={testOptions}
+			tabIndex={-1}
+			getOptionDisabled={undefined}
+			getOptionId={noop}
+			getOptionLabel={noop}
+			getOptionSelected={noop}
+			onActiveIndexChange={noop}
+			onOptionSelect={noop}
+			theme={{}}
+			classes={undefined}
+		/>
+	</div>
+);
 
 registerSuite('ComboBox', {
 	tests: {
@@ -633,7 +747,8 @@ registerSuite('ComboBox', {
 					onFocus: noop,
 					onInput: noop,
 					onKeyDown: noop,
-					onValidate: undefined
+					onValidate: undefined,
+					helperTextHidden: undefined
 				})
 			);
 		},
@@ -684,7 +799,8 @@ registerSuite('ComboBox', {
 					onFocus: noop,
 					onInput: noop,
 					onKeyDown: noop,
-					onValidate: undefined
+					onValidate: undefined,
+					helperTextHidden: undefined
 				})
 			);
 
@@ -766,7 +882,8 @@ registerSuite('ComboBox', {
 					onFocus: noop,
 					onInput: noop,
 					onKeyDown: noop,
-					onValidate: undefined
+					onValidate: undefined,
+					helperTextHidden: undefined
 				})
 			);
 		},
@@ -854,6 +971,34 @@ registerSuite('ComboBox', {
 					{ valid: undefined, message: undefined },
 					helperText
 				)
+			);
+		},
+
+		'helperText can be hidden'() {
+			const h = harness(() => <ComboBox {...testProperties} helperTextHidden={true} />);
+
+			let assertion = baseAssertion
+				.setChildren(':root', () => [label(), controls({ helperTextHidden: true })])
+				.setProperty('@textinput', 'helperTextHidden', true);
+			h.expect(assertion);
+
+			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
+
+			h.expect(
+				assertion
+					.setChildren(':root', () => [
+						label(),
+						controls({ expanded: true, helperTextHidden: true })
+					])
+					.setProperty(':root', 'classes', [
+						css.root,
+						css.open,
+						css.clearable,
+						null,
+						null,
+						null
+					])
+					.append(':root', () => [menu()])
 			);
 		},
 
