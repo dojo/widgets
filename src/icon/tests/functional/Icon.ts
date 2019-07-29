@@ -9,7 +9,7 @@ const DELAY = 300;
 
 function getPage(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#icon`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#icon`)
 		.setFindTimeout(5000);
 }
 

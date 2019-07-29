@@ -16,14 +16,15 @@
 	</style>
 </head>
 <body>
-	<script src="../../../node_modules/@dojo/framework/shim/util/amd.js"></script>
-	<script src="../../../node_modules/@dojo/loader/loader.js"></script>
+	<script src="../../../../../node_modules/@dojo/framework/shim/util/amd.js"></script>
+	<script src="../../../../../node_modules/@dojo/loader/loader.js"></script>
+	<link rel="stylesheet" href="../../../../../node_modules/@dojo/themes/dojo/index.css">
 	<link rel="stylesheet" href="./example.css">
 	<script>
 		require.config(shimAmdDependencies({
-			baseUrl: '../../../',
+			baseUrl: '../../../../../',
 			packages: [
-				{ name: 'src', location: '_build' },
+				{ name: 'src', location: 'dist/dev/src' },
 				{ name: 'cldrjs', location: 'node_modules/cldrjs' },
 				{ name: 'globalize', location: 'node_modules/globalize', main: 'dist/globalize' }
 			],

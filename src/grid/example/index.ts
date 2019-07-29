@@ -1,5 +1,5 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
 import Grid from '../../grid/index';
 import { createFetcher } from '../../grid/utils';
 import mockData from './mockData';

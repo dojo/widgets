@@ -1,8 +1,8 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/framework/widget-core/d';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
+import Focus from '@dojo/framework/core/meta/Focus';
 
 import Label from '../../../label/index';
 import Slider from '../../index';

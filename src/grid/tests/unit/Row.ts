@@ -1,7 +1,7 @@
 const { describe, it } = intern.getInterface('bdd');
 
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 import Row from '../../Row';
 
 import * as fixedCss from './../../styles/row.m.css';

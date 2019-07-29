@@ -1,14 +1,14 @@
-import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { DNode } from '@dojo/framework/core/interfaces';
 import { Keys } from '../common/util';
-import { reference } from '@dojo/framework/widget-core/diff';
-import { I18nMixin } from '@dojo/framework/widget-core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { reference } from '@dojo/framework/core/diff';
+import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import Focus from '@dojo/framework/core/meta/Focus';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { uuid } from '@dojo/framework/core/util';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 
 import Icon from '../icon/index';
 import Label from '../label/index';
@@ -19,7 +19,8 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
+import HelperText from '../helper-text/index';
 
 /**
  * @type ComboBoxProperties
@@ -31,6 +32,7 @@ import { customElement } from '@dojo/framework/widget-core/decorators/customElem
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label
  * @property getResultValue     Can be used to define a value returned by onChange when a given result is selected. Defaults to getResultLabel
+ * @property helpertext			Displays text at bottom of widget
  * @property widgetId           Optional id string for the combobox, set on the text input
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property invalid            Determines if this input is valid
@@ -54,9 +56,10 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	getResultLabel?(result: any): DNode;
 	getResultSelected?(result: any): boolean;
 	getResultValue?(result: any): string;
+	helperText?: string;
 	widgetId?: string;
 	inputProperties?: TextInputProperties;
-	invalid?: boolean;
+	valid?: { valid?: boolean; message?: string } | boolean;
 	isResultDisabled?(result: any): boolean;
 	onBlur?(value: string, key?: string | number): void;
 	onChange?(value: string, key?: string | number): void;
@@ -64,6 +67,7 @@ export interface ComboBoxProperties extends ThemedProperties, LabeledProperties,
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestResults?(key?: string | number): void;
 	onResultSelect?(result: any, key?: string | number): void;
+	onValidate?: (valid: boolean | undefined, message: string) => void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -85,14 +89,13 @@ export enum Operation {
 		'theme',
 		'classes',
 		'extraClasses',
-		'labelAfter',
 		'labelHidden',
 		'clearable',
 		'disabled',
 		'inputProperties',
-		'invalid',
+		'valid',
 		'isResultDisabled',
-		'labelAfter',
+		'helperText',
 		'labelHidden',
 		'openOnFocus',
 		'readOnly',
@@ -100,7 +103,15 @@ export enum Operation {
 		'results'
 	],
 	attributes: ['widgetId', 'label', 'value'],
-	events: ['onBlur', 'onChange', 'onFocus', 'onMenuChange', 'onRequestResults', 'onResultSelect']
+	events: [
+		'onBlur',
+		'onChange',
+		'onFocus',
+		'onMenuChange',
+		'onRequestResults',
+		'onResultSelect',
+		'onValidate'
+	]
 })
 export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
 	private _activeIndex = 0;
@@ -289,18 +300,17 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		this.invalidate();
 	}
 
-	protected getRootClasses(): (string | null)[] {
-		const { clearable, invalid } = this.properties;
-		const focus = this.meta(Focus).get('root');
+	protected get validity() {
+		const { valid = { valid: undefined, message: undefined } } = this.properties;
 
-		return [
-			css.root,
-			this._open ? css.open : null,
-			clearable ? css.clearable : null,
-			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null
-		];
+		if (typeof valid === 'boolean') {
+			return { valid, message: undefined };
+		}
+
+		return {
+			valid: valid.valid,
+			message: valid.message
+		};
 	}
 
 	protected renderInput(results: any[]): DNode {
@@ -309,12 +319,14 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			disabled,
 			widgetId = this._idBase,
 			inputProperties = {},
-			invalid,
 			readOnly,
 			required,
 			value = '',
-			theme
+			theme,
+			onValidate
 		} = this.properties;
+
+		const { valid } = this.validity;
 
 		return w(TextInput, {
 			...inputProperties,
@@ -326,7 +338,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					: null,
 				autocomplete: 'list'
 			},
-			valid: typeof invalid === 'boolean' ? !invalid : undefined,
+			valid,
 			disabled,
 			widgetId,
 			focus: this.shouldFocus,
@@ -334,6 +346,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			onFocus: this._onInputFocus,
 			onInput: this._onInput,
 			onKeyDown: this._onInputKeyDown,
+			onValidate,
 			readOnly,
 			required,
 			theme,
@@ -428,22 +441,39 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		const {
 			clearable = false,
 			widgetId = this._idBase,
-			invalid,
 			label,
 			readOnly,
 			required,
 			disabled,
 			labelHidden,
-			labelAfter,
 			results = [],
 			theme,
-			classes
+			classes,
+			helperText
 		} = this.properties;
+
+		const { valid, message } = this.validity;
+
 		const { messages } = this.localizeBundle(commonBundle);
 		const focus = this.meta(Focus).get('root');
 
 		const menu = this.renderMenu(results);
 		this._onMenuChange();
+
+		if (results.length === 0 && this._open === true) {
+			this._open = false;
+			this.invalidate();
+		}
+
+		const rootClasses = [
+			css.root,
+			this._open ? css.open : null,
+			clearable ? css.clearable : null,
+			focus.containsFocus ? css.focused : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null
+		];
+
 		this._wasOpen = this._open;
 
 		const controls = [
@@ -456,7 +486,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 							classes,
 							disabled,
 							focused: focus.containsFocus,
-							invalid,
+							invalid: !valid,
 							readOnly,
 							required,
 							hidden: labelHidden,
@@ -480,16 +510,21 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					this.renderMenuButton(messages)
 				]
 			),
+			!this._open &&
+				w(HelperText, {
+					text: valid ? helperText : message,
+					valid
+				}),
 			menu
 		];
 
 		return v(
 			'div',
 			{
-				classes: this.theme(this.getRootClasses()),
+				classes: this.theme(rootClasses),
 				key: 'root'
 			},
-			labelAfter ? controls.reverse() : controls
+			controls
 		);
 	}
 }

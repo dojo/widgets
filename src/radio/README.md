@@ -20,9 +20,9 @@ If the `label` property is not used, we recommend creating a separate `label` an
 // Example usage
 w(Radio, {
 	checked: this.state.radioValue === 'radio1-1',
-	describedBy: 'instructions',
+	aria: { describedBy: 'instructions' },
 	label: 'Choice A',
-	name: 'radio1'
+	name: 'radio1',
 	value: 'radio1-1',
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ radioValue: event.target.value });
@@ -30,9 +30,9 @@ w(Radio, {
 }),
 w(Radio, {
 	checked: this.state.radioValue === 'radio1-2',
-	describedBy: 'instructions',
+	aria: { describedBy: 'instructions' },
 	label: 'Choice B',
-	name: 'radio1'
+	name: 'radio1',
 	value: 'radio1-2',
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
 		this.setState({ radioValue: event.target.value });

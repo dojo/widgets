@@ -5,7 +5,7 @@ import Button from '../../../button/index';
 import Icon from '../../../icon/index';
 import { Keys } from '../../../common/util';
 
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 import { stub } from 'sinon';
 import {
 	compareId,

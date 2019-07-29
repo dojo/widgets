@@ -10,7 +10,7 @@ const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#tab-controller`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#tab-controller`)
 		.setFindTimeout(5000);
 }
 
@@ -29,7 +29,7 @@ registerSuite('TabController', {
 		return getPage(this.remote)
 			.findByCssSelector(`.${css.root}`)
 			.findByCssSelector(`.${css.tabButton}:last-child`)
-			.getProperty('className')
+			.getAttribute('class')
 			.then((className: string) => {
 				assert.notInclude(
 					className,
@@ -39,15 +39,7 @@ registerSuite('TabController', {
 			})
 			.click()
 			.end()
-			.findByCssSelector(`.${css.tabButton}:last-child`)
-			.getProperty('className')
-			.then((className: string) => {
-				assert.include(
-					className,
-					css.activeTabButton,
-					'The last tab should be selected after being clicked.'
-				);
-			})
+			.findByCssSelector(`.${css.root} .${css.activeTabButton}`)
 			.end()
 			.end();
 	},

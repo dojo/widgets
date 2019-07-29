@@ -1,8 +1,8 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { theme, ThemedMixin } from '@dojo/framework/widget-core/mixins/Themed';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { theme, ThemedMixin } from '@dojo/framework/core/mixins/Themed';
 import * as css from '../theme/helper-text.m.css';
-import { v } from '@dojo/framework/widget-core/d';
-import { VNode } from '@dojo/framework/widget-core/interfaces';
+import { v } from '@dojo/framework/core/vdom';
+import { VNode } from '@dojo/framework/core/interfaces';
 
 export interface HelperTextProperties {
 	text?: string;

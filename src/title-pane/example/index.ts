@@ -1,5 +1,5 @@
-import { v, w } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 import TitlePane from '../../title-pane/index';
 

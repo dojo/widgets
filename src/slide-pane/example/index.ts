@@ -1,6 +1,6 @@
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { DNode } from '@dojo/framework/core/interfaces';
+import { v, w } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import SlidePane, { Align } from '../../slide-pane/index';
 
 export default class App extends WidgetBase {

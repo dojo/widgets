@@ -9,7 +9,7 @@ const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#tooltip`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#tooltip`)
 		.setFindTimeout(5000);
 }
 

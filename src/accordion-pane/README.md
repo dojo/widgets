@@ -26,7 +26,7 @@ The following CSS classes are used to style the `AccordionPane` widget and shoul
 ```typescript
 import AccordionPane from '@dojo/widgets/accordion-pane';
 import TitlePane from '@dojo/widgets/title-pane';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(AccordionPane, {
 	onRequestOpen: (key: string) => {

@@ -25,7 +25,7 @@ The following CSS classes are used to style the `Toolbar` widget and should be p
 *Basic Example*
 ```typescript
 import Toolbar from '@dojo/widgets/toolbar';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(Toolbar, {
 	heading: 'My Site',
@@ -40,7 +40,7 @@ w(Toolbar, {
 *Fixed position Example*
 ```typescript
 import Toolbar from '@dojo/widgets/toolbar';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 // wrap toolbar in a fixed element
 v('div', { styles: { position: fixed, top: 0 } }, [

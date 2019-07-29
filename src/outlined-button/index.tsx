@@ -1,11 +1,11 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { ThemedMixin, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { tsx } from '@dojo/framework/widget-core/tsx';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { ThemedMixin, theme } from '@dojo/framework/core/mixins/Themed';
+import { tsx } from '@dojo/framework/core/vdom';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 import Button, { ButtonProperties } from '../button/index';
 import * as css from '../theme/outlined-button.m.css';
-import { CustomElementChildType } from '@dojo/framework/widget-core/registerCustomElement';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { CustomElementChildType } from '@dojo/framework/core/registerCustomElement';
+import { DNode } from '@dojo/framework/core/interfaces';
 
 export interface OutlinedButtonProperties extends ButtonProperties {}
 

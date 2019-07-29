@@ -12,11 +12,11 @@ import * as textinputCss from '../../../theme/text-input.m.css';
 import { uuid } from '@dojo/framework/core/util';
 
 const axe = services.axe;
-const DELAY = 300;
+const DELAY = 1000;
 
 function getPage(remote: Remote, exampleId: string) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#time-picker`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#time-picker`)
 		.setFindTimeout(5000)
 		.findById(exampleId);
 }
@@ -140,6 +140,7 @@ registerSuite('TimePicker', {
 			.then((isEqual) => {
 				assert.isTrue(isEqual);
 			})
+			.setFindTimeout(DELAY)
 			.findByCssSelector(`.${comboboxCss.dropdown}`)
 			.getSize()
 			.then(({ height }) => {
@@ -157,12 +158,6 @@ registerSuite('TimePicker', {
 					'',
 					'The input value should not contain the disabled value.'
 				);
-			})
-			.end()
-			.findByCssSelector(`.${comboboxCss.dropdown}`)
-			.getSize()
-			.then(({ height }) => {
-				assert.isAbove(height, 0, 'The dropdown should remain open.');
 			})
 			.end();
 	},

@@ -1,7 +1,7 @@
 const { describe, it } = intern.getInterface('bdd');
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
-import { tsx } from '@dojo/framework/widget-core/tsx';
+import { tsx } from '@dojo/framework/core/vdom';
 import Card from '../../index';
 import Button from '../../../button/index';
 import * as css from '../../../theme/card.m.css';

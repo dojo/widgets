@@ -1,6 +1,6 @@
 import { Set } from '@dojo/framework/shim/Set';
-import { w, v } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { w, v } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { from } from '@dojo/framework/shim/array';
 
 import AccordionPane from '../../accordion-pane/index';

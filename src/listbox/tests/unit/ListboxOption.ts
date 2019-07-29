@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 
 import ListboxOption from '../../ListboxOption';
 import * as css from '../../../theme/listbox.m.css';
@@ -30,7 +30,7 @@ registerSuite('ListboxOption', {
 						classes: [],
 						id: 'bar',
 						role: 'option',
-						onclick: noop
+						onmousedown: noop
 					},
 					['foo']
 				)
@@ -60,7 +60,7 @@ registerSuite('ListboxOption', {
 						classes: [css.option],
 						id: 'bar',
 						role: 'option',
-						onclick: noop
+						onmousedown: noop
 					},
 					['foo']
 				)
@@ -80,7 +80,7 @@ registerSuite('ListboxOption', {
 				})
 			);
 
-			h.trigger(`.${css.option}`, 'onclick', stubEvent);
+			h.trigger(`.${css.option}`, 'onmousedown', stubEvent);
 			assert.isTrue(onClick.calledWith('baz', 1));
 		}
 	}

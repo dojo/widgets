@@ -9,7 +9,7 @@ const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#accordion-pane`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#accordion-pane`)
 		.setFindTimeout(5000);
 }
 

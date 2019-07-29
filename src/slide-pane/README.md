@@ -13,7 +13,7 @@ Dojo's `SlidePane` widget provides a component capable of moving content into or
 
 *Basic Example*
 ```typescript
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 import SlidePane from '@dojo/widgets/slide-pane';
 
 w(SlidePane, {
@@ -25,7 +25,7 @@ w(SlidePane, {
 
 *Right-aligned*
 ```typescript
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 import SlidePane, { Align } from '@dojo/widgets/slide-pane';
 
 w(SlidePane, {

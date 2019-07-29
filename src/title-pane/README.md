@@ -36,7 +36,7 @@ The following CSS classes are used to style the `TitlePane` widget and should be
 *Basic Example*
 ```typescript
 import TitlePane from '@dojo/widgets/title-pane';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(Titlepane, {
 	title: 'My Pane',
@@ -50,7 +50,7 @@ w(Titlepane, {
 *Basic Example*
 ```typescript
 import TitlePane from '@dojo/widgets/title-pane';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(Titlepane, {
 	title: 'My Pane',

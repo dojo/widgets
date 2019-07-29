@@ -3,8 +3,8 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/widget-core/d';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { v, w } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
 
 import TabController, { Align } from '../../index';
 import TabButton from '../../TabButton';

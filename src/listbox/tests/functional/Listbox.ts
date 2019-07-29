@@ -14,7 +14,7 @@ const LIST_BOX_3_SELECTOR = '#listbox3';
 
 function getPage(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#listbox`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#listbox`)
 		.setFindTimeout(5000);
 }
 

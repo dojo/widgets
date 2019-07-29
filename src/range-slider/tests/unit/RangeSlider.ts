@@ -1,13 +1,13 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 
 import Label from '../../../label/index';
 import RangeSlider from '../../index';
 import * as css from '../../../theme/range-slider.m.css';
 import * as fixedCss from '../../styles/range-slider.m.css';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
+import Focus from '@dojo/framework/core/meta/Focus';
 import {
 	compareId,
 	compareForId,
@@ -18,7 +18,7 @@ import {
 	compareWidgetId,
 	compareAriaLabelledBy
 } from '../../../common/tests/support/test-helpers';
-import Dimensions from '@dojo/framework/widget-core/meta/Dimensions';
+import Dimensions from '@dojo/framework/core/meta/Dimensions';
 
 const compareFor = {
 	selector: '*',

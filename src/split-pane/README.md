@@ -25,7 +25,7 @@ The following CSS classes are used to style the `SplitPane` widget and should be
 *Basic Row Example*
 ```typescript
 import SplitPane, { Direction } from '@dojo/widgets/split-pane';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(SplitPane, {
 	key: 'splitpane1',
@@ -43,7 +43,7 @@ w(SplitPane, {
 *Column example that collapses at 600px*
 ```typescript
 import SplitPane, { Direction } from '@dojo/widgets/split-pane';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(SplitPane, {
 	key: 'splitpane2',
@@ -62,7 +62,7 @@ w(SplitPane, {
 *Nested SplitPanes*
 ```typescript
 import SplitPane, { Direction } from '@dojo/widgets/split-pane';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 w(SplitPane, {
 	key: 'nested',

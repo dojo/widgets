@@ -11,7 +11,7 @@ Dojo's `Button` widget creates a `<button>` element
 
 ### Accessibility Features
 
-- The basic button provides a strongly typed `type` property, as well as `describedBy` and `disabled`
+- The basic button provides a strongly typed `type` property, as well as `disabled`
 - Setting `pressed` to create a toggle button handles `aria-pressed`
 - Creating a popup button with `popup` sets `aria-haspopup`, `aria-controls`, and `aria-expanded`
 
@@ -27,7 +27,7 @@ w(Button, {
 // Toggle button
 // pressed must be a boolean to correctly set aria-pressed
 w(Button, {
-	describedBy: 'instructions',
+	aria: { describedBy: 'instructions' },
 	pressed: !!this.state.buttonPressed,
 	onClick: (event: MouseEvent) => {
 		this.setState({ buttonPressed: !this.state.buttonPressed });

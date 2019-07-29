@@ -2,7 +2,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 const { registerSuite } = intern.getInterface('object');
 
-import { tsx } from '@dojo/framework/widget-core/tsx';
+import { tsx } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 
 import OutlinedButton from '../../index';

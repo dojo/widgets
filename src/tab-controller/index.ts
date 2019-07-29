@@ -1,17 +1,17 @@
 import { assign } from '@dojo/framework/shim/object';
-import { DNode, WNode } from '@dojo/framework/widget-core/interfaces';
+import { DNode, WNode } from '@dojo/framework/core/interfaces';
 import Tab, { TabProperties } from '../tab/index';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import TabButton from './TabButton';
 import { uuid } from '@dojo/framework/core/util';
 import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * Enum for tab button alignment

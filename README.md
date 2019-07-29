@@ -185,11 +185,13 @@ Not all widgets include these extension points, and some have additional overrid
 We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
 Contributing Guidelines and Style Guide.
 
+Note that all changes to widgets should work with the [dojo theme](https://github.com/dojo/themes/). To test this start the example page (instructions at [Installation](#installation) section) and select the dojo option at the top of the page.
+
 ### Installation
 
 To start working with this package, clone the repository and run `npm install`.
 
-In order to build the project run `grunt dev` or `grunt dist`.
+In order to build the project run `npm run build`.
 
 ### Testing
 
@@ -199,25 +201,18 @@ Test cases MUST be written using [Intern](https://theintern.github.io) using the
 
 To test locally in node run:
 
-`grunt test`
+`npm run test`
 
 To test against browsers with a local selenium server run:
 
-`grunt test:local`
+`npm run test:functional`
 
-To test against BrowserStack or Sauce Labs run:
-
-`grunt test:browserstack`
-
-or
-
-`grunt test:saucelabs`
 
 ### Viewing widget examples locally
 
 Each Dojo widget includes functioning example code so you can view the widget. To view individual widget example:
 
-1. Run `grunt dev` in your terminal
+1. Run `npm run build:test` in your terminal
 2. Run `npm run examples`
 2. Open the newly built project at `http://localhost:5000/_build/common/example/` in your web browser
 3. By default, no widget is selected, open the dropdown to select a widget
@@ -225,7 +220,7 @@ Each Dojo widget includes functioning example code so you can view the widget. T
 
 #### Watching widget example code
 
-Running `grunt dev` each time you wish to view a small change can be tedious, instead to have your files watched run:
+Running `npm run build` each time you wish to view a small change can be tedious, instead to have your files watched run:
 
 ```
 tsc -w

@@ -1,12 +1,12 @@
 import { padStart } from '@dojo/framework/shim/string';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
-import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/widget-core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/widget-core/mixins/Focus';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { diffProperty } from '@dojo/framework/widget-core/decorators/diffProperty';
-import { auto } from '@dojo/framework/widget-core/diff';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
+import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { auto } from '@dojo/framework/core/diff';
+import Focus from '@dojo/framework/core/meta/Focus';
 import ComboBox from '../combobox/index';
 import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
@@ -14,7 +14,7 @@ import { TextInputProperties } from '../text-input/index';
 import Label from '../label/index';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/time-picker.m.css';
-import { customElement } from '@dojo/framework/widget-core/decorators/customElement';
+import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;
@@ -315,7 +315,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			widgetId,
 			focus: this.shouldFocus,
 			inputProperties,
-			invalid,
+			valid: !invalid,
 			isResultDisabled: isOptionDisabled,
 			label,
 			labelAfter,

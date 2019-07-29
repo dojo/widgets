@@ -1,5 +1,5 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { v, w } from '@dojo/framework/widget-core/d';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
 import Textarea from '../../text-area/index';
 
 export default class App extends WidgetBase {
@@ -45,7 +45,7 @@ export default class App extends WidgetBase {
 					required: true,
 					value: this._value2,
 					invalid: this._invalid,
-					onChange: (value: string) => {
+					onInput: (value: string) => {
 						this._value2 = value;
 						this._invalid = value.trim().length === 0;
 						this.invalidate();

@@ -33,7 +33,7 @@ Option text is handled through the `getOptionLabel` property. Localization is ha
 *Basic Listbox*
 ```typescript
 import Listbox from '@dojo/widgets/listbox';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 interface OptionData {
 	disabled: boolean;
@@ -70,7 +70,7 @@ w(Listbox, {
 *Multi-select Listbox*
 ```typescript
 import Listbox from '@dojo/widgets/listbox';
-import { w } from '@dojo/framework/widget-core/d';
+import { w } from '@dojo/framework/core/vdom';
 
 interface OptionData {
 	disabled: boolean;

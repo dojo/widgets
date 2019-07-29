@@ -1,8 +1,8 @@
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/widget-core/mixins/Themed';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
-import { v } from '@dojo/framework/widget-core/d';
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import Focus from '@dojo/framework/core/meta/Focus';
+import { v } from '@dojo/framework/core/vdom';
+import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/calendar.m.css';
 
 /**

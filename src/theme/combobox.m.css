@@ -29,7 +29,7 @@
 	cursor: pointer;
 	border: none;
 	background: none;
-	top: 50%;
+	top: .5rem;
 	transform: translateY(-50%);
 	padding: 0;
 }

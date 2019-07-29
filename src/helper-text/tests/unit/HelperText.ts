@@ -1,6 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 
-import { v, w } from '@dojo/framework/widget-core/d';
+import { v, w } from '@dojo/framework/core/vdom';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 import * as css from '../../../theme/helper-text.m.css';
 import HelperText from '../../index';

@@ -1,8 +1,8 @@
-import { DNode } from '@dojo/framework/widget-core/interfaces';
+import { DNode } from '@dojo/framework/core/interfaces';
 import { includes } from '@dojo/framework/shim/array';
 import { deepAssign } from '@dojo/framework/core/util';
-import { v, w } from '@dojo/framework/widget-core/d';
-import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import Tab from '../../tab/index';
 import TabController, { Align } from '../../tab-controller/index';
 

@@ -2,8 +2,8 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
-import { v, w, isWNode } from '@dojo/framework/widget-core/d';
-import Focus from '@dojo/framework/widget-core/meta/Focus';
+import { v, w, isWNode } from '@dojo/framework/core/vdom';
+import Focus from '@dojo/framework/core/meta/Focus';
 
 import Dialog, { DialogProperties } from '../../index';
 import Icon from '../../../icon/index';
@@ -399,17 +399,6 @@ registerSuite('Dialog', {
 			assert.isTrue(
 				onRequestClose.calledOnce,
 				'onRequestClose handler called when close button is clicked'
-			);
-
-			properties = {
-				closeable: false,
-				open: true,
-				onRequestClose
-			};
-			h.trigger(`.${css.close}`, 'onclick', stubEvent);
-			assert.isTrue(
-				onRequestClose.calledOnce,
-				'onRequestClose handler not called when closeable is false'
 			);
 		},
 

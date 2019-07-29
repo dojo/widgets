@@ -12,7 +12,7 @@ const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
-		.get(`http://localhost:9000/_build/common/example/?id=${uuid()}#text-area`)
+		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#text-area`)
 		.setFindTimeout(5000);
 }
 
@@ -146,15 +146,19 @@ registerSuite('Textarea', {
 				.end()
 				.end()
 				// focus another input
-				.findByCssSelector(`#example-t1 .${css.root} .${css.input}`)
+				.findByCssSelector(`#example-t3 .${css.root} .${css.input}`)
 				.click()
+				.type(keys.SPACE)
 				.end()
 				.sleep(500)
 				.findByCssSelector(`#example-t3 .${css.root}`)
-				.getProperty('className')
+				.getAttribute('class')
 				.then((className: string) => {
-					assert.notInclude(className, css.valid);
-					assert.include(className, css.invalid);
+					assert.include(
+						className,
+						css.invalid,
+						'The third text area should be invalid until a user types'
+					);
 				})
 				.end()
 		);
