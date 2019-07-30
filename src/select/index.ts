@@ -33,23 +33,23 @@ import { customElement } from '@dojo/framework/core/decorators/customElement';
  * @property useNativeElement  Use the native <select> element if true
  * @property value           The current value
  */
-export interface SelectProperties
+export interface SelectProperties<T = any>
 	extends ThemedProperties,
 		InputProperties,
 		FocusProperties,
 		CustomAriaProperties {
-	getOptionDisabled?(option: any, index: number): boolean;
-	getOptionId?(option: any, index: number): string;
-	getOptionLabel?(option: any): DNode;
-	getOptionText?(option: any): string;
-	getOptionSelected?(option: any, index: number): boolean;
-	getOptionValue?(option: any, index: number): string;
+	getOptionDisabled?(option: T, index: number): boolean;
+	getOptionId?(option: T, index: number): string;
+	getOptionLabel?(option: T): DNode;
+	getOptionText?(option: T): string;
+	getOptionSelected?(option: T, index: number): boolean;
+	getOptionValue?(option: T, index: number): string;
 	helperText?: string;
-	options?: any[];
+	options?: T[];
 	placeholder?: string;
 	useNativeElement?: boolean;
 	onBlur?(key?: string | number): void;
-	onChange?(option: any, key?: string | number): void;
+	onChange?(option: T, key?: string | number): void;
 	onFocus?(key?: string | number): void;
 	value?: string;
 	labelHidden?: boolean;
@@ -82,7 +82,7 @@ export interface SelectProperties
 	attributes: ['widgetId', 'placeholder', 'label', 'value', 'helperText'],
 	events: ['onBlur', 'onChange', 'onFocus']
 })
-export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties> {
+export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties<T>> {
 	private _focusedIndex!: number;
 	private _focusNode = 'trigger';
 	private _ignoreBlur = false;
@@ -91,15 +91,20 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 	private _inputText = '';
 	private _resetInputTextTimer: any;
 
-	private _getOptionLabel(option: any) {
+	private _getOptionLabel(option: T) {
 		const { getOptionLabel } = this.properties;
 		const fallback = option ? `${option}` : '';
 		return getOptionLabel ? getOptionLabel(option) : fallback;
 	}
 
-	private _getOptionSelected = (option: any, index: number) => {
+	private _getOptionSelected = (option: T, index: number) => {
 		const { getOptionValue, value } = this.properties;
-		return getOptionValue ? getOptionValue(option, index) === value : option === value;
+		if (getOptionValue) {
+			return getOptionValue(option, index) === value;
+		} else if (typeof option === 'string') {
+			return option === value;
+		}
+		return false;
 	};
 
 	private _getSelectedIndexOnInput(event: KeyboardEvent) {
@@ -143,9 +148,14 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		const { key, getOptionValue, options = [], onChange } = this.properties;
 		event.stopPropagation();
 		const value = (<HTMLInputElement>event.target).value;
-		const option = find(options, (option: any, index: number) =>
-			getOptionValue ? getOptionValue(option, index) === value : option === value
-		);
+		const option = find(options, (option: T, index: number) => {
+			if (getOptionValue) {
+				return getOptionValue(option, index) === value;
+			} else if (typeof option === 'string') {
+				return option === value;
+			}
+			return false;
+		});
 		option && onChange && onChange(option, key);
 	}
 
@@ -339,7 +349,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 								this._focusedIndex = index;
 								this.invalidate();
 							},
-							onOptionSelect: (option: any) => {
+							onOptionSelect: (option: T) => {
 								onChange && onChange(option, key);
 								this._closeSelect();
 								this.focus();
@@ -374,7 +384,7 @@ export class Select extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties
 		let label: DNode;
 		let isPlaceholder = false;
 
-		const selectedOption = find(options, (option: any, index: number) => {
+		const selectedOption = find(options, (option: T, index: number) => {
 			return getOptionSelected(option, index);
 		});
 
