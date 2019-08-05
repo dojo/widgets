@@ -212,7 +212,7 @@ To test against browsers with a local selenium server run:
 
 Each Dojo widget includes functioning example code so you can view the widget. To view individual widget example:
 
-1. Run `npm run build:test` in your terminal
+1. Run `npm run clean && npm run build:test` in your terminal
 2. Run `npm run examples`
 2. Open the newly built project at `http://localhost:5000/_build/common/example/` in your web browser
 3. By default, no widget is selected, open the dropdown to select a widget
@@ -223,7 +223,7 @@ Each Dojo widget includes functioning example code so you can view the widget. T
 Running `npm run build` each time you wish to view a small change can be tedious, instead to have your files watched run:
 
 ```
-tsc -w
+npm run build:watch
 ```
 
 With that command, TypeScript watches for changes and recompiles when necessary.
