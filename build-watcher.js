@@ -22,19 +22,14 @@ server.listen(5000, () => {
 
 
 // Start watching files
-let fsWait = false;
 watcher.on('raw', function(event, path) {
-	if (fsWait) return;
-	fsWait = setTimeout(() => {
-		fsWait = false;
-	}, 100)
 	if (!path.endsWith(watchIgnore)) {
 		log(`Changes detected at ${path}`);
 		exec("npm run clean && npm run build:test", (err, stdout) => {
 			if (err) {
 			  console.error(err)
 			} else {
-			 console.log(`Compiling Complete`);
+			 console.log(`Rebuild complete`);
 			}
 		  });
 	}
