@@ -221,6 +221,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			return;
 		}
 
+		this._state.dirty = true;
 		let { valid, message = '' } = this.meta(InputValidity).get('input', value);
 		if (valid && customValidator) {
 			const customValid = customValidator(value);
