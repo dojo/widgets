@@ -3,13 +3,13 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
+import InputValidity from '@dojo/framework/core/meta/InputValidity';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
 import TextInput from '../../index';
-import InputValidity from '../../../common/InputValidity';
 import * as css from '../../../theme/text-input.m.css';
 import {
 	compareForId,
@@ -133,53 +133,55 @@ const expected = function({
 	);
 };
 
-const baseTemplate = assertationTemplate(() => {
-	return v(
-		'div',
-		{
-			key: 'root',
-			role: 'presentation',
-			classes: [css.root, null, null, null, null, null, null, null, null]
-		},
-		[
-			v('div', { key: 'inputWrapper', role: 'presentation', classes: css.inputWrapper }, [
-				v('input', {
-					key: 'input',
-					classes: css.input,
-					id: '',
-					disabled: undefined,
-					'aria-invalid': null,
-					autocomplete: undefined,
-					maxlength: null,
-					minlength: null,
-					name: undefined,
-					placeholder: undefined,
-					readOnly: undefined,
-					'aria-readonly': null,
-					required: undefined,
-					type: 'text',
-					value: undefined,
-					focus: noop,
-					pattern: undefined,
-					onblur: noop,
-					onchange: noop,
-					onclick: noop,
-					onfocus: noop,
-					oninput: noop,
-					onkeydown: noop,
-					onkeypress: noop,
-					onkeyup: noop,
-					onmousedown: noop,
-					onmouseup: noop,
-					ontouchstart: noop,
-					ontouchend: noop,
-					ontouchcancel: noop
-				})
-			]),
-			w(HelperText, { text: undefined, valid: undefined })
-		]
+const baseAssertion = assertationTemplate(() => {
+	return (
+		<div
+			key="root"
+			role="presentation"
+			classes={[css.root, null, null, null, null, null, null, null, null]}
+		>
+			{input()}
+			<HelperText assertion-key="helperText" text={undefined} valid={undefined} />
+		</div>
 	);
 });
+
+const input = () => (
+	<div key="inputWrapper" role="presentation" classes={css.inputWrapper}>
+		<input
+			key="input"
+			classes={css.input}
+			id=""
+			disabled={undefined}
+			aria-invalid={null}
+			autocomplete={undefined}
+			maxlength={null}
+			minlength={null}
+			name={undefined}
+			placeholder={undefined}
+			readOnly={undefined}
+			aria-readonly={null}
+			required={undefined}
+			type="text"
+			value={undefined}
+			focus={noop}
+			pattern={undefined}
+			onblur={noop}
+			onchange={noop}
+			onclick={noop}
+			onfocus={noop}
+			oninput={noop}
+			onkeydown={noop}
+			onkeypress={noop}
+			onkeyup={noop}
+			onmousedown={noop}
+			onmouseup={noop}
+			ontouchstart={noop}
+			ontouchend={noop}
+			ontouchcancel={noop}
+		/>
+	</div>
+);
 
 registerSuite('TextInput', {
 	tests: {
@@ -383,6 +385,12 @@ registerSuite('TextInput', {
 			mockMeta.withArgs(Focus).returns({
 				get: mockFocusGet
 			});
+			mockMeta.withArgs(InputValidity).returns({
+				get: () => ({
+					valid: undefined,
+					message: ''
+				})
+			});
 			const h = harness(() => w(MockMetaMixin(TextInput, mockMeta), {}));
 			h.expect(() => expected({ focused: true }));
 		},
@@ -509,7 +517,7 @@ registerSuite('TextInput', {
 
 		'leading property'() {
 			const leading = () => v('span', {}, ['A']);
-			const leadingTemplate = baseTemplate
+			const leadingTemplate = baseAssertion
 				.setProperty('@root', 'classes', [
 					css.root,
 					null,
@@ -521,9 +529,8 @@ registerSuite('TextInput', {
 					css.hasLeading,
 					null
 				])
-				.setChildren('@inputWrapper', [
-					v('span', { key: 'leading', classes: css.leading }, [leading()]),
-					...baseTemplate.getChildren('@inputWrapper')
+				.prepend('@inputWrapper', () => [
+					v('span', { key: 'leading', classes: css.leading }, [leading()])
 				]);
 			const h = harness(() => w(TextInput, { leading }));
 			h.expect(leadingTemplate);
@@ -531,7 +538,7 @@ registerSuite('TextInput', {
 
 		'trailing property'() {
 			const trailing = () => v('span', {}, ['Z']);
-			const trailingTemplate = baseTemplate
+			const trailingTemplate = baseAssertion
 				.setProperty('@root', 'classes', [
 					css.root,
 					null,
@@ -543,8 +550,7 @@ registerSuite('TextInput', {
 					null,
 					css.hasTrailing
 				])
-				.setChildren('@inputWrapper', [
-					...baseTemplate.getChildren('@inputWrapper'),
+				.append('@inputWrapper', () => [
 					v('span', { key: 'trailing', classes: css.trailing }, [trailing()])
 				]);
 			const h = harness(() => w(TextInput, { trailing }));
@@ -610,6 +616,147 @@ registerSuite('TextInput', {
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
 			h.trigger('@input', 'ontouchcancel', stubEvent);
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
+		},
+
+		'handles value changes from outside the DOM'() {
+			const clock = sinon.useFakeTimers();
+			let editedValues: undefined | { required: string } = undefined;
+			let values = { required: 'Initial' };
+			let validity:
+				| boolean
+				| {
+						valid?: boolean | undefined;
+						message?: string | undefined;
+				  }
+				| undefined;
+
+			const mockMeta = sinon.stub();
+
+			const inputValidity = new InputValidity({
+				invalidate: () => {},
+				nodeHandler: {} as any,
+				bind: {} as any
+			});
+
+			mockMeta.withArgs(InputValidity).returns({
+				getNode: () => undefined,
+				get: inputValidity.get,
+				invalidate: () => {}
+			});
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+			let placeholder: string | undefined;
+			const h = harness(() =>
+				w(MockMetaMixin(TextInput, mockMeta), {
+					widgetId: 'required',
+					required: true,
+					onInput: (value) => {
+						editedValues = {
+							...values,
+							...editedValues,
+							required: value as string
+						};
+					},
+					value: editedValues ? editedValues.required : values.required,
+					valid: validity,
+					onValidate: (valid, message) => (validity = { valid, message }),
+					placeholder
+				})
+			);
+
+			let assertion = baseAssertion
+				.setProperty(':root', 'classes', [
+					css.root,
+					null,
+					null,
+					null,
+					null,
+					null,
+					css.required,
+					null,
+					null
+				])
+				.setProperty('@input', 'required', true)
+				.setProperty('@input', 'value', 'Initial');
+			h.expect(assertion);
+
+			h.trigger('@input', 'oninput', { ...stubEvent, ...{ target: { value: '' } } });
+			const invalidateMock = sinon.mock();
+			mockMeta.withArgs(InputValidity).returns({
+				getNode: () => ({
+					value: '',
+					validity: {
+						valid: false
+					},
+					validationMessage: 'Please fill out this field.'
+				}),
+				get: inputValidity.get,
+				invalidate: invalidateMock
+			});
+			h.expect(assertion.setProperty('@input', 'value', ''));
+
+			const invalidAssertion = assertion
+				.setProperty(':root', 'classes', [
+					css.root,
+					null,
+					null,
+					css.invalid,
+					null,
+					null,
+					css.required,
+					null,
+					null
+				])
+				.setProperty('@input', 'aria-invalid', 'true')
+				.setProperty('~helperText', 'text', 'Please fill out this field.')
+				.setProperty('~helperText', 'valid', false)
+				.setProperty('@input', 'value', '');
+			h.expect(invalidAssertion);
+
+			editedValues = undefined;
+			h.expect(invalidAssertion.setProperty('@input', 'value', 'Initial'));
+
+			assert.isTrue(invalidateMock.notCalled, 'Invalidate should not yet have been called');
+			clock.tick(1);
+			assert.isTrue(invalidateMock.called, 'Invalidate should be called one tick later');
+
+			mockMeta.withArgs(InputValidity).returns({
+				getNode: () => ({
+					value: 'Initial',
+					validity: {
+						valid: true
+					},
+					validationMessage: ''
+				}),
+				get: inputValidity.get,
+				invalidate: () => {}
+			});
+			placeholder = ''; // Force render
+			h.expect(
+				invalidAssertion
+					.setProperty('@input', 'value', 'Initial')
+					.setProperty('@input', 'placeholder', '')
+			);
+
+			placeholder = undefined;
+			assert.deepEqual(validity, { valid: true, message: '' }, 'Input should be valid');
+			h.expect(
+				assertion
+					.setProperty(':root', 'classes', [
+						css.root,
+						null,
+						null,
+						null,
+						css.valid,
+						null,
+						css.required,
+						null,
+						null
+					])
+					.setProperty('~helperText', 'valid', true)
+			);
+			clock.restore();
 		}
 	}
 });
