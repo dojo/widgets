@@ -5,7 +5,11 @@ import Textarea from '../../text-area/index';
 export default class App extends WidgetBase {
 	private _value1: string | undefined;
 	private _value2: string | undefined;
-	private _invalid: boolean | undefined;
+	private _valid1: undefined | boolean | { valid?: boolean; message?: string };
+	private _customValid: undefined | boolean | { valid?: boolean; message?: string };
+	private _customValue: string | undefined;
+
+	// private _valid1: undefined | { valid: boolean, message?:string };
 
 	render() {
 		return v('div', [
@@ -44,10 +48,48 @@ export default class App extends WidgetBase {
 					label: 'Required',
 					required: true,
 					value: this._value2,
-					invalid: this._invalid,
+					valid: this._valid1,
+					onValidate: (valid?: boolean, message?: string) => {
+						this._valid1 = { valid, message };
+						this.invalidate();
+					},
 					onInput: (value: string) => {
 						this._value2 = value;
-						this._invalid = value.trim().length === 0;
+						this.invalidate();
+					}
+				})
+			]),
+			v('h3', {}, ['Custom validated Textarea']),
+			v('div', { id: 'example-custom-validated' }, [
+				w(Textarea, {
+					key: 'custom-validated',
+					columns: 40,
+					rows: 8,
+					label: 'Custom Validated',
+					value: this._customValue,
+					valid: this._customValid,
+					customValidator: (value: string) => {
+						if (value === 'valid') {
+							return {
+								valid: true,
+								message: 'Value is valid!'
+							};
+						} else if (!value) {
+							return undefined;
+						} else {
+							return {
+								valid: false,
+								message: 'Only "valid" is a valid input'
+							};
+						}
+					},
+					helperText: 'Enter "valid" to be valid',
+					onValidate: (valid?: boolean, message?: string) => {
+						this._customValid = { valid, message };
+						this.invalidate();
+					},
+					onInput: (value: string) => {
+						this._customValue = value;
 						this.invalidate();
 					}
 				})
