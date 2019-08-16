@@ -2,8 +2,9 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
 import Textarea from '../../index';
@@ -17,14 +18,15 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
+import InputValidity from '@dojo/framework/core/meta/InputValidity';
 
 const harness = createHarness([compareId, compareForId]);
 
 interface States {
 	disabled?: boolean;
 	required?: boolean;
-	invalid?: boolean;
 	readOnly?: boolean;
+	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
 const expected = function(
@@ -34,7 +36,18 @@ const expected = function(
 	focused = false,
 	helperText?: string
 ) {
-	const { disabled, required, readOnly, invalid } = states;
+	const { disabled, required, readOnly, valid: validState } = states;
+	let valid: boolean | undefined;
+	let message: string | undefined;
+
+	if (validState !== undefined && typeof validState !== 'boolean') {
+		valid = validState.valid;
+		message = validState.message;
+	} else {
+		valid = validState;
+	}
+
+	const helperTextValue = (valid === false && message) || helperText;
 
 	return v(
 		'div',
@@ -44,8 +57,8 @@ const expected = function(
 				css.root,
 				disabled ? css.disabled : null,
 				focused ? css.focused : null,
-				invalid ? css.invalid : null,
-				invalid === false ? css.valid : null,
+				valid === false ? css.invalid : null,
+				valid === true ? css.valid : null,
 				readOnly ? css.readonly : null,
 				required ? css.required : null
 			]
@@ -60,7 +73,7 @@ const expected = function(
 							disabled,
 							focused,
 							hidden: undefined,
-							invalid,
+							invalid: valid === false || undefined,
 							readOnly,
 							required,
 							forId: ''
@@ -76,7 +89,7 @@ const expected = function(
 					cols: '20',
 					disabled,
 					focus: noop,
-					'aria-invalid': invalid ? 'true' : null,
+					'aria-invalid': valid === false ? 'true' : null,
 					maxlength: null,
 					minlength: null,
 					name: undefined,
@@ -103,10 +116,54 @@ const expected = function(
 					...inputOverrides
 				})
 			]),
-			w(HelperText, { text: helperText })
+			w(HelperText, { text: helperTextValue, valid })
 		]
 	);
 };
+
+const baseAssertion = assertionTemplate(() => (
+	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
+		{textarea()}
+		<HelperText assertion-key="helperText" text={undefined} valid={true} />
+	</div>
+));
+
+const textarea = () => (
+	<div classes={css.inputWrapper}>
+		<textarea
+			classes={css.input}
+			id=""
+			key="input"
+			cols="20"
+			disabled={undefined}
+			focus={noop}
+			aria-invalid={null}
+			maxlength={null}
+			minlength={null}
+			name={undefined}
+			placeholder={undefined}
+			readOnly={undefined}
+			aria-readonly={null}
+			required={undefined}
+			rows="2"
+			value={undefined}
+			wrap={undefined}
+			onblur={noop}
+			onchange={noop}
+			onclick={noop}
+			onfocus={noop}
+			oninput={noop}
+			onkeydown={noop}
+			onkeypress={noop}
+			onkeyup={noop}
+			onmousedown={noop}
+			onmouseup={noop}
+			ontouchstart={noop}
+			ontouchend={noop}
+			ontouchcancel={noop}
+		/>
+	</div>
+);
 
 registerSuite('Textarea', {
 	tests: {
@@ -158,8 +215,8 @@ registerSuite('Textarea', {
 		},
 
 		'state classes'() {
-			let properties = {
-				invalid: true,
+			let properties: States = {
+				valid: { valid: false },
 				disabled: true,
 				readOnly: true,
 				required: true
@@ -167,15 +224,41 @@ registerSuite('Textarea', {
 
 			const h = harness(() => w(Textarea, properties));
 
-			h.expect(() => expected(false, {}, properties));
+			h.expect(
+				baseAssertion
+					.setProperty(':root', 'classes', [
+						css.root,
+						css.disabled,
+						null,
+						css.invalid,
+						null,
+						css.readonly,
+						css.required
+					])
+					.setProperty('@input', 'aria-invalid', 'true')
+					.setProperty('@input', 'aria-readonly', 'true')
+					.setProperty('@input', 'disabled', true)
+					.setProperty('@input', 'readOnly', true)
+					.setProperty('@input', 'required', true)
+					.setProperty('~helperText', 'valid', false)
+			);
 
 			properties = {
-				invalid: false,
+				valid: undefined,
 				disabled: false,
 				readOnly: false,
 				required: false
 			};
-			h.expect(() => expected(false, {}, properties));
+			h.expect(
+				baseAssertion
+					.setProperty(':root', 'classes', [css.root, null, null, null, null, null, null])
+					.setProperty('@input', 'aria-invalid', null)
+					.setProperty('@input', 'aria-readonly', null)
+					.setProperty('@input', 'disabled', false)
+					.setProperty('@input', 'readOnly', false)
+					.setProperty('@input', 'required', false)
+					.setProperty('~helperText', 'valid', undefined)
+			);
 		},
 
 		'focused class'() {
@@ -255,6 +338,115 @@ registerSuite('Textarea', {
 			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
 			h.trigger('@input', 'ontouchcancel', stubEvent);
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
+		},
+
+		onValidate() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: false, message: 'test' })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy
+				})
+			);
+
+			assert.isTrue(validateSpy.calledWith(false, 'test'));
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true, message: '' })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy
+				})
+			);
+
+			assert.isTrue(validateSpy.calledWith(true, ''));
+		},
+
+		'customValidator not called when native validation fails'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: false, message: 'test' })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
+			);
+
+			assert.isFalse(customValidatorSpy.called);
+		},
+
+		'customValidator called when native validation succeeds'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
+			);
+
+			assert.isTrue(customValidatorSpy.called);
+		},
+
+		'customValidator can change the validation outcome'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon
+				.stub()
+				.returns({ valid: false, message: 'custom message' });
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
+			);
+
+			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
 		}
 	}
 });
