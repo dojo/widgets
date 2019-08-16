@@ -9,8 +9,6 @@ export default class App extends WidgetBase {
 	private _customValid: undefined | boolean | { valid?: boolean; message?: string };
 	private _customValue: string | undefined;
 
-	// private _valid1: undefined | { valid: boolean, message?:string };
-
 	render() {
 		return v('div', [
 			v('h2', {}, ['Textarea Example']),
