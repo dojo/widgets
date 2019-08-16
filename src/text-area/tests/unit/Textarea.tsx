@@ -18,14 +18,15 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
+import InputValidity from '@dojo/framework/core/meta/InputValidity';
 
 const harness = createHarness([compareId, compareForId]);
 
 interface States {
 	disabled?: boolean;
 	required?: boolean;
-	invalid?: boolean;
 	readOnly?: boolean;
+	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
 const expected = function(
@@ -35,7 +36,18 @@ const expected = function(
 	focused = false,
 	helperText?: string
 ) {
-	const { disabled, required, readOnly, invalid } = states;
+	const { disabled, required, readOnly, valid: validState } = states;
+	let valid: boolean | undefined;
+	let message: string | undefined;
+
+	if (validState !== undefined && typeof validState !== 'boolean') {
+		valid = validState.valid;
+		message = validState.message;
+	} else {
+		valid = validState;
+	}
+
+	const helperTextValue = (valid === false && message) || helperText;
 
 	return v(
 		'div',
@@ -45,8 +57,8 @@ const expected = function(
 				css.root,
 				disabled ? css.disabled : null,
 				focused ? css.focused : null,
-				invalid ? css.invalid : null,
-				invalid === false ? css.valid : null,
+				valid === false ? css.invalid : null,
+				valid === true ? css.valid : null,
 				readOnly ? css.readonly : null,
 				required ? css.required : null
 			]
@@ -61,7 +73,7 @@ const expected = function(
 							disabled,
 							focused,
 							hidden: undefined,
-							invalid,
+							invalid: valid === false || undefined,
 							readOnly,
 							required,
 							forId: ''
@@ -77,7 +89,7 @@ const expected = function(
 					cols: '20',
 					disabled,
 					focus: noop,
-					'aria-invalid': invalid ? 'true' : null,
+					'aria-invalid': valid === false ? 'true' : null,
 					maxlength: null,
 					minlength: null,
 					name: undefined,
@@ -104,7 +116,7 @@ const expected = function(
 					...inputOverrides
 				})
 			]),
-			w(HelperText, { text: helperText, valid: true })
+			w(HelperText, { text: helperTextValue, valid })
 		]
 	);
 };
@@ -203,8 +215,8 @@ registerSuite('Textarea', {
 		},
 
 		'state classes'() {
-			let properties = {
-				invalid: true,
+			let properties: States = {
+				valid: { valid: false },
 				disabled: true,
 				readOnly: true,
 				required: true
@@ -232,27 +244,20 @@ registerSuite('Textarea', {
 			);
 
 			properties = {
-				invalid: false,
+				valid: undefined,
 				disabled: false,
 				readOnly: false,
 				required: false
 			};
 			h.expect(
 				baseAssertion
-					.setProperty(':root', 'classes', [
-						css.root,
-						null,
-						null,
-						null,
-						css.valid,
-						null,
-						null
-					])
+					.setProperty(':root', 'classes', [css.root, null, null, null, null, null, null])
 					.setProperty('@input', 'aria-invalid', null)
 					.setProperty('@input', 'aria-readonly', null)
 					.setProperty('@input', 'disabled', false)
 					.setProperty('@input', 'readOnly', false)
 					.setProperty('@input', 'required', false)
+					.setProperty('~helperText', 'valid', undefined)
 			);
 		},
 
@@ -335,110 +340,113 @@ registerSuite('Textarea', {
 			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		},
 
-		'onValidate called with correct value'() {
-			const onValidate = sinon.stub();
-			let value: string | undefined = undefined;
-			const h = harness(() => <Textarea onValidate={onValidate} value={value} />);
-			h.expect(baseAssertion);
-			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: 'oSome valuene' } });
-			value = 'Some value';
-			h.expect(baseAssertion.setProperty('@input', 'value', 'Some value'));
-			assert.isTrue(
-				onValidate.firstCall.calledWith(true),
-				'onValidate should be called with true'
+		onValidate() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: false, message: 'test' })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy
+				})
 			);
-			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: '' } });
-			value = '';
-			h.expect(baseAssertion.setProperty('@input', 'value', ''));
-			assert.equal(
-				onValidate.callCount,
-				1,
-				'onValidate should not have been called a second time'
+
+			assert.isTrue(validateSpy.calledWith(false, 'test'));
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true, message: '' })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy
+				})
 			);
+
+			assert.isTrue(validateSpy.calledWith(true, ''));
 		},
 
-		'onValidate called with correct value on required select'() {
-			const onValidate = sinon.stub();
-			let value: string | undefined = undefined;
-			const h = harness(() => <Textarea onValidate={onValidate} value={value} required />);
-			let assertion = baseAssertion
-				.setProperty('@input', 'required', true)
-				.setProperty(':root', 'classes', [
-					css.root,
-					null,
-					null,
-					null,
-					null,
-					null,
-					css.required
-				]);
-			h.expect(assertion);
-			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: 'Some value' } });
-			value = 'Some value';
-			h.expect(assertion.setProperty('@input', 'value', 'Some value'));
-			assert.isTrue(
-				onValidate.firstCall.calledWith(true),
-				'onValidate should be called with true'
+		'customValidator not called when native validation fails'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: false, message: 'test' })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
 			);
-			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: '' } });
-			value = '';
-			h.expect(assertion.setProperty('@input', 'value', ''));
-			assert.isTrue(
-				onValidate.secondCall.calledWith(false),
-				'onValidate should be called with false'
-			);
-			assert.equal(onValidate.callCount, 2, 'onValidate should have been called two times');
+
+			assert.isFalse(customValidatorSpy.called);
 		},
 
-		'onValidate called with correct value when required value changes'() {
-			const onValidate = sinon.stub();
-			let value: string | undefined = undefined;
-			let required = false;
-			const h = harness(() => (
-				<Textarea onValidate={onValidate} value={value} required={required} />
-			));
-			let assertion = baseAssertion.setProperty('@input', 'required', false);
-			h.expect(assertion);
-			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: 'one' } });
-			value = 'one';
-			h.expect(assertion.setProperty('@input', 'value', 'one'));
-			assert.isTrue(
-				onValidate.firstCall.calledWith(true),
-				'onValidate should be called with true'
+		'customValidator called when native validation succeeds'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
 			);
-			h.trigger('@input', 'onchange', { ...stubEvent, target: { value: '' } });
-			value = '';
-			assertion = assertion.setProperty('@input', 'value', '');
-			h.expect(assertion);
-			assert.equal(
-				onValidate.callCount,
-				1,
-				'onValidate should not have been called a second time'
+
+			assert.isTrue(customValidatorSpy.called);
+		},
+
+		'customValidator can change the validation outcome'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+			let customValidatorSpy = sinon
+				.stub()
+				.returns({ valid: false, message: 'custom message' });
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: true })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					onValidate: validateSpy,
+					customValidator: customValidatorSpy
+				})
 			);
-			required = true;
-			h.expect(
-				assertion
-					.setProperty('@input', 'required', true)
-					.setProperty(':root', 'classes', [
-						css.root,
-						null,
-						null,
-						null,
-						null,
-						null,
-						css.required
-					])
-			);
-			assert.isTrue(
-				onValidate.secondCall.calledWith(false),
-				'onValidate should be called with false'
-			);
-			required = false;
-			h.expect(assertion);
-			assert.isTrue(
-				onValidate.thirdCall.calledWith(true),
-				'onValidate should be called with true'
-			);
+
+			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
 		}
 	}
 });
