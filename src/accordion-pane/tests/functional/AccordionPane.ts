@@ -4,21 +4,20 @@ const { assert } = intern.getPlugin('chai');
 import { Remote } from 'intern/lib/executors/Node';
 import { services } from '@theintern/a11y';
 import { uuid } from '@dojo/framework/core/util';
+import * as css from '../../../theme/title-pane.m.css';
 
 const axe = services.axe;
 
 function getPage(remote: Remote) {
 	return remote
 		.get(`http://localhost:9000/dist/dev/src/common/example/?id=${uuid()}#accordion-pane`)
-		.setFindTimeout(5000);
+		.setFindTimeout(5000)
+		.setExecuteAsyncTimeout(750);
 }
-
-const DELAY = 750;
 
 registerSuite('AccordionPane', {
 	'Child panes should open on click'() {
 		return getPage(this.remote)
-			.sleep(DELAY)
 			.findByCssSelector('#pane > div > :first-child')
 			.getSize()
 			.then((size: { height: number }) => {
@@ -27,11 +26,8 @@ registerSuite('AccordionPane', {
 			.findByCssSelector('button')
 			.click()
 			.end()
-			.sleep(DELAY)
-			.getSize()
-			.then((size: { height: number }) => {
-				assert.isAbove(size.height, 50);
-			});
+			.end()
+			.findByCssSelector(`.${css.open}`);
 	},
 
 	'check accessibility'() {

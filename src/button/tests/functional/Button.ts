@@ -14,8 +14,6 @@ function getPage(remote: Remote) {
 		.setFindTimeout(5000);
 }
 
-const DELAY = 750;
-
 registerSuite('Button', {
 	'button should be visible'() {
 		return getPage(this.remote)
@@ -54,21 +52,11 @@ registerSuite('Button', {
 				assert.isNull(pressed, 'Initial state should be null');
 			})
 			.click()
-			.sleep(DELAY)
 			.end()
-			.findByCssSelector(`#example-4 .${css.root}`)
-			.getAttribute('aria-pressed')
-			.then((pressed: string) => {
-				assert.strictEqual(pressed, 'true');
-			})
+			.findByCssSelector(`#example-4 .${css.root}[aria-pressed="true"]`)
 			.click()
-			.sleep(DELAY)
 			.end()
-			.findByCssSelector(`#example-4 .${css.root}`)
-			.getAttribute('aria-pressed')
-			.then((pressed: string) => {
-				assert.strictEqual(pressed, 'false');
-			})
+			.findByCssSelector(`#example-4 .${css.root}[aria-pressed="false"]`)
 			.end();
 	},
 
