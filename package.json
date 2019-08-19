@@ -34,7 +34,8 @@
     "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce",
     "clean": "shx rm -rf dist && shx mkdir dist && shx mkdir dist/umd && shx mkdir dist/esm && shx mkdir dist/dev",
     "release": "run-s \"version:update -- {@}\" build version:reset dojo-package \"dojo-release -- {@}\" --",
-    "uploadCoverage": "codecov --file=coverage/coverage.json"
+    "uploadCoverage": "codecov --file=coverage/coverage.json",
+    "copy:framework": "cp -R ../framework/dist/release/* node_modules/@dojo/framework/"
   },
   "husky": {
     "hooks": {
@@ -43,8 +44,8 @@
   },
   "devDependencies": {
     "@dojo/cli": "^5.0.0",
-    "@dojo/cli-build-widget": "6.0.0-alpha.2",
-    "@dojo/framework": "6.0.0-alpha.11",
+    "@dojo/cli-build-widget": "6.0.0-alpha.3",
+    "@dojo/framework": "6.0.0-alpha.18",
     "@dojo/loader": "^2.0.0",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^5.0.1",

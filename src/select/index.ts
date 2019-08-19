@@ -15,7 +15,6 @@ import Label from '../label/index';
 import Listbox from '../listbox/index';
 import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type SelectProperties
@@ -58,30 +57,6 @@ export interface SelectProperties<T = any>
 
 @theme(css)
 @diffProperty('options', reference)
-@customElement<SelectProperties>({
-	tag: 'dojo-select',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'options',
-		'useNativeElement',
-		'getOptionDisabled',
-		'getOptionId',
-		'getOptionLabel',
-		'getOptionText',
-		'getOptionSelected',
-		'getOptionValue',
-		'readOnly',
-		'required',
-		'invalid',
-		'disabled',
-		'labelHidden'
-	],
-	attributes: ['widgetId', 'placeholder', 'label', 'value', 'helperText'],
-	events: ['onBlur', 'onChange', 'onFocus']
-})
 export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectProperties<T>> {
 	private _focusedIndex!: number;
 	private _focusNode = 'trigger';

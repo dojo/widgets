@@ -11,7 +11,6 @@ import commonBundle from '../common/nls/common';
 import Icon from '../icon/index';
 import * as fixedCss from './styles/slide-pane.m.css';
 import * as css from '../theme/slide-pane.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 
 /**
@@ -65,12 +64,6 @@ enum Slide {
 }
 
 @theme(css)
-@customElement<SlidePaneProperties>({
-	tag: 'dojo-slide-pane',
-	properties: ['theme', 'aria', 'extraClasses', 'open', 'underlay', 'classes'],
-	attributes: ['align', 'closeText', 'title'],
-	events: ['onOpen', 'onRequestClose']
-})
 export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePaneProperties> {
 	private _initialPosition = 0;
 	private _slide: Slide | undefined;

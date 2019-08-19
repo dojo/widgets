@@ -1,7 +1,6 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
 import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
-import customElement from '@dojo/framework/core/decorators/customElement';
 import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { reference } from '@dojo/framework/core/diff';
@@ -50,11 +49,6 @@ export interface GridProperties<S> extends ThemedProperties {
 }
 
 @theme(css)
-@customElement<GridProperties<any>>({
-	tag: 'dojo-grid',
-	properties: ['theme', 'classes', 'height', 'fetcher', 'updater', 'columnConfig', 'store'],
-	attributes: ['storeId']
-})
 export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> {
 	private _store = new Store<GridState<S>>();
 	private _handle: any;
