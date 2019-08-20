@@ -213,11 +213,25 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
+	private _callOnValidate(valid: boolean | undefined, message: string) {
+		let { valid: previousValid } = this.properties;
+		let previousMessage: string | undefined;
+
+		if (typeof previousValid === 'object') {
+			previousMessage = previousValid.message;
+			previousValid = previousValid.valid;
+		}
+
+		if (valid !== previousValid || message !== previousMessage) {
+			this.properties.onValidate && this.properties.onValidate(valid, message);
+		}
+	}
+
 	private _validate() {
-		const { customValidator, onValidate, value = '' } = this.properties;
+		const { customValidator, value = '' } = this.properties;
 		const { dirty = false } = this._state;
 		if (value === '' && !dirty) {
-			onValidate && onValidate(undefined, '');
+			this._callOnValidate(undefined, '');
 			return;
 		}
 
@@ -230,7 +244,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 				message = customValid.message || '';
 			}
 		}
-		onValidate && onValidate(valid, message);
+
+		this._callOnValidate(valid, message);
 	}
 
 	protected get validity() {
@@ -287,10 +302,11 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			type = 'text',
 			value,
 			widgetId = this._uuid,
-			helperText
+			helperText,
+			onValidate
 		} = this.properties;
 
-		this._validate();
+		onValidate && this._validate();
 		const { valid, message } = this.validity;
 
 		const focus = this.meta(Focus).get('root');

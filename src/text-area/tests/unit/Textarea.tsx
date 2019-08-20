@@ -375,6 +375,29 @@ registerSuite('Textarea', {
 			assert.isTrue(validateSpy.calledWith(true, ''));
 		},
 
+		'onValidate only called when validity or message changed'() {
+			const mockMeta = sinon.stub();
+			let validateSpy = sinon.spy();
+
+			mockMeta.withArgs(InputValidity).returns({
+				get: sinon.stub().returns({ valid: false, message: 'test' })
+			});
+
+			mockMeta.withArgs(Focus).returns({
+				get: () => ({ active: false, containsFocus: false })
+			});
+
+			harness(() =>
+				w(MockMetaMixin(Textarea, mockMeta), {
+					value: 'test value',
+					valid: { valid: false, message: 'test' },
+					onValidate: validateSpy
+				})
+			);
+
+			assert.isFalse(validateSpy.called);
+		},
+
 		'customValidator not called when native validation fails'() {
 			const mockMeta = sinon.stub();
 			let validateSpy = sinon.spy();

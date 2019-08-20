@@ -169,11 +169,25 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
+	private _callOnValidate(valid: boolean | undefined, message: string) {
+		let { valid: previousValid } = this.properties;
+		let previousMessage: string | undefined;
+
+		if (typeof previousValid === 'object') {
+			previousMessage = previousValid.message;
+			previousValid = previousValid.valid;
+		}
+
+		if (valid !== previousValid || message !== previousMessage) {
+			this.properties.onValidate && this.properties.onValidate(valid, message);
+		}
+	}
+
 	private _validate() {
-		const { customValidator, onValidate, value = '' } = this.properties;
+		const { customValidator, value = '' } = this.properties;
 
 		if (value === '' && !this._dirty) {
-			onValidate && onValidate(undefined, '');
+			this._callOnValidate(undefined, '');
 			return;
 		}
 
@@ -186,7 +200,7 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 				message = customValid.message || '';
 			}
 		}
-		onValidate && onValidate(valid, message);
+		this._callOnValidate(valid, message);
 	}
 
 	protected get validity() {
@@ -238,11 +252,12 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 			theme,
 			classes,
 			labelHidden,
-			helperText
+			helperText,
+			onValidate
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
-		this._validate();
+		onValidate && this._validate();
 		const { valid, message } = this.validity;
 
 		const computedHelperText = (valid === false && message) || helperText;
