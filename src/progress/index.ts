@@ -5,7 +5,6 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/progress.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type ProgressProperties
@@ -29,22 +28,6 @@ export interface ProgressProperties extends ThemedProperties, CustomAriaProperti
 }
 
 @theme(css)
-@customElement<ProgressProperties>({
-	tag: 'dojo-progress',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'output',
-		'showOutput',
-		'max',
-		'min',
-		'value'
-	],
-	attributes: ['widgetId'],
-	events: []
-})
 export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
 	private _output(value: number, percent: number) {
 		const { output } = this.properties;

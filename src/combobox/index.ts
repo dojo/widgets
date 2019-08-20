@@ -19,7 +19,6 @@ import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import HelperText from '../helper-text/index';
 
 /**
@@ -83,36 +82,6 @@ export enum Operation {
 
 @theme(css)
 @diffProperty('results', reference)
-@customElement<ComboBoxProperties>({
-	tag: 'dojo-combo-box',
-	properties: [
-		'theme',
-		'classes',
-		'extraClasses',
-		'labelHidden',
-		'clearable',
-		'disabled',
-		'inputProperties',
-		'valid',
-		'isResultDisabled',
-		'helperText',
-		'labelHidden',
-		'openOnFocus',
-		'readOnly',
-		'required',
-		'results'
-	],
-	attributes: ['widgetId', 'label', 'value'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onFocus',
-		'onMenuChange',
-		'onRequestResults',
-		'onResultSelect',
-		'onValidate'
-	]
-})
 export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
 	private _activeIndex = 0;
 	private _ignoreBlur: boolean | undefined;

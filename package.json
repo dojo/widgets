@@ -43,8 +43,8 @@
   },
   "devDependencies": {
     "@dojo/cli": "^5.0.0",
-    "@dojo/cli-build-widget": "6.0.0-alpha.2",
-    "@dojo/framework": "6.0.0-alpha.11",
+    "@dojo/cli-build-widget": "6.0.0-alpha.3",
+    "@dojo/framework": "6.0.0-alpha.19",
     "@dojo/loader": "^2.0.0",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^5.0.1",

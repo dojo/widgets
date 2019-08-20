@@ -1,6 +1,5 @@
 import { assign } from '@dojo/framework/shim/object';
 import { DNode, WNode } from '@dojo/framework/core/interfaces';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import { includes } from '@dojo/framework/shim/array';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v } from '@dojo/framework/core/vdom';
@@ -25,11 +24,6 @@ export interface AccordionPaneProperties extends ThemedProperties {
 }
 
 @theme(css)
-@customElement<AccordionPaneProperties>({
-	tag: 'dojo-accordion-pane',
-	properties: ['openKeys', 'theme', 'extraClasses', 'classes'],
-	events: ['onRequestClose', 'onRequestOpen']
-})
 export class AccordionPane extends ThemedMixin(WidgetBase)<
 	AccordionPaneProperties,
 	WNode<TitlePane>

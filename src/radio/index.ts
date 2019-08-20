@@ -16,7 +16,6 @@ import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/radio.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type RadioProperties
@@ -40,37 +39,6 @@ export interface RadioProperties
 }
 
 @theme(css)
-@customElement<RadioProperties>({
-	tag: 'dojo-radio',
-	properties: [
-		'required',
-		'invalid',
-		'readOnly',
-		'disabled',
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'checked',
-		'labelAfter',
-		'labelHidden'
-	],
-	attributes: ['widgetId', 'label', 'value', 'name'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
-})
 export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> {
 	private _uuid = uuid();
 

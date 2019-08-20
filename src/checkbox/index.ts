@@ -16,7 +16,6 @@ import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/checkbox.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type CheckboxProperties
@@ -54,37 +53,6 @@ export enum Mode {
 }
 
 @theme(css)
-@customElement<CheckboxProperties>({
-	tag: 'dojo-checkbox',
-	properties: [
-		'required',
-		'invalid',
-		'readOnly',
-		'disabled',
-		'theme',
-		'aria',
-		'extraClasses',
-		'labelAfter',
-		'labelHidden',
-		'checked',
-		'classes'
-	],
-	attributes: ['widgetId', 'label', 'value', 'name', 'mode', 'offLabel', 'onLabel'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
-})
 export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProperties> {
 	private _onBlur(event: FocusEvent) {
 		const checkbox = event.target as HTMLInputElement;

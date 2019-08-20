@@ -11,7 +11,6 @@ import commonBundle from '../common/nls/common';
 import * as fixedCss from './styles/toolbar.m.css';
 import * as css from '../theme/toolbar.m.css';
 import { GlobalEvent } from '../global-event/index';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 export { Align };
 
@@ -32,12 +31,6 @@ export interface ToolbarProperties extends ThemedProperties {
 }
 
 @theme(css)
-@customElement<ToolbarProperties>({
-	tag: 'dojo-toolbar',
-	properties: ['theme', 'classes', 'extraClasses', 'collapseWidth'],
-	attributes: ['key', 'heading'],
-	events: ['onCollapse']
-})
 export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarProperties> {
 	private _collapsed = false;
 	private _open = false;

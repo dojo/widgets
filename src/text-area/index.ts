@@ -14,7 +14,6 @@ import {
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import HelperText from '../helper-text/index';
 import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
 
@@ -60,48 +59,6 @@ export interface TextareaProperties
 }
 
 @theme(css)
-@customElement<TextareaProperties>({
-	tag: 'dojo-text-area',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'columns',
-		'rows',
-		'required',
-		'readOnly',
-		'disabled',
-		'labelHidden'
-	],
-	attributes: [
-		'widgetId',
-		'label',
-		'helperText',
-		'minLength',
-		'maxLength',
-		'name',
-		'placeholder',
-		'value',
-		'wrapText'
-	],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart',
-		'onValidate'
-	]
-})
 export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
 	private _dirty = false;
 
