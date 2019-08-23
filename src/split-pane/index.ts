@@ -9,7 +9,6 @@ import * as css from '../theme/split-pane.m.css';
 import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
 import { Resize, ContentRect } from '@dojo/framework/core/meta/Resize';
 import { GlobalEvent } from '../global-event/index';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * Direction of this SplitPane
@@ -39,12 +38,6 @@ export interface SplitPaneProperties extends ThemedProperties {
 const DEFAULT_SIZE = 100;
 
 @theme(css)
-@customElement<SplitPaneProperties>({
-	tag: 'dojo-split-pane',
-	properties: ['theme', 'classes', 'extraClasses', 'size', 'collapseWidth'],
-	attributes: ['direction'],
-	events: ['onCollapse', 'onResize']
-})
 export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 	private _dragging: boolean | undefined;
 	private _lastSize?: number;

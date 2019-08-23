@@ -41,10 +41,13 @@
       "pre-commit": "lint-staged"
     }
   },
+  "peerDependencies": {
+    "@dojo/framework": "6.0.0-rc.2"
+  },
   "devDependencies": {
-    "@dojo/cli": "^5.0.0",
-    "@dojo/cli-build-widget": "6.0.0-alpha.2",
-    "@dojo/framework": "6.0.0-alpha.11",
+    "@dojo/cli": "6.0.0-rc.1",
+    "@dojo/cli-build-widget": "6.0.0-rc.2",
+    "@dojo/framework": "6.0.0-rc.2",
     "@dojo/loader": "^2.0.0",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^5.0.1",

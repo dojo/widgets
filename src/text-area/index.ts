@@ -7,7 +7,6 @@ import Focus from '@dojo/framework/core/meta/Focus';
 import Label from '../label/index';
 import {
 	CustomAriaProperties,
-	InputProperties,
 	InputEventProperties,
 	PointerEventProperties,
 	KeyEventProperties
@@ -15,8 +14,8 @@ import {
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import HelperText from '../helper-text/index';
+import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
 
 /**
  * @type TextareaProperties
@@ -33,7 +32,6 @@ import HelperText from '../helper-text/index';
  */
 export interface TextareaProperties
 	extends ThemedProperties,
-		InputProperties,
 		FocusProperties,
 		InputEventProperties,
 		KeyEventProperties,
@@ -47,55 +45,23 @@ export interface TextareaProperties
 	placeholder?: string;
 	value?: string;
 	onClick?(value: string): void;
+	valid?: { valid?: boolean; message?: string } | boolean;
+	onValidate?: (valid: boolean | undefined, message: string) => void;
+	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
 	label?: string;
 	labelHidden?: boolean;
 	helperText?: string;
+	disabled?: boolean;
+	widgetId?: string;
+	name?: string;
+	readOnly?: boolean;
+	required?: boolean;
 }
 
 @theme(css)
-@customElement<TextareaProperties>({
-	tag: 'dojo-text-area',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'columns',
-		'rows',
-		'required',
-		'readOnly',
-		'disabled',
-		'invalid',
-		'labelHidden'
-	],
-	attributes: [
-		'widgetId',
-		'label',
-		'helperText',
-		'minLength',
-		'maxLength',
-		'name',
-		'placeholder',
-		'value',
-		'wrapText'
-	],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
-})
 export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
+	private _dirty = false;
+
 	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
 	}
@@ -160,17 +126,65 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
+	private _callOnValidate(valid: boolean | undefined, message: string) {
+		let { valid: previousValid } = this.properties;
+		let previousMessage: string | undefined;
+
+		if (typeof previousValid === 'object') {
+			previousMessage = previousValid.message;
+			previousValid = previousValid.valid;
+		}
+
+		if (valid !== previousValid || message !== previousMessage) {
+			this.properties.onValidate && this.properties.onValidate(valid, message);
+		}
+	}
+
+	private _validate() {
+		const { customValidator, value = '' } = this.properties;
+
+		if (value === '' && !this._dirty) {
+			this._callOnValidate(undefined, '');
+			return;
+		}
+
+		this._dirty = true;
+		let { valid, message = '' } = this.meta(InputValidity).get('input', value);
+		if (valid && customValidator) {
+			const customValid = customValidator(value);
+			if (customValid) {
+				valid = customValid.valid;
+				message = customValid.message || '';
+			}
+		}
+		this._callOnValidate(valid, message);
+	}
+
+	protected get validity() {
+		const { valid = { valid: undefined, message: undefined } } = this.properties;
+
+		if (typeof valid === 'boolean') {
+			return { valid, message: undefined };
+		}
+
+		return {
+			valid: valid.valid,
+			message: valid.message
+		};
+	}
+
 	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, invalid, readOnly, required } = this.properties;
+		const { disabled, readOnly, required } = this.properties;
 		const focus = this.meta(Focus).get('root');
+		const { valid } = this.validity;
 		return [
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
@@ -182,7 +196,6 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 			columns = 20,
 			disabled,
 			widgetId = this._uuid,
-			invalid,
 			label,
 			maxLength,
 			minLength,
@@ -196,9 +209,15 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 			theme,
 			classes,
 			labelHidden,
-			helperText
+			helperText,
+			onValidate
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
+
+		onValidate && this._validate();
+		const { valid, message } = this.validity;
+
+		const computedHelperText = (valid === false && message) || helperText;
 
 		return v(
 			'div',
@@ -215,7 +234,7 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 								classes,
 								disabled,
 								focused: focus.containsFocus,
-								invalid,
+								invalid: valid === false || undefined,
 								readOnly,
 								required,
 								hidden: labelHidden,
@@ -233,7 +252,7 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 						cols: `${columns}`,
 						disabled,
 						focus: this.shouldFocus,
-						'aria-invalid': invalid ? 'true' : null,
+						'aria-invalid': valid === false ? 'true' : null,
 						maxlength: maxLength ? `${maxLength}` : null,
 						minlength: minLength ? `${minLength}` : null,
 						name,
@@ -259,7 +278,7 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 						ontouchcancel: this._onTouchCancel
 					})
 				]),
-				w(HelperText, { text: helperText })
+				w(HelperText, { text: computedHelperText, valid })
 			]
 		);
 	}

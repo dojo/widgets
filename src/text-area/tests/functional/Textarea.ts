@@ -145,11 +145,6 @@ registerSuite('Textarea', {
 				.type(backspaces)
 				.end()
 				.end()
-				// focus another input
-				.findByCssSelector(`#example-t3 .${css.root} .${css.input}`)
-				.click()
-				.type(keys.SPACE)
-				.end()
 				.sleep(500)
 				.findByCssSelector(`#example-t3 .${css.root}`)
 				.getAttribute('class')

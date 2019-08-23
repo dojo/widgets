@@ -1,5 +1,5 @@
 import { uuid } from '@dojo/framework/core/util';
-import { DNode } from '@dojo/framework/core/interfaces';
+import { DNode, WidgetProperties } from '@dojo/framework/core/interfaces';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
@@ -9,7 +9,6 @@ import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
 import * as css from '../theme/title-pane.m.css';
 import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import GlobalEvent from '../global-event/index';
 
 /**
@@ -24,7 +23,7 @@ import GlobalEvent from '../global-event/index';
  * @property open               If true the pane is opened and content is visible
  * @property title              Title to display above the content
  */
-export interface TitlePaneProperties extends ThemedProperties, FocusProperties {
+export interface TitlePaneProperties extends WidgetProperties, ThemedProperties, FocusProperties {
 	closeable?: boolean;
 	headingLevel?: number;
 	onRequestClose?(key: string | number | undefined): void;
@@ -34,12 +33,6 @@ export interface TitlePaneProperties extends ThemedProperties, FocusProperties {
 }
 
 @theme(css)
-@customElement<TitlePaneProperties>({
-	tag: 'dojo-title-pane',
-	properties: ['theme', 'classes', 'extraClasses', 'open', 'closeable', 'headingLevel'],
-	attributes: ['title', 'key'],
-	events: ['onRequestClose', 'onRequestOpen']
-})
 export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProperties> {
 	private _id = uuid();
 	private _open: boolean | undefined;

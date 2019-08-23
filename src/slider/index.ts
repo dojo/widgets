@@ -17,7 +17,6 @@ import {
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
 import * as css from '../theme/slider.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * @type SliderProperties
@@ -61,45 +60,6 @@ function extractValue(event: Event): number {
 }
 
 @theme(css)
-@customElement<SliderProperties>({
-	tag: 'dojo-slider',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'disabled',
-		'invalid',
-		'required',
-		'readOnly',
-		'labelAfter',
-		'labelHidden',
-		'max',
-		'min',
-		'output',
-		'outputIsTooltip',
-		'showOutput',
-		'step',
-		'vertical',
-		'value'
-	],
-	attributes: ['widgetId', 'label', 'name', 'verticalHeight'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
-})
 export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties> {
 	// id used to associate input with output
 	private _widgetId = uuid();

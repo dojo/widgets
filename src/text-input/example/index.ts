@@ -11,6 +11,7 @@ export default class App extends WidgetBase {
 	private _value6Valid!: boolean | { valid?: boolean; message?: string };
 
 	render() {
+		console.log(this._value6, this._value6Valid);
 		return v(
 			'div',
 			{
