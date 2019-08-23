@@ -7,7 +7,7 @@ import Focus from '@dojo/framework/core/meta/Focus';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
-import Textarea from '../../index';
+import TextArea from '../../index';
 import * as css from '../../../theme/text-area.m.css';
 import {
 	compareForId,
@@ -168,13 +168,13 @@ const textarea = () => (
 registerSuite('Textarea', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => w(Textarea, {}));
+			const h = harness(() => w(TextArea, {}));
 			h.expect(expected);
 		},
 
 		'custom properties'() {
 			const h = harness(() =>
-				w(Textarea, {
+				w(TextArea, {
 					aria: { describedBy: 'foo' },
 					columns: 15,
 					widgetId: 'foo',
@@ -206,7 +206,7 @@ registerSuite('Textarea', {
 
 		label() {
 			const h = harness(() =>
-				w(Textarea, {
+				w(TextArea, {
 					label: 'foo'
 				})
 			);
@@ -222,7 +222,7 @@ registerSuite('Textarea', {
 				required: true
 			};
 
-			const h = harness(() => w(Textarea, properties));
+			const h = harness(() => w(TextArea, properties));
 
 			h.expect(
 				baseAssertion
@@ -270,12 +270,12 @@ registerSuite('Textarea', {
 			mockMeta.withArgs(Focus).returns({
 				get: mockFocusGet
 			});
-			const h = harness(() => w(MockMetaMixin(Textarea, mockMeta), {}));
+			const h = harness(() => w(MockMetaMixin(TextArea, mockMeta), {}));
 			h.expect(() => expected(false, {}, {}, true));
 		},
 
 		helperText() {
-			const h = harness(() => w(Textarea, { helperText: 'test' }));
+			const h = harness(() => w(TextArea, { helperText: 'test' }));
 			h.expect(() => expected(false, {}, {}, false, 'test'));
 		},
 
@@ -295,7 +295,7 @@ registerSuite('Textarea', {
 			const onTouchCancel = sinon.stub();
 
 			const h = harness(() =>
-				w(Textarea, {
+				w(TextArea, {
 					onBlur,
 					onChange,
 					onClick,
@@ -353,7 +353,7 @@ registerSuite('Textarea', {
 			});
 
 			harness(() =>
-				w(MockMetaMixin(Textarea, mockMeta), {
+				w(MockMetaMixin(TextArea, mockMeta), {
 					value: 'test value',
 					onValidate: validateSpy
 				})
@@ -366,7 +366,7 @@ registerSuite('Textarea', {
 			});
 
 			harness(() =>
-				w(MockMetaMixin(Textarea, mockMeta), {
+				w(MockMetaMixin(TextArea, mockMeta), {
 					value: 'test value',
 					onValidate: validateSpy
 				})
@@ -388,7 +388,7 @@ registerSuite('Textarea', {
 			});
 
 			harness(() =>
-				w(MockMetaMixin(Textarea, mockMeta), {
+				w(MockMetaMixin(TextArea, mockMeta), {
 					value: 'test value',
 					valid: { valid: false, message: 'test' },
 					onValidate: validateSpy
@@ -412,7 +412,7 @@ registerSuite('Textarea', {
 			});
 
 			harness(() =>
-				w(MockMetaMixin(Textarea, mockMeta), {
+				w(MockMetaMixin(TextArea, mockMeta), {
 					value: 'test value',
 					onValidate: validateSpy,
 					customValidator: customValidatorSpy
@@ -436,7 +436,7 @@ registerSuite('Textarea', {
 			});
 
 			harness(() =>
-				w(MockMetaMixin(Textarea, mockMeta), {
+				w(MockMetaMixin(TextArea, mockMeta), {
 					value: 'test value',
 					onValidate: validateSpy,
 					customValidator: customValidatorSpy
@@ -462,7 +462,7 @@ registerSuite('Textarea', {
 			});
 
 			harness(() =>
-				w(MockMetaMixin(Textarea, mockMeta), {
+				w(MockMetaMixin(TextArea, mockMeta), {
 					value: 'test value',
 					onValidate: validateSpy,
 					customValidator: customValidatorSpy

@@ -1,6 +1,6 @@
 # @dojo/widgets/text-area widget
 
-Dojo's `Textarea` widget provides a wrapped native `textarea` input, optionally with a label.
+Dojo's `TextArea` widget provides a wrapped native `textarea` input, optionally with a label.
 
 
 ## Features
@@ -11,7 +11,7 @@ Dojo's `Textarea` widget provides a wrapped native `textarea` input, optionally 
 
 ### Accessibility Features
 
-`Textarea` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used. It also provides an API for custom ARIA implementations of `aria-describedby` and `aria-controls`. It also sets `aria-invalid` when validation fails.
+`TextArea` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used. It also provides an API for custom ARIA implementations of `aria-describedby` and `aria-controls`. It also sets `aria-invalid` when validation fails.
 
 If the `label` property is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
 
@@ -19,7 +19,7 @@ If the `label` property is not used, we recommend creating a separate `label` an
 
 ```typescript
 // Basic usage
-w(Textarea, {
+w(TextArea, {
 	label: 'Your Message',
 	value: this.state.textareaValue,
 	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ w(Textarea, {
 });
 
 // Advanced usage
-w(Textarea, {
+w(TextArea, {
 	columns: 20,
 	rows: 8,
 	aria: { describedBy: 'descriptionId' },

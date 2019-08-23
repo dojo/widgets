@@ -16,7 +16,7 @@ function getPage(remote: Remote) {
 		.setFindTimeout(5000);
 }
 
-registerSuite('Textarea', {
+registerSuite('TextArea', {
 	'should be visible'() {
 		return getPage(this.remote)
 			.findByCssSelector(`#example-t1 .${css.root}`)
