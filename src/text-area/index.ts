@@ -3,6 +3,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
+import customElement from '@dojo/framework/core/decorators/customElement';
 import Focus from '@dojo/framework/core/meta/Focus';
 import Label from '../label/index';
 import {
@@ -59,6 +60,9 @@ export interface TextareaProperties
 }
 
 @theme(css)
+@customElement<TextareaProperties>({
+	tag: 'dojo-text-area'
+})
 export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
 	private _dirty = false;
 
