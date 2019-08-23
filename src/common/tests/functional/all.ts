@@ -15,7 +15,7 @@ import '../../../slider/tests/functional/Slider';
 import '../../../split-pane/tests/functional/SplitPane';
 import '../../../range-slider/tests/functional/RangeSlider';
 import '../../../tab-controller/tests/functional/TabController';
-import '../../../text-area/tests/functional/temp';
+import '../../../text-area/tests/functional/TextArea';
 import '../../../text-input/tests/functional/TextInput';
 import '../../../time-picker/tests/functional/TimePicker';
 import '../../../title-pane/tests/functional/TitlePane';
