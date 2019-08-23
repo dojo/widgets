@@ -17,9 +17,7 @@ import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
 
 interface SelectInternalState {
-	previousValid?: boolean;
-	previousValue?: string;
-	previousRequired?: string;
+	dirty?: boolean;
 }
 
 /**
@@ -139,41 +137,36 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			}
 			return false;
 		});
+		this._state.dirty = true;
 		option && onChange && onChange(option, key);
 	}
 
-	private _validate() {
-		const {
-			_state: state,
-			properties: { onValidate, value, required }
-		} = this;
+	private _callOnValidate(valid: boolean | undefined) {
+		let { invalid: previousInvalid, onValidate } = this.properties;
 
+		if (!valid !== previousInvalid) {
+			onValidate && onValidate(valid);
+		}
+	}
+
+	private _validate() {
+		const { value = '', onValidate, required } = this.properties;
 		if (!onValidate) {
 			return;
 		}
 
-		if (
-			value === undefined ||
-			value === null ||
-			(state.previousRequired === required && state.previousValue === value)
-		) {
+		const { dirty = false } = this._state;
+		if (!value && !dirty) {
+			this._callOnValidate(undefined);
 			return;
 		}
 
-		state.previousValue = value;
-
-		let valid = true;
-		if (required && !value) {
-			valid = false;
+		this._state.dirty = true;
+		if (!value && required) {
+			this._callOnValidate(false);
+		} else {
+			this._callOnValidate(true);
 		}
-
-		if (valid === state.previousValid) {
-			return;
-		}
-
-		state.previousValid = valid;
-
-		onValidate(valid);
 	}
 
 	// custom select events
@@ -223,6 +216,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 		const index = this._getSelectedIndexOnInput(event);
 		if (index !== undefined) {
 			this._focusedIndex = index;
+			this._state.dirty = true;
 			onChange && onChange(options[index], key);
 			this.invalidate();
 		}
@@ -369,6 +363,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 								this.invalidate();
 							},
 							onOptionSelect: (option: T) => {
+								this._state.dirty = true;
 								onChange && onChange(option, key);
 								this._closeSelect();
 								this.focus();

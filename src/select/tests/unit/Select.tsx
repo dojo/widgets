@@ -375,6 +375,7 @@ registerSuite('Select', {
 
 			'onValidate called with correct value'() {
 				const onValidate = sinon.stub();
+				let invalid: boolean | undefined = undefined;
 				let value: string | undefined = undefined;
 				const h = harness(() => (
 					<Select
@@ -384,30 +385,48 @@ registerSuite('Select', {
 						useNativeElement={true}
 						onValidate={onValidate}
 						value={value}
+						invalid={invalid}
 					/>
 				));
 				h.expect(baseNativeAssertion);
+				assert.isTrue(
+					onValidate.firstCall.calledWith(undefined),
+					'onValidate should be called with undefined'
+				);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				value = 'one';
 				h.expect(baseNativeAssertion.setProperty('select', 'value', 'one'));
 				assert.isTrue(
-					onValidate.firstCall.calledWith(true),
+					onValidate.secondCall.calledWith(true),
 					'onValidate should be called with true'
 				);
+				invalid = false;
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
 				value = '';
-				h.expect(baseNativeAssertion.setProperty('select', 'value', ''));
+				h.expect(
+					baseNativeAssertion
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							null,
+							css.valid,
+							null,
+							null
+						])
+						.setProperty('select', 'value', '')
+				);
 				assert.equal(
 					onValidate.callCount,
-					1,
-					'onValidate should not have been called a second time'
+					2,
+					'onValidate should have been called two times'
 				);
 			},
 
 			'onValidate called with correct value on required select'() {
 				const onValidate = sinon.stub();
 				let value: string | undefined = undefined;
-				let invalid = false;
+				let invalid: boolean | undefined = undefined;
 				const h = harness(() => (
 					<Select
 						getOptionValue={testProperties.getOptionValue}
@@ -427,20 +446,57 @@ registerSuite('Select', {
 						null,
 						null,
 						null,
-						css.valid,
+						null,
 						null,
 						css.required
 					]);
 				h.expect(assertion);
+				assert.isTrue(
+					onValidate.firstCall.calledWith(undefined),
+					'onValidate should be called with undefined'
+				);
+
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				value = 'one';
 				h.expect(assertion.setProperty('select', 'value', 'one'));
 				assert.isTrue(
-					onValidate.firstCall.calledWith(true),
+					onValidate.secondCall.calledWith(true),
 					'onValidate should be called with true'
 				);
+				invalid = false;
+				h.expect(
+					assertion
+						.setProperty('select', 'value', 'one')
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							null,
+							css.valid,
+							null,
+							css.required
+						])
+				);
+
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
 				value = '';
+				h.expect(
+					assertion
+						.setProperty('select', 'value', '')
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							null,
+							css.valid,
+							null,
+							css.required
+						])
+				);
+				assert.isTrue(
+					onValidate.thirdCall.calledWith(false),
+					'onValidate should be called with false'
+				);
 				invalid = true;
 				h.expect(
 					assertion
@@ -457,14 +513,10 @@ registerSuite('Select', {
 						.setProperty('select', 'aria-invalid', 'true')
 						.setProperty('~helperText', 'valid', false)
 				);
-				assert.isTrue(
-					onValidate.secondCall.calledWith(false),
-					'onValidate should be called with false'
-				);
 				assert.equal(
 					onValidate.callCount,
-					2,
-					'onValidate should have been called two times'
+					3,
+					'onValidate should have been called three times'
 				);
 			},
 
@@ -472,7 +524,7 @@ registerSuite('Select', {
 				const onValidate = sinon.stub();
 				let value: string | undefined = undefined;
 				let required = false;
-				let invalid = false;
+				let invalid: boolean | undefined = undefined;
 				const h = harness(() => (
 					<Select
 						getOptionValue={testProperties.getOptionValue}
@@ -485,8 +537,39 @@ registerSuite('Select', {
 						invalid={invalid}
 					/>
 				));
-				let assertion = baseNativeAssertion
-					.setProperty(':root', 'classes', [
+				let assertion = baseNativeAssertion.setProperty('select', 'required', false);
+				h.expect(assertion);
+				assert.isTrue(
+					onValidate.firstCall.calledWith(undefined),
+					'onValidate should be called with undefined'
+				);
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
+				value = 'one';
+				h.expect(assertion.setProperty('select', 'value', 'one'));
+				assert.isTrue(
+					onValidate.secondCall.calledWith(true),
+					'onValidate should be called with true'
+				);
+				invalid = false;
+				h.expect(
+					assertion
+						.setProperty(':root', 'classes', [
+							css.root,
+							null,
+							null,
+							null,
+							css.valid,
+							null,
+							null
+						])
+						.setProperty('select', 'value', 'one')
+				);
+
+				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
+				value = '';
+				assertion = assertion.setProperty('select', 'value', '');
+				h.expect(
+					assertion.setProperty(':root', 'classes', [
 						css.root,
 						null,
 						null,
@@ -495,23 +578,11 @@ registerSuite('Select', {
 						null,
 						null
 					])
-					.setProperty('select', 'required', false);
-				h.expect(assertion);
-				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
-				value = 'one';
-				h.expect(assertion.setProperty('select', 'value', 'one'));
-				assert.isTrue(
-					onValidate.firstCall.calledWith(true),
-					'onValidate should be called with true'
 				);
-				h.trigger('select', 'onchange', { ...stubEvent, target: { value: '' } });
-				value = '';
-				assertion = assertion.setProperty('select', 'value', '');
-				h.expect(assertion);
 				assert.equal(
 					onValidate.callCount,
-					1,
-					'onValidate should not have been called a second time'
+					2,
+					'onValidate should not have been called a third time'
 				);
 
 				required = true;
@@ -529,7 +600,7 @@ registerSuite('Select', {
 						])
 				);
 				assert.isTrue(
-					onValidate.secondCall.calledWith(false),
+					onValidate.thirdCall.calledWith(false),
 					'onValidate should be called with false'
 				);
 
@@ -566,12 +637,22 @@ registerSuite('Select', {
 						.setProperty('~helperText', 'valid', false)
 				);
 				assert.isTrue(
-					onValidate.thirdCall.calledWith(true),
+					onValidate.getCall(3).calledWith(true),
 					'onValidate should be called with true'
 				);
 
 				invalid = false;
-				h.expect(assertion);
+				h.expect(
+					assertion.setProperty(':root', 'classes', [
+						css.root,
+						null,
+						null,
+						null,
+						css.valid,
+						null,
+						null
+					])
+				);
 			},
 
 			'events called with widget key'() {
