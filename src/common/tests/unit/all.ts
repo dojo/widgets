@@ -28,7 +28,7 @@ import '../../../range-slider/tests/unit/RangeSlider';
 import '../../../tab/tests/unit/Tab';
 import '../../../tab-controller/tests/unit/TabButton';
 import '../../../tab-controller/tests/unit/TabController';
-import '../../../text-area/tests/unit/TextArea';
+import '../../../text-area/tests/unit/temp';
 import '../../../text-input/tests/unit/TextInput';
 import '../../../time-picker/tests/unit/TimePicker';
 import '../../../title-pane/tests/unit/TitlePane';
