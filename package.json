@@ -1,6 +1,6 @@
 {
   "name": "@dojo/widgets",
-  "version": "6.0.0-pre",
+  "version": "6.0.1-pre",
   "description": "Dojo Widgets",
   "private": true,
   "homepage": "https://dojo.io",
@@ -42,12 +42,12 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "6.0.0-rc.2"
+    "@dojo/framework": "^6.0.0"
   },
   "devDependencies": {
-    "@dojo/cli": "6.0.0-rc.1",
-    "@dojo/cli-build-widget": "6.0.0-rc.2",
-    "@dojo/framework": "6.0.0-rc.2",
+    "@dojo/cli": "^6.0.0",
+    "@dojo/cli-build-widget": "^6.0.0",
+    "@dojo/framework": "^6.0.0",
     "@dojo/loader": "^2.0.0",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^5.0.1",

@@ -18,7 +18,7 @@ import HelperText from '../helper-text/index';
 import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
 
 /**
- * @type TextareaProperties
+ * @type TextAreaProperties
  *
  * Properties that can be set on a TextInput component
  *
@@ -30,7 +30,7 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextareaProperties
+export interface TextAreaProperties
 	extends ThemedProperties,
 		FocusProperties,
 		InputEventProperties,
@@ -59,7 +59,7 @@ export interface TextareaProperties
 }
 
 @theme(css)
-export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProperties> {
+export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProperties> {
 	private _dirty = false;
 
 	private _onBlur(event: FocusEvent) {
@@ -284,4 +284,4 @@ export class Textarea extends ThemedMixin(FocusMixin(WidgetBase))<TextareaProper
 	}
 }
 
-export default Textarea;
+export default TextArea;
