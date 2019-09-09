@@ -6,8 +6,6 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
-import { CustomElementChildType } from '@dojo/framework/core/registerCustomElement';
 
 /**
  * @type TabProperties
@@ -32,13 +30,6 @@ export interface TabProperties extends ThemedProperties, CustomAriaProperties {
 }
 
 @theme(css)
-@customElement<TabProperties>({
-	tag: 'dojo-tab',
-	childType: CustomElementChildType.NODE,
-	properties: ['theme', 'classes', 'aria', 'extraClasses', 'closeable', 'disabled', 'show'],
-	attributes: ['key', 'labelledBy', 'widgetId', 'label'],
-	events: []
-})
 export class Tab extends ThemedMixin(WidgetBase)<TabProperties> {
 	render(): DNode {
 		const { aria = {}, widgetId, labelledBy, show = false } = this.properties;

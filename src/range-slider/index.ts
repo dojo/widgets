@@ -17,7 +17,6 @@ import Label from '../label/index';
 import * as fixedCss from './styles/range-slider.m.css';
 import * as css from '../theme/range-slider.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 export interface RangeSliderProperties
 	extends ThemedProperties,
@@ -53,49 +52,6 @@ function extractValue(event: Event): number {
 type MinMaxCallback = (minValue: number, maxValue: number) => void;
 
 @theme(css)
-@customElement<RangeSliderProperties>({
-	tag: 'dojo-range-slider',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'disabled',
-		'invalid',
-		'required',
-		'readOnly',
-		'labelAfter',
-		'labelHidden',
-		'max',
-		'min',
-		'output',
-		'outputIsTooltip',
-		'showOutput',
-		'step',
-		'minValue',
-		'maxValue',
-		'minName',
-		'maxName',
-		'minimumLabel',
-		'maximumLabel'
-	],
-	attributes: ['widgetId', 'label', 'name'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
-})
 export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> {
 	// id used to associate input with output
 	private _widgetId = uuid();

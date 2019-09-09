@@ -11,7 +11,6 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 /**
  * Enum for tab button alignment
@@ -44,12 +43,6 @@ export interface TabControllerProperties
 }
 
 @theme(css)
-@customElement<TabControllerProperties>({
-	tag: 'dojo-tab-controller',
-	properties: ['theme', 'classes', 'aria', 'extraClasses', 'activeIndex'],
-	attributes: ['alignButtons'],
-	events: ['onRequestTabChange', 'onRequestTabClose']
-})
 export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<
 	TabControllerProperties,
 	WNode<Tab>

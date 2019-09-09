@@ -11,9 +11,7 @@ import {
 	KeyEventProperties
 } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import Icon from '../icon/index';
-import { CustomElementChildType } from '@dojo/framework/core/registerCustomElement';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -48,27 +46,6 @@ export interface ButtonProperties
 }
 
 @theme(css)
-@customElement<ButtonProperties>({
-	tag: 'dojo-button',
-	childType: CustomElementChildType.TEXT,
-	properties: ['disabled', 'pressed', 'popup', 'theme', 'aria', 'extraClasses', 'classes'],
-	attributes: ['widgetId', 'name', 'type', 'value'],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart'
-	]
-})
 export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties> {
 	private _onBlur(event: FocusEvent) {
 		this.properties.onBlur && this.properties.onBlur();

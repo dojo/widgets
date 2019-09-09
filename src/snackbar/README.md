@@ -11,29 +11,36 @@ Dojo's `Snackbar` widget creates a brief display message that is positioned at t
 
 ```tsx
 // basic usage
-<Snackbar open={true} message="Text to display"/>
+<Snackbar open={true} messageRenderer={() => "Text to display"}/>
 
 // Display a success-styled message
-<Snackbar open={true} message="Text to display" type="success"/>
+<Snackbar open={true} messageRenderer={() => "Text to display"} type="success"/>
 
 // Display a error-styled message
-<Snackbar open={true} message="Text to display" type="error"/>
+<Snackbar open={true} messageRenderer={() => "Text to display"} type="error"/>
 
 // Handle closing the message
 let open = true;
 <Snackbar
 	open={open}
-	message="Text to display"
+	messageRenderer={() => "Text to display"}
 	type="error"
 	actionsRenderer={() => <Button onClick={() => open = false}>Dismiss</Button>}
 />
+
+// Display a non text message
+<Snackbar open={true} messageRenderer={() => (
+	<div>
+		<Icon type="checkIcon" />
+		Text to display
+	</div>
+)} type="success"/>
 ```
 
 ## Properties
 
-
 - `open: boolean` - Whether the snackbar is open and displayed
-- `message: string` - The message to display on the snackbar
+- `messageRenderer: () => RenderResult` - A callback that returns what to render in the snackbar's message section
 - `actionsRenderer?: () => RenderResult` -  A callback that returns what to render in the snackbar's actions section
 - `type?: 'success' | 'error'` - The variant of snackbar to render. Can be `"success"` or `"error"`
 - `leading?: boolean` - If true, render the snackbar on the leading side of the page

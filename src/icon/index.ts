@@ -6,7 +6,6 @@ import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as css from '../theme/icon.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 
 export type IconType = keyof typeof css;
 
@@ -24,11 +23,6 @@ export interface IconProperties extends ThemedProperties, CustomAriaProperties {
 }
 
 @theme(css)
-@customElement<IconProperties>({
-	tag: 'dojo-icon',
-	properties: ['theme', 'classes', 'aria', 'extraClasses'],
-	attributes: ['type', 'altText']
-})
 export class Icon extends ThemedMixin(WidgetBase)<IconProperties> {
 	protected renderAltText(altText: string): DNode {
 		return v('span', { classes: [baseCss.visuallyHidden] }, [altText]);

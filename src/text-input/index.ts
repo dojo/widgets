@@ -3,6 +3,7 @@ import { DNode, PropertyChangeRecord } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
+import InputValidity from '@dojo/framework/core/meta/InputValidity';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
 import {
@@ -14,10 +15,8 @@ import {
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
-import { customElement } from '@dojo/framework/core/decorators/customElement';
 import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 import { reference } from '@dojo/framework/core/diff';
-import InputValidity from '../common/InputValidity';
 import HelperText from '../helper-text/index';
 
 export type TextInputType =
@@ -31,9 +30,7 @@ export type TextInputType =
 	| 'date';
 
 interface TextInputInternalState {
-	previousValue?: string;
-	previousValid?: boolean;
-	previousMessage?: string;
+	dirty?: boolean;
 }
 
 /**
@@ -101,51 +98,6 @@ function patternDiffer(
 }
 
 @theme(css)
-@customElement<TextInputProperties>({
-	tag: 'dojo-text-input',
-	properties: [
-		'theme',
-		'classes',
-		'aria',
-		'extraClasses',
-		'disabled',
-		'readOnly',
-		'labelHidden',
-		'valid',
-		'leading',
-		'trailing'
-	],
-	attributes: [
-		'widgetId',
-		'label',
-		'placeholder',
-		'helperText',
-		'controls',
-		'type',
-		'minLength',
-		'maxLength',
-		'value',
-		'name',
-		'pattern',
-		'autocomplete'
-	],
-	events: [
-		'onBlur',
-		'onChange',
-		'onClick',
-		'onFocus',
-		'onInput',
-		'onKeyDown',
-		'onKeyPress',
-		'onKeyUp',
-		'onMouseDown',
-		'onMouseUp',
-		'onTouchCancel',
-		'onTouchEnd',
-		'onTouchStart',
-		'onValidate'
-	]
-})
 @diffProperty('pattern', patternDiffer)
 @diffProperty('leading', reference)
 @diffProperty('trailing', reference)
@@ -155,6 +107,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 	}
 	private _onChange(event: Event) {
 		event.stopPropagation();
+		this._state.dirty = true;
 		this.properties.onChange &&
 			this.properties.onChange((event.target as HTMLInputElement).value);
 	}
@@ -214,20 +167,30 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
-	private _validate() {
-		const {
-			_state: state,
-			properties: { onValidate, value, customValidator }
-		} = this;
+	private _callOnValidate(valid: boolean | undefined, message: string) {
+		let { valid: previousValid } = this.properties;
+		let previousMessage: string | undefined;
 
-		if (!onValidate || value === undefined || value === null || state.previousValue === value) {
+		if (typeof previousValid === 'object') {
+			previousMessage = previousValid.message;
+			previousValid = previousValid.valid;
+		}
+
+		if (valid !== previousValid || message !== previousMessage) {
+			this.properties.onValidate && this.properties.onValidate(valid, message);
+		}
+	}
+
+	private _validate() {
+		const { customValidator, value = '' } = this.properties;
+		const { dirty = false } = this._state;
+		if (value === '' && !dirty) {
+			this._callOnValidate(undefined, '');
 			return;
 		}
 
-		state.previousValue = value;
-
+		this._state.dirty = true;
 		let { valid, message = '' } = this.meta(InputValidity).get('input', value);
-
 		if (valid && customValidator) {
 			const customValid = customValidator(value);
 			if (customValid) {
@@ -236,14 +199,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			}
 		}
 
-		if (valid === state.previousValid && message === state.previousMessage) {
-			return;
-		}
-
-		state.previousValid = valid;
-		state.previousMessage = message;
-
-		onValidate(valid, message);
+		this._callOnValidate(valid, message);
 	}
 
 	protected get validity() {
@@ -300,11 +256,13 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			type = 'text',
 			value,
 			widgetId = this._uuid,
-			helperText
+			helperText,
+			onValidate
 		} = this.properties;
 
-		this._validate();
+		onValidate && this._validate();
 		const { valid, message } = this.validity;
+
 		const focus = this.meta(Focus).get('root');
 
 		const computedHelperText = (valid === false && message) || helperText;
