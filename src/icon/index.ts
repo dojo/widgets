@@ -2,7 +2,6 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v } from '@dojo/framework/core/vdom';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as css from '../theme/icon.m.css';
 import * as baseCss from '../common/styles/base.m.css';
@@ -17,7 +16,8 @@ export type IconType = keyof typeof css;
  * @property type           Icon type, e.g. downIcon, searchIcon, etc.
  * @property altText        An optional, visually hidden label for the icon
  */
-export interface IconProperties extends ThemedProperties, CustomAriaProperties {
+export interface IconProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
 	type: IconType;
 	altText?: string;
 }

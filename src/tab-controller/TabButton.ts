@@ -5,7 +5,6 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { v } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import commonBundle from '../common/nls/common';
-import { CommonMessages } from '../common/interfaces';
 import { Keys } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
@@ -119,7 +118,7 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 		}
 	}
 
-	protected getContent(messages: CommonMessages): DNode[] {
+	protected getContent(messages: typeof commonBundle.messages): DNode[] {
 		const { active, closeable } = this.properties;
 
 		return [

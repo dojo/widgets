@@ -1,7 +1,6 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v } from '@dojo/framework/core/vdom';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/progress.m.css';
@@ -18,7 +17,8 @@ import * as css from '../theme/progress.m.css';
  * @property min            Value used to calculate percent width
  * @property widgetId       Value used to supply a dom id to the element with role="progressbar"
  */
-export interface ProgressProperties extends ThemedProperties, CustomAriaProperties {
+export interface ProgressProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
 	value: number;
 	output?(value: number, percent: number): string;
 	showOutput?: boolean;

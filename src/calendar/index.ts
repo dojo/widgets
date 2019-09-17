@@ -5,8 +5,6 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import commonBundle from '../common/nls/common';
-import { CommonMessages } from '../common/interfaces';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import { monthInMin, monthInMax } from './date-utils';
 import CalendarCell from './CalendarCell';
@@ -37,7 +35,8 @@ export type CalendarMessages = typeof calendarBundle.messages;
  * @property onYearChange      Function called when the year changes
  * @property onDateSelect      Function called when the user selects a date
  */
-export interface CalendarProperties extends ThemedProperties, CustomAriaProperties {
+export interface CalendarProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
 	labels?: CalendarMessages;
 	month?: number;
 	monthNames?: { short: string; long: string }[];
@@ -96,7 +95,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		return lastDate.getDate();
 	}
 
-	private _getMonths(commonMessages: CommonMessages) {
+	private _getMonths(commonMessages: typeof commonBundle.messages) {
 		return DEFAULT_MONTHS.map((month) => ({
 			short: commonMessages[month.short],
 			long: commonMessages[month.long]
@@ -112,7 +111,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		};
 	}
 
-	private _getWeekdays(commonMessages: CommonMessages) {
+	private _getWeekdays(commonMessages: typeof commonBundle.messages) {
 		return DEFAULT_WEEKDAYS.map((weekday) => ({
 			short: commonMessages[weekday.short],
 			long: commonMessages[weekday.long]
@@ -331,7 +330,10 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		});
 	}
 
-	protected renderDatePicker(commonMessages: CommonMessages, labels: CalendarMessages): DNode {
+	protected renderDatePicker(
+		commonMessages: typeof commonBundle.messages,
+		labels: CalendarMessages
+	): DNode {
 		const {
 			monthNames = this._getMonths(commonMessages),
 			renderMonthLabel,

@@ -2,7 +2,6 @@ import { reference } from '@dojo/framework/core/diff';
 import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import { DNode } from '@dojo/framework/core/interfaces';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import MetaBase from '@dojo/framework/core/meta/Base';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
@@ -46,7 +45,8 @@ export class ScrollMeta extends MetaBase {
  * @property onOptionSelect       Called with the option data of the new requested selected item
  */
 
-export interface ListboxProperties extends ThemedProperties, FocusProperties, CustomAriaProperties {
+export interface ListboxProperties extends ThemedProperties, FocusProperties {
+	aria?: { [key: string]: string | null };
 	activeIndex?: number;
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;

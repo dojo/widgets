@@ -6,14 +6,6 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 import Focus from '@dojo/framework/core/meta/Focus';
 import { uuid } from '@dojo/framework/core/util';
-import {
-	CustomAriaProperties,
-	LabeledProperties,
-	InputEventProperties,
-	InputProperties,
-	PointerEventProperties,
-	KeyEventProperties
-} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
 import * as css from '../theme/slider.m.css';
@@ -32,15 +24,19 @@ import * as css from '../theme/slider.m.css';
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
  * @property value           The current value
  */
-export interface SliderProperties
-	extends ThemedProperties,
-		LabeledProperties,
-		InputProperties,
-		FocusProperties,
-		InputEventProperties,
-		PointerEventProperties,
-		KeyEventProperties,
-		CustomAriaProperties {
+export interface SliderProperties extends ThemedProperties, FocusProperties {
+	aria?: { [key: string]: string | null };
+	labelAfter?: boolean;
+	labelHidden?: boolean;
+	label?: string;
+	onBlur?(): void;
+	onFocus?(): void;
+	onInput?(value?: number): void;
+	disabled?: boolean;
+	widgetId?: string;
+	name?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	max?: number;
 	min?: number;
 	output?(value: number): DNode;
@@ -51,12 +47,7 @@ export interface SliderProperties
 	verticalHeight?: string;
 	value?: number;
 	onClick?(value: number): void;
-	inputStyles?: Partial<CSSStyleDeclaration>;
-}
-
-function extractValue(event: Event): number {
-	const value = (event.target as HTMLInputElement).value;
-	return parseFloat(value);
+	valid?: boolean;
 }
 
 @theme(css)
@@ -64,76 +55,29 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 	// id used to associate input with output
 	private _widgetId = uuid();
 
-	private _onBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur(extractValue(event));
+	private _onBlur() {
+		this.properties.onBlur && this.properties.onBlur();
 	}
-	private _onChange(event: Event) {
-		event.stopPropagation();
-		this.properties.onChange && this.properties.onChange(extractValue(event));
-	}
-	private _onClick(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick(extractValue(event));
-	}
-	private _onFocus(event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus(extractValue(event));
+	private _onFocus() {
+		this.properties.onFocus && this.properties.onFocus();
 	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
-		this.properties.onInput && this.properties.onInput(extractValue(event));
-	}
-	private _onKeyDown(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyDown &&
-			this.properties.onKeyDown(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onKeyPress(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyPress &&
-			this.properties.onKeyPress(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onKeyUp(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyUp &&
-			this.properties.onKeyUp(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onMouseDown(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown();
-	}
-	private _onMouseUp(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp();
-	}
-	private _onTouchStart(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart();
-	}
-	private _onTouchEnd(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd();
-	}
-	private _onTouchCancel(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel();
+		const value = (event.target as HTMLInputElement).value;
+
+		this.properties.onInput && this.properties.onInput(parseFloat(value));
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, invalid, readOnly, required, vertical = false } = this.properties;
+		const { disabled, valid, readOnly, required, vertical = false } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null,
 			vertical ? css.vertical : null
@@ -193,7 +137,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 			aria = {},
 			disabled,
 			widgetId = this._widgetId,
-			invalid,
+			valid,
 			label,
 			labelAfter,
 			labelHidden,
@@ -207,8 +151,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 			vertical = false,
 			verticalHeight = '200px',
 			theme,
-			classes,
-			inputStyles = {}
+			classes
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -233,7 +176,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 					disabled,
 					id: widgetId,
 					focus: this.shouldFocus,
-					'aria-invalid': invalid === true ? 'true' : null,
+					'aria-invalid': valid === false ? 'true' : null,
 					max: `${max}`,
 					min: `${min}`,
 					name,
@@ -241,22 +184,12 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 					'aria-readonly': readOnly === true ? 'true' : null,
 					required,
 					step: `${step}`,
-					styles: { ...inputStyles, ...(vertical ? { width: verticalHeight } : {}) },
+					styles: vertical ? { width: verticalHeight } : {},
 					type: 'range',
 					value: `${value}`,
 					onblur: this._onBlur,
-					onchange: this._onChange,
-					onclick: this._onClick,
 					onfocus: this._onFocus,
-					oninput: this._onInput,
-					onkeydown: this._onKeyDown,
-					onkeypress: this._onKeyPress,
-					onkeyup: this._onKeyUp,
-					onmousedown: this._onMouseDown,
-					onmouseup: this._onMouseUp,
-					ontouchstart: this._onTouchStart,
-					ontouchend: this._onTouchEnd,
-					ontouchcancel: this._onTouchCancel
+					oninput: this._onInput
 				}),
 				this.renderControls(percentValue),
 				showOutput ? this.renderOutput(value, percentValue) : null
@@ -272,7 +205,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 							classes,
 							disabled,
 							focused: focus.containsFocus,
-							invalid,
+							valid,
 							readOnly,
 							required,
 							hidden: labelHidden,

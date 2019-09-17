@@ -1,4 +1,6 @@
-import { AriaPropertyObject } from './interfaces';
+interface AriaPropertyObject {
+	[key: string]: string | null;
+}
 
 export enum Keys {
 	Down = 40,

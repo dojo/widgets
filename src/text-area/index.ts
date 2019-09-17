@@ -5,12 +5,6 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
 import Label from '../label/index';
-import {
-	CustomAriaProperties,
-	InputEventProperties,
-	PointerEventProperties,
-	KeyEventProperties
-} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
@@ -30,13 +24,14 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  * @property placeholder    Placeholder text
  * @property value           The current value
  */
-export interface TextAreaProperties
-	extends ThemedProperties,
-		FocusProperties,
-		InputEventProperties,
-		KeyEventProperties,
-		PointerEventProperties,
-		CustomAriaProperties {
+export interface TextAreaProperties extends ThemedProperties, FocusProperties {
+	aria?: { [key: string]: string | null };
+	onKeyDown?(key: number, preventDefault: () => void): void;
+	onKeyPress?(key: number, preventDefault: () => void): void;
+	onKeyUp?(key: number, preventDefault: () => void): void;
+	onBlur?(): void;
+	onFocus?(): void;
+	onInput?(value?: string): void;
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -44,7 +39,6 @@ export interface TextAreaProperties
 	minLength?: number | string;
 	placeholder?: string;
 	value?: string;
-	onClick?(value: string): void;
 	valid?: { valid?: boolean; message?: string } | boolean;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
@@ -62,22 +56,11 @@ export interface TextAreaProperties
 export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProperties> {
 	private _dirty = false;
 
-	private _onBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
+	private _onBlur() {
+		this.properties.onBlur && this.properties.onBlur();
 	}
-	private _onChange(event: Event) {
-		event.stopPropagation();
-		this.properties.onChange &&
-			this.properties.onChange((event.target as HTMLInputElement).value);
-	}
-	private _onClick(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onClick &&
-			this.properties.onClick((event.target as HTMLInputElement).value);
-	}
-	private _onFocus(event: FocusEvent) {
-		this.properties.onFocus &&
-			this.properties.onFocus((event.target as HTMLInputElement).value);
+	private _onFocus() {
+		this.properties.onFocus && this.properties.onFocus();
 	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
@@ -104,26 +87,6 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 			this.properties.onKeyUp(event.which, () => {
 				event.preventDefault();
 			});
-	}
-	private _onMouseDown(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown();
-	}
-	private _onMouseUp(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp();
-	}
-	private _onTouchStart(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart();
-	}
-	private _onTouchEnd(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd();
-	}
-	private _onTouchCancel(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
 	private _callOnValidate(valid: boolean | undefined, message: string) {
@@ -234,7 +197,7 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 								classes,
 								disabled,
 								focused: focus.containsFocus,
-								invalid: valid === false || undefined,
+								valid,
 								readOnly,
 								required,
 								hidden: labelHidden,
@@ -264,18 +227,11 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 						value,
 						wrap: wrapText,
 						onblur: this._onBlur,
-						onchange: this._onChange,
-						onclick: this._onClick,
 						onfocus: this._onFocus,
 						oninput: this._onInput,
 						onkeydown: this._onKeyDown,
 						onkeypress: this._onKeyPress,
-						onkeyup: this._onKeyUp,
-						onmousedown: this._onMouseDown,
-						onmouseup: this._onMouseUp,
-						ontouchstart: this._onTouchStart,
-						ontouchend: this._onTouchEnd,
-						ontouchcancel: this._onTouchCancel
+						onkeyup: this._onKeyUp
 					})
 				]),
 				w(HelperText, { text: computedHelperText, valid })

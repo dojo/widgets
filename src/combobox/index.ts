@@ -15,7 +15,6 @@ import Label from '../label/index';
 import Listbox from '../listbox/index';
 import TextInput, { TextInputProperties } from '../text-input/index';
 import commonBundle from '../common/nls/common';
-import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
@@ -49,7 +48,9 @@ import HelperText from '../helper-text/index';
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
  * @property value              Value to set on the input
  */
-export interface ComboBoxProperties extends ThemedProperties, LabeledProperties, FocusProperties {
+export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
+	labelHidden?: boolean;
+	label?: string;
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): DNode;
@@ -323,7 +324,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		});
 	}
 
-	protected renderClearButton(messages: CommonMessages): DNode {
+	protected renderClearButton(messages: typeof commonBundle.messages): DNode {
 		const { disabled, label = '', readOnly, theme, classes } = this.properties;
 
 		return v(
@@ -344,7 +345,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		);
 	}
 
-	protected renderMenuButton(messages: CommonMessages): DNode {
+	protected renderMenuButton(messages: typeof commonBundle.messages): DNode {
 		const { disabled, label = '', readOnly, theme, classes } = this.properties;
 
 		return v(

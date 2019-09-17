@@ -6,12 +6,6 @@ import Focus from '@dojo/framework/core/meta/Focus';
 import InputValidity from '@dojo/framework/core/meta/InputValidity';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
-import {
-	CustomAriaProperties,
-	PointerEventProperties,
-	KeyEventProperties,
-	InputEventProperties
-} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
@@ -48,13 +42,11 @@ interface TextInputInternalState {
  * @property trailing		Renderer for trailing icon content
  */
 
-export interface TextInputProperties
-	extends ThemedProperties,
-		FocusProperties,
-		PointerEventProperties,
-		KeyEventProperties,
-		InputEventProperties,
-		CustomAriaProperties {
+export interface TextInputProperties extends ThemedProperties, FocusProperties {
+	aria?: { [key: string]: string | null };
+	onBlur?(): void;
+	onFocus?(): void;
+	onInput?(value?: string | number): void;
 	disabled?: boolean;
 	widgetId?: string;
 	name?: string;
@@ -102,69 +94,16 @@ function patternDiffer(
 @diffProperty('leading', reference)
 @diffProperty('trailing', reference)
 export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProperties> {
-	private _onBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
+	private _onBlur() {
+		this.properties.onBlur && this.properties.onBlur();
 	}
-	private _onChange(event: Event) {
-		event.stopPropagation();
-		this._state.dirty = true;
-		this.properties.onChange &&
-			this.properties.onChange((event.target as HTMLInputElement).value);
-	}
-	private _onClick(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onClick &&
-			this.properties.onClick((event.target as HTMLInputElement).value);
-	}
-	private _onFocus(event: FocusEvent) {
-		this.properties.onFocus &&
-			this.properties.onFocus((event.target as HTMLInputElement).value);
+	private _onFocus() {
+		this.properties.onFocus && this.properties.onFocus();
 	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
 		this.properties.onInput &&
 			this.properties.onInput((event.target as HTMLInputElement).value);
-	}
-	private _onKeyDown(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyDown &&
-			this.properties.onKeyDown(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onKeyPress(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyPress &&
-			this.properties.onKeyPress(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onKeyUp(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyUp &&
-			this.properties.onKeyUp(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onMouseDown(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown();
-	}
-	private _onMouseUp(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp();
-	}
-	private _onTouchStart(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart();
-	}
-	private _onTouchEnd(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd();
-	}
-	private _onTouchCancel(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
 	private _callOnValidate(valid: boolean | undefined, message: string) {
@@ -282,7 +221,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							theme,
 							classes,
 							disabled,
-							invalid: valid === false || undefined,
+							valid,
 							focused: focus.containsFocus,
 							readOnly,
 							required,
@@ -323,18 +262,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							type,
 							value,
 							onblur: this._onBlur,
-							onchange: this._onChange,
-							onclick: this._onClick,
 							onfocus: this._onFocus,
-							oninput: this._onInput,
-							onkeydown: this._onKeyDown,
-							onkeypress: this._onKeyPress,
-							onkeyup: this._onKeyUp,
-							onmousedown: this._onMouseDown,
-							onmouseup: this._onMouseUp,
-							ontouchstart: this._onTouchStart,
-							ontouchend: this._onTouchEnd,
-							ontouchcancel: this._onTouchCancel
+							oninput: this._onInput
 						}),
 						trailing &&
 							v('span', { key: 'trailing', classes: this.theme(css.trailing) }, [

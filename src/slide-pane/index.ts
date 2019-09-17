@@ -4,7 +4,6 @@ import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
@@ -37,7 +36,8 @@ export enum Align {
  * @property underlay         Determines whether a semi-transparent background shows behind the pane
  * @property width            Width of the pane in pixels
  */
-export interface SlidePaneProperties extends ThemedProperties, CustomAriaProperties {
+export interface SlidePaneProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
 	align?: Align;
 	closeText?: string;
 	onOpen?(): void;

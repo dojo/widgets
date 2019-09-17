@@ -5,7 +5,6 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixin
 import Focus from '@dojo/framework/core/meta/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import commonBundle from '../common/nls/common';
 
@@ -38,7 +37,8 @@ export type RoleType = 'dialog' | 'alertdialog';
  * @property title              Title to show in the dialog title bar
  * @property underlay           Determines whether a semi-transparent background shows behind the dialog
  */
-export interface DialogProperties extends ThemedProperties, CustomAriaProperties {
+export interface DialogProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
 	closeable?: boolean;
 	closeText?: string;
 	enterAnimation?: string | null;
