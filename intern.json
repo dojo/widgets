@@ -13,10 +13,6 @@
 		"./dist/dev/src/common/tests/unit/all.js"
 	],
 
-	"functionalSuites": [
-		"./dist/dev/src/common/tests/functional/all.js"
-	],
-
 	"browser": {
 		"loader": {
 			"script": "./node_modules/@dojo/scripts/intern/loader.js",
