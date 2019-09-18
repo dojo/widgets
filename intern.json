@@ -13,10 +13,6 @@
 		"./dist/dev/src/common/tests/unit/all.js"
 	],
 
-	"functionalSuites": [
-		"./dist/dev/src/common/tests/functional/all.js"
-	],
-
 	"browser": {
 		"loader": {
 			"script": "./node_modules/@dojo/scripts/intern/loader.js",
@@ -46,74 +42,5 @@
 		"!./dist/dev/src/**/themes/**/*",
 		"!./dist/dev/src/**/example/**/*",
 		"!./dist/dev/src/**/*Element.js"
-	],
-
-	"configs": {
-		"browserstack": {
-			"tunnel": "browserstack",
-
-			"environments+": [
-				{ "browserName": "internet explorer", "version": "11" },
-				{ "browserName": "edge" },
-				{ "browserName": "firefox", "os": "Windows", "os_version": "10" },
-				{ "browserName": "chrome", "os": "Windows", "os_version": "10" },
-				{ "browserName": "safari", "version": "9.1", "platform": "MAC" },
-				{ "browserName": "iPhone", "version": "9.1" }
-			],
-
-			"maxConcurrency": 5
-		},
-
-		"local": {
-			"tunnel": "selenium",
-			"tunnelOptions": {
-				"hostname": "localhost",
-				"port": 4444,
-				"drivers": [
-					{
-						"name": "chrome",
-						"version": "2.40"
-					}
-				]
-			},
-
-			"environments+": [
-				{ "browserName": "chrome" }
-			]
-		},
-
-		"headless": {
-			"tunnel": "selenium",
-			"tunnelOptions": {
-				"hostname": "localhost",
-				"port": 4444,
-				"drivers": [
-					{
-						"name": "chrome",
-						"version": "2.36"
-					}
-				]
-			},
-
-			"environments+": [
-				{ "browserName": "chrome", "chromeOptions": { "args": ["headless", "disable-gpu", "no-sandbox", "window-size=1280,1024"] } }
-			]
-		},
-
-		"saucelabs": {
-			"tunnel": "saucelabs",
-			"tunnelOptions": {},
-
-			"defaultTimeout": 10000,
-			"environments+": [
-				{ "browserName": "internet explorer", "version": [ "11.0" ], "platform": "Windows 7" },
-				{ "browserName": "firefox", "version": "43", "platform": "Windows 10" },
-				{ "browserName": "chrome", "platform": "Windows 10" },
-				{ "browserName": "chrome", "platform": "Windows 10" },
-				{ "browserName": "safari", "version": "9.0", "platform": "OS X 10.11" },
-				{ "browserName": "iphone", "version": "9.3" }
-			],
-			"maxConcurrency": 4
-		}
-	}
+	]
 }

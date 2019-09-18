@@ -26,7 +26,6 @@
     "version:reset": "shx mv package.json.bk package.json",
     "intern": "intern",
     "test": "run-s clean build:test intern",
-    "test:functional": "run-s clean build:test \"intern config=@headless\"",
     "build:ce": "dojo build widget && shx cp -r output/dist dist/umd/src/",
     "build:lib": "dojo build widget -t lib && shx cp -r output/dist dist/esm/src",
     "build:lib:legacy": "dojo build widget -t lib -l && shx cp -r output/dist dist/umd/src",
