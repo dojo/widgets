@@ -50,7 +50,7 @@ const expected = function({
 			checked: false,
 			disabled: disabled,
 			focus: noop,
-			'aria-invalid': !valid ? null : true,
+			'aria-invalid': valid === false ? 'true' : null,
 			name: undefined,
 			readOnly: readOnly,
 			'aria-readonly': readOnly ? 'true' : null,
@@ -59,6 +59,7 @@ const expected = function({
 			value: undefined,
 			onblur: noop,
 			onfocus: noop,
+			onchange: noop,
 			...inputOverrides
 		}),
 		v(
@@ -146,7 +147,7 @@ registerSuite('Radio', {
 
 		'state classes'() {
 			const properties = {
-				invalid: true,
+				valid: false,
 				disabled: true,
 				readOnly: true,
 				required: true,
@@ -162,8 +163,8 @@ registerSuite('Radio', {
 							null,
 							css.disabled,
 							null,
-							css.invalid,
 							null,
+							css.invalid,
 							css.readonly,
 							css.required
 						]
@@ -173,7 +174,7 @@ registerSuite('Radio', {
 			);
 
 			properties.disabled = false;
-			properties.invalid = false;
+			properties.valid = true;
 			properties.readOnly = false;
 			properties.required = false;
 
@@ -181,7 +182,7 @@ registerSuite('Radio', {
 				expected({
 					label: true,
 					rootOverrides: {
-						classes: [css.root, null, null, null, null, css.valid, null, null]
+						classes: [css.root, null, null, null, css.valid, null, null, null]
 					},
 					states: properties
 				})

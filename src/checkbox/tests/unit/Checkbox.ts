@@ -95,7 +95,6 @@ const expected = function(label = false, toggle = false, toggleLabels = false, c
 					value: undefined,
 					onblur: noop,
 					onchange: noop,
-					onclick: noop,
 					onfocus: noop
 				})
 			]),
@@ -169,7 +168,6 @@ registerSuite('Checkbox', {
 								value: 'baz',
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
 								onfocus: noop
 							})
 						])
@@ -237,13 +235,7 @@ registerSuite('Checkbox', {
 								name: undefined,
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
 								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop,
 								disabled: true,
 								readOnly: true,
 								required: true
@@ -279,13 +271,7 @@ registerSuite('Checkbox', {
 								name: undefined,
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
 								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop,
 								disabled: false,
 								readOnly: false,
 								required: false
@@ -343,13 +329,7 @@ registerSuite('Checkbox', {
 								id: '',
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
-								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop
+								onfocus: noop
 							})
 						]),
 						w(
@@ -408,13 +388,7 @@ registerSuite('Checkbox', {
 								value: undefined,
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
-								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop
+								onfocus: noop
 							})
 						])
 					]
