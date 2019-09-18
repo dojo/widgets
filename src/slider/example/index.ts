@@ -57,8 +57,7 @@ export default class App extends WidgetBase {
 					},
 					step: 1,
 					value: tribbleValue,
-					onChange: this.onTribbleInput,
-					onInput: this.onTribbleInput
+					onValue: this.onTribbleInput
 				})
 			]),
 			v('h1', {}, ['Disabled slider']),
@@ -80,15 +79,14 @@ export default class App extends WidgetBase {
 					label: 'Vertical Slider with default properties. Anything over 50 is invalid:',
 					value: verticalValue,
 					vertical: true,
-					invalid: verticalInvalid,
+					valid: !verticalInvalid,
 					output: (value: number) => {
 						return v('span', {
 							innerHTML: verticalInvalid ? value + ' !' : value + ''
 						});
 					},
 					outputIsTooltip: true,
-					onChange: this.onVerticalInput,
-					onInput: this.onVerticalInput
+					onValue: this.onVerticalInput
 				})
 			]),
 			v('h1', {}, ['Slider with no output']),

@@ -93,7 +93,11 @@ export default class App extends WidgetBase {
 							checked: this._theme === theme.label,
 							value: theme.label,
 							label: theme.label,
-							onChange: this._onThemeChange
+							onValue: (checked) => {
+								if (checked) {
+									this._onThemeChange(theme.label);
+								}
+							}
 						});
 					})
 				)

@@ -87,7 +87,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 			labelHidden: true,
 			type: 'search',
 			value: filterValue,
-			onInput: doFilter
+			onValue: doFilter
 		});
 	};
 

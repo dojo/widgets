@@ -48,9 +48,8 @@ const expectedEditing = function() {
 				extraClasses: { input: css.input },
 				focus: noop,
 				value: 'id',
-				onInput: noop,
+				onValue: noop,
 				onBlur: noop,
-				onKeyDown: noop,
 				classes: undefined,
 				theme: undefined
 			})

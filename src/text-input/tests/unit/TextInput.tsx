@@ -85,7 +85,7 @@ const expected = function({
 							disabled,
 							focused,
 							hidden: false,
-							invalid: valid === false || undefined,
+							valid,
 							readOnly,
 							required,
 							forId: ''
@@ -582,63 +582,28 @@ registerSuite('TextInput', {
 
 		events() {
 			const onBlur = sinon.stub();
-			const onChange = sinon.stub();
-			const onClick = sinon.stub();
 			const onFocus = sinon.stub();
-			const onInput = sinon.stub();
-			const onKeyDown = sinon.stub();
-			const onKeyPress = sinon.stub();
-			const onKeyUp = sinon.stub();
-			const onMouseDown = sinon.stub();
-			const onMouseUp = sinon.stub();
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
+			const onValue = sinon.stub();
+			const onKey = sinon.stub();
 
 			const h = harness(() =>
 				w(TextInput, {
 					onBlur,
-					onChange,
-					onClick,
 					onFocus,
-					onInput,
-					onKeyDown,
-					onKeyPress,
-					onKeyUp,
-					onMouseDown,
-					onMouseUp,
-					onTouchStart,
-					onTouchEnd,
-					onTouchCancel
+					onValue,
+					onKey
 				})
 			);
 
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
-			h.trigger('@input', 'onchange', stubEvent);
-			assert.isTrue(onChange.called, 'onChange called');
-			h.trigger('@input', 'onclick', stubEvent);
-			assert.isTrue(onClick.called, 'onClick called');
 			h.trigger('@input', 'onfocus', stubEvent);
 			assert.isTrue(onFocus.called, 'onFocus called');
 			h.trigger('@input', 'oninput', stubEvent);
-			assert.isTrue(onInput.called, 'onInput called');
+			assert.isTrue(onValue.called, 'onValue called');
 			h.trigger('@input', 'onkeydown', stubEvent);
-			assert.isTrue(onKeyDown.called, 'onKeyDown called');
+			assert.isTrue(onKey.called, 'onKey called');
 			h.trigger('@input', 'onkeypress', stubEvent);
-			assert.isTrue(onKeyPress.called, 'onKeyPress called');
-			h.trigger('@input', 'onkeyup', stubEvent);
-			assert.isTrue(onKeyUp.called, 'onKeyUp called');
-			h.trigger('@input', 'onmousedown', stubEvent);
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			h.trigger('@input', 'onmouseup', stubEvent);
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-			h.trigger('@input', 'ontouchstart', stubEvent);
-			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			h.trigger('@input', 'ontouchend', stubEvent);
-			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			h.trigger('@input', 'ontouchcancel', stubEvent);
-			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		},
 
 		'handles value changes from outside the DOM'() {
@@ -674,7 +639,7 @@ registerSuite('TextInput', {
 				w(MockMetaMixin(TextInput, mockMeta), {
 					widgetId: 'required',
 					required: true,
-					onInput: (value) => {
+					onValue: (value) => {
 						editedValues = {
 							...values,
 							...editedValues,

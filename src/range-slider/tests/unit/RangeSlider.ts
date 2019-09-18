@@ -298,7 +298,7 @@ registerSuite('RangeSlider', {
 			const h = harness(
 				() =>
 					w(RangeSlider, {
-						invalid: true
+						valid: false
 					}),
 				[compareAriaDescribedBy, compareAriaLabelledBy]
 			);
@@ -372,12 +372,12 @@ registerSuite('RangeSlider', {
 			);
 		},
 		events: {
-			onChange() {
-				const onChange = sinon.stub();
+			onValue() {
+				const onValue = sinon.stub();
 
 				const h = harness(() =>
 					w(RangeSlider, {
-						onChange
+						onValue
 					})
 				);
 
@@ -388,7 +388,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onChange.calledWith(25, 100));
+				assert(onValue.calledWith(25, 100));
 
 				h.trigger('@slider2', 'onchange', {
 					stopPropagation: sinon.stub(),
@@ -397,7 +397,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onChange.calledWith(0, 50));
+				assert(onValue.calledWith(0, 50));
 			},
 			onInput() {
 				const onInput = sinon.stub();
@@ -481,224 +481,6 @@ registerSuite('RangeSlider', {
 
 				assert(onFocus.calledWith(0, 50));
 			},
-			onClick() {
-				const onClick = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onClick
-					})
-				);
-
-				h.trigger('@slider1', 'onclick', {
-					stopPropagation: sinon.stub(),
-					target: {
-						value: '25'
-					}
-				});
-
-				assert(onClick.calledWith(25, 100));
-
-				h.trigger('@slider2', 'onclick', {
-					stopPropagation: sinon.stub(),
-					target: {
-						value: '50'
-					}
-				});
-
-				assert(onClick.calledWith(0, 50));
-			},
-			onKeyDown() {
-				const onKeyDown = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onKeyDown
-					})
-				);
-
-				h.trigger('@slider1', 'onkeydown', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onKeyDown.calledOnce);
-
-				h.trigger('@slider2', 'onkeydown', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onKeyDown.calledTwice);
-			},
-
-			onKeyUp() {
-				const onKeyUp = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onKeyUp
-					})
-				);
-
-				h.trigger('@slider1', 'onkeyup', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onKeyUp.calledOnce);
-
-				h.trigger('@slider2', 'onkeyup', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onKeyUp.calledTwice);
-			},
-
-			onKeyPress() {
-				const onKeyPress = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onKeyPress
-					})
-				);
-
-				h.trigger('@slider1', 'onkeypress', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onKeyPress.calledOnce);
-
-				h.trigger('@slider2', 'onkeypress', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onKeyPress.calledTwice);
-			},
-
-			onMouseDown() {
-				const onMouseDown = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onMouseDown
-					})
-				);
-
-				h.trigger('@slider1', 'onmousedown', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onMouseDown.calledOnce);
-
-				h.trigger('@slider2', 'onmousedown', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onMouseDown.calledTwice);
-			},
-
-			onMouseUp() {
-				const onMouseUp = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onMouseUp
-					})
-				);
-
-				h.trigger('@slider1', 'onmouseup', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onMouseUp.calledOnce);
-
-				h.trigger('@slider2', 'onmouseup', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onMouseUp.calledTwice);
-			},
-
-			onTouchStart() {
-				const onTouchStart = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onTouchStart
-					})
-				);
-
-				h.trigger('@slider1', 'ontouchstart', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onTouchStart.calledOnce);
-
-				h.trigger('@slider2', 'ontouchstart', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onTouchStart.calledTwice);
-			},
-
-			onTouchEnd() {
-				const onTouchEnd = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onTouchEnd
-					})
-				);
-
-				h.trigger('@slider1', 'ontouchend', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onTouchEnd.calledOnce);
-
-				h.trigger('@slider2', 'ontouchend', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onTouchEnd.calledTwice);
-			},
-
-			onTouchCancel() {
-				const onTouchCancel = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onTouchCancel
-					})
-				);
-
-				h.trigger('@slider1', 'ontouchcancel', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onTouchCancel.calledOnce);
-
-				h.trigger('@slider2', 'ontouchcancel', {
-					preventDefault: sinon.stub(),
-					stopPropagation: sinon.stub()
-				});
-
-				assert(onTouchCancel.calledTwice);
-			},
 
 			'does not error on missing events'() {
 				const h = harness(() => w(RangeSlider, {}));
@@ -742,7 +524,7 @@ registerSuite('RangeSlider', {
 							classes: undefined,
 							disabled: undefined,
 							focused: false,
-							invalid: undefined,
+							valid: undefined,
 							readOnly: undefined,
 							required: undefined,
 							hidden: undefined,
@@ -774,7 +556,7 @@ registerSuite('RangeSlider', {
 							classes: undefined,
 							disabled: true,
 							focused: false,
-							invalid: undefined,
+							valid: undefined,
 							readOnly: true,
 							required: true,
 							hidden: undefined,
@@ -821,7 +603,7 @@ registerSuite('RangeSlider', {
 							classes: undefined,
 							disabled: undefined,
 							focused: true,
-							invalid: undefined,
+							valid: undefined,
 							readOnly: undefined,
 							required: undefined,
 							hidden: undefined,

@@ -120,8 +120,8 @@ const getExpectedControls = function(
 				value: useTestProperties ? 'one' : '',
 				onBlur: noop,
 				onFocus: noop,
-				onInput: noop,
-				onKeyDown: noop,
+				onValue: noop,
+				onKey: noop,
 				onValidate: undefined
 			}),
 			useTestProperties
@@ -259,7 +259,7 @@ const getExpectedVdom = function(
 							disabled,
 							focused,
 							hidden: undefined,
-							invalid: !validity.valid,
+							valid: validity.valid,
 							readOnly,
 							required,
 							forId: useTestProperties ? 'foo' : ''
@@ -335,7 +335,7 @@ registerSuite('ComboBox', {
 				[compareFocusFalse]
 			);
 
-			h.trigger('@textinput', 'onInput', 'foo');
+			h.trigger('@textinput', 'onValue', 'foo');
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 
 			assert.isTrue(onChange.calledWith('foo'), 'onChange callback called with input value');
@@ -423,7 +423,7 @@ registerSuite('ComboBox', {
 				})
 			);
 
-			h.trigger('@textinput', 'onKeyDown', Keys.Down, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Down, preventDefault);
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true }));
 			assert.isTrue(
 				onRequestResults.calledOnce,
@@ -431,7 +431,7 @@ registerSuite('ComboBox', {
 			);
 			assert.isTrue(preventDefault.calledOnce, 'down key press prevents default page scroll');
 
-			h.trigger('@textinput', 'onKeyDown', Keys.Escape, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Escape, preventDefault);
 			h.expect(() => getExpectedVdom(true, false, true));
 		},
 
@@ -446,27 +446,27 @@ registerSuite('ComboBox', {
 			const preventDefault = sinon.stub();
 			const h = harness(() => w(ComboBox, testProperties));
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
-			h.trigger('@textinput', 'onKeyDown', Keys.Down, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Down, preventDefault);
 			h.expectPartial('@dropdown', () =>
 				getExpectedMenu(true, true, { visualFocus: true, activeIndex: 1 })
 			);
-			h.trigger('@textinput', 'onKeyDown', Keys.Up, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Up, preventDefault);
 			h.expectPartial('@dropdown', () =>
 				getExpectedMenu(true, true, { visualFocus: true, activeIndex: 0 })
 			);
-			h.trigger('@textinput', 'onKeyDown', Keys.Up, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Up, preventDefault);
 			h.expectPartial('@dropdown', () =>
 				getExpectedMenu(true, true, { visualFocus: true, activeIndex: 2 })
 			);
-			h.trigger('@textinput', 'onKeyDown', Keys.Down, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Down, preventDefault);
 			h.expectPartial('@dropdown', () =>
 				getExpectedMenu(true, true, { visualFocus: true, activeIndex: 0 })
 			);
-			h.trigger('@textinput', 'onKeyDown', Keys.End, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.End, preventDefault);
 			h.expectPartial('@dropdown', () =>
 				getExpectedMenu(true, true, { visualFocus: true, activeIndex: 2 })
 			);
-			h.trigger('@textinput', 'onKeyDown', Keys.Home, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Home, preventDefault);
 			h.expectPartial('@dropdown', () =>
 				getExpectedMenu(true, true, { visualFocus: true, activeIndex: 0 })
 			);
@@ -490,7 +490,7 @@ registerSuite('ComboBox', {
 				[compareFocusTrue]
 			);
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
-			h.trigger('@textinput', 'onKeyDown', Keys.Enter, () => {});
+			h.trigger('@textinput', 'onKey', Keys.Enter, () => {});
 
 			assert.isTrue(
 				onChange.calledWith('One'),
@@ -502,7 +502,7 @@ registerSuite('ComboBox', {
 			);
 			h.expect(() => getExpectedVdom(true, false, true, {}));
 
-			h.trigger('@textinput', 'onKeyDown', Keys.Enter, () => {});
+			h.trigger('@textinput', 'onKey', Keys.Enter, () => {});
 			assert.isFalse(
 				onChange.calledTwice,
 				'enter does not trigger onChange when menu is closed'
@@ -514,7 +514,7 @@ registerSuite('ComboBox', {
 			onChange.reset();
 
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
-			h.trigger('@textinput', 'onKeyDown', Keys.Space, () => {});
+			h.trigger('@textinput', 'onKey', Keys.Space, () => {});
 			assert.isTrue(
 				onChange.calledWith('One'),
 				'space triggers onChange callback called with label of first option'
@@ -539,8 +539,8 @@ registerSuite('ComboBox', {
 				})
 			);
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
-			h.trigger('@textinput', 'onKeyDown', Keys.Up, preventDefault);
-			h.trigger('@textinput', 'onKeyDown', Keys.Enter, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Up, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Enter, preventDefault);
 
 			assert.isFalse(onChange.called, 'onChange not called for disabled option');
 			assert.isFalse(onResultSelect.called, 'onResultSelect not called for disabled option');
@@ -560,8 +560,8 @@ registerSuite('ComboBox', {
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.expect(() => getExpectedVdom(false, false, false, {}));
 
-			h.trigger('@textinput', 'onKeyDown', Keys.Down, preventDefault);
-			h.trigger('@textinput', 'onKeyDown', Keys.Enter, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Down, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Enter, preventDefault);
 
 			assert.isFalse(onChange.called, 'onChange not called for no results');
 		},
@@ -631,8 +631,8 @@ registerSuite('ComboBox', {
 					value: '',
 					onBlur: noop,
 					onFocus: noop,
-					onInput: noop,
-					onKeyDown: noop,
+					onValue: noop,
+					onKey: noop,
 					onValidate: undefined
 				})
 			);
@@ -682,8 +682,8 @@ registerSuite('ComboBox', {
 					value: 'one',
 					onBlur: noop,
 					onFocus: noop,
-					onInput: noop,
-					onKeyDown: noop,
+					onValue: noop,
+					onKey: noop,
 					onValidate: undefined
 				})
 			);
@@ -698,7 +698,7 @@ registerSuite('ComboBox', {
 						disabled: true,
 						focused: false,
 						readOnly: true,
-						invalid: true,
+						valid: false,
 						required: true,
 						hidden: undefined,
 						forId: 'foo'
@@ -764,8 +764,8 @@ registerSuite('ComboBox', {
 					value: 'one',
 					onBlur: noop,
 					onFocus: noop,
-					onInput: noop,
-					onKeyDown: noop,
+					onValue: noop,
+					onKey: noop,
 					onValidate: undefined
 				})
 			);
@@ -798,7 +798,7 @@ registerSuite('ComboBox', {
 
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.expect(() => getExpectedVdom(true, false, true, { disabled: true }));
-			h.trigger('@textinput', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@textinput', 'onKey', Keys.Down, () => {});
 			h.expect(() => getExpectedVdom(true, false, true, { disabled: true }));
 			assert.isFalse(onMenuChange.called, 'onMenuChange never called');
 			assert.isFalse(onRequestResults.called, 'onRequestResults never called');
@@ -818,7 +818,7 @@ registerSuite('ComboBox', {
 
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.expect(() => getExpectedVdom(true, false, true, { readOnly: true }));
-			h.trigger('@textinput', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@textinput', 'onKey', Keys.Down, () => {});
 			h.expect(() => getExpectedVdom(true, false, true, { readOnly: true }));
 
 			assert.isFalse(onMenuChange.called, 'onMenuChange never called');
@@ -830,8 +830,8 @@ registerSuite('ComboBox', {
 			const h = harness(() => w(ComboBox, { ...testProperties }));
 			h.expect(() => getExpectedVdom(true, false, true));
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
-			h.trigger('@textinput', 'onKeyDown', Keys.Up, preventDefault);
-			h.trigger('@textinput', 'onKeyDown', Keys.Down, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Up, preventDefault);
+			h.trigger('@textinput', 'onKey', Keys.Down, preventDefault);
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true, { visualFocus: true }));
 			h.trigger('@dropdown', 'onmouseover', stubEvent);
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));

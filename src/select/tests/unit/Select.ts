@@ -92,7 +92,7 @@ const testProperties: Partial<SelectProperties> = {
 const testStateProperties: Partial<SelectProperties> = {
 	...testProperties,
 	disabled: true,
-	invalid: true,
+	valid: false,
 	readOnly: true,
 	required: true
 };
@@ -232,7 +232,7 @@ const expectedSingle = function(
 						getOptionDisabled: useTestProperties ? noop : undefined,
 						getOptionId: useTestProperties ? noop : undefined,
 						getOptionLabel: useTestProperties ? noop : undefined,
-						onKey: noop,
+						onKeyDown: noop,
 						getOptionSelected: noop,
 						theme: undefined,
 						classes: undefined,
@@ -272,7 +272,7 @@ const expected = function(
 							disabled: undefined,
 							focused: focus,
 							hidden: undefined,
-							invalid: undefined,
+							valid: undefined,
 							readOnly: undefined,
 							required: undefined,
 							forId: ''
@@ -603,7 +603,7 @@ registerSuite('Select', {
 												getOptionId: undefined,
 												getOptionLabel: undefined,
 												getOptionSelected: noop,
-												onKey: noop,
+												onKeyDown: noop,
 												theme: undefined,
 												classes: undefined,
 												onActiveIndexChange: noop,

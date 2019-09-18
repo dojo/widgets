@@ -95,9 +95,9 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 						extraClasses: { input: this.theme(css.input) } as any,
 						focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
 						value: this._editingValue,
-						onInput: this._onInput,
+						onValue: this._onInput,
 						onBlur: this._onBlur,
-						onKeyDown: this._onKeyDown
+						onKey: this._onKeyDown
 				  })
 				: this.renderContent(),
 			editable && !this._editing

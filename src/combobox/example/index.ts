@@ -106,7 +106,9 @@ export default class App extends WidgetBase {
 					clearable: true,
 					onValue: onChange,
 					getResultLabel: (result: any) => result.value,
-					onRequestResults,
+					onRequestResults: () => {
+						onRequestResults('2');
+					},
 					results: this._results,
 					value: this._value2,
 					inputProperties: {
@@ -120,7 +122,9 @@ export default class App extends WidgetBase {
 					openOnFocus: true,
 					onValue: onChange,
 					getResultLabel: (result: any) => result.value,
-					onRequestResults,
+					onRequestResults: () => {
+						onRequestResults('1');
+					},
 					results: this._results,
 					value: this._value1,
 					inputProperties: {
@@ -133,7 +137,9 @@ export default class App extends WidgetBase {
 					label: 'Combo:',
 					onValue: onChange,
 					getResultLabel: (result: any) => result.value,
-					onRequestResults,
+					onRequestResults: () => {
+						onRequestResults('3');
+					},
 					results: this._results,
 					value: this._value5,
 					isResultDisabled: (result: any) => result.value.length > 9,
@@ -150,7 +156,9 @@ export default class App extends WidgetBase {
 						placeholder: 'Enter a value'
 					},
 					onValue: onChange,
-					onRequestResults,
+					onRequestResults: () => {
+						onRequestResults('6');
+					},
 					value: this._value6
 				}),
 				v('h3', ['Read Only']),
@@ -162,7 +170,9 @@ export default class App extends WidgetBase {
 						placeholder: 'Enter a value'
 					},
 					onValue: onChange,
-					onRequestResults,
+					onRequestResults: () => {
+						onRequestResults('7');
+					},
 					value: this._value7
 				}),
 				v('h3', ['Label']),
@@ -170,7 +180,9 @@ export default class App extends WidgetBase {
 					key: '8',
 					onValue: onChange,
 					getResultLabel: (result: any) => result.value,
-					onRequestResults,
+					onRequestResults: () => {
+						onRequestResults('8');
+					},
 					results: this._results,
 					value: this._value8,
 					label: 'Enter a value'
@@ -186,7 +198,9 @@ export default class App extends WidgetBase {
 						this.invalidate();
 					},
 					getResultLabel: (result: any) => result.value,
-					onRequestResults,
+					onRequestResults: () => {
+						onRequestResults('9');
+					},
 					results: this._results,
 					value: this._value9,
 					valid: this._valid,

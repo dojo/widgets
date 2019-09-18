@@ -42,10 +42,9 @@ const getExpectedCombobox = function(useTestProperties = false, results?: any[])
 		valid: useTestProperties ? false : true,
 		isResultDisabled: undefined,
 		label: useTestProperties ? 'Some Field' : undefined,
-		labelAfter: undefined,
 		labelHidden: undefined,
 		onBlur: noop,
-		onChange: noop,
+		onValue: noop,
 		onFocus: noop,
 		onMenuChange: noop,
 		onRequestResults: noop,
@@ -232,7 +231,7 @@ registerSuite('TimePicker', {
 						inputProperties: {
 							aria: { describedBy: 'Some descriptive text' }
 						},
-						invalid: true,
+						valid: false,
 						name: 'some-field',
 						readOnly: true,
 						required: true,
@@ -365,7 +364,6 @@ registerSuite('TimePicker', {
 								disabled: undefined,
 								focused: false,
 								hidden: false,
-								invalid: undefined,
 								readOnly: undefined,
 								required: undefined,
 								forId: ''

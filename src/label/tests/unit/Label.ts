@@ -37,7 +37,7 @@ registerSuite('Label', {
 						focused: true,
 						readOnly: true,
 						required: true,
-						invalid: true,
+						valid: false,
 						secondary: true
 					},
 					['baz']
