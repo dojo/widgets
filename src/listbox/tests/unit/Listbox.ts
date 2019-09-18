@@ -257,7 +257,7 @@ registerSuite('Listbox', {
 
 		'onkeydown event'() {
 			const onKeyDown = sinon.stub();
-			const h = harness(() => w(Listbox, { onKeyDown }));
+			const h = harness(() => w(Listbox, { onKey: onKeyDown }));
 			h.trigger('@root', 'onkeydown', { eventInit: { which: Keys.Down }, ...stubEvent });
 			assert.isTrue(onKeyDown.called);
 		},

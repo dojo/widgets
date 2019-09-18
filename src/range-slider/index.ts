@@ -35,7 +35,7 @@ export interface RangeSliderProperties extends ThemedProperties {
 	maxName?: string;
 	minimumLabel?: string;
 	maximumLabel?: string;
-	onInput?(value: SliderValue): void;
+	onValue?(value: SliderValue): void;
 	onBlur?(): void;
 	onFocus?(): void;
 	valid?: boolean;
@@ -65,10 +65,10 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	}
 
 	private _onInput(event: Event, isMinEvent: boolean) {
-		const { min = 0, max = 100, onInput } = this.properties;
+		const { min = 0, max = 100, onValue } = this.properties;
 		const { minValue = min, maxValue = max } = this.properties;
 
-		if (!onInput) {
+		if (!onValue) {
 			return;
 		}
 
@@ -78,7 +78,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			? [Math.min(parseFloat(value), maxValue), maxValue]
 			: [minValue, Math.max(minValue, parseFloat(value))];
 
-		onInput(returnValues);
+		onValue(returnValues);
 	}
 
 	private _getInputProperties(isSlider1: boolean) {

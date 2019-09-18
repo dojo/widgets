@@ -98,7 +98,7 @@ export default class App extends WidgetBase {
 					label: 'Slider with default values and no output',
 					showOutput: false,
 					value: this._outputlessValue,
-					onInput: this.onOutputlessInput
+					onValue: this.onOutputlessInput
 				})
 			])
 		]);

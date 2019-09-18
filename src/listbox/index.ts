@@ -57,9 +57,9 @@ export interface ListboxProperties extends ThemedProperties, FocusProperties {
 	optionData?: any[];
 	tabIndex?: number;
 	visualFocus?: boolean;
-	onActiveIndexChange?(index: number, key?: string | number): void;
-	onKeyDown?(event: KeyboardEvent, key?: string | number): void;
-	onOptionSelect?(option: any, index: number, key?: string | number): void;
+	onActiveIndexChange?(index: number): void;
+	onKeyDown?(event: KeyboardEvent): void;
+	onOptionSelect?(option: any, index: number): void;
 }
 
 @theme(css)
@@ -82,14 +82,13 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 		event.stopPropagation();
 		const {
 			activeIndex = 0,
-			key,
 			optionData = [],
 			onActiveIndexChange,
 			onOptionSelect,
 			onKeyDown
 		} = this.properties;
 
-		onKeyDown && onKeyDown(event, key);
+		onKeyDown && onKeyDown(event);
 
 		const activeItem = optionData[activeIndex];
 		let newIndex: number;
@@ -99,35 +98,35 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 			case Keys.Space:
 				event.preventDefault();
 				if (!this._getOptionDisabled(activeItem, activeIndex)) {
-					onOptionSelect && onOptionSelect(activeItem, activeIndex, key);
+					onOptionSelect && onOptionSelect(activeItem, activeIndex);
 				}
 				break;
 			case Keys.Down:
 				event.preventDefault();
 				newIndex = (activeIndex + 1) % optionData.length;
-				onActiveIndexChange && onActiveIndexChange(newIndex, key);
+				onActiveIndexChange && onActiveIndexChange(newIndex);
 				break;
 			case Keys.Up:
 				event.preventDefault();
 				newIndex = (activeIndex - 1 + optionData.length) % optionData.length;
-				onActiveIndexChange && onActiveIndexChange(newIndex, key);
+				onActiveIndexChange && onActiveIndexChange(newIndex);
 				break;
 			case Keys.Home:
 			case Keys.PageUp:
-				onActiveIndexChange && onActiveIndexChange(0, key);
+				onActiveIndexChange && onActiveIndexChange(0);
 				break;
 			case Keys.End:
 			case Keys.PageDown:
-				onActiveIndexChange && onActiveIndexChange(optionData.length - 1, key);
+				onActiveIndexChange && onActiveIndexChange(optionData.length - 1);
 				break;
 		}
 	}
 
-	private _onOptionClick(option: any, index: number, key?: string | number) {
+	private _onOptionClick(option: any, index: number) {
 		const { onActiveIndexChange, onOptionSelect } = this.properties;
 		if (!this._getOptionDisabled(option, index)) {
-			onActiveIndexChange && onActiveIndexChange(index, key);
-			onOptionSelect && onOptionSelect(option, index, key);
+			onActiveIndexChange && onActiveIndexChange(index);
+			onOptionSelect && onOptionSelect(option, index);
 		}
 	}
 

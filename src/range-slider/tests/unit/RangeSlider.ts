@@ -404,7 +404,7 @@ registerSuite('RangeSlider', {
 
 				const h = harness(() =>
 					w(RangeSlider, {
-						onInput
+						onValue: onInput
 					})
 				);
 

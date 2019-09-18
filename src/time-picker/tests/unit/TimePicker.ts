@@ -419,7 +419,7 @@ registerSuite('TimePicker', {
 
 			const h = harness(() =>
 				w(TimePicker, {
-					onChange,
+					onValue: onChange,
 					useNativeElement: true,
 					value: '12:34:56'
 				})

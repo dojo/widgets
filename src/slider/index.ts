@@ -31,7 +31,7 @@ export interface SliderProperties extends ThemedProperties, FocusProperties {
 	label?: string;
 	onBlur?(): void;
 	onFocus?(): void;
-	onInput?(value?: number): void;
+	onValue?(value?: number): void;
 	disabled?: boolean;
 	widgetId?: string;
 	name?: string;
@@ -65,7 +65,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 		event.stopPropagation();
 		const value = (event.target as HTMLInputElement).value;
 
-		this.properties.onInput && this.properties.onInput(parseFloat(value));
+		this.properties.onValue && this.properties.onValue(parseFloat(value));
 	}
 
 	protected getRootClasses(): (string | null)[] {

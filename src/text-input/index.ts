@@ -64,7 +64,6 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
 	pattern?: string | RegExp;
 	autocomplete?: boolean | string;
-	onClick?(value: string): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 	leading?: () => DNode;
 	trailing?: () => DNode;

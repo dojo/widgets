@@ -26,12 +26,10 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  */
 export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
-	onKeyDown?(key: number, preventDefault: () => void): void;
-	onKeyPress?(key: number, preventDefault: () => void): void;
-	onKeyUp?(key: number, preventDefault: () => void): void;
+	onKey?(key: number, preventDefault: () => void): void;
 	onBlur?(): void;
 	onFocus?(): void;
-	onInput?(value?: string): void;
+	onValue?(value?: string): void;
 	columns?: number;
 	rows?: number;
 	wrapText?: 'hard' | 'soft' | 'off';
@@ -64,27 +62,13 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
-		this.properties.onInput &&
-			this.properties.onInput((event.target as HTMLInputElement).value);
+		this.properties.onValue &&
+			this.properties.onValue((event.target as HTMLInputElement).value);
 	}
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown &&
-			this.properties.onKeyDown(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onKeyPress(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyPress &&
-			this.properties.onKeyPress(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onKeyUp(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyUp &&
-			this.properties.onKeyUp(event.which, () => {
+		this.properties.onKey &&
+			this.properties.onKey(event.which, () => {
 				event.preventDefault();
 			});
 	}
@@ -229,9 +213,7 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 						onblur: this._onBlur,
 						onfocus: this._onFocus,
 						oninput: this._onInput,
-						onkeydown: this._onKeyDown,
-						onkeypress: this._onKeyPress,
-						onkeyup: this._onKeyUp
+						onkeydown: this._onKeyDown
 					})
 				]),
 				w(HelperText, { text: computedHelperText, valid })

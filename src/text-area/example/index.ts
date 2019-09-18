@@ -20,7 +20,7 @@ export default class App extends WidgetBase {
 					placeholder: 'Hello, World',
 					label: 'Type Something',
 					value: this._value1,
-					onInput: (value: string) => {
+					onValue: (value: string) => {
 						this._value1 = value;
 						this.invalidate();
 					}
@@ -51,7 +51,7 @@ export default class App extends WidgetBase {
 						this._valid1 = { valid, message };
 						this.invalidate();
 					},
-					onInput: (value: string) => {
+					onValue: (value: string) => {
 						this._value2 = value;
 						this.invalidate();
 					}
@@ -86,7 +86,7 @@ export default class App extends WidgetBase {
 						this._customValid = { valid, message };
 						this.invalidate();
 					},
-					onInput: (value: string) => {
+					onValue: (value: string) => {
 						this._customValue = value;
 						this.invalidate();
 					}

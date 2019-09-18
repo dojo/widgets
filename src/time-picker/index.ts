@@ -32,7 +32,7 @@ interface FocusInputEvent extends FocusEvent {
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property isOptionDisabled   Used to determine if an item should be disabled
  * @property onBlur             Called when the input is blurred
- * @property onChange           Called when the value changes
+ * @property onValue           Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestOptions   Called when options are shown; should be used to set `options`
@@ -59,7 +59,7 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties 
 	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
 	onBlur?(): void;
-	onChange?(value: string): void;
+	onValue?(value: string): void;
 	onFocus?(): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestOptions?(key?: string | number): void;
@@ -198,9 +198,9 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		onBlur && onBlur();
 	}
 
-	private _onChange(value: string) {
-		const { onChange } = this.properties;
-		onChange && onChange(value);
+	private _onValue(value: string) {
+		const { onValue } = this.properties;
+		onValue && onValue(value);
 	}
 
 	private _onFocus() {
@@ -219,8 +219,8 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 	}
 
 	private _onNativeChange(event: FocusInputEvent) {
-		const { onChange } = this.properties;
-		onChange && onChange(event.target.value);
+		const { onValue } = this.properties;
+		onValue && onValue(event.target.value);
 	}
 
 	private _onNativeFocus() {
@@ -297,7 +297,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			label,
 			labelHidden,
 			onBlur: this._onBlur,
-			onValue: this._onChange,
+			onValue: this._onValue,
 			onFocus: this._onFocus,
 			onMenuChange: this._onMenuChange,
 			onRequestResults: this._onRequestOptions.bind(this),

@@ -232,7 +232,7 @@ const expectedSingle = function(
 						getOptionDisabled: useTestProperties ? noop : undefined,
 						getOptionId: useTestProperties ? noop : undefined,
 						getOptionLabel: useTestProperties ? noop : undefined,
-						onKeyDown: noop,
+						onKey: noop,
 						getOptionSelected: noop,
 						theme: undefined,
 						classes: undefined,
@@ -379,7 +379,7 @@ registerSuite('Select', {
 						getOptionValue: testProperties.getOptionValue,
 						options: testOptions,
 						useNativeElement: true,
-						onChange
+						onValue: onChange
 					})
 				);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
@@ -401,7 +401,7 @@ registerSuite('Select', {
 						options: testOptions,
 						onBlur,
 						onFocus,
-						onChange
+						onValue: onChange
 					})
 				);
 
@@ -507,7 +507,7 @@ registerSuite('Select', {
 					w(Select, {
 						...testProperties,
 						options: testOptions,
-						onChange
+						onValue: onChange
 					})
 				);
 
@@ -603,7 +603,7 @@ registerSuite('Select', {
 												getOptionId: undefined,
 												getOptionLabel: undefined,
 												getOptionSelected: noop,
-												onKeyDown: noop,
+												onKey: noop,
 												theme: undefined,
 												classes: undefined,
 												onActiveIndexChange: noop,

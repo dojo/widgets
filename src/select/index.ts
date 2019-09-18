@@ -49,7 +49,7 @@ export interface SelectProperties<T = any> extends ThemedProperties, FocusProper
 	placeholder?: string;
 	useNativeElement?: boolean;
 	onBlur?(): void;
-	onChange?(option: T): void;
+	onValue?(option: T): void;
 	onFocus?(): void;
 	value?: string;
 	labelHidden?: boolean;
@@ -122,7 +122,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 
 	// native select events
 	private _onNativeChange(event: Event) {
-		const { getOptionValue, options = [], onChange } = this.properties;
+		const { getOptionValue, options = [], onValue } = this.properties;
 		event.stopPropagation();
 		const value = (<HTMLInputElement>event.target).value;
 		const option = find(options, (option: T, index: number) => {
@@ -133,7 +133,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			}
 			return false;
 		});
-		option && onChange && onChange(option);
+		option && onValue && onValue(option);
 	}
 
 	// custom select events
@@ -178,12 +178,12 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 	}
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
-		const { options = [], onChange } = this.properties;
+		const { options = [], onValue } = this.properties;
 		event.stopPropagation();
 		const index = this._getSelectedIndexOnInput(event);
 		if (index !== undefined) {
 			this._focusedIndex = index;
-			onChange && onChange(options[index]);
+			onValue && onValue(options[index]);
 			this.invalidate();
 		}
 		if (event.which === Keys.Down) {
@@ -260,7 +260,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					required,
 					value,
 					onblur: this._onBlur,
-					onchange: this._onNativeChange,
+					onValue: this._onNativeChange,
 					onfocus: this._onFocus
 				},
 				optionNodes
@@ -279,7 +279,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			options = [],
 			theme,
 			classes,
-			onChange
+			onValue
 		} = this.properties;
 
 		if (this._focusedIndex === undefined) {
@@ -326,7 +326,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 								this.invalidate();
 							},
 							onOptionSelect: (option: T) => {
-								onChange && onChange(option);
+								onValue && onValue(option);
 								this._closeSelect();
 								this.focus();
 							},
