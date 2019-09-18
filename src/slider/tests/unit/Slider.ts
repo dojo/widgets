@@ -92,18 +92,8 @@ const expected = function(
 						type: 'range',
 						value: '0',
 						onblur: noop,
-						onchange: noop,
-						onclick: noop,
 						onfocus: noop,
 						oninput: noop,
-						onkeydown: noop,
-						onkeypress: noop,
-						onkeyup: noop,
-						onmousedown: noop,
-						onmouseup: noop,
-						ontouchstart: noop,
-						ontouchend: noop,
-						ontouchcancel: noop,
 						...overrides
 					}),
 					v(
@@ -263,18 +253,8 @@ registerSuite('Slider', {
 										type: 'range',
 										value: '0',
 										onblur: noop,
-										onchange: noop,
-										onclick: noop,
 										onfocus: noop,
-										oninput: noop,
-										onkeydown: noop,
-										onkeypress: noop,
-										onkeyup: noop,
-										onmousedown: noop,
-										onmouseup: noop,
-										ontouchstart: noop,
-										ontouchend: noop,
-										ontouchcancel: noop
+										oninput: noop
 									}),
 									v(
 										'div',
@@ -371,18 +351,8 @@ registerSuite('Slider', {
 										type: 'range',
 										value: '6',
 										onblur: noop,
-										onchange: noop,
-										onclick: noop,
 										onfocus: noop,
-										oninput: noop,
-										onkeydown: noop,
-										onkeypress: noop,
-										onkeyup: noop,
-										onmousedown: noop,
-										onmouseup: noop,
-										ontouchstart: noop,
-										ontouchend: noop,
-										ontouchcancel: noop
+										oninput: noop
 									}),
 									v(
 										'div',
@@ -474,18 +444,8 @@ registerSuite('Slider', {
 									type: 'range',
 									value: '40',
 									onblur: noop,
-									onchange: noop,
-									onclick: noop,
 									onfocus: noop,
-									oninput: noop,
-									onkeydown: noop,
-									onkeypress: noop,
-									onkeyup: noop,
-									onmousedown: noop,
-									onmouseup: noop,
-									ontouchstart: noop,
-									ontouchend: noop,
-									ontouchcancel: noop
+									oninput: noop
 								}),
 								v(
 									'div',
@@ -574,18 +534,8 @@ registerSuite('Slider', {
 									type: 'range',
 									value: '30',
 									onblur: noop,
-									onchange: noop,
-									onclick: noop,
 									onfocus: noop,
-									oninput: noop,
-									onkeydown: noop,
-									onkeypress: noop,
-									onkeyup: noop,
-									onmousedown: noop,
-									onmouseup: noop,
-									ontouchstart: noop,
-									ontouchend: noop,
-									ontouchcancel: noop
+									oninput: noop
 								}),
 								v(
 									'div',
@@ -634,7 +584,7 @@ registerSuite('Slider', {
 
 		'state classes'() {
 			let properties = {
-				invalid: true,
+				valid: false,
 				disabled: true,
 				readOnly: true,
 				required: true
@@ -685,18 +635,8 @@ registerSuite('Slider', {
 									type: 'range',
 									value: '0',
 									onblur: noop,
-									onchange: noop,
-									onclick: noop,
 									onfocus: noop,
-									oninput: noop,
-									onkeydown: noop,
-									onkeypress: noop,
-									onkeyup: noop,
-									onmousedown: noop,
-									onmouseup: noop,
-									ontouchstart: noop,
-									ontouchend: noop,
-									ontouchcancel: noop
+									oninput: noop
 								}),
 								v(
 									'div',
@@ -733,7 +673,7 @@ registerSuite('Slider', {
 			);
 
 			properties = {
-				invalid: false,
+				valid: true,
 				disabled: false,
 				readOnly: false,
 				required: false
@@ -783,18 +723,8 @@ registerSuite('Slider', {
 									type: 'range',
 									value: '0',
 									onblur: noop,
-									onchange: noop,
-									onclick: noop,
 									onfocus: noop,
-									oninput: noop,
-									onkeydown: noop,
-									onkeypress: noop,
-									onkeyup: noop,
-									onmousedown: noop,
-									onmouseup: noop,
-									ontouchstart: noop,
-									ontouchend: noop,
-									ontouchcancel: noop
+									oninput: noop
 								}),
 								v(
 									'div',

@@ -260,7 +260,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					required,
 					value,
 					onblur: this._onBlur,
-					onValue: this._onNativeChange,
+					onchange: this._onNativeChange,
 					onfocus: this._onFocus
 				},
 				optionNodes

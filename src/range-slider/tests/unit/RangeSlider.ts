@@ -40,18 +40,8 @@ const sliderProps = {
 	required: undefined,
 	disabled: undefined,
 	onblur: () => {},
-	onclick: () => {},
 	onfocus: () => {},
-	onchange: () => {},
 	oninput: () => {},
-	onkeydown: () => {},
-	onkeypress: () => {},
-	onkeyup: () => {},
-	onmousedown: () => {},
-	onmouseup: () => {},
-	ontouchstart: () => {},
-	ontouchend: () => {},
-	ontouchcancel: () => {},
 	classes: [css.input, fixedCss.nativeInput]
 };
 
@@ -377,34 +367,7 @@ registerSuite('RangeSlider', {
 
 				const h = harness(() =>
 					w(RangeSlider, {
-						onValue
-					})
-				);
-
-				h.trigger('@slider1', 'onchange', {
-					stopPropagation: sinon.stub(),
-					target: {
-						value: '25'
-					}
-				});
-
-				assert(onValue.calledWith(25, 100));
-
-				h.trigger('@slider2', 'onchange', {
-					stopPropagation: sinon.stub(),
-					target: {
-						value: '50'
-					}
-				});
-
-				assert(onValue.calledWith(0, 50));
-			},
-			onInput() {
-				const onInput = sinon.stub();
-
-				const h = harness(() =>
-					w(RangeSlider, {
-						onValue: onInput
+						onValue: onValue
 					})
 				);
 
@@ -415,7 +378,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onInput.calledWith(25, 100));
+				assert(onValue.calledWith([25, 100]));
 
 				h.trigger('@slider2', 'oninput', {
 					stopPropagation: sinon.stub(),
@@ -424,7 +387,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onInput.calledWith(0, 50));
+				assert(onValue.calledWith([0, 50]));
 			},
 
 			onBlur() {
@@ -443,16 +406,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onBlur.calledWith(25, 100));
-
-				h.trigger('@slider2', 'onblur', {
-					stopPropagation: sinon.stub(),
-					target: {
-						value: '50'
-					}
-				});
-
-				assert(onBlur.calledWith(0, 50));
+				assert(onBlur.called);
 			},
 			onFocus() {
 				const onFocus = sinon.stub();
@@ -470,36 +424,13 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onFocus.calledWith(25, 100));
-
-				h.trigger('@slider2', 'onfocus', {
-					stopPropagation: sinon.stub(),
-					target: {
-						value: '50'
-					}
-				});
-
-				assert(onFocus.calledWith(0, 50));
+				assert(onFocus.called);
 			},
 
 			'does not error on missing events'() {
 				const h = harness(() => w(RangeSlider, {}));
 
-				[
-					'onblur',
-					'onclick',
-					'onfocus',
-					'onchange',
-					'oninput',
-					'onkeydown',
-					'onkeypress',
-					'onkeyup',
-					'onmousedown',
-					'onmouseup',
-					'ontouchstart',
-					'ontouchend',
-					'ontouchcancel'
-				].forEach((key) => {
+				['onblur', 'onfocus', 'oninput'].forEach((key) => {
 					h.trigger('@slider1', key, stubEvent);
 					h.trigger('@slider2', key, stubEvent);
 				});

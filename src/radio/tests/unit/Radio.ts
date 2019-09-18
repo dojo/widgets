@@ -50,7 +50,7 @@ const expected = function({
 			checked: false,
 			disabled: disabled,
 			focus: noop,
-			'aria-invalid': !valid ? 'true' : null,
+			'aria-invalid': !valid ? null : true,
 			name: undefined,
 			readOnly: readOnly,
 			'aria-readonly': readOnly ? 'true' : null,
@@ -58,14 +58,7 @@ const expected = function({
 			type: 'radio',
 			value: undefined,
 			onblur: noop,
-			onchange: noop,
-			onclick: noop,
 			onfocus: noop,
-			onmousedown: noop,
-			onmouseup: noop,
-			ontouchstart: noop,
-			ontouchend: noop,
-			ontouchcancel: noop,
 			...inputOverrides
 		}),
 		v(

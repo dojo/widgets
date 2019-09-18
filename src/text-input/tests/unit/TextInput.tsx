@@ -113,18 +113,9 @@ const expected = function({
 					focus: noop,
 					pattern: undefined,
 					onblur: noop,
-					onchange: noop,
-					onclick: noop,
 					onfocus: noop,
 					oninput: noop,
 					onkeydown: noop,
-					onkeypress: noop,
-					onkeyup: noop,
-					onmousedown: noop,
-					onmouseup: noop,
-					ontouchstart: noop,
-					ontouchend: noop,
-					ontouchcancel: noop,
 					...inputOverrides
 				})
 			]),
@@ -167,18 +158,9 @@ const input = () => (
 			focus={noop}
 			pattern={undefined}
 			onblur={noop}
-			onchange={noop}
-			onclick={noop}
 			onfocus={noop}
 			oninput={noop}
 			onkeydown={noop}
-			onkeypress={noop}
-			onkeyup={noop}
-			onmousedown={noop}
-			onmouseup={noop}
-			ontouchstart={noop}
-			ontouchend={noop}
-			ontouchcancel={noop}
 		/>
 	</div>
 );

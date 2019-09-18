@@ -101,7 +101,6 @@ const expected = function(
 					value: undefined,
 					wrap: undefined,
 					onblur: noop,
-					onchange: noop,
 					onfocus: noop,
 					oninput: noop,
 					onkeydown: noop,
@@ -141,10 +140,9 @@ const textarea = () => (
 			value={undefined}
 			wrap={undefined}
 			onblur={noop}
-			onchange={noop}
-			onclick={noop}
 			onfocus={noop}
 			oninput={noop}
+			onkeydown={noop}
 		/>
 	</div>
 );
@@ -278,8 +276,6 @@ registerSuite('Textarea', {
 
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
-			h.trigger('@input', 'onchange', stubEvent);
-			assert.isTrue(onValue.called, 'onChange called');
 			h.trigger('@input', 'onfocus', stubEvent);
 			assert.isTrue(onFocus.called, 'onFocus called');
 			h.trigger('@input', 'oninput', stubEvent);
