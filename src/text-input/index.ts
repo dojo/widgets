@@ -46,7 +46,8 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
 	onBlur?(): void;
 	onFocus?(): void;
-	onInput?(value?: string | number): void;
+	onValue?(value?: string): void;
+	onKey?(key: number, preventDefault: () => void): void;
 	disabled?: boolean;
 	widgetId?: string;
 	name?: string;
@@ -102,8 +103,16 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
-		this.properties.onInput &&
-			this.properties.onInput((event.target as HTMLInputElement).value);
+		this.properties.onValue &&
+			this.properties.onValue((event.target as HTMLInputElement).value);
+	}
+
+	private _onKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
+		this.properties.onKey &&
+			this.properties.onKey(event.which, () => {
+				event.preventDefault();
+			});
 	}
 
 	private _callOnValidate(valid: boolean | undefined, message: string) {
@@ -263,7 +272,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							value,
 							onblur: this._onBlur,
 							onfocus: this._onFocus,
-							oninput: this._onInput
+							oninput: this._onInput,
+							onkeydown: this._onKeyDown
 						}),
 						trailing &&
 							v('span', { key: 'trailing', classes: this.theme(css.trailing) }, [

@@ -327,7 +327,7 @@ registerSuite('ComboBox', {
 					w(ComboBox, {
 						...testProperties,
 						label: undefined,
-						onChange,
+						onValue: onChange,
 						onRequestResults,
 						onResultSelect,
 						onMenuChange
@@ -394,7 +394,7 @@ registerSuite('ComboBox', {
 				() =>
 					w(ComboBox, {
 						...testProperties,
-						onChange,
+						onValue: onChange,
 						onResultSelect
 					}),
 				[compareFocusTrue]
@@ -484,7 +484,7 @@ registerSuite('ComboBox', {
 				() =>
 					w(ComboBox, {
 						...testProperties,
-						onChange,
+						onValue: onChange,
 						onResultSelect
 					}),
 				[compareFocusTrue]
@@ -534,7 +534,7 @@ registerSuite('ComboBox', {
 				w(ComboBox, {
 					...testProperties,
 					isResultDisabled: (result: any) => !!result.disabled,
-					onChange,
+					onValue: onChange,
 					onResultSelect
 				})
 			);
@@ -556,7 +556,7 @@ registerSuite('ComboBox', {
 		'keyboard does not trigger onChange with no results'() {
 			const onChange = sinon.stub();
 			const preventDefault = sinon.stub();
-			const h = harness(() => w(ComboBox, { onChange }));
+			const h = harness(() => w(ComboBox, { onValue: onChange }));
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.expect(() => getExpectedVdom(false, false, false, {}));
 
@@ -571,7 +571,7 @@ registerSuite('ComboBox', {
 			const h = harness(() =>
 				w(ComboBox, {
 					...testProperties,
-					onChange,
+					onValue: onChange,
 					getResultValue: (result: any) => result.value
 				})
 			);
@@ -590,7 +590,7 @@ registerSuite('ComboBox', {
 			const h = harness(() =>
 				w(ComboBox, {
 					...testProperties,
-					onChange,
+					onValue: onChange,
 					onResultSelect
 				})
 			);
