@@ -104,7 +104,9 @@ export default class App extends WidgetBase {
 					key: '2',
 					label: 'Combo:',
 					clearable: true,
-					onValue: onChange,
+					onValue: (value) => {
+						onChange(value, '2');
+					},
 					getResultLabel: (result: any) => result.value,
 					onRequestResults: () => {
 						onRequestResults('2');
@@ -120,7 +122,9 @@ export default class App extends WidgetBase {
 					key: '1',
 					label: 'Combo:',
 					openOnFocus: true,
-					onValue: onChange,
+					onValue: (value) => {
+						onChange(value, '1');
+					},
 					getResultLabel: (result: any) => result.value,
 					onRequestResults: () => {
 						onRequestResults('1');
@@ -135,10 +139,12 @@ export default class App extends WidgetBase {
 				w(ComboBox, {
 					key: '5',
 					label: 'Combo:',
-					onValue: onChange,
+					onValue: (value) => {
+						onChange(value, '5');
+					},
 					getResultLabel: (result: any) => result.value,
 					onRequestResults: () => {
-						onRequestResults('3');
+						onRequestResults('5');
 					},
 					results: this._results,
 					value: this._value5,
@@ -155,7 +161,9 @@ export default class App extends WidgetBase {
 					inputProperties: {
 						placeholder: 'Enter a value'
 					},
-					onValue: onChange,
+					onValue: (value) => {
+						onChange(value, '6');
+					},
 					onRequestResults: () => {
 						onRequestResults('6');
 					},
@@ -169,7 +177,9 @@ export default class App extends WidgetBase {
 					inputProperties: {
 						placeholder: 'Enter a value'
 					},
-					onValue: onChange,
+					onValue: (value) => {
+						onChange(value, '7');
+					},
 					onRequestResults: () => {
 						onRequestResults('7');
 					},
@@ -178,7 +188,9 @@ export default class App extends WidgetBase {
 				v('h3', ['Label']),
 				w(ComboBox, {
 					key: '8',
-					onValue: onChange,
+					onValue: (value) => {
+						onChange(value, '8');
+					},
 					getResultLabel: (result: any) => result.value,
 					onRequestResults: () => {
 						onRequestResults('8');
