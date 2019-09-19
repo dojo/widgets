@@ -19,7 +19,7 @@ export interface RangeSliderProperties extends ThemedProperties {
 	labelHidden?: boolean;
 	label?: string;
 	disabled?: boolean;
-	widgetId?: string;
+	id?: string;
 	name?: string;
 	readOnly?: boolean;
 	required?: boolean;
@@ -44,7 +44,7 @@ export interface RangeSliderProperties extends ThemedProperties {
 @theme(css)
 export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> {
 	// id used to associate input with output
-	private _widgetId = uuid();
+	private _id = uuid();
 	private _minLabelId = uuid();
 	private _maxLabelId = uuid();
 
@@ -92,7 +92,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			readOnly,
 			required,
 			step = 1,
-			widgetId = this._widgetId,
+			id = this._id,
 			onFocus,
 			onBlur
 		} = this.properties;
@@ -103,7 +103,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			'aria-invalid': valid === false ? 'true' : null,
 			'aria-readonly': readOnly === true ? 'true' : null,
 			'aria-describedby': isSlider1 ? this._minLabelId : this._maxLabelId,
-			'aria-labelledby': `${widgetId}-label`,
+			'aria-labelledby': `${id}-label`,
 			type: 'range',
 			min: `${min}`,
 			max: `${max}`,
@@ -144,7 +144,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			'output',
 			{
 				classes: this.theme([css.output, outputIsTooltip ? css.outputTooltip : null]),
-				for: this._widgetId,
+				for: this._id,
 				styles: outputStyles,
 				tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
 			},
@@ -155,7 +155,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	render(): DNode {
 		const {
 			disabled,
-			widgetId = this._widgetId,
+			id = this._id,
 			valid,
 			label,
 			labelAfter,
@@ -220,7 +220,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 							readOnly,
 							required,
 							hidden: labelHidden,
-							widgetId: `${widgetId}-label`
+							id: `${id}-label`
 						},
 						[label]
 				  )

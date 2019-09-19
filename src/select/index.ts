@@ -42,7 +42,7 @@ import * as css from '../theme/select.m.css';
  * @property useNativeElement  Use the native <select> element if true
  * @property valid
  * @property value           The current value
- * @property widgetId
+ * @property id
  *
  */
 export interface SelectProperties<T = any> extends ThemedProperties, FocusProperties {
@@ -68,7 +68,7 @@ export interface SelectProperties<T = any> extends ThemedProperties, FocusProper
 	useNativeElement?: boolean;
 	valid?: boolean;
 	value?: string;
-	widgetId?: string;
+	id?: string;
 }
 
 @theme(css)
@@ -235,7 +235,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			getOptionId,
 			getOptionSelected,
 			getOptionValue,
-			widgetId = this._baseId,
+			id = this._baseId,
 			valid,
 			name,
 			options = [],
@@ -267,7 +267,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					disabled,
 					focus: this.shouldFocus,
 					'aria-invalid': valid === false ? 'true' : null,
-					id: widgetId,
+					id,
 					name,
 					readOnly,
 					'aria-readonly': readOnly ? 'true' : null,
@@ -289,7 +289,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			getOptionId,
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
-			widgetId = this._baseId,
+			id = this._baseId,
 			options = [],
 			theme,
 			classes,
@@ -325,7 +325,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 						w(Listbox, {
 							key: 'listbox',
 							activeIndex: _focusedIndex,
-							id: widgetId,
+							id,
 							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
 							optionData: options,
 							tabIndex: _open ? 0 : -1,
@@ -419,7 +419,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			labelHidden,
 			disabled,
 			helperText,
-			widgetId = this._baseId,
+			id = this._baseId,
 			valid,
 			readOnly,
 			required,
@@ -457,7 +457,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 								readOnly,
 								required,
 								hidden: labelHidden,
-								forId: widgetId
+								forId: id
 							},
 							[label]
 					  )

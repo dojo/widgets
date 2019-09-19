@@ -37,7 +37,7 @@ import * as css from '../theme/slider.m.css';
  * @property value           The current value
  * @property vertical          Orients the slider vertically, false by default.
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
- * @property widgetId
+ * @property id
  */
 export interface SliderProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
@@ -62,13 +62,13 @@ export interface SliderProperties extends ThemedProperties, FocusProperties {
 	value?: number;
 	vertical?: boolean;
 	verticalHeight?: string;
-	widgetId?: string;
+	id?: string;
 }
 
 @theme(css)
 export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties> {
 	// id used to associate input with output
-	private _widgetId = uuid();
+	private _id = uuid();
 
 	private _onBlur() {
 		this.properties.onBlur && this.properties.onBlur();
@@ -139,7 +139,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 			'output',
 			{
 				classes: this.theme([css.output, outputIsTooltip ? css.outputTooltip : null]),
-				for: this._widgetId,
+				for: this._id,
 				styles: outputStyles,
 				tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
 			},
@@ -151,7 +151,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 		const {
 			aria = {},
 			disabled,
-			widgetId = this._widgetId,
+			id = this._id,
 			valid,
 			label,
 			labelAfter,
@@ -189,7 +189,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 					...formatAriaProperties(aria),
 					classes: [this.theme(css.input), fixedCss.nativeInput],
 					disabled,
-					id: widgetId,
+					id,
 					focus: this.shouldFocus,
 					'aria-invalid': valid === false ? 'true' : null,
 					max: `${max}`,
@@ -224,7 +224,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 							readOnly,
 							required,
 							hidden: labelHidden,
-							forId: widgetId
+							forId: id
 						},
 						[label]
 				  )

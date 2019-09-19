@@ -159,7 +159,7 @@ registerSuite('Textarea', {
 				w(TextArea, {
 					aria: { describedBy: 'foo' },
 					columns: 15,
-					widgetId: 'foo',
+					id: 'foo',
 					maxLength: 50,
 					minLength: 10,
 					name: 'bar',

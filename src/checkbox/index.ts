@@ -38,7 +38,7 @@ export interface CheckboxProperties extends ThemedProperties, FocusProperties {
 	required?: boolean;
 	valid?: boolean;
 	value?: string;
-	widgetId?: string;
+	id?: string;
 }
 
 /**
@@ -123,7 +123,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 			classes,
 			checked = false,
 			disabled,
-			widgetId = this._uuid,
+			id = this._uuid,
 			valid,
 			label,
 			labelAfter = true,
@@ -140,7 +140,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				...this.renderToggle(),
 				v('input', {
-					id: widgetId,
+					id,
 					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					checked,
@@ -171,7 +171,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 							readOnly,
 							required,
 							hidden: labelHidden,
-							forId: widgetId,
+							forId: id,
 							secondary: true
 						},
 						[label]

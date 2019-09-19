@@ -83,7 +83,7 @@ const testProperties: Partial<SelectProperties> = {
 	getOptionSelected: (option: any, index: number) => option.value === 'two',
 	getOptionValue: (option: any, index: number) => option.value,
 	getOptionText: (option: any) => option.label,
-	widgetId: 'foo',
+	id: 'foo',
 	name: 'foo',
 	options: testOptions,
 	value: 'two'

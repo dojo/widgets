@@ -143,7 +143,7 @@ registerSuite('Slider', {
 			const h = harness(() =>
 				w(Slider, {
 					aria: { describedBy: 'foo' },
-					widgetId: 'foo',
+					id: 'foo',
 					max: 60,
 					min: 10,
 					name: 'bar',

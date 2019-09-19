@@ -24,7 +24,7 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property pressed        Indicates status of a toggle button
  * @property type           Button type can be "submit", "reset", "button", or "menu"
  * @property value          Defines a value for the button submitted with form data
- * @property widgetId       DOM id set on the root button node
+ * @property id       DOM id set on the root button node
  */
 export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
@@ -37,7 +37,7 @@ export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	pressed?: boolean;
 	type?: ButtonType;
 	value?: string;
-	widgetId?: string;
+	id?: string;
 }
 
 @theme(css)
@@ -67,7 +67,7 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 		let {
 			aria = {},
 			disabled,
-			widgetId,
+			id,
 			popup = false,
 			name,
 			pressed,
@@ -86,7 +86,7 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 			{
 				classes: this.theme([css.root, ...this.getModifierClasses()]),
 				disabled,
-				id: widgetId,
+				id,
 				focus: this.shouldFocus,
 				name,
 				type,

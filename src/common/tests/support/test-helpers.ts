@@ -30,7 +30,7 @@ export const compareId = {
 
 export const compareWidgetId = {
 	selector: '*',
-	property: 'widgetId',
+	property: 'id',
 	comparator: isStringComparator
 };
 

@@ -459,7 +459,7 @@ registerSuite('RangeSlider', {
 							readOnly: undefined,
 							required: undefined,
 							hidden: undefined,
-							widgetId: ''
+							id: ''
 						},
 						['Test']
 					)
@@ -491,7 +491,7 @@ registerSuite('RangeSlider', {
 							readOnly: true,
 							required: true,
 							hidden: undefined,
-							widgetId: ''
+							id: ''
 						},
 						['Test']
 					)
@@ -538,7 +538,7 @@ registerSuite('RangeSlider', {
 							readOnly: undefined,
 							required: undefined,
 							hidden: undefined,
-							widgetId: ''
+							id: ''
 						},
 						['Test']
 					)

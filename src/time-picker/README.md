@@ -31,7 +31,7 @@ Dojo's `TimePicker` widget provides a form control that allows users to manually
 
 ### Accessibility Features
 
-Beyond complete keyboard accessibility, `TimePicker` ensures that all appropriate ARIA attributes are included. To guarantee an excellent experience for all users `TimePicker` should always have a text label, either through its `label` property or created separately and associated with its `widgetId`.
+Beyond complete keyboard accessibility, `TimePicker` ensures that all appropriate ARIA attributes are included. To guarantee an excellent experience for all users `TimePicker` should always have a text label, either through its `label` property or created separately and associated with its `id`.
 
 Additional user hints like the accepted time format can be added using `inputProperties.aria.describedBy`:
 

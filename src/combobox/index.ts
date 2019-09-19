@@ -47,7 +47,7 @@ import HelperText from '../helper-text/index';
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
  * @property valid            Determines if this input is valid
  * @property value              Value to set on the input
- * @property widgetId           Optional id string for the combobox, set on the text input
+ * @property id           Optional id string for the combobox, set on the text input
  */
 export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
 	clearable?: boolean;
@@ -73,7 +73,7 @@ export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
 	results?: any[];
 	valid?: { valid?: boolean; message?: string } | boolean;
 	value?: string;
-	widgetId?: string;
+	id?: string;
 }
 
 // Enum used when traversing items using arrow keys
@@ -288,7 +288,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		const {
 			classes,
 			disabled,
-			widgetId = this._idBase,
+			id = this._idBase,
 			inputProperties = {},
 			readOnly,
 			required,
@@ -311,7 +311,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			},
 			valid,
 			disabled,
-			widgetId,
+			id,
 			focus: this.shouldFocus,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
@@ -411,7 +411,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	render(): DNode {
 		const {
 			clearable = false,
-			widgetId = this._idBase,
+			id = this._idBase,
 			label,
 			readOnly,
 			required,
@@ -461,7 +461,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 							readOnly,
 							required,
 							hidden: labelHidden,
-							forId: widgetId
+							forId: id
 						},
 						[label]
 				  )

@@ -48,7 +48,7 @@ interface FocusInputEvent extends FocusEvent {
  * @property useNativeElement   Use the native <input type="time"> element if true
  * @property valid
  * @property value           The current value
- * @property widgetId
+ * @property id
  */
 export interface TimePickerProperties extends ThemedProperties, FocusProperties {
 	autoBlur?: boolean;
@@ -76,7 +76,7 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties 
 	useNativeElement?: boolean;
 	valid?: boolean;
 	value?: string;
-	widgetId?: string;
+	id?: string;
 }
 
 /**
@@ -275,7 +275,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			clearable,
 			disabled,
 			extraClasses,
-			widgetId = this._uuid,
+			id = this._uuid,
 			inputProperties,
 			valid,
 			isOptionDisabled,
@@ -296,7 +296,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			disabled,
 			extraClasses,
 			getResultLabel: this._getOptionLabel.bind(this),
-			widgetId,
+			id,
 			focus: this.shouldFocus,
 			inputProperties,
 			valid,
@@ -322,7 +322,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		const {
 			disabled,
 			end,
-			widgetId = this._uuid,
+			id = this._uuid,
 			inputProperties = {},
 			valid,
 			name,
@@ -354,13 +354,13 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 							readOnly,
 							required,
 							hidden: labelHidden,
-							forId: widgetId
+							forId: id
 						},
 						[label]
 				  )
 				: null,
 			v('input', {
-				id: widgetId,
+				id,
 				...formatAriaProperties(aria),
 				'aria-invalid': valid === false ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,

@@ -15,7 +15,7 @@ Dojo's `Checkbox` widget provides either a wrapped, styleable checkbox widget or
 
 When using the toggle mode, only one of `onLabel` and `offLabel` will be read, based on the current state. E.g. if checked with a label of "Sample Checkbox", the full screen reader-accessible label would read "Sample Checkbox On".
 
-If the `label` property is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
+If the `label` property is not used, we recommend creating a separate `label` and pointing it at the input's `id` property.
 
 ## Example Usage
 

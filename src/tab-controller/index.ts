@@ -152,7 +152,7 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<
 
 		return this._tabs.map((tab, i) => {
 			assign(tab.properties, {
-				widgetId: `${this._id}-tab-${i}`,
+				id: `${this._id}-tab-${i}`,
 				labelledBy: `${this._id}-tabbutton-${i}`,
 				show: i === activeIndex
 			});
