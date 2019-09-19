@@ -27,6 +27,7 @@ export enum Align {
  *
  * Properties that can be set on a SlidePane component
  *
+ * @property aria
  * @property align            The position of the pane on the screen
  * @property closeText        Hidden text used by screen readers to display for the close button
  * @property onOpen           Called when the pane opens
@@ -37,8 +38,8 @@ export enum Align {
  * @property width            Width of the pane in pixels
  */
 export interface SlidePaneProperties extends ThemedProperties {
-	aria?: { [key: string]: string | null };
 	align?: Align;
+	aria?: { [key: string]: string | null };
 	closeText?: string;
 	onOpen?(): void;
 	onRequestClose?(): void;

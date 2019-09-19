@@ -31,48 +31,49 @@ import HelperText from '../helper-text/index';
  * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label
  * @property getResultValue     Can be used to define a value returned by onValue when a given result is selected. Defaults to getResultLabel
  * @property helpertext			Displays text at bottom of widget
- * @property widgetId           Optional id string for the combobox, set on the text input
  * @property inputProperties    TextInput properties to set on the underlying input
- * @property invalid            Determines if this input is valid
  * @property isResultDisabled   Used to determine if an item should be disabled
  * @property label              Label to show for this input
+ * @property labelHidden
  * @property onBlur             Called when the input is blurred
- * @property onValue           Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestResults   Called when results are shown; should be used to set `results`
  * @property onResultSelect     Called when result is selected
+ * @property onValue           Called when the value changes
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property readOnly           Prevents user interaction
  * @property required           Determines if this input is required, styles accordingly
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
+ * @property valid            Determines if this input is valid
  * @property value              Value to set on the input
+ * @property widgetId           Optional id string for the combobox, set on the text input
  */
 export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
-	labelHidden?: boolean;
-	label?: string;
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): DNode;
 	getResultSelected?(result: any): boolean;
 	getResultValue?(result: any): string;
 	helperText?: string;
-	widgetId?: string;
 	inputProperties?: TextInputProperties;
-	valid?: { valid?: boolean; message?: string } | boolean;
 	isResultDisabled?(result: any): boolean;
+	label?: string;
+	labelHidden?: boolean;
 	onBlur?(): void;
-	onValue?(value: string): void;
 	onFocus?(): void;
 	onMenuChange?(open: boolean): void;
 	onRequestResults?(): void;
 	onResultSelect?(result: any): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	onValue?(value: string): void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
 	results?: any[];
+	valid?: { valid?: boolean; message?: string } | boolean;
 	value?: string;
+	widgetId?: string;
 }
 
 // Enum used when traversing items using arrow keys
@@ -386,7 +387,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					key: 'listbox',
 					classes,
 					activeIndex: this._activeIndex,
-					widgetId: this._getMenuId(),
+					id: this._getMenuId(),
 					visualFocus: this._menuHasVisualFocus,
 					optionData: results,
 					tabIndex: -1,

@@ -31,35 +31,35 @@ export class ScrollMeta extends MetaBase {
  * Properties that can be set on a Listbox component
  *
  * @property activeIndex          Index of the currently active listbox option
- * @property getOptionLabel       Function to return string label based on option data
+ * @property aria
  * @property getOptionDisabled    Function that accepts option data and returns a boolean for disabled/not disabled
  * @property getOptionId          Function that accepts option data and returns a string ID
+ * @property getOptionLabel       Function to return string label based on option data
  * @property getOptionSelected    Function that accepts option data and returns a boolean for selected/unselected
- * @property widgetId               Optional custom id for the root node of the listbox
- * @property focus                Indicates if the listbox needs focusing
  * @property multiselect          Adds currect semantics for a multiselect listbox
+ * @property onActiveIndexChange  Called with the index of the new requested active descendant
+ * @property onOptionSelect       Called with the option data of the new requested selected item
  * @property optionData           Array of data for listbox options
  * @property tabIndex             Listbox is in the focus order by default, but setting tabIndex: -1 will remove it
  * @property visualFocus          When controlling Listbox through an outside widget, e.g. in ComboBox, visualFocus mimics visual focus styling when true
- * @property onActiveIndexChange  Called with the index of the new requested active descendant
- * @property onOptionSelect       Called with the option data of the new requested selected item
+ * @property widgetId               Optional custom id for the root node of the listbox
  */
 
 export interface ListboxProperties extends ThemedProperties, FocusProperties {
-	aria?: { [key: string]: string | null };
 	activeIndex?: number;
+	aria?: { [key: string]: string | null };
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any, index: number): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
-	widgetId?: string;
 	multiselect?: boolean;
-	optionData?: any[];
-	tabIndex?: number;
-	visualFocus?: boolean;
 	onActiveIndexChange?(index: number): void;
 	onKeyDown?(event: KeyboardEvent): void;
 	onOptionSelect?(option: any, index: number): void;
+	optionData?: any[];
+	tabIndex?: number;
+	visualFocus?: boolean;
+	widgetId?: string;
 }
 
 @theme(css)

@@ -15,39 +15,54 @@ import * as css from '../theme/slider.m.css';
  *
  * Properties that can be set on a Slider component
  *
+ * @property aria
+ * @property disabled
+ * @property label
+ * @property labelAfter
+ * @property labelHidden
  * @property max               The maximum value for the slider
  * @property min               The minimum value for the slider
+ * @property name
+ * @property onBlur
+ * @property onClick
+ * @property onFocus
+ * @property onValue
  * @property output            An optional function that returns a string or DNode for custom output format
+ * @property outputIsTooltip
+ * @property readOnly
+ * @property required
  * @property showOutput        Toggles visibility of slider output
  * @property step              Size of the slider increment
+ * @property valid
+ * @property value           The current value
  * @property vertical          Orients the slider vertically, false by default.
  * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
- * @property value           The current value
+ * @property widgetId
  */
 export interface SliderProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
+	disabled?: boolean;
+	label?: string;
 	labelAfter?: boolean;
 	labelHidden?: boolean;
-	label?: string;
-	onBlur?(): void;
-	onFocus?(): void;
-	onValue?(value?: number): void;
-	disabled?: boolean;
-	widgetId?: string;
-	name?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	max?: number;
 	min?: number;
+	name?: string;
+	onBlur?(): void;
+	onClick?(value: number): void;
+	onFocus?(): void;
+	onValue?(value?: number): void;
 	output?(value: number): DNode;
 	outputIsTooltip?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
 	showOutput?: boolean;
 	step?: number;
+	valid?: boolean;
+	value?: number;
 	vertical?: boolean;
 	verticalHeight?: string;
-	value?: number;
-	onClick?(value: number): void;
-	valid?: boolean;
+	widgetId?: string;
 }
 
 @theme(css)

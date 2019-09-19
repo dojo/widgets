@@ -32,43 +32,61 @@ interface TextInputInternalState {
  *
  * Properties that can be set on a TextInput component
  *
+ * @property aria
+ * @property autocomplete
  * @property controls       ID of an element that this input controls
- * @property type           Input type, e.g. text, email, tel, etc.
+ * @property customValidator
+ * @property disabled
+ * @property helperText
+ * @property label
+ * @property labelHidden
+ * @property leading		Renderer for leading icon content
  * @property maxLength      Maximum number of characters allowed in the input
  * @property minLength      Minimum number of characters allowed in the input
+ * @property name
+ * @property onBlur
+ * @property onFocus
+ * @property onKey
+ * @property onValidate
+ * @property onValue
+ * @property pattern
  * @property placeholder    Placeholder text
- * @property value          The current value
- * @property leading		Renderer for leading icon content
+ * @property readOnly
+ * @property required
  * @property trailing		Renderer for trailing icon content
+ * @property type           Input type, e.g. text, email, tel, etc.
+ * @property valid
+ * @property value          The current value
+ * @property widgetId
  */
 
 export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
-	onBlur?(): void;
-	onFocus?(): void;
-	onValue?(value?: string): void;
-	onKey?(key: number, preventDefault: () => void): void;
-	disabled?: boolean;
-	widgetId?: string;
-	name?: string;
-	readOnly?: boolean;
-	required?: boolean;
+	autocomplete?: boolean | string;
 	controls?: string;
-	type?: TextInputType;
+	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
+	disabled?: boolean;
+	helperText?: string;
+	label?: string;
+	labelHidden?: boolean;
+	leading?: () => DNode;
 	maxLength?: number | string;
 	minLength?: number | string;
-	placeholder?: string;
-	helperText?: string;
-	value?: string;
-	valid?: { valid?: boolean; message?: string } | boolean;
-	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
-	pattern?: string | RegExp;
-	autocomplete?: boolean | string;
+	name?: string;
+	onBlur?(): void;
+	onFocus?(): void;
+	onKey?(key: number, preventDefault: () => void): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
-	leading?: () => DNode;
+	onValue?(value?: string): void;
+	pattern?: string | RegExp;
+	placeholder?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	trailing?: () => DNode;
-	labelHidden?: boolean;
-	label?: string;
+	type?: TextInputType;
+	valid?: { valid?: boolean; message?: string } | boolean;
+	value?: string;
+	widgetId?: string;
 }
 
 function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {

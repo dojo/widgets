@@ -35,30 +35,30 @@ export enum Controls {
  *
  * @property labelId              Set id to reference label containing current month and year
  * @property labels               Customize or internationalize accessible helper text
+ * @property maxDate              Maximum date to be picked
+ * @property minDate              Minimum date to be picked
  * @property month                Currently displayed month, zero-based
  * @property monthNames           Array of full and abbreviated month names
- * @property year                 Currently displayed year
- * @property yearRange            Number of years to display in a single page of the year popup
- * @property renderMonthLabel     Format the displayed current month and year
- * @property minDate              Minimum date to be picked
- * @property maxDate              Maximum date to be picked
  * @property onPopupChange        Called when a user action occurs that triggers a change in the month or year popup state
  * @property onRequestMonthChange Called when a month should change; receives the zero-based month number
  * @property onRequestYearChange  Called when a year should change; receives the year as an integer
+ * @property renderMonthLabel     Format the displayed current month and year
+ * @property year                 Currently displayed year
+ * @property yearRange            Number of years to display in a single page of the year popup
  */
 export interface DatePickerProperties extends ThemedProperties {
 	labelId?: string;
 	labels: typeof calendarBundle.messages;
+	maxDate?: Date;
+	minDate?: Date;
 	month: number;
 	monthNames: { short: string; long: string }[];
-	year: number;
-	yearRange?: number;
-	minDate?: Date;
-	maxDate?: Date;
-	renderMonthLabel?(month: number, year: number): string;
 	onPopupChange?(open: boolean): void;
 	onRequestMonthChange?(month: number): void;
 	onRequestYearChange?(year: number): void;
+	renderMonthLabel?(month: number, year: number): string;
+	year: number;
+	yearRange?: number;
 }
 
 const BASE_YEAR = 2000;

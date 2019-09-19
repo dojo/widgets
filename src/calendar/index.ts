@@ -21,35 +21,36 @@ export type CalendarMessages = typeof calendarBundle.messages;
  *
  * Properties that can be set on a Calendar component
  *
+ * @property aria
  * @property labels            Customize or internationalize accessible text for the Calendar widget
+ * @property maxDate           Set the latest date the calendar will display (it will show the whole month but not allow later selections)
+ * @property minDate           Set the earliest date the calendar will display (it will show the whole month but not allow previous selections)
  * @property month             Set the currently displayed month, 0-based
  * @property monthNames        Customize or internationalize full month names and abbreviations
+ * @property onDateSelect      Function called when the user selects a date
+ * @property onMonthChange     Function called when the month changes
+ * @property onYearChange      Function called when the year changes
+ * @property renderMonthLabel  Format the displayed current month and year
+ * @property renderWeekdayCell Format the weekday column headers
  * @property selectedDate      The currently selected date
  * @property weekdayNames      Customize or internationalize weekday names and abbreviations
  * @property year              Set the currently displayed year
- * @property minDate           Set the earliest date the calendar will display (it will show the whole month but not allow previous selections)
- * @property maxDate           Set the latest date the calendar will display (it will show the whole month but not allow later selections)
- * @property renderMonthLabel  Format the displayed current month and year
- * @property renderWeekdayCell Format the weekday column headers
- * @property onMonthChange     Function called when the month changes
- * @property onYearChange      Function called when the year changes
- * @property onDateSelect      Function called when the user selects a date
  */
 export interface CalendarProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
 	labels?: CalendarMessages;
+	maxDate?: Date;
+	minDate?: Date;
 	month?: number;
 	monthNames?: { short: string; long: string }[];
+	onDateSelect?(date: Date): void;
+	onMonthChange?(month: number): void;
+	onYearChange?(year: number): void;
+	renderMonthLabel?(month: number, year: number): string;
+	renderWeekdayCell?(day: { short: string; long: string }): DNode;
 	selectedDate?: Date;
 	weekdayNames?: { short: string; long: string }[];
 	year?: number;
-	minDate?: Date;
-	maxDate?: Date;
-	renderMonthLabel?(month: number, year: number): string;
-	renderWeekdayCell?(day: { short: string; long: string }): DNode;
-	onMonthChange?(month: number): void;
-	onYearChange?(year: number): void;
-	onDateSelect?(date: Date): void;
 }
 
 interface ShortLong<T> {

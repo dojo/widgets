@@ -13,13 +13,14 @@ export type IconType = keyof typeof css;
  *
  * Properties that can be set on an Icon component
  *
- * @property type           Icon type, e.g. downIcon, searchIcon, etc.
  * @property altText        An optional, visually hidden label for the icon
+ * @property aria
+ * @property type           Icon type, e.g. downIcon, searchIcon, etc.
  */
 export interface IconProperties extends ThemedProperties {
+	altText?: string;
 	aria?: { [key: string]: string | null };
 	type: IconType;
-	altText?: string;
 }
 
 @theme(css)

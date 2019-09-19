@@ -94,7 +94,7 @@ export default class App extends WidgetBase {
 			w(Listbox, {
 				key: 'listbox1',
 				activeIndex: this._listbox1Index,
-				widgetId: 'listbox1',
+				id: 'listbox1',
 				optionData: this._options,
 				getOptionLabel: (option: CustomOption) => option.value,
 				getOptionDisabled: (option: CustomOption) => !!option.disabled,
@@ -114,7 +114,7 @@ export default class App extends WidgetBase {
 			w(Listbox, {
 				key: 'listbox2',
 				activeIndex: this._listbox2Index,
-				widgetId: 'listbox2',
+				id: 'listbox2',
 				optionData: this._moreOptions,
 				getOptionLabel: (option: CustomOption) => option.label,
 				getOptionDisabled: (option: CustomOption) => !!option.disabled,
@@ -134,7 +134,7 @@ export default class App extends WidgetBase {
 			w(Listbox, {
 				key: 'listbox3',
 				activeIndex: this._listbox3Index,
-				widgetId: 'listbox3',
+				id: 'listbox3',
 				optionData: this._options,
 				getOptionLabel: (option: CustomOption) => option.value,
 				getOptionDisabled: (option: CustomOption) => !!option.disabled,

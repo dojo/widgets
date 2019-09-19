@@ -14,26 +14,30 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  *
  * Properties that can be set on a Button component
  *
+ * @property aria
  * @property disabled       Whether the button is disabled or clickable
- * @property widgetId       DOM id set on the root button node
- * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
  * @property name           The button's name attribute
+ * @property onBlur
+ * @property onClick
+ * @property onFocus
+ * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
  * @property pressed        Indicates status of a toggle button
  * @property type           Button type can be "submit", "reset", "button", or "menu"
  * @property value          Defines a value for the button submitted with form data
+ * @property widgetId       DOM id set on the root button node
  */
 export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
 	disabled?: boolean;
-	widgetId?: string;
-	popup?: { expanded?: boolean; id?: string } | boolean;
 	name?: string;
+	onBlur?(): void;
+	onClick?(): void;
+	onFocus?(): void;
+	popup?: { expanded?: boolean; id?: string } | boolean;
 	pressed?: boolean;
 	type?: ButtonType;
 	value?: string;
-	onClick?(): void;
-	onBlur?(): void;
-	onFocus?(): void;
+	widgetId?: string;
 }
 
 @theme(css)

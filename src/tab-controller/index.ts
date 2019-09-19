@@ -28,13 +28,14 @@ export enum Align {
  *
  * @property activeIndex           Position of the currently active tab
  * @property alignButtons          Orientation of the tab buttons
+ * @property aria
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
 export interface TabControllerProperties extends ThemedProperties, FocusProperties {
-	aria?: { [key: string]: string | null };
 	activeIndex: number;
 	alignButtons?: Align;
+	aria?: { [key: string]: string | null };
 	onRequestTabChange?(index: number, key: string): void;
 	onRequestTabClose?(index: number, key: string): void;
 }

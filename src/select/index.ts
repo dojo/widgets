@@ -20,41 +20,55 @@ import * as css from '../theme/select.m.css';
  *
  * Properties that can be set on a Select component
  *
+ * @property aria
+ * @property disabled
  * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
  * @property getOptionId       Function that accepts an option's data and index and returns a string id
  * @property getOptionLabel    Function that accepts an option's data and returns a DNode label
- * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
  * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
+ * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
  * @property getOptionValue    Function that accepts an option's data and index and returns a string value
+ * @property helperText
+ * @property label
+ * @property labelHidden
+ * @property name
+ * @property onBlur
+ * @property onFocus
+ * @property onValue
  * @property options           Array of any type of data for the options
  * @property placeholder       Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined)
+ * @property readOnly
+ * @property required
  * @property useNativeElement  Use the native <select> element if true
+ * @property valid
  * @property value           The current value
+ * @property widgetId
+ *
  */
 export interface SelectProperties<T = any> extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
 	disabled?: boolean;
-	widgetId?: string;
-	name?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	getOptionDisabled?(option: T, index: number): boolean;
 	getOptionId?(option: T, index: number): string;
 	getOptionLabel?(option: T): DNode;
-	getOptionText?(option: T): string;
 	getOptionSelected?(option: T, index: number): boolean;
+	getOptionText?(option: T): string;
 	getOptionValue?(option: T, index: number): string;
 	helperText?: string;
+	label?: string;
+	labelHidden?: boolean;
+	name?: string;
+	onBlur?(): void;
+	onFocus?(): void;
+	onValue?(option: T): void;
 	options?: T[];
 	placeholder?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	useNativeElement?: boolean;
-	onBlur?(): void;
-	onValue?(option: T): void;
-	onFocus?(): void;
-	value?: string;
-	labelHidden?: boolean;
-	label?: string;
 	valid?: boolean;
+	value?: string;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -311,7 +325,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 						w(Listbox, {
 							key: 'listbox',
 							activeIndex: _focusedIndex,
-							widgetId: widgetId,
+							id: widgetId,
 							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
 							optionData: options,
 							tabIndex: _open ? 0 : -1,

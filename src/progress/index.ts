@@ -10,20 +10,21 @@ import * as css from '../theme/progress.m.css';
  *
  * Properties that can be set on a Progress component
  *
- * @property value          The current value
- * @property output         A function used to determine the output display
- * @property showOutput     Toggles visibility of progess bar output
+ * @property aria
  * @property max            Value used to calculate percent width
  * @property min            Value used to calculate percent width
+ * @property output         A function used to determine the output display
+ * @property showOutput     Toggles visibility of progess bar output
+ * @property value          The current value
  * @property widgetId       Value used to supply a dom id to the element with role="progressbar"
  */
 export interface ProgressProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
-	value: number;
-	output?(value: number, percent: number): string;
-	showOutput?: boolean;
 	max?: number;
 	min?: number;
+	output?(value: number, percent: number): string;
+	showOutput?: boolean;
+	value: number;
 	widgetId?: string;
 }
 

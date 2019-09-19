@@ -160,7 +160,7 @@ registerSuite('Listbox', {
 					activeIndex: 0,
 					aria: { describedBy: 'foo' },
 					visualFocus: true,
-					widgetId: 'bar',
+					id: 'bar',
 					multiselect: true,
 					optionData: testOptions,
 					tabIndex: -1,

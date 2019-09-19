@@ -16,38 +16,54 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  *
  * Properties that can be set on a TextInput component
  *
+ * @property aria
  * @property columns         Number of columns, controls the width of the textarea
- * @property rows            Number of rows, controls the height of the textarea
- * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
+ * @property customValidator
+ * @property disabled
+ * @property helperText
+ * @property label
+ * @property labelHidden
  * @property maxLength      Maximum number of characters allowed in the input
  * @property minLength      Minimum number of characters allowed in the input
+ * @property name
+ * @property onBlur
+ * @property onFocus
+ * @property onKey
+ * @property onValidate
+ * @property onValue
  * @property placeholder    Placeholder text
+ * @property readOnly
+ * @property required
+ * @property rows            Number of rows, controls the height of the textarea
+ * @property valid
  * @property value           The current value
+ * @property widgetId
+ * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
  */
 export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
-	onKey?(key: number, preventDefault: () => void): void;
-	onBlur?(): void;
-	onFocus?(): void;
-	onValue?(value?: string): void;
 	columns?: number;
-	rows?: number;
-	wrapText?: 'hard' | 'soft' | 'off';
-	maxLength?: number | string;
-	minLength?: number | string;
-	placeholder?: string;
-	value?: string;
-	valid?: { valid?: boolean; message?: string } | boolean;
-	onValidate?: (valid: boolean | undefined, message: string) => void;
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
+	disabled?: boolean;
+	helperText?: string;
 	label?: string;
 	labelHidden?: boolean;
-	helperText?: string;
-	disabled?: boolean;
-	widgetId?: string;
+	maxLength?: number | string;
+	minLength?: number | string;
 	name?: string;
+	onBlur?(): void;
+	onFocus?(): void;
+	onKey?(key: number, preventDefault: () => void): void;
+	onValidate?: (valid: boolean | undefined, message: string) => void;
+	onValue?(value?: string): void;
+	placeholder?: string;
 	readOnly?: boolean;
 	required?: boolean;
+	rows?: number;
+	valid?: { valid?: boolean; message?: string } | boolean;
+	value?: string;
+	widgetId?: string;
+	wrapText?: 'hard' | 'soft' | 'off';
 }
 
 @theme(css)

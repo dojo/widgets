@@ -11,22 +11,24 @@ import * as css from '../theme/tab-controller.m.css';
  *
  * Properties that can be set on a Tab component
  *
+ * @property aria
  * @property closeable    Determines whether this tab can be closed
  * @property disabled     Determines whether this tab can become active
- * @property widgetId       ID of this underlying DOM element
  * @property key          A unique identifier for this Tab within the TabController
  * @property label        Content to show in the TabController control bar for this tab
  * @property labelledBy   ID of DOM element that serves as a label for this tab
+ * @property show
+ * @property widgetId       ID of this underlying DOM element
  */
 export interface TabProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
 	closeable?: boolean;
 	disabled?: boolean;
-	widgetId?: string;
 	key: string;
 	label?: DNode;
-	show?: boolean;
 	labelledBy?: string;
+	show?: boolean;
+	widgetId?: string;
 }
 
 @theme(css)

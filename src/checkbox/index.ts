@@ -22,23 +22,23 @@ import * as css from '../theme/checkbox.m.css';
  */
 export interface CheckboxProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
+	checked?: boolean;
+	disabled?: boolean;
+	label?: string;
 	labelAfter?: boolean;
 	labelHidden?: boolean;
-	label?: string;
-	onBlur?(): void;
-	onValue?(checked: boolean): void;
-	onFocus?(): void;
-	disabled?: boolean;
-	widgetId?: string;
+	mode?: Mode;
 	name?: string;
+	offLabel?: DNode;
+	onBlur?(): void;
+	onFocus?(): void;
+	onLabel?: DNode;
+	onValue?(checked: boolean, value?: string): void;
 	readOnly?: boolean;
 	required?: boolean;
-	checked?: boolean;
-	mode?: Mode;
-	offLabel?: DNode;
-	onLabel?: DNode;
-	value?: string;
 	valid?: boolean;
+	value?: string;
+	widgetId?: string;
 }
 
 /**
@@ -57,7 +57,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 	private _onChange(event: Event) {
 		event.stopPropagation();
 		const checkbox = event.target as HTMLInputElement;
-		this.properties.onValue && this.properties.onValue(checkbox.checked);
+		this.properties.onValue && this.properties.onValue(checkbox.checked, this.properties.value);
 	}
 	private _onFocus() {
 		this.properties.onFocus && this.properties.onFocus();

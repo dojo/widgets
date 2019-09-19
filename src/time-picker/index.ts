@@ -25,51 +25,58 @@ interface FocusInputEvent extends FocusEvent {
  *
  * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the custom input should be able to be cleared
- * @property CustomOptionItem   Can be used to render a custom option
- * @property CustomOptionMenu   Can be used to render a custom option menu
+ * @property disabled
  * @property end                The maximum time to display in the menu (defaults to '23:59:59')
  * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property isOptionDisabled   Used to determine if an item should be disabled
+ * @property label
+ * @property labelAfter
+ * @property labelHidden
+ * @property name
  * @property onBlur             Called when the input is blurred
- * @property onValue           Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestOptions   Called when options are shown; should be used to set `options`
+ * @property onValue           Called when the value changes
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property options            Options for the current input; should be set in response to `onRequestOptions`
+ * @property readOnly
+ * @property required
  * @property start              The minimum time to display in the menu (defaults to '00:00:00')
  * @property step               The number of seconds between each option in the menu (defaults to 60)
  * @property useNativeElement   Use the native <input type="time"> element if true
+ * @property valid
  * @property value           The current value
+ * @property widgetId
  */
 export interface TimePickerProperties extends ThemedProperties, FocusProperties {
-	labelAfter?: boolean;
-	labelHidden?: boolean;
-	label?: string;
-	disabled?: boolean;
-	widgetId?: string;
-	name?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	autoBlur?: boolean;
 	clearable?: boolean;
+	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
 	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
+	label?: string;
+	labelAfter?: boolean;
+	labelHidden?: boolean;
+	name?: string;
 	onBlur?(): void;
-	onValue?(value: string): void;
 	onFocus?(): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestOptions?(key?: string | number): void;
+	onValue?(value: string): void;
 	openOnFocus?: boolean;
 	options?: TimeUnits[];
+	readOnly?: boolean;
+	required?: boolean;
 	start?: string;
 	step?: number;
 	useNativeElement?: boolean;
-	value?: string;
 	valid?: boolean;
+	value?: string;
+	widgetId?: string;
 }
 
 /**

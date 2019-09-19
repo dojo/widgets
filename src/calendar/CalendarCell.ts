@@ -14,24 +14,24 @@ import * as css from '../theme/calendar.m.css';
  * @property date             Integer date value
  * @property disabled         Boolean, whether the date is in the displayed month
  * @property focusable        Boolean, whether the date can receive tab focus
- * @property outOfRange       Boolean, true if the date is outside the min/max
- * @property selected         True if the date is currently selected
- * @property today            True if the date the same as the current day
  * @property onClick          Callback function for the click event
  * @property onFocusCalled    Callback function when the cell receives focus
  * @property onKeyDown        Callback function for the key down event
+ * @property outOfRange       Boolean, true if the date is outside the min/max
+ * @property selected         True if the date is currently selected
+ * @property today            True if the date the same as the current day
  */
 export interface CalendarCellProperties extends ThemedProperties {
 	callFocus?: boolean;
 	date: number;
 	disabled?: boolean;
 	focusable?: boolean;
-	outOfRange?: boolean;
-	selected?: boolean;
-	today?: boolean;
 	onClick?(date: number, disabled: boolean): void;
 	onFocusCalled?(): void;
 	onKeyDown?(key: number, preventDefault: () => void): void;
+	outOfRange?: boolean;
+	selected?: boolean;
+	today?: boolean;
 }
 
 @theme(css)

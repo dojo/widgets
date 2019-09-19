@@ -11,25 +11,27 @@ import * as baseCss from '../common/styles/base.m.css';
  *
  * Properties that can be set on a Label component
  *
- * @property forId     ID to explicitly associate the label with an input element
+ * @property aria
  * @property disabled
  * @property focused
+ * @property forId     ID to explicitly associate the label with an input element
+ * @property hidden
  * @property readOnly
  * @property required
- * @property invalid
- * @property hidden
  * @property secondary
+ * @property valid
+ * @property widgetId
  */
 export interface LabelProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
-	forId?: string;
 	disabled?: boolean;
 	focused?: boolean;
+	forId?: string;
+	hidden?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
-	valid?: boolean;
-	hidden?: boolean;
 	secondary?: boolean;
+	valid?: boolean;
 	widgetId?: string;
 }
 

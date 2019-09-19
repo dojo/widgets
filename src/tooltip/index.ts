@@ -12,15 +12,16 @@ import * as css from '../theme/tooltip.m.css';
  *
  * Properties that can be set on Tooltip components
  *
+ * @property aria
  * @property content           Information to show within the tooltip
- * @property orientation       Where this tooltip should render relative to its child
  * @property open              Determines if this tooltip is visible
+ * @property orientation       Where this tooltip should render relative to its child
  */
 export interface TooltipProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
 	content: DNode;
-	orientation?: Orientation;
 	open?: boolean;
+	orientation?: Orientation;
 }
 
 // Enum used to position the Tooltip

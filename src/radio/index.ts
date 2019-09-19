@@ -14,25 +14,39 @@ import * as css from '../theme/radio.m.css';
  *
  * Properties that can be set on a Radio component
  *
- * @property checked          Checked/unchecked property of the radio
- * @property value           The current value
+ * @property aria
+ * @property checked
+ * @property disabled
+ * @property label
+ * @property labelAfter
+ * @property labelHidden
+ * @property name
+ * @property onBlur
+ * @property onFocus
+ * @property onValue
+ * @property readOnly
+ * @property required
+ * @property valid
+ * @property value
+ * @property widgetId
+ *
  */
 export interface RadioProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
+	checked?: boolean;
+	disabled?: boolean;
+	label?: string;
 	labelAfter?: boolean;
 	labelHidden?: boolean;
-	label?: string;
-	onBlur?(): void;
-	onValue?(checked: boolean): void;
-	onFocus?(): void;
-	disabled?: boolean;
-	widgetId?: string;
 	name?: string;
+	onBlur?(): void;
+	onFocus?(): void;
+	onValue?(checked: boolean, value?: string): void;
 	readOnly?: boolean;
 	required?: boolean;
-	checked?: boolean;
-	value?: string;
 	valid?: boolean;
+	value?: string;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -45,7 +59,7 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 	private _onChange(event: Event) {
 		event.stopPropagation();
 		const radio = event.target as HTMLInputElement;
-		this.properties.onValue && this.properties.onValue(radio.checked);
+		this.properties.onValue && this.properties.onValue(radio.checked, this.properties.value);
 	}
 	private _onFocus() {
 		this.properties.onFocus && this.properties.onFocus();
