@@ -318,7 +318,7 @@ registerSuite('ComboBox', {
 		},
 
 		'menu opens on input'() {
-			const onChange = sinon.stub();
+			const onValue = sinon.stub();
 			const onRequestResults = sinon.stub();
 			const onResultSelect = sinon.stub();
 			const onMenuChange = sinon.stub();
@@ -327,7 +327,7 @@ registerSuite('ComboBox', {
 					w(ComboBox, {
 						...testProperties,
 						label: undefined,
-						onValue: onChange,
+						onValue,
 						onRequestResults,
 						onResultSelect,
 						onMenuChange
@@ -338,7 +338,7 @@ registerSuite('ComboBox', {
 			h.trigger('@textinput', 'onValue', 'foo');
 			h.expectPartial('@dropdown', () => getExpectedMenu(true, true));
 
-			assert.isTrue(onChange.calledWith('foo'), 'onChange callback called with input value');
+			assert.isTrue(onValue.calledWith('foo'), 'onValue callback called with input value');
 			assert.isTrue(onRequestResults.calledOnce, 'onRequestResults callback called');
 			assert.isFalse(onResultSelect.called, 'onResultSelect is not called on input');
 			assert.isTrue(onMenuChange.calledOnce, 'onMenuChange called when menu is opened');
@@ -388,13 +388,13 @@ registerSuite('ComboBox', {
 		},
 
 		'menu closes on result selection'() {
-			const onChange = sinon.stub();
+			const onValue = sinon.stub();
 			const onResultSelect = sinon.stub();
 			const h = harness(
 				() =>
 					w(ComboBox, {
 						...testProperties,
-						onValue: onChange,
+						onValue,
 						onResultSelect
 					}),
 				[compareFocusTrue]
@@ -403,8 +403,8 @@ registerSuite('ComboBox', {
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@listbox', 'onOptionSelect', testOptions[1], 1);
 			assert.isTrue(
-				onChange.calledWith('Two'),
-				'onChange callback called with label of second option'
+				onValue.calledWith('Two'),
+				'onValue callback called with label of second option'
 			);
 			assert.isTrue(
 				onResultSelect.calledWith(testOptions[1]),
@@ -478,13 +478,13 @@ registerSuite('ComboBox', {
 		},
 
 		'enter and space select option'() {
-			const onChange = sinon.stub();
+			const onValue = sinon.stub();
 			const onResultSelect = sinon.stub();
 			const h = harness(
 				() =>
 					w(ComboBox, {
 						...testProperties,
-						onValue: onChange,
+						onValue,
 						onResultSelect
 					}),
 				[compareFocusTrue]
@@ -493,8 +493,8 @@ registerSuite('ComboBox', {
 			h.trigger('@textinput', 'onKey', Keys.Enter, () => {});
 
 			assert.isTrue(
-				onChange.calledWith('One'),
-				'enter triggers onChange callback called with label of first option'
+				onValue.calledWith('One'),
+				'enter triggers onValue callback called with label of first option'
 			);
 			assert.isTrue(
 				onResultSelect.calledWith(testOptions[0]),
@@ -504,20 +504,20 @@ registerSuite('ComboBox', {
 
 			h.trigger('@textinput', 'onKey', Keys.Enter, () => {});
 			assert.isFalse(
-				onChange.calledTwice,
-				'enter does not trigger onChange when menu is closed'
+				onValue.calledTwice,
+				'enter does not trigger onValue when menu is closed'
 			);
 			assert.isFalse(
 				onResultSelect.calledTwice,
 				'enter does not trigger onResultSelect when menu is closed'
 			);
-			onChange.reset();
+			onValue.reset();
 
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@textinput', 'onKey', Keys.Space, () => {});
 			assert.isTrue(
-				onChange.calledWith('One'),
-				'space triggers onChange callback called with label of first option'
+				onValue.calledWith('One'),
+				'space triggers onValue callback called with label of first option'
 			);
 			assert.isTrue(
 				onResultSelect.calledWith(testOptions[0]),
@@ -527,14 +527,14 @@ registerSuite('ComboBox', {
 		},
 
 		'disabled options are not selected'() {
-			const onChange = sinon.stub();
+			const onValue = sinon.stub();
 			const onResultSelect = sinon.stub();
 			const preventDefault = sinon.stub();
 			const h = harness(() =>
 				w(ComboBox, {
 					...testProperties,
 					isResultDisabled: (result: any) => !!result.disabled,
-					onValue: onChange,
+					onValue,
 					onResultSelect
 				})
 			);
@@ -542,7 +542,7 @@ registerSuite('ComboBox', {
 			h.trigger('@textinput', 'onKey', Keys.Up, preventDefault);
 			h.trigger('@textinput', 'onKey', Keys.Enter, preventDefault);
 
-			assert.isFalse(onChange.called, 'onChange not called for disabled option');
+			assert.isFalse(onValue.called, 'onValue not called for disabled option');
 			assert.isFalse(onResultSelect.called, 'onResultSelect not called for disabled option');
 			h.expectPartial('@dropdown', () =>
 				getExpectedMenu(true, true, {
@@ -553,25 +553,25 @@ registerSuite('ComboBox', {
 			);
 		},
 
-		'keyboard does not trigger onChange with no results'() {
-			const onChange = sinon.stub();
+		'keyboard does not trigger onValue with no results'() {
+			const onValue = sinon.stub();
 			const preventDefault = sinon.stub();
-			const h = harness(() => w(ComboBox, { onValue: onChange }));
+			const h = harness(() => w(ComboBox, { onValue }));
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.expect(() => getExpectedVdom(false, false, false, {}));
 
 			h.trigger('@textinput', 'onKey', Keys.Down, preventDefault);
 			h.trigger('@textinput', 'onKey', Keys.Enter, preventDefault);
 
-			assert.isFalse(onChange.called, 'onChange not called for no results');
+			assert.isFalse(onValue.called, 'onValue not called for no results');
 		},
 
-		'onChange uses custom getResultValue'() {
-			const onChange = sinon.stub();
+		'onValue uses custom getResultValue'() {
+			const onValue = sinon.stub();
 			const h = harness(() =>
 				w(ComboBox, {
 					...testProperties,
-					onValue: onChange,
+					onValue,
 					getResultValue: (result: any) => result.value
 				})
 			);
@@ -579,25 +579,25 @@ registerSuite('ComboBox', {
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@listbox', 'onOptionSelect', testOptions[1], 1);
 			assert.isTrue(
-				onChange.calledWith('two'),
-				'onChange callback called with value of second option'
+				onValue.calledWith('two'),
+				'onValue callback called with value of second option'
 			);
 		},
 
 		'clear button clears input'() {
-			const onChange = sinon.stub();
+			const onValue = sinon.stub();
 			const onResultSelect = sinon.stub();
 			const h = harness(() =>
 				w(ComboBox, {
 					...testProperties,
-					onValue: onChange,
+					onValue,
 					onResultSelect
 				})
 			);
 			h.trigger(`.${css.clear}`, 'onclick', stubEvent);
 			assert.isTrue(
-				onChange.calledWith(''),
-				'clear button calls onChange with an empty string'
+				onValue.calledWith(''),
+				'clear button calls onValue with an empty string'
 			);
 			assert.isFalse(onResultSelect.called, 'clear button does not call onResultSelect');
 		},

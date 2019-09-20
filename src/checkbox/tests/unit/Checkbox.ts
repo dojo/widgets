@@ -92,7 +92,6 @@ const expected = function(label = false, toggle = false, toggleLabels = false, c
 					'aria-readonly': null,
 					required: undefined,
 					type: 'checkbox',
-					value: undefined,
 					onblur: noop,
 					onchange: noop,
 					onfocus: noop
@@ -137,8 +136,7 @@ registerSuite('Checkbox', {
 						},
 						checked: true,
 						id: 'foo',
-						name: 'bar',
-						value: 'baz'
+						name: 'bar'
 					}),
 				[compareId]
 			);
@@ -165,7 +163,6 @@ registerSuite('Checkbox', {
 								'aria-readonly': null,
 								required: undefined,
 								type: 'checkbox',
-								value: 'baz',
 								onblur: noop,
 								onchange: noop,
 								onfocus: noop
@@ -231,7 +228,6 @@ registerSuite('Checkbox', {
 								'aria-invalid': 'true',
 								'aria-readonly': 'true',
 								type: 'checkbox',
-								value: undefined,
 								name: undefined,
 								onblur: noop,
 								onchange: noop,
@@ -267,7 +263,6 @@ registerSuite('Checkbox', {
 								'aria-invalid': null,
 								'aria-readonly': null,
 								type: 'checkbox',
-								value: undefined,
 								name: undefined,
 								onblur: noop,
 								onchange: noop,
@@ -325,7 +320,6 @@ registerSuite('Checkbox', {
 								checked: false,
 								name: undefined,
 								type: 'checkbox',
-								value: undefined,
 								id: '',
 								onblur: noop,
 								onchange: noop,
@@ -385,7 +379,6 @@ registerSuite('Checkbox', {
 								'aria-readonly': null,
 								required: undefined,
 								type: 'checkbox',
-								value: undefined,
 								onblur: noop,
 								onchange: noop,
 								onfocus: noop

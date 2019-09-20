@@ -33,11 +33,10 @@ export interface CheckboxProperties extends ThemedProperties, FocusProperties {
 	onBlur?(): void;
 	onFocus?(): void;
 	onLabel?: DNode;
-	onValue?(checked: boolean, value?: string): void;
+	onValue?(checked: boolean): void;
 	readOnly?: boolean;
 	required?: boolean;
 	valid?: boolean;
-	value?: string;
 	id?: string;
 }
 
@@ -57,7 +56,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 	private _onChange(event: Event) {
 		event.stopPropagation();
 		const checkbox = event.target as HTMLInputElement;
-		this.properties.onValue && this.properties.onValue(checkbox.checked, this.properties.value);
+		this.properties.onValue && this.properties.onValue(checkbox.checked);
 	}
 	private _onFocus() {
 		this.properties.onFocus && this.properties.onFocus();
@@ -131,8 +130,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 			theme,
 			name,
 			readOnly,
-			required,
-			value
+			required
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -152,7 +150,6 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 					'aria-readonly': readOnly === true ? 'true' : null,
 					required,
 					type: 'checkbox',
-					value,
 					onblur: this._onBlur,
 					onchange: this._onChange,
 					onfocus: this._onFocus

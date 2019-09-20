@@ -379,7 +379,7 @@ registerSuite('Select', {
 						getOptionValue: testProperties.getOptionValue,
 						options: testOptions,
 						useNativeElement: true,
-						onValue: onValue
+						onValue
 					})
 				);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
@@ -401,7 +401,7 @@ registerSuite('Select', {
 						options: testOptions,
 						onBlur,
 						onFocus,
-						onValue: onValue
+						onValue
 					})
 				);
 
@@ -504,7 +504,7 @@ registerSuite('Select', {
 					w(Select, {
 						...testProperties,
 						options: testOptions,
-						onValue: onValue
+						onValue
 					})
 				);
 

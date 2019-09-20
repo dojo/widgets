@@ -367,7 +367,7 @@ registerSuite('RangeSlider', {
 
 				const h = harness(() =>
 					w(RangeSlider, {
-						onValue: onValue
+						onValue
 					})
 				);
 

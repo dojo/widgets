@@ -247,7 +247,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	private _selectIndex(index: number) {
-		const { onValue: onValue, onResultSelect, results = [] } = this.properties;
+		const { onValue, onResultSelect, results = [] } = this.properties;
 
 		this.focus();
 		this._closeMenu();
