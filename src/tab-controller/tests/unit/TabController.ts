@@ -142,7 +142,7 @@ const expectedTabContent = function(index = 0): DNode {
 			Tab,
 			{
 				key: '0',
-				id: '',
+				widgetId: '',
 				labelledBy: '',
 				show: index === 0
 			},
@@ -155,7 +155,7 @@ const expectedTabContent = function(index = 0): DNode {
 				disabled: true,
 				key: '1',
 				label: 'foo',
-				id: '',
+				widgetId: '',
 				show: index === 1,
 				labelledBy: ''
 			},

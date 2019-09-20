@@ -179,7 +179,7 @@ registerSuite('TextInput', {
 						controls: 'foo',
 						describedBy: 'bar'
 					},
-					id: 'foo',
+					widgetId: 'foo',
 					maxLength: 50,
 					minLength: 10,
 					name: 'bar',
@@ -619,7 +619,7 @@ registerSuite('TextInput', {
 			let placeholder: string | undefined;
 			const h = harness(() =>
 				w(MockMetaMixin(TextInput, mockMeta), {
-					id: 'required',
+					widgetId: 'required',
 					required: true,
 					onValue: (value) => {
 						editedValues = {

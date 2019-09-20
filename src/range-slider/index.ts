@@ -19,7 +19,7 @@ export interface RangeSliderProperties extends ThemedProperties {
 	labelHidden?: boolean;
 	label?: string;
 	disabled?: boolean;
-	id?: string;
+	widgetId?: string;
 	name?: string;
 	readOnly?: boolean;
 	required?: boolean;
@@ -43,7 +43,7 @@ export interface RangeSliderProperties extends ThemedProperties {
 @theme(css)
 export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> {
 	// id used to associate input with output
-	private _id = uuid();
+	private _widgetId = uuid();
 	private _minLabelId = uuid();
 	private _maxLabelId = uuid();
 
@@ -91,7 +91,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			readOnly,
 			required,
 			step = 1,
-			id = this._id,
+			widgetId = this._widgetId,
 			onFocus,
 			onBlur
 		} = this.properties;
@@ -102,7 +102,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			'aria-invalid': valid === false ? 'true' : null,
 			'aria-readonly': readOnly === true ? 'true' : null,
 			'aria-describedby': isSlider1 ? this._minLabelId : this._maxLabelId,
-			'aria-labelledby': `${id}-label`,
+			'aria-labelledby': `${widgetId}-label`,
 			type: 'range',
 			min: `${min}`,
 			max: `${max}`,
@@ -143,7 +143,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			'output',
 			{
 				classes: this.theme([css.output, outputIsTooltip ? css.outputTooltip : null]),
-				for: this._id,
+				for: this._widgetId,
 				styles: outputStyles,
 				tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
 			},
@@ -154,7 +154,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	render(): DNode {
 		const {
 			disabled,
-			id = this._id,
+			widgetId = this._widgetId,
 			valid,
 			label,
 			labelAfter,
@@ -219,7 +219,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 							readOnly,
 							required,
 							hidden: labelHidden,
-							id: `${id}-label`
+							widgetId: `${widgetId}-label`
 						},
 						[label]
 				  )

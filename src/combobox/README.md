@@ -30,7 +30,7 @@ Dojo's `ComboBox` widget provides a form control that allows users to either ent
 
 ### Accessibility Features
 
-Beyond complete keyboard accessibility, `ComboBox` ensures that all appropriate ARIA attributes are included. All instances of this widget should make use of the `label` property or a separate `label` node associated with the combobox's `id` property.
+Beyond complete keyboard accessibility, `ComboBox` ensures that all appropriate ARIA attributes are included. All instances of this widget should make use of the `label` property or a separate `label` node associated with the combobox's `widgetId` property.
 
 ### Internationalization Features
 

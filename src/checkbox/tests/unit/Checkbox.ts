@@ -135,7 +135,7 @@ registerSuite('Checkbox', {
 							describedBy: 'foo'
 						},
 						checked: true,
-						id: 'foo',
+						widgetId: 'foo',
 						name: 'bar'
 					}),
 				[compareId]

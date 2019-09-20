@@ -37,7 +37,7 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  * @property rows            Number of rows, controls the height of the textarea
  * @property valid
  * @property value           The current value
- * @property id
+ * @property widgetId
  * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
  */
 export interface TextAreaProperties extends ThemedProperties, FocusProperties {
@@ -62,7 +62,7 @@ export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	rows?: number;
 	valid?: { valid?: boolean; message?: string } | boolean;
 	value?: string;
-	id?: string;
+	widgetId?: string;
 	wrapText?: 'hard' | 'soft' | 'off';
 }
 
@@ -158,7 +158,7 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 			aria = {},
 			columns = 20,
 			disabled,
-			id = this._uuid,
+			widgetId = this._uuid,
 			label,
 			maxLength,
 			minLength,
@@ -201,14 +201,14 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 								readOnly,
 								required,
 								hidden: labelHidden,
-								forId: id
+								forId: widgetId
 							},
 							[label]
 					  )
 					: null,
 				v('div', { classes: this.theme(css.inputWrapper) }, [
 					v('textarea', {
-						id,
+						id: widgetId,
 						key: 'input',
 						...formatAriaProperties(aria),
 						classes: this.theme(css.input),

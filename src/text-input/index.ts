@@ -57,7 +57,7 @@ interface TextInputInternalState {
  * @property type           Input type, e.g. text, email, tel, etc.
  * @property valid
  * @property value          The current value
- * @property id
+ * @property widgetId
  */
 
 export interface TextInputProperties extends ThemedProperties, FocusProperties {
@@ -86,7 +86,7 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	type?: TextInputType;
 	valid?: { valid?: boolean; message?: string } | boolean;
 	value?: string;
-	id?: string;
+	widgetId?: string;
 }
 
 function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {
@@ -220,7 +220,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			trailing,
 			type = 'text',
 			value,
-			id = this._uuid,
+			widgetId = this._uuid,
 			helperText,
 			onValidate
 		} = this.properties;
@@ -252,7 +252,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							readOnly,
 							required,
 							hidden: labelHidden,
-							forId: id
+							forId: widgetId
 						},
 						[label]
 					),
@@ -274,7 +274,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							autocomplete: formatAutocomplete(autocomplete),
 							classes: this.theme(css.input),
 							disabled,
-							id,
+							id: widgetId,
 							focus: this.shouldFocus,
 							key: 'input',
 							maxlength: maxLength ? `${maxLength}` : null,

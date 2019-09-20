@@ -34,7 +34,7 @@ registerSuite('Tab', {
 						closeable: true,
 						disabled: true,
 						show: true,
-						id: 'foo',
+						widgetId: 'foo',
 						key: 'bar',
 						label: 'baz',
 						labelledBy: 'id'

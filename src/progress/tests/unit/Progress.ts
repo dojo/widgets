@@ -103,7 +103,7 @@ describe('Progress', () => {
 		const h = harness(() =>
 			w(Progress, {
 				value: 50,
-				id: 'my-id'
+				widgetId: 'my-id'
 			})
 		);
 

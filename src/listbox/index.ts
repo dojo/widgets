@@ -42,7 +42,7 @@ export class ScrollMeta extends MetaBase {
  * @property optionData           Array of data for listbox options
  * @property tabIndex             Listbox is in the focus order by default, but setting tabIndex: -1 will remove it
  * @property visualFocus          When controlling Listbox through an outside widget, e.g. in ComboBox, visualFocus mimics visual focus styling when true
- * @property id               Optional custom id for the root node of the listbox
+ * @property widgetId               Optional custom id for the root node of the listbox
  */
 
 export interface ListboxProperties extends ThemedProperties, FocusProperties {
@@ -59,7 +59,7 @@ export interface ListboxProperties extends ThemedProperties, FocusProperties {
 	optionData?: any[];
 	tabIndex?: number;
 	visualFocus?: boolean;
-	id?: string;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -202,7 +202,7 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 		const {
 			activeIndex = 0,
 			aria = {},
-			id,
+			widgetId,
 			multiselect = false,
 			tabIndex = 0
 		} = this.properties;
@@ -218,7 +218,7 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 				'aria-activedescendant': this._getOptionId(activeIndex),
 				'aria-multiselectable': multiselect ? 'true' : null,
 				classes: this.theme([css.root, ...themeClasses]),
-				id,
+				id: widgetId,
 				focus: this.shouldFocus,
 				key: 'root',
 				role: 'listbox',

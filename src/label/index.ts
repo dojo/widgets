@@ -20,7 +20,7 @@ import * as baseCss from '../common/styles/base.m.css';
  * @property required
  * @property secondary
  * @property valid
- * @property id
+ * @property widgetId
  */
 export interface LabelProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
@@ -32,7 +32,7 @@ export interface LabelProperties extends ThemedProperties {
 	required?: boolean;
 	secondary?: boolean;
 	valid?: boolean;
-	id?: string;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -52,13 +52,13 @@ export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
 	}
 
 	render(): DNode {
-		const { aria = {}, forId, hidden, id } = this.properties;
+		const { aria = {}, forId, hidden, widgetId } = this.properties;
 
 		return v(
 			'label',
 			{
 				...formatAriaProperties(aria),
-				id,
+				id: widgetId,
 				classes: [
 					...this.theme(this.getRootClasses()),
 					hidden ? baseCss.visuallyHidden : null

@@ -114,7 +114,7 @@ registerSuite('Radio', {
 				w(Radio, {
 					aria: { describedBy: 'foo' },
 					checked: true,
-					id: 'foo',
+					widgetId: 'foo',
 					name: 'bar',
 					value: 'baz'
 				})

@@ -18,7 +18,7 @@ import * as css from '../theme/tab-controller.m.css';
  * @property label        Content to show in the TabController control bar for this tab
  * @property labelledBy   ID of DOM element that serves as a label for this tab
  * @property show
- * @property id       ID of this underlying DOM element
+ * @property widgetId       ID of this underlying DOM element
  */
 export interface TabProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
@@ -28,13 +28,13 @@ export interface TabProperties extends ThemedProperties {
 	label?: DNode;
 	labelledBy?: string;
 	show?: boolean;
-	id?: string;
+	widgetId?: string;
 }
 
 @theme(css)
 export class Tab extends ThemedMixin(WidgetBase)<TabProperties> {
 	render(): DNode {
-		const { aria = {}, id, labelledBy, show = false } = this.properties;
+		const { aria = {}, widgetId, labelledBy, show = false } = this.properties;
 
 		const hidden = this.theme(!show ? css.hidden : null);
 
@@ -44,7 +44,7 @@ export class Tab extends ThemedMixin(WidgetBase)<TabProperties> {
 				...formatAriaProperties(aria),
 				'aria-labelledby': labelledBy,
 				classes: this.theme([css.tab]),
-				id,
+				id: widgetId,
 				role: 'tabpanel'
 			},
 			[v('div', { classes: [hidden] }, this.children)]

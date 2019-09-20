@@ -22,7 +22,7 @@ Dojo's `Listbox` provides a base widget that can be used as an options menu with
 
 ### Accessibility Features
 
-Since `Listbox` is primarily intended for use as a base for other components like `Select` and `ComboBox`, it does not have a `label` property. When used as a standalone component, a separate `label` node should be created and associated with the listbox's `id` property.
+Since `Listbox` is primarily intended for use as a base for other components like `Select` and `ComboBox`, it does not have a `label` property. When used as a standalone component, a separate `label` node should be created and associated with the listbox's `widgetId` property.
 
 ### Internationalization Features
 
@@ -51,7 +51,7 @@ v('label', {
 w(Listbox, {
 	key: 'listbox1',
 	activeIndex: listboxIndex,
-	id: 'listbox1',
+	widgetId: 'listbox1',
 	optionData,
 	getOptionLabel: (option: CustomOption) => option.value,
 	getOptionDisabled: (option: CustomOption) => !!option.disabled,
@@ -88,7 +88,7 @@ v('label', {
 w(Listbox, {
 	key: 'listbox2',
 	activeIndex: listboxIndex,
-	id: 'listbox2',
+	widgetId: 'listbox2',
 	optionData,
 	getOptionLabel: (option: CustomOption) => option.value,
 	getOptionDisabled: (option: CustomOption) => !!option.disabled,

@@ -20,7 +20,7 @@ import {
 const testProperties = {
 	clearable: true,
 	disabled: false,
-	id: 'foo',
+	widgetId: 'foo',
 	valid: false,
 	label: 'Some Field',
 	openOnFocus: false,
@@ -36,7 +36,7 @@ const getExpectedCombobox = function(useTestProperties = false, results?: any[])
 		clearable: useTestProperties ? true : undefined,
 		disabled: useTestProperties ? false : undefined,
 		getResultLabel: noop,
-		id: useTestProperties ? 'foo' : '',
+		widgetId: useTestProperties ? 'foo' : '',
 		focus: noop,
 		inputProperties: undefined,
 		valid: useTestProperties ? false : undefined,

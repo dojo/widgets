@@ -16,7 +16,7 @@ import * as css from '../theme/progress.m.css';
  * @property output         A function used to determine the output display
  * @property showOutput     Toggles visibility of progess bar output
  * @property value          The current value
- * @property id       Value used to supply a dom id to the element with role="progressbar"
+ * @property widgetId       Value used to supply a dom id to the element with role="progressbar"
  */
 export interface ProgressProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
@@ -25,7 +25,7 @@ export interface ProgressProperties extends ThemedProperties {
 	output?(value: number, percent: number): string;
 	showOutput?: boolean;
 	value: number;
-	id?: string;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -47,7 +47,14 @@ export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
 	}
 
 	protected render(): DNode {
-		const { aria = {}, value, showOutput = true, max = 100, min = 0, id } = this.properties;
+		const {
+			aria = {},
+			value,
+			showOutput = true,
+			max = 100,
+			min = 0,
+			widgetId
+		} = this.properties;
 
 		const percent = Math.round(((value - min) / (max - min)) * 100);
 		const output = this._output(value, percent);
@@ -63,7 +70,7 @@ export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
 					'aria-valuemax': `${max}`,
 					'aria-valuenow': `${value}`,
 					'aria-valuetext': output,
-					id: id
+					id: widgetId
 				},
 				this.renderProgress(percent)
 			),

@@ -62,7 +62,7 @@ registerSuite('Button', {
 						{
 							type: 'submit',
 							name: 'bar',
-							id: 'qux',
+							widgetId: 'qux',
 							aria: {
 								describedBy: 'baz'
 							},

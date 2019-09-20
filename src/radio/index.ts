@@ -28,7 +28,7 @@ import * as css from '../theme/radio.m.css';
  * @property required
  * @property valid
  * @property value
- * @property id
+ * @property widgetId
  *
  */
 export interface RadioProperties extends ThemedProperties, FocusProperties {
@@ -46,7 +46,7 @@ export interface RadioProperties extends ThemedProperties, FocusProperties {
 	required?: boolean;
 	valid?: boolean;
 	value?: string;
-	id?: string;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -86,7 +86,7 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 			aria = {},
 			checked = false,
 			disabled,
-			id = this._uuid,
+			widgetId = this._uuid,
 			valid,
 			label,
 			labelAfter = true,
@@ -103,7 +103,7 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 		const children = [
 			v('div', { classes: this.theme(css.inputWrapper) }, [
 				v('input', {
-					id,
+					id: widgetId,
 					...formatAriaProperties(aria),
 					classes: this.theme(css.input),
 					checked,
@@ -143,7 +143,7 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 							readOnly,
 							required,
 							hidden: labelHidden,
-							forId: id,
+							forId: widgetId,
 							secondary: true
 						},
 						[label]
