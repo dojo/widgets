@@ -41,7 +41,7 @@ export interface RadioProperties extends ThemedProperties, FocusProperties {
 	name?: string;
 	onBlur?(): void;
 	onFocus?(): void;
-	onValue?(checked: boolean, value?: string): void;
+	onValue?(checked: boolean): void;
 	readOnly?: boolean;
 	required?: boolean;
 	valid?: boolean;
@@ -59,7 +59,7 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 	private _onChange(event: Event) {
 		event.stopPropagation();
 		const radio = event.target as HTMLInputElement;
-		this.properties.onValue && this.properties.onValue(radio.checked, this.properties.value);
+		this.properties.onValue && this.properties.onValue(radio.checked);
 	}
 	private _onFocus() {
 		this.properties.onFocus && this.properties.onFocus();

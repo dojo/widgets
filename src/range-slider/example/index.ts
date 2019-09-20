@@ -21,15 +21,15 @@ export default class App extends WidgetBase {
 		requiredMax: 50
 	};
 
-	private _onRangeSliderInput([minValue, maxValue]: [number, number]) {
-		this._state.exampleMin = minValue;
-		this._state.exampleMax = maxValue;
+	private _onRangeSliderInput({ min, max }: { min: number; max: number }) {
+		this._state.exampleMin = min;
+		this._state.exampleMax = max;
 		this.invalidate();
 	}
 
-	private _onRange2SliderInput([minValue, maxValue]: [number, number]) {
-		this._state.range1Min = minValue;
-		this._state.range1Max = maxValue;
+	private _onRange2SliderInput({ min, max }: { min: number; max: number }) {
+		this._state.range1Min = min;
+		this._state.range1Max = max;
 		this.invalidate();
 	}
 
@@ -42,9 +42,8 @@ export default class App extends WidgetBase {
 				label: 'mostly default settings',
 				min: 0,
 				max: 50,
-				minValue: this._state.value1Min,
-				maxValue: this._state.value1Max,
-				onValue: ([min, max]) => {
+				value: { min: this._state.value1Min, max: this._state.value1Max },
+				onValue: ({ min, max }) => {
 					this._state.value1Min = min;
 					this._state.value1Max = max;
 					this.invalidate();
@@ -59,12 +58,11 @@ export default class App extends WidgetBase {
 					label: 'min = 0, max = 100, step = 1',
 					min: 0,
 					max: 100,
-					minValue: this._state.exampleMin,
-					maxValue: this._state.exampleMax,
+					value: { min: this._state.exampleMin, max: this._state.exampleMax },
 					onValue: this._onRangeSliderInput,
 					showOutput: true,
-					output([minValue, maxValue]) {
-						return `${minValue}, ${maxValue}`;
+					output({ min, max }) {
+						return `${min}, ${max}`;
 					}
 				})
 			]),
@@ -75,19 +73,18 @@ export default class App extends WidgetBase {
 				min: 100,
 				max: 500,
 				step: 20,
-				minValue: this._state.range1Min,
-				maxValue: this._state.range1Max,
+				value: { min: this._state.range1Min, max: this._state.range1Max },
 				onValue: this._onRange2SliderInput,
 				showOutput: true,
 				outputIsTooltip: true,
-				output([minValue, maxValue]) {
-					return `${minValue}, ${maxValue}`;
+				output({ min, max }) {
+					return `${min}, ${max}`;
 				}
 			}),
 			v('h3', {}, ['Events']),
 			w(RangeSlider, {
 				key: 'eventExample',
-				onValue: ([min, max]) => {
+				onValue: ({ min, max }) => {
 					this._state.eventMin = min;
 					this._state.eventMax = max;
 					this.invalidate();
@@ -100,8 +97,7 @@ export default class App extends WidgetBase {
 					this._state.eventFocus = false;
 					this.invalidate();
 				},
-				minValue: this._state.eventMin,
-				maxValue: this._state.eventMax,
+				value: { min: this._state.eventMin, max: this._state.eventMax },
 				label: 'event example'
 			}),
 			v('div', {}, [`Focused: ${this._state.eventFocus}, Clicks: ${this._state.eventClick}`]),
@@ -110,9 +106,8 @@ export default class App extends WidgetBase {
 				key: 'disabled',
 				label: 'Disabled',
 				disabled: true,
-				minValue: this._state.disabledMin,
-				maxValue: this._state.disabledMax,
-				onValue: ([min, max]) => {
+				value: { min: this._state.disabledMin, max: this._state.disabledMax },
+				onValue: ({ min, max }) => {
 					this._state.disabledMin = min;
 					this._state.disabledMax = max;
 					this.invalidate();
@@ -121,11 +116,10 @@ export default class App extends WidgetBase {
 			w(RangeSlider, {
 				key: 'required',
 				label: 'Required',
-				minValue: this._state.requiredMin,
-				maxValue: this._state.requiredMax,
+				value: { min: this._state.requiredMin, max: this._state.requiredMax },
 				required: true,
 				name: 'required',
-				onValue: ([min, max]) => {
+				onValue: ({ min, max }) => {
 					this._state.requiredMin = min;
 					this._state.requiredMax = max;
 					this.invalidate();

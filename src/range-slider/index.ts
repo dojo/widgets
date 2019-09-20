@@ -11,7 +11,7 @@ import * as fixedCss from './styles/range-slider.m.css';
 import * as css from '../theme/range-slider.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
-type SliderValue = [number, number];
+type RangeValue = { min: number; max: number };
 
 export interface RangeSliderProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
@@ -25,17 +25,16 @@ export interface RangeSliderProperties extends ThemedProperties {
 	required?: boolean;
 	max?: number;
 	min?: number;
-	output?(value: SliderValue): DNode;
+	output?(value: RangeValue): DNode;
 	outputIsTooltip?: boolean;
 	showOutput?: boolean;
 	step?: number;
-	minValue?: number;
-	maxValue?: number;
+	value?: RangeValue;
 	minName?: string;
 	maxName?: string;
 	minimumLabel?: string;
 	maximumLabel?: string;
-	onValue?(value: SliderValue): void;
+	onValue?(value: RangeValue): void;
 	onBlur?(): void;
 	onFocus?(): void;
 	valid?: boolean;
@@ -65,8 +64,8 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	}
 
 	private _onInput(event: Event, isMinEvent: boolean) {
-		const { min = 0, max = 100, onValue } = this.properties;
-		const { minValue = min, maxValue = max } = this.properties;
+		const { min: minRestraint = 0, max: maxRestraint = 100, onValue } = this.properties;
+		const { value: { min, max } = { min: minRestraint, max: maxRestraint } } = this.properties;
 
 		if (!onValue) {
 			return;
@@ -74,9 +73,9 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 
 		event.stopPropagation();
 		const value = (event.target as HTMLInputElement).value;
-		const returnValues: SliderValue = isMinEvent
-			? [Math.min(parseFloat(value), maxValue), maxValue]
-			: [minValue, Math.max(minValue, parseFloat(value))];
+		const returnValues: RangeValue = isMinEvent
+			? { min: Math.min(parseFloat(value), max), max }
+			: { min, max: Math.max(min, parseFloat(value)) };
 
 		onValue(returnValues);
 	}
@@ -125,10 +124,10 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		};
 	}
 
-	protected renderOutput(minValue: number, maxValue: number, percentValue: number[]): DNode {
+	protected renderOutput(value: RangeValue, percentValue: number[]): DNode {
 		const { output, outputIsTooltip = false } = this.properties;
 
-		const outputNode = output ? output([minValue, maxValue]) : `${minValue}, ${maxValue}`;
+		const outputNode = output ? output(value) : `${value.min}, ${value.max}`;
 
 		// output styles
 		let outputStyles: { left?: string; top?: string } = {};
@@ -160,8 +159,8 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			label,
 			labelAfter,
 			labelHidden,
-			max = 100,
-			min = 0,
+			max: maxRestraint = 100,
+			min: minRestraint = 0,
 			readOnly,
 			required,
 			theme,
@@ -171,13 +170,13 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			maximumLabel = 'Maximum'
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
-		let { minValue = min, maxValue = max } = this.properties;
+		let { value: { min, max } = { min: minRestraint, max: maxRestraint } } = this.properties;
 
-		minValue = Math.max(minValue, min);
-		maxValue = Math.min(maxValue, max);
+		min = Math.max(min, minRestraint);
+		max = Math.min(max, maxRestraint);
 
-		const slider1Percent = (minValue - min) / (max - min);
-		const slider2Percent = (maxValue - min) / (max - min);
+		const slider1Percent = (min - minRestraint) / (maxRestraint - minRestraint);
+		const slider2Percent = (max - minRestraint) / (maxRestraint - minRestraint);
 
 		const slider1Size = slider1Percent + (slider2Percent - slider1Percent) / 2;
 		const slider2Size = 1 - slider1Size;
@@ -190,7 +189,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		const slider1 = v('input', {
 			...this._getInputProperties(true),
 			key: 'slider1',
-			value: `${minValue}`,
+			value: `${min}`,
 			styles: {
 				clip: `rect(auto, ${Math.round(slider1Size * size.client.width)}px, auto, auto)`
 			}
@@ -198,7 +197,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		const slider2 = v('input', {
 			...this._getInputProperties(false),
 			key: 'slider2',
-			value: `${maxValue}`,
+			value: `${max}`,
 			styles: {
 				clip: `rect(auto, auto, auto, ${Math.round(
 					(1 - slider2Size) * size.client.width
@@ -288,7 +287,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 						}
 					}),
 					showOutput
-						? this.renderOutput(minValue, maxValue, [slider1Percent, slider2Percent])
+						? this.renderOutput({ min, max }, [slider1Percent, slider2Percent])
 						: null
 				]
 			)

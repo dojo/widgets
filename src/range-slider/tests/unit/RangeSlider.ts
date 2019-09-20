@@ -324,8 +324,7 @@ registerSuite('RangeSlider', {
 					w(RangeSlider, {
 						min: 25,
 						max: 50,
-						minValue: 25,
-						maxValue: 50,
+						value: { min: 25, max: 50 },
 						step: 5
 					}),
 				[compareAriaDescribedBy, compareAriaLabelledBy]
@@ -378,7 +377,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onValue.calledWith([25, 100]));
+				assert(onValue.calledWith({ min: 25, max: 100 }));
 
 				h.trigger('@slider2', 'oninput', {
 					stopPropagation: sinon.stub(),
@@ -387,7 +386,7 @@ registerSuite('RangeSlider', {
 					}
 				});
 
-				assert(onValue.calledWith([0, 50]));
+				assert(onValue.calledWith({ min: 0, max: 50 }));
 			},
 
 			onBlur() {
