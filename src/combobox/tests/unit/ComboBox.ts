@@ -192,7 +192,7 @@ const getExpectedMenu = function(useTestProperties: boolean, open: boolean, over
 		[
 			w(Listbox, {
 				activeIndex: 0,
-				id: '',
+				widgetId: '',
 				key: 'listbox',
 				visualFocus: false,
 				optionData: testOptions,

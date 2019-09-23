@@ -387,7 +387,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					key: 'listbox',
 					classes,
 					activeIndex: this._activeIndex,
-					id: this._getMenuId(),
+					widgetId: this._getMenuId(),
 					visualFocus: this._menuHasVisualFocus,
 					optionData: results,
 					tabIndex: -1,

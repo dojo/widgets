@@ -325,7 +325,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 						w(Listbox, {
 							key: 'listbox',
 							activeIndex: _focusedIndex,
-							id: widgetId,
+							widgetId,
 							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
 							optionData: options,
 							tabIndex: _open ? 0 : -1,
