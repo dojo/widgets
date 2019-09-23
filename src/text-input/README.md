@@ -45,7 +45,7 @@ w(TextInput, {
 		password = value;
 	},
 	onValidate: (valid: boolean) {
-		passwordValid = valid'
+		passwordValid = valid;
 	}
 });
 ```
