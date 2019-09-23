@@ -20,7 +20,7 @@ import {
 const harness = createHarness([compareId, compareForId]);
 
 interface States {
-	invalid?: boolean;
+	valid?: boolean;
 	disabled?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
@@ -41,7 +41,7 @@ const expected = function({
 	states = {},
 	focused = false
 }: ExpectedOptions = {}) {
-	const { disabled, invalid, required, readOnly } = states;
+	const { disabled, valid, required, readOnly } = states;
 
 	const radioVdom = v('div', { classes: css.inputWrapper }, [
 		v('input', {
@@ -50,7 +50,7 @@ const expected = function({
 			checked: false,
 			disabled: disabled,
 			focus: noop,
-			'aria-invalid': invalid ? 'true' : null,
+			'aria-invalid': valid === false ? 'true' : null,
 			name: undefined,
 			readOnly: readOnly,
 			'aria-readonly': readOnly ? 'true' : null,
@@ -58,14 +58,8 @@ const expected = function({
 			type: 'radio',
 			value: undefined,
 			onblur: noop,
-			onchange: noop,
-			onclick: noop,
 			onfocus: noop,
-			onmousedown: noop,
-			onmouseup: noop,
-			ontouchstart: noop,
-			ontouchend: noop,
-			ontouchcancel: noop,
+			onchange: noop,
 			...inputOverrides
 		}),
 		v(
@@ -95,7 +89,7 @@ const expected = function({
 							disabled,
 							focused,
 							hidden: undefined,
-							invalid,
+							valid,
 							readOnly,
 							required,
 							forId: '',
@@ -153,7 +147,7 @@ registerSuite('Radio', {
 
 		'state classes'() {
 			const properties = {
-				invalid: true,
+				valid: false,
 				disabled: true,
 				readOnly: true,
 				required: true,
@@ -169,8 +163,8 @@ registerSuite('Radio', {
 							null,
 							css.disabled,
 							null,
-							css.invalid,
 							null,
+							css.invalid,
 							css.readonly,
 							css.required
 						]
@@ -180,7 +174,7 @@ registerSuite('Radio', {
 			);
 
 			properties.disabled = false;
-			properties.invalid = false;
+			properties.valid = true;
 			properties.readOnly = false;
 			properties.required = false;
 
@@ -188,7 +182,7 @@ registerSuite('Radio', {
 				expected({
 					label: true,
 					rootOverrides: {
-						classes: [css.root, null, null, null, null, css.valid, null, null]
+						classes: [css.root, null, null, null, css.valid, null, null, null]
 					},
 					states: properties
 				})
@@ -217,46 +211,22 @@ registerSuite('Radio', {
 
 		events() {
 			const onBlur = sinon.stub();
-			const onChange = sinon.stub();
-			const onClick = sinon.stub();
+			const onValue = sinon.stub();
 			const onFocus = sinon.stub();
-			const onMouseDown = sinon.stub();
-			const onMouseUp = sinon.stub();
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
 
 			const h = harness(() =>
 				w(Radio, {
 					onBlur,
-					onChange,
-					onClick,
-					onFocus,
-					onMouseDown,
-					onMouseUp,
-					onTouchStart,
-					onTouchEnd,
-					onTouchCancel
+					onValue,
+					onFocus
 				})
 			);
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
 			h.trigger('input', 'onchange', stubEvent);
-			assert.isTrue(onChange.called, 'onChange called');
-			h.trigger('input', 'onclick', stubEvent);
-			assert.isTrue(onClick.called, 'onClick called');
+			assert.isTrue(onValue.called, 'onChange called');
 			h.trigger('input', 'onfocus', stubEvent);
 			assert.isTrue(onFocus.called, 'onFocus called');
-			h.trigger('input', 'onmousedown', stubEvent);
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			h.trigger('input', 'onmouseup', stubEvent);
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-			h.trigger('input', 'ontouchstart', stubEvent);
-			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			h.trigger('input', 'ontouchend', stubEvent);
-			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			h.trigger('input', 'ontouchcancel', stubEvent);
-			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}
 });

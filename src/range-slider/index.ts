@@ -5,51 +5,40 @@ import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import Focus from '@dojo/framework/core/meta/Focus';
 import { theme, ThemedMixin, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import {
-	CustomAriaProperties,
-	InputProperties,
-	KeyEventProperties,
-	LabeledProperties,
-	PointerEventProperties
-} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import Label from '../label/index';
 import * as fixedCss from './styles/range-slider.m.css';
 import * as css from '../theme/range-slider.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
-export interface RangeSliderProperties
-	extends ThemedProperties,
-		LabeledProperties,
-		InputProperties,
-		PointerEventProperties,
-		KeyEventProperties,
-		CustomAriaProperties {
+type RangeValue = { min: number; max: number };
+
+export interface RangeSliderProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
+	labelAfter?: boolean;
+	labelHidden?: boolean;
+	label?: string;
+	disabled?: boolean;
+	widgetId?: string;
+	name?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	max?: number;
 	min?: number;
-	output?(min: number, max: number): DNode;
+	output?(value: RangeValue): DNode;
 	outputIsTooltip?: boolean;
 	showOutput?: boolean;
 	step?: number;
-	minValue?: number;
-	maxValue?: number;
+	value?: RangeValue;
 	minName?: string;
 	maxName?: string;
 	minimumLabel?: string;
 	maximumLabel?: string;
-	onClick?(minValue: number, maxValue: number): void;
-	onInput?(minValue: number, maxValue: number): void;
-	onChange?(minValue: number, maxValue: number): void;
-	onBlur?(value?: string | number | boolean): void;
-	onFocus?(value?: string | number | boolean): void;
+	onValue?(value: RangeValue): void;
+	onBlur?(): void;
+	onFocus?(): void;
+	valid?: boolean;
 }
-
-function extractValue(event: Event): number {
-	const value = (event.target as HTMLInputElement).value;
-	return parseFloat(value);
-}
-
-type MinMaxCallback = (minValue: number, maxValue: number) => void;
 
 @theme(css)
 export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> {
@@ -59,125 +48,58 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	private _maxLabelId = uuid();
 
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, invalid, readOnly, required, showOutput } = this.properties;
+		const { disabled, valid, readOnly, required, showOutput } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null,
 			showOutput ? css.hasOutput : null
 		];
 	}
 
-	private _genericCallback(callback?: MinMaxCallback, minEvent?: Event, maxEvent?: Event) {
-		minEvent && minEvent.stopPropagation();
-		maxEvent && maxEvent.stopPropagation();
+	private _onInput(event: Event, isMinEvent: boolean) {
+		const { min: minRestraint = 0, max: maxRestraint = 100, onValue } = this.properties;
+		const { value: { min, max } = { min: minRestraint, max: maxRestraint } } = this.properties;
 
-		const { min = 0, max = 100 } = this.properties;
-		const { minValue = min, maxValue = max } = this.properties;
-
-		callback &&
-			callback(
-				minEvent ? extractValue(minEvent) : minValue,
-				maxEvent ? extractValue(maxEvent) : maxValue
-			);
-	}
-
-	private _genericChangeCallback(callback?: MinMaxCallback, minEvent?: Event, maxEvent?: Event) {
-		minEvent && minEvent.stopPropagation();
-		maxEvent && maxEvent.stopPropagation();
-
-		const { min = 0, max = 100 } = this.properties;
-		const { minValue = min, maxValue = max } = this.properties;
-
-		if (minEvent) {
-			callback && callback(Math.min(extractValue(minEvent), maxValue), maxValue);
-		} else if (maxEvent) {
-			callback && callback(minValue, Math.max(minValue, extractValue(maxEvent)));
+		if (!onValue) {
+			return;
 		}
-	}
 
-	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown &&
-			this.properties.onKeyDown(event.which, () => {
-				event.preventDefault();
-			});
-	}
+		const value = (event.target as HTMLInputElement).value;
+		const returnValues: RangeValue = isMinEvent
+			? { min: Math.min(parseFloat(value), max), max }
+			: { min, max: Math.max(min, parseFloat(value)) };
 
-	private _onKeyPress(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyPress &&
-			this.properties.onKeyPress(event.which, () => {
-				event.preventDefault();
-			});
-	}
-
-	private _onKeyUp(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyUp &&
-			this.properties.onKeyUp(event.which, () => {
-				event.preventDefault();
-			});
-	}
-
-	private _onMouseDown(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown();
-	}
-
-	private _onMouseUp(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp();
-	}
-
-	private _onTouchStart(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart();
-	}
-
-	private _onTouchEnd(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd();
-	}
-
-	private _onTouchCancel(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel();
+		onValue(returnValues);
 	}
 
 	private _getInputProperties(isSlider1: boolean) {
 		const {
 			aria = {},
 			disabled,
-			invalid,
+			valid,
 			max = 100,
 			min = 0,
 			name = '',
 			readOnly,
 			required,
 			step = 1,
-			widgetId = this._widgetId
+			widgetId = this._widgetId,
+			onFocus,
+			onBlur
 		} = this.properties;
 		const { minName = `${name}_min`, maxName = `${name}_max` } = this.properties;
 
-		const prepareCallback = (
-			callback: (callback?: MinMaxCallback, minEvent?: Event, maxEvent?: Event) => void,
-			property?: MinMaxCallback
-		) => {
-			return (e?: Event) => {
-				callback(property, ...[isSlider1 ? e : undefined, !isSlider1 ? e : undefined]);
-			};
-		};
-
 		return {
 			...formatAriaProperties(aria),
-			'aria-invalid': invalid === true ? 'true' : null,
+			'aria-invalid': valid === false ? 'true' : null,
 			'aria-readonly': readOnly === true ? 'true' : null,
 			'aria-describedby': isSlider1 ? this._minLabelId : this._maxLabelId,
 			'aria-labelledby': `${widgetId}-label`,
@@ -189,42 +111,23 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			required,
 			disabled,
 			name: isSlider1 ? minName : maxName,
-			onblur: prepareCallback(
-				(prop, e1, e2) => this._genericCallback(prop, e1, e2),
-				this.properties.onBlur
-			),
-			onclick: prepareCallback(
-				(prop, e1, e2) => this._genericCallback(prop, e1, e2),
-				this.properties.onClick
-			),
-			onfocus: prepareCallback(
-				(prop, e1, e2) => this._genericCallback(prop, e1, e2),
-				this.properties.onFocus
-			),
-			onchange: prepareCallback(
-				(prop, e1, e2) => this._genericChangeCallback(prop, e1, e2),
-				this.properties.onChange
-			),
-			oninput: prepareCallback(
-				(prop, e1, e2) => this._genericChangeCallback(prop, e1, e2),
-				this.properties.onInput
-			),
-			onkeydown: this._onKeyDown,
-			onkeypress: this._onKeyPress,
-			onkeyup: this._onKeyUp,
-			onmousedown: this._onMouseDown,
-			onmouseup: this._onMouseUp,
-			ontouchstart: this._onTouchStart,
-			ontouchend: this._onTouchEnd,
-			ontouchcancel: this._onTouchCancel,
+			onblur: () => {
+				onBlur && onBlur();
+			},
+			onfocus: () => {
+				onFocus && onFocus();
+			},
+			oninput: (event: Event) => {
+				this._onInput(event, isSlider1);
+			},
 			classes: [this.theme(css.input), fixedCss.nativeInput]
 		};
 	}
 
-	protected renderOutput(minValue: number, maxValue: number, percentValue: number[]): DNode {
+	protected renderOutput(value: RangeValue, percentValue: number[]): DNode {
 		const { output, outputIsTooltip = false } = this.properties;
 
-		const outputNode = output ? output(minValue, maxValue) : `${minValue}, ${maxValue}`;
+		const outputNode = output ? output(value) : `${value.min}, ${value.max}`;
 
 		// output styles
 		let outputStyles: { left?: string; top?: string } = {};
@@ -252,12 +155,12 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		const {
 			disabled,
 			widgetId = this._widgetId,
-			invalid,
+			valid,
 			label,
 			labelAfter,
 			labelHidden,
-			max = 100,
-			min = 0,
+			max: maxRestraint = 100,
+			min: minRestraint = 0,
 			readOnly,
 			required,
 			theme,
@@ -267,13 +170,13 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			maximumLabel = 'Maximum'
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
-		let { minValue = min, maxValue = max } = this.properties;
+		let { value: { min, max } = { min: minRestraint, max: maxRestraint } } = this.properties;
 
-		minValue = Math.max(minValue, min);
-		maxValue = Math.min(maxValue, max);
+		min = Math.max(min, minRestraint);
+		max = Math.min(max, maxRestraint);
 
-		const slider1Percent = (minValue - min) / (max - min);
-		const slider2Percent = (maxValue - min) / (max - min);
+		const slider1Percent = (min - minRestraint) / (maxRestraint - minRestraint);
+		const slider2Percent = (max - minRestraint) / (maxRestraint - minRestraint);
 
 		const slider1Size = slider1Percent + (slider2Percent - slider1Percent) / 2;
 		const slider2Size = 1 - slider1Size;
@@ -286,7 +189,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		const slider1 = v('input', {
 			...this._getInputProperties(true),
 			key: 'slider1',
-			value: `${minValue}`,
+			value: `${min}`,
 			styles: {
 				clip: `rect(auto, ${Math.round(slider1Size * size.client.width)}px, auto, auto)`
 			}
@@ -294,7 +197,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		const slider2 = v('input', {
 			...this._getInputProperties(false),
 			key: 'slider2',
-			value: `${maxValue}`,
+			value: `${max}`,
 			styles: {
 				clip: `rect(auto, auto, auto, ${Math.round(
 					(1 - slider2Size) * size.client.width
@@ -312,7 +215,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 							classes,
 							disabled,
 							focused: focus.containsFocus,
-							invalid,
+							valid,
 							readOnly,
 							required,
 							hidden: labelHidden,
@@ -384,7 +287,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 						}
 					}),
 					showOutput
-						? this.renderOutput(minValue, maxValue, [slider1Percent, slider2Percent])
+						? this.renderOutput({ min, max }, [slider1Percent, slider2Percent])
 						: null
 				]
 			)

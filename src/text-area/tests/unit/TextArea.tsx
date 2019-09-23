@@ -73,7 +73,7 @@ const expected = function(
 							disabled,
 							focused,
 							hidden: undefined,
-							invalid: valid === false || undefined,
+							valid,
 							readOnly,
 							required,
 							forId: ''
@@ -101,18 +101,9 @@ const expected = function(
 					value: undefined,
 					wrap: undefined,
 					onblur: noop,
-					onchange: noop,
-					onclick: noop,
 					onfocus: noop,
 					oninput: noop,
 					onkeydown: noop,
-					onkeypress: noop,
-					onkeyup: noop,
-					onmousedown: noop,
-					onmouseup: noop,
-					ontouchstart: noop,
-					ontouchend: noop,
-					ontouchcancel: noop,
 					...inputOverrides
 				})
 			]),
@@ -149,18 +140,9 @@ const textarea = () => (
 			value={undefined}
 			wrap={undefined}
 			onblur={noop}
-			onchange={noop}
-			onclick={noop}
 			onfocus={noop}
 			oninput={noop}
 			onkeydown={noop}
-			onkeypress={noop}
-			onkeyup={noop}
-			onmousedown={noop}
-			onmouseup={noop}
-			ontouchstart={noop}
-			ontouchend={noop}
-			ontouchcancel={noop}
 		/>
 	</div>
 );
@@ -281,63 +263,22 @@ registerSuite('Textarea', {
 
 		events() {
 			const onBlur = sinon.stub();
-			const onChange = sinon.stub();
-			const onClick = sinon.stub();
+			const onValue = sinon.stub();
 			const onFocus = sinon.stub();
-			const onInput = sinon.stub();
-			const onKeyDown = sinon.stub();
-			const onKeyPress = sinon.stub();
-			const onKeyUp = sinon.stub();
-			const onMouseDown = sinon.stub();
-			const onMouseUp = sinon.stub();
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
 
 			const h = harness(() =>
 				w(TextArea, {
 					onBlur,
-					onChange,
-					onClick,
-					onFocus,
-					onInput,
-					onKeyDown,
-					onKeyPress,
-					onKeyUp,
-					onMouseDown,
-					onMouseUp,
-					onTouchStart,
-					onTouchEnd,
-					onTouchCancel
+					onValue,
+					onFocus
 				})
 			);
 
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
-			h.trigger('@input', 'onchange', stubEvent);
-			assert.isTrue(onChange.called, 'onChange called');
-			h.trigger('@input', 'onclick', stubEvent);
-			assert.isTrue(onClick.called, 'onClick called');
 			h.trigger('@input', 'onfocus', stubEvent);
 			assert.isTrue(onFocus.called, 'onFocus called');
 			h.trigger('@input', 'oninput', stubEvent);
-			assert.isTrue(onInput.called, 'onInput called');
-			h.trigger('@input', 'onkeydown', stubEvent);
-			assert.isTrue(onKeyDown.called, 'onKeyDown called');
-			h.trigger('@input', 'onkeypress', stubEvent);
-			assert.isTrue(onKeyPress.called, 'onKeyPress called');
-			h.trigger('@input', 'onkeyup', stubEvent);
-			assert.isTrue(onKeyUp.called, 'onKeyUp called');
-			h.trigger('@input', 'onmousedown', stubEvent);
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			h.trigger('@input', 'onmouseup', stubEvent);
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-			h.trigger('@input', 'ontouchstart', stubEvent);
-			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			h.trigger('@input', 'ontouchend', stubEvent);
-			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			h.trigger('@input', 'ontouchcancel', stubEvent);
-			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		},
 
 		onValidate() {

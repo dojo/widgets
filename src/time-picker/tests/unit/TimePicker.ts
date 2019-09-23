@@ -21,7 +21,7 @@ const testProperties = {
 	clearable: true,
 	disabled: false,
 	widgetId: 'foo',
-	invalid: true,
+	valid: false,
 	label: 'Some Field',
 	openOnFocus: false,
 	readOnly: false,
@@ -39,13 +39,12 @@ const getExpectedCombobox = function(useTestProperties = false, results?: any[])
 		widgetId: useTestProperties ? 'foo' : '',
 		focus: noop,
 		inputProperties: undefined,
-		valid: useTestProperties ? false : true,
+		valid: useTestProperties ? false : undefined,
 		isResultDisabled: undefined,
 		label: useTestProperties ? 'Some Field' : undefined,
-		labelAfter: undefined,
 		labelHidden: undefined,
 		onBlur: noop,
-		onChange: noop,
+		onValue: noop,
 		onFocus: noop,
 		onMenuChange: noop,
 		onRequestResults: noop,
@@ -203,7 +202,7 @@ registerSuite('TimePicker', {
 							classes: css.input,
 							disabled: undefined,
 							focus: noop,
-							invalid: undefined,
+							valid: undefined,
 							key: 'native-input',
 							id: '',
 							max: undefined,
@@ -232,7 +231,7 @@ registerSuite('TimePicker', {
 						inputProperties: {
 							aria: { describedBy: 'Some descriptive text' }
 						},
-						invalid: true,
+						valid: false,
 						name: 'some-field',
 						readOnly: true,
 						required: true,
@@ -268,7 +267,7 @@ registerSuite('TimePicker', {
 							id: '',
 							disabled: true,
 							focus: noop,
-							invalid: true,
+							valid: false,
 							key: 'native-input',
 							max: '12:00',
 							min: '10:00',
@@ -320,7 +319,7 @@ registerSuite('TimePicker', {
 							classes: css.input,
 							disabled: undefined,
 							focus: noop,
-							invalid: undefined,
+							valid: undefined,
 							key: 'native-input',
 							id: '',
 							max: undefined,
@@ -365,9 +364,9 @@ registerSuite('TimePicker', {
 								disabled: undefined,
 								focused: false,
 								hidden: false,
-								invalid: undefined,
 								readOnly: undefined,
 								required: undefined,
+								valid: undefined,
 								forId: ''
 							},
 							['foo']
@@ -378,7 +377,7 @@ registerSuite('TimePicker', {
 							classes: css.input,
 							disabled: undefined,
 							focus: noop,
-							invalid: undefined,
+							valid: undefined,
 							key: 'native-input',
 							id: '',
 							max: undefined,
@@ -408,27 +407,7 @@ registerSuite('TimePicker', {
 				})
 			);
 			h.trigger('input[type=time]', 'onblur', { target: { value: '12:34:56' } });
-			assert.isTrue(
-				onBlur.calledWith('12:34:56'),
-				'`onBlur` should be called with the value'
-			);
-		},
-
-		'`onChange` should be called'() {
-			const onChange = sinon.spy();
-
-			const h = harness(() =>
-				w(TimePicker, {
-					onChange,
-					useNativeElement: true,
-					value: '12:34:56'
-				})
-			);
-			h.trigger('input[type=time]', 'onchange', { target: { value: '12:34:56' } });
-			assert.isTrue(
-				onChange.calledWith('12:34:56'),
-				'`onChange` should be called with the value'
-			);
+			assert.isTrue(onBlur.called);
 		},
 
 		'`onFocus` should be called'() {
@@ -442,10 +421,7 @@ registerSuite('TimePicker', {
 			);
 
 			h.trigger('input[type=time]', 'onfocus', { target: { value: '12:34:56' } });
-			assert.isTrue(
-				onFocus.calledWith('12:34:56'),
-				'`onFocus` should be called with the value'
-			);
+			assert.isTrue(onFocus.called);
 		}
 	}
 });

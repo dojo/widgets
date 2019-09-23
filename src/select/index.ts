@@ -9,7 +9,6 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import { find } from '@dojo/framework/shim/array';
 import { formatAriaProperties, Keys } from '../common/util';
-import { CustomAriaProperties, InputProperties } from '../common/interfaces';
 import Icon from '../icon/index';
 import Label from '../label/index';
 import Listbox from '../listbox/index';
@@ -21,38 +20,55 @@ import * as css from '../theme/select.m.css';
  *
  * Properties that can be set on a Select component
  *
+ * @property aria
+ * @property disabled
  * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
  * @property getOptionId       Function that accepts an option's data and index and returns a string id
  * @property getOptionLabel    Function that accepts an option's data and returns a DNode label
- * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
  * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
+ * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
  * @property getOptionValue    Function that accepts an option's data and index and returns a string value
+ * @property helperText
+ * @property label
+ * @property labelHidden
+ * @property name
+ * @property onBlur
+ * @property onFocus
+ * @property onValue
  * @property options           Array of any type of data for the options
  * @property placeholder       Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined)
+ * @property readOnly
+ * @property required
  * @property useNativeElement  Use the native <select> element if true
+ * @property valid
  * @property value           The current value
+ * @property widgetId
+ *
  */
-export interface SelectProperties<T = any>
-	extends ThemedProperties,
-		InputProperties,
-		FocusProperties,
-		CustomAriaProperties {
+export interface SelectProperties<T = any> extends ThemedProperties, FocusProperties {
+	aria?: { [key: string]: string | null };
+	disabled?: boolean;
 	getOptionDisabled?(option: T, index: number): boolean;
 	getOptionId?(option: T, index: number): string;
 	getOptionLabel?(option: T): DNode;
-	getOptionText?(option: T): string;
 	getOptionSelected?(option: T, index: number): boolean;
+	getOptionText?(option: T): string;
 	getOptionValue?(option: T, index: number): string;
 	helperText?: string;
+	label?: string;
+	labelHidden?: boolean;
+	name?: string;
+	onBlur?(): void;
+	onFocus?(): void;
+	onValue?(option: T): void;
 	options?: T[];
 	placeholder?: string;
+	readOnly?: boolean;
+	required?: boolean;
 	useNativeElement?: boolean;
-	onBlur?(key?: string | number): void;
-	onChange?(option: T, key?: string | number): void;
-	onFocus?(key?: string | number): void;
+	valid?: boolean;
 	value?: string;
-	labelHidden?: boolean;
-	label?: string;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -111,16 +127,16 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 		}
 	}
 
-	private _onBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur(this.properties.key || '');
+	private _onBlur() {
+		this.properties.onBlur && this.properties.onBlur();
 	}
-	private _onFocus(event: FocusEvent) {
-		this.properties.onFocus && this.properties.onFocus(this.properties.key || '');
+	private _onFocus() {
+		this.properties.onFocus && this.properties.onFocus();
 	}
 
 	// native select events
 	private _onNativeChange(event: Event) {
-		const { key, getOptionValue, options = [], onChange } = this.properties;
+		const { getOptionValue, options = [], onValue } = this.properties;
 		event.stopPropagation();
 		const value = (<HTMLInputElement>event.target).value;
 		const option = find(options, (option: T, index: number) => {
@@ -131,7 +147,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			}
 			return false;
 		});
-		option && onChange && onChange(option, key);
+		option && onValue && onValue(option);
 	}
 
 	// custom select events
@@ -170,18 +186,18 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			return;
 		}
 
-		const { key, onBlur } = this.properties;
-		onBlur && onBlur(key);
+		const { onBlur } = this.properties;
+		onBlur && onBlur();
 		this._closeSelect();
 	}
 
 	private _onTriggerKeyDown(event: KeyboardEvent) {
-		const { key, options = [], onChange } = this.properties;
+		const { options = [], onValue } = this.properties;
 		event.stopPropagation();
 		const index = this._getSelectedIndexOnInput(event);
 		if (index !== undefined) {
 			this._focusedIndex = index;
-			onChange && onChange(options[index], key);
+			onValue && onValue(options[index]);
 			this.invalidate();
 		}
 		if (event.which === Keys.Down) {
@@ -199,8 +215,8 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			return;
 		}
 
-		const { key, onBlur } = this.properties;
-		onBlur && onBlur(key);
+		const { onBlur } = this.properties;
+		onBlur && onBlur();
 		this._closeSelect();
 	}
 
@@ -220,7 +236,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			getOptionSelected,
 			getOptionValue,
 			widgetId = this._baseId,
-			invalid,
+			valid,
 			name,
 			options = [],
 			readOnly,
@@ -250,7 +266,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					classes: this.theme(css.input),
 					disabled,
 					focus: this.shouldFocus,
-					'aria-invalid': invalid ? 'true' : null,
+					'aria-invalid': valid === false ? 'true' : null,
 					id: widgetId,
 					name,
 					readOnly,
@@ -274,11 +290,10 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			getOptionLabel,
 			getOptionSelected = this._getOptionSelected,
 			widgetId = this._baseId,
-			key,
 			options = [],
 			theme,
 			classes,
-			onChange
+			onValue
 		} = this.properties;
 
 		if (this._focusedIndex === undefined) {
@@ -310,7 +325,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 						w(Listbox, {
 							key: 'listbox',
 							activeIndex: _focusedIndex,
-							widgetId: widgetId,
+							widgetId,
 							focus: this._focusNode === 'listbox' ? this.shouldFocus : () => false,
 							optionData: options,
 							tabIndex: _open ? 0 : -1,
@@ -325,7 +340,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 								this.invalidate();
 							},
 							onOptionSelect: (option: T) => {
-								onChange && onChange(option, key);
+								onValue && onValue(option);
 								this._closeSelect();
 								this.focus();
 							},
@@ -348,7 +363,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			aria = {},
 			disabled,
 			getOptionSelected = this._getOptionSelected,
-			invalid,
+			valid,
 			options = [],
 			placeholder,
 			readOnly,
@@ -378,7 +393,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					'aria-controls': this._baseId,
 					'aria-expanded': `${this._open}`,
 					'aria-haspopup': 'listbox',
-					'aria-invalid': invalid ? 'true' : null,
+					'aria-invalid': valid === false ? 'true' : null,
 					'aria-required': required ? 'true' : null,
 					classes: this.theme([css.trigger, isPlaceholder ? css.placeholder : null]),
 					disabled: disabled || readOnly,
@@ -405,7 +420,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			disabled,
 			helperText,
 			widgetId = this._baseId,
-			invalid,
+			valid,
 			readOnly,
 			required,
 			useNativeElement = false,
@@ -423,8 +438,8 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					css.root,
 					disabled ? css.disabled : null,
 					focus.containsFocus ? css.focused : null,
-					invalid === true ? css.invalid : null,
-					invalid === false ? css.valid : null,
+					valid === false ? css.invalid : null,
+					valid === true ? css.valid : null,
 					readOnly ? css.readonly : null,
 					required ? css.required : null
 				])
@@ -438,7 +453,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 								classes,
 								disabled,
 								focused: focus.containsFocus,
-								invalid,
+								valid,
 								readOnly,
 								required,
 								hidden: labelHidden,

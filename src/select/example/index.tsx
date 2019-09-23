@@ -78,7 +78,7 @@ export default class App extends WidgetBase {
 					options={this._selectOptions}
 					useNativeElement={true}
 					value={this._value1}
-					onChange={(option) => {
+					onValue={(option) => {
 						this._value1 = option.value;
 						this.invalidate();
 					}}
@@ -90,7 +90,7 @@ export default class App extends WidgetBase {
 					label="Custom select box"
 					options={this._moreSelectOptions}
 					value={this._value2}
-					onChange={(option) => {
+					onValue={(option) => {
 						this._value2 = option.value;
 						this.invalidate();
 					}}
@@ -103,7 +103,7 @@ export default class App extends WidgetBase {
 					options={this._evenMoreSelectOptions}
 					placeholder="Choose a cat"
 					value={this._value3}
-					onChange={(option) => {
+					onValue={(option) => {
 						this._value3 = option;
 						this.invalidate();
 					}}
@@ -117,7 +117,7 @@ export default class App extends WidgetBase {
 					options={this._selectOptions}
 					useNativeElement={true}
 					value={this._value1}
-					onChange={(option) => {
+					onValue={(option) => {
 						this._value1 = option.value;
 						this.invalidate();
 					}}
@@ -129,7 +129,7 @@ export default class App extends WidgetBase {
 					label="Custom select box with helper text"
 					options={this._moreSelectOptions}
 					value={this._value2}
-					onChange={(option) => {
+					onValue={(option) => {
 						this._value2 = option.value;
 						this.invalidate();
 					}}

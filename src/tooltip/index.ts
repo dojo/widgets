@@ -2,7 +2,6 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as fixedCss from './styles/tooltip.m.css';
@@ -13,14 +12,16 @@ import * as css from '../theme/tooltip.m.css';
  *
  * Properties that can be set on Tooltip components
  *
+ * @property aria
  * @property content           Information to show within the tooltip
- * @property orientation       Where this tooltip should render relative to its child
  * @property open              Determines if this tooltip is visible
+ * @property orientation       Where this tooltip should render relative to its child
  */
-export interface TooltipProperties extends ThemedProperties, CustomAriaProperties {
+export interface TooltipProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
 	content: DNode;
-	orientation?: Orientation;
 	open?: boolean;
+	orientation?: Orientation;
 }
 
 // Enum used to position the Tooltip

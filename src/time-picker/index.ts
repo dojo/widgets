@@ -8,7 +8,6 @@ import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { auto } from '@dojo/framework/core/diff';
 import Focus from '@dojo/framework/core/meta/Focus';
 import ComboBox from '../combobox/index';
-import { LabeledProperties, InputProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { TextInputProperties } from '../text-input/index';
 import Label from '../label/index';
@@ -26,46 +25,58 @@ interface FocusInputEvent extends FocusEvent {
  *
  * @property autoBlur           Determines whether the input should blur after value selection
  * @property clearable          Determines whether the custom input should be able to be cleared
- * @property CustomOptionItem   Can be used to render a custom option
- * @property CustomOptionMenu   Can be used to render a custom option menu
+ * @property disabled
  * @property end                The maximum time to display in the menu (defaults to '23:59:59')
  * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
  * @property inputProperties    TextInput properties to set on the underlying input
  * @property isOptionDisabled   Used to determine if an item should be disabled
+ * @property label
+ * @property labelAfter
+ * @property labelHidden
+ * @property name
  * @property onBlur             Called when the input is blurred
- * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestOptions   Called when options are shown; should be used to set `options`
+ * @property onValue           Called when the value changes
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property options            Options for the current input; should be set in response to `onRequestOptions`
+ * @property readOnly
+ * @property required
  * @property start              The minimum time to display in the menu (defaults to '00:00:00')
  * @property step               The number of seconds between each option in the menu (defaults to 60)
  * @property useNativeElement   Use the native <input type="time"> element if true
+ * @property valid
  * @property value           The current value
+ * @property widgetId
  */
-export interface TimePickerProperties
-	extends ThemedProperties,
-		FocusProperties,
-		InputProperties,
-		LabeledProperties {
+export interface TimePickerProperties extends ThemedProperties, FocusProperties {
 	autoBlur?: boolean;
 	clearable?: boolean;
+	disabled?: boolean;
 	end?: string;
 	getOptionLabel?(option: TimeUnits): string;
 	inputProperties?: TextInputProperties;
 	isOptionDisabled?(result: any): boolean;
-	onBlur?(value: string, key?: string | number): void;
-	onChange?(value: string, key?: string | number): void;
-	onFocus?(value: string, key?: string | number): void;
+	label?: string;
+	labelAfter?: boolean;
+	labelHidden?: boolean;
+	name?: string;
+	onBlur?(): void;
+	onFocus?(): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
 	onRequestOptions?(key?: string | number): void;
+	onValue?(value: string): void;
 	openOnFocus?: boolean;
 	options?: TimeUnits[];
+	readOnly?: boolean;
+	required?: boolean;
 	start?: string;
 	step?: number;
 	useNativeElement?: boolean;
+	valid?: boolean;
 	value?: string;
+	widgetId?: string;
 }
 
 /**
@@ -189,19 +200,19 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
 	}
 
-	private _onBlur(value: string) {
-		const { key, onBlur } = this.properties;
-		onBlur && onBlur(value, key);
+	private _onBlur() {
+		const { onBlur } = this.properties;
+		onBlur && onBlur();
 	}
 
-	private _onChange(value: string) {
-		const { key, onChange } = this.properties;
-		onChange && onChange(value, key);
+	private _onValue(value: string) {
+		const { onValue } = this.properties;
+		onValue && onValue(value);
 	}
 
-	private _onFocus(value: string) {
-		const { key, onFocus } = this.properties;
-		onFocus && onFocus(value, key);
+	private _onFocus() {
+		const { onFocus } = this.properties;
+		onFocus && onFocus();
 	}
 
 	private _onMenuChange(open: boolean) {
@@ -209,19 +220,19 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		onMenuChange && onMenuChange(open, key);
 	}
 
-	private _onNativeBlur(event: FocusInputEvent) {
-		const { key, onBlur } = this.properties;
-		onBlur && onBlur(event.target.value, key);
+	private _onNativeBlur() {
+		const { onBlur } = this.properties;
+		onBlur && onBlur();
 	}
 
 	private _onNativeChange(event: FocusInputEvent) {
-		const { key, onChange } = this.properties;
-		onChange && onChange(event.target.value, key);
+		const { onValue } = this.properties;
+		onValue && onValue(event.target.value);
 	}
 
-	private _onNativeFocus(event: FocusInputEvent) {
-		const { key, onFocus } = this.properties;
-		onFocus && onFocus(event.target.value, key);
+	private _onNativeFocus() {
+		const { onFocus } = this.properties;
+		onFocus && onFocus();
 	}
 
 	private _onRequestOptions() {
@@ -230,13 +241,13 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, invalid, readOnly, required } = this.properties;
+		const { disabled, valid, readOnly, required } = this.properties;
 		const focus = this.meta(Focus).get('root');
 		return [
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid ? css.invalid : null,
+			valid === false ? css.invalid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
@@ -266,10 +277,9 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			extraClasses,
 			widgetId = this._uuid,
 			inputProperties,
-			invalid,
+			valid,
 			isOptionDisabled,
 			label,
-			labelAfter,
 			labelHidden,
 			openOnFocus,
 			options = this.getOptions(),
@@ -289,13 +299,12 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			widgetId,
 			focus: this.shouldFocus,
 			inputProperties,
-			valid: !invalid,
+			valid,
 			isResultDisabled: isOptionDisabled,
 			label,
-			labelAfter,
 			labelHidden,
 			onBlur: this._onBlur,
-			onChange: this._onChange,
+			onValue: this._onValue,
 			onFocus: this._onFocus,
 			onMenuChange: this._onMenuChange,
 			onRequestResults: this._onRequestOptions.bind(this),
@@ -315,7 +324,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			end,
 			widgetId = this._uuid,
 			inputProperties = {},
-			invalid,
+			valid,
 			name,
 			readOnly,
 			required,
@@ -341,7 +350,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 							classes,
 							disabled,
 							focused: focus.containsFocus,
-							invalid,
+							valid,
 							readOnly,
 							required,
 							hidden: labelHidden,
@@ -353,12 +362,12 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			v('input', {
 				id: widgetId,
 				...formatAriaProperties(aria),
-				'aria-invalid': invalid === true ? 'true' : null,
+				'aria-invalid': valid === false ? 'true' : null,
 				'aria-readonly': readOnly === true ? 'true' : null,
 				classes: this.theme(css.input),
 				disabled,
 				focus: this.shouldFocus,
-				invalid,
+				valid,
 				key: 'native-input',
 				max: end,
 				min: start,

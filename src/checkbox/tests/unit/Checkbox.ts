@@ -92,16 +92,9 @@ const expected = function(label = false, toggle = false, toggleLabels = false, c
 					'aria-readonly': null,
 					required: undefined,
 					type: 'checkbox',
-					value: undefined,
 					onblur: noop,
 					onchange: noop,
-					onclick: noop,
-					onfocus: noop,
-					onmousedown: noop,
-					onmouseup: noop,
-					ontouchstart: noop,
-					ontouchend: noop,
-					ontouchcancel: noop
+					onfocus: noop
 				})
 			]),
 			label
@@ -114,7 +107,7 @@ const expected = function(label = false, toggle = false, toggleLabels = false, c
 							disabled: undefined,
 							focused: false,
 							hidden: undefined,
-							invalid: undefined,
+							valid: undefined,
 							readOnly: undefined,
 							required: undefined,
 							forId: '',
@@ -143,8 +136,7 @@ registerSuite('Checkbox', {
 						},
 						checked: true,
 						widgetId: 'foo',
-						name: 'bar',
-						value: 'baz'
+						name: 'bar'
 					}),
 				[compareId]
 			);
@@ -171,16 +163,9 @@ registerSuite('Checkbox', {
 								'aria-readonly': null,
 								required: undefined,
 								type: 'checkbox',
-								value: 'baz',
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
-								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop
+								onfocus: noop
 							})
 						])
 					]
@@ -201,14 +186,14 @@ registerSuite('Checkbox', {
 		},
 
 		'state classes'() {
-			let invalid = true;
+			let valid = false;
 			let disabled = true;
 			let readOnly = true;
 			let required = true;
 			const h = harness(
 				() =>
 					w(Checkbox, {
-						invalid,
+						valid,
 						disabled,
 						readOnly,
 						required
@@ -243,17 +228,10 @@ registerSuite('Checkbox', {
 								'aria-invalid': 'true',
 								'aria-readonly': 'true',
 								type: 'checkbox',
-								value: undefined,
 								name: undefined,
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
 								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop,
 								disabled: true,
 								readOnly: true,
 								required: true
@@ -263,7 +241,7 @@ registerSuite('Checkbox', {
 				)
 			);
 
-			invalid = false;
+			valid = true;
 			disabled = false;
 			readOnly = false;
 			required = false;
@@ -285,17 +263,10 @@ registerSuite('Checkbox', {
 								'aria-invalid': null,
 								'aria-readonly': null,
 								type: 'checkbox',
-								value: undefined,
 								name: undefined,
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
 								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop,
 								disabled: false,
 								readOnly: false,
 								required: false
@@ -311,7 +282,7 @@ registerSuite('Checkbox', {
 				() =>
 					w(Checkbox, {
 						label: 'foo',
-						invalid: true,
+						valid: false,
 						disabled: true,
 						readOnly: true,
 						required: true
@@ -349,17 +320,10 @@ registerSuite('Checkbox', {
 								checked: false,
 								name: undefined,
 								type: 'checkbox',
-								value: undefined,
 								id: '',
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
-								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop
+								onfocus: noop
 							})
 						]),
 						w(
@@ -372,7 +336,7 @@ registerSuite('Checkbox', {
 								classes: undefined,
 								readOnly: true,
 								required: true,
-								invalid: true,
+								valid: false,
 								hidden: undefined,
 								forId: '',
 								secondary: true
@@ -415,16 +379,9 @@ registerSuite('Checkbox', {
 								'aria-readonly': null,
 								required: undefined,
 								type: 'checkbox',
-								value: undefined,
 								onblur: noop,
 								onchange: noop,
-								onclick: noop,
-								onfocus: noop,
-								onmousedown: noop,
-								onmouseup: noop,
-								ontouchstart: noop,
-								ontouchend: noop,
-								ontouchcancel: noop
+								onfocus: noop
 							})
 						])
 					]
@@ -458,47 +415,23 @@ registerSuite('Checkbox', {
 
 		events() {
 			const onBlur = sinon.stub();
-			const onChange = sinon.stub();
-			const onClick = sinon.stub();
+			const onValue = sinon.stub();
 			const onFocus = sinon.stub();
-			const onMouseDown = sinon.stub();
-			const onMouseUp = sinon.stub();
-			const onTouchStart = sinon.stub();
-			const onTouchEnd = sinon.stub();
-			const onTouchCancel = sinon.stub();
 
 			const h = harness(() =>
 				w(Checkbox, {
 					onBlur,
-					onChange,
-					onClick,
-					onFocus,
-					onMouseDown,
-					onMouseUp,
-					onTouchStart,
-					onTouchEnd,
-					onTouchCancel
+					onValue,
+					onFocus
 				})
 			);
 
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
 			h.trigger('input', 'onchange', stubEvent);
-			assert.isTrue(onChange.called, 'onChange called');
-			h.trigger('input', 'onclick', stubEvent);
-			assert.isTrue(onClick.called, 'onClick called');
+			assert.isTrue(onValue.called, 'onChange called');
 			h.trigger('input', 'onfocus', stubEvent);
 			assert.isTrue(onFocus.called, 'onFocus called');
-			h.trigger('input', 'onmousedown', stubEvent);
-			assert.isTrue(onMouseDown.called, 'onMouseDown called');
-			h.trigger('input', 'onmouseup', stubEvent);
-			assert.isTrue(onMouseUp.called, 'onMouseUp called');
-			h.trigger('input', 'ontouchstart', stubEvent);
-			assert.isTrue(onTouchStart.called, 'onTouchStart called');
-			h.trigger('input', 'ontouchend', stubEvent);
-			assert.isTrue(onTouchEnd.called, 'onTouchEnd called');
-			h.trigger('input', 'ontouchcancel', stubEvent);
-			assert.isTrue(onTouchCancel.called, 'onTouchCancel called');
 		}
 	}
 });

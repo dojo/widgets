@@ -37,7 +37,7 @@ registerSuite('Label', {
 						focused: true,
 						readOnly: true,
 						required: true,
-						invalid: true,
+						valid: false,
 						secondary: true
 					},
 					['baz']
@@ -52,8 +52,8 @@ registerSuite('Label', {
 							css.root,
 							css.disabled,
 							css.focused,
-							css.invalid,
 							null,
+							css.invalid,
 							css.readonly,
 							css.required,
 							css.secondary,

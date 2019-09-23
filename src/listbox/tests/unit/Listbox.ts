@@ -347,10 +347,7 @@ registerSuite('Listbox', {
 				preventDefault: sinon.stub(),
 				...stubEvent
 			});
-			assert.isTrue(
-				onOptionSelect.calledWith(testOptions[1], 1, 'foo'),
-				'Enter key selects option'
-			);
+			assert.isTrue(onOptionSelect.calledWith(testOptions[1]), 'Enter key selects option');
 
 			properties = {
 				activeIndex: 0,
@@ -363,10 +360,7 @@ registerSuite('Listbox', {
 				preventDefault: sinon.stub(),
 				...stubEvent
 			});
-			assert.isTrue(
-				onOptionSelect.calledWith(testOptions[0], 0, 'foo'),
-				'Space key selects option'
-			);
+			assert.isTrue(onOptionSelect.calledWith(testOptions[0]), 'Space key selects option');
 		},
 
 		'disabled options are not selected'() {

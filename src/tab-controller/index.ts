@@ -7,7 +7,6 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import TabButton from './TabButton';
 import { uuid } from '@dojo/framework/core/util';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
@@ -29,15 +28,14 @@ export enum Align {
  *
  * @property activeIndex           Position of the currently active tab
  * @property alignButtons          Orientation of the tab buttons
+ * @property aria
  * @property onRequestTabChange    Called when a new tab button is clicked
  * @property onRequestTabClose     Called when a tab close button is clicked
  */
-export interface TabControllerProperties
-	extends ThemedProperties,
-		FocusProperties,
-		CustomAriaProperties {
+export interface TabControllerProperties extends ThemedProperties, FocusProperties {
 	activeIndex: number;
 	alignButtons?: Align;
+	aria?: { [key: string]: string | null };
 	onRequestTabChange?(index: number, key: string): void;
 	onRequestTabClose?(index: number, key: string): void;
 }

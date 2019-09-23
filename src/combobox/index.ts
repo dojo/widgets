@@ -15,7 +15,6 @@ import Label from '../label/index';
 import Listbox from '../listbox/index';
 import TextInput, { TextInputProperties } from '../text-input/index';
 import commonBundle from '../common/nls/common';
-import { CommonMessages, LabeledProperties } from '../common/interfaces';
 
 import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
@@ -30,48 +29,51 @@ import HelperText from '../helper-text/index';
  * @property disabled           Prevents user interaction and styles content accordingly
  * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
  * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label
- * @property getResultValue     Can be used to define a value returned by onChange when a given result is selected. Defaults to getResultLabel
+ * @property getResultValue     Can be used to define a value returned by onValue when a given result is selected. Defaults to getResultLabel
  * @property helpertext			Displays text at bottom of widget
- * @property widgetId           Optional id string for the combobox, set on the text input
  * @property inputProperties    TextInput properties to set on the underlying input
- * @property invalid            Determines if this input is valid
  * @property isResultDisabled   Used to determine if an item should be disabled
  * @property label              Label to show for this input
+ * @property labelHidden
  * @property onBlur             Called when the input is blurred
- * @property onChange           Called when the value changes
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
  * @property onRequestResults   Called when results are shown; should be used to set `results`
  * @property onResultSelect     Called when result is selected
+ * @property onValue           Called when the value changes
  * @property openOnFocus        Determines whether the result list should open when the input is focused
  * @property readOnly           Prevents user interaction
  * @property required           Determines if this input is required, styles accordingly
  * @property results            Results for the current search term; should be set in response to `onRequestResults`
+ * @property valid            Determines if this input is valid
  * @property value              Value to set on the input
+ * @property widgetId           Optional id string for the combobox, set on the text input
  */
-export interface ComboBoxProperties extends ThemedProperties, LabeledProperties, FocusProperties {
+export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): DNode;
 	getResultSelected?(result: any): boolean;
 	getResultValue?(result: any): string;
 	helperText?: string;
-	widgetId?: string;
 	inputProperties?: TextInputProperties;
-	valid?: { valid?: boolean; message?: string } | boolean;
 	isResultDisabled?(result: any): boolean;
-	onBlur?(value: string, key?: string | number): void;
-	onChange?(value: string, key?: string | number): void;
-	onFocus?(value: string, key?: string | number): void;
-	onMenuChange?(open: boolean, key?: string | number): void;
-	onRequestResults?(key?: string | number): void;
-	onResultSelect?(result: any, key?: string | number): void;
+	label?: string;
+	labelHidden?: boolean;
+	onBlur?(): void;
+	onFocus?(): void;
+	onMenuChange?(open: boolean): void;
+	onRequestResults?(): void;
+	onResultSelect?(result: any): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	onValue?(value: string): void;
 	openOnFocus?: boolean;
 	readOnly?: boolean;
 	required?: boolean;
 	results?: any[];
+	valid?: { valid?: boolean; message?: string } | boolean;
 	value?: string;
+	widgetId?: string;
 }
 
 // Enum used when traversing items using arrow keys
@@ -135,40 +137,40 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 
 	private _onClearClick(event: MouseEvent) {
 		event.stopPropagation();
-		const { key, onChange } = this.properties;
+		const { onValue } = this.properties;
 
 		this.focus();
 		this.invalidate();
-		onChange && onChange('', key);
+		onValue && onValue('');
 	}
 
-	private _onInput(value: string) {
-		const { key, disabled, readOnly, onChange } = this.properties;
+	private _onInputValue(value: string) {
+		const { disabled, readOnly, onValue } = this.properties;
 
-		onChange && onChange(value, key);
+		onValue && onValue(value);
 		!disabled && !readOnly && this._openMenu();
 	}
 
-	private _onInputBlur(value: string) {
-		const { key, onBlur } = this.properties;
+	private _onInputBlur() {
+		const { onBlur } = this.properties;
 
 		if (this._ignoreBlur) {
 			this._ignoreBlur = false;
 			return;
 		}
 
-		onBlur && onBlur(value, key);
+		onBlur && onBlur();
 		this._closeMenu();
 	}
 
-	private _onInputFocus(value: string) {
-		const { key, disabled, readOnly, onFocus, openOnFocus } = this.properties;
+	private _onInputFocus() {
+		const { disabled, readOnly, onFocus, openOnFocus } = this.properties;
 
-		onFocus && onFocus(value, key);
+		onFocus && onFocus();
 		!disabled && !readOnly && openOnFocus && this._openMenu();
 	}
 
-	private _onInputKeyDown(key: number, preventDefault: () => void) {
+	private _onInputKey(key: number, preventDefault: () => void) {
 		const {
 			disabled,
 			isResultDisabled = () => false,
@@ -214,14 +216,14 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	private _onMenuChange() {
-		const { key, onMenuChange } = this.properties;
+		const { onMenuChange } = this.properties;
 
 		if (!onMenuChange) {
 			return;
 		}
 
-		this._open && !this._wasOpen && onMenuChange(true, key);
-		!this._open && this._wasOpen && onMenuChange(false, key);
+		this._open && !this._wasOpen && onMenuChange(true);
+		!this._open && this._wasOpen && onMenuChange(false);
 	}
 
 	private _onResultHover(): void {
@@ -236,21 +238,21 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 	}
 
 	private _openMenu() {
-		const { key, onRequestResults } = this.properties;
+		const { onRequestResults } = this.properties;
 
 		this._activeIndex = 0;
 		this._open = true;
-		onRequestResults && onRequestResults(key);
+		onRequestResults && onRequestResults();
 		this.invalidate();
 	}
 
 	private _selectIndex(index: number) {
-		const { key, onChange, onResultSelect, results = [] } = this.properties;
+		const { onValue, onResultSelect, results = [] } = this.properties;
 
 		this.focus();
 		this._closeMenu();
-		onResultSelect && onResultSelect(results[index], key);
-		onChange && onChange(this._getResultValue(results[index]), key);
+		onResultSelect && onResultSelect(results[index]);
+		onValue && onValue(this._getResultValue(results[index]));
 	}
 
 	private _moveActiveIndex(operation: Operation) {
@@ -313,8 +315,8 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			focus: this.shouldFocus,
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
-			onInput: this._onInput,
-			onKeyDown: this._onInputKeyDown,
+			onValue: this._onInputValue,
+			onKey: this._onInputKey,
 			onValidate,
 			readOnly,
 			required,
@@ -323,7 +325,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		});
 	}
 
-	protected renderClearButton(messages: CommonMessages): DNode {
+	protected renderClearButton(messages: typeof commonBundle.messages): DNode {
 		const { disabled, label = '', readOnly, theme, classes } = this.properties;
 
 		return v(
@@ -344,7 +346,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 		);
 	}
 
-	protected renderMenuButton(messages: CommonMessages): DNode {
+	protected renderMenuButton(messages: typeof commonBundle.messages): DNode {
 		const { disabled, label = '', readOnly, theme, classes } = this.properties;
 
 		return v(
@@ -455,7 +457,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 							classes,
 							disabled,
 							focused: focus.containsFocus,
-							invalid: !valid,
+							valid,
 							readOnly,
 							required,
 							hidden: labelHidden,

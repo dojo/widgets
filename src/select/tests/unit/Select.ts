@@ -92,7 +92,7 @@ const testProperties: Partial<SelectProperties> = {
 const testStateProperties: Partial<SelectProperties> = {
 	...testProperties,
 	disabled: true,
-	invalid: true,
+	valid: false,
 	readOnly: true,
 	required: true
 };
@@ -272,7 +272,7 @@ const expected = function(
 							disabled: undefined,
 							focused: focus,
 							hidden: undefined,
-							invalid: undefined,
+							valid: undefined,
 							readOnly: undefined,
 							required: undefined,
 							forId: ''
@@ -372,27 +372,27 @@ registerSuite('Select', {
 				assert.isTrue(onFocus.called, 'onFocus called');
 			},
 
-			'onChange called with correct option'() {
-				const onChange = sinon.stub();
+			'onValue called with correct option'() {
+				const onValue = sinon.stub();
 				const h = harness(() =>
 					w(Select, {
 						getOptionValue: testProperties.getOptionValue,
 						options: testOptions,
 						useNativeElement: true,
-						onChange
+						onValue
 					})
 				);
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
 				assert.isTrue(
-					onChange.calledWith(testOptions[0]),
-					'onChange should be called with the first entry in the testOptions array'
+					onValue.calledWith(testOptions[0]),
+					'onValue should be called with the first entry in the testOptions array'
 				);
 			},
 
-			'events called with widget key'() {
+			'events called'() {
 				const onBlur = sinon.stub();
 				const onFocus = sinon.stub();
-				const onChange = sinon.stub();
+				const onValue = sinon.stub();
 				const h = harness(() =>
 					w(Select, {
 						key: 'foo',
@@ -401,19 +401,16 @@ registerSuite('Select', {
 						options: testOptions,
 						onBlur,
 						onFocus,
-						onChange
+						onValue
 					})
 				);
 
 				h.trigger('select', 'onblur', { target: { value: 'one' } });
-				assert.isTrue(onBlur.calledWith('foo'), 'onBlur called with foo key');
+				assert.isTrue(onBlur.called, 'onBlur called');
 				h.trigger('select', 'onfocus', { target: { value: 'one' } });
-				assert.isTrue(onFocus.calledWith('foo'), 'onFocus called with foo key');
+				assert.isTrue(onFocus.called, 'onFocus called');
 				h.trigger('select', 'onchange', { ...stubEvent, target: { value: 'one' } });
-				assert.isTrue(
-					onChange.calledWith(testOptions[0], 'foo'),
-					'onChange called with foo key'
-				);
+				assert.isTrue(onValue.calledWith(testOptions[0]), 'onValue called with foo key');
 			}
 		},
 
@@ -501,13 +498,13 @@ registerSuite('Select', {
 			},
 
 			'select options'() {
-				const onChange = sinon.stub();
+				const onValue = sinon.stub();
 
 				const h = harness(() =>
 					w(Select, {
 						...testProperties,
 						options: testOptions,
-						onChange
+						onValue
 					})
 				);
 
@@ -515,7 +512,7 @@ registerSuite('Select', {
 				h.expect(() => expected(expectedSingle(true, false, true, '')));
 				h.trigger('@listbox', 'onOptionSelect', testOptions[2]);
 				h.expect(() => expected(expectedSingle(true)));
-				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
+				assert.isTrue(onValue.calledOnce, 'onValue handler called when option selected');
 
 				// open widget a second time
 				h.trigger('@trigger', 'onclick', stubEvent);
@@ -703,21 +700,6 @@ registerSuite('Select', {
 				assert.isTrue(
 					onBlur.calledOnce,
 					'onBlur callback should only be called once for last blur event'
-				);
-			},
-
-			'events called with widget key'() {
-				const onBlur = sinon.stub();
-				const h = harness(() => w(Select, { key: 'foo', onBlur }));
-
-				h.trigger('@trigger', 'onblur');
-				assert.isTrue(onBlur.calledWith('foo'), 'Trigger blur event called with foo key');
-
-				h.trigger('@trigger', 'onblur');
-				h.trigger(`.${css.dropdown}`, 'onfocusout');
-				assert.isTrue(
-					onBlur.getCall(1).calledWith('foo'),
-					'Dropdown blur event called with foo key'
 				);
 			},
 

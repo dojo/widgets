@@ -5,7 +5,6 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixin
 import Focus from '@dojo/framework/core/meta/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import commonBundle from '../common/nls/common';
 
@@ -24,12 +23,11 @@ export type RoleType = 'dialog' | 'alertdialog';
  *
  * Properties that can be set on a Dialog component
  *
+ * @property aria
  * @property closeable          Determines whether the dialog can be closed
  * @property closeText          Hidden text used by screen readers to display for the close button
  * @property enterAnimation     css class to be used when animating the dialog entering, or null to disable the animation
  * @property exitAnimation      css class to be used when animating the dialog exiting, or null to disable the animation
- * @property underlayEnterAnimation     css class to be used when animating the dialog underlay entering, or null to disable the animation
- * @property underlayExitAnimation      css class to be used when animating the dialog underlay exiting, or null to disable the animation
  * @property modal              Determines whether the dialog can be closed by clicking outside its content
  * @property onOpen             Called when the dialog opens
  * @property onRequestClose     Called when the dialog is closed
@@ -37,14 +35,15 @@ export type RoleType = 'dialog' | 'alertdialog';
  * @property role               Role of this dialog for accessibility, either 'alert' or 'dialog'
  * @property title              Title to show in the dialog title bar
  * @property underlay           Determines whether a semi-transparent background shows behind the dialog
+ * @property underlayEnterAnimation     css class to be used when animating the dialog underlay entering, or null to disable the animation
+ * @property underlayExitAnimation      css class to be used when animating the dialog underlay exiting, or null to disable the animation
  */
-export interface DialogProperties extends ThemedProperties, CustomAriaProperties {
+export interface DialogProperties extends ThemedProperties {
+	aria?: { [key: string]: string | null };
 	closeable?: boolean;
 	closeText?: string;
 	enterAnimation?: string | null;
 	exitAnimation?: string | null;
-	underlayEnterAnimation?: string | null;
-	underlayExitAnimation?: string | null;
 	modal?: boolean;
 	onOpen?(): void;
 	onRequestClose?(): void;
@@ -52,6 +51,8 @@ export interface DialogProperties extends ThemedProperties, CustomAriaProperties
 	role?: RoleType;
 	title?: string;
 	underlay?: boolean;
+	underlayEnterAnimation?: string | null;
+	underlayExitAnimation?: string | null;
 }
 
 @theme(css)

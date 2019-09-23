@@ -19,15 +19,16 @@ export { Align };
  *
  * Properties that can be set on a Toolbar component
  *
+ * @property aligh
  * @property collapseWidth     Width at which to collapse actions into a SlidePane
- * @property onCollapse        Called when action items change their layout
  * @property heading           The toolbar heading
+ * @property onCollapse        Called when action items change their layout
  */
 export interface ToolbarProperties extends ThemedProperties {
 	align?: Align;
 	collapseWidth?: number;
-	onCollapse?(collapsed: boolean): void;
 	heading?: string;
+	onCollapse?(collapsed: boolean): void;
 }
 
 @theme(css)

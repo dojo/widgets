@@ -46,7 +46,7 @@ import { w } from '@dojo/framework/core/vdom';
 w(ComboBox, {
 	results: ['foo', 'bar', 'baz'],
 	value: this.state.currentValue,
-	onChange: (value: string) => this.setState({ currentValue: value })
+	onValue: (value: string) => this.setState({ currentValue: value })
 });
 ```
 
@@ -60,7 +60,7 @@ const data = ['foo', 'bar', 'baz'];
 w(ComboBox, {
 	results: this.state.results,
 	value: this.state.currentValue,
-	onChange: (value: string) => this.setState({ currentValue: value }),
+	onValue: (value: string) => this.setState({ currentValue: value }),
 	onRequestResults: (value: string) => {
 		// Search for matching results; though a simple array of
 		// data is used in this example, any data provider or store
@@ -88,7 +88,7 @@ const store = new MyAwesomeStore();
 w(ComboBox, {
 	results: this.state.results,
 	value: this.state.currentValue,
-	onChange: (value: string) => this.setState({ currentValue: value }),
+	onValue: (value: string) => this.setState({ currentValue: value }),
 	onRequestResults: (value: string) => {
 		// Search for matching results; query whatever data source we
 		// happen to be using, which in this example, is `MyAwesomeStore`
@@ -105,11 +105,11 @@ import { w } from '@dojo/framework/core/vdom';
 w(ComboBox, {
 	results: ['foo', 'bar', 'baz'],
 	value: this.state.currentValue,
-	invalid: this.state.invalid,
-	onChange: (value: string) => this.setState({
+	valid: this.state.valid,
+	onValue: (value: string) => this.setState({
 		currentValue: value,
-		// For this example, any value over 3 characters is deemed invalid
-		invalid: value.length > 3
+		// For this example, any value over 3 characters is deemed valid
+		valid: value.length > 3
 	})
 });
 ```
@@ -123,7 +123,7 @@ w(ComboBox, {
 	getResultLabel: (result: string) => v('span', { style: 'color: blue' }, [ result ]),
 	results: ['foo', 'bar', 'baz'],
 	value: this.state.currentValue,,
-	onChange: (value: string) => this.setState({ currentValue: value })
+	onValue: (value: string) => this.setState({ currentValue: value })
 });
 ```
 
@@ -139,7 +139,7 @@ The following CSS classes are used to style the `ComboBox` widget and should be 
 - `downIcon`: Applied to the down arrow icon
 - `icon`: Applied to the clear icon and the down arrow icon
 - `input`: Applied to the input node
-- `invalid`: Applied to both the input and optional label when the widget is invalid
+- `valid`: Applied to both the input and optional label when the widget is valid
 - `readOnly`: Applied to both the input and optional label when the widget is read-only
 - `required`: Applied to both the input and optional label when the widget is required
 - `root`: Applied to the top-level wrapper node

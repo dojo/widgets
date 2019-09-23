@@ -23,16 +23,18 @@ export enum Direction {
  *
  * Properties that can be set on a SplitPane component
  *
+ * @property collapseWidth
  * @property direction      Orientation of this SplitPane, can be `row` or `column`
+ * @property onCollapse
  * @property onResize       Called when the divider is dragged; should be used to update `size`
  * @property size           Size of the primary pane
  */
 export interface SplitPaneProperties extends ThemedProperties {
+	collapseWidth?: number;
 	direction?: Direction;
+	onCollapse?(collapsed: boolean): void;
 	onResize?(size: number): void;
 	size?: number;
-	collapseWidth?: number;
-	onCollapse?(collapsed: boolean): void;
 }
 
 const DEFAULT_SIZE = 100;

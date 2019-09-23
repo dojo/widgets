@@ -2,7 +2,6 @@ import { reference } from '@dojo/framework/core/diff';
 import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import { DNode } from '@dojo/framework/core/interfaces';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties, Keys } from '../common/util';
 import MetaBase from '@dojo/framework/core/meta/Base';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
@@ -32,34 +31,35 @@ export class ScrollMeta extends MetaBase {
  * Properties that can be set on a Listbox component
  *
  * @property activeIndex          Index of the currently active listbox option
- * @property getOptionLabel       Function to return string label based on option data
+ * @property aria
  * @property getOptionDisabled    Function that accepts option data and returns a boolean for disabled/not disabled
  * @property getOptionId          Function that accepts option data and returns a string ID
+ * @property getOptionLabel       Function to return string label based on option data
  * @property getOptionSelected    Function that accepts option data and returns a boolean for selected/unselected
- * @property widgetId               Optional custom id for the root node of the listbox
- * @property focus                Indicates if the listbox needs focusing
  * @property multiselect          Adds currect semantics for a multiselect listbox
+ * @property onActiveIndexChange  Called with the index of the new requested active descendant
+ * @property onOptionSelect       Called with the option data of the new requested selected item
  * @property optionData           Array of data for listbox options
  * @property tabIndex             Listbox is in the focus order by default, but setting tabIndex: -1 will remove it
  * @property visualFocus          When controlling Listbox through an outside widget, e.g. in ComboBox, visualFocus mimics visual focus styling when true
- * @property onActiveIndexChange  Called with the index of the new requested active descendant
- * @property onOptionSelect       Called with the option data of the new requested selected item
+ * @property widgetId               Optional custom id for the root node of the listbox
  */
 
-export interface ListboxProperties extends ThemedProperties, FocusProperties, CustomAriaProperties {
+export interface ListboxProperties extends ThemedProperties, FocusProperties {
 	activeIndex?: number;
+	aria?: { [key: string]: string | null };
 	getOptionDisabled?(option: any, index: number): boolean;
 	getOptionId?(option: any, index: number): string;
 	getOptionLabel?(option: any, index: number): DNode;
 	getOptionSelected?(option: any, index: number): boolean;
-	widgetId?: string;
 	multiselect?: boolean;
+	onActiveIndexChange?(index: number): void;
+	onKeyDown?(event: KeyboardEvent): void;
+	onOptionSelect?(option: any, index: number): void;
 	optionData?: any[];
 	tabIndex?: number;
 	visualFocus?: boolean;
-	onActiveIndexChange?(index: number, key?: string | number): void;
-	onKeyDown?(event: KeyboardEvent, key?: string | number): void;
-	onOptionSelect?(option: any, index: number, key?: string | number): void;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -82,14 +82,13 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 		event.stopPropagation();
 		const {
 			activeIndex = 0,
-			key,
 			optionData = [],
 			onActiveIndexChange,
 			onOptionSelect,
 			onKeyDown
 		} = this.properties;
 
-		onKeyDown && onKeyDown(event, key);
+		onKeyDown && onKeyDown(event);
 
 		const activeItem = optionData[activeIndex];
 		let newIndex: number;
@@ -99,35 +98,35 @@ export class Listbox extends ThemedMixin(FocusMixin(WidgetBase))<ListboxProperti
 			case Keys.Space:
 				event.preventDefault();
 				if (!this._getOptionDisabled(activeItem, activeIndex)) {
-					onOptionSelect && onOptionSelect(activeItem, activeIndex, key);
+					onOptionSelect && onOptionSelect(activeItem, activeIndex);
 				}
 				break;
 			case Keys.Down:
 				event.preventDefault();
 				newIndex = (activeIndex + 1) % optionData.length;
-				onActiveIndexChange && onActiveIndexChange(newIndex, key);
+				onActiveIndexChange && onActiveIndexChange(newIndex);
 				break;
 			case Keys.Up:
 				event.preventDefault();
 				newIndex = (activeIndex - 1 + optionData.length) % optionData.length;
-				onActiveIndexChange && onActiveIndexChange(newIndex, key);
+				onActiveIndexChange && onActiveIndexChange(newIndex);
 				break;
 			case Keys.Home:
 			case Keys.PageUp:
-				onActiveIndexChange && onActiveIndexChange(0, key);
+				onActiveIndexChange && onActiveIndexChange(0);
 				break;
 			case Keys.End:
 			case Keys.PageDown:
-				onActiveIndexChange && onActiveIndexChange(optionData.length - 1, key);
+				onActiveIndexChange && onActiveIndexChange(optionData.length - 1);
 				break;
 		}
 	}
 
-	private _onOptionClick(option: any, index: number, key?: string | number) {
+	private _onOptionClick(option: any, index: number) {
 		const { onActiveIndexChange, onOptionSelect } = this.properties;
 		if (!this._getOptionDisabled(option, index)) {
-			onActiveIndexChange && onActiveIndexChange(index, key);
-			onOptionSelect && onOptionSelect(option, index, key);
+			onActiveIndexChange && onActiveIndexChange(index);
+			onOptionSelect && onOptionSelect(option, index);
 		}
 	}
 

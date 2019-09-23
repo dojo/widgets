@@ -14,7 +14,7 @@ export default class App extends WidgetBase {
 	private _options: TimeUnits[] = getOptions();
 	private _filteredOptions: TimeUnits[] = [];
 	private _values: any = {};
-	private _invalid = false;
+	private _valid?: boolean = undefined;
 
 	getFilteredOptions(key: string | number) {
 		const value = this._values[key];
@@ -58,7 +58,9 @@ export default class App extends WidgetBase {
 					},
 					key: '1',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value) => {
+						this.onChange(value, '1');
+					},
 					onRequestOptions: this.getFilteredOptions,
 					options: this._filteredOptions,
 					value: this._values['1']
@@ -75,7 +77,9 @@ export default class App extends WidgetBase {
 					key: '2',
 					label: 'Time: ',
 					openOnFocus: true,
-					onChange: this.onChange,
+					onValue: (value) => {
+						this.onChange(value, '2');
+					},
 					step: 1800,
 					value: this._values['2']
 				})
@@ -98,7 +102,9 @@ export default class App extends WidgetBase {
 					isOptionDisabled: (option: TimeUnits) => option.hour >= 12,
 					key: '3',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value) => {
+						this.onChange(value, '3');
+					},
 					step: 3600,
 					value: this._values['3']
 				})
@@ -138,7 +144,9 @@ export default class App extends WidgetBase {
 						aria: { describedBy: 'description1' }
 					},
 					label: 'Enter a value',
-					onChange: this.onChange,
+					onValue: (value) => {
+						this.onChange(value, '6');
+					},
 					step: 1800,
 					value: this._values['6']
 				})
@@ -151,16 +159,12 @@ export default class App extends WidgetBase {
 						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
-					invalid: this._invalid,
+					valid: this._valid,
 					key: '7',
 					required: true,
-					onBlur: (value: string) => {
-						this._invalid = value.trim().length === 0;
-						this.invalidate();
-					},
-					onChange: (value: string, key: string | number) => {
-						this._invalid = value.trim().length === 0;
-						this.onChange(value, key);
+					onValue: (value) => {
+						this._valid = value.trim().length > 0;
+						this.onChange(value, '7');
 					},
 					label: 'Time: ',
 					step: 1800,
@@ -185,7 +189,9 @@ export default class App extends WidgetBase {
 					},
 					key: '8',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value) => {
+						this.onChange(value, '8');
+					},
 					start: '12:00:00',
 					step: 1,
 					value: this._values['8']
@@ -213,7 +219,9 @@ export default class App extends WidgetBase {
 					},
 					key: '9',
 					label: 'Time: ',
-					onChange: this.onChange,
+					onValue: (value) => {
+						this.onChange(value, '9');
+					},
 					step: 1800,
 					value: this._values['9']
 				})
@@ -227,10 +235,12 @@ export default class App extends WidgetBase {
 						aria: { describedBy: 'description1' },
 						placeholder: 'Enter a value'
 					},
-					onChange: this.onChange,
+					onValue: (value) => {
+						this.onChange(value, '10');
+					},
 					step: 1800,
 					useNativeElement: true,
-					invalid: true,
+					valid: false,
 					label: 'foo',
 					value: this._values['10']
 				})

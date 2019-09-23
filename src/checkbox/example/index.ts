@@ -30,8 +30,9 @@ export default class App extends WidgetBase {
 						key: 'c1',
 						checked: c1,
 						label: 'Sample checkbox that starts checked',
-						value: 'c1',
-						onChange: this.onChange
+						onValue: (checked) => {
+							this.onChange('c1', checked);
+						}
 					})
 				]),
 
@@ -41,8 +42,9 @@ export default class App extends WidgetBase {
 						checked: c2,
 						label: 'Sample disabled checkbox',
 						disabled: true,
-						value: 'c2',
-						onChange: this.onChange
+						onValue: (checked) => {
+							this.onChange('c2', checked);
+						}
 					})
 				]),
 
@@ -52,8 +54,9 @@ export default class App extends WidgetBase {
 						checked: c3,
 						label: 'Required checkbox',
 						required: true,
-						value: 'c3',
-						onChange: this.onChange
+						onValue: (checked) => {
+							this.onChange('c3', checked);
+						}
 					})
 				]),
 
@@ -63,8 +66,9 @@ export default class App extends WidgetBase {
 						checked: c4,
 						label: 'Checkbox in "toggle" mode',
 						mode: Mode.toggle,
-						value: 'c4',
-						onChange: this.onChange
+						onValue: (checked) => {
+							this.onChange('c4', checked);
+						}
 					})
 				]),
 
@@ -77,8 +81,9 @@ export default class App extends WidgetBase {
 						offLabel: 'Off',
 						mode: Mode.toggle,
 						disabled: true,
-						value: 'c5',
-						onChange: this.onChange
+						onValue: (checked) => {
+							this.onChange('c5', checked);
+						}
 					})
 				])
 			])

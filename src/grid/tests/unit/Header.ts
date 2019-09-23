@@ -136,7 +136,7 @@ describe('Header', () => {
 							labelHidden: true,
 							type: 'search',
 							value: '',
-							onInput: noop,
+							onValue: noop,
 							classes: undefined,
 							theme: undefined
 						})
@@ -212,7 +212,7 @@ describe('Header', () => {
 							labelHidden: true,
 							type: 'search',
 							value: '',
-							onInput: noop,
+							onValue: noop,
 							classes: undefined,
 							theme: undefined
 						})
@@ -288,7 +288,7 @@ describe('Header', () => {
 							labelHidden: true,
 							type: 'search',
 							value: '',
-							onInput: noop,
+							onValue: noop,
 							classes: undefined,
 							theme: undefined
 						})
@@ -363,7 +363,7 @@ describe('Header', () => {
 							labelHidden: true,
 							type: 'search',
 							value: 'my filter',
-							onInput: noop,
+							onValue: noop,
 							classes: undefined,
 							theme: undefined
 						})
@@ -384,7 +384,7 @@ describe('Header', () => {
 			})
 		);
 
-		h.trigger('@filter', 'onInput', 'trillian');
+		h.trigger('@filter', 'onValue', 'trillian');
 		assert.isTrue(filtererStub.calledWith('firstName', 'trillian'));
 	});
 
@@ -515,7 +515,7 @@ describe('Header', () => {
 								labelHidden: true,
 								type: 'search',
 								value: '',
-								onInput: noop,
+								onValue: noop,
 								classes: undefined,
 								theme: undefined
 							})
@@ -586,7 +586,7 @@ describe('Header', () => {
 								labelHidden: true,
 								type: 'search',
 								value: '',
-								onInput: noop,
+								onValue: noop,
 								classes: undefined,
 								theme: undefined
 							})
@@ -611,7 +611,7 @@ describe('Header', () => {
 						title?: any
 					) => {
 						return v('div', [
-							v('input', { value: filterValue, onInput: doFilter }),
+							v('input', { value: filterValue, onValue: doFilter }),
 							v('span', [`${title} - ${columnConfig.id}`])
 						]);
 					}
@@ -663,7 +663,7 @@ describe('Header', () => {
 								]
 							),
 							v('div', [
-								v('input', { value: '', onInput: noop }),
+								v('input', { value: '', onValue: noop }),
 								v('span', ['Custom Title - firstName'])
 							])
 						]

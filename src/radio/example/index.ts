@@ -5,7 +5,7 @@ import Radio from '../../radio/index';
 export default class App extends WidgetBase {
 	private _inputValue: string | undefined;
 
-	onChange(value: string) {
+	onValue(value: string) {
 		this._inputValue = value;
 		this.invalidate();
 	}
@@ -25,7 +25,11 @@ export default class App extends WidgetBase {
 					value: 'first',
 					label: 'First option',
 					name: 'sample-radios',
-					onChange: this.onChange
+					onValue: (checked) => {
+						if (checked) {
+							this.onValue('first');
+						}
+					}
 				}),
 				w(Radio, {
 					key: 'r2',
@@ -33,7 +37,11 @@ export default class App extends WidgetBase {
 					value: 'second',
 					label: 'Second option',
 					name: 'sample-radios',
-					onChange: this.onChange
+					onValue: (checked) => {
+						if (checked) {
+							this.onValue('second');
+						}
+					}
 				}),
 				w(Radio, {
 					key: 'r3',
@@ -41,7 +49,11 @@ export default class App extends WidgetBase {
 					value: 'third',
 					label: 'Third option',
 					name: 'sample-radios',
-					onChange: this.onChange
+					onValue: (checked) => {
+						if (checked) {
+							this.onValue('third');
+						}
+					}
 				})
 			]),
 			v('fieldset', { id: 'example-2' }, [

@@ -4,7 +4,6 @@ import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { CustomAriaProperties } from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
@@ -28,6 +27,7 @@ export enum Align {
  *
  * Properties that can be set on a SlidePane component
  *
+ * @property aria
  * @property align            The position of the pane on the screen
  * @property closeText        Hidden text used by screen readers to display for the close button
  * @property onOpen           Called when the pane opens
@@ -37,8 +37,9 @@ export enum Align {
  * @property underlay         Determines whether a semi-transparent background shows behind the pane
  * @property width            Width of the pane in pixels
  */
-export interface SlidePaneProperties extends ThemedProperties, CustomAriaProperties {
+export interface SlidePaneProperties extends ThemedProperties {
 	align?: Align;
+	aria?: { [key: string]: string | null };
 	closeText?: string;
 	onOpen?(): void;
 	onRequestClose?(): void;

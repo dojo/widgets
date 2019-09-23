@@ -4,14 +4,6 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixin
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Focus from '@dojo/framework/core/meta/Focus';
 import Label from '../label/index';
-import {
-	CustomAriaProperties,
-	LabeledProperties,
-	InputProperties,
-	CheckboxRadioEventProperties,
-	KeyEventProperties,
-	PointerEventProperties
-} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
@@ -28,20 +20,25 @@ import * as css from '../theme/checkbox.m.css';
  * @property onLabel        Label to show in the "on" positin of a toggle
  * @property value           The current value
  */
-export interface CheckboxProperties
-	extends ThemedProperties,
-		InputProperties,
-		FocusProperties,
-		LabeledProperties,
-		KeyEventProperties,
-		PointerEventProperties,
-		CustomAriaProperties,
-		CheckboxRadioEventProperties {
+export interface CheckboxProperties extends ThemedProperties, FocusProperties {
+	aria?: { [key: string]: string | null };
 	checked?: boolean;
+	disabled?: boolean;
+	label?: string;
+	labelAfter?: boolean;
+	labelHidden?: boolean;
 	mode?: Mode;
+	name?: string;
 	offLabel?: DNode;
+	onBlur?(): void;
+	onFocus?(): void;
 	onLabel?: DNode;
+	onValue?(checked: boolean): void;
+	readOnly?: boolean;
+	required?: boolean;
+	valid?: boolean;
 	value?: string;
+	widgetId?: string;
 }
 
 /**
@@ -54,49 +51,22 @@ export enum Mode {
 
 @theme(css)
 export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProperties> {
-	private _onBlur(event: FocusEvent) {
-		const checkbox = event.target as HTMLInputElement;
-		this.properties.onBlur && this.properties.onBlur(checkbox.value, checkbox.checked);
+	private _onBlur() {
+		this.properties.onBlur && this.properties.onBlur();
 	}
 	private _onChange(event: Event) {
 		event.stopPropagation();
 		const checkbox = event.target as HTMLInputElement;
-		this.properties.onChange && this.properties.onChange(checkbox.value, checkbox.checked);
+		this.properties.onValue && this.properties.onValue(checkbox.checked);
 	}
-	private _onClick(event: MouseEvent) {
-		event.stopPropagation();
-		const checkbox = event.target as HTMLInputElement;
-		this.properties.onClick && this.properties.onClick(checkbox.value, checkbox.checked);
-	}
-	private _onFocus(event: FocusEvent) {
-		const checkbox = event.target as HTMLInputElement;
-		this.properties.onFocus && this.properties.onFocus(checkbox.value, checkbox.checked);
-	}
-	private _onMouseDown(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown();
-	}
-	private _onMouseUp(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp();
-	}
-	private _onTouchStart(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart();
-	}
-	private _onTouchEnd(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd();
-	}
-	private _onTouchCancel(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel();
+	private _onFocus() {
+		this.properties.onFocus && this.properties.onFocus();
 	}
 
 	private _uuid = uuid();
 
 	protected getRootClasses(): (string | null)[] {
-		const { checked = false, disabled, invalid, mode, readOnly, required } = this.properties;
+		const { checked = false, disabled, valid, mode, readOnly, required } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -105,8 +75,8 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,
-			invalid === true ? css.invalid : null,
-			invalid === false ? css.valid : null,
+			valid === false ? css.invalid : null,
+			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null
 		];
@@ -154,15 +124,14 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 			checked = false,
 			disabled,
 			widgetId = this._uuid,
-			invalid,
+			valid,
 			label,
 			labelAfter = true,
 			labelHidden,
 			theme,
 			name,
 			readOnly,
-			required,
-			value
+			required
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -176,22 +145,15 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 					checked,
 					disabled,
 					focus: this.shouldFocus,
-					'aria-invalid': invalid === true ? 'true' : null,
+					'aria-invalid': valid === false ? 'true' : null,
 					name,
 					readOnly,
 					'aria-readonly': readOnly === true ? 'true' : null,
 					required,
 					type: 'checkbox',
-					value,
 					onblur: this._onBlur,
 					onchange: this._onChange,
-					onclick: this._onClick,
-					onfocus: this._onFocus,
-					onmousedown: this._onMouseDown,
-					onmouseup: this._onMouseUp,
-					ontouchstart: this._onTouchStart,
-					ontouchend: this._onTouchEnd,
-					ontouchcancel: this._onTouchCancel
+					onfocus: this._onFocus
 				})
 			]),
 			label
@@ -203,7 +165,7 @@ export class Checkbox extends ThemedMixin(FocusMixin(WidgetBase))<CheckboxProper
 							theme,
 							disabled,
 							focused: focus.containsFocus,
-							invalid,
+							valid,
 							readOnly,
 							required,
 							hidden: labelHidden,

@@ -27,7 +27,7 @@ export default class App extends WidgetBase {
 						type: 'text',
 						placeholder: 'Hello, World',
 						value: this._value1,
-						onChange: (value: string) => {
+						onValue: (value: string) => {
 							this._value1 = value;
 							this.invalidate();
 						}
@@ -41,7 +41,7 @@ export default class App extends WidgetBase {
 						label: 'Email (required)',
 						required: true,
 						value: this._value2,
-						onChange: (value: string) => {
+						onValue: (value: string) => {
 							this._value2 = value;
 							this.invalidate();
 						}
@@ -56,7 +56,7 @@ export default class App extends WidgetBase {
 						label: 'Try listening to me!',
 						labelHidden: true,
 						value: this._value3,
-						onChange: (value: string) => {
+						onValue: (value: string) => {
 							this._value3 = value;
 							this.invalidate();
 						}
@@ -81,7 +81,7 @@ export default class App extends WidgetBase {
 						label: 'input with helper text',
 						value: this._value5,
 						helperText: 'helper text',
-						onInput: (value: string) => {
+						onValue: (value: string) => {
 							this._value5 = value;
 							this.invalidate();
 						}
@@ -102,7 +102,7 @@ export default class App extends WidgetBase {
 							this.invalidate();
 						},
 						pattern: 'foo|bar',
-						onInput: (value: string) => {
+						onValue: (value: string) => {
 							this._value6 = value;
 							this.invalidate();
 						}

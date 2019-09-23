@@ -5,12 +5,6 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
 import Focus from '@dojo/framework/core/meta/Focus';
 import Label from '../label/index';
-import {
-	CustomAriaProperties,
-	InputEventProperties,
-	PointerEventProperties,
-	KeyEventProperties
-} from '../common/interfaces';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-area.m.css';
@@ -22,108 +16,77 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  *
  * Properties that can be set on a TextInput component
  *
+ * @property aria
  * @property columns         Number of columns, controls the width of the textarea
- * @property rows            Number of rows, controls the height of the textarea
- * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
+ * @property customValidator
+ * @property disabled
+ * @property helperText
+ * @property label
+ * @property labelHidden
  * @property maxLength      Maximum number of characters allowed in the input
  * @property minLength      Minimum number of characters allowed in the input
+ * @property name
+ * @property onBlur
+ * @property onFocus
+ * @property onKey
+ * @property onValidate
+ * @property onValue
  * @property placeholder    Placeholder text
+ * @property readOnly
+ * @property required
+ * @property rows            Number of rows, controls the height of the textarea
+ * @property valid
  * @property value           The current value
+ * @property widgetId
+ * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
  */
-export interface TextAreaProperties
-	extends ThemedProperties,
-		FocusProperties,
-		InputEventProperties,
-		KeyEventProperties,
-		PointerEventProperties,
-		CustomAriaProperties {
+export interface TextAreaProperties extends ThemedProperties, FocusProperties {
+	aria?: { [key: string]: string | null };
 	columns?: number;
-	rows?: number;
-	wrapText?: 'hard' | 'soft' | 'off';
-	maxLength?: number | string;
-	minLength?: number | string;
-	placeholder?: string;
-	value?: string;
-	onClick?(value: string): void;
-	valid?: { valid?: boolean; message?: string } | boolean;
-	onValidate?: (valid: boolean | undefined, message: string) => void;
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
+	disabled?: boolean;
+	helperText?: string;
 	label?: string;
 	labelHidden?: boolean;
-	helperText?: string;
-	disabled?: boolean;
-	widgetId?: string;
+	maxLength?: number | string;
+	minLength?: number | string;
 	name?: string;
+	onBlur?(): void;
+	onFocus?(): void;
+	onKey?(key: number, preventDefault: () => void): void;
+	onValidate?: (valid: boolean | undefined, message: string) => void;
+	onValue?(value?: string): void;
+	placeholder?: string;
 	readOnly?: boolean;
 	required?: boolean;
+	rows?: number;
+	valid?: { valid?: boolean; message?: string } | boolean;
+	value?: string;
+	widgetId?: string;
+	wrapText?: 'hard' | 'soft' | 'off';
 }
 
 @theme(css)
 export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProperties> {
 	private _dirty = false;
 
-	private _onBlur(event: FocusEvent) {
-		this.properties.onBlur && this.properties.onBlur((event.target as HTMLInputElement).value);
+	private _onBlur() {
+		this.properties.onBlur && this.properties.onBlur();
 	}
-	private _onChange(event: Event) {
-		event.stopPropagation();
-		this.properties.onChange &&
-			this.properties.onChange((event.target as HTMLInputElement).value);
-	}
-	private _onClick(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onClick &&
-			this.properties.onClick((event.target as HTMLInputElement).value);
-	}
-	private _onFocus(event: FocusEvent) {
-		this.properties.onFocus &&
-			this.properties.onFocus((event.target as HTMLInputElement).value);
+	private _onFocus() {
+		this.properties.onFocus && this.properties.onFocus();
 	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
-		this.properties.onInput &&
-			this.properties.onInput((event.target as HTMLInputElement).value);
+		this.properties.onValue &&
+			this.properties.onValue((event.target as HTMLInputElement).value);
 	}
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKeyDown &&
-			this.properties.onKeyDown(event.which, () => {
+		this.properties.onKey &&
+			this.properties.onKey(event.which, () => {
 				event.preventDefault();
 			});
-	}
-	private _onKeyPress(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyPress &&
-			this.properties.onKeyPress(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onKeyUp(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyUp &&
-			this.properties.onKeyUp(event.which, () => {
-				event.preventDefault();
-			});
-	}
-	private _onMouseDown(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseDown && this.properties.onMouseDown();
-	}
-	private _onMouseUp(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onMouseUp && this.properties.onMouseUp();
-	}
-	private _onTouchStart(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchStart && this.properties.onTouchStart();
-	}
-	private _onTouchEnd(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchEnd && this.properties.onTouchEnd();
-	}
-	private _onTouchCancel(event: TouchEvent) {
-		event.stopPropagation();
-		this.properties.onTouchCancel && this.properties.onTouchCancel();
 	}
 
 	private _callOnValidate(valid: boolean | undefined, message: string) {
@@ -234,7 +197,7 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 								classes,
 								disabled,
 								focused: focus.containsFocus,
-								invalid: valid === false || undefined,
+								valid,
 								readOnly,
 								required,
 								hidden: labelHidden,
@@ -264,18 +227,9 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 						value,
 						wrap: wrapText,
 						onblur: this._onBlur,
-						onchange: this._onChange,
-						onclick: this._onClick,
 						onfocus: this._onFocus,
 						oninput: this._onInput,
-						onkeydown: this._onKeyDown,
-						onkeypress: this._onKeyPress,
-						onkeyup: this._onKeyUp,
-						onmousedown: this._onMouseDown,
-						onmouseup: this._onMouseUp,
-						ontouchstart: this._onTouchStart,
-						ontouchend: this._onTouchEnd,
-						ontouchcancel: this._onTouchCancel
+						onkeydown: this._onKeyDown
 					})
 				]),
 				w(HelperText, { text: computedHelperText, valid })

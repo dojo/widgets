@@ -93,7 +93,11 @@ export default class App extends WidgetBase {
 							checked: this._theme === theme.label,
 							value: theme.label,
 							label: theme.label,
-							onChange: this._onThemeChange
+							onValue: (checked) => {
+								if (checked) {
+									this._onThemeChange(theme.label);
+								}
+							}
 						});
 					})
 				)
@@ -101,7 +105,7 @@ export default class App extends WidgetBase {
 			v('div', { id: 'module-select' }, [
 				v('h2', ['Select a module to view']),
 				w(Select, {
-					onChange: this._onModuleChange,
+					onValue: this._onModuleChange,
 					useNativeElement: true,
 					label: 'Select a module to view',
 					options: modules,
