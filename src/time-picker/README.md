@@ -88,7 +88,7 @@ w(TimePicker, {
 	isOptionDisabled: (option: TimeUnits) => option.hour === 12,
 	label: 'Meeting Time',
 	// Perform simple validation
-	onChange: (value: string) => {
+	onValue: (value: string) => {
 		const timeInvalid = !/^\d{2}:\d{2}$/.test(value);
 		this.setState({ timeInvalid });
 	},
@@ -109,7 +109,7 @@ w(TimePicker, {
 	invalid: this.state.timeInvalid,
 	label: 'Meeting Time',
 	// Perform simple validation
-	onChange: (value: string) => {
+	onValue: (value: string) => {
 		const timeInvalid = !/^\d{2}:\d{2}$/.test(value);
 		this.setState({ timeInvalid });
 	},

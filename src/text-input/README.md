@@ -22,11 +22,11 @@ If the `label` property is not used, we recommend creating a separate `label` an
 // Basic usage
 w(TextInput, {
 	label: 'Email Address',
-	value: this.state.firstName,
+	value: emailAddress,
     type: 'email',
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ firstName: event.target.value });
-	},
+	onValue: (value: string) => {
+		emailAddress = value;
+	}
 });
 
 // Advanced usage
@@ -39,16 +39,15 @@ w(TextInput, {
 	required: true,
 	type: 'password',
 	helperText: 'Password must contain letters and numbers',
-	value: this.state.password,
-    valid: this.state.valid,
-	onChange: (event: TypedTargetEvent<HTMLInputElement>) => {
-		this.setState({ password: event.target.value });
-		this.setState({ passwordValid: this._validatePassword() });
+	value: password,
+    valid: passwordValid,
+	onValue: (value: string) => {
+		password = value;
+	},
+	onValidate: (valid: boolean) {
+		passwordValid = valid'
 	}
-}),
-v('p', {
-	id: 'instructions'
-}, [ 'Password must be at least 6 characters' ]);
+});
 ```
 
 ## Validation
@@ -68,7 +67,7 @@ w(TextInput, {
 		this.invalidate();
 	},
 	pattern: 'foo|bar',
-	onInput: (value: string) => {
+	onValue: (value: string) => {
 		this.setState({ value });
 		this.invalidate();
 	}
@@ -97,7 +96,7 @@ w(TextInput, {
 		this.invalidate();
 	},
 	pattern: 'foo|bar',
-	onInput: (value: string) => {
+	onValue: (value: string) => {
 		this.setState({ value });
 		this.invalidate();
 	}

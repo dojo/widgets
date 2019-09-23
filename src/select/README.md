@@ -61,7 +61,7 @@ w(Select, {
 	options: optionsData,
 	useNativeElement: true,
 	value,
-	onChange: (option: OptionData) => {
+	onValue: (option: OptionData) => {
 		value = option.value;
 	}
 });
@@ -79,7 +79,7 @@ w(Select, {
 	label: 'Option label defaults to option data',
 	options,
 	value,
-	onChange: (option: string) => {
+	onValue: (option: string) => {
 		value = option;
 	}
 });
@@ -101,7 +101,7 @@ w(Select, {
 	options,
 	placeholder: 'Choose one',
 	value,
-	onChange: (option: string) => {
+	onValue: (option: string) => {
 		value = option;
 	}
 });
