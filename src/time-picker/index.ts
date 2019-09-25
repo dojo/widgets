@@ -35,8 +35,11 @@ interface FocusInputEvent extends FocusEvent {
  * @property labelHidden
  * @property name
  * @property onBlur             Called when the input is blurred
+ * @property onClick
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
+ * @property onOut
+ * @property onOver
  * @property onRequestOptions   Called when options are shown; should be used to set `options`
  * @property onValue           Called when the value changes
  * @property openOnFocus        Determines whether the result list should open when the input is focused
@@ -63,8 +66,11 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties 
 	labelHidden?: boolean;
 	name?: string;
 	onBlur?(): void;
+	onClick?(): void;
 	onFocus?(): void;
 	onMenuChange?(open: boolean, key?: string | number): void;
+	onOut?(): void;
+	onOver?(): void;
 	onRequestOptions?(key?: string | number): void;
 	onValue?(value: string): void;
 	openOnFocus?: boolean;
@@ -178,12 +184,7 @@ export function parseUnits(value: string | TimeUnits): TimeUnits {
 export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerProperties> {
 	protected options: TimeUnits[] | null = null;
 
-	private _uuid: string;
-
-	constructor() {
-		super();
-		this._uuid = uuid();
-	}
+	private _uuid = uuid();
 
 	private _formatUnits(units: TimeUnits): string {
 		const { step = 60 } = this.properties;
@@ -200,19 +201,9 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		return getOptionLabel ? getOptionLabel(units) : this._formatUnits(units);
 	}
 
-	private _onBlur() {
-		const { onBlur } = this.properties;
-		onBlur && onBlur();
-	}
-
 	private _onValue(value: string) {
 		const { onValue } = this.properties;
 		onValue && onValue(value);
-	}
-
-	private _onFocus() {
-		const { onFocus } = this.properties;
-		onFocus && onFocus();
 	}
 
 	private _onMenuChange(open: boolean) {
@@ -220,19 +211,9 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 		onMenuChange && onMenuChange(open, key);
 	}
 
-	private _onNativeBlur() {
-		const { onBlur } = this.properties;
-		onBlur && onBlur();
-	}
-
 	private _onNativeChange(event: FocusInputEvent) {
 		const { onValue } = this.properties;
 		onValue && onValue(event.target.value);
-	}
-
-	private _onNativeFocus() {
-		const { onFocus } = this.properties;
-		onFocus && onFocus();
 	}
 
 	private _onRequestOptions() {
@@ -287,7 +268,11 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			required,
 			theme,
 			classes,
-			value
+			value,
+			onFocus,
+			onBlur,
+			onOver,
+			onOut
 		} = this.properties;
 
 		return w(ComboBox, {
@@ -303,9 +288,19 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			isResultDisabled: isOptionDisabled,
 			label,
 			labelHidden,
-			onBlur: this._onBlur,
+			onBlur: () => {
+				onBlur && onBlur();
+			},
 			onValue: this._onValue,
-			onFocus: this._onFocus,
+			onFocus: () => {
+				onFocus && onFocus();
+			},
+			onOver: () => {
+				onOver && onOver();
+			},
+			onOut: () => {
+				onOut && onOut();
+			},
 			onMenuChange: this._onMenuChange,
 			onRequestResults: this._onRequestOptions.bind(this),
 			openOnFocus,
@@ -335,7 +330,12 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			theme,
 			classes,
 			labelHidden = false,
-			labelAfter = false
+			labelAfter = false,
+			onFocus,
+			onBlur,
+			onClick,
+			onOut,
+			onOver
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -372,9 +372,22 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 				max: end,
 				min: start,
 				name,
-				onblur: this._onNativeBlur,
+				onblur: () => {
+					onBlur && onBlur();
+				},
 				onchange: this._onNativeChange,
-				onfocus: this._onNativeFocus,
+				onfocus: () => {
+					onFocus && onFocus();
+				},
+				onclick: () => {
+					onClick && onClick();
+				},
+				onpointerenter: () => {
+					onOver && onOver();
+				},
+				onpointerleave: () => {
+					onOut && onOut();
+				},
 				readOnly,
 				required,
 				step,

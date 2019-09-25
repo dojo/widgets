@@ -38,6 +38,8 @@ import HelperText from '../helper-text/index';
  * @property onBlur             Called when the input is blurred
  * @property onFocus            Called when the input is focused
  * @property onMenuChange       Called when menu visibility changes
+ * @property onOut
+ * @property onOver
  * @property onRequestResults   Called when results are shown; should be used to set `results`
  * @property onResultSelect     Called when result is selected
  * @property onValue           Called when the value changes
@@ -63,6 +65,8 @@ export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
 	onBlur?(): void;
 	onFocus?(): void;
 	onMenuChange?(open: boolean): void;
+	onOut?(): void;
+	onOver?(): void;
 	onRequestResults?(): void;
 	onResultSelect?(result: any): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
@@ -420,7 +424,9 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			results = [],
 			theme,
 			classes,
-			helperText
+			helperText,
+			onOver,
+			onOut
 		} = this.properties;
 
 		const { valid, message } = this.validity;
@@ -473,7 +479,13 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 					'aria-haspopup': 'listbox',
 					'aria-owns': this._open ? this._getMenuId() : null,
 					classes: this.theme(css.controls),
-					role: 'combobox'
+					role: 'combobox',
+					onpointerenter: () => {
+						onOver && onOver();
+					},
+					onpointerleave: () => {
+						onOut && onOut();
+					}
 				},
 				[
 					this.renderInput(results),

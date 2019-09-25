@@ -78,6 +78,9 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	onKey?(key: number, preventDefault: () => void): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 	onValue?(value?: string): void;
+	onClick?(): void;
+	onOver?(): void;
+	onOut?(): void;
 	pattern?: string | RegExp;
 	placeholder?: string;
 	readOnly?: boolean;
@@ -112,12 +115,6 @@ function patternDiffer(
 @diffProperty('leading', reference)
 @diffProperty('trailing', reference)
 export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProperties> {
-	private _onBlur() {
-		this.properties.onBlur && this.properties.onBlur();
-	}
-	private _onFocus() {
-		this.properties.onFocus && this.properties.onFocus();
-	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
 		this.properties.onValue &&
@@ -222,7 +219,12 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			value,
 			widgetId = this._uuid,
 			helperText,
-			onValidate
+			onValidate,
+			onBlur,
+			onFocus,
+			onClick,
+			onOver,
+			onOut
 		} = this.properties;
 
 		onValidate && this._validate();
@@ -287,10 +289,23 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							required,
 							type,
 							value,
-							onblur: this._onBlur,
-							onfocus: this._onFocus,
+							onblur: () => {
+								onBlur && onBlur();
+							},
+							onfocus: () => {
+								onFocus && onFocus();
+							},
 							oninput: this._onInput,
-							onkeydown: this._onKeyDown
+							onkeydown: this._onKeyDown,
+							onclick: () => {
+								onClick && onClick();
+							},
+							onpointerenter: () => {
+								onOver && onOver();
+							},
+							onpointerleave: () => {
+								onOut && onOut();
+							}
 						}),
 						trailing &&
 							v('span', { key: 'trailing', classes: this.theme(css.trailing) }, [

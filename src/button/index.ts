@@ -20,6 +20,8 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property onBlur
  * @property onClick
  * @property onFocus
+ * @property onOut
+ * @property onOver
  * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
  * @property pressed        Indicates status of a toggle button
  * @property type           Button type can be "submit", "reset", "button", or "menu"
@@ -33,6 +35,8 @@ export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	onBlur?(): void;
 	onClick?(): void;
 	onFocus?(): void;
+	onOut?(): void;
+	onOver?(): void;
 	popup?: { expanded?: boolean; id?: string } | boolean;
 	pressed?: boolean;
 	type?: ButtonType;
@@ -42,15 +46,9 @@ export interface ButtonProperties extends ThemedProperties, FocusProperties {
 
 @theme(css)
 export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties> {
-	private _onBlur() {
-		this.properties.onBlur && this.properties.onBlur();
-	}
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onClick && this.properties.onClick();
-	}
-	private _onFocus() {
-		this.properties.onFocus && this.properties.onFocus();
 	}
 
 	protected getModifierClasses(): (string | null)[] {
@@ -74,7 +72,11 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 			type,
 			value,
 			theme,
-			classes
+			classes,
+			onOut,
+			onOver,
+			onBlur,
+			onFocus
 		} = this.properties;
 
 		if (popup === true) {
@@ -91,9 +93,19 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 				name,
 				type,
 				value,
-				onblur: this._onBlur,
+				onblur: () => {
+					onBlur && onBlur();
+				},
 				onclick: this._onClick,
-				onfocus: this._onFocus,
+				onfocus: () => {
+					onFocus && onFocus();
+				},
+				onpointerenter: () => {
+					onOver && onOver();
+				},
+				onpointerleave: () => {
+					onOut && onOut();
+				},
 				...formatAriaProperties(aria),
 				'aria-haspopup': popup ? 'true' : null,
 				'aria-controls': popup ? popup.id : null,
