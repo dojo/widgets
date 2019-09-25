@@ -116,6 +116,10 @@ const expected = function({
 					onfocus: noop,
 					oninput: noop,
 					onkeydown: noop,
+					onkeyup: noop,
+					onclick: noop,
+					onpointerenter: noop,
+					onpointerleave: noop,
 					...inputOverrides
 				})
 			]),
@@ -161,6 +165,10 @@ const input = () => (
 			onfocus={noop}
 			oninput={noop}
 			onkeydown={noop}
+			onkeyup={noop}
+			onclick={noop}
+			onpointerenter={noop}
+			onpointerleave={noop}
 		/>
 	</div>
 );

@@ -2,10 +2,9 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { v, w } from '@dojo/framework/core/vdom';
+import { v } from '@dojo/framework/core/vdom';
 import * as css from '../theme/button.m.css';
 import { formatAriaProperties } from '../common/util';
-import Icon from '../icon/index';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 

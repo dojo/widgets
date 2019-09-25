@@ -94,6 +94,8 @@ const expected = function(
 						onblur: noop,
 						onfocus: noop,
 						oninput: noop,
+						onpointerenter: noop,
+						onpointerleave: noop,
 						...overrides
 					}),
 					v(
@@ -254,7 +256,9 @@ registerSuite('Slider', {
 										value: '0',
 										onblur: noop,
 										onfocus: noop,
-										oninput: noop
+										oninput: noop,
+										onpointerenter: noop,
+										onpointerleave: noop
 									}),
 									v(
 										'div',
@@ -352,7 +356,9 @@ registerSuite('Slider', {
 										value: '6',
 										onblur: noop,
 										onfocus: noop,
-										oninput: noop
+										oninput: noop,
+										onpointerenter: noop,
+										onpointerleave: noop
 									}),
 									v(
 										'div',
@@ -445,7 +451,9 @@ registerSuite('Slider', {
 									value: '40',
 									onblur: noop,
 									onfocus: noop,
-									oninput: noop
+									oninput: noop,
+									onpointerenter: noop,
+									onpointerleave: noop
 								}),
 								v(
 									'div',
@@ -535,7 +543,9 @@ registerSuite('Slider', {
 									value: '30',
 									onblur: noop,
 									onfocus: noop,
-									oninput: noop
+									oninput: noop,
+									onpointerenter: noop,
+									onpointerleave: noop
 								}),
 								v(
 									'div',
@@ -636,7 +646,9 @@ registerSuite('Slider', {
 									value: '0',
 									onblur: noop,
 									onfocus: noop,
-									oninput: noop
+									oninput: noop,
+									onpointerenter: noop,
+									onpointerleave: noop
 								}),
 								v(
 									'div',
@@ -724,7 +736,9 @@ registerSuite('Slider', {
 									value: '0',
 									onblur: noop,
 									onfocus: noop,
-									oninput: noop
+									oninput: noop,
+									onpointerenter: noop,
+									onpointerleave: noop
 								}),
 								v(
 									'div',
