@@ -46,7 +46,8 @@ interface TextInputInternalState {
  * @property name
  * @property onBlur
  * @property onFocus
- * @property onKey
+ * @property onKeyDown
+ * @property onKeyUp
  * @property onValidate
  * @property onValue
  * @property pattern
@@ -75,7 +76,8 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	name?: string;
 	onBlur?(): void;
 	onFocus?(): void;
-	onKey?(key: number, preventDefault: () => void): void;
+	onKeyDown?(key: number, preventDefault: () => void): void;
+	onKeyUp?(key: number, preventDefault: () => void): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 	onValue?(value?: string): void;
 	onClick?(): void;
@@ -123,8 +125,16 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKey &&
-			this.properties.onKey(event.which, () => {
+		this.properties.onKeyDown &&
+			this.properties.onKeyDown(event.which, () => {
+				event.preventDefault();
+			});
+	}
+
+	private _onKeyUp(event: KeyboardEvent) {
+		event.stopPropagation();
+		this.properties.onKeyUp &&
+			this.properties.onKeyUp(event.which, () => {
 				event.preventDefault();
 			});
 	}
@@ -297,6 +307,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							},
 							oninput: this._onInput,
 							onkeydown: this._onKeyDown,
+							onkeyup: this._onKeyUp,
 							onclick: () => {
 								onClick && onClick();
 							},

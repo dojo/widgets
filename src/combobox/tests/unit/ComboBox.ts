@@ -121,7 +121,7 @@ const getExpectedControls = function(
 				onBlur: noop,
 				onFocus: noop,
 				onValue: noop,
-				onKey: noop,
+				onKeyDown: noop,
 				onValidate: undefined
 			}),
 			useTestProperties
@@ -632,7 +632,7 @@ registerSuite('ComboBox', {
 					onBlur: noop,
 					onFocus: noop,
 					onValue: noop,
-					onKey: noop,
+					onKeyDown: noop,
 					onValidate: undefined
 				})
 			);
@@ -683,7 +683,7 @@ registerSuite('ComboBox', {
 					onBlur: noop,
 					onFocus: noop,
 					onValue: noop,
-					onKey: noop,
+					onKeyDown: noop,
 					onValidate: undefined
 				})
 			);
@@ -765,7 +765,7 @@ registerSuite('ComboBox', {
 					onBlur: noop,
 					onFocus: noop,
 					onValue: noop,
-					onKey: noop,
+					onKeyDown: noop,
 					onValidate: undefined
 				})
 			);

@@ -320,7 +320,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			onBlur: this._onInputBlur,
 			onFocus: this._onInputFocus,
 			onValue: this._onInputValue,
-			onKey: this._onInputKey,
+			onKeyDown: this._onInputKey,
 			onValidate,
 			readOnly,
 			required,

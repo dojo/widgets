@@ -29,7 +29,8 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  * @property onBlur
  * @property onClick
  * @property onFocus
- * @property onKey
+ * @property onKeyDown
+ * @property onKeyUp
  * @property onOut
  * @property onOver
  * @property onValidate
@@ -57,7 +58,8 @@ export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	onBlur?(): void;
 	onClick?(): void;
 	onFocus?(): void;
-	onKey?(key: number, preventDefault: () => void): void;
+	onKeyDown?(key: number, preventDefault: () => void): void;
+	onKeyUp?(key: number, preventDefault: () => void): void;
 	onOut?(): void;
 	onOver?(): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
@@ -81,10 +83,19 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 		this.properties.onValue &&
 			this.properties.onValue((event.target as HTMLInputElement).value);
 	}
+
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKey &&
-			this.properties.onKey(event.which, () => {
+		this.properties.onKeyDown &&
+			this.properties.onKeyDown(event.which, () => {
+				event.preventDefault();
+			});
+	}
+
+	private _onKeyUp(event: KeyboardEvent) {
+		event.stopPropagation();
+		this.properties.onKeyUp &&
+			this.properties.onKeyUp(event.which, () => {
 				event.preventDefault();
 			});
 	}
@@ -239,6 +250,7 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 						},
 						oninput: this._onInput,
 						onkeydown: this._onKeyDown,
+						onkeyup: this._onKeyUp,
 						onclick: () => {
 							onClick && onClick();
 						},

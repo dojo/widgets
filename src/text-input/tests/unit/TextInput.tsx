@@ -573,7 +573,7 @@ registerSuite('TextInput', {
 					onBlur,
 					onFocus,
 					onValue,
-					onKey
+					onKeyDown: onKey
 				})
 			);
 

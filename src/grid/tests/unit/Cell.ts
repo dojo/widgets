@@ -50,7 +50,7 @@ const expectedEditing = function() {
 				value: 'id',
 				onValue: noop,
 				onBlur: noop,
-				onKey: noop,
+				onKeyDown: noop,
 				classes: undefined,
 				theme: undefined
 			})
