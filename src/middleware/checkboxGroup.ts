@@ -8,17 +8,11 @@ interface CheckboxGroupICache {
 	initial: string[];
 }
 
-export type CheckboxGroupAPI = (
-	key: string
-) => {
-	checked(checked?: boolean | undefined): boolean | undefined;
-};
-
 const icache = createICacheMiddleware<CheckboxGroupICache>();
 const factory = create({ icache });
 
 export const checkboxGroup = factory(({ middleware: { icache } }) => {
-	return (onValue: (value: string[]) => void, initialValue: string[] = []): CheckboxGroupAPI => {
+	return (onValue: (value: string[]) => void, initialValue: string[] = []) => {
 		const existingInitialValue = icache.get('initial');
 		if (JSON.stringify(existingInitialValue) !== JSON.stringify(initialValue)) {
 			icache.set(
