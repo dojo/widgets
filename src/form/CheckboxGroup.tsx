@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { checkboxGroup } from '../middleware/checkboxGroup';
+import { checkboxGroup, CheckboxGroupAPI } from '../middleware/checkboxGroup';
 import { Checkbox } from '../Checkbox';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 
@@ -10,7 +10,11 @@ interface CheckboxGroupProperties {
 	label?: string;
 	options: CheckboxGroupOptions;
 	onValue(value: string[]): void;
-	renderer?(name: string, checkboxGroup: any, options: CheckboxGroupOptions): RenderResult;
+	renderer?(
+		name: string,
+		checkboxGroup: CheckboxGroupAPI,
+		options: CheckboxGroupOptions
+	): RenderResult;
 	initialValue?: string[];
 }
 
