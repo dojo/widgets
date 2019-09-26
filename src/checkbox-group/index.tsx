@@ -1,19 +1,19 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { checkboxGroup } from '../middleware/checkboxGroup';
-import { Checkbox } from '../Checkbox';
+import { checkboxGroup } from './middleware';
+import { Checkbox } from '../Checkbox/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 
-type CheckboxGroupOptions = { value: string; label?: string }[];
+type CheckboxOptions = { value: string; label?: string }[];
 
 interface CheckboxGroupProperties {
 	name: string;
 	label?: string;
-	options: CheckboxGroupOptions;
+	options: CheckboxOptions;
 	onValue(value: string[]): void;
 	renderer?(
 		name: string,
 		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,
-		options: CheckboxGroupOptions
+		options: CheckboxOptions
 	): RenderResult;
 	initialValue?: string[];
 }
@@ -37,7 +37,9 @@ export const CheckboxGroup = factory(function({ properties, middleware: { checkb
 					value={value}
 					label={label || value}
 					checked={checked()}
-					onValue={checked}
+					onValue={(newChecked) => {
+						checked(newChecked);
+					}}
 				/>
 			);
 		});

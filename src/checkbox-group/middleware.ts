@@ -22,6 +22,7 @@ export const checkboxGroup = factory(({ middleware: { icache } }) => {
 					return existing;
 				}, {})
 			);
+			icache.set('initial', initialValue);
 		}
 
 		function getAllValues() {
