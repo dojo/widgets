@@ -21,6 +21,18 @@ const App = factory(function({ properties, middleware: { icache } }) {
 			/>
 			<pre>{`${get('standard')}`}</pre>
 			<br />
+			<h1>Initial Valie Example</h1>
+			<CheckboxGroup
+				label="favourite names"
+				initialValue={['tom']}
+				name="initial-value"
+				options={[{ value: 'tom' }, { value: 'dick' }, { value: 'harry' }]}
+				onValue={(value) => {
+					set('initial-value', value);
+				}}
+			/>
+			<pre>{`${get('initial-value')}`}</pre>
+			<br />
 			<h1>Label Example</h1>
 			<CheckboxGroup
 				label="colours"
