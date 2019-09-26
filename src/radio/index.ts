@@ -23,6 +23,8 @@ import * as css from '../theme/radio.m.css';
  * @property name
  * @property onBlur
  * @property onFocus
+ * @property onOut
+ * @property onOver
  * @property onValue
  * @property readOnly
  * @property required
@@ -41,6 +43,8 @@ export interface RadioProperties extends ThemedProperties, FocusProperties {
 	name?: string;
 	onBlur?(): void;
 	onFocus?(): void;
+	onOut?(): void;
+	onOver?(): void;
 	onValue?(checked: boolean): void;
 	readOnly?: boolean;
 	required?: boolean;
@@ -53,16 +57,10 @@ export interface RadioProperties extends ThemedProperties, FocusProperties {
 export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> {
 	private _uuid = uuid();
 
-	private _onBlur() {
-		this.properties.onBlur && this.properties.onBlur();
-	}
 	private _onChange(event: Event) {
 		event.stopPropagation();
 		const radio = event.target as HTMLInputElement;
 		this.properties.onValue && this.properties.onValue(radio.checked);
-	}
-	private _onFocus() {
-		this.properties.onFocus && this.properties.onFocus();
 	}
 
 	protected getRootClasses(): (string | null)[] {
@@ -96,7 +94,11 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 			name,
 			readOnly,
 			required,
-			value
+			value,
+			onOut,
+			onOver,
+			onBlur,
+			onFocus
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -116,9 +118,19 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 					required,
 					type: 'radio',
 					value,
-					onblur: this._onBlur,
+					onblur: () => {
+						onBlur && onBlur();
+					},
 					onchange: this._onChange,
-					onfocus: this._onFocus
+					onfocus: () => {
+						onFocus && onFocus();
+					},
+					onpointerenter: () => {
+						onOver && onOver();
+					},
+					onpointerleave: () => {
+						onOut && onOut();
+					}
 				}),
 				v(
 					'div',

@@ -116,6 +116,8 @@ const expectedNative = function(useTestProperties = false, withStates = false) {
 				onblur: noop,
 				onchange: noop,
 				onfocus: noop,
+				onpointerenter: noop,
+				onpointerleave: noop,
 				...describedBy
 			},
 			[
@@ -182,6 +184,8 @@ const expectedSingle = function(
 		'div',
 		{
 			classes: [css.inputWrapper, open ? css.open : null],
+			onpointerenter: noop,
+			onpointerleave: noop,
 			key: 'wrapper'
 		},
 		[
@@ -549,6 +553,8 @@ registerSuite('Select', {
 								'div',
 								{
 									classes: [css.inputWrapper, null],
+									onpointerenter: noop,
+									onpointerleave: noop,
 									key: 'wrapper'
 								},
 								[

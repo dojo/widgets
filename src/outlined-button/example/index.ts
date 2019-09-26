@@ -35,18 +35,6 @@ export default class App extends WidgetBase {
 					['Submit']
 				)
 			]),
-			v('div', { id: 'example-3' }, [
-				v('p', ['Popup button:']),
-				w(
-					OutlinedButton,
-					{
-						key: 'b3',
-						popup: { expanded: false, id: 'fakeId' }
-					},
-					['Open']
-				),
-				v('div', { id: 'fakeId' })
-			]),
 			v('div', { id: 'example-4' }, [
 				v('p', ['Toggle OutlinedButton']),
 				w(

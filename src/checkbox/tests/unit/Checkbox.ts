@@ -94,7 +94,9 @@ const expected = function(label = false, toggle = false, toggleLabels = false, c
 					type: 'checkbox',
 					onblur: noop,
 					onchange: noop,
-					onfocus: noop
+					onfocus: noop,
+					onpointerenter: noop,
+					onpointerleave: noop
 				})
 			]),
 			label
@@ -165,7 +167,9 @@ registerSuite('Checkbox', {
 								type: 'checkbox',
 								onblur: noop,
 								onchange: noop,
-								onfocus: noop
+								onfocus: noop,
+								onpointerenter: noop,
+								onpointerleave: noop
 							})
 						])
 					]
@@ -234,7 +238,9 @@ registerSuite('Checkbox', {
 								onfocus: noop,
 								disabled: true,
 								readOnly: true,
-								required: true
+								required: true,
+								onpointerenter: noop,
+								onpointerleave: noop
 							})
 						])
 					]
@@ -269,7 +275,9 @@ registerSuite('Checkbox', {
 								onfocus: noop,
 								disabled: false,
 								readOnly: false,
-								required: false
+								required: false,
+								onpointerenter: noop,
+								onpointerleave: noop
 							})
 						])
 					]
@@ -323,7 +331,9 @@ registerSuite('Checkbox', {
 								id: '',
 								onblur: noop,
 								onchange: noop,
-								onfocus: noop
+								onfocus: noop,
+								onpointerenter: noop,
+								onpointerleave: noop
 							})
 						]),
 						w(
@@ -381,7 +391,9 @@ registerSuite('Checkbox', {
 								type: 'checkbox',
 								onblur: noop,
 								onchange: noop,
-								onfocus: noop
+								onfocus: noop,
+								onpointerenter: noop,
+								onpointerleave: noop
 							})
 						])
 					]

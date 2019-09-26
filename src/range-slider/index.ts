@@ -15,29 +15,31 @@ type RangeValue = { min: number; max: number };
 
 export interface RangeSliderProperties extends ThemedProperties {
 	aria?: { [key: string]: string | null };
+	disabled?: boolean;
+	label?: string;
 	labelAfter?: boolean;
 	labelHidden?: boolean;
-	label?: string;
-	disabled?: boolean;
-	widgetId?: string;
-	name?: string;
-	readOnly?: boolean;
-	required?: boolean;
 	max?: number;
-	min?: number;
-	output?(value: RangeValue): DNode;
-	outputIsTooltip?: boolean;
-	showOutput?: boolean;
-	step?: number;
-	value?: RangeValue;
-	minName?: string;
-	maxName?: string;
-	minimumLabel?: string;
 	maximumLabel?: string;
-	onValue?(value: RangeValue): void;
+	maxName?: string;
+	min?: number;
+	minimumLabel?: string;
+	minName?: string;
+	name?: string;
 	onBlur?(): void;
 	onFocus?(): void;
+	onOut?(): void;
+	onOver?(): void;
+	onValue?(value: RangeValue): void;
+	output?(value: RangeValue): DNode;
+	outputIsTooltip?: boolean;
+	readOnly?: boolean;
+	required?: boolean;
+	showOutput?: boolean;
+	step?: number;
 	valid?: boolean;
+	value?: RangeValue;
+	widgetId?: string;
 }
 
 @theme(css)
@@ -167,7 +169,9 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			classes,
 			showOutput = false,
 			minimumLabel = 'Minimum',
-			maximumLabel = 'Maximum'
+			maximumLabel = 'Maximum',
+			onOver,
+			onOut
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 		let { value: { min, max } = { min: minRestraint, max: maxRestraint } } = this.properties;
@@ -227,7 +231,13 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			v(
 				'div',
 				{
-					classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed]
+					classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed],
+					onpointerenter: () => {
+						onOver && onOver();
+					},
+					onpointerleave: () => {
+						onOut && onOut();
+					}
 				},
 				[
 					slider1,

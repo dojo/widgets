@@ -27,8 +27,12 @@ import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
  * @property minLength      Minimum number of characters allowed in the input
  * @property name
  * @property onBlur
+ * @property onClick
  * @property onFocus
- * @property onKey
+ * @property onKeyDown
+ * @property onKeyUp
+ * @property onOut
+ * @property onOver
  * @property onValidate
  * @property onValue
  * @property placeholder    Placeholder text
@@ -52,8 +56,12 @@ export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	minLength?: number | string;
 	name?: string;
 	onBlur?(): void;
+	onClick?(): void;
 	onFocus?(): void;
-	onKey?(key: number, preventDefault: () => void): void;
+	onKeyDown?(key: number, preventDefault: () => void): void;
+	onKeyUp?(key: number, preventDefault: () => void): void;
+	onOut?(): void;
+	onOver?(): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 	onValue?(value?: string): void;
 	placeholder?: string;
@@ -70,21 +78,24 @@ export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProperties> {
 	private _dirty = false;
 
-	private _onBlur() {
-		this.properties.onBlur && this.properties.onBlur();
-	}
-	private _onFocus() {
-		this.properties.onFocus && this.properties.onFocus();
-	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
 		this.properties.onValue &&
 			this.properties.onValue((event.target as HTMLInputElement).value);
 	}
+
 	private _onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		this.properties.onKey &&
-			this.properties.onKey(event.which, () => {
+		this.properties.onKeyDown &&
+			this.properties.onKeyDown(event.which, () => {
+				event.preventDefault();
+			});
+	}
+
+	private _onKeyUp(event: KeyboardEvent) {
+		event.stopPropagation();
+		this.properties.onKeyUp &&
+			this.properties.onKeyUp(event.which, () => {
 				event.preventDefault();
 			});
 	}
@@ -173,7 +184,12 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 			classes,
 			labelHidden,
 			helperText,
-			onValidate
+			onValidate,
+			onBlur,
+			onFocus,
+			onClick,
+			onOver,
+			onOut
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -226,10 +242,24 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 						rows: `${rows}`,
 						value,
 						wrap: wrapText,
-						onblur: this._onBlur,
-						onfocus: this._onFocus,
+						onblur: () => {
+							onBlur && onBlur();
+						},
+						onfocus: () => {
+							onFocus && onFocus();
+						},
 						oninput: this._onInput,
-						onkeydown: this._onKeyDown
+						onkeydown: this._onKeyDown,
+						onkeyup: this._onKeyUp,
+						onclick: () => {
+							onClick && onClick();
+						},
+						onpointerenter: () => {
+							onOver && onOver();
+						},
+						onpointerleave: () => {
+							onOut && onOut();
+						}
 					})
 				]),
 				w(HelperText, { text: computedHelperText, valid })

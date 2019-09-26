@@ -2,10 +2,9 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { v, w } from '@dojo/framework/core/vdom';
+import { v } from '@dojo/framework/core/vdom';
 import * as css from '../theme/button.m.css';
 import { formatAriaProperties } from '../common/util';
-import Icon from '../icon/index';
 
 export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
 
@@ -19,7 +18,11 @@ export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
  * @property name           The button's name attribute
  * @property onBlur
  * @property onClick
+ * @property onDown
  * @property onFocus
+ * @property onOut
+ * @property onOver
+ * @property onUp
  * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
  * @property pressed        Indicates status of a toggle button
  * @property type           Button type can be "submit", "reset", "button", or "menu"
@@ -32,8 +35,11 @@ export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	name?: string;
 	onBlur?(): void;
 	onClick?(): void;
+	onDown?(): void;
 	onFocus?(): void;
-	popup?: { expanded?: boolean; id?: string } | boolean;
+	onOut?(): void;
+	onOver?(): void;
+	onUp?(): void;
 	pressed?: boolean;
 	type?: ButtonType;
 	value?: string;
@@ -42,25 +48,15 @@ export interface ButtonProperties extends ThemedProperties, FocusProperties {
 
 @theme(css)
 export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties> {
-	private _onBlur() {
-		this.properties.onBlur && this.properties.onBlur();
-	}
 	private _onClick(event: MouseEvent) {
 		event.stopPropagation();
 		this.properties.onClick && this.properties.onClick();
 	}
-	private _onFocus() {
-		this.properties.onFocus && this.properties.onFocus();
-	}
 
 	protected getModifierClasses(): (string | null)[] {
-		const { disabled, popup = false, pressed } = this.properties;
+		const { disabled, pressed } = this.properties;
 
-		return [
-			disabled ? css.disabled : null,
-			popup ? css.popup : null,
-			pressed ? css.pressed : null
-		];
+		return [disabled ? css.disabled : null, pressed ? css.pressed : null];
 	}
 
 	render(): DNode {
@@ -68,18 +64,17 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 			aria = {},
 			disabled,
 			widgetId,
-			popup = false,
 			name,
 			pressed,
 			type,
 			value,
-			theme,
-			classes
+			onOut,
+			onOver,
+			onDown,
+			onUp,
+			onBlur,
+			onFocus
 		} = this.properties;
-
-		if (popup === true) {
-			popup = { expanded: false, id: '' };
-		}
 
 		return v(
 			'button',
@@ -91,23 +86,29 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 				name,
 				type,
 				value,
-				onblur: this._onBlur,
+				onblur: () => {
+					onBlur && onBlur();
+				},
 				onclick: this._onClick,
-				onfocus: this._onFocus,
+				onfocus: () => {
+					onFocus && onFocus();
+				},
+				onpointerenter: () => {
+					onOver && onOver();
+				},
+				onpointerleave: () => {
+					onOut && onOut();
+				},
+				onpointerdown: () => {
+					onDown && onDown();
+				},
+				onpointerup: () => {
+					onUp && onUp();
+				},
 				...formatAriaProperties(aria),
-				'aria-haspopup': popup ? 'true' : null,
-				'aria-controls': popup ? popup.id : null,
-				'aria-expanded': popup ? popup.expanded + '' : null,
 				'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null
 			},
-			[
-				...this.children,
-				popup
-					? v('span', { classes: this.theme(css.addon) }, [
-							w(Icon, { type: 'downIcon', theme, classes })
-					  ])
-					: null
-			]
+			this.children
 		);
 	}
 }

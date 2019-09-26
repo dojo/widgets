@@ -97,7 +97,7 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 						value: this._editingValue,
 						onValue: this._onInput,
 						onBlur: this._onBlur,
-						onKey: this._onKeyDown
+						onKeyDown: this._onKeyDown
 				  })
 				: this.renderContent(),
 			editable && !this._editing

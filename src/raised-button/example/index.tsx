@@ -25,13 +25,6 @@ export default class App extends WidgetBase {
 						Submit
 					</RaisedButton>
 				</div>
-				<div id="example-3">
-					<p>Popup button:</p>
-					<RaisedButton key="b3" popup={{ expanded: false, id: 'fakeId' }}>
-						Open
-					</RaisedButton>
-					<div id="fakeId" />
-				</div>
 				<div id="example-4">
 					<p>Toggle Button:</p>
 					<RaisedButton

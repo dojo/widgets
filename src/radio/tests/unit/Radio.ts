@@ -60,6 +60,8 @@ const expected = function({
 			onblur: noop,
 			onfocus: noop,
 			onchange: noop,
+			onpointerenter: noop,
+			onpointerleave: noop,
 			...inputOverrides
 		}),
 		v(

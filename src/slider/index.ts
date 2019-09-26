@@ -24,8 +24,9 @@ import * as css from '../theme/slider.m.css';
  * @property min               The minimum value for the slider
  * @property name
  * @property onBlur
- * @property onClick
  * @property onFocus
+ * @property onOut
+ * @property onOver
  * @property onValue
  * @property output            An optional function that returns a string or DNode for custom output format
  * @property outputIsTooltip
@@ -49,8 +50,9 @@ export interface SliderProperties extends ThemedProperties, FocusProperties {
 	min?: number;
 	name?: string;
 	onBlur?(): void;
-	onClick?(value: number): void;
 	onFocus?(): void;
+	onOut?(): void;
+	onOver?(): void;
 	onValue?(value?: number): void;
 	output?(value: number): DNode;
 	outputIsTooltip?: boolean;
@@ -70,12 +72,6 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 	// id used to associate input with output
 	private _widgetId = uuid();
 
-	private _onBlur() {
-		this.properties.onBlur && this.properties.onBlur();
-	}
-	private _onFocus() {
-		this.properties.onFocus && this.properties.onFocus();
-	}
 	private _onInput(event: Event) {
 		event.stopPropagation();
 		const value = (event.target as HTMLInputElement).value;
@@ -166,7 +162,11 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 			vertical = false,
 			verticalHeight = '200px',
 			theme,
-			classes
+			classes,
+			onOut,
+			onOver,
+			onBlur,
+			onFocus
 		} = this.properties;
 		const focus = this.meta(Focus).get('root');
 
@@ -202,8 +202,18 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 					styles: vertical ? { width: verticalHeight } : {},
 					type: 'range',
 					value: `${value}`,
-					onblur: this._onBlur,
-					onfocus: this._onFocus,
+					onblur: () => {
+						onBlur && onBlur();
+					},
+					onfocus: () => {
+						onFocus && onFocus();
+					},
+					onpointerenter: () => {
+						onOver && onOver();
+					},
+					onpointerleave: () => {
+						onOut && onOut();
+					},
 					oninput: this._onInput
 				}),
 				this.renderControls(percentValue),

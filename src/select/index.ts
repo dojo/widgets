@@ -34,6 +34,8 @@ import * as css from '../theme/select.m.css';
  * @property name
  * @property onBlur
  * @property onFocus
+ * @property onOut
+ * @property onOver
  * @property onValue
  * @property options           Array of any type of data for the options
  * @property placeholder       Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined)
@@ -60,6 +62,8 @@ export interface SelectProperties<T = any> extends ThemedProperties, FocusProper
 	name?: string;
 	onBlur?(): void;
 	onFocus?(): void;
+	onOut?(): void;
+	onOver?(): void;
 	onValue?(option: T): void;
 	options?: T[];
 	placeholder?: string;
@@ -125,13 +129,6 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			});
 			return index;
 		}
-	}
-
-	private _onBlur() {
-		this.properties.onBlur && this.properties.onBlur();
-	}
-	private _onFocus() {
-		this.properties.onFocus && this.properties.onFocus();
 	}
 
 	// native select events
@@ -241,7 +238,11 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			options = [],
 			readOnly,
 			required,
-			value
+			value,
+			onFocus,
+			onBlur,
+			onOver,
+			onOut
 		} = this.properties;
 
 		/* create option nodes */
@@ -273,9 +274,19 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					'aria-readonly': readOnly ? 'true' : null,
 					required,
 					value,
-					onblur: this._onBlur,
+					onblur: () => {
+						onBlur && onBlur();
+					},
 					onchange: this._onNativeChange,
-					onfocus: this._onFocus
+					onfocus: () => {
+						onFocus && onFocus();
+					},
+					onpointerenter: () => {
+						onOver && onOver();
+					},
+					onpointerleave: () => {
+						onOut && onOut();
+					}
 				},
 				optionNodes
 			),
@@ -293,7 +304,9 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			options = [],
 			theme,
 			classes,
-			onValue
+			onValue,
+			onOver,
+			onOut
 		} = this.properties;
 
 		if (this._focusedIndex === undefined) {
@@ -310,7 +323,13 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			'div',
 			{
 				key: 'wrapper',
-				classes: this.theme([css.inputWrapper, _open ? css.open : null])
+				classes: this.theme([css.inputWrapper, _open ? css.open : null]),
+				onpointerenter: () => {
+					onOver && onOver();
+				},
+				onpointerleave: () => {
+					onOut && onOut();
+				}
 			},
 			[
 				...this.renderCustomTrigger(),
@@ -368,7 +387,8 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 			placeholder,
 			readOnly,
 			required,
-			value
+			value,
+			onFocus
 		} = this.properties;
 
 		let label: DNode;
@@ -403,7 +423,9 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					value,
 					onblur: this._onTriggerBlur,
 					onclick: this._onTriggerClick,
-					onfocus: this._onFocus,
+					onfocus: () => {
+						onFocus && onFocus();
+					},
 					onkeydown: this._onTriggerKeyDown,
 					onmousedown: this._onTriggerMouseDown
 				},

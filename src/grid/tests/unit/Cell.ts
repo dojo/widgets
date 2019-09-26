@@ -50,7 +50,7 @@ const expectedEditing = function() {
 				value: 'id',
 				onValue: noop,
 				onBlur: noop,
-				onKey: noop,
+				onKeyDown: noop,
 				classes: undefined,
 				theme: undefined
 			})
@@ -270,7 +270,7 @@ describe('Cell', () => {
 		h.expect(expectedEditing);
 
 		h.trigger('@input', 'onValue', 'typed value');
-		h.trigger('@input', 'onKey', Keys.Enter);
+		h.trigger('@input', 'onKeyDown', Keys.Enter);
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
 		h.expect(() => expectedEditable(true));
@@ -292,7 +292,7 @@ describe('Cell', () => {
 		h.expect(expectedEditing);
 
 		h.trigger('@input', 'onValue', 'typed value');
-		h.trigger('@input', 'onKey', Keys.Escape);
+		h.trigger('@input', 'onKeyDown', Keys.Escape);
 
 		assert.isFalse(updaterStub.called);
 		h.expect(() => expectedEditable(true));
@@ -325,7 +325,7 @@ describe('Cell', () => {
 
 		h.trigger('@content', 'ondblclick');
 		h.trigger('@input', 'onValue', 'typed value');
-		h.trigger('@input', 'onKey', Keys.Enter);
+		h.trigger('@input', 'onKeyDown', Keys.Enter);
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
 		h.expect(() => expectedEditable(true));
@@ -343,7 +343,7 @@ describe('Cell', () => {
 		}, [compareButtonFocused]);
 
 		h.trigger('@button', 'onClick');
-		h.trigger('@input', 'onKey', Keys.Escape);
+		h.trigger('@input', 'onKeyDown', Keys.Escape);
 
 		h.expect(() => expectedEditable(true));
 	});
