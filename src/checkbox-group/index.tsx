@@ -3,7 +3,7 @@ import { checkboxGroup } from './middleware';
 import { Checkbox } from '../Checkbox/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
-import * as css from '../theme/checbox-group.m.css';
+import * as css from '../theme/checkbox-group.m.css';
 
 type CheckboxOptions = { value: string; label?: string }[];
 
@@ -50,7 +50,7 @@ export const CheckboxGroup = factory(function({
 	}
 
 	return (
-		<fieldset classes={root} name={name}>
+		<fieldset key="root" classes={root} name={name}>
 			{label && <legend classes={legend}>{label}</legend>}
 			{renderCheckboxes()}
 		</fieldset>
