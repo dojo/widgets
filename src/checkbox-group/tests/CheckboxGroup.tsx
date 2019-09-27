@@ -69,7 +69,7 @@ describe('CheckboxGroup', () => {
 				name="test"
 				label="custom render label"
 				options={[{ value: 'cat' }]}
-				renderer={(name, middleware, options) => {
+				renderer={() => {
 					return [
 						<span>custom label</span>,
 						<Checkbox
