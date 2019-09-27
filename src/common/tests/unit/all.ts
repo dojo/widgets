@@ -7,6 +7,8 @@ import '../../../calendar/tests/unit/CalendarCell';
 import '../../../calendar/tests/unit/DatePicker';
 import '../../../card/tests/unit/Card';
 import '../../../checkbox/tests/unit/Checkbox';
+import '../../../checkbox-group/tests/CheckboxGroup';
+import '../../../checkbox-group/tests/middleware';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../global-event/tests/unit/GlobalEvent';
