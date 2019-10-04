@@ -9,6 +9,7 @@ import '../../../card/tests/unit/Card';
 import '../../../checkbox/tests/unit/Checkbox';
 import '../../../checkbox-group/tests/CheckboxGroup';
 import '../../../checkbox-group/tests/middleware';
+import '../../../chip/tests/Chip';
 import '../../../combobox/tests/unit/ComboBox';
 import '../../../dialog/tests/unit/Dialog';
 import '../../../global-event/tests/unit/GlobalEvent';
