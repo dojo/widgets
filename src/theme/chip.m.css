@@ -1,14 +1,10 @@
 .root {}
 
-.icon {}
-
 .label {}
 
 .closeIcon {
 	cursor: pointer;
 }
-
-.wrapper {}
 
 .clickable {
 	cursor: pointer;

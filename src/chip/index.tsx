@@ -27,9 +27,12 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 		}
 	};
 
+	const onCloseKeydown = createKeydown(onClose);
+
 	const clickable = !disabled && onClick;
 	return (
 		<div
+			key="root"
 			classes={[
 				themedCss.root,
 				disabled && themedCss.disabled,
@@ -44,6 +47,7 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 			<span classes={themedCss.label}>{label}</span>
 			{onClose && (
 				<span
+					key="closeButton"
 					classes={themedCss.closeIcon}
 					tabIndex={0}
 					role="button"
@@ -51,7 +55,10 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 						event.stopPropagation();
 						onClose();
 					}}
-					onkeydown={createKeydown(onClose)}
+					onkeydown={(event) => {
+						event.stopPropagation();
+						onCloseKeydown(event);
+					}}
 				>
 					{isVNode(closeIcon) || isWNode(closeIcon) ? (
 						closeIcon
