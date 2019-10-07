@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@dojo/cli": "^6.0.0",
+    "@dojo/cli-build-app": "^6.0.0",
     "@dojo/cli-build-widget": "^6.0.0",
     "@dojo/framework": "^6.0.0",
     "@dojo/loader": "^2.0.0",
@@ -72,6 +73,7 @@
     "shx": "^0.2.2",
     "sinon": "^1.17.6",
     "ts-node": "^3.3.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "~3.4.5"
   },
   "dependencies": {

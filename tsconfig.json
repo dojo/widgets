@@ -20,6 +20,7 @@
 		"importHelpers": true,
 		"downlevelIteration": true,
 		"outDir": "dist/dev/src/",
+		"baseUrl": "./",
 		"plugins": [
 			{
 				"name": "tslint-language-service",
@@ -30,10 +31,14 @@
 		"sourceMap": true,
 		"strict": true,
 		"target": "es5",
-		"types": [ "intern" ]
+		"types": [ "intern" ],
+		"paths": {
+			"@dojo/widgets/*": ["src/*"]
+		}
 	},
 	"include": [
 		"./src/**/*.ts",
-		"./src/**/*.tsx"
+		"./src/**/*.tsx",
+		"./examples/**/*.tsx"
 	]
 }
