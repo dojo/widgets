@@ -2,21 +2,21 @@
 	"version": "2.1.5",
 	"compilerOptions": {
 		"declaration": false,
-		"emitDecoratorMetadata": true,
+		// "emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"jsx": "react",
 		"jsxFactory": "tsx",
-		"lib": [
-			"dom",
-			"es5",
-			"es2015.iterable",
-			"es2015.promise",
-			"es2015.symbol",
-			"es2015.symbol.wellknown"
-		],
+		// "lib": [
+		// 	"dom",
+		// 	"es5",
+		// 	"es2015.iterable",
+		// 	"es2015.promise",
+		// 	"es2015.symbol",
+		// 	"es2015.symbol.wellknown"
+		// ],
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"noUnusedLocals": true,
+		// "noUnusedLocals": true,
 		"importHelpers": true,
 		"downlevelIteration": true,
 		"outDir": "dist/dev/src/",
@@ -29,7 +29,7 @@
 		],
 		"removeComments": false,
 		"sourceMap": true,
-		"strict": true,
+		// "strict": true,
 		"target": "es5",
 		"types": [ "intern" ],
 		"paths": {

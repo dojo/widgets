@@ -72,6 +72,7 @@
     "serve": "^11.0.0",
     "shx": "^0.2.2",
     "sinon": "^1.17.6",
+    "ts-morph": "^3.0.0",
     "ts-node": "^3.3.0",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "~3.4.5"
