@@ -14,7 +14,7 @@
 			"es2015.symbol",
 			"es2015.symbol.wellknown"
 		],
-		"module": "umd",
+		"module": "commonjs",
 		"moduleResolution": "node",
 		"noUnusedLocals": true,
 		"importHelpers": true,
@@ -38,7 +38,6 @@
 	},
 	"include": [
 		"./src/**/*.ts",
-		"./src/**/*.tsx",
-		"./examples/**/*.tsx"
+		"./src/**/*.tsx"
 	]
 }

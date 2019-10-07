@@ -1,4 +1,9 @@
 {
+	"build-app": {
+		"build-time-render": {
+			"root": "app"
+		}
+	},
 	"build-widget": {
 		"prefix": "dojo",
 		"widgets": [
