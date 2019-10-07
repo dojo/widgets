@@ -1,6 +1,7 @@
 {
   "name": "examples",
   "version": "1.0.0",
+  "main": "src/main.tsx",
   "scripts": {
     "dev": "dojo build --mode dev --watch --serve",
     "build": "dojo build --mode dist",
