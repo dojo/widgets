@@ -8,7 +8,7 @@
     "url": "https://github.com/dojo/widgets/issues"
   },
   "license": "BSD-3-Clause",
-  "main": "main.js",
+  "main": "src/main.tsx",
   "engines": {
     "npm": ">=3.0.0"
   },
