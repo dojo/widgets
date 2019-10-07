@@ -4,10 +4,18 @@ import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
 import dojo from '@dojo/themes/dojo';
 
 import App from './App';
-import basicTextInput from './text-input/Basic';
+
+// const blah = require('./text-input/*');
+
+const blah = (require as any).context("./text-input/", true);
+
+console.log(blah);
+
+const foo = blah('./Basic');
+console.log(foo);
 
 const registry = new Registry();
 registerThemeInjector(dojo, registry);
 
-const r = renderer(() => <App configs={[basicTextInput]}/>);
+const r = renderer(() => <App configs={[]}/>);
 r.mount({ registry });
