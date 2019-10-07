@@ -1,10 +1,12 @@
 import renderer, { tsx } from '@dojo/framework/core/vdom';
-import TextInput from '@dojo/widgets/text-input';
+import Registry from '@dojo/framework/core/Registry';
+import { registerThemeInjector } from '@dojo/framework/core/mixins/Themed';
+import dojo from '@dojo/themes/dojo';
 
-const r = renderer(() => (
-	<div>
-		<TextInput />
-		Hello, Dojo World!
-	</div>
-));
-r.mount();
+import App from './App';
+
+const registry = new Registry();
+registerThemeInjector(dojo, registry);
+
+const r = renderer(() => <App/>);
+r.mount({ registry });

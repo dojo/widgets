@@ -1,0 +1,92 @@
+.root {
+}
+
+.trigger {
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4em;
+  background: #192b3c;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1.5em;
+}
+
+.title {
+  color: #efefef;
+  margin-left: 1em;
+}
+
+.icon {
+  color: #f07ab0;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  padding-top: 4em;
+  left: -12em;
+  overflow: hidden;
+  transition: all 0.3s ease-in;
+  width: 12em;
+  height: 100%;
+  background: #243e56;
+  color: rgba(255, 255, 255, 0.7);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.nav:hover,
+.nav:focus,
+.trigger:focus + .nav,
+.trigger:hover + .nav {
+  left: 0;
+}
+
+.nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+.nav ul li {
+  width: 100%;
+}
+
+.link {
+  color: #dcdcdc;
+  padding: 1em;
+  width: 100%;
+  height: 4em;
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.link:hover {
+  background: #4d6276;
+}
+
+.active {
+  color: #f07ab0;
+}
+
+.toggle {
+  padding: 1em;
+}
+
+.toggle label {
+  color: #dcdcdc;
+}
+
+.checked .toggleSwitch,
+.toggleSwitch::after {
+  background-color: #f07ab0;
+  border-color: #f07ab0;
+}
+
+.toggle .toggleSwitch::before {
+  border-color: #f07ab0;
+}

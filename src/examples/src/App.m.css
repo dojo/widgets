@@ -1,0 +1,16 @@
+.root {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.sidebar {
+  z-index: 99;
+}
+
+.content {
+  padding-top: 4em;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
