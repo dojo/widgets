@@ -1,10 +1,10 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import TextInput from '@dojo/widgets/text-input';
+import Button from '@dojo/widgets/button';
 
 const factory = create();
 
 const Example = factory(function() {
-    return <TextInput />
+	return <Button>Button</Button>;
 });
 
 export default Example;

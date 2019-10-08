@@ -32,7 +32,6 @@ interface TextInputInternalState {
  *
  * Properties that can be set on a TextInput component
  *
- * @property aria
  * @property autocomplete
  * @property controls       ID of an element that this input controls
  * @property customValidator
@@ -62,6 +61,7 @@ interface TextInputInternalState {
  */
 
 export interface TextInputProperties extends ThemedProperties, FocusProperties {
+	/** blah blah */
 	aria?: { [key: string]: string | null };
 	autocomplete?: boolean | string;
 	controls?: string;

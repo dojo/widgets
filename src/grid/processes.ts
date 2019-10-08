@@ -22,7 +22,7 @@ const pageChangeCommand = commandFactory<PageChangeCommandPayload>(
 	}
 );
 
-const preFetcherCommand = commandFactory<PageChangeCommandPayload>(
+const preFetcherCommand = commandFactory<FetcherCommandPayload>(
 	({ path, get, payload: { id, page } }) => {
 		const fetchedPages = get(path(id, 'meta', 'fetchedPages')) || [];
 		if (fetchedPages.indexOf(page) === -1) {

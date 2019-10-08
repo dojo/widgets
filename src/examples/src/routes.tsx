@@ -1,6 +1,12 @@
 export default [
-    {
-        path: 'widget/{widget}/{example}',
-        outlet: 'example'
-    }
-]
+	{
+		path: 'widget/{widget}',
+		outlet: 'basic',
+		children: [
+			{
+				path: '{example}',
+				outlet: 'example'
+			}
+		]
+	}
+];

@@ -4,7 +4,7 @@ import TextInput from '@dojo/widgets/text-input';
 const factory = create();
 
 const Example = factory(function() {
-    return <TextInput />
+	return <TextInput />;
 });
 
 export default Example;

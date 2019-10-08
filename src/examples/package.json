@@ -1,5 +1,5 @@
 {
-  "name": "examples",
+  "name": "@dojo/widgets",
   "version": "1.0.0",
   "main": "src/main.tsx",
   "scripts": {
@@ -22,6 +22,6 @@
     "@dojo/cli-build-app": "^6.0.0",
     "@dojo/cli-test-intern": "^6.0.0",
     "@types/node": "~9.6.5",
-    "typescript": "~3.4.5"
+    "typescript": "^3.4.5"
   }
 }
