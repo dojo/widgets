@@ -61,7 +61,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 						const propertyInterface = widgetProperties[widgetName];
 						const themeClasses = widgetThemeClasses[widgetName];
 						return (
-							<div key={widgetPath}>
+							<virtual key={widgetPath}>
 								<SideMenu name={widgetName} config={widgetConfig} />
 								<div classes={[css.content]}>
 									{isBasic && includeDocs && <div innerHTML={readmeContent} />}
@@ -75,7 +75,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 									)}
 									{isBasic && includeDocs && <ThemeTable themes={themeClasses} />}
 								</div>
-							</div>
+							</virtual>
 						);
 					}}
 				/>
