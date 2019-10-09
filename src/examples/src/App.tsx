@@ -65,8 +65,9 @@ export default factory(function App({ properties, middleware: { block } }) {
 								<SideMenu name={widgetName} config={widgetConfig} />
 								<div classes={[css.content]}>
 									{isBasic && includeDocs && <div innerHTML={readmeContent} />}
-									{isBasic && includeDocs && <h1>Basic Usage</h1>}
+									<h1>{isBasic ? 'Basic Usage' : example.title}</h1>
 									<div>
+										{}
 										<example.module />
 									</div>
 									{content && <ExampleCode content={content} />}

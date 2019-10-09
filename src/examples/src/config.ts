@@ -6,18 +6,22 @@ import BasicButton from './widgets/button/Basic';
 import BasicGrid from './widgets/grid/Basic';
 import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 
+import BasicTabController from './widgets/tab-controller/Basic';
+import DisabledTabController from './widgets/tab-controller/Disabled';
+
+export interface ExampleConfig {
+	title?: string;
+	description?: string;
+	module: any;
+	filename: string;
+}
+
 export interface WidgetConfig {
 	filename?: string;
 	overview: {
-		example: {
-			module: any;
-			filename: string;
-		};
+		example: ExampleConfig;
 	};
-	examples?: {
-		module: any;
-		filename: string;
-	}[];
+	examples?: ExampleConfig[];
 }
 
 export interface Config {
@@ -35,6 +39,7 @@ export const config: Config = {
 		},
 		examples: [
 			{
+				title: 'TextInput with Label',
 				module: TextInputWithLabel,
 				filename: 'WithLabel'
 			}
@@ -59,8 +64,25 @@ export const config: Config = {
 		},
 		examples: [
 			{
+				title: 'Grid with Custom Filter Renderer',
 				module: GridCustomFilterRenderer,
 				filename: 'CustomFilterRenderer'
+			}
+		]
+	},
+	'tab-controller': {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicTabController,
+				filename: 'Basic'
+			}
+		},
+		examples: [
+			{
+				title: 'TabController with disabled tabs',
+				module: DisabledTabController,
+				filename: 'Disabled'
 			}
 		]
 	}
