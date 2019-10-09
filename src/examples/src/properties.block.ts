@@ -1,14 +1,5 @@
-import globExamples from './glob-examples.block';
 import * as path from 'path';
-import {
-	Project,
-	InterfaceDeclaration,
-	OptionalKind,
-	PropertySignatureStructure,
-	MethodSignatureStructure,
-	MethodSignature,
-	PropertySignature
-} from 'ts-morph';
+import { Project, InterfaceDeclaration, MethodSignature, PropertySignature } from 'ts-morph';
 
 function getPropertyInterfaceName(value: string) {
 	var result = value.replace(/-([a-z])/g, function(g) {
@@ -17,7 +8,7 @@ function getPropertyInterfaceName(value: string) {
 	return `${result.charAt(0).toUpperCase() + result.slice(1)}Properties`;
 }
 
-interface PropertyInterface {
+export interface PropertyInterface {
 	name: string;
 	type: string;
 	optional: boolean;
@@ -33,12 +24,12 @@ function format(prop: MethodSignature | PropertySignature): PropertyInterface {
 	};
 }
 
-function a(propsInterface: InterfaceDeclaration) {
+function getWidgetProperties(propsInterface: InterfaceDeclaration) {
 	let properties: any[] = [];
-	const baseInterfaces = propsInterface.getBaseDeclarations();
+	const baseInterfaces = propsInterface.getBaseDeclarations() as InterfaceDeclaration[];
 
 	for (let i = 0; i < baseInterfaces.length; i++) {
-		properties = [...properties, ...a(baseInterfaces[i] as any)];
+		properties = [...properties, ...getWidgetProperties(baseInterfaces[i])];
 	}
 	const propNodes = [...propsInterface.getProperties(), ...propsInterface.getMethods()];
 	for (let i = 0; i < propNodes.length; i++) {
@@ -47,23 +38,21 @@ function a(propsInterface: InterfaceDeclaration) {
 	return properties;
 }
 
-export default function(config: any) {
-	const examples = globExamples();
-	const widgets = [...new Set<string>(examples.map((example) => example.split('/')[0]))];
+export default function(config: { [index: string]: string }) {
 	const project = new Project({
 		tsConfigFilePath: path.join(__dirname, '..', '..', '..', 'tsconfig.json')
 	});
-	return widgets.reduce((properties, widget) => {
-		console.warn(widget);
-		const filename = config[widget].filename || 'index';
-		let sourceFile = project.getSourceFile(`./src/${widget}/${filename}.ts`);
+
+	return Object.keys(config).reduce((props, widgetName) => {
+		const filename = config[widgetName] || 'index';
+		let sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.ts`);
 		if (!sourceFile) {
-			sourceFile = project.getSourceFile(`./src/${widget}/${filename}.tsx`);
+			sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.tsx`);
 		}
 		if (!sourceFile) {
-			return properties;
+			return props;
 		}
-		const propsInterface = sourceFile.getInterface(getPropertyInterfaceName(widget));
-		return { ...properties, [widget]: a(propsInterface) };
+		const propsInterface = sourceFile.getInterface(getPropertyInterfaceName(widgetName));
+		return { ...props, [widgetName]: getWidgetProperties(propsInterface) };
 	}, {});
 }

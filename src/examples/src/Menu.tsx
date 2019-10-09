@@ -1,38 +1,42 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
-import ActiveLink from '@dojo/framework/routing/ActiveLink';
+import ActiveLink from './ActiveLink';
 
-import * as css from './Menu.m.css';
+import * as css from './App.m.css';
 
-const factory = create({ icache }).properties<{ widgets: string[] }>();
+interface MenuProperties {
+	widgetNames: string[];
+}
+
+const factory = create().properties<MenuProperties>();
+
+function formatMenuItem(widget: string) {
+	return widget
+		.split('-')
+		.map((item) => `${item[0].toUpperCase()}${item.slice(1)}`)
+		.join(' ');
+}
 
 export default factory(function Menu({ properties }) {
-	const { widgets } = properties();
-
+	const { widgetNames } = properties();
 	return (
-		<div classes={[css.root]}>
-			<a classes={[css.trigger]}>
-				<i classes={[css.icon, 'fa', 'fa-bars']} />
-				<h1 classes={[css.title]}>Hello</h1>
-			</a>
-			<nav classes={[css.nav]}>
-				<ul>
-					{widgets.map((widget) => {
-						return (
-							<li>
-								<ActiveLink
-									classes={[css.link]}
-									activeClasses={[css.active]}
-									to="example"
-									params={{ widget }}
-								>
-									<em>{widget}</em>
-								</ActiveLink>
-							</li>
-						);
-					})}
-				</ul>
-			</nav>
-		</div>
+		<nav classes={css.nav}>
+			<ul classes={css.menuList}>
+				{widgetNames.map((widget) => {
+					return (
+						<li classes={css.menuItem}>
+							<ActiveLink
+								to="example"
+								classes={css.menuLink}
+								params={{ widget, example: 'basic' }}
+								matchParams={{ widget }}
+								activeClasses={[css.selected]}
+							>
+								{formatMenuItem(widget)}
+							</ActiveLink>
+						</li>
+					);
+				})}
+			</ul>
+		</nav>
 	);
 });

@@ -13,15 +13,21 @@
   },
   "dependencies": {
     "@dojo/framework": "^6.0.0",
-    "@dojo/widgets": "^6.0.0",
     "@dojo/themes": "^6.0.0",
-    "tslib": "~1.9.1"
-  },
-  "devDependencies": {
+    "@dojo/widgets": "^6.0.0",
+    "glob": "7.1.4",
+    "tslib": "~1.9.1",
     "@dojo/cli": "^6.0.0",
-    "@dojo/cli-build-app": "^6.0.0",
-    "@dojo/cli-test-intern": "^6.0.0",
+    "@dojo/cli-build-app": "^6.0.5",
+    "@dojo/cli-build-widget": "^6.0.0",
+    "@types/jsdom": "2.0.*",
     "@types/node": "~9.6.5",
-    "typescript": "^3.4.5"
+    "ts-morph": "^4.2.0",
+    "typescript": "~3.4.5",
+    "prismjs": "^1.17.1",
+    "rehype-stringify": "^6.0.0",
+    "remark-parse": "^7.0.1",
+    "remark-rehype": "^5.0.0",
+    "unified": "^8.4.1"
   }
 }

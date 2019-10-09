@@ -9,11 +9,12 @@ import '@dojo/themes/dojo/index.css';
 import routes from './routes';
 import App from './App';
 
-console.log('docs', has('docs'));
-
+const includeDocs = Boolean(
+	has('docs') === 'false' ? false : has('docs') === 'true' ? true : has('docs')
+);
 const registry = new Registry();
 registerThemeInjector(dojo, registry);
 registerRouterInjector(routes, registry);
 
-const r = renderer(() => <App />);
+const r = renderer(() => <App includeDocs={includeDocs} />);
 r.mount({ registry, domNode: document.getElementById('app')! });

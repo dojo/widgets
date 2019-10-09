@@ -6,22 +6,25 @@ import BasicButton from './widgets/button/Basic';
 import BasicGrid from './widgets/grid/Basic';
 import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 
-interface Config {
-	[index: string]: {
-		overview: {
-			example: {
-				module: any;
-				filename: string;
-			};
-		};
-		examples?: {
+export interface WidgetConfig {
+	filename?: string;
+	overview: {
+		example: {
 			module: any;
 			filename: string;
-		}[];
+		};
 	};
+	examples?: {
+		module: any;
+		filename: string;
+	}[];
 }
 
-export default {
+export interface Config {
+	[index: string]: WidgetConfig;
+}
+
+export const config: Config = {
 	'text-input': {
 		filename: 'index',
 		overview: {
@@ -61,4 +64,12 @@ export default {
 			}
 		]
 	}
-} as Config;
+};
+
+export function getWidgetFileNames(config: Config): { [index: string]: string } {
+	return Object.keys(config).reduce((newConfig, widget) => {
+		return { ...newConfig, [widget]: config[widget].filename };
+	}, {});
+}
+
+export default config;

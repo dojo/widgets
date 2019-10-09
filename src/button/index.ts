@@ -6,43 +6,34 @@ import { v } from '@dojo/framework/core/vdom';
 import * as css from '../theme/button.m.css';
 import { formatAriaProperties } from '../common/util';
 
-export type ButtonType = 'submit' | 'reset' | 'button' | 'menu';
-
-/**
- * @type ButtonProperties
- *
- * Properties that can be set on a Button component
- *
- * @property aria
- * @property disabled       Whether the button is disabled or clickable
- * @property name           The button's name attribute
- * @property onBlur
- * @property onClick
- * @property onDown
- * @property onFocus
- * @property onOut
- * @property onOver
- * @property onUp
- * @property popup       		Controls aria-haspopup, aria-expanded, and aria-controls for popup buttons
- * @property pressed        Indicates status of a toggle button
- * @property type           Button type can be "submit", "reset", "button", or "menu"
- * @property value          Defines a value for the button submitted with form data
- * @property widgetId       DOM id set on the root button node
- */
 export interface ButtonProperties extends ThemedProperties, FocusProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Whether the button is disabled or clickable */
 	disabled?: boolean;
+	/** The name of the button */
 	name?: string;
+	/** Handler for events triggered by button losing focus */
 	onBlur?(): void;
+	/** Handler for events triggered by a button click */
 	onClick?(): void;
+	/** Handler for events triggered by "on down" */
 	onDown?(): void;
+	/** Handler for events triggered by "on focus" */
 	onFocus?(): void;
+	/** Handler for events triggered by "on out" */
 	onOut?(): void;
+	/** Handler for events triggered by "on over" */
 	onOver?(): void;
+	/** Handler for events triggered by "on up" */
 	onUp?(): void;
+	/** Indicates status of a toggle button */
 	pressed?: boolean;
-	type?: ButtonType;
+	/** Button type can be "submit", "reset", "button", or "menu" */
+	type?: 'submit' | 'reset' | 'button' | 'menu';
+	/**  Defines a value for the button submitted with form data */
 	value?: string;
+	/** `id` set on the root button DOM node */
 	widgetId?: string;
 }
 
