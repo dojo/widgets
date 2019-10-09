@@ -64,14 +64,16 @@ export default factory(function App({ properties, middleware: { block } }) {
 							<div key={widgetPath}>
 								<SideMenu name={widgetName} config={widgetConfig} />
 								<div classes={[css.content]}>
-									{isBasic && <div innerHTML={readmeContent} />}
-									{isBasic && <h1>Basic Usage</h1>}
+									{isBasic && includeDocs && <div innerHTML={readmeContent} />}
+									{isBasic && includeDocs && <h1>Basic Usage</h1>}
 									<div>
 										<example.module />
 									</div>
 									{content && <ExampleCode content={content} />}
-									{isBasic && <PropertyTable props={propertyInterface} />}
-									{isBasic && <ThemeTable themes={themeClasses} />}
+									{isBasic && includeDocs && (
+										<PropertyTable props={propertyInterface} />
+									)}
+									{isBasic && includeDocs && <ThemeTable themes={themeClasses} />}
 								</div>
 							</div>
 						);
