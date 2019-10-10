@@ -63,6 +63,12 @@ export default function(config: { [index: string]: string }) {
 		}
 		let properties = getWidgetProperties(propsInterface);
 		properties.sort((a, b) => {
+			if (a.optional && !b.optional) {
+				return 1;
+			}
+			if (!a.optional && b.optional) {
+				return -1;
+			}
 			if (a.name < b.name) {
 				return -1;
 			}
@@ -71,6 +77,6 @@ export default function(config: { [index: string]: string }) {
 			}
 			return 0;
 		});
-		return { ...props, [widgetName]: getWidgetProperties(propsInterface) };
+		return { ...props, [widgetName]: properties };
 	}, {});
 }
