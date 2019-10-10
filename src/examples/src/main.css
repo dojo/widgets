@@ -21,7 +21,77 @@ body {
 }
 
 h1 {
-  font-size: 1.4em;
+	font-size: 25px;
+	line-height: 1.2;
+}
+
+h2 {
+	font-size: 21px;
+	line-height: 1.3;
+}
+
+h3 {
+	font-size: 19px;
+	line-height: 1.4;
+}
+
+h4 {
+	font-size: 19px;
+	line-height: 1.4;
+}
+
+h5 {
+	font-size: 17px;
+	line-height: 1.4;
+}
+
+h6 {
+	font-size: 15px;
+	line-height: 1.4;
+}
+
+/* Add margin if adjacent element */
+* + h1,
+* + h2,
+* + h3,
+* + h4,
+* + h5,
+* + h6 {
+	margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+	* + h1,
+	* + h2,
+	* + h3,
+	* + h4,
+	* + h5,
+	* + h6 {
+		margin-top: 25px;
+	}
+	h1 {
+		font-size: 24px;
+	}
+	
+	h2 {
+		font-size: 22px;
+	}
+	
+	h3 {
+		font-size: 20px;
+	}
+	
+	h4 {
+		font-size: 18px;
+	}
+	
+	h5 {
+		font-size: 16px;
+	}
+	
+	h6 {
+		font-size: 14px;
+	}
 }
 
 em {
