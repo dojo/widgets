@@ -138,61 +138,61 @@ a {
   color: inherit;
 }
 
-table {
+.docs table {
 	background: #282a36;
 	border-radius: 0.3em;
 	border: 1px solid #282a36;
 }
 
-th {
+.docs th {
 	text-align: left;
 	font-weight: bold;
 	color: white;
 	padding: 10px 15px;
 }
 
-thead {
+.docs thead {
 	font-size: 14px;
 }
 
-tbody {
+.docs tbody {
 	background: white;
 }
 
-td {
+.docs td {
 	text-align: left;
 	padding: 10px 15px;
 }
 
 @media (max-width: 850px) {
-	table {
+	.docs table {
 		box-shadow: none;
 		border: none;
 		border-collapse: collapse;
 	}
 
-	thead {
+	.docs thead {
 		display: none;
 	}
 
-	tbody {
+	.docs tbody {
 		display: flex;
 		flex-direction: column;
 	}
 
-	tr {
+	.docs tr {
 		display: flex;
 		flex-direction: column;
 		margin-bottom: 0.5em;
 		border-bottom: none;
 	}
 
-	td {
+	.docs td {
 		margin-bottom: 0.5em;
 		padding: 0;
 	}
 
-	td:first-child {
+	.docs td:first-child {
 		font-size: 15px;
 		font-weight: bold;
 		color: #000000;

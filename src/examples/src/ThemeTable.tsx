@@ -12,7 +12,7 @@ export default factory(function ThemeTable({ properties }) {
 		return null;
 	}
 	return (
-		<div>
+		<div classes={["docs"]}>
 			<h1>Themeable Classes</h1>
 			<table>
 				<thead>
