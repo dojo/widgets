@@ -83,7 +83,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 									</Example>
 									{includeDocs && (
 										<a
-											href={`https://codesandbox.io/s/github/agubler/widgets/tree/widget-examples/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widgetName}%2F${example.filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widgetName}%2F${
+											href={`https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widgetName}%2F${example.filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widgetName}%2F${
 												example.filename
 											}.tsx`}
 										>
