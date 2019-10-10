@@ -61,7 +61,6 @@ interface TextInputInternalState {
  */
 
 export interface TextInputProperties extends ThemedProperties, FocusProperties {
-	/** blah blah */
 	aria?: { [key: string]: string | null };
 	autocomplete?: boolean | string;
 	controls?: string;
