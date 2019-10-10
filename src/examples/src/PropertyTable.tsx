@@ -20,7 +20,6 @@ export default factory(function PropertyTable({ properties }) {
 					<tr>
 						<th>Name</th>
 						<th>Type</th>
-						<th>Optional</th>
 						<th>Description</th>
 					</tr>
 				</thead>
@@ -28,9 +27,8 @@ export default factory(function PropertyTable({ properties }) {
 					{props.map((prop) => {
 						return (
 							<tr>
-								<td>{prop.name}</td>
+								<td>{`${prop.name}${prop.optional ? '?' : ''}`}</td>
 								<td>{prop.type}</td>
-								<td>{`${prop.optional || 'false'}`}</td>
 								<td>{prop.description}</td>
 							</tr>
 						);
