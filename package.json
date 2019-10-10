@@ -32,7 +32,7 @@
     "build:lib": "dojo build widget -t lib && shx cp -r output/dist dist/esm/src",
     "build:lib:legacy": "dojo build widget -t lib -l && shx cp -r output/dist dist/umd/src",
     "build:test": "dojo build widget -t lib -l && shx cp -r output/dist dist/dev/src && tsc && npm run copy:test && node scripts/umd",
-    "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce",
+    "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce && npm run build:docs",
     "clean": "shx rm -rf dist && shx mkdir dist && shx mkdir dist/umd && shx mkdir dist/esm && shx mkdir dist/dev",
     "release": "run-s \"version:update -- {@}\" build version:reset dojo-package \"dojo-release -- {@}\" --",
     "uploadCoverage": "codecov --file=coverage/coverage.json"
