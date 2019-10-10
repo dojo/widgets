@@ -4,7 +4,7 @@ import TextArea from '@dojo/widgets/text-area';
 
 const factory = create({ icache });
 
-const Example = factory(function Basic({ middleware: { icache } }) {
+export default factory(function Basic({ middleware: { icache } }) {
 	const value = icache.getOrSet('value', '');
 	return (
 		<TextArea
