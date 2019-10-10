@@ -18,26 +18,6 @@ import { GlobalEvent } from '../global-event/index';
  */
 export type RoleType = 'dialog' | 'alertdialog';
 
-/**
- * @type DialogProperties
- *
- * Properties that can be set on a Dialog component
- *
- * @property aria
- * @property closeable
- * @property closeText
- * @property enterAnimation
- * @property exitAnimation
- * @property modal
- * @property onOpen
- * @property onRequestClose
- * @property open
- * @property role
- * @property title
- * @property underlay
- * @property underlayEnterAnimation
- * @property underlayExitAnimation
- */
 export interface DialogProperties extends ThemedProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
