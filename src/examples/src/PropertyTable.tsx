@@ -2,13 +2,16 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { PropertyInterface } from './properties.block';
 
 interface PropertyTableProperties {
-	props: PropertyInterface[];
+	props?: PropertyInterface[];
 }
 
 const factory = create().properties<PropertyTableProperties>();
 
 export default factory(function PropertyTable({ properties }) {
 	const { props } = properties();
+	if (!props) {
+		return null;
+	}
 	return (
 		<div>
 			<h1>Properties</h1>

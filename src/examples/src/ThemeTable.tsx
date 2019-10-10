@@ -1,13 +1,16 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 interface ThemeTableProperties {
-	themes: string[];
+	themes?: string[];
 }
 
 const factory = create().properties<ThemeTableProperties>();
 
 export default factory(function ThemeTable({ properties }) {
 	const { themes } = properties();
+	if (!themes) {
+		return null;
+	}
 	return (
 		<div>
 			<h1>Themeable Classes</h1>

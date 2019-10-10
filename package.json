@@ -17,7 +17,7 @@
     "url": "https://github.com/dojo/widgets.git"
   },
   "scripts": {
-    "examples": "serve",
+    "examples": "dojo build app -m dev -w -s",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "copy:test": "cpx \"src/**/{*.html,example.css}\" dist/dev/src",
     "dojo-package": "dojo-package",
@@ -27,6 +27,8 @@
     "intern": "intern",
     "test": "run-s clean build:test intern",
     "build:ce": "dojo build widget && shx cp -r output/dist dist/umd/src/",
+    "build:docs": "dojo build app -f docs=true",
+    "build:docs:dev": "dojo build app -m dev -w -s -f docs=true",
     "build:lib": "dojo build widget -t lib && shx cp -r output/dist dist/esm/src",
     "build:lib:legacy": "dojo build widget -t lib -l && shx cp -r output/dist dist/umd/src",
     "build:test": "dojo build widget -t lib -l && shx cp -r output/dist dist/dev/src && tsc && npm run copy:test && node scripts/umd",

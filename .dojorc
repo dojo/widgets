@@ -4,7 +4,7 @@
 			"root": "app"
 		},
 		"features": {
-			"docs": true
+			"docs": false
 		}
 	},
 	"build-widget": {

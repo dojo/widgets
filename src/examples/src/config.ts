@@ -1,20 +1,13 @@
 import BasicTextInput from './widgets/text-input/Basic';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
-
 import BasicButton from './widgets/button/Basic';
-
 import BasicGrid from './widgets/grid/Basic';
 import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
-
 import BasicTabController from './widgets/tab-controller/Basic';
 import DisabledTabController from './widgets/tab-controller/Disabled';
-
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
-
 import BasicCard from './widgets/card/Basic';
-
 import BasicCalendar from './widgets/calendar/Basic';
-
 import BasicCheckbox from './widgets/checkbox/Basic';
 
 export interface ExampleConfig {
