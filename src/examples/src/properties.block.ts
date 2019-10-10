@@ -53,6 +53,10 @@ export default function(config: { [index: string]: string }) {
 			return props;
 		}
 		const propsInterface = sourceFile.getInterface(getPropertyInterfaceName(widgetName));
+		if (!propsInterface) {
+			console.warn(`could not find interface for ${widgetName} ${getPropertyInterfaceName(widgetName)}`);
+			return props;
+		}
 		return { ...props, [widgetName]: getWidgetProperties(propsInterface) };
 	}, {});
 }

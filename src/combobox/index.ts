@@ -51,7 +51,7 @@ import HelperText from '../helper-text/index';
  * @property value              Value to set on the input
  * @property widgetId           Optional id string for the combobox, set on the text input
  */
-export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
+export interface ComboboxProperties extends ThemedProperties, FocusProperties {
 	clearable?: boolean;
 	disabled?: boolean;
 	getResultLabel?(result: any): DNode;
@@ -88,7 +88,7 @@ export enum Operation {
 
 @theme(css)
 @diffProperty('results', reference)
-export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
+export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboboxProperties> {
 	private _activeIndex = 0;
 	private _ignoreBlur: boolean | undefined;
 	private _idBase = uuid();
