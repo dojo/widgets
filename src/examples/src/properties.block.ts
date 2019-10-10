@@ -24,7 +24,7 @@ function format(prop: MethodSignature | PropertySignature): PropertyInterface {
 	};
 }
 
-function getWidgetProperties(propsInterface: InterfaceDeclaration) {
+function getWidgetProperties(propsInterface: InterfaceDeclaration): PropertyInterface[] {
 	let properties: any[] = [];
 	const baseInterfaces = propsInterface.getBaseDeclarations() as InterfaceDeclaration[];
 
@@ -54,9 +54,21 @@ export default function(config: { [index: string]: string }) {
 		}
 		const propsInterface = sourceFile.getInterface(getPropertyInterfaceName(widgetName));
 		if (!propsInterface) {
-			console.warn(`could not find interface for ${widgetName} ${getPropertyInterfaceName(widgetName)}`);
+			console.warn(
+				`could not find interface for ${widgetName} ${getPropertyInterfaceName(widgetName)}`
+			);
 			return props;
 		}
+		let properties = getWidgetProperties(propsInterface);
+		properties.sort((a, b) => {
+			if (a.name < b.name) {
+				return -1;
+			}
+			if (a.name > b.name) {
+				return 1;
+			}
+			return 0;
+		});
 		return { ...props, [widgetName]: getWidgetProperties(propsInterface) };
 	}, {});
 }
