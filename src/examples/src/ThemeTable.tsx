@@ -18,7 +18,6 @@ export default factory(function ThemeTable({ properties }) {
 				<thead>
 					<tr>
 						<th>Name</th>
-						<th>Description</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -26,7 +25,6 @@ export default factory(function ThemeTable({ properties }) {
 						return (
 							<tr>
 								<td>{`.${className}`}</td>
-								<td />
 							</tr>
 						);
 					})}
