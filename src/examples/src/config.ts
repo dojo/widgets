@@ -298,7 +298,7 @@ export const config: Config = {
 
 export function getWidgetFileNames(config: Config): { [index: string]: string } {
 	return Object.keys(config).reduce((newConfig, widget) => {
-		return { ...newConfig, [widget]: config[widget].filename };
+		return { ...newConfig, [widget]: config[widget].filename || 'index' };
 	}, {});
 }
 
