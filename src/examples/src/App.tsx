@@ -42,6 +42,13 @@ export default factory(function App({ properties, middleware: { block } }) {
 		<div classes={[css.root]}>
 			<Menu widgetNames={widgets} />
 			<main classes={[css.main]}>
+				<Outlet id="landing" renderer={() => {
+					return (
+						<div>
+							Widget Examples!
+						</div>
+					);
+				}}/>
 				<Outlet
 					id="example"
 					renderer={({ params }) => {
