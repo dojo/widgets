@@ -2,7 +2,7 @@ import * as path from 'path';
 import { Project, InterfaceDeclaration, MethodSignature, PropertySignature } from 'ts-morph';
 
 function getPropertyInterfaceName(value: string) {
-	var result = value.replace(/-([a-z])/g, function(g) {
+	const result = value.replace(/-([a-z])/g, function(g) {
 		return g[1].toUpperCase();
 	});
 	return `${result.charAt(0).toUpperCase() + result.slice(1)}Properties`;
@@ -43,7 +43,9 @@ export default function(config: { [index: string]: string }) {
 		tsConfigFilePath: path.join(__dirname, '..', '..', '..', 'tsconfig.json')
 	});
 
-	return Object.keys(config).reduce((props, widgetName) => {
+	return Object.keys(config).reduce((props, widgetName): {
+		[index: string]: PropertyInterface[];
+	} => {
 		const filename = config[widgetName] || 'index';
 		let sourceFile = project.getSourceFile(`./src/${widgetName}/${filename}.ts`);
 		if (!sourceFile) {

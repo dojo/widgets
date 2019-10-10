@@ -1,11 +1,9 @@
-import has from '@dojo/framework/core/has';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import block from '@dojo/framework/core/middleware/block';
 import Outlet from '@dojo/framework/routing/Outlet';
-import ActiveLink from './ActiveLink';
 
 import readme from './readme.block';
-import getWidgetProperties from './properties.block';
+import getWidgetProperties, { PropertyInterface } from './properties.block';
 import getTheme from './theme.block';
 import code from './code.block';
 import configs, { getWidgetFileNames } from './config';
@@ -25,13 +23,17 @@ interface AppProperties {
 
 const factory = create({ block }).properties<AppProperties>();
 
+interface Content {
+	[index: string]: string;
+}
+
 export default factory(function App({ properties, middleware: { block } }) {
 	const { includeDocs } = properties();
 	const widgets = Object.keys(configs).sort();
-	let widgetReadmeContent = {};
-	let widgetExampleContent = {};
-	let widgetProperties = {};
-	let widgetThemeClasses = {};
+	let widgetReadmeContent: Content = {};
+	let widgetExampleContent: Content = {};
+	let widgetProperties: { [index: string]: PropertyInterface[] } = {};
+	let widgetThemeClasses: { [index: string]: string[] } = {};
 	if (includeDocs) {
 		widgetReadmeContent = block(readme)() || {};
 		widgetExampleContent = block(code)() || {};
@@ -61,6 +63,9 @@ export default factory(function App({ properties, middleware: { block } }) {
 							: examples.find(
 									(example) => example.filename.toLowerCase() === exampleName
 							  );
+						if (!example) {
+							return null;
+						}
 						const widgetPath = `${widgetName}/${example.filename}`;
 						const content =
 							widgetExampleContent[`${widgetPath}.tsx`] ||

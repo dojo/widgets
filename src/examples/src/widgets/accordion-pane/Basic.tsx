@@ -7,7 +7,7 @@ import TitlePane from '@dojo/widgets/title-pane';
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
-	let openKeys = icache.getOrSet('open', []);
+	let openKeys = icache.getOrSet<string[]>('open', []);
 	return (
 		<AccordionPane
 			onRequestClose={(key) => {
