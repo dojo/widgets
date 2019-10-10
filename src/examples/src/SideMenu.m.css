@@ -36,13 +36,13 @@
 		overflow: auto;
 		-webkit-overflow-scrolling: touch;
 		-ms-overflow-style: -ms-autohiding-scrollbar;
-    }
-    
-    .root::-webkit-scrollbar {
+	}
+
+	.root::-webkit-scrollbar {
 		display: none;
-    }
-    
-    .menu {
+	}
+
+	.menu {
 		list-style: none;
 		display: flex;
 		padding: 0;
