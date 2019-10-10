@@ -13,7 +13,7 @@ export default factory(function PropertyTable({ properties }) {
 		return null;
 	}
 	return (
-		<div classes={["docs"]}>
+		<div classes={['docs']}>
 			<h1>Properties</h1>
 			<table>
 				<thead>

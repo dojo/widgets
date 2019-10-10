@@ -24,19 +24,19 @@ export type RoleType = 'dialog' | 'alertdialog';
  * Properties that can be set on a Dialog component
  *
  * @property aria
- * @property closeable          
- * @property closeText          
- * @property enterAnimation     
- * @property exitAnimation      
- * @property modal              
- * @property onOpen             
- * @property onRequestClose     
- * @property open               
- * @property role               
- * @property title              
- * @property underlay           
- * @property underlayEnterAnimation     
- * @property underlayExitAnimation      
+ * @property closeable
+ * @property closeText
+ * @property enterAnimation
+ * @property exitAnimation
+ * @property modal
+ * @property onOpen
+ * @property onRequestClose
+ * @property open
+ * @property role
+ * @property title
+ * @property underlay
+ * @property underlayEnterAnimation
+ * @property underlayExitAnimation
  */
 export interface DialogProperties extends ThemedProperties {
 	/** Custom aria attributes */
