@@ -81,6 +81,18 @@ export default factory(function App({ properties, middleware: { block } }) {
 									<Example content={content}>
 										<example.module />
 									</Example>
+									{includeDocs && (
+										<a
+											href={`https://codesandbox.io/s/github/agubler/widgets/tree/widget-examples/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widgetName}%2F${example.filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widgetName}%2F${
+												example.filename
+											}.tsx`}
+										>
+											<img
+												alt={`Edit ${widgetPath} example`}
+												src="https://codesandbox.io/static/img/play-codesandbox.svg"
+											/>
+										</a>
+									)}
 									{isBasic && includeDocs && (
 										<PropertyTable props={propertyInterface} />
 									)}
