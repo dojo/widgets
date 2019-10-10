@@ -1,4 +1,4 @@
-# @dojo/widgets/label widget
+# @dojo/widgets/label
 
 Dojo's `Label` widget creates a `<label>` element that wraps its children and inserts a text node as either the first or last child. It is included by default in all form input widgets, including `ComboBox` and `TimePicker`. Input widgets control the text, visibility, and placement of the label through the following properties:
 - `label`: String used as label text
@@ -16,31 +16,3 @@ Dojo's `Label` widget creates a `<label>` element that wraps its children and in
 
 - The label is implicitly tied to its form control, so it should not be passed children with non-label text content
 - If `properties.label.hidden` is true, it uses styles that leave the text content accessible to screen readers
-
-## Example Usage
-
-```typescript
-// Basic usage of a label wrapping an input
-w(Label, [
-	'Name'
-	v('input', { type: 'text' })
-]);
-
-// Label associated with input by id
-v('div', [
-	w(Label, {
-		forId: 'emailId'
-	}, [ 'Email' ]),
-	v('input', {
-		id: 'emailId',
-		type: 'email'
-	})
-]);
-
-// Hidden label
-w(Label, {
-	hidden: true
-}, [
-	'Visually hidden label text'
-]);
-```
