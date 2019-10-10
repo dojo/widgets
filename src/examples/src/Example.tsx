@@ -14,6 +14,22 @@ const factory = create({ icache }).properties<ExampleProperties>();
 export default factory(function Example({ children, properties, middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('active', 0);
 	const { content } = properties();
+	const tabs = [
+		<Tab key="example" label="Example">
+			<div classes={css.tab}>{children()}</div>
+		</Tab>
+	];
+	if (content) {
+		tabs.push(
+			<Tab key="code" label="Code">
+				<div classes={css.tab}>
+					<pre classes={['language-ts']}>
+						<code classes={['language-ts']} innerHTML={content} />
+					</pre>
+				</div>
+			</Tab>
+		);
+	}
 	return (
 		<TabController
 			activeIndex={activeIndex}
@@ -21,18 +37,7 @@ export default factory(function Example({ children, properties, middleware: { ic
 				icache.set('active', index);
 			}}
 		>
-			<Tab key="example" label="Example">
-				<div classes={css.tab}>{children()}</div>
-			</Tab>
-			{content && (
-				<Tab key="code" label="Code">
-					<div classes={css.tab}>
-					<pre classes={['language-ts']}>
-						<code classes={['language-ts']} innerHTML={content} />
-					</pre>
-					</div>
-				</Tab>
-			)}
+			{tabs}
 		</TabController>
 	);
 });
