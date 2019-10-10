@@ -1,6 +1,4 @@
-import { tsx } from '@dojo/framework/core/vdom';
-import WidgetBase from '@dojo/framework/core/WidgetBase';
-
+import { tsx, create } from '@dojo/framework/core/vdom';
 import Grid from '@dojo/widgets/grid';
 import { ColumnConfig, FetcherOptions, FetcherResult } from '@dojo/widgets/grid/interfaces';
 import { createFetcherResult, sorter } from '@dojo/widgets/grid/utils';
@@ -63,67 +61,60 @@ async function fetcher(
 	return createFetcherResult(sorter(filterer(data, options), options), page, pageSize);
 }
 
-export default class extends WidgetBase {
-	protected render() {
-		return (
-			<div styles={{ width: '100%' }}>
-				<Grid
-					fetcher={fetcher}
-					columnConfig={columnConfig}
-					height={500}
-					customRenderers={{
-						filterRenderer: (
-							columnConfig: ColumnConfig,
-							filterValue,
-							doFilter,
-							title
-						) => {
-							if (columnConfig.id === 'gender') {
-								return (
-									<div>
-										<Button
-											extraClasses={{ root: css.filter }}
-											pressed={filterValue === 'female'}
-											onClick={() => {
-												if (filterValue === 'female') {
-													doFilter('');
-												} else {
-													doFilter('female');
-												}
-											}}
-										>
-											Female
-										</Button>
-										<Button
-											extraClasses={{ root: css.filter }}
-											pressed={filterValue === 'male'}
-											onClick={() => {
-												if (filterValue === 'male') {
-													doFilter('');
-												} else {
-													doFilter('male');
-												}
-											}}
-										>
-											Male
-										</Button>
-									</div>
-								);
-							}
-							return (
-								<TextInput
-									key="filter"
-									label={`Filter by ${title}`}
-									labelHidden={true}
-									type="search"
-									value={filterValue}
-									onValue={doFilter}
-								/>
-							);
-						}
-					}}
-				/>
-			</div>
-		);
-	}
-}
+const factory = create();
+
+export default factory(function CustomFilterRenderer() {
+	return (
+		<Grid
+			fetcher={fetcher}
+			columnConfig={columnConfig}
+			height={500}
+			customRenderers={{
+				filterRenderer: (columnConfig: ColumnConfig, filterValue, doFilter, title) => {
+					if (columnConfig.id === 'gender') {
+						return (
+							<div>
+								<Button
+									extraClasses={{ root: css.filter }}
+									pressed={filterValue === 'female'}
+									onClick={() => {
+										if (filterValue === 'female') {
+											doFilter('');
+										} else {
+											doFilter('female');
+										}
+									}}
+								>
+									Female
+								</Button>
+								<Button
+									extraClasses={{ root: css.filter }}
+									pressed={filterValue === 'male'}
+									onClick={() => {
+										if (filterValue === 'male') {
+											doFilter('');
+										} else {
+											doFilter('male');
+										}
+									}}
+								>
+									Male
+								</Button>
+							</div>
+						);
+					}
+					return (
+						<TextInput
+							key="filter"
+							label={`Filter by ${title}`}
+							labelHidden={true}
+							type="search"
+							value={filterValue}
+							onValue={doFilter}
+						/>
+					);
+				}
+			}}
+		/>
+	);
+});

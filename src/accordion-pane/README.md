@@ -1,4 +1,4 @@
-# @dojo/widgets/accordion-pane widget
+# @dojo/widgets/accordion-pane
 
 Dojo's `AccordionPane` component can be used to show multiple pieces of content inside collapsible panes within a common parent component. It provides a mechanism of control over multiple child `TitlePane` components.
 
@@ -13,39 +13,3 @@ An `AccordionPane` expects all children to be `TitlePane` components, and as suc
 **TitleBar Events**:
 
 - Space bar: toggles the pane content of a closeable child `TitlePane`
-
-## Themeing
-
-The following CSS classes are used to style the `AccordionPane` widget and should be provided by custom themes:
-
-- `root`: Applied to the top-level wrapper node
-
-## Example Usage
-
-*Basic Example*
-```typescript
-import AccordionPane from '@dojo/widgets/accordion-pane';
-import TitlePane from '@dojo/widgets/title-pane';
-import { w } from '@dojo/framework/core/vdom';
-
-w(AccordionPane, {
-	onRequestOpen: (key: string) => {
-		this._openKey = key;
-		this.invalidate();
-	},
-	onRequestClose: (key: string) => {
-		this._openKey = null;
-		this.invalidate();
-	},
-	openKeys: [ this._openKey ]
-}, [
-	w(TitlePane, {
-		title: 'Pane 1',
-		key: 'foo'
-	}, [ 'Foo' ]),
-	w(TitlePane, {
-		title: 'Pane 2',
-		key: 'bar'
-	}, [ 'Bar' ])
-])
-```

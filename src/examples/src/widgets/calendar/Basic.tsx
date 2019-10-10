@@ -1,8 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from '@dojo/widgets/button';
+import Calendar from '@dojo/widgets/calendar';
 
 const factory = create();
 
 export default factory(function Basic() {
-	return <Button>Button</Button>;
+	return <Calendar />;
 });

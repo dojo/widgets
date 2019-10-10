@@ -9,6 +9,14 @@ import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 import BasicTabController from './widgets/tab-controller/Basic';
 import DisabledTabController from './widgets/tab-controller/Disabled';
 
+import BasicAccordionPane from './widgets/accordion-pane/Basic';
+
+import BasicCard from './widgets/card/Basic';
+
+import BasicCalendar from './widgets/calendar/Basic';
+
+import BasicCheckbox from './widgets/checkbox/Basic';
+
 export interface ExampleConfig {
 	title?: string;
 	description?: string;
@@ -85,6 +93,42 @@ export const config: Config = {
 				filename: 'Disabled'
 			}
 		]
+	},
+	'accordion-pane': {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicAccordionPane,
+				filename: 'Basic'
+			}
+		}
+	},
+	card: {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicCard,
+				filename: 'Basic'
+			}
+		}
+	},
+	calendar: {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicCalendar,
+				filename: 'Basic'
+			}
+		}
+	},
+	checkbox: {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicCheckbox,
+				filename: 'Basic'
+			}
+		}
 	}
 };
 

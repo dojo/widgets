@@ -1,8 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from '@dojo/widgets/button';
+import Card from '@dojo/widgets/card';
 
 const factory = create();
 
 export default factory(function Basic() {
-	return <Button>Button</Button>;
+	return (
+		<Card>
+			<h1>Hello, World</h1>
+			<p>Lorem ipsum</p>
+		</Card>
+	);
 });

@@ -8,13 +8,14 @@ import readme from './readme.block';
 import getWidgetProperties from './properties.block';
 import getTheme from './theme.block';
 import code from './code.block';
-import * as css from './App.m.css';
 import configs, { getWidgetFileNames } from './config';
 import Menu from './Menu';
 import SideMenu from './SideMenu';
-import ExampleCode from './ExampleCode';
+import Example from './Example';
 import ThemeTable from './ThemeTable';
 import PropertyTable from './PropertyTable';
+
+import * as css from './App.m.css';
 
 const widgetFilenames = getWidgetFileNames(configs);
 
@@ -26,7 +27,7 @@ const factory = create({ block }).properties<AppProperties>();
 
 export default factory(function App({ properties, middleware: { block } }) {
 	const { includeDocs } = properties();
-	const widgets = Object.keys(configs);
+	const widgets = Object.keys(configs).sort();
 	let widgetReadmeContent = {};
 	let widgetExampleContent = {};
 	let widgetProperties = {};
@@ -66,11 +67,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 								<div classes={[css.content]}>
 									{isBasic && includeDocs && <div innerHTML={readmeContent} />}
 									<h1>{isBasic ? 'Basic Usage' : example.title}</h1>
-									<div>
-										{}
-										<example.module />
-									</div>
-									{content && <ExampleCode content={content} />}
+									<Example content={content} ><example.module /></Example>
 									{isBasic && includeDocs && (
 										<PropertyTable props={propertyInterface} />
 									)}

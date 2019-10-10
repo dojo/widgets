@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import ActiveLink from './ActiveLink';
 
-import * as css from './App.m.css';
+import * as css from './Menu.m.css';
 
 interface MenuProperties {
 	widgetNames: string[];
@@ -19,14 +19,14 @@ function formatMenuItem(widget: string) {
 export default factory(function Menu({ properties }) {
 	const { widgetNames } = properties();
 	return (
-		<nav classes={css.nav}>
-			<ul classes={css.menuList}>
+		<nav classes={css.root}>
+			<ul classes={css.menu}>
 				{widgetNames.map((widget) => {
 					return (
-						<li classes={css.menuItem}>
+						<li classes={css.item}>
 							<ActiveLink
 								to="example"
-								classes={css.menuLink}
+								classes={css.link}
 								params={{ widget, example: 'basic' }}
 								matchParams={{ widget }}
 								activeClasses={[css.selected]}
