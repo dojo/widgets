@@ -1,5 +1,5 @@
 import { DNode } from '@dojo/framework/core/interfaces';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { v } from '@dojo/framework/core/vdom';
@@ -29,7 +29,7 @@ import * as css from '../theme/tab-controller.m.css';
  * @property onRightArrowPress  Called when the right arrow button is pressed
  * @property onUpArrowPress     Called when the up arrow button is pressed
  */
-export interface TabButtonProperties extends ThemedProperties, FocusProperties {
+export interface TabButtonProperties extends ThemedProperties, FocusProperties, I18nProperties {
 	active?: boolean;
 	closeable?: boolean;
 	controls: string;

@@ -1,6 +1,6 @@
 import { uuid } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/core/interfaces';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
@@ -22,7 +22,7 @@ export enum Align {
 	top = 'top'
 }
 
-export interface SlidePaneProperties extends ThemedProperties {
+export interface SlidePaneProperties extends ThemedProperties, I18nProperties {
 	/** The position of the pane on the screen */
 	align?: Align;
 	/** Custom aria attributes */

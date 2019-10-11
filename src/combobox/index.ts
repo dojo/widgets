@@ -2,7 +2,7 @@ import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/framework/core/diff';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import Focus from '@dojo/framework/core/meta/Focus';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
@@ -20,7 +20,7 @@ import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import HelperText from '../helper-text/index';
 
-export interface ComboboxProperties extends ThemedProperties, FocusProperties {
+export interface ComboboxProperties extends ThemedProperties, FocusProperties, I18nProperties {
 	/** Determines whether the input should be able to be cleared */
 	clearable?: boolean;
 	/** Prevents user interaction and styles content accordingly */

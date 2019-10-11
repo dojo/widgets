@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
@@ -16,7 +16,7 @@ import * as baseCss from '../common/styles/base.m.css';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 
-export interface CalendarProperties extends ThemedProperties {
+export interface CalendarProperties extends ThemedProperties, I18nProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Customize or internationalize accessible text for the Calendar widget */
