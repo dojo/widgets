@@ -22,30 +22,24 @@ export enum Align {
 	top = 'top'
 }
 
-/**
- * @type SlidePaneProperties
- *
- * Properties that can be set on a SlidePane component
- *
- * @property aria
- * @property align            The position of the pane on the screen
- * @property closeText        Hidden text used by screen readers to display for the close button
- * @property onOpen           Called when the pane opens
- * @property onRequestClose   Called when the pane is swiped closed or the underlay is clicked or tapped
- * @property open             Determines whether the pane is open or closed
- * @property title            Title to display in the pane
- * @property underlay         Determines whether a semi-transparent background shows behind the pane
- * @property width            Width of the pane in pixels
- */
 export interface SlidePaneProperties extends ThemedProperties {
+	/** The position of the pane on the screen */
 	align?: Align;
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Hidden text used by screen readers to display for the close button */
 	closeText?: string;
+	/** Called when the pane opens */
 	onOpen?(): void;
+	/** Called when the pane is swiped closed or the underlay is clicked or tapped */
 	onRequestClose?(): void;
+	/** Determines whether the pane is open or closed */
 	open?: boolean;
+	/** Title to display in the pane */
 	title?: string;
+	/** Determines whether a semi-transparent background shows behind the pane */
 	underlay?: boolean;
+	/** Width of the pane in pixels */
 	width?: number;
 }
 

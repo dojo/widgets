@@ -6,28 +6,22 @@ import { formatAriaProperties } from '../common/util';
 
 import * as css from '../theme/tab-controller.m.css';
 
-/**
- * @type TabProperties
- *
- * Properties that can be set on a Tab component
- *
- * @property aria
- * @property closeable    Determines whether this tab can be closed
- * @property disabled     Determines whether this tab can become active
- * @property key          A unique identifier for this Tab within the TabController
- * @property label        Content to show in the TabController control bar for this tab
- * @property labelledBy   ID of DOM element that serves as a label for this tab
- * @property show
- * @property widgetId       ID of this underlying DOM element
- */
 export interface TabProperties extends ThemedProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Determines whether this tab can be closed */
 	closeable?: boolean;
+	/** Determines whether this tab can become active */
 	disabled?: boolean;
+	/** A unique identifier for this Tab within the TabController */
 	key: string;
+	/** Content to show in the TabController control bar for this tab */
 	label?: DNode;
+	/** ID of DOM element that serves as a label for this tab */
 	labelledBy?: string;
+	/**  */
 	show?: boolean;
+	/** ID of this underlying DOM element */
 	widgetId?: string;
 }
 

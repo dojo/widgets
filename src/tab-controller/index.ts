@@ -21,22 +21,16 @@ export enum Align {
 	top = 'top'
 }
 
-/**
- * @type TabControllerProperties
- *
- * Properties that can be set on a TabController component
- *
- * @property activeIndex           Position of the currently active tab
- * @property alignButtons          Orientation of the tab buttons
- * @property aria
- * @property onRequestTabChange    Called when a new tab button is clicked
- * @property onRequestTabClose     Called when a tab close button is clicked
- */
 export interface TabControllerProperties extends ThemedProperties, FocusProperties {
+	/** Position of the currently active tab */
 	activeIndex: number;
+	/** Orientation of the tab buttons */
 	alignButtons?: Align;
+		/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Called when a new tab button is clicked */
 	onRequestTabChange?(index: number, key: string): void;
+	/** Called when a tab close button is clicked */
 	onRequestTabClose?(index: number, key: string): void;
 }
 

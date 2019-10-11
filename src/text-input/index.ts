@@ -27,69 +27,66 @@ interface TextInputInternalState {
 	dirty?: boolean;
 }
 
-/**
- * @type IconProperties
- *
- * Properties that can be set on a TextInput component
- *
- * @property autocomplete
- * @property controls       ID of an element that this input controls
- * @property customValidator
- * @property disabled
- * @property helperText
- * @property label
- * @property labelHidden
- * @property leading		Renderer for leading icon content
- * @property maxLength      Maximum number of characters allowed in the input
- * @property minLength      Minimum number of characters allowed in the input
- * @property name
- * @property onBlur
- * @property onFocus
- * @property onKeyDown
- * @property onKeyUp
- * @property onValidate
- * @property onValue
- * @property pattern
- * @property placeholder    Placeholder text
- * @property readOnly
- * @property required
- * @property trailing		Renderer for trailing icon content
- * @property type           Input type, e.g. text, email, tel, etc.
- * @property valid
- * @property value          The current value
- * @property widgetId
- */
-
 export interface TextInputProperties extends ThemedProperties, FocusProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  */
 	autocomplete?: boolean | string;
+	/** ID of an element that this input controls */
 	controls?: string;
+	/**  */
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
+	/**  */
 	disabled?: boolean;
+	/**  */
 	helperText?: string;
+	/**  */
 	label?: string;
+	/**  */
 	labelHidden?: boolean;
+	/** Renderer for leading icon content */
 	leading?: () => DNode;
+	/** Maximum number of characters allowed in the input */
 	maxLength?: number | string;
+	/** Minimum number of characters allowed in the input */
 	minLength?: number | string;
+	/**  */
 	name?: string;
+	/**  */
 	onBlur?(): void;
+	/**  */
 	onFocus?(): void;
+	/**  */
 	onKeyDown?(key: number, preventDefault: () => void): void;
+	/**  */
 	onKeyUp?(key: number, preventDefault: () => void): void;
+	/**  */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	/**  */
 	onValue?(value?: string): void;
+	/**  */
 	onClick?(): void;
+	/**  */
 	onOver?(): void;
+	/**  */
 	onOut?(): void;
+	/**  */
 	pattern?: string | RegExp;
+	/** Placeholder text */
 	placeholder?: string;
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/** Renderer for trailing icon content */
 	trailing?: () => DNode;
+	/** Input type, e.g. text, email, tel, etc. */
 	type?: TextInputType;
+	/**  */
 	valid?: { valid?: boolean; message?: string } | boolean;
+	/** The current value */
 	value?: string;
+	/**  */
 	widgetId?: string;
 }
 

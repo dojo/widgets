@@ -15,63 +15,56 @@ import Listbox from '../listbox/index';
 import HelperText from '../helper-text/index';
 import * as css from '../theme/select.m.css';
 
-/**
- * @type SelectProperties
- *
- * Properties that can be set on a Select component
- *
- * @property aria
- * @property disabled
- * @property getOptionDisabled Function that accepts an option's data and index and returns a boolean
- * @property getOptionId       Function that accepts an option's data and index and returns a string id
- * @property getOptionLabel    Function that accepts an option's data and returns a DNode label
- * @property getOptionSelected Function that accepts an option's data and index and returns a boolean
- * @property getOptionText     Function that accepts an option's data and returns a string, used for matching an option on keydown
- * @property getOptionValue    Function that accepts an option's data and index and returns a string value
- * @property helperText
- * @property label
- * @property labelHidden
- * @property name
- * @property onBlur
- * @property onFocus
- * @property onOut
- * @property onOver
- * @property onValue
- * @property options           Array of any type of data for the options
- * @property placeholder       Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined)
- * @property readOnly
- * @property required
- * @property useNativeElement  Use the native <select> element if true
- * @property valid
- * @property value           The current value
- * @property widgetId
- *
- */
 export interface SelectProperties<T = any> extends ThemedProperties, FocusProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  */
 	disabled?: boolean;
+	/** Function that accepts an option's data and index and returns a boolean */
 	getOptionDisabled?(option: T, index: number): boolean;
+	/** Function that accepts an option's data and index and returns a string id */
 	getOptionId?(option: T, index: number): string;
+	/** Function that accepts an option's data and returns a DNode label */
 	getOptionLabel?(option: T): DNode;
+	/** Function that accepts an option's data and index and returns a boolean */
 	getOptionSelected?(option: T, index: number): boolean;
+	/** Function that accepts an option's data and returns a string, used for matching an option on keydown */
 	getOptionText?(option: T): string;
+	/** Function that accepts an option's data and index and returns a string value */
 	getOptionValue?(option: T, index: number): string;
+	/**  */
 	helperText?: string;
+	/**  */
 	label?: string;
+	/**  */
 	labelHidden?: boolean;
+	/**  */
 	name?: string;
+	/**  */
 	onBlur?(): void;
+	/**  */
 	onFocus?(): void;
+	/**  */
 	onOut?(): void;
+	/**  */
 	onOver?(): void;
+	/**  */
 	onValue?(option: T): void;
+	/** Array of any type of data for the options */
 	options?: T[];
+	/** Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined) */
 	placeholder?: string;
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/** Use the native <select> element if true */
 	useNativeElement?: boolean;
+	/**  */
 	valid?: boolean;
+	/** The current value */
 	value?: string;
+	/**  */
 	widgetId?: string;
 }
 

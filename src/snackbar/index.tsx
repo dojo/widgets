@@ -5,11 +5,17 @@ import { tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/snackbar.m.css';
 
 export interface SnackbarProperties {
+	/**  */
 	open: boolean;
+	/**  */
 	messageRenderer: () => RenderResult;
+	/**  */
 	actionsRenderer?: () => RenderResult;
+	/**  */
 	type?: 'success' | 'error';
+	/**  */
 	leading?: boolean;
+	/**  */
 	stacked?: boolean;
 }
 

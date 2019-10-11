@@ -11,24 +11,18 @@ import * as css from '../theme/title-pane.m.css';
 import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
 import GlobalEvent from '../global-event/index';
 
-/**
- * @type TitlePaneProperties
- *
- * Properties that can be set on a TitlePane component
- *
- * @property closeable          If false the pane will not collapse in response to clicking the title
- * @property headingLevel       'aria-level' for the title's DOM node
- * @property onRequestClose     Called when the title of an open pane is clicked
- * @property onRequestOpen      Called when the title of a closed pane is clicked
- * @property open               If true the pane is opened and content is visible
- * @property title              Title to display above the content
- */
 export interface TitlePaneProperties extends WidgetProperties, ThemedProperties, FocusProperties {
+	/** If false the pane will not collapse in response to clicking the title */
 	closeable?: boolean;
+	/** 'aria-level' for the title's DOM node */
 	headingLevel?: number;
+	/** Called when the title of an open pane is clicked */
 	onRequestClose?(key: string | number | undefined): void;
+	/** Called when the title of a closed pane is clicked */
 	onRequestOpen?(key: string | number | undefined): void;
+	/** If true the pane is opened and content is visible */
 	open?: boolean;
+	/** Title to display above the content */
 	title: string;
 }
 

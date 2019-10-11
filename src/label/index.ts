@@ -6,32 +6,26 @@ import { formatAriaProperties } from '../common/util';
 import * as css from '../theme/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
-/**
- * @type LabelProperties
- *
- * Properties that can be set on a Label component
- *
- * @property aria
- * @property disabled
- * @property focused
- * @property forId     ID to explicitly associate the label with an input element
- * @property hidden
- * @property readOnly
- * @property required
- * @property secondary
- * @property valid
- * @property widgetId
- */
 export interface LabelProperties extends ThemedProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  */
 	disabled?: boolean;
+	/**  */
 	focused?: boolean;
+	/** ID to explicitly associate the label with an input element */
 	forId?: string;
+	/**  */
 	hidden?: boolean;
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/**  */
 	secondary?: boolean;
+	/**  */
 	valid?: boolean;
+	/**  */
 	widgetId?: string;
 }
 

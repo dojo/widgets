@@ -14,20 +14,14 @@ import { GlobalEvent } from '../global-event/index';
 
 export { Align };
 
-/**
- * @type ToolbarProperties
- *
- * Properties that can be set on a Toolbar component
- *
- * @property aligh
- * @property collapseWidth     Width at which to collapse actions into a SlidePane
- * @property heading           The toolbar heading
- * @property onCollapse        Called when action items change their layout
- */
 export interface ToolbarProperties extends ThemedProperties {
+	/**  */
 	align?: Align;
+	/** Width at which to collapse actions into a SlidePane */
 	collapseWidth?: number;
+	/** The toolbar heading */
 	heading?: string;
+	/** Called when action items change their layout */
 	onCollapse?(collapsed: boolean): void;
 }
 
