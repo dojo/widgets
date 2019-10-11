@@ -13,28 +13,30 @@ export default factory(function PropertyTable({ properties }) {
 		return null;
 	}
 	return (
-		<div classes={['docs']}>
+		<virtual>
 			<h1>Properties</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Type</th>
-						<th>Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					{props.map((prop) => {
-						return (
-							<tr>
-								<td>{`${prop.name}${prop.optional ? '?' : ''}`}</td>
-								<td>{prop.type}</td>
-								<td>{prop.description}</td>
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
-		</div>
+			<div classes={['docs']}>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						{props.map((prop) => {
+							return (
+								<tr>
+									<td>{`${prop.name}${prop.optional ? '?' : ''}`}</td>
+									<td>{prop.type}</td>
+									<td>{prop.description}</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
+		</virtual>
 	);
 });

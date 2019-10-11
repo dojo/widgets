@@ -12,24 +12,26 @@ export default factory(function ThemeTable({ properties }) {
 		return null;
 	}
 	return (
-		<div classes={['docs']}>
+		<virtual>
 			<h1>Themeable Classes</h1>
-			<table>
-				<thead>
-					<tr>
-						<th>Name</th>
-					</tr>
-				</thead>
-				<tbody>
-					{themes.map((className) => {
-						return (
-							<tr>
-								<td>{`.${className}`}</td>
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
-		</div>
+			<div classes={['docs']}>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						{themes.map((className) => {
+							return (
+								<tr>
+									<td>{`.${className}`}</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
+		</virtual>
 	);
 });

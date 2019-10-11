@@ -138,6 +138,10 @@ a {
 	color: inherit;
 }
 
+.docs {
+	overflow: auto;
+}
+
 .docs table {
 	background: #282a36;
 	border-collapse: collapse;
@@ -162,42 +166,6 @@ a {
 .docs td {
 	text-align: left;
 	padding: 10px 15px;
-}
-
-@media (max-width: 850px) {
-	.docs table {
-		box-shadow: none;
-		border: none;
-		border-collapse: collapse;
-	}
-
-	.docs thead {
-		display: none;
-	}
-
-	.docs tbody {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.docs tr {
-		display: flex;
-		flex-direction: column;
-		margin-bottom: 0.5em;
-		border-bottom: none;
-	}
-
-	.docs td {
-		margin-bottom: 0.5em;
-		padding: 0;
-	}
-
-	.docs td:first-child {
-		font-size: 15px;
-		font-weight: bold;
-		color: #000000;
-		margin-bottom: 0;
-	}
 }
 
 /**
