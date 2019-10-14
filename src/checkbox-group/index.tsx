@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { checkboxGroup } from './middleware';
-import { Checkbox } from '../Checkbox/index';
+import { Checkbox } from '../checkbox/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
 import * as css from '../theme/checkbox-group.m.css';
