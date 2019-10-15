@@ -8,15 +8,21 @@ import * as css from '../theme/checkbox-group.m.css';
 type CheckboxOptions = { value: string; label?: string }[];
 
 interface CheckboxGroupProperties {
+	/** The name attribute for this form group */
 	name: string;
+	/** The label to be displayed in the legend */
 	label?: string;
+	/** Object containing the values / labels to create checkboxes for */
 	options: CheckboxOptions;
+	/** Callback for the current value */
 	onValue(value: string[]): void;
+	/** Custom renderer for the checkboxes, recieves the checkbox group middleware and options */
 	renderer?(
 		name: string,
 		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,
 		options: CheckboxOptions
 	): RenderResult;
+	/** Initial value of the checkbox group */
 	initialValue?: string[];
 }
 

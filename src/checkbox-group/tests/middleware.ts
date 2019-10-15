@@ -1,4 +1,3 @@
-// const { describe, afterEach } = intern.getInterface('bdd');
 import { checkboxGroup as checkboxGroupMiddleware } from '../middleware';
 const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
