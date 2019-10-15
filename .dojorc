@@ -15,6 +15,7 @@
 			"src/calendar",
 			"src/card",
 			"src/checkbox",
+			"src/checkbox-group",
 			"src/combobox",
 			"src/dialog",
 			"src/icon",
