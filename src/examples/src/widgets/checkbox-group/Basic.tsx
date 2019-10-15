@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import CheckboxGroup from '@dojo/widgets/checkbox-group/index';
+import CheckboxGroup from '@dojo/widgets/checkbox-group';
 import { icache } from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
