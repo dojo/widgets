@@ -238,7 +238,7 @@ To add a new example, create a directory that matches the directory name of the 
  * overview: The configuration for the basic example including the imported Basic module and the example filename (has to be `'Basic'`)
  * examples: Additional examples for the widget, an array of configuration that specifies the title, description, module and example filename. 
 
- To view the examples locally run `npm run examples` and navigate to http://localhost:9999, this starts the examples in watch mode and should update widget module are changed.
+ To view the examples locally run `npm run dev` and navigate to http://localhost:9999, this starts the examples in watch mode and should update widget module are changed.
 
 ### Widget Documentation
 
