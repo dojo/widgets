@@ -9,47 +9,40 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/radio.m.css';
 
-/**
- * @type RadioProperties
- *
- * Properties that can be set on a Radio component
- *
- * @property aria
- * @property checked
- * @property disabled
- * @property label
- * @property labelAfter
- * @property labelHidden
- * @property name
- * @property onBlur
- * @property onFocus
- * @property onOut
- * @property onOver
- * @property onValue
- * @property readOnly
- * @property required
- * @property valid
- * @property value
- * @property widgetId
- *
- */
 export interface RadioProperties extends ThemedProperties, FocusProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  */
 	checked?: boolean;
+	/**  */
 	disabled?: boolean;
+	/**  */
 	label?: string;
+	/**  */
 	labelAfter?: boolean;
+	/**  */
 	labelHidden?: boolean;
+	/**  */
 	name?: string;
+	/**  */
 	onBlur?(): void;
+	/**  */
 	onFocus?(): void;
+	/**  */
 	onOut?(): void;
+	/**  */
 	onOver?(): void;
+	/**  */
 	onValue?(checked: boolean): void;
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/**  */
 	valid?: boolean;
+	/**  */
 	value?: string;
+	/**  */
 	widgetId?: string;
 }
 

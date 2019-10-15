@@ -14,12 +14,13 @@
 			"es2015.symbol",
 			"es2015.symbol.wellknown"
 		],
-		"module": "umd",
+		"module": "commonjs",
 		"moduleResolution": "node",
 		"noUnusedLocals": true,
 		"importHelpers": true,
 		"downlevelIteration": true,
 		"outDir": "dist/dev/src/",
+		"baseUrl": "./",
 		"plugins": [
 			{
 				"name": "tslint-language-service",
@@ -30,7 +31,10 @@
 		"sourceMap": true,
 		"strict": true,
 		"target": "es5",
-		"types": [ "intern" ]
+		"types": [ "intern" ],
+		"paths": {
+			"@dojo/widgets/*": ["src/*"]
+		}
 	},
 	"include": [
 		"./src/**/*.ts",

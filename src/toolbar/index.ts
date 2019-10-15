@@ -1,6 +1,6 @@
 import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
 import { DNode } from '@dojo/framework/core/interfaces';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
@@ -14,20 +14,14 @@ import { GlobalEvent } from '../global-event/index';
 
 export { Align };
 
-/**
- * @type ToolbarProperties
- *
- * Properties that can be set on a Toolbar component
- *
- * @property aligh
- * @property collapseWidth     Width at which to collapse actions into a SlidePane
- * @property heading           The toolbar heading
- * @property onCollapse        Called when action items change their layout
- */
-export interface ToolbarProperties extends ThemedProperties {
+export interface ToolbarProperties extends ThemedProperties, I18nProperties {
+	/**  */
 	align?: Align;
+	/** Width at which to collapse actions into a SlidePane */
 	collapseWidth?: number;
+	/** The toolbar heading */
 	heading?: string;
+	/** Called when action items change their layout */
 	onCollapse?(collapsed: boolean): void;
 }
 

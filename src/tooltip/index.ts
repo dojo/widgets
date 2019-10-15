@@ -7,20 +7,14 @@ import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/tooltip.m.css';
 import * as css from '../theme/tooltip.m.css';
 
-/**
- * @type TooltipProperties
- *
- * Properties that can be set on Tooltip components
- *
- * @property aria
- * @property content           Information to show within the tooltip
- * @property open              Determines if this tooltip is visible
- * @property orientation       Where this tooltip should render relative to its child
- */
 export interface TooltipProperties extends ThemedProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Information to show within the tooltip */
 	content: DNode;
+	/** Determines if this tooltip is visible */
 	open?: boolean;
+	/** Where this tooltip should render relative to its child */
 	orientation?: Orientation;
 }
 

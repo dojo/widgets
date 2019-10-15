@@ -8,18 +8,12 @@ import * as baseCss from '../common/styles/base.m.css';
 
 export type IconType = keyof typeof css;
 
-/**
- * @type IconProperties
- *
- * Properties that can be set on an Icon component
- *
- * @property altText        An optional, visually hidden label for the icon
- * @property aria
- * @property type           Icon type, e.g. downIcon, searchIcon, etc.
- */
 export interface IconProperties extends ThemedProperties {
+	/** An optional, visually hidden label for the icon */
 	altText?: string;
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Icon type, e.g. downIcon, searchIcon, etc. */
 	type: IconType;
 }
 

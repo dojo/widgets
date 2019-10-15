@@ -8,7 +8,7 @@
     "url": "https://github.com/dojo/widgets/issues"
   },
   "license": "BSD-3-Clause",
-  "main": "main.js",
+  "main": "src/main.tsx",
   "engines": {
     "npm": ">=3.0.0"
   },
@@ -17,7 +17,7 @@
     "url": "https://github.com/dojo/widgets.git"
   },
   "scripts": {
-    "examples": "serve",
+    "dev": "dojo build app -m dev -w -s",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "copy:test": "cpx \"src/**/{*.html,example.css}\" dist/dev/src",
     "dojo-package": "dojo-package",
@@ -27,10 +27,12 @@
     "intern": "intern",
     "test": "run-s clean build:test intern",
     "build:ce": "dojo build widget && shx cp -r output/dist dist/umd/src/",
+    "build:docs": "dojo build app -f docs=true",
+    "build:docs:dev": "dojo build app -m dev -w -s -f docs=true",
     "build:lib": "dojo build widget -t lib && shx cp -r output/dist dist/esm/src",
     "build:lib:legacy": "dojo build widget -t lib -l && shx cp -r output/dist dist/umd/src",
     "build:test": "dojo build widget -t lib -l && shx cp -r output/dist dist/dev/src && tsc && npm run copy:test && node scripts/umd",
-    "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce",
+    "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce && npm run build:docs",
     "clean": "shx rm -rf dist && shx mkdir dist && shx mkdir dist/umd && shx mkdir dist/esm && shx mkdir dist/dev",
     "release": "run-s \"version:update -- {@}\" build version:reset dojo-package \"dojo-release -- {@}\" --",
     "uploadCoverage": "codecov --file=coverage/coverage.json"
@@ -45,14 +47,15 @@
   },
   "devDependencies": {
     "@dojo/cli": "^6.0.0",
-    "@dojo/cli-build-widget": "^6.0.0",
+    "@dojo/cli-build-app": "^6.0.7",
+    "@dojo/cli-build-widget": "^6.0.2",
     "@dojo/framework": "^6.0.0",
     "@dojo/loader": "^2.0.0",
     "@dojo/scripts": "^4.0.2",
-    "@dojo/themes": "^5.0.1",
+    "@dojo/themes": "^6.0.0",
     "@theintern/a11y": "~0.2.0",
     "@types/execa": "^0.8.1",
-    "@types/glob": "5.0.*",
+    "@types/glob": "5.0.36",
     "@types/grunt": "0.4.*",
     "@types/jsdom": "2.0.*",
     "@types/node": "~9.6.5",
@@ -68,11 +71,17 @@
     "npm-run-all": "4.1.5",
     "pkg-dir": "^2.0.0",
     "prettier": "1.17.0",
+    "prismjs": "1.17.1",
+    "rehype-stringify": "6.0.0",
+    "remark-parse": "7.0.1",
+    "remark-rehype": "5.0.0",
     "serve": "^11.0.0",
     "shx": "^0.2.2",
     "sinon": "^1.17.6",
+    "ts-morph": "4.2.0",
     "ts-node": "^3.3.0",
-    "typescript": "~3.4.5"
+    "typescript": "~3.4.5",
+    "unified": "8.4.1"
   },
   "dependencies": {
     "tslib": "~1.9.1"

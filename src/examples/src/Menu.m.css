@@ -1,0 +1,79 @@
+.root {
+	background: linear-gradient(110deg, #862790, #0f6ecd);
+	position: fixed;
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	z-index: 10;
+}
+
+.root::-webkit-scrollbar {
+	display: none;
+}
+
+.menu {
+	list-style: none;
+	display: flex;
+	padding: 0;
+	margin: 0;
+	height: auto;
+	width: auto;
+	background: none;
+}
+
+.item {
+	font-size: 15px;
+	line-height: 24px;
+	display: inline-block;
+	text-decoration: none;
+	position: relative;
+	white-space: nowrap;
+	padding: 10px 20px;
+}
+
+.link {
+	color: white;
+}
+
+.link:hover {
+	text-decoration: none;
+	color: white;
+}
+
+.link:hover::before {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	content: '';
+	width: 100%;
+	height: 4px;
+	background-color: rgba(18, 18, 18, 0.5);
+}
+
+.link::after {
+	position: absolute;
+	left: 0;
+	content: '';
+	width: 1px;
+	height: 22px;
+	background-color: rgba(18, 18, 18, 0.2);
+}
+
+.selected::before {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	content: '';
+	width: 100%;
+	height: 4px;
+	background-color: #fff;
+}
+
+@media (max-width: 1050px) {
+	.root {
+		position: inherit;
+	}
+}

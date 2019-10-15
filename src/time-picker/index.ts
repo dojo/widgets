@@ -18,70 +18,64 @@ interface FocusInputEvent extends FocusEvent {
 	target: HTMLInputElement;
 }
 
-/**
- * @type TimePickerProperties
- *
- * Properties that can be set on a TimePicker component
- *
- * @property autoBlur           Determines whether the input should blur after value selection
- * @property clearable          Determines whether the custom input should be able to be cleared
- * @property disabled
- * @property end                The maximum time to display in the menu (defaults to '23:59:59')
- * @property getOptionLabel     Can be used to get the text label of an option based on the underlying option object
- * @property inputProperties    TextInput properties to set on the underlying input
- * @property isOptionDisabled   Used to determine if an item should be disabled
- * @property label
- * @property labelAfter
- * @property labelHidden
- * @property name
- * @property onBlur             Called when the input is blurred
- * @property onClick
- * @property onFocus            Called when the input is focused
- * @property onMenuChange       Called when menu visibility changes
- * @property onOut
- * @property onOver
- * @property onRequestOptions   Called when options are shown; should be used to set `options`
- * @property onValue           Called when the value changes
- * @property openOnFocus        Determines whether the result list should open when the input is focused
- * @property options            Options for the current input; should be set in response to `onRequestOptions`
- * @property readOnly
- * @property required
- * @property start              The minimum time to display in the menu (defaults to '00:00:00')
- * @property step               The number of seconds between each option in the menu (defaults to 60)
- * @property useNativeElement   Use the native <input type="time"> element if true
- * @property valid
- * @property value           The current value
- * @property widgetId
- */
 export interface TimePickerProperties extends ThemedProperties, FocusProperties {
+	/** Determines whether the input should blur after value selection */
 	autoBlur?: boolean;
+	/** Determines whether the custom input should be able to be cleared */
 	clearable?: boolean;
+	/**  */
 	disabled?: boolean;
+	/** The maximum time to display in the menu (defaults to '23:59:59') */
 	end?: string;
+	/** Can be used to get the text label of an option based on the underlying option object */
 	getOptionLabel?(option: TimeUnits): string;
+	/** TextInput properties to set on the underlying input */
 	inputProperties?: TextInputProperties;
+	/** Used to determine if an item should be disabled */
 	isOptionDisabled?(result: any): boolean;
+	/**  */
 	label?: string;
+	/**  */
 	labelAfter?: boolean;
+	/**  */
 	labelHidden?: boolean;
+	/**  */
 	name?: string;
+	/** Called when the input is blurred */
 	onBlur?(): void;
+	/**  */
 	onClick?(): void;
+	/** Called when the input is focused */
 	onFocus?(): void;
+	/** Called when menu visibility changes */
 	onMenuChange?(open: boolean, key?: string | number): void;
+	/**  */
 	onOut?(): void;
+	/**  */
 	onOver?(): void;
+	/** Called when options are shown; should be used to set `options` */
 	onRequestOptions?(key?: string | number): void;
+	/** Called when the value changes */
 	onValue?(value: string): void;
+	/** Determines whether the result list should open when the input is focused */
 	openOnFocus?: boolean;
+	/** Options for the current input; should be set in response to `onRequestOptions` */
 	options?: TimeUnits[];
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/** The minimum time to display in the menu (defaults to '00:00:00') */
 	start?: string;
+	/** The number of seconds between each option in the menu (defaults to 60) */
 	step?: number;
+	/** Use the native <input type="time"> element if true */
 	useNativeElement?: boolean;
+	/**  */
 	valid?: boolean;
+	/** The current value */
 	value?: string;
+	/**  */
 	widgetId?: string;
 }
 

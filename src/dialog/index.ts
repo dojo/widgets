@@ -1,6 +1,6 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import Focus from '@dojo/framework/core/meta/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
@@ -18,40 +18,34 @@ import { GlobalEvent } from '../global-event/index';
  */
 export type RoleType = 'dialog' | 'alertdialog';
 
-/**
- * @type DialogProperties
- *
- * Properties that can be set on a Dialog component
- *
- * @property aria
- * @property closeable          Determines whether the dialog can be closed
- * @property closeText          Hidden text used by screen readers to display for the close button
- * @property enterAnimation     css class to be used when animating the dialog entering, or null to disable the animation
- * @property exitAnimation      css class to be used when animating the dialog exiting, or null to disable the animation
- * @property modal              Determines whether the dialog can be closed by clicking outside its content
- * @property onOpen             Called when the dialog opens
- * @property onRequestClose     Called when the dialog is closed
- * @property open               Determines whether the dialog is open or closed
- * @property role               Role of this dialog for accessibility, either 'alert' or 'dialog'
- * @property title              Title to show in the dialog title bar
- * @property underlay           Determines whether a semi-transparent background shows behind the dialog
- * @property underlayEnterAnimation     css class to be used when animating the dialog underlay entering, or null to disable the animation
- * @property underlayExitAnimation      css class to be used when animating the dialog underlay exiting, or null to disable the animation
- */
-export interface DialogProperties extends ThemedProperties {
+export interface DialogProperties extends ThemedProperties, I18nProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Determines whether the dialog can be closed */
 	closeable?: boolean;
+	/** Hidden text used by screen readers to display for the close button */
 	closeText?: string;
+	/** css class to be used when animating the dialog entering, or null to disable the animation */
 	enterAnimation?: string | null;
+	/** css class to be used when animating the dialog exiting, or null to disable the animation */
 	exitAnimation?: string | null;
+	/** Determines whether the dialog can be closed by clicking outside its content */
 	modal?: boolean;
+	/** Called when the dialog opens */
 	onOpen?(): void;
+	/** Called when the dialog is closed */
 	onRequestClose?(): void;
+	/** Determines whether the dialog is open or closed */
 	open?: boolean;
+	/** Role of this dialog for accessibility, either 'alert' or 'dialog' */
 	role?: RoleType;
+	/** Title to show in the dialog title bar */
 	title?: string;
+	/** Determines whether a semi-transparent background shows behind the dialog */
 	underlay?: boolean;
+	/** css class to be used when animating the dialog underlay entering, or null to disable the animation */
 	underlayEnterAnimation?: string | null;
+	/** css class to be used when animating the dialog underlay exiting, or null to disable the animation */
 	underlayExitAnimation?: string | null;
 }
 

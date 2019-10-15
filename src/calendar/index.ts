@@ -1,5 +1,5 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
@@ -16,40 +16,34 @@ import * as baseCss from '../common/styles/base.m.css';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 
-/**
- * @type CalendarProperties
- *
- * Properties that can be set on a Calendar component
- *
- * @property aria
- * @property labels            Customize or internationalize accessible text for the Calendar widget
- * @property maxDate           Set the latest date the calendar will display (it will show the whole month but not allow later selections)
- * @property minDate           Set the earliest date the calendar will display (it will show the whole month but not allow previous selections)
- * @property month             Set the currently displayed month, 0-based
- * @property monthNames        Customize or internationalize full month names and abbreviations
- * @property onDateSelect      Function called when the user selects a date
- * @property onMonthChange     Function called when the month changes
- * @property onYearChange      Function called when the year changes
- * @property renderMonthLabel  Format the displayed current month and year
- * @property renderWeekdayCell Format the weekday column headers
- * @property selectedDate      The currently selected date
- * @property weekdayNames      Customize or internationalize weekday names and abbreviations
- * @property year              Set the currently displayed year
- */
-export interface CalendarProperties extends ThemedProperties {
+export interface CalendarProperties extends ThemedProperties, I18nProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Customize or internationalize accessible text for the Calendar widget */
 	labels?: CalendarMessages;
+	/** Set the latest date the calendar will display (it will show the whole month but not allow later selections) */
 	maxDate?: Date;
+	/** Set the earliest date the calendar will display (it will show the whole month but not allow previous selections) */
 	minDate?: Date;
+	/** Set the currently displayed month, 0-based */
 	month?: number;
+	/** Customize or internationalize full month names and abbreviations */
 	monthNames?: { short: string; long: string }[];
+	/** Function called when the user selects a date */
 	onDateSelect?(date: Date): void;
+	/** Function called when the month changes */
 	onMonthChange?(month: number): void;
+	/** Function called when the year changes */
 	onYearChange?(year: number): void;
+	/** Format the displayed current month and year */
 	renderMonthLabel?(month: number, year: number): string;
+	/** Format the weekday column headers */
 	renderWeekdayCell?(day: { short: string; long: string }): DNode;
+	/** The currently selected date */
 	selectedDate?: Date;
+	/** Customize or internationalize weekday names and abbreviations */
 	weekdayNames?: { short: string; long: string }[];
+	/** Set the currently displayed year */
 	year?: number;
 }
 

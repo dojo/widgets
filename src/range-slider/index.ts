@@ -14,31 +14,57 @@ import * as baseCss from '../common/styles/base.m.css';
 type RangeValue = { min: number; max: number };
 
 export interface RangeSliderProperties extends ThemedProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  */
 	disabled?: boolean;
+	/**  */
 	label?: string;
+	/**  */
 	labelAfter?: boolean;
+	/**  */
 	labelHidden?: boolean;
+	/**  */
 	max?: number;
+	/**  */
 	maximumLabel?: string;
+	/**  */
 	maxName?: string;
+	/**  */
 	min?: number;
+	/**  */
 	minimumLabel?: string;
+	/**  */
 	minName?: string;
+	/**  */
 	name?: string;
+	/**  */
 	onBlur?(): void;
+	/**  */
 	onFocus?(): void;
+	/**  */
 	onOut?(): void;
+	/**  */
 	onOver?(): void;
+	/**  */
 	onValue?(value: RangeValue): void;
+	/**  */
 	output?(value: RangeValue): DNode;
+	/**  */
 	outputIsTooltip?: boolean;
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/**  */
 	showOutput?: boolean;
+	/**  */
 	step?: number;
+	/**  */
 	valid?: boolean;
+	/**  */
 	value?: RangeValue;
+	/**  */
 	widgetId?: string;
 }
 

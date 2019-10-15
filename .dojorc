@@ -1,4 +1,12 @@
 {
+	"build-app": {
+		"build-time-render": {
+			"root": "app"
+		},
+		"features": {
+			"docs": false
+		}
+	},
 	"build-widget": {
 		"prefix": "dojo",
 		"widgets": [

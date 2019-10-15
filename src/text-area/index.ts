@@ -11,66 +11,60 @@ import * as css from '../theme/text-area.m.css';
 import HelperText from '../helper-text/index';
 import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
 
-/**
- * @type TextAreaProperties
- *
- * Properties that can be set on a TextInput component
- *
- * @property aria
- * @property columns         Number of columns, controls the width of the textarea
- * @property customValidator
- * @property disabled
- * @property helperText
- * @property label
- * @property labelHidden
- * @property maxLength      Maximum number of characters allowed in the input
- * @property minLength      Minimum number of characters allowed in the input
- * @property name
- * @property onBlur
- * @property onClick
- * @property onFocus
- * @property onKeyDown
- * @property onKeyUp
- * @property onOut
- * @property onOver
- * @property onValidate
- * @property onValue
- * @property placeholder    Placeholder text
- * @property readOnly
- * @property required
- * @property rows            Number of rows, controls the height of the textarea
- * @property valid
- * @property value           The current value
- * @property widgetId
- * @property wrapText        Controls text wrapping. Can be "hard", "soft", or "off"
- */
 export interface TextAreaProperties extends ThemedProperties, FocusProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Number of columns, controls the width of the textarea */
 	columns?: number;
+	/**  */
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
+	/**  */
 	disabled?: boolean;
+	/**  */
 	helperText?: string;
+	/**  */
 	label?: string;
+	/**  */
 	labelHidden?: boolean;
+	/** Maximum number of characters allowed in the input */
 	maxLength?: number | string;
+	/** Minimum number of characters allowed in the input */
 	minLength?: number | string;
+	/**  */
 	name?: string;
+	/**  */
 	onBlur?(): void;
+	/**  */
 	onClick?(): void;
+	/**  */
 	onFocus?(): void;
+	/**  */
 	onKeyDown?(key: number, preventDefault: () => void): void;
+	/**  */
 	onKeyUp?(key: number, preventDefault: () => void): void;
+	/**  */
 	onOut?(): void;
+	/**  */
 	onOver?(): void;
+	/**  */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	/**  */
 	onValue?(value?: string): void;
+	/** Placeholder text */
 	placeholder?: string;
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/** Number of rows, controls the height of the textarea */
 	rows?: number;
+	/**  */
 	valid?: { valid?: boolean; message?: string } | boolean;
+	/** The current value */
 	value?: string;
+	/**  */
 	widgetId?: string;
+	/** Controls text wrapping. Can be "hard", "soft", or "off" */
 	wrapText?: 'hard' | 'soft' | 'off';
 }
 

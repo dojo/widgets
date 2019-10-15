@@ -10,60 +10,54 @@ import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
 import * as css from '../theme/slider.m.css';
 
-/**
- * @type SliderProperties
- *
- * Properties that can be set on a Slider component
- *
- * @property aria
- * @property disabled
- * @property label
- * @property labelAfter
- * @property labelHidden
- * @property max               The maximum value for the slider
- * @property min               The minimum value for the slider
- * @property name
- * @property onBlur
- * @property onFocus
- * @property onOut
- * @property onOver
- * @property onValue
- * @property output            An optional function that returns a string or DNode for custom output format
- * @property outputIsTooltip
- * @property readOnly
- * @property required
- * @property showOutput        Toggles visibility of slider output
- * @property step              Size of the slider increment
- * @property valid
- * @property value           The current value
- * @property vertical          Orients the slider vertically, false by default.
- * @property verticalHeight    Length of the vertical slider (only used if vertical is true)
- * @property widgetId
- */
 export interface SliderProperties extends ThemedProperties, FocusProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  */
 	disabled?: boolean;
+	/**  */
 	label?: string;
+	/**  */
 	labelAfter?: boolean;
+	/**  */
 	labelHidden?: boolean;
+	/** The maximum value for the slider */
 	max?: number;
+	/** The minimum value for the slider */
 	min?: number;
+	/**  */
 	name?: string;
+	/**  */
 	onBlur?(): void;
+	/**  */
 	onFocus?(): void;
+	/**  */
 	onOut?(): void;
+	/**  */
 	onOver?(): void;
+	/**  */
 	onValue?(value?: number): void;
+	/** An optional function that returns a string or DNode for custom output format */
 	output?(value: number): DNode;
+	/**  */
 	outputIsTooltip?: boolean;
+	/**  */
 	readOnly?: boolean;
+	/**  */
 	required?: boolean;
+	/** Toggles visibility of slider output */
 	showOutput?: boolean;
+	/** Size of the slider increment */
 	step?: number;
+	/**  */
 	valid?: boolean;
+	/** The current value */
 	value?: number;
+	/** Orients the slider vertically, false by default. */
 	vertical?: boolean;
+	/** Length of the vertical slider (only used if vertical is true) */
 	verticalHeight?: string;
+	/**  */
 	widgetId?: string;
 }
 

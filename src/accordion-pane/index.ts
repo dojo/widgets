@@ -8,18 +8,12 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import TitlePane from '../title-pane/index';
 import * as css from '../theme/accordion-pane.m.css';
 
-/**
- * @type AccordionPaneProperties
- *
- * Properties that can be set on AccordionPane components
- *
- * @property onRequestClose   Called when the title of an open pane is clicked
- * @property onRequestOpen    Called when the title of a closed pane is clicked
- * @property openKeys         Array of TitlePane keys indicating which panes should be open
- */
 export interface AccordionPaneProperties extends ThemedProperties {
+	/** Called when the title of an open pane is clicked */
 	onRequestClose?(key: string): void;
+	/** Called when the title of a closed pane is clicked */
 	onRequestOpen?(key: string): void;
+	/** Array of TitlePane keys indicating which panes should be open */
 	openKeys?: string[];
 }
 

@@ -25,40 +25,33 @@ export class ScrollMeta extends MetaBase {
 	}
 }
 
-/**
- * @type ListboxProperties
- *
- * Properties that can be set on a Listbox component
- *
- * @property activeIndex          Index of the currently active listbox option
- * @property aria
- * @property getOptionDisabled    Function that accepts option data and returns a boolean for disabled/not disabled
- * @property getOptionId          Function that accepts option data and returns a string ID
- * @property getOptionLabel       Function to return string label based on option data
- * @property getOptionSelected    Function that accepts option data and returns a boolean for selected/unselected
- * @property multiselect          Adds currect semantics for a multiselect listbox
- * @property onActiveIndexChange  Called with the index of the new requested active descendant
- * @property onOptionSelect       Called with the option data of the new requested selected item
- * @property optionData           Array of data for listbox options
- * @property tabIndex             Listbox is in the focus order by default, but setting tabIndex: -1 will remove it
- * @property visualFocus          When controlling Listbox through an outside widget, e.g. in ComboBox, visualFocus mimics visual focus styling when true
- * @property widgetId               Optional custom id for the root node of the listbox
- */
-
 export interface ListboxProperties extends ThemedProperties, FocusProperties {
+	/** Index of the currently active listbox option */
 	activeIndex?: number;
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Function that accepts option data and returns a boolean for disabled/not disabled */
 	getOptionDisabled?(option: any, index: number): boolean;
+	/** Function that accepts option data and returns a string ID */
 	getOptionId?(option: any, index: number): string;
+	/** Function to return string label based on option data */
 	getOptionLabel?(option: any, index: number): DNode;
+	/** Function that accepts option data and returns a boolean for selected/unselected */
 	getOptionSelected?(option: any, index: number): boolean;
+	/** Adds currect semantics for a multiselect listbox */
 	multiselect?: boolean;
+	/** Called with the index of the new requested active descendant */
 	onActiveIndexChange?(index: number): void;
 	onKeyDown?(event: KeyboardEvent): void;
+	/** Called with the option data of the new requested selected item */
 	onOptionSelect?(option: any, index: number): void;
+	/** Array of data for listbox options */
 	optionData?: any[];
+	/** Listbox is in the focus order by default, but setting tabIndex: -1 will remove it */
 	tabIndex?: number;
+	/** When controlling Listbox through an outside widget, e.g. in ComboBox, visualFocus mimics visual focus styling when true */
 	visualFocus?: boolean;
+	/** Optional custom id for the root node of the listbox */
 	widgetId?: string;
 }
 

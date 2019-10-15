@@ -39,12 +39,19 @@ export interface CustomRenderers {
 }
 
 export interface GridProperties<S> extends ThemedProperties {
+	/** The full configuration for the grid columns */
 	columnConfig: ColumnConfig[];
+	/** function that returns results for the page reflected */
 	fetcher: Fetcher<S>;
+	/** gird height in px */
 	height: number;
+	/** function that updates an item from a edit made in the grid */
 	updater?: Updater<S>;
+	/** options store, if no store is passed each grid will factory their own grid */
 	store?: Store<S>;
+	/** the path to store the grid data in */
 	storeId?: string;
+	/** set of custom renderers for sorting or filtering */
 	customRenderers?: CustomRenderers;
 }
 

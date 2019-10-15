@@ -5,26 +5,20 @@ import { formatAriaProperties } from '../common/util';
 import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/progress.m.css';
 
-/**
- * @type ProgressProperties
- *
- * Properties that can be set on a Progress component
- *
- * @property aria
- * @property max            Value used to calculate percent width
- * @property min            Value used to calculate percent width
- * @property output         A function used to determine the output display
- * @property showOutput     Toggles visibility of progess bar output
- * @property value          The current value
- * @property widgetId       Value used to supply a dom id to the element with role="progressbar"
- */
 export interface ProgressProperties extends ThemedProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/** Value used to calculate percent width */
 	max?: number;
+	/** Value used to calculate percent width */
 	min?: number;
+	/** A function used to determine the output display */
 	output?(value: number, percent: number): string;
+	/** Toggles visibility of progress bar output */
 	showOutput?: boolean;
+	/** The current value */
 	value: number;
+	/** Value used to supply a dom id to the element with role="progressbar" */
 	widgetId?: string;
 }
 

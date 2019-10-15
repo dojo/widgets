@@ -2,7 +2,7 @@ import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { Keys } from '../common/util';
 import { reference } from '@dojo/framework/core/diff';
-import { I18nMixin } from '@dojo/framework/core/mixins/I18n';
+import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import Focus from '@dojo/framework/core/meta/Focus';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
@@ -20,63 +20,54 @@ import * as css from '../theme/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import HelperText from '../helper-text/index';
 
-/**
- * @type ComboBoxProperties
- *
- * Properties that can be set on a ComboBox component
- *
- * @property clearable          Determines whether the input should be able to be cleared
- * @property disabled           Prevents user interaction and styles content accordingly
- * @property getResultLabel     Can be used to get the text label of a result based on the underlying result object
- * @property getResultSelected  Can be used to highlight the selected result. Defaults to checking the result label
- * @property getResultValue     Can be used to define a value returned by onValue when a given result is selected. Defaults to getResultLabel
- * @property helpertext			Displays text at bottom of widget
- * @property inputProperties    TextInput properties to set on the underlying input
- * @property isResultDisabled   Used to determine if an item should be disabled
- * @property label              Label to show for this input
- * @property labelHidden
- * @property onBlur             Called when the input is blurred
- * @property onFocus            Called when the input is focused
- * @property onMenuChange       Called when menu visibility changes
- * @property onOut
- * @property onOver
- * @property onRequestResults   Called when results are shown; should be used to set `results`
- * @property onResultSelect     Called when result is selected
- * @property onValue           Called when the value changes
- * @property openOnFocus        Determines whether the result list should open when the input is focused
- * @property readOnly           Prevents user interaction
- * @property required           Determines if this input is required, styles accordingly
- * @property results            Results for the current search term; should be set in response to `onRequestResults`
- * @property valid            Determines if this input is valid
- * @property value              Value to set on the input
- * @property widgetId           Optional id string for the combobox, set on the text input
- */
-export interface ComboBoxProperties extends ThemedProperties, FocusProperties {
+export interface ComboboxProperties extends ThemedProperties, FocusProperties, I18nProperties {
+	/** Determines whether the input should be able to be cleared */
 	clearable?: boolean;
+	/** Prevents user interaction and styles content accordingly */
 	disabled?: boolean;
+	/** Can be used to get the text label of a result based on the underlying result object */
 	getResultLabel?(result: any): DNode;
+	/** Can be used to highlight the selected result. Defaults to checking the result label */
 	getResultSelected?(result: any): boolean;
+	/** Can be used to define a value returned by onValue when a given result is selected. Defaults to getResultLabel */
 	getResultValue?(result: any): string;
+	/** Displays text at bottom of widget */
 	helperText?: string;
+	/** TextInput properties to set on the underlying input */
 	inputProperties?: TextInputProperties;
+	/** Used to determine if an item should be disabled */
 	isResultDisabled?(result: any): boolean;
+	/** Label to show for this input */
 	label?: string;
 	labelHidden?: boolean;
+	/** Called when the input is blurred */
 	onBlur?(): void;
+	/** Called when the input is focused */
 	onFocus?(): void;
+	/** Called when menu visibility changes */
 	onMenuChange?(open: boolean): void;
 	onOut?(): void;
 	onOver?(): void;
+	/** Called when results are shown; should be used to set `results` */
 	onRequestResults?(): void;
+	/** Called when result is selected */
 	onResultSelect?(result: any): void;
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	/** Called when the value changes */
 	onValue?(value: string): void;
+	/** Determines whether the result list should open when the input is focused */
 	openOnFocus?: boolean;
+	/** Prevents user interaction */
 	readOnly?: boolean;
+	/** Determines if this input is required, styles accordingly */
 	required?: boolean;
+	/** Results for the current search term; should be set in response to `onRequestResults` */
 	results?: any[];
+	/** Determines if this input is valid */
 	valid?: { valid?: boolean; message?: string } | boolean;
+	/** Value to set on the input */
 	value?: string;
+	/** Optional id string for the combobox, set on the text input */
 	widgetId?: string;
 }
 
@@ -88,7 +79,7 @@ export enum Operation {
 
 @theme(css)
 @diffProperty('results', reference)
-export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboBoxProperties> {
+export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<ComboboxProperties> {
 	private _activeIndex = 0;
 	private _ignoreBlur: boolean | undefined;
 	private _idBase = uuid();

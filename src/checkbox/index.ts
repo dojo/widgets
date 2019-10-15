@@ -9,31 +9,23 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/checkbox.m.css';
 
-/**
- * @type CheckboxProperties
- *
- * Properties that can be set on a Checkbox component
- *
- * @property checked        Checked/unchecked property of the radio
- * @property mode           The type of user interface to show for this Checkbox
- * @property offLabel       Label to show in the "off" positin of a toggle
- * @property onLabel        Label to show in the "on" positin of a toggle
- * @property onOut
- * @property onOver
- * @property value           The current value
- */
 export interface CheckboxProperties extends ThemedProperties, FocusProperties {
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  Checked/unchecked property of the radio */
 	checked?: boolean;
 	disabled?: boolean;
 	label?: string;
 	labelAfter?: boolean;
 	labelHidden?: boolean;
+	/** The type of user interface to show for this Checkbox */
 	mode?: Mode;
 	name?: string;
+	/** Label to show in the "off" positin of a toggle */
 	offLabel?: DNode;
 	onBlur?(): void;
 	onFocus?(): void;
+	/** Label to show in the "on" positin of a toggle */
 	onLabel?: DNode;
 	onOut?(): void;
 	onOver?(): void;
@@ -41,6 +33,7 @@ export interface CheckboxProperties extends ThemedProperties, FocusProperties {
 	readOnly?: boolean;
 	required?: boolean;
 	valid?: boolean;
+	/** The current value */
 	value?: string;
 	widgetId?: string;
 }

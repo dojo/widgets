@@ -7,6 +7,7 @@ import * as css from '../theme/card.m.css';
 import { DNode } from '@dojo/framework/core/interfaces';
 
 export interface CardProperties {
+	/** Renderer for action available from the card */
 	actionsRenderer?(): RenderResult;
 }
 
