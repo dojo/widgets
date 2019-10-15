@@ -28,6 +28,10 @@ import BasicTimePicker from './widgets/time-picker/Basic';
 import BasicTitlePane from './widgets/title-pane/Basic';
 import BasicToolbar from './widgets/toolbar/Basic';
 import BasicTooltip from './widgets/tooltip/Basic';
+import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
+import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
+import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
+import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
 
 export interface ExampleConfig {
 	title?: string;
@@ -141,6 +145,32 @@ export const config: Config = {
 				filename: 'Basic'
 			}
 		}
+	},
+	'checkbox-group': {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicCheckboxGroup,
+				filename: 'Basic'
+			}
+		},
+		examples: [
+			{
+				title: 'Initial Value',
+				module: InitialValueCheckboxGroup,
+				filename: 'InitialValue'
+			},
+			{
+				title: 'Custom Label',
+				module: CustomLabelCheckboxGroup,
+				filename: 'CustomLabel'
+			},
+			{
+				title: 'Custom Renderer',
+				module: CustomRendererCheckboxGroup,
+				filename: 'CustomRenderer'
+			}
+		]
 	},
 	combobox: {
 		overview: {
