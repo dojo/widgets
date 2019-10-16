@@ -1,0 +1,14 @@
+.root {
+    width: 100%;
+  }
+  
+  .link {
+    text-align: center;
+    color: pink;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+    color: hotpink;
+  }
+  

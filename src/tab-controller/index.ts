@@ -26,7 +26,7 @@ export interface TabControllerProperties extends ThemedProperties, FocusProperti
 	activeIndex: number;
 	/** Orientation of the tab buttons */
 	alignButtons?: Align;
-		/** Custom aria attributes */
+	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Called when a new tab button is clicked */
 	onRequestTabChange?(index: number, key: string): void;
