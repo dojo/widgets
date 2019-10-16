@@ -1,10 +1,8 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import TextInput from '../text-input/index';
-import { tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/email-input.m.css';
+import { tsx, create } from '@dojo/framework/core/vdom';
 
 export interface EmailInputProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
@@ -53,11 +51,10 @@ export interface EmailInputProperties extends ThemedProperties, FocusProperties 
 	widgetId?: string;
 }
 
-@theme(css)
-export class EmailInput extends ThemedMixin(FocusMixin(WidgetBase))<EmailInputProperties> {
-	protected render(): DNode {
-		return <TextInput {...this.properties} type={'email'} />;
-	}
-}
+const factory = create({}).properties<EmailInputProperties>();
+
+export const EmailInput = factory(function({ properties }) {
+	return <TextInput {...properties()} type={'email'} />;
+});
 
 export default EmailInput;

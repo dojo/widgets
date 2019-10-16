@@ -18,6 +18,7 @@
 			"src/checkbox-group",
 			"src/combobox",
 			"src/dialog",
+			"src/email-input",
 			"src/icon",
 			"src/grid",
 			"src/label",
