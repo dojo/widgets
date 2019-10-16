@@ -7,6 +7,8 @@ import { tsx, create } from '@dojo/framework/core/vdom';
 export interface EmailInputProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
+	/**  */
+	autocomplete?: boolean | string;
 	/** ID of an element that this input controls */
 	controls?: string;
 	/**  */
@@ -21,6 +23,10 @@ export interface EmailInputProperties extends ThemedProperties, FocusProperties 
 	leading?: () => DNode;
 	/**  */
 	name?: string;
+	/** Maximum number of characters allowed in the input */
+	maxLength?: number | string;
+	/** Minimum number of characters allowed in the input */
+	minLength?: number | string;
 	/**  */
 	onBlur?(): void;
 	/**  */
