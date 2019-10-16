@@ -8,7 +8,6 @@ import BasicDialog from './widgets/dialog/Basic';
 import BasicGrid from './widgets/grid/Basic';
 import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
-import GridLargeDataset from './widgets/grid/LargeDataset';
 import Filtering from './widgets/grid/Filtering';
 import Sorting from './widgets/grid/Sorting';
 import EditableCells from './widgets/grid/EditableCells';
@@ -103,11 +102,6 @@ export const config: Config = {
 				title: 'Grid with Filtered Columns',
 				module: Filtering,
 				filename: 'Filtering'
-			},
-			{
-				title: 'Grid with a Large Dataset',
-				module: GridLargeDataset,
-				filename: 'LargeDataset'
 			},
 			{
 				title: 'Grid with Custom Cell Rendering',
