@@ -17,6 +17,7 @@ import BasicIcons from './widgets/icon/Basic';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicLabel from './widgets/label/Basic';
 import BasicListbox from './widgets/listbox/Basic';
+import BasicNumberInput from './widgets/input/NumberInput/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import BasicProgress from './widgets/progress/Basic';
 import BasicRadio from './widgets/radio/Basic';
@@ -299,6 +300,14 @@ export const config: Config = {
 		overview: {
 			example: {
 				module: BasicListbox,
+				filename: 'Basic'
+			}
+		}
+	},
+	numberInput: {
+		overview: {
+			example: {
+				module: BasicNumberInput,
 				filename: 'Basic'
 			}
 		}
