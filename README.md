@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/%40dojo%2Fwidgets.svg)](https://badge.fury.io/js/%40dojo%2Fwidgets)
 
 A suite of pre-built Dojo widgets, ready to use in your web application.
-These widgets are built using Dojo's widget authoring system [(@dojo/framework/widget-core)](https://github.com/dojo/framework/blob/master/src/widget-core/README.md).
+These widgets are built using Dojo's widget authoring system [(@dojo/framework/core)](https://github.com/dojo/framework/blob/master/src/core/README.md).
 
 - [Usage](#usage)
 - [Features](#features)
@@ -158,7 +158,7 @@ The range definitions are as follows:
 ## How to customize a widget
 
 There are many ways in which you can customize the behavior and appearance of Dojo widgets.
-See the [`widget-core`](https://github.com/dojo/framework/blob/master/src/widget-core/README.md) README for examples of how to customize the theme or a specific CSS class of a widget.
+See the [`core`](https://github.com/dojo/framework/blob/master/src/core/README.md) README for examples of how to customize the theme or a specific CSS class of a widget.
 
 Or can you write your own widget that extends an official widget.
 
@@ -172,7 +172,7 @@ export class MyWidget extends Button {
 }
 ```
 
-Dojo widgets provide standard extension points to allow you to customize their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/framework/blob/master/src/widget-core/README.md#decorator-lifecycle-hooks).
+Dojo widgets provide standard extension points to allow you to customize their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/framework/blob/master/src/core/README.md#decorator-lifecycle-hooks).
 
 Individual widgets also provide certain types of extension points where applicable:
 - `render*`: Large render functions are split up into multiple smaller pieces that can be more easily overridden to create custom vdom.
