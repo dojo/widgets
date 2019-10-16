@@ -41,6 +41,8 @@
 		"!./dist/dev/src/**/theme/**/*",
 		"!./dist/dev/src/**/themes/**/*",
 		"!./dist/dev/src/**/example/**/*",
-		"!./dist/dev/src/**/*Element.js"
+		"!./dist/dev/src/**/*Element.js",
+		"!./dist/dev/src/examples/**/*",
+		"!./dist/dev/src/main.js"
 	]
 }
