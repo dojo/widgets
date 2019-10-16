@@ -32,6 +32,7 @@ import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
+import BasicEmailInput from './widgets/email-input/Basic';
 
 export interface ExampleConfig {
 	title?: string;
@@ -68,6 +69,15 @@ export const config: Config = {
 				filename: 'WithLabel'
 			}
 		]
+	},
+	'email-input': {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicEmailInput,
+				filename: 'Basic'
+			}
+		}
 	},
 	button: {
 		filename: 'index',
