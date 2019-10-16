@@ -1,10 +1,9 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v, w } from '@dojo/framework/core/vdom';
+import { ThemedMixin, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import * as css from '../theme/text-input.m.css';
 import TextInput from '../text-input/index';
+import { tsx } from '@dojo/framework/core/vdom';
 
 export interface EmailInputProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
@@ -53,72 +52,9 @@ export interface EmailInputProperties extends ThemedProperties, FocusProperties 
 	widgetId?: string;
 }
 
-@theme(css)
 export class EmailInput extends ThemedMixin(FocusMixin(WidgetBase))<EmailInputProperties> {
 	protected render(): DNode {
-		const {
-			aria = {},
-			classes,
-			disabled,
-			label,
-			labelHidden = false,
-			leading,
-			name,
-			placeholder,
-			readOnly,
-			required,
-			theme,
-			trailing,
-			value,
-			widgetId,
-			helperText,
-			onValidate,
-			onValue,
-			onBlur,
-			onFocus,
-			onClick,
-			onOver,
-			onOut,
-			valid,
-			controls
-		} = this.properties;
-
-		return v(
-			'div',
-			{
-				key: 'root',
-				role: 'presentation'
-			},
-			[
-				w(TextInput, {
-					aria,
-					classes,
-					controls,
-					disabled,
-					label,
-					labelHidden,
-					leading,
-					name,
-					placeholder,
-					readOnly,
-					required,
-					theme,
-					trailing,
-					value,
-					widgetId,
-					helperText,
-					onValue,
-					onValidate,
-					onBlur,
-					onFocus,
-					onClick,
-					onOver,
-					onOut,
-					type: 'email',
-					valid
-				})
-			]
-		);
+		return <TextInput {...this.properties} type={'email'} />;
 	}
 }
 
