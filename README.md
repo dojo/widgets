@@ -202,10 +202,6 @@ To test locally in node run:
 
 `npm run test`
 
-To test against browsers with a local selenium server run:
-
-`npm run test:functional`
-
 ### Widget Examples
 
 The Dojo widget examples application is located in `src/examples`.
