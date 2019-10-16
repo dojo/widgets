@@ -110,6 +110,9 @@ const expected = function({
 					required,
 					type: 'text',
 					value: undefined,
+					min: undefined,
+					max: undefined,
+					step: undefined,
 					focus: noop,
 					pattern: undefined,
 					onblur: noop,
@@ -169,6 +172,9 @@ const input = () => (
 			onclick={noop}
 			onpointerenter={noop}
 			onpointerleave={noop}
+			min={undefined}
+			max={undefined}
+			step={undefined}
 		/>
 	</div>
 );

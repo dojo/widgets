@@ -46,6 +46,12 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	labelHidden?: boolean;
 	/** Renderer for leading icon content */
 	leading?: () => DNode;
+	/** The min value a number can be */
+	min?: number | string;
+	/** The max value a number can be */
+	max?: number | string;
+	/** The step to increment the number value by */
+	step?: number | string;
 	/** Maximum number of characters allowed in the input */
 	maxLength?: number | string;
 	/** Minimum number of characters allowed in the input */
@@ -209,28 +215,31 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			autocomplete,
 			classes,
 			disabled,
+			helperText,
 			label,
 			labelHidden = false,
 			leading,
+			max,
 			maxLength,
+			min,
 			minLength,
 			name,
+			onBlur,
+			onClick,
+			onFocus,
+			onOut,
+			onOver,
+			onValidate,
 			pattern,
 			placeholder,
 			readOnly,
 			required,
+			step,
 			theme,
 			trailing,
 			type = 'text',
 			value,
-			widgetId = this._uuid,
-			helperText,
-			onValidate,
-			onBlur,
-			onFocus,
-			onClick,
-			onOver,
-			onOut
+			widgetId = this._uuid
 		} = this.properties;
 
 		onValidate && this._validate();
@@ -285,7 +294,9 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							id: widgetId,
 							focus: this.shouldFocus,
 							key: 'input',
+							max,
 							maxlength: maxLength ? `${maxLength}` : null,
+							min,
 							minlength: minLength ? `${minLength}` : null,
 							name,
 							pattern,
@@ -293,6 +304,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							readOnly,
 							'aria-readonly': readOnly ? 'true' : null,
 							required,
+							step,
 							type,
 							value,
 							onblur: () => {
