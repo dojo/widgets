@@ -3,7 +3,6 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/text-input.m.css';
 import TextInput from '../text-input/index';
 
@@ -56,8 +55,6 @@ export interface EmailInputProperties extends ThemedProperties, FocusProperties 
 
 @theme(css)
 export class EmailInput extends ThemedMixin(FocusMixin(WidgetBase))<EmailInputProperties> {
-	private _uuid = uuid();
-
 	protected render(): DNode {
 		const {
 			aria = {},
@@ -73,7 +70,7 @@ export class EmailInput extends ThemedMixin(FocusMixin(WidgetBase))<EmailInputPr
 			theme,
 			trailing,
 			value,
-			widgetId = this._uuid,
+			widgetId,
 			helperText,
 			onValidate,
 			onValue,
