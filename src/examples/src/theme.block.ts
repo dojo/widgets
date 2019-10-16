@@ -1,4 +1,4 @@
-import * as path from 'path';
+import * as path from 'canonical-path';
 import { Project } from 'ts-morph';
 
 interface ThemeInterface {

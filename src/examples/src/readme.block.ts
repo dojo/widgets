@@ -1,6 +1,6 @@
 import globExamples from './glob-examples.block';
 import * as fs from 'fs';
-import * as path from 'path';
+import * as path from 'canonical-path';
 const unified = require('unified');
 const remarkParse = require('remark-parse');
 const remark2rehype = require('remark-rehype');
