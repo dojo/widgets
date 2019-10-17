@@ -1,66 +1,26 @@
-import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import TextInput from '../text-input/index';
+import { TextInput, BaseInputProperties } from '../text-input/index';
 import { tsx, create } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
 
-export interface EmailInputProperties extends ThemedProperties, FocusProperties {
-	/** Custom aria attributes */
-	aria?: { [key: string]: string | null };
-	/**  */
-	autocomplete?: boolean | string;
-	/** ID of an element that this input controls */
-	controls?: string;
-	/**  */
-	disabled?: boolean;
-	/**  */
-	helperText?: string;
-	/**  */
-	label?: string;
-	/**  */
-	labelHidden?: boolean;
-	/** Renderer for leading icon content */
-	leading?: () => DNode;
-	/**  */
-	name?: string;
-	/** Maximum number of characters allowed in the input */
-	maxLength?: number | string;
-	/** Minimum number of characters allowed in the input */
-	minLength?: number | string;
-	/**  */
-	onBlur?(): void;
-	/**  */
-	onFocus?(): void;
-	/**  */
-	onValidate?: (valid: boolean | undefined, message: string) => void;
-	/**  */
-	onValue?(value?: string): void;
-	/**  */
-	onClick?(): void;
-	/**  */
-	onOver?(): void;
-	/**  */
-	onOut?(): void;
-	/** Placeholder text */
-	placeholder?: string;
-	/**  */
-	readOnly?: boolean;
-	/**  */
-	required?: boolean;
-	/** Renderer for trailing icon content */
-	trailing?: () => DNode;
-	/**  */
-	valid?: { valid?: boolean; message?: string } | boolean;
-	/** The current value */
-	value?: string;
-	/**  */
-	widgetId?: string;
-}
+export interface EmailInputProperties extends BaseInputProperties {}
 
-const factory = create({}).properties<EmailInputProperties>();
+const factory = create({ icache }).properties<EmailInputProperties>();
 
-export const EmailInput = factory(function({ properties }) {
-	return <TextInput {...properties()} type={'email'} />;
+export const EmailInput = factory(function({ properties, middleware: { icache } }) {
+	const { get, set } = icache;
+	const props = properties();
+	return (
+		<TextInput
+			{...properties()}
+			type={'email'}
+			onValidate={(valid, message) => {
+				set('valid', valid);
+				set('message', message);
+				props.onValidate && props.onValidate(valid, message);
+			}}
+			valid={{ valid: get('valid'), message: get('message') }}
+		/>
+	);
 });
 
 export default EmailInput;
