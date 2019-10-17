@@ -7,6 +7,12 @@ import BasicCombobox from './widgets/combobox/Basic';
 import BasicDialog from './widgets/dialog/Basic';
 import BasicGrid from './widgets/grid/Basic';
 import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
+import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
+import Filtering from './widgets/grid/Filtering';
+import Sorting from './widgets/grid/Sorting';
+import EditableCells from './widgets/grid/EditableCells';
+import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
+import RestfulGrid from './widgets/grid/Restful';
 import BasicLabel from './widgets/label/Basic';
 import BasicListbox from './widgets/listbox/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
@@ -88,9 +94,40 @@ export const config: Config = {
 		},
 		examples: [
 			{
+				title: 'Grid with Sorting',
+				module: Sorting,
+				filename: 'Sorting'
+			},
+			{
+				title: 'Grid with Filtered Columns',
+				module: Filtering,
+				filename: 'Filtering'
+			},
+			{
+				title: 'Grid with Custom Cell Rendering',
+				module: CustomCellRenderer,
+				filename: 'CustomCellRenderer'
+			},
+			{
 				title: 'Grid with Custom Filter Renderer',
 				module: GridCustomFilterRenderer,
 				filename: 'CustomFilterRenderer'
+			},
+			{
+				title: 'Grid with Customized Sort Rendering',
+				module: CustomSortRenderer,
+				filename: 'CustomSortRenderer'
+			},
+			{
+				title: 'Grid with Data Loaded from a Remote Resource (REST)',
+				module: RestfulGrid,
+				filename: 'RestfulGrid'
+			},
+			{
+				title: 'Grid with Editable Cells',
+				description: 'Demonstrates using the grid utilities to support editable cells',
+				module: EditableCells,
+				filename: 'EditableCells'
 			}
 		]
 	},

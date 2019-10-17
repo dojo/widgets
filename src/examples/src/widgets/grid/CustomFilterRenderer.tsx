@@ -1,6 +1,6 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import Grid from '@dojo/widgets/grid';
-import { ColumnConfig, FetcherOptions, FetcherResult } from '@dojo/widgets/grid/interfaces';
+import { ColumnConfig, FetcherOptions } from '@dojo/widgets/grid/interfaces';
 import { createFetcherResult, sorter } from '@dojo/widgets/grid/utils';
 
 import { createData } from './data';
@@ -21,14 +21,11 @@ const columnConfig: ColumnConfig[] = [
 	},
 	{
 		id: 'firstName',
-		title: 'First Name',
-		sortable: true,
-		filterable: true
+		title: 'First Name'
 	},
 	{
 		id: 'lastName',
-		title: 'Last Name',
-		sortable: true
+		title: 'Last Name'
 	}
 ];
 
@@ -57,7 +54,7 @@ async function fetcher(
 	page: number,
 	pageSize: number,
 	options: FetcherOptions = {}
-): Promise<FetcherResult> {
+) {
 	return createFetcherResult(sorter(filterer(data, options), options), page, pageSize);
 }
 
@@ -68,7 +65,7 @@ export default factory(function CustomFilterRenderer() {
 		<Grid
 			fetcher={fetcher}
 			columnConfig={columnConfig}
-			height={500}
+			height={450}
 			customRenderers={{
 				filterRenderer: (columnConfig: ColumnConfig, filterValue, doFilter, title) => {
 					if (columnConfig.id === 'gender') {
