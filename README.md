@@ -202,10 +202,6 @@ To test locally in node run:
 
 `npm run test`
 
-To test against browsers with a local selenium server run:
-
-`npm run test:functional`
-
 ### Widget Examples
 
 The Dojo widget examples application is located in `src/examples`.
@@ -238,7 +234,7 @@ To add a new example, create a directory that matches the directory name of the 
  * overview: The configuration for the basic example including the imported Basic module and the example filename (has to be `'Basic'`)
  * examples: Additional examples for the widget, an array of configuration that specifies the title, description, module and example filename.
 
- To view the examples locally run `npm run dev` and navigate to http://localhost:9999, this starts the examples in watch mode and should update widget module are changed.
+ To view the examples locally run `npm run dev` in the root directory and navigate to http://localhost:9999, this starts the examples in watch mode and should update widget module are changed. Note that you do not have to install dependencies in the `src/examples` project, this will result in an error.
 
 ### Widget Documentation
 
