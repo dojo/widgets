@@ -36,4 +36,3 @@ import '../../../time-picker/tests/unit/TimePicker';
 import '../../../title-pane/tests/unit/TitlePane';
 import '../../../toolbar/tests/unit/Toolbar';
 import '../../../tooltip/tests/unit/Tooltip';
-import '../../../email-input/unit/EmailInput';
