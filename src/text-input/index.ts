@@ -27,25 +27,58 @@ interface TextInputInternalState {
 	dirty?: boolean;
 }
 
-export interface TextInputProperties extends ThemedProperties, FocusProperties {
+export interface BaseInputProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/**  */
+	/** Should the field autocomplete */
 	autocomplete?: boolean | string;
-	/** ID of an element that this input controls */
-	controls?: string;
-	/**  */
-	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
-	/**  */
+	/** The disabled property of the input */
 	disabled?: boolean;
-	/**  */
+	/** Text to display below the input */
 	helperText?: string;
-	/**  */
+	/** The label to be displayed above the input */
 	label?: string;
-	/**  */
+	/** Hides the label for a11y purposes */
 	labelHidden?: boolean;
 	/** Renderer for leading icon content */
 	leading?: () => DNode;
+	/** The name property of the input */
+	name?: string;
+	/** Callback fired when the input is blurred */
+	onBlur?(): void;
+	/** Callback fired when the input is focused */
+	onFocus?(): void;
+	/** Callback fired when a key is pressed down */
+	onKeyDown?(key: number, preventDefault: () => void): void;
+	/** Callback fired when a key is released */
+	onKeyUp?(key: number, preventDefault: () => void): void;
+	/** Callback fired when the input validation changes */
+	onValidate?: (valid: boolean | undefined, message: string) => void;
+	/** Callback fired when the input value changes */
+	onValue?(value?: string): void;
+	/** Callback fired when the input is clicked */
+	onClick?(): void;
+	/** Callback fired when the pointer enters the input */
+	onOver?(): void;
+	/** Callback fired when the pointer leaves the input */
+	onOut?(): void;
+	/** Placeholder text */
+	placeholder?: string;
+	/** The readonly attribute of the input */
+	readOnly?: boolean;
+	/** The required attribute of the input */
+	required?: boolean;
+	/** Renderer for trailing icon content */
+	trailing?: () => DNode;
+	/** The current value */
+	value?: string;
+	/** The id to be applied to the input */
+	widgetId?: string;
+}
+
+export interface TextInputProperties extends BaseInputProperties {
+	/**  */
+	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
 	/** The min value a number can be */
 	min?: number | string;
 	/** The max value a number can be */
@@ -56,44 +89,12 @@ export interface TextInputProperties extends ThemedProperties, FocusProperties {
 	maxLength?: number | string;
 	/** Minimum number of characters allowed in the input */
 	minLength?: number | string;
-	/**  */
-	name?: string;
-	/**  */
-	onBlur?(): void;
-	/**  */
-	onFocus?(): void;
-	/**  */
-	onKeyDown?(key: number, preventDefault: () => void): void;
-	/**  */
-	onKeyUp?(key: number, preventDefault: () => void): void;
-	/**  */
-	onValidate?: (valid: boolean | undefined, message: string) => void;
-	/**  */
-	onValue?(value?: string): void;
-	/**  */
-	onClick?(): void;
-	/**  */
-	onOver?(): void;
-	/**  */
-	onOut?(): void;
-	/**  */
+	/** Pattern used as part of validation */
 	pattern?: string | RegExp;
-	/** Placeholder text */
-	placeholder?: string;
-	/**  */
-	readOnly?: boolean;
-	/**  */
-	required?: boolean;
-	/** Renderer for trailing icon content */
-	trailing?: () => DNode;
 	/** Input type, e.g. text, email, tel, etc. */
 	type?: TextInputType;
-	/**  */
+	/** Represents if the input value is valid */
 	valid?: { valid?: boolean; message?: string } | boolean;
-	/** The current value */
-	value?: string;
-	/**  */
-	widgetId?: string;
 }
 
 function formatAutocomplete(autocomplete: string | boolean | undefined): string | undefined {
