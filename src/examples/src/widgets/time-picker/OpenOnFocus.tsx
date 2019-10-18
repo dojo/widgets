@@ -15,9 +15,10 @@ export default factory(function Basic({ middleware: { icache } }) {
 				placeholder: 'Enter a value'
 			}}
 			label="Time: "
+			openOnFocus
+			step={1800}
 			value={get<string>('date')}
 			onValue={(value) => set('date', value)}
-			step={1800}
 		/>
 	);
 });

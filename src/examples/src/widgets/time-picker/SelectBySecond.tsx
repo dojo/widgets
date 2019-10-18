@@ -17,7 +17,9 @@ export default factory(function Basic({ middleware: { icache } }) {
 			label="Time: "
 			value={get<string>('date')}
 			onValue={(value) => set('date', value)}
-			step={1800}
+			start="12:00:00"
+			end="12:00:59"
+			step={1}
 		/>
 	);
 });

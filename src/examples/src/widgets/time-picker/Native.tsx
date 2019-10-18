@@ -18,6 +18,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 			value={get<string>('date')}
 			onValue={(value) => set('date', value)}
 			step={1800}
+			useNativeElement
 		/>
 	);
 });
