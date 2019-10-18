@@ -6,12 +6,19 @@ import Icon from '../icon/index';
 import { Keys } from '../common/util';
 
 export interface ChipProperties {
+	/** Renders an icon, provided with the value of the checked property */
 	iconRenderer?(checked?: boolean): RenderResult;
+	/** The label to be displayed in the widget */
 	label: string;
+	/** Renders a close icon, ignored if `onClose` is not provided */
 	closeRenderer?(): RenderResult;
+	/** A callback when the close icon is clicked, if `closeRenderer is not provided a default X icon will be used */
 	onClose?(): void;
+	/** An optional callback for the the widget is clicked */
 	onClick?(): void;
+	/** Whether the widget is disabled, only affects the widget when `onClick` is provided */
 	disabled?: boolean;
+	/** Indicates whe "checked" state of the widget, will be passed to the iconRenderer */
 	checked?: boolean;
 }
 

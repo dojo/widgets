@@ -11,7 +11,7 @@ Dojo's `Chip` widget allows content and particularly user inputs to be displayed
 
 ```typescript jsx
 // Basic chip
-<Chip label="Displayed value" icon="plusIcon"/>
+<Chip label="Displayed value" iconRenderer={() => <Icon type="plusIcon"/>}/>
 ```
 
 ## Theming
@@ -25,4 +25,4 @@ The following CSS classes are available on the `Chip` widget for use with custom
 
 - `clickable`: Applied to the root when an `onClick` callback is provided and the component is not `disabled`
 - `disabled`: Applied to the root when the `disabled` property is provided
-- `closeIcon`: Applied to the div wrapping the `closeIcon` if an `onClose` callback is provided
+- `closeIcon`: Applied to the div wrapping the close icon if an `onClose` callback is provided
