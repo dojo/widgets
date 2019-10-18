@@ -55,6 +55,12 @@ import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
+import BasicChip from './widgets/chip/Basic';
+import IconChip from './widgets/chip/Icon';
+import ClickableChip from './widgets/chip/Clickable';
+import DisabledChip from './widgets/chip/Disabled';
+import ClosableChip from './widgets/chip/Closable';
+import ClickableClosableChip from './widgets/chip/ClickableClosable';
 
 export interface ExampleConfig {
 	title?: string;
@@ -248,6 +254,42 @@ export const config: Config = {
 				title: 'Custom Renderer',
 				module: CustomRendererCheckboxGroup,
 				filename: 'CustomRenderer'
+			}
+		]
+	},
+	chip: {
+		filename: 'index',
+		overview: {
+			example: {
+				module: BasicChip,
+				filename: 'Basic'
+			}
+		},
+		examples: [
+			{
+				title: 'Icon',
+				module: IconChip,
+				filename: 'Icon'
+			},
+			{
+				title: 'Clickable',
+				module: ClickableChip,
+				filename: 'Clickable'
+			},
+			{
+				title: 'Disabled',
+				module: DisabledChip,
+				filename: 'Disabled'
+			},
+			{
+				title: 'Closable',
+				module: ClosableChip,
+				filename: 'Closable'
+			},
+			{
+				title: 'Clickable and Closable',
+				module: ClickableClosableChip,
+				filename: 'ClickableClosable'
 			}
 		]
 	},
