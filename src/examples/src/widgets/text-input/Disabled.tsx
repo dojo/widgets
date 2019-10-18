@@ -9,7 +9,9 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<TextInput
 			value={value}
-			label="Input label"
+			label="Can't type here"
+			disabled
+			readOnly
 			onValue={(value) => {
 				icache.set('value', value);
 			}}

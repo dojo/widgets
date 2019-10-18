@@ -9,7 +9,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<TextInput
 			value={value}
-			label="Input label"
+			label="Hidden label"
+			labelHidden
 			onValue={(value) => {
 				icache.set('value', value);
 			}}

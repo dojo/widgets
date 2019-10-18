@@ -13,6 +13,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 			onValue={(value) => {
 				icache.set('value', value);
 			}}
+			leading={() => <span>A</span>}
+			trailing={() => <span>Z</span>}
 		/>
 	);
 });
