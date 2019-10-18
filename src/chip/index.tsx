@@ -1,23 +1,32 @@
-import { create, isVNode, isWNode, tsx } from '@dojo/framework/core/vdom';
-import { VNode, WNode } from '@dojo/framework/core/interfaces';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
 import * as css from '../theme/chip.m.css';
-import Icon, { IconType } from '../icon/index';
+import Icon from '../icon/index';
 import { Keys } from '../common/util';
 
 export interface ChipProperties {
-	icon?: WNode | VNode | IconType;
+	iconRenderer?(checked?: boolean): RenderResult;
 	label: string;
-	closeIcon?: WNode | VNode | IconType;
+	closeRenderer?(): RenderResult;
 	onClose?(): void;
 	onClick?(): void;
 	disabled?: boolean;
+	checked?: boolean;
 }
 
 const factory = create({ theme }).properties<ChipProperties>();
 
 export default factory(function Chip({ properties, middleware: { theme } }) {
-	const { icon, label, closeIcon, onClose, onClick, disabled } = properties();
+	const {
+		iconRenderer,
+		label,
+		closeRenderer,
+		onClose,
+		onClick,
+		disabled,
+		checked
+	} = properties();
 	const themedCss = theme.classes(css);
 
 	const createKeydown = (callback?: () => void) => (event: KeyboardEvent) => {
@@ -43,7 +52,7 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 			tabIndex={clickable ? 0 : undefined}
 			onkeydown={clickable ? createKeydown(onClick) : undefined}
 		>
-			{!icon || isVNode(icon) || isWNode(icon) ? icon : <Icon type={icon} />}
+			{iconRenderer && iconRenderer(checked)}
 			<span classes={themedCss.label}>{label}</span>
 			{onClose && (
 				<span
@@ -56,15 +65,13 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 						onClose();
 					}}
 					onkeydown={(event) => {
-						event.stopPropagation();
-						onCloseKeydown(event);
+						if (event.which === Keys.Enter || event.which === Keys.Space) {
+							event.stopPropagation();
+							onCloseKeydown(event);
+						}
 					}}
 				>
-					{isVNode(closeIcon) || isWNode(closeIcon) ? (
-						closeIcon
-					) : (
-						<Icon type={closeIcon || 'closeIcon'} />
-					)}
+					{closeRenderer ? closeRenderer() : <Icon type="closeIcon" />}
 				</span>
 			)}
 		</div>

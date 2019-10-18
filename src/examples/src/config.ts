@@ -61,6 +61,8 @@ import ClickableChip from './widgets/chip/Clickable';
 import DisabledChip from './widgets/chip/Disabled';
 import ClosableChip from './widgets/chip/Closable';
 import ClickableClosableChip from './widgets/chip/ClickableClosable';
+import ToggledChip from './widgets/chip/Toggled';
+import ClosableRendererChip from './widgets/chip/ClosableRenderer';
 
 export interface ExampleConfig {
 	title?: string;
@@ -277,6 +279,11 @@ export const config: Config = {
 				filename: 'Clickable'
 			},
 			{
+				title: 'Toggled',
+				module: ToggledChip,
+				filename: 'Toggled'
+			},
+			{
 				title: 'Disabled',
 				module: DisabledChip,
 				filename: 'Disabled'
@@ -285,6 +292,11 @@ export const config: Config = {
 				title: 'Closable',
 				module: ClosableChip,
 				filename: 'Closable'
+			},
+			{
+				title: 'Closable Renderer',
+				module: ClosableRendererChip,
+				filename: 'ClosableRenderer'
 			},
 			{
 				title: 'Clickable and Closable',

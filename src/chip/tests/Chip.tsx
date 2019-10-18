@@ -33,16 +33,24 @@ describe('Chip', () => {
 		h.expect(template);
 	});
 
-	it('should render with an icon', () => {
-		const h = harness(() => <Chip label={label} icon="plusIcon" />);
+	it('should render with an iconRenderer', () => {
+		const h = harness(() => (
+			<Chip label={label} iconRenderer={() => <Icon type="plusIcon" />} />
+		));
 
 		h.expect(template.prepend(':root', () => [<Icon type="plusIcon" />]));
 	});
 
-	it('should render with a custom icon', () => {
-		const h = harness(() => <Chip label={label} icon={<div>Some icon</div>} />);
+	it('should pass checked property to iconRenderer', () => {
+		const h = harness(() => (
+			<Chip
+				label={label}
+				checked={true}
+				iconRenderer={(checked) => <div>{String(checked)}</div>}
+			/>
+		));
 
-		h.expect(template.prepend(':root', () => [<div>Some icon</div>]));
+		h.expect(template.prepend(':root', () => [<div>true</div>]));
 	});
 
 	it('should render with a close icon when onClose is provided', () => {
@@ -63,8 +71,10 @@ describe('Chip', () => {
 		);
 	});
 
-	it('should render with a specific closeIcon when onClose is also provided', () => {
-		const h = harness(() => <Chip label={label} onClose={noop} closeIcon="minusIcon" />);
+	it('should render with a closeRenderer when onClose is also provided', () => {
+		const h = harness(() => (
+			<Chip label={label} onClose={noop} closeRenderer={() => <Icon type="minusIcon" />} />
+		));
 		h.expect(
 			template.append(':root', () => [
 				<span
@@ -81,35 +91,16 @@ describe('Chip', () => {
 		);
 	});
 
-	it('should render with a vnode closeIcon when onClose is provided', () => {
-		const h = harness(() => (
-			<Chip label={label} onClose={noop} closeIcon={<div>Some close icon</div>} />
-		));
-
-		h.expect(
-			template.append(':root', () => [
-				<span
-					key="closeButton"
-					classes={css.closeIcon}
-					tabIndex={0}
-					role="button"
-					onclick={noop}
-					onkeydown={noop}
-				>
-					<div>Some close icon</div>
-				</span>
-			])
-		);
-	});
-
-	it('should not render a closeIcon if provided without a callback', () => {
-		const h = harness(() => <Chip label={label} closeIcon="minusIcon" />);
+	it('should not use a closeIconRenderer if provided without a callback', () => {
+		const h = harness(() => <Chip label={label} closeRenderer={() => <div>Close</div>} />);
 
 		h.expect(template);
 	});
 
-	it('should render with an icon and a closeIcon', () => {
-		const h = harness(() => <Chip label={label} onClose={noop} icon="plusIcon" />);
+	it('should render with an iconRenderer and a close icon', () => {
+		const h = harness(() => (
+			<Chip label={label} onClose={noop} iconRenderer={() => <Icon type="plusIcon" />} />
+		));
 
 		h.expect(
 			template
@@ -152,7 +143,12 @@ describe('Chip', () => {
 		const onClose = sinon.spy();
 		const onClick = sinon.spy();
 		const h = harness(() => (
-			<Chip label={label} onClose={onClose} onClick={onClick} icon="plusIcon" />
+			<Chip
+				label={label}
+				onClose={onClose}
+				onClick={onClick}
+				iconRenderer={() => <Icon type="plusIcon" />}
+			/>
 		));
 
 		h.expect(
@@ -197,7 +193,12 @@ describe('Chip', () => {
 		const onClose = sinon.spy();
 		const onClick = sinon.spy();
 		const h = harness(() => (
-			<Chip label={label} onClose={onClose} onClick={onClick} icon="plusIcon" />
+			<Chip
+				label={label}
+				onClose={onClose}
+				onClick={onClick}
+				iconRenderer={() => <Icon type="plusIcon" />}
+			/>
 		));
 
 		h.expect(
@@ -222,7 +223,7 @@ describe('Chip', () => {
 				.prepend(':root', () => [<Icon type="plusIcon" />])
 		);
 
-		[Keys.Enter, Keys.Space].forEach((which) => {
+		[Keys.Enter, Keys.Space, Keys.Left].forEach((which) => {
 			onClose.reset();
 			onClick.reset();
 			const closeEvent = {
@@ -232,9 +233,16 @@ describe('Chip', () => {
 			};
 			h.trigger('@closeButton', 'onkeydown', closeEvent as any);
 
-			assert.isTrue(closeEvent.stopPropagation.calledOnce);
-			assert.isTrue(closeEvent.preventDefault.calledOnce);
-			assert.isTrue(onClose.calledOnce);
+			if (Keys.Left === which) {
+				assert.isTrue(closeEvent.stopPropagation.notCalled);
+				assert.isTrue(closeEvent.preventDefault.notCalled);
+				assert.isTrue(onClose.notCalled);
+			} else {
+				assert.isTrue(closeEvent.stopPropagation.calledOnce);
+				assert.isTrue(closeEvent.preventDefault.calledOnce);
+				assert.isTrue(onClose.calledOnce);
+			}
+
 			assert.isTrue(onClick.notCalled);
 
 			const clickKeyEvent = {
@@ -244,11 +252,19 @@ describe('Chip', () => {
 
 			h.trigger('@root', 'onkeydown', clickKeyEvent as any);
 
-			assert.isTrue(closeEvent.stopPropagation.calledOnce);
-			assert.isTrue(closeEvent.preventDefault.calledOnce);
-			assert.isTrue(onClose.calledOnce);
-			assert.isTrue(clickKeyEvent.preventDefault.calledOnce);
-			assert.isTrue(onClick.calledOnce);
+			if (Keys.Left === which) {
+				assert.isTrue(closeEvent.stopPropagation.notCalled);
+				assert.isTrue(closeEvent.preventDefault.notCalled);
+				assert.isTrue(onClose.notCalled);
+				assert.isTrue(clickKeyEvent.preventDefault.notCalled);
+				assert.isTrue(onClick.notCalled);
+			} else {
+				assert.isTrue(closeEvent.stopPropagation.calledOnce);
+				assert.isTrue(closeEvent.preventDefault.calledOnce);
+				assert.isTrue(onClose.calledOnce);
+				assert.isTrue(clickKeyEvent.preventDefault.calledOnce);
+				assert.isTrue(onClick.calledOnce);
+			}
 		});
 	});
 });
