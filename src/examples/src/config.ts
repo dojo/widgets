@@ -34,6 +34,8 @@ import BasicTimePicker from './widgets/time-picker/Basic';
 import BasicTitlePane from './widgets/title-pane/Basic';
 import BasicToolbar from './widgets/toolbar/Basic';
 import BasicTooltip from './widgets/tooltip/Basic';
+import FocusTooltip from './widgets/tooltip/Focus';
+import ClickTooltip from './widgets/tooltip/Click';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
@@ -359,7 +361,19 @@ export const config: Config = {
 				module: BasicTooltip,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{
+				title: 'Show on focus',
+				module: FocusTooltip,
+				filename: 'Focus'
+			},
+			{
+				title: 'Show on click',
+				module: ClickTooltip,
+				filename: 'Click'
+			}
+		]
 	}
 };
 
