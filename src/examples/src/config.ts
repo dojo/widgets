@@ -32,6 +32,11 @@ import DisabledTabController from './widgets/tab-controller/Disabled';
 import BasicTextArea from './widgets/text-area/Basic';
 import BasicTextInput from './widgets/text-input/Basic';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
+import DisabledTextInput from './widgets/text-input/Disabled';
+import HiddenLabelTextInput from './widgets/text-input/HiddenLabel';
+import ValidatedTextInput from './widgets/text-input/Validated';
+import HelperTextInput from './widgets/text-input/HelperText';
+import LeadingTrailingTextInput from './widgets/text-input/LeadingTrailing';
 import BasicTimePicker from './widgets/time-picker/Basic';
 import FilteredOnInputTimePicker from '@dojo/widgets/examples/src/widgets/time-picker/FilteredOnInput';
 import OpenOnFocusTimePicker from './widgets/time-picker/OpenOnFocus';
@@ -84,6 +89,31 @@ export const config: Config = {
 				title: 'TextInput with Label',
 				module: TextInputWithLabel,
 				filename: 'WithLabel'
+			},
+			{
+				title: 'TextInput with hidden label',
+				module: HiddenLabelTextInput,
+				filename: 'HiddenLabel'
+			},
+			{
+				title: 'Disabled TextInput',
+				module: DisabledTextInput,
+				filename: 'Disabled'
+			},
+			{
+				title: 'Validated TextInput',
+				module: ValidatedTextInput,
+				filename: 'Validated'
+			},
+			{
+				title: 'TextInput with helper text',
+				module: HelperTextInput,
+				filename: 'HelperText'
+			},
+			{
+				title: 'TextInput with leading and trailing',
+				module: LeadingTrailingTextInput,
+				filename: 'LeadingTrailing'
 			}
 		]
 	},
