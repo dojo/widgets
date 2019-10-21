@@ -1,17 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import TimePicker, { TimeUnits } from '@dojo/widgets/time-picker';
-import setLocaleData from './setLocaleData';
 import { getDateFormatter } from '@dojo/framework/i18n/date';
-
-setLocaleData();
-
-const Today = new Date();
-const getEnglishTime = getDateFormatter({ time: 'short' });
 
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
+	const Today = new Date();
+
 	const { get, set } = icache;
 	return (
 		<TimePicker
@@ -21,7 +17,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 			getOptionLabel={(option: TimeUnits) => {
 				Today.setHours(option.hour);
 				Today.setMinutes(option.minute as number);
-				return getEnglishTime(Today);
+				return getDateFormatter({ time: 'short' })(Today);
 			}}
 			label="Time: "
 			value={get<string>('date')}
