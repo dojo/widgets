@@ -8,16 +8,13 @@ const factory = create({ icache });
 export default factory(function Basic({ middleware: { icache } }) {
 	const show = icache.getOrSet('show', false);
 	return (
-		<Tooltip open={show} content="This tooltip shows on mouseover">
+		<Tooltip open={show} content="This tooltip is toggled on click">
 			<Button
-				onOut={() => {
-					icache.set('show', false);
-				}}
-				onOver={() => {
-					icache.set('show', true);
+				onClick={() => {
+					icache.set('show', !icache.get<boolean>('show'));
 				}}
 			>
-				Click
+				Click Me
 			</Button>
 		</Tooltip>
 	);
