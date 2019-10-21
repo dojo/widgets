@@ -36,15 +36,6 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 	} = properties();
 	const themedCss = theme.classes(css);
 
-	const createKeydown = (callback?: () => void) => (event: KeyboardEvent) => {
-		if (callback && (event.which === Keys.Enter || event.which === Keys.Space)) {
-			event.preventDefault();
-			callback();
-		}
-	};
-
-	const onCloseKeydown = createKeydown(onClose);
-
 	const clickable = !disabled && onClick;
 	return (
 		<div
@@ -55,9 +46,22 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 				clickable && themedCss.clickable
 			]}
 			role={clickable ? 'button' : undefined}
-			onclick={clickable ? onClick : undefined}
+			onclick={() => {
+				if (clickable && onClick) {
+					onClick();
+				}
+			}}
 			tabIndex={clickable ? 0 : undefined}
-			onkeydown={clickable ? createKeydown(onClick) : undefined}
+			onkeydown={(event) => {
+				if (
+					clickable &&
+					onClick &&
+					(event.which === Keys.Enter || event.which === Keys.Space)
+				) {
+					event.preventDefault();
+					onClick();
+				}
+			}}
 		>
 			{iconRenderer && iconRenderer(checked)}
 			<span classes={themedCss.label}>{label}</span>
@@ -74,7 +78,8 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 					onkeydown={(event) => {
 						if (event.which === Keys.Enter || event.which === Keys.Space) {
 							event.stopPropagation();
-							onCloseKeydown(event);
+							event.preventDefault();
+							onClose();
 						}
 					}}
 				>

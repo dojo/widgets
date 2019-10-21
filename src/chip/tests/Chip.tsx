@@ -19,9 +19,9 @@ describe('Chip', () => {
 			key="root"
 			classes={[css.root, undefined, undefined]}
 			role={undefined}
-			onclick={undefined}
+			onclick={noop}
 			tabIndex={undefined}
-			onkeydown={undefined}
+			onkeydown={noop}
 		>
 			<span classes={css.label}>{label}</span>
 		</div>
@@ -126,10 +126,8 @@ describe('Chip', () => {
 		h.expect(
 			template
 				.setProperty(':root', 'classes', [css.root, undefined, css.clickable])
-				.setProperty(':root', 'onclick', noop)
 				.setProperty(':root', 'role', 'button')
 				.setProperty(':root', 'tabIndex', 0)
-				.setProperty(':root', 'onkeydown', noop)
 		);
 	});
 
@@ -154,10 +152,8 @@ describe('Chip', () => {
 		h.expect(
 			template
 				.setProperty(':root', 'classes', [css.root, undefined, css.clickable])
-				.setProperty(':root', 'onclick', noop)
 				.setProperty(':root', 'role', 'button')
 				.setProperty(':root', 'tabIndex', 0)
-				.setProperty(':root', 'onkeydown', noop)
 				.append(':root', () => [
 					<span
 						key="closeButton"
@@ -204,10 +200,8 @@ describe('Chip', () => {
 		h.expect(
 			template
 				.setProperty(':root', 'classes', [css.root, undefined, css.clickable])
-				.setProperty(':root', 'onclick', noop)
 				.setProperty(':root', 'role', 'button')
 				.setProperty(':root', 'tabIndex', 0)
-				.setProperty(':root', 'onkeydown', noop)
 				.append(':root', () => [
 					<span
 						key="closeButton"
