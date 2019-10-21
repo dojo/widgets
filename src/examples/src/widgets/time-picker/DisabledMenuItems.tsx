@@ -14,10 +14,11 @@ export default factory(function Basic({ middleware: { icache } }) {
 			inputProperties={{
 				placeholder: 'Enter a value'
 			}}
+			isOptionDisabled={(option) => option.hour >= 12}
 			label="Time: "
 			value={get<string>('date')}
 			onValue={(value) => set('date', value)}
-			step={1800}
+			step={3600}
 		/>
 	);
 });

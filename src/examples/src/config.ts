@@ -31,6 +31,14 @@ import BasicTextArea from './widgets/text-area/Basic';
 import BasicTextInput from './widgets/text-input/Basic';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
 import BasicTimePicker from './widgets/time-picker/Basic';
+import FilteredOnInputTimePicker from '@dojo/widgets/examples/src/widgets/time-picker/FilteredOnInput';
+import OpenOnFocusTimePicker from './widgets/time-picker/OpenOnFocus';
+import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
+import DisabledTimePicker from './widgets/time-picker/Disabled';
+import SelectBySecondTimePicker from './widgets/time-picker/SelectBySecond';
+import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
+import RequiredTimePicker from './widgets/time-picker/Required';
+import NativeTimePicker from './widgets/time-picker/Native';
 import BasicTitlePane from './widgets/title-pane/Basic';
 import BasicToolbar from './widgets/toolbar/Basic';
 import BasicTooltip from './widgets/tooltip/Basic';
@@ -337,7 +345,49 @@ export const config: Config = {
 				module: BasicTimePicker,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{
+				title: 'Filtered on input',
+				module: FilteredOnInputTimePicker,
+				filename: 'FilteredOnInput'
+			},
+			{
+				title: 'Opens on focus',
+				module: OpenOnFocusTimePicker,
+				filename: 'OpensOnFocus'
+			},
+			{
+				title: 'Disabled menu items',
+				module: DisabledMenuItemsTimePicker,
+				filename: 'DisabledMenuItems'
+			},
+			{
+				title: 'Disabled time picker',
+				module: DisabledTimePicker,
+				filename: 'Disabled'
+			},
+			{
+				title: 'Select time by the second',
+				module: SelectBySecondTimePicker,
+				filename: 'SelectBySecond'
+			},
+			{
+				title: '12 hour time',
+				module: TwelveHourTimePicker,
+				filename: '12HourTime'
+			},
+			{
+				title: 'Required time picker',
+				module: RequiredTimePicker,
+				filename: 'Required'
+			},
+			{
+				title: 'Native time picker',
+				module: NativeTimePicker,
+				filename: 'Native'
+			}
+		]
 	},
 	'title-pane': {
 		overview: {

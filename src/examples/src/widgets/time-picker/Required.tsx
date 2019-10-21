@@ -15,8 +15,13 @@ export default factory(function Basic({ middleware: { icache } }) {
 				placeholder: 'Enter a value'
 			}}
 			label="Time: "
+			required
+			valid={get<boolean>('valid')}
 			value={get<string>('date')}
-			onValue={(value) => set('date', value)}
+			onValue={(value) => {
+				set('valid', value.trim().length > 0);
+				set('date', value);
+			}}
 			step={1800}
 		/>
 	);
