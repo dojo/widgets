@@ -15,7 +15,7 @@
     "@dojo/framework": "^6.0.0",
     "@dojo/themes": "^6.0.0",
     "@dojo/widgets": "^6.0.0",
-    "cldrjs": "0.5.0",
+    "cldr-data": "32.0.1",
     "glob": "7.1.4",
     "tslib": "~1.9.1",
     "@dojo/cli": "^6.0.0",

@@ -5,7 +5,20 @@
 		},
 		"features": {
 			"docs": false
-		}
+		},
+		"locale": "en",
+		"cldrPaths": [
+			"cldr-data/main/{locale}/ca-gregorian",
+			"cldr-data/main/{locale}/dateFields",
+			"cldr-data/main/{locale}/numbers",
+			"cldr-data/main/{locale}/timeZoneNames",
+			"cldr-data/supplemental/likelySubtags",
+			"cldr-data/supplemental/numberingSystems",
+			"cldr-data/supplemental/ordinals",
+			"cldr-data/supplemental/plurals",
+			"cldr-data/supplemental/timeData",
+			"cldr-data/supplemental/weekData"
+		]
 	},
 	"build-widget": {
 		"prefix": "dojo",

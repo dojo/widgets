@@ -1,9 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import TimePicker from '@dojo/widgets/time-picker';
-import setLocaleData from './setLocaleData';
-
-setLocaleData();
 
 const factory = create({ icache });
 

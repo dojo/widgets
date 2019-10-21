@@ -1,8 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import TimePicker from '@dojo/widgets/time-picker';
-import setLocaleData from './setLocaleData';
-
-setLocaleData();
 
 const factory = create();
 
