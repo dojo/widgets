@@ -1,46 +1,30 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { ThemedMixin, theme } from '@dojo/framework/core/mixins/Themed';
-import { tsx } from '@dojo/framework/core/vdom';
+import theme from '@dojo/framework/core/middleware/theme';
+import { tsx, create } from '@dojo/framework/core/vdom';
 import Button, { ButtonProperties } from '../button/index';
-import * as css from '../theme/raised-button.m.css';
+import * as variantCss from '../theme/raised-button.m.css';
 import * as buttonCss from '../theme/button.m.css';
-import { DNode, SupportedClassName } from '@dojo/framework/core/interfaces';
 
 export interface RaisedButtonProperties extends ButtonProperties {}
 
-function composeThemeClasses(
-	baseCss: { [key: string]: SupportedClassName },
-	variantCss: { [key: string]: SupportedClassName },
-	getThemeClass: (classes: SupportedClassName) => SupportedClassName
-) {
-	const themedBaseClasses = Object.keys(baseCss).reduce((existing, key) => {
-		(existing as any)[key] = getThemeClass((baseCss as any)[key]);
-		return existing;
-	}, {});
+const factory = create({ theme }).properties<RaisedButtonProperties>();
 
-	const themedVariantClasses = Object.keys(variantCss).reduce((existing, key) => {
-		(existing as any)[key] = getThemeClass((variantCss as any)[key]);
-		return existing;
-	}, {});
+export const RaisedButton = factory(function({ properties, children, middleware: { theme } }) {
+	const props = properties();
 
-	return { ...themedBaseClasses, ...themedVariantClasses };
-}
-
-@theme(css)
-@theme(buttonCss)
-export class RaisedButton extends ThemedMixin(WidgetBase)<RaisedButtonProperties> {
-	protected render(): DNode {
-		const theme = {
-			...this.properties.theme,
-			'@dojo/widgets/button': composeThemeClasses(buttonCss, css, this.theme)
-		};
-
-		return (
-			<Button {...this.properties} theme={theme}>
-				{this.children}
-			</Button>
-		);
-	}
-}
+	return (
+		<Button
+			{...props}
+			theme={{
+				...props.theme,
+				'@dojo/widgets/button': {
+					...theme.classes(buttonCss),
+					...theme.classes(variantCss)
+				}
+			}}
+		>
+			{children()}
+		</Button>
+	);
+});
 
 export default RaisedButton;
