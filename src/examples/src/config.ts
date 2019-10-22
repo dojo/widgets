@@ -30,11 +30,6 @@ import BasicSplitPane from './widgets/split-pane/Basic';
 import BasicTabController from './widgets/tab-controller/Basic';
 import DisabledTabController from './widgets/tab-controller/Disabled';
 import BasicTextArea from './widgets/text-area/Basic';
-import DisabledTextArea from './widgets/text-area/Disabled';
-import HelperTextTextArea from './widgets/text-area/HelperText';
-import HiddenLabelTextArea from './widgets/text-area/HiddenLabel';
-import ValidatedCustomTextArea from './widgets/text-area/ValidatedCustom';
-import ValidatedRequiredTextArea from './widgets/text-area/ValidatedRequired';
 import BasicTextInput from './widgets/text-input/Basic';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
 import DisabledTextInput from './widgets/text-input/Disabled';
@@ -389,34 +384,7 @@ export const config: Config = {
 				module: BasicTextArea,
 				filename: 'Basic'
 			}
-		},
-		examples: [
-			{
-				title: 'Disabled',
-				module: DisabledTextArea,
-				filename: 'Disabled'
-			},
-			{
-				title: 'Helper text',
-				module: HelperTextTextArea,
-				filename: 'HelperText'
-			},
-			{
-				title: 'Hidden label',
-				module: HiddenLabelTextArea,
-				filename: 'HiddenLabel'
-			},
-			{
-				title: 'Validated with custom validator',
-				module: ValidatedCustomTextArea,
-				filename: 'ValidatedCustom'
-			},
-			{
-				title: 'Validated required',
-				module: ValidatedRequiredTextArea,
-				filename: 'ValidatedRequired'
-			}
-		]
+		}
 	},
 	'time-picker': {
 		overview: {
