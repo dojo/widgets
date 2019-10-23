@@ -8,8 +8,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Button from '../../../button/index';
 
-const buttonTheme = { ...buttonCss };
-delete (buttonTheme as any)[' _key'];
+const { ' _key': key, ...buttonTheme } = buttonCss as any;
 const theme = { '@dojo/widgets/button': buttonTheme };
 
 const baseTemplate = assertionTemplate(() => <Button theme={theme} />);
