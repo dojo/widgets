@@ -7,7 +7,7 @@ import * as buttonCss from '../../../theme/button.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Button from '../../../button/index';
-import { compareTheme } from '@dojo/widgets/common/tests/support/test-helpers';
+import { compareTheme } from '../../../common/tests/support/test-helpers';
 
 const baseTemplate = assertionTemplate(() => (
 	<Button theme={{ '@dojo/widgets/button': buttonCss }} />
