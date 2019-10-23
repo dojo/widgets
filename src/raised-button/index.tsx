@@ -8,7 +8,11 @@ export interface RaisedButtonProperties extends ButtonProperties {}
 
 const factory = create({ theme }).properties<RaisedButtonProperties>();
 
-export const RaisedButton = factory(function({ properties, children, middleware: { theme } }) {
+export const RaisedButton = factory(function RaisedButton({
+	properties,
+	children,
+	middleware: { theme }
+}) {
 	const props = properties();
 
 	return (
