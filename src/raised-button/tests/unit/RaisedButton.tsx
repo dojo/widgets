@@ -3,14 +3,16 @@ const { registerSuite } = intern.getInterface('object');
 import harness from '@dojo/framework/testing/harness';
 
 import { RaisedButton } from '../../index';
-import * as css from '../../../theme/raised-button.m.css';
+import * as buttonCss from '../../../theme/button.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Button from '../../../button/index';
 
-const baseTemplate = assertionTemplate(() => (
-	<Button classes={{ '@dojo/widgets/button': { root: [css.root], disabled: [css.disabled] } }} />
-));
+const buttonTheme = { ...buttonCss };
+delete (buttonTheme as any)[' _key'];
+const theme = { '@dojo/widgets/button': buttonTheme };
+
+const baseTemplate = assertionTemplate(() => <Button theme={theme} />);
 
 registerSuite('RaisedButton', {
 	tests: {
@@ -22,16 +24,7 @@ registerSuite('RaisedButton', {
 		'properties and attributes'() {
 			const h = harness(() => <RaisedButton type="submit" name="bar" disabled={true} />);
 
-			h.expect(() => (
-				<Button
-					classes={{
-						'@dojo/widgets/button': { root: [css.root], disabled: [css.disabled] }
-					}}
-					type="submit"
-					name="bar"
-					disabled={true}
-				/>
-			));
+			h.expect(() => <Button theme={theme} type="submit" name="bar" disabled={true} />);
 		}
 	}
 });
