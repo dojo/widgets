@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import NumberInput from '@dojo/widgets/input/NumberInput/NumberInput';
+import NumberInput from '@dojo/widgets/input/number-input/NumberInput';
 import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
