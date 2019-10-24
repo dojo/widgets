@@ -5,8 +5,8 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { harness } from '@dojo/framework/testing/harness';
-import NumberInput from '../../NumberInput';
-import TextInput, { BaseInputProperties } from '../../../../text-input';
+import NumberInput from '../..';
+import TextInput, { BaseInputProperties } from '../../../text-input';
 
 const noop = () => {};
 

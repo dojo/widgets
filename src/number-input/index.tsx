@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import TextInput, { BaseInputProperties } from '../../text-input';
+import TextInput, { BaseInputProperties } from '../text-input';
 
 export interface NumberInputProperties extends BaseInputProperties<{ value: number }> {
 	/** The min value a number can be */

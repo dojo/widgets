@@ -15,7 +15,7 @@ import '../../../global-event/tests/unit/GlobalEvent';
 import '../../../grid/tests/unit/all';
 import '../../../helper-text/tests/unit/HelperText';
 import '../../../icon/tests/unit/Icon';
-import '../../../input/number-input/tests/unit/NumberInput';
+import '../../../number-input/tests/unit/NumberInput';
 import '../../../label/tests/unit/Label';
 import '../../../listbox/tests/unit/Listbox';
 import '../../../listbox/tests/unit/ListboxOption';
