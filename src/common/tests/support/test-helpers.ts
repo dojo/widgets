@@ -92,3 +92,14 @@ export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(
 		}
 	};
 }
+
+const themeComparator = (css: any) => (value: any) => {
+	const { ' _key': key, ...classes } = css;
+	return JSON.stringify(classes) === JSON.stringify(value[key]);
+};
+
+export const compareTheme = (css: any) => ({
+	selector: '*',
+	property: 'theme',
+	comparator: themeComparator(css)
+});

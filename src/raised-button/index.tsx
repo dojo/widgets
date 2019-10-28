@@ -1,29 +1,34 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { ThemedMixin, theme } from '@dojo/framework/core/mixins/Themed';
-import { tsx } from '@dojo/framework/core/vdom';
+import theme from '../middleware/theme';
+import { tsx, create } from '@dojo/framework/core/vdom';
 import Button, { ButtonProperties } from '../button/index';
-import * as css from '../theme/raised-button.m.css';
-import { DNode } from '@dojo/framework/core/interfaces';
+import * as raisedButtonCss from '../theme/raised-button.m.css';
+import * as buttonCss from '../theme/button.m.css';
 
 export interface RaisedButtonProperties extends ButtonProperties {}
 
-@theme(css)
-export class RaisedButton extends ThemedMixin(WidgetBase)<RaisedButtonProperties> {
-	protected render(): DNode {
-		return (
-			<Button
-				classes={{
-					'@dojo/widgets/button': {
-						root: this.theme([css.root]),
-						disabled: this.theme([css.disabled])
-					}
-				}}
-				{...this.properties}
-			>
-				{this.children}
-			</Button>
-		);
-	}
-}
+const factory = create({ theme }).properties<RaisedButtonProperties>();
+
+export const RaisedButton = factory(function RaisedButton({
+	properties,
+	children,
+	middleware: { theme }
+}) {
+	const props = properties();
+
+	return (
+		<Button
+			{...props}
+			theme={{
+				...props.theme,
+				'@dojo/widgets/button': theme.compose(
+					buttonCss,
+					raisedButtonCss
+				)
+			}}
+		>
+			{children()}
+		</Button>
+	);
+});
 
 export default RaisedButton;
