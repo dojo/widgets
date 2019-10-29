@@ -22,16 +22,12 @@ export default factory(function NumberInput({ properties, middleware: { theme } 
 	const valueAsString = value !== undefined && value !== null ? value.toString() : value;
 
 	function onValueAdapter(valueAsString: string | undefined) {
-		console.log('1');
 		if (!onValue) {
 			return;
 		}
-		console.log('2');
 		if (valueAsString === undefined) {
-			console.log('3');
 			onValue();
 		} else {
-			console.log('4');
 			onValue(parseFloat(valueAsString));
 		}
 	}
