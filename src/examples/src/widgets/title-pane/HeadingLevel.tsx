@@ -9,7 +9,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 
 	return (
 		<TitlePane
-			title="Basic Title Pane"
+			title="Aria Heading level 2"
+			headingLevel={2}
 			open={!!open}
 			onRequestOpen={() => {
 				icache.set('open', true);

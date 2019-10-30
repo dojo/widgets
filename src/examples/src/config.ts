@@ -68,8 +68,8 @@ import DisabledChip from './widgets/chip/Disabled';
 import ClosableChip from './widgets/chip/Closable';
 import ClickableClosableChip from './widgets/chip/ClickableClosable';
 import ClosableRendererChip from './widgets/chip/ClosableRenderer';
-import AdvancedOptions from './widgets/select/AdvancedOptions';
-import NonNative from './widgets/select/NonNative';
+import HeadingLevel from './widgets/title-pane/HeadingLevel';
+import NonCloseable from './widgets/title-pane/NonCloseable';
 
 export interface ExampleConfig {
 	title?: string;
@@ -537,7 +537,19 @@ export const config: Config = {
 				module: BasicTitlePane,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{
+				title: 'Defined aria heading level',
+				module: HeadingLevel,
+				filename: 'AriaHeadingLevel'
+			},
+			{
+				title: 'Non closeable',
+				module: NonCloseable,
+				filename: 'NonCloseable'
+			}
+		]
 	},
 	toolbar: {
 		overview: {
