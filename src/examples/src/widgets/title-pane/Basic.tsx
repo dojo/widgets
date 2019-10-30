@@ -5,12 +5,12 @@ import icache from '@dojo/framework/core/middleware/icache';
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
-	const open = icache.get('open');
+	const open = icache.getOrSet('open', true);
 
 	return (
 		<TitlePane
 			title="Basic Title Pane"
-			open={!!open}
+			open={open}
 			onRequestOpen={() => {
 				icache.set('open', true);
 			}}

@@ -3,7 +3,7 @@ import TitlePane from '@dojo/widgets/title-pane';
 
 const factory = create();
 
-export default factory(function Basic() {
+export default factory(function NonClosable() {
 	return (
 		<TitlePane title="I can't be closed" closeable={false}>
 			<div>
