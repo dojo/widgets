@@ -68,6 +68,8 @@ import DisabledChip from './widgets/chip/Disabled';
 import ClosableChip from './widgets/chip/Closable';
 import ClickableClosableChip from './widgets/chip/ClickableClosable';
 import ClosableRendererChip from './widgets/chip/ClosableRenderer';
+import AdvancedOptions from './widgets/select/AdvancedOptions';
+import NonNative from './widgets/select/NonNative';
 
 export interface ExampleConfig {
 	title?: string;
@@ -406,7 +408,11 @@ export const config: Config = {
 				module: BasicSelect,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{ title: 'Advanced options', module: AdvancedOptions, filename: 'AdvancedOptions' },
+			{ title: 'Non Native', module: NonNative, filename: 'NonNative' }
+		]
 	},
 	'slide-pane': {
 		overview: {
