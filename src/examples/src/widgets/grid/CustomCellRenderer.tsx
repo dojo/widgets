@@ -39,5 +39,5 @@ const fetcher = createFetcher(createData());
 const factory = create();
 
 export default factory(() => {
-    return <Grid fetcher={fetcher} columnConfig={columnConfig} height={450} />;
+	return <Grid fetcher={fetcher} columnConfig={columnConfig} height={450} />;
 });

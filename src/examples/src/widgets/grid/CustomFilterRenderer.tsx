@@ -50,11 +50,7 @@ function filterer(data: any[], { filter }: FetcherOptions) {
 	return [...data];
 }
 
-async function fetcher(
-	page: number,
-	pageSize: number,
-	options: FetcherOptions = {}
-) {
+async function fetcher(page: number, pageSize: number, options: FetcherOptions = {}) {
 	return createFetcherResult(sorter(filterer(data, options), options), page, pageSize);
 }
 
