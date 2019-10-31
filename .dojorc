@@ -35,6 +35,7 @@
 			"src/grid",
 			"src/label",
 			"src/listbox",
+			"src/number-input",
 			"src/outlined-button",
 			"src/progress",
 			"src/radio",

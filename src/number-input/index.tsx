@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import theme from '../middleware/theme';
 
+import theme from '../middleware/theme';
 import TextInput, { BaseInputProperties } from '../text-input';
 import * as textInputCss from '../theme/text-input.m.css';
 import * as numberInputCss from '../theme/number-input.m.css';
@@ -34,7 +34,6 @@ export default factory(function NumberInput({ properties, middleware: { theme } 
 
 	return (
 		<TextInput
-			assertion-key="textInput"
 			{...properties()}
 			value={valueAsString}
 			onValue={onValueAdapter}
