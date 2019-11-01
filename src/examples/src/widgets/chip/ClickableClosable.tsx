@@ -4,7 +4,7 @@ import { icache } from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-const App = factory(function({ middleware: { icache } }) {
+const App = factory(function ClickableClosable({ middleware: { icache } }) {
 	const clickableClosed = icache.get<boolean>('clickableClosed');
 	const clickableClosedCount = icache.getOrSet<number>('clickableClosedCount', 0);
 
