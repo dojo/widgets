@@ -4,7 +4,7 @@ import Icon from '@dojo/widgets/icon';
 
 const factory = create();
 
-const App = factory(function() {
+const App = factory(function Icon() {
 	return (
 		<virtual>
 			<Chip label="Icon Example" iconRenderer={() => <Icon type="alertIcon" />} />
