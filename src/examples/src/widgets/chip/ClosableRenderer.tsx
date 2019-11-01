@@ -5,7 +5,7 @@ import { icache } from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-const App = factory(function CloseableRenderer({ middleware: { icache } }) {
+const App = factory(function ClosableRenderer({ middleware: { icache } }) {
 	const { get, set } = icache;
 	const closed = get<boolean>('closed');
 
