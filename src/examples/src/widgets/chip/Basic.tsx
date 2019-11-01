@@ -3,7 +3,7 @@ import Chip from '@dojo/widgets/chip';
 
 const factory = create();
 
-const App = factory(function() {
+const App = factory(function Basic() {
 	return (
 		<virtual>
 			<Chip label="Chip Example" />
