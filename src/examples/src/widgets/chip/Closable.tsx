@@ -9,16 +9,14 @@ const App = factory(function Closeable({ middleware: { icache } }) {
 	const closed = get<boolean>('closed');
 
 	return (
-		<virtual>
-			{!closed && (
-				<Chip
-					label="Close me"
-					onClose={() => {
-						set('closed', true);
-					}}
-				/>
-			)}
-		</virtual>
+		!closed && (
+			<Chip
+				label="Close me"
+				onClose={() => {
+					set('closed', true);
+				}}
+			/>
+		)
 	);
 });
 

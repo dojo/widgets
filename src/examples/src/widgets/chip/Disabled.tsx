@@ -5,15 +5,13 @@ const factory = create();
 
 const App = factory(function Disabled() {
 	return (
-		<virtual>
-			<Chip
-				label="Disabled"
-				disabled
-				onClick={() => {
-					window.alert('clicked');
-				}}
-			/>
-		</virtual>
+		<Chip
+			label="Disabled"
+			disabled
+			onClick={() => {
+				window.alert('clicked');
+			}}
+		/>
 	);
 });
 
