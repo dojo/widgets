@@ -1,0 +1,13 @@
+.root {}
+
+.label {}
+
+.closeIcon {
+	cursor: pointer;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.disabled {}

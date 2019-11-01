@@ -29,6 +29,7 @@
 			"src/card",
 			"src/checkbox",
 			"src/checkbox-group",
+			"src/chip",
 			"src/combobox",
 			"src/dialog",
 			"src/icon",
