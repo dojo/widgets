@@ -27,7 +27,9 @@ interface TextInputInternalState {
 	dirty?: boolean;
 }
 
-export interface BaseInputProperties extends ThemedProperties, FocusProperties {
+export interface BaseInputProperties<T extends { value: any } = { value: string }>
+	extends ThemedProperties,
+		FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Should the field autocomplete */
@@ -55,7 +57,7 @@ export interface BaseInputProperties extends ThemedProperties, FocusProperties {
 	/** Callback fired when the input validation changes */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 	/** Callback fired when the input value changes */
-	onValue?(value?: string): void;
+	onValue?(value?: T['value']): void;
 	/** Callback fired when the input is clicked */
 	onClick?(): void;
 	/** Callback fired when the pointer enters the input */
@@ -71,7 +73,7 @@ export interface BaseInputProperties extends ThemedProperties, FocusProperties {
 	/** Renderer for trailing icon content */
 	trailing?: () => DNode;
 	/** The current value */
-	value?: string;
+	value?: T['value'];
 	/** The id to be applied to the input */
 	widgetId?: string;
 }
