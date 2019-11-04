@@ -25,7 +25,7 @@ const options = [
 ];
 
 export default factory(function NonNative({ middleware: { icache } }) {
-	const value: string | undefined = icache.get('value');
+	const value = icache.get<string>('value');
 
 	return (
 		<Select
