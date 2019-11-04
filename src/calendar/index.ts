@@ -400,19 +400,16 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const { year, month } = this._getMonthYear();
 
 		// Calendar Weekday array
-		const weekdays = [];
-		for (const weekday in weekdayNames) {
-			weekdays.push(
-				v(
-					'th',
-					{
-						role: 'columnheader',
-						classes: this.theme(css.weekday)
-					},
-					[this.renderWeekdayCell(weekdayNames[weekday])]
-				)
-			);
-		}
+		const weekdays = weekdayNames.map((weekday) =>
+			v(
+				'th',
+				{
+					role: 'columnheader',
+					classes: this.theme(css.weekday)
+				},
+				[this.renderWeekdayCell(weekday)]
+			)
+		);
 
 		return v(
 			'div',
