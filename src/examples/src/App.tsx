@@ -33,7 +33,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 	let widgetReadmeContent: Content = {};
 	let widgetExampleContent: Content = {};
 	let widgetProperties: { [index: string]: PropertyInterface[] } = {};
-	let widgetThemeClasses: { [index: string]: string[] } = {};
+	let widgetThemeClasses: { [index: string]: { [index: string]: string } } = {};
 	if (includeDocs) {
 		widgetReadmeContent = block(readme)() || {};
 		widgetExampleContent = block(code)() || {};

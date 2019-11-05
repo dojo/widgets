@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 interface ThemeTableProperties {
-	themes?: string[];
+	themes?: { [index: string]: string };
 }
 
 const factory = create().properties<ThemeTableProperties>();
@@ -19,13 +19,15 @@ export default factory(function ThemeTable({ properties }) {
 					<thead>
 						<tr>
 							<th>Name</th>
+							<th>Description</th>
 						</tr>
 					</thead>
 					<tbody>
-						{themes.map((className) => {
+						{Object.keys(themes).map((key) => {
 							return (
 								<tr>
-									<td>{`.${className}`}</td>
+									<td>{key}</td>
+									<td>{themes[key]}</td>
 								</tr>
 							);
 						})}
