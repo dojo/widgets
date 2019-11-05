@@ -354,7 +354,7 @@ export const config: Config = {
 			}
 		}
 	},
-	numberInput: {
+	'number-input': {
 		overview: {
 			example: {
 				module: BasicNumberInput,
