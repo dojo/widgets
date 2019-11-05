@@ -13,13 +13,13 @@ export default function(config: { [index: string]: string }): ThemeInterface {
 		root.walk((node) => {
 			if (node.type === 'comment') {
 				comment = node.text;
-				console.warn(node.text);
-			}
-			if (node.type === 'rule' && node.selector.match(/^\./)) {
+			} else if (node.type === 'rule' && node.selector.match(/^\./)) {
 				const selector = /^\.[a-zA-Z0-9]*/.exec(node.selector);
 				if (selector && !classHash[selector[0]]) {
 					classHash[selector[0]] = comment;
 				}
+				comment = '';
+			} else {
 				comment = '';
 			}
 		});
