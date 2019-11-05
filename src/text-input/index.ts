@@ -39,7 +39,7 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	/** Text to display below the input */
 	helperText?: string;
 	/** The label to be displayed above the input */
-	label?: string;
+	label?: string | DNode;
 	/** Hides the label for a11y purposes */
 	labelHidden?: boolean;
 	/** Renderer for leading icon content */
