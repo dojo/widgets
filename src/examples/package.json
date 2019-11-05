@@ -23,6 +23,7 @@
     "@dojo/cli-build-widget": "^6.0.0",
     "@types/jsdom": "2.0.*",
     "@types/node": "~9.6.5",
+    "postcss": "^7.0.21",
     "ts-morph": "^4.2.0",
     "typescript": "~3.4.5",
     "prismjs": "^1.17.1",
@@ -30,8 +31,5 @@
     "remark-parse": "^7.0.1",
     "remark-rehype": "^5.0.0",
     "unified": "^8.4.1"
-  },
-  "devDependencies": {
-    "postcss": "^7.0.21"
   }
 }
