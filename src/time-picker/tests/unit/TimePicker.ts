@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../../../meta/Focus';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../index';
 import * as css from '../../../theme/time-picker.m.css';

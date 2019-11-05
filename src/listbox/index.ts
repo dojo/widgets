@@ -12,7 +12,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 import * as css from '../theme/listbox.m.css';
 import ListboxOption from './ListboxOption';
-import { Focus } from '@dojo/framework/core/meta/Focus';
+import Focus from '../meta/Focus';
 import Resize from '@dojo/framework/core/meta/Resize';
 
 /* Default scroll meta */

@@ -445,8 +445,6 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 
 		const focus = this.meta(Focus).get('root');
 
-		console.log(`RENDERED: ${focus.containsFocus}`);
-
 		return v(
 			'div',
 			{
