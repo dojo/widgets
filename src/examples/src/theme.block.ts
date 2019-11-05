@@ -1,20 +1,28 @@
-import * as path from 'canonical-path';
-import { Project } from 'ts-morph';
+import * as postcss from 'postcss';
+import * as fs from 'fs';
 
 interface ThemeInterface {
-	[index: string]: string[];
+	[index: string]: { [index: string]: string };
 }
 
 export default function(config: { [index: string]: string }): ThemeInterface {
-	const project = new Project({
-		tsConfigFilePath: path.join(__dirname, '..', '..', '..', 'tsconfig.json')
-	});
 	return Object.keys(config).reduce((properties, widget) => {
-		let sourceFile = project.getSourceFile(`./src/theme/${widget}.m.css.d.ts`);
-		if (!sourceFile) {
-			console.warn(`could not find theme css for ${widget}`);
-			return properties;
-		}
-		return { ...properties, [widget]: [...sourceFile.getExportedDeclarations().keys()] };
+		const root = postcss.parse(fs.readFileSync(`./src/theme/${widget}.m.css`));
+		const classHash = {} as any;
+		let comment = '';
+		root.walk((node) => {
+			if (node.type === 'comment') {
+				comment = node.text;
+				console.warn(node.text);
+			}
+			if (node.type === 'rule' && node.selector.match(/^\./)) {
+				const selector = /^\.[a-zA-Z0-9]*/.exec(node.selector);
+				if (selector && !classHash[selector[0]]) {
+					classHash[selector[0]] = comment;
+				}
+				comment = '';
+			}
+		});
+		return { ...properties, [widget]: classHash };
 	}, {});
 }

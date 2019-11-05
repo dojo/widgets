@@ -30,5 +30,8 @@
     "remark-parse": "^7.0.1",
     "remark-rehype": "^5.0.0",
     "unified": "^8.4.1"
+  },
+  "devDependencies": {
+    "postcss": "^7.0.21"
   }
 }
