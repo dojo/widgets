@@ -1,7 +1,7 @@
 #!/bin/bash
 cp ./now.json ./output/dist
 
-name="dojo.widget.examples"
+name="dojo.widgets"
 
 if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
 	nowurl=$(npx now ./output/dist --token=$PUBLIC_NOW_TOKEN --public --name=$name)
