@@ -6,7 +6,7 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { auto } from '@dojo/framework/core/diff';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../meta/Focus';
 import ComboBox from '../combobox/index';
 import { formatAriaProperties } from '../common/util';
 import { TextInputProperties } from '../text-input/index';

@@ -4,7 +4,7 @@ import { Keys } from '../common/util';
 import { reference } from '@dojo/framework/core/diff';
 import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../meta/Focus';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { uuid } from '@dojo/framework/core/util';

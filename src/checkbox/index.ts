@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../meta/Focus';
 import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/core/vdom';

@@ -1,7 +1,7 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../../meta/Focus';
 import Dialog from '../../dialog/index';
 
 export default class App extends WidgetBase {
