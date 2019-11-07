@@ -6,7 +6,7 @@ install:
 - travis_retry npm install
 script:
 - npm run build
-- npm run test
+- npm run test:ci
 - npm run build:docs
 - ./deploy.sh
 - ./comment-deployments.sh
