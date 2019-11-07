@@ -45,12 +45,6 @@ export default factory(function App({ properties, middleware: { block } }) {
 			<Menu widgetNames={widgets} />
 			<main classes={[css.main]}>
 				<Outlet
-					id="landing"
-					renderer={() => {
-						return <div>Widget Examples!</div>;
-					}}
-				/>
-				<Outlet
 					id="example"
 					renderer={({ params }) => {
 						const { widget: widgetName, example: exampleName } = params;
