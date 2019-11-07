@@ -1,6 +1,6 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../meta/Focus';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
 import { DNode } from '@dojo/framework/core/interfaces';

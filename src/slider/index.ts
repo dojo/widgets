@@ -4,7 +4,7 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
 import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../meta/Focus';
 import { uuid } from '@dojo/framework/core/util';
 import {
 	CustomAriaProperties,

@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 
 import { DNode } from '@dojo/framework/core/interfaces';
 import { Keys } from '../../../common/util';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../../../meta/Focus';
 import Resize from '@dojo/framework/core/meta/Resize';
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import { v, w } from '@dojo/framework/core/vdom';
