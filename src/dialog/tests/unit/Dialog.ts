@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { v, w, isWNode } from '@dojo/framework/core/vdom';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../../../meta/Focus';
 
 import Dialog, { DialogProperties } from '../../index';
 import Icon from '../../../icon/index';
