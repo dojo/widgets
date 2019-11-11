@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 import { v, w, tsx } from '@dojo/framework/core/vdom';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../../../meta/Focus';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';

@@ -7,7 +7,7 @@ import Label from '../../../label/index';
 import RangeSlider from '../../index';
 import * as css from '../../../theme/range-slider.m.css';
 import * as fixedCss from '../../styles/range-slider.m.css';
-import Focus from '@dojo/framework/core/meta/Focus';
+import Focus from '../../../meta/Focus';
 import {
 	compareId,
 	compareForId,
