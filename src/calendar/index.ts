@@ -26,8 +26,6 @@ export enum FirstDayOfWeek {
 	saturday = 6
 }
 
-FirstDayOfWeek.sunday;
-
 export interface CalendarProperties extends ThemedProperties, I18nProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
@@ -260,17 +258,8 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const initialWeekday =
 			currentMonthStartDay - firstDayOfWeek < 0
 				? currentMonthStartDay - firstDayOfWeek + 7
-				: currentMonthStartDay - firstDayOfWeek; // 7 + currentMonthStartDay - firstDayOfWeek;
+				: currentMonthStartDay - firstDayOfWeek;
 		const todayString = new Date().toDateString();
-
-		console.log(
-			'firstDayOfWeek',
-			firstDayOfWeek,
-			'currentMonthStartDay',
-			currentMonthStartDay,
-			'initialWeekday',
-			initialWeekday
-		);
 
 		let dayIndex = 0;
 		let isCurrentMonth = currentMonthStartDay === firstDayOfWeek;
