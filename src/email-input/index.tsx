@@ -24,9 +24,9 @@ export const EmailInput = factory(function({ properties, middleware: { icache, t
 			valid={{ valid: get('valid'), message: get('message') }}
 			theme={{
 				...props.theme,
-				'@dojo/widgets/textInput': theme.compose(
-					emailInputCss,
-					textInputCss
+				'@dojo/widgets/text-input': theme.compose(
+					textInputCss,
+					emailInputCss
 				)
 			}}
 		/>
