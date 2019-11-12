@@ -26,7 +26,7 @@
     "test": "dojo test",
     "test:headless": "dojo test -u -c headless",
     "test:watch": "dojo test --watch",
-    "test:ci": "run-s clean build:test test:ci",
+    "test:ci": "run-s clean build:test test:headless",
     "build:ce": "dojo build widget && shx cp -r output/dist dist/umd/src/",
     "build:docs": "dojo build app -f docs=true",
     "build:docs:dev": "dojo build app -m dev -w -s -f docs=true",
