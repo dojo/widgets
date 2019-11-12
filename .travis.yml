@@ -4,6 +4,8 @@ node_js:
 - '10'
 install:
 - travis_retry npm install
+addons:
+  chrome: stable
 script:
 - npm run build
 - npm run test:ci
