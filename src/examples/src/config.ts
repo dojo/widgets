@@ -70,6 +70,8 @@ import ClickableClosableChip from './widgets/chip/ClickableClosable';
 import ClosableRendererChip from './widgets/chip/ClosableRenderer';
 import HeadingLevel from './widgets/title-pane/HeadingLevel';
 import NonCloseable from './widgets/title-pane/NonCloseable';
+import AdvancedOptions from './widgets/select/AdvancedOptions';
+import NonNative from './widgets/select/NonNative';
 
 export interface ExampleConfig {
 	title?: string;
