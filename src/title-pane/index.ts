@@ -23,7 +23,7 @@ export interface TitlePaneProperties extends WidgetProperties, ThemedProperties,
 	/** If true the pane is opened and content is visible */
 	open?: boolean;
 	/** Title to display above the content */
-	title: string;
+	title: DNode;
 }
 
 @theme(css)
