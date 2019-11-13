@@ -5,7 +5,7 @@ import { tsx, create } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input';
 import validation from '../../../middleware/validation';
 
-const { registerSuite } = intern.getInterface('object');
+const { describe, it } = intern.getInterface('bdd');
 
 function createMockValidationMiddleware(validator: Function) {
 	const factory = create();
@@ -21,84 +21,82 @@ function createMockValidationMiddleware(validator: Function) {
 	});
 }
 
-registerSuite('ConstrainedInput', {
-	tests: {
-		'default properties'() {
-			const h = harness(() => <ConstrainedInput rules={{}} />);
-			h.expect(() => (
-				<TextInput
-					key="root"
-					customValidator={() => {}}
-					valid={undefined}
-					onValidate={() => {}}
-					helperText={''}
+describe('ConstrainedInput', () => {
+	it('renders with default properties', () => {
+		const h = harness(() => <ConstrainedInput rules={{}} />);
+		h.expect(() => (
+			<TextInput
+				key="root"
+				customValidator={() => {}}
+				valid={undefined}
+				onValidate={() => {}}
+				helperText={''}
+			/>
+		));
+	});
+
+	it('passes properties to the input widget', () => {
+		const h = harness(() => <ConstrainedInput rules={{}} label="Test Label" />);
+		h.expect(() => (
+			<TextInput
+				key="root"
+				customValidator={() => {}}
+				valid={undefined}
+				onValidate={() => {}}
+				helperText={''}
+				label="Test Label"
+			/>
+		));
+	});
+
+	it('handles validation and messaging', () => {
+		const h = harness(
+			() => (
+				<ConstrainedInput
+					rules={{
+						length: {
+							min: 1
+						}
+					}}
 				/>
-			));
-		},
+			),
+			{
+				middleware: [[validation, createMockValidationMiddleware(() => true)]]
+			}
+		);
 
-		'passes properties'() {
-			const h = harness(() => <ConstrainedInput rules={{}} label="Test Label" />);
-			h.expect(() => (
-				<TextInput
-					key="root"
-					customValidator={() => {}}
-					valid={undefined}
-					onValidate={() => {}}
-					helperText={''}
-					label="Test Label"
-				/>
-			));
-		},
+		h.expect(() => (
+			<TextInput
+				key="root"
+				customValidator={() => {}}
+				valid={undefined}
+				onValidate={() => {}}
+				helperText={'description'}
+			/>
+		));
 
-		'handles validation and messaging'() {
-			const h = harness(
-				() => (
-					<ConstrainedInput
-						rules={{
-							length: {
-								min: 1
-							}
-						}}
-					/>
-				),
-				{
-					middleware: [[validation, createMockValidationMiddleware(() => true)]]
-				}
-			);
+		h.trigger('@root', 'onValidate', false, 'invalid');
 
-			h.expect(() => (
-				<TextInput
-					key="root"
-					customValidator={() => {}}
-					valid={undefined}
-					onValidate={() => {}}
-					helperText={'description'}
-				/>
-			));
+		h.expect(() => (
+			<TextInput
+				key="root"
+				customValidator={() => {}}
+				valid={{ valid: false, message: 'invalid' }}
+				onValidate={() => {}}
+				helperText={'description'}
+			/>
+		));
 
-			h.trigger('@root', 'onValidate', false, 'invalid');
+		h.trigger('@root', 'onValidate', true);
 
-			h.expect(() => (
-				<TextInput
-					key="root"
-					customValidator={() => {}}
-					valid={{ valid: false, message: 'invalid' }}
-					onValidate={() => {}}
-					helperText={'description'}
-				/>
-			));
-
-			h.trigger('@root', 'onValidate', true);
-
-			h.expect(() => (
-				<TextInput
-					key="root"
-					customValidator={() => {}}
-					valid={{ valid: true, message: undefined }}
-					onValidate={() => {}}
-					helperText={undefined}
-				/>
-			));
-		}
-	}
+		h.expect(() => (
+			<TextInput
+				key="root"
+				customValidator={() => {}}
+				valid={{ valid: true, message: undefined }}
+				onValidate={() => {}}
+				helperText={undefined}
+			/>
+		));
+	});
 });
