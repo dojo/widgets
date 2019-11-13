@@ -5,18 +5,49 @@ import i18n from '@dojo/framework/core/middleware/i18n';
 const upperCaseRegEx = /[A-Z]/;
 const numbersRegEx = /\d/;
 
-export interface ValidationRules {
-	length?: {
-		min?: number;
-		max?: number;
-	};
-	contains?: {
-		atLeast?: number;
-		uppercase?: number;
-		numbers?: number;
-		specialCharacters?: number;
-	};
+interface LengthMin {
+	min: number;
+	max?: number;
 }
+
+interface LengthMax {
+	min?: number;
+	max: number;
+}
+
+interface ContainsUppercase {
+	uppercase: number;
+	numbers?: number;
+	specialCharacters?: number;
+}
+
+interface ContainsNumbers {
+	uppercase?: number;
+	numbers: number;
+	specialCharacters?: number;
+}
+
+interface ContainsSpecialCharacters {
+	uppercase?: number;
+	numbers?: number;
+	specialCharacters: number;
+}
+
+type ContainsRules =
+	| ContainsUppercase
+	| ContainsNumbers
+	| ContainsSpecialCharacters
+	| (ContainsUppercase & ContainsNumbers & ContainsSpecialCharacters);
+
+interface LengthRule {
+	length: LengthMin | LengthMax | (LengthMin & LengthMax);
+}
+
+interface ContainsRule {
+	contains: ({ atLeast: number }) & ContainsRules | ContainsRules;
+}
+
+type ValidationRules = LengthRule | ContainsRule | (LengthRule & ContainsRule);
 
 /* OWASP Special Characters: https://www.owasp.org/index.php/Password_special_characters */
 const specialCharactersRegEx = new RegExp(

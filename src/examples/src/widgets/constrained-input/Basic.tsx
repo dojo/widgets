@@ -11,8 +11,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 		<ConstrainedInput
 			rules={{
 				length: {
-					min: 2,
-					max: 8
+					min: 1,
+					max: 10
 				}
 			}}
 			value={value}
