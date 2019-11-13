@@ -6,7 +6,6 @@ import TextInput from '../../../text-input';
 import validation from '../../../middleware/validation';
 
 const { registerSuite } = intern.getInterface('object');
-// const { assert } = intern.getPlugin('chai');
 
 function createMockValidationMiddleware(validator: Function) {
 	const factory = create();
