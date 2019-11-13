@@ -4,12 +4,13 @@ import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function HeadingLevel({ middleware: { icache } }) {
 	const open = icache.getOrSet('open', true);
 
 	return (
 		<TitlePane
-			title="Basic Title Pane"
+			title="Aria Heading level 2"
+			headingLevel={2}
 			open={open}
 			onRequestOpen={() => {
 				icache.set('open', true);
