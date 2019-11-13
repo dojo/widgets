@@ -36,6 +36,9 @@ import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
 import BasicLabel from './widgets/label/Basic';
 import BasicListbox from './widgets/listbox/Basic';
+import BasicMenu from './widgets/menu/Basic';
+import ControlledMenu from './widgets/menu/Controlled';
+import ItemRenderer from './widgets/menu/ItemRenderer';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import BasicProgress from './widgets/progress/Basic';
@@ -102,12 +105,10 @@ export interface Config {
 
 export const config: Config = {
 	'accordion-pane': {
-		examples: [
-			{
-				filename: 'Exclusive',
-				module: Exclusive
-			}
-		],
+		examples: [{
+			filename: 'Exclusive',
+			module: Exclusive
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -117,18 +118,15 @@ export const config: Config = {
 		}
 	},
 	button: {
-		examples: [
-			{
-				filename: 'DisabledSubmit',
-				module: DisabledSubmit,
-				title: 'Disabled Submit Button'
-			},
-			{
-				filename: 'ToggleButton',
-				module: ToggleButton,
-				title: 'Toggle Button'
-			}
-		],
+		examples: [{
+			filename: 'DisabledSubmit',
+			module: DisabledSubmit,
+			title: 'Disabled Submit Button'
+		}, {
+			filename: 'ToggleButton',
+			module: ToggleButton,
+			title: 'Toggle Button'
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -138,19 +136,16 @@ export const config: Config = {
 		}
 	},
 	calendar: {
-		examples: [
-			{
-				filename: 'CustomFirstWeekDay',
-				module: FirstDayOfWeekCalendar,
-				title: 'Custom First Day of Week'
-			},
-			{
-				description: 'Demonstrates limiting the selectable region of the calendar.',
-				filename: 'LimitedRange',
-				module: LimitedRange,
-				title: 'Limited Date Range'
-			}
-		],
+		examples: [{
+			filename: 'CustomFirstWeekDay',
+			module: FirstDayOfWeekCalendar,
+			title: 'Custom First Day of Week'
+		}, {
+			description: 'Demonstrates limiting the selectable region of the calendar.',
+			filename: 'LimitedRange',
+			module: LimitedRange,
+			title: 'Limited Date Range'
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -178,23 +173,19 @@ export const config: Config = {
 		}
 	},
 	'checkbox-group': {
-		examples: [
-			{
-				filename: 'InitialValue',
-				module: InitialValueCheckboxGroup,
-				title: 'Initial Value'
-			},
-			{
-				filename: 'CustomLabel',
-				module: CustomLabelCheckboxGroup,
-				title: 'Custom Label'
-			},
-			{
-				filename: 'CustomRenderer',
-				module: CustomRendererCheckboxGroup,
-				title: 'Custom Renderer'
-			}
-		],
+		examples: [{
+			filename: 'InitialValue',
+			module: InitialValueCheckboxGroup,
+			title: 'Initial Value'
+		}, {
+			filename: 'CustomLabel',
+			module: CustomLabelCheckboxGroup,
+			title: 'Custom Label'
+		}, {
+			filename: 'CustomRenderer',
+			module: CustomRendererCheckboxGroup,
+			title: 'Custom Renderer'
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -204,38 +195,31 @@ export const config: Config = {
 		}
 	},
 	chip: {
-		examples: [
-			{
-				filename: 'Icon',
-				module: IconChip,
-				title: 'Icon'
-			},
-			{
-				filename: 'Clickable',
-				module: ClickableChip,
-				title: 'Clickable'
-			},
-			{
-				filename: 'Disabled',
-				module: DisabledChip,
-				title: 'Disabled'
-			},
-			{
-				filename: 'Closable',
-				module: ClosableChip,
-				title: 'Closable'
-			},
-			{
-				filename: 'ClosableRenderer',
-				module: ClosableRendererChip,
-				title: 'Closable Renderer'
-			},
-			{
-				filename: 'ClickableClosable',
-				module: ClickableClosableChip,
-				title: 'Clickable and Closable'
-			}
-		],
+		examples: [{
+			filename: 'Icon',
+			module: IconChip,
+			title: 'Icon'
+		}, {
+			filename: 'Clickable',
+			module: ClickableChip,
+			title: 'Clickable'
+		}, {
+			filename: 'Disabled',
+			module: DisabledChip,
+			title: 'Disabled'
+		}, {
+			filename: 'Closable',
+			module: ClosableChip,
+			title: 'Closable'
+		}, {
+			filename: 'ClosableRenderer',
+			module: ClosableRendererChip,
+			title: 'Closable Renderer'
+		}, {
+			filename: 'ClickableClosable',
+			module: ClickableClosableChip,
+			title: 'Clickable and Closable'
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -253,13 +237,11 @@ export const config: Config = {
 		}
 	},
 	'constrained-input': {
-		examples: [
-			{
-				filename: 'Username',
-				module: Username,
-				title: 'Username'
-			}
-		],
+		examples: [{
+			filename: 'Username',
+			module: Username,
+			title: 'Username'
+		}],
 		overview: {
 			example: {
 				filename: 'Basic',
@@ -285,44 +267,36 @@ export const config: Config = {
 		}
 	},
 	grid: {
-		examples: [
-			{
-				filename: 'Sorting',
-				module: Sorting,
-				title: 'Grid with Sorting'
-			},
-			{
-				filename: 'Filtering',
-				module: Filtering,
-				title: 'Grid with Filtered Columns'
-			},
-			{
-				filename: 'CustomCellRenderer',
-				module: CustomCellRenderer,
-				title: 'Grid with Custom Cell Rendering'
-			},
-			{
-				filename: 'CustomFilterRenderer',
-				module: GridCustomFilterRenderer,
-				title: 'Grid with Custom Filter Renderer'
-			},
-			{
-				filename: 'CustomSortRenderer',
-				module: CustomSortRenderer,
-				title: 'Grid with Customized Sort Rendering'
-			},
-			{
-				filename: 'Restful',
-				module: Restful,
-				title: 'Grid with Data Loaded from a Remote Resource (REST)'
-			},
-			{
-				description: 'Demonstrates using the grid utilities to support editable cells',
-				filename: 'EditableCells',
-				module: EditableCells,
-				title: 'Grid with Editable Cells'
-			}
-		],
+		examples: [{
+			filename: 'Sorting',
+			module: Sorting,
+			title: 'Grid with Sorting'
+		}, {
+			filename: 'Filtering',
+			module: Filtering,
+			title: 'Grid with Filtered Columns'
+		}, {
+			filename: 'CustomCellRenderer',
+			module: CustomCellRenderer,
+			title: 'Grid with Custom Cell Rendering'
+		}, {
+			filename: 'CustomFilterRenderer',
+			module: GridCustomFilterRenderer,
+			title: 'Grid with Custom Filter Renderer'
+		}, {
+			filename: 'CustomSortRenderer',
+			module: CustomSortRenderer,
+			title: 'Grid with Customized Sort Rendering'
+		}, {
+			filename: 'Restful',
+			module: Restful,
+			title: 'Grid with Data Loaded from a Remote Resource (REST)'
+		}, {
+			description: 'Demonstrates using the grid utilities to support editable cells',
+			filename: 'EditableCells',
+			module: EditableCells,
+			title: 'Grid with Editable Cells'
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -332,13 +306,11 @@ export const config: Config = {
 		}
 	},
 	icon: {
-		examples: [
-			{
-				filename: 'AltText',
-				module: AltTextIcon,
-				title: 'With alt text'
-			}
-		],
+		examples: [{
+			filename: 'AltText',
+			module: AltTextIcon,
+			title: 'With alt text'
+		}],
 		overview: {
 			example: {
 				filename: 'Basic',
@@ -359,6 +331,24 @@ export const config: Config = {
 			example: {
 				filename: 'Basic',
 				module: BasicListbox
+			}
+		}
+	},
+	menu: {
+		examples: [{
+			description: 'In this example, an activeIndex and onActiveIndexChange property are passed into the Menu allowing for thr active menu item to be controlled.',
+			filename: 'Controlled',
+			module: ControlledMenu,
+			title: 'Controlled Active Index'
+		}, {
+			filename: 'ItemRenderer',
+			module: ItemRenderer,
+			title: 'Item Renderer'
+		}],
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicMenu
 			}
 		}
 	},
@@ -411,18 +401,15 @@ export const config: Config = {
 		}
 	},
 	select: {
-		examples: [
-			{
-				filename: 'AdvancedOptions',
-				module: AdvancedOptions,
-				title: 'Advanced options'
-			},
-			{
-				filename: 'NonNative',
-				module: NonNative,
-				title: 'Non Native'
-			}
-		],
+		examples: [{
+			filename: 'AdvancedOptions',
+			module: AdvancedOptions,
+			title: 'Advanced options'
+		}, {
+			filename: 'NonNative',
+			module: NonNative,
+			title: 'Non Native'
+		}],
 		overview: {
 			example: {
 				filename: 'Basic',
@@ -463,13 +450,11 @@ export const config: Config = {
 		}
 	},
 	'tab-controller': {
-		examples: [
-			{
-				filename: 'Disabled',
-				module: DisabledTabController,
-				title: 'TabController with disabled tabs'
-			}
-		],
+		examples: [{
+			filename: 'Disabled',
+			module: DisabledTabController,
+			title: 'TabController with disabled tabs'
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -479,33 +464,27 @@ export const config: Config = {
 		}
 	},
 	'text-area': {
-		examples: [
-			{
-				filename: 'Disabled',
-				module: DisabledTextArea,
-				title: 'Disabled'
-			},
-			{
-				filename: 'HelperText',
-				module: HelperTextTextArea,
-				title: 'Helper text'
-			},
-			{
-				filename: 'HiddenLabel',
-				module: HiddenLabelTextArea,
-				title: 'Hidden label'
-			},
-			{
-				filename: 'ValidatedCustom',
-				module: ValidatedCustomTextArea,
-				title: 'Validated with custom validator'
-			},
-			{
-				filename: 'ValidatedRequired',
-				module: ValidatedRequiredTextArea,
-				title: 'Validated required'
-			}
-		],
+		examples: [{
+			filename: 'Disabled',
+			module: DisabledTextArea,
+			title: 'Disabled'
+		}, {
+			filename: 'HelperText',
+			module: HelperTextTextArea,
+			title: 'Helper text'
+		}, {
+			filename: 'HiddenLabel',
+			module: HiddenLabelTextArea,
+			title: 'Hidden label'
+		}, {
+			filename: 'ValidatedCustom',
+			module: ValidatedCustomTextArea,
+			title: 'Validated with custom validator'
+		}, {
+			filename: 'ValidatedRequired',
+			module: ValidatedRequiredTextArea,
+			title: 'Validated required'
+		}],
 		overview: {
 			example: {
 				filename: 'Basic',
@@ -514,38 +493,31 @@ export const config: Config = {
 		}
 	},
 	'text-input': {
-		examples: [
-			{
-				filename: 'WithLabel',
-				module: TextInputWithLabel,
-				title: 'TextInput with Label'
-			},
-			{
-				filename: 'HiddenLabel',
-				module: HiddenLabelTextInput,
-				title: 'TextInput with hidden label'
-			},
-			{
-				filename: 'Disabled',
-				module: DisabledTextInput,
-				title: 'Disabled TextInput'
-			},
-			{
-				filename: 'Validated',
-				module: ValidatedTextInput,
-				title: 'Validated TextInput'
-			},
-			{
-				filename: 'HelperText',
-				module: HelperTextInput,
-				title: 'TextInput with helper text'
-			},
-			{
-				filename: 'LeadingTrailing',
-				module: LeadingTrailingTextInput,
-				title: 'TextInput with leading and trailing'
-			}
-		],
+		examples: [{
+			filename: 'WithLabel',
+			module: TextInputWithLabel,
+			title: 'TextInput with Label'
+		}, {
+			filename: 'HiddenLabel',
+			module: HiddenLabelTextInput,
+			title: 'TextInput with hidden label'
+		}, {
+			filename: 'Disabled',
+			module: DisabledTextInput,
+			title: 'Disabled TextInput'
+		}, {
+			filename: 'Validated',
+			module: ValidatedTextInput,
+			title: 'Validated TextInput'
+		}, {
+			filename: 'HelperText',
+			module: HelperTextInput,
+			title: 'TextInput with helper text'
+		}, {
+			filename: 'LeadingTrailing',
+			module: LeadingTrailingTextInput,
+			title: 'TextInput with leading and trailing'
+		}],
 		filename: 'index',
 		overview: {
 			example: {
@@ -555,48 +527,39 @@ export const config: Config = {
 		}
 	},
 	'time-picker': {
-		examples: [
-			{
-				filename: 'FilteredOnInput',
-				module: FilteredOnInputTimePicker,
-				title: 'Filtered on input'
-			},
-			{
-				filename: 'OpensOnFocus',
-				module: OpenOnFocusTimePicker,
-				title: 'Opens on focus'
-			},
-			{
-				filename: 'DisabledMenuItems',
-				module: DisabledMenuItemsTimePicker,
-				title: 'Disabled menu items'
-			},
-			{
-				filename: 'Disabled',
-				module: DisabledTimePicker,
-				title: 'Disabled time picker'
-			},
-			{
-				filename: 'SelectBySecond',
-				module: SelectBySecondTimePicker,
-				title: 'Select time by the second'
-			},
-			{
-				filename: '12HourTime',
-				module: TwelveHourTimePicker,
-				title: '12 hour time'
-			},
-			{
-				filename: 'Required',
-				module: RequiredTimePicker,
-				title: 'Required time picker'
-			},
-			{
-				filename: 'Native',
-				module: NativeTimePicker,
-				title: 'Native time picker'
-			}
-		],
+		examples: [{
+			filename: 'FilteredOnInput',
+			module: FilteredOnInputTimePicker,
+			title: 'Filtered on input'
+		}, {
+			filename: 'OpensOnFocus',
+			module: OpenOnFocusTimePicker,
+			title: 'Opens on focus'
+		}, {
+			filename: 'DisabledMenuItems',
+			module: DisabledMenuItemsTimePicker,
+			title: 'Disabled menu items'
+		}, {
+			filename: 'Disabled',
+			module: DisabledTimePicker,
+			title: 'Disabled time picker'
+		}, {
+			filename: 'SelectBySecond',
+			module: SelectBySecondTimePicker,
+			title: 'Select time by the second'
+		}, {
+			filename: '12HourTime',
+			module: TwelveHourTimePicker,
+			title: '12 hour time'
+		}, {
+			filename: 'Required',
+			module: RequiredTimePicker,
+			title: 'Required time picker'
+		}, {
+			filename: 'Native',
+			module: NativeTimePicker,
+			title: 'Native time picker'
+		}],
 		overview: {
 			example: {
 				filename: 'Basic',
@@ -605,18 +568,15 @@ export const config: Config = {
 		}
 	},
 	'title-pane': {
-		examples: [
-			{
-				filename: 'AriaHeadingLevel',
-				module: HeadingLevel,
-				title: 'Defined aria heading level'
-			},
-			{
-				filename: 'NonCloseable',
-				module: NonCloseable,
-				title: 'Non closeable'
-			}
-		],
+		examples: [{
+			filename: 'AriaHeadingLevel',
+			module: HeadingLevel,
+			title: 'Defined aria heading level'
+		}, {
+			filename: 'NonCloseable',
+			module: NonCloseable,
+			title: 'Non closeable'
+		}],
 		overview: {
 			example: {
 				filename: 'Basic',
@@ -633,18 +593,15 @@ export const config: Config = {
 		}
 	},
 	tooltip: {
-		examples: [
-			{
-				filename: 'Focus',
-				module: FocusTooltip,
-				title: 'Show on focus'
-			},
-			{
-				filename: 'Click',
-				module: ClickTooltip,
-				title: 'Show on click'
-			}
-		],
+		examples: [{
+			filename: 'Focus',
+			module: FocusTooltip,
+			title: 'Show on focus'
+		}, {
+			filename: 'Click',
+			module: ClickTooltip,
+			title: 'Show on click'
+		}],
 		overview: {
 			example: {
 				filename: 'Basic',
