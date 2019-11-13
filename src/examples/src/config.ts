@@ -78,6 +78,7 @@ import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
 import LimitedRange from './widgets/calendar/LimitedRange';
 import BasicConstrainedInput from './widgets/constrained-input/Basic';
+import Password from './widgets/constrained-input/Password';
 
 export interface ExampleConfig {
 	title?: string;
@@ -624,7 +625,14 @@ export const config: Config = {
 				module: BasicConstrainedInput,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{
+				title: 'Password',
+				module: Password,
+				filename: 'Password'
+			}
+		]
 	}
 };
 

@@ -11,13 +11,19 @@ export default factory(function Basic({ middleware: { icache } }) {
 		<ConstrainedInput
 			rules={{
 				length: {
-					min: 2,
-					max: 8
+					min: 4
+				},
+				contains: {
+					atLeast: 2,
+					uppercase: 1,
+					specialCharacters: 1,
+					numbers: 1
 				}
 			}}
 			value={value}
 			onValue={(value) => icache.set('value', value)}
-			label="Minimum and Maximum Length Constraints"
+			label="Enter Password"
+			type="password"
 		/>
 	);
 });
