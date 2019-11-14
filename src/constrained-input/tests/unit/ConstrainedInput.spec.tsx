@@ -5,6 +5,8 @@ import { tsx, create } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input';
 import validation from '../../../middleware/validation';
 import bundle from '../../../middleware/validation.nls';
+import { compareTheme } from '../../../common/tests/support/test-helpers';
+import * as textInputCss from '../../../theme/text-input.m.css';
 
 const { messages } = bundle;
 
@@ -28,10 +30,11 @@ const rules = { length: { min: 0 } };
 
 describe('ConstrainedInput', () => {
 	it('renders with default properties', () => {
-		const h = harness(() => <ConstrainedInput rules={rules} />);
+		const h = harness(() => <ConstrainedInput rules={rules} />, [compareTheme(textInputCss)]);
 		h.expect(() => (
 			<TextInput
 				key="root"
+				theme={{ '@dojo/widgets/text-input': textInputCss }}
 				customValidator={() => {}}
 				valid={undefined}
 				onValidate={() => {}}
@@ -41,10 +44,13 @@ describe('ConstrainedInput', () => {
 	});
 
 	it('passes properties to the input widget', () => {
-		const h = harness(() => <ConstrainedInput rules={rules} label="Test Label" />);
+		const h = harness(() => <ConstrainedInput rules={rules} label="Test Label" />, [
+			compareTheme(textInputCss)
+		]);
 		h.expect(() => (
 			<TextInput
 				key="root"
+				theme={{ '@dojo/widgets/text-input': textInputCss }}
 				customValidator={() => {}}
 				valid={undefined}
 				onValidate={() => {}}
@@ -66,13 +72,15 @@ describe('ConstrainedInput', () => {
 				/>
 			),
 			{
-				middleware: [[validation, createMockValidationMiddleware(() => true)]]
+				middleware: [[validation, createMockValidationMiddleware(() => true)]],
+				customComparator: [compareTheme(textInputCss)]
 			}
 		);
 
 		h.expect(() => (
 			<TextInput
 				key="root"
+				theme={{ '@dojo/widgets/text-input': textInputCss }}
 				customValidator={() => {}}
 				valid={undefined}
 				onValidate={() => {}}
@@ -85,6 +93,7 @@ describe('ConstrainedInput', () => {
 		h.expect(() => (
 			<TextInput
 				key="root"
+				theme={{ '@dojo/widgets/text-input': textInputCss }}
 				customValidator={() => {}}
 				valid={{ valid: false, message: 'invalid' }}
 				onValidate={() => {}}
@@ -97,6 +106,7 @@ describe('ConstrainedInput', () => {
 		h.expect(() => (
 			<TextInput
 				key="root"
+				theme={{ '@dojo/widgets/text-input': textInputCss }}
 				customValidator={() => {}}
 				valid={{ valid: true, message: undefined }}
 				onValidate={() => {}}
