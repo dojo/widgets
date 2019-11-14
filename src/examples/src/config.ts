@@ -1,6 +1,7 @@
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import BasicButton from './widgets/button/Basic';
 import BasicCalendar from './widgets/calendar/Basic';
+import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import BasicCard from './widgets/card/Basic';
 import BasicCheckbox from './widgets/checkbox/Basic';
 import BasicCombobox from './widgets/combobox/Basic';
@@ -231,7 +232,14 @@ export const config: Config = {
 				module: BasicCalendar,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{
+				title: 'Custom First Day of Week',
+				module: FirstDayOfWeekCalendar,
+				filename: 'CustomFirstWeekDay'
+			}
+		]
 	},
 	checkbox: {
 		filename: 'index',

@@ -663,7 +663,6 @@ registerSuite('Calendar', {
 const minDateInMonth = new Date('June 3, 2017');
 const maxDateInMonth = new Date('June 29, 2017');
 
-let dateIndex = 28;
 const baseMinMaxTemplate = baseTemplate
 	.setProperty('@date-picker', 'minDate', minDateInMonth)
 	.setProperty('@date-picker', 'maxDate', maxDateInMonth)
@@ -678,26 +677,129 @@ const baseMinMaxTemplate = baseTemplate
 	])
 	.setProperty('@date-4', 'focusable', false)
 	.setProperty('@date-6', 'focusable', true)
-	.replaceChildren('tbody tr:nth-child(5)', () => [
-		expectedDateCell(dateIndex++, 25, true, false),
-		expectedDateCell(dateIndex++, 26, true, false),
-		expectedDateCell(dateIndex++, 27, true, false),
-		expectedDateCell(dateIndex++, 28, true, false),
-		expectedDateCell(dateIndex++, 29, true, false),
-		expectedDateCell(dateIndex++, 30, true, true),
-		expectedDateCell(dateIndex++, 1, false, true)
-	])
-	.replaceChildren('tbody tr:last-child', () => [
-		expectedDateCell(dateIndex++, 2, false, true),
-		expectedDateCell(dateIndex++, 3, false, true),
-		expectedDateCell(dateIndex++, 4, false, true),
-		expectedDateCell(dateIndex++, 5, false, true),
-		expectedDateCell(dateIndex++, 6, false, true),
-		expectedDateCell(dateIndex++, 7, false, true),
-		expectedDateCell(dateIndex++, 8, false, true)
-	])
+	.replaceChildren('tbody tr:nth-child(5)', () => {
+		let dateIndex = 28;
+		return [
+			expectedDateCell(dateIndex++, 25, true, false),
+			expectedDateCell(dateIndex++, 26, true, false),
+			expectedDateCell(dateIndex++, 27, true, false),
+			expectedDateCell(dateIndex++, 28, true, false),
+			expectedDateCell(dateIndex++, 29, true, false),
+			expectedDateCell(dateIndex++, 30, true, true),
+			expectedDateCell(dateIndex++, 1, false, true)
+		];
+	})
+	.replaceChildren('tbody tr:last-child', () => {
+		let dateIndex = 35;
+		return [
+			expectedDateCell(dateIndex++, 2, false, true),
+			expectedDateCell(dateIndex++, 3, false, true),
+			expectedDateCell(dateIndex++, 4, false, true),
+			expectedDateCell(dateIndex++, 5, false, true),
+			expectedDateCell(dateIndex++, 6, false, true),
+			expectedDateCell(dateIndex++, 7, false, true),
+			expectedDateCell(dateIndex++, 8, false, true)
+		];
+	})
 	.setProperty('~previousMonth', 'disabled', true)
 	.setProperty('~nextMonth', 'disabled', true);
+
+registerSuite('Custom first day of week', {
+	tests: {
+		'render the correct first day of week'() {
+			const h = harness(() =>
+				w(Calendar, {
+					month: testDate.getMonth(),
+					year: testDate.getFullYear(),
+					firstDayOfWeek: 2
+				})
+			);
+			const firstDayOfWeekTemplate = baseTemplate
+				.replaceChildren('thead', () => {
+					let dayOrder = [2, 3, 4, 5, 6, 0, 1];
+					return [
+						v(
+							'tr',
+							dayOrder.map((order) =>
+								v(
+									'th',
+									{
+										role: 'columnheader',
+										classes: css.weekday
+									},
+									[
+										v('abbr', { title: DEFAULT_WEEKDAYS[order].long }, [
+											DEFAULT_WEEKDAYS[order].short
+										])
+									]
+								)
+							)
+						)
+					];
+				})
+				.replaceChildren('tbody', () => {
+					let dateIndex = 0;
+					return [
+						v('tr', [
+							expectedDateCell(dateIndex++, 30, false),
+							expectedDateCell(dateIndex++, 31, false),
+							expectedDateCell(dateIndex++, 1, true),
+							expectedDateCell(dateIndex++, 2, true),
+							expectedDateCell(dateIndex++, 3, true),
+							expectedDateCell(dateIndex++, 4, true),
+							expectedDateCell(dateIndex++, 5, true)
+						]),
+						v('tr', [
+							expectedDateCell(dateIndex++, 6, true),
+							expectedDateCell(dateIndex++, 7, true),
+							expectedDateCell(dateIndex++, 8, true),
+							expectedDateCell(dateIndex++, 9, true),
+							expectedDateCell(dateIndex++, 10, true),
+							expectedDateCell(dateIndex++, 11, true),
+							expectedDateCell(dateIndex++, 12, true)
+						]),
+						v('tr', [
+							expectedDateCell(dateIndex++, 13, true),
+							expectedDateCell(dateIndex++, 14, true),
+							expectedDateCell(dateIndex++, 15, true),
+							expectedDateCell(dateIndex++, 16, true),
+							expectedDateCell(dateIndex++, 17, true),
+							expectedDateCell(dateIndex++, 18, true),
+							expectedDateCell(dateIndex++, 19, true)
+						]),
+						v('tr', [
+							expectedDateCell(dateIndex++, 20, true),
+							expectedDateCell(dateIndex++, 21, true),
+							expectedDateCell(dateIndex++, 22, true),
+							expectedDateCell(dateIndex++, 23, true),
+							expectedDateCell(dateIndex++, 24, true),
+							expectedDateCell(dateIndex++, 25, true),
+							expectedDateCell(dateIndex++, 26, true)
+						]),
+						v('tr', [
+							expectedDateCell(dateIndex++, 27, true),
+							expectedDateCell(dateIndex++, 28, true),
+							expectedDateCell(dateIndex++, 29, true),
+							expectedDateCell(dateIndex++, 30, true),
+							expectedDateCell(dateIndex++, 1, false),
+							expectedDateCell(dateIndex++, 2, false),
+							expectedDateCell(dateIndex++, 3, false)
+						]),
+						v('tr', [
+							expectedDateCell(dateIndex++, 4, false),
+							expectedDateCell(dateIndex++, 5, false),
+							expectedDateCell(dateIndex++, 6, false),
+							expectedDateCell(dateIndex++, 7, false),
+							expectedDateCell(dateIndex++, 8, false),
+							expectedDateCell(dateIndex++, 9, false),
+							expectedDateCell(dateIndex++, 10, false)
+						])
+					];
+				});
+			h.expect(firstDayOfWeekTemplate);
+		}
+	}
+});
 
 registerSuite('Calendar with min-max', {
 	tests: {
@@ -768,29 +870,34 @@ registerSuite('Calendar with min-max', {
 			// Change to next month so 29th cell is invalid
 			calendarProperties.month = testDate.getMonth();
 
-			dateIndex = 28;
 			h.expect(
 				baseTemplate
 					.setProperty('@date-picker', 'maxDate', maxDate)
 					.setProperty('@date-4', 'focusable', false)
-					.replaceChildren('tbody tr:nth-child(5)', () => [
-						expectedDateCell(dateIndex++, 25, true, true),
-						expectedDateCell(dateIndex++, 26, true, true),
-						expectedDateCell(dateIndex++, 27, true, true),
-						expectedDateCell(dateIndex++, 28, true, true),
-						expectedDateCell(dateIndex++, 29, true, true),
-						expectedDateCell(dateIndex++, 30, true, true),
-						expectedDateCell(dateIndex++, 1, false, true)
-					])
-					.replaceChildren('tbody tr:last-child', () => [
-						expectedDateCell(dateIndex++, 2, false, true),
-						expectedDateCell(dateIndex++, 3, false, true),
-						expectedDateCell(dateIndex++, 4, false, true),
-						expectedDateCell(dateIndex++, 5, false, true),
-						expectedDateCell(dateIndex++, 6, false, true),
-						expectedDateCell(dateIndex++, 7, false, true),
-						expectedDateCell(dateIndex++, 8, false, true)
-					])
+					.replaceChildren('tbody tr:nth-child(5)', () => {
+						let dateIndex = 28;
+						return [
+							expectedDateCell(dateIndex++, 25, true, true),
+							expectedDateCell(dateIndex++, 26, true, true),
+							expectedDateCell(dateIndex++, 27, true, true),
+							expectedDateCell(dateIndex++, 28, true, true),
+							expectedDateCell(dateIndex++, 29, true, true),
+							expectedDateCell(dateIndex++, 30, true, true),
+							expectedDateCell(dateIndex++, 1, false, true)
+						];
+					})
+					.replaceChildren('tbody tr:last-child', () => {
+						let dateIndex = 35;
+						return [
+							expectedDateCell(dateIndex++, 2, false, true),
+							expectedDateCell(dateIndex++, 3, false, true),
+							expectedDateCell(dateIndex++, 4, false, true),
+							expectedDateCell(dateIndex++, 5, false, true),
+							expectedDateCell(dateIndex++, 6, false, true),
+							expectedDateCell(dateIndex++, 7, false, true),
+							expectedDateCell(dateIndex++, 8, false, true)
+						];
+					})
 					.setProperty('@date-27', 'focusable', true)
 					.setProperty('@date-27', 'callFocus', true)
 					.setProperty('~nextMonth', 'disabled', true)
