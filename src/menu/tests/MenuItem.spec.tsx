@@ -24,8 +24,6 @@ describe('MenuItem', () => {
 
 	const sb = sandbox.create();
 
-	before(() => {});
-
 	after(() => {
 		sb.restore();
 	});

@@ -47,24 +47,6 @@ describe('Menu', () => {
 		</div>
 	));
 
-	// const getAnimalTemplate = () =>
-	// 	template.setChildren('@root', () =>
-	// 		animalOptions.map(({ value, label, disabled = false }, index) => (
-	// 			<MenuItem
-	// 				key={`item-${index}`}
-	// 				selected={false}
-	// 				onSelect={noop}
-	// 				active={index === 0}
-	// 				onRequestActive={noop}
-	// 				onActive={noop}
-	// 				scrollIntoView={false}
-	// 				disabled={disabled}
-	// 			>
-	// 				{label || value}
-	// 			</MenuItem>
-	// 		))
-	// 	);
-
 	const sb = sandbox.create();
 
 	before(() => {
