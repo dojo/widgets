@@ -1,4 +1,4 @@
-const { describe, it, before, after } = intern.getInterface('bdd');
+const { describe, it, after } = intern.getInterface('bdd');
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
