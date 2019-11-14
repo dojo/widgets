@@ -80,7 +80,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 								<div classes={[css.content]}>
 									{isBasic && includeDocs && <div innerHTML={readmeContent} />}
 									<h1>{isBasic ? 'Basic Usage' : example.title}</h1>
-									<Example content={content}>
+									<Example widgetName={widgetName} content={content}>
 										<example.module />
 									</Example>
 									{includeDocs && (

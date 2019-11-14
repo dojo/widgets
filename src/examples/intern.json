@@ -1,0 +1,6 @@
+{
+  "suites": [
+	  "./bootstrap.js",
+	  "./main.js"
+  ]
+}

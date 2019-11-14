@@ -18,7 +18,28 @@
 			"cldr-data/supplemental/plurals",
 			"cldr-data/supplemental/timeData",
 			"cldr-data/supplemental/weekData"
-		]
+		],
+		"externals": {
+			"outputPath": ".",
+			"dependencies": [
+				{
+					"from": "node_modules/intern/browser",
+					"to": "browser"
+				},
+				{
+					"from": "node_modules/intern/loaders",
+					"to": "intern/loaders"
+				},
+				{
+					"from": "node_modules/intern/index.html",
+					"to": "intern.html"
+				},
+				{
+					"from": "src/examples/intern.json",
+					"to": "intern.json"
+				}
+			]
+		}
 	},
 	"build-widget": {
 		"prefix": "dojo",
