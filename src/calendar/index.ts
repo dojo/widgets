@@ -18,6 +18,16 @@ import * as baseCss from '../common/styles/base.m.css';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 
+export enum FirstDayOfWeek {
+	sunday = 0,
+	monday = 1,
+	tuesday = 2,
+	wednesday = 3,
+	thursday = 4,
+	friday = 5,
+	saturday = 6
+}
+
 /**
  * @type CalendarProperties
  *
@@ -36,6 +46,7 @@ export type CalendarMessages = typeof calendarBundle.messages;
  * @property onMonthChange     Function called when the month changes
  * @property onYearChange      Function called when the year changes
  * @property onDateSelect      Function called when the user selects a date
+ * @property firstDayOfWeek    Specify a custom first day of the week, defauls to 0 (sunday)
  */
 export interface CalendarProperties extends ThemedProperties, CustomAriaProperties {
 	labels?: CalendarMessages;
@@ -51,6 +62,7 @@ export interface CalendarProperties extends ThemedProperties, CustomAriaProperti
 	onMonthChange?(month: number): void;
 	onYearChange?(year: number): void;
 	onDateSelect?(date: Date): void;
+	firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 interface ShortLong<T> {
@@ -240,6 +252,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 
 	private _renderDateGrid(selectedDate?: Date) {
 		const { month, year } = this._getMonthYear();
+		const { firstDayOfWeek = 0 } = this.properties;
 
 		this._ensureDayIsInMinMax(
 			new Date(year, month, this._focusedDay),
@@ -247,11 +260,15 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		);
 		const currentMonthLength = this._getMonthLength(month, year);
 		const previousMonthLength = this._getMonthLength(month - 1, year);
-		const initialWeekday = new Date(year, month, 1).getDay();
+		const currentMonthStartDay = new Date(year, month, 1).getDay();
+		const initialWeekday =
+			currentMonthStartDay - firstDayOfWeek < 0
+				? currentMonthStartDay - firstDayOfWeek + 7
+				: currentMonthStartDay - firstDayOfWeek;
 		const todayString = new Date().toDateString();
 
 		let dayIndex = 0;
-		let isCurrentMonth = initialWeekday === 0;
+		let isCurrentMonth = currentMonthStartDay === firstDayOfWeek;
 		let cellMonth = isCurrentMonth ? month : month - 1;
 		let date = isCurrentMonth ? 0 : previousMonthLength - initialWeekday;
 		let isSelectedDay: boolean;
@@ -395,19 +412,25 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			selectedDate,
 			minDate,
 			maxDate,
-			weekdayNames = this._getWeekdays(commonMessages)
+			weekdayNames = this._getWeekdays(commonMessages),
+			firstDayOfWeek = 0
 		} = this.properties;
 		const { year, month } = this._getMonthYear();
 
+		let weekdayOrder: number[] = [];
+		for (let i = firstDayOfWeek; i < firstDayOfWeek + 7; i++) {
+			weekdayOrder.push(i > 6 ? i - 7 : i);
+		}
+
 		// Calendar Weekday array
-		const weekdays = weekdayNames.map((weekday) =>
+		const weekdays = weekdayOrder.map((order) =>
 			v(
 				'th',
 				{
 					role: 'columnheader',
 					classes: this.theme(css.weekday)
 				},
-				[this.renderWeekdayCell(weekday)]
+				[this.renderWeekdayCell(weekdayNames[order])]
 			)
 		);
 
