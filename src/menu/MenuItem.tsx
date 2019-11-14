@@ -9,10 +9,10 @@ import { throttle } from '@dojo/framework/core/util';
 export interface MenuItemProperties {
 	onSelect(): void;
 	selected?: boolean;
-	active: boolean;
+	active?: boolean;
 	onRequestActive(): void;
 	onActive(dimensions: DimensionResults): void;
-	scrollIntoView: boolean;
+	scrollIntoView?: boolean;
 	disabled?: boolean;
 }
 
@@ -31,12 +31,12 @@ export const MenuItem = factory(function({
 }) {
 	const {
 		onSelect,
-		selected,
-		active,
+		selected = false,
+		active = false,
 		onRequestActive,
 		onActive,
-		scrollIntoView,
-		disabled
+		scrollIntoView = false,
+		disabled = false
 	} = properties();
 
 	if (icache.get('active') !== active) {

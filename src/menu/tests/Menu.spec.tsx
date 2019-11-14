@@ -2,12 +2,12 @@ const { describe, it, before, after } = intern.getInterface('bdd');
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
-import Menu, { MenuOption } from './Menu';
-import MenuItem from './MenuItem';
-import * as css from '../theme/menu.m.css';
+import Menu, { MenuOption } from '../Menu';
+import MenuItem from '../MenuItem';
+import * as css from '../../theme/menu.m.css';
 import { sandbox } from 'sinon';
 import global from '@dojo/framework/shim/global';
-import { Keys } from '../common/util';
+import { Keys } from '../../common/util';
 const { assert } = intern.getPlugin('chai');
 
 const noop: any = () => {};
@@ -29,12 +29,8 @@ describe('Menu', () => {
 			onfocus={undefined}
 			onblur={undefined}
 			styles={{}}
-		/>
-	));
-
-	const getAnimalTemplate = () =>
-		template.setChildren('@root', () =>
-			animalOptions.map(({ value, label, disabled = false }, index) => (
+		>
+			{animalOptions.map(({ value, label, disabled = false }, index) => (
 				<MenuItem
 					key={`item-${index}`}
 					selected={false}
@@ -47,8 +43,27 @@ describe('Menu', () => {
 				>
 					{label || value}
 				</MenuItem>
-			))
-		);
+			))}
+		</div>
+	));
+
+	// const getAnimalTemplate = () =>
+	// 	template.setChildren('@root', () =>
+	// 		animalOptions.map(({ value, label, disabled = false }, index) => (
+	// 			<MenuItem
+	// 				key={`item-${index}`}
+	// 				selected={false}
+	// 				onSelect={noop}
+	// 				active={index === 0}
+	// 				onRequestActive={noop}
+	// 				onActive={noop}
+	// 				scrollIntoView={false}
+	// 				disabled={disabled}
+	// 			>
+	// 				{label || value}
+	// 			</MenuItem>
+	// 		))
+	// 	);
 
 	const sb = sandbox.create();
 
@@ -64,7 +79,7 @@ describe('Menu', () => {
 
 	it('renders options', () => {
 		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
-		h.expect(getAnimalTemplate());
+		h.expect(template);
 	});
 
 	it('takes a custom renderer', () => {
@@ -98,7 +113,7 @@ describe('Menu', () => {
 
 	it('takes a number in view property', () => {
 		const h = harness(() => <Menu onValue={noop} options={animalOptions} numberInView={2} />);
-		const numberInViewTemplate = getAnimalTemplate().setProperty('@root', 'styles', {
+		const numberInViewTemplate = template.setProperty('@root', 'styles', {
 			maxHeight: '90px'
 		});
 		h.expect(numberInViewTemplate);
@@ -113,7 +128,7 @@ describe('Menu', () => {
 		};
 
 		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
-		const arrowKeyDownTemplate = getAnimalTemplate()
+		const arrowKeyDownTemplate = template
 			.setProperty('@item-0', 'active', false)
 			.setProperty('@item-1', 'active', true);
 		h.expect(arrowKeyDownTemplate);
@@ -128,7 +143,7 @@ describe('Menu', () => {
 		};
 
 		h.trigger('@root', 'onkeydown', mockArrowUpEvent);
-		const arrowKeyUpTemplate = getAnimalTemplate()
+		const arrowKeyUpTemplate = template
 			.setProperty('@item-0', 'active', false)
 			.setProperty('@item-2', 'active', true);
 		h.expect(arrowKeyUpTemplate);
@@ -150,7 +165,7 @@ describe('Menu', () => {
 		};
 
 		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
-		h.expect(getAnimalTemplate());
+		h.expect(template);
 		assert.isTrue(onActiveIndexChange.calledOnceWith(1));
 	});
 
@@ -163,7 +178,7 @@ describe('Menu', () => {
 		};
 
 		h.trigger('@root', 'onkeydown', mockCPressEvent);
-		const cPressTemplate = getAnimalTemplate()
+		const cPressTemplate = template
 			.setProperty('@item-0', 'active', false)
 			.setProperty('@item-1', 'active', true);
 		h.expect(cPressTemplate);
@@ -189,7 +204,7 @@ describe('Menu', () => {
 
 		h.trigger('@root', 'onkeydown', mockSpacePressEvent);
 
-		const spacePressTemplate = getAnimalTemplate()
+		const spacePressTemplate = template
 			.setProperty('@item-0', 'active', false)
 			.setProperty('@item-1', 'active', true)
 			.setProperty('@item-1', 'selected', true);
