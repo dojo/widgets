@@ -2,7 +2,7 @@ const { describe, it, before, after } = intern.getInterface('bdd');
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
-import Menu, { MenuOption } from '../Menu';
+import Menu, { MenuOption } from '..';
 import MenuItem from '../MenuItem';
 import * as css from '../../theme/menu.m.css';
 import { sandbox } from 'sinon';

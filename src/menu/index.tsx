@@ -14,7 +14,7 @@ import { findIndex } from '@dojo/framework/shim/array';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
-interface MenuProperties {
+export interface MenuProperties {
 	/** Options to display within the menu */
 	options: MenuOption[];
 	/** The initial selected value */

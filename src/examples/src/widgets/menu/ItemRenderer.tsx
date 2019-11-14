@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Menu from '@dojo/widgets/menu/Menu';
+import Menu from '@dojo/widgets/menu';
 import states from './states';
 import icache from '@dojo/framework/core/middleware/icache';
 
