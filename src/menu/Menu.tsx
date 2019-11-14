@@ -34,7 +34,7 @@ interface MenuProperties {
 	/** Callback called when menu root is blurred */
 	onBlur?(): void;
 	/** Property to determine how many items to render. Not passing a number will render all results */
-	numberInView?: number;
+	itemsInView?: number;
 	/** Custom renderer for item contents */
 	itemRenderer?(properties: ItemRendererProperties): RenderResult;
 }
@@ -68,7 +68,7 @@ const offscreenHeight = (dnode: RenderResult) => {
 	return dimensions.height;
 };
 
-const menuFactory = create({
+const factory = create({
 	icache: createICacheMiddleware<MenuICache>(),
 	focus,
 	dimensions,
@@ -76,7 +76,7 @@ const menuFactory = create({
 	theme
 }).properties<MenuProperties>();
 
-export const Menu = menuFactory(function({
+export const Menu = factory(function({
 	properties,
 	middleware: { icache, cache, focus, dimensions, theme }
 }) {
@@ -90,7 +90,7 @@ export const Menu = menuFactory(function({
 		focusable = true,
 		onBlur,
 		onFocus,
-		numberInView,
+		itemsInView: numberInView,
 		itemRenderer
 	} = properties();
 

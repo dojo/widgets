@@ -94,7 +94,7 @@ describe('Menu', () => {
 	});
 
 	it('takes a number in view property', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} numberInView={2} />);
+		const h = harness(() => <Menu onValue={noop} options={animalOptions} itemsInView={2} />);
 		const numberInViewTemplate = template.setProperty('@root', 'styles', {
 			maxHeight: '90px'
 		});

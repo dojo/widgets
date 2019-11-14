@@ -28,16 +28,17 @@ export default factory(function Controlled({ middleware: { icache } }) {
 			</button>
 			<Menu
 				focusable={false}
-				numberInView={6}
+				itemsInView={6}
 				options={states}
 				onActiveIndexChange={(index: number) => {
 					icache.set('activeIndex', index);
 				}}
 				activeIndex={activeIndex}
 				onValue={(value) => {
-					console.log(`selected: ${value}`);
+					icache.set('value', value);
 				}}
 			/>
+			<p>{`Selected: ${icache.getOrSet<string>('value', '')}`}</p>{' '}
 		</virtual>
 	);
 });
