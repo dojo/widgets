@@ -5,7 +5,7 @@ const factory = create();
 
 export default factory(function DisabledSubmitButton() {
 	return (
-		<Button type="submit" disabled={true}>
+		<Button type="submit" disabled>
 			Submit
 		</Button>
 	);
