@@ -117,6 +117,12 @@ import CustomRenderer from './widgets/select/CustomRenderer';
 import DisabledSelect from './widgets/select/DisabledSelect';
 import RequiredSelect from './widgets/select/RequiredSelect';
 import AdditionalText from './widgets/select/AdditionalText';
+import ActionButtons from './widgets/card/ActionButtons';
+import ActionIcons from './widgets/card/ActionIcons';
+import ActionButtonsAndIcons from './widgets/card/ActionButtonsAndIcons';
+import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
+import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
+import CardWithMediaContent from './widgets/card/CardWithMediaContent';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -196,6 +202,38 @@ export const config = {
 			}
 		},
 		card: {
+			examples: [
+				{
+					title: 'Basic Card with Action Buttons',
+					module: ActionButtons,
+					filename: 'ActionButtons'
+				},
+				{
+					title: 'Basic Card with Action Icons',
+					module: ActionIcons,
+					filename: 'ActionIcons'
+				},
+				{
+					title: 'Basic Card with Actions and Icons',
+					module: ActionButtonsAndIcons,
+					filename: 'ActionButtonsAndIcons'
+				},
+				{
+					title: 'Basic card with 16x9 Media',
+					module: CardWithMediaRectangle,
+					filename: 'CardWithMediaRectangle'
+				},
+				{
+					title: 'Basic card with Square Media',
+					module: CardWithMediaSquare,
+					filename: 'CardWithMediaSquare'
+				},
+				{
+					title: 'Basic card with Content Media',
+					module: CardWithMediaContent,
+					filename: 'CardWithMediaContent'
+				}
+			],
 			filename: 'index',
 			overview: {
 				example: {

@@ -5,11 +5,17 @@ import * as cardCss from '../../../../theme/card.m.css';
 
 const factory = create();
 
-export default factory(function Basic() {
+export default factory(function CardWithMediaRectangle() {
 	return (
 		<div styles={{ width: '400px' }}>
 			<Card>
-				<h1 classes={cardCss.primary}>Hello, World</h1>
+				<div
+					classes={[cardCss.media, cardCss.media16by9]}
+					styles={{
+						background:
+							'linear-gradient(to bottom, #1e5799 0%,#2989d8 100%,#207cca 51%,#7db9e8 100%)'
+					}}
+				/>
 				<p classes={cardCss.secondary}>Lorem ipsum</p>
 			</Card>
 		</div>
