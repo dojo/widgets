@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
+import injector from '@dojo/framework/core/middleware/injector';
+import Router from '@dojo/framework/routing/Router';
 import has from '@dojo/framework/core/has';
-import icache from '@dojo/framework/core/middleware/icache';
 import TabController from '@dojo/widgets/tab-controller';
 import Tab from '@dojo/widgets/tab';
 
@@ -9,13 +10,23 @@ import * as css from './Example.m.css';
 interface ExampleProperties {
 	content?: string;
 	widgetName: string;
+	active: string;
 }
 
-const factory = create({ icache }).properties<ExampleProperties>();
+const tabNames = ['example'];
 
-export default factory(function Example({ children, properties, middleware: { icache } }) {
-	const activeIndex = icache.getOrSet('active', 0);
-	const { content, widgetName } = properties();
+const factory = create({ injector }).properties<ExampleProperties>();
+
+export default factory(function Example({ children, properties, middleware: { injector } }) {
+	const router = injector.get<Router>('router');
+	const { content, widgetName, active } = properties();
+	if (content) {
+		tabNames.push('code');
+	}
+	if (has('dojo-debug')) {
+		tabNames.push('tests');
+	}
+	const activeTab = tabNames.indexOf(active) === -1 ? 0 : tabNames.indexOf(active);
 	const tabs = [
 		<Tab key="example" label="Example">
 			<div classes={css.tab}>{children()}</div>
@@ -33,14 +44,13 @@ export default factory(function Example({ children, properties, middleware: { ic
 		);
 	}
 	if (has('dojo-debug')) {
-		const testIndex = has('docs') ? 2 : 1;
 		tabs.push(
 			<Tab key="tests" label="Tests">
 				<div classes={css.tab}>
-					{icache.get('active') === testIndex && (
+					{activeTab === tabNames.indexOf('tests') && (
 						<iframe
 							classes={css.iframe}
-							src={`./intern?config=intern.json&widget=${widgetName}`}
+							src={`./intern.html?config=intern.json&widget=${widgetName}`}
 						/>
 					)}
 				</div>
@@ -49,9 +59,13 @@ export default factory(function Example({ children, properties, middleware: { ic
 	}
 	return (
 		<TabController
-			activeIndex={activeIndex}
+			activeIndex={activeTab}
 			onRequestTabChange={(index) => {
-				icache.set('active', index);
+				if (router) {
+					const activeTab = tabNames[index];
+					const href = router.link('example', { active: activeTab });
+					href && router.setPath(href);
+				}
 			}}
 		>
 			{tabs}

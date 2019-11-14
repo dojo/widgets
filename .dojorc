@@ -27,8 +27,8 @@
 					"to": "browser"
 				},
 				{
-					"from": "node_modules/intern/loaders",
-					"to": "intern/loaders"
+					"from": "node_modules/intern/loaders/default.js",
+					"to": "loaders/default.js"
 				},
 				{
 					"from": "node_modules/intern/index.html",

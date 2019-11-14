@@ -54,8 +54,9 @@ export default factory(function App({ properties, middleware: { block } }) {
 			<main classes={[css.main]}>
 				<Outlet
 					id="example"
-					renderer={({ params }) => {
+					renderer={({ params, queryParams }) => {
 						const { widget: widgetName, example: exampleName } = params;
+						const active = queryParams.active ? queryParams.active : 'example';
 						const widgetConfig = configs[widgetName];
 						const { overview, examples = [] } = widgetConfig;
 						const isBasic = exampleName === 'basic';
@@ -80,7 +81,11 @@ export default factory(function App({ properties, middleware: { block } }) {
 								<div classes={[css.content]}>
 									{isBasic && includeDocs && <div innerHTML={readmeContent} />}
 									<h1>{isBasic ? 'Basic Usage' : example.title}</h1>
-									<Example widgetName={widgetName} content={content}>
+									<Example
+										widgetName={widgetName}
+										content={content}
+										active={active}
+									>
 										<example.module />
 									</Example>
 									{includeDocs && (
