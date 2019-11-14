@@ -190,17 +190,11 @@ export const Menu = factory(function({
 		icache.set('resetInputTextTimer', resetTextTimeout);
 		icache.set('inputText', inputText);
 
-		return findIndex(options, ({ disabled, value, label }, i) => {
-			if (disabled) {
-				return false;
-			}
-
-			if ((label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0) {
-				return true;
-			}
-
-			return false;
-		});
+		return findIndex(
+			options,
+			({ disabled, value, label }) =>
+				!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0
+		);
 	}
 
 	function onActive(index: number, itemDimensions: DimensionResults) {
