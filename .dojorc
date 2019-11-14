@@ -23,8 +23,12 @@
 			"outputPath": ".",
 			"dependencies": [
 				{
-					"from": "node_modules/intern/browser",
-					"to": "browser"
+					"from": "node_modules/intern/browser/intern.js",
+					"to": "browser/intern.js"
+				},
+				{
+					"from": "node_modules/intern/browser/config.js",
+					"to": "browser/config.js"
 				},
 				{
 					"from": "node_modules/intern/loaders/default.js",
