@@ -76,6 +76,7 @@ import NonNative from './widgets/select/NonNative';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
+import LimitedRange from './widgets/calendar/LimitedRange';
 
 export interface ExampleConfig {
 	title?: string;
@@ -259,6 +260,12 @@ export const config: Config = {
 				title: 'Custom First Day of Week',
 				module: FirstDayOfWeekCalendar,
 				filename: 'CustomFirstWeekDay'
+			},
+			{
+				title: 'Limited Date Range',
+				module: LimitedRange,
+				filename: 'LimitedRange',
+				description: 'Demonstrates limiting the selectable region of the calendar.'
 			}
 		]
 	},
