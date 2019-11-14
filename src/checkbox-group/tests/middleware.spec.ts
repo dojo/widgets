@@ -1,9 +1,9 @@
+const { describe, it, afterEach } = intern.getInterface('bdd');
 import { checkboxGroup as checkboxGroupMiddleware } from '../middleware';
 const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
 import cacheMiddleware from '@dojo/framework/core/middleware/cache';
 import icacheMiddleware from '@dojo/framework/core/middleware/icache';
-import { it, describe, afterEach } from 'intern/lib/interfaces/bdd';
 
 const sb = sandbox.create();
 const onValueStub = sb.stub();
