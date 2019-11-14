@@ -25,6 +25,7 @@
 			"src/menu",
 			"src/number-input",
 			"src/outlined-button",
+			"src/password-input",
 			"src/popup",
 			"src/progress",
 			"src/radio",

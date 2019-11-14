@@ -46,6 +46,7 @@ import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
+import BasicPassword from './widgets/password-input/Basic';
 import BasicPopup from './widgets/popup/Basic';
 import BasicProgress from './widgets/progress/Basic';
 import BasicRadio from './widgets/radio/Basic';
@@ -418,6 +419,14 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicMenu
+				}
+			}
+		},
+		'password-input': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicPassword
 				}
 			}
 		},
