@@ -44,10 +44,13 @@ interface LengthRule {
 }
 
 interface ContainsRule {
-	contains: ({ atLeast: number }) & ContainsRules | ContainsRules;
+	contains: ({ atLeast?: number }) & ContainsRules;
 }
 
-type ValidationRules = LengthRule | ContainsRule | (LengthRule & ContainsRule);
+export type ValidationRules = RequireAtLeastOne<LengthRule & ContainsRule>;
+
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+	{ [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>> }[Keys];
 
 /* OWASP Special Characters: https://www.owasp.org/index.php/Password_special_characters */
 const specialCharactersRegEx = new RegExp(
@@ -263,7 +266,7 @@ const validation = validationFactory(function validation({ middleware: { i18n } 
 			const failedResults = (Object.keys(rules) as (keyof ValidationRules)[])
 				.map(
 					(rule) =>
-						validators[rule] && validators[rule].validate(rules[rule] || {}, value)
+						validators[rule] && validators[rule].validate(rules[rule] as any, value)
 				)
 				.filter((result) => result && !result.valid);
 
@@ -276,7 +279,7 @@ const validation = validationFactory(function validation({ middleware: { i18n } 
 		}
 		validator.describe = () =>
 			(Object.keys(rules) as (keyof ValidationRules)[]).reduce(
-				(prev, rule) => [...prev, ...validators[rule].describe(rules[rule] || {})],
+				(prev, rule) => [...prev, ...validators[rule].describe(rules[rule] as any)],
 				[] as string[]
 			);
 

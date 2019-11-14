@@ -21,9 +21,11 @@ function createMockValidationMiddleware(validator: Function) {
 	});
 }
 
+const rules = { length: { min: 0 } };
+
 describe('ConstrainedInput', () => {
 	it('renders with default properties', () => {
-		const h = harness(() => <ConstrainedInput rules={{}} />);
+		const h = harness(() => <ConstrainedInput rules={rules} />);
 		h.expect(() => (
 			<TextInput
 				key="root"
@@ -36,7 +38,7 @@ describe('ConstrainedInput', () => {
 	});
 
 	it('passes properties to the input widget', () => {
-		const h = harness(() => <ConstrainedInput rules={{}} label="Test Label" />);
+		const h = harness(() => <ConstrainedInput rules={rules} label="Test Label" />);
 		h.expect(() => (
 			<TextInput
 				key="root"
