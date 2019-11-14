@@ -40,6 +40,7 @@ describe('Menu', () => {
 					onActive={noop}
 					scrollIntoView={false}
 					disabled={disabled}
+					theme={undefined}
 				>
 					{label || value}
 				</MenuItem>
@@ -84,6 +85,7 @@ describe('Menu', () => {
 						onActive={noop}
 						scrollIntoView={false}
 						disabled={disabled}
+						theme={undefined}
 					>
 						<span>label is {label || value}</span>
 					</MenuItem>

@@ -91,7 +91,8 @@ export const Menu = factory(function({
 		onBlur,
 		onFocus,
 		itemsInView: numberInView,
-		itemRenderer
+		itemRenderer,
+		theme: themeProp
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -244,6 +245,7 @@ export const Menu = factory(function({
 							_setValue(value);
 						}}
 						active={active}
+						theme={themeProp}
 						onRequestActive={() => {
 							if (focus.isFocused('root') || !focusable) {
 								_setActiveIndex(index);

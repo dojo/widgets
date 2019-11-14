@@ -5,6 +5,7 @@ import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { throttle } from '@dojo/framework/core/util';
+import theme from '@dojo/framework/core/middleware/theme';
 
 export interface MenuItemProperties {
 	onSelect(): void;
@@ -22,7 +23,7 @@ interface MenuItemICache {
 
 const icache = createICacheMiddleware<MenuItemICache>();
 
-const factory = create({ dimensions, icache }).properties<MenuItemProperties>();
+const factory = create({ dimensions, icache, theme }).properties<MenuItemProperties>();
 
 export const MenuItem = factory(function({
 	properties,
