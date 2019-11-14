@@ -4,5 +4,5 @@ import Button from '@dojo/widgets/button';
 const factory = create();
 
 export default factory(function Basic() {
-	return <Button>Button</Button>;
+	return <Button>Basic Button</Button>;
 });
