@@ -13,13 +13,13 @@ interface ExampleProperties {
 	active: string;
 }
 
-const tabNames = ['example'];
-
 const factory = create({ injector }).properties<ExampleProperties>();
 
 export default factory(function Example({ children, properties, middleware: { injector } }) {
 	const router = injector.get<Router>('router');
 	const { content, widgetName, active } = properties();
+	const tabNames = ['example'];
+
 	if (content) {
 		tabNames.push('code');
 	}
