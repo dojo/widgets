@@ -4,6 +4,9 @@ import ConstrainedInput from '../..';
 import { tsx, create } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input';
 import validation from '../../../middleware/validation';
+import bundle from '../../../middleware/validation.nls';
+
+const { messages } = bundle;
 
 const { describe, it } = intern.getInterface('bdd');
 
@@ -32,7 +35,7 @@ describe('ConstrainedInput', () => {
 				customValidator={() => {}}
 				valid={undefined}
 				onValidate={() => {}}
-				helperText={''}
+				helperText={messages.minimumLength.replace('{length}', '0')}
 			/>
 		));
 	});
@@ -45,7 +48,7 @@ describe('ConstrainedInput', () => {
 				customValidator={() => {}}
 				valid={undefined}
 				onValidate={() => {}}
-				helperText={''}
+				helperText={messages.minimumLength.replace('{length}', '0')}
 				label="Test Label"
 			/>
 		));
