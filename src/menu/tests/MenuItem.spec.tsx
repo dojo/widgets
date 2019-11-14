@@ -3,7 +3,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import MenuItem from '../MenuItem';
-import * as css from '../../theme/menuItem.m.css';
+import * as css from '../../theme/menu-item.m.css';
 import { sandbox } from 'sinon';
 const { assert } = intern.getPlugin('chai');
 
@@ -14,7 +14,7 @@ describe('MenuItem', () => {
 		<div
 			key="root"
 			onpointermove={noop}
-			classes={[css.root, null, null, null]}
+			classes={[css.root, false, false, false]}
 			onpointerdown={noop}
 			scrollIntoView={false}
 		>
@@ -46,8 +46,8 @@ describe('MenuItem', () => {
 		const selectedTemplate = template.setProperty('@root', 'classes', [
 			css.root,
 			css.selected,
-			null,
-			null
+			false,
+			false
 		]);
 		h.expect(selectedTemplate);
 	});
@@ -60,8 +60,8 @@ describe('MenuItem', () => {
 		));
 		const disabledTemplate = template.setProperty('@root', 'classes', [
 			css.root,
-			null,
-			null,
+			false,
+			false,
 			css.disabled
 		]);
 		h.expect(disabledTemplate);
@@ -86,9 +86,9 @@ describe('MenuItem', () => {
 		));
 		const disabledTemplate = template.setProperty('@root', 'classes', [
 			css.root,
-			null,
+			false,
 			css.active,
-			null
+			false
 		]);
 		h.expect(disabledTemplate);
 		assert.isTrue(onActive.calledOnce);

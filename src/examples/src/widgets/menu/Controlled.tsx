@@ -6,7 +6,7 @@ import states from './states';
 const factory = create({ icache });
 
 export default factory(function Controlled({ middleware: { icache } }) {
-	const activeIndex = icache.getOrSet<number>('activeIndex', 0);
+	const activeIndex = icache.getOrSet('activeIndex', 0);
 
 	return (
 		<virtual>
@@ -38,7 +38,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Selected: ${icache.getOrSet<string>('value', '')}`}</p>{' '}
+			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>{' '}
 		</virtual>
 	);
 });

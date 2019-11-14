@@ -20,7 +20,7 @@ export default factory(function ItemRenderer({ middleware: { icache } }) {
 				}}
 				itemsInView={8}
 			/>
-			<p>{`Selected: ${icache.getOrSet<string>('value', '')}`}</p>
+			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
 	);
 });

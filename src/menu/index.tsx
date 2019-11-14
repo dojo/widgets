@@ -1,7 +1,6 @@
 import { create, tsx, renderer } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { theme } from '@dojo/framework/core/middleware/theme';
-import { cache } from '@dojo/framework/core/middleware/cache';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { Keys } from '../common/util';
 import * as css from '../theme/menu.m.css';
@@ -51,10 +50,12 @@ interface MenuICache {
 	value: string;
 	initial: string;
 	activeIndex: number;
-	numberInView: number;
+	itemsInView: number;
 	menuHeight: number;
 	itemHeight: number;
 	itemToScroll: number;
+	resetInputTextTimer: NodeJS.Timer;
+	inputText: string;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -72,13 +73,12 @@ const factory = create({
 	icache: createICacheMiddleware<MenuICache>(),
 	focus,
 	dimensions,
-	cache,
 	theme
 }).properties<MenuProperties>();
 
 export const Menu = factory(function({
 	properties,
-	middleware: { icache, cache, focus, dimensions, theme }
+	middleware: { icache, focus, dimensions, theme }
 }) {
 	const {
 		options,
@@ -90,7 +90,7 @@ export const Menu = factory(function({
 		focusable = true,
 		onBlur,
 		onFocus,
-		itemsInView: numberInView,
+		itemsInView,
 		itemRenderer,
 		theme: themeProp
 	} = properties();
@@ -101,8 +101,8 @@ export const Menu = factory(function({
 		icache.set('activeIndex', findIndex(options, (option) => option.value === initialValue));
 	}
 
-	if (numberInView && numberInView !== icache.get('numberInView')) {
-		icache.set('numberInView', numberInView);
+	if (itemsInView && itemsInView !== icache.get('itemsInView')) {
+		icache.set('itemsInView', itemsInView);
 
 		const offscreenItemProps = {
 			selected: false,
@@ -128,14 +128,14 @@ export const Menu = factory(function({
 				</MenuItem>
 			)
 		);
-		itemHeight && icache.set('menuHeight', numberInView * itemHeight);
+		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
 	}
 
 	const selectedValue = icache.get('value');
 	const computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 
-	function _setActiveIndex(index: number) {
+	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {
 			onActiveIndexChange(index);
 		} else {
@@ -143,12 +143,12 @@ export const Menu = factory(function({
 		}
 	}
 
-	function _setValue(value: string) {
+	function setValue(value: string) {
 		icache.set('value', value);
 		onValue(value);
 	}
 
-	function _onKeyDown(event: KeyboardEvent) {
+	function onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
 
 		switch (event.which) {
@@ -156,15 +156,15 @@ export const Menu = factory(function({
 			case Keys.Space:
 				event.preventDefault();
 				const activeItem = options[computedActiveIndex];
-				!activeItem.disabled && _setValue(activeItem.value);
+				!activeItem.disabled && setValue(activeItem.value);
 				break;
 			case Keys.Down:
 				event.preventDefault();
-				_setActiveIndex((computedActiveIndex + 1) % options.length);
+				setActiveIndex((computedActiveIndex + 1) % options.length);
 				break;
 			case Keys.Up:
 				event.preventDefault();
-				_setActiveIndex((computedActiveIndex - 1 + options.length) % options.length);
+				setActiveIndex((computedActiveIndex - 1 + options.length) % options.length);
 				break;
 			case Keys.Escape:
 				event.preventDefault();
@@ -173,25 +173,23 @@ export const Menu = factory(function({
 			default:
 				const newIndex = getComputedIndexFromInput(event.key);
 				if (newIndex !== undefined) {
-					_setActiveIndex(newIndex);
+					setActiveIndex(newIndex);
 				}
 		}
 	}
 
 	function getComputedIndexFromInput(key: string) {
-		const existingTimer = cache.get<NodeJS.Timer>('resetInputTextTimer');
-		let inputText = cache.get<string>('inputText') || '';
+		const existingTimer = icache.get('resetInputTextTimer');
+		let inputText = icache.getOrSet('inputText', '') + `${key}`;
 		existingTimer && clearTimeout(existingTimer);
 
-		cache.set(
-			'resetInputTextTimer',
-			setTimeout(() => {
-				cache.set('inputText', '');
-			}, 800)
-		);
+		const resetTextTimeout = setTimeout(() => {
+			icache.set('inputText', '');
+		}, 800);
 
-		inputText += `${key}`;
-		cache.set('inputText', inputText);
+		icache.set('resetInputTextTimer', resetTextTimeout);
+
+		icache.set('inputText', inputText);
 
 		return findIndex(options, ({ disabled, value, label }, i) => {
 			if (disabled) {
@@ -206,7 +204,7 @@ export const Menu = factory(function({
 		});
 	}
 
-	function _onActive(index: number, itemDimensions: DimensionResults) {
+	function onActive(index: number, itemDimensions: DimensionResults) {
 		const { position: itemPosition, size: itemSize } = itemDimensions;
 		const { position: rootPosition, size: rootSize } = dimensions.get('root');
 		if (itemPosition.bottom > rootPosition.bottom) {
@@ -228,7 +226,7 @@ export const Menu = factory(function({
 			key="root"
 			classes={classes.root}
 			tabIndex={focusable ? 0 : -1}
-			onkeydown={_onKeyDown}
+			onkeydown={onKeyDown}
 			focus={() => shouldFocus}
 			onfocus={onFocus}
 			onblur={onBlur}
@@ -242,17 +240,17 @@ export const Menu = factory(function({
 						key={`item-${index}`}
 						selected={selected}
 						onSelect={() => {
-							_setValue(value);
+							setValue(value);
 						}}
 						active={active}
 						theme={themeProp}
 						onRequestActive={() => {
 							if (focus.isFocused('root') || !focusable) {
-								_setActiveIndex(index);
+								setActiveIndex(index);
 							}
 						}}
-						onActive={(dimensions: DimensionResults) => {
-							_onActive(index, dimensions);
+						onActive={(dimensions) => {
+							onActive(index, dimensions);
 						}}
 						scrollIntoView={index === itemToScroll}
 						disabled={disabled}

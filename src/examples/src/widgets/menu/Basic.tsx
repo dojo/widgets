@@ -20,7 +20,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Selected: ${icache.getOrSet<string>('value', '')}`}</p>{' '}
+			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>{' '}
 		</virtual>
 	);
 });
