@@ -188,7 +188,6 @@ export const Menu = factory(function({
 		}, 800);
 
 		icache.set('resetInputTextTimer', resetTextTimeout);
-
 		icache.set('inputText', inputText);
 
 		return findIndex(options, ({ disabled, value, label }, i) => {
