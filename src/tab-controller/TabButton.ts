@@ -134,7 +134,10 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 						},
 						[messages.close]
 				  )
-				: null
+				: null,
+			v('span', { classes: this.theme([css.indicator, active ? css.indicatorActive : '']) }, [
+				v('span', { classes: this.theme(css.indicatorContent) })
+			])
 		];
 	}
 
@@ -166,7 +169,7 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 				role: 'tab',
 				tabIndex: active === true ? 0 : -1
 			},
-			this.getContent(messages)
+			[v('span', { classes: this.theme(css.tabButtonContent) }, this.getContent(messages))]
 		);
 	}
 }

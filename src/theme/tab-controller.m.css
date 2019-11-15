@@ -3,7 +3,7 @@
 .tab {
 	position: relative;
 	border: 1px solid black;
-	background: #FFF;
+	background: #fff;
 }
 
 .close {
@@ -28,16 +28,30 @@
 	font-size: 14px;
 }
 
-.closeable {}
+.closeable {
+}
+
+.indicator {
+	display: none;
+}
+
+.indicatorActive {
+}
+.indicatorContent {
+}
+
+.tabButtonContent {
+}
 
 .activeTabButton {
-	background: #FFF;
+	background: #fff;
 	border-color: black;
-	border-bottom-color: #FFF;
+	border-bottom-color: #fff;
 	z-index: calc(var(--zindex-base) + 1);
 }
 
-.root, .root * {
+.root,
+.root * {
 	box-sizing: border-box;
 }
 
@@ -90,7 +104,7 @@
 	border-top-color: var(--selected-background);
 	border-left-color: var(--selected-background);
 	border-bottom-color: var(--selected-background);
-	border-right: 1px solid #FFF;
+	border-right: 1px solid #fff;
 }
 
 .alignBottom .tabButton {
