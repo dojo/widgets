@@ -1,12 +1,18 @@
 import { TextInput, BaseInputProperties } from '../text-input/index';
 import { tsx, create } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 import * as textInputCss from '../theme/text-input.m.css';
 import * as emailInputCss from '../theme/email-input.m.css';
 
 export interface EmailInputProperties extends BaseInputProperties {}
 
+interface EmailInputICache {
+	valid?: boolean;
+	message?: string;
+}
+
+const icache = createICacheMiddleware<EmailInputICache>();
 const factory = create({ icache, theme }).properties<EmailInputProperties>();
 
 export const EmailInput = factory(function({ properties, middleware: { icache, theme } }) {
