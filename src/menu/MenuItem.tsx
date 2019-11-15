@@ -70,6 +70,7 @@ export const MenuItem = factory(function({
 				!disabled && onSelect();
 			}}
 			scrollIntoView={scrollIntoView}
+			role="menuitem"
 		>
 			{children()}
 		</div>

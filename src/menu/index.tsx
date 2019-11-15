@@ -222,6 +222,9 @@ export const Menu = factory(function({
 			onfocus={onFocus}
 			onblur={onBlur}
 			styles={rootStyles}
+			role="menu"
+			aria-hidden="true"
+			aria-orientation="vertical"
 		>
 			{options.map(({ value, label, disabled = false }, index) => {
 				const selected = value === selectedValue;
