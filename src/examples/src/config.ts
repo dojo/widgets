@@ -77,6 +77,8 @@ import Exclusive from './widgets/accordion-pane/Exclusive';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
 import LimitedRange from './widgets/calendar/LimitedRange';
+import BasicConstrainedInput from './widgets/constrained-input/Basic';
+import Username from './widgets/constrained-input/Username';
 
 export interface ExampleConfig {
 	title?: string;
@@ -614,6 +616,21 @@ export const config: Config = {
 				title: 'Show on click',
 				module: ClickTooltip,
 				filename: 'Click'
+			}
+		]
+	},
+	'constrained-input': {
+		overview: {
+			example: {
+				module: BasicConstrainedInput,
+				filename: 'Basic'
+			}
+		},
+		examples: [
+			{
+				title: 'Username',
+				module: Username,
+				filename: 'Username'
 			}
 		]
 	}
