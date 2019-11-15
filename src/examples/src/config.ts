@@ -1,5 +1,3 @@
-import FilteredOnInputTimePicker from '@dojo/widgets/examples/src/widgets/time-picker/FilteredOnInput';
-
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
@@ -70,6 +68,7 @@ import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
 import BasicTimePicker from './widgets/time-picker/Basic';
 import DisabledTimePicker from './widgets/time-picker/Disabled';
 import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
+import FilteredOnInputTimePicker from './widgets/time-picker/FilteredOnInput';
 import NativeTimePicker from './widgets/time-picker/Native';
 import OpenOnFocusTimePicker from './widgets/time-picker/OpenOnFocus';
 import RequiredTimePicker from './widgets/time-picker/Required';
