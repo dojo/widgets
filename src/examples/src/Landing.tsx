@@ -57,7 +57,8 @@ export default factory(function Landing({ properties, middleware: { icache } }) 
 				<div classes={css.grid}>
 					{filteredWidgets.length ? (
 						filteredWidgets.map((widget) => {
-							const example = configs[widget];
+							const example = configs[widget].overview.example;
+
 							return (
 								<div key={widget} classes={css.card}>
 									<LinkedCard
