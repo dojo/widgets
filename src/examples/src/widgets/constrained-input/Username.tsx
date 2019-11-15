@@ -15,7 +15,9 @@ export default factory(function Basic({ middleware: { icache } }) {
 					max: 16
 				},
 				contains: {
-					numbers: 1
+					numbers: 1,
+					uppercase: 1,
+					specialCharacters: 1
 				}
 			}}
 			value={value}
