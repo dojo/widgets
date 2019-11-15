@@ -5,9 +5,11 @@ import { tsx } from '@dojo/framework/core/vdom';
 import Menu, { MenuOption } from '..';
 import MenuItem from '../MenuItem';
 import * as css from '../../theme/menu.m.css';
+import * as menuItemCss from '../../theme/menu-item.m.css';
 import { sandbox } from 'sinon';
 import global from '@dojo/framework/shim/global';
 import { Keys } from '../../common/util';
+import { compareTheme } from '../../common/tests/support/test-helpers';
 const { assert } = intern.getPlugin('chai');
 
 const noop: any = () => {};
@@ -22,7 +24,7 @@ describe('Menu', () => {
 	const template = assertionTemplate(() => (
 		<div
 			key="root"
-			classes={css.root}
+			classes={css.menu}
 			tabIndex={0}
 			onkeydown={noop}
 			focus={noop}
@@ -43,7 +45,7 @@ describe('Menu', () => {
 					onActive={noop}
 					scrollIntoView={false}
 					disabled={disabled}
-					theme={undefined}
+					theme={{}}
 				>
 					{label || value}
 				</MenuItem>
@@ -64,18 +66,23 @@ describe('Menu', () => {
 	});
 
 	it('renders options', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => <Menu onValue={noop} options={animalOptions} />, [
+			compareTheme(menuItemCss)
+		]);
 		h.expect(template);
 	});
 
 	it('takes a custom renderer', () => {
-		const h = harness(() => (
-			<Menu
-				onValue={noop}
-				options={animalOptions}
-				itemRenderer={({ label, value }) => <span>label is {label || value}</span>}
-			/>
-		));
+		const h = harness(
+			() => (
+				<Menu
+					onValue={noop}
+					options={animalOptions}
+					itemRenderer={({ label, value }) => <span>label is {label || value}</span>}
+				/>
+			),
+			[compareTheme(menuItemCss)]
+		);
 		const itemRendererTemplate = template.setChildren('@root', () =>
 			animalOptions.map(({ value, label, disabled = false }, index) => {
 				return (
@@ -88,7 +95,7 @@ describe('Menu', () => {
 						onActive={noop}
 						scrollIntoView={false}
 						disabled={disabled}
-						theme={undefined}
+						theme={{}}
 					>
 						<span>label is {label || value}</span>
 					</MenuItem>
@@ -99,7 +106,9 @@ describe('Menu', () => {
 	});
 
 	it('takes a number in view property', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} itemsInView={2} />);
+		const h = harness(() => <Menu onValue={noop} options={animalOptions} itemsInView={2} />, [
+			compareTheme(menuItemCss)
+		]);
 		const numberInViewTemplate = template.setProperty('@root', 'styles', {
 			maxHeight: '90px'
 		});
@@ -107,7 +116,9 @@ describe('Menu', () => {
 	});
 
 	it('changes active item on arrow key down', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => <Menu onValue={noop} options={animalOptions} />, [
+			compareTheme(menuItemCss)
+		]);
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
 			preventDefault: sb.stub(),
@@ -122,7 +133,9 @@ describe('Menu', () => {
 	});
 
 	it('changes active item on arrow key up and loops to last item', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => <Menu onValue={noop} options={animalOptions} />, [
+			compareTheme(menuItemCss)
+		]);
 		const mockArrowUpEvent = {
 			stopPropagation: sb.stub(),
 			preventDefault: sb.stub(),
@@ -138,13 +151,16 @@ describe('Menu', () => {
 
 	it('calls onActiveIndexChange callback if passed and does not manage active index itself', () => {
 		const onActiveIndexChange = sb.stub();
-		const h = harness(() => (
-			<Menu
-				onValue={noop}
-				options={animalOptions}
-				onActiveIndexChange={onActiveIndexChange}
-			/>
-		));
+		const h = harness(
+			() => (
+				<Menu
+					onValue={noop}
+					options={animalOptions}
+					onActiveIndexChange={onActiveIndexChange}
+				/>
+			),
+			[compareTheme(menuItemCss)]
+		);
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
 			preventDefault: sb.stub(),
@@ -157,7 +173,9 @@ describe('Menu', () => {
 	});
 
 	it('sets active item to be the one starting with letter key pressed', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => <Menu onValue={noop} options={animalOptions} />, [
+			compareTheme(menuItemCss)
+		]);
 		const mockCPressEvent = {
 			stopPropagation: sb.stub(),
 			preventDefault: sb.stub(),
@@ -173,7 +191,9 @@ describe('Menu', () => {
 
 	it('selects item on key press', () => {
 		const onValue = sb.stub();
-		const h = harness(() => <Menu onValue={onValue} options={animalOptions} />);
+		const h = harness(() => <Menu onValue={onValue} options={animalOptions} />, [
+			compareTheme(menuItemCss)
+		]);
 
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),

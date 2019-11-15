@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
-import * as css from '../theme/menu.m.css';
+import * as css from '../theme/menu-item.m.css';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';

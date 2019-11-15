@@ -1,9 +1,10 @@
 import { create, tsx, renderer } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { theme } from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { Keys } from '../common/util';
 import * as css from '../theme/menu.m.css';
+import * as menuItemCss from '../theme/menu-item.m.css';
 import MenuItem from './MenuItem';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import global from '@dojo/framework/shim/global';
@@ -215,7 +216,7 @@ export const Menu = factory(function({
 	return (
 		<div
 			key="root"
-			classes={classes.root}
+			classes={classes.menu}
 			tabIndex={focusable ? 0 : -1}
 			onkeydown={onKeyDown}
 			focus={() => shouldFocus}
@@ -237,7 +238,13 @@ export const Menu = factory(function({
 							setValue(value);
 						}}
 						active={active}
-						theme={themeProp}
+						theme={{
+							...themeProp,
+							'@dojo/widgets/menu-item': theme.compose(
+								menuItemCss,
+								css
+							)
+						}}
 						onRequestActive={() => {
 							if (focus.isFocused('root') || !focusable) {
 								setActiveIndex(index);
