@@ -1,0 +1,37 @@
+.root {
+	position: relative;
+	flex-grow: 1;
+	display: flex;
+}
+
+.card {
+	display: flex;
+	flex-grow: 1;
+}
+
+.link,
+.link:link,
+.link:visited {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-decoration: none;
+	display: flex;
+	transition: box-shadow 0.4s ease;
+	width: 100%;
+	z-index: 1;
+}
+
+.link:hover {
+	box-shadow: 0 1px 0px rgba(0, 0, 0, 0.05), 0 2px 15px rgba(0, 0, 0, 0.05), 0 28px 50px rgba(0, 0, 0, 0.16);
+}
+
+.content {
+	color: var(--font-color);
+	padding: calc(var(--grid-size) * 1.5) var(--card-padding) var(--card-padding);
+	box-sizing: border-box;
+	flex-grow: 1;
+	flex-shrink: 1;
+}

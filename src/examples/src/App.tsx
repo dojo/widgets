@@ -100,7 +100,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 				<Outlet
 					id="landing"
 					renderer={({ params }) => {
-						return <Landing widgets={widgets} />;
+						return <Landing widgets={widgets} configs={configs} />;
 					}}
 				/>
 			</main>
