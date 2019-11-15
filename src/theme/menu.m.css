@@ -1,8 +1,10 @@
+/* Root class of the menu */
 .root {
 	overflow: auto;
 	position: relative;
 }
 
+/* Root class of each menu item */
 .item {
 	background: white;
 	padding: 10px;
@@ -11,14 +13,17 @@
 	height: 45px;
 }
 
+/* Added to selected items */
 .itemSelected {
 	background: grey;
 }
 
+/* Added to active items */
 .itemActive {
 	border: 1px solid blue;
 }
 
+/* Added to disabled items */
 .itemDisabled {
 	color: grey;
 	font-style: italic;
