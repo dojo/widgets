@@ -9,7 +9,7 @@ interface MenuProperties {
 
 const factory = create().properties<MenuProperties>();
 
-function formatMenuItem(widget: string) {
+export function formatMenuItem(widget: string) {
 	return widget
 		.split('-')
 		.map((item) => `${item[0].toUpperCase()}${item.slice(1)}`)
@@ -21,6 +21,11 @@ export default factory(function Menu({ properties }) {
 	return (
 		<nav classes={css.root}>
 			<ul classes={css.menu}>
+				<li classes={css.item}>
+					<ActiveLink to="landing" classes={css.link} activeClasses={[css.selected]}>
+						Overview
+					</ActiveLink>
+				</li>
 				{widgetNames.map((widget) => {
 					return (
 						<li classes={css.item}>

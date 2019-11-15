@@ -1,0 +1,7 @@
+:root {
+
+	/* App Variables */
+	--grid-size: 10px;
+	--card-padding: calc(var(--grid-size) * 2);
+
+}

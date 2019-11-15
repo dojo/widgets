@@ -1,0 +1,18 @@
+@import './variables.css';
+
+.root {
+	width: 100%;
+	display: flex;
+	margin: 20px;
+	flex-direction: column;
+}
+
+.title {
+	margin-top: 0px;
+}
+
+.listItem {
+	margin-bottom: var(--grid-size);
+    text-decoration: underline;
+    font-size: 16px;
+}
