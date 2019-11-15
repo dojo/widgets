@@ -56,31 +56,31 @@ export default factory(function Landing({ properties, middleware: { icache } }) 
 					{filteredWidgets.length ? (
 						filteredWidgets.map((widget) => {
 							const example = configs[widget].overview.example;
+							const codesandboxUrl = `https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2F${example.filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${
+								example.filename
+							}.tsx`;
+							const githubUrl = `https://github.com/dojo/widgets/tree/master/src/${widget}`;
 
 							return (
 								<div key={widget} classes={css.card}>
 									<LinkedCard
 										footer={
 											<div classes={css.footer}>
-												{example && example.filename ? (
-													<a
-														href={`https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2F${example.filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${
-															example.filename
-														}.tsx`}
-														target="_blank"
-														rel="noopener noreferrer"
-														classes={css.linkBtn}
-													>
-														<img
-															title="CodeSandbox"
-															alt="CodeSandbox"
-															height="24px"
-															src={codesandboxImg}
-														/>
-													</a>
-												) : null}
 												<a
-													href={`https://github.com/dojo/widgets/tree/master/src/${widget}`}
+													href={codesandboxUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+													classes={css.linkBtn}
+												>
+													<img
+														title="CodeSandbox"
+														alt="CodeSandbox"
+														height="24px"
+														src={codesandboxImg}
+													/>
+												</a>
+												<a
+													href={githubUrl}
 													target="_blank"
 													rel="noopener noreferrer"
 													classes={css.linkBtn}
