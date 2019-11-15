@@ -7,6 +7,7 @@ const factory = create({ icache });
 
 export default factory(function Controlled({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
+	const initialValue = icache.get<string>('initialValue');
 
 	return (
 		<virtual>
@@ -26,6 +27,18 @@ export default factory(function Controlled({ middleware: { icache } }) {
 			>
 				DOWN
 			</button>
+			<button
+				type="button"
+				onclick={() => {
+					const activeIndex = icache.get<number>('activeIndex');
+					if (activeIndex) {
+						const item = states[activeIndex];
+						!item.disabled && icache.set('initialValue', states[activeIndex].value);
+					}
+				}}
+			>
+				SELECT
+			</button>
 			<Menu
 				focusable={false}
 				itemsInView={6}
@@ -37,6 +50,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
+				initialValue={initialValue}
 			/>
 			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>{' '}
 		</virtual>
