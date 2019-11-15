@@ -16,11 +16,11 @@
 	font-size: 24px;
 }
 
-.searchWrapper {
+.searchRoot {
 	margin-bottom: 40px;
 }
 
-.searchWrapperOverwide, .searchWrapperOverwide:hover {
+.searchWrapper, .searchWrapper:hover {
 	border-color: unset;
 	box-shadow: unset;
 	border: unset;
@@ -43,56 +43,9 @@
     font-size: 16px;
 }
 
-.grid {
-	display: grid;
-	grid-gap: calc(var(--grid-size) * 4);
-	grid-template-columns:
-		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
-		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
-		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
-		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4));
-}
-
-@media (max-width: 1240px) {
-	.grid {
-		grid-template-columns:
-			calc((100% - calc(var(--grid-size) * 12)) * (1 / 2))
-			calc((100% - calc(var(--grid-size) * 12)) * (1 / 2));
-	}
-}
-
-@media (max-width: 850px) {
-	.grid {
-		grid-template-columns: 100%;
-	}
-}
-
 .card {
 	display: flex;
 	align-items: center;
-}
-
-.header {
-	background-color: var(--color-off-white);
-	background-position: center;
-	background-size: cover;
-	border-top-left-radius: var(--border-radius);
-	border-top-right-radius: var(--border-radius);
-	flex-grow: 0;
-	flex-shrink: 0;
-	/* min-height: 204px; */
-}
-
-.header:after {
-	background: rgba(0, 0, 0, 0.05);
-	content: '';
-	width: 100%;
-	display: block;
-	height: 100%;
-}
-
-.card:hover .header:after {
-	background: transparent;
 }
 
 .footer {
@@ -117,9 +70,26 @@
 	color: var(--font-color-hover);
 }
 
-.root .cardContent {
-	margin-top: 1.33em;
-	z-index: 2;
-	padding: 0;
-	margin: calc(var(--grid-size) * 1.5) var(--card-padding) var(--card-padding);
+.grid {
+	display: grid;
+	grid-gap: calc(var(--grid-size) * 4);
+	grid-template-columns:
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4));
+}
+
+@media (max-width: 1240px) {
+	.grid {
+		grid-template-columns:
+			calc((100% - calc(var(--grid-size) * 12)) * (1 / 2))
+			calc((100% - calc(var(--grid-size) * 12)) * (1 / 2));
+	}
+}
+
+@media (max-width: 850px) {
+	.grid {
+		grid-template-columns: 100%;
+	}
 }

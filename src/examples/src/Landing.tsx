@@ -32,14 +32,12 @@ export default factory(function Landing({ properties, middleware: { icache } }) 
 					classes={{
 						'@dojo/widgets/text-input': {
 							input: [css.search],
-							inputWrapper: [css.searchWrapperOverwide],
-							root: [css.searchWrapper]
+							inputWrapper: [css.searchWrapper],
+							root: [css.searchRoot]
 						}
 					}}
 					value={icache.get('search')}
 					onValue={(value) => {
-						console.log(value, typeof value);
-
 						if (value) {
 							icache.set(
 								'widgets',
