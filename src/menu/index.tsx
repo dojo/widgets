@@ -113,21 +113,19 @@ export const Menu = factory(function({
 			scrollIntoView: false
 		};
 
-		const itemHeight = icache.getOrSet(
-			'itemHeight',
-			offscreenHeight(
-				<MenuItem {...offscreenItemProps}>
-					{itemRenderer
-						? itemRenderer({
-								selected: false,
-								active: false,
-								value: 'offscreen',
-								disabled: false
-						  })
-						: 'offscreen'}
-				</MenuItem>
-			)
-		);
+		const menuItemChild = itemRenderer
+			? itemRenderer({
+					selected: false,
+					active: false,
+					value: 'offscreen',
+					disabled: false
+			  })
+			: 'offscreen';
+
+		const offscreenMenuItem = <MenuItem {...offscreenItemProps}>{menuItemChild}</MenuItem>;
+
+		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));
+
 		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
 	}
 
