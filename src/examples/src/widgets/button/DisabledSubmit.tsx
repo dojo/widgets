@@ -3,6 +3,10 @@ import Button from '@dojo/widgets/button';
 
 const factory = create();
 
-export default factory(function Basic() {
-	return <Button>Basic Button</Button>;
+export default factory(function DisabledSubmitButton() {
+	return (
+		<Button type="submit" disabled>
+			Submit
+		</Button>
+	);
 });

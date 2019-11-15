@@ -74,6 +74,8 @@ import NonCloseable from './widgets/title-pane/NonCloseable';
 import AdvancedOptions from './widgets/select/AdvancedOptions';
 import NonNative from './widgets/select/NonNative';
 import Exclusive from './widgets/accordion-pane/Exclusive';
+import DisabledSubmit from './widgets/button/DisabledSubmit';
+import ToggleButton from './widgets/button/ToggleButton';
 
 export interface ExampleConfig {
 	title?: string;
@@ -143,7 +145,19 @@ export const config: Config = {
 				module: BasicButton,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{
+				title: 'Disabled Submit Button',
+				module: DisabledSubmit,
+				filename: 'DisabledSubmit'
+			},
+			{
+				title: 'Toggle Button',
+				module: ToggleButton,
+				filename: 'ToggleButton'
+			}
+		]
 	},
 	grid: {
 		filename: 'index',
