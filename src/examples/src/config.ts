@@ -1,21 +1,18 @@
+import AdvancedOptions from './widgets/select/AdvancedOptions';
+import AltTextIcon from './widgets/icon/AltText';
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import BasicButton from './widgets/button/Basic';
 import BasicCalendar from './widgets/calendar/Basic';
-import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import BasicCard from './widgets/card/Basic';
 import BasicCheckbox from './widgets/checkbox/Basic';
+import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
+import BasicChip from './widgets/chip/Basic';
 import BasicCombobox from './widgets/combobox/Basic';
+import BasicConstrainedInput from './widgets/constrained-input/Basic';
 import BasicDialog from './widgets/dialog/Basic';
+import BasicEmailInput from './widgets/email-input/Basic';
 import BasicGrid from './widgets/grid/Basic';
-import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
-import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
-import Filtering from './widgets/grid/Filtering';
-import Sorting from './widgets/grid/Sorting';
-import EditableCells from './widgets/grid/EditableCells';
-import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
-import Restful from './widgets/grid/Restful';
 import BasicIcons from './widgets/icon/Basic';
-import AltTextIcon from './widgets/icon/AltText';
 import BasicLabel from './widgets/label/Basic';
 import BasicListbox from './widgets/listbox/Basic';
 import BasicNumberInput from './widgets/number-input/Basic';
@@ -30,56 +27,59 @@ import BasicSlider from './widgets/slider/Basic';
 import BasicSnackbar from './widgets/snackbar/Basic';
 import BasicSplitPane from './widgets/split-pane/Basic';
 import BasicTabController from './widgets/tab-controller/Basic';
-import DisabledTabController from './widgets/tab-controller/Disabled';
 import BasicTextArea from './widgets/text-area/Basic';
-import DisabledTextArea from './widgets/text-area/Disabled';
-import HelperTextTextArea from './widgets/text-area/HelperText';
-import HiddenLabelTextArea from './widgets/text-area/HiddenLabel';
-import ValidatedCustomTextArea from './widgets/text-area/ValidatedCustom';
-import ValidatedRequiredTextArea from './widgets/text-area/ValidatedRequired';
 import BasicTextInput from './widgets/text-input/Basic';
-import TextInputWithLabel from './widgets/text-input/WithLabel';
-import DisabledTextInput from './widgets/text-input/Disabled';
-import HiddenLabelTextInput from './widgets/text-input/HiddenLabel';
-import ValidatedTextInput from './widgets/text-input/Validated';
-import HelperTextInput from './widgets/text-input/HelperText';
-import LeadingTrailingTextInput from './widgets/text-input/LeadingTrailing';
 import BasicTimePicker from './widgets/time-picker/Basic';
-import FilteredOnInputTimePicker from '@dojo/widgets/examples/src/widgets/time-picker/FilteredOnInput';
-import OpenOnFocusTimePicker from './widgets/time-picker/OpenOnFocus';
-import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
-import DisabledTimePicker from './widgets/time-picker/Disabled';
-import SelectBySecondTimePicker from './widgets/time-picker/SelectBySecond';
-import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
-import RequiredTimePicker from './widgets/time-picker/Required';
-import NativeTimePicker from './widgets/time-picker/Native';
 import BasicTitlePane from './widgets/title-pane/Basic';
 import BasicToolbar from './widgets/toolbar/Basic';
 import BasicTooltip from './widgets/tooltip/Basic';
-import FocusTooltip from './widgets/tooltip/Focus';
+import ClickableChip from './widgets/chip/Clickable';
+import ClickableClosableChip from './widgets/chip/ClickableClosable';
 import ClickTooltip from './widgets/tooltip/Click';
-import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
-import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
+import ClosableChip from './widgets/chip/Closable';
+import ClosableRendererChip from './widgets/chip/ClosableRenderer';
+import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
-import BasicChip from './widgets/chip/Basic';
-import IconChip from './widgets/chip/Icon';
-import ClickableChip from './widgets/chip/Clickable';
+import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
 import DisabledChip from './widgets/chip/Disabled';
-import ClosableChip from './widgets/chip/Closable';
-import ClickableClosableChip from './widgets/chip/ClickableClosable';
-import ClosableRendererChip from './widgets/chip/ClosableRenderer';
-import HeadingLevel from './widgets/title-pane/HeadingLevel';
-import NonCloseable from './widgets/title-pane/NonCloseable';
-import AdvancedOptions from './widgets/select/AdvancedOptions';
-import NonNative from './widgets/select/NonNative';
-import Exclusive from './widgets/accordion-pane/Exclusive';
+import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
-import ToggleButton from './widgets/button/ToggleButton';
+import DisabledTabController from './widgets/tab-controller/Disabled';
+import DisabledTextArea from './widgets/text-area/Disabled';
+import DisabledTextInput from './widgets/text-input/Disabled';
+import DisabledTimePicker from './widgets/time-picker/Disabled';
+import EditableCells from './widgets/grid/EditableCells';
+import Exclusive from './widgets/accordion-pane/Exclusive';
+import FilteredOnInputTimePicker from '@dojo/widgets/examples/src/widgets/time-picker/FilteredOnInput';
+import Filtering from './widgets/grid/Filtering';
+import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
+import FocusTooltip from './widgets/tooltip/Focus';
+import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
+import HeadingLevel from './widgets/title-pane/HeadingLevel';
+import HelperTextInput from './widgets/text-input/HelperText';
+import HelperTextTextArea from './widgets/text-area/HelperText';
+import HiddenLabelTextArea from './widgets/text-area/HiddenLabel';
+import HiddenLabelTextInput from './widgets/text-input/HiddenLabel';
+import IconChip from './widgets/chip/Icon';
+import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
+import LeadingTrailingTextInput from './widgets/text-input/LeadingTrailing';
 import LimitedRange from './widgets/calendar/LimitedRange';
-import BasicConstrainedInput from './widgets/constrained-input/Basic';
+import NativeTimePicker from './widgets/time-picker/Native';
+import NonCloseable from './widgets/title-pane/NonCloseable';
+import NonNative from './widgets/select/NonNative';
+import OpenOnFocusTimePicker from './widgets/time-picker/OpenOnFocus';
+import RequiredTimePicker from './widgets/time-picker/Required';
+import Restful from './widgets/grid/Restful';
+import SelectBySecondTimePicker from './widgets/time-picker/SelectBySecond';
+import Sorting from './widgets/grid/Sorting';
+import TextInputWithLabel from './widgets/text-input/WithLabel';
+import ToggleButton from './widgets/button/ToggleButton';
+import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
 import Username from './widgets/constrained-input/Username';
-import BasicEmailInput from './widgets/email-input/Basic';
+import ValidatedCustomTextArea from './widgets/text-area/ValidatedCustom';
+import ValidatedRequiredTextArea from './widgets/text-area/ValidatedRequired';
+import ValidatedTextInput from './widgets/text-input/Validated';
 
 export interface ExampleConfig {
 	title?: string;
@@ -101,548 +101,556 @@ export interface Config {
 }
 
 export const config: Config = {
-	'text-input': {
-		filename: 'index',
-		overview: {
-			example: {
-				module: BasicTextInput,
-				filename: 'Basic'
-			}
-		},
+	'accordion-pane': {
 		examples: [
 			{
-				title: 'TextInput with Label',
-				module: TextInputWithLabel,
-				filename: 'WithLabel'
-			},
-			{
-				title: 'TextInput with hidden label',
-				module: HiddenLabelTextInput,
-				filename: 'HiddenLabel'
-			},
-			{
-				title: 'Disabled TextInput',
-				module: DisabledTextInput,
-				filename: 'Disabled'
-			},
-			{
-				title: 'Validated TextInput',
-				module: ValidatedTextInput,
-				filename: 'Validated'
-			},
-			{
-				title: 'TextInput with helper text',
-				module: HelperTextInput,
-				filename: 'HelperText'
-			},
-			{
-				title: 'TextInput with leading and trailing',
-				module: LeadingTrailingTextInput,
-				filename: 'LeadingTrailing'
+				filename: 'Exclusive',
+				module: Exclusive
 			}
-		]
-	},
-	'email-input': {
+		],
 		filename: 'index',
 		overview: {
 			example: {
-				module: BasicEmailInput,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicAccordionPane
 			}
 		}
 	},
 	button: {
-		filename: 'index',
-		overview: {
-			example: {
-				module: BasicButton,
-				filename: 'Basic'
-			}
-		},
 		examples: [
 			{
-				title: 'Disabled Submit Button',
+				filename: 'DisabledSubmit',
 				module: DisabledSubmit,
-				filename: 'DisabledSubmit'
+				title: 'Disabled Submit Button'
 			},
 			{
-				title: 'Toggle Button',
+				filename: 'ToggleButton',
 				module: ToggleButton,
-				filename: 'ToggleButton'
+				title: 'Toggle Button'
 			}
-		]
-	},
-	grid: {
+		],
 		filename: 'index',
 		overview: {
 			example: {
-				module: BasicGrid,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicButton
 			}
-		},
+		}
+	},
+	calendar: {
 		examples: [
 			{
-				title: 'Grid with Sorting',
-				module: Sorting,
-				filename: 'Sorting'
+				filename: 'CustomFirstWeekDay',
+				module: FirstDayOfWeekCalendar,
+				title: 'Custom First Day of Week'
 			},
 			{
-				title: 'Grid with Filtered Columns',
-				module: Filtering,
-				filename: 'Filtering'
-			},
-			{
-				title: 'Grid with Custom Cell Rendering',
-				module: CustomCellRenderer,
-				filename: 'CustomCellRenderer'
-			},
-			{
-				title: 'Grid with Custom Filter Renderer',
-				module: GridCustomFilterRenderer,
-				filename: 'CustomFilterRenderer'
-			},
-			{
-				title: 'Grid with Customized Sort Rendering',
-				module: CustomSortRenderer,
-				filename: 'CustomSortRenderer'
-			},
-			{
-				title: 'Grid with Data Loaded from a Remote Resource (REST)',
-				module: Restful,
-				filename: 'Restful'
-			},
-			{
-				title: 'Grid with Editable Cells',
-				description: 'Demonstrates using the grid utilities to support editable cells',
-				module: EditableCells,
-				filename: 'EditableCells'
+				description: 'Demonstrates limiting the selectable region of the calendar.',
+				filename: 'LimitedRange',
+				module: LimitedRange,
+				title: 'Limited Date Range'
 			}
-		]
-	},
-	'tab-controller': {
+		],
 		filename: 'index',
 		overview: {
 			example: {
-				module: BasicTabController,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicCalendar
 			}
-		},
-		examples: [
-			{
-				title: 'TabController with disabled tabs',
-				module: DisabledTabController,
-				filename: 'Disabled'
-			}
-		]
-	},
-	'accordion-pane': {
-		filename: 'index',
-		overview: {
-			example: {
-				module: BasicAccordionPane,
-				filename: 'Basic'
-			}
-		},
-		examples: [
-			{
-				module: Exclusive,
-				filename: 'Exclusive'
-			}
-		]
+		}
 	},
 	card: {
 		filename: 'index',
 		overview: {
 			example: {
-				module: BasicCard,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicCard
 			}
 		}
-	},
-	calendar: {
-		filename: 'index',
-		overview: {
-			example: {
-				module: BasicCalendar,
-				filename: 'Basic'
-			}
-		},
-		examples: [
-			{
-				title: 'Custom First Day of Week',
-				module: FirstDayOfWeekCalendar,
-				filename: 'CustomFirstWeekDay'
-			},
-			{
-				title: 'Limited Date Range',
-				module: LimitedRange,
-				filename: 'LimitedRange',
-				description: 'Demonstrates limiting the selectable region of the calendar.'
-			}
-		]
 	},
 	checkbox: {
 		filename: 'index',
 		overview: {
 			example: {
-				module: BasicCheckbox,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicCheckbox
 			}
 		}
 	},
 	'checkbox-group': {
+		examples: [
+			{
+				filename: 'InitialValue',
+				module: InitialValueCheckboxGroup,
+				title: 'Initial Value'
+			},
+			{
+				filename: 'CustomLabel',
+				module: CustomLabelCheckboxGroup,
+				title: 'Custom Label'
+			},
+			{
+				filename: 'CustomRenderer',
+				module: CustomRendererCheckboxGroup,
+				title: 'Custom Renderer'
+			}
+		],
 		filename: 'index',
 		overview: {
 			example: {
-				module: BasicCheckboxGroup,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicCheckboxGroup
 			}
-		},
-		examples: [
-			{
-				title: 'Initial Value',
-				module: InitialValueCheckboxGroup,
-				filename: 'InitialValue'
-			},
-			{
-				title: 'Custom Label',
-				module: CustomLabelCheckboxGroup,
-				filename: 'CustomLabel'
-			},
-			{
-				title: 'Custom Renderer',
-				module: CustomRendererCheckboxGroup,
-				filename: 'CustomRenderer'
-			}
-		]
+		}
 	},
 	chip: {
+		examples: [
+			{
+				filename: 'Icon',
+				module: IconChip,
+				title: 'Icon'
+			},
+			{
+				filename: 'Clickable',
+				module: ClickableChip,
+				title: 'Clickable'
+			},
+			{
+				filename: 'Disabled',
+				module: DisabledChip,
+				title: 'Disabled'
+			},
+			{
+				filename: 'Closable',
+				module: ClosableChip,
+				title: 'Closable'
+			},
+			{
+				filename: 'ClosableRenderer',
+				module: ClosableRendererChip,
+				title: 'Closable Renderer'
+			},
+			{
+				filename: 'ClickableClosable',
+				module: ClickableClosableChip,
+				title: 'Clickable and Closable'
+			}
+		],
 		filename: 'index',
 		overview: {
 			example: {
-				module: BasicChip,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicChip
 			}
-		},
-		examples: [
-			{
-				title: 'Icon',
-				module: IconChip,
-				filename: 'Icon'
-			},
-			{
-				title: 'Clickable',
-				module: ClickableChip,
-				filename: 'Clickable'
-			},
-			{
-				title: 'Disabled',
-				module: DisabledChip,
-				filename: 'Disabled'
-			},
-			{
-				title: 'Closable',
-				module: ClosableChip,
-				filename: 'Closable'
-			},
-			{
-				title: 'Closable Renderer',
-				module: ClosableRendererChip,
-				filename: 'ClosableRenderer'
-			},
-			{
-				title: 'Clickable and Closable',
-				module: ClickableClosableChip,
-				filename: 'ClickableClosable'
-			}
-		]
+		}
 	},
 	combobox: {
 		overview: {
 			example: {
-				module: BasicCombobox,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicCombobox
+			}
+		}
+	},
+	'constrained-input': {
+		examples: [
+			{
+				filename: 'Username',
+				module: Username,
+				title: 'Username'
+			}
+		],
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicConstrainedInput
 			}
 		}
 	},
 	dialog: {
 		overview: {
 			example: {
-				module: BasicDialog,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicDialog
+			}
+		}
+	},
+	'email-input': {
+		filename: 'index',
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicEmailInput
+			}
+		}
+	},
+	grid: {
+		examples: [
+			{
+				filename: 'Sorting',
+				module: Sorting,
+				title: 'Grid with Sorting'
+			},
+			{
+				filename: 'Filtering',
+				module: Filtering,
+				title: 'Grid with Filtered Columns'
+			},
+			{
+				filename: 'CustomCellRenderer',
+				module: CustomCellRenderer,
+				title: 'Grid with Custom Cell Rendering'
+			},
+			{
+				filename: 'CustomFilterRenderer',
+				module: GridCustomFilterRenderer,
+				title: 'Grid with Custom Filter Renderer'
+			},
+			{
+				filename: 'CustomSortRenderer',
+				module: CustomSortRenderer,
+				title: 'Grid with Customized Sort Rendering'
+			},
+			{
+				filename: 'Restful',
+				module: Restful,
+				title: 'Grid with Data Loaded from a Remote Resource (REST)'
+			},
+			{
+				description: 'Demonstrates using the grid utilities to support editable cells',
+				filename: 'EditableCells',
+				module: EditableCells,
+				title: 'Grid with Editable Cells'
+			}
+		],
+		filename: 'index',
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicGrid
 			}
 		}
 	},
 	icon: {
-		overview: {
-			example: {
-				module: BasicIcons,
-				filename: 'Basic'
-			}
-		},
 		examples: [
 			{
-				title: 'With alt text',
+				filename: 'AltText',
 				module: AltTextIcon,
-				filename: 'AltText'
+				title: 'With alt text'
 			}
-		]
+		],
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicIcons
+			}
+		}
 	},
 	label: {
 		overview: {
 			example: {
-				module: BasicLabel,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicLabel
 			}
 		}
 	},
 	listbox: {
 		overview: {
 			example: {
-				module: BasicListbox,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicListbox
 			}
 		}
 	},
 	'number-input': {
 		overview: {
 			example: {
-				module: BasicNumberInput,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicNumberInput
 			}
 		}
 	},
 	'outlined-button': {
 		overview: {
 			example: {
-				module: BasicOutlinedButton,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicOutlinedButton
 			}
 		}
 	},
 	progress: {
 		overview: {
 			example: {
-				module: BasicProgress,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicProgress
 			}
 		}
 	},
 	radio: {
 		overview: {
 			example: {
-				module: BasicRadio,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicRadio
 			}
 		}
 	},
 	'raised-button': {
 		overview: {
 			example: {
-				module: BasicRaisedButton,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicRaisedButton
 			}
 		}
 	},
 	'range-slider': {
 		overview: {
 			example: {
-				module: BasicRangeSlider,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicRangeSlider
 			}
 		}
 	},
 	select: {
+		examples: [
+			{
+				filename: 'AdvancedOptions',
+				module: AdvancedOptions,
+				title: 'Advanced options'
+			},
+			{
+				filename: 'NonNative',
+				module: NonNative,
+				title: 'Non Native'
+			}
+		],
 		overview: {
 			example: {
-				module: BasicSelect,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicSelect
 			}
-		},
-		examples: [
-			{ title: 'Advanced options', module: AdvancedOptions, filename: 'AdvancedOptions' },
-			{ title: 'Non Native', module: NonNative, filename: 'NonNative' }
-		]
+		}
 	},
 	'slide-pane': {
 		overview: {
 			example: {
-				module: BasicSlidePane,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicSlidePane
 			}
 		}
 	},
 	slider: {
 		overview: {
 			example: {
-				module: BasicSlider,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicSlider
 			}
 		}
 	},
 	snackbar: {
 		overview: {
 			example: {
-				module: BasicSnackbar,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicSnackbar
 			}
 		}
 	},
 	'split-pane': {
 		overview: {
 			example: {
-				module: BasicSplitPane,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicSplitPane
+			}
+		}
+	},
+	'tab-controller': {
+		examples: [
+			{
+				filename: 'Disabled',
+				module: DisabledTabController,
+				title: 'TabController with disabled tabs'
+			}
+		],
+		filename: 'index',
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicTabController
 			}
 		}
 	},
 	'text-area': {
-		overview: {
-			example: {
-				module: BasicTextArea,
-				filename: 'Basic'
-			}
-		},
 		examples: [
 			{
-				title: 'Disabled',
+				filename: 'Disabled',
 				module: DisabledTextArea,
-				filename: 'Disabled'
+				title: 'Disabled'
 			},
 			{
-				title: 'Helper text',
+				filename: 'HelperText',
 				module: HelperTextTextArea,
-				filename: 'HelperText'
+				title: 'Helper text'
 			},
 			{
-				title: 'Hidden label',
+				filename: 'HiddenLabel',
 				module: HiddenLabelTextArea,
-				filename: 'HiddenLabel'
+				title: 'Hidden label'
 			},
 			{
-				title: 'Validated with custom validator',
+				filename: 'ValidatedCustom',
 				module: ValidatedCustomTextArea,
-				filename: 'ValidatedCustom'
+				title: 'Validated with custom validator'
 			},
 			{
-				title: 'Validated required',
+				filename: 'ValidatedRequired',
 				module: ValidatedRequiredTextArea,
-				filename: 'ValidatedRequired'
+				title: 'Validated required'
 			}
-		]
+		],
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicTextArea
+			}
+		}
+	},
+	'text-input': {
+		examples: [
+			{
+				filename: 'WithLabel',
+				module: TextInputWithLabel,
+				title: 'TextInput with Label'
+			},
+			{
+				filename: 'HiddenLabel',
+				module: HiddenLabelTextInput,
+				title: 'TextInput with hidden label'
+			},
+			{
+				filename: 'Disabled',
+				module: DisabledTextInput,
+				title: 'Disabled TextInput'
+			},
+			{
+				filename: 'Validated',
+				module: ValidatedTextInput,
+				title: 'Validated TextInput'
+			},
+			{
+				filename: 'HelperText',
+				module: HelperTextInput,
+				title: 'TextInput with helper text'
+			},
+			{
+				filename: 'LeadingTrailing',
+				module: LeadingTrailingTextInput,
+				title: 'TextInput with leading and trailing'
+			}
+		],
+		filename: 'index',
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicTextInput
+			}
+		}
 	},
 	'time-picker': {
-		overview: {
-			example: {
-				module: BasicTimePicker,
-				filename: 'Basic'
-			}
-		},
 		examples: [
 			{
-				title: 'Filtered on input',
+				filename: 'FilteredOnInput',
 				module: FilteredOnInputTimePicker,
-				filename: 'FilteredOnInput'
+				title: 'Filtered on input'
 			},
 			{
-				title: 'Opens on focus',
+				filename: 'OpensOnFocus',
 				module: OpenOnFocusTimePicker,
-				filename: 'OpensOnFocus'
+				title: 'Opens on focus'
 			},
 			{
-				title: 'Disabled menu items',
+				filename: 'DisabledMenuItems',
 				module: DisabledMenuItemsTimePicker,
-				filename: 'DisabledMenuItems'
+				title: 'Disabled menu items'
 			},
 			{
-				title: 'Disabled time picker',
+				filename: 'Disabled',
 				module: DisabledTimePicker,
-				filename: 'Disabled'
+				title: 'Disabled time picker'
 			},
 			{
-				title: 'Select time by the second',
+				filename: 'SelectBySecond',
 				module: SelectBySecondTimePicker,
-				filename: 'SelectBySecond'
+				title: 'Select time by the second'
 			},
 			{
-				title: '12 hour time',
+				filename: '12HourTime',
 				module: TwelveHourTimePicker,
-				filename: '12HourTime'
+				title: '12 hour time'
 			},
 			{
-				title: 'Required time picker',
+				filename: 'Required',
 				module: RequiredTimePicker,
-				filename: 'Required'
+				title: 'Required time picker'
 			},
 			{
-				title: 'Native time picker',
+				filename: 'Native',
 				module: NativeTimePicker,
-				filename: 'Native'
+				title: 'Native time picker'
 			}
-		]
+		],
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicTimePicker
+			}
+		}
 	},
 	'title-pane': {
-		overview: {
-			example: {
-				module: BasicTitlePane,
-				filename: 'Basic'
-			}
-		},
 		examples: [
 			{
-				title: 'Defined aria heading level',
+				filename: 'AriaHeadingLevel',
 				module: HeadingLevel,
-				filename: 'AriaHeadingLevel'
+				title: 'Defined aria heading level'
 			},
 			{
-				title: 'Non closeable',
+				filename: 'NonCloseable',
 				module: NonCloseable,
-				filename: 'NonCloseable'
+				title: 'Non closeable'
 			}
-		]
+		],
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicTitlePane
+			}
+		}
 	},
 	toolbar: {
 		overview: {
 			example: {
-				module: BasicToolbar,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicToolbar
 			}
 		}
 	},
 	tooltip: {
-		overview: {
-			example: {
-				module: BasicTooltip,
-				filename: 'Basic'
-			}
-		},
 		examples: [
 			{
-				title: 'Show on focus',
+				filename: 'Focus',
 				module: FocusTooltip,
-				filename: 'Focus'
+				title: 'Show on focus'
 			},
 			{
-				title: 'Show on click',
+				filename: 'Click',
 				module: ClickTooltip,
-				filename: 'Click'
+				title: 'Show on click'
 			}
-		]
-	},
-	'constrained-input': {
+		],
 		overview: {
 			example: {
-				module: BasicConstrainedInput,
-				filename: 'Basic'
+				filename: 'Basic',
+				module: BasicTooltip
 			}
-		},
-		examples: [
-			{
-				title: 'Username',
-				module: Username,
-				filename: 'Username'
-			}
-		]
+		}
 	}
 };
 
