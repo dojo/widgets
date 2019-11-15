@@ -17,6 +17,7 @@ describe('MenuItem', () => {
 			classes={[css.item, false, false, false]}
 			onpointerdown={noop}
 			scrollIntoView={false}
+			role="menuitem"
 		>
 			test
 		</div>

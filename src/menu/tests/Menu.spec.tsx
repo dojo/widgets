@@ -29,6 +29,9 @@ describe('Menu', () => {
 			onfocus={undefined}
 			onblur={undefined}
 			styles={{}}
+			role="menu"
+			aria-hidden="true"
+			aria-orientation="vertical"
 		>
 			{animalOptions.map(({ value, label, disabled = false }, index) => (
 				<MenuItem
