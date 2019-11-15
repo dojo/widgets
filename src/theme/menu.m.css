@@ -2,3 +2,24 @@
 	overflow: auto;
 	position: relative;
 }
+
+.item {
+	background: white;
+	padding: 10px;
+	border: 1px solid transparent;
+	box-sizing: border-box;
+	height: 45px;
+}
+
+.itemSelected {
+	background: grey;
+}
+
+.itemActive {
+	border: 1px solid blue;
+}
+
+.itemDisabled {
+	color: grey;
+	font-style: italic;
+}

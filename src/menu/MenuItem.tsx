@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
-import * as css from '../theme/menu-item.m.css';
+import * as css from '../theme/menu.m.css';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -61,10 +61,10 @@ export const MenuItem = factory(function({
 				!disabled && !active && onRequestActive();
 			}, 500)}
 			classes={[
-				classes.root,
-				selected && classes.selected,
-				active && classes.active,
-				disabled && classes.disabled
+				classes.item,
+				selected && classes.itemSelected,
+				active && classes.itemActive,
+				disabled && classes.itemDisabled
 			]}
 			onpointerdown={() => {
 				!disabled && onSelect();
