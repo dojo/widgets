@@ -29,7 +29,8 @@ export interface TitlePaneProperties extends WidgetProperties, ThemedProperties,
 	onRequestClose?(key: string | number | undefined): void;
 	onRequestOpen?(key: string | number | undefined): void;
 	open?: boolean;
-	title: string;
+	/** Title to display above the content */
+	title: DNode;
 }
 
 @theme(css)
