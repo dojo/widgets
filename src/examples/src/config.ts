@@ -54,6 +54,7 @@ import RequiredTimePicker from './widgets/time-picker/Required';
 import NativeTimePicker from './widgets/time-picker/Native';
 import BasicTitlePane from './widgets/title-pane/Basic';
 import BasicToolbar from './widgets/toolbar/Basic';
+import HeadingCollapsedToolbar from './widgets/toolbar/HeadingCollapsed';
 import BasicTooltip from './widgets/tooltip/Basic';
 import FocusTooltip from './widgets/tooltip/Focus';
 import ClickTooltip from './widgets/tooltip/Click';
@@ -545,7 +546,14 @@ export const config: Config = {
 				module: BasicToolbar,
 				filename: 'Basic'
 			}
-		}
+		},
+		examples: [
+			{
+				title: 'Collapsed with heading',
+				module: HeadingCollapsedToolbar,
+				filename: 'HeadingCollapsed'
+			}
+		]
 	},
 	tooltip: {
 		overview: {

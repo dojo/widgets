@@ -5,10 +5,10 @@ import Toolbar from '@dojo/widgets/toolbar';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function Collapsed({ middleware: { icache } }) {
 	return (
 		<div>
-			<Toolbar collapseWidth={0}>
+			<Toolbar heading="Heading" collapseWidth={10000}>
 				<Button
 					onClick={() => {
 						icache.set('value', 'Clicked Option A');
