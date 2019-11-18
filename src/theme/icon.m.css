@@ -1,9 +1,9 @@
 @font-face {
-	font-family: 'dojo2';
+	font-family: 'dojo';
 	src:
-	url('./fonts/dojo2.ttf?fkcsox') format('truetype'),
-	url('./fonts/dojo2.woff?fkcsox') format('woff'),
-	url('./fonts/dojo2.svg?fkcsox#dojo2') format('svg');
+	url('./fonts/dojo.ttf?fkcsox') format('truetype'),
+	url('./fonts/dojo.woff?fkcsox') format('woff'),
+	url('./fonts/dojo.svg?fkcsox#dojo') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -12,7 +12,7 @@
 
 .icon {
 	/* use !important to prevent issues with browser extensions that change fonts */
-	font-family: 'dojo2' !important;
+	font-family: 'dojo' !important;
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -114,4 +114,12 @@
 
 .mailIcon:before {
 	content: "\f0e0";
+}
+
+.eyeIcon:before {
+	content: "\f06e";
+}
+
+.eyeSlashIcon:before {
+	content: "\f070";
 }

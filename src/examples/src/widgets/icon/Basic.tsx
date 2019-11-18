@@ -29,6 +29,8 @@ export default factory(function Basic() {
 			<Icon type="locationIcon" />
 			<Icon type="secureIcon" />
 			<Icon type="mailIcon" />
+			<Icon type="eyeIcon" />
+			<Icon type="eyeSlashIcon" />
 		</virtual>
 	);
 });
