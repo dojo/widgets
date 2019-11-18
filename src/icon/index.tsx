@@ -28,15 +28,10 @@ export const Icon = factory(function({ properties, middleware: { theme } }) {
 
 	const themedCss = theme.classes(css);
 
-	// TODO: figure out why these classes are superceeded
-
 	return (
 		<span>
-			<i classes={[themedCss.icon, themedCss[type]]} {...formatAriaProperties(aria)}>
-				<virtual>
-					{altText ? <span classes={baseCss.visuallyHidden}>{altText}</span> : null}
-				</virtual>
-			</i>
+			<i classes={[themedCss.icon, themedCss[type]]} {...formatAriaProperties(aria)} />
+			{altText ? <span classes={baseCss.visuallyHidden}>{altText}</span> : null}
 		</span>
 	);
 });
