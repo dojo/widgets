@@ -14,8 +14,16 @@ import ThemeTable from './ThemeTable';
 import PropertyTable from './PropertyTable';
 
 import * as css from './App.m.css';
+import Landing from './Landing';
 
 const widgetFilenames = getWidgetFileNames(configs);
+
+export function formatWidgetName(widget: string) {
+	return widget
+		.split('-')
+		.map((item) => `${item[0].toUpperCase()}${item.slice(1)}`)
+		.join(' ');
+}
 
 interface AppProperties {
 	includeDocs: boolean;
@@ -94,6 +102,12 @@ export default factory(function App({ properties, middleware: { block } }) {
 								</div>
 							</virtual>
 						);
+					}}
+				/>
+				<Outlet
+					id="landing"
+					renderer={({ params }) => {
+						return <Landing widgets={widgets} />;
 					}}
 				/>
 			</main>

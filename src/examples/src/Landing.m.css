@@ -1,0 +1,116 @@
+@import './variables.css';
+
+.root {
+	width: 100%;
+	display: flex;
+	margin: calc(var(--grid-size) * 2);
+	flex-direction: column;
+}
+
+.title {
+	text-align: center;
+}
+
+.search {
+	text-align: center;
+	font-size: 24px;
+}
+
+.searchRoot {
+	margin-bottom: calc(var(--grid-size) * 4);;
+}
+
+.searchWrapper, .searchWrapper:hover {
+	border-color: unset;
+	box-shadow: unset;
+	border: unset;
+}
+
+.header {
+	margin-left: calc(var(--grid-size) * 8);
+}
+
+.container {
+	margin-left: calc(var(--grid-size) * 8);
+	margin-right: calc(var(--grid-size) * 8);
+	margin-top: calc(var(--grid-size) * 2);
+	margin-bottom: calc(var(--grid-size) * 6);
+}
+
+.listItem {
+	margin-bottom: var(--grid-size);
+    text-decoration: underline;
+    font-size: 16px;
+}
+
+.card {
+	display: flex;
+	align-items: center;
+}
+
+.footer {
+	border-top: 1px solid var(--color-border);
+	flex-grow: 0;
+	flex-shrink: 0;
+	text-align: right;
+}
+
+.linkBtn {
+	border-left: 1px solid var(--color-border);
+	color: var(--font-color);
+	display: inline-block;
+	padding: calc(var(--card-padding) / 2) var(--card-padding);
+	position: relative;
+	z-index: 2;
+	height: 44px;
+}
+
+.linkBtn:hover {
+	box-shadow: 0 0 2px 0 var(--color-border);
+	color: var(--font-color-hover);
+}
+
+.grid {
+	display: grid;
+	grid-gap: calc(var(--grid-size) * 4);
+	grid-template-columns:
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4))
+		calc((100% - calc(var(--grid-size) * 12)) * (1 / 4));
+}
+
+@media (max-width: 1240px) {
+	.grid {
+		grid-template-columns:
+			calc((100% - calc(var(--grid-size) * 12)) * (1 / 2))
+			calc((100% - calc(var(--grid-size) * 12)) * (1 / 2));
+	}
+}
+
+@media (max-width: 850px) {
+	.grid {
+		grid-template-columns: 100%;
+	}
+
+	.header {
+		margin: auto;
+		margin-top: calc(var(--grid-size) * 4);
+		margin-bottom: calc(var(--grid-size) * 4);
+	}
+
+	.search {
+		background: #fafafa;
+	}
+
+	.root {
+		margin: 0px;
+	}
+	.container {
+		margin-left: calc(var(--grid-size) * 2);
+		margin-right: calc(var(--grid-size) * 2);
+		margin-top: calc(var(--grid-size) * 2);
+		margin-bottom: calc(var(--grid-size) * 6);
+	}
+}
+
