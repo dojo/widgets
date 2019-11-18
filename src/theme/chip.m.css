@@ -1,8 +1,10 @@
 .root {}
 
+.iconWrapper {}
+
 .label {}
 
-.closeIcon {
+.closeIconWrapper {
 	cursor: pointer;
 }
 
