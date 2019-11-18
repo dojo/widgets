@@ -17,7 +17,7 @@ export interface IconProperties {
 
 const factory = create({ theme }).properties<IconProperties>();
 
-export const Icon = factory(function({ properties, middleware: { theme } }) {
+export const Icon = factory(function Icon({ properties, middleware: { theme } }) {
 	const {
 		aria = {
 			hidden: 'true'
@@ -26,11 +26,11 @@ export const Icon = factory(function({ properties, middleware: { theme } }) {
 		altText
 	} = properties();
 
-	const themedCss = theme.classes(css);
+	const classes = theme.classes(css);
 
 	return (
 		<span>
-			<i classes={[themedCss.icon, themedCss[type]]} {...formatAriaProperties(aria)} />
+			<i classes={[classes.icon, classes[type]]} {...formatAriaProperties(aria)} />
 			{altText ? <span classes={baseCss.visuallyHidden}>{altText}</span> : null}
 		</span>
 	);
