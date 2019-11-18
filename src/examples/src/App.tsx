@@ -18,6 +18,13 @@ import Landing from './Landing';
 
 const widgetFilenames = getWidgetFileNames(configs);
 
+export function formatWidgetName(widget: string) {
+	return widget
+		.split('-')
+		.map((item) => `${item[0].toUpperCase()}${item.slice(1)}`)
+		.join(' ');
+}
+
 interface AppProperties {
 	includeDocs: boolean;
 }
@@ -100,7 +107,7 @@ export default factory(function App({ properties, middleware: { block } }) {
 				<Outlet
 					id="landing"
 					renderer={({ params }) => {
-						return <Landing widgets={widgets} configs={configs} />;
+						return <Landing widgets={widgets} />;
 					}}
 				/>
 			</main>

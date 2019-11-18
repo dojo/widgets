@@ -3,7 +3,7 @@
 .root {
 	width: 100%;
 	display: flex;
-	margin: 20px;
+	margin: calc(var(--grid-size) * 2);
 	flex-direction: column;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .searchRoot {
-	margin-bottom: 40px;
+	margin-bottom: calc(var(--grid-size) * 4);;
 }
 
 .searchWrapper, .searchWrapper:hover {
@@ -27,14 +27,14 @@
 }
 
 .header {
-	margin-left: 80px;
+	margin-left: calc(var(--grid-size) * 8);
 }
 
 .container {
-	margin-left: 80px;
-	margin-right: 80px;
-	margin-top: 20px;
-	margin-bottom: 60px;
+	margin-left: calc(var(--grid-size) * 8);
+	margin-right: calc(var(--grid-size) * 8);
+	margin-top: calc(var(--grid-size) * 2);
+	margin-bottom: calc(var(--grid-size) * 6);
 }
 
 .listItem {
@@ -92,4 +92,25 @@
 	.grid {
 		grid-template-columns: 100%;
 	}
+
+	.header {
+		margin: auto;
+		margin-top: calc(var(--grid-size) * 4);
+		margin-bottom: calc(var(--grid-size) * 4);
+	}
+
+	.search {
+		background: #fafafa;
+	}
+
+	.root {
+		margin: 0px;
+	}
+	.container {
+		margin-left: calc(var(--grid-size) * 2);
+		margin-right: calc(var(--grid-size) * 2);
+		margin-top: calc(var(--grid-size) * 2);
+		margin-bottom: calc(var(--grid-size) * 6);
+	}
 }
+

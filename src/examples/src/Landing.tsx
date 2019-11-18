@@ -3,22 +3,17 @@ import TextInput from '@dojo/widgets/text-input';
 import icache from '@dojo/framework/core/middleware/icache';
 
 import LinkedCard from './LinkedCard';
-import { formatMenuItem } from './Menu';
-import { Config } from './config';
-
+import { formatWidgetName } from './App';
 import * as css from './Landing.m.css';
-const githubImg = require('./images/github.svg');
-const codesandboxImg = require('./images/codesandbox.png');
 
 interface LandingProperties {
 	widgets: string[];
-	configs: Config;
 }
 
 const factory = create({ icache }).properties<LandingProperties>();
 
 export default factory(function Landing({ properties, middleware: { icache } }) {
-	const { widgets, configs } = properties();
+	const { widgets } = properties();
 
 	const filteredWidgets = icache.getOrSet('widgets', widgets);
 
@@ -55,49 +50,13 @@ export default factory(function Landing({ properties, middleware: { icache } }) 
 				<div classes={css.grid}>
 					{filteredWidgets.length ? (
 						filteredWidgets.map((widget) => {
-							const example = configs[widget].overview.example;
-							const codesandboxUrl = `https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2F${example.filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${
-								example.filename
-							}.tsx`;
-							const githubUrl = `https://github.com/dojo/widgets/tree/master/src/${widget}`;
-
 							return (
 								<div key={widget} classes={css.card}>
 									<LinkedCard
-										footer={
-											<div classes={css.footer}>
-												<a
-													href={codesandboxUrl}
-													target="_blank"
-													rel="noopener noreferrer"
-													classes={css.linkBtn}
-												>
-													<img
-														title="CodeSandbox"
-														alt="CodeSandbox"
-														height="24px"
-														src={codesandboxImg}
-													/>
-												</a>
-												<a
-													href={githubUrl}
-													target="_blank"
-													rel="noopener noreferrer"
-													classes={css.linkBtn}
-												>
-													<img
-														title="GitHub"
-														alt="GitHub"
-														height="24px"
-														src={githubImg}
-													/>
-												</a>
-											</div>
-										}
 										params={{ widget: widget, example: 'basic' }}
 										outlet="example"
 									>
-										<h4 classes={css.title}>{formatMenuItem(widget)}</h4>
+										<h4 classes={css.title}>{formatWidgetName(widget)}</h4>
 									</LinkedCard>
 								</div>
 							);
