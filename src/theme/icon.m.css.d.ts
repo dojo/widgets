@@ -23,5 +23,5 @@ export const linkIcon: string;
 export const locationIcon: string;
 export const secureIcon: string;
 export const mailIcon: string;
-export const eyeOpen: string;
-export const eyeSlash: string;
+export const eyeIcon: string;
+export const eyeSlashIcon: string;

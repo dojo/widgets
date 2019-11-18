@@ -116,10 +116,10 @@
 	content: "\f0e0";
 }
 
-.eyeOpen:before {
+.eyeIcon:before {
 	content: "\f06e";
 }
 
-.eyeSlash:before {
+.eyeSlashIcon:before {
 	content: "\f070";
 }
