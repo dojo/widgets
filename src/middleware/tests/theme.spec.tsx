@@ -163,13 +163,19 @@ registerSuite('theme-middleware', {
 					baseCss={baseCss}
 					variantCss={variantCss}
 					theme={theme}
-					classes={{ variant: { a: ['variant-classes-a'] } }}
+					classes={{
+						variant: { a: ['variant-classes-a'] },
+						base: { a: ['base-classes-a'] }
+					}}
 				/>
 			));
 
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'base-theme-a', b: 'variant-theme-b' })
+					JSON.stringify({
+						a: 'base-theme-a base-classes-a variant-classes-a',
+						b: 'variant-theme-b'
+					})
 				])
 			);
 		},
@@ -215,7 +221,10 @@ registerSuite('theme-middleware', {
 
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ root: 'base-root', input: 'variant-theme-input' })
+					JSON.stringify({
+						root: 'base-root variant-classes-prefix-root',
+						input: 'variant-theme-input'
+					})
 				])
 			);
 		},
@@ -237,14 +246,17 @@ registerSuite('theme-middleware', {
 					baseCss={baseCss}
 					variantCss={variantCss}
 					theme={theme}
-					classes={{ variant: { prefixRoot: ['variant-classes-prefix-root'] } }}
+					classes={{
+						base: { root: ['base-classes-prefix-root'] },
+						variant: { prefixRoot: ['variant-classes-prefix-root'] }
+					}}
 				/>
 			));
 
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
 					JSON.stringify({
-						root: 'base-root',
+						root: 'base-root base-classes-prefix-root variant-classes-prefix-root',
 						input: 'variant-theme-input composed-input'
 					})
 				])

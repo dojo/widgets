@@ -1,42 +1,18 @@
 import { create } from '@dojo/framework/core/vdom';
 import coreTheme from '@dojo/framework/core/middleware/theme';
-import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
-import cache from '@dojo/framework/core/middleware/cache';
-import injector from '@dojo/framework/core/middleware/injector';
-import { Injector } from '@dojo/framework/core/Injector';
+import { ClassNames } from '@dojo/framework/core/mixins/Themed';
 
-const factory = create({ coreTheme, cache, injector });
+const factory = create({ coreTheme });
 export const THEME_KEY = ' _key';
-export const INJECTED_THEME_KEY = '__theme_injector';
 
-const theme = factory(function({ middleware: { coreTheme, cache, injector }, properties }) {
-	let themeKeys = new Set();
-
-	function getThemedCssWithoutClasses(css: ClassNames) {
-		let theme = cache.get(css);
-		if (theme) {
-			return theme;
-		}
-		const { [THEME_KEY]: key, ...classes } = css;
-		themeKeys.add(key);
-		theme = classes;
-		let { theme: currentTheme } = properties();
-		if (!currentTheme) {
-			const injectedTheme = injector.get<Injector<Theme>>(INJECTED_THEME_KEY);
-			currentTheme = injectedTheme ? injectedTheme.get() : undefined;
-		}
-		if (currentTheme && currentTheme[key]) {
-			theme = { ...theme, ...currentTheme[key] };
-		}
-		cache.set(css, theme);
-		return theme;
-	}
-
+const theme = factory(function({ middleware: { coreTheme }, properties }) {
 	return {
 		compose(baseCss: ClassNames, variantCss: ClassNames, prefix?: string) {
-			let allVariantThemeClasses: ClassNames = getThemedCssWithoutClasses(variantCss);
+			let allVariantThemeClasses: ClassNames = coreTheme.classes(variantCss);
+			const { classes } = properties();
+			const variantKey = variantCss[THEME_KEY];
+
 			const sanitizedVariantThemeClasses: ClassNames = {};
-			const prefixClassNameMap: { [key: string]: string } = {};
 
 			if (prefix) {
 				allVariantThemeClasses = Object.keys(allVariantThemeClasses).reduce(
@@ -45,7 +21,6 @@ const theme = factory(function({ middleware: { coreTheme, cache, injector }, pro
 							let newClassName = className.replace(prefix, '');
 							newClassName =
 								newClassName.charAt(0).toLowerCase() + newClassName.slice(1);
-							prefixClassNameMap[newClassName] = className;
 
 							return {
 								...themeClasses,
@@ -59,19 +34,40 @@ const theme = factory(function({ middleware: { coreTheme, cache, injector }, pro
 				);
 			}
 
+			const variantClassesMap: ClassNames = {};
+
 			for (let className in allVariantThemeClasses) {
-				if (
-					allVariantThemeClasses[className] !==
-					variantCss[prefix ? prefixClassNameMap[className] : className]
-				) {
+				const calculatedClassName = prefix
+					? `${prefix}${className.charAt(0).toUpperCase() + className.slice(1)}`
+					: className;
+				let compare = variantCss[calculatedClassName];
+				const variantClasses =
+					classes && classes[variantKey] && classes[variantKey][calculatedClassName];
+
+				if (variantClasses) {
+					compare = `${compare} ${variantClasses.join(' ')}`;
+				}
+				if (allVariantThemeClasses[className] !== compare) {
 					sanitizedVariantThemeClasses[className] = allVariantThemeClasses[className];
+				}
+
+				if (variantClasses && variantClasses.length) {
+					variantClassesMap[className] = variantClasses.join(' ');
 				}
 			}
 
-			return {
-				...getThemedCssWithoutClasses(baseCss),
+			const returnTheme = {
+				...coreTheme.classes(baseCss),
 				...sanitizedVariantThemeClasses
 			};
+
+			for (let className in variantClassesMap) {
+				returnTheme[className] = `${returnTheme[className]} ${
+					variantClassesMap[className]
+				}`;
+			}
+
+			return returnTheme;
 		},
 		...coreTheme
 	};
