@@ -55,7 +55,7 @@ interface MenuICache {
 	menuHeight: number;
 	itemHeight: number;
 	itemToScroll: number;
-	resetInputTextTimer: NodeJS.Timer;
+	resetInputTextTimer: any;
 	inputText: string;
 }
 
@@ -242,7 +242,8 @@ export const Menu = factory(function({
 							...themeProp,
 							'@dojo/widgets/menu-item': theme.compose(
 								menuItemCss,
-								css
+								css,
+								'item'
 							)
 						}}
 						onRequestActive={() => {

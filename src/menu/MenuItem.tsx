@@ -61,10 +61,10 @@ export const MenuItem = factory(function({
 				!disabled && !active && onRequestActive();
 			}, 500)}
 			classes={[
-				classes.item,
-				selected && classes.itemSelected,
-				active && classes.itemActive,
-				disabled && classes.itemDisabled
+				classes.root,
+				selected && classes.selected,
+				active && classes.active,
+				disabled && classes.disabled
 			]}
 			onpointerdown={() => {
 				!disabled && onSelect();

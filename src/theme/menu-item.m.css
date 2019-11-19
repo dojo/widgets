@@ -1,5 +1,5 @@
 /* Root class of each menu item */
-.item {
+.root {
 	background: white;
 	padding: 10px;
 	border: 1px solid transparent;
@@ -8,17 +8,17 @@
 }
 
 /* Added to selected items */
-.itemSelected {
+.selected {
 	background: grey;
 }
 
 /* Added to active items */
-.itemActive {
+.active {
 	border: 1px solid blue;
 }
 
 /* Added to disabled items */
-.itemDisabled {
+.disabled {
 	color: grey;
 	font-style: italic;
 }
