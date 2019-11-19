@@ -1,13 +1,40 @@
 import { create } from '@dojo/framework/core/vdom';
 import coreTheme from '@dojo/framework/core/middleware/theme';
-import { ClassNames } from '@dojo/framework/core/mixins/Themed';
+import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
+import cache from '@dojo/framework/core/middleware/cache';
+import injector from '@dojo/framework/core/middleware/injector';
+import { Injector } from '@dojo/framework/core/Injector';
 
-const factory = create({ coreTheme });
+const factory = create({ coreTheme, cache, injector });
+export const THEME_KEY = ' _key';
+export const INJECTED_THEME_KEY = '__theme_injector';
 
-const theme = factory(function({ middleware: { coreTheme } }) {
+const theme = factory(function({ middleware: { coreTheme, cache, injector }, properties }) {
+	let themeKeys = new Set();
+
+	function getThemedCssWithoutClasses(css: ClassNames) {
+		let theme = cache.get(css);
+		if (theme) {
+			return theme;
+		}
+		const { [THEME_KEY]: key, ...classes } = css;
+		themeKeys.add(key);
+		theme = classes;
+		let { theme: currentTheme } = properties();
+		if (!currentTheme) {
+			const injectedTheme = injector.get<Injector<Theme>>(INJECTED_THEME_KEY);
+			currentTheme = injectedTheme ? injectedTheme.get() : undefined;
+		}
+		if (currentTheme && currentTheme[key]) {
+			theme = { ...theme, ...currentTheme[key] };
+		}
+		cache.set(css, theme);
+		return theme;
+	}
+
 	return {
 		compose(baseCss: ClassNames, variantCss: ClassNames, prefix?: string) {
-			let allVariantThemeClasses: ClassNames = coreTheme.classes(variantCss);
+			let allVariantThemeClasses: ClassNames = getThemedCssWithoutClasses(variantCss);
 			const sanitizedVariantThemeClasses: ClassNames = {};
 			const prefixClassNameMap: { [key: string]: string } = {};
 
@@ -33,20 +60,13 @@ const theme = factory(function({ middleware: { coreTheme } }) {
 			}
 
 			for (let className in allVariantThemeClasses) {
-				const splitVariantThemeClasses = allVariantThemeClasses[className].split(' ');
-				const hasMatch = splitVariantThemeClasses.some(
-					(splitThemeClass) =>
-						splitThemeClass ===
-						variantCss[prefix ? prefixClassNameMap[className] : className]
-				);
-
-				if (!hasMatch) {
+				if (allVariantThemeClasses[className] !== variantCss[className]) {
 					sanitizedVariantThemeClasses[className] = allVariantThemeClasses[className];
 				}
 			}
 
 			return {
-				...coreTheme.classes(baseCss),
+				...getThemedCssWithoutClasses(baseCss),
 				...sanitizedVariantThemeClasses
 			};
 		},
