@@ -200,9 +200,6 @@ registerSuite('theme-middleware', {
 			const baseCss = { ' _key': 'base', root: 'base-root', input: 'base-input' };
 			const variantCss = { ' _key': 'variant', prefixRoot: 'variant-root' };
 			const theme = {
-				base: {
-					root: 'base-theme-root'
-				},
 				variant: {
 					prefixInput: 'variant-theme-input'
 				}
@@ -218,7 +215,7 @@ registerSuite('theme-middleware', {
 
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ root: 'variant-theme-root', input: 'base-input' })
+					JSON.stringify({ root: 'base-root', input: 'variant-theme-input' })
 				])
 			);
 		}
