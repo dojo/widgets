@@ -38,7 +38,13 @@ describe('Chip', () => {
 			<Chip label={label} iconRenderer={() => <Icon type="plusIcon" />} />
 		));
 
-		h.expect(template.prepend(':root', () => [<Icon type="plusIcon" />]));
+		h.expect(
+			template.prepend(':root', () => [
+				<span classes={css.iconWrapper}>
+					<Icon type="plusIcon" />
+				</span>
+			])
+		);
 	});
 
 	it('should pass checked property to iconRenderer', () => {
@@ -46,11 +52,17 @@ describe('Chip', () => {
 			<Chip
 				label={label}
 				checked={true}
-				iconRenderer={(checked) => <div>{String(checked)}</div>}
+				iconRenderer={(checked) => <span>{String(checked)}</span>}
 			/>
 		));
 
-		h.expect(template.prepend(':root', () => [<div>true</div>]));
+		h.expect(
+			template.prepend(':root', () => [
+				<span classes={css.iconWrapper}>
+					<span>true</span>
+				</span>
+			])
+		);
 	});
 
 	it('should render with a close icon when onClose is provided', () => {
@@ -59,7 +71,7 @@ describe('Chip', () => {
 			template.append(':root', () => [
 				<span
 					key="closeButton"
-					classes={css.closeIcon}
+					classes={css.closeIconWrapper}
 					tabIndex={0}
 					role="button"
 					onclick={noop}
@@ -79,7 +91,7 @@ describe('Chip', () => {
 			template.append(':root', () => [
 				<span
 					key="closeButton"
-					classes={css.closeIcon}
+					classes={css.closeIconWrapper}
 					tabIndex={0}
 					role="button"
 					onclick={noop}
@@ -92,7 +104,7 @@ describe('Chip', () => {
 	});
 
 	it('should not use a closeIconRenderer if provided without a callback', () => {
-		const h = harness(() => <Chip label={label} closeRenderer={() => <div>Close</div>} />);
+		const h = harness(() => <Chip label={label} closeRenderer={() => <span>Close</span>} />);
 
 		h.expect(template);
 	});
@@ -107,7 +119,7 @@ describe('Chip', () => {
 				.append(':root', () => [
 					<span
 						key="closeButton"
-						classes={css.closeIcon}
+						classes={css.closeIconWrapper}
 						tabIndex={0}
 						role="button"
 						onclick={noop}
@@ -116,7 +128,11 @@ describe('Chip', () => {
 						<Icon type="closeIcon" />
 					</span>
 				])
-				.prepend(':root', () => [<Icon type="plusIcon" />])
+				.prepend(':root', () => [
+					<span classes={css.iconWrapper}>
+						<Icon type="plusIcon" />
+					</span>
+				])
 		);
 	});
 
@@ -157,7 +173,7 @@ describe('Chip', () => {
 				.append(':root', () => [
 					<span
 						key="closeButton"
-						classes={css.closeIcon}
+						classes={css.closeIconWrapper}
 						tabIndex={0}
 						role="button"
 						onclick={noop}
@@ -166,7 +182,11 @@ describe('Chip', () => {
 						<Icon type="closeIcon" />
 					</span>
 				])
-				.prepend(':root', () => [<Icon type="plusIcon" />])
+				.prepend(':root', () => [
+					<span classes={css.iconWrapper}>
+						<Icon type="plusIcon" />
+					</span>
+				])
 		);
 
 		const event = {
@@ -205,7 +225,7 @@ describe('Chip', () => {
 				.append(':root', () => [
 					<span
 						key="closeButton"
-						classes={css.closeIcon}
+						classes={css.closeIconWrapper}
 						tabIndex={0}
 						role="button"
 						onclick={noop}
@@ -214,7 +234,11 @@ describe('Chip', () => {
 						<Icon type="closeIcon" />
 					</span>
 				])
-				.prepend(':root', () => [<Icon type="plusIcon" />])
+				.prepend(':root', () => [
+					<span classes={css.iconWrapper}>
+						<Icon type="plusIcon" />
+					</span>
+				])
 		);
 
 		[Keys.Enter, Keys.Space, Keys.Left].forEach((which) => {

@@ -1,5 +1,6 @@
 export const root: string;
+export const iconWrapper: string;
 export const label: string;
-export const closeIcon: string;
+export const closeIconWrapper: string;
 export const clickable: string;
 export const disabled: string;

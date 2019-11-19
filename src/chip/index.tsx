@@ -63,12 +63,12 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 				}
 			}}
 		>
-			{iconRenderer && iconRenderer(checked)}
+			{iconRenderer && <span classes={themedCss.iconWrapper}>{iconRenderer(checked)}</span>}
 			<span classes={themedCss.label}>{label}</span>
 			{onClose && (
 				<span
 					key="closeButton"
-					classes={themedCss.closeIcon}
+					classes={themedCss.closeIconWrapper}
 					tabIndex={0}
 					role="button"
 					onclick={(event) => {
