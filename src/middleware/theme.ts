@@ -44,15 +44,13 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 				const variantClasses =
 					classes && classes[variantKey] && classes[variantKey][calculatedClassName];
 
-				if (variantClasses) {
+				if (variantClasses && variantClasses.length) {
 					compare = `${compare} ${variantClasses.join(' ')}`;
-				}
-				if (allVariantThemeClasses[className] !== compare) {
-					sanitizedVariantThemeClasses[className] = allVariantThemeClasses[className];
+					variantClassesMap[className] = variantClasses.join(' ');
 				}
 
-				if (variantClasses && variantClasses.length) {
-					variantClassesMap[className] = variantClasses.join(' ');
+				if (allVariantThemeClasses[className] !== compare) {
+					sanitizedVariantThemeClasses[className] = allVariantThemeClasses[className];
 				}
 			}
 
@@ -62,9 +60,7 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 			};
 
 			for (let className in variantClassesMap) {
-				returnTheme[className] = `${returnTheme[className]} ${
-					variantClassesMap[className]
-				}`;
+				returnTheme[className] += ` ${variantClassesMap[className]}`;
 			}
 
 			return returnTheme;
