@@ -60,7 +60,9 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 			};
 
 			for (let className in variantClassesMap) {
-				returnTheme[className] += ` ${variantClassesMap[className]}`;
+				returnTheme[className] = `${returnTheme[className]} ${
+					variantClassesMap[className]
+				}`;
 			}
 
 			return returnTheme;
