@@ -194,6 +194,33 @@ registerSuite('theme-middleware', {
 					JSON.stringify({ root: 'variant-theme-root', input: 'base-input' })
 				])
 			);
+		},
+
+		'Resolves prefixed theme classes correctly when used with `classes` property'() {
+			const baseCss = { ' _key': 'base', root: 'base-root', input: 'base-input' };
+			const variantCss = { ' _key': 'variant', prefixRoot: 'variant-root' };
+			const theme = {
+				base: {
+					root: 'base-theme-root'
+				},
+				variant: {
+					prefixInput: 'variant-theme-input'
+				}
+			};
+			const h = harness(() => (
+				<PrefixTestWidget
+					baseCss={baseCss}
+					variantCss={variantCss}
+					theme={theme}
+					classes={{ variant: { prefixRoot: ['variant-classes-prefix-root'] } }}
+				/>
+			));
+
+			h.expect(
+				baseTemplate.setChildren('@root', () => [
+					JSON.stringify({ root: 'variant-theme-root', input: 'base-input' })
+				])
+			);
 		}
 	}
 });

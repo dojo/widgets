@@ -60,7 +60,10 @@ const theme = factory(function({ middleware: { coreTheme, cache, injector }, pro
 			}
 
 			for (let className in allVariantThemeClasses) {
-				if (allVariantThemeClasses[className] !== variantCss[className]) {
+				if (
+					allVariantThemeClasses[className] !==
+					variantCss[prefix ? prefixClassNameMap[className] : className]
+				) {
 					sanitizedVariantThemeClasses[className] = allVariantThemeClasses[className];
 				}
 			}
