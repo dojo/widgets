@@ -120,6 +120,33 @@ registerSuite('theme-middleware', {
 			);
 		},
 
+		'Resolves themes correctly when using composes resulting in space-separated classnames'() {
+			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
+			const variantCss = {
+				' _key': 'variant',
+				a: 'variant-a composed-variant-a',
+				b: 'variant-b'
+			};
+			const theme = {
+				base: {
+					a: 'base-theme-a'
+				},
+				variant: {
+					// composed-variant-a in both themed / unthemed classnames
+					a: 'variant-theme-a composed-variant-a'
+				}
+			};
+			const h = harness(() => (
+				<TestWidget baseCss={baseCss} variantCss={variantCss} theme={theme} />
+			));
+
+			h.expect(
+				baseTemplate.setChildren('@root', () => [
+					JSON.stringify({ a: 'variant-theme-a composed-variant-a', b: 'base-b' })
+				])
+			);
+		},
+
 		'Resolves theme classes correctly when used with `classes` property'() {
 			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
 			const variantCss = { ' _key': 'variant', a: 'variant-a', b: 'variant-b' };
