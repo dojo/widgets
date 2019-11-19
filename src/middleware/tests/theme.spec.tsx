@@ -26,6 +26,21 @@ const TestWidget = factory(function TestWidget({ properties, middleware: { theme
 	);
 });
 
+const PrefixTestWidget = factory(function TestWidget({ properties, middleware: { theme } }) {
+	const { baseCss, variantCss } = properties();
+	return (
+		<div key="root">
+			{JSON.stringify(
+				theme.compose(
+					baseCss,
+					variantCss,
+					'prefix'
+				)
+			)}
+		</div>
+	);
+});
+
 const baseTemplate = assertionTemplate(() => <div key="root" />);
 
 registerSuite('theme-middleware', {
@@ -101,6 +116,55 @@ registerSuite('theme-middleware', {
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
 					JSON.stringify({ a: 'base-theme-a', b: 'variant-theme-b' })
+				])
+			);
+		},
+
+		'Resolves theme classes correctly when used with `classes` property'() {
+			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
+			const variantCss = { ' _key': 'variant', a: 'variant-a', b: 'variant-b' };
+			const theme = {
+				base: {
+					a: 'base-theme-a'
+				},
+				variant: {
+					b: 'variant-theme-b'
+				}
+			};
+			const h = harness(() => (
+				<TestWidget
+					baseCss={baseCss}
+					variantCss={variantCss}
+					theme={theme}
+					classes={{ variant: { a: ['variant-classes-a'] } }}
+				/>
+			));
+
+			h.expect(
+				baseTemplate.setChildren('@root', () => [
+					JSON.stringify({ a: 'base-theme-a', b: 'variant-theme-b' })
+				])
+			);
+		},
+
+		'Can be used with a prefix to pick out theme classes for a child widget'() {
+			const baseCss = { ' _key': 'base', root: 'base-root', input: 'base-input' };
+			const variantCss = { ' _key': 'variant', prefixRoot: 'variant-root' };
+			const theme = {
+				base: {
+					root: 'base-theme-root'
+				},
+				variant: {
+					prefixRoot: 'variant-theme-root'
+				}
+			};
+			const h = harness(() => (
+				<PrefixTestWidget baseCss={baseCss} variantCss={variantCss} theme={theme} />
+			));
+
+			h.expect(
+				baseTemplate.setChildren('@root', () => [
+					JSON.stringify({ root: 'variant-theme-root', input: 'base-input' })
 				])
 			);
 		}
