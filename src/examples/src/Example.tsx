@@ -50,7 +50,7 @@ export default factory(function Example({ children, properties, middleware: { in
 					{activeTab === tabNames.indexOf('tests') && (
 						<iframe
 							classes={css.iframe}
-							src={`./intern?config=intern.json&widget=${widgetName}`}
+							src={`./intern?config=intern/intern.json&widget=${widgetName}`}
 						/>
 					)}
 				</div>
