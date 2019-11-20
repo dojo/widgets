@@ -5,6 +5,7 @@
 		},
 		"build-time-render": {
 			"root": "app",
+			"renderer": "jsdom",
 			"writeHtml": false
 		},
 		"features": {
