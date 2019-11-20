@@ -11,7 +11,7 @@ import routes from './routes';
 import App from './App';
 
 if (global.intern) {
-	const tests = (require as any).context('./', true, /\.spec\.ts(x)?$/);
+	const tests = (require as any).context('../../', true, /\.spec\.ts(x)?$/);
 	const url = new URL(window.location.href);
 	const params = url.searchParams;
 	const widget = params.get('widget');
