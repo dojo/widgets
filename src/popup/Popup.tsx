@@ -11,6 +11,7 @@ export interface PopupProperties {
 	underlayVisible?: boolean;
 	anchorDimensions: DimensionResults;
 	position?: PopupPosition;
+	matchWidth?: boolean;
 }
 
 const factory = create({ dimensions, theme }).properties<PopupProperties>();
@@ -20,7 +21,8 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 		onClose,
 		underlayVisible = false,
 		anchorDimensions: { size: aSize, position: aPosition },
-		position = 'below'
+		position = 'below',
+		matchWidth = true
 	} = properties();
 
 	const wrapperDimensions = dimensions.get('wrapper');
@@ -41,7 +43,7 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 
 	if (wrapperDimensions.size.height) {
 		wrapperStyles = {
-			width: `${aSize.width}px`,
+			width: matchWidth ? `${aSize.width}px` : 'auto',
 			left: `${aPosition.left}px`,
 			opacity: '1'
 		};
