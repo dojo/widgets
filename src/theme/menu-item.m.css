@@ -7,11 +7,6 @@
 	height: 45px;
 }
 
-/* Added to selected items */
-.selected {
-	background: grey;
-}
-
 /* Added to active items */
 .active {
 	border: 1px solid blue;

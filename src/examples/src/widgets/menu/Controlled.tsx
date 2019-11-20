@@ -7,7 +7,15 @@ const factory = create({ icache });
 
 export default factory(function Controlled({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
-	const initialValue = icache.get<string>('initialValue');
+
+	const options = [
+		{ value: 'Save' },
+		{ value: 'copy', label: 'Copy' },
+		{ value: 'Paste', disabled: true },
+		{ value: 'Print' },
+		{ value: 'Export' },
+		{ value: 'Share' }
+	];
 
 	return (
 		<virtual>
@@ -33,7 +41,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 					const activeIndex = icache.get<number>('activeIndex');
 					if (activeIndex) {
 						const item = states[activeIndex];
-						!item.disabled && icache.set('initialValue', states[activeIndex].value);
+						!item.disabled && icache.set('value', states[activeIndex].value);
 					}
 				}}
 			>
@@ -41,8 +49,8 @@ export default factory(function Controlled({ middleware: { icache } }) {
 			</button>
 			<Menu
 				focusable={false}
-				itemsInView={6}
-				options={states}
+				itemsInView={4}
+				options={options}
 				onActiveIndexChange={(index: number) => {
 					icache.set('activeIndex', index);
 				}}
@@ -50,9 +58,8 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-				initialValue={initialValue}
 			/>
-			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>{' '}
+			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>{' '}
 		</virtual>
 	);
 });

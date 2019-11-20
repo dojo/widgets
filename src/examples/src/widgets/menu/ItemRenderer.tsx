@@ -10,7 +10,6 @@ export default factory(function ItemRenderer({ middleware: { icache } }) {
 		<virtual>
 			<Menu
 				options={states}
-				initialValue={'cat'}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
@@ -20,7 +19,7 @@ export default factory(function ItemRenderer({ middleware: { icache } }) {
 				}}
 				itemsInView={8}
 			/>
-			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked On: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
 	);
 });
