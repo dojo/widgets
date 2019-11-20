@@ -53,7 +53,11 @@ export default factory(function Landing({ properties, middleware: { icache } }) 
 							return (
 								<div key={widget} classes={css.card}>
 									<LinkedCard
-										params={{ widget: widget, example: 'basic' }}
+										params={{
+											widget: widget,
+											example: 'basic',
+											active: 'example'
+										}}
 										outlet="example"
 									>
 										<h4 classes={css.title}>{formatWidgetName(widget)}</h4>

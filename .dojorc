@@ -4,7 +4,8 @@
 			"speed": true
 		},
 		"build-time-render": {
-			"root": "app"
+			"root": "app",
+			"writeHtml": false
 		},
 		"features": {
 			"docs": false
