@@ -23,7 +23,7 @@ export default factory(function Example({ children, properties, middleware: { in
 	if (content) {
 		tabNames.push('code');
 	}
-	if (has('dojo-debug')) {
+	if (!has('docs')) {
 		tabNames.push('tests');
 	}
 	const activeTab = tabNames.indexOf(active) === -1 ? 0 : tabNames.indexOf(active);
@@ -43,7 +43,7 @@ export default factory(function Example({ children, properties, middleware: { in
 			</Tab>
 		);
 	}
-	if (has('dojo-debug')) {
+	if (!has('docs')) {
 		tabs.push(
 			<Tab key="tests" label="Tests">
 				<div classes={css.tab}>

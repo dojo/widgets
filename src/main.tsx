@@ -1,1 +1,1 @@
-import('./examples/src/main');
+import './examples/src/main';
