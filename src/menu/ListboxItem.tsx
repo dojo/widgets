@@ -4,11 +4,13 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
 import { throttle } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/menu-item.m.css';
+import * as css from '../theme/list-box-item.m.css';
 
-export interface MenuItemProperties {
+export interface ListBoxItemProperties {
 	/** Callback used when the item is clicked */
 	onSelect(): void;
+	/** Property to set the selected state of the item */
+	selected?: boolean;
 	/** Property to set the active state of the item, indicates it's the current keyboard / mouse navigation target */
 	active?: boolean;
 	/** Callback used when the item wants to request it be made active, to example on pointer move */
@@ -23,15 +25,15 @@ export interface MenuItemProperties {
 	id: string;
 }
 
-interface MenuItemICache {
+interface ListBoxItemICache {
 	active: boolean;
 }
 
-const icache = createICacheMiddleware<MenuItemICache>();
+const icache = createICacheMiddleware<ListBoxItemICache>();
 
-const factory = create({ dimensions, icache, theme }).properties<MenuItemProperties>();
+const factory = create({ dimensions, icache, theme }).properties<ListBoxItemProperties>();
 
-export const MenuItem = factory(function({
+export const ListBoxItem = factory(function({
 	properties,
 	children,
 	middleware: { dimensions, icache, theme }
@@ -42,6 +44,7 @@ export const MenuItem = factory(function({
 		onRequestActive,
 		onActive,
 		scrollIntoView = false,
+		selected = false,
 		disabled = false,
 		id
 	} = properties();
@@ -60,17 +63,23 @@ export const MenuItem = factory(function({
 			onpointermove={throttle(() => {
 				!disabled && !active && onRequestActive();
 			}, 500)}
-			classes={[classes.root, active && classes.active, disabled && classes.disabled]}
+			classes={[
+				classes.root,
+				selected && classes.selected,
+				active && classes.active,
+				disabled && classes.disabled
+			]}
 			onpointerdown={() => {
 				!disabled && onSelect();
 			}}
 			scrollIntoView={scrollIntoView}
-			role="menuitem"
+			role="option"
 			aria-disabled={disabled}
+			aria-selected={selected}
 		>
 			{children()}
 		</div>
 	);
 });
 
-export default MenuItem;
+export default ListBoxItem;

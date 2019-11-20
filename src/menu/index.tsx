@@ -12,6 +12,7 @@ import theme from '../middleware/theme';
 import * as menuItemCss from '../theme/menu-item.m.css';
 import * as css from '../theme/menu.m.css';
 import MenuItem from './MenuItem';
+import ListBoxItem from './ListboxItem';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -38,6 +39,8 @@ export interface MenuProperties {
 	itemsInView?: number;
 	/** Custom renderer for item contents */
 	itemRenderer?(properties: ItemRendererProperties): RenderResult;
+	/** Property to determine if this menu is being used as a listbox, changes a11y and item type */
+	listBox?: boolean;
 }
 
 export interface ItemRendererProperties {
@@ -84,17 +87,18 @@ export const Menu = factory(function({
 	middleware: { icache, focus, dimensions, theme }
 }) {
 	const {
-		options,
-		initialValue,
-		onValue,
-		onRequestClose,
-		onActiveIndexChange,
 		activeIndex,
 		focusable = true,
+		initialValue,
+		itemRenderer,
+		itemsInView,
+		listBox = false,
+		onActiveIndexChange,
 		onBlur,
 		onFocus,
-		itemsInView,
-		itemRenderer,
+		onRequestClose,
+		onValue,
+		options,
 		theme: themeProp
 	} = properties();
 
@@ -235,51 +239,56 @@ export const Menu = factory(function({
 			onfocus={onFocus}
 			onblur={onBlur}
 			styles={rootStyles}
-			role="listbox"
+			role={listBox ? 'listbox' : 'menu'}
 			aria-orientation="vertical"
 			aria-activedescendant={`${idBase}-item-${activeIndex}`}
 		>
 			{options.map(({ value, label, disabled = false }, index) => {
 				const selected = value === selectedValue;
 				const active = index === computedActiveIndex;
-				return (
-					<MenuItem
-						id={`${idBase}-item-${index}`}
-						key={`item-${index}`}
-						selected={selected}
-						onSelect={() => {
-							setValue(value);
-						}}
-						active={active}
-						theme={{
-							...themeProp,
-							'@dojo/widgets/menu-item': theme.compose(
-								menuItemCss,
-								css,
-								'item'
-							)
-						}}
-						onRequestActive={() => {
-							if (focus.isFocused('root') || !focusable) {
-								setActiveIndex(index);
-							}
-						}}
-						onActive={(dimensions) => {
-							onActive(index, dimensions);
-						}}
-						scrollIntoView={index === itemToScroll}
-						disabled={disabled}
-					>
-						{itemRenderer
-							? itemRenderer({
-									value,
-									label,
-									disabled,
-									active,
-									selected
-							  })
-							: label || value}
-					</MenuItem>
+				const itemProps = {
+					id: `${idBase}-item-${index}`,
+					key: `item-${index}`,
+					onSelect: () => {
+						setValue(value);
+					},
+					active,
+					theme: {
+						...themeProp,
+						'@dojo/widgets/menu-item': theme.compose(
+							menuItemCss,
+							css,
+							'item'
+						)
+					},
+					onRequestActive: () => {
+						if (focus.isFocused('root') || !focusable) {
+							setActiveIndex(index);
+						}
+					},
+					onActive: (dimensions: DimensionResults) => {
+						onActive(index, dimensions);
+					},
+					scrollIntoView: index === itemToScroll,
+					disabled
+				};
+
+				const children = itemRenderer
+					? itemRenderer({
+							value,
+							label,
+							disabled,
+							active,
+							selected
+					  })
+					: label || value;
+
+				return listBox ? (
+					<ListBoxItem {...itemProps} selected={selected}>
+						{children}
+					</ListBoxItem>
+				) : (
+					<MenuItem {...itemProps}>{children}</MenuItem>
 				);
 			})}
 		</div>
