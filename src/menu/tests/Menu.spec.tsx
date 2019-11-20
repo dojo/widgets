@@ -9,7 +9,7 @@ import * as menuItemCss from '../../theme/menu-item.m.css';
 import * as listBoxItemCss from '../../theme/list-box-item.m.css';
 import * as css from '../../theme/menu.m.css';
 import MenuItem from '../MenuItem';
-import ListBoxItem from '../ListboxItem';
+import ListBoxItem from '../ListBoxItem';
 const { assert } = intern.getPlugin('chai');
 const { describe, it, before, after } = intern.getInterface('bdd');
 
