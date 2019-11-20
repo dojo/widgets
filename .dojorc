@@ -1,5 +1,8 @@
 {
 	"build-app": {
+		"experimental": {
+			"speed": true
+		},
 		"build-time-render": {
 			"root": "app"
 		},
