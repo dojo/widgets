@@ -88,7 +88,6 @@
     "unified": "8.4.1"
   },
   "dependencies": {
-    "ts-loader": "^6.2.1",
     "tslib": "~1.9.1"
   },
   "lint-staged": {
