@@ -13,7 +13,7 @@ import * as menuItemCss from '../theme/menu-item.m.css';
 import * as listBoxItemCss from '../theme/list-box-item.m.css';
 import * as css from '../theme/menu.m.css';
 import MenuItem from './MenuItem';
-import ListBoxItem from './ListboxItem';
+import ListBoxItem from './ListBoxItem';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
