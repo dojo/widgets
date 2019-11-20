@@ -1,16 +1,17 @@
-import { create, tsx, renderer } from '@dojo/framework/core/vdom';
-import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import theme from '../middleware/theme';
-import { focus } from '@dojo/framework/core/middleware/focus';
-import { Keys } from '../common/util';
-import * as css from '../theme/menu.m.css';
-import * as menuItemCss from '../theme/menu-item.m.css';
-import MenuItem from './MenuItem';
-import { dimensions } from '@dojo/framework/core/middleware/dimensions';
-import global from '@dojo/framework/shim/global';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
+import { dimensions } from '@dojo/framework/core/middleware/dimensions';
+import { focus } from '@dojo/framework/core/middleware/focus';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { uuid } from '@dojo/framework/core/util';
+import { create, renderer, tsx } from '@dojo/framework/core/vdom';
 import { findIndex } from '@dojo/framework/shim/array';
+import global from '@dojo/framework/shim/global';
+import { Keys } from '../common/util';
+import theme from '../middleware/theme';
+import * as menuItemCss from '../theme/menu-item.m.css';
+import * as css from '../theme/menu.m.css';
+import MenuItem from './MenuItem';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -40,23 +41,24 @@ export interface MenuProperties {
 }
 
 export interface ItemRendererProperties {
-	value: string;
-	label?: string;
-	disabled: boolean;
 	active: boolean;
+	disabled: boolean;
+	label?: string;
 	selected: boolean;
+	value: string;
 }
 
 interface MenuICache {
-	value: string;
-	initial: string;
 	activeIndex: number;
-	itemsInView: number;
-	menuHeight: number;
-	itemHeight: number;
-	itemToScroll: number;
-	resetInputTextTimer: any;
+	idBase: string;
+	initial: string;
 	inputText: string;
+	itemHeight: number;
+	itemsInView: number;
+	itemToScroll: number;
+	menuHeight: number;
+	resetInputTextTimer: any;
+	value: string;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -111,7 +113,8 @@ export const Menu = factory(function({
 			active: false,
 			onRequestActive: () => {},
 			onActive: () => {},
-			scrollIntoView: false
+			scrollIntoView: false,
+			id: 'offcreen'
 		};
 
 		const menuItemChild = itemRenderer
@@ -217,6 +220,7 @@ export const Menu = factory(function({
 
 	const itemToScroll = icache.get('itemToScroll');
 	const menuHeight = icache.get('menuHeight');
+	const idBase = icache.getOrSet('idBase', uuid());
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
 	const classes = theme.classes(css);
@@ -231,15 +235,16 @@ export const Menu = factory(function({
 			onfocus={onFocus}
 			onblur={onBlur}
 			styles={rootStyles}
-			role="menu"
-			aria-hidden="true"
+			role="listbox"
 			aria-orientation="vertical"
+			aria-activedescendant={`${idBase}-item-${activeIndex}`}
 		>
 			{options.map(({ value, label, disabled = false }, index) => {
 				const selected = value === selectedValue;
 				const active = index === computedActiveIndex;
 				return (
 					<MenuItem
+						id={`${idBase}-item-${index}`}
 						key={`item-${index}`}
 						selected={selected}
 						onSelect={() => {

@@ -1,10 +1,10 @@
-const { describe, it, after } = intern.getInterface('bdd');
+import { sandbox } from 'sinon';
+import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
-import { tsx } from '@dojo/framework/core/vdom';
-import MenuItem from '../MenuItem';
 import * as css from '../../theme/menu-item.m.css';
-import { sandbox } from 'sinon';
+import MenuItem from '../MenuItem';
+const { describe, it, after } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
 const noop: any = () => {};
@@ -14,10 +14,13 @@ describe('MenuItem', () => {
 		<div
 			key="root"
 			onpointermove={noop}
-			classes={[css.item, false, false, false]}
+			classes={[css.root, false, false, false]}
 			onpointerdown={noop}
 			scrollIntoView={false}
-			role="menuitem"
+			role="option"
+			aria-selected={false}
+			aria-disabled={false}
+			id="test"
 		>
 			test
 		</div>
@@ -31,7 +34,7 @@ describe('MenuItem', () => {
 
 	it('renders with a label', () => {
 		const h = harness(() => (
-			<MenuItem onActive={noop} onRequestActive={noop} onSelect={noop}>
+			<MenuItem id="test" onActive={noop} onRequestActive={noop} onSelect={noop}>
 				test
 			</MenuItem>
 		));
@@ -40,37 +43,37 @@ describe('MenuItem', () => {
 
 	it('renders selected', () => {
 		const h = harness(() => (
-			<MenuItem onActive={noop} selected onRequestActive={noop} onSelect={noop}>
+			<MenuItem id="test" onActive={noop} selected onRequestActive={noop} onSelect={noop}>
 				test
 			</MenuItem>
 		));
-		const selectedTemplate = template.setProperty('@root', 'classes', [
-			css.item,
-			css.itemSelected,
-			false,
-			false
-		]);
+		const selectedTemplate = template
+			.setProperty('@root', 'classes', [css.root, css.selected, false, false])
+			.setProperty('@root', 'aria-selected', true);
 		h.expect(selectedTemplate);
 	});
 
 	it('renders disabled', () => {
 		const h = harness(() => (
-			<MenuItem onActive={noop} disabled onRequestActive={noop} onSelect={noop}>
+			<MenuItem id="test" onActive={noop} disabled onRequestActive={noop} onSelect={noop}>
 				test
 			</MenuItem>
 		));
-		const disabledTemplate = template.setProperty('@root', 'classes', [
-			css.item,
-			false,
-			false,
-			css.itemDisabled
-		]);
+		const disabledTemplate = template
+			.setProperty('@root', 'classes', [css.root, false, false, css.disabled])
+			.setProperty('@root', 'aria-disabled', true);
 		h.expect(disabledTemplate);
 	});
 
 	it('renders with scroll into view', () => {
 		const h = harness(() => (
-			<MenuItem onActive={noop} scrollIntoView onRequestActive={noop} onSelect={noop}>
+			<MenuItem
+				id="test"
+				onActive={noop}
+				scrollIntoView
+				onRequestActive={noop}
+				onSelect={noop}
+			>
 				test
 			</MenuItem>
 		));
@@ -81,14 +84,14 @@ describe('MenuItem', () => {
 	it('renders active', () => {
 		const onActive = sb.stub();
 		const h = harness(() => (
-			<MenuItem onActive={onActive} active onRequestActive={noop} onSelect={noop}>
+			<MenuItem id="test" onActive={onActive} active onRequestActive={noop} onSelect={noop}>
 				test
 			</MenuItem>
 		));
 		const disabledTemplate = template.setProperty('@root', 'classes', [
-			css.item,
+			css.root,
 			false,
-			css.itemActive,
+			css.active,
 			false
 		]);
 		h.expect(disabledTemplate);
@@ -98,7 +101,7 @@ describe('MenuItem', () => {
 	it('requests active onpointermove', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
-			<MenuItem onActive={noop} onRequestActive={onRequestActive} onSelect={noop}>
+			<MenuItem id="test" onActive={noop} onRequestActive={onRequestActive} onSelect={noop}>
 				test
 			</MenuItem>
 		));
@@ -109,7 +112,13 @@ describe('MenuItem', () => {
 	it('does not request active onpointermove when disabled', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
-			<MenuItem onActive={noop} disabled onRequestActive={onRequestActive} onSelect={noop}>
+			<MenuItem
+				id="test"
+				onActive={noop}
+				disabled
+				onRequestActive={onRequestActive}
+				onSelect={noop}
+			>
 				test
 			</MenuItem>
 		));
@@ -120,7 +129,7 @@ describe('MenuItem', () => {
 	it('calls onSelect onpointerdown', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<MenuItem onActive={noop} onRequestActive={noop} onSelect={onSelect}>
+			<MenuItem id="test" onActive={noop} onRequestActive={noop} onSelect={onSelect}>
 				test
 			</MenuItem>
 		));
@@ -131,7 +140,7 @@ describe('MenuItem', () => {
 	it('does not call onSelect onpointerdown when disabled', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<MenuItem onActive={noop} disabled onRequestActive={noop} onSelect={onSelect}>
+			<MenuItem id="test" onActive={noop} disabled onRequestActive={noop} onSelect={onSelect}>
 				test
 			</MenuItem>
 		));
