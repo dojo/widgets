@@ -7,20 +7,13 @@ import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import dojo from '@dojo/themes/dojo';
 import '@dojo/themes/dojo/index.css';
 
+`!has('dojo-debug')`;
+import './tests';
+
 import routes from './routes';
 import App from './App';
 
-if (global.intern) {
-	const tests = (require as any).context('../../', true, /\.spec\.ts(x)?$/);
-	const url = new URL(window.location.href);
-	const params = url.searchParams;
-	const widget = params.get('widget');
-	tests.keys().forEach((id: string) => {
-		if (widget && id.indexOf(widget) !== -1) {
-			tests(id);
-		}
-	});
-} else {
+if (!global.intern) {
 	const includeDocs = Boolean(
 		has('docs') === 'false' ? false : has('docs') === 'true' ? true : has('docs')
 	);
