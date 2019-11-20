@@ -7,7 +7,7 @@ import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import dojo from '@dojo/themes/dojo';
 import '@dojo/themes/dojo/index.css';
 
-`!has('dojo-debug')`;
+`!has('docs')`;
 import './tests';
 
 import routes from './routes';
