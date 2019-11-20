@@ -1,17 +1,23 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/popup.m.css';
+import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { theme } from '@dojo/framework/core/middleware/theme';
-import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import * as css from '../theme/popup.m.css';
+import * as fixedCss from './popup.m.css';
 
 export type PopupPosition = 'above' | 'below';
 
 export interface PopupProperties {
-	onClose(): void;
-	underlayVisible?: boolean;
-	anchorDimensions: DimensionResults;
-	position?: PopupPosition;
+	/** The dimensions of the anchor that triggers this popup */
+	triggerDimensions: DimensionResults;
+	/** Property to define if the popup wrapper should match the trigger width, defaults to true */
 	matchWidth?: boolean;
+	/** Callback called when the popup wishes to close */
+	onClose(): void;
+	/** Property to define where the popup should render relative to the trigger, defaults to below */
+	position?: PopupPosition;
+	/** Property to define if the underlay should be visible, defaults to false */
+	underlayVisible?: boolean;
 }
 
 const factory = create({ dimensions, theme }).properties<PopupProperties>();
@@ -20,7 +26,7 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 	const {
 		onClose,
 		underlayVisible = false,
-		anchorDimensions: { size: aSize, position: aPosition },
+		triggerDimensions: { size: aSize, position: aPosition },
 		position = 'below',
 		matchWidth = true
 	} = properties();
@@ -69,10 +75,10 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 		<body>
 			<div
 				key="underlay"
-				classes={[classes.underlay, underlayVisible && classes.underlayVisible]}
+				classes={[fixedCss.underlay, underlayVisible && classes.underlayVisible]}
 				onclick={onClose}
 			/>
-			<div key="wrapper" classes={classes.root} styles={wrapperStyles}>
+			<div key="wrapper" classes={fixedCss.root} styles={wrapperStyles}>
 				{children()}
 			</div>
 		</body>
