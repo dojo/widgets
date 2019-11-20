@@ -32,7 +32,7 @@
 				},
 				{
 					"from": "node_modules/intern/loaders/default.js",
-					"to": "loaders/default.js"
+					"to": "intern/loaders/default.js"
 				},
 				{
 					"from": "node_modules/intern/index.html",
