@@ -242,7 +242,7 @@ export const Menu = factory(function({
 			styles={rootStyles}
 			role={listBox ? 'listbox' : 'menu'}
 			aria-orientation="vertical"
-			aria-activedescendant={`${idBase}-item-${activeIndex}`}
+			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
 		>
 			{options.map(({ value, label, disabled = false }, index) => {
 				const selected = value === selectedValue;
