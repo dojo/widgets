@@ -9,10 +9,12 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 	return {
 		compose(baseCss: ClassNames, variantCss: ClassNames, prefix?: string) {
 			let allVariantThemeClasses: ClassNames = coreTheme.classes(variantCss);
+			const allBaseThemeClasses: ClassNames = coreTheme.classes(baseCss);
+
 			const { classes } = properties();
 			const variantKey = variantCss[THEME_KEY];
 
-			const sanitizedVariantThemeClasses: ClassNames = {};
+			const sanitizedThemeClasses: ClassNames = allBaseThemeClasses;
 
 			if (prefix) {
 				allVariantThemeClasses = Object.keys(allVariantThemeClasses).reduce(
@@ -34,38 +36,31 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 				);
 			}
 
-			const variantClassesMap: ClassNames = {};
-
 			for (let className in allVariantThemeClasses) {
 				const calculatedClassName = prefix
 					? `${prefix}${className.charAt(0).toUpperCase() + className.slice(1)}`
 					: className;
 				let compare = variantCss[calculatedClassName];
-				const variantClasses =
-					classes && classes[variantKey] && classes[variantKey][calculatedClassName];
 
-				if (variantClasses && variantClasses.length) {
-					compare = `${compare} ${variantClasses.join(' ')}`;
-					variantClassesMap[className] = variantClasses.join(' ');
+				let variantClasses = '';
+				if (classes && classes[variantKey] && classes[variantKey][calculatedClassName]) {
+					variantClasses = classes[variantKey][calculatedClassName].join(' ');
+				}
+
+				if (variantClasses) {
+					compare = `${compare} ${variantClasses}`;
 				}
 
 				if (allVariantThemeClasses[className] !== compare) {
-					sanitizedVariantThemeClasses[className] = allVariantThemeClasses[className];
+					sanitizedThemeClasses[className] = allVariantThemeClasses[className];
 				}
+
+				sanitizedThemeClasses[className] = `${
+					sanitizedThemeClasses[className]
+				} ${variantClasses}`.trim();
 			}
 
-			const returnTheme = {
-				...coreTheme.classes(baseCss),
-				...sanitizedVariantThemeClasses
-			};
-
-			for (let className in variantClassesMap) {
-				returnTheme[className] = `${returnTheme[className]} ${
-					variantClassesMap[className]
-				}`;
-			}
-
-			return returnTheme;
+			return sanitizedThemeClasses;
 		},
 		...coreTheme
 	};
