@@ -169,6 +169,14 @@ export const Menu = factory(function({
 				event.preventDefault();
 				onRequestClose && onRequestClose();
 				break;
+			case Keys.Home:
+				event.preventDefault();
+				setActiveIndex(0);
+				break;
+			case Keys.End:
+				event.preventDefault();
+				setActiveIndex(options.length - 1);
+				break;
 			default:
 				const newIndex = getComputedIndexFromInput(event.key);
 				if (newIndex !== undefined) {
