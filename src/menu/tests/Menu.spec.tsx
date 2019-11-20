@@ -3,10 +3,12 @@ import { tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Menu, { MenuOption } from '../';
-import { compareId, compareTheme, createHarness } from '../../common/tests/support/test-helpers';
+import {
+	compareId,
+	createHarness,
+	comparePrefixTheme
+} from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
-import * as menuItemCss from '../../theme/menu-item.m.css';
-import * as listBoxItemCss from '../../theme/list-box-item.m.css';
 import * as css from '../../theme/menu.m.css';
 import MenuItem from '../MenuItem';
 import ListBoxItem from '../ListBoxItem';
@@ -21,18 +23,14 @@ const compareAriaActiveDescendant = {
 	comparator: (property: any) => typeof property === 'string'
 };
 
+const harness = createHarness([comparePrefixTheme, compareId, compareAriaActiveDescendant]);
+
 describe('Menu - Menu', () => {
 	const animalOptions: MenuOption[] = [
 		{ value: 'dog' },
 		{ value: 'cat', label: 'Cat' },
 		{ value: 'fish', disabled: true }
 	];
-
-	const harness = createHarness([
-		compareTheme(menuItemCss),
-		compareId,
-		compareAriaActiveDescendant
-	]);
 
 	const template = assertionTemplate(() => (
 		<div
@@ -193,12 +191,6 @@ describe('Menu - ListBox', () => {
 		{ value: 'cat', label: 'Cat' },
 		{ value: 'fish', disabled: true }
 	];
-
-	const harness = createHarness([
-		compareTheme(listBoxItemCss),
-		compareId,
-		compareAriaActiveDescendant
-	]);
 
 	const template = assertionTemplate(() => (
 		<div
