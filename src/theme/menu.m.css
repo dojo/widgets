@@ -6,25 +6,20 @@
 
 /* Root class of each menu item */
 .itemRoot {
-	/* background: white;
-	padding: 10px;
-	border: 1px solid transparent;
-	box-sizing: border-box;
-	height: 45px; */
+
 }
 
-/* Added to selected items */
+/* Added to selected items, only applicable in listbbox mode */
 .itemSelected {
-	/* background: grey; */
+
 }
 
 /* Added to active items */
 .itemActive {
-	/* border: 1px solid blue; */
+
 }
 
 /* Added to disabled items */
 .itemDisabled {
-	/* color: grey;
-	font-style: italic; */
+
 }

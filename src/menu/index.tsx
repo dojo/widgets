@@ -10,6 +10,7 @@ import global from '@dojo/framework/shim/global';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
 import * as menuItemCss from '../theme/menu-item.m.css';
+import * as listBoxItemCss from '../theme/list-box-item.m.css';
 import * as css from '../theme/menu.m.css';
 import MenuItem from './MenuItem';
 import ListBoxItem from './ListboxItem';
@@ -253,14 +254,6 @@ export const Menu = factory(function({
 						setValue(value);
 					},
 					active,
-					theme: {
-						...themeProp,
-						'@dojo/widgets/menu-item': theme.compose(
-							menuItemCss,
-							css,
-							'item'
-						)
-					},
 					onRequestActive: () => {
 						if (focus.isFocused('root') || !focusable) {
 							setActiveIndex(index);
@@ -284,11 +277,34 @@ export const Menu = factory(function({
 					: label || value;
 
 				return listBox ? (
-					<ListBoxItem {...itemProps} selected={selected}>
+					<ListBoxItem
+						{...itemProps}
+						selected={selected}
+						theme={{
+							...themeProp,
+							'@dojo/widgets/list-box-item': theme.compose(
+								listBoxItemCss,
+								css,
+								'item'
+							)
+						}}
+					>
 						{children}
 					</ListBoxItem>
 				) : (
-					<MenuItem {...itemProps}>{children}</MenuItem>
+					<MenuItem
+						{...itemProps}
+						theme={{
+							...themeProp,
+							'@dojo/widgets/menu-item': theme.compose(
+								menuItemCss,
+								css,
+								'item'
+							)
+						}}
+					>
+						{children}
+					</MenuItem>
 				);
 			})}
 		</div>
