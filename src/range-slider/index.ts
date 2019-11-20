@@ -76,7 +76,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	private _maxLabelId = uuid();
 
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, valid, readOnly, required, showOutput } = this.properties;
+		const { disabled, valid, readOnly, showOutput } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -86,7 +86,6 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			valid === false ? css.invalid : null,
 			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null,
 			showOutput ? css.hasOutput : null
 		];
 	}
@@ -222,7 +221,8 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			value: `${min}`,
 			styles: {
 				clip: `rect(auto, ${Math.round(slider1Size * size.client.width)}px, auto, auto)`
-			}
+			},
+			classes: this.theme(css.input)
 		});
 		const slider2 = v('input', {
 			...this._getInputProperties(false),
@@ -232,7 +232,8 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 				clip: `rect(auto, auto, auto, ${Math.round(
 					(1 - slider2Size) * size.client.width
 				)}px)`
-			}
+			},
+			classes: this.theme(css.input)
 		});
 
 		const children = [

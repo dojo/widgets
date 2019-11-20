@@ -74,7 +74,7 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 	}
 
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, valid, readOnly, required, vertical = false } = this.properties;
+		const { disabled, valid, readOnly, vertical = false } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -84,7 +84,6 @@ export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties
 			valid === false ? css.invalid : null,
 			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null,
 			vertical ? css.vertical : null
 		];
 	}

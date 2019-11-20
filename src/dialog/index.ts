@@ -208,7 +208,10 @@ export class Dialog extends I18nMixin(ThemedMixin(WidgetBase))<DialogProperties>
 														w(Icon, {
 															type: 'closeIcon',
 															theme,
-															classes
+															classes,
+															extraClasses: {
+																root: this.theme(css.closeIcon)
+															} as any
 														})
 													]
 											  )

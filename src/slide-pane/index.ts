@@ -305,7 +305,14 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 											},
 											[
 												closeText,
-												w(Icon, { type: 'closeIcon', theme, classes })
+												w(Icon, {
+													type: 'closeIcon',
+													theme,
+													classes,
+													extraClasses: {
+														root: this.theme(css.closeIcon)
+													} as any
+												})
 											]
 										)
 									]

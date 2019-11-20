@@ -19,11 +19,6 @@
 	text-align: left;
 }
 
-.trigger i {
-	position: absolute;
-	right: 4px;
-}
-
 .trigger:focus {
 	color: var(--selected-background);
 }
@@ -75,12 +70,6 @@
 	right: 0;
 	top: 0;
 	width: 1.5em;
-}
-
-.arrow i {
-	position: absolute;
-	right: 4px;
-	padding: 2px 0;
 }
 
 

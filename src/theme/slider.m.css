@@ -21,12 +21,6 @@
 	background-color: var(--disabled-color);
 }
 
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
-	color: var(--error-color);
-}
-
 /* invalid style */
 .invalid .track {
 	border-color: var(--error-color);
@@ -49,7 +43,7 @@
 
 }
 
-.focused input {
+.focused .input {
 	outline: none;
 }
 

@@ -50,8 +50,7 @@
 	z-index: calc(var(--zindex-base) + 1);
 }
 
-.root,
-.root * {
+.root {
 	box-sizing: border-box;
 }
 

@@ -3,6 +3,7 @@ export const main: string;
 export const title: string;
 export const open: string;
 export const close: string;
+export const closeIcon: string;
 export const content: string;
 export const underlayVisible: string;
 export const enter: string;
