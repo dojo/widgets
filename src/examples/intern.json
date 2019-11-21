@@ -1,0 +1,6 @@
+{
+	"basePath": "..",
+	"suites": [
+		"./main.js"
+	]
+}

@@ -1,5 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
+import injector from '@dojo/framework/core/middleware/injector';
+import Router from '@dojo/framework/routing/Router';
+import has from '@dojo/framework/core/has';
 import TabController from '@dojo/widgets/tab-controller';
 import Tab from '@dojo/widgets/tab';
 
@@ -7,13 +9,24 @@ import * as css from './Example.m.css';
 
 interface ExampleProperties {
 	content?: string;
+	widgetName: string;
+	active: string;
 }
 
-const factory = create({ icache }).properties<ExampleProperties>();
+const factory = create({ injector }).properties<ExampleProperties>();
 
-export default factory(function Example({ children, properties, middleware: { icache } }) {
-	const activeIndex = icache.getOrSet('active', 0);
-	const { content } = properties();
+export default factory(function Example({ children, properties, middleware: { injector } }) {
+	const router = injector.get<Router>('router');
+	const { content, widgetName, active } = properties();
+	const tabNames = ['example'];
+
+	if (content) {
+		tabNames.push('code');
+	}
+	if (!has('docs')) {
+		tabNames.push('tests');
+	}
+	const activeTab = tabNames.indexOf(active) === -1 ? 0 : tabNames.indexOf(active);
 	const tabs = [
 		<Tab key="example" label="Example">
 			<div classes={css.tab}>{children()}</div>
@@ -30,11 +43,29 @@ export default factory(function Example({ children, properties, middleware: { ic
 			</Tab>
 		);
 	}
+	if (!has('docs')) {
+		tabs.push(
+			<Tab key="tests" label="Tests">
+				<div classes={css.tab}>
+					{activeTab === tabNames.indexOf('tests') && (
+						<iframe
+							classes={css.iframe}
+							src={`./intern?config=intern/intern.json&widget=${widgetName}`}
+						/>
+					)}
+				</div>
+			</Tab>
+		);
+	}
 	return (
 		<TabController
-			activeIndex={activeIndex}
+			activeIndex={activeTab}
 			onRequestTabChange={(index) => {
-				icache.set('active', index);
+				if (router) {
+					const activeTab = tabNames[index];
+					const href = router.link('example', { active: activeTab });
+					href && router.setPath(href);
+				}
 			}}
 		>
 			{tabs}

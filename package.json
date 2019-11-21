@@ -44,14 +44,14 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "7.0.0-alpha.3"
+    "@dojo/framework": "7.0.0-alpha.4"
   },
   "devDependencies": {
     "@dojo/cli": "7.0.0-alpha.1",
-    "@dojo/cli-build-app": "7.0.0-alpha.2",
+    "@dojo/cli-build-app": "7.0.0-alpha.4",
     "@dojo/cli-build-widget": "7.0.0-alpha.2",
     "@dojo/cli-test-intern": "7.0.0-alpha.3",
-    "@dojo/framework": "7.0.0-alpha.3",
+    "@dojo/framework": "7.0.0-alpha.4",
     "@dojo/loader": "^2.0.0",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^6.0.0",

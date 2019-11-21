@@ -26,7 +26,7 @@ export default factory(function Menu({ properties }) {
 							<ActiveLink
 								to="example"
 								classes={css.link}
-								params={{ widget, example: 'basic' }}
+								params={{ widget, example: 'basic', active: 'example' }}
 								matchParams={{ widget }}
 								activeClasses={[css.selected]}
 							>

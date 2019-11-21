@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@dojo/cli": "7.0.0-alpha.1",
-    "@dojo/cli-build-app": "7.0.0-alpha.2",
-    "@dojo/framework": "7.0.0-alpha.3",
+    "@dojo/cli-build-app": "7.0.0-alpha.4",
+    "@dojo/framework": "7.0.0-alpha.4",
     "@dojo/themes": "^6.0.0",
     "@dojo/widgets": "^6.0.0",
     "@types/jsdom": "2.0.*",

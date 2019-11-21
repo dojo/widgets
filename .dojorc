@@ -1,7 +1,12 @@
 {
 	"build-app": {
+		"experimental": {
+			"speed": true
+		},
 		"build-time-render": {
-			"root": "app"
+			"root": "app",
+			"renderer": "jsdom",
+			"writeHtml": false
 		},
 		"features": {
 			"docs": false
@@ -18,7 +23,32 @@
 			"cldr-data/supplemental/plurals",
 			"cldr-data/supplemental/timeData",
 			"cldr-data/supplemental/weekData"
-		]
+		],
+		"externals": {
+			"outputPath": ".",
+			"dependencies": [
+				{
+					"from": "node_modules/intern/browser/intern.js",
+					"to": "browser/intern.js"
+				},
+				{
+					"from": "node_modules/intern/browser/config.js",
+					"to": "browser/config.js"
+				},
+				{
+					"from": "node_modules/intern/loaders/default.js",
+					"to": "intern/loaders/default.js"
+				},
+				{
+					"from": "node_modules/intern/index.html",
+					"to": "intern/index.html"
+				},
+				{
+					"from": "src/examples/intern.json",
+					"to": "intern/intern.json"
+				}
+			]
+		}
 	},
 	"build-widget": {
 		"prefix": "dojo",
