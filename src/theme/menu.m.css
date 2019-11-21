@@ -1,0 +1,25 @@
+/* Root class of the menu */
+.menu {
+	overflow: auto;
+	position: relative;
+}
+
+/* Root class of each menu item */
+.itemRoot {
+
+}
+
+/* Added to selected items, only applicable in listbbox mode */
+.itemSelected {
+
+}
+
+/* Added to active items */
+.itemActive {
+
+}
+
+/* Added to disabled items */
+.itemDisabled {
+
+}

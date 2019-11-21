@@ -1,0 +1,24 @@
+/* Root class of each menu item */
+.root {
+	background: white;
+	padding: 10px;
+	border: 1px solid transparent;
+	box-sizing: border-box;
+	height: 45px;
+}
+
+/* Added to selected items */
+.selected {
+	background: grey;
+}
+
+/* Added to active items */
+.active {
+	border: 1px solid blue;
+}
+
+/* Added to disabled items */
+.disabled {
+	color: grey;
+	font-style: italic;
+}

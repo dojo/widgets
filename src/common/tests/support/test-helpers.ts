@@ -16,6 +16,7 @@ export const stubEvent = {
 	target: {}
 };
 
+export const isObjectComparator = (value: any) => typeof value === 'object';
 export const isStringComparator = (value: any) => value === null || typeof value === 'string';
 export const isStringObjectComparator = (value: any) =>
 	Object.keys(value).every((key) => value[key] === null || typeof value[key] === 'string');
@@ -93,7 +94,7 @@ export function MockMetaMixin<T extends Constructor<WidgetBase<any>>>(
 	};
 }
 
-const themeComparator = (css: any) => (value: any) => {
+export const themeComparator = (css: any) => (value: any) => {
 	const { ' _key': key, ...classes } = css;
 	return JSON.stringify(classes) === JSON.stringify(value[key]);
 };
@@ -103,3 +104,9 @@ export const compareTheme = (css: any) => ({
 	property: 'theme',
 	comparator: themeComparator(css)
 });
+
+export const comparePrefixTheme = {
+	selector: '*',
+	property: 'theme',
+	comparator: isObjectComparator
+};

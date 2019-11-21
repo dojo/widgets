@@ -36,6 +36,9 @@ import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
 import BasicLabel from './widgets/label/Basic';
 import BasicListbox from './widgets/listbox/Basic';
+import BasicMenu from './widgets/menu/Basic';
+import ControlledMenu from './widgets/menu/Controlled';
+import ItemRenderer from './widgets/menu/ItemRenderer';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import BasicProgress from './widgets/progress/Basic';
@@ -80,6 +83,7 @@ import BasicToolbar from './widgets/toolbar/Basic';
 import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
+import ListBox from './widgets/menu/ListBox';
 
 export interface ExampleConfig {
 	title?: string;
@@ -359,6 +363,35 @@ export const config: Config = {
 			example: {
 				filename: 'Basic',
 				module: BasicListbox
+			}
+		}
+	},
+	menu: {
+		examples: [
+			{
+				description:
+					'In this example, an activeIndex and onActiveIndexChange property are passed into the Menu allowing for thr active menu item to be controlled.',
+				filename: 'Controlled',
+				module: ControlledMenu,
+				title: 'Controlled Active Index'
+			},
+			{
+				filename: 'ItemRenderer',
+				module: ItemRenderer,
+				title: 'Item Renderer'
+			},
+			{
+				description:
+					'This example shows the menu used as a Listbox. This allows for a selection to be made and persisted. Useful for user selections and within selects / typeahead etc.',
+				filename: 'ListBox',
+				module: ListBox,
+				title: 'List Box'
+			}
+		],
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicMenu
 			}
 		}
 	},
