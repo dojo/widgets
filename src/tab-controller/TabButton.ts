@@ -135,7 +135,7 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 						[messages.close]
 				  )
 				: null,
-			v('span', { classes: this.theme([css.indicator, active ? css.indicatorActive : '']) }, [
+			v('span', { classes: this.theme([css.indicator, active && css.indicatorActive]) }, [
 				v('span', { classes: this.theme(css.indicatorContent) })
 			])
 		];
