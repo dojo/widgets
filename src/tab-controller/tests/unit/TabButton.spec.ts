@@ -44,9 +44,11 @@ const expected = function(
 					['close']
 			  )
 			: null,
-		v('span', { classes: [css.indicator, activeTab !== -1 ? css.indicatorActive : null] }, [
-			v('span', { classes: css.indicatorContent })
-		])
+		v(
+			'span',
+			{ classes: [css.indicator, activeTab !== -1 ? css.indicatorActive : undefined] },
+			[v('span', { classes: css.indicatorContent })]
+		)
 	);
 
 	return v(
