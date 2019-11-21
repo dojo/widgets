@@ -1,4 +1,4 @@
-const { registerSuite } = intern.getInterface('object');
+const { describe, it, before, after } = intern.getInterface('bdd');
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
@@ -13,11 +13,26 @@ const baseTemplate = assertionTemplate(() => (
 	</body>
 ));
 
-registerSuite('Popup', {
-	tests: {
-		'no content'() {
-			const h = harness(() => <Popup triggerDimensions>hello</Popup>);
-			h.expect(baseTemplate);
-		}
-	}
+describe('Popup', () => {
+	const triggerPosition = {
+		top: 10,
+		left: 10,
+		right: 100,
+		bottom: 100
+	};
+
+	const triggerSize = {
+		height: 20,
+		width: 50
+	};
+
+	it('Renders with content', () => {
+		const h = harness(() => (
+			<Popup triggerPosition={triggerPosition} triggerSize={triggerSize} onClose={() => {}}>
+				hello world
+			</Popup>
+		));
+		const helloWorldTemplate = baseTemplate.setChildren('@wrapper', () => ['hello world']);
+		h.expect(helloWorldTemplate);
+	});
 });

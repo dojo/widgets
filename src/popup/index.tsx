@@ -1,40 +1,54 @@
-import { Size, BottomRight, TopLeft } from '@dojo/framework/core/meta/Dimensions';
+// import { Size, BottomRight, TopLeft } from '@dojo/framework/core/meta/Dimensions';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { theme } from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/popup.m.css';
 import * as fixedCss from './popup.m.css';
+import { RenderResult } from '@dojo/framework/core/interfaces';
+import icache from '@dojo/framework/core/middleware/icache';
 
 export type PopupPosition = 'above' | 'below';
 
 export interface PopupProperties {
-	/** The size of the element that triggers this popup */
-	triggerSize: Size;
-	/** The position of the element that triggers this popup */
-	triggerPosition: TopLeft & BottomRight;
+	// /** The size of the element that triggers this popup */
+	// triggerSize: Size;
+	// /** The position of the element that triggers this popup */
+	// triggerPosition: TopLeft & BottomRight;
 	/** Property to define if the popup wrapper should match the trigger width, defaults to true */
 	matchWidth?: boolean;
-	/** Callback called when the popup wishes to close */
-	onClose(): void;
+	// /** Callback called when the popup wishes to close */
+	// onClose(): void;
 	/** Property to define where the popup should render relative to the trigger, defaults to below */
 	position?: PopupPosition;
 	/** Property to define if the underlay should be visible, defaults to false */
 	underlayVisible?: boolean;
 }
 
-const factory = create({ dimensions, theme }).properties<PopupProperties>();
+export interface PopupChildren {
+	trigger: (onToggleOpen: any) => RenderResult;
+	content: (onClose: any) => RenderResult;
+}
 
-export const Popup = factory(function({ properties, children, middleware: { dimensions, theme } }) {
+const factory = create({ dimensions, theme, icache })
+	.properties<PopupProperties>()
+	.children<PopupChildren>();
+
+export const Popup = factory(function({
+	properties,
+	children,
+	middleware: { dimensions, theme, icache }
+}) {
 	const {
-		onClose,
+		// onClose,
 		underlayVisible = false,
-		triggerSize,
-		triggerPosition,
+		// triggerSize,
+		// triggerPosition,
 		position = 'below',
 		matchWidth = true
 	} = properties();
 
 	const wrapperDimensions = dimensions.get('wrapper');
+	const { position: triggerPosition, size: triggerSize } = dimensions.get('trigger');
 	const triggerTop = triggerPosition.top + document.documentElement.scrollTop;
 	const triggerBottom = triggerTop + triggerSize.height;
 	const bottomOfVisibleScreen =
@@ -73,18 +87,34 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 	}
 
 	const classes = theme.classes(css);
+	const { trigger, content } = children()[0];
+	const open = icache.get<boolean>('open');
+
+	function onToggleOpen() {
+		const open = icache.get<boolean>('open');
+		icache.set('open', !open);
+	}
+
+	function onClose() {
+		icache.set('open', false);
+	}
 
 	return (
-		<body>
-			<div
-				key="underlay"
-				classes={[fixedCss.underlay, underlayVisible && classes.underlayVisible]}
-				onclick={onClose}
-			/>
-			<div key="wrapper" classes={fixedCss.root} styles={wrapperStyles}>
-				{children()}
-			</div>
-		</body>
+		<virtual>
+			<span key="trigger">{trigger(onToggleOpen)}</span>
+			{open && (
+				<body>
+					<div
+						key="underlay"
+						classes={[fixedCss.underlay, underlayVisible && classes.underlayVisible]}
+						onclick={onClose}
+					/>
+					<div key="wrapper" classes={fixedCss.root} styles={wrapperStyles}>
+						{content(onClose)}
+					</div>
+				</body>
+			)}
+		</virtual>
 	);
 });
 
