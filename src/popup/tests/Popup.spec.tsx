@@ -2,37 +2,96 @@ const { describe, it, before, after } = intern.getInterface('bdd');
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
+import global from '@dojo/framework/shim/global';
 import Popup from '../index';
-import * as css from '../../theme/popup.m.css';
 import * as fixedCss from '../popup.m.css';
+import { sandbox } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
-	<body>
-		<div key="underlay" classes={[css.underlay, false]} onclick={() => {}} />
-		<div key="wrapper" classes={fixedCss.root} styles={{}} />
-	</body>
+	<virtual>
+		<span key="trigger" classes={fixedCss.trigger} />
+	</virtual>
 ));
 
 describe('Popup', () => {
-	const triggerPosition = {
-		top: 10,
-		left: 10,
-		right: 100,
-		bottom: 100
-	};
+	const sb = sandbox.create();
 
-	const triggerSize = {
-		height: 20,
-		width: 50
-	};
+	before(() => {
+		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
+			width: 50,
+			height: 50,
+			bottom: 0,
+			top: 0,
+			left: 0,
+			right: 0
+		}));
+	});
 
-	it('Renders with content', () => {
+	after(() => {
+		sb.restore();
+	});
+
+	it('Renders with trigger renderer', () => {
 		const h = harness(() => (
-			<Popup triggerPosition={triggerPosition} triggerSize={triggerSize} onClose={() => {}}>
-				hello world
+			<Popup>
+				{{
+					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
+					content: () => 'hello world'
+				}}
 			</Popup>
 		));
-		const helloWorldTemplate = baseTemplate.setChildren('@wrapper', () => ['hello world']);
-		h.expect(helloWorldTemplate);
+		const triggerTemplate = baseTemplate.setChildren('@trigger', () => [
+			<button onclick={() => {}} />
+		]);
+		h.expect(triggerTemplate);
+	});
+
+	it('initialy renders with opacity 0 while height is calculated', () => {
+		const h = harness(() => (
+			<Popup>
+				{{
+					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
+					content: () => 'hello world'
+				}}
+			</Popup>
+		));
+		const contentTemplate = baseTemplate
+			.setChildren('@trigger', () => [<button onclick={() => {}} />])
+			.insertSiblings('@trigger', () => [
+				<body>
+					<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />
+					<div key="wrapper" classes={fixedCss.root} styles={{ opacity: '0' }}>
+						hello world
+					</div>
+				</body>
+			]);
+
+		h.trigger('@trigger button', 'onclick');
+		h.expect(contentTemplate);
+	});
+
+	it('renders with opacity 1 after height is calculated', () => {
+		const h = harness(() => (
+			<Popup>
+				{{
+					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
+					content: () => 'hello world'
+				}}
+			</Popup>
+		));
+		const contentTemplate = baseTemplate
+			.setChildren('@trigger', () => [<button onclick={() => {}} />])
+			.insertSiblings('@trigger', () => [
+				<body>
+					<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />
+					<div key="wrapper" classes={fixedCss.root} styles={{ opacity: '0' }}>
+						hello world
+					</div>
+				</body>
+			]);
+
+		h.trigger('@trigger button', 'onclick');
+
+		h.expect(contentTemplate);
 	});
 });

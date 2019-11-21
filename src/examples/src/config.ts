@@ -88,6 +88,9 @@ import HeadingCollapsedToolbar from './widgets/toolbar/HeadingCollapsed';
 import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
+import MenuPopup from './widgets/popup/MenuPopup';
+import SetWidth from './widgets/popup/SetWidth';
+import Underlay from './widgets/popup/Underlay';
 
 export interface ExampleConfig {
 	title?: string;
@@ -405,7 +408,12 @@ export const config: Config = {
 				filename: 'Basic',
 				module: BasicPopup
 			}
-		}
+		},
+		examples: [
+			{ title: 'Underlay', filename: 'Underlay', module: Underlay },
+			{ title: 'Set Width', filename: 'SetWidth', module: SetWidth },
+			{ title: 'Menu Popup', filename: 'MenuPopup', module: MenuPopup }
+		]
 	},
 	'number-input': {
 		overview: {
