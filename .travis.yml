@@ -9,7 +9,7 @@ addons:
 script:
 - npm run build
 - npm run test:ci
-- npm run build:docs
+- npm run build:examples
 - ./deploy.sh
 - ./comment-deployments.sh
 - npm run uploadCoverage

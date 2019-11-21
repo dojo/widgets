@@ -1,5 +1,6 @@
 #!/bin/bash
 cp ./now.json ./output/dist
+cp ./now.json ./output/dev
 
 name="dojo.widgets"
 
@@ -10,7 +11,14 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
 		exit 1
 	fi
 
-	echo "* $name: $nowurl" &>> deployments.txt
+	echo "* Docs Deployment: $nowurl" &>> deployments.txt
+	nowurl=$(npx now ./output/dev --token=$PUBLIC_NOW_TOKEN --public --name=$name)
+	if [ "$nowurl" = "" ] ; then
+		echo "Now deployment failed"
+		exit 1
+	fi
+
+	echo "* Tests Deployment: $nowurl" &>> deployments.txt
 else
 	if [ "$TRAVIS_BRANCH" = "master" ] ; then
 		nowurl=$(npx now ./output/dist --token=$NOW_TOKEN --public --name=$name --scope=dojo --target=production)

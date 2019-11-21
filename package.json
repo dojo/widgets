@@ -29,6 +29,7 @@
     "test:ci": "run-s clean build:test test:headless",
     "build:ce": "dojo build widget && shx cp -r output/dist dist/umd/src/",
     "build:docs": "dojo build app -f docs=true",
+    "build:examples": "dojo build app -f docs=true && dojo build app -m dev",
     "build:docs:dev": "dojo build app -m dev -w -s -f docs=true",
     "build:lib": "dojo build widget -t lib && shx cp -r output/dist dist/esm/src",
     "build:lib:legacy": "dojo build widget -t lib -l && shx cp -r output/dist dist/umd/src",
