@@ -1,0 +1,7 @@
+{
+  "buildCommand": "build:codesandbox",
+  "publishDirectory": {
+    "@dojo/framework": "dist/release"
+  },
+  "sandboxes": ["/src/examples"]
+}
