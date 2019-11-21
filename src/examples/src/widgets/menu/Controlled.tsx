@@ -1,7 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Menu from '@dojo/widgets/menu';
 import icache from '@dojo/framework/core/middleware/icache';
-import states from './states';
 
 const factory = create({ icache });
 
@@ -22,7 +21,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 			<button
 				type="button"
 				onclick={() => {
-					icache.set('activeIndex', (activeIndex - 1 + states.length) % states.length);
+					icache.set('activeIndex', (activeIndex - 1 + options.length) % options.length);
 				}}
 			>
 				UP
@@ -30,7 +29,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 			<button
 				type="button"
 				onclick={() => {
-					icache.set('activeIndex', (activeIndex + 1) % states.length);
+					icache.set('activeIndex', (activeIndex + 1) % options.length);
 				}}
 			>
 				DOWN
@@ -40,8 +39,8 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				onclick={() => {
 					const activeIndex = icache.get<number>('activeIndex');
 					if (activeIndex) {
-						const item = states[activeIndex];
-						!item.disabled && icache.set('value', states[activeIndex].value);
+						const item = options[activeIndex];
+						!item.disabled && icache.set('value', options[activeIndex].value);
 					}
 				}}
 			>
