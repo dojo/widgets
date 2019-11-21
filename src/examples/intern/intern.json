@@ -1,5 +1,8 @@
 {
 	"basePath": "..",
+	"plugins": [
+		"./intern/reporter.js"
+	],
 	"suites": [
 		"./main.js"
 	]

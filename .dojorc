@@ -44,8 +44,8 @@
 					"to": "intern/index.html"
 				},
 				{
-					"from": "src/examples/intern.json",
-					"to": "intern/intern.json"
+					"from": "src/examples/intern",
+					"to": "intern"
 				}
 			]
 		}
