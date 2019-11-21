@@ -43,7 +43,10 @@ const expected = function(
 					},
 					['close']
 			  )
-			: null
+			: null,
+		v('span', { classes: [css.indicator, activeTab !== -1 ? css.indicatorActive : null] }, [
+			v('span', { classes: css.indicatorContent })
+		])
 	);
 
 	return v(
@@ -66,7 +69,7 @@ const expected = function(
 			role: 'tab',
 			tabIndex: activeTab
 		},
-		children
+		[v('span', { classes: css.tabButtonContent }, children)]
 	);
 };
 
