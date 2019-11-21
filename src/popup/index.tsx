@@ -1,4 +1,4 @@
-import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
+import { Size, BottomRight, TopLeft } from '@dojo/framework/core/meta/Dimensions';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { theme } from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -8,8 +8,10 @@ import * as fixedCss from './popup.m.css';
 export type PopupPosition = 'above' | 'below';
 
 export interface PopupProperties {
-	/** The dimensions of the anchor that triggers this popup */
-	triggerDimensions: DimensionResults;
+	/** The size of the element that triggers this popup */
+	triggerSize: Size;
+	/** The position of the element that triggers this popup */
+	triggerPosition: TopLeft & BottomRight;
 	/** Property to define if the popup wrapper should match the trigger width, defaults to true */
 	matchWidth?: boolean;
 	/** Callback called when the popup wishes to close */
@@ -26,14 +28,15 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 	const {
 		onClose,
 		underlayVisible = false,
-		triggerDimensions: { size: aSize, position: aPosition },
+		triggerSize,
+		triggerPosition,
 		position = 'below',
 		matchWidth = true
 	} = properties();
 
 	const wrapperDimensions = dimensions.get('wrapper');
-	const triggerTop = aPosition.top + document.documentElement.scrollTop;
-	const triggerBottom = triggerTop + aSize.height;
+	const triggerTop = triggerPosition.top + document.documentElement.scrollTop;
+	const triggerBottom = triggerTop + triggerSize.height;
 	const bottomOfVisibleScreen =
 		document.documentElement.scrollTop + document.documentElement.clientHeight;
 	const topOfVisibleScreen = document.documentElement.scrollTop;
@@ -49,8 +52,8 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 
 	if (wrapperDimensions.size.height) {
 		wrapperStyles = {
-			width: matchWidth ? `${aSize.width}px` : 'auto',
-			left: `${aPosition.left}px`,
+			width: matchWidth ? `${triggerSize.width}px` : 'auto',
+			left: `${triggerPosition.left}px`,
 			opacity: '1'
 		};
 
