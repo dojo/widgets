@@ -45,7 +45,6 @@ const expected = function(
 				null,
 				null,
 				null,
-				null,
 				fixedCss.rootFixed
 			]
 		},
@@ -219,7 +218,6 @@ registerSuite('Slider', {
 								null,
 								null,
 								null,
-								null,
 								css.vertical,
 								fixedCss.rootFixed
 							]
@@ -321,7 +319,6 @@ registerSuite('Slider', {
 								null,
 								null,
 								null,
-								null,
 								css.vertical,
 								fixedCss.rootFixed
 							]
@@ -411,17 +408,7 @@ registerSuite('Slider', {
 					'div',
 					{
 						key: 'root',
-						classes: [
-							css.root,
-							null,
-							null,
-							null,
-							null,
-							null,
-							null,
-							null,
-							fixedCss.rootFixed
-						]
+						classes: [css.root, null, null, null, null, null, null, fixedCss.rootFixed]
 					},
 					[
 						null,
@@ -503,17 +490,7 @@ registerSuite('Slider', {
 					'div',
 					{
 						key: 'root',
-						classes: [
-							css.root,
-							null,
-							null,
-							null,
-							null,
-							null,
-							null,
-							null,
-							fixedCss.rootFixed
-						]
+						classes: [css.root, null, null, null, null, null, null, fixedCss.rootFixed]
 					},
 					[
 						null,
@@ -613,7 +590,6 @@ registerSuite('Slider', {
 							css.invalid,
 							null,
 							css.readonly,
-							css.required,
 							null,
 							fixedCss.rootFixed
 						]
@@ -702,7 +678,6 @@ registerSuite('Slider', {
 							null,
 							null,
 							css.valid,
-							null,
 							null,
 							null,
 							fixedCss.rootFixed

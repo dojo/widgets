@@ -5,7 +5,7 @@
 }
 
 .root {
-	padding-bottom: calc(var(--slider-height) / 2)
+	padding-bottom: calc(var(--slider-height) / 2);
 }
 
 .hasOutput {

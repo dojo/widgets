@@ -30,7 +30,18 @@ const expectedCloseButton = function() {
 			type: 'button',
 			onclick: noop
 		},
-		['close ', w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })]
+		[
+			'close ',
+			w(Icon, {
+				type: 'closeIcon',
+				theme: undefined,
+				classes: {
+					'@dojo/widgets/icon': {
+						root: [css.closeIcon]
+					}
+				}
+			})
+		]
 	);
 };
 
@@ -179,7 +190,11 @@ registerSuite('Dialog', {
 												w(Icon, {
 													type: 'closeIcon',
 													theme: undefined,
-													classes: undefined
+													classes: {
+														'@dojo/widgets/icon': {
+															root: [css.closeIcon]
+														}
+													}
 												})
 											]
 										)
@@ -269,7 +284,11 @@ registerSuite('Dialog', {
 												w(Icon, {
 													type: 'closeIcon',
 													theme: undefined,
-													classes: undefined
+													classes: {
+														'@dojo/widgets/icon': {
+															root: [css.closeIcon]
+														}
+													}
 												})
 											]
 										)
@@ -350,7 +369,11 @@ registerSuite('Dialog', {
 												w(Icon, {
 													type: 'closeIcon',
 													theme: undefined,
-													classes: undefined
+													classes: {
+														'@dojo/widgets/icon': {
+															root: [css.closeIcon]
+														}
+													}
 												})
 											]
 										)

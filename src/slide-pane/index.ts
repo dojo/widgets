@@ -308,10 +308,12 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 												w(Icon, {
 													type: 'closeIcon',
 													theme,
-													classes,
-													extraClasses: {
-														root: this.theme(css.closeIcon)
-													} as any
+													classes: {
+														...classes,
+														'@dojo/widgets/icon': {
+															root: [this.theme(css.closeIcon)]
+														}
+													}
 												})
 											]
 										)
