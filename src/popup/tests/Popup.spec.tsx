@@ -1,11 +1,10 @@
-const { describe, it, before, after } = intern.getInterface('bdd');
-import { tsx } from '@dojo/framework/core/vdom';
+const { describe, it } = intern.getInterface('bdd');
+import { tsx, node } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
 import harness from '@dojo/framework/testing/harness';
-import global from '@dojo/framework/shim/global';
 import Popup from '../index';
 import * as fixedCss from '../popup.m.css';
-import { sandbox } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
 	<virtual>
@@ -14,23 +13,6 @@ const baseTemplate = assertionTemplate(() => (
 ));
 
 describe('Popup', () => {
-	const sb = sandbox.create();
-
-	before(() => {
-		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
-			width: 50,
-			height: 50,
-			bottom: 0,
-			top: 0,
-			left: 0,
-			right: 0
-		}));
-	});
-
-	after(() => {
-		sb.restore();
-	});
-
 	it('Renders with trigger renderer', () => {
 		const h = harness(() => (
 			<Popup>
@@ -71,14 +53,35 @@ describe('Popup', () => {
 	});
 
 	it('renders with opacity 1 after height is calculated', () => {
-		const h = harness(() => (
-			<Popup>
-				{{
-					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
-					content: () => 'hello world'
-				}}
-			</Popup>
-		));
+		const mockNode = createNodeMock();
+
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					bottom: 0,
+					left: 50,
+					top: 50,
+					right: 0
+				};
+			},
+			boundingDimensions: {
+				width: 100,
+				height: 100
+			}
+		};
+		mockNode('wrapper', wrapper);
+
+		const h = harness(
+			() => (
+				<Popup>
+					{{
+						trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
+						content: () => 'hello world'
+					}}
+				</Popup>
+			),
+			{ middleware: [[node, mockNode]] }
+		);
 		const contentTemplate = baseTemplate
 			.setChildren('@trigger', () => [<button onclick={() => {}} />])
 			.insertSiblings('@trigger', () => [
