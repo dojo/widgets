@@ -5,7 +5,7 @@ The following has been addressed in the PR:
 * [ ] There is a related issue
 * [ ] All code matches the [style guide](https://github.com/dojo/framework/blob/master/STYLE.md)
 * [ ] Unit tests are included in the PR
-* [ ] Any widget variant uses `theme.compose`
+* [ ] Any widget variant uses `theme.compose` like [this](https://github.com/dojo/widgets/pull/855/files#diff-a0dca9255cbe0cff30565808d27fe93fR23)
 * [ ] WidgetProperties are exported
 
 <!--
