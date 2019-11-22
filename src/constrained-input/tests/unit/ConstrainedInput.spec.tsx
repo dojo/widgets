@@ -4,11 +4,8 @@ import ConstrainedInput from '../..';
 import { tsx, create } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input';
 import validation from '../../../middleware/validation';
-import bundle from '../../../middleware/validation.nls';
 import { compareTheme } from '../../../common/tests/support/test-helpers';
 import * as textInputCss from '../../../theme/text-input.m.css';
-
-const { messages } = bundle;
 
 const { describe, it } = intern.getInterface('bdd');
 
@@ -30,7 +27,11 @@ const rules = { length: { min: 0 } };
 
 describe('ConstrainedInput', () => {
 	it('renders with default properties', () => {
-		const h = harness(() => <ConstrainedInput rules={rules} />, [compareTheme(textInputCss)]);
+		const h = harness(() => <ConstrainedInput rules={rules} />, {
+			middleware: [[validation, createMockValidationMiddleware(() => true)]],
+			customComparator: [compareTheme(textInputCss)]
+		});
+
 		h.expect(() => (
 			<TextInput
 				key="root"
@@ -38,15 +39,16 @@ describe('ConstrainedInput', () => {
 				customValidator={() => {}}
 				valid={undefined}
 				onValidate={() => {}}
-				helperText={messages.minimumLength.replace('{length}', '0')}
+				helperText="description"
 			/>
 		));
 	});
 
 	it('passes properties to the input widget', () => {
-		const h = harness(() => <ConstrainedInput rules={rules} label="Test Label" />, [
-			compareTheme(textInputCss)
-		]);
+		const h = harness(() => <ConstrainedInput rules={rules} label="Test Label" />, {
+			middleware: [[validation, createMockValidationMiddleware(() => true)]],
+			customComparator: [compareTheme(textInputCss)]
+		});
 		h.expect(() => (
 			<TextInput
 				key="root"
@@ -54,7 +56,7 @@ describe('ConstrainedInput', () => {
 				customValidator={() => {}}
 				valid={undefined}
 				onValidate={() => {}}
-				helperText={messages.minimumLength.replace('{length}', '0')}
+				helperText="description"
 				label="Test Label"
 			/>
 		));
