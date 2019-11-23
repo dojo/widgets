@@ -15,6 +15,7 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 import { GlobalEvent } from '../../../global-event/index';
+import { DNode } from '@dojo/framework/core/interfaces';
 
 const harness = createHarness([compareId, compareAriaLabelledBy, compareAriaControls]);
 
@@ -43,9 +44,21 @@ function createVNodeSelector(type: 'window' | 'document', name: string) {
 }
 
 const expected = function(
-	options: { open?: boolean; closeable?: boolean; heading?: string; transition?: boolean } = {}
+	options: {
+		open?: boolean;
+		closeable?: boolean;
+		heading?: string;
+		transition?: boolean;
+		title?: DNode;
+	} = {}
 ) {
-	const { open = true, closeable = true, heading = null, transition = true } = options;
+	const {
+		open = true,
+		closeable = true,
+		heading = null,
+		transition = true,
+		title = 'test'
+	} = options;
 	return v(
 		'div',
 		{
@@ -86,7 +99,7 @@ const expected = function(
 									classes: undefined
 								})
 							]),
-							'test'
+							title
 						]
 					)
 				]
@@ -121,7 +134,7 @@ registerSuite('TitlePane', {
 			h.expect(expected);
 		},
 
-		'Should construct with the passed properties'() {
+		'Should construct with the passed properties where title is a string'() {
 			const h = harness(() =>
 				w(StubbedTitlePane, {
 					closeable: false,
@@ -132,6 +145,37 @@ registerSuite('TitlePane', {
 			);
 
 			h.expect(() => expected({ open: false, closeable: false, heading: '5' }));
+		},
+
+		'Should construct with the passed properties where title is a null'() {
+			const h = harness(() =>
+				w(StubbedTitlePane, {
+					closeable: false,
+					headingLevel: 5,
+					open: false,
+					title: null
+				})
+			);
+
+			h.expect(() => expected({ open: false, closeable: false, heading: '5', title: null }));
+		},
+
+		'Should construct with the passed properties where title is a VNode'() {
+			const title = v('span', [
+				v('span', { styles: { color: 'red' } }, ['foo']),
+				v('span', { styles: { color: 'blue' } }, ['bar'])
+			]);
+
+			const h = harness(() =>
+				w(StubbedTitlePane, {
+					closeable: false,
+					headingLevel: 5,
+					open: false,
+					title: title
+				})
+			);
+
+			h.expect(() => expected({ open: false, closeable: false, heading: '5', title: title }));
 		},
 
 		'click title to close'() {
