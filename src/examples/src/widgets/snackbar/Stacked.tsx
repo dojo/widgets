@@ -5,14 +5,17 @@ import Button from '@dojo/widgets/button';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function Stacked({ middleware: { icache } }) {
 	const open = icache.getOrSet('open', true);
 	return (
 		<Snackbar
+			stacked
 			open={open}
-			messageRenderer={() => 'Snackbar'}
+			messageRenderer={() => 'Stacked Snackbar'}
 			actionsRenderer={() => (
-				<Button onClick={() => icache.set('open', false)}>Dismiss</Button>
+				<Button onClick={() => icache.set('open', false)}>
+					Dismiss button with long text
+				</Button>
 			)}
 		/>
 	);

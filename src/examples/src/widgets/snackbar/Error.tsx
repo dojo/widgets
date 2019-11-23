@@ -5,12 +5,13 @@ import Button from '@dojo/widgets/button';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function Error({ middleware: { icache } }) {
 	const open = icache.getOrSet('open', true);
 	return (
 		<Snackbar
+			type="error"
 			open={open}
-			messageRenderer={() => 'Snackbar'}
+			messageRenderer={() => 'Error Snackbar'}
 			actionsRenderer={() => (
 				<Button onClick={() => icache.set('open', false)}>Dismiss</Button>
 			)}
