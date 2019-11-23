@@ -1,22 +1,15 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Snackbar from '@dojo/widgets/snackbar';
-import icache from '@dojo/framework/core/middleware/icache';
-import Button from '@dojo/widgets/button';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Stacked({ middleware: { icache } }) {
-	const open = icache.getOrSet('open', true);
+export default factory(function Stacked() {
 	return (
 		<Snackbar
 			stacked
-			open={open}
+			open={true}
 			messageRenderer={() => 'Stacked Snackbar'}
-			actionsRenderer={() => (
-				<Button onClick={() => icache.set('open', false)}>
-					Dismiss button with long text
-				</Button>
-			)}
+			actionsRenderer={() => 'A really long actions renderer'}
 		/>
 	);
 });
