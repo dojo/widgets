@@ -4,7 +4,9 @@ The following has been addressed in the PR:
 
 * [ ] There is a related issue
 * [ ] All code matches the [style guide](https://github.com/dojo/framework/blob/master/STYLE.md)
-* [ ] Unit or Functional tests are included in the PR
+* [ ] Unit tests are included in the PR
+* [ ] Any widget variant uses `theme.compose` like [this](https://github.com/dojo/widgets/issues/847)
+* [ ] WidgetProperties are exported
 
 <!--
 Our bots should ensure:
