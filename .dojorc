@@ -30,6 +30,7 @@
 			"src/popup",
 			"src/progress",
 			"src/radio",
+			"src/radio-group",
 			"src/raised-button",
 			"src/range-slider",
 			"src/select",

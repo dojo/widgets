@@ -75,6 +75,10 @@ import ProgressWithCustomOutput from './widgets/progress/ProgressWithCustomOutpu
 import ProgressWithMax from './widgets/progress/ProgressWithMax';
 import ProgressWithoutOutput from './widgets/progress/ProgressWithoutOutput';
 import BasicRadio from './widgets/radio/Basic';
+import BasicRadioGroup from './widgets/radio-group/Basic';
+import CustomLabelRadioGroup from './widgets/radio-group/CustomLabel';
+import CustomRendererRadioGroup from './widgets/radio-group/CustomRenderer';
+import InitialValueRadioGroup from './widgets/radio-group/InitialValue';
 import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
 import RaisedToggleButton from './widgets/raised-button/ToggleButton';
@@ -617,6 +621,32 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicRadio
+				}
+			}
+		},
+		'radio-group': {
+			examples: [
+				{
+					filename: 'InitialValue',
+					module: InitialValueRadioGroup,
+					title: 'Initial Value'
+				},
+				{
+					filename: 'CustomLabel',
+					module: CustomLabelRadioGroup,
+					title: 'Custom Label'
+				},
+				{
+					filename: 'CustomRenderer',
+					module: CustomRendererRadioGroup,
+					title: 'Custom Renderer'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicRadioGroup
 				}
 			}
 		},
