@@ -7,8 +7,6 @@ registerSuite('Calendar date utils', {
 	tests: {
 		'monthInMin checks year/month against the first of the year'() {
 			const janFirst2019 = new Date(2019, 0, 1);
-			console.log('janFirst2019', janFirst2019);
-			console.log(' janFirst2019 full year', janFirst2019.getFullYear());
 
 			assert.isFalse(monthInMin(2018, 10, janFirst2019));
 			assert.isFalse(monthInMin(2018, 11, janFirst2019, true));
