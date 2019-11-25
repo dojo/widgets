@@ -9,7 +9,7 @@ registerSuite('Calendar date utils', {
 			const janFirst2019 = new Date(2019, 0, 1);
 
 			assert.isFalse(monthInMin(2018, 10, janFirst2019));
-			assert.isFalse(monthInMin(2018, 11, janFirst2019, true));
+			assert.isFalse(monthInMin(2018, 11, janFirst2019));
 			assert.isTrue(monthInMin(2019, 0, janFirst2019));
 			assert.isTrue(monthInMin(2019, 1, janFirst2019));
 		},
