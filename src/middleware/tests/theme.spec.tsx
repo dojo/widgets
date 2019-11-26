@@ -45,7 +45,7 @@ const baseTemplate = assertionTemplate(() => <div key="root" />);
 
 registerSuite('theme-middleware', {
 	tests: {
-		'variant used if there is no base theme or variant theme'() {
+		'variant used if it exists and there is no theme'() {
 			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
 			const variantCss = { ' _key': 'test', a: 'variant-a' };
 			const h = harness(() => <TestWidget baseCss={baseCss} variantCss={variantCss} />);
