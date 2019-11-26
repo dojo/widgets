@@ -39,10 +39,12 @@ import BasicListbox from './widgets/listbox/Basic';
 import BasicMenu from './widgets/menu/Basic';
 import ControlledMenu from './widgets/menu/Controlled';
 import ItemRenderer from './widgets/menu/ItemRenderer';
+import ListBox from './widgets/menu/ListBox';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
+import BasicPopup from './widgets/popup/Basic';
 import BasicProgress from './widgets/progress/Basic';
 import BasicRadio from './widgets/radio/Basic';
 import BasicRaisedButton from './widgets/raised-button/Basic';
@@ -86,7 +88,9 @@ import HeadingCollapsedToolbar from './widgets/toolbar/HeadingCollapsed';
 import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
-import ListBox from './widgets/menu/ListBox';
+import MenuPopup from './widgets/popup/MenuPopup';
+import SetWidth from './widgets/popup/SetWidth';
+import Underlay from './widgets/popup/Underlay';
 
 export interface ExampleConfig {
 	title?: string;
@@ -397,6 +401,19 @@ export const config: Config = {
 				module: BasicMenu
 			}
 		}
+	},
+	popup: {
+		overview: {
+			example: {
+				filename: 'Basic',
+				module: BasicPopup
+			}
+		},
+		examples: [
+			{ title: 'Underlay', filename: 'Underlay', module: Underlay },
+			{ title: 'Set Width', filename: 'SetWidth', module: SetWidth },
+			{ title: 'Menu Popup', filename: 'MenuPopup', module: MenuPopup }
+		]
 	},
 	'number-input': {
 		overview: {
