@@ -48,6 +48,8 @@ import BasicPopup from './widgets/popup/Basic';
 import BasicProgress from './widgets/progress/Basic';
 import BasicRadio from './widgets/radio/Basic';
 import BasicRaisedButton from './widgets/raised-button/Basic';
+import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
+import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
 import AdvancedOptions from './widgets/select/AdvancedOptions';
 import BasicSelect from './widgets/select/Basic';
@@ -460,6 +462,18 @@ export const config: Config = {
 		}
 	},
 	'raised-button': {
+		examples: [
+			{
+				filename: 'DisabledSubmit',
+				module: RaisedDisabledSubmit,
+				title: 'Disabled Submit Button'
+			},
+			{
+				filename: 'ToggleButton',
+				module: RaisedToggleButton,
+				title: 'Toggle Button'
+			}
+		],
 		overview: {
 			example: {
 				filename: 'Basic',
