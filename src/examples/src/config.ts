@@ -41,6 +41,8 @@ import ControlledMenu from './widgets/menu/Controlled';
 import ItemRenderer from './widgets/menu/ItemRenderer';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
+import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
+import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
 import BasicProgress from './widgets/progress/Basic';
 import BasicRadio from './widgets/radio/Basic';
 import BasicRaisedButton from './widgets/raised-button/Basic';
@@ -405,6 +407,18 @@ export const config: Config = {
 		}
 	},
 	'outlined-button': {
+		examples: [
+			{
+				filename: 'DisabledSubmit',
+				module: OutlinedDisabledSubmit,
+				title: 'Disabled Submit Button'
+			},
+			{
+				filename: 'ToggleButton',
+				module: OutlinedToggleButton,
+				title: 'Toggle Button'
+			}
+		],
 		overview: {
 			example: {
 				filename: 'Basic',

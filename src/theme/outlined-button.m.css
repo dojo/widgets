@@ -1,3 +1,7 @@
 @import '../common/styles/variables.css';
 
 .root {}
+
+.disabled {}
+
+.pressed {}

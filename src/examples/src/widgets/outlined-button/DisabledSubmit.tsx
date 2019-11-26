@@ -3,6 +3,10 @@ import OutlinedButton from '@dojo/widgets/outlined-button';
 
 const factory = create();
 
-export default factory(function Basic() {
-	return <OutlinedButton>Outlined Button</OutlinedButton>;
+export default factory(function DisabledSubmitButton() {
+	return (
+		<OutlinedButton type="submit" disabled>
+			Submit
+		</OutlinedButton>
+	);
 });
