@@ -64,7 +64,7 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 				}
 
 				// if the base is themed but variant is not, take the base theme
-				// else, take the variant theme - which may be the base
+				// else, take the variant theme - which may be the variant's base-css
 				const baseThemed = allBaseThemeClasses[className] !== baseCompare;
 				const variantThemed = allVariantThemeClasses[className] !== variantCompare;
 
@@ -74,13 +74,11 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 					sanitizedThemeClasses[className] = allVariantThemeClasses[className];
 				}
 
-				// if (allVariantThemeClasses[className] !== variantCompare) {
-				// 	sanitizedThemeClasses[className] = allVariantThemeClasses[className];
-				// }
-
-				sanitizedThemeClasses[className] = `${
-					sanitizedThemeClasses[className]
-				} ${variantClasses}`.trim();
+				if (sanitizedThemeClasses[className].indexOf(variantClasses) < 0) {
+					sanitizedThemeClasses[className] = `${
+						sanitizedThemeClasses[className]
+					} ${variantClasses}`.trim();
+				}
 			}
 
 			return sanitizedThemeClasses;

@@ -26,7 +26,7 @@ const baseTemplate = assertionTemplate(() => (
 registerSuite('NumberInput', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => <NumberInput />, [compareTheme(textInputCss)]);
+			const h = harness(() => <NumberInput />, [compareTheme]);
 			h.expect(baseTemplate);
 		},
 		'passes expected properties to underlying TextInput'() {
@@ -54,9 +54,7 @@ registerSuite('NumberInput', {
 				widgetId: 'widgetId'
 			};
 
-			const h = harness(() => <NumberInput {...baseProperties} />, [
-				compareTheme(textInputCss)
-			]);
+			const h = harness(() => <NumberInput {...baseProperties} />, [compareTheme]);
 			h.expect(
 				baseTemplate.setProperties(':root', {
 					...baseProperties,
@@ -68,7 +66,7 @@ registerSuite('NumberInput', {
 		},
 		'passes correct value to underlying TextInput'() {
 			const value = 42;
-			const h = harness(() => <NumberInput value={value} />, [compareTheme(textInputCss)]);
+			const h = harness(() => <NumberInput value={value} />, [compareTheme]);
 			h.expect(baseTemplate.setProperty(':root', 'value', value.toString()));
 		},
 		'calls onValue with correct value'() {

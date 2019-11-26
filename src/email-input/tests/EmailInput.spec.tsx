@@ -26,7 +26,7 @@ const expected = assertionTemplate(() => (
 registerSuite('EmailInput', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => <EmailInput />, [compareTheme(textInputCss)]);
+			const h = harness(() => <EmailInput />, [compareTheme]);
 			h.expect(expected);
 		}
 	}
