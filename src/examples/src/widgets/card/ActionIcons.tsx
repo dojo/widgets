@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Card from '@dojo/widgets/card';
-import Icon from '@dojo/widgets/Icon';
+import Icon from '@dojo/widgets/icon';
 
 import * as cardCss from '../../../../theme/card.m.css';
 
