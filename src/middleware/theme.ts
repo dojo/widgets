@@ -51,6 +51,9 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 					compare = `${compare} ${variantClasses}`;
 				}
 
+				// if the base is themed but variant is not, take the base theme
+				// else, take the variant theme - which may be the base
+
 				if (allVariantThemeClasses[className] !== compare) {
 					sanitizedThemeClasses[className] = allVariantThemeClasses[className];
 				}
