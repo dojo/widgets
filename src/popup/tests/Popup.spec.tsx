@@ -1,4 +1,4 @@
-const { describe, it } = intern.getInterface('bdd');
+const { describe, it, before } = intern.getInterface('bdd');
 import { tsx, node } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
@@ -14,6 +14,11 @@ const baseTemplate = assertionTemplate(() => (
 ));
 
 describe('Popup', () => {
+	before(() => {
+		Object.defineProperty(document.documentElement, 'scrollTop', { value: 0 });
+		Object.defineProperty(document.documentElement, 'clientHeight', { value: 1000 });
+	});
+
 	it('Renders with trigger renderer', () => {
 		const h = harness(() => (
 			<Popup>
