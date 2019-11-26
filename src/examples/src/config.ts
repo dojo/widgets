@@ -87,6 +87,10 @@ import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
 import ListBox from './widgets/menu/ListBox';
+import DisabledCheckbox from './widgets/checkbox/DisabledCheckbox';
+import RequiredCheckbox from './widgets/checkbox/RequiredCheckbox';
+import ToggleModeCheckbox from './widgets/checkbox/ToggleModeCheckbox';
+import DisabledToggleModeCheckbox from './widgets/checkbox/DisabledToggleModeCheckbox';
 
 export interface ExampleConfig {
 	title?: string;
@@ -176,6 +180,28 @@ export const config: Config = {
 		}
 	},
 	checkbox: {
+		examples: [
+			{
+				filename: 'DisabledCheckbox',
+				module: DisabledCheckbox,
+				title: 'Disabled checkbox'
+			},
+			{
+				filename: 'RequiredCheckbox',
+				module: RequiredCheckbox,
+				title: 'Required checkbox'
+			},
+			{
+				filename: 'ToggleModeCheckbox',
+				module: ToggleModeCheckbox,
+				title: 'Checkbox in "toggle" mode'
+			},
+			{
+				filename: 'DisabledToggleModeCheckbox',
+				module: DisabledToggleModeCheckbox,
+				title: 'Disabled toggle mode'
+			}
+		],
 		filename: 'index',
 		overview: {
 			example: {
