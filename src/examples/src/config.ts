@@ -91,6 +91,9 @@ import FocusTooltip from './widgets/tooltip/Focus';
 import MenuPopup from './widgets/popup/MenuPopup';
 import SetWidth from './widgets/popup/SetWidth';
 import Underlay from './widgets/popup/Underlay';
+import UnderlayDialog from './widgets/dialog/UnderlayDialog';
+import ModalDialog from './widgets/dialog/ModalDialog';
+import CloseableDialog from './widgets/dialog/CloseableDialog';
 
 export interface ExampleConfig {
 	title?: string;
@@ -279,6 +282,23 @@ export const config: Config = {
 		}
 	},
 	dialog: {
+		examples: [
+			{
+				filename: 'UnderlayDialog',
+				module: UnderlayDialog,
+				title: 'Dialog with and Underlay'
+			},
+			{
+				filename: 'ModalDialog',
+				module: ModalDialog,
+				title: 'Modal Dialog'
+			},
+			{
+				filename: 'CloseableDialog',
+				module: CloseableDialog,
+				title: 'Dialog with Configurable Closeability'
+			}
+		],
 		overview: {
 			example: {
 				filename: 'Basic',

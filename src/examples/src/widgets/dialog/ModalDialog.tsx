@@ -5,7 +5,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function ModalDialog({ middleware: { icache } }) {
 	const isOpen = icache.getOrSet<boolean>('isOpen', false);
 	return (
 		<div>
@@ -14,7 +14,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 			</Button>
 			<Dialog
 				open={isOpen}
-				title="Basic Dialog"
+				title="Modal Dialog"
+				modal={true}
 				onRequestClose={() => icache.set('isOpen', false)}
 			>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum.
