@@ -16,13 +16,13 @@ const baseTemplate = assertionTemplate(() => (
 registerSuite('RaisedButton', {
 	tests: {
 		'no content'() {
-			const h = harness(() => <RaisedButton />, [compareTheme(buttonCss)]);
+			const h = harness(() => <RaisedButton />, [compareTheme]);
 			h.expect(baseTemplate);
 		},
 
 		'properties and attributes'() {
 			const h = harness(() => <RaisedButton type="submit" name="bar" disabled={true} />, [
-				compareTheme(buttonCss)
+				compareTheme
 			]);
 			h.expect(() => (
 				<Button

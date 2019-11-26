@@ -3,11 +3,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Menu, { MenuOption } from '../';
-import {
-	compareId,
-	createHarness,
-	comparePrefixTheme
-} from '../../common/tests/support/test-helpers';
+import { compareId, createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
 import * as css from '../../theme/menu.m.css';
 import MenuItem from '../MenuItem';
@@ -23,7 +19,7 @@ const compareAriaActiveDescendant = {
 	comparator: (property: any) => typeof property === 'string'
 };
 
-const harness = createHarness([comparePrefixTheme, compareId, compareAriaActiveDescendant]);
+const harness = createHarness([compareTheme, compareId, compareAriaActiveDescendant]);
 
 describe('Menu - Menu', () => {
 	const animalOptions: MenuOption[] = [

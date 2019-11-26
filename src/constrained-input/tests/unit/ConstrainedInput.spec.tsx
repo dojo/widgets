@@ -29,7 +29,7 @@ describe('ConstrainedInput', () => {
 	it('renders with default properties', () => {
 		const h = harness(() => <ConstrainedInput rules={rules} />, {
 			middleware: [[validation, createMockValidationMiddleware(() => true)]],
-			customComparator: [compareTheme(textInputCss)]
+			customComparator: [compareTheme]
 		});
 
 		h.expect(() => (
@@ -47,7 +47,7 @@ describe('ConstrainedInput', () => {
 	it('passes properties to the input widget', () => {
 		const h = harness(() => <ConstrainedInput rules={rules} label="Test Label" />, {
 			middleware: [[validation, createMockValidationMiddleware(() => true)]],
-			customComparator: [compareTheme(textInputCss)]
+			customComparator: [compareTheme]
 		});
 		h.expect(() => (
 			<TextInput
@@ -75,7 +75,7 @@ describe('ConstrainedInput', () => {
 			),
 			{
 				middleware: [[validation, createMockValidationMiddleware(() => true)]],
-				customComparator: [compareTheme(textInputCss)]
+				customComparator: [compareTheme]
 			}
 		);
 

@@ -45,19 +45,19 @@ const baseTemplate = assertionTemplate(() => <div key="root" />);
 
 registerSuite('theme-middleware', {
 	tests: {
-		'Base used when no theme applied'() {
+		'variant used if it exists and there is no theme'() {
 			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
 			const variantCss = { ' _key': 'test', a: 'variant-a' };
 			const h = harness(() => <TestWidget baseCss={baseCss} variantCss={variantCss} />);
 
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'base-a', b: 'base-b' })
+					JSON.stringify({ a: 'variant-a', b: 'base-b' })
 				])
 			);
 		},
 
-		'Base theme comes through'() {
+		'Base theme comes through when variant is not themed'() {
 			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
 			const variantCss = { ' _key': 'test', a: 'variant-a' };
 			const theme = {
@@ -142,7 +142,7 @@ registerSuite('theme-middleware', {
 
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'variant-theme-a composed-variant-a', b: 'base-b' })
+					JSON.stringify({ a: 'variant-theme-a composed-variant-a', b: 'variant-b' })
 				])
 			);
 		},
@@ -222,7 +222,7 @@ registerSuite('theme-middleware', {
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
 					JSON.stringify({
-						root: 'base-root variant-classes-prefix-root',
+						root: 'variant-root variant-classes-prefix-root',
 						input: 'variant-theme-input'
 					})
 				])
@@ -256,7 +256,7 @@ registerSuite('theme-middleware', {
 			h.expect(
 				baseTemplate.setChildren('@root', () => [
 					JSON.stringify({
-						root: 'base-root base-classes-prefix-root variant-classes-prefix-root',
+						root: 'variant-root variant-classes-prefix-root',
 						input: 'variant-theme-input composed-input'
 					})
 				])
