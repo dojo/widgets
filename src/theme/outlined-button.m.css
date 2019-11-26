@@ -1,7 +1,11 @@
-@import '../common/styles/variables.css';
+.root {
+	composes: root from './button.m.css';
+}
 
-.root {}
+.disabled {
+	composes: disabled from './button.m.css';
+}
 
-.disabled {}
-
-.pressed {}
+.pressed {
+	composes: pressed from './button.m.css';
+}

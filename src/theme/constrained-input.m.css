@@ -1,1 +1,3 @@
-.root {}
+.root {
+	composes: root from './text-input.m.css';
+}

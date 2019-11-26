@@ -13,6 +13,7 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 
 			const { classes } = properties();
 			const variantKey = variantCss[THEME_KEY];
+			const baseKey = baseCss[THEME_KEY];
 
 			const sanitizedThemeClasses: ClassNames = allBaseThemeClasses;
 
@@ -40,23 +41,42 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 				const calculatedClassName = prefix
 					? `${prefix}${className.charAt(0).toUpperCase() + className.slice(1)}`
 					: className;
-				let compare = variantCss[calculatedClassName];
+				let variantCompare = variantCss[calculatedClassName];
+				let baseCompare = baseCss[className];
 
 				let variantClasses = '';
+				let baseClasses = '';
+
 				if (classes && classes[variantKey] && classes[variantKey][calculatedClassName]) {
 					variantClasses = classes[variantKey][calculatedClassName].join(' ');
 				}
 
+				if (classes && classes[baseKey] && classes[baseKey][className]) {
+					baseClasses = classes[baseKey][className].join(' ');
+				}
+
 				if (variantClasses) {
-					compare = `${compare} ${variantClasses}`;
+					variantCompare = `${variantCompare} ${variantClasses}`;
+				}
+
+				if (baseClasses) {
+					baseCompare = `${baseCompare} ${baseClasses}`;
 				}
 
 				// if the base is themed but variant is not, take the base theme
 				// else, take the variant theme - which may be the base
+				const baseThemed = allBaseThemeClasses[className] !== baseCompare;
+				const variantThemed = allVariantThemeClasses[className] !== variantCompare;
 
-				if (allVariantThemeClasses[className] !== compare) {
+				if (baseThemed && !variantThemed) {
+					sanitizedThemeClasses[className] = allBaseThemeClasses[className];
+				} else {
 					sanitizedThemeClasses[className] = allVariantThemeClasses[className];
 				}
+
+				// if (allVariantThemeClasses[className] !== variantCompare) {
+				// 	sanitizedThemeClasses[className] = allVariantThemeClasses[className];
+				// }
 
 				sanitizedThemeClasses[className] = `${
 					sanitizedThemeClasses[className]
