@@ -18,11 +18,11 @@ export interface SnackbarProperties {
 	stacked?: boolean;
 }
 
-const factory = create({ coreTheme: theme }).properties<SnackbarProperties>();
+const factory = create({ theme }).properties<SnackbarProperties>();
 
-export const Snackbar = factory(function Snackbar({ middleware: { coreTheme }, properties }) {
+export const Snackbar = factory(function Snackbar({ middleware: { theme }, properties }) {
 	const { type, open, leading, stacked, messageRenderer, actionsRenderer } = properties();
-	const themeCss = coreTheme.classes(css);
+	const themeCss = theme.classes(css);
 	return (
 		<div
 			key="root"
