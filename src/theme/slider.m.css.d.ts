@@ -5,7 +5,6 @@ export const input: string;
 export const track: string;
 export const disabled: string;
 export const readonly: string;
-export const required: string;
 export const invalid: string;
 export const thumb: string;
 export const valid: string;

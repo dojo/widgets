@@ -5,10 +5,6 @@
 	display: inline-block;
 }
 
-.root *, .root *:before, .root *:after {
-	box-sizing: inherit;
-}
-
 .inactiveDate {
 	background-color: var(--disabled-color);
 }

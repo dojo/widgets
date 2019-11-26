@@ -5,7 +5,7 @@
 }
 
 .root {
-	padding-bottom: calc(var(--slider-height) / 2)
+	padding-bottom: calc(var(--slider-height) / 2);
 }
 
 .hasOutput {
@@ -41,19 +41,13 @@
 	background-color: var(--success-color);
 }
 
-.focused input {
+.focused .input {
 	outline: none;
 }
 
 .focused .thumb.focused {
 	box-shadow: 0 0 7px 3px var(--selected-background);
 	border-color: white;
-}
-
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
-	color: var(--error-color);
 }
 
 .thumb {

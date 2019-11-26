@@ -30,7 +30,16 @@ const expectedCloseButton = function() {
 			type: 'button',
 			onclick: noop
 		},
-		['close ', w(Icon, { type: 'closeIcon', theme: undefined, classes: undefined })]
+		[
+			'close ',
+			v('span', { classes: css.closeIcon }, [
+				w(Icon, {
+					type: 'closeIcon',
+					theme: undefined,
+					classes: undefined
+				})
+			])
+		]
 	);
 };
 
@@ -176,11 +185,13 @@ registerSuite('Dialog', {
 											},
 											[
 												'foo',
-												w(Icon, {
-													type: 'closeIcon',
-													theme: undefined,
-													classes: undefined
-												})
+												v('span', { classes: css.closeIcon }, [
+													w(Icon, {
+														type: 'closeIcon',
+														theme: undefined,
+														classes: undefined
+													})
+												])
 											]
 										)
 									]
@@ -266,11 +277,13 @@ registerSuite('Dialog', {
 											},
 											[
 												'close foo',
-												w(Icon, {
-													type: 'closeIcon',
-													theme: undefined,
-													classes: undefined
-												})
+												v('span', { classes: css.closeIcon }, [
+													w(Icon, {
+														type: 'closeIcon',
+														theme: undefined,
+														classes: undefined
+													})
+												])
 											]
 										)
 									]
@@ -347,11 +360,13 @@ registerSuite('Dialog', {
 											},
 											[
 												'close foo',
-												w(Icon, {
-													type: 'closeIcon',
-													theme: undefined,
-													classes: undefined
-												})
+												v('span', { classes: css.closeIcon }, [
+													w(Icon, {
+														type: 'closeIcon',
+														theme: undefined,
+														classes: undefined
+													})
+												])
 											]
 										)
 									]

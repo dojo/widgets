@@ -4,10 +4,6 @@
 	box-sizing: border-box;
 }
 
-.rootFixed * {
-	box-sizing: border-box;
-}
-
 .titleFixed {
 	position: relative;
 }

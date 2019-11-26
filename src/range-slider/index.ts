@@ -76,7 +76,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 	private _maxLabelId = uuid();
 
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, valid, readOnly, required, showOutput } = this.properties;
+		const { disabled, valid, readOnly, showOutput } = this.properties;
 		const focus = this.meta(Focus).get('root');
 
 		return [
@@ -86,7 +86,6 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 			valid === false ? css.invalid : null,
 			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null,
 			showOutput ? css.hasOutput : null
 		];
 	}
