@@ -100,7 +100,10 @@ import UnderlayDialog from './widgets/dialog/UnderlayDialog';
 import ModalDialog from './widgets/dialog/ModalDialog';
 import CloseableDialog from './widgets/dialog/CloseableDialog';
 
-const tests = (require as any).context('../../', true, /\.spec\.ts(x)?$/);
+`!has('docs')`;
+import testsContext from './tests';
+
+const tests = typeof testsContext !== 'undefined' ? testsContext : [];
 
 export const config = {
 	themes: [dojoTheme],
