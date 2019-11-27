@@ -9,7 +9,7 @@ import Icon from '../icon/index';
 import SlidePane, { Align } from '../slide-pane/index';
 import commonBundle from '../common/nls/common';
 import * as fixedCss from './styles/toolbar.m.css';
-import * as css from '../theme/toolbar.m.css';
+import * as css from '../theme/default/toolbar.m.css';
 import { GlobalEvent } from '../global-event/index';
 
 export { Align };

@@ -7,7 +7,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input/index';
 import Icon from '../../../icon/index';
 
-import * as css from '../../../theme/grid-header.m.css';
+import * as css from '../../../theme/default/grid-header.m.css';
 import * as fixedCss from '../../styles/header.m.css';
 import Header from '../../Header';
 import { ColumnConfig } from '../../interfaces';

@@ -2,7 +2,7 @@ const { describe, it } = intern.getInterface('bdd');
 import { v, w } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 import Progress from '../../index';
-import * as css from '../../../theme/progress.m.css';
+import * as css from '../../../theme/default/progress.m.css';
 
 const expectedVDom = function(args: any) {
 	const { width, output, value, showOutput = true, max = 100, min = 0, id, describedBy } = args;

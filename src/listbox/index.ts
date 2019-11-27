@@ -10,7 +10,7 @@ import { uuid } from '@dojo/framework/core/util';
 import { v, w } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
-import * as css from '../theme/listbox.m.css';
+import * as css from '../theme/default/listbox.m.css';
 import ListboxOption from './ListboxOption';
 import Focus from '../meta/Focus';
 import Resize from '@dojo/framework/core/meta/Resize';

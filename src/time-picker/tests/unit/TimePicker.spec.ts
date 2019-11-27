@@ -6,7 +6,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import Focus from '../../../meta/Focus';
 import * as sinon from 'sinon';
 import TimePicker, { getOptions, parseUnits } from '../../index';
-import * as css from '../../../theme/time-picker.m.css';
+import * as css from '../../../theme/default/time-picker.m.css';
 import ComboBox from '../../../combobox/index';
 import Label from '../../../label/index';
 import {

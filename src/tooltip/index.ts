@@ -5,7 +5,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { formatAriaProperties } from '../common/util';
 
 import * as fixedCss from './styles/tooltip.m.css';
-import * as css from '../theme/tooltip.m.css';
+import * as css from '../theme/default/tooltip.m.css';
 
 export interface TooltipProperties extends ThemedProperties {
 	/** Custom aria attributes */

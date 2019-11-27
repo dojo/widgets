@@ -6,7 +6,7 @@ import { v } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 import TitlePane from '../title-pane/index';
-import * as css from '../theme/accordion-pane.m.css';
+import * as css from '../theme/default/accordion-pane.m.css';
 
 export interface AccordionPaneProperties extends ThemedProperties {
 	/** Called when the title of an open pane is clicked */

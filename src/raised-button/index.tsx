@@ -1,8 +1,8 @@
 import theme from '../middleware/theme';
 import { tsx, create } from '@dojo/framework/core/vdom';
 import Button, { ButtonProperties } from '../button/index';
-import * as raisedButtonCss from '../theme/raised-button.m.css';
-import * as buttonCss from '../theme/button.m.css';
+import * as raisedButtonCss from '../theme/default/raised-button.m.css';
+import * as buttonCss from '../theme/default/button.m.css';
 
 export interface RaisedButtonProperties extends ButtonProperties {}
 

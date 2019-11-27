@@ -16,7 +16,7 @@ import {
 	noop
 } from '../../../common/tests/support/test-helpers';
 import * as fixedCss from '../../styles/cell.m.css';
-import * as css from '../../../theme/grid-cell.m.css';
+import * as css from '../../../theme/default/grid-cell.m.css';
 import Cell from '../../Cell';
 
 const harness = createHarness([compareId, compareAria, compareAriaDescribedBy]);

@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import { theme, ThemedMixin } from '@dojo/framework/core/mixins/Themed';
 import { tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/snackbar.m.css';
+import * as css from '../theme/default/snackbar.m.css';
 
 export interface SnackbarProperties {
 	/**  */

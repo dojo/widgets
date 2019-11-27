@@ -8,7 +8,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { formatAriaProperties } from '../common/util';
 import Label from '../label/index';
 import * as fixedCss from './styles/range-slider.m.css';
-import * as css from '../theme/range-slider.m.css';
+import * as css from '../theme/default/range-slider.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 type RangeValue = { min: number; max: number };

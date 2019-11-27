@@ -21,7 +21,7 @@ import {
 import Header, { SortRenderer, FilterRenderer } from './Header';
 import Body from './Body';
 import Footer from './Footer';
-import * as css from '../theme/grid.m.css';
+import * as css from '../theme/default/grid.m.css';
 import * as fixedCss from './styles/grid.m.css';
 
 const defaultGridMeta = {

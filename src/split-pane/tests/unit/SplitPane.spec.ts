@@ -5,7 +5,7 @@ import { stub } from 'sinon';
 import { v, w, isWNode } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 
-import * as css from '../../../theme/split-pane.m.css';
+import * as css from '../../../theme/default/split-pane.m.css';
 import * as fixedCss from '../../styles/split-pane.m.css';
 import SplitPane, { Direction } from '../../index';
 import { GlobalEvent } from '../../../global-event/index';

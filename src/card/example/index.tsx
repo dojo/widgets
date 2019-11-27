@@ -2,7 +2,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { tsx } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 import Card from '../index';
-import * as cardCss from './../../theme/card.m.css';
+import * as cardCss from './../../theme/default/card.m.css';
 import Button from '../../button/index';
 import Icon from '../../icon/index';
 

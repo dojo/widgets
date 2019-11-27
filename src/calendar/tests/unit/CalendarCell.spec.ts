@@ -5,7 +5,7 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 
 import CalendarCell from '../../CalendarCell';
-import * as css from '../../../theme/calendar.m.css';
+import * as css from '../../../theme/default/calendar.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('CalendarCell', {

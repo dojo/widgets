@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import { v, w } from '@dojo/framework/core/vdom';
 
 import SlidePane, { Align, SlidePaneProperties } from '../../index';
-import * as css from '../../../theme/slide-pane.m.css';
+import * as css from '../../../theme/default/slide-pane.m.css';
 import * as fixedCss from '../../styles/slide-pane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
 import {

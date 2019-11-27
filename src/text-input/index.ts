@@ -8,7 +8,7 @@ import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
-import * as css from '../theme/text-input.m.css';
+import * as css from '../theme/default/text-input.m.css';
 import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 import { reference } from '@dojo/framework/core/diff';
 import HelperText from '../helper-text/index';

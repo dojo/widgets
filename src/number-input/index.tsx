@@ -2,8 +2,8 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 
 import theme from '../middleware/theme';
 import TextInput, { BaseInputProperties } from '../text-input';
-import * as textInputCss from '../theme/text-input.m.css';
-import * as numberInputCss from '../theme/number-input.m.css';
+import * as textInputCss from '../theme/default/text-input.m.css';
+import * as numberInputCss from '../theme/default/number-input.m.css';
 
 export interface NumberInputProperties extends BaseInputProperties<{ value: number }> {
 	/** The min value a number can be */

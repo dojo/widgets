@@ -3,7 +3,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { alwaysRender } from '@dojo/framework/core/decorators/alwaysRender';
 import { ThemedMixin, theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
-import * as css from '../theme/card.m.css';
+import * as css from '../theme/default/card.m.css';
 import { DNode } from '@dojo/framework/core/interfaces';
 
 export interface CardProperties extends ThemedProperties {

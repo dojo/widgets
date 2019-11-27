@@ -7,7 +7,7 @@ import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
-import * as css from '../theme/radio.m.css';
+import * as css from '../theme/default/radio.m.css';
 
 export interface RadioProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */

@@ -11,7 +11,7 @@ import Icon from '../../../icon/index';
 import Select, { SelectProperties } from '../../index';
 import Listbox from '../../../listbox/index';
 import Label from '../../../label/index';
-import * as css from '../../../theme/select.m.css';
+import * as css from '../../../theme/default/select.m.css';
 import {
 	createHarness,
 	compareId,

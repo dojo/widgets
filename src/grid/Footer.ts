@@ -3,7 +3,7 @@ import { v } from '@dojo/framework/core/vdom';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode } from '@dojo/framework/core/interfaces';
 
-import * as css from '../theme/grid-footer.m.css';
+import * as css from '../theme/default/grid-footer.m.css';
 
 export interface FooterProperties {
 	total?: number;

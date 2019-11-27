@@ -13,7 +13,7 @@ import Icon from '../icon/index';
 import Label from '../label/index';
 import Listbox from '../listbox/index';
 import HelperText from '../helper-text/index';
-import * as css from '../theme/select.m.css';
+import * as css from '../theme/default/select.m.css';
 
 export interface SelectProperties<T = any> extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */

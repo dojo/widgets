@@ -3,7 +3,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixin
 import { v } from '@dojo/framework/core/vdom';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
-import * as css from '../theme/listbox.m.css';
+import * as css from '../theme/default/listbox.m.css';
 
 export interface ListboxOptionProperties extends ThemedProperties {
 	active?: boolean;

@@ -4,7 +4,7 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import Card from '../../index';
 import Button from '../../../button/index';
-import * as css from '../../../theme/card.m.css';
+import * as css from '../../../theme/default/card.m.css';
 
 describe('Card', () => {
 	const template = assertionTemplate(() => <div key="root" classes={css.root} />);

@@ -4,7 +4,7 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 
 import Tab from '../../index';
-import * as css from '../../../theme/tab-controller.m.css';
+import * as css from '../../../theme/default/tab-controller.m.css';
 
 registerSuite('Tab', {
 	tests: {

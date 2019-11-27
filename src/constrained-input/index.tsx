@@ -3,8 +3,8 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import validation, { ValidationRules } from '../middleware/validation';
 import theme from '../middleware/theme';
-import * as constrainedInputCss from '../theme/constrained-input.m.css';
-import * as textInputCss from '../theme/text-input.m.css';
+import * as constrainedInputCss from '../theme/default/constrained-input.m.css';
+import * as textInputCss from '../theme/default/text-input.m.css';
 
 export interface ConstrainedInputProperties
 	extends Exclude<

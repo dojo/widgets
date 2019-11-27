@@ -5,7 +5,7 @@ import { tsx, create } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input';
 import validation from '../../../middleware/validation';
 import { compareTheme } from '../../../common/tests/support/test-helpers';
-import * as textInputCss from '../../../theme/text-input.m.css';
+import * as textInputCss from '../../../theme/default/text-input.m.css';
 
 const { describe, it } = intern.getInterface('bdd');
 

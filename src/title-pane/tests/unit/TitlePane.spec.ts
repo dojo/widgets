@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import { v, w, isWNode } from '@dojo/framework/core/vdom';
 import Icon from '../../../icon/index';
 import TitlePane, { TitlePaneProperties } from '../../index';
-import * as css from '../../../theme/title-pane.m.css';
+import * as css from '../../../theme/default/title-pane.m.css';
 import * as fixedCss from '../../styles/title-pane.m.css';
 import {
 	compareId,

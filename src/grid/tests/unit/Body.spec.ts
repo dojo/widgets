@@ -5,7 +5,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 
 import * as fixedCss from '../../styles/body.m.css';
-import * as css from '../../../theme/grid-body.m.css';
+import * as css from '../../../theme/default/grid-body.m.css';
 import Body from '../../Body';
 import PlaceholderRow from '../../PlaceholderRow';
 import Row from '../../Row';

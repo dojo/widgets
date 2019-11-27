@@ -5,7 +5,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import Row from '../../Row';
 
 import * as fixedCss from './../../styles/row.m.css';
-import * as css from '../../../theme/grid-row.m.css';
+import * as css from '../../../theme/default/grid-row.m.css';
 import { ColumnConfig } from '../../interfaces';
 import Cell from '../../Cell';
 

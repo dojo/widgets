@@ -4,7 +4,7 @@ import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import Snackbar from '../../index';
-import * as css from '../../../theme/snackbar.m.css';
+import * as css from '../../../theme/default/snackbar.m.css';
 import Button from '../../../button/index';
 
 describe('Snackbar', () => {

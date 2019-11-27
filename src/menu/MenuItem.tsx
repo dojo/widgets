@@ -4,7 +4,7 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
 import { throttle } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/menu-item.m.css';
+import * as css from '../theme/default/menu-item.m.css';
 
 export interface MenuItemProperties {
 	/** Callback used when the item is clicked */

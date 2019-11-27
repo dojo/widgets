@@ -10,7 +10,7 @@ import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
 
 import * as fixedCss from './styles/body.m.css';
-import * as css from '../theme/grid-body.m.css';
+import * as css from '../theme/default/grid-body.m.css';
 import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { auto, reference } from '@dojo/framework/core/diff';
 
