@@ -67,6 +67,10 @@ import MenuPopup from './widgets/popup/MenuPopup';
 import SetWidth from './widgets/popup/SetWidth';
 import Underlay from './widgets/popup/Underlay';
 import BasicProgress from './widgets/progress/Basic';
+import ProgressWithChangingValues from './widgets/progress/ProgressWithChangingValues';
+import ProgressWithCustomOutput from './widgets/progress/ProgressWithCustomOutput';
+import ProgressWithMax from './widgets/progress/ProgressWithMax';
+import ProgressWithoutOutput from './widgets/progress/ProgressWithoutOutput';
 import BasicRadio from './widgets/radio/Basic';
 import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
@@ -557,6 +561,24 @@ export const config = {
 			}
 		},
 		progress: {
+			examples: [
+				{
+					filename: 'ProgressWithChangingValues',
+					module: ProgressWithChangingValues
+				},
+				{
+					filename: 'ProgressWithMax',
+					module: ProgressWithMax
+				},
+				{
+					filename: 'ProgressWithCustomOutput',
+					module: ProgressWithCustomOutput
+				},
+				{
+					filename: 'ProgressWithoutOutput',
+					module: ProgressWithoutOutput
+				}
+			],
 			overview: {
 				example: {
 					filename: 'Basic',
