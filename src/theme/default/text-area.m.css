@@ -1,17 +1,23 @@
 @import './variables.css';
 
-.root {}
+.root {
+}
 
 .input {
 	max-width: 100%;
 }
 
-.inputWrapper {}
+.inputWrapper {
+}
 
-.disabled {}
-.focused {}
-.readonly {}
-.required {}
+.disabled {
+}
+.focused {
+}
+.readonly {
+}
+.required {
+}
 
 .invalid .input {
 	border-color: var(--error-color);

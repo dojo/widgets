@@ -1,8 +1,11 @@
-.root {}
+.root {
+}
 
-.iconWrapper {}
+.iconWrapper {
+}
 
-.label {}
+.label {
+}
 
 .closeIconWrapper {
 	cursor: pointer;
@@ -12,4 +15,5 @@
 	cursor: pointer;
 }
 
-.disabled {}
+.disabled {
+}

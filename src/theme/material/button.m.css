@@ -5,7 +5,8 @@
 }
 
 /* Styles taken from :active pseudo class */
-.pressed {}
+.pressed {
+}
 .pressed::after {
 	transition-duration: 75ms;
 	opacity: 0.12;

@@ -9,14 +9,16 @@
 	background-color: var(--disabled-color);
 }
 
-.outOfRange {}
+.outOfRange {
+}
 
 .selectedDate {
 	background-color: var(--selected-background);
 	color: var(--selected-color);
 }
 
-.todayDate {}
+.todayDate {
+}
 
 .date {
 	cursor: pointer;
@@ -29,7 +31,8 @@
 }
 
 /* Date grid */
-.dateGrid {}
+.dateGrid {
+}
 
 .weekday {
 	padding: 10px 20px;
@@ -43,24 +46,45 @@
 }
 
 /* Date picker  */
-.datePicker { }
-.topMatter { }
-.monthTrigger { }
-.yearTrigger { }
-.controls { }
-.previous { }
-.next { }
-.monthGrid { }
-.monthFields { }
-.yearGrid { }
-.yearFields { }
-.monthRadio { }
-.yearRadio { }
-.monthRadioChecked { }
-.yearRadioChecked { }
-.monthRadioInput { }
-.monthRadioLabel { }
-.yearRadioInput { }
-.yearRadioLabel { }
-.monthTriggerActive { }
-.yearTriggerActive { }
+.datePicker {
+}
+.topMatter {
+}
+.monthTrigger {
+}
+.yearTrigger {
+}
+.controls {
+}
+.previous {
+}
+.next {
+}
+.monthGrid {
+}
+.monthFields {
+}
+.yearGrid {
+}
+.yearFields {
+}
+.monthRadio {
+}
+.yearRadio {
+}
+.monthRadioChecked {
+}
+.yearRadioChecked {
+}
+.monthRadioInput {
+}
+.monthRadioLabel {
+}
+.yearRadioInput {
+}
+.yearRadioLabel {
+}
+.monthTriggerActive {
+}
+.yearTriggerActive {
+}

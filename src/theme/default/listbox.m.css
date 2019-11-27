@@ -8,7 +8,8 @@
 	position: relative;
 }
 
-.focused {}
+.focused {
+}
 
 .option {
 	cursor: pointer;

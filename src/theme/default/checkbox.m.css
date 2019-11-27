@@ -5,13 +5,20 @@
 	position: relative;
 }
 
-.input {}
-.inputWrapper {}
-.checked {}
-.disabled {}
-.focused {}
-.readonly {}
-.required {}
+.input {
+}
+.inputWrapper {
+}
+.checked {
+}
+.disabled {
+}
+.focused {
+}
+.readonly {
+}
+.required {
+}
 
 /* invalid style */
 .invalid .inputWrapper::before {
@@ -29,7 +36,11 @@
 	background-color: var(--success-color);
 }
 
-.toggle {}
-.onLabel {}
-.offLabel {}
-.toggleSwitch {}
+.toggle {
+}
+.onLabel {
+}
+.offLabel {
+}
+.toggleSwitch {
+}

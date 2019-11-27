@@ -1,6 +1,7 @@
 @import './variables.css';
 
-.root {}
+.root {
+}
 .text {
 	margin: 0;
 	color: var(--color-text-faded);

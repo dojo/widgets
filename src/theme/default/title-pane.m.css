@@ -4,17 +4,23 @@
 	background-color: var(--component-background);
 }
 
-.closeable { }
+.closeable {
+}
 
-.arrow { }
+.arrow {
+}
 
-.root { }
+.root {
+}
 
-.open { }
+.open {
+}
 
-.content { }
+.content {
+}
 
-.titleButton { }
+.titleButton {
+}
 
 .contentTransition {
 	transition: margin-top ease-in-out var(--short-animation-duration);

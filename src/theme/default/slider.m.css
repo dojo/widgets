@@ -1,6 +1,7 @@
 @import './variables.css';
 
-.root { }
+.root {
+}
 
 .outputTooltip {
 	left: 2.5em;
@@ -37,10 +38,10 @@
 	background-color: var(--success-color);
 }
 
-.focused { }
+.focused {
+}
 
 .inputWrapper {
-
 }
 
 .focused .input {
@@ -91,4 +92,5 @@
 	width: 2em;
 }
 
-.output { }
+.output {
+}

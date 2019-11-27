@@ -17,7 +17,8 @@
 	cursor: pointer;
 	line-height: var(--line-height-base);
 	padding: var(--spacing-regular);
-	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
+	transition: background var(--transition-duration) var(--transition-easing),
+		border var(--transition-duration) var(--transition-easing);
 }
 
 .option:hover {

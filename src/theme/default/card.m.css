@@ -42,7 +42,7 @@
 
 .media::before {
 	display: block;
-	content: "";
+	content: '';
 }
 
 .primary {

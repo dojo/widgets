@@ -1,13 +1,21 @@
 @import './variables.css';
 
-.root {}
-.readonly {}
-.invalid {}
-.valid {}
-.required {}
-.disabled {}
-.focused {}
-.secondary {}
+.root {
+}
+.readonly {
+}
+.invalid {
+}
+.valid {
+}
+.required {
+}
+.disabled {
+}
+.focused {
+}
+.secondary {
+}
 
 .required::after {
 	content: '*';

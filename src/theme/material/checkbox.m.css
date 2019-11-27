@@ -17,7 +17,7 @@
 }
 
 .background::after {
-	content: "";
+	content: '';
 	opacity: 0;
 }
 
@@ -36,6 +36,7 @@
 	box-sizing: border-box;
 }
 
-.disabled, .readonly {
+.disabled,
+.readonly {
 	composes: mdc-checkbox--disabled from '@material/checkbox/dist/mdc.checkbox.css';
 }

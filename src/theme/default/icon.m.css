@@ -1,14 +1,14 @@
 @font-face {
 	font-family: 'dojo';
-	src:
-	url('./fonts/dojo.ttf?fkcsox') format('truetype'),
-	url('./fonts/dojo.woff?fkcsox') format('woff'),
-	url('./fonts/dojo.svg?fkcsox#dojo') format('svg');
+	src: url('./fonts/dojo.ttf?fkcsox') format('truetype'),
+		url('./fonts/dojo.woff?fkcsox') format('woff'),
+		url('./fonts/dojo.svg?fkcsox#dojo') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
-.root {}
+.root {
+}
 
 .icon {
 	/* use !important to prevent issues with browser extensions that change fonts */
@@ -25,101 +25,101 @@
 }
 
 .downIcon:before {
-	content: "\f078";
+	content: '\f078';
 }
 
 .leftIcon:before {
-	content: "\f053";
+	content: '\f053';
 }
 
 .rightIcon:before {
-	content: "\f054";
+	content: '\f054';
 }
 
 .closeIcon:before {
-	content: "\f00d";
+	content: '\f00d';
 }
 
 .plusIcon:before {
-	content: "\f067";
+	content: '\f067';
 }
 
 .minusIcon:before {
-	content: "\f068";
+	content: '\f068';
 }
 
 .checkIcon:before {
-	content: "\f00c";
+	content: '\f00c';
 }
 
 .upIcon:before {
-	content: "\f077";
+	content: '\f077';
 }
 
 .upAltIcon:before {
-	content: "\f0d8";
+	content: '\f0d8';
 }
 
 .downAltIcon:before {
-	content: "\f0d7";
+	content: '\f0d7';
 }
 
 .searchIcon:before {
-	content: "\f002";
+	content: '\f002';
 }
 
 .barsIcon:before {
-	content: "\f0c9";
+	content: '\f0c9';
 }
 
 .settingsIcon:before {
-	content: "\f013";
+	content: '\f013';
 }
 
 .alertIcon:before {
-	content: "\f06a";
+	content: '\f06a';
 }
 
 .helpIcon:before {
-	content: "\f059";
+	content: '\f059';
 }
 
 .infoIcon:before {
-	content: "\f05a";
+	content: '\f05a';
 }
 
 .phoneIcon:before {
-	content: "\f095";
+	content: '\f095';
 }
 
 .editIcon:before {
-	content: "\f040";
+	content: '\f040';
 }
 
 .dateIcon:before {
-	content: "\f133";
+	content: '\f133';
 }
 
 .linkIcon:before {
-	content: "\f127";
+	content: '\f127';
 }
 
 .locationIcon:before {
-	content: "\f041";
+	content: '\f041';
 }
 
 .secureIcon:before {
-	content: "\f023";
+	content: '\f023';
 }
 
 .mailIcon:before {
-	content: "\f0e0";
+	content: '\f0e0';
 }
 
 .eyeIcon:before {
-	content: "\f06e";
+	content: '\f06e';
 }
 
 .eyeSlashIcon:before {
-	content: "\f070";
+	content: '\f070';
 }

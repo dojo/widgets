@@ -1,17 +1,29 @@
 @import './variables.css';
 
-.input {}
-.root {}
-.inputWrapper {}
-.disabled {}
-.focused {}
-.readonly {}
-.required {}
-.invalid {}
-.leading {}
-.trailing {}
-.hasLeading {}
-.hasTrailing {}
+.input {
+}
+.root {
+}
+.inputWrapper {
+}
+.disabled {
+}
+.focused {
+}
+.readonly {
+}
+.required {
+}
+.invalid {
+}
+.leading {
+}
+.trailing {
+}
+.hasLeading {
+}
+.hasTrailing {
+}
 
 .invalid .helperText {
 	color: var(--error-color);
@@ -24,4 +36,3 @@
 .valid .input {
 	border-color: var(--success-color);
 }
-

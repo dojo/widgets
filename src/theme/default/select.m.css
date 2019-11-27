@@ -1,6 +1,7 @@
 @import './variables.css';
 
-.root {}
+.root {
+}
 
 .inputWrapper {
 	display: inline-block;
@@ -23,8 +24,10 @@
 	color: var(--selected-background);
 }
 
-.placeholder {}
-.required {}
+.placeholder {
+}
+.required {
+}
 
 .dropdown {
 	background: var(--component-background);
@@ -36,7 +39,8 @@
 	width: 100%;
 }
 
-.open {}
+.open {
+}
 
 .open .dropdown {
 	display: block;
@@ -46,8 +50,8 @@
 /* native input styles */
 .input {
 	appearance: none;
--moz-appearance: none;
--webkit-appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
 	background: var(--component-background);
 	border: 1px solid var(--component-color);
 	border-radius: 0;
@@ -74,13 +78,13 @@
 	width: 1.5em;
 }
 
-
 .input:focus ~ .arrow {
 	color: var(--selected-background);
 }
 
 /* State classes */
-.focused { }
+.focused {
+}
 .disabled .input,
 .readonly .input {
 	background-color: var(--disabled-color);
@@ -92,7 +96,8 @@
 .invalid .arrow {
 	background-color: var(--error-color);
 }
-.required { }
+.required {
+}
 .valid .input {
 	border-color: var(--success-color);
 }

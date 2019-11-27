@@ -1,6 +1,7 @@
 @import './variables.css';
 
-.root {}
+.root {
+}
 
 .cell {
 	border: 1px solid var(--component-color);
@@ -24,9 +25,11 @@
 	color: var(--success-color);
 }
 
-.desc {}
+.desc {
+}
 
-.asc {}
+.asc {
+}
 
 .sort {
 	margin-left: 4px;

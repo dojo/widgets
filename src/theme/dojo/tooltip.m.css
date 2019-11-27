@@ -27,7 +27,7 @@
 	border-left: var(--grid-base) solid transparent;
 	border-right: var(--grid-base) solid transparent;
 	border-bottom: var(--grid-base) solid var(--color-background-inverted);
-	content: "";
+	content: '';
 	position: absolute;
 	top: calc(var(--grid-base) * -1);
 	left: 50%;
@@ -43,7 +43,7 @@
 	border-left: var(--grid-base) solid transparent;
 	border-right: var(--grid-base) solid transparent;
 	border-top: var(--grid-base) solid var(--color-background-inverted);
-	content: "";
+	content: '';
 	position: absolute;
 	bottom: calc(var(--grid-base) * -1);
 	left: 50%;
@@ -59,7 +59,7 @@
 	border-top: var(--grid-base) solid transparent;
 	border-bottom: var(--grid-base) solid transparent;
 	border-left: var(--grid-base) solid var(--color-background-inverted);
-	content: "";
+	content: '';
 	position: absolute;
 	right: calc(var(--grid-base) * -1);
 	top: 50%;
@@ -75,7 +75,7 @@
 	border-top: var(--grid-base) solid transparent;
 	border-bottom: var(--grid-base) solid transparent;
 	border-right: var(--grid-base) solid var(--color-background-inverted);
-	content: "";
+	content: '';
 	position: absolute;
 	left: calc(var(--grid-base) * -1);
 	top: 50%;

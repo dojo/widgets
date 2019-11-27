@@ -9,7 +9,7 @@
 	--error-color: red;
 	--success-color: green;
 
-	--short-animation-duration: .2s;
+	--short-animation-duration: 0.2s;
 	--short-animation-easing: ease;
 
 	/* Z-index levels */

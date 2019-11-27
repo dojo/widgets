@@ -1,17 +1,23 @@
 @import './variables.css';
 
-.root { }
+.root {
+}
 
-.column { }
+.column {
+}
 
 .divider {
 	background-color: var(--component-color);
 }
 
-.leading { }
+.leading {
+}
 
-.row { }
+.row {
+}
 
-.trailing { }
+.trailing {
+}
 
-.collapsed {}
+.collapsed {
+}

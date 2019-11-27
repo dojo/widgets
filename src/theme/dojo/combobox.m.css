@@ -16,7 +16,8 @@
 
 .root input {
 	min-width: 200px;
-	padding: var(--spacing-regular) calc(var(--spacing-regular) * 6) var(--spacing-regular) var(--spacing-regular);
+	padding: var(--spacing-regular) calc(var(--spacing-regular) * 6) var(--spacing-regular)
+		var(--spacing-regular);
 	width: 100%;
 }
 
@@ -26,8 +27,8 @@
 
 .trigger {
 	appearance: none;
--moz-appearance: none;
--webkit-appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
 	background-color: transparent;
 	border-radius: 0;
 	border: var(--border-width) solid transparent;
@@ -85,7 +86,8 @@
 	cursor: pointer;
 	line-height: var(--line-height-base);
 	padding: var(--spacing-regular);
-	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
+	transition: background var(--transition-duration) var(--transition-easing),
+		border var(--transition-duration) var(--transition-easing);
 }
 
 .selected {

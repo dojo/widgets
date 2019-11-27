@@ -1,6 +1,7 @@
 @import './variables.css';
 
-.root {}
+.root {
+}
 
 .main {
 	position: fixed;
@@ -20,7 +21,6 @@
 }
 
 .open {
-
 }
 
 .close {
@@ -38,7 +38,8 @@
 	font-size: 14px;
 }
 
-.content {}
+.content {
+}
 
 .underlayVisible {
 	background: var(--underlay-background);

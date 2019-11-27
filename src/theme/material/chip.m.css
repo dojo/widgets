@@ -1,8 +1,9 @@
 .root {
-	composes: mdc-chip from '@material/chips/dist/mdc.chips.css'
+	composes: mdc-chip from '@material/chips/dist/mdc.chips.css';
 }
 
-.iconWrapper, .closeIconWrapper {
+.iconWrapper,
+.closeIconWrapper {
 	composes: mdc-chip__icon from '@material/chips/dist/mdc.chips.css';
 	overflow: hidden;
 }
@@ -24,4 +25,5 @@
 	cursor: pointer;
 }
 
-.disabled {}
+.disabled {
+}

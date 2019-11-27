@@ -1,6 +1,9 @@
 @import './variables.css';
 
-.root, .root * { box-sizing: border-box; }
+.root,
+.root * {
+	box-sizing: border-box;
+}
 
 .root {
 	display: block;

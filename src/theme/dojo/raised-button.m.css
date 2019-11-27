@@ -1,14 +1,14 @@
 @import './variables.css';
 
 .root {
-    box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 }
 
 .root:hover,
 .root:focus {
-    box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight)
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
 }
 
 .disabled:hover {
-    box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 }

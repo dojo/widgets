@@ -1,6 +1,9 @@
 @import './variables.css';
 
-.root, .root * { box-sizing: border-box; }
+.root,
+.root * {
+	box-sizing: border-box;
+}
 
 .root {
 	display: block;
@@ -31,7 +34,8 @@
 	margin-left: 0;
 	position: absolute;
 	top: -8px;
-	transition: border var(--transition-duration) var(--transition-easing), background var(--transition-duration) var(--transition-easing);
+	transition: border var(--transition-duration) var(--transition-easing),
+		background var(--transition-duration) var(--transition-easing);
 	width: calc(var(--grid-base) * 2);
 }
 
@@ -100,7 +104,7 @@
 	border-left: var(--grid-base) solid transparent;
 	border-right: var(--grid-base) solid transparent;
 	border-bottom: var(--grid-base) solid var(--color-background-inverted);
-	content: "";
+	content: '';
 	left: 50%;
 	margin-left: calc(var(--grid-base) * -1);
 	margin-top: calc(var(--grid-base) * -1);

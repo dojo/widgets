@@ -25,7 +25,7 @@
 	cursor: pointer;
 	border: none;
 	background: none;
-	top: .5rem;
+	top: 0.5rem;
 	transform: translateY(-50%);
 	padding: 0;
 }
@@ -38,8 +38,13 @@
 	right: 27px;
 }
 
-.focused { }
-.valid { }
-.invalid { }
-.open { }
-.clearable { }
+.focused {
+}
+.valid {
+}
+.invalid {
+}
+.open {
+}
+.clearable {
+}

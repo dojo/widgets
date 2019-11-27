@@ -5,18 +5,27 @@
 	position: relative;
 }
 
-.input {}
-.inputWrapper {}
-.checked {}
-.focused {}
-.disabled {}
-.readonly {}
-.required {}
+.input {
+}
+.inputWrapper {
+}
+.checked {
+}
+.focused {
+}
+.disabled {
+}
+.readonly {
+}
+.required {
+}
 .radioBackground {
 	display: none;
 }
-.radioOuter {}
-.radioInner {}
+.radioOuter {
+}
+.radioInner {
+}
 
 /* invalid style */
 .invalid .inputWrapper::before {

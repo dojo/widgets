@@ -32,7 +32,7 @@
 
 .leftFixed {
 	left: 0;
-	transform: translateX(-100%)
+	transform: translateX(-100%);
 }
 
 .rightFixed {
@@ -42,7 +42,7 @@
 
 .topFixed {
 	top: 0;
-	transform: translateY(-100%)
+	transform: translateY(-100%);
 }
 
 .bottomFixed {

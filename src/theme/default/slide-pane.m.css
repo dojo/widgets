@@ -1,6 +1,7 @@
 @import './variables.css';
 
-.root {}
+.root {
+}
 
 .slideIn,
 .slideOut {
@@ -12,9 +13,11 @@
 	z-index: var(--zindex-dialog);
 }
 
-.content { }
+.content {
+}
 
-.open { }
+.open {
+}
 
 .pane {
 	background-color: var(--component-background);
@@ -40,10 +43,14 @@
 	font-size: 14px;
 }
 
-.left { }
+.left {
+}
 
-.right { }
+.right {
+}
 
-.top { }
+.top {
+}
 
-.bottom { }
+.bottom {
+}

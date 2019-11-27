@@ -1,6 +1,9 @@
 @import './variables.css';
 
-.root, .root * { box-sizing: border-box; }
+.root,
+.root * {
+	box-sizing: border-box;
+}
 
 .root {
 	display: block;
@@ -36,7 +39,8 @@
 	box-sizing: border-box;
 	content: '';
 	display: block;
-	transition: transform var(--transition-duration) var(--transition-easing), background-color var(--transition-duration) var(--transition-easing);
+	transition: transform var(--transition-duration) var(--transition-easing),
+		background-color var(--transition-duration) var(--transition-easing);
 }
 
 .radioOuter {

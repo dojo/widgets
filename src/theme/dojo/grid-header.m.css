@@ -12,7 +12,7 @@
 	display: flex;
 	flex-direction: column;
 	min-width: 100px;
-	padding: var(--grid-base) calc(var(--grid-base)/2);
+	padding: var(--grid-base) calc(var(--grid-base) / 2);
 }
 
 .cell:first-child {

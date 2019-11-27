@@ -30,7 +30,7 @@
 	flex: 1;
 	outline: none;
 	overflow: hidden;
-	padding: calc(var(--grid-base)*2) calc(var(--grid-base)/2);
+	padding: calc(var(--grid-base) * 2) calc(var(--grid-base) / 2);
 	position: relative;
 	text-align: center;
 	text-overflow: ellipsis;

@@ -1,4 +1,4 @@
-@import "./variables.css";
+@import './variables.css';
 
 :root {
 	--slider-height: 13px;
@@ -18,7 +18,8 @@
 	border: 1px solid var(--selected-background);
 }
 
-.focused { }
+.focused {
+}
 
 .disabled .inputWrapper,
 .readonly .inputWrapper {

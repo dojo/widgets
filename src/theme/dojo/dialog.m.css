@@ -12,7 +12,7 @@
 }
 
 .main {
-	background: #FFF;
+	background: #fff;
 	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
 	display: flex;

@@ -13,7 +13,9 @@
 	border-radius: 0;
 	margin: 0;
 	font-size: inherit;
-	height: calc(var(--line-height-base) + 2 * var(--grid-base) + 2 * var(--border-width)); /* for IE 11 */
+	height: calc(
+		var(--line-height-base) + 2 * var(--grid-base) + 2 * var(--border-width)
+	); /* for IE 11 */
 	line-height: var(--line-height-base);
 	padding: var(--grid-base);
 	box-sizing: border-box;
@@ -23,7 +25,9 @@
 	outline: none;
 }
 
-.input::placeholder { color: var(--color-text-faded); }
+.input::placeholder {
+	color: var(--color-text-faded);
+}
 
 .inputWrapper {
 	border: var(--border-width) solid var(--color-border);
@@ -83,7 +87,8 @@
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
 }
 
-.leading, .trailing {
+.leading,
+.trailing {
 	background-color: var(--color-background-faded);
 	color: var(--color-text-faded);
 	flex: 0 0 auto;
