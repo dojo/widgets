@@ -1,0 +1,51 @@
+@import './variables.css';
+
+.root {
+	border: var(--border-width) solid var(--color-border);
+	position: relative;
+}
+
+.root:focus {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+	outline: none;
+}
+
+.option {
+	background-color: var(--color-background);
+	border: var(--border-width) solid transparent;
+	cursor: pointer;
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
+}
+
+.option:hover {
+	background-color: var(--color-background-faded);
+}
+
+.focused .activeOption,
+.root:focus .activeOption {
+	border: var(--border-width) solid var(--color-highlight);
+}
+
+.disabledOption {
+	background-color: var(--color-background-faded);
+	color: var(--color-text-faded);
+	cursor: default;
+}
+
+.selectedOption {
+	composes: checkIcon from './icon.m.css';
+	background-color: var(--color-background-faded);
+	padding-right: calc(var(--grid-base) * 4);
+	position: relative;
+}
+
+.selectedOption::before {
+	font-family: 'dojo2BaseTheme';
+	position: absolute;
+	right: var(--grid-base);
+	top: 50%;
+	transform: translateY(-50%);
+}

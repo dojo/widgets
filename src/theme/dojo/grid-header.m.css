@@ -1,0 +1,52 @@
+@import './variables.css';
+
+.root {
+	font-size: var(--font-size-base);
+}
+
+.cell {
+	align-items: center;
+	background-color: var(--color-background-faded);
+	border-left: var(--border-width) solid var(--color-border);
+	color: var(--color-text-primary);
+	display: flex;
+	flex-direction: column;
+	min-width: 100px;
+	padding: var(--grid-base) calc(var(--grid-base)/2);
+}
+
+.cell:first-child {
+	border-left: 0;
+}
+
+.sortable {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+}
+
+.sorted,
+.sorted .sort {
+	color: var(--color-highlight);
+}
+
+.sort {
+	background: transparent;
+	border: 0;
+	font-size: var(--font-size-icon);
+	line-height: var(--line-height-base);
+	padding: 0;
+	opacity: 0;
+	width: 0;
+}
+
+.sort:focus,
+.sorted .sort {
+	opacity: 1;
+	width: auto;
+}
+
+.filter {
+	margin-top: 4px;
+	width: 100%;
+}

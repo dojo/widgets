@@ -1,0 +1,12 @@
+@import './variables.css';
+
+.root {
+	border: var(--border-width) solid var(--color-border);
+	background: var(--color-background);
+}
+
+.header {
+	border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.filterGroup {}

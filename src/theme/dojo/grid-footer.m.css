@@ -1,0 +1,9 @@
+@import './variables.css';
+
+.root {
+	background-color: var(--color-background-faded);
+	box-sizing: border-box;
+	color: var(--color-text-primary);
+	padding: var(--grid-base) calc(var(--grid-base)/2);
+	border-top: var(--border-width) solid var(--color-border);
+}

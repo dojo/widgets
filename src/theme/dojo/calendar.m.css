@@ -1,0 +1,227 @@
+@import './variables.css';
+
+.root,
+.root *,
+.root *::before,
+.root *::after {
+	box-sizing: border-box;
+}
+
+.root {
+	border: var(--border-width) solid var(--color-border);
+	display: inline-block;
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	margin: 0 calc(var(--spacing-large) + 2px);
+	position: relative;
+	width: calc((var(--grid-base) * 35) + (var(--border-width) * 4));
+}
+
+.dateGrid {
+	width: 100%;
+}
+
+/* Date grid */
+.weekday, .date {
+	text-align: center;
+	width: 14.28%;
+}
+
+.weekday {
+	background-color: var(--color-background-faded);
+	border-bottom: var(--border-width) solid var(--color-border);
+	color: var(--color-text-faded);
+	font-weight: normal;
+	padding: 0 calc(var(--grid-base) / 2);
+	text-align: center;
+	font-size: var(--font-size-small);
+	text-transform: uppercase;
+}
+
+.weekday abbr {
+	text-decoration: none;
+}
+
+.date {
+	color: var(--color-text-faded);
+	cursor: pointer;
+	font-weight: bold;
+	outline: var(--border-width) solid transparent;
+	padding: var(--grid-base);
+	transition: color var(--transition-duration) var(--transition-easing), background-color var(--transition-duration) var(--transition-easing);
+}
+
+.todayDate {
+	background-color: var(--color-background-faded);
+}
+
+.date:focus,
+.date:hover {
+	color: var(--color-highlight);
+	outline: var(--border-width) solid var(--color-border);
+}
+
+.inactiveDate {
+	color: var(--color-border);
+}
+
+.selectedDate {
+	background-color: var(--color-highlight);
+	color: var(--color-text-inverted);
+}
+
+.selectedDate:focus,
+.selectedDate:hover {
+	background-color: var(--color-background);
+	color: var(--color-highlight);
+	outline: var(--border-width) solid var(--color-highlight);
+}
+
+/* Date picker  */
+.topMatter {
+	background: var(--color-background-faded);
+	border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.monthTrigger,
+.yearTrigger,
+.previous,
+.next {
+	background: 0;
+	border: var(--border-width) solid transparent;
+	color: inherit;
+	cursor: pointer;
+	font-family: inherit;
+	line-height: inherit;
+	outline: none;
+	transition: border-color var(--transition-duration) var(--transition-easing);
+}
+
+.monthTrigger:focus,
+.monthTrigger:hover,
+.yearTrigger:focus,
+.yearTrigger:hover,
+.previous:focus,
+.previous:hover,
+.next:focus,
+.next:hover {
+	border-color: var(--color-highlight);
+}
+
+.monthTrigger,
+.yearTrigger {
+	color: var(--color-text-primary);
+	font-size: var(--font-size-small);
+	padding: var(--grid-base);
+	text-transform: uppercase;
+}
+
+.monthTriggerActive,
+.yearTriggerActive {
+	border-color: transparent;
+	border-bottom-color: var(--color-highlight);
+	color: var(--color-highlight);
+}
+
+.previous,
+.next {
+	background-color: var(--color-background-faded);
+	border: var(--border-width) solid var(--color-border);
+	color: var(--color-text-primary);
+	display: block;
+	font-size: var(--font-size-icon);
+	line-height: 1;
+	padding: calc(var(--grid-base) * 1.5) 0;
+	position: absolute;
+	top: 50%;
+	width: calc(var(--spacing-large) + 2px);
+}
+
+.previous i,
+.next i {
+	position: relative;
+	left: calc((var(--spacing-large) - var(--font-size-icon)) / 2);
+}
+
+.previous {
+	left: 0;
+	transform: translate(-100%, -50%);
+}
+
+.next {
+	right: 0;
+	transform: translate(100%, -50%);
+}
+
+.monthGrid,
+.yearGrid {
+	position: relative;
+	background-color: var(--color-background);
+}
+
+.monthFields,
+.yearFields {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.monthRadio,
+.yearRadio {
+	display: block;
+	float: left;
+	position: relative;
+	text-align: center;
+	text-transform: capitalize;
+}
+
+.monthRadio {
+	width: 33.33%;
+}
+
+.yearRadio {
+	width: 20%;
+}
+
+.monthRadioLabel,
+.yearRadioLabel {
+	border: var(--border-width) solid transparent;
+	cursor: pointer;
+	display: block;
+	text-decoration: none;
+	padding: var(--grid-base);
+	transition: color var(--transition-duration) var(--transition-easing), background-color var(--transition-duration) var(--transition-easing);
+}
+
+
+.monthRadioChecked .monthRadioLabel,
+.yearRadioChecked .yearRadioLabel {
+	background-color: var(--color-highlight);
+	color: var(--color-text-inverted);
+}
+
+.monthRadioInput,
+.yearRadioInput {
+	height: 100%;
+	left: 0;
+	margin: 0;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.monthRadio:hover .monthRadioLabel,
+.yearRadio:hover .yearRadioLabel {
+	color: var(--color-highlight);
+	border: var(--border-width) solid var(--color-border);
+}
+
+.monthRadioChecked:hover .monthRadioLabel,
+.yearRadioChecked:hover .yearRadioLabel,
+.monthRadioInput:focus ~ .monthRadioLabel,
+.yearRadioInput:focus ~ .yearRadioLabel {
+	background-color: var(--color-background);
+	color: var(--color-highlight);
+	border: var(--border-width) solid var(--color-highlight);
+}

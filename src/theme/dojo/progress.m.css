@@ -1,0 +1,17 @@
+@import './variables.css';
+
+.output {
+	display: inline-block;
+	padding: var(--spacing-regular);
+}
+
+.bar {
+	border: var(--border-width) solid var(--color-border);
+	height: 24px;
+	border-radius: 3px;
+}
+
+.progress {
+	height: 100%;
+	background: var(--color-highlight);
+}

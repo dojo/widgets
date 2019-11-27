@@ -1,0 +1,13 @@
+@import './variables.css';
+
+.root {}
+.text {
+	margin: 0;
+	color: var(--color-text-faded);
+}
+.valid .text {
+	color: var(--color-success);
+}
+.invalid .text {
+	color: var(--color-error);
+}

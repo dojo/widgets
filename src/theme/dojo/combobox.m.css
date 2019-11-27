@@ -1,0 +1,134 @@
+@import './variables.css';
+
+.root {
+	box-sizing: border-box;
+	color: var(--color-text-primary);
+	display: inline-block;
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	position: relative;
+	width: 100%;
+}
+
+.root * {
+	box-sizing: border-box;
+}
+
+.root input {
+	min-width: 200px;
+	padding: var(--spacing-regular) calc(var(--spacing-regular) * 6) var(--spacing-regular) var(--spacing-regular);
+	width: 100%;
+}
+
+.clearable input {
+	padding-right: calc(var(--spacing-regular) * 8);
+}
+
+.trigger {
+	appearance: none;
+	background-color: transparent;
+	border-radius: 0;
+	border: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid var(--color-border);
+	bottom: var(--border-width);
+	color: var(--color-text-faded);
+	cursor: pointer;
+	display: block;
+	font-size: 24px;
+	line-height: 1;
+	outline: 0;
+	padding: var(--spacing-regular);
+	position: absolute;
+	right: 0;
+	top: var(--border-width);
+	transition: border-color var(--transition-duration) var(--transition-easing);
+}
+
+.trigger:focus {
+	border-color: var(--color-highlight);
+}
+
+.dropdown {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	display: none;
+	position: absolute;
+	width: 100%;
+}
+
+.open .dropdown {
+	display: block;
+	pointer-events: all;
+	opacity: 1;
+	z-index: var(--zindex-dropdown);
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: var(--transition-easing);
+	animation-duration: var(--transition-duration);
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.option {
+	background-color: var(--color-background);
+	border: var(--border-width) solid transparent;
+	cursor: pointer;
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	transition: background var(--transition-duration) var(--transition-easing), border var(--transition-duration) var(--transition-easing);
+}
+
+.selected {
+	background-color: var(--color-background-faded);
+}
+
+.invalid .trigger {
+	border-left-color: var(--color-border-invalid);
+	color: var(--color-error);
+}
+
+.valid .trigger {
+	border-left-color: var(--color-border-valid);
+	color: var(--color-success);
+}
+
+.clear {
+	background: none;
+	border: var(--border-width) solid transparent;
+	color: var(--color-border);
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1;
+	outline: none;
+	padding: 0;
+	position: absolute;
+	right: calc(var(--spacing-regular) * 6);
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.clear:focus {
+	border-color: var(--color-highlight);
+}
+
+/* styles for backward compatibility with widgets 2.0.0 */
+.trigger,
+.clear {
+	font-size: 0;
+}
+
+.trigger * {
+	font-size: var(--font-size-icon);
+}
+
+.clear * {
+	font-size: var(--font-size-base);
+}

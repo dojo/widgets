@@ -1,0 +1,68 @@
+@import './variables.css';
+
+.root {
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
+.root,
+.root * {
+	box-sizing: border-box;
+}
+
+.main {
+	background: #FFF;
+	border: var(--border-width) solid var(--color-border);
+	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
+	display: flex;
+	flex-direction: column;
+	height: calc(75 * var(--grid-base));
+	left: 50%;
+	max-height: 100%;
+	max-width: 100%;
+	position: fixed;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: calc(80 * var(--grid-base));
+	z-index: var(--zindex-dialog);
+	z-index: calc(var(--zindex-dialog) + 1);
+}
+
+.underlayVisible {
+	background-color: var(--color-box-shadow-strong);
+	z-index: var(--zindex-dialog);
+}
+
+.title {
+	border-bottom: var(--border-width) solid var(--color-border);
+	box-sizing: border-box;
+	flex: 0 0 auto;
+	font-size: var(--font-size-title);
+	height: calc(7 * var(--grid-base));
+	padding: calc(2 * var(--grid-base));
+	position: relative;
+	text-align: left;
+}
+
+.content {
+	flex: 1 1 auto;
+	overflow: auto;
+	padding: calc(2 * var(--grid-base));
+}
+
+.close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 0;
+	padding: var(--grid-base);
+	position: absolute;
+	right: calc(2 * var(--grid-base));
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.close i {
+	font-size: var(--font-size-title);
+}

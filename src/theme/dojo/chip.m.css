@@ -1,0 +1,27 @@
+@import './variables.css';
+
+.root {
+	height: calc(var(--grid-base) * 4);
+	background-color: var(--color-background-inverted);
+	border-radius: calc(var(--grid-base) * 2);
+	align-items: center;
+	color: var(--color-background);
+	display: inline-flex;
+	padding-left: var(--grid-base);
+	padding-right: var(--grid-base);
+}
+
+.label {
+	padding-left: var(--grid-base);
+	padding-right: var(--grid-base);
+}
+
+.closeIcon {
+	cursor: pointer;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.disabled {}

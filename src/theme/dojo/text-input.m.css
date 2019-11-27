@@ -1,0 +1,95 @@
+@import './variables.css';
+
+.root {
+	display: block;
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	box-sizing: border-box;
+}
+
+.input {
+	border: none;
+	width: 100%;
+	border-radius: 0;
+	margin: 0;
+	font-size: inherit;
+	height: calc(var(--line-height-base) + 2 * var(--grid-base) + 2 * var(--border-width)); /* for IE 11 */
+	line-height: var(--line-height-base);
+	padding: var(--grid-base);
+	box-sizing: border-box;
+}
+
+.input:focus {
+	outline: none;
+}
+
+.input::placeholder { color: var(--color-text-faded); }
+
+.inputWrapper {
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	transition: box-shadow var(--transition-duration) var(--transition-easing);
+	box-sizing: border-box;
+}
+
+.focused .inputWrapper {
+	border-color: var(--color-highlight);
+	border-bottom-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--box-shadow-focus);
+}
+
+.inputWrapper:hover {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+}
+
+.input::-ms-clear {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+/* disabled and readonly */
+.disabled .inputWrapper,
+.readonly .inputWrapper {
+	background-color: var(--color-background-faded);
+}
+
+.disabled .inputWrapper:hover,
+.readonly .inputWrapper:hover {
+	box-shadow: none;
+}
+
+/* invalid */
+.invalid .inputWrapper {
+	border-color: var(--color-border-invalid);
+	border-bottom-color: var(--color-error);
+}
+
+.invalid.focused .inputWrapper {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-invalid);
+}
+
+/* valid */
+.valid .inputWrapper {
+	border-color: var(--color-border-valid);
+	border-bottom-color: var(--color-success);
+}
+
+.valid.focused .inputWrapper {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
+}
+
+.leading, .trailing {
+	background-color: var(--color-background-faded);
+	color: var(--color-text-faded);
+	flex: 0 0 auto;
+	font-size: inherit;
+	line-height: var(--line-height-base);
+	padding: var(--grid-base);
+	transition: border var(--transition-duration) var(--transition-easing);
+	box-sizing: border-box;
+}

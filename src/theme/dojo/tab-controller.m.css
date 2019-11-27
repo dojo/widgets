@@ -1,0 +1,146 @@
+@import './variables.css';
+
+:root {
+	--tab-width: calc(var(--grid-base) * 16);
+}
+
+.root {
+	box-sizing: border-box;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
+.root * {
+	box-sizing: border-box;
+}
+
+.tabButtons {
+	display: flex;
+}
+
+.tabButton {
+	border-bottom: var(--border-width) solid var(--color-border);
+	border-left: var(--border-width) solid transparent;
+	border-right: var(--border-width) solid transparent;
+	border-top: var(--border-width) solid transparent;
+	color: var(--color-text-faded);
+	cursor: pointer;
+	display: inline-block;
+	flex: 1;
+	outline: none;
+	overflow: hidden;
+	padding: calc(var(--grid-base)*2) calc(var(--grid-base)/2);
+	position: relative;
+	text-align: center;
+	text-overflow: ellipsis;
+	vertical-align: top;
+	white-space: nowrap;
+	width: var(--tab-width);
+	margin: 0;
+}
+
+.tabButton:hover:not(.disabledTabButton):not(.activeTabButton) {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-background-faded);
+	color: var(--color-text-primary);
+}
+
+.tabButton:focus:not(.disabledTabButton) {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.activeTabButton {
+	border-bottom-color: var(--color-highlight);
+	color: var(--color-highlight);
+}
+
+.disabledTabButton {
+	color: var(--color-border);
+	cursor: default;
+}
+
+.close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 0;
+	padding: 1px 3px;
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: var(--font-size-small);
+}
+
+.closeable {
+	padding-right: calc(var(--font-size-small) + 6px);
+}
+
+.tab {
+	position: relative;
+}
+
+.alignLeft .tabs {
+	display: inline-block;
+	vertical-align: top;
+	width: calc(100% - var(--tab-width));
+}
+
+.alignLeft .tabButtons {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.alignLeft .tabButton {
+	border-bottom: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid transparent;
+	border-right: var(--border-width) solid var(--color-border);
+	border-top: var(--border-width) solid transparent;
+	display: block;
+}
+
+.alignLeft .activeTabButton {
+	border-right-color: var(--color-highlight);
+	color: var(--color-highlight);
+}
+
+.alignRight .tabs {
+	display: inline-block;
+	vertical-align: top;
+	width: calc(100% - var(--tab-width));
+}
+
+.alignRight .tabButtons {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.alignRight .tabButton {
+	border-bottom: var(--border-width) solid transparent;
+	border-left: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid transparent;
+	border-top: var(--border-width) solid transparent;
+	display: block;
+}
+
+.alignRight .activeTabButton {
+	border-left-color: var(--color-highlight);
+	color: var(--color-highlight);
+}
+
+.alignBottom .tabButton {
+	border-bottom-color: transparent;
+	border-top-color: var(--color-border);
+}
+
+.alignBottom .activeTabButton {
+	border-bottom-color: transparent;
+	border-top-color: var(--color-highlight);
+}

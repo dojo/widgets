@@ -1,0 +1,45 @@
+@import './variables.css';
+
+.addon {
+	background-color: var(--color-background-faded);
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+	color: var(--color-text-faded);
+	flex: 0 0 auto;
+	font-size: inherit;
+	line-height: var(--line-height-base);
+	padding: var(--grid-base);
+	transition: border var(--transition-duration) var(--transition-easing);
+}
+
+.addonAfter {
+	border-left: none;
+}
+
+.addonBefore {
+	border-right: none;
+}
+
+.input {
+	composes: input from './text-input.m.css';
+	flex: 1 1 auto;
+}
+
+.inputWrapper {
+	composes: inputWrapper from './text-input.m.css';
+	display: flex;
+}
+
+/* focus styles */
+.focused .inputWrapper {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.input:focus {
+	border-left-color: var(--color-border);
+	box-shadow: none;
+}
+
+.focused .addon {
+	border-color: var(--color-highlight);
+}

@@ -1,0 +1,11 @@
+@import './variables.css';
+
+.root {
+	box-sizing: border-box;
+	height: calc(var(--grid-base) * 5);
+	border-top: var(--border-width) solid var(--color-border);
+}
+
+.root:nth-child(2) {
+	border-top: 0;
+}

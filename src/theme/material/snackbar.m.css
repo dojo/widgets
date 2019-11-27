@@ -1,0 +1,39 @@
+@import './variables.css';
+
+.root {
+	composes: mdc-snackbar from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.content {
+	composes: mdc-snackbar__surface from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.label {
+	composes: mdc-snackbar__label from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.actions {
+	composes: mdc-snackbar__actions from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.action {
+	composes: mdc-snackbar__action from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.stacked {
+	composes: mdc-snackbar--stacked from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.leading {
+	composes: mdc-snackbar--leading from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.open {
+	composes: mdc-snackbar--open from '@material/snackbar/dist/mdc.snackbar.css';
+}
+
+.error {
+}
+
+.success {
+}

@@ -1,0 +1,10 @@
+@import './variables.css';
+
+.root {
+	composes: root from './button.m.css';
+	composes: mdc-button--outlined from '@material/button/dist/mdc.button.css';
+}
+
+.pressed {
+	composes: mdc-button--unelevated from '@material/button/dist/mdc.button.css';
+}

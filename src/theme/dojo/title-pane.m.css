@@ -1,0 +1,62 @@
+@import './variables.css';
+
+.root {
+	box-sizing: border-box;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+	overflow: hidden;
+	min-height: calc(var(--font-size-title) + 2 * var(--grid-base));
+}
+
+.root * {
+	box-sizing: border-box;
+}
+
+.titleButton {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	color: var(--color-text-faded);
+	cursor: pointer;
+	font-size: var(--font-size-base);
+	padding: var(--grid-base) var(--grid-base) var(--grid-base) calc(var(--grid-base) * 4);
+	position: relative;
+	width: 100%;
+	margin: 0;
+}
+
+.titleButton:focus {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+	outline: none;
+}
+
+.titleButton:hover {
+	background: var(--color-background-faded);
+	color: var(--color-text-primary);
+}
+
+.content {
+	border-bottom: var(--border-width) solid var(--color-border);
+	border-left: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid var(--color-border);
+	padding: var(--grid-base);
+}
+
+.contentTransition {
+	transition: margin-top ease-in-out var(--transition-duration);
+}
+
+.open .titleButton {
+	color: var(--color-highlight);
+}
+
+.arrow {
+	position: absolute;
+	left: 8px;
+	top: 10px;
+}
+
+.open .arrow {
+	top: 10px;
+}

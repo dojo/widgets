@@ -1,0 +1,72 @@
+@import './variables.css';
+
+.root {
+	display: none;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	pointer-events: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	margin: var(--spacing-regular);
+	z-index: var(--zindex-alert);
+}
+
+.content {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: flex-start;
+	box-sizing: border-box;
+	opacity: 0;
+	color: var(--color-text-inverted);
+	background-color: var(--color-dark);
+	padding: var(--spacing-regular);
+	border-radius: var(--border-radius);
+	box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2),
+		0 6px 10px 0 rgba(0,0,0,0.14),
+		0 1px 18px 0 rgba(0,0,0,0.12);
+}
+
+.label {
+	flex-grow: 1;
+	box-sizing: border-box;
+	margin: 0;
+	padding: var(--spacing-regular);
+}
+
+.actions {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.open {
+	display: flex;
+}
+
+.open .content {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.success .label {
+	color: var(--color-success);
+}
+
+.error .label {
+	color: var(--color-error);
+}
+
+.leading {
+	justify-content: flex-start;
+}
+
+.stacked .content {
+	flex-direction: column;
+	align-items: flex-start;
+}

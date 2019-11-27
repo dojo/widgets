@@ -1,0 +1,144 @@
+@import './variables.css';
+
+.root, .root * { box-sizing: border-box; }
+
+.root {
+	font-size: var(--font-size-base);
+}
+
+.inputWrapper {
+	position: relative;
+}
+
+/* custom input styles */
+.trigger {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+	cursor: pointer;
+	font-size: inherit;
+	line-height: var(--line-height-base);
+	min-height: calc(var(--spacing-regular) * 5 + 2);
+	outline: none;
+	padding: var(--spacing-regular) calc(var(--spacing-regular) * 3) var(--spacing-regular) var(--spacing-regular);
+	position: relative;
+	text-align: left;
+	width: 100%;
+	appearance: none;
+	border-radius: 0;
+}
+
+.trigger:focus {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.placeholder {
+	color: var(--color-text-faded);
+}
+
+.arrow {
+	border-left: var(--border-width) solid var(--color-border);
+	bottom: var(--border-width);
+	color: var(--color-text-faded);
+	font-size: var(--font-size-icon);
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+	pointer-events: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.dropdown {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	display: none;
+	pointer-events: none;
+	position: absolute;
+	width: 100%;
+}
+
+.open .dropdown {
+	display: block;
+	pointer-events: all;
+	opacity: 1;
+	z-index: var(--zindex-dropdown);
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: var(--transition-easing);
+	animation-duration: var(--transition-duration);
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+/* native input styles */
+.input {
+	appearance: none;
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+	border-radius: 0;
+	cursor: pointer;
+	display: block;
+	font-size: inherit;
+	line-height: var(--line-height-base);
+	outline: 0;
+	padding: var(--spacing-regular) calc(var(--spacing-regular) * 3) var(--spacing-regular) var(--spacing-regular);
+	transition: border var(--transition-duration) var(--transition-easing);
+	width: 100%;
+}
+
+.input:focus {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+/* IE 10+ */
+.input::-ms-expand {
+	display: none;
+}
+
+/* State classes */
+.disabled .input,
+.readonly .input,
+.disabled .trigger,
+.readonly .trigger {
+	background-color: var(--color-background-faded);
+}
+
+.invalid .input,
+.invalid .trigger {
+	border-color: var(--color-border-invalid);
+	border-bottom-color: var(--color-error);
+}
+.invalid .input:focus,
+.invalid .trigger:focus {
+	border-color: var(--color-error);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-invalid);
+}
+.invalid .arrow {
+	border-left-color: var(--color-border-invalid);
+	color: var(--color-error);
+}
+
+.valid .input,
+.valid .trigger {
+	border-color: var(--color-border-valid);
+	border-bottom-color: var(--color-success);
+}
+.valid .input:focus,
+.valid .trigger:focus {
+	border-color: var(--color-success);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
+}
+.valid .arrow {
+	border-left-color: var(--color-border-valid);
+	color: var(--color-success);
+}

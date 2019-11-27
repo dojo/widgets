@@ -1,0 +1,12 @@
+@import './variables.css';
+
+.root {
+	composes: mdc-button from '@material/button/dist/mdc.button.css';
+}
+
+/* Styles taken from :active pseudo class */
+.pressed {}
+.pressed::after {
+	transition-duration: 75ms;
+	opacity: 0.12;
+}

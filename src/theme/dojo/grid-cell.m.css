@@ -1,0 +1,28 @@
+@import './variables.css';
+
+.root {
+	align-items: center;
+	border-left: var(--border-width) solid var(--color-border);
+	color: var(--color-text-faded);
+	justify-content: space-between;
+	min-width: 100px;
+	padding: calc(var(--grid-base)/4) calc(var(--grid-base)/2);
+}
+
+.root:first-child {
+	border-left: 0;
+}
+
+.input {
+	height: calc(var(--grid-base) * 5);
+}
+
+.edit {
+	min-width: 0;
+	opacity: 0;
+  padding: 0 calc(var(--grid-base)/2);
+}
+
+.edit:focus {
+	opacity: 1;
+}

@@ -1,0 +1,100 @@
+@import './variables.css';
+
+.root, .root * { box-sizing: border-box; }
+
+.root {
+	display: block;
+	min-height: var(--line-height-base);
+	padding: 0 0 0 calc(var(--grid-base) * 3);
+	position: relative;
+}
+
+.input {
+	height: 100%;
+	left: 0;
+	margin: 0;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.input:focus {
+	outline: none;
+}
+
+.inputWrapper {
+	left: 0;
+	position: absolute;
+	top: calc(var(--grid-base) / 2);
+}
+
+.radioBackground,
+.radioOuter,
+.radioInner {
+	border-radius: 50%;
+	box-sizing: border-box;
+	content: '';
+	display: block;
+	transition: transform var(--transition-duration) var(--transition-easing), background-color var(--transition-duration) var(--transition-easing);
+}
+
+.radioOuter {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border-strong);
+	height: calc(var(--grid-base) * 2);
+	width: calc(var(--grid-base) * 2);
+}
+
+.radioInner {
+	background-color: var(--color-border-strong);
+	height: var(--grid-base);
+	left: calc(var(--grid-base) / 2);
+	position: absolute;
+	top: calc(var(--grid-base) / 2);
+	transform: scale(0);
+	width: var(--grid-base);
+}
+
+/* focus styles */
+.focused .radioOuter {
+	border: var(--border-width-emphasized) solid var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.focused .radioInner {
+	background-color: var(--color-highlight);
+}
+
+/* checked style */
+.checked .radioInner {
+	transform: scale(1);
+}
+
+/* disabled and readonly styles */
+.disabled .radioOuter,
+.readonly .radioOuter {
+	border-color: var(--color-border);
+	background-color: var(--color-background-faded);
+}
+
+/* required style, only applies to inputs with a label */
+.required span::after {
+	content: '*';
+}
+
+/* invalid style */
+.invalid .radioOuter {
+	border-color: var(--color-error);
+}
+.invalid .radioInner {
+	background-color: var(--color-error);
+}
+
+/* valid style */
+.valid .radioOuter {
+	border-color: var(--color-success);
+}
+.valid .radioInner {
+	background-color: var(--color-success);
+}

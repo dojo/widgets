@@ -1,0 +1,108 @@
+@import './variables.css';
+
+:root {
+	--indicator-width: 2px;
+}
+
+/* TAB BUTTONS */
+.tabButtons {
+	display: flex;
+}
+
+.tabButton {
+	composes: mdc-tab mdc-tab__content from '@material/tab/dist/mdc.tab.css';
+	height: 48px;
+	pointer-events: all;
+}
+
+.tabButtonContent {
+	composes: mdc-tab__text-label from '@material/tab/dist/mdc.tab.css';
+}
+
+.activeTabButton {
+	composes: mdc-tab--active from '@material/tab/dist/mdc.tab.css';
+}
+
+.disabledTabButton {
+	font-style: italic;
+	cursor: default;
+	color: var(--disabled-color);
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+	padding: 1px 3px;
+	margin-top: -1px;
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+/* TAB INDICATOR */
+.indicator {
+	composes: mdc-tab-indicator from '@material/tab-indicator/dist/mdc.tab-indicator.css';
+}
+
+.indicatorActive {
+	composes: mdc-tab-indicator--active from '@material/tab-indicator/dist/mdc.tab-indicator.css';
+}
+
+.indicatorContent {
+	composes: mdc-tab-indicator__content mdc-tab-indicator__content--underline from '@material/tab-indicator/dist/mdc.tab-indicator.css';
+}
+
+.indicatorActive .indicatorContent {
+	background-color: var(--primary-inverse);
+}
+
+/* TABS */
+.tab {
+	composes: mdc-tab__content from '@material/tab/dist/mdc.tab.css';
+}
+
+/* OTHER ALIGNMENTS */
+.alignRight,
+.alignLeft {
+	display: flex;
+}
+
+.alignRight .tabButtons,
+.alignLeft .tabButtons {
+	flex-direction: column;
+}
+
+.alignRight .indicatorContent,
+.alignLeft .indicatorContent {
+	border-top-width: 0;
+	height: 100%;
+}
+
+.alignRight .indicatorContent {
+	border-left-width: var(--indicator-width);
+	border-left-style: solid;
+}
+
+.alignLeft .indicatorContent {
+	border-right-width: var(--indicator-width);
+	border-right-style: solid;
+}
+
+.alignRight .tabs,
+.alignLeft .tabs {
+	flex: 1;
+}
+
+.alignBottom .indicatorContent {
+	align-self: flex-start;
+}

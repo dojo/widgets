@@ -1,0 +1,78 @@
+ @import './variables.css';
+
+.root {
+	display: flex;
+	flex-direction: column;
+	border-radius: 4px;
+	box-shadow: 0px 2px 1px -1px var(--color-box-shadow),
+		0 1px 1px 0 rgba(0,0,0,0.14),
+		0 1px 3px 0 rgba(0,0,0,0.12);
+}
+
+.actions {
+	display: flex;
+	flex-direction: row;
+	padding: var(--grid-base);
+	align-items: center;
+	box-sizing: border-box;
+	min-height: 52px;
+}
+
+.actionButtons {
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.actionIcons {
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	flex-grow: 1;
+}
+
+.primaryAction {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.media {
+	position: relative;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: cover;
+	box-sizing: border-box;
+}
+
+.mediaContent {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	box-sizing: border-box;
+}
+
+.mediaSquare::before {
+	margin-top: 100%;
+}
+
+.media16by9::before {
+	margin-top: 56.25%;
+}
+
+.media::before {
+	display: block;
+	content: "";
+}
+
+.primary {
+	padding: var(--grid-base);
+}
+
+.secondary {
+	padding: 0 1rem var(--grid-base);
+}

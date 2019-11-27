@@ -1,0 +1,62 @@
+@import './variables.css';
+
+.root, .root * { box-sizing: border-box; }
+
+.root {
+	display: block;
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
+.input {
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+	font-size: inherit;
+	padding: var(--grid-base) calc(var(--grid-base) * 3) var(--grid-base) var(--grid-base);
+	transition: box-shadow var(--transition-duration) var(--transition-easing);
+	width: 100%;
+	border-radius: 0;
+	margin: 0;
+}
+
+.input:focus {
+	border-color: var(--color-highlight);
+	border-bottom-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+	outline: none;
+}
+
+.input:hover {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+}
+
+/* disabled and readonly */
+.disabled .input,
+.readonly .input {
+	background-color: var(--color-background-faded);
+}
+
+.disabled .input:hover,
+.readonly .input:hover {
+	box-shadow: none;
+}
+
+/* invalid */
+.invalid .input {
+	border-color: var(--color-border-invalid);
+	border-bottom-color: var(--color-error);
+}
+
+.invalid .input:focus {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-invalid);
+}
+
+/* valid */
+.valid .input {
+	border-color: var(--color-border-valid);
+	border-bottom-color: var(--color-success);
+}
+
+.valid .input:focus {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
+}
