@@ -15,22 +15,12 @@
     "@dojo/cli": "7.0.0-alpha.1",
     "@dojo/cli-build-app": "7.0.0-alpha.4",
     "@dojo/framework": "7.0.0-alpha.4",
+    "@dojo/parade": "0.0.1",
     "@dojo/themes": "^6.0.0",
     "@dojo/widgets": "^6.0.0",
     "@types/jsdom": "2.0.*",
     "@types/node": "9.6.5",
-    "canonical-path": "1.0.0",
-    "cldr-data": "32.0.1",
-    "cldrjs": "0.5.0",
-    "glob": "7.1.4",
-    "postcss": "7.0.21",
-    "prismjs": "1.17.1",
-    "rehype-stringify": "6.0.0",
-    "remark-parse": "7.0.1",
-    "remark-rehype": "5.0.0",
-    "ts-morph": "4.2.0",
     "tslib": "~1.9.1",
-    "typescript": "~3.4.5",
-    "unified": "8.4.1"
+    "typescript": "~3.4.5"
   }
 }
