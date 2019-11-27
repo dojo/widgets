@@ -1,3 +1,6 @@
+import dojoTheme from '@dojo/themes/dojo';
+import '@dojo/themes/dojo/index.css';
+
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
@@ -97,673 +100,653 @@ import UnderlayDialog from './widgets/dialog/UnderlayDialog';
 import ModalDialog from './widgets/dialog/ModalDialog';
 import CloseableDialog from './widgets/dialog/CloseableDialog';
 
-export interface ExampleConfig {
-	title?: string;
-	description?: string;
-	module: any;
-	filename: string;
-}
+const tests = (require as any).context('../../', true, /\.spec\.ts(x)?$/);
 
-export interface WidgetConfig {
-	filename?: string;
-	overview: {
-		example: ExampleConfig;
-	};
-	examples?: ExampleConfig[];
-}
-
-export interface Config {
-	[index: string]: WidgetConfig;
-}
-
-export const config: Config = {
-	'accordion-pane': {
-		examples: [
-			{
-				filename: 'Exclusive',
-				module: Exclusive
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicAccordionPane
-			}
-		}
-	},
-	button: {
-		examples: [
-			{
-				filename: 'DisabledSubmit',
-				module: DisabledSubmit,
-				title: 'Disabled Submit Button'
-			},
-			{
-				filename: 'ToggleButton',
-				module: ToggleButton,
-				title: 'Toggle Button'
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicButton
-			}
-		}
-	},
-	calendar: {
-		examples: [
-			{
-				filename: 'CustomFirstWeekDay',
-				module: FirstDayOfWeekCalendar,
-				title: 'Custom First Day of Week'
-			},
-			{
-				description: 'Demonstrates limiting the selectable region of the calendar.',
-				filename: 'LimitedRange',
-				module: LimitedRange,
-				title: 'Limited Date Range'
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicCalendar
-			}
-		}
-	},
-	card: {
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicCard
-			}
-		}
-	},
-	checkbox: {
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicCheckbox
-			}
-		}
-	},
-	'checkbox-group': {
-		examples: [
-			{
-				filename: 'InitialValue',
-				module: InitialValueCheckboxGroup,
-				title: 'Initial Value'
-			},
-			{
-				filename: 'CustomLabel',
-				module: CustomLabelCheckboxGroup,
-				title: 'Custom Label'
-			},
-			{
-				filename: 'CustomRenderer',
-				module: CustomRendererCheckboxGroup,
-				title: 'Custom Renderer'
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicCheckboxGroup
-			}
-		}
-	},
-	chip: {
-		examples: [
-			{
-				filename: 'Icon',
-				module: IconChip,
-				title: 'Icon'
-			},
-			{
-				filename: 'Clickable',
-				module: ClickableChip,
-				title: 'Clickable'
-			},
-			{
-				filename: 'Disabled',
-				module: DisabledChip,
-				title: 'Disabled'
-			},
-			{
-				filename: 'Closable',
-				module: ClosableChip,
-				title: 'Closable'
-			},
-			{
-				filename: 'ClosableRenderer',
-				module: ClosableRendererChip,
-				title: 'Closable Renderer'
-			},
-			{
-				filename: 'ClickableClosable',
-				module: ClickableClosableChip,
-				title: 'Clickable and Closable'
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicChip
-			}
-		}
-	},
-	combobox: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicCombobox
-			}
-		}
-	},
-	'constrained-input': {
-		examples: [
-			{
-				filename: 'Username',
-				module: Username,
-				title: 'Username'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicConstrainedInput
-			}
-		}
-	},
-	dialog: {
-		examples: [
-			{
-				filename: 'UnderlayDialog',
-				module: UnderlayDialog,
-				title: 'Dialog with and Underlay'
-			},
-			{
-				filename: 'ModalDialog',
-				module: ModalDialog,
-				title: 'Modal Dialog'
-			},
-			{
-				filename: 'CloseableDialog',
-				module: CloseableDialog,
-				title: 'Dialog with Configurable Closeability'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicDialog
-			}
-		}
-	},
-	'email-input': {
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicEmailInput
-			}
-		}
-	},
-	grid: {
-		examples: [
-			{
-				filename: 'Sorting',
-				module: Sorting,
-				title: 'Grid with Sorting'
-			},
-			{
-				filename: 'Filtering',
-				module: Filtering,
-				title: 'Grid with Filtered Columns'
-			},
-			{
-				filename: 'CustomCellRenderer',
-				module: CustomCellRenderer,
-				title: 'Grid with Custom Cell Rendering'
-			},
-			{
-				filename: 'CustomFilterRenderer',
-				module: GridCustomFilterRenderer,
-				title: 'Grid with Custom Filter Renderer'
-			},
-			{
-				filename: 'CustomSortRenderer',
-				module: CustomSortRenderer,
-				title: 'Grid with Customized Sort Rendering'
-			},
-			{
-				filename: 'Restful',
-				module: Restful,
-				title: 'Grid with Data Loaded from a Remote Resource (REST)'
-			},
-			{
-				description: 'Demonstrates using the grid utilities to support editable cells',
-				filename: 'EditableCells',
-				module: EditableCells,
-				title: 'Grid with Editable Cells'
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicGrid
-			}
-		}
-	},
-	icon: {
-		examples: [
-			{
-				filename: 'AltText',
-				module: AltTextIcon,
-				title: 'With alt text'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicIcons
-			}
-		}
-	},
-	label: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicLabel
-			}
-		}
-	},
-	listbox: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicListbox
-			}
-		}
-	},
-	menu: {
-		examples: [
-			{
-				description:
-					'In this example, an activeIndex and onActiveIndexChange property are passed into the Menu allowing for thr active menu item to be controlled.',
-				filename: 'Controlled',
-				module: ControlledMenu,
-				title: 'Controlled Active Index'
-			},
-			{
-				filename: 'ItemRenderer',
-				module: ItemRenderer,
-				title: 'Item Renderer'
-			},
-			{
-				description:
-					'This example shows the menu used as a Listbox. This allows for a selection to be made and persisted. Useful for user selections and within selects / typeahead etc.',
-				filename: 'ListBox',
-				module: ListBox,
-				title: 'List Box'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicMenu
-			}
-		}
-	},
-	popup: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicPopup
+export const config = {
+	themes: [dojoTheme],
+	tests,
+	widgets: {
+		'accordion-pane': {
+			examples: [
+				{
+					filename: 'Exclusive',
+					module: Exclusive
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicAccordionPane
+				}
 			}
 		},
-		examples: [
-			{ title: 'Underlay', filename: 'Underlay', module: Underlay },
-			{ title: 'Set Width', filename: 'SetWidth', module: SetWidth },
-			{ title: 'Menu Popup', filename: 'MenuPopup', module: MenuPopup }
-		]
-	},
-	'number-input': {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicNumberInput
-			}
-		}
-	},
-	'outlined-button': {
-		examples: [
-			{
-				filename: 'DisabledSubmit',
-				module: OutlinedDisabledSubmit,
-				title: 'Disabled Submit Button'
-			},
-			{
-				filename: 'ToggleButton',
-				module: OutlinedToggleButton,
-				title: 'Toggle Button'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicOutlinedButton
-			}
-		}
-	},
-	progress: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicProgress
-			}
-		}
-	},
-	radio: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicRadio
-			}
-		}
-	},
-	'raised-button': {
-		examples: [
-			{
-				filename: 'DisabledSubmit',
-				module: RaisedDisabledSubmit,
-				title: 'Disabled Submit Button'
-			},
-			{
-				filename: 'ToggleButton',
-				module: RaisedToggleButton,
-				title: 'Toggle Button'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicRaisedButton
-			}
-		}
-	},
-	'range-slider': {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicRangeSlider
-			}
-		}
-	},
-	select: {
-		examples: [
-			{
-				filename: 'AdvancedOptions',
-				module: AdvancedOptions,
-				title: 'Advanced options'
-			},
-			{
-				filename: 'NonNative',
-				module: NonNative,
-				title: 'Non Native'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicSelect
-			}
-		}
-	},
-	'slide-pane': {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicSlidePane
-			}
-		}
-	},
-	slider: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicSlider
-			}
-		}
-	},
-	snackbar: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicSnackbar
-			}
-		}
-	},
-	'split-pane': {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicSplitPane
-			}
-		}
-	},
-	'tab-controller': {
-		examples: [
-			{
-				filename: 'Disabled',
-				module: DisabledTabController,
-				title: 'TabController with disabled tabs'
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicTabController
-			}
-		}
-	},
-	'text-area': {
-		examples: [
-			{
-				filename: 'Disabled',
-				module: DisabledTextArea,
-				title: 'Disabled'
-			},
-			{
-				filename: 'HelperText',
-				module: HelperTextTextArea,
-				title: 'Helper text'
-			},
-			{
-				filename: 'HiddenLabel',
-				module: HiddenLabelTextArea,
-				title: 'Hidden label'
-			},
-			{
-				filename: 'ValidatedCustom',
-				module: ValidatedCustomTextArea,
-				title: 'Validated with custom validator'
-			},
-			{
-				filename: 'ValidatedRequired',
-				module: ValidatedRequiredTextArea,
-				title: 'Validated required'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicTextArea
-			}
-		}
-	},
-	'text-input': {
-		examples: [
-			{
-				filename: 'WithLabel',
-				module: TextInputWithLabel,
-				title: 'TextInput with Label'
-			},
-			{
-				filename: 'HiddenLabel',
-				module: HiddenLabelTextInput,
-				title: 'TextInput with hidden label'
-			},
-			{
-				filename: 'Disabled',
-				module: DisabledTextInput,
-				title: 'Disabled TextInput'
-			},
-			{
-				filename: 'Validated',
-				module: ValidatedTextInput,
-				title: 'Validated TextInput'
-			},
-			{
-				filename: 'HelperText',
-				module: HelperTextInput,
-				title: 'TextInput with helper text'
-			},
-			{
-				filename: 'LeadingTrailing',
-				module: LeadingTrailingTextInput,
-				title: 'TextInput with leading and trailing'
-			}
-		],
-		filename: 'index',
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicTextInput
-			}
-		}
-	},
-	'time-picker': {
-		examples: [
-			{
-				filename: 'FilteredOnInput',
-				module: FilteredOnInputTimePicker,
-				title: 'Filtered on input'
-			},
-			{
-				filename: 'OpensOnFocus',
-				module: OpenOnFocusTimePicker,
-				title: 'Opens on focus'
-			},
-			{
-				filename: 'DisabledMenuItems',
-				module: DisabledMenuItemsTimePicker,
-				title: 'Disabled menu items'
-			},
-			{
-				filename: 'Disabled',
-				module: DisabledTimePicker,
-				title: 'Disabled time picker'
-			},
-			{
-				filename: 'SelectBySecond',
-				module: SelectBySecondTimePicker,
-				title: 'Select time by the second'
-			},
-			{
-				filename: '12HourTime',
-				module: TwelveHourTimePicker,
-				title: '12 hour time'
-			},
-			{
-				filename: 'Required',
-				module: RequiredTimePicker,
-				title: 'Required time picker'
-			},
-			{
-				filename: 'Native',
-				module: NativeTimePicker,
-				title: 'Native time picker'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicTimePicker
-			}
-		}
-	},
-	'title-pane': {
-		examples: [
-			{
-				filename: 'AriaHeadingLevel',
-				module: HeadingLevel,
-				title: 'Defined aria heading level'
-			},
-			{
-				filename: 'NonCloseable',
-				module: NonCloseable,
-				title: 'Non closeable'
-			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicTitlePane
-			}
-		}
-	},
-	toolbar: {
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicToolbar
+		button: {
+			examples: [
+				{
+					filename: 'DisabledSubmit',
+					module: DisabledSubmit,
+					title: 'Disabled Submit Button'
+				},
+				{
+					filename: 'ToggleButton',
+					module: ToggleButton,
+					title: 'Toggle Button'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicButton
+				}
 			}
 		},
-		examples: [
-			{
-				title: 'Collapsed with heading',
-				module: HeadingCollapsedToolbar,
-				filename: 'HeadingCollapsed'
+		calendar: {
+			examples: [
+				{
+					filename: 'CustomFirstWeekDay',
+					module: FirstDayOfWeekCalendar,
+					title: 'Custom First Day of Week'
+				},
+				{
+					description: 'Demonstrates limiting the selectable region of the calendar.',
+					filename: 'LimitedRange',
+					module: LimitedRange,
+					title: 'Limited Date Range'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicCalendar
+				}
 			}
-		]
-	},
-	tooltip: {
-		examples: [
-			{
-				filename: 'Focus',
-				module: FocusTooltip,
-				title: 'Show on focus'
+		},
+		card: {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicCard
+				}
+			}
+		},
+		checkbox: {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicCheckbox
+				}
+			}
+		},
+		'checkbox-group': {
+			examples: [
+				{
+					filename: 'InitialValue',
+					module: InitialValueCheckboxGroup,
+					title: 'Initial Value'
+				},
+				{
+					filename: 'CustomLabel',
+					module: CustomLabelCheckboxGroup,
+					title: 'Custom Label'
+				},
+				{
+					filename: 'CustomRenderer',
+					module: CustomRendererCheckboxGroup,
+					title: 'Custom Renderer'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicCheckboxGroup
+				}
+			}
+		},
+		chip: {
+			examples: [
+				{
+					filename: 'Icon',
+					module: IconChip,
+					title: 'Icon'
+				},
+				{
+					filename: 'Clickable',
+					module: ClickableChip,
+					title: 'Clickable'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledChip,
+					title: 'Disabled'
+				},
+				{
+					filename: 'Closable',
+					module: ClosableChip,
+					title: 'Closable'
+				},
+				{
+					filename: 'ClosableRenderer',
+					module: ClosableRendererChip,
+					title: 'Closable Renderer'
+				},
+				{
+					filename: 'ClickableClosable',
+					module: ClickableClosableChip,
+					title: 'Clickable and Closable'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicChip
+				}
+			}
+		},
+		combobox: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicCombobox
+				}
+			}
+		},
+		'constrained-input': {
+			examples: [
+				{
+					filename: 'Username',
+					module: Username,
+					title: 'Username'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicConstrainedInput
+				}
+			}
+		},
+		dialog: {
+			examples: [
+				{
+					filename: 'UnderlayDialog',
+					module: UnderlayDialog,
+					title: 'Dialog with and Underlay'
+				},
+				{
+					filename: 'ModalDialog',
+					module: ModalDialog,
+					title: 'Modal Dialog'
+				},
+				{
+					filename: 'CloseableDialog',
+					module: CloseableDialog,
+					title: 'Dialog with Configurable Closeability'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicDialog
+				}
+			}
+		},
+		'email-input': {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicEmailInput
+				}
+			}
+		},
+		grid: {
+			examples: [
+				{
+					filename: 'Sorting',
+					module: Sorting,
+					title: 'Grid with Sorting'
+				},
+				{
+					filename: 'Filtering',
+					module: Filtering,
+					title: 'Grid with Filtered Columns'
+				},
+				{
+					filename: 'CustomCellRenderer',
+					module: CustomCellRenderer,
+					title: 'Grid with Custom Cell Rendering'
+				},
+				{
+					filename: 'CustomFilterRenderer',
+					module: GridCustomFilterRenderer,
+					title: 'Grid with Custom Filter Renderer'
+				},
+				{
+					filename: 'CustomSortRenderer',
+					module: CustomSortRenderer,
+					title: 'Grid with Customized Sort Rendering'
+				},
+				{
+					filename: 'Restful',
+					module: Restful,
+					title: 'Grid with Data Loaded from a Remote Resource (REST)'
+				},
+				{
+					description: 'Demonstrates using the grid utilities to support editable cells',
+					filename: 'EditableCells',
+					module: EditableCells,
+					title: 'Grid with Editable Cells'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicGrid
+				}
+			}
+		},
+		icon: {
+			examples: [
+				{
+					filename: 'AltText',
+					module: AltTextIcon,
+					title: 'With alt text'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicIcons
+				}
+			}
+		},
+		label: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicLabel
+				}
+			}
+		},
+		listbox: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicListbox
+				}
+			}
+		},
+		menu: {
+			examples: [
+				{
+					description:
+						'In this example, an activeIndex and onActiveIndexChange property are passed into the Menu allowing for thr active menu item to be controlled.',
+					filename: 'Controlled',
+					module: ControlledMenu,
+					title: 'Controlled Active Index'
+				},
+				{
+					filename: 'ItemRenderer',
+					module: ItemRenderer,
+					title: 'Item Renderer'
+				},
+				{
+					description:
+						'This example shows the menu used as a Listbox. This allows for a selection to be made and persisted. Useful for user selections and within selects / typeahead etc.',
+					filename: 'ListBox',
+					module: ListBox,
+					title: 'List Box'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicMenu
+				}
+			}
+		},
+		popup: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicPopup
+				}
 			},
-			{
-				filename: 'Click',
-				module: ClickTooltip,
-				title: 'Show on click'
+			examples: [
+				{ title: 'Underlay', filename: 'Underlay', module: Underlay },
+				{ title: 'Set Width', filename: 'SetWidth', module: SetWidth },
+				{ title: 'Menu Popup', filename: 'MenuPopup', module: MenuPopup }
+			]
+		},
+		'number-input': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicNumberInput
+				}
 			}
-		],
-		overview: {
-			example: {
-				filename: 'Basic',
-				module: BasicTooltip
+		},
+		'outlined-button': {
+			examples: [
+				{
+					filename: 'DisabledSubmit',
+					module: OutlinedDisabledSubmit,
+					title: 'Disabled Submit Button'
+				},
+				{
+					filename: 'ToggleButton',
+					module: OutlinedToggleButton,
+					title: 'Toggle Button'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicOutlinedButton
+				}
+			}
+		},
+		progress: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicProgress
+				}
+			}
+		},
+		radio: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicRadio
+				}
+			}
+		},
+		'raised-button': {
+			examples: [
+				{
+					filename: 'DisabledSubmit',
+					module: RaisedDisabledSubmit,
+					title: 'Disabled Submit Button'
+				},
+				{
+					filename: 'ToggleButton',
+					module: RaisedToggleButton,
+					title: 'Toggle Button'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicRaisedButton
+				}
+			}
+		},
+		'range-slider': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicRangeSlider
+				}
+			}
+		},
+		select: {
+			examples: [
+				{
+					filename: 'AdvancedOptions',
+					module: AdvancedOptions,
+					title: 'Advanced options'
+				},
+				{
+					filename: 'NonNative',
+					module: NonNative,
+					title: 'Non Native'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSelect
+				}
+			}
+		},
+		'slide-pane': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSlidePane
+				}
+			}
+		},
+		slider: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSlider
+				}
+			}
+		},
+		snackbar: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSnackbar
+				}
+			}
+		},
+		'split-pane': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSplitPane
+				}
+			}
+		},
+		'tab-controller': {
+			examples: [
+				{
+					filename: 'Disabled',
+					module: DisabledTabController,
+					title: 'TabController with disabled tabs'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTabController
+				}
+			}
+		},
+		'text-area': {
+			examples: [
+				{
+					filename: 'Disabled',
+					module: DisabledTextArea,
+					title: 'Disabled'
+				},
+				{
+					filename: 'HelperText',
+					module: HelperTextTextArea,
+					title: 'Helper text'
+				},
+				{
+					filename: 'HiddenLabel',
+					module: HiddenLabelTextArea,
+					title: 'Hidden label'
+				},
+				{
+					filename: 'ValidatedCustom',
+					module: ValidatedCustomTextArea,
+					title: 'Validated with custom validator'
+				},
+				{
+					filename: 'ValidatedRequired',
+					module: ValidatedRequiredTextArea,
+					title: 'Validated required'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTextArea
+				}
+			}
+		},
+		'text-input': {
+			examples: [
+				{
+					filename: 'WithLabel',
+					module: TextInputWithLabel,
+					title: 'TextInput with Label'
+				},
+				{
+					filename: 'HiddenLabel',
+					module: HiddenLabelTextInput,
+					title: 'TextInput with hidden label'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledTextInput,
+					title: 'Disabled TextInput'
+				},
+				{
+					filename: 'Validated',
+					module: ValidatedTextInput,
+					title: 'Validated TextInput'
+				},
+				{
+					filename: 'HelperText',
+					module: HelperTextInput,
+					title: 'TextInput with helper text'
+				},
+				{
+					filename: 'LeadingTrailing',
+					module: LeadingTrailingTextInput,
+					title: 'TextInput with leading and trailing'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTextInput
+				}
+			}
+		},
+		'time-picker': {
+			examples: [
+				{
+					filename: 'FilteredOnInput',
+					module: FilteredOnInputTimePicker,
+					title: 'Filtered on input'
+				},
+				{
+					filename: 'OpensOnFocus',
+					module: OpenOnFocusTimePicker,
+					title: 'Opens on focus'
+				},
+				{
+					filename: 'DisabledMenuItems',
+					module: DisabledMenuItemsTimePicker,
+					title: 'Disabled menu items'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledTimePicker,
+					title: 'Disabled time picker'
+				},
+				{
+					filename: 'SelectBySecond',
+					module: SelectBySecondTimePicker,
+					title: 'Select time by the second'
+				},
+				{
+					filename: '12HourTime',
+					module: TwelveHourTimePicker,
+					title: '12 hour time'
+				},
+				{
+					filename: 'Required',
+					module: RequiredTimePicker,
+					title: 'Required time picker'
+				},
+				{
+					filename: 'Native',
+					module: NativeTimePicker,
+					title: 'Native time picker'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTimePicker
+				}
+			}
+		},
+		'title-pane': {
+			examples: [
+				{
+					filename: 'AriaHeadingLevel',
+					module: HeadingLevel,
+					title: 'Defined aria heading level'
+				},
+				{
+					filename: 'NonCloseable',
+					module: NonCloseable,
+					title: 'Non closeable'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTitlePane
+				}
+			}
+		},
+		toolbar: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicToolbar
+				}
+			},
+			examples: [
+				{
+					title: 'Collapsed with heading',
+					module: HeadingCollapsedToolbar,
+					filename: 'HeadingCollapsed'
+				}
+			]
+		},
+		tooltip: {
+			examples: [
+				{
+					filename: 'Focus',
+					module: FocusTooltip,
+					title: 'Show on focus'
+				},
+				{
+					filename: 'Click',
+					module: ClickTooltip,
+					title: 'Show on click'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTooltip
+				}
 			}
 		}
 	}
 };
-
-export function getWidgetFileNames(config: Config): { [index: string]: string } {
-	return Object.keys(config).reduce((newConfig, widget) => {
-		return { ...newConfig, [widget]: config[widget].filename || 'index' };
-	}, {});
-}
-
 export default config;
