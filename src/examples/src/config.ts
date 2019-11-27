@@ -1,5 +1,4 @@
-import dojoTheme from '@dojo/themes/dojo';
-import '@dojo/themes/dojo/index.css';
+import dojoTheme from '@dojo/widgets/theme/dojo';
 
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
