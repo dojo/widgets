@@ -46,6 +46,8 @@
 /* native input styles */
 .input {
 	appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
 	background: var(--component-background);
 	border: 1px solid var(--component-color);
 	border-radius: 0;

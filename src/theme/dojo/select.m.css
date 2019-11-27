@@ -25,6 +25,8 @@
 	text-align: left;
 	width: 100%;
 	appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
 	border-radius: 0;
 }
 
@@ -81,6 +83,8 @@
 /* native input styles */
 .input {
 	appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
 	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);

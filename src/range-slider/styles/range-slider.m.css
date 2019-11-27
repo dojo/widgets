@@ -18,6 +18,8 @@
 /* Make native input invisible */
 .nativeInput {
 	appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
 	background: transparent;
 	border: 0 none;
 	color: transparent;
@@ -36,6 +38,8 @@
 /* invisible native track */
 .nativeInput::-ms-track {
 	appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
 	background: transparent;
 	border: 0 none;
 	color: transparent;
@@ -48,6 +52,8 @@
 
 .nativeInput::-moz-range-track {
 	appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
 	background: transparent;
 	border: 0 none;
 	color: transparent;
@@ -80,6 +86,8 @@
 
 .nativeInput::-webkit-slider-thumb {
 	appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
 	border-radius: 50%;
 	border: 0 none;
 	background: transparent;
