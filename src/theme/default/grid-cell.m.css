@@ -1,4 +1,4 @@
-@import '../common/styles/variables.css';
+@import './variables.css';
 
 .root {
 	border: 1px solid var(--component-color);
@@ -15,5 +15,5 @@
 }
 
 .edit {
-	composes: visuallyHidden focusable from '../common/styles/base.m.css';
+	composes: visuallyHidden focusable from './base.m.css';
 }

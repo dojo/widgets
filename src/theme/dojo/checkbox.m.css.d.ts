@@ -1,5 +1,4 @@
 export const root: string;
-export const background: string;
 export const input: string;
 export const inputWrapper: string;
 export const checked: string;

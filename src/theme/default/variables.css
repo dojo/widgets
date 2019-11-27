@@ -1,0 +1,22 @@
+:root {
+	--selected-background: #34495e;
+	--selected-color: #fff;
+	--disabled-color: #bbb;
+	--component-background: #fff;
+	--component-color: #424242;
+	--underlay-background: rgba(66, 66, 66, 0.3);
+
+	--error-color: red;
+	--success-color: green;
+
+	--short-animation-duration: .2s;
+	--short-animation-easing: ease;
+
+	/* Z-index levels */
+	--zindex-base: 0;
+	--zindex-tooltip: 100;
+	--zindex-dropdown: 200;
+	--zindex-fixed: 300;
+	--zindex-dialog: 400;
+	--zindex-alert: 500;
+}

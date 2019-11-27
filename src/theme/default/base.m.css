@@ -1,0 +1,28 @@
+.visuallyHidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	white-space: nowrap;
+}
+
+/* Allows visually hidden, focusable content to become visible when navigated to via keyboard */
+.visuallyHidden.focusable:active,
+.visuallyHidden.focusable:focus {
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+	white-space: inherit;
+}
+
+/* If you're using .hidden, you probably mean it. */
+.hidden {
+	display: none !important;
+}

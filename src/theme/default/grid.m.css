@@ -1,4 +1,4 @@
-@import '../common/styles/variables.css';
+@import './variables.css';
 
 .root {
 	border-top: 1px solid var(--component-color);

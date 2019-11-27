@@ -1,4 +1,4 @@
-@import '../common/styles/variables.css';
+@import './variables.css';
 
 .title {
 	background-color: var(--component-background);
