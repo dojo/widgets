@@ -55,7 +55,6 @@
     "@dojo/framework": "7.0.0-alpha.4",
     "@dojo/parade": "0.0.1",
     "@dojo/scripts": "^4.0.2",
-    "@dojo/themes": "^6.0.0",
     "@theintern/a11y": "~0.2.0",
     "@types/execa": "^0.8.1",
     "@types/glob": "5.0.36",
