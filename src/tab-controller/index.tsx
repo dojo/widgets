@@ -110,9 +110,14 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<
 
 	protected renderTabButtons(): DNode[] {
 		return this._tabs.map((tab, i) => {
-			const { closeable, disabled, key, label, theme, classes } = <TabProperties>(
-				tab.properties
-			);
+			const {
+				closeable,
+				disabled,
+				key,
+				label,
+				theme,
+				classes
+			} = tab.properties as TabProperties;
 
 			return w(
 				TabButton,

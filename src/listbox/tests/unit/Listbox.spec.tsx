@@ -200,7 +200,7 @@ registerSuite('Listbox', {
 							theme: {}
 						}),
 						expectedThirdOption({
-							css: <any>[css.option, null, css.disabledOption, null],
+							css: [css.option, null, css.disabledOption, null],
 							disabled: true,
 							label: 'Three',
 							theme: {}

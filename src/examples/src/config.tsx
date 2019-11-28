@@ -107,6 +107,10 @@ const tests = typeof testsContext !== 'undefined' ? testsContext : [];
 export const config = {
 	themes: [dojoTheme],
 	tests,
+	readmePath: (widget: string) => `src/${widget}/README.md`,
+	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename || 'index'}.tsx`,
+	examplePath: (widget: string, filename: string) =>
+		`src/examples/src/widgets/${widget}/${filename || 'index'}.tsx`,
 	widgets: {
 		'accordion-pane': {
 			examples: [
