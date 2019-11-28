@@ -128,7 +128,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 	private _onNativeChange(event: Event) {
 		const { getOptionValue, options = [], onValue } = this.properties;
 		event.stopPropagation();
-		const value = (<HTMLInputElement>event.target).value;
+		const value = (event.target as HTMLInputElement).value;
 		const option = find(options, (option: T, index: number) => {
 			if (getOptionValue) {
 				return getOptionValue(option, index) === value;
