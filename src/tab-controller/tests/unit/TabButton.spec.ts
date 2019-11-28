@@ -9,7 +9,7 @@ import { Keys } from '../../../common/util';
 import { assign } from '@dojo/framework/shim/object';
 
 import TabButton, { TabButtonProperties } from '../../TabButton';
-import * as css from '../../../theme/tab-controller.m.css';
+import * as css from '../../../theme/default/tab-controller.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const props = function(props = {}) {

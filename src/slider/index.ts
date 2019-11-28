@@ -8,7 +8,7 @@ import Focus from '../meta/Focus';
 import { uuid } from '@dojo/framework/core/util';
 import { formatAriaProperties } from '../common/util';
 import * as fixedCss from './styles/slider.m.css';
-import * as css from '../theme/slider.m.css';
+import * as css from '../theme/default/slider.m.css';
 
 export interface SliderProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */

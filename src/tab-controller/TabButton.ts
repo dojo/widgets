@@ -7,7 +7,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import commonBundle from '../common/nls/common';
 import { Keys } from '../common/util';
 
-import * as css from '../theme/tab-controller.m.css';
+import * as css from '../theme/default/tab-controller.m.css';
 
 /**
  * @type TabButtonProperties

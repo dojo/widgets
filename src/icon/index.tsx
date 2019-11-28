@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import { formatAriaProperties } from '../common/util';
-import * as css from '../theme/icon.m.css';
+import * as css from '../theme/default/icon.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 export type IconType = keyof typeof css;

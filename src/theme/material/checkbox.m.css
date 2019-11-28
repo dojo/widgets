@@ -1,0 +1,42 @@
+.root {
+	display: flex;
+	align-items: center;
+}
+
+.inputWrapper {
+	composes: mdc-checkbox from '@material/checkbox/dist/mdc.checkbox.css';
+}
+
+.input {
+	composes: mdc-checkbox__native-control from '@material/checkbox/dist/mdc.checkbox.css';
+}
+
+.background {
+	display: unset;
+	composes: mdc-checkbox__background from '@material/checkbox/dist/mdc.checkbox.css';
+}
+
+.background::after {
+	content: '';
+	opacity: 0;
+}
+
+.checked .background::after {
+	opacity: 1;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 7px;
+	height: 14px;
+	border: solid 2px var(--mdc-theme-surface);
+	border-left: none;
+	border-top: none;
+	transform: translate(3.5px, -0.5px) rotate(45deg);
+	box-sizing: border-box;
+}
+
+.disabled,
+.readonly {
+	composes: mdc-checkbox--disabled from '@material/checkbox/dist/mdc.checkbox.css';
+}

@@ -6,7 +6,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import TextInput from '../text-input/index';
 import Icon from '../icon/index';
 
-import * as css from '../theme/grid-header.m.css';
+import * as css from '../theme/default/grid-header.m.css';
 import * as fixedCss from './styles/header.m.css';
 
 export interface SortRenderer {

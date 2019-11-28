@@ -1,0 +1,17 @@
+@import './variables.css';
+
+.root {
+}
+
+.output {
+}
+
+.bar {
+	border: 1px solid black;
+	height: 24px;
+}
+
+.progress {
+	height: 100%;
+	background: var(--selected-background);
+}

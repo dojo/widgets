@@ -1,0 +1,19 @@
+.root {
+}
+
+.iconWrapper {
+}
+
+.label {
+}
+
+.closeIconWrapper {
+	cursor: pointer;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.disabled {
+}

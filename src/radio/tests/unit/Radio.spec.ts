@@ -7,7 +7,7 @@ import Focus from '../../../meta/Focus';
 
 import Label from '../../../label/index';
 import Radio from '../../../radio/index';
-import * as css from '../../../theme/radio.m.css';
+import * as css from '../../../theme/default/radio.m.css';
 import {
 	createHarness,
 	compareId,

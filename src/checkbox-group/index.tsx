@@ -3,7 +3,7 @@ import { checkboxGroup } from './middleware';
 import { Checkbox } from '../checkbox/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
-import * as css from '../theme/checkbox-group.m.css';
+import * as css from '../theme/default/checkbox-group.m.css';
 
 type CheckboxOptions = { value: string; label?: string }[];
 

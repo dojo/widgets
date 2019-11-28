@@ -3,7 +3,7 @@ const { registerSuite } = intern.getInterface('object');
 import { v, w } from '@dojo/framework/core/vdom';
 
 import Icon from '../../index';
-import * as css from '../../../theme/icon.m.css';
+import * as css from '../../../theme/default/icon.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import {
 	createHarness,

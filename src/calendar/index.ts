@@ -11,7 +11,7 @@ import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import Icon from '../icon/index';
 import calendarBundle from './nls/Calendar';
-import * as css from '../theme/calendar.m.css';
+import * as css from '../theme/default/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 export type CalendarMessages = typeof calendarBundle.messages;

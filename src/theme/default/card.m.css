@@ -1,0 +1,52 @@
+.root {
+	display: flex;
+	flex-direction: column;
+}
+
+.actions {
+	display: flex;
+	flex-direction: row;
+}
+
+.actionButtons {
+	display: flex;
+	align-items: center;
+}
+
+.actionIcons {
+	display: flex;
+	align-items: center;
+	flex-grow: 1;
+}
+
+.primaryAction {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.media {
+}
+
+.mediaContent {
+}
+
+.mediaSquare::before {
+	margin-top: 100%;
+}
+
+.media16by9::before {
+	margin-top: 56.25%;
+}
+
+.media::before {
+	display: block;
+	content: '';
+}
+
+.primary {
+}
+
+.secondary {
+}

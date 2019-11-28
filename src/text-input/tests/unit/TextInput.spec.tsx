@@ -10,7 +10,7 @@ import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
 import TextInput from '../../index';
-import * as css from '../../../theme/text-input.m.css';
+import * as css from '../../../theme/default/text-input.m.css';
 import {
 	compareForId,
 	compareId,

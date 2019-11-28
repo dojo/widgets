@@ -3,7 +3,7 @@ const { registerSuite } = intern.getInterface('object');
 import harness from '@dojo/framework/testing/harness';
 
 import { RaisedButton } from '../../index';
-import * as buttonCss from '../../../theme/button.m.css';
+import * as buttonCss from '../../../theme/default/button.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import Button from '../../../button/index';

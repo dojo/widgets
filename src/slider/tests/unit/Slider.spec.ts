@@ -6,7 +6,7 @@ import Focus from '../../../meta/Focus';
 
 import Label from '../../../label/index';
 import Slider from '../../index';
-import * as css from '../../../theme/slider.m.css';
+import * as css from '../../../theme/default/slider.m.css';
 import * as fixedCss from '../../styles/slider.m.css';
 import {
 	compareId,

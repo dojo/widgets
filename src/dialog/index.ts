@@ -10,7 +10,7 @@ import commonBundle from '../common/nls/common';
 
 import Icon from '../icon/index';
 import * as fixedCss from './styles/dialog.m.css';
-import * as css from '../theme/dialog.m.css';
+import * as css from '../theme/default/dialog.m.css';
 import { GlobalEvent } from '../global-event/index';
 
 /**

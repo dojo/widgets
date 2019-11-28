@@ -9,7 +9,7 @@ import TabButton from './TabButton';
 import { uuid } from '@dojo/framework/core/util';
 import { formatAriaProperties } from '../common/util';
 
-import * as css from '../theme/tab-controller.m.css';
+import * as css from '../theme/default/tab-controller.m.css';
 
 /**
  * Enum for tab button alignment

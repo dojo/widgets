@@ -10,7 +10,7 @@ import { monthInMin, monthInMax } from './date-utils';
 
 import Icon from '../icon/index';
 import * as baseCss from '../common/styles/base.m.css';
-import * as css from '../theme/calendar.m.css';
+import * as css from '../theme/default/calendar.m.css';
 
 /**
  * Enum for next/previous buttons

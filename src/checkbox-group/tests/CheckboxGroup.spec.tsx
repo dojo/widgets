@@ -3,7 +3,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import CheckboxGroup from '../index';
-import * as css from '../../theme/checkbox-group.m.css';
+import * as css from '../../theme/default/checkbox-group.m.css';
 import Checkbox from '../../checkbox/index';
 
 function noop() {}

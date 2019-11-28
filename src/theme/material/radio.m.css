@@ -1,0 +1,40 @@
+@import './variables.css';
+
+.root {
+	--mdc-theme-secondary: var(--mdc-theme-primary);
+	display: flex;
+	align-items: center;
+}
+
+.inputWrapper {
+	composes: mdc-radio from '@material/radio/dist/mdc.radio.css';
+}
+
+.input {
+	composes: mdc-radio__native-control from '@material/radio/dist/mdc.radio.css';
+}
+
+.radioBackground {
+	composes: mdc-radio__background from '@material/radio/dist/mdc.radio.css';
+}
+.radioOuter {
+	composes: mdc-radio__outer-circle from '@material/radio/dist/mdc.radio.css';
+}
+.radioInner {
+	composes: mdc-radio__inner-circle from '@material/radio/dist/mdc.radio.css';
+}
+
+.checked {
+}
+
+.focused {
+}
+
+.disabled {
+}
+
+.readonly {
+}
+
+.required {
+}

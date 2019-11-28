@@ -1,0 +1,12 @@
+@import './variables.css';
+
+.root {
+}
+.text {
+}
+.valid {
+	color: var(--success-color);
+}
+.invalid {
+	color: var(--error-color);
+}

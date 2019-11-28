@@ -8,7 +8,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
 import TextArea from '../../index';
-import * as css from '../../../theme/text-area.m.css';
+import * as css from '../../../theme/default/text-area.m.css';
 import {
 	compareForId,
 	compareId,

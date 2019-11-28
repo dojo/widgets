@@ -11,7 +11,7 @@ import Icon from '../../../icon/index';
 import Label from '../../../label/index';
 import Listbox from '../../../listbox/index';
 import TextInput from '../../../text-input/index';
-import * as css from '../../../theme/combobox.m.css';
+import * as css from '../../../theme/default/combobox.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 import {
 	createHarness,

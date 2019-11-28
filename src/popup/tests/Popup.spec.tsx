@@ -5,7 +5,7 @@ import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
 import harness from '@dojo/framework/testing/harness';
 import Popup from '../index';
 import * as fixedCss from '../popup.m.css';
-import * as css from '../../theme/popup.m.css';
+import * as css from '../../theme/default/popup.m.css';
 
 const baseTemplate = assertionTemplate(() => (
 	<virtual>

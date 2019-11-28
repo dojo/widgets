@@ -10,7 +10,7 @@ import Button from '../button/index';
 import Icon from '../icon/index';
 
 import * as fixedCss from './styles/cell.m.css';
-import * as css from '../theme/grid-cell.m.css';
+import * as css from '../theme/default/grid-cell.m.css';
 
 export interface CellProperties extends FocusProperties {
 	value: string | DNode;

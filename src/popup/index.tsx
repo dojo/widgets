@@ -1,7 +1,7 @@
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { theme } from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/popup.m.css';
+import * as css from '../theme/default/popup.m.css';
 import * as fixedCss from './popup.m.css';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';

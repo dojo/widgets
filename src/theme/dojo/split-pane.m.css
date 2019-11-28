@@ -1,0 +1,38 @@
+@import './variables.css';
+
+.root {
+	box-sizing: border-box;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
+}
+
+.root * {
+	box-sizing: border-box;
+}
+
+.divider {
+	background-color: var(--color-border);
+	box-sizing: content-box;
+	transition: border var(--transition-duration) var(--transition-easing);
+}
+
+.row > .divider {
+	border-left: 2px solid transparent;
+	border-right: 2px solid transparent;
+}
+
+.column > .divider {
+	border-bottom: 2px solid transparent;
+	border-top: 2px solid transparent;
+}
+
+.row > .divider:hover {
+	border-left-color: var(--color-border-strong);
+	border-right-color: var(--color-border-strong);
+}
+
+.column > .divider:hover {
+	border-bottom-color: var(--color-border-strong);
+	border-top-color: var(--color-border-strong);
+}

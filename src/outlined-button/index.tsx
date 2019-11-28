@@ -1,8 +1,8 @@
 import theme from '../middleware/theme';
 import { tsx, create } from '@dojo/framework/core/vdom';
 import Button, { ButtonProperties } from '../button/index';
-import * as outlinedButtonCss from '../theme/outlined-button.m.css';
-import * as buttonCss from '../theme/button.m.css';
+import * as outlinedButtonCss from '../theme/default/outlined-button.m.css';
+import * as buttonCss from '../theme/default/button.m.css';
 
 export interface OutlinedButtonProperties extends ButtonProperties {}
 

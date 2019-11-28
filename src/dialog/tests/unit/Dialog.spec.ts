@@ -7,7 +7,7 @@ import Focus from '../../../meta/Focus';
 
 import Dialog, { DialogProperties } from '../../index';
 import Icon from '../../../icon/index';
-import * as css from '../../../theme/dialog.m.css';
+import * as css from '../../../theme/default/dialog.m.css';
 import * as fixedCss from '../../styles/dialog.m.css';
 import { Keys } from '../../../common/util';
 import { GlobalEvent } from '../../../global-event/index';

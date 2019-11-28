@@ -11,7 +11,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 
 import Listbox from '../../index';
 import ListboxOption, { ListboxOptionProperties } from '../../ListboxOption';
-import * as css from '../../../theme/listbox.m.css';
+import * as css from '../../../theme/default/listbox.m.css';
 import {
 	createHarness,
 	compareId,

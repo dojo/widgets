@@ -10,7 +10,7 @@ import Toolbar, { Align, ToolbarProperties } from '../../index';
 import SlidePane from '../../../slide-pane/index';
 
 import * as fixedCss from '../../styles/toolbar.m.css';
-import * as css from '../../../theme/toolbar.m.css';
+import * as css from '../../../theme/default/toolbar.m.css';
 import { GlobalEvent } from '../../../global-event/index';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 

@@ -6,7 +6,7 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 
 import ListboxOption from '../../ListboxOption';
-import * as css from '../../../theme/listbox.m.css';
+import * as css from '../../../theme/default/listbox.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 registerSuite('ListboxOption', {

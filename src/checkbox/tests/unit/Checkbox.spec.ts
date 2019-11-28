@@ -8,7 +8,7 @@ import harness from '@dojo/framework/testing/harness';
 
 import Label from '../../../label/index';
 import Checkbox, { Mode, CheckboxProperties } from '../../index';
-import * as css from '../../../theme/checkbox.m.css';
+import * as css from '../../../theme/default/checkbox.m.css';
 import { noop, MockMetaMixin, stubEvent } from '../../../common/tests/support/test-helpers';
 
 const expectedToggle = function(labels = false, checked = false) {

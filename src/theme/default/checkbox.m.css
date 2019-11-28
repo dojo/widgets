@@ -1,0 +1,46 @@
+@import './variables.css';
+
+.root {
+	display: block;
+	position: relative;
+}
+
+.input {
+}
+.inputWrapper {
+}
+.checked {
+}
+.disabled {
+}
+.focused {
+}
+.readonly {
+}
+.required {
+}
+
+/* invalid style */
+.invalid .inputWrapper::before {
+	border-color: var(--error-color);
+}
+.invalid .inputWrapper::after {
+	background-color: var(--error-color);
+}
+
+/* valid style */
+.valid .inputWrapper::before {
+	border-color: var(--success-color);
+}
+.valid .inputWrapper::after {
+	background-color: var(--success-color);
+}
+
+.toggle {
+}
+.onLabel {
+}
+.offLabel {
+}
+.toggleSwitch {
+}

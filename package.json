@@ -18,7 +18,7 @@
   },
   "scripts": {
     "dev": "dojo build app -m dev -w -s",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "dojo-package": "dojo-package",
     "dojo-release": "dojo-release",
     "version:update": "shx cp package.json package.json.bk && node scripts/version",
@@ -29,12 +29,13 @@
     "test:ci": "run-s clean build:test test:headless",
     "build:ce": "dojo build widget && shx cp -r output/dist dist/umd/src/",
     "build:docs": "dojo build app -f docs=true",
+    "build:themes": "dojo build theme && shx cp -r output/theme/* dist/umd/src/theme",
     "build:examples": "dojo build app -f docs=true && dojo build app -m dev",
     "build:docs:dev": "dojo build app -m dev -w -s -f docs=true",
     "build:lib": "dojo build widget -t lib && shx cp -r output/dist dist/esm/src",
     "build:lib:legacy": "dojo build widget -t lib -l && shx cp -r output/dist dist/umd/src",
     "build:test": "dojo build widget -m unit",
-    "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce",
+    "build": "npm run clean && npm run build:lib && npm run build:lib:legacy && npm run build:ce && npm run build:themes",
     "clean": "shx rm -rf dist && shx mkdir dist && shx mkdir dist/umd && shx mkdir dist/esm && shx mkdir dist/dev",
     "release": "run-s \"version:update -- {@}\" build version:reset dojo-package \"dojo-release -- {@}\" --",
     "uploadCoverage": "codecov --file=coverage/coverage.json"
@@ -51,11 +52,17 @@
     "@dojo/cli": "7.0.0-alpha.1",
     "@dojo/cli-build-app": "7.0.0-alpha.4",
     "@dojo/cli-build-widget": "7.0.0-alpha.2",
+    "@dojo/cli-build-theme": "7.0.0-alpha.1",
     "@dojo/cli-test-intern": "7.0.0-alpha.3",
     "@dojo/framework": "7.0.0-alpha.4",
     "@dojo/parade": "0.0.1",
     "@dojo/scripts": "^4.0.2",
-    "@dojo/themes": "^6.0.0",
+    "@material/button": "2.1.1",
+    "@material/checkbox": "4.0.0",
+    "@material/chips": "4.0.0",
+    "@material/radio": "3.2.0",
+    "@material/snackbar": "4.0.0",
+    "@material/tab": "4.0.0",
     "@theintern/a11y": "~0.2.0",
     "@types/execa": "^0.8.1",
     "@types/glob": "5.0.36",
@@ -83,7 +90,7 @@
     "tslib": "~1.9.1"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "*.{ts,tsx,css}": [
       "prettier --write",
       "git add"
     ]

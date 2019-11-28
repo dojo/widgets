@@ -10,7 +10,7 @@ import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
 
 import Grid from '../../index';
-import * as css from '../../../theme/grid.m.css';
+import * as css from '../../../theme/default/grid.m.css';
 import * as fixedCss from '../../styles/grid.m.css';
 import { ColumnConfig } from '../../interfaces';
 import { stub, spy } from 'sinon';

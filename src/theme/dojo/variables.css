@@ -1,0 +1,56 @@
+:root {
+	/* Spacing */
+	--grid-base: 8px;
+	--spacing-regular: var(--grid-base);
+	--spacing-large: calc(var(--grid-base) * 2);
+	--touch-target-min: 48px;
+
+	/* Fonts */
+	--font-size-base: 16px;
+	--font-size-small: 14px;
+	--font-size-title: 20px;
+	--font-size-icon: 24px;
+	--line-height-base: 24px;
+
+	/* Color hex values */
+	--color-dark: #333;
+	--color-text-primary: #000000;
+	--color-text-faded: #5c6c7c;
+	--color-text-inverted: #ffffff;
+	--color-highlight: #006be6;
+	--color-highlight-border: hsl(212.08695652173913, 100%, 58.0980392157%);
+	--color-success: #188701;
+	--color-error: #eb1313;
+	--color-background: #ffffff;
+	--color-background-inverted: #5c6c7c;
+	--color-background-faded: #f4f6f7;
+	--color-border: #d6dde2;
+	--color-border-strong: #5c6c7c;
+	--color-border-invalid: hsl(0, 76.0393700787%, 86.8039215686%);
+	--color-border-valid: hsl(109.70149253731344, 66.5294117647%, 81.6666666667%);
+	--color-box-shadow: rgba(0, 0, 0, 0.2);
+	--color-box-shadow-highlight: rgba(0, 107, 230, 0.2);
+	--color-box-shadow-strong: rgba(0, 0, 0, 0.5);
+	--color-box-shadow-focus: rgba(0, 107, 230, 0.2);
+	--color-box-shadow-invalid: rgba(235, 19, 19, 0.2);
+	--color-box-shadow-valid: rgba(24, 135, 1, 0.2);
+
+	/* Border and shadow */
+	--box-shadow-dimensions-small: 0 2px 2px 0;
+	--box-shadow-dimensions-large: 0 9px 16px 0;
+	--border-width: 1px;
+	--border-width-emphasized: 2px;
+	--border-radius: 4px;
+
+	/* Transitions */
+	--transition-duration: 0.25s;
+	--transition-easing: ease;
+
+	/* Z-index levels */
+	--zindex-base: 0;
+	--zindex-tooltip: 100;
+	--zindex-dropdown: 200;
+	--zindex-fixed: 300;
+	--zindex-dialog: 400;
+	--zindex-alert: 500;
+}

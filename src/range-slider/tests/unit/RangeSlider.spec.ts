@@ -5,7 +5,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 
 import Label from '../../../label/index';
 import RangeSlider from '../../index';
-import * as css from '../../../theme/range-slider.m.css';
+import * as css from '../../../theme/default/range-slider.m.css';
 import * as fixedCss from '../../styles/range-slider.m.css';
 import Focus from '../../../meta/Focus';
 import {

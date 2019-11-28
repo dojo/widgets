@@ -3,7 +3,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { v } from '@dojo/framework/core/vdom';
-import * as css from '../theme/button.m.css';
+import * as css from '../theme/default/button.m.css';
 import { formatAriaProperties } from '../common/util';
 
 export interface ButtonProperties extends ThemedProperties, FocusProperties {

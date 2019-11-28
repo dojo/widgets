@@ -3,7 +3,7 @@ import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixin
 import { v } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
 import { DNode } from '@dojo/framework/core/interfaces';
-import * as css from '../theme/progress.m.css';
+import * as css from '../theme/default/progress.m.css';
 
 export interface ProgressProperties extends ThemedProperties {
 	/** Custom aria attributes */

@@ -5,7 +5,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 
 import * as fixedCss from './styles/split-pane.m.css';
-import * as css from '../theme/split-pane.m.css';
+import * as css from '../theme/default/split-pane.m.css';
 import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
 import { Resize, ContentRect } from '@dojo/framework/core/meta/Resize';
 import { GlobalEvent } from '../global-event/index';

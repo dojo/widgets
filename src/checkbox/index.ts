@@ -7,7 +7,7 @@ import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
 import { v, w } from '@dojo/framework/core/vdom';
 import { uuid } from '@dojo/framework/core/util';
-import * as css from '../theme/checkbox.m.css';
+import * as css from '../theme/default/checkbox.m.css';
 
 export interface CheckboxProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */

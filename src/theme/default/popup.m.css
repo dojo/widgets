@@ -1,0 +1,4 @@
+/* defines the colour of the underlay when it is set to visible */
+.underlayVisible {
+	background: rgba(0, 0, 0, 0.25);
+}

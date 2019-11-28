@@ -1,0 +1,143 @@
+@import './variables.css';
+
+.tab {
+	position: relative;
+	border: 1px solid black;
+	background: #fff;
+}
+
+.close {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 5px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+	padding: 1px 3px;
+}
+
+.hidden {
+	display: none;
+}
+
+.close:after {
+	content: '✕';
+	display: block;
+	font-size: 14px;
+}
+
+.closeable {
+}
+
+.indicator {
+	display: none;
+}
+
+.indicatorActive {
+}
+.indicatorContent {
+}
+
+.tabButtonContent {
+}
+
+.activeTabButton {
+	background: #fff;
+	border-color: black;
+	border-bottom-color: #fff;
+	z-index: calc(var(--zindex-base) + 1);
+}
+
+.root {
+	box-sizing: border-box;
+}
+
+.tabButton {
+	border: 1px solid transparent;
+	border-top: 2px solid transparent;
+	text-align: center;
+	display: inline-block;
+	vertical-align: top;
+	width: auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+	position: relative;
+	top: 1px;
+}
+
+.tabButton:focus:not(.disabledTabButton) {
+	font-weight: bold;
+}
+
+.disabledTabButton {
+	font-style: italic;
+	cursor: default;
+	color: var(--disabled-color);
+}
+
+.alignLeft .tabs {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.alignLeft .tabButtons {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.alignLeft .tabButton {
+	border-top: 1px solid transparent;
+	border-left: 2px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-right: 1px solid transparent;
+	display: block;
+	top: 0;
+	left: 1px;
+}
+
+.alignLeft .activeTabButton {
+	border-top-color: var(--selected-background);
+	border-left-color: var(--selected-background);
+	border-bottom-color: var(--selected-background);
+	border-right: 1px solid #fff;
+}
+
+.alignBottom .tabButton {
+	border-top: none;
+	border-bottom: 2px solid transparent;
+	top: -1px;
+}
+
+.alignBottom .activeTabButton {
+	border-bottom-color: var(--selected-background);
+}
+
+.alignRight .tabs {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.alignRight .tabButtons {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.alignRight .tabButton {
+	border-top: 1px solid transparent;
+	border-right: 2px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-left: none;
+	display: block;
+	top: 0;
+	left: -1px;
+}
+
+.alignRight .activeTabButton {
+	border-top-color: var(--selected-background);
+	border-right-color: var(--selected-background);
+	border-bottom-color: var(--selected-background);
+}

@@ -9,7 +9,7 @@ import * as animations from '../common/styles/animations.m.css';
 import commonBundle from '../common/nls/common';
 import Icon from '../icon/index';
 import * as fixedCss from './styles/slide-pane.m.css';
-import * as css from '../theme/slide-pane.m.css';
+import * as css from '../theme/default/slide-pane.m.css';
 import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 
 /**

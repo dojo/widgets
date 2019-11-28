@@ -23,7 +23,7 @@
 }
 
 .dividerFixed::after {
-	content: "";
+	content: '';
 	position: absolute;
 }
 
@@ -59,7 +59,8 @@
 	flex: 1 1 0%;
 }
 
-.trailingFixed, .leadingFixed {
+.trailingFixed,
+.leadingFixed {
 	overflow: auto;
 }
 

@@ -7,7 +7,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import { harness } from '@dojo/framework/testing/harness';
 
 import TextInput, { BaseInputProperties } from '../../../text-input';
-import * as textInputCss from '../../../theme/text-input.m.css';
+import * as textInputCss from '../../../theme/default/text-input.m.css';
 import { compareTheme } from '../../../common/tests/support/test-helpers';
 
 import NumberInput from '../..';

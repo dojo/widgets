@@ -16,7 +16,7 @@ import Listbox from '../listbox/index';
 import TextInput, { TextInputProperties } from '../text-input/index';
 import commonBundle from '../common/nls/common';
 
-import * as css from '../theme/combobox.m.css';
+import * as css from '../theme/default/combobox.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import HelperText from '../helper-text/index';
 

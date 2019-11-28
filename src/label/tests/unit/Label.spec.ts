@@ -4,7 +4,7 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 
 import Label from '../../index';
-import * as css from '../../../theme/label.m.css';
+import * as css from '../../../theme/default/label.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
 
 registerSuite('Label', {

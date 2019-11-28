@@ -7,7 +7,7 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import * as sinon from 'sinon';
 import Chip from '../index';
-import * as css from '../../theme/chip.m.css';
+import * as css from '../../theme/default/chip.m.css';
 import Icon from '../../icon/index';
 
 function noop() {}

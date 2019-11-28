@@ -1,0 +1,28 @@
+@import './variables.css';
+
+.root {
+	composes: root from './grid-row.m.css';
+	line-height: 30px;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.loading {
+	margin: 6px;
+	width: 12px;
+	height: 12px;
+	border: 3px solid var(--disabled-color);
+	border-radius: 50%;
+	border-top-color: var(--component-color);
+	animation: spin 1s ease-in-out infinite;
+	will-change: auto;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

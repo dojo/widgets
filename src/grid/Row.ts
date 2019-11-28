@@ -6,7 +6,7 @@ import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { ColumnConfig } from './interfaces';
 import Cell from './Cell';
 import * as fixedCss from './styles/row.m.css';
-import * as css from '../theme/grid-row.m.css';
+import * as css from '../theme/default/grid-row.m.css';
 
 export interface RowProperties {
 	id: number;

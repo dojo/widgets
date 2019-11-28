@@ -1,0 +1,30 @@
+@import './variables.css';
+
+.root {
+	border: 1px solid var(--component-color);
+	background: var(--component-background);
+	max-height: 400px;
+	overflow-y: auto;
+	position: relative;
+}
+
+.focused {
+}
+
+.option {
+	cursor: pointer;
+}
+
+.focused .activeOption,
+.root:focus .activeOption {
+	box-shadow: inset 0 0 1px 0 var(--component-background);
+	outline: 4px auto var(--selected-background);
+}
+.disabledOption {
+	background-color: var(--disabled-color);
+	cursor: default;
+}
+.selectedOption {
+	background-color: var(--selected-background);
+	color: var(--selected-color);
+}

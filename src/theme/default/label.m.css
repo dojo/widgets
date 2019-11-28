@@ -1,0 +1,23 @@
+@import './variables.css';
+
+.root {
+}
+.readonly {
+}
+.invalid {
+}
+.valid {
+}
+.required {
+}
+.disabled {
+}
+.focused {
+}
+.secondary {
+}
+
+.required::after {
+	content: '*';
+	color: var(--error-color);
+}

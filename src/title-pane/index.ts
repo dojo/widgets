@@ -7,7 +7,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
 import Icon from '../icon/index';
 import * as fixedCss from './styles/title-pane.m.css';
-import * as css from '../theme/title-pane.m.css';
+import * as css from '../theme/default/title-pane.m.css';
 import { Dimensions } from '@dojo/framework/core/meta/Dimensions';
 import GlobalEvent from '../global-event/index';
 

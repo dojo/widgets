@@ -1,0 +1,30 @@
+@import './variables.css';
+
+.root {
+	background: var(--color-background);
+	border-top: var(--border-width) solid var(--color-border);
+	border-bottom: var(--border-width) solid var(--color-border);
+	box-sizing: border-box;
+	height: calc(7 * var(--grid-base));
+	padding: calc(2 * var(--grid-base));
+	text-align: left;
+}
+
+.title {
+	font-size: var(--font-size-title);
+	margin: 0;
+	font-weight: normal;
+}
+
+.menuButton {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 0;
+	padding: var(--grid-base);
+	margin: 0;
+}
+
+.menuButton i {
+	font-size: var(--font-size-title);
+}

@@ -9,7 +9,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import TabController, { Align } from '../../index';
 import TabButton from '../../TabButton';
 import Tab from '../../../tab/index';
-import * as css from '../../../theme/tab-controller.m.css';
+import * as css from '../../../theme/default/tab-controller.m.css';
 import {
 	createHarness,
 	compareId,

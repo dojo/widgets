@@ -4,7 +4,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 
 import Tooltip, { Orientation } from '../../index';
-import * as css from '../../../theme/tooltip.m.css';
+import * as css from '../../../theme/default/tooltip.m.css';
 import * as fixedCss from '../../styles/tooltip.m.css';
 
 registerSuite('Tooltip', {

@@ -3,7 +3,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
-import * as css from '../theme/label.m.css';
+import * as css from '../theme/default/label.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 export interface LabelProperties extends ThemedProperties {
