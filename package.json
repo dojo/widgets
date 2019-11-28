@@ -52,7 +52,7 @@
     "@dojo/cli": "7.0.0-alpha.1",
     "@dojo/cli-build-app": "7.0.0-alpha.4",
     "@dojo/cli-build-widget": "7.0.0-alpha.2",
-    "@dojo/cli-build-theme": "./dojo-cli-build-theme-7.0.0-alpha.1.tgz",
+    "@dojo/cli-build-theme": "7.0.0-alpha.1",
     "@dojo/cli-test-intern": "7.0.0-alpha.3",
     "@dojo/framework": "7.0.0-alpha.4",
     "@dojo/parade": "0.0.1",
