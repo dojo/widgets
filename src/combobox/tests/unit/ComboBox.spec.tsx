@@ -273,7 +273,9 @@ const getExpectedVdom = function(
 			!open &&
 				w(HelperText, {
 					text: valid ? helperText : message,
-					valid
+					valid,
+					classes: undefined,
+					theme: useTestProperties ? {} : undefined
 				}),
 			menuVdom
 		]

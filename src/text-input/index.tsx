@@ -335,7 +335,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							])
 					]
 				),
-				w(HelperText, { text: computedHelperText, valid })
+				w(HelperText, { text: computedHelperText, valid, classes, theme })
 			]
 		);
 	}

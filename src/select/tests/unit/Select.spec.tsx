@@ -285,7 +285,7 @@ const expected = function(
 				  )
 				: null,
 			selectVdom,
-			w(HelperText, { theme: undefined, text: helperText })
+			w(HelperText, { classes: undefined, theme: undefined, text: helperText })
 		]
 	);
 };
@@ -616,7 +616,7 @@ registerSuite('Select', {
 									)
 								]
 							),
-							w(HelperText, { theme: undefined, text: undefined })
+							w(HelperText, { classes: undefined, theme: undefined, text: undefined })
 						]
 					)
 				);

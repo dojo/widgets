@@ -487,7 +487,9 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			!this._open &&
 				w(HelperText, {
 					text: valid ? helperText : message,
-					valid
+					valid,
+					classes,
+					theme
 				}),
 			menu
 		];
