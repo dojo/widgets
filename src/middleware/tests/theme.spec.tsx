@@ -312,4 +312,39 @@ describe('theme middleware', () => {
 			}
 		});
 	});
+
+	it('should compose base theme using prefix and enable theming even when the prefixed class does not exist in the variant css', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_theme_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		});
+	});
 });
