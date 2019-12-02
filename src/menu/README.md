@@ -1,6 +1,6 @@
 # @dojo/widgets/menu
 
-Dojo's `Menu` provides a base widget that can be used as a menu or an options menu within a `Select`, `Typeahead` etc.
+Dojo's `Menu` provides a base widget that can be used as a menu or an options menu within a `Select`, `Typeahead`, etc.
 
 ## Features
 
@@ -8,11 +8,11 @@ Dojo's `Menu` provides a base widget that can be used as a menu or an options me
 - Can be controlled through `activeIndex` and `onActiveIndexChange` in conjunction with `focusable: false`.
 - Handles native style scrolling
 - Provides a custom renderer for more complex menu items
-- Active selection follows mouse as per native behaviour
+- Active selection follows mouse as per native behavior
 
 ### Keyboard Usage
 
-`Menu` supports keyboard navigation for highlighting and selecting options
+`Menu` supports keyboard navigation for highlighting and selecting options.
 
 - Enter Key: selects the current option
 - Space Key: selects the current option
