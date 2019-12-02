@@ -4,9 +4,9 @@ Dojo's `TimePicker` widget provides a form control that allows users to manually
 
 ## Features
 
-- Provides an option to use a native `<input type="time">` when needed.
-- Automatically generates all possible valid options based on the starting time, ending time, and step.
-- Completely keyboard accessible.
+- Provides an option to use a native `<input type="time">` when needed
+- Automatically generates all possible valid options based on the starting time, ending time, and step
+- Completely keyboard accessible
 
 ### Keyboard Usage
 
@@ -35,4 +35,4 @@ Beyond complete keyboard accessibility, `TimePicker` ensures that all appropriat
 
 ### Internationalization Features
 
-By default, all options are formatted in 24-hour standard time (`HHmmss`, or `HHmm` is the `step` is greater than or equal to 60). This format can be localized by setting a `getOptionLabel` property function that accepts an object containing `hour`, `minute`, and `second` properties and returns a locale-specific string. For example, if 12-hour time with the appropriate "am"/"pm" periods should be displayed to English-speaking users, then one of the date formatters from [`@dojo/framework/i18n/date`](https://github.com/dojo/i18n#date-and-number-formatting) could be used to do so (note that these methods [require CLDR data](https://github.com/dojo/i18n#loading-cldr-data)).
+By default, all options are formatted in 24-hour standard time (`HHmmss`, or `HHmm` is the `step` is greater than or equal to 60). This format can be localized by setting a `getOptionLabel` property function that accepts an object containing `hour`, `minute`, and `second` properties and returns a locale-specific string. For example, if 12-hour time with the appropriate "am"/"pm" periods should be displayed to English-speaking users, then one of the date formatters from [`@dojo/framework/i18n/date`](https://github.com/dojo/framework/blob/master/docs/en/i18n/supplemental.md#date-and-number-formatting) could be used to do so (note that these methods [require CLDR data](https://github.com/dojo/framework/blob/master/docs/en/i18n/supplemental.md#loading-cldr-data)).

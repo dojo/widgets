@@ -16,7 +16,7 @@ interface CheckboxGroupProperties {
 	options: CheckboxOptions;
 	/** Callback for the current value */
 	onValue(value: string[]): void;
-	/** Custom renderer for the checkboxes, recieves the checkbox group middleware and options */
+	/** Custom renderer for the checkboxes, receives the checkbox group middleware and options */
 	renderer?(
 		name: string,
 		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,

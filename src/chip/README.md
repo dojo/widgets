@@ -1,7 +1,6 @@
-# @dojo/widgets/chip widget
+# @dojo/widgets/chip
 
-Dojo's `Chip` widget allows content and particularly user inputs to be displayed more clearly and enables interaction such as removing entered values or clicking them to trigger some action
-
+Dojo's `Chip` widget allows information and user inputs to be displayed as a single compact entity. Supported interactions include removing a chip or clicking them to trigger an action.
 
 ## Features
 

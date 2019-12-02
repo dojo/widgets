@@ -28,7 +28,7 @@ export interface MenuProperties {
 	onRequestClose?(): void;
 	/** Optional callback, when passed, the widget will no longer control it's own active index / keyboard navigation */
 	onActiveIndexChange?(index: number): void;
-	/** Optional proprty to set the activeIndex when it is being controlled externally */
+	/** Optional property to set the activeIndex when it is being controlled externally */
 	activeIndex?: number;
 	/** Determines if the widget can be focused or not. If the active index is controlled from elsewhere you may wish to stop the menu being focused and receiving keyboard events */
 	focusable?: boolean;

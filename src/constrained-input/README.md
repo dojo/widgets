@@ -1,6 +1,6 @@
 # @dojo/widgets/constrained-input
 
-Dojo's `ConstrainedInput` component can be used to show a text input that follows certain pre-defined validation constraints. This can be used to quickly create an input that meets certain minimum standards like a username or password input.
+Dojo's `ConstrainedInput` component creates a text input that follows certain pre-defined validation constraints. This can be used to quickly create an input that meets certain minimum standards like a username or password input.
 
 ## Features
 

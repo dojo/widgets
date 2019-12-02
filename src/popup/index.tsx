@@ -9,11 +9,11 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 export type PopupPosition = 'above' | 'below';
 
 export interface PopupProperties {
-	/** Property to define if the popup wrapper should match the trigger width, defaults to true */
+	/** if the popup wrapper should match the trigger width, defaults to true */
 	matchWidth?: boolean;
-	/** Property to define where the popup should render relative to the trigger, defaults to below */
+	/** where the popup should render relative to the trigger, defaults to below */
 	position?: PopupPosition;
-	/** Property to define if the underlay should be visible, defaults to false */
+	/** if the underlay should be visible, defaults to false */
 	underlayVisible?: boolean;
 }
 

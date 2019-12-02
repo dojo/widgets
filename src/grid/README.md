@@ -1,11 +1,11 @@
 # @dojo/widgets/grid
 
-A reactive lightweight, customizable grid widget built with Dojo.
+Dojo's `Grid` is a reactive lightweight, customizable grid widget.
 
 ## Features
 
  * On-demand virtual rendering with supports for large data-sets
  * Backed by [`@dojo/framework/stores`](https://github.com/dojo/framework/tree/master/src/stores)
- * Editable cells
+ * Cells may be editable or read-only
  * Filtering and Sorting by column
  * Custom cell renderers
