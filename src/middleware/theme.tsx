@@ -36,14 +36,14 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 				);
 				baseTheme = { ...baseTheme, ...prefixedCss };
 			}
-			let variantComposes: any = {};
+			let variantComposes: ClassNames = {};
 			if (extraClasses) {
 				const virtualCss = extraClasses.reduce(
 					(css, key) => {
 						css[key] = ' ';
 						return css;
 					},
-					{ THEME_KEY: variantKey } as any
+					{ THEME_KEY: variantKey } as ClassNames
 				);
 				variantComposes = coreTheme.classes(virtualCss);
 			}
