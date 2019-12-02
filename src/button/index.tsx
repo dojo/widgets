@@ -6,8 +6,6 @@ import { v } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/button.m.css';
 import { formatAriaProperties } from '../common/util';
 
-import './button.css';
-
 export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
