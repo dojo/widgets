@@ -13,7 +13,3 @@
 	background: var(--component-background);
 	color: var(--component-color);
 }
-
-.edit {
-	composes: visuallyHidden focusable from './base.m.css';
-}
