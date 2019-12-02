@@ -8,8 +8,5 @@ Dojo's `AccordionPane` component can be used to show multiple pieces of content 
 
 ### Accessibility Features
 
-An `AccordionPane` expects all children to be `TitlePane` components, and as such, supports standard keyboard navigation for toggling child content open or closed.
-
-**TitleBar Events**:
-
-- Space bar: toggles the pane content of a closeable child `TitlePane`
+- Supports standard tab navigation
+- Space bar toggles the pane content of a closeable child `TitlePane`
