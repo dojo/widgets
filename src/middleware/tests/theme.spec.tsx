@@ -232,6 +232,45 @@ describe('theme middleware', () => {
 		});
 	});
 
+	it('should compose base theme using prefix and variant theme overriding the base theme class', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			baseActive: 'variant_active'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Base': {
+				active: 'base_theme_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_theme_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		});
+	});
+
 	it('should compose base theme using prefix and variant theme and composes', () => {
 		const baseClasses = {
 			' _key': '@dojo/widgets/Base',

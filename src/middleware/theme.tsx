@@ -32,9 +32,9 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 						}
 						return prefixCss;
 					},
-					{ ' _key': baseKey } as any
+					{} as ClassNames
 				);
-				baseTheme = { ...baseTheme, ...coreTheme.classes(prefixedCss) };
+				baseTheme = { ...baseTheme, ...prefixedCss };
 			}
 			let variantComposes: any = {};
 			if (extraClasses) {
