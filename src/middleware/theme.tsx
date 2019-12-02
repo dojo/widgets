@@ -43,7 +43,7 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 						css[key] = ' ';
 						return css;
 					},
-					{ THEME_KEY: variantKey } as ClassNames
+					{ [THEME_KEY]: variantKey } as ClassNames
 				);
 				variantComposes = coreTheme.classes(virtualCss);
 			}
