@@ -13,8 +13,8 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 			prefix?: string
 		): Theme => {
 			const variantTheme = coreTheme.classes(css);
-			const baseKey = baseCss[' _key'];
-			const variantKey = css[' _key'];
+			const baseKey = baseCss[THEME_KEY];
+			const variantKey = css[THEME_KEY];
 			const extraClasses = Object.keys(baseCss).filter(
 				(key) => Object.keys(css).indexOf(key) === -1
 			);
@@ -43,13 +43,13 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 						css[key] = ' ';
 						return css;
 					},
-					{ ' _key': variantKey } as any
+					{ THEME_KEY: variantKey } as any
 				);
 				variantComposes = coreTheme.classes(virtualCss);
 			}
 			const constructedTheme = Object.keys(baseTheme).reduce(
 				(theme, key) => {
-					if (key === ' _key') {
+					if (key === THEME_KEY) {
 						return theme;
 					}
 					const variantComposesClass =
