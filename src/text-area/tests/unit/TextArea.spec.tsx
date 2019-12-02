@@ -111,7 +111,7 @@ const expected = function(
 					...inputOverrides
 				})
 			]),
-			w(HelperText, { text: helperTextValue, valid })
+			w(HelperText, { text: helperTextValue, valid, classes: undefined, theme: undefined })
 		]
 	);
 };
@@ -119,7 +119,13 @@ const expected = function(
 const baseAssertion = assertionTemplate(() => (
 	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
 		{textarea()}
-		<HelperText assertion-key="helperText" text={undefined} valid={true} />
+		<HelperText
+			assertion-key="helperText"
+			text={undefined}
+			valid={true}
+			classes={undefined}
+			theme={undefined}
+		/>
 	</div>
 ));
 

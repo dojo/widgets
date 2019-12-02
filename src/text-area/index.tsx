@@ -256,7 +256,12 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 						}
 					})
 				]),
-				w(HelperText, { text: computedHelperText, valid })
+				w(HelperText, {
+					text: computedHelperText,
+					valid,
+					classes,
+					theme
+				})
 			]
 		);
 	}

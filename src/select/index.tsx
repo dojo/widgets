@@ -478,7 +478,7 @@ export class Select<T = any> extends ThemedMixin(FocusMixin(WidgetBase))<SelectP
 					  )
 					: null,
 				useNativeElement ? this.renderNativeSelect() : this.renderCustomSelect(),
-				w(HelperText, { theme, text: helperText })
+				w(HelperText, { classes, theme, text: helperText })
 			]
 		);
 	}
