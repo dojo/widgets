@@ -2,11 +2,10 @@
 
 Dojo's `Radio` widget provides a styleable radio widget with an optional label.
 
-
 ## Features
 
 - Correctly handles a11y attributes
-- Wraps the input in a visible or invisible but accessible `<label>` if the `label` property is added
+- Wraps the input in an accessible `<label>` when the `label` property is added
 
 ### Accessibility Features
 
