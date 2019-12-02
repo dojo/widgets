@@ -62,6 +62,8 @@ import BasicSnackbar from './widgets/snackbar/Basic';
 import BasicSplitPane from './widgets/split-pane/Basic';
 import BasicTabController from './widgets/tab-controller/Basic';
 import DisabledTabController from './widgets/tab-controller/Disabled';
+import CloseableTabController from './widgets/tab-controller/Closeable';
+import ButtonAlignmentTabController from './widgets/tab-controller/ButtonAlignment';
 import BasicTextArea from './widgets/text-area/Basic';
 import DisabledTextArea from './widgets/text-area/Disabled';
 import HelperTextTextArea from './widgets/text-area/HelperText';
@@ -562,6 +564,16 @@ export const config = {
 					filename: 'Disabled',
 					module: DisabledTabController,
 					title: 'TabController with disabled tabs'
+				},
+				{
+					filename: 'ButtonAlignment',
+					module: ButtonAlignmentTabController,
+					title: 'TabController with adjustable button alignment'
+				},
+				{
+					filename: 'Closeable',
+					module: CloseableTabController,
+					title: 'TabController with closeable tab'
 				}
 			],
 			filename: 'index',
