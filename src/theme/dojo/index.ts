@@ -6,6 +6,7 @@ import * as checkboxGroup from './checkbox-group.m.css';
 import * as checkbox from './checkbox.m.css';
 import * as chip from './chip.m.css';
 import * as combobox from './combobox.m.css';
+import * as dateInput from './date-input.m.css';
 import * as dialog from './dialog.m.css';
 import * as grid from './grid.m.css';
 import * as gridBody from './grid-body.m.css';
@@ -51,6 +52,7 @@ export default {
 	'@dojo/widgets/checkbox': checkbox,
 	'@dojo/widgets/chip': chip,
 	'@dojo/widgets/combobox': combobox,
+	'@dojo/widgets/date-input': dateInput,
 	'@dojo/widgets/dialog': dialog,
 	'@dojo/widgets/grid-body': gridBody,
 	'@dojo/widgets/grid-cell': gridCell,

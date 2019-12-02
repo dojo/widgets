@@ -172,6 +172,7 @@ import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
 import BasicNativeSelect from './widgets/native-select/Basic';
+import BasicDateInput from './widgets/date-input/Basic';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -402,6 +403,15 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicContextMenu
+				}
+			}
+		},
+		'date-input': {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicDateInput
 				}
 			}
 		},
