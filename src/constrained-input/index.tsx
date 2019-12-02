@@ -45,13 +45,10 @@ export const ConstrainedInput = factory(function ConstrainedInput({
 		<TextInput
 			key="root"
 			{...props}
-			theme={{
-				...props.theme,
-				'@dojo/widgets/text-input': theme.compose(
-					textInputCss,
-					constrainedInputCss
-				)
-			}}
+			theme={theme.compose(
+				textInputCss,
+				constrainedInputCss
+			)}
 			customValidator={validator}
 			valid={valid}
 			onValidate={handleValidation}

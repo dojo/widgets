@@ -1,87 +1,76 @@
 import { create } from '@dojo/framework/core/vdom';
 import coreTheme from '@dojo/framework/core/middleware/theme';
-import { ClassNames } from '@dojo/framework/core/mixins/Themed';
+import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
 
 const factory = create({ coreTheme });
 export const THEME_KEY = ' _key';
 
 const theme = factory(function({ middleware: { coreTheme }, properties }) {
 	return {
-		compose(baseCss: ClassNames, variantCss: ClassNames, prefix?: string) {
-			let allVariantThemeClasses: ClassNames = coreTheme.classes(variantCss);
-			const allBaseThemeClasses: ClassNames = coreTheme.classes(baseCss);
-
-			const { classes } = properties();
-			const variantKey = variantCss[THEME_KEY];
-			const baseKey = baseCss[THEME_KEY];
-
-			const sanitizedThemeClasses: ClassNames = allBaseThemeClasses;
-
+		compose: <T extends ClassNames, B extends ClassNames>(
+			baseCss: B,
+			css: T,
+			prefix?: string
+		): Theme => {
+			const variantTheme = coreTheme.classes(css);
+			const baseKey = baseCss[' _key'];
+			const variantKey = css[' _key'];
+			const extraClasses = Object.keys(baseCss).filter(
+				(key) => Object.keys(css).indexOf(key) === -1
+			);
+			let baseTheme = coreTheme.classes(baseCss);
 			if (prefix) {
-				allVariantThemeClasses = Object.keys(allVariantThemeClasses).reduce(
-					(themeClasses, className) => {
-						if (className.indexOf(prefix) === 0) {
-							let newClassName = className.replace(prefix, '');
-							newClassName =
-								newClassName.charAt(0).toLowerCase() + newClassName.slice(1);
-
-							return {
-								...themeClasses,
-								[newClassName]: allVariantThemeClasses[className]
-							};
-						} else {
-							return themeClasses;
+				const prefixedCss = Object.keys(variantTheme).reduce(
+					(prefixCss, key) => {
+						if (key.indexOf(prefix) === 0) {
+							const classKey =
+								key
+									.replace(prefix, '')
+									.charAt(0)
+									.toLowerCase() + key.replace(prefix, '').slice(1);
+							prefixCss[classKey] = variantTheme[key];
 						}
+						return prefixCss;
 					},
-					{}
+					{ ' _key': baseKey } as any
 				);
+				baseTheme = { ...baseTheme, ...coreTheme.classes(prefixedCss) };
 			}
-
-			for (let className in allVariantThemeClasses) {
-				const calculatedClassName = prefix
-					? `${prefix}${className.charAt(0).toUpperCase() + className.slice(1)}`
-					: className;
-				let variantCompare = variantCss[calculatedClassName];
-				let baseCompare = baseCss[className];
-
-				let variantClasses = '';
-				let baseClasses = '';
-
-				if (classes && classes[variantKey] && classes[variantKey][calculatedClassName]) {
-					variantClasses = classes[variantKey][calculatedClassName].join(' ');
-				}
-
-				if (classes && classes[baseKey] && classes[baseKey][className]) {
-					baseClasses = classes[baseKey][className].join(' ');
-				}
-
-				if (variantClasses) {
-					variantCompare = `${variantCompare} ${variantClasses}`;
-				}
-
-				if (baseClasses) {
-					baseCompare = `${baseCompare} ${baseClasses}`;
-				}
-
-				// if the base is themed but variant is not, take the base theme
-				// else, take the variant theme - which may be the variant's base-css
-				const baseThemed = allBaseThemeClasses[className] !== baseCompare;
-				const variantThemed = allVariantThemeClasses[className] !== variantCompare;
-
-				if (baseThemed && !variantThemed) {
-					sanitizedThemeClasses[className] = allBaseThemeClasses[className];
-				} else {
-					sanitizedThemeClasses[className] = allVariantThemeClasses[className];
-				}
-
-				if (sanitizedThemeClasses[className].indexOf(variantClasses) < 0) {
-					sanitizedThemeClasses[className] = `${
-						sanitizedThemeClasses[className]
-					} ${variantClasses}`.trim();
-				}
+			let variantComposes: any = {};
+			if (extraClasses) {
+				const virtualCss = extraClasses.reduce(
+					(css, key) => {
+						css[key] = ' ';
+						return css;
+					},
+					{ ' _key': variantKey } as any
+				);
+				variantComposes = coreTheme.classes(virtualCss);
 			}
-
-			return sanitizedThemeClasses;
+			const constructedTheme = Object.keys(baseTheme).reduce(
+				(theme, key) => {
+					if (key === ' _key') {
+						return theme;
+					}
+					const variantComposesClass =
+						variantComposes[key] && variantComposes[key].trim();
+					if (variantComposesClass) {
+						theme[key] =
+							theme[key] && !variantTheme[key]
+								? `${theme[key]} ${variantComposesClass}`
+								: variantComposesClass;
+					} else if (variantTheme[key]) {
+						theme[key] = variantTheme[key];
+					}
+					return theme;
+				},
+				{ ...baseTheme } as ClassNames
+			);
+			const theme = properties().theme || coreTheme.get();
+			return {
+				...theme,
+				[baseKey]: constructedTheme
+			};
 		},
 		...coreTheme
 	};

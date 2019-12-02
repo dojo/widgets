@@ -28,13 +28,10 @@ export const EmailInput = factory(function({ properties, middleware: { icache, t
 				props.onValidate && props.onValidate(valid, message);
 			}}
 			valid={{ valid: get('valid'), message: get('message') }}
-			theme={{
-				...props.theme,
-				'@dojo/widgets/text-input': theme.compose(
-					textInputCss,
-					emailInputCss
-				)
-			}}
+			theme={theme.compose(
+				textInputCss,
+				emailInputCss
+			)}
 		/>
 	);
 });
