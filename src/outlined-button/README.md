@@ -1,6 +1,3 @@
-# @dojo/widgets/outlined-button widget
+# @dojo/widgets/outlined-button
 
-Dojo's `OutlinedButton` widget creates a `<button>` element
-
-The `OutlinedButton` widget wraps the `Button` widget with an additional class for alternative styling.
-For details on the features, usage, and accessibility of the `OutlinedButton`, refer to the [Button README](../button/README.md)
+Dojo's `OutlinedButton` widget creates a Dojo `Button` widget with additional classes for alternative styling.
