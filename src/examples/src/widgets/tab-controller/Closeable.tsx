@@ -7,7 +7,7 @@ import Tab from '@dojo/widgets/tab';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function Closeable({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('active', 0);
 	const closedKeys = icache.getOrSet<string[]>('closedKeys', []);
 	return (

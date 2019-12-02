@@ -6,7 +6,7 @@ import Tab from '@dojo/widgets/tab';
 
 const factory = create({ icache });
 
-export default factory(function Closeable({ middleware: { icache } }) {
+export default factory(function Disabled({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('active', 0);
 	return (
 		<TabController

@@ -9,7 +9,7 @@ const factory = create({ icache });
 
 export default factory(function ButtonAlignment({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('active', 0);
-	const alignButtons = icache.getOrSet<Align>('align', Align.top);
+	const alignButtons = icache.getOrSet('align', Align.top);
 	return (
 		<div>
 			<Select<{ value: Align; label: string }>
