@@ -5,6 +5,14 @@ import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
 const factory = create({ coreTheme });
 export const THEME_KEY = ' _key';
 
+function uppercaseFirstChar(value: string) {
+	return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+}
+
+function lowercaseFirstChar(value: string) {
+	return `${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+}
+
 const theme = factory(function({ middleware: { coreTheme }, properties }) {
 	return {
 		compose: <T extends ClassNames, B extends ClassNames>(
@@ -12,23 +20,43 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 			css: T,
 			prefix?: string
 		): Theme => {
-			const variantTheme = coreTheme.classes(css);
 			const baseKey = baseCss[THEME_KEY];
 			const variantKey = css[THEME_KEY];
-			const extraClasses = Object.keys(baseCss).filter(
-				(key) => Object.keys(css).indexOf(key) === -1
+			const virtualCss = Object.keys(baseCss).reduce(
+				(virtualCss, key) => {
+					if (key === THEME_KEY) {
+						return virtualCss;
+					}
+					if (prefix && !virtualCss[`${prefix}${uppercaseFirstChar(key)}`]) {
+						virtualCss[`${prefix}${uppercaseFirstChar(key)}`] = ' ';
+					}
+					if (!css[key]) {
+						virtualCss[key] = ' ';
+					}
+					return virtualCss;
+				},
+				{ [THEME_KEY]: variantKey } as ClassNames
 			);
+			const virtualTheme = coreTheme.classes(virtualCss);
+			const variantTheme = coreTheme.classes(css);
 			let baseTheme = coreTheme.classes(baseCss);
 			if (prefix) {
-				const prefixedCss = Object.keys(variantTheme).reduce(
+				const prefixedCss = Object.keys({ ...virtualTheme, ...variantTheme }).reduce(
 					(prefixCss, key) => {
 						if (key.indexOf(prefix) === 0) {
-							const classKey =
-								key
-									.replace(prefix, '')
-									.charAt(0)
-									.toLowerCase() + key.replace(prefix, '').slice(1);
-							prefixCss[classKey] = variantTheme[key];
+							const classKey = lowercaseFirstChar(key.replace(prefix, ''));
+							if (
+								!variantTheme[key] &&
+								virtualTheme[key] &&
+								virtualTheme[key].trim()
+							) {
+								prefixCss[classKey] = `${baseTheme[classKey]} ${virtualTheme[
+									key
+								].trim()}`;
+							}
+							if (variantTheme[key]) {
+								prefixCss[classKey] = variantTheme[key];
+							}
 						}
 						return prefixCss;
 					},
@@ -36,31 +64,17 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 				);
 				baseTheme = { ...baseTheme, ...prefixedCss };
 			}
-			let variantComposes: ClassNames = {};
-			if (extraClasses) {
-				const virtualCss = extraClasses.reduce(
-					(css, key) => {
-						css[key] = ' ';
-						return css;
-					},
-					{ [THEME_KEY]: variantKey } as ClassNames
-				);
-				variantComposes = coreTheme.classes(virtualCss);
-			}
+
 			const constructedTheme = Object.keys(baseTheme).reduce(
 				(theme, key) => {
 					if (key === THEME_KEY) {
 						return theme;
 					}
-					const variantComposesClass =
-						variantComposes[key] && variantComposes[key].trim();
-					if (variantComposesClass) {
-						theme[key] =
-							theme[key] && !variantTheme[key]
-								? `${theme[key]} ${variantComposesClass}`
-								: variantComposesClass;
-					} else if (variantTheme[key]) {
-						theme[key] = variantTheme[key];
+					const variantComposesClass = variantTheme[key] && variantTheme[key].trim();
+					if (variantTheme[key]) {
+						theme[key] = variantComposesClass;
+					} else if (virtualTheme[key] && virtualTheme[key].trim()) {
+						theme[key] = `${theme[key]} ${virtualTheme[key].trim()}`;
 					}
 					return theme;
 				},

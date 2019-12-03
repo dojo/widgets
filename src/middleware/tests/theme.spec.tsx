@@ -271,7 +271,7 @@ describe('theme middleware', () => {
 		});
 	});
 
-	it('should compose base theme using prefix and variant theme and composes', () => {
+	it('should compose base theme using prefix and variant theme and classes', () => {
 		const baseClasses = {
 			' _key': '@dojo/widgets/Base',
 			root: 'base_root',
@@ -309,6 +309,38 @@ describe('theme middleware', () => {
 			},
 			'@dojo/widgets/Variant': {
 				baseActive: 'variant_theme_active'
+			}
+		});
+	});
+
+	it('should compose base theme using prefix and classes', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant'
+		};
+
+		properties.classes = {
+			'@dojo/widgets/Variant': {
+				baseActive: ['variant_extra_active']
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'base_active variant_extra_active'
 			}
 		});
 	});
