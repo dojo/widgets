@@ -1,0 +1,10 @@
+@import './variables.css';
+
+/* Menu wrapper */
+.wrapper {
+	border: 1px solid var(--component-color);
+}
+
+/* Wrapper element around content */
+.contentWrapper {
+}

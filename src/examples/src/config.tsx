@@ -30,6 +30,7 @@ import ClosableRendererChip from './widgets/chip/ClosableRenderer';
 import DisabledChip from './widgets/chip/Disabled';
 import IconChip from './widgets/chip/Icon';
 import BasicCombobox from './widgets/combobox/Basic';
+import BasicContextMenu from './widgets/context-menu/Basic';
 import BasicConstrainedInput from './widgets/constrained-input/Basic';
 import Username from './widgets/constrained-input/Username';
 import BasicContextPopup from './widgets/context-popup/Basic';
@@ -372,6 +373,14 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicConstrainedInput
+				}
+			}
+		},
+		'context-menu': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicContextMenu
 				}
 			}
 		},
