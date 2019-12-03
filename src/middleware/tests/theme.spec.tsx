@@ -379,4 +379,39 @@ describe('theme middleware', () => {
 			}
 		});
 	});
+
+	it('should not pass common classes down to if not explicitly prefixed', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Variant': {
+				active: 'variant_theme_active'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'base_active'
+			},
+			'@dojo/widgets/Variant': {
+				active: 'variant_theme_active'
+			}
+		});
+	});
 });

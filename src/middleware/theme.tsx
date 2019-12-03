@@ -20,6 +20,7 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 			css: T,
 			prefix?: string
 		): Theme => {
+			const theme = properties().theme || coreTheme.get();
 			const baseKey = baseCss[THEME_KEY];
 			const variantKey = css[THEME_KEY];
 			const virtualCss = Object.keys(baseCss).reduce(
@@ -63,6 +64,10 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 					{} as ClassNames
 				);
 				baseTheme = { ...baseTheme, ...prefixedCss };
+				return {
+					...theme,
+					[baseKey]: baseTheme
+				};
 			}
 
 			const constructedTheme = Object.keys(baseTheme).reduce(
@@ -80,7 +85,6 @@ const theme = factory(function({ middleware: { coreTheme }, properties }) {
 				},
 				{ ...baseTheme } as ClassNames
 			);
-			const theme = properties().theme || coreTheme.get();
 			return {
 				...theme,
 				[baseKey]: constructedTheme
