@@ -1,1 +1,2 @@
-export const root: string;
+declare const styles: {};
+export = styles;
