@@ -99,8 +99,7 @@ export const Menu = factory(function({
 		onFocus,
 		onRequestClose,
 		onValue,
-		options,
-		theme: themeProp
+		options
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
