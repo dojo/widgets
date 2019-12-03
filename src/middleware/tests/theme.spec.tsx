@@ -1,266 +1,417 @@
-const { registerSuite } = intern.getInterface('object');
-
-import harness from '@dojo/framework/testing/harness';
-import { tsx, create } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+const { describe, it, beforeEach } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
+import coreTheme from '@dojo/framework/core/middleware/theme';
+import { sandbox } from 'sinon';
+import cacheMiddleware from '@dojo/framework/core/middleware/cache';
 import theme from '../theme';
-import { ClassNames } from '@dojo/framework/core/mixins/Themed';
 
-interface TestProperties {
-	baseCss: ClassNames;
-	variantCss: ClassNames;
-}
-
-const factory = create({ theme }).properties<TestProperties>();
-const TestWidget = factory(function TestWidget({ properties, middleware: { theme } }) {
-	const { baseCss, variantCss } = properties();
-	return (
-		<div key="root">
-			{JSON.stringify(
-				theme.compose(
-					baseCss,
-					variantCss
-				)
-			)}
-		</div>
-	);
-});
-
-const PrefixTestWidget = factory(function TestWidget({ properties, middleware: { theme } }) {
-	const { baseCss, variantCss } = properties();
-	return (
-		<div key="root">
-			{JSON.stringify(
-				theme.compose(
-					baseCss,
-					variantCss,
-					'prefix'
-				)
-			)}
-		</div>
-	);
-});
-
-const baseTemplate = assertionTemplate(() => <div key="root" />);
-
-registerSuite('theme-middleware', {
-	tests: {
-		'variant used if it exists and there is no theme'() {
-			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
-			const variantCss = { ' _key': 'test', a: 'variant-a' };
-			const h = harness(() => <TestWidget baseCss={baseCss} variantCss={variantCss} />);
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'variant-a', b: 'base-b' })
-				])
-			);
-		},
-
-		'Base theme comes through when variant is not themed'() {
-			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
-			const variantCss = { ' _key': 'test', a: 'variant-a' };
-			const theme = {
-				base: {
-					a: 'base-theme-a'
-				}
-			};
-			const h = harness(() => (
-				<TestWidget baseCss={baseCss} variantCss={variantCss} theme={theme} />
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'base-theme-a', b: 'base-b' })
-				])
-			);
-		},
-
-		'Variant theme overrides base theme'() {
-			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
-			const variantCss = { ' _key': 'variant', a: 'variant-a' };
-			const theme = {
-				base: {
-					a: 'base-theme-a'
-				},
-				variant: {
-					a: 'variant-theme-a'
-				}
-			};
-			const h = harness(() => (
-				<TestWidget baseCss={baseCss} variantCss={variantCss} theme={theme} />
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'variant-theme-a', b: 'base-b' })
-				])
-			);
-		},
-
-		'Both themes used with different classes'() {
-			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
-			const variantCss = { ' _key': 'variant', a: 'variant-a' };
-			const theme = {
-				base: {
-					a: 'base-theme-a'
-				},
-				variant: {
-					b: 'variant-theme-b'
-				}
-			};
-			const h = harness(() => (
-				<TestWidget baseCss={baseCss} variantCss={variantCss} theme={theme} />
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'base-theme-a', b: 'variant-theme-b' })
-				])
-			);
-		},
-
-		'Resolves themes correctly when using composes resulting in space-separated classnames'() {
-			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
-			const variantCss = {
-				' _key': 'variant',
-				a: 'variant-a composed-variant-a',
-				b: 'variant-b'
-			};
-			const theme = {
-				base: {
-					a: 'base-theme-a'
-				},
-				variant: {
-					// composed-variant-a in both themed / unthemed classnames
-					a: 'variant-theme-a composed-variant-a'
-				}
-			};
-			const h = harness(() => (
-				<TestWidget baseCss={baseCss} variantCss={variantCss} theme={theme} />
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ a: 'variant-theme-a composed-variant-a', b: 'variant-b' })
-				])
-			);
-		},
-
-		'Resolves theme classes correctly when used with `classes` property'() {
-			const baseCss = { ' _key': 'base', a: 'base-a', b: 'base-b' };
-			const variantCss = { ' _key': 'variant', a: 'variant-a', b: 'variant-b' };
-			const theme = {
-				base: {
-					a: 'base-theme-a'
-				},
-				variant: {
-					b: 'variant-theme-b'
-				}
-			};
-			const h = harness(() => (
-				<TestWidget
-					baseCss={baseCss}
-					variantCss={variantCss}
-					theme={theme}
-					classes={{
-						variant: { a: ['variant-classes-a'] },
-						base: { a: ['base-classes-a'] }
-					}}
-				/>
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({
-						a: 'base-theme-a base-classes-a variant-classes-a',
-						b: 'variant-theme-b'
-					})
-				])
-			);
-		},
-
-		'Can be used with a prefix to pick out theme classes for a child widget'() {
-			const baseCss = { ' _key': 'base', root: 'base-root', input: 'base-input' };
-			const variantCss = { ' _key': 'variant', prefixRoot: 'variant-root' };
-			const theme = {
-				base: {
-					root: 'base-theme-root'
-				},
-				variant: {
-					prefixRoot: 'variant-theme-root'
-				}
-			};
-			const h = harness(() => (
-				<PrefixTestWidget baseCss={baseCss} variantCss={variantCss} theme={theme} />
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({ root: 'variant-theme-root', input: 'base-input' })
-				])
-			);
-		},
-
-		'Resolves prefixed theme classes correctly when used with `classes` property'() {
-			const baseCss = { ' _key': 'base', root: 'base-root', input: 'base-input' };
-			const variantCss = { ' _key': 'variant', prefixRoot: 'variant-root' };
-			const theme = {
-				variant: {
-					prefixInput: 'variant-theme-input'
-				}
-			};
-			const h = harness(() => (
-				<PrefixTestWidget
-					baseCss={baseCss}
-					variantCss={variantCss}
-					theme={theme}
-					classes={{ variant: { prefixRoot: ['variant-classes-prefix-root'] } }}
-				/>
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({
-						root: 'variant-root variant-classes-prefix-root',
-						input: 'variant-theme-input'
-					})
-				])
-			);
-		},
-
-		'Resolves prefixed theme classes correctly when used with `classes` property and composes classes'() {
-			const baseCss = {
-				' _key': 'base',
-				root: 'base-root',
-				input: 'base-input composed-input'
-			};
-			const variantCss = { ' _key': 'variant', prefixRoot: 'variant-root' };
-			const theme = {
-				variant: {
-					prefixInput: 'variant-theme-input composed-input'
-				}
-			};
-			const h = harness(() => (
-				<PrefixTestWidget
-					baseCss={baseCss}
-					variantCss={variantCss}
-					theme={theme}
-					classes={{
-						base: { root: ['base-classes-prefix-root'] },
-						variant: { prefixRoot: ['variant-classes-prefix-root'] }
-					}}
-				/>
-			));
-
-			h.expect(
-				baseTemplate.setChildren('@root', () => [
-					JSON.stringify({
-						root: 'variant-root variant-classes-prefix-root',
-						input: 'variant-theme-input composed-input'
-					})
-				])
-			);
-		}
+const sb = sandbox.create();
+const invalidator = sb.stub();
+const diffProperty = sb.stub();
+const injector = {
+	subscribe: sb.stub(),
+	get: sb.stub()
+};
+const defineInjector = sb.stub();
+const getRegistry = sb.stub();
+const registryHandler = {
+	base: {
+		defineInjector
 	}
+};
+getRegistry.returns(registryHandler);
+
+const properties: any = {};
+const cache = cacheMiddleware().callback({
+	middleware: { destroy: sb.stub() },
+	properties: () => ({}),
+	children: () => [],
+	id: 'cache'
+});
+const { callback } = coreTheme();
+let themeMiddleware = callback({
+	id: 'coreTheme',
+	middleware: {
+		invalidator,
+		cache,
+		diffProperty,
+		injector,
+		getRegistry
+	},
+	properties: () => properties,
+	children: () => []
+});
+
+let composesInstance = theme().callback({
+	id: 'theme',
+	middleware: {
+		coreTheme: themeMiddleware
+	},
+	properties: () => properties,
+	children: () => []
+});
+
+describe('theme middleware', () => {
+	beforeEach(() => {
+		cache.clear();
+		properties.theme = undefined;
+		properties.classes = undefined;
+		composesInstance = theme().callback({
+			id: 'theme',
+			middleware: {
+				coreTheme: themeMiddleware
+			},
+			properties: () => properties,
+			children: () => []
+		});
+	});
+	it('should compose implemented variant css to the base theme', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			active: 'variant_active',
+			extra: 'variant_extra'
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_active'
+			}
+		});
+	});
+
+	it('should compose implemented variant css and classes to the base theme', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			active: 'variant_active',
+			extra: 'variant_extra'
+		};
+
+		properties.classes = {
+			'@dojo/widgets/Base': {
+				root: ['base_classes_root']
+			},
+			'@dojo/widgets/Variant': {
+				selected: ['variant_classes_selected']
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root base_classes_root',
+				selected: 'base_selected variant_classes_selected',
+				active: 'variant_active'
+			}
+		});
+	});
+
+	it('should compose variant theme and fallback to the base theme', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			active: 'variant_active',
+			extra: 'variant_extra'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Base': {
+				root: 'base_theme_root'
+			},
+			'@dojo/widgets/Variant': {
+				extra: 'variant_theme_extra',
+				selected: 'variant_theme_selected'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_theme_root',
+				selected: 'variant_theme_selected',
+				active: 'variant_active'
+			},
+			'@dojo/widgets/Variant': {
+				extra: 'variant_theme_extra',
+				selected: 'variant_theme_selected'
+			}
+		});
+	});
+
+	it('should compose base theme using prefix', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			baseActive: 'variant_active'
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_active'
+			}
+		});
+	});
+
+	it('should compose base theme using prefix and variant theme', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			baseActive: 'variant_active'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_theme_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		});
+	});
+
+	it('should compose base theme using prefix and variant theme overriding the base theme class', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			baseActive: 'variant_active'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Base': {
+				active: 'base_theme_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_theme_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		});
+	});
+
+	it('should compose base theme using prefix and variant theme and classes', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			baseActive: 'variant_active'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		};
+
+		properties.classes = {
+			'@dojo/widgets/Variant': {
+				baseActive: ['variant_extra_active']
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_theme_active variant_extra_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		});
+	});
+
+	it('should compose base theme using prefix and classes', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant'
+		};
+
+		properties.classes = {
+			'@dojo/widgets/Variant': {
+				baseActive: ['variant_extra_active']
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'base_active variant_extra_active'
+			}
+		});
+	});
+
+	it('should compose base theme using prefix and enable theming even when the prefixed class does not exist in the variant css', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_theme_active'
+			},
+			'@dojo/widgets/Variant': {
+				baseActive: 'variant_theme_active'
+			}
+		});
+	});
+
+	it('should not pass common classes down to if not explicitly prefixed', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant'
+		};
+
+		properties.theme = {
+			'@dojo/widgets/Variant': {
+				active: 'variant_theme_active'
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'base_active'
+			},
+			'@dojo/widgets/Variant': {
+				active: 'variant_theme_active'
+			}
+		});
+	});
 });

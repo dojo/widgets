@@ -99,8 +99,7 @@ export const Menu = factory(function({
 		onFocus,
 		onRequestClose,
 		onValue,
-		options,
-		theme: themeProp
+		options
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -280,28 +279,22 @@ export const Menu = factory(function({
 					<ListBoxItem
 						{...itemProps}
 						selected={selected}
-						theme={{
-							...themeProp,
-							'@dojo/widgets/list-box-item': theme.compose(
-								listBoxItemCss,
-								css,
-								'item'
-							)
-						}}
+						theme={theme.compose(
+							listBoxItemCss,
+							css,
+							'item'
+						)}
 					>
 						{children}
 					</ListBoxItem>
 				) : (
 					<MenuItem
 						{...itemProps}
-						theme={{
-							...themeProp,
-							'@dojo/widgets/menu-item': theme.compose(
-								menuItemCss,
-								css,
-								'item'
-							)
-						}}
+						theme={theme.compose(
+							menuItemCss,
+							css,
+							'item'
+						)}
 					>
 						{children}
 					</MenuItem>

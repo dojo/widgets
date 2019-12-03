@@ -18,13 +18,10 @@ export const RaisedButton = factory(function RaisedButton({
 	return (
 		<Button
 			{...props}
-			theme={{
-				...props.theme,
-				'@dojo/widgets/button': theme.compose(
-					buttonCss,
-					raisedButtonCss
-				)
-			}}
+			theme={theme.compose(
+				buttonCss,
+				raisedButtonCss
+			)}
 		>
 			{children()}
 		</Button>
