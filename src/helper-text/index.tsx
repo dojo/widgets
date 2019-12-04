@@ -5,7 +5,9 @@ import { v } from '@dojo/framework/core/vdom';
 import { VNode } from '@dojo/framework/core/interfaces';
 
 export interface HelperTextProperties extends ThemedProperties {
+	/** The supplied helper text */
 	text?: string;
+	/** If `HelperText` indicates a valid condition */
 	valid?: boolean;
 }
 

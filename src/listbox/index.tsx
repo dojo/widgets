@@ -38,10 +38,11 @@ export interface ListboxProperties extends ThemedProperties, FocusProperties {
 	getOptionLabel?(option: any, index: number): DNode;
 	/** Function that accepts option data and returns a boolean for selected/unselected */
 	getOptionSelected?(option: any, index: number): boolean;
-	/** Adds currect semantics for a multiselect listbox */
+	/** Adds current semantics for a multiselect listbox */
 	multiselect?: boolean;
 	/** Called with the index of the new requested active descendant */
 	onActiveIndexChange?(index: number): void;
+	/** Called on a keyboard event */
 	onKeyDown?(event: KeyboardEvent): void;
 	/** Called with the option data of the new requested selected item */
 	onOptionSelect?(option: any, index: number): void;

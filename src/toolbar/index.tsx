@@ -15,7 +15,7 @@ import { GlobalEvent } from '../global-event/index';
 export { Align };
 
 export interface ToolbarProperties extends ThemedProperties, I18nProperties {
-	/**  */
+	/** The position to slide out the pane (bottom, left, right, top) */
 	align?: Align;
 	/** Width at which to collapse actions into a SlidePane */
 	collapseWidth?: number;

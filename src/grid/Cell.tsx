@@ -13,9 +13,13 @@ import * as fixedCss from './styles/cell.m.css';
 import * as css from '../theme/default/grid-cell.m.css';
 
 export interface CellProperties extends FocusProperties {
+	/** The display value (or widget) of the cell */
 	value: string | DNode;
+	/** If the cell's value may be updated */
 	editable?: boolean;
+	/** The underlying string value of the cell (used by the editor) */
 	rawValue: string;
+	/** Called when the Cell's value is saved by the editor */
 	updater: (value: any) => void;
 }
 

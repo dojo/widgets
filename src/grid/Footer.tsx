@@ -6,8 +6,11 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/default/grid-footer.m.css';
 
 export interface FooterProperties {
+	/** The total number of rows */
 	total?: number;
+	/** The current page */
 	page: number;
+	/** The number of rows per page */
 	pageSize: number;
 }
 

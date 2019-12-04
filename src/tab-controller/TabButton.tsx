@@ -9,40 +9,34 @@ import { Keys } from '../common/util';
 
 import * as css from '../theme/default/tab-controller.m.css';
 
-/**
- * @type TabButtonProperties
- *
- * Properties that can be set on a TabButton component
- *
- * @property active             Determines whether this tab button is active
- * @property closeable          Determines whether this tab can be closed
- * @property controls           ID of the DOM element this tab button controls
- * @property disabled           Determines whether this tab can become active
- * @property id                 ID of this tab button DOM element
- * @property index              The position of this tab button
- * @property onClick            Called when this tab button is clicked
- * @property onCloseClick       Called when this tab button's close icon is clicked
- * @property onDownArrowPress   Called when the down arrow button is pressed
- * @property onEndPress         Called when the end button is pressed
- * @property onHomePress        Called when the home button is pressed
- * @property onLeftArrowPress   Called when the left arrow button is pressed
- * @property onRightArrowPress  Called when the right arrow button is pressed
- * @property onUpArrowPress     Called when the up arrow button is pressed
- */
 export interface TabButtonProperties extends ThemedProperties, FocusProperties, I18nProperties {
+	/** Determines whether this tab button is active */
 	active?: boolean;
+	/** Determines whether this tab can be closed */
 	closeable?: boolean;
+	/** ID of the DOM element this tab button controls */
 	controls: string;
+	/** Determines whether this tab can become active */
 	disabled?: boolean;
+	/** The id to apply to this widget top level for a11y */
 	id: string;
+	/** The position of this tab button */
 	index: number;
+	/** Called when this tab button is clicked */
 	onClick?: (index: number) => void;
+	/** Called when this tab button's close icon is clicked */
 	onCloseClick?: (index: number) => void;
+	/** Called when the down arrow button is pressed */
 	onDownArrowPress?: () => void;
+	/** Called when the end button is pressed */
 	onEndPress?: () => void;
+	/** Called when the home button is pressed */
 	onHomePress?: () => void;
+	/** Called when the left arrow button is pressed */
 	onLeftArrowPress?: () => void;
+	/** Called when the right arrow button is pressed */
 	onRightArrowPress?: () => void;
+	/** Called when the up arrow button is pressed */
 	onUpArrowPress?: () => void;
 }
 

@@ -12,7 +12,7 @@ export interface ChipProperties {
 	label: string;
 	/** Renders a close icon, ignored if `onClose` is not provided */
 	closeRenderer?(): RenderResult;
-	/** A callback when the close icon is clicked, if `closeRenderer is not provided a default X icon will be used */
+	/** A callback when the close icon is clicked, if `closeRenderer` is not provided a default X icon will be used */
 	onClose?(): void;
 	/** An optional callback for the the widget is clicked */
 	onClick?(): void;

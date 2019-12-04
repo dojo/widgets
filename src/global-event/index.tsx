@@ -9,7 +9,9 @@ export interface ListenerObject {
 }
 
 export interface GlobalEventProperties extends Partial<RegisteredListeners> {
+	/** The global window object */
 	window?: ListenerObject;
+	/** The document for this context */
 	document?: ListenerObject;
 }
 

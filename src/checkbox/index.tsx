@@ -12,29 +12,43 @@ import * as css from '../theme/default/checkbox.m.css';
 export interface CheckboxProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/**  Checked/unchecked property of the radio */
+	/**  Checked/unchecked property of the control */
 	checked?: boolean;
+	/** Set the disabled property of the control */
 	disabled?: boolean;
+	/** Adds a <label> element with the supplied text */
 	label?: string;
+	/** Adds the label element after (true) or before (false) */
 	labelAfter?: boolean;
+	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** The type of user interface to show for this Checkbox */
 	mode?: Mode;
+	/** The name of the checkbox */
 	name?: string;
-	/** Label to show in the "off" positin of a toggle */
+	/** Label to show in the "off" position of a toggle */
 	offLabel?: DNode;
+	/** Handler for when the element is blurred */
 	onBlur?(): void;
+	/** Handler for when the element is focused */
 	onFocus?(): void;
-	/** Label to show in the "on" positin of a toggle */
+	/** Label to show in the "on" position of a toggle */
 	onLabel?: DNode;
+	/** Handler for when the pointer moves out of the element */
 	onOut?(): void;
+	/** Handler for when the pointer moves over the element */
 	onOver?(): void;
+	/** Handler for when the value of the widget changes */
 	onValue?(checked: boolean): void;
+	/** Makes the checkbox readonly (it may be focused but not changed) */
 	readOnly?: boolean;
+	/** Sets the checkbox input as required to complete the form */
 	required?: boolean;
+	/** Toggles the invalid/valid states of the Checkbox affecting how it is displayed */
 	valid?: boolean;
 	/** The current value */
 	value?: string;
+	/** The id used for the form input element */
 	widgetId?: string;
 }
 

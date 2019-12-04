@@ -15,15 +15,25 @@ import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { auto, reference } from '@dojo/framework/core/diff';
 
 export interface BodyProperties<S> {
+	/** The total number of rows */
 	totalRows?: number;
+	/** The number of elements to a page */
 	pageSize: number;
+	/** A list of paginated grids */
 	pages: GridPages<S>;
+	/** The height (in pixels) */
 	height: number;
+	/** Configuration for grid columns (id, title, properties, and custom renderer) */
 	columnConfig: ColumnConfig[];
+	/** Custom renderer for the placeholder row used while data is loaded */
 	placeholderRowRenderer?: (index: number) => DNode;
+	/** Used to fetch additional pages of information */
 	fetcher: (page: number, pageSize: number) => void;
+	/** Called when a cell is updated */
 	updater: (page: number, rowNumber: number, columnId: string, value: string) => void;
+	/** Called when the page changes */
 	pageChange: (page: number) => void;
+	/** Handler for scroll events */
 	onScroll: (value: number) => void;
 }
 
