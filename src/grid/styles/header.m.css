@@ -1,7 +1,27 @@
 .rootFixed {
 	display: flex;
+	height: 100%;
 }
 
 .cellFixed {
 	flex: 1 100%;
+	position: relative;
+}
+
+.column {
+	min-width: 100%;
+}
+
+.resize {
+	position: absolute;
+	right: -3px;
+	width: 5px;
+	top: 0;
+	bottom: 0;
+	cursor: col-resize;
+	z-index: 1;
+}
+
+.resize:hover {
+	background: rgba(0, 0, 0, 0.25);
 }

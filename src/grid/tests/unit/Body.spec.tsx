@@ -47,11 +47,11 @@ describe('Body', () => {
 				pageSize: 100,
 				height: 400,
 				pages: {},
-				columnConfig: [] as any,
+				columnConfig: [],
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				columnWidths: {}
 			})
 		);
 
@@ -93,7 +93,8 @@ describe('Body', () => {
 					columnConfig: [] as any,
 					updater: noop,
 					classes: undefined,
-					theme: undefined
+					theme: undefined,
+					columnWidths: {}
 				})
 			);
 		}
@@ -110,7 +111,7 @@ describe('Body', () => {
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				columnWidths: {}
 			})
 		);
 
@@ -144,7 +145,7 @@ describe('Body', () => {
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				columnWidths: {}
 			})
 		);
 
@@ -186,13 +187,13 @@ describe('Body', () => {
 					columnConfig: [] as any,
 					updater: noop,
 					classes: undefined,
-					theme: undefined
+					theme: undefined,
+					columnWidths: {}
 				})
 			);
 		}
 
 		const fetcherStub = stub();
-		const onScrollStub = stub();
 
 		const h = harness(() =>
 			w(Body, {
@@ -206,7 +207,7 @@ describe('Body', () => {
 				fetcher: fetcherStub,
 				updater: noop,
 				pageChange: noop,
-				onScroll: onScrollStub
+				columnWidths: {}
 			})
 		);
 
@@ -259,7 +260,6 @@ describe('Body', () => {
 		);
 
 		assert.isTrue(fetcherStub.called);
-		assert.isTrue(onScrollStub.called);
 
 		h.expect(() =>
 			v(
@@ -301,7 +301,7 @@ describe('Body', () => {
 					fetcher: noop,
 					updater: noop,
 					pageChange: pageChangeStub,
-					onScroll: noop
+					columnWidths: {}
 				})
 			);
 
@@ -335,7 +335,7 @@ describe('Body', () => {
 					fetcher: noop,
 					updater: noop,
 					pageChange: pageChangeStub,
-					onScroll: noop
+					columnWidths: {}
 				})
 			);
 			// scroll to row 286

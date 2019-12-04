@@ -210,7 +210,9 @@ export function createData(rows: number = 10000) {
 		data.push({
 			id: i,
 			firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
+			middleName: firstNames[Math.floor(Math.random() * firstNames.length)],
 			lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
+			otherName: lastNames[Math.floor(Math.random() * lastNames.length)],
 			gender: gender[i % 2]
 		});
 	}

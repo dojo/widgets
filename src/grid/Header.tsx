@@ -1,5 +1,6 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
+import Drag from '@dojo/framework/core/meta/Drag';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { ColumnConfig, SortOptions } from './interfaces';
 import { DNode } from '@dojo/framework/core/interfaces';
@@ -39,6 +40,9 @@ export interface HeaderProperties {
 	sortRenderer?: SortRenderer;
 	/** Custom renderer displaying applied filters */
 	filterRenderer?: FilterRenderer;
+	onColumnResize?: (index: number, value: number) => void;
+	columnWidths?: { [index: string]: number };
+	width?: number;
 }
 
 @theme(css)
@@ -105,13 +109,20 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 			filterer,
 			filter = {},
 			sortRenderer = this._sortRenderer,
-			filterRenderer = this._filterRenderer
+			filterRenderer = this._filterRenderer,
+			columnWidths,
+			width,
+			onColumnResize
 		} = this.properties;
 
 		return v(
 			'div',
-			{ classes: [this.theme(css.root), fixedCss.rootFixed], role: 'row' },
-			columnConfig.map((column) => {
+			{
+				styles: width ? { width: `${width}px` } : {},
+				classes: [this.theme(css.root), fixedCss.rootFixed],
+				role: 'row'
+			},
+			columnConfig.map((column, index) => {
 				const title = this._getColumnTitle(column);
 				let headerProperties = {};
 				const isSorted = sort && sort.columnId === column.id;
@@ -121,6 +132,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 				if (column.sortable) {
 					headerProperties = {
 						classes: [
+							fixedCss.column,
 							this.theme(css.sortable),
 							isSorted ? this.theme(css.sorted) : null,
 							isSorted && !isSortedAsc ? this.theme(css.desc) : null,
@@ -139,12 +151,27 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					filterer(column.id, value);
 				};
 
+				if (column.resizable) {
+					const dragResults = this.meta(Drag).get(`${column.id}-resize`);
+
+					if (dragResults.isDragging) {
+						dragResults.delta.x !== 0 &&
+							onColumnResize &&
+							onColumnResize(index, dragResults.delta.x);
+					}
+				}
+
 				return v(
 					'div',
 					{
 						'aria-sort': isSorted ? (isSortedAsc ? 'ascending' : 'descending') : null,
 						classes: [this.theme(css.cell), fixedCss.cellFixed],
-						role: 'columnheader'
+						role: 'columnheader',
+						styles: columnWidths
+							? {
+									flex: `0 1 ${columnWidths[column.id]}px`
+							  }
+							: {}
 					},
 					[
 						v('div', headerProperties, [
@@ -155,9 +182,15 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 								  })
 								: null
 						]),
+
 						column.filterable
 							? filterRenderer(column, filterValue, doFilter, title)
-							: null
+							: null,
+						column.resizable &&
+							v('span', {
+								key: `${column.id}-resize`,
+								classes: [fixedCss.resize]
+							})
 					]
 				);
 			})

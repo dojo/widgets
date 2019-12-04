@@ -55,12 +55,16 @@ export interface GridProperties<S> extends ThemedProperties {
 	customRenderers?: CustomRenderers;
 }
 
+const MIN_COLUMN_WIDTH = 100;
+
 @theme(css)
 export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> {
 	private _store = new Store<GridState<S>>();
 	private _handle: any;
-	private _scrollLeft = 0;
 	private _pageSize = 100;
+	private _columnWidths: { [index: string]: number } | undefined;
+	private _rowWidth = 0;
+	private _gridWidth = 0;
 
 	constructor() {
 		super();
@@ -82,11 +86,38 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		return { ...this.properties, storeId };
 	}
 
-	private _getBodyHeight(): number {
+	private _getBodyDimensions() {
 		const { height } = this.properties;
 		const headerHeight = this.meta(Dimensions).get('header');
+		const headerWrapper = this.meta(Dimensions).get('header-wrapper');
 		const footerHeight = this.meta(Dimensions).get('footer');
-		return height - headerHeight.size.height - footerHeight.size.height;
+		return {
+			headerWidth: headerWrapper.size.width,
+			bodyHeight: height - headerHeight.size.height - footerHeight.size.height,
+			bodyWidth: headerHeight.size.width
+		};
+	}
+
+	private _onColumnResize(index: number, value: number) {
+		const { columnConfig } = this.properties;
+		if (!this._columnWidths) {
+			return;
+		}
+		const currentColumnWidth = this._columnWidths[columnConfig[index].id];
+		if (currentColumnWidth <= MIN_COLUMN_WIDTH && value < 0) {
+			return;
+		}
+
+		if (currentColumnWidth + value <= MIN_COLUMN_WIDTH) {
+			value = value - (currentColumnWidth + value - MIN_COLUMN_WIDTH);
+		}
+
+		this._rowWidth = this._rowWidth + value;
+		this._columnWidths = {
+			...this._columnWidths,
+			[columnConfig[index].id]: currentColumnWidth + value
+		};
+		this.invalidate();
 	}
 
 	private _fetcher(page: number, pageSize: number) {
@@ -114,11 +145,6 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		pageChangeProcess(this._store)({ id: storeId, page });
 	}
 
-	private _onScroll(value: number) {
-		this._scrollLeft = value;
-		this.invalidate();
-	}
-
 	protected render(): DNode {
 		const {
 			columnConfig,
@@ -136,16 +162,23 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		const meta = this._store.get(this._store.path(storeId, 'meta')) || defaultGridMeta;
 		const pages = this._store.get(this._store.path(storeId, 'data', 'pages')) || {};
 		const hasFilters = columnConfig.some((config) => !!config.filterable);
-		const bodyHeight = this._getBodyHeight();
+		const { bodyHeight, bodyWidth, headerWidth } = this._getBodyDimensions();
 		this.meta(Resize).get('root');
 
-		if (bodyHeight <= 0) {
-			return v('div', {
-				key: 'root',
-				classes: [this.theme(css.root), fixedCss.rootFixed],
-				role: 'table'
-			});
+		if (bodyWidth && !this._columnWidths) {
+			const width = headerWidth / columnConfig.length;
+			this._columnWidths = columnConfig.reduce(
+				(sizes, { id }) => {
+					sizes[id] = Math.max(MIN_COLUMN_WIDTH, width);
+					return sizes;
+				},
+				{} as any
+			);
+			this._rowWidth = bodyWidth;
+			this._gridWidth = bodyWidth;
 		}
+
+		const hasResizableColumns = columnConfig.some((config) => config.resizable);
 
 		return v(
 			'div',
@@ -159,44 +192,71 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				v(
 					'div',
 					{
-						key: 'header',
-						scrollLeft: this._scrollLeft,
-						classes: [
-							this.theme(css.header),
-							fixedCss.headerFixed,
-							hasFilters ? this.theme(css.filterGroup) : null
-						],
-						row: 'rowgroup'
+						styles:
+							hasResizableColumns && this._gridWidth
+								? { overflowX: 'auto', width: `${this._gridWidth}px` }
+								: {}
 					},
 					[
-						w(Header, {
-							key: 'header-row',
+						v(
+							'div',
+							{
+								key: 'header',
+								styles:
+									hasResizableColumns && this._rowWidth && this._gridWidth
+										? {
+												width: `${Math.max(
+													this._rowWidth,
+													this._gridWidth
+												)}px`
+										  }
+										: {},
+								classes: [
+									this.theme(css.header),
+									fixedCss.headerFixed,
+									hasFilters ? this.theme(css.filterGroup) : null
+								],
+								row: 'rowgroup'
+							},
+							[
+								v('div', { key: 'header-wrapper' }, [
+									w(Header, {
+										key: 'header-row',
+										theme,
+										columnWidths: this._columnWidths,
+										classes,
+										columnConfig,
+										sorter: this._sorter,
+										sort: meta.sort,
+										filter: meta.filter,
+										filterer: this._filterer,
+										sortRenderer,
+										filterRenderer,
+										onColumnResize: this._onColumnResize
+									})
+								])
+							]
+						),
+						w(Body, {
+							key: 'body',
 							theme,
 							classes,
+							pages,
+							columnWidths: this._columnWidths,
+							totalRows: meta.total,
+							pageSize: this._pageSize,
 							columnConfig,
-							sorter: this._sorter,
-							sort: meta.sort,
-							filter: meta.filter,
-							filterer: this._filterer,
-							sortRenderer,
-							filterRenderer
+							fetcher: this._fetcher,
+							pageChange: this._pageChange,
+							updater: this._updater,
+							height: bodyHeight,
+							width:
+								hasResizableColumns && this._rowWidth && this._gridWidth
+									? Math.max(this._rowWidth, this._gridWidth)
+									: undefined
 						})
 					]
 				),
-				w(Body, {
-					key: 'body',
-					theme,
-					classes,
-					pages,
-					totalRows: meta.total,
-					pageSize: this._pageSize,
-					columnConfig,
-					fetcher: this._fetcher,
-					pageChange: this._pageChange,
-					updater: this._updater,
-					onScroll: this._onScroll,
-					height: bodyHeight
-				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
 						key: 'footer-row',
