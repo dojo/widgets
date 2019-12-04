@@ -28,7 +28,7 @@ export interface MenuProperties {
 	onRequestClose?(): void;
 	/** Optional callback, when passed, the widget will no longer control it's own active index / keyboard navigation */
 	onActiveIndexChange?(index: number): void;
-	/** Optional property to set the activeIndex when it is being controlled externally */
+	/** Optional proprty to set the activeIndex when it is being controlled externally */
 	activeIndex?: number;
 	/** Determines if the widget can be focused or not. If the active index is controlled from elsewhere you may wish to stop the menu being focused and receiving keyboard events */
 	focusable?: boolean;
@@ -42,6 +42,7 @@ export interface MenuProperties {
 	itemRenderer?(properties: ItemRendererProperties): RenderResult;
 	/** Property to determine if this menu is being used as a listbox, changes a11y and item type */
 	listBox?: boolean;
+	widgetId?: string;
 }
 
 export interface ItemRendererProperties {
@@ -99,7 +100,9 @@ export const Menu = factory(function({
 		onFocus,
 		onRequestClose,
 		onValue,
-		options
+		options,
+		theme: themeProp,
+		widgetId
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -224,7 +227,7 @@ export const Menu = factory(function({
 
 	const itemToScroll = icache.get('itemToScroll');
 	const menuHeight = icache.get('menuHeight');
-	const idBase = icache.getOrSet('idBase', uuid());
+	const idBase = icache.getOrSet('idBase', widgetId || uuid());
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
 	const classes = theme.classes(css);
@@ -242,6 +245,7 @@ export const Menu = factory(function({
 			role={listBox ? 'listbox' : 'menu'}
 			aria-orientation="vertical"
 			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
+			id={idBase}
 		>
 			{options.map(({ value, label, disabled = false }, index) => {
 				const selected = value === selectedValue;
@@ -279,22 +283,28 @@ export const Menu = factory(function({
 					<ListBoxItem
 						{...itemProps}
 						selected={selected}
-						theme={theme.compose(
-							listBoxItemCss,
-							css,
-							'item'
-						)}
+						theme={{
+							...themeProp,
+							'@dojo/widgets/list-box-item': theme.compose(
+								listBoxItemCss,
+								css,
+								'item'
+							)
+						}}
 					>
 						{children}
 					</ListBoxItem>
 				) : (
 					<MenuItem
 						{...itemProps}
-						theme={theme.compose(
-							menuItemCss,
-							css,
-							'item'
-						)}
+						theme={{
+							...themeProp,
+							'@dojo/widgets/menu-item': theme.compose(
+								menuItemCss,
+								css,
+								'item'
+							)
+						}}
 					>
 						{children}
 					</MenuItem>
