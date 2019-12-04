@@ -834,6 +834,26 @@ registerSuite('Calendar with min-max', {
 			h.expect(baseMinMaxTemplate.setProperty('@date-8', 'selected', true));
 		},
 
+		'Time is ignored for minDate and maxDate'() {
+			process.env.TZ = 'Europe/London';
+			const minDate = new Date('June 3, 2017 23:59:59.999');
+			const maxDate = new Date('June 29, 2017 00:00:00.000');
+
+			const h = harness(() =>
+				w(Calendar, {
+					selectedDate: testDate,
+					minDate,
+					maxDate
+				})
+			);
+			h.expect(
+				baseMinMaxTemplate
+					.setProperty('@date-8', 'selected', true)
+					.setProperty('@date-picker', 'minDate', minDate)
+					.setProperty('@date-picker', 'maxDate', maxDate)
+			);
+		},
+
 		'Set the focusable date when the month change makes it invalid'() {
 			const maxDate = new Date('June 24, 2017');
 			const calendarProperties: CalendarProperties = {
