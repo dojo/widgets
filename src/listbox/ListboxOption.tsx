@@ -6,6 +6,7 @@ import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import * as css from '../theme/default/listbox.m.css';
 
 export interface ListboxOptionProperties extends ThemedProperties {
+	active?: boolean;
 	/** Specific theme used for ListboxOption */
 	css?: (string | null)[];
 	/** If the widget is disabled */
