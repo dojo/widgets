@@ -55,6 +55,8 @@ export interface CalendarProperties extends ThemedProperties, I18nProperties {
 	weekdayNames?: { short: string; long: string }[];
 	/** Set the currently displayed year */
 	year?: number;
+	/** The starting year used in numbering for the year popup (defaults to 2000) */
+	yearBasis?: number;
 	/** Configure the first day of the calendar week, defaults to 0 (sunday) */
 	firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
@@ -354,7 +356,8 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			onMonthChange,
 			onYearChange,
 			minDate,
-			maxDate
+			maxDate,
+			yearBasis
 		} = this.properties;
 		const { month, year } = this._getMonthYear();
 
@@ -368,6 +371,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			renderMonthLabel,
 			theme,
 			year,
+			yearBasis,
 			minDate,
 			maxDate,
 			onPopupChange: (open: boolean) => {

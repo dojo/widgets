@@ -342,6 +342,7 @@ registerSuite('Calendar DatePicker', {
 			customProps = {
 				labelId: 'foo',
 				yearRange: 25,
+				yearBasis: 2010,
 				minDate: new Date('Oct 5, 2001'),
 				maxDate: new Date('March 14, 2019')
 			};
@@ -367,8 +368,8 @@ registerSuite('Calendar DatePicker', {
 
 			h.expect(() =>
 				expected(false, false, {
-					yearStart: 2000,
-					yearEnd: 2025,
+					yearStart: 2010,
+					yearEnd: 2035,
 					monthLabel: 'bar',
 					minDate: customProps.minDate,
 					maxDate: customProps.maxDate

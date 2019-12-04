@@ -44,6 +44,7 @@ export enum Controls {
  * @property onRequestYearChange  Called when a year should change; receives the year as an integer
  * @property renderMonthLabel     Format the displayed current month and year
  * @property year                 Currently displayed year
+ * @property yearBasis            The starting year used in numbering for the year popup (defaults to 2000)
  * @property yearRange            Number of years to display in a single page of the year popup
  */
 export interface DatePickerProperties extends ThemedProperties {
@@ -58,10 +59,11 @@ export interface DatePickerProperties extends ThemedProperties {
 	onRequestYearChange?(year: number): void;
 	renderMonthLabel?(month: number, year: number): string;
 	year: number;
+	yearBasis?: number;
 	yearRange?: number;
 }
 
-const BASE_YEAR = 2000;
+const DEFAULT_YEAR_BASIS = 2000;
 
 @theme(css)
 export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
@@ -105,10 +107,10 @@ export class DatePicker extends ThemedMixin(WidgetBase)<DatePickerProperties> {
 	}
 
 	private _getYearRange() {
-		const { year, yearRange = 20 } = this.properties;
-		const offset = ((year - BASE_YEAR) % yearRange) - yearRange * this._yearPage;
+		const { year, yearRange = 20, yearBasis = DEFAULT_YEAR_BASIS } = this.properties;
+		const offset = ((year - yearBasis) % yearRange) - yearRange * this._yearPage;
 
-		if (year >= BASE_YEAR) {
+		if (year >= yearBasis) {
 			return { first: year - offset, last: year + yearRange - offset };
 		} else {
 			return { first: year - (yearRange + offset), last: year - offset };
