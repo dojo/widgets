@@ -178,7 +178,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			this._gridWidth = bodyWidth;
 		}
 
-		const hasResizableColumns = columnConfig.some((config) => config.resizable);
+		const hasResizableColumns = columnConfig.some((config) => !!config.resizable);
 
 		return v(
 			'div',
