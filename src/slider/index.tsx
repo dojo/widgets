@@ -13,43 +13,43 @@ import * as css from '../theme/default/slider.m.css';
 export interface SliderProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/**  */
+	/** Set the disabled property of the control */
 	disabled?: boolean;
-	/**  */
+	/** Adds a <label> element with the supplied text */
 	label?: string;
-	/**  */
+	/** Adds the label element after (true) or before (false) */
 	labelAfter?: boolean;
-	/**  */
+	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** The maximum value for the slider */
 	max?: number;
 	/** The minimum value for the slider */
 	min?: number;
-	/**  */
+	/** The name of the input element */
 	name?: string;
-	/**  */
+	/** Handler for when the element is blurred */
 	onBlur?(): void;
-	/**  */
+	/** Handler for when the element is focused */
 	onFocus?(): void;
-	/**  */
+	/** Handler for when the pointer moves out of the element */
 	onOut?(): void;
-	/**  */
+	/** Handler for when the pointer moves over the element */
 	onOver?(): void;
-	/**  */
+	/** Handler for when the value of the widget changes */
 	onValue?(value?: number): void;
 	/** An optional function that returns a string or DNode for custom output format */
 	output?(value: number): DNode;
-	/**  */
+	/** If the rendered output should be displayed as a tooltip */
 	outputIsTooltip?: boolean;
-	/**  */
+	/** Makes the slider readonly (it may be focused but not changed) */
 	readOnly?: boolean;
-	/**  */
+	/** If the slider must be set */
 	required?: boolean;
 	/** Toggles visibility of slider output */
 	showOutput?: boolean;
 	/** Size of the slider increment */
 	step?: number;
-	/**  */
+	/** If the value provided by the slider are valid */
 	valid?: boolean;
 	/** The current value */
 	value?: number;
@@ -57,7 +57,7 @@ export interface SliderProperties extends ThemedProperties, FocusProperties {
 	vertical?: boolean;
 	/** Length of the vertical slider (only used if vertical is true) */
 	verticalHeight?: string;
-	/**  */
+	/** The id used for the form input element */
 	widgetId?: string;
 }
 

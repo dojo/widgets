@@ -16,53 +16,53 @@ export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	aria?: { [key: string]: string | null };
 	/** Number of columns, controls the width of the textarea */
 	columns?: number;
-	/**  */
+	/** Custom validator used to validate the contents of the TextArea */
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
-	/**  */
+	/** Set the disabled property of the control */
 	disabled?: boolean;
-	/**  */
+	/** Renders helper text to the user */
 	helperText?: string;
-	/**  */
+	/** Adds a <label> element with the supplied text */
 	label?: string;
-	/**  */
+	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** Maximum number of characters allowed in the input */
 	maxLength?: number | string;
 	/** Minimum number of characters allowed in the input */
 	minLength?: number | string;
-	/**  */
+	/** The name of the field */
 	name?: string;
-	/**  */
+	/** Handler for when the element is blurred */
 	onBlur?(): void;
-	/**  */
+	/** Handler of when the element is clicked */
 	onClick?(): void;
-	/**  */
+	/** Handler for when the element is focused */
 	onFocus?(): void;
-	/**  */
+	/** Handler for when a key is depressed in the element */
 	onKeyDown?(key: number, preventDefault: () => void): void;
-	/**  */
+	/** Handler for when a key is released in the element */
 	onKeyUp?(key: number, preventDefault: () => void): void;
-	/**  */
+	/** Handler for when the pointer moves out of the element */
 	onOut?(): void;
-	/**  */
+	/** Handler for when the pointer moves over the element */
 	onOver?(): void;
-	/**  */
+	/** Called when TextArea's state is validated */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
-	/**  */
+	/** Handler for when the value of the widget changes */
 	onValue?(value?: string): void;
-	/** Placeholder text */
+	/** Placeholder text displayed in an empty TextArea */
 	placeholder?: string;
-	/**  */
+	/** Makes the field readonly (it may be focused but not changed) */
 	readOnly?: boolean;
-	/**  */
+	/** Sets the input as required to complete the form */
 	required?: boolean;
 	/** Number of rows, controls the height of the textarea */
 	rows?: number;
-	/**  */
+	/** If the field is valid and optionally display a message */
 	valid?: { valid?: boolean; message?: string } | boolean;
 	/** The current value */
 	value?: string;
-	/**  */
+	/** The id used for the form input element */
 	widgetId?: string;
 	/** Controls text wrapping. Can be "hard", "soft", or "off" */
 	wrapText?: 'hard' | 'soft' | 'off';

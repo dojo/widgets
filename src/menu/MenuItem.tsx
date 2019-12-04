@@ -17,7 +17,7 @@ export interface MenuItemProperties {
 	onActive(dimensions: DimensionResults): void;
 	/** When set to true, the item will set `scrollIntoView` on it's root dom node */
 	scrollIntoView?: boolean;
-	/** Prpoperty to set the disabled state of the item */
+	/** Property to set the disabled state of the item */
 	disabled?: boolean;
 	/** The id to apply to this widget top level for a11y */
 	id: string;

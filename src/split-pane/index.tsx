@@ -19,11 +19,11 @@ export enum Direction {
 }
 
 export interface SplitPaneProperties extends ThemedProperties {
-	/**  */
+	/** The width at which the pane is collapsed */
 	collapseWidth?: number;
 	/** Orientation of this SplitPane, can be `row` or `column` */
 	direction?: Direction;
-	/**  */
+	/** Called when the pane is collapsed */
 	onCollapse?(collapsed: boolean): void;
 	/** Called when the divider is dragged; should be used to update `size` */
 	onResize?(size: number): void;

@@ -28,36 +28,30 @@ export enum Controls {
 	year = 'year'
 }
 
-/**
- * @type DatePickerProperties
- *
- * Properties that can be set on a Calendar component
- *
- * @property labelId              Set id to reference label containing current month and year
- * @property labels               Customize or internationalize accessible helper text
- * @property maxDate              Maximum date to be picked
- * @property minDate              Minimum date to be picked
- * @property month                Currently displayed month, zero-based
- * @property monthNames           Array of full and abbreviated month names
- * @property onPopupChange        Called when a user action occurs that triggers a change in the month or year popup state
- * @property onRequestMonthChange Called when a month should change; receives the zero-based month number
- * @property onRequestYearChange  Called when a year should change; receives the year as an integer
- * @property renderMonthLabel     Format the displayed current month and year
- * @property year                 Currently displayed year
- * @property yearRange            Number of years to display in a single page of the year popup
- */
 export interface DatePickerProperties extends ThemedProperties {
+	/** Id to reference label containing current month and year */
 	labelId?: string;
+	/** Customize or internationalize accessible helper text */
 	labels: typeof calendarBundle.messages;
+	/** Maximum date to be picked */
 	maxDate?: Date;
+	/** Minimum date to be picked */
 	minDate?: Date;
+	/** Currently displayed month (zero-based) */
 	month: number;
+	/** Array of full and abbreviated month names */
 	monthNames: { short: string; long: string }[];
+	/** Handles when a user action occurs that triggers a change in the month or year popup state */
 	onPopupChange?(open: boolean): void;
+	/** Handles when a month should change (month is zero-based) */
 	onRequestMonthChange?(month: number): void;
+	/** Handles when a year should change */
 	onRequestYearChange?(year: number): void;
+	/** Formats the displayed current month and year */
 	renderMonthLabel?(month: number, year: number): string;
+	/** Currently displayed year */
 	year: number;
+	/** Number of years to display in a single page of the year popup */
 	yearRange?: number;
 }
 

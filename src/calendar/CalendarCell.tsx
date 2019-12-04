@@ -5,32 +5,26 @@ import { v } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/default/calendar.m.css';
 
-/**
- * @type CalendarCellProperties
- *
- * Properties that can be set on a Calendar Date Cell
- *
- * @property callFocus        Used to immediately call focus on the cell
- * @property date             Integer date value
- * @property disabled         Boolean, whether the date is in the displayed month
- * @property focusable        Boolean, whether the date can receive tab focus
- * @property onClick          Callback function for the click event
- * @property onFocusCalled    Callback function when the cell receives focus
- * @property onKeyDown        Callback function for the key down event
- * @property outOfRange       Boolean, true if the date is outside the min/max
- * @property selected         True if the date is currently selected
- * @property today            True if the date the same as the current day
- */
 export interface CalendarCellProperties extends ThemedProperties {
+	/** Used to immediately call focus on the cell */
 	callFocus?: boolean;
+	/** The set date value */
 	date: number;
+	/** Whether the date is in the displayed month */
 	disabled?: boolean;
+	/** Whether the date can receive tab focus */
 	focusable?: boolean;
+	/** Handler for the click event */
 	onClick?(date: number, disabled: boolean): void;
+	/** Handler for when the cell receives focus */
 	onFocusCalled?(): void;
+	/** Handler for the key down event */
 	onKeyDown?(key: number, preventDefault: () => void): void;
+	/** if the date is outside the min/max */
 	outOfRange?: boolean;
+	/** if the date is currently selected */
 	selected?: boolean;
+	/** if the date the same as the current day */
 	today?: boolean;
 }
 

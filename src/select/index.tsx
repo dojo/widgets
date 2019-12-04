@@ -18,7 +18,7 @@ import * as css from '../theme/default/select.m.css';
 export interface SelectProperties<T = any> extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/**  */
+	/** Set the disabled property of the control */
 	disabled?: boolean;
 	/** Function that accepts an option's data and index and returns a boolean */
 	getOptionDisabled?(option: T, index: number): boolean;
@@ -32,39 +32,39 @@ export interface SelectProperties<T = any> extends ThemedProperties, FocusProper
 	getOptionText?(option: T): string;
 	/** Function that accepts an option's data and index and returns a string value */
 	getOptionValue?(option: T, index: number): string;
-	/**  */
+	/** Renders helper text with the Select */
 	helperText?: string;
-	/**  */
+	/** Adds a <label> element with the supplied text */
 	label?: string;
-	/**  */
+	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
-	/**  */
+	/** The name of the select field */
 	name?: string;
-	/**  */
+	/** Handler for when the element is blurred */
 	onBlur?(): void;
-	/**  */
+	/** Handler for when the element is focused */
 	onFocus?(): void;
-	/**  */
+	/** Handler for when the pointer moves out of the element */
 	onOut?(): void;
-	/**  */
+	/** Handler for when the pointer moves over the element */
 	onOver?(): void;
-	/**  */
+	/** Handler for when the value of the widget changes */
 	onValue?(option: T): void;
 	/** Array of any type of data for the options */
 	options?: T[];
 	/** Optional placeholder text, only valid for custom select widgets (useNativeElement must be false or undefined) */
 	placeholder?: string;
-	/**  */
+	/** Makes the select readonly (it may be focused but not changed) */
 	readOnly?: boolean;
-	/**  */
+	/** Sets the input as required to complete the form */
 	required?: boolean;
 	/** Use the native <select> element if true */
 	useNativeElement?: boolean;
-	/**  */
+	/** If the value provided is valid */
 	valid?: boolean;
 	/** The current value */
 	value?: string;
-	/**  */
+	/** The id used for the form input element */
 	widgetId?: string;
 }
 

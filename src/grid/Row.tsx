@@ -9,9 +9,13 @@ import * as fixedCss from './styles/row.m.css';
 import * as css from '../theme/default/grid-row.m.css';
 
 export interface RowProperties {
+	/** identifier for the row */
 	id: number;
+	/** A list of values indexed on the column id */
 	item: { [index: string]: any };
+	/** Configuration for grid columns (id, title, properties, and custom renderer)  */
 	columnConfig: ColumnConfig[];
+	/** Handles updating the value of a cell */
 	updater: (rowNumber: number, columnId: string, value: any) => void;
 }
 

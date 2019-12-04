@@ -23,14 +23,21 @@ export interface FilterRenderer {
 }
 
 export interface HeaderProperties {
+	/** Configuration for grid columns (id, title, properties, and custom renderer) */
 	columnConfig: ColumnConfig[];
+	/** Handles changing the sort order of a column */
 	sorter: (columnId: string, direction: 'asc' | 'desc') => void;
+	/** Handles filtering rows based on a given column */
 	filterer: (columnId: string, value: any) => void;
+	/** Applied filters */
 	filter?: {
 		[index: string]: string;
 	};
+	/** Applied sort options */
 	sort?: SortOptions;
+	/** Custom column renderer for displaying sort options */
 	sortRenderer?: SortRenderer;
+	/** Custom renderer displaying applied filters */
 	filterRenderer?: FilterRenderer;
 }
 

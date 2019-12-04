@@ -79,7 +79,7 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 }
 
 export interface TextInputProperties extends BaseInputProperties {
-	/**  */
+	/** Custom validator used to validate the contents of the input */
 	customValidator?: (value: string) => { valid?: boolean; message?: string } | void;
 	/** The min value a number can be */
 	min?: number | string;
