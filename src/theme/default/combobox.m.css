@@ -1,5 +1,6 @@
 @import './variables.css';
 
+/* The root class for the Combobox */
 .root {
 	position: relative;
 	display: inline-block;
@@ -7,10 +8,12 @@
 	width: 200px;
 }
 
+/* Contains the controls of the ComboBox */
 .controls {
 	position: relative;
 }
 
+/* Contains the drop-down of the ComboBox */
 .dropdown {
 	border: 1px solid var(--component-color);
 	background: var(--component-background);
@@ -19,6 +22,7 @@
 	z-index: var(--zindex-dropdown);
 }
 
+/* Common styling for buttons */
 .clear,
 .trigger {
 	position: absolute;
@@ -30,21 +34,28 @@
 	padding: 0;
 }
 
+/* Added to the trigger button */
 .trigger {
 	right: 7px;
 }
 
+/* Added to the clear button */
 .clear {
 	right: 27px;
 }
 
+/* Added when the control is focused */
 .focused {
 }
+/* Added when the control is valid */
 .valid {
 }
+/* Added when the control is invalid */
 .invalid {
 }
+/* Added when the Combobox is open */
 .open {
 }
+/* Added when the Combobox may be cleared */
 .clearable {
 }

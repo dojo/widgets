@@ -1,11 +1,13 @@
 @import './variables.css';
 
+/* The root class for the button ensures button-like behavior */
 .root {
 	cursor: pointer;
 	display: inline-block;
 	padding: 10px;
 }
 
+/* indicates that the button has been pressed */
 .pressed::before {
 	border-bottom: 2px solid black;
 	border-right: 2px solid black;
@@ -24,6 +26,7 @@
 .addon {
 }
 
+/* Addded to a disabled button */
 .disabled,
 .disabled:hover {
 	cursor: default;

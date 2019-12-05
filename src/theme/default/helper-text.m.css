@@ -1,12 +1,16 @@
 @import './variables.css';
 
+/* The root class of the HelperText */
 .root {
 }
+/* Added to the helper text */
 .text {
 }
+/* Added when the helper text indicates a valid state */
 .valid {
 	color: var(--success-color);
 }
+/* Added when the helper text indicates an invalid state */
 .invalid {
 	color: var(--error-color);
 }

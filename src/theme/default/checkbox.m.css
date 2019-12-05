@@ -1,22 +1,30 @@
 @import './variables.css';
 
+/* The root class for the Checkbox */
 .root {
 	display: block;
 	position: relative;
 }
 
+/* Added to the input of the control */
 .input {
 }
+/* Contains the input */
 .inputWrapper {
 }
+/* Added to a checked control */
 .checked {
 }
+/* Added to a disabled control */
 .disabled {
 }
+/* Added to a focused control */
 .focused {
 }
+/* Added to a read-only control */
 .readonly {
 }
+/* Added to a required control */
 .required {
 }
 
@@ -36,11 +44,15 @@
 	background-color: var(--success-color);
 }
 
+/* Added to a toggle-style Checkbox */
 .toggle {
 }
+/* Added to the label of a toggle-style Checkbox when checked */
 .onLabel {
 }
+/* Added to the label of a toggle-style Checkbox when not checked */
 .offLabel {
 }
+/* Added to the toggle switch of a toggle-style Checkbox */
 .toggleSwitch {
 }

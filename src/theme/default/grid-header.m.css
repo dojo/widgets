@@ -1,8 +1,10 @@
 @import './variables.css';
 
+/* The root class of the grid Header */
 .root {
 }
 
+/* Contains the header cell for a column */
 .cell {
 	border: 1px solid var(--component-color);
 	border-top-style: none;
@@ -17,20 +19,25 @@
 	min-width: 100px;
 }
 
+/* Added to a sortable column */
 .sortable {
 	cursor: pointer;
 }
 
+/* Added to a sorted column */
 .sorted {
 	color: var(--success-color);
 }
 
+/* Added to a column sorted in descending order */
 .desc {
 }
 
+/* Added to a column sorted in ascending order */
 .asc {
 }
 
+/* Added to the sort button */
 .sort {
 	margin-left: 4px;
 	opacity: 0;
@@ -41,6 +48,7 @@
 	opacity: 1;
 }
 
+/* Added to the filter control */
 .filter {
 	margin-top: 4px;
 	width: 100%;

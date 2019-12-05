@@ -1,16 +1,20 @@
 @import './variables.css';
 
+/* The root class of Progress */
 .root {
 }
 
+/* Added to the output text */
 .output {
 }
 
+/* Added to the progress bar */
 .bar {
 	border: 1px solid black;
 	height: 24px;
 }
 
+/* Added to the progress portion of the progress bar */
 .progress {
 	height: 100%;
 	background: var(--selected-background);
