@@ -1,27 +1,35 @@
 @import './variables.css';
 
+/* Contains the title */
 .title {
 	background-color: var(--component-background);
 }
 
+/* Added to a closable pane */
 .closeable {
 }
 
+/* Contains the arrow icon */
 .arrow {
 }
 
+/* The root class of the TitlePane */
 .root {
 }
 
+/* Added when the pane is open */
 .open {
 }
 
+/* Contains the content */
 .content {
 }
 
+/* Added to the title button */
 .titleButton {
 }
 
+/* Style the content animation */
 .contentTransition {
 	transition: margin-top ease-in-out var(--short-animation-duration);
 }

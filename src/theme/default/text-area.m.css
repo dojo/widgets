@@ -1,28 +1,37 @@
 @import './variables.css';
 
+/* The root node of TextArea */
 .root {
 }
 
+/* Added to the textarea element */
 .input {
 	max-width: 100%;
 }
 
+/* Contains the textarea element */
 .inputWrapper {
 }
 
+/* Added to a disabled control */
 .disabled {
 }
+/* Added to a focused control */
 .focused {
 }
+/* Added to a read-only control */
 .readonly {
 }
+/* Added to a required control */
 .required {
 }
 
+/* Added when the contents of a textarea are invalid */
 .invalid .input {
 	border-color: var(--error-color);
 }
 
+/* Added when the contents of a textarea are valid */
 .valid .input {
 	border-color: var(--success-color);
 }

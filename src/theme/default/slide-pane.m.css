@@ -1,33 +1,42 @@
 @import './variables.css';
 
+/* The root style of SlidePane */
 .root {
 }
 
+/* Animation for sliding the SlidePane in */
 .slideIn,
+/* Animation for sliding the SlidePane out */
 .slideOut {
 	transition: transform ease-in-out var(--short-animation-duration);
 }
 
+/* Added when a visible underlay is used */
 .underlayVisible {
 	background: var(--underlay-background);
 	z-index: var(--zindex-dialog);
 }
 
+/* Contains the children of the SlidePane */
 .content {
 }
 
+/* Added to an open slide pane */
 .open {
 }
 
+/* Contains the pane */
 .pane {
 	background-color: var(--component-background);
 	z-index: calc(var(--zindex-dialog) + 1);
 }
 
+/* Added to the title */
 .title {
 	position: relative;
 }
 
+/* Added to the close button */
 .close {
 	position: absolute;
 	top: 50%;
@@ -39,18 +48,23 @@
 	background: none;
 }
 
+/* Added to the close icon */
 .closeIcon {
 	font-size: 14px;
 }
 
+/* Added to a left-aligned pane */
 .left {
 }
 
+/* Added to a right-aligned pane */
 .right {
 }
 
+/* Added to a top-aligned pane */
 .top {
 }
 
+/* Added to a bottom-aligned pane */
 .bottom {
 }
