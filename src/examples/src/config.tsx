@@ -61,6 +61,10 @@ import NonNative from './widgets/select/NonNative';
 import BasicSlidePane from './widgets/slide-pane/Basic';
 import BasicSlider from './widgets/slider/Basic';
 import BasicSnackbar from './widgets/snackbar/Basic';
+import ErrorSnackbar from './widgets/snackbar/Error';
+import LeadingSnackbar from './widgets/snackbar/Leading';
+import StackedSnackbar from './widgets/snackbar/Stacked';
+import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSplitPane from './widgets/split-pane/Basic';
 import BasicTabController from './widgets/tab-controller/Basic';
 import DisabledTabController from './widgets/tab-controller/Disabled';
@@ -554,7 +558,13 @@ export const config = {
 					filename: 'Basic',
 					module: BasicSnackbar
 				}
-			}
+			},
+			examples: [
+				{ filename: 'Error', module: ErrorSnackbar, title: 'Error Snackbar' },
+				{ filename: 'Success', module: SuccessSnackbar, title: 'Success Snackbar' },
+				{ filename: 'Stacked', module: StackedSnackbar, title: 'Stacked Snackbar' },
+				{ filename: 'Leading', module: LeadingSnackbar, title: 'Leading Snackbar' }
+			]
 		},
 		'split-pane': {
 			overview: {

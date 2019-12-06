@@ -3,6 +3,6 @@ import Snackbar from '@dojo/widgets/snackbar';
 
 const factory = create();
 
-export default factory(function Basic() {
-	return <Snackbar open={true} messageRenderer={() => 'Basic Snackbar'} />;
+export default factory(function Leading() {
+	return <Snackbar leading open={true} messageRenderer={() => 'Leading Snackbar'} />;
 });
