@@ -24,6 +24,7 @@ import * as menu from './menu.m.css';
 import * as menuItem from './menu-item.m.css';
 import * as listBoxItem from './list-box-item.m.css';
 import * as outlinedButton from './outlined-button.m.css';
+import * as passwordInput from './password-input.m.css';
 import * as popup from './popup.m.css';
 import * as progress from './progress.m.css';
 import * as radio from './radio.m.css';
@@ -69,6 +70,7 @@ export default {
 	'@dojo/widgets/menu-item': menuItem,
 	'@dojo/widgets/list-box-item': listBoxItem,
 	'@dojo/widgets/outlined-button': outlinedButton,
+	'@dojo/widget/password-input': passwordInput,
 	'@dojo/widgets/popup': popup,
 	'@dojo/widgets/progress': progress,
 	'@dojo/widgets/radio': radio,
