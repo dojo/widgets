@@ -64,7 +64,6 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	private _scrollLeft = 0;
 	private _pageSize = 100;
 	private _columnWidths: { [index: string]: number } | undefined;
-	private _rowWidth = 0;
 	private _gridWidth = 0;
 
 	constructor() {
@@ -113,7 +112,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			value = value - (currentColumnWidth + value - MIN_COLUMN_WIDTH);
 		}
 
-		this._rowWidth = this._rowWidth + value;
+		// this._rowWidth = this._rowWidth + value;
 		this._columnWidths = {
 			...this._columnWidths,
 			[columnConfig[index].id]: currentColumnWidth + value
@@ -169,10 +168,11 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		const meta = this._store.get(this._store.path(storeId, 'meta')) || defaultGridMeta;
 		const pages = this._store.get(this._store.path(storeId, 'data', 'pages')) || {};
 		const hasFilters = columnConfig.some((config) => !!config.filterable);
+		const hasResizableColumns = columnConfig.some((config) => !!config.resizable);
 		const { bodyHeight, bodyWidth, headerWidth } = this._getBodyDimensions();
 		this.meta(Resize).get('root');
 
-		if (bodyWidth && !this._columnWidths) {
+		if (bodyWidth && headerWidth && !this._columnWidths) {
 			const width = headerWidth / columnConfig.length;
 			this._columnWidths = columnConfig.reduce(
 				(sizes, { id }) => {
@@ -181,11 +181,8 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				},
 				{} as any
 			);
-			this._rowWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);
 			this._gridWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);
 		}
-
-		const hasResizableColumns = columnConfig.some((config) => !!config.resizable);
 
 		return v(
 			'div',
@@ -199,70 +196,56 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				v(
 					'div',
 					{
-						styles: hasResizableColumns && this._gridWidth ? { overflowX: 'auto' } : {}
+						key: 'header',
+						scrollLeft: this._scrollLeft,
+						styles:
+							hasResizableColumns && this._gridWidth
+								? {
+										width: `${this._gridWidth}px`
+								  }
+								: {},
+						classes: [
+							this.theme(css.header),
+							fixedCss.headerFixed,
+							hasFilters ? this.theme(css.filterGroup) : null
+						],
+						row: 'rowgroup'
 					},
 					[
-						v(
-							'div',
-							{
-								key: 'header',
-								scrollLeft: this._scrollLeft,
-								styles:
-									hasResizableColumns && this._rowWidth && this._gridWidth
-										? {
-												width: `${Math.max(
-													this._rowWidth,
-													this._gridWidth
-												)}px`
-										  }
-										: {},
-								classes: [
-									this.theme(css.header),
-									fixedCss.headerFixed,
-									hasFilters ? this.theme(css.filterGroup) : null
-								],
-								row: 'rowgroup'
-							},
-							[
-								v('div', { key: 'header-wrapper' }, [
-									w(Header, {
-										key: 'header-row',
-										theme,
-										columnWidths: this._columnWidths,
-										classes,
-										columnConfig,
-										sorter: this._sorter,
-										sort: meta.sort,
-										filter: meta.filter,
-										filterer: this._filterer,
-										sortRenderer,
-										filterRenderer,
-										onColumnResize: this._onColumnResize
-									})
-								])
-							]
-						),
-						w(Body, {
-							key: 'body',
-							theme,
-							classes,
-							pages,
-							columnWidths: this._columnWidths,
-							totalRows: meta.total,
-							pageSize: this._pageSize,
-							columnConfig,
-							fetcher: this._fetcher,
-							pageChange: this._pageChange,
-							updater: this._updater,
-							onScroll: hasResizableColumns ? undefined : this._onScroll,
-							height: bodyHeight,
-							width:
-								hasResizableColumns && this._rowWidth && this._gridWidth
-									? Math.max(this._rowWidth, this._gridWidth)
-									: undefined
-						})
+						v('div', { key: 'header-wrapper' }, [
+							w(Header, {
+								key: 'header-row',
+								theme,
+								columnWidths: this._columnWidths,
+								classes,
+								columnConfig,
+								sorter: this._sorter,
+								sort: meta.sort,
+								filter: meta.filter,
+								filterer: this._filterer,
+								sortRenderer,
+								filterRenderer,
+								onColumnResize: this._onColumnResize
+							})
+						])
 					]
 				),
+				w(Body, {
+					key: 'body',
+					theme,
+					classes,
+					pages,
+					columnWidths: this._columnWidths,
+					totalRows: meta.total,
+					pageSize: this._pageSize,
+					columnConfig,
+					fetcher: this._fetcher,
+					pageChange: this._pageChange,
+					updater: this._updater,
+					onScroll: this._onScroll,
+					height: bodyHeight,
+					width: hasResizableColumns ? this._gridWidth : undefined
+				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
 						key: 'footer-row',

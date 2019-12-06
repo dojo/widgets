@@ -44,8 +44,6 @@ export interface HeaderProperties {
 	onColumnResize?: (index: number, value: number) => void;
 	/** Calculated column widths */
 	columnWidths?: { [index: string]: number };
-	/** The width (in pixels) */
-	width?: number;
 }
 
 @theme(css)
@@ -114,14 +112,19 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 			sortRenderer = this._sortRenderer,
 			filterRenderer = this._filterRenderer,
 			columnWidths,
-			width,
 			onColumnResize
 		} = this.properties;
+
+		const rowWidth =
+			columnWidths &&
+			Object.keys(columnWidths).reduce((rowWidth, key) => {
+				return rowWidth + columnWidths[key];
+			}, 0);
 
 		return v(
 			'div',
 			{
-				styles: width ? { width: `${width}px` } : {},
+				styles: rowWidth ? { width: `${rowWidth}px` } : {},
 				classes: [this.theme(css.root), fixedCss.rootFixed],
 				role: 'row'
 			},

@@ -175,8 +175,15 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			totalRows = 0,
 			pageSize,
 			height,
-			width
+			width,
+			columnWidths
 		} = this.properties;
+
+		const rowWidth =
+			columnWidths &&
+			Object.keys(columnWidths).reduce((rowWidth, key) => {
+				return rowWidth + columnWidths[key];
+			}, 0);
 
 		if (!this._rowHeight) {
 			const firstRow = placeholderRowRenderer(0);
@@ -215,12 +222,14 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 		}
 
 		return v('div', containerProperties, [
-			v('div', { key: 'top', styles: { height: `${topPaddingHeight}px` } }),
-			...rows,
-			v('div', {
-				key: 'bottom',
-				styles: { height: `${bottomPaddingHeight}px` }
-			})
+			v('div', { styles: rowWidth ? { width: `${rowWidth}px` } : {} }, [
+				v('div', { key: 'top', styles: { height: `${topPaddingHeight}px` } }),
+				...rows,
+				v('div', {
+					key: 'bottom',
+					styles: { height: `${bottomPaddingHeight}px` }
+				})
+			])
 		]);
 	}
 }
