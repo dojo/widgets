@@ -1,11 +1,13 @@
 @import './variables.css';
 
+/* The root class of the Grid */
 .root {
 	border-top: 1px solid var(--component-color);
 	border-bottom: 1px solid var(--component-color);
 	background: var(--component-background);
 }
 
+/* Contains the header */
 .header {
 	border-bottom: 1px solid var(--component-color);
 	background: var(--component-background);
@@ -13,6 +15,7 @@
 	height: 32px;
 }
 
+/* Added to the header container when there are filters */
 .filterGroup {
 	height: 64px;
 }

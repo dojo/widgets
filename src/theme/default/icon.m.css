@@ -7,9 +7,11 @@
 	font-style: normal;
 }
 
+/* The root class of the Icon */
 .root {
 }
 
+/* Added to the icon */
 .icon {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'dojo' !important;
@@ -24,102 +26,127 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+/* A down icon */
 .downIcon:before {
 	content: '\f078';
 }
 
+/* A left icon */
 .leftIcon:before {
 	content: '\f053';
 }
 
+/* A right icon */
 .rightIcon:before {
 	content: '\f054';
 }
 
+/* A close icon */
 .closeIcon:before {
 	content: '\f00d';
 }
 
+/* A plus icon */
 .plusIcon:before {
 	content: '\f067';
 }
 
+/* A minus icon */
 .minusIcon:before {
 	content: '\f068';
 }
 
+/* A checkmark icon */
 .checkIcon:before {
 	content: '\f00c';
 }
 
+/* An up icon */
 .upIcon:before {
 	content: '\f077';
 }
 
+/* An alternative up icon */
 .upAltIcon:before {
 	content: '\f0d8';
 }
 
+/* A down icon in the same styling as the alternative up icon */
 .downAltIcon:before {
 	content: '\f0d7';
 }
 
+/* A search icon */
 .searchIcon:before {
 	content: '\f002';
 }
 
+/* A bar icon */
 .barsIcon:before {
 	content: '\f0c9';
 }
 
+/* A settings icon */
 .settingsIcon:before {
 	content: '\f013';
 }
 
+/* An alert icon */
 .alertIcon:before {
 	content: '\f06a';
 }
 
+/* A help icon */
 .helpIcon:before {
 	content: '\f059';
 }
 
+/* An info icon */
 .infoIcon:before {
 	content: '\f05a';
 }
 
+/* A phone icon */
 .phoneIcon:before {
 	content: '\f095';
 }
 
+/* An edit icon */
 .editIcon:before {
 	content: '\f040';
 }
 
+/* A date icon */
 .dateIcon:before {
 	content: '\f133';
 }
 
+/* A link icon */
 .linkIcon:before {
 	content: '\f127';
 }
 
+/* A location icon */
 .locationIcon:before {
 	content: '\f041';
 }
 
+/* A secure icon */
 .secureIcon:before {
 	content: '\f023';
 }
 
+/* A mail icon */
 .mailIcon:before {
 	content: '\f0e0';
 }
 
+/* An eye icon */
 .eyeIcon:before {
 	content: '\f06e';
 }
 
+/* An eye icon with a slash through it (indicating not visible) */
 .eyeSlashIcon:before {
 	content: '\f070';
 }

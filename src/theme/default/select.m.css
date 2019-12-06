@@ -1,8 +1,10 @@
 @import './variables.css';
 
+/* The root style for Select */
 .root {
 }
 
+/* Contains the select element */
 .inputWrapper {
 	display: inline-block;
 	position: relative;
@@ -24,11 +26,14 @@
 	color: var(--selected-background);
 }
 
+/* Added to a placeholder select option (custom select only) */
 .placeholder {
 }
+/* Added to a required Select */
 .required {
 }
 
+/* Contains the dropdown of a custom Select */
 .dropdown {
 	background: var(--component-background);
 	border: 1px solid var(--component-color);
@@ -39,9 +44,11 @@
 	width: 100%;
 }
 
+/* Added to an open custom Select */
 .open {
 }
 
+/* Contains the drop-down of an open custom Select */
 .open .dropdown {
 	display: block;
 	z-index: var(--zindex-dropdown);
@@ -65,10 +72,12 @@
 	width: 200px;
 }
 
+/* Focus for a native Select */
 .input:focus {
 	border-color: var(--selected-background);
 }
 
+/* Added to the expand icon */
 .arrow {
 	bottom: 0;
 	pointer-events: none;
@@ -82,25 +91,32 @@
 	color: var(--selected-background);
 }
 
-/* State classes */
+/* Added to a focused Select */
 .focused {
 }
+/* Added to a disabled native Select */
 .disabled .input,
+/* Added to a read-only native Select */
 .readonly .input {
 	background-color: var(--disabled-color);
 }
 
+/* Added to an invalid native Select */
 .invalid .input {
 	border-color: var(--error-color);
 }
+/* Styles the arrow when the Select is invalid */
 .invalid .arrow {
 	background-color: var(--error-color);
 }
+/* Added to a required Select */
 .required {
 }
+/* Added to a valid native Select */
 .valid .input {
 	border-color: var(--success-color);
 }
+/* Style the arrow when the Select is valid */
 .valid .arrow {
 	background-color: var(--success-color);
 }

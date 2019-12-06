@@ -1,5 +1,6 @@
 @import './variables.css';
 
+/* The root class for the PlaceholderRow */
 .root {
 	composes: root from './grid-row.m.css';
 	line-height: 30px;
@@ -10,6 +11,7 @@
 	text-overflow: ellipsis;
 }
 
+/* Added to the loading row */
 .loading {
 	margin: 6px;
 	width: 12px;

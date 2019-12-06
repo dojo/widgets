@@ -1,5 +1,6 @@
 @import './variables.css';
 
+/* The root class of the grid's Cell */
 .root {
 	border: 1px solid var(--component-color);
 	border-top-style: none;
@@ -9,11 +10,13 @@
 	min-width: 100px;
 }
 
+/* Added to the input while editing */
 .input {
 	background: var(--component-background);
 	color: var(--component-color);
 }
 
+/* Added to the edit button */
 .edit {
 	composes: visuallyHidden focusable from './base.m.css';
 }

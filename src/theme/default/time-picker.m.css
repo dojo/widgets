@@ -1,25 +1,28 @@
 @import './variables.css';
 
+/* The root class of the TimePicker */
 .root {
 	box-sizing: border-box;
-}
-
-.root {
 	display: inline-block;
 }
 
+/* Styles the input when focused */
 .input:focus {
 	outline: none;
 }
 
-/* State classes */
+/* Added when the TimePicker is disabled */
 .disabled {
 }
+/* Added when focused */
 .focused {
 }
+/* Added when the value is invalid */
 .invalid {
 }
+/* Added to a read-only TimePicker */
 .readonly {
 }
+/* Added when the valid is required */
 .required {
 }

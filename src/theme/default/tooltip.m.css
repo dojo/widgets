@@ -1,17 +1,23 @@
+/* The root class of the Tooltip */
 .root {
 }
 
+/* Contains the content of the Tooltip */
 .content {
 }
 
+/* Added to a top-aligned tip */
 .top {
 }
 
+/* Added to a right-aligned tip */
 .right {
 }
 
+/* Added to a left-aligned tip */
 .left {
 }
 
+/* Added to a bottom-aligned tip */
 .bottom {
 }
