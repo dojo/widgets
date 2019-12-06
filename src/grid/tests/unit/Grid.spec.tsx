@@ -553,4 +553,107 @@ describe('Grid', () => {
 			)
 		);
 	});
+
+	it('should set pass widths when any of the columns are resizable', () => {
+		const columnConfig = [
+			{
+				id: 'id',
+				title: 'Id',
+				resizable: true
+			},
+			{
+				id: 'name',
+				title: 'Name',
+				resizable: true
+			}
+		];
+		const h = harness(() =>
+			w(MockMetaMixin(Grid, mockMeta), {
+				fetcher: noop,
+				updater: noop,
+				columnConfig,
+				height: 500
+			})
+		);
+
+		h.expect(() =>
+			v(
+				'div',
+				{
+					key: 'root',
+					classes: [css.root, fixedCss.rootFixed],
+					role: 'table',
+					'aria-rowcount': null
+				},
+				[
+					v(
+						'div',
+						{
+							key: 'header',
+							scrollLeft: 0,
+							styles: { width: '1000px' },
+							classes: [css.header, fixedCss.headerFixed, null],
+							row: 'rowgroup'
+						},
+						[
+							v(
+								'div',
+								{
+									key: 'header-wrapper'
+								},
+								[
+									w(Header, {
+										key: 'header-row',
+										columnConfig,
+										columnWidths: {
+											id: 500,
+											name: 500
+										},
+										sorter: noop,
+										sort: undefined,
+										filter: undefined,
+										onColumnResize: noop,
+										filterer: noop,
+										classes: undefined,
+										theme: undefined,
+										filterRenderer: undefined,
+										sortRenderer: undefined
+									})
+								]
+							)
+						]
+					),
+					w(Body, {
+						key: 'body',
+						pages: {},
+						totalRows: undefined,
+						pageSize: 100,
+						columnConfig,
+						columnWidths: {
+							id: 500,
+							name: 500
+						},
+						pageChange: noop,
+						updater: noop,
+						fetcher: noop,
+						onScroll: noop,
+						height: 300,
+						classes: undefined,
+						theme: undefined,
+						width: 1000
+					}),
+					v('div', { key: 'footer' }, [
+						w(Footer, {
+							key: 'footer-row',
+							total: undefined,
+							page: 1,
+							pageSize: 100,
+							classes: undefined,
+							theme: undefined
+						})
+					])
+				]
+			)
+		);
+	});
 });

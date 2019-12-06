@@ -361,5 +361,63 @@ describe('Body', () => {
 			h.expect(() => h.getRender());
 			assert.isTrue(pageChangeStub.calledWith(3));
 		});
+
+		it('should set the body to the correct width', () => {
+			const pageChangeStub = stub();
+			const page: any[] = [];
+			for (let i = 0; i < 100; i++) {
+				const item = { id: 'id' };
+				page.push(item);
+			}
+
+			const columnConfig = [
+				{
+					id: 'id',
+					title: 'Id'
+				}
+			];
+
+			const h = harness(() =>
+				w(Body, {
+					totalRows: 1000,
+					pageSize: 100,
+					height: 400,
+					pages: {},
+					columnConfig,
+					fetcher: noop,
+					updater: noop,
+					pageChange: pageChangeStub,
+					columnWidths: {
+						id: 100
+					},
+					width: 100
+				})
+			);
+
+			const rows: any[] = [];
+			for (let i = 0; i < 100; i++) {
+				rows.push(w(PlaceholderRow, { key: i }));
+			}
+
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [css.root, fixedCss.rootFixed],
+						role: 'rowgroup',
+						onscroll: noop,
+						styles: { height: '400px', width: '100px' }
+					},
+					[
+						v('div', { styles: { width: '100px' } }, [
+							v('div', { key: 'top', styles: { height: '0px' } }),
+							...rows,
+							v('div', { key: 'bottom', styles: { height: '31500px' } })
+						])
+					]
+				)
+			);
+		});
 	});
 });
