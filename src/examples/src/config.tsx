@@ -10,6 +10,8 @@ import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import LimitedRange from './widgets/calendar/LimitedRange';
 import BasicCard from './widgets/card/Basic';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
+import DisabledCheckbox from './widgets/checkbox/Disabled';
+import ReadonlyCheckbox from './widgets/checkbox/Readonly';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
@@ -188,7 +190,11 @@ export const config = {
 					filename: 'Basic',
 					module: BasicCheckbox
 				}
-			}
+			},
+			examples: [
+				{ title: 'Disabled', module: DisabledCheckbox, filename: 'Disabled' },
+				{ title: 'Readonly', module: ReadonlyCheckbox, filename: 'Readonly' }
+			]
 		},
 		'checkbox-group': {
 			examples: [
