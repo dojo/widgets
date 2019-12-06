@@ -17,9 +17,17 @@ const columnConfig: ColumnConfig[] = [
 		filterable: true
 	},
 	{
+		id: 'middleName',
+		title: 'Middle Name'
+	},
+	{
 		id: 'lastName',
 		title: 'Last Name',
 		filterable: true
+	},
+	{
+		id: 'otherName',
+		title: 'Other Name'
 	}
 ];
 

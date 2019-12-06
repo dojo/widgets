@@ -36,7 +36,7 @@ export interface BodyProperties<S> {
 	/** Called when the page changes */
 	pageChange: (page: number) => void;
 	/** Handler for scroll events */
-	onScroll: (value: number) => void;
+	onScroll?: (value: number) => void;
 	columnWidths?: { [index: string]: number };
 }
 
@@ -81,8 +81,9 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 	}
 
 	private _onScroll(event: UIEvent) {
-		const { totalRows = 0 } = this.properties;
+		const { totalRows = 0, onScroll } = this.properties;
 		const scrollTop = (event.target as HTMLElement).scrollTop;
+		const scrollLeft = (event.target as HTMLElement).scrollLeft;
 		const topRow = Math.round(scrollTop / this._rowHeight);
 		const bottomRow = topRow + this._rowsInView;
 		if (topRow <= this._start) {
@@ -93,6 +94,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			this._start = Math.min(topRow, totalRows - this._renderPageSize);
 			this._end = Math.min(totalRows, this._start + this._renderPageSize * 2);
 		}
+		onScroll && onScroll(scrollLeft);
 		this.invalidate();
 	}
 

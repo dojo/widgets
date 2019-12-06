@@ -61,6 +61,7 @@ const MIN_COLUMN_WIDTH = 100;
 export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> {
 	private _store = new Store<GridState<S>>();
 	private _handle: any;
+	private _scrollLeft = 0;
 	private _pageSize = 100;
 	private _columnWidths: { [index: string]: number } | undefined;
 	private _rowWidth = 0;
@@ -145,6 +146,12 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		pageChangeProcess(this._store)({ id: storeId, page });
 	}
 
+	private _onScroll(value: number) {
+		console.log('here');
+		this._scrollLeft = value;
+		this.invalidate();
+	}
+
 	protected render(): DNode {
 		const {
 			columnConfig,
@@ -174,8 +181,8 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				},
 				{} as any
 			);
-			this._rowWidth = bodyWidth;
-			this._gridWidth = bodyWidth;
+			this._rowWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);
+			this._gridWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);;
 		}
 
 		const hasResizableColumns = columnConfig.some((config) => !!config.resizable);
@@ -194,7 +201,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 					{
 						styles:
 							hasResizableColumns && this._gridWidth
-								? { overflowX: 'auto', width: `${this._gridWidth}px` }
+								? { overflowX: 'auto' }
 								: {}
 					},
 					[
@@ -202,6 +209,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 							'div',
 							{
 								key: 'header',
+								scrollLeft: this._scrollLeft,
 								styles:
 									hasResizableColumns && this._rowWidth && this._gridWidth
 										? {
@@ -249,6 +257,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 							fetcher: this._fetcher,
 							pageChange: this._pageChange,
 							updater: this._updater,
+							onScroll: hasResizableColumns ? undefined : this._onScroll,
 							height: bodyHeight,
 							width:
 								hasResizableColumns && this._rowWidth && this._gridWidth
