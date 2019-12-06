@@ -182,7 +182,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				{} as any
 			);
 			this._rowWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);
-			this._gridWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);;
+			this._gridWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);
 		}
 
 		const hasResizableColumns = columnConfig.some((config) => !!config.resizable);
@@ -199,10 +199,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				v(
 					'div',
 					{
-						styles:
-							hasResizableColumns && this._gridWidth
-								? { overflowX: 'auto' }
-								: {}
+						styles: hasResizableColumns && this._gridWidth ? { overflowX: 'auto' } : {}
 					},
 					[
 						v(
