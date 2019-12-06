@@ -1,9 +1,10 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
+import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/snackbar.m.css';
 
-export interface SnackbarProperties {
+export interface SnackbarProperties extends ThemedProperties {
 	/** If the snackbar is displayed */
 	open: boolean;
 	/** Renders the message portion of the snackbar */
