@@ -17,6 +17,7 @@
 			"src/constrained-input",
 			"src/dialog",
 			"src/email-input",
+			"src/form",
 			"src/grid",
 			"src/helper-text",
 			"src/icon",
