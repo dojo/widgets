@@ -112,7 +112,6 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			value = value - (currentColumnWidth + value - MIN_COLUMN_WIDTH);
 		}
 
-		// this._rowWidth = this._rowWidth + value;
 		this._columnWidths = {
 			...this._columnWidths,
 			[columnConfig[index].id]: currentColumnWidth + value
@@ -146,7 +145,6 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	private _onScroll(value: number) {
-		console.log('here');
 		this._scrollLeft = value;
 		this.invalidate();
 	}
