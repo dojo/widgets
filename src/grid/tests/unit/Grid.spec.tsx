@@ -71,7 +71,8 @@ describe('Grid', () => {
 								key: 'header',
 								styles: {},
 								classes: [css.header, fixedCss.headerFixed, css.filterGroup],
-								row: 'rowgroup'
+								row: 'rowgroup',
+								scrollLeft: 0
 							},
 							[
 								v('div', { key: 'header-wrapper' }, [
@@ -96,6 +97,7 @@ describe('Grid', () => {
 						),
 						w(Body, {
 							key: 'body',
+							onScroll: noop,
 							pages: {},
 							totalRows: undefined,
 							pageSize: 100,
@@ -172,7 +174,8 @@ describe('Grid', () => {
 								key: 'header',
 								classes: [css.header, fixedCss.headerFixed, css.filterGroup],
 								styles: {},
-								row: 'rowgroup'
+								row: 'rowgroup',
+								scrollLeft: 0
 							},
 							[
 								v('div', { key: 'header-wrapper' }, [
@@ -203,6 +206,7 @@ describe('Grid', () => {
 						),
 						w(Body, {
 							key: 'body',
+							onScroll: noop,
 							pages: {
 								'page-1': [{ id: 'id' }]
 							},
@@ -268,7 +272,8 @@ describe('Grid', () => {
 								key: 'header',
 								classes: [css.header, fixedCss.headerFixed, css.filterGroup],
 								styles: {},
-								row: 'rowgroup'
+								row: 'rowgroup',
+								scrollLeft: 0
 							},
 							[
 								v('div', { key: 'header-wrapper' }, [
@@ -293,6 +298,7 @@ describe('Grid', () => {
 						),
 						w(Body, {
 							key: 'body',
+							onScroll: noop,
 							pages: {},
 							totalRows: undefined,
 							pageSize: 100,
@@ -353,7 +359,8 @@ describe('Grid', () => {
 								key: 'header',
 								classes: [css.header, fixedCss.headerFixed, null],
 								styles: {},
-								row: 'rowgroup'
+								row: 'rowgroup',
+								scrollLeft: 0
 							},
 							[
 								v('div', { key: 'header-wrapper' }, [
@@ -376,6 +383,7 @@ describe('Grid', () => {
 						),
 						w(Body, {
 							key: 'body',
+							onScroll: noop,
 							pages: {},
 							totalRows: undefined,
 							pageSize: 100,
