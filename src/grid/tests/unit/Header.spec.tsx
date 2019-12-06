@@ -58,10 +58,7 @@ describe('Header', () => {
 				columnConfig,
 				sorter: sorterStub,
 				filterer: filtererStub,
-				columnWidths: {
-					title: 100,
-					firstName: 250
-				}
+				columnWidths: undefined
 			})
 		);
 		h.expect(() =>
@@ -70,9 +67,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -82,9 +77,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 250px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -102,7 +95,7 @@ describe('Header', () => {
 				columnConfig: advancedColumnConfig,
 				sorter: sorterStub,
 				filterer: filtererStub,
-				columnWidths: getColumnWidths(advancedColumnConfig)
+				columnWidths: undefined
 			})
 		);
 
@@ -112,9 +105,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -124,9 +115,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -185,7 +174,7 @@ describe('Header', () => {
 					columnId: 'firstName',
 					direction: 'asc'
 				},
-				columnWidths: getColumnWidths(advancedColumnConfig)
+				columnWidths: undefined
 			})
 		);
 
@@ -195,9 +184,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -207,9 +194,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': 'ascending'
 					},
@@ -268,7 +253,7 @@ describe('Header', () => {
 					columnId: 'firstName',
 					direction: 'desc'
 				},
-				columnWidths: getColumnWidths(advancedColumnConfig)
+				columnWidths: undefined
 			})
 		);
 
@@ -278,9 +263,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -290,9 +273,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': 'descending'
 					},
@@ -356,7 +337,7 @@ describe('Header', () => {
 				filter: {
 					firstName: 'my filter'
 				},
-				columnWidths: getColumnWidths(advancedColumnConfig)
+				columnWidths: undefined
 			})
 		);
 
@@ -366,9 +347,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -378,9 +357,7 @@ describe('Header', () => {
 					'div',
 					{
 						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
-						},
+						styles: {},
 						role: 'columnheader',
 						'aria-sort': null
 					},
@@ -435,7 +412,7 @@ describe('Header', () => {
 				columnConfig: advancedColumnConfig,
 				sorter: sorterStub,
 				filterer: filtererStub,
-				columnWidths: getColumnWidths(advancedColumnConfig)
+				columnWidths: undefined
 			})
 		);
 
@@ -452,7 +429,7 @@ describe('Header', () => {
 					columnConfig: advancedColumnConfig,
 					sorter: sorterStub,
 					filterer: filtererStub,
-					columnWidths: getColumnWidths(advancedColumnConfig)
+					columnWidths: undefined
 				})
 			);
 
@@ -476,7 +453,7 @@ describe('Header', () => {
 						columnId: 'firstName',
 						direction: 'desc'
 					},
-					columnWidths: getColumnWidths(advancedColumnConfig)
+					columnWidths: undefined
 				})
 			);
 
@@ -500,7 +477,7 @@ describe('Header', () => {
 						columnId: 'firstName',
 						direction: 'asc'
 					},
-					columnWidths: getColumnWidths(advancedColumnConfig)
+					columnWidths: undefined
 				})
 			);
 
@@ -531,7 +508,7 @@ describe('Header', () => {
 							`custom renderer - ${direction} - ${title}`
 						]);
 					},
-					columnWidths: getColumnWidths(advancedColumnConfig)
+					columnWidths: undefined
 				})
 			);
 
@@ -541,9 +518,7 @@ describe('Header', () => {
 						'div',
 						{
 							classes: [css.cell, fixedCss.cellFixed],
-							styles: {
-								flex: '0 1 100px'
-							},
+							styles: {},
 							role: 'columnheader',
 							'aria-sort': null
 						},
@@ -553,9 +528,7 @@ describe('Header', () => {
 						'div',
 						{
 							classes: [css.cell, fixedCss.cellFixed],
-							styles: {
-								flex: '0 1 100px'
-							},
+							styles: {},
 							role: 'columnheader',
 							'aria-sort': 'ascending'
 						},
@@ -615,7 +588,7 @@ describe('Header', () => {
 							`custom renderer - ${direction} - ${title}`
 						]);
 					},
-					columnWidths: getColumnWidths(advancedColumnConfig)
+					columnWidths: undefined
 				})
 			);
 
@@ -625,9 +598,7 @@ describe('Header', () => {
 						'div',
 						{
 							classes: [css.cell, fixedCss.cellFixed],
-							styles: {
-								flex: '0 1 100px'
-							},
+							styles: {},
 							role: 'columnheader',
 							'aria-sort': null
 						},
@@ -637,9 +608,7 @@ describe('Header', () => {
 						'div',
 						{
 							classes: [css.cell, fixedCss.cellFixed],
-							styles: {
-								flex: '0 1 100px'
-							},
+							styles: {},
 							role: 'columnheader',
 							'aria-sort': 'descending'
 						},
@@ -699,7 +668,7 @@ describe('Header', () => {
 							v('span', [`${title} - ${columnConfig.id}`])
 						]);
 					},
-					columnWidths: getColumnWidths(advancedColumnConfig)
+					columnWidths: undefined
 				})
 			);
 
@@ -709,9 +678,7 @@ describe('Header', () => {
 						'div',
 						{
 							classes: [css.cell, fixedCss.cellFixed],
-							styles: {
-								flex: '0 1 100px'
-							},
+							styles: {},
 							role: 'columnheader',
 							'aria-sort': null
 						},
@@ -721,9 +688,7 @@ describe('Header', () => {
 						'div',
 						{
 							classes: [css.cell, fixedCss.cellFixed],
-							styles: {
-								flex: '0 1 100px'
-							},
+							styles: {},
 							role: 'columnheader',
 							'aria-sort': null
 						},
@@ -786,38 +751,46 @@ describe('Header', () => {
 			/>
 		));
 		h.expect(() =>
-			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row', styles: {} }, [
-				v(
-					'div',
-					{
-						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
+			v(
+				'div',
+				{
+					classes: [css.root, fixedCss.rootFixed],
+					role: 'row',
+					styles: { width: '200px' }
+				},
+				[
+					v(
+						'div',
+						{
+							classes: [css.cell, fixedCss.cellFixed],
+							styles: {
+								flex: '0 1 100px'
+							},
+							role: 'columnheader',
+							'aria-sort': null
 						},
-						role: 'columnheader',
-						'aria-sort': null
-					},
-					[
-						v('div', {}, ['Title']),
-						v('span', { key: 'title-resize', classes: [fixedCss.resize] })
-					]
-				),
-				v(
-					'div',
-					{
-						classes: [css.cell, fixedCss.cellFixed],
-						styles: {
-							flex: '0 1 100px'
+						[
+							v('div', {}, ['Title']),
+							v('span', { key: 'title-resize', classes: [fixedCss.resize] })
+						]
+					),
+					v(
+						'div',
+						{
+							classes: [css.cell, fixedCss.cellFixed],
+							styles: {
+								flex: '0 1 100px'
+							},
+							role: 'columnheader',
+							'aria-sort': null
 						},
-						role: 'columnheader',
-						'aria-sort': null
-					},
-					[
-						v('div', {}, ['First Name']),
-						v('span', { key: 'firstName-resize', classes: [fixedCss.resize] })
-					]
-				)
-			])
+						[
+							v('div', {}, ['First Name']),
+							v('span', { key: 'firstName-resize', classes: [fixedCss.resize] })
+						]
+					)
+				]
+			)
 		);
 	});
 });

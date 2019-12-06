@@ -71,9 +71,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '31500px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '31500px' } })
+					])
 				]
 			)
 		);
@@ -126,9 +128,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '31500px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '31500px' } })
+					])
 				]
 			)
 		);
@@ -165,9 +169,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '0px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '0px' } })
+					])
 				]
 			)
 		);
@@ -222,9 +228,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '31500px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '31500px' } })
+					])
 				]
 			)
 		);
@@ -252,9 +260,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '10010px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '23310px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '10010px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '23310px' } })
+					])
 				]
 			)
 		);
@@ -272,9 +282,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '10010px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '23310px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '10010px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '23310px' } })
+					])
 				]
 			)
 		);

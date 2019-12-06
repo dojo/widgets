@@ -172,7 +172,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		const { bodyHeight, bodyWidth, headerWidth } = this._getBodyDimensions();
 		this.meta(Resize).get('root');
 
-		if (bodyWidth && headerWidth && !this._columnWidths) {
+		if (bodyWidth && headerWidth && hasResizableColumns && !this._columnWidths) {
 			const width = headerWidth / columnConfig.length;
 			this._columnWidths = columnConfig.reduce(
 				(sizes, { id }) => {
