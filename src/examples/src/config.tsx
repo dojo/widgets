@@ -59,9 +59,7 @@ import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
 import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
-import AdvancedOptions from './widgets/select/AdvancedOptions';
 import BasicSelect from './widgets/select/Basic';
-import NonNative from './widgets/select/NonNative';
 import BasicSlidePane from './widgets/slide-pane/Basic';
 import BasicSlider from './widgets/slider/Basic';
 import BasicSnackbar from './widgets/snackbar/Basic';
@@ -548,18 +546,6 @@ export const config = {
 			}
 		},
 		select: {
-			examples: [
-				{
-					filename: 'AdvancedOptions',
-					module: AdvancedOptions,
-					title: 'Advanced options'
-				},
-				{
-					filename: 'NonNative',
-					module: NonNative,
-					title: 'Non Native'
-				}
-			],
 			overview: {
 				example: {
 					filename: 'Basic',

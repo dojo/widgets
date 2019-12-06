@@ -26,8 +26,8 @@ interface PopupICache {
 }
 
 export interface PopupChildren {
-	trigger: (onToggleOpen: () => void) => RenderResult;
-	content: (onClose: () => void) => RenderResult;
+	trigger: (toggleOpen: () => void) => RenderResult;
+	content: (close: () => void) => RenderResult;
 }
 
 const icache = createICacheMiddleware<PopupICache>();
@@ -96,9 +96,9 @@ export const Popup = factory(function({
 		const open = icache.get('open');
 		icache.set('open', !open);
 		if (open) {
-			onOpen && onOpen();
-		} else {
 			onClose && onClose();
+		} else {
+			onOpen && onOpen();
 		}
 	}
 

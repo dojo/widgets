@@ -42,6 +42,7 @@ export interface MenuProperties {
 	itemRenderer?(properties: ItemRendererProperties): RenderResult;
 	/** Property to determine if this menu is being used as a listbox, changes a11y and item type */
 	listBox?: boolean;
+	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
 	widgetId?: string;
 }
 
