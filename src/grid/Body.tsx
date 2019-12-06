@@ -23,8 +23,8 @@ export interface BodyProperties<S> {
 	pages: GridPages<S>;
 	/** The height (in pixels) */
 	height: number;
+	/** The width (in pixels) */
 	width?: number;
-	rowWidth?: number;
 	/** Configuration for grid columns (id, title, properties, and custom renderer) */
 	columnConfig: ColumnConfig[];
 	/** Custom renderer for the placeholder row used while data is loaded */
@@ -37,6 +37,7 @@ export interface BodyProperties<S> {
 	pageChange: (page: number) => void;
 	/** Handler for scroll events */
 	onScroll?: (value: number) => void;
+	/** Calculated column widths */
 	columnWidths?: { [index: string]: number };
 }
 

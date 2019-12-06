@@ -17,6 +17,7 @@ export interface RowProperties {
 	columnConfig: ColumnConfig[];
 	/** Handles updating the value of a cell */
 	updater: (rowNumber: number, columnId: string, value: any) => void;
+	/** Calculated column widths */
 	columnWidths?: { [index: string]: number };
 }
 

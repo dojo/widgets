@@ -21,6 +21,7 @@ export interface CellProperties extends FocusProperties {
 	rawValue: string;
 	/** Called when the Cell's value is saved by the editor */
 	updater: (value: any) => void;
+	/** The width (in pixels) */
 	width?: number;
 }
 

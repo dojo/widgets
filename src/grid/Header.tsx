@@ -40,8 +40,11 @@ export interface HeaderProperties {
 	sortRenderer?: SortRenderer;
 	/** Custom renderer displaying applied filters */
 	filterRenderer?: FilterRenderer;
+	/** Callback on column resize */
 	onColumnResize?: (index: number, value: number) => void;
+	/** Calculated column widths */
 	columnWidths?: { [index: string]: number };
+	/** The width (in pixels) */
 	width?: number;
 }
 
