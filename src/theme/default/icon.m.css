@@ -20,6 +20,8 @@
 	font-weight: normal;
 	font-variant: normal;
 	text-transform: none;
+	font-size: inherit;
+	line-height: inherit;
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
