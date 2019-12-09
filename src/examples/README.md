@@ -1,41 +1,44 @@
-# examples
+# @dojo/widgets
 
-This project was generated with the [Dojo CLI](https://github.com/dojo/cli) & [Dojo CLI create app command](https://github.com/dojo/cli-create-app).
+A suite of pre-built Dojo widgets, ready to use in your web application.
+These widgets are built using Dojo's widget authoring system [(@dojo/framework/core)](https://github.com/dojo/framework/blob/master/src/core/README.md).
 
-## Build
+- [Usage](#usage)
+- [Features](#features)
 
-Run `npm run build` or `dojo build --mode dist` (the `mode` option defaults to `dist`) to create a production build for the project. The built artifacts will be stored in the `output/dist` directory.
+## Usage
 
-## Development Build
+To use `@dojo/widgets` in your project, you will need to install the package:
 
-Run `npm run build:dev` or `dojo build --mode dev` to create a development build for the project. The built artifacts will be stored in the `output/dev` directory.
+```bash
+npm install @dojo/widgets
+```
+This package contains *all* of the widgets in this repo.
 
-## Development server
+All of the widgets are on the same release schedule, that is to say, that we release all widgets at the same time.
+Minor releases may include new widgets and/or features, whereas patch releases may contain fixes to more than 1 widget.
 
-Run `npm run dev` or `dojo build --mode dev --watch file --serve` to create a development build and start a development server. By default the server runs on port `9999`, navigate to `http://localhost:9999/`.
+To use a widget in your application, you will need to import each widget individually:
 
-To change the port of the development server use the `--port` option on the `dojo build` command.
+```ts
+import Button from '@dojo/widgets/button';
+```
 
-To create an in memory development build and start a development server with hot reload, switch the `--watch` option to `memory`.
+Each widget module has a default export of the widget itself, as well as named exports for things such as properties specific to the widget:
 
-## Running unit tests
+```ts
+import Button, { ButtonProperties } from '@dojo/widgets/button';
+```
 
-To run units tests in node only use `npm run test` or `dojo test` which uses JIT (just in time) compilation.
+Because each widget is a separate module, when you create a release build of your application, you will only include the widgets that you have explicitly imported.
+This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make sure that the production build of your application only includes the widgets you use and is as small as possible.
 
-To run the unit tests against built bundles, run `npm run test:unit`.
+## Features
 
-To be re-run the unit tests without needing to re-build the full application each time, first build the app with `--mode unit` and the `--watch` option, `dojo build --mode unit --watch`. Then run `dojo test --config local` to run the unit tests as needed.
+- All widgets are supported in all evergreen browsers (Chrome, Edge, Firefox, IE11+, and Safari) as well as popular mobile browsers (Mobile Safari, Chrome on Android).
 
-The build test artifacts are written to the `output/tests/unit` directory. These tests are located in the `tests/unit` directory.
+- All widgets are designed to be accessible. If custom ARIA semantics are required, widgets have an `aria` property that may be passed an object with custom `aria-*` attributes.
 
-## Running functional tests
+- All widgets are fully themeable. Example themes are available in the [@dojo/themes](https://github.com/dojo/themes) repository.
 
-To run the functional tests, run `npm run test:functional`. These tests are located in the `tests/functional` directory.
-
-## Running unit and functional tests together
-
-To run both unit and functional tests as the same time, run `npm run test:all`.
-
-## Further help
-
-To get help for these commands and more, run `dojo` on the command line.
+- All widgets support internationalization (`i18n`)

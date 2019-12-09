@@ -55,7 +55,7 @@
     "@dojo/cli-build-widget": "7.0.0-alpha.5",
     "@dojo/cli-test-intern": "7.0.0-alpha.3",
     "@dojo/framework": "7.0.0-alpha.4",
-    "@dojo/parade": "0.0.3",
+    "@dojo/parade": "0.0.4",
     "@dojo/scripts": "^4.0.2",
     "@material/button": "2.1.1",
     "@material/checkbox": "4.0.0",
