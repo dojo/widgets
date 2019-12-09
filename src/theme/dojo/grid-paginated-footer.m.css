@@ -15,7 +15,6 @@
 	min-width: 26px;
 	color: var(--color-background-inverted);
 	margin: 2px;
-	font-weight: 700;
 	text-align: center;
 	user-select: none;
 }
@@ -30,7 +29,6 @@
 	margin: 2px;
 	color: var(--color-text-primary);
 	background-color: var(--color-background-faded);
-	font-weight: 700;
 	text-align: center;
 }
 
