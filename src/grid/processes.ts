@@ -26,7 +26,10 @@ const preFetcherCommand = commandFactory<FetcherCommandPayload>(
 	({ path, get, payload: { id, page } }) => {
 		const fetchedPages = get(path(id, 'meta', 'fetchedPages')) || [];
 		if (fetchedPages.indexOf(page) === -1) {
-			return [replace(path(id, 'meta', 'fetchedPages'), [...fetchedPages, page])];
+			return [
+				replace(path(id, 'meta', 'fetchedPages'), [...fetchedPages, page]),
+				replace(path(id, 'meta', 'page'), page)
+			];
 		}
 		throw Error('The page has already been requested');
 	}
