@@ -1,20 +1,19 @@
+@import './variables.css';
+
 .root {
 	height: 45px;
-}
-
-.pagination {
-	background-color: white;
+	background-color: var(--color-background-faded);
 }
 
 .details {
 	margin-left: 5px;
-	color: #5c6c7c;
+	color: var(--color-text-primary);
 }
 
 .more {
 	height: 26px;
 	min-width: 26px;
-	color: #5c6c7c;
+	color: var(--color-background-inverted);
 	margin: 2px;
 	font-weight: 700;
 	text-align: center;
@@ -29,11 +28,12 @@
 	height: 26px;
 	min-width: 26px;
 	margin: 2px;
-	color: #5c6c7c;
+	color: var(--color-text-primary);
+	background-color: var(--color-background-faded);
 	font-weight: 700;
 	text-align: center;
 }
 
 .active {
-	background-color: #f5f6f7;
+	color: var(--color-background-inverted);
 }
