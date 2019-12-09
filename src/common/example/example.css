@@ -39,11 +39,13 @@
 @import '../../grid/styles/body.m.css';
 @import '../../grid/styles/cell.m.css';
 @import '../../grid/styles/header.m.css';
+@import '../../grid/styles/paginated-footer.m.css';
 @import '../../grid/styles/row.m.css';
 @import '../../theme/grid.m.css';
 @import '../../theme/grid-body.m.css';
 @import '../../theme/grid-cell.m.css';
 @import '../../theme/grid-footer.m.css';
+@import '../../theme/grid-paginated-footer.m.css';
 @import '../../theme/grid-header.m.css';
 @import '../../theme/grid-placeholder-row.m.css';
 @import '../../theme/grid-row.m.css';
