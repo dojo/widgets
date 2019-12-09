@@ -6,6 +6,7 @@
 	flex-direction: column;
 }
 
+/* Class applied to the root of the trigger node */
 .trigger {
 	display: flex;
 	flex-direction: row;
@@ -19,32 +20,37 @@
 	padding: 0 8px;
 }
 
+/* Wrapper around the widgets text value */
 .value {
 	flex-grow: 1;
 	text-align: left;
 }
 
-/* Added to a placeholder select option (custom select only) */
+/* Wrapper around the widgets placeholder value */
 .placeholder {
 }
 
-/* Added to the expand icon */
+/* Wrapper around the widgets arrow icon */
 .arrow {
 }
 
+/* Wrapper around the popup content */
 .menuWrapper {
 	border: 1px solid var(--component-color);
 }
 
+/* Modifier classes */
 .disabled .trigger,
 .readonly .trigger {
 	background-color: var(--disabled-color);
 }
 
+/* Valid class */
 .valid .trigger {
 	border-color: green;
 }
 
+/* Invalid class */
 .invalid .trigger {
 	border-color: red;
 }
