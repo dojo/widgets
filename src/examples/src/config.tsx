@@ -113,15 +113,20 @@ import CloseableDialog from './widgets/dialog/CloseableDialog';
 `!has('docs')`;
 import testsContext from './tests';
 
-const tests = typeof testsContext !== 'undefined' ? testsContext : [];
+const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
 export const config = {
+	name: '@dojo/widgets',
+	home: 'src/examples/README.md',
 	themes: [dojoTheme],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
 	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename || 'index'}.tsx`,
 	examplePath: (widget: string, filename: string) =>
 		`src/examples/src/widgets/${widget}/${filename || 'index'}.tsx`,
+	codesandboxPath: (widget: string, filename: string) => {
+		return `https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2F${filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${filename}.tsx`;
+	},
 	widgets: {
 		'accordion-pane': {
 			examples: [
