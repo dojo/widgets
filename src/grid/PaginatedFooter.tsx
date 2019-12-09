@@ -43,17 +43,29 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 				this._renderPageControl(3),
 				this._renderPageControl(4),
 				this._renderPageControl(5),
-				v('span', { key: 'more', classes: [this.theme(css.more), fixedCss.moreFixed] }, [
-					'...'
-				]),
+				v(
+					'span',
+					{
+						key: 'more',
+						'aria-hidden': true,
+						classes: [this.theme(css.more), fixedCss.moreFixed]
+					},
+					['...']
+				),
 				this._renderPageControl(totalPages)
 			];
 		} else if (page > totalPages - 3) {
 			return [
 				this._renderPageControl(1),
-				v('span', { key: 'less', classes: [this.theme(css.more), fixedCss.moreFixed] }, [
-					'...'
-				]),
+				v(
+					'span',
+					{
+						key: 'less',
+						'aria-hidden': true,
+						classes: [this.theme(css.more), fixedCss.moreFixed]
+					},
+					['...']
+				),
 				this._renderPageControl(totalPages - 4),
 				this._renderPageControl(totalPages - 3),
 				this._renderPageControl(totalPages - 2),
@@ -63,15 +75,27 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 		} else {
 			return [
 				this._renderPageControl(1),
-				v('span', { key: 'less', classes: [this.theme(css.more), fixedCss.moreFixed] }, [
-					'...'
-				]),
+				v(
+					'span',
+					{
+						key: 'less',
+						'aria-hidden': true,
+						classes: [this.theme(css.more), fixedCss.moreFixed]
+					},
+					['...']
+				),
 				this._renderPageControl(page - 1),
 				this._renderPageControl(page),
 				this._renderPageControl(page + 1),
-				v('span', { key: 'more', classes: [this.theme(css.more), fixedCss.moreFixed] }, [
-					'...'
-				]),
+				v(
+					'span',
+					{
+						key: 'more',
+						'aria-hidden': true,
+						classes: [this.theme(css.more), fixedCss.moreFixed]
+					},
+					['...']
+				),
 				this._renderPageControl(totalPages)
 			];
 		}

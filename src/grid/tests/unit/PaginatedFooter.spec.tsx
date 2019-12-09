@@ -115,7 +115,11 @@ const baseTemplate = assertionTemplate(() =>
 								),
 								v(
 									'span',
-									{ key: 'more', classes: [css.more, fixedCss.moreFixed] },
+									{
+										key: 'more',
+										'aria-hidden': true,
+										classes: [css.more, fixedCss.moreFixed]
+									},
 									['...']
 								),
 								v(
@@ -210,7 +214,15 @@ describe('PaginatedFooter', () => {
 						},
 						['1']
 					),
-					v('span', { key: 'less', classes: [css.more, fixedCss.moreFixed] }, ['...']),
+					v(
+						'span',
+						{
+							key: 'less',
+							'aria-hidden': true,
+							classes: [css.more, fixedCss.moreFixed]
+						},
+						['...']
+					),
 					v(
 						'button',
 						{
@@ -247,7 +259,15 @@ describe('PaginatedFooter', () => {
 						},
 						['13']
 					),
-					v('span', { key: 'more', classes: [css.more, fixedCss.moreFixed] }, ['...']),
+					v(
+						'span',
+						{
+							key: 'more',
+							'aria-hidden': true,
+							classes: [css.more, fixedCss.moreFixed]
+						},
+						['...']
+					),
 					v(
 						'button',
 						{
@@ -312,7 +332,15 @@ describe('PaginatedFooter', () => {
 						},
 						['1']
 					),
-					v('span', { key: 'less', classes: [css.more, fixedCss.moreFixed] }, ['...']),
+					v(
+						'span',
+						{
+							key: 'less',
+							'aria-hidden': true,
+							classes: [css.more, fixedCss.moreFixed]
+						},
+						['...']
+					),
 					v(
 						'button',
 						{
