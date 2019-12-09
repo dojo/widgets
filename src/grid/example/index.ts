@@ -14,18 +14,21 @@ export default class App extends WidgetBase {
 			id: 'first_name',
 			title: 'First Name',
 			editable: true,
+			resizable: true,
 			sortable: true
 		},
 		{
 			id: 'last_name',
 			title: 'Last Name',
 			editable: true,
+			resizable: true,
 			sortable: true
 		},
 		{
 			id: 'job',
 			title: 'Job Title',
 			editable: true,
+			resizable: true,
 			filterable: true
 		},
 		{
@@ -37,6 +40,7 @@ export default class App extends WidgetBase {
 			id: 'animal',
 			title: 'Pet',
 			editable: true,
+			resizable: true,
 			filterable: true
 		}
 	];

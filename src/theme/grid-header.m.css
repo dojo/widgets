@@ -1,11 +1,14 @@
 @import '../common/styles/variables.css';
 
-.root {}
+/* The root class of the grid Header */
+.root {
+}
 
+/* Contains the header cell for a column */
 .cell {
 	border: 1px solid var(--component-color);
 	border-top-style: none;
-	border-right-style: none;
+	border-left-style: none;
 	border-bottom-style: none;
 	font-weight: 600;
 	padding: 6px 4px;
@@ -16,18 +19,25 @@
 	min-width: 100px;
 }
 
+/* Added to a sortable column */
 .sortable {
 	cursor: pointer;
 }
 
+/* Added to a sorted column */
 .sorted {
 	color: var(--success-color);
 }
 
-.desc {}
+/* Added to a column sorted in descending order */
+.desc {
+}
 
-.asc {}
+/* Added to a column sorted in ascending order */
+.asc {
+}
 
+/* Added to the sort button */
 .sort {
 	margin-left: 4px;
 	opacity: 0;
@@ -38,6 +48,7 @@
 	opacity: 1;
 }
 
+/* Added to the filter control */
 .filter {
 	margin-top: 4px;
 	width: 100%;
