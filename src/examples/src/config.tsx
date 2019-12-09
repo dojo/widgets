@@ -34,6 +34,7 @@ import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
 import EditableCells from './widgets/grid/EditableCells';
 import Filtering from './widgets/grid/Filtering';
+import ColumnResize from './widgets/grid/ColumnResize';
 import Restful from './widgets/grid/Restful';
 import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
@@ -351,6 +352,11 @@ export const config = {
 					filename: 'CustomSortRenderer',
 					module: CustomSortRenderer,
 					title: 'Grid with Customized Sort Rendering'
+				},
+				{
+					filename: 'ColumnResize',
+					module: ColumnResize,
+					title: 'Grid with resizable columns'
 				},
 				{
 					filename: 'Restful',

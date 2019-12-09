@@ -14,7 +14,7 @@ const noop = () => {};
 describe('Row', () => {
 	it('should render without columns', () => {
 		const h = harness(() =>
-			w(Row, { id: 1, item: {}, columnConfig: [] as any, updater: noop })
+			w(Row, { id: 1, item: {}, columnConfig: [] as any, updater: noop, columnWidths: {} })
 		);
 		h.expect(() =>
 			v(
@@ -31,7 +31,13 @@ describe('Row', () => {
 			title: 'id'
 		};
 		const h = harness(() =>
-			w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop })
+			w(Row, {
+				id: 1,
+				item: { id: 'id' },
+				columnConfig: [columnConfig],
+				updater: noop,
+				columnWidths: { id: 100 }
+			})
 		);
 		h.expect(() =>
 			v(
@@ -45,7 +51,8 @@ describe('Row', () => {
 						editable: undefined,
 						rawValue: 'id',
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						width: 100
 					})
 				]
 			)
@@ -59,7 +66,13 @@ describe('Row', () => {
 			renderer: () => 'transformed'
 		};
 		const h = harness(() =>
-			w(Row, { id: 1, item: { id: 'id' }, columnConfig: [columnConfig], updater: noop })
+			w(Row, {
+				id: 1,
+				item: { id: 'id' },
+				columnConfig: [columnConfig],
+				updater: noop,
+				columnWidths: { id: 100 }
+			})
 		);
 		h.expect(() =>
 			v(
@@ -73,7 +86,8 @@ describe('Row', () => {
 						editable: undefined,
 						rawValue: 'id',
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						width: 100
 					})
 				]
 			)

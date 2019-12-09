@@ -47,11 +47,11 @@ describe('Body', () => {
 				pageSize: 100,
 				height: 400,
 				pages: {},
-				columnConfig: [] as any,
+				columnConfig: [],
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				columnWidths: {}
 			})
 		);
 
@@ -71,9 +71,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '31500px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '31500px' } })
+					])
 				]
 			)
 		);
@@ -93,7 +95,8 @@ describe('Body', () => {
 					columnConfig: [] as any,
 					updater: noop,
 					classes: undefined,
-					theme: undefined
+					theme: undefined,
+					columnWidths: {}
 				})
 			);
 		}
@@ -110,7 +113,7 @@ describe('Body', () => {
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				columnWidths: {}
 			})
 		);
 
@@ -125,9 +128,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '31500px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '31500px' } })
+					])
 				]
 			)
 		);
@@ -144,7 +149,7 @@ describe('Body', () => {
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				columnWidths: {}
 			})
 		);
 
@@ -164,9 +169,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '0px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '0px' } })
+					])
 				]
 			)
 		);
@@ -186,13 +193,13 @@ describe('Body', () => {
 					columnConfig: [] as any,
 					updater: noop,
 					classes: undefined,
-					theme: undefined
+					theme: undefined,
+					columnWidths: {}
 				})
 			);
 		}
 
 		const fetcherStub = stub();
-		const onScrollStub = stub();
 
 		const h = harness(() =>
 			w(Body, {
@@ -206,7 +213,7 @@ describe('Body', () => {
 				fetcher: fetcherStub,
 				updater: noop,
 				pageChange: noop,
-				onScroll: onScrollStub
+				columnWidths: {}
 			})
 		);
 
@@ -221,9 +228,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '0px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '31500px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '0px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '31500px' } })
+					])
 				]
 			)
 		);
@@ -251,15 +260,16 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '10010px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '23310px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '10010px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '23310px' } })
+					])
 				]
 			)
 		);
 
 		assert.isTrue(fetcherStub.called);
-		assert.isTrue(onScrollStub.called);
 
 		h.expect(() =>
 			v(
@@ -272,9 +282,11 @@ describe('Body', () => {
 					styles: { height: '400px' }
 				},
 				[
-					v('div', { key: 'top', styles: { height: '10010px' } }),
-					...rows,
-					v('div', { key: 'bottom', styles: { height: '23310px' } })
+					v('div', { styles: {} }, [
+						v('div', { key: 'top', styles: { height: '10010px' } }),
+						...rows,
+						v('div', { key: 'bottom', styles: { height: '23310px' } })
+					])
 				]
 			)
 		);
@@ -301,7 +313,7 @@ describe('Body', () => {
 					fetcher: noop,
 					updater: noop,
 					pageChange: pageChangeStub,
-					onScroll: noop
+					columnWidths: {}
 				})
 			);
 
@@ -335,7 +347,7 @@ describe('Body', () => {
 					fetcher: noop,
 					updater: noop,
 					pageChange: pageChangeStub,
-					onScroll: noop
+					columnWidths: {}
 				})
 			);
 			// scroll to row 286
@@ -348,6 +360,64 @@ describe('Body', () => {
 			// force a render
 			h.expect(() => h.getRender());
 			assert.isTrue(pageChangeStub.calledWith(3));
+		});
+
+		it('should set the body to the correct width', () => {
+			const pageChangeStub = stub();
+			const page: any[] = [];
+			for (let i = 0; i < 100; i++) {
+				const item = { id: 'id' };
+				page.push(item);
+			}
+
+			const columnConfig = [
+				{
+					id: 'id',
+					title: 'Id'
+				}
+			];
+
+			const h = harness(() =>
+				w(Body, {
+					totalRows: 1000,
+					pageSize: 100,
+					height: 400,
+					pages: {},
+					columnConfig,
+					fetcher: noop,
+					updater: noop,
+					pageChange: pageChangeStub,
+					columnWidths: {
+						id: 100
+					},
+					width: 100
+				})
+			);
+
+			const rows: any[] = [];
+			for (let i = 0; i < 100; i++) {
+				rows.push(w(PlaceholderRow, { key: i }));
+			}
+
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [css.root, fixedCss.rootFixed],
+						role: 'rowgroup',
+						onscroll: noop,
+						styles: { height: '400px', width: '100px' }
+					},
+					[
+						v('div', { styles: { width: '100px' } }, [
+							v('div', { key: 'top', styles: { height: '0px' } }),
+							...rows,
+							v('div', { key: 'bottom', styles: { height: '31500px' } })
+						])
+					]
+				)
+			);
 		});
 	});
 });

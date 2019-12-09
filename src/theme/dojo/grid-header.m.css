@@ -2,12 +2,13 @@
 
 .root {
 	font-size: var(--font-size-base);
+	background-color: var(--color-background-faded);
 }
 
 .cell {
 	align-items: center;
 	background-color: var(--color-background-faded);
-	border-left: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid var(--color-border);
 	color: var(--color-text-primary);
 	display: flex;
 	flex-direction: column;

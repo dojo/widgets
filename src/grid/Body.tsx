@@ -23,6 +23,8 @@ export interface BodyProperties<S> {
 	pages: GridPages<S>;
 	/** The height (in pixels) */
 	height: number;
+	/** The width (in pixels) */
+	width?: number;
 	/** Configuration for grid columns (id, title, properties, and custom renderer) */
 	columnConfig: ColumnConfig[];
 	/** Custom renderer for the placeholder row used while data is loaded */
@@ -34,7 +36,9 @@ export interface BodyProperties<S> {
 	/** Called when the page changes */
 	pageChange: (page: number) => void;
 	/** Handler for scroll events */
-	onScroll: (value: number) => void;
+	onScroll?: (value: number) => void;
+	/** Calculated column widths */
+	columnWidths?: { [index: string]: number };
 }
 
 const offscreen = (dnode: DNode) => {
@@ -78,7 +82,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 	}
 
 	private _onScroll(event: UIEvent) {
-		const { totalRows = 0 } = this.properties;
+		const { totalRows = 0, onScroll } = this.properties;
 		const scrollTop = (event.target as HTMLElement).scrollTop;
 		const scrollLeft = (event.target as HTMLElement).scrollLeft;
 		const topRow = Math.round(scrollTop / this._rowHeight);
@@ -91,7 +95,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			this._start = Math.min(topRow, totalRows - this._renderPageSize);
 			this._end = Math.min(totalRows, this._start + this._renderPageSize * 2);
 		}
-		this.properties.onScroll(scrollLeft);
+		onScroll && onScroll(scrollLeft);
 		this.invalidate();
 	}
 
@@ -112,7 +116,8 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			pageChange,
 			totalRows,
 			theme,
-			classes
+			classes,
+			columnWidths
 		} = this.properties;
 
 		const startPage = Math.max(Math.ceil(start / pageSize), 1);
@@ -150,7 +155,8 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 						classes,
 						item,
 						columnConfig,
-						updater: this._updater
+						updater: this._updater,
+						columnWidths
 					})
 				);
 			} else {
@@ -168,8 +174,16 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			placeholderRowRenderer = defaultPlaceholderRowRenderer,
 			totalRows = 0,
 			pageSize,
-			height
+			height,
+			width,
+			columnWidths
 		} = this.properties;
+
+		const rowWidth =
+			columnWidths &&
+			Object.keys(columnWidths).reduce((rowWidth, key) => {
+				return rowWidth + columnWidths[key];
+			}, 0);
 
 		if (!this._rowHeight) {
 			const firstRow = placeholderRowRenderer(0);
@@ -194,7 +208,9 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			classes: [this.theme(css.root), fixedCss.rootFixed],
 			role: 'rowgroup',
 			onscroll: this._onScroll,
-			styles: { height: `${height}px` }
+			styles: width
+				? { height: `${height}px`, width: `${width}px` }
+				: { height: `${height}px` }
 		};
 
 		if (this._resetScroll) {
@@ -206,12 +222,14 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 		}
 
 		return v('div', containerProperties, [
-			v('div', { key: 'top', styles: { height: `${topPaddingHeight}px` } }),
-			...rows,
-			v('div', {
-				key: 'bottom',
-				styles: { height: `${bottomPaddingHeight}px` }
-			})
+			v('div', { styles: rowWidth ? { width: `${rowWidth}px` } : {} }, [
+				v('div', { key: 'top', styles: { height: `${topPaddingHeight}px` } }),
+				...rows,
+				v('div', {
+					key: 'bottom',
+					styles: { height: `${bottomPaddingHeight}px` }
+				})
+			])
 		]);
 	}
 }

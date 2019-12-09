@@ -40,6 +40,7 @@ export interface ColumnConfig {
 	filterable?: boolean;
 	sortable?: boolean;
 	editable?: boolean;
+	resizable?: boolean;
 	renderer?: (props: any) => DNode;
 }
 

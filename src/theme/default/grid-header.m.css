@@ -8,7 +8,7 @@
 .cell {
 	border: 1px solid var(--component-color);
 	border-top-style: none;
-	border-right-style: none;
+	border-left-style: none;
 	border-bottom-style: none;
 	font-weight: 600;
 	padding: 6px 4px;

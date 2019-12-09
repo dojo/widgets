@@ -9,12 +9,13 @@ import { createData } from './data';
 const columnConfig: ColumnConfig[] = [
 	{
 		id: 'id',
-		title: 'ID'
+		title: 'ID',
+		resizable: true
 	},
 	{
 		id: 'firstName',
 		title: 'First Name',
-		filterable: true
+		resizable: true
 	},
 	{
 		id: 'middleName',
@@ -22,18 +23,18 @@ const columnConfig: ColumnConfig[] = [
 	},
 	{
 		id: 'lastName',
-		title: 'Last Name',
-		filterable: true
+		title: 'Last Name'
 	},
 	{
 		id: 'otherName',
-		title: 'Other Name'
+		title: 'Other Name',
+		resizable: true
 	}
 ];
 
 const fetcher = createFetcher(createData());
 const factory = create();
 
-export default factory(() => {
+export default factory(function ColumnResize() {
 	return <Grid fetcher={fetcher} columnConfig={columnConfig} height={450} />;
 });

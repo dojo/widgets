@@ -24,8 +24,10 @@ const noop: any = () => {};
 const columnConfig: ColumnConfig[] = [];
 
 let mockDimensionsGet = stub();
-mockDimensionsGet.withArgs('header').returns({ size: { height: 150 } });
+mockDimensionsGet.withArgs('header').returns({ size: { height: 150, width: 1000 } });
+mockDimensionsGet.withArgs('header-wrapper').returns({ size: { height: 150, width: 1000 } });
 mockDimensionsGet.withArgs('footer').returns({ size: { height: 50 } });
+mockDimensionsGet.withArgs('root').returns({ size: { width: 50 } });
 const metaDimensionsReturn = {
 	get: mockDimensionsGet,
 	has: () => false
@@ -38,22 +40,6 @@ mockMeta.withArgs(Dimensions).returns(metaDimensionsReturn);
 mockMeta.withArgs(Resize).returns(metaResizeReturn);
 
 describe('Grid', () => {
-	it('should render only the container when no dimensions', () => {
-		const h = harness(() =>
-			w(Grid, {
-				fetcher: noop,
-				updater: noop,
-				columnConfig,
-				storeId: 'id',
-				height: 0
-			})
-		);
-
-		h.expect(() =>
-			v('div', { key: 'root', classes: [css.root, fixedCss.rootFixed], role: 'table' })
-		);
-	});
-
 	it('should use store from properties when passed', () => {
 		const store = new Store();
 		const storeSpy = spy(store, 'onChange');
@@ -82,38 +68,45 @@ describe('Grid', () => {
 						'div',
 						{
 							key: 'header',
-							scrollLeft: 0,
+							styles: {},
 							classes: [css.header, fixedCss.headerFixed, css.filterGroup],
-							row: 'rowgroup'
+							row: 'rowgroup',
+							scrollLeft: 0
 						},
 						[
-							w(Header, {
-								key: 'header-row',
-								columnConfig: filterableConfig,
-								sorter: noop,
-								sort: undefined,
-								filter: undefined,
-								filterer: noop,
-								classes: undefined,
-								theme: undefined,
-								filterRenderer: undefined,
-								sortRenderer: undefined
-							})
+							v('div', { key: 'header-wrapper' }, [
+								w(Header, {
+									key: 'header-row',
+									columnConfig: filterableConfig,
+									sorter: noop,
+									sort: undefined,
+									filter: undefined,
+									filterer: noop,
+									classes: undefined,
+									theme: undefined,
+									filterRenderer: undefined,
+									sortRenderer: undefined,
+									columnWidths: undefined,
+									onColumnResize: noop
+								})
+							])
 						]
 					),
 					w(Body, {
 						key: 'body',
+						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
 						columnConfig: filterableConfig,
 						pageChange: noop,
+						width: undefined,
 						updater: noop,
 						fetcher: noop,
-						onScroll: noop,
 						height: 300,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						columnWidths: undefined
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -172,33 +165,39 @@ describe('Grid', () => {
 						'div',
 						{
 							key: 'header',
-							scrollLeft: 0,
 							classes: [css.header, fixedCss.headerFixed, css.filterGroup],
-							row: 'rowgroup'
+							styles: {},
+							row: 'rowgroup',
+							scrollLeft: 0
 						},
 						[
-							w(Header, {
-								key: 'header-row',
-								columnConfig: filterableConfig,
-								sorter: noop,
-								sort: {
-									columnId: 'id',
-									direction: 'asc'
-								},
-								filter: {
-									columnId: 'id',
-									value: 'id'
-								},
-								filterer: noop,
-								classes: undefined,
-								theme: undefined,
-								filterRenderer: undefined,
-								sortRenderer: undefined
-							})
+							v('div', { key: 'header-wrapper' }, [
+								w(Header, {
+									key: 'header-row',
+									columnConfig: filterableConfig,
+									sorter: noop,
+									sort: {
+										columnId: 'id',
+										direction: 'asc'
+									},
+									filter: {
+										columnId: 'id',
+										value: 'id'
+									},
+									filterer: noop,
+									classes: undefined,
+									theme: undefined,
+									filterRenderer: undefined,
+									sortRenderer: undefined,
+									columnWidths: undefined,
+									onColumnResize: noop
+								})
+							])
 						]
 					),
 					w(Body, {
 						key: 'body',
+						onScroll: noop,
 						pages: {
 							'page-1': [{ id: 'id' }]
 						},
@@ -206,12 +205,13 @@ describe('Grid', () => {
 						pageSize: 100,
 						columnConfig: filterableConfig,
 						pageChange: noop,
+						width: undefined,
 						updater: noop,
 						fetcher: noop,
-						onScroll: noop,
 						height: 300,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						columnWidths: undefined
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -257,38 +257,45 @@ describe('Grid', () => {
 						'div',
 						{
 							key: 'header',
-							scrollLeft: 0,
 							classes: [css.header, fixedCss.headerFixed, css.filterGroup],
-							row: 'rowgroup'
+							styles: {},
+							row: 'rowgroup',
+							scrollLeft: 0
 						},
 						[
-							w(Header, {
-								key: 'header-row',
-								columnConfig: filterableConfig,
-								sorter: noop,
-								sort: undefined,
-								filter: undefined,
-								filterer: noop,
-								classes: undefined,
-								theme: undefined,
-								filterRenderer: undefined,
-								sortRenderer: undefined
-							})
+							v('div', { key: 'header-wrapper' }, [
+								w(Header, {
+									key: 'header-row',
+									columnConfig: filterableConfig,
+									sorter: noop,
+									sort: undefined,
+									filter: undefined,
+									filterer: noop,
+									classes: undefined,
+									theme: undefined,
+									filterRenderer: undefined,
+									sortRenderer: undefined,
+									columnWidths: undefined,
+									onColumnResize: noop
+								})
+							])
 						]
 					),
 					w(Body, {
 						key: 'body',
+						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
 						columnConfig: filterableConfig,
 						pageChange: noop,
+						width: undefined,
 						updater: noop,
 						fetcher: noop,
-						onScroll: noop,
 						height: 300,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						columnWidths: undefined
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -331,38 +338,45 @@ describe('Grid', () => {
 						'div',
 						{
 							key: 'header',
-							scrollLeft: 0,
 							classes: [css.header, fixedCss.headerFixed, null],
-							row: 'rowgroup'
+							styles: {},
+							row: 'rowgroup',
+							scrollLeft: 0
 						},
 						[
-							w(Header, {
-								key: 'header-row',
-								columnConfig,
-								sorter: noop,
-								sort: undefined,
-								filter: undefined,
-								filterer: noop,
-								classes: undefined,
-								theme: undefined,
-								filterRenderer: undefined,
-								sortRenderer: undefined
-							})
+							v('div', { key: 'header-wrapper' }, [
+								w(Header, {
+									key: 'header-row',
+									columnConfig,
+									sorter: noop,
+									sort: undefined,
+									filter: undefined,
+									filterer: noop,
+									classes: undefined,
+									theme: undefined,
+									filterRenderer: undefined,
+									sortRenderer: undefined,
+									columnWidths: undefined,
+									onColumnResize: noop
+								})
+							])
 						]
 					),
 					w(Body, {
 						key: 'body',
+						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
 						columnConfig,
 						pageChange: noop,
+						width: undefined,
 						updater: noop,
 						fetcher: noop,
-						onScroll: noop,
 						height: 50,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						columnWidths: undefined
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -404,22 +418,33 @@ describe('Grid', () => {
 						{
 							key: 'header',
 							scrollLeft: 0,
+							styles: {},
 							classes: [css.header, fixedCss.headerFixed, null],
 							row: 'rowgroup'
 						},
 						[
-							w(Header, {
-								key: 'header-row',
-								columnConfig,
-								sorter: noop,
-								sort: undefined,
-								filter: undefined,
-								filterer: noop,
-								classes: undefined,
-								theme: undefined,
-								filterRenderer: undefined,
-								sortRenderer: undefined
-							})
+							v(
+								'div',
+								{
+									key: 'header-wrapper'
+								},
+								[
+									w(Header, {
+										key: 'header-row',
+										columnConfig,
+										columnWidths: undefined,
+										sorter: noop,
+										sort: undefined,
+										filter: undefined,
+										onColumnResize: noop,
+										filterer: noop,
+										classes: undefined,
+										theme: undefined,
+										filterRenderer: undefined,
+										sortRenderer: undefined
+									})
+								]
+							)
 						]
 					),
 					w(Body, {
@@ -428,13 +453,15 @@ describe('Grid', () => {
 						totalRows: undefined,
 						pageSize: 100,
 						columnConfig,
+						columnWidths: undefined,
 						pageChange: noop,
 						updater: noop,
 						fetcher: noop,
 						onScroll: noop,
 						height: 300,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						width: undefined
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -467,22 +494,33 @@ describe('Grid', () => {
 						{
 							key: 'header',
 							scrollLeft: 10,
+							styles: {},
 							classes: [css.header, fixedCss.headerFixed, null],
 							row: 'rowgroup'
 						},
 						[
-							w(Header, {
-								key: 'header-row',
-								columnConfig,
-								sorter: noop,
-								sort: undefined,
-								filter: undefined,
-								filterer: noop,
-								classes: undefined,
-								theme: undefined,
-								filterRenderer: undefined,
-								sortRenderer: undefined
-							})
+							v(
+								'div',
+								{
+									key: 'header-wrapper'
+								},
+								[
+									w(Header, {
+										key: 'header-row',
+										columnConfig,
+										columnWidths: undefined,
+										sorter: noop,
+										sort: undefined,
+										onColumnResize: noop,
+										filter: undefined,
+										filterer: noop,
+										classes: undefined,
+										theme: undefined,
+										filterRenderer: undefined,
+										sortRenderer: undefined
+									})
+								]
+							)
 						]
 					),
 					w(Body, {
@@ -491,13 +529,118 @@ describe('Grid', () => {
 						totalRows: undefined,
 						pageSize: 100,
 						columnConfig,
+						columnWidths: undefined,
 						pageChange: noop,
 						updater: noop,
 						fetcher: noop,
 						onScroll: noop,
 						height: 300,
 						classes: undefined,
-						theme: undefined
+						theme: undefined,
+						width: undefined
+					}),
+					v('div', { key: 'footer' }, [
+						w(Footer, {
+							key: 'footer-row',
+							total: undefined,
+							page: 1,
+							pageSize: 100,
+							classes: undefined,
+							theme: undefined
+						})
+					])
+				]
+			)
+		);
+	});
+
+	it('should set pass widths when any of the columns are resizable', () => {
+		const columnConfig = [
+			{
+				id: 'id',
+				title: 'Id',
+				resizable: true
+			},
+			{
+				id: 'name',
+				title: 'Name',
+				resizable: true
+			}
+		];
+		const h = harness(() =>
+			w(MockMetaMixin(Grid, mockMeta), {
+				fetcher: noop,
+				updater: noop,
+				columnConfig,
+				height: 500
+			})
+		);
+
+		h.expect(() =>
+			v(
+				'div',
+				{
+					key: 'root',
+					classes: [css.root, fixedCss.rootFixed],
+					role: 'table',
+					'aria-rowcount': null
+				},
+				[
+					v(
+						'div',
+						{
+							key: 'header',
+							scrollLeft: 0,
+							styles: { width: '1000px' },
+							classes: [css.header, fixedCss.headerFixed, null],
+							row: 'rowgroup'
+						},
+						[
+							v(
+								'div',
+								{
+									key: 'header-wrapper'
+								},
+								[
+									w(Header, {
+										key: 'header-row',
+										columnConfig,
+										columnWidths: {
+											id: 500,
+											name: 500
+										},
+										sorter: noop,
+										sort: undefined,
+										filter: undefined,
+										onColumnResize: noop,
+										filterer: noop,
+										classes: undefined,
+										theme: undefined,
+										filterRenderer: undefined,
+										sortRenderer: undefined
+									})
+								]
+							)
+						]
+					),
+					w(Body, {
+						key: 'body',
+						pages: {},
+						totalRows: undefined,
+						pageSize: 100,
+						columnConfig,
+						columnWidths: {
+							id: 500,
+							name: 500
+						},
+						pageChange: noop,
+						updater: noop,
+						fetcher: noop,
+						onScroll: noop,
+						height: 300,
+						classes: undefined,
+						theme: undefined,
+						width: 1000
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
