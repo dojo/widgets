@@ -55,7 +55,7 @@ describe('Grid Processes', () => {
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-2': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
-			assert.deepEqual(meta, { fetchedPages: [2], total: 10000, pageSize: 100 });
+			assert.deepEqual(meta, { fetchedPages: [2], page: 2, total: 10000, pageSize: 100 });
 		});
 
 		it('Should throw an error if the page has already been fetched', async () => {
@@ -75,7 +75,7 @@ describe('Grid Processes', () => {
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-2': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
-			assert.deepEqual(meta, { fetchedPages: [2], total: 10000, pageSize: 100 });
+			assert.deepEqual(meta, { fetchedPages: [2], page: 2, total: 10000, pageSize: 100 });
 			return fetcherProcess(store)({
 				id: 'grid',
 				page: 2,

@@ -1,0 +1,39 @@
+.root {
+	height: 45px;
+}
+
+.pagination {
+	background-color: white;
+}
+
+.details {
+	margin-left: 5px;
+	color: #5c6c7c;
+}
+
+.more {
+	height: 26px;
+	min-width: 26px;
+	color: #5c6c7c;
+	margin: 2px;
+	font-weight: 700;
+	text-align: center;
+	user-select: none;
+}
+
+.pageNav,
+.pageNumber {
+	border: 0;
+	cursor: pointer;
+	border-radius: 4px;
+	height: 26px;
+	min-width: 26px;
+	margin: 2px;
+	color: #5c6c7c;
+	font-weight: 700;
+	text-align: center;
+}
+
+.active {
+	background-color: #f5f6f7;
+}

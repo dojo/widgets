@@ -1,0 +1,124 @@
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import { v, w } from '@dojo/framework/core/vdom';
+import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
+import { DNode } from '@dojo/framework/core/interfaces';
+
+import { GridPages, ColumnConfig } from './interfaces';
+import PlaceholderRow from './PlaceholderRow';
+import Row from './Row';
+
+import * as fixedCss from './styles/body.m.css';
+import * as css from '../theme/default/grid-body.m.css';
+import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { reference } from '@dojo/framework/core/diff';
+
+export interface BodyProperties<S> {
+	/** The current page number */
+	pageNumber: number;
+	/** A list of paginated grids */
+	pages: GridPages<S>;
+	/** The height (in pixels) */
+	height: number;
+	/** The width (in pixels) */
+	width?: number;
+	/** The number of elements to a page */
+	pageSize: number;
+	/** Configuration for grid columns (id, title, properties, and custom renderer) */
+	columnConfig: ColumnConfig[];
+	/** Custom renderer for the placeholder row used while data is loaded */
+	placeholderRowRenderer?: (index: number) => DNode;
+	/** Used to fetch additional pages of information */
+	fetcher: (page: number, pageSize: number) => void;
+	/** Called when a cell is updated */
+	updater: (page: number, rowNumber: number, columnId: string, value: string) => void;
+	/** Handler for scroll events */
+	onScroll: (value: number) => void;
+	/** Calculated column widths */
+	columnWidths?: { [index: string]: number };
+}
+
+const defaultPlaceholderRowRenderer = (index: number) => {
+	return w(PlaceholderRow, { key: index });
+};
+
+@theme(css)
+@diffProperty('pages', reference)
+export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> {
+	private _updater(rowNumber: number, columnId: string, value: any) {
+		const page = Math.max(Math.ceil(rowNumber / this.properties.pageSize), 1);
+		const pageItemNumber = rowNumber - (page - 1) * this.properties.pageSize;
+		this.properties.updater(page, pageItemNumber, columnId, value);
+	}
+
+	private _onScroll(event: UIEvent) {
+		const scrollLeft = (event.target as HTMLElement).scrollLeft;
+		this.properties.onScroll(scrollLeft);
+	}
+
+	private _renderRows() {
+		const {
+			pageSize,
+			fetcher,
+			pages,
+			columnConfig,
+			placeholderRowRenderer = defaultPlaceholderRowRenderer,
+			pageNumber,
+			theme,
+			classes,
+			columnWidths
+		} = this.properties;
+		let data = pages[`page-${pageNumber}`] || [];
+		if (!data.length) {
+			fetcher(pageNumber, pageSize);
+		}
+		let rows: DNode[] = [];
+		for (let i = 0; i < pageSize; i++) {
+			if (!data.length) {
+				rows.push(placeholderRowRenderer(i));
+			} else {
+				rows.push(
+					w(Row, {
+						id: i,
+						key: i,
+						theme,
+						classes,
+						item: data[i],
+						columnConfig,
+						columnWidths,
+						updater: this._updater
+					})
+				);
+			}
+		}
+		return rows;
+	}
+
+	protected render(): DNode {
+		const { height, width, columnWidths } = this.properties;
+
+		const rowWidth =
+			columnWidths &&
+			Object.keys(columnWidths).reduce((rowWidth, key) => {
+				return rowWidth + columnWidths[key];
+			}, 0);
+
+		return v(
+			'div',
+			{
+				key: 'root',
+				classes: [this.theme(css.root), fixedCss.rootFixed],
+				role: 'rowgroup',
+				onscroll: this._onScroll,
+				styles: width
+					? { height: `${height}px`, width: `${width}px` }
+					: { height: `${height}px` }
+			},
+			[
+				v('div', { styles: rowWidth ? { width: `${rowWidth}px` } : {} }, [
+					v('div'),
+					...this._renderRows()
+				])
+			]
+		);
+	}
+}

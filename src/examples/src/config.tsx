@@ -34,6 +34,7 @@ import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
 import EditableCells from './widgets/grid/EditableCells';
 import Filtering from './widgets/grid/Filtering';
+import Paginated from './widgets/grid/Paginated';
 import ColumnResize from './widgets/grid/ColumnResize';
 import Restful from './widgets/grid/Restful';
 import Sorting from './widgets/grid/Sorting';
@@ -357,6 +358,11 @@ export const config = {
 					filename: 'ColumnResize',
 					module: ColumnResize,
 					title: 'Grid with resizable columns'
+				},
+				{
+					filename: 'Paginated',
+					module: Paginated,
+					title: 'Grid with traditional pagination'
 				},
 				{
 					filename: 'Restful',
