@@ -111,6 +111,10 @@ import CloseableDialog from './widgets/dialog/CloseableDialog';
 
 `!has('docs')`;
 import testsContext from './tests';
+import CustomRenderer from './widgets/select/CustomRenderer';
+import DisabledSelect from './widgets/select/DisabledSelect';
+import RequiredSelect from './widgets/select/RequiredSelect';
+import AdditionalText from './widgets/select/AdditionalText';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -551,7 +555,17 @@ export const config = {
 					filename: 'Basic',
 					module: BasicSelect
 				}
-			}
+			},
+			examples: [
+				{ filename: 'AdditionalText', module: AdditionalText, title: 'Additional Text' },
+				{ filename: 'DisabledSelect', module: DisabledSelect, title: 'Disabled Select' },
+				{ filename: 'RequiredSelect', module: RequiredSelect, title: 'Required Select' },
+				{
+					filename: 'CustomRenderer',
+					module: CustomRenderer,
+					title: 'Custom Item Renderer'
+				}
+			]
 		},
 		'slide-pane': {
 			overview: {

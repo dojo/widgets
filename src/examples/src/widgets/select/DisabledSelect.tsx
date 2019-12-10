@@ -5,17 +5,10 @@ import icache from '@dojo/framework/core/middleware/icache';
 const factory = create({ icache });
 const options = [{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }];
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function DisabledSelect() {
 	return (
 		<virtual>
-			<Select
-				label="Basic Select"
-				options={options}
-				onValue={(value) => {
-					icache.set('value', value);
-				}}
-			/>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<Select label="Disabled Select" options={options} disabled onValue={() => {}} />
 		</virtual>
 	);
 });

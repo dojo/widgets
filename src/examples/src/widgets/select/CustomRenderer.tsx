@@ -5,7 +5,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 const factory = create({ icache });
 const options = [{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }];
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function CustomRenderer({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
@@ -13,6 +13,14 @@ export default factory(function Basic({ middleware: { icache } }) {
 				options={options}
 				onValue={(value) => {
 					icache.set('value', value);
+				}}
+				itemRenderer={({ selected, value }) => {
+					return (
+						<div>
+							{selected && <span>✅ </span>}
+							{value}
+						</div>
+					);
 				}}
 			/>
 			<pre>{icache.getOrSet('value', '')}</pre>

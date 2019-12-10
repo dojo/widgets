@@ -165,6 +165,7 @@ export const Select = factory(function Select({
 										event.which === Keys.Space ||
 										event.which === Keys.Enter
 									) {
+										event.preventDefault();
 										openMenu();
 									}
 								}}
