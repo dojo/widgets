@@ -41,7 +41,7 @@ export default factory(function Selection({ middleware: { icache } }) {
 				}}
 				fetcher={fetcher}
 				columnConfig={columnConfig}
-				height={300}
+				height={500}
 			/>
 			{selected && (
 				<div>
