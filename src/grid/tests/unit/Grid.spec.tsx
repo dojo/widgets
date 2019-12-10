@@ -670,4 +670,126 @@ describe('Grid', () => {
 			)
 		);
 	});
+
+	it('should pass row selection for grid and selected rows', () => {
+		const columnConfig = [
+			{
+				id: 'id',
+				title: 'Id',
+				resizable: true
+			},
+			{
+				id: 'name',
+				title: 'Name',
+				resizable: true
+			}
+		];
+		const store = new Store();
+		store.apply(
+			[
+				{
+					op: OperationType.REPLACE,
+					path: new Pointer('_grid/meta'),
+					value: {
+						page: 1,
+						selection: [1]
+					}
+				}
+			],
+			true
+		);
+
+		const h = harness(() =>
+			w(MockMetaMixin(Grid, mockMeta), {
+				store,
+				fetcher: noop,
+				updater: noop,
+				columnConfig,
+				height: 500,
+				onRowSelect: noop
+			})
+		);
+
+		h.expect(() =>
+			v(
+				'div',
+				{
+					key: 'root',
+					classes: [css.root, fixedCss.rootFixed],
+					role: 'table',
+					'aria-rowcount': null
+				},
+				[
+					v(
+						'div',
+						{
+							key: 'header',
+							scrollLeft: 0,
+							styles: { width: '1000px' },
+							classes: [css.header, fixedCss.headerFixed, null],
+							row: 'rowgroup'
+						},
+						[
+							v(
+								'div',
+								{
+									key: 'header-wrapper'
+								},
+								[
+									w(Header, {
+										key: 'header-row',
+										columnConfig,
+										columnWidths: {
+											id: 500,
+											name: 500
+										},
+										sorter: noop,
+										sort: undefined,
+										filter: undefined,
+										onColumnResize: noop,
+										filterer: noop,
+										classes: undefined,
+										theme: undefined,
+										filterRenderer: undefined,
+										sortRenderer: undefined
+									})
+								]
+							)
+						]
+					),
+					w(Body, {
+						key: 'body',
+						pages: {},
+						totalRows: undefined,
+						pageSize: 100,
+						columnConfig,
+						columnWidths: {
+							id: 500,
+							name: 500
+						},
+						pageChange: noop,
+						updater: noop,
+						fetcher: noop,
+						onScroll: noop,
+						height: 300,
+						classes: undefined,
+						theme: undefined,
+						width: 1000,
+						onRowSelect: noop,
+						selectedRows: [1]
+					}),
+					v('div', { key: 'footer' }, [
+						w(Footer, {
+							key: 'footer-row',
+							total: undefined,
+							page: 1,
+							pageSize: 100,
+							classes: undefined,
+							theme: undefined
+						})
+					])
+				]
+			)
+		);
+	});
 });

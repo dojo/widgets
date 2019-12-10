@@ -69,6 +69,7 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 		return v(
 			'div',
 			{
+				key: 'root',
 				classes: [
 					this.theme(css.root),
 					selected && this.theme(css.selected),

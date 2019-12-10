@@ -1,7 +1,9 @@
 const { describe, it } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
+import { stub } from 'sinon';
 import Row from '../../Row';
 
 import * as fixedCss from './../../styles/row.m.css';
@@ -20,6 +22,7 @@ describe('Row', () => {
 			v(
 				'div',
 				{
+					key: 'root',
 					classes: [css.root, undefined, fixedCss.rootFixed],
 					role: 'row',
 					'aria-rowindex': '2',
@@ -48,6 +51,7 @@ describe('Row', () => {
 			v(
 				'div',
 				{
+					key: 'root',
 					classes: [css.root, undefined, fixedCss.rootFixed],
 					role: 'row',
 					'aria-rowindex': '2',
@@ -88,6 +92,7 @@ describe('Row', () => {
 			v(
 				'div',
 				{
+					key: 'root',
 					classes: [css.root, undefined, fixedCss.rootFixed],
 					role: 'row',
 					'aria-rowindex': '2',
@@ -107,5 +112,60 @@ describe('Row', () => {
 				]
 			)
 		);
+	});
+
+	it('should set row as selected and call row select on click', () => {
+		const rowSelectStub = stub();
+		const columnConfig: ColumnConfig = {
+			id: 'id',
+			title: 'id',
+			renderer: () => 'transformed'
+		};
+		const h = harness(() =>
+			w(Row, {
+				id: 1,
+				item: { id: 'id' },
+				columnConfig: [columnConfig],
+				updater: noop,
+				columnWidths: { id: 100 },
+				selected: true,
+				onRowSelect: rowSelectStub
+			})
+		);
+
+		h.expect(() =>
+			v(
+				'div',
+				{
+					key: 'root',
+					classes: [css.root, css.selected, fixedCss.rootFixed],
+					role: 'row',
+					'aria-rowindex': '2',
+					onclick: noop
+				},
+				[
+					w(Cell, {
+						key: 'id',
+						updater: noop,
+						value: 'transformed',
+						editable: undefined,
+						rawValue: 'id',
+						classes: undefined,
+						theme: undefined,
+						width: 100
+					})
+				]
+			)
+		);
+
+		h.trigger('@root', 'onclick', { ctrlKey: true });
+		assert.isTrue(rowSelectStub.calledOnce);
+		assert.isTrue(rowSelectStub.firstCall.calledWith('multi'));
+		h.trigger('@root', 'onclick', { metaKey: true });
+		assert.isTrue(rowSelectStub.calledTwice);
+		assert.isTrue(rowSelectStub.secondCall.calledWith('multi'));
+		h.trigger('@root', 'onclick', {});
+		assert.isTrue(rowSelectStub.calledThrice);
+		assert.isTrue(rowSelectStub.thirdCall.calledWith('single'));
 	});
 });
