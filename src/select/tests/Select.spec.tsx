@@ -4,7 +4,7 @@ import { stub } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import select from '@dojo/framework/testing/support/selector';
-import { Keys } from '@dojo/widgets/common/util';
+import { Keys } from '../../common/util';
 import {
 	compareAriaControls,
 	compareForId,
@@ -172,15 +172,15 @@ describe('Select', () => {
 			toggleOpenStub
 		);
 
-		triggerRenderResult.properties.onkeydown({ which: Keys.Down });
+		triggerRenderResult.properties.onkeydown({ which: Keys.Down, preventDefault: stub() });
 		assert.isTrue(toggleOpenStub.calledOnce);
 		toggleOpenStub.reset();
 
-		triggerRenderResult.properties.onkeydown({ which: Keys.Space });
+		triggerRenderResult.properties.onkeydown({ which: Keys.Space, preventDefault: stub() });
 		assert.isTrue(toggleOpenStub.calledOnce);
 		toggleOpenStub.reset();
 
-		triggerRenderResult.properties.onkeydown({ which: Keys.Enter });
+		triggerRenderResult.properties.onkeydown({ which: Keys.Enter, preventDefault: stub() });
 		assert.isTrue(toggleOpenStub.calledOnce);
 		toggleOpenStub.reset();
 
