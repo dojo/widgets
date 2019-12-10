@@ -53,7 +53,7 @@ describe('Menu - Menu', () => {
 					scrollIntoView={false}
 					disabled={disabled}
 					theme={{}}
-					id={`item-${index}`}
+					widgetId={`item-${index}`}
 				>
 					{label || value}
 				</MenuItem>
@@ -98,7 +98,7 @@ describe('Menu - Menu', () => {
 						scrollIntoView={false}
 						disabled={disabled}
 						theme={{}}
-						id={`item-${index}`}
+						widgetId={`item-${index}`}
 					>
 						<span>label is {label || value}</span>
 					</MenuItem>
@@ -215,7 +215,7 @@ describe('Menu - ListBox', () => {
 					disabled={disabled}
 					selected={false}
 					theme={{}}
-					id={`item-${index}`}
+					widgetId={`item-${index}`}
 				>
 					{label || value}
 				</ListBoxItem>
@@ -262,7 +262,7 @@ describe('Menu - ListBox', () => {
 						disabled={disabled}
 						selected={false}
 						theme={{}}
-						id={`item-${index}`}
+						widgetId={`item-${index}`}
 					>
 						<span>label is {label || value}</span>
 					</ListBoxItem>

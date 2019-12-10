@@ -3,7 +3,6 @@ import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { uuid } from '@dojo/framework/core/util';
 import { create, renderer, tsx } from '@dojo/framework/core/vdom';
 import { findIndex } from '@dojo/framework/shim/array';
 import global from '@dojo/framework/shim/global';
@@ -56,7 +55,6 @@ export interface ItemRendererProperties {
 
 interface MenuICache {
 	activeIndex: number;
-	idBase: string;
 	initial: string;
 	inputText: string;
 	itemHeight: number;
@@ -87,6 +85,7 @@ const factory = create({
 
 export const Menu = factory(function({
 	properties,
+	id,
 	middleware: { icache, focus, dimensions, theme }
 }) {
 	const {
@@ -102,7 +101,6 @@ export const Menu = factory(function({
 		onRequestClose,
 		onValue,
 		options,
-		theme: themeProp,
 		widgetId
 	} = properties();
 
@@ -122,7 +120,7 @@ export const Menu = factory(function({
 			onRequestActive: () => {},
 			onActive: () => {},
 			scrollIntoView: false,
-			id: 'offcreen'
+			widgetId: 'offcreen'
 		};
 
 		const menuItemChild = itemRenderer
@@ -228,7 +226,7 @@ export const Menu = factory(function({
 
 	const itemToScroll = icache.get('itemToScroll');
 	const menuHeight = icache.get('menuHeight');
-	const idBase = icache.getOrSet('idBase', widgetId || uuid());
+	const idBase = widgetId || id;
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
 	const classes = theme.classes(css);
@@ -252,7 +250,7 @@ export const Menu = factory(function({
 				const selected = value === selectedValue;
 				const active = index === computedActiveIndex;
 				const itemProps = {
-					id: `${idBase}-item-${index}`,
+					widgetId: `${idBase}-item-${index}`,
 					key: `item-${index}`,
 					onSelect: () => {
 						setValue(value);
