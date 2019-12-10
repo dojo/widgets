@@ -3,17 +3,16 @@ import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { uuid } from '@dojo/framework/core/util';
 import { create, renderer, tsx } from '@dojo/framework/core/vdom';
 import { findIndex } from '@dojo/framework/shim/array';
 import global from '@dojo/framework/shim/global';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
-import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as listBoxItemCss from '../theme/default/list-box-item.m.css';
+import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/menu.m.css';
-import MenuItem from './MenuItem';
 import ListBoxItem from './ListBoxItem';
+import MenuItem from './MenuItem';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -42,6 +41,8 @@ export interface MenuProperties {
 	itemRenderer?(properties: ItemRendererProperties): RenderResult;
 	/** Property to determine if this menu is being used as a listbox, changes a11y and item type */
 	listBox?: boolean;
+	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
+	widgetId?: string;
 }
 
 export interface ItemRendererProperties {
@@ -54,7 +55,6 @@ export interface ItemRendererProperties {
 
 interface MenuICache {
 	activeIndex: number;
-	idBase: string;
 	initial: string;
 	inputText: string;
 	itemHeight: number;
@@ -85,6 +85,7 @@ const factory = create({
 
 export const Menu = factory(function({
 	properties,
+	id,
 	middleware: { icache, focus, dimensions, theme }
 }) {
 	const {
@@ -99,7 +100,8 @@ export const Menu = factory(function({
 		onFocus,
 		onRequestClose,
 		onValue,
-		options
+		options,
+		widgetId
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -118,7 +120,7 @@ export const Menu = factory(function({
 			onRequestActive: () => {},
 			onActive: () => {},
 			scrollIntoView: false,
-			id: 'offcreen'
+			widgetId: 'offcreen'
 		};
 
 		const menuItemChild = itemRenderer
@@ -224,7 +226,7 @@ export const Menu = factory(function({
 
 	const itemToScroll = icache.get('itemToScroll');
 	const menuHeight = icache.get('menuHeight');
-	const idBase = icache.getOrSet('idBase', uuid());
+	const idBase = widgetId || `menu-${id}`;
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
 	const classes = theme.classes(css);
@@ -242,12 +244,13 @@ export const Menu = factory(function({
 			role={listBox ? 'listbox' : 'menu'}
 			aria-orientation="vertical"
 			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
+			id={idBase}
 		>
 			{options.map(({ value, label, disabled = false }, index) => {
 				const selected = value === selectedValue;
 				const active = index === computedActiveIndex;
 				const itemProps = {
-					id: `${idBase}-item-${index}`,
+					widgetId: `${idBase}-item-${index}`,
 					key: `item-${index}`,
 					onSelect: () => {
 						setValue(value);

@@ -34,7 +34,7 @@ describe('ListBoxItem', () => {
 
 	it('renders with a label', () => {
 		const h = harness(() => (
-			<ListBoxItem id="test" onActive={noop} onRequestActive={noop} onSelect={noop}>
+			<ListBoxItem widgetId="test" onActive={noop} onRequestActive={noop} onSelect={noop}>
 				test
 			</ListBoxItem>
 		));
@@ -43,7 +43,13 @@ describe('ListBoxItem', () => {
 
 	it('renders selected', () => {
 		const h = harness(() => (
-			<ListBoxItem id="test" onActive={noop} selected onRequestActive={noop} onSelect={noop}>
+			<ListBoxItem
+				widgetId="test"
+				onActive={noop}
+				selected
+				onRequestActive={noop}
+				onSelect={noop}
+			>
 				test
 			</ListBoxItem>
 		));
@@ -55,7 +61,13 @@ describe('ListBoxItem', () => {
 
 	it('renders disabled', () => {
 		const h = harness(() => (
-			<ListBoxItem id="test" onActive={noop} disabled onRequestActive={noop} onSelect={noop}>
+			<ListBoxItem
+				widgetId="test"
+				onActive={noop}
+				disabled
+				onRequestActive={noop}
+				onSelect={noop}
+			>
 				test
 			</ListBoxItem>
 		));
@@ -68,7 +80,7 @@ describe('ListBoxItem', () => {
 	it('renders with scroll into view', () => {
 		const h = harness(() => (
 			<ListBoxItem
-				id="test"
+				widgetId="test"
 				onActive={noop}
 				scrollIntoView
 				onRequestActive={noop}
@@ -85,7 +97,7 @@ describe('ListBoxItem', () => {
 		const onActive = sb.stub();
 		const h = harness(() => (
 			<ListBoxItem
-				id="test"
+				widgetId="test"
 				onActive={onActive}
 				active
 				onRequestActive={noop}
@@ -108,7 +120,7 @@ describe('ListBoxItem', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
 			<ListBoxItem
-				id="test"
+				widgetId="test"
 				onActive={noop}
 				onRequestActive={onRequestActive}
 				onSelect={noop}
@@ -124,7 +136,7 @@ describe('ListBoxItem', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
 			<ListBoxItem
-				id="test"
+				widgetId="test"
 				onActive={noop}
 				disabled
 				onRequestActive={onRequestActive}
@@ -140,7 +152,7 @@ describe('ListBoxItem', () => {
 	it('calls onSelect onpointerdown', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem id="test" onActive={noop} onRequestActive={noop} onSelect={onSelect}>
+			<ListBoxItem widgetId="test" onActive={noop} onRequestActive={noop} onSelect={onSelect}>
 				test
 			</ListBoxItem>
 		));
@@ -152,7 +164,7 @@ describe('ListBoxItem', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
 			<ListBoxItem
-				id="test"
+				widgetId="test"
 				onActive={noop}
 				disabled
 				onRequestActive={noop}

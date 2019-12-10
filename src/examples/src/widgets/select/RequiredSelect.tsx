@@ -5,17 +5,21 @@ import icache from '@dojo/framework/core/middleware/icache';
 const factory = create({ icache });
 const options = [{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }];
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function RequiredSelect({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
-				label="Basic Select"
+				label="Required Select"
 				options={options}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
+				required
+				onValidate={(valid) => {
+					icache.set('valid', valid);
+				}}
 			/>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{`Value: ${icache.getOrSet('value', '')}, Valid: ${icache.get('valid')}`}</pre>
 		</virtual>
 	);
 });

@@ -12,17 +12,15 @@ export default factory(function ButtonAlignment({ middleware: { icache } }) {
 	const alignButtons = icache.getOrSet('align', Align.top);
 	return (
 		<div>
-			<Select<{ value: Align; label: string }>
-				value={alignButtons}
-				getOptionLabel={({ label }) => label}
-				getOptionValue={({ value }) => value}
+			<Select
+				initialValue={alignButtons}
 				options={[
 					{ value: Align.top, label: 'Top' },
 					{ value: Align.left, label: 'Left' },
 					{ value: Align.right, label: 'Right' },
 					{ value: Align.bottom, label: 'Bottom' }
 				]}
-				onValue={({ value }) => {
+				onValue={(value) => {
 					icache.set('align', value);
 				}}
 			/>

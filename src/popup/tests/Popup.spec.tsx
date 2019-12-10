@@ -1,4 +1,5 @@
 const { describe, it, before } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 import { tsx, node } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
@@ -6,6 +7,7 @@ import harness from '@dojo/framework/testing/harness';
 import Popup from '../index';
 import * as fixedCss from '../popup.m.css';
 import * as css from '../../theme/default/popup.m.css';
+import { stub } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
 	<virtual>
@@ -56,6 +58,24 @@ describe('Popup', () => {
 
 		h.trigger('@trigger button', 'onclick');
 		h.expect(contentTemplate);
+	});
+
+	it('calls onOpen and onClose when opened and closed', () => {
+		const onClose = stub();
+		const onOpen = stub();
+		const h = harness(() => (
+			<Popup onOpen={onOpen} onClose={onClose}>
+				{{
+					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
+					content: () => 'hello world'
+				}}
+			</Popup>
+		));
+
+		h.trigger('@trigger button', 'onclick');
+		assert.isTrue(onOpen.calledOnce);
+		h.trigger('@underlay', 'onclick');
+		assert.isTrue(onClose.calledOnce);
 	});
 
 	it('renders with opacity 1 and matched size / position with dimensions', () => {

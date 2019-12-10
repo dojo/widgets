@@ -33,7 +33,7 @@ describe('MenuItem', () => {
 
 	it('renders with a label', () => {
 		const h = harness(() => (
-			<MenuItem id="test" onActive={noop} onRequestActive={noop} onSelect={noop}>
+			<MenuItem widgetId="test" onActive={noop} onRequestActive={noop} onSelect={noop}>
 				test
 			</MenuItem>
 		));
@@ -42,7 +42,13 @@ describe('MenuItem', () => {
 
 	it('renders disabled', () => {
 		const h = harness(() => (
-			<MenuItem id="test" onActive={noop} disabled onRequestActive={noop} onSelect={noop}>
+			<MenuItem
+				widgetId="test"
+				onActive={noop}
+				disabled
+				onRequestActive={noop}
+				onSelect={noop}
+			>
 				test
 			</MenuItem>
 		));
@@ -55,7 +61,7 @@ describe('MenuItem', () => {
 	it('renders with scroll into view', () => {
 		const h = harness(() => (
 			<MenuItem
-				id="test"
+				widgetId="test"
 				onActive={noop}
 				scrollIntoView
 				onRequestActive={noop}
@@ -71,7 +77,13 @@ describe('MenuItem', () => {
 	it('renders active', () => {
 		const onActive = sb.stub();
 		const h = harness(() => (
-			<MenuItem id="test" onActive={onActive} active onRequestActive={noop} onSelect={noop}>
+			<MenuItem
+				widgetId="test"
+				onActive={onActive}
+				active
+				onRequestActive={noop}
+				onSelect={noop}
+			>
 				test
 			</MenuItem>
 		));
@@ -87,7 +99,12 @@ describe('MenuItem', () => {
 	it('requests active onpointermove', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
-			<MenuItem id="test" onActive={noop} onRequestActive={onRequestActive} onSelect={noop}>
+			<MenuItem
+				widgetId="test"
+				onActive={noop}
+				onRequestActive={onRequestActive}
+				onSelect={noop}
+			>
 				test
 			</MenuItem>
 		));
@@ -99,7 +116,7 @@ describe('MenuItem', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
 			<MenuItem
-				id="test"
+				widgetId="test"
 				onActive={noop}
 				disabled
 				onRequestActive={onRequestActive}
@@ -115,7 +132,7 @@ describe('MenuItem', () => {
 	it('calls onSelect onpointerdown', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<MenuItem id="test" onActive={noop} onRequestActive={noop} onSelect={onSelect}>
+			<MenuItem widgetId="test" onActive={noop} onRequestActive={noop} onSelect={onSelect}>
 				test
 			</MenuItem>
 		));
@@ -126,7 +143,13 @@ describe('MenuItem', () => {
 	it('does not call onSelect onpointerdown when disabled', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<MenuItem id="test" onActive={noop} disabled onRequestActive={noop} onSelect={onSelect}>
+			<MenuItem
+				widgetId="test"
+				onActive={noop}
+				disabled
+				onRequestActive={noop}
+				onSelect={onSelect}
+			>
 				test
 			</MenuItem>
 		));

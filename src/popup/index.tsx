@@ -15,6 +15,10 @@ export interface PopupProperties {
 	position?: PopupPosition;
 	/** If the underlay should be visible (defaults to false) */
 	underlayVisible?: boolean;
+	/** Callback triggered when the popup is opened */
+	onOpen?(): void;
+	/** Callback triggered when the popup is closed */
+	onClose?(): void;
 }
 
 interface PopupICache {
@@ -22,8 +26,8 @@ interface PopupICache {
 }
 
 export interface PopupChildren {
-	trigger: (onToggleOpen: () => void) => RenderResult;
-	content: (onClose: () => void) => RenderResult;
+	trigger: (toggleOpen: () => void) => RenderResult;
+	content: (close: () => void) => RenderResult;
 }
 
 const icache = createICacheMiddleware<PopupICache>();
@@ -37,7 +41,13 @@ export const Popup = factory(function({
 	children,
 	middleware: { dimensions, theme, icache }
 }) {
-	const { underlayVisible = false, position = 'below', matchWidth = true } = properties();
+	const {
+		underlayVisible = false,
+		position = 'below',
+		matchWidth = true,
+		onClose,
+		onOpen
+	} = properties();
 
 	const wrapperDimensions = dimensions.get('wrapper');
 	const { position: triggerPosition, size: triggerSize } = dimensions.get('trigger');
@@ -82,29 +92,35 @@ export const Popup = factory(function({
 	const { trigger, content } = children()[0];
 	const open = icache.getOrSet('open', false);
 
-	function onToggleOpen() {
+	function toggleOpen() {
 		const open = icache.get('open');
 		icache.set('open', !open);
+		if (open) {
+			onClose && onClose();
+		} else {
+			onOpen && onOpen();
+		}
 	}
 
-	function onClose() {
+	function close() {
 		icache.set('open', false);
+		onClose && onClose();
 	}
 
 	return (
 		<virtual>
 			<span key="trigger" classes={fixedCss.trigger}>
-				{trigger(onToggleOpen)}
+				{trigger(toggleOpen)}
 			</span>
 			{open && (
 				<body>
 					<div
 						key="underlay"
 						classes={[fixedCss.underlay, underlayVisible && classes.underlayVisible]}
-						onclick={onClose}
+						onclick={close}
 					/>
 					<div key="wrapper" classes={fixedCss.root} styles={wrapperStyles}>
-						{content(onClose)}
+						{content(close)}
 					</div>
 				</body>
 			)}

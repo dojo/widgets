@@ -2,121 +2,55 @@
 
 /* The root style for Select */
 .root {
+	display: flex;
+	flex-direction: column;
 }
 
-/* Contains the select element */
-.inputWrapper {
-	display: inline-block;
-	position: relative;
-}
-
-/* custom input styles */
+/* Class applied to the root of the trigger node */
 .trigger {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	background: var(--component-background);
 	border: 1px solid var(--component-color);
 	font-size: inherit;
 	min-height: 25px;
 	min-width: 200px;
-	padding-right: 25px;
 	position: relative;
+	padding: 0 8px;
+}
+
+/* Wrapper around the widgets text value */
+.value {
+	flex-grow: 1;
 	text-align: left;
 }
 
-.trigger:focus {
-	color: var(--selected-background);
-}
-
-/* Added to a placeholder select option (custom select only) */
+/* Wrapper around the widgets placeholder value */
 .placeholder {
 }
-/* Added to a required Select */
-.required {
-}
 
-/* Contains the dropdown of a custom Select */
-.dropdown {
-	background: var(--component-background);
-	border: 1px solid var(--component-color);
-	display: none;
-	max-height: 400px;
-	overflow-y: auto;
-	position: absolute;
-	width: 100%;
-}
-
-/* Added to an open custom Select */
-.open {
-}
-
-/* Contains the drop-down of an open custom Select */
-.open .dropdown {
-	display: block;
-	z-index: var(--zindex-dropdown);
-}
-
-/* native input styles */
-.input {
-	appearance: none;
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	background: var(--component-background);
-	border: 1px solid var(--component-color);
-	border-radius: 0;
-	cursor: pointer;
-	display: block;
-	font-size: inherit;
-	line-height: 1;
-	max-width: 100%;
-	padding: 2px 25px 2px 4px;
-	transition: border var(--short-animation-duration) ease;
-	width: 200px;
-}
-
-/* Focus for a native Select */
-.input:focus {
-	border-color: var(--selected-background);
-}
-
-/* Added to the expand icon */
+/* Wrapper around the widgets arrow icon */
 .arrow {
-	bottom: 0;
-	pointer-events: none;
-	position: absolute;
-	right: 0;
-	top: 0;
-	width: 1.5em;
 }
 
-.input:focus ~ .arrow {
-	color: var(--selected-background);
+/* Wrapper around the popup content */
+.menuWrapper {
+	border: 1px solid var(--component-color);
 }
 
-/* Added to a focused Select */
-.focused {
-}
-/* Added to a disabled native Select */
-.disabled .input,
-/* Added to a read-only native Select */
-.readonly .input {
+/* Modifier classes */
+.disabled .trigger,
+.readonly .trigger {
 	background-color: var(--disabled-color);
 }
 
-/* Added to an invalid native Select */
-.invalid .input {
-	border-color: var(--error-color);
+/* Valid class */
+.valid .trigger {
+	border-color: green;
 }
-/* Styles the arrow when the Select is invalid */
-.invalid .arrow {
-	background-color: var(--error-color);
-}
-/* Added to a required Select */
-.required {
-}
-/* Added to a valid native Select */
-.valid .input {
-	border-color: var(--success-color);
-}
-/* Style the arrow when the Select is valid */
-.valid .arrow {
-	background-color: var(--success-color);
+
+/* Invalid class */
+.invalid .trigger {
+	border-color: red;
 }

@@ -59,9 +59,7 @@ import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
 import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
-import AdvancedOptions from './widgets/select/AdvancedOptions';
 import BasicSelect from './widgets/select/Basic';
-import NonNative from './widgets/select/NonNative';
 import BasicSlidePane from './widgets/slide-pane/Basic';
 import BasicSlider from './widgets/slider/Basic';
 import BasicSnackbar from './widgets/snackbar/Basic';
@@ -113,6 +111,10 @@ import CloseableDialog from './widgets/dialog/CloseableDialog';
 
 `!has('docs')`;
 import testsContext from './tests';
+import CustomRenderer from './widgets/select/CustomRenderer';
+import DisabledSelect from './widgets/select/DisabledSelect';
+import RequiredSelect from './widgets/select/RequiredSelect';
+import AdditionalText from './widgets/select/AdditionalText';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -548,24 +550,22 @@ export const config = {
 			}
 		},
 		select: {
-			examples: [
-				{
-					filename: 'AdvancedOptions',
-					module: AdvancedOptions,
-					title: 'Advanced options'
-				},
-				{
-					filename: 'NonNative',
-					module: NonNative,
-					title: 'Non Native'
-				}
-			],
 			overview: {
 				example: {
 					filename: 'Basic',
 					module: BasicSelect
 				}
-			}
+			},
+			examples: [
+				{ filename: 'AdditionalText', module: AdditionalText, title: 'Additional Text' },
+				{ filename: 'DisabledSelect', module: DisabledSelect, title: 'Disabled Select' },
+				{ filename: 'RequiredSelect', module: RequiredSelect, title: 'Required Select' },
+				{
+					filename: 'CustomRenderer',
+					module: CustomRenderer,
+					title: 'Custom Item Renderer'
+				}
+			]
 		},
 		'slide-pane': {
 			overview: {
