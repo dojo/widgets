@@ -21,6 +21,8 @@ import {
 import Header, { SortRenderer, FilterRenderer } from './Header';
 import Body from './Body';
 import Footer from './Footer';
+import PaginatedFooter from './PaginatedFooter';
+import PaginatedBody from './PaginatedBody';
 import * as css from '../theme/grid.m.css';
 import * as fixedCss from './styles/grid.m.css';
 
@@ -53,6 +55,8 @@ export interface GridProperties<S> extends ThemedProperties {
 	storeId?: string;
 	/** set of custom renderers for sorting or filtering */
 	customRenderers?: CustomRenderers;
+	/** when set uses traditional pagination */
+	pagination?: boolean;
 }
 
 const MIN_COLUMN_WIDTH = 100;
@@ -155,6 +159,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			storeId,
 			theme,
 			classes,
+			pagination = false,
 			customRenderers = {}
 		} = this._getProperties();
 		const { sortRenderer, filterRenderer } = customRenderers;
@@ -228,31 +233,58 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 						])
 					]
 				),
-				w(Body, {
-					key: 'body',
-					theme,
-					classes,
-					pages,
-					columnWidths: this._columnWidths,
-					totalRows: meta.total,
-					pageSize: this._pageSize,
-					columnConfig,
-					fetcher: this._fetcher,
-					pageChange: this._pageChange,
-					updater: this._updater,
-					onScroll: this._onScroll,
-					height: bodyHeight,
-					width: hasResizableColumns ? this._gridWidth : undefined
-				}),
+				pagination
+					? w(PaginatedBody, {
+							key: 'paginated-body',
+							theme,
+							classes,
+							pages,
+							columnWidths: this._columnWidths,
+							pageNumber: meta.page,
+							pageSize: this._pageSize,
+							onScroll: this._onScroll,
+							columnConfig,
+							fetcher: this._fetcher,
+							updater: this._updater,
+							height: bodyHeight,
+							width: hasResizableColumns ? this._gridWidth : undefined
+					  })
+					: w(Body, {
+							key: 'body',
+							theme,
+							classes,
+							pages,
+							columnWidths: this._columnWidths,
+							totalRows: meta.total,
+							pageSize: this._pageSize,
+							columnConfig,
+							fetcher: this._fetcher,
+							pageChange: this._pageChange,
+							updater: this._updater,
+							onScroll: this._onScroll,
+							height: bodyHeight,
+							width: hasResizableColumns ? this._gridWidth : undefined
+					  }),
 				v('div', { key: 'footer' }, [
-					w(Footer, {
-						key: 'footer-row',
-						theme,
-						classes,
-						total: meta.total,
-						page: meta.page,
-						pageSize: this._pageSize
-					})
+					pagination
+						? w(PaginatedFooter, {
+								theme,
+								classes,
+								total: meta.total,
+								page: meta.page,
+								pageSize: this._pageSize,
+								onPageChange: (page: number) => {
+									this._pageChange(page);
+								}
+						  })
+						: w(Footer, {
+								key: 'footer-row',
+								theme,
+								classes,
+								total: meta.total,
+								page: meta.page,
+								pageSize: this._pageSize
+						  })
 				])
 			]
 		);

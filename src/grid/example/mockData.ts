@@ -801,4 +801,12 @@ const mockData = [
 	}
 ];
 
+export function getMockData(pages: number = 1) {
+	let data = [];
+	for (let i = 1; i <= pages; i++) {
+		data.push(...mockData.map((data, index) => ({ ...data, id: i * (index + 1) })));
+	}
+	return data;
+}
+
 export default mockData;
