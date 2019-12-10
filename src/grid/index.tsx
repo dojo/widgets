@@ -133,12 +133,14 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	private _sorter(columnId: string, direction: 'asc' | 'desc') {
-		const { storeId, fetcher } = this._getProperties();
+		const { storeId, fetcher, onRowSelect } = this._getProperties();
+		onRowSelect && onRowSelect([]);
 		sortProcess(this._store)({ id: storeId, fetcher, columnId, direction });
 	}
 
 	private _filterer(columnId: string, value: any) {
-		const { storeId, fetcher } = this._getProperties();
+		const { storeId, fetcher, onRowSelect } = this._getProperties();
+		onRowSelect && onRowSelect([]);
 		filterProcess(this._store)({ id: storeId, fetcher, filterOptions: { columnId, value } });
 	}
 
