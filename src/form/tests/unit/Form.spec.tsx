@@ -11,7 +11,7 @@ import TextInput from '../../../text-input';
 
 import { stubEvent } from '../../../common/tests/support/test-helpers';
 
-import * as css from '../../../theme/form.m.css';
+import * as css from '../../../theme/default/form.m.css';
 import { FormMiddleware } from '../../middleware';
 import Form from '../../index';
 
