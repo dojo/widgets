@@ -1,4 +1,5 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
+import materialTheme from '@dojo/widgets/theme/material';
 
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
@@ -118,7 +119,11 @@ const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () =>
 export const config = {
 	name: '@dojo/widgets',
 	home: 'src/examples/README.md',
-	themes: [dojoTheme],
+	themes: [
+		{ label: 'dojo', theme: dojoTheme },
+		{ label: 'material', theme: materialTheme },
+		{ label: 'default', theme: {} }
+	],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
 	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename || 'index'}.tsx`,
