@@ -1,27 +1,25 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
+import { stub } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-// import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
-import Select from '../index';
-import * as css from '../../theme/default/select.m.css';
-import { stub } from 'sinon';
-import Popup from '../../popup';
-import HelperText from '../../helper-text';
-import {
-	createHarness,
-	compareTheme,
-	compareForId,
-	compareAriaControls,
-	compareId,
-	compareWidgetId,
-	isObjectComparator
-} from '../../common/tests/support/test-helpers';
-import Label from '../../label';
-import Icon from '../../icon';
-import Menu from '../../menu';
 import select from '@dojo/framework/testing/support/selector';
 import { Keys } from '@dojo/widgets/common/util';
+import {
+	compareAriaControls,
+	compareForId,
+	compareId,
+	compareTheme,
+	compareWidgetId,
+	createHarness
+} from '../../common/tests/support/test-helpers';
+import HelperText from '../../helper-text';
+import Icon from '../../icon';
+import Label from '../../label';
+import Menu from '../../menu';
+import Popup from '../../popup';
+import * as css from '../../theme/default/select.m.css';
+import Select from '../index';
 
 const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
 

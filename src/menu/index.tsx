@@ -9,11 +9,11 @@ import { findIndex } from '@dojo/framework/shim/array';
 import global from '@dojo/framework/shim/global';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
-import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as listBoxItemCss from '../theme/default/list-box-item.m.css';
+import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/menu.m.css';
-import MenuItem from './MenuItem';
 import ListBoxItem from './ListBoxItem';
+import MenuItem from './MenuItem';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
