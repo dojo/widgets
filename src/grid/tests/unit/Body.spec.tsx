@@ -96,7 +96,9 @@ describe('Body', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
-					columnWidths: {}
+					columnWidths: {},
+					onRowSelect: undefined,
+					selected: false
 				})
 			);
 		}
@@ -194,7 +196,9 @@ describe('Body', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
-					columnWidths: {}
+					columnWidths: {},
+					onRowSelect: undefined,
+					selected: false
 				})
 			);
 		}

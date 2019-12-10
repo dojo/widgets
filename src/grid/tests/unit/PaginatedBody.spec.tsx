@@ -60,6 +60,8 @@ describe('PaginatedBody', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
+					onRowSelect: undefined,
+					selected: false,
 					columnWidths: undefined
 				})
 			);
@@ -109,6 +111,8 @@ describe('PaginatedBody', () => {
 					columnConfig: [],
 					updater: noop,
 					classes: undefined,
+					onRowSelect: undefined,
+					selected: false,
 					theme: undefined,
 					columnWidths: {
 						id: 400,

@@ -37,6 +37,7 @@ import EditableCells from './widgets/grid/EditableCells';
 import Filtering from './widgets/grid/Filtering';
 import Paginated from './widgets/grid/Paginated';
 import ColumnResize from './widgets/grid/ColumnResize';
+import RowSelection from './widgets/grid/RowSelection';
 import Restful from './widgets/grid/Restful';
 import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
@@ -375,6 +376,11 @@ export const config = {
 					filename: 'Paginated',
 					module: Paginated,
 					title: 'Grid with traditional pagination'
+				},
+				{
+					filename: 'RowSelection',
+					module: RowSelection,
+					title: 'Grid with row selection'
 				},
 				{
 					filename: 'Restful',

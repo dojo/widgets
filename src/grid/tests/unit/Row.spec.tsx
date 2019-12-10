@@ -19,7 +19,12 @@ describe('Row', () => {
 		h.expect(() =>
 			v(
 				'div',
-				{ classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' },
+				{
+					classes: [css.root, undefined, fixedCss.rootFixed],
+					role: 'row',
+					'aria-rowindex': '2',
+					onclick: undefined
+				},
 				[]
 			)
 		);
@@ -42,7 +47,12 @@ describe('Row', () => {
 		h.expect(() =>
 			v(
 				'div',
-				{ classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' },
+				{
+					classes: [css.root, undefined, fixedCss.rootFixed],
+					role: 'row',
+					'aria-rowindex': '2',
+					onclick: undefined
+				},
 				[
 					w(Cell, {
 						key: 'id',
@@ -77,7 +87,12 @@ describe('Row', () => {
 		h.expect(() =>
 			v(
 				'div',
-				{ classes: [css.root, fixedCss.rootFixed], role: 'row', 'aria-rowindex': '2' },
+				{
+					classes: [css.root, undefined, fixedCss.rootFixed],
+					role: 'row',
+					'aria-rowindex': '2',
+					onclick: undefined
+				},
 				[
 					w(Cell, {
 						key: 'id',

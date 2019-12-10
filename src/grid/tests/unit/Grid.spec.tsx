@@ -106,7 +106,9 @@ describe('Grid', () => {
 						height: 300,
 						classes: undefined,
 						theme: undefined,
-						columnWidths: undefined
+						columnWidths: undefined,
+						onRowSelect: undefined,
+						selectedRows: []
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -211,7 +213,9 @@ describe('Grid', () => {
 						height: 300,
 						classes: undefined,
 						theme: undefined,
-						columnWidths: undefined
+						columnWidths: undefined,
+						onRowSelect: undefined,
+						selectedRows: undefined
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -295,7 +299,9 @@ describe('Grid', () => {
 						height: 300,
 						classes: undefined,
 						theme: undefined,
-						columnWidths: undefined
+						columnWidths: undefined,
+						onRowSelect: undefined,
+						selectedRows: []
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -376,7 +382,9 @@ describe('Grid', () => {
 						height: 50,
 						classes: undefined,
 						theme: undefined,
-						columnWidths: undefined
+						columnWidths: undefined,
+						onRowSelect: undefined,
+						selectedRows: []
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -461,7 +469,9 @@ describe('Grid', () => {
 						height: 300,
 						classes: undefined,
 						theme: undefined,
-						width: undefined
+						width: undefined,
+						onRowSelect: undefined,
+						selectedRows: []
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -537,7 +547,9 @@ describe('Grid', () => {
 						height: 300,
 						classes: undefined,
 						theme: undefined,
-						width: undefined
+						width: undefined,
+						onRowSelect: undefined,
+						selectedRows: []
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
@@ -640,7 +652,9 @@ describe('Grid', () => {
 						height: 300,
 						classes: undefined,
 						theme: undefined,
-						width: 1000
+						width: 1000,
+						onRowSelect: undefined,
+						selectedRows: []
 					}),
 					v('div', { key: 'footer' }, [
 						w(Footer, {
