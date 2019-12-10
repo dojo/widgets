@@ -209,6 +209,8 @@ const selectionCommand = commandFactory<SelectionCommandPayload>(
 		if (type === 'single') {
 			if (currentSelection.indexOf(index) === -1) {
 				currentSelection = [index];
+			} else if (currentSelection.length > 1) {
+				currentSelection = [index];
 			} else {
 				currentSelection = [];
 			}

@@ -317,6 +317,18 @@ describe('Grid Processes', () => {
 			assert.deepEqual(selection, []);
 		});
 
+		it('should select row in single mode when multiple rows are selected', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'multi', index: 1, id: 'grid' });
+			selectionProcess(store)({ type: 'multi', index: 2, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1, 2]);
+			selectionProcess(store)({ type: 'single', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1]);
+		});
+
 		it('should clear selection', () => {
 			let selection = store.get(store.path('grid', 'meta', 'selection'));
 			assert.deepEqual(selection, undefined);
