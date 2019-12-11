@@ -152,4 +152,60 @@ describe('PaginatedBody', () => {
 			)
 		);
 	});
+
+	it('should only render based on the total page length', () => {
+		const columnConfig = [
+			{
+				id: 'id',
+				title: 'Id'
+			}
+		];
+		const rows: any[] = [];
+		const page: any[] = [];
+		for (let i = 0; i < 57; i++) {
+			const item = { id: 'id' };
+			page.push(item);
+			rows.push(
+				w(Row, {
+					id: i,
+					key: i,
+					item,
+					columnConfig,
+					updater: noop,
+					classes: undefined,
+					theme: undefined,
+					columnWidths: undefined
+				})
+			);
+		}
+
+		const h = harness(() =>
+			w(PaginatedBody, {
+				pageSize: 100,
+				height: 400,
+				pageNumber: 1,
+				pages: {
+					'page-1': page
+				},
+				columnConfig,
+				fetcher: noop,
+				updater: noop,
+				onScroll: noop
+			})
+		);
+
+		h.expect(() =>
+			v(
+				'div',
+				{
+					key: 'root',
+					classes: [css.root, fixedCss.rootFixed],
+					role: 'rowgroup',
+					onscroll: noop,
+					styles: { height: '400px' }
+				},
+				[v('div', { styles: {} }, [v('div'), ...rows])]
+			)
+		);
+	});
 });

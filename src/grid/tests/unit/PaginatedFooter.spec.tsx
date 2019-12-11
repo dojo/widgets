@@ -187,7 +187,7 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		const middlePageControlsTemplate = baseTemplate
+		const pageControlsTemplate = baseTemplate
 			.setChildren('~details', () => ['1101 - 1200 of 10500 Results'])
 			.setChildren('~pagination-item', () => {
 				return [
@@ -293,7 +293,7 @@ describe('PaginatedFooter', () => {
 					)
 				];
 			});
-		h.expect(middlePageControlsTemplate);
+		h.expect(pageControlsTemplate);
 	});
 
 	it('should render the controls for the last page', () => {
@@ -305,7 +305,7 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		const middlePageControlsTemplate = baseTemplate
+		const pageControlsTemplate = baseTemplate
 			.setChildren('~details', () => ['10401 - 10500 of 10500 Results'])
 			.setChildren('~pagination-item', () => {
 				return [
@@ -414,6 +414,153 @@ describe('PaginatedFooter', () => {
 					)
 				];
 			});
-		h.expect(middlePageControlsTemplate);
+		h.expect(pageControlsTemplate);
+	});
+
+	it('should render limited controls when total is less than page size', () => {
+		const h = harness(() =>
+			w(PaginatedFooter, {
+				page: 1,
+				pageSize: 100,
+				total: 90,
+				onPageChange: noop
+			})
+		);
+		const pageControlsTemplate = baseTemplate
+			.setChildren('~details', () => ['1 - 90 of 90 Results'])
+			.setChildren('~pagination-item', () => {
+				return [
+					v(
+						'button',
+						{
+							key: 'current',
+							disabled: true,
+							onclick: noop,
+							'aria-current': 'page',
+							'aria-label': 'Current Page, Page 1',
+							classes: [css.pageNumber, css.active]
+						},
+						['1']
+					)
+				];
+			});
+		h.expect(pageControlsTemplate);
+	});
+
+	it('should render limited controls when total is less than 6 pages', () => {
+		const h = harness(() =>
+			w(PaginatedFooter, {
+				page: 1,
+				pageSize: 100,
+				total: 401,
+				onPageChange: noop
+			})
+		);
+		const pageControlsTemplate = baseTemplate
+			.setChildren('~details', () => ['1 - 100 of 401 Results'])
+			.setChildren('~pagination-item', () => {
+				return [
+					v(
+						'button',
+						{
+							key: 'previous',
+							disabled: true,
+							onclick: noop,
+							'aria-label': `Goto Page 0`,
+							classes: [css.pageNav, fixedCss.pageNavFixed]
+						},
+						['<']
+					),
+					v(
+						'button',
+						{
+							key: 'current',
+							disabled: true,
+							onclick: noop,
+							'aria-current': 'page',
+							'aria-label': 'Current Page, Page 1',
+							classes: [css.pageNumber, css.active]
+						},
+						['1']
+					),
+					v(
+						'button',
+						{
+							key: '2',
+							disabled: false,
+							onclick: noop,
+							'aria-current': undefined,
+							'aria-label': 'Goto Page 2',
+							classes: [css.pageNumber, false]
+						},
+						['2']
+					),
+					v(
+						'button',
+						{
+							key: '3',
+							disabled: false,
+							onclick: noop,
+							'aria-current': undefined,
+							'aria-label': 'Goto Page 3',
+							classes: [css.pageNumber, false]
+						},
+						['3']
+					),
+					v(
+						'button',
+						{
+							key: '4',
+							disabled: false,
+							onclick: noop,
+							'aria-current': undefined,
+							'aria-label': 'Goto Page 4',
+							classes: [css.pageNumber, false]
+						},
+						['4']
+					),
+					v(
+						'button',
+						{
+							key: '5',
+							disabled: false,
+							onclick: noop,
+							'aria-current': undefined,
+							'aria-label': 'Goto Page 5',
+							classes: [css.pageNumber, false]
+						},
+						['5']
+					),
+					v(
+						'button',
+						{
+							key: 'next',
+							disabled: false,
+							onclick: noop,
+							'aria-label': `Goto Page 2`,
+							classes: [css.pageNav, fixedCss.pageNavFixed]
+						},
+						['>']
+					)
+				];
+			});
+		h.expect(pageControlsTemplate);
+	});
+
+	it('should not render controls when there are zero results', () => {
+		const h = harness(() =>
+			w(PaginatedFooter, {
+				page: 1,
+				pageSize: 100,
+				total: 0,
+				onPageChange: noop
+			})
+		);
+		const pageControlsTemplate = baseTemplate
+			.setChildren('~details', () => ['0 Results'])
+			.setChildren('~pagination-item', () => {
+				return [];
+			});
+		h.expect(pageControlsTemplate);
 	});
 });
