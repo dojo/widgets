@@ -56,6 +56,14 @@ export interface FetcherCommandPayload {
 	id: string;
 }
 
+export type SelectionType = 'single' | 'multi';
+
+export interface SelectionCommandPayload {
+	id: string;
+	index: number;
+	type: SelectionType;
+}
+
 export interface SortCommandPayload {
 	id: string;
 	fetcher: Fetcher;
@@ -99,6 +107,7 @@ export interface GridMeta<S> {
 	currentFilter: FilterOptions;
 	isSorting: boolean;
 	editedRow: GridEditedRow<S>;
+	selection: number[];
 	fetchedPages: number[];
 }
 

@@ -3,7 +3,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 
-import { ColumnConfig } from './interfaces';
+import { ColumnConfig, SelectionType } from './interfaces';
 import Cell from './Cell';
 import * as fixedCss from './styles/row.m.css';
 import * as css from '../theme/grid-row.m.css';
@@ -19,12 +19,31 @@ export interface RowProperties {
 	updater: (rowNumber: number, columnId: string, value: any) => void;
 	/** Calculated column widths */
 	columnWidths?: { [index: string]: number };
+	/** handler for row selection */
+	onRowSelect?: (type: SelectionType) => void;
+	/** array of selected rows */
+	selected?: boolean;
 }
 
 @theme(css)
 export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
+	private _onRowSelect(event: MouseEvent) {
+		const { onRowSelect } = this.properties;
+		const type = event.ctrlKey || event.metaKey ? 'multi' : 'single';
+		onRowSelect && onRowSelect(type);
+	}
+
 	protected render(): DNode {
-		const { item, columnConfig, id, theme, classes, columnWidths } = this.properties;
+		const {
+			item,
+			columnConfig,
+			id,
+			theme,
+			classes,
+			columnWidths,
+			onRowSelect,
+			selected
+		} = this.properties;
 		let columns = columnConfig.map(
 			(config) => {
 				let value: string | DNode = `${item[config.id]}`;
@@ -50,8 +69,14 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 		return v(
 			'div',
 			{
-				classes: [this.theme(css.root), fixedCss.rootFixed],
+				key: 'root',
+				classes: [
+					this.theme(css.root),
+					selected && this.theme(css.selected),
+					fixedCss.rootFixed
+				],
 				role: 'row',
+				onclick: onRowSelect ? this._onRowSelect : undefined,
 				'aria-rowindex': `${id + 1}`
 			},
 			columns

@@ -60,6 +60,8 @@ describe('PaginatedBody', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
+					onRowSelect: undefined,
+					selected: false,
 					columnWidths: undefined
 				})
 			);
@@ -110,6 +112,8 @@ describe('PaginatedBody', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
+					onRowSelect: undefined,
+					selected: false,
 					columnWidths: {
 						id: 400,
 						name: 400
@@ -174,6 +178,8 @@ describe('PaginatedBody', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
+					onRowSelect: undefined,
+					selected: false,
 					columnWidths: undefined
 				})
 			);
@@ -191,6 +197,66 @@ describe('PaginatedBody', () => {
 				fetcher: noop,
 				updater: noop,
 				onScroll: noop
+			})
+		);
+
+		h.expect(() =>
+			v(
+				'div',
+				{
+					key: 'root',
+					classes: [css.root, fixedCss.rootFixed],
+					role: 'rowgroup',
+					onscroll: noop,
+					styles: { height: '400px' }
+				},
+				[v('div', { styles: {} }, [v('div'), ...rows])]
+			)
+		);
+	});
+
+	it('should pass selection details to rows', () => {
+		const columnConfig = [
+			{
+				id: 'id',
+				title: 'Id'
+			}
+		];
+		const rows: any[] = [];
+		const page: any[] = [];
+		for (let i = 0; i < 100; i++) {
+			const item = { id: 'id' };
+			page.push(item);
+			rows.push(
+				w(Row, {
+					id: i,
+					key: i,
+					item,
+					columnConfig,
+					updater: noop,
+					classes: undefined,
+					theme: undefined,
+					columnWidths: undefined,
+					onRowSelect: noop,
+					selected: i === 1 || i === 99
+				})
+			);
+		}
+
+		const h = harness(() =>
+			w(PaginatedBody, {
+				pageSize: 100,
+				height: 400,
+				pageNumber: 1,
+				pages: {
+					'page-1': page
+				},
+				columnConfig,
+				fetcher: noop,
+				updater: noop,
+				onScroll: noop,
+				onRowSelect: noop,
+				selectedRows: [1, 99]
 			})
 		);
 

@@ -5,7 +5,7 @@ import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode, VNodeProperties } from '@dojo/framework/core/interfaces';
 import renderer from '@dojo/framework/core/vdom';
 
-import { GridPages, ColumnConfig } from './interfaces';
+import { GridPages, ColumnConfig, SelectionType } from './interfaces';
 import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
 
@@ -39,6 +39,10 @@ export interface BodyProperties<S> {
 	onScroll?: (value: number) => void;
 	/** Calculated column widths */
 	columnWidths?: { [index: string]: number };
+	/** handler for row selection */
+	onRowSelect?: (index: number, type: SelectionType) => void;
+	/** array of selected rows */
+	selectedRows?: number[];
 }
 
 const offscreen = (dnode: DNode) => {
@@ -117,7 +121,9 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			totalRows,
 			theme,
 			classes,
-			columnWidths
+			columnWidths,
+			onRowSelect,
+			selectedRows = []
 		} = this.properties;
 
 		const startPage = Math.max(Math.ceil(start / pageSize), 1);
@@ -156,7 +162,13 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 						item,
 						columnConfig,
 						updater: this._updater,
-						columnWidths
+						columnWidths,
+						onRowSelect: onRowSelect
+							? (type: SelectionType) => {
+									onRowSelect && onRowSelect(i, type);
+							  }
+							: undefined,
+						selected: selectedRows.indexOf(i) !== -1
 					})
 				);
 			} else {
