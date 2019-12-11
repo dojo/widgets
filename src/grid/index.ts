@@ -15,7 +15,8 @@ import {
 	pageChangeProcess,
 	sortProcess,
 	filterProcess,
-	updaterProcess
+	updaterProcess,
+	selectionProcess
 } from './processes';
 
 import Header, { SortRenderer, FilterRenderer } from './Header';
@@ -32,7 +33,8 @@ const defaultGridMeta = {
 	sort: undefined,
 	filter: undefined,
 	isSorting: false,
-	editedRow: undefined
+	editedRow: undefined,
+	selection: []
 };
 
 export interface CustomRenderers {
@@ -57,6 +59,8 @@ export interface GridProperties<S> extends ThemedProperties {
 	customRenderers?: CustomRenderers;
 	/** when set uses traditional pagination */
 	pagination?: boolean;
+	/** handler for row selection */
+	onRowSelect?: (rowData: S[]) => void;
 }
 
 const MIN_COLUMN_WIDTH = 100;
@@ -129,12 +133,22 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	private _sorter(columnId: string, direction: 'asc' | 'desc') {
-		const { storeId, fetcher } = this._getProperties();
+		const { storeId, fetcher, onRowSelect } = this._getProperties();
+		if (onRowSelect) {
+			const selectedIndexes =
+				this._store.get(this._store.path(storeId, 'meta', 'selection')) || [];
+			selectedIndexes.length && onRowSelect([]);
+		}
 		sortProcess(this._store)({ id: storeId, fetcher, columnId, direction });
 	}
 
 	private _filterer(columnId: string, value: any) {
-		const { storeId, fetcher } = this._getProperties();
+		const { storeId, fetcher, onRowSelect } = this._getProperties();
+		if (onRowSelect) {
+			const selectedIndexes =
+				this._store.get(this._store.path(storeId, 'meta', 'selection')) || [];
+			selectedIndexes.length && onRowSelect([]);
+		}
 		filterProcess(this._store)({ id: storeId, fetcher, filterOptions: { columnId, value } });
 	}
 
@@ -146,6 +160,24 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	private _pageChange(page: number) {
 		const { storeId } = this._getProperties();
 		pageChangeProcess(this._store)({ id: storeId, page });
+	}
+
+	private _selection(index: number, type: any) {
+		const { storeId, onRowSelect } = this._getProperties();
+		selectionProcess(this._store)({ id: storeId, index, type });
+		const selectedIndexes =
+			this._store.get(this._store.path(storeId, 'meta', 'selection')) || [];
+		const items = [];
+		const data = this._store.get(this._store.path(storeId, 'data', 'pages'));
+		for (let i = 0; i < selectedIndexes.length; i++) {
+			const selectedIndex = selectedIndexes[i];
+			const pageNumber = Math.floor(selectedIndex / this._pageSize) + 1;
+			const itemIndex = selectedIndex - (pageNumber - 1) * this._pageSize;
+			if (data[`page-${pageNumber}`]) {
+				items.push(data[`page-${pageNumber}`][itemIndex]);
+			}
+		}
+		onRowSelect && onRowSelect(items);
 	}
 
 	private _onScroll(value: number) {
@@ -160,7 +192,8 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			theme,
 			classes,
 			pagination = false,
-			customRenderers = {}
+			customRenderers = {},
+			onRowSelect
 		} = this._getProperties();
 		const { sortRenderer, filterRenderer } = customRenderers;
 
@@ -247,7 +280,9 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 							fetcher: this._fetcher,
 							updater: this._updater,
 							height: bodyHeight,
-							width: hasResizableColumns ? this._gridWidth : undefined
+							width: hasResizableColumns ? this._gridWidth : undefined,
+							onRowSelect: onRowSelect ? this._selection : undefined,
+							selectedRows: meta.selection
 					  })
 					: w(Body, {
 							key: 'body',
@@ -263,7 +298,9 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 							updater: this._updater,
 							onScroll: this._onScroll,
 							height: bodyHeight,
-							width: hasResizableColumns ? this._gridWidth : undefined
+							width: hasResizableColumns ? this._gridWidth : undefined,
+							onRowSelect: onRowSelect ? this._selection : undefined,
+							selectedRows: meta.selection
 					  }),
 				v('div', { key: 'footer' }, [
 					pagination
