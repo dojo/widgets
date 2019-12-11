@@ -23,7 +23,6 @@ async function fetcher(
 	if (sort) {
 		url = `${url}&sort=${sort.columnId}&direction=${sort.direction}`;
 	}
-	await new Promise((resolve) => setTimeout(resolve, 4000));
 	const response = await fetch(url, {
 		headers: {
 			'Content-Type': 'application/json'
