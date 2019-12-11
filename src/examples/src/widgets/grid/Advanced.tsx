@@ -98,7 +98,7 @@ interface Item {
 	country: string;
 }
 
-export default factory(function AdvancedGrid({ middleware: { icache } }) {
+export default factory(function Advanced({ middleware: { icache } }) {
 	const selectedItems = icache.getOrSet<Item[]>('selected', []);
 
 	return (
