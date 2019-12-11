@@ -4,7 +4,7 @@ import theme from '@dojo/framework/core/middleware/theme';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 
 import createFormMiddleware, { FormMiddleware, FormValue } from './middleware';
-import * as css from '../theme/form.m.css';
+import * as css from '../theme/default/form.m.css';
 
 const form = createFormMiddleware();
 
