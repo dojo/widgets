@@ -9,3 +9,7 @@ Dojo's `Grid` is a reactive lightweight, customizable grid widget.
  * Cells may be editable or read-only
  * Filtering and Sorting by column
  * Custom cell renderers
+ * Resizable columns
+ * Row selection
+ * Opt-in support for traditional pagination
+
