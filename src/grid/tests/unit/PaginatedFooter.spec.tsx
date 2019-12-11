@@ -187,7 +187,7 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		const middlePageControlsTemplate = baseTemplate
+		const pageControlsTemplate = baseTemplate
 			.setChildren('~details', () => ['1101 - 1200 of 10500 Results'])
 			.setChildren('~pagination-item', () => {
 				return [
@@ -293,7 +293,7 @@ describe('PaginatedFooter', () => {
 					)
 				];
 			});
-		h.expect(middlePageControlsTemplate);
+		h.expect(pageControlsTemplate);
 	});
 
 	it('should render the controls for the last page', () => {
@@ -305,7 +305,7 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		const middlePageControlsTemplate = baseTemplate
+		const pageControlsTemplate = baseTemplate
 			.setChildren('~details', () => ['10401 - 10500 of 10500 Results'])
 			.setChildren('~pagination-item', () => {
 				return [
@@ -414,7 +414,7 @@ describe('PaginatedFooter', () => {
 					)
 				];
 			});
-		h.expect(middlePageControlsTemplate);
+		h.expect(pageControlsTemplate);
 	});
 
 	it('should render limited controls when total is less than page size', () => {
@@ -426,7 +426,7 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		const middlePageControlsTemplate = baseTemplate
+		const pageControlsTemplate = baseTemplate
 			.setChildren('~details', () => ['1 - 90 of 90 Results'])
 			.setChildren('~pagination-item', () => {
 				return [
@@ -444,7 +444,7 @@ describe('PaginatedFooter', () => {
 					)
 				];
 			});
-		h.expect(middlePageControlsTemplate);
+		h.expect(pageControlsTemplate);
 	});
 
 	it('should render limited controls when total is less than 6 pages', () => {
@@ -456,7 +456,7 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		const middlePageControlsTemplate = baseTemplate
+		const pageControlsTemplate = baseTemplate
 			.setChildren('~details', () => ['1 - 100 of 401 Results'])
 			.setChildren('~pagination-item', () => {
 				return [
@@ -544,7 +544,7 @@ describe('PaginatedFooter', () => {
 					)
 				];
 			});
-		h.expect(middlePageControlsTemplate);
+		h.expect(pageControlsTemplate);
 	});
 
 	it('should not render controls when there are zero results', () => {
@@ -556,11 +556,11 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		const middlePageControlsTemplate = baseTemplate
+		const pageControlsTemplate = baseTemplate
 			.setChildren('~details', () => ['0 Results'])
 			.setChildren('~pagination-item', () => {
 				return [];
 			});
-		h.expect(middlePageControlsTemplate);
+		h.expect(pageControlsTemplate);
 	});
 });
