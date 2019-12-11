@@ -3,7 +3,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode } from '@dojo/framework/core/interfaces';
 
-import { GridPages, ColumnConfig } from './interfaces';
+import { GridPages, ColumnConfig, SelectionType } from './interfaces';
 import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
 
@@ -35,6 +35,10 @@ export interface PaginatedBodyProperties<S> {
 	onScroll: (value: number) => void;
 	/** Calculated column widths */
 	columnWidths?: { [index: string]: number };
+	/** handler for row selection */
+	onRowSelect?: (index: number, type: SelectionType) => void;
+	/** array of selected rows */
+	selectedRows?: number[];
 }
 
 const defaultPlaceholderRowRenderer = (index: number) => {
@@ -65,7 +69,9 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 			pageNumber,
 			theme,
 			classes,
-			columnWidths
+			columnWidths,
+			onRowSelect,
+			selectedRows = []
 		} = this.properties;
 		let data = pages[`page-${pageNumber}`];
 		if (!data) {
@@ -86,7 +92,13 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 						item: data[i],
 						columnConfig,
 						columnWidths,
-						updater: this._updater
+						updater: this._updater,
+						onRowSelect: onRowSelect
+							? (type: SelectionType) => {
+									onRowSelect && onRowSelect(i, type);
+							  }
+							: undefined,
+						selected: selectedRows.indexOf(i) !== -1
 					})
 				);
 			}

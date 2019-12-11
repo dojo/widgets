@@ -4,3 +4,8 @@
 	height: 30px;
 	border-left-style: none;
 }
+
+/* the class applied when a row is selected */
+.selected {
+	background: rgba(0, 0, 0, 0.05);
+}

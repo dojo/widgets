@@ -96,7 +96,9 @@ describe('Body', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
-					columnWidths: {}
+					columnWidths: {},
+					onRowSelect: undefined,
+					selected: false
 				})
 			);
 		}
@@ -194,7 +196,9 @@ describe('Body', () => {
 					updater: noop,
 					classes: undefined,
 					theme: undefined,
-					columnWidths: {}
+					columnWidths: {},
+					onRowSelect: undefined,
+					selected: false
 				})
 			);
 		}
@@ -411,6 +415,72 @@ describe('Body', () => {
 					},
 					[
 						v('div', { styles: { width: '100px' } }, [
+							v('div', { key: 'top', styles: { height: '0px' } }),
+							...rows,
+							v('div', { key: 'bottom', styles: { height: '31500px' } })
+						])
+					]
+				)
+			);
+		});
+
+		it('should pass selection details to rows', () => {
+			const columnConfig = [
+				{
+					id: 'id',
+					title: 'Id'
+				}
+			];
+			const rows: any[] = [];
+			const page: any[] = [];
+			for (let i = 0; i < 100; i++) {
+				const item = { id: 'id' };
+				page.push(item);
+				rows.push(
+					w(Row, {
+						id: i,
+						key: i,
+						item,
+						columnConfig,
+						updater: noop,
+						classes: undefined,
+						theme: undefined,
+						columnWidths: undefined,
+						onRowSelect: noop,
+						selected: i === 1
+					})
+				);
+			}
+
+			const h = harness(() =>
+				w(Body, {
+					totalRows: 1000,
+					pageSize: 100,
+					height: 400,
+					pages: {
+						'page-1': page
+					},
+					columnConfig,
+					fetcher: noop,
+					updater: noop,
+					pageChange: noop,
+					onRowSelect: noop,
+					selectedRows: [1]
+				})
+			);
+
+			h.expect(() =>
+				v(
+					'div',
+					{
+						key: 'root',
+						classes: [css.root, fixedCss.rootFixed],
+						role: 'rowgroup',
+						onscroll: noop,
+						styles: { height: '400px' }
+					},
+					[
+						v('div', { styles: {} }, [
 							v('div', { key: 'top', styles: { height: '0px' } }),
 							...rows,
 							v('div', { key: 'bottom', styles: { height: '31500px' } })
