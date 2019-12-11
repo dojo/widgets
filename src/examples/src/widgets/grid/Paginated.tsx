@@ -13,7 +13,8 @@ const columnConfig: ColumnConfig[] = [
 	},
 	{
 		id: 'firstName',
-		title: 'First Name'
+		title: 'First Name',
+		filterable: true
 	},
 	{
 		id: 'middleName',
@@ -21,7 +22,8 @@ const columnConfig: ColumnConfig[] = [
 	},
 	{
 		id: 'lastName',
-		title: 'Last Name'
+		title: 'Last Name',
+		filterable: true
 	},
 	{
 		id: 'otherName',
