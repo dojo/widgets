@@ -40,6 +40,7 @@ import ColumnResize from './widgets/grid/ColumnResize';
 import RowSelection from './widgets/grid/RowSelection';
 import Restful from './widgets/grid/Restful';
 import Sorting from './widgets/grid/Sorting';
+import Advanced from './widgets/grid/Advanced';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
 import BasicLabel from './widgets/label/Basic';
@@ -392,6 +393,13 @@ export const config = {
 					filename: 'EditableCells',
 					module: EditableCells,
 					title: 'Grid with Editable Cells'
+				},
+				{
+					description:
+						'Advanced grid demonstrating all features working together, including remote data, editable cells, pagination, filtering, resizable columns and sorting',
+					filename: 'Advanced',
+					module: Advanced,
+					title: 'Advanced Grid'
 				}
 			],
 			filename: 'index',
