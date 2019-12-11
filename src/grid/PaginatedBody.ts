@@ -67,13 +67,14 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 			classes,
 			columnWidths
 		} = this.properties;
-		let data = pages[`page-${pageNumber}`] || [];
-		if (!data.length) {
+		let data = pages[`page-${pageNumber}`];
+		if (!data) {
 			fetcher(pageNumber, pageSize);
 		}
 		let rows: DNode[] = [];
-		for (let i = 0; i < pageSize; i++) {
-			if (!data.length) {
+		const rowCount = data ? data.length : pageSize;
+		for (let i = 0; i < rowCount; i++) {
+			if (!data) {
 				rows.push(placeholderRowRenderer(i));
 			} else {
 				rows.push(
