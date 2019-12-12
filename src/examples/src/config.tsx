@@ -1,6 +1,5 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
 import materialTheme from '@dojo/widgets/theme/material';
-
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
@@ -9,14 +8,20 @@ import ToggleButton from './widgets/button/ToggleButton';
 import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import LimitedRange from './widgets/calendar/LimitedRange';
+import ActionButtons from './widgets/card/ActionButtons';
+import ActionButtonsAndIcons from './widgets/card/ActionButtonsAndIcons';
+import ActionIcons from './widgets/card/ActionIcons';
 import BasicCard from './widgets/card/Basic';
+import CardWithMediaContent from './widgets/card/CardWithMediaContent';
+import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
+import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
-import DisabledCheckbox from './widgets/checkbox/Disabled';
-import ReadonlyCheckbox from './widgets/checkbox/Readonly';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
 import BasicCheckbox from './widgets/checkbox/Basic';
+import DisabledCheckbox from './widgets/checkbox/Disabled';
+import ReadonlyCheckbox from './widgets/checkbox/Readonly';
 import BasicChip from './widgets/chip/Basic';
 import ClickableChip from './widgets/chip/Clickable';
 import ClickableClosableChip from './widgets/chip/ClickableClosable';
@@ -28,19 +33,22 @@ import BasicCombobox from './widgets/combobox/Basic';
 import BasicConstrainedInput from './widgets/constrained-input/Basic';
 import Username from './widgets/constrained-input/Username';
 import BasicDialog from './widgets/dialog/Basic';
+import CloseableDialog from './widgets/dialog/CloseableDialog';
+import ModalDialog from './widgets/dialog/ModalDialog';
+import UnderlayDialog from './widgets/dialog/UnderlayDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
+import Advanced from './widgets/grid/Advanced';
 import BasicGrid from './widgets/grid/Basic';
+import ColumnResize from './widgets/grid/ColumnResize';
 import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
 import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
 import EditableCells from './widgets/grid/EditableCells';
 import Filtering from './widgets/grid/Filtering';
 import Paginated from './widgets/grid/Paginated';
-import ColumnResize from './widgets/grid/ColumnResize';
-import RowSelection from './widgets/grid/RowSelection';
 import Restful from './widgets/grid/Restful';
+import RowSelection from './widgets/grid/RowSelection';
 import Sorting from './widgets/grid/Sorting';
-import Advanced from './widgets/grid/Advanced';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
 import BasicLabel from './widgets/label/Basic';
@@ -55,13 +63,20 @@ import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
 import BasicPassword from './widgets/password-input/Basic';
 import BasicPopup from './widgets/popup/Basic';
+import MenuPopup from './widgets/popup/MenuPopup';
+import SetWidth from './widgets/popup/SetWidth';
+import Underlay from './widgets/popup/Underlay';
 import BasicProgress from './widgets/progress/Basic';
 import BasicRadio from './widgets/radio/Basic';
 import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
 import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
+import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
+import CustomRenderer from './widgets/select/CustomRenderer';
+import DisabledSelect from './widgets/select/DisabledSelect';
+import RequiredSelect from './widgets/select/RequiredSelect';
 import BasicSlidePane from './widgets/slide-pane/Basic';
 import BasicSlider from './widgets/slider/Basic';
 import BasicSnackbar from './widgets/snackbar/Basic';
@@ -71,9 +86,9 @@ import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSplitPane from './widgets/split-pane/Basic';
 import BasicTabController from './widgets/tab-controller/Basic';
-import DisabledTabController from './widgets/tab-controller/Disabled';
-import CloseableTabController from './widgets/tab-controller/Closeable';
 import ButtonAlignmentTabController from './widgets/tab-controller/ButtonAlignment';
+import CloseableTabController from './widgets/tab-controller/Closeable';
+import DisabledTabController from './widgets/tab-controller/Disabled';
 import BasicTextArea from './widgets/text-area/Basic';
 import DisabledTextArea from './widgets/text-area/Disabled';
 import HelperTextTextArea from './widgets/text-area/HelperText';
@@ -104,19 +119,9 @@ import HeadingCollapsedToolbar from './widgets/toolbar/HeadingCollapsed';
 import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
-import MenuPopup from './widgets/popup/MenuPopup';
-import SetWidth from './widgets/popup/SetWidth';
-import Underlay from './widgets/popup/Underlay';
-import UnderlayDialog from './widgets/dialog/UnderlayDialog';
-import ModalDialog from './widgets/dialog/ModalDialog';
-import CloseableDialog from './widgets/dialog/CloseableDialog';
 
 `!has('docs')`;
 import testsContext from './tests';
-import CustomRenderer from './widgets/select/CustomRenderer';
-import DisabledSelect from './widgets/select/DisabledSelect';
-import RequiredSelect from './widgets/select/RequiredSelect';
-import AdditionalText from './widgets/select/AdditionalText';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -196,6 +201,38 @@ export const config = {
 			}
 		},
 		card: {
+			examples: [
+				{
+					title: 'Basic Card with Action Buttons',
+					module: ActionButtons,
+					filename: 'ActionButtons'
+				},
+				{
+					title: 'Basic Card with Action Icons',
+					module: ActionIcons,
+					filename: 'ActionIcons'
+				},
+				{
+					title: 'Basic Card with Actions and Icons',
+					module: ActionButtonsAndIcons,
+					filename: 'ActionButtonsAndIcons'
+				},
+				{
+					title: 'Basic card with 16x9 Media',
+					module: CardWithMediaRectangle,
+					filename: 'CardWithMediaRectangle'
+				},
+				{
+					title: 'Basic card with Square Media',
+					module: CardWithMediaSquare,
+					filename: 'CardWithMediaSquare'
+				},
+				{
+					title: 'Basic card with Content Media',
+					module: CardWithMediaContent,
+					filename: 'CardWithMediaContent'
+				}
+			],
 			filename: 'index',
 			overview: {
 				example: {
