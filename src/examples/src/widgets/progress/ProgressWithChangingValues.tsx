@@ -13,7 +13,7 @@ export default factory(function ProgressWithChangingvalues({ middleware: { icach
 		<div>
 			<Progress value={value} max={max} />
 			<div>
-				<Button onClick={() => icache.set('value', value - step < 0 ? 0 : value - step)}>
+				<Button onClick={() => icache.set('value', Math.max(0, value - step))}>
 					Decrease
 				</Button>
 				<Button
