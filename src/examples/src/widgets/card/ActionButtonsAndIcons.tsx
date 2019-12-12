@@ -4,7 +4,7 @@ import Card from '@dojo/widgets/card';
 import Button from '@dojo/widgets/button';
 import Icon from '@dojo/widgets/icon';
 
-import * as cardCss from '../../../../theme/card.m.css';
+import * as cardCss from '../../../../theme/dojo/card.m.css';
 
 const factory = create({ icache });
 

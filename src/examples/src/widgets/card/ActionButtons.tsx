@@ -3,7 +3,7 @@ import { icache } from '@dojo/framework/core/middleware/icache';
 import Card from '@dojo/widgets/card';
 import Button from '@dojo/widgets/button';
 
-import * as cardCss from '../../../../theme/card.m.css';
+import * as cardCss from '../../../../theme/dojo/card.m.css';
 
 const factory = create({ icache });
 
