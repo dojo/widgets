@@ -1,4 +1,4 @@
-import theme, { ThemedProperties } from '@dojo/framework/core/middleware/theme';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/helper-text.m.css';
 
