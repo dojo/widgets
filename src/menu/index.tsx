@@ -19,6 +19,8 @@ export type MenuOption = { value: string; label?: string; disabled?: boolean };
 export interface MenuProperties {
 	/** Options to display within the menu */
 	options: MenuOption[];
+	/** The total number of options provided */
+	total: number;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Callback called when user selects a value */
@@ -63,6 +65,7 @@ interface MenuICache {
 	menuHeight: number;
 	resetInputTextTimer: any;
 	value: string;
+	scrollTop: number;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -93,7 +96,7 @@ export const Menu = factory(function({
 		focusable = true,
 		initialValue,
 		itemRenderer,
-		itemsInView,
+		itemsInView = 10,
 		listBox = false,
 		onActiveIndexChange,
 		onBlur,
@@ -101,7 +104,8 @@ export const Menu = factory(function({
 		onRequestClose,
 		onValue,
 		options,
-		widgetId
+		widgetId,
+		total
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -230,6 +234,83 @@ export const Menu = factory(function({
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
 	const classes = theme.classes(css);
+	const scrollTop = icache.getOrSet('scrollTop', 0);
+
+	const itemHeight = icache.getOrSet('itemHeight', 0);
+
+	const totalContentHeight = total * itemHeight;
+
+	const nodePadding = 10;
+
+	const startNode = Math.max(0, Math.floor(scrollTop / itemHeight) - nodePadding);
+
+	let visibleNodesCount = itemsInView + 2 * nodePadding;
+	visibleNodesCount = Math.min(total - startNode, visibleNodesCount);
+
+	const offsetY = startNode * itemHeight;
+
+	function renderItem(index: number) {
+		const { value, label, disabled = false } = options[index];
+		const selected = value === selectedValue;
+		const active = index === computedActiveIndex;
+		const itemProps = {
+			widgetId: `${idBase}-item-${index}`,
+			key: `item-${index}`,
+			onSelect: () => {
+				setValue(value);
+			},
+			active,
+			onRequestActive: () => {
+				if (focus.isFocused('root') || !focusable) {
+					setActiveIndex(index);
+				}
+			},
+			onActive: (dimensions: DimensionResults) => {
+				onActive(index, dimensions);
+			},
+			scrollIntoView: index === itemToScroll,
+			disabled
+		};
+
+		const children = itemRenderer
+			? itemRenderer({
+					value,
+					label,
+					disabled,
+					active,
+					selected
+			  })
+			: label || value;
+
+		return listBox ? (
+			<ListBoxItem
+				{...itemProps}
+				selected={selected}
+				theme={theme.compose(
+					listBoxItemCss,
+					css,
+					'item'
+				)}
+			>
+				{children}
+			</ListBoxItem>
+		) : (
+			<MenuItem
+				{...itemProps}
+				theme={theme.compose(
+					menuItemCss,
+					css,
+					'item'
+				)}
+			>
+				{children}
+			</MenuItem>
+		);
+	}
+
+	const visibleChildren = new Array(visibleNodesCount)
+		.fill(null)
+		.map((_, index) => renderItem(index + startNode));
 
 	return (
 		<div
@@ -240,69 +321,36 @@ export const Menu = factory(function({
 			focus={() => shouldFocus}
 			onfocus={onFocus}
 			onblur={onBlur}
+			onscroll={(e) => {
+				icache.set('scrollTop', (e.target as HTMLElement).scrollTop);
+			}}
 			styles={rootStyles}
 			role={listBox ? 'listbox' : 'menu'}
 			aria-orientation="vertical"
 			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
 			id={idBase}
 		>
-			{options.map(({ value, label, disabled = false }, index) => {
-				const selected = value === selectedValue;
-				const active = index === computedActiveIndex;
-				const itemProps = {
-					widgetId: `${idBase}-item-${index}`,
-					key: `item-${index}`,
-					onSelect: () => {
-						setValue(value);
-					},
-					active,
-					onRequestActive: () => {
-						if (focus.isFocused('root') || !focusable) {
-							setActiveIndex(index);
-						}
-					},
-					onActive: (dimensions: DimensionResults) => {
-						onActive(index, dimensions);
-					},
-					scrollIntoView: index === itemToScroll,
-					disabled
-				};
-
-				const children = itemRenderer
-					? itemRenderer({
-							value,
-							label,
-							disabled,
-							active,
-							selected
-					  })
-					: label || value;
-
-				return listBox ? (
-					<ListBoxItem
-						{...itemProps}
-						selected={selected}
-						theme={theme.compose(
-							listBoxItemCss,
-							css,
-							'item'
-						)}
-					>
-						{children}
-					</ListBoxItem>
-				) : (
-					<MenuItem
-						{...itemProps}
-						theme={theme.compose(
-							menuItemCss,
-							css,
-							'item'
-						)}
-					>
-						{children}
-					</MenuItem>
-				);
-			})}
+			<div
+				styles={
+					{
+						overflow: 'hidden',
+						willChange: 'transform',
+						height: `${totalContentHeight}px`,
+						position: 'relative'
+					} as any
+				}
+			>
+				<div
+					styles={
+						{
+							willChange: 'transform',
+							transform: `translateY(${offsetY}px)`
+						} as any
+					}
+				>
+					{visibleChildren}
+				</div>
+			</div>
 		</div>
 	);
 });
