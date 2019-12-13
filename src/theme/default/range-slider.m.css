@@ -4,24 +4,30 @@
 	--slider-height: 13px;
 }
 
+/* The root class of the RangeSlider */
 .root {
 	padding-bottom: calc(var(--slider-height) / 2);
 }
 
+/* Added when there is output to show */
 .hasOutput {
 	padding-bottom: calc(calc(var(--slider-height) / 2) + var(--slider-height));
 }
 
+/* Contains the range slider */
 .inputWrapper {
 	height: var(--slider-height);
 	background-color: var(--component-background);
 	border: 1px solid var(--selected-background);
 }
 
+/* Added when the controls are focused */
 .focused {
 }
 
+/* Added to a disabled control */
 .disabled .inputWrapper,
+/* Added to a read-only control */
 .readonly .inputWrapper {
 	background-color: var(--disabled-color);
 }
@@ -42,15 +48,18 @@
 	background-color: var(--success-color);
 }
 
+/* Added to a focused input */
 .focused .input {
 	outline: none;
 }
 
+/* Added to the thumb when focused */
 .focused .thumb.focused {
 	box-shadow: 0 0 7px 3px var(--selected-background);
 	border-color: white;
 }
 
+/* Added to the thumb */
 .thumb {
 	background-color: #ffffff;
 	border: 1px solid var(--selected-background);
@@ -59,38 +68,46 @@
 	transform: translate(-50%, -25%);
 }
 
+/* Added to the track between the two thumbs */
 .filled {
 	background-color: var(--selected-background);
 }
 
+/* Styles the thumb on IE */
 .input::-ms-thumb {
 	height: 2em;
 	width: 2em;
 }
 
+/* Styles the thumb on FF */
 .input::-moz-range-thumb {
 	height: 2em;
 	width: 2em;
 }
 
+/* Styles the thumb on Safari */
 .input::-webkit-slider-thumb {
 	height: 2em;
 	width: 2em;
 }
 
+/* Added if the output is a tooltip */
 .outputTooltip {
 	left: 2.5em;
 	position: absolute;
 	top: 0;
 }
 
+/* Contains the output */
 .output {
 	display: block;
 	margin-top: 16px;
 }
 
+/* Added to the left thumb */
 .leftThumb {
 }
 
+/* Added to the right thumb */
 .rightThumb {
 }

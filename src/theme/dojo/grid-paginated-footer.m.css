@@ -1,0 +1,37 @@
+@import './variables.css';
+
+.root {
+	height: 45px;
+	background-color: var(--color-background-faded);
+}
+
+.details {
+	margin-left: 5px;
+	color: var(--color-text-primary);
+}
+
+.more {
+	height: 26px;
+	min-width: 26px;
+	color: var(--color-background-inverted);
+	margin: 2px;
+	text-align: center;
+	user-select: none;
+}
+
+.pageNav,
+.pageNumber {
+	border: 0;
+	cursor: pointer;
+	border-radius: 4px;
+	height: 26px;
+	min-width: 26px;
+	margin: 2px;
+	color: var(--color-text-primary);
+	background-color: var(--color-background-faded);
+	text-align: center;
+}
+
+.active {
+	color: var(--color-background-inverted);
+}

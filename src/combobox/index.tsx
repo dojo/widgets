@@ -46,12 +46,15 @@ export interface ComboboxProperties extends ThemedProperties, FocusProperties, I
 	onFocus?(): void;
 	/** Called when menu visibility changes */
 	onMenuChange?(open: boolean): void;
+	/** Called when the pointer moves out of the element */
 	onOut?(): void;
+	/** Called when the pointer moves over the element */
 	onOver?(): void;
 	/** Called when results are shown; should be used to set `results` */
 	onRequestResults?(): void;
 	/** Called when result is selected */
 	onResultSelect?(result: any): void;
+	/** Called when the validation state changes */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 	/** Called when the value changes */
 	onValue?(value: string): void;
@@ -487,7 +490,9 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			!this._open &&
 				w(HelperText, {
 					text: valid ? helperText : message,
-					valid
+					valid,
+					classes,
+					theme
 				}),
 			menu
 		];

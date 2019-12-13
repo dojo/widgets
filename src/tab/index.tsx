@@ -19,7 +19,7 @@ export interface TabProperties extends ThemedProperties {
 	label?: DNode;
 	/** ID of DOM element that serves as a label for this tab */
 	labelledBy?: string;
-	/**  */
+	/** If the tab should be shown */
 	show?: boolean;
 	/** ID of this underlying DOM element */
 	widgetId?: string;

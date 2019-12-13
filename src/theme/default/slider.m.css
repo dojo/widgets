@@ -1,8 +1,10 @@
 @import './variables.css';
 
+/* The root class of the Slider */
 .root {
 }
 
+/* Added to the output when rendered as a tooltip */
 .outputTooltip {
 	left: 2.5em;
 	position: absolute;
@@ -38,50 +40,61 @@
 	background-color: var(--success-color);
 }
 
+/* Added to a focused Slider */
 .focused {
 }
 
+/* Contains the input */
 .inputWrapper {
 }
 
+/* Styles the input when the Slider is focused */
 .focused .input {
 	outline: none;
 }
 
+/* Styles the thumb when the Slider if focused */
 .focused .thumb {
 	box-shadow: 0 0 7px 3px var(--selected-background);
 	border-color: white;
 }
 
+/* Added to the track of the slider */
 .track {
 	background-color: var(--component-background);
 	border: 1px solid var(--component-color);
 	height: 0.75em;
 }
 
+/* Indicates the filled portion of the track */
 .fill {
 	background-color: var(--selected-background);
 }
 
+/* Added to the input */
 .input {
 	height: 0.75em;
 }
 
+/* Styles the thumb in IE */
 .input::-ms-thumb {
 	height: 2em;
 	width: 2em;
 }
 
+/* Styles the thumb in FF */
 .input::-moz-range-thumb {
 	height: 2em;
 	width: 2em;
 }
 
+/* Styles the thumb in Safari */
 .input::-webkit-slider-thumb {
 	height: 2em;
 	width: 2em;
 }
 
+/* Added to the thumb */
 .thumb {
 	background-color: var(--component-background);
 	border: 1px solid var(--component-color);
@@ -92,5 +105,6 @@
 	width: 2em;
 }
 
+/* Added to the output text */
 .output {
 }

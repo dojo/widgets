@@ -23,7 +23,7 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties 
 	autoBlur?: boolean;
 	/** Determines whether the custom input should be able to be cleared */
 	clearable?: boolean;
-	/**  */
+	/** Set the disabled property of the control */
 	disabled?: boolean;
 	/** The maximum time to display in the menu (defaults to '23:59:59') */
 	end?: string;
@@ -33,25 +33,25 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties 
 	inputProperties?: TextInputProperties;
 	/** Used to determine if an item should be disabled */
 	isOptionDisabled?(result: any): boolean;
-	/**  */
+	/** Adds a <label> element with the supplied text */
 	label?: string;
-	/**  */
+	/** Adds the label element after (true) or before (false) */
 	labelAfter?: boolean;
-	/**  */
+	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
-	/**  */
+	/** The name of the field */
 	name?: string;
 	/** Called when the input is blurred */
 	onBlur?(): void;
-	/**  */
+	/** Called when the input is clicked */
 	onClick?(): void;
 	/** Called when the input is focused */
 	onFocus?(): void;
 	/** Called when menu visibility changes */
 	onMenuChange?(open: boolean, key?: string | number): void;
-	/**  */
+	/** Called when the pointer moves out of the element */
 	onOut?(): void;
-	/**  */
+	/** Called when the pointer moves over the element */
 	onOver?(): void;
 	/** Called when options are shown; should be used to set `options` */
 	onRequestOptions?(key?: string | number): void;
@@ -61,9 +61,9 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties 
 	openOnFocus?: boolean;
 	/** Options for the current input; should be set in response to `onRequestOptions` */
 	options?: TimeUnits[];
-	/**  */
+	/** Makes the radio readonly (it may be focused but not changed) */
 	readOnly?: boolean;
-	/**  */
+	/** Indicates the input is required to complete the form */
 	required?: boolean;
 	/** The minimum time to display in the menu (defaults to '00:00:00') */
 	start?: string;
@@ -71,11 +71,11 @@ export interface TimePickerProperties extends ThemedProperties, FocusProperties 
 	step?: number;
 	/** Use the native <input type="time"> element if true */
 	useNativeElement?: boolean;
-	/**  */
+	/** If the value of the input is valid */
 	valid?: boolean;
 	/** The current value */
 	value?: string;
-	/**  */
+	/** The id used for the form input element */
 	widgetId?: string;
 }
 

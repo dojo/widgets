@@ -1,9 +1,11 @@
-import theme from '@dojo/framework/core/middleware/theme';
+import theme, { ThemedProperties } from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/helper-text.m.css';
 
-export interface HelperTextProperties {
+export interface HelperTextProperties extends ThemedProperties {
+	/** The supplied helper text */
 	text?: string;
+	/** If `HelperText` indicates a valid condition */
 	valid?: boolean;
 }
 

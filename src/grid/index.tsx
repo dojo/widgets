@@ -15,12 +15,15 @@ import {
 	pageChangeProcess,
 	sortProcess,
 	filterProcess,
-	updaterProcess
+	updaterProcess,
+	selectionProcess
 } from './processes';
 
 import Header, { SortRenderer, FilterRenderer } from './Header';
 import Body from './Body';
 import Footer from './Footer';
+import PaginatedFooter from './PaginatedFooter';
+import PaginatedBody from './PaginatedBody';
 import * as css from '../theme/default/grid.m.css';
 import * as fixedCss from './styles/grid.m.css';
 
@@ -30,7 +33,8 @@ const defaultGridMeta = {
 	sort: undefined,
 	filter: undefined,
 	isSorting: false,
-	editedRow: undefined
+	editedRow: undefined,
+	selection: []
 };
 
 export interface CustomRenderers {
@@ -53,7 +57,13 @@ export interface GridProperties<S> extends ThemedProperties {
 	storeId?: string;
 	/** set of custom renderers for sorting or filtering */
 	customRenderers?: CustomRenderers;
+	/** when set uses traditional pagination */
+	pagination?: boolean;
+	/** handler for row selection */
+	onRowSelect?: (rowData: S[]) => void;
 }
+
+const MIN_COLUMN_WIDTH = 100;
 
 @theme(css)
 export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> {
@@ -61,6 +71,8 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	private _handle: any;
 	private _scrollLeft = 0;
 	private _pageSize = 100;
+	private _columnWidths: { [index: string]: number } | undefined;
+	private _gridWidth = 0;
 
 	constructor() {
 		super();
@@ -82,11 +94,37 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		return { ...this.properties, storeId };
 	}
 
-	private _getBodyHeight(): number {
+	private _getBodyDimensions() {
 		const { height } = this.properties;
 		const headerHeight = this.meta(Dimensions).get('header');
+		const headerWrapper = this.meta(Dimensions).get('header-wrapper');
 		const footerHeight = this.meta(Dimensions).get('footer');
-		return height - headerHeight.size.height - footerHeight.size.height;
+		return {
+			headerWidth: headerWrapper.size.width,
+			bodyHeight: height - headerHeight.size.height - footerHeight.size.height,
+			bodyWidth: headerHeight.size.width
+		};
+	}
+
+	private _onColumnResize(index: number, value: number) {
+		const { columnConfig } = this.properties;
+		if (!this._columnWidths) {
+			return;
+		}
+		const currentColumnWidth = this._columnWidths[columnConfig[index].id];
+		if (currentColumnWidth <= MIN_COLUMN_WIDTH && value < 0) {
+			return;
+		}
+
+		if (currentColumnWidth + value <= MIN_COLUMN_WIDTH) {
+			value = value - (currentColumnWidth + value - MIN_COLUMN_WIDTH);
+		}
+
+		this._columnWidths = {
+			...this._columnWidths,
+			[columnConfig[index].id]: currentColumnWidth + value
+		};
+		this.invalidate();
 	}
 
 	private _fetcher(page: number, pageSize: number) {
@@ -95,12 +133,22 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	private _sorter(columnId: string, direction: 'asc' | 'desc') {
-		const { storeId, fetcher } = this._getProperties();
+		const { storeId, fetcher, onRowSelect } = this._getProperties();
+		if (onRowSelect) {
+			const selectedIndexes =
+				this._store.get(this._store.path(storeId, 'meta', 'selection')) || [];
+			selectedIndexes.length && onRowSelect([]);
+		}
 		sortProcess(this._store)({ id: storeId, fetcher, columnId, direction });
 	}
 
 	private _filterer(columnId: string, value: any) {
-		const { storeId, fetcher } = this._getProperties();
+		const { storeId, fetcher, onRowSelect } = this._getProperties();
+		if (onRowSelect) {
+			const selectedIndexes =
+				this._store.get(this._store.path(storeId, 'meta', 'selection')) || [];
+			selectedIndexes.length && onRowSelect([]);
+		}
 		filterProcess(this._store)({ id: storeId, fetcher, filterOptions: { columnId, value } });
 	}
 
@@ -114,6 +162,24 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		pageChangeProcess(this._store)({ id: storeId, page });
 	}
 
+	private _selection(index: number, type: any) {
+		const { storeId, onRowSelect } = this._getProperties();
+		selectionProcess(this._store)({ id: storeId, index, type });
+		const selectedIndexes =
+			this._store.get(this._store.path(storeId, 'meta', 'selection')) || [];
+		const items = [];
+		const data = this._store.get(this._store.path(storeId, 'data', 'pages'));
+		for (let i = 0; i < selectedIndexes.length; i++) {
+			const selectedIndex = selectedIndexes[i];
+			const pageNumber = Math.floor(selectedIndex / this._pageSize) + 1;
+			const itemIndex = selectedIndex - (pageNumber - 1) * this._pageSize;
+			if (data[`page-${pageNumber}`]) {
+				items.push(data[`page-${pageNumber}`][itemIndex]);
+			}
+		}
+		onRowSelect && onRowSelect(items);
+	}
+
 	private _onScroll(value: number) {
 		this._scrollLeft = value;
 		this.invalidate();
@@ -125,7 +191,9 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			storeId,
 			theme,
 			classes,
-			customRenderers = {}
+			pagination = false,
+			customRenderers = {},
+			onRowSelect
 		} = this._getProperties();
 		const { sortRenderer, filterRenderer } = customRenderers;
 
@@ -136,15 +204,20 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 		const meta = this._store.get(this._store.path(storeId, 'meta')) || defaultGridMeta;
 		const pages = this._store.get(this._store.path(storeId, 'data', 'pages')) || {};
 		const hasFilters = columnConfig.some((config) => !!config.filterable);
-		const bodyHeight = this._getBodyHeight();
+		const hasResizableColumns = columnConfig.some((config) => !!config.resizable);
+		const { bodyHeight, bodyWidth, headerWidth } = this._getBodyDimensions();
 		this.meta(Resize).get('root');
 
-		if (bodyHeight <= 0) {
-			return v('div', {
-				key: 'root',
-				classes: [this.theme(css.root), fixedCss.rootFixed],
-				role: 'table'
-			});
+		if (bodyWidth && headerWidth && hasResizableColumns && !this._columnWidths) {
+			const width = headerWidth / columnConfig.length;
+			this._columnWidths = columnConfig.reduce(
+				(sizes, { id }) => {
+					sizes[id] = Math.max(MIN_COLUMN_WIDTH, width);
+					return sizes;
+				},
+				{} as any
+			);
+			this._gridWidth = Math.max(bodyWidth, MIN_COLUMN_WIDTH * columnConfig.length);
 		}
 
 		return v(
@@ -161,6 +234,12 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 					{
 						key: 'header',
 						scrollLeft: this._scrollLeft,
+						styles:
+							hasResizableColumns && this._gridWidth
+								? {
+										width: `${this._gridWidth}px`
+								  }
+								: {},
 						classes: [
 							this.theme(css.header),
 							fixedCss.headerFixed,
@@ -169,43 +248,80 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 						row: 'rowgroup'
 					},
 					[
-						w(Header, {
-							key: 'header-row',
-							theme,
-							classes,
-							columnConfig,
-							sorter: this._sorter,
-							sort: meta.sort,
-							filter: meta.filter,
-							filterer: this._filterer,
-							sortRenderer,
-							filterRenderer
-						})
+						v('div', { key: 'header-wrapper' }, [
+							w(Header, {
+								key: 'header-row',
+								theme,
+								columnWidths: this._columnWidths,
+								classes,
+								columnConfig,
+								sorter: this._sorter,
+								sort: meta.sort,
+								filter: meta.filter,
+								filterer: this._filterer,
+								sortRenderer,
+								filterRenderer,
+								onColumnResize: this._onColumnResize
+							})
+						])
 					]
 				),
-				w(Body, {
-					key: 'body',
-					theme,
-					classes,
-					pages,
-					totalRows: meta.total,
-					pageSize: this._pageSize,
-					columnConfig,
-					fetcher: this._fetcher,
-					pageChange: this._pageChange,
-					updater: this._updater,
-					onScroll: this._onScroll,
-					height: bodyHeight
-				}),
+				pagination
+					? w(PaginatedBody, {
+							key: 'paginated-body',
+							theme,
+							classes,
+							pages,
+							columnWidths: this._columnWidths,
+							pageNumber: meta.page,
+							pageSize: this._pageSize,
+							onScroll: this._onScroll,
+							columnConfig,
+							fetcher: this._fetcher,
+							updater: this._updater,
+							height: bodyHeight,
+							width: hasResizableColumns ? this._gridWidth : undefined,
+							onRowSelect: onRowSelect ? this._selection : undefined,
+							selectedRows: meta.selection
+					  })
+					: w(Body, {
+							key: 'body',
+							theme,
+							classes,
+							pages,
+							columnWidths: this._columnWidths,
+							totalRows: meta.total,
+							pageSize: this._pageSize,
+							columnConfig,
+							fetcher: this._fetcher,
+							pageChange: this._pageChange,
+							updater: this._updater,
+							onScroll: this._onScroll,
+							height: bodyHeight,
+							width: hasResizableColumns ? this._gridWidth : undefined,
+							onRowSelect: onRowSelect ? this._selection : undefined,
+							selectedRows: meta.selection
+					  }),
 				v('div', { key: 'footer' }, [
-					w(Footer, {
-						key: 'footer-row',
-						theme,
-						classes,
-						total: meta.total,
-						page: meta.page,
-						pageSize: this._pageSize
-					})
+					pagination
+						? w(PaginatedFooter, {
+								theme,
+								classes,
+								total: meta.total,
+								page: meta.page,
+								pageSize: this._pageSize,
+								onPageChange: (page: number) => {
+									this._pageChange(page);
+								}
+						  })
+						: w(Footer, {
+								key: 'footer-row',
+								theme,
+								classes,
+								total: meta.total,
+								page: meta.page,
+								pageSize: this._pageSize
+						  })
 				])
 			]
 		);

@@ -1,8 +1,8 @@
 # @dojo/widgets/card
 
-Dojo's `Card` widget provides a simple wrapper for elements that should be designated and styled as a card component.
+Dojo's `Card` widget provides a simple container for content and actions with a similar theme.
 
 ### Features
 
-- Create a wrapper with a consistent style
-- Easily add actions to the card
+- Wrap content with a consistent style
+- Include actions with the card

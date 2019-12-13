@@ -2,7 +2,7 @@
 
 .root {
 	align-items: center;
-	border-left: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid var(--color-border);
 	color: var(--color-text-faded);
 	justify-content: space-between;
 	min-width: 100px;

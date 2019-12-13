@@ -1,8 +1,10 @@
 @import './variables.css';
 
+/* The root class for the Dialog */
 .root {
 }
 
+/* Contains the dialog */
 .main {
 	position: fixed;
 	top: 50%;
@@ -16,13 +18,16 @@
 	z-index: calc(var(--zindex-dialog) + 1);
 }
 
+/* Contains the title of the Dialog */
 .title {
 	position: relative;
 }
 
+/* Added to an open dialog */
 .open {
 }
 
+/* Added to the close control */
 .close {
 	position: absolute;
 	top: 50%;
@@ -34,13 +39,16 @@
 	background: none;
 }
 
+/* Added to the close icon */
 .closeIcon {
 	font-size: 14px;
 }
 
+/* Contains the content of the Dialog */
 .content {
 }
 
+/* Added when a visible underlay is used */
 .underlayVisible {
 	background: var(--underlay-background);
 	z-index: var(--zindex-dialog);
@@ -55,7 +63,9 @@
 	}
 }
 
+/* Enter animation for the Dialog */
 .enter,
+/* Enter animation for the Dialog's underlay */
 .underlayEnter {
 	animation-duration: var(--short-animation-duration);
 	animation-fill-mode: both;
@@ -71,7 +81,9 @@
 	}
 }
 
+/* Exit animation for the Dialog */
 .exit,
+/* Exit animation for the Dialog's underlay */
 .underlayExit {
 	animation-duration: var(--short-animation-duration);
 	animation-fill-mode: both;

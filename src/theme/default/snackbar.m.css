@@ -1,43 +1,53 @@
 @import './variables.css';
 
+/* The root class of the Snackbar */
 .root {
 	display: none;
 }
 
+/* Contains the contents of the snackbar */
 .content {
 	display: flex;
 	opacity: 0;
 }
 
+/* Contains the message of the snackbar */
 .label {
 	flex-grow: 1;
 	margin: 0;
 }
 
+/* Contains the actions of the snackbar */
 .actions {
 	display: flex;
 	flex-shrink: 0;
 }
 
+/* Added to an open snackbar */
 .open {
 	display: flex;
 }
 
+/* Styles the content of an open snackbar */
 .open .content {
 	opacity: 1;
 }
 
+/* Added when a successful message is displayed */
 .success .label {
 	color: var(--success-color);
 }
 
+/* Added when an error message is displayed */
 .error .label {
 	color: var(--error-color);
 }
 
+/* Added to justify the contents of the snackbar */
 .leading {
 	justify-content: flex-start;
 }
+/* Added to display snackbar messages stacked */
 .stacked .content {
 	flex-direction: column;
 	align-items: flex-start;

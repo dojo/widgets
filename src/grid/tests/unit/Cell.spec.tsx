@@ -38,6 +38,7 @@ const expectedEditing = function() {
 		'div',
 		{
 			role: 'cell',
+			styles: { flex: '0 1 100px' },
 			classes: [css.root, fixedCss.rootFixed]
 		},
 		[
@@ -63,6 +64,7 @@ const expectedEditable = function(focusButton = false) {
 		'div',
 		{
 			role: 'cell',
+			styles: { flex: '0 1 100px' },
 			classes: [css.root, fixedCss.rootFixed]
 		},
 		[
@@ -106,7 +108,8 @@ describe('Cell', () => {
 			w(Cell, {
 				value: 'id',
 				rawValue: 'id',
-				updater: noop
+				updater: noop,
+				width: 100
 			})
 		);
 		h.expect(() =>
@@ -114,6 +117,7 @@ describe('Cell', () => {
 				'div',
 				{
 					classes: [css.root, fixedCss.rootFixed],
+					styles: { flex: '0 1 100px' },
 					role: 'cell'
 				},
 				[
@@ -136,13 +140,15 @@ describe('Cell', () => {
 			w(Cell, {
 				value: v('div', ['id']),
 				rawValue: 'id',
-				updater: noop
+				updater: noop,
+				width: 100
 			})
 		);
 		h.expect(() =>
 			v(
 				'div',
 				{
+					styles: { flex: '0 1 100px' },
 					classes: [css.root, fixedCss.rootFixed],
 					role: 'cell'
 				},
@@ -167,7 +173,8 @@ describe('Cell', () => {
 			w(Cell, {
 				value: 'id',
 				rawValue: 'id',
-				updater: updaterStub
+				updater: updaterStub,
+				width: 100
 			})
 		);
 		h.expect(() =>
@@ -175,6 +182,7 @@ describe('Cell', () => {
 				'div',
 				{
 					classes: [css.root, fixedCss.rootFixed],
+					styles: { flex: '0 1 100px' },
 					role: 'cell'
 				},
 				[
@@ -198,6 +206,7 @@ describe('Cell', () => {
 				'div',
 				{
 					classes: [css.root, fixedCss.rootFixed],
+					styles: { flex: '0 1 100px' },
 					role: 'cell'
 				},
 				[
@@ -222,7 +231,8 @@ describe('Cell', () => {
 				value: 'id',
 				rawValue: 'id',
 				updater: updaterStub,
-				editable: true
+				editable: true,
+				width: 100
 			})
 		);
 		h.expect(expectedEditable);
@@ -239,7 +249,8 @@ describe('Cell', () => {
 				value: 'id',
 				rawValue: 'id',
 				updater: updaterStub,
-				editable: true
+				editable: true,
+				width: 100
 			})
 		);
 		h.expect(expectedEditable);
@@ -261,7 +272,8 @@ describe('Cell', () => {
 				value: 'id',
 				rawValue: 'id',
 				updater: updaterStub,
-				editable: true
+				editable: true,
+				width: 100
 			})
 		);
 		h.expect(expectedEditable);
@@ -283,7 +295,8 @@ describe('Cell', () => {
 				value: 'id',
 				rawValue: 'id',
 				updater: updaterStub,
-				editable: true
+				editable: true,
+				width: 100
 			})
 		);
 		h.expect(expectedEditable);
@@ -305,7 +318,8 @@ describe('Cell', () => {
 				value: 'id',
 				rawValue: 'id',
 				updater: updaterStub,
-				editable: true
+				editable: true,
+				width: 100
 			});
 		}, [compareInputFocused]);
 		h.trigger('@content', 'ondblclick');
@@ -319,7 +333,8 @@ describe('Cell', () => {
 				value: 'id',
 				rawValue: 'id',
 				updater: updaterStub,
-				editable: true
+				editable: true,
+				width: 100
 			});
 		}, [compareButtonFocused]);
 
@@ -338,7 +353,8 @@ describe('Cell', () => {
 				value: 'id',
 				rawValue: 'id',
 				updater: updaterStub,
-				editable: true
+				editable: true,
+				width: 100
 			});
 		}, [compareButtonFocused]);
 

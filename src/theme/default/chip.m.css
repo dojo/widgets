@@ -1,19 +1,25 @@
+/* The root class for a Chip */
 .root {
 }
 
+/* Contains the rendered icon */
 .iconWrapper {
 }
 
+/* Contains the label */
 .label {
 }
 
+/* Contains the close icon */
 .closeIconWrapper {
 	cursor: pointer;
 }
 
+/* Added to clickable Chips */
 .clickable {
 	cursor: pointer;
 }
 
+/* Added to disabled Chips */
 .disabled {
 }

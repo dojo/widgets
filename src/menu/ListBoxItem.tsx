@@ -19,10 +19,10 @@ export interface ListBoxItemProperties {
 	onActive(dimensions: DimensionResults): void;
 	/** When set to true, the item will set `scrollIntoView` on it's root dom node */
 	scrollIntoView?: boolean;
-	/** Prpoperty to set the disabled state of the item */
+	/** Property to set the disabled state of the item */
 	disabled?: boolean;
 	/** The id to apply to this widget top level for a11y */
-	id: string;
+	widgetId: string;
 }
 
 interface ListBoxItemICache {
@@ -46,7 +46,7 @@ export const ListBoxItem = factory(function({
 		scrollIntoView = false,
 		selected = false,
 		disabled = false,
-		id
+		widgetId
 	} = properties();
 
 	if (icache.get('active') !== active) {
@@ -58,7 +58,7 @@ export const ListBoxItem = factory(function({
 
 	return (
 		<div
-			id={id}
+			id={widgetId}
 			key="root"
 			onpointermove={throttle(() => {
 				!disabled && !active && onRequestActive();

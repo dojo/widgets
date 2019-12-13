@@ -3,23 +3,3 @@
 	overflow: auto;
 	position: relative;
 }
-
-/* Root class of each menu item */
-.itemRoot {
-	composes: root from './menu-item.m.css';
-}
-
-/* Added to selected items, only applicable in listbbox mode */
-.itemSelected {
-	composes: selected from './list-box-item.m.css';
-}
-
-/* Added to active items */
-.itemActive {
-	composes: active from './menu-item.m.css';
-}
-
-/* Added to disabled items */
-.itemDisabled {
-	composes: disabled from './menu-item.m.css';
-}

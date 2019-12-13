@@ -1,5 +1,11 @@
+/* The root class of the grid Row */
 .root {
 	box-sizing: border-box;
 	height: 30px;
 	border-left-style: none;
+}
+
+/* the class applied when a row is selected */
+.selected {
+	background: rgba(0, 0, 0, 0.05);
 }

@@ -13,3 +13,11 @@ export function monthInMax(year: number, month: number, maxDate?: Date) {
 	}
 	return true;
 }
+
+function stripTime(date: Date) {
+	return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+export function isOutOfDateRange(dateObj: Date, min?: Date, max?: Date) {
+	return Boolean((min && dateObj < stripTime(min)) || (max && stripTime(dateObj) > max));
+}

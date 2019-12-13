@@ -38,13 +38,10 @@ export default factory(function NumberInput({ properties, middleware: { theme } 
 			value={valueAsString}
 			onValue={onValueAdapter}
 			type="number"
-			theme={{
-				...properties().theme,
-				'@dojo/widgets/text-input': theme.compose(
-					textInputCss,
-					numberInputCss
-				)
-			}}
+			theme={theme.compose(
+				textInputCss,
+				numberInputCss
+			)}
 		/>
 	);
 });

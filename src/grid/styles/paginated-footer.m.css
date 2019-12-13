@@ -1,0 +1,39 @@
+.rootFixed {
+	display: flex;
+}
+
+.containerFixed {
+	display: inline-flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.detailsFixed {
+	justify-content: flex-start;
+}
+
+.paginationListFixed {
+	margin: 0;
+	list-style-type: none;
+}
+
+.itemFixed {
+	align-items: center;
+	display: flex;
+}
+
+.moreFixed {
+	display: inline-flex;
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.pageNavFixed {
+	border: 0;
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+}

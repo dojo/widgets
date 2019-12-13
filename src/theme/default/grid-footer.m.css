@@ -1,5 +1,6 @@
 @import './variables.css';
 
+/* The root class of the grid Footer */
 .root {
 	background: var(--component-background);
 	color: var(--component-color);

@@ -1,5 +1,5 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
-
+import materialTheme from '@dojo/widgets/theme/material';
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
@@ -8,12 +8,20 @@ import ToggleButton from './widgets/button/ToggleButton';
 import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import LimitedRange from './widgets/calendar/LimitedRange';
+import ActionButtons from './widgets/card/ActionButtons';
+import ActionButtonsAndIcons from './widgets/card/ActionButtonsAndIcons';
+import ActionIcons from './widgets/card/ActionIcons';
 import BasicCard from './widgets/card/Basic';
+import CardWithMediaContent from './widgets/card/CardWithMediaContent';
+import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
+import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
 import BasicCheckbox from './widgets/checkbox/Basic';
+import DisabledCheckbox from './widgets/checkbox/Disabled';
+import ReadonlyCheckbox from './widgets/checkbox/Readonly';
 import BasicChip from './widgets/chip/Basic';
 import ClickableChip from './widgets/chip/Clickable';
 import ClickableClosableChip from './widgets/chip/ClickableClosable';
@@ -25,14 +33,21 @@ import BasicCombobox from './widgets/combobox/Basic';
 import BasicConstrainedInput from './widgets/constrained-input/Basic';
 import Username from './widgets/constrained-input/Username';
 import BasicDialog from './widgets/dialog/Basic';
+import CloseableDialog from './widgets/dialog/CloseableDialog';
+import ModalDialog from './widgets/dialog/ModalDialog';
+import UnderlayDialog from './widgets/dialog/UnderlayDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
+import Advanced from './widgets/grid/Advanced';
 import BasicGrid from './widgets/grid/Basic';
+import ColumnResize from './widgets/grid/ColumnResize';
 import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
 import GridCustomFilterRenderer from './widgets/grid/CustomFilterRenderer';
 import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
 import EditableCells from './widgets/grid/EditableCells';
 import Filtering from './widgets/grid/Filtering';
+import Paginated from './widgets/grid/Paginated';
 import Restful from './widgets/grid/Restful';
+import RowSelection from './widgets/grid/RowSelection';
 import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
@@ -46,21 +61,37 @@ import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
+import BasicPassword from './widgets/password-input/Basic';
 import BasicPopup from './widgets/popup/Basic';
+import MenuPopup from './widgets/popup/MenuPopup';
+import SetWidth from './widgets/popup/SetWidth';
+import Underlay from './widgets/popup/Underlay';
 import BasicProgress from './widgets/progress/Basic';
+import ProgressWithChangingValues from './widgets/progress/ProgressWithChangingValues';
+import ProgressWithCustomOutput from './widgets/progress/ProgressWithCustomOutput';
+import ProgressWithMax from './widgets/progress/ProgressWithMax';
+import ProgressWithoutOutput from './widgets/progress/ProgressWithoutOutput';
 import BasicRadio from './widgets/radio/Basic';
 import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
 import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
-import AdvancedOptions from './widgets/select/AdvancedOptions';
+import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
-import NonNative from './widgets/select/NonNative';
+import CustomRenderer from './widgets/select/CustomRenderer';
+import DisabledSelect from './widgets/select/DisabledSelect';
+import RequiredSelect from './widgets/select/RequiredSelect';
 import BasicSlidePane from './widgets/slide-pane/Basic';
 import BasicSlider from './widgets/slider/Basic';
 import BasicSnackbar from './widgets/snackbar/Basic';
+import ErrorSnackbar from './widgets/snackbar/Error';
+import LeadingSnackbar from './widgets/snackbar/Leading';
+import StackedSnackbar from './widgets/snackbar/Stacked';
+import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSplitPane from './widgets/split-pane/Basic';
 import BasicTabController from './widgets/tab-controller/Basic';
+import ButtonAlignmentTabController from './widgets/tab-controller/ButtonAlignment';
+import CloseableTabController from './widgets/tab-controller/Closeable';
 import DisabledTabController from './widgets/tab-controller/Disabled';
 import BasicTextArea from './widgets/text-area/Basic';
 import DisabledTextArea from './widgets/text-area/Disabled';
@@ -92,25 +123,28 @@ import HeadingCollapsedToolbar from './widgets/toolbar/HeadingCollapsed';
 import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
-import MenuPopup from './widgets/popup/MenuPopup';
-import SetWidth from './widgets/popup/SetWidth';
-import Underlay from './widgets/popup/Underlay';
-import UnderlayDialog from './widgets/dialog/UnderlayDialog';
-import ModalDialog from './widgets/dialog/ModalDialog';
-import CloseableDialog from './widgets/dialog/CloseableDialog';
 
 `!has('docs')`;
 import testsContext from './tests';
 
-const tests = typeof testsContext !== 'undefined' ? testsContext : [];
+const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
 export const config = {
-	themes: [dojoTheme],
+	name: '@dojo/widgets',
+	home: 'src/examples/README.md',
+	themes: [
+		{ label: 'dojo', theme: dojoTheme },
+		{ label: 'material', theme: materialTheme },
+		{ label: 'default', theme: {} }
+	],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
 	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename || 'index'}.tsx`,
 	examplePath: (widget: string, filename: string) =>
 		`src/examples/src/widgets/${widget}/${filename || 'index'}.tsx`,
+	codesandboxPath: (widget: string, filename: string) => {
+		return `https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2F${filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${filename}.tsx`;
+	},
 	widgets: {
 		'accordion-pane': {
 			examples: [
@@ -171,6 +205,38 @@ export const config = {
 			}
 		},
 		card: {
+			examples: [
+				{
+					title: 'Basic Card with Action Buttons',
+					module: ActionButtons,
+					filename: 'ActionButtons'
+				},
+				{
+					title: 'Basic Card with Action Icons',
+					module: ActionIcons,
+					filename: 'ActionIcons'
+				},
+				{
+					title: 'Basic Card with Actions and Icons',
+					module: ActionButtonsAndIcons,
+					filename: 'ActionButtonsAndIcons'
+				},
+				{
+					title: 'Basic card with 16x9 Media',
+					module: CardWithMediaRectangle,
+					filename: 'CardWithMediaRectangle'
+				},
+				{
+					title: 'Basic card with Square Media',
+					module: CardWithMediaSquare,
+					filename: 'CardWithMediaSquare'
+				},
+				{
+					title: 'Basic card with Content Media',
+					module: CardWithMediaContent,
+					filename: 'CardWithMediaContent'
+				}
+			],
 			filename: 'index',
 			overview: {
 				example: {
@@ -186,7 +252,11 @@ export const config = {
 					filename: 'Basic',
 					module: BasicCheckbox
 				}
-			}
+			},
+			examples: [
+				{ title: 'Disabled', module: DisabledCheckbox, filename: 'Disabled' },
+				{ title: 'Readonly', module: ReadonlyCheckbox, filename: 'Readonly' }
+			]
 		},
 		'checkbox-group': {
 			examples: [
@@ -340,6 +410,21 @@ export const config = {
 					title: 'Grid with Customized Sort Rendering'
 				},
 				{
+					filename: 'ColumnResize',
+					module: ColumnResize,
+					title: 'Grid with resizable columns'
+				},
+				{
+					filename: 'Paginated',
+					module: Paginated,
+					title: 'Grid with traditional pagination'
+				},
+				{
+					filename: 'RowSelection',
+					module: RowSelection,
+					title: 'Grid with row selection'
+				},
+				{
 					filename: 'Restful',
 					module: Restful,
 					title: 'Grid with Data Loaded from a Remote Resource (REST)'
@@ -349,6 +434,13 @@ export const config = {
 					filename: 'EditableCells',
 					module: EditableCells,
 					title: 'Grid with Editable Cells'
+				},
+				{
+					description:
+						'Advanced grid demonstrating all features working together, including remote data, editable cells, pagination, filtering, resizable columns and sorting',
+					filename: 'Advanced',
+					module: Advanced,
+					title: 'Advanced Grid'
 				}
 			],
 			filename: 'index',
@@ -419,6 +511,14 @@ export const config = {
 				}
 			}
 		},
+		'password-input': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicPassword
+				}
+			}
+		},
 		popup: {
 			overview: {
 				example: {
@@ -461,6 +561,24 @@ export const config = {
 			}
 		},
 		progress: {
+			examples: [
+				{
+					filename: 'ProgressWithChangingValues',
+					module: ProgressWithChangingValues
+				},
+				{
+					filename: 'ProgressWithMax',
+					module: ProgressWithMax
+				},
+				{
+					filename: 'ProgressWithCustomOutput',
+					module: ProgressWithCustomOutput
+				},
+				{
+					filename: 'ProgressWithoutOutput',
+					module: ProgressWithoutOutput
+				}
+			],
 			overview: {
 				example: {
 					filename: 'Basic',
@@ -505,24 +623,22 @@ export const config = {
 			}
 		},
 		select: {
-			examples: [
-				{
-					filename: 'AdvancedOptions',
-					module: AdvancedOptions,
-					title: 'Advanced options'
-				},
-				{
-					filename: 'NonNative',
-					module: NonNative,
-					title: 'Non Native'
-				}
-			],
 			overview: {
 				example: {
 					filename: 'Basic',
 					module: BasicSelect
 				}
-			}
+			},
+			examples: [
+				{ filename: 'AdditionalText', module: AdditionalText, title: 'Additional Text' },
+				{ filename: 'DisabledSelect', module: DisabledSelect, title: 'Disabled Select' },
+				{ filename: 'RequiredSelect', module: RequiredSelect, title: 'Required Select' },
+				{
+					filename: 'CustomRenderer',
+					module: CustomRenderer,
+					title: 'Custom Item Renderer'
+				}
+			]
 		},
 		'slide-pane': {
 			overview: {
@@ -546,7 +662,13 @@ export const config = {
 					filename: 'Basic',
 					module: BasicSnackbar
 				}
-			}
+			},
+			examples: [
+				{ filename: 'Error', module: ErrorSnackbar, title: 'Error Snackbar' },
+				{ filename: 'Success', module: SuccessSnackbar, title: 'Success Snackbar' },
+				{ filename: 'Stacked', module: StackedSnackbar, title: 'Stacked Snackbar' },
+				{ filename: 'Leading', module: LeadingSnackbar, title: 'Leading Snackbar' }
+			]
 		},
 		'split-pane': {
 			overview: {
@@ -562,6 +684,16 @@ export const config = {
 					filename: 'Disabled',
 					module: DisabledTabController,
 					title: 'TabController with disabled tabs'
+				},
+				{
+					filename: 'ButtonAlignment',
+					module: ButtonAlignmentTabController,
+					title: 'TabController with adjustable button alignment'
+				},
+				{
+					filename: 'Closeable',
+					module: CloseableTabController,
+					title: 'TabController with closeable tab'
 				}
 			],
 			filename: 'index',

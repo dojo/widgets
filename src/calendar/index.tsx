@@ -6,7 +6,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
-import { monthInMin, monthInMax } from './date-utils';
+import { monthInMin, monthInMax, isOutOfDateRange } from './date-utils';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import Icon from '../icon/index';
@@ -320,9 +320,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 
 		const date = dateObj.getDate();
 		const { theme, classes } = this.properties;
-		const outOfRange = Boolean(
-			(minDate && dateObj < minDate) || (maxDate && dateObj > maxDate)
-		);
+		const outOfRange = isOutOfDateRange(dateObj, minDate, maxDate);
 		const focusable = currentMonth && date === this._focusedDay;
 
 		return w(CalendarCell, {

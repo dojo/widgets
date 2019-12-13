@@ -3,21 +3,30 @@ import * as button from './button.m.css';
 import * as calendar from './calendar.m.css';
 import * as card from './card.m.css';
 import * as checkbox from './checkbox.m.css';
+import * as checkboxGroup from './checkbox-group.m.css';
 import * as chip from './chip.m.css';
 import * as combobox from './combobox.m.css';
+import * as constrainedInput from './constrained-input.m.css';
 import * as dialog from './dialog.m.css';
+import * as emailInput from './email-input.m.css';
 import * as grid from './grid.m.css';
 import * as gridBody from './grid-body.m.css';
 import * as gridCell from './grid-cell.m.css';
 import * as gridFooter from './grid-footer.m.css';
 import * as gridHeader from './grid-header.m.css';
 import * as gridPlaceholderRow from './grid-placeholder-row.m.css';
+import * as gridPaginatedFooter from './grid-paginated-footer.m.css';
 import * as gridRow from './grid-row.m.css';
 import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
+import * as menu from './menu.m.css';
+import * as menuItem from './menu-item.m.css';
+import * as listBoxItem from './list-box-item.m.css';
 import * as outlinedButton from './outlined-button.m.css';
+import * as passwordInput from './password-input.m.css';
+import * as popup from './popup.m.css';
 import * as progress from './progress.m.css';
 import * as radio from './radio.m.css';
 import * as raisedButton from './raised-button.m.css';
@@ -41,21 +50,30 @@ export default {
 	'@dojo/widgets/calendar': calendar,
 	'@dojo/widgets/card': card,
 	'@dojo/widgets/checkbox': checkbox,
+	'@dojo/widgets/checkbox-group': checkboxGroup,
 	'@dojo/widgets/chip': chip,
 	'@dojo/widgets/combobox': combobox,
+	'@dojo/widgets/constrained-input': constrainedInput,
 	'@dojo/widgets/dialog': dialog,
+	'@dojo/widgets/email-input': emailInput,
 	'@dojo/widgets/grid-body': gridBody,
 	'@dojo/widgets/grid-cell': gridCell,
 	'@dojo/widgets/grid-footer': gridFooter,
 	'@dojo/widgets/grid-header': gridHeader,
 	'@dojo/widgets/grid-placeholder-row': gridPlaceholderRow,
+	'@dojo/widgets/grid-paginated-footer': gridPaginatedFooter,
 	'@dojo/widgets/grid-row': gridRow,
 	'@dojo/widgets/grid': grid,
 	'@dojo/widgets/helper-text': helperText,
 	'@dojo/widgets/icon': icon,
 	'@dojo/widgets/label': label,
 	'@dojo/widgets/listbox': listbox,
+	'@dojo/widgets/menu': menu,
+	'@dojo/widgets/menu-item': menuItem,
+	'@dojo/widgets/list-box-item': listBoxItem,
 	'@dojo/widgets/outlined-button': outlinedButton,
+	'@dojo/widget/password-input': passwordInput,
+	'@dojo/widgets/popup': popup,
 	'@dojo/widgets/progress': progress,
 	'@dojo/widgets/radio': radio,
 	'@dojo/widgets/raised-button': raisedButton,

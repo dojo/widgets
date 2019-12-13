@@ -7,13 +7,21 @@ import * as css from '../theme/default/listbox.m.css';
 
 export interface ListboxOptionProperties extends ThemedProperties {
 	active?: boolean;
+	/** Specific theme used for ListboxOption */
 	css?: (string | null)[];
+	/** If the widget is disabled */
 	disabled?: boolean;
+	/** The id to apply to this widget top level for a11y */
 	id: string;
+	/** The index of this ListboxOption */
 	index: number;
+	/** The label displayed for this ListboxOption */
 	label: DNode;
+	/** The associated value supplied to `onClick` */
 	option: any;
+	/** if this option is selected */
 	selected?: boolean;
+	/** Handler for when this is clicked */
 	onClick?(option: any, index: number, key?: string | number): void;
 }
 

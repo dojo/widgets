@@ -16,55 +16,55 @@ type RangeValue = { min: number; max: number };
 export interface RangeSliderProperties extends ThemedProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/**  */
+	/** Set the disabled property of the control */
 	disabled?: boolean;
-	/**  */
+	/** Adds a <label> element with the supplied text */
 	label?: string;
-	/**  */
+	/** Adds the label element after (true) or before (false) */
 	labelAfter?: boolean;
-	/**  */
+	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
-	/**  */
+	/** The maximum value allowed */
 	max?: number;
-	/**  */
+	/** The label displayed at the maximum range */
 	maximumLabel?: string;
-	/**  */
+	/** The name of the max slider */
 	maxName?: string;
-	/**  */
+	/** The minimum value allowed */
 	min?: number;
-	/**  */
+	/** The label displayed at the minimum range */
 	minimumLabel?: string;
-	/**  */
+	/** The name of the minimum range */
 	minName?: string;
-	/**  */
+	/** The name of the slider input */
 	name?: string;
-	/**  */
+	/** Handler for when the element is blurred */
 	onBlur?(): void;
-	/**  */
+	/** Handler for when the element is focused */
 	onFocus?(): void;
-	/**  */
+	/** Handler for when the pointer moves out of the element */
 	onOut?(): void;
-	/**  */
+	/** Handler for when the pointer moves over the element */
 	onOver?(): void;
-	/**  */
+	/** Handler for when the value of the widget changes */
 	onValue?(value: RangeValue): void;
-	/**  */
+	/** A renderer used to display the output values (min, max) */
 	output?(value: RangeValue): DNode;
-	/**  */
+	/** If the rendered output should be displayed as a tooltip */
 	outputIsTooltip?: boolean;
-	/**  */
+	/** Makes the slider readonly (it may be focused but not changed) */
 	readOnly?: boolean;
-	/**  */
+	/** If the range slider must be set */
 	required?: boolean;
-	/**  */
+	/** If the rendered output should be displayed */
 	showOutput?: boolean;
-	/**  */
+	/** The amount which the slider may be changed */
 	step?: number;
-	/**  */
+	/** If the values provided by the slider are valid */
 	valid?: boolean;
-	/**  */
+	/** The current vlaue */
 	value?: RangeValue;
-	/**  */
+	/** The id used for the form input element */
 	widgetId?: string;
 }
 

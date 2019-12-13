@@ -9,23 +9,23 @@ import * as baseCss from '../common/styles/base.m.css';
 export interface LabelProperties extends ThemedProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/**  */
+	/** If the label should be disabled */
 	disabled?: boolean;
-	/**  */
+	/** If the label is focused */
 	focused?: boolean;
 	/** ID to explicitly associate the label with an input element */
 	forId?: string;
-	/**  */
+	/** If the label should be invisible (it will remain accessible to screen readers) */
 	hidden?: boolean;
-	/**  */
+	/** If the label is read only */
 	readOnly?: boolean;
-	/**  */
+	/** If the label is required */
 	required?: boolean;
-	/**  */
+	/** If the label should use the secondary styling */
 	secondary?: boolean;
-	/**  */
+	/** If the label is valid */
 	valid?: boolean;
-	/**  */
+	/** ID of the underlying label element */
 	widgetId?: string;
 }
 

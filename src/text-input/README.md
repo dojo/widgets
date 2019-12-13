@@ -2,12 +2,11 @@
 
 Dojo's `TextInput` widget provides a basic text input widget with an optional label.
 
-
 ## Features
 
 - Allows specification of input type (e.g. `text`, `email`, `number`, etc)
 - Correctly handles a11y attributes
-- Associates a visible or invisible but accessible `<label>` with the input if the `label` property is added
+- Associates an accessible `<label>` with the input if the `label` property is added
 - Allows leading / trailing icons / text to be added
 
 ### Accessibility Features

@@ -18,13 +18,10 @@ export const OutlinedButton = factory(function OutlinedButton({
 	return (
 		<Button
 			{...props}
-			theme={{
-				...props.theme,
-				'@dojo/widgets/button': theme.compose(
-					buttonCss,
-					outlinedButtonCss
-				)
-			}}
+			theme={theme.compose(
+				buttonCss,
+				outlinedButtonCss
+			)}
 		>
 			{children()}
 		</Button>

@@ -1,6 +1,6 @@
 # @dojo/widgets/dialog
 
-Dojo's `Dialog` component can be used to show content inside a window over top the application content. It provides default styling for a titlebar, content area, underlay, and a close button.
+Dojo's `Dialog` component shows content inside a window over top the application content. It provides default styling for a titlebar, content area, underlay, and a close button.
 
 ## Features
 

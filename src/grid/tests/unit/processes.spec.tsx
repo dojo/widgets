@@ -10,7 +10,9 @@ import {
 	fetcherProcess,
 	sortProcess,
 	filterProcess,
-	updaterProcess
+	updaterProcess,
+	selectionProcess,
+	clearSelectionProcess
 } from '../../processes';
 
 let store: Store;
@@ -55,7 +57,7 @@ describe('Grid Processes', () => {
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-2': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
-			assert.deepEqual(meta, { fetchedPages: [2], total: 10000, pageSize: 100 });
+			assert.deepEqual(meta, { fetchedPages: [2], page: 2, total: 10000, pageSize: 100 });
 		});
 
 		it('Should throw an error if the page has already been fetched', async () => {
@@ -75,7 +77,7 @@ describe('Grid Processes', () => {
 			const pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-2': [{ id: '1' }] } });
 			const meta = store.get(store.path('grid', 'meta'));
-			assert.deepEqual(meta, { fetchedPages: [2], total: 10000, pageSize: 100 });
+			assert.deepEqual(meta, { fetchedPages: [2], page: 2, total: 10000, pageSize: 100 });
 			return fetcherProcess(store)({
 				id: 'grid',
 				page: 2,
@@ -264,6 +266,78 @@ describe('Grid Processes', () => {
 			});
 			pages = store.get(store.path('grid', 'data'));
 			assert.deepEqual(pages, { pages: { 'page-1': [{ id: 'A', name: 'bill' }] } });
+		});
+	});
+
+	describe('row selection process', () => {
+		it('should select row in single mode', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'single', index: 1, id: 'grid' });
+		});
+
+		it('should deselect row in single mode when selected', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'single', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1]);
+			selectionProcess(store)({ type: 'single', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, []);
+		});
+
+		it('should select row in multi mode', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'multi', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1]);
+		});
+
+		it('should select additional row in multi mode', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'multi', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1]);
+			selectionProcess(store)({ type: 'multi', index: 2, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1, 2]);
+		});
+
+		it('should deselect row in multi mode when selected', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'multi', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1]);
+			selectionProcess(store)({ type: 'multi', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, []);
+		});
+
+		it('should select row in single mode when multiple rows are selected', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'multi', index: 1, id: 'grid' });
+			selectionProcess(store)({ type: 'multi', index: 2, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1, 2]);
+			selectionProcess(store)({ type: 'single', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1]);
+		});
+
+		it('should clear selection', () => {
+			let selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
+			selectionProcess(store)({ type: 'single', index: 1, id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, [1]);
+			clearSelectionProcess(store)({ id: 'grid' });
+			selection = store.get(store.path('grid', 'meta', 'selection'));
+			assert.deepEqual(selection, undefined);
 		});
 	});
 });

@@ -13,10 +13,16 @@ import * as fixedCss from './styles/cell.m.css';
 import * as css from '../theme/default/grid-cell.m.css';
 
 export interface CellProperties extends FocusProperties {
+	/** The display value (or widget) of the cell */
 	value: string | DNode;
+	/** If the cell's value may be updated */
 	editable?: boolean;
+	/** The underlying string value of the cell (used by the editor) */
 	rawValue: string;
+	/** Called when the Cell's value is saved by the editor */
 	updater: (value: any) => void;
+	/** The width (in pixels) */
+	width?: number;
 }
 
 @theme(css)
@@ -82,40 +88,52 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 	}
 
 	protected render(): DNode {
-		let { editable, rawValue, theme, classes } = this.properties;
+		let { editable, rawValue, theme, classes, width } = this.properties;
 
-		return v('div', { role: 'cell', classes: [this.theme(css.root), fixedCss.rootFixed] }, [
-			this._editing
-				? w(TextInput, {
-						key: 'input',
-						theme,
-						classes,
-						label: `Edit ${rawValue}`,
-						labelHidden: true,
-						extraClasses: { input: this.theme(css.input) } as any,
-						focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
-						value: this._editingValue,
-						onValue: this._onInput,
-						onBlur: this._onBlur,
-						onKeyDown: this._onKeyDown
-				  })
-				: this.renderContent(),
-			editable && !this._editing
-				? w(
-						Button,
-						{
-							key: 'button',
+		return v(
+			'div',
+			{
+				role: 'cell',
+				styles: width
+					? {
+							flex: `0 1 ${width}px`
+					  }
+					: {},
+				classes: [this.theme(css.root), fixedCss.rootFixed]
+			},
+			[
+				this._editing
+					? w(TextInput, {
+							key: 'input',
 							theme,
 							classes,
-							aria: { describedby: this._idBase },
-							focus: this._focusKey === 'button' ? this.shouldFocus : () => false,
-							type: 'button',
-							extraClasses: { root: this.theme(css.edit) } as any,
-							onClick: this._onEdit
-						},
-						[w(Icon, { type: 'editIcon', altText: 'Edit', classes, theme })]
-				  )
-				: null
-		]);
+							label: `Edit ${rawValue}`,
+							labelHidden: true,
+							extraClasses: { input: this.theme(css.input) } as any,
+							focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
+							value: this._editingValue,
+							onValue: this._onInput,
+							onBlur: this._onBlur,
+							onKeyDown: this._onKeyDown
+					  })
+					: this.renderContent(),
+				editable && !this._editing
+					? w(
+							Button,
+							{
+								key: 'button',
+								theme,
+								classes,
+								aria: { describedby: this._idBase },
+								focus: this._focusKey === 'button' ? this.shouldFocus : () => false,
+								type: 'button',
+								extraClasses: { root: this.theme(css.edit) } as any,
+								onClick: this._onEdit
+							},
+							[w(Icon, { type: 'editIcon', altText: 'Edit', classes, theme })]
+					  )
+					: null
+			]
+		);
 	}
 }

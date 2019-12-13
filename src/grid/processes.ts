@@ -7,8 +7,10 @@ import {
 	PageChangeCommandPayload,
 	SortCommandPayload,
 	FilterCommandPayload,
-	UpdaterCommandPayload
+	UpdaterCommandPayload,
+	SelectionCommandPayload
 } from './interfaces';
+import { findIndex } from '@dojo/framework/shim/array';
 
 const commandFactory = createCommandFactory<GridState>();
 
@@ -26,7 +28,10 @@ const preFetcherCommand = commandFactory<FetcherCommandPayload>(
 	({ path, get, payload: { id, page } }) => {
 		const fetchedPages = get(path(id, 'meta', 'fetchedPages')) || [];
 		if (fetchedPages.indexOf(page) === -1) {
-			return [replace(path(id, 'meta', 'fetchedPages'), [...fetchedPages, page])];
+			return [
+				replace(path(id, 'meta', 'fetchedPages'), [...fetchedPages, page]),
+				replace(path(id, 'meta', 'page'), page)
+			];
 		}
 		throw Error('The page has already been requested');
 	}
@@ -63,6 +68,7 @@ const preSortCommand = commandFactory<SortCommandPayload>(
 		const page = get(path(id, 'meta', 'page'));
 		return [
 			remove(path(id, 'data', 'pages')),
+			remove(path(id, 'meta', 'selection')),
 			replace(path(id, 'meta', 'fetchedPages'), page === 1 ? [1] : [page, page - 1]),
 			replace(path(id, 'meta', 'sort', 'columnId'), columnId),
 			replace(path(id, 'meta', 'sort', 'direction'), direction),
@@ -75,6 +81,7 @@ const preFilterCommand = commandFactory<FilterCommandPayload>(
 	({ at, path, get, payload: { id, filterOptions } }) => {
 		return [
 			remove(path(id, 'data', 'pages')),
+			remove(path(id, 'meta', 'selection')),
 			replace(path(id, 'meta', 'fetchedPages'), [1]),
 			replace(path(id, 'meta', 'filter', filterOptions.columnId), filterOptions.value),
 			replace(path(id, 'meta', 'currentFilter'), filterOptions),
@@ -196,6 +203,34 @@ const updaterCommand = commandFactory<UpdaterCommandPayload>(
 	}
 );
 
+const selectionCommand = commandFactory<SelectionCommandPayload>(
+	({ payload: { id, index, type }, get, path }) => {
+		let currentSelection = [...(get(path(id, 'meta', 'selection')) || [])];
+		if (type === 'single') {
+			if (currentSelection.indexOf(index) === -1) {
+				currentSelection = [index];
+			} else if (currentSelection.length > 1) {
+				currentSelection = [index];
+			} else {
+				currentSelection = [];
+			}
+		} else {
+			const existingIndex = findIndex(currentSelection, (idx) => idx === index);
+			if (existingIndex === -1) {
+				currentSelection = [...currentSelection, index];
+			} else {
+				currentSelection.splice(existingIndex, 1);
+			}
+		}
+
+		return [replace(path(id, 'meta', 'selection'), currentSelection)];
+	}
+);
+
+const clearSelectionCommand = commandFactory<{ id: string }>(({ payload: { id }, path }) => {
+	return [remove(path(id, 'meta', 'selection'))];
+});
+
 export const updaterProcess: Process<GridState, UpdaterCommandPayload> = createProcess(
 	'grid-update',
 	[preUpdateCommand, updaterCommand]
@@ -212,6 +247,11 @@ export const sortProcess: Process<GridState, SortCommandPayload> = createProcess
 	preSortCommand,
 	sortCommand
 ]);
+export const selectionProcess: Process<GridState, SelectionCommandPayload> = createProcess(
+	'grid-selection',
+	[selectionCommand]
+);
+export const clearSelectionProcess = createProcess('clear-selection', [clearSelectionCommand]);
 export const pageChangeProcess: Process<GridState, PageChangeCommandPayload> = createProcess(
 	'grid-page-change',
 	[pageChangeCommand]

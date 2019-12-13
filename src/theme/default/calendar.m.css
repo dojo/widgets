@@ -1,31 +1,38 @@
 @import './variables.css';
 
+/* The root class of the calendar */
 .root {
 	box-sizing: border-box;
 	display: inline-block;
 }
 
+/* Added to inactive dates (disabled or out of range) */
 .inactiveDate {
 	background-color: var(--disabled-color);
 }
 
+/* Added to dates outside of the allowed min/max dates */
 .outOfRange {
 }
 
+/* The currently selected date */
 .selectedDate {
 	background-color: var(--selected-background);
 	color: var(--selected-color);
 }
 
+/* Added to today's date */
 .todayDate {
 }
 
+/* Added to all dates */
 .date {
 	cursor: pointer;
 	padding: 10px 20px;
 	text-align: center;
 }
 
+/* Hover style for all dates */
 .date:hover {
 	background-color: var(--disabled-color); /* TODO: better hover color variable? */
 }
@@ -34,12 +41,10 @@
 .dateGrid {
 }
 
+/* Added the days of the week header (e.g. Sun, Mon, Tue) */
 .weekday {
 	padding: 10px 20px;
 	text-align: center;
-}
-
-.weekday {
 	color: var(--disabled-color);
 	font-weight: normal;
 	text-transform: uppercase;
@@ -48,43 +53,63 @@
 /* Date picker  */
 .datePicker {
 }
+/* Contains the month and year of the DatePicker */
 .topMatter {
 }
+/* Added to the month trigger in the DatePicker */
 .monthTrigger {
 }
+/* Added to the year trigger in the DatePicker */
 .yearTrigger {
 }
+/* Contains all controls in DatePicker and Calendar */
 .controls {
 }
+/* Added to the previous arrow selector for years and months */
 .previous {
 }
+/* Added to the next arrow selector for years and months */
 .next {
 }
+/* Contains the month grid of the DatePicker */
 .monthGrid {
 }
+/* Added to each month in the month grid of the DatePicker */
 .monthFields {
 }
+/* Contains the year grid of the DatePicker */
 .yearGrid {
 }
+/* Added to each year in the year grid of the DatePicker */
 .yearFields {
 }
+/* Added to the label of each month field in the month grid of the DatePicker */
 .monthRadio {
 }
+/* Added to the label of each year field in the year grid of the DatePicker */
 .yearRadio {
 }
+/* Added to the selected month in the month grid of the DatePicker */
 .monthRadioChecked {
 }
+/* Added to the selected year in the year grid of the DatePicker */
 .yearRadioChecked {
 }
+/* Added to the input for each month in the month grid of the DatePicker */
 .monthRadioInput {
 }
+/* Added to each month name in the month grid of the DatePicker */
 .monthRadioLabel {
 }
+/* Added to the input for each year in the year grid of the DatePicker */
 .yearRadioInput {
 }
+/* Added to each year name in the year grid of the DatePicker */
 .yearRadioLabel {
 }
+/* Added to the month button when the month grid is open */
 .monthTriggerActive {
 }
+/* Added to the year button when the year grid is open */
 .yearTriggerActive {
 }

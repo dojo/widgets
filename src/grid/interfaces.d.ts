@@ -40,6 +40,7 @@ export interface ColumnConfig {
 	filterable?: boolean;
 	sortable?: boolean;
 	editable?: boolean;
+	resizable?: boolean;
 	renderer?: (props: any) => DNode;
 }
 
@@ -53,6 +54,14 @@ export interface FetcherCommandPayload {
 	page: number;
 	pageSize: number;
 	id: string;
+}
+
+export type SelectionType = 'single' | 'multi';
+
+export interface SelectionCommandPayload {
+	id: string;
+	index: number;
+	type: SelectionType;
 }
 
 export interface SortCommandPayload {
@@ -98,6 +107,7 @@ export interface GridMeta<S> {
 	currentFilter: FilterOptions;
 	isSorting: boolean;
 	editedRow: GridEditedRow<S>;
+	selection: number[];
 	fetchedPages: number[];
 }
 
