@@ -1,7 +1,7 @@
 {
 	"extends": "./node_modules/@dojo/parade/parade.json",
 	"build-theme": {
-		"themes": ["default", "dojo", "material"]
+		"themes": ["dojo", "material"]
 	},
 	"build-widget": {
 		"prefix": "dojo",
