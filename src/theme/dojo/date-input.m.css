@@ -3,5 +3,10 @@
 .root {
 }
 
+.input {
+}
+
 .popup {
+	display: inline-block;
+	background: var(--color-background);
 }

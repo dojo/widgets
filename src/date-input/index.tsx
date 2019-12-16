@@ -1,35 +1,46 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
 import Icon from '@dojo/widgets/icon';
 import Popup from '../popup';
 import * as css from '../theme/default/date-input.m.css';
+import HelperText from '../helper-text';
 
 export interface DateInputProperties {
+	/** Sets the helper text of the input */
+	helperText?: string;
+	/** The current value */
+	initialValue?: Date;
 	/** Set the latest date the calendar will display (it will show the whole month but not allow later selections) */
-	maxDate?: Date;
+	max?: Date;
 	/** Set the earliest date the calendar will display (it will show the whole month but not allow previous selections) */
-	minDate?: Date;
+	min?: Date;
 	/** Callback fired when the input value changes */
 	onValue?(date: Date): void;
-	/** The current value */
-	value?: Date;
 }
 
+interface DateInputICache {
+	date: Date;
+	month: number;
+	year: number;
+}
+
+const icache = createICacheMiddleware<DateInputICache>();
 const factory = create({ theme, icache }).properties<DateInputProperties>();
 
 export default factory(function({ properties, middleware: { theme, icache } }) {
-	const { minDate, maxDate, onValue, value = new Date() } = properties();
+	const { max, min, onValue, initialValue = new Date(), helperText } = properties();
 	const classes = theme.classes(css);
-	const month = icache.getOrSet('month', value.getMonth());
-	const year = icache.getOrSet('year', value.getFullYear());
+	const date = icache.getOrSet('date', initialValue);
+	const month = icache.getOrSet('month', initialValue.getMonth());
+	const year = icache.getOrSet('year', initialValue.getFullYear());
 
 	const formatDate = () => {
-		const year = value.getFullYear();
-		const month = value.getMonth() + 1;
-		const day = value
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date
 			.getDate()
 			.toString()
 			.padStart(2, '0');
@@ -38,43 +49,60 @@ export default factory(function({ properties, middleware: { theme, icache } }) {
 	};
 
 	return (
-		<div classes={[classes.root]}>
+		<div classes={classes.root}>
 			<Popup>
 				{{
-					trigger: (onToggleOpen) => (
-						<TextInput
-							type="date"
-							value={formatDate()}
-							onClick={onToggleOpen}
-							trailing={() => (
-								<div onclick={onToggleOpen}>
-									<Icon type="dateIcon" />
-								</div>
-							)}
-						/>
-					),
-					content: (onClose) => (
-						<div classes={[classes.popup]}>
-							<Calendar
-								selectedDate={value}
-								month={month}
-								year={year}
-								onDateSelect={(date) => {
-									icache.set('date', date);
-									if (onValue) {
-										onValue(date);
-									}
-									onClose();
-								}}
-								onMonthChange={(month) => icache.set('month', month)}
-								onYearChange={(year) => icache.set('year', year)}
-								minDate={minDate}
-								maxDate={maxDate}
-							/>
-						</div>
-					)
+					trigger: (toggleOpen) => {
+						function openCalendar() {
+							// todo: focus calendar popup instead of text-input
+							toggleOpen();
+						}
+
+						return (
+							<div classes={classes.input}>
+								<TextInput
+									onClick={openCalendar}
+									onFocus={openCalendar}
+									trailing={() => (
+										<div onclick={openCalendar}>
+											<Icon type="dateIcon" />
+										</div>
+									)}
+									type="text"
+									value={formatDate()}
+								/>
+							</div>
+						);
+					},
+					content: (onClose) => {
+						function closePopup() {
+							onClose();
+						}
+
+						return (
+							<div classes={classes.popup}>
+								<Calendar
+									maxDate={max}
+									minDate={min}
+									month={month}
+									onDateSelect={(date) => {
+										icache.set('date', date);
+										if (onValue) {
+											onValue(date);
+										}
+										closePopup();
+									}}
+									onMonthChange={(month) => icache.set('month', month)}
+									onYearChange={(year) => icache.set('year', year)}
+									selectedDate={date}
+									year={year}
+								/>
+							</div>
+						);
+					}
 				}}
 			</Popup>
+			<HelperText key={helperText} text={helperText} />
 		</div>
 	);
 });
