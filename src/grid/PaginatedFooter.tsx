@@ -105,7 +105,7 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 	protected render() {
 		const { onPageChange, page, total, pageSize } = this.properties;
 		if (total === undefined) {
-			return null;
+			return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed] });
 		}
 		const totalPages = Math.ceil(total / pageSize);
 		const from = page === 1 ? '1' : `${(page - 1) * pageSize + 1}`;

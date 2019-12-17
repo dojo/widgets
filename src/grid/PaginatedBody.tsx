@@ -41,10 +41,6 @@ export interface PaginatedBodyProperties<S> {
 	selectedRows?: number[];
 }
 
-const defaultPlaceholderRowRenderer = (index: number) => {
-	return w(PlaceholderRow, { key: index });
-};
-
 @theme(css)
 @diffProperty('pages', reference)
 export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedBodyProperties<S>> {
@@ -59,13 +55,18 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 		this.properties.onScroll(scrollLeft);
 	}
 
+	private _defaultPlaceholderRow(key: number) {
+		const { classes, theme } = this.properties;
+		return w(PlaceholderRow, { key, theme, classes });
+	}
+
 	private _renderRows() {
 		const {
 			pageSize,
 			fetcher,
 			pages,
 			columnConfig,
-			placeholderRowRenderer = defaultPlaceholderRowRenderer,
+			placeholderRowRenderer = this._defaultPlaceholderRow,
 			pageNumber,
 			theme,
 			classes,

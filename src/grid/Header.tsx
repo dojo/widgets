@@ -89,8 +89,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 		doFilter: (value: string) => void,
 		title?: string | DNode
 	) => {
-		const { theme, classes } = this.properties;
-		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
+		const { theme, classes = {} } = this.properties;
 		return w(TextInput, {
 			key: 'filter',
 			theme,
@@ -98,7 +97,8 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 				...classes,
 				'@dojo/widgets/text-input': {
 					root: [this.theme(css.filter)],
-					...passedInputClasses
+					input: [this.theme(css.filterInput)],
+					...classes['@dojo/widgets/text-input']
 				}
 			},
 			label: `Filter by ${title}`,

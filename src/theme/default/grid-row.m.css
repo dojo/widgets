@@ -2,7 +2,7 @@
 .root {
 	box-sizing: border-box;
 	height: 30px;
-	border-left-style: none;
+	border-left: 1px solid black;
 }
 
 /* the class applied when a row is selected */

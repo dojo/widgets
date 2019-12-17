@@ -65,10 +65,6 @@ const offscreen = (dnode: DNode) => {
 	return dimensions;
 };
 
-const defaultPlaceholderRowRenderer = (index: number) => {
-	return w(PlaceholderRow, { key: index });
-};
-
 @theme(css)
 @diffProperty('pages', reference)
 export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> {
@@ -110,13 +106,18 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 		this._resetScroll = true;
 	}
 
+	private _defaultPlaceholderRow(key: number) {
+		const { classes, theme } = this.properties;
+		return w(PlaceholderRow, { key, theme, classes });
+	}
+
 	private _renderRows(start: number, end: number) {
 		const {
 			pageSize,
 			fetcher,
 			pages,
 			columnConfig,
-			placeholderRowRenderer = defaultPlaceholderRowRenderer,
+			placeholderRowRenderer = this._defaultPlaceholderRow,
 			pageChange,
 			totalRows,
 			theme,
@@ -183,7 +184,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 
 	protected render(): DNode {
 		const {
-			placeholderRowRenderer = defaultPlaceholderRowRenderer,
+			placeholderRowRenderer = this._defaultPlaceholderRow,
 			totalRows = 0,
 			pageSize,
 			height,
