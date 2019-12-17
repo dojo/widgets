@@ -13,7 +13,7 @@ import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
 
-export type MenuOption = { value: string; label?: string; disabled?: boolean };
+export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
 export interface MenuProperties {
 	/** Options to display within the menu */
@@ -214,7 +214,7 @@ export const Menu = factory(function Menu({
 			  })
 			: label || value;
 
-		return listBox ? (
+		const item = listBox ? (
 			<ListBoxItem
 				{...itemProps}
 				selected={selected}
@@ -238,6 +238,8 @@ export const Menu = factory(function Menu({
 				{children}
 			</MenuItem>
 		);
+
+		return divider ? item : [item, <hr classes={classes.divider} />];
 	}
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
