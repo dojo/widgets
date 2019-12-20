@@ -1,636 +1,256 @@
-const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
-import * as sinon from 'sinon';
-
-import { v, w, isWNode } from '@dojo/framework/core/vdom';
-import Focus from '../../../meta/Focus';
-
-import Dialog, { DialogProperties } from '../../index';
-import Icon from '../../../icon/index';
-import * as css from '../../../theme/default/dialog.m.css';
-import * as fixedCss from '../../styles/dialog.m.css';
 import { Keys } from '../../../common/util';
-import { GlobalEvent } from '../../../global-event/index';
+
+const { describe, it } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
+import { tsx } from '@dojo/framework/core/vdom';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import Icon from '../../../icon';
 import {
-	createHarness,
-	compareId,
 	compareAriaLabelledBy,
-	MockMetaMixin,
-	noop,
+	compareId,
+	createHarness,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
+import * as themeCss from '../../../theme/default/dialog.m.css';
+import * as fixedCss from '../../styles/dialog.m.css';
+import * as sinon from 'sinon';
+
+import Dialog, { DialogProperties } from '../../index';
+import GlobalEvent from '../../../global-event';
 
 const harness = createHarness([compareId, compareAriaLabelledBy]);
 
-const expectedCloseButton = function() {
-	return v(
-		'button',
-		{
-			classes: css.close,
-			type: 'button',
-			onclick: noop
-		},
-		[
-			'close ',
-			v('span', { classes: css.closeIcon }, [
-				w(Icon, {
-					type: 'closeIcon',
-					theme: undefined,
-					classes: undefined
-				})
-			])
-		]
-	);
-};
+describe('Dialog', () => {
+	const closedAssertion = assertionTemplate(() => <div classes={[themeCss.root, null]} />);
+	const openAssertion = assertionTemplate(() => (
+		<div classes={[themeCss.root, themeCss.open]}>
+			<virtual>
+				<GlobalEvent key="global" document={{ keyup: () => {} }} />
+				<div
+					classes={[null, fixedCss.underlay]}
+					enterAnimation={themeCss.underlayEnter}
+					exitAnimation={themeCss.underlayExit}
+					key="underlay"
+					onclick={() => {}}
+				/>
+				<div
+					aria-describedby={undefined}
+					aria-labelledby="uuid"
+					aria-modal="false"
+					classes={themeCss.main}
+					enterAnimation={themeCss.enter}
+					exitAnimation={themeCss.exit}
+					focus={false}
+					key="main"
+					role="dialog"
+					tabIndex={-1}
+				>
+					<div classes={themeCss.title} id="uuid" key="title">
+						<div>foo</div>
+						<button classes={themeCss.close} onclick={() => {}} type="button">
+							{'close foo'}
+							<span classes={themeCss.closeIcon}>
+								<Icon type="closeIcon" />
+							</span>
+						</button>
+					</div>
+					<div classes={themeCss.content} key="content" id="uuid" />
+				</div>
+			</virtual>
+		</div>
+	));
+	const focusedAssertion = openAssertion.setProperty('@main', 'focus', true);
 
-const expected = function(open = false, closeable = false, children: any[] = []) {
-	return v(
-		'div',
-		{
-			classes: [css.root, open ? css.open : null]
-		},
-		open
-			? [
-					w(GlobalEvent, {
-						key: 'global',
-						document: {
-							keyup: noop
-						}
-					}),
-					v('div', {
-						classes: [null, fixedCss.underlay],
-						enterAnimation: css.underlayEnter,
-						exitAnimation: css.underlayExit,
-						key: 'underlay',
-						onclick: noop
-					}),
-					v(
-						'div',
-						{
-							'aria-labelledby': '',
-							classes: css.main,
-							enterAnimation: css.enter,
-							exitAnimation: css.exit,
-							key: 'main',
-							role: 'dialog',
-							tabIndex: -1
-						},
-						[
-							v(
-								'div',
-								{
-									classes: css.title,
-									key: 'title'
-								},
-								[
-									v('div', { id: '' }, ['']),
-									closeable ? expectedCloseButton() : null
-								]
-							),
-							v(
-								'div',
-								{
-									classes: css.content,
-									key: 'content'
-								},
-								children
-							)
-						]
-					)
-			  ]
-			: []
-	);
-};
+	it('renders closed', () => {
+		const h = harness(() => (
+			<Dialog open={false} onRequestClose={() => {}}>
+				{{}}
+			</Dialog>
+		));
+		h.expect(closedAssertion);
+	});
 
-registerSuite('Dialog', {
-	tests: {
-		'default properties'() {
-			let properties: DialogProperties = {};
-			const h = harness(() => w(Dialog, properties));
-			h.expect(expected);
+	it('renders open', () => {
+		const h = harness(() => (
+			<Dialog open onRequestClose={() => {}}>
+				{{ title: () => 'foo' }}
+			</Dialog>
+		));
+		h.expect(focusedAssertion);
+	});
 
-			properties = {
-				open: true,
-				closeable: false
-			};
-			h.expect(() => expected(true));
-		},
+	it('renders with custom properties', () => {
+		let properties: DialogProperties = {
+			open: true,
+			onRequestClose: () => {}
+		};
+		const h = harness(() => <Dialog {...properties}>{{ title: () => 'foo' }}</Dialog>);
 
-		'custom properties'() {
-			let properties: DialogProperties = {
-				open: true
-			};
-			const h = harness(() => w(Dialog, properties));
+		// set tested properties
+		properties = {
+			aria: { describedBy: 'foo' },
+			closeText: 'foo',
+			enterAnimation: 'fooAnimation',
+			exitAnimation: 'barAnimation',
+			open: true,
+			role: 'alertdialog',
+			underlay: true,
+			onRequestClose: () => {}
+		};
 
-			// set tested properties
-			properties = {
-				aria: { describedBy: 'foo' },
-				closeable: true,
-				closeText: 'foo',
-				enterAnimation: 'fooAnimation',
-				exitAnimation: 'barAnimation',
-				open: true,
-				role: 'alertdialog',
-				title: 'foo',
-				underlay: true
-			};
-
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: [css.root, css.open]
-					},
-					[
-						w(GlobalEvent, {
-							key: 'global',
-							document: {
-								keyup: noop
-							}
-						}),
-						v('div', {
-							classes: [css.underlayVisible, fixedCss.underlay],
-							enterAnimation: css.underlayEnter,
-							exitAnimation: css.underlayExit,
-							key: 'underlay',
-							onclick: noop
-						}),
-						v(
-							'div',
-							{
-								role: 'alertdialog',
-								'aria-describedby': 'foo',
-								'aria-labelledby': '',
-								classes: css.main,
-								enterAnimation: 'fooAnimation',
-								exitAnimation: 'barAnimation',
-								key: 'main',
-								tabIndex: -1
-							},
-							[
-								v(
-									'div',
-									{
-										classes: css.title,
-										key: 'title'
-									},
-									[
-										v('div', { id: '' }, ['foo']),
-										v(
-											'button',
-											{
-												classes: css.close,
-												type: 'button',
-												onclick: noop
-											},
-											[
-												'foo',
-												v('span', { classes: css.closeIcon }, [
-													w(Icon, {
-														type: 'closeIcon',
-														theme: undefined,
-														classes: undefined
-													})
-												])
-											]
-										)
-									]
-								),
-								v(
-									'div',
-									{
-										classes: css.content,
-										key: 'content'
-									},
-									[]
-								)
-							]
-						)
-					]
-				)
-			);
-		},
-
-		'turn off animations'() {
-			let properties: DialogProperties = {
-				open: true
-			};
-			const h = harness(() => w(Dialog, properties));
-
-			// set tested properties
-			properties = {
-				enterAnimation: null,
-				exitAnimation: null,
-				underlayEnterAnimation: null,
-				underlayExitAnimation: null,
-				open: true,
-				underlay: true,
-				title: 'foo'
-			};
-
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: [css.root, css.open]
-					},
-					[
-						w(GlobalEvent, {
-							key: 'global',
-							document: {
-								keyup: noop
-							}
-						}),
-						v('div', {
-							classes: [css.underlayVisible, fixedCss.underlay],
-							enterAnimation: null,
-							exitAnimation: null,
-							key: 'underlay',
-							onclick: noop
-						}),
-						v(
-							'div',
-							{
-								role: 'dialog',
-								'aria-labelledby': '',
-								classes: css.main,
-								enterAnimation: null,
-								exitAnimation: null,
-								key: 'main',
-								tabIndex: -1
-							},
-							[
-								v(
-									'div',
-									{
-										classes: css.title,
-										key: 'title'
-									},
-									[
-										v('div', { id: '' }, ['foo']),
-										v(
-											'button',
-											{
-												classes: css.close,
-												type: 'button',
-												onclick: noop
-											},
-											[
-												'close foo',
-												v('span', { classes: css.closeIcon }, [
-													w(Icon, {
-														type: 'closeIcon',
-														theme: undefined,
-														classes: undefined
-													})
-												])
-											]
-										)
-									]
-								),
-								v(
-									'div',
-									{
-										classes: css.content,
-										key: 'content'
-									},
-									[]
-								)
-							]
-						)
-					]
-				)
-			);
-		},
-
-		'correct close text'() {
-			const h = harness(() =>
-				w(Dialog, {
-					closeable: true,
-					open: true,
-					title: 'foo'
-				})
-			);
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: [css.root, css.open]
-					},
-					[
-						w(GlobalEvent, {
-							key: 'global',
-							document: {
-								keyup: noop
-							}
-						}),
-						v('div', {
-							classes: [null, fixedCss.underlay],
-							enterAnimation: css.underlayEnter,
-							exitAnimation: css.underlayExit,
-							key: 'underlay',
-							onclick: noop
-						}),
-						v(
-							'div',
-							{
-								role: 'dialog',
-								'aria-labelledby': '',
-								classes: css.main,
-								enterAnimation: css.enter,
-								exitAnimation: css.exit,
-								key: 'main',
-								tabIndex: -1
-							},
-							[
-								v(
-									'div',
-									{
-										classes: css.title,
-										key: 'title'
-									},
-									[
-										v('div', { id: '' }, ['foo']),
-										v(
-											'button',
-											{
-												classes: css.close,
-												type: 'button',
-												onclick: noop
-											},
-											[
-												'close foo',
-												v('span', { classes: css.closeIcon }, [
-													w(Icon, {
-														type: 'closeIcon',
-														theme: undefined,
-														classes: undefined
-													})
-												])
-											]
-										)
-									]
-								),
-								v(
-									'div',
-									{
-										classes: css.content,
-										key: 'content'
-									},
-									[]
-								)
-							]
-						)
-					]
-				)
-			);
-		},
-
-		children() {
-			const h = harness(() =>
-				w(Dialog, { open: true }, [
-					v('p', ['Lorem ipsum dolor sit amet']),
-					v('a', { href: '#foo' }, ['foo'])
+		h.expect(
+			openAssertion
+				.replaceChildren('@title', () => [
+					<div>foo</div>,
+					<button classes={themeCss.close} onclick={() => {}} type="button">
+						{'foo'}
+						<span classes={themeCss.closeIcon}>
+							<Icon type="closeIcon" />
+						</span>
+					</button>
 				])
-			);
+				.setProperty('@underlay', 'classes', [themeCss.underlayVisible, fixedCss.underlay])
+				.setProperty('@main', 'aria-describedby', 'foo')
+				.setProperty('@main', 'enterAnimation', 'fooAnimation')
+				.setProperty('@main', 'exitAnimation', 'barAnimation')
+				.setProperty('@main', 'focus', true)
+				.setProperty('@main', 'role', 'alertdialog')
+				.setProperty('@main', 'aria-modal', 'true')
+		);
+	});
 
-			h.expect(() =>
-				expected(true, true, [
-					v('p', ['Lorem ipsum dolor sit amet']),
-					v('a', { href: '#foo' }, ['foo'])
-				])
-			);
-		},
+	it('turns off animations', () => {
+		const h = harness(() => (
+			<Dialog
+				open
+				underlay
+				enterAnimation={null}
+				exitAnimation={null}
+				underlayEnterAnimation={null}
+				underlayExitAnimation={null}
+				onRequestClose={() => {}}
+			>
+				{{ title: () => 'foo' }}
+			</Dialog>
+		));
+		h.expect(
+			openAssertion
+				.setProperty('@underlay', 'classes', [themeCss.underlayVisible, fixedCss.underlay])
+				.setProperty('@underlay', 'enterAnimation', null)
+				.setProperty('@underlay', 'exitAnimation', null)
+				.setProperty('@main', 'enterAnimation', null)
+				.setProperty('@main', 'exitAnimation', null)
+				.setProperty('@main', 'focus', true)
+		);
+	});
 
-		onRequestClose() {
-			const onRequestClose = sinon.stub();
-			let properties = {
-				closeable: true,
-				open: true,
-				onRequestClose
-			};
-			const h = harness(() => w(Dialog, properties));
-			h.trigger(`.${css.close}`, 'onclick', stubEvent);
-			assert.isTrue(
-				onRequestClose.calledOnce,
-				'onRequestClose handler called when close button is clicked'
-			);
-		},
+	it('renders children', () => {
+		const h = harness(() => (
+			<Dialog closeable open onRequestClose={() => {}}>
+				{{ title: () => 'foo', content: () => 'test' }}
+			</Dialog>
+		));
 
-		onOpen() {
-			const onOpen = sinon.stub();
-			let properties: any = {
-				open: true,
-				onOpen
-			};
-			const h = harness(() => w(Dialog, properties));
-			assert.isTrue(
-				onOpen.calledOnce,
-				'onOpen handler called when open is initially set to true'
-			);
+		h.expect(
+			openAssertion
+				.setProperty('@main', 'focus', true)
+				.setChildren('@content', () => ['test'])
+		);
+	});
 
-			properties = {
-				closeable: true,
-				open: true,
-				onOpen
-			};
-			h.expect(() => expected(true, true));
-			assert.isTrue(
-				onOpen.calledOnce,
-				'onOpen handler not called if dialog was previously open'
-			);
-		},
+	it('calls onRequestClose', () => {
+		const onRequestClose = sinon.stub();
+		const h = harness(() => (
+			<Dialog closeable open onRequestClose={onRequestClose}>
+				{{}}
+			</Dialog>
+		));
+		h.trigger(`.${themeCss.close}`, 'onclick', stubEvent);
+		assert.isTrue(
+			onRequestClose.calledOnce,
+			'onRequestClose handler called when close button is clicked'
+		);
+	});
 
-		modal() {
-			const onRequestClose = sinon.stub();
-			let properties: any = {
-				open: true,
-				modal: true,
-				onRequestClose
-			};
-			const h = harness(() => w(Dialog, properties));
-			h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
+	it('calls onOpen', () => {
+		const onOpen = sinon.stub();
+		let properties: any = {
+			open: true,
+			onOpen,
+			onRequestClose: () => {}
+		};
+		const h = harness(() => <Dialog {...properties}>{{ title: () => 'foo' }}</Dialog>);
+		h.expect(openAssertion.setProperty('@main', 'focus', true));
 
-			assert.isFalse(
-				onRequestClose.called,
-				'onRequestClose should not be called when the underlay is clicked and modal is true'
-			);
+		assert.isTrue(
+			onOpen.calledOnce,
+			'onOpen handler called when open is initially set to true'
+		);
 
-			properties = {
-				open: true,
-				modal: false,
-				onRequestClose
-			};
+		properties = {
+			closeable: true,
+			open: true,
+			onOpen,
+			onRequestClose: () => {}
+		};
+		h.expect(openAssertion);
+		assert.isTrue(onOpen.calledOnce, 'onOpen handler not called if dialog was previously open');
+	});
 
-			h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
-			assert.isTrue(
-				onRequestClose.called,
-				'onRequestClose is called when the underlay is clicked and modal is false'
-			);
-		},
+	it('uses modal property', () => {
+		const onRequestClose = sinon.stub();
+		let properties: any = {
+			open: true,
+			modal: true,
+			onRequestClose
+		};
+		const h = harness(() => <Dialog {...properties}>{{}}</Dialog>);
+		h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
 
-		escapeKey() {
-			const onRequestClose = sinon.stub();
-			const h = harness(() =>
-				w(Dialog, {
-					open: true,
-					onRequestClose
-				})
-			);
-			h.trigger(
-				'@global',
-				(node: any) => {
-					if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
-						return node.properties.document.keyup;
-					}
-				},
-				{ which: Keys.Down, ...stubEvent }
-			);
-			assert.isTrue(onRequestClose.notCalled);
-			h.trigger(
-				'@global',
-				(node: any) => {
-					if (isWNode<GlobalEvent>(node) && node.properties.document !== undefined) {
-						return node.properties.document.keyup;
-					}
-				},
-				{ which: Keys.Escape, ...stubEvent }
-			);
-			assert.isTrue(onRequestClose.calledOnce);
-		},
+		assert.isFalse(
+			onRequestClose.called,
+			'onRequestClose should not be called when the underlay is clicked and modal is true'
+		);
 
-		focus: {
-			'set initial focus'() {
-				const mockMeta = sinon.stub();
-				const mockFocusGet = sinon.stub().returns({
-					active: false,
-					containsFocus: false
-				});
-				const mockFocusSet = sinon.stub();
-				mockMeta.withArgs(Focus).returns({
-					get: mockFocusGet,
-					set: mockFocusSet
-				});
-				harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
-				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog is opened');
+		properties = {
+			open: true,
+			modal: false,
+			onRequestClose
+		};
+
+		h.trigger(`.${fixedCss.underlay}`, 'onclick', stubEvent);
+		assert.isTrue(
+			onRequestClose.called,
+			'onRequestClose is called when the underlay is clicked and modal is false'
+		);
+	});
+
+	it('closes the modal on escape', () => {
+		const onRequestClose = sinon.stub();
+		const h = harness(() => (
+			<Dialog open onRequestClose={onRequestClose}>
+				{{}}
+			</Dialog>
+		));
+		h.trigger(
+			'@global',
+			(node: any) => {
+				if (node.properties.document !== undefined) {
+					return node.properties.document.keyup;
+				}
 			},
-
-			'set initial focus only once'() {
-				const mockMeta = sinon.stub();
-				const mockFocusGet = sinon.stub().returns({
-					active: true,
-					containsFocus: true
-				});
-				const mockFocusSet = sinon.stub();
-				mockMeta.withArgs(Focus).returns({
-					get: mockFocusGet,
-					set: mockFocusSet
-				});
-				harness(() => w(MockMetaMixin(Dialog, mockMeta), { open: true }));
-				assert.isFalse(mockFocusSet.called, 'focus not set when dialog is already focused');
+			{ which: Keys.Down, ...stubEvent }
+		);
+		assert.isTrue(onRequestClose.notCalled);
+		h.trigger(
+			'@global',
+			(node: any) => {
+				if (node.properties.document !== undefined) {
+					return node.properties.document.keyup;
+				}
 			},
-
-			'keep focus in modal dialog'() {
-				const mockMeta = sinon.stub();
-				const mockFocusGet = sinon.stub().returns({
-					active: false,
-					containsFocus: false
-				});
-				const mockFocusSet = sinon.stub();
-				mockMeta.withArgs(Focus).returns({
-					get: mockFocusGet,
-					set: mockFocusSet
-				});
-				let properties: any = {
-					open: true,
-					modal: true
-				};
-				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), properties));
-				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog is opened');
-
-				// force render
-				properties = {
-					open: true,
-					modal: false
-				};
-				mockFocusGet.returns({
-					active: true,
-					containsFocus: true
-				});
-				mockFocusSet.resetHistory();
-				h.expect(() => expected(true, true));
-				assert.isFalse(
-					mockFocusSet.called,
-					'set focus not called when dialog contains focus'
-				);
-
-				// force render
-				properties = {
-					open: true,
-					modal: true
-				};
-				mockFocusGet.returns({
-					active: false,
-					containsFocus: false
-				});
-				h.expect(() => expected(true, true));
-				assert.isTrue(
-					mockFocusSet.calledOnce,
-					'focus set when dialog loses focus while open'
-				);
-			},
-
-			'close non-modal dialog when focus leaves'() {
-				const mockMeta = sinon.stub();
-				const mockFocusGet = sinon.stub().returns({
-					active: false,
-					containsFocus: false
-				});
-				const mockFocusSet = sinon.stub();
-				mockMeta.withArgs(Focus).returns({
-					get: mockFocusGet,
-					set: mockFocusSet
-				});
-				const mockRequestClose = sinon.stub();
-				let properties: any = {
-					open: true,
-					modal: false
-				};
-				const h = harness(() => w(MockMetaMixin(Dialog, mockMeta), properties));
-				assert.isTrue(mockFocusSet.calledOnce, 'focus set when dialog is opened');
-
-				// force render
-				properties = {
-					open: true,
-					modal: true
-				};
-				mockFocusGet.returns({
-					active: true,
-					containsFocus: true
-				});
-				mockFocusSet.resetHistory();
-				h.expect(() => expected(true, true));
-				assert.isFalse(
-					mockFocusSet.called,
-					'set focus not called when dialog contains focus'
-				);
-
-				// force render
-				properties = {
-					open: true,
-					modal: false,
-					onRequestClose: mockRequestClose
-				};
-				mockFocusGet.returns({
-					active: false,
-					containsFocus: false
-				});
-				h.expect(() => expected(true, true));
-				assert.isTrue(
-					mockRequestClose.calledOnce,
-					'onRequestClose called when focus leaves'
-				);
-			}
-		}
-	}
+			{ which: Keys.Escape, ...stubEvent }
+		);
+		assert.isTrue(onRequestClose.calledOnce);
+	});
 });

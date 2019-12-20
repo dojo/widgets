@@ -16,20 +16,26 @@ export default factory(function CloseableDialog({ middleware: { icache } }) {
 			</Button>
 			<Dialog
 				open={isOpen}
-				title="Closeable Dialog"
 				closeable={isCloseable}
 				onRequestClose={() => icache.set('isOpen', false)}
 			>
-				<div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum.
-					Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia felis tempor
-					in.
-				</div>
-				<Checkbox
-					label="Closeable?"
-					checked={isCloseable}
-					onValue={(value) => icache.set('isCloseable', !isCloseable)}
-				/>
+				{{
+					title: () => 'Closeable Dialog',
+					content: () => (
+						<virtual>
+							<div>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
+								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
+								sed lacinia felis tempor in.
+							</div>
+							<Checkbox
+								label="Closeable?"
+								checked={isCloseable}
+								onValue={(value) => icache.set('isCloseable', !isCloseable)}
+							/>
+						</virtual>
+					)
+				}}
 			</Dialog>
 		</div>
 	);

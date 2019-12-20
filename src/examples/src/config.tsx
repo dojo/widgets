@@ -37,6 +37,8 @@ import BasicDialog from './widgets/dialog/Basic';
 import CloseableDialog from './widgets/dialog/CloseableDialog';
 import ModalDialog from './widgets/dialog/ModalDialog';
 import UnderlayDialog from './widgets/dialog/UnderlayDialog';
+import AlertDialog from './widgets/dialog/AlertDialog';
+import AnimatedDialog from './widgets/dialog/AnimatedDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
 import BasicForm from './widgets/form/Basic';
@@ -405,6 +407,16 @@ export const config = {
 					filename: 'CloseableDialog',
 					module: CloseableDialog,
 					title: 'Dialog with Configurable Closeability'
+				},
+				{
+					filename: 'AlertDialog',
+					module: AlertDialog,
+					title: 'Alert Dialog'
+				},
+				{
+					filename: 'AnimatedDialog',
+					module: AnimatedDialog,
+					title: 'Animated Dialog'
 				}
 			],
 			overview: {
