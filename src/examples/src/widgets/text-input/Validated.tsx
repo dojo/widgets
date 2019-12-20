@@ -1,7 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import TextInput from '@dojo/widgets/text-input';
-import materialTheme from '@dojo/widgets/theme/material';
 
 const factory = create({ icache });
 
@@ -10,7 +9,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 	const valid = icache.get<{ valid?: boolean; message?: string }>('valid');
 	return (
 		<TextInput
-			theme={materialTheme}
 			value={value}
 			label="Type 'foo' or 'bar'"
 			valid={valid}
