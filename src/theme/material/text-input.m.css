@@ -1,2 +1,66 @@
+@import './variables.css';
+
+/* The root class of TextInput */
 .root {
+}
+
+/* Added to the input */
+.input {
+	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
+}
+/* Contains the input element */
+.inputWrapper {
+	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.label {
+	composes: mdc-floating-label from '@material/textfield/dist/mdc.textfield.css';
+}
+
+/* Added to a disabled TextInput */
+.disabled {
+	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
+}
+/* Added to a focused input */
+.focused {
+	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
+}
+/* Added to a read-only input */
+.readonly {
+}
+/* Added to a required input */
+.required {
+}
+/* Added when the contents of the TextInput are invalid */
+.invalid {
+}
+/* Contains leading content */
+.leading {
+}
+/* Contains trailing content */
+.trailing {
+}
+/* Added at the root when there is leading content */
+.hasLeading {
+	composes: mdc-text-field--with-leading-icon from '@material/textfield/dist/mdc.textfield.css';
+}
+
+/* Added at the root when there is trailing content */
+.hasTrailing {
+	composes: mdc-text-field--with-trailing-icon from '@material/textfield/dist/mdc.textfield.css';
+}
+
+/* Styles the helper text when the input is invalid */
+.invalid .helperText {
+	color: var(--error-color);
+}
+
+/* Styles the input when the input is invalid */
+.invalid .input {
+	border-color: var(--error-color);
+}
+
+/* Styles the input when the input is valid */
+.valid .input {
+	border-color: var(--success-color);
 }

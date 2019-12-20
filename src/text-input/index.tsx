@@ -260,22 +260,6 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 				role: 'presentation'
 			},
 			[
-				label &&
-					w(
-						Label,
-						{
-							theme,
-							classes,
-							disabled,
-							valid,
-							focused: focus.containsFocus,
-							readOnly,
-							required,
-							hidden: labelHidden,
-							forId: widgetId
-						},
-						[label]
-					),
 				v(
 					'div',
 					{
@@ -284,6 +268,22 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 						role: 'presentation'
 					},
 					[
+						label &&
+							w(
+								Label,
+								{
+									theme,
+									classes: this.theme(css.label),
+									disabled,
+									valid,
+									focused: focus.containsFocus,
+									readOnly,
+									required,
+									hidden: labelHidden,
+									forId: widgetId
+								},
+								[label]
+							),
 						leading &&
 							v('span', { key: 'leading', classes: this.theme(css.leading) }, [
 								leading()
