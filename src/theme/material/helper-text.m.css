@@ -1,0 +1,26 @@
+.root {
+	composes: mdc-text-field-helper-line from '@material/textfield/dist/mdc.textfield.css';
+	color: var(--medium-emphasis-dark);
+	position: absolute;
+	max-width: 100%;
+}
+
+.text {
+	composes: mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg from '@material/textfield/dist/mdc.textfield.css';
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.valid,
+.invalid {
+	composes: mdc-text-field-helper-text--validation-msg from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.valid {
+	color: var(--color-success);
+}
+
+.invalid {
+	color: var(--color-error);
+}

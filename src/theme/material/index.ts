@@ -15,6 +15,7 @@ import * as gridFooter from './grid-footer.m.css';
 import * as gridHeader from './grid-header.m.css';
 import * as gridPlaceholderRow from './grid-placeholder-row.m.css';
 import * as gridRow from './grid-row.m.css';
+import * as helperText from './helper-text.m.css';
 import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
 import * as progress from './progress.m.css';
@@ -48,6 +49,7 @@ export default {
 	'@dojo/widgets/grid-header': gridHeader,
 	'@dojo/widgets/grid-placeholder-row': gridPlaceholderRow,
 	'@dojo/widgets/grid-row': gridRow,
+	'@dojo/widgets/helper-text': helperText,
 	'@dojo/widgets/label': label,
 	'@dojo/widgets/listbox': listbox,
 	'@dojo/widgets/outlined-button': outlinedButton,
