@@ -244,7 +244,7 @@ export const Menu = factory(function({ properties, id, middleware: { icache, foc
 		icache.set('activeIndex', findIndex(options, (option) => option.value === initialValue));
 	}
 
-	if (itemsInView && itemsInView !== icache.get('itemsInView')) {
+	if (itemsInView !== icache.get('itemsInView')) {
 		icache.set('itemsInView', itemsInView);
 
 		const offscreenItemProps = {

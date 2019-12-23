@@ -15,7 +15,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 					icache.set('value', value);
 				}}
 				total={options.length}
-				itemsInView={10}
 			/>
 			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>{' '}
 		</virtual>
