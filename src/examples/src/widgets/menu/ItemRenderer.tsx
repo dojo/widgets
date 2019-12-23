@@ -18,6 +18,7 @@ export default factory(function ItemRenderer({ middleware: { icache } }) {
 					return <div styles={{ color: color }}>{value}</div>;
 				}}
 				itemsInView={8}
+				total={states.length}
 			/>
 			<p>{`Clicked On: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>

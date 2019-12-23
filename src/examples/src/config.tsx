@@ -126,6 +126,7 @@ import FocusTooltip from './widgets/tooltip/Focus';
 
 `!has('docs')`;
 import testsContext from './tests';
+import LargeOptionSet from './widgets/menu/LargeOptionSet';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -502,6 +503,12 @@ export const config = {
 					filename: 'ListBox',
 					module: ListBox,
 					title: 'List Box'
+				},
+				{
+					description: 'This example shows the menu rendering 100,000 options.',
+					filename: 'LargeOptionSet',
+					module: LargeOptionSet,
+					title: '100,000 options'
 				}
 			],
 			overview: {

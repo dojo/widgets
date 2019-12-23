@@ -15,6 +15,7 @@ export default factory(function ListBox({ middleware: { icache } }) {
 					icache.set('value', value);
 				}}
 				itemsInView={8}
+				total={states.length}
 			/>
 			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
