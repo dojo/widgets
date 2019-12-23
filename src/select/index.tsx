@@ -193,6 +193,7 @@ export const Select = factory(function Select({
 									key="menu"
 									focus={() => focusNode === 'menu' && shouldFocus}
 									options={options}
+									total={options.length}
 									onValue={(value: string) => {
 										focus.focus();
 										closeMenu();

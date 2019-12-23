@@ -127,11 +127,19 @@ export const Menu = factory(function({ properties, id, middleware: { icache, foc
 				break;
 			case Keys.Down:
 				event.preventDefault();
-				setActiveIndex((computedActiveIndex + 1) % total);
+				if (event.metaKey || event.ctrlKey) {
+					setActiveIndex(total - 1);
+				} else {
+					setActiveIndex((computedActiveIndex + 1) % total);
+				}
 				break;
 			case Keys.Up:
 				event.preventDefault();
-				setActiveIndex((computedActiveIndex - 1 + total) % total);
+				if (event.metaKey || event.ctrlKey) {
+					setActiveIndex(0);
+				} else {
+					setActiveIndex((computedActiveIndex - 1 + total) % total);
+				}
 				break;
 			case Keys.Escape:
 				event.preventDefault();
@@ -146,6 +154,9 @@ export const Menu = factory(function({ properties, id, middleware: { icache, foc
 				setActiveIndex(total - 1);
 				break;
 			default:
+				if (event.metaKey || event.ctrlKey) {
+					return;
+				}
 				const newIndex = getComputedIndexFromInput(event.key);
 				if (newIndex !== undefined) {
 					setActiveIndex(newIndex);
