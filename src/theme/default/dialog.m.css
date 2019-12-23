@@ -4,6 +4,10 @@
 .root {
 }
 
+/* Added to `.root` for an open dialog */
+.open {
+}
+
 /* Contains the dialog */
 .main {
 	position: fixed;
@@ -21,10 +25,6 @@
 /* Contains the title of the Dialog */
 .title {
 	position: relative;
-}
-
-/* Added to an open dialog */
-.open {
 }
 
 /* Added to the close control */
