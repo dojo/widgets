@@ -343,12 +343,14 @@ export const Menu = factory(function({ properties, id, middleware: { icache, foc
 				styles={{
 					height: `${totalContentHeight}px`
 				}}
+				key="wrapper"
 			>
 				<div
 					classes={fixedCss.transformer}
 					styles={{
 						transform: `translateY(${offsetY}px)`
 					}}
+					key="transformer"
 				>
 					{renderedItems}
 				</div>

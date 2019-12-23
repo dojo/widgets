@@ -16,7 +16,6 @@ describe('ListBoxItem', () => {
 			onpointermove={noop}
 			classes={[css.root, false, false, false]}
 			onpointerdown={noop}
-			scrollIntoView={false}
 			role="option"
 			aria-selected={false}
 			aria-disabled={false}
@@ -34,7 +33,7 @@ describe('ListBoxItem', () => {
 
 	it('renders with a label', () => {
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" onActive={noop} onRequestActive={noop} onSelect={noop}>
+			<ListBoxItem widgetId="test" onRequestActive={noop} onSelect={noop}>
 				test
 			</ListBoxItem>
 		));
@@ -43,13 +42,7 @@ describe('ListBoxItem', () => {
 
 	it('renders selected', () => {
 		const h = harness(() => (
-			<ListBoxItem
-				widgetId="test"
-				onActive={noop}
-				selected
-				onRequestActive={noop}
-				onSelect={noop}
-			>
+			<ListBoxItem widgetId="test" selected onRequestActive={noop} onSelect={noop}>
 				test
 			</ListBoxItem>
 		));
@@ -61,13 +54,7 @@ describe('ListBoxItem', () => {
 
 	it('renders disabled', () => {
 		const h = harness(() => (
-			<ListBoxItem
-				widgetId="test"
-				onActive={noop}
-				disabled
-				onRequestActive={noop}
-				onSelect={noop}
-			>
+			<ListBoxItem widgetId="test" disabled onRequestActive={noop} onSelect={noop}>
 				test
 			</ListBoxItem>
 		));
@@ -77,54 +64,25 @@ describe('ListBoxItem', () => {
 		h.expect(disabledTemplate);
 	});
 
-	it('renders with scroll into view', () => {
-		const h = harness(() => (
-			<ListBoxItem
-				widgetId="test"
-				onActive={noop}
-				scrollIntoView
-				onRequestActive={noop}
-				onSelect={noop}
-			>
-				test
-			</ListBoxItem>
-		));
-		const scrollIntoViewTemplate = template.setProperty('@root', 'scrollIntoView', true);
-		h.expect(scrollIntoViewTemplate);
-	});
-
 	it('renders active', () => {
-		const onActive = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem
-				widgetId="test"
-				onActive={onActive}
-				active
-				onRequestActive={noop}
-				onSelect={noop}
-			>
+			<ListBoxItem widgetId="test" active onRequestActive={noop} onSelect={noop}>
 				test
 			</ListBoxItem>
 		));
-		const disabledTemplate = template.setProperty('@root', 'classes', [
+		const activeTemplate = template.setProperty('@root', 'classes', [
 			css.root,
 			false,
 			css.active,
 			false
 		]);
-		h.expect(disabledTemplate);
-		assert.isTrue(onActive.calledOnce);
+		h.expect(activeTemplate);
 	});
 
 	it('requests active onpointermove', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem
-				widgetId="test"
-				onActive={noop}
-				onRequestActive={onRequestActive}
-				onSelect={noop}
-			>
+			<ListBoxItem widgetId="test" onRequestActive={onRequestActive} onSelect={noop}>
 				test
 			</ListBoxItem>
 		));
@@ -135,13 +93,7 @@ describe('ListBoxItem', () => {
 	it('does not request active onpointermove when disabled', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem
-				widgetId="test"
-				onActive={noop}
-				disabled
-				onRequestActive={onRequestActive}
-				onSelect={noop}
-			>
+			<ListBoxItem widgetId="test" disabled onRequestActive={onRequestActive} onSelect={noop}>
 				test
 			</ListBoxItem>
 		));
@@ -152,7 +104,7 @@ describe('ListBoxItem', () => {
 	it('calls onSelect onpointerdown', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" onActive={noop} onRequestActive={noop} onSelect={onSelect}>
+			<ListBoxItem widgetId="test" onRequestActive={noop} onSelect={onSelect}>
 				test
 			</ListBoxItem>
 		));
@@ -163,13 +115,7 @@ describe('ListBoxItem', () => {
 	it('does not call onSelect onpointerdown when disabled', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem
-				widgetId="test"
-				onActive={noop}
-				disabled
-				onRequestActive={noop}
-				onSelect={onSelect}
-			>
+			<ListBoxItem widgetId="test" disabled onRequestActive={noop} onSelect={onSelect}>
 				test
 			</ListBoxItem>
 		));
