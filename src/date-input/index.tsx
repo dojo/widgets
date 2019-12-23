@@ -7,7 +7,6 @@ import TextInput from '../text-input';
 import Icon from '@dojo/widgets/icon';
 import Popup from '../popup';
 import * as css from '../theme/default/date-input.m.css';
-
 import bundle from './nls/DateInput';
 
 export interface DateInputProperties {
@@ -66,6 +65,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 			icache.set('date', newDate);
 			icache.set('month', newDate.getMonth());
 			icache.set('year', newDate.getFullYear());
+			icache.set('value', formatDate(newDate));
 			if (onValue) {
 				onValue(newDate);
 			}
@@ -89,7 +89,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 										</div>
 									)}
 									type="text"
-									value={value}
+									value={icache.get('value')}
 									onBlur={() => icache.set('shouldValidate', true)}
 									onValue={(v) => icache.set('value', v || '')}
 									helperText={(icache.get('validationMessages') || []).join('; ')}
