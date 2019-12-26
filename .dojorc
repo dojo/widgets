@@ -16,6 +16,7 @@
 			"src/combobox",
 			"src/constrained-input",
 			"src/context-menu",
+			"src/date-input",
 			"src/context-popup",
 			"src/dialog",
 			"src/email-input",

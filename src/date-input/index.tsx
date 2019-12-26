@@ -4,7 +4,7 @@ import { i18n } from '@dojo/framework/core/middleware/i18n';
 import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
-import Icon from '@dojo/widgets/icon';
+import Icon from '../icon';
 import Popup from '../popup';
 import * as css from '../theme/default/date-input.m.css';
 import bundle from './nls/DateInput';
@@ -54,21 +54,24 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 
 		if (min && max && min > max) {
 			validationMessages.push(messages.invalidProps);
-		}
-
-		if (isNaN(Date.parse(value))) {
-			validationMessages.push(messages.invalidDate);
-		}
-
-		if (validationMessages.length === 0) {
+		} else if (!isNaN(Date.parse(value))) {
 			const newDate = new Date(value);
-			icache.set('date', newDate);
-			icache.set('month', newDate.getMonth());
-			icache.set('year', newDate.getFullYear());
-			icache.set('value', formatDate(newDate));
-			if (onValue) {
-				onValue(newDate);
+
+			if (min && newDate < min) {
+				validationMessages.push(messages.tooEarly);
+			} else if (max && newDate > max) {
+				validationMessages.push(messages.tooLate);
+			} else {
+				icache.set('date', newDate);
+				icache.set('month', newDate.getMonth());
+				icache.set('year', newDate.getFullYear());
+				icache.set('value', formatDate(newDate));
+				if (onValue) {
+					onValue(newDate);
+				}
 			}
+		} else {
+			validationMessages.push(messages.invalidDate);
 		}
 
 		icache.set('validationMessages', validationMessages);
@@ -77,14 +80,15 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 
 	return (
 		<div classes={classes.root}>
-			<Popup>
+			<Popup key="popup">
 				{{
 					trigger: (toggleOpen) => {
 						return (
 							<div classes={classes.input}>
 								<TextInput
+									key="input"
 									trailing={() => (
-										<div onclick={toggleOpen}>
+										<div key="dateIcon" onclick={toggleOpen}>
 											<Icon type="dateIcon" />
 										</div>
 									)}
@@ -101,6 +105,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 						return (
 							<div classes={classes.popup}>
 								<Calendar
+									key="calendar"
 									maxDate={max}
 									minDate={min}
 									month={icache.get('month')}
