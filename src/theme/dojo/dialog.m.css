@@ -63,6 +63,6 @@
 	transform: translateY(-50%);
 }
 
-.close i {
+.closeIcon {
 	font-size: var(--font-size-title);
 }
