@@ -1,7 +1,6 @@
 @import './variables.css';
 
 .root,
-.root *,
 .root:before,
 .root:after {
 	box-sizing: border-box;

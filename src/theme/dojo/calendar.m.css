@@ -1,9 +1,6 @@
 @import './variables.css';
 
-.root,
-.root *,
-.root *::before,
-.root *::after {
+.root {
 	box-sizing: border-box;
 }
 
@@ -39,7 +36,7 @@
 	text-transform: uppercase;
 }
 
-.weekday abbr {
+.weekday .abbr {
 	text-decoration: none;
 }
 
@@ -139,8 +136,11 @@
 	width: calc(var(--spacing-large) + 2px);
 }
 
-.previous i,
-.next i {
+.icon {
+}
+
+.previous .icon,
+.next .icon {
 	position: relative;
 	left: calc((var(--spacing-large) - var(--font-size-icon)) / 2);
 }

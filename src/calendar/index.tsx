@@ -387,7 +387,9 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			w(Icon, { type: iconType, theme, classes }),
+			v('span', { classes: [this.theme(css.icon)] }, [
+				w(Icon, { type: iconType, theme, classes })
+			]),
 			v('span', { classes: [baseCss.visuallyHidden] }, [labelText])
 		];
 	}
@@ -396,7 +398,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const { renderWeekdayCell } = this.properties;
 		return renderWeekdayCell
 			? renderWeekdayCell(day)
-			: v('abbr', { title: day.long }, [day.short]);
+			: v('abbr', { class: this.theme(css.abbr), title: day.long }, [day.short]);
 	}
 
 	protected render(): DNode {
