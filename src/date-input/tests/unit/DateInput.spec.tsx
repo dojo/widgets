@@ -123,10 +123,13 @@ describe('DateInput', () => {
 		const [input] = select('@input', triggerResult);
 		onValue.resetHistory();
 		input.properties.onValue(formatDate(expected));
+
+		h.expect(baseTemplate);
 		sinon.assert.notCalled(onValue); // onValue not called until validated; validation delayed for manual input until blur
 
 		// If `onValue` is called, the input was accepted & validated
 		input.properties.onBlur();
+		h.expect(baseTemplate);
 		sinon.assert.calledWith(onValue, expected);
 
 		// The icon wasn't clicked; the calendar should NOT have been shown
@@ -136,6 +139,7 @@ describe('DateInput', () => {
 	it('allows date picker entry', () => {
 		const expected = new Date('12/19/2019');
 		const h = harness(() => <DateInput onValue={onValue} />);
+		h.expect(baseTemplate);
 
 		const onClose = sinon.stub();
 		const contentResult = h.trigger(
@@ -149,6 +153,14 @@ describe('DateInput', () => {
 		const [calendar] = select('@calendar', contentResult);
 		onValue.resetHistory();
 		calendar.properties.onDateSelect(expected);
+
+		// Find the input; it should contain the new value
+		h.expect(baseTemplate);
+		const [input] = select(
+			'@input',
+			h.trigger('@popup', (node) => (node.children as any)[0].trigger)
+		);
+		assert(input.properties.value, formatDate(expected));
 
 		// If `onValue` is called, the input was accepted & validated
 		sinon.assert.calledWith(onValue, expected);
@@ -167,12 +179,18 @@ describe('DateInput', () => {
 		);
 
 		// Find the input widget and give it a bad value
-		const [input] = select('@input', triggerResult);
+		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
 		input.properties.onValue('foobar');
+		input.properties.onBlur();
+		h.expect(baseTemplate);
 
 		// With invalid input, `onValue` should not have been called & message should be displayed
 		sinon.assert.notCalled(onValue);
+		[input] = select(
+			'@input',
+			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
+		);
 		assert.equal(input.properties.helperText, messages.invalidDate);
 	});
 
@@ -188,21 +206,31 @@ describe('DateInput', () => {
 		);
 
 		// Find the input widget and give it a value before the min date
-		const [input] = select('@input', triggerResult);
+		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
 		input.properties.onValue('11/11/2019');
 		input.properties.onBlur();
+		h.expect(baseTemplate);
 
 		// With invalud input, `onValue` should not have been called & message should be displayed
 		sinon.assert.notCalled(onValue);
+		[input] = select(
+			'@input',
+			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
+		);
 		assert.equal(input.properties.helperText, messages.tooEarly);
 
 		// Set value after the max date
 		onValue.resetHistory();
 		input.properties.onValue('1/22/2020');
 		input.properties.onBlur();
+		h.expect(baseTemplate);
 
 		// With invalud input, `onValue` should not have been called & message should be displayed
+		[input] = select(
+			'@input',
+			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
+		);
 		assert.equal(input.properties.helperText, messages.tooLate);
 	});
 

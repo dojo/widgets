@@ -53,6 +53,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 		let validationMessages: string[] = [];
 
 		if (min && max && min > max) {
+			// if min & max create an impossible range, no need to validate anything else
 			validationMessages.push(messages.invalidProps);
 		} else if (!isNaN(Date.parse(value))) {
 			const newDate = new Date(value);
