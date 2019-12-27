@@ -1,0 +1,15 @@
+@import './variables.css';
+
+.root {
+	font-size: var(--font-size-base);
+	display: flex;
+	flex-direction: column;
+}
+
+.select {
+	cursor: pointer;
+}
+
+.disabled {
+	cursor: inherit;
+}

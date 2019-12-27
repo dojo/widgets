@@ -23,6 +23,7 @@ import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
 import * as menu from './menu.m.css';
 import * as menuItem from './menu-item.m.css';
+import * as nativeSelect from './native-select.m.css';
 import * as listBoxItem from './list-box-item.m.css';
 import * as outlinedButton from './outlined-button.m.css';
 import * as passwordInput from './password-input.m.css';
@@ -70,6 +71,7 @@ export default {
 	'@dojo/widgets/listbox': listbox,
 	'@dojo/widgets/menu': menu,
 	'@dojo/widgets/menu-item': menuItem,
+	'@dojo/widgets/native-select': nativeSelect,
 	'@dojo/widgets/list-box-item': listBoxItem,
 	'@dojo/widgets/outlined-button': outlinedButton,
 	'@dojo/widget/password-input': passwordInput,

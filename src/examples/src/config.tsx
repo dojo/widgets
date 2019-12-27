@@ -170,6 +170,7 @@ import HeadingCollapsedToolbar from './widgets/toolbar/HeadingCollapsed';
 import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
+import BasicNativeSelect from './widgets/native-select/Basic';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -675,6 +676,14 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicMenu
+				}
+			}
+		},
+		'native-select': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicNativeSelect
 				}
 			}
 		},

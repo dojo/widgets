@@ -1,0 +1,19 @@
+@import './variables.css';
+
+.root {
+	font-size: var(--font-size-base);
+	display: flex;
+	flex-direction: column;
+}
+
+.select {
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+	cursor: pointer;
+	line-height: var(--line-height-base);
+	height: calc(var(--line-height-base) + 2 * var(--grid-base) + 2 * var(--border-width));
+}
+
+.disabled {
+	cursor: inherit;
+}
