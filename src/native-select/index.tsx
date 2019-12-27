@@ -13,7 +13,7 @@ interface SelectInputEvent extends InputEvent {
 	target: HTMLInputElement;
 }
 
-interface NativeSelectProperties {
+export interface NativeSelectProperties {
 	/** Callback called when user selects a value */
 	onValue?(value: string): void;
 	/** The initial selected value */
