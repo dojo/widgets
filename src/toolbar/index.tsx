@@ -104,9 +104,14 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 			},
 			[
 				open,
-				v('span', { classes: this.theme(css.toggleIcon) }, [
-					w(Icon, { type: 'barsIcon', theme, classes })
-				])
+				w(Icon, {
+					type: 'barsIcon',
+					theme,
+					classes: {
+						...classes,
+						'@dojo/widgets/icon': { icon: [this.theme(css.toggleIcon)] }
+					}
+				})
 			]
 		);
 	}

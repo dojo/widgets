@@ -158,9 +158,13 @@ registerSuite('Toolbar', {
 				},
 				[
 					'open',
-					v('span', { classes: css.toggleIcon }, [
-						w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })
-					])
+					w(Icon, {
+						type: 'barsIcon',
+						theme: undefined,
+						classes: {
+							'@dojo/widgets/icon': { icon: [css.toggleIcon] }
+						}
+					})
 				]
 			);
 
@@ -293,9 +297,13 @@ registerSuite('Toolbar', {
 				},
 				[
 					'open',
-					v('span', { classes: css.toggleIcon }, [
-						w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })
-					])
+					w(Icon, {
+						type: 'barsIcon',
+						theme: undefined,
+						classes: {
+							'@dojo/widgets/icon': { icon: [css.toggleIcon] }
+						}
+					})
 				]
 			);
 
