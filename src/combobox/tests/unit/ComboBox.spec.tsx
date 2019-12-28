@@ -117,10 +117,10 @@ const getExpectedControls = function(
 				valid,
 				readOnly,
 				required,
-				theme: {
-					'@dojo/widgets/text-input': { input: css.input }
+				theme: useTestProperties ? {} : undefined,
+				classes: {
+					'@dojo/widgets/text-input': { input: [css.input] }
 				},
-				classes: undefined,
 				value: useTestProperties ? 'one' : '',
 				onBlur: noop,
 				onFocus: noop,
@@ -632,10 +632,10 @@ registerSuite('ComboBox', {
 					widgetId: '',
 					readOnly: undefined,
 					required: undefined,
-					theme: {
-						'@dojo/widgets/text-input': { input: css.input }
+					theme: undefined,
+					classes: {
+						'@dojo/widgets/text-input': { input: [css.input] }
 					},
-					classes: undefined,
 					value: '',
 					onBlur: noop,
 					onFocus: noop,
@@ -685,10 +685,10 @@ registerSuite('ComboBox', {
 					disabled: true,
 					readOnly: true,
 					required: true,
-					theme: {
-						'@dojo/widgets/text-input': { input: css.input }
+					theme: {},
+					classes: {
+						'@dojo/widgets/text-input': { input: [css.input] }
 					},
-					classes: undefined,
 					value: 'one',
 					onBlur: noop,
 					onFocus: noop,
@@ -758,7 +758,9 @@ registerSuite('ComboBox', {
 			h.expectPartial('@textinput', () =>
 				w(TextInput, {
 					key: 'textinput',
-					classes: undefined,
+					classes: {
+						'@dojo/widgets/text-input': { input: [css.input] }
+					},
 					aria: {
 						activedescendant: '',
 						controls: '',
@@ -770,9 +772,7 @@ registerSuite('ComboBox', {
 					disabled: true,
 					readOnly: true,
 					required: true,
-					theme: {
-						'@dojo/widgets/text-input': { input: css.input }
-					},
+					theme: {},
 					value: 'one',
 					onBlur: noop,
 					onFocus: noop,

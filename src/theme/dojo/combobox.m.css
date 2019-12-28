@@ -10,9 +10,6 @@
 	width: 100%;
 }
 
-.input {
-}
-
 .root .input {
 	min-width: 200px;
 	padding: var(--spacing-regular) calc(var(--spacing-regular) * 6) var(--spacing-regular)
