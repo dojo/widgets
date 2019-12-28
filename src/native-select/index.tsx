@@ -9,10 +9,6 @@ import * as css from '../theme/default/native-select.m.css';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
-interface SelectInputEvent extends InputEvent {
-	target: HTMLInputElement;
-}
-
 export interface NativeSelectProperties {
 	/** Callback called when user selects a value */
 	onValue?(value: string): void;
@@ -89,10 +85,11 @@ export const NativeSelect = factory(function NativeSelect({
 			</label>
 			<select
 				key="native-select"
-				onchange={(event: SelectInputEvent) => {
+				onchange={(event: Event) => {
+					const targetElement = event.target as HTMLInputElement;
 					selectedValue !== icache.get('value') &&
-						icache.set('value', event.target.value);
-					onValue && onValue(event.target.value);
+						icache.set('value', targetElement.value);
+					onValue && onValue(targetElement.value);
 				}}
 				disabled={disabled}
 				name={name}
