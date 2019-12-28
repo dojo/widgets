@@ -117,7 +117,9 @@ const getExpectedControls = function(
 				valid,
 				readOnly,
 				required,
-				theme: useTestProperties ? {} : undefined,
+				theme: {
+					'@dojo/widgets/text-input': { input: css.input }
+				},
 				classes: undefined,
 				value: useTestProperties ? 'one' : '',
 				onBlur: noop,
@@ -630,7 +632,9 @@ registerSuite('ComboBox', {
 					widgetId: '',
 					readOnly: undefined,
 					required: undefined,
-					theme: undefined,
+					theme: {
+						'@dojo/widgets/text-input': { input: css.input }
+					},
 					classes: undefined,
 					value: '',
 					onBlur: noop,
@@ -681,7 +685,9 @@ registerSuite('ComboBox', {
 					disabled: true,
 					readOnly: true,
 					required: true,
-					theme: {},
+					theme: {
+						'@dojo/widgets/text-input': { input: css.input }
+					},
 					classes: undefined,
 					value: 'one',
 					onBlur: noop,
@@ -764,7 +770,9 @@ registerSuite('ComboBox', {
 					disabled: true,
 					readOnly: true,
 					required: true,
-					theme: {},
+					theme: {
+						'@dojo/widgets/text-input': { input: css.input }
+					},
 					value: 'one',
 					onBlur: noop,
 					onFocus: noop,

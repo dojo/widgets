@@ -7,10 +7,6 @@
 	line-height: var(--line-height-base);
 }
 
-.root * {
-	box-sizing: border-box;
-}
-
 .underlayVisible {
 	background: var(--color-box-shadow-strong);
 	z-index: var(--zindex-dialog);
@@ -50,7 +46,7 @@
 	transform: translateY(-50%);
 }
 
-.close i {
+.close .closeIcon {
 	font-size: var(--font-size-title);
 }
 

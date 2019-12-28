@@ -104,7 +104,9 @@ const expected = function(
 									[
 										weekdayLabel
 											? weekdayLabel
-											: v('abbr', { title: weekday.long }, [weekday.short])
+											: v('abbr', { title: weekday.long, class: css.abbr }, [
+													weekday.short
+											  ])
 									]
 								)
 							)
@@ -184,7 +186,9 @@ const expected = function(
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
+							v('span', { classes: [css.icon] }, [
+								w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined })
+							]),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
 						]
 					),
@@ -198,7 +202,9 @@ const expected = function(
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
+							v('span', { classes: [css.icon] }, [
+								w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined })
+							]),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
 						]
 					)
@@ -251,7 +257,11 @@ const baseTemplate = assertionTemplate(() => {
 										role: 'columnheader',
 										classes: css.weekday
 									},
-									[v('abbr', { title: weekday.long }, [weekday.short])]
+									[
+										v('abbr', { title: weekday.long, class: css.abbr }, [
+											weekday.short
+										])
+									]
 								)
 							)
 						)
@@ -331,7 +341,9 @@ const baseTemplate = assertionTemplate(() => {
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
+							v('span', { classes: [css.icon] }, [
+								w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined })
+							]),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
 						]
 					),
@@ -346,7 +358,9 @@ const baseTemplate = assertionTemplate(() => {
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
+							v('span', { classes: [css.icon] }, [
+								w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined })
+							]),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
 						]
 					)
@@ -728,9 +742,14 @@ registerSuite('Custom first day of week', {
 										classes: css.weekday
 									},
 									[
-										v('abbr', { title: DEFAULT_WEEKDAYS[order].long }, [
-											DEFAULT_WEEKDAYS[order].short
-										])
+										v(
+											'abbr',
+											{
+												title: DEFAULT_WEEKDAYS[order].long,
+												class: css.abbr
+											},
+											[DEFAULT_WEEKDAYS[order].short]
+										)
 									]
 								)
 							)

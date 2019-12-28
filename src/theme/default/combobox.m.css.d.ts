@@ -8,3 +8,5 @@ export const valid: string;
 export const invalid: string;
 export const open: string;
 export const clearable: string;
+export const input: string;
+export const icon: string;

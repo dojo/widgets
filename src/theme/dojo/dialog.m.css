@@ -6,8 +6,7 @@
 	line-height: var(--line-height-base);
 }
 
-.root,
-.root * {
+.root {
 	box-sizing: border-box;
 }
 
@@ -63,7 +62,7 @@
 	transform: translateY(-50%);
 }
 
-.closeIcon {
+.close .closeIcon {
 	font-size: var(--font-size-title);
 }
 

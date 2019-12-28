@@ -301,6 +301,10 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			...inputProperties,
 			key: 'textinput',
 			classes,
+			theme: {
+				...theme,
+				'@dojo/widgets/text-input': { input: this.theme(css.input) }
+			},
 			aria: {
 				activedescendant: this._open
 					? this._getResultId(results[this._activeIndex], this._activeIndex)
@@ -318,7 +322,6 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			onValidate,
 			readOnly,
 			required,
-			theme,
 			value
 		});
 	}

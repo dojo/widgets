@@ -156,7 +156,12 @@ registerSuite('Toolbar', {
 					type: 'button',
 					onclick: noop
 				},
-				['open', w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })]
+				[
+					'open',
+					v('span', { classes: css.toggleIcon }, [
+						w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })
+					])
+				]
 			);
 
 			h.expect(() =>
@@ -286,7 +291,12 @@ registerSuite('Toolbar', {
 					type: 'button',
 					onclick: noop
 				},
-				['open', w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })]
+				[
+					'open',
+					v('span', { classes: css.toggleIcon }, [
+						w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })
+					])
+				]
 			);
 
 			h.expect(() =>

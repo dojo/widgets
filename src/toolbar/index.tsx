@@ -102,7 +102,12 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 				type: 'button',
 				onclick: this._toggleMenu
 			},
-			[open, w(Icon, { type: 'barsIcon', theme, classes })]
+			[
+				open,
+				v('span', { classes: this.theme(css.toggleIcon) }, [
+					w(Icon, { type: 'barsIcon', theme, classes })
+				])
+			]
 		);
 	}
 

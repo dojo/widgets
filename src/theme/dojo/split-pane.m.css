@@ -7,10 +7,6 @@
 	line-height: var(--line-height-base);
 }
 
-.root * {
-	box-sizing: border-box;
-}
-
 .divider {
 	background-color: var(--color-border);
 	box-sizing: content-box;
