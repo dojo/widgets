@@ -387,9 +387,14 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
-			v('span', { classes: [this.theme(css.icon)] }, [
-				w(Icon, { type: iconType, theme, classes })
-			]),
+			w(Icon, {
+				type: iconType,
+				theme,
+				classes: {
+					...classes,
+					'@dojo/widgets/icon': { icon: [this.theme(css.icon)] }
+				}
+			}),
 			v('span', { classes: [baseCss.visuallyHidden] }, [labelText])
 		];
 	}

@@ -186,9 +186,11 @@ const expected = function(
 							onclick: noop
 						},
 						[
-							v('span', { classes: [css.icon] }, [
-								w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined })
-							]),
+							w(Icon, {
+								type: 'leftIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
 						]
 					),
@@ -202,9 +204,11 @@ const expected = function(
 							onclick: noop
 						},
 						[
-							v('span', { classes: [css.icon] }, [
-								w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined })
-							]),
+							w(Icon, {
+								type: 'rightIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
 						]
 					)
@@ -341,9 +345,11 @@ const baseTemplate = assertionTemplate(() => {
 							onclick: noop
 						},
 						[
-							v('span', { classes: [css.icon] }, [
-								w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined })
-							]),
+							w(Icon, {
+								type: 'leftIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
 						]
 					),
@@ -358,9 +364,11 @@ const baseTemplate = assertionTemplate(() => {
 							onclick: noop
 						},
 						[
-							v('span', { classes: [css.icon] }, [
-								w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined })
-							]),
+							w(Icon, {
+								type: 'rightIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
 						]
 					)
