@@ -206,7 +206,9 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			valid === false ? css.invalid : null,
 			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null
+			required ? css.required : null,
+			leading ? css.hasLeading : null,
+			trailing ? css.hasTrailing : null
 		];
 	}
 
@@ -251,16 +253,8 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 		const computedHelperText = (valid === false && message) || helperText;
 
 		return (
-			<div key="root" classes={this.theme(this.getRootClasses())} role="presentation">
-				<div
-					key="wrapper"
-					classes={this.theme([
-						css.wrapper,
-						leading ? css.hasLeading : null,
-						trailing ? css.hasTrailing : null
-					])}
-					role="presentation"
-				>
+			<virtual>
+				<div key="root" classes={this.theme(this.getRootClasses())} role="presentation">
 					{label && (
 						<Label
 							theme={theme}
@@ -346,7 +340,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 					classes={classes}
 					theme={theme}
 				/>
-			</div>
+			</virtual>
 		);
 	}
 }

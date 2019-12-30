@@ -2,10 +2,10 @@
 
 /* The root class of TextInput */
 .root {
+	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
 }
 
 .wrapper {
-	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
 }
 
 /* Added to the input */
