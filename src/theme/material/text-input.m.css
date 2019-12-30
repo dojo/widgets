@@ -4,17 +4,20 @@
 .root {
 }
 
+.wrapper {
+	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
+}
+
 /* Added to the input */
 .input {
 	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
 }
 /* Contains the input element */
 .inputWrapper {
-	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
 }
 
 .label {
-	composes: mdc-floating-label from '@material/textfield/dist/mdc.textfield.css';
+	composes: mdc-floating-label mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
 }
 
 /* Added to a disabled TextInput */
@@ -36,9 +39,11 @@
 }
 /* Contains leading content */
 .leading {
+	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
 }
 /* Contains trailing content */
 .trailing {
+	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
 }
 /* Added at the root when there is leading content */
 .hasLeading {
@@ -63,4 +68,12 @@
 /* Styles the input when the input is valid */
 .valid .input {
 	border-color: var(--success-color);
+}
+
+.helperTextWrapper {
+	composes: mdc-text-field-helper-line from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.helperText {
+	composes: mdc-text-field-helper-text from '@material/textfield/dist/mdc.textfield.css';
 }

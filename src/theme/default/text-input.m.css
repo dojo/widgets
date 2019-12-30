@@ -6,6 +6,10 @@
 /* The root class of TextInput */
 .root {
 }
+
+.wrapper {
+}
+
 /* Contains the input element */
 .inputWrapper {
 }
@@ -35,6 +39,15 @@
 }
 /* Added at the root when there is trailing content */
 .hasTrailing {
+}
+
+.label {
+}
+
+.helperTextWrapper {
+}
+
+.helperText {
 }
 
 /* Styles the helper text when the input is invalid */

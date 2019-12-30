@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode, PropertyChangeRecord } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v, w } from '@dojo/framework/core/vdom';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import Focus from '../meta/Focus';
 import InputValidity from '@dojo/framework/core/meta/InputValidity';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
@@ -206,9 +206,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 			valid === false ? css.invalid : null,
 			valid === true ? css.valid : null,
 			readOnly ? css.readonly : null,
-			required ? css.required : null,
-			leading ? css.hasLeading : null,
-			trailing ? css.hasTrailing : null
+			required ? css.required : null
 		];
 	}
 
@@ -252,91 +250,104 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 		const computedHelperText = (valid === false && message) || helperText;
 
-		return v(
-			'div',
-			{
-				key: 'root',
-				classes: this.theme(this.getRootClasses()),
-				role: 'presentation'
-			},
-			[
-				v(
-					'div',
-					{
-						key: 'inputWrapper',
-						classes: this.theme(css.inputWrapper),
-						role: 'presentation'
-					},
-					[
-						label &&
-							w(
-								Label,
-								{
-									theme,
-									classes: this.theme(css.label),
-									disabled,
-									valid,
-									focused: focus.containsFocus,
-									readOnly,
-									required,
-									hidden: labelHidden,
-									forId: widgetId
-								},
-								[label]
-							),
-						leading &&
-							v('span', { key: 'leading', classes: this.theme(css.leading) }, [
-								leading()
-							]),
-						v('input', {
-							...formatAriaProperties(aria),
-							'aria-invalid': valid === false ? 'true' : null,
-							autocomplete: formatAutocomplete(autocomplete),
-							classes: this.theme(css.input),
-							disabled,
-							id: widgetId,
-							focus: this.shouldFocus,
-							key: 'input',
-							max,
-							maxlength: maxLength ? `${maxLength}` : null,
-							min,
-							minlength: minLength ? `${minLength}` : null,
-							name,
-							pattern,
-							placeholder,
-							readOnly,
-							'aria-readonly': readOnly ? 'true' : null,
-							required,
-							step,
-							type,
-							value,
-							onblur: () => {
-								onBlur && onBlur();
-							},
-							onfocus: () => {
-								onFocus && onFocus();
-							},
-							oninput: this._onInput,
-							onkeydown: this._onKeyDown,
-							onkeyup: this._onKeyUp,
-							onclick: () => {
-								onClick && onClick();
-							},
-							onpointerenter: () => {
-								onOver && onOver();
-							},
-							onpointerleave: () => {
-								onOut && onOut();
+		return (
+			<div key="root" classes={this.theme(this.getRootClasses())} role="presentation">
+				<div key="inputWrapper" classes={this.theme([css.wrapper])} role="presentation">
+					{label && (
+						<Label
+							theme={theme}
+							disabled={disabled}
+							valid={valid}
+							focused={focus.containsFocus}
+							readOnly={readOnly}
+							required={required}
+							hidden={labelHidden}
+							forId={widgetId}
+							classes={
+								classes || {
+									'@dojo/widgets/label': {
+										root: [this.theme(css.label)]
+									}
+								}
 							}
-						}),
-						trailing &&
-							v('span', { key: 'trailing', classes: this.theme(css.trailing) }, [
-								trailing()
-							])
-					]
-				),
-				w(HelperText, { text: computedHelperText, valid, classes, theme })
-			]
+						>
+							{label}
+						</Label>
+					)}
+					<div
+						classes={this.theme([
+							css.inputWrapper,
+							leading ? css.hasLeading : null,
+							trailing ? css.hasTrailing : null
+						])}
+					>
+						{leading && (
+							<span key="leading" classes={this.theme(css.leading)}>
+								{leading()}
+							</span>
+						)}
+						<input
+							{...formatAriaProperties(aria)}
+							aria-invalid={valid === false ? 'true' : null}
+							autocomplete={formatAutocomplete(autocomplete)}
+							classes={this.theme(css.input)}
+							disabled={disabled}
+							id={widgetId}
+							focus={this.shouldFocus}
+							key={'input'}
+							max={max}
+							maxlength={maxLength ? `${maxLength}` : null}
+							min={min}
+							minlength={minLength ? `${minLength}` : null}
+							name={name}
+							pattern={pattern}
+							placeholder={placeholder}
+							readOnly={readOnly}
+							aria-readonly={readOnly ? 'true' : null}
+							required={required}
+							step={step}
+							type={type}
+							value={value}
+							onblur={() => {
+								onBlur && onBlur();
+							}}
+							onfocus={() => {
+								onFocus && onFocus();
+							}}
+							oninput={this._onInput}
+							onkeydown={this._onKeyDown}
+							onkeyup={this._onKeyUp}
+							onclick={() => {
+								onClick && onClick();
+							}}
+							onpointerenter={() => {
+								onOver && onOver();
+							}}
+							onpointerleave={() => {
+								onOut && onOut();
+							}}
+						/>
+						{trailing && (
+							<span key="trailing" classes={this.theme(css.trailing)}>
+								{trailing()}
+							</span>
+						)}
+					</div>
+				</div>
+				<HelperText
+					text={computedHelperText}
+					valid={valid}
+					classes={
+						classes || {
+							'dojo/widgets/helper-text': {
+								root: [this.theme(css.helperTextWrapper)],
+								text: [this.theme(css.helperText)]
+							}
+						}
+					}
+					theme={theme}
+				/>
+			</div>
 		);
 	}
 }

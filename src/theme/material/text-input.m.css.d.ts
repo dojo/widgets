@@ -1,4 +1,5 @@
 export const root: string;
+export const wrapper: string;
 export const input: string;
 export const inputWrapper: string;
 export const label: string;
@@ -13,3 +14,4 @@ export const hasLeading: string;
 export const hasTrailing: string;
 export const helperText: string;
 export const valid: string;
+export const helperTextWrapper: string;
