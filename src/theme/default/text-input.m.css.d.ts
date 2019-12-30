@@ -12,6 +12,5 @@ export const trailing: string;
 export const hasLeading: string;
 export const hasTrailing: string;
 export const label: string;
-export const helperTextWrapper: string;
 export const helperText: string;
 export const valid: string;

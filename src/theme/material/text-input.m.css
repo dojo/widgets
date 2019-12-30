@@ -69,11 +69,3 @@
 .valid .input {
 	border-color: var(--success-color);
 }
-
-.helperTextWrapper {
-	composes: mdc-text-field-helper-line from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.helperText {
-	composes: mdc-text-field-helper-text from '@material/textfield/dist/mdc.textfield.css';
-}

@@ -1,7 +1,7 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { DNode, PropertyChangeRecord } from '@dojo/framework/core/interfaces';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v, w, tsx } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 import Focus from '../meta/Focus';
 import InputValidity from '@dojo/framework/core/meta/InputValidity';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
@@ -253,7 +253,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 		return (
 			<div key="root" classes={this.theme(this.getRootClasses())} role="presentation">
 				<div
-					key="inputWrapper"
+					key="wrapper"
 					classes={this.theme([
 						css.wrapper,
 						leading ? css.hasLeading : null,
@@ -282,7 +282,11 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							{label}
 						</Label>
 					)}
-					<div classes={this.theme([css.inputWrapper])}>
+					<div
+						key="inputWrapper"
+						classes={this.theme([css.inputWrapper])}
+						role="presentation"
+					>
 						{leading && (
 							<span key="leading" classes={this.theme(css.leading)}>
 								{leading()}
@@ -339,14 +343,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 				<HelperText
 					text={computedHelperText}
 					valid={valid}
-					classes={
-						classes || {
-							'dojo/widgets/helper-text': {
-								root: [this.theme(css.helperTextWrapper)],
-								text: [this.theme(css.helperText)]
-							}
-						}
-					}
+					classes={classes}
 					theme={theme}
 				/>
 			</div>

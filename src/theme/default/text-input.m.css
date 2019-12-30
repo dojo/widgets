@@ -41,13 +41,8 @@
 .hasTrailing {
 }
 
+/* passed to the text-input's Label's root component */
 .label {
-}
-
-.helperTextWrapper {
-}
-
-.helperText {
 }
 
 /* Styles the helper text when the input is invalid */
