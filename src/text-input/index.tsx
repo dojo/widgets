@@ -278,7 +278,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 					)}
 					<div
 						key="inputWrapper"
-						classes={this.theme([css.inputWrapper])}
+						classes={this.theme(css.inputWrapper)}
 						role="presentation"
 					>
 						{leading && (
