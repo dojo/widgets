@@ -252,7 +252,15 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 
 		return (
 			<div key="root" classes={this.theme(this.getRootClasses())} role="presentation">
-				<div key="inputWrapper" classes={this.theme([css.wrapper])} role="presentation">
+				<div
+					key="inputWrapper"
+					classes={this.theme([
+						css.wrapper,
+						leading ? css.hasLeading : null,
+						trailing ? css.hasTrailing : null
+					])}
+					role="presentation"
+				>
 					{label && (
 						<Label
 							theme={theme}
@@ -274,13 +282,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							{label}
 						</Label>
 					)}
-					<div
-						classes={this.theme([
-							css.inputWrapper,
-							leading ? css.hasLeading : null,
-							trailing ? css.hasTrailing : null
-						])}
-					>
+					<div classes={this.theme([css.inputWrapper])}>
 						{leading && (
 							<span key="leading" classes={this.theme(css.leading)}>
 								{leading()}
