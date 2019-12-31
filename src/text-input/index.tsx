@@ -1,17 +1,15 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { DNode, PropertyChangeRecord } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { tsx } from '@dojo/framework/core/vdom';
-import Focus from '../meta/Focus';
-import InputValidity from '@dojo/framework/core/meta/InputValidity';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import Label from '../label/index';
-import { formatAriaProperties } from '../common/util';
+import { create, tsx, diffProperty, invalidator } from '@dojo/framework/core/vdom';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import validity from '@dojo/framework/core/middleware/validity';
+import focus from '@dojo/framework/core/middleware/focus';
+import icache from '@dojo/framework/core/middleware/icache';
 import { uuid } from '@dojo/framework/core/util';
-import * as css from '../theme/default/text-input.m.css';
-import diffProperty from '@dojo/framework/core/decorators/diffProperty';
-import { reference } from '@dojo/framework/core/diff';
+import { formatAriaProperties } from '../common/util';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { DNode } from '@dojo/framework/core/interfaces';
+import Label from '../label/index';
 import HelperText from '../helper-text/index';
+import * as css from '../theme/default/text-input.m.css';
 
 export type TextInputType =
 	| 'text'
@@ -23,12 +21,8 @@ export type TextInputType =
 	| 'url'
 	| 'date';
 
-interface TextInputInternalState {
-	dirty?: boolean;
-}
-
 export interface BaseInputProperties<T extends { value: any } = { value: string }>
-	extends ThemedProperties,
+	extends ThemeProperties,
 		FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
@@ -106,46 +100,65 @@ function formatAutocomplete(autocomplete: string | boolean | undefined): string 
 	return autocomplete;
 }
 
-function patternDiffer(
-	previousProperty: string | undefined,
-	newProperty: string | RegExp | undefined
-): PropertyChangeRecord {
-	const value = newProperty instanceof RegExp ? newProperty.source : newProperty;
-	return {
-		changed: previousProperty !== value,
-		value
-	};
-}
+const factory = create({ theme, icache, validity, focus, diffProperty, invalidator }).properties<
+	TextInputProperties
+>();
 
-@theme(css)
-@diffProperty('pattern', patternDiffer)
-@diffProperty('leading', reference)
-@diffProperty('trailing', reference)
-export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProperties> {
-	private _onInput(event: Event) {
-		event.stopPropagation();
-		this.properties.onValue &&
-			this.properties.onValue((event.target as HTMLInputElement).value);
-	}
+export const TextInput = factory(function TextInput({
+	middleware: { icache, theme, validity, focus, diffProperty, invalidator },
+	properties
+}) {
+	diffProperty('pattern', (previous: string | undefined, next: string | RegExp | undefined) => {
+		const value = next instanceof RegExp ? next.source : next;
+		if (value !== previous) {
+			invalidator();
+		}
+	});
+	diffProperty('leading', (previous, next) => previous !== next && invalidator());
+	diffProperty('trailing', (previous, next) => previous !== next && invalidator());
 
-	private _onKeyDown(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyDown &&
-			this.properties.onKeyDown(event.which, () => {
-				event.preventDefault();
-			});
-	}
+	const themeCss = theme.classes(css);
+	const _uuid = icache.getOrSet('uuid', uuid());
+	const dirty = icache.getOrSet('dirty', false);
+	const {
+		aria = {},
+		autocomplete,
+		classes,
+		customValidator,
+		disabled,
+		helperText,
+		label,
+		labelHidden = false,
+		leading,
+		max,
+		maxLength,
+		min,
+		minLength,
+		name,
+		onBlur,
+		onClick,
+		onFocus,
+		onKeyDown,
+		onKeyUp,
+		onOut,
+		onOver,
+		onValidate,
+		onValue,
+		pattern,
+		placeholder,
+		readOnly,
+		required,
+		step,
+		theme: themeProp,
+		trailing,
+		type,
+		value = '',
+		valid: validValue = { valid: undefined, message: '' },
+		widgetId = _uuid
+	} = properties();
 
-	private _onKeyUp(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyUp &&
-			this.properties.onKeyUp(event.which, () => {
-				event.preventDefault();
-			});
-	}
-
-	private _callOnValidate(valid: boolean | undefined, message: string) {
-		let { valid: previousValid } = this.properties;
+	function _callOnValidate(valid: boolean | undefined, message: string) {
+		let previousValid: typeof validValue | undefined = validValue;
 		let previousMessage: string | undefined;
 
 		if (typeof previousValid === 'object') {
@@ -154,187 +167,137 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 		}
 
 		if (valid !== previousValid || message !== previousMessage) {
-			this.properties.onValidate && this.properties.onValidate(valid, message);
+			onValidate && onValidate(valid, message);
 		}
 	}
 
-	private _validate() {
-		const { customValidator, value = '' } = this.properties;
-		const { dirty = false } = this._state;
+	if (onValidate) {
 		if (value === '' && !dirty) {
-			this._callOnValidate(undefined, '');
-			return;
-		}
-
-		this._state.dirty = true;
-		let { valid, message = '' } = this.meta(InputValidity).get('input', value);
-		if (valid && customValidator) {
-			const customValid = customValidator(value);
-			if (customValid) {
-				valid = customValid.valid;
-				message = customValid.message || '';
+			_callOnValidate(undefined, '');
+		} else {
+			icache.set('dirty', true);
+			let { valid, message = '' } = validity.get('input', value);
+			if (valid && customValidator) {
+				const customValid = customValidator(value);
+				if (customValid) {
+					valid = customValid.valid;
+					message = customValid.message || '';
+				}
 			}
-		}
 
-		this._callOnValidate(valid, message);
+			_callOnValidate(valid, message);
+		}
 	}
 
-	protected get validity() {
-		const { valid = { valid: undefined, message: undefined } } = this.properties;
+	const { valid, message } =
+		typeof validValue === 'boolean' ? { valid: validValue, message: '' } : validValue;
 
-		if (typeof valid === 'boolean') {
-			return { valid, message: undefined };
-		}
+	const computedHelperText = (valid === false && message) || helperText;
 
-		return {
-			valid: valid.valid,
-			message: valid.message
-		};
-	}
-
-	private _uuid = uuid();
-	private _state: TextInputInternalState = {};
-
-	protected render(): DNode {
-		const {
-			aria = {},
-			autocomplete,
-			classes,
-			disabled,
-			helperText,
-			label,
-			labelHidden = false,
-			leading,
-			max,
-			maxLength,
-			min,
-			minLength,
-			name,
-			onBlur,
-			onClick,
-			onFocus,
-			onOut,
-			onOver,
-			onValidate,
-			pattern,
-			placeholder,
-			readOnly,
-			required,
-			step,
-			theme,
-			trailing,
-			type = 'text',
-			value,
-			widgetId = this._uuid
-		} = this.properties;
-
-		onValidate && this._validate();
-		const { valid, message } = this.validity;
-
-		const focus = this.meta(Focus).get('root');
-
-		const computedHelperText = (valid === false && message) || helperText;
-
-		return (
-			<div key="root" classes={this.theme(css.root)} role="presentation">
-				<div
-					key="wrapper"
-					classes={this.theme([
-						css.wrapper,
-						disabled ? css.disabled : null,
-						focus.containsFocus ? css.focused : null,
-						valid === false ? css.invalid : null,
-						valid === true ? css.valid : null,
-						readOnly ? css.readonly : null,
-						required ? css.required : null,
-						leading ? css.hasLeading : null,
-						trailing ? css.hasTrailing : null,
-						!label ? css.noLabel : null
-					])}
-					role="presentation"
-				>
-					{label && (
-						<Label
-							theme={theme}
-							disabled={disabled}
-							valid={valid}
-							focused={focus.containsFocus}
-							readOnly={readOnly}
-							required={required}
-							hidden={labelHidden}
-							forId={widgetId}
-							active={!!value || focus.containsFocus}
-						>
-							{label}
-						</Label>
-					)}
-					<div
-						key="inputWrapper"
-						classes={this.theme(css.inputWrapper)}
-						role="presentation"
+	return (
+		<div key="root" classes={themeCss.root} role="presentation">
+			<div
+				key="wrapper"
+				classes={[
+					themeCss.wrapper,
+					disabled ? themeCss.disabled : null,
+					focus.isFocused('input') ? themeCss.focused : null,
+					valid === false ? themeCss.invalid : null,
+					valid === true ? themeCss.valid : null,
+					readOnly ? themeCss.readonly : null,
+					required ? themeCss.required : null,
+					leading ? themeCss.hasLeading : null,
+					trailing ? themeCss.hasTrailing : null,
+					!label ? css.noLabel : null
+				]}
+				role="presentation"
+			>
+				{label && (
+					<Label
+						theme={themeProp}
+						disabled={disabled}
+						valid={valid}
+						focused={focus.isFocused('input')}
+						readOnly={readOnly}
+						required={required}
+						hidden={labelHidden}
+						forId={widgetId}
+						active={!!value || focus.isFocused('input')}
 					>
-						{leading && (
-							<span key="leading" classes={this.theme(css.leading)}>
-								{leading()}
-							</span>
-						)}
-						<input
-							{...formatAriaProperties(aria)}
-							aria-invalid={valid === false ? 'true' : null}
-							autocomplete={formatAutocomplete(autocomplete)}
-							classes={this.theme(css.input)}
-							disabled={disabled}
-							id={widgetId}
-							focus={this.shouldFocus}
-							key={'input'}
-							max={max}
-							maxlength={maxLength ? `${maxLength}` : null}
-							min={min}
-							minlength={minLength ? `${minLength}` : null}
-							name={name}
-							pattern={pattern}
-							placeholder={placeholder}
-							readOnly={readOnly}
-							aria-readonly={readOnly ? 'true' : null}
-							required={required}
-							step={step}
-							type={type}
-							value={value}
-							onblur={() => {
-								onBlur && onBlur();
-							}}
-							onfocus={() => {
-								onFocus && onFocus();
-							}}
-							oninput={this._onInput}
-							onkeydown={this._onKeyDown}
-							onkeyup={this._onKeyUp}
-							onclick={() => {
-								onClick && onClick();
-							}}
-							onpointerenter={() => {
-								onOver && onOver();
-							}}
-							onpointerleave={() => {
-								onOut && onOut();
-							}}
-						/>
-						{trailing && (
-							<span key="trailing" classes={this.theme(css.trailing)}>
-								{trailing()}
-							</span>
-						)}
-					</div>
+						{label}
+					</Label>
+				)}
+				<div key="inputWrapper" classes={themeCss.inputWrapper} role="presentation">
+					{leading && (
+						<span key="leading" classes={themeCss.leading}>
+							{leading()}
+						</span>
+					)}
+					<input
+						{...formatAriaProperties(aria)}
+						aria-invalid={valid === false ? 'true' : null}
+						autocomplete={formatAutocomplete(autocomplete)}
+						classes={themeCss.input}
+						disabled={disabled}
+						id={widgetId}
+						focus={focus.shouldFocus()}
+						key={'input'}
+						max={max}
+						maxlength={maxLength ? `${maxLength}` : null}
+						min={min}
+						minlength={minLength ? `${minLength}` : null}
+						name={name}
+						pattern={pattern}
+						placeholder={placeholder}
+						readOnly={readOnly}
+						aria-readonly={readOnly ? 'true' : null}
+						required={required}
+						step={step}
+						type={type}
+						value={value}
+						onblur={() => {
+							onBlur && onBlur();
+						}}
+						onfocus={() => {
+							onFocus && onFocus();
+						}}
+						oninput={(event: Event) => {
+							event.stopPropagation();
+							onValue && onValue((event.target as HTMLInputElement).value);
+						}}
+						onkeydown={(event: KeyboardEvent) => {
+							event.stopPropagation();
+							onKeyDown && onKeyDown(event.which, () => event.preventDefault());
+						}}
+						onkeyup={(event: KeyboardEvent) => {
+							event.stopPropagation();
+							onKeyUp && onKeyUp(event.which, () => event.preventDefault());
+						}}
+						onclick={() => {
+							onClick && onClick();
+						}}
+						onpointerenter={() => {
+							onOver && onOver();
+						}}
+						onpointerleave={() => {
+							onOut && onOut();
+						}}
+					/>
+					{trailing && (
+						<span key="trailing" classes={themeCss.trailing}>
+							{trailing()}
+						</span>
+					)}
 				</div>
-				<HelperText
-					text={computedHelperText}
-					valid={valid}
-					classes={classes}
-					theme={theme}
-				/>
 			</div>
-		);
-	}
-}
+			<HelperText
+				text={computedHelperText}
+				valid={valid}
+				classes={classes}
+				theme={themeProp}
+			/>
+		</div>
+	);
+});
 
 export default TextInput;
