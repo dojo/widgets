@@ -1,6 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
+import { systemLocale } from '@dojo/framework/i18n/i18n';
+import { parseDate } from '@dojo/framework/i18n/date';
 import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
@@ -55,24 +57,26 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 		if (min && max && min > max) {
 			// if min & max create an impossible range, no need to validate anything else
 			validationMessages.push(messages.invalidProps);
-		} else if (!isNaN(Date.parse(value))) {
-			const newDate = new Date(value);
-
-			if (min && newDate < min) {
-				validationMessages.push(messages.tooEarly);
-			} else if (max && newDate > max) {
-				validationMessages.push(messages.tooLate);
-			} else {
-				icache.set('date', newDate);
-				icache.set('month', newDate.getMonth());
-				icache.set('year', newDate.getFullYear());
-				icache.set('value', formatDate(newDate));
-				if (onValue) {
-					onValue(newDate);
-				}
-			}
 		} else {
-			validationMessages.push(messages.invalidDate);
+			const newDate = parseDate(value, systemLocale);
+
+			if (newDate !== null) {
+				if (min && newDate < min) {
+					validationMessages.push(messages.tooEarly);
+				} else if (max && newDate > max) {
+					validationMessages.push(messages.tooLate);
+				} else {
+					icache.set('date', newDate);
+					icache.set('month', newDate.getMonth());
+					icache.set('year', newDate.getFullYear());
+					icache.set('value', formatDate(newDate));
+					if (onValue) {
+						onValue(newDate);
+					}
+				}
+			} else {
+				validationMessages.push(messages.invalidDate);
+			}
 		}
 
 		icache.set('validationMessages', validationMessages);
