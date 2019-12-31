@@ -1,8 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
-import { systemLocale } from '@dojo/framework/i18n/i18n';
-import { parseDate } from '@dojo/framework/i18n/date';
+import { parseDate } from '@dojo/framework/i18n/main';
 import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
@@ -48,6 +47,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 	const { messages } = i18n.localize(bundle);
 	const classes = theme.classes(css);
 
+	const locale = i18n.get();
 	const value = icache.getOrSet('value', formatDate(initialValue));
 	const shouldValidate = icache.getOrSet('shouldValidate', true);
 
@@ -58,7 +58,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 			// if min & max create an impossible range, no need to validate anything else
 			validationMessages.push(messages.invalidProps);
 		} else {
-			const newDate = parseDate(value, systemLocale);
+			const newDate = parseDate(value, locale && locale.locale);
 
 			if (newDate !== null) {
 				if (min && newDate < min) {
