@@ -56,6 +56,7 @@ import BasicListbox from './widgets/listbox/Basic';
 import BasicMenu from './widgets/menu/Basic';
 import ControlledMenu from './widgets/menu/Controlled';
 import ItemRenderer from './widgets/menu/ItemRenderer';
+import LargeOptionSet from './widgets/menu/LargeOptionSet';
 import ListBox from './widgets/menu/ListBox';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
@@ -126,7 +127,6 @@ import FocusTooltip from './widgets/tooltip/Focus';
 
 `!has('docs')`;
 import testsContext from './tests';
-import LargeOptionSet from './widgets/menu/LargeOptionSet';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -505,7 +505,8 @@ export const config = {
 					title: 'List Box'
 				},
 				{
-					description: 'This example shows the menu rendering 100,000 options.',
+					description:
+						'This example shows the menu handling being passed 100,000 options. The menu will only render the items in view along with a buffer albove / below. When scrolling up / down, the menu will render the appropriate items.',
 					filename: 'LargeOptionSet',
 					module: LargeOptionSet,
 					title: '100,000 options'

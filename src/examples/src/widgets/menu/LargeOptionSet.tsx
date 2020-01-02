@@ -4,13 +4,13 @@ import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-export default factory(function LargeOptionSet({ middleware: { icache } }) {
-	const options: MenuOption[] = [];
-	const total = 100000;
-	for (let i = 0; i < total; i++) {
-		options[i] = { value: `test-${i}` };
-	}
+const options: MenuOption[] = [];
+const total = 100000;
+for (let i = 0; i < total; i++) {
+	options[i] = { value: `test-${i}` };
+}
 
+export default factory(function LargeOptionSet({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Menu

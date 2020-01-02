@@ -20,7 +20,11 @@ export interface ListBoxItemProperties {
 
 const factory = create({ theme }).properties<ListBoxItemProperties>();
 
-export const ListBoxItem = factory(function({ properties, children, middleware: { theme } }) {
+export const ListBoxItem = factory(function ListBoxItem({
+	properties,
+	children,
+	middleware: { theme }
+}) {
 	const {
 		onSelect,
 		active = false,

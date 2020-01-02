@@ -18,7 +18,7 @@ export interface MenuItemProperties {
 
 const factory = create({ theme }).properties<MenuItemProperties>();
 
-export const MenuItem = factory(function({ properties, children, middleware: { theme } }) {
+export const MenuItem = factory(function MenuItem({ properties, children, middleware: { theme } }) {
 	const { onSelect, active = false, onRequestActive, disabled = false, widgetId } = properties();
 
 	const classes = theme.classes(css);

@@ -84,7 +84,11 @@ const factory = create({
 	theme
 }).properties<MenuProperties>();
 
-export const Menu = factory(function({ properties, id, middleware: { icache, focus, theme } }) {
+export const Menu = factory(function Menu({
+	properties,
+	id,
+	middleware: { icache, focus, theme }
+}) {
 	const {
 		activeIndex,
 		focusable = true,
@@ -266,7 +270,11 @@ export const Menu = factory(function({ properties, id, middleware: { icache, foc
 			  })
 			: 'offscreen';
 
-		const offscreenMenuItem = <MenuItem {...offscreenItemProps}>{menuItemChild}</MenuItem>;
+		const offscreenMenuItem = listBox ? (
+			<ListBoxItem {...offscreenItemProps}>{menuItemChild}</ListBoxItem>
+		) : (
+			<MenuItem {...offscreenItemProps}>{menuItemChild}</MenuItem>
+		);
 
 		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));
 
