@@ -15,6 +15,7 @@
 			"src/chip",
 			"src/combobox",
 			"src/constrained-input",
+			"src/context-popup",
 			"src/dialog",
 			"src/email-input",
 			"src/form",
@@ -46,6 +47,7 @@
 			"src/title-pane",
 			"src/toolbar",
 			"src/tooltip"
+			"src/trigger-popup",
 		]
 	}
 }
