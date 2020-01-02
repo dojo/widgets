@@ -149,6 +149,7 @@ import BasicTextInput from './widgets/text-input/Basic';
 import DisabledTextInput from './widgets/text-input/Disabled';
 import HelperTextInput from './widgets/text-input/HelperText';
 import HiddenLabelTextInput from './widgets/text-input/HiddenLabel';
+import PlaceholderTextInput from './widgets/text-input/Placeholder';
 import LeadingTrailingTextInput from './widgets/text-input/LeadingTrailing';
 import ValidatedTextInput from './widgets/text-input/Validated';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
@@ -1036,6 +1037,11 @@ export const config = {
 					filename: 'HiddenLabel',
 					module: HiddenLabelTextInput,
 					title: 'TextInput with hidden label'
+				},
+				{
+					filename: 'Placeholder',
+					module: PlaceholderTextInput,
+					title: 'TextInput with placeholder and no label'
 				},
 				{
 					filename: 'Disabled',
