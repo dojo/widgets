@@ -100,26 +100,40 @@ function formatAutocomplete(autocomplete: string | boolean | undefined): string 
 	return autocomplete;
 }
 
-const factory = create({ theme, icache, validity, focus, diffProperty, invalidator }).properties<
-	TextInputProperties
->();
+const factory = create({
+	theme,
+	icache,
+	validity,
+	focus,
+	diffProperty,
+	invalidator
+}).properties<TextInputProperties>();
 
 export const TextInput = factory(function TextInput({
 	middleware: { icache, theme, validity, focus, diffProperty, invalidator },
 	properties
 }) {
-	diffProperty('pattern', (previous: string | undefined, next: string | RegExp | undefined) => {
-		const value = next instanceof RegExp ? next.source : next;
-		if (value !== previous) {
+	diffProperty('pattern', (previous: TextInputProperties, next: TextInputProperties) => {
+		const value = next.pattern instanceof RegExp ? next.pattern.source : next.pattern;
+		if (value !== previous.pattern) {
 			invalidator();
 		}
 	});
-	diffProperty('leading', (previous, next) => previous !== next && invalidator());
-	diffProperty('trailing', (previous, next) => previous !== next && invalidator());
+	diffProperty(
+		'leading',
+		(previous: TextInputProperties, next: TextInputProperties) =>
+			previous.leading !== next.leading && invalidator()
+	);
+	diffProperty(
+		'trailing',
+		(previous: TextInputProperties, next: TextInputProperties) =>
+			previous.leading !== next.leading && invalidator()
+	);
 
 	const themeCss = theme.classes(css);
 	const _uuid = icache.getOrSet('uuid', uuid());
 	const dirty = icache.getOrSet('dirty', false);
+
 	const {
 		aria = {},
 		autocomplete,
@@ -144,18 +158,20 @@ export const TextInput = factory(function TextInput({
 		onOver,
 		onValidate,
 		onValue,
-		pattern,
+		pattern: patternValue,
 		placeholder,
 		readOnly,
 		required,
 		step,
 		theme: themeProp,
 		trailing,
-		type,
-		value = '',
+		type = 'text',
+		value,
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = _uuid
 	} = properties();
+
+	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;
 
 	function _callOnValidate(valid: boolean | undefined, message: string) {
 		let previousValid: typeof validValue | undefined = validValue;
@@ -176,9 +192,9 @@ export const TextInput = factory(function TextInput({
 			_callOnValidate(undefined, '');
 		} else {
 			icache.set('dirty', true);
-			let { valid, message = '' } = validity.get('input', value);
+			let { valid, message = '' } = validity.get('input', value || '');
 			if (valid && customValidator) {
-				const customValid = customValidator(value);
+				const customValid = customValidator(value || '');
 				if (customValid) {
 					valid = customValid.valid;
 					message = customValid.message || '';
@@ -240,7 +256,7 @@ export const TextInput = factory(function TextInput({
 						classes={themeCss.input}
 						disabled={disabled}
 						id={widgetId}
-						focus={focus.shouldFocus()}
+						focus={focus.shouldFocus}
 						key={'input'}
 						max={max}
 						maxlength={maxLength ? `${maxLength}` : null}

@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { tsx } from '@dojo/framework/core/vdom';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import Focus from '../../../meta/Focus';
 import InputValidity from '@dojo/framework/core/meta/InputValidity';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
@@ -20,6 +20,12 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
+
+const focusMock = create()(() => ({
+	shouldFocus() {},
+	focus() {},
+	isFocused() {}
+}));
 
 const harness = createHarness([compareId, compareForId]);
 
