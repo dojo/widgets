@@ -108,7 +108,7 @@ describe('DateInput', () => {
 	});
 
 	it('allows manual date entry', () => {
-		const expected = new Date('12/19/2019');
+		const expected = new Date(2019, 11, 19); // Dec 19, 2019
 		const h = harness(() => <DateInput onValue={onValue} />);
 
 		const toggleOpen = sinon.stub();
@@ -137,7 +137,7 @@ describe('DateInput', () => {
 	});
 
 	it('allows date picker entry', () => {
-		const expected = new Date('12/19/2019');
+		const expected = new Date(2019, 11, 19); // Dec 19, 2019
 		const h = harness(() => <DateInput onValue={onValue} />);
 		h.expect(baseTemplate);
 
@@ -195,8 +195,10 @@ describe('DateInput', () => {
 	});
 
 	it('validates manual date entry range', () => {
-		const max = new Date('12/31/2019');
-		const min = new Date('12/1/2019');
+		const tooEarly = new Date(2019, 10, 11); // Nov 11, 2019
+		const tooLate = new Date(2020, 0, 22); // Jan 22, 2020
+		const max = new Date(2019, 11, 31); // Dec 31, 2019
+		const min = new Date(2019, 11, 1); // Dec 1, 2019
 		const h = harness(() => <DateInput onValue={onValue} max={max} min={min} />);
 
 		const triggerResult = h.trigger(
@@ -208,7 +210,7 @@ describe('DateInput', () => {
 		// Find the input widget and give it a value before the min date
 		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
-		input.properties.onValue('11/11/2019');
+		input.properties.onValue(formatDate(tooEarly));
 		input.properties.onBlur();
 		h.expect(baseTemplate);
 
@@ -222,7 +224,7 @@ describe('DateInput', () => {
 
 		// Set value after the max date
 		onValue.resetHistory();
-		input.properties.onValue('1/22/2020');
+		input.properties.onValue(formatDate(tooLate));
 		input.properties.onBlur();
 		h.expect(baseTemplate);
 
@@ -235,8 +237,8 @@ describe('DateInput', () => {
 	});
 
 	it('validates range inputs', () => {
-		const max = new Date('12/1/2019');
-		const min = new Date('12/31/2019'); // notice min is AFTER max
+		const max = new Date(2019, 11, 1); // Dec 1, 2019
+		const min = new Date(2019, 11, 31); // Dec 31, 2019; notice min is AFTER max
 		const h = harness(() => <DateInput onValue={onValue} max={max} min={min} />);
 
 		const triggerResult = h.trigger(
