@@ -4,6 +4,10 @@
 .root {
 }
 
+/* The wrapper around the textarea, and label (not helper text) */
+.wrapper {
+}
+
 /* Added to the textarea element */
 .input {
 	max-width: 100%;
@@ -34,4 +38,8 @@
 /* Added when the contents of a textarea are valid */
 .valid .input {
 	border-color: var(--success-color);
+}
+
+/* Addded to the textarea's label */
+.labelRoot {
 }

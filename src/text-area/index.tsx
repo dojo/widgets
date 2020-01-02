@@ -2,9 +2,11 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
 import * as css from '../theme/default/text-area.m.css';
+import * as labelCss from '../theme/default/label.m.css';
 import HelperText from '../helper-text/index';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import validity from '@dojo/framework/core/middleware/validity';
 
@@ -185,98 +187,104 @@ export const TextArea = factory(function TextArea({
 	const computedHelperText = (valid === false && message) || helperText;
 
 	return (
-		<div
-			key="root"
-			classes={[
-				themeCss.root,
-				disabled ? themeCss.disabled : null,
-				valid === false ? themeCss.invalid : null,
-				valid === true ? themeCss.valid : null,
-				readOnly ? themeCss.readonly : null,
-				required ? themeCss.required : null,
-				focus.isFocused('input') ? themeCss.focused : null
-			]}
-		>
-			{label ? (
-				<Label
-					theme={themeProp}
-					classes={classes}
-					disabled={disabled}
-					valid={valid}
-					readOnly={readOnly}
-					required={required}
-					hidden={labelHidden}
-					forId={widgetId}
-					focused={focus.isFocused('input')}
-					active={!!value || focus.isFocused('input')}
-				>
-					{label}
-				</Label>
-			) : null}
-			<div classes={themeCss.inputWrapper}>
-				<textarea
-					id={widgetId}
-					key="input"
-					{...formatAriaProperties(aria)}
-					classes={themeCss.input}
-					cols={`${columns}`}
-					disabled={disabled}
-					focus={focus.shouldFocus}
-					aria-invalid={valid === false ? 'true' : null}
-					maxlength={maxLength ? `${maxLength}` : null}
-					minlength={minLength ? `${minLength}` : null}
-					name={name}
-					placeholder={placeholder}
-					readOnly={readOnly}
-					aria-readonly={readOnly ? 'true' : null}
-					required={required}
-					rows={`${rows}`}
-					value={value}
-					wrap={wrapText}
-					onblur={() => {
-						const { onBlur } = properties();
-						onBlur && onBlur();
-					}}
-					onfocus={() => {
-						const { onFocus } = properties();
-						onFocus && onFocus();
-					}}
-					oninput={(event: Event) => {
-						const { onValue } = properties();
-						event.stopPropagation();
-						const value = (event.target as HTMLInputElement).value;
-						icache.set('value', value);
-						onValue && onValue(value);
-					}}
-					onkeydown={(event: KeyboardEvent) => {
-						const { onKeyDown } = properties();
-						event.stopPropagation();
-						onKeyDown &&
-							onKeyDown(event.which, () => {
-								event.preventDefault();
-							});
-					}}
-					onkeyup={(event: KeyboardEvent) => {
-						const { onKeyUp } = properties();
-						event.stopPropagation();
-						onKeyUp &&
-							onKeyUp(event.which, () => {
-								event.preventDefault();
-							});
-					}}
-					onclick={() => {
-						const { onClick } = properties();
-						onClick && onClick();
-					}}
-					onpointerenter={() => {
-						const { onOver } = properties();
-						onOver && onOver();
-					}}
-					onpointerleave={() => {
-						const { onOut } = properties();
-						onOut && onOut();
-					}}
-				/>
+		<div key="root" classes={themeCss.root}>
+			<div
+				key="wrapper"
+				classes={[
+					themeCss.wrapper,
+					disabled ? themeCss.disabled : null,
+					valid === false ? themeCss.invalid : null,
+					valid === true ? themeCss.valid : null,
+					readOnly ? themeCss.readonly : null,
+					required ? themeCss.required : null,
+					focus.isFocused('input') ? themeCss.focused : null
+				]}
+			>
+				{label ? (
+					<Label
+						theme={theme.compose(
+							labelCss,
+							css,
+							'label'
+						)}
+						classes={classes}
+						disabled={disabled}
+						valid={valid}
+						readOnly={readOnly}
+						required={required}
+						hidden={labelHidden}
+						forId={widgetId}
+						focused={focus.isFocused('input')}
+						active={!!value || focus.isFocused('input')}
+					>
+						{label}
+					</Label>
+				) : null}
+				<div classes={themeCss.inputWrapper}>
+					<textarea
+						id={widgetId}
+						key="input"
+						{...formatAriaProperties(aria)}
+						classes={themeCss.input}
+						cols={`${columns}`}
+						disabled={disabled}
+						focus={focus.shouldFocus}
+						aria-invalid={valid === false ? 'true' : null}
+						maxlength={maxLength ? `${maxLength}` : null}
+						minlength={minLength ? `${minLength}` : null}
+						name={name}
+						placeholder={placeholder}
+						readOnly={readOnly}
+						aria-readonly={readOnly ? 'true' : null}
+						required={required}
+						rows={`${rows}`}
+						value={value}
+						wrap={wrapText}
+						onblur={() => {
+							const { onBlur } = properties();
+							onBlur && onBlur();
+						}}
+						onfocus={() => {
+							const { onFocus } = properties();
+							onFocus && onFocus();
+						}}
+						oninput={(event: Event) => {
+							const { onValue } = properties();
+							event.stopPropagation();
+							const value = (event.target as HTMLInputElement).value;
+							icache.set('value', value);
+							onValue && onValue(value);
+						}}
+						onkeydown={(event: KeyboardEvent) => {
+							const { onKeyDown } = properties();
+							event.stopPropagation();
+							onKeyDown &&
+								onKeyDown(event.which, () => {
+									event.preventDefault();
+								});
+						}}
+						onkeyup={(event: KeyboardEvent) => {
+							const { onKeyUp } = properties();
+							event.stopPropagation();
+							onKeyUp &&
+								onKeyUp(event.which, () => {
+									event.preventDefault();
+								});
+						}}
+						onclick={() => {
+							const { onClick } = properties();
+							onClick && onClick();
+						}}
+						onpointerenter={() => {
+							const { onOver } = properties();
+							onOver && onOver();
+						}}
+						onpointerleave={() => {
+							const { onOut } = properties();
+							onOut && onOut();
+						}}
+					/>
+				</div>
 			</div>
 			<HelperText
 				text={computedHelperText}

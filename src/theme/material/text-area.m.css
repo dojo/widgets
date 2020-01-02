@@ -1,2 +1,41 @@
+@import './variables.css';
+
 .root {
+}
+
+.wrapper {
+	composes: mdc-text-field mdc-text-field--textarea mdc-text-field--fullwidth from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.input {
+	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.disabled {
+	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.wrapper.disabled .input {
+	border-bottom: 1px solid var(--mdc-border-color);
+}
+
+.focused {
+	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.inputWrapper {
+	width: 100%;
+}
+
+.root .input {
+	border: 1px solid var(--mdc-border-color);
+	border-radius: var(--mdc-border-radius);
+}
+
+.labelRoot {
+	composes: mdc-floating-label mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.focused {
+	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
 }

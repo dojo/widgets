@@ -40,4 +40,6 @@
 	--mdc-theme-font-size-small: 0.875rem;
 	--zindex-tooltip: 100;
 	--zindex-dialog: 400;
+	--mdc-border-color: rgba(0, 0, 0, 0.38);
+	--mdc-border-radius: 4px;
 }

@@ -145,6 +145,7 @@ import ButtonAlignmentTabController from './widgets/tab-controller/ButtonAlignme
 import CloseableTabController from './widgets/tab-controller/Closeable';
 import DisabledTabController from './widgets/tab-controller/Disabled';
 import BasicTextArea from './widgets/text-area/Basic';
+import TextAreaWithLabel from './widgets/text-area/Label';
 import DisabledTextArea from './widgets/text-area/Disabled';
 import HelperTextTextArea from './widgets/text-area/HelperText';
 import HiddenLabelTextArea from './widgets/text-area/HiddenLabel';
@@ -1048,6 +1049,11 @@ export const config = {
 		},
 		'text-area': {
 			examples: [
+				{
+					filename: 'Label',
+					module: TextAreaWithLabel,
+					title: 'Textarea with label'
+				},
 				{
 					filename: 'Disabled',
 					module: DisabledTextArea,
