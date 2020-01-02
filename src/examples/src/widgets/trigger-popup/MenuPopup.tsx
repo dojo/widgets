@@ -1,5 +1,4 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Popup from '@dojo/widgets/popup';
 import Menu from '@dojo/widgets/menu';
 import Button from '@dojo/widgets/button';
 import TriggerPopup from '@dojo/widgets/trigger-popup';
