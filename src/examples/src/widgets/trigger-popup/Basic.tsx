@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Popup from '@dojo/widgets/popup';
+import TriggerPopup from '@dojo/widgets/trigger-popup';
 import Button from '@dojo/widgets/button';
 
 const factory = create();
@@ -7,7 +7,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<virtual>
-			<Popup position="below">
+			<TriggerPopup position="below">
 				{{
 					trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Popup Below</Button>,
 					content: (onClose) => (
@@ -19,8 +19,8 @@ export default factory(function Basic() {
 						</div>
 					)
 				}}
-			</Popup>
-			<Popup position="above">
+			</TriggerPopup>
+			<TriggerPopup position="above">
 				{{
 					trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Popup Above</Button>,
 					content: (onClose) => (
@@ -32,7 +32,7 @@ export default factory(function Basic() {
 						</div>
 					)
 				}}
-			</Popup>
+			</TriggerPopup>
 		</virtual>
 	);
 });

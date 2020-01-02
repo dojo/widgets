@@ -32,6 +32,7 @@ import IconChip from './widgets/chip/Icon';
 import BasicCombobox from './widgets/combobox/Basic';
 import BasicConstrainedInput from './widgets/constrained-input/Basic';
 import Username from './widgets/constrained-input/Username';
+import BasicContextPopup from './widgets/context-popup/Basic';
 import BasicDialog from './widgets/dialog/Basic';
 import CloseableDialog from './widgets/dialog/CloseableDialog';
 import ModalDialog from './widgets/dialog/ModalDialog';
@@ -65,10 +66,10 @@ import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
 import BasicPassword from './widgets/password-input/Basic';
-import BasicPopup from './widgets/popup/Basic';
-import MenuPopup from './widgets/popup/MenuPopup';
-import SetWidth from './widgets/popup/SetWidth';
-import Underlay from './widgets/popup/Underlay';
+import BasicTriggerPopup from './widgets/trigger-popup/Basic';
+import MenuTriggerPopup from './widgets/trigger-popup/MenuPopup';
+import SetWidth from './widgets/trigger-popup/SetWidth';
+import Underlay from './widgets/trigger-popup/Underlay';
 import BasicProgress from './widgets/progress/Basic';
 import ProgressWithChangingValues from './widgets/progress/ProgressWithChangingValues';
 import ProgressWithCustomOutput from './widgets/progress/ProgressWithCustomOutput';
@@ -355,6 +356,14 @@ export const config = {
 				}
 			}
 		},
+		'context-popup': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicContextPopup
+				}
+			}
+		},
 		dialog: {
 			examples: [
 				{
@@ -549,17 +558,17 @@ export const config = {
 				}
 			}
 		},
-		popup: {
+		'trigger-popup': {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicPopup
+					module: BasicTriggerPopup
 				}
 			},
 			examples: [
 				{ title: 'Underlay', filename: 'Underlay', module: Underlay },
 				{ title: 'Set Width', filename: 'SetWidth', module: SetWidth },
-				{ title: 'Menu Popup', filename: 'MenuPopup', module: MenuPopup }
+				{ title: 'Menu Popup', filename: 'MenuPopup', module: MenuTriggerPopup }
 			]
 		},
 		'number-input': {

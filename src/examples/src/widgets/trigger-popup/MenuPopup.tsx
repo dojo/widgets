@@ -2,10 +2,11 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Popup from '@dojo/widgets/popup';
 import Menu from '@dojo/widgets/menu';
 import Button from '@dojo/widgets/button';
+import TriggerPopup from '@dojo/widgets/trigger-popup';
 
 const factory = create();
 
-export default factory(function MenuPopup() {
+export default factory(function MenuTriggerPopup() {
 	const options = [
 		{ value: 'Save' },
 		{ value: 'copy', label: 'Copy' },
@@ -13,7 +14,7 @@ export default factory(function MenuPopup() {
 	];
 
 	return (
-		<Popup position="below">
+		<TriggerPopup position="below">
 			{{
 				trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Menu Popup</Button>,
 				content: (onClose) => (
@@ -22,6 +23,6 @@ export default factory(function MenuPopup() {
 					</div>
 				)
 			}}
-		</Popup>
+		</TriggerPopup>
 	);
 });

@@ -1,12 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Popup from '@dojo/widgets/popup';
+import TriggerPopup from '@dojo/widgets/trigger-popup';
 import Button from '@dojo/widgets/button';
 
 const factory = create();
 
 export default factory(function SetWidth() {
 	return (
-		<Popup position="below" matchWidth={false}>
+		<TriggerPopup position="below" matchWidth={false}>
 			{{
 				trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Own Width</Button>,
 				content: (onClose) => (
@@ -18,6 +18,6 @@ export default factory(function SetWidth() {
 					</div>
 				)
 			}}
-		</Popup>
+		</TriggerPopup>
 	);
 });
