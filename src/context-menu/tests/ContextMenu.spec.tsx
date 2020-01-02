@@ -1,15 +1,12 @@
 import { sandbox } from 'sinon';
-import { node, tsx } from '@dojo/framework/core/vdom';
-import dojoHarness from '@dojo/framework/testing/harness';
+import { tsx } from '@dojo/framework/core/vdom';
 import { createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import * as fixedCss from '../context-menu.m.css';
-import * as css from '../../theme/default/context-menu.m.css';
-import * as menuCss from '../../theme/default/menu.m.css';
+import { stub } from 'sinon';
 import Menu from '../../menu';
 import ContextMenu from '../';
-import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
-const { describe, it, beforeEach, after, afterEach } = intern.getInterface('bdd');
+import ContextPopup from '../../context-popup';
+const { describe, it, after, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
 const noop: any = () => {};
@@ -19,53 +16,14 @@ describe('ContextMenu', () => {
 	const sb = sandbox.create();
 	const children = <div>Children</div>;
 	const options = [{ value: 'foo', label: 'Foo' }];
-	const event: any = {
-		preventDefault: sb.spy(),
-		pageX: 20,
-		pageY: 20
-	};
 	const template = assertionTemplate(() => (
-		<virtual>
-			<div key="content" classes={css.contentWrapper} oncontextmenu={noop}>
-				{children}
-			</div>
-		</virtual>
+		<ContextPopup>
+			{{
+				contentWithContext: () => null as any,
+				popupContent: null as any
+			}}
+		</ContextPopup>
 	));
-	const openTemplate = template.append(':root', () => [
-		<body>
-			<div key="underlay" classes={fixedCss.underlay} onclick={noop} />
-			<div
-				key="wrapper"
-				classes={[fixedCss.root, css.wrapper]}
-				styles={{
-					top: '16px',
-					left: '18px',
-					opacity: '0'
-				}}
-			>
-				<Menu
-					key="menu"
-					focus={() => false}
-					theme={{}}
-					options={options}
-					onBlur={noop}
-					onRequestClose={noop}
-					onValue={noop}
-				/>
-			</div>
-		</body>
-	]);
-
-	beforeEach(() => {
-		Object.defineProperty(document.documentElement, 'scrollTop', {
-			configurable: true,
-			value: 0
-		});
-		Object.defineProperty(document.documentElement, 'clientHeight', {
-			configurable: true,
-			value: 1000
-		});
-	});
 
 	after(() => {
 		sb.restore();
@@ -75,7 +33,7 @@ describe('ContextMenu', () => {
 		sb.resetHistory();
 	});
 
-	it('renders closed by default', () => {
+	it('renders', () => {
 		const h = harness(() => (
 			<ContextMenu options={options} onSelect={noop}>
 				{children}
@@ -85,7 +43,7 @@ describe('ContextMenu', () => {
 		h.expect(template);
 	});
 
-	it('renders with an open menu with opacity 0 after context menu event is triggered', () => {
+	it('passes a function that returns children as `contentWithContext`', () => {
 		const h = harness(() => (
 			<ContextMenu options={options} onSelect={noop}>
 				{children}
@@ -93,138 +51,16 @@ describe('ContextMenu', () => {
 		));
 
 		h.expect(template);
-		h.trigger('@content', 'oncontextmenu', event);
-		assert.isTrue(event.preventDefault.calledOnce);
-		h.expect(openTemplate);
-	});
-
-	it('renders with opacity 1 and matched size / position with dimensions', () => {
-		const mockNode = createNodeMock();
-
-		const wrapper = {
-			getBoundingClientRect() {
-				return {
-					width: 100,
-					height: 100
-				};
-			}
-		};
-
-		mockNode('wrapper', wrapper);
-
-		const h = dojoHarness(
-			() => (
-				<ContextMenu options={options} onSelect={noop}>
-					{children}
-				</ContextMenu>
-			),
-			{ middleware: [[node, mockNode]] }
+		h.expect(
+			() => [children],
+			() => h.trigger(':root', (node: any) => node.children[0].contentWithContext)
 		);
-		h.trigger('@content', 'oncontextmenu', event);
-
-		const contentTemplate = openTemplate
-			.setProperty('@wrapper', 'styles', {
-				top: '16px',
-				left: '18px',
-				opacity: '1'
-			})
-			.setProperty('@menu', 'theme', {
-				'@dojo/widgets/menu': {
-					menu: menuCss.menu
-				}
-			});
-
-		h.expect(contentTemplate);
 	});
 
-	it('adjusts position if it cannot render under the cursor', () => {
-		Object.defineProperty(document.documentElement, 'clientHeight', {
-			configurable: true,
-			value: 5
-		});
-		const mockNode = createNodeMock();
-
-		const wrapper = {
-			getBoundingClientRect() {
-				return {
-					width: 100,
-					height: 6
-				};
-			}
-		};
-
-		mockNode('wrapper', wrapper);
-
-		const h = dojoHarness(
-			() => (
-				<ContextMenu options={options} onSelect={noop}>
-					{children}
-				</ContextMenu>
-			),
-			{ middleware: [[node, mockNode]] }
-		);
-		h.trigger('@content', 'oncontextmenu', event);
-
-		const contentTemplate = openTemplate
-			.setProperty('@wrapper', 'styles', {
-				top: '10px',
-				left: '18px',
-				opacity: '1'
-			})
-			.setProperty('@menu', 'theme', {
-				'@dojo/widgets/menu': {
-					menu: menuCss.menu
-				}
-			});
-
-		h.expect(contentTemplate);
-	});
-
-	it('closes when the underlay is clicked', () => {
-		const h = harness(() => (
-			<ContextMenu options={options} onSelect={noop}>
-				{children}
-			</ContextMenu>
-		));
-
-		h.expect(template);
-		h.trigger('@content', 'oncontextmenu', event);
-		h.expect(openTemplate);
-		h.trigger('@underlay', 'onclick');
-		h.expect(template);
-	});
-
-	it('closes when the menu is blurred', () => {
-		const h = harness(() => (
-			<ContextMenu options={options} onSelect={noop}>
-				{children}
-			</ContextMenu>
-		));
-
-		h.expect(template);
-		h.trigger('@content', 'oncontextmenu', event);
-		h.expect(openTemplate);
-		h.trigger('@menu', 'onBlur');
-		h.expect(template);
-	});
-
-	it('closes when a the menus onRequestClose fires', () => {
-		const h = harness(() => (
-			<ContextMenu options={options} onSelect={noop}>
-				{children}
-			</ContextMenu>
-		));
-
-		h.expect(template);
-		h.trigger('@content', 'oncontextmenu', event);
-		h.expect(openTemplate);
-		h.trigger('@menu', 'onRequestClose');
-		h.expect(template);
-	});
-
-	it('calls the provided onSelect callback and closes on the menu onValue callback fires', () => {
-		const onSelect = sb.spy();
-		const value = 'foo';
+	it('passes a function that renders a menu as `popupContent`', () => {
+		const onClose = stub();
+		const onSelect = stub();
+		const shouldFocus = stub();
 		const h = harness(() => (
 			<ContextMenu options={options} onSelect={onSelect}>
 				{children}
@@ -232,11 +68,55 @@ describe('ContextMenu', () => {
 		));
 
 		h.expect(template);
-		h.trigger('@content', 'oncontextmenu', event);
-		h.expect(openTemplate);
-		h.trigger('@menu', 'onValue', value);
-		h.expect(template);
+		h.expect(
+			() => (
+				<Menu
+					key="menu"
+					focus={() => null as any}
+					theme={{}}
+					options={options}
+					onBlur={() => {}}
+					onRequestClose={() => {}}
+					onValue={() => {}}
+				/>
+			),
+			() =>
+				h.trigger(
+					':root',
+					(node: any) => node.children[0].popupContent,
+					onClose,
+					shouldFocus
+				)
+		);
 
-		assert.isTrue(onSelect.calledOnceWith(value));
+		h.trigger(
+			':root',
+			(node: any) => node.children[0].popupContent(onClose, shouldFocus).properties.onBlur
+		);
+		assert.isTrue(onClose.calledOnce);
+		onClose.resetHistory();
+
+		h.trigger(
+			':root',
+			(node: any) =>
+				node.children[0].popupContent(onClose, shouldFocus).properties.onRequestClose
+		);
+		assert.isTrue(onClose.calledOnce);
+		onClose.resetHistory();
+
+		h.trigger(
+			':root',
+			(node: any) => node.children[0].popupContent(onClose, shouldFocus).properties.onValue,
+			'value'
+		);
+		assert.isTrue(onClose.calledOnce);
+		assert.isTrue(onSelect.calledOnceWith('value'));
+		onClose.resetHistory();
+
+		h.trigger(
+			':root',
+			(node: any) => node.children[0].popupContent(onClose, shouldFocus).properties.focus
+		);
+		assert.isTrue(shouldFocus.calledOnce);
 	});
 });
