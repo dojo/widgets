@@ -239,7 +239,7 @@ export const Menu = factory(function Menu({
 			</MenuItem>
 		);
 
-		return divider ? item : [item, <hr classes={classes.divider} />];
+		return divider ? [item, <hr classes={classes.divider} />] : item;
 	}
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
