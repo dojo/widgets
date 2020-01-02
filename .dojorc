@@ -46,8 +46,8 @@
 			"src/time-picker",
 			"src/title-pane",
 			"src/toolbar",
-			"src/tooltip"
-			"src/trigger-popup",
+			"src/tooltip",
+			"src/trigger-popup"
 		]
 	}
 }
