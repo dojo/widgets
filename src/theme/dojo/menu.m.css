@@ -1,0 +1,8 @@
+@import './variables.css';
+
+.menu {
+	overflow: auto;
+	position: relative;
+	border: var(--border-width) solid var(--color-border);
+	border-radius: 3px;
+}

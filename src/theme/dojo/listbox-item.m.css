@@ -1,0 +1,18 @@
+@import './variables.css';
+
+.root {
+	padding: var(--spacing-regular);
+	border: 1px solid transparent;
+}
+
+.active {
+	border: 1px solid var(--color-highlight-border);
+}
+
+.selected {
+	background: var(--color-background-faded);
+}
+
+.disabled {
+	background: var(--color-text-faded);
+}
