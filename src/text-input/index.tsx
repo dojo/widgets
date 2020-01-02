@@ -195,23 +195,6 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 	private _uuid = uuid();
 	private _state: TextInputInternalState = {};
 
-	protected getRootClasses(): (string | null)[] {
-		const { disabled, readOnly, required, leading, trailing } = this.properties;
-		const { valid } = this.validity;
-		const focus = this.meta(Focus).get('root');
-		return [
-			css.root,
-			disabled ? css.disabled : null,
-			focus.containsFocus ? css.focused : null,
-			valid === false ? css.invalid : null,
-			valid === true ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null,
-			leading ? css.hasLeading : null,
-			trailing ? css.hasTrailing : null
-		];
-	}
-
 	protected render(): DNode {
 		const {
 			aria = {},
@@ -253,8 +236,23 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 		const computedHelperText = (valid === false && message) || helperText;
 
 		return (
-			<virtual>
-				<div key="root" classes={this.theme(this.getRootClasses())} role="presentation">
+			<div key="root" classes={this.theme(css.root)} role="presentation">
+				<div
+					key="wrapper"
+					classes={this.theme([
+						css.wrapper,
+						disabled ? css.disabled : null,
+						focus.containsFocus ? css.focused : null,
+						valid === false ? css.invalid : null,
+						valid === true ? css.valid : null,
+						readOnly ? css.readonly : null,
+						required ? css.required : null,
+						leading ? css.hasLeading : null,
+						trailing ? css.hasTrailing : null,
+						!label ? css.noLabel : null
+					])}
+					role="presentation"
+				>
 					{label && (
 						<Label
 							theme={theme}
@@ -340,7 +338,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 					classes={classes}
 					theme={theme}
 				/>
-			</virtual>
+			</div>
 		);
 	}
 }

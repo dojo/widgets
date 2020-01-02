@@ -59,11 +59,11 @@ const expected = function({
 	const helperTextValue = (valid === false && message) || helperText;
 
 	return (
-		<virtual>
+		<div key="root" classes={css.root} role="presentation">
 			<div
-				key="root"
+				key="wrapper"
 				classes={[
-					css.root,
+					css.wrapper,
 					disabled ? css.disabled : null,
 					focused ? css.focused : null,
 					valid === false ? css.invalid : null,
@@ -71,7 +71,8 @@ const expected = function({
 					readOnly ? css.readonly : null,
 					required ? css.required : null,
 					null,
-					null
+					null,
+					!label ? css.noLabel : null
 				]}
 				role="presentation"
 			>
@@ -134,17 +135,17 @@ const expected = function({
 				classes={undefined}
 				theme={undefined}
 			/>
-		</virtual>
+		</div>
 	);
 };
 
 const baseAssertion = assertationTemplate(() => {
 	return (
-		<virtual>
+		<div key="root" classes={css.root} role="presentation">
 			<div
-				key="root"
+				key="wrapper"
 				role="presentation"
-				classes={[css.root, null, null, null, null, null, null, null, null]}
+				classes={[css.wrapper, null, null, null, null, null, null, null, null, null]}
 			>
 				{input()}
 			</div>
@@ -155,7 +156,7 @@ const baseAssertion = assertationTemplate(() => {
 				classes={undefined}
 				theme={undefined}
 			/>
-		</virtual>
+		</div>
 	);
 });
 
@@ -525,8 +526,8 @@ registerSuite('TextInput', {
 		'leading property'() {
 			const leading = () => <span>A</span>;
 			const leadingTemplate = baseAssertion
-				.setProperty('@root', 'classes', [
-					css.root,
+				.setProperty('@wrapper', 'classes', [
+					css.wrapper,
 					null,
 					null,
 					null,
@@ -534,7 +535,8 @@ registerSuite('TextInput', {
 					null,
 					null,
 					css.hasLeading,
-					null
+					null,
+					css.noLabel
 				])
 				.prepend('@inputWrapper', () => [
 					<span key="leading" classes={css.leading}>
@@ -548,8 +550,8 @@ registerSuite('TextInput', {
 		'trailing property'() {
 			const trailing = () => <span>Z</span>;
 			const trailingTemplate = baseAssertion
-				.setProperty('@root', 'classes', [
-					css.root,
+				.setProperty('@wrapper', 'classes', [
+					css.wrapper,
 					null,
 					null,
 					null,
@@ -557,7 +559,8 @@ registerSuite('TextInput', {
 					null,
 					null,
 					null,
-					css.hasTrailing
+					css.hasTrailing,
+					css.noLabel
 				])
 				.append('@inputWrapper', () => [
 					<span key="trailing" classes={css.trailing}>
@@ -638,8 +641,8 @@ registerSuite('TextInput', {
 			));
 
 			let assertion = baseAssertion
-				.setProperty('@root', 'classes', [
-					css.root,
+				.setProperty('@wrapper', 'classes', [
+					css.wrapper,
 					null,
 					null,
 					null,
@@ -647,7 +650,8 @@ registerSuite('TextInput', {
 					null,
 					css.required,
 					null,
-					null
+					null,
+					css.noLabel
 				])
 				.setProperty('@input', 'required', true)
 				.setProperty('@input', 'value', 'Initial');
@@ -669,8 +673,8 @@ registerSuite('TextInput', {
 			h.expect(assertion.setProperty('@input', 'value', ''));
 
 			const invalidAssertion = assertion
-				.setProperty('@root', 'classes', [
-					css.root,
+				.setProperty('@wrapper', 'classes', [
+					css.wrapper,
 					null,
 					null,
 					css.invalid,
@@ -678,7 +682,8 @@ registerSuite('TextInput', {
 					null,
 					css.required,
 					null,
-					null
+					null,
+					css.noLabel
 				])
 				.setProperty('@input', 'aria-invalid', 'true')
 				.setProperty('~helperText', 'text', 'Please fill out this field.')
@@ -715,8 +720,8 @@ registerSuite('TextInput', {
 			assert.deepEqual(validity, { valid: true, message: '' }, 'Input should be valid');
 			h.expect(
 				assertion
-					.setProperty('@root', 'classes', [
-						css.root,
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
 						null,
 						null,
 						null,
@@ -724,7 +729,8 @@ registerSuite('TextInput', {
 						null,
 						css.required,
 						null,
-						null
+						null,
+						css.noLabel
 					])
 					.setProperty('~helperText', 'valid', true)
 			);

@@ -1,6 +1,9 @@
 @import './variables.css';
 
 .root {
+}
+
+.wrapper {
 	display: block;
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);

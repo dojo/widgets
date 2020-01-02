@@ -7,6 +7,7 @@
 .root {
 }
 
+/* The wrapper around the text input, label, leading, and trailing (not helper text) */
 .wrapper {
 }
 
@@ -34,11 +35,15 @@
 /* Contains trailing content */
 .trailing {
 }
-/* Added at the root when there is leading content */
+/* Added to the wrapper when there is leading content */
 .hasLeading {
 }
-/* Added at the root when there is trailing content */
+/* Added to the wrapper when there is trailing content */
 .hasTrailing {
+}
+
+/* Added to the wrapper if no label is provided */
+.noLabel {
 }
 
 /* passed to the text-input's Label's root component */

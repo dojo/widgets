@@ -2,10 +2,12 @@
 
 /* The root class of TextInput */
 .root {
-	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
 }
 
+/* The wrapper around the text input, label, leading, and trailing (not helper text) */
 .wrapper {
+	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
+	display: flex;
 }
 
 /* Added to the input */
@@ -14,10 +16,15 @@
 }
 /* Contains the input element */
 .inputWrapper {
+	width: 100%;
 }
 
 .label {
 	composes: mdc-floating-label mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.noLabel {
+	composes: mdc-text-field--no-label from '@material/textfield/dist/mdc.textfield.css';
 }
 
 /* Added to a disabled TextInput */
