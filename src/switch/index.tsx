@@ -1,11 +1,12 @@
-import { tsx, create } from '@dojo/framework/core/vdom';
-import theme from '@dojo/framework/core/middleware/theme';
+import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import * as css from '../theme/switch.m.css';
-import Label from '../label';
+import coreTheme from '@dojo/framework/core/middleware/theme';
 import { uuid } from '@dojo/framework/core/util';
-import icache from '@dojo/framework/core/middleware/icache';
+import { create, tsx } from '@dojo/framework/core/vdom';
+
 import { formatAriaProperties } from '../common/util';
+import Label from '../label';
+import * as css from '../theme/default/switch.m.css';
 
 interface SwitchProperties {
 	/** Custom aria attributes */
@@ -20,51 +21,59 @@ interface SwitchProperties {
 	labelHidden?: boolean;
 	/** The name attribute for the switch */
 	name?: string;
+	/** Label to show in the "off" position of the switch */
+	offLabel?: DNode;
 	/** Handler for events triggered by switch losing focus */
 	onBlur?(): void;
-	/** Callback for the current value */
-	onChange?: (checked: boolean) => void;
 	/** Handler for events triggered by "on focus" */
 	onFocus?(): void;
+	/** Label to show in the "on" position of the switch */
+	onLabel?: DNode;
 	/** Handler for events triggered by "on out" */
 	onOut?(): void;
 	/** Handler for events triggered by "on over" */
 	onOver?(): void;
+	/** Handler for when the value of the widget changes */
+	onValue?(checked: boolean): void;
+	/** Makes the switch readonly (it may be focused but not changed) */
+	readOnly?: boolean;
 	/** Determines if this input is required, styles accordingly */
 	required?: boolean;
 	/** Determines if this input is valid */
 	valid?: boolean;
+	/** The current value */
+	value?: string;
 	/** `id` set on the root button DOM node */
 	widgetId?: string;
 }
 
-const factory = create({ theme, focus, icache }).properties<SwitchProperties>();
+const factory = create({ coreTheme, focus }).properties<SwitchProperties>();
 
-export default factory(function Switch({ properties, middleware: { theme, focus, icache } }) {
+export default factory(function Switch({ properties, middleware: { coreTheme, focus } }) {
 	const {
 		aria = {},
 		checked = false,
-		disabled = false,
+		classes,
+		disabled,
 		label,
 		labelHidden,
 		name,
+		offLabel,
 		onBlur,
-		onChange,
 		onFocus,
+		onValue,
+		onLabel,
 		onOut,
 		onOver,
+		readOnly,
 		required,
+		theme,
 		valid,
+		value,
 		widgetId = uuid()
 	} = properties();
-	const themedCss = theme.classes(css);
 
-	function _onChange(event: Event) {
-		const checkbox = event.target as HTMLInputElement;
-		onChange && onChange(checkbox.checked);
-	}
-
-	const focused = icache.getOrSet('focused', focus.isFocused('root'));
+	const themedCss = coreTheme.classes(css);
 
 	return (
 		<div
@@ -73,51 +82,73 @@ export default factory(function Switch({ properties, middleware: { theme, focus,
 				themedCss.root,
 				checked ? themedCss.checked : null,
 				disabled ? themedCss.disabled : null,
-				required ? themedCss.required : null,
-				focused ? themedCss.focused : null,
+				focus.isFocused('root') ? themedCss.focused : null,
 				valid === false ? themedCss.invalid : null,
-				valid === true ? themedCss.valid : null
+				valid === true ? themedCss.valid : null,
+				readOnly ? themedCss.readonly : null,
+				required ? themedCss.required : null
 			]}
 		>
-			<div classes={themedCss.track} />
-			<div classes={themedCss.underlay}>
-				<div classes={themedCss.thumb}>
-					<input
-						id={widgetId}
-						{...formatAriaProperties(aria)}
-						classes={themedCss.nativeControl}
-						checked={checked}
-						disabled={disabled}
-						focus={focused}
-						aria-invalid={valid === false ? 'true' : null}
-						name={name}
-						required={required}
-						type="checkbox"
-						role="switch"
-						aria-checked={checked}
-						key="input"
-						onblur={() => {
-							onBlur && onBlur();
-						}}
-						onchange={(event: Event) => _onChange(event)}
-						onfocus={() => {
-							onFocus && onFocus();
-						}}
-						onpointerenter={() => {
-							onOver && onOver();
-						}}
-						onpointerleave={() => {
-							onOut && onOut();
-						}}
-					/>
+			{offLabel && (
+				<div
+					key="offlabel"
+					classes={themedCss.offLabel}
+					aria-hidden={checked ? 'true' : null}
+				>
+					{offLabel}
+				</div>
+			)}
+			<div classes={themedCss.inputWrapper}>
+				<div classes={themedCss.track} />
+				<div classes={themedCss.underlay}>
+					<div classes={themedCss.thumb}>
+						<input
+							id={widgetId}
+							{...formatAriaProperties(aria)}
+							classes={themedCss.nativeControl}
+							checked={checked}
+							disabled={disabled}
+							focus={focus.shouldFocus()}
+							aria-invalid={valid === false ? 'true' : null}
+							name={name}
+							readonly={readOnly}
+							aria-readonly={readOnly === true ? 'true' : null}
+							required={required}
+							type="checkbox"
+							value={value}
+							role="switch"
+							aria-checked={checked}
+							onblur={() => onBlur && onBlur()}
+							onchange={(event: Event) => {
+								event.stopPropagation();
+								const checkbox = event.target as HTMLInputElement;
+								onValue && onValue(checkbox.checked);
+							}}
+							onfocus={() => onFocus && onFocus()}
+							onpointerenter={() => onOver && onOver()}
+							onpointerleave={() => onOut && onOut()}
+						/>
+					</div>
 				</div>
 			</div>
+			{onLabel && (
+				<div
+					key="onLabel"
+					classes={themedCss.onLabel}
+					aria-hidden={checked ? null : 'true'}
+				>
+					{onLabel}
+				</div>
+			)}
 			{label && (
 				<Label
 					key="label"
+					classes={classes}
+					theme={theme}
 					disabled={disabled}
-					focused={focused}
+					focused={focus.isFocused('root')}
 					valid={valid}
+					readOnly={readOnly}
 					required={required}
 					hidden={labelHidden}
 					forId={widgetId}

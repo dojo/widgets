@@ -1,48 +1,49 @@
-@import '../common/styles/variables.css';
+@import './variables.css';
 
 .root {
 }
 
-.disabled {
+.inputWrapper {
+}
 
+.disabled {
 }
 
 .track {
-
 }
 
 .underlay {
-
 }
 
 .thumb {
-
 }
 
 .nativeControl {
-
 }
 
 .checked {
-
 }
 
 .label {
-
 }
 
 .invalid {
-
 }
 
 .valid {
-    
+}
+
+.readonly {
 }
 
 .required {
-
 }
 
 .focused {
-	
+}
+
+.onLabel {
+}
+
+.offLabel {
 }

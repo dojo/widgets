@@ -1,4 +1,5 @@
 export const root: string;
+export const inputWrapper: string;
 export const disabled: string;
 export const track: string;
 export const underlay: string;
@@ -8,5 +9,8 @@ export const checked: string;
 export const label: string;
 export const invalid: string;
 export const valid: string;
+export const readonly: string;
 export const required: string;
 export const focused: string;
+export const onLabel: string;
+export const offLabel: string;

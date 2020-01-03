@@ -1,0 +1,104 @@
+@import './variables.css';
+
+.root {
+	display: flex;
+	position: relative;
+	line-height: var(--line-height-base);
+	min-height: var(--line-height-base);
+}
+
+.inputWrapper {
+	display: inline-flex;
+}
+
+.label {
+	color: var(--color-text-primary);
+	line-height: var(--line-height-base);
+}
+
+.thumb {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-border-strong);
+	border-radius: calc(var(--line-height-base) / 2);
+	height: var(--line-height-base);
+	left: 0;
+	position: absolute;
+	transition: background-color var(--transition-duration) var(--transition-easing),
+		transform var(--transition-duration) var(--transition-easing);
+	width: var(--line-height-base);
+}
+
+.track {
+	background-color: var(--color-border);
+	border: var(--border-width) solid var(--color-border-strong);
+	border-radius: calc(var(--line-height-base) / 2);
+	display: inline-block;
+	height: var(--line-height-base);
+	position: relative;
+	transition: background var(--transition-duration) var(--transition-easing),
+		border var(--transition-duration) var(--transition-easing);
+	vertical-align: middle;
+	width: calc(var(--line-height-base) * 1.75);
+}
+
+.underlay {
+	padding-right: var(--grid-base);
+	position: relative;
+	left: calc(var(--line-height-base) * -1.75);
+}
+
+.nativeControl {
+	height: 100%;
+	left: 0;
+	right: auto;
+	position: absolute;
+	top: 0;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+	pointer-events: auto;
+	width: 100%;
+}
+
+.checked .thumb {
+	background-color: var(--color-background);
+	border-color: var(--color-highlight);
+	transform: translate(75%, 0);
+}
+
+.checked .track {
+	background-color: var(--color-highlight);
+	border-color: var(--color-highlight);
+}
+
+/* Disabled */
+.disabled .thumb,
+.readonly .thumb {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border-strong);
+}
+
+.disabled .track,
+.readonly .track {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border-strong);
+}
+
+/* Focus */
+.focused label {
+	color: var(--color-highlight);
+}
+
+.focused {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.focused.checked {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.offLabel,
+.onLabel {
+	padding-right: var(--grid-base);
+}
