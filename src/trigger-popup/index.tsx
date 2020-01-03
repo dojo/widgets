@@ -37,7 +37,6 @@ export const TriggerPopup = factory(function({
 	middleware: { dimensions, icache }
 }) {
 	const { matchWidth = true, onOpen, ...otherProperties } = properties();
-	const { onClose } = properties();
 
 	const { position: triggerPosition, size: triggerSize } = dimensions.get('trigger');
 	const triggerTop = triggerPosition.top + document.documentElement.scrollTop;
@@ -49,6 +48,7 @@ export const TriggerPopup = factory(function({
 
 	const { trigger, content } = children()[0];
 	const close = () => {
+		const { onClose } = properties();
 		icache.set('open', false);
 		onClose && onClose();
 	};
@@ -57,6 +57,7 @@ export const TriggerPopup = factory(function({
 		<virtual>
 			<span key="trigger" classes={fixedCss.trigger}>
 				{trigger(() => {
+					const { onOpen } = properties();
 					icache.set('open', !icache.get('open'));
 					onOpen && onOpen();
 				})}

@@ -36,12 +36,12 @@ export const ContextPopup = factory(function({
 	children,
 	middleware: { icache, focus }
 }) {
-	const { onOpen, onClose } = properties();
 	const x = icache.getOrSet('x', 0);
 	const y = icache.getOrSet('y', 0);
 
 	const { trigger, content } = children()[0];
 	const close = () => {
+		const { onClose } = properties();
 		icache.set('open', false);
 		onClose && onClose();
 	};
@@ -52,6 +52,7 @@ export const ContextPopup = factory(function({
 				classes={css.trigger}
 				key="trigger"
 				oncontextmenu={(event: MouseEvent) => {
+					const { onOpen } = properties();
 					event.preventDefault();
 					focus.focus();
 					icache.set('x', event.pageX - CursorWidth);
