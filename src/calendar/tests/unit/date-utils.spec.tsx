@@ -1,8 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-import * as sinon from 'sinon';
 
-import { isOutOfDateRange, monthInMin, parseDate } from '../../date-utils';
+import { isOutOfDateRange, monthInMin } from '../../date-utils';
 
 const fullDate = new Date(1979, 2, 20, 7, 33, 12);
 const shortDate = new Date(2019, 11, 3);
