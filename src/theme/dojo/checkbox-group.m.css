@@ -1,0 +1,9 @@
+@import './variables.css';
+
+.root {
+	padding-top: var(--spacing-regular);
+	padding-bottom: var(--spacing-regular);
+}
+
+.legend {
+}
