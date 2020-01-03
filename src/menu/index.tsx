@@ -199,9 +199,7 @@ export const Menu = factory(function Menu({
 			},
 			active,
 			onRequestActive: () => {
-				if (focus.isFocused('root') || !focusable) {
-					setActiveIndex(index);
-				}
+				setActiveIndex(index);
 			},
 			disabled
 		};
