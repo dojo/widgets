@@ -11,7 +11,6 @@
 	line-height: var(--line-height-base);
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
-	transition: box-shadow var(--transition-duration) var(--transition-easing);
 	margin: 0;
 }
 
@@ -21,19 +20,10 @@
 	outline: none;
 }
 
-.root:hover .addon,
-.root:focus .addon {
-	border-left-color: var(--color-highlight);
-}
-
 .pressed {
 	background-color: var(--color-highlight);
 	border-color: var(--color-highlight);
 	color: var(--color-text-inverted);
-}
-
-.pressed .addon {
-	border-left-color: var(--color-highlight-border);
 }
 
 .popup {
@@ -41,23 +31,10 @@
 	position: relative;
 }
 
-.addon {
-	border-left: var(--border-width) solid var(--color-border);
-	line-height: var(--line-height-base);
-	padding: var(--spacing-regular);
-	position: absolute;
-	right: 0;
-	text-align: center;
-	top: 0;
-	width: calc(var(--line-height-base) + 2 * var(--spacing-regular)); /* square icon addons */
-	transition: border var(--transition-duration) var(--transition-easing);
-}
-
 .disabled,
 .disabled:hover {
 	background-color: initial;
 	border-color: var(--color-border);
-	box-shadow: none;
 	color: var(--color-text-faded);
 	cursor: default;
 }

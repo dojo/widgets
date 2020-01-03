@@ -29,11 +29,6 @@
 	outline: none;
 }
 
-.root:hover .addon,
-.root:focus .addon {
-	border-left-color: var(--color-highlight);
-}
-
 .pressed {
 	background-color: var(--color-highlight);
 	border-color: var(--color-highlight);
