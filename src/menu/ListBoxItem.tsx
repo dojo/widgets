@@ -36,12 +36,20 @@ export const ListBoxItem = factory(function ListBoxItem({
 
 	const classes = theme.classes(css);
 
+	function select() {
+		!disabled && onSelect();
+	}
+
+	function requestActive() {
+		!disabled && !active && onRequestActive();
+	}
+
 	return (
 		<div
 			id={widgetId}
 			key="root"
 			onpointermove={throttle(() => {
-				!disabled && !active && onRequestActive();
+				requestActive();
 			}, 500)}
 			classes={[
 				classes.root,
@@ -50,7 +58,8 @@ export const ListBoxItem = factory(function ListBoxItem({
 				disabled && classes.disabled
 			]}
 			onpointerdown={() => {
-				!disabled && onSelect();
+				requestActive();
+				select();
 			}}
 			role="option"
 			aria-disabled={disabled}

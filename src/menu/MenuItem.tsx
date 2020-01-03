@@ -23,16 +23,25 @@ export const MenuItem = factory(function MenuItem({ properties, children, middle
 
 	const classes = theme.classes(css);
 
+	function select() {
+		!disabled && onSelect();
+	}
+
+	function requestActive() {
+		!disabled && !active && onRequestActive();
+	}
+
 	return (
 		<div
 			id={widgetId}
 			key="root"
 			onpointermove={throttle(() => {
-				!disabled && !active && onRequestActive();
+				requestActive();
 			}, 500)}
 			classes={[classes.root, active && classes.active, disabled && classes.disabled]}
 			onpointerdown={() => {
-				!disabled && onSelect();
+				requestActive();
+				select();
 			}}
 			role="menuitem"
 			aria-disabled={disabled}
