@@ -1,15 +1,8 @@
 @import './variables.css';
 
-.root,
-.root *,
-.root:before,
-.root:after {
-	box-sizing: border-box;
-}
-
 .root {
 	background-color: var(--color-background);
-	border: var(--border-width) solid var(--color-border);
+	border: var(--border-width) solid var(--color-highlight);
 	color: var(--color-highlight);
 	cursor: pointer;
 	display: inline-block;
@@ -18,14 +11,12 @@
 	line-height: var(--line-height-base);
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
-	transition: box-shadow var(--transition-duration) var(--transition-easing);
 	margin: 0;
 }
 
-.root:hover,
-.root:focus {
-	border-color: var(--color-highlight);
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+.root:hover {
+	background-color: var(--color-highlight);
+	color: var(--color-text-inverted);
 	outline: none;
 }
 
@@ -37,9 +28,8 @@
 
 .disabled,
 .disabled:hover {
-	background-color: var(--color-background-faded);
+	background-color: initial;
 	border-color: var(--color-border);
-	box-shadow: none;
 	color: var(--color-text-faded);
 	cursor: default;
 }
