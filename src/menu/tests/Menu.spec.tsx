@@ -290,6 +290,18 @@ describe('Menu - ListBox', () => {
 		h.expect(template);
 	});
 
+	it('renders options with dividers', () => {
+		const h = harness(() => (
+			<Menu
+				onValue={noop}
+				listBox
+				total={animalOptions.length}
+				options={[{ ...animalOptions[0], divider: true }, ...animalOptions.slice(1)]}
+			/>
+		));
+		h.expect(template.insertAfter('@item-0', () => [<hr classes={css.divider} />]));
+	});
+
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
 			<Menu

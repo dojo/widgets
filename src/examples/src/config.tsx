@@ -54,6 +54,7 @@ import BasicIcons from './widgets/icon/Basic';
 import BasicLabel from './widgets/label/Basic';
 import BasicListbox from './widgets/listbox/Basic';
 import BasicMenu from './widgets/menu/Basic';
+import DividedMenu from './widgets/menu/Dividers';
 import ControlledMenu from './widgets/menu/Controlled';
 import ItemRenderer from './widgets/menu/ItemRenderer';
 import LargeOptionSet from './widgets/menu/LargeOptionSet';
@@ -510,6 +511,13 @@ export const config = {
 					filename: 'LargeOptionSet',
 					module: LargeOptionSet,
 					title: '100,000 options'
+				},
+				{
+					description:
+						'This example shows usage of the divider property on a menu item to trigger the menu to render with a divider after that item',
+					filename: 'Dividers',
+					module: DividedMenu,
+					title: 'Dividers'
 				}
 			],
 			overview: {

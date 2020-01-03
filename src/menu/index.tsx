@@ -13,10 +13,10 @@ import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
 
-export type MenuOption = { value: string; label?: string; disabled?: boolean };
+export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
 export interface MenuProperties {
-	/** Options to display within the menu */
+	/** Options to display within the menu. The `value` of the option will be passed to `onValue` when it is selected. The label is an optional display string to be used instead of the `value`. If `disabled` is true the option will have a disabled style and will not be selectable. An option with `divider: true` will have a divider rendered after it in the menu */
 	options: MenuOption[];
 	/** The total number of options provided */
 	total: number;
@@ -188,7 +188,7 @@ export const Menu = factory(function Menu({
 	}
 
 	function renderItem(index: number) {
-		const { value, label, disabled = false } = options[index];
+		const { value, label, divider, disabled = false } = options[index];
 		const selected = value === selectedValue;
 		const active = index === computedActiveIndex;
 		const itemProps = {
@@ -214,7 +214,7 @@ export const Menu = factory(function Menu({
 			  })
 			: label || value;
 
-		return listBox ? (
+		const item = listBox ? (
 			<ListBoxItem
 				{...itemProps}
 				selected={selected}
@@ -238,6 +238,8 @@ export const Menu = factory(function Menu({
 				{children}
 			</MenuItem>
 		);
+
+		return divider ? [item, <hr classes={classes.divider} />] : item;
 	}
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
