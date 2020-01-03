@@ -12,8 +12,8 @@ export interface ContextPopupProperties {
 }
 
 export interface ContextPopupChildren {
-	contentWithContext: () => RenderResult;
-	popupContent: (close: () => void, shouldFocus: () => boolean) => RenderResult;
+	trigger: () => RenderResult;
+	content: (close: () => void, shouldFocus: () => boolean) => RenderResult;
 }
 
 interface ContextIcache {
@@ -40,7 +40,7 @@ export const ContextPopup = factory(function({
 	const x = icache.getOrSet('x', 0);
 	const y = icache.getOrSet('y', 0);
 
-	const { contentWithContext, popupContent } = children()[0];
+	const { trigger, content } = children()[0];
 	const close = () => {
 		icache.set('open', false);
 		onClose && onClose();
@@ -49,8 +49,8 @@ export const ContextPopup = factory(function({
 	return (
 		<virtual>
 			<div
-				classes={css.contentWithContext}
-				key="contentWithContext"
+				classes={css.trigger}
+				key="trigger"
 				oncontextmenu={(event: MouseEvent) => {
 					event.preventDefault();
 					focus.focus();
@@ -60,7 +60,7 @@ export const ContextPopup = factory(function({
 					onOpen && onOpen();
 				}}
 			>
-				{contentWithContext()}
+				{trigger()}
 			</div>
 			<Popup
 				key="popup"
@@ -72,7 +72,7 @@ export const ContextPopup = factory(function({
 				open={icache.get('open')}
 			>
 				{{
-					content: () => <div>{popupContent(close, focus.shouldFocus)}</div>
+					content: () => <div>{content(close, focus.shouldFocus)}</div>
 				}}
 			</Popup>
 		</virtual>

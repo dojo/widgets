@@ -1,1 +1,1 @@
-export const contentWithContext: string;
+export const trigger: string;

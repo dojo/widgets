@@ -10,7 +10,7 @@ import { stub } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
 	<virtual>
-		<div classes={css.contentWithContext} key="contentWithContext" oncontextmenu={() => {}} />
+		<div classes={css.trigger} key="trigger" oncontextmenu={() => {}} />
 		<Popup
 			key="popup"
 			x={0}
@@ -37,16 +37,16 @@ describe('ContextPopup', () => {
 		});
 	});
 
-	it('Renders with contentWithContext renderer', () => {
+	it('Renders with trigger renderer', () => {
 		const h = harness(() => (
 			<ContextPopup>
 				{{
-					contentWithContext: () => <div>Some text with a context menu</div>,
-					popupContent: () => 'hello world'
+					trigger: () => <div>Some text with a context menu</div>,
+					content: () => 'hello world'
 				}}
 			</ContextPopup>
 		));
-		const contextContentTemplate = baseTemplate.setChildren('@contentWithContext', () => [
+		const contextContentTemplate = baseTemplate.setChildren('@trigger', () => [
 			<div>Some text with a context menu</div>
 		]);
 		h.expect(contextContentTemplate);
@@ -57,8 +57,8 @@ describe('ContextPopup', () => {
 		const h = harness(() => (
 			<ContextPopup onClose={onClose}>
 				{{
-					contentWithContext: () => undefined,
-					popupContent: (onClose, shouldFocus) => (
+					trigger: () => undefined,
+					content: (onClose, shouldFocus) => (
 						<div key="content" tabIndex={0} onblur={onClose} focus={shouldFocus}>
 							hello world
 						</div>
@@ -86,8 +86,8 @@ describe('ContextPopup', () => {
 		const h = harness(() => (
 			<ContextPopup onOpen={onOpen} onClose={onClose}>
 				{{
-					contentWithContext: () => undefined,
-					popupContent: () => 'hello world'
+					trigger: () => undefined,
+					content: () => 'hello world'
 				}}
 			</ContextPopup>
 		));
@@ -97,7 +97,7 @@ describe('ContextPopup', () => {
 			pageY: 100
 		};
 
-		h.trigger('@contentWithContext', 'oncontextmenu', event);
+		h.trigger('@trigger', 'oncontextmenu', event);
 		assert.isTrue(onOpen.calledOnce);
 		assert.isTrue(event.preventDefault.calledOnce);
 		h.expect(

@@ -8,8 +8,8 @@ export default factory(function Basic() {
 		<virtual>
 			<ContextPopup>
 				{{
-					contentWithContext: () => <div>This text has a context popup</div>,
-					popupContent: (onClose, shouldFocus) => (
+					trigger: () => <div>This text has a context popup</div>,
+					content: (onClose, shouldFocus) => (
 						<div
 							focus={shouldFocus}
 							tabIndex={0}
