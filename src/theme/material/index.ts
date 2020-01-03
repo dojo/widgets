@@ -26,7 +26,6 @@ import * as splitPane from './split-pane.m.css';
 import * as tabController from './tab-controller.m.css';
 import * as textArea from './text-area.m.css';
 import * as textInput from './text-input.m.css';
-import * as enhancedTextInput from './enhanced-text-input.m.css';
 import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
 import * as toolbar from './toolbar.m.css';
@@ -61,7 +60,6 @@ export default {
 	'@dojo/widgets/tab-controller': tabController,
 	'@dojo/widgets/text-area': textArea,
 	'@dojo/widgets/text-input': textInput,
-	'@dojo/widgets/enhanced-text-input': enhancedTextInput,
 	'@dojo/widgets/time-picker': timePicker,
 	'@dojo/widgets/title-pane': titlePane,
 	'@dojo/widgets/toolbar': toolbar,
