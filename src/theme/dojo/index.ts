@@ -35,6 +35,9 @@ import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
 import * as toolbar from './toolbar.m.css';
 import * as tooltip from './tooltip.m.css';
+import * as menu from './menu.m.css';
+import * as listboxItem from './listbox-item.m.css';
+import * as menuItem from './menu-item.m.css';
 
 export default {
 	'@dojo/widgets/accordion-pane': accordionPane,
@@ -57,6 +60,9 @@ export default {
 	'@dojo/widgets/icon': icon,
 	'@dojo/widgets/label': label,
 	'@dojo/widgets/listbox': listbox,
+	'@dojo/widgets/list-box-item': listboxItem,
+	'@dojo/widgets/menu-item': menuItem,
+	'@dojo/widgets/menu': menu,
 	'@dojo/widgets/password-input': passwordInput,
 	'@dojo/widgets/progress': progress,
 	'@dojo/widgets/radio': radio,
