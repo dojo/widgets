@@ -4,6 +4,7 @@ import * as raisedButton from './raised-button.m.css';
 import * as outlinedButton from './outlined-button.m.css';
 import * as calendar from './calendar.m.css';
 import * as checkbox from './checkbox.m.css';
+import * as chip from './chip.m.css';
 import * as combobox from './combobox.m.css';
 import * as dialog from './dialog.m.css';
 import * as icon from './icon.m.css';
@@ -36,6 +37,7 @@ export default {
 	'@dojo/widgets/button': button,
 	'@dojo/widgets/calendar': calendar,
 	'@dojo/widgets/checkbox': checkbox,
+	'@dojo/widgets/chip': chip,
 	'@dojo/widgets/combobox': combobox,
 	'@dojo/widgets/dialog': dialog,
 	'@dojo/widgets/icon': icon,
