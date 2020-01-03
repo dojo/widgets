@@ -6,4 +6,5 @@
 }
 
 .legend {
+	composes: root from './label.m.css';
 }
