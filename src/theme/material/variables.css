@@ -6,4 +6,6 @@
 	--mdc-theme-on-primary: #fff; /* Text color on top of a primary background */
 	--mdc-theme-on-secondary: #fff; /* Text color on top of a secondary background */
 	--mdc-theme-on-surface: #000; /* Text color on top of a surface background */
+
+	--zindex-dialog: 400;
 }
