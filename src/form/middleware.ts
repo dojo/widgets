@@ -98,9 +98,10 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 			valid() {
 				const values = icache.getOrSet('valid', {});
 				const requiredValues = icache.getOrSet('required', {});
-				return Object.keys(values).every((key) => {
+				return Object.keys({ ...values, ...requiredValues }).every((key) => {
 					const valid = values[key];
-					const value = typeof valid === 'boolean' ? valid : valid.valid;
+					const value =
+						typeof valid === 'boolean' || valid === undefined ? valid : valid.valid;
 					return (value === undefined && !requiredValues[key]) || Boolean(value);
 				});
 			},
@@ -113,6 +114,8 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 				});
 				icache.set('valid', valid);
 				icache.set('required', {});
+				icache.set('formDisabled', false);
+				icache.set('disabled', {});
 			},
 			field(name: any, required = false): Field<S, any> {
 				const requiredValues = icache.getOrSet('required', {});
@@ -120,6 +123,13 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 					icache.set('required', {
 						...requiredValues,
 						[name]: required
+					});
+				}
+				const values = icache.getOrSet('values', {}) as S;
+				if (!values.hasOwnProperty(name)) {
+					icache.set('values', {
+						...values,
+						[name]: undefined
 					});
 				}
 				return {

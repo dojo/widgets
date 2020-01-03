@@ -38,6 +38,7 @@ import ModalDialog from './widgets/dialog/ModalDialog';
 import UnderlayDialog from './widgets/dialog/UnderlayDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
+import BasicForm from './widgets/form/Basic';
 import BasicGrid from './widgets/grid/Basic';
 import ColumnResize from './widgets/grid/ColumnResize';
 import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
@@ -381,6 +382,15 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicEmailInput
+				}
+			}
+		},
+		form: {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicForm
 				}
 			}
 		},
