@@ -2,6 +2,7 @@
 .menu {
 	overflow: auto;
 	position: relative;
+	background: var(--component-background);
 }
 
 /* Class for dividers between menu options */
