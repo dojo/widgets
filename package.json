@@ -64,6 +64,7 @@
     "@material/radio": "3.2.0",
     "@material/snackbar": "4.0.0",
     "@material/tab": "4.0.0",
+    "@material/top-app-bar": "4.0.0",
     "@theintern/a11y": "~0.2.0",
     "@types/execa": "^0.8.1",
     "@types/glob": "5.0.36",

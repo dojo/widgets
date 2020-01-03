@@ -1,2 +1,10 @@
+@import './variables.css';
+
 .root {
+	background-color: var(--mdc-theme-primary);
+	color: var(--mdc-theme-on-primary);
+}
+
+.title {
+	composes: mdc-top-app-bar__title from '@material/top-app-bar/dist/mdc.top-app-bar.css';
 }
