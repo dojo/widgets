@@ -13,7 +13,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 				name="Switch"
 				label="Disabled unchecked"
 				disabled={true}
-				onChange={(checked) => {
+				onValue={(checked) => {
 					icache.set('checked', checked);
 				}}
 			/>
@@ -22,7 +22,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 				name="Switch"
 				label="Disabled checked"
 				disabled={true}
-				onChange={(checked) => {
+				onValue={(checked) => {
 					icache.set('checked', checked);
 				}}
 			/>

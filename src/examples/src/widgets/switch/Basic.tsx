@@ -11,7 +11,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 			checked={checked}
 			name="Switch"
 			label="On/Off"
-			onChange={(checked) => {
+			onValue={(checked) => {
 				icache.set('checked', checked);
 			}}
 		/>
