@@ -4,14 +4,16 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import {
 	compareId,
 	compareTheme,
-	compareFor,
 	createHarness,
-	noop
+	noop,
+	compareForId
 } from '../../common/tests/support/test-helpers';
 import HelperText from '../../helper-text';
 import * as css from '../../theme/default/native-select.m.css';
 import { NativeSelect } from '../index';
 import { stub } from 'sinon';
+import Icon from '../../icon';
+import Label from '../../label';
 const { assert } = intern.getPlugin('chai');
 
 const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
@@ -20,27 +22,44 @@ const harness = createHarness([compareTheme]);
 
 const baseTemplate = assertionTemplate(() => (
 	<div classes={[css.root, undefined, undefined]} key="root">
-		<label assertion-key="label" type="select" for="something" />
-		<select
-			key="native-select"
-			onchange={noop}
+		<Label
+			assertion-key="label"
+			theme={undefined}
+			classes={undefined}
 			disabled={undefined}
-			name={undefined}
+			forId={'something'}
 			required={undefined}
-			id="something"
-			size={undefined}
-			onfocus={noop}
-			onblur={noop}
-			class={css.select}
-		>
-			{options.map(({ value }, index) => {
-				return (
-					<option key={`option-${index}`} value={value} disabled={false} selected={false}>
-						{value}
-					</option>
-				);
-			})}
-		</select>
+		/>
+		<div classes={css.inputWrapper}>
+			<select
+				key="native-select"
+				onchange={noop}
+				disabled={undefined}
+				name={undefined}
+				required={undefined}
+				id="something"
+				size={undefined}
+				onfocus={noop}
+				onblur={noop}
+				class={css.select}
+			>
+				{options.map(({ value }, index) => {
+					return (
+						<option
+							key={`option-${index}`}
+							value={value}
+							disabled={false}
+							selected={false}
+						>
+							{value}
+						</option>
+					);
+				})}
+			</select>
+			<span classes={css.arrow}>
+				<Icon type="downIcon" theme={undefined} classes={undefined} />
+			</span>
+		</div>
 		<HelperText key="helperText" text={undefined} />
 	</div>
 ));
@@ -48,7 +67,7 @@ const baseTemplate = assertionTemplate(() => (
 describe('Native Select', () => {
 	it('renders', () => {
 		const h = harness(() => <NativeSelect onValue={() => {}} options={options} />, [
-			compareFor,
+			compareForId,
 			compareId
 		]);
 		h.expect(baseTemplate);
@@ -69,7 +88,7 @@ describe('Native Select', () => {
 					size={3}
 				/>
 			),
-			[compareFor, compareId]
+			[compareForId, compareId]
 		);
 
 		const optionalPropertyTemplate = baseTemplate
@@ -80,6 +99,8 @@ describe('Native Select', () => {
 			.setProperty('@helperText', 'text', 'Pick a pet type')
 			.setProperty('@option-1', 'selected', true)
 			.setProperty('@root', 'classes', [css.root, css.disabled, css.required])
+			.setProperty('~label', 'disabled', true)
+			.setProperty('~label', 'required', true)
 			.replaceChildren('~label', () => {
 				return ['Pets'];
 			});
@@ -97,7 +118,7 @@ describe('Native Select', () => {
 		const onValueStub = stub();
 
 		const h = harness(() => <NativeSelect onValue={onValueStub} options={options} />, [
-			compareFor,
+			compareForId,
 			compareId
 		]);
 

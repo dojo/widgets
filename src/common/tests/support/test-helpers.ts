@@ -29,12 +29,6 @@ export const compareId = {
 	comparator: isStringComparator
 };
 
-export const compareFor = {
-	selector: '*',
-	property: 'for',
-	comparator: isStringComparator
-};
-
 export const compareWidgetId = {
 	selector: '*',
 	property: 'widgetId',

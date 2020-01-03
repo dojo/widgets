@@ -7,6 +7,7 @@ import HelperText from '../helper-text';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/native-select.m.css';
 import Icon from '../icon';
+import Label from '../label';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -83,9 +84,15 @@ export const NativeSelect = factory(function NativeSelect({
 			]}
 			key="root"
 		>
-			<label type="select" for={selectId}>
+			<Label
+				theme={themeProp}
+				classes={classes}
+				disabled={disabled}
+				forId={selectId}
+				required={required}
+			>
 				{label}
-			</label>
+			</Label>
 			<div classes={themedCss.inputWrapper}>
 				<select
 					key="native-select"
