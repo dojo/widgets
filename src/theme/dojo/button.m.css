@@ -35,27 +35,6 @@
 	color: var(--color-text-inverted);
 }
 
-.pressed .addon {
-	border-left-color: var(--color-highlight-border);
-}
-
-.popup {
-	padding-right: calc(var(--line-height-base) + 3 * var(--spacing-regular));
-	position: relative;
-}
-
-.addon {
-	border-left: var(--border-width) solid var(--color-border);
-	line-height: var(--line-height-base);
-	padding: var(--spacing-regular);
-	position: absolute;
-	right: 0;
-	text-align: center;
-	top: 0;
-	width: calc(var(--line-height-base) + 2 * var(--spacing-regular)); /* square icon addons */
-	transition: border var(--transition-duration) var(--transition-easing);
-}
-
 .disabled,
 .disabled:hover {
 	background-color: var(--color-background-faded);

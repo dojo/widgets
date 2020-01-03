@@ -26,11 +26,6 @@
 	color: var(--color-text-inverted);
 }
 
-.popup {
-	padding-right: calc(var(--line-height-base) + 3 * var(--spacing-regular));
-	position: relative;
-}
-
 .disabled,
 .disabled:hover {
 	background-color: initial;
