@@ -7,11 +7,29 @@
 }
 
 .select {
+	appearance: none;
+	-webkit-appearance: none;
 	cursor: pointer;
+	border: 1px solid var(--component-color);
+	min-width: 100%;
 }
 
 .disabled {
 	cursor: inherit;
+}
+
+.inputWrapper {
+	display: inline-block;
+	position: relative;
+	min-width: 100%;
+}
+
+.arrow {
+	bottom: 0;
+	position: absolute;
+	right: 4px;
+	top: 0;
+	width: 1.5em;
 }
 
 .required {
