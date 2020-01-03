@@ -18,6 +18,9 @@ import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
+import * as listboxItem from './listbox-item.m.css';
+import * as menu from './menu.m.css';
+import * as menuItem from './menu-item.m.css';
 import * as outlinedButton from './outlined-button.m.css';
 import * as passwordInput from './password-input.m.css';
 import * as progress from './progress.m.css';
@@ -36,9 +39,6 @@ import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
 import * as toolbar from './toolbar.m.css';
 import * as tooltip from './tooltip.m.css';
-import * as menu from './menu.m.css';
-import * as listboxItem from './listbox-item.m.css';
-import * as menuItem from './menu-item.m.css';
 
 export default {
 	'@dojo/widgets/accordion-pane': accordionPane,
