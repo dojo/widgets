@@ -18,18 +18,10 @@ export interface DialogPropertiesBase {
 	closeable?: boolean;
 	/** Hidden text used by screen readers to display for the close button */
 	closeText?: string;
-	/** css class to be used when animating the dialog entering, or null to disable the animation */
-	enterAnimation?: string | null;
-	/** css class to be used when animating the dialog exiting, or null to disable the animation */
-	exitAnimation?: string | null;
 	/** Determines whether the dialog is open or closed */
 	open: boolean;
 	/** Determines whether a semi-transparent background shows behind the dialog */
 	underlay?: boolean;
-	/** css class to be used when animating the dialog underlay entering, or null to disable the animation */
-	underlayEnterAnimation?: string | null;
-	/** css class to be used when animating the dialog underlay exiting, or null to disable the animation */
-	underlayExitAnimation?: string | null;
 	/** Called when the dialog opens */
 	onOpen?(): void;
 	/** Called when the dialog is closed */
@@ -71,18 +63,7 @@ export const Dialog = factory(function Dialog({
 }) {
 	const themeCss = theme.classes(css);
 
-	let {
-		open,
-		aria = {},
-		underlay,
-		underlayEnterAnimation = themeCss.underlayEnter,
-		underlayExitAnimation = themeCss.underlayExit,
-		enterAnimation = themeCss.enter,
-		exitAnimation = themeCss.exit,
-		role = 'dialog',
-		closeable = true,
-		closeText
-	} = properties();
+	let { open, aria = {}, underlay, role = 'dialog', closeable = true, closeText } = properties();
 	const [renderer] = children();
 	const modal = role === 'alertdialog' || (properties() as DialogPropertiesDialogRole).modal;
 
@@ -132,8 +113,8 @@ export const Dialog = factory(function Dialog({
 					<GlobalEvent key="global" document={{ keyup }} />
 					<div
 						classes={[underlay ? themeCss.underlayVisible : null, fixedCss.underlay]}
-						enterAnimation={underlayEnterAnimation}
-						exitAnimation={underlayExitAnimation}
+						enterAnimation={themeCss.underlayEnter}
+						exitAnimation={themeCss.underlayExit}
 						key="underlay"
 						onclick={(event) => {
 							const { role } = properties();
@@ -151,8 +132,8 @@ export const Dialog = factory(function Dialog({
 						aria-describedby={role === 'alertdialog' ? contentId : undefined}
 						{...formatAriaProperties(aria)}
 						classes={themeCss.main}
-						enterAnimation={enterAnimation}
-						exitAnimation={exitAnimation}
+						enterAnimation={themeCss.enter}
+						exitAnimation={themeCss.exit}
 						key="main"
 						role={role}
 						tabIndex={-1}

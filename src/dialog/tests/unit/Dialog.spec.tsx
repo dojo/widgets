@@ -90,8 +90,6 @@ describe('Dialog', () => {
 		properties = {
 			aria: { describedBy: 'foo' },
 			closeText: 'foo',
-			enterAnimation: 'fooAnimation',
-			exitAnimation: 'barAnimation',
 			open: true,
 			role: 'alertdialog',
 			underlay: true,
@@ -111,36 +109,9 @@ describe('Dialog', () => {
 				])
 				.setProperty('@underlay', 'classes', [themeCss.underlayVisible, fixedCss.underlay])
 				.setProperty('@main', 'aria-describedby', 'foo')
-				.setProperty('@main', 'enterAnimation', 'fooAnimation')
-				.setProperty('@main', 'exitAnimation', 'barAnimation')
 				.setProperty('@main', 'focus', true)
 				.setProperty('@main', 'role', 'alertdialog')
 				.setProperty('@main', 'aria-modal', 'true')
-		);
-	});
-
-	it('turns off animations', () => {
-		const h = harness(() => (
-			<Dialog
-				open
-				underlay
-				enterAnimation={null}
-				exitAnimation={null}
-				underlayEnterAnimation={null}
-				underlayExitAnimation={null}
-				onRequestClose={() => {}}
-			>
-				{{ title: () => 'foo' }}
-			</Dialog>
-		));
-		h.expect(
-			openAssertion
-				.setProperty('@underlay', 'classes', [themeCss.underlayVisible, fixedCss.underlay])
-				.setProperty('@underlay', 'enterAnimation', null)
-				.setProperty('@underlay', 'exitAnimation', null)
-				.setProperty('@main', 'enterAnimation', null)
-				.setProperty('@main', 'exitAnimation', null)
-				.setProperty('@main', 'focus', true)
 		);
 	});
 
