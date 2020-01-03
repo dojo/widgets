@@ -1,0 +1,9 @@
+.wrapper {
+	overflow: hidden;
+	will-change: transform;
+	position: relative;
+}
+
+.transformer {
+	will-change: transform;
+}

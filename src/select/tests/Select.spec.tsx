@@ -73,6 +73,7 @@ const menuTemplate = assertionTemplate(() => (
 			classes={undefined}
 			listBox
 			widgetId={'test'}
+			total={options.length}
 		/>
 	</div>
 ));

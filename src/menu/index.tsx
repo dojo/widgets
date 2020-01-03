@@ -1,6 +1,4 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
-import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, renderer, tsx } from '@dojo/framework/core/vdom';
@@ -11,6 +9,7 @@ import theme from '../middleware/theme';
 import * as listBoxItemCss from '../theme/default/list-box-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/menu.m.css';
+import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
 
@@ -19,6 +18,8 @@ export type MenuOption = { value: string; label?: string; disabled?: boolean };
 export interface MenuProperties {
 	/** Options to display within the menu */
 	options: MenuOption[];
+	/** The total number of options provided */
+	total: number;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Callback called when user selects a value */
@@ -59,10 +60,11 @@ interface MenuICache {
 	inputText: string;
 	itemHeight: number;
 	itemsInView: number;
-	itemToScroll: number;
 	menuHeight: number;
 	resetInputTextTimer: any;
 	value: string;
+	scrollTop: number;
+	scrolling: boolean;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -79,21 +81,20 @@ const offscreenHeight = (dnode: RenderResult) => {
 const factory = create({
 	icache: createICacheMiddleware<MenuICache>(),
 	focus,
-	dimensions,
 	theme
 }).properties<MenuProperties>();
 
-export const Menu = factory(function({
+export const Menu = factory(function Menu({
 	properties,
 	id,
-	middleware: { icache, focus, dimensions, theme }
+	middleware: { icache, focus, theme }
 }) {
 	const {
 		activeIndex,
 		focusable = true,
 		initialValue,
 		itemRenderer,
-		itemsInView,
+		itemsInView = 10,
 		listBox = false,
 		onActiveIndexChange,
 		onBlur,
@@ -101,47 +102,9 @@ export const Menu = factory(function({
 		onRequestClose,
 		onValue,
 		options,
-		widgetId
+		widgetId,
+		total
 	} = properties();
-
-	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
-		icache.set('initial', initialValue);
-		icache.set('value', initialValue);
-		icache.set('activeIndex', findIndex(options, (option) => option.value === initialValue));
-	}
-
-	if (itemsInView && itemsInView !== icache.get('itemsInView')) {
-		icache.set('itemsInView', itemsInView);
-
-		const offscreenItemProps = {
-			selected: false,
-			onSelect: () => {},
-			active: false,
-			onRequestActive: () => {},
-			onActive: () => {},
-			scrollIntoView: false,
-			widgetId: 'offcreen'
-		};
-
-		const menuItemChild = itemRenderer
-			? itemRenderer({
-					selected: false,
-					active: false,
-					value: 'offscreen',
-					disabled: false
-			  })
-			: 'offscreen';
-
-		const offscreenMenuItem = <MenuItem {...offscreenItemProps}>{menuItemChild}</MenuItem>;
-
-		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));
-
-		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
-	}
-
-	const selectedValue = icache.get('value');
-	const computedActiveIndex =
-		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 
 	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {
@@ -168,11 +131,19 @@ export const Menu = factory(function({
 				break;
 			case Keys.Down:
 				event.preventDefault();
-				setActiveIndex((computedActiveIndex + 1) % options.length);
+				if (event.metaKey || event.ctrlKey) {
+					setActiveIndex(total - 1);
+				} else {
+					setActiveIndex((computedActiveIndex + 1) % total);
+				}
 				break;
 			case Keys.Up:
 				event.preventDefault();
-				setActiveIndex((computedActiveIndex - 1 + options.length) % options.length);
+				if (event.metaKey || event.ctrlKey) {
+					setActiveIndex(0);
+				} else {
+					setActiveIndex((computedActiveIndex - 1 + total) % total);
+				}
 				break;
 			case Keys.Escape:
 				event.preventDefault();
@@ -184,9 +155,12 @@ export const Menu = factory(function({
 				break;
 			case Keys.End:
 				event.preventDefault();
-				setActiveIndex(options.length - 1);
+				setActiveIndex(total - 1);
 				break;
 			default:
+				if (event.metaKey || event.ctrlKey) {
+					return;
+				}
 				const newIndex = getComputedIndexFromInput(event.key);
 				if (newIndex !== undefined) {
 					setActiveIndex(newIndex);
@@ -213,23 +187,139 @@ export const Menu = factory(function({
 		);
 	}
 
-	function onActive(index: number, itemDimensions: DimensionResults) {
-		const { position: itemPosition, size: itemSize } = itemDimensions;
-		const { position: rootPosition, size: rootSize } = dimensions.get('root');
-		if (itemPosition.bottom > rootPosition.bottom) {
-			const numInView = Math.ceil(rootSize.height / itemSize.height);
-			icache.set('itemToScroll', Math.max(index - numInView + 1, 0));
-		} else if (itemPosition.top < rootPosition.top) {
-			icache.set('itemToScroll', index);
-		}
+	function renderItem(index: number) {
+		const { value, label, disabled = false } = options[index];
+		const selected = value === selectedValue;
+		const active = index === computedActiveIndex;
+		const itemProps = {
+			widgetId: `${idBase}-item-${index}`,
+			key: `item-${index}`,
+			onSelect: () => {
+				setValue(value);
+			},
+			active,
+			onRequestActive: () => {
+				setActiveIndex(index);
+			},
+			disabled
+		};
+
+		const children = itemRenderer
+			? itemRenderer({
+					value,
+					label,
+					disabled,
+					active,
+					selected
+			  })
+			: label || value;
+
+		return listBox ? (
+			<ListBoxItem
+				{...itemProps}
+				selected={selected}
+				theme={theme.compose(
+					listBoxItemCss,
+					css,
+					'item'
+				)}
+			>
+				{children}
+			</ListBoxItem>
+		) : (
+			<MenuItem
+				{...itemProps}
+				theme={theme.compose(
+					menuItemCss,
+					css,
+					'item'
+				)}
+			>
+				{children}
+			</MenuItem>
+		);
 	}
 
-	const itemToScroll = icache.get('itemToScroll');
+	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
+		icache.set('initial', initialValue);
+		icache.set('value', initialValue);
+		icache.set('activeIndex', findIndex(options, (option) => option.value === initialValue));
+	}
+
+	if (itemsInView !== icache.get('itemsInView')) {
+		icache.set('itemsInView', itemsInView);
+
+		const offscreenItemProps = {
+			selected: false,
+			onSelect: () => {},
+			active: false,
+			onRequestActive: () => {},
+			onActive: () => {},
+			scrollIntoView: false,
+			widgetId: 'offcreen'
+		};
+
+		const menuItemChild = itemRenderer
+			? itemRenderer({
+					selected: false,
+					active: false,
+					value: 'offscreen',
+					disabled: false
+			  })
+			: 'offscreen';
+
+		const offscreenMenuItem = listBox ? (
+			<ListBoxItem {...offscreenItemProps}>{menuItemChild}</ListBoxItem>
+		) : (
+			<MenuItem {...offscreenItemProps}>{menuItemChild}</MenuItem>
+		);
+
+		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));
+
+		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
+	}
+
+	const nodePadding = 10;
+	const selectedValue = icache.get('value');
+	const computedActiveIndex =
+		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
 	const classes = theme.classes(css);
+	const itemHeight = icache.getOrSet('itemHeight', 0);
+	let scrollTop = icache.getOrSet('scrollTop', 0);
+	const totalContentHeight = total * itemHeight;
+	const scrolling = icache.getOrSet('scrolling', false);
+
+	if (scrolling) {
+		icache.set('scrolling', false);
+	} else {
+		const visibleStartIndex = Math.floor(scrollTop / itemHeight);
+		const visibleEndIndex = visibleStartIndex + itemsInView - 1;
+		if (computedActiveIndex < visibleStartIndex) {
+			scrollTop = computedActiveIndex * itemHeight;
+		} else if (computedActiveIndex > visibleEndIndex) {
+			scrollTop = Math.max(computedActiveIndex + 1 - itemsInView, 0) * itemHeight;
+		}
+
+		if (icache.get('scrollTop') !== scrollTop) {
+			icache.set('scrollTop', scrollTop);
+		}
+	}
+
+	const startNode = Math.max(0, Math.floor(scrollTop / itemHeight) - nodePadding);
+
+	let renderedItemsCount = itemsInView + 2 * nodePadding;
+	renderedItemsCount = Math.min(total - startNode, renderedItemsCount);
+
+	const offsetY = startNode * itemHeight;
+
+	const renderedItems = new Array(renderedItemsCount);
+	for (let i = 0; i < renderedItemsCount; i++) {
+		renderedItems[i] = renderItem(i + startNode);
+	}
 
 	return (
 		<div
@@ -240,69 +330,37 @@ export const Menu = factory(function({
 			focus={() => shouldFocus}
 			onfocus={onFocus}
 			onblur={onBlur}
+			scrollTop={scrollTop}
+			onscroll={(e) => {
+				const newScrollTop = (e.target as HTMLElement).scrollTop;
+				if (scrollTop !== newScrollTop) {
+					icache.set('scrolling', true);
+					icache.set('scrollTop', newScrollTop);
+				}
+			}}
 			styles={rootStyles}
 			role={listBox ? 'listbox' : 'menu'}
 			aria-orientation="vertical"
 			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
 			id={idBase}
 		>
-			{options.map(({ value, label, disabled = false }, index) => {
-				const selected = value === selectedValue;
-				const active = index === computedActiveIndex;
-				const itemProps = {
-					widgetId: `${idBase}-item-${index}`,
-					key: `item-${index}`,
-					onSelect: () => {
-						setValue(value);
-					},
-					active,
-					onRequestActive: () => {
-						if (focus.isFocused('root') || !focusable) {
-							setActiveIndex(index);
-						}
-					},
-					onActive: (dimensions: DimensionResults) => {
-						onActive(index, dimensions);
-					},
-					scrollIntoView: index === itemToScroll,
-					disabled
-				};
-
-				const children = itemRenderer
-					? itemRenderer({
-							value,
-							label,
-							disabled,
-							active,
-							selected
-					  })
-					: label || value;
-
-				return listBox ? (
-					<ListBoxItem
-						{...itemProps}
-						selected={selected}
-						theme={theme.compose(
-							listBoxItemCss,
-							css,
-							'item'
-						)}
-					>
-						{children}
-					</ListBoxItem>
-				) : (
-					<MenuItem
-						{...itemProps}
-						theme={theme.compose(
-							menuItemCss,
-							css,
-							'item'
-						)}
-					>
-						{children}
-					</MenuItem>
-				);
-			})}
+			<div
+				classes={fixedCss.wrapper}
+				styles={{
+					height: `${totalContentHeight}px`
+				}}
+				key="wrapper"
+			>
+				<div
+					classes={fixedCss.transformer}
+					styles={{
+						transform: `translateY(${offsetY}px)`
+					}}
+					key="transformer"
+				>
+					{renderedItems}
+				</div>
+			</div>
 		</div>
 	);
 });

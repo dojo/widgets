@@ -6,6 +6,7 @@ import Menu, { MenuOption } from '../';
 import { compareId, createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
 import * as css from '../../theme/default/menu.m.css';
+import * as fixedCss from '../menu.m.css';
 import MenuItem from '../MenuItem';
 import ListBoxItem from '../ListBoxItem';
 const { assert } = intern.getPlugin('chai');
@@ -37,27 +38,43 @@ describe('Menu - Menu', () => {
 			focus={noop}
 			onfocus={undefined}
 			onblur={undefined}
-			styles={{}}
+			styles={{ maxHeight: '450px' }}
 			id="test"
 			role="menu"
 			aria-activedescendant="test"
 			aria-orientation="vertical"
+			scrollTop={0}
+			onscroll={() => {}}
 		>
-			{animalOptions.map(({ value, label, disabled = false }, index) => (
-				<MenuItem
-					key={`item-${index}`}
-					onSelect={noop}
-					active={index === 0}
-					onRequestActive={noop}
-					onActive={noop}
-					scrollIntoView={false}
-					disabled={disabled}
-					theme={{}}
-					widgetId={`menu-test-item-${index}`}
+			<div
+				classes={fixedCss.wrapper}
+				styles={{
+					height: `135px`
+				}}
+				key="wrapper"
+			>
+				<div
+					classes={fixedCss.transformer}
+					styles={{
+						transform: `translateY(0px)`
+					}}
+					key="transformer"
 				>
-					{label || value}
-				</MenuItem>
-			))}
+					{animalOptions.map(({ value, label, disabled = false }, index) => (
+						<MenuItem
+							key={`item-${index}`}
+							onSelect={noop}
+							active={index === 0}
+							onRequestActive={noop}
+							disabled={disabled}
+							theme={{}}
+							widgetId={`menu-test-item-${index}`}
+						>
+							{label || value}
+						</MenuItem>
+					))}
+				</div>
+			</div>
 		</div>
 	));
 
@@ -74,7 +91,9 @@ describe('Menu - Menu', () => {
 	});
 
 	it('renders options', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => (
+			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+		));
 		h.expect(template);
 	});
 
@@ -84,9 +103,10 @@ describe('Menu - Menu', () => {
 				onValue={noop}
 				options={animalOptions}
 				itemRenderer={({ label, value }) => <span>label is {label || value}</span>}
+				total={animalOptions.length}
 			/>
 		));
-		const itemRendererTemplate = template.setChildren('@root', () =>
+		const itemRendererTemplate = template.setChildren('@transformer', () =>
 			animalOptions.map(({ value, label, disabled = false }, index) => {
 				return (
 					<MenuItem
@@ -94,8 +114,6 @@ describe('Menu - Menu', () => {
 						onSelect={noop}
 						active={index === 0}
 						onRequestActive={noop}
-						onActive={noop}
-						scrollIntoView={false}
 						disabled={disabled}
 						theme={{}}
 						widgetId={`menu-test-item-${index}`}
@@ -109,7 +127,14 @@ describe('Menu - Menu', () => {
 	});
 
 	it('takes a number in view property', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} itemsInView={2} />);
+		const h = harness(() => (
+			<Menu
+				onValue={noop}
+				options={animalOptions}
+				itemsInView={2}
+				total={animalOptions.length}
+			/>
+		));
 		const numberInViewTemplate = template.setProperty('@root', 'styles', {
 			maxHeight: '90px'
 		});
@@ -117,7 +142,9 @@ describe('Menu - Menu', () => {
 	});
 
 	it('changes active item on arrow key down', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => (
+			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+		));
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
 			preventDefault: sb.stub(),
@@ -132,7 +159,9 @@ describe('Menu - Menu', () => {
 	});
 
 	it('changes active item on arrow key up and loops to last item', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => (
+			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+		));
 		const mockArrowUpEvent = {
 			stopPropagation: sb.stub(),
 			preventDefault: sb.stub(),
@@ -153,6 +182,7 @@ describe('Menu - Menu', () => {
 				onValue={noop}
 				options={animalOptions}
 				onActiveIndexChange={onActiveIndexChange}
+				total={animalOptions.length}
 			/>
 		));
 		const mockArrowDownEvent = {
@@ -167,7 +197,9 @@ describe('Menu - Menu', () => {
 	});
 
 	it('sets active item to be the one starting with letter key pressed', () => {
-		const h = harness(() => <Menu onValue={noop} options={animalOptions} />);
+		const h = harness(() => (
+			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+		));
 		const mockCPressEvent = {
 			stopPropagation: sb.stub(),
 			preventDefault: sb.stub(),
@@ -198,28 +230,44 @@ describe('Menu - ListBox', () => {
 			focus={noop}
 			onfocus={undefined}
 			onblur={undefined}
-			styles={{}}
+			styles={{ maxHeight: '450px' }}
 			id="test"
 			role="listbox"
 			aria-activedescendant="test"
 			aria-orientation="vertical"
+			scrollTop={0}
+			onscroll={() => {}}
 		>
-			{animalOptions.map(({ value, label, disabled = false }, index) => (
-				<ListBoxItem
-					key={`item-${index}`}
-					onSelect={noop}
-					active={index === 0}
-					onRequestActive={noop}
-					onActive={noop}
-					scrollIntoView={false}
-					disabled={disabled}
-					selected={false}
-					theme={{}}
-					widgetId={`menu-test-item-${index}`}
+			<div
+				classes={fixedCss.wrapper}
+				styles={{
+					height: `135px`
+				}}
+				key="wrapper"
+			>
+				<div
+					classes={fixedCss.transformer}
+					styles={{
+						transform: `translateY(0px)`
+					}}
+					key="transformer"
 				>
-					{label || value}
-				</ListBoxItem>
-			))}
+					{animalOptions.map(({ value, label, disabled = false }, index) => (
+						<ListBoxItem
+							key={`item-${index}`}
+							onSelect={noop}
+							active={index === 0}
+							onRequestActive={noop}
+							disabled={disabled}
+							selected={false}
+							theme={{}}
+							widgetId={`menu-test-item-${index}`}
+						>
+							{label || value}
+						</ListBoxItem>
+					))}
+				</div>
+			</div>
 		</div>
 	));
 
@@ -236,7 +284,9 @@ describe('Menu - ListBox', () => {
 	});
 
 	it('renders options', () => {
-		const h = harness(() => <Menu onValue={noop} listBox options={animalOptions} />);
+		const h = harness(() => (
+			<Menu onValue={noop} listBox options={animalOptions} total={animalOptions.length} />
+		));
 		h.expect(template);
 	});
 
@@ -245,11 +295,12 @@ describe('Menu - ListBox', () => {
 			<Menu
 				onValue={noop}
 				options={animalOptions}
+				total={animalOptions.length}
 				listBox
 				itemRenderer={({ label, value }) => <span>label is {label || value}</span>}
 			/>
 		));
-		const itemRendererTemplate = template.setChildren('@root', () =>
+		const itemRendererTemplate = template.setChildren('@transformer', () =>
 			animalOptions.map(({ value, label, disabled = false }, index) => {
 				return (
 					<ListBoxItem
@@ -257,8 +308,6 @@ describe('Menu - ListBox', () => {
 						onSelect={noop}
 						active={index === 0}
 						onRequestActive={noop}
-						onActive={noop}
-						scrollIntoView={false}
 						disabled={disabled}
 						selected={false}
 						theme={{}}
@@ -274,7 +323,9 @@ describe('Menu - ListBox', () => {
 
 	it('selects item on key press', () => {
 		const onValue = sb.stub();
-		const h = harness(() => <Menu listBox onValue={onValue} options={animalOptions} />);
+		const h = harness(() => (
+			<Menu listBox onValue={onValue} options={animalOptions} total={animalOptions.length} />
+		));
 
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),

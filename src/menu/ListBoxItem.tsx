@@ -1,6 +1,3 @@
-import { DimensionResults } from '@dojo/framework/core/meta/Dimensions';
-import { dimensions } from '@dojo/framework/core/middleware/dimensions';
-import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
 import { throttle } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -15,53 +12,44 @@ export interface ListBoxItemProperties {
 	active?: boolean;
 	/** Callback used when the item wants to request it be made active, to example on pointer move */
 	onRequestActive(): void;
-	/** Callback used when an item is set to active, allows parent menu to scroll appropriate item into view */
-	onActive(dimensions: DimensionResults): void;
-	/** When set to true, the item will set `scrollIntoView` on it's root dom node */
-	scrollIntoView?: boolean;
 	/** Property to set the disabled state of the item */
 	disabled?: boolean;
 	/** The id to apply to this widget top level for a11y */
 	widgetId: string;
 }
 
-interface ListBoxItemICache {
-	active: boolean;
-}
+const factory = create({ theme }).properties<ListBoxItemProperties>();
 
-const icache = createICacheMiddleware<ListBoxItemICache>();
-
-const factory = create({ dimensions, icache, theme }).properties<ListBoxItemProperties>();
-
-export const ListBoxItem = factory(function({
+export const ListBoxItem = factory(function ListBoxItem({
 	properties,
 	children,
-	middleware: { dimensions, icache, theme }
+	middleware: { theme }
 }) {
 	const {
 		onSelect,
 		active = false,
 		onRequestActive,
-		onActive,
-		scrollIntoView = false,
 		selected = false,
 		disabled = false,
 		widgetId
 	} = properties();
 
-	if (icache.get('active') !== active) {
-		icache.set('active', active);
-		active && onActive(dimensions.get('root'));
+	const classes = theme.classes(css);
+
+	function select() {
+		!disabled && onSelect();
 	}
 
-	const classes = theme.classes(css);
+	function requestActive() {
+		!disabled && !active && onRequestActive();
+	}
 
 	return (
 		<div
 			id={widgetId}
 			key="root"
 			onpointermove={throttle(() => {
-				!disabled && !active && onRequestActive();
+				requestActive();
 			}, 500)}
 			classes={[
 				classes.root,
@@ -70,9 +58,9 @@ export const ListBoxItem = factory(function({
 				disabled && classes.disabled
 			]}
 			onpointerdown={() => {
-				!disabled && onSelect();
+				requestActive();
+				select();
 			}}
-			scrollIntoView={scrollIntoView}
 			role="option"
 			aria-disabled={disabled}
 			aria-selected={selected}

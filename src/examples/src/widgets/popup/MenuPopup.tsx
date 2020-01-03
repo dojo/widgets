@@ -18,7 +18,7 @@ export default factory(function MenuPopup() {
 				trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Menu Popup</Button>,
 				content: (onClose) => (
 					<div styles={{ border: '1px solid black' }}>
-						<Menu options={options} onValue={onClose} />
+						<Menu options={options} onValue={onClose} total={options.length} />
 					</div>
 				)
 			}}
