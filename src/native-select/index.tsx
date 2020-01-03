@@ -6,6 +6,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import HelperText from '../helper-text';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/native-select.m.css';
+import Icon from '../icon';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -49,6 +50,7 @@ export const NativeSelect = factory(function NativeSelect({
 	middleware: { icache, theme }
 }) {
 	const {
+		classes,
 		disabled,
 		helperText,
 		initialValue,
@@ -59,7 +61,8 @@ export const NativeSelect = factory(function NativeSelect({
 		name,
 		size,
 		onFocus,
-		onBlur
+		onBlur,
+		theme: themeProp
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -83,40 +86,45 @@ export const NativeSelect = factory(function NativeSelect({
 			<label type="select" for={selectId}>
 				{label}
 			</label>
-			<select
-				key="native-select"
-				onchange={(event: Event) => {
-					const targetElement = event.target as HTMLInputElement;
-					selectedValue !== icache.get('value') &&
-						icache.set('value', targetElement.value);
-					onValue && onValue(targetElement.value);
-				}}
-				disabled={disabled}
-				name={name}
-				required={required}
-				id={selectId}
-				size={size}
-				onfocus={() => {
-					onFocus && onFocus();
-				}}
-				onblur={() => {
-					onBlur && onBlur();
-				}}
-				class={themedCss.select}
-			>
-				{options.map(({ value, label, disabled = false }, index) => {
-					return (
-						<option
-							key={`option-${index}`}
-							value={value}
-							disabled={disabled}
-							selected={selectedValue === value}
-						>
-							{label ? label : value}
-						</option>
-					);
-				})}
-			</select>
+			<div classes={themedCss.inputWrapper}>
+				<select
+					key="native-select"
+					onchange={(event: Event) => {
+						const targetElement = event.target as HTMLInputElement;
+						selectedValue !== icache.get('value') &&
+							icache.set('value', targetElement.value);
+						onValue && onValue(targetElement.value);
+					}}
+					disabled={disabled}
+					name={name}
+					required={required}
+					id={selectId}
+					size={size}
+					onfocus={() => {
+						onFocus && onFocus();
+					}}
+					onblur={() => {
+						onBlur && onBlur();
+					}}
+					class={themedCss.select}
+				>
+					{options.map(({ value, label, disabled = false }, index) => {
+						return (
+							<option
+								key={`option-${index}`}
+								value={value}
+								disabled={disabled}
+								selected={selectedValue === value}
+							>
+								{label ? label : value}
+							</option>
+						);
+					})}
+				</select>
+				<span classes={themedCss.arrow}>
+					<Icon type="downIcon" theme={themeProp} classes={classes} />
+				</span>
+			</div>
 			<HelperText key="helperText" text={helperText} />
 		</div>
 	);
