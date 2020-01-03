@@ -38,7 +38,7 @@ describe('RadioGroup-middleware', () => {
 			middleware: { icache: icacheFactory() },
 			properties: () => ({}),
 			children: () => []
-		})(onValueStub);
+		})(onValueStub, 'test');
 
 		const test1Api = radioGroup('test1');
 		const test2Api = radioGroup('test2');
