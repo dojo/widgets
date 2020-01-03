@@ -13,6 +13,7 @@ import Popup from '../../../popup';
 import TextInput from '../../../text-input';
 
 import DateInput from '../../index';
+import { formatDate, formatDateISO } from '../../date-utils';
 import bundle from '../../nls/DateInput';
 import * as css from '../../../theme/default/date-input.m.css';
 
@@ -21,30 +22,11 @@ const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const noop = () => {};
 
-function formatDateDisplay(date: Date) {
-	return Intl.DateTimeFormat().format(date);
-}
-
-const formatDate = (date: Date | undefined) => {
-	if (!date) {
-		return '';
-	}
-
-	const year = date.getFullYear();
-	const month = (date.getMonth() + 1).toString().padStart(2, '0');
-	const day = date
-		.getDate()
-		.toString()
-		.padStart(2, '0');
-
-	return `${year}-${month}-${day}`;
-};
-
 const baseTemplate = (date: Date) =>
 	assertionTemplate(() => {
 		return (
 			<div classes={css.root}>
-				<input type="hidden" name="dateInput" value={formatDate(date)} />
+				<input type="hidden" name="dateInput" value={formatDateISO(date)} />
 				<Popup key="popup">
 					{{
 						trigger: () => <button />,
@@ -64,7 +46,7 @@ const buttonTemplate = assertionTemplate(() => {
 				onBlur={noop}
 				onValue={noop}
 				trailing={() => undefined}
-				value={formatDateDisplay(today)}
+				value={formatDate(today)}
 				helperText=""
 			/>
 		</div>
@@ -99,13 +81,17 @@ describe('DateInput', () => {
 	it('renders with default date', () => {
 		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
 		h.expect(baseTemplate(today));
-		sinon.assert.calledWith(onValue, today);
+		sinon.assert.calledWith(onValue, formatDateISO(today));
 	});
 
 	it('renders with initial value', () => {
 		const initialValue = new Date(2019, 11, 4);
 		const h = harness(() => (
-			<DateInput name="dateInput" onValue={onValue} initialValue={initialValue} />
+			<DateInput
+				name="dateInput"
+				onValue={onValue}
+				initialValue={formatDateISO(initialValue)}
+			/>
 		));
 		h.expect(baseTemplate(initialValue));
 	});
@@ -147,7 +133,7 @@ describe('DateInput', () => {
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
 		onValue.resetHistory();
-		input.properties.onValue(formatDateDisplay(expected));
+		input.properties.onValue(formatDate(expected));
 
 		h.expect(baseTemplate(today));
 		sinon.assert.notCalled(onValue); // onValue not called until validated; validation delayed for manual input until blur
@@ -155,7 +141,7 @@ describe('DateInput', () => {
 		// If `onValue` is called, the input was accepted & validated
 		input.properties.onBlur();
 		h.expect(baseTemplate(expected));
-		sinon.assert.calledWith(onValue, expected);
+		sinon.assert.calledWith(onValue, formatDateISO(expected));
 
 		// The icon wasn't clicked; the calendar should NOT have been shown
 		sinon.assert.notCalled(toggleOpen);
@@ -185,10 +171,10 @@ describe('DateInput', () => {
 			'@input',
 			h.trigger('@popup', (node) => (node.children as any)[0].trigger)
 		);
-		assert(input.properties.value, formatDateDisplay(expected));
+		assert(input.properties.value, formatDate(expected));
 
 		// If `onValue` is called, the input was accepted & validated
-		sinon.assert.calledWith(onValue, expected);
+		sinon.assert.calledWith(onValue, formatDateISO(expected));
 
 		// The calendar popup should be closed after a selection
 		sinon.assert.calledOnce(onClose);
@@ -229,9 +215,9 @@ describe('DateInput', () => {
 			<DateInput
 				name="dateInput"
 				onValue={onValue}
-				max={max}
-				min={min}
-				initialValue={initialValue}
+				max={formatDateISO(max)}
+				min={formatDateISO(min)}
+				initialValue={formatDateISO(initialValue)}
 			/>
 		));
 
@@ -244,7 +230,7 @@ describe('DateInput', () => {
 		// Find the input widget and give it a value before the min date
 		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
-		input.properties.onValue(formatDateDisplay(tooEarly));
+		input.properties.onValue(formatDate(tooEarly));
 		input.properties.onBlur();
 		h.expect(baseTemplate(initialValue));
 
@@ -258,7 +244,7 @@ describe('DateInput', () => {
 
 		// Set value after the max date
 		onValue.resetHistory();
-		input.properties.onValue(formatDateDisplay(tooLate));
+		input.properties.onValue(formatDate(tooLate));
 		input.properties.onBlur();
 		h.expect(baseTemplate(initialValue));
 
@@ -274,7 +260,12 @@ describe('DateInput', () => {
 		const max = new Date(2019, 11, 1); // Dec 1, 2019
 		const min = new Date(2019, 11, 31); // Dec 31, 2019; notice min is AFTER max
 		const h = harness(() => (
-			<DateInput name="dateInput" onValue={onValue} max={max} min={min} />
+			<DateInput
+				name="dateInput"
+				onValue={onValue}
+				max={formatDateISO(max)}
+				min={formatDateISO(min)}
+			/>
 		));
 
 		const triggerResult = h.trigger(

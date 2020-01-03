@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
-import { parseDate } from '../calendar/date-utils';
+import { parseDate, formatDateISO, formatDate } from './date-utils';
 import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
@@ -11,16 +11,16 @@ import * as css from '../theme/default/date-input.m.css';
 import bundle from './nls/DateInput';
 
 export interface DateInputProperties {
-	/** The current value */
-	initialValue?: Date;
-	/** Set the latest date the calendar will display (it will show the whole month but not allow later selections) */
-	max?: Date;
+	/** The initial value */
+	initialValue?: string;
+	/** Set the latest date the calendar will display in (it will show the whole month but not allow previous selections) */
+	max?: string;
 	/** Set the earliest date the calendar will display (it will show the whole month but not allow previous selections) */
-	min?: Date;
+	min?: string;
 	/** name used on the underlying form input's name attribute */
 	name: string;
-	/** Callback fired when the input value changes */
-	onValue?(date: Date): void;
+	/** Callback fired with new value in YYYY-MM-DD format */
+	onValue?(date: string): void;
 }
 
 interface DateInputICache {
@@ -41,31 +41,18 @@ interface DateInputICache {
 const icache = createICacheMiddleware<DateInputICache>();
 const factory = create({ theme, icache, i18n }).properties<DateInputProperties>();
 
-const formatDate = (date: Date | undefined) => {
-	if (!date) {
-		return '';
-	}
-
-	const year = date.getFullYear();
-	const month = (date.getMonth() + 1).toString().padStart(2, '0');
-	const day = date
-		.getDate()
-		.toString()
-		.padStart(2, '0');
-
-	return `${year}-${month}-${day}`;
-};
-
-const formatDateDisplay = (date: Date) => {
-	return Intl.DateTimeFormat().format(date);
-};
-
 export default factory(function({ properties, middleware: { theme, icache, i18n } }) {
-	const { max, min, name, onValue, initialValue = new Date() } = properties();
+	const { name, onValue, initialValue } = properties();
 	const { messages } = i18n.localize(bundle);
 	const classes = theme.classes(css);
+	const max = parseDate(properties().max);
+	const min = parseDate(properties().min);
 
-	const inputValue = icache.getOrSet('inputValue', formatDateDisplay(initialValue));
+	const inputValue = icache.getOrSet('inputValue', () => {
+		const parsed = initialValue && parseDate(initialValue);
+
+		return formatDate(parsed || new Date());
+	});
 	const shouldValidate = icache.getOrSet('shouldValidate', true);
 
 	if (shouldValidate) {
@@ -86,9 +73,9 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 					icache.set('value', newDate);
 					icache.set('month', newDate.getMonth());
 					icache.set('year', newDate.getFullYear());
-					icache.set('inputValue', formatDateDisplay(newDate));
+					icache.set('inputValue', formatDate(newDate));
 					if (onValue) {
-						onValue(newDate);
+						onValue(formatDateISO(newDate));
 					}
 				}
 			} else {
@@ -102,7 +89,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 
 	return (
 		<div classes={classes.root}>
-			<input type="hidden" name={name} value={formatDate(icache.get('value'))} />
+			<input type="hidden" name={name} value={formatDateISO(icache.get('value'))} />
 			<Popup key="popup">
 				{{
 					trigger: (toggleOpen) => {
@@ -133,7 +120,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 									minDate={min}
 									month={icache.get('month')}
 									onDateSelect={(date) => {
-										icache.set('inputValue', formatDateDisplay(date));
+										icache.set('inputValue', formatDate(date));
 										icache.set('shouldValidate', true);
 										onClose();
 									}}
