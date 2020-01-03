@@ -1,7 +1,6 @@
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import HelperText from '../helper-text';
 import theme from '../middleware/theme';
@@ -38,7 +37,6 @@ export interface NativeSelectProperties {
 
 interface NativeSelectICache {
 	initial: string;
-	selectId: string;
 	value: string;
 }
 
@@ -48,6 +46,7 @@ const factory = create({ icache, focus, theme, i18n }).properties<NativeSelectPr
 
 export const NativeSelect = factory(function NativeSelect({
 	properties,
+	id,
 	middleware: { icache, theme }
 }) {
 	const {
@@ -72,7 +71,6 @@ export const NativeSelect = factory(function NativeSelect({
 	}
 
 	const selectedValue = icache.get('value');
-	const selectId = icache.getOrSet('selectId', uuid());
 	const themedCss = theme.classes(css);
 
 	return (
@@ -88,7 +86,7 @@ export const NativeSelect = factory(function NativeSelect({
 				theme={themeProp}
 				classes={classes}
 				disabled={disabled}
-				forId={selectId}
+				forId={id}
 				required={required}
 			>
 				{label}
@@ -105,7 +103,7 @@ export const NativeSelect = factory(function NativeSelect({
 					disabled={disabled}
 					name={name}
 					required={required}
-					id={selectId}
+					id={id}
 					size={size}
 					onfocus={() => {
 						onFocus && onFocus();
