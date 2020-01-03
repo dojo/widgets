@@ -16,7 +16,7 @@ import MenuItem from './MenuItem';
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
 export interface MenuProperties {
-	/** Options to display within the menu */
+	/** Options to display within the menu. An option with `divider: true` will have a divider rendered after it in the menu */
 	options: MenuOption[];
 	/** The total number of options provided */
 	total: number;
@@ -188,7 +188,7 @@ export const Menu = factory(function Menu({
 	}
 
 	function renderItem(index: number) {
-		const { value, label, disabled = false } = options[index];
+		const { value, label, divider, disabled = false } = options[index];
 		const selected = value === selectedValue;
 		const active = index === computedActiveIndex;
 		const itemProps = {

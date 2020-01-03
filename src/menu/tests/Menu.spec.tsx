@@ -295,6 +295,7 @@ describe('Menu - ListBox', () => {
 			<Menu
 				onValue={noop}
 				listBox
+				total={animalOptions.length}
 				options={[{ ...animalOptions[0], divider: true }, ...animalOptions.slice(1)]}
 			/>
 		));

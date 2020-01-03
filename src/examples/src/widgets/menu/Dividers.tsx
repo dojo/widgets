@@ -20,6 +20,7 @@ export default factory(function Dividers({ middleware: { icache } }) {
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
+				total={options.length}
 			/>
 			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>{' '}
 		</virtual>
