@@ -14,5 +14,6 @@
 }
 
 .disabled {
-	background: var(--color-text-faded);
+	color: var(--color-text-faded);
+	font-style: italic;
 }
