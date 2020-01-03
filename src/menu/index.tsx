@@ -16,7 +16,7 @@ import MenuItem from './MenuItem';
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
 export interface MenuProperties {
-	/** Options to display within the menu. An option with `divider: true` will have a divider rendered after it in the menu */
+	/** Options to display within the menu. The `value` of the option will be passed to `onValue` when it is selected. The label is an optional display string to be used instead of the `value`. If `disabled` is true the option will have a disabled style and will not be selectable. An option with `divider: true` will have a divider rendered after it in the menu */
 	options: MenuOption[];
 	/** The total number of options provided */
 	total: number;
