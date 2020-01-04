@@ -2,9 +2,10 @@ import {
 	WNode,
 	Constructor,
 	MetaBase,
-	WidgetMetaConstructor
+	WidgetMetaConstructor,
+	MiddlewareResultFactory
 } from '@dojo/framework/core/interfaces';
-import { CustomComparator, harness } from '@dojo/framework/testing/harness';
+import { CustomComparator, harness, HarnessAPI } from '@dojo/framework/testing/harness';
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
@@ -77,9 +78,24 @@ export const compareLabelId = {
 	comparator: isStringComparator
 };
 
+interface HarnessOptions {
+	customComparator?: CustomComparator[];
+	middleware?: [
+		MiddlewareResultFactory<any, any, any, any>,
+		MiddlewareResultFactory<any, any, any, any>
+	][];
+}
+
 export const createHarness = (globalCompares: CustomComparator[]) => {
-	return (renderFunction: () => WNode, compares: CustomComparator[] = []) => {
-		return harness(renderFunction, [...globalCompares, ...compares]);
+	return (renderFunction: () => WNode, options: CustomComparator[] | HarnessOptions = []) => {
+		if (Array.isArray(options)) {
+			return harness(renderFunction, [...globalCompares, ...options]);
+		} else {
+			return harness(renderFunction, {
+				...options,
+				customComparator: [...globalCompares, ...(options.customComparator || [])]
+			});
+		}
 	};
 };
 
