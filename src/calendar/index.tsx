@@ -389,11 +389,11 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		return [
 			w(Icon, {
 				type: iconType,
-				theme: {
-					...theme,
-					'@dojo/widgets/icon': { icon: this.theme(css.icon) }
-				},
-				classes
+				theme,
+				classes: {
+					...classes,
+					'@dojo/widgets/icon': { icon: [this.theme(css.icon)] }
+				}
 			}),
 			v('span', { classes: [baseCss.visuallyHidden] }, [labelText])
 		];
