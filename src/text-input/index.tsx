@@ -224,7 +224,7 @@ export const TextInput = factory(function TextInput({
 					required ? themeCss.required : null,
 					leading ? themeCss.hasLeading : null,
 					trailing ? themeCss.hasTrailing : null,
-					!label ? css.noLabel : null
+					!label ? themeCss.noLabel : null
 				]}
 				role="presentation"
 			>
