@@ -39,6 +39,7 @@ import ModalDialog from './widgets/dialog/ModalDialog';
 import UnderlayDialog from './widgets/dialog/UnderlayDialog';
 import AlertDialog from './widgets/dialog/AlertDialog';
 import AnimatedDialog from './widgets/dialog/AnimatedDialog';
+import FocusTrappedDialog from './widgets/dialog/FocusTrappedDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
 import BasicForm from './widgets/form/Basic';
@@ -417,6 +418,11 @@ export const config = {
 					filename: 'AnimatedDialog',
 					module: AnimatedDialog,
 					title: 'Animated Dialog'
+				},
+				{
+					filename: 'FocusTrappedDialog',
+					module: FocusTrappedDialog,
+					title: 'Focus Trapping'
 				}
 			],
 			overview: {

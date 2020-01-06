@@ -10,6 +10,7 @@ import * as css from '../theme/default/dialog.m.css';
 import * as fixedCss from './styles/dialog.m.css';
 import commonBundle from '../common/nls/common';
 import GlobalEvent from '../global-event';
+import inert from '@dojo/framework/core/middleware/inert';
 
 export interface DialogPropertiesBase {
 	/** Custom aria attributes */
@@ -53,11 +54,11 @@ export interface DialogState {
 	contentId: string;
 }
 
-const factory = create({ theme, i18n, icache: createICacheMiddleware<DialogState>() })
+const factory = create({ theme, i18n, icache: createICacheMiddleware<DialogState>(), inert })
 	.properties<DialogProperties>()
 	.children<DialogChild>();
 export const Dialog = factory(function Dialog({
-	middleware: { theme, i18n, icache },
+	middleware: { theme, i18n, icache, inert },
 	properties,
 	children
 }) {
@@ -66,6 +67,8 @@ export const Dialog = factory(function Dialog({
 	let { open, aria = {}, underlay, role = 'dialog', closeable = true, closeText } = properties();
 	const [renderer] = children();
 	const modal = role === 'alertdialog' || (properties() as DialogPropertiesDialogRole).modal;
+
+	inert.set('dialog', open, true);
 
 	if (!closeText) {
 		const { messages } = i18n.localize(commonBundle);
@@ -107,9 +110,9 @@ export const Dialog = factory(function Dialog({
 	};
 
 	return (
-		<div classes={[themeCss.root, open ? themeCss.open : null]}>
-			{open && (
-				<virtual>
+		open && (
+			<body>
+				<div key="dialog" classes={[themeCss.root, open ? themeCss.open : null]}>
 					<GlobalEvent key="global" document={{ keyup }} />
 					<div
 						classes={[underlay ? themeCss.underlayVisible : null, fixedCss.underlay]}
@@ -121,6 +124,8 @@ export const Dialog = factory(function Dialog({
 							const modal =
 								role === 'alertdialog' ||
 								(properties() as DialogPropertiesDialogRole).modal;
+
+							console.log('click!');
 
 							event.stopPropagation();
 							!modal && close();
@@ -161,9 +166,9 @@ export const Dialog = factory(function Dialog({
 							{renderer.content && renderer.content()}
 						</div>
 					</div>
-				</virtual>
-			)}
-		</div>
+				</div>
+			</body>
+		)
 	);
 });
 

@@ -21,10 +21,10 @@ import GlobalEvent from '../../../global-event';
 const harness = createHarness([compareId, compareAriaLabelledBy]);
 
 describe('Dialog', () => {
-	const closedAssertion = assertionTemplate(() => <div classes={[themeCss.root, null]} />);
+	const closedAssertion = assertionTemplate(() => undefined);
 	const openAssertion = assertionTemplate(() => (
-		<div classes={[themeCss.root, themeCss.open]}>
-			<virtual>
+		<body>
+			<div key="dialog" classes={[themeCss.root, themeCss.open]}>
 				<GlobalEvent key="global" document={{ keyup: () => {} }} />
 				<div
 					classes={[null, fixedCss.underlay]}
@@ -56,8 +56,8 @@ describe('Dialog', () => {
 					</div>
 					<div classes={themeCss.content} key="content" id="uuid" />
 				</div>
-			</virtual>
-		</div>
+			</div>
+		</body>
 	));
 	const focusedAssertion = openAssertion.setProperty('@main', 'focus', true);
 
