@@ -3,7 +3,6 @@ import { assert } from 'chai';
 import { assert as sinonAssert, mock, sandbox, match } from 'sinon';
 
 import iCacheMiddleware from '@dojo/framework/core/middleware/icache';
-import cacheMiddleware from '@dojo/framework/core/middleware/cache';
 
 import createFormMiddleware from '../../middleware';
 
@@ -27,17 +26,11 @@ describe('Form Middleware', () => {
 		onSubmit.reset();
 		onValue.reset();
 
-		const cache = cacheMiddleware().callback({
-			id: 'cache-test',
-			middleware: { destroy: sb.stub() },
-			properties: () => ({}),
-			children: () => []
-		});
 		const { callback: iCacheCallback } = iCacheMiddleware();
 		const icache = iCacheCallback({
 			id: 'test',
 			middleware: {
-				cache,
+				destroy: sb.stub(),
 				invalidator: invalidatorStub
 			},
 			properties: () => ({}),
@@ -47,7 +40,7 @@ describe('Form Middleware', () => {
 		const { callback } = formMiddleware();
 		form = callback({
 			id: 'test',
-			middleware: { icache, cache },
+			middleware: { icache },
 			properties: () => ({}),
 			children: () => []
 		});

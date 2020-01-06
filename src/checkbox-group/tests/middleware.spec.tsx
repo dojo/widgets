@@ -2,7 +2,6 @@ const { describe, it, afterEach } = intern.getInterface('bdd');
 import { checkboxGroup as checkboxGroupMiddleware } from '../middleware';
 const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
-import cacheMiddleware from '@dojo/framework/core/middleware/cache';
 import icacheMiddleware from '@dojo/framework/core/middleware/icache';
 
 const sb = sandbox.create();
@@ -10,21 +9,12 @@ const onValueStub = sb.stub();
 
 const { callback } = checkboxGroupMiddleware();
 
-function cacheFactory() {
-	return cacheMiddleware().callback({
-		id: 'test-cache',
-		properties: () => ({}),
-		children: () => [],
-		middleware: { destroy: sb.stub() }
-	});
-}
-
 function icacheFactory() {
 	return icacheMiddleware().callback({
 		id: 'test-cache',
 		properties: () => ({}),
 		children: () => [],
-		middleware: { cache: cacheFactory(), invalidator: sb.stub() }
+		middleware: { invalidator: sb.stub(), destroy: sb.stub() }
 	});
 }
 

@@ -2,7 +2,7 @@ const { describe, it, beforeEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import coreTheme from '@dojo/framework/core/middleware/theme';
 import { sandbox } from 'sinon';
-import cacheMiddleware from '@dojo/framework/core/middleware/cache';
+import icacheMiddleware from '@dojo/framework/core/middleware/icache';
 import theme from '../theme';
 
 const sb = sandbox.create();
@@ -22,18 +22,18 @@ const registryHandler = {
 getRegistry.returns(registryHandler);
 
 const properties: any = {};
-const cache = cacheMiddleware().callback({
-	middleware: { destroy: sb.stub() },
+const icache = icacheMiddleware().callback({
+	middleware: { invalidator: sb.stub(), destroy: sb.stub() },
 	properties: () => ({}),
 	children: () => [],
-	id: 'cache'
+	id: 'icache'
 });
 const { callback } = coreTheme();
 let themeMiddleware = callback({
 	id: 'coreTheme',
 	middleware: {
 		invalidator,
-		cache,
+		icache,
 		diffProperty,
 		injector,
 		getRegistry
@@ -53,7 +53,7 @@ let composesInstance = theme().callback({
 
 describe('theme middleware', () => {
 	beforeEach(() => {
-		cache.clear();
+		icache.clear();
 		properties.theme = undefined;
 		properties.classes = undefined;
 		composesInstance = theme().callback({
