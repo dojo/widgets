@@ -52,3 +52,7 @@
 	composes: mdc-dialog__scrim from '@material/dialog/dist/mdc.dialog.css';
 	z-index: var(--zindex-dialog);
 }
+
+.actions {
+	composes: mdc-dialog__actions from '@material/dialog/dist/mdc.dialog.css';
+}

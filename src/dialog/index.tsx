@@ -45,6 +45,7 @@ export type DialogProperties = DialogPropertiesDialogRole | DialogPropertiesAler
 export interface DialogChild {
 	title?: () => DNode;
 	content?: () => DNode;
+	actions?: () => DNode;
 }
 
 export interface DialogState {
@@ -165,6 +166,11 @@ export const Dialog = factory(function Dialog({
 						<div classes={themeCss.content} key="content" id={contentId}>
 							{renderer.content && renderer.content()}
 						</div>
+						{renderer.actions && (
+							<div classes={themeCss.actions} key="actions">
+								{renderer.actions()}
+							</div>
+						)}
 					</div>
 				</div>
 			</body>

@@ -224,4 +224,26 @@ describe('Dialog', () => {
 		);
 		assert.isTrue(onRequestClose.calledOnce);
 	});
+
+	it('renders actions', () => {
+		const h = harness(() => (
+			<Dialog open onRequestClose={() => {}}>
+				{{
+					title: () => 'foo',
+					content: () => 'bar',
+					actions: () => 'action'
+				}}
+			</Dialog>
+		));
+
+		h.expect(
+			focusedAssertion
+				.setChildren('@content', () => ['bar'])
+				.insertAfter('@content', () => [
+					<div classes={themeCss.actions} key="actions">
+						action
+					</div>
+				])
+		);
+	});
 });
