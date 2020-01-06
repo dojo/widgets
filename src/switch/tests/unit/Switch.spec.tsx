@@ -29,7 +29,7 @@ function createMockFocusMiddleware({
 
 const expected = ({
 	label = false,
-	checked = false,
+	value = false,
 	disabled = undefined,
 	focused = false,
 	valid = undefined,
@@ -43,7 +43,7 @@ const expected = ({
 			key="root"
 			classes={[
 				css.root,
-				checked ? css.checked : null,
+				value ? css.checked : null,
 				disabled ? css.disabled : null,
 				focused ? css.focused : null,
 				valid === false ? css.invalid : null,
@@ -53,7 +53,7 @@ const expected = ({
 			]}
 		>
 			{offLabel ? (
-				<div key="offlabel" classes={css.offLabel} aria-hidden={checked ? null : 'true'}>
+				<div key="offlabel" classes={css.offLabel} aria-hidden={value ? null : 'true'}>
 					{['off']}
 				</div>
 			) : null}
@@ -65,7 +65,7 @@ const expected = ({
 							assertion-key="input"
 							id=""
 							classes={css.nativeControl}
-							checked={checked}
+							checked={value}
 							disabled={disabled}
 							focus={focused}
 							aria-invalid={valid === false ? 'true' : null}
@@ -74,9 +74,9 @@ const expected = ({
 							aria-readonly={readOnly === true ? 'true' : null}
 							required={required}
 							type="checkbox"
-							value={undefined}
+							value={`${value}`}
 							role="switch"
-							aria-checked={checked}
+							aria-checked={value}
 							onblur={noop}
 							onchange={noop}
 							onfocus={noop}
@@ -87,7 +87,7 @@ const expected = ({
 				</div>
 			</div>
 			{onLabel ? (
-				<div key="onLabel" classes={css.onLabel} aria-hidden={checked ? null : 'true'}>
+				<div key="onLabel" classes={css.onLabel} aria-hidden={value ? null : 'true'}>
 					{['on']}
 				</div>
 			) : null}
@@ -123,8 +123,7 @@ registerSuite('Switch', {
 				() => (
 					<Switch
 						aria={{ describedBy: 'foo' }}
-						checked={true}
-						widgetId="foo"
+						value={true}
 						name="bar"
 						onLabel={'on'}
 						offLabel={'off'}
@@ -134,7 +133,7 @@ registerSuite('Switch', {
 			);
 
 			h.expect(
-				expected({ checked: true, onLabel: true, offLabel: true })
+				expected({ checked: true, onLabel: true, offLabel: true, value: true })
 					.setProperty('~input', 'aria-describedby', 'foo')
 					.setProperty('~input', 'name', 'bar')
 					.setProperty('@offlabel', 'aria-hidden', 'true')

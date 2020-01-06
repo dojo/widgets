@@ -5,25 +5,25 @@ import Switch from '@dojo/widgets/switch';
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
-	const checked = icache.getOrSet('checked', false);
+	const switched = icache.getOrSet('switched', false);
 	return (
 		<virtual>
 			<Switch
-				checked={checked}
+				value={switched}
 				name="Switch"
-				label="Disabled unchecked"
+				label="Disabled off"
 				disabled={true}
-				onValue={(checked) => {
-					icache.set('checked', checked);
+				onValue={(switched) => {
+					icache.set('checked', switched);
 				}}
 			/>
 			<Switch
-				checked={!checked}
+				value={!switched}
 				name="Switch"
-				label="Disabled checked"
+				label="Disabled on"
 				disabled={true}
-				onValue={(checked) => {
-					icache.set('checked', checked);
+				onValue={(switched) => {
+					icache.set('switched', switched);
 				}}
 			/>
 		</virtual>

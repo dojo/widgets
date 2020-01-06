@@ -1,7 +1,6 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import coreTheme from '@dojo/framework/core/middleware/theme';
-import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import { formatAriaProperties } from '../common/util';
@@ -11,8 +10,6 @@ import * as css from '../theme/default/switch.m.css';
 interface SwitchProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/**  Checked/unchecked property of the switch */
-	checked?: boolean;
 	/** Whether the switch is disabled or clickable */
 	disabled?: boolean;
 	/** The label to be displayed for the switch */
@@ -39,20 +36,17 @@ interface SwitchProperties {
 	readOnly?: boolean;
 	/** Determines if this input is required, styles accordingly */
 	required?: boolean;
-	/** Determines if this input is valid */
+	/** Toggles the invalid/valid states of the switch */
 	valid?: boolean;
-	/** The current value */
-	value?: string;
-	/** `id` set on the root button DOM node */
-	widgetId?: string;
+	/** The current value; checked state of the switch */
+	value?: boolean;
 }
 
 const factory = create({ coreTheme, focus }).properties<SwitchProperties>();
 
-export default factory(function Switch({ properties, middleware: { coreTheme, focus } }) {
+export default factory(function Switch({ properties, id, middleware: { coreTheme, focus } }) {
 	const {
 		aria = {},
-		checked = false,
 		classes,
 		disabled,
 		label,
@@ -69,18 +63,18 @@ export default factory(function Switch({ properties, middleware: { coreTheme, fo
 		required,
 		theme,
 		valid,
-		value,
-		widgetId = uuid()
+		value = false
 	} = properties();
 
 	const themedCss = coreTheme.classes(css);
+	const idBase = `switch-${id}`;
 
 	return (
 		<div
 			key="root"
 			classes={[
 				themedCss.root,
-				checked ? themedCss.checked : null,
+				value ? themedCss.checked : null,
 				disabled ? themedCss.disabled : null,
 				focus.isFocused('root') ? themedCss.focused : null,
 				valid === false ? themedCss.invalid : null,
@@ -93,7 +87,7 @@ export default factory(function Switch({ properties, middleware: { coreTheme, fo
 				<div
 					key="offlabel"
 					classes={themedCss.offLabel}
-					aria-hidden={checked ? 'true' : null}
+					aria-hidden={value ? 'true' : null}
 				>
 					{offLabel}
 				</div>
@@ -103,10 +97,10 @@ export default factory(function Switch({ properties, middleware: { coreTheme, fo
 				<div classes={themedCss.underlay}>
 					<div classes={themedCss.thumb}>
 						<input
-							id={widgetId}
+							id={idBase}
 							{...formatAriaProperties(aria)}
 							classes={themedCss.nativeControl}
-							checked={checked}
+							checked={value}
 							disabled={disabled}
 							focus={focus.shouldFocus()}
 							aria-invalid={valid === false ? 'true' : null}
@@ -115,9 +109,9 @@ export default factory(function Switch({ properties, middleware: { coreTheme, fo
 							aria-readonly={readOnly === true ? 'true' : null}
 							required={required}
 							type="checkbox"
-							value={value}
+							value={`${value}`}
 							role="switch"
-							aria-checked={checked}
+							aria-checked={value}
 							onblur={() => onBlur && onBlur()}
 							onchange={(event: Event) => {
 								event.stopPropagation();
@@ -132,11 +126,7 @@ export default factory(function Switch({ properties, middleware: { coreTheme, fo
 				</div>
 			</div>
 			{onLabel && (
-				<div
-					key="onLabel"
-					classes={themedCss.onLabel}
-					aria-hidden={checked ? null : 'true'}
-				>
+				<div key="onLabel" classes={themedCss.onLabel} aria-hidden={value ? null : 'true'}>
 					{onLabel}
 				</div>
 			)}
@@ -151,7 +141,7 @@ export default factory(function Switch({ properties, middleware: { coreTheme, fo
 					readOnly={readOnly}
 					required={required}
 					hidden={labelHidden}
-					forId={widgetId}
+					forId={idBase}
 					secondary={true}
 				>
 					{label}

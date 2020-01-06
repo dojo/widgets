@@ -5,14 +5,14 @@ import Switch from '@dojo/widgets/switch';
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
-	const checked = icache.getOrSet('checked', false);
+	const switched = icache.getOrSet('switched', false);
 	return (
 		<Switch
-			checked={checked}
+			value={switched}
 			name="Switch"
 			label="On/Off"
-			onValue={(checked) => {
-				icache.set('checked', checked);
+			onValue={(value) => {
+				icache.set('switched', value);
 			}}
 		/>
 	);
