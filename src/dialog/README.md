@@ -6,7 +6,6 @@ Dojo's `Dialog` component shows content inside a window over top the application
 
 - Can be used as a modal window or classic dialog
 - Possible to show a semi-transparent underlay
-- Custom CSS animations can be provided
 
 ### Accessibility Features
 
