@@ -7,35 +7,30 @@
 
 @keyframes slide-in {
 	0% {
-		transform: translateX(-50%) translateY(calc(-50% + 100px));
-		transform-origin: center;
 		opacity: 0;
 	}
 	100% {
-		transform: translateX(-50%) translateY(-50%);
 		opacity: 1;
 	}
 }
 
 .enter {
-	animation-duration: 0.5s;
+	animation-duration: 1s;
 	animation-fill-mode: both;
 	animation-name: slide-in;
 }
 
 @keyframes slide-out {
 	0% {
-		transform: translateX(-50%) translateY(-50%);
 		opacity: 1;
 	}
 	100% {
-		transform: translateX(-50%) translateY(calc(-50% + 100px));
 		opacity: 0;
 	}
 }
 
 .exit {
-	animation-duration: 0.5s;
+	animation-duration: 1s;
 	animation-fill-mode: both;
 	animation-name: slide-out;
 }
