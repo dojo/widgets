@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import cache from '@dojo/framework/core/middleware/cache';
+import icache from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 
@@ -28,19 +28,23 @@ export type FormChildRenderer<S extends FormValue = any> = (
 	properties: FormMiddleware<S>
 ) => RenderResult;
 
-const factory = create({ form, theme, cache })
+const factory = create({ form, theme, icache })
 	.properties<FormProperties>()
 	.children<FormChildRenderer>();
 
-export default factory(function Form({ properties, children, middleware: { form, theme, cache } }) {
+export default factory(function Form({
+	properties,
+	children,
+	middleware: { form, theme, icache }
+}) {
 	const themedCss = theme.classes(css);
 	const { initialValue, onSubmit, onValue } = properties();
 	const [renderer] = children();
 
 	onValue && form.onValue(onValue);
 
-	if (initialValue !== undefined && !valueEqual(initialValue, cache.get('initial'))) {
-		cache.set('initial', initialValue);
+	if (initialValue !== undefined && !valueEqual(initialValue, icache.get('initial'))) {
+		icache.set('initial', initialValue, false);
 		form.value(initialValue);
 	}
 

@@ -1,5 +1,4 @@
 import { create } from '@dojo/framework/core/vdom';
-import cache from '@dojo/framework/core/middleware/cache';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 export type Validity = true | { valid: false | undefined; message: string };
@@ -50,6 +49,7 @@ function compareValidity(a: Validity, b: Validity) {
 }
 
 interface State<S> {
+	callbacks: Callbacks<S>;
 	required: Record<string, boolean>;
 	values: Partial<S>;
 	valid: Record<string, Validity>;
@@ -59,18 +59,16 @@ interface State<S> {
 
 export const createFormMiddleware = <S extends FormValue = any>() => {
 	const icache = createICacheMiddleware<State<S>>();
-	const factory = create({ icache, cache });
+	const factory = create({ icache });
 
-	const formMiddleware = factory(function Form({
-		middleware: { icache, cache }
-	}): FormMiddleware<S> {
+	const formMiddleware = factory(function Form({ middleware: { icache } }): FormMiddleware<S> {
 		return {
 			value(values?: any): any {
 				const currentValues = icache.getOrSet('values', {});
 				if (values !== undefined) {
 					icache.set('values', values);
 					const newValues = { ...currentValues, ...values };
-					const callbacks = cache.get<Callbacks<S>>('callbacks');
+					const callbacks = icache.get('callbacks');
 					callbacks && callbacks.onValue && callbacks.onValue(newValues);
 					return newValues;
 				}
@@ -86,7 +84,7 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 				return callback(this.value());
 			},
 			onValue<T = void>(callback: (values: Partial<S>) => T) {
-				cache.set('callbacks', { onValue: callback });
+				icache.set('callbacks', { onValue: callback }, false);
 			},
 			disabled(disabled?: boolean) {
 				if (disabled !== undefined) {
@@ -137,7 +135,7 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 						const values = icache.getOrSet('values', {}) as S;
 						if (newValue !== undefined && values[name] !== newValue) {
 							icache.set('values', { ...values, [name]: newValue });
-							const callbacks = cache.get<Callbacks<S>>('callbacks');
+							const callbacks = icache.get('callbacks');
 							callbacks &&
 								callbacks.onValue &&
 								callbacks.onValue({ [name]: newValue } as Partial<S>);

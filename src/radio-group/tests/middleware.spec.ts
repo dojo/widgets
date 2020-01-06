@@ -1,6 +1,5 @@
 const { assert } = intern.getPlugin('chai');
 const { describe, it, afterEach } = intern.getInterface('bdd');
-import cacheMiddleware from '@dojo/framework/core/middleware/cache';
 import icacheMiddleware from '@dojo/framework/core/middleware/icache';
 import { radioGroup as radioGroupMiddleware } from '../middleware';
 import { sandbox } from 'sinon';
@@ -9,21 +8,12 @@ const sb = sandbox.create();
 const onValueStub = sb.stub();
 const { callback } = radioGroupMiddleware();
 
-function cacheFactory() {
-	return cacheMiddleware().callback({
-		id: 'test-cache',
-		properties: () => ({}),
-		children: () => [],
-		middleware: { destroy: sb.stub() }
-	});
-}
-
 function icacheFactory() {
 	return icacheMiddleware().callback({
 		id: 'test-cache',
 		properties: () => ({}),
 		children: () => [],
-		middleware: { cache: cacheFactory(), invalidator: sb.stub() }
+		middleware: { destroy: sb.stub(), invalidator: sb.stub() }
 	});
 }
 
