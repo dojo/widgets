@@ -53,6 +53,10 @@ import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
 import BasicLabel from './widgets/label/Basic';
+import HiddenLabel from './widgets/label/HiddenLabel';
+import InvalidLabel from './widgets/label/InvalidLabel';
+import DisabledLabel from './widgets/label/DisabledLabel';
+import SecondaryLabel from './widgets/label/SecondaryLabel';
 import BasicListbox from './widgets/listbox/Basic';
 import BasicMenu from './widgets/menu/Basic';
 import DividedMenu from './widgets/menu/Dividers';
@@ -488,7 +492,29 @@ export const config = {
 					filename: 'Basic',
 					module: BasicLabel
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'HiddenLabel',
+					module: HiddenLabel,
+					title: 'Hidden Label'
+				},
+				{
+					filename: 'InvalidLabel',
+					module: InvalidLabel,
+					title: 'Invalid Label'
+				},
+				{
+					filename: 'DisabledLabel',
+					module: DisabledLabel,
+					title: 'Disabled Label'
+				},
+				{
+					filename: 'SecondaryLabel',
+					module: SecondaryLabel,
+					title: 'Secondary Label'
+				}
+			]
 		},
 		listbox: {
 			overview: {
