@@ -17,7 +17,7 @@ import HelperText from '../../helper-text';
 import Icon from '../../icon';
 import Label from '../../label';
 import Menu from '../../menu';
-import Popup from '../../popup';
+import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
 import Select from '../index';
 
@@ -27,9 +27,9 @@ const harness = createHarness([compareTheme]);
 
 const baseTemplate = assertionTemplate(() => (
 	<div classes={[css.root, undefined, false, false]} key="root">
-		<Popup key="popup" onClose={() => {}} onOpen={() => {}} position={undefined}>
+		<TriggerPopup key="popup" onClose={() => {}} onOpen={() => {}} position={undefined}>
 			{{ trigger: () => <button />, content: () => <div /> }}
-		</Popup>
+		</TriggerPopup>
 		<HelperText key="helperText" text={undefined} valid={undefined} />
 	</div>
 ));

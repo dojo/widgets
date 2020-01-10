@@ -10,75 +10,65 @@ import * as css from '../../theme/default/popup.m.css';
 import { stub } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
-	<virtual>
-		<span key="trigger" classes={fixedCss.trigger} />
-	</virtual>
+	<body>
+		<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />
+		<div key="wrapper" classes={fixedCss.root} styles={{ opacity: '0' }}>
+			hello world
+		</div>
+	</body>
 ));
 
 describe('Popup', () => {
 	before(() => {
-		Object.defineProperty(document.documentElement, 'scrollTop', { value: 0 });
-		Object.defineProperty(document.documentElement, 'clientHeight', { value: 1000 });
+		Object.defineProperty(document.documentElement, 'scrollTop', {
+			value: 0,
+			configurable: true
+		});
+		Object.defineProperty(document.documentElement, 'clientHeight', {
+			value: 1000,
+			configurable: true
+		});
 	});
 
-	it('Renders with trigger renderer', () => {
+	it('renders nothing if not open', () => {
 		const h = harness(() => (
-			<Popup>
+			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} open={false}>
 				{{
-					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
 					content: () => 'hello world'
 				}}
 			</Popup>
 		));
-		const triggerTemplate = baseTemplate.setChildren('@trigger', () => [
-			<button onclick={() => {}} />
-		]);
-		h.expect(triggerTemplate);
+
+		h.expect(assertionTemplate(() => false));
 	});
 
-	it('initialy renders with opacity 0 while height is calculated', () => {
+	it('initially renders with opacity 0 while height is calculated', () => {
 		const h = harness(() => (
-			<Popup>
+			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} open={true}>
 				{{
-					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
 					content: () => 'hello world'
 				}}
 			</Popup>
 		));
-		const contentTemplate = baseTemplate
-			.setChildren('@trigger', () => [<button onclick={() => {}} />])
-			.insertSiblings('@trigger', () => [
-				<body>
-					<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />
-					<div key="wrapper" classes={fixedCss.root} styles={{ opacity: '0' }}>
-						hello world
-					</div>
-				</body>
-			]);
 
-		h.trigger('@trigger button', 'onclick');
-		h.expect(contentTemplate);
+		h.expect(baseTemplate);
 	});
 
-	it('calls onOpen and onClose when opened and closed', () => {
+	it('calls onClose when closed', () => {
 		const onClose = stub();
-		const onOpen = stub();
 		const h = harness(() => (
-			<Popup onOpen={onOpen} onClose={onClose}>
+			<Popup x={0} yTop={0} yBottom={0} open={true} onClose={onClose}>
 				{{
-					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
 					content: () => 'hello world'
 				}}
 			</Popup>
 		));
 
-		h.trigger('@trigger button', 'onclick');
-		assert.isTrue(onOpen.calledOnce);
 		h.trigger('@underlay', 'onclick');
 		assert.isTrue(onClose.calledOnce);
 	});
 
-	it('renders with opacity 1 and matched size / position with dimensions', () => {
+	it('renders with opacity 1 and matched size / position with dimensions when below', () => {
 		const mockNode = createNodeMock();
 
 		const wrapper = {
@@ -90,78 +80,121 @@ describe('Popup', () => {
 			}
 		};
 
-		const trigger = {
-			getBoundingClientRect() {
-				return {
-					bottom: 0,
-					left: 50,
-					top: 50,
-					right: 0,
-					width: 150,
-					height: 50
-				};
-			}
-		};
-
 		mockNode('wrapper', wrapper);
-		mockNode('trigger', trigger);
 
 		const h = harness(
 			() => (
-				<Popup>
+				<Popup x={50} yTop={100} yBottom={0} open={true} onClose={() => {}}>
 					{{
-						trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
 						content: () => 'hello world'
 					}}
 				</Popup>
 			),
 			{ middleware: [[node, mockNode]] }
 		);
-		const contentTemplate = baseTemplate
-			.setChildren('@trigger', () => [<button onclick={() => {}} />])
-			.insertSiblings('@trigger', () => [
-				<body>
-					<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />
-					<div
-						key="wrapper"
-						classes={fixedCss.root}
-						styles={{ width: '150px', left: '50px', opacity: '1', top: '100px' }}
-					>
-						hello world
-					</div>
-				</body>
-			]);
+		const contentTemplate = baseTemplate.setChildren(':root', () => [
+			<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />,
+			<div
+				key="wrapper"
+				classes={fixedCss.root}
+				styles={{ left: '50px', opacity: '1', top: '100px' }}
+			>
+				hello world
+			</div>
+		]);
 
-		h.trigger('@trigger button', 'onclick');
+		h.expect(contentTemplate);
+	});
+	it('renders with opacity 1 and matched size / position with dimensions when it does not fit below', () => {
+		const mockNode = createNodeMock();
+
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					width: 100,
+					height: 100
+				};
+			}
+		};
+
+		mockNode('wrapper', wrapper);
+
+		const h = harness(
+			() => (
+				<Popup x={50} yTop={901} yBottom={300} open={true} onClose={() => {}}>
+					{{
+						content: () => 'hello world'
+					}}
+				</Popup>
+			),
+			{ middleware: [[node, mockNode]] }
+		);
+		const contentTemplate = baseTemplate.setChildren(':root', () => [
+			<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />,
+			<div
+				key="wrapper"
+				classes={fixedCss.root}
+				styles={{ left: '50px', opacity: '1', top: '200px' }}
+			>
+				hello world
+			</div>
+		]);
+
+		h.expect(contentTemplate);
+	});
+
+	it('renders with opacity 1 and matched size / position with dimensions when it does not fit above', () => {
+		const mockNode = createNodeMock();
+
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					width: 100,
+					height: 100
+				};
+			}
+		};
+
+		mockNode('wrapper', wrapper);
+
+		const h = harness(
+			() => (
+				<Popup x={50} yTop={300} yBottom={50} open={true} onClose={() => {}}>
+					{{
+						content: () => 'hello world'
+					}}
+				</Popup>
+			),
+			{ middleware: [[node, mockNode]] }
+		);
+		const contentTemplate = baseTemplate.setChildren(':root', () => [
+			<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />,
+			<div
+				key="wrapper"
+				classes={fixedCss.root}
+				styles={{ left: '50px', opacity: '1', top: '300px' }}
+			>
+				hello world
+			</div>
+		]);
 
 		h.expect(contentTemplate);
 	});
 
 	it('Renders with an underlay', () => {
 		const h = harness(() => (
-			<Popup underlayVisible>
+			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} underlayVisible={true} open={true}>
 				{{
-					trigger: (onToggleOpen) => <button onclick={onToggleOpen} />,
 					content: () => 'hello world'
 				}}
 			</Popup>
 		));
-		const underlayTemplate = baseTemplate
-			.setChildren('@trigger', () => [<button onclick={() => {}} />])
-			.insertSiblings('@trigger', () => [
-				<body>
-					<div
-						key="underlay"
-						classes={[fixedCss.underlay, css.underlayVisible]}
-						onclick={() => {}}
-					/>
-					<div key="wrapper" classes={fixedCss.root} styles={{ opacity: '0' }}>
-						hello world
-					</div>
-				</body>
-			]);
 
-		h.trigger('@trigger button', 'onclick');
-		h.expect(underlayTemplate);
+		h.expect(
+			baseTemplate.setProperty('@underlay', 'classes', [
+				fixedCss.underlay,
+				css.underlayVisible
+			])
+		);
 	});
 });

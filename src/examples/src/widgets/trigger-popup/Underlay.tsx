@@ -1,12 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Popup from '@dojo/widgets/popup';
 import Button from '@dojo/widgets/button';
+import TriggerPopup from '@dojo/widgets/trigger-popup';
 
 const factory = create();
 
 export default factory(function Underlay() {
 	return (
-		<Popup position="below" underlayVisible={true}>
+		<TriggerPopup position="below" underlayVisible={true}>
 			{{
 				trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Underlay</Button>,
 				content: (onClose) => (
@@ -18,6 +18,6 @@ export default factory(function Underlay() {
 					</div>
 				)
 			}}
-		</Popup>
+		</TriggerPopup>
 	);
 });

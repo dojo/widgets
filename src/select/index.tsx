@@ -10,7 +10,8 @@ import Icon from '../icon';
 import Label from '../label';
 import { ItemRendererProperties, Menu, MenuOption } from '../menu';
 import theme from '../middleware/theme';
-import { Popup, PopupPosition } from '../popup';
+import { PopupPosition } from '../popup';
+import TriggerPopup from '../trigger-popup';
 import * as menuCss from '../theme/default/menu.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './select.nls';
@@ -124,7 +125,7 @@ export const Select = factory(function Select({
 					{label}
 				</Label>
 			)}
-			<Popup
+			<TriggerPopup
 				key="popup"
 				onOpen={() => {
 					icache.set('expanded', true);
@@ -218,7 +219,7 @@ export const Select = factory(function Select({
 						);
 					}
 				}}
-			</Popup>
+			</TriggerPopup>
 			<HelperText
 				key="helperText"
 				text={valid === false ? messages.requiredMessage : helperText}

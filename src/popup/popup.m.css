@@ -3,10 +3,6 @@
 	z-index: 11;
 }
 
-.trigger {
-	display: inline-block;
-}
-
 .underlay {
 	z-index: 10;
 	position: fixed;
