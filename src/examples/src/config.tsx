@@ -90,6 +90,11 @@ import DisabledSelect from './widgets/select/DisabledSelect';
 import RequiredSelect from './widgets/select/RequiredSelect';
 import BasicSlidePane from './widgets/slide-pane/Basic';
 import BasicSlider from './widgets/slider/Basic';
+import SliderWithCustomOutput from './widgets/slider/SliderWithCustomOutput';
+import DisabledSlider from './widgets/slider/DisabledSlider';
+import VerticalSlider from './widgets/slider/VerticalSlider';
+import SliderWithNoOutput from './widgets/slider/SliderWithNoOutput';
+import SliderWithValidityCheck from './widgets/slider/SliderWithValidityCheck';
 import BasicSnackbar from './widgets/snackbar/Basic';
 import ErrorSnackbar from './widgets/snackbar/Error';
 import LeadingSnackbar from './widgets/snackbar/Leading';
@@ -710,7 +715,29 @@ export const config = {
 					filename: 'Basic',
 					module: BasicSlider
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'SliderWithCustomOutput',
+					module: SliderWithCustomOutput
+				},
+				{
+					filename: 'DisabledSlider',
+					module: DisabledSlider
+				},
+				{
+					filename: 'VerticalSlider',
+					module: VerticalSlider
+				},
+				{
+					filename: 'SliderWithNoOutput',
+					module: SliderWithNoOutput
+				},
+				{
+					filename: 'SliderWithValidityCheck',
+					module: SliderWithValidityCheck
+				}
+			]
 		},
 		snackbar: {
 			overview: {
