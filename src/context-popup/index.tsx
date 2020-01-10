@@ -13,7 +13,7 @@ export interface ContextPopupProperties {
 
 export interface ContextPopupChildren {
 	trigger: () => RenderResult;
-	content: (close: () => void, shouldFocus: () => boolean) => RenderResult;
+	content: (callbacks: { close(): void; shouldFocus(): boolean }) => RenderResult;
 }
 
 interface ContextIcache {
@@ -73,7 +73,7 @@ export const ContextPopup = factory(function({
 				open={icache.get('open')}
 			>
 				{{
-					content: () => <div>{content(close, focus.shouldFocus)}</div>
+					content: () => <div>{content({ close, shouldFocus: focus.shouldFocus })}</div>
 				}}
 			</Popup>
 		</virtual>

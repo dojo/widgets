@@ -58,8 +58,8 @@ describe('ContextPopup', () => {
 			<ContextPopup onClose={onClose}>
 				{{
 					trigger: () => undefined,
-					content: (onClose, shouldFocus) => (
-						<div key="content" tabIndex={0} onblur={onClose} focus={shouldFocus}>
+					content: ({ close, shouldFocus }) => (
+						<div key="content" tabIndex={0} onblur={close} focus={shouldFocus}>
 							hello world
 						</div>
 					)

@@ -9,11 +9,11 @@ export default factory(function Basic() {
 			<ContextPopup>
 				{{
 					trigger: () => <div>This text has a context popup</div>,
-					content: (onClose, shouldFocus) => (
+					content: ({ close, shouldFocus }) => (
 						<div
 							focus={shouldFocus}
 							tabIndex={0}
-							onblur={onClose}
+							onblur={close}
 							styles={{ background: 'red', height: '100px', fontSize: '32px' }}
 						>
 							Hello from the context menu!
