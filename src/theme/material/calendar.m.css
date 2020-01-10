@@ -1,2 +1,38 @@
+@import './variables.css';
+
 .root {
+	width: calc(var(--grid-base) * 32);
+	font-family: Roboto, sans-serif;
+	color: var(--mdc-theme-on-surface);
+}
+
+.dateGrid {
+	width: calc(100% - var(--grid-base) * 4);
+}
+
+.weekday,
+.date {
+	width: calc(var(--grid-base) * 4);
+	height: calc(var(--grid-base) * 4);
+	text-align: center;
+}
+
+.todayDate:before {
+	position: absolute;
+	width: calc(var(--grid-base) * 3.5);
+	height: calc(var(--grid-base) * 3.5);
+	border-radius: 50%;
+	border: 1px solid var(--mdc-theme-on-surface);
+}
+
+.selectedDate {
+	color: var(--mdc-theme-on-primary);
+}
+
+.selectedDate:before {
+	position: absolute;
+	width: calc(var(--grid-base) * 3.5);
+	height: calc(var(--grid-base) * 3.5);
+	border-radius: 50%;
+	background-color: var(--mdc-theme-primary);
 }
