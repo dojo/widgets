@@ -19,8 +19,8 @@ describe('ContextMenu', () => {
 	const template = assertionTemplate(() => (
 		<ContextPopup>
 			{{
-				contentWithContext: () => null as any,
-				popupContent: null as any
+				trigger: () => null as any,
+				content: null as any
 			}}
 		</ContextPopup>
 	));
@@ -43,7 +43,7 @@ describe('ContextMenu', () => {
 		h.expect(template);
 	});
 
-	it('passes a function that returns children as `contentWithContext`', () => {
+	it('passes a function that returns children as `trigger`', () => {
 		const h = harness(() => (
 			<ContextMenu options={options} onSelect={noop}>
 				{children}
@@ -53,12 +53,12 @@ describe('ContextMenu', () => {
 		h.expect(template);
 		h.expect(
 			() => [children],
-			() => h.trigger(':root', (node: any) => node.children[0].contentWithContext)
+			() => h.trigger(':root', (node: any) => node.children[0].trigger)
 		);
 	});
 
-	it('passes a function that renders a menu as `popupContent`', () => {
-		const onClose = stub();
+	it('passes a function that renders a menu as `content`', () => {
+		const close = stub();
 		const onSelect = stub();
 		const shouldFocus = stub();
 		const h = harness(() => (
@@ -75,47 +75,43 @@ describe('ContextMenu', () => {
 					focus={() => null as any}
 					theme={{}}
 					options={options}
+					total={options.length}
 					onBlur={() => {}}
 					onRequestClose={() => {}}
 					onValue={() => {}}
 				/>
 			),
 			() =>
-				h.trigger(
-					':root',
-					(node: any) => node.children[0].popupContent,
-					onClose,
-					shouldFocus
-				)
+				h.trigger(':root', (node: any) => node.children[0].content, { close, shouldFocus })
 		);
 
 		h.trigger(
 			':root',
-			(node: any) => node.children[0].popupContent(onClose, shouldFocus).properties.onBlur
+			(node: any) => node.children[0].content({ close, shouldFocus }).properties.onBlur
 		);
-		assert.isTrue(onClose.calledOnce);
-		onClose.resetHistory();
+		assert.isTrue(close.calledOnce);
+		close.resetHistory();
 
 		h.trigger(
 			':root',
 			(node: any) =>
-				node.children[0].popupContent(onClose, shouldFocus).properties.onRequestClose
+				node.children[0].content({ close, shouldFocus }).properties.onRequestClose
 		);
-		assert.isTrue(onClose.calledOnce);
-		onClose.resetHistory();
+		assert.isTrue(close.calledOnce);
+		close.resetHistory();
 
 		h.trigger(
 			':root',
-			(node: any) => node.children[0].popupContent(onClose, shouldFocus).properties.onValue,
+			(node: any) => node.children[0].content({ close, shouldFocus }).properties.onValue,
 			'value'
 		);
-		assert.isTrue(onClose.calledOnce);
+		assert.isTrue(close.calledOnce);
 		assert.isTrue(onSelect.calledOnceWith('value'));
-		onClose.resetHistory();
+		close.resetHistory();
 
 		h.trigger(
 			':root',
-			(node: any) => node.children[0].popupContent(onClose, shouldFocus).properties.focus
+			(node: any) => node.children[0].content({ close, shouldFocus }).properties.focus
 		);
 		assert.isTrue(shouldFocus.calledOnce);
 	});

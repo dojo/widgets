@@ -17,8 +17,8 @@ export const ContextMenu = factory(function({ properties, children, middleware: 
 	return (
 		<ContextPopup>
 			{{
-				contentWithContext: () => children(),
-				popupContent: (onClose, shouldFocus) => (
+				trigger: () => children(),
+				content: ({ close, shouldFocus }) => (
 					<Menu
 						key="menu"
 						focus={shouldFocus}
@@ -28,10 +28,11 @@ export const ContextMenu = factory(function({ properties, children, middleware: 
 							'menu'
 						)}
 						options={options}
-						onBlur={onClose}
-						onRequestClose={onClose}
+						total={options.length}
+						onBlur={close}
+						onRequestClose={close}
 						onValue={(value) => {
-							onClose();
+							close();
 							onSelect(value);
 						}}
 					/>
