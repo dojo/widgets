@@ -1,11 +1,11 @@
 import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v } from '@dojo/framework/core/vdom';
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { formatAriaProperties } from '../common/util';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import theme from '../middleware/theme';
 
 import * as fixedCss from './styles/tooltip.m.css';
 import * as css from '../theme/default/tooltip.m.css';
+import { formatAriaProperties } from '../common/util';
 
 export interface TooltipProperties extends ThemedProperties {
 	/** Custom aria attributes */
@@ -26,53 +26,46 @@ export enum Orientation {
 	top = 'top'
 }
 
-const fixedOrientationCss: { [key: string]: any } = fixedCss;
-const orientationCss: { [key: string]: any } = css;
+const factory = create({ theme }).properties<TooltipProperties>();
 
-@theme(css)
-export class Tooltip extends ThemedMixin(WidgetBase)<TooltipProperties> {
-	protected getFixedModifierClasses(): (string | null)[] {
-		const { orientation = Orientation.right } = this.properties;
+export const Tooltip = factory(function Tooltip({ children, properties, middleware: { theme } }) {
+	const { open, content, aria = {}, orientation = Orientation.right } = properties();
+	const classes = theme.classes(css);
+	const fixedClasses = theme.classes(fixedCss);
 
-		return [fixedCss.rootFixed, fixedOrientationCss[`${orientation}Fixed`]];
+	let fixedOrientation;
+	let classesOrientation;
+
+	if (orientation === 'bottom') {
+		fixedOrientation = fixedClasses.bottomFixed;
+		classesOrientation = classes.bottom;
+	} else if (orientation === 'right') {
+		fixedOrientation = fixedClasses.rightFixed;
+		classesOrientation = classes.right;
+	} else if (orientation === 'left') {
+		fixedOrientation = fixedClasses.leftFixed;
+		classesOrientation = classes.left;
+	} else if (orientation === 'top') {
+		fixedOrientation = fixedClasses.topFixed;
+		classesOrientation = classes.top;
 	}
 
-	protected getModifierClasses(): (string | null)[] {
-		const { orientation = Orientation.right } = this.properties;
-
-		return [orientationCss[orientation]];
-	}
-
-	protected renderContent(): DNode {
-		const { aria = {} } = this.properties;
-		return v(
-			'div',
-			{
-				...formatAriaProperties(aria),
-				classes: [this.theme(css.content), fixedCss.contentFixed],
-				key: 'content'
-			},
-			[this.properties.content]
-		);
-	}
-
-	protected renderTarget(): DNode {
-		return v('div', { key: 'target' }, this.children);
-	}
-
-	render(): DNode {
-		const { open } = this.properties;
-		const classes = this.getModifierClasses();
-		const fixedClasses = this.getFixedModifierClasses();
-
-		return v(
-			'div',
-			{
-				classes: [...this.theme(classes), ...fixedClasses]
-			},
-			[this.renderTarget(), open ? this.renderContent() : null]
-		);
-	}
-}
+	return (
+		<div classes={[classesOrientation, fixedClasses.rootFixed, fixedOrientation]}>
+			<div key="target">
+				{children()}
+				{open ? (
+					<div
+						key="content"
+						{...formatAriaProperties(aria)}
+						classes={[classes.content, fixedClasses.contentFixed]}
+					>
+						{content}
+					</div>
+				) : null}
+			</div>
+		</div>
+	);
+});
 
 export default Tooltip;
