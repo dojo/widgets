@@ -1,14 +1,14 @@
 import { create, destroy } from '@dojo/framework/core/vdom';
-import globalObject from '@dojo/framework/shim/global';
+import global from '@dojo/framework/shim/global';
 
 const factory = create({ destroy });
-const bodyStyle = globalObject.document.body.style;
+const bodyStyle = global.document.body.style;
 
 export const bodyScroll = factory(function bodyScroll({ middleware: { destroy } }) {
 	let disabled = false;
 	let previousOverflow: string | undefined = undefined;
 
-	const enable = () => {
+	const enableScroll = () => {
 		if (!disabled) {
 			return;
 		}
@@ -22,7 +22,7 @@ export const bodyScroll = factory(function bodyScroll({ middleware: { destroy } 
 		previousOverflow = undefined;
 	};
 
-	const disable = () => {
+	const disableScroll = () => {
 		if (disabled) {
 			return;
 		}
@@ -33,11 +33,11 @@ export const bodyScroll = factory(function bodyScroll({ middleware: { destroy } 
 	};
 
 	destroy(() => {
-		disabled && enable();
+		disabled && enableScroll();
 	});
 
-	return (enableScroll: boolean) => {
-		enableScroll ? enable() : disable();
+	return (enable: boolean) => {
+		enable ? enableScroll() : disableScroll();
 	};
 });
 
