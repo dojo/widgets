@@ -76,6 +76,10 @@ import ProgressWithCustomOutput from './widgets/progress/ProgressWithCustomOutpu
 import ProgressWithMax from './widgets/progress/ProgressWithMax';
 import ProgressWithoutOutput from './widgets/progress/ProgressWithoutOutput';
 import BasicRadio from './widgets/radio/Basic';
+import CheckedRadio from './widgets/radio/Checked';
+import EventsRadio from './widgets/radio/Events';
+import DisabledRadio from './widgets/radio/Disabled';
+import LabelledRadio from './widgets/radio/Labelled';
 import BasicRadioGroup from './widgets/radio-group/Basic';
 import CustomLabelRadioGroup from './widgets/radio-group/CustomLabel';
 import CustomRendererRadioGroup from './widgets/radio-group/CustomRenderer';
@@ -631,7 +635,29 @@ export const config = {
 					filename: 'Basic',
 					module: BasicRadio
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'Labelled',
+					module: LabelledRadio,
+					title: 'Labelled Radio Button'
+				},
+				{
+					filename: 'Checked',
+					module: CheckedRadio,
+					title: 'Checked Radio Button'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledRadio,
+					title: 'Disabled Radio Button'
+				},
+				{
+					filename: 'Events',
+					module: EventsRadio,
+					title: 'Radio Button Events'
+				}
+			]
 		},
 		'radio-group': {
 			examples: [
