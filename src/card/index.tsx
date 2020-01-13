@@ -1,29 +1,26 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, create } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { alwaysRender } from '@dojo/framework/core/decorators/alwaysRender';
-import { ThemedMixin, theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import * as css from '../theme/default/card.m.css';
-import { DNode } from '@dojo/framework/core/interfaces';
+import theme from '../middleware/theme';
+import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 
 export interface CardProperties extends ThemedProperties {
 	/** Renderer for action available from the card */
 	actionsRenderer?(): RenderResult;
 }
 
-@theme(css)
-@alwaysRender()
-export class Card extends ThemedMixin(WidgetBase)<CardProperties> {
-	protected render(): DNode {
-		const { actionsRenderer } = this.properties;
-		const actionsResult = actionsRenderer && actionsRenderer();
-		return (
-			<div key="root" classes={this.theme(css.root)}>
-				{this.children}
-				{actionsResult && <div classes={this.theme(css.actions)}>{actionsResult}</div>}
-			</div>
-		);
-	}
-}
+const factory = create({ theme }).properties<CardProperties>();
+
+export const Card = factory(function Card({ children, properties, middleware: { theme } }) {
+	const { actionsRenderer } = properties();
+	const classes = theme.classes(css);
+
+	return (
+		<div key="root" classes={[classes.root]}>
+			{children()}
+			{actionsRenderer && <div classes={[classes.actions]}>{actionsRenderer()}</div>}
+		</div>
+	);
+});
 
 export default Card;

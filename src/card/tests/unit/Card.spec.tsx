@@ -7,7 +7,7 @@ import Button from '../../../button/index';
 import * as css from '../../../theme/default/card.m.css';
 
 describe('Card', () => {
-	const template = assertionTemplate(() => <div key="root" classes={css.root} />);
+	const template = assertionTemplate(() => <div key="root" classes={[css.root]} />);
 
 	it('renders', () => {
 		const h = harness(() => <Card />);
@@ -24,9 +24,9 @@ describe('Card', () => {
 		const h = harness(() => (
 			<Card actionsRenderer={() => <Button>test</Button>}>Hello, World</Card>
 		));
-		const childrenTemplate = template.setChildren('@root', [
+		const childrenTemplate = template.setChildren('@root', () => [
 			'Hello, World',
-			<div classes={css.actions}>
+			<div classes={[css.actions]}>
 				<Button>test</Button>
 			</div>
 		]);
