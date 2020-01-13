@@ -11,7 +11,7 @@ import focus from '@dojo/framework/core/middleware/focus';
 
 import { Keys } from '../../../common/util';
 import Calendar from '../../../calendar';
-import Popup from '../../../popup';
+import TriggerPopup from '../../../trigger-popup';
 import TextInput from '../../../text-input';
 
 import DateInput from '../../index';
@@ -45,12 +45,12 @@ const baseTemplate = (date?: Date) =>
 		return (
 			<div classes={css.root}>
 				<input type="hidden" name="dateInput" value={formatDateISO(date || today)} />
-				<Popup key="popup">
+				<TriggerPopup key="popup">
 					{{
 						trigger: () => <button />,
 						content: () => <div />
 					}}
-				</Popup>
+				</TriggerPopup>
 			</div>
 		);
 	});

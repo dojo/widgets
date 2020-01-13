@@ -9,7 +9,7 @@ import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
 import Icon from '../icon';
-import Popup from '../popup';
+import TriggerPopup from '../trigger-popup';
 import * as css from '../theme/default/date-input.m.css';
 
 import bundle from './nls/DateInput';
@@ -98,7 +98,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 	return (
 		<div classes={classes.root}>
 			<input type="hidden" name={name} value={formatDateISO(icache.get('value'))} />
-			<Popup key="popup">
+			<TriggerPopup key="popup">
 				{{
 					trigger: (toggleOpen) => {
 						function openCalendar() {
@@ -166,7 +166,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 						);
 					}
 				}}
-			</Popup>
+			</TriggerPopup>
 		</div>
 	);
 });
