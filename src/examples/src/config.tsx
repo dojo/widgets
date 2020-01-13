@@ -92,6 +92,12 @@ import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
 import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
+import MinMaxRangeSlider from './widgets/range-slider/MinMax';
+import TooltipRangeSlider from './widgets/range-slider/Tooltip';
+import EventsRangeSlider from './widgets/range-slider/Events';
+import DisabledRangeSlider from './widgets/range-slider/Disabled';
+import RequiredRangeSlider from './widgets/range-slider/Required';
+import LabelledRangeSlider from './widgets/range-slider/Labelled';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
 import CustomRenderer from './widgets/select/CustomRenderer';
@@ -737,7 +743,23 @@ export const config = {
 					filename: 'Basic',
 					module: BasicRangeSlider
 				}
-			}
+			},
+			examples: [
+				{ filename: 'Labelled', module: LabelledRangeSlider, title: 'Labelled' },
+				{
+					filename: 'MinMax',
+					module: MinMaxRangeSlider,
+					title: 'Minimum and Maximum Values'
+				},
+				{ filename: 'Events', module: EventsRangeSlider, title: 'Events' },
+				{
+					filename: 'Tooltip',
+					module: TooltipRangeSlider,
+					title: 'Display Tooltip Output'
+				},
+				{ filename: 'Required', module: RequiredRangeSlider, title: 'Required' },
+				{ filename: 'Disabled', module: DisabledRangeSlider, title: 'Disabled' }
+			]
 		},
 		select: {
 			overview: {

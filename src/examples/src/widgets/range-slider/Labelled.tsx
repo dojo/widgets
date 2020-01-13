@@ -3,6 +3,6 @@ import RangeSlider from '@dojo/widgets/range-slider';
 
 const factory = create();
 
-export default factory(function Basic() {
-	return <RangeSlider />;
+export default factory(function LabelledRangeSlider() {
+	return <RangeSlider label={'A Labelled Slider'} />;
 });
