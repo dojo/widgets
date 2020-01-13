@@ -435,7 +435,7 @@ describe('Header', () => {
 
 			h.trigger(`.${css.sort}`, 'onclick', {});
 			assert.isTrue(sorterStub.calledWith('firstName', 'desc'));
-			sorterStub.reset();
+			sorterStub.resetHistory();
 
 			h.trigger(`.${css.sortable}`, 'onclick', {});
 			assert.isTrue(sorterStub.calledWith('firstName', 'desc'));
@@ -459,7 +459,7 @@ describe('Header', () => {
 
 			h.trigger(`.${css.sort}`, 'onclick', {});
 			assert.isTrue(sorterStub.calledWith('firstName', 'asc'));
-			sorterStub.reset();
+			sorterStub.resetHistory();
 
 			h.trigger(`.${css.sortable}`, 'onclick', {});
 			assert.isTrue(sorterStub.calledWith('firstName', 'asc'));
@@ -483,7 +483,7 @@ describe('Header', () => {
 
 			h.trigger(`.${css.sort}`, 'onclick', {});
 			assert.isTrue(sorterStub.calledWith('firstName', 'desc'));
-			sorterStub.reset();
+			sorterStub.resetHistory();
 
 			h.trigger(`.${css.sortable}`, 'onclick', {});
 			assert.isTrue(sorterStub.calledWith('firstName', 'desc'));

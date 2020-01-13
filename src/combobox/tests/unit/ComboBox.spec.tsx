@@ -515,7 +515,7 @@ registerSuite('ComboBox', {
 				onResultSelect.calledTwice,
 				'enter does not trigger onResultSelect when menu is closed'
 			);
-			onValue.reset();
+			onValue.resetHistory();
 
 			h.trigger(`.${css.trigger}`, 'onclick', stubEvent);
 			h.trigger('@textinput', 'onKeyDown', Keys.Space, () => {});

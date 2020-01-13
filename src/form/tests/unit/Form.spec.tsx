@@ -219,7 +219,7 @@ describe('Form', () => {
 	);
 
 	beforeEach(() => {
-		onSubmit.reset();
+		onSubmit.resetHistory();
 	});
 
 	it('renders', () => {

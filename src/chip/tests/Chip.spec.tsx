@@ -242,8 +242,8 @@ describe('Chip', () => {
 		);
 
 		[Keys.Enter, Keys.Space, Keys.Left].forEach((which) => {
-			onClose.reset();
-			onClick.reset();
+			onClose.resetHistory();
+			onClick.resetHistory();
 			const closeEvent = {
 				which,
 				preventDefault: sinon.spy(),

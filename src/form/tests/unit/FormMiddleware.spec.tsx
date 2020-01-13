@@ -23,8 +23,8 @@ describe('Form Middleware', () => {
 	let form: ReturnType<typeof formMiddleware>['api'];
 
 	beforeEach(() => {
-		onSubmit.reset();
-		onValue.reset();
+		onSubmit.resetHistory();
+		onValue.resetHistory();
 
 		const { callback: iCacheCallback } = iCacheMiddleware();
 		const icache = iCacheCallback({
