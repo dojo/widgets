@@ -79,6 +79,7 @@ import ControlledMenu from './widgets/menu/Controlled';
 import ItemRenderer from './widgets/menu/ItemRenderer';
 import LargeOptionSet from './widgets/menu/LargeOptionSet';
 import ListBox from './widgets/menu/ListBox';
+import BasicLoginForm from './widgets/login-form/Basic';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
@@ -642,6 +643,14 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicListbox
+				}
+			}
+		},
+		'login-form': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicLoginForm
 				}
 			}
 		},
