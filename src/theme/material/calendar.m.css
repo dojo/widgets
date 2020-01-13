@@ -1,13 +1,26 @@
 @import './variables.css';
 
 .root {
+	position: relative;
 	width: calc(var(--grid-base) * 32);
 	font-family: Roboto, sans-serif;
+	font-size: var(--font-size-small);
 	color: var(--mdc-theme-on-surface);
+	padding-left: calc(var(--grid-base) * 2);
+	padding-right: calc(var(--grid-base) * 2);
 }
 
-.dateGrid {
-	width: calc(100% - var(--grid-base) * 4);
+.monthTrigger {
+	padding-right: calc(var(--grid-base) * 0.75);
+	padding-left: calc(var(--grid-base) * 0.5);
+}
+
+.datePicker {
+	padding-top: calc(var(--grid-base) * 1.75);
+}
+
+.topMatter {
+	padding-bottom: var(--grid-base);
 }
 
 .weekday,
@@ -15,24 +28,67 @@
 	width: calc(var(--grid-base) * 4);
 	height: calc(var(--grid-base) * 4);
 	text-align: center;
+	position: relative;
+	z-index: 0;
 }
 
-.todayDate:before {
-	position: absolute;
-	width: calc(var(--grid-base) * 3.5);
-	height: calc(var(--grid-base) * 3.5);
-	border-radius: 50%;
-	border: 1px solid var(--mdc-theme-on-surface);
+.inactiveDate {
+	color: var(--disabled-color);
+}
+
+.weekday .abbreviation {
+	font-weight: 300;
+	text-decoration: none;
 }
 
 .selectedDate {
 	color: var(--mdc-theme-on-primary);
 }
 
+.todayDate:before,
 .selectedDate:before {
 	position: absolute;
+	left: 2px;
+	top: 2px;
 	width: calc(var(--grid-base) * 3.5);
 	height: calc(var(--grid-base) * 3.5);
 	border-radius: 50%;
+	content: '';
+	z-index: -1;
+}
+
+.todayDate:before {
+	border: 1px solid var(--mdc-theme-on-surface);
+}
+
+.selectedDate:before {
 	background-color: var(--mdc-theme-primary);
+}
+
+.controls {
+	height: 0;
+}
+
+.previous,
+.next {
+	position: absolute;
+	top: calc(var(--grid-base) * 2);
+}
+
+.next {
+	right: var(--grid-base);
+	right: calc(var(--grid-base) * 3);
+}
+
+.previous {
+	right: calc(var(--grid-base) * 9);
+}
+
+.yearRadio {
+	height: calc(var(--grid-base) * 4);
+	width: calc(var(--grid-base) * 7);
+}
+
+.yearRadioInput {
+	display: none;
 }

@@ -29,3 +29,4 @@ export const yearRadioInput: string;
 export const yearRadioLabel: string;
 export const monthTriggerActive: string;
 export const yearTriggerActive: string;
+export const abbreviation: string;
