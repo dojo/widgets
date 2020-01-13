@@ -1,13 +1,17 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
+import { focus } from '@dojo/framework/core/middleware/focus';
+
 import { parseDate, formatDateISO, formatDate } from './date-utils';
+import { Keys } from '../common/util';
 import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
 import Icon from '../icon';
 import Popup from '../popup';
 import * as css from '../theme/default/date-input.m.css';
+
 import bundle from './nls/DateInput';
 
 export interface DateInputProperties {
@@ -36,12 +40,14 @@ interface DateInputICache {
 	shouldValidate: boolean;
 	/** Message for current validation state */
 	validationMessages: string[];
+	/** Indicates which node will be focused */
+	focusNode: 'input' | 'calendar';
 }
 
 const icache = createICacheMiddleware<DateInputICache>();
-const factory = create({ theme, icache, i18n }).properties<DateInputProperties>();
+const factory = create({ theme, icache, i18n, focus }).properties<DateInputProperties>();
 
-export default factory(function({ properties, middleware: { theme, icache, i18n } }) {
+export default factory(function({ properties, middleware: { theme, icache, i18n, focus } }) {
 	const { name, onValue, initialValue } = properties();
 	const { messages } = i18n.localize(bundle);
 	const classes = theme.classes(css);
@@ -54,6 +60,8 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 		return formatDate(parsed || new Date());
 	});
 	const shouldValidate = icache.getOrSet('shouldValidate', true);
+	const shouldFocus = focus.shouldFocus();
+	const focusNode = icache.getOrSet('focusNode', 'input');
 
 	if (shouldValidate) {
 		let validationMessages: string[] = [];
@@ -93,12 +101,19 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 			<Popup key="popup">
 				{{
 					trigger: (toggleOpen) => {
+						function openCalendar() {
+							icache.set('focusNode', 'calendar');
+							focus.focus();
+							toggleOpen();
+						}
+
 						return (
 							<div classes={classes.input}>
 								<TextInput
 									key="input"
+									focus={() => shouldFocus && focusNode === 'input'}
 									trailing={() => (
-										<div key="dateIcon" onclick={toggleOpen}>
+										<div key="dateIcon" onclick={openCalendar}>
 											<Icon type="dateIcon" />
 										</div>
 									)}
@@ -107,13 +122,31 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 									onBlur={() => icache.set('shouldValidate', true)}
 									onValue={(v) => icache.set('inputValue', v || '')}
 									helperText={(icache.get('validationMessages') || []).join('; ')}
+									onKeyDown={(key) => {
+										if (
+											key === Keys.Down ||
+											key === Keys.Space ||
+											key === Keys.Enter
+										) {
+											openCalendar();
+										}
+									}}
 								/>
 							</div>
 						);
 					},
 					content: (onClose) => {
+						function closeCalendar() {
+							icache.set('focusNode', 'input');
+							focus.focus();
+							onClose();
+						}
+
 						return (
-							<div classes={classes.popup}>
+							<div
+								classes={classes.popup}
+								focus={() => shouldFocus && focusNode === 'calendar'}
+							>
 								<Calendar
 									key="calendar"
 									maxDate={max}
@@ -122,7 +155,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n 
 									onDateSelect={(date) => {
 										icache.set('inputValue', formatDate(date));
 										icache.set('shouldValidate', true);
-										onClose();
+										closeCalendar();
 									}}
 									onMonthChange={(month) => icache.set('month', month)}
 									onYearChange={(year) => icache.set('year', year)}

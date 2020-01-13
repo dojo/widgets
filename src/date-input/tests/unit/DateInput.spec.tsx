@@ -3,11 +3,13 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, create } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import { harness } from '@dojo/framework/testing/harness';
 import select from '@dojo/framework/testing/support/selector';
+import focus from '@dojo/framework/core/middleware/focus';
 
+import { Keys } from '../../../common/util';
 import Calendar from '../../../calendar';
 import Popup from '../../../popup';
 import TextInput from '../../../text-input';
@@ -22,11 +24,27 @@ const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const noop = () => {};
 
-const baseTemplate = (date: Date) =>
+function createFocusMock({
+	shouldFocus = false,
+	focused = false,
+	isFocused = false,
+	focus = () => {}
+} = {}) {
+	const factory = create();
+	return () =>
+		factory(() => ({
+			shouldFocus: () => shouldFocus,
+			focused: () => focused,
+			isFocused: () => isFocused,
+			focus
+		}))();
+}
+
+const baseTemplate = (date?: Date) =>
 	assertionTemplate(() => {
 		return (
 			<div classes={css.root}>
-				<input type="hidden" name="dateInput" value={formatDateISO(date)} />
+				<input type="hidden" name="dateInput" value={formatDateISO(date || today)} />
 				<Popup key="popup">
 					{{
 						trigger: () => <button />,
@@ -42,12 +60,14 @@ const buttonTemplate = assertionTemplate(() => {
 		<div classes={css.input}>
 			<TextInput
 				key="input"
+				focus={() => false}
 				type="text"
 				onBlur={noop}
 				onValue={noop}
 				trailing={() => undefined}
 				value={formatDate(today)}
 				helperText=""
+				onKeyDown={noop}
 			/>
 		</div>
 	);
@@ -55,7 +75,7 @@ const buttonTemplate = assertionTemplate(() => {
 
 const calendarTemplate = assertionTemplate(() => {
 	return (
-		<div classes={css.popup}>
+		<div classes={css.popup} focus={() => false}>
 			<Calendar
 				key="calendar"
 				maxDate={undefined}
@@ -80,7 +100,7 @@ describe('DateInput', () => {
 
 	it('renders with default date', () => {
 		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
-		h.expect(baseTemplate(today));
+		h.expect(baseTemplate());
 		sinon.assert.calledWith(onValue, formatDateISO(today));
 	});
 
@@ -99,6 +119,7 @@ describe('DateInput', () => {
 	it('shows calendar when triggered via icon', () => {
 		const h = harness(() => <DateInput name="dateInput" />);
 
+		// Execute render-prop to show "trigger" content
 		const toggleOpen = sinon.stub();
 		const triggerResult = h.trigger(
 			'@popup',
@@ -113,9 +134,51 @@ describe('DateInput', () => {
 			select('@input', triggerResult)[0].properties.trailing()
 		);
 		dateIcon.properties.onclick();
+		h.expect(baseTemplate());
 
 		// If `toggleOpen` is called, the popup content (i.e., the calendar) is shown
 		sinon.assert.calledOnce(toggleOpen);
+	});
+
+	it('shows calendar when triggered via keyboard', () => {
+		const h = harness(() => <DateInput name="dateInput" />);
+
+		// Execute render-prop to show "trigger" content
+		const toggleOpen = sinon.stub();
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpen
+		);
+		h.expect(buttonTemplate, () => triggerResult);
+
+		// Find the input and simulate "enter"
+		const [input] = select('@input', triggerResult);
+		input.properties.onKeyDown(Keys.Enter);
+
+		// If `toggleOpen` is called, the popup content (i.e., the calendar) is shown
+		sinon.assert.calledOnce(toggleOpen);
+	});
+
+	it('focus popup content on trigger', () => {
+		const focusStub = sinon.stub();
+		const focusMock = createFocusMock({
+			focus: focusStub
+		});
+		const h = harness(() => <DateInput name="dateInput" />, {
+			middleware: [[focus, focusMock]]
+		});
+		h.expect(baseTemplate());
+
+		// Trigger popup content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			noop
+		);
+		select('@input', triggerResult)[0].properties.onKeyDown(Keys.Enter);
+
+		sinon.assert.calledOnce(focusStub);
 	});
 
 	it('allows manual date entry', () => {
@@ -135,7 +198,7 @@ describe('DateInput', () => {
 		onValue.resetHistory();
 		input.properties.onValue(formatDate(expected));
 
-		h.expect(baseTemplate(today));
+		h.expect(baseTemplate());
 		sinon.assert.notCalled(onValue); // onValue not called until validated; validation delayed for manual input until blur
 
 		// If `onValue` is called, the input was accepted & validated
@@ -150,7 +213,7 @@ describe('DateInput', () => {
 	it('allows date picker entry', () => {
 		const expected = new Date(2019, 11, 19); // Dec 19, 2019
 		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
-		h.expect(baseTemplate(today));
+		h.expect(baseTemplate());
 
 		const onClose = sinon.stub();
 		const contentResult = h.trigger(
@@ -194,7 +257,7 @@ describe('DateInput', () => {
 		onValue.resetHistory();
 		input.properties.onValue('foobar');
 		input.properties.onBlur();
-		h.expect(baseTemplate(today));
+		h.expect(baseTemplate());
 
 		// With invalid input, `onValue` should not have been called & message should be displayed
 		sinon.assert.notCalled(onValue);
