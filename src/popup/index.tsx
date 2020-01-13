@@ -86,11 +86,7 @@ export const Popup = factory(function({
 	const classes = theme.classes(css);
 	const { content } = children()[0];
 
-	if (open) {
-		bodyScroll.disable();
-	} else {
-		bodyScroll.enable();
-	}
+	bodyScroll(!open);
 
 	return (
 		open && (

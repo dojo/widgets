@@ -42,9 +42,8 @@ export const bodyScroll = factory(function bodyScroll({ middleware: { icache, de
 		}
 	});
 
-	return {
-		enable,
-		disable
+	return (enableScroll: boolean) => {
+		enableScroll ? enable() : disable();
 	};
 });
 
