@@ -1,6 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 
-import { w, tsx } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 
 import Tooltip, { Orientation } from '../../index';
