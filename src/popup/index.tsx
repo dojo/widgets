@@ -1,5 +1,6 @@
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { theme } from '@dojo/framework/core/middleware/theme';
+import { bodyScroll } from '../middleware/bodyScroll';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/popup.m.css';
 import * as fixedCss from './popup.m.css';
@@ -28,11 +29,15 @@ export interface PopupChildren {
 	content: () => RenderResult;
 }
 
-const factory = create({ dimensions, theme })
+const factory = create({ dimensions, theme, bodyScroll })
 	.properties<PopupProperties>()
 	.children<PopupChildren>();
 
-export const Popup = factory(function({ properties, children, middleware: { dimensions, theme } }) {
+export const Popup = factory(function({
+	properties,
+	children,
+	middleware: { dimensions, theme, bodyScroll }
+}) {
 	const {
 		underlayVisible = false,
 		position = 'below',
@@ -80,6 +85,12 @@ export const Popup = factory(function({ properties, children, middleware: { dime
 
 	const classes = theme.classes(css);
 	const { content } = children()[0];
+
+	if (open) {
+		bodyScroll.disable();
+	} else {
+		bodyScroll.enable();
+	}
 
 	return (
 		open && (
