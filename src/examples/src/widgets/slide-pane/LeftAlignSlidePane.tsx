@@ -6,42 +6,40 @@ const factory = create({ icache });
 
 export default factory(function LeftAlignSlidePane({ middleware: { icache } }) {
 	return (
-		<div>
-			<SlidePane
-				title="Left Aligned SlidePane"
-				open={icache.getOrSet('open', true)}
-				underlay={false}
-				align={Align.left}
-				onRequestClose={() => {
-					console.log('close');
-					icache.set('open', false);
-				}}
-			>
-				{`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Quisque id purus ipsum. Aenean ac purus purus.
-				Nam sollicitudin varius augue, sed lacinia felis tempor in.`}
-			</SlidePane>
-		</div>
+		<SlidePane
+			title="Left Aligned SlidePane"
+			open={icache.getOrSet('open', true)}
+			underlay={false}
+			align={Align.left}
+			onRequestClose={() => {
+				console.log('close');
+				icache.set('open', false);
+			}}
+		>
+			{`Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Quisque id purus ipsum. Aenean ac purus purus.
+			Nam sollicitudin varius augue, sed lacinia felis tempor in.`}
+		</SlidePane>
 	);
 });

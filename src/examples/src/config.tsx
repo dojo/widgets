@@ -104,6 +104,11 @@ import CustomRenderer from './widgets/select/CustomRenderer';
 import DisabledSelect from './widgets/select/DisabledSelect';
 import RequiredSelect from './widgets/select/RequiredSelect';
 import BasicSlidePane from './widgets/slide-pane/Basic';
+import RightAlignSlidePane from './widgets/slide-pane/RightAlignSlidePane';
+import LeftAlignSlidePane from './widgets/slide-pane/LeftAlignSlidePane';
+import BottomAlignSlidePane from './widgets/slide-pane/BottomAlignSlidePane';
+import UnderlaySlidePane from './widgets/slide-pane/UnderlaySlidePane';
+import FixedWidthSlidePane from './widgets/slide-pane/FixedWidthSlidePane';
 import BasicSlider from './widgets/slider/Basic';
 import BasicSnackbar from './widgets/snackbar/Basic';
 import ErrorSnackbar from './widgets/snackbar/Error';
@@ -785,7 +790,34 @@ export const config = {
 					filename: 'Basic',
 					module: BasicSlidePane
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'RightAlignSlidePane',
+					module: RightAlignSlidePane,
+					title: 'Right Aligned Slide Pane'
+				},
+				{
+					filename: 'LeftAlignSlidePane',
+					module: LeftAlignSlidePane,
+					title: 'Left Aligned Slide Pane'
+				},
+				{
+					filename: 'BottomAlignSlidePane',
+					module: BottomAlignSlidePane,
+					title: 'Bottom Aligned Slide Pane'
+				},
+				{
+					filename: 'UnderlaySlidePane',
+					module: UnderlaySlidePane,
+					title: 'Underlaid Slide Pane'
+				},
+				{
+					filename: 'FixedWidthSlidePane',
+					module: FixedWidthSlidePane,
+					title: 'Fixed Width Slide Pane'
+				}
+			]
 		},
 		slider: {
 			overview: {
