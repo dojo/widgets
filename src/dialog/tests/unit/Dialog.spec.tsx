@@ -557,7 +557,7 @@ registerSuite('Dialog', {
 					active: true,
 					containsFocus: true
 				});
-				mockFocusSet.reset();
+				mockFocusSet.resetHistory();
 				h.expect(() => expected(true, true));
 				assert.isFalse(
 					mockFocusSet.called,
@@ -608,7 +608,7 @@ registerSuite('Dialog', {
 					active: true,
 					containsFocus: true
 				});
-				mockFocusSet.reset();
+				mockFocusSet.resetHistory();
 				h.expect(() => expected(true, true));
 				assert.isFalse(
 					mockFocusSet.called,

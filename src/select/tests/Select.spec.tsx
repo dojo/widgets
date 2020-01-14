@@ -175,15 +175,15 @@ describe('Select', () => {
 
 		triggerRenderResult.properties.onkeydown({ which: Keys.Down, preventDefault: stub() });
 		assert.isTrue(toggleOpenStub.calledOnce);
-		toggleOpenStub.reset();
+		toggleOpenStub.resetHistory();
 
 		triggerRenderResult.properties.onkeydown({ which: Keys.Space, preventDefault: stub() });
 		assert.isTrue(toggleOpenStub.calledOnce);
-		toggleOpenStub.reset();
+		toggleOpenStub.resetHistory();
 
 		triggerRenderResult.properties.onkeydown({ which: Keys.Enter, preventDefault: stub() });
 		assert.isTrue(toggleOpenStub.calledOnce);
-		toggleOpenStub.reset();
+		toggleOpenStub.resetHistory();
 
 		triggerRenderResult.properties.onkeydown({ which: Keys.Left });
 		triggerRenderResult.properties.onkeydown({ which: Keys.Right });
