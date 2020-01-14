@@ -12,7 +12,7 @@ interface FormProperties {
 	/** The initial form value */
 	initialValue?: FormValue;
 	/** Callback for when the form is submitted with valid values */
-	onSubmit(values: FormValue): void;
+	onSubmit?(values: FormValue): void;
 	/** Callback called when a form value changes */
 	onValue?(values: FormValue): void;
 }
@@ -51,10 +51,14 @@ export default factory(function Form({
 	return (
 		<form
 			classes={themedCss.root}
-			onsubmit={(event) => {
-				event.preventDefault();
-				form.submit((value) => onSubmit(value));
-			}}
+			onsubmit={
+				onSubmit
+					? (event) => {
+							event.preventDefault();
+							form.submit((value) => onSubmit(value));
+					  }
+					: undefined
+			}
 		>
 			{renderer(form)}
 		</form>
