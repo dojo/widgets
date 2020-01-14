@@ -70,6 +70,7 @@ import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
 import BasicPassword from './widgets/password-input/Basic';
+import NoRules from './widgets/password-input/NoRules';
 import BasicTriggerPopup from './widgets/trigger-popup/Basic';
 import MenuTriggerPopup from './widgets/trigger-popup/MenuPopup';
 import SetWidth from './widgets/trigger-popup/SetWidth';
@@ -602,7 +603,14 @@ export const config = {
 					filename: 'Basic',
 					module: BasicPassword
 				}
-			}
+			},
+			examples: [
+				{
+					title: 'No Rules',
+					filename: 'NoRules',
+					module: NoRules
+				}
+			]
 		},
 		'trigger-popup': {
 			overview: {

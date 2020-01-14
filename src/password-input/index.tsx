@@ -6,11 +6,19 @@ import ConstrainedInput, { ConstrainedInputProperties } from '../constrained-inp
 import theme from '../middleware/theme';
 import * as css from '../theme/default/password-input.m.css';
 import * as textInputCss from '../theme/default/text-input.m.css';
+import TextInput from '../text-input';
+import { ValidationRules } from '../middleware/validation';
 
-export interface PasswordInputProperties extends Exclude<ConstrainedInputProperties, 'type'> {}
+export type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
+
+export interface PasswordInputProperties
+	extends Omit<ConstrainedInputProperties, 'type' | 'rules'> {
+	rules?: ValidationRules;
+}
 
 export interface PasswordInputState {
 	showPassword: boolean;
+	valid: { valid?: boolean; message?: string } | undefined;
 }
 
 const factory = create({
@@ -35,8 +43,25 @@ export const PasswordInput = factory(function PasswordInput({
 		</Button>
 	);
 
-	return (
+	const handleValidation = (valid?: boolean, message?: string) => {
+		icache.set('valid', { valid, message });
+		props.onValidate && props.onValidate(valid);
+	};
+
+	return props.rules ? (
 		<ConstrainedInput
+			{...props}
+			rules={props.rules}
+			key="root"
+			type={showPassword ? 'text' : 'password'}
+			theme={theme.compose(
+				textInputCss,
+				css
+			)}
+			trailing={() => trailing}
+		/>
+	) : (
+		<TextInput
 			{...props}
 			key="root"
 			type={showPassword ? 'text' : 'password'}
@@ -45,6 +70,8 @@ export const PasswordInput = factory(function PasswordInput({
 				css
 			)}
 			trailing={() => trailing}
+			onValidate={handleValidation}
+			valid={icache.get('valid')}
 		/>
 	);
 });
