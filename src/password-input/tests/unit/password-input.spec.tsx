@@ -75,7 +75,6 @@ describe('PasswordInput', () => {
 			() => (
 				<Button
 					onClick={() => {}}
-					type="button"
 					classes={{ '@dojo/widgets/button': { root: [css.togglePasswordButton] } }}
 				>
 					<Icon type="eyeIcon" />
@@ -101,7 +100,6 @@ describe('PasswordInput', () => {
 			() => (
 				<Button
 					onClick={() => {}}
-					type="button"
 					classes={{ '@dojo/widgets/button': { root: [css.togglePasswordButton] } }}
 				>
 					<Icon type="eyeSlashIcon" />
