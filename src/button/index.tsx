@@ -57,7 +57,7 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 			widgetId,
 			name,
 			pressed,
-			type,
+			type = 'button',
 			value,
 			onOut,
 			onOver,
