@@ -21,6 +21,7 @@ import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
+import * as loginForm from './login-form.m.css';
 import * as menu from './menu.m.css';
 import * as menuItem from './menu-item.m.css';
 import * as nativeSelect from './native-select.m.css';
@@ -69,6 +70,7 @@ export default {
 	'@dojo/widgets/icon': icon,
 	'@dojo/widgets/label': label,
 	'@dojo/widgets/listbox': listbox,
+	'@dojo/widgets/login-form': loginForm,
 	'@dojo/widgets/menu': menu,
 	'@dojo/widgets/menu-item': menuItem,
 	'@dojo/widgets/native-select': nativeSelect,

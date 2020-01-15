@@ -1,0 +1,23 @@
+.root {
+	padding: 10px;
+}
+
+.field {
+	margin-bottom: 10px;
+}
+
+.forgotPassword {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.forgotPasswordLink {
+	cursor: pointer;
+	color: lightblue;
+}
+
+.buttonHolder {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}

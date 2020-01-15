@@ -1,0 +1,23 @@
+.root {
+	padding: var(--spacing-large);
+}
+
+.field {
+	margin-bottom: var(--spacing-large);
+}
+
+.forgotPassword {
+	margin-top: var(--spacing-large);
+	text-align: center;
+}
+
+.forgotPasswordLink {
+	cursor: pointer;
+	color: var(--color-highlight);
+}
+
+.buttonHolder {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
