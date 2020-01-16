@@ -40,6 +40,15 @@ import UnderlayDialog from './widgets/dialog/UnderlayDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
 import BasicForm from './widgets/form/Basic';
+import ValidationForm from './widgets/form/Validation';
+import InitialValueForm from './widgets/form/InitialValueForm';
+import FillingForm from './widgets/form/FillingForm';
+import RequiredFieldsForm from './widgets/form/RequiredFieldsForm';
+import DisabledFieldsForm from './widgets/form/DisabledFieldsForm';
+import DisabledForm from './widgets/form/DisabledForm';
+import ResettingForm from './widgets/form/ResettingForm';
+import SubmitForm from './widgets/form/SubmitForm';
+import KitchenSinkForm from './widgets/form/KitchenSinkForm';
 import BasicGrid from './widgets/grid/Basic';
 import ColumnResize from './widgets/grid/ColumnResize';
 import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
@@ -424,6 +433,53 @@ export const config = {
 			}
 		},
 		form: {
+			examples: [
+				{
+					title: 'Basic form with validation',
+					module: ValidationForm,
+					filename: 'Validation'
+				},
+				{
+					title: 'Basic form with an initial value',
+					module: InitialValueForm,
+					filename: 'InitialValueForm'
+				},
+				{
+					title: 'Basic form with fill button',
+					module: FillingForm,
+					filename: 'FillingForm'
+				},
+				{
+					title: 'Basic form with required fields',
+					module: RequiredFieldsForm,
+					filename: 'RequiredFieldsForm'
+				},
+				{
+					title: 'Basic form with disabled fields',
+					module: DisabledFieldsForm,
+					filename: 'DisabledFieldsForm'
+				},
+				{
+					title: 'Basic form with whole form disabling',
+					module: DisabledForm,
+					filename: 'DisabledForm'
+				},
+				{
+					title: 'Basic form with reset button',
+					module: ResettingForm,
+					filename: 'ResettingForm'
+				},
+				{
+					title: 'Basic form with onSubmit',
+					module: SubmitForm,
+					filename: 'SubmitForm'
+				},
+				{
+					title: 'Form with all available options',
+					module: KitchenSinkForm,
+					filename: 'KitchenSinkForm'
+				}
+			],
 			filename: 'index',
 			overview: {
 				example: {

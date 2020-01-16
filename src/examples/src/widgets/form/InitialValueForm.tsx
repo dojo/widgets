@@ -23,7 +23,13 @@ const App = factory(function({ middleware: { icache } }) {
 
 	return (
 		<virtual>
-			<Form onValue={(values) => icache.set('basic', { ...icache.get('basic'), ...values })}>
+			<Form
+				initialValue={{
+					firstName: 'Billy',
+					lastName: 'Bob'
+				}}
+				onValue={(values) => icache.set('basic', { ...icache.get('basic'), ...values })}
+			>
 				{({ field }: FormMiddleware<Fields>) => {
 					const firstName = field('firstName');
 					const middleName = field('middleName');
