@@ -80,6 +80,8 @@ import ItemRenderer from './widgets/menu/ItemRenderer';
 import LargeOptionSet from './widgets/menu/LargeOptionSet';
 import ListBox from './widgets/menu/ListBox';
 import BasicLoginForm from './widgets/login-form/Basic';
+import ForgotPasswordLoginForm from './widgets/login-form/ForgotPassword';
+import InitialValueLoginForm from './widgets/login-form/InitialValue';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
@@ -652,7 +654,22 @@ export const config = {
 					filename: 'Basic',
 					module: BasicLoginForm
 				}
-			}
+			},
+			examples: [
+				{
+					description:
+						'In this example, a forgot your password link and callack are added',
+					filename: 'ForgotPassword',
+					module: ForgotPasswordLoginForm,
+					title: 'Forgot password link'
+				},
+				{
+					description: 'In this example, an initial value property is passed to the form',
+					filename: 'InitialValue',
+					module: InitialValueLoginForm,
+					title: 'Initial value login form'
+				}
+			]
 		},
 		menu: {
 			examples: [

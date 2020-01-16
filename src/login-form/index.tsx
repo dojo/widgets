@@ -6,8 +6,7 @@ import TextInput from '../text-input';
 import PasswordInput from '../password-input';
 import Form from '../form';
 import * as css from '../theme/default/login-form.m.css';
-import { RenderResult } from '@dojo/framework/core/interfaces';
-import bundle from './loginForm.nls';
+import bundle from './nls';
 
 export interface LoginFormFields {
 	username: string;
@@ -19,8 +18,6 @@ export interface LoginFormProperties extends ThemeProperties {
 	onSubmit(values: LoginFormFields): void;
 	/* When specified, will render a forgotten password link which calls this callback function */
 	onForgotPassword?(): void;
-	/* When specified, will be used to generate the forgotten password link */
-	forgotPasswordRenderer?(): RenderResult;
 	/* The initial value of the login form */
 	initialValue?: Partial<LoginFormFields>;
 }
@@ -29,33 +26,13 @@ const factory = create({ theme, i18n }).properties<LoginFormProperties>();
 
 const LoginForm = factory(function LoginForm({ properties, middleware: { theme, i18n } }) {
 	const classes = theme.classes(css);
-	const { onForgotPassword, forgotPasswordRenderer, onSubmit, initialValue } = properties();
+	const { onForgotPassword, onSubmit, initialValue } = properties();
 
 	const { messages } = i18n.localize(bundle);
-	const showForgotPassword = onForgotPassword || forgotPasswordRenderer;
-
-	function renderForgotPassword() {
-		if (forgotPasswordRenderer) {
-			return forgotPasswordRenderer();
-		} else if (onForgotPassword) {
-			return (
-				<a
-					classes={classes.forgotPasswordLink}
-					onclick={(e) => {
-						e.stopPropagation();
-						e.preventDefault();
-						onForgotPassword();
-					}}
-				>
-					{messages.forgot}
-				</a>
-			);
-		}
-	}
 
 	return (
 		<div classes={classes.root}>
-			<Form onSubmit={onSubmit} initialValue={initialValue}>
+			<Form key="form" onSubmit={onSubmit} initialValue={initialValue}>
 				{({ field, valid }) => {
 					const username = field('username', true);
 					const password = field('password', true);
@@ -85,13 +62,25 @@ const LoginForm = factory(function LoginForm({ properties, middleware: { theme, 
 									onValidate={password.valid}
 								/>
 							</div>
-							<div classes={classes.buttonHolder}>
+							<div key="buttonHolder" classes={classes.buttonHolder}>
 								<Button key="loginButton" type="submit" disabled={!valid()}>
 									{messages.login}
 								</Button>
 							</div>
-							{showForgotPassword && (
-								<div classes={classes.forgotPassword}>{renderForgotPassword()}</div>
+							{onForgotPassword && (
+								<div classes={classes.forgotPassword}>
+									<a
+										key="forgotPasswordLink"
+										classes={classes.forgotPasswordLink}
+										onclick={(e) => {
+											e.stopPropagation();
+											e.preventDefault();
+											onForgotPassword();
+										}}
+									>
+										{messages.forgot}
+									</a>
+								</div>
 							)}
 						</virtual>
 					);

@@ -1,21 +1,26 @@
+/* The root class of the login form */
 .root {
 	padding: 10px;
 }
 
+/* Wrapping class around each field */
 .field {
 	margin-bottom: 10px;
 }
 
+/* Wrapping class around the forgot password link */
 .forgotPassword {
 	margin-top: 10px;
 	text-align: center;
 }
 
+/* Class applied to the forgot password link */
 .forgotPasswordLink {
 	cursor: pointer;
 	color: lightblue;
 }
 
+/* Wrapping class around the login button */
 .buttonHolder {
 	display: flex;
 	flex-direction: row;

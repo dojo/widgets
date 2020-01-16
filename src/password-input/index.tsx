@@ -34,7 +34,6 @@ export const PasswordInput = factory(function PasswordInput({
 
 	const trailing = (
 		<Button
-			type="button"
 			onClick={() => {
 				icache.set('showPassword', !showPassword);
 			}}
