@@ -6,7 +6,9 @@ import * as css from '../theme/default/context-menu.m.css';
 import ContextPopup from '../context-popup';
 
 export interface ContextMenuProperties {
+	/* Menu options for the context menu. Uses the same API as the menu widget */
 	options: MenuOption[];
+	/* A callback that will be called with the value of whatever item is selected */
 	onSelect(value: string): void;
 }
 
