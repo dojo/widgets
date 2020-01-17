@@ -1,21 +1,38 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
-import { RenderResult } from '@dojo/framework/core/interfaces';
+import { RenderResult, VNodeProperties } from '@dojo/framework/core/interfaces';
 
 import createFormMiddleware, { FormMiddleware, FormValue } from './middleware';
 import * as css from '../theme/default/form.m.css';
 
 const form = createFormMiddleware();
 
-interface FormProperties {
+type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
+
+interface BaseFormProperties {
 	/** The initial form value */
 	initialValue?: FormValue;
-	/** Callback for when the form is submitted with valid values */
-	onSubmit?(values: FormValue): void;
 	/** Callback called when a form value changes */
 	onValue?(values: FormValue): void;
+
+	onSubmit?: never;
+	action?: never;
 }
+
+interface SubmitFormProperties extends Omit<BaseFormProperties, 'onSubmit'> {
+	/** Callback for when the form is submitted with valid values */
+	onSubmit(values: FormValue): void;
+}
+
+interface ActionFormProperties extends Omit<BaseFormProperties, 'action'> {
+	/** Action url for the form on submit */
+	action: string;
+	/** method of submit, defaults to `post` */
+	method?: 'post' | 'get';
+}
+
+export type FormProperties = BaseFormProperties | SubmitFormProperties | ActionFormProperties;
 
 function valueEqual(a: FormValue, b: FormValue = {}) {
 	return (
@@ -28,6 +45,14 @@ export type FormChildRenderer<S extends FormValue = any> = (
 	properties: FormMiddleware<S>
 ) => RenderResult;
 
+function isSubmitForm(properties: FormProperties): properties is SubmitFormProperties {
+	return (properties as SubmitFormProperties).onSubmit !== undefined;
+}
+
+function isActionForm(properties: FormProperties): properties is ActionFormProperties {
+	return (properties as ActionFormProperties).action !== undefined;
+}
+
 const factory = create({ form, theme, icache })
 	.properties<FormProperties>()
 	.children<FormChildRenderer>();
@@ -38,7 +63,31 @@ export default factory(function Form({
 	middleware: { form, theme, icache }
 }) {
 	const themedCss = theme.classes(css);
-	const { initialValue, onSubmit, onValue } = properties();
+	const props = properties();
+
+	let formProps: Partial<VNodeProperties> = {
+		classes: themedCss.root
+	};
+
+	const { initialValue, onValue } = props;
+
+	if (isSubmitForm(props)) {
+		formProps = {
+			...formProps,
+			onsubmit: (event) => {
+				event.preventDefault();
+				form.submit((value) => props.onSubmit(value));
+			}
+		};
+	} else if (isActionForm(props)) {
+		const { action, method = 'post' } = props;
+		formProps = {
+			...formProps,
+			action,
+			method
+		};
+	}
+
 	const [renderer] = children();
 
 	onValue && form.onValue(onValue);
@@ -48,19 +97,5 @@ export default factory(function Form({
 		form.value(initialValue);
 	}
 
-	return (
-		<form
-			classes={themedCss.root}
-			onsubmit={
-				onSubmit
-					? (event) => {
-							event.preventDefault();
-							form.submit((value) => onSubmit(value));
-					  }
-					: undefined
-			}
-		>
-			{renderer(form)}
-		</form>
-	);
+	return <form {...formProps}>{renderer(form)}</form>;
 });

@@ -33,6 +33,7 @@ export interface Field<S, K extends keyof S> {
 	valid(valid?: boolean, message?: string): Validity;
 	required(required?: boolean): boolean;
 	disabled(required?: boolean): boolean;
+	name: string;
 }
 
 function compareValidity(a: Validity, b: Validity) {
@@ -131,6 +132,7 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 					});
 				}
 				return {
+					name,
 					value: (newValue?: any): any => {
 						const values = icache.getOrSet('values', {}) as S;
 						if (newValue !== undefined && values[name] !== newValue) {
