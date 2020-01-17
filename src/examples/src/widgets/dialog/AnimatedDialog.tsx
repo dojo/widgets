@@ -2,19 +2,32 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Dialog from '@dojo/widgets/dialog';
 import Button from '@dojo/widgets/button';
 import icache from '@dojo/framework/core/middleware/icache';
+import theme from '@dojo/widgets/middleware/theme';
+import * as css from './styles/AnimatedDialog.m.css';
 
-const factory = create({ icache });
+const factory = create({ icache, theme });
 
-export default factory(function ModalDialog({ middleware: { icache } }) {
+export default factory(function AnimatedDialog({ middleware: { icache, theme } }) {
 	const isOpen = icache.getOrSet<boolean>('isOpen', false);
+	const { enter, exit } = theme.classes(css);
+
 	return (
 		<div>
 			<Button onClick={() => icache.set('isOpen', !isOpen)}>
 				{`${isOpen ? 'Close' : 'Open'} Dialog`}
 			</Button>
-			<Dialog open={isOpen} modal={true} onRequestClose={() => icache.set('isOpen', false)}>
+			<Dialog
+				open={isOpen}
+				onRequestClose={() => icache.set('isOpen', false)}
+				classes={{
+					'@dojo/widgets/dialog': {
+						enter: [enter],
+						exit: [exit]
+					}
+				}}
+			>
 				{{
-					title: () => 'Modal Dialog',
+					title: () => 'Basic Dialog',
 					content: () => (
 						<virtual>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id

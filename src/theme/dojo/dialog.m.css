@@ -66,3 +66,11 @@
 .closeIcon {
 	font-size: var(--font-size-title);
 }
+
+.actions {
+	border-top: 1px solid var(--color-border);
+	padding: calc(2 * var(--grid-base));
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}

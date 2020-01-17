@@ -12,13 +12,17 @@ export default factory(function Basic({ middleware: { icache } }) {
 			<Button onClick={() => icache.set('isOpen', !isOpen)}>
 				{`${isOpen ? 'Close' : 'Open'} Dialog`}
 			</Button>
-			<Dialog
-				open={isOpen}
-				title="Basic Dialog"
-				onRequestClose={() => icache.set('isOpen', false)}
-			>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum.
-				Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia felis tempor in.
+			<Dialog open={isOpen} onRequestClose={() => icache.set('isOpen', false)}>
+				{{
+					title: () => 'Basic Dialog',
+					content: () => (
+						<virtual>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
+							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed
+							lacinia felis tempor in.
+						</virtual>
+					)
+				}}
 			</Dialog>
 		</div>
 	);

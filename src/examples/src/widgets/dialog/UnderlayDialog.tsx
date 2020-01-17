@@ -14,12 +14,19 @@ export default factory(function UnderlayDialog({ middleware: { icache } }) {
 			</Button>
 			<Dialog
 				open={isOpen}
-				title="Underlay Dialog"
 				underlay={true}
 				onRequestClose={() => icache.set('isOpen', false)}
 			>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum.
-				Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia felis tempor in.
+				{{
+					title: () => 'Underlay Dialog',
+					content: () => (
+						<virtual>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
+							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed
+							lacinia felis tempor in.
+						</virtual>
+					)
+				}}
 			</Dialog>
 		</div>
 	);
