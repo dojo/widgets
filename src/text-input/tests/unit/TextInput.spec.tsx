@@ -7,8 +7,8 @@ import { tsx } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
 import validity from '@dojo/framework/core/middleware/validity';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import createFocusMock from './focus';
-import createValidityMock from './validity';
+import createFocusMock from '@dojo/framework/testing/mocks/middleware/focus';
+import createValidityMock from '@dojo/framework/testing/mocks/middleware/validity';
 
 import Label from '../../../label/index';
 import TextInput from '../../index';
@@ -371,7 +371,7 @@ registerSuite('TextInput', {
 			const focusMock = createFocusMock();
 			const validityMock = createValidityMock();
 
-			focusMock('isFocused', true);
+			focusMock('input', true);
 			validityMock('input', { valid: undefined, message: '' });
 
 			const h = harness(() => <TextInput />, {
