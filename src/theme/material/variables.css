@@ -1,4 +1,9 @@
 :root {
+	/* Spacing */
+	--grid-base: 8px;
+	--spacing-regular: var(--grid-base);
+
+	/* Color */
 	--mdc-theme-primary: rgb(0, 142, 231); /* The theme primary color */
 	--mdc-theme-secondary: rgb(169, 49, 182); /* The theme secondary color */
 	--mdc-theme-background: #fff; /* The theme background color */
@@ -6,6 +11,10 @@
 	--mdc-theme-on-primary: #fff; /* Text color on top of a primary background */
 	--mdc-theme-on-secondary: #fff; /* Text color on top of a secondary background */
 	--mdc-theme-on-surface: #000; /* Text color on top of a surface background */
+	--mdc-theme-grey-background: rgba(97, 97, 97, 0.9); /* The theme grey background color */
+
+	/* Border */
+	--border-radius: 6px;
 
 	--zindex-dialog: 400;
 }

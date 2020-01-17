@@ -1,2 +1,38 @@
+@import './variables.css';
+
+:root {
+	--mdc-tooltip-font-size: 0.975rem;
+}
+
 .root {
+	font-family: Roboto, sans-serif;
+}
+
+.content {
+	background-color: var(--mdc-theme-grey-background);
+	border-radius: var(--border-radius);
+	color: var(--mdc-theme-surface);
+	padding: calc(var(--spacing-regular) * 0.5) var(--spacing-regular);
+	font-size: 0.875rem;
+	line-height: calc(var(--mdc-tooltip-font-size) * 1.6);
+}
+
+.bottom .content {
+	margin: var(--spacing-regular) 0 0;
+	transform: translate(-50%, calc(100% + var(--grid-base)));
+}
+
+.top .content {
+	margin: 0 0 var(--spacing-regular);
+	transform: translate(-50%, calc(-100% - var(--grid-base)));
+}
+
+.left .content {
+	margin: 0 var(--spacing-regular) 0 0;
+	transform: translate(calc(-100% - var(--grid-base)), -50%);
+}
+
+.right .content {
+	margin: 0 0 0 var(--spacing-regular);
+	transform: translate(calc(100% + var(--grid-base)), -50%);
 }
