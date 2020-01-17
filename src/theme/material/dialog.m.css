@@ -2,11 +2,11 @@
 
 /* The root class for the Dialog */
 .root {
-	composes: mdc-dialog from '@material/dialog/dist/mdc.dialog.css';
 }
 
 /* Added to `.root` for an open dialog */
 .open {
+	composes: mdc-dialog from '@material/dialog/dist/mdc.dialog.css';
 	composes: mdc-dialog--open from '@material/dialog/dist/mdc.dialog.css';
 }
 
