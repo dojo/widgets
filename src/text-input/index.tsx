@@ -1,14 +1,13 @@
-import { create, tsx, diffProperty, invalidator } from '@dojo/framework/core/vdom';
-import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
-import validity from '@dojo/framework/core/middleware/validity';
+import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import icache from '@dojo/framework/core/middleware/icache';
+import theme from '@dojo/framework/core/middleware/theme';
+import validity from '@dojo/framework/core/middleware/validity';
 import { uuid } from '@dojo/framework/core/util';
+import { create, diffProperty, invalidator, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { DNode } from '@dojo/framework/core/interfaces';
-import Label from '../label/index';
 import HelperText from '../helper-text/index';
+import Label from '../label/index';
 import * as css from '../theme/default/text-input.m.css';
 
 export type TextInputType =
@@ -21,9 +20,7 @@ export type TextInputType =
 	| 'url'
 	| 'date';
 
-export interface BaseInputProperties<T extends { value: any } = { value: string }>
-	extends ThemeProperties,
-		FocusProperties {
+export interface BaseInputProperties<T extends { value: any } = { value: string }> {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Should the field autocomplete */
@@ -131,7 +128,7 @@ export const TextInput = factory(function TextInput({
 	);
 
 	const themeCss = theme.classes(css);
-	const _uuid = icache.getOrSet('uuid', uuid());
+	const _uuid = icache.getOrSet('uuid', () => uuid());
 	const dirty = icache.getOrSet('dirty', false);
 
 	const {
@@ -174,7 +171,7 @@ export const TextInput = factory(function TextInput({
 	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;
 
 	function _callOnValidate(valid: boolean | undefined, message: string) {
-		let previousValid: typeof validValue | undefined = validValue;
+		let { valid: previousValid } = properties();
 		let previousMessage: string | undefined;
 
 		if (typeof previousValid === 'object') {
