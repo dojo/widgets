@@ -5,7 +5,7 @@ import {
 	WidgetMetaConstructor,
 	MiddlewareResultFactory
 } from '@dojo/framework/core/interfaces';
-import { CustomComparator, harness, HarnessAPI } from '@dojo/framework/testing/harness';
+import { CustomComparator, harness } from '@dojo/framework/testing/harness';
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 
