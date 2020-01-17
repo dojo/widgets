@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Toolbar from '@dojo/widgets/toolbar';
-import Button from '@dojo/widgets/button';
+import RaisedButton from '@dojo/widgets/raised-button';
 
 const factory = create({ icache });
 
@@ -9,27 +9,27 @@ export default factory(function Collapsed({ middleware: { icache } }) {
 	return (
 		<div>
 			<Toolbar heading="Heading" collapseWidth={10000}>
-				<Button
+				<RaisedButton
 					onClick={() => {
 						icache.set('value', 'Clicked Option A');
 					}}
 				>
 					Option A{' '}
-				</Button>
-				<Button
+				</RaisedButton>
+				<RaisedButton
 					onClick={() => {
 						icache.set('value', 'Clicked Option B');
 					}}
 				>
 					Option B
-				</Button>
-				<Button
+				</RaisedButton>
+				<RaisedButton
 					onClick={() => {
 						icache.set('value', 'Clicked Option C');
 					}}
 				>
 					Option C
-				</Button>
+				</RaisedButton>
 			</Toolbar>
 			<div>{icache.get('value')}</div>
 		</div>
