@@ -1,10 +1,7 @@
 .root {
 	composes: mdc-text-field-helper-line from '@material/textfield/dist/mdc.textfield.css';
 	color: var(--medium-emphasis-dark);
-<<<<<<< HEAD
-=======
 	position: absolute;
->>>>>>> add helper-text material theme
 	max-width: 100%;
 }
 
