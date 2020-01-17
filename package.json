@@ -46,7 +46,7 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "7.0.0-alpha.6"
+    "@dojo/framework": "7.0.0-alpha.7"
   },
   "devDependencies": {
     "@dojo/cli": "7.0.0-alpha.1",

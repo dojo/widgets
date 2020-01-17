@@ -111,70 +111,75 @@ export const Dialog = factory(function Dialog({
 	};
 
 	return (
-		open && (
-			<body>
-				<div key="dialog" classes={[themeCss.root, open ? themeCss.open : null]}>
-					<GlobalEvent key="global" document={{ keyup }} />
-					<div
-						classes={[underlay ? themeCss.underlayVisible : null, fixedCss.underlay]}
-						enterAnimation={themeCss.underlayEnter}
-						exitAnimation={themeCss.underlayExit}
-						key="underlay"
-						onclick={(event) => {
-							const { role } = properties();
-							const modal =
-								role === 'alertdialog' ||
-								(properties() as DialogPropertiesDialogRole).modal;
+		<body>
+			<div key="dialog" classes={[themeCss.root, open ? themeCss.open : null]}>
+				{open && (
+					<virtual>
+						<GlobalEvent key="global" document={{ keyup }} />
+						<div
+							classes={[
+								underlay ? themeCss.underlayVisible : null,
+								fixedCss.underlay
+							]}
+							enterAnimation={themeCss.underlayEnter}
+							exitAnimation={themeCss.underlayExit}
+							key="underlay"
+							onclick={(event) => {
+								const { role } = properties();
+								const modal =
+									role === 'alertdialog' ||
+									(properties() as DialogPropertiesDialogRole).modal;
 
-							console.log('click!');
+								console.log('click!');
 
-							event.stopPropagation();
-							!modal && close();
-						}}
-					/>
-					<div
-						aria-labelledby={titleId}
-						aria-modal={modal ? 'true' : 'false'}
-						aria-describedby={role === 'alertdialog' ? contentId : undefined}
-						{...formatAriaProperties(aria)}
-						classes={themeCss.main}
-						enterAnimation={themeCss.enter}
-						exitAnimation={themeCss.exit}
-						key="main"
-						role={role}
-						tabIndex={-1}
-						focus={callFocus}
-					>
-						<div classes={themeCss.title} key="title" id={titleId}>
-							<div>{renderer.title && renderer.title()}</div>
-							{closeable && (
-								<button
-									classes={themeCss.close}
-									type="button"
-									onclick={(event) => {
-										event.stopPropagation();
-										close();
-									}}
-								>
-									{closeText}
-									<span classes={themeCss.closeIcon}>
-										<Icon type="closeIcon" />
-									</span>
-								</button>
+								event.stopPropagation();
+								!modal && close();
+							}}
+						/>
+						<div
+							aria-labelledby={titleId}
+							aria-modal={modal ? 'true' : 'false'}
+							aria-describedby={role === 'alertdialog' ? contentId : undefined}
+							{...formatAriaProperties(aria)}
+							classes={themeCss.main}
+							enterAnimation={themeCss.enter}
+							exitAnimation={themeCss.exit}
+							key="main"
+							role={role}
+							tabIndex={-1}
+							focus={callFocus}
+						>
+							<div classes={themeCss.title} key="title" id={titleId}>
+								<div>{renderer.title && renderer.title()}</div>
+								{closeable && (
+									<button
+										classes={themeCss.close}
+										type="button"
+										onclick={(event) => {
+											event.stopPropagation();
+											close();
+										}}
+									>
+										{closeText}
+										<span classes={themeCss.closeIcon}>
+											<Icon type="closeIcon" />
+										</span>
+									</button>
+								)}
+							</div>
+							<div classes={themeCss.content} key="content" id={contentId}>
+								{renderer.content && renderer.content()}
+							</div>
+							{renderer.actions && (
+								<div classes={themeCss.actions} key="actions">
+									{renderer.actions()}
+								</div>
 							)}
 						</div>
-						<div classes={themeCss.content} key="content" id={contentId}>
-							{renderer.content && renderer.content()}
-						</div>
-						{renderer.actions && (
-							<div classes={themeCss.actions} key="actions">
-								{renderer.actions()}
-							</div>
-						)}
-					</div>
-				</div>
-			</body>
-		)
+					</virtual>
+				)}
+			</div>
+		</body>
 	);
 });
 
