@@ -1,10 +1,18 @@
 @import './variables.css';
 
 .root {
-	background-color: var(--mdc-theme-primary);
-	color: var(--mdc-theme-on-primary);
+	composes: mdc-top-app-bar from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	height: 64px;
 }
 
 .title {
 	composes: mdc-top-app-bar__title from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+}
+
+.actions {
+	padding-right: 20px;
 }
