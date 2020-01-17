@@ -1,4 +1,5 @@
 export const root: string;
+export const wrapper: string;
 export const input: string;
 export const inputWrapper: string;
 export const focused: string;

@@ -1,5 +1,6 @@
 export const input: string;
 export const root: string;
+export const wrapper: string;
 export const inputWrapper: string;
 export const disabled: string;
 export const focused: string;
@@ -10,5 +11,7 @@ export const leading: string;
 export const trailing: string;
 export const hasLeading: string;
 export const hasTrailing: string;
+export const noLabel: string;
+export const label: string;
 export const helperText: string;
 export const valid: string;

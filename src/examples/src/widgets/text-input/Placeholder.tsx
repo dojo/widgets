@@ -5,13 +5,11 @@ import TextInput from '@dojo/widgets/text-input';
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', 'disabled input text');
+	const value = icache.getOrSet('value', '');
 	return (
 		<TextInput
 			value={value}
-			label="Can't type here"
-			disabled
-			readOnly
+			placeholder="Placeholder text"
 			onValue={(value) => {
 				icache.set('value', value);
 			}}
