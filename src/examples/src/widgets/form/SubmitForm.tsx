@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
+import Button from '@dojo/widgets/button';
 import TextInput from '@dojo/widgets/text-input';
 import Form from '@dojo/widgets/form';
 import { FormMiddleware } from '@dojo/widgets/form/middleware';
@@ -12,9 +13,9 @@ const icache = createICacheMiddleware<{
 const factory = create({ icache });
 
 interface Fields {
-	firstName?: string;
+	firstName: string;
 	middleName?: string;
-	lastName?: string;
+	lastName: string;
 	email?: string;
 }
 
@@ -23,11 +24,11 @@ const App = factory(function({ middleware: { icache } }) {
 
 	return (
 		<virtual>
-			<Form onValue={(values) => icache.set('basic', { ...icache.get('basic'), ...values })}>
-				{({ field }: FormMiddleware<Fields>) => {
-					const firstName = field('firstName');
+			<Form onSubmit={(values) => icache.set('basic', values)}>
+				{({ valid, field }: FormMiddleware<Fields>) => {
+					const firstName = field('firstName', true);
 					const middleName = field('middleName');
-					const lastName = field('lastName');
+					const lastName = field('lastName', true);
 					const email = field('email');
 
 					return (
@@ -35,9 +36,12 @@ const App = factory(function({ middleware: { icache } }) {
 							<TextInput
 								key="firstName"
 								label="First Name"
-								placeholder="Enter first name"
+								placeholder="Enter first name (must be Billy)"
+								required={true}
 								value={firstName.value()}
+								valid={firstName.valid()}
 								onValue={firstName.value}
+								onValidate={firstName.valid}
 							/>
 							<TextInput
 								key="middleName"
@@ -50,8 +54,11 @@ const App = factory(function({ middleware: { icache } }) {
 								key="lastName"
 								label="Last Name"
 								placeholder="Enter a last name"
+								required={true}
 								value={lastName.value()}
+								valid={lastName.valid()}
 								onValue={lastName.value}
+								onValidate={lastName.valid}
 							/>
 							<TextInput
 								key="email"
@@ -61,13 +68,16 @@ const App = factory(function({ middleware: { icache } }) {
 								onValue={email.value}
 								type="email"
 							/>
+							<Button key="submit" type="submit" disabled={!valid()}>
+								Submit
+							</Button>
 						</virtual>
 					);
 				}}
 			</Form>
 			{results && (
-				<div key="onValueResults">
-					<h2>onValue Results</h2>
+				<div key="onSubmitResults">
+					<h2>onSubmit Results</h2>
 					<ul>
 						<li>First Name: {results.firstName}</li>
 						<li>Middle Name: {results.middleName}</li>

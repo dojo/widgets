@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
+import Button from '@dojo/widgets/button';
 import TextInput from '@dojo/widgets/text-input';
 import Form from '@dojo/widgets/form';
 import { FormMiddleware } from '@dojo/widgets/form/middleware';
@@ -24,7 +25,7 @@ const App = factory(function({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Form onValue={(values) => icache.set('basic', { ...icache.get('basic'), ...values })}>
-				{({ field }: FormMiddleware<Fields>) => {
+				{({ field, reset }: FormMiddleware<Fields>) => {
 					const firstName = field('firstName');
 					const middleName = field('middleName');
 					const lastName = field('lastName');
@@ -61,13 +62,16 @@ const App = factory(function({ middleware: { icache } }) {
 								onValue={email.value}
 								type="email"
 							/>
+							<Button key="reset" type="button" onClick={() => reset()}>
+								Reset
+							</Button>
 						</virtual>
 					);
 				}}
 			</Form>
 			{results && (
-				<div key="onValueResults">
-					<h2>onValue Results</h2>
+				<div key="onSubmitResults">
+					<h2>onSubmit Results</h2>
 					<ul>
 						<li>First Name: {results.firstName}</li>
 						<li>Middle Name: {results.middleName}</li>

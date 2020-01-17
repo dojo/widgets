@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
+import Button from '@dojo/widgets/button';
 import TextInput from '@dojo/widgets/text-input';
 import Form from '@dojo/widgets/form';
 import { FormMiddleware } from '@dojo/widgets/form/middleware';
@@ -24,7 +25,7 @@ const App = factory(function({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Form onValue={(values) => icache.set('basic', { ...icache.get('basic'), ...values })}>
-				{({ field }: FormMiddleware<Fields>) => {
+				{({ disabled, field }: FormMiddleware<Fields>) => {
 					const firstName = field('firstName');
 					const middleName = field('middleName');
 					const lastName = field('lastName');
@@ -38,6 +39,7 @@ const App = factory(function({ middleware: { icache } }) {
 								placeholder="Enter first name"
 								value={firstName.value()}
 								onValue={firstName.value}
+								disabled={firstName.disabled()}
 							/>
 							<TextInput
 								key="middleName"
@@ -45,6 +47,7 @@ const App = factory(function({ middleware: { icache } }) {
 								placeholder="Enter a middle name"
 								value={middleName.value()}
 								onValue={middleName.value}
+								disabled={middleName.disabled()}
 							/>
 							<TextInput
 								key="lastName"
@@ -52,6 +55,7 @@ const App = factory(function({ middleware: { icache } }) {
 								placeholder="Enter a last name"
 								value={lastName.value()}
 								onValue={lastName.value}
+								disabled={lastName.disabled()}
 							/>
 							<TextInput
 								key="email"
@@ -60,7 +64,15 @@ const App = factory(function({ middleware: { icache } }) {
 								value={email.value()}
 								onValue={email.value}
 								type="email"
+								disabled={email.disabled()}
 							/>
+							<Button
+								key="disableForm"
+								type="button"
+								onClick={() => disabled(!disabled())}
+							>
+								{`${disabled() ? 'Enable' : 'Disable'} Form`}
+							</Button>
 						</virtual>
 					);
 				}}
