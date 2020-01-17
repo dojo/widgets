@@ -21,41 +21,47 @@ import GlobalEvent from '../../../global-event';
 const harness = createHarness([compareId, compareAriaLabelledBy]);
 
 describe('Dialog', () => {
-	const closedAssertion = assertionTemplate(() => undefined);
+	const closedAssertion = assertionTemplate(() => (
+		<body>
+			<div key="dialog" classes={[themeCss.root, null]} />
+		</body>
+	));
 	const openAssertion = assertionTemplate(() => (
 		<body>
 			<div key="dialog" classes={[themeCss.root, themeCss.open]}>
-				<GlobalEvent key="global" document={{ keyup: () => {} }} />
-				<div
-					classes={[null, fixedCss.underlay]}
-					enterAnimation={themeCss.underlayEnter}
-					exitAnimation={themeCss.underlayExit}
-					key="underlay"
-					onclick={() => {}}
-				/>
-				<div
-					aria-describedby={undefined}
-					aria-labelledby="uuid"
-					aria-modal="false"
-					classes={themeCss.main}
-					enterAnimation={themeCss.enter}
-					exitAnimation={themeCss.exit}
-					focus={false}
-					key="main"
-					role="dialog"
-					tabIndex={-1}
-				>
-					<div classes={themeCss.title} id="uuid" key="title">
-						<div>foo</div>
-						<button classes={themeCss.close} onclick={() => {}} type="button">
-							{'close foo'}
-							<span classes={themeCss.closeIcon}>
-								<Icon type="closeIcon" />
-							</span>
-						</button>
+				<virtual>
+					<GlobalEvent key="global" document={{ keyup: () => {} }} />
+					<div
+						classes={[null, fixedCss.underlay]}
+						enterAnimation={themeCss.underlayEnter}
+						exitAnimation={themeCss.underlayExit}
+						key="underlay"
+						onclick={() => {}}
+					/>
+					<div
+						aria-describedby={undefined}
+						aria-labelledby="uuid"
+						aria-modal="false"
+						classes={themeCss.main}
+						enterAnimation={themeCss.enter}
+						exitAnimation={themeCss.exit}
+						focus={false}
+						key="main"
+						role="dialog"
+						tabIndex={-1}
+					>
+						<div classes={themeCss.title} id="uuid" key="title">
+							<div>foo</div>
+							<button classes={themeCss.close} onclick={() => {}} type="button">
+								{'close foo'}
+								<span classes={themeCss.closeIcon}>
+									<Icon type="closeIcon" />
+								</span>
+							</button>
+						</div>
+						<div classes={themeCss.content} key="content" id="uuid" />
 					</div>
-					<div classes={themeCss.content} key="content" id="uuid" />
-				</div>
+				</virtual>
 			</div>
 		</body>
 	));
