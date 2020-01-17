@@ -503,4 +503,28 @@ describe('Form', () => {
 				.setProperty('@lastName', 'value', 'Bob')
 		);
 	});
+
+	it('sets action and method when passed', () => {
+		const h = harness(() => (
+			<Form action="test-url" method="get">
+				{() => <div />}
+			</Form>
+		));
+		const actionTemplate = assertionTemplate(() => (
+			<form classes={css.root} action="test-url" method="get">
+				<div />
+			</form>
+		));
+		h.expect(actionTemplate);
+	});
+
+	it('defaults method to post when using an action', () => {
+		const h = harness(() => <Form action="test-url">{() => <div />}</Form>);
+		const actionTemplate = assertionTemplate(() => (
+			<form classes={css.root} action="test-url" method="post">
+				<div />
+			</form>
+		));
+		h.expect(actionTemplate);
+	});
 });
