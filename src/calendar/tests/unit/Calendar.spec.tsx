@@ -104,9 +104,11 @@ const expected = function(
 									[
 										weekdayLabel
 											? weekdayLabel
-											: v('abbr', { title: weekday.long, class: css.abbr }, [
-													weekday.short
-											  ])
+											: v(
+													'abbr',
+													{ title: weekday.long, classes: css.abbr },
+													[weekday.short]
+											  )
 									]
 								)
 							)
@@ -262,7 +264,7 @@ const baseTemplate = assertionTemplate(() => {
 										classes: css.weekday
 									},
 									[
-										v('abbr', { title: weekday.long, class: css.abbr }, [
+										v('abbr', { title: weekday.long, classes: css.abbr }, [
 											weekday.short
 										])
 									]
@@ -754,7 +756,7 @@ registerSuite('Custom first day of week', {
 											'abbr',
 											{
 												title: DEFAULT_WEEKDAYS[order].long,
-												class: css.abbr
+												classes: css.abbr
 											},
 											[DEFAULT_WEEKDAYS[order].short]
 										)
