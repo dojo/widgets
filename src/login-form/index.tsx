@@ -4,7 +4,7 @@ import { i18n } from '@dojo/framework/core/middleware/i18n';
 import Button from '../button';
 import TextInput from '../text-input';
 import PasswordInput from '../password-input';
-import Form from '../form';
+import Form, { SubmitFormProperties, ActionFormProperties, FormProperties } from '../form';
 import * as css from '../theme/default/login-form.m.css';
 import bundle from './nls';
 
@@ -13,26 +13,47 @@ export interface LoginFormFields {
 	password: string;
 }
 
-export interface LoginFormProperties extends ThemeProperties {
-	/* onSubmit callback called when the login for is submitted with username / password values */
-	onSubmit(values: LoginFormFields): void;
+interface BaseFormProperties extends ThemeProperties {
 	/* When specified, will render a forgotten password link which calls this callback function */
 	onForgotPassword?(): void;
 	/* The initial value of the login form */
 	initialValue?: Partial<LoginFormFields>;
 }
 
+type SubmitProperties = BaseFormProperties & SubmitFormProperties<LoginFormFields>;
+type ActionProperties = BaseFormProperties & ActionFormProperties;
+
+export type LoginFormProperties = SubmitProperties | ActionProperties;
+
 const factory = create({ theme, i18n }).properties<LoginFormProperties>();
 
 const LoginForm = factory(function LoginForm({ properties, middleware: { theme, i18n } }) {
 	const classes = theme.classes(css);
-	const { onForgotPassword, onSubmit, initialValue } = properties();
 
+	let formProps: FormProperties = {};
+	const props = properties();
+
+	if (props.onSubmit) {
+		const { onSubmit, initialValue } = props;
+		formProps = {
+			onSubmit,
+			initialValue
+		};
+	} else if (props.action) {
+		const { action, initialValue, method } = props;
+		formProps = {
+			action,
+			method,
+			initialValue
+		};
+	}
+
+	const { onForgotPassword } = props;
 	const { messages } = i18n.localize(bundle);
 
 	return (
 		<div classes={classes.root}>
-			<Form key="form" onSubmit={onSubmit} initialValue={initialValue}>
+			<Form key="form" {...formProps}>
 				{({ field, valid }) => {
 					const username = field('username', true);
 					const password = field('password', true);
