@@ -15,6 +15,7 @@
 			"src/chip",
 			"src/combobox",
 			"src/constrained-input",
+			"src/context-menu",
 			"src/context-popup",
 			"src/dialog",
 			"src/email-input",
