@@ -9,10 +9,6 @@
 	min-height: calc(var(--font-size-title) + 2 * var(--grid-base));
 }
 
-.root * {
-	box-sizing: border-box;
-}
-
 .titleButton {
 	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);

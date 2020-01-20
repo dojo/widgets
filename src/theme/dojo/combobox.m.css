@@ -10,18 +10,14 @@
 	width: 100%;
 }
 
-.root * {
-	box-sizing: border-box;
-}
-
-.root input {
+.root .input {
 	min-width: 200px;
 	padding: var(--spacing-regular) calc(var(--spacing-regular) * 6) var(--spacing-regular)
 		var(--spacing-regular);
 	width: 100%;
 }
 
-.clearable input {
+.clearable .input {
 	padding-right: calc(var(--spacing-regular) * 8);
 }
 
@@ -123,16 +119,10 @@
 	border-color: var(--color-highlight);
 }
 
-/* styles for backward compatibility with widgets 2.0.0 */
-.trigger,
-.clear {
-	font-size: 0;
-}
-
-.trigger * {
+.trigger {
 	font-size: var(--font-size-icon);
 }
 
-.clear * {
+.clear {
 	font-size: var(--font-size-base);
 }

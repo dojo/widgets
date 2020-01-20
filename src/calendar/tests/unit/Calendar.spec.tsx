@@ -104,7 +104,11 @@ const expected = function(
 									[
 										weekdayLabel
 											? weekdayLabel
-											: v('abbr', { title: weekday.long }, [weekday.short])
+											: v(
+													'abbr',
+													{ title: weekday.long, classes: css.abbr },
+													[weekday.short]
+											  )
 									]
 								)
 							)
@@ -184,7 +188,11 @@ const expected = function(
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
+							w(Icon, {
+								type: 'leftIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
 						]
 					),
@@ -198,7 +206,11 @@ const expected = function(
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
+							w(Icon, {
+								type: 'rightIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
 						]
 					)
@@ -251,7 +263,11 @@ const baseTemplate = assertionTemplate(() => {
 										role: 'columnheader',
 										classes: css.weekday
 									},
-									[v('abbr', { title: weekday.long }, [weekday.short])]
+									[
+										v('abbr', { title: weekday.long, classes: css.abbr }, [
+											weekday.short
+										])
+									]
 								)
 							)
 						)
@@ -331,7 +347,11 @@ const baseTemplate = assertionTemplate(() => {
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
+							w(Icon, {
+								type: 'leftIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
 						]
 					),
@@ -346,7 +366,11 @@ const baseTemplate = assertionTemplate(() => {
 							onclick: noop
 						},
 						[
-							w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
+							w(Icon, {
+								type: 'rightIcon',
+								theme: undefined,
+								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
+							}),
 							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
 						]
 					)
@@ -728,9 +752,14 @@ registerSuite('Custom first day of week', {
 										classes: css.weekday
 									},
 									[
-										v('abbr', { title: DEFAULT_WEEKDAYS[order].long }, [
-											DEFAULT_WEEKDAYS[order].short
-										])
+										v(
+											'abbr',
+											{
+												title: DEFAULT_WEEKDAYS[order].long,
+												classes: css.abbr
+											},
+											[DEFAULT_WEEKDAYS[order].short]
+										)
 									]
 								)
 							)

@@ -25,6 +25,6 @@
 	margin: 0;
 }
 
-.menuButton i {
+.menuButton .toggleIcon {
 	font-size: var(--font-size-title);
 }

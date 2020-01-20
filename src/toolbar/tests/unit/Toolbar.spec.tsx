@@ -156,7 +156,16 @@ registerSuite('Toolbar', {
 					type: 'button',
 					onclick: noop
 				},
-				['open', w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })]
+				[
+					'open',
+					w(Icon, {
+						type: 'barsIcon',
+						theme: undefined,
+						classes: {
+							'@dojo/widgets/icon': { icon: [css.toggleIcon] }
+						}
+					})
+				]
 			);
 
 			h.expect(() =>
@@ -286,7 +295,16 @@ registerSuite('Toolbar', {
 					type: 'button',
 					onclick: noop
 				},
-				['open', w(Icon, { type: 'barsIcon', theme: undefined, classes: undefined })]
+				[
+					'open',
+					w(Icon, {
+						type: 'barsIcon',
+						theme: undefined,
+						classes: {
+							'@dojo/widgets/icon': { icon: [css.toggleIcon] }
+						}
+					})
+				]
 			);
 
 			h.expect(() =>

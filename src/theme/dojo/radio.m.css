@@ -1,7 +1,6 @@
 @import './variables.css';
 
-.root,
-.root * {
+.root {
 	box-sizing: border-box;
 }
 
@@ -80,11 +79,6 @@
 .readonly .radioOuter {
 	border-color: var(--color-border);
 	background-color: var(--color-background-faded);
-}
-
-/* required style, only applies to inputs with a label */
-.required span::after {
-	content: '*';
 }
 
 /* invalid style */

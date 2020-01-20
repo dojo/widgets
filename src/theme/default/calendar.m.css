@@ -41,6 +41,14 @@
 .dateGrid {
 }
 
+/* Month abbreviation */
+.abbr {
+}
+
+/* Icons */
+.icon {
+}
+
 /* Added the days of the week header (e.g. Sun, Mon, Tue) */
 .weekday {
 	padding: 10px 20px;

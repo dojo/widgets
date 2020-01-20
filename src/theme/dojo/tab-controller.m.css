@@ -11,10 +11,6 @@
 	line-height: var(--line-height-base);
 }
 
-.root * {
-	box-sizing: border-box;
-}
-
 .tabButtons {
 	display: flex;
 }
