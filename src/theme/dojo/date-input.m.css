@@ -6,6 +6,13 @@
 .input {
 }
 
+.toggleCalendarButton {
+	min-width: unset;
+	background: none;
+	border: none;
+	padding: unset;
+}
+
 .popup {
 	display: inline-block;
 	background: var(--color-background);

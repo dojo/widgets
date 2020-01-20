@@ -8,6 +8,7 @@ import { Keys } from '../common/util';
 import theme from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
+import Button from '../button';
 import Icon from '../icon';
 import TriggerPopup from '../trigger-popup';
 import * as css from '../theme/default/date-input.m.css';
@@ -113,9 +114,17 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 									key="input"
 									focus={() => shouldFocus && focusNode === 'input'}
 									trailing={() => (
-										<div key="dateIcon" onclick={openCalendar}>
+										<Button
+											key="dateIcon"
+											onClick={openCalendar}
+											classes={{
+												'@dojo/widgets/button': {
+													root: [classes.toggleCalendarButton]
+												}
+											}}
+										>
 											<Icon type="dateIcon" />
-										</div>
+										</Button>
 									)}
 									type="text"
 									value={icache.get('inputValue')}
