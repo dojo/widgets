@@ -118,6 +118,11 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 								<TextInput
 									key="input"
 									focus={() => shouldFocus && focusNode === 'input'}
+									classes={{
+										'@dojo/widgets/text-input': {
+											trailing: [classes.inputTrailing]
+										}
+									}}
 									trailing={() => (
 										<Button
 											key="dateIcon"

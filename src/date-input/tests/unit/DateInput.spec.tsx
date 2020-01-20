@@ -66,6 +66,11 @@ const buttonTemplate = assertionTemplate(() => {
 			<TextInput
 				key="input"
 				focus={() => false}
+				classes={{
+					'@dojo/widgets/text-input': {
+						trailing: [css.inputTrailing]
+					}
+				}}
 				type="text"
 				onBlur={noop}
 				onValue={noop}
