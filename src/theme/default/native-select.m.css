@@ -1,11 +1,13 @@
 @import './variables.css';
 
+/* Root class of native select */
 .root {
 	font-size: var(--font-size-base);
 	display: flex;
 	flex-direction: column;
 }
 
+/* Class for select element */
 .select {
 	appearance: none;
 	-webkit-appearance: none;
@@ -14,16 +16,19 @@
 	min-width: 100%;
 }
 
+/* Class for disabled select state */
 .disabled {
 	cursor: inherit;
 }
 
+/* Wrapper class for native select and dropdown arrow */
 .inputWrapper {
 	display: inline-block;
 	position: relative;
 	min-width: 100%;
 }
 
+/* Class for dropdown arrow positioning */
 .arrow {
 	bottom: 0;
 	position: absolute;
@@ -33,5 +38,6 @@
 	pointer-events: none;
 }
 
+/* Class for required select state */
 .required {
 }
