@@ -1,18 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
 import TextInput from '@dojo/widgets/text-input';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Basic({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', '');
+export default factory(function Basic() {
 	return (
 		<TextInput
-			value={value}
 			label="Input label"
-			onValue={(value) => {
-				icache.set('value', value);
-			}}
 			leading={() => <span>A</span>}
 			trailing={() => <span>Z</span>}
 		/>

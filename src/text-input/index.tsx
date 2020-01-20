@@ -1,6 +1,6 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import icache from '@dojo/framework/core/middleware/icache';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
 import validity from '@dojo/framework/core/middleware/validity';
 import { create, diffProperty, invalidator, tsx } from '@dojo/framework/core/vdom';
@@ -62,8 +62,10 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	required?: boolean;
 	/** Renderer for trailing icon content */
 	trailing?: () => DNode;
-	/** The current value */
-	value?: T['value'];
+
+	/** The initial value */
+	initialValue?: T['value'];
+
 	/** The id to be applied to the input */
 	widgetId?: string;
 }
@@ -96,9 +98,16 @@ function formatAutocomplete(autocomplete: string | boolean | undefined): string 
 	return autocomplete;
 }
 
+interface TextInputICache {
+	uuid: string;
+	dirty: boolean;
+	value?: string;
+	initialValue?: string;
+}
+
 const factory = create({
 	theme,
-	icache,
+	icache: createICacheMiddleware<TextInputICache>(),
 	validity,
 	focus,
 	diffProperty,
@@ -162,10 +171,21 @@ export const TextInput = factory(function TextInput({
 		theme: themeProp,
 		trailing,
 		type = 'text',
-		value,
+		initialValue,
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = `text-input-${id}`
 	} = properties();
+
+	let value = icache.get('value');
+	const existingInitialValue = icache.get('initialValue');
+
+	if (initialValue !== existingInitialValue) {
+		icache.set('value', initialValue);
+		icache.set('initialValue', initialValue);
+		value = initialValue;
+
+		onValue && onValue(initialValue);
+	}
 
 	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;
 
@@ -275,7 +295,9 @@ export const TextInput = factory(function TextInput({
 						}}
 						oninput={(event: Event) => {
 							event.stopPropagation();
-							onValue && onValue((event.target as HTMLInputElement).value);
+							const value = (event.target as HTMLInputElement).value;
+							icache.set('value', value);
+							onValue && onValue(value);
 						}}
 						onkeydown={(event: KeyboardEvent) => {
 							event.stopPropagation();

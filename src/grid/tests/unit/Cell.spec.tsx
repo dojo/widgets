@@ -48,7 +48,7 @@ const expectedEditing = function() {
 				labelHidden: true,
 				classes: { '@dojo/widgets/text-input': { input: [css.input] } },
 				focus: noop,
-				value: 'id',
+				initialValue: 'id',
 				onValue: noop,
 				onBlur: noop,
 				onKeyDown: noop,

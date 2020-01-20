@@ -81,6 +81,7 @@ import ItemRenderer from './widgets/menu/ItemRenderer';
 import LargeOptionSet from './widgets/menu/LargeOptionSet';
 import ListBox from './widgets/menu/ListBox';
 import BasicNumberInput from './widgets/number-input/Basic';
+import ValidatedNumberInput from './widgets/number-input/Validation';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
@@ -738,7 +739,10 @@ export const config = {
 					filename: 'Basic',
 					module: BasicNumberInput
 				}
-			}
+			},
+			examples: [
+				{ title: 'Validation', filename: 'Validation', module: ValidatedNumberInput }
+			]
 		},
 		'outlined-button': {
 			examples: [

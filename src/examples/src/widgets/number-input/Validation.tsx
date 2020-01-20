@@ -5,16 +5,19 @@ import icache from '@dojo/framework/core/middleware/icache';
 const factory = create({ icache });
 
 const Example = factory(function Example({ middleware: { icache } }) {
+	const valid = icache.get<{ valid?: boolean; message?: string }>('valid');
+
 	return (
-		<virtual>
-			<NumberInput
-				initialValue={42}
-				onValue={(value) => {
-					icache.set('value', value);
-				}}
-			/>
-			<div>The number input value is: {`${icache.get('value')}`}</div>
-		</virtual>
+		<NumberInput
+			label="Value between 40 and 50"
+			initialValue={42}
+			min={40}
+			max={50}
+			valid={valid}
+			onValidate={(valid, message) => {
+				icache.set('valid', { valid, message });
+			}}
+		/>
 	);
 });
 

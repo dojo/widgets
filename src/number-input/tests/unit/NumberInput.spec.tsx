@@ -19,7 +19,7 @@ const baseTemplate = assertionTemplate(() => (
 		type="number"
 		theme={{ '@dojo/widgets/text-input': textInputCss }}
 		onValue={noop}
-		value={undefined}
+		initialValue={undefined}
 	/>
 ));
 
@@ -50,7 +50,7 @@ registerSuite('NumberInput', {
 				onValue: noop,
 				readOnly: true,
 				trailing: () => <div />,
-				value: 42,
+				initialValue: 42,
 				widgetId: 'widgetId'
 			};
 
@@ -58,7 +58,7 @@ registerSuite('NumberInput', {
 			h.expect(
 				baseTemplate.setProperties(':root', {
 					...baseProperties,
-					value: baseProperties.value!.toString(),
+					initialValue: baseProperties.initialValue!.toString(),
 					type: 'number',
 					theme: { '@dojo/widgets/text-input': textInputCss }
 				})
@@ -66,8 +66,8 @@ registerSuite('NumberInput', {
 		},
 		'passes correct value to underlying TextInput'() {
 			const value = 42;
-			const h = harness(() => <NumberInput value={value} />, [compareTheme]);
-			h.expect(baseTemplate.setProperty(':root', 'value', value.toString()));
+			const h = harness(() => <NumberInput initialValue={value} />, [compareTheme]);
+			h.expect(baseTemplate.setProperty(':root', 'initialValue', value.toString()));
 		},
 		'calls onValue with correct value'() {
 			const value = 42;

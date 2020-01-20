@@ -1,12 +1,9 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import ConstrainedInput from '@dojo/widgets/constrained-input';
-import icache from '@dojo/framework/core/middleware/icache';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Basic({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', '');
-
+export default factory(function Basic() {
 	return (
 		<ConstrainedInput
 			rules={{
@@ -20,8 +17,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 					specialCharacters: 1
 				}
 			}}
-			value={value}
-			onValue={(value) => icache.set('value', value)}
 			label="Enter Username"
 		/>
 	);

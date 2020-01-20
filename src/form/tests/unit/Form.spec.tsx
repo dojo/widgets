@@ -32,7 +32,7 @@ describe('Form', () => {
 				placeholder="Enter first name (must be Billy)"
 				pattern="Billy"
 				required={true}
-				value="Billy"
+				initialValue="Billy"
 				valid={{
 					valid: undefined,
 					message: ''
@@ -46,7 +46,7 @@ describe('Form', () => {
 				label="Middle Name"
 				placeholder="Enter a middle name"
 				required={false}
-				value={undefined}
+				initialValue={undefined}
 				valid={{
 					valid: undefined,
 					message: ''
@@ -61,7 +61,7 @@ describe('Form', () => {
 				label="Last Name"
 				placeholder="Enter a last name"
 				required={true}
-				value={undefined}
+				initialValue={undefined}
 				valid={{
 					valid: undefined,
 					message: ''
@@ -76,7 +76,7 @@ describe('Form', () => {
 				label="Email"
 				placeholder="Enter an email address"
 				required={false}
-				value={undefined}
+				initialValue={undefined}
 				valid={{
 					valid: undefined,
 					message: ''
@@ -131,7 +131,7 @@ describe('Form', () => {
 						placeholder="Enter first name (must be Billy)"
 						pattern="Billy"
 						required={true}
-						value={firstName.value()}
+						initialValue={firstName.value()}
 						valid={firstName.valid()}
 						onValue={firstName.value}
 						onValidate={firstName.valid}
@@ -142,7 +142,7 @@ describe('Form', () => {
 						label="Middle Name"
 						placeholder="Enter a middle name"
 						required={middleName.required()}
-						value={middleName.value()}
+						initialValue={middleName.value()}
 						valid={middleName.valid()}
 						onValue={middleName.value}
 						onValidate={middleName.valid}
@@ -154,7 +154,7 @@ describe('Form', () => {
 						label="Last Name"
 						placeholder="Enter a last name"
 						required={true}
-						value={lastName.value()}
+						initialValue={lastName.value()}
 						valid={lastName.valid()}
 						onValue={lastName.value}
 						onValidate={lastName.valid}
@@ -166,7 +166,7 @@ describe('Form', () => {
 						label="Email"
 						placeholder="Enter an email address"
 						required={false}
-						value={email.value()}
+						initialValue={email.value()}
 						valid={email.valid()}
 						onValue={email.value}
 						onValidate={email.valid}
@@ -259,10 +259,10 @@ describe('Form', () => {
 		assert.isTrue(onValue.calledWith({ email: 'test@example.com' }), 'onValue called');
 
 		assertion = assertion
-			.setProperty('@firstName', 'value', 'Bobby')
-			.setProperty('@middleName', 'value', 'Bo')
-			.setProperty('@lastName', 'value', 'Bob')
-			.setProperty('@email', 'value', 'test@example.com');
+			.setProperty('@firstName', 'initialValue', 'Bobby')
+			.setProperty('@middleName', 'initialValue', 'Bo')
+			.setProperty('@lastName', 'initialValue', 'Bob')
+			.setProperty('@email', 'initialValue', 'test@example.com');
 		h.expect(assertion);
 
 		h.trigger('@firstName', 'onValidate', false, 'Not Billy');
@@ -280,7 +280,7 @@ describe('Form', () => {
 		h.trigger('@firstName', 'onValue', 'Billy');
 		assert.isTrue(onValue.calledWith({ firstName: 'Billy' }), 'onValue called');
 
-		assertion = assertion.setProperty('@firstName', 'value', 'Billy');
+		assertion = assertion.setProperty('@firstName', 'initialValue', 'Billy');
 		h.expect(assertion);
 
 		h.trigger('@firstName', 'onValidate', true);
@@ -303,10 +303,10 @@ describe('Form', () => {
 		h.trigger('@email', 'onValue', 'notanemail');
 
 		assertion = assertion
-			.setProperty('@firstName', 'value', 'Buddy')
-			.setProperty('@middleName', 'value', '')
-			.setProperty('@lastName', 'value', 'Bob')
-			.setProperty('@email', 'value', 'notanemail');
+			.setProperty('@firstName', 'initialValue', 'Buddy')
+			.setProperty('@middleName', 'initialValue', '')
+			.setProperty('@lastName', 'initialValue', 'Bob')
+			.setProperty('@email', 'initialValue', 'notanemail');
 		h.expect(assertion);
 
 		h.trigger('@firstName', 'onValidate', false, 'Not Billy');
@@ -322,7 +322,7 @@ describe('Form', () => {
 
 		h.trigger('@firstName', 'onValue', '');
 
-		assertion = assertion.setProperty('@firstName', 'value', '');
+		assertion = assertion.setProperty('@firstName', 'initialValue', '');
 		h.expect(assertion);
 
 		h.trigger('@firstName', 'onValidate', false, 'Required');
@@ -404,10 +404,10 @@ describe('Form', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@firstName', 'value', 'Billy')
-				.setProperty('@middleName', 'value', 'Bo')
-				.setProperty('@lastName', 'value', 'Bob')
-				.setProperty('@email', 'value', 'test@example.com')
+				.setProperty('@firstName', 'initialValue', 'Billy')
+				.setProperty('@middleName', 'initialValue', 'Bo')
+				.setProperty('@lastName', 'initialValue', 'Bob')
+				.setProperty('@email', 'initialValue', 'test@example.com')
 				.setProperty('@firstName', 'valid', true)
 				.setProperty('@middleName', 'valid', true)
 				.setProperty('@lastName', 'valid', true)
@@ -441,8 +441,8 @@ describe('Form', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@firstName', 'value', 'Billy')
-				.setProperty('@middleName', 'value', 'Bo')
+				.setProperty('@firstName', 'initialValue', 'Billy')
+				.setProperty('@middleName', 'initialValue', 'Bo')
 				.setProperty('@firstName', 'valid', true)
 				.setProperty('@middleName', 'valid', true)
 				.setProperty('@submit', 'disabled', true)
@@ -469,10 +469,10 @@ describe('Form', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@firstName', 'value', 'Billy')
-				.setProperty('@middleName', 'value', 'Bo')
-				.setProperty('@lastName', 'value', 'Bob')
-				.setProperty('@email', 'value', 'test@example.com')
+				.setProperty('@firstName', 'initialValue', 'Billy')
+				.setProperty('@middleName', 'initialValue', 'Bo')
+				.setProperty('@lastName', 'initialValue', 'Bob')
+				.setProperty('@email', 'initialValue', 'test@example.com')
 				.setProperty('@firstName', 'valid', true)
 				.setProperty('@middleName', 'valid', true)
 				.setProperty('@lastName', 'valid', true)
@@ -484,7 +484,7 @@ describe('Form', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@firstName', 'value', undefined)
+				.setProperty('@firstName', 'initialValue', undefined)
 				.setProperty('@submit', 'disabled', true)
 		);
 	});
@@ -498,9 +498,9 @@ describe('Form', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@firstName', 'value', 'Billy')
-				.setProperty('@middleName', 'value', '')
-				.setProperty('@lastName', 'value', 'Bob')
+				.setProperty('@firstName', 'initialValue', 'Billy')
+				.setProperty('@middleName', 'initialValue', '')
+				.setProperty('@lastName', 'initialValue', 'Bob')
 		);
 	});
 

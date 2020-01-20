@@ -12,20 +12,25 @@ export interface NumberInputProperties extends BaseInputProperties<{ value: numb
 	max?: number;
 	/** The step to increment the number value by */
 	step?: number;
+	/** Represents if the input value is valid */
+	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
 const factory = create({ theme }).properties<NumberInputProperties>();
 
 export default factory(function NumberInput({ properties, middleware: { theme } }) {
-	const { value, onValue } = properties();
+	const { initialValue, onValue } = properties();
 
-	const valueAsString = value !== undefined && value !== null ? value.toString() : value;
+	const valueAsString =
+		initialValue !== undefined && initialValue !== null
+			? initialValue.toString()
+			: initialValue;
 
 	function onValueAdapter(valueAsString: string | undefined) {
 		if (!onValue) {
 			return;
 		}
-		if (valueAsString === undefined) {
+		if (valueAsString === undefined || valueAsString === '') {
 			onValue();
 		} else {
 			onValue(parseFloat(valueAsString));
@@ -35,7 +40,7 @@ export default factory(function NumberInput({ properties, middleware: { theme } 
 	return (
 		<TextInput
 			{...properties()}
-			value={valueAsString}
+			initialValue={valueAsString}
 			onValue={onValueAdapter}
 			type="number"
 			theme={theme.compose(
