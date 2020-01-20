@@ -77,6 +77,8 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [Select](src/select/README.md)
 
+[NativeSelect](src/native-select/README.md)
+
 [Slider](src/slider/README.md)
 
 [TextArea](src/text-area/README.md)
