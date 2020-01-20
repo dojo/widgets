@@ -98,7 +98,12 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 
 	return (
 		<div classes={classes.root}>
-			<input type="hidden" name={name} value={formatDateISO(icache.get('value'))} />
+			<input
+				type="hidden"
+				name={name}
+				value={formatDateISO(icache.get('value'))}
+				aria-hidden="true"
+			/>
 			<TriggerPopup key="popup">
 				{{
 					trigger: (toggleOpen) => {

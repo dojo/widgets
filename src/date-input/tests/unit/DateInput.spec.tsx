@@ -44,7 +44,12 @@ const baseTemplate = (date?: Date) =>
 	assertionTemplate(() => {
 		return (
 			<div classes={css.root}>
-				<input type="hidden" name="dateInput" value={formatDateISO(date || today)} />
+				<input
+					type="hidden"
+					name="dateInput"
+					value={formatDateISO(date || today)}
+					aria-hidden="true"
+				/>
 				<TriggerPopup key="popup">
 					{{
 						trigger: () => <button />,
