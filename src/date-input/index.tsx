@@ -143,12 +143,10 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 						}
 
 						return (
-							<div
-								classes={classes.popup}
-								focus={() => shouldFocus && focusNode === 'calendar'}
-							>
+							<div classes={classes.popup}>
 								<Calendar
 									key="calendar"
+									focus={() => shouldFocus && focusNode === 'calendar'}
 									maxDate={max}
 									minDate={min}
 									month={icache.get('month')}

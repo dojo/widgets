@@ -1,5 +1,6 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
+import { FocusMixin } from '@dojo/framework/core/mixins/Focus';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
 import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
@@ -90,12 +91,13 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 ];
 
 @theme(css)
-export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarProperties> {
+export class Calendar extends FocusMixin(I18nMixin(ThemedMixin(WidgetBase)))<CalendarProperties> {
 	private _callDateFocus = false;
 	private _defaultDate = new Date();
 	private _focusedDay = 1;
 	private _monthLabelId = uuid();
 	private _popupOpen = false;
+	private _shouldFocus = false;
 
 	private _getMonthLength(month: number, year: number) {
 		const lastDate = new Date(year, month + 1, 0);
@@ -326,7 +328,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 		return w(CalendarCell, {
 			classes,
 			key: `date-${index}`,
-			callFocus: this._callDateFocus && focusable,
+			callFocus: (this._callDateFocus || this._shouldFocus) && focusable,
 			date,
 			outOfRange,
 			focusable,
@@ -418,6 +420,7 @@ export class Calendar extends I18nMixin(ThemedMixin(WidgetBase))<CalendarPropert
 			firstDayOfWeek = 0
 		} = this.properties;
 		const { year, month } = this._getMonthYear();
+		this._shouldFocus = this.shouldFocus();
 
 		let weekdayOrder: number[] = [];
 		for (let i = firstDayOfWeek; i < firstDayOfWeek + 7; i++) {

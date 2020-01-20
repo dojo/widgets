@@ -75,9 +75,10 @@ const buttonTemplate = assertionTemplate(() => {
 
 const calendarTemplate = assertionTemplate(() => {
 	return (
-		<div classes={css.popup} focus={() => false}>
+		<div classes={css.popup}>
 			<Calendar
 				key="calendar"
+				focus={() => false}
 				maxDate={undefined}
 				minDate={undefined}
 				month={today.getMonth()}
