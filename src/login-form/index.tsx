@@ -49,10 +49,6 @@ function isSubmitForm(properties: LoginFormProperties): properties is SubmitProp
 	return (properties as SubmitProperties).onSubmit !== undefined;
 }
 
-function isActionForm(properties: LoginFormProperties): properties is ActionProperties {
-	return (properties as ActionProperties).action !== undefined;
-}
-
 const factory = create({ theme, i18n })
 	.properties<LoginFormProperties>()
 	.children<LoginFormChildren>();
@@ -62,7 +58,7 @@ const LoginForm = factory(function LoginForm({
 	children,
 	middleware: { theme, i18n }
 }) {
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 
 	let formProps: FormProperties = {};
 	const props = properties();
@@ -73,7 +69,7 @@ const LoginForm = factory(function LoginForm({
 			onSubmit,
 			initialValue
 		};
-	} else if (isActionForm(props)) {
+	} else {
 		const { action, initialValue, method } = props;
 		formProps = {
 			action,
@@ -89,7 +85,7 @@ const LoginForm = factory(function LoginForm({
 	const { messages } = i18n.localize(bundle);
 
 	return (
-		<div classes={classes.root}>
+		<div classes={themedCss.root}>
 			<Form key="form" {...formProps}>
 				{({ field, valid }) => {
 					const username = field('username', true);
@@ -97,7 +93,7 @@ const LoginForm = factory(function LoginForm({
 
 					return (
 						<virtual>
-							<div classes={classes.field}>
+							<div classes={themedCss.field}>
 								<TextInput
 									key="username"
 									label={messages.username}
@@ -109,7 +105,7 @@ const LoginForm = factory(function LoginForm({
 									onValidate={username.valid}
 								/>
 							</div>
-							<div classes={classes.field}>
+							<div classes={themedCss.field}>
 								<PasswordInput
 									key="password"
 									label={messages.password}
@@ -120,15 +116,15 @@ const LoginForm = factory(function LoginForm({
 									onValidate={password.valid}
 								/>
 							</div>
-							<div key="buttonHolder" classes={classes.buttonHolder}>
+							<div key="buttonHolder" classes={themedCss.buttonHolder}>
 								<Button key="loginButton" type="submit" disabled={!valid()}>
 									{messages.login}
 								</Button>
 							</div>
 							{forgotPassword && (
-								<div classes={classes.forgotPassword}>{forgotPassword()}</div>
+								<div classes={themedCss.forgotPassword}>{forgotPassword()}</div>
 							)}
-							{register && <div classes={classes.register}>{register()}</div>}
+							{register && <div classes={themedCss.register}>{register()}</div>}
 						</virtual>
 					);
 				}}

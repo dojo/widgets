@@ -4,9 +4,5 @@ import LoginForm from '@dojo/widgets/login-form';
 const factory = create();
 
 export default factory(function ActionForm() {
-	return (
-		<virtual>
-			<LoginForm action="https://postman-echo.com/post" method="post" />
-		</virtual>
-	);
+	return <LoginForm action="https://postman-echo.com/post" method="post" />;
 });
