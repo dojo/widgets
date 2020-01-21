@@ -4,9 +4,10 @@ import { i18n } from '@dojo/framework/core/middleware/i18n';
 import Button from '../button';
 import TextInput from '../text-input';
 import PasswordInput from '../password-input';
-import Form, { SubmitFormProperties, ActionFormProperties, FormProperties } from '../form';
+import Form, { FormProperties } from '../form';
 import * as css from '../theme/default/login-form.m.css';
 import bundle from './nls';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface LoginFormFields {
 	username: string;
@@ -14,32 +15,65 @@ export interface LoginFormFields {
 }
 
 interface BaseFormProperties extends ThemeProperties {
-	/* When specified, will render a forgotten password link which calls this callback function */
-	onForgotPassword?(): void;
 	/* The initial value of the login form */
 	initialValue?: Partial<LoginFormFields>;
+
+	onSubmit?: never;
+	action?: never;
 }
 
-type SubmitProperties = BaseFormProperties & SubmitFormProperties<LoginFormFields>;
-type ActionProperties = BaseFormProperties & ActionFormProperties;
+type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
+
+interface SubmitProperties extends Omit<BaseFormProperties, 'onSubmit'> {
+	/** Callback for when the form is submitted with valid values */
+	onSubmit(values: LoginFormFields): void;
+}
+
+interface ActionProperties extends Omit<BaseFormProperties, 'action'> {
+	/** Action url for the form on submit */
+	action: string;
+	/** method of submit, defaults to `post` */
+	method?: 'post' | 'get';
+}
+
+export type LoginFormChildren =
+	| undefined
+	| {
+			forgotPassword?(): RenderResult;
+			register?(): RenderResult;
+	  };
 
 export type LoginFormProperties = SubmitProperties | ActionProperties;
 
-const factory = create({ theme, i18n }).properties<LoginFormProperties>();
+function isSubmitForm(properties: LoginFormProperties): properties is SubmitProperties {
+	return (properties as SubmitProperties).onSubmit !== undefined;
+}
 
-const LoginForm = factory(function LoginForm({ properties, middleware: { theme, i18n } }) {
+function isActionForm(properties: LoginFormProperties): properties is ActionProperties {
+	return (properties as ActionProperties).action !== undefined;
+}
+
+const factory = create({ theme, i18n })
+	.properties<LoginFormProperties>()
+	.children<LoginFormChildren>();
+
+const LoginForm = factory(function LoginForm({
+	properties,
+	children,
+	middleware: { theme, i18n }
+}) {
 	const classes = theme.classes(css);
 
 	let formProps: FormProperties = {};
 	const props = properties();
 
-	if (props.onSubmit) {
+	if (isSubmitForm(props)) {
 		const { onSubmit, initialValue } = props;
 		formProps = {
 			onSubmit,
 			initialValue
 		};
-	} else if (props.action) {
+	} else if (isActionForm(props)) {
 		const { action, initialValue, method } = props;
 		formProps = {
 			action,
@@ -48,7 +82,10 @@ const LoginForm = factory(function LoginForm({ properties, middleware: { theme, 
 		};
 	}
 
-	const { onForgotPassword } = props;
+	const [
+		{ forgotPassword, register } = { forgotPassword: undefined, register: undefined }
+	] = children();
+
 	const { messages } = i18n.localize(bundle);
 
 	return (
@@ -88,21 +125,10 @@ const LoginForm = factory(function LoginForm({ properties, middleware: { theme, 
 									{messages.login}
 								</Button>
 							</div>
-							{onForgotPassword && (
-								<div classes={classes.forgotPassword}>
-									<a
-										key="forgotPasswordLink"
-										classes={classes.forgotPasswordLink}
-										onclick={(e) => {
-											e.stopPropagation();
-											e.preventDefault();
-											onForgotPassword();
-										}}
-									>
-										{messages.forgot}
-									</a>
-								</div>
+							{forgotPassword && (
+								<div classes={classes.forgotPassword}>{forgotPassword()}</div>
 							)}
+							{register && <div classes={classes.register}>{register()}</div>}
 						</virtual>
 					);
 				}}

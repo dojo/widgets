@@ -82,6 +82,8 @@ import ListBox from './widgets/menu/ListBox';
 import BasicLoginForm from './widgets/login-form/Basic';
 import ForgotPasswordLoginForm from './widgets/login-form/ForgotPassword';
 import InitialValueLoginForm from './widgets/login-form/InitialValue';
+import ActionForm from './widgets/login-form/ActionForm';
+import RegisterLink from './widgets/login-form/RegisterLink';
 import BasicNumberInput from './widgets/number-input/Basic';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
@@ -657,8 +659,7 @@ export const config = {
 			},
 			examples: [
 				{
-					description:
-						'In this example, a forgot your password link and callack are added',
+					description: 'Example of login form with forgotten password renderer',
 					filename: 'ForgotPassword',
 					module: ForgotPasswordLoginForm,
 					title: 'Forgot password link'
@@ -668,6 +669,19 @@ export const config = {
 					filename: 'InitialValue',
 					module: InitialValueLoginForm,
 					title: 'Initial value login form'
+				},
+				{
+					description:
+						'Example of login form using native form action, posts to postman-echo',
+					filename: 'ActionForm',
+					module: ActionForm,
+					title: 'Action form'
+				},
+				{
+					description: 'Example of login form with register renderer',
+					filename: 'RegisterLink',
+					module: RegisterLink,
+					title: 'Register link'
 				}
 			]
 		},

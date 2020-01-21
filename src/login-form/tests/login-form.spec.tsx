@@ -3,7 +3,6 @@ import Button from '../../button';
 import * as css from '../../theme/default/login-form.m.css';
 import LoginForm from '../index';
 import Form from '../../form';
-import select from '@dojo/framework/testing/support/selector';
 import { tsx } from '@dojo/framework/core/vdom';
 import TextInput from '../../text-input';
 import PasswordInput from '../../password-input';
@@ -28,11 +27,13 @@ describe('Login Form', () => {
 
 	const baseTemplate = assertionTemplate(() => (
 		<div classes={css.root}>
-			<Form key="form" onSubmit={() => {}} initialValue={undefined}>
+			<Form key="form" initialValue={undefined}>
 				{() => <div />}
 			</Form>
 		</div>
 	));
+
+	const submitTemplate = baseTemplate.setProperty('@form', 'onSubmit', () => {});
 
 	const formRenderTemplate = assertionTemplate(() => (
 		<virtual>
@@ -73,7 +74,15 @@ describe('Login Form', () => {
 
 	it('renders with default properties', () => {
 		const h = harness(() => <LoginForm onSubmit={onSubmitStub} />);
-		h.expect(baseTemplate);
+		h.expect(submitTemplate);
+	});
+
+	it('renders with action properties', () => {
+		const h = harness(() => <LoginForm action="login" method="post" />);
+		const actionTemplate = baseTemplate
+			.setProperty('@form', 'action', 'login')
+			.setProperty('@form', 'method', 'post');
+		h.expect(actionTemplate);
 	});
 
 	it('form renders default inputs', () => {
@@ -87,10 +96,11 @@ describe('Login Form', () => {
 		h.expect(formRenderTemplate, () => formRenderResult);
 	});
 
-	it('shows forgot passsword link with callback', () => {
-		const onForgotPasswordStub = stub();
+	it('renders forgot password', () => {
 		const h = harness(() => (
-			<LoginForm onForgotPassword={onForgotPasswordStub} onSubmit={onSubmitStub} />
+			<LoginForm onSubmit={onSubmitStub}>
+				{{ forgotPassword: () => <span>forgot password</span> }}
+			</LoginForm>
 		));
 
 		const formRenderResult = h.trigger(
@@ -101,17 +111,31 @@ describe('Login Form', () => {
 
 		const forgotPasswordTemplate = formRenderTemplate.insertAfter('@buttonHolder', [
 			<div classes={css.forgotPassword}>
-				<a key="forgotPasswordLink" classes={css.forgotPasswordLink} onclick={() => {}}>
-					{messages.forgot}
-				</a>
+				<span>forgot password</span>
 			</div>
 		]);
 		h.expect(forgotPasswordTemplate, () => formRenderResult);
+	});
 
-		const [forgotPasswordLink] = select('@forgotPasswordLink', formRenderResult);
+	it('renders register', () => {
+		const h = harness(() => (
+			<LoginForm onSubmit={onSubmitStub}>
+				{{ register: () => <span>register</span> }}
+			</LoginForm>
+		));
 
-		forgotPasswordLink.properties.onclick({ preventDefault: stub(), stopPropagation: stub() });
-		assert.isTrue(onForgotPasswordStub.calledOnce);
+		const formRenderResult = h.trigger(
+			'@form',
+			(node) => (node.children as any)[0],
+			formRenderStub
+		);
+
+		const registerTemplate = formRenderTemplate.insertAfter('@buttonHolder', [
+			<div classes={css.register}>
+				<span>register</span>
+			</div>
+		]);
+		h.expect(registerTemplate, () => formRenderResult);
 	});
 
 	it('calls onSubmit callback when form is submitted', () => {

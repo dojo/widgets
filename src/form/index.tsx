@@ -20,12 +20,12 @@ interface BaseFormProperties {
 	action?: never;
 }
 
-export interface SubmitFormProperties<T = FormValue> extends Omit<BaseFormProperties, 'onSubmit'> {
+interface SubmitFormProperties extends Omit<BaseFormProperties, 'onSubmit'> {
 	/** Callback for when the form is submitted with valid values */
-	onSubmit(values: T): void;
+	onSubmit(values: FormValue): void;
 }
 
-export interface ActionFormProperties extends Omit<BaseFormProperties, 'action'> {
+interface ActionFormProperties extends Omit<BaseFormProperties, 'action'> {
 	/** Action url for the form on submit */
 	action: string;
 	/** method of submit, defaults to `post` */

@@ -8,16 +8,14 @@
 	margin-bottom: 10px;
 }
 
-/* Wrapping class around the forgot password link */
+/* Wrapping class around the forgot password link renderer */
 .forgotPassword {
 	margin-top: 10px;
-	text-align: center;
 }
 
-/* Class applied to the forgot password link */
-.forgotPasswordLink {
-	cursor: pointer;
-	color: lightblue;
+/* Wrapping class around the register link renderer */
+.register {
+	margin-top: 10px;
 }
 
 /* Wrapping class around the login button */

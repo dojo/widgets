@@ -4,7 +4,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-export default factory(function ForgotPassword({ middleware: { icache } }) {
+export default factory(function RegisterLink({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<LoginForm
@@ -13,20 +13,20 @@ export default factory(function ForgotPassword({ middleware: { icache } }) {
 				}}
 			>
 				{{
-					forgotPassword: () => (
+					register: () => (
 						<a
 							onclick={() => {
 								const count = icache.getOrSet('count', 0);
 								icache.set('count', count + 1);
 							}}
 						>
-							Forgot you Password?
+							Click to register
 						</a>
 					)
 				}}
 			</LoginForm>
 			<pre>{`Submited Values: ${JSON.stringify(icache.getOrSet('values', {}))}
-Forgot password click count: ${icache.getOrSet('count', 0)}`}</pre>
+Register click count: ${icache.getOrSet('count', 0)}`}</pre>
 		</virtual>
 	);
 });
