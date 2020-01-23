@@ -12,14 +12,16 @@ import * as css from '../theme/default/menu.m.css';
 import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
+import { createResource } from './resource';
+import fetcher from './grid-data-fetcher';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
 export interface MenuProperties {
 	/** Options to display within the menu. The `value` of the option will be passed to `onValue` when it is selected. The label is an optional display string to be used instead of the `value`. If `disabled` is true the option will have a disabled style and will not be selectable. An option with `divider: true` will have a divider rendered after it in the menu */
-	options: MenuOption[];
+	// options: MenuOption[];
 	/** The total number of options provided */
-	total: number;
+	// total: number;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Callback called when user selects a value */
@@ -81,6 +83,10 @@ const offscreenHeight = (dnode: RenderResult) => {
 	return dimensions.height;
 };
 
+const resource = createResource({
+	read: fetcher
+});
+
 const factory = create({
 	icache: createICacheMiddleware<MenuICache>(),
 	focus,
@@ -93,7 +99,7 @@ export const Menu = factory(function Menu({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme }
+	middleware: { icache, focus, theme, resource }
 }) {
 	const {
 		activeIndex,
@@ -104,11 +110,11 @@ export const Menu = factory(function Menu({
 		onActiveIndexChange,
 		onBlur,
 		onFocus,
-		onRequestClose,
+		// onRequestClose,
 		onValue,
-		options,
-		widgetId,
-		total,
+		// options,
+		widgetId
+		// total,
 		theme: themeProp
 	} = properties();
 	const [itemRenderer] = children();
@@ -126,73 +132,73 @@ export const Menu = factory(function Menu({
 		onValue(value);
 	}
 
-	function onKeyDown(event: KeyboardEvent) {
-		event.stopPropagation();
+	// function onKeyDown(event: KeyboardEvent) {
+	// 	event.stopPropagation();
 
-		switch (event.which) {
-			case Keys.Enter:
-			case Keys.Space:
-				event.preventDefault();
-				const activeItem = options[computedActiveIndex];
-				!activeItem.disabled && setValue(activeItem.value);
-				break;
-			case Keys.Down:
-				event.preventDefault();
-				if (event.metaKey || event.ctrlKey) {
-					setActiveIndex(total - 1);
-				} else {
-					setActiveIndex((computedActiveIndex + 1) % total);
-				}
-				break;
-			case Keys.Up:
-				event.preventDefault();
-				if (event.metaKey || event.ctrlKey) {
-					setActiveIndex(0);
-				} else {
-					setActiveIndex((computedActiveIndex - 1 + total) % total);
-				}
-				break;
-			case Keys.Escape:
-				event.preventDefault();
-				onRequestClose && onRequestClose();
-				break;
-			case Keys.Home:
-				event.preventDefault();
-				setActiveIndex(0);
-				break;
-			case Keys.End:
-				event.preventDefault();
-				setActiveIndex(total - 1);
-				break;
-			default:
-				if (event.metaKey || event.ctrlKey) {
-					return;
-				}
-				const newIndex = getComputedIndexFromInput(event.key);
-				if (newIndex !== undefined) {
-					setActiveIndex(newIndex);
-				}
-		}
-	}
+	// 	switch (event.which) {
+	// 		case Keys.Enter:
+	// 		case Keys.Space:
+	// 			event.preventDefault();
+	// 			const activeItem = options[computedActiveIndex];
+	// 			!activeItem.disabled && setValue(activeItem.value);
+	// 			break;
+	// 		case Keys.Down:
+	// 			event.preventDefault();
+	// 			if (event.metaKey || event.ctrlKey) {
+	// 				setActiveIndex(total - 1);
+	// 			} else {
+	// 				setActiveIndex((computedActiveIndex + 1) % total);
+	// 			}
+	// 			break;
+	// 		case Keys.Up:
+	// 			event.preventDefault();
+	// 			if (event.metaKey || event.ctrlKey) {
+	// 				setActiveIndex(0);
+	// 			} else {
+	// 				setActiveIndex((computedActiveIndex - 1 + total) % total);
+	// 			}
+	// 			break;
+	// 		case Keys.Escape:
+	// 			event.preventDefault();
+	// 			onRequestClose && onRequestClose();
+	// 			break;
+	// 		case Keys.Home:
+	// 			event.preventDefault();
+	// 			setActiveIndex(0);
+	// 			break;
+	// 		case Keys.End:
+	// 			event.preventDefault();
+	// 			setActiveIndex(total - 1);
+	// 			break;
+	// 		default:
+	// 			if (event.metaKey || event.ctrlKey) {
+	// 				return;
+	// 			}
+	// 			const newIndex = getComputedIndexFromInput(event.key);
+	// 			if (newIndex !== undefined) {
+	// 				setActiveIndex(newIndex);
+	// 			}
+	// 	}
+	// }
 
-	function getComputedIndexFromInput(key: string) {
-		const existingTimer = icache.get('resetInputTextTimer');
-		let inputText = icache.getOrSet('inputText', '') + `${key}`;
-		existingTimer && clearTimeout(existingTimer);
+	// function getComputedIndexFromInput(key: string) {
+	// 	const existingTimer = icache.get('resetInputTextTimer');
+	// 	let inputText = icache.getOrSet('inputText', '') + `${key}`;
+	// 	existingTimer && clearTimeout(existingTimer);
 
-		const resetTextTimeout = setTimeout(() => {
-			icache.set('inputText', '');
-		}, 800);
+	// 	const resetTextTimeout = setTimeout(() => {
+	// 		icache.set('inputText', '');
+	// 	}, 800);
 
-		icache.set('resetInputTextTimer', resetTextTimeout);
-		icache.set('inputText', inputText);
+	// 	icache.set('resetInputTextTimer', resetTextTimeout);
+	// 	icache.set('inputText', inputText);
 
-		return findIndex(
-			options,
-			({ disabled, value, label }) =>
-				!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0
-		);
-	}
+	// 	return findIndex(
+	// 		options,
+	// 		({ disabled, value, label }) =>
+	// 			!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0
+	// 	);
+	// }
 
 	function renderItem(index: number) {
 		const { value, label, divider, disabled = false } = options[index];
@@ -252,7 +258,7 @@ export const Menu = factory(function Menu({
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);
 		icache.set('value', initialValue);
-		icache.set('activeIndex', findIndex(options, (option) => option.value === initialValue));
+		// icache.set('activeIndex', findIndex(options, (option) => option.value === initialValue));
 	}
 
 	if (itemsInView !== icache.get('itemsInView')) {
@@ -300,6 +306,9 @@ export const Menu = factory(function Menu({
 	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
+
+	// resource.getOrRead({ pagination: })
+
 	const totalContentHeight = total * itemHeight;
 	const scrolling = icache.getOrSet('scrolling', false);
 
@@ -336,7 +345,7 @@ export const Menu = factory(function Menu({
 			key="root"
 			classes={[themedCss.root, fixedCss.root]}
 			tabIndex={focusable ? 0 : -1}
-			onkeydown={onKeyDown}
+			// onkeydown={onKeyDown}
 			focus={() => shouldFocus}
 			onfocus={onFocus}
 			onblur={onBlur}
