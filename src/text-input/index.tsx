@@ -3,7 +3,6 @@ import focus from '@dojo/framework/core/middleware/focus';
 import icache from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
 import validity from '@dojo/framework/core/middleware/validity';
-import { uuid } from '@dojo/framework/core/util';
 import { create, diffProperty, invalidator, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
 import HelperText from '../helper-text/index';
@@ -108,7 +107,8 @@ const factory = create({
 
 export const TextInput = factory(function TextInput({
 	middleware: { icache, theme, validity, focus, diffProperty, invalidator },
-	properties
+	properties,
+	id
 }) {
 	diffProperty('pattern', (previous: TextInputProperties, next: TextInputProperties) => {
 		const value = next.pattern instanceof RegExp ? next.pattern.source : next.pattern;
@@ -128,7 +128,6 @@ export const TextInput = factory(function TextInput({
 	);
 
 	const themeCss = theme.classes(css);
-	const _uuid = icache.getOrSet('uuid', () => uuid());
 	const dirty = icache.getOrSet('dirty', false);
 
 	const {
@@ -165,7 +164,7 @@ export const TextInput = factory(function TextInput({
 		type = 'text',
 		value,
 		valid: validValue = { valid: undefined, message: '' },
-		widgetId = _uuid
+		widgetId = `text-input-${id}`
 	} = properties();
 
 	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;
