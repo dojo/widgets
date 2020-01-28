@@ -3,33 +3,6 @@ import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache, invalidator });
 
-export interface Resource<T> {
-	getOrRead(options?: GetOrReadOptions): undefined | T[];
-}
-
-export interface Response<T> {
-	data: T[];
-	total?: number;
-}
-
-export interface PaginationOptions {
-	offset: number;
-	size: number;
-}
-
-export interface Read<T> {
-	(options?: GetOrReadOptions): Promise<Response<T>> | Response<T>;
-}
-
-export interface ResourceConfig<T> {
-	read: Read<T>;
-}
-
-export interface GetOrReadOptions {
-	pagination?: PaginationOptions;
-	query?: string;
-}
-
 export function createResource<T>(config: ResourceConfig<T>) {
 	return factory(({ id, middleware: { icache, invalidator } }) => {
 		const { read } = config;

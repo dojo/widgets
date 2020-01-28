@@ -18,7 +18,7 @@ const fetcher: Read<any> = async (options = {}) => {
 		}
 	});
 	const data = await response.json();
-	console.log('got json');
+
 	return {
 		data: data.data.map((item: any) => ({ value: `${item.firstName} ${item.lastName}` })),
 		total: data.total

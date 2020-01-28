@@ -69,7 +69,7 @@ interface MenuICache {
 	resetInputTextTimer: any;
 	value: string;
 	scrollTop: number;
-	scrolling: boolean;
+	previousActiveIndex: number;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -132,54 +132,54 @@ export const Menu = factory(function Menu({
 		onValue(value);
 	}
 
-	// function onKeyDown(event: KeyboardEvent) {
-	// 	event.stopPropagation();
+	function onKeyDown(event: KeyboardEvent, total: number) {
+		event.stopPropagation();
 
-	// 	switch (event.which) {
-	// 		case Keys.Enter:
-	// 		case Keys.Space:
-	// 			event.preventDefault();
-	// 			const activeItem = options[computedActiveIndex];
-	// 			!activeItem.disabled && setValue(activeItem.value);
-	// 			break;
-	// 		case Keys.Down:
-	// 			event.preventDefault();
-	// 			if (event.metaKey || event.ctrlKey) {
-	// 				setActiveIndex(total - 1);
-	// 			} else {
-	// 				setActiveIndex((computedActiveIndex + 1) % total);
-	// 			}
-	// 			break;
-	// 		case Keys.Up:
-	// 			event.preventDefault();
-	// 			if (event.metaKey || event.ctrlKey) {
-	// 				setActiveIndex(0);
-	// 			} else {
-	// 				setActiveIndex((computedActiveIndex - 1 + total) % total);
-	// 			}
-	// 			break;
-	// 		case Keys.Escape:
-	// 			event.preventDefault();
-	// 			onRequestClose && onRequestClose();
-	// 			break;
-	// 		case Keys.Home:
-	// 			event.preventDefault();
-	// 			setActiveIndex(0);
-	// 			break;
-	// 		case Keys.End:
-	// 			event.preventDefault();
-	// 			setActiveIndex(total - 1);
-	// 			break;
-	// 		default:
-	// 			if (event.metaKey || event.ctrlKey) {
-	// 				return;
-	// 			}
-	// 			const newIndex = getComputedIndexFromInput(event.key);
-	// 			if (newIndex !== undefined) {
-	// 				setActiveIndex(newIndex);
-	// 			}
-	// 	}
-	// }
+		switch (event.which) {
+			// case Keys.Enter:
+			// case Keys.Space:
+			// 	event.preventDefault();
+			// 	const activeItem = options[computedActiveIndex];
+			// 	!activeItem.disabled && setValue(activeItem.value);
+			// 	break;
+			case Keys.Down:
+				event.preventDefault();
+				if (event.metaKey || event.ctrlKey) {
+					setActiveIndex(total - 1);
+				} else {
+					setActiveIndex((computedActiveIndex + 1) % total);
+				}
+				break;
+			case Keys.Up:
+				event.preventDefault();
+				if (event.metaKey || event.ctrlKey) {
+					setActiveIndex(0);
+				} else {
+					setActiveIndex((computedActiveIndex - 1 + total) % total);
+				}
+				break;
+			// case Keys.Escape:
+			// 	event.preventDefault();
+			// 	onRequestClose && onRequestClose();
+			// 	break;
+			case Keys.Home:
+				event.preventDefault();
+				setActiveIndex(0);
+				break;
+			case Keys.End:
+				event.preventDefault();
+				setActiveIndex(total - 1);
+				break;
+			// default:
+			// 	if (event.metaKey || event.ctrlKey) {
+			// 		return;
+			// 	}
+			// 	const newIndex = getComputedIndexFromInput(event.key);
+			// 	if (newIndex !== undefined) {
+			// 		setActiveIndex(newIndex);
+			// 	}
+		}
+	}
 
 	// function getComputedIndexFromInput(key: string) {
 	// 	const existingTimer = icache.get('resetInputTextTimer');
@@ -200,8 +200,36 @@ export const Menu = factory(function Menu({
 	// 	);
 	// }
 
-	function renderItem(index: number) {
-		const { value, label, divider, disabled = false } = options[index];
+	function renderItems(startNode: number, count: number) {
+		const pageNumber = Math.floor(startNode / count);
+		const response = resource.getOrRead({
+			pagination: { size: count, offset: pageNumber * count }
+		});
+
+		if (!response) {
+			return {
+				total: 0,
+				items: []
+			};
+		}
+
+		const { data, total }: { data: MenuOption[]; total: number } = response as any;
+
+		const renderedItemsCount = Math.min(total - startNode, count);
+
+		const renderedItems = new Array(renderedItemsCount);
+		for (let i = 0; i < renderedItemsCount; i++) {
+			renderedItems[i] = renderItem(data[i], i + startNode);
+		}
+
+		return {
+			renderedItems,
+			total
+		};
+	}
+
+	function renderItem(data: MenuOption, index: number) {
+		const { value, label, divider, disabled = false } = data;
 		const selected = value === selectedValue;
 		const active = index === computedActiveIndex;
 		const itemProps = {
@@ -307,14 +335,9 @@ export const Menu = factory(function Menu({
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
 
-	// resource.getOrRead({ pagination: })
+	const previousActiveIndex = icache.get('previousActiveIndex');
 
-	const totalContentHeight = total * itemHeight;
-	const scrolling = icache.getOrSet('scrolling', false);
-
-	if (scrolling) {
-		icache.set('scrolling', false);
-	} else {
+	if (computedActiveIndex !== previousActiveIndex) {
 		const visibleStartIndex = Math.floor(scrollTop / itemHeight);
 		const visibleEndIndex = visibleStartIndex + itemsInView - 1;
 		if (computedActiveIndex < visibleStartIndex) {
@@ -326,26 +349,26 @@ export const Menu = factory(function Menu({
 		if (icache.get('scrollTop') !== scrollTop) {
 			icache.set('scrollTop', scrollTop);
 		}
+
+		icache.set('previousActiveIndex', computedActiveIndex);
 	}
 
 	const startNode = Math.max(0, Math.floor(scrollTop / itemHeight) - nodePadding);
-
-	let renderedItemsCount = itemsInView + 2 * nodePadding;
-	renderedItemsCount = Math.min(total - startNode, renderedItemsCount);
-
 	const offsetY = startNode * itemHeight;
 
-	const renderedItems = new Array(renderedItemsCount);
-	for (let i = 0; i < renderedItemsCount; i++) {
-		renderedItems[i] = renderItem(i + startNode);
-	}
+	const renderedItemsCount = itemsInView + 2 * nodePadding;
+	const { renderedItems, total } = renderItems(startNode, renderedItemsCount);
+
+	const totalContentHeight = total * itemHeight;
 
 	return (
 		<div
 			key="root"
 			classes={[themedCss.root, fixedCss.root]}
 			tabIndex={focusable ? 0 : -1}
-			// onkeydown={onKeyDown}
+			onkeydown={(e) => {
+				onKeyDown(e, total);
+			}}
 			focus={() => shouldFocus}
 			onfocus={onFocus}
 			onblur={onBlur}
@@ -353,7 +376,6 @@ export const Menu = factory(function Menu({
 			onscroll={(e) => {
 				const newScrollTop = (e.target as HTMLElement).scrollTop;
 				if (scrollTop !== newScrollTop) {
-					icache.set('scrolling', true);
 					icache.set('scrollTop', newScrollTop);
 				}
 			}}

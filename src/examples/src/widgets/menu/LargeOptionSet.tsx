@@ -11,7 +11,6 @@ for (let i = 0; i < total; i++) {
 const factory = create({ icache });
 
 export default factory(function LargeOptionSet({ middleware: { icache } }) {
-	// const response = resource.getOrRead({pagination: {offset: 10, size: 10}});
 	return (
 		<virtual>
 			<Menu
