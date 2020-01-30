@@ -1,0 +1,70 @@
+@import './variables.css';
+
+.root {
+	composes: mdc-switch from '@material/switch/dist/mdc.switch.css';
+	display: flex;
+	align-items: center;
+}
+
+.inputWrapper {
+	display: inline-block;
+	margin-right: 10px;
+	position: relative;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.checked {
+	composes: mdc-switch--checked from '@material/switch/dist/mdc.switch.css';
+}
+
+.label {
+	margin-left: 10px;
+}
+
+.thumb {
+	composes: mdc-switch__thumb from '@material/switch/dist/mdc.switch.css';
+}
+
+.track {
+	composes: mdc-switch__track from '@material/switch/dist/mdc.switch.css';
+}
+
+.underlay {
+	composes: mdc-switch__thumb-underlay from '@material/switch/dist/mdc.switch.css';
+}
+
+.nativeControl {
+	composes: mdc-switch__native-control from '@material/switch/dist/mdc.switch.css';
+}
+
+.checked .thumb {
+	background-color: var(--mdc-theme-secondary);
+	border-color: var(--mdc-theme-secondary);
+}
+
+.checked .track {
+	background-color: var(--mdc-theme-secondary);
+	border-color: var(--mdc-theme-secondary);
+}
+
+.offLabel,
+.onLabel {
+	padding-right: 10px;
+}
+
+/* Disabled */
+
+.checked.disabled .thumb,
+.checked.readonly .thumb {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border-strong);
+}
+
+.checked.disabled .track,
+.checked.readonly .track {
+	background-color: var(--color-background-faded);
+	border-color: var(--color-border-strong);
+}

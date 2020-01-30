@@ -136,6 +136,8 @@ import LeadingSnackbar from './widgets/snackbar/Leading';
 import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSplitPane from './widgets/split-pane/Basic';
+import BasicSwitch from './widgets/switch/Basic';
+import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabController from './widgets/tab-controller/Basic';
 import ButtonAlignmentTabController from './widgets/tab-controller/ButtonAlignment';
 import CloseableTabController from './widgets/tab-controller/Closeable';
@@ -980,6 +982,21 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicSplitPane
+				}
+			}
+		},
+		switch: {
+			examples: [
+				{
+					filename: 'Disabled',
+					module: DisabledSwitch,
+					title: 'Disabled'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSwitch
 				}
 			}
 		},
