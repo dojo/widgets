@@ -90,6 +90,8 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 	protected render(): DNode {
 		let { editable, rawValue, theme, classes, width } = this.properties;
 
+		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
+
 		return v(
 			'div',
 			{
@@ -106,8 +108,12 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 					? w(TextInput, {
 							key: 'input',
 							theme,
-							classes: classes || {
-								'@dojo/widgets/text-input': { input: [this.theme(css.input)] }
+							classes: {
+								...classes,
+								'@dojo/widgets/text-input': {
+									input: [this.theme(css.input)],
+									...passedInputClasses
+								}
 							},
 							label: `Edit ${rawValue}`,
 							labelHidden: true,
