@@ -1,49 +1,65 @@
 @import './variables.css';
 
+/* The root class of Switch */
 .root {
 }
 
+/* Styles the wrapper containing the Switch */
 .inputWrapper {
 }
 
+/* Styles the disabled label */
 .disabled {
 }
 
+/* Styles the switch Track */
 .track {
 }
 
+/* Styles the Switch underlay element */
 .underlay {
 }
 
+/* Styles the Switch Thumb. Moves along track to indicate state. */
 .thumb {
 }
 
+/* Styles the native CheckBox */
 .nativeControl {
 }
 
+/* Styles the checked switch */
 .checked {
 }
 
+/* Styles the label */
 .label {
 }
 
+/* Added when the switch is invalid */
 .invalid {
 }
 
+/* Added when the switch is valid */
 .valid {
 }
 
+/* Added to a read-only Switch */
 .readonly {
 }
 
+/* Added when the Switch is required */
 .required {
 }
 
+/* Added when focused */
 .focused {
 }
 
+/* Styles the on label */
 .onLabel {
 }
 
+/* Styles the off label */
 .offLabel {
 }
