@@ -67,6 +67,7 @@ import RowSelection from './widgets/grid/RowSelection';
 import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
+import IconButton from './widgets/icon/IconButton';
 import BasicLabel from './widgets/label/Basic';
 import HiddenLabel from './widgets/label/HiddenLabel';
 import InvalidLabel from './widgets/label/InvalidLabel';
@@ -600,6 +601,11 @@ export const config = {
 					filename: 'AltText',
 					module: AltTextIcon,
 					title: 'With alt text'
+				},
+				{
+					filename: 'IconButton',
+					module: IconButton,
+					title: 'Icon within a button'
 				}
 			],
 			overview: {
