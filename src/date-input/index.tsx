@@ -26,6 +26,8 @@ export interface DateInputProperties {
 	name: string;
 	/** Callback fired with new value in YYYY-MM-DD format */
 	onValue?(date: string): void;
+	/** Callback fired when input validation changes */
+	onValidate?: (valid: boolean | undefined, message: string) => void;
 }
 
 interface DateInputICache {
@@ -40,7 +42,7 @@ interface DateInputICache {
 	/** Should validate the input value on the next cycle */
 	shouldValidate: boolean;
 	/** Message for current validation state */
-	validationMessages: string[];
+	validationMessage: string | undefined;
 	/** Indicates which node will be focused */
 	focusNode: 'input' | 'calendar';
 }
@@ -49,7 +51,7 @@ const icache = createICacheMiddleware<DateInputICache>();
 const factory = create({ theme, icache, i18n, focus }).properties<DateInputProperties>();
 
 export default factory(function({ properties, middleware: { theme, icache, i18n, focus } }) {
-	const { name, onValue, initialValue } = properties();
+	const { initialValue, name, onValue, onValidate } = properties();
 	const { messages } = i18n.localize(bundle);
 	const classes = theme.classes(css);
 	const max = parseDate(properties().max);
@@ -65,11 +67,13 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 	const focusNode = icache.getOrSet('focusNode', 'input');
 
 	if (shouldValidate) {
+		let isValid: boolean | undefined;
 		let validationMessages: string[] = [];
 
+		// if min & max create an impossible range, no need to validate anything else
 		if (min && max && min > max) {
-			// if min & max create an impossible range, no need to validate anything else
 			validationMessages.push(messages.invalidProps);
+			isValid = false;
 		} else {
 			const newDate = parseDate(inputValue);
 
@@ -90,9 +94,13 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 			} else {
 				validationMessages.push(messages.invalidDate);
 			}
+
+			isValid = validationMessages.length === 0;
 		}
 
-		icache.set('validationMessages', validationMessages);
+		const validationMessage = validationMessages.join('; ');
+		onValidate && onValidate(isValid, validationMessage);
+		icache.set('validationMessage', validationMessage);
 		icache.set('shouldValidate', false);
 	}
 
@@ -140,7 +148,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 									value={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
 									onValue={(v) => icache.set('inputValue', v || '')}
-									helperText={(icache.get('validationMessages') || []).join('; ')}
+									helperText={icache.get('validationMessage')}
 									onKeyDown={(key) => {
 										if (
 											key === Keys.Down ||

@@ -255,16 +255,21 @@ describe('DateInput', () => {
 	});
 
 	it('validates date input', () => {
-		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
+		const onValidate = sinon.stub();
+		const h = harness(() => (
+			<DateInput name="dateInput" onValue={onValue} onValidate={onValidate} />
+		));
 
 		const triggerResult = h.trigger(
 			'@popup',
 			(node) => (node.children as any)[0].trigger,
 			noop
 		);
+		sinon.assert.calledWith(onValidate, true, '');
 
 		// Find the input widget and give it a bad value
 		let [input] = select('@input', triggerResult);
+		onValidate.resetHistory();
 		onValue.resetHistory();
 		input.properties.onValue('foobar');
 		input.properties.onBlur();
@@ -272,6 +277,7 @@ describe('DateInput', () => {
 
 		// With invalid input, `onValue` should not have been called & message should be displayed
 		sinon.assert.notCalled(onValue);
+		sinon.assert.calledWith(onValidate, false, messages.invalidDate);
 		[input] = select(
 			'@input',
 			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
@@ -280,6 +286,7 @@ describe('DateInput', () => {
 	});
 
 	it('validates manual date entry range', () => {
+		const onValidate = sinon.stub();
 		const tooEarly = new Date(2019, 10, 11); // Nov 11, 2019
 		const tooLate = new Date(2020, 0, 22); // Jan 22, 2020
 		const initialValue = new Date(2019, 11, 15); // Dec 15, 2019
@@ -292,6 +299,7 @@ describe('DateInput', () => {
 				max={formatDateISO(max)}
 				min={formatDateISO(min)}
 				initialValue={formatDateISO(initialValue)}
+				onValidate={onValidate}
 			/>
 		));
 
@@ -300,8 +308,10 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			noop
 		);
+		sinon.assert.calledWith(onValidate, true, '');
 
 		// Find the input widget and give it a value before the min date
+		onValidate.resetHistory();
 		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
 		input.properties.onValue(formatDate(tooEarly));
@@ -309,6 +319,7 @@ describe('DateInput', () => {
 		h.expect(baseTemplate(initialValue));
 
 		// With invalud input, `onValue` should not have been called & message should be displayed
+		sinon.assert.calledWith(onValidate, false, messages.tooEarly);
 		sinon.assert.notCalled(onValue);
 		[input] = select(
 			'@input',
@@ -317,6 +328,7 @@ describe('DateInput', () => {
 		assert.equal(input.properties.helperText, messages.tooEarly);
 
 		// Set value after the max date
+		onValidate.resetHistory();
 		onValue.resetHistory();
 		input.properties.onValue(formatDate(tooLate));
 		input.properties.onBlur();
@@ -328,9 +340,11 @@ describe('DateInput', () => {
 			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
 		);
 		assert.equal(input.properties.helperText, messages.tooLate);
+		sinon.assert.calledWith(onValidate, false, messages.tooLate);
 	});
 
 	it('validates range inputs', () => {
+		const onValidate = sinon.stub();
 		const max = new Date(2019, 11, 1); // Dec 1, 2019
 		const min = new Date(2019, 11, 31); // Dec 31, 2019; notice min is AFTER max
 		const h = harness(() => (
@@ -339,6 +353,7 @@ describe('DateInput', () => {
 				onValue={onValue}
 				max={formatDateISO(max)}
 				min={formatDateISO(min)}
+				onValidate={onValidate}
 			/>
 		));
 
@@ -351,5 +366,6 @@ describe('DateInput', () => {
 			buttonTemplate.setProperty('@input', 'helperText', messages.invalidProps),
 			() => triggerResult
 		);
+		sinon.assert.calledWith(onValidate, false, messages.invalidProps);
 	});
 });
