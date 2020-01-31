@@ -26,7 +26,7 @@ const expected = function(icon: keyof typeof css = 'downIcon', overrides = {}, a
 		children.push(v('span', { classes: baseCss.visuallyHidden }, [altText]));
 	}
 
-	return v('span', children);
+	return v('virtual', children);
 };
 
 registerSuite('Icon', {

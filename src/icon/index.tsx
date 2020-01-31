@@ -29,10 +29,10 @@ export const Icon = factory(function Icon({ properties, middleware: { theme } })
 	const classes = theme.classes(css);
 
 	return (
-		<span>
+		<virtual>
 			<i classes={[classes.icon, classes[type]]} {...formatAriaProperties(aria)} />
 			{altText ? <span classes={baseCss.visuallyHidden}>{altText}</span> : null}
-		</span>
+		</virtual>
 	);
 });
 
