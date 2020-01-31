@@ -47,6 +47,8 @@ const buttonTemplate = assertionTemplate(() => (
 		classes={css.trigger}
 		onclick={() => {}}
 		onkeydown={() => {}}
+		name={undefined}
+		value={undefined}
 	>
 		<span classes={css.value}>
 			<span classes={css.placeholder} />
