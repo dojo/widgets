@@ -1,2 +1,129 @@
+@import './variables.css';
+
 .root {
+	position: relative;
+	width: calc(var(--grid-base) * 32);
+	font-family: Roboto, sans-serif;
+	font-size: var(--font-size-small);
+	color: var(--mdc-theme-on-surface);
+	padding-left: calc(var(--grid-base) * 2);
+	padding-right: calc(var(--grid-base) * 2);
+}
+
+.monthTrigger {
+	padding-right: calc(var(--grid-base) * 0.75);
+	padding-left: calc(var(--grid-base) * 1);
+}
+
+.datePicker {
+	padding-top: calc(var(--grid-base) * 1.75);
+}
+
+.topMatter {
+	padding-bottom: var(--grid-base);
+}
+
+.weekday,
+.date {
+	width: calc(var(--grid-base) * 4);
+	height: calc(var(--grid-base) * 4);
+	text-align: center;
+	position: relative;
+	z-index: 0;
+}
+
+.inactiveDate {
+	color: var(--disabled-color);
+}
+
+.weekday .abbr {
+	font-weight: 300;
+	text-decoration: none;
+	color: var(--disabled-color);
+}
+
+.selectedDate {
+	color: var(--mdc-theme-on-primary);
+}
+
+.todayDate:before,
+.selectedDate:before {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	width: calc(var(--grid-base) * 3.5);
+	height: calc(var(--grid-base) * 3.5);
+	border-radius: 50%;
+	content: '';
+	z-index: -1;
+}
+
+.todayDate:before {
+	border: 1px solid var(--mdc-theme-on-surface);
+}
+
+.selectedDate:before {
+	background-color: var(--mdc-theme-primary);
+}
+
+.controls {
+	height: 0;
+}
+
+.previous,
+.next {
+	position: absolute;
+	top: calc(var(--grid-base) * 2);
+}
+
+.next {
+	right: var(--grid-base);
+	right: calc(var(--grid-base) * 3);
+}
+
+.previous {
+	right: calc(var(--grid-base) * 9);
+}
+
+.yearRadio,
+.monthRadio {
+	height: calc(var(--grid-base) * 4);
+	width: calc(var(--grid-base) * 7);
+	display: inline-flex;
+	margin-left: calc(var(--grid-base) * -0.5);
+	align-items: center;
+	justify-content: center;
+}
+
+.yearRadioChecked,
+.monthRadioChecked {
+	position: relative;
+	z-index: 0;
+}
+.yearRadioChecked:before,
+.monthRadioChecked:before {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	width: calc(var(--grid-base) * 6.5);
+	height: calc(var(--grid-base) * 3.5);
+	border-radius: calc(var(--grid-base) * 2);
+	content: '';
+	z-index: -1;
+	background-color: var(--mdc-theme-primary);
+}
+
+.yearRadioChecked .yearRadioLabel,
+.monthRadioChecked .monthRadioLabel {
+	color: var(--mdc-theme-on-primary);
+}
+
+.monthRadio,
+.monthRadioLabel[title] {
+	text-decoration: none;
+}
+
+.yearRadioInput,
+.monthRadioInput {
+	display: none;
 }
