@@ -9,7 +9,6 @@
 	display: inline-block;
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
-	margin: 0 calc(var(--spacing-large) + 2px);
 	position: relative;
 	width: calc((var(--grid-base) * 35) + (var(--border-width) * 4));
 }
@@ -80,6 +79,8 @@
 .topMatter {
 	background: var(--color-background-faded);
 	border-bottom: var(--border-width) solid var(--color-border);
+	display: flex;
+	justify-content: center;
 }
 
 .monthTrigger,
@@ -93,18 +94,23 @@
 	font-family: inherit;
 	line-height: inherit;
 	outline: none;
-	transition: border-color var(--transition-duration) var(--transition-easing);
+	transition: border-color var(--transition-duration) var(--transition-easing),
+		color var(--transition-duration) var(--transition-easing);
 }
 
 .monthTrigger:focus,
 .monthTrigger:hover,
 .yearTrigger:focus,
-.yearTrigger:hover,
+.yearTrigger:hover {
+	border-color: var(--color-highlight);
+}
+
 .previous:focus,
 .previous:hover,
 .next:focus,
 .next:hover {
-	border-color: var(--color-highlight);
+	color: var(--color-highlight);
+	border: var(--border-width) solid var(--color-border);
 }
 
 .monthTrigger,
@@ -124,35 +130,26 @@
 
 .previous,
 .next {
-	background-color: var(--color-background-faded);
-	border: var(--border-width) solid var(--color-border);
 	color: var(--color-text-primary);
-	display: block;
+	display: flex;
 	font-size: var(--font-size-icon);
 	line-height: 1;
-	padding: calc(var(--grid-base) * 1.5) 0;
 	position: absolute;
-	top: 50%;
-	width: calc(var(--spacing-large) + 2px);
+	top: var(--grid-base);
 }
 
 .icon {
-}
-
-.previous .icon,
-.next .icon {
-	position: relative;
-	left: calc((var(--spacing-large) - var(--font-size-icon)) / 2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .previous {
-	left: 0;
-	transform: translate(-100%, -50%);
+	left: calc(var(--grid-base) * 0.75);
 }
 
 .next {
-	right: 0;
-	transform: translate(100%, -50%);
+	right: calc(var(--grid-base) * 0.75);
 }
 
 .monthGrid,
