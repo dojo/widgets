@@ -6,6 +6,7 @@ import HelperText from '../helper-text';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/native-select.m.css';
 import * as labelCss from '../theme/default/label.m.css';
+import * as iconCss from '../theme/default/icon.m.css';
 import Icon from '../icon';
 import Label from '../label';
 
@@ -62,8 +63,7 @@ export const NativeSelect = factory(function NativeSelect({
 		name,
 		size,
 		onFocus,
-		onBlur,
-		theme: themeProp
+		onBlur
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -135,7 +135,15 @@ export const NativeSelect = factory(function NativeSelect({
 					})}
 				</select>
 				<span classes={themedCss.arrow}>
-					<Icon type="downIcon" theme={themeProp} classes={classes} />
+					<Icon
+						type="downIcon"
+						theme={theme.compose(
+							iconCss,
+							css,
+							'icon'
+						)}
+						classes={classes}
+					/>
 				</span>
 			</div>
 			<HelperText key="helperText" text={helperText} />

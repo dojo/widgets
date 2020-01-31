@@ -52,7 +52,7 @@ const buttonTemplate = assertionTemplate(() => (
 			<span classes={css.placeholder} />
 		</span>
 		<span classes={css.arrow}>
-			<Icon type="downIcon" theme={undefined} classes={undefined} />
+			<Icon type="downIcon" theme={{}} classes={undefined} />
 		</span>
 	</button>
 ));

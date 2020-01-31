@@ -14,6 +14,7 @@ import { PopupPosition } from '../popup';
 import TriggerPopup from '../trigger-popup';
 import * as menuCss from '../theme/default/menu.m.css';
 import * as labelCss from '../theme/default/label.m.css';
+import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './select.nls';
 
@@ -76,8 +77,7 @@ export const Select = factory(function Select({
 		options,
 		placeholder = '',
 		position,
-		required,
-		theme: themeProp
+		required
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -183,7 +183,15 @@ export const Select = factory(function Select({
 									)}
 								</span>
 								<span classes={themedCss.arrow}>
-									<Icon type="downIcon" theme={themeProp} classes={classes} />
+									<Icon
+										type="downIcon"
+										theme={theme.compose(
+											iconCss,
+											css,
+											'icon'
+										)}
+										classes={classes}
+									/>
 								</span>
 							</button>
 						);

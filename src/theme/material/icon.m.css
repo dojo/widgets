@@ -1,2 +1,132 @@
+@font-face {
+	font-family: 'Material Icons';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Material Icons'), local('MaterialIcons-Regular'),
+		url('./fonts/MaterialIcons-Regular.woff2') format('woff2'),
+		url('./fonts/MaterialIcons-Regular.woff') format('woff'),
+		url('./fonts/MaterialIcons-Regular.ttf') format('truetype');
+}
+
 .icon {
+	/* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'Material Icons' !important;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	speak: none;
+
+	/* Support for all WebKit browsers. */
+	-webkit-font-smoothing: antialiased;
+	/* Support for Safari and Chrome. */
+	text-rendering: optimizeLegibility;
+	/* Support for Firefox. */
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.downIcon:before {
+	content: 'expand_more';
+}
+
+.leftIcon:before {
+	content: 'chevron_left';
+}
+
+.rightIcon:before {
+	content: 'chevron_right';
+}
+
+.closeIcon:before {
+	content: 'close';
+}
+
+.plusIcon:before {
+	content: 'add';
+}
+
+.minusIcon:before {
+	content: 'remove';
+}
+
+.checkIcon:before {
+	content: 'done';
+}
+
+.upIcon:before {
+	content: 'expand_less';
+}
+
+.upAltIcon:before {
+	content: 'arrow_drop_up';
+}
+
+.downAltIcon:before {
+	content: 'arrow_drop_down';
+}
+
+.searchIcon:before {
+	content: 'search';
+}
+
+.barsIcon:before {
+	content: 'menu';
+}
+
+.settingsIcon:before {
+	content: 'settings';
+}
+
+.alertIcon:before {
+	content: 'error';
+}
+
+.helpIcon:before {
+	content: 'help';
+}
+
+.infoIcon:before {
+	content: 'info';
+}
+
+.phoneIcon:before {
+	content: 'phone';
+}
+
+.editIcon:before {
+	content: 'edit';
+}
+
+.dateIcon:before {
+	content: 'today';
+}
+
+.linkIcon:before {
+	content: 'link';
+}
+
+.locationIcon:before {
+	content: 'location_on';
+}
+
+.secureIcon:before {
+	content: 'lock';
+}
+
+.mailIcon:before {
+	content: 'email';
+}
+
+.eyeIcon:before {
+	content: 'visibility';
+}
+
+.eyeSlashIcon:before {
+	content: 'visibility_off';
 }

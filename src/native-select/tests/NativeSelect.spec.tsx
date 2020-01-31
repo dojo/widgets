@@ -59,7 +59,7 @@ const baseTemplate = assertionTemplate(() => (
 				})}
 			</select>
 			<span classes={css.arrow}>
-				<Icon type="downIcon" theme={undefined} classes={undefined} />
+				<Icon type="downIcon" theme={{}} classes={undefined} />
 			</span>
 		</div>
 		<HelperText key="helperText" text={undefined} />
