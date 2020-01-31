@@ -263,13 +263,7 @@ export class TextInput extends ThemedMixin(FocusMixin(WidgetBase))<TextInputProp
 							required={required}
 							hidden={labelHidden}
 							forId={widgetId}
-							classes={
-								classes || {
-									'@dojo/widgets/label': {
-										root: [this.theme(css.label)]
-									}
-								}
-							}
+							active={!!value || focus.containsFocus}
 						>
 							{label}
 						</Label>

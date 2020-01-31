@@ -15,7 +15,7 @@ registerSuite('Label', {
 				v(
 					'label',
 					{
-						classes: [css.root, null, null, null, null, null, null, null, null],
+						classes: [css.root, null, null, null, null, null, null, null, null, null],
 						for: undefined,
 						id: undefined
 					},
@@ -57,6 +57,7 @@ registerSuite('Label', {
 							css.readonly,
 							css.required,
 							css.secondary,
+							null,
 							null
 						],
 						for: 'foo',
@@ -85,6 +86,7 @@ registerSuite('Label', {
 					{
 						classes: [
 							css.root,
+							null,
 							null,
 							null,
 							null,

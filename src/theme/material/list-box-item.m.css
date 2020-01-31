@@ -1,0 +1,12 @@
+.root {
+	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
+}
+
+.root.selected {
+	background: var(--mdc-theme-background-selected);
+}
+
+.active {
+	border: none;
+	background: var(--mdc-theme-background-active);
+}

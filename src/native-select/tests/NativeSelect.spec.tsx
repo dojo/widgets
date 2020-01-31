@@ -24,11 +24,12 @@ const baseTemplate = assertionTemplate(() => (
 	<div classes={[css.root, undefined, undefined]} key="root">
 		<Label
 			assertion-key="label"
-			theme={undefined}
+			theme={{}}
 			classes={undefined}
 			disabled={undefined}
 			forId={'something'}
 			required={undefined}
+			active={false}
 		/>
 		<div classes={css.inputWrapper}>
 			<select
@@ -41,8 +42,9 @@ const baseTemplate = assertionTemplate(() => (
 				size={undefined}
 				onfocus={noop}
 				onblur={noop}
-				class={css.select}
+				classes={css.select}
 			>
+				<option key="blank-option" value="" />
 				{options.map(({ value }, index) => {
 					return (
 						<option
@@ -101,9 +103,11 @@ describe('Native Select', () => {
 			.setProperty('@root', 'classes', [css.root, css.disabled, css.required])
 			.setProperty('~label', 'disabled', true)
 			.setProperty('~label', 'required', true)
+			.setProperty('~label', 'active', true)
 			.replaceChildren('~label', () => {
 				return ['Pets'];
-			});
+			})
+			.remove('@blank-option');
 
 		h.expect(optionalPropertyTemplate);
 	});

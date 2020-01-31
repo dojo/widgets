@@ -25,6 +25,10 @@
 .secondary {
 }
 
+/* Added when the label or it's control are active */
+.active {
+}
+
 /* Visual indicator for a required field */
 .required::after {
 	content: '*';

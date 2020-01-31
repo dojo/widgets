@@ -32,7 +32,7 @@ describe('Menu - Menu', () => {
 	const template = assertionTemplate(() => (
 		<div
 			key="root"
-			classes={css.menu}
+			classes={[css.root, fixedCss.root]}
 			tabIndex={0}
 			onkeydown={noop}
 			focus={noop}
@@ -224,7 +224,7 @@ describe('Menu - ListBox', () => {
 	const template = assertionTemplate(() => (
 		<div
 			key="root"
-			classes={css.menu}
+			classes={[css.root, fixedCss.root]}
 			tabIndex={0}
 			onkeydown={noop}
 			focus={noop}

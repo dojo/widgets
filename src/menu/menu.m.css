@@ -7,3 +7,7 @@
 .transformer {
 	will-change: transform;
 }
+
+.root {
+	overflow: auto;
+}
