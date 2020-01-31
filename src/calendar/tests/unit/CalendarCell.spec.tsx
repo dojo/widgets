@@ -22,6 +22,7 @@ registerSuite('CalendarCell', {
 					'td',
 					{
 						key: 'root',
+						focus: undefined,
 						role: 'gridcell',
 						'aria-selected': 'false',
 						tabIndex: -1,
@@ -50,6 +51,7 @@ registerSuite('CalendarCell', {
 					'td',
 					{
 						key: 'root',
+						focus: undefined,
 						role: 'gridcell',
 						'aria-selected': 'true',
 						tabIndex: 0,
@@ -81,6 +83,7 @@ registerSuite('CalendarCell', {
 					'td',
 					{
 						key: 'root',
+						focus: undefined,
 						role: 'gridcell',
 						'aria-selected': 'false',
 						tabIndex: -1,
@@ -106,6 +109,7 @@ registerSuite('CalendarCell', {
 					'td',
 					{
 						key: 'root',
+						focus: undefined,
 						role: 'gridcell',
 						'aria-selected': 'false',
 						tabIndex: -1,
@@ -177,6 +181,7 @@ registerSuite('CalendarCell', {
 					'td',
 					{
 						key: 'root',
+						focus: false,
 						role: 'gridcell',
 						'aria-selected': 'false',
 						tabIndex: -1,
@@ -197,6 +202,7 @@ registerSuite('CalendarCell', {
 					'td',
 					{
 						key: 'root',
+						focus: true,
 						role: 'gridcell',
 						'aria-selected': 'false',
 						tabIndex: -1,
