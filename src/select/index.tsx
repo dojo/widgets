@@ -43,6 +43,8 @@ interface SelectProperties {
 	required?: boolean;
 	/** Callabck when valid state has changed */
 	onValidate?(valid: boolean): void;
+	/** The name property of the input */
+	name?: string;
 }
 
 interface SelectICache {
@@ -77,7 +79,8 @@ export const Select = factory(function Select({
 		options,
 		placeholder = '',
 		position,
-		required
+		required,
+		name
 	} = properties();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -156,6 +159,8 @@ export const Select = factory(function Select({
 
 						return (
 							<button
+								name={name}
+								value={icache.get('value')}
 								focus={() => focusNode === 'trigger' && shouldFocus}
 								aria-controls={menuId}
 								aria-haspopup="listbox"
