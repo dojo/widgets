@@ -5,6 +5,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import HelperText from '../helper-text';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/native-select.m.css';
+import * as labelCss from '../theme/default/label.m.css';
 import Icon from '../icon';
 import Label from '../label';
 
@@ -83,11 +84,16 @@ export const NativeSelect = factory(function NativeSelect({
 			key="root"
 		>
 			<Label
-				theme={themeProp}
+				theme={theme.compose(
+					labelCss,
+					css,
+					'label'
+				)}
 				classes={classes}
 				disabled={disabled}
 				forId={id}
 				required={required}
+				active={!!selectedValue}
 			>
 				{label}
 			</Label>
@@ -95,10 +101,11 @@ export const NativeSelect = factory(function NativeSelect({
 				<select
 					key="native-select"
 					onchange={(event: Event) => {
-						const targetElement = event.target as HTMLInputElement;
-						selectedValue !== icache.get('value') &&
-							icache.set('value', targetElement.value);
-						onValue && onValue(targetElement.value);
+						const { value } = event.target as HTMLInputElement;
+						if (value !== icache.get('value')) {
+							icache.set('value', value);
+							onValue && onValue(value);
+						}
 					}}
 					disabled={disabled}
 					name={name}
@@ -111,8 +118,9 @@ export const NativeSelect = factory(function NativeSelect({
 					onblur={() => {
 						onBlur && onBlur();
 					}}
-					class={themedCss.select}
+					classes={themedCss.select}
 				>
+					{!initialValue && <option key="blank-option" value="" />}
 					{options.map(({ value, label, disabled = false }, index) => {
 						return (
 							<option

@@ -103,7 +103,8 @@ export const Menu = factory(function Menu({
 		onValue,
 		options,
 		widgetId,
-		total
+		total,
+		theme: themeProp
 	} = properties();
 
 	function setActiveIndex(index: number) {
@@ -239,7 +240,7 @@ export const Menu = factory(function Menu({
 			</MenuItem>
 		);
 
-		return divider ? [item, <hr classes={classes.divider} />] : item;
+		return divider ? [item, <hr classes={themedCss.divider} />] : item;
 	}
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -258,7 +259,8 @@ export const Menu = factory(function Menu({
 			onRequestActive: () => {},
 			onActive: () => {},
 			scrollIntoView: false,
-			widgetId: 'offcreen'
+			widgetId: 'offcreen',
+			theme: themeProp
 		};
 
 		const menuItemChild = itemRenderer
@@ -289,7 +291,7 @@ export const Menu = factory(function Menu({
 	const idBase = widgetId || `menu-${id}`;
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
 	const totalContentHeight = total * itemHeight;
@@ -326,7 +328,7 @@ export const Menu = factory(function Menu({
 	return (
 		<div
 			key="root"
-			classes={classes.menu}
+			classes={[themedCss.root, fixedCss.root]}
 			tabIndex={focusable ? 0 : -1}
 			onkeydown={onKeyDown}
 			focus={() => shouldFocus}

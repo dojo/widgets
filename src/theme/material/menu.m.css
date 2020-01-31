@@ -1,0 +1,10 @@
+.root {
+	padding: 8px 0;
+	background: var(--mdc-theme-surface);
+	composes: mdc-menu from '@material/menu/dist/mdc.menu.css';
+	composes: mdc-list from '@material/list/dist/mdc.list.css';
+}
+
+.divider {
+	composes: mdc-list-divider from '@material/list/dist/mdc.list.css';
+}

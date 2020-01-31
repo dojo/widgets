@@ -13,6 +13,7 @@ import theme from '../middleware/theme';
 import { PopupPosition } from '../popup';
 import TriggerPopup from '../trigger-popup';
 import * as menuCss from '../theme/default/menu.m.css';
+import * as labelCss from '../theme/default/label.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './select.nls';
 
@@ -115,12 +116,17 @@ export const Select = factory(function Select({
 		>
 			{label && (
 				<Label
-					theme={themeProp}
+					theme={theme.compose(
+						labelCss,
+						css,
+						'label'
+					)}
 					classes={classes}
 					disabled={disabled}
 					forId={triggerId}
 					valid={valid}
 					required={required}
+					active={!!(value || icache.get('expanded'))}
 				>
 					{label}
 				</Label>

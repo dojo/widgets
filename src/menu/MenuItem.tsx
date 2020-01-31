@@ -21,7 +21,7 @@ const factory = create({ theme }).properties<MenuItemProperties>();
 export const MenuItem = factory(function MenuItem({ properties, children, middleware: { theme } }) {
 	const { onSelect, active = false, onRequestActive, disabled = false, widgetId } = properties();
 
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 
 	function select() {
 		!disabled && onSelect();
@@ -38,7 +38,7 @@ export const MenuItem = factory(function MenuItem({ properties, children, middle
 			onpointermove={throttle(() => {
 				requestActive();
 			}, 500)}
-			classes={[classes.root, active && classes.active, disabled && classes.disabled]}
+			classes={[themedCss.root, active && themedCss.active, disabled && themedCss.disabled]}
 			onpointerdown={() => {
 				requestActive();
 				select();

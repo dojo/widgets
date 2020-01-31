@@ -84,11 +84,6 @@
 	border-color: var(--color-border-strong);
 }
 
-/* Focus */
-.focused label {
-	color: var(--color-highlight);
-}
-
 .focused {
 	border-color: var(--color-highlight);
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);

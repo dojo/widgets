@@ -104,12 +104,13 @@ describe('Select', () => {
 		const optionalPropertyTemplate = baseTemplate
 			.prepend('@root', () => [
 				<Label
-					theme={undefined}
+					theme={{}}
 					classes={undefined}
 					disabled={undefined}
 					forId={'id'}
 					valid={undefined}
 					required={true}
+					active={false}
 				>
 					test-label
 				</Label>

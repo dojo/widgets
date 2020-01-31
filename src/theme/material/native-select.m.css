@@ -1,5 +1,26 @@
 .root {
+	composes: mdc-select from '@material/select/dist/mdc.select.css';
 }
 
-.disabled {
+.inputWrapper {
+	composes: mdc-select__anchor from '@material/select/dist/mdc.select.css';
+	width: 100%;
+}
+
+.select {
+	composes: mdc-select__selected-text from '@material/select/dist/mdc.select.css';
+	appearance: none;
+	-webkit-appearance: none;
+	cursor: pointer;
+	min-width: 100%;
+	border-radius: 0;
+}
+
+.arrow {
+	composes: mdc-select__dropdown-icon from '@material/select/dist/mdc.select.css';
+}
+
+.labelRoot {
+	composes: mdc-floating-label from '@material/select/dist/mdc.select.css';
+	z-index: 10;
 }
