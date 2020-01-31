@@ -1,6 +1,5 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import Focus from '../meta/Focus';
 import { v } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/default/calendar.m.css';
@@ -75,7 +74,6 @@ export class CalendarCell extends ThemedMixin(WidgetBase)<CalendarCellProperties
 		} = this.properties;
 
 		if (callFocus) {
-			this.meta(Focus).set('root');
 			onFocusCalled && onFocusCalled();
 		}
 
@@ -83,6 +81,7 @@ export class CalendarCell extends ThemedMixin(WidgetBase)<CalendarCellProperties
 			'td',
 			{
 				key: 'root',
+				focus: callFocus,
 				role: 'gridcell',
 				'aria-selected': `${selected}`,
 				tabIndex: focusable ? 0 : -1,

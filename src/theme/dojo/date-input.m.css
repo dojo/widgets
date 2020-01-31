@@ -1,0 +1,30 @@
+@import './variables.css';
+
+.root {
+}
+
+.input {
+}
+
+.toggleCalendarButton {
+	min-width: unset;
+	background: none;
+	border: none;
+}
+
+.toggleCalendarButton:hover,
+.toggleCalendarButton:focus {
+	box-shadow: none;
+}
+
+.popup {
+	display: inline-block;
+	background: var(--color-background);
+}
+
+/* include .root prefix to ensure this overrides the default styling */
+.root .inputTrailing {
+	background: none;
+	padding-bottom: 0;
+	padding-top: 0;
+}
