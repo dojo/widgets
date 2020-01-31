@@ -1,2 +1,14 @@
+.root {
+	composes: mdc-linear-progress from '@material/linear-progress/dist/mdc.linear-progress.css';
+}
+
+.output {
+}
+
+.bar {
+	composes: mdc-linear-progress__buffer from '@material/linear-progress/dist/mdc.linear-progress.css';
+}
+
 .progress {
+	composes: mdc-linear-progress__bar-inner from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
