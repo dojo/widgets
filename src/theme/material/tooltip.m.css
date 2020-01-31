@@ -1,2 +1,47 @@
+@import './variables.css';
+
+:root {
+	/* Spacing */
+	--mdc-tooltip-grid-base: 8px;
+	--mdc-tooltip-spacing-regular: var(--grid-base);
+
+	/* Color */
+	--mdc-tooltip-grey-background: rgba(97, 97, 97, 0.9); /* The theme grey background color */
+
+	/* Border */
+	--mdc-tooltip-border-radius: 6px;
+}
+
 .root {
+	font-family: var(--mdc-theme-font-family);
+}
+
+.content {
+	background-color: var(--mdc-tooltip-grey-background);
+	border-radius: var(--mdc-tooltip-border-radius);
+	color: var(--mdc-theme-surface);
+	padding: var(--mdc-tooltip-spacing-regular) calc(var(--mdc-tooltip-spacing-regular) * 2);
+	font-size: var(--mdc-theme-font-size-small);
+	line-height: calc(var(--mdc-tooltip-font-size) * 1.6);
+	z-index: var(--zindex-tooltip);
+}
+
+.bottom .content {
+	margin: var(--mdc-tooltip-spacing-regular) 0 0;
+	transform: translate(-50%, calc(100% + var(--mdc-tooltip-grid-base)));
+}
+
+.top .content {
+	margin: 0 0 var(--mdc-tooltip-spacing-regular);
+	transform: translate(-50%, calc(-100% - var(--mdc-tooltip-grid-base)));
+}
+
+.left .content {
+	margin: 0 var(--mdc-tooltip-spacing-regular) 0 0;
+	transform: translate(calc(-100% - var(--mdc-tooltip-grid-base)), -50%);
+}
+
+.right .content {
+	margin: 0 0 0 var(--mdc-tooltip-spacing-regular);
+	transform: translate(calc(100% + var(--mdc-tooltip-grid-base)), -50%);
 }
