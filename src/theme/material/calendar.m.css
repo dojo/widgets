@@ -1,6 +1,7 @@
 @import './variables.css';
 
 .root {
+	border: 1px solid black;
 	position: relative;
 	width: calc(var(--grid-base) * 32);
 	font-family: Roboto, sans-serif;
@@ -12,7 +13,7 @@
 
 .monthTrigger {
 	padding-right: calc(var(--grid-base) * 0.75);
-	padding-left: calc(var(--grid-base) * 0.5);
+	padding-left: calc(var(--grid-base) * 1);
 }
 
 .datePicker {
@@ -39,6 +40,7 @@
 .weekday .abbreviation {
 	font-weight: 300;
 	text-decoration: none;
+	color: var(--disabled-color);
 }
 
 .selectedDate {
@@ -84,11 +86,45 @@
 	right: calc(var(--grid-base) * 9);
 }
 
-.yearRadio {
+.yearRadio,
+.monthRadio {
 	height: calc(var(--grid-base) * 4);
 	width: calc(var(--grid-base) * 7);
+	display: inline-flex;
+	margin-left: calc(var(--grid-base) * -0.5);
+	align-items: center;
+	justify-content: center;
 }
 
-.yearRadioInput {
+.yearRadioChecked,
+.monthRadioChecked {
+	position: relative;
+	z-index: 0;
+}
+.yearRadioChecked:before,
+.monthRadioChecked:before {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	width: calc(var(--grid-base) * 6.5);
+	height: calc(var(--grid-base) * 3.5);
+	border-radius: calc(var(--grid-base) * 2);
+	content: '';
+	z-index: -1;
+	background-color: var(--mdc-theme-primary);
+}
+
+.yearRadioChecked .yearRadioLabel,
+.monthRadioChecked .monthRadioLabel {
+	color: var(--mdc-theme-on-primary);
+}
+
+.monthRadio,
+.monthRadioLabel[title] {
+	text-decoration: none;
+}
+
+.yearRadioInput,
+.monthRadioInput {
 	display: none;
 }
