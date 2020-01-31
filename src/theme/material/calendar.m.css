@@ -37,7 +37,7 @@
 	color: var(--disabled-color);
 }
 
-.weekday .abbreviation {
+.weekday .abbr {
 	font-weight: 300;
 	text-decoration: none;
 	color: var(--disabled-color);
