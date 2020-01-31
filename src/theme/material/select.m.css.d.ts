@@ -8,3 +8,4 @@ export const value: string;
 export const arrow: string;
 export const labelRoot: string;
 export const menuWrapper: string;
+export const iconIcon: string;

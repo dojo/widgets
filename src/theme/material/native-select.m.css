@@ -24,3 +24,7 @@
 	composes: mdc-floating-label from '@material/select/dist/mdc.select.css';
 	z-index: 10;
 }
+
+.iconIcon {
+	display: none;
+}
