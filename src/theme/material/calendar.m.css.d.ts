@@ -5,7 +5,7 @@ export const topMatter: string;
 export const weekday: string;
 export const date: string;
 export const inactiveDate: string;
-export const abbreviation: string;
+export const abbr: string;
 export const selectedDate: string;
 export const todayDate: string;
 export const controls: string;

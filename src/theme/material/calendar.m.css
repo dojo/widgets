@@ -1,7 +1,6 @@
 @import './variables.css';
 
 .root {
-	border: 1px solid black;
 	position: relative;
 	width: calc(var(--grid-base) * 32);
 	font-family: Roboto, sans-serif;
