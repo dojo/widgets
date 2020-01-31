@@ -86,11 +86,7 @@ const expected = function({
 						required={required}
 						hidden={false}
 						forId={''}
-						classes={{
-							'@dojo/widgets/label': {
-								root: [css.label]
-							}
-						}}
+						active={false}
 					>
 						foo
 					</Label>

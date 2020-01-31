@@ -27,12 +27,14 @@ export interface LabelProperties extends ThemedProperties {
 	valid?: boolean;
 	/** ID of the underlying label element */
 	widgetId?: string;
+	/** Indicates that the label or it's control are active, will add extra style class */
+	active?: boolean;
 }
 
 @theme(css)
 export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
 	protected getRootClasses(): (string | null)[] {
-		const { disabled, focused, valid, readOnly, required, secondary } = this.properties;
+		const { disabled, focused, valid, readOnly, required, secondary, active } = this.properties;
 		return [
 			css.root,
 			disabled ? css.disabled : null,
@@ -41,7 +43,8 @@ export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
 			valid === false ? css.invalid : null,
 			readOnly ? css.readonly : null,
 			required ? css.required : null,
-			secondary ? css.secondary : null
+			secondary ? css.secondary : null,
+			active ? css.active : null
 		];
 	}
 

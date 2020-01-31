@@ -6,3 +6,4 @@ export const required: string;
 export const disabled: string;
 export const focused: string;
 export const secondary: string;
+export const active: string;
