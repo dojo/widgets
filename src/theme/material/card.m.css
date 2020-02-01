@@ -1,0 +1,47 @@
+@import './variables.css';
+
+.root {
+	composes: mdc-card from '@material/card/dist/mdc.card.css';
+}
+
+.actions {
+	composes: mdc-card__action from '@material/card/dist/mdc.card.css';
+}
+
+.actionButtons {
+	composes: mdc-card__action-buttons from '@material/card/dist/mdc.card.css';
+}
+
+.actionIcons {
+	composes: mdc-card__action-icons from '@material/card/dist/mdc.card.css';
+}
+
+.media {
+	composes: mdc-card__media from '@material/card/dist/mdc.card.css';
+}
+
+.mediaContent {
+	composes: card__media from '@material/card/dist/mdc.card.css';
+}
+
+.mediaSquare::before {
+	margin-top: 100%;
+}
+
+.media16by9::before {
+	margin-top: 56.25%;
+}
+
+.media::before {
+	display: block;
+	content: '';
+}
+
+.primary {
+	composes: mdc-card__primary-action from '@material/card/dist/mdc.card.css';
+	padding: 1rem 1rem 0rem 1rem;
+}
+
+.secondary {
+	padding: 0 1rem var(--grid-base);
+}
