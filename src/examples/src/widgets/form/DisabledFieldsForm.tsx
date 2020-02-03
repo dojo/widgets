@@ -37,14 +37,14 @@ const App = factory(function({ middleware: { icache } }) {
 								key="firstName"
 								label="First Name"
 								placeholder="Enter first name	"
-								value={firstName.value()}
+								initialValue={firstName.value()}
 								onValue={firstName.value}
 							/>
 							<TextInput
 								key="middleName"
 								label="Middle Name"
 								placeholder="Enter a middle name"
-								value={middleName.value()}
+								initialValue={middleName.value()}
 								onValue={middleName.value}
 								disabled={true}
 							/>
@@ -52,14 +52,14 @@ const App = factory(function({ middleware: { icache } }) {
 								key="lastName"
 								label="Last Name"
 								placeholder="Enter a last name"
-								value={lastName.value()}
+								initialValue={lastName.value()}
 								onValue={lastName.value}
 							/>
 							<TextInput
 								key="email"
 								label="Email"
 								placeholder="Enter an email address"
-								value={email.value()}
+								initialValue={email.value()}
 								onValue={email.value}
 								type="email"
 								disabled={email.disabled()}

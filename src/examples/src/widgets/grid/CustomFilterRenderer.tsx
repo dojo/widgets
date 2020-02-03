@@ -102,7 +102,7 @@ export default factory(function CustomFilterRenderer() {
 							label={`Filter by ${title}`}
 							labelHidden={true}
 							type="search"
-							value={filterValue}
+							initialValue={filterValue}
 							onValue={doFilter}
 						/>
 					);

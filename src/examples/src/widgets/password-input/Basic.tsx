@@ -1,12 +1,9 @@
-import icache from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import PasswordInput from '@dojo/widgets/password-input';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Basic({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', '');
-
+export default factory(function Basic() {
 	return (
 		<PasswordInput
 			rules={{
@@ -20,8 +17,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 					numbers: 1
 				}
 			}}
-			value={value}
-			onValue={(value) => icache.set('value', value)}
 			label="Enter Password"
 		/>
 	);

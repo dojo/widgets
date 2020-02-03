@@ -1,20 +1,10 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
 import TextInput from '@dojo/widgets/text-input';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Basic({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', 'disabled input text');
+export default factory(function Basic() {
 	return (
-		<TextInput
-			value={value}
-			label="Can't type here"
-			disabled
-			readOnly
-			onValue={(value) => {
-				icache.set('value', value);
-			}}
-		/>
+		<TextInput initialValue="disabled input text" label="Can't type here" disabled readOnly />
 	);
 });

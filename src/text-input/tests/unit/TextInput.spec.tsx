@@ -214,7 +214,6 @@ registerSuite('TextInput', {
 					name="bar"
 					placeholder="baz"
 					type="email"
-					value="hello world"
 				/>
 			));
 
@@ -228,8 +227,7 @@ registerSuite('TextInput', {
 						minlength: '10',
 						name: 'bar',
 						placeholder: 'baz',
-						type: 'email',
-						value: 'hello world'
+						type: 'email'
 					}
 				})
 			);
@@ -396,9 +394,12 @@ registerSuite('TextInput', {
 
 			let validateSpy = sinon.spy();
 
-			let h = harness(() => <TextInput value="test value" onValidate={validateSpy} />, {
-				middleware: [[focus, focusMock], [validity, validityMock]]
-			});
+			let h = harness(
+				() => <TextInput initialValue="test value" onValidate={validateSpy} />,
+				{
+					middleware: [[focus, focusMock], [validity, validityMock]]
+				}
+			);
 
 			h.expect(assertionTemplate(() => expected({ value: 'test value' })));
 
@@ -406,10 +407,11 @@ registerSuite('TextInput', {
 
 			validityMock('input', { valid: true, message: '' });
 
-			h = harness(() => <TextInput value="test value" onValidate={validateSpy} />, {
+			h = harness(() => <TextInput initialValue="test value" onValidate={validateSpy} />, {
 				middleware: [[focus, focusMock], [validity, validityMock]]
 			});
 
+			h.trigger('@input', '');
 			h.expect(assertionTemplate(() => expected({ value: 'test value' })));
 
 			assert.isTrue(validateSpy.calledWith(true, ''));
@@ -427,7 +429,7 @@ registerSuite('TextInput', {
 			const h = harness(
 				() => (
 					<TextInput
-						value="test value"
+						initialValue="test value"
 						valid={{ valid: false, message: 'test' }}
 						onValidate={validateSpy}
 					/>
@@ -462,7 +464,7 @@ registerSuite('TextInput', {
 			const h = harness(
 				() => (
 					<TextInput
-						value="test value"
+						initialValue="test value"
 						onValidate={validateSpy}
 						customValidator={customValidatorSpy}
 					/>
@@ -488,7 +490,7 @@ registerSuite('TextInput', {
 			const h = harness(
 				() => (
 					<TextInput
-						value="test value"
+						initialValue="test value"
 						onValidate={validateSpy}
 						customValidator={customValidatorSpy}
 					/>
@@ -516,7 +518,7 @@ registerSuite('TextInput', {
 			const h = harness(
 				() => (
 					<TextInput
-						value="test value"
+						initialValue="test value"
 						onValidate={validateSpy}
 						customValidator={customValidatorSpy}
 					/>
@@ -627,7 +629,7 @@ registerSuite('TextInput', {
 								required: value as string
 							};
 						}}
-						value={editedValues ? editedValues.required : values.required}
+						initialValue={editedValues ? editedValues.required : values.required}
 						valid={validityValue}
 						onValidate={(valid, message) => (validityValue = { valid, message })}
 						placeholder={placeholder}

@@ -5,11 +5,9 @@ import TextInput from '@dojo/widgets/text-input';
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', '');
 	const valid = icache.get<{ valid?: boolean; message?: string }>('valid');
 	return (
 		<TextInput
-			value={value}
 			label="Type 'foo' or 'bar'"
 			valid={valid}
 			required
@@ -17,9 +15,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 				icache.set('valid', { valid, message });
 			}}
 			pattern="foo|bar"
-			onValue={(value) => {
-				icache.set('value', value);
-			}}
 		/>
 	);
 });

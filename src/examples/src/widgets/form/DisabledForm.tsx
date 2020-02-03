@@ -37,7 +37,7 @@ const App = factory(function({ middleware: { icache } }) {
 								key="firstName"
 								label="First Name"
 								placeholder="Enter first name"
-								value={firstName.value()}
+								initialValue={firstName.value()}
 								onValue={firstName.value}
 								disabled={firstName.disabled()}
 							/>
@@ -45,7 +45,7 @@ const App = factory(function({ middleware: { icache } }) {
 								key="middleName"
 								label="Middle Name"
 								placeholder="Enter a middle name"
-								value={middleName.value()}
+								initialValue={middleName.value()}
 								onValue={middleName.value}
 								disabled={middleName.disabled()}
 							/>
@@ -53,7 +53,7 @@ const App = factory(function({ middleware: { icache } }) {
 								key="lastName"
 								label="Last Name"
 								placeholder="Enter a last name"
-								value={lastName.value()}
+								initialValue={lastName.value()}
 								onValue={lastName.value}
 								disabled={lastName.disabled()}
 							/>
@@ -61,7 +61,7 @@ const App = factory(function({ middleware: { icache } }) {
 								key="email"
 								label="Email"
 								placeholder="Enter an email address"
-								value={email.value()}
+								initialValue={email.value()}
 								onValue={email.value}
 								type="email"
 								disabled={email.disabled()}

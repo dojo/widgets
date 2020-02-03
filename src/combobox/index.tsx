@@ -322,7 +322,7 @@ export class ComboBox extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<Com
 			onValidate,
 			readOnly,
 			required,
-			value
+			initialValue: value
 		});
 	}
 

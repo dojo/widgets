@@ -118,7 +118,7 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 							label: `Edit ${rawValue}`,
 							labelHidden: true,
 							focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
-							value: this._editingValue,
+							initialValue: this._editingValue,
 							onValue: this._onInput,
 							onBlur: this._onBlur,
 							onKeyDown: this._onKeyDown

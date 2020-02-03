@@ -5,14 +5,16 @@ import TextInput from '@dojo/widgets/text-input';
 const factory = create({ icache });
 
 const Example = factory(function({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', '');
 	return (
-		<TextInput
-			value={value}
-			onValue={(value) => {
-				icache.set('value', value);
-			}}
-		/>
+		<virtual>
+			<TextInput
+				initialValue="Hello, Dojo!"
+				onValue={(value) => {
+					icache.set('value', value);
+				}}
+			/>
+			<div>The value text input is: "{icache.getOrSet('value', '')}"</div>
+		</virtual>
 	);
 });
 
