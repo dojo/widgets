@@ -1,9 +1,10 @@
+import createValidityMock from '@dojo/framework/testing/mocks/middleware/validity';
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 import { v, w, tsx } from '@dojo/framework/core/vdom';
-import Focus from '../../../meta/Focus';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
@@ -13,12 +14,11 @@ import {
 	compareForId,
 	compareId,
 	createHarness,
-	MockMetaMixin,
 	noop,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
-import InputValidity from '@dojo/framework/core/meta/InputValidity';
+import validity from '@dojo/framework/core/middleware/validity';
 
 const harness = createHarness([compareId, compareForId]);
 
@@ -27,16 +27,16 @@ interface States {
 	required?: boolean;
 	readOnly?: boolean;
 	valid?: { valid?: boolean; message?: string } | boolean;
+	focused?: boolean;
 }
 
 const expected = function(
 	label = false,
 	inputOverrides = {},
 	states: States = {},
-	focused = false,
 	helperText?: string
 ) {
-	const { disabled, required, readOnly, valid: validState } = states;
+	const { disabled, required, readOnly, valid: validState, focused } = states;
 	let valid: boolean | undefined;
 	let message: string | undefined;
 
@@ -56,11 +56,11 @@ const expected = function(
 			classes: [
 				css.root,
 				disabled ? css.disabled : null,
-				focused ? css.focused : null,
 				valid === false ? css.invalid : null,
 				valid === true ? css.valid : null,
 				readOnly ? css.readonly : null,
-				required ? css.required : null
+				required ? css.required : null,
+				focused ? css.focused : null
 			]
 		},
 		[
@@ -71,12 +71,13 @@ const expected = function(
 							theme: undefined,
 							classes: undefined,
 							disabled,
-							focused,
 							hidden: undefined,
 							valid,
 							readOnly,
 							required,
-							forId: ''
+							forId: '',
+							active: false,
+							focused: false
 						},
 						['foo']
 				  )
@@ -161,6 +162,10 @@ const textarea = () => (
 	</div>
 );
 
+const valueAssertion = baseAssertion
+	.setProperty('@input', 'value', 'test value')
+	.setProperty('~helperText', 'valid', undefined);
+
 registerSuite('Textarea', {
 	tests: {
 		'default properties'() {
@@ -225,11 +230,11 @@ registerSuite('Textarea', {
 					.setProperty(':root', 'classes', [
 						css.root,
 						css.disabled,
-						null,
 						css.invalid,
 						null,
 						css.readonly,
-						css.required
+						css.required,
+						null
 					])
 					.setProperty('@input', 'aria-invalid', 'true')
 					.setProperty('@input', 'aria-readonly', 'true')
@@ -257,22 +262,9 @@ registerSuite('Textarea', {
 			);
 		},
 
-		'focused class'() {
-			const mockMeta = sinon.stub();
-			const mockFocusGet = sinon.stub().returns({
-				active: false,
-				containsFocus: true
-			});
-			mockMeta.withArgs(Focus).returns({
-				get: mockFocusGet
-			});
-			const h = harness(() => w(MockMetaMixin(TextArea, mockMeta), {}));
-			h.expect(() => expected(false, {}, {}, true));
-		},
-
 		helperText() {
 			const h = harness(() => w(TextArea, { helperText: 'test' }));
-			h.expect(() => expected(false, {}, {}, false, 'test'));
+			h.expect(() => expected(false, {}, {}, 'test'));
 		},
 
 		events() {
@@ -296,133 +288,123 @@ registerSuite('Textarea', {
 		},
 
 		onValidate() {
-			const mockMeta = sinon.stub();
+			let mockValidity = createValidityMock();
+
 			let validateSpy = sinon.spy();
 
-			mockMeta.withArgs(InputValidity).returns({
-				get: sinon.stub().returns({ valid: false, message: 'test' })
+			mockValidity('input', { valid: false, message: 'test' });
+
+			let h = harness(() => <TextArea value="test value" onValidate={validateSpy} />, {
+				middleware: [[validity, mockValidity]]
 			});
 
-			mockMeta.withArgs(Focus).returns({
-				get: () => ({ active: false, containsFocus: false })
-			});
-
-			harness(() =>
-				w(MockMetaMixin(TextArea, mockMeta), {
-					value: 'test value',
-					onValidate: validateSpy
-				})
-			);
-
+			h.expect(valueAssertion);
 			assert.isTrue(validateSpy.calledWith(false, 'test'));
 
-			mockMeta.withArgs(InputValidity).returns({
-				get: sinon.stub().returns({ valid: true, message: '' })
+			mockValidity = createValidityMock();
+
+			h = harness(() => <TextArea value="test value" onValidate={validateSpy} />, {
+				middleware: [[validity, mockValidity]]
 			});
+			mockValidity('input', { valid: true, message: 'test' });
+			h.expect(valueAssertion);
 
-			harness(() =>
-				w(MockMetaMixin(TextArea, mockMeta), {
-					value: 'test value',
-					onValidate: validateSpy
-				})
-			);
-
-			assert.isTrue(validateSpy.calledWith(true, ''));
+			assert.isTrue(validateSpy.calledWith(true, 'test'));
 		},
 
 		'onValidate only called when validity or message changed'() {
-			const mockMeta = sinon.stub();
+			const mockValidity = createValidityMock();
 			let validateSpy = sinon.spy();
 
-			mockMeta.withArgs(InputValidity).returns({
-				get: sinon.stub().returns({ valid: false, message: 'test' })
-			});
+			mockValidity('input', { valid: false, message: 'test' });
 
-			mockMeta.withArgs(Focus).returns({
-				get: () => ({ active: false, containsFocus: false })
-			});
-
-			harness(() =>
-				w(MockMetaMixin(TextArea, mockMeta), {
-					value: 'test value',
-					valid: { valid: false, message: 'test' },
-					onValidate: validateSpy
-				})
+			harness(
+				() => (
+					<TextArea
+						value="test value"
+						valid={{ valid: false, message: 'test' }}
+						onValidate={validateSpy}
+					/>
+				),
+				{
+					middleware: [[validity, mockValidity]]
+				}
 			);
 
 			assert.isFalse(validateSpy.called);
 		},
 
 		'customValidator not called when native validation fails'() {
-			const mockMeta = sinon.stub();
+			const mockValidity = createValidityMock();
 			let validateSpy = sinon.spy();
 			let customValidatorSpy = sinon.spy();
 
-			mockMeta.withArgs(InputValidity).returns({
-				get: sinon.stub().returns({ valid: false, message: 'test' })
-			});
+			mockValidity('input', { valid: false, message: 'test' });
 
-			mockMeta.withArgs(Focus).returns({
-				get: () => ({ active: false, containsFocus: false })
-			});
-
-			harness(() =>
-				w(MockMetaMixin(TextArea, mockMeta), {
-					value: 'test value',
-					onValidate: validateSpy,
-					customValidator: customValidatorSpy
-				})
+			harness(
+				() => (
+					<TextArea
+						value="test value"
+						onValidate={validateSpy}
+						customValidator={customValidatorSpy}
+					/>
+				),
+				{
+					middleware: [[validity, mockValidity]]
+				}
 			);
 
 			assert.isFalse(customValidatorSpy.called);
 		},
 
 		'customValidator called when native validation succeeds'() {
-			const mockMeta = sinon.stub();
+			const mockValidity = createValidityMock();
 			let validateSpy = sinon.spy();
 			let customValidatorSpy = sinon.spy();
 
-			mockMeta.withArgs(InputValidity).returns({
-				get: sinon.stub().returns({ valid: true })
-			});
+			mockValidity('input', { valid: true });
 
-			mockMeta.withArgs(Focus).returns({
-				get: () => ({ active: false, containsFocus: false })
-			});
-
-			harness(() =>
-				w(MockMetaMixin(TextArea, mockMeta), {
-					value: 'test value',
-					onValidate: validateSpy,
-					customValidator: customValidatorSpy
-				})
+			const h = harness(
+				() => (
+					<TextArea
+						value="test value"
+						onValidate={validateSpy}
+						customValidator={customValidatorSpy}
+					/>
+				),
+				{
+					middleware: [[validity, mockValidity]]
+				}
 			);
+
+			h.expect(valueAssertion);
 
 			assert.isTrue(customValidatorSpy.called);
 		},
 
 		'customValidator can change the validation outcome'() {
-			const mockMeta = sinon.stub();
+			const mockValidity = createValidityMock();
 			let validateSpy = sinon.spy();
 			let customValidatorSpy = sinon
 				.stub()
 				.returns({ valid: false, message: 'custom message' });
 
-			mockMeta.withArgs(InputValidity).returns({
-				get: sinon.stub().returns({ valid: true })
-			});
+			mockValidity('input', { valid: true });
 
-			mockMeta.withArgs(Focus).returns({
-				get: () => ({ active: false, containsFocus: false })
-			});
-
-			harness(() =>
-				w(MockMetaMixin(TextArea, mockMeta), {
-					value: 'test value',
-					onValidate: validateSpy,
-					customValidator: customValidatorSpy
-				})
+			const h = harness(
+				() => (
+					<TextArea
+						value="test value"
+						onValidate={validateSpy}
+						customValidator={customValidatorSpy}
+					/>
+				),
+				{
+					middleware: [[validity, mockValidity]]
+				}
 			);
+
+			h.expect(valueAssertion);
 
 			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
 		}

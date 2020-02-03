@@ -1,17 +1,14 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { v, w } from '@dojo/framework/core/vdom';
-import Focus from '../meta/Focus';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
-import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/default/text-area.m.css';
 import HelperText from '../helper-text/index';
-import { InputValidity } from '@dojo/framework/core/meta/InputValidity';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import focus from '@dojo/framework/core/middleware/focus';
+import validity from '@dojo/framework/core/middleware/validity';
 
-export interface TextAreaProperties extends ThemedProperties, FocusProperties {
+export interface TextAreaProperties extends ThemeProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Number of columns, controls the width of the textarea */
@@ -32,24 +29,34 @@ export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	minLength?: number | string;
 	/** The name of the field */
 	name?: string;
+
 	/** Handler for when the element is blurred */
 	onBlur?(): void;
+
 	/** Handler of when the element is clicked */
 	onClick?(): void;
+
 	/** Handler for when the element is focused */
 	onFocus?(): void;
+
 	/** Handler for when a key is depressed in the element */
 	onKeyDown?(key: number, preventDefault: () => void): void;
+
 	/** Handler for when a key is released in the element */
 	onKeyUp?(key: number, preventDefault: () => void): void;
+
 	/** Handler for when the pointer moves out of the element */
 	onOut?(): void;
+
 	/** Handler for when the pointer moves over the element */
 	onOver?(): void;
+
 	/** Called when TextArea's state is validated */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+
 	/** Handler for when the value of the widget changes */
 	onValue?(value?: string): void;
+
 	/** Placeholder text displayed in an empty TextArea */
 	placeholder?: string;
 	/** Makes the field readonly (it may be focused but not changed) */
@@ -68,34 +75,25 @@ export interface TextAreaProperties extends ThemedProperties, FocusProperties {
 	wrapText?: 'hard' | 'soft' | 'off';
 }
 
-@theme(css)
-export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProperties> {
-	private _dirty = false;
+export interface TextAreaICache {
+	dirty: boolean;
+}
 
-	private _onInput(event: Event) {
-		event.stopPropagation();
-		this.properties.onValue &&
-			this.properties.onValue((event.target as HTMLInputElement).value);
-	}
+const factory = create({
+	icache: createICacheMiddleware<TextAreaICache>(),
+	theme,
+	focus,
+	validity
+}).properties<TextAreaProperties>();
+export const TextArea = factory(function TextArea({
+	id,
+	middleware: { icache, theme, focus, validity },
+	properties
+}) {
+	const themeCss = theme.classes(css);
 
-	private _onKeyDown(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyDown &&
-			this.properties.onKeyDown(event.which, () => {
-				event.preventDefault();
-			});
-	}
-
-	private _onKeyUp(event: KeyboardEvent) {
-		event.stopPropagation();
-		this.properties.onKeyUp &&
-			this.properties.onKeyUp(event.which, () => {
-				event.preventDefault();
-			});
-	}
-
-	private _callOnValidate(valid: boolean | undefined, message: string) {
-		let { valid: previousValid } = this.properties;
+	function callOnValidate(valid: boolean | undefined, message: string) {
+		let { valid: previousValid, onValidate } = properties();
 		let previousMessage: string | undefined;
 
 		if (typeof previousValid === 'object') {
@@ -104,20 +102,22 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 		}
 
 		if (valid !== previousValid || message !== previousMessage) {
-			this.properties.onValidate && this.properties.onValidate(valid, message);
+			onValidate && onValidate(valid, message);
 		}
 	}
 
-	private _validate() {
-		const { customValidator, value = '' } = this.properties;
+	function validate() {
+		const { customValidator, value = '' } = properties();
+		const dirty = icache.getOrSet('dirty', false);
 
-		if (value === '' && !this._dirty) {
-			this._callOnValidate(undefined, '');
+		if (value === '' && !dirty) {
+			callOnValidate(undefined, '');
 			return;
 		}
 
-		this._dirty = true;
-		let { valid, message = '' } = this.meta(InputValidity).get('input', value);
+		icache.set('dirty', true);
+
+		let { valid, message = '' } = validity.get('input', value || '');
 		if (valid && customValidator) {
 			const customValid = customValidator(value);
 			if (customValid) {
@@ -125,11 +125,12 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 				message = customValid.message || '';
 			}
 		}
-		this._callOnValidate(valid, message);
+
+		callOnValidate(valid, message);
 	}
 
-	protected get validity() {
-		const { valid = { valid: undefined, message: undefined } } = this.properties;
+	function getValidity() {
+		const { valid = { valid: undefined, message: undefined } } = properties();
 
 		if (typeof valid === 'boolean') {
 			return { valid, message: undefined };
@@ -141,130 +142,133 @@ export class TextArea extends ThemedMixin(FocusMixin(WidgetBase))<TextAreaProper
 		};
 	}
 
-	private _uuid = uuid();
+	const {
+		aria = {},
+		columns = 20,
+		disabled,
+		widgetId = `textarea-${id}`,
+		label,
+		maxLength,
+		minLength,
+		name,
+		placeholder,
+		readOnly,
+		required,
+		rows = 2,
+		value,
+		wrapText,
+		theme: themeProp,
+		classes,
+		labelHidden,
+		helperText,
+		onValidate,
+		onBlur,
+		onFocus,
+		onClick,
+		onOver,
+		onOut
+	} = properties();
 
-	protected getRootClasses(): (string | null)[] {
-		const { disabled, readOnly, required } = this.properties;
-		const focus = this.meta(Focus).get('root');
-		const { valid } = this.validity;
-		return [
-			css.root,
-			disabled ? css.disabled : null,
-			focus.containsFocus ? css.focused : null,
-			valid === false ? css.invalid : null,
-			valid === true ? css.valid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
-	}
+	onValidate && validate();
+	const { valid, message } = getValidity();
 
-	render(): DNode {
-		const {
-			aria = {},
-			columns = 20,
-			disabled,
-			widgetId = this._uuid,
-			label,
-			maxLength,
-			minLength,
-			name,
-			placeholder,
-			readOnly,
-			required,
-			rows = 2,
-			value,
-			wrapText,
-			theme,
-			classes,
-			labelHidden,
-			helperText,
-			onValidate,
-			onBlur,
-			onFocus,
-			onClick,
-			onOver,
-			onOut
-		} = this.properties;
-		const focus = this.meta(Focus).get('root');
+	const computedHelperText = (valid === false && message) || helperText;
 
-		onValidate && this._validate();
-		const { valid, message } = this.validity;
-
-		const computedHelperText = (valid === false && message) || helperText;
-
-		return v(
-			'div',
-			{
-				key: 'root',
-				classes: this.theme(this.getRootClasses())
-			},
-			[
-				label
-					? w(
-							Label,
-							{
-								theme,
-								classes,
-								disabled,
-								focused: focus.containsFocus,
-								valid,
-								readOnly,
-								required,
-								hidden: labelHidden,
-								forId: widgetId
-							},
-							[label]
-					  )
-					: null,
-				v('div', { classes: this.theme(css.inputWrapper) }, [
-					v('textarea', {
-						id: widgetId,
-						key: 'input',
-						...formatAriaProperties(aria),
-						classes: this.theme(css.input),
-						cols: `${columns}`,
-						disabled,
-						focus: this.shouldFocus,
-						'aria-invalid': valid === false ? 'true' : null,
-						maxlength: maxLength ? `${maxLength}` : null,
-						minlength: minLength ? `${minLength}` : null,
-						name,
-						placeholder,
-						readOnly,
-						'aria-readonly': readOnly ? 'true' : null,
-						required,
-						rows: `${rows}`,
-						value,
-						wrap: wrapText,
-						onblur: () => {
-							onBlur && onBlur();
-						},
-						onfocus: () => {
-							onFocus && onFocus();
-						},
-						oninput: this._onInput,
-						onkeydown: this._onKeyDown,
-						onkeyup: this._onKeyUp,
-						onclick: () => {
-							onClick && onClick();
-						},
-						onpointerenter: () => {
-							onOver && onOver();
-						},
-						onpointerleave: () => {
-							onOut && onOut();
-						}
-					})
-				]),
-				w(HelperText, {
-					text: computedHelperText,
-					valid,
-					classes,
-					theme
-				})
-			]
-		);
-	}
-}
+	return (
+		<div
+			key="root"
+			classes={[
+				themeCss.root,
+				disabled ? themeCss.disabled : null,
+				valid === false ? themeCss.invalid : null,
+				valid === true ? themeCss.valid : null,
+				readOnly ? themeCss.readonly : null,
+				required ? themeCss.required : null,
+				focus.isFocused('input') ? themeCss.focused : null
+			]}
+		>
+			{label ? (
+				<Label
+					theme={themeProp}
+					classes={classes}
+					disabled={disabled}
+					valid={valid}
+					readOnly={readOnly}
+					required={required}
+					hidden={labelHidden}
+					forId={widgetId}
+					focused={focus.isFocused('input')}
+					active={!!value || focus.isFocused('input')}
+				>
+					{label}
+				</Label>
+			) : null}
+			<div classes={themeCss.inputWrapper}>
+				<textarea
+					id={widgetId}
+					key="input"
+					{...formatAriaProperties(aria)}
+					classes={themeCss.input}
+					cols={`${columns}`}
+					disabled={disabled}
+					focus={focus.shouldFocus}
+					aria-invalid={valid === false ? 'true' : null}
+					maxlength={maxLength ? `${maxLength}` : null}
+					minlength={minLength ? `${minLength}` : null}
+					name={name}
+					placeholder={placeholder}
+					readOnly={readOnly}
+					aria-readonly={readOnly ? 'true' : null}
+					required={required}
+					rows={`${rows}`}
+					value={value}
+					wrap={wrapText}
+					onblur={() => {
+						onBlur && onBlur();
+					}}
+					onfocus={() => {
+						onFocus && onFocus();
+					}}
+					oninput={(event: Event) => {
+						const { onValue } = properties();
+						event.stopPropagation();
+						onValue && onValue((event.target as HTMLInputElement).value);
+					}}
+					onkeydown={(event: KeyboardEvent) => {
+						const { onKeyDown } = properties();
+						event.stopPropagation();
+						onKeyDown &&
+							onKeyDown(event.which, () => {
+								event.preventDefault();
+							});
+					}}
+					onkeyup={(event: KeyboardEvent) => {
+						const { onKeyUp } = properties();
+						event.stopPropagation();
+						onKeyUp &&
+							onKeyUp(event.which, () => {
+								event.preventDefault();
+							});
+					}}
+					onclick={() => {
+						onClick && onClick();
+					}}
+					onpointerenter={() => {
+						onOver && onOver();
+					}}
+					onpointerleave={() => {
+						onOut && onOut();
+					}}
+				/>
+			</div>
+			<HelperText
+				text={computedHelperText}
+				valid={valid}
+				classes={classes}
+				theme={themeProp}
+			/>
+		</div>
+	);
+});
 
 export default TextArea;
