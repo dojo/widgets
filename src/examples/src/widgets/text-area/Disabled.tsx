@@ -6,5 +6,5 @@ const factory = create({ icache });
 
 export default factory(function Disabled({ middleware: { icache } }) {
 	const value = icache.getOrSet('value', 'Initial value');
-	return <TextArea value={value} label="Can't type here" disabled={true} />;
+	return <TextArea initialValue={value} label="Can't type here" disabled={true} />;
 });

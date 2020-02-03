@@ -67,8 +67,8 @@ export interface TextAreaProperties extends ThemeProperties {
 	rows?: number;
 	/** If the field is valid and optionally display a message */
 	valid?: { valid?: boolean; message?: string } | boolean;
-	/** The current value */
-	value?: string;
+	/** The initial value */
+	initialValue?: string;
 	/** The id used for the form input element */
 	widgetId?: string;
 	/** Controls text wrapping. Can be "hard", "soft", or "off" */
@@ -77,6 +77,8 @@ export interface TextAreaProperties extends ThemeProperties {
 
 export interface TextAreaICache {
 	dirty: boolean;
+	value?: string;
+	initialValue?: string;
 }
 
 const factory = create({
@@ -107,7 +109,8 @@ export const TextArea = factory(function TextArea({
 	}
 
 	function validate() {
-		const { customValidator, value = '' } = properties();
+		const { customValidator } = properties();
+		const value = icache.get('value') || '';
 		const dirty = icache.getOrSet('dirty', false);
 
 		if (value === '' && !dirty) {
@@ -155,19 +158,26 @@ export const TextArea = factory(function TextArea({
 		readOnly,
 		required,
 		rows = 2,
-		value,
+		initialValue,
 		wrapText,
 		theme: themeProp,
 		classes,
 		labelHidden,
 		helperText,
 		onValidate,
-		onBlur,
-		onFocus,
-		onClick,
-		onOver,
-		onOut
+		onValue
 	} = properties();
+
+	let value = icache.get('value');
+	const existingInitialValue = icache.get('initialValue');
+
+	if (initialValue !== existingInitialValue) {
+		icache.set('value', initialValue);
+		icache.set('initialValue', initialValue);
+		value = initialValue;
+
+		onValue && onValue(initialValue);
+	}
 
 	onValidate && validate();
 	const { valid, message } = getValidity();
@@ -224,15 +234,19 @@ export const TextArea = factory(function TextArea({
 					value={value}
 					wrap={wrapText}
 					onblur={() => {
+						const { onBlur } = properties();
 						onBlur && onBlur();
 					}}
 					onfocus={() => {
+						const { onFocus } = properties();
 						onFocus && onFocus();
 					}}
 					oninput={(event: Event) => {
 						const { onValue } = properties();
 						event.stopPropagation();
-						onValue && onValue((event.target as HTMLInputElement).value);
+						const value = (event.target as HTMLInputElement).value;
+						icache.set('value', value);
+						onValue && onValue(value);
 					}}
 					onkeydown={(event: KeyboardEvent) => {
 						const { onKeyDown } = properties();
@@ -251,12 +265,15 @@ export const TextArea = factory(function TextArea({
 							});
 					}}
 					onclick={() => {
+						const { onClick } = properties();
 						onClick && onClick();
 					}}
 					onpointerenter={() => {
+						const { onOver } = properties();
 						onOver && onOver();
 					}}
 					onpointerleave={() => {
+						const { onOut } = properties();
 						onOut && onOut();
 					}}
 				/>
