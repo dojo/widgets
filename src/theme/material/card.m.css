@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	composes: mdc-card from '@material/card/dist/mdc.card.css';
 }

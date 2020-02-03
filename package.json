@@ -58,6 +58,7 @@
     "@dojo/parade": "0.0.6",
     "@dojo/scripts": "^4.0.2",
     "@material/button": "2.1.1",
+    "@material/card": "^4.0.0",
     "@material/checkbox": "4.0.0",
     "@material/chips": "4.0.0",
     "@material/dialog": "^4.0.0",
@@ -95,7 +96,6 @@
     "typescript": "~3.4.5"
   },
   "dependencies": {
-    "@material/card": "^4.0.0",
     "tslib": "~1.9.1"
   },
   "lint-staged": {
