@@ -3,7 +3,7 @@
 .root {
 	position: relative;
 	width: calc(var(--grid-base) * 32);
-	font-family: Roboto, sans-serif;
+	font-family: var(--mdc-theme-font-family);
 	font-size: var(--font-size-small);
 	color: var(--mdc-theme-on-surface);
 	padding-left: calc(var(--grid-base) * 2);
