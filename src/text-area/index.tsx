@@ -152,7 +152,8 @@ export const TextArea = factory(function TextArea({
 			valid === false ? themeCss.invalid : null,
 			valid === true ? themeCss.valid : null,
 			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null
+			required ? themeCss.required : null,
+			focus.isFocused('input') ? themeCss.focused : null
 		];
 	}
 
@@ -199,6 +200,8 @@ export const TextArea = factory(function TextArea({
 					required={required}
 					hidden={labelHidden}
 					forId={widgetId}
+					focused={focus.isFocused('input')}
+					active={!!value || focus.isFocused('input')}
 				>
 					{label}
 				</Label>

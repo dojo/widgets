@@ -27,6 +27,7 @@ interface States {
 	required?: boolean;
 	readOnly?: boolean;
 	valid?: { valid?: boolean; message?: string } | boolean;
+	focused?: boolean;
 }
 
 const expected = function(
@@ -35,7 +36,7 @@ const expected = function(
 	states: States = {},
 	helperText?: string
 ) {
-	const { disabled, required, readOnly, valid: validState } = states;
+	const { disabled, required, readOnly, valid: validState, focused } = states;
 	let valid: boolean | undefined;
 	let message: string | undefined;
 
@@ -58,7 +59,8 @@ const expected = function(
 				valid === false ? css.invalid : null,
 				valid === true ? css.valid : null,
 				readOnly ? css.readonly : null,
-				required ? css.required : null
+				required ? css.required : null,
+				focused ? css.focused : null
 			]
 		},
 		[
@@ -73,7 +75,9 @@ const expected = function(
 							valid,
 							readOnly,
 							required,
-							forId: ''
+							forId: '',
+							active: false,
+							focused: false
 						},
 						['foo']
 				  )
@@ -114,7 +118,7 @@ const expected = function(
 };
 
 const baseAssertion = assertionTemplate(() => (
-	<div key="root" classes={[css.root, null, null, null, null, null]}>
+	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
 		{textarea()}
 		<HelperText
 			assertion-key="helperText"
@@ -229,7 +233,8 @@ registerSuite('Textarea', {
 						css.invalid,
 						null,
 						css.readonly,
-						css.required
+						css.required,
+						null
 					])
 					.setProperty('@input', 'aria-invalid', 'true')
 					.setProperty('@input', 'aria-readonly', 'true')
@@ -247,7 +252,7 @@ registerSuite('Textarea', {
 			};
 			h.expect(
 				baseAssertion
-					.setProperty(':root', 'classes', [css.root, null, null, null, null, null])
+					.setProperty(':root', 'classes', [css.root, null, null, null, null, null, null])
 					.setProperty('@input', 'aria-invalid', null)
 					.setProperty('@input', 'aria-readonly', null)
 					.setProperty('@input', 'disabled', false)
