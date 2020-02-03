@@ -1,7 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
-import { uuid } from '@dojo/framework/core/util';
 import * as css from '../theme/default/text-area.m.css';
 import HelperText from '../helper-text/index';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -78,7 +77,6 @@ export interface TextAreaProperties extends ThemeProperties {
 
 export interface TextAreaICache {
 	dirty: boolean;
-	uuid: string;
 }
 
 const factory = create({
@@ -88,6 +86,7 @@ const factory = create({
 	validity
 }).properties<TextAreaProperties>();
 export const TextArea = factory(function TextArea({
+	id,
 	middleware: { icache, theme, focus, validity },
 	properties
 }) {
@@ -143,25 +142,11 @@ export const TextArea = factory(function TextArea({
 		};
 	}
 
-	function getRootClasses(): (string | null)[] {
-		const { disabled, readOnly, required } = properties();
-		const { valid } = getValidity();
-		return [
-			themeCss.root,
-			disabled ? themeCss.disabled : null,
-			valid === false ? themeCss.invalid : null,
-			valid === true ? themeCss.valid : null,
-			readOnly ? themeCss.readonly : null,
-			required ? themeCss.required : null,
-			focus.isFocused('input') ? themeCss.focused : null
-		];
-	}
-
 	const {
 		aria = {},
 		columns = 20,
 		disabled,
-		widgetId = icache.getOrSet('uuid', uuid()),
+		widgetId = `textarea-${id}`,
 		label,
 		maxLength,
 		minLength,
@@ -183,13 +168,25 @@ export const TextArea = factory(function TextArea({
 		onOver,
 		onOut
 	} = properties();
+
 	onValidate && validate();
 	const { valid, message } = getValidity();
 
 	const computedHelperText = (valid === false && message) || helperText;
 
 	return (
-		<div key="root" classes={getRootClasses()}>
+		<div
+			key="root"
+			classes={[
+				themeCss.root,
+				disabled ? themeCss.disabled : null,
+				valid === false ? themeCss.invalid : null,
+				valid === true ? themeCss.valid : null,
+				readOnly ? themeCss.readonly : null,
+				required ? themeCss.required : null,
+				focus.isFocused('input') ? themeCss.focused : null
+			]}
+		>
 			{label ? (
 				<Label
 					theme={themeProp}
