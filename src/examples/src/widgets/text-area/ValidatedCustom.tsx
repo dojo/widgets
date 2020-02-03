@@ -5,11 +5,9 @@ import TextArea from '@dojo/widgets/text-area';
 const factory = create({ icache });
 
 export default factory(function ValidateCustom({ middleware: { icache } }) {
-	const value = icache.getOrSet('value', '');
 	const valid = icache.getOrSet('valid', {});
 	return (
 		<TextArea
-			value={value}
 			valid={valid}
 			label="Custom Validated"
 			helperText='Enter "valid" to be valid'
@@ -28,9 +26,6 @@ export default factory(function ValidateCustom({ middleware: { icache } }) {
 						message: 'Only "valid" is a valid input'
 					};
 				}
-			}}
-			onValue={(value) => {
-				icache.set('value', value);
 			}}
 			onValidate={(valid?: boolean, message?: string) => {
 				icache.set('valid', { valid, message });

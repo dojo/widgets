@@ -184,7 +184,7 @@ registerSuite('Textarea', {
 					name: 'bar',
 					placeholder: 'baz',
 					rows: 42,
-					value: 'qux',
+					initialValue: 'qux',
 					wrapText: 'soft'
 				})
 			);
@@ -294,7 +294,7 @@ registerSuite('Textarea', {
 
 			mockValidity('input', { valid: false, message: 'test' });
 
-			let h = harness(() => <TextArea value="test value" onValidate={validateSpy} />, {
+			let h = harness(() => <TextArea initialValue="test value" onValidate={validateSpy} />, {
 				middleware: [[validity, mockValidity]]
 			});
 
@@ -303,7 +303,7 @@ registerSuite('Textarea', {
 
 			mockValidity = createValidityMock();
 
-			h = harness(() => <TextArea value="test value" onValidate={validateSpy} />, {
+			h = harness(() => <TextArea initialValue="test value" onValidate={validateSpy} />, {
 				middleware: [[validity, mockValidity]]
 			});
 			mockValidity('input', { valid: true, message: 'test' });
@@ -321,7 +321,7 @@ registerSuite('Textarea', {
 			harness(
 				() => (
 					<TextArea
-						value="test value"
+						initialValue="test value"
 						valid={{ valid: false, message: 'test' }}
 						onValidate={validateSpy}
 					/>
@@ -344,7 +344,7 @@ registerSuite('Textarea', {
 			harness(
 				() => (
 					<TextArea
-						value="test value"
+						initialValue="test value"
 						onValidate={validateSpy}
 						customValidator={customValidatorSpy}
 					/>
@@ -367,7 +367,7 @@ registerSuite('Textarea', {
 			const h = harness(
 				() => (
 					<TextArea
-						value="test value"
+						initialValue="test value"
 						onValidate={validateSpy}
 						customValidator={customValidatorSpy}
 					/>
@@ -394,7 +394,7 @@ registerSuite('Textarea', {
 			const h = harness(
 				() => (
 					<TextArea
-						value="test value"
+						initialValue="test value"
 						onValidate={validateSpy}
 						customValidator={customValidatorSpy}
 					/>
