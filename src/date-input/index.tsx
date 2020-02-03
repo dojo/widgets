@@ -145,7 +145,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 										</Button>
 									)}
 									type="text"
-									value={icache.get('inputValue')}
+									initialValue={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
 									onValue={(v) => icache.set('inputValue', v || '')}
 									helperText={icache.get('validationMessage')}

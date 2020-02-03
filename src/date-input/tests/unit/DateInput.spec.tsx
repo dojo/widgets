@@ -75,7 +75,7 @@ const buttonTemplate = assertionTemplate(() => {
 				onBlur={noop}
 				onValue={noop}
 				trailing={() => undefined}
-				value={formatDate(today)}
+				initialValue={formatDate(today)}
 				helperText=""
 				onKeyDown={noop}
 			/>
@@ -245,7 +245,7 @@ describe('DateInput', () => {
 			'@input',
 			h.trigger('@popup', (node) => (node.children as any)[0].trigger)
 		);
-		assert(input.properties.value, formatDate(expected));
+		assert(input.properties.initialValue, formatDate(expected));
 
 		// If `onValue` is called, the input was accepted & validated
 		sinon.assert.calledWith(onValue, formatDateISO(expected));
