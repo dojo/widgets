@@ -9,7 +9,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<TextArea
 			label="Textarea with label"
-			value={value}
+			initialValue={value}
 			onValue={(value) => {
 				icache.set('value', value);
 			}}
