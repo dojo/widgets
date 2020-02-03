@@ -2,14 +2,18 @@
 .root {
 }
 
+/* Class added to the first titlepane */
 .firstTitlePane {
 }
 
+/* Class added to the last titlepane */
 .lastTitlePane {
 }
 
+/* Class added to the open titlepane */
 .openTitlePane {
 }
 
+/* Class added to all titlepanes */
 .rootTitlePane {
 }
