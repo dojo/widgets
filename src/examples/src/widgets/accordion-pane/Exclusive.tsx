@@ -30,6 +30,18 @@ export default factory(function Exclusive({ middleware: { icache } }) {
 				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus
 				vehicula, vehicula varius eros.
 			</TitlePane>
+			<TitlePane key="la" title="Pane 3">
+				Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus.
+				Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue
+				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus
+				vehicula, vehicula varius eros.
+			</TitlePane>
+			<TitlePane key="dee" title="Pane 4">
+				Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus.
+				Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue
+				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus
+				vehicula, vehicula varius eros.
+			</TitlePane>
 		</AccordionPane>
 	);
 });

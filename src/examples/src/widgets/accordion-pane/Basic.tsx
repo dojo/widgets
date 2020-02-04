@@ -32,7 +32,19 @@ export default factory(function Basic({ middleware: { icache } }) {
 				imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis
 				dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.
 			</TitlePane>
-			<TitlePane key="bar" title="Pane 2">
+			<TitlePane key="la" title="Pane 2">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ante sed
+				massa finibus, at euismod ex molestie. Donec sagittis ligula at lorem blandit
+				imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis
+				dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.
+			</TitlePane>
+			<TitlePane key="dee" title="Pane 3">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ante sed
+				massa finibus, at euismod ex molestie. Donec sagittis ligula at lorem blandit
+				imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis
+				dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.
+			</TitlePane>
+			<TitlePane key="bar" title="Pane 4">
 				Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus.
 				Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue
 				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus

@@ -1,2 +1,45 @@
+@import './variables.css';
+
 .root {
+	font-family: var(--mdc-theme-font-family);
+	box-sizing: border-box;
+	box-shadow: var(--mdc-theme-elevation-1);
+}
+
+.titleButton {
+	background-color: var(--mdc-theme-surface);
+	cursor: pointer;
+	position: relative;
+	padding: 12px 24px;
+	width: 100%;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row-reverse;
+	transition: padding ease-in-out 0.25s, background-color ease-in-out 0.25s;
+}
+
+.titleButton:active {
+	background-color: var(--mdc-theme-background-selected);
+	outline: none;
+}
+
+.titleButton:focus {
+	outline: none;
+}
+
+.arrow {
+	display: flex;
+	align-items: center;
+}
+
+.open .titleButton {
+	padding: 24px;
+}
+
+.content {
+	padding: 24px;
+	padding-top: 0;
+	transition: margin-top ease-in-out 0.25s;
 }

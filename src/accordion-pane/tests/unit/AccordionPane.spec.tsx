@@ -48,7 +48,11 @@ registerSuite('AccordionPane', {
 							onRequestOpen: noop,
 							open: false,
 							theme: undefined,
-							classes: undefined,
+							classes: {
+								'@dojo/widgets/title-pane': {
+									root: [css.rootTitlePane, null, css.firstTitlePane, null]
+								}
+							},
 							title: 'foo'
 						}),
 						w(TitlePane, {
@@ -57,7 +61,11 @@ registerSuite('AccordionPane', {
 							onRequestOpen: noop,
 							open: false,
 							theme: undefined,
-							classes: undefined,
+							classes: {
+								'@dojo/widgets/title-pane': {
+									root: [css.rootTitlePane, null, null, null]
+								}
+							},
 							title: 'bar'
 						}),
 						w(TitlePane, {
@@ -66,7 +74,11 @@ registerSuite('AccordionPane', {
 							onRequestOpen: noop,
 							open: false,
 							theme: undefined,
-							classes: undefined,
+							classes: {
+								'@dojo/widgets/title-pane': {
+									root: [css.rootTitlePane, null, null, null]
+								}
+							},
 							title: 'baz'
 						})
 					]

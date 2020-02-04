@@ -1,21 +1,43 @@
+@import '~@material/theme/dist/mdc.theme.css';
+
+/*
+  Available from above import ^^
+  --mdc-theme-primary: #6200ee;
+  --mdc-theme-secondary: #018786;
+  --mdc-theme-background: #fff;
+  --mdc-theme-surface: #fff;
+  --mdc-theme-error: #b00020;
+  --mdc-theme-on-primary: #fff;
+  --mdc-theme-on-secondary: #fff;
+  --mdc-theme-on-surface: #000;
+  --mdc-theme-on-error: #fff;
+  --mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
+  --mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
+  --mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
+  --mdc-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
+  --mdc-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
+  --mdc-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
+  --mdc-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
+  --mdc-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
+  --mdc-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
+  --mdc-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
+  --mdc-theme-text-primary-on-dark: white;
+  --mdc-theme-text-secondary-on-dark: rgba(255, 255, 255, 0.7);
+  --mdc-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
+  --mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
+  --mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
+*/
+
 :root {
-	/* Color */
-	--mdc-theme-primary: rgb(0, 142, 231); /* The theme primary color */
-	--mdc-theme-secondary: rgb(169, 49, 182); /* The theme secondary color */
-	--mdc-theme-background: #fff; /* The theme background color */
-	--mdc-theme-surface: #fff; /* The theme surface color */
-	--mdc-theme-on-primary: #fff; /* Text color on top of a primary background */
-	--mdc-theme-on-secondary: #fff; /* Text color on top of a secondary background */
-	--mdc-theme-on-surface: #000; /* Text color on top of a surface background */
 	--mdc-theme-background-active: #f1f1f1;
 	--mdc-theme-background-selected: #e1e1e1;
-	--mdc-theme-popup-border-radius: 4px;
-	--mdc-theme-popup-box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-		0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
-
+	--mdc-theme-border-radius: 4px;
+	--mdc-theme-elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+		0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+	--mdc-theme-elevation-2: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+		0 3px 14px 2px rgba(0, 0, 0, 0.12);
 	--mdc-theme-font-family: Roboto, sans-serif;
 	--mdc-theme-font-size-small: 0.875rem;
-
 	--zindex-tooltip: 100;
 	--zindex-dialog: 400;
 }

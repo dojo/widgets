@@ -52,10 +52,14 @@ export class AccordionPane extends ThemedMixin(WidgetBase)<
 
 	protected renderChildren(): DNode[] {
 		const { openKeys = [], theme, classes } = this.properties;
-
+		const length = this.children.length;
 		return this.children
 			.filter((child) => child)
-			.map((child) => {
+			.map((child, index) => {
+				const passedTitlePaneClasses =
+					(classes && classes['@dojo/widgets/title-pane']) || {};
+				const open = includes(openKeys, child!.properties.key);
+
 				// null checks skipped since children are filtered prior to mapping
 				assign(child!.properties, {
 					onRequestClose: this._assignCallback(
@@ -68,9 +72,20 @@ export class AccordionPane extends ThemedMixin(WidgetBase)<
 						'onRequestOpen',
 						this.onRequestOpen
 					),
-					open: includes(openKeys, child!.properties.key),
+					open,
 					theme,
-					classes
+					classes: {
+						...classes,
+						'@dojo/widgets/title-pane': {
+							root: this.theme([
+								css.rootTitlePane,
+								open ? css.openTitlePane : null,
+								index === 0 ? css.firstTitlePane : null,
+								index === length - 1 ? css.lastTitlePane : null
+							]),
+							...passedTitlePaneClasses
+						}
+					}
 				});
 
 				return child;
