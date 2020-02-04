@@ -11,11 +11,6 @@
 }
 
 .track {
-	/* background-color: var(--color-border-strong);
-	height: var(--border-width);
-	position: relative;
-	transition: background var(--transition-duration) var(--transition-easing);
-	width: 100%; */
 	position: relative;
 	composes: mdc-slider__track-container from '@material/slider/dist/mdc.slider.css';
 }
@@ -31,38 +26,36 @@
 .thumb {
 	background-color: var(--mdc-theme-secondary);
 	border-radius: 50%;
-	height: 12px;
-	left: 50%;
-	margin-left: -12px;
+	height: 16px;
+	margin-left: -7px;
 	position: absolute;
-	top: -12px;
-	transition: border var(--transition-duration) var(--transition-easing),
-		background var(--transition-duration) var(--transition-easing);
-	width: 12px;
+	top: -7px;
+	transition: transform 0.1s ease-out;
+	width: 16px;
+	transform: scale(0.571);
 }
 
-.input {
-	height: 15px;
+.root .input {
+	height: 16px;
 	outline: none;
 	top: -7px;
 }
 .input::-ms-thumb {
-	height: var(--touch-target-min);
-	width: var(--touch-target-min);
+	height: 16px;
+	width: 16px;
 }
 .input::-moz-range-thumb {
-	height: var(--touch-target-min);
-	width: var(--touch-target-min);
+	height: 16px;
+	width: 16px;
 }
 .input::-webkit-slider-thumb {
-	height: var(--touch-target-min);
-	width: var(--touch-target-min);
+	height: 16px;
+	width: 16px;
 }
 
 /* focused styles */
 .input:focus ~ .track .thumb {
-	border: var(--border-width-emphasized) solid var(--color-highlight);
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+	transform: scale(1);
 }
 
 .input:focus ~ .outputTooltip,
