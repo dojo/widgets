@@ -1,11 +1,12 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, renderer, tsx } from '@dojo/framework/core/vdom';
 import { findIndex } from '@dojo/framework/shim/array';
 import global from '@dojo/framework/shim/global';
 import { Keys } from '../common/util';
-import theme from '../middleware/theme';
+import theme, { ThemeProperties } from '../middleware/theme';
 import * as listBoxItemCss from '../theme/default/list-box-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/menu.m.css';
@@ -15,7 +16,7 @@ import MenuItem from './MenuItem';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
-export interface MenuProperties {
+export interface MenuProperties extends ThemeProperties, FocusProperties {
 	/** Options to display within the menu. The `value` of the option will be passed to `onValue` when it is selected. The label is an optional display string to be used instead of the `value`. If `disabled` is true the option will have a disabled style and will not be selectable. An option with `divider: true` will have a divider rendered after it in the menu */
 	options: MenuOption[];
 	/** The total number of options provided */

@@ -1,5 +1,6 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { uuid } from '@dojo/framework/core/util';
@@ -9,7 +10,7 @@ import HelperText from '../helper-text';
 import Icon from '../icon';
 import Label from '../label';
 import { ItemRendererProperties, Menu, MenuOption } from '../menu';
-import theme from '../middleware/theme';
+import theme, { ThemeProperties } from '../middleware/theme';
 import { PopupPosition } from '../popup';
 import TriggerPopup from '../trigger-popup';
 import * as menuCss from '../theme/default/menu.m.css';
@@ -18,7 +19,7 @@ import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './select.nls';
 
-interface SelectProperties {
+interface SelectProperties extends ThemeProperties, FocusProperties {
 	/** Callback called when user selects a value */
 	onValue(value: string): void;
 	/** The initial selected value */

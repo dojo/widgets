@@ -1,5 +1,5 @@
 import * as css from '../theme/radio-group.m.css';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import { Radio } from '../radio/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -7,7 +7,7 @@ import { radioGroup } from './middleware';
 
 type RadioOptions = { value: string; label?: string }[];
 
-interface RadioGroupProperties {
+interface RadioGroupProperties extends ThemeProperties {
 	/** Initial value of the radio group */
 	initialValue?: string;
 	/** The label to be displayed in the legend */
