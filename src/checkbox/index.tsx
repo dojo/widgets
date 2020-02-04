@@ -1,14 +1,13 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/checkbox.m.css';
-import coreTheme from '@dojo/framework/core/middleware/theme';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
-import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 
-export interface CheckboxProperties extends ThemedProperties, FocusProperties {
+export interface CheckboxProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/**  Checked/unchecked property of the control */
@@ -45,12 +44,9 @@ export interface CheckboxProperties extends ThemedProperties, FocusProperties {
 	widgetId?: string;
 }
 
-const factory = create({ coreTheme, focus }).properties<CheckboxProperties>();
+const factory = create({ theme, focus }).properties<CheckboxProperties>();
 
-export const Checkbox = factory(function Checkbox({
-	properties,
-	middleware: { coreTheme, focus }
-}) {
+export const Checkbox = factory(function Checkbox({ properties, middleware: { theme, focus } }) {
 	const _uuid = uuid();
 	const {
 		aria = {},
@@ -67,13 +63,13 @@ export const Checkbox = factory(function Checkbox({
 		onOver,
 		readOnly,
 		required,
-		theme,
+		theme: themeProp,
 		valid,
 		value,
 		widgetId = _uuid
 	} = properties();
 
-	const themeCss = coreTheme.classes(css);
+	const themeCss = theme.classes(css);
 
 	return (
 		<div
@@ -120,7 +116,7 @@ export const Checkbox = factory(function Checkbox({
 				<Label
 					key="label"
 					classes={classes}
-					theme={theme}
+					theme={themeProp}
 					disabled={disabled}
 					focused={focus.isFocused('root')}
 					valid={valid}

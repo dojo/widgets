@@ -1,10 +1,9 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/default/card.m.css';
-import theme from '../middleware/theme';
-import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
+import theme, { ThemeProperties } from '../middleware/theme';
 
-export interface CardProperties extends ThemedProperties {
+export interface CardProperties extends ThemeProperties {
 	/** Renderer for action available from the card */
 	actionsRenderer?(): RenderResult;
 }

@@ -1,5 +1,7 @@
 import { create } from '@dojo/framework/core/vdom';
-import coreTheme from '@dojo/framework/core/middleware/theme';
+import coreTheme, {
+	ThemeProperties as CoreThemeProperties
+} from '@dojo/framework/core/middleware/theme';
 import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
 
 const factory = create({ coreTheme });
@@ -13,7 +15,9 @@ function lowercaseFirstChar(value: string) {
 	return `${value.charAt(0).toLowerCase()}${value.slice(1)}`;
 }
 
-const theme = factory(function({ middleware: { coreTheme }, properties }) {
+export interface ThemeProperties extends CoreThemeProperties {}
+
+export const theme = factory(function({ middleware: { coreTheme }, properties }) {
 	return {
 		compose: <T extends ClassNames, B extends ClassNames>(
 			baseCss: B,
