@@ -2,10 +2,11 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { focus } from '@dojo/framework/core/middleware/focus';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 
 import { parseDate, formatDateISO, formatDate } from './date-utils';
 import { Keys } from '../common/util';
-import theme from '../middleware/theme';
+import theme, { ThemeProperties } from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
 import Button from '../button';
@@ -15,7 +16,7 @@ import * as css from '../theme/default/date-input.m.css';
 
 import bundle from './nls/DateInput';
 
-export interface DateInputProperties {
+export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	/** The initial value */
 	initialValue?: string;
 	/** Set the latest date the calendar will display in (it will show the whole month but not allow previous selections) */

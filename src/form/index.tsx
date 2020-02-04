@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import { RenderResult, VNodeProperties } from '@dojo/framework/core/interfaces';
 
 import createFormMiddleware, { FormMiddleware, FormValue } from './middleware';
@@ -10,7 +10,7 @@ const form = createFormMiddleware();
 
 type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
 
-interface BaseFormProperties {
+interface BaseFormProperties extends ThemeProperties {
 	/** The initial form value */
 	initialValue?: FormValue;
 	/** Callback called when a form value changes */

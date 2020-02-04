@@ -1,11 +1,11 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import * as css from '../theme/default/chip.m.css';
 import Icon from '../icon/index';
 import { Keys } from '../common/util';
 
-export interface ChipProperties {
+export interface ChipProperties extends ThemeProperties {
 	/** Renders an icon, provided with the value of the checked property */
 	iconRenderer?(checked?: boolean): RenderResult;
 	/** The label to be displayed in the widget */

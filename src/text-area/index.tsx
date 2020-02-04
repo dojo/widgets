@@ -6,9 +6,10 @@ import HelperText from '../helper-text/index';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import validity from '@dojo/framework/core/middleware/validity';
 
-export interface TextAreaProperties extends ThemeProperties {
+export interface TextAreaProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Number of columns, controls the width of the textarea */

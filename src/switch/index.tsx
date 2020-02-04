@@ -1,13 +1,14 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import coreTheme from '@dojo/framework/core/middleware/theme';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import { formatAriaProperties } from '../common/util';
 import Label from '../label';
 import * as css from '../theme/default/switch.m.css';
 
-interface SwitchProperties {
+interface SwitchProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Whether the switch is disabled or clickable */
@@ -42,9 +43,9 @@ interface SwitchProperties {
 	value?: boolean;
 }
 
-const factory = create({ coreTheme, focus }).properties<SwitchProperties>();
+const factory = create({ theme, focus }).properties<SwitchProperties>();
 
-export default factory(function Switch({ properties, id, middleware: { coreTheme, focus } }) {
+export default factory(function Switch({ properties, id, middleware: { theme, focus } }) {
 	const {
 		aria = {},
 		classes,
@@ -61,12 +62,12 @@ export default factory(function Switch({ properties, id, middleware: { coreTheme
 		onOver,
 		readOnly,
 		required,
-		theme,
+		theme: themeProp,
 		valid,
 		value = false
 	} = properties();
 
-	const themedCss = coreTheme.classes(css);
+	const themedCss = theme.classes(css);
 	const idBase = `switch-${id}`;
 
 	return (
@@ -134,7 +135,7 @@ export default factory(function Switch({ properties, id, middleware: { coreTheme
 				<Label
 					key="label"
 					classes={classes}
-					theme={theme}
+					theme={themeProp}
 					disabled={disabled}
 					focused={focus.isFocused('root')}
 					valid={valid}

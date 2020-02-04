@@ -1,12 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import theme from '../middleware/theme';
+import theme, { ThemeProperties } from '../middleware/theme';
 import { formatAriaProperties } from '../common/util';
 import * as css from '../theme/default/icon.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 export type IconType = keyof typeof css;
 
-export interface IconProperties {
+export interface IconProperties extends ThemeProperties {
 	/** An optional, visually hidden label for the icon */
 	altText?: string;
 	/** Custom aria attributes */
