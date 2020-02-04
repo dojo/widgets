@@ -407,7 +407,9 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicContextMenu
+					module: BasicContextMenu,
+					sandbox: true,
+					size: 'medium'
 				}
 			}
 		},
@@ -416,7 +418,9 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicDateInput
+					module: BasicDateInput,
+					sandbox: true,
+					size: 'medium'
 				}
 			}
 		},
@@ -424,7 +428,9 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicContextPopup
+					module: BasicContextPopup,
+					sandbox: true,
+					size: 'medium'
 				}
 			}
 		},
@@ -433,43 +439,59 @@ export const config = {
 				{
 					filename: 'UnderlayDialog',
 					module: UnderlayDialog,
-					title: 'Dialog with and Underlay'
+					title: 'Dialog with and Underlay',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'ModalDialog',
 					module: ModalDialog,
-					title: 'Modal Dialog'
+					title: 'Modal Dialog',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'CloseableDialog',
 					module: CloseableDialog,
-					title: 'Dialog with Configurable Closeability'
+					title: 'Dialog with Configurable Closeability',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'AlertDialog',
 					module: AlertDialog,
-					title: 'Alert Dialog'
+					title: 'Alert Dialog',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'AnimatedDialog',
 					module: AnimatedDialog,
-					title: 'Animated Dialog'
+					title: 'Animated Dialog',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'FocusTrappedDialog',
 					module: FocusTrappedDialog,
-					title: 'Focus Trapping'
+					title: 'Focus Trapping',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'ActionsDialog',
 					module: ActionsDialog,
-					title: 'Actions Dialog'
+					title: 'Actions Dialog',
+					sandbox: true,
+					size: 'medium'
 				}
 			],
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicDialog
+					module: BasicDialog,
+					sandbox: true,
+					size: 'medium'
 				}
 			}
 		},
@@ -631,24 +653,28 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicLabel
+					module: BasicLabel,
+					sandbox: true
 				}
 			},
 			examples: [
 				{
 					filename: 'HiddenLabel',
 					module: HiddenLabel,
-					title: 'Hidden Label'
+					title: 'Hidden Label',
+					sandbox: true
 				},
 				{
 					filename: 'InvalidLabel',
 					module: InvalidLabel,
-					title: 'Invalid Label'
+					title: 'Invalid Label',
+					sandbox: true
 				},
 				{
 					filename: 'DisabledLabel',
 					module: DisabledLabel,
-					title: 'Disabled Label'
+					title: 'Disabled Label',
+					sandbox: true
 				},
 				{
 					filename: 'SecondaryLabel',
@@ -735,13 +761,33 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicTriggerPopup
+					module: BasicTriggerPopup,
+					sandbox: true,
+					size: 'medium'
 				}
 			},
 			examples: [
-				{ title: 'Underlay', filename: 'Underlay', module: Underlay },
-				{ title: 'Set Width', filename: 'SetWidth', module: SetWidth },
-				{ title: 'Menu Popup', filename: 'MenuPopup', module: MenuTriggerPopup }
+				{
+					title: 'Underlay',
+					filename: 'Underlay',
+					module: Underlay,
+					sandbox: true,
+					size: 'medium'
+				},
+				{
+					title: 'Set Width',
+					filename: 'SetWidth',
+					module: SetWidth,
+					sandbox: true,
+					size: 'medium'
+				},
+				{
+					title: 'Menu Popup',
+					filename: 'MenuPopup',
+					module: MenuTriggerPopup,
+					sandbox: true,
+					size: 'medium'
+				}
 			]
 		},
 		'number-input': {
@@ -905,17 +951,39 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicSelect
+					module: BasicSelect,
+					sandbox: true,
+					size: 'medium'
 				}
 			},
 			examples: [
-				{ filename: 'AdditionalText', module: AdditionalText, title: 'Additional Text' },
-				{ filename: 'DisabledSelect', module: DisabledSelect, title: 'Disabled Select' },
-				{ filename: 'RequiredSelect', module: RequiredSelect, title: 'Required Select' },
+				{
+					filename: 'AdditionalText',
+					module: AdditionalText,
+					title: 'Additional Text',
+					sandbox: true,
+					size: 'medium'
+				},
+				{
+					filename: 'DisabledSelect',
+					module: DisabledSelect,
+					title: 'Disabled Select',
+					sandbox: true,
+					size: 'medium'
+				},
+				{
+					filename: 'RequiredSelect',
+					module: RequiredSelect,
+					title: 'Required Select',
+					sandbox: true,
+					size: 'medium'
+				},
 				{
 					filename: 'CustomRenderer',
 					module: CustomRenderer,
-					title: 'Custom Item Renderer'
+					title: 'Custom Item Renderer',
+					sandbox: true,
+					size: 'medium'
 				}
 			]
 		},
@@ -923,34 +991,46 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicSlidePane
+					module: BasicSlidePane,
+					sandbox: true,
+					size: 'medium'
 				}
 			},
 			examples: [
 				{
 					filename: 'RightAlignSlidePane',
 					module: RightAlignSlidePane,
-					title: 'Right Aligned Slide Pane'
+					title: 'Right Aligned Slide Pane',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'LeftAlignSlidePane',
 					module: LeftAlignSlidePane,
-					title: 'Left Aligned Slide Pane'
+					title: 'Left Aligned Slide Pane',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'BottomAlignSlidePane',
 					module: BottomAlignSlidePane,
-					title: 'Bottom Aligned Slide Pane'
+					title: 'Bottom Aligned Slide Pane',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'UnderlaySlidePane',
 					module: UnderlaySlidePane,
-					title: 'Underlaid Slide Pane'
+					title: 'Underlaid Slide Pane',
+					sandbox: true,
+					size: 'medium'
 				},
 				{
 					filename: 'FixedWidthSlidePane',
 					module: FixedWidthSlidePane,
-					title: 'Fixed Width Slide Pane'
+					title: 'Fixed Width Slide Pane',
+					sandbox: true,
+					size: 'medium'
 				}
 			]
 		},
@@ -988,14 +1068,40 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicSnackbar
+					module: BasicSnackbar,
+					sandbox: true,
+					size: 'small'
 				}
 			},
 			examples: [
-				{ filename: 'Error', module: ErrorSnackbar, title: 'Error Snackbar' },
-				{ filename: 'Success', module: SuccessSnackbar, title: 'Success Snackbar' },
-				{ filename: 'Stacked', module: StackedSnackbar, title: 'Stacked Snackbar' },
-				{ filename: 'Leading', module: LeadingSnackbar, title: 'Leading Snackbar' }
+				{
+					filename: 'Error',
+					module: ErrorSnackbar,
+					title: 'Error Snackbar',
+					sandbox: true,
+					size: 'small'
+				},
+				{
+					filename: 'Success',
+					module: SuccessSnackbar,
+					title: 'Success Snackbar',
+					sandbox: true,
+					size: 'small'
+				},
+				{
+					filename: 'Stacked',
+					module: StackedSnackbar,
+					title: 'Stacked Snackbar',
+					sandbox: true,
+					size: 'small'
+				},
+				{
+					filename: 'Leading',
+					module: LeadingSnackbar,
+					title: 'Leading Snackbar',
+					sandbox: true,
+					size: 'small'
+				}
 			]
 		},
 		'split-pane': {
