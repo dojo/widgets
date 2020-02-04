@@ -3,6 +3,6 @@ import TextArea from '@dojo/widgets/text-area';
 
 const factory = create();
 
-export default factory(function Disabled() {
-	return <TextArea initialValue="Initial Value" label="Can't type here" disabled={true} />;
+export default factory(function Label() {
+	return <TextArea label="Textarea with label" />;
 });

@@ -228,6 +228,7 @@ export const TextInput = factory(function TextInput({
 		typeof validValue === 'boolean' ? { valid: validValue, message: '' } : validValue;
 
 	const computedHelperText = (valid === false && message) || helperText;
+	const inputFocused = focus.isFocused('input');
 
 	return (
 		<div key="root" classes={themeCss.root} role="presentation">
@@ -236,7 +237,7 @@ export const TextInput = factory(function TextInput({
 				classes={[
 					themeCss.wrapper,
 					disabled ? themeCss.disabled : null,
-					focus.isFocused('input') ? themeCss.focused : null,
+					inputFocused ? themeCss.focused : null,
 					valid === false ? themeCss.invalid : null,
 					valid === true ? themeCss.valid : null,
 					readOnly ? themeCss.readonly : null,
@@ -252,12 +253,12 @@ export const TextInput = factory(function TextInput({
 						theme={themeProp}
 						disabled={disabled}
 						valid={valid}
-						focused={focus.isFocused('input')}
+						focused={inputFocused}
 						readOnly={readOnly}
 						required={required}
 						hidden={labelHidden}
 						forId={widgetId}
-						active={!!value || focus.isFocused('input')}
+						active={!!value || inputFocused}
 					>
 						{label}
 					</Label>

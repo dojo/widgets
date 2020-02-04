@@ -4,7 +4,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
-import { v, w, tsx } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Label from '../../../label/index';
@@ -13,6 +13,7 @@ import * as css from '../../../theme/default/text-area.m.css';
 import {
 	compareForId,
 	compareId,
+	compareTheme,
 	createHarness,
 	noop,
 	stubEvent
@@ -20,7 +21,7 @@ import {
 import HelperText from '../../../helper-text/index';
 import validity from '@dojo/framework/core/middleware/validity';
 
-const harness = createHarness([compareId, compareForId]);
+const harness = createHarness([compareId, compareForId, compareTheme]);
 
 interface States {
 	disabled?: boolean;
@@ -49,77 +50,82 @@ const expected = function(
 
 	const helperTextValue = (valid === false && message) || helperText;
 
-	return v(
-		'div',
-		{
-			key: 'root',
-			classes: [
-				css.root,
-				disabled ? css.disabled : null,
-				valid === false ? css.invalid : null,
-				valid === true ? css.valid : null,
-				readOnly ? css.readonly : null,
-				required ? css.required : null,
-				focused ? css.focused : null
-			]
-		},
-		[
-			label
-				? w(
-						Label,
-						{
-							theme: undefined,
-							classes: undefined,
-							disabled,
-							hidden: undefined,
-							valid,
-							readOnly,
-							required,
-							forId: '',
-							active: false,
-							focused: false
-						},
-						['foo']
-				  )
-				: null,
-			v('div', { classes: css.inputWrapper }, [
-				v('textarea', {
-					classes: css.input,
-					id: '',
-					key: 'input',
-					cols: '20',
-					disabled,
-					focus: noop,
-					'aria-invalid': valid === false ? 'true' : null,
-					maxlength: null,
-					minlength: null,
-					name: undefined,
-					placeholder: undefined,
-					readOnly,
-					'aria-readonly': readOnly ? 'true' : null,
-					required,
-					rows: '2',
-					value: undefined,
-					wrap: undefined,
-					onblur: noop,
-					onfocus: noop,
-					oninput: noop,
-					onkeydown: noop,
-					onkeyup: noop,
-					onclick: noop,
-					onpointerenter: noop,
-					onpointerleave: noop,
-					...inputOverrides
-				})
-			]),
-			w(HelperText, { text: helperTextValue, valid, classes: undefined, theme: undefined })
-		]
+	return (
+		<div key="root" classes={css.root}>
+			<div
+				key="wrapper"
+				classes={[
+					css.wrapper,
+					disabled ? css.disabled : null,
+					valid === false ? css.invalid : null,
+					valid === true ? css.valid : null,
+					readOnly ? css.readonly : null,
+					required ? css.required : null,
+					focused ? css.focused : null
+				]}
+			>
+				{label ? (
+					<Label
+						theme={{}}
+						classes={undefined}
+						disabled={disabled}
+						hidden={undefined}
+						valid={valid}
+						readOnly={readOnly}
+						required={required}
+						forId=""
+						active={false}
+						focused={false}
+					>
+						foo
+					</Label>
+				) : null}
+				<div classes={css.inputWrapper}>
+					<textarea
+						classes={css.input}
+						id=""
+						key="input"
+						cols="20"
+						disabled={disabled}
+						focus={noop}
+						aria-invalid={valid === false ? 'true' : null}
+						maxlength={null}
+						minlength={null}
+						name={undefined}
+						placeholder={undefined}
+						readOnly={readOnly}
+						aria-readonly={readOnly ? 'true' : null}
+						required={required}
+						rows="2"
+						value={undefined}
+						wrap={undefined}
+						onblur={noop}
+						onfocus={noop}
+						oninput={noop}
+						onkeydown={noop}
+						onkeyup={noop}
+						onclick={noop}
+						onpointerenter={noop}
+						onpointerleave={noop}
+						{...inputOverrides}
+					/>
+				</div>
+			</div>
+			<HelperText
+				text={helperTextValue}
+				valid={valid}
+				classes={undefined}
+				theme={undefined}
+			/>
+		</div>
 	);
 };
 
 const baseAssertion = assertionTemplate(() => (
-	<div key="root" classes={[css.root, null, null, null, null, null, null]}>
-		{textarea()}
+	<div key="root" classes={css.root}>
+		<div key="wrapper" classes={[css.wrapper, null, null, null, null, null, null]}>
+			{textarea()}
+		</div>
 		<HelperText
 			assertion-key="helperText"
 			text={undefined}
@@ -169,25 +175,25 @@ const valueAssertion = baseAssertion
 registerSuite('Textarea', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => w(TextArea, {}));
+			const h = harness(() => <TextArea />);
 			h.expect(expected);
 		},
 
 		'custom properties'() {
-			const h = harness(() =>
-				w(TextArea, {
-					aria: { describedBy: 'foo' },
-					columns: 15,
-					widgetId: 'foo',
-					maxLength: 50,
-					minLength: 10,
-					name: 'bar',
-					placeholder: 'baz',
-					rows: 42,
-					initialValue: 'qux',
-					wrapText: 'soft'
-				})
-			);
+			const h = harness(() => (
+				<TextArea
+					aria={{ describedBy: 'foo' }}
+					columns={15}
+					widgetId="foo"
+					maxLength={50}
+					minLength={10}
+					name="bar"
+					placeholder="baz"
+					rows={42}
+					initialValue="qux"
+					wrapText="soft"
+				/>
+			));
 
 			h.expect(() =>
 				expected(false, {
@@ -206,11 +212,7 @@ registerSuite('Textarea', {
 		},
 
 		label() {
-			const h = harness(() =>
-				w(TextArea, {
-					label: 'foo'
-				})
-			);
+			const h = harness(() => <TextArea label="foo" />);
 
 			h.expect(() => expected(true));
 		},
@@ -223,12 +225,12 @@ registerSuite('Textarea', {
 				required: true
 			};
 
-			const h = harness(() => w(TextArea, properties));
+			const h = harness(() => <TextArea {...properties} />);
 
 			h.expect(
 				baseAssertion
-					.setProperty(':root', 'classes', [
-						css.root,
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
 						css.disabled,
 						css.invalid,
 						null,
@@ -252,7 +254,15 @@ registerSuite('Textarea', {
 			};
 			h.expect(
 				baseAssertion
-					.setProperty(':root', 'classes', [css.root, null, null, null, null, null, null])
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					])
 					.setProperty('@input', 'aria-invalid', null)
 					.setProperty('@input', 'aria-readonly', null)
 					.setProperty('@input', 'disabled', false)
@@ -263,7 +273,7 @@ registerSuite('Textarea', {
 		},
 
 		helperText() {
-			const h = harness(() => w(TextArea, { helperText: 'test' }));
+			const h = harness(() => <TextArea helperText="test" />);
 			h.expect(() => expected(false, {}, {}, 'test'));
 		},
 
@@ -272,13 +282,9 @@ registerSuite('Textarea', {
 			const onValue = sinon.stub();
 			const onFocus = sinon.stub();
 
-			const h = harness(() =>
-				w(TextArea, {
-					onBlur,
-					onValue,
-					onFocus
-				})
-			);
+			const h = harness(() => (
+				<TextArea onBlur={onBlur} onValue={onValue} onFocus={onFocus} />
+			));
 
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
