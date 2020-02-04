@@ -39,7 +39,3 @@
 .valid .input {
 	border-color: var(--success-color);
 }
-
-/* Addded to the textarea's label */
-.labelRoot {
-}

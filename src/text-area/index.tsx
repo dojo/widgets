@@ -185,6 +185,7 @@ export const TextArea = factory(function TextArea({
 	const { valid, message } = getValidity();
 
 	const computedHelperText = (valid === false && message) || helperText;
+	const inputFocused = focus.isFocused('input');
 
 	return (
 		<div key="root" classes={themeCss.root}>
@@ -197,7 +198,7 @@ export const TextArea = factory(function TextArea({
 					valid === true ? themeCss.valid : null,
 					readOnly ? themeCss.readonly : null,
 					required ? themeCss.required : null,
-					focus.isFocused('input') ? themeCss.focused : null
+					inputFocused ? themeCss.focused : null
 				]}
 			>
 				{label ? (
@@ -214,8 +215,8 @@ export const TextArea = factory(function TextArea({
 						required={required}
 						hidden={labelHidden}
 						forId={widgetId}
-						focused={focus.isFocused('input')}
-						active={!!value || focus.isFocused('input')}
+						focused={inputFocused}
+						active={!!value || inputFocused}
 					>
 						{label}
 					</Label>

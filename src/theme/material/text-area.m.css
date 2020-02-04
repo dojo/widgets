@@ -32,10 +32,6 @@
 	border-radius: var(--mdc-border-radius);
 }
 
-.labelRoot {
-	composes: mdc-floating-label mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
-}
-
 .focused {
 	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
 }
