@@ -1,8 +1,9 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
+import focus from '@dojo/framework/core/middleware/focus';
+import createFocusMock from '@dojo/framework/testing/mocks/middleware/focus';
+import { v, w, tsx } from '@dojo/framework/core/vdom';
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/framework/core/vdom';
-import Focus from '../../../meta/Focus';
 
 import Label from '../../../label/index';
 import Slider from '../../index';
@@ -12,7 +13,6 @@ import {
 	compareId,
 	compareForId,
 	createHarness,
-	MockMetaMixin,
 	noop,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
@@ -33,11 +33,10 @@ const expected = function(
 	focused = false,
 	showOutput = true
 ) {
-	return v(
-		'div',
-		{
-			key: 'root',
-			classes: [
+	return (
+		<div
+			key="root"
+			classes={[
 				css.root,
 				null,
 				focused ? css.focused : null,
@@ -46,90 +45,64 @@ const expected = function(
 				null,
 				null,
 				fixedCss.rootFixed
-			]
-		},
-		[
-			label
-				? w(
-						Label,
-						{
-							theme: undefined,
-							classes: undefined,
-							disabled: undefined,
-							focused,
-							hidden: undefined,
-							valid: undefined,
-							readOnly: undefined,
-							required: undefined,
-							forId: ''
-						},
-						['foo']
-				  )
-				: null,
-			v(
-				'div',
-				{
-					classes: [css.inputWrapper, fixedCss.inputWrapperFixed],
-					styles: {}
-				},
-				[
-					v('input', {
-						key: 'input',
-						classes: [css.input, fixedCss.nativeInput],
-						disabled: undefined,
-						id: '',
-						focus: noop,
-						'aria-invalid': null,
-						max: '100',
-						min: '0',
-						name: undefined,
-						readOnly: undefined,
-						'aria-readonly': null,
-						required: undefined,
-						step: '1',
-						styles: {},
-						type: 'range',
-						value: '0',
-						onblur: noop,
-						onfocus: noop,
-						oninput: noop,
-						onpointerenter: noop,
-						onpointerleave: noop,
-						...overrides
-					}),
-					v(
-						'div',
-						{
-							classes: [css.track, fixedCss.trackFixed],
-							'aria-hidden': 'true',
-							styles: {}
-						},
-						[
-							v('span', {
-								classes: [css.fill, fixedCss.fillFixed],
-								styles: { width: progress }
-							}),
-							v('span', {
-								classes: [css.thumb, fixedCss.thumbFixed],
-								styles: { left: progress }
-							})
-						]
-					),
-					showOutput
-						? v(
-								'output',
-								{
-									classes: [css.output, tooltip ? css.outputTooltip : null],
-									for: '',
-									tabIndex: -1,
-									styles: progress !== '0%' ? { left: progress } : {}
-								},
-								[child]
-						  )
-						: null
-				]
-			)
-		]
+			]}
+		>
+			{label ? (
+				<Label
+					theme={undefined}
+					classes={undefined}
+					disabled={undefined}
+					focused={focused}
+					hidden={undefined}
+					valid={undefined}
+					readOnly={undefined}
+					required={undefined}
+					forId=""
+				>
+					foo
+				</Label>
+			) : null}
+			<div classes={[css.inputWrapper, fixedCss.inputWrapperFixed]} styles={{}}>
+				<input
+					key="input"
+					classes={[css.input, fixedCss.nativeInput]}
+					disabled={undefined}
+					id=""
+					focus={noop}
+					aria-invalid={null}
+					max="100"
+					min="0"
+					name={undefined}
+					readOnly={undefined}
+					aria-readonly={null}
+					required={undefined}
+					step="1"
+					styles={{}}
+					type="range"
+					value="0"
+					onblur={noop}
+					onfocus={noop}
+					oninput={noop}
+					onpointerenter={noop}
+					onpointerleave={noop}
+					{...overrides}
+				/>
+				<div classes={[css.track, fixedCss.trackFixed]} aria-hidden="true" styles={{}}>
+					<span classes={[css.fill, fixedCss.fillFixed]} styles={{ width: progress }} />
+					<span classes={[css.thumb, fixedCss.thumbFixed]} styles={{ left: progress }} />
+				</div>
+				{showOutput ? (
+					<output
+						classes={[css.output, tooltip ? css.outputTooltip : null]}
+						for=""
+						tabIndex={-1}
+						styles={progress !== '0%' ? { left: progress } : {}}
+					>
+						{child}
+					</output>
+				) : null}
+			</div>
+		</div>
 	);
 };
 
@@ -185,16 +158,15 @@ registerSuite('Slider', {
 			);
 		},
 
-		'focussed class'() {
-			const mockMeta = sinon.stub();
-			const mockFocusGet = sinon.stub().returns({
-				active: false,
-				containsFocus: true
+		'focused class'() {
+			const focusMock = createFocusMock();
+
+			focusMock('input', true);
+
+			const h = harness(() => <Slider />, {
+				middleware: [[focus, focusMock]]
 			});
-			mockMeta.withArgs(Focus).returns({
-				get: mockFocusGet
-			});
-			const h = harness(() => w(MockMetaMixin(Slider, mockMeta), {}));
+
 			h.expect(() => expected(false, false, {}, '0', '0%', true));
 		},
 
