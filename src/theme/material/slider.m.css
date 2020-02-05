@@ -33,6 +33,7 @@
 	transition: transform 0.1s ease-out;
 	width: 16px;
 	transform: scale(0.571);
+	will-change: transform;
 }
 
 .root .input {
@@ -54,7 +55,31 @@
 }
 
 /* focused styles */
-.input:focus ~ .track .thumb {
+.input:active ~ .track .thumb {
+	transform: scale(1);
+}
+
+.thumb:before {
+	content: '';
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	opacity: 0.25;
+	background-color: var(--mdc-theme-secondary);
+	transition: transform 0.1s ease-out;
+	transform: scale(0.571);
+	will-change: transform;
+	display: block;
+	top: -8px;
+	position: relative;
+	left: -8px;
+}
+
+.input:focus ~ .track .thumb:before {
+	transform: scale(1);
+}
+
+.input:focus:active ~ .track .thumb:before {
 	transform: scale(1);
 }
 
