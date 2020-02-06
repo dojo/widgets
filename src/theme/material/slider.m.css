@@ -1,2 +1,170 @@
+@import './variables.css';
+
 .root {
+	display: block;
+	composes: mdc-slider from '@material/slider/dist/mdc.slider.css';
+}
+
+.inputWrapper {
+	margin: var(--spacing-regular) 0;
+	position: relative;
+}
+
+.track {
+	position: relative;
+	composes: mdc-slider__track-container from '@material/slider/dist/mdc.slider.css';
+}
+
+.root .track {
+	overflow: visible;
+}
+
+.fill {
+	composes: mdc-slider__track from '@material/slider/dist/mdc.slider.css';
+}
+
+.thumb {
+	background-color: var(--mdc-theme-secondary);
+	border-radius: 50%;
+	height: 16px;
+	margin-left: -7px;
+	position: absolute;
+	top: -7px;
+	transition: transform 0.1s ease-out;
+	width: 16px;
+	transform: scale(0.571);
+	will-change: transform;
+}
+
+.root .input {
+	height: 16px;
+	outline: none;
+	top: -7px;
+}
+.input::-ms-thumb {
+	height: 16px;
+	width: 16px;
+}
+.input::-moz-range-thumb {
+	height: 16px;
+	width: 16px;
+}
+.input::-webkit-slider-thumb {
+	height: 16px;
+	width: 16px;
+}
+
+/* focused styles */
+.input:active ~ .track .thumb {
+	transform: scale(1);
+}
+
+.thumb:before {
+	content: '';
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	opacity: 0.25;
+	background-color: var(--mdc-theme-secondary);
+	transition: transform 0.1s ease-out;
+	transform: scale(0.571);
+	will-change: transform;
+	display: block;
+	top: -8px;
+	position: relative;
+	left: -8px;
+}
+
+.input:focus ~ .track .thumb:before {
+	transform: scale(1);
+}
+
+.input:focus:active ~ .track .thumb:before {
+	transform: scale(1);
+}
+
+.input:focus ~ .outputTooltip,
+.root:hover .outputTooltip {
+	opacity: 1;
+	pointer-events: auto;
+	z-index: var(--zindex-tooltip);
+}
+
+.output {
+	background-color: var(--color-background-inverted);
+	color: var(--color-text-inverted);
+	display: inline-block;
+	margin: var(--spacing-regular) 0 0;
+	padding: var(--spacing-regular);
+}
+
+.outputTooltip {
+	margin: 0;
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	top: calc(var(--grid-base) * 2.5);
+	transform: translate(-50%, 0);
+	transition: opacity var(--transition-duration) var(--transition-easing);
+}
+
+.outputTooltip::before {
+	border-left: var(--grid-base) solid transparent;
+	border-right: var(--grid-base) solid transparent;
+	border-bottom: var(--grid-base) solid var(--color-background-inverted);
+	content: '';
+	left: 50%;
+	margin-left: calc(var(--grid-base) * -1);
+	margin-top: calc(var(--grid-base) * -1);
+	position: absolute;
+	top: 0;
+}
+
+.vertical .outputTooltip {
+	left: calc(var(--grid-base) * 2.5);
+	top: auto;
+	transform: translate(0, -50%);
+}
+
+.vertical .outputTooltip::before {
+	border-bottom: var(--grid-base) solid transparent;
+	border-left: 0;
+	border-right: var(--grid-base) solid var(--color-background-inverted);
+	border-top: var(--grid-base) solid transparent;
+	left: 0;
+	top: 50%;
+}
+
+/* vertical slider */
+.vertical .input,
+.vertical .track {
+	transform-origin: 0 0;
+	transform: rotate(-90deg) translate(-100%, 0);
+}
+
+/* disabled and readonly styles */
+.disabled .track,
+.readonly .track {
+	background-color: var(--color-border);
+}
+
+.disabled .thumb,
+.readonly .thumb {
+	background-color: var(--color-background-faded);
+}
+
+/* invalid style */
+.invalid .track {
+	background-color: var(--color-error);
+}
+.invalid .thumb {
+	border-color: var(--color-error);
+}
+
+/* valid style */
+.valid .track {
+	background-color: var(--color-success);
+}
+.valid .thumb {
+	border-color: var(--color-success);
 }
