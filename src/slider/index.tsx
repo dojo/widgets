@@ -1,5 +1,6 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -49,8 +50,8 @@ export interface SliderProperties extends ThemeProperties, FocusProperties {
 	step?: number;
 	/** If the value provided by the slider are valid */
 	valid?: boolean;
-	/** The current value */
-	value?: number;
+	/** The initial value */
+	initialValue?: number;
 	/** Orients the slider vertically, false by default. */
 	vertical?: boolean;
 	/** Length of the vertical slider (only used if vertical is true) */
@@ -59,9 +60,22 @@ export interface SliderProperties extends ThemeProperties, FocusProperties {
 	widgetId?: string;
 }
 
-const factory = create({ theme, focus }).properties<SliderProperties>();
+export interface SliderICache {
+	value?: number;
+	initialValue?: number;
+}
 
-export const Slider = factory(function Slider({ id, middleware: { theme, focus }, properties }) {
+const factory = create({
+	theme,
+	focus,
+	icache: createICacheMiddleware<SliderICache>()
+}).properties<SliderProperties>();
+
+export const Slider = factory(function Slider({
+	id,
+	middleware: { theme, focus, icache },
+	properties
+}) {
 	const {
 		aria = {},
 		disabled,
@@ -88,12 +102,24 @@ export const Slider = factory(function Slider({ id, middleware: { theme, focus }
 		onValue
 	} = properties();
 
-	let { value = min } = properties();
-	const themeCss = theme.classes(css);
-	const themeFixedCss = theme.classes(fixedCss);
+	const { initialValue = min } = properties();
+	const existingInitialValue = icache.getOrSet('initialValue', min);
+	let value = icache.get('value') || initialValue;
 
-	value = value > max ? max : value;
-	value = value < min ? min : value;
+	if (initialValue !== existingInitialValue) {
+		value = initialValue;
+		if (initialValue > max) {
+			value = max;
+		} else if (initialValue < min) {
+			value = min;
+		}
+
+		icache.set('value', value);
+		icache.set('initialValue', initialValue);
+		onValue && onValue(value);
+	}
+
+	const themeCss = theme.classes(css);
 
 	const percentValue = ((value - min) / (max - min)) * 100;
 
@@ -124,13 +150,13 @@ export const Slider = factory(function Slider({ id, middleware: { theme, focus }
 
 	const slider = (
 		<div
-			classes={[themeCss.inputWrapper, themeFixedCss.inputWrapperFixed]}
+			classes={[themeCss.inputWrapper, fixedCss.inputWrapperFixed]}
 			styles={vertical ? { height: verticalHeight } : {}}
 		>
 			<input
 				key="input"
 				{...formatAriaProperties(aria)}
-				classes={[themeCss.input, themeFixedCss.nativeInput]}
+				classes={[themeCss.input, fixedCss.nativeInput]}
 				disabled={disabled}
 				id={widgetId}
 				focus={focus.shouldFocus}
@@ -151,22 +177,23 @@ export const Slider = factory(function Slider({ id, middleware: { theme, focus }
 				onpointerleave={() => onOut && onOut()}
 				oninput={(event: Event) => {
 					event.stopPropagation();
-					const value = (event.target as HTMLInputElement).value;
+					const value = parseFloat((event.target as HTMLInputElement).value);
 
-					onValue && onValue(parseFloat(value));
+					icache.set('value', value);
+					onValue && onValue(value);
 				}}
 			/>
 			<div
-				classes={[themeCss.track, themeFixedCss.trackFixed]}
+				classes={[themeCss.track, fixedCss.trackFixed]}
 				aria-hidden="true"
 				styles={vertical ? { width: verticalHeight } : {}}
 			>
 				<span
-					classes={[themeCss.fill, themeFixedCss.fillFixed]}
+					classes={[themeCss.fill, fixedCss.fillFixed]}
 					styles={{ width: `${percentValue}%` }}
 				/>
 				<span
-					classes={[themeCss.thumb, themeFixedCss.thumbFixed]}
+					classes={[themeCss.thumb, fixedCss.thumbFixed]}
 					styles={{ left: `${percentValue}%` }}
 				/>
 			</div>
@@ -204,7 +231,7 @@ export const Slider = factory(function Slider({ id, middleware: { theme, focus }
 				valid === true ? css.valid : null,
 				readOnly ? css.readonly : null,
 				vertical ? css.vertical : null,
-				themeFixedCss.rootFixed
+				fixedCss.rootFixed
 			]}
 		>
 			{labelAfter ? children.reverse() : children}

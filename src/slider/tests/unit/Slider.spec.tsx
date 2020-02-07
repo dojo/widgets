@@ -144,7 +144,7 @@ registerSuite('Slider', {
 					output={() => 'tribbles'}
 					outputIsTooltip
 					step={5}
-					value={35}
+					initialValue={35}
 				/>
 			));
 
@@ -197,7 +197,7 @@ registerSuite('Slider', {
 						max={10}
 						min={5}
 						outputIsTooltip
-						value={6}
+						initialValue={6}
 						vertical
 						verticalHeight="100px"
 					/>
@@ -220,7 +220,7 @@ registerSuite('Slider', {
 		},
 
 		'max value should be respected'() {
-			const h = harness(() => <Slider max={40} value={100} />);
+			const h = harness(() => <Slider max={40} initialValue={100} />);
 			h.expect(
 				expected()
 					.setProperty('@input', 'value', '40')
@@ -232,7 +232,7 @@ registerSuite('Slider', {
 		},
 
 		'min value should be respected'() {
-			const h = harness(() => <Slider min={30} value={20} />);
+			const h = harness(() => <Slider min={30} initialValue={20} />);
 
 			h.expect(
 				expected()
