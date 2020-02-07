@@ -1,5 +1,5 @@
 const { describe, it } = intern.getInterface('bdd');
-import * as css from '../../theme/radio-group.m.css';
+import * as css from '../../theme/default/radio-group.m.css';
 import Radio from '../../radio/index';
 import RadioGroup from '../index';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';

@@ -1,4 +1,4 @@
-import * as css from '../theme/radio-group.m.css';
+import * as css from '../theme/default/radio-group.m.css';
 import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import { Radio } from '../radio/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
