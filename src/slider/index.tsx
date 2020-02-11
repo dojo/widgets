@@ -1,16 +1,15 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import Label from '../label/index';
-import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
-import Focus from '../meta/Focus';
-import { uuid } from '@dojo/framework/core/util';
+import focus from '@dojo/framework/core/middleware/focus';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
-import * as fixedCss from './styles/slider.m.css';
+import Label from '../label/index';
 import * as css from '../theme/default/slider.m.css';
+import * as fixedCss from './styles/slider.m.css';
 
-export interface SliderProperties extends ThemedProperties, FocusProperties {
+export interface SliderProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Set the disabled property of the control */
@@ -51,8 +50,8 @@ export interface SliderProperties extends ThemedProperties, FocusProperties {
 	step?: number;
 	/** If the value provided by the slider are valid */
 	valid?: boolean;
-	/** The current value */
-	value?: number;
+	/** The initial value */
+	initialValue?: number;
 	/** Orients the slider vertically, false by default. */
 	vertical?: boolean;
 	/** Length of the vertical slider (only used if vertical is true) */
@@ -61,189 +60,174 @@ export interface SliderProperties extends ThemedProperties, FocusProperties {
 	widgetId?: string;
 }
 
-@theme(css)
-export class Slider extends ThemedMixin(FocusMixin(WidgetBase))<SliderProperties> {
-	// id used to associate input with output
-	private _widgetId = uuid();
+export interface SliderICache {
+	value?: number;
+	initialValue?: number;
+}
 
-	private _onInput(event: Event) {
-		event.stopPropagation();
-		const value = (event.target as HTMLInputElement).value;
+const factory = create({
+	theme,
+	focus,
+	icache: createICacheMiddleware<SliderICache>()
+}).properties<SliderProperties>();
 
-		this.properties.onValue && this.properties.onValue(parseFloat(value));
-	}
+export const Slider = factory(function Slider({
+	id,
+	middleware: { theme, focus, icache },
+	properties
+}) {
+	const {
+		aria = {},
+		disabled,
+		widgetId = `slider-${id}}`,
+		valid,
+		label,
+		labelAfter,
+		labelHidden,
+		max = 100,
+		min = 0,
+		name,
+		readOnly,
+		required,
+		showOutput = true,
+		step = 1,
+		vertical = false,
+		verticalHeight = '200px',
+		outputIsTooltip = false,
+		output,
+		theme: themeProp,
+		classes,
+		onOut,
+		onOver,
+		onBlur,
+		onFocus,
+		onValue
+	} = properties();
 
-	protected getRootClasses(): (string | null)[] {
-		const { disabled, valid, readOnly, vertical = false } = this.properties;
-		const focus = this.meta(Focus).get('root');
+	const { initialValue = min } = properties();
+	const existingInitialValue = icache.getOrSet('initialValue', min);
+	let value = icache.get('value') || initialValue;
 
-		return [
-			css.root,
-			disabled ? css.disabled : null,
-			focus.containsFocus ? css.focused : null,
-			valid === false ? css.invalid : null,
-			valid === true ? css.valid : null,
-			readOnly ? css.readonly : null,
-			vertical ? css.vertical : null
-		];
-	}
-
-	protected renderControls(percentValue: number): DNode {
-		const { vertical = false, verticalHeight = '200px' } = this.properties;
-
-		return v(
-			'div',
-			{
-				classes: [this.theme(css.track), fixedCss.trackFixed],
-				'aria-hidden': 'true',
-				styles: vertical ? { width: verticalHeight } : {}
-			},
-			[
-				v('span', {
-					classes: [this.theme(css.fill), fixedCss.fillFixed],
-					styles: { width: `${percentValue}%` }
-				}),
-				v('span', {
-					classes: [this.theme(css.thumb), fixedCss.thumbFixed],
-					styles: { left: `${percentValue}%` }
-				})
-			]
-		);
-	}
-
-	protected renderOutput(value: number, percentValue: number): DNode {
-		const { output, outputIsTooltip = false, vertical = false } = this.properties;
-
-		const outputNode = output ? output(value) : `${value}`;
-
-		// output styles
-		let outputStyles: { left?: string; top?: string } = {};
-		if (outputIsTooltip) {
-			outputStyles = vertical
-				? { top: `${100 - percentValue}%` }
-				: { left: `${percentValue}%` };
+	if (initialValue !== existingInitialValue) {
+		value = initialValue;
+		if (initialValue > max) {
+			value = max;
+		} else if (initialValue < min) {
+			value = min;
 		}
 
-		return v(
-			'output',
-			{
-				classes: this.theme([css.output, outputIsTooltip ? css.outputTooltip : null]),
-				for: this._widgetId,
-				styles: outputStyles,
-				tabIndex: -1 /* needed so Edge doesn't select the element while tabbing through */
-			},
-			[outputNode]
-		);
+		icache.set('value', value);
+		icache.set('initialValue', initialValue);
+		onValue && onValue(value);
 	}
 
-	render(): DNode {
-		const {
-			aria = {},
-			disabled,
-			widgetId = this._widgetId,
-			valid,
-			label,
-			labelAfter,
-			labelHidden,
-			max = 100,
-			min = 0,
-			name,
-			readOnly,
-			required,
-			showOutput = true,
-			step = 1,
-			vertical = false,
-			verticalHeight = '200px',
-			theme,
-			classes,
-			onOut,
-			onOver,
-			onBlur,
-			onFocus
-		} = this.properties;
-		const focus = this.meta(Focus).get('root');
+	const themeCss = theme.classes(css);
 
-		let { value = min } = this.properties;
+	const percentValue = ((value - min) / (max - min)) * 100;
 
-		value = value > max ? max : value;
-		value = value < min ? min : value;
-
-		const percentValue = ((value - min) / (max - min)) * 100;
-
-		const slider = v(
-			'div',
-			{
-				classes: [this.theme(css.inputWrapper), fixedCss.inputWrapperFixed],
-				styles: vertical ? { height: verticalHeight } : {}
-			},
-			[
-				v('input', {
-					key: 'input',
-					...formatAriaProperties(aria),
-					classes: [this.theme(css.input), fixedCss.nativeInput],
-					disabled,
-					id: widgetId,
-					focus: this.shouldFocus,
-					'aria-invalid': valid === false ? 'true' : null,
-					max: `${max}`,
-					min: `${min}`,
-					name,
-					readOnly,
-					'aria-readonly': readOnly === true ? 'true' : null,
-					required,
-					step: `${step}`,
-					styles: vertical ? { width: verticalHeight } : {},
-					type: 'range',
-					value: `${value}`,
-					onblur: () => {
-						onBlur && onBlur();
-					},
-					onfocus: () => {
-						onFocus && onFocus();
-					},
-					onpointerenter: () => {
-						onOver && onOver();
-					},
-					onpointerleave: () => {
-						onOut && onOut();
-					},
-					oninput: this._onInput
-				}),
-				this.renderControls(percentValue),
-				showOutput ? this.renderOutput(value, percentValue) : null
-			]
-		);
-
-		const children = [
-			label
-				? w(
-						Label,
-						{
-							theme,
-							classes,
-							disabled,
-							focused: focus.containsFocus,
-							valid,
-							readOnly,
-							required,
-							hidden: labelHidden,
-							forId: widgetId
-						},
-						[label]
-				  )
-				: null,
-			slider
-		];
-
-		return v(
-			'div',
-			{
-				key: 'root',
-				classes: [...this.theme(this.getRootClasses()), fixedCss.rootFixed]
-			},
-			labelAfter ? children.reverse() : children
-		);
+	let outputStyles: any = {};
+	if (outputIsTooltip) {
+		outputStyles = vertical ? { top: `${100 - percentValue}%` } : { left: `${percentValue}%` };
 	}
-}
+
+	const slider = (
+		<div
+			classes={[themeCss.inputWrapper, fixedCss.inputWrapperFixed]}
+			styles={vertical ? { height: verticalHeight } : {}}
+		>
+			<input
+				key="input"
+				{...formatAriaProperties(aria)}
+				classes={[themeCss.input, fixedCss.nativeInput]}
+				disabled={disabled}
+				id={widgetId}
+				focus={focus.shouldFocus}
+				aria-invalid={valid === false ? 'true' : null}
+				max={`${max}`}
+				min={`${min}`}
+				name={name}
+				readOnly={readOnly}
+				aria-readonly={readOnly ? 'true' : null}
+				required={required}
+				step={`${step}`}
+				styles={vertical ? { width: verticalHeight } : {}}
+				type="range"
+				value={`${value}`}
+				onblur={() => onBlur && onBlur()}
+				onfocus={() => onFocus && onFocus()}
+				onpointerenter={() => onOver && onOver()}
+				onpointerleave={() => onOut && onOut()}
+				oninput={(event: Event) => {
+					event.stopPropagation();
+					const value = parseFloat((event.target as HTMLInputElement).value);
+
+					icache.set('value', value);
+					onValue && onValue(value);
+				}}
+			/>
+			<div
+				classes={[themeCss.track, fixedCss.trackFixed]}
+				aria-hidden="true"
+				styles={vertical ? { width: verticalHeight } : {}}
+			>
+				<span
+					classes={[themeCss.fill, fixedCss.fillFixed]}
+					styles={{ width: `${percentValue}%` }}
+				/>
+				<span
+					classes={[themeCss.thumb, fixedCss.thumbFixed]}
+					styles={{ left: `${percentValue}%` }}
+				/>
+			</div>
+			{showOutput ? (
+				<output
+					classes={[themeCss.output, outputIsTooltip ? themeCss.outputTooltip : null]}
+					for={widgetId}
+					styles={outputStyles}
+					tabIndex={-1}
+				>
+					{output ? output(value) : `${value}`}
+				</output>
+			) : null}
+		</div>
+	);
+
+	const children = [
+		label ? (
+			<Label
+				theme={themeProp}
+				classes={classes}
+				disabled={disabled}
+				focused={focus.shouldFocus()}
+				valid={valid}
+				readOnly={readOnly}
+				required={required}
+				hidden={labelHidden}
+				forId={widgetId}
+			>
+				{label}
+			</Label>
+		) : null,
+		slider
+	];
+
+	return (
+		<div
+			key="root"
+			classes={[
+				themeCss.root,
+				disabled ? themeCss.disabled : null,
+				focus.isFocused('input') ? themeCss.focused : null,
+				valid === false ? themeCss.invalid : null,
+				valid === true ? themeCss.valid : null,
+				readOnly ? themeCss.readonly : null,
+				vertical ? themeCss.vertical : null,
+				fixedCss.rootFixed
+			]}
+		>
+			{labelAfter ? children.reverse() : children}
+		</div>
+	);
+});
 
 export default Slider;

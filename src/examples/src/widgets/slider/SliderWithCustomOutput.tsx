@@ -1,17 +1,14 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { icache } from '@dojo/framework/core/middleware/icache';
 import Slider from '@dojo/widgets/slider';
 
-const factory = create({ icache });
+const factory = create({});
 
-export default factory(function SliderWithCustomOutput({ middleware: { icache } }) {
-	const value = icache.getOrSet<number>('value', 0);
+export default factory(function SliderWithCustomOutput({}) {
 	return (
 		<Slider
 			min={0}
-			value={value}
+			initialValue={0}
 			max={100}
-			onValue={(value) => icache.set('value', value)}
 			output={(value) => {
 				if (value < 20) {
 					return 'I am a Klingon';
