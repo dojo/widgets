@@ -6,7 +6,7 @@ const factory = create({});
 export default factory(function VerticalSlider({}) {
 	return (
 		<div styles={{ margin: '2em' }}>
-			<Slider min={0} initialValue={0} max={100} vertical />
+			<Slider min={0} max={100} vertical />
 		</div>
 	);
 });

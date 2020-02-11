@@ -4,5 +4,5 @@ import Slider from '@dojo/widgets/slider';
 const factory = create({});
 
 export default factory(function Basic({}) {
-	return <Slider min={0} initialValue={0} max={100} />;
+	return <Slider min={0} max={100} />;
 });
