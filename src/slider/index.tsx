@@ -93,6 +93,8 @@ export const Slider = factory(function Slider({
 		step = 1,
 		vertical = false,
 		verticalHeight = '200px',
+		outputIsTooltip = false,
+		output,
 		theme: themeProp,
 		classes,
 		onOut,
@@ -123,30 +125,10 @@ export const Slider = factory(function Slider({
 
 	const percentValue = ((value - min) / (max - min)) * 100;
 
-	const renderOutput = (value: number, percentValue: number) => {
-		const { output, outputIsTooltip = false, vertical = false } = properties();
-
-		const outputNode = output ? output(value) : `${value}`;
-
-		// output styles
-		let outputStyles: { left?: string; top?: string } = {};
-		if (outputIsTooltip) {
-			outputStyles = vertical
-				? { top: `${100 - percentValue}%` }
-				: { left: `${percentValue}%` };
-		}
-
-		return (
-			<output
-				classes={[themeCss.output, outputIsTooltip ? themeCss.outputTooltip : null]}
-				for={widgetId}
-				styles={outputStyles}
-				tabIndex={-1}
-			>
-				{outputNode}
-			</output>
-		);
-	};
+	let outputStyles: any = {};
+	if (outputIsTooltip) {
+		outputStyles = vertical ? { top: `${100 - percentValue}%` } : { left: `${percentValue}%` };
+	}
 
 	const slider = (
 		<div
@@ -197,7 +179,16 @@ export const Slider = factory(function Slider({
 					styles={{ left: `${percentValue}%` }}
 				/>
 			</div>
-			{showOutput ? renderOutput(value, percentValue) : null}
+			{showOutput ? (
+				<output
+					classes={[themeCss.output, outputIsTooltip ? themeCss.outputTooltip : null]}
+					for={widgetId}
+					styles={outputStyles}
+					tabIndex={-1}
+				>
+					{output ? output(value) : `${value}`}
+				</output>
+			) : null}
 		</div>
 	);
 
@@ -224,13 +215,13 @@ export const Slider = factory(function Slider({
 		<div
 			key="root"
 			classes={[
-				css.root,
-				disabled ? css.disabled : null,
-				focus.isFocused('input') ? css.focused : null,
-				valid === false ? css.invalid : null,
-				valid === true ? css.valid : null,
-				readOnly ? css.readonly : null,
-				vertical ? css.vertical : null,
+				themeCss.root,
+				disabled ? themeCss.disabled : null,
+				focus.isFocused('input') ? themeCss.focused : null,
+				valid === false ? themeCss.invalid : null,
+				valid === true ? themeCss.valid : null,
+				readOnly ? themeCss.readonly : null,
+				vertical ? themeCss.vertical : null,
 				fixedCss.rootFixed
 			]}
 		>
