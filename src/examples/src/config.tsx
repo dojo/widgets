@@ -1,6 +1,7 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
 import materialTheme from '@dojo/widgets/theme/material';
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
+import BasicAvatar from './widgets/avatar/Basic';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
@@ -213,6 +214,16 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicAccordionPane
+				}
+			}
+		},
+		avatar: {
+			examples: [],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicAvatar
 				}
 			}
 		},

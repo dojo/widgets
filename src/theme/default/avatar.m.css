@@ -1,0 +1,45 @@
+.root {
+	color: white;
+	background-color: black;
+	width: var(--size);
+	height: var(--size);
+	display: flex;
+	font-size: 1.25rem;
+	line-height: 1;
+	position: relative;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+}
+
+.small {
+	--size: 24px;
+}
+
+.medium {
+	--size: 40px;
+}
+
+.large {
+	--size: 56px;
+}
+
+.circle {
+	border-radius: 50%;
+}
+
+.square {
+	border-radius: 0;
+}
+
+.rounded {
+	border-radius: 4px;
+}
+
+.image {
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
+	color: transparent;
+}
