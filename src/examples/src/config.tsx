@@ -18,6 +18,7 @@ import ActionButtons from './widgets/card/ActionButtons';
 import ActionButtonsAndIcons from './widgets/card/ActionButtonsAndIcons';
 import ActionIcons from './widgets/card/ActionIcons';
 import BasicCard from './widgets/card/Basic';
+import CardCombined from './widgets/card/CardCombined';
 import CardWithMediaContent from './widgets/card/CardWithMediaContent';
 import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
 import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
@@ -330,6 +331,11 @@ export const config = {
 					title: 'Basic card with Content Media',
 					module: CardWithMediaContent,
 					filename: 'CardWithMediaContent'
+				},
+				{
+					title: 'Combined Card',
+					module: CardCombined,
+					filename: 'CardCombined'
 				}
 			],
 			filename: 'index',

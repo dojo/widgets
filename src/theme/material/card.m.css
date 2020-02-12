@@ -35,9 +35,17 @@
 	content: '';
 }
 
+.header {
+	padding: 1rem 1rem 0rem 1rem;
+}
+
+.content {
+	padding: 1rem 1rem 0rem 1rem;
+}
+
 .primary {
 	composes: mdc-card__primary-action from '@material/card/dist/mdc.card.css';
-	padding: 1rem 1rem 0rem 1rem;
+	/* padding: 1rem 1rem 0rem 1rem; */
 }
 
 .secondary {

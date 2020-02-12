@@ -24,7 +24,7 @@
 }
 
 /* May be added to an action to indiciate the desired CTA */
-.primaryAction {
+.primary {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -37,6 +37,14 @@
 
 /* May be added to media content */
 .mediaContent {
+}
+
+/* The wrapper around a header */
+.header {
+}
+
+/* The wrapper around the main content area */
+.content {
 }
 
 /* May be added to square media */
