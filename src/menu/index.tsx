@@ -201,19 +201,14 @@ export const Menu = factory(function Menu({
 	// }
 
 	function renderItems(startNode: number, count: number) {
-		if (!getOptions().pageNumber) {
-			setOptions({ ...getOptions(), pageNumber: 1, pageSize: itemsInView * 2 });
-		}
+		const page = Math.ceil(startNode / count) + 1;
+
+		setOptions({
+			...getOptions(),
+			pageNumber: page
+		});
 
 		const response = getOrRead(getOptions());
-		const total = getTotal(getOptions());
-
-		if (!response || total === undefined) {
-			return {
-				total: 0,
-				items: []
-			};
-		}
 
 		const renderedItemsCount = Math.min(total - startNode, count);
 
@@ -222,10 +217,7 @@ export const Menu = factory(function Menu({
 			renderedItems[i] = renderItem(response[i], i + startNode);
 		}
 
-		return {
-			renderedItems,
-			total
-		};
+		return renderedItems;
 	}
 
 	function renderItem(data: MenuOption, index: number) {
@@ -357,7 +349,19 @@ export const Menu = factory(function Menu({
 	const offsetY = startNode * itemHeight;
 
 	const renderedItemsCount = itemsInView + 2 * nodePadding;
-	const { renderedItems, total } = renderItems(startNode, renderedItemsCount);
+
+	if (!getOptions().pageNumber) {
+		setOptions({
+			...getOptions(),
+			pageNumber: 1,
+			pageSize: renderedItemsCount
+		});
+		getOrRead(getOptions());
+	}
+
+	const total = getTotal(getOptions()) || 0;
+
+	const renderedItems = renderItems(startNode, renderedItemsCount);
 
 	const totalContentHeight = total * itemHeight;
 
