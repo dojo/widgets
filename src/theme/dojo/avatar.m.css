@@ -1,0 +1,46 @@
+@import './variables.css';
+
+.root {
+	color: var(--color-text-inverted);
+	background-color: var(--color-highlight);
+	font-size: 1.25rem;
+	display: flex;
+	position: relative;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+}
+
+.small {
+	width: var(--avatar-size-small);
+	height: var(--avatar-size-small);
+}
+
+.medium {
+	width: var(--avatar-size-medium);
+	height: var(--avatar-size-medium);
+}
+
+.large {
+	width: var(--avatar-size-large);
+	height: var(--avatar-size-large);
+}
+
+.circle {
+	border-radius: 50%;
+}
+
+.square {
+	border-radius: 0;
+}
+
+.rounded {
+	border-radius: var(--border-radius);
+}
+
+.image {
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
+}

@@ -1,0 +1,46 @@
+@import './variables.css';
+
+.root {
+	color: var(--mdc-theme-surface);
+	background-color: var(--mdc-theme-primary);
+	font-size: 1.25rem;
+	display: flex;
+	position: relative;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+}
+
+.small {
+	width: var(--mdc-avatar-size-small);
+	height: var(--mdc-avatar-size-small);
+}
+
+.medium {
+	width: var(--mdc-avatar-size-medium);
+	height: var(--mdc-avatar-size-medium);
+}
+
+.large {
+	width: var(--mdc-avatar-size-large);
+	height: var(--mdc-avatar-size-large);
+}
+
+.circle {
+	border-radius: 50%;
+}
+
+.square {
+	border-radius: 0;
+}
+
+.rounded {
+	border-radius: var(--mdc-border-radius);
+}
+
+.image {
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
+}

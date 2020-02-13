@@ -53,4 +53,9 @@
 	--zindex-fixed: 300;
 	--zindex-dialog: 400;
 	--zindex-alert: 500;
+
+	/* Avatar */
+	--avatar-size-small: 24px;
+	--avatar-size-medium: 40px;
+	--avatar-size-large: 56px;
 }

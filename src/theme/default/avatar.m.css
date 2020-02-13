@@ -1,45 +1,31 @@
+/* The root class for the avatar widget */
 .root {
-	color: white;
-	background-color: black;
-	width: var(--size);
-	height: var(--size);
-	display: flex;
-	font-size: 1.25rem;
-	line-height: 1;
-	position: relative;
-	overflow: hidden;
-	align-items: center;
-	justify-content: center;
-	user-select: none;
 }
 
+/* May be added to avatars with size set to small */
 .small {
-	--size: 24px;
 }
 
+/* May be added to avatars with size set to medium */
 .medium {
-	--size: 40px;
 }
 
+/* May be added to avatars with size set to large */
 .large {
-	--size: 56px;
 }
 
+/* May be added to the avatar's circle variant */
 .circle {
-	border-radius: 50%;
 }
 
+/* May be added to the avatar's square variant */
 .square {
-	border-radius: 0;
 }
 
+/* May be added to the avatar's rounded variant */
 .rounded {
-	border-radius: 4px;
 }
 
+/* Added to the img element of the avatar */
 .image {
-	object-fit: cover;
-	height: 100%;
-	width: 100%;
-	color: transparent;
 }
