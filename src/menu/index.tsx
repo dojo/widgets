@@ -363,7 +363,7 @@ export const Menu = factory(function Menu({
 		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
 	}
 
-	const nodePadding = 10;
+	const nodePadding = Math.min(itemsInView, 20);
 	const selectedValue = icache.get('value');
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
@@ -400,18 +400,19 @@ export const Menu = factory(function Menu({
 
 	const renderedItemsCount = itemsInView + 2 * nodePadding;
 
-	if (!getOptions().pageNumber) {
+	if (!getOptions().pageNumber || !getOptions().pageSize) {
+		const { pageSize = renderedItemsCount, pageNumber = 1, query } = getOptions();
 		setOptions({
-			...getOptions(),
-			pageNumber: 1,
-			pageSize: renderedItemsCount
+			pageNumber,
+			pageSize,
+			query
 		});
-		getOrRead(getOptions());
 	}
 
 	const total = getTotal(getOptions());
 
 	if (total === undefined) {
+		getOrRead(getOptions());
 		return;
 	}
 
