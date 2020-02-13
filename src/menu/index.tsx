@@ -2,7 +2,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, renderer, tsx } from '@dojo/framework/core/vdom';
-import { findIndex } from '@dojo/framework/shim/array';
+// import { findIndex } from '@dojo/framework/shim/array';
 import global from '@dojo/framework/shim/global';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
@@ -12,8 +12,7 @@ import * as css from '../theme/default/menu.m.css';
 import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
-import { createResource } from './resource';
-import fetcher from './grid-data-fetcher';
+import { createDataMiddleware } from '../common/data';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
@@ -70,6 +69,7 @@ interface MenuICache {
 	value: string;
 	scrollTop: number;
 	previousActiveIndex: number;
+	previousTotal: number;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -83,9 +83,7 @@ const offscreenHeight = (dnode: RenderResult) => {
 	return dimensions.height;
 };
 
-const resource = createResource({
-	read: fetcher
-});
+const data = createDataMiddleware<MenuOption>();
 
 const factory = create({
 	icache: createICacheMiddleware<MenuICache>(),
@@ -99,7 +97,7 @@ export const Menu = factory(function Menu({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme, resource }
+	middleware: { icache, focus, theme, data }
 }) {
 	const {
 		activeIndex,
@@ -113,11 +111,13 @@ export const Menu = factory(function Menu({
 		// onRequestClose,
 		onValue,
 		// options,
-		widgetId
+		widgetId,
 		// total,
 		theme: themeProp
 	} = properties();
 	const [itemRenderer] = children();
+
+	const { getOrRead, getOptions, setOptions, getTotal } = data();
 
 	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {
@@ -201,25 +201,25 @@ export const Menu = factory(function Menu({
 	// }
 
 	function renderItems(startNode: number, count: number) {
-		const pageNumber = Math.floor(startNode / count);
-		const response = resource.getOrRead({
-			pagination: { size: count, offset: pageNumber * count }
-		});
+		if (!getOptions().pageNumber) {
+			setOptions({ ...getOptions(), pageNumber: 1, pageSize: itemsInView * 2 });
+		}
 
-		if (!response) {
+		const response = getOrRead(getOptions());
+		const total = getTotal(getOptions());
+
+		if (!response || total === undefined) {
 			return {
 				total: 0,
 				items: []
 			};
 		}
 
-		const { data, total }: { data: MenuOption[]; total: number } = response as any;
-
 		const renderedItemsCount = Math.min(total - startNode, count);
 
 		const renderedItems = new Array(renderedItemsCount);
 		for (let i = 0; i < renderedItemsCount; i++) {
-			renderedItems[i] = renderItem(data[i], i + startNode);
+			renderedItems[i] = renderItem(response[i], i + startNode);
 		}
 
 		return {

@@ -1,4 +1,4 @@
-import { Resource, ResourceOptions } from '@dojo/framework/core/middleware/data';
+import { Resource, ResourceOptions, SubscriptionType } from './data';
 
 export interface ReadOptions {
 	offset?: number;
@@ -10,7 +10,7 @@ type Invalidator = () => void;
 
 export type DataResponse<S> = { data: S[]; total: number };
 export type DataResponsePromise<S> = Promise<{ data: S[]; total: number }>;
-export type DataFetcher<S> = (options: ReadOptions) => DataResponse<S>;
+export type DataFetcher<S> = (options: ReadOptions) => DataResponse<S> | DataResponsePromise<S>;
 
 export interface DataTemplate<S> {
 	read: DataFetcher<S>;
@@ -20,9 +20,7 @@ export function createTransformer<S, T>(template: DataTemplate<S>, transformer: 
 	return transformer;
 }
 
-enum Status {
-	'INPROGRESS'
-}
+type Status = 'INPROGRESS' | 'FAILED';
 
 function isAsyncResponse<S>(
 	response: DataResponsePromise<S> | DataResponse<S>
@@ -35,48 +33,74 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 	let dataMap = new Map<string, S[] | Status>();
 	let totalMap = new Map<string, number>();
 
-	let keyedInvalidators = new Map<string, Set<Invalidator>>();
+	const invalidatorMaps = {
+		data: new Map<string, Set<Invalidator>>(),
+		total: new Map<string, Set<Invalidator>>(),
+		loading: new Map<string, Set<Invalidator>>(),
+		failed: new Map<string, Set<Invalidator>>()
+	};
 
-	function invalidate(key: string) {
-		const invalidators = keyedInvalidators.get(key);
-		if (invalidators) {
-			[...invalidators].forEach((invalidator: any) => {
-				invalidator();
-			});
-		}
-		keyedInvalidators.delete(key);
+	function invalidate(key: string, types: SubscriptionType[]) {
+		types.forEach((type) => {
+			const keyedInvalidatorMap = invalidatorMaps[type];
+			const invalidatorSet = keyedInvalidatorMap.get(key);
+			if (invalidatorSet) {
+				[...invalidatorSet].forEach((invalidator: any) => {
+					invalidator();
+				});
+			}
+		});
 	}
 
 	function getKey({ pageNumber, query, pageSize }: ResourceOptions): string {
 		return `page-${pageNumber}-pageSize-${pageSize}-query-${query}`;
 	}
 
-	function addInvalidator(key: string, invalidator: Invalidator) {
-		const invalidatorSet = keyedInvalidators.get(key) || new Set<Invalidator>();
-		invalidatorSet.add(invalidator);
-		keyedInvalidators.set(key, invalidatorSet);
-	}
-
-	function getTotal(options: ResourceOptions, invalidator: Invalidator) {
+	function subscribe(type: SubscriptionType, options: ResourceOptions, invalidator: Invalidator) {
 		const key = getKey(options);
-		const total = totalMap.get(key);
-
-		if (total !== undefined) {
-			return total;
-		} else {
-			addInvalidator(key, invalidator);
-			return undefined;
-		}
+		const keyedInvalidatorMap = invalidatorMaps[type];
+		const invalidatorSet = keyedInvalidatorMap.get(key) || new Set<Invalidator>();
+		invalidatorSet.add(invalidator);
+		keyedInvalidatorMap.set(key, invalidatorSet);
 	}
 
-	function getOrRead(options: ResourceOptions, invalidator: Invalidator): S[] | undefined {
+	function unsubscribe(invalidator: Invalidator) {
+		Object.keys(invalidatorMaps).forEach((type) => {
+			const keyedInvalidatorMap = invalidatorMaps[type as SubscriptionType];
+
+			const keys = keyedInvalidatorMap.keys();
+			[...keys].forEach((key) => {
+				const invalidatorSet = keyedInvalidatorMap.get(key);
+				if (invalidatorSet && invalidatorSet.has(invalidator)) {
+					invalidatorSet.delete(invalidator);
+					keyedInvalidatorMap.set(key, invalidatorSet);
+				}
+			});
+		});
+	}
+
+	function isLoading(options: ResourceOptions) {
+		const key = getKey(options);
+		return dataMap.get(key) === 'INPROGRESS';
+	}
+
+	function isFailed(options: ResourceOptions) {
+		const key = getKey(options);
+		return dataMap.get(key) === 'FAILED';
+	}
+
+	function getTotal(options: ResourceOptions) {
+		const key = getKey(options);
+		return totalMap.get(key);
+	}
+
+	function getOrRead(options: ResourceOptions): S[] | undefined {
 		const { pageNumber, query, pageSize } = options;
 		const key = getKey(options);
 
 		if (dataMap.has(key)) {
 			const keyedData = dataMap.get(key);
-			if (keyedData === Status.INPROGRESS) {
-				addInvalidator(key, invalidator);
+			if (keyedData === 'INPROGRESS' || keyedData === 'FAILED') {
 				return undefined;
 			} else {
 				return keyedData;
@@ -96,14 +120,19 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 			const response = read(readOptions);
 
 			if (isAsyncResponse(response)) {
-				dataMap.set(key, Status.INPROGRESS);
-				addInvalidator(key, invalidator);
+				dataMap.set(key, 'INPROGRESS');
+				invalidate(key, ['loading']);
 
-				response.then(({ data, total }) => {
-					dataMap.set(key, data);
-					totalMap.set(key, total);
-					invalidate(key);
-				});
+				response
+					.then(({ data, total }) => {
+						dataMap.set(key, data);
+						totalMap.set(key, total);
+						invalidate(key, ['loading', 'data', 'total']);
+					})
+					.catch(() => {
+						dataMap.set(key, 'FAILED');
+						invalidate(key, ['failed', 'loading']);
+					});
 
 				return undefined;
 			} else {
@@ -116,6 +145,10 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 
 	return {
 		getOrRead,
-		getTotal
+		getTotal,
+		subscribe,
+		unsubscribe,
+		isFailed,
+		isLoading
 	};
 }
