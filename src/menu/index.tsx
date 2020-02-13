@@ -2,7 +2,6 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, renderer, tsx } from '@dojo/framework/core/vdom';
-// import { findIndex } from '@dojo/framework/shim/array';
 import global from '@dojo/framework/shim/global';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
@@ -69,7 +68,6 @@ interface MenuICache {
 	value: string;
 	scrollTop: number;
 	previousActiveIndex: number;
-	previousTotal: number;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -108,16 +106,14 @@ export const Menu = factory(function Menu({
 		onActiveIndexChange,
 		onBlur,
 		onFocus,
-		// onRequestClose,
+		onRequestClose,
 		onValue,
-		// options,
 		widgetId,
-		// total,
 		theme: themeProp
 	} = properties();
 	const [itemRenderer] = children();
 
-	const { getOrRead, getOptions, setOptions, getTotal } = data();
+	const { getOrRead, getOptions, setOptions, getTotal, isLoading } = data();
 
 	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {
@@ -136,12 +132,13 @@ export const Menu = factory(function Menu({
 		event.stopPropagation();
 
 		switch (event.which) {
-			// case Keys.Enter:
-			// case Keys.Space:
-			// 	event.preventDefault();
-			// 	const activeItem = options[computedActiveIndex];
-			// 	!activeItem.disabled && setValue(activeItem.value);
-			// 	break;
+			case Keys.Enter:
+			case Keys.Space:
+				event.preventDefault();
+				if (activeItem && !activeItem.disabled) {
+					setValue(activeItem.value);
+				}
+				break;
 			case Keys.Down:
 				event.preventDefault();
 				if (event.metaKey || event.ctrlKey) {
@@ -158,10 +155,10 @@ export const Menu = factory(function Menu({
 					setActiveIndex((computedActiveIndex - 1 + total) % total);
 				}
 				break;
-			// case Keys.Escape:
-			// 	event.preventDefault();
-			// 	onRequestClose && onRequestClose();
-			// 	break;
+			case Keys.Escape:
+				event.preventDefault();
+				onRequestClose && onRequestClose();
+				break;
 			case Keys.Home:
 				event.preventDefault();
 				setActiveIndex(0);
@@ -170,14 +167,14 @@ export const Menu = factory(function Menu({
 				event.preventDefault();
 				setActiveIndex(total - 1);
 				break;
-			// default:
-			// 	if (event.metaKey || event.ctrlKey) {
-			// 		return;
-			// 	}
-			// 	const newIndex = getComputedIndexFromInput(event.key);
-			// 	if (newIndex !== undefined) {
-			// 		setActiveIndex(newIndex);
-			// 	}
+			default:
+				if (event.metaKey || event.ctrlKey) {
+					return;
+				}
+			// const newIndex = getComputedIndexFromInput(event.key);
+			// if (newIndex !== undefined) {
+			// 	setActiveIndex(newIndex);
+			// }
 		}
 	}
 
@@ -201,29 +198,80 @@ export const Menu = factory(function Menu({
 	// }
 
 	function renderItems(startNode: number, count: number) {
-		const page = Math.ceil(startNode / count) + 1;
-
-		setOptions({
-			...getOptions(),
-			pageNumber: page
-		});
-
-		const response = getOrRead(getOptions());
+		if (!total) {
+			return [];
+		}
 
 		const renderedItemsCount = Math.min(total - startNode, count);
-
 		const renderedItems = new Array(renderedItemsCount);
+		const pages = [];
+		const loading = [];
 		for (let i = 0; i < renderedItemsCount; i++) {
-			renderedItems[i] = renderItem(response[i], i + startNode);
+			const index = i + startNode;
+			const page = Math.floor(index / count) + 1;
+			if (!pages[page]) {
+				setOptions({
+					...getOptions(),
+					pageNumber: page
+				});
+				pages[page] = getOrRead(getOptions()) || [];
+				loading[page] = isLoading(getOptions());
+			}
+			const indexWithinPage = index - (page - 1) * count;
+			const menuOption = pages[page][indexWithinPage];
+			const pageIsLoading = loading[page];
+			renderedItems[i] = pageIsLoading
+				? renderPlaceholder(index)
+				: renderItem(menuOption, index);
 		}
 
 		return renderedItems;
+	}
+
+	function renderPlaceholder(index: number) {
+		const itemProps = {
+			widgetId: `${idBase}-item-${index}`,
+			key: `item-${index}`,
+			onSelect: () => {},
+			active: false,
+			onRequestActive: () => {
+				setActiveIndex(index);
+			},
+			disabled: true
+		};
+		return listBox ? (
+			<ListBoxItem
+				{...itemProps}
+				selected={false}
+				theme={theme.compose(
+					listBoxItemCss,
+					css,
+					'item'
+				)}
+			>
+				LOADING
+			</ListBoxItem>
+		) : (
+			<MenuItem
+				{...itemProps}
+				theme={theme.compose(
+					menuItemCss,
+					css,
+					'item'
+				)}
+			>
+				LOADING
+			</MenuItem>
+		);
 	}
 
 	function renderItem(data: MenuOption, index: number) {
 		const { value, label, divider, disabled = false } = data;
 		const selected = value === selectedValue;
 		const active = index === computedActiveIndex;
+		if (active) {
+			activeItem = data;
+		}
 		const itemProps = {
 			widgetId: `${idBase}-item-${index}`,
 			key: `item-${index}`,
@@ -317,8 +365,6 @@ export const Menu = factory(function Menu({
 
 	const nodePadding = 10;
 	const selectedValue = icache.get('value');
-	const computedActiveIndex =
-		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
@@ -328,6 +374,10 @@ export const Menu = factory(function Menu({
 	let scrollTop = icache.getOrSet('scrollTop', 0);
 
 	const previousActiveIndex = icache.get('previousActiveIndex');
+	const computedActiveIndex =
+		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
+
+	let activeItem: MenuOption | undefined = undefined;
 
 	if (computedActiveIndex !== previousActiveIndex) {
 		const visibleStartIndex = Math.floor(scrollTop / itemHeight);
@@ -359,9 +409,11 @@ export const Menu = factory(function Menu({
 		getOrRead(getOptions());
 	}
 
-	const total = getTotal(getOptions()) || 0;
+	const total = getTotal(getOptions());
 
-	const renderedItems = renderItems(startNode, renderedItemsCount);
+	if (total === undefined) {
+		return;
+	}
 
 	const totalContentHeight = total * itemHeight;
 
@@ -403,7 +455,7 @@ export const Menu = factory(function Menu({
 					}}
 					key="transformer"
 				>
-					{renderedItems}
+					{renderItems(startNode, renderedItemsCount)}
 				</div>
 			</div>
 		</div>

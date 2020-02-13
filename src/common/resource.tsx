@@ -56,6 +56,10 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		return `page-${pageNumber}-pageSize-${pageSize}-query-${query}`;
 	}
 
+	function getTotalKey({ query = '' }: ResourceOptions): string {
+		return query;
+	}
+
 	function subscribe(type: SubscriptionType, options: ResourceOptions, invalidator: Invalidator) {
 		const key = getKey(options);
 		const keyedInvalidatorMap = invalidatorMaps[type];
@@ -90,13 +94,14 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 	}
 
 	function getTotal(options: ResourceOptions) {
-		const key = getKey(options);
-		return totalMap.get(key);
+		const totalKey = getTotalKey(options);
+		return totalMap.get(totalKey);
 	}
 
 	function getOrRead(options: ResourceOptions): S[] | undefined {
 		const { pageNumber, query, pageSize } = options;
 		const key = getKey(options);
+		const totalKey = getTotalKey(options);
 
 		if (dataMap.has(key)) {
 			const keyedData = dataMap.get(key);
@@ -126,8 +131,11 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 				response
 					.then(({ data, total }) => {
 						dataMap.set(key, data);
-						totalMap.set(key, total);
-						invalidate(key, ['loading', 'data', 'total']);
+						invalidate(key, ['loading', 'data']);
+						if (total !== totalMap.get(totalKey)) {
+							totalMap.set(totalKey, total);
+							invalidate(key, ['total']);
+						}
 					})
 					.catch(() => {
 						dataMap.set(key, 'FAILED');
@@ -137,7 +145,9 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 				return undefined;
 			} else {
 				dataMap.set(key, response.data);
-				totalMap.set(key, response.total);
+				if (response.total !== totalMap.get(totalKey)) {
+					totalMap.set(totalKey, response.total);
+				}
 				return response.data;
 			}
 		}
