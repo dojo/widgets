@@ -420,7 +420,7 @@ export const config = {
 					filename: 'Basic',
 					module: BasicDateInput,
 					sandbox: true,
-					size: 'medium'
+					size: 'large'
 				}
 			}
 		},
