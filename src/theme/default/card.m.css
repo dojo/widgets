@@ -1,72 +1,73 @@
 /* The root class for the card */
 .root {
-	display: flex;
-	flex-direction: column;
 }
 
 /* Contains the Card's actions */
 .actions {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 }
 
 /* May be added to action buttons supplied by the actionsRenderer */
 .actionButtons {
-	display: flex;
-	align-items: center;
 }
 
 /* May be added to action icons supplied by the actionsRenderer */
 .actionIcons {
-	display: flex;
-	align-items: center;
-	flex-grow: 1;
 }
 
 /* May be added to an action to indiciate the desired CTA */
 .primary {
-	position: relative;
+}
+
+/* The wrapper around the main content section */
+.contentWrapper {
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
+}
+
+/* Wrapper around the content child */
+.content {
+}
+
+/* The wrapper around the header content area */
+.header {
 }
 
 /* May contain media content */
 .media {
 }
 
-/* May be added to media content */
-.mediaContent {
-}
-
-/* The wrapper around a header */
-.header {
-}
-
-/* The wrapper around the main content area */
-.content {
-}
-
-/* May be added to square media */
 .mediaSquare::before {
 	margin-top: 100%;
 }
 
-/* May be added to 16:9 media */
 .media16by9::before {
 	margin-top: 56.25%;
 }
 
-/* May wrap media content */
 .media::before {
 	display: block;
 	content: '';
 }
 
-/* May indicate primary actions */
-.primary {
+/* May be added to square media */
+.mediaSquare {
 }
 
-/* May indicate secondary actions */
-.secondary {
+/* May be added to 16:9 media */
+.media16by9 {
+}
+
+/* Wrapper around the title and subtitle area */
+.titleWrapper {
+}
+
+/* Applied to the title */
+.title {
+}
+
+/* Applied to the subtitle */
+.subtitle {
 }

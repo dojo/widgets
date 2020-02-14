@@ -6,14 +6,9 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<div styles={{ width: '400px' }}>
-			<Card>
+			<Card title="Hello, World">
 				{{
-					content: () => (
-						<virtual>
-							<h2>Hello, World</h2>
-							<p>Lorem ipsum</p>
-						</virtual>
-					)
+					content: () => <p>Lorem ipsum</p>
 				}}
 			</Card>
 		</div>

@@ -4,9 +4,12 @@ import * as css from '../theme/default/card.m.css';
 import theme, { ThemeProperties } from '../middleware/theme';
 
 export interface CardProperties extends ThemeProperties {
-	square?: boolean;
+	onAction?: () => void;
 	mediaSrc?: string;
+	mediaTitle?: string;
+	square?: boolean;
 	title?: string;
+	subtitle?: string;
 }
 
 export interface CardChildren {
@@ -22,16 +25,19 @@ const factory = create({ theme })
 
 export const Card = factory(function Card({ children, properties, middleware: { theme } }) {
 	const themeCss = theme.classes(css);
-	const { square, mediaSrc, title } = properties();
+	const { onAction, mediaSrc, mediaTitle, square, title, subtitle } = properties();
 	const { header, content, actionButtons, actionIcons } = children()[0];
 
 	return (
 		<div key="root" classes={[themeCss.root]}>
 			{header && <div classes={themeCss.header}>{header()}</div>}
-			<div classes={[themeCss.primary]}>
+			<div
+				classes={[themeCss.contentWrapper, onAction ? themeCss.primary : null]}
+				onClick={() => onAction && onAction()}
+			>
 				{mediaSrc && (
 					<div
-						title={title}
+						title={mediaTitle}
 						classes={[
 							themeCss.media,
 							square ? themeCss.mediaSquare : themeCss.media16by9
@@ -40,6 +46,14 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 							backgroundImage: `url("${mediaSrc}")`
 						}}
 					/>
+				)}
+				{title && (
+					<div classes={themeCss.header}>
+						<div classes={themeCss.titleWrapper}>
+							{<h2 classes={themeCss.title}>{title}</h2>}
+							{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
+						</div>
+					</div>
 				)}
 				{content && <div classes={themeCss.content}>{content()}</div>}
 			</div>

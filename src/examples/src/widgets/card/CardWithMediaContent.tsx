@@ -1,20 +1,15 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Card from '@dojo/widgets/card';
-import mediaSrc from './img/card-photo.jpg';
+const mediaSrc = require('./img/card-photo.jpg');
 
 const factory = create();
 
 export default factory(function CardWithMediaContent() {
 	return (
 		<div styles={{ width: '400px' }}>
-			<Card mediaSrc={mediaSrc}>
+			<Card title="Hello, World" mediaSrc={mediaSrc}>
 				{{
-					content: () => (
-						<virtual>
-							<h2>Hello, World</h2>
-							<p>Lorem ipsum</p>
-						</virtual>
-					)
+					content: () => <p>Lorem ipsum</p>
 				}}
 			</Card>
 		</div>

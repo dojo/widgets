@@ -14,12 +14,49 @@
 	composes: mdc-card__action-icons from '@material/card/dist/mdc.card.css';
 }
 
-.media {
-	composes: mdc-card__media from '@material/card/dist/mdc.card.css';
+.primary {
+	composes: mdc-card__primary-action from '@material/card/dist/mdc.card.css';
+	/* padding: 1rem 1rem 0rem 1rem; */
 }
 
-.mediaContent {
-	composes: card__media from '@material/card/dist/mdc.card.css';
+.contentWrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.contentWrapper:first-child {
+	border-top-left-radius: inherit;
+	border-top-right-radius: inherit;
+}
+
+.content {
+	padding: 0 1rem 8px;
+	color: var(--mdc-theme-text-secondary-on-background);
+	composes: mdc-typography mdc-typography--body2 from '@material/typography/dist/mdc.typography.css';
+}
+
+.header {
+	padding: 0 1rem 8px;
+	display: flex;
+	align-items: center;
+}
+
+.media {
+	composes: mdc-card__media from '@material/card/dist/mdc.card.css';
+	margin-bottom: 1rem;
+}
+
+.media:first-child {
+	border-top-left-radius: inherit;
+	border-top-right-radius: inherit;
+}
+
+.mediaSquare::before {
+	margin-top: 100%;
+}
+
+.media16by9::before {
+	margin-top: 56.25%;
 }
 
 .mediaSquare::before {
@@ -35,19 +72,11 @@
 	content: '';
 }
 
-.header {
-	padding: 1rem 1rem 0rem 1rem;
+.title {
+	composes: mdc-typography mdc-typography--headline6 from '@material/typography/dist/mdc.typography.css';
 }
 
-.content {
-	padding: 1rem 1rem 0rem 1rem;
-}
-
-.primary {
-	composes: mdc-card__primary-action from '@material/card/dist/mdc.card.css';
-	/* padding: 1rem 1rem 0rem 1rem; */
-}
-
-.secondary {
-	padding: 0 1rem var(--grid-base);
+.subtitle {
+	composes: mdc-typography mdc-typography--subtitle2 from '@material/typography/dist/mdc.typography.css';
+	color: var(--mdc-theme-text-secondary-on-background);
 }

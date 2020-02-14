@@ -10,14 +10,9 @@ export default factory(function ActionButtonsAndIcons({ middleware: { icache } }
 	const clickCount = icache.getOrSet<number>('clickCount', 0);
 	return (
 		<div styles={{ width: '400px' }}>
-			<Card>
+			<Card title="Hello, World">
 				{{
-					content: () => (
-						<virtual>
-							<h2>Hello, World</h2>
-							<p>Lorem ipsum</p>
-						</virtual>
-					),
+					content: () => <p>Lorem ipsum</p>,
 					actionButtons: () => (
 						<Button onClick={() => icache.set('clickCount', clickCount + 1)}>
 							{clickCount === 0

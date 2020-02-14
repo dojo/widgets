@@ -7,14 +7,9 @@ const factory = create();
 export default factory(function ActionIcons() {
 	return (
 		<div styles={{ width: '400px' }}>
-			<Card>
+			<Card title="Hello, World">
 				{{
-					content: () => (
-						<virtual>
-							<h2>Hello, World</h2>
-							<p>Lorem ipsum</p>
-						</virtual>
-					),
+					content: () => <h2>Hello, World</h2>,
 					actionIcons: () => (
 						<virtual>
 							<Icon type="secureIcon" />

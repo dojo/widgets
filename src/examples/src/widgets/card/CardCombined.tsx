@@ -1,28 +1,22 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Card from '@dojo/widgets/card';
-import mediaSrc from './img/card-photo.jpg';
 import Button from '@dojo/widgets/button';
 import Icon from '@dojo/widgets/icon';
+const mediaSrc = require('./img/card-photo.jpg');
 
 const factory = create();
 
 export default factory(function CardWithMediaContent() {
 	return (
 		<div styles={{ width: '400px' }}>
-			<Card mediaSrc={mediaSrc}>
+			<Card
+				onAction={() => {}}
+				mediaSrc={mediaSrc}
+				title="Hello, World"
+				subtitle="A pretty picture"
+			>
 				{{
-					header: () => (
-						<virtual>
-							<h2>Our Changing Planet</h2>
-							<h3>by Kurt Wagner</h3>
-						</virtual>
-					),
-					content: () => (
-						<p>
-							Visit ten places on our planet that are undergoing the biggest changes
-							today.
-						</p>
-					),
+					content: () => <p>Travel the world today.</p>,
 					actionButtons: () => (
 						<virtual>
 							<Button>Read</Button>
