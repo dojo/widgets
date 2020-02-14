@@ -1,2 +1,12 @@
+@import './variables.css';
+
 .root {
+}
+
+.selected {
+	background-color: var(--mdc-theme-background-selected);
+}
+
+.selectable:hover {
+	background-color: var(--mdc-theme-background-active);
 }

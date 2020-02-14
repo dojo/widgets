@@ -1,2 +1,29 @@
+@import './variables.css';
+
 .root {
+}
+
+.cell {
+	font-size: var(--mdc-theme-font-size-small);
+	font-family: var(--mdc-theme-font-family);
+	display: table-cell;
+	border: none;
+	font-weight: var(--mdc-theme-heading-font-weight);
+	padding: 16px;
+	background-color: var(--mdc-theme-on-surface);
+	color: var(--mdc-theme-text-primary-on-dark);
+}
+
+.sort {
+	display: flex;
+	align-items: center;
+	opacity: 0;
+}
+
+.sortable {
+	display: flex;
+}
+
+.sorted .sort {
+	opacity: 1;
 }

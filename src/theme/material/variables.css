@@ -45,4 +45,6 @@
 	--mdc-avatar-size-small: 24px;
 	--mdc-avatar-size-medium: 40px;
 	--mdc-avatar-size-large: 56px;
+	--mdc-theme-heading-font-weight: 500;
+	--mdc-theme-separator: #e0e0e0;
 }
