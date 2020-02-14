@@ -1,8 +1,6 @@
 @import './variables.css';
 
 .root {
-	color: var(--color-text-inverted);
-	background-color: var(--color-highlight);
 	font-size: 1.25rem;
 	display: flex;
 	position: relative;
@@ -10,6 +8,11 @@
 	align-items: center;
 	justify-content: center;
 	user-select: none;
+}
+
+.avatarColor {
+	color: var(--color-text-inverted);
+	background-color: var(--color-highlight);
 }
 
 .small {

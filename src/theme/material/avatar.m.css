@@ -1,8 +1,6 @@
 @import './variables.css';
 
 .root {
-	color: var(--mdc-theme-surface);
-	background-color: var(--mdc-theme-primary);
 	font-size: 1.25rem;
 	display: flex;
 	position: relative;
@@ -10,6 +8,11 @@
 	align-items: center;
 	justify-content: center;
 	user-select: none;
+}
+
+.avatarColor {
+	color: var(--mdc-theme-surface);
+	background-color: var(--mdc-theme-primary);
 }
 
 .small {

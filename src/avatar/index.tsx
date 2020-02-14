@@ -15,7 +15,10 @@ export const Avatar = factory(function Avatar({ middleware: { theme }, propertie
 	const themeCss = theme.classes(css);
 	const { src, alt, variant = 'circle', size = 'medium' } = properties();
 	return (
-		<div key="root" classes={[themeCss.root, themeCss[size], themeCss[variant]]}>
+		<div
+			key="root"
+			classes={[themeCss.root, themeCss.avatarColor, themeCss[size], themeCss[variant]]}
+		>
 			{src ? <img alt={alt} classes={themeCss.image} src={src} /> : children()}
 		</div>
 	);
