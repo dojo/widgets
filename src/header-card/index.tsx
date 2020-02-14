@@ -15,7 +15,7 @@ export interface HeaderCardChildren extends Omit<CardChildren, 'header'> {}
 
 const factory = create({ theme })
 	.properties<HeaderCardProperties>()
-	.children<HeaderCardChildren>();
+	.children<HeaderCardChildren | undefined>();
 
 export const HeaderCard = factory(function HeaderCard({
 	middleware: { theme },
@@ -26,18 +26,16 @@ export const HeaderCard = factory(function HeaderCard({
 	const { title, subtitle, avatar, ...cardProps } = properties();
 	const cardChildren = children()[0];
 	return (
-		<Card {...cardProps}>
+		<Card key="root" {...cardProps}>
 			{{
 				header: () => (
-					<virtual>
-						<div classes={themeCss.header}>
-							{avatar && <div classes={themeCss.avatar}>{avatar()}</div>}
-							<div classes={themeCss.headerContent}>
-								{<h2 classes={themeCss.title}>{title}</h2>}
-								{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
-							</div>
+					<div key="header" classes={themeCss.header}>
+						{avatar && <div classes={themeCss.avatar}>{avatar()}</div>}
+						<div key="headerContent" classes={themeCss.headerContent}>
+							{<h2 classes={themeCss.title}>{title}</h2>}
+							{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
 						</div>
-					</virtual>
+					</div>
 				),
 				...cardChildren
 			}}
