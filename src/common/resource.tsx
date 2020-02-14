@@ -14,13 +14,14 @@ export type DataFetcher<S> = (options: ReadOptions) => DataResponse<S> | DataRes
 
 export interface DataTemplate<S> {
 	read: DataFetcher<S>;
+	pageSize?: number;
 }
 
 export function createTransformer<S, T>(template: DataTemplate<S>, transformer: (data: S) => T) {
 	return transformer;
 }
 
-type Status = 'INPROGRESS' | 'FAILED';
+type Status = 'LOADING' | 'FAILED';
 
 function isAsyncResponse<S>(
 	response: DataResponsePromise<S> | DataResponse<S>
@@ -30,7 +31,8 @@ function isAsyncResponse<S>(
 
 export function createResource<S>(config: DataTemplate<S>): Resource {
 	const { read } = config;
-	let dataMap = new Map<string, S[] | Status>();
+	let queryMap = new Map<string, S[]>(); // sparse array of items
+	let statusMap = new Map<string, Status>();
 	let totalMap = new Map<string, number>();
 
 	const invalidatorMaps = {
@@ -85,12 +87,12 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 
 	function isLoading(options: ResourceOptions) {
 		const key = getKey(options);
-		return dataMap.get(key) === 'INPROGRESS';
+		return statusMap.get(key) === 'LOADING';
 	}
 
 	function isFailed(options: ResourceOptions) {
 		const key = getKey(options);
-		return dataMap.get(key) === 'FAILED';
+		return statusMap.get(key) === 'FAILED';
 	}
 
 	function getTotal(options: ResourceOptions) {
@@ -98,63 +100,105 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		return totalMap.get(totalKey);
 	}
 
-	function getOrRead(options: ResourceOptions): S[] | undefined {
-		const { pageNumber, query, pageSize } = options;
-		const key = getKey(options);
-		const totalKey = getTotalKey(options);
+	function get(options: ResourceOptions): S[] {
+		const { pageNumber, query = '', pageSize } = options;
 
-		if (dataMap.has(key)) {
-			const keyedData = dataMap.get(key);
-			if (keyedData === 'INPROGRESS' || keyedData === 'FAILED') {
-				return undefined;
+		const cachedQueryData = queryMap.get(query) || [];
+
+		if (!cachedQueryData) {
+			return [];
+		}
+
+		if (pageSize && pageNumber) {
+			const start = (pageNumber - 1) * pageSize;
+			const end = start + pageSize;
+			const requiredData = cachedQueryData.slice(start, end);
+			if (requiredData.every((item) => item !== undefined)) {
+				return requiredData;
 			} else {
-				return keyedData;
+				return [];
 			}
 		} else {
-			const readOptions: ReadOptions = {};
+			return cachedQueryData;
+		}
+	}
 
-			if (pageNumber !== undefined && pageSize !== undefined) {
-				readOptions.offset = (pageNumber - 1) * pageSize;
-				readOptions.size = pageSize;
-			}
+	function getOrRead(options: ResourceOptions): S[] | undefined {
+		const { pageNumber, query = '', pageSize } = options;
+		const key = getKey(options);
 
-			if (query) {
-				readOptions.query = query;
-			}
+		if (isLoading(options) || isFailed(options)) {
+			return undefined;
+		}
 
-			const response = read(readOptions);
-
-			if (isAsyncResponse(response)) {
-				dataMap.set(key, 'INPROGRESS');
-				invalidate(key, ['loading']);
-
-				response
-					.then(({ data, total }) => {
-						dataMap.set(key, data);
-						invalidate(key, ['loading', 'data']);
-						if (total !== totalMap.get(totalKey)) {
-							totalMap.set(totalKey, total);
-							invalidate(key, ['total']);
-						}
-					})
-					.catch(() => {
-						dataMap.set(key, 'FAILED');
-						invalidate(key, ['failed', 'loading']);
-					});
-
-				return undefined;
+		const cachedQueryData = queryMap.get(query);
+		if (cachedQueryData && (!pageSize || !pageNumber)) {
+			if (cachedQueryData.length === totalMap.get(query)) {
+				return cachedQueryData;
 			} else {
-				dataMap.set(key, response.data);
-				if (response.total !== totalMap.get(totalKey)) {
-					totalMap.set(totalKey, response.total);
-				}
-				return response.data;
+				// request it all
 			}
+		}
+
+		if (pageSize && pageNumber && cachedQueryData && cachedQueryData.length) {
+			const start = (pageNumber - 1) * pageSize;
+			const end = start + pageSize;
+			const requiredData = cachedQueryData.slice(start, end);
+			if (requiredData.length && requiredData.every((item) => item !== undefined)) {
+				return requiredData;
+			}
+		}
+
+		const readOptions: ReadOptions = {};
+
+		if (pageNumber !== undefined && pageSize !== undefined) {
+			readOptions.offset = (pageNumber - 1) * pageSize;
+			readOptions.size = pageSize;
+		}
+
+		if (query) {
+			readOptions.query = query;
+		}
+
+		const response = read(readOptions);
+
+		if (isAsyncResponse(response)) {
+			statusMap.set(key, 'LOADING');
+			invalidate(key, ['loading']);
+
+			response
+				.then(({ data, total }) => {
+					statusMap.delete(key);
+
+					const newQueryData = [...(cachedQueryData || new Array(total).fill(null))];
+					newQueryData.splice(readOptions.offset || 0, 0, ...data);
+					queryMap.set(query, newQueryData);
+					invalidate(key, ['loading', 'data']);
+					if (total !== totalMap.get(query)) {
+						totalMap.set(query, total);
+						invalidate(key, ['total']);
+					}
+				})
+				.catch(() => {
+					statusMap.set(key, 'FAILED');
+					invalidate(key, ['failed', 'loading']);
+				});
+
+			return undefined;
+		} else {
+			const newQueryData = [...(cachedQueryData || new Array(response.total).fill(null))];
+			newQueryData.splice(readOptions.offset || 0, 0, ...response.data);
+			queryMap.set(query, newQueryData);
+			if (response.total !== totalMap.get(query)) {
+				totalMap.set(query, response.total);
+			}
+			return response.data;
 		}
 	}
 
 	return {
 		getOrRead,
+		get,
 		getTotal,
 		subscribe,
 		unsubscribe,

@@ -29,6 +29,7 @@ const fetcher = async (options: any) => {
 
 const template: DataTemplate<{ firstName: string; lastName: string }> = {
 	read: fetcher
+	// pageSize: 50
 };
 
 const transformer = createTransformer(template, (data) => {

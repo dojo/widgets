@@ -12,6 +12,7 @@ import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
 import { createDataMiddleware } from '../common/data';
+import { findIndex } from '@dojo/framework/shim/array';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
@@ -171,31 +172,32 @@ export const Menu = factory(function Menu({
 				if (event.metaKey || event.ctrlKey) {
 					return;
 				}
-			// const newIndex = getComputedIndexFromInput(event.key);
-			// if (newIndex !== undefined) {
-			// 	setActiveIndex(newIndex);
-			// }
+
+				const newIndex = getComputedIndexFromInput(event.key);
+				if (newIndex !== undefined) {
+					setActiveIndex(newIndex);
+				}
 		}
 	}
 
-	// function getComputedIndexFromInput(key: string) {
-	// 	const existingTimer = icache.get('resetInputTextTimer');
-	// 	let inputText = icache.getOrSet('inputText', '') + `${key}`;
-	// 	existingTimer && clearTimeout(existingTimer);
+	function getComputedIndexFromInput(key: string) {
+		const existingTimer = icache.get('resetInputTextTimer');
+		let inputText = icache.getOrSet('inputText', '') + `${key}`;
+		existingTimer && clearTimeout(existingTimer);
 
-	// 	const resetTextTimeout = setTimeout(() => {
-	// 		icache.set('inputText', '');
-	// 	}, 800);
+		const resetTextTimeout = setTimeout(() => {
+			icache.set('inputText', '');
+		}, 800);
 
-	// 	icache.set('resetInputTextTimer', resetTextTimeout);
-	// 	icache.set('inputText', inputText);
+		icache.set('resetInputTextTimer', resetTextTimeout);
+		icache.set('inputText', inputText);
 
-	// 	return findIndex(
-	// 		options,
-	// 		({ disabled, value, label }) =>
-	// 			!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0
-	// 	);
-	// }
+		return findIndex(
+			getOrRead(getOptions()) as MenuOption[],
+			({ disabled, value, label }) =>
+				!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0
+		);
+	}
 
 	function renderItems(startNode: number, count: number) {
 		if (!total) {

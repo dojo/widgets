@@ -12,6 +12,7 @@ export interface ResourceOptions {
 
 export interface Resource {
 	getOrRead(options: ResourceOptions): any;
+	get(options: ResourceOptions): any[];
 	getTotal(options: ResourceOptions): number | undefined;
 	isLoading(options: ResourceOptions): boolean;
 	isFailed(options: ResourceOptions): boolean;
@@ -146,6 +147,16 @@ export function createDataMiddleware<T = void>() {
 				getOrRead(options: ResourceOptions): T extends void ? any : T[] | undefined {
 					resource.subscribe('data', options, invalidator);
 					const data = resource.getOrRead(options);
+					const props = properties();
+
+					if (data && data.length && isDataTransformProperties(props)) {
+						return data.map(props.transform);
+					}
+
+					return data;
+				},
+				get(options: ResourceOptions): T extends void ? any : T[] | undefined {
+					const data = resource.get(options);
 					const props = properties();
 
 					if (data && data.length && isDataTransformProperties(props)) {
