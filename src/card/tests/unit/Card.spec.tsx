@@ -1,4 +1,5 @@
 const { describe, it } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
@@ -6,18 +7,28 @@ import Card from '../../index';
 import Button from '../../../button/index';
 import Icon from '../../../icon';
 import * as css from '../../../theme/default/card.m.css';
+import { spy } from 'sinon';
 
 const noop = () => {};
 describe('Card', () => {
 	const template = assertionTemplate(() => (
 		<div key="root" classes={css.root}>
-			<div key="content" classes={[css.contentWrapper, null]} onClick={noop} />
+			<div key="content" classes={[css.content, null]} onClick={noop} />
 		</div>
 	));
 
 	it('renders', () => {
 		const h = harness(() => <Card />);
 		h.expect(template);
+	});
+
+	describe('action', () => {
+		const onAction = spy();
+		const h = harness(() => <Card onAction={onAction} />);
+		h.expect(template.setProperty('@content', 'classes', [css.content, css.primary]));
+
+		h.trigger('@content', 'onClick');
+		assert.isTrue(onAction.calledOnce);
 	});
 
 	describe('header', () => {
@@ -51,7 +62,7 @@ describe('Card', () => {
 			));
 			h.expect(
 				template.setChildren('@content', () => [
-					<div classes={css.content}>Hello, World</div>
+					<div classes={css.contentWrapper}>Hello, World</div>
 				])
 			);
 		});
@@ -60,11 +71,9 @@ describe('Card', () => {
 			const h = harness(() => <Card title="Hello, World" subtitle="this is a test" />);
 			h.expect(
 				template.append('@content', () => [
-					<div classes={css.header}>
-						<div classes={css.titleWrapper}>
-							{<h2 classes={css.title}>Hello, World</h2>}
-							<h3 classes={css.subtitle}>this is a test</h3>
-						</div>
+					<div classes={css.titleWrapper}>
+						{<h2 classes={css.title}>Hello, World</h2>}
+						<h3 classes={css.subtitle}>this is a test</h3>
 					</div>
 				])
 			);
@@ -80,13 +89,11 @@ describe('Card', () => {
 			));
 			h.expect(
 				template.append('@content', () => [
-					<div classes={css.header}>
-						<div classes={css.titleWrapper}>
-							{<h2 classes={css.title}>Hello, World</h2>}
-							<h3 classes={css.subtitle}>this is a test</h3>
-						</div>
+					<div classes={css.titleWrapper}>
+						{<h2 classes={css.title}>Hello, World</h2>}
+						<h3 classes={css.subtitle}>this is a test</h3>
 					</div>,
-					<div classes={css.content}>test</div>
+					<div classes={css.contentWrapper}>test</div>
 				])
 			);
 		});
@@ -213,13 +220,11 @@ describe('Card', () => {
 							backgroundImage: 'url("test.png")'
 						}}
 					/>,
-					<div classes={css.header}>
-						<div classes={css.titleWrapper}>
-							{<h2 classes={css.title}>Hello, World</h2>}
-							<h3 classes={css.subtitle}>this is a test</h3>
-						</div>
+					<div classes={css.titleWrapper}>
+						{<h2 classes={css.title}>Hello, World</h2>}
+						<h3 classes={css.subtitle}>this is a test</h3>
 					</div>,
-					<div classes={css.content}>Content</div>
+					<div classes={css.contentWrapper}>Content</div>
 				])
 				.append('@root', () => [
 					<div key="actions" classes={css.actions}>

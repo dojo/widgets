@@ -37,7 +37,7 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 			)}
 			<div
 				key="content"
-				classes={[themeCss.contentWrapper, onAction ? themeCss.primary : null]}
+				classes={[themeCss.content, onAction ? themeCss.primary : null]}
 				onClick={() => onAction && onAction()}
 			>
 				{mediaSrc && (
@@ -53,14 +53,12 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 					/>
 				)}
 				{title && (
-					<div classes={themeCss.header}>
-						<div classes={themeCss.titleWrapper}>
-							{<h2 classes={themeCss.title}>{title}</h2>}
-							{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
-						</div>
+					<div classes={themeCss.titleWrapper}>
+						{<h2 classes={themeCss.title}>{title}</h2>}
+						{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
 					</div>
 				)}
-				{content && <div classes={themeCss.content}>{content()}</div>}
+				{content && <div classes={themeCss.contentWrapper}>{content()}</div>}
 			</div>
 			{(actionButtons || actionIcons) && (
 				<div key="actions" classes={themeCss.actions}>

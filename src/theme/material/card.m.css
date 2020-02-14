@@ -19,23 +19,24 @@
 	/* padding: 1rem 1rem 0rem 1rem; */
 }
 
-.contentWrapper {
+.content {
 	display: flex;
 	flex-direction: column;
 }
 
-.contentWrapper:first-child {
+.content:first-child {
 	border-top-left-radius: inherit;
 	border-top-right-radius: inherit;
 }
 
-.content {
+.contentWrapper {
 	padding: 0 1rem 8px;
 	color: var(--mdc-theme-text-secondary-on-background);
 	composes: mdc-typography mdc-typography--body2 from '@material/typography/dist/mdc.typography.css';
 }
 
-.header {
+.header,
+.titleWrapper {
 	padding: 0 1rem 8px;
 	display: flex;
 	align-items: center;

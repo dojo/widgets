@@ -22,13 +22,13 @@
 }
 
 /* The wrapper around the main content section */
-.contentWrapper {
+.content {
 	display: flex;
 	flex-direction: column;
 }
 
 /* Wrapper around the content child */
-.content {
+.contentWrapper {
 }
 
 /* The wrapper around the header content area */
