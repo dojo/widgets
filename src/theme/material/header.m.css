@@ -1,0 +1,48 @@
+.root {
+	composes: mdc-top-app-bar from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+	position: relative;
+}
+
+.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+.row {
+	composes: mdc-top-app-bar__row from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+}
+
+.primary {
+	composes: mdc-top-app-bar__section from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+	composes: mdc-top-app-bar__section--align-start from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+}
+
+.secondary {
+	composes: mdc-top-app-bar__section from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+	composes: mdc-top-app-bar__section--align-end from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+}
+
+.leading {
+	align-items: center;
+	display: flex;
+	padding: 0 12px;
+}
+
+.title {
+	composes: mdc-top-app-bar__title from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+}
+
+.action {
+	composes: mdc-top-app-bar__action-item from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+	margin: 0 12px;
+}
+
+.trailing {
+	flex-grow: 0;
+	flex-shrink: 0;
+	margin: 0 12px;
+	align-items: center;
+	display: flex;
+}

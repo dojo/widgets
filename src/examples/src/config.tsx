@@ -188,6 +188,9 @@ import FocusTooltip from './widgets/tooltip/Focus';
 import BasicNativeSelect from './widgets/native-select/Basic';
 import BasicDateInput from './widgets/date-input/Basic';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
+import BasicHeader from './widgets/header/Basic';
+import LeadingHeader from './widgets/header/Leading';
+import TrailingHeader from './widgets/header/Trailing';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -695,6 +698,27 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicGrid
+				}
+			}
+		},
+		header: {
+			examples: [
+				{
+					filename: 'Leading',
+					module: LeadingHeader,
+					title: 'With leading element'
+				},
+				{
+					filename: 'Trailing',
+					module: TrailingHeader,
+					title: 'With trailing element'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					module: BasicHeader,
+					filename: 'Basic'
 				}
 			}
 		},
