@@ -16,6 +16,7 @@ import * as gridPaginatedFooter from './grid-paginated-footer.m.css';
 import * as gridPlaceholderRow from './grid-placeholder-row.m.css';
 import * as gridRow from './grid-row.m.css';
 import * as grid from './grid.m.css';
+import * as headerCard from './header-card.m.css';
 import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
@@ -62,6 +63,7 @@ export default {
 	'@dojo/widgets/grid-placeholder-row': gridPlaceholderRow,
 	'@dojo/widgets/grid-row': gridRow,
 	'@dojo/widgets/grid': grid,
+	'@dojo/widgets/header-card': headerCard,
 	'@dojo/widgets/helper-text': helperText,
 	'@dojo/widgets/icon': icon,
 	'@dojo/widgets/label': label,

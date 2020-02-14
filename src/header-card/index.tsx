@@ -1,0 +1,48 @@
+import { create, tsx } from '@dojo/framework/core/vdom';
+import theme from '../middleware/theme';
+import Card, { CardProperties, CardChildren } from '../card';
+import { RenderResult } from '@dojo/framework/core/interfaces';
+import * as css from '../theme/default/header-card.m.css';
+
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+export interface HeaderCardProperties extends CardProperties {
+	title: string;
+	avatar?: () => RenderResult;
+}
+
+export interface HeaderCardChildren extends Omit<CardChildren, 'header'> {}
+
+const factory = create({ theme })
+	.properties<HeaderCardProperties>()
+	.children<HeaderCardChildren>();
+
+export const HeaderCard = factory(function HeaderCard({
+	middleware: { theme },
+	properties,
+	children
+}) {
+	const themeCss = theme.classes(css);
+	const { title, subtitle, avatar, ...cardProps } = properties();
+	const cardChildren = children()[0];
+	return (
+		<Card {...cardProps}>
+			{{
+				header: () => (
+					<virtual>
+						<div classes={themeCss.header}>
+							{avatar && <div classes={themeCss.avatar}>{avatar()}</div>}
+							<div classes={themeCss.headerContent}>
+								{<h2 classes={themeCss.title}>{title}</h2>}
+								{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
+							</div>
+						</div>
+					</virtual>
+				),
+				...cardChildren
+			}}
+		</Card>
+	);
+});
+
+export default HeaderCard;
