@@ -35,10 +35,13 @@
 	composes: mdc-typography mdc-typography--body2 from '@material/typography/dist/mdc.typography.css';
 }
 
+.header {
+	display: flex;
+}
+
 .header,
 .titleWrapper {
 	padding: 0 1rem 8px;
-	display: flex;
 	align-items: center;
 }
 
