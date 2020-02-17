@@ -133,17 +133,13 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 										}
 									}}
 									trailing={() => (
-										<Button
+										<button
 											key="dateIcon"
-											onClick={openCalendar}
-											classes={{
-												'@dojo/widgets/button': {
-													root: [classes.toggleCalendarButton]
-												}
-											}}
+											onclick={openCalendar}
+											classes={classes.toggleCalendarButton}
 										>
 											<Icon type="dateIcon" />
-										</Button>
+										</button>
 									)}
 									type="text"
 									initialValue={icache.get('inputValue')}

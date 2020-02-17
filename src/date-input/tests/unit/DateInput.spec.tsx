@@ -144,7 +144,7 @@ describe('DateInput', () => {
 			'@dateIcon',
 			select('@input', triggerResult)[0].properties.trailing()
 		);
-		dateIcon.properties.onClick();
+		dateIcon.properties.onclick();
 		h.expect(baseTemplate());
 
 		// If `toggleOpen` is called, the popup content (i.e., the calendar) is shown
