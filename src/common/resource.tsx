@@ -112,8 +112,10 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		if (pageSize && pageNumber) {
 			const start = (pageNumber - 1) * pageSize;
 			const end = start + pageSize;
-			const requiredData = cachedQueryData.slice(start, end);
-			if (requiredData.filter(() => true).length === end - start) {
+			const total = totalMap.get(query) || end;
+			const calculatedEnd = Math.min(end, total);
+			const requiredData = cachedQueryData.slice(start, calculatedEnd);
+			if (requiredData.filter(() => true).length === calculatedEnd - start) {
 				return requiredData;
 			} else {
 				return [];
@@ -143,9 +145,14 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 
 		if (pageSize && pageNumber && cachedQueryData && cachedQueryData.length) {
 			const start = (pageNumber - 1) * pageSize;
-			const end = Math.max(start + pageSize, totalMap.get(query) as number);
-			const requiredData = cachedQueryData.slice(start, end);
-			if (requiredData.length && requiredData.filter(() => true).length === end - start) {
+			const end = start + pageSize;
+			const total = totalMap.get(query) || end;
+			const calculatedEnd = Math.min(end, total);
+			const requiredData = cachedQueryData.slice(start, calculatedEnd);
+			if (
+				requiredData.length &&
+				requiredData.filter(() => true).length === calculatedEnd - start
+			) {
 				console.log('returning pagenumber: ', pageNumber);
 				return requiredData;
 			}

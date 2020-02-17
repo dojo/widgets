@@ -192,11 +192,21 @@ export const Menu = factory(function Menu({
 		icache.set('resetInputTextTimer', resetTextTimeout);
 		icache.set('inputText', inputText);
 
-		return findIndex(
-			get({ query: getOptions().query }) as MenuOption[],
-			({ disabled, value, label }) =>
-				!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0
-		);
+		const allItems = get({ query: getOptions().query }) as MenuOption[];
+		let foundIndex: number | undefined = undefined;
+
+		allItems.some((option, index) => {
+			const { disabled, value, label } = option;
+			const match =
+				!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0;
+			if (match) {
+				foundIndex = index;
+				return true;
+			}
+			return false;
+		});
+
+		return foundIndex;
 	}
 
 	function renderItems(startNode: number, count: number) {

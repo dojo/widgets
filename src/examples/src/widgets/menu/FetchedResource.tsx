@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Menu, { MenuOption } from '@dojo/widgets/menu';
+import Menu from '@dojo/widgets/menu';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createResource, createTransformer, DataTemplate } from '@dojo/widgets/common/resource';
 
@@ -29,7 +29,6 @@ const fetcher = async (options: any) => {
 
 const template: DataTemplate<{ firstName: string; lastName: string }> = {
 	read: fetcher
-	// pageSize: 50
 };
 
 const transformer = createTransformer(template, (data) => {
@@ -42,7 +41,7 @@ const resource = createResource(template);
 
 const factory = create({ icache });
 
-export default factory(function LargeOptionSet({ middleware: { icache } }) {
+export default factory(function FetchedResource({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Menu

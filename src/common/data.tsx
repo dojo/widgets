@@ -32,12 +32,14 @@ export interface ResourceWrapper {
 
 export type ResourceOrResourceWrapper = Resource | ResourceWrapper;
 
+export type Transformer<T> = (item: any) => T;
+
 interface DataProperties {
 	resource: ResourceOrResourceWrapper;
 }
 
 interface DataTransformProperties<T = void> {
-	transform(item: any): T;
+	transform: Transformer<T>;
 	resource: ResourceOrResourceWrapper;
 }
 
@@ -110,14 +112,12 @@ export function createDataMiddleware<T = void>() {
 			let resourceWrapperOrResource = dataOptions.resource || properties().resource;
 			let resourceWrapper: ResourceWrapper;
 
-			// Get or create the resource wrapper
 			if (isResource(resourceWrapperOrResource)) {
 				resourceWrapper = createResourceWrapper(resourceWrapperOrResource);
 			} else {
 				resourceWrapper = resourceWrapperOrResource as ResourceWrapper;
 			}
 
-			// Create a new wrapper if reset is set to true
 			if (dataOptions.reset) {
 				resourceWrapper = createResourceWrapper(resourceWrapper.resource);
 			}
@@ -125,7 +125,6 @@ export function createDataMiddleware<T = void>() {
 			const { resource } = resourceWrapper;
 			const { key = '' } = dataOptions;
 
-			// Get or create an options wrapper
 			let keyedCachedOptions = optionsWrapperMap.get(resource);
 			if (!keyedCachedOptions) {
 				keyedCachedOptions = new Map<string, OptionsWrapper>();

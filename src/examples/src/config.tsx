@@ -87,7 +87,7 @@ import BasicMenu from './widgets/menu/Basic';
 import DividedMenu from './widgets/menu/Dividers';
 import ControlledMenu from './widgets/menu/Controlled';
 import ItemRenderer from './widgets/menu/ItemRenderer';
-import LargeOptionSet from './widgets/menu/LargeOptionSet';
+import LargeOptionSet from './widgets/menu/FetchedResource';
 import ListBox from './widgets/menu/ListBox';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
