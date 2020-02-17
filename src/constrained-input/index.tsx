@@ -1,20 +1,12 @@
-import TextInput, { TextInputProperties } from '../text-input';
+import TextInput, { BaseInputProperties } from '../text-input';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import validation, { ValidationRules } from '../middleware/validation';
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import * as constrainedInputCss from '../theme/default/constrained-input.m.css';
 import * as textInputCss from '../theme/default/text-input.m.css';
 
-export interface ConstrainedInputProperties
-	extends ThemeProperties,
-		Pick<
-			TextInputProperties,
-			Exclude<
-				keyof TextInputProperties,
-				'onValidate' | 'valid' | 'helperText' | 'customValidator'
-				>
-			> {
+export interface ConstrainedInputProperties extends BaseInputProperties {
 	/** Validation rules applied to this input */
 	rules: ValidationRules;
 	/** Callback fired when the input validation changes */
