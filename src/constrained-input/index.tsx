@@ -8,13 +8,7 @@ import * as textInputCss from '../theme/default/text-input.m.css';
 
 export interface ConstrainedInputProperties
 	extends ThemeProperties,
-		Pick<
-			TextInputProperties,
-			Exclude<
-				keyof TextInputProperties,
-				'onValidate' | 'valid' | 'helperText' | 'customValidator'
-				>
-			> {
+		Exclude<TextInputProperties, 'onValidate' | 'valid' | 'helperText' | 'customValidator'> {
 	/** Validation rules applied to this input */
 	rules: ValidationRules;
 	/** Callback fired when the input validation changes */
