@@ -1,6 +1,8 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
+import mockedEnv from 'mocked-env';
+
 import { v, w } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
@@ -864,7 +866,8 @@ registerSuite('Calendar with min-max', {
 		},
 
 		'Time is ignored for minDate and maxDate'() {
-			process.env.TZ = 'Europe/London';
+			const restore = mockedEnv({ TZ: 'Europe/London' });
+
 			const minDate = new Date('June 3, 2017 23:59:59.999');
 			const maxDate = new Date('June 29, 2017 00:00:00.000');
 
@@ -881,6 +884,8 @@ registerSuite('Calendar with min-max', {
 					.setProperty('@date-picker', 'minDate', minDate)
 					.setProperty('@date-picker', 'maxDate', maxDate)
 			);
+
+			restore();
 		},
 
 		'Set the focusable date when the month change makes it invalid'() {
