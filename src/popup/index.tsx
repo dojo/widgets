@@ -14,7 +14,7 @@ export interface BasePopupProperties extends ThemeProperties {
 	/** If the underlay should be visible (defaults to false) */
 	underlayVisible?: boolean;
 	/** Callback triggered when the popup is closed */
-	onClose(): void;
+	onClose?(): void;
 }
 
 export interface PopupProperties extends BasePopupProperties {

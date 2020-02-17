@@ -1,4 +1,4 @@
-import TextInput, { BaseInputProperties } from '../text-input';
+import TextInput, { BaseInputProperties, TextInputType } from '../text-input';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import validation, { ValidationRules } from '../middleware/validation';
@@ -11,6 +11,8 @@ export interface ConstrainedInputProperties extends BaseInputProperties {
 	rules: ValidationRules;
 	/** Callback fired when the input validation changes */
 	onValidate?: (valid?: boolean) => void;
+	/** Input type, text or email, tel, etc. */
+	type?: TextInputType;
 }
 
 export interface ConstrainedInputState {
