@@ -23,6 +23,7 @@
 			"src/email-input",
 			"src/form",
 			"src/grid",
+			"src/header-card",
 			"src/helper-text",
 			"src/icon",
 			"src/label",

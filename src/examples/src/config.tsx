@@ -23,6 +23,8 @@ import CardWithMediaContent from './widgets/card/CardWithMediaContent';
 import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
 import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
 import BasicHeaderCard from './widgets/header-card/Basic';
+import MediaHeaderCard from './widgets/header-card/MediaCard';
+import ActionHeaderCard from './widgets/header-card/ActionCard';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
@@ -352,39 +354,14 @@ export const config = {
 			examples: [
 				{
 					title: 'Basic HeaderCard with Action Buttons',
-					module: ActionButtons,
-					filename: 'ActionButtons'
+					module: ActionHeaderCard,
+					filename: 'ActionHeaderCard'
+				},
+				{
+					title: 'Header Card with media',
+					module: MediaHeaderCard,
+					filename: 'MediaHeaderCard'
 				}
-				// {
-				// 	title: 'Basic HeaderCard with Action Icons',
-				// 	module: ActionIcons,
-				// 	filename: 'ActionIcons'
-				// },
-				// {
-				// 	title: 'Basic HeaderCard with Actions and Icons',
-				// 	module: ActionButtonsAndIcons,
-				// 	filename: 'ActionButtonsAndIcons'
-				// },
-				// {
-				// 	title: 'Basic HeaderCard with 16x9 Media',
-				// 	module: CardWithMediaRectangle,
-				// 	filename: 'CardWithMediaRectangle'
-				// },
-				// {
-				// 	title: 'Basic HeaderCard with Square Media',
-				// 	module: CardWithMediaSquare,
-				// 	filename: 'CardWithMediaSquare'
-				// },
-				// {
-				// 	title: 'Basic card with Content Media',
-				// 	module: CardWithMediaContent,
-				// 	filename: 'CardWithMediaContent'
-				// },
-				// {
-				// 	title: 'Combined Card',
-				// 	module: CardCombined,
-				// 	filename: 'CardCombined'
-				// }
 			],
 			filename: 'index',
 			overview: {
