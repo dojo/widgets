@@ -10,8 +10,7 @@
 	border: none;
 	font-weight: var(--mdc-theme-heading-font-weight);
 	padding: 16px;
-	background-color: var(--mdc-theme-on-surface);
-	color: var(--mdc-theme-text-primary-on-dark);
+	color: var(--mdc-theme-text-primary-on-light);
 }
 
 .sort {
