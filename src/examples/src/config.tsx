@@ -6,6 +6,7 @@ import ImageAvatar from './widgets/avatar/Image';
 import AvatarVariant from './widgets/avatar/Variant';
 import AvatarSize from './widgets/avatar/Size';
 import AvatarIcon from './widgets/avatar/Icon';
+import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
@@ -232,6 +233,11 @@ export const config = {
 					title: 'Avatar variants',
 					filename: 'Variant',
 					module: AvatarVariant
+				},
+				{
+					title: 'Avatar with secondary colors',
+					filename: 'Secondary',
+					module: AvatarSecondary
 				},
 				{
 					title: 'Avatar sizes',

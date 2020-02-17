@@ -15,6 +15,11 @@
 	background-color: var(--mdc-theme-primary);
 }
 
+.avatarColorSecondary {
+	color: var(--mdc-theme-surface);
+	background-color: var(--mdc-theme-secondary);
+}
+
 .small {
 	width: var(--mdc-avatar-size-small);
 	height: var(--mdc-avatar-size-small);

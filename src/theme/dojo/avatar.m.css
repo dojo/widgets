@@ -15,6 +15,11 @@
 	background-color: var(--color-highlight);
 }
 
+.avatarColorSecondary {
+	color: var(--color-text-inverted);
+	background-color: var(--color-background-inverted);
+}
+
 .small {
 	width: var(--avatar-size-small);
 	height: var(--avatar-size-small);

@@ -1,4 +1,5 @@
 export const root: string;
+export const avatarColorSecondary: string;
 export const avatarColor: string;
 export const small: string;
 export const medium: string;

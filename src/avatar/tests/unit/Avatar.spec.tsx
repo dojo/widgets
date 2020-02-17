@@ -18,6 +18,18 @@ describe('Avatar', () => {
 		h.expect(template);
 	});
 
+	it('reners secondary colors', () => {
+		const h = harness(() => <Avatar secondary>D</Avatar>);
+		h.expect(
+			template.setProperty('@root', 'classes', [
+				css.root,
+				css.avatarColorSecondary,
+				css.medium,
+				css.circle
+			])
+		);
+	});
+
 	describe('variants', () => {
 		it('renders circle', () => {
 			const h = harness(() => <Avatar variant="circle">D</Avatar>);
