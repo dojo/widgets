@@ -9,7 +9,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 export type PopupPosition = 'above' | 'below';
 
 export interface BasePopupProperties extends ThemeProperties {
-	/** Where the popup should render relative to the provided position (defaults to "below") */
+	/** Preferred position where the popup should render relative to the provided position (defaults to "below"). If the popup does not have room to fully render in the preferred position it will switch to the opposite side. */
 	position?: PopupPosition;
 	/** If the underlay should be visible (defaults to false) */
 	underlayVisible?: boolean;
