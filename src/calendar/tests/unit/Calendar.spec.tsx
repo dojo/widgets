@@ -872,6 +872,7 @@ registerSuite('Calendar with min-max', {
 		},
 
 		'Time is ignored for minDate and maxDate'() {
+			// Before/after must restore the `env` or this modification will leak
 			process.env.TZ = 'Europe/London';
 			const minDate = new Date('June 3, 2017 23:59:59.999');
 			const maxDate = new Date('June 29, 2017 00:00:00.000');
