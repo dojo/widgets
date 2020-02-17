@@ -25,12 +25,13 @@ const pageChangeCommand = commandFactory<PageChangeCommandPayload>(
 );
 
 const preFetcherCommand = commandFactory<FetcherCommandPayload>(
-	({ path, get, payload: { id, page } }) => {
+	({ path, get, payload: { id, page, pageSize } }) => {
 		const fetchedPages = get(path(id, 'meta', 'fetchedPages')) || [];
 		if (fetchedPages.indexOf(page) === -1) {
 			return [
 				replace(path(id, 'meta', 'fetchedPages'), [...fetchedPages, page]),
-				replace(path(id, 'meta', 'page'), page)
+				replace(path(id, 'meta', 'page'), page),
+				replace(path(id, 'meta', 'pageSize'), pageSize)
 			];
 		}
 		throw Error('The page has already been requested');
@@ -54,8 +55,7 @@ const fetcherCommand = commandFactory<FetcherCommandPayload>(
 			}
 			return [
 				replace(path(id, 'data', 'pages', `page-${page}`), result.data),
-				replace(path(id, 'meta', 'total'), result.meta.total),
-				replace(path(id, 'meta', 'pageSize'), pageSize)
+				replace(path(id, 'meta', 'total'), result.meta.total)
 			];
 		} else {
 			throw Error('The grid is being sorted or filtered');
