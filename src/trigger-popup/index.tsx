@@ -1,18 +1,14 @@
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import Popup, { PopupProperties } from '../popup';
+import Popup, { BasePopupProperties } from '../popup';
 import * as fixedCss from './trigger-popup.m.css';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
-export interface TriggerPopupProperties
-	extends Pick<
-		PopupProperties,
-		Exclude<keyof PopupProperties, 'x' | 'yTop' | 'yBottom' | 'onClose' | 'open'>
-	> {
+export interface TriggerPopupProperties extends BasePopupProperties {
 	/** If the popup wrapper should match the trigger width (defaults to true) */
 	matchWidth?: boolean;
-	onClose?(): void;
+	/** Callback when the menu is opened  */
 	onOpen?(): void;
 }
 

@@ -8,19 +8,22 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export type PopupPosition = 'above' | 'below';
 
-export interface PopupProperties extends ThemeProperties {
+export interface BasePopupProperties extends ThemeProperties {
 	/** Where the popup should render relative to the provided position (defaults to "below") */
 	position?: PopupPosition;
 	/** If the underlay should be visible (defaults to false) */
 	underlayVisible?: boolean;
+	/** Callback triggered when the popup is closed */
+	onClose?(): void;
+}
+
+export interface PopupProperties extends BasePopupProperties {
 	/** The X position on the page where the popup should render */
 	x: number;
 	/** The Y position on the page where the bottom of the popup should be if rendering "above" */
 	yBottom: number;
 	/** The Y position on the page where the popup should start if rendering "below" */
 	yTop: number;
-	/** Callback triggered when the popup is closed */
-	onClose(): void;
 	/** Whether the popup is currently open */
 	open?: boolean;
 }
