@@ -15,6 +15,8 @@ interface BaseFormProperties extends ThemeProperties {
 	initialValue?: FormValue;
 	/** Callback called when a form value changes */
 	onValue?(values: FormValue): void;
+	/** The name property of the form */
+	name?: string;
 
 	onSubmit?: never;
 	action?: never;
@@ -68,6 +70,13 @@ export default factory(function Form({
 	let formProps: Partial<VNodeProperties> = {
 		classes: themedCss.root
 	};
+
+	if (props.name) {
+		formProps = {
+			...formProps,
+			name: props.name
+		};
+	}
 
 	const { initialValue, onValue } = props;
 

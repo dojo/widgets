@@ -25,7 +25,7 @@ interface Fields {
 describe('Form', () => {
 	const noop = () => {};
 	const baseAssertion = assertionTemplate(() => (
-		<form classes={css.root} onsubmit={noop}>
+		<form name="formName" classes={css.root} onsubmit={noop}>
 			<TextInput
 				key="firstName"
 				label="First Name"
@@ -117,6 +117,7 @@ describe('Form', () => {
 			}}
 			onSubmit={onSubmit}
 			onValue={onValue}
+			name="formName"
 		>
 			{({ value, valid, disabled, field, reset }: FormMiddleware<Fields>) => {
 				const firstName = field('firstName', true);
