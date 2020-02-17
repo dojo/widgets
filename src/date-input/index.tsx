@@ -9,7 +9,6 @@ import { Keys } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
-import Button from '../button';
 import Icon from '../icon';
 import TriggerPopup from '../trigger-popup';
 import * as css from '../theme/default/date-input.m.css';
