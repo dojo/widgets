@@ -22,6 +22,7 @@ import CardCombined from './widgets/card/CardCombined';
 import CardWithMediaContent from './widgets/card/CardWithMediaContent';
 import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
 import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
+import BasicHeaderCard from './widgets/header-card/Basic';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
@@ -344,6 +345,52 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicCard
+				}
+			}
+		},
+		'header-card': {
+			examples: [
+				{
+					title: 'Basic HeaderCard with Action Buttons',
+					module: ActionButtons,
+					filename: 'ActionButtons'
+				}
+				// {
+				// 	title: 'Basic HeaderCard with Action Icons',
+				// 	module: ActionIcons,
+				// 	filename: 'ActionIcons'
+				// },
+				// {
+				// 	title: 'Basic HeaderCard with Actions and Icons',
+				// 	module: ActionButtonsAndIcons,
+				// 	filename: 'ActionButtonsAndIcons'
+				// },
+				// {
+				// 	title: 'Basic HeaderCard with 16x9 Media',
+				// 	module: CardWithMediaRectangle,
+				// 	filename: 'CardWithMediaRectangle'
+				// },
+				// {
+				// 	title: 'Basic HeaderCard with Square Media',
+				// 	module: CardWithMediaSquare,
+				// 	filename: 'CardWithMediaSquare'
+				// },
+				// {
+				// 	title: 'Basic card with Content Media',
+				// 	module: CardWithMediaContent,
+				// 	filename: 'CardWithMediaContent'
+				// },
+				// {
+				// 	title: 'Combined Card',
+				// 	module: CardCombined,
+				// 	filename: 'CardCombined'
+				// }
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicHeaderCard
 				}
 			}
 		},
