@@ -114,7 +114,7 @@ export const Menu = factory(function Menu({
 	} = properties();
 	const [itemRenderer] = children();
 
-	const { getOrRead, getOptions, setOptions, getTotal, isLoading } = data();
+	const { get, getOrRead, getOptions, setOptions, getTotal, isLoading } = data();
 
 	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {
@@ -193,7 +193,7 @@ export const Menu = factory(function Menu({
 		icache.set('inputText', inputText);
 
 		return findIndex(
-			getOrRead(getOptions()) as MenuOption[],
+			get({ query: getOptions().query }) as MenuOption[],
 			({ disabled, value, label }) =>
 				!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0
 		);

@@ -103,7 +103,7 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 	function get(options: ResourceOptions): S[] {
 		const { pageNumber, query = '', pageSize } = options;
 
-		const cachedQueryData = queryMap.get(query) || [];
+		const cachedQueryData = queryMap.get(query);
 
 		if (!cachedQueryData) {
 			return [];
@@ -113,7 +113,7 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 			const start = (pageNumber - 1) * pageSize;
 			const end = start + pageSize;
 			const requiredData = cachedQueryData.slice(start, end);
-			if (requiredData.every((item) => item !== undefined)) {
+			if (requiredData.filter(() => true).length === end - start) {
 				return requiredData;
 			} else {
 				return [];
@@ -132,19 +132,21 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		}
 
 		const cachedQueryData = queryMap.get(query);
-		if (cachedQueryData && (!pageSize || !pageNumber)) {
-			if (cachedQueryData.length === totalMap.get(query)) {
-				return cachedQueryData;
-			} else {
-				// request it all
-			}
+
+		if (
+			cachedQueryData &&
+			(!pageSize || !pageNumber) &&
+			cachedQueryData.filter(() => true).length === totalMap.get(query)
+		) {
+			return cachedQueryData;
 		}
 
 		if (pageSize && pageNumber && cachedQueryData && cachedQueryData.length) {
 			const start = (pageNumber - 1) * pageSize;
-			const end = start + pageSize;
+			const end = Math.max(start + pageSize, totalMap.get(query) as number);
 			const requiredData = cachedQueryData.slice(start, end);
-			if (requiredData.length && requiredData.every((item) => item !== undefined)) {
+			if (requiredData.length && requiredData.filter(() => true).length === end - start) {
+				console.log('returning pagenumber: ', pageNumber);
 				return requiredData;
 			}
 		}
@@ -168,11 +170,19 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 
 			response
 				.then(({ data, total }) => {
-					statusMap.delete(key);
+					const cachedQueryData = queryMap.get(query);
+					const newQueryData =
+						cachedQueryData && cachedQueryData.length ? cachedQueryData : [];
 
-					const newQueryData = [...(cachedQueryData || new Array(total).fill(null))];
-					newQueryData.splice(readOptions.offset || 0, 0, ...data);
+					const offset = readOptions.offset || 0;
+
+					for (let i = 0; i < data.length; i += 1) {
+						newQueryData[offset + i] = data[i];
+					}
+
 					queryMap.set(query, newQueryData);
+
+					statusMap.delete(key);
 					invalidate(key, ['loading', 'data']);
 					if (total !== totalMap.get(query)) {
 						totalMap.set(query, total);
@@ -186,13 +196,18 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 
 			return undefined;
 		} else {
-			const newQueryData = [...(cachedQueryData || new Array(response.total).fill(null))];
-			newQueryData.splice(readOptions.offset || 0, 0, ...response.data);
-			queryMap.set(query, newQueryData);
-			if (response.total !== totalMap.get(query)) {
-				totalMap.set(query, response.total);
+			const { data, total } = response;
+
+			const newQueryData = cachedQueryData && cachedQueryData.length ? cachedQueryData : [];
+
+			let before = newQueryData.splice(0, readOptions.offset);
+			let after = newQueryData.splice(data.length);
+
+			queryMap.set(query, [...before, ...data, ...after]);
+			if (total !== totalMap.get(query)) {
+				totalMap.set(query, total);
 			}
-			return response.data;
+			return data;
 		}
 	}
 

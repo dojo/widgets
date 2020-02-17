@@ -12,7 +12,7 @@ export interface ResourceOptions {
 
 export interface Resource {
 	getOrRead(options: ResourceOptions): any;
-	get(options: ResourceOptions): any[];
+	get(options: ResourceOptions): any;
 	getTotal(options: ResourceOptions): number | undefined;
 	isLoading(options: ResourceOptions): boolean;
 	isFailed(options: ResourceOptions): boolean;
