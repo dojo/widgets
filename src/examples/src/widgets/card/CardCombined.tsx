@@ -16,6 +16,7 @@ export default factory(function CardWithMediaContent() {
 				subtitle="A pretty picture"
 			>
 				{{
+					header: () => <div>Header Content</div>,
 					content: () => <p>Travel the world today.</p>,
 					actionButtons: () => (
 						<virtual>
