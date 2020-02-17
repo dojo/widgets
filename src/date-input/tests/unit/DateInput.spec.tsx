@@ -9,6 +9,7 @@ import { harness } from '@dojo/framework/testing/harness';
 import select from '@dojo/framework/testing/support/selector';
 import focus from '@dojo/framework/core/middleware/focus';
 
+import { stubEvent } from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import Calendar from '../../../calendar';
 import TriggerPopup from '../../../trigger-popup';
@@ -144,7 +145,7 @@ describe('DateInput', () => {
 			'@dateIcon',
 			select('@input', triggerResult)[0].properties.trailing()
 		);
-		dateIcon.properties.onclick();
+		dateIcon.properties.onclick(stubEvent);
 		h.expect(baseTemplate());
 
 		// If `toggleOpen` is called, the popup content (i.e., the calendar) is shown

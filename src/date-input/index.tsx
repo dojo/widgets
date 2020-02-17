@@ -134,8 +134,12 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 									trailing={() => (
 										<button
 											key="dateIcon"
-											onclick={openCalendar}
+											onclick={(e) => {
+												e.stopPropagation();
+												openCalendar();
+											}}
 											classes={classes.toggleCalendarButton}
+											type="button"
 										>
 											<Icon type="dateIcon" />
 										</button>
