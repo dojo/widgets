@@ -29,7 +29,6 @@ import ClosableChip from './widgets/chip/Closable';
 import ClosableRendererChip from './widgets/chip/ClosableRenderer';
 import DisabledChip from './widgets/chip/Disabled';
 import IconChip from './widgets/chip/Icon';
-import BasicCombobox from './widgets/combobox/Basic';
 import BasicContextMenu from './widgets/context-menu/Basic';
 import BasicConstrainedInput from './widgets/constrained-input/Basic';
 import Username from './widgets/constrained-input/Username';
@@ -73,7 +72,6 @@ import HiddenLabel from './widgets/label/HiddenLabel';
 import InvalidLabel from './widgets/label/InvalidLabel';
 import DisabledLabel from './widgets/label/DisabledLabel';
 import SecondaryLabel from './widgets/label/SecondaryLabel';
-import BasicListbox from './widgets/listbox/Basic';
 import BasicMenu from './widgets/menu/Basic';
 import DividedMenu from './widgets/menu/Dividers';
 import ControlledMenu from './widgets/menu/Controlled';
@@ -380,14 +378,6 @@ export const config = {
 				}
 			}
 		},
-		combobox: {
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicCombobox
-				}
-			}
-		},
 		'constrained-input': {
 			examples: [
 				{
@@ -682,14 +672,6 @@ export const config = {
 					title: 'Secondary Label'
 				}
 			]
-		},
-		listbox: {
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicListbox
-				}
-			}
 		},
 		menu: {
 			examples: [
