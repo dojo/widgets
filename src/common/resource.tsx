@@ -8,13 +8,17 @@ export interface ReadOptions {
 
 type Invalidator = () => void;
 
+type Setter<S> = (data: S[], start: number) => void;
+
 export type DataResponse<S> = { data: S[]; total: number };
 export type DataResponsePromise<S> = Promise<{ data: S[]; total: number }>;
-export type DataFetcher<S> = (options: ReadOptions) => DataResponse<S> | DataResponsePromise<S>;
+export type DataFetcher<S> = (
+	options: ReadOptions,
+	set: Setter<S>
+) => DataResponse<S> | DataResponsePromise<S>;
 
 export interface DataTemplate<S> {
 	read: DataFetcher<S>;
-	pageSize?: number;
 }
 
 export function createTransformer<S, T>(template: DataTemplate<S>, transformer: (data: S) => T) {
@@ -125,6 +129,18 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		}
 	}
 
+	function setData(data: S[], start: number, size: number, query: string) {
+		console.log(`set data called with start: ${start}, size: ${size}, query: ${query}`);
+		const cachedQueryData = queryMap.get(query);
+		const newQueryData = cachedQueryData && cachedQueryData.length ? cachedQueryData : [];
+
+		for (let i = 0; i < size; i += 1) {
+			newQueryData[start + i] = data[i];
+		}
+
+		queryMap.set(query, newQueryData);
+	}
+
 	function getOrRead(options: ResourceOptions): S[] | undefined {
 		const { pageNumber, query = '', pageSize } = options;
 		const key = getKey(options);
@@ -153,7 +169,6 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 				requiredData.length &&
 				requiredData.filter(() => true).length === calculatedEnd - start
 			) {
-				console.log('returning pagenumber: ', pageNumber);
 				return requiredData;
 			}
 		}
@@ -169,7 +184,9 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 			readOptions.query = query;
 		}
 
-		const response = read(readOptions);
+		const response = read(readOptions, (data: S[], start = 0) => {
+			setData(data, start, data.length, query);
+		});
 
 		if (isAsyncResponse(response)) {
 			statusMap.set(key, 'LOADING');
@@ -177,17 +194,9 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 
 			response
 				.then(({ data, total }) => {
-					const cachedQueryData = queryMap.get(query);
-					const newQueryData =
-						cachedQueryData && cachedQueryData.length ? cachedQueryData : [];
-
-					const offset = readOptions.offset || 0;
-
-					for (let i = 0; i < data.length; i += 1) {
-						newQueryData[offset + i] = data[i];
-					}
-
-					queryMap.set(query, newQueryData);
+					const start = readOptions.offset || 0;
+					const size = Math.min(data.length, readOptions.size || data.length);
+					setData(data, start, size, query);
 
 					statusMap.delete(key);
 					invalidate(key, ['loading', 'data']);
@@ -204,13 +213,10 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 			return undefined;
 		} else {
 			const { data, total } = response;
+			const start = readOptions.offset || 0;
+			const size = Math.min(data.length, readOptions.size || data.length);
+			setData(data, start, size, query);
 
-			const newQueryData = cachedQueryData && cachedQueryData.length ? cachedQueryData : [];
-
-			let before = newQueryData.splice(0, readOptions.offset);
-			let after = newQueryData.splice(data.length);
-
-			queryMap.set(query, [...before, ...data, ...after]);
 			if (total !== totalMap.get(query)) {
 				totalMap.set(query, total);
 			}

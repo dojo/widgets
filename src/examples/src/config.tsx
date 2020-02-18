@@ -190,6 +190,7 @@ import TrailingHeader from './widgets/header/Trailing';
 
 `!has('docs')`;
 import testsContext from './tests';
+import FetchedResource from './widgets/menu/FetchedResource';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -815,6 +816,11 @@ export const config = {
 					filename: 'LargeOptionSet',
 					module: LargeOptionSet,
 					title: '100,000 options'
+				},
+				{
+					filename: 'FetchedResource',
+					module: FetchedResource,
+					title: 'Rest fetched resource'
 				},
 				{
 					description:
