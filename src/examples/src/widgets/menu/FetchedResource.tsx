@@ -33,7 +33,8 @@ const template: DataTemplate<{ firstName: string; lastName: string }> = {
 
 const transformer = createTransformer(template, (data) => {
 	return {
-		value: `${data.firstName} ${data.lastName}`
+		value: `${data.firstName} ${data.lastName}`,
+		label: `${data.firstName} ${data.lastName}`
 	};
 });
 

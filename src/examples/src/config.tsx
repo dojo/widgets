@@ -191,6 +191,7 @@ import TrailingHeader from './widgets/header/Trailing';
 `!has('docs')`;
 import testsContext from './tests';
 import FetchedResource from './widgets/menu/FetchedResource';
+import MemoryResource from './widgets/menu/MemoryResource';
 
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
@@ -821,6 +822,11 @@ export const config = {
 					filename: 'FetchedResource',
 					module: FetchedResource,
 					title: 'Rest fetched resource'
+				},
+				{
+					filename: 'MemoryResource',
+					module: MemoryResource,
+					title: 'Array resource'
 				},
 				{
 					description:

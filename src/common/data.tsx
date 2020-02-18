@@ -1,4 +1,6 @@
-import { create, invalidator, destroy } from '@dojo/framework/core/vdom';
+import { create, invalidator, destroy, diffProperty } from '@dojo/framework/core/vdom';
+import { createResource, DataTemplate } from './resource';
+import { invalidate } from '@dojo/framework/i18n/i18n';
 
 export type Invalidator = () => void;
 
@@ -18,6 +20,7 @@ export interface Resource {
 	isFailed(options: ResourceOptions): boolean;
 	subscribe(type: SubscriptionType, options: ResourceOptions, invalidator: Invalidator): void;
 	unsubscribe(invalidator: Invalidator): void;
+	set(data: any[]): void;
 }
 
 interface OptionsWrapper {
@@ -30,17 +33,22 @@ export interface ResourceWrapper {
 	createOptionsWrapper(): OptionsWrapper;
 }
 
-export type ResourceOrResourceWrapper = Resource | ResourceWrapper;
+export interface ResourceWithData {
+	resource: Resource;
+	data: any[];
+}
+
+export type ResourceOrResourceWrapper = Resource | ResourceWrapper | ResourceWithData;
 
 export type Transformer<T> = (item: any) => T;
 
 interface DataProperties {
-	resource: ResourceOrResourceWrapper;
+	resource: ResourceOrResourceWrapper | any[];
 }
 
 interface DataTransformProperties<T = void> {
 	transform: Transformer<T>;
-	resource: ResourceOrResourceWrapper;
+	resource: ResourceOrResourceWrapper | T[];
 }
 
 interface DataInitialiserOptions {
@@ -49,16 +57,12 @@ interface DataInitialiserOptions {
 	key?: string;
 }
 
-function isResource(
-	resourceWrapperOrResource: ResourceOrResourceWrapper
-): resourceWrapperOrResource is Resource {
-	return !(resourceWrapperOrResource as any).resource;
+function isResource(resourceWrapperOrResource: any): resourceWrapperOrResource is Resource {
+	return !!(resourceWrapperOrResource as any).getOrRead;
 }
 
-function isDataTransformProperties<T>(
-	properties: DataTransformProperties | DataProperties
-): properties is DataTransformProperties<T> {
-	return !!(properties as any).transform;
+function isDataTransformProperties<T>(properties: any): properties is DataTransformProperties<T> {
+	return !!properties.transform;
 }
 
 function createOptionsWrapper(): OptionsWrapper {
@@ -94,13 +98,31 @@ function createResourceWrapper(resource: Resource, options?: OptionsWrapper): Re
 	};
 }
 
+// function createMemoryTemplate<T>(data: T[]): DataTemplate<T> {
+// 	return {
+// 		read: ({ query = '', size, offset }, put) => {
+// 			if (size !== undefined && offset !== undefined) {
+// 				put(0, data);
+// 				return { data: data.slice(offset, offset + size), total: data.length };
+// 			} else {
+// 				return { data, total: data.length };
+// 			}
+// 		}
+// 	}
+// }
+
+function isResourceWithData(resource: any): resource is ResourceWithData {
+	return !!resource.data;
+}
+
 export function createDataMiddleware<T = void>() {
-	const factory = create({ invalidator, destroy }).properties<
+	const factory = create({ invalidator, destroy, diffProperty }).properties<
 		T extends void ? DataProperties : DataTransformProperties<T>
 	>();
 
-	const data = factory(({ middleware: { invalidator, destroy }, properties }) => {
+	const data = factory(({ middleware: { invalidator, destroy, diffProperty }, properties }) => {
 		const optionsWrapperMap = new Map<Resource, Map<string, OptionsWrapper>>();
+		const resourceWithDataMap = new Map<T[], Resource>();
 
 		destroy(() => {
 			[...optionsWrapperMap.keys()].forEach((resource) => {
@@ -108,8 +130,27 @@ export function createDataMiddleware<T = void>() {
 			});
 		});
 
+		// diffProperty('resource', (current, next) => {
+		// 	if (typeof next === 'function' && current !== next) {
+		// 		invalidate();
+		// 	} else if ()
+		// });
+
 		return (dataOptions: DataInitialiserOptions = {}) => {
-			let resourceWrapperOrResource = dataOptions.resource || properties().resource;
+			let passedResourceProperty = dataOptions.resource || properties().resource;
+			let resourceWrapperOrResource;
+
+			if (isResourceWithData(passedResourceProperty)) {
+				const { resource, data } = passedResourceProperty;
+				if (!resourceWithDataMap.has(data)) {
+					resourceWithDataMap.set(data, resource);
+					resource.set(data);
+				}
+				resourceWrapperOrResource = resourceWithDataMap.get(data);
+			} else {
+				resourceWrapperOrResource = passedResourceProperty;
+			}
+
 			let resourceWrapper: ResourceWrapper;
 
 			if (isResource(resourceWrapperOrResource)) {

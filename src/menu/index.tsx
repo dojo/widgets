@@ -209,32 +209,31 @@ export const Menu = factory(function Menu({
 		return foundIndex;
 	}
 
-	function renderItems(startNode: number, count: number) {
-		if (!total) {
-			return [];
-		}
-
-		const renderedItemsCount = Math.min(total - startNode, count);
-		const renderedItems = new Array(renderedItemsCount);
+	function renderItems(start: number, count: number) {
+		const renderedItems = [];
 		const pages = [];
 		const loading = [];
-		for (let i = 0; i < renderedItemsCount; i++) {
-			const index = i + startNode;
-			const page = Math.floor(index / count) + 1;
-			if (!pages[page]) {
-				setOptions({
-					...getOptions(),
-					pageNumber: page
-				});
-				pages[page] = getOrRead(getOptions()) || [];
-				loading[page] = isLoading(getOptions());
+		getOrRead(getOptions());
+		const total = getTotal(getOptions());
+		if (total) {
+			for (let i = 0; i < Math.min(total - start, count); i++) {
+				const index = i + startNode;
+				const page = Math.floor(index / count) + 1;
+				if (!pages[page]) {
+					setOptions({
+						...getOptions(),
+						pageNumber: page
+					});
+					pages[page] = getOrRead(getOptions()) || [];
+					loading[page] = isLoading(getOptions());
+				}
+				const indexWithinPage = index - (page - 1) * count;
+				const menuOption = pages[page][indexWithinPage];
+				const pageIsLoading = loading[page];
+				renderedItems[i] = pageIsLoading
+					? renderPlaceholder(index)
+					: renderItem(menuOption, index);
 			}
-			const indexWithinPage = index - (page - 1) * count;
-			const menuOption = pages[page][indexWithinPage];
-			const pageIsLoading = loading[page];
-			renderedItems[i] = pageIsLoading
-				? renderPlaceholder(index)
-				: renderItem(menuOption, index);
 		}
 
 		return renderedItems;
@@ -338,7 +337,6 @@ export const Menu = factory(function Menu({
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);
 		icache.set('value', initialValue);
-		// icache.set('activeIndex', findIndex(options, (option) => option.value === initialValue));
 	}
 
 	if (itemsInView !== icache.get('itemsInView')) {
@@ -421,10 +419,10 @@ export const Menu = factory(function Menu({
 		});
 	}
 
+	const items = renderItems(startNode, renderedItemsCount);
 	const total = getTotal(getOptions());
 
 	if (total === undefined) {
-		getOrRead(getOptions());
 		return;
 	}
 
@@ -468,7 +466,7 @@ export const Menu = factory(function Menu({
 					}}
 					key="transformer"
 				>
-					{renderItems(startNode, renderedItemsCount)}
+					{items}
 				</div>
 			</div>
 		</div>
