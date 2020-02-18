@@ -62,6 +62,29 @@ describe('ConstrainedInput', () => {
 		));
 	});
 
+	it('will display user helperText if passed instead of generated description', () => {
+		const h = harness(
+			() => (
+				<ConstrainedInput rules={rules} label="Test Label" helperText="test helper text" />
+			),
+			{
+				middleware: [[validation, createMockValidationMiddleware(() => true)]],
+				customComparator: [compareTheme]
+			}
+		);
+		h.expect(() => (
+			<TextInput
+				key="root"
+				theme={{ '@dojo/widgets/text-input': textInputCss }}
+				customValidator={() => {}}
+				valid={undefined}
+				onValidate={() => {}}
+				helperText="test helper text"
+				label="Test Label"
+			/>
+		));
+	});
+
 	it('handles validation and messaging', () => {
 		const h = harness(
 			() => (

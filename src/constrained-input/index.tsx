@@ -28,16 +28,18 @@ export const ConstrainedInput = factory(function ConstrainedInput({
 	middleware: { icache, validation, theme },
 	properties
 }) {
-	const { rules, onValidate, ...props } = properties();
+	const { rules, onValidate, helperText, ...props } = properties();
 	const valid = icache.get('valid');
 
 	const validator = validation(rules);
 
 	const handleValidation = (valid?: boolean, message?: string) => {
 		icache.set('valid', { valid, message });
-
 		onValidate && onValidate(valid);
 	};
+
+	const generatedDescribeHelperText =
+		valid && valid.valid === true ? undefined : validator.describe().join(' ');
 
 	return (
 		<TextInput
@@ -50,7 +52,7 @@ export const ConstrainedInput = factory(function ConstrainedInput({
 			customValidator={validator}
 			valid={valid}
 			onValidate={handleValidation}
-			helperText={valid && valid.valid === true ? undefined : validator.describe().join(' ')}
+			helperText={helperText ? helperText : generatedDescribeHelperText}
 		/>
 	);
 });
