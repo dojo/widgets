@@ -18,14 +18,23 @@ export const Avatar = factory(function Avatar({ middleware: { theme }, propertie
 	return (
 		<div
 			key="root"
+			role={src && 'image'}
+			aria-label={alt}
 			classes={[
 				themeCss.root,
 				secondary ? themeCss.avatarColorSecondary : themeCss.avatarColor,
 				themeCss[size],
 				themeCss[variant]
 			]}
+			styles={
+				src
+					? {
+							backgroundImage: `url(${src})`
+					  }
+					: {}
+			}
 		>
-			{src ? <img alt={alt} classes={themeCss.image} src={src} /> : children()}
+			{children()}
 		</div>
 	);
 });

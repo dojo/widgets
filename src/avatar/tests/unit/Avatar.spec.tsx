@@ -8,7 +8,13 @@ import * as css from '../../../theme/default/avatar.m.css';
 
 describe('Avatar', () => {
 	const template = assertionTemplate(() => (
-		<div key="root" classes={[css.root, css.avatarColor, css.medium, css.circle]}>
+		<div
+			key="root"
+			role={undefined}
+			aria-label={undefined}
+			styles={{}}
+			classes={[css.root, css.avatarColor, css.medium, css.circle]}
+		>
 			D
 		</div>
 	));
@@ -110,9 +116,11 @@ describe('Avatar', () => {
 		it('renders with an image', () => {
 			const h = harness(() => <Avatar src="img.jpg" alt="test" />);
 			h.expect(
-				template.setChildren('@root', () => [
-					<img alt="test" classes={css.image} src="img.jpg" />
-				])
+				template
+					.setProperty('@root', 'role', 'image')
+					.setProperty('@root', 'aria-label', 'test')
+					.setProperty('@root', 'styles', { backgroundImage: 'url(img.jpg)' })
+					.setChildren('@root', [])
 			);
 		});
 

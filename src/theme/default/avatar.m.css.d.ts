@@ -7,4 +7,3 @@ export const large: string;
 export const circle: string;
 export const square: string;
 export const rounded: string;
-export const image: string;

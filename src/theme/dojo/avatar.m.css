@@ -8,6 +8,7 @@
 	align-items: center;
 	justify-content: center;
 	user-select: none;
+	background-size: cover;
 }
 
 .avatarColor {
@@ -45,10 +46,4 @@
 
 .rounded {
 	border-radius: var(--border-radius);
-}
-
-.image {
-	object-fit: cover;
-	height: 100%;
-	width: 100%;
 }
