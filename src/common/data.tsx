@@ -1,6 +1,4 @@
 import { create, invalidator, destroy, diffProperty } from '@dojo/framework/core/vdom';
-import { createResource, DataTemplate } from './resource';
-import { invalidate } from '@dojo/framework/i18n/i18n';
 
 export type Invalidator = () => void;
 
@@ -8,7 +6,7 @@ export type SubscriptionType = 'data' | 'total' | 'loading' | 'failed';
 
 export interface ResourceOptions {
 	pageNumber?: number;
-	query?: string;
+	query?: { [index: string]: string | undefined };
 	pageSize?: number;
 }
 
@@ -40,14 +38,14 @@ export interface ResourceWithData {
 
 export type ResourceOrResourceWrapper = Resource | ResourceWrapper | ResourceWithData;
 
-export type Transformer<T> = (item: any) => T;
+export type TransformConfig = { [index: string]: string[] };
 
 interface DataProperties {
 	resource: ResourceOrResourceWrapper | any[];
 }
 
 interface DataTransformProperties<T = void> {
-	transform: Transformer<T>;
+	transform: TransformConfig;
 	resource: ResourceOrResourceWrapper | T[];
 }
 
@@ -113,6 +111,34 @@ function createResourceWrapper(resource: Resource, options?: OptionsWrapper): Re
 
 function isResourceWithData(resource: any): resource is ResourceWithData {
 	return !!resource.data;
+}
+
+function transformQuery(
+	query: { [key: string]: string | undefined },
+	transformConfig: TransformConfig
+) {
+	const transformedQuery: any = {};
+	Object.keys(query).forEach((key: string) => {
+		const destinationValues = transformConfig[key];
+		if (destinationValues) {
+			destinationValues.forEach((destination) => {
+				transformedQuery[destination] = query[key];
+			});
+		} else {
+			transformedQuery[key] = query[key];
+		}
+	});
+	return transformedQuery;
+}
+
+function transformData(item: any, transformConfig: TransformConfig) {
+	const transformedItem: any = {};
+	Object.keys(transformConfig).forEach((key: string) => {
+		const sourceValues = transformConfig[key];
+		const transformedValues = sourceValues.map((value) => item[value] || '');
+		transformedItem[key] = transformedValues.join(' ');
+	});
+	return transformedItem;
 }
 
 export function createDataMiddleware<T = void>() {
@@ -186,21 +212,36 @@ export function createDataMiddleware<T = void>() {
 			return {
 				getOrRead(options: ResourceOptions): T extends void ? any : T[] | undefined {
 					resource.subscribe('data', options, invalidator);
-					const data = resource.getOrRead(options);
 					const props = properties();
 
+					if (options.query && isDataTransformProperties(props)) {
+						options = {
+							...options,
+							query: transformQuery(options.query, props.transform)
+						};
+					}
+
+					const data = resource.getOrRead(options);
 					if (data && data.length && isDataTransformProperties(props)) {
-						return data.map(props.transform);
+						return data.map((item: any) => transformData(item, props.transform));
 					}
 
 					return data;
 				},
 				get(options: ResourceOptions): T extends void ? any : T[] | undefined {
-					const data = resource.get(options);
 					const props = properties();
 
+					if (options.query && isDataTransformProperties(props)) {
+						options = {
+							...options,
+							query: transformQuery(options.query, props.transform)
+						};
+					}
+
+					const data = resource.get(options);
+
 					if (data && data.length && isDataTransformProperties(props)) {
-						return data.map(props.transform);
+						return data.map((item: any) => transformData(item, props.transform));
 					}
 
 					return data;

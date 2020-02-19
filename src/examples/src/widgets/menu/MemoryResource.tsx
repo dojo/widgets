@@ -1,42 +1,35 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Menu from '@dojo/widgets/menu';
 import icache from '@dojo/framework/core/middleware/icache';
-import states from './states';
-import { createResource } from '@dojo/widgets/common/resource';
-import FetchedResource from './FetchedResource';
+import { createResource, createMemoryTemplate } from '@dojo/widgets/common/resource';
 
 const factory = create({ icache });
 
-const animals = [{ value: 'cat' }, { value: 'dog' }, { value: 'mouse' }];
+const animals = [
+	{ name: 'cat', type: 'feline' },
+	{ name: 'dog', type: 'kanine' },
+	{ name: 'mouse', type: 'rodent' },
+	{ name: 'rat', type: 'rodent' }
+];
 
-const personResource = createResource({
-	// why did i get here?
-	// do transform
-	read: ({ query = '', size, offset }, put, get) => {
-		const data = get('');
-
-		if (size !== undefined && offset !== undefined) {
-			put(0, data);
-			return { data: data.slice(offset, offset + size), total: data.length };
-		} else {
-			return { data, total: data.length };
-		}
-	}
-});
+const animalResource = createResource(createMemoryTemplate());
 
 export default factory(function MemoryResource({ middleware: { icache } }) {
-	const toggled = icache.getOrSet('toggled', false);
+	// const toggled = icache.getOrSet('toggled', false);
 	return (
 		<virtual>
 			<Menu
-				resource={{ resource: personResource, data: animals }}
-				transform={(item) => item}
+				resource={{ resource: animalResource, data: animals }}
+				transform={{
+					value: ['name'],
+					label: ['name', 'type']
+				}}
 				onValue={(value: string) => {
 					icache.set('value', value);
 				}}
 				itemsInView={10}
 			/>
-			<button
+			{/* <button
 				type="button"
 				onclick={(e) => {
 					e.stopPropagation();
@@ -45,7 +38,7 @@ export default factory(function MemoryResource({ middleware: { icache } }) {
 				}}
 			>
 				click to change array
-			</button>
+			</button> */}
 			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>{' '}
 		</virtual>
 	);

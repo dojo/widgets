@@ -3,13 +3,13 @@ import { Resource, ResourceOptions, SubscriptionType } from './data';
 export interface ReadOptions {
 	offset?: number;
 	size?: number;
-	query?: string;
+	query?: { [key: string]: string | undefined };
 }
 
 type Invalidator = () => void;
 
 type Putter<S> = (start: number, data: S[]) => void;
-type Getter<S> = (query: string) => S[];
+type Getter<S> = (query?: {}) => S[];
 
 export type DataResponse<S> = { data: S[]; total: number };
 export type DataResponsePromise<S> = Promise<{ data: S[]; total: number }>;
@@ -24,11 +24,38 @@ export interface DataTemplate<S> {
 	set?: any;
 }
 
-export function createTransformer<S, T>(template: DataTemplate<S>, transformer: (data: S) => T) {
+export function createTransformer<S, T>(
+	template: DataTemplate<S>,
+	transformer: { [key: string]: string[] }
+) {
 	return transformer;
 }
 
 type Status = 'LOADING' | 'FAILED';
+
+export type FilterType = 'OR' | 'AND';
+
+export function createMemoryTemplate<S = any>({
+	filterType = 'OR'
+}: {
+	filterType?: FilterType;
+} = {}): DataTemplate<S> {
+	return {
+		read: ({ query, size, offset }, put, get) => {
+			let data: any[] = get();
+			if (query && Object.keys(query).length > 0) {
+				data = data.filter((item) => {
+					return Object.keys(query)[filterType === 'OR' ? 'some' : 'every']((key) => {
+						return item[key].indexOf(query[key]) > -1;
+					});
+				});
+			}
+
+			put(0, data);
+			return { data, total: data.length };
+		}
+	};
+}
 
 function isAsyncResponse<S>(
 	response: DataResponsePromise<S> | DataResponse<S>
@@ -39,7 +66,7 @@ function isAsyncResponse<S>(
 export function createResource<S>(config: DataTemplate<S>): Resource {
 	const { read } = config;
 	let queryMap = new Map<string, S[]>(); // sparse array of items
-	let statusMap = new Map<string, Status>();
+	let statusMap = new Map<string, { [key: string]: Status }>();
 	let totalMap = new Map<string, number>();
 
 	const invalidatorMaps = {
@@ -61,16 +88,16 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		});
 	}
 
-	function getKey({ pageNumber, query, pageSize }: ResourceOptions): string {
-		return `page-${pageNumber}-pageSize-${pageSize}-query-${query}`;
+	function getPageKey({ pageNumber, pageSize }: ResourceOptions): string {
+		return `page-${pageNumber}-pageSize-${pageSize}`;
 	}
 
-	function getTotalKey({ query = '' }: ResourceOptions): string {
-		return query;
+	function getQueryKey(query = {}): string {
+		return JSON.stringify(query, Object.keys(query).sort());
 	}
 
 	function subscribe(type: SubscriptionType, options: ResourceOptions, invalidator: Invalidator) {
-		const key = getKey(options);
+		const key = getPageKey(options);
 		const keyedInvalidatorMap = invalidatorMaps[type];
 		const invalidatorSet = keyedInvalidatorMap.get(key) || new Set<Invalidator>();
 		invalidatorSet.add(invalidator);
@@ -92,25 +119,51 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		});
 	}
 
+	function isStatus(status: Status, options: ResourceOptions) {
+		const queryKey = getQueryKey(options.query);
+		const pageKey = getPageKey(options);
+		const pageStatuses = statusMap.get(queryKey);
+		if (pageStatuses) {
+			return pageStatuses[pageKey] === status;
+		}
+		return false;
+	}
+
+	function setStatus(status: Status, options: ResourceOptions) {
+		const queryKey = getQueryKey(options.query);
+		const pageKey = getPageKey(options);
+		const pageStatuses = statusMap.get(queryKey) || {};
+		pageStatuses[pageKey] = status;
+		statusMap.set(queryKey, pageStatuses);
+	}
+
+	function clearStatus(options: ResourceOptions) {
+		const queryKey = getQueryKey(options.query);
+		const pageKey = getPageKey(options);
+		const pageStatuses = statusMap.get(queryKey);
+		if (pageStatuses && pageStatuses[pageKey]) {
+			delete pageStatuses[pageKey];
+			statusMap.set(queryKey, pageStatuses);
+		}
+	}
+
 	function isLoading(options: ResourceOptions) {
-		const key = getKey(options);
-		return statusMap.get(key) === 'LOADING';
+		return isStatus('LOADING', options);
 	}
 
 	function isFailed(options: ResourceOptions) {
-		const key = getKey(options);
-		return statusMap.get(key) === 'FAILED';
+		return isStatus('FAILED', options);
 	}
 
 	function getTotal(options: ResourceOptions) {
-		const totalKey = getTotalKey(options);
-		return totalMap.get(totalKey);
+		const queryKey = getQueryKey(options.query);
+		return totalMap.get(queryKey);
 	}
 
 	function get(options: ResourceOptions): S[] {
-		const { pageNumber, query = '', pageSize } = options;
-
-		const cachedQueryData = queryMap.get(query);
+		const { pageNumber, pageSize } = options;
+		const queryKey = getQueryKey(options.query);
+		const cachedQueryData = queryMap.get(queryKey);
 
 		if (!cachedQueryData) {
 			return [];
@@ -119,7 +172,7 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		if (pageSize && pageNumber) {
 			const start = (pageNumber - 1) * pageSize;
 			const end = start + pageSize;
-			const total = totalMap.get(query) || end;
+			const total = totalMap.get(queryKey) || end;
 			const calculatedEnd = Math.min(end, total);
 			const requiredData = cachedQueryData.slice(start, calculatedEnd);
 			if (requiredData.filter(() => true).length === calculatedEnd - start) {
@@ -132,32 +185,34 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		}
 	}
 
-	function setData(start: number, data: S[], size: number, query = '') {
+	function setData(start: number, data: S[], size: number, query = {}) {
 		console.log(`set data called with start: ${start}, size: ${size}, query: ${query}`);
-		const cachedQueryData = queryMap.get(query);
+		const queryKey = getQueryKey(query);
+		const cachedQueryData = queryMap.get(queryKey);
 		const newQueryData = cachedQueryData && cachedQueryData.length ? cachedQueryData : [];
 
 		for (let i = 0; i < size; i += 1) {
 			newQueryData[start + i] = data[i];
 		}
 
-		queryMap.set(query, newQueryData);
+		queryMap.set(queryKey, newQueryData);
 	}
 
 	function getOrRead(options: ResourceOptions): S[] | undefined {
-		const { pageNumber, query = '', pageSize } = options;
-		const key = getKey(options);
+		const { pageNumber, query, pageSize } = options;
+		const pageKey = getPageKey(options);
+		const queryKey = getQueryKey(options.query);
 
 		if (isLoading(options) || isFailed(options)) {
 			return undefined;
 		}
 
-		const cachedQueryData = queryMap.get(query);
+		const cachedQueryData = queryMap.get(queryKey);
 
 		if (
 			cachedQueryData &&
 			(!pageSize || !pageNumber) &&
-			cachedQueryData.filter(() => true).length === totalMap.get(query)
+			cachedQueryData.filter(() => true).length === totalMap.get(queryKey)
 		) {
 			return cachedQueryData;
 		}
@@ -165,7 +220,7 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 		if (pageSize && pageNumber && cachedQueryData && cachedQueryData.length) {
 			const start = (pageNumber - 1) * pageSize;
 			const end = start + pageSize;
-			const total = totalMap.get(query) || end;
+			const total = totalMap.get(queryKey) || end;
 			const calculatedEnd = Math.min(end, total);
 			const requiredData = cachedQueryData.slice(start, calculatedEnd);
 			if (
@@ -192,14 +247,14 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 			(start = 0, data: S[]) => {
 				setData(start, data, data.length, query);
 			},
-			(query = '') => {
+			(query) => {
 				return get({ query });
 			}
 		);
 
 		if (isAsyncResponse(response)) {
-			statusMap.set(key, 'LOADING');
-			invalidate(key, ['loading']);
+			setStatus('LOADING', options);
+			invalidate(pageKey, ['loading']);
 
 			response
 				.then(({ data, total }) => {
@@ -207,16 +262,17 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 					const size = Math.min(data.length, readOptions.size || data.length);
 					setData(start, data, size, query);
 
-					statusMap.delete(key);
-					invalidate(key, ['loading', 'data']);
-					if (total !== totalMap.get(query)) {
-						totalMap.set(query, total);
-						invalidate(key, ['total']);
+					clearStatus(options);
+
+					invalidate(pageKey, ['loading', 'data']);
+					if (total !== totalMap.get(queryKey)) {
+						totalMap.set(queryKey, total);
+						invalidate(pageKey, ['total']);
 					}
 				})
 				.catch(() => {
-					statusMap.set(key, 'FAILED');
-					invalidate(key, ['failed', 'loading']);
+					setStatus('FAILED', options);
+					invalidate(pageKey, ['failed', 'loading']);
 				});
 
 			return undefined;
@@ -225,11 +281,11 @@ export function createResource<S>(config: DataTemplate<S>): Resource {
 			const start = readOptions.offset || 0;
 			const size = Math.min(data.length, readOptions.size || data.length);
 			setData(start, data, size, query);
-			invalidate(key, ['data']);
+			invalidate(pageKey, ['data']);
 
-			if (total !== totalMap.get(query)) {
-				totalMap.set(query, total);
-				invalidate(key, ['total']);
+			if (total !== totalMap.get(queryKey)) {
+				totalMap.set(queryKey, total);
+				invalidate(pageKey, ['total']);
 			}
 			return data;
 		}

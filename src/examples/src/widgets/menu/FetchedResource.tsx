@@ -11,7 +11,11 @@ const fetcher = async (options: any) => {
 	url = `${url}page=${pageNumber}&size=${size}`;
 
 	if (query) {
-		url = `${url}&firstName=${query}`;
+		Object.keys(query).forEach((key) => {
+			if (query[key]) {
+				url = `${url}&${key}=${query[key]}`;
+			}
+		});
 	}
 
 	const response = await fetch(url, {
@@ -31,11 +35,9 @@ const template: DataTemplate<{ firstName: string; lastName: string }> = {
 	read: fetcher
 };
 
-const transformer = createTransformer(template, (data) => {
-	return {
-		value: `${data.firstName} ${data.lastName}`,
-		label: `${data.firstName} ${data.lastName}`
-	};
+const transformer = createTransformer(template, {
+	value: ['firstName'],
+	label: ['firstName', 'lastName']
 });
 
 const resource = createResource(template);
