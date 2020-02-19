@@ -38,15 +38,19 @@ export interface ResourceWithData {
 
 export type ResourceOrResourceWrapper = Resource | ResourceWrapper | ResourceWithData;
 
-export type TransformConfig = { [index: string]: string[] };
+export type TransformConfig<T, S = void> = {
+	[P in keyof T]: (S extends void ? string : keyof S)[]
+};
+export type Query = { [key: string]: string | undefined };
 
 interface DataProperties {
 	resource: ResourceOrResourceWrapper | any[];
 }
 
 interface DataTransformProperties<T = void> {
-	transform: TransformConfig;
+	transform: TransformConfig<T>;
 	resource: ResourceOrResourceWrapper | T[];
+	bob?: string;
 }
 
 interface DataInitialiserOptions {
@@ -96,30 +100,14 @@ function createResourceWrapper(resource: Resource, options?: OptionsWrapper): Re
 	};
 }
 
-// function createMemoryTemplate<T>(data: T[]): DataTemplate<T> {
-// 	return {
-// 		read: ({ query = '', size, offset }, put) => {
-// 			if (size !== undefined && offset !== undefined) {
-// 				put(0, data);
-// 				return { data: data.slice(offset, offset + size), total: data.length };
-// 			} else {
-// 				return { data, total: data.length };
-// 			}
-// 		}
-// 	}
-// }
-
 function isResourceWithData(resource: any): resource is ResourceWithData {
 	return !!resource.data;
 }
 
-function transformQuery(
-	query: { [key: string]: string | undefined },
-	transformConfig: TransformConfig
-) {
-	const transformedQuery: any = {};
+function transformQuery<T>(query: Query, transformConfig: TransformConfig<T>) {
+	const transformedQuery: Query = {};
 	Object.keys(query).forEach((key: string) => {
-		const destinationValues = transformConfig[key];
+		const destinationValues = transformConfig[key as keyof T];
 		if (destinationValues) {
 			destinationValues.forEach((destination) => {
 				transformedQuery[destination] = query[key];
@@ -131,12 +119,17 @@ function transformQuery(
 	return transformedQuery;
 }
 
-function transformData(item: any, transformConfig: TransformConfig) {
-	const transformedItem: any = {};
+function transformData<T>(item: any, transformConfig: TransformConfig<T>) {
+	let transformedItem: Partial<T> = {};
 	Object.keys(transformConfig).forEach((key: string) => {
-		const sourceValues = transformConfig[key];
-		const transformedValues = sourceValues.map((value) => item[value] || '');
-		transformedItem[key] = transformedValues.join(' ');
+		const sourceValues = transformConfig[key as keyof T];
+		if (sourceValues) {
+			const transformedValues: string[] = sourceValues.map((value) => item[value] || '');
+			transformedItem = {
+				...transformedItem,
+				[key]: transformedValues.join(' ')
+			};
+		}
 	});
 	return transformedItem;
 }

@@ -1,4 +1,4 @@
-import { Resource, ResourceOptions, SubscriptionType } from './data';
+import { Resource, ResourceOptions, SubscriptionType, TransformConfig } from './data';
 
 export interface ReadOptions {
 	offset?: number;
@@ -19,14 +19,14 @@ export type DataFetcher<S> = (
 	get: Getter<S>
 ) => DataResponse<S> | DataResponsePromise<S>;
 
-export interface DataTemplate<S> {
+export interface DataTemplate<S = {}> {
 	read: DataFetcher<S>;
 	set?: any;
 }
 
 export function createTransformer<S, T>(
 	template: DataTemplate<S>,
-	transformer: { [key: string]: string[] }
+	transformer: TransformConfig<T, S>
 ) {
 	return transformer;
 }
@@ -35,13 +35,13 @@ type Status = 'LOADING' | 'FAILED';
 
 export type FilterType = 'OR' | 'AND';
 
-export function createMemoryTemplate<S = any>({
+export function createMemoryTemplate<S = void>({
 	filterType = 'OR'
 }: {
 	filterType?: FilterType;
 } = {}): DataTemplate<S> {
 	return {
-		read: ({ query, size, offset }, put, get) => {
+		read: ({ query }, put, get) => {
 			let data: any[] = get();
 			if (query && Object.keys(query).length > 0) {
 				data = data.filter((item) => {

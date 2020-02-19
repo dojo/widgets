@@ -12,7 +12,6 @@ import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
 import { createDataMiddleware } from '../common/data';
-import { findIndex } from '@dojo/framework/shim/array';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
