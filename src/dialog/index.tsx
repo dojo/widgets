@@ -6,6 +6,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties, Keys } from '../common/util';
 import Icon from '../icon';
 import theme, { ThemeProperties } from '../middleware/theme';
+import bodyScroll from '../middleware/bodyScroll';
 import * as css from '../theme/default/dialog.m.css';
 import * as fixedCss from './styles/dialog.m.css';
 import commonBundle from '../common/nls/common';
@@ -55,11 +56,17 @@ export interface DialogState {
 	contentId: string;
 }
 
-const factory = create({ theme, i18n, icache: createICacheMiddleware<DialogState>(), inert })
+const factory = create({
+	theme,
+	i18n,
+	icache: createICacheMiddleware<DialogState>(),
+	inert,
+	bodyScroll
+})
 	.properties<DialogProperties>()
 	.children<DialogChild>();
 export const Dialog = factory(function Dialog({
-	middleware: { theme, i18n, icache, inert },
+	middleware: { theme, i18n, icache, inert, bodyScroll },
 	properties,
 	children
 }) {
@@ -109,6 +116,8 @@ export const Dialog = factory(function Dialog({
 			close();
 		}
 	};
+
+	bodyScroll(!open);
 
 	return (
 		<body>
