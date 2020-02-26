@@ -1,4 +1,5 @@
 import * as accordionPane from './accordion-pane.m.css';
+import * as avatar from './avatar.m.css';
 import * as button from './button.m.css';
 import * as card from './card.m.css';
 import * as calendar from './calendar.m.css';
@@ -42,6 +43,7 @@ import * as tooltip from './tooltip.m.css';
 
 export default {
 	'@dojo/widgets/accordion-pane': accordionPane,
+	'@dojo/widgets/avatar': avatar,
 	'@dojo/widgets/button': button,
 	'@dojo/widgets/calendar': calendar,
 	'@dojo/widgets/checkbox': checkbox,

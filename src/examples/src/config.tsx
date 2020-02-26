@@ -1,6 +1,12 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
 import materialTheme from '@dojo/widgets/theme/material';
 import BasicAccordionPane from './widgets/accordion-pane/Basic';
+import BasicAvatar from './widgets/avatar/Basic';
+import ImageAvatar from './widgets/avatar/Image';
+import AvatarVariant from './widgets/avatar/Variant';
+import AvatarSize from './widgets/avatar/Size';
+import AvatarIcon from './widgets/avatar/Icon';
+import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
@@ -211,6 +217,42 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicAccordionPane
+				}
+			}
+		},
+		avatar: {
+			examples: [
+				{
+					title: 'Avatar with image',
+					filename: 'Image',
+					module: ImageAvatar
+				},
+				{
+					title: 'Avatar variants',
+					filename: 'Variant',
+					module: AvatarVariant
+				},
+				{
+					title: 'Avatar with secondary colors',
+					filename: 'Secondary',
+					module: AvatarSecondary
+				},
+				{
+					title: 'Avatar sizes',
+					filename: 'Size',
+					module: AvatarSize
+				},
+				{
+					title: 'Avatar with Icons',
+					filename: 'Icon',
+					module: AvatarIcon
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicAvatar
 				}
 			}
 		},

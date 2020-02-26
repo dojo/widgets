@@ -1,0 +1,35 @@
+/* The root class for the avatar widget */
+.root {
+}
+
+/* Applied for secondary styling of the avatar */
+.avatarColorSecondary {
+}
+
+/* The color settings for the avatar */
+.avatarColor {
+}
+
+/* May be added to avatars with size set to small */
+.small {
+}
+
+/* May be added to avatars with size set to medium */
+.medium {
+}
+
+/* May be added to avatars with size set to large */
+.large {
+}
+
+/* May be added to the avatar's circle variant */
+.circle {
+}
+
+/* May be added to the avatar's square variant */
+.square {
+}
+
+/* May be added to the avatar's rounded variant */
+.rounded {
+}
