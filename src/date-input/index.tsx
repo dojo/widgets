@@ -9,7 +9,6 @@ import { Keys } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput from '../text-input';
-import Button from '../button';
 import Icon from '../icon';
 import TriggerPopup from '../trigger-popup';
 import * as css from '../theme/default/date-input.m.css';
@@ -133,17 +132,17 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 										}
 									}}
 									trailing={() => (
-										<Button
+										<button
 											key="dateIcon"
-											onClick={openCalendar}
-											classes={{
-												'@dojo/widgets/button': {
-													root: [classes.toggleCalendarButton]
-												}
+											onclick={(e) => {
+												e.stopPropagation();
+												openCalendar();
 											}}
+											classes={classes.toggleCalendarButton}
+											type="button"
 										>
 											<Icon type="dateIcon" />
-										</Button>
+										</button>
 									)}
 									type="text"
 									initialValue={icache.get('inputValue')}
