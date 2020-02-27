@@ -4,6 +4,8 @@
 
 .actions {
 	composes: mdc-card__action from '@material/card/dist/mdc.card.css';
+	padding: 1rem;
+	padding-top: 0;
 }
 
 .actionButtons {
@@ -12,7 +14,6 @@
 
 .actionIcons {
 	composes: mdc-card__action-icons from '@material/card/dist/mdc.card.css';
-	padding-right: 1rem;
 }
 
 .primary {
