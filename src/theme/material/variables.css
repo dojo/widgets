@@ -47,4 +47,7 @@
 	--mdc-avatar-size-large: 56px;
 	--mdc-theme-heading-font-weight: 500;
 	--mdc-theme-separator: #e0e0e0;
+	--mdc-grid-base: 8px;
+	--mdc-font-size-small: 14px;
+	--mdc-disabled-color: #bbb;
 }
