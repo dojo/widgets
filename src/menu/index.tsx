@@ -11,9 +11,16 @@ import * as css from '../theme/default/menu.m.css';
 import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
-import { createDataMiddleware } from '../common/data';
+import { createDataMiddleware, TransformConfig } from '../common/data';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
+
+export const defaultTransform: TransformConfig<MenuOption, MenuOption> = {
+	value: ['value'],
+	label: ['label'],
+	divider: ['divider'],
+	disabled: ['disabled']
+};
 
 export interface MenuProperties {
 	/** Options to display within the menu. The `value` of the option will be passed to `onValue` when it is selected. The label is an optional display string to be used instead of the `value`. If `disabled` is true the option will have a disabled style and will not be selectable. An option with `divider: true` will have a divider rendered after it in the menu */

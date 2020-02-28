@@ -1,15 +1,21 @@
-import { Resource, ResourceOptions, SubscriptionType, TransformConfig } from './data';
+import {
+	Resource,
+	ResourceOptions,
+	ResourceQuery,
+	SubscriptionType,
+	TransformConfig
+} from './data';
 
 export interface ReadOptions {
 	offset?: number;
 	size?: number;
-	query?: { [key: string]: string | undefined };
+	query?: ResourceQuery[];
 }
 
 type Invalidator = () => void;
 
 type Putter<S> = (start: number, data: S[]) => void;
-type Getter<S> = (query?: {}) => S[];
+type Getter<S> = (query?: ResourceQuery[]) => S[];
 
 export type DataResponse<S> = { data: S[]; total: number };
 export type DataResponsePromise<S> = Promise<{ data: S[]; total: number }>;
@@ -43,13 +49,13 @@ export function createMemoryTemplate<S = void>({
 	return {
 		read: ({ query }, put, get) => {
 			let data: any[] = get();
-			if (query && Object.keys(query).length > 0) {
-				data = data.filter((item) => {
-					return Object.keys(query)[filterType === 'OR' ? 'some' : 'every']((key) => {
-						return item[key].indexOf(query[key]) > -1;
-					});
-				});
-			}
+			// if (query && Object.keys(query).length > 0) {
+			// 	data = data.filter((item) => {
+			// 		return Object.keys(query)[filterType === 'OR' ? 'some' : 'every']((key) => {
+			// 			return item[key].indexOf(query[key]) > -1;
+			// 		});
+			// 	});
+			// }
 
 			put(0, data);
 			return { data, total: data.length };
@@ -65,7 +71,7 @@ function isAsyncResponse<S>(
 
 export function createResource<S>(config: DataTemplate<S>): Resource {
 	const { read } = config;
-	let queryMap = new Map<string, S[]>(); // sparse array of items
+	let queryMap = new Map<string, S[]>();
 	let statusMap = new Map<string, { [key: string]: Status }>();
 	let totalMap = new Map<string, number>();
 
