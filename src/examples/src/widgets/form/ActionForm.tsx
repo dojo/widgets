@@ -4,7 +4,6 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import TextInput from '@dojo/widgets/text-input';
 import Form from '@dojo/widgets/form';
 import { FormMiddleware } from '@dojo/widgets/form/middleware';
-import Button from '@dojo/widgets/button';
 
 const icache = createICacheMiddleware<{
 	basic?: Partial<Fields>;
