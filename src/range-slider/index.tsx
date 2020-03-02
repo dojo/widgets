@@ -248,7 +248,8 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 							readOnly,
 							required,
 							hidden: labelHidden,
-							widgetId: `${widgetId}-label`
+							widgetId: `${widgetId}-label`,
+							secondary: true
 						},
 						[label]
 				  )

@@ -203,6 +203,7 @@ export const Slider = factory(function Slider({
 				readOnly={readOnly}
 				required={required}
 				hidden={labelHidden}
+				secondary={true}
 				forId={widgetId}
 			>
 				{label}
