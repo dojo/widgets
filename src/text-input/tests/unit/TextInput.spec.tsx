@@ -33,6 +33,7 @@ interface States {
 
 interface ExpectedOptions {
 	label?: boolean;
+	labelHidden?: boolean;
 	inputOverrides?: any;
 	states?: States;
 	focused?: boolean;
@@ -46,7 +47,8 @@ const expected = function({
 	states = {},
 	focused = false,
 	helperText,
-	value
+	value,
+	labelHidden = false
 }: ExpectedOptions = {}) {
 	const { disabled, required, readOnly, valid: validState } = states;
 	let valid: boolean | undefined;
@@ -75,7 +77,7 @@ const expected = function({
 					required ? css.required : null,
 					null,
 					null,
-					!label ? css.noLabel : null
+					!label || labelHidden ? css.noLabel : null
 				]}
 				role="presentation"
 			>
@@ -87,7 +89,7 @@ const expected = function({
 						focused={focused}
 						readOnly={readOnly}
 						required={required}
-						hidden={false}
+						hidden={labelHidden}
 						forId={''}
 						active={false}
 					>
@@ -708,6 +710,11 @@ registerSuite('TextInput', {
 					.setProperty('~helperText', 'valid', true)
 			);
 			clock.restore();
+		},
+		hiddenLabel() {
+			const h = harness(() => <TextInput label="foo" labelHidden={true} />);
+
+			h.expect(() => expected({ label: true, labelHidden: true }));
 		}
 	}
 });
