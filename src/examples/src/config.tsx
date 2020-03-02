@@ -190,6 +190,7 @@ import BasicDateInput from './widgets/date-input/Basic';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
 import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
+import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
 
 `!has('docs')`;
@@ -712,6 +713,11 @@ export const config = {
 					filename: 'Trailing',
 					module: TrailingHeader,
 					title: 'With trailing element'
+				},
+				{
+					filename: 'Sticky',
+					module: StickyHeader,
+					title: 'With fixed positioning'
 				}
 			],
 			filename: 'index',

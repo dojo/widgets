@@ -11,14 +11,14 @@ export interface HeaderProperties extends ThemedProperties {
 
 export type HeaderChildren =
 	| {
-			/** Renderer for header actions like links */
-			actionsRenderer?(): RenderResult;
 			/** Renderer for leading elements like icons */
-			leadingRenderer?(): RenderResult;
+			leading?(): RenderResult;
 			/** Renderer for the header title */
-			titleRenderer?(): RenderResult;
+			title?(): RenderResult;
+			/** Renderer for header actions like links */
+			actions?(): RenderResult;
 			/** Renderer for trailing elements like search inputs */
-			trailingRenderer?(): RenderResult;
+			trailing?(): RenderResult;
 	  }
 	| undefined;
 
@@ -29,32 +29,28 @@ const factory = create({ theme })
 export const Header = factory(function Header({ children, properties, middleware: { theme } }) {
 	const classes = theme.classes(css);
 	const { sticky } = properties();
-	const {
-		actionsRenderer = undefined,
-		leadingRenderer = undefined,
-		titleRenderer = undefined,
-		trailingRenderer = undefined
-	} = children()[0] || {};
+	const { actions = undefined, leading = undefined, title = undefined, trailing = undefined } =
+		children()[0] || {};
 
-	const actions = actionsRenderer && actionsRenderer();
+	const actionElements = actions && actions();
 
 	return (
 		<div classes={[classes.root, sticky && classes.sticky]}>
 			<div classes={classes.row}>
 				<div classes={classes.primary} key="primary">
-					{leadingRenderer && <div classes={classes.leading}>{leadingRenderer()}</div>}
+					{leading && <div classes={classes.leading}>{leading()}</div>}
 					<div classes={classes.title} key="title">
-						{titleRenderer && titleRenderer()}
+						{title && title()}
 					</div>
 				</div>
 				<div classes={classes.secondary} key="secondary">
 					<div classes={classes.actions} key="actions">
 						{actions &&
-							(Array.isArray(actions) ? actions : [actions]).map((action) => (
-								<div classes={classes.action}>{action}</div>
-							))}
+							(Array.isArray(actionElements) ? actionElements : [actionElements]).map(
+								(action) => <div classes={classes.action}>{action}</div>
+							)}
 					</div>
-					{trailingRenderer && <div classes={classes.trailing}>{trailingRenderer()}</div>}
+					{trailing && <div classes={classes.trailing}>{trailing()}</div>}
 				</div>
 			</div>
 		</div>

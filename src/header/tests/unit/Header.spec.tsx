@@ -28,7 +28,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					leadingRenderer: () => 'leading'
+					leading: () => 'leading'
 				}}
 			</Header>
 		));
@@ -42,7 +42,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					trailingRenderer: () => 'trailing'
+					trailing: () => 'trailing'
 				}}
 			</Header>
 		));
@@ -56,7 +56,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					titleRenderer: () => 'title'
+					title: () => 'title'
 				}}
 			</Header>
 		));
@@ -68,7 +68,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					actionsRenderer: () => ['action']
+					actions: () => ['action']
 				}}
 			</Header>
 		));

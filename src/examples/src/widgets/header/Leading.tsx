@@ -9,13 +9,13 @@ export default factory(function Basic() {
 	return (
 		<Header>
 			{{
-				actionsRenderer: () => [
+				leading: () => <Icon type="barsIcon" />,
+				title: () => 'My App',
+				actions: () => [
 					<Link to="#foo">Foo</Link>,
 					<Link to="#bar">Bar</Link>,
 					<Link to="#baz">Baz</Link>
-				],
-				leadingRenderer: () => <Icon type="barsIcon" />,
-				titleRenderer: () => 'My App'
+				]
 			}}
 		</Header>
 	);
