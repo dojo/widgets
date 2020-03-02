@@ -1,14 +1,13 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import { formatAriaProperties } from '../common/util';
 import Label from '../label';
 import * as css from '../theme/default/switch.m.css';
 
-interface SwitchProperties extends ThemeProperties, FocusProperties {
+interface SwitchProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Whether the switch is disabled or clickable */

@@ -1,8 +1,7 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import theme from '@dojo/framework/core/middleware/theme';
 import validity from '@dojo/framework/core/middleware/validity';
 import { create, diffProperty, invalidator, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
@@ -20,9 +19,7 @@ export type TextInputType =
 	| 'url'
 	| 'date';
 
-export interface BaseInputProperties<T extends { value: any } = { value: string }>
-	extends ThemeProperties,
-		FocusProperties {
+export interface BaseInputProperties<T extends { value: any } = { value: string }> {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Should the field autocomplete */

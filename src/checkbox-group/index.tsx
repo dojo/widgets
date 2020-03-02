@@ -2,12 +2,12 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { checkboxGroup } from './middleware';
 import { Checkbox } from '../checkbox/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import theme from '@dojo/framework/core/middleware/theme';
 import * as css from '../theme/default/checkbox-group.m.css';
 
 type CheckboxOptions = { value: string; label?: string }[];
 
-interface CheckboxGroupProperties extends ThemeProperties {
+interface CheckboxGroupProperties {
 	/** The name attribute for this form group */
 	name: string;
 	/** The label to be displayed in the legend */

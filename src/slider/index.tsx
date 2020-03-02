@@ -1,15 +1,14 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
 import Label from '../label/index';
 import * as css from '../theme/default/slider.m.css';
 import * as fixedCss from './styles/slider.m.css';
 
-export interface SliderProperties extends ThemeProperties, FocusProperties {
+export interface SliderProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Set the disabled property of the control */

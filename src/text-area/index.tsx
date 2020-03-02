@@ -5,13 +5,11 @@ import * as css from '../theme/default/text-area.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import HelperText from '../helper-text/index';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { ThemeProperties } from '@dojo/framework/core/middleware/theme';
 import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import validity from '@dojo/framework/core/middleware/validity';
 
-export interface TextAreaProperties extends ThemeProperties, FocusProperties {
+export interface TextAreaProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Number of columns, controls the width of the textarea */

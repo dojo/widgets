@@ -1,10 +1,9 @@
 import { focus } from '@dojo/framework/core/middleware/focus';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import HelperText from '../helper-text';
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import * as css from '../theme/default/native-select.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
@@ -13,7 +12,7 @@ import Label from '../label';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
-export interface NativeSelectProperties extends FocusProperties, ThemeProperties {
+export interface NativeSelectProperties {
 	/** Callback called when user selects a value */
 	onValue?(value: string): void;
 	/** The initial selected value */

@@ -1,13 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import Popup from '../popup';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 import * as css from '../theme/default/context-popup.m.css';
 
-export interface ContextPopupProperties extends FocusProperties {
+export interface ContextPopupProperties {
 	onClose?(): void;
 	onOpen?(): void;
 }
