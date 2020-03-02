@@ -98,6 +98,8 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 				...classes,
 				'@dojo/widgets/text-input': {
 					root: [this.theme(css.filter)],
+					input: [this.theme(css.filterInput)],
+					noLabel: [this.theme(css.filterNoLabel)],
 					...passedInputClasses
 				}
 			},

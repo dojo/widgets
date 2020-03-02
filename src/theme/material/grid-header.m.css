@@ -26,3 +26,11 @@
 .sorted .sort {
 	opacity: 1;
 }
+
+.root .cell .filter .filterNoLabel .filterInput {
+	padding: 8px;
+}
+
+.root .filter .filterNoLabel {
+	height: auto;
+}

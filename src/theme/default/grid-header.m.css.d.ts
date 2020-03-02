@@ -6,3 +6,5 @@ export const desc: string;
 export const asc: string;
 export const sort: string;
 export const filter: string;
+export const filterInput: string;
+export const filterNoLabel: string;
