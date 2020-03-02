@@ -15,7 +15,7 @@ const baseTemplate = assertionTemplate(() => (
 		role="progressbar"
 	>
 		<div classes={classes.buffer} />
-		<div classes={classes.primary}>
+		<div classes={[classes.bar, classes.primary]}>
 			<span classes={classes.inner} />
 		</div>
 	</div>
