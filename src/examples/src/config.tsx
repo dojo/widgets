@@ -717,6 +717,8 @@ export const config = {
 				{
 					filename: 'Sticky',
 					module: StickyHeader,
+					sandbox: true,
+					size: 'medium',
 					title: 'With fixed positioning'
 				}
 			],
