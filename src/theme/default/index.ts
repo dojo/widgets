@@ -22,6 +22,7 @@ import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
+import * as loadingIndicator from './loading-indicator.m.css';
 import * as menu from './menu.m.css';
 import * as menuItem from './menu-item.m.css';
 import * as nativeSelect from './native-select.m.css';
@@ -45,7 +46,7 @@ import * as textInput from './text-input.m.css';
 import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
 import * as toolbar from './toolbar.m.css';
-import * as tooltip from './tooltip.m.css';
+v;
 
 export default {
 	'@dojo/widgets/accordion-pane': accordionPane,
@@ -72,6 +73,7 @@ export default {
 	'@dojo/widgets/icon': icon,
 	'@dojo/widgets/label': label,
 	'@dojo/widgets/listbox': listbox,
+	'@dojo/widgets/loading-indicator': loadingIndicator,
 	'@dojo/widgets/menu': menu,
 	'@dojo/widgets/menu-item': menuItem,
 	'@dojo/widgets/native-select': nativeSelect,

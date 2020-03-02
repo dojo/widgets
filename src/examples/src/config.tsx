@@ -182,6 +182,7 @@ import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
 import BasicNativeSelect from './widgets/native-select/Basic';
 import BasicDateInput from './widgets/date-input/Basic';
+import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -714,6 +715,15 @@ export const config = {
 					title: 'Secondary Label'
 				}
 			]
+		},
+		'loading-indicator': {
+			filename: 'index',
+			overview: {
+				example: {
+					module: BasicLoadingIndicator,
+					filename: 'Basic'
+				}
+			}
 		},
 		menu: {
 			examples: [

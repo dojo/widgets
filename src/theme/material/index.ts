@@ -21,6 +21,7 @@ import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listbox from './listbox.m.css';
 import * as listBoxItem from './list-box-item.m.css';
+import * as loadingIndicator from './loading-indicator.m.css';
 import * as menu from './menu.m.css';
 import * as menuItem from './menu-item.m.css';
 import * as nativeSelect from './native-select.m.css';
@@ -66,6 +67,7 @@ export default {
 	'@dojo/widgets/label': label,
 	'@dojo/widgets/listbox': listbox,
 	'@dojo/widgets/list-box-item': listBoxItem,
+	'@dojo/widgets/loading-indicator': loadingIndicator,
 	'@dojo/widgets/menu': menu,
 	'@dojo/widgets/menu-item': menuItem,
 	'@dojo/widgets/native-select': nativeSelect,

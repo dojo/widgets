@@ -1,0 +1,20 @@
+.root {
+	composes: mdc-linear-progress from '@material/linear-progress/dist/mdc.linear-progress.css';
+	composes: mdc-linear-progress--indeterminate from '@material/linear-progress/dist/mdc.linear-progress.css';
+}
+
+.buffer {
+	composes: mdc-linear-progress__buffer from '@material/linear-progress/dist/mdc.linear-progress.css';
+}
+
+.bar {
+	composes: mdc-linear-progress__bar from '@material/linear-progress/dist/mdc.linear-progress.css';
+}
+
+.primary {
+	composes: mdc-linear-progress__primary-bar from '@material/linear-progress/dist/mdc.linear-progress.css';
+}
+
+.inner {
+	composes: mdc-linear-progress__bar-inner from '@material/linear-progress/dist/mdc.linear-progress.css';
+}

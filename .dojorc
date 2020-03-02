@@ -27,6 +27,7 @@
 			"src/icon",
 			"src/label",
 			"src/listbox",
+			"src/loading-indicator",
 			"src/menu",
 			"src/native-select",
 			"src/number-input",
