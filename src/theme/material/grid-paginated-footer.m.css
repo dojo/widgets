@@ -1,0 +1,38 @@
+.root {
+	min-height: 52px;
+	padding-right: 24px;
+	padding-left: 24px;
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: flex-end;
+	color: var(--mdc-theme-text-primary-on-background);
+	font-size: var(--mdc-theme-font-size-small);
+	font-family: var(--mdc-theme-font-family);
+	border-top: 1px solid var(--mdc-theme-separator);
+}
+
+.root .details {
+	width: auto;
+	margin-right: 16px;
+	justify-content: flex-end;
+	font-weight: var(--mdc-theme-heading-font-weight);
+}
+
+.pageNav {
+	color: var(--mdc-theme-text-secondary-on-background);
+	font-size: var(--mdc-theme-font-size-small);
+	font-family: var(--mdc-theme-font-family);
+	margin: 0 16px;
+}
+
+.pageNumber {
+	color: var(--mdc-theme-text-secondary-on-background);
+	font-size: var(--mdc-theme-font-size-small);
+	font-family: var(--mdc-theme-font-family);
+	margin: 0 4px;
+}
+
+.active {
+	color: var(--mdc-theme-text-primary-on-background);
+}

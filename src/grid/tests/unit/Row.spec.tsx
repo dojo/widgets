@@ -23,7 +23,7 @@ describe('Row', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, undefined, fixedCss.rootFixed],
+					classes: [css.root, undefined, fixedCss.rootFixed, undefined],
 					role: 'row',
 					'aria-rowindex': '2',
 					onclick: undefined
@@ -52,7 +52,7 @@ describe('Row', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, undefined, fixedCss.rootFixed],
+					classes: [css.root, undefined, fixedCss.rootFixed, undefined],
 					role: 'row',
 					'aria-rowindex': '2',
 					onclick: undefined
@@ -93,7 +93,7 @@ describe('Row', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, undefined, fixedCss.rootFixed],
+					classes: [css.root, undefined, fixedCss.rootFixed, undefined],
 					role: 'row',
 					'aria-rowindex': '2',
 					onclick: undefined
@@ -138,7 +138,7 @@ describe('Row', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, css.selected, fixedCss.rootFixed],
+					classes: [css.root, css.selected, fixedCss.rootFixed, css.selectable],
 					role: 'row',
 					'aria-rowindex': '2',
 					onclick: noop

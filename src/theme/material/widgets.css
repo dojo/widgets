@@ -25,6 +25,7 @@
 @import './grid-cell.m.css';
 @import './grid-footer.m.css';
 @import './grid-header.m.css';
+@import './grid-paginated-footer.m.css';
 @import './grid-placeholder-row.m.css';
 @import './grid-row.m.css';
 @import './grid.m.css';

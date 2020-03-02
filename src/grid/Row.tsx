@@ -73,7 +73,8 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 				classes: [
 					this.theme(css.root),
 					selected && this.theme(css.selected),
-					fixedCss.rootFixed
+					fixedCss.rootFixed,
+					onRowSelect && this.theme(css.selectable)
 				],
 				role: 'row',
 				onclick: onRowSelect ? this._onRowSelect : undefined,
