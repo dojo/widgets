@@ -46,7 +46,6 @@ import * as textInput from './text-input.m.css';
 import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
 import * as toolbar from './toolbar.m.css';
-v;
 
 export default {
 	'@dojo/widgets/accordion-pane': accordionPane,
