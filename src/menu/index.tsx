@@ -11,11 +11,11 @@ import * as css from '../theme/default/menu.m.css';
 import * as fixedCss from './menu.m.css';
 import ListBoxItem from './ListBoxItem';
 import MenuItem from './MenuItem';
-import { createDataMiddleware, TransformConfig } from '../common/data';
+import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
-export const defaultTransform: TransformConfig<MenuOption, MenuOption> = {
+export const defaultTransform = {
 	value: ['value'],
 	label: ['label'],
 	divider: ['divider'],
