@@ -57,6 +57,7 @@ export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
 				...formatAriaProperties(aria),
 				id: widgetId,
 				classes: [
+					this.variant(),
 					...this.theme(this.getRootClasses()),
 					hidden ? baseCss.visuallyHidden : null
 				],

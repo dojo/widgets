@@ -93,7 +93,7 @@ export class AccordionPane extends ThemedMixin(WidgetBase)<
 	}
 
 	protected render(): DNode {
-		return v('div', { classes: this.theme(css.root) }, this.renderChildren());
+		return v('div', { classes: [this.theme(css.root), this.variant()] }, this.renderChildren());
 	}
 }
 

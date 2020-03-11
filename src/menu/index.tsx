@@ -329,7 +329,7 @@ export const Menu = factory(function Menu({
 	return (
 		<div
 			key="root"
-			classes={[themedCss.root, fixedCss.root]}
+			classes={[theme.variant(), themedCss.root, fixedCss.root]}
 			tabIndex={focusable ? 0 : -1}
 			onkeydown={onKeyDown}
 			focus={() => shouldFocus}

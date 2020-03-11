@@ -61,6 +61,7 @@ export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> 
 		const focus = this.meta(Focus).get('root');
 
 		return [
+			this.variant(),
 			css.root,
 			checked ? css.checked : null,
 			disabled ? css.disabled : null,

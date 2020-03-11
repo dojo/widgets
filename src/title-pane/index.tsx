@@ -104,7 +104,11 @@ export class TitlePane extends ThemedMixin(FocusMixin(WidgetBase))<TitlePaneProp
 		return v(
 			'div',
 			{
-				classes: [...this.theme([css.root, open ? css.open : null]), fixedCss.rootFixed]
+				classes: [
+					this.variant(),
+					...this.theme([css.root, open ? css.open : null]),
+					fixedCss.rootFixed
+				]
 			},
 			[
 				w(GlobalEvent, { key: 'global', window: { resize: this._onWindowResize } }),

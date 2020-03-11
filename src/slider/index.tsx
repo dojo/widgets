@@ -215,6 +215,7 @@ export const Slider = factory(function Slider({
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				disabled ? themeCss.disabled : null,
 				focus.isFocused('input') ? themeCss.focused : null,

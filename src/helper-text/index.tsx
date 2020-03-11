@@ -19,6 +19,7 @@ export default factory(function HelperText({ properties, middleware: { theme } }
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themedCss.root,
 				valid === true ? themedCss.valid : null,
 				valid === false ? themedCss.invalid : null

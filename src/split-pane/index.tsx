@@ -170,6 +170,7 @@ export class SplitPane extends ThemedMixin(WidgetBase)<SplitPaneProperties> {
 			'div',
 			{
 				classes: [
+					this.variant(),
 					...this.theme([
 						css.root,
 						this._collapsed ? css.collapsed : null,

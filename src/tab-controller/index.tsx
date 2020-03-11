@@ -246,7 +246,10 @@ export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<
 			{
 				...formatAriaProperties(aria),
 				'aria-orientation': orientation,
-				classes: this.theme([alignClass ? alignClass : null, css.root]),
+				classes: [
+					this.variant(),
+					...this.theme([alignClass ? alignClass : null, css.root])
+				],
 				role: 'tablist'
 			},
 			children

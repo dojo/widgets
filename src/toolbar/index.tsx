@@ -126,6 +126,7 @@ export class Toolbar extends I18nMixin(ThemedMixin(WidgetBase))<ToolbarPropertie
 			{
 				key: 'root',
 				classes: [
+					this.variant(),
 					fixedCss.rootFixed,
 					...this.theme([css.root, this._collapsed ? css.collapsed : null])
 				]

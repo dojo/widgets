@@ -66,7 +66,7 @@ export default factory(function Form({
 	const props = properties();
 
 	let formProps: Partial<VNodeProperties> = {
-		classes: themedCss.root
+		classes: [theme.variant(), themedCss.root]
 	};
 
 	const { initialValue, onValue } = props;

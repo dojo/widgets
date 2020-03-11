@@ -263,7 +263,7 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 			'div',
 			{
 				'aria-labelledby': this._titleId,
-				classes: this.theme(css.root),
+				classes: [this.variant(), this.theme(css.root)],
 				onmousedown: this._onSwipeStart,
 				onmousemove: this._onSwipeMove,
 				onmouseup: this._onSwipeEnd,

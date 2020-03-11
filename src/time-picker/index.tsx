@@ -394,7 +394,7 @@ export class TimePicker extends ThemedMixin(FocusMixin(WidgetBase))<TimePickerPr
 			'div',
 			{
 				key: 'root',
-				classes: this.theme(this.getRootClasses())
+				classes: [this.variant(), ...this.theme(this.getRootClasses())]
 			},
 			labelAfter ? children.reverse() : children
 		);

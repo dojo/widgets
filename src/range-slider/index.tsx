@@ -80,6 +80,7 @@ export class RangeSlider extends ThemedMixin(WidgetBase)<RangeSliderProperties> 
 		const focus = this.meta(Focus).get('root');
 
 		return [
+			this.variant(),
 			css.root,
 			disabled ? css.disabled : null,
 			focus.containsFocus ? css.focused : null,

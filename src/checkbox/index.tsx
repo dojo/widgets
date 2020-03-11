@@ -75,6 +75,7 @@ export const Checkbox = factory(function Checkbox({ properties, middleware: { th
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				checked ? themeCss.checked : null,
 				disabled ? themeCss.disabled : null,

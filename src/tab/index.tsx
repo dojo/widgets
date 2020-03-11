@@ -37,7 +37,7 @@ export class Tab extends ThemedMixin(WidgetBase)<TabProperties> {
 			{
 				...formatAriaProperties(aria),
 				'aria-labelledby': labelledBy,
-				classes: this.theme([css.tab]),
+				classes: [this.variant(), ...this.theme([css.tab])],
 				id: widgetId,
 				role: 'tabpanel'
 			},

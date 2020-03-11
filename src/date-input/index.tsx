@@ -105,7 +105,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 	}
 
 	return (
-		<div classes={classes.root}>
+		<div classes={[theme.variant(), classes.root]}>
 			<input
 				type="hidden"
 				name={name}

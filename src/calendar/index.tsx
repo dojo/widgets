@@ -442,7 +442,7 @@ export class Calendar extends FocusMixin(I18nMixin(ThemedMixin(WidgetBase)))<Cal
 		return v(
 			'div',
 			{
-				classes: this.theme(css.root),
+				classes: [this.variant(), this.theme(css.root)],
 				...formatAriaProperties(aria)
 			},
 			[

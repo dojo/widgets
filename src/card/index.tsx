@@ -15,7 +15,7 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 	const classes = theme.classes(css);
 
 	return (
-		<div key="root" classes={[classes.root]}>
+		<div key="root" classes={[theme.variant(), classes.root]}>
 			{children()}
 			{actionsRenderer && <div classes={[classes.actions]}>{actionsRenderer()}</div>}
 		</div>

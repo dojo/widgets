@@ -41,6 +41,7 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themedCss.root,
 				disabled && themedCss.disabled,
 				clickable && themedCss.clickable

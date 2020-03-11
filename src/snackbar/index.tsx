@@ -27,6 +27,7 @@ export const Snackbar = factory(function Snackbar({ middleware: { theme }, prope
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				open ? themeCss.open : null,
 				type ? themeCss[type] : null,

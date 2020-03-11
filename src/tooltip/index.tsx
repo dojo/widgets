@@ -50,7 +50,14 @@ export const Tooltip = factory(function Tooltip({ children, properties, middlewa
 	}
 
 	return (
-		<div classes={[classesOrientation, fixedClasses.rootFixed, fixedOrientation]}>
+		<div
+			classes={[
+				theme.variant(),
+				classesOrientation,
+				fixedClasses.rootFixed,
+				fixedOrientation
+			]}
+		>
 			<div key="target">
 				{children()}
 				{open ? (

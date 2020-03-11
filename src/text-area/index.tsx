@@ -193,6 +193,7 @@ export const TextArea = factory(function TextArea({
 			<div
 				key="wrapper"
 				classes={[
+					theme.variant(),
 					themeCss.wrapper,
 					disabled ? themeCss.disabled : null,
 					valid === false ? themeCss.invalid : null,

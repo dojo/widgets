@@ -70,7 +70,7 @@ export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties
 		return v(
 			'button',
 			{
-				classes: this.theme([css.root, ...this.getModifierClasses()]),
+				classes: this.theme([this.variant(), css.root, ...this.getModifierClasses()]),
 				disabled,
 				id: widgetId,
 				focus: this.shouldFocus,

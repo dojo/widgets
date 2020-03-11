@@ -53,7 +53,7 @@ export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
 		const percent = Math.round(((value - min) / (max - min)) * 100);
 		const output = this._output(value, percent);
 
-		return v('div', { classes: this.theme(css.root) }, [
+		return v('div', { classes: [this.variant(), this.theme(css.root)] }, [
 			v(
 				'div',
 				{

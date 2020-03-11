@@ -235,6 +235,7 @@ export const TextInput = factory(function TextInput({
 			<div
 				key="wrapper"
 				classes={[
+					theme.variant(),
 					themeCss.wrapper,
 					disabled ? themeCss.disabled : null,
 					inputFocused ? themeCss.focused : null,
