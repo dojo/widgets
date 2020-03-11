@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	align-items: center;
 	border-right: var(--border-width) solid var(--color-border);

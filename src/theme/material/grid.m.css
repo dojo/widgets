@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	box-shadow: var(--mdc-theme-elevation-1);
 	border-radius: var(--mdc-theme-border-radius);

@@ -1,5 +1,3 @@
-@import './variables.css';
-
 :root {
 	--tab-width: calc(var(--grid-base) * 16);
 }

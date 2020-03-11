@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	padding: 16px;
 	color: var(--mdc-theme-text-primary-on-background);

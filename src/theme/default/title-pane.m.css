@@ -1,5 +1,3 @@
-@import './variables.css';
-
 /* Contains the title */
 .title {
 	background-color: var(--component-background);

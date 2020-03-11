@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	composes: mdc-button from '@material/button/dist/mdc.button.css';
 }

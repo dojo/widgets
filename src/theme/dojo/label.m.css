@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	transition: color var(--transition-duration) var(--transition-easing);
 	font-size: var(--font-size-base);

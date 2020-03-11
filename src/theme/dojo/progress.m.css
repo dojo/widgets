@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .output {
 	display: inline-block;
 	padding: var(--spacing-regular);

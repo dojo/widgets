@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	composes: mdc-switch from '@material/switch/dist/mdc.switch.css';
 	display: flex;

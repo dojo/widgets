@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	background: var(--color-background);
 	border-top: var(--border-width) solid var(--color-border);

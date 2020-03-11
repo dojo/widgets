@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	composes: root from './button.m.css';
 	composes: mdc-button--outlined from '@material/button/dist/mdc.button.css';

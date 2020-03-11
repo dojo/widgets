@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	font-size: var(--font-size-base);
 	background-color: var(--color-background-faded);

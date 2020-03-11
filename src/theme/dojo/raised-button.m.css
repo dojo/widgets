@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 }
