@@ -1,10 +1,8 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v } from '@dojo/framework/core/vdom';
-import { DNode } from '@dojo/framework/core/interfaces';
+import { theme, ThemeProperties } from '../middleware/theme';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/calendar.m.css';
 
-export interface CalendarCellProperties extends ThemedProperties {
+export interface CalendarCellProperties extends ThemeProperties {
 	/** Used to immediately call focus on the cell */
 	callFocus?: boolean;
 	/** The set date value */
@@ -27,71 +25,60 @@ export interface CalendarCellProperties extends ThemedProperties {
 	today?: boolean;
 }
 
-@theme(css)
-export class CalendarCell extends ThemedMixin(WidgetBase)<CalendarCellProperties> {
-	private _onClick(event: MouseEvent) {
+const factory = create({ theme }).properties<CalendarCellProperties>();
+
+export const CalendarCell = factory(function CalendarCell({ middleware: { theme }, properties }) {
+	const themeCss = theme.classes(css);
+	const {
+		callFocus,
+		date,
+		focusable = false,
+		selected = false,
+		onFocusCalled,
+		disabled = false,
+		outOfRange = false,
+		today = false
+	} = properties();
+
+	function onClick(event: MouseEvent) {
 		event.stopPropagation();
-		const { date, disabled = false, onClick } = this.properties;
+		const { date, disabled = false, onClick } = properties();
 		onClick && onClick(date, disabled);
 	}
 
-	private _onKeyDown(event: KeyboardEvent) {
+	function onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
-		const { onKeyDown } = this.properties;
+		const { onKeyDown } = properties();
 		onKeyDown &&
 			onKeyDown(event.which, () => {
 				event.preventDefault();
 			});
 	}
 
-	protected formatDate(date: number): DNode {
-		return v('span', [`${date}`]);
+	if (callFocus) {
+		onFocusCalled && onFocusCalled();
 	}
 
-	protected getModifierClasses(): (string | null)[] {
-		const {
-			disabled = false,
-			outOfRange = false,
-			selected = false,
-			today = false
-		} = this.properties;
-
-		return [
-			disabled || outOfRange ? css.inactiveDate : null,
-			outOfRange ? css.outOfRange : null,
-			selected ? css.selectedDate : null,
-			today ? css.todayDate : null
-		];
-	}
-
-	protected render(): DNode {
-		const {
-			callFocus,
-			date,
-			focusable = false,
-			selected = false,
-			onFocusCalled
-		} = this.properties;
-
-		if (callFocus) {
-			onFocusCalled && onFocusCalled();
-		}
-
-		return v(
-			'td',
-			{
-				key: 'root',
-				focus: callFocus,
-				role: 'gridcell',
-				'aria-selected': `${selected}`,
-				tabIndex: focusable ? 0 : -1,
-				classes: this.theme([css.date, ...this.getModifierClasses()]),
-				onclick: this._onClick,
-				onkeydown: this._onKeyDown
-			},
-			[this.formatDate(date)]
-		);
-	}
-}
+	return (
+		<td
+			key="root"
+			focus={callFocus}
+			role="gridcell"
+			aria-selected={`${selected}`}
+			tabIndex={focusable ? 0 : -1}
+			classes={[
+				themeCss.date,
+				disabled || outOfRange ? themeCss.inactiveDate : null,
+				outOfRange ? themeCss.outOfRange : null,
+				selected ? themeCss.selectedDate : null,
+				today ? themeCss.todayDate : null
+			]}
+			onclick={onClick}
+			onkeydown={onKeyDown}
+		>
+			<span>{`${date}`}</span>
+		</td>
+	);
+});
 
 export default CalendarCell;

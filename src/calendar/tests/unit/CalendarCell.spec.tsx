@@ -2,7 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 
 import CalendarCell from '../../CalendarCell';
 import * as css from '../../../theme/default/calendar.m.css';
@@ -11,115 +11,93 @@ import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 registerSuite('CalendarCell', {
 	tests: {
 		'Calendar cell with default properties'() {
-			const h = harness(() =>
-				w(CalendarCell, {
-					date: 1
-				})
-			);
+			const h = harness(() => <CalendarCell date={1} />);
 
-			h.expect(() =>
-				v(
-					'td',
-					{
-						key: 'root',
-						focus: undefined,
-						role: 'gridcell',
-						'aria-selected': 'false',
-						tabIndex: -1,
-						classes: [css.date, null, null, null, null],
-						onclick: noop,
-						onkeydown: noop
-					},
-					[v('span', {}, ['1'])]
-				)
-			);
+			h.expect(() => (
+				<td
+					key="root"
+					focus={undefined}
+					role="gridcell"
+					aria-selected="false"
+					tabIndex={-1}
+					classes={[css.date, null, null, null, null]}
+					onclick={noop}
+					onkeydown={noop}
+				>
+					<span>1</span>
+				</td>
+			));
 		},
 
 		'Calendar cell with custom properties'() {
-			const h = harness(() =>
-				w(CalendarCell, {
-					date: 2,
-					outOfRange: true,
-					focusable: true,
-					selected: true,
-					today: true
-				})
-			);
+			const h = harness(() => (
+				<CalendarCell
+					date={2}
+					outOfRange={true}
+					focusable={true}
+					selected={true}
+					today={true}
+				/>
+			));
 
-			h.expect(() =>
-				v(
-					'td',
-					{
-						key: 'root',
-						focus: undefined,
-						role: 'gridcell',
-						'aria-selected': 'true',
-						tabIndex: 0,
-						classes: [
-							css.date,
-							css.inactiveDate,
-							css.outOfRange,
-							css.selectedDate,
-							css.todayDate
-						],
-						onclick: noop,
-						onkeydown: noop
-					},
-					[v('span', {}, ['2'])]
-				)
-			);
+			h.expect(() => (
+				<td
+					key="root"
+					focus={undefined}
+					role="gridcell"
+					aria-selected="true"
+					tabIndex={0}
+					classes={[
+						css.date,
+						css.inactiveDate,
+						css.outOfRange,
+						css.selectedDate,
+						css.todayDate
+					]}
+					onclick={noop}
+					onkeydown={noop}
+				>
+					<span>2</span>
+				</td>
+			));
 		},
 
 		'Calendar cells for other months display as inactive'() {
-			const h = harness(() =>
-				w(CalendarCell, {
-					date: 30,
-					disabled: true
-				})
-			);
+			const h = harness(() => <CalendarCell date={30} disabled={true} />);
 
-			h.expect(() =>
-				v(
-					'td',
-					{
-						key: 'root',
-						focus: undefined,
-						role: 'gridcell',
-						'aria-selected': 'false',
-						tabIndex: -1,
-						classes: [css.date, css.inactiveDate, null, null, null],
-						onclick: noop,
-						onkeydown: noop
-					},
-					[v('span', {}, ['30'])]
-				)
-			);
+			h.expect(() => (
+				<td
+					key="root"
+					focus={undefined}
+					role="gridcell"
+					aria-selected="false"
+					tabIndex={-1}
+					classes={[css.date, css.inactiveDate, null, null, null]}
+					onclick={noop}
+					onkeydown={noop}
+				>
+					<span>30</span>
+				</td>
+			));
 		},
 
 		'Calendar cells for out of range dates display as inactive'() {
-			const h = harness(() =>
-				w(CalendarCell, {
-					date: 30,
-					outOfRange: true
-				})
-			);
+			const h = harness(() => <CalendarCell date={30} outOfRange={true} />);
 
-			h.expect(() =>
-				v(
-					'td',
-					{
-						key: 'root',
-						focus: undefined,
-						role: 'gridcell',
-						'aria-selected': 'false',
-						tabIndex: -1,
-						classes: [css.date, css.inactiveDate, css.outOfRange, null, null],
-						onclick: noop,
-						onkeydown: noop
-					},
-					[v('span', {}, ['30'])]
-				)
-			);
+			h.expect(() => (
+				<td
+					key="root"
+					focus={undefined}
+					role="gridcell"
+					aria-selected="false"
+					tabIndex={-1}
+					classes={[css.date, css.inactiveDate, css.outOfRange, null, null]}
+					onclick={noop}
+					onkeydown={noop}
+				>
+					<span>30</span>
+				</td>
+			));
 		},
 
 		'Click handler called with correct arguments'() {
@@ -127,16 +105,16 @@ registerSuite('CalendarCell', {
 			let clickedCurrentMonth = false;
 			let date = 1;
 			let disabled = true;
-			const h = harness(() =>
-				w(CalendarCell, {
-					date,
-					disabled,
-					onClick: (callbackDate: number, callbackCurrentMonth: boolean) => {
+			const h = harness(() => (
+				<CalendarCell
+					date={date}
+					disabled={disabled}
+					onClick={(callbackDate: number, callbackCurrentMonth: boolean) => {
 						clickedDate = callbackDate;
 						clickedCurrentMonth = callbackCurrentMonth;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger('td', 'onclick', stubEvent);
 			assert.strictEqual(clickedDate, 1);
@@ -151,68 +129,64 @@ registerSuite('CalendarCell', {
 
 		'Keydown handler called'() {
 			let called = false;
-			const h = harness(() =>
-				w(CalendarCell, {
-					date: 1,
-					onKeyDown: () => {
+			const h = harness(() => (
+				<CalendarCell
+					date={1}
+					onKeyDown={() => {
 						called = true;
-					}
-				})
-			);
+					}}
+				/>
+			));
 			h.trigger('td', 'onkeydown', stubEvent);
 			assert.isTrue(called);
 		},
 
 		'Focus is set with callback'() {
-			let callFocus = true;
+			let callFocus = false;
 			let date = 1;
-			const h = harness(() =>
-				w(CalendarCell, {
-					callFocus,
-					date,
-					onFocusCalled: () => {
+			const h = harness(() => (
+				<CalendarCell
+					callFocus={callFocus}
+					date={date}
+					onFocusCalled={() => {
 						callFocus = false;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
-			h.expect(() =>
-				v(
-					'td',
-					{
-						key: 'root',
-						focus: false,
-						role: 'gridcell',
-						'aria-selected': 'false',
-						tabIndex: -1,
-						classes: [css.date, null, null, null, null],
-						onclick: noop,
-						onkeydown: noop
-					},
-					[v('span', {}, ['1'])]
-				)
-			);
+			h.expect(() => (
+				<td
+					key="root"
+					focus={false}
+					role="gridcell"
+					aria-selected="false"
+					tabIndex={-1}
+					classes={[css.date, null, null, null, null]}
+					onclick={noop}
+					onkeydown={noop}
+				>
+					<span>1</span>
+				</td>
+			));
 
 			assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 
 			callFocus = true;
 			date = 2;
-			h.expect(() =>
-				v(
-					'td',
-					{
-						key: 'root',
-						focus: true,
-						role: 'gridcell',
-						'aria-selected': 'false',
-						tabIndex: -1,
-						classes: [css.date, null, null, null, null],
-						onclick: noop,
-						onkeydown: noop
-					},
-					[v('span', {}, ['2'])]
-				)
-			);
+			h.expect(() => (
+				<td
+					key="root"
+					focus={true}
+					role="gridcell"
+					aria-selected="false"
+					tabIndex={-1}
+					classes={[css.date, null, null, null, null]}
+					onclick={noop}
+					onkeydown={noop}
+				>
+					<span>2</span>
+				</td>
+			));
 
 			assert.isFalse(callFocus, 'Focus callback should set callFocus to false');
 		}
