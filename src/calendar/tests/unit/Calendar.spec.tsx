@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { v, w } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/defaults';
@@ -32,21 +32,23 @@ const expectedDateCell = function(
 	outOfRange = false,
 	selectedIndex = -1
 ) {
-	return w(CalendarCell, {
-		key: `date-${dateIndex}`,
-		callFocus: false,
-		date,
-		outOfRange,
-		disabled: !currentMonth,
-		focusable: date === 1 && currentMonth,
-		selected: dateIndex === selectedIndex,
-		theme: undefined,
-		classes: undefined,
-		today: false,
-		onClick: outOfRange ? undefined : noop,
-		onFocusCalled: noop,
-		onKeyDown: noop
-	});
+	return (
+		<CalendarCell
+			key={`date-${dateIndex}`}
+			callFocus={false}
+			date={date}
+			outOfRange={outOfRange}
+			disabled={!currentMonth}
+			focusable={date === 1 && currentMonth}
+			selected={dateIndex === selectedIndex}
+			theme={undefined}
+			classes={undefined}
+			today={false}
+			onClick={outOfRange ? undefined : noop}
+			onFocusCalled={noop}
+			onKeyDown={noop}
+		/>
+	);
 };
 
 const expected = function(
@@ -58,346 +60,279 @@ const expected = function(
 ) {
 	const overrides = describedby ? { 'aria-describedby': describedby } : {};
 	let dateIndex = 0;
-	return v(
-		'div',
-		{
-			classes: css.root,
-			...overrides
-		},
-		[
-			w(DatePicker, {
-				key: 'date-picker',
-				labelId: '',
-				labels: DEFAULT_LABELS,
-				month: 5,
-				monthNames: DEFAULT_MONTHS,
-				renderMonthLabel: customMonthLabel ? noop : undefined,
-				theme: undefined,
-				classes: undefined,
-				year: 2017,
-				minDate: undefined,
-				maxDate: undefined,
-				onPopupChange: noop,
-				onRequestMonthChange: noop,
-				onRequestYearChange: noop
-			}),
-			v(
-				'table',
-				{
-					cellspacing: '0',
-					cellpadding: '0',
-					role: 'grid',
-					'aria-labelledby': '', // this._monthLabelId,
-					classes: [css.dateGrid, popupOpen ? baseCss.visuallyHidden : null]
-				},
-				[
-					v('thead', [
-						v(
-							'tr',
-							DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string }) =>
-								v(
-									'th',
-									{
-										role: 'columnheader',
-										classes: css.weekday
-									},
-									[
-										weekdayLabel
-											? weekdayLabel
-											: v(
-													'abbr',
-													{ title: weekday.long, classes: css.abbr },
-													[weekday.short]
-											  )
-									]
-								)
-							)
-						)
-					]),
-					v('tbody', [
-						v('tr', [
-							expectedDateCell(dateIndex++, 28, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 29, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 30, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 31, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 1, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 2, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 3, true, false, selectedIndex)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 4, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 5, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 6, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 7, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 8, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 9, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 10, true, false, selectedIndex)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 11, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 12, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 13, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 14, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 15, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 16, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 17, true, false, selectedIndex)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 18, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 19, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 20, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 21, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 22, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 23, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 24, true, false, selectedIndex)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 25, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 26, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 27, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 28, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 29, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 30, true, false, selectedIndex),
-							expectedDateCell(dateIndex++, 1, false, false, selectedIndex)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 2, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 3, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 4, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 5, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 6, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 7, false, false, selectedIndex),
-							expectedDateCell(dateIndex++, 8, false, false, selectedIndex)
-						])
-					])
-				]
-			),
-			v(
-				'div',
-				{
-					classes: [css.controls, popupOpen ? baseCss.visuallyHidden : null]
-				},
-				[
-					v(
-						'button',
-						{
-							classes: css.previous,
-							disabled: false,
-							tabIndex: popupOpen ? -1 : 0,
-							type: 'button',
-							onclick: noop
-						},
-						[
-							w(Icon, {
-								type: 'leftIcon',
-								theme: undefined,
-								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
-							}),
-							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
-						]
-					),
-					v(
-						'button',
-						{
-							classes: css.next,
-							disabled: false,
-							tabIndex: popupOpen ? -1 : 0,
-							type: 'button',
-							onclick: noop
-						},
-						[
-							w(Icon, {
-								type: 'rightIcon',
-								theme: undefined,
-								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
-							}),
-							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
-						]
-					)
-				]
-			)
-		]
+	return (
+		<div classes={css.root} {...overrides}>
+			<DatePicker
+				key="date-picker"
+				labelId=""
+				labels={DEFAULT_LABELS}
+				month={5}
+				monthNames={DEFAULT_MONTHS}
+				renderMonthLabel={customMonthLabel ? noop : undefined}
+				theme={undefined}
+				classes={undefined}
+				year={2017}
+				minDate={undefined}
+				maxDate={undefined}
+				onPopupChange={noop}
+				onRequestMonthChange={noop}
+				onRequestYearChange={noop}
+			/>
+			<table
+				cellspacing="0"
+				cellpadding="0"
+				role="grid"
+				aria-labelledby=""
+				classes={[css.dateGrid, popupOpen ? baseCss.visuallyHidden : null]}
+			>
+				<thead>
+					<tr>
+						{DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string }) => (
+							<th role="columnheader" classes={css.weekday}>
+								{weekdayLabel ? (
+									weekdayLabel
+								) : (
+									<abbr title={weekday.long} classes={css.abbr}>
+										{weekday.short}
+									</abbr>
+								)}
+							</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						{expectedDateCell(dateIndex++, 28, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 29, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 30, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 31, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 1, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 2, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 3, true, false, selectedIndex)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 4, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 5, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 6, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 7, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 8, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 9, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 10, true, false, selectedIndex)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 11, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 12, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 13, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 14, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 15, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 16, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 17, true, false, selectedIndex)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 18, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 19, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 20, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 21, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 22, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 23, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 24, true, false, selectedIndex)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 25, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 26, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 27, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 28, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 29, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 30, true, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 1, false, false, selectedIndex)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 2, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 3, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 4, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 5, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 6, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 7, false, false, selectedIndex)}
+						{expectedDateCell(dateIndex++, 8, false, false, selectedIndex)}
+					</tr>
+				</tbody>
+			</table>
+			<div classes={[css.controls, popupOpen ? baseCss.visuallyHidden : null]}>
+				<button
+					classes={css.previous}
+					disabled={false}
+					tabIndex={popupOpen ? -1 : 0}
+					type="button"
+					onclick={noop}
+				>
+					<Icon
+						type="leftIcon"
+						theme={undefined}
+						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
+					/>
+					<span classes={[baseCss.visuallyHidden]}>Previous Month</span>
+				</button>
+				<button
+					classes={css.next}
+					disabled={false}
+					tabIndex={popupOpen ? -1 : 0}
+					type="button"
+					onclick={noop}
+				>
+					<Icon
+						type="rightIcon"
+						theme={undefined}
+						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
+					/>
+					<span classes={[baseCss.visuallyHidden]}>Next Month</span>
+				</button>
+			</div>
+		</div>
 	);
 };
 const baseTemplate = assertionTemplate(() => {
 	let dateIndex = 0;
-	return v(
-		'div',
-		{
-			classes: css.root
-		},
-		[
-			w(DatePicker, {
-				key: 'date-picker',
-				labelId: '',
-				labels: DEFAULT_LABELS,
-				month: 5,
-				monthNames: DEFAULT_MONTHS,
-				renderMonthLabel: undefined,
-				theme: undefined,
-				classes: undefined,
-				year: 2017,
-				minDate: undefined,
-				maxDate: undefined,
-				onPopupChange: noop,
-				onRequestMonthChange: noop,
-				onRequestYearChange: noop
-			}),
-			v(
-				'table',
-				{
-					cellspacing: '0',
-					cellpadding: '0',
-					role: 'grid',
-					'aria-labelledby': '', // this._monthLabelId,
-					classes: [css.dateGrid, null]
-				},
-				[
-					v('thead', [
-						v(
-							'tr',
-							DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string }) =>
-								v(
-									'th',
-									{
-										role: 'columnheader',
-										classes: css.weekday
-									},
-									[
-										v('abbr', { title: weekday.long, classes: css.abbr }, [
-											weekday.short
-										])
-									]
-								)
-							)
-						)
-					]),
-					v('tbody', [
-						v('tr', [
-							expectedDateCell(dateIndex++, 28, false),
-							expectedDateCell(dateIndex++, 29, false),
-							expectedDateCell(dateIndex++, 30, false),
-							expectedDateCell(dateIndex++, 31, false),
-							expectedDateCell(dateIndex++, 1, true),
-							expectedDateCell(dateIndex++, 2, true),
-							expectedDateCell(dateIndex++, 3, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 4, true),
-							expectedDateCell(dateIndex++, 5, true),
-							expectedDateCell(dateIndex++, 6, true),
-							expectedDateCell(dateIndex++, 7, true),
-							expectedDateCell(dateIndex++, 8, true),
-							expectedDateCell(dateIndex++, 9, true),
-							expectedDateCell(dateIndex++, 10, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 11, true),
-							expectedDateCell(dateIndex++, 12, true),
-							expectedDateCell(dateIndex++, 13, true),
-							expectedDateCell(dateIndex++, 14, true),
-							expectedDateCell(dateIndex++, 15, true),
-							expectedDateCell(dateIndex++, 16, true),
-							expectedDateCell(dateIndex++, 17, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 18, true),
-							expectedDateCell(dateIndex++, 19, true),
-							expectedDateCell(dateIndex++, 20, true),
-							expectedDateCell(dateIndex++, 21, true),
-							expectedDateCell(dateIndex++, 22, true),
-							expectedDateCell(dateIndex++, 23, true),
-							expectedDateCell(dateIndex++, 24, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 25, true),
-							expectedDateCell(dateIndex++, 26, true),
-							expectedDateCell(dateIndex++, 27, true),
-							expectedDateCell(dateIndex++, 28, true),
-							expectedDateCell(dateIndex++, 29, true),
-							expectedDateCell(dateIndex++, 30, true),
-							expectedDateCell(dateIndex++, 1, false)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 2, false),
-							expectedDateCell(dateIndex++, 3, false),
-							expectedDateCell(dateIndex++, 4, false),
-							expectedDateCell(dateIndex++, 5, false),
-							expectedDateCell(dateIndex++, 6, false),
-							expectedDateCell(dateIndex++, 7, false),
-							expectedDateCell(dateIndex++, 8, false)
-						])
-					])
-				]
-			),
-			v(
-				'div',
-				{
-					classes: [css.controls, null]
-				},
-				[
-					v(
-						'button',
-						{
-							'assertion-key': 'previousMonth',
-							classes: css.previous,
-							disabled: false,
-							tabIndex: 0,
-							type: 'button',
-							onclick: noop
-						},
-						[
-							w(Icon, {
-								type: 'leftIcon',
-								theme: undefined,
-								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
-							}),
-							v('span', { classes: [baseCss.visuallyHidden] }, ['Previous Month'])
-						]
-					),
-					v(
-						'button',
-						{
-							'assertion-key': 'nextMonth',
-							classes: css.next,
-							disabled: false,
-							tabIndex: 0,
-							type: 'button',
-							onclick: noop
-						},
-						[
-							w(Icon, {
-								type: 'rightIcon',
-								theme: undefined,
-								classes: { '@dojo/widgets/icon': { icon: [css.icon] } }
-							}),
-							v('span', { classes: [baseCss.visuallyHidden] }, ['Next Month'])
-						]
-					)
-				]
-			)
-		]
+	return (
+		<div classes={css.root}>
+			<DatePicker
+				key="date-picker"
+				labelId=""
+				labels={DEFAULT_LABELS}
+				month={5}
+				monthNames={DEFAULT_MONTHS}
+				renderMonthLabel={undefined}
+				theme={undefined}
+				classes={undefined}
+				year={2017}
+				minDate={undefined}
+				maxDate={undefined}
+				onPopupChange={noop}
+				onRequestMonthChange={noop}
+				onRequestYearChange={noop}
+			/>
+			<table
+				cellspacing="0"
+				cellpadding="0"
+				role="grid"
+				aria-labelledby=""
+				classes={[css.dateGrid, null]}
+			>
+				<thead>
+					<tr>
+						{DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string }) => (
+							<th role="columnheader" classes={css.weekday}>
+								<abbr title={weekday.long} classes={css.abbr}>
+									weekday.short
+								</abbr>
+							</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						{expectedDateCell(dateIndex++, 28, false)}
+						{expectedDateCell(dateIndex++, 29, false)}
+						{expectedDateCell(dateIndex++, 30, false)}
+						{expectedDateCell(dateIndex++, 31, false)}
+						{expectedDateCell(dateIndex++, 1, true)}
+						{expectedDateCell(dateIndex++, 2, true)}
+						{expectedDateCell(dateIndex++, 3, true)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 4, true)}
+						{expectedDateCell(dateIndex++, 5, true)}
+						{expectedDateCell(dateIndex++, 6, true)}
+						{expectedDateCell(dateIndex++, 7, true)}
+						{expectedDateCell(dateIndex++, 8, true)}
+						{expectedDateCell(dateIndex++, 9, true)}
+						{expectedDateCell(dateIndex++, 10, true)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 11, true)}
+						{expectedDateCell(dateIndex++, 12, true)}
+						{expectedDateCell(dateIndex++, 13, true)}
+						{expectedDateCell(dateIndex++, 14, true)}
+						{expectedDateCell(dateIndex++, 15, true)}
+						{expectedDateCell(dateIndex++, 16, true)}
+						{expectedDateCell(dateIndex++, 17, true)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 18, true)}
+						{expectedDateCell(dateIndex++, 19, true)}
+						{expectedDateCell(dateIndex++, 20, true)}
+						{expectedDateCell(dateIndex++, 21, true)}
+						{expectedDateCell(dateIndex++, 22, true)}
+						{expectedDateCell(dateIndex++, 23, true)}
+						{expectedDateCell(dateIndex++, 24, true)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 25, true)}
+						{expectedDateCell(dateIndex++, 26, true)}
+						{expectedDateCell(dateIndex++, 27, true)}
+						{expectedDateCell(dateIndex++, 28, true)}
+						{expectedDateCell(dateIndex++, 29, true)}
+						{expectedDateCell(dateIndex++, 30, true)}
+						{expectedDateCell(dateIndex++, 1, false)}
+					</tr>
+					<tr>
+						{expectedDateCell(dateIndex++, 2, false)}
+						{expectedDateCell(dateIndex++, 3, false)}
+						{expectedDateCell(dateIndex++, 4, false)}
+						{expectedDateCell(dateIndex++, 5, false)}
+						{expectedDateCell(dateIndex++, 6, false)}
+						{expectedDateCell(dateIndex++, 7, false)}
+						{expectedDateCell(dateIndex++, 8, false)}
+					</tr>
+				</tbody>
+			</table>
+			<div classes={[css.controls, null]}>
+				<button
+					assertion-key="previousMonth"
+					classes={css.previous}
+					disabled={false}
+					tabIndex={0}
+					type="button"
+					onclick={noop}
+				>
+					<Icon
+						type="leftIcon"
+						theme={undefined}
+						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
+					/>
+					<span classes={[baseCss.visuallyHidden]}>Previous Month</span>
+				</button>
+				<button
+					assertion-key="nextMonth"
+					classes={css.next}
+					disabled={false}
+					tabIndex={0}
+					type="button"
+					onclick={noop}
+				>
+					<Icon
+						type="rightIcon"
+						theme={undefined}
+						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
+					/>
+					<span classes={[baseCss.visuallyHidden]}>Next Month</span>
+				</button>
+				)
+			</div>
+		</div>
 	);
 });
 
 registerSuite('Calendar', {
 	tests: {
 		'Render specific month with default props'() {
-			const h = harness(() =>
-				w(Calendar, {
-					month: testDate.getMonth(),
-					year: testDate.getFullYear()
-				})
-			);
+			const h = harness(() => (
+				<Calendar month={testDate.getMonth()} year={testDate.getFullYear()} />
+			));
 			h.expect(expected);
 		},
 
 		'Render specific month and year with selectedDate'() {
-			const h = harness(() =>
-				w(Calendar, {
-					selectedDate: testDate
-				})
-			);
+			const h = harness(() => <Calendar selectedDate={testDate} />);
 
 			h.expect(() => expected(false, 8));
 		},
@@ -414,7 +349,7 @@ registerSuite('Calendar', {
 				renderMonthLabel: (month: number, year: number) => 'Foo',
 				renderWeekdayCell: (day: { short: string; long: string }) => 'Bar'
 			};
-			const h = harness(() => w(Calendar, properties));
+			const h = harness(() => <Calendar {...properties} />);
 
 			h.expect(() => expected(false, 4, 'Bar', true, 'foo'));
 			properties = {
@@ -426,15 +361,15 @@ registerSuite('Calendar', {
 
 		'Click to select date'() {
 			let selectedDate = testDate;
-			const h = harness(() =>
-				w(Calendar, {
-					month: testDate.getMonth(),
-					year: testDate.getFullYear(),
-					onDateSelect: (date: Date) => {
+			const h = harness(() => (
+				<Calendar
+					month={testDate.getMonth()}
+					year={testDate.getFullYear()}
+					onDateSelect={(date: Date) => {
 						selectedDate = date;
-					}
-				})
-			);
+					}}
+				/>
+			));
 			h.trigger('@date-4', 'onClick', 1, false);
 
 			assert.strictEqual(selectedDate.getDate(), 1, 'Clicking cell selects correct date');
@@ -463,7 +398,7 @@ registerSuite('Calendar', {
 					selectedDate = date;
 				}
 			};
-			const h = harness(() => w(Calendar, properties));
+			const h = harness(() => <Calendar {...properties} />);
 
 			h.trigger('@date-34', 'onClick', 1, true);
 			assert.strictEqual(currentMonth, 6, 'Month changes to July');
@@ -478,15 +413,15 @@ registerSuite('Calendar', {
 
 		'Keyboard date select'() {
 			let selectedDate = testDate;
-			const h = harness(() =>
-				w(Calendar, {
-					month: testDate.getMonth(),
-					year: testDate.getFullYear(),
-					onDateSelect: (date: Date) => {
+			const h = harness(() => (
+				<Calendar
+					month={testDate.getMonth()}
+					year={testDate.getFullYear()}
+					onDateSelect={(date: Date) => {
 						selectedDate = date;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			// right arrow, then select
 			h.trigger('@date-4', 'onKeyDown', Keys.Right, () => {});
@@ -539,15 +474,15 @@ registerSuite('Calendar', {
 
 		'Arrow keys can change month'() {
 			let currentMonth = testDate.getMonth();
-			const h = harness(() =>
-				w(Calendar, {
-					month: currentMonth,
-					year: testDate.getFullYear(),
-					onMonthChange: (month: number) => {
+			const h = harness(() => (
+				<Calendar
+					month={currentMonth}
+					year={testDate.getFullYear()}
+					onMonthChange={(month: number) => {
 						currentMonth = month;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger('@date-4', 'onKeyDown', Keys.Left, () => {});
 			assert.strictEqual(
@@ -578,7 +513,7 @@ registerSuite('Calendar', {
 					currentYear = year;
 				}
 			};
-			const h = harness(() => w(Calendar, properties));
+			const h = harness(() => <Calendar {...properties} />);
 
 			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
 
@@ -605,18 +540,18 @@ registerSuite('Calendar', {
 		'Month popup events change month and year'() {
 			let currentMonth = testDate.getMonth();
 			let currentYear = testDate.getFullYear();
-			const h = harness(() =>
-				w(Calendar, {
-					month: currentMonth,
-					year: currentYear,
-					onMonthChange: (month: number) => {
+			const h = harness(() => (
+				<Calendar
+					month={currentMonth}
+					year={currentYear}
+					onMonthChange={(month: number) => {
 						currentMonth = month;
-					},
-					onYearChange: (year: number) => {
+					}}
+					onYearChange={(year: number) => {
 						currentYear = year;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger('@date-picker', 'onRequestMonthChange', 2);
 			assert.strictEqual(
@@ -635,14 +570,14 @@ registerSuite('Calendar', {
 
 		'Previous button should decrement month'() {
 			let currentMonth = testDate.getMonth();
-			const h = harness(() =>
-				w(Calendar, {
-					month: currentMonth,
-					onMonthChange: (month: number) => {
+			const h = harness(() => (
+				<Calendar
+					month={currentMonth}
+					onMonthChange={(month: number) => {
 						currentMonth = month;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger(`.${css.previous}`, 'onclick', stubEvent);
 			assert.strictEqual(
@@ -654,14 +589,14 @@ registerSuite('Calendar', {
 
 		'Next button should increment month'() {
 			let currentMonth = testDate.getMonth();
-			const h = harness(() =>
-				w(Calendar, {
-					month: currentMonth,
-					onMonthChange: (month: number) => {
+			const h = harness(() => (
+				<Calendar
+					month={currentMonth}
+					onMonthChange={(month: number) => {
 						currentMonth = month;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger(`.${css.next}`, 'onclick', stubEvent);
 			assert.strictEqual(
@@ -673,7 +608,7 @@ registerSuite('Calendar', {
 
 		'onPopupChange should control visibility'() {
 			let properties: any = {};
-			const h = harness(() => w(Calendar, properties));
+			const h = harness(() => <Calendar {...properties} />);
 			h.trigger('@date-picker', 'onPopupChange', true);
 			properties = {
 				month: testDate.getMonth(),
@@ -731,98 +666,85 @@ const baseMinMaxTemplate = baseTemplate
 registerSuite('Custom first day of week', {
 	tests: {
 		'render the correct first day of week'() {
-			const h = harness(() =>
-				w(Calendar, {
-					month: testDate.getMonth(),
-					year: testDate.getFullYear(),
-					firstDayOfWeek: 2
-				})
-			);
+			const h = harness(() => (
+				<Calendar
+					month={testDate.getMonth()}
+					year={testDate.getFullYear()}
+					firstDayOfWeek={2}
+				/>
+			));
 			const firstDayOfWeekTemplate = baseTemplate
 				.replaceChildren('thead', () => {
 					let dayOrder = [2, 3, 4, 5, 6, 0, 1];
 					return [
-						v(
-							'tr',
-							dayOrder.map((order) =>
-								v(
-									'th',
-									{
-										role: 'columnheader',
-										classes: css.weekday
-									},
-									[
-										v(
-											'abbr',
-											{
-												title: DEFAULT_WEEKDAYS[order].long,
-												classes: css.abbr
-											},
-											[DEFAULT_WEEKDAYS[order].short]
-										)
-									]
-								)
-							)
-						)
+						<tr>
+							{dayOrder.map((order) => (
+								<th role="columnheader" classes={css.weekday}>
+									<abbr title={DEFAULT_WEEKDAYS[order].long} classes={css.abbr}>
+										{DEFAULT_WEEKDAYS[order].short}
+									</abbr>
+								</th>
+							))}
+						</tr>
 					];
 				})
 				.replaceChildren('tbody', () => {
 					let dateIndex = 0;
 					return [
-						v('tr', [
-							expectedDateCell(dateIndex++, 30, false),
-							expectedDateCell(dateIndex++, 31, false),
-							expectedDateCell(dateIndex++, 1, true),
-							expectedDateCell(dateIndex++, 2, true),
-							expectedDateCell(dateIndex++, 3, true),
-							expectedDateCell(dateIndex++, 4, true),
-							expectedDateCell(dateIndex++, 5, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 6, true),
-							expectedDateCell(dateIndex++, 7, true),
-							expectedDateCell(dateIndex++, 8, true),
-							expectedDateCell(dateIndex++, 9, true),
-							expectedDateCell(dateIndex++, 10, true),
-							expectedDateCell(dateIndex++, 11, true),
-							expectedDateCell(dateIndex++, 12, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 13, true),
-							expectedDateCell(dateIndex++, 14, true),
-							expectedDateCell(dateIndex++, 15, true),
-							expectedDateCell(dateIndex++, 16, true),
-							expectedDateCell(dateIndex++, 17, true),
-							expectedDateCell(dateIndex++, 18, true),
-							expectedDateCell(dateIndex++, 19, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 20, true),
-							expectedDateCell(dateIndex++, 21, true),
-							expectedDateCell(dateIndex++, 22, true),
-							expectedDateCell(dateIndex++, 23, true),
-							expectedDateCell(dateIndex++, 24, true),
-							expectedDateCell(dateIndex++, 25, true),
-							expectedDateCell(dateIndex++, 26, true)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 27, true),
-							expectedDateCell(dateIndex++, 28, true),
-							expectedDateCell(dateIndex++, 29, true),
-							expectedDateCell(dateIndex++, 30, true),
-							expectedDateCell(dateIndex++, 1, false),
-							expectedDateCell(dateIndex++, 2, false),
-							expectedDateCell(dateIndex++, 3, false)
-						]),
-						v('tr', [
-							expectedDateCell(dateIndex++, 4, false),
-							expectedDateCell(dateIndex++, 5, false),
-							expectedDateCell(dateIndex++, 6, false),
-							expectedDateCell(dateIndex++, 7, false),
-							expectedDateCell(dateIndex++, 8, false),
-							expectedDateCell(dateIndex++, 9, false),
-							expectedDateCell(dateIndex++, 10, false)
-						])
+						<tr>
+							{expectedDateCell(dateIndex++, 30, false)}
+							{expectedDateCell(dateIndex++, 31, false)}
+							{expectedDateCell(dateIndex++, 1, true)}
+							{expectedDateCell(dateIndex++, 2, true)}
+							{expectedDateCell(dateIndex++, 3, true)}
+							{expectedDateCell(dateIndex++, 4, true)}
+							{expectedDateCell(dateIndex++, 5, true)}
+						</tr>,
+						<tr>
+							{expectedDateCell(dateIndex++, 6, true)}
+							{expectedDateCell(dateIndex++, 7, true)}
+							{expectedDateCell(dateIndex++, 8, true)}
+							{expectedDateCell(dateIndex++, 9, true)}
+							{expectedDateCell(dateIndex++, 10, true)}
+							{expectedDateCell(dateIndex++, 11, true)}
+							{expectedDateCell(dateIndex++, 12, true)}
+						</tr>,
+						<tr>
+							{expectedDateCell(dateIndex++, 13, true)}
+							{expectedDateCell(dateIndex++, 14, true)}
+							{expectedDateCell(dateIndex++, 15, true)}
+							{expectedDateCell(dateIndex++, 16, true)}
+							{expectedDateCell(dateIndex++, 17, true)}
+							{expectedDateCell(dateIndex++, 18, true)}
+							{expectedDateCell(dateIndex++, 19, true)}
+						</tr>,
+						<tr>
+							{expectedDateCell(dateIndex++, 20, true)}
+							{expectedDateCell(dateIndex++, 21, true)}
+							{expectedDateCell(dateIndex++, 22, true)}
+							{expectedDateCell(dateIndex++, 23, true)}
+							{expectedDateCell(dateIndex++, 24, true)}
+							{expectedDateCell(dateIndex++, 25, true)}
+							{expectedDateCell(dateIndex++, 26, true)}
+						</tr>,
+						<tr>
+							{expectedDateCell(dateIndex++, 27, true)}
+							{expectedDateCell(dateIndex++, 28, true)}
+							{expectedDateCell(dateIndex++, 29, true)}
+							{expectedDateCell(dateIndex++, 30, true)}
+							{expectedDateCell(dateIndex++, 1, false)}
+							{expectedDateCell(dateIndex++, 2, false)}
+							{expectedDateCell(dateIndex++, 3, false)}
+						</tr>,
+						<tr>
+							{expectedDateCell(dateIndex++, 4, false)}
+							{expectedDateCell(dateIndex++, 5, false)}
+							{expectedDateCell(dateIndex++, 6, false)}
+							{expectedDateCell(dateIndex++, 7, false)}
+							{expectedDateCell(dateIndex++, 8, false)}
+							{expectedDateCell(dateIndex++, 9, false)}
+							{expectedDateCell(dateIndex++, 10, false)}
+						</tr>
 					];
 				});
 			h.expect(firstDayOfWeekTemplate);
@@ -844,14 +766,14 @@ registerSuite('Calendar with min-max', {
 			const minDate = new Date('May 15, 2017');
 			const maxDate = new Date('July 15, 2017');
 
-			const h = harness(() =>
-				w(Calendar, {
-					month: testDate.getMonth(),
-					year: testDate.getFullYear(),
-					minDate,
-					maxDate
-				})
-			);
+			const h = harness(() => (
+				<Calendar
+					month={testDate.getMonth()}
+					year={testDate.getFullYear()}
+					minDate={minDate}
+					maxDate={maxDate}
+				/>
+			));
 			h.expect(
 				baseTemplate
 					.setProperty('@date-picker', 'minDate', minDate)
@@ -860,13 +782,13 @@ registerSuite('Calendar with min-max', {
 		},
 
 		'Render the month and year with min and max date limitations'() {
-			const h = harness(() =>
-				w(Calendar, {
-					selectedDate: testDate,
-					minDate: minDateInMonth,
-					maxDate: maxDateInMonth
-				})
-			);
+			const h = harness(() => (
+				<Calendar
+					selectedDate={testDate}
+					minDate={minDateInMonth}
+					maxDate={maxDateInMonth}
+				/>
+			));
 
 			h.expect(baseMinMaxTemplate.setProperty('@date-8', 'selected', true));
 		},
@@ -877,13 +799,9 @@ registerSuite('Calendar with min-max', {
 			const minDate = new Date('June 3, 2017 23:59:59.999');
 			const maxDate = new Date('June 29, 2017 00:00:00.000');
 
-			const h = harness(() =>
-				w(Calendar, {
-					selectedDate: testDate,
-					minDate,
-					maxDate
-				})
-			);
+			const h = harness(() => (
+				<Calendar selectedDate={testDate} minDate={minDate} maxDate={maxDate} />
+			));
 			h.expect(
 				baseMinMaxTemplate
 					.setProperty('@date-8', 'selected', true)
@@ -900,30 +818,30 @@ registerSuite('Calendar with min-max', {
 				maxDate
 			};
 
-			const h = harness(() => w(Calendar, calendarProperties));
+			const h = harness(() => <Calendar {...calendarProperties} />);
 
 			h.trigger('@date-1', 'onKeyDown', Keys.Down, () => {});
 			h.trigger('@date-8', 'onKeyDown', Keys.Down, () => {});
 			h.trigger('@date-15', 'onKeyDown', Keys.Down, () => {});
 			h.trigger('@date-22', 'onKeyDown', Keys.Down, () => {});
 
-			h.expectPartial('@date-29', () =>
-				w(CalendarCell, {
-					key: `date-29`,
-					callFocus: true,
-					date: 29,
-					outOfRange: false,
-					disabled: false,
-					focusable: true, // 29nd is focused
-					selected: false,
-					theme: undefined,
-					classes: undefined,
-					today: false,
-					onClick: noop,
-					onFocusCalled: noop,
-					onKeyDown: noop
-				})
-			);
+			h.expectPartial('@date-29', () => (
+				<CalendarCell
+					key="date-29"
+					callFocus={true}
+					date={29}
+					outOfRange={false}
+					disabled={false}
+					focusable={true}
+					selected={false}
+					theme={undefined}
+					classes={undefined}
+					today={false}
+					onClick={noop}
+					onFocusCalled={noop}
+					onKeyDown={noop}
+				/>
+			));
 
 			// Change to next month so 29th cell is invalid
 			calendarProperties.month = testDate.getMonth();
@@ -963,13 +881,13 @@ registerSuite('Calendar with min-max', {
 		},
 
 		'Allows the selected date even if outside the min/max'() {
-			const h = harness(() =>
-				w(Calendar, {
-					selectedDate: new Date('June 1, 2017'),
-					minDate: minDateInMonth,
-					maxDate: maxDateInMonth
-				})
-			);
+			const h = harness(() => (
+				<Calendar
+					selectedDate={new Date('June 1, 2017')}
+					minDate={minDateInMonth}
+					maxDate={maxDateInMonth}
+				/>
+			));
 
 			h.expect(baseMinMaxTemplate.setProperty('@date-4', 'selected', true));
 		},
@@ -977,17 +895,17 @@ registerSuite('Calendar with min-max', {
 		'Click to select date does not click outOfRange dates'() {
 			const defaultDate = testDate.toDateString();
 			let selectedDate = testDate.toDateString();
-			const h = harness(() =>
-				w(Calendar, {
-					month: testDate.getMonth(),
-					year: testDate.getFullYear(),
-					minDate: minDateInMonth,
-					maxDate: maxDateInMonth,
-					onDateSelect: (date: Date) => {
+			const h = harness(() => (
+				<Calendar
+					month={testDate.getMonth()}
+					year={testDate.getFullYear()}
+					minDate={minDateInMonth}
+					maxDate={maxDateInMonth}
+					onDateSelect={(date: Date) => {
 						selectedDate = date.toDateString();
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger('@date-2', 'onClick', 30, true);
 			assert.strictEqual(
@@ -1028,17 +946,17 @@ registerSuite('Calendar with min-max', {
 		'Arrow keys keep month in min/max'() {
 			let originalMonth = testDate.getMonth();
 			let currentMonth = originalMonth;
-			const h = harness(() =>
-				w(Calendar, {
-					month: currentMonth,
-					year: testDate.getFullYear(),
-					minDate: minDateInMonth,
-					maxDate: maxDateInMonth,
-					onMonthChange: (month: number) => {
+			const h = harness(() => (
+				<Calendar
+					month={currentMonth}
+					year={testDate.getFullYear()}
+					minDate={minDateInMonth}
+					maxDate={maxDateInMonth}
+					onMonthChange={(month: number) => {
 						currentMonth = month;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger('@date-4', 'onKeyDown', Keys.Left, () => {});
 			assert.strictEqual(
