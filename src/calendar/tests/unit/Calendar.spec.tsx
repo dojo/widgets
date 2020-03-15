@@ -222,7 +222,7 @@ const baseTemplate = assertionTemplate(() => {
 						{DEFAULT_WEEKDAYS.map((weekday: { short: string; long: string }) => (
 							<th role="columnheader" classes={css.weekday}>
 								<abbr title={weekday.long} classes={css.abbr}>
-									weekday.short
+									{weekday.short}
 								</abbr>
 							</th>
 						))}
@@ -316,7 +316,6 @@ const baseTemplate = assertionTemplate(() => {
 					/>
 					<span classes={[baseCss.visuallyHidden]}>Next Month</span>
 				</button>
-				)
 			</div>
 		</div>
 	);
@@ -346,8 +345,8 @@ registerSuite('Calendar', {
 				selectedDate: new Date('June 1 2017'),
 				weekdayNames: DEFAULT_WEEKDAYS,
 				year: testDate.getFullYear(),
-				renderMonthLabel: (month: number, year: number) => 'Foo',
-				renderWeekdayCell: (day: { short: string; long: string }) => 'Bar'
+				renderMonthLabel: () => 'Foo',
+				renderWeekdayCell: () => 'Bar'
 			};
 			const h = harness(() => <Calendar {...properties} />);
 

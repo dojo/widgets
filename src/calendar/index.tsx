@@ -11,11 +11,10 @@ import calendarBundle from './nls/Calendar';
 import * as css from '../theme/default/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import icache from '@dojo/framework/core/middleware/icache';
 import focus from '@dojo/framework/core/middleware/focus';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import i18n, { I18nProperties } from '@dojo/framework/core/middleware/i18n';
+import i18n from '@dojo/framework/core/middleware/i18n';
 
 export type CalendarMessages = typeof calendarBundle.messages;
 
@@ -29,7 +28,7 @@ export enum FirstDayOfWeek {
 	saturday = 6
 }
 
-export interface CalendarProperties extends ThemeProperties, I18nProperties, FocusProperties {
+export interface CalendarProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Customize or internationalize accessible text for the Calendar widget */
@@ -105,7 +104,7 @@ export const Calendar = factory(function Calendar({
 	const focusedDay = icache.getOrSet('focusedDay', 1);
 	const monthLabelId = icache.getOrSet('monthLabelId', uuid());
 	const popupOpen = icache.getOrSet('popupOpen', false);
-	const shouldFocus = icache.getOrSet('shouldFocus', focus.shouldFocus);
+	const shouldFocus = focus.shouldFocus();
 
 	const {
 		labels = i18n.localize(calendarBundle).messages,
@@ -172,7 +171,7 @@ export const Calendar = factory(function Calendar({
 		}
 
 		icache.set('focusedDay', day);
-		icache.set('cellDateFocus', true);
+		icache.set('callDateFocus', true);
 	}
 
 	function onDateClick(date: number, disabled: boolean) {
@@ -181,7 +180,7 @@ export const Calendar = factory(function Calendar({
 
 		if (disabled) {
 			({ month, year } = date < 15 ? onMonthIncrement() : onMonthDecrement());
-			icache.set('cellDateFocus', true);
+			icache.set('callDateFocus', true);
 		}
 		icache.set('focusedDay', date);
 		onDateSelect && onDateSelect(new Date(year, month, date));
@@ -344,12 +343,12 @@ export const Calendar = factory(function Calendar({
 		selected: boolean,
 		currentMonth: boolean,
 		today: boolean
-	): DNode {
+	) {
 		const { minDate, maxDate, theme, classes } = properties();
 
 		const date = dateObj.getDate();
 		const outOfRange = isOutOfDateRange(dateObj, minDate, maxDate);
-		const focusable = currentMonth && date === focusedDay;
+		const focusable = currentMonth && date === icache.get('focusedDay');
 
 		return (
 			<CalendarCell
@@ -373,7 +372,7 @@ export const Calendar = factory(function Calendar({
 	function renderDatePicker(
 		commonMessages: typeof commonBundle.messages,
 		labels: CalendarMessages
-	): DNode {
+	) {
 		const {
 			monthNames = getMonths(commonMessages),
 			renderMonthLabel,
@@ -412,7 +411,7 @@ export const Calendar = factory(function Calendar({
 		);
 	}
 
-	function renderPagingButtonContent(type: Paging, labels: CalendarMessages): DNode[] {
+	function renderPagingButtonContent(type: Paging, labels: CalendarMessages) {
 		const { theme, classes } = properties();
 		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
@@ -427,7 +426,7 @@ export const Calendar = factory(function Calendar({
 		];
 	}
 
-	function renderWeekdayCell(day: { short: string; long: string }): DNode {
+	function renderWeekdayCell(day: { short: string; long: string }) {
 		const { renderWeekdayCell } = properties();
 		return renderWeekdayCell ? (
 			renderWeekdayCell(day)

@@ -841,7 +841,6 @@ registerSuite('Calendar DatePicker', {
 					w(DatePicker, {
 						...requiredProps,
 						onPopupChange: (open: boolean) => {
-							console.log('XXX onPopupChange', open);
 							isOpen = open;
 						},
 						onRequestMonthChange: (month: number) => {
