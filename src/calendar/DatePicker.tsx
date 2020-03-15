@@ -97,7 +97,9 @@ export const DatePicker = factory(function DatePicker({
 	}
 
 	function getPopupState() {
-		return monthPopupOpen || yearPopupOpen;
+		const monthPopupOpen = icache.get('monthPopupOpen');
+		const yearPopupOpen = icache.get('yearPopupOpen');
+		return !!monthPopupOpen || !!yearPopupOpen;
 	}
 
 	function getYearInputKey(year: number): string {

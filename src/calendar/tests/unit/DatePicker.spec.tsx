@@ -61,6 +61,7 @@ const monthRadios = function(open?: boolean) {
 					key: '',
 					name: '',
 					tabIndex: open ? 0 : -1,
+					focus: open && i === 5 ? noop : undefined,
 					type: 'radio',
 					disabled: false,
 					value: `${i}`,
@@ -104,6 +105,7 @@ const yearRadios = function(
 						classes: css.yearRadioInput,
 						id: '',
 						tabIndex: open ? 0 : -1,
+						focus: open && i === checkedYear ? noop : undefined,
 						type: 'radio',
 						key: '',
 						name: '',
@@ -236,10 +238,20 @@ interface ExpectedOptions {
 	monthLabel?: string;
 	minDate?: Date;
 	maxDate?: Date;
+	monthTriggerFocus?: () => any;
+	yearTriggerFocus?: () => any;
 }
 
 const expected = function(monthOpen = false, yearOpen = false, options: ExpectedOptions = {}) {
-	const { yearStart, yearEnd, monthLabel = 'June 2017', minDate, maxDate } = options;
+	const {
+		yearStart,
+		yearEnd,
+		monthLabel = 'June 2017',
+		minDate,
+		maxDate,
+		monthTriggerFocus,
+		yearTriggerFocus
+	} = options;
 	// new
 	return v(
 		'div',
@@ -274,6 +286,7 @@ const expected = function(monthOpen = false, yearOpen = false, options: Expected
 							'aria-controls': '',
 							'aria-expanded': `${monthOpen}`,
 							'aria-haspopup': 'true',
+							focus: monthTriggerFocus,
 							id: '',
 							classes: [css.monthTrigger, monthOpen ? css.monthTriggerActive : null],
 							role: 'menuitem',
@@ -291,6 +304,7 @@ const expected = function(monthOpen = false, yearOpen = false, options: Expected
 							'aria-controls': '',
 							'aria-expanded': `${yearOpen}`,
 							'aria-haspopup': 'true',
+							focus: yearTriggerFocus,
 							id: '',
 							classes: [css.yearTrigger, yearOpen ? css.yearTriggerActive : null],
 							role: 'menuitem',
@@ -429,6 +443,7 @@ registerSuite('Calendar DatePicker', {
 										'aria-controls': '',
 										'aria-expanded': 'false',
 										'aria-haspopup': 'true',
+										focus: undefined,
 										id: '',
 										classes: [css.monthTrigger, null],
 										role: 'menuitem',
@@ -446,6 +461,7 @@ registerSuite('Calendar DatePicker', {
 										'aria-controls': '',
 										'aria-expanded': 'false',
 										'aria-haspopup': 'true',
+										focus: undefined,
 										id: '',
 										classes: [css.yearTrigger, null],
 										role: 'menuitem',
@@ -498,6 +514,7 @@ registerSuite('Calendar DatePicker', {
 														checked: i === 5,
 														classes: css.monthRadioInput,
 														disabled: false,
+														focus: undefined,
 														id: '',
 														key: '',
 														name: '',
@@ -694,7 +711,7 @@ registerSuite('Calendar DatePicker', {
 				which: Keys.Escape,
 				...stubEvent
 			});
-			h.expect(() => expected(false, false));
+			h.expect(() => expected(false, false, { monthTriggerFocus: noop }));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
@@ -704,7 +721,7 @@ registerSuite('Calendar DatePicker', {
 				which: Keys.Enter,
 				...stubEvent
 			});
-			h.expect(() => expected(false, false));
+			h.expect(() => expected(false, false, { monthTriggerFocus: noop }));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
@@ -714,7 +731,7 @@ registerSuite('Calendar DatePicker', {
 				which: Keys.Space,
 				...stubEvent
 			});
-			h.expect(() => expected(false, false));
+			h.expect(() => expected(false, false, { monthTriggerFocus: noop }));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
@@ -757,7 +774,7 @@ registerSuite('Calendar DatePicker', {
 				which: Keys.Escape,
 				...stubEvent
 			});
-			h.expect(() => expected(false, false));
+			h.expect(() => expected(false, false, { yearTriggerFocus: noop }));
 			assert.isFalse(isOpen, 'Should close on escape key press');
 
 			// enter key
@@ -767,7 +784,7 @@ registerSuite('Calendar DatePicker', {
 				which: Keys.Enter,
 				...stubEvent
 			});
-			h.expect(() => expected(false, false));
+			h.expect(() => expected(false, false, { yearTriggerFocus: noop }));
 			assert.isFalse(isOpen, 'Should close on enter key press');
 
 			// space key
@@ -777,7 +794,7 @@ registerSuite('Calendar DatePicker', {
 				which: Keys.Space,
 				...stubEvent
 			});
-			h.expect(() => expected(false, false));
+			h.expect(() => expected(false, false, { yearTriggerFocus: noop }));
 			assert.isFalse(isOpen, 'Should close on space key press');
 
 			// random key
@@ -816,7 +833,7 @@ registerSuite('Calendar DatePicker', {
 			h.expect(() => expected(false, true, { yearStart: 2000, yearEnd: 2020 }));
 		},
 
-		'Change month radios'() {
+		'XXChange month radios'() {
 			let currentMonth = testDate.getMonth();
 			let isOpen = false;
 			const h = harness(
@@ -824,6 +841,7 @@ registerSuite('Calendar DatePicker', {
 					w(DatePicker, {
 						...requiredProps,
 						onPopupChange: (open: boolean) => {
+							console.log('XXX onPopupChange', open);
 							isOpen = open;
 						},
 						onRequestMonthChange: (month: number) => {
