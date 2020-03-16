@@ -7,7 +7,6 @@
 	display: block;
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
-	box-sizing: border-box;
 }
 
 .input {
@@ -21,7 +20,6 @@
 	); /* for IE 11 */
 	line-height: var(--line-height-base);
 	padding: var(--grid-base);
-	box-sizing: border-box;
 }
 
 .input:focus {
@@ -40,7 +38,6 @@
 	flex-direction: row;
 	align-items: center;
 	transition: box-shadow var(--transition-duration) var(--transition-easing);
-	box-sizing: border-box;
 }
 
 .focused .inputWrapper {
@@ -99,5 +96,4 @@
 	line-height: var(--line-height-base);
 	padding: var(--grid-base);
 	transition: border var(--transition-duration) var(--transition-easing);
-	box-sizing: border-box;
 }

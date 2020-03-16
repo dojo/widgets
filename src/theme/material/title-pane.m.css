@@ -2,7 +2,6 @@
 
 .root {
 	font-family: var(--mdc-theme-font-family);
-	box-sizing: border-box;
 	box-shadow: var(--mdc-theme-elevation-1);
 }
 

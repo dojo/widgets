@@ -6,10 +6,6 @@
 	line-height: var(--line-height-base);
 }
 
-.root {
-	box-sizing: border-box;
-}
-
 .main {
 	background: #fff;
 	border: var(--border-width) solid var(--color-border);
@@ -35,7 +31,6 @@
 
 .title {
 	border-bottom: var(--border-width) solid var(--color-border);
-	box-sizing: border-box;
 	flex: 0 0 auto;
 	font-size: var(--font-size-title);
 	height: calc(7 * var(--grid-base));

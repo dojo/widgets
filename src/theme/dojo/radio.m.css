@@ -1,10 +1,6 @@
 @import './variables.css';
 
 .root {
-	box-sizing: border-box;
-}
-
-.root {
 	display: block;
 	min-height: var(--line-height-base);
 	padding: 0 0 0 calc(var(--grid-base) * 3);
@@ -35,7 +31,6 @@
 .radioOuter,
 .radioInner {
 	border-radius: 50%;
-	box-sizing: border-box;
 	content: '';
 	display: block;
 	transition: transform var(--transition-duration) var(--transition-easing),

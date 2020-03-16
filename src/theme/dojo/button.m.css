@@ -1,11 +1,5 @@
 @import './variables.css';
 
-.root,
-.root:before,
-.root:after {
-	box-sizing: border-box;
-}
-
 .root {
 	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);

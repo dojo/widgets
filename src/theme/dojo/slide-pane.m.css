@@ -1,7 +1,6 @@
 @import './variables.css';
 
 .root {
-	box-sizing: border-box;
 	color: var(--color-text-primary);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
@@ -25,7 +24,6 @@
 
 .title {
 	border-bottom: var(--border-width) solid var(--color-border);
-	box-sizing: border-box;
 	flex: 0 0 auto;
 	font-size: var(--font-size-title);
 	height: calc(7 * var(--grid-base));

@@ -2,7 +2,6 @@
 
 /* The root class of the TimePicker */
 .root {
-	box-sizing: border-box;
 	display: inline-block;
 }
 

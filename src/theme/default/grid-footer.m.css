@@ -8,5 +8,4 @@
 	border-left: 1px solid var(--component-color);
 	border-right: 1px solid var(--component-color);
 	height: 20px;
-	box-sizing: border-box;
 }

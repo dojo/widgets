@@ -52,7 +52,6 @@
 .filter {
 	margin-top: 4px;
 	width: 100%;
-	box-sizing: border-box;
 	color: var(--component-color);
 	padding: 2px 4px;
 }

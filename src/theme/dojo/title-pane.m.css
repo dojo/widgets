@@ -1,7 +1,6 @@
 @import './variables.css';
 
 .root {
-	box-sizing: border-box;
 	color: var(--color-text-primary);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);

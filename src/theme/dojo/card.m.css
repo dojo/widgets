@@ -13,20 +13,17 @@
 	flex-direction: row;
 	padding: var(--grid-base);
 	align-items: center;
-	box-sizing: border-box;
 	min-height: 52px;
 }
 
 .actionButtons {
 	display: flex;
 	align-items: center;
-	box-sizing: border-box;
 }
 
 .actionIcons {
 	display: flex;
 	align-items: center;
-	box-sizing: border-box;
 	flex-grow: 1;
 	justify-content: flex-end;
 }
@@ -54,7 +51,6 @@
 	background-repeat: no-repeat;
 	background-position: 50%;
 	background-size: cover;
-	box-sizing: border-box;
 	margin-bottom: calc(2 * var(--grid-base));
 }
 

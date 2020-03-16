@@ -4,7 +4,6 @@
 .root {
 	position: relative;
 	display: inline-block;
-	box-sizing: border-box;
 	width: 200px;
 }
 

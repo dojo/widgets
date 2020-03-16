@@ -4,7 +4,6 @@
 	background: var(--color-background);
 	border-top: var(--border-width) solid var(--color-border);
 	border-bottom: var(--border-width) solid var(--color-border);
-	box-sizing: border-box;
 	height: calc(7 * var(--grid-base));
 	padding: calc(2 * var(--grid-base));
 	text-align: left;

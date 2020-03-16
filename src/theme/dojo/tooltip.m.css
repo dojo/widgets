@@ -6,10 +6,6 @@
 	line-height: var(--line-height-base);
 }
 
-.root {
-	box-sizing: border-box;
-}
-
 .content {
 	background-color: var(--color-background-inverted);
 	color: var(--color-text-inverted);

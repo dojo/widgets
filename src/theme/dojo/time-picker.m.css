@@ -7,7 +7,6 @@
 .input {
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
-	box-sizing: border-box;
 	font-size: inherit;
 	line-height: var(--line-height-base);
 	padding: var(--grid-base) calc(var(--grid-base) * 3) var(--grid-base) var(--grid-base);
