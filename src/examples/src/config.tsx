@@ -143,6 +143,8 @@ import DisabledRangeSlider from './widgets/range-slider/Disabled';
 import RequiredRangeSlider from './widgets/range-slider/Required';
 import LabelledRangeSlider from './widgets/range-slider/Labelled';
 import ControlledRangeSlider from './widgets/range-slider/Controlled';
+import BasicRate from './widgets/rate/Basic';
+import CustomCharacterRate from './widgets/rate/CustomCharacter';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
@@ -996,6 +998,21 @@ export const config = {
 					title: 'No Rules',
 					filename: 'NoRules',
 					module: NoRules
+				}
+			]
+		},
+		rate: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicRate
+				}
+			},
+			examples: [
+				{
+					title: 'Custom Character',
+					filename: 'CustomCharacter',
+					module: CustomCharacterRate
 				}
 			]
 		},

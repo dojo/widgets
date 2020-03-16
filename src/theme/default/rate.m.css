@@ -1,0 +1,35 @@
+.root {
+}
+
+.root .label {
+	color: #fadb14;
+}
+
+.root .input:checked ~ .label {
+	color: inherit;
+}
+
+.root .input:checked + .label {
+	color: #fadb14;
+}
+
+.root:hover .input + .label {
+	color: #fadb14;
+}
+
+.root .input:hover ~ .label,
+.root .input:focus ~ .label {
+	color: inherit;
+}
+
+.root .input:hover + .label,
+.root .input:focus + .label {
+	color: #fadb14;
+}
+
+.legend {
+}
+
+.characterFill {
+	/*color: #fadb14;*/
+}

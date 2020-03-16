@@ -1,0 +1,1 @@
+# @dojo/widgets/rate widget
