@@ -59,6 +59,7 @@ export const Rate = factory(function Rate({
 							id={id}
 							name={name}
 							type="radio"
+							checked={checked()}
 							classes={[input, baseCss.visuallyHidden]}
 							onclick={() => checked(true)}
 						/>

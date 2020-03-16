@@ -17,13 +17,11 @@
 	color: #fadb14;
 }
 
-.root .input:hover ~ .label,
-.root .input:focus ~ .label {
+.root .input:hover ~ .label {
 	color: inherit;
 }
 
-.root .input:hover + .label,
-.root .input:focus + .label {
+.root .input:hover + .label {
 	color: #fadb14;
 }
 
