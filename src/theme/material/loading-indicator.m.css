@@ -1,6 +1,5 @@
 .root {
-	composes: mdc-linear-progress from '@material/linear-progress/dist/mdc.linear-progress.css';
-	composes: mdc-linear-progress--indeterminate from '@material/linear-progress/dist/mdc.linear-progress.css';
+	composes: mdc-linear-progress mdc-linear-progress--indeterminate from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
 
 .buffer {
