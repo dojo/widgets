@@ -24,7 +24,8 @@ const App = factory(function({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Form
-				name="basicForm"
+				name="actionForm"
+				action="action-url"
 				onValue={(values) => icache.set('basic', { ...icache.get('basic'), ...values })}
 			>
 				{({ field }: FormMiddleware<Fields>) => {

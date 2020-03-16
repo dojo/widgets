@@ -59,6 +59,7 @@ import DisabledForm from './widgets/form/DisabledForm';
 import ResettingForm from './widgets/form/ResettingForm';
 import SubmitForm from './widgets/form/SubmitForm';
 import KitchenSinkForm from './widgets/form/KitchenSinkForm';
+import ActionForm from './widgets/form/ActionForm';
 import BasicGrid from './widgets/grid/Basic';
 import ColumnResize from './widgets/grid/ColumnResize';
 import CustomCellRenderer from './widgets/grid/CustomCellRenderer';
@@ -582,6 +583,11 @@ export const config = {
 					title: 'Form with all available options',
 					module: KitchenSinkForm,
 					filename: 'KitchenSinkForm'
+				},
+				{
+					title: 'Action form with a name',
+					module: ActionForm,
+					filename: 'ActionForm'
 				}
 			],
 			filename: 'index',
