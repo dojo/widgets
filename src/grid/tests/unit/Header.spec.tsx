@@ -8,6 +8,7 @@ import TextInput from '../../../text-input/index';
 import Icon from '../../../icon/index';
 
 import * as css from '../../../theme/default/grid-header.m.css';
+import defaultBundle from '../../nls/Grid';
 import * as fixedCss from '../../styles/header.m.css';
 import Header from '../../Header';
 import { ColumnConfig } from '../../interfaces';
@@ -821,6 +822,98 @@ describe('Header', () => {
 					)
 				]
 			)
+		);
+	});
+
+	it('should render with a custom message bundle', () => {
+		const bundle = {
+			messages: {
+				...defaultBundle.messages,
+				filterBy: 'Whittle by {name}',
+				sortBy: 'Organize by {name}'
+			}
+		};
+		const sorterStub = stub();
+		const filtererStub = stub();
+		const h = harness(() =>
+			w(Header, {
+				bundle,
+				columnConfig: advancedColumnConfig,
+				sorter: sorterStub,
+				filterer: filtererStub,
+				sort: {
+					columnId: 'firstName',
+					direction: 'asc'
+				},
+				columnWidths: undefined
+			})
+		);
+
+		h.expect(() =>
+			v('div', { classes: [css.root, fixedCss.rootFixed], role: 'row', styles: {} }, [
+				v(
+					'div',
+					{
+						classes: [css.cell, fixedCss.cellFixed],
+						styles: {},
+						role: 'columnheader',
+						'aria-sort': null
+					},
+					[v('div', {}, ['Title'])]
+				),
+				v(
+					'div',
+					{
+						classes: [css.cell, fixedCss.cellFixed],
+						styles: {},
+						role: 'columnheader',
+						'aria-sort': 'ascending'
+					},
+					[
+						v(
+							'div',
+							{
+								classes: [fixedCss.column, css.sortable, css.sorted, null, css.asc],
+								onclick: noop
+							},
+							[
+								'Custom Title',
+								v(
+									'button',
+									{
+										classes: css.sort,
+										onclick: noop
+									},
+									[
+										w(Icon, {
+											type: 'upIcon',
+											altText: 'Organize by Custom Title',
+											classes: undefined,
+											theme: undefined
+										})
+									]
+								)
+							]
+						),
+						w(TextInput, {
+							key: 'filter',
+							classes: {
+								'@dojo/widgets/text-input': {
+									root: [css.filter],
+									input: [css.filterInput],
+									noLabel: [css.filterNoLabel]
+								}
+							},
+							label: 'Whittle by Custom Title',
+							labelHidden: true,
+							type: 'search',
+							initialValue: '',
+							onValue: noop,
+							theme: undefined
+						})
+					]
+				)
+			])
 		);
 	});
 });

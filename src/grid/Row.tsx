@@ -3,12 +3,15 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 
+import defaultBundle from './nls/Grid';
 import { ColumnConfig } from './interfaces';
 import Cell from './Cell';
 import * as fixedCss from './styles/row.m.css';
 import * as css from '../theme/default/grid-row.m.css';
 
 export interface RowProperties {
+	/** optional message bundle to override the included bundle */
+	bundle?: typeof defaultBundle;
 	/** identifier for the row */
 	id: number;
 	/** A list of values indexed on the column id */
@@ -35,6 +38,7 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 
 	protected render(): DNode {
 		const {
+			bundle,
 			item,
 			columnConfig,
 			id,
@@ -51,6 +55,7 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 					value = config.renderer({ value });
 				}
 				return w(Cell, {
+					bundle,
 					theme,
 					key: config.id,
 					classes,

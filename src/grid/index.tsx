@@ -1,5 +1,6 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
+import I18nMixin, { I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 import { DNode } from '@dojo/framework/core/interfaces';
@@ -7,6 +8,7 @@ import { reference } from '@dojo/framework/core/diff';
 import { Store } from '@dojo/framework/stores/Store';
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import Resize from '@dojo/framework/core/meta/Resize';
+import defaultBundle from './nls/Grid';
 import './utils';
 
 import { Fetcher, ColumnConfig, GridState, Updater } from './interfaces';
@@ -42,7 +44,9 @@ export interface CustomRenderers {
 	filterRenderer?: FilterRenderer;
 }
 
-export interface GridProperties<S> extends ThemedProperties {
+export interface GridProperties<S> extends I18nProperties, ThemedProperties {
+	/** optional message bundle to override the included bundle */
+	bundle?: typeof defaultBundle;
 	/** The full configuration for the grid columns */
 	columnConfig: ColumnConfig[];
 	/** function that returns results for the page reflected */
@@ -66,7 +70,7 @@ export interface GridProperties<S> extends ThemedProperties {
 const MIN_COLUMN_WIDTH = 100;
 
 @theme(css)
-export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> {
+export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProperties<S>> {
 	private _store = new Store<GridState<S>>();
 	private _handle: any;
 	private _scrollLeft = 0;
@@ -187,6 +191,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 
 	protected render(): DNode {
 		const {
+			bundle,
 			columnConfig,
 			storeId,
 			theme,
@@ -251,6 +256,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 						v('div', { key: 'header-wrapper' }, [
 							w(Header, {
 								key: 'header-row',
+								bundle,
 								theme,
 								columnWidths: this._columnWidths,
 								classes,
@@ -269,6 +275,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				pagination
 					? w(PaginatedBody, {
 							key: 'paginated-body',
+							bundle,
 							theme,
 							classes,
 							pages,
@@ -286,6 +293,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 					  })
 					: w(Body, {
 							key: 'body',
+							bundle,
 							theme,
 							classes,
 							pages,
@@ -305,6 +313,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				v('div', { key: 'footer' }, [
 					pagination
 						? w(PaginatedFooter, {
+								bundle,
 								theme,
 								classes,
 								total: meta.total,
@@ -316,6 +325,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 						  })
 						: w(Footer, {
 								key: 'footer-row',
+								bundle,
 								theme,
 								classes,
 								total: meta.total,

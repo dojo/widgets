@@ -15,6 +15,7 @@ import {
 	isFocusedComparator,
 	noop
 } from '../../../common/tests/support/test-helpers';
+import defaultBundle from '../../nls/Grid';
 import * as fixedCss from '../../styles/cell.m.css';
 import * as css from '../../../theme/default/grid-cell.m.css';
 import Cell from '../../Cell';
@@ -58,7 +59,7 @@ const expectedEditing = function() {
 	);
 };
 
-const expectedEditable = function(focusButton = false) {
+const expectedEditable = function(messages = defaultBundle.messages) {
 	return v(
 		'div',
 		{
@@ -91,7 +92,7 @@ const expectedEditable = function(focusButton = false) {
 				[
 					w(Icon, {
 						type: 'editIcon',
-						altText: 'Edit',
+						altText: messages.edit,
 						theme: undefined,
 						classes: undefined
 					})
@@ -261,7 +262,7 @@ describe('Cell', () => {
 		h.trigger('@input', 'onBlur');
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
-		h.expect(() => expectedEditable(true));
+		h.expect(expectedEditable);
 	});
 
 	it('should save edit on enter', () => {
@@ -284,7 +285,7 @@ describe('Cell', () => {
 		h.trigger('@input', 'onKeyDown', Keys.Enter);
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
-		h.expect(() => expectedEditable(true));
+		h.expect(expectedEditable);
 	});
 
 	it('should exit editing without saving on escape', () => {
@@ -307,7 +308,7 @@ describe('Cell', () => {
 		h.trigger('@input', 'onKeyDown', Keys.Escape);
 
 		assert.isFalse(updaterStub.called);
-		h.expect(() => expectedEditable(true));
+		h.expect(expectedEditable);
 	});
 
 	it('should focus input on edit', () => {
@@ -342,7 +343,7 @@ describe('Cell', () => {
 		h.trigger('@input', 'onKeyDown', Keys.Enter);
 
 		assert.isTrue(updaterStub.calledWith('typed value'));
-		h.expect(() => expectedEditable(true));
+		h.expect(expectedEditable);
 	});
 
 	it('should focus button on escape', () => {
@@ -360,6 +361,27 @@ describe('Cell', () => {
 		h.trigger('@button', 'onClick');
 		h.trigger('@input', 'onKeyDown', Keys.Escape);
 
-		h.expect(() => expectedEditable(true));
+		h.expect(expectedEditable);
+	});
+
+	it('should render with a custom message bundle', () => {
+		const bundle = {
+			messages: {
+				...defaultBundle.messages,
+				edit: 'Edit Me'
+			}
+		};
+		const updaterStub = stub();
+		const h = harness(() =>
+			w(Cell, {
+				bundle,
+				value: 'id',
+				rawValue: 'id',
+				updater: updaterStub,
+				editable: true,
+				width: 100
+			})
+		);
+		h.expect(() => expectedEditable(bundle.messages));
 	});
 });

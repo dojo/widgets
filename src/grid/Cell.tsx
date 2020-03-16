@@ -1,6 +1,7 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
@@ -9,10 +10,13 @@ import TextInput from '../text-input/index';
 import Button from '../button/index';
 import Icon from '../icon/index';
 
+import defaultBundle from './nls/Grid';
 import * as fixedCss from './styles/cell.m.css';
 import * as css from '../theme/default/grid-cell.m.css';
 
 export interface CellProperties extends FocusProperties {
+	/** optional message bundle to override the included bundle */
+	bundle?: typeof defaultBundle;
 	/** The display value (or widget) of the cell */
 	value: string | DNode;
 	/** If the cell's value may be updated */
@@ -26,7 +30,7 @@ export interface CellProperties extends FocusProperties {
 }
 
 @theme(css)
-export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProperties> {
+export default class Cell extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))<CellProperties> {
 	private _editing = false;
 	private _editingValue = '';
 	private _focusKey!: string;
@@ -88,7 +92,8 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 	}
 
 	protected render(): DNode {
-		let { editable, rawValue, theme, classes, width } = this.properties;
+		let { bundle, editable, rawValue, theme, classes, width } = this.properties;
+		const { format, messages } = this.localizeBundle(bundle || defaultBundle);
 
 		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
 
@@ -115,7 +120,7 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 									...passedInputClasses
 								}
 							},
-							label: `Edit ${rawValue}`,
+							label: format('editValue', { value: rawValue }),
 							labelHidden: true,
 							focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
 							initialValue: this._editingValue,
@@ -137,7 +142,7 @@ export default class Cell extends ThemedMixin(FocusMixin(WidgetBase))<CellProper
 								extraClasses: { root: this.theme(css.edit) } as any,
 								onClick: this._onEdit
 							},
-							[w(Icon, { type: 'editIcon', altText: 'Edit', classes, theme })]
+							[w(Icon, { type: 'editIcon', altText: messages.edit, classes, theme })]
 					  )
 					: null
 			]

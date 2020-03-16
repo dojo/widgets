@@ -6,6 +6,7 @@ import { v, w } from '@dojo/framework/core/vdom';
 import { stub } from 'sinon';
 import Row from '../../Row';
 
+import defaultBundle from '../../nls/Grid';
 import * as fixedCss from './../../styles/row.m.css';
 import * as css from '../../../theme/default/grid-row.m.css';
 import { ColumnConfig } from '../../interfaces';
@@ -59,6 +60,7 @@ describe('Row', () => {
 				},
 				[
 					w(Cell, {
+						bundle: undefined,
 						key: 'id',
 						updater: noop,
 						value: 'id',
@@ -100,6 +102,7 @@ describe('Row', () => {
 				},
 				[
 					w(Cell, {
+						bundle: undefined,
 						key: 'id',
 						updater: noop,
 						value: 'transformed',
@@ -145,6 +148,7 @@ describe('Row', () => {
 				},
 				[
 					w(Cell, {
+						bundle: undefined,
 						key: 'id',
 						updater: noop,
 						value: 'transformed',
@@ -167,5 +171,48 @@ describe('Row', () => {
 		h.trigger('@root', 'onclick', {});
 		assert.isTrue(rowSelectStub.calledThrice);
 		assert.isTrue(rowSelectStub.thirdCall.calledWith('single'));
+	});
+
+	it('should render with a custom message bundle', () => {
+		const bundle = { messages: { ...defaultBundle.messages } };
+		const columnConfig: ColumnConfig = {
+			id: 'id',
+			title: 'id'
+		};
+		const h = harness(() =>
+			w(Row, {
+				bundle,
+				id: 1,
+				item: { id: 'id' },
+				columnConfig: [columnConfig],
+				updater: noop,
+				columnWidths: { id: 100 }
+			})
+		);
+		h.expect(() =>
+			v(
+				'div',
+				{
+					key: 'root',
+					classes: [css.root, undefined, fixedCss.rootFixed, undefined],
+					role: 'row',
+					'aria-rowindex': '2',
+					onclick: undefined
+				},
+				[
+					w(Cell, {
+						bundle,
+						key: 'id',
+						updater: noop,
+						value: 'id',
+						editable: undefined,
+						rawValue: 'id',
+						classes: undefined,
+						theme: undefined,
+						width: 100
+					})
+				]
+			)
+		);
 	});
 });

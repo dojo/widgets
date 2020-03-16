@@ -7,12 +7,15 @@ import { GridPages, ColumnConfig, SelectionType } from './interfaces';
 import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
 
+import defaultBundle from './nls/Grid';
 import * as fixedCss from './styles/body.m.css';
 import * as css from '../theme/default/grid-body.m.css';
 import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { reference } from '@dojo/framework/core/diff';
 
 export interface PaginatedBodyProperties<S> {
+	/** optional message bundle to override the included bundle */
+	bundle?: typeof defaultBundle;
 	/** The current page number */
 	pageNumber: number;
 	/** A list of paginated grids */
@@ -61,6 +64,7 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 
 	private _renderRows() {
 		const {
+			bundle,
 			pageSize,
 			fetcher,
 			pages,
@@ -87,6 +91,7 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 					w(Row, {
 						id: i,
 						key: i,
+						bundle,
 						theme,
 						classes,
 						item: data[i],

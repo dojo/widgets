@@ -1,11 +1,15 @@
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, theme } from '@dojo/framework/core/mixins/Themed';
 import { v } from '@dojo/framework/core/vdom';
 
+import defaultBundle from './nls/Grid';
 import * as fixedCss from './styles/paginated-footer.m.css';
 import * as css from '../theme/default/grid-paginated-footer.m.css';
 
 export interface PaginatedFooterProperties {
+	/** optional message bundle to override the included bundle */
+	bundle?: typeof defaultBundle;
 	total?: number;
 	page: number;
 	pageSize: number;
@@ -13,9 +17,12 @@ export interface PaginatedFooterProperties {
 }
 
 @theme(css)
-export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFooterProperties> {
+export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
+	PaginatedFooterProperties
+> {
 	private _renderPageControl(page: number) {
-		const { onPageChange, page: currentPage } = this.properties;
+		const { bundle, onPageChange, page: currentPage } = this.properties;
+		const { format } = this.localizeBundle(bundle || defaultBundle);
 		const active = page === currentPage;
 
 		return v(
@@ -27,7 +34,9 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 					onPageChange(page);
 				},
 				'aria-current': active ? 'page' : undefined,
-				'aria-label': active ? `Current Page, Page ${page}` : `Goto Page ${page}`,
+				'aria-label': active
+					? format('currentPage', { page })
+					: format('goToPage', { page }),
 				classes: [this.theme(css.pageNumber), active && this.theme(css.active)]
 			},
 			[`${page}`]
@@ -103,7 +112,8 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 	}
 
 	protected render() {
-		const { onPageChange, page, total, pageSize } = this.properties;
+		const { bundle, onPageChange, page, total, pageSize } = this.properties;
+		const { format, messages } = this.localizeBundle(bundle || defaultBundle);
 		if (total === undefined) {
 			return null;
 		}
@@ -122,13 +132,21 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 						fixedCss.detailsFixed
 					]
 				},
-				[total ? `${from} - ${total < to ? total : to} of ${total} Results` : '0 Results']
+				[
+					total
+						? format('resultRange', {
+								from,
+								to: total < to ? total : to,
+								total
+						  })
+						: messages.noResults
+				]
 			),
 			v(
 				'nav',
 				{
 					role: 'navigation',
-					'aria-label': 'Pagination Navigation',
+					'aria-label': messages.pagination,
 					classes: [this.theme(css.pagination)]
 				},
 				[
@@ -152,7 +170,7 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 											onclick: () => {
 												onPageChange(page - 1);
 											},
-											'aria-label': `Goto Page ${page - 1}`,
+											'aria-label': format('goToPage', { page: page - 1 }),
 											classes: [
 												this.theme(css.pageNav),
 												fixedCss.pageNavFixed
@@ -170,7 +188,7 @@ export default class PaginatedFooter extends ThemedMixin(WidgetBase)<PaginatedFo
 											onclick: () => {
 												onPageChange(page + 1);
 											},
-											'aria-label': `Goto Page ${page + 1}`,
+											'aria-label': format('goToPage', { page: page + 1 }),
 											classes: [
 												this.theme(css.pageNav),
 												fixedCss.pageNavFixed

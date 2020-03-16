@@ -1,12 +1,14 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
 import Drag from '@dojo/framework/core/meta/Drag';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { ColumnConfig, SortOptions } from './interfaces';
 import { DNode } from '@dojo/framework/core/interfaces';
 import TextInput from '../text-input/index';
 import Icon from '../icon/index';
 
+import defaultBundle from './nls/Grid';
 import * as css from '../theme/default/grid-header.m.css';
 import * as fixedCss from './styles/header.m.css';
 
@@ -24,6 +26,8 @@ export interface FilterRenderer {
 }
 
 export interface HeaderProperties {
+	/** optional message bundle to override the included bundle */
+	bundle?: typeof defaultBundle;
 	/** Configuration for grid columns (id, title, properties, and custom renderer) */
 	columnConfig: ColumnConfig[];
 	/** Handles changing the sort order of a column */
@@ -47,7 +51,7 @@ export interface HeaderProperties {
 }
 
 @theme(css)
-export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
+export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderProperties> {
 	private _getColumnTitle(column: ColumnConfig): string | DNode {
 		if (typeof column.title === 'function') {
 			return column.title();
@@ -72,13 +76,16 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 		direction: undefined | 'asc' | 'desc',
 		sorter: () => void
 	) => {
-		const { theme, classes } = this.properties;
+		const { bundle, theme, classes } = this.properties;
+		const { format } = this.localizeBundle(bundle || defaultBundle);
 		return v('button', { classes: this.theme(css.sort), onclick: sorter }, [
 			w(Icon, {
 				theme,
 				classes,
 				type: direction === 'asc' ? 'upIcon' : 'downIcon',
-				altText: `Sort by ${this._getColumnTitle(column)}`
+				altText: format('sortBy', {
+					name: this._getColumnTitle(column)
+				})
 			})
 		]);
 	};
@@ -89,7 +96,8 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 		doFilter: (value: string) => void,
 		title?: string | DNode
 	) => {
-		const { theme, classes } = this.properties;
+		const { bundle, theme, classes } = this.properties;
+		const { format } = this.localizeBundle(bundle || defaultBundle);
 		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
 		return w(TextInput, {
 			key: 'filter',
@@ -103,7 +111,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					...passedInputClasses
 				}
 			},
-			label: `Filter by ${title}`,
+			label: format('filterBy', { name: title }),
 			labelHidden: true,
 			type: 'search',
 			initialValue: filterValue,
