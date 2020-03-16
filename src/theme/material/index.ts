@@ -28,6 +28,7 @@ import * as outlinedButton from './outlined-button.m.css';
 import * as progress from './progress.m.css';
 import * as radio from './radio.m.css';
 import * as raisedButton from './raised-button.m.css';
+import * as rangeSlider from './range-slider.m.css';
 import * as select from './select.m.css';
 import * as slidePane from './slide-pane.m.css';
 import * as slider from './slider.m.css';
@@ -73,6 +74,7 @@ export default {
 	'@dojo/widgets/progress': progress,
 	'@dojo/widgets/radio': radio,
 	'@dojo/widgets/raised-button': raisedButton,
+	'@dojo/widgets/range-slider': rangeSlider,
 	'@dojo/widgets/select': select,
 	'@dojo/widgets/slide-pane': slidePane,
 	'@dojo/widgets/slider': slider,

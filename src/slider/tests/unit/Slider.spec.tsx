@@ -60,6 +60,7 @@ const expected = function(
 					readOnly={undefined}
 					required={undefined}
 					forId=""
+					secondary={true}
 				>
 					foo
 				</Label>
