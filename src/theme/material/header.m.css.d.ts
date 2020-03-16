@@ -7,3 +7,4 @@ export const leading: string;
 export const title: string;
 export const action: string;
 export const trailing: string;
+export const spacer: string;

@@ -59,3 +59,7 @@
 	display: flex;
 	margin-left: var(--spacing-large);
 }
+
+.spacer {
+	height: calc(var(--spacing-regular) * 9);
+}

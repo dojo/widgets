@@ -8,3 +8,4 @@ export const title: string;
 export const actions: string;
 export const action: string;
 export const trailing: string;
+export const spacer: string;

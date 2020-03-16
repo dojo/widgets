@@ -6,16 +6,18 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const baseTemplate = assertionTemplate(() => (
-	<div classes={[classes.root, undefined]}>
-		<div classes={classes.row}>
-			<div classes={classes.primary} key="primary">
-				<div classes={classes.title} key="title" />
-			</div>
-			<div classes={classes.secondary} key="secondary">
-				<div classes={classes.actions} key="actions" />
+	<virtual key="virtual">
+		<div key="root" classes={[classes.root, undefined]}>
+			<div classes={classes.row}>
+				<div classes={classes.primary} key="primary">
+					<div classes={classes.title} key="title" />
+				</div>
+				<div classes={classes.secondary} key="secondary">
+					<div classes={classes.actions} key="actions" />
+				</div>
 			</div>
 		</div>
-	</div>
+	</virtual>
 ));
 
 describe('HeaderToolbar', () => {
@@ -75,6 +77,14 @@ describe('HeaderToolbar', () => {
 		const testTemplate = baseTemplate.replaceChildren('@actions', () => [
 			<div classes={classes.action}>action</div>
 		]);
+		h.expect(testTemplate);
+	});
+
+	it('Renders a sticky header', () => {
+		const h = harness(() => <Header sticky />);
+		const testTemplate = baseTemplate
+			.append('@virtual', () => [<div classes={classes.spacer} />])
+			.setProperty('@root', 'classes', [classes.root, classes.sticky]);
 		h.expect(testTemplate);
 	});
 });

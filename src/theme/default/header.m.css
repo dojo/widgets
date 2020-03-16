@@ -58,3 +58,7 @@
 	flex-grow: 0;
 	flex-shrink: 0;
 }
+
+/* Content padding for fixed headers */
+.spacer {
+}

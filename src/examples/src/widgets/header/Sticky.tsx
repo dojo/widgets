@@ -17,7 +17,7 @@ export default factory(function Basic() {
 					]
 				}}
 			</Header>
-			<p style="padding-top: 80px">
+			<p>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 				incididunt ut labore et dolore magna aliqua. Pellentesque pulvinar pellentesque
 				habitant morbi tristique. Facilisis magna etiam tempor orci eu lobortis elementum

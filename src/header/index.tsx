@@ -35,25 +35,29 @@ export const Header = factory(function Header({ children, properties, middleware
 	const actionElements = actions && actions();
 
 	return (
-		<div classes={[classes.root, sticky && classes.sticky]}>
-			<div classes={classes.row}>
-				<div classes={classes.primary} key="primary">
-					{leading && <div classes={classes.leading}>{leading()}</div>}
-					<div classes={classes.title} key="title">
-						{title && title()}
+		<virtual key="virtual">
+			<div classes={[classes.root, sticky && classes.sticky]} key="root">
+				<div classes={classes.row}>
+					<div classes={classes.primary} key="primary">
+						{leading && <div classes={classes.leading}>{leading()}</div>}
+						<div classes={classes.title} key="title">
+							{title && title()}
+						</div>
 					</div>
-				</div>
-				<div classes={classes.secondary} key="secondary">
-					<div classes={classes.actions} key="actions">
-						{actions &&
-							(Array.isArray(actionElements) ? actionElements : [actionElements]).map(
-								(action) => <div classes={classes.action}>{action}</div>
-							)}
+					<div classes={classes.secondary} key="secondary">
+						<div classes={classes.actions} key="actions">
+							{actions &&
+								(Array.isArray(actionElements)
+									? actionElements
+									: [actionElements]
+								).map((action) => <div classes={classes.action}>{action}</div>)}
+						</div>
+						{trailing && <div classes={classes.trailing}>{trailing()}</div>}
 					</div>
-					{trailing && <div classes={classes.trailing}>{trailing()}</div>}
 				</div>
 			</div>
-		</div>
+			{sticky && <div classes={classes.spacer} />}
+		</virtual>
 	);
 });
 

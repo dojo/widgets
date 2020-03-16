@@ -46,3 +46,7 @@
 	align-items: center;
 	display: flex;
 }
+
+.spacer {
+	height: 64px;
+}
