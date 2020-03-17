@@ -9,18 +9,16 @@ export interface HeaderProperties extends ThemedProperties {
 	sticky?: boolean;
 }
 
-export type HeaderChildren =
-	| {
-			/** Renderer for leading elements like icons */
-			leading?(): RenderResult;
-			/** Renderer for the header title */
-			title(): RenderResult;
-			/** Renderer for header actions like links */
-			actions?(): RenderResult;
-			/** Renderer for trailing elements like search inputs */
-			trailing?(): RenderResult;
-	  }
-	| undefined;
+export type HeaderChildren = {
+	/** Renderer for leading elements like icons */
+	leading?(): RenderResult;
+	/** Renderer for the header title */
+	title(): RenderResult;
+	/** Renderer for header actions like links */
+	actions?(): RenderResult;
+	/** Renderer for trailing elements like search inputs */
+	trailing?(): RenderResult;
+};
 
 const factory = create({ theme })
 	.properties<HeaderProperties>()
@@ -29,13 +27,11 @@ const factory = create({ theme })
 export const Header = factory(function Header({ children, properties, middleware: { theme } }) {
 	const classes = theme.classes(css);
 	const { sticky } = properties();
-	const { actions = undefined, leading = undefined, title = undefined, trailing = undefined } =
-		children()[0] || {};
-
+	const { actions, leading, title, trailing } = children()[0];
 	const actionElements = actions && actions();
 
 	return (
-		<header key="header" classes={classes.spacer}>
+		<header key="header" classes={sticky ? classes.spacer : undefined}>
 			<div classes={[classes.root, sticky && classes.sticky]} key="root">
 				<div classes={classes.row}>
 					<div classes={classes.primary} key="primary">

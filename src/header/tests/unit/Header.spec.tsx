@@ -6,7 +6,7 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const baseTemplate = assertionTemplate(() => (
-	<header key="header" classes={classes.spacer}>
+	<header key="header" classes={undefined}>
 		<div key="root" classes={[classes.root, undefined]}>
 			<div classes={classes.row}>
 				<div classes={classes.primary} key="primary">
@@ -99,10 +99,9 @@ describe('HeaderToolbar', () => {
 				}}
 			</Header>
 		));
-		const testTemplate = baseTemplate.setProperty('@root', 'classes', [
-			classes.root,
-			classes.sticky
-		]);
+		const testTemplate = baseTemplate
+			.setProperty('@root', 'classes', [classes.root, classes.sticky])
+			.setProperty('@header', 'classes', classes.spacer);
 		h.expect(testTemplate);
 	});
 });
