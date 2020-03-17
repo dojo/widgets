@@ -24,7 +24,7 @@ export const HeaderCard = factory(function HeaderCard({
 }) {
 	const themeCss = theme.classes(css);
 	const { title, subtitle, avatar, ...cardProps } = properties();
-	const cardChildren = children()[0];
+	const [ cardChildren ] = children();
 	return (
 		<Card key="root" {...cardProps}>
 			{{
