@@ -6,23 +6,31 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const baseTemplate = assertionTemplate(() => (
-	<virtual key="virtual">
+	<header key="header" classes={classes.spacer}>
 		<div key="root" classes={[classes.root, undefined]}>
 			<div classes={classes.row}>
 				<div classes={classes.primary} key="primary">
-					<div classes={classes.title} key="title" />
+					<div classes={classes.title} key="title">
+						title
+					</div>
 				</div>
 				<div classes={classes.secondary} key="secondary">
-					<div classes={classes.actions} key="actions" />
+					<nav classes={classes.actions} key="actions" />
 				</div>
 			</div>
 		</div>
-	</virtual>
+	</header>
 ));
 
 describe('HeaderToolbar', () => {
 	it('Renders default state', () => {
-		const h = harness(() => <Header />);
+		const h = harness(() => (
+			<Header>
+				{{
+					title: () => 'title'
+				}}
+			</Header>
+		));
 		h.expect(baseTemplate);
 	});
 
@@ -30,6 +38,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
+					title: () => 'title',
 					leading: () => 'leading'
 				}}
 			</Header>
@@ -44,6 +53,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
+					title: () => 'title',
 					trailing: () => 'trailing'
 				}}
 			</Header>
@@ -70,6 +80,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
+					title: () => 'title',
 					actions: () => ['action']
 				}}
 			</Header>
@@ -81,10 +92,17 @@ describe('HeaderToolbar', () => {
 	});
 
 	it('Renders a sticky header', () => {
-		const h = harness(() => <Header sticky />);
-		const testTemplate = baseTemplate
-			.append('@virtual', () => [<div classes={classes.spacer} />])
-			.setProperty('@root', 'classes', [classes.root, classes.sticky]);
+		const h = harness(() => (
+			<Header sticky>
+				{{
+					title: () => 'title'
+				}}
+			</Header>
+		));
+		const testTemplate = baseTemplate.setProperty('@root', 'classes', [
+			classes.root,
+			classes.sticky
+		]);
 		h.expect(testTemplate);
 	});
 });
