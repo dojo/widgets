@@ -29,7 +29,7 @@ const factory = create({ theme })
 export const Header = factory(function Header({ children, properties, middleware: { theme } }) {
 	const classes = theme.classes(css);
 	const { sticky } = properties();
-	const { actions = undefined, leading = undefined, title, trailing = undefined } =
+	const { actions = undefined, leading = undefined, title = undefined, trailing = undefined } =
 		children()[0] || {};
 
 	const actionElements = actions && actions();
