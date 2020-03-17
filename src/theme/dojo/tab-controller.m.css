@@ -60,6 +60,7 @@
 .close {
 	background: none;
 	border: none;
+	color: inherit;
 	cursor: pointer;
 	font-size: 0;
 	padding: 1px 3px;

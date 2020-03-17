@@ -21,14 +21,16 @@
 
 .pageNav,
 .pageNumber {
-	border: 0;
-	cursor: pointer;
-	border-radius: 4px;
-	height: 26px;
-	min-width: 26px;
-	margin: 2px;
-	color: var(--color-text-primary);
 	background-color: var(--color-background-faded);
+	border-radius: 4px;
+	border: 0;
+	color: var(--color-text-primary);
+	cursor: pointer;
+	font-size: inherit;
+	height: 26px;
+	margin: 2px;
+	min-width: 26px;
+	padding: 0;
 	text-align: center;
 }
 

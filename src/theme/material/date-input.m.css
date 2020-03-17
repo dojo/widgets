@@ -1,6 +1,7 @@
 @import './variables.css';
 
 .toggleCalendarButton {
+	composes: nativeResetRoot from './button.m.css';
 	cursor: pointer;
 	display: flex;
 	pointer-events: all;

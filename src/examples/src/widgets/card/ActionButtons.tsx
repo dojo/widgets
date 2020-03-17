@@ -18,7 +18,7 @@ export default factory(function ActionButtons({ middleware: { icache } }) {
 								: `Clicked: ${clickCount} time${clickCount > 1 ? 's' : ''}`}
 						</Button>
 					),
-					content: () => <p>Lorem ipsum</p>
+					content: () => <span>Lorem ipsum</span>
 				}}
 			</Card>
 		</div>

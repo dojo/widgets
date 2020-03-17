@@ -19,6 +19,18 @@
 	font-weight: var(--mdc-theme-heading-font-weight);
 }
 
+.paginationList {
+	padding-left: 0;
+}
+
+.pageNav,
+.pageNumber {
+	background: none;
+	border: 0;
+	font-size: inherit;
+	padding: 0;
+}
+
 .pageNav {
 	color: var(--mdc-theme-text-secondary-on-background);
 	font-size: var(--mdc-theme-font-size-small);

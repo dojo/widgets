@@ -9,7 +9,7 @@ export default factory(function CardWithMediaContent() {
 		<div styles={{ width: '400px' }}>
 			<Card title="Hello, World" mediaSrc={mediaSrc}>
 				{{
-					content: () => <p>Lorem ipsum</p>
+					content: () => <span>Lorem ipsum</span>
 				}}
 			</Card>
 		</div>

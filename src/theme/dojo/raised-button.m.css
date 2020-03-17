@@ -1,7 +1,21 @@
 @import './variables.css';
 
 .root {
+	border: 0;
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	font-size: inherit;
+	line-height: var(--line-height-base);
+	min-width: calc(var(--grid-base) * 20);
+	padding: var(--spacing-regular);
+}
+
+.root:not(.pressed) {
+	background: none;
+	color: inherit;
+}
+
+.pressed {
+	composes: pressed from './button.m.css';
 }
 
 .root:hover,

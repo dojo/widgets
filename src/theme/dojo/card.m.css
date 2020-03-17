@@ -87,8 +87,12 @@
 
 .title {
 	font-size: var(--font-size-title);
+	font-weight: inherit;
+	margin: 0;
 }
 
 .subtitle {
 	font-size: var(--font-size-small);
+	font-weight: inherit;
+	margin: 0;
 }

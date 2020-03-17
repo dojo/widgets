@@ -30,14 +30,12 @@
 }
 
 .close {
+	composes: nativeResetRoot from './button.m.css';
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 	right: 5px;
 	cursor: pointer;
-	font-size: 0;
-	border: none;
-	background: none;
 	padding: 1px 3px;
 	margin-top: -1px;
 }
