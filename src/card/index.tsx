@@ -1,9 +1,9 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/default/card.m.css';
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 
-export interface CardProperties extends ThemeProperties {
+export interface CardProperties {
 	onAction?: () => void;
 	mediaSrc?: string;
 	mediaTitle?: string;

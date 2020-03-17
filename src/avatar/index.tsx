@@ -1,8 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import * as css from '../theme/default/avatar.m.css';
 
-export interface AvatarProperties extends ThemeProperties {
+export interface AvatarProperties {
 	variant?: 'square' | 'rounded' | 'circle';
 	secondary?: boolean;
 	src?: string;

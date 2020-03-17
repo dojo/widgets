@@ -1,13 +1,12 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/checkbox.m.css';
-import theme, { ThemeProperties } from '@dojo/framework/core/middleware/theme';
+import theme from '@dojo/framework/core/middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import Label from '../label/index';
 import { formatAriaProperties } from '../common/util';
 import { uuid } from '@dojo/framework/core/util';
 
-export interface CheckboxProperties extends ThemeProperties, FocusProperties {
+export interface CheckboxProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/**  Checked/unchecked property of the control */

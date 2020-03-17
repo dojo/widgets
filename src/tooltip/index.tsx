@@ -1,12 +1,12 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 
 import * as fixedCss from './styles/tooltip.m.css';
 import * as css from '../theme/default/tooltip.m.css';
 import { formatAriaProperties } from '../common/util';
 
-export interface TooltipProperties extends ThemeProperties {
+export interface TooltipProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Information to show within the tooltip */

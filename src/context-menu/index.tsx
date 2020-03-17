@@ -1,11 +1,11 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import Menu, { MenuOption } from '../menu/index';
 import * as menuCss from '../theme/default/menu.m.css';
 import * as css from '../theme/default/context-menu.m.css';
 import ContextPopup from '../context-popup';
 
-export interface ContextMenuProperties extends ThemeProperties {
+export interface ContextMenuProperties {
 	/* Menu options for the context menu. Uses the same API as the menu widget */
 	options: MenuOption[];
 	/* A callback that will be called with the value of whatever item is selected */

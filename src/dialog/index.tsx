@@ -5,7 +5,7 @@ import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties, Keys } from '../common/util';
 import Icon from '../icon';
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import bodyScroll from '../middleware/bodyScroll';
 import * as css from '../theme/default/dialog.m.css';
 import * as fixedCss from './styles/dialog.m.css';
@@ -13,7 +13,7 @@ import commonBundle from '../common/nls/common';
 import GlobalEvent from '../global-event';
 import inert from '@dojo/framework/core/middleware/inert';
 
-export interface DialogPropertiesBase extends ThemeProperties {
+export interface DialogPropertiesBase {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Determines whether the dialog can be closed */
