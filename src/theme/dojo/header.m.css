@@ -1,0 +1,65 @@
+@import './variables.css';
+
+.root {
+	align-items: center;
+	background-color: var(--color-background-inverted);
+	color: var(--color-text-inverted);
+	display: flex;
+	height: calc(var(--spacing-regular) * 9);
+	padding: 0 var(--spacing-large);
+}
+
+.row {
+	display: flex;
+	flex: 1;
+}
+
+.primary {
+	align-items: center;
+	display: flex;
+	flex: 1;
+}
+
+.secondary {
+	align-items: center;
+	display: flex;
+}
+
+.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+.leading {
+	flex-grow: 0;
+	flex-shrink: 0;
+	margin-right: var(--spacing-large);
+}
+
+.title {
+	flex: 1;
+}
+
+.actions {
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.action {
+	margin-left: var(--spacing-large);
+}
+
+.trailing {
+	flex-grow: 0;
+	flex-shrink: 0;
+	align-items: center;
+	display: flex;
+	margin-left: var(--spacing-large);
+}
+
+.spacer {
+	height: calc(var(--spacing-regular) * 9);
+}

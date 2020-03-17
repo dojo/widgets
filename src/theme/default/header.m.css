@@ -1,0 +1,64 @@
+/* Outermost container */
+.root {
+	align-items: center;
+	display: flex;
+}
+
+/* Inner content row */
+.row {
+	display: flex;
+	flex: 1;
+}
+
+/* Primary content */
+.primary {
+	align-items: center;
+	display: flex;
+	flex: 1;
+}
+
+/* Secondary conotent */
+.secondary {
+	align-items: center;
+	display: flex;
+}
+
+/* Fixed outermost container */
+.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+/* Leading control container */
+.leading {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+/* Toolbar title */
+.title {
+	flex: 1;
+}
+
+/* Actions container */
+.actions {
+	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+/* Individual actions */
+.action {
+}
+
+/* Trailing control container */
+.trailing {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+/* Content padding for fixed headers */
+.spacer {
+}
