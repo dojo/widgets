@@ -8,6 +8,9 @@ import AvatarSize from './widgets/avatar/Size';
 import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
+import BasicBreadcrumb from './widgets/breadcrumb/Basic';
+import CustomLabelBreadcrumb from './widgets/breadcrumb/CustomLabel';
+import CustomSeparatorBreadcrumb from './widgets/breadcrumb/CustomSeparator';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
@@ -258,6 +261,27 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicAvatar
+				}
+			}
+		},
+		breadcrumb: {
+			examples: [
+				{
+					filename: 'CustomSeparator',
+					module: CustomSeparatorBreadcrumb,
+					title: 'Custom Separator'
+				},
+				{
+					filename: 'CustomLabel',
+					module: CustomLabelBreadcrumb,
+					title: 'Custom Label'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicBreadcrumb
 				}
 			}
 		},
