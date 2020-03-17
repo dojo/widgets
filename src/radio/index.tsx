@@ -1,15 +1,14 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import Focus from '../meta/Focus';
-import Label from '../label/index';
-import { formatAriaProperties } from '../common/util';
-import { v, w } from '@dojo/framework/core/vdom';
+import { focus } from '@dojo/framework/core/middleware/focus';
+import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { uuid } from '@dojo/framework/core/util';
+import { create, tsx } from '@dojo/framework/core/vdom';
+
+import { formatAriaProperties } from '../common/util';
+import Label from '../label';
+import theme, { ThemeProperties } from '../middleware/theme';
 import * as css from '../theme/default/radio.m.css';
 
-export interface RadioProperties extends ThemedProperties, FocusProperties {
+interface RadioProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Checked/unchecked property of the radio */
@@ -46,125 +45,114 @@ export interface RadioProperties extends ThemedProperties, FocusProperties {
 	widgetId?: string;
 }
 
-@theme(css)
-export class Radio extends ThemedMixin(FocusMixin(WidgetBase))<RadioProperties> {
-	private _uuid = uuid();
+const factory = create({ focus, theme }).properties<RadioProperties>();
 
-	private _onChange(event: Event) {
-		event.stopPropagation();
-		const radio = event.target as HTMLInputElement;
-		this.properties.onValue && this.properties.onValue(radio.checked);
-	}
+export const Radio = factory(function Radio({ properties, middleware: { focus, theme } }) {
+	const _uuid = uuid();
+	const {
+		aria = {},
+		checked = false,
+		classes,
+		disabled,
+		label,
+		labelAfter = true,
+		labelHidden,
+		name,
+		onBlur,
+		onFocus,
+		onOut,
+		onOver,
+		onValue,
+		readOnly,
+		required,
+		theme: themeProp,
+		valid,
+		value,
+		widgetId = _uuid
+	} = properties();
 
-	protected getRootClasses(): (string | null)[] {
-		const { checked = false, disabled, valid, readOnly, required } = this.properties;
-		const focus = this.meta(Focus).get('root');
+	const themeCss = theme.classes(css);
 
-		return [
-			css.root,
-			checked ? css.checked : null,
-			disabled ? css.disabled : null,
-			focus.containsFocus ? css.focused : null,
-			valid === true ? css.valid : null,
-			valid === false ? css.invalid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null
-		];
-	}
-
-	render(): DNode {
-		const {
-			aria = {},
-			checked = false,
-			disabled,
-			widgetId = this._uuid,
-			valid,
-			label,
-			labelAfter = true,
-			labelHidden,
-			theme,
-			classes,
-			name,
-			readOnly,
-			required,
-			value,
-			onOut,
-			onOver,
-			onBlur,
-			onFocus
-		} = this.properties;
-		const focus = this.meta(Focus).get('root');
-
-		const children = [
-			v('div', { classes: this.theme(css.inputWrapper) }, [
-				v('input', {
-					id: widgetId,
-					...formatAriaProperties(aria),
-					classes: this.theme(css.input),
-					checked,
-					disabled,
-					focus: this.shouldFocus,
-					'aria-invalid': valid === false ? 'true' : null,
-					name,
-					readOnly,
-					'aria-readonly': readOnly === true ? 'true' : null,
-					required,
-					type: 'radio',
-					value,
-					onblur: () => {
-						onBlur && onBlur();
-					},
-					onchange: this._onChange,
-					onfocus: () => {
-						onFocus && onFocus();
-					},
-					onpointerenter: () => {
-						onOver && onOver();
-					},
-					onpointerleave: () => {
-						onOut && onOut();
-					}
-				}),
-				v(
-					'div',
-					{
-						classes: this.theme(css.radioBackground)
-					},
-					[
-						v('div', { classes: this.theme(css.radioOuter) }),
-						v('div', { classes: this.theme(css.radioInner) })
-					]
-				)
-			]),
-			label
-				? w(
-						Label,
-						{
-							theme,
-							classes,
-							disabled,
-							focused: focus.containsFocus,
-							valid,
-							readOnly,
-							required,
-							hidden: labelHidden,
-							forId: widgetId,
-							secondary: true
-						},
-						[label]
-				  )
-				: null
-		];
-
-		return v(
-			'div',
-			{
-				key: 'root',
-				classes: this.theme(this.getRootClasses())
-			},
-			labelAfter ? children : children.reverse()
-		);
-	}
-}
+	return (
+		<div
+			key="root"
+			classes={[
+				themeCss.root,
+				checked ? themeCss.checked : null,
+				disabled ? themeCss.disabled : null,
+				focus.isFocused('root') ? themeCss.focused : null,
+				valid === false ? themeCss.invalid : null,
+				valid === true ? themeCss.valid : null,
+				readOnly ? themeCss.readonly : null,
+				required ? themeCss.required : null
+			]}
+		>
+			{!labelAfter && label ? (
+				<Label
+					key="label"
+					classes={classes}
+					theme={themeProp}
+					disabled={disabled}
+					focused={focus.isFocused('root')}
+					forId={widgetId}
+					valid={valid}
+					readOnly={readOnly}
+					hidden={labelHidden}
+					required={required}
+					secondary={true}
+				>
+					{label}
+				</Label>
+			) : null}
+			<div classes={themeCss.inputWrapper}>
+				<input
+					id={widgetId}
+					{...formatAriaProperties(aria)}
+					classes={themeCss.input}
+					checked={checked}
+					disabled={disabled}
+					focus={focus.shouldFocus()}
+					aria-invalid={valid === false ? 'true' : null}
+					name={name}
+					readonly={readOnly}
+					aria-readonly={readOnly === true ? 'true' : null}
+					required={required}
+					type="radio"
+					value={value}
+					onblur={() => onBlur && onBlur()}
+					onchange={(event: Event) => {
+						event.stopPropagation();
+						const radio = event.target as HTMLInputElement;
+						onValue && onValue(radio.checked);
+					}}
+					onfocus={() => onFocus && onFocus()}
+					onpointerenter={() => onOver && onOver()}
+					onpointerleave={() => onOut && onOut()}
+				/>
+				<div classes={themeCss.radioBackground}>
+					<div classes={themeCss.radioOuter} />
+					<div classes={themeCss.radioInner} />
+				</div>
+			</div>
+			{labelAfter && label ? (
+				<Label
+					key="labelAfter"
+					classes={classes}
+					theme={themeProp}
+					disabled={disabled}
+					focused={focus.isFocused('root')}
+					forId={widgetId}
+					valid={valid}
+					readOnly={readOnly}
+					hidden={labelHidden}
+					required={required}
+					secondary={true}
+				>
+					{label}
+				</Label>
+			) : null}
+		</div>
+	);
+});
 
 export default Radio;

@@ -1,214 +1,210 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import { compareId, compareForId } from '../../../common/tests/support/test-helpers';
 
+import { tsx, create } from '@dojo/framework/core/vdom';
 import * as sinon from 'sinon';
-import { v, w } from '@dojo/framework/core/vdom';
-import Focus from '../../../meta/Focus';
+import harness from '@dojo/framework/testing/harness';
 
 import Label from '../../../label/index';
-import Radio from '../../../radio/index';
+import Radio from '../../index';
 import * as css from '../../../theme/default/radio.m.css';
-import {
-	createHarness,
-	compareId,
-	compareForId,
-	MockMetaMixin,
-	noop,
-	stubEvent
-} from '../../../common/tests/support/test-helpers';
+import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import focus from '@dojo/framework/core/middleware/focus';
 
-const harness = createHarness([compareId, compareForId]);
-
-interface States {
-	valid?: boolean;
-	disabled?: boolean;
-	readOnly?: boolean;
-	required?: boolean;
+const middlewareFactory = create();
+function createMockFocusMiddleware({
+	shouldFocus = false,
+	focused = false,
+	isFocused = false
+} = {}) {
+	return () =>
+		middlewareFactory(() => ({
+			shouldFocus: () => shouldFocus,
+			focused: () => focused,
+			isFocused: () => isFocused
+		}))();
 }
 
-interface ExpectedOptions {
-	label?: boolean;
-	states?: States;
-	focused?: boolean;
-	rootOverrides?: any;
-	inputOverrides?: any;
-}
-
-const expected = function({
+const expected = ({
 	label = false,
-	rootOverrides = {},
-	inputOverrides = {},
-	states = {},
-	focused = false
-}: ExpectedOptions = {}) {
-	const { disabled, valid, required, readOnly } = states;
-
-	const radioVdom = v('div', { classes: css.inputWrapper }, [
-		v('input', {
-			id: '',
-			classes: css.input,
-			checked: false,
-			disabled: disabled,
-			focus: noop,
-			'aria-invalid': valid === false ? 'true' : null,
-			name: undefined,
-			readOnly: readOnly,
-			'aria-readonly': readOnly ? 'true' : null,
-			required: required,
-			type: 'radio',
-			value: undefined,
-			onblur: noop,
-			onfocus: noop,
-			onchange: noop,
-			onpointerenter: noop,
-			onpointerleave: noop,
-			...inputOverrides
-		}),
-		v(
-			'div',
-			{
-				classes: css.radioBackground
-			},
-			[v('div', { classes: css.radioOuter }), v('div', { classes: css.radioInner })]
-		)
-	]);
-
-	return v(
-		'div',
-		{
-			key: 'root',
-			classes: [css.root, null, null, null, null, null, null, null],
-			...rootOverrides
-		},
-		[
-			radioVdom,
-			label
-				? w(
-						Label,
-						{
-							theme: undefined,
-							classes: undefined,
-							disabled,
-							focused,
-							hidden: undefined,
-							valid,
-							readOnly,
-							required,
-							forId: '',
-							secondary: true
-						},
-						['foo']
-				  )
-				: null
-		]
-	);
-};
+	labelAfter = true,
+	checked = false,
+	disabled = undefined,
+	focused = false,
+	valid = undefined,
+	readOnly = undefined,
+	required = undefined
+}: { [key: string]: boolean | undefined } = {}) =>
+	assertionTemplate(() => (
+		<div
+			key="root"
+			classes={[
+				css.root,
+				checked ? css.checked : null,
+				disabled ? css.disabled : null,
+				focused ? css.focused : null,
+				valid === false ? css.invalid : null,
+				valid === true ? css.valid : null,
+				readOnly ? css.readonly : null,
+				required ? css.required : null
+			]}
+		>
+			{!labelAfter && label ? (
+				<Label
+					key="label"
+					classes={undefined}
+					theme={undefined}
+					disabled={disabled}
+					focused={false}
+					forId=""
+					valid={valid}
+					readOnly={readOnly}
+					hidden={undefined}
+					required={required}
+					secondary={true}
+				>
+					foo
+				</Label>
+			) : null}
+			<div classes={css.inputWrapper}>
+				<input
+					assertion-key="input"
+					id=""
+					classes={css.input}
+					checked={checked}
+					disabled={disabled}
+					focus={focused}
+					aria-invalid={valid === false ? 'true' : null}
+					name={undefined}
+					readonly={readOnly}
+					aria-readonly={readOnly === true ? 'true' : null}
+					required={required}
+					type="radio"
+					value={undefined}
+					onblur={noop}
+					onchange={noop}
+					onfocus={noop}
+					onpointerenter={noop}
+					onpointerleave={noop}
+				/>
+				<div classes={css.radioBackground}>
+					<div classes={css.radioOuter} />
+					<div classes={css.radioInner} />
+				</div>
+			</div>
+			{labelAfter && label ? (
+				<Label
+					key="labelAfter"
+					classes={undefined}
+					theme={undefined}
+					disabled={disabled}
+					focused={false}
+					forId=""
+					valid={valid}
+					readOnly={readOnly}
+					hidden={undefined}
+					required={required}
+					secondary={true}
+				>
+					foo
+				</Label>
+			) : null}
+		</div>
+	));
 
 registerSuite('Radio', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => w(Radio, {}));
-			h.expect(expected);
+			const h = harness(() => <Radio />, [compareId]);
+			h.expect(expected());
 		},
 
 		'custom properties'() {
-			const h = harness(() =>
-				w(Radio, {
-					aria: { describedBy: 'foo' },
-					checked: true,
-					widgetId: 'foo',
-					name: 'bar',
-					value: 'baz'
-				})
+			const h = harness(
+				() => (
+					<Radio aria={{ describedBy: 'foo' }} checked={true} widgetId="foo" name="bar" />
+				),
+				[compareId]
 			);
 
-			h.expect(() =>
-				expected({
-					inputOverrides: {
-						checked: true,
-						'aria-describedby': 'foo',
-						id: 'foo',
-						name: 'bar',
-						value: 'baz'
-					},
-					rootOverrides: {
-						classes: [css.root, css.checked, null, null, null, null, null, null]
-					}
-				})
+			h.expect(
+				expected({ checked: true })
+					.setProperty('~input', 'aria-describedby', 'foo')
+					.setProperty('~input', 'name', 'bar')
 			);
 		},
 
 		label() {
-			const h = harness(() =>
-				w(Radio, {
-					label: 'foo'
-				})
-			);
-			h.expect(() => expected({ label: true }));
+			const h = harness(() => <Radio label="foo" />, [compareId, compareForId]);
+
+			h.expect(expected({ label: true }));
 		},
 
 		'state classes'() {
-			const properties = {
-				valid: false,
-				disabled: true,
-				readOnly: true,
-				required: true,
-				label: 'foo'
-			};
-			const h = harness(() => w(Radio, properties));
-			h.expect(() =>
-				expected({
-					label: true,
-					rootOverrides: {
-						classes: [
-							css.root,
-							null,
-							css.disabled,
-							null,
-							null,
-							css.invalid,
-							css.readonly,
-							css.required
-						]
-					},
-					states: properties
-				})
+			let valid = false;
+			let disabled = true;
+			let readOnly = true;
+			let required = true;
+			const h = harness(
+				() => (
+					<Radio
+						valid={valid}
+						disabled={disabled}
+						readOnly={readOnly}
+						required={required}
+					/>
+				),
+				[compareForId, compareId]
 			);
 
-			properties.disabled = false;
-			properties.valid = true;
-			properties.readOnly = false;
-			properties.required = false;
+			h.expect(expected({ valid, disabled, readOnly, required }));
 
-			h.expect(() =>
+			valid = true;
+			disabled = false;
+			readOnly = false;
+			required = false;
+
+			h.expect(expected({ valid, disabled, readOnly, required }));
+		},
+
+		'state properties on label'() {
+			const h = harness(
+				() => (
+					<Radio
+						label="foo"
+						valid={false}
+						disabled={true}
+						readOnly={true}
+						required={true}
+					/>
+				),
+				[compareId, compareForId]
+			);
+
+			h.expect(
 				expected({
 					label: true,
-					rootOverrides: {
-						classes: [css.root, null, null, null, css.valid, null, null, null]
-					},
-					states: properties
+					disabled: true,
+					readOnly: true,
+					required: true,
+					valid: false
 				})
 			);
 		},
 
 		'focused class'() {
-			const mockMeta = sinon.stub();
-			const mockFocusGet = sinon.stub().returns({
-				active: false,
-				containsFocus: true
+			const focusMock = createMockFocusMiddleware({
+				shouldFocus: true,
+				focused: true,
+				isFocused: true
 			});
-			mockMeta.withArgs(Focus).returns({
-				get: mockFocusGet
+			const h = harness(() => <Radio />, {
+				middleware: [[focus, focusMock]],
+				customComparator: [compareId]
 			});
-			const h = harness(() => w(MockMetaMixin(Radio, mockMeta), {}), [compareId]);
-			h.expect(() =>
-				expected({
-					rootOverrides: {
-						classes: [css.root, null, null, css.focused, null, null, null, null]
-					},
-					focused: true
-				})
-			);
+			h.expect(expected({ focused: true }));
 		},
 
 		events() {
@@ -216,13 +212,8 @@ registerSuite('Radio', {
 			const onValue = sinon.stub();
 			const onFocus = sinon.stub();
 
-			const h = harness(() =>
-				w(Radio, {
-					onBlur,
-					onValue,
-					onFocus
-				})
-			);
+			const h = harness(() => <Radio onBlur={onBlur} onValue={onValue} onFocus={onFocus} />);
+
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
 			h.trigger('input', 'onchange', stubEvent);
