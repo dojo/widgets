@@ -1,0 +1,26 @@
+@import './variables.css';
+
+/* The wrapper around a header */
+.header {
+	display: flex;
+	padding-top: 1rem;
+	align-items: center;
+}
+
+.headerContent {
+	flex: 1 1 auto;
+}
+
+.avatar {
+	margin-right: 1rem;
+	flex: 0 0 auto;
+}
+
+.title {
+	composes: mdc-typography mdc-typography--headline6 from '@material/typography/dist/mdc.typography.css';
+}
+
+.subtitle {
+	composes: mdc-typography mdc-typography--subtitle2 from '@material/typography/dist/mdc.typography.css';
+	color: var(--mdc-theme-text-secondary-on-background);
+}

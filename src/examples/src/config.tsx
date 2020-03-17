@@ -22,6 +22,9 @@ import CardCombined from './widgets/card/CardCombined';
 import CardWithMediaContent from './widgets/card/CardWithMediaContent';
 import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
 import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
+import BasicHeaderCard from './widgets/header-card/Basic';
+import MediaHeaderCard from './widgets/header-card/MediaCard';
+import ActionHeaderCard from './widgets/header-card/ActionCard';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
@@ -345,6 +348,27 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicCard
+				}
+			}
+		},
+		'header-card': {
+			examples: [
+				{
+					title: 'Basic HeaderCard with Action Buttons',
+					module: ActionHeaderCard,
+					filename: 'ActionHeaderCard'
+				},
+				{
+					title: 'Header Card with media',
+					module: MediaHeaderCard,
+					filename: 'MediaHeaderCard'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicHeaderCard
 				}
 			}
 		},
