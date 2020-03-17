@@ -15,13 +15,11 @@
 }
 
 .primary {
-	composes: mdc-top-app-bar__section from '@material/top-app-bar/dist/mdc.top-app-bar.css';
-	composes: mdc-top-app-bar__section--align-start from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+	composes: mdc-top-app-bar__section mdc-top-app-bar__section--align-start from '@material/top-app-bar/dist/mdc.top-app-bar.css';
 }
 
 .secondary {
-	composes: mdc-top-app-bar__section from '@material/top-app-bar/dist/mdc.top-app-bar.css';
-	composes: mdc-top-app-bar__section--align-end from '@material/top-app-bar/dist/mdc.top-app-bar.css';
+	composes: mdc-top-app-bar__section mdc-top-app-bar__section--align-end from '@material/top-app-bar/dist/mdc.top-app-bar.css';
 }
 
 .leading {
