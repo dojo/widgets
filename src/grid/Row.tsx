@@ -1,17 +1,15 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 
-import defaultBundle from './nls/Grid';
 import { ColumnConfig } from './interfaces';
 import Cell from './Cell';
 import * as fixedCss from './styles/row.m.css';
 import * as css from '../theme/default/grid-row.m.css';
 
 export interface RowProperties {
-	/** optional message bundle to override the included bundle */
-	bundle?: typeof defaultBundle;
 	/** identifier for the row */
 	id: number;
 	/** A list of values indexed on the column id */
@@ -29,7 +27,7 @@ export interface RowProperties {
 }
 
 @theme(css)
-export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
+export default class Row extends I18nMixin(ThemedMixin(WidgetBase))<RowProperties> {
 	private _onRowSelect(event: MouseEvent) {
 		const { onRowSelect } = this.properties;
 		const type = event.ctrlKey || event.metaKey ? 'multi' : 'single';
@@ -38,7 +36,7 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 
 	protected render(): DNode {
 		const {
-			bundle,
+			i18nBundle,
 			item,
 			columnConfig,
 			id,
@@ -55,7 +53,7 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 					value = config.renderer({ value });
 				}
 				return w(Cell, {
-					bundle,
+					i18nBundle,
 					theme,
 					key: config.id,
 					classes,

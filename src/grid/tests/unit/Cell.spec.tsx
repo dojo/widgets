@@ -15,10 +15,12 @@ import {
 	isFocusedComparator,
 	noop
 } from '../../../common/tests/support/test-helpers';
-import defaultBundle from '../../nls/Grid';
+import bundle from '../../nls/Grid';
 import * as fixedCss from '../../styles/cell.m.css';
 import * as css from '../../../theme/default/grid-cell.m.css';
 import Cell from '../../Cell';
+
+const { messages } = bundle;
 
 const harness = createHarness([compareId, compareAria, compareAriaDescribedBy]);
 
@@ -59,7 +61,7 @@ const expectedEditing = function() {
 	);
 };
 
-const expectedEditable = function(messages = defaultBundle.messages) {
+const expectedEditable = function() {
 	return v(
 		'div',
 		{
@@ -362,26 +364,5 @@ describe('Cell', () => {
 		h.trigger('@input', 'onKeyDown', Keys.Escape);
 
 		h.expect(expectedEditable);
-	});
-
-	it('should render with a custom message bundle', () => {
-		const bundle = {
-			messages: {
-				...defaultBundle.messages,
-				edit: 'Edit Me'
-			}
-		};
-		const updaterStub = stub();
-		const h = harness(() =>
-			w(Cell, {
-				bundle,
-				value: 'id',
-				rawValue: 'id',
-				updater: updaterStub,
-				editable: true,
-				width: 100
-			})
-		);
-		h.expect(() => expectedEditable(bundle.messages));
 	});
 });

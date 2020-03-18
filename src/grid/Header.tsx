@@ -8,7 +8,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import TextInput from '../text-input/index';
 import Icon from '../icon/index';
 
-import defaultBundle from './nls/Grid';
+import bundle from './nls/Grid';
 import * as css from '../theme/default/grid-header.m.css';
 import * as fixedCss from './styles/header.m.css';
 
@@ -26,8 +26,6 @@ export interface FilterRenderer {
 }
 
 export interface HeaderProperties {
-	/** optional message bundle to override the included bundle */
-	bundle?: typeof defaultBundle;
 	/** Configuration for grid columns (id, title, properties, and custom renderer) */
 	columnConfig: ColumnConfig[];
 	/** Handles changing the sort order of a column */
@@ -76,8 +74,8 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 		direction: undefined | 'asc' | 'desc',
 		sorter: () => void
 	) => {
-		const { bundle, theme, classes } = this.properties;
-		const { format } = this.localizeBundle(bundle || defaultBundle);
+		const { theme, classes } = this.properties;
+		const { format } = this.localizeBundle(bundle);
 		return v('button', { classes: this.theme(css.sort), onclick: sorter }, [
 			w(Icon, {
 				theme,
@@ -96,8 +94,8 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 		doFilter: (value: string) => void,
 		title?: string | DNode
 	) => {
-		const { bundle, theme, classes } = this.properties;
-		const { format } = this.localizeBundle(bundle || defaultBundle);
+		const { theme, classes } = this.properties;
+		const { format } = this.localizeBundle(bundle);
 		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
 		return w(TextInput, {
 			key: 'filter',

@@ -4,7 +4,6 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
-import defaultBundle from '../../nls/Grid';
 import * as css from '../../../theme/default/grid-paginated-footer.m.css';
 import * as fixedCss from '../../styles/paginated-footer.m.css';
 import PaginatedFooter from '../../PaginatedFooter';
@@ -563,25 +562,5 @@ describe('PaginatedFooter', () => {
 				return [];
 			});
 		h.expect(pageControlsTemplate);
-	});
-
-	it('should render with a custom message bundle', () => {
-		const bundle = {
-			messages: {
-				...defaultBundle.messages,
-				resultRange: '{from} – {to} of {total}'
-			}
-		};
-
-		const h = harness(() =>
-			w(PaginatedFooter, {
-				bundle,
-				page: 1,
-				pageSize: 100,
-				total: 10500,
-				onPageChange: noop
-			})
-		);
-		h.expect(baseTemplate.setChildren('~details', () => ['1 – 100 of 10500']));
 	});
 });

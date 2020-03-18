@@ -8,7 +8,6 @@ import { reference } from '@dojo/framework/core/diff';
 import { Store } from '@dojo/framework/stores/Store';
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import Resize from '@dojo/framework/core/meta/Resize';
-import defaultBundle from './nls/Grid';
 import './utils';
 
 import { Fetcher, ColumnConfig, GridState, Updater } from './interfaces';
@@ -45,8 +44,6 @@ export interface CustomRenderers {
 }
 
 export interface GridProperties<S> extends I18nProperties, ThemedProperties {
-	/** optional message bundle to override the included bundle */
-	bundle?: typeof defaultBundle;
 	/** The full configuration for the grid columns */
 	columnConfig: ColumnConfig[];
 	/** function that returns results for the page reflected */
@@ -191,7 +188,7 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 
 	protected render(): DNode {
 		const {
-			bundle,
+			i18nBundle,
 			columnConfig,
 			storeId,
 			theme,
@@ -256,7 +253,7 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 						v('div', { key: 'header-wrapper' }, [
 							w(Header, {
 								key: 'header-row',
-								bundle,
+								i18nBundle,
 								theme,
 								columnWidths: this._columnWidths,
 								classes,
@@ -275,7 +272,7 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 				pagination
 					? w(PaginatedBody, {
 							key: 'paginated-body',
-							bundle,
+							i18nBundle,
 							theme,
 							classes,
 							pages,
@@ -293,7 +290,7 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 					  })
 					: w(Body, {
 							key: 'body',
-							bundle,
+							i18nBundle,
 							theme,
 							classes,
 							pages,
@@ -313,7 +310,7 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 				v('div', { key: 'footer' }, [
 					pagination
 						? w(PaginatedFooter, {
-								bundle,
+								i18nBundle,
 								theme,
 								classes,
 								total: meta.total,
@@ -325,7 +322,7 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 						  })
 						: w(Footer, {
 								key: 'footer-row',
-								bundle,
+								i18nBundle,
 								theme,
 								classes,
 								total: meta.total,

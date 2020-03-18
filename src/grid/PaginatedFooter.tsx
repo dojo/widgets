@@ -3,13 +3,11 @@ import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import { ThemedMixin, theme } from '@dojo/framework/core/mixins/Themed';
 import { v } from '@dojo/framework/core/vdom';
 
-import defaultBundle from './nls/Grid';
+import bundle from './nls/Grid';
 import * as fixedCss from './styles/paginated-footer.m.css';
 import * as css from '../theme/default/grid-paginated-footer.m.css';
 
 export interface PaginatedFooterProperties {
-	/** optional message bundle to override the included bundle */
-	bundle?: typeof defaultBundle;
 	total?: number;
 	page: number;
 	pageSize: number;
@@ -21,8 +19,8 @@ export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
 	PaginatedFooterProperties
 > {
 	private _renderPageControl(page: number) {
-		const { bundle, onPageChange, page: currentPage } = this.properties;
-		const { format } = this.localizeBundle(bundle || defaultBundle);
+		const { onPageChange, page: currentPage } = this.properties;
+		const { format } = this.localizeBundle(bundle);
 		const active = page === currentPage;
 
 		return v(
@@ -112,8 +110,8 @@ export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
 	}
 
 	protected render() {
-		const { bundle, onPageChange, page, total, pageSize } = this.properties;
-		const { format, messages } = this.localizeBundle(bundle || defaultBundle);
+		const { onPageChange, page, total, pageSize } = this.properties;
+		const { format, messages } = this.localizeBundle(bundle);
 		if (total === undefined) {
 			return null;
 		}

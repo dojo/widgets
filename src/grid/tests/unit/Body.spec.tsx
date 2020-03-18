@@ -4,7 +4,6 @@ import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 
-import defaultBundle from '../../nls/Grid';
 import * as fixedCss from '../../styles/body.m.css';
 import * as css from '../../../theme/default/grid-body.m.css';
 import Body from '../../Body';
@@ -92,7 +91,7 @@ describe('Body', () => {
 				w(Row, {
 					id: i,
 					key: i,
-					bundle: undefined,
+					i18nBundle: undefined,
 					item,
 					columnConfig: [] as any,
 					updater: noop,
@@ -193,7 +192,7 @@ describe('Body', () => {
 				w(Row, {
 					id: i,
 					key: i,
-					bundle: undefined,
+					i18nBundle: undefined,
 					item,
 					columnConfig: [] as any,
 					updater: noop,
@@ -443,7 +442,7 @@ describe('Body', () => {
 					w(Row, {
 						id: i,
 						key: i,
-						bundle: undefined,
+						i18nBundle: undefined,
 						item,
 						columnConfig,
 						updater: noop,
@@ -493,67 +492,5 @@ describe('Body', () => {
 				)
 			);
 		});
-	});
-
-	it('should render with a custom message bundle', () => {
-		const bundle = { messages: { ...defaultBundle.messages } };
-		const rows: any[] = [];
-		const page: any[] = [];
-		for (let i = 0; i < 100; i++) {
-			const item = { id: 'id' };
-			page.push(item);
-			rows.push(
-				w(Row, {
-					id: i,
-					key: i,
-					bundle,
-					item,
-					columnConfig: [] as any,
-					updater: noop,
-					classes: undefined,
-					theme: undefined,
-					columnWidths: {},
-					onRowSelect: undefined,
-					selected: false
-				})
-			);
-		}
-
-		const h = harness(() =>
-			w(Body, {
-				bundle,
-				totalRows: 1000,
-				pageSize: 100,
-				height: 400,
-				pages: {
-					'page-1': page
-				},
-				columnConfig: [] as any,
-				fetcher: noop,
-				updater: noop,
-				pageChange: noop,
-				columnWidths: {}
-			})
-		);
-
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
-					role: 'rowgroup',
-					onscroll: noop,
-					styles: { height: '400px' }
-				},
-				[
-					v('div', { styles: {} }, [
-						v('div', { key: 'top', styles: { height: '0px' } }),
-						...rows,
-						v('div', { key: 'bottom', styles: { height: '31500px' } })
-					])
-				]
-			)
-		);
 	});
 });

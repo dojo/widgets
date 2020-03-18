@@ -10,7 +10,6 @@ import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
 
 import Grid from '../../index';
-import defaultBundle from '../../nls/Grid';
 import * as css from '../../../theme/default/grid.m.css';
 import * as fixedCss from '../../styles/grid.m.css';
 import { ColumnConfig } from '../../interfaces';
@@ -78,7 +77,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
-									bundle: undefined,
+									i18nBundle: undefined,
 									columnConfig: filterableConfig,
 									sorter: noop,
 									sort: undefined,
@@ -96,7 +95,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
@@ -116,7 +115,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -180,7 +179,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
-									bundle: undefined,
+									i18nBundle: undefined,
 									columnConfig: filterableConfig,
 									sorter: noop,
 									sort: {
@@ -204,7 +203,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {
 							'page-1': [{ id: 'id' }]
@@ -226,7 +225,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: 100,
 							page: 10,
 							pageSize: 100,
@@ -277,7 +276,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
-									bundle: undefined,
+									i18nBundle: undefined,
 									columnConfig: filterableConfig,
 									sorter: noop,
 									sort: undefined,
@@ -295,7 +294,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
@@ -315,7 +314,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -363,7 +362,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
-									bundle: undefined,
+									i18nBundle: undefined,
 									columnConfig,
 									sorter: noop,
 									sort: undefined,
@@ -381,7 +380,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
@@ -401,7 +400,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -452,7 +451,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
-										bundle: undefined,
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: undefined,
 										sorter: noop,
@@ -471,7 +470,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -491,7 +490,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -533,7 +532,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
-										bundle: undefined,
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: undefined,
 										sorter: noop,
@@ -552,7 +551,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -572,7 +571,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -635,7 +634,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
-										bundle: undefined,
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: {
 											id: 500,
@@ -657,7 +656,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -680,7 +679,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -760,7 +759,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
-										bundle: undefined,
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: {
 											id: 500,
@@ -782,7 +781,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
-						bundle: undefined,
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -805,7 +804,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
-							bundle: undefined,
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -816,97 +815,5 @@ describe('Grid', () => {
 				]
 			)
 		);
-	});
-
-	it('should accept a custom message bundle', () => {
-		const bundle = { messages: { ...defaultBundle.messages } };
-		const store = new Store();
-		const storeSpy = spy(store, 'onChange');
-		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
-		const h = harness(() =>
-			w(MockMetaMixin(Grid, mockMeta), {
-				bundle,
-				fetcher: noop,
-				updater: noop,
-				columnConfig: filterableConfig,
-				store,
-				height: 500
-			})
-		);
-
-		h.expect(() =>
-			v(
-				'div',
-				{
-					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
-					role: 'table',
-					'aria-rowcount': null
-				},
-				[
-					v(
-						'div',
-						{
-							key: 'header',
-							styles: {},
-							classes: [css.header, fixedCss.headerFixed, css.filterGroup],
-							row: 'rowgroup',
-							scrollLeft: 0
-						},
-						[
-							v('div', { key: 'header-wrapper' }, [
-								w(Header, {
-									key: 'header-row',
-									bundle,
-									columnConfig: filterableConfig,
-									sorter: noop,
-									sort: undefined,
-									filter: undefined,
-									filterer: noop,
-									classes: undefined,
-									theme: undefined,
-									filterRenderer: undefined,
-									sortRenderer: undefined,
-									columnWidths: undefined,
-									onColumnResize: noop
-								})
-							])
-						]
-					),
-					w(Body, {
-						key: 'body',
-						bundle,
-						onScroll: noop,
-						pages: {},
-						totalRows: undefined,
-						pageSize: 100,
-						columnConfig: filterableConfig,
-						pageChange: noop,
-						width: undefined,
-						updater: noop,
-						fetcher: noop,
-						height: 300,
-						classes: undefined,
-						theme: undefined,
-						columnWidths: undefined,
-						onRowSelect: undefined,
-						selectedRows: []
-					}),
-					v('div', { key: 'footer' }, [
-						w(Footer, {
-							key: 'footer-row',
-							bundle,
-							total: undefined,
-							page: 1,
-							pageSize: 100,
-							classes: undefined,
-							theme: undefined
-						})
-					])
-				]
-			)
-		);
-
-		assert.isTrue(storeSpy.calledWithMatch(store.path('_grid')));
 	});
 });

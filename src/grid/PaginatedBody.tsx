@@ -1,5 +1,6 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode } from '@dojo/framework/core/interfaces';
 
@@ -7,15 +8,12 @@ import { GridPages, ColumnConfig, SelectionType } from './interfaces';
 import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
 
-import defaultBundle from './nls/Grid';
 import * as fixedCss from './styles/body.m.css';
 import * as css from '../theme/default/grid-body.m.css';
 import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { reference } from '@dojo/framework/core/diff';
 
 export interface PaginatedBodyProperties<S> {
-	/** optional message bundle to override the included bundle */
-	bundle?: typeof defaultBundle;
 	/** The current page number */
 	pageNumber: number;
 	/** A list of paginated grids */
@@ -50,7 +48,9 @@ const defaultPlaceholderRowRenderer = (index: number) => {
 
 @theme(css)
 @diffProperty('pages', reference)
-export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedBodyProperties<S>> {
+export default class PaginatedBody<S> extends I18nMixin(ThemedMixin(WidgetBase))<
+	PaginatedBodyProperties<S>
+> {
 	private _updater(rowNumber: number, columnId: string, value: any) {
 		const page = Math.max(Math.ceil(rowNumber / this.properties.pageSize), 1);
 		const pageItemNumber = rowNumber - (page - 1) * this.properties.pageSize;
@@ -64,7 +64,7 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 
 	private _renderRows() {
 		const {
-			bundle,
+			i18nBundle,
 			pageSize,
 			fetcher,
 			pages,
@@ -91,7 +91,7 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 					w(Row, {
 						id: i,
 						key: i,
-						bundle,
+						i18nBundle,
 						theme,
 						classes,
 						item: data[i],

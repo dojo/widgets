@@ -10,13 +10,11 @@ import TextInput from '../text-input/index';
 import Button from '../button/index';
 import Icon from '../icon/index';
 
-import defaultBundle from './nls/Grid';
+import bundle from './nls/Grid';
 import * as fixedCss from './styles/cell.m.css';
 import * as css from '../theme/default/grid-cell.m.css';
 
 export interface CellProperties extends FocusProperties {
-	/** optional message bundle to override the included bundle */
-	bundle?: typeof defaultBundle;
 	/** The display value (or widget) of the cell */
 	value: string | DNode;
 	/** If the cell's value may be updated */
@@ -92,8 +90,8 @@ export default class Cell extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))
 	}
 
 	protected render(): DNode {
-		let { bundle, editable, rawValue, theme, classes, width } = this.properties;
-		const { format, messages } = this.localizeBundle(bundle || defaultBundle);
+		let { editable, rawValue, theme, classes, width } = this.properties;
+		const { format, messages } = this.localizeBundle(bundle);
 
 		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
 

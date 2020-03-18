@@ -1,11 +1,11 @@
 import global from '@dojo/framework/shim/global';
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode, VNodeProperties } from '@dojo/framework/core/interfaces';
 import renderer from '@dojo/framework/core/vdom';
 
-import defaultBundle from './nls/Grid';
 import { GridPages, ColumnConfig, SelectionType } from './interfaces';
 import PlaceholderRow from './PlaceholderRow';
 import Row from './Row';
@@ -16,8 +16,6 @@ import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
 import { auto, reference } from '@dojo/framework/core/diff';
 
 export interface BodyProperties<S> {
-	/** optional message bundle to override the included bundle */
-	bundle?: typeof defaultBundle;
 	/** The total number of rows */
 	totalRows?: number;
 	/** The number of elements to a page */
@@ -74,7 +72,7 @@ const defaultPlaceholderRowRenderer = (index: number) => {
 
 @theme(css)
 @diffProperty('pages', reference)
-export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> {
+export default class Body<S> extends I18nMixin(ThemedMixin(WidgetBase))<BodyProperties<S>> {
 	private _rowHeight!: number;
 	private _rowsInView!: number;
 	private _renderPageSize!: number;
@@ -115,7 +113,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 
 	private _renderRows(start: number, end: number) {
 		const {
-			bundle,
+			i18nBundle,
 			pageSize,
 			fetcher,
 			pages,
@@ -161,7 +159,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 					w(Row, {
 						id: i,
 						key: i,
-						bundle,
+						i18nBundle,
 						theme,
 						classes,
 						item,
