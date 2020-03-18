@@ -25,19 +25,15 @@ export interface RateProperties {
 }
 
 export interface RateChildren {
-	(
-		fill: boolean,
-		index: number,
-		selected: boolean,
-		hovering: boolean,
-		over: boolean
-	): RenderResult;
+	(fill: boolean, integer: number, selected?: number, over?: number): RenderResult;
 }
 
 interface RateState {
 	hover: string;
 	hovering: boolean;
 }
+
+function numberFromIntegerStep(integer: number, step: number) {}
 
 const icache = createICacheMiddleware<RateState>();
 
@@ -56,12 +52,13 @@ export const Rate = factory(function Rate({
 	const {
 		name,
 		label,
-		initialValue = 0,
+		initialValue: initialInteger = undefined,
 		onValue,
 		max = 5,
 		steps: stepsLength = 1,
 		widgetId = _uuid
 	} = properties();
+	const initialValue = initialInteger ? `${initialInteger}-${stepsLength}` : undefined;
 	const character = children()[0];
 	const hovering = icache.getOrSet('hovering', false);
 
@@ -91,8 +88,8 @@ export const Rate = factory(function Rate({
 
 	const _onValue = (value: string) => {
 		console.log(value);
-		const [base, step] = value.split('-').map((num) => +num);
-		const index = base - 1 + step / stepsLength;
+		const [integer, step] = value.split('-').map((num) => +num);
+		const index = integer - 1 + step / stepsLength;
 		onValue && onValue(index);
 	};
 
@@ -103,7 +100,7 @@ export const Rate = factory(function Rate({
 			onpointerleave={() => icache.set('hovering', false)}
 		>
 			<RadioGroup
-				initialValue={`${initialValue}`}
+				initialValue={initialValue}
 				label={label}
 				name={name}
 				onValue={_onValue}
@@ -134,10 +131,14 @@ export const Rate = factory(function Rate({
 									)
 										.split('-')
 										.map((num) => +num);
+									const selected = selectedValue()
+										? selectedInteger - 1 + selectedStep / stepsLength
+										: undefined;
 									const activeInteger = hovering ? hoverInteger : selectedInteger;
 									const activeStep = hovering ? hoverStep : selectedStep;
-									const selected = integer === selectedInteger;
-									const over = hovering ? integer === hoverInteger : false;
+									const over = hovering
+										? hoverInteger - 1 + hoverStep / stepsLength
+										: undefined;
 									let fill =
 										integer < activeInteger ||
 										(integer === activeInteger && activeStep === stepsLength);
@@ -178,13 +179,7 @@ export const Rate = factory(function Rate({
 															})}
 														</span>
 														{character ? (
-															character(
-																fill,
-																integer,
-																selected,
-																hovering,
-																over
-															)
+															character(fill, integer, selected, over)
 														) : (
 															<Icon
 																classes={{

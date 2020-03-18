@@ -11,14 +11,24 @@ const App = factory(function({ properties, middleware: { icache } }) {
 	return (
 		<virtual>
 			<Rate
-				name="custom"
+				name="character"
 				onValue={(value) => {
-					set('custom', value);
+					set('character', value);
 				}}
 			>
-				{(fill, index) => (fill ? <Icon type="upIcon" /> : <Icon type="downIcon" />)}
+				{(fill, integer, selected, over) => {
+					const styles: Partial<CSSStyleDeclaration> = {
+						borderBottom: `1px solid ${selected === integer ? '#369' : 'transparent'}`,
+						background: over === integer ? '#ccc' : 'transparent'
+					};
+					return (
+						<div styles={styles}>
+							{fill ? <Icon type="upIcon" /> : <Icon type="downIcon" />}
+						</div>
+					);
+				}}
 			</Rate>
-			<pre>{`${get('custom')}`}</pre>
+			<pre>{`${get('character')}`}</pre>
 		</virtual>
 	);
 });

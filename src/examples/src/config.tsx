@@ -145,7 +145,9 @@ import LabelledRangeSlider from './widgets/range-slider/Labelled';
 import ControlledRangeSlider from './widgets/range-slider/Controlled';
 import BasicRate from './widgets/rate/Basic';
 import CustomCharacterRate from './widgets/rate/CustomCharacter';
+import CustomMaxRate from './widgets/rate/CustomMax';
 import HalfRatings from './widgets/rate/HalfRatings';
+import InitialValueRate from './widgets/rate/InitialValue';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
@@ -1016,9 +1018,19 @@ export const config = {
 					module: CustomCharacterRate
 				},
 				{
+					title: 'Custom Max',
+					filename: 'CustomMax',
+					module: CustomMaxRate
+				},
+				{
 					title: 'Half Ratings',
 					filename: 'HalfRatings',
 					module: HalfRatings
+				},
+				{
+					title: 'Has Initial Value',
+					filename: 'InitialValue',
+					module: InitialValueRate
 				}
 			]
 		},
