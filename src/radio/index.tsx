@@ -1,6 +1,5 @@
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import { formatAriaProperties } from '../common/util';
@@ -8,7 +7,7 @@ import Label from '../label';
 import theme, { ThemeProperties } from '../middleware/theme';
 import * as css from '../theme/default/radio.m.css';
 
-interface RadioProperties extends ThemeProperties, FocusProperties {
+export interface RadioProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Checked/unchecked property of the radio */
@@ -17,8 +16,6 @@ interface RadioProperties extends ThemeProperties, FocusProperties {
 	disabled?: boolean;
 	/** Adds a <label> element with the supplied text */
 	label?: string;
-	/** Adds the label element after (true) or before (false) */
-	labelAfter?: boolean;
 	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** The name of the radio button */
@@ -41,21 +38,19 @@ interface RadioProperties extends ThemeProperties, FocusProperties {
 	valid?: boolean;
 	/** The current value */
 	value?: string;
-	/** The id used for the form input element */
+	/** The id used for the form input element. If not passed, one will be generated. */
 	widgetId?: string;
 }
 
 const factory = create({ focus, theme }).properties<RadioProperties>();
 
-export const Radio = factory(function Radio({ properties, middleware: { focus, theme } }) {
-	const _uuid = uuid();
+export const Radio = factory(function Radio({ properties, id, middleware: { focus, theme } }) {
 	const {
 		aria = {},
 		checked = false,
 		classes,
 		disabled,
 		label,
-		labelAfter = true,
 		labelHidden,
 		name,
 		onBlur,
@@ -68,10 +63,11 @@ export const Radio = factory(function Radio({ properties, middleware: { focus, t
 		theme: themeProp,
 		valid,
 		value,
-		widgetId = _uuid
+		widgetId
 	} = properties();
 
 	const themeCss = theme.classes(css);
+	const idBase = widgetId || `radio-${id}`;
 
 	return (
 		<div
@@ -87,26 +83,9 @@ export const Radio = factory(function Radio({ properties, middleware: { focus, t
 				required ? themeCss.required : null
 			]}
 		>
-			{!labelAfter && label ? (
-				<Label
-					key="label"
-					classes={classes}
-					theme={themeProp}
-					disabled={disabled}
-					focused={focus.isFocused('root')}
-					forId={widgetId}
-					valid={valid}
-					readOnly={readOnly}
-					hidden={labelHidden}
-					required={required}
-					secondary={true}
-				>
-					{label}
-				</Label>
-			) : null}
 			<div classes={themeCss.inputWrapper}>
 				<input
-					id={widgetId}
+					id={idBase}
 					{...formatAriaProperties(aria)}
 					classes={themeCss.input}
 					checked={checked}
@@ -134,14 +113,14 @@ export const Radio = factory(function Radio({ properties, middleware: { focus, t
 					<div classes={themeCss.radioInner} />
 				</div>
 			</div>
-			{labelAfter && label ? (
+			{label && (
 				<Label
 					key="labelAfter"
 					classes={classes}
 					theme={themeProp}
 					disabled={disabled}
 					focused={focus.isFocused('root')}
-					forId={widgetId}
+					forId={idBase}
 					valid={valid}
 					readOnly={readOnly}
 					hidden={labelHidden}
@@ -150,7 +129,7 @@ export const Radio = factory(function Radio({ properties, middleware: { focus, t
 				>
 					{label}
 				</Label>
-			) : null}
+			)}
 		</div>
 	);
 });
