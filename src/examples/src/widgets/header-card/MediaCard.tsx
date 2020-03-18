@@ -16,7 +16,7 @@ export default factory(function Basic() {
 				mediaSrc={mediaSrc}
 			>
 				{{
-					content: () => <p>Lorem ipsum</p>
+					content: () => <p styles={{ margin: '0' }}>Lorem ipsum</p>
 				}}
 			</HeaderCard>
 		</div>
