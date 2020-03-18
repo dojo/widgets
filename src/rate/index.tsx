@@ -33,8 +33,6 @@ interface RateState {
 	hovering: boolean;
 }
 
-function numberFromIntegerStep(integer: number, step: number) {}
-
 const icache = createICacheMiddleware<RateState>();
 
 const factory = create({ i18n, icache, theme })
