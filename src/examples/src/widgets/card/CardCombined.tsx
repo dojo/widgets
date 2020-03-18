@@ -17,7 +17,7 @@ export default factory(function CardWithMediaContent() {
 			>
 				{{
 					header: () => <div>Header Content</div>,
-					content: () => <p>Travel the world today.</p>,
+					content: () => <span>Travel the world today.</span>,
 					actionButtons: () => (
 						<virtual>
 							<Button>Read</Button>

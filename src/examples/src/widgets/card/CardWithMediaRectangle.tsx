@@ -9,7 +9,7 @@ export default factory(function CardWithMediaRectangle() {
 		<div styles={{ width: '400px' }}>
 			<Card mediaSrc={mediaSrc} title="Hello, World" subtitle="Lorem ipsum">
 				{{
-					content: () => <p>Content goes here.</p>
+					content: () => <span>Content goes here.</span>
 				}}
 			</Card>
 		</div>

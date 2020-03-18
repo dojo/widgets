@@ -18,6 +18,8 @@
 
 .trigger {
 	composes: mdc-select__anchor from '@material/select/dist/mdc.select.css';
+	border: 0;
+	padding: 0;
 	width: 100%;
 }
 

@@ -30,7 +30,16 @@ const App = factory(function({ properties, middleware: { icache } }) {
 									onValue={checked}
 									value={value}
 								/>
-								<hr />
+								<hr
+									styles={{
+										borderColor: '#d6dde2',
+										borderStyle: 'solid',
+										borderWidth: '1px 0 0',
+										height: '0',
+										margin: '0',
+										overflow: 'hidden'
+									}}
+								/>
 							</virtual>
 						);
 					});

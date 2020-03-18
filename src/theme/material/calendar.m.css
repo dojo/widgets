@@ -10,6 +10,19 @@
 	padding-right: calc(var(--mdc-grid-base) * 2);
 }
 
+.monthTrigger,
+.yearTrigger,
+.previous,
+.next {
+	background: inherit;
+	border: 0;
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	padding: 0;
+}
+
 .monthTrigger {
 	padding-right: calc(var(--mdc-grid-base) * 0.75);
 	padding-left: calc(var(--mdc-grid-base) * 1);

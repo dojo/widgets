@@ -7,9 +7,12 @@
 }
 
 .toggleCalendarButton {
-	min-width: unset;
 	background: none;
 	border: none;
+	color: inherit;
+	font-size: inherit;
+	min-width: unset;
+	padding: 0;
 }
 
 .toggleCalendarButton:hover,

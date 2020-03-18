@@ -12,7 +12,7 @@ export default factory(function ActionButtonsAndIcons({ middleware: { icache } }
 		<div styles={{ width: '400px' }}>
 			<Card title="Hello, World">
 				{{
-					content: () => <p>Lorem ipsum</p>,
+					content: () => <span>Lorem ipsum</span>,
 					actionButtons: () => (
 						<Button onClick={() => icache.set('clickCount', clickCount + 1)}>
 							{clickCount === 0

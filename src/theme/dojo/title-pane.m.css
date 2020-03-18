@@ -15,6 +15,7 @@
 	color: var(--color-text-faded);
 	cursor: pointer;
 	font-size: var(--font-size-base);
+	line-height: var(--line-height-base);
 	padding: var(--grid-base) var(--grid-base) var(--grid-base) calc(var(--grid-base) * 4);
 	position: relative;
 	width: 100%;

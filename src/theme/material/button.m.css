@@ -1,5 +1,15 @@
 @import './variables.css';
 
+.nativeResetRoot {
+	background: none;
+	border: none;
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	padding: 0;
+}
+
 .root {
 	composes: mdc-button from '@material/button/dist/mdc.button.css';
 }

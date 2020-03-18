@@ -5,7 +5,7 @@ import { icache } from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-const App = factory(function({ properties, middleware: { icache } }) {
+const App = factory(function({ middleware: { icache } }) {
 	const { get, set } = icache;
 
 	return (
@@ -30,7 +30,16 @@ const App = factory(function({ properties, middleware: { icache } }) {
 									checked={checked()}
 									onValue={checked}
 								/>
-								<hr />
+								<hr
+									styles={{
+										borderColor: '#d6dde2',
+										borderStyle: 'solid',
+										borderWidth: '1px 0 0',
+										height: '0',
+										margin: '0',
+										overflow: 'hidden'
+									}}
+								/>
 							</virtual>
 						);
 					});

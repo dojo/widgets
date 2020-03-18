@@ -3,6 +3,7 @@ import * as avatar from './avatar.m.css';
 import * as button from './button.m.css';
 import * as card from './card.m.css';
 import * as calendar from './calendar.m.css';
+import * as checkboxGroup from './checkbox-group.m.css';
 import * as checkbox from './checkbox.m.css';
 import * as chip from './chip.m.css';
 import * as combobox from './combobox.m.css';
@@ -29,6 +30,7 @@ import * as menuItem from './menu-item.m.css';
 import * as nativeSelect from './native-select.m.css';
 import * as outlinedButton from './outlined-button.m.css';
 import * as progress from './progress.m.css';
+import * as radioGroup from './radio-group.m.css';
 import * as radio from './radio.m.css';
 import * as raisedButton from './raised-button.m.css';
 import * as rangeSlider from './range-slider.m.css';
@@ -51,6 +53,7 @@ export default {
 	'@dojo/widgets/avatar': avatar,
 	'@dojo/widgets/button': button,
 	'@dojo/widgets/calendar': calendar,
+	'@dojo/widgets/checkbox-group': checkboxGroup,
 	'@dojo/widgets/checkbox': checkbox,
 	'@dojo/widgets/card': card,
 	'@dojo/widgets/chip': chip,
@@ -78,6 +81,7 @@ export default {
 	'@dojo/widgets/native-select': nativeSelect,
 	'@dojo/widgets/outlined-button': outlinedButton,
 	'@dojo/widgets/progress': progress,
+	'@dojo/widgets/radio-group': radioGroup,
 	'@dojo/widgets/radio': radio,
 	'@dojo/widgets/raised-button': raisedButton,
 	'@dojo/widgets/range-slider': rangeSlider,

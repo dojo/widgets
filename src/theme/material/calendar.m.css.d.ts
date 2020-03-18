@@ -1,5 +1,8 @@
 export const root: string;
 export const monthTrigger: string;
+export const yearTrigger: string;
+export const previous: string;
+export const next: string;
 export const datePicker: string;
 export const topMatter: string;
 export const weekday: string;
@@ -9,8 +12,6 @@ export const abbr: string;
 export const selectedDate: string;
 export const todayDate: string;
 export const controls: string;
-export const previous: string;
-export const next: string;
 export const yearRadio: string;
 export const monthRadio: string;
 export const yearRadioChecked: string;

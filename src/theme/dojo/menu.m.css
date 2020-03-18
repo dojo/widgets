@@ -6,3 +6,10 @@
 	border: var(--border-width) solid var(--color-border);
 	background: var(--component-background);
 }
+
+.divider {
+	border-color: var(--color-border);
+	border-style: solid;
+	border-width: 1px 0 0;
+	margin: 0;
+}
