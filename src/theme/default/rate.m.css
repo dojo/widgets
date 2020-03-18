@@ -2,6 +2,7 @@
 }
 
 .label {
+	overflow: visible;
 }
 
 .radio {
@@ -18,6 +19,7 @@
 .characterWrapper {
 	display: inline-block;
 	position: relative;
+	overflow: hidden;
 }
 
 .characterFill {

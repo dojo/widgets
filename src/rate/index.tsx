@@ -1,4 +1,4 @@
-import { RenderResult } from '@dojo/framework/core/interfaces';
+import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import i18n from '@dojo/framework/core/middleware/i18n';
@@ -10,6 +10,7 @@ import * as baseCss from '../common/styles/base.m.css';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/rate.m.css';
 import bundle from './nls/Rate';
+import Label from '@dojo/widgets/label';
 
 export interface RateProperties {
 	/** The name attribute for this rating group */
@@ -45,7 +46,14 @@ export const Rate = factory(function Rate({
 	middleware: { i18n, icache, theme }
 }) {
 	const { format } = i18n.localize(bundle);
-	const { root, radio, characterWrapper, characterFill, partialCharacter } = theme.classes(css);
+	const {
+		root,
+		label: labelClasses,
+		radio,
+		characterWrapper,
+		characterFill,
+		partialCharacter
+	} = theme.classes(css);
 	const _uuid = uuid();
 	const {
 		name,
@@ -80,12 +88,8 @@ export const Rate = factory(function Rate({
 			});
 		}
 	}
-	steps.reverse();
-
-	console.log('options', options);
 
 	const _onValue = (value: string) => {
-		console.log(value);
 		const [integer, step] = value.split('-').map((num) => +num);
 		const index = integer - 1 + step / stepsLength;
 		onValue && onValue(index);
@@ -108,9 +112,96 @@ export const Rate = factory(function Rate({
 						.getOrSet('hover', '0-0')
 						.split('-')
 						.map((num) => +num);
-					console.log('hover', hoverInteger, hoverStep);
 
 					return integers.map((integer) => {
+						const labels: DNode[] = [];
+						const radios: DNode[] = [];
+
+						steps.forEach((step) => {
+							if (integer === 0 && step !== stepsLength) {
+								return;
+							}
+
+							const key = `${integer}-${step}`;
+							const id = `${widgetId}-${name}-${key}`;
+							const { checked, value: selectedValue } = middleware(key);
+							const [selectedInteger, selectedStep] = (selectedValue() || '0-0')
+								.split('-')
+								.map((num) => +num);
+							const selected = selectedValue()
+								? selectedInteger - 1 + selectedStep / stepsLength
+								: undefined;
+							const activeInteger = hovering ? hoverInteger : selectedInteger;
+							const activeStep = hovering ? hoverStep : selectedStep;
+							const over = hovering
+								? hoverInteger - 1 + hoverStep / stepsLength
+								: undefined;
+							let fill =
+								integer < activeInteger ||
+								(integer === activeInteger && activeStep === stepsLength);
+							const styles: Partial<CSSStyleDeclaration> = {};
+							const classes: string[] = [];
+							if (stepsLength > 1) {
+								if (step < stepsLength) {
+									classes.push(partialCharacter);
+									styles.width = `${(step / stepsLength) * 100}%`;
+									if (integer === activeInteger) {
+										fill = step <= activeStep;
+									}
+								}
+							}
+
+							labels.push(
+								<div
+									key={key}
+									styles={styles}
+									classes={classes}
+									onpointerenter={() => icache.set('hover', key)}
+								>
+									<Label
+										forId={id}
+										secondary={true}
+										classes={{
+											'@dojo/widgets/label': { root: [labelClasses] }
+										}}
+									>
+										<virtual>
+											<span classes={baseCss.visuallyHidden}>
+												{format('starLabels', {
+													index: integer
+												})}
+											</span>
+											{character ? (
+												character(fill, integer, selected, over)
+											) : (
+												<Icon
+													classes={{
+														'@dojo/widgets/icon': {
+															icon: [fill ? characterFill : null]
+														}
+													}}
+													type="settingsIcon"
+												/>
+											)}
+										</virtual>
+									</Label>
+								</div>
+							);
+
+							radios.push(
+								<Radio
+									widgetId={id}
+									name={name}
+									checked={checked()}
+									onValue={checked}
+									classes={{
+										'@dojo/widgets/radio': {
+											root: [radio, baseCss.visuallyHidden]
+										}
+									}}
+								/>
+							);
+						});
 						return (
 							<div
 								key={integer}
@@ -118,86 +209,9 @@ export const Rate = factory(function Rate({
 									characterWrapper,
 									integer === 0 ? baseCss.visuallyHidden : null
 								]}
-								styles={{ overflow: 'hidden' }}
 							>
-								{steps.map((step, index, steps) => {
-									const key = `${integer}-${step}`;
-									const id = `${widgetId}-${name}-${key}`;
-									const { checked, value: selectedValue } = middleware(key);
-									const [selectedInteger, selectedStep] = (
-										selectedValue() || '0-0'
-									)
-										.split('-')
-										.map((num) => +num);
-									const selected = selectedValue()
-										? selectedInteger - 1 + selectedStep / stepsLength
-										: undefined;
-									const activeInteger = hovering ? hoverInteger : selectedInteger;
-									const activeStep = hovering ? hoverStep : selectedStep;
-									const over = hovering
-										? hoverInteger - 1 + hoverStep / stepsLength
-										: undefined;
-									let fill =
-										integer < activeInteger ||
-										(integer === activeInteger && activeStep === stepsLength);
-									const styles: Partial<CSSStyleDeclaration> = {};
-									const classes: string[] = [];
-									if (stepsLength > 1) {
-										if (step < stepsLength) {
-											classes.push(partialCharacter);
-											styles.width = `${(step / stepsLength) * 100}%`;
-											if (integer === activeInteger) {
-												fill = step <= activeStep;
-											}
-										}
-									}
-									console.log(`${integer} ${step}/${stepsLength}`, fill, styles);
-
-									return (
-										<div
-											key={key}
-											styles={styles}
-											classes={classes}
-											onpointerenter={() => icache.set('hover', key)}
-										>
-											<Radio
-												widgetId={id}
-												name={name}
-												checked={checked()}
-												onValue={checked}
-												extraClasses={{
-													root: radio,
-													inputWrapper: baseCss.visuallyHidden
-												}}
-												label={
-													<virtual>
-														<span classes={baseCss.visuallyHidden}>
-															{format('starLabels', {
-																index: integer
-															})}
-														</span>
-														{character ? (
-															character(fill, integer, selected, over)
-														) : (
-															<Icon
-																classes={{
-																	'@dojo/widgets/icon': {
-																		icon: [
-																			fill
-																				? characterFill
-																				: null
-																		]
-																	}
-																}}
-																type="settingsIcon"
-															/>
-														)}
-													</virtual>
-												}
-											/>
-										</div>
-									);
-								})}
+								{labels.reverse()}
+								{radios}
 							</div>
 						);
 					});
