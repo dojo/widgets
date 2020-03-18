@@ -145,6 +145,7 @@ import LabelledRangeSlider from './widgets/range-slider/Labelled';
 import ControlledRangeSlider from './widgets/range-slider/Controlled';
 import BasicRate from './widgets/rate/Basic';
 import CustomCharacterRate from './widgets/rate/CustomCharacter';
+import HalfRatings from './widgets/rate/HalfRatings';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
@@ -1013,6 +1014,11 @@ export const config = {
 					title: 'Custom Character',
 					filename: 'CustomCharacter',
 					module: CustomCharacterRate
+				},
+				{
+					title: 'Half Ratings',
+					filename: 'HalfRatings',
+					module: HalfRatings
 				}
 			]
 		},

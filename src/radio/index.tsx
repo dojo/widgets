@@ -1,3 +1,4 @@
+import { DNode } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { create, tsx } from '@dojo/framework/core/vdom';

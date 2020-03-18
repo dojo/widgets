@@ -1,33 +1,25 @@
 .root {
 }
 
-.root .label {
-	color: #fadb14;
+.label {
 }
 
-.root .input:checked ~ .label {
-	color: inherit;
+.radio {
+	padding: 0;
 }
 
-.root .input:checked + .label {
-	color: #fadb14;
+.partialCharacter {
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
-.root:hover .input + .label {
-	color: #fadb14;
-}
-
-.root .input:hover ~ .label {
-	color: inherit;
-}
-
-.root .input:hover + .label {
-	color: #fadb14;
-}
-
-.legend {
+.characterWrapper {
+	display: inline-block;
+	position: relative;
 }
 
 .characterFill {
-	/*color: #fadb14;*/
+	color: #fadb14;
 }
