@@ -5,7 +5,7 @@ import { icache } from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 
-const App = factory(function({ properties, middleware: { icache } }) {
+const App = factory(function({ middleware: { icache } }) {
 	const { get, set } = icache;
 
 	return (
@@ -17,7 +17,8 @@ const App = factory(function({ properties, middleware: { icache } }) {
 				onValue={(value) => {
 					set('custom', value);
 				}}
-				renderer={(name, radioGroup, options) => {
+			>
+				{(name, radioGroup, options) => {
 					return options.map(({ value, label }) => {
 						const { checked } = radioGroup(value);
 						return (
@@ -44,7 +45,7 @@ const App = factory(function({ properties, middleware: { icache } }) {
 						);
 					});
 				}}
-			/>
+			</RadioGroup>
 			<pre>{`${get('custom')}`}</pre>
 		</virtual>
 	);

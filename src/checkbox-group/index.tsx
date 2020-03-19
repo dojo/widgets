@@ -7,7 +7,7 @@ import * as css from '../theme/default/checkbox-group.m.css';
 
 type CheckboxOptions = { value: string; label?: string }[];
 
-interface CheckboxGroupProperties {
+export interface CheckboxGroupProperties {
 	/** The name attribute for this form group */
 	name: string;
 	/** The label to be displayed in the legend */
@@ -16,29 +16,36 @@ interface CheckboxGroupProperties {
 	options: CheckboxOptions;
 	/** Callback for the current value */
 	onValue(value: string[]): void;
-	/** Custom renderer for the checkboxes, receives the checkbox group middleware and options */
-	renderer?(
-		name: string,
-		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,
-		options: CheckboxOptions
-	): RenderResult;
 	/** Initial value of the checkbox group */
 	initialValue?: string[];
 }
 
-const factory = create({ checkboxGroup, theme }).properties<CheckboxGroupProperties>();
+export interface CheckboxGroupChildren {
+	/** Custom renderer for the checkboxes, receives the checkbox group middleware and options */
+	(
+		name: string,
+		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,
+		options: CheckboxOptions
+	): RenderResult;
+}
+
+const factory = create({ checkboxGroup, theme })
+	.properties<CheckboxGroupProperties>()
+	.children<CheckboxGroupChildren | undefined>();
 
 export const CheckboxGroup = factory(function({
+	children,
 	properties,
 	middleware: { checkboxGroup, theme }
 }) {
-	const { name, label, options, renderer, onValue, initialValue } = properties();
+	const { name, label, options, onValue, initialValue } = properties();
+	const [renderer] = children();
 
 	const checkbox = checkboxGroup(onValue, initialValue);
 	const { root, legend } = theme.classes(css);
 
 	function renderCheckboxes() {
-		if (renderer) {
+		if (typeof renderer === 'function') {
 			return renderer(name, checkbox, options);
 		}
 		return options.map(({ value, label }) => {

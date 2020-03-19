@@ -17,7 +17,8 @@ const App = factory(function({ middleware: { icache } }) {
 				onValue={(value) => {
 					set('custom', value);
 				}}
-				renderer={(name, checkboxGroup, options) => {
+			>
+				{(name, checkboxGroup, options) => {
 					return options.map(({ value, label }) => {
 						const { checked } = checkboxGroup(value);
 						return (
@@ -44,7 +45,7 @@ const App = factory(function({ middleware: { icache } }) {
 						);
 					});
 				}}
-			/>
+			</CheckboxGroup>
 			<pre>{`${get('custom')}`}</pre>
 		</virtual>
 	);

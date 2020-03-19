@@ -69,7 +69,8 @@ describe('RadioGroup', () => {
 				name="test"
 				onValue={noop}
 				options={[{ value: 'cat' }]}
-				renderer={() => {
+			>
+				{() => {
 					return [
 						<span>custom label</span>,
 						<Radio
@@ -82,7 +83,7 @@ describe('RadioGroup', () => {
 						<hr />
 					];
 				}}
-			/>
+			</RadioGroup>
 		));
 		const customTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>custom render label</legend>,
