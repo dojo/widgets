@@ -91,6 +91,7 @@ describe('Body', () => {
 				w(Row, {
 					id: i,
 					key: i,
+					i18nBundle: undefined,
 					item,
 					columnConfig: [] as any,
 					updater: noop,
@@ -191,6 +192,7 @@ describe('Body', () => {
 				w(Row, {
 					id: i,
 					key: i,
+					i18nBundle: undefined,
 					item,
 					columnConfig: [] as any,
 					updater: noop,
@@ -440,6 +442,7 @@ describe('Body', () => {
 					w(Row, {
 						id: i,
 						key: i,
+						i18nBundle: undefined,
 						item,
 						columnConfig,
 						updater: noop,

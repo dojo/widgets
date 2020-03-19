@@ -1,8 +1,10 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v } from '@dojo/framework/core/vdom';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode } from '@dojo/framework/core/interfaces';
 
+import bundle from './nls/Grid';
 import * as css from '../theme/default/grid-footer.m.css';
 
 export interface FooterProperties {
@@ -15,13 +17,18 @@ export interface FooterProperties {
 }
 
 @theme(css)
-export default class Footer extends ThemedMixin(WidgetBase)<FooterProperties> {
+export default class Footer extends I18nMixin(ThemedMixin(WidgetBase))<FooterProperties> {
 	protected render(): DNode {
 		const { total, page, pageSize } = this.properties;
+		const { format } = this.localizeBundle(bundle);
 		const footer =
 			total !== undefined
-				? `Page ${page} of ${Math.ceil(total / pageSize)}. Total rows ${total}`
-				: `Page ${page} of ?`;
+				? format('pageOfTotal', {
+						page,
+						totalPages: Math.ceil(total / pageSize),
+						totalRows: total
+				  })
+				: format('pageOfUnknownTotal', { page });
 		return v('div', { classes: this.theme(css.root) }, [footer]);
 	}
 }

@@ -77,6 +77,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
+									i18nBundle: undefined,
 									columnConfig: filterableConfig,
 									sorter: noop,
 									sort: undefined,
@@ -94,6 +95,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
@@ -113,6 +115,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -176,6 +179,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
+									i18nBundle: undefined,
 									columnConfig: filterableConfig,
 									sorter: noop,
 									sort: {
@@ -199,6 +203,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {
 							'page-1': [{ id: 'id' }]
@@ -220,6 +225,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: 100,
 							page: 10,
 							pageSize: 100,
@@ -270,6 +276,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
+									i18nBundle: undefined,
 									columnConfig: filterableConfig,
 									sorter: noop,
 									sort: undefined,
@@ -287,6 +294,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
@@ -306,6 +314,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -353,6 +362,7 @@ describe('Grid', () => {
 							v('div', { key: 'header-wrapper' }, [
 								w(Header, {
 									key: 'header-row',
+									i18nBundle: undefined,
 									columnConfig,
 									sorter: noop,
 									sort: undefined,
@@ -370,6 +380,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						onScroll: noop,
 						pages: {},
 						totalRows: undefined,
@@ -389,6 +400,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -439,6 +451,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: undefined,
 										sorter: noop,
@@ -457,6 +470,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -476,6 +490,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -517,6 +532,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: undefined,
 										sorter: noop,
@@ -535,6 +551,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -554,6 +571,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -616,6 +634,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: {
 											id: 500,
@@ -637,6 +656,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -659,6 +679,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,
@@ -738,6 +759,7 @@ describe('Grid', () => {
 								[
 									w(Header, {
 										key: 'header-row',
+										i18nBundle: undefined,
 										columnConfig,
 										columnWidths: {
 											id: 500,
@@ -759,6 +781,7 @@ describe('Grid', () => {
 					),
 					w(Body, {
 						key: 'body',
+						i18nBundle: undefined,
 						pages: {},
 						totalRows: undefined,
 						pageSize: 100,
@@ -781,6 +804,7 @@ describe('Grid', () => {
 					v('div', { key: 'footer' }, [
 						w(Footer, {
 							key: 'footer-row',
+							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
 							pageSize: 100,

@@ -55,6 +55,7 @@ describe('PaginatedBody', () => {
 				w(Row, {
 					id: i,
 					key: i,
+					i18nBundle: undefined,
 					item,
 					columnConfig: [],
 					updater: noop,
@@ -107,6 +108,7 @@ describe('PaginatedBody', () => {
 				w(Row, {
 					id: i,
 					key: i,
+					i18nBundle: undefined,
 					item,
 					columnConfig: [],
 					updater: noop,
@@ -173,6 +175,7 @@ describe('PaginatedBody', () => {
 				w(Row, {
 					id: i,
 					key: i,
+					i18nBundle: undefined,
 					item,
 					columnConfig,
 					updater: noop,
@@ -231,6 +234,7 @@ describe('PaginatedBody', () => {
 				w(Row, {
 					id: i,
 					key: i,
+					i18nBundle: undefined,
 					item,
 					columnConfig,
 					updater: noop,

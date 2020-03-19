@@ -59,6 +59,7 @@ describe('Row', () => {
 				},
 				[
 					w(Cell, {
+						i18nBundle: undefined,
 						key: 'id',
 						updater: noop,
 						value: 'id',
@@ -100,6 +101,7 @@ describe('Row', () => {
 				},
 				[
 					w(Cell, {
+						i18nBundle: undefined,
 						key: 'id',
 						updater: noop,
 						value: 'transformed',
@@ -145,6 +147,7 @@ describe('Row', () => {
 				},
 				[
 					w(Cell, {
+						i18nBundle: undefined,
 						key: 'id',
 						updater: noop,
 						value: 'transformed',

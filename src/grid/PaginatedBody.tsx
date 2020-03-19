@@ -1,5 +1,6 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode } from '@dojo/framework/core/interfaces';
 
@@ -47,7 +48,9 @@ const defaultPlaceholderRowRenderer = (index: number) => {
 
 @theme(css)
 @diffProperty('pages', reference)
-export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedBodyProperties<S>> {
+export default class PaginatedBody<S> extends I18nMixin(ThemedMixin(WidgetBase))<
+	PaginatedBodyProperties<S>
+> {
 	private _updater(rowNumber: number, columnId: string, value: any) {
 		const page = Math.max(Math.ceil(rowNumber / this.properties.pageSize), 1);
 		const pageItemNumber = rowNumber - (page - 1) * this.properties.pageSize;
@@ -61,6 +64,7 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 
 	private _renderRows() {
 		const {
+			i18nBundle,
 			pageSize,
 			fetcher,
 			pages,
@@ -87,6 +91,7 @@ export default class PaginatedBody<S> extends ThemedMixin(WidgetBase)<PaginatedB
 					w(Row, {
 						id: i,
 						key: i,
+						i18nBundle,
 						theme,
 						classes,
 						item: data[i],

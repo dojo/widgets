@@ -1,5 +1,6 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
+import I18nMixin, { I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import diffProperty from '@dojo/framework/core/decorators/diffProperty';
 import { DNode } from '@dojo/framework/core/interfaces';
@@ -42,7 +43,7 @@ export interface CustomRenderers {
 	filterRenderer?: FilterRenderer;
 }
 
-export interface GridProperties<S> extends ThemedProperties {
+export interface GridProperties<S> extends I18nProperties, ThemedProperties {
 	/** The full configuration for the grid columns */
 	columnConfig: ColumnConfig[];
 	/** function that returns results for the page reflected */
@@ -66,7 +67,7 @@ export interface GridProperties<S> extends ThemedProperties {
 const MIN_COLUMN_WIDTH = 100;
 
 @theme(css)
-export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> {
+export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProperties<S>> {
 	private _store = new Store<GridState<S>>();
 	private _handle: any;
 	private _scrollLeft = 0;
@@ -187,6 +188,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 
 	protected render(): DNode {
 		const {
+			i18nBundle,
 			columnConfig,
 			storeId,
 			theme,
@@ -251,6 +253,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 						v('div', { key: 'header-wrapper' }, [
 							w(Header, {
 								key: 'header-row',
+								i18nBundle,
 								theme,
 								columnWidths: this._columnWidths,
 								classes,
@@ -269,6 +272,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				pagination
 					? w(PaginatedBody, {
 							key: 'paginated-body',
+							i18nBundle,
 							theme,
 							classes,
 							pages,
@@ -286,6 +290,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 					  })
 					: w(Body, {
 							key: 'body',
+							i18nBundle,
 							theme,
 							classes,
 							pages,
@@ -305,6 +310,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				v('div', { key: 'footer' }, [
 					pagination
 						? w(PaginatedFooter, {
+								i18nBundle,
 								theme,
 								classes,
 								total: meta.total,
@@ -316,6 +322,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 						  })
 						: w(Footer, {
 								key: 'footer-row',
+								i18nBundle,
 								theme,
 								classes,
 								total: meta.total,

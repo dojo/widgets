@@ -1,6 +1,7 @@
 import global from '@dojo/framework/shim/global';
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { DNode, VNodeProperties } from '@dojo/framework/core/interfaces';
 import renderer from '@dojo/framework/core/vdom';
@@ -71,7 +72,7 @@ const defaultPlaceholderRowRenderer = (index: number) => {
 
 @theme(css)
 @diffProperty('pages', reference)
-export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> {
+export default class Body<S> extends I18nMixin(ThemedMixin(WidgetBase))<BodyProperties<S>> {
 	private _rowHeight!: number;
 	private _rowsInView!: number;
 	private _renderPageSize!: number;
@@ -112,6 +113,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 
 	private _renderRows(start: number, end: number) {
 		const {
+			i18nBundle,
 			pageSize,
 			fetcher,
 			pages,
@@ -157,6 +159,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 					w(Row, {
 						id: i,
 						key: i,
+						i18nBundle,
 						theme,
 						classes,
 						item,

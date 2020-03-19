@@ -1,12 +1,14 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
 import Drag from '@dojo/framework/core/meta/Drag';
+import I18nMixin from '@dojo/framework/core/mixins/I18n';
 import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
 import { ColumnConfig, SortOptions } from './interfaces';
 import { DNode } from '@dojo/framework/core/interfaces';
 import TextInput from '../text-input/index';
 import Icon from '../icon/index';
 
+import bundle from './nls/Grid';
 import * as css from '../theme/default/grid-header.m.css';
 import * as fixedCss from './styles/header.m.css';
 
@@ -47,7 +49,7 @@ export interface HeaderProperties {
 }
 
 @theme(css)
-export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
+export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderProperties> {
 	private _getColumnTitle(column: ColumnConfig): string | DNode {
 		if (typeof column.title === 'function') {
 			return column.title();
@@ -73,12 +75,15 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 		sorter: () => void
 	) => {
 		const { theme, classes } = this.properties;
+		const { format } = this.localizeBundle(bundle);
 		return v('button', { classes: this.theme(css.sort), onclick: sorter }, [
 			w(Icon, {
 				theme,
 				classes,
 				type: direction === 'asc' ? 'upIcon' : 'downIcon',
-				altText: `Sort by ${this._getColumnTitle(column)}`
+				altText: format('sortBy', {
+					name: this._getColumnTitle(column)
+				})
 			})
 		]);
 	};
@@ -90,6 +95,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 		title?: string | DNode
 	) => {
 		const { theme, classes } = this.properties;
+		const { format } = this.localizeBundle(bundle);
 		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
 		return w(TextInput, {
 			key: 'filter',
@@ -103,7 +109,7 @@ export default class Header extends ThemedMixin(WidgetBase)<HeaderProperties> {
 					...passedInputClasses
 				}
 			},
-			label: `Filter by ${title}`,
+			label: format('filterBy', { name: title }),
 			labelHidden: true,
 			type: 'search',
 			initialValue: filterValue,
