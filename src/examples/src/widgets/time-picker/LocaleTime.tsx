@@ -4,5 +4,5 @@ import TimePicker from '@dojo/widgets/time-picker';
 const factory = create();
 
 export default factory(function Basic() {
-	return <TimePicker label="Time: " step={1800} format="12" />;
+	return <TimePicker label="Time: " step={1800} format="locale" />;
 });

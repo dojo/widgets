@@ -1,21 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
 import TimePicker from '@dojo/widgets/time-picker';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Basic({ middleware: { icache } }) {
-	const { get, set } = icache;
-	return (
-		<TimePicker
-			inputProperties={{
-				placeholder: 'Enter a value'
-			}}
-			isOptionDisabled={(option) => option.hour >= 12}
-			label="Time: "
-			value={get<string>('date')}
-			onValue={(value) => set('date', value)}
-			step={3600}
-		/>
-	);
+export default factory(function Basic() {
+	return <TimePicker label="Time: " step={3600} timeDisabled={(time) => time.getHours() > 12} />;
 });
