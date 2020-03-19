@@ -99,12 +99,9 @@ describe('Menu - Menu', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<Menu
-				onValue={noop}
-				options={animalOptions}
-				itemRenderer={({ label, value }) => <span>label is {label || value}</span>}
-				total={animalOptions.length}
-			/>
+			<Menu onValue={noop} options={animalOptions} total={animalOptions.length}>
+				{({ label, value }) => <span>label is {label || value}</span>}
+			</Menu>
 		));
 		const itemRendererTemplate = template.setChildren('@transformer', () =>
 			animalOptions.map(({ value, label, disabled = false }, index) => {
@@ -304,13 +301,9 @@ describe('Menu - ListBox', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<Menu
-				onValue={noop}
-				options={animalOptions}
-				total={animalOptions.length}
-				listBox
-				itemRenderer={({ label, value }) => <span>label is {label || value}</span>}
-			/>
+			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} listBox>
+				{({ label, value }) => <span>label is {label || value}</span>}
+			</Menu>
 		));
 		const itemRendererTemplate = template.setChildren('@transformer', () =>
 			animalOptions.map(({ value, label, disabled = false }, index) => {

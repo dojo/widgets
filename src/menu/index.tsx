@@ -38,12 +38,15 @@ export interface MenuProperties {
 	onBlur?(): void;
 	/** Property to determine how many items to render. Not passing a number will render all results */
 	itemsInView?: number;
-	/** Custom renderer for item contents */
-	itemRenderer?(properties: ItemRendererProperties): RenderResult;
 	/** Property to determine if this menu is being used as a listbox, changes a11y and item type */
 	listBox?: boolean;
 	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
 	widgetId?: string;
+}
+
+export interface MenuChildren {
+	/** Custom renderer for item contents */
+	(properties: ItemRendererProperties): RenderResult;
 }
 
 export interface ItemRendererProperties {
@@ -82,9 +85,12 @@ const factory = create({
 	icache: createICacheMiddleware<MenuICache>(),
 	focus,
 	theme
-}).properties<MenuProperties>();
+})
+	.properties<MenuProperties>()
+	.children<MenuChildren | undefined>();
 
 export const Menu = factory(function Menu({
+	children,
 	properties,
 	id,
 	middleware: { icache, focus, theme }
@@ -93,7 +99,6 @@ export const Menu = factory(function Menu({
 		activeIndex,
 		focusable = true,
 		initialValue,
-		itemRenderer,
 		itemsInView = 10,
 		listBox = false,
 		onActiveIndexChange,
@@ -106,6 +111,7 @@ export const Menu = factory(function Menu({
 		total,
 		theme: themeProp
 	} = properties();
+	const [itemRenderer] = children();
 
 	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {

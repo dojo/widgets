@@ -14,7 +14,8 @@ export default factory(function CustomRenderer({ middleware: { icache } }) {
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-				itemRenderer={({ selected, value }) => {
+			>
+				{({ selected, value }) => {
 					return (
 						<div>
 							{selected && <span>✅ </span>}
@@ -22,7 +23,7 @@ export default factory(function CustomRenderer({ middleware: { icache } }) {
 						</div>
 					);
 				}}
-			/>
+			</Select>
 			<pre>{icache.getOrSet('value', '')}</pre>
 		</virtual>
 	);

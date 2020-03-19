@@ -13,13 +13,14 @@ export default factory(function ItemRenderer({ middleware: { icache } }) {
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-				itemRenderer={({ value }) => {
+				itemsInView={8}
+				total={states.length}
+			>
+				{({ value }) => {
 					const color = value.length > 7 ? 'red' : 'blue';
 					return <div styles={{ color: color }}>{value}</div>;
 				}}
-				itemsInView={8}
-				total={states.length}
-			/>
+			</Menu>
 			<p>{`Clicked On: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
 	);
