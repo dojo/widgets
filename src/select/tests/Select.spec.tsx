@@ -70,7 +70,6 @@ const menuTemplate = assertionTemplate(() => (
 			onBlur={() => {}}
 			initialValue={undefined}
 			itemsInView={6}
-			itemRenderer={undefined}
 			theme={{}}
 			classes={undefined}
 			listBox

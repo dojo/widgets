@@ -69,7 +69,8 @@ describe('CheckboxGroup', () => {
 				name="test"
 				label="custom render label"
 				options={[{ value: 'cat' }]}
-				renderer={() => {
+			>
+				{() => {
 					return [
 						<span>custom label</span>,
 						<Checkbox
@@ -82,7 +83,7 @@ describe('CheckboxGroup', () => {
 						<hr />
 					];
 				}}
-			/>
+			</CheckboxGroup>
 		));
 		const customTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>custom render label</legend>,

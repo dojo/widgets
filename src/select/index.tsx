@@ -18,7 +18,7 @@ import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './select.nls';
 
-interface SelectProperties {
+export interface SelectProperties {
 	/** Callback called when user selects a value */
 	onValue(value: string): void;
 	/** The initial selected value */
@@ -27,8 +27,6 @@ interface SelectProperties {
 	options: MenuOption[];
 	/** Property to determine how many items to render. Defaults to 6 */
 	itemsInView?: number;
-	/** Custom renderer for item contents */
-	itemRenderer?(properties: ItemRendererProperties): RenderResult;
 	/** placement of the select menu; 'above' or 'below' */
 	position?: PopupPosition;
 	/** Placeholder value to show when nothing has been selected */
@@ -47,6 +45,11 @@ interface SelectProperties {
 	name?: string;
 }
 
+export interface SelectChildren {
+	/** Custom renderer for item contents */
+	(properties: ItemRendererProperties): RenderResult;
+}
+
 interface SelectICache {
 	dirty: boolean;
 	expanded: boolean;
@@ -60,9 +63,12 @@ interface SelectICache {
 
 const icache = createICacheMiddleware<SelectICache>();
 
-const factory = create({ icache, focus, theme, i18n }).properties<SelectProperties>();
+const factory = create({ icache, focus, theme, i18n })
+	.properties<SelectProperties>()
+	.children<SelectChildren | undefined>();
 
 export const Select = factory(function Select({
+	children,
 	properties,
 	middleware: { icache, focus, theme, i18n }
 }) {
@@ -71,7 +77,6 @@ export const Select = factory(function Select({
 		disabled,
 		helperText,
 		initialValue,
-		itemRenderer,
 		itemsInView = 6,
 		label,
 		onValidate,
@@ -82,6 +87,7 @@ export const Select = factory(function Select({
 		required,
 		name
 	} = properties();
+	const [itemRenderer] = children();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);
@@ -224,7 +230,6 @@ export const Select = factory(function Select({
 									onBlur={closeMenu}
 									initialValue={value}
 									itemsInView={itemsInView}
-									itemRenderer={itemRenderer}
 									theme={theme.compose(
 										menuCss,
 										css,
@@ -233,7 +238,9 @@ export const Select = factory(function Select({
 									classes={classes}
 									listBox
 									widgetId={menuId}
-								/>
+								>
+									{itemRenderer}
+								</Menu>
 							</div>
 						);
 					}
