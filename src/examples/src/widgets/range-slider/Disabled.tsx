@@ -1,9 +1,8 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
 import RangeSlider from '@dojo/widgets/range-slider';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function DisabledRangeSlider({ middleware: { icache } }) {
-	return <RangeSlider min={0} max={100} value={{ min: 20, max: 80 }} disabled />;
+export default factory(function DisabledRangeSlider() {
+	return <RangeSlider initialValue={{ min: 20, max: 80 }} disabled />;
 });

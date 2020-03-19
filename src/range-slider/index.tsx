@@ -62,7 +62,7 @@ export interface RangeSliderProperties {
 	/** If the values provided by the slider are valid */
 	valid?: boolean;
 	/** The current vlaue */
-	value?: RangeValue;
+	initialValue?: RangeValue;
 	/** The id used for the form input element */
 	widgetId?: string;
 }
@@ -84,18 +84,17 @@ export const RangeSlider = factory(function RangeSlider({
 	middleware: { dimensions, focus, icache, theme },
 	properties
 }) {
+	const { name = '', max: maxRestraint = 100, min: minRestraint = 0 } = properties();
+
 	const {
-		name = '',
 		aria = {},
 		classes,
 		disabled,
 		label,
 		labelAfter,
 		labelHidden,
-		max: maxRestraint = 100,
 		maxName = `${name}_max`,
 		maximumLabel = 'Maximum',
-		min: minRestraint = 0,
 		minName = `${name}_min`,
 		minimumLabel = 'Minimum',
 		onBlur,
@@ -111,12 +110,26 @@ export const RangeSlider = factory(function RangeSlider({
 		step = 1,
 		theme: themeProp,
 		valid,
-		value = {
+		initialValue = {
 			max: maxRestraint,
 			min: minRestraint
 		},
 		widgetId = `range-slider-${id}`
 	} = properties();
+
+	let value = icache.get('value');
+	const existingInitialValue = icache.get('initialValue');
+
+	if (
+		!existingInitialValue ||
+		initialValue.min !== existingInitialValue.min ||
+		initialValue.max !== existingInitialValue.max
+	) {
+		icache.set('value', initialValue);
+		icache.set('initialValue', initialValue);
+		value = initialValue;
+		onValue && onValue(initialValue);
+	}
 
 	const themeCss = theme.classes(css);
 	const size = dimensions.get('root');
@@ -124,8 +137,8 @@ export const RangeSlider = factory(function RangeSlider({
 	const maxLabelId = `max-label-${id}`;
 	const minLabelId = `min-label-${id}`;
 
-	const min = Math.max(value.min, minRestraint);
-	const max = Math.min(value.max, maxRestraint);
+	const min = Math.max((value || initialValue).min, minRestraint);
+	const max = Math.min((value || initialValue).max, maxRestraint);
 	const slider1Percent = (min - minRestraint) / (maxRestraint - minRestraint);
 	const slider2Percent = (max - minRestraint) / (maxRestraint - minRestraint);
 	const slider1Size = slider1Percent + (slider2Percent - slider1Percent) / 2;
@@ -158,17 +171,13 @@ export const RangeSlider = factory(function RangeSlider({
 	});
 
 	const onInput = (event: Event, isMinEvent: boolean) => {
-		if (!onValue) {
-			return;
-		}
-
 		event.stopPropagation();
 		const value = (event.target as HTMLInputElement).value;
 		const returnValues: RangeValue = isMinEvent
 			? { min: Math.min(parseFloat(value), max), max }
 			: { min, max: Math.max(min, parseFloat(value)) };
-
-		onValue(returnValues);
+		icache.set('value', returnValues);
+		onValue && onValue(returnValues);
 	};
 
 	const slider1 = (
