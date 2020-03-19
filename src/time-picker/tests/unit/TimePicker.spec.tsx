@@ -1,441 +1,137 @@
-const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
-
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import { tsx } from '@dojo/framework/core/vdom';
+import TimePicker from '../../index';
+import Select from '../../../select';
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/core/vdom';
-import Focus from '../../../meta/Focus';
-import * as sinon from 'sinon';
-import TimePicker, { getOptions, parseUnits } from '../../index';
-import * as css from '../../../theme/default/time-picker.m.css';
-import ComboBox from '../../../combobox/index';
-import Label from '../../../label/index';
-import {
-	noop,
-	compareId,
-	compareWidgetId,
-	compareForId,
-	MockMetaMixin
-} from '../../../common/tests/support/test-helpers';
+import { MenuOption } from '@dojo/widgets/menu';
+import { padStart } from '@dojo/framework/shim/string';
+import { compareTheme } from '../../../common/tests/support/test-helpers';
+import * as selectCss from '../../../theme/default/select.m.css';
 
-const testProperties = {
-	clearable: true,
-	disabled: false,
-	widgetId: 'foo',
-	valid: false,
-	label: 'Some Field',
-	openOnFocus: false,
-	readOnly: false,
-	required: true,
-	value: 'some value'
-};
+const { registerSuite } = intern.getInterface('object');
 
-const getExpectedCombobox = function(useTestProperties = false, results?: any[]) {
-	results = results ? results : getOptions();
-	return w(ComboBox, {
-		key: 'combo',
-		clearable: useTestProperties ? true : undefined,
-		disabled: useTestProperties ? false : undefined,
-		getResultLabel: noop,
-		widgetId: useTestProperties ? 'foo' : '',
-		focus: noop,
-		inputProperties: undefined,
-		valid: useTestProperties ? false : undefined,
-		isResultDisabled: undefined,
-		label: useTestProperties ? 'Some Field' : undefined,
-		labelHidden: undefined,
-		onBlur: noop,
-		onValue: noop,
-		onFocus: noop,
-		onOut: noop,
-		onOver: noop,
-		onMenuChange: noop,
-		onRequestResults: noop,
-		openOnFocus: useTestProperties ? false : undefined,
-		extraClasses: undefined,
-		readOnly: useTestProperties ? false : undefined,
-		required: useTestProperties ? true : undefined,
-		results,
-		theme: undefined,
-		classes: undefined,
-		value: useTestProperties ? 'some value' : undefined
-	});
-};
+function generateOptions(step: number, dateOptions: Intl.DateTimeFormatOptions = {}) {
+	const options: MenuOption[] = [];
+
+	const dt = new Date(1970, 0, 1, 0, 0, 0, 0);
+	while (dt.getDate() === 1) {
+		const value = `${padStart(String(dt.getHours()), 2, '0')}:${padStart(
+			String(dt.getMinutes()),
+			2,
+			'0'
+		)}:${padStart(String(dt.getSeconds()), 2, '0')}`;
+
+		options.push({
+			label: dt.toLocaleTimeString(undefined, dateOptions),
+			value,
+			disabled: false
+		});
+
+		dt.setSeconds(dt.getSeconds() + step);
+	}
+
+	return options;
+}
+
+const options30Minutes = generateOptions(1800, {
+	hour12: false,
+	hour: 'numeric',
+	minute: 'numeric'
+});
+
+const baseAssertion = assertionTemplate(() => (
+	<Select
+		key="root"
+		initialValue={undefined}
+		options={options30Minutes}
+		onValue={() => undefined}
+		required={undefined}
+		disabled={undefined}
+		label={undefined}
+		name={undefined}
+		focus={undefined}
+		onValidate={undefined}
+		theme={{ '@dojo/widgets/select': selectCss }}
+	/>
+));
 
 registerSuite('TimePicker', {
-	getOptions: {
-		'Should include each minute for a full day by default'() {
-			const options = getOptions();
+	'renders options'() {
+		const h = harness(() => <TimePicker />, [compareTheme]);
 
-			assert.lengthOf(options, 1440);
-		},
-
-		'Should allow steps under 60 seconds'() {
-			const options = getOptions('00:00:00', '00:00:10', 1);
-
-			assert.lengthOf(options, 11);
-			options.forEach((option, i) => {
-				const { hour, minute, second } = option;
-
-				assert.strictEqual(hour, 0);
-				assert.strictEqual(minute, 0);
-				assert.strictEqual(second, i);
-			});
-		}
+		h.expect(baseAssertion);
 	},
 
-	parseUnits() {
-		assert.throws(parseUnits.bind(null, ''));
-		assert.throws(parseUnits.bind(null, '273:00:00'));
-		assert.throws(parseUnits.bind(null, 'x@1235s'));
-		assert.throws(parseUnits.bind(null, '7:00'));
-		assert.throws(parseUnits.bind(null, '07:0a'));
+	'passes properties down to Select'() {
+		const focus = () => false;
+		const onValue = () => {};
+		const onValidate = () => {};
 
-		const units = { hour: 13 };
-		assert.strictEqual(parseUnits(units), units);
-		assert.deepEqual(parseUnits('23:44:50'), {
-			hour: 23,
-			minute: 44,
-			second: 50
-		});
-		assert.deepEqual(parseUnits('00:00'), {
-			hour: 0,
-			minute: 0,
-			second: 0
-		});
-		assert.deepEqual(
-			parseUnits('55:98:72'),
-			{
-				hour: 55,
-				minute: 98,
-				second: 72
-			},
-			'does not check for invalid units'
+		const h = harness(
+			() => (
+				<TimePicker
+					disabled
+					label="Test"
+					initialValue={'one'}
+					name={'name'}
+					required={true}
+					focus={focus}
+					onValue={onValue}
+					onValidate={onValidate}
+				/>
+			),
+			[compareTheme]
+		);
+
+		h.expect(
+			baseAssertion.setProperties('@root', {
+				key: 'root',
+				initialValue: 'one',
+				options: options30Minutes,
+				onValue,
+				required: true,
+				disabled: true,
+				label: 'Test',
+				name: 'name',
+				focus,
+				onValidate,
+				theme: { '@dojo/widgets/select': selectCss }
+			})
 		);
 	},
 
-	'Custom input': {
-		'Should delegate to ComboBox'() {
-			const h = harness(() => w(TimePicker, testProperties));
-			h.expect(() => getExpectedCombobox(true));
-		},
+	'disables items'() {
+		const h = harness(() => <TimePicker timeDisabled={(date) => date.getHours() === 1} />, [
+			compareTheme
+		]);
 
-		'Should use `getOptionLabel` to format menu options'() {
-			const getOptionLabel = sinon.spy();
-			const option = { hour: 0 };
-
-			const h = harness(() => w(TimePicker, { getOptionLabel }));
-			h.trigger('@combo', 'getResultLabel', option);
-			assert.isTrue(getOptionLabel.calledWith(option));
-		},
-
-		'Should format options as `HH:mm` by default'() {
-			const h = harness(() => w(TimePicker, {}));
-			const result = h.trigger('@combo', 'getResultLabel', {
-				hour: 4,
-				minute: 22,
-				second: 0
-			});
-			assert.strictEqual(result, '04:22');
-		},
-
-		'Should format options as `HH:mm:ss` when the step is less than 60 seconds'() {
-			const h = harness(() => w(TimePicker, { step: 1 }));
-			const result = h.trigger('@combo', 'getResultLabel', {
-				hour: 4,
-				minute: 22,
-				second: 0
-			});
-			assert.strictEqual(result, '04:22:00');
-		},
-
-		'Should set options with step and default start and end'() {
-			const h = harness(() => w(TimePicker, { step: 3600 }), [compareWidgetId]);
-			const expectedOptions = getOptions(undefined, undefined, 3600);
-
-			h.expect(() => getExpectedCombobox(false, expectedOptions));
-		},
-
-		'Should set options with start, end, and step'() {
-			const h = harness(() => w(TimePicker, { end: '01:00', start: '00:00' }), [
-				compareWidgetId
-			]);
-			const expectedOptions = getOptions('00:00', '01:00');
-
-			h.expect(() => getExpectedCombobox(false, expectedOptions));
-		},
-
-		'Should call onRequestOptions'() {
-			const onRequestOptions = sinon.spy();
-			const h = harness(() =>
-				w(TimePicker, {
-					key: 'foo',
-					onRequestOptions,
-					step: 3600
-				})
-			);
-			h.trigger('@combo', 'onRequestResults');
-			assert.isTrue(onRequestOptions.calledWith('foo'));
-		}
+		h.expect(
+			baseAssertion.setProperty(
+				'@root',
+				'options',
+				options30Minutes.map((opt) =>
+					opt.value.indexOf('01') === 0 ? { ...opt, disabled: true } : opt
+				)
+			)
+		);
 	},
 
-	'Native input': {
-		basic() {
-			const h = harness(
-				() =>
-					w(TimePicker, {
-						name: 'some-field',
-						useNativeElement: true
-					}),
-				[compareId]
-			);
+	'uses min and max'() {
+		const h = harness(() => <TimePicker min="12:00:00" max="21:00:00" />, [compareTheme]);
 
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: [css.root, null, null, null, null, null],
-						key: 'root'
-					},
-					[
-						null,
-						v('input', {
-							'aria-invalid': null,
-							'aria-readonly': null,
-							classes: css.input,
-							disabled: undefined,
-							focus: noop,
-							valid: undefined,
-							key: 'native-input',
-							id: '',
-							max: undefined,
-							min: undefined,
-							name: 'some-field',
-							onblur: noop,
-							onchange: noop,
-							onclick: noop,
-							onpointerenter: noop,
-							onpointerleave: noop,
-							onfocus: noop,
-							readOnly: undefined,
-							required: undefined,
-							step: undefined,
-							type: 'time',
-							value: undefined
-						})
-					]
-				)
-			);
-		},
+		h.expect(
+			baseAssertion.setProperty(
+				'@root',
+				'options',
+				options30Minutes.filter((opt) => {
+					const parts = opt.value.split(':');
 
-		'Attributes added'() {
-			const h = harness(
-				() =>
-					w(TimePicker, {
-						disabled: true,
-						end: '12:00',
-						inputProperties: {
-							aria: { describedBy: 'Some descriptive text' }
-						},
-						valid: false,
-						name: 'some-field',
-						readOnly: true,
-						required: true,
-						start: '10:00',
-						step: 60,
-						useNativeElement: true,
-						value: '11:30'
-					}),
-				[compareId]
-			);
+					const h = parseInt(parts[0], 10);
+					const m = parseInt(parts[1], 10);
 
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: [
-							css.root,
-							css.disabled,
-							null,
-							css.invalid,
-							css.readonly,
-							css.required
-						],
-						key: 'root'
-					},
-					[
-						null,
-						v('input', {
-							'aria-describedby': 'Some descriptive text',
-							'aria-invalid': 'true',
-							'aria-readonly': 'true',
-							classes: css.input,
-							id: '',
-							disabled: true,
-							focus: noop,
-							valid: false,
-							key: 'native-input',
-							max: '12:00',
-							min: '10:00',
-							name: 'some-field',
-							onblur: noop,
-							onchange: noop,
-							onfocus: noop,
-							onclick: noop,
-							onpointerenter: noop,
-							onpointerleave: noop,
-							readOnly: true,
-							required: true,
-							step: 60,
-							type: 'time',
-							value: '11:30'
-						})
-					]
-				)
-			);
-		},
-
-		'focused class'() {
-			const mockMeta = sinon.stub();
-			const mockFocusGet = sinon.stub().returns({
-				active: false,
-				containsFocus: true
-			});
-			mockMeta.withArgs(Focus).returns({
-				get: mockFocusGet
-			});
-			const h = harness(
-				() =>
-					w(MockMetaMixin(TimePicker, mockMeta), {
-						name: 'some-field',
-						useNativeElement: true
-					}),
-				[compareId]
-			);
-
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: [css.root, null, css.focused, null, null, null],
-						key: 'root'
-					},
-					[
-						null,
-						v('input', {
-							'aria-invalid': null,
-							'aria-readonly': null,
-							classes: css.input,
-							disabled: undefined,
-							focus: noop,
-							valid: undefined,
-							key: 'native-input',
-							id: '',
-							max: undefined,
-							min: undefined,
-							name: 'some-field',
-							onblur: noop,
-							onchange: noop,
-							onfocus: noop,
-							onclick: noop,
-							onpointerenter: noop,
-							onpointerleave: noop,
-							readOnly: undefined,
-							required: undefined,
-							step: undefined,
-							type: 'time',
-							value: undefined
-						})
-					]
-				)
-			);
-		},
-
-		'Label should render'() {
-			const h = harness(
-				() =>
-					w(TimePicker, {
-						label: 'foo',
-						useNativeElement: true
-					}),
-				[compareId, compareForId]
-			);
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: [css.root, null, null, null, null, null],
-						key: 'root'
-					},
-					[
-						w(
-							Label,
-							{
-								theme: undefined,
-								classes: undefined,
-								disabled: undefined,
-								focused: false,
-								hidden: false,
-								readOnly: undefined,
-								required: undefined,
-								valid: undefined,
-								forId: ''
-							},
-							['foo']
-						),
-						v('input', {
-							'aria-invalid': null,
-							'aria-readonly': null,
-							classes: css.input,
-							disabled: undefined,
-							focus: noop,
-							valid: undefined,
-							key: 'native-input',
-							id: '',
-							max: undefined,
-							min: undefined,
-							name: undefined,
-							onblur: noop,
-							onchange: noop,
-							onfocus: noop,
-							onclick: noop,
-							onpointerenter: noop,
-							onpointerleave: noop,
-							readOnly: undefined,
-							required: undefined,
-							step: undefined,
-							type: 'time',
-							value: undefined
-						})
-					]
-				)
-			);
-		},
-
-		'`onBlur` should be called'() {
-			const onBlur = sinon.spy();
-			const h = harness(() =>
-				w(TimePicker, {
-					onBlur,
-					useNativeElement: true,
-					value: '12:34:56'
+					return (h >= 12 && h <= 20) || (h === 21 && !m);
 				})
-			);
-			h.trigger('input[type=time]', 'onblur', { target: { value: '12:34:56' } });
-			assert.isTrue(onBlur.called);
-		},
-
-		'`onFocus` should be called'() {
-			const onFocus = sinon.spy();
-			const h = harness(() =>
-				w(TimePicker, {
-					onFocus,
-					useNativeElement: true,
-					value: '12:34:56'
-				})
-			);
-
-			h.trigger('input[type=time]', 'onfocus', { target: { value: '12:34:56' } });
-			assert.isTrue(onFocus.called);
-		}
+			)
+		);
 	}
 });
