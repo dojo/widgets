@@ -59,6 +59,12 @@ const buttonTemplate = assertionTemplate(() => (
 	</button>
 ));
 
+const ignoreMenuTheme = {
+	selector: '@menu',
+	property: 'theme',
+	comparator: () => true
+};
+
 const menuTemplate = assertionTemplate(() => (
 	<div key="menu-wrapper" classes={css.menuWrapper}>
 		<Menu
@@ -198,12 +204,6 @@ describe('Select', () => {
 	it('creates menu content and closes on blur', () => {
 		const closeMenuStub = stub();
 
-		const ignoreMenuTheme = {
-			selector: '@menu',
-			property: 'theme',
-			comparator: () => true
-		};
-
 		const h = harness(() => <Select onValue={() => {}} options={options} />, [
 			compareWidgetId,
 			ignoreMenuTheme
@@ -226,12 +226,6 @@ describe('Select', () => {
 		const onValueStub = stub();
 		const closeMenuStub = stub();
 
-		const ignoreMenuTheme = {
-			selector: '@menu',
-			property: 'theme',
-			comparator: () => true
-		};
-
 		const h = harness(() => <Select onValue={onValueStub} options={options} />, [
 			compareWidgetId,
 			ignoreMenuTheme
@@ -249,5 +243,33 @@ describe('Select', () => {
 		menu.properties.onValue('cat');
 		assert.isTrue(closeMenuStub.calledOnce);
 		assert.isTrue(onValueStub.calledOnceWith('cat'));
+	});
+
+	it('displays an optional label when available', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const options = [{ value: 'dog', label: 'Dog' }, { value: 'cat' }, { value: 'fish' }];
+
+		const h = harness(
+			() => <Select onValue={onValueStub} options={options} initialValue={'dog'} />,
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
+				<span classes={css.value}>Dog</span>,
+				<span classes={css.arrow}>
+					<Icon type="downIcon" theme={{}} classes={undefined} />
+				</span>
+			]),
+			() => triggerRenderResult
+		);
 	});
 });
