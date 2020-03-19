@@ -1,4 +1,4 @@
-import { DNode } from '@dojo/framework/core/interfaces';
+import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
@@ -6,10 +6,9 @@ import * as css from '../theme/default/breadcrumb.m.css';
 import * as fixedCss from './styles/breadcrumb.m.css';
 
 export interface BreadcrumbItem {
-	href?: string;
-	key: string;
+	[key: string]: any;
+
 	label: DNode;
-	title?: string;
 }
 
 export interface BreadcrumbProperties {
@@ -20,34 +19,42 @@ export interface BreadcrumbProperties {
 	separator?: DNode;
 }
 
-const factory = create({ theme }).properties<BreadcrumbProperties>();
+export interface BreadcrumbChildren {
+	(item: BreadcrumbItem, current: boolean): RenderResult;
+}
 
-const empty = Object.create(null);
+const factory = create({ theme })
+	.properties<BreadcrumbProperties>()
+	.children<BreadcrumbChildren | undefined>();
 
-export const Breadcrumb = factory(function Breadcrumb({ middleware: { theme }, properties }) {
+export const Breadcrumb = factory(function Breadcrumb({
+	children,
+	properties,
+	middleware: { theme }
+}) {
 	const { current, itemLevel, items, label, separator = '/' } = properties();
 	const themeCss = theme.classes(css);
+
+	const defaultRenderer: BreadcrumbChildren = (item, isCurrent) => {
+		const itemProperties = isCurrent ? { 'aria-current': itemLevel || 'page' } : {};
+		return (
+			<span {...itemProperties} classes={[fixedCss.labelFixed, themeCss.label]}>
+				{item.label}
+			</span>
+		);
+	};
+	const [itemRenderer = defaultRenderer] = children();
 
 	return (
 		<nav classes={themeCss.root} aria-label={label}>
 			<ol classes={[fixedCss.listFixed, themeCss.list]}>
-				{items.map(({ href, key, label, title }, index) => {
-					const Tag = href ? 'a' : 'span';
-					const hrefProperties = href ? { href, title } : empty;
-					const currentProperties =
-						current === index ? { 'aria-current': itemLevel || 'page' } : empty;
-
-					const labelProperties = {
-						classes: [fixedCss.labelFixed, themeCss.label],
-						...hrefProperties,
-						...currentProperties
-					};
-
+				{items.map((item, index) => {
+					const isCurrent = current === index;
 					return (
 						<virtual>
 							{index !== 0 && (
 								<li
-									key={`${key}-separator`}
+									key={`breadcrumb-${index}-separator`}
 									aria-hidden="true"
 									classes={[
 										fixedCss.listItemFixed,
@@ -64,9 +71,9 @@ export const Breadcrumb = factory(function Breadcrumb({ middleware: { theme }, p
 									themeCss.listItem,
 									current === index ? themeCss.current : undefined
 								]}
-								key={key}
+								key={`breadcrumb-${index}`}
 							>
-								<Tag {...labelProperties}>{label}</Tag>
+								{itemRenderer(item, isCurrent)}
 							</li>
 						</virtual>
 					);

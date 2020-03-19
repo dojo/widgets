@@ -17,31 +17,23 @@ describe('Breadcrumb', () => {
 		<nav classes={css.root} aria-label="breadcrumb">
 			<ol classes={[fixedCss.listFixed, css.list]}>
 				<virtual>
-					<li classes={textSeparatorItemStyles} key="home">
-						<a classes={[fixedCss.labelFixed, css.label]} href="/" title={undefined}>
-							Home
-						</a>
+					<li classes={textSeparatorItemStyles} key="breadcrumb-0">
+						<span classes={[fixedCss.labelFixed, css.label]}>Home</span>
 					</li>
 				</virtual>
 				<virtual>
-					<li aria-hidden="true" classes={separatorStyles} key="overview-separator">
+					<li aria-hidden="true" classes={separatorStyles} key="breadcrumb-1-separator">
 						/
 					</li>
-					<li classes={textSeparatorItemStyles} key="overview">
-						<a
-							classes={[fixedCss.labelFixed, css.label]}
-							href="/overview"
-							title="Breadcrumb Overview"
-						>
-							Overview
-						</a>
+					<li classes={textSeparatorItemStyles} key="breadcrumb-1">
+						<span classes={[fixedCss.labelFixed, css.label]}>Overview</span>
 					</li>
 				</virtual>
 				<virtual>
-					<li aria-hidden="true" classes={separatorStyles} key="tests-separator">
+					<li aria-hidden="true" classes={separatorStyles} key="breadcrumb-2-separator">
 						/
 					</li>
-					<li classes={currentTextSeparatorItemStyles} key="tests">
+					<li classes={currentTextSeparatorItemStyles} key="breadcrumb-2">
 						<span classes={[fixedCss.labelFixed, css.label]} aria-current="page">
 							Tests
 						</span>
@@ -56,19 +48,7 @@ describe('Breadcrumb', () => {
 			<Breadcrumb
 				label="breadcrumb"
 				current={2}
-				items={[
-					{ key: 'home', label: 'Home', href: '/' },
-					{
-						key: 'overview',
-						label: 'Overview',
-						href: '/overview',
-						title: 'Breadcrumb Overview'
-					},
-					{
-						key: 'tests',
-						label: 'Tests'
-					}
-				]}
+				items={[{ label: 'Home' }, { label: 'Overview' }, { label: 'Tests' }]}
 			/>
 		));
 
@@ -81,24 +61,12 @@ describe('Breadcrumb', () => {
 				label="breadcrumb"
 				current={2}
 				itemLevel="step"
-				items={[
-					{ key: 'home', label: 'Home', href: '/' },
-					{
-						key: 'overview',
-						label: 'Overview',
-						href: '/overview',
-						title: 'Breadcrumb Overview'
-					},
-					{
-						key: 'tests',
-						label: 'Tests'
-					}
-				]}
+				items={[{ label: 'Home' }, { label: 'Overview' }, { label: 'Tests' }]}
 			/>
 		));
 
 		h.expect(
-			baseTemplate.setChildren('@tests', () => [
+			baseTemplate.setChildren('@breadcrumb-2', () => [
 				<span classes={[fixedCss.labelFixed, css.label]} aria-current="step">
 					Tests
 				</span>
@@ -112,26 +80,14 @@ describe('Breadcrumb', () => {
 				label="breadcrumb"
 				current={2}
 				separator={'>'}
-				items={[
-					{ key: 'home', label: 'Home', href: '/' },
-					{
-						key: 'overview',
-						label: 'Overview',
-						href: '/overview',
-						title: 'Breadcrumb Overview'
-					},
-					{
-						key: 'tests',
-						label: 'Tests'
-					}
-				]}
+				items={[{ label: 'Home' }, { label: 'Overview' }, { label: 'Tests' }]}
 			/>
 		));
 
 		h.expect(
 			baseTemplate
-				.setChildren('@overview-separator', () => ['>'])
-				.setChildren('@tests-separator', () => ['>'])
+				.setChildren('@breadcrumb-1-separator', () => ['>'])
+				.setChildren('@breadcrumb-2-separator', () => ['>'])
 		);
 	});
 
@@ -141,19 +97,7 @@ describe('Breadcrumb', () => {
 				label="breadcrumb"
 				current={2}
 				separator={<Icon type="rightIcon" />}
-				items={[
-					{ key: 'home', label: 'Home', href: '/' },
-					{
-						key: 'overview',
-						label: 'Overview',
-						href: '/overview',
-						title: 'Breadcrumb Overview'
-					},
-					{
-						key: 'tests',
-						label: 'Tests'
-					}
-				]}
+				items={[{ label: 'Home' }, { label: 'Overview' }, { label: 'Tests' }]}
 			/>
 		));
 
@@ -161,8 +105,47 @@ describe('Breadcrumb', () => {
 
 		h.expect(
 			baseTemplate
-				.setChildren('@overview-separator', () => [separator])
-				.setChildren('@tests-separator', () => [separator])
+				.setChildren('@breadcrumb-1-separator', () => [separator])
+				.setChildren('@breadcrumb-2-separator', () => [separator])
+		);
+	});
+
+	it('renders with a custom child renderer', () => {
+		const h = harness(() => (
+			<Breadcrumb
+				label="breadcrumb"
+				current={2}
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: 'Overview', href: '/overview', title: 'Breadcrumb Overview' },
+					{ href: '/tests', label: 'Tests' }
+				]}
+			>
+				{(item, isCurrent) => (
+					<a aria-current={isCurrent || undefined} href={item.href} title={item.title}>
+						{item.label}
+					</a>
+				)}
+			</Breadcrumb>
+		));
+
+		h.expect(
+			baseTemplate
+				.setChildren('@breadcrumb-0', () => [
+					<a aria-current={undefined} href="/" title={undefined}>
+						Home
+					</a>
+				])
+				.setChildren('@breadcrumb-1', () => [
+					<a aria-current={undefined} href="/overview" title="Breadcrumb Overview">
+						Overview
+					</a>
+				])
+				.setChildren('@breadcrumb-2', () => [
+					<a aria-current={true} href="/tests" title={undefined}>
+						Tests
+					</a>
+				])
 		);
 	});
 });

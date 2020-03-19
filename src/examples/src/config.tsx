@@ -9,7 +9,7 @@ import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicBreadcrumb from './widgets/breadcrumb/Basic';
-import CustomLabelBreadcrumb from './widgets/breadcrumb/CustomLabel';
+import CustomRendererBreadcrumb from './widgets/breadcrumb/CustomRenderer';
 import CustomSeparatorBreadcrumb from './widgets/breadcrumb/CustomSeparator';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
@@ -272,9 +272,9 @@ export const config = {
 					title: 'Custom Separator'
 				},
 				{
-					filename: 'CustomLabel',
-					module: CustomLabelBreadcrumb,
-					title: 'Custom Label'
+					filename: 'CustomRenderer',
+					module: CustomRendererBreadcrumb,
+					title: 'Custom Renderer'
 				}
 			],
 			filename: 'index',

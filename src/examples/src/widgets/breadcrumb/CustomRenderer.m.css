@@ -1,0 +1,13 @@
+.link {
+	align-items: center;
+	display: inline-flex;
+}
+
+.icon {
+	line-height: inherit;
+	margin-right: 8px;
+}
+
+.linkText {
+	text-decoration: underline;
+}

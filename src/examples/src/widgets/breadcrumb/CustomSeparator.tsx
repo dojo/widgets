@@ -7,11 +7,7 @@ import RadioGroup from '@dojo/widgets/radio-group';
 const factory = create({ icache });
 
 const App = factory(function({ middleware: { icache } }) {
-	const items = [
-		{ key: 'home', label: 'Home' },
-		{ key: 'widgets', label: 'Widgets' },
-		{ key: 'breadcrumb', label: 'Breadcrumb' }
-	];
+	const items = [{ label: 'Home' }, { label: 'Widgets' }, { label: 'Breadcrumb' }];
 
 	const separator = icache.get('separator-type') === 'icon' ? <Icon type="rightIcon" /> : '>';
 
