@@ -18,9 +18,11 @@
 
 .title {
 	composes: mdc-typography mdc-typography--headline6 from '@material/typography/dist/mdc.typography.css';
+	margin: 0;
 }
 
 .subtitle {
 	composes: mdc-typography mdc-typography--subtitle2 from '@material/typography/dist/mdc.typography.css';
 	color: var(--mdc-theme-text-secondary-on-background);
+	margin: 0;
 }

@@ -16,6 +16,12 @@
 	flex: 0 0 auto;
 }
 
+.title,
+.subtitle {
+	font-weight: inherit;
+	margin: 0;
+}
+
 .title {
 	font-size: var(--font-size-title);
 }
