@@ -109,6 +109,7 @@ export const RangeSlider = factory(function RangeSlider({
 		required,
 		showOutput = false,
 		step = 1,
+		theme: themeProp,
 		valid,
 		value = {
 			max: maxRestraint,
@@ -194,8 +195,6 @@ export const RangeSlider = factory(function RangeSlider({
 		/>
 	);
 
-	console.log('label', label);
-
 	const children = [
 		label ? (
 			<Label
@@ -207,7 +206,7 @@ export const RangeSlider = factory(function RangeSlider({
 				readOnly={readOnly}
 				required={required}
 				secondary={true}
-				theme={theme}
+				theme={themeProp}
 				valid={valid}
 				widgetId={`${widgetId}-label`}
 			>
