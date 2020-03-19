@@ -37,7 +37,8 @@ export const Breadcrumb = factory(function Breadcrumb({ middleware: { theme }, p
 					const currentProperties =
 						current === index ? { 'aria-current': itemLevel || 'page' } : empty;
 
-					const properties = {
+					const labelProperties = {
+						classes: [fixedCss.labelFixed, themeCss.label],
 						...hrefProperties,
 						...currentProperties
 					};
@@ -65,7 +66,7 @@ export const Breadcrumb = factory(function Breadcrumb({ middleware: { theme }, p
 								]}
 								key={key}
 							>
-								<Tag {...properties}>{label}</Tag>
+								<Tag {...labelProperties}>{label}</Tag>
 							</li>
 						</virtual>
 					);

@@ -1,4 +1,5 @@
 .listFixed {
+	align-items: center;
 	display: flex;
 	list-style: none;
 	margin: 0;
@@ -6,5 +7,11 @@
 }
 
 .listItemFixed {
+	align-items: center;
 	display: flex;
+}
+
+.labelFixed {
+	align-items: center;
+	display: inline-flex;
 }

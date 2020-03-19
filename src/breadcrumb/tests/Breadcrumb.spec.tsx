@@ -11,14 +11,14 @@ import Breadcrumb from '../index';
 describe('Breadcrumb', () => {
 	const separatorStyles = [fixedCss.listItemFixed, css.listItem, css.separator];
 	const textSeparatorItemStyles = [fixedCss.listItemFixed, css.listItem, undefined];
-	const currentTextSeparatorItemStyles = textSeparatorItemStyles.slice(0, -1).concat(css.current);
+	const currentTextSeparatorItemStyles = [fixedCss.listItemFixed, css.listItem, css.current];
 
 	const baseTemplate = assertionTemplate(() => (
 		<nav classes={css.root} aria-label="breadcrumb">
 			<ol classes={[fixedCss.listFixed, css.list]}>
 				<virtual>
 					<li classes={textSeparatorItemStyles} key="home">
-						<a href="/" title={undefined}>
+						<a classes={[fixedCss.labelFixed, css.label]} href="/" title={undefined}>
 							Home
 						</a>
 					</li>
@@ -28,7 +28,11 @@ describe('Breadcrumb', () => {
 						/
 					</li>
 					<li classes={textSeparatorItemStyles} key="overview">
-						<a href="/overview" title="Breadcrumb Overview">
+						<a
+							classes={[fixedCss.labelFixed, css.label]}
+							href="/overview"
+							title="Breadcrumb Overview"
+						>
 							Overview
 						</a>
 					</li>
@@ -38,7 +42,9 @@ describe('Breadcrumb', () => {
 						/
 					</li>
 					<li classes={currentTextSeparatorItemStyles} key="tests">
-						<span aria-current="page">Tests</span>
+						<span classes={[fixedCss.labelFixed, css.label]} aria-current="page">
+							Tests
+						</span>
 					</li>
 				</virtual>
 			</ol>
@@ -92,7 +98,11 @@ describe('Breadcrumb', () => {
 		));
 
 		h.expect(
-			baseTemplate.setChildren('@tests', () => [<span aria-current="step">Tests</span>])
+			baseTemplate.setChildren('@tests', () => [
+				<span classes={[fixedCss.labelFixed, css.label]} aria-current="step">
+					Tests
+				</span>
+			])
 		);
 	});
 
