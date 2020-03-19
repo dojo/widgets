@@ -6,28 +6,17 @@ const factory = create({ icache });
 
 const App = factory(function({ properties, middleware: { icache } }) {
 	const { get, set } = icache;
-	icache.getOrSet('initial', 4);
-	icache.getOrSet('initialsteps', 4.25);
 
 	return (
 		<virtual>
 			<Rate
-				name="initial"
-				initialValue={4}
+				name="noclear"
+				allowClear={true}
 				onValue={(value) => {
-					set('initial', value);
+					set('noclear', value);
 				}}
 			/>
-			<pre>{`${get('initial')}`}</pre>
-			<Rate
-				name="initialsteps"
-				initialValue={4.25}
-				steps={4}
-				onValue={(value) => {
-					set('initialsteps', value);
-				}}
-			/>
-			<pre>{`${get('initialsteps')}`}</pre>
+			<pre>{`${get('noclear')}`}</pre>
 		</virtual>
 	);
 });

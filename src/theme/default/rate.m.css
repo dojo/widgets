@@ -5,6 +5,11 @@
 	overflow: visible;
 }
 
+.radioGroup {
+	display: inline-block;
+	border: 1px solid transparent;
+}
+
 .radio {
 	padding: 0;
 }
@@ -13,10 +18,17 @@
 	overflow: hidden;
 	position: absolute;
 	top: 0;
-	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.partialRadio {
+	position: absolute;
+	right: 0;
 }
 
 .characterWrapper {
+	border: 1px solid transparent;
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
@@ -24,4 +36,9 @@
 
 .characterFill {
 	color: #fadb14;
+}
+
+/* Added to active items */
+.active {
+	border: 1px solid blue;
 }

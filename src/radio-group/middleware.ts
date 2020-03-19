@@ -30,9 +30,6 @@ export const radioGroup = factory(({ middleware: { icache } }) => {
 					icache.set('value', key);
 					onValue(key);
 				}
-			},
-			value() {
-				return icache.get('value');
 			}
 		});
 	};

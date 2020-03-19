@@ -148,6 +148,7 @@ import CustomCharacterRate from './widgets/rate/CustomCharacter';
 import CustomMaxRate from './widgets/rate/CustomMax';
 import HalfRatings from './widgets/rate/HalfRatings';
 import InitialValueRate from './widgets/rate/InitialValue';
+import AllowClearRate from './widgets/rate/AllowClear';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
@@ -1031,6 +1032,11 @@ export const config = {
 					title: 'Has Initial Value',
 					filename: 'InitialValue',
 					module: InitialValueRate
+				},
+				{
+					title: 'Clear on repeat click or with arrows',
+					filename: 'AllowClear',
+					module: AllowClearRate
 				}
 			]
 		},
