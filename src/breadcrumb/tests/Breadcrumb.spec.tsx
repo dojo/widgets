@@ -4,38 +4,43 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 import Icon from '../../icon';
-import * as css from '../Breadcrumb.m.css';
+import * as css from '../../theme/default/breadcrumb.m.css';
+import * as fixedCss from '../styles/breadcrumb.m.css';
 import Breadcrumb from '../index';
 
 describe('Breadcrumb', () => {
+	const separatorStyles = [fixedCss.listItemFixed, css.listItem, css.separator];
+	const textSeparatorItemStyles = [fixedCss.listItemFixed, css.listItem, undefined];
+	const currentTextSeparatorItemStyles = textSeparatorItemStyles.slice(0, -1).concat(css.current);
+
 	const baseTemplate = assertionTemplate(() => (
 		<nav classes={css.root} aria-label="breadcrumb">
-			<ol classes={[css.listFixed, css.list]}>
-				<li
-					classes={[css.listItem, css.withTextSeparator, undefined]}
-					data-separator="/"
-					key="home"
-				>
-					<a href="/" title={undefined}>
-						Home
-					</a>
-				</li>
-				<li
-					classes={[css.listItem, css.withTextSeparator, undefined]}
-					data-separator="/"
-					key="overview"
-				>
-					<a href="/overview" title="Breadcrumb Overview">
-						Overview
-					</a>
-				</li>
-				<li
-					classes={[css.listItem, css.withTextSeparator, css.current]}
-					data-separator="/"
-					key="tests"
-				>
-					<span aria-current="page">Tests</span>
-				</li>
+			<ol classes={[fixedCss.listFixed, css.list]}>
+				<virtual>
+					<li classes={textSeparatorItemStyles} key="home">
+						<a href="/" title={undefined}>
+							Home
+						</a>
+					</li>
+				</virtual>
+				<virtual>
+					<li aria-hidden="true" classes={separatorStyles} key="overview-separator">
+						/
+					</li>
+					<li classes={textSeparatorItemStyles} key="overview">
+						<a href="/overview" title="Breadcrumb Overview">
+							Overview
+						</a>
+					</li>
+				</virtual>
+				<virtual>
+					<li aria-hidden="true" classes={separatorStyles} key="tests-separator">
+						/
+					</li>
+					<li classes={currentTextSeparatorItemStyles} key="tests">
+						<span aria-current="page">Tests</span>
+					</li>
+				</virtual>
 			</ol>
 		</nav>
 	));
@@ -115,9 +120,8 @@ describe('Breadcrumb', () => {
 
 		h.expect(
 			baseTemplate
-				.setProperty('@home', 'data-separator', '>')
-				.setProperty('@overview', 'data-separator', '>')
-				.setProperty('@tests', 'data-separator', '>')
+				.setChildren('@overview-separator', () => ['>'])
+				.setChildren('@tests-separator', () => ['>'])
 		);
 	});
 
@@ -143,31 +147,12 @@ describe('Breadcrumb', () => {
 			/>
 		));
 
-		const separator = (
-			<span aria-hidden="true">
-				<Icon type="rightIcon" />
-			</span>
-		);
+		const separator = <Icon type="rightIcon" />;
 
 		h.expect(
 			baseTemplate
-				.setProperties('@home', {
-					key: 'home',
-					'data-separator': undefined,
-					classes: [css.listItem, undefined, undefined]
-				})
-				.setProperties('@overview', {
-					key: 'overview',
-					'data-separator': undefined,
-					classes: [css.listItem, undefined, undefined]
-				})
-				.setProperties('@tests', {
-					key: 'tests',
-					'data-separator': undefined,
-					classes: [css.listItem, undefined, css.current]
-				})
-				.setChildren('@overview', () => [separator], 'prepend')
-				.setChildren('@tests', () => [separator], 'prepend')
+				.setChildren('@overview-separator', () => [separator])
+				.setChildren('@tests-separator', () => [separator])
 		);
 	});
 });

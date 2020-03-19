@@ -2,7 +2,8 @@ import { DNode } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
-import * as css from './Breadcrumb.m.css';
+import * as css from '../theme/default/breadcrumb.m.css';
+import * as fixedCss from './styles/breadcrumb.m.css';
 
 export interface BreadcrumbItem {
 	href?: string;
@@ -29,7 +30,7 @@ export const Breadcrumb = factory(function Breadcrumb({ middleware: { theme }, p
 
 	return (
 		<nav classes={themeCss.root} aria-label={label}>
-			<ol classes={[css.listFixed, themeCss.list]}>
+			<ol classes={[fixedCss.listFixed, themeCss.list]}>
 				{items.map(({ href, key, label, title }, index) => {
 					const Tag = href ? 'a' : 'span';
 					const hrefProperties = href ? { href, title } : empty;
@@ -42,22 +43,31 @@ export const Breadcrumb = factory(function Breadcrumb({ middleware: { theme }, p
 					};
 
 					return (
-						<li
-							classes={[
-								themeCss.listItem,
-								typeof separator === 'string'
-									? themeCss.withTextSeparator
-									: undefined,
-								current === index ? themeCss.current : undefined
-							]}
-							data-separator={typeof separator === 'string' ? separator : undefined}
-							key={key}
-						>
-							{separator && typeof separator !== 'string' && index !== 0 && (
-								<span aria-hidden="true">{separator}</span>
+						<virtual>
+							{index !== 0 && (
+								<li
+									key={`${key}-separator`}
+									aria-hidden="true"
+									classes={[
+										fixedCss.listItemFixed,
+										themeCss.listItem,
+										themeCss.separator
+									]}
+								>
+									{separator}
+								</li>
 							)}
-							<Tag {...properties}>{label}</Tag>
-						</li>
+							<li
+								classes={[
+									fixedCss.listItemFixed,
+									themeCss.listItem,
+									current === index ? themeCss.current : undefined
+								]}
+								key={key}
+							>
+								<Tag {...properties}>{label}</Tag>
+							</li>
+						</virtual>
 					);
 				})}
 			</ol>

@@ -1,0 +1,20 @@
+@import './variables.css';
+
+.root {
+}
+
+.list {
+}
+
+.listItem {
+	margin-right: var(--grid-base);
+}
+.listItem::last-child {
+	margin-right: 0;
+}
+
+.separator {
+}
+
+.current {
+}

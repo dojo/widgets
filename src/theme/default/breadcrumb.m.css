@@ -1,0 +1,18 @@
+.root {
+}
+
+.list {
+}
+
+.listItem {
+	margin-right: 0.75rem;
+}
+.listItem::last-child {
+	margin-right: 0;
+}
+
+.separator {
+}
+
+.current {
+}
