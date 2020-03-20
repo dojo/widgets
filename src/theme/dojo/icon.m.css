@@ -25,6 +25,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.clockIcon:before {
+	content: '\e94e';
+}
 .eyeIcon:before {
 	content: '\f06e';
 }

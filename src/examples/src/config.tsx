@@ -169,7 +169,6 @@ import LeadingTrailingTextInput from './widgets/text-input/LeadingTrailing';
 import ValidatedTextInput from './widgets/text-input/Validated';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
 import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
-import LocaleTimePicker from './widgets/time-picker/LocaleTime';
 import BasicTimePicker from './widgets/time-picker/Basic';
 import DisabledTimePicker from './widgets/time-picker/Disabled';
 import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
@@ -1360,11 +1359,6 @@ export const config = {
 					filename: '12HourTime',
 					module: TwelveHourTimePicker,
 					title: '12 hour time'
-				},
-				{
-					filename: 'LocaleTime',
-					module: LocaleTimePicker,
-					title: 'Locale Time'
 				},
 				{
 					filename: 'Required',

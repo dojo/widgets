@@ -1,4 +1,5 @@
 export const icon: string;
+export const clockIcon: string;
 export const eyeIcon: string;
 export const eyeSlashIcon: string;
 export const plusIcon: string;

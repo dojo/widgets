@@ -28,6 +28,11 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+/* A clock icon */
+.clockIcon:before {
+	content: '\e94e';
+}
+
 /* A down icon */
 .downIcon:before {
 	content: '\f078';

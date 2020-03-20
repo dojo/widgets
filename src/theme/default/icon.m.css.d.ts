@@ -1,5 +1,6 @@
 export const root: string;
 export const icon: string;
+export const clockIcon: string;
 export const downIcon: string;
 export const leftIcon: string;
 export const rightIcon: string;

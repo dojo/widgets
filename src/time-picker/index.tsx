@@ -1,11 +1,16 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
-import Select from '../select';
 import { padStart } from '@dojo/framework/shim/string';
-import { MenuOption } from '../menu';
+import { Menu, MenuOption } from '../menu';
 import focus from '@dojo/framework/core/middleware/focus';
-import * as selectCss from '../theme/default/select.m.css';
-import * as timePickerCss from '../theme/default/time-picker.m.css';
+import * as css from '../theme/default/time-picker.m.css';
+import TriggerPopup from '../trigger-popup';
+import TextInput from '../text-input';
+import Icon from '../icon';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { Keys } from '../common/util';
+import bundle from './nls/TimePicker';
+import i18n from '@dojo/framework/core/middleware/i18n';
 
 export interface TimePickerProperties {
 	/** Set the disabled property of the control */
@@ -30,7 +35,7 @@ export interface TimePickerProperties {
 	required?: boolean;
 
 	/** Callabck when valid state has changed */
-	onValidate?(valid: boolean): void;
+	onValidate?(valid: boolean, message: string): void;
 
 	/** The maximum time to display in the menu (defaults to '23:59:59') */
 	max?: string;
@@ -41,28 +46,159 @@ export interface TimePickerProperties {
 	/** The number of seconds between each option in the menu (defaults to 1800) */
 	step?: number;
 
-	/** How the time is formatted. 24 hour, 12 hour, or locale-specific format (defaults to 24) */
-	format?: '24' | '12' | 'locale';
+	/** How the time is formatted. 24 hour, 12 hour */
+	format?: '24' | '12';
+}
+
+export interface TimePickerICache {
+	value?: string;
+	inputValue: string;
+	shouldValidate: boolean;
+	validationMessage: string | undefined;
+	focusNode: 'input' | 'menu';
+	inputValid?: boolean;
+	inputValidMessage?: string;
 }
 
 const factory = create({
 	theme,
-	focus
+	i18n,
+	focus,
+	icache: createICacheMiddleware<TimePickerICache>()
 }).properties<TimePickerProperties>();
 
-export const TimePicker = factory(function TimePicker({ middleware: { theme }, properties }) {
-	function parseDate(time: string): [number, number, number] {
-		const [hours, minutes, seconds] = time.split(':');
+export interface TimeParser {
+	regex: RegExp;
+	positions: {
+		hour?: number;
+		minute?: number;
+		second?: number;
+		amPm?: number;
+	};
+}
 
-		return [
-			parseInt(hours || '0', 10),
-			parseInt(minutes || '0', 10),
-			parseInt(seconds || '0', 10)
-		];
+const formats: Record<string, TimeParser> = {
+	hh: {
+		regex: /^(\d{1,2})$/i,
+		positions: {
+			hour: 1
+		}
+	},
+
+	hhmm: {
+		regex: /^(\d{1,2}):(\d{1,2})$/,
+		positions: {
+			hour: 1,
+			minute: 2
+		}
+	},
+	hhmmss: {
+		regex: /^(\d{1,2}):(\d{1,2}):(\d{1,2})$/,
+		positions: {
+			hour: 1,
+			minute: 2,
+			second: 3
+		}
+	},
+	hham: {
+		regex: /^(\d{1,2})\s*([ap]\.?m\.?)$/i,
+		positions: {
+			hour: 1,
+			amPm: 2
+		}
+	},
+
+	hhmmam: {
+		regex: /^(\d{1,2}):(\d{1,2})\s*([ap]\.?m\.?)$/i,
+		positions: {
+			hour: 1,
+			minute: 2,
+			amPm: 3
+		}
+	},
+	hhmmssam: {
+		regex: /^(\d{1,2}):(\d{1,2}):(\d{1,2})\s*([ap]\.?m\.?)$/i,
+		positions: {
+			hour: 1,
+			minute: 2,
+			second: 3,
+			amPm: 4
+		}
+	}
+};
+
+const formats24 = ['hh', 'hhmm', 'hhmmss'];
+
+const formats12 = ['hh', 'hhmm', 'hhmmss', 'hham', 'hhmmam', 'hhmmssam'];
+
+export function parseTime(time: string | undefined, hour12: boolean) {
+	if (!time) {
+		return undefined;
 	}
 
-	const formatTime = (hideSeconds: boolean, time: Date) => {
-		const { format = '24' } = properties();
+	const timeFormats = hour12 ? formats12 : formats24;
+
+	for (const key of timeFormats) {
+		const format = formats[key] as TimeParser;
+
+		const match = format.regex.exec(time);
+		if (match) {
+			let hours = format.positions.hour ? parseInt(match[format.positions.hour], 0) : 0;
+			const minutes = format.positions.minute
+				? parseInt(match[format.positions.minute], 0)
+				: 0;
+			const seconds = format.positions.second
+				? parseInt(match[format.positions.second], 0)
+				: 0;
+
+			if (
+				hour12 &&
+				format.positions.amPm &&
+				match[format.positions.amPm].toLocaleLowerCase()[0] === 'p' &&
+				hours !== 12
+			) {
+				// special case for "12pm", which is just 12
+				hours += 12;
+			} else if (
+				hour12 &&
+				format.positions.amPm &&
+				match[format.positions.amPm].toLocaleLowerCase()[0] === 'a' &&
+				hours === 12
+			) {
+				// special case of "12am", which we want to be hour 0
+				hours = 0;
+			}
+
+			if (hours === undefined || isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+				return undefined;
+			}
+
+			return new Date(1970, 0, 1, hours, minutes, seconds, 0);
+		}
+	}
+
+	return undefined;
+}
+
+export function format24HourTime(dt: Date) {
+	return `${padStart(String(dt.getHours()), 2, '0')}:${padStart(
+		String(dt.getMinutes()),
+		2,
+		'0'
+	)}:${padStart(String(dt.getSeconds()), 2, '0')}`;
+}
+
+export const TimePicker = factory(function TimePicker({
+	middleware: { theme, icache, focus, i18n },
+	properties
+}) {
+	const classes = theme.classes(css);
+	const { messages } = i18n.localize(bundle);
+
+	const formatTime = (time: Date) => {
+		const { format = '24', step = 1800 } = properties();
+
+		const hideSeconds = step >= 60 && time.getSeconds() === 0;
 
 		if (format === '24') {
 			return time.toLocaleTimeString(undefined, {
@@ -87,26 +223,76 @@ export const TimePicker = factory(function TimePicker({ middleware: { theme }, p
 		}
 	};
 
+	const inputValue = icache.getOrSet('inputValue', () => {
+		const { initialValue, format } = properties();
+		const parsed = initialValue && parseTime(initialValue, format === '12');
+
+		return parsed ? formatTime(parsed) : '';
+	});
+
+	const shouldValidate = icache.getOrSet('shouldValidate', true);
+	const shouldFocus = focus.shouldFocus();
+	const focusNode = icache.getOrSet('focusNode', 'input');
+
+	if (shouldValidate) {
+		const { onValidate, onValue, format } = properties();
+		const max = parseTime(properties().max, format === '12');
+		const min = parseTime(properties().min, format === '12');
+
+		let isValid = icache.get('inputValid');
+		let validationMessages: string[] = [];
+
+		if (icache.get('inputValidMessage')) {
+			validationMessages.push(icache.get('inputValidMessage') || '');
+		}
+
+		if (min && max && min > max) {
+			validationMessages.push(messages.invalidProps);
+			isValid = false;
+		} else {
+			const newTime = parseTime(inputValue, format === '12');
+
+			if (newTime !== undefined) {
+				if (min && newTime < min) {
+					validationMessages.push(messages.tooEarly);
+				} else if (max && newTime > max) {
+					validationMessages.push(messages.tooLate);
+				} else {
+					icache.set('value', format24HourTime(newTime));
+					icache.set('inputValue', formatTime(newTime));
+					if (onValue) {
+						onValue(format24HourTime(newTime));
+					}
+				}
+			} else {
+				if (inputValue) {
+					validationMessages.push(messages.invalidTime);
+				}
+			}
+
+			isValid = validationMessages.length === 0;
+		}
+
+		const validationMessage = validationMessages.join('; ');
+		onValidate && onValidate(isValid, validationMessage);
+
+		icache.set('validationMessage', validationMessage);
+		icache.set('shouldValidate', false);
+	}
+
 	const generateOptions = () => {
 		const { min = '00:00:00', max = '23:59:59', step = 1800, timeDisabled } = properties();
 
 		const options: MenuOption[] = [];
 
-		const [startHours, startMinutes, startSeconds] = parseDate(min);
-		const [endHours, endMinutes, endSeconds] = parseDate(max);
+		const dt = parseTime(min, false) || new Date(1970, 0, 1, 0, 0, 0, 0);
+		const end = parseTime(max, false) || new Date(1970, 0, 1, 23, 59, 59, 99);
 
-		const dt = new Date(1970, 0, 1, startHours, startMinutes, startSeconds, 0);
-		const endDate = new Date(1970, 0, 1, endHours, endMinutes, endSeconds, 0);
-
-		while (dt.getDate() === 1 && dt.valueOf() <= endDate.valueOf()) {
-			const value = `${padStart(String(dt.getHours()), 2, '0')}:${padStart(
-				String(dt.getMinutes()),
-				2,
-				'0'
-			)}:${padStart(String(dt.getSeconds()), 2, '0')}`;
+		while (dt.getDate() === 1 && dt <= end) {
+			const value = format24HourTime(dt);
 
 			options.push({
-				label: formatTime(step >= 60, dt),
+				label: formatTime(dt),
 				value,
 				disabled: timeDisabled ? timeDisabled(dt) : false
 			});
@@ -117,34 +303,106 @@ export const TimePicker = factory(function TimePicker({ middleware: { theme }, p
 		return options;
 	};
 
-	const {
-		onValue,
-		initialValue,
-		required,
-		disabled,
-		label,
-		name,
-		focus,
-		onValidate
-	} = properties();
+	const { name } = properties();
+
+	const options = generateOptions();
 
 	return (
-		<Select
-			key="root"
-			initialValue={initialValue}
-			options={generateOptions()}
-			onValue={onValue || (() => undefined)}
-			required={required}
-			disabled={disabled}
-			label={label}
-			name={name}
-			focus={focus}
-			onValidate={onValidate}
-			theme={theme.compose(
-				selectCss,
-				timePickerCss
-			)}
-		/>
+		<div classes={classes.root}>
+			<input
+				type="hidden"
+				name={name}
+				value={icache.getOrSet('value', '')}
+				aria-hidden="true"
+			/>
+			<TriggerPopup key="popup">
+				{{
+					trigger: (toggleOpen) => {
+						function openMenu() {
+							icache.set('focusNode', 'menu');
+							focus.focus();
+							toggleOpen();
+						}
+
+						const { disabled, required } = properties();
+
+						return (
+							<div classes={classes.input}>
+								<TextInput
+									key="input"
+									disabled={disabled}
+									required={required}
+									focus={() => shouldFocus && focusNode === 'input'}
+									classes={{
+										'@dojo/widgets/text-input': {
+											trailing: [classes.inputTrailing]
+										}
+									}}
+									trailing={() => (
+										<button
+											disabled={disabled}
+											key="clockIcon"
+											onclick={(e) => {
+												e.stopPropagation();
+												openMenu();
+											}}
+											classes={classes.toggleMenuButton}
+											type="button"
+										>
+											<Icon type="clockIcon" />
+										</button>
+									)}
+									initialValue={icache.get('inputValue')}
+									onBlur={() => icache.set('shouldValidate', true)}
+									onValue={(v) => icache.set('inputValue', v || '')}
+									helperText={icache.get('validationMessage')}
+									valid={!icache.get('validationMessage')}
+									onValidate={(valid, message) => {
+										if (valid !== icache.get('inputValid')) {
+											icache.set('inputValid', valid);
+											icache.set('inputValidMessage', message);
+										}
+									}}
+									onKeyDown={(key) => {
+										if (key === Keys.Down || key === Keys.Enter) {
+											openMenu();
+										}
+									}}
+									type="text"
+								/>
+							</div>
+						);
+					},
+					content: (onClose) => {
+						function closeMenu() {
+							icache.set('focusNode', 'input');
+							focus.focus();
+							onClose();
+						}
+
+						return (
+							<div key="menu-wrapper" classes={classes.menuWrapper}>
+								<Menu
+									key="menu"
+									focus={() => shouldFocus && focusNode === 'menu'}
+									options={options}
+									total={options.length}
+									onValue={(value: string) => {
+										icache.set('inputValue', value);
+										icache.set('shouldValidate', true);
+										closeMenu();
+									}}
+									onRequestClose={closeMenu}
+									onBlur={closeMenu}
+									initialValue={''}
+									listBox
+								/>
+							</div>
+						);
+					}
+				}}
+			</TriggerPopup>
+		</div>
 	);
 });
 

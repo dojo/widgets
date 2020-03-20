@@ -1,2 +1,2 @@
-declare const styles: {};
-export = styles;
+export const toggleMenuButton: string;
+export const popup: string;
