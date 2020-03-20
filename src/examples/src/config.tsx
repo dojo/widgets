@@ -211,8 +211,8 @@ export const config = {
 	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename || 'index'}.tsx`,
 	examplePath: (widget: string, filename: string) =>
 		`src/examples/src/widgets/${widget}/${filename || 'index'}.tsx`,
-	codesandboxPath: (widget: string, filename: string) => {
-		return `https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2F${filename.toLowerCase()}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${filename}.tsx`;
+	codesandboxPath: (widget: string, filename: string, themeName?: string) => {
+		return `https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2Fsandbox%2F${filename.toLowerCase()}?theme=${themeName}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${filename}.tsx`;
 	},
 	widgets: {
 		'accordion-pane': {
