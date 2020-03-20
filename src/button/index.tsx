@@ -1,10 +1,10 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { v } from '@dojo/framework/core/vdom';
-import * as css from '../theme/default/button.m.css';
+import { focus, FocusProperties } from '@dojo/framework/core/middleware/focus';
+import { create, tsx } from '@dojo/framework/core/vdom';
+
 import { formatAriaProperties } from '../common/util';
+import { theme } from '../middleware/theme';
+import * as css from '../theme/default/button.m.css';
+import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 
 export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	/** Custom aria attributes */
@@ -37,71 +37,63 @@ export interface ButtonProperties extends ThemedProperties, FocusProperties {
 	widgetId?: string;
 }
 
-@theme(css)
-export class Button extends ThemedMixin(FocusMixin(WidgetBase))<ButtonProperties> {
-	private _onClick(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onClick && this.properties.onClick();
-	}
+const factory = create({ focus, theme }).properties<ButtonProperties>();
 
-	protected getModifierClasses(): (string | null)[] {
-		const { disabled, pressed } = this.properties;
+export const Button = factory(function Button({
+	children,
+	id,
+	middleware: { focus, theme },
+	properties
+}) {
+	const {
+		aria = {},
+		disabled,
+		widgetId,
+		name,
+		pressed,
+		type = 'button',
+		value,
+		onClick,
+		onOut,
+		onOver,
+		onDown,
+		onUp,
+		onBlur,
+		onFocus
+	} = properties();
 
-		return [disabled ? css.disabled : null, pressed ? css.pressed : null];
-	}
+	const themeCss = theme.classes(css);
+	const idBase = widgetId || `button-${id}`;
 
-	render(): DNode {
-		let {
-			aria = {},
-			disabled,
-			widgetId,
-			name,
-			pressed,
-			type = 'button',
-			value,
-			onOut,
-			onOver,
-			onDown,
-			onUp,
-			onBlur,
-			onFocus
-		} = this.properties;
-
-		return v(
-			'button',
-			{
-				classes: this.theme([css.root, ...this.getModifierClasses()]),
-				disabled,
-				id: widgetId,
-				focus: this.shouldFocus,
-				name,
-				type,
-				value,
-				onblur: () => {
-					onBlur && onBlur();
-				},
-				onclick: this._onClick,
-				onfocus: () => {
-					onFocus && onFocus();
-				},
-				onpointerenter: () => {
-					onOver && onOver();
-				},
-				onpointerleave: () => {
-					onOut && onOut();
-				},
-				onpointerdown: () => {
-					onDown && onDown();
-				},
-				onpointerup: () => {
-					onUp && onUp();
-				},
-				...formatAriaProperties(aria),
-				'aria-pressed': typeof pressed === 'boolean' ? pressed.toString() : null
-			},
-			this.children
-		);
-	}
-}
+	return (
+		<button
+			classes={[
+				themeCss.root,
+				disabled ? themeCss.disabled : null,
+				pressed ? themeCss.pressed : null
+			]}
+			disabled={disabled}
+			id={idBase}
+			focus={focus.shouldFocus()}
+			name={name}
+			type={type}
+			value={value}
+			onblur={() => onBlur && onBlur()}
+			onclick={(event: MouseEvent) => {
+				event.stopPropagation();
+				onClick && onClick();
+			}}
+			onfocus={() => onFocus && onFocus()}
+			onpointerenter={() => onOver && onOver()}
+			onpointerleave={() => onOut && onOut()}
+			onpointerdown={() => onDown && onDown()}
+			onpointerup={() => onUp && onUp()}
+			{...formatAriaProperties(aria)}
+			aria-pressed={typeof pressed === 'boolean' ? pressed.toString() : null}
+		>
+			{children()}
+		</button>
+	);
+});
 
 export default Button;

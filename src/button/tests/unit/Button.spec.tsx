@@ -1,84 +1,67 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
+import focus from '@dojo/framework/core/middleware/focus';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/core/vdom';
 
-import Button from '../../index';
+import { compareId, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 import * as css from '../../../theme/default/button.m.css';
-import {
-	isFocusedComparator,
-	isNotFocusedComparator,
-	noop,
-	stubEvent
-} from '../../../common/tests/support/test-helpers';
+import Button from '../../index';
 
-const compareFocusFalse = {
-	selector: 'button',
-	property: 'focus',
-	comparator: isNotFocusedComparator
-};
+const middlewareFactory = create();
+function createMockFocusMiddleware({
+	shouldFocus = false,
+	focused = false,
+	isFocused = false
+} = {}) {
+	return () =>
+		middlewareFactory(() => ({
+			shouldFocus: () => shouldFocus,
+			focused: () => focused,
+			isFocused: () => isFocused
+		}))();
+}
 
-const compareFocusTrue = {
-	selector: 'button',
-	property: 'focus',
-	comparator: isFocusedComparator
-};
+const template = assertionTemplate(() => (
+	<button
+		classes={[css.root, null, null]}
+		disabled={undefined}
+		id="button-test"
+		focus={false}
+		name={undefined}
+		type="button"
+		value={undefined}
+		onblur={noop}
+		onclick={noop}
+		onfocus={noop}
+		onpointerenter={noop}
+		onpointerleave={noop}
+		onpointerdown={noop}
+		onpointerup={noop}
+		aria-pressed={null}
+	/>
+));
 
 registerSuite('Button', {
 	tests: {
 		'no content'() {
-			const h = harness(() => w(Button, {}), [compareFocusFalse]);
-			h.expect(() =>
-				v(
-					'button',
-					{
-						'aria-pressed': null,
-						classes: [css.root, null, null],
-						disabled: undefined,
-						id: undefined,
-						name: undefined,
-						focus: noop,
-						onblur: noop,
-						onclick: noop,
-						onfocus: noop,
-						type: 'button',
-						value: undefined,
-						onpointerenter: noop,
-						onpointerleave: noop,
-						onpointerdown: noop,
-						onpointerup: noop
-					},
-					[null]
-				)
-			);
+			const h = harness(() => <Button />, [compareId]);
+			h.expect(template);
 		},
 
-		'call focus on button node'() {
-			const h = harness(() => w(Button, { focus: () => true }), [compareFocusTrue]);
-			h.expect(() =>
-				v(
-					'button',
-					{
-						'aria-pressed': null,
-						classes: [css.root, null, null],
-						disabled: undefined,
-						id: undefined,
-						name: undefined,
-						focus: noop,
-						onblur: noop,
-						onclick: noop,
-						onfocus: noop,
-						type: 'button',
-						value: undefined,
-						onpointerenter: noop,
-						onpointerleave: noop,
-						onpointerdown: noop,
-						onpointerup: noop
-					},
-					[null]
-				)
-			);
+		'calls focus on button node'() {
+			const focusMock = createMockFocusMiddleware({
+				shouldFocus: true,
+				focused: true,
+				isFocused: true
+			});
+			const h = harness(() => <Button />, {
+				middleware: [[focus, focusMock]],
+				customComparator: [compareId]
+			});
+			h.expect(template.setProperty('button', 'focus', true));
 		},
 
 		events() {
@@ -86,19 +69,19 @@ registerSuite('Button', {
 			let clicked = false;
 			let focused = false;
 
-			const h = harness(() =>
-				w(Button, {
-					onBlur: () => {
+			const h = harness(() => (
+				<Button
+					onBlur={() => {
 						blurred = true;
-					},
-					onClick: () => {
+					}}
+					onClick={() => {
 						clicked = true;
-					},
-					onFocus: () => {
+					}}
+					onFocus={() => {
 						focused = true;
-					}
-				})
-			);
+					}}
+				/>
+			));
 
 			h.trigger('button', 'onblur');
 			h.trigger('button', 'onclick', stubEvent);
