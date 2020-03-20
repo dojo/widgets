@@ -1,262 +1,127 @@
-const { registerSuite } = intern.getInterface('object');
-const { assert } = intern.getPlugin('chai');
-
-import { v, w, isWNode } from '@dojo/framework/core/vdom';
-import Icon from '../../../icon/index';
-import TitlePane, { TitlePaneProperties } from '../../index';
-import * as css from '../../../theme/default/title-pane.m.css';
+const { describe, it } = intern.getInterface('bdd');
 import * as fixedCss from '../../styles/title-pane.m.css';
-import {
-	compareId,
-	compareAriaControls,
-	compareAriaLabelledBy,
-	createHarness,
-	noop,
-	stubEvent
-} from '../../../common/tests/support/test-helpers';
-import { GlobalEvent } from '../../../global-event/index';
-import { DNode } from '@dojo/framework/core/interfaces';
+import * as themeCss from '../../../theme/default/title-pane.m.css';
+import Icon from '../../../icon';
+import TitlePane, { TitlePaneProperties } from '../../index';
+import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
+import harness from '@dojo/framework/testing/harness';
+import { tsx } from '@dojo/framework/core/vdom';
 
-const harness = createHarness([compareId, compareAriaLabelledBy, compareAriaControls]);
+const noop = () => {};
 
-class StubMeta {
-	// dimensions .get()
-	public get(key: any) {
-		return {
-			offset: { height: 100 }
-		};
-	}
-}
-
-class StubbedTitlePane extends TitlePane {
-	meta(MetaType: any): any {
-		return new StubMeta();
-	}
-}
-
-function createVNodeSelector(type: 'window' | 'document', name: string) {
-	return (node: any) => {
-		if (isWNode<GlobalEvent>(node) && node.properties[type] !== undefined) {
-			const globalFuncs = node.properties[type];
-			return globalFuncs ? globalFuncs[name] : undefined;
-		}
-	};
-}
-
-const expected = function(
-	options: {
-		open?: boolean;
-		closeable?: boolean;
-		heading?: string;
-		transition?: boolean;
-		title?: DNode;
-	} = {}
-) {
-	const {
-		open = true,
+describe('TitlePane', () => {
+	function getTemplate({
 		closeable = true,
-		heading = null,
-		transition = true,
-		title = 'test'
-	} = options;
-	return v(
-		'div',
-		{
-			classes: [css.root, open ? css.open : null, fixedCss.rootFixed]
-		},
-		[
-			w(GlobalEvent, { window: { resize: noop }, key: 'global' }),
-			v(
-				'div',
-				{
-					'aria-level': heading,
-					classes: [
-						css.title,
-						closeable ? css.closeable : null,
-						fixedCss.titleFixed,
-						closeable ? fixedCss.closeableFixed : null
-					],
-					role: 'heading'
-				},
-				[
-					v(
-						'button',
-						{
-							'aria-controls': '',
-							'aria-expanded': `${open}`,
-							classes: [fixedCss.titleButtonFixed, css.titleButton],
-							disabled: !closeable,
-							focus: noop,
-							id: '',
-							type: 'button',
-							onclick: noop
-						},
-						[
-							v('span', { classes: css.arrow }, [
-								w(Icon, {
-									type: open ? 'downIcon' : 'rightIcon',
-									theme: undefined,
-									classes: undefined
-								})
-							]),
+		headingLevel,
+		initiallyOpen: open
+	}: TitlePaneProperties = {}) {
+		return assertationTemplate(() => {
+			return (
+				<div classes={[themeCss.root, open ? themeCss.open : null, fixedCss.rootFixed]}>
+					<div
+						aria-level={headingLevel ? `${headingLevel}` : null}
+						classes={[
+							themeCss.title,
+							closeable ? themeCss.closeable : null,
+							fixedCss.titleFixed,
+							closeable ? fixedCss.closeableFixed : null
+						]}
+						role="heading"
+					>
+						<button
+							aria-controls="test-content"
+							aria-expanded={`${open}`}
+							disabled={!closeable}
+							classes={[fixedCss.titleButtonFixed, themeCss.titleButton]}
+							focus={false}
+							key="title-button"
+							onclick={noop}
+							type="button"
+						>
+							<span classes={themeCss.arrow}>
+								<Icon type={open ? 'downIcon' : 'rightIcon'} theme={undefined} />
+							</span>
 							title
-						]
-					)
-				]
-			),
-			v(
-				'div',
-				{
-					'aria-hidden': open ? null : 'true',
-					'aria-labelledby': '',
-					classes: [
-						css.content,
-						transition ? css.contentTransition : null,
-						fixedCss.contentFixed
-					],
-					styles: {
-						marginTop: open ? '0px' : '-100px'
-					},
-					id: '',
-					key: 'content'
-				},
-				[]
-			)
-		]
-	);
-};
-
-registerSuite('TitlePane', {
-	tests: {
-		'default rendering'() {
-			const h = harness(() => w(StubbedTitlePane, { title: 'test' }));
-
-			h.expect(expected);
-		},
-
-		'Should construct with the passed properties where title is a string'() {
-			const h = harness(() =>
-				w(StubbedTitlePane, {
-					closeable: false,
-					headingLevel: 5,
-					open: false,
-					title: 'test'
-				})
+						</button>
+					</div>
+					<div
+						aria-hidden={open ? null : 'true'}
+						aria-labelledby="test-title"
+						classes={[
+							themeCss.content,
+							open ? themeCss.contentTransition : null,
+							fixedCss.contentFixed
+						]}
+						id="test-content"
+						key="content"
+						styles={{
+							marginTop: open ? '0px' : `-0px`
+						}}
+					>
+						content
+					</div>
+				</div>
 			);
-
-			h.expect(() => expected({ open: false, closeable: false, heading: '5' }));
-		},
-
-		'Should construct with the passed properties where title is a null'() {
-			const h = harness(() =>
-				w(StubbedTitlePane, {
-					closeable: false,
-					headingLevel: 5,
-					open: false,
-					title: null
-				})
-			);
-
-			h.expect(() => expected({ open: false, closeable: false, heading: '5', title: null }));
-		},
-
-		'Should construct with the passed properties where title is a VNode'() {
-			const title = v('span', [
-				v('span', { styles: { color: 'red' } }, ['foo']),
-				v('span', { styles: { color: 'blue' } }, ['bar'])
-			]);
-
-			const h = harness(() =>
-				w(StubbedTitlePane, {
-					closeable: false,
-					headingLevel: 5,
-					open: false,
-					title: title
-				})
-			);
-
-			h.expect(() => expected({ open: false, closeable: false, heading: '5', title: title }));
-		},
-
-		'click title to close'() {
-			let called = false;
-			const h = harness(() =>
-				w(StubbedTitlePane, {
-					closeable: true,
-					onRequestClose() {
-						called = true;
-					},
-					title: 'test'
-				})
-			);
-
-			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
-			assert.isTrue(called, 'onRequestClose should be called on title click');
-		},
-
-		'click title to open'() {
-			let called = false;
-			const h = harness(() =>
-				w(StubbedTitlePane, {
-					closeable: true,
-					open: false,
-					onRequestOpen() {
-						called = true;
-					},
-					title: 'test'
-				})
-			);
-			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
-			assert.isTrue(called, 'onRequestOpen should be called on title click');
-		},
-
-		'can not open pane on click'() {
-			let called = 0;
-			let properties: TitlePaneProperties = {
-				closeable: false,
-				open: true,
-				onRequestClose() {
-					called++;
-				},
-				title: 'test'
-			};
-			const h = harness(() => w(StubbedTitlePane, properties));
-			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
-
-			properties = {
-				open: true,
-				onRequestClose() {
-					called++;
-				},
-				title: 'test'
-			};
-			h.trigger(`.${css.titleButton}`, 'onclick', stubEvent);
-			assert.strictEqual(called, 1, 'onRequestClose should only becalled once');
-		},
-
-		'Can animate closed'() {
-			let open = true;
-			const h = harness(() =>
-				w(StubbedTitlePane, {
-					title: 'test',
-					open
-				})
-			);
-			h.expect(() => expected({ open: true }));
-			open = false;
-			h.expect(() => expected({ open: false }));
-		},
-
-		'Global resize event removes transition class'() {
-			const h = harness(() =>
-				w(StubbedTitlePane, {
-					title: 'test'
-				})
-			);
-
-			h.expect(() => expected({ open: true, transition: true }));
-			h.trigger('@global', createVNodeSelector('window', 'resize'), stubEvent);
-			h.expect(() => expected({ open: true, transition: false }));
-		}
+		});
 	}
+
+	it('renders closed', () => {
+		const h = harness(() => (
+			<TitlePane>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+		h.expect(getTemplate());
+	});
+
+	it('renders open', () => {
+		const h = harness(() => (
+			<TitlePane initiallyOpen>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+		h.expect(
+			getTemplate({
+				initiallyOpen: true
+			})
+		);
+	});
+
+	it('renders heading level', () => {
+		const h = harness(() => (
+			<TitlePane headingLevel={3}>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+		h.expect(
+			getTemplate({
+				headingLevel: 3
+			})
+		);
+	});
+
+	it('renders not closeable', () => {
+		const h = harness(() => (
+			<TitlePane closeable={false}>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+		h.expect(
+			getTemplate({
+				closeable: false
+			})
+		);
+	});
 });
