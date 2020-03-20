@@ -7,3 +7,5 @@ export const partialRadio: string;
 export const characterWrapper: string;
 export const characterFill: string;
 export const active: string;
+export const disabled: string;
+export const readOnly: string;

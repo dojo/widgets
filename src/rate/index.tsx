@@ -12,6 +12,12 @@ import theme from '../middleware/theme';
 import * as css from '../theme/default/rate.m.css';
 import bundle from './nls/Rate';
 
+export interface MixedNumber {
+	quotient: number;
+	numerator: number;
+	denominator: number;
+}
+
 export interface RateProperties {
 	/** The name attribute for this rating group */
 	name: string;
@@ -19,11 +25,15 @@ export interface RateProperties {
 	label?: string;
 	/** The id used for the radio input elements */
 	widgetId?: string;
+	/** The initial rating value */
 	initialValue?: number;
-	onValue?: (value?: number) => void;
+	/** Callback fired when the rating value changes */
+	onValue?: (value?: number, mixedValue?: MixedNumber) => void;
 	steps?: number;
 	max?: number;
 	allowClear?: boolean;
+	disabled?: boolean;
+	readOnly?: boolean;
 }
 
 export interface RateChildren {
@@ -40,6 +50,15 @@ interface RateState {
 
 const icache = createICacheMiddleware<RateState>();
 
+function mixedNumber(integer: number, step: number, steps: number) {
+	if (step === steps) {
+		step = 0;
+	} else {
+		integer -= 1;
+	}
+	return { quotient: integer, numerator: step, denominator: steps };
+}
+
 const factory = create({ focus, i18n, icache, theme })
 	.properties<RateProperties>()
 	.children<RateChildren | undefined>();
@@ -53,6 +72,8 @@ export const Rate = factory(function Rate({
 	const {
 		root,
 		active,
+		disabled: disabledClasses,
+		readOnly: readOnlyClasses,
 		label: labelClasses,
 		radioGroup,
 		radio,
@@ -70,8 +91,11 @@ export const Rate = factory(function Rate({
 		max = 5,
 		steps: stepsLength = 1,
 		widgetId = _uuid,
-		allowClear = false
+		allowClear = false,
+		disabled = false,
+		readOnly = false
 	} = properties();
+	const interaction = !disabled && !readOnly;
 	const initialStep = initialNumber ? Math.round((initialNumber % 1) * stepsLength) : undefined;
 	const initialInteger = initialNumber ? Math.ceil(initialNumber) : undefined;
 	const initialValue = initialNumber
@@ -93,7 +117,7 @@ export const Rate = factory(function Rate({
 		integers.push(0);
 		options.push({
 			value: '',
-			label: format('starLabels', { index: 0 })
+			label: format('starLabels', { quotient: 0, numerator: 0, denominator: 1 })
 		});
 	}
 	for (let integer = 1; integer <= max; integer++) {
@@ -101,7 +125,7 @@ export const Rate = factory(function Rate({
 		for (const step of steps) {
 			options.push({
 				value: `${integer}-${step}`,
-				label: format('starLabels', { index: integer })
+				label: format('starLabels', mixedNumber(integer, step, stepsLength))
 			});
 		}
 	}
@@ -110,26 +134,25 @@ export const Rate = factory(function Rate({
 	const onBlur = () => icache.set('focused', false);
 
 	const _onValue = (value?: string) => {
-		let resolved;
 		if (!value) {
 			icache.set('selectedInteger', undefined);
 			icache.set('selectedStep', undefined);
-			resolved = undefined;
+			onValue && onValue();
 		} else {
 			const [integer, step] = value.split('-').map((num) => +num);
+			const mixed = mixedNumber(integer, step, stepsLength);
 			icache.set('selectedInteger', integer);
 			icache.set('selectedStep', step);
-			resolved = integer - 1 + step / stepsLength;
+			onValue && onValue(mixed.quotient + mixed.numerator / mixed.denominator, mixed);
 		}
-		onValue && onValue(resolved);
 		focus.focus();
 	};
 
 	return (
 		<div
-			classes={root}
-			onpointerenter={() => icache.set('hovering', true)}
-			onpointerleave={() => icache.set('hovering', false)}
+			classes={[root, readOnly ? readOnlyClasses : null, disabled ? disabledClasses : null]}
+			onpointerenter={() => interaction && icache.set('hovering', true)}
+			onpointerleave={() => interaction && icache.set('hovering', false)}
 		>
 			<RadioGroup
 				initialValue={initialValue}
@@ -196,8 +219,9 @@ export const Rate = factory(function Rate({
 									key={key}
 									styles={styles}
 									classes={classes}
-									onpointerenter={() => icache.set('hover', key)}
+									onpointerenter={() => interaction && icache.set('hover', key)}
 									onclick={() =>
+										interaction &&
 										allowClear &&
 										integer === selectedInteger &&
 										step === selectedStep &&
@@ -208,6 +232,7 @@ export const Rate = factory(function Rate({
 										widgetId={id}
 										name={name}
 										checked={checked()}
+										disabled={!interaction}
 										onFocus={onFocus}
 										onBlur={onBlur}
 										onValue={checked}
@@ -221,9 +246,10 @@ export const Rate = factory(function Rate({
 										label={
 											<virtual>
 												<span classes={baseCss.visuallyHidden}>
-													{format('starLabels', {
-														index: integer
-													})}
+													{format(
+														'starLabels',
+														mixedNumber(integer, step, stepsLength)
+													)}
 												</span>
 												{character ? (
 													character(fill, integer, selected, over)

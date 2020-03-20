@@ -149,6 +149,8 @@ import CustomMaxRate from './widgets/rate/CustomMax';
 import HalfRatings from './widgets/rate/HalfRatings';
 import InitialValueRate from './widgets/rate/InitialValue';
 import AllowClearRate from './widgets/rate/AllowClear';
+import DisabledRatings from './widgets/rate/DisabledRatings';
+import ReadonlyRatings from './widgets/rate/ReadonlyRatings';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
@@ -1037,6 +1039,16 @@ export const config = {
 					title: 'Clear on repeat click or with arrows',
 					filename: 'AllowClear',
 					module: AllowClearRate
+				},
+				{
+					title: 'Disabled',
+					filename: 'DisabledRatings',
+					module: DisabledRatings
+				},
+				{
+					title: 'Readonly',
+					filename: 'ReadonlyRatings',
+					module: ReadonlyRatings
 				}
 			]
 		},

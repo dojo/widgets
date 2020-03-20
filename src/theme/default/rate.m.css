@@ -42,3 +42,12 @@
 .active {
 	border: 1px solid blue;
 }
+
+/* Added to disabled ratings group */
+.disabled {
+	opacity: 0.5;
+}
+
+/* Added to readonly ratings group */
+.readOnly {
+}
