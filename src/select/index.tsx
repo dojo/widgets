@@ -17,6 +17,7 @@ import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './select.nls';
+import { find } from '@dojo/framework/shim/array';
 
 export interface SelectProperties {
 	/** Callback called when user selects a value */
@@ -163,6 +164,8 @@ export const Select = factory(function Select({
 							}
 						}
 
+						const valueOption = find(options, (option) => option.value === value);
+
 						return (
 							<button
 								name={name}
@@ -189,7 +192,7 @@ export const Select = factory(function Select({
 								}}
 							>
 								<span classes={themedCss.value}>
-									{value || (
+									{(valueOption && valueOption.label) || value || (
 										<span classes={themedCss.placeholder}>{placeholder}</span>
 									)}
 								</span>
