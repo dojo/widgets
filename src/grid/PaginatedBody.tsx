@@ -42,15 +42,16 @@ export interface PaginatedBodyProperties<S> {
 	selectedRows?: number[];
 }
 
-const defaultPlaceholderRowRenderer = (index: number) => {
-	return w(PlaceholderRow, { key: index });
-};
-
 @theme(css)
 @diffProperty('pages', reference)
 export default class PaginatedBody<S> extends I18nMixin(ThemedMixin(WidgetBase))<
 	PaginatedBodyProperties<S>
 > {
+	private _defaultPlaceholderRow(key: number) {
+		const { classes, theme } = this.properties;
+		return w(PlaceholderRow, { key, theme, classes });
+	}
+
 	private _updater(rowNumber: number, columnId: string, value: any) {
 		const page = Math.max(Math.ceil(rowNumber / this.properties.pageSize), 1);
 		const pageItemNumber = rowNumber - (page - 1) * this.properties.pageSize;
@@ -69,7 +70,7 @@ export default class PaginatedBody<S> extends I18nMixin(ThemedMixin(WidgetBase))
 			fetcher,
 			pages,
 			columnConfig,
-			placeholderRowRenderer = defaultPlaceholderRowRenderer,
+			placeholderRowRenderer = this._defaultPlaceholderRow,
 			pageNumber,
 			theme,
 			classes,

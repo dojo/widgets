@@ -1,6 +1,9 @@
 @import './variables.css';
 
 .root {
+	box-sizing: border-box;
+	height: calc(var(--mdc-grid-base) * 5);
+	/* border-top: var(--mdc-border-width) solid var(--mdc-border-color); */
 }
 
 .selected {

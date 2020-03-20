@@ -2,6 +2,7 @@
 
 /* The root class of the grid Header */
 .root {
+	border-left: 1px solid var(--component-color);
 }
 
 /* Contains the header cell for a column */
@@ -58,6 +59,7 @@
 }
 
 .filterInput {
+	width: 100%;
 }
 
 .filterNoLabel {
