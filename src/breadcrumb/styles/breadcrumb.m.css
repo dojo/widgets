@@ -11,7 +11,10 @@
 	display: flex;
 }
 
-.labelFixed {
-	align-items: center;
-	display: inline-flex;
+.listItemFixed::before {
+	content: '/';
+}
+
+.listItemFixed:first-child::before {
+	display: none;
 }

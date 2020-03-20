@@ -10,7 +10,6 @@ import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
 import BasicBreadcrumb from './widgets/breadcrumb/Basic';
 import CustomRendererBreadcrumb from './widgets/breadcrumb/CustomRenderer';
-import CustomSeparatorBreadcrumb from './widgets/breadcrumb/CustomSeparator';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
@@ -266,11 +265,6 @@ export const config = {
 		},
 		breadcrumb: {
 			examples: [
-				{
-					filename: 'CustomSeparator',
-					module: CustomSeparatorBreadcrumb,
-					title: 'Custom Separator'
-				},
 				{
 					filename: 'CustomRenderer',
 					module: CustomRendererBreadcrumb,

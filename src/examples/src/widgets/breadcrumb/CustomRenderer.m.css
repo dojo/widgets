@@ -1,13 +1,26 @@
-.link {
+.breadcrumb {
 	align-items: center;
-	display: inline-flex;
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.crumb {
+	align-items: center;
+	display: flex;
+	margin-right: 0.75rem;
+}
+
+.crumb:last-child {
+	margin-right: 0;
 }
 
 .icon {
 	line-height: inherit;
-	margin-right: 8px;
+	margin-right: 0.5rem;
 }
 
-.linkText {
-	text-decoration: underline;
+.current {
+	font-weight: bold;
 }

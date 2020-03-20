@@ -4,17 +4,12 @@
 .list {
 }
 
-.listItem {
+.listItem,
+.listItem::before {
 	margin-right: 0.75rem;
 }
 .listItem::last-child {
 	margin-right: 0;
-}
-
-.label {
-}
-
-.separator {
 }
 
 .current {

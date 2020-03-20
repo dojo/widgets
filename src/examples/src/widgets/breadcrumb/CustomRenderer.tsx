@@ -1,5 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Breadcrumb from '@dojo/widgets/breadcrumb';
+import Crumb from '@dojo/widgets/breadcrumb/Crumb';
 import Icon from '@dojo/widgets/icon';
 
 import * as css from './CustomRenderer.m.css';
@@ -8,34 +9,48 @@ const factory = create();
 
 const App = factory(function() {
 	const items = [
-		{ label: 'Home', href: '/' },
-		{
-			label: 'Overview',
-			href: '/#widget/breadcrumb/overview',
-			title: 'Breadcrumb Overview'
-		},
-		{
-			label: 'Tests',
-			href: '/#widget/breadcrumb/tests',
-			title: 'Breadcrumb Tests'
-		}
+		{ completed: true, key: 'step1', label: 'Step 1' },
+		{ completed: true, key: 'step2', label: 'Step 2' },
+		{ completed: false, current: true, key: 'step3', label: 'Step 3' },
+		{ completed: false, key: 'step4', label: 'Step 4' }
 	];
 
 	return (
-		<Breadcrumb label="breadcrumb" current={1} items={items}>
-			{(item, isCurrent) => (
-				<a
-					aria-current={isCurrent || undefined}
-					classes={css.link}
-					href={item.href}
-					title={item.title}
-				>
-					<Icon
-						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
-						type="checkIcon"
-					/>
-					<span classes={css.linkText}>{item.label}</span>
-				</a>
+		<Breadcrumb label="breadcrumb" items={items}>
+			{(items) => (
+				<ol classes={css.breadcrumb}>
+					{items.map((item, i) => (
+						<virtual>
+							{i !== 0 && (
+								<li
+									classes={css.crumb}
+									key={`${item.key}-separator`}
+									aria-hidden="true"
+								>
+									<Icon type="rightIcon" />
+								</li>
+							)}
+							<li classes={css.crumb} key={item.key}>
+								{item.completed && (
+									<Icon
+										classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
+										type="checkIcon"
+									/>
+								)}
+
+								<Crumb
+									classes={{
+										'@dojo/widgets/crumb': {
+											root: [item.current ? css.current : undefined]
+										}
+									}}
+									item={item}
+									current={item.current ? 'step' : undefined}
+								/>
+							</li>
+						</virtual>
+					))}
+				</ol>
 			)}
 		</Breadcrumb>
 	);

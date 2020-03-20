@@ -8,6 +8,7 @@ import * as checkbox from './checkbox.m.css';
 import * as checkboxGroup from './checkbox-group.m.css';
 import * as chip from './chip.m.css';
 import * as constrainedInput from './constrained-input.m.css';
+import * as crumb from './crumb.m.css';
 import * as dialog from './dialog.m.css';
 import * as emailInput from './email-input.m.css';
 import * as grid from './grid.m.css';
@@ -50,6 +51,7 @@ export default {
 	'@dojo/widgets/accordion-pane': accordionPane,
 	'@dojo/widgets/avatar': avatar,
 	'@dojo/widgets/breadcrumb': breadcrumb,
+	'@dojo/widgets/breadcrumb/Crumb': crumb,
 	'@dojo/widgets/button': button,
 	'@dojo/widgets/calendar': calendar,
 	'@dojo/widgets/card': card,

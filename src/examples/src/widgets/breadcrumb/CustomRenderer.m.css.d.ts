@@ -1,3 +1,4 @@
-export const link: string;
+export const breadcrumb: string;
+export const crumb: string;
 export const icon: string;
-export const linkText: string;
+export const current: string;
