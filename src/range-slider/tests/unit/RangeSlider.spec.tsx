@@ -147,28 +147,6 @@ describe('RangeSlider', () => {
 		h.expect(testTemplate);
 	});
 
-	it('renders label after', () => {
-		const h = harness(() => <RangeSlider label="label" labelAfter />);
-		const testTemplate = template.append('@root', [
-			<Label
-				classes={undefined}
-				disabled={undefined}
-				focused={false}
-				hidden={undefined}
-				key="label"
-				readOnly={undefined}
-				required={undefined}
-				secondary={true}
-				theme={undefined}
-				valid={undefined}
-				widgetId="range-slider-test-label"
-			>
-				label
-			</Label>
-		]);
-		h.expect(testTemplate);
-	});
-
 	it('renders output', () => {
 		const h = harness(() => <RangeSlider showOutput />);
 		const testTemplate = template

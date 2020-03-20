@@ -19,8 +19,6 @@ export interface RangeSliderProperties {
 	disabled?: boolean;
 	/** Adds a <label> element with the supplied text */
 	label?: string;
-	/** Adds the label element after (true) or before (false) */
-	labelAfter?: boolean;
 	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** The maximum value allowed */
@@ -91,7 +89,6 @@ export const RangeSlider = factory(function RangeSlider({
 		classes,
 		disabled,
 		label,
-		labelAfter,
 		labelHidden,
 		maxName = `${name}_max`,
 		maximumLabel = 'Maximum',
@@ -204,94 +201,7 @@ export const RangeSlider = factory(function RangeSlider({
 		/>
 	);
 
-	const children = [
-		label ? (
-			<Label
-				classes={classes}
-				disabled={disabled}
-				focused={focus.isFocused('root')}
-				hidden={labelHidden}
-				key="label"
-				readOnly={readOnly}
-				required={required}
-				secondary={true}
-				theme={themeProp}
-				valid={valid}
-				widgetId={`${widgetId}-label`}
-			>
-				{label}
-			</Label>
-		) : null,
-		<div
-			classes={[themeCss.inputWrapper, fixedCss.inputWrapperFixed]}
-			onpointerenter={() => {
-				onOver && onOver();
-			}}
-			onpointerleave={() => {
-				onOut && onOut();
-			}}
-		>
-			{slider1}
-			<div classes={baseCss.visuallyHidden} id={minLabelId} key="minimumLabel">
-				{minimumLabel}
-			</div>
-			{slider2}
-			<div classes={baseCss.visuallyHidden} id={maxLabelId} key="maximumLabel">
-				{maximumLabel}
-			</div>
-			<div
-				classes={[themeCss.filled, fixedCss.filledFixed]}
-				key="track"
-				styles={{
-					left: Math.round(slider1Percent * 100) + '%',
-					width: Math.round((slider2Percent - slider1Percent) * 100) + '%'
-				}}
-			/>
-			<div
-				key="leftThumb"
-				classes={[
-					themeCss.thumb,
-					themeCss.leftThumb,
-					focus.isFocused('slider1') ? themeCss.focused : undefined,
-					fixedCss.thumbFixed
-				]}
-				styles={{
-					left: Math.round(slider1Percent * 100) + '%'
-				}}
-			/>
-			<div
-				key="rightThumb"
-				classes={[
-					themeCss.thumb,
-					themeCss.rightThumb,
-					focus.isFocused('slider2') ? themeCss.focused : undefined,
-					fixedCss.thumbFixed
-				]}
-				styles={{
-					left: Math.round(slider2Percent * 100) + '%'
-				}}
-			/>
-			{showOutput ? (
-				<output
-					classes={[themeCss.output, outputIsTooltip ? themeCss.outputTooltip : null]}
-					for={widgetId}
-					styles={
-						outputIsTooltip
-							? {
-									left: `${Math.round(
-										(slider1Percent + (slider2Percent - slider1Percent) / 2) *
-											100
-									)}%`
-							  }
-							: undefined
-					}
-					tabIndex={-1}
-				>
-					{output ? output({ min, max }) : `${min}, ${max}`}
-				</output>
-			) : null}
-		</div>
-	];
+	const children = [];
 
 	return (
 		<div
@@ -306,7 +216,93 @@ export const RangeSlider = factory(function RangeSlider({
 				showOutput ? themeCss.hasOutput : null
 			]}
 		>
-			{labelAfter ? children.reverse() : children}
+			{label ? (
+				<Label
+					classes={classes}
+					disabled={disabled}
+					focused={focus.isFocused('root')}
+					hidden={labelHidden}
+					key="label"
+					readOnly={readOnly}
+					required={required}
+					secondary={true}
+					theme={themeProp}
+					valid={valid}
+					widgetId={`${widgetId}-label`}
+				>
+					{label}
+				</Label>
+			) : null}
+			<div
+				classes={[themeCss.inputWrapper, fixedCss.inputWrapperFixed]}
+				onpointerenter={() => {
+					onOver && onOver();
+				}}
+				onpointerleave={() => {
+					onOut && onOut();
+				}}
+			>
+				{slider1}
+				<div classes={baseCss.visuallyHidden} id={minLabelId} key="minimumLabel">
+					{minimumLabel}
+				</div>
+				{slider2}
+				<div classes={baseCss.visuallyHidden} id={maxLabelId} key="maximumLabel">
+					{maximumLabel}
+				</div>
+				<div
+					classes={[themeCss.filled, fixedCss.filledFixed]}
+					key="track"
+					styles={{
+						left: Math.round(slider1Percent * 100) + '%',
+						width: Math.round((slider2Percent - slider1Percent) * 100) + '%'
+					}}
+				/>
+				<div
+					key="leftThumb"
+					classes={[
+						themeCss.thumb,
+						themeCss.leftThumb,
+						focus.isFocused('slider1') ? themeCss.focused : undefined,
+						fixedCss.thumbFixed
+					]}
+					styles={{
+						left: Math.round(slider1Percent * 100) + '%'
+					}}
+				/>
+				<div
+					key="rightThumb"
+					classes={[
+						themeCss.thumb,
+						themeCss.rightThumb,
+						focus.isFocused('slider2') ? themeCss.focused : undefined,
+						fixedCss.thumbFixed
+					]}
+					styles={{
+						left: Math.round(slider2Percent * 100) + '%'
+					}}
+				/>
+				{showOutput ? (
+					<output
+						classes={[themeCss.output, outputIsTooltip ? themeCss.outputTooltip : null]}
+						for={widgetId}
+						styles={
+							outputIsTooltip
+								? {
+										left: `${Math.round(
+											(slider1Percent +
+												(slider2Percent - slider1Percent) / 2) *
+												100
+										)}%`
+								  }
+								: undefined
+						}
+						tabIndex={-1}
+					>
+						{output ? output({ min, max }) : `${min}, ${max}`}
+					</output>
+				) : null}
+			</div>
 		</div>
 	);
 });
