@@ -201,8 +201,6 @@ export const RangeSlider = factory(function RangeSlider({
 		/>
 	);
 
-	const children = [];
-
 	return (
 		<div
 			key="root"
