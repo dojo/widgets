@@ -19,7 +19,7 @@ export interface SortRenderer {
 export interface FilterRenderer {
 	(
 		column: ColumnConfig,
-		filterValue: string | undefined,
+		filterValue: string,
 		doFilter: (value: string) => void,
 		title?: string | DNode
 	): DNode;
@@ -90,7 +90,7 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 
 	private _filterRenderer = (
 		columnConfig: ColumnConfig,
-		filterValue: string | undefined,
+		filterValue: string,
 		doFilter: (value: string) => void,
 		title?: string | DNode
 	) => {
@@ -111,7 +111,7 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 			label: format('filterBy', { name: title }),
 			labelHidden: true,
 			type: 'search',
-			initialValue: filterValue,
+			initialValue: filterValue || undefined,
 			onValue: doFilter
 		});
 	};
@@ -165,8 +165,7 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 
 				const filterKeys = Object.keys(filter);
 				const direction = !isSorted ? undefined : isSortedAsc ? 'asc' : 'desc';
-				const filterValue =
-					filterKeys.indexOf(column.id) > -1 ? filter[column.id] : undefined;
+				const filterValue = filterKeys.indexOf(column.id) > -1 ? filter[column.id] : '';
 				const doFilter = (value: string) => {
 					filterer(column.id, value);
 				};

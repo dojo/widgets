@@ -163,7 +163,7 @@ describe('PaginatedFooter', () => {
 				onPageChange: noop
 			})
 		);
-		h.expect(() => null);
+		h.expect(() => v('div', { classes: [css.root, fixedCss.rootFixed] }));
 	});
 
 	it('should render the controls for the initial page', () => {
