@@ -76,7 +76,7 @@ const buttonTemplate = assertionTemplate(() => {
 				initialValue={''}
 				onValidate={noop}
 				required={undefined}
-				valid={true}
+				valid={undefined}
 				helperText=""
 				onKeyDown={noop}
 				type="text"

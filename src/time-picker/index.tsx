@@ -58,6 +58,7 @@ export interface TimePickerICache {
 	focusNode: 'input' | 'menu';
 	inputValid?: boolean;
 	inputValidMessage?: string;
+	isValid?: boolean;
 }
 
 const factory = create({
@@ -271,6 +272,7 @@ export const TimePicker = factory(function TimePicker({
 			}
 
 			isValid = validationMessages.length === 0;
+			icache.set('isValid', isValid);
 		}
 
 		const validationMessage = validationMessages.join('; ');
@@ -356,7 +358,7 @@ export const TimePicker = factory(function TimePicker({
 									onBlur={() => icache.set('shouldValidate', true)}
 									onValue={(v) => icache.set('inputValue', v || '')}
 									helperText={icache.get('validationMessage')}
-									valid={!icache.get('validationMessage')}
+									valid={icache.get('isValid') && icache.get('inputValid')}
 									onValidate={(valid, message) => {
 										if (valid !== icache.get('inputValid')) {
 											icache.set('inputValid', valid);
