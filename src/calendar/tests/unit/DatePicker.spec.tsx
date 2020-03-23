@@ -2,7 +2,7 @@ const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
@@ -44,40 +44,31 @@ const compareName = {
 };
 
 const monthRadios = function(open?: boolean) {
-	return DEFAULT_MONTHS.map((monthName, i) =>
-		v(
-			'label',
-			{
-				key: '',
-				classes: [css.monthRadio, i === 5 ? css.monthRadioChecked : null],
-				for: '',
-				onmouseup: noop
-			},
-			[
-				v('input', {
-					checked: i === 5,
-					classes: css.monthRadioInput,
-					id: '',
-					key: '',
-					name: '',
-					tabIndex: open ? 0 : -1,
-					focus: open && i === 5 ? noop : undefined,
-					type: 'radio',
-					disabled: false,
-					value: `${i}`,
-					onchange: noop
-				}),
-				v(
-					'abbr',
-					{
-						classes: css.monthRadioLabel,
-						title: monthName.long
-					},
-					[monthName.short]
-				)
-			]
-		)
-	);
+	return DEFAULT_MONTHS.map((monthName, i) => (
+		<label
+			key=""
+			classes={[css.monthRadio, i === 5 ? css.monthRadioChecked : null]}
+			for=""
+			onmouseup={noop}
+		>
+			<input
+				checked={i === 5}
+				classes={css.monthRadioInput}
+				id=""
+				key=""
+				name=""
+				tabIndex={open ? 0 : -1}
+				focus={open && i === 5 ? noop : undefined}
+				type="radio"
+				disabled={false}
+				value={`${i}`}
+				onchange={noop}
+			/>
+			<abbr classes={css.monthRadioLabel} title={monthName.long}>
+				{monthName.short}
+			</abbr>
+		</label>
+	));
 };
 
 const yearRadios = function(
@@ -91,72 +82,47 @@ const yearRadios = function(
 	const radios = [];
 	for (let i = yearStart; i < yearEnd; i++) {
 		radios.push(
-			v(
-				'label',
-				{
-					key: '',
-					classes: [css.yearRadio, i === checkedYear ? css.yearRadioChecked : null],
-					for: '',
-					onmouseup: noop
-				},
-				[
-					v('input', {
-						checked: i === checkedYear,
-						classes: css.yearRadioInput,
-						id: '',
-						tabIndex: open ? 0 : -1,
-						focus: open && i === checkedYear ? noop : undefined,
-						type: 'radio',
-						key: '',
-						name: '',
-						disabled: i < minYear || i > maxYear,
-						value: `${i}`,
-						onchange: noop
-					}),
-					v(
-						'abbr',
-						{
-							classes: css.yearRadioLabel
-						},
-						[`${i}`]
-					)
-				]
-			)
+			<label
+				key=""
+				classes={[css.yearRadio, i === checkedYear ? css.yearRadioChecked : null]}
+				for=""
+				onmouseup={noop}
+			>
+				<input
+					checked={i === checkedYear}
+					classes={css.yearRadioInput}
+					id=""
+					tabIndex={open ? 0 : -1}
+					focus={open && i === checkedYear ? noop : undefined}
+					type="radio"
+					key=""
+					name=""
+					disabled={i < minYear || i > maxYear}
+					value={`${i}`}
+					onchange={noop}
+				/>
+				<abbr classes={css.yearRadioLabel}>{`${i}`}</abbr>
+			</label>
 		);
 	}
 	return radios;
 };
 
 const expectedMonthPopup = function(open: boolean) {
-	return v(
-		'div',
-		{
-			id: '',
-			key: 'month-grid',
-			'aria-hidden': `${!open}`,
-			'aria-labelledby': '',
-			classes: [css.monthGrid, !open ? baseCss.visuallyHidden : null],
-			role: 'dialog'
-		},
-		[
-			v(
-				'fieldset',
-				{
-					classes: css.monthFields,
-					onkeydown: noop
-				},
-				[
-					v(
-						'legend',
-						{
-							classes: baseCss.visuallyHidden
-						},
-						[DEFAULT_LABELS.chooseMonth]
-					),
-					...monthRadios(open)
-				]
-			)
-		]
+	return (
+		<div
+			id=""
+			key="month-grid"
+			aria-hidden={`${!open}`}
+			aria-labelledby=""
+			classes={[css.monthGrid, !open ? baseCss.visuallyHidden : null]}
+			role="dialog"
+		>
+			<fieldset classes={css.monthFields} onkeydown={noop}>
+				<legend classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.chooseMonth}</legend>
+				{...monthRadios(open)}
+			</fieldset>
+		</div>
 	);
 };
 
@@ -167,69 +133,42 @@ const expectedYearPopup = function(
 	minYear?: number,
 	maxYear?: number
 ) {
-	return v(
-		'div',
-		{
-			key: 'year-grid',
-			'aria-hidden': `${!open}`,
-			'aria-labelledby': '',
-			classes: [css.yearGrid, !open ? baseCss.visuallyHidden : null],
-			id: '',
-			role: 'dialog'
-		},
-		[
-			v(
-				'fieldset',
-				{
-					classes: css.yearFields,
-					onkeydown: noop
-				},
-				[
-					v('legend', { classes: [baseCss.visuallyHidden] }, [DEFAULT_LABELS.chooseYear]),
-					...yearRadios(open, yearStart, yearEnd, undefined, minYear, maxYear)
-				]
-			),
-			v(
-				'div',
-				{
-					classes: css.controls
-				},
-				[
-					v(
-						'button',
-						{
-							classes: css.previous,
-							tabIndex: open ? 0 : -1,
-							type: 'button',
-							disabled: false,
-							onclick: noop
-						},
-						[
-							w(Icon, { type: 'leftIcon', theme: undefined, classes: undefined }),
-							v('span', { classes: baseCss.visuallyHidden }, [
-								DEFAULT_LABELS.previousYears
-							])
-						]
-					),
-					v(
-						'button',
-						{
-							classes: css.next,
-							tabIndex: open ? 0 : -1,
-							type: 'button',
-							disabled: false,
-							onclick: noop
-						},
-						[
-							w(Icon, { type: 'rightIcon', theme: undefined, classes: undefined }),
-							v('span', { classes: baseCss.visuallyHidden }, [
-								DEFAULT_LABELS.nextYears
-							])
-						]
-					)
-				]
-			)
-		]
+	return (
+		<div
+			key="year-grid"
+			aria-hidden={`${!open}`}
+			aria-labelledby=""
+			classes={[css.yearGrid, !open ? baseCss.visuallyHidden : null]}
+			id=""
+			role="dialog"
+		>
+			<fieldset classes={css.yearFields} onkeydown={noop}>
+				<legend classes={[baseCss.visuallyHidden]}>{DEFAULT_LABELS.chooseYear}</legend>
+				{...yearRadios(open, yearStart, yearEnd, undefined, minYear, maxYear)}
+			</fieldset>
+			<div classes={css.controls}>
+				<button
+					classes={css.previous}
+					tabIndex={open ? 0 : -1}
+					type="button"
+					disabled={false}
+					onclick={noop}
+				>
+					<Icon type="leftIcon" theme={undefined} classes={undefined} />
+					<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.previousYears}</span>
+				</button>
+				<button
+					classes={css.next}
+					tabIndex={open ? 0 : -1}
+					type="button"
+					disabled={false}
+					onclick={noop}
+				>
+					<Icon type="rightIcon" theme={undefined} classes={undefined} />
+					<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
+				</button>
+			</div>
+		</div>
 	);
 };
 interface ExpectedOptions {
@@ -252,102 +191,73 @@ const expected = function(monthOpen = false, yearOpen = false, options: Expected
 		monthTriggerFocus,
 		yearTriggerFocus
 	} = options;
-	// new
-	return v(
-		'div',
-		{
-			classes: css.datePicker
-		},
-		[
-			v(
-				'div',
-				{
-					classes: css.topMatter,
-					role: 'menubar'
-				},
-				[
-					// hidden label
-					v(
-						'label',
-						{
-							id: customProps.labelId ? customProps.labelId : '',
-							classes: [baseCss.visuallyHidden],
-							'aria-live': 'polite',
-							'aria-atomic': 'false'
-						},
-						[monthLabel]
-					),
+	return (
+		<div classes={css.datePicker}>
+			<div classes={css.topMatter} role="menubar">
+				<label
+					id={customProps.labelId ? customProps.labelId : ''}
+					classes={[baseCss.visuallyHidden]}
+					aria-live="polite"
+					aria-atomic="false"
+				>
+					{monthLabel}
+				</label>
 
-					// month trigger
-					v(
-						'button',
-						{
-							key: 'month-button',
-							'aria-controls': '',
-							'aria-expanded': `${monthOpen}`,
-							'aria-haspopup': 'true',
-							focus: monthTriggerFocus,
-							id: '',
-							classes: [css.monthTrigger, monthOpen ? css.monthTriggerActive : null],
-							role: 'menuitem',
-							type: 'button',
-							onclick: noop
-						},
-						['June']
-					),
+				<button
+					key="month-button"
+					aria-controls=""
+					aria-expanded={`${monthOpen}`}
+					aria-haspopup="true"
+					focus={monthTriggerFocus}
+					id=""
+					classes={[css.monthTrigger, monthOpen ? css.monthTriggerActive : null]}
+					role="menuitem"
+					type="button"
+					onclick={noop}
+				>
+					June
+				</button>
 
-					// year trigger
-					v(
-						'button',
-						{
-							key: 'year-button',
-							'aria-controls': '',
-							'aria-expanded': `${yearOpen}`,
-							'aria-haspopup': 'true',
-							focus: yearTriggerFocus,
-							id: '',
-							classes: [css.yearTrigger, yearOpen ? css.yearTriggerActive : null],
-							role: 'menuitem',
-							type: 'button',
-							onclick: noop
-						},
-						['2017']
-					)
-				]
-			),
+				<button
+					key="year-button"
+					aria-controls=""
+					aria-expanded={`${yearOpen}`}
+					aria-haspopup="true"
+					focus={yearTriggerFocus}
+					id=""
+					classes={[css.yearTrigger, yearOpen ? css.yearTriggerActive : null]}
+					role="menuitem"
+					type="button"
+					onclick={noop}
+				>
+					2017
+				</button>
+			</div>
 
-			// month picker
-			expectedMonthPopup(monthOpen),
+			{expectedMonthPopup(monthOpen)}
 
-			// year picker
-			expectedYearPopup(
+			{expectedYearPopup(
 				yearOpen,
 				yearStart,
 				yearEnd,
 				minDate && minDate.getFullYear(),
 				maxDate && maxDate.getFullYear()
-			)
-		]
+			)}
+		</div>
 	);
 };
 
 registerSuite('Calendar DatePicker', {
 	tests: {
 		'Popup should render with default properties'() {
-			const h = harness(
-				() =>
-					w(DatePicker, {
-						...requiredProps
-					}),
-				[
-					compareId,
-					compareAriaLabelledBy,
-					compareAriaControls,
-					compareKey,
-					compareFor,
-					compareName
-				]
-			);
+			const h = harness(() => <DatePicker {...requiredProps} />, [
+				compareId,
+				compareAriaLabelledBy,
+				compareAriaControls,
+				compareKey,
+				compareFor,
+				compareName
+			]);
 
 			h.expect(() => expected());
 		},
@@ -361,14 +271,15 @@ registerSuite('Calendar DatePicker', {
 			};
 
 			const h = harness(
-				() =>
-					w(DatePicker, {
-						renderMonthLabel: () => {
+				() => (
+					<DatePicker
+						renderMonthLabel={() => {
 							return 'bar';
-						},
-						...customProps,
-						...requiredProps
-					}),
+						}}
+						{...customProps}
+						{...requiredProps}
+					/>
+				),
 				[
 					compareId,
 					compareAriaLabelledBy,
@@ -394,7 +305,7 @@ registerSuite('Calendar DatePicker', {
 			let properties = {
 				...requiredProps
 			};
-			const h = harness(() => w(DatePicker, properties), [
+			const h = harness(() => <DatePicker {...properties} />, [
 				compareKey,
 				compareFor,
 				compareName,
@@ -409,224 +320,145 @@ registerSuite('Calendar DatePicker', {
 				year: 1997
 			};
 
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: css.datePicker
-					},
-					[
-						v(
-							'div',
-							{
-								classes: css.topMatter,
-								role: 'menubar'
-							},
-							[
-								// hidden label
-								v(
-									'label',
-									{
-										id: '',
-										classes: [baseCss.visuallyHidden],
-										'aria-live': 'polite',
-										'aria-atomic': 'false'
-									},
-									['June 1997']
-								),
+			h.expect(() => (
+				<div classes={css.datePicker}>
+					<div classes={css.topMatter} role="menubar">
+						<label
+							id=""
+							classes={[baseCss.visuallyHidden]}
+							aria-live="polite"
+							aria-atomic="false"
+						>
+							June 1997
+						</label>
 
-								// month trigger
-								v(
-									'button',
-									{
-										key: 'month-button',
-										'aria-controls': '',
-										'aria-expanded': 'false',
-										'aria-haspopup': 'true',
-										focus: undefined,
-										id: '',
-										classes: [css.monthTrigger, null],
-										role: 'menuitem',
-										type: 'button',
-										onclick: noop
-									},
-									['June']
-								),
+						<button
+							key="month-button"
+							aria-controls=""
+							aria-expanded="false"
+							aria-haspopup="true"
+							focus={undefined}
+							id=""
+							classes={[css.monthTrigger, null]}
+							role="menuitem"
+							type="button"
+							onclick={noop}
+						>
+							June
+						</button>
 
-								// year trigger
-								v(
-									'button',
-									{
-										key: 'year-button',
-										'aria-controls': '',
-										'aria-expanded': 'false',
-										'aria-haspopup': 'true',
-										focus: undefined,
-										id: '',
-										classes: [css.yearTrigger, null],
-										role: 'menuitem',
-										type: 'button',
-										onclick: noop
-									},
-									['1997']
-								)
-							]
-						),
-						v(
-							'div',
-							{
-								id: '',
-								key: 'month-grid',
-								'aria-hidden': 'true',
-								'aria-labelledby': '',
-								classes: [css.monthGrid, baseCss.visuallyHidden],
-								role: 'dialog'
-							},
-							[
-								v(
-									'fieldset',
-									{
-										classes: css.monthFields,
-										onkeydown: noop
-									},
-									[
-										v(
-											'legend',
-											{
-												classes: baseCss.visuallyHidden
-											},
-											[DEFAULT_LABELS.chooseMonth]
-										),
-										...DEFAULT_MONTHS.map((monthName, i) =>
-											v(
-												'label',
-												{
-													for: '',
-													key: '',
-													classes: [
-														css.monthRadio,
-														i === 5 ? css.monthRadioChecked : null
-													],
-													onmouseup: noop
-												},
-												[
-													v('input', {
-														checked: i === 5,
-														classes: css.monthRadioInput,
-														disabled: false,
-														focus: undefined,
-														id: '',
-														key: '',
-														name: '',
-														tabIndex: -1,
-														type: 'radio',
-														value: `${i}`,
-														onchange: noop
-													}),
-													v(
-														'abbr',
-														{
-															classes: css.monthRadioLabel,
-															title: monthName.long
-														},
-														[monthName.short]
-													)
-												]
-											)
-										)
-									]
-								)
-							]
-						),
-						v(
-							'div',
-							{
-								key: 'year-grid',
-								'aria-hidden': 'true',
-								'aria-labelledby': '',
-								classes: [css.yearGrid, baseCss.visuallyHidden],
-								id: '',
-								role: 'dialog'
-							},
-							[
-								v(
-									'fieldset',
-									{
-										classes: css.yearFields,
-										onkeydown: noop
-									},
-									[
-										v('legend', { classes: [baseCss.visuallyHidden] }, [
-											DEFAULT_LABELS.chooseYear
-										]),
-										...yearRadios(false, 1980, 2000, 1997)
-									]
-								),
-								v(
-									'div',
-									{
-										classes: css.controls
-									},
-									[
-										v(
-											'button',
-											{
-												classes: css.previous,
-												disabled: false,
-												tabIndex: -1,
-												type: 'button',
-												onclick: noop
-											},
-											[
-												w(Icon, {
-													type: 'leftIcon',
-													theme: undefined,
-													classes: undefined
-												}),
-												v('span', { classes: baseCss.visuallyHidden }, [
-													DEFAULT_LABELS.previousYears
-												])
-											]
-										),
-										v(
-											'button',
-											{
-												classes: css.next,
-												disabled: false,
-												tabIndex: -1,
-												type: 'button',
-												onclick: noop
-											},
-											[
-												w(Icon, {
-													type: 'rightIcon',
-													theme: undefined,
-													classes: undefined
-												}),
-												v('span', { classes: baseCss.visuallyHidden }, [
-													DEFAULT_LABELS.nextYears
-												])
-											]
-										)
-									]
-								)
-							]
-						)
-					]
-				)
-			);
+						<button
+							key="year-button"
+							aria-controls=""
+							aria-expanded="false"
+							aria-haspopup="true"
+							focus={undefined}
+							id=""
+							classes={[css.yearTrigger, null]}
+							role="menuitem"
+							type="button"
+							onclick={noop}
+						>
+							1997
+						</button>
+					</div>
+					<div
+						id=""
+						key="month-grid"
+						aria-hidden="true"
+						aria-labelledby=""
+						classes={[css.monthGrid, baseCss.visuallyHidden]}
+						role="dialog"
+					>
+						<fieldset classes={css.monthFields} onkeydown={noop}>
+							<legend classes={baseCss.visuallyHidden}>
+								{DEFAULT_LABELS.chooseMonth}
+							</legend>
+							{...DEFAULT_MONTHS.map((monthName, i) => (
+								<label
+									for=""
+									key=""
+									classes={[
+										css.monthRadio,
+										i === 5 ? css.monthRadioChecked : null
+									]}
+									onmouseup={noop}
+								>
+									<input
+										checked={i === 5}
+										classes={css.monthRadioInput}
+										disabled={false}
+										focus={undefined}
+										id=""
+										key=""
+										name=""
+										tabIndex={-1}
+										type="radio"
+										value={`${i}`}
+										onchange={noop}
+									/>
+									<abbr classes={css.monthRadioLabel} title={monthName.long}>
+										{monthName.short}
+									</abbr>
+								</label>
+							))}
+						</fieldset>
+					</div>
+					<div
+						key="year-grid"
+						aria-hidden="true"
+						aria-labelledby=""
+						classes={[css.yearGrid, baseCss.visuallyHidden]}
+						id=""
+						role="dialog"
+					>
+						<fieldset classes={css.yearFields} onkeydown={noop}>
+							<legend classes={[baseCss.visuallyHidden]}>
+								{DEFAULT_LABELS.chooseYear}
+							</legend>
+							{...yearRadios(false, 1980, 2000, 1997)}
+						</fieldset>
+						<div classes={css.controls}>
+							<button
+								classes={css.previous}
+								disabled={false}
+								tabIndex={-1}
+								type="button"
+								onclick={noop}
+							>
+								<Icon type="leftIcon" theme={undefined} classes={undefined} />
+								<span classes={baseCss.visuallyHidden}>
+									{DEFAULT_LABELS.previousYears}
+								</span>
+							</button>
+							<button
+								classes={css.next}
+								disabled={false}
+								tabIndex={-1}
+								type="button"
+								onclick={noop}
+							>
+								<Icon type="rightIcon" theme={undefined} classes={undefined} />
+								<span classes={baseCss.visuallyHidden}>
+									{DEFAULT_LABELS.nextYears}
+								</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			));
 		},
 
 		'Month popup opens and closes on button click'() {
 			let isOpen;
-			const h = harness(() =>
-				w(DatePicker, {
-					onPopupChange: (open: boolean) => {
+			const h = harness(() => (
+				<DatePicker
+					onPopupChange={(open: boolean) => {
 						isOpen = open;
-					},
-					...requiredProps
-				})
-			);
+					}}
+					{...requiredProps}
+				/>
+			));
 
 			h.trigger('@month-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'First click should open popup');
@@ -636,14 +468,14 @@ registerSuite('Calendar DatePicker', {
 
 		'Year popup opens and closes on button click'() {
 			let isOpen;
-			const h = harness(() =>
-				w(DatePicker, {
-					onPopupChange: (open: boolean) => {
+			const h = harness(() => (
+				<DatePicker
+					onPopupChange={(open: boolean) => {
 						isOpen = open;
-					},
-					...requiredProps
-				})
-			);
+					}}
+					{...requiredProps}
+				/>
+			));
 
 			h.trigger('@year-button', 'onclick', stubEvent);
 			assert.isTrue(isOpen, 'First click should open popup');
@@ -655,13 +487,14 @@ registerSuite('Calendar DatePicker', {
 		'Popup switches between month and year'() {
 			let isOpen;
 			const h = harness(
-				() =>
-					w(DatePicker, {
-						onPopupChange: (open: boolean) => {
+				() => (
+					<DatePicker
+						onPopupChange={(open: boolean) => {
 							isOpen = open;
-						},
-						...requiredProps
-					}),
+						}}
+						{...requiredProps}
+					/>
+				),
 				[
 					compareId,
 					compareAriaLabelledBy,
@@ -685,13 +518,14 @@ registerSuite('Calendar DatePicker', {
 		'Month popup closes with correct keys'() {
 			let isOpen = true;
 			const h = harness(
-				() =>
-					w(DatePicker, {
-						onPopupChange: (open: boolean) => {
+				() => (
+					<DatePicker
+						onPopupChange={(open: boolean) => {
 							isOpen = open;
-						},
-						...requiredProps
-					}),
+						}}
+						{...requiredProps}
+					/>
+				),
 				[
 					compareId,
 					compareAriaLabelledBy,
@@ -748,13 +582,14 @@ registerSuite('Calendar DatePicker', {
 		'year popup closes with correct keys'() {
 			let isOpen = true;
 			const h = harness(
-				() =>
-					w(DatePicker, {
-						onPopupChange: (open: boolean) => {
+				() => (
+					<DatePicker
+						onPopupChange={(open: boolean) => {
 							isOpen = open;
-						},
-						...requiredProps
-					}),
+						}}
+						{...requiredProps}
+					/>
+				),
 				[
 					compareId,
 					compareAriaLabelledBy,
@@ -809,20 +644,14 @@ registerSuite('Calendar DatePicker', {
 		},
 
 		'Clicking buttons changes year page'() {
-			const h = harness(
-				() =>
-					w(DatePicker, {
-						...requiredProps
-					}),
-				[
-					compareId,
-					compareAriaLabelledBy,
-					compareAriaControls,
-					compareKey,
-					compareFor,
-					compareName
-				]
-			);
+			const h = harness(() => <DatePicker {...requiredProps} />, [
+				compareId,
+				compareAriaLabelledBy,
+				compareAriaControls,
+				compareKey,
+				compareFor,
+				compareName
+			]);
 			h.trigger('@year-button', 'onclick', stubEvent);
 			h.expect(() => expected(false, true));
 
@@ -837,16 +666,17 @@ registerSuite('Calendar DatePicker', {
 			let currentMonth = testDate.getMonth();
 			let isOpen = false;
 			const h = harness(
-				() =>
-					w(DatePicker, {
-						...requiredProps,
-						onPopupChange: (open: boolean) => {
+				() => (
+					<DatePicker
+						{...requiredProps}
+						onPopupChange={(open: boolean) => {
 							isOpen = open;
-						},
-						onRequestMonthChange: (month: number) => {
+						}}
+						onRequestMonthChange={(month: number) => {
 							currentMonth = month;
-						}
-					}),
+						}}
+					/>
+				),
 				[
 					compareId,
 					compareAriaLabelledBy,
@@ -874,16 +704,17 @@ registerSuite('Calendar DatePicker', {
 			let currentYear = testDate.getMonth();
 			let isOpen = false;
 			const h = harness(
-				() =>
-					w(DatePicker, {
-						...requiredProps,
-						onPopupChange: (open: boolean) => {
+				() => (
+					<DatePicker
+						{...requiredProps}
+						onPopupChange={(open: boolean) => {
 							isOpen = open;
-						},
-						onRequestYearChange: (year: number) => {
+						}}
+						onRequestYearChange={(year: number) => {
 							currentYear = year;
-						}
-					}),
+						}}
+					/>
+				),
 				[
 					compareId,
 					compareAriaLabelledBy,
@@ -916,21 +747,22 @@ registerSuite('Calendar DatePicker', {
 			let currentYear = testDate.getFullYear();
 			let isOpen = false;
 			const h = harness(
-				() =>
-					w(DatePicker, {
-						minDate: new Date('Nov 20, 2016'),
-						maxDate: new Date('Feb 2, 2018'),
-						...requiredProps,
-						onPopupChange: (open: boolean) => {
+				() => (
+					<DatePicker
+						minDate={new Date('Nov 20, 2016')}
+						maxDate={new Date('Feb 2, 2018')}
+						{...requiredProps}
+						onPopupChange={(open: boolean) => {
 							isOpen = open;
-						},
-						onRequestMonthChange: (month: number) => {
+						}}
+						onRequestMonthChange={(month: number) => {
 							currentMonth = month;
-						},
-						onRequestYearChange: (year: number) => {
+						}}
+						onRequestYearChange={(year: number) => {
 							currentYear = year;
-						}
-					}),
+						}}
+					/>
+				),
 				[
 					compareId,
 					compareAriaLabelledBy,
