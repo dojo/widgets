@@ -3,14 +3,14 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { v, w } from '@dojo/framework/core/vdom';
-import harness from '@dojo/framework/testing/harness';
-import { Keys } from '../../../common/util';
+import { tsx } from '@dojo/framework/core/vdom';
 import { assign } from '@dojo/framework/shim/object';
+import harness from '@dojo/framework/testing/harness';
 
-import TabButton, { TabButtonProperties } from '../../TabButton';
-import * as css from '../../../theme/default/tab-controller.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
+import { Keys } from '../../../common/util';
+import * as css from '../../../theme/default/tab-controller.m.css';
+import TabButton, { TabButtonProperties } from '../../TabButton';
 
 const props = function(props = {}) {
 	return assign(
@@ -23,7 +23,7 @@ const props = function(props = {}) {
 	);
 };
 
-const testChildren = [v('p', ['lorem ipsum']), v('a', { href: '#foo' }, ['foo'])];
+const testChildren = [<p>lorem ipsum</p>, <a href="#foo">foo</a>];
 
 const expected = function(
 	closeable = false,
@@ -32,67 +32,53 @@ const expected = function(
 	children: any[] = []
 ) {
 	children.push(
-		closeable
-			? v(
-					'button',
-					{
-						tabIndex: activeTab,
-						classes: css.close,
-						type: 'button',
-						onclick: noop
-					},
-					['close']
-			  )
-			: null,
-		v(
-			'span',
-			{ classes: [css.indicator, activeTab !== -1 ? css.indicatorActive : undefined] },
-			[v('span', { classes: css.indicatorContent })]
-		)
+		closeable ? (
+			<button tabIndex={activeTab} classes={css.close} type="button" onclick={noop}>
+				close
+			</button>
+		) : null,
+		<span classes={[css.indicator, activeTab !== -1 ? css.indicatorActive : undefined]}>
+			<span classes={css.indicatorContent} />
+		</span>
 	);
 
-	return v(
-		'div',
-		{
-			'aria-controls': 'foo',
-			'aria-disabled': disabled ? 'true' : 'false',
-			'aria-selected': activeTab !== -1 ? 'true' : 'false',
-			classes: [
+	return (
+		<div
+			aria-controls="foo"
+			aria-disabled={disabled ? 'true' : 'false'}
+			aria-selected={activeTab !== -1 ? 'true' : 'false'}
+			classes={[
 				css.tabButton,
 				activeTab !== -1 ? css.activeTabButton : null,
 				closeable ? css.closeable : null,
 				disabled ? css.disabledTabButton : null
-			],
-			id: 'foo',
-			focus: noop,
-			key: 'tab-button',
-			onclick: noop,
-			onkeydown: noop,
-			role: 'tab',
-			tabIndex: activeTab
-		},
-		[v('span', { classes: css.tabButtonContent }, children)]
+			]}
+			id="foo"
+			focus={noop}
+			key="tab-button"
+			onclick={noop}
+			onkeydown={noop}
+			role="tab"
+			tabIndex={activeTab}
+		>
+			<span classes={css.tabButtonContent}>{children}</span>
+		</div>
 	);
 };
 
 registerSuite('TabButton', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => w(TabButton, props()));
+			const h = harness(() => <TabButton {...props()} />);
 			h.expect(expected);
 		},
 
 		'custom properties'() {
-			const h = harness(() =>
-				w(
-					TabButton,
-					props({
-						closeable: true,
-						disabled: true
-					}),
-					testChildren
-				)
-			);
+			const h = harness(() => (
+				<TabButton {...props({ closeable: true, disabled: true })}>
+					{testChildren}
+				</TabButton>
+			));
 			h.expect(() => expected(true, true, -1, testChildren));
 		},
 
@@ -100,7 +86,7 @@ registerSuite('TabButton', {
 			let extraProps: Partial<TabButtonProperties> = {
 				active: true
 			};
-			const h = harness(() => w(TabButton, props(extraProps)));
+			const h = harness(() => <TabButton {...props(extraProps)} />);
 			h.expect(() => expected(false, false, 0));
 
 			extraProps = {
@@ -113,15 +99,7 @@ registerSuite('TabButton', {
 		onCloseClick() {
 			const onCloseClick = sinon.stub();
 			const stopPropagation = sinon.stub();
-			const h = harness(() =>
-				w(
-					TabButton,
-					props({
-						closeable: true,
-						onCloseClick
-					})
-				)
-			);
+			const h = harness(() => <TabButton {...props({ closeable: true, onCloseClick })} />);
 
 			h.trigger('button', 'onclick', { stopPropagation });
 			assert.isTrue(
@@ -136,7 +114,7 @@ registerSuite('TabButton', {
 			let extraProps: Partial<TabButtonProperties> = {
 				onClick
 			};
-			const h = harness(() => w(TabButton, props(extraProps)));
+			const h = harness(() => <TabButton {...props(extraProps)} />);
 			h.trigger('@tab-button', 'onclick', { stopPropagation });
 			assert.isTrue(onClick.calledOnce, 'onClick handler called when tab is clicked');
 			assert.isTrue(onClick.calledWith(0), 'onClick called with index as argument');
@@ -165,7 +143,7 @@ registerSuite('TabButton', {
 				onRightArrowPress,
 				onUpArrowPress
 			};
-			const h = harness(() => w(TabButton, props(extraProps)));
+			const h = harness(() => <TabButton {...props(extraProps)} />);
 			h.trigger('@tab-button', 'onkeydown', {
 				which: Keys.Down,
 				stopPropagation,
@@ -241,7 +219,7 @@ registerSuite('TabButton', {
 			let extraProps: Partial<TabButtonProperties> = {
 				onCloseClick
 			};
-			const h = harness(() => w(TabButton, props(extraProps)));
+			const h = harness(() => <TabButton {...props(extraProps)} />);
 			h.trigger('@tab-button', 'onkeydown', {
 				which: Keys.Escape,
 				stopPropagation,

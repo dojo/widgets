@@ -1,15 +1,14 @@
+import { WNode } from '@dojo/framework/core/interfaces';
+import focus from '@dojo/framework/core/middleware/focus';
+import i18n from '@dojo/framework/core/middleware/i18n';
+import theme from '@dojo/framework/core/middleware/theme';
+import { create, isWNode, tsx } from '@dojo/framework/core/vdom';
 import { assign } from '@dojo/framework/shim/object';
-import { DNode, WNode } from '@dojo/framework/core/interfaces';
-import Tab, { TabProperties } from '../tab/index';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { v, w } from '@dojo/framework/core/vdom';
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import TabButton from './TabButton';
-import { uuid } from '@dojo/framework/core/util';
-import { formatAriaProperties } from '../common/util';
 
+import { formatAriaProperties } from '../common/util';
+import Tab, { TabProperties } from '../tab/index';
 import * as css from '../theme/default/tab-controller.m.css';
+import TabButton from './TabButton';
 
 /**
  * Enum for tab button alignment
@@ -21,7 +20,7 @@ export enum Align {
 	top = 'top'
 }
 
-export interface TabControllerProperties extends ThemedProperties, FocusProperties {
+export interface TabControllerProperties {
 	/** Position of the currently active tab */
 	activeIndex: number;
 	/** Orientation of the tab buttons */
@@ -34,224 +33,191 @@ export interface TabControllerProperties extends ThemedProperties, FocusProperti
 	onRequestTabClose?(index: number, key: string): void;
 }
 
-@theme(css)
-export class TabController extends ThemedMixin(FocusMixin(WidgetBase))<
-	TabControllerProperties,
-	WNode<Tab>
-> {
-	private _id = uuid();
+const factory = create({ focus, i18n, theme }).properties<TabControllerProperties>();
 
-	private get _tabs(): WNode<Tab>[] {
-		return this.children.filter((child) => child !== null) as WNode<Tab>[];
-	}
-
-	private _onDownArrowPress() {
-		const { alignButtons } = this.properties;
-
-		if (alignButtons === Align.left || alignButtons === Align.right) {
-			this.selectNextIndex();
-		}
-	}
-
-	private _onLeftArrowPress() {
-		this.selectPreviousIndex();
-	}
-
-	private _onRightArrowPress() {
-		this.selectNextIndex();
-	}
-
-	private _onUpArrowPress() {
-		const { alignButtons } = this.properties;
-
-		if (alignButtons === Align.left || alignButtons === Align.right) {
-			this.selectPreviousIndex();
-		}
-	}
+export const TabController = factory(function TabController({
+	children,
+	id,
+	middleware: { focus, theme },
+	properties
+}) {
+	const themeCss = theme.classes(css);
+	const tabChildren = children().filter((child) => isWNode<Tab>(child)) as WNode<Tab>[];
 
 	/**
 	 * Determines if the tab at `currentIndex` is enabled. If disabled,
 	 * returns the next valid index, or null if no enabled tabs exist.
 	 */
-	private _validateIndex(currentIndex: number, backwards?: boolean) {
-		const tabs = this._tabs;
-
-		if (tabs.every((result) => Boolean(result.properties.disabled))) {
+	const validateIndex = (currentIndex: number, backwards?: boolean) => {
+		if (tabChildren.every((result) => Boolean(result.properties.disabled))) {
 			return null;
 		}
 
 		function nextIndex(index: number) {
 			if (backwards) {
-				return (tabs.length + (index - 1)) % tabs.length;
+				return (tabChildren.length + (index - 1)) % tabChildren.length;
 			}
-			return (index + 1) % tabs.length;
+			return (index + 1) % tabChildren.length;
 		}
 
-		let i = !tabs[currentIndex] ? tabs.length - 1 : currentIndex;
+		let i = !tabChildren[currentIndex] ? tabChildren.length - 1 : currentIndex;
 
-		while (tabs[i].properties.disabled) {
+		while (tabChildren[i].properties.disabled) {
 			i = nextIndex(i);
 		}
 
 		return i;
-	}
+	};
 
-	protected closeIndex(index: number) {
-		const { onRequestTabClose } = this.properties;
-		const key = this._tabs[index].properties.key;
-		this.focus();
+	const selectIndex = (index: number, backwards?: boolean) => {
+		const { activeIndex, onRequestTabChange } = properties();
 
-		onRequestTabClose && onRequestTabClose(index, key);
-	}
-
-	protected renderButtonContent(label?: DNode): DNode[] {
-		return [label || null];
-	}
-
-	protected renderTabButtons(): DNode[] {
-		return this._tabs.map((tab, i) => {
-			const {
-				closeable,
-				disabled,
-				key,
-				label,
-				theme,
-				classes
-			} = tab.properties as TabProperties;
-
-			return w(
-				TabButton,
-				{
-					active: i === this.properties.activeIndex,
-					closeable,
-					controls: `${this._id}-tab-${i}`,
-					disabled,
-					focus: i === this.properties.activeIndex ? this.shouldFocus : () => false,
-					id: `${this._id}-tabbutton-${i}`,
-					index: i,
-					key: `${key}-tabbutton`,
-					onClick: this.selectIndex,
-					onCloseClick: this.closeIndex,
-					onDownArrowPress: this._onDownArrowPress,
-					onEndPress: this.selectLastIndex,
-					onHomePress: this.selectFirstIndex,
-					onLeftArrowPress: this._onLeftArrowPress,
-					onRightArrowPress: this._onRightArrowPress,
-					onUpArrowPress: this._onUpArrowPress,
-					theme,
-					classes
-				},
-				this.renderButtonContent(label)
-			);
-		});
-	}
-
-	protected renderTabs(): DNode[] {
-		const { activeIndex } = this.properties;
-
-		return this._tabs.map((tab, i) => {
-			assign(tab.properties, {
-				widgetId: `${this._id}-tab-${i}`,
-				labelledBy: `${this._id}-tabbutton-${i}`,
-				show: i === activeIndex
-			});
-			return tab;
-		});
-	}
-
-	protected selectFirstIndex() {
-		this.selectIndex(0, true);
-	}
-
-	protected selectIndex(index: number, backwards?: boolean) {
-		const { activeIndex, onRequestTabChange } = this.properties;
-
-		const validIndex = this._validateIndex(index, backwards);
-		this.focus();
+		const validIndex = validateIndex(index, backwards);
+		focus.focus();
 
 		if (validIndex !== null && validIndex !== activeIndex) {
-			const key = this._tabs[validIndex].properties.key;
+			const key = tabChildren[validIndex].properties.key;
 			onRequestTabChange && onRequestTabChange(validIndex, key);
 		}
-	}
+	};
 
-	protected selectLastIndex() {
-		this.selectIndex(this._tabs.length - 1);
-	}
+	const closeIndex = (index: number) => {
+		const { onRequestTabClose } = properties();
+		const key = tabChildren[index].properties.key;
+		focus.focus();
 
-	protected selectNextIndex() {
-		const { activeIndex } = this.properties;
+		onRequestTabClose && onRequestTabClose(index, key);
+	};
 
-		this.selectIndex(activeIndex === this._tabs.length - 1 ? 0 : activeIndex + 1);
-	}
+	const selectNextIndex = () => {
+		const { activeIndex } = properties();
+		selectIndex(activeIndex === tabChildren.length - 1 ? 0 : activeIndex + 1);
+	};
 
-	protected selectPreviousIndex() {
-		const { activeIndex } = this.properties;
+	const selectPreviousIndex = () => {
+		const { activeIndex } = properties();
 
-		this.selectIndex(activeIndex === 0 ? this._tabs.length - 1 : activeIndex - 1, true);
-	}
+		selectIndex(activeIndex === 0 ? tabChildren.length - 1 : activeIndex - 1, true);
+	};
 
-	render(): DNode {
-		const { activeIndex, aria = {} } = this.properties;
-		const validIndex = this._validateIndex(activeIndex);
-		const tabs = this.renderTabs();
+	const onDownArrowPress = () => {
+		const { alignButtons } = properties();
 
-		if (validIndex !== null && validIndex !== activeIndex) {
-			this.selectIndex(validIndex);
-			return null;
+		if (alignButtons === Align.left || alignButtons === Align.right) {
+			selectNextIndex();
 		}
+	};
 
-		const children = [
-			v(
-				'div',
-				{
-					key: 'buttons',
-					classes: this.theme(css.tabButtons)
-				},
-				this.renderTabButtons()
-			),
-			tabs.length
-				? v(
-						'div',
-						{
-							key: 'tabs',
-							classes: this.theme(css.tabs)
-						},
-						tabs
-				  )
-				: null
-		];
+	const selectLastIndex = () => {
+		selectIndex(tabChildren.length - 1);
+	};
 
-		let alignClass;
-		let orientation = 'horizontal';
+	const selectFirstIndex = () => {
+		selectIndex(0, true);
+	};
 
-		switch (this.properties.alignButtons) {
-			case Align.right:
-				alignClass = css.alignRight;
-				orientation = 'vertical';
-				children.reverse();
-				break;
-			case Align.bottom:
-				alignClass = css.alignBottom;
-				children.reverse();
-				break;
-			case Align.left:
-				alignClass = css.alignLeft;
-				orientation = 'vertical';
-				break;
+	const onLeftArrowPress = () => {
+		selectPreviousIndex();
+	};
+
+	const onRightArrowPress = () => {
+		selectNextIndex();
+	};
+
+	const onUpArrowPress = () => {
+		const { alignButtons } = properties();
+
+		if (alignButtons === Align.left || alignButtons === Align.right) {
+			selectPreviousIndex();
 		}
+	};
 
-		return v(
-			'div',
-			{
-				...formatAriaProperties(aria),
-				'aria-orientation': orientation,
-				classes: this.theme([alignClass ? alignClass : null, css.root]),
-				role: 'tablist'
-			},
-			children
+	const { activeIndex, alignButtons, aria = {} } = properties();
+	const validIndex = validateIndex(activeIndex);
+
+	if (validIndex !== null && validIndex !== activeIndex) {
+		selectIndex(validIndex);
+		return null;
+	}
+
+	const tabs = tabChildren.map((tab, i) => {
+		assign(tab.properties, {
+			widgetId: `${id}-tab-${i}`,
+			labelledBy: `${id}-tabbutton-${i}`,
+			show: i === activeIndex
+		});
+		return tab;
+	});
+
+	const tabButtons = tabChildren.map((tab, i) => {
+		const { classes, closeable, disabled, key, label, theme } = tab.properties as TabProperties;
+
+		return (
+			<TabButton
+				active={i === activeIndex}
+				classes={classes}
+				theme={theme}
+				closeable={closeable}
+				controls={`${id}-tab-${i}`}
+				disabled={disabled}
+				focus={i === activeIndex ? focus.shouldFocus : () => false}
+				id={`${id}-tabbutton-${i}`}
+				index={i}
+				key={`${key}-tabbutton`}
+				onClick={selectIndex}
+				onCloseClick={closeIndex}
+				onDownArrowPress={onDownArrowPress}
+				onEndPress={selectLastIndex}
+				onHomePress={selectFirstIndex}
+				onLeftArrowPress={onLeftArrowPress}
+				onRightArrowPress={onRightArrowPress}
+				onUpArrowPress={onUpArrowPress}
+			>
+				{label}
+			</TabButton>
 		);
+	});
+
+	const content = [
+		<div key="buttons" classes={themeCss.tabButtons}>
+			{...tabButtons}
+		</div>,
+		tabs.length ? (
+			<div key="tabs" classes={themeCss.tabs}>
+				{...tabs}
+			</div>
+		) : null
+	];
+
+	let alignClass;
+	let orientation = 'horizontal';
+
+	switch (alignButtons) {
+		case Align.right:
+			alignClass = themeCss.alignRight;
+			orientation = 'vertical';
+			content.reverse();
+			break;
+		case Align.bottom:
+			alignClass = themeCss.alignBottom;
+			content.reverse();
+			break;
+		case Align.left:
+			alignClass = themeCss.alignLeft;
+			orientation = 'vertical';
+			break;
 	}
-}
+
+	return (
+		<div
+			{...formatAriaProperties(aria)}
+			aria-orientation={orientation}
+			classes={[alignClass || null, themeCss.root]}
+			role="tablist"
+		>
+			{...content}
+		</div>
+	);
+});
 
 export default TabController;
