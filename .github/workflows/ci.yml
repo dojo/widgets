@@ -43,7 +43,7 @@ jobs:
     - run: npm ci
     - run: npm run build:lib:legacy
 
-  build-lib:
+  build-ce:
     name: Build Custom Element
     strategy:
       fail-fast: false
@@ -61,7 +61,7 @@ jobs:
     - run: npm ci
     - run: npm run build:ce
 
-  build-lib:
+  build-themes:
     name: Build Themes
     strategy:
       fail-fast: false
