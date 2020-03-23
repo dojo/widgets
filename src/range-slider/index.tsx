@@ -125,7 +125,6 @@ export const RangeSlider = factory(function RangeSlider({
 		icache.set('value', initialValue);
 		icache.set('initialValue', initialValue);
 		value = initialValue;
-		onValue && onValue(initialValue);
 	}
 
 	const themeCss = theme.classes(css);
