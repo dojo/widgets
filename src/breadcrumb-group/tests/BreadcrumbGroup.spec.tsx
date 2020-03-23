@@ -9,21 +9,34 @@ import * as fixedCss from '../styles/breadcrumb-group.m.css';
 import BreadcrumbGroup from '../index';
 
 describe('BreadcrumbGroup', () => {
-	const textSeparatorItemStyles = [fixedCss.listItemFixed, css.listItem, undefined];
-	const currentTextSeparatorItemStyles = [fixedCss.listItemFixed, css.listItem, css.current];
+	const separatorClasses = [fixedCss.listItemFixed, css.listItem];
+	const listItemClasses = [fixedCss.listItemFixed, css.listItem, undefined];
+	const currentListItemClasses = [fixedCss.listItemFixed, css.listItem, css.current];
 
 	const baseTemplate = assertionTemplate(() => (
 		<nav assertion-key="root" classes={css.root} aria-label="breadcrumb">
 			<ol classes={[fixedCss.listFixed, css.list]}>
-				<li classes={textSeparatorItemStyles} key="breadcrumb-0">
-					<Breadcrumb item={{ label: 'Home' }} current={undefined} />
-				</li>
-				<li classes={textSeparatorItemStyles} key="breadcrumb-1">
-					<Breadcrumb item={{ label: 'Overview' }} current={undefined} />
-				</li>
-				<li classes={currentTextSeparatorItemStyles} key="breadcrumb-2">
-					<Breadcrumb item={{ label: 'Tests' }} current="page" />
-				</li>
+				<virtual>
+					<li classes={listItemClasses} key="breadcrumb-0">
+						<Breadcrumb item={{ label: 'Home' }} current={undefined} />
+					</li>
+				</virtual>
+				<virtual>
+					<li aria-hidden="true" classes={separatorClasses} key="breadcrumb-1-separator">
+						<span classes={css.separator}>/</span>
+					</li>
+					<li classes={listItemClasses} key="breadcrumb-1">
+						<Breadcrumb item={{ label: 'Overview' }} current={undefined} />
+					</li>
+				</virtual>
+				<virtual>
+					<li aria-hidden="true" classes={separatorClasses} key="breadcrumb-2-separator">
+						<span classes={css.separator}>/</span>
+					</li>
+					<li classes={currentListItemClasses} key="breadcrumb-2">
+						<Breadcrumb item={{ label: 'Tests' }} current="page" />
+					</li>
+				</virtual>
 			</ol>
 		</nav>
 	));

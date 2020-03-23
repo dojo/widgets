@@ -10,11 +10,3 @@
 	align-items: center;
 	display: flex;
 }
-
-.listItemFixed::before {
-	content: '/';
-}
-
-.listItemFixed:first-child::before {
-	display: none;
-}

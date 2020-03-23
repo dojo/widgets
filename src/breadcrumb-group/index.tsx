@@ -33,19 +33,30 @@ export const BreadcrumbGroup = factory(function BreadcrumbGroup({
 		return (
 			<ol classes={[fixedCss.listFixed, themeCss.list]}>
 				{items.map((item, index) => (
-					<li
-						classes={[
-							fixedCss.listItemFixed,
-							themeCss.listItem,
-							index === lastIndex ? themeCss.current : undefined
-						]}
-						key={`breadcrumb-${index}`}
-					>
-						<Breadcrumb
-							item={item}
-							current={index === lastIndex ? 'page' : undefined}
-						/>
-					</li>
+					<virtual>
+						{index !== 0 && (
+							<li
+								aria-hidden="true"
+								classes={[fixedCss.listItemFixed, themeCss.listItem]}
+								key={`breadcrumb-${index}-separator`}
+							>
+								<span classes={css.separator}>/</span>
+							</li>
+						)}
+						<li
+							classes={[
+								fixedCss.listItemFixed,
+								themeCss.listItem,
+								index === lastIndex ? themeCss.current : undefined
+							]}
+							key={`breadcrumb-${index}`}
+						>
+							<Breadcrumb
+								item={item}
+								current={index === lastIndex ? 'page' : undefined}
+							/>
+						</li>
+					</virtual>
 				))}
 			</ol>
 		);
