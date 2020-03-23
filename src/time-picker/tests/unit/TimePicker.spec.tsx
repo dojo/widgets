@@ -12,8 +12,8 @@ import bundle from '../../nls/TimePicker';
 import * as css from '../../../theme/default/time-picker.m.css';
 import { padStart } from '@dojo/framework/shim/string';
 import select from '@dojo/framework/testing/support/selector';
-import { stubEvent } from '@dojo/widgets/common/tests/support/test-helpers';
-import { Keys } from '@dojo/widgets/common/util';
+import { stubEvent } from '../../../common/tests/support/test-helpers';
+import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
