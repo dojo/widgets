@@ -1,4 +1,4 @@
-import { Menu, MenuOption } from '@dojo/widgets/menu';
+import { Menu, MenuOption } from '../../../menu';
 import * as sinon from 'sinon';
 
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -132,7 +132,7 @@ const menuTemplate = assertionTemplate(() => {
 	);
 });
 
-describe('DateInput', () => {
+describe('TimePicker', () => {
 	const onValue = sinon.stub();
 
 	afterEach(() => {
