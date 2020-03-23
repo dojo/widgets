@@ -1,19 +1,14 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v } from '@dojo/framework/core/vdom';
-import { formatAriaProperties } from '../common/util';
-import { DNode } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
+import { create, tsx } from '@dojo/framework/core/vdom';
+
+import theme from '../middleware/theme';
 import * as css from '../theme/default/progress.m.css';
 
-export interface ProgressProperties extends ThemedProperties {
-	/** Custom aria attributes */
-	aria?: { [key: string]: string | null };
+export interface ProgressProperties {
 	/** Value used to calculate percent width */
 	max?: number;
 	/** Value used to calculate percent width */
 	min?: number;
-	/** A function used to determine the output display */
-	output?(value: number, percent: number): string;
 	/** Toggles visibility of progress bar output */
 	showOutput?: boolean;
 	/** The current value */
@@ -22,55 +17,57 @@ export interface ProgressProperties extends ThemedProperties {
 	widgetId?: string;
 }
 
-@theme(css)
-export class Progress extends ThemedMixin(WidgetBase)<ProgressProperties> {
-	private _output(value: number, percent: number) {
-		const { output } = this.properties;
-		return output ? output(value, percent) : `${percent}%`;
-	}
-
-	protected renderProgress(percent: number): DNode[] {
-		return [
-			v('div', {
-				classes: this.theme(css.progress),
-				styles: {
-					width: `${percent}%`
-				}
-			})
-		];
-	}
-
-	protected render(): DNode {
-		const {
-			aria = {},
-			value,
-			showOutput = true,
-			max = 100,
-			min = 0,
-			widgetId
-		} = this.properties;
-
-		const percent = Math.round(((value - min) / (max - min)) * 100);
-		const output = this._output(value, percent);
-
-		return v('div', { classes: this.theme(css.root) }, [
-			v(
-				'div',
-				{
-					...formatAriaProperties(aria),
-					classes: this.theme(css.bar),
-					role: 'progressbar',
-					'aria-valuemin': `${min}`,
-					'aria-valuemax': `${max}`,
-					'aria-valuenow': `${value}`,
-					'aria-valuetext': output,
-					id: widgetId
-				},
-				this.renderProgress(percent)
-			),
-			showOutput ? v('span', { classes: this.theme(css.output) }, [output]) : null
-		]);
-	}
+export interface ProgressChildren {
+	output?(value: number, percent: number): RenderResult;
 }
+
+const factory = create({ theme })
+	.properties<ProgressProperties>()
+	.children<ProgressChildren | undefined>();
+
+export const Progress = factory(function Progress({
+	children,
+	id,
+	properties,
+	middleware: { theme }
+}) {
+	const themeCss = theme.classes(css);
+	const {
+		value,
+		showOutput = true,
+		max = 100,
+		min = 0,
+		widgetId = `progress-${id}`
+	} = properties();
+
+	const _output = (value: number, percent: number) => {
+		const { output } = children()[0] || ({} as ProgressChildren);
+		return output ? output(value, percent) : `${percent}%`;
+	};
+
+	const renderProgress = (percent: number) => {
+		return <div classes={themeCss.progress} styles={{ width: `${percent}%` }} />;
+	};
+
+	const percent = Math.round(((value - min) / (max - min)) * 100);
+	const output = _output(value, percent);
+
+	return (
+		<div key="root" classes={themeCss.root}>
+			<div
+				classes={themeCss.bar}
+				role="progressbar"
+				aria-valuemin={`${min}`}
+				aria-valuemax={`${max}`}
+				aria-valuenow={`${value}`}
+				aria-valuetext={output}
+				id={widgetId}
+			>
+				{renderProgress(percent)}
+			</div>
+			{showOutput ? <span classes={themeCss.output}>{output}</span> : null}
+		</div>
+	);
+});
 
 export default Progress;

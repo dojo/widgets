@@ -8,10 +8,10 @@ export default factory(function ProgressWithCustomOutput() {
 	const max = 750;
 
 	return (
-		<Progress
-			value={value}
-			max={max}
-			output={(value, percent) => `${value} of ${max} is ${percent}%`}
-		/>
+		<Progress value={value} max={max}>
+			{{
+				output: (value, percent) => `${value} of ${max} is ${percent}%`
+			}}
+		</Progress>
 	);
 });
