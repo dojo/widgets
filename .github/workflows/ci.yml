@@ -96,7 +96,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build:test
-      run: npm run test:headless
+    - run: npm run test:headless
     - name: Upload coverage
       uses: codecov/codecov-action@v1
       with:
@@ -108,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      uses: actions/setup-node@v1
+    - uses: actions/setup-node@v1
       with:
         node-version: 12.x
     - run: echo ${{ github.event.number }}
