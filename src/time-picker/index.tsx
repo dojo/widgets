@@ -59,6 +59,7 @@ export interface TimePickerICache {
 	inputValid?: boolean;
 	inputValidMessage?: string;
 	isValid?: boolean;
+	initialValue?: string;
 }
 
 const factory = create({
@@ -223,6 +224,14 @@ export const TimePicker = factory(function TimePicker({
 			});
 		}
 	};
+
+	const { initialValue, format = '24' } = properties();
+	if (icache.get('initialValue') !== initialValue) {
+		const parsed = initialValue && parseTime(initialValue, format === '12');
+		icache.set('inputValue', parsed ? formatTime(parsed) : '');
+		icache.set('initialValue', initialValue);
+		icache.set('shouldValidate', true);
+	}
 
 	const inputValue = icache.getOrSet('inputValue', () => {
 		const { initialValue, format } = properties();
