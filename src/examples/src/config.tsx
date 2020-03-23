@@ -8,8 +8,8 @@ import AvatarSize from './widgets/avatar/Size';
 import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
-import BasicBreadcrumb from './widgets/breadcrumb/Basic';
-import CustomRendererBreadcrumb from './widgets/breadcrumb/CustomRenderer';
+import BasicBreadcrumb from './widgets/breadcrumb-group/Basic';
+import CustomRendererBreadcrumb from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
@@ -263,7 +263,7 @@ export const config = {
 				}
 			}
 		},
-		breadcrumb: {
+		'breadcrumb-group': {
 			examples: [
 				{
 					filename: 'CustomRenderer',

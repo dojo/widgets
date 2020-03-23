@@ -1,9 +1,5 @@
 .breadcrumb {
-	align-items: center;
-	display: flex;
-	list-style: none;
-	margin: 0;
-	padding: 0;
+	composes: listFixed from '@dojo/widgets/breadcrumb-group/styles/breadcrumb-group.m.css';
 }
 
 .crumb {

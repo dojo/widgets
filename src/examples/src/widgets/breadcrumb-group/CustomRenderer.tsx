@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Breadcrumb from '@dojo/widgets/breadcrumb';
-import Crumb from '@dojo/widgets/breadcrumb/Crumb';
+import BreadcrumbGroup from '@dojo/widgets/breadcrumb-group';
 import Icon from '@dojo/widgets/icon';
 
 import * as css from './CustomRenderer.m.css';
@@ -16,7 +16,7 @@ const App = factory(function() {
 	];
 
 	return (
-		<Breadcrumb label="breadcrumb" items={items}>
+		<BreadcrumbGroup label="breadcrumb" items={items}>
 			{(items) => (
 				<ol classes={css.breadcrumb}>
 					{items.map((item, i) => (
@@ -38,9 +38,9 @@ const App = factory(function() {
 									/>
 								)}
 
-								<Crumb
+								<Breadcrumb
 									classes={{
-										'@dojo/widgets/crumb': {
+										'@dojo/widgets/breadcrumb': {
 											root: [item.current ? css.current : undefined]
 										}
 									}}
@@ -52,7 +52,7 @@ const App = factory(function() {
 					))}
 				</ol>
 			)}
-		</Breadcrumb>
+		</BreadcrumbGroup>
 	);
 });
 
