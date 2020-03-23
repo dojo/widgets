@@ -26,7 +26,7 @@ jobs:
     - run: npm run build:lib
 
   build-lib-legecy:
-    name: Build Lib - Legacy
+    name: Build Legacy Lib
     strategy:
       fail-fast: false
       matrix:
