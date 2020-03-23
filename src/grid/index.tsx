@@ -191,8 +191,6 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 		this.invalidate();
 	}
 
-	private _renderBody() {}
-
 	protected render(): DNode {
 		const {
 			i18nBundle,
