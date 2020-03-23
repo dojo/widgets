@@ -1,8 +1,8 @@
-import { theme, ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/calendar.m.css';
 
-export interface CalendarCellProperties extends ThemeProperties {
+export interface CalendarCellProperties {
 	/** Used to immediately call focus on the cell */
 	callFocus?: boolean;
 	/** The set date value */

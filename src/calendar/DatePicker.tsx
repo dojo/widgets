@@ -1,7 +1,6 @@
-import theme, { ThemeProperties } from '../middleware/theme';
+import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import icache from '@dojo/framework/core/middleware/icache';
-import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import calendarBundle from './nls/Calendar';
 import { Keys } from '../common/util';
@@ -27,7 +26,7 @@ export enum Controls {
 	year = 'year'
 }
 
-export interface DatePickerProperties extends ThemeProperties, FocusProperties {
+export interface DatePickerProperties {
 	/** Id to reference label containing current month and year */
 	labelId?: string;
 	/** Customize or internationalize accessible helper text */
