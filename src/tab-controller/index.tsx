@@ -1,14 +1,16 @@
-import { WNode } from '@dojo/framework/core/interfaces';
+import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
+import icache from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
-import { create, isWNode, tsx } from '@dojo/framework/core/vdom';
-import { assign } from '@dojo/framework/shim/object';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import Set from '@dojo/framework/shim/Set';
 
-import { formatAriaProperties } from '../common/util';
-import Tab, { TabProperties } from '../tab/index';
+import commonBundle from '../common/nls/common';
+import { formatAriaProperties, Keys } from '../common/util';
 import * as css from '../theme/default/tab-controller.m.css';
-import TabButton from './TabButton';
+
+export { TabContent } from './TabContent';
 
 /**
  * Enum for tab button alignment
@@ -20,49 +22,64 @@ export enum Align {
 	top = 'top'
 }
 
+export interface TabItem {
+	closeable?: boolean;
+	disabled?: boolean;
+	label: DNode;
+}
+
 export interface TabControllerProperties {
-	/** Position of the currently active tab */
-	activeIndex: number;
 	/** Orientation of the tab buttons */
 	alignButtons?: Align;
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/** Called when a new tab button is clicked */
-	onRequestTabChange?(index: number, key: string): void;
-	/** Called when a tab close button is clicked */
-	onRequestTabClose?(index: number, key: string): void;
+	/** Index of the initial active tab. Defaults to 0. */
+	initialIndex?: number;
+	/** Tabs config used to display tab buttons */
+	tabs: TabItem[];
 }
 
-const factory = create({ focus, i18n, theme }).properties<TabControllerProperties>();
+export interface TabControllerChildren {
+	(
+		tabs: TabItem[],
+		active: (index: number) => boolean,
+		closed: (index: number) => boolean
+	): RenderResult;
+}
+
+const factory = create({ focus, i18n, icache, theme })
+	.properties<TabControllerProperties>()
+	.children<TabControllerChildren>();
 
 export const TabController = factory(function TabController({
 	children,
 	id,
-	middleware: { focus, theme },
+	middleware: { focus, i18n, icache, theme },
 	properties
 }) {
-	const themeCss = theme.classes(css);
-	const tabChildren = children().filter((child) => isWNode<Tab>(child)) as WNode<Tab>[];
-
 	/**
 	 * Determines if the tab at `currentIndex` is enabled. If disabled,
 	 * returns the next valid index, or null if no enabled tabs exist.
 	 */
 	const validateIndex = (currentIndex: number, backwards?: boolean) => {
-		if (tabChildren.every((result) => Boolean(result.properties.disabled))) {
+		const { tabs } = properties();
+		const closedIndices = icache.get('closedIndices') as Set<number>;
+		const selectableTabs = tabs.filter((tab, i) => !tab.disabled && !closedIndices.has(i));
+
+		if (!selectableTabs.length) {
 			return null;
 		}
 
 		function nextIndex(index: number) {
 			if (backwards) {
-				return (tabChildren.length + (index - 1)) % tabChildren.length;
+				return (tabs.length + (index - 1)) % tabs.length;
 			}
-			return (index + 1) % tabChildren.length;
+			return (index + 1) % tabs.length;
 		}
 
-		let i = !tabChildren[currentIndex] ? tabChildren.length - 1 : currentIndex;
+		let i = !tabs[currentIndex] ? tabs.length - 1 : currentIndex;
 
-		while (tabChildren[i].properties.disabled) {
+		while (tabs[i].disabled || closedIndices.has(i)) {
 			i = nextIndex(i);
 		}
 
@@ -70,34 +87,39 @@ export const TabController = factory(function TabController({
 	};
 
 	const selectIndex = (index: number, backwards?: boolean) => {
-		const { activeIndex, onRequestTabChange } = properties();
-
+		const activeIndex = icache.get('activeIndex');
 		const validIndex = validateIndex(index, backwards);
 		focus.focus();
 
 		if (validIndex !== null && validIndex !== activeIndex) {
-			const key = tabChildren[validIndex].properties.key;
-			onRequestTabChange && onRequestTabChange(validIndex, key);
+			icache.set('activeIndex', validIndex);
 		}
 	};
 
-	const closeIndex = (index: number) => {
-		const { onRequestTabClose } = properties();
-		const key = tabChildren[index].properties.key;
-		focus.focus();
-
-		onRequestTabClose && onRequestTabClose(index, key);
-	};
-
 	const selectNextIndex = () => {
-		const { activeIndex } = properties();
-		selectIndex(activeIndex === tabChildren.length - 1 ? 0 : activeIndex + 1);
+		const { tabs } = properties();
+		const activeIndex = icache.get('activeIndex') as number;
+		selectIndex(activeIndex === tabs.length - 1 ? 0 : activeIndex + 1);
 	};
 
 	const selectPreviousIndex = () => {
-		const { activeIndex } = properties();
+		const { tabs } = properties();
+		const activeIndex = icache.get('activeIndex') as number;
+		selectIndex(activeIndex === 0 ? tabs.length - 1 : activeIndex - 1, true);
+	};
 
-		selectIndex(activeIndex === 0 ? tabChildren.length - 1 : activeIndex - 1, true);
+	const closeIndex = (index: number) => {
+		const closedIndices = icache.get('closedIndices') as Set<number>;
+		const { tabs } = properties();
+		const openedTabs = tabs.filter((_tab, i) => !closedIndices.has(i));
+
+		focus.focus();
+		icache.set('closedIndices', new Set([...closedIndices, index]));
+
+		const activeIndex = icache.get('activeIndex') as number;
+		if (index === activeIndex) {
+			index === openedTabs.length - 1 ? selectPreviousIndex() : selectNextIndex();
+		}
 	};
 
 	const onDownArrowPress = () => {
@@ -109,7 +131,8 @@ export const TabController = factory(function TabController({
 	};
 
 	const selectLastIndex = () => {
-		selectIndex(tabChildren.length - 1);
+		const { tabs } = properties();
+		selectIndex(tabs.length - 1);
 	};
 
 	const selectFirstIndex = () => {
@@ -132,59 +155,124 @@ export const TabController = factory(function TabController({
 		}
 	};
 
-	const { activeIndex, alignButtons, aria = {} } = properties();
-	const validIndex = validateIndex(activeIndex);
+	const onKeyDown = (event: KeyboardEvent, { closeable, disabled }: TabItem, index: number) => {
+		event.stopPropagation();
 
-	if (validIndex !== null && validIndex !== activeIndex) {
-		selectIndex(validIndex);
-		return null;
-	}
+		if (disabled) {
+			return;
+		}
 
-	const tabs = tabChildren.map((tab, i) => {
-		assign(tab.properties, {
-			widgetId: `${id}-tab-${i}`,
-			labelledBy: `${id}-tabbutton-${i}`,
-			show: i === activeIndex
-		});
-		return tab;
-	});
+		// Accessibility
+		switch (event.which) {
+			// Escape
+			case Keys.Escape:
+				closeable && closeIndex(index);
+				break;
+			// Left arrow
+			case Keys.Left:
+				onLeftArrowPress();
+				break;
+			// Right arrow
+			case Keys.Right:
+				onRightArrowPress();
+				break;
+			// Up arrow
+			case Keys.Up:
+				onUpArrowPress();
+				break;
+			// Down arrow
+			case Keys.Down:
+				onDownArrowPress();
+				break;
+			// Home
+			case Keys.Home:
+				selectFirstIndex();
+				break;
+			// End
+			case Keys.End:
+				selectLastIndex();
+				break;
+		}
+	};
 
-	const tabButtons = tabChildren.map((tab, i) => {
-		const { classes, closeable, disabled, key, label, theme } = tab.properties as TabProperties;
+	const { alignButtons, aria = {}, initialIndex, tabs } = properties();
+	const themeCss = theme.classes(css);
+	const { messages } = i18n.localize(commonBundle);
+
+	const closedIndices = icache.getOrSet('closedIndices', new Set<number>());
+	const validIndex = validateIndex(initialIndex || 0);
+	const activeIndex = icache.getOrSet('activeIndex', validIndex);
+	const [renderer] = children();
+	const tabContents = renderer(
+		tabs,
+		(index) => index === activeIndex,
+		(index) => closedIndices.has(index)
+	);
+
+	const renderTab = (tab: TabItem, index: number) => {
+		const { closeable, disabled, label } = tab;
+		const active = index === activeIndex;
+
+		if (closedIndices.has(index)) {
+			return null;
+		}
 
 		return (
-			<TabButton
-				active={i === activeIndex}
-				classes={classes}
-				theme={theme}
-				closeable={closeable}
-				controls={`${id}-tab-${i}`}
-				disabled={disabled}
-				focus={i === activeIndex ? focus.shouldFocus : () => false}
-				id={`${id}-tabbutton-${i}`}
-				index={i}
-				key={`${key}-tabbutton`}
-				onClick={selectIndex}
-				onCloseClick={closeIndex}
-				onDownArrowPress={onDownArrowPress}
-				onEndPress={selectLastIndex}
-				onHomePress={selectFirstIndex}
-				onLeftArrowPress={onLeftArrowPress}
-				onRightArrowPress={onRightArrowPress}
-				onUpArrowPress={onUpArrowPress}
+			<div
+				aria-controls={`${id}-tab-${index}`}
+				aria-disabled={disabled ? 'true' : 'false'}
+				aria-selected={active ? 'true' : 'false'}
+				classes={[
+					themeCss.tabButton,
+					active ? themeCss.activeTabButton : null,
+					closeable ? themeCss.closeable : null,
+					disabled ? themeCss.disabledTabButton : null
+				]}
+				focus={active ? focus.shouldFocus : () => false}
+				id={`${id}-tabbutton-${index}`}
+				key={`${index}-tabbutton`}
+				onclick={() => {
+					if (!disabled) {
+						icache.set('activeIndex', index);
+					}
+				}}
+				onkeydown={(event) => onKeyDown(event, tab, index)}
+				role="tab"
+				tabIndex={active ? 0 : -1}
 			>
-				{label}
-			</TabButton>
+				<span classes={themeCss.tabButtonContent}>
+					{label}
+					{closeable ? (
+						<button
+							tabIndex={active ? 0 : -1}
+							classes={themeCss.close}
+							key={`${index}-tabbutton-close`}
+							type="button"
+							onclick={(event) => {
+								event.stopPropagation();
+								if (!disabled) {
+									closeIndex(index);
+								}
+							}}
+						>
+							{messages.close}
+						</button>
+					) : null}
+					<span classes={[themeCss.indicator, active && themeCss.indicatorActive]}>
+						<span classes={themeCss.indicatorContent} />
+					</span>
+				</span>
+			</div>
 		);
-	});
+	};
 
 	const content = [
 		<div key="buttons" classes={themeCss.tabButtons}>
-			{...tabButtons}
+			{tabs.map(renderTab)}
 		</div>,
-		tabs.length ? (
+		tabContents ? (
 			<div key="tabs" classes={themeCss.tabs}>
-				{...tabs}
+				{tabContents}
 			</div>
 		) : null
 	];

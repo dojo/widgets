@@ -6,9 +6,9 @@ import * as sinon from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import { DNode } from '@dojo/framework/core/interfaces';
 
-import TabController, { Align } from '../../index';
-import TabButton from '../../TabButton';
-import Tab from '../../../tab/index';
+import commonBundle from '../../../common/nls/common';
+import { Keys } from '../../../common/util';
+import TabController, { Align, TabContent, TabControllerChildren, TabItem } from '../../index';
 import * as css from '../../../theme/default/tab-controller.m.css';
 import {
 	createHarness,
@@ -19,103 +19,92 @@ import {
 	noop
 } from '../../../common/tests/support/test-helpers';
 
+const { messages } = commonBundle;
+
 const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
 const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
 const harness = createHarness([compareId, compareWidgetId, compareControls, compareLabelledBy]);
 
-const tabChildren = function(tabs = 2) {
-	const children = [
-		<Tab key="0">tab content 1</Tab>,
-		<Tab closeable={true} disabled={true} key="1" label="foo">
-			tab content 2
-		</Tab>
-	];
-
-	if (tabs > 2) {
-		for (let i = 2; i < tabs; i++) {
-			children.push(<Tab key={`${i}`}>tab content {`${i}`}</Tab>);
-		}
-	}
-
-	return children;
+const createMockKeydownEvent = (which: number) => {
+	return {
+		stopPropagation: sinon.spy(),
+		which
+	} as any;
 };
 
-const expectedTabButtons = function(empty = false, activeIndex = 0): DNode {
-	if (empty) {
+const tabChildren = (tabs: TabItem[]): TabControllerChildren => {
+	return (_, active, closed) =>
+		tabs.map((_tab, i) => (
+			<TabContent key={`tab${i}`} active={active(i)} closed={closed(i)}>
+				{`tab content ${i + 1}`}
+			</TabContent>
+		));
+};
+
+const expectedTabButtons = (tabs: TabItem[], activeIndex = 0, closedIndex = -1): DNode => {
+	if (!tabs.length) {
 		return <div key="buttons" classes={css.tabButtons} />;
 	}
 
+	const tabButtons: DNode[] = [];
+	tabs.forEach((tab, i) => {
+		if (closedIndex !== i) {
+			const active = i === activeIndex;
+			tabButtons.push(
+				<div
+					aria-controls={`test-tab-${i}`}
+					aria-disabled={tab.disabled ? 'true' : 'false'}
+					aria-selected={active ? 'true' : 'false'}
+					classes={[
+						css.tabButton,
+						active ? css.activeTabButton : null,
+						tab.closeable ? css.closeable : null,
+						tab.disabled ? css.disabledTabButton : null
+					]}
+					focus={noop}
+					id=""
+					key={`${i}-tabbutton`}
+					onclick={noop}
+					onkeydown={noop}
+					role="tab"
+					tabIndex={active ? 0 : -1}
+				>
+					<span classes={css.tabButtonContent}>
+						{tab.label}
+						{tab.closeable ? (
+							<button
+								tabIndex={active ? 0 : -1}
+								classes={css.close}
+								type="button"
+								onclick={noop}
+							>
+								{messages.close}
+							</button>
+						) : null}
+						<span classes={[css.indicator, active && css.indicatorActive]}>
+							<span classes={css.indicatorContent} />
+						</span>
+					</span>
+				</div>
+			);
+		}
+	});
+
 	return (
 		<div key="buttons" classes={css.tabButtons}>
-			<TabButton
-				active={activeIndex === 0}
-				closeable={undefined}
-				controls=""
-				disabled={undefined}
-				id=""
-				index={0}
-				focus={noop}
-				key="0-tabbutton"
-				onClick={noop}
-				onCloseClick={noop}
-				onDownArrowPress={noop}
-				onEndPress={noop}
-				onHomePress={noop}
-				onLeftArrowPress={noop}
-				onRightArrowPress={noop}
-				onUpArrowPress={noop}
-				theme={undefined}
-				classes={undefined}
-			>
-				{null}
-			</TabButton>
-			<TabButton
-				active={activeIndex === 1}
-				closeable={true}
-				controls=""
-				disabled={true}
-				id=""
-				index={1}
-				focus={noop}
-				key={'1-tabbutton'}
-				onClick={noop}
-				onCloseClick={noop}
-				onDownArrowPress={noop}
-				onEndPress={noop}
-				onHomePress={noop}
-				onLeftArrowPress={noop}
-				onRightArrowPress={noop}
-				onUpArrowPress={noop}
-				theme={undefined}
-				classes={undefined}
-			>
-				foo
-			</TabButton>
+			{tabButtons}
 		</div>
 	);
 };
 
-const expectedTabContent = function(index = 0): DNode {
-	if (index < 0 || index > 1) {
-		return null;
-	}
-
+const expectedTabContent = (tabs: TabItem[], activeIndex = 0, closedIndex = -1): DNode => {
 	return (
 		<div key="tabs" classes={css.tabs}>
-			<Tab key="0" widgetId="" labelledBy="" show={index === 0}>
-				tab content 1
-			</Tab>
-			<Tab
-				closeable={true}
-				disabled={true}
-				key="1"
-				label="foo"
-				widgetId=""
-				show={index === 1}
-				labelledBy=""
-			>
-				tab content 2
-			</Tab>
+			{tabs.map((_tab, i) => (
+				<TabContent key={`tab${i}`} active={i === activeIndex} closed={i === closedIndex}>
+					{`tab content ${i + 1}`}
+				</TabContent>
+			))}
 		</div>
 	);
 };
@@ -146,274 +135,259 @@ const expected = function(
 registerSuite('TabController', {
 	tests: {
 		'default properties'() {
-			let children: any[] = [];
-			const h = harness(() => <TabController activeIndex={0}>{children}</TabController>);
-			let tabButtons = expectedTabButtons(true);
-			let tabContent: any = null;
-
-			h.expect(() => expected([tabButtons, tabContent]));
-			children = tabChildren();
-			tabButtons = expectedTabButtons();
-			tabContent = expectedTabContent();
-			h.expect(() => expected([tabButtons, tabContent]));
+			const tabs: TabItem[] = [];
+			const h = harness(() => <TabController tabs={tabs}>{() => []}</TabController>);
+			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
 		},
 
 		'aria properties'() {
+			const tabs: TabItem[] = [];
 			const h = harness(() => (
-				<TabController
-					activeIndex={0}
-					aria={{ describedBy: 'foo', orientation: 'overridden' }}
-				/>
+				<TabController aria={{ describedBy: 'foo', orientation: 'overridden' }} tabs={tabs}>
+					{() => []}
+				</TabController>
 			));
 
-			h.expect(() => expected([expectedTabButtons(true), null], 'foo'));
+			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)], 'foo'));
 		},
 
 		'custom orientation'() {
-			let properties = {
-				activeIndex: 0,
-				alignButtons: Align.bottom
-			};
-			const h = harness(() => <TabController {...properties}>{tabChildren()}</TabController>);
-
-			let tabButtons = expectedTabButtons();
-			let tabContent = expectedTabContent();
+			const tabs: TabItem[] = [];
+			let h = harness(() => (
+				<TabController alignButtons={Align.bottom} tabs={tabs}>
+					{() => []}
+				</TabController>
+			));
 			h.expect(() =>
-				expected([tabContent, tabButtons], '', [undefined, css.alignBottom, css.root])
+				expected([expectedTabContent(tabs), expectedTabButtons(tabs)], '', [
+					undefined,
+					css.alignBottom,
+					css.root
+				])
 			);
 
-			properties = {
-				activeIndex: 0,
-				alignButtons: Align.right
-			};
-
-			tabButtons = expectedTabButtons();
-			tabContent = expectedTabContent();
+			h = harness(() => (
+				<TabController alignButtons={Align.right} tabs={[]}>
+					{() => []}
+				</TabController>
+			));
 			h.expect(() =>
-				expected([tabContent, tabButtons], '', [undefined, css.alignRight, css.root], true)
+				expected(
+					[expectedTabContent(tabs), expectedTabButtons(tabs)],
+					'',
+					[undefined, css.alignRight, css.root],
+					true
+				)
 			);
 
-			properties = {
-				activeIndex: 0,
-				alignButtons: Align.left
-			};
+			h = harness(() => (
+				<TabController alignButtons={Align.left} tabs={[]}>
+					{() => []}
+				</TabController>
+			));
 			h.expect(() =>
-				expected([tabButtons, tabContent], '', [undefined, css.alignLeft, css.root], true)
+				expected(
+					[expectedTabButtons(tabs), expectedTabContent(tabs)],
+					'',
+					[undefined, css.alignLeft, css.root],
+					true
+				)
 			);
 		},
 
-		'Clicking tab should change activeIndex'() {
-			const onRequestTabChange = sinon.stub();
+		'Clicking tab should change the active tab'() {
+			const tabs = [
+				{ label: 'Tab 1' },
+				{ disabled: true, label: 'Tab 2' },
+				{ label: 'Tab 3' }
+			];
+
 			const h = harness(() => (
-				<TabController activeIndex={2} onRequestTabChange={onRequestTabChange}>
-					{tabChildren(3)}
+				<TabController initialIndex={2} tabs={tabs}>
+					{tabChildren(tabs)}
 				</TabController>
 			));
-			h.trigger('@0-tabbutton', 'onClick', 0);
-			assert.isTrue(
-				onRequestTabChange.calledOnce,
-				'onRequestTabChange called when tab is clicked'
-			);
-			assert.isTrue(
-				onRequestTabChange.calledWith(0, '0'),
-				'onRequestTabChange called with correct index and key'
-			);
 
-			h.trigger('@1-tabbutton', 'onClick', 1);
-			assert.isTrue(
-				onRequestTabChange.calledOnce,
-				'onRequestTabChange not called on disabled tabs'
-			);
+			h.trigger('@0-tabbutton', 'onclick');
+			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
 
-			h.trigger('@2-tabbutton', 'onClick', 2);
-			assert.isTrue(
-				onRequestTabChange.calledOnce,
-				'onRequestTabChange not called on the active tab'
-			);
+			h.trigger('@1-tabbutton', 'onclick');
+			// nothing happens on disabled tabs
+			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
+
+			h.trigger('@2-tabbutton', 'onclick');
+			h.expect(() => expected([expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)]));
 		},
 
 		'Closing a tab should change tabs'() {
-			const onRequestTabClose = sinon.stub();
+			const tabs = [
+				{ label: 'Tab 1' },
+				{ label: 'Tab 2' },
+				{ closeable: true, label: 'Tab 3' }
+			];
 			const h = harness(() => (
-				<TabController activeIndex={2} onRequestTabClose={onRequestTabClose}>
-					{tabChildren(3)}
+				<TabController initialIndex={2} tabs={tabs}>
+					{tabChildren(tabs)}
 				</TabController>
 			));
 
-			h.trigger('@2-tabbutton', 'onCloseClick', 2);
-			assert.isTrue(
-				onRequestTabClose.calledOnce,
-				"onRequestTabClose called when a tab's onCloseClick fires"
-			);
-			assert.isTrue(
-				onRequestTabClose.calledWith(2, '2'),
-				'onRequestTabClose called with correct index and key'
+			const stopPropagation = sinon.spy();
+			h.trigger('@2-tabbutton-close', 'onclick', { stopPropagation });
+			assert.isTrue(stopPropagation.called, 'event.stopPropagation called');
+			h.expect(() =>
+				expected([expectedTabButtons(tabs, 1, 2), expectedTabContent(tabs, 1, 2)])
 			);
 		},
 
 		'Basic keyboard navigation'() {
-			const onRequestTabChange = sinon.stub();
+			const tabs: TabItem[] = '01234'.split('').map((n) => ({ label: `Tab ${n + 1}` }));
 			const h = harness(() => (
-				<TabController activeIndex={2} onRequestTabChange={onRequestTabChange}>
-					{tabChildren(5)}
+				<TabController initialIndex={2} tabs={tabs}>
+					{tabChildren(tabs)}
 				</TabController>
 			));
 
-			h.trigger('@2-tabbutton', 'onRightArrowPress', 2);
-			assert.strictEqual(
-				onRequestTabChange.getCall(0).args[0],
-				3,
-				'Right arrow moves to next tab'
-			);
-
-			h.trigger('@2-tabbutton', 'onDownArrowPress', 2);
-			assert.isTrue(
-				onRequestTabChange.calledOnce,
-				'Down arrow does nothing on horizontal tabs'
-			);
-
-			h.trigger('@2-tabbutton', 'onLeftArrowPress', 2);
-			assert.strictEqual(
-				onRequestTabChange.getCall(1).args[0],
-				0,
-				'Left arrow moves to previous tab, skipping disabled tab'
-			);
-
-			h.trigger('@2-tabbutton', 'onUpArrowPress', 2);
-			assert.isTrue(
-				onRequestTabChange.calledTwice,
-				'Up arrow does nothing on horizontal tabs'
-			);
-
-			h.trigger('@2-tabbutton', 'onHomePress', 2);
-			assert.strictEqual(onRequestTabChange.getCall(2).args[0], 0, 'Home moves to first tab');
-
-			h.trigger('@2-tabbutton', 'onEndPress', 2);
-			assert.strictEqual(onRequestTabChange.getCall(3).args[0], 4, 'End moves to last tab');
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
+			h.expect(() => expected([expectedTabButtons(tabs, 3), expectedTabContent(tabs, 3)]));
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Down));
+			h.expect(() => expected([expectedTabButtons(tabs, 3), expectedTabContent(tabs, 3)]));
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Left));
+			h.expect(() => expected([expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)]));
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Up));
+			h.expect(() => expected([expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)]));
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Home));
+			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.End));
+			h.expect(() => expected([expectedTabButtons(tabs, 4), expectedTabContent(tabs, 4)]));
 		},
 
 		'Arrow keys wrap to first and last tab'() {
-			const onRequestTabChange = sinon.stub();
-			let properties: any = {
-				activeIndex: 0,
-				onRequestTabChange
-			};
+			const tabs = [{ label: 'Tab 1' }, { label: 'Tab 2' }, { label: 'Tab 3' }];
+			let properties: any = { initialIndex: 0, tabs };
 			const h = harness(() => (
-				<TabController {...properties}>{tabChildren(3)}</TabController>
+				<TabController {...properties}>{tabChildren(tabs)}</TabController>
 			));
-
-			h.trigger('@0-tabbutton', 'onLeftArrowPress', 2);
-			assert.isTrue(
-				onRequestTabChange.calledWith(2),
-				'Left arrow wraps from first to last tab'
-			);
-
-			properties = {
-				activeIndex: 2,
-				onRequestTabChange
-			};
-			h.trigger('@2-tabbutton', 'onRightArrowPress', 2);
-			assert.isTrue(
-				onRequestTabChange.calledWith(0),
-				'Right arrow wraps from last to first tab'
-			);
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Left));
+			h.expect(() => expected([expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)]));
+			properties = { initialIndex: 2, tabs };
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
+			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
 		},
 
 		'Arrow keys on vertical tabs'() {
-			const onRequestTabChange = sinon.stub();
+			const tabs: TabItem[] = '01234'
+				.split('')
+				.map((n) => ({ disabled: n === '1', label: `Tab ${n + 1}` }));
 			let properties: any = {
-				activeIndex: 0,
 				alignButtons: Align.right,
-				onRequestTabChange
+				tabs
 			};
 			const h = harness(() => (
-				<TabController {...properties}>{tabChildren(5)}</TabController>
+				<TabController {...properties}>{tabChildren(tabs)}</TabController>
 			));
 
-			h.trigger('@0-tabbutton', 'onDownArrowPress', 0);
-			assert.strictEqual(
-				onRequestTabChange.getCall(0).args[0],
-				2,
-				'Down arrow moves to next tab, skipping disabled tab'
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Down));
+			h.expect(() =>
+				expected(
+					[expectedTabContent(tabs, 2), expectedTabButtons(tabs, 2)],
+					undefined,
+					[undefined, css.alignRight, css.root],
+					true
+				)
 			);
 
-			h.trigger('@0-tabbutton', 'onRightArrowPress', 0);
-			assert.strictEqual(
-				onRequestTabChange.getCall(1).args[0],
-				2,
-				'Right arrow works on vertical tabs'
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
+			h.expect(() =>
+				expected(
+					[expectedTabContent(tabs, 3), expectedTabButtons(tabs, 3)],
+					undefined,
+					[undefined, css.alignRight, css.root],
+					true
+				)
 			);
 
-			h.trigger('@0-tabbutton', 'onUpArrowPress', 0);
-			assert.strictEqual(
-				onRequestTabChange.getCall(2).args[0],
-				4,
-				'Up arrow moves to previous tab'
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Up));
+			h.expect(() =>
+				expected(
+					[expectedTabContent(tabs, 2), expectedTabButtons(tabs, 2)],
+					undefined,
+					[undefined, css.alignRight, css.root],
+					true
+				)
 			);
 
-			h.trigger('@0-tabbutton', 'onLeftArrowPress', 0);
-			assert.strictEqual(
-				onRequestTabChange.getCall(3).args[0],
-				4,
-				'Left arrow works on vertical tabs'
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Left));
+			h.expect(() =>
+				expected(
+					[expectedTabContent(tabs), expectedTabButtons(tabs)],
+					undefined,
+					[undefined, css.alignRight, css.root],
+					true
+				)
 			);
 
-			properties = {
-				activeIndex: 0,
-				alignButtons: Align.left,
-				onRequestTabChange
-			};
-			h.trigger('@0-tabbutton', 'onDownArrowPress', 0);
-			assert.strictEqual(
-				onRequestTabChange.getCall(4).args[0],
-				2,
-				'Down arrow works on left-aligned tabs'
+			properties = { alignButtons: Align.left, tabs };
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Down));
+			h.expect(() =>
+				expected(
+					[expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)],
+					undefined,
+					[undefined, css.alignLeft, css.root],
+					true
+				)
 			);
 		},
 
-		'Should default to last tab if invalid activeIndex passed'() {
-			const onRequestTabChange = sinon.stub();
+		'Should default to last tab if invalid initialIndex passed'() {
+			const tabs = [{ label: 'Tab 1' }, { label: 'Tab 2' }, { label: 'Tab 3' }];
 			const h = harness(() => (
-				<TabController activeIndex={5} onRequestTabChange={onRequestTabChange}>
-					{tabChildren(5)}
+				<TabController initialIndex={3} tabs={tabs}>
+					{tabChildren(tabs)}
 				</TabController>
 			));
-			h.expect(() => null);
-			assert.isTrue(onRequestTabChange.calledWith(4));
+			const tabButtons = expectedTabButtons(tabs, 2);
+			const tabContent = expectedTabContent(tabs, 2);
+			h.expect(() => expected([tabButtons, tabContent]));
 		},
 
-		'Should skip tab if activeIndex is disabled'() {
-			const onRequestTabChange = sinon.stub();
+		'Should skip tab if initialIndex is disabled'() {
+			const tabs = [
+				{ label: 'Tab 1' },
+				{ disabled: true, label: 'Tab 2' },
+				{ label: 'Tab 3' }
+			];
 			const h = harness(() => (
-				<TabController activeIndex={1} onRequestTabChange={onRequestTabChange}>
-					{tabChildren(5)}
+				<TabController initialIndex={1} tabs={tabs}>
+					{tabChildren(tabs)}
 				</TabController>
 			));
-			h.expect(() => null);
-			assert.isTrue(onRequestTabChange.calledWith(2));
+			const tabButtons = expectedTabButtons(tabs, 2);
+			const tabContent = expectedTabContent(tabs, 2);
+			h.expect(() => expected([tabButtons, tabContent]));
 		},
 
 		'Calls focus when arrowing through tabs'() {
+			const tabs = [{ label: 'Tab 1' }, { label: 'Tab 2' }];
 			const h = harness(
-				() => <TabController activeIndex={0}>{tabChildren()}</TabController>,
+				() => <TabController tabs={tabs}>{tabChildren(tabs)}</TabController>,
 				[
 					{
-						selector: '@0-tabbutton',
+						selector: '@1-tabbutton',
 						property: 'focus',
 						comparator: isFocusedComparator
 					}
 				]
 			);
-			h.trigger('@0-tabbutton', 'onRightArrowPress');
-			const tabButtons = expectedTabButtons();
-			const tabContent = expectedTabContent();
-
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
+			const tabButtons = expectedTabButtons(tabs, 1);
+			const tabContent = expectedTabContent(tabs, 1);
 			h.expect(() => expected([tabButtons, tabContent]));
 		},
 
 		'Calls focus when closing a tab'() {
+			const tabs = [{ closeable: true, label: 'Tab 1' }, { label: 'Tab 2' }];
 			const h = harness(
-				() => <TabController activeIndex={0}>{tabChildren()}</TabController>,
+				() => <TabController tabs={tabs}>{tabChildren(tabs)}</TabController>,
 				[
 					{
 						selector: '@0-tabbutton',
@@ -422,10 +396,11 @@ registerSuite('TabController', {
 					}
 				]
 			);
-			h.trigger('@1-tabbutton', 'onCloseClick', 1);
-			const tabButtons = expectedTabButtons();
-			const tabContent = expectedTabContent();
-
+			const stopPropagation = sinon.spy();
+			h.trigger('@0-tabbutton-close', 'onclick', { stopPropagation });
+			assert.isTrue(stopPropagation.called, 'clicking close button calls stopPropagation');
+			const tabButtons = expectedTabButtons(tabs, 1, 0);
+			const tabContent = expectedTabContent(tabs, 1, 0);
 			h.expect(() => expected([tabButtons, tabContent]));
 		}
 	}

@@ -1,8 +1,7 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 
-import TabController, { Align } from '@dojo/widgets/tab-controller';
-import Tab from '@dojo/widgets/tab';
+import TabController, { Align, TabContent } from '@dojo/widgets/tab-controller';
 import Select, { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithData } from '../list/memoryTemplate';
 
@@ -16,8 +15,14 @@ const options = [
 const resource = createMemoryResourceWithData(options);
 
 export default factory(function ButtonAlignment({ middleware: { icache } }) {
-	const activeIndex = icache.getOrSet('active', 0);
 	const alignButtons = icache.getOrSet('align', Align.top);
+	const tabs = [
+		{ label: 'Tab One' },
+		{ label: 'Tab Two' },
+		{ label: 'Tab Three' },
+		{ label: 'Tab Four' }
+	];
+
 	return (
 		<div>
 			<Select
@@ -28,25 +33,21 @@ export default factory(function ButtonAlignment({ middleware: { icache } }) {
 					icache.set('align', value);
 				}}
 			/>
-			<TabController
-				activeIndex={activeIndex}
-				alignButtons={alignButtons}
-				onRequestTabChange={(index) => {
-					icache.set('active', index);
-				}}
-			>
-				<Tab key="tab-one" label="Tab One">
-					Hello Tab One
-				</Tab>
-				<Tab key="tab-two" label="Tab Two">
-					Hello Tab Two
-				</Tab>
-				<Tab key="tab-three" label="Tab Three">
-					Hello Tab Three
-				</Tab>
-				<Tab key="tab-four" label="Tab Four">
-					Hello Tab Four
-				</Tab>
+			<TabController alignButtons={alignButtons} tabs={tabs}>
+				{(_tabs, isActive) => [
+					<TabContent key="tab0" active={isActive(0)}>
+						Hello Tab One
+					</TabContent>,
+					<TabContent key="tab1" active={isActive(1)}>
+						Hello Tab Two
+					</TabContent>,
+					<TabContent key="tab2" active={isActive(2)}>
+						Hello Tab Three
+					</TabContent>,
+					<TabContent key="tab3" active={isActive(3)}>
+						Hello Tab Four
+					</TabContent>
+				]}
 			</TabController>
 		</div>
 	);
