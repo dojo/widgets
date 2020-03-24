@@ -1,12 +1,7 @@
 {
-	"version": 2,
-	"public": true,
-	"name": "dojo.widgets",
-	"builds": [
-		{
-			"src": "**/*",
-			"use": "@now/static",
-			"config": { "useBuildUtils": "@now/build-utils@canary" }
+	"build": {
+		"env": {
+			"PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
 		}
-	]
+	}
 }
