@@ -45,17 +45,39 @@ registerSuite('GlobalEvent', {
 		'Registers document listener'() {
 			const globalEvent = () => {};
 			const focusEvent = () => {};
-			const h = harness(() => (
-				<GlobalEvent document={{ focus: globalEvent }} key="global">
-					child
-				</GlobalEvent>
-			));
-			h.expect(() => h.getRender());
+			const keyDownEvent = () => {};
 
-			// h.trigger(':root', (node: any) => node.children[0].focus);
+			let testEvent = globalEvent;
+			const h = harness(() => <GlobalEvent document={{ focus: testEvent }} key="global" />);
+			assert.strictEqual(documentAddEventlistenerStub.callCount, 0);
 			h.expect(() => h.getRender());
+			testEvent = focusEvent;
 
+			h.expect(() => h.getRender());
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 1);
+
+			testEvent = keyDownEvent;
+			h.expect(() => h.getRender());
+			assert.strictEqual(documentAddEventlistenerStub.callCount, 2);
+		},
+
+		'Registers window listener'() {
+			const globalEvent = () => {};
+			const focusEvent = () => {};
+			const keyDownEvent = () => {};
+
+			let testEvent = globalEvent;
+			const h = harness(() => <GlobalEvent window={{ focus: testEvent }} key="global" />);
+			assert.strictEqual(windowAddEventlistenerStub.callCount, 0);
+			h.expect(() => h.getRender());
+			testEvent = focusEvent;
+
+			h.expect(() => h.getRender());
+			assert.strictEqual(windowAddEventlistenerStub.callCount, 1);
+
+			testEvent = keyDownEvent;
+			h.expect(() => h.getRender());
+			assert.strictEqual(windowAddEventlistenerStub.callCount, 2);
 		},
 
 		'Returns null when there are no children'() {

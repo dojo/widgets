@@ -1,5 +1,7 @@
 import global from '@dojo/framework/shim/global';
-import { create, diffProperty, tsx } from '@dojo/framework/core/vdom';
+import { create, diffProperty } from '@dojo/framework/core/vdom';
+import { shallow } from '@dojo/framework/core/diff';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 export interface ListenerObject {
 	[index: string]: (event?: any) => void;
@@ -16,18 +18,23 @@ export interface RegisteredListeners {
 	window: ListenerObject;
 	document: ListenerObject;
 }
+export interface GlobalEventICache {
+	listeners: {
+		window: {};
+		document: {};
+	};
+}
 
-const factory = create({ diffProperty }).properties<GlobalEventProperties>();
+const factory = create({
+	icache: createICacheMiddleware<GlobalEventICache>(),
+	diffProperty
+}).properties<GlobalEventProperties>();
 
-export const GlobalEvent = factory(function({
-	children,
-	properties,
-	middleware: { diffProperty }
-}) {
-	const listeners: RegisteredListeners = {
+export const GlobalEvent = factory(function({ children, middleware: { diffProperty, icache } }) {
+	const listeners = icache.getOrSet('listeners', {
 		window: {},
 		document: {}
-	};
+	}) as RegisteredListeners;
 
 	const registerListeners = (
 		type: 'window' | 'document',
@@ -59,16 +66,26 @@ export const GlobalEvent = factory(function({
 					registeredListeners[eventName] = newListeners[type][eventName];
 				}
 			});
-		// console.log('registeredListeners', registeredListeners);
-		listeners[type] = registeredListeners;
+		const currentListeners = icache.get('listeners') as RegisteredListeners;
+		type === 'window'
+			? icache.set('listeners', {
+					window: registeredListeners,
+					document: currentListeners.document
+			  })
+			: icache.set('listeners', {
+					window: currentListeners.window,
+					document: registeredListeners
+			  });
 	};
 
-	diffProperty('window', (previous: RegisteredListeners, next: RegisteredListeners) =>
-		registerListeners('window', previous, next)
-	);
-	diffProperty('document', (previous: RegisteredListeners, next: RegisteredListeners) =>
-		registerListeners('document', previous, next)
-	);
+	diffProperty('window', (previous: RegisteredListeners, next: RegisteredListeners) => {
+		const { changed } = shallow(previous, next);
+		changed && registerListeners('window', previous, next);
+	});
+	diffProperty('document', (previous: RegisteredListeners, next: RegisteredListeners) => {
+		const { changed } = shallow(previous, next);
+		changed && registerListeners('document', previous, next);
+	});
 
 	if (children().length > 0) {
 		return children();
