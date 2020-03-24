@@ -1,15 +1,13 @@
-import { DNode } from '@dojo/framework/core/interfaces';
-import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import { v } from '@dojo/framework/core/vdom';
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import focus from '@dojo/framework/core/middleware/focus';
+import i18n from '@dojo/framework/core/middleware/i18n';
+import theme from '@dojo/framework/core/middleware/theme';
+import { create, tsx } from '@dojo/framework/core/vdom';
+
 import commonBundle from '../common/nls/common';
 import { Keys } from '../common/util';
-
 import * as css from '../theme/default/tab-controller.m.css';
 
-export interface TabButtonProperties extends ThemedProperties, FocusProperties, I18nProperties {
+export interface TabButtonProperties {
 	/** Determines whether this tab button is active */
 	active?: boolean;
 	/** Determines whether this tab can be closed */
@@ -40,27 +38,32 @@ export interface TabButtonProperties extends ThemedProperties, FocusProperties, 
 	onUpArrowPress?: () => void;
 }
 
-export const ThemedBase = I18nMixin(ThemedMixin(FocusMixin(WidgetBase)));
+const factory = create({ focus, i18n, theme }).properties<TabButtonProperties>();
 
-@theme(css)
-export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> extends ThemedBase<
-	P
-> {
-	private _onClick(event: MouseEvent) {
+export const TabButton = factory(function TabButton({
+	children,
+	middleware: { focus, i18n, theme },
+	properties
+}) {
+	const { active, closeable, controls, disabled, id } = properties();
+	const { messages } = i18n.localize(commonBundle);
+	const themeCss = theme.classes(css);
+
+	const onClick = (event: MouseEvent) => {
 		event.stopPropagation();
-		const { disabled, index, onClick } = this.properties;
+		const { disabled, index, onClick } = properties();
 
 		!disabled && onClick && onClick(index);
-	}
+	};
 
-	private _onCloseClick(event: MouseEvent) {
+	const onCloseClick = (event: MouseEvent) => {
 		event.stopPropagation();
-		const { index, onCloseClick } = this.properties;
+		const { index, onCloseClick } = properties();
 
 		onCloseClick && onCloseClick(index);
-	}
+	};
 
-	private _onKeyDown(event: KeyboardEvent) {
+	const onKeyDown = (event: KeyboardEvent) => {
 		event.stopPropagation();
 		const {
 			closeable,
@@ -73,7 +76,7 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 			onLeftArrowPress,
 			onRightArrowPress,
 			onUpArrowPress
-		} = this.properties;
+		} = properties();
 
 		if (disabled) {
 			return;
@@ -110,62 +113,45 @@ export class TabButtonBase<P extends TabButtonProperties = TabButtonProperties> 
 				onEndPress && onEndPress();
 				break;
 		}
-	}
+	};
 
-	protected getContent(messages: typeof commonBundle.messages): DNode[] {
-		const { active, closeable } = this.properties;
+	return (
+		<div
+			aria-controls={controls}
+			aria-disabled={disabled ? 'true' : 'false'}
+			aria-selected={active === true ? 'true' : 'false'}
+			classes={[
+				themeCss.tabButton,
+				active ? themeCss.activeTabButton : null,
+				closeable ? themeCss.closeable : null,
+				disabled ? themeCss.disabledTabButton : null
+			]}
+			focus={focus.shouldFocus}
+			id={id}
+			key="tab-button"
+			onclick={onClick}
+			onkeydown={onKeyDown}
+			role="tab"
+			tabIndex={active === true ? 0 : -1}
+		>
+			<span classes={themeCss.tabButtonContent}>
+				{children()}
+				{closeable ? (
+					<button
+						tabIndex={active ? 0 : -1}
+						classes={themeCss.close}
+						type="button"
+						onclick={onCloseClick}
+					>
+						{messages.close}
+					</button>
+				) : null}
+				<span classes={[themeCss.indicator, active && themeCss.indicatorActive]}>
+					<span classes={themeCss.indicatorContent} />
+				</span>
+			</span>
+		</div>
+	);
+});
 
-		return [
-			...this.children,
-			closeable
-				? v(
-						'button',
-						{
-							tabIndex: active ? 0 : -1,
-							classes: this.theme(css.close),
-							type: 'button',
-							onclick: this._onCloseClick
-						},
-						[messages.close]
-				  )
-				: null,
-			v('span', { classes: this.theme([css.indicator, active && css.indicatorActive]) }, [
-				v('span', { classes: this.theme(css.indicatorContent) })
-			])
-		];
-	}
-
-	protected getModifierClasses(): (string | null)[] {
-		const { active, closeable, disabled } = this.properties;
-		return [
-			active ? css.activeTabButton : null,
-			closeable ? css.closeable : null,
-			disabled ? css.disabledTabButton : null
-		];
-	}
-
-	render(): DNode {
-		const { active, controls, disabled, id } = this.properties;
-		const { messages } = this.localizeBundle(commonBundle);
-
-		return v(
-			'div',
-			{
-				'aria-controls': controls,
-				'aria-disabled': disabled ? 'true' : 'false',
-				'aria-selected': active === true ? 'true' : 'false',
-				classes: this.theme([css.tabButton, ...this.getModifierClasses()]),
-				focus: this.shouldFocus,
-				id,
-				key: 'tab-button',
-				onclick: this._onClick,
-				onkeydown: this._onKeyDown,
-				role: 'tab',
-				tabIndex: active === true ? 0 : -1
-			},
-			[v('span', { classes: this.theme(css.tabButtonContent) }, this.getContent(messages))]
-		);
-	}
-}
-
-export default class TabButton extends TabButtonBase<TabButtonProperties> {}
+export default TabButton;
