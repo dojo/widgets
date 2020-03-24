@@ -1,2 +1,15 @@
-.root {
+@import './variables.css';
+
+.toggleMenuButton {
+	composes: nativeResetRoot from './button.m.css';
+	cursor: pointer;
+	display: flex;
+	pointer-events: all;
+}
+
+.popup {
+	display: inline-block;
+	background: var(--mdc-theme-background);
+	border-radius: var(--mdc-theme-border-radius);
+	box-shadow: var(--mdc-theme-elevation-2);
 }

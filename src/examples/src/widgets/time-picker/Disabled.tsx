@@ -4,13 +4,5 @@ import TimePicker from '@dojo/widgets/time-picker';
 const factory = create();
 
 export default factory(function Basic() {
-	return (
-		<TimePicker
-			inputProperties={{
-				placeholder: 'Enter a value'
-			}}
-			label="Time: "
-			readOnly
-		/>
-	);
+	return <TimePicker label="Time: " disabled />;
 });

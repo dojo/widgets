@@ -1,28 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
-import TimePicker, { TimeUnits } from '@dojo/widgets/time-picker';
-import { getDateFormatter } from '@dojo/framework/i18n/date';
+import TimePicker from '@dojo/widgets/time-picker';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Basic({ middleware: { icache } }) {
-	const Today = new Date();
-
-	const { get, set } = icache;
-	return (
-		<TimePicker
-			inputProperties={{
-				placeholder: 'Enter a value'
-			}}
-			getOptionLabel={(option: TimeUnits) => {
-				Today.setHours(option.hour);
-				Today.setMinutes(option.minute as number);
-				return getDateFormatter({ time: 'short' })(Today);
-			}}
-			label="Time: "
-			value={get<string>('date')}
-			onValue={(value) => set('date', value)}
-			step={1800}
-		/>
-	);
+export default factory(function Basic() {
+	return <TimePicker label="Time: " step={1800} format="12" />;
 });

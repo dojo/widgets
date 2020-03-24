@@ -1,60 +1,33 @@
 @import './variables.css';
 
 .root {
-	display: block;
 }
 
 .input {
-	border: var(--border-width) solid var(--color-border);
-	border-bottom-color: var(--color-border-strong);
-	box-sizing: border-box;
+}
+
+.toggleMenuButton {
+	background: none;
+	border: none;
+	color: inherit;
 	font-size: inherit;
-	line-height: var(--line-height-base);
-	padding: var(--grid-base) calc(var(--grid-base) * 3) var(--grid-base) var(--grid-base);
-	transition: box-shadow var(--transition-duration) var(--transition-easing);
-	width: 100%;
-	border-radius: 0;
-	margin: 0;
+	min-width: unset;
+	padding: 0;
 }
 
-.input:focus {
-	border-color: var(--color-highlight);
-	border-bottom-color: var(--color-highlight);
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
-	outline: none;
-}
-
-.input:hover {
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
-}
-
-/* disabled and readonly */
-.disabled .input,
-.readonly .input {
-	background-color: var(--color-background-faded);
-}
-
-.disabled .input:hover,
-.readonly .input:hover {
+.toggleMenuButton:hover,
+.toggleMenuButton:focus {
 	box-shadow: none;
 }
 
-/* invalid */
-.invalid .input {
-	border-color: var(--color-border-invalid);
-	border-bottom-color: var(--color-error);
+.popup {
+	display: inline-block;
+	background: var(--color-background);
 }
 
-.invalid .input:focus {
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-invalid);
-}
-
-/* valid */
-.valid .input {
-	border-color: var(--color-border-valid);
-	border-bottom-color: var(--color-success);
-}
-
-.valid .input:focus {
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
+/* include .root prefix to ensure this overrides the default styling */
+.root .inputTrailing {
+	background: none;
+	padding-bottom: 0;
+	padding-top: 0;
 }

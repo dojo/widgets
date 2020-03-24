@@ -172,9 +172,6 @@ import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
 import BasicTimePicker from './widgets/time-picker/Basic';
 import DisabledTimePicker from './widgets/time-picker/Disabled';
 import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
-import FilteredOnInputTimePicker from './widgets/time-picker/FilteredOnInput';
-import NativeTimePicker from './widgets/time-picker/Native';
-import OpenOnFocusTimePicker from './widgets/time-picker/OpenOnFocus';
 import RequiredTimePicker from './widgets/time-picker/Required';
 import SelectBySecondTimePicker from './widgets/time-picker/SelectBySecond';
 import BasicTitlePane from './widgets/title-pane/Basic';
@@ -1344,16 +1341,6 @@ export const config = {
 		'time-picker': {
 			examples: [
 				{
-					filename: 'FilteredOnInput',
-					module: FilteredOnInputTimePicker,
-					title: 'Filtered on input'
-				},
-				{
-					filename: 'OpensOnFocus',
-					module: OpenOnFocusTimePicker,
-					title: 'Opens on focus'
-				},
-				{
 					filename: 'DisabledMenuItems',
 					module: DisabledMenuItemsTimePicker,
 					title: 'Disabled menu items'
@@ -1377,11 +1364,6 @@ export const config = {
 					filename: 'Required',
 					module: RequiredTimePicker,
 					title: 'Required time picker'
-				},
-				{
-					filename: 'Native',
-					module: NativeTimePicker,
-					title: 'Native time picker'
 				}
 			],
 			overview: {

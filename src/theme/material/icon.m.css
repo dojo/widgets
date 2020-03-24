@@ -31,6 +31,10 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.clockIcon:before {
+	content: 'alarm';
+}
+
 .downIcon:before {
 	content: 'expand_more';
 }
