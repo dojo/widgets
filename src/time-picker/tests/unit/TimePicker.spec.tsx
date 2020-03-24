@@ -64,6 +64,7 @@ const buttonTemplate = assertionTemplate(() => {
 			<TextInput
 				disabled={undefined}
 				key="input"
+				label={undefined}
 				focus={() => false}
 				classes={{
 					'@dojo/widgets/text-input': {

@@ -335,12 +335,13 @@ export const TimePicker = factory(function TimePicker({
 							toggleOpen();
 						}
 
-						const { disabled, required } = properties();
+						const { disabled, required, label } = properties();
 
 						return (
 							<div classes={classes.input}>
 								<TextInput
 									key="input"
+									label={label}
 									disabled={disabled}
 									required={required}
 									focus={() => shouldFocus && focusNode === 'input'}
