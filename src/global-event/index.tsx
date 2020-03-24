@@ -1,8 +1,5 @@
 import global from '@dojo/framework/shim/global';
-import WidgetBase from '@dojo/framework/core/WidgetBase';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
-import { shallow } from '@dojo/framework/core/diff';
+import { create, diffProperty, tsx } from '@dojo/framework/core/vdom';
 
 export interface ListenerObject {
 	[index: string]: (event?: any) => void;
@@ -20,25 +17,31 @@ export interface RegisteredListeners {
 	document: ListenerObject;
 }
 
-export class GlobalEvent extends WidgetBase<GlobalEventProperties> {
-	private _listeners: RegisteredListeners = {
+const factory = create({ diffProperty }).properties<GlobalEventProperties>();
+
+export const GlobalEvent = factory(function({
+	children,
+	properties,
+	middleware: { diffProperty }
+}) {
+	const listeners: RegisteredListeners = {
 		window: {},
 		document: {}
 	};
 
-	private _registerListeners(
+	const registerListeners = (
 		type: 'window' | 'document',
 		previousListeners: RegisteredListeners,
 		newListeners: RegisteredListeners
-	) {
+	) => {
 		const registeredListeners: ListenerObject = {};
 		previousListeners[type] &&
 			Object.keys(previousListeners[type]).forEach((eventName) => {
 				const newListener = newListeners[type][eventName];
 				if (newListener === undefined) {
-					global[type].removeEventListener(eventName, this._listeners[type][eventName]);
+					global[type].removeEventListener(eventName, listeners[type][eventName]);
 				} else if (previousListeners[type][eventName] !== newListener) {
-					global[type].removeEventListener(eventName, this._listeners[type][eventName]);
+					global[type].removeEventListener(eventName, listeners[type][eventName]);
 					global[type].addEventListener(eventName, newListener);
 					registeredListeners[eventName] = newListener;
 				} else {
@@ -56,42 +59,21 @@ export class GlobalEvent extends WidgetBase<GlobalEventProperties> {
 					registeredListeners[eventName] = newListeners[type][eventName];
 				}
 			});
-		this._listeners[type] = registeredListeners;
-	}
+		// console.log('registeredListeners', registeredListeners);
+		listeners[type] = registeredListeners;
+	};
 
-	private _removeAllRegisteredListeners(type: 'window' | 'document') {
-		Object.keys(this._listeners[type]).forEach((eventName) => {
-			global[type].removeEventListener(eventName, this._listeners[type][eventName]);
-		});
-	}
+	diffProperty('window', (previous: RegisteredListeners, next: RegisteredListeners) =>
+		registerListeners('window', previous, next)
+	);
+	diffProperty('document', (previous: RegisteredListeners, next: RegisteredListeners) =>
+		registerListeners('document', previous, next)
+	);
 
-	@diffProperty('window', shallow)
-	protected onWindowListenersChange(
-		previousListeners: RegisteredListeners,
-		newListeners: RegisteredListeners
-	) {
-		this._registerListeners('window', previousListeners, newListeners);
+	if (children().length > 0) {
+		return children();
 	}
-
-	@diffProperty('document', shallow)
-	protected onDocumentListenersChange(
-		previousListeners: RegisteredListeners,
-		newListeners: RegisteredListeners
-	) {
-		this._registerListeners('document', previousListeners, newListeners);
-	}
-
-	protected onDetach() {
-		this._removeAllRegisteredListeners('window');
-		this._removeAllRegisteredListeners('document');
-	}
-
-	protected render(): DNode | DNode[] {
-		if (this.children.length > 0) {
-			return this.children;
-		}
-		return null;
-	}
-}
+	return null;
+});
 
 export default GlobalEvent;
