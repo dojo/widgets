@@ -2,9 +2,17 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
-import { Breadcrumb, BreadcrumbItem } from '../breadcrumb';
+import { Breadcrumb } from '../breadcrumb';
 import * as css from '../theme/default/breadcrumb-group.m.css';
 import * as fixedCss from './styles/breadcrumb-group.m.css';
+
+export interface BreadcrumbItem {
+	[key: string]: any;
+
+	href?: string;
+	label: string;
+	title?: string;
+}
 
 export interface BreadcrumbGroupProperties {
 	items: BreadcrumbItem[];
@@ -52,8 +60,10 @@ export const BreadcrumbGroup = factory(function BreadcrumbGroup({
 							key={`breadcrumb-${index}`}
 						>
 							<Breadcrumb
-								item={item}
 								current={index === lastIndex ? 'page' : undefined}
+								href={item.href}
+								label={item.label}
+								title={item.title}
 							/>
 						</li>
 					</virtual>

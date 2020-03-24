@@ -18,7 +18,12 @@ describe('BreadcrumbGroup', () => {
 			<ol classes={[fixedCss.listFixed, css.list]}>
 				<virtual>
 					<li classes={listItemClasses} key="breadcrumb-0">
-						<Breadcrumb item={{ label: 'Home' }} current={undefined} />
+						<Breadcrumb
+							label="Home"
+							current={undefined}
+							href={undefined}
+							title={undefined}
+						/>
 					</li>
 				</virtual>
 				<virtual>
@@ -26,7 +31,12 @@ describe('BreadcrumbGroup', () => {
 						<span classes={css.separator}>/</span>
 					</li>
 					<li classes={listItemClasses} key="breadcrumb-1">
-						<Breadcrumb item={{ label: 'Overview' }} current={undefined} />
+						<Breadcrumb
+							label="Overview"
+							current={undefined}
+							href={undefined}
+							title={undefined}
+						/>
 					</li>
 				</virtual>
 				<virtual>
@@ -34,7 +44,12 @@ describe('BreadcrumbGroup', () => {
 						<span classes={css.separator}>/</span>
 					</li>
 					<li classes={currentListItemClasses} key="breadcrumb-2">
-						<Breadcrumb item={{ label: 'Tests' }} current="page" />
+						<Breadcrumb
+							label="Tests"
+							current="page"
+							href={undefined}
+							title={undefined}
+						/>
 					</li>
 				</virtual>
 			</ol>

@@ -44,8 +44,10 @@ const App = factory(function() {
 											root: [item.current ? css.current : undefined]
 										}
 									}}
-									item={item}
 									current={item.current ? 'step' : undefined}
+									href={item.href}
+									label={item.label}
+									title={item.title}
 								/>
 							</li>
 						</virtual>

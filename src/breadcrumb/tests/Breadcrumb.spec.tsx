@@ -7,7 +7,7 @@ import Breadcrumb from '../index';
 
 describe('Breadcrumb', () => {
 	it('renders a text label', () => {
-		const h = harness(() => <Breadcrumb item={{ label: 'Home' }} />);
+		const h = harness(() => <Breadcrumb label="Home" />);
 
 		h.expect(() => (
 			<span aria-current={undefined} classes={css.root}>
@@ -17,15 +17,7 @@ describe('Breadcrumb', () => {
 	});
 
 	it('renders with a link', () => {
-		const h = harness(() => (
-			<Breadcrumb
-				item={{
-					href: '/home',
-					label: 'Home',
-					title: 'Home page'
-				}}
-			/>
-		));
+		const h = harness(() => <Breadcrumb href="/home" label="Home" title="Home page" />);
 
 		h.expect(() => (
 			<a aria-current={undefined} classes={css.root} href="/home" title="Home page">
@@ -35,7 +27,7 @@ describe('Breadcrumb', () => {
 	});
 
 	it('renders with an aria-current attributes', () => {
-		const h = harness(() => <Breadcrumb current="step" item={{ label: 'Home' }} />);
+		const h = harness(() => <Breadcrumb current="step" label="Home" />);
 
 		h.expect(() => (
 			<span aria-current="step" classes={css.root}>

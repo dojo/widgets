@@ -1,6 +1,8 @@
 @import './variables.css';
 
 .root {
+	color: var(--mdc-theme-text-secondary-on-background);
+	composes: mdc-typography mdc-typography--body1 from '@material/typography/dist/mdc.typography.css';
 }
 
 .list {
@@ -15,4 +17,5 @@
 }
 
 .current {
+	color: var(--mdc-theme-text-primary-on-background);
 }
