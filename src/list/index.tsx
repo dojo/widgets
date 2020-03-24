@@ -5,15 +5,16 @@ import { create, renderer, tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
-import * as listBoxItemCss from '../theme/default/list-box-item.m.css';
+import * as listItemCss from '../theme/default/list-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
-import * as css from '../theme/default/menu.m.css';
-import * as fixedCss from './menu.m.css';
-import ListBoxItem from './ListBoxItem';
+import * as css from '../theme/default/list.m.css';
+import * as fixedCss from './list.m.css';
+import ListItem from './Listitem';
 import MenuItem from './MenuItem';
 import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
+import LoadingIndicator from '../loading-indicator';
 
-export type MenuOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
+export type ListOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
 export const defaultTransform = {
 	value: ['value'],
@@ -22,11 +23,7 @@ export const defaultTransform = {
 	disabled: ['disabled']
 };
 
-export interface MenuProperties {
-	/** Options to display within the menu. The `value` of the option will be passed to `onValue` when it is selected. The label is an optional display string to be used instead of the `value`. If `disabled` is true the option will have a disabled style and will not be selectable. An option with `divider: true` will have a divider rendered after it in the menu */
-	// options: MenuOption[];
-	/** The total number of options provided */
-	// total: number;
+export interface ListProperties {
 	/** The initial selected value */
 	initialValue?: string;
 	/** Callback called when user selects a value */
@@ -45,13 +42,13 @@ export interface MenuProperties {
 	onBlur?(): void;
 	/** Property to determine how many items to render. Not passing a number will render all results */
 	itemsInView?: number;
-	/** Property to determine if this menu is being used as a listbox, changes a11y and item type */
-	listBox?: boolean;
+	/** Property to determine if this list is being used as a menu, changes a11y and item type */
+	menu?: boolean;
 	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
 	widgetId?: string;
 }
 
-export interface MenuChildren {
+export interface ListChildren {
 	/** Custom renderer for item contents */
 	(properties: ItemRendererProperties): RenderResult;
 }
@@ -64,7 +61,7 @@ export interface ItemRendererProperties {
 	value: string;
 }
 
-interface MenuICache {
+interface ListICache {
 	activeIndex: number;
 	initial: string;
 	inputText: string;
@@ -88,17 +85,16 @@ const offscreenHeight = (dnode: RenderResult) => {
 	return dimensions.height;
 };
 
-const data = createDataMiddleware<MenuOption>();
-
 const factory = create({
-	icache: createICacheMiddleware<MenuICache>(),
+	icache: createICacheMiddleware<ListICache>(),
 	focus,
-	theme
+	theme,
+	data: createDataMiddleware<ListOption>()
 })
-	.properties<MenuProperties>()
-	.children<MenuChildren | undefined>();
+	.properties<ListProperties>()
+	.children<ListChildren | undefined>();
 
-export const Menu = factory(function Menu({
+export const List = factory(function List({
 	children,
 	properties,
 	id,
@@ -109,7 +105,7 @@ export const Menu = factory(function Menu({
 		focusable = true,
 		initialValue,
 		itemsInView = 10,
-		listBox = false,
+		menu = false,
 		onActiveIndexChange,
 		onBlur,
 		onFocus,
@@ -198,7 +194,7 @@ export const Menu = factory(function Menu({
 		icache.set('resetInputTextTimer', resetTextTimeout);
 		icache.set('inputText', inputText);
 
-		const allItems = get({ query: getOptions().query }) as MenuOption[];
+		const allItems = get({ query: getOptions().query }) as ListOption[];
 		let foundIndex: number | undefined = undefined;
 
 		allItems.some((option, index) => {
@@ -256,19 +252,7 @@ export const Menu = factory(function Menu({
 			},
 			disabled: true
 		};
-		return listBox ? (
-			<ListBoxItem
-				{...itemProps}
-				selected={false}
-				theme={theme.compose(
-					listBoxItemCss,
-					css,
-					'item'
-				)}
-			>
-				LOADING
-			</ListBoxItem>
-		) : (
+		return menu ? (
 			<MenuItem
 				{...itemProps}
 				theme={theme.compose(
@@ -277,12 +261,24 @@ export const Menu = factory(function Menu({
 					'item'
 				)}
 			>
-				LOADING
+				<LoadingIndicator />
 			</MenuItem>
+		) : (
+			<ListItem
+				{...itemProps}
+				selected={false}
+				theme={theme.compose(
+					listItemCss,
+					css,
+					'item'
+				)}
+			>
+				<LoadingIndicator />
+			</ListItem>
 		);
 	}
 
-	function renderItem(data: MenuOption, index: number) {
+	function renderItem(data: ListOption, index: number) {
 		const { value, label, divider, disabled = false } = data;
 		const selected = value === selectedValue;
 		const active = index === computedActiveIndex;
@@ -312,19 +308,7 @@ export const Menu = factory(function Menu({
 			  })
 			: label || value;
 
-		const item = listBox ? (
-			<ListBoxItem
-				{...itemProps}
-				selected={selected}
-				theme={theme.compose(
-					listBoxItemCss,
-					css,
-					'item'
-				)}
-			>
-				{children}
-			</ListBoxItem>
-		) : (
+		const item = menu ? (
 			<MenuItem
 				{...itemProps}
 				theme={theme.compose(
@@ -335,6 +319,18 @@ export const Menu = factory(function Menu({
 			>
 				{children}
 			</MenuItem>
+		) : (
+			<ListItem
+				{...itemProps}
+				selected={selected}
+				theme={theme.compose(
+					listItemCss,
+					css,
+					'item'
+				)}
+			>
+				{children}
+			</ListItem>
 		);
 
 		return divider ? [item, <hr classes={themedCss.divider} />] : item;
@@ -368,10 +364,10 @@ export const Menu = factory(function Menu({
 			  })
 			: 'offscreen';
 
-		const offscreenMenuItem = listBox ? (
-			<ListBoxItem {...offscreenItemProps}>{menuItemChild}</ListBoxItem>
-		) : (
+		const offscreenMenuItem = menu ? (
 			<MenuItem {...offscreenItemProps}>{menuItemChild}</MenuItem>
+		) : (
+			<ListItem {...offscreenItemProps}>{menuItemChild}</ListItem>
 		);
 
 		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));
@@ -393,7 +389,7 @@ export const Menu = factory(function Menu({
 	const computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 
-	let activeItem: MenuOption | undefined = undefined;
+	let activeItem: ListOption | undefined = undefined;
 
 	if (computedActiveIndex !== previousActiveIndex) {
 		const visibleStartIndex = Math.floor(scrollTop / itemHeight);
@@ -453,7 +449,7 @@ export const Menu = factory(function Menu({
 				}
 			}}
 			styles={rootStyles}
-			role={listBox ? 'listbox' : 'menu'}
+			role={menu ? 'menu' : 'listbox'}
 			aria-orientation="vertical"
 			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
 			id={idBase}
@@ -479,4 +475,4 @@ export const Menu = factory(function Menu({
 	);
 });
 
-export default Menu;
+export default List;

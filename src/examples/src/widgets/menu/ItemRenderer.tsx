@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Menu from '@dojo/widgets/menu';
+import List from '@dojo/widgets/list';
 import states from './states';
 import icache from '@dojo/framework/core/middleware/icache';
 
@@ -8,7 +8,7 @@ const factory = create({ icache });
 export default factory(function ItemRenderer({ middleware: { icache } }) {
 	return (
 		<virtual>
-			<Menu
+			<List
 				options={states}
 				onValue={(value) => {
 					icache.set('value', value);
@@ -20,7 +20,7 @@ export default factory(function ItemRenderer({ middleware: { icache } }) {
 					const color = value.length > 7 ? 'red' : 'blue';
 					return <div styles={{ color: color }}>{value}</div>;
 				}}
-			</Menu>
+			</List>
 			<p>{`Clicked On: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
 	);

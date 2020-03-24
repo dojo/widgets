@@ -1,13 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
-import Menu, { MenuOption } from '../menu/index';
-import * as menuCss from '../theme/default/menu.m.css';
+import List, { ListOption } from '../list/index';
+import * as menuCss from '../theme/default/list.m.css';
 import * as css from '../theme/default/context-menu.m.css';
 import ContextPopup from '../context-popup';
 
 export interface ContextMenuProperties {
 	/* Menu options for the context menu. Uses the same API as the menu widget */
-	options: MenuOption[];
+	options: ListOption[];
 	/* A callback that will be called with the value of whatever item is selected */
 	onSelect(value: string): void;
 }
@@ -21,7 +21,7 @@ export const ContextMenu = factory(function({ properties, children, middleware: 
 			{{
 				trigger: () => children(),
 				content: ({ close, shouldFocus }) => (
-					<Menu
+					<List
 						key="menu"
 						focus={shouldFocus}
 						theme={theme.compose(

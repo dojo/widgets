@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Menu from '@dojo/widgets/menu';
+import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
@@ -46,7 +46,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 			>
 				SELECT
 			</button>
-			<Menu
+			<List
 				focusable={false}
 				itemsInView={4}
 				options={options}

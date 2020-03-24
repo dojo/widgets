@@ -8,11 +8,11 @@ import { Keys } from '../common/util';
 import HelperText from '../helper-text';
 import Icon from '../icon';
 import Label from '../label';
-import { ItemRendererProperties, Menu, MenuOption } from '../menu';
+import { ItemRendererProperties, List, ListOption } from '../list';
 import theme from '../middleware/theme';
 import { PopupPosition } from '../popup';
 import TriggerPopup from '../trigger-popup';
-import * as menuCss from '../theme/default/menu.m.css';
+import * as menuCss from '../theme/default/list.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
@@ -25,7 +25,7 @@ export interface SelectProperties {
 	/** The initial selected value */
 	initialValue?: string;
 	/** Options to display within the menu */
-	options: MenuOption[];
+	options: ListOption[];
 	/** Property to determine how many items to render. Defaults to 6 */
 	itemsInView?: number;
 	/** placement of the select menu; 'above' or 'below' */
@@ -218,7 +218,7 @@ export const Select = factory(function Select({
 
 						return (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
-								<Menu
+								<List
 									key="menu"
 									focus={() => focusNode === 'menu' && shouldFocus}
 									options={options}
@@ -239,11 +239,11 @@ export const Select = factory(function Select({
 										'menu'
 									)}
 									classes={classes}
-									listBox
+									menu
 									widgetId={menuId}
 								>
 									{itemRenderer}
-								</Menu>
+								</List>
 							</div>
 						);
 					}

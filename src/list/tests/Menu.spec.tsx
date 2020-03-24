@@ -2,13 +2,13 @@ import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import Menu, { MenuOption } from '../';
+import List, { ListOption } from '..';
 import { compareId, createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
-import * as css from '../../theme/default/menu.m.css';
-import * as fixedCss from '../menu.m.css';
+import * as css from '../../theme/default/list.m.css';
+import * as fixedCss from '../list.m.css';
 import MenuItem from '../MenuItem';
-import ListBoxItem from '../ListBoxItem';
+import ListBoxItem from '../Listitem';
 const { assert } = intern.getPlugin('chai');
 const { describe, it, before, after } = intern.getInterface('bdd');
 
@@ -23,7 +23,7 @@ const compareAriaActiveDescendant = {
 const harness = createHarness([compareTheme, compareId, compareAriaActiveDescendant]);
 
 describe('Menu - Menu', () => {
-	const animalOptions: MenuOption[] = [
+	const animalOptions: ListOption[] = [
 		{ value: 'dog' },
 		{ value: 'cat', label: 'Cat' },
 		{ value: 'fish', disabled: true }
@@ -92,16 +92,16 @@ describe('Menu - Menu', () => {
 
 	it('renders options', () => {
 		const h = harness(() => (
-			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+			<List onValue={noop} options={animalOptions} total={animalOptions.length} />
 		));
 		h.expect(template);
 	});
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<Menu onValue={noop} options={animalOptions} total={animalOptions.length}>
+			<List onValue={noop} options={animalOptions} total={animalOptions.length}>
 				{({ label, value }) => <span>label is {label || value}</span>}
-			</Menu>
+			</List>
 		));
 		const itemRendererTemplate = template.setChildren('@transformer', () =>
 			animalOptions.map(({ value, label, disabled = false }, index) => {
@@ -125,7 +125,7 @@ describe('Menu - Menu', () => {
 
 	it('takes a number in view property', () => {
 		const h = harness(() => (
-			<Menu
+			<List
 				onValue={noop}
 				options={animalOptions}
 				itemsInView={2}
@@ -140,7 +140,7 @@ describe('Menu - Menu', () => {
 
 	it('changes active item on arrow key down', () => {
 		const h = harness(() => (
-			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+			<List onValue={noop} options={animalOptions} total={animalOptions.length} />
 		));
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
@@ -157,7 +157,7 @@ describe('Menu - Menu', () => {
 
 	it('changes active item on arrow key up and loops to last item', () => {
 		const h = harness(() => (
-			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+			<List onValue={noop} options={animalOptions} total={animalOptions.length} />
 		));
 		const mockArrowUpEvent = {
 			stopPropagation: sb.stub(),
@@ -175,7 +175,7 @@ describe('Menu - Menu', () => {
 	it('calls onActiveIndexChange callback if passed and does not manage active index itself', () => {
 		const onActiveIndexChange = sb.stub();
 		const h = harness(() => (
-			<Menu
+			<List
 				onValue={noop}
 				options={animalOptions}
 				onActiveIndexChange={onActiveIndexChange}
@@ -195,7 +195,7 @@ describe('Menu - Menu', () => {
 
 	it('sets active item to be the one starting with letter key pressed', () => {
 		const h = harness(() => (
-			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} />
+			<List onValue={noop} options={animalOptions} total={animalOptions.length} />
 		));
 		const mockCPressEvent = {
 			stopPropagation: sb.stub(),
@@ -212,7 +212,7 @@ describe('Menu - Menu', () => {
 });
 
 describe('Menu - ListBox', () => {
-	const animalOptions: MenuOption[] = [
+	const animalOptions: ListOption[] = [
 		{ value: 'dog' },
 		{ value: 'cat', label: 'Cat' },
 		{ value: 'fish', disabled: true }
@@ -282,16 +282,16 @@ describe('Menu - ListBox', () => {
 
 	it('renders options', () => {
 		const h = harness(() => (
-			<Menu onValue={noop} listBox options={animalOptions} total={animalOptions.length} />
+			<List onValue={noop} menu options={animalOptions} total={animalOptions.length} />
 		));
 		h.expect(template);
 	});
 
 	it('renders options with dividers', () => {
 		const h = harness(() => (
-			<Menu
+			<List
 				onValue={noop}
-				listBox
+				menu
 				total={animalOptions.length}
 				options={[{ ...animalOptions[0], divider: true }, ...animalOptions.slice(1)]}
 			/>
@@ -301,9 +301,9 @@ describe('Menu - ListBox', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<Menu onValue={noop} options={animalOptions} total={animalOptions.length} listBox>
+			<List onValue={noop} options={animalOptions} total={animalOptions.length} menu>
 				{({ label, value }) => <span>label is {label || value}</span>}
-			</Menu>
+			</List>
 		));
 		const itemRendererTemplate = template.setChildren('@transformer', () =>
 			animalOptions.map(({ value, label, disabled = false }, index) => {
@@ -329,7 +329,7 @@ describe('Menu - ListBox', () => {
 	it('selects item on key press', () => {
 		const onValue = sb.stub();
 		const h = harness(() => (
-			<Menu listBox onValue={onValue} options={animalOptions} total={animalOptions.length} />
+			<List menu onValue={onValue} options={animalOptions} total={animalOptions.length} />
 		));
 
 		const mockArrowDownEvent = {

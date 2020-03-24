@@ -3,7 +3,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import { createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import { stub } from 'sinon';
-import Menu from '../../menu';
+import List from '../../list';
 import ContextMenu from '../';
 import ContextPopup from '../../context-popup';
 const { describe, it, after, afterEach } = intern.getInterface('bdd');
@@ -70,7 +70,7 @@ describe('ContextMenu', () => {
 		h.expect(template);
 		h.expect(
 			() => (
-				<Menu
+				<List
 					key="menu"
 					focus={() => null as any}
 					theme={{}}

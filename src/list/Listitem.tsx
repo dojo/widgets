@@ -1,7 +1,7 @@
 import theme from '@dojo/framework/core/middleware/theme';
 import { throttle } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/default/list-box-item.m.css';
+import * as css from '../theme/default/list-item.m.css';
 
 export interface ListBoxItemProperties {
 	/** Callback used when the item is clicked */

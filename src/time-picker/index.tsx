@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import { padStart } from '@dojo/framework/shim/string';
-import { Menu, MenuOption } from '../menu';
+import { List, ListOption } from '../list';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/time-picker.m.css';
 import * as inputCss from '../theme/default/text-input.m.css';
@@ -295,7 +295,7 @@ export const TimePicker = factory(function TimePicker({
 	const generateOptions = () => {
 		const { min = '00:00:00', max = '23:59:59', step = 1800, timeDisabled } = properties();
 
-		const options: MenuOption[] = [];
+		const options: ListOption[] = [];
 
 		const dt = parseTime(min, false) || new Date(1970, 0, 1, 0, 0, 0, 0);
 		const end = parseTime(max, false) || new Date(1970, 0, 1, 23, 59, 59, 99);
@@ -395,7 +395,7 @@ export const TimePicker = factory(function TimePicker({
 
 						return (
 							<div key="menu-wrapper" classes={classes.menuWrapper}>
-								<Menu
+								<List
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
 									options={options}
@@ -408,7 +408,7 @@ export const TimePicker = factory(function TimePicker({
 									onRequestClose={closeMenu}
 									onBlur={closeMenu}
 									initialValue={''}
-									listBox
+									menu
 								/>
 							</div>
 						);

@@ -2,8 +2,8 @@ import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
-import * as css from '../../theme/default/list-box-item.m.css';
-import ListBoxItem from '../ListBoxItem';
+import * as css from '../../theme/default/list-item.m.css';
+import ListBoxItem from '../Listitem';
 const { describe, it, after } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 

@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Menu, { defaultTransform } from '@dojo/widgets/menu';
+import List, { defaultTransform } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createResource, DataTemplate } from '@dojo/framework/core/resource';
 
@@ -27,7 +27,7 @@ const memoryTemplate = createMemoryTemplate();
 export default factory(function MemoryResource({ middleware: { icache } }) {
 	return (
 		<virtual>
-			<Menu
+			<List
 				resource={{
 					resource: () => createResource(memoryTemplate),
 					data: animals

@@ -16,7 +16,7 @@ import {
 import HelperText from '../../helper-text';
 import Icon from '../../icon';
 import Label from '../../label';
-import Menu from '../../menu';
+import List from '../../list';
 import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
 import Select from '../index';
@@ -67,7 +67,7 @@ const ignoreMenuTheme = {
 
 const menuTemplate = assertionTemplate(() => (
 	<div key="menu-wrapper" classes={css.menuWrapper}>
-		<Menu
+		<List
 			key="menu"
 			focus={() => false}
 			options={options}
@@ -78,7 +78,7 @@ const menuTemplate = assertionTemplate(() => (
 			itemsInView={6}
 			theme={{}}
 			classes={undefined}
-			listBox
+			menu
 			widgetId={'test'}
 			total={options.length}
 		/>

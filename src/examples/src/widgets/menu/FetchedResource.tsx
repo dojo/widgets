@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Menu from '@dojo/widgets/menu';
+import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createResource, createTransformer, DataTemplate } from '@dojo/widgets/common/resource';
 
@@ -47,7 +47,7 @@ const factory = create({ icache });
 export default factory(function FetchedResource({ middleware: { icache } }) {
 	return (
 		<virtual>
-			<Menu
+			<List
 				resource={resource}
 				transform={transformer}
 				onValue={(value: string) => {

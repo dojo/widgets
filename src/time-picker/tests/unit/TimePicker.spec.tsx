@@ -1,4 +1,4 @@
-import { Menu, MenuOption } from '../../../menu';
+import { List, ListOption } from '../../../list';
 import * as sinon from 'sinon';
 
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -83,7 +83,7 @@ const buttonTemplate = assertionTemplate(() => {
 });
 
 function generateOptions(step: number, dateOptions: Intl.DateTimeFormatOptions = {}) {
-	const options: MenuOption[] = [];
+	const options: ListOption[] = [];
 
 	const dt = new Date(1970, 0, 1, 0, 0, 0, 0);
 	while (dt.getDate() === 1) {
@@ -114,7 +114,7 @@ const options30Minutes = generateOptions(1800, {
 const menuTemplate = assertionTemplate(() => {
 	return (
 		<div key="menu-wrapper" classes={css.menuWrapper}>
-			<Menu
+			<List
 				key="menu"
 				focus={() => false}
 				options={options30Minutes}
@@ -123,7 +123,7 @@ const menuTemplate = assertionTemplate(() => {
 				onRequestClose={noop}
 				onBlur={noop}
 				initialValue={''}
-				listBox
+				menu
 			/>
 		</div>
 	);

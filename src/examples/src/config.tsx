@@ -88,7 +88,7 @@ import DividedMenu from './widgets/menu/Dividers';
 import ControlledMenu from './widgets/menu/Controlled';
 import ItemRenderer from './widgets/menu/ItemRenderer';
 import LargeOptionSet from './widgets/menu/FetchedResource';
-import ListBox from './widgets/menu/ListBox';
+import ListBox from './widgets/menu/Menu';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
