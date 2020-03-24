@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { v, w } from '@dojo/framework/core/vdom';
+import { tsx, v, w } from '@dojo/framework/core/vdom';
 
 import SlidePane, { Align, SlidePaneProperties } from '../../index';
 import * as css from '../../../theme/default/slide-pane.m.css';
@@ -22,58 +22,43 @@ const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 	Quisque id purus ipsum. Aenean ac purus purus.
 	Nam sollicitudin varius augue, sed lacinia felis tempor in.`;
 
-const closedTemplate = assertionTemplate(() =>
-	v(
-		'div',
-		{
-			'aria-labelledby': '',
-			onmousedown: noop,
-			onmousemove: noop,
-			onmouseup: noop,
-			ontouchend: noop,
-			ontouchmove: noop,
-			ontouchstart: noop,
-			classes: css.root
-		},
-		[
-			v(
-				'div',
-				{
-					key: 'content',
-					classes: [
-						css.pane,
-						css.left,
-						null,
-						null,
-						null,
-						fixedCss.paneFixed,
-						null,
-						fixedCss.leftFixed,
-						null,
-						null
-					],
-					transitionend: noop,
-					styles: {
-						transform: undefined,
-						width: '320px',
-						height: undefined
-					}
-				},
-				[
-					null,
-					v(
-						'div',
-						{
-							'~key': 'textContent',
-							classes: [css.content, fixedCss.contentFixed]
-						},
-						[GREEKING]
-					)
-				]
-			)
-		]
-	)
-);
+const closedTemplate = assertionTemplate(() => (
+	<div
+		aria-labelledby=""
+		classes={css.root}
+		onmousedown={noop}
+		onmousemove={noop}
+		onmouseup={noop}
+		ontouchend={noop}
+		ontouchmove={noop}
+		ontouchstart={noop}
+	>
+		<div
+			key="content"
+			classes={[
+				css.pane,
+				css.left,
+				null,
+				null,
+				null,
+				fixedCss.paneFixed,
+				null,
+				fixedCss.leftFixed,
+				null,
+				null
+			]}
+			styles={{
+				transform: undefined,
+				width: '320px',
+				height: undefined
+			}}
+		>
+			<div assertion-key="textContent" classes={[css.content, fixedCss.contentFixed]}>
+				{GREEKING}
+			</div>
+		</div>
+	</div>
+));
 const closedTemplateRight = closedTemplate.setProperty('@content', 'classes', [
 	css.pane,
 	css.right,
@@ -126,104 +111,82 @@ const openTemplateRight = openTemplate.setProperty('@content', 'classes', [
 registerSuite('SlidePane', {
 	tests: {
 		'Should construct SlidePane with passed properties'() {
-			const h = harness(() =>
-				w(
-					SlidePane,
-					{
-						key: 'foo',
-						align: Align.left,
-						aria: { describedBy: 'foo' },
-						open: true,
-						underlay: true
-					},
-					[GREEKING]
-				)
-			);
+			const h = harness(() => (
+				<SlidePane key="foo" align={Align.left} aria={{ describedBy: 'foo' }} open underlay>
+					{GREEKING}
+				</SlidePane>
+			));
 
-			h.expect(
-				() =>
-					v(
-						'div',
-						{
-							'aria-labelledby': '',
-							classes: css.root,
-							onmousedown: noop,
-							onmousemove: noop,
-							onmouseup: noop,
-							ontouchend: noop,
-							ontouchmove: noop,
-							ontouchstart: noop
-						},
-						[
-							v('div', {
-								classes: [css.underlayVisible, fixedCss.underlay],
-								enterAnimation: animations.fadeIn,
-								exitAnimation: animations.fadeOut,
-								onmouseup: noop,
-								ontouchend: noop,
-								key: 'underlay'
-							}),
-							v(
-								'div',
-								{
-									key: 'content',
-									'aria-describedby': 'foo',
-									classes: [
-										css.pane,
-										css.left,
-										css.open,
-										css.slideIn,
-										null,
-										fixedCss.paneFixed,
-										fixedCss.openFixed,
-										fixedCss.leftFixed,
-										fixedCss.slideInFixed,
-										null
-									],
-									transitionend: noop,
-									styles: {
-										transform: undefined,
-										width: '320px',
-										height: undefined
-									}
-								},
-								[
-									null,
-									v(
-										'div',
-										{
-											classes: [css.content, fixedCss.contentFixed]
-										},
-										[GREEKING]
-									)
-								]
-							)
-						]
-					),
-				() => h.getRender()
-			);
+			h.expect(() => (
+				<div
+					aria-labelledby=""
+					classes={css.root}
+					onmousedown={noop}
+					onmousemove={noop}
+					onmouseup={noop}
+					ontouchend={noop}
+					ontouchmove={noop}
+					ontouchstart={noop}
+				>
+					<div
+						classes={[css.underlayVisible, fixedCss.underlay]}
+						enterAnimation={animations.fadeIn}
+						exitAnimation={animations.fadeOut}
+						onmouseup={noop}
+						ontouchend={noop}
+						key="underlay"
+					/>
+					<div
+						key="content"
+						aria-describedby="foo"
+						classes={[
+							css.pane,
+							css.left,
+							css.open,
+							css.slideIn,
+							null,
+							fixedCss.paneFixed,
+							fixedCss.openFixed,
+							fixedCss.leftFixed,
+							fixedCss.slideInFixed,
+							null
+						]}
+						styles={{
+							transform: undefined,
+							width: '320px',
+							height: undefined
+						}}
+					>
+						<div classes={[css.content, fixedCss.contentFixed]}>{GREEKING}</div>
+					</div>
+				</div>
+			));
 		},
 
 		'Render correct children'() {
-			const h = harness(() =>
-				w(SlidePane, {
-					key: 'foo',
-					underlay: false
-				})
-			);
+			const h = harness(() => <SlidePane key="foo" underlay={false} />);
 
 			h.expect(closedTemplate.setChildren('~textContent', []));
 		},
 
 		onOpen() {
 			let called = false;
-			harness(() =>
-				w(SlidePane, {
-					open: true,
-					onOpen() {
-						called = true;
-					}
-				})
+			const h = harness(() => <SlidePane open onOpen={() => (called = true)} />);
+			h.expect(
+				openTemplate
+					.setChildren('~textContent', [])
+					.setProperty('@content', 'classes', [
+						css.pane,
+						css.left,
+						css.open,
+						css.slideIn,
+						null,
+						fixedCss.paneFixed,
+						fixedCss.openFixed,
+						fixedCss.leftFixed,
+						fixedCss.slideInFixed,
+						null
+					])
 			);
 			assert.isTrue(called, 'onOpen should be called');
 		},
@@ -272,7 +235,6 @@ registerSuite('SlidePane', {
 									fixedCss.slideInFixed,
 									null
 								],
-								transitionend: noop,
 								styles: {
 									transform: undefined,
 									width: '320px',
@@ -326,7 +288,6 @@ registerSuite('SlidePane', {
 									null,
 									fixedCss.slideOutFixed
 								],
-								transitionend: noop,
 								styles: {
 									transform: undefined,
 									width: '320px',
@@ -613,89 +574,14 @@ registerSuite('SlidePane', {
 			);
 		},
 
-		'classes removed after transition'() {
-			function expected(open: boolean, transitionDone?: boolean) {
-				return v(
-					'div',
-					{
-						'aria-labelledby': '',
-						onmousedown: noop,
-						onmousemove: noop,
-						onmouseup: noop,
-						ontouchend: noop,
-						ontouchmove: noop,
-						ontouchstart: noop,
-						classes: css.root
-					},
-					[
-						open
-							? v('div', {
-									classes: [null, fixedCss.underlay],
-									enterAnimation: animations.fadeIn,
-									exitAnimation: animations.fadeOut,
-									onmouseup: noop,
-									ontouchend: noop,
-									key: 'underlay'
-							  })
-							: null,
-						v(
-							'div',
-							{
-								key: 'content',
-								classes: [
-									css.pane,
-									css.left,
-									open ? css.open : null,
-									transitionDone ? null : open ? css.slideIn : null,
-									transitionDone ? null : open ? null : css.slideOut,
-									fixedCss.paneFixed,
-									open ? fixedCss.openFixed : null,
-									fixedCss.leftFixed,
-									transitionDone ? null : open ? fixedCss.slideInFixed : null,
-									transitionDone ? null : open ? null : fixedCss.slideOutFixed
-								],
-								transitionend: noop,
-								styles: {
-									transform: undefined,
-									width: '320px',
-									height: undefined
-								}
-							},
-							[
-								null,
-								v(
-									'div',
-									{
-										classes: [css.content, fixedCss.contentFixed]
-									},
-									[GREEKING]
-								)
-							]
-						)
-					]
-				);
-			}
-			let properties = {
-				open: true
-			};
-			const h = harness(() => w(SlidePane, properties, [GREEKING]));
-			h.expect(() => expected(true, false), () => h.getRender());
-			h.trigger('@content', 'transitionend');
-			h.expect(() => expected(true, true));
-			properties.open = false;
-			h.expect(() => expected(false, false));
-
-			h.trigger('@content', 'transitionend');
-			h.expect(() => expected(false, true));
-		},
-
 		'transform styles are applied on next render if being swiped closed'() {
 			let properties: SlidePaneProperties = {
 				open: true
 			};
 			properties.onRequestClose = () => (properties.open = false);
 
-			const h = harness(() => w(SlidePane, properties, [GREEKING]));
+			const h = harness(() => <SlidePane {...properties}>{GREEKING}</SlidePane>);
+
 			h.expect(
 				openTemplate.setProperty('@content', 'classes', [
 					css.pane,
@@ -708,8 +594,7 @@ registerSuite('SlidePane', {
 					fixedCss.leftFixed,
 					fixedCss.slideInFixed,
 					null
-				]),
-				() => h.getRender()
+				])
 			);
 
 			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
@@ -739,9 +624,6 @@ registerSuite('SlidePane', {
 					fixedCss.slideOutFixed
 				])
 			);
-
-			// Next render does not have the slide styles
-			h.expect(closedTemplate);
 		},
 
 		'transform styles are applied on next render if being swiped closed right'() {
@@ -751,7 +633,7 @@ registerSuite('SlidePane', {
 			};
 			properties.onRequestClose = () => (properties.open = false);
 
-			const h = harness(() => w(SlidePane, properties, [GREEKING]));
+			const h = harness(() => <SlidePane {...properties}>{GREEKING}</SlidePane>);
 			h.expect(
 				openTemplateRight.setProperty('@content', 'classes', [
 					css.pane,
@@ -764,8 +646,7 @@ registerSuite('SlidePane', {
 					fixedCss.rightFixed,
 					fixedCss.slideInFixed,
 					null
-				]),
-				() => h.getRender()
+				])
 			);
 
 			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
@@ -809,9 +690,6 @@ registerSuite('SlidePane', {
 				])
 			);
 			assert(!properties.open);
-
-			// Next render does not have the slide styles
-			h.expect(closedTemplateRight);
 		}
 	}
 });
