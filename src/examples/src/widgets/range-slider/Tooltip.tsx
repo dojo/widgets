@@ -1,21 +1,14 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
 import RangeSlider from '@dojo/widgets/range-slider';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function TooltipRangeSlider({ middleware: { icache } }) {
-	const min = 0;
-	const max = 100;
-	const value = icache.getOrSet('value', { min, max });
-
+export default factory(function TooltipRangeSlider() {
 	return (
 		<RangeSlider
-			min={0}
-			max={100}
-			value={value}
-			onValue={(newValue) => {
-				icache.set('value', newValue);
+			initialValue={{
+				min: 0,
+				max: 100
 			}}
 			showOutput={true}
 			outputIsTooltip={true}
