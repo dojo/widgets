@@ -57,7 +57,7 @@ describe('Body', () => {
 
 		let rows: any[] = [];
 		for (let i = 0; i < 100; i++) {
-			rows.push(w(PlaceholderRow, { key: i }));
+			rows.push(w(PlaceholderRow, { key: i, theme: undefined, classes: undefined }));
 		}
 
 		h.expect(() =>
@@ -158,7 +158,7 @@ describe('Body', () => {
 
 		let rows: any[] = [];
 		for (let i = 0; i < 80; i++) {
-			rows.push(w(PlaceholderRow, { key: i }));
+			rows.push(w(PlaceholderRow, { key: i, theme: undefined, classes: undefined }));
 		}
 
 		h.expect(() =>
@@ -252,7 +252,7 @@ describe('Body', () => {
 
 		rows = [];
 		for (let i = 286; i < 334; i++) {
-			rows.push(w(PlaceholderRow, { key: i }));
+			rows.push(w(PlaceholderRow, { key: i, theme: undefined, classes: undefined }));
 		}
 
 		h.expect(() =>
@@ -402,7 +402,7 @@ describe('Body', () => {
 
 			const rows: any[] = [];
 			for (let i = 0; i < 100; i++) {
-				rows.push(w(PlaceholderRow, { key: i }));
+				rows.push(w(PlaceholderRow, { key: i, theme: undefined, classes: undefined }));
 			}
 
 			h.expect(() =>

@@ -42,6 +42,7 @@
 	--zindex-dialog: 400;
 	--mdc-border-color: rgba(0, 0, 0, 0.38);
 	--mdc-border-radius: 4px;
+	--mdc-border-width: 1px;
 	--mdc-avatar-size-small: 24px;
 	--mdc-avatar-size-medium: 40px;
 	--mdc-avatar-size-large: 56px;

@@ -113,7 +113,7 @@ export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
 		const { onPageChange, page, total, pageSize } = this.properties;
 		const { format, messages } = this.localizeBundle(bundle);
 		if (total === undefined) {
-			return null;
+			return v('div', { classes: [this.theme(css.root), fixedCss.rootFixed] });
 		}
 		const totalPages = Math.ceil(total / pageSize);
 		const from = page === 1 ? '1' : `${(page - 1) * pageSize + 1}`;

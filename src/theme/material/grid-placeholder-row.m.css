@@ -1,2 +1,33 @@
+@import './variables.css';
+
 .root {
+	composes: root from './grid-row.m.css';
+	border: 1px solid #ccc;
+	border-bottom: none;
+	border-left: none;
+	height: calc(var(--mdc-grid-base) * 5);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.root:last-of-type {
+	border-bottom: 1px solid #ccc;
+}
+
+.loading {
+	margin: auto;
+	width: calc(var(--mdc-grid-base) * 2.5);
+	height: calc(var(--mdc-grid-base) * 2.5);
+	border: 2px solid var(--mdc-theme-text-secondary-on-light);
+	border-radius: 50%;
+	border-top-color: transparent;
+	animation: spin 1s ease infinite;
+	will-change: auto;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
 }

@@ -27,7 +27,7 @@ describe('PaginatedBody', () => {
 
 		let rows: any[] = [];
 		for (let i = 0; i < 100; i++) {
-			rows.push(w(PlaceholderRow, { key: i }));
+			rows.push(w(PlaceholderRow, { key: i, theme: undefined, classes: undefined }));
 		}
 
 		h.expect(() =>

@@ -2,18 +2,23 @@
 
 .root {
 	composes: root from './grid-row.m.css';
-	border-left: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	border-left: none;
 	height: calc(var(--grid-base) * 5);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
+.root:last-of-type {
+	border-bottom: 1px solid #ccc;
+}
+
 .loading {
-	margin: 6px;
-	width: 12px;
-	height: 12px;
+	margin: auto;
+	width: calc(var(--grid-base) * 2.5);
+	height: calc(var(--grid-base) * 2.5);
 	border: var(--border-width-emphasized) solid var(--color-text-faded);
 	border-radius: 50%;
 	border-top-color: transparent;

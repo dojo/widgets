@@ -94,9 +94,8 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 		doFilter: (value: string) => void,
 		title?: string | DNode
 	) => {
-		const { theme, classes } = this.properties;
+		const { theme, classes = {} } = this.properties;
 		const { format } = this.localizeBundle(bundle);
-		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
 		return w(TextInput, {
 			key: 'filter',
 			theme,
@@ -106,13 +105,13 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 					root: [this.theme(css.filter)],
 					input: [this.theme(css.filterInput)],
 					noLabel: [this.theme(css.filterNoLabel)],
-					...passedInputClasses
+					...classes['@dojo/widgets/text-input']
 				}
 			},
 			label: format('filterBy', { name: title }),
 			labelHidden: true,
 			type: 'search',
-			initialValue: filterValue,
+			initialValue: filterValue || undefined,
 			onValue: doFilter
 		});
 	};

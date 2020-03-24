@@ -97,13 +97,18 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 
 	private _getBodyDimensions() {
 		const { height } = this.properties;
-		const headerHeight = this.meta(Dimensions).get('header');
 		const headerWrapper = this.meta(Dimensions).get('header-wrapper');
-		const footerHeight = this.meta(Dimensions).get('footer');
+		const {
+			size: { height: headerHeight, width: bodyWidth }
+		} = this.meta(Dimensions).get('header');
+		const {
+			size: { height: footerHeight }
+		} = this.meta(Dimensions).get('footer');
+
 		return {
 			headerWidth: headerWrapper.size.width,
-			bodyHeight: height - headerHeight.size.height - footerHeight.size.height,
-			bodyWidth: headerHeight.size.width
+			bodyHeight: footerHeight && footerHeight ? height - headerHeight - footerHeight : 0,
+			bodyWidth
 		};
 	}
 
@@ -269,44 +274,46 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 						])
 					]
 				),
-				pagination
-					? w(PaginatedBody, {
-							key: 'paginated-body',
-							i18nBundle,
-							theme,
-							classes,
-							pages,
-							columnWidths: this._columnWidths,
-							pageNumber: meta.page,
-							pageSize: this._pageSize,
-							onScroll: this._onScroll,
-							columnConfig,
-							fetcher: this._fetcher,
-							updater: this._updater,
-							height: bodyHeight,
-							width: hasResizableColumns ? this._gridWidth : undefined,
-							onRowSelect: onRowSelect ? this._selection : undefined,
-							selectedRows: meta.selection
-					  })
-					: w(Body, {
-							key: 'body',
-							i18nBundle,
-							theme,
-							classes,
-							pages,
-							columnWidths: this._columnWidths,
-							totalRows: meta.total,
-							pageSize: this._pageSize,
-							columnConfig,
-							fetcher: this._fetcher,
-							pageChange: this._pageChange,
-							updater: this._updater,
-							onScroll: this._onScroll,
-							height: bodyHeight,
-							width: hasResizableColumns ? this._gridWidth : undefined,
-							onRowSelect: onRowSelect ? this._selection : undefined,
-							selectedRows: meta.selection
-					  }),
+				bodyHeight
+					? pagination
+						? w(PaginatedBody, {
+								key: 'paginated-body',
+								i18nBundle,
+								theme,
+								classes,
+								pages,
+								columnWidths: this._columnWidths,
+								pageNumber: meta.page,
+								pageSize: this._pageSize,
+								onScroll: this._onScroll,
+								columnConfig,
+								fetcher: this._fetcher,
+								updater: this._updater,
+								height: bodyHeight,
+								width: hasResizableColumns ? this._gridWidth : undefined,
+								onRowSelect: onRowSelect ? this._selection : undefined,
+								selectedRows: meta.selection
+						  })
+						: w(Body, {
+								key: 'body',
+								i18nBundle,
+								theme,
+								classes,
+								pages,
+								columnWidths: this._columnWidths,
+								totalRows: meta.total,
+								pageSize: this._pageSize,
+								columnConfig,
+								fetcher: this._fetcher,
+								pageChange: this._pageChange,
+								updater: this._updater,
+								onScroll: this._onScroll,
+								height: bodyHeight,
+								width: hasResizableColumns ? this._gridWidth : undefined,
+								onRowSelect: onRowSelect ? this._selection : undefined,
+								selectedRows: meta.selection
+						  })
+					: null,
 				v('div', { key: 'footer' }, [
 					pagination
 						? w(PaginatedFooter, {

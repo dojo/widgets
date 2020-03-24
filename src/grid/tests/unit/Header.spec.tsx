@@ -157,7 +157,7 @@ describe('Header', () => {
 							label: 'Filter by Custom Title',
 							labelHidden: true,
 							type: 'search',
-							initialValue: '',
+							initialValue: undefined,
 							onValue: noop,
 							theme: undefined
 						})
@@ -241,7 +241,7 @@ describe('Header', () => {
 							label: 'Filter by Custom Title',
 							labelHidden: true,
 							type: 'search',
-							initialValue: '',
+							initialValue: undefined,
 							onValue: noop,
 							theme: undefined
 						})
@@ -331,7 +331,7 @@ describe('Header', () => {
 							label: 'Filter by Custom Title',
 							labelHidden: true,
 							type: 'search',
-							initialValue: '',
+							initialValue: undefined,
 							onValue: noop,
 							theme: undefined
 						})
@@ -584,7 +584,7 @@ describe('Header', () => {
 								label: 'Filter by Custom Title',
 								labelHidden: true,
 								type: 'search',
-								initialValue: '',
+								initialValue: undefined,
 								onValue: noop,
 								theme: undefined
 							})
@@ -669,7 +669,7 @@ describe('Header', () => {
 								label: 'Filter by Custom Title',
 								labelHidden: true,
 								type: 'search',
-								initialValue: '',
+								initialValue: undefined,
 								onValue: noop,
 								theme: undefined
 							})

@@ -4,7 +4,7 @@
 .root {
 	border: 1px solid var(--component-color);
 	border-top-style: none;
-	border-right-style: none;
+	border-left-style: none;
 	padding: 2px 4px;
 	align-items: center;
 	min-width: 100px;
