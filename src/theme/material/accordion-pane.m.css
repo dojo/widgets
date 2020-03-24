@@ -4,33 +4,32 @@
 	font-family: var(--mdc-theme-font-family);
 }
 
-.firstTitlePane {
-	border-top-left-radius: 4px;
-	border-top-right-radius: 4px;
-}
-
-.lastTitlePane {
-	border-bottom-left-radius: 4px;
-	border-bottom-right-radius: 4px;
-}
-
-.openTitlePane.rootTitlePane {
-	margin: 16px 0;
-}
-
-.firstTitlePane.openTitlePane.rootTitlePane {
-	margin-top: 0;
-}
-
-.lastTitlePane.openTitlePane.rootTitlePane {
-	margin-bottom: 0;
-}
-
-.rootTitlePane {
+.paneRoot {
+	composes: root from './title-pane.m.css';
 	margin-bottom: 1px;
 	transition: margin ease-in-out 0.25s;
 }
 
-.lastTitlePane.rootTitlePane {
+.paneRoot:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+.paneRoot:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	margin-bottom: 0;
+}
+
+.paneOpen {
+	composes: open from './title-pane.m.css';
+	margin: 16px 0;
+}
+
+.paneOpen:first-child {
+	margin-top: 0;
+}
+
+.paneOpen:last-child {
 	margin-bottom: 0;
 }

@@ -13,7 +13,7 @@ describe('TitlePane', () => {
 	function getTemplate({
 		closeable = true,
 		headingLevel,
-		initiallyOpen: open
+		initialOpen: open
 	}: TitlePaneProperties = {}) {
 		return assertationTemplate(() => {
 			return (
@@ -79,7 +79,7 @@ describe('TitlePane', () => {
 
 	it('renders open', () => {
 		const h = harness(() => (
-			<TitlePane initiallyOpen>
+			<TitlePane initialOpen>
 				{{
 					title: () => 'title',
 					content: () => 'content'
@@ -88,7 +88,7 @@ describe('TitlePane', () => {
 		));
 		h.expect(
 			getTemplate({
-				initiallyOpen: true
+				initialOpen: true
 			})
 		);
 	});

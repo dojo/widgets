@@ -66,11 +66,8 @@ export const TitlePane = factory(function TitlePane({
 		icache.set('open', initialOpen);
 		icache.set('initialOpen', initialOpen);
 		open = initialOpen;
-		onOpen && onOpen();
 		performTransition = true;
 	}
-
-	console.log(open ? '0px' : `-${dimensions.get('content').offset.height}px`);
 
 	return (
 		<div classes={[themeCss.root, open ? themeCss.open : null, fixedCss.rootFixed]}>

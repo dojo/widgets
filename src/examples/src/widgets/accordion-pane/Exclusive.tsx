@@ -1,47 +1,65 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
-
 import AccordionPane from '@dojo/widgets/accordion-pane';
 import TitlePane from '@dojo/widgets/title-pane';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Exclusive({ middleware: { icache } }) {
-	let exclusiveKey = icache.getOrSet('exclusiveKey', undefined);
+export default factory(function Basic() {
 	return (
-		<AccordionPane
-			onRequestClose={(key) => {
-				icache.set('exclusiveKey', undefined);
-			}}
-			onRequestOpen={(key) => {
-				icache.set('exclusiveKey', key);
-			}}
-			openKeys={exclusiveKey ? [exclusiveKey] : []}
-		>
-			<TitlePane key="baz" title="Pane 1">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ante sed
-				massa finibus, at euismod ex molestie. Donec sagittis ligula at lorem blandit
-				imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis
-				dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.
-			</TitlePane>
-			<TitlePane key="bax" title="Pane 2">
-				Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus.
-				Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue
-				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus
-				vehicula, vehicula varius eros.
-			</TitlePane>
-			<TitlePane key="la" title="Pane 3">
-				Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus.
-				Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue
-				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus
-				vehicula, vehicula varius eros.
-			</TitlePane>
-			<TitlePane key="dee" title="Pane 4">
-				Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus.
-				Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue
-				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus
-				vehicula, vehicula varius eros.
-			</TitlePane>
+		<AccordionPane>
+			{(onOpen, onClose, initialOpen) => [
+				<TitlePane
+					key="foo"
+					onOpen={onOpen('foo')}
+					onClose={onClose('foo')}
+					initialOpen={initialOpen('foo')}
+				>
+					{{
+						title: () => 'Pane 1',
+						content: () => (
+							<div>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
+								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
+								sed lacinia felis tempor in.
+							</div>
+						)
+					}}
+				</TitlePane>,
+				<TitlePane
+					key="bar"
+					onOpen={onOpen('bar')}
+					onClose={onClose('bar')}
+					initialOpen={initialOpen('bar')}
+				>
+					{{
+						title: () => 'Pane 2',
+						content: () => (
+							<div>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
+								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
+								sed lacinia felis tempor in.
+							</div>
+						)
+					}}
+				</TitlePane>,
+				<TitlePane
+					key="baz"
+					onOpen={onOpen('baz')}
+					onClose={onClose('baz')}
+					initialOpen={initialOpen('baz')}
+				>
+					{{
+						title: () => 'Pane 3',
+						content: () => (
+							<div>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
+								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
+								sed lacinia felis tempor in.
+							</div>
+						)
+					}}
+				</TitlePane>
+			]}
 		</AccordionPane>
 	);
 });

@@ -1,108 +1,138 @@
-const { assert } = intern.getPlugin('chai');
-const { registerSuite } = intern.getInterface('object');
-
-import { v, w } from '@dojo/framework/core/vdom';
-import * as sinon from 'sinon';
-import harness from '@dojo/framework/testing/harness';
-
-import * as css from '../../../theme/default/accordion-pane.m.css';
+const { describe, it } = intern.getInterface('bdd');
+import * as themeCss from '../../../theme/default/accordion-pane.m.css';
 import AccordionPane from '../../index';
-import TitlePane from '../../../title-pane/index';
-import { noop } from '../../../common/tests/support/test-helpers';
+import TitlePane from '../../../title-pane';
+import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
+import harness from '@dojo/framework/testing/harness';
+import { tsx } from '@dojo/framework/core/vdom';
 
-registerSuite('AccordionPane', {
-	tests: {
-		'default rendering'() {
-			const h = harness(() => w(AccordionPane, {}));
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: css.root
-					},
-					[]
-				)
-			);
-		},
+const noop = () => {};
 
-		'default rendering with children'() {
-			const h = harness(() =>
-				w(AccordionPane, { openKeys: [] }, [
-					w(TitlePane, { title: 'foo', key: 'foo', onRequestOpen: () => {} }),
-					null,
-					w(TitlePane, { title: 'bar', key: 'bar', onRequestClose: () => {} }),
-					w(TitlePane, { title: 'baz', key: 'baz' })
-				])
-			);
+describe('AccordionPane', () => {
+	const baseTemplate = assertationTemplate(() => {
+		return (
+			<div classes={themeCss.root}>
+				<TitlePane key="foo">
+					{{
+						title: () => 'foo title',
+						content: () => 'foo content'
+					}}
+				</TitlePane>
+				<TitlePane key="bar">
+					{{
+						title: () => 'bar title',
+						content: () => 'bar content'
+					}}
+				</TitlePane>
+			</div>
+		);
+	});
 
-			h.expect(() =>
-				v(
-					'div',
-					{
-						classes: css.root
-					},
-					[
-						w(TitlePane, {
-							key: 'foo',
-							onRequestClose: noop,
-							onRequestOpen: noop,
-							open: false,
-							theme: undefined,
-							classes: {
-								'@dojo/widgets/title-pane': {
-									root: [css.rootTitlePane, null, css.firstTitlePane, null]
-								}
-							},
-							title: 'foo'
-						}),
-						w(TitlePane, {
-							key: 'bar',
-							onRequestClose: noop,
-							onRequestOpen: noop,
-							open: false,
-							theme: undefined,
-							classes: {
-								'@dojo/widgets/title-pane': {
-									root: [css.rootTitlePane, null, null, null]
-								}
-							},
-							title: 'bar'
-						}),
-						w(TitlePane, {
-							key: 'baz',
-							onRequestClose: noop,
-							onRequestOpen: noop,
-							open: false,
-							theme: undefined,
-							classes: {
-								'@dojo/widgets/title-pane': {
-									root: [css.rootTitlePane, null, null, null]
-								}
-							},
-							title: 'baz'
-						})
-					]
-				)
-			);
-		},
+	it('renders closed panes', () => {
+		const h = harness(() => (
+			<AccordionPane>
+				{() => {
+					return [
+						<TitlePane key="foo">
+							{{
+								title: () => 'foo title',
+								content: () => 'foo content'
+							}}
+						</TitlePane>,
+						<TitlePane key="bar">
+							{{
+								title: () => 'bar title',
+								content: () => 'bar content'
+							}}
+						</TitlePane>
+					];
+				}}
+			</AccordionPane>
+		));
+		h.expect(baseTemplate);
+	});
 
-		'onRequestOpen should be called'() {
-			const onRequestOpen = sinon.stub();
-			const h = harness(() =>
-				w(AccordionPane, { onRequestOpen }, [w(TitlePane, { title: 'foo', key: 'foo' })])
-			);
-			h.trigger('@foo', 'onRequestOpen');
-			assert.isTrue(onRequestOpen.calledWith('foo'));
-		},
+	it('renders open panes', () => {
+		const h = harness(() => (
+			<AccordionPane>
+				{(onOpen, _, initialOpen) => {
+					return [
+						<TitlePane
+							key="foo"
+							onOpen={onOpen('foo')}
+							initialOpen={initialOpen('foo')}
+						>
+							{{
+								title: () => 'foo title',
+								content: () => 'foo content'
+							}}
+						</TitlePane>,
+						<TitlePane
+							key="bar"
+							onOpen={onOpen('bar')}
+							initialOpen={initialOpen('bar')}
+						>
+							{{
+								title: () => 'bar title',
+								content: () => 'bar content'
+							}}
+						</TitlePane>
+					];
+				}}
+			</AccordionPane>
+		));
 
-		'onRequestClose should be called'() {
-			const onRequestClose = sinon.stub();
-			const h = harness(() =>
-				w(AccordionPane, { onRequestClose }, [w(TitlePane, { title: 'foo', key: 'foo' })])
-			);
+		h.trigger('@foo', 'onOpen');
+		h.trigger('@bar', 'onOpen');
 
-			h.trigger('@foo', 'onRequestClose');
-			assert.isTrue(onRequestClose.calledWith('foo'));
-		}
-	}
+		const testTemplate = baseTemplate
+			.setProperty('@foo', 'initialOpen', true)
+			.setProperty('@foo', 'onOpen', noop)
+			.setProperty('@bar', 'initialOpen', true)
+			.setProperty('@bar', 'onOpen', noop);
+
+		h.expect(testTemplate);
+	});
+
+	it('renders exclusive panes', () => {
+		const h = harness(() => (
+			<AccordionPane exclusive>
+				{(onOpen, _, initialOpen) => {
+					return [
+						<TitlePane
+							key="foo"
+							onOpen={onOpen('foo')}
+							initialOpen={initialOpen('foo')}
+						>
+							{{
+								title: () => 'foo title',
+								content: () => 'foo content'
+							}}
+						</TitlePane>,
+						<TitlePane
+							key="bar"
+							onOpen={onOpen('bar')}
+							initialOpen={initialOpen('bar')}
+						>
+							{{
+								title: () => 'bar title',
+								content: () => 'bar content'
+							}}
+						</TitlePane>
+					];
+				}}
+			</AccordionPane>
+		));
+
+		h.trigger('@foo', 'onOpen');
+		h.trigger('@bar', 'onOpen');
+
+		const testTemplate = baseTemplate
+			.setProperty('@foo', 'initialOpen', undefined)
+			.setProperty('@foo', 'onOpen', noop)
+			.setProperty('@bar', 'initialOpen', true)
+			.setProperty('@bar', 'onOpen', noop);
+
+		h.expect(testTemplate);
+	});
 });
