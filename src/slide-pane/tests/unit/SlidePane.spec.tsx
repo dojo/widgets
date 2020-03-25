@@ -165,28 +165,6 @@ registerSuite('SlidePane', {
 			h.expect(closedTemplate.setChildren('~textContent', []));
 		},
 
-		onOpen() {
-			let called = false;
-			const h = harness(() => <SlidePane open onOpen={() => (called = true)} />);
-			h.expect(
-				openTemplate
-					.setChildren('~textContent', [])
-					.setProperty('@content', 'classes', [
-						css.pane,
-						css.left,
-						css.open,
-						css.slideIn,
-						null,
-						fixedCss.paneFixed,
-						fixedCss.openFixed,
-						fixedCss.leftFixed,
-						fixedCss.slideInFixed,
-						null
-					])
-			);
-			assert.isTrue(called, 'onOpen should be called');
-		},
-
 		'change property to close'() {
 			let properties = {
 				open: true

@@ -23,9 +23,6 @@ export interface SlidePaneProperties {
 	/** Hidden text used by screen readers to display for the close button */
 	closeText?: string;
 
-	/** Called when the pane opens */
-	onOpen?(): void;
-
 	/** Called when the pane is swiped closed or the underlay is clicked or tapped */
 	onRequestClose?(): void;
 
@@ -88,12 +85,10 @@ export const SlidePane = factory(function SlidePane({
 
 	if (icache.get('open') !== open) {
 		const wasOpen = icache.get('open');
-		const { onOpen } = properties();
 		icache.set('open', open);
 
 		if (open && !wasOpen) {
 			icache.set('slide', Slide.in);
-			onOpen && onOpen();
 		} else if (!open && wasOpen) {
 			icache.set('slide', Slide.out);
 		}
