@@ -71,7 +71,7 @@ export default {
 	'@dojo/widgets/label': label,
 	'@dojo/widgets/list-item': listItem,
 	'@dojo/widgets/loading-indicator': loadingIndicator,
-	'@dojo/widgets/menu': list,
+	'@dojo/widgets/list': list,
 	'@dojo/widgets/menu-item': menuItem,
 	'@dojo/widgets/native-select': nativeSelect,
 	'@dojo/widgets/outlined-button': outlinedButton,

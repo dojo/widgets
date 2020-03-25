@@ -73,7 +73,7 @@ export default {
 	'@dojo/widgets/list-item': listItem,
 	'@dojo/widgets/loading-indicator': loadingIndicator,
 	'@dojo/widgets/menu-item': menuItem,
-	'@dojo/widgets/menu': list,
+	'@dojo/widgets/list': list,
 	'@dojo/widgets/outlined-button': outlinedButton,
 	'@dojo/widgets/native-select': nativeSelect,
 	'@dojo/widgets/password-input': passwordInput,

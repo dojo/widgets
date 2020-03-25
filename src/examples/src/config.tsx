@@ -83,12 +83,13 @@ import HiddenLabel from './widgets/label/HiddenLabel';
 import InvalidLabel from './widgets/label/InvalidLabel';
 import DisabledLabel from './widgets/label/DisabledLabel';
 import SecondaryLabel from './widgets/label/SecondaryLabel';
-import BasicMenu from './widgets/menu/Basic';
-import DividedMenu from './widgets/menu/Dividers';
-import ControlledMenu from './widgets/menu/Controlled';
-import ItemRenderer from './widgets/menu/ItemRenderer';
-import LargeOptionSet from './widgets/menu/FetchedResource';
-import ListBox from './widgets/menu/Menu';
+import BasicList from './widgets/list/Basic';
+import DividedList from './widgets/list/Dividers';
+import ControlledList from './widgets/list/Controlled';
+import ItemRenderer from './widgets/list/ItemRenderer';
+import FetchedResource from './widgets/list/FetchedResource';
+import Menu from './widgets/list/Menu';
+import CustomTransformer from './widgets/list/CustomTransformer';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
@@ -190,9 +191,6 @@ import TrailingHeader from './widgets/header/Trailing';
 
 `!has('docs')`;
 import testsContext from './tests';
-import FetchedResource from './widgets/menu/FetchedResource';
-import MemoryResource from './widgets/menu/MemoryResource';
-
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
 
 export const config = {
@@ -790,13 +788,13 @@ export const config = {
 				}
 			}
 		},
-		menu: {
+		list: {
 			examples: [
 				{
 					description:
-						'In this example, an activeIndex and onActiveIndexChange property are passed into the Menu allowing for thr active menu item to be controlled.',
+						'In this example, an activeIndex and onActiveIndexChange property are passed into the List allowing for the active list item to be controlled.',
 					filename: 'Controlled',
-					module: ControlledMenu,
+					module: ControlledList,
 					title: 'Controlled Active Index'
 				},
 				{
@@ -807,16 +805,9 @@ export const config = {
 				{
 					description:
 						'This example shows the menu used as a Listbox. This allows for a selection to be made and persisted. Useful for user selections and within selects / typeahead etc.',
-					filename: 'ListBox',
-					module: ListBox,
-					title: 'List Box'
-				},
-				{
-					description:
-						'This example shows the menu handling being passed 100,000 options. The menu will only render the items in view along with a buffer albove / below. When scrolling up / down, the menu will render the appropriate items.',
-					filename: 'LargeOptionSet',
-					module: LargeOptionSet,
-					title: '100,000 options'
+					filename: 'Menu',
+					module: Menu,
+					title: 'Menu Mode'
 				},
 				{
 					filename: 'FetchedResource',
@@ -824,22 +815,22 @@ export const config = {
 					title: 'Rest fetched resource'
 				},
 				{
-					filename: 'MemoryResource',
-					module: MemoryResource,
-					title: 'Array resource'
+					filename: 'CustomTransformer',
+					module: CustomTransformer,
+					title: 'Custom transform to match resource format'
 				},
 				{
 					description:
 						'This example shows usage of the divider property on a menu item to trigger the menu to render with a divider after that item',
 					filename: 'Dividers',
-					module: DividedMenu,
+					module: DividedList,
 					title: 'Dividers'
 				}
 			],
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicMenu
+					module: BasicList
 				}
 			}
 		},
