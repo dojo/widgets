@@ -94,6 +94,7 @@ export default class Cell extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))
 		const { format, messages } = this.localizeBundle(bundle);
 
 		const passedInputClasses = (classes && classes['@dojo/widgets/text-input']) || {};
+		const passedButtonClasses = (classes && classes['@dojo/widgets/button']) || {};
 
 		return v(
 			'div',
@@ -136,7 +137,8 @@ export default class Cell extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))
 								classes: {
 									...classes,
 									'@dojo/widgets/button': {
-										root: [this.theme(css.edit)]
+										root: [this.theme(css.edit)],
+										...passedButtonClasses
 									}
 								},
 								aria: { describedby: this._idBase },
