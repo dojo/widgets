@@ -6,7 +6,6 @@ import * as calendar from './calendar.m.css';
 import * as checkboxGroup from './checkbox-group.m.css';
 import * as checkbox from './checkbox.m.css';
 import * as chip from './chip.m.css';
-import * as combobox from './combobox.m.css';
 import * as dateInput from './date-input.m.css';
 import * as dialog from './dialog.m.css';
 import * as gridBody from './grid-body.m.css';
@@ -22,7 +21,6 @@ import * as header from './header.m.css';
 import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
-import * as listbox from './listbox.m.css';
 import * as listBoxItem from './list-box-item.m.css';
 import * as loadingIndicator from './loading-indicator.m.css';
 import * as menu from './menu.m.css';
@@ -57,7 +55,6 @@ export default {
 	'@dojo/widgets/checkbox': checkbox,
 	'@dojo/widgets/card': card,
 	'@dojo/widgets/chip': chip,
-	'@dojo/widgets/combobox': combobox,
 	'@dojo/widgets/date-input': dateInput,
 	'@dojo/widgets/dialog': dialog,
 	'@dojo/widgets/grid-body': gridBody,
@@ -73,7 +70,6 @@ export default {
 	'@dojo/widgets/helper-text': helperText,
 	'@dojo/widgets/icon': icon,
 	'@dojo/widgets/label': label,
-	'@dojo/widgets/listbox': listbox,
 	'@dojo/widgets/list-box-item': listBoxItem,
 	'@dojo/widgets/loading-indicator': loadingIndicator,
 	'@dojo/widgets/menu': menu,

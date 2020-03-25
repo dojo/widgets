@@ -6,7 +6,6 @@ import * as card from './card.m.css';
 import * as checkbox from './checkbox.m.css';
 import * as checkboxGroup from './checkbox-group.m.css';
 import * as chip from './chip.m.css';
-import * as combobox from './combobox.m.css';
 import * as constrainedInput from './constrained-input.m.css';
 import * as dialog from './dialog.m.css';
 import * as emailInput from './email-input.m.css';
@@ -21,7 +20,6 @@ import * as gridRow from './grid-row.m.css';
 import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
-import * as listbox from './listbox.m.css';
 import * as loadingIndicator from './loading-indicator.m.css';
 import * as menu from './menu.m.css';
 import * as menuItem from './menu-item.m.css';
@@ -57,7 +55,6 @@ export default {
 	'@dojo/widgets/checkbox': checkbox,
 	'@dojo/widgets/checkbox-group': checkboxGroup,
 	'@dojo/widgets/chip': chip,
-	'@dojo/widgets/combobox': combobox,
 	'@dojo/widgets/constrained-input': constrainedInput,
 	'@dojo/widgets/dialog': dialog,
 	'@dojo/widgets/email-input': emailInput,
@@ -72,7 +69,6 @@ export default {
 	'@dojo/widgets/helper-text': helperText,
 	'@dojo/widgets/icon': icon,
 	'@dojo/widgets/label': label,
-	'@dojo/widgets/listbox': listbox,
 	'@dojo/widgets/loading-indicator': loadingIndicator,
 	'@dojo/widgets/menu': menu,
 	'@dojo/widgets/menu-item': menuItem,
