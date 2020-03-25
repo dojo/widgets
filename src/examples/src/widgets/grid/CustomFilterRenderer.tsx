@@ -68,7 +68,7 @@ export default factory(function CustomFilterRenderer() {
 						return (
 							<div>
 								<Button
-									extraClasses={{ root: css.filter }}
+									classes={{ '@dojo/widgets/button': { root: [css.filter] } }}
 									pressed={filterValue === 'female'}
 									onClick={() => {
 										if (filterValue === 'female') {
@@ -81,7 +81,7 @@ export default factory(function CustomFilterRenderer() {
 									Female
 								</Button>
 								<Button
-									extraClasses={{ root: css.filter }}
+									classes={{ '@dojo/widgets/button': { root: [css.filter] } }}
 									pressed={filterValue === 'male'}
 									onClick={() => {
 										if (filterValue === 'male') {

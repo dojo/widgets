@@ -1,12 +1,11 @@
-import { focus, FocusProperties } from '@dojo/framework/core/middleware/focus';
+import { focus } from '@dojo/framework/core/middleware/focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import { formatAriaProperties } from '../common/util';
 import { theme } from '../middleware/theme';
 import * as css from '../theme/default/button.m.css';
-import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 
-export interface ButtonProperties extends ThemedProperties, FocusProperties {
+export interface ButtonProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Whether the button is disabled or clickable */
