@@ -5,11 +5,10 @@ import * as sinon from 'sinon';
 
 import { tsx, create } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import { harness } from '@dojo/framework/testing/harness';
 import select from '@dojo/framework/testing/support/selector';
 import focus from '@dojo/framework/core/middleware/focus';
 
-import { stubEvent } from '../../../common/tests/support/test-helpers';
+import { compareTheme, createHarness, stubEvent } from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import Calendar from '../../../calendar';
 import TriggerPopup from '../../../trigger-popup';
@@ -24,6 +23,7 @@ const { messages } = bundle;
 const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const noop = () => {};
+const harness = createHarness([compareTheme]);
 
 function createFocusMock({
 	shouldFocus = false,
@@ -67,11 +67,7 @@ const buttonTemplate = assertionTemplate(() => {
 			<TextInput
 				key="input"
 				focus={() => false}
-				classes={{
-					'@dojo/widgets/text-input': {
-						trailing: [css.inputTrailing]
-					}
-				}}
+				theme={{}}
 				type="text"
 				onBlur={noop}
 				onValue={noop}

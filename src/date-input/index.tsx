@@ -11,6 +11,7 @@ import Calendar from '../calendar';
 import TextInput from '../text-input';
 import Icon from '../icon';
 import TriggerPopup from '../trigger-popup';
+import * as textInputCss from '../theme/default/text-input.m.css';
 import * as css from '../theme/default/date-input.m.css';
 
 import bundle from './nls/DateInput';
@@ -126,11 +127,11 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 								<TextInput
 									key="input"
 									focus={() => shouldFocus && focusNode === 'input'}
-									classes={{
-										'@dojo/widgets/text-input': {
-											trailing: [classes.inputTrailing]
-										}
-									}}
+									theme={theme.compose(
+										textInputCss,
+										css,
+										'input'
+									)}
 									trailing={() => (
 										<button
 											key="dateIcon"
