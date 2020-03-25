@@ -26,12 +26,10 @@ const closedTemplate = assertionTemplate(() => (
 	<div
 		aria-labelledby=""
 		classes={css.root}
-		onmousedown={noop}
-		onmousemove={noop}
-		onmouseup={noop}
-		ontouchend={noop}
-		ontouchmove={noop}
-		ontouchstart={noop}
+		onpointerup={noop}
+		onpointerdown={noop}
+		onpointermove={noop}
+		onpointercancel={noop}
 	>
 		<div
 			key="content"
@@ -121,12 +119,10 @@ registerSuite('SlidePane', {
 				<div
 					aria-labelledby=""
 					classes={css.root}
-					onmousedown={noop}
-					onmousemove={noop}
-					onmouseup={noop}
-					ontouchend={noop}
-					ontouchmove={noop}
-					ontouchstart={noop}
+					onpointerup={noop}
+					onpointerdown={noop}
+					onpointermove={noop}
+					onpointercancel={noop}
 				>
 					<div
 						classes={[css.underlayVisible, fixedCss.underlay]}
@@ -202,12 +198,10 @@ registerSuite('SlidePane', {
 					'div',
 					{
 						'aria-labelledby': '',
-						onmousedown: noop,
-						onmousemove: noop,
-						onmouseup: noop,
-						ontouchend: noop,
-						ontouchmove: noop,
-						ontouchstart: noop,
+						onpointerup: noop,
+						onpointerdown: noop,
+						onpointermove: noop,
+						onpointercancel: noop,
 						classes: css.root
 					},
 					[
@@ -262,12 +256,10 @@ registerSuite('SlidePane', {
 					'div',
 					{
 						'aria-labelledby': '',
-						onmousedown: noop,
-						onmousemove: noop,
-						onmouseup: noop,
-						ontouchend: noop,
-						ontouchmove: noop,
-						ontouchstart: noop,
+						onpointerup: noop,
+						onpointerdown: noop,
+						onpointermove: noop,
+						onpointercancel: noop,
 						classes: css.root
 					},
 					[
@@ -597,8 +589,8 @@ registerSuite('SlidePane', {
 				])
 			);
 
-			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
-			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 150, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onpointerdown', { pageX: 300, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onpointermove', { pageX: 150, ...stubEvent });
 
 			h.expect(
 				openTemplate.setProperty('@content', 'styles', {
@@ -608,7 +600,7 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 50, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onpointerup', { pageX: 50, ...stubEvent });
 			assert(!properties.open);
 			h.expect(
 				closedTemplate.setProperty('@content', 'classes', [
@@ -649,8 +641,8 @@ registerSuite('SlidePane', {
 				])
 			);
 
-			h.trigger(`.${css.root}`, 'onmousedown', { pageX: 300, ...stubEvent });
-			h.trigger(`.${css.root}`, 'onmousemove', { pageX: 400, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onpointerdown', { pageX: 300, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onpointermove', { pageX: 400, ...stubEvent });
 
 			h.expect(
 				openTemplateRight
@@ -673,7 +665,7 @@ registerSuite('SlidePane', {
 					})
 			);
 
-			h.trigger(`.${css.root}`, 'onmouseup', { pageX: 500, ...stubEvent });
+			h.trigger(`.${css.root}`, 'onpointerup', { pageX: 500, ...stubEvent });
 
 			h.expect(
 				closedTemplateRight.setProperty('@content', 'classes', [
