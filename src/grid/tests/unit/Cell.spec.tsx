@@ -86,9 +86,8 @@ const expectedEditable = function() {
 					aria: { describedby: '' },
 					focus: noop,
 					type: 'button',
-					extraClasses: { root: css.edit },
 					onClick: noop,
-					classes: undefined,
+					classes: { '@dojo/widgets/button': { root: [css.edit] } },
 					theme: undefined
 				},
 				[
