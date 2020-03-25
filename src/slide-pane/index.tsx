@@ -1,5 +1,3 @@
-import { I18nProperties } from '@dojo/framework/core/mixins/I18n';
-import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
@@ -17,7 +15,7 @@ import * as animations from '../common/styles/animations.m.css';
  */
 export type Align = 'bottom' | 'left' | 'right' | 'top';
 
-export interface SlidePaneProperties extends ThemedProperties, I18nProperties {
+export interface SlidePaneProperties {
 	/** The position of the pane on the screen */
 	align?: Align;
 	/** Custom aria attributes */
