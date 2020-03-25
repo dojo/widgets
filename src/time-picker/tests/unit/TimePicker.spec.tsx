@@ -3,7 +3,6 @@ import * as sinon from 'sinon';
 
 import { create, tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import { harness } from '@dojo/framework/testing/harness';
 import TriggerPopup from '../../../trigger-popup';
 import TextInput from '../../../text-input';
 
@@ -12,12 +11,13 @@ import bundle from '../../nls/TimePicker';
 import * as css from '../../../theme/default/time-picker.m.css';
 import { padStart } from '@dojo/framework/shim/string';
 import select from '@dojo/framework/testing/support/selector';
-import { stubEvent } from '../../../common/tests/support/test-helpers';
+import { createHarness, compareTheme, stubEvent } from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
+const harness = createHarness([compareTheme]);
 
 const { messages } = bundle;
 const noop = () => {};
@@ -66,11 +66,7 @@ const buttonTemplate = assertionTemplate(() => {
 				key="input"
 				label={undefined}
 				focus={() => false}
-				classes={{
-					'@dojo/widgets/text-input': {
-						trailing: [css.inputTrailing]
-					}
-				}}
+				theme={{}}
 				onBlur={noop}
 				onValue={noop}
 				trailing={() => undefined}
