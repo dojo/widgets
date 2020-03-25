@@ -170,7 +170,8 @@ export const Rate = factory(function Rate({
 						]
 					}
 				}}
-				renderer={(name, middleware) => {
+			>
+				{(name, middleware) => {
 					const [hoverInteger, hoverStep] = icache
 						.getOrSet('hover', '0-0')
 						.split('-')
@@ -289,7 +290,7 @@ export const Rate = factory(function Rate({
 						);
 					});
 				}}
-			/>
+			</RadioGroup>
 		</div>
 	);
 });
