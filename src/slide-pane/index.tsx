@@ -1,6 +1,6 @@
 import { I18nProperties } from '@dojo/framework/core/mixins/I18n';
 import { ThemedProperties } from '@dojo/framework/core/mixins/Themed';
-import { create, tsx, invalidator } from '@dojo/framework/core/vdom';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 import i18n from '@dojo/framework/core/middleware/i18n';
@@ -74,12 +74,11 @@ export interface SlidePaneICache {
 const factory = create({
 	icache: createICacheMiddleware<SlidePaneICache>(),
 	theme,
-	i18n,
-	invalidator
+	i18n
 }).properties<SlidePaneProperties>();
 
 export const SlidePane = factory(function SlidePane({
-	middleware: { icache, theme, i18n, invalidator },
+	middleware: { icache, theme, i18n },
 	properties,
 	children
 }) {
