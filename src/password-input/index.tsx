@@ -4,6 +4,7 @@ import Button from '../button';
 import Icon from '../icon';
 import ConstrainedInput, { ConstrainedInputProperties } from '../constrained-input';
 import theme from '../middleware/theme';
+import * as buttonCss from '../theme/default/button.m.css';
 import * as css from '../theme/default/password-input.m.css';
 import * as textInputCss from '../theme/default/text-input.m.css';
 import TextInput from '../text-input';
@@ -37,7 +38,11 @@ export const PasswordInput = factory(function PasswordInput({
 			onClick={() => {
 				icache.set('showPassword', !showPassword);
 			}}
-			classes={{ '@dojo/widgets/button': { root: [css.togglePasswordButton] } }}
+			theme={theme.compose(
+				buttonCss,
+				css,
+				'toggleButton'
+			)}
 		>
 			<Icon type={showPassword ? 'eyeSlashIcon' : 'eyeIcon'} />
 		</Button>
