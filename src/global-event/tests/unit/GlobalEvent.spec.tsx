@@ -55,10 +55,12 @@ registerSuite('GlobalEvent', {
 
 			h.expect(() => h.getRender());
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 1);
+			assert.strictEqual(documentRemoveEventlistenerStub.callCount, 1);
 
 			testEvent = keyDownEvent;
 			h.expect(() => h.getRender());
 			assert.strictEqual(documentAddEventlistenerStub.callCount, 2);
+			assert.strictEqual(documentRemoveEventlistenerStub.callCount, 2);
 		},
 
 		'Registers window listener'() {
@@ -74,10 +76,12 @@ registerSuite('GlobalEvent', {
 
 			h.expect(() => h.getRender());
 			assert.strictEqual(windowAddEventlistenerStub.callCount, 1);
+			assert.strictEqual(windowRemoveEventlistenerStub.callCount, 1);
 
 			testEvent = keyDownEvent;
 			h.expect(() => h.getRender());
 			assert.strictEqual(windowAddEventlistenerStub.callCount, 2);
+			assert.strictEqual(windowRemoveEventlistenerStub.callCount, 2);
 		},
 
 		'Returns null when there are no children'() {
