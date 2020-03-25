@@ -15,12 +15,7 @@ import * as animations from '../common/styles/animations.m.css';
 /**
  * Enum for left / right alignment
  */
-export enum Align {
-	bottom = 'bottom',
-	left = 'left',
-	right = 'right',
-	top = 'top'
-}
+export type Align = 'bottom' | 'left' | 'right' | 'top';
 
 export interface SlidePaneProperties extends ThemedProperties, I18nProperties {
 	/** The position of the pane on the screen */
@@ -87,7 +82,7 @@ export const SlidePane = factory(function SlidePane({
 		closeText,
 		open = false,
 		title = '',
-		align = Align.left,
+		align = 'left',
 		width = DEFAULT_WIDTH,
 		underlay = false
 	} = properties();
@@ -106,14 +101,14 @@ export const SlidePane = factory(function SlidePane({
 		}
 	}
 
-	const plane = align === Align.left || align === Align.right ? Plane.x : Plane.y;
+	const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
 
 	let translate = '';
 	const translateAxis = plane === Plane.x ? 'X' : 'Y';
 
 	if (icache.get('swiping')) {
 		translate =
-			align === Align.left || align === Align.top
+			align === 'left' || align === 'top'
 				? `-${icache.getOrSet('transform', 0)}`
 				: `${icache.getOrSet('transform', 0)}`;
 	}
@@ -149,28 +144,28 @@ export const SlidePane = factory(function SlidePane({
 	}
 
 	const getDelta = (event: MouseEvent & TouchEvent, eventType: string) => {
-		const { align = Align.left } = properties();
-		const plane = align === Align.left || align === Align.right ? Plane.x : Plane.y;
+		const { align = 'left' } = properties();
+		const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
 
 		if (plane === Plane.x) {
 			const currentX =
 				event.type === eventType ? event.changedTouches[0].screenX : event.pageX;
-			return align === Align.right
+			return align === 'right'
 				? currentX - icache.getOrSet('initialPosition', 0)
 				: icache.getOrSet('initialPosition', 0) - currentX;
 		} else {
 			const currentY =
 				event.type === eventType ? event.changedTouches[0].screenY : event.pageY;
-			return align === Align.bottom
+			return align === 'bottom'
 				? currentY - icache.getOrSet('initialPosition', 0)
 				: icache.getOrSet('initialPosition', 0) - currentY;
 		}
 	};
 
-	const swipeStart = (event: MouseEvent & TouchEvent) => {
-		const { align = Align.left } = properties();
+	const swipeStart = (event: MouseEvent & TouchEvent & PointerEvent) => {
+		const { align = 'left' } = properties();
 
-		const plane = align === Align.left || align === Align.right ? Plane.x : Plane.y;
+		const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
 
 		event.stopPropagation();
 		icache.set('swiping', true);
@@ -191,7 +186,7 @@ export const SlidePane = factory(function SlidePane({
 		icache.set('transform', 0);
 	};
 
-	const swipeMove = (event: MouseEvent & TouchEvent) => {
+	const swipeMove = (event: MouseEvent & TouchEvent & PointerEvent) => {
 		event.stopPropagation();
 		// Ignore mouse movement when not swiping
 		if (!icache.get('swiping')) {
@@ -212,7 +207,7 @@ export const SlidePane = factory(function SlidePane({
 		}
 	};
 
-	const swipeEnd = (event: MouseEvent & TouchEvent) => {
+	const swipeEnd = (event: MouseEvent & TouchEvent & PointerEvent) => {
 		event.stopPropagation();
 		icache.set('swiping', false);
 		icache.set('hasMoved', false);
@@ -251,12 +246,10 @@ export const SlidePane = factory(function SlidePane({
 		<div
 			aria-labelledby={titleId}
 			classes={themeCss.root}
-			onmousedown={swipeStart}
-			onmousemove={swipeMove}
-			onmouseup={swipeEnd}
-			ontouchend={swipeEnd}
-			ontouchmove={swipeMove}
-			ontouchstart={swipeStart}
+			onpointerdown={swipeStart}
+			onpointermove={swipeMove}
+			onpointerup={swipeEnd}
+			onpointercancel={swipeEnd}
 		>
 			{open ? (
 				<div

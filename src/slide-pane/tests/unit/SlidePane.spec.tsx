@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import { tsx, v, w } from '@dojo/framework/core/vdom';
 
-import SlidePane, { Align, SlidePaneProperties } from '../../index';
+import SlidePane, { SlidePaneProperties } from '../../index';
 import * as css from '../../../theme/default/slide-pane.m.css';
 import * as fixedCss from '../../styles/slide-pane.m.css';
 import * as animations from '../../../common/styles/animations.m.css';
@@ -112,7 +112,7 @@ registerSuite('SlidePane', {
 	tests: {
 		'Should construct SlidePane with passed properties'() {
 			const h = harness(() => (
-				<SlidePane key="foo" align={Align.left} aria={{ describedBy: 'foo' }} open underlay>
+				<SlidePane key="foo" align="left" aria={{ describedBy: 'foo' }} open underlay>
 					{GREEKING}
 				</SlidePane>
 			));
@@ -441,7 +441,7 @@ registerSuite('SlidePane', {
 			const h = harness(() =>
 				w(SlidePane, {
 					open: true,
-					align: Align.top,
+					align: 'top',
 					onRequestClose() {
 						called = true;
 					}
@@ -476,7 +476,7 @@ registerSuite('SlidePane', {
 
 			const h = harness(() =>
 				w(SlidePane, {
-					align: Align.right,
+					align: 'right',
 					open: true,
 					width: 320,
 					onRequestClose() {
@@ -511,7 +511,7 @@ registerSuite('SlidePane', {
 
 			const h = harness(() =>
 				w(SlidePane, {
-					align: Align.bottom,
+					align: 'bottom',
 					open: true,
 					width: 320,
 					onRequestClose() {
@@ -628,7 +628,7 @@ registerSuite('SlidePane', {
 
 		'transform styles are applied on next render if being swiped closed right'() {
 			let properties: SlidePaneProperties = {
-				align: Align.right,
+				align: 'right',
 				open: true
 			};
 			properties.onRequestClose = () => (properties.open = false);
