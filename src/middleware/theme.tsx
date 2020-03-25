@@ -48,7 +48,7 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 			if (prefix) {
 				const prefixedCss = Object.keys({ ...virtualTheme, ...variantTheme }).reduce(
 					(prefixCss, key) => {
-						if (key.indexOf(prefix) === 0) {
+						if (key.indexOf(prefix) === 0 && key.length > prefix.length) {
 							const classKey = lowercaseFirstChar(key.replace(prefix, ''));
 							if (
 								!variantTheme[key] &&
