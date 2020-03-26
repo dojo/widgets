@@ -25,6 +25,7 @@ registerSuite('Label', {
 		custom() {
 			const h = harness(() => (
 				<Label
+					aria={{ describedBy: 'bar' }}
 					forId="foo"
 					disabled={true}
 					focused={true}
@@ -39,6 +40,7 @@ registerSuite('Label', {
 
 			h.expect(() => (
 				<label
+					aria-describedby="bar"
 					classes={[
 						css.root,
 						css.disabled,

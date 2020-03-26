@@ -3,8 +3,12 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import * as baseCss from '../common/styles/base.m.css';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/label.m.css';
+import { formatAriaProperties } from '../common/util';
 
 export interface LabelProperties {
+	/** Custom aria attributes */
+
+	aria?: { [key: string]: string | null };
 	/** If the label should be disabled */
 	disabled?: boolean;
 	/** If the label is focused */
@@ -31,6 +35,7 @@ const factory = create({ theme }).properties<LabelProperties>();
 
 export const Label = factory(function Label({ properties, id, children, middleware: { theme } }) {
 	const {
+		aria = {},
 		active,
 		disabled,
 		focused,
@@ -47,6 +52,7 @@ export const Label = factory(function Label({ properties, id, children, middlewa
 
 	return (
 		<label
+			{...formatAriaProperties(aria)}
 			id={widgetId}
 			classes={[
 				themeCss.root,
