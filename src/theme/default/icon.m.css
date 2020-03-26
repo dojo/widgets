@@ -157,3 +157,8 @@
 .eyeSlashIcon:before {
 	content: '\f070';
 }
+
+/* A star icon */
+.starIcon:before {
+	content: '\e900';
+}

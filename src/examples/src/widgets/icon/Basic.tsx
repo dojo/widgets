@@ -31,6 +31,7 @@ export default factory(function Basic() {
 			<Icon type="mailIcon" />
 			<Icon type="eyeIcon" />
 			<Icon type="eyeSlashIcon" />
+			<Icon type="starIcon" />
 		</virtual>
 	);
 });

@@ -26,3 +26,4 @@ export const secureIcon: string;
 export const mailIcon: string;
 export const eyeIcon: string;
 export const eyeSlashIcon: string;
+export const starIcon: string;
