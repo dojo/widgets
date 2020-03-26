@@ -76,8 +76,7 @@ const openTemplate = closedTemplate
 			classes: [null, fixedCss.underlay],
 			enterAnimation: animations.fadeIn,
 			exitAnimation: animations.fadeOut,
-			onmouseup: noop,
-			ontouchend: noop,
+			onpointerup: noop,
 			key: 'underlay'
 		})
 	])
@@ -128,8 +127,7 @@ registerSuite('SlidePane', {
 						classes={[css.underlayVisible, fixedCss.underlay]}
 						enterAnimation={animations.fadeIn}
 						exitAnimation={animations.fadeOut}
-						onmouseup={noop}
-						ontouchend={noop}
+						onpointerup={noop}
 						key="underlay"
 					/>
 					<div
@@ -187,8 +185,7 @@ registerSuite('SlidePane', {
 							classes: [null, fixedCss.underlay],
 							enterAnimation: animations.fadeIn,
 							exitAnimation: animations.fadeOut,
-							onmouseup: noop,
-							ontouchend: noop,
+							onpointerup: noop,
 							key: 'underlay'
 						}),
 						v(
@@ -290,11 +287,11 @@ registerSuite('SlidePane', {
 					}
 				})
 			);
-			h.trigger('@underlay', 'onmousedown', {
+			h.trigger('@underlay', 'onpointerdown', {
 				pageX: 300,
 				...stubEvent
 			});
-			h.trigger('@underlay', 'onmouseup', {
+			h.trigger('@underlay', 'onpointerup', {
 				pageX: 300,
 				...stubEvent
 			});
@@ -331,11 +328,11 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger('@underlay', 'ontouchstart', {
+			h.trigger('@underlay', 'onpointerdown', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
-			h.trigger('@underlay', 'ontouchend', {
+			h.trigger('@underlay', 'onpointerup', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
@@ -354,15 +351,15 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger('@underlay', 'onmousedown', {
+			h.trigger('@underlay', 'onpointerdown', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
-			h.trigger('@underlay', 'onmousemove', {
+			h.trigger('@underlay', 'onpointerdown', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
-			h.trigger('@underlay', 'onmouseup', {
+			h.trigger('@underlay', 'onpointerup', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
@@ -382,22 +379,22 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger('@underlay', 'ontouchmove', {
+			h.trigger('@underlay', 'onpointermove', {
 				changedTouches: [{ screenX: 150 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchstart', {
+			h.trigger('@underlay', 'onpointerdown', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchmove', {
+			h.trigger('@underlay', 'onpointermove', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchend', {
+			h.trigger('@underlay', 'onpointerup', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
@@ -418,22 +415,22 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger('@underlay', 'ontouchmove', {
+			h.trigger('@underlay', 'onpointermove', {
 				changedTouches: [{ screenY: 150 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchstart', {
+			h.trigger('@underlay', 'onpointerdown', {
 				changedTouches: [{ screenY: 300 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchmove', {
+			h.trigger('@underlay', 'onpointermove', {
 				changedTouches: [{ screenY: 150 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchend', {
+			h.trigger('@underlay', 'onpointerup', {
 				changedTouches: [{ screenY: 50 }],
 				...stubEvent
 			});
@@ -455,17 +452,17 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger('@underlay', 'ontouchstart', {
+			h.trigger('@underlay', 'onpointerdown', {
 				changedTouches: [{ screenX: 300 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchmove', {
+			h.trigger('@underlay', 'onpointermove', {
 				changedTouches: [{ screenX: 400 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchend', {
+			h.trigger('@underlay', 'onpointerup', {
 				changedTouches: [{ screenX: 500 }],
 				...stubEvent
 			});
@@ -490,17 +487,17 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger('@underlay', 'ontouchstart', {
+			h.trigger('@underlay', 'onpointerdown', {
 				changedTouches: [{ screenY: 300 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchmove', {
+			h.trigger('@underlay', 'onpointermove', {
 				changedTouches: [{ screenY: 400 }],
 				...stubEvent
 			});
 
-			h.trigger('@underlay', 'ontouchend', {
+			h.trigger('@underlay', 'onpointerup', {
 				changedTouches: [{ screenY: 500 }],
 				...stubEvent
 			});
@@ -523,17 +520,17 @@ registerSuite('SlidePane', {
 				})
 			);
 
-			h.trigger(`.${css.root}`, 'onmousedown', {
+			h.trigger(`.${css.root}`, 'onpointerdown', {
 				pageX: 300,
 				...stubEvent
 			});
 
-			h.trigger(`.${css.root}`, 'onmousemove', {
+			h.trigger(`.${css.root}`, 'onpointermove', {
 				pageX: 250,
 				...stubEvent
 			});
 
-			h.trigger(`.${css.root}`, 'onmouseup', {
+			h.trigger(`.${css.root}`, 'onpointerup', {
 				pageX: 250,
 				...stubEvent
 			});

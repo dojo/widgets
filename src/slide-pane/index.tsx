@@ -136,26 +136,24 @@ export const SlidePane = factory(function SlidePane({
 		closeText = `${messages.close} ${title}`;
 	}
 
-	const getDelta = (event: MouseEvent & TouchEvent, eventType: string) => {
+	const getDelta = (event: PointerEvent, eventType: string) => {
 		const { align = 'left' } = properties();
 		const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
 
 		if (plane === Plane.x) {
-			const currentX =
-				event.type === eventType ? event.changedTouches[0].screenX : event.pageX;
+			const currentX = event.pageX;
 			return align === 'right'
 				? currentX - icache.getOrSet('initialPosition', 0)
 				: icache.getOrSet('initialPosition', 0) - currentX;
 		} else {
-			const currentY =
-				event.type === eventType ? event.changedTouches[0].screenY : event.pageY;
+			const currentY = event.pageY;
 			return align === 'bottom'
 				? currentY - icache.getOrSet('initialPosition', 0)
 				: icache.getOrSet('initialPosition', 0) - currentY;
 		}
 	};
 
-	const swipeStart = (event: MouseEvent & TouchEvent & PointerEvent) => {
+	const swipeStart = (event: PointerEvent) => {
 		const { align = 'left' } = properties();
 
 		const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
@@ -164,24 +162,18 @@ export const SlidePane = factory(function SlidePane({
 		icache.set('swiping', true);
 		// Cache initial pointer position
 		if (plane === Plane.x) {
-			icache.set(
-				'initialPosition',
-				event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX
-			);
+			icache.set('initialPosition', event.pageX);
 		} else {
-			icache.set(
-				'initialPosition',
-				event.type === 'touchstart' ? event.changedTouches[0].screenY : event.pageY
-			);
+			icache.set('initialPosition', event.pageY);
 		}
 
 		// Clear out the last transform applied
 		icache.set('transform', 0);
 	};
 
-	const swipeMove = (event: MouseEvent & TouchEvent & PointerEvent) => {
+	const swipeMove = (event: PointerEvent) => {
 		event.stopPropagation();
-		// Ignore mouse movement when not swiping
+		// Ignore pointer movement when not swiping
 		if (!icache.get('swiping')) {
 			return;
 		}
@@ -200,7 +192,7 @@ export const SlidePane = factory(function SlidePane({
 		}
 	};
 
-	const swipeEnd = (event: MouseEvent & TouchEvent & PointerEvent) => {
+	const swipeEnd = (event: PointerEvent) => {
 		event.stopPropagation();
 		icache.set('swiping', false);
 		icache.set('hasMoved', false);
@@ -250,8 +242,7 @@ export const SlidePane = factory(function SlidePane({
 					classes={[underlay ? themeCss.underlayVisible : null, fixedCss.underlay]}
 					enterAnimation={animations.fadeIn}
 					exitAnimation={animations.fadeOut}
-					onmouseup={onUnderlayMouseUp}
-					ontouchend={onUnderlayMouseUp}
+					onpointerup={onUnderlayMouseUp}
 				/>
 			) : null}
 			<div
