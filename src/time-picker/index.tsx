@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import { padStart } from '@dojo/framework/shim/string';
-import { List, ListOption } from '../list';
+import { List, ListOption, defaultTransform as listTransform } from '../list';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/time-picker.m.css';
 import * as inputCss from '../theme/default/text-input.m.css';
@@ -12,6 +12,19 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { Keys } from '../common/util';
 import bundle from './nls/TimePicker';
 import i18n from '@dojo/framework/core/middleware/i18n';
+import { createResource, DataTemplate } from '@dojo/framework/core/resource';
+
+function createMemoryTemplate<S = void>(): DataTemplate<S> {
+	return {
+		read: ({ query }, put, get) => {
+			let data: any[] = get();
+			put(0, data);
+			return { data, total: data.length };
+		}
+	};
+}
+
+const memoryTemplate = createMemoryTemplate();
 
 export interface TimePickerProperties {
 	/** Set the disabled property of the control */
@@ -398,8 +411,11 @@ export const TimePicker = factory(function TimePicker({
 								<List
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
-									options={options}
-									total={options.length}
+									resource={{
+										resource: () => createResource(memoryTemplate),
+										data: options
+									}}
+									transform={listTransform}
 									onValue={(value: string) => {
 										icache.set('inputValue', value);
 										icache.set('shouldValidate', true);
