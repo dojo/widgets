@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List, { defaultTransform } from '@dojo/widgets/list';
 import states from './states';
 import icache from '@dojo/framework/core/middleware/icache';
-import { createMemoryTemplate } from './memoryTemplate';
+import { createMemoryTemplate } from '../../../../list/tests/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 
 const factory = create({ icache });
