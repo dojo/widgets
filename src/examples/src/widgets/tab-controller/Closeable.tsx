@@ -1,6 +1,7 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 
-import TabController, { TabContent } from '@dojo/widgets/tab-controller';
+import TabController from '@dojo/widgets/tab-controller';
+import TabContent from '@dojo/widgets/tab-controller/TabContent';
 
 const factory = create();
 

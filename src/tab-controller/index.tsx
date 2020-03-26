@@ -10,8 +10,6 @@ import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
 import * as css from '../theme/default/tab-controller.m.css';
 
-export { TabContent } from './TabContent';
-
 /**
  * Enum for tab button alignment
  */

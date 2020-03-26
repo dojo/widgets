@@ -8,7 +8,8 @@ import { DNode } from '@dojo/framework/core/interfaces';
 
 import commonBundle from '../../../common/nls/common';
 import { Keys } from '../../../common/util';
-import TabController, { Align, TabContent, TabControllerChildren, TabItem } from '../../index';
+import TabController, { Align, TabControllerChildren, TabItem } from '../../index';
+import TabContent from '../../TabContent';
 import * as css from '../../../theme/default/tab-controller.m.css';
 import {
 	createHarness,

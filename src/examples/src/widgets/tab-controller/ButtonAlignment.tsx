@@ -1,7 +1,8 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 
-import TabController, { Align, TabContent } from '@dojo/widgets/tab-controller';
+import TabController, { Align } from '@dojo/widgets/tab-controller';
+import TabContent from '@dojo/widgets/tab-controller/TabContent';
 import Select, { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithData } from '../list/memoryTemplate';
 
