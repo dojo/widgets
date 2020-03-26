@@ -1,17 +1,24 @@
 .root {
 }
 
-.label {
-	overflow: visible;
+.groupWrapper {
 }
 
-.radioGroup {
+.labelRoot {
+	overflow: visible;
+	cursor: pointer;
+}
+
+.radioGroupRoot {
 	display: inline-block;
 	border: 1px solid transparent;
 }
 
-.radio {
+.radioRoot {
 	padding: 0;
+}
+
+.over {
 }
 
 .partialCharacter {
@@ -28,19 +35,18 @@
 }
 
 .characterWrapper {
-	border: 1px solid transparent;
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
 }
 
-.characterFill {
+.filled {
 	color: #fadb14;
 }
 
 /* Added to active items */
 .active {
-	border: 1px solid blue;
+	outline: 1px solid #999;
 }
 
 /* Added to disabled ratings group */
