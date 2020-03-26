@@ -414,4 +414,32 @@ describe('theme middleware', () => {
 			}
 		});
 	});
+
+	it('should not create empty keys', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			base: 'variant_base',
+			baseActive: 'variant_active'
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			'@dojo/widgets/Base': {
+				root: 'base_root',
+				selected: 'base_selected',
+				active: 'variant_active'
+			}
+		});
+	});
 });
