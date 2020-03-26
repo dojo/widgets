@@ -31,7 +31,7 @@
     "build:docs": "dojo build app -f docs=true",
     "build:themes": "dojo build theme",
     "build:examples": "dojo build app -f docs=true && dojo build app -m dev",
-    "build:docs:dev": "dojo build app -m dev -w -s -f docs=true",
+    "build:docs:dev": "dojo build app -m dev -w -s",
     "build:lib": "dojo build widget -t lib",
     "build:lib:legacy": "dojo build widget -t lib -l",
     "build:test": "dojo build widget -m unit",
