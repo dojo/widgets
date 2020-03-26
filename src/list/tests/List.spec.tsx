@@ -9,7 +9,7 @@ import * as css from '../../theme/default/list.m.css';
 import * as fixedCss from '../list.m.css';
 import MenuItem from '../MenuItem';
 import ListItem from '../Listitem';
-import { createMemoryTemplate } from './memoryTemplate';
+import { createMemoryTemplate } from '../../examples/src/widgets/list/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 const { assert } = intern.getPlugin('chai');
 const { describe, it, before, after } = intern.getInterface('bdd');

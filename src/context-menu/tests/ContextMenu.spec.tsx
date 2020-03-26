@@ -4,8 +4,10 @@ import { createHarness, compareTheme } from '../../common/tests/support/test-hel
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import { stub } from 'sinon';
 import List from '../../list';
-import ContextMenu from '../';
+import ContextMenu, { defaultTransform } from '../';
 import ContextPopup from '../../context-popup';
+import { createMemoryTemplate } from '../../examples/src/widgets/list/memoryTemplate';
+import { createResource } from '@dojo/framework/core/resource';
 const { describe, it, after, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
@@ -16,6 +18,8 @@ describe('ContextMenu', () => {
 	const sb = sandbox.create();
 	const children = <div>Children</div>;
 	const options = [{ value: 'foo', label: 'Foo' }];
+	const memoryTemplate = createMemoryTemplate();
+
 	const template = assertionTemplate(() => (
 		<ContextPopup>
 			{{
@@ -35,7 +39,14 @@ describe('ContextMenu', () => {
 
 	it('renders', () => {
 		const h = harness(() => (
-			<ContextMenu options={options} onSelect={noop}>
+			<ContextMenu
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: options
+				}}
+				transform={defaultTransform}
+				onSelect={noop}
+			>
 				{children}
 			</ContextMenu>
 		));
@@ -45,7 +56,14 @@ describe('ContextMenu', () => {
 
 	it('passes a function that returns children as `trigger`', () => {
 		const h = harness(() => (
-			<ContextMenu options={options} onSelect={noop}>
+			<ContextMenu
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: options
+				}}
+				transform={defaultTransform}
+				onSelect={noop}
+			>
 				{children}
 			</ContextMenu>
 		));
@@ -62,7 +80,14 @@ describe('ContextMenu', () => {
 		const onSelect = stub();
 		const shouldFocus = stub();
 		const h = harness(() => (
-			<ContextMenu options={options} onSelect={onSelect}>
+			<ContextMenu
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: options
+				}}
+				transform={defaultTransform}
+				onSelect={onSelect}
+			>
 				{children}
 			</ContextMenu>
 		));
@@ -72,10 +97,14 @@ describe('ContextMenu', () => {
 			() => (
 				<List
 					key="menu"
+					menu
 					focus={() => null as any}
 					theme={{}}
-					options={options}
-					total={options.length}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
 					onBlur={() => {}}
 					onRequestClose={() => {}}
 					onValue={() => {}}

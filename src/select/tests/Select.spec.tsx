@@ -17,11 +17,15 @@ import HelperText from '../../helper-text';
 import Icon from '../../icon';
 import Label from '../../label';
 import List from '../../list';
+import { createMemoryTemplate } from '../../examples/src/widgets/list/memoryTemplate';
+import { createResource } from '@dojo/framework/core/resource';
 import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
-import Select from '../index';
+import Select, { defaultTransform } from '../index';
 
 const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
+
+const memoryTemplate = createMemoryTemplate();
 
 const harness = createHarness([compareTheme]);
 
@@ -70,7 +74,11 @@ const menuTemplate = assertionTemplate(() => (
 		<List
 			key="menu"
 			focus={() => false}
-			options={options}
+			resource={{
+				resource: () => createResource(memoryTemplate),
+				data: options
+			}}
+			transform={defaultTransform}
 			onValue={() => {}}
 			onRequestClose={() => {}}
 			onBlur={() => {}}
@@ -80,14 +88,22 @@ const menuTemplate = assertionTemplate(() => (
 			classes={undefined}
 			menu
 			widgetId={'test'}
-			total={options.length}
 		/>
 	</div>
 ));
 
 describe('Select', () => {
 	it('renders', () => {
-		const h = harness(() => <Select onValue={() => {}} options={[]} />);
+		const h = harness(() => (
+			<Select
+				onValue={() => {}}
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: options
+				}}
+				transform={defaultTransform}
+			/>
+		));
 		h.expect(baseTemplate);
 	});
 
@@ -96,7 +112,11 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={() => {}}
-					options={[]}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
 					itemsInView={10}
 					position="above"
 					placeholder="test"
@@ -132,10 +152,19 @@ describe('Select', () => {
 	it('calls toggle open on trigger click', () => {
 		const toggleOpenStub = stub();
 
-		const h = harness(() => <Select onValue={() => {}} options={[]} />, [
-			compareAriaControls,
-			compareId
-		]);
+		const h = harness(
+			() => (
+				<Select
+					onValue={() => {}}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
+				/>
+			),
+			[compareAriaControls, compareId]
+		);
 
 		const triggerRenderResult = h.trigger(
 			'@popup',
@@ -150,10 +179,20 @@ describe('Select', () => {
 	it('does not call toggle open on trigger click when disabled', () => {
 		const toggleOpenStub = stub();
 
-		const h = harness(() => <Select disabled onValue={() => {}} options={[]} />, [
-			compareAriaControls,
-			compareId
-		]);
+		const h = harness(
+			() => (
+				<Select
+					disabled
+					onValue={() => {}}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
+				/>
+			),
+			[compareAriaControls, compareId]
+		);
 
 		const triggerRenderResult = h.trigger(
 			'@popup',
@@ -170,10 +209,19 @@ describe('Select', () => {
 	it('opens menu on down/space/enter', () => {
 		const toggleOpenStub = stub();
 
-		const h = harness(() => <Select onValue={() => {}} options={[]} />, [
-			compareAriaControls,
-			compareId
-		]);
+		const h = harness(
+			() => (
+				<Select
+					onValue={() => {}}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
+				/>
+			),
+			[compareAriaControls, compareId]
+		);
 
 		const triggerRenderResult = h.trigger(
 			'@popup',
@@ -203,10 +251,19 @@ describe('Select', () => {
 	it('creates menu content and closes on blur', () => {
 		const closeMenuStub = stub();
 
-		const h = harness(() => <Select onValue={() => {}} options={options} />, [
-			compareWidgetId,
-			ignoreMenuTheme
-		]);
+		const h = harness(
+			() => (
+				<Select
+					onValue={() => {}}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
+				/>
+			),
+			[compareWidgetId, ignoreMenuTheme]
+		);
 
 		const menuRenderResult = h.trigger(
 			'@popup',
@@ -225,10 +282,19 @@ describe('Select', () => {
 		const onValueStub = stub();
 		const closeMenuStub = stub();
 
-		const h = harness(() => <Select onValue={onValueStub} options={options} />, [
-			compareWidgetId,
-			ignoreMenuTheme
-		]);
+		const h = harness(
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
+				/>
+			),
+			[compareWidgetId, ignoreMenuTheme]
+		);
 
 		const menuRenderResult = h.trigger(
 			'@popup',
@@ -251,7 +317,17 @@ describe('Select', () => {
 		const options = [{ value: 'dog', label: 'Dog' }, { value: 'cat' }, { value: 'fish' }];
 
 		const h = harness(
-			() => <Select onValue={onValueStub} options={options} initialValue={'dog'} />,
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
+					initialValue="dog"
+				/>
+			),
 			[compareAriaControls, compareId]
 		);
 
