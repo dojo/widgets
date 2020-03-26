@@ -177,8 +177,6 @@ import SelectBySecondTimePicker from './widgets/time-picker/SelectBySecond';
 import BasicTitlePane from './widgets/title-pane/Basic';
 import HeadingLevel from './widgets/title-pane/HeadingLevel';
 import NonCloseable from './widgets/title-pane/NonCloseable';
-import BasicToolbar from './widgets/toolbar/Basic';
-import HeadingCollapsedToolbar from './widgets/toolbar/HeadingCollapsed';
 import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
@@ -1392,21 +1390,6 @@ export const config = {
 					module: BasicTitlePane
 				}
 			}
-		},
-		toolbar: {
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicToolbar
-				}
-			},
-			examples: [
-				{
-					title: 'Collapsed with heading',
-					module: HeadingCollapsedToolbar,
-					filename: 'HeadingCollapsed'
-				}
-			]
 		},
 		tooltip: {
 			examples: [

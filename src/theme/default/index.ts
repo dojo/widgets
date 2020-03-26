@@ -43,7 +43,6 @@ import * as textArea from './text-area.m.css';
 import * as textInput from './text-input.m.css';
 import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
-import * as toolbar from './toolbar.m.css';
 import * as tooltip from './tooltip.m.css';
 
 export default {
@@ -92,6 +91,6 @@ export default {
 	'@dojo/widgets/text-input': textInput,
 	'@dojo/widgets/time-picker': timePicker,
 	'@dojo/widgets/title-pane': titlePane,
-	'@dojo/widgets/toolbar': toolbar,
+
 	'@dojo/widgets/tooltip': tooltip
 };
