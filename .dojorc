@@ -43,7 +43,6 @@
 			"src/slide-pane",
 			"src/slider",
 			"src/snackbar",
-			"src/split-pane",
 			"src/switch",
 			"src/tab",
 			"src/tab-controller",
