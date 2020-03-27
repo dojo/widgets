@@ -134,3 +134,7 @@
 .eyeSlashIcon:before {
 	content: 'visibility_off';
 }
+
+.starIcon:before {
+	content: 'star';
+}

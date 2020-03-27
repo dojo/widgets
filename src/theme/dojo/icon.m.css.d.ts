@@ -25,3 +25,4 @@ export const linkIcon: string;
 export const locationIcon: string;
 export const secureIcon: string;
 export const mailIcon: string;
+export const starIcon: string;

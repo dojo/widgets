@@ -103,3 +103,6 @@
 .mailIcon:before {
 	content: '\e0e1';
 }
+.starIcon:before {
+	content: '\e900';
+}
