@@ -4,6 +4,7 @@ import { padStart } from '@dojo/framework/shim/string';
 import { Menu, MenuOption } from '../menu';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/time-picker.m.css';
+import * as inputCss from '../theme/default/text-input.m.css';
 import TriggerPopup from '../trigger-popup';
 import TextInput from '../text-input';
 import Icon from '../icon';
@@ -345,11 +346,11 @@ export const TimePicker = factory(function TimePicker({
 									disabled={disabled}
 									required={required}
 									focus={() => shouldFocus && focusNode === 'input'}
-									classes={{
-										'@dojo/widgets/text-input': {
-											trailing: [classes.inputTrailing]
-										}
-									}}
+									theme={theme.compose(
+										inputCss,
+										css,
+										'input'
+									)}
 									trailing={() => (
 										<button
 											disabled={disabled}

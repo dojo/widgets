@@ -25,7 +25,10 @@
 	background: var(--color-background);
 }
 
-/* include .root prefix to ensure this overrides the default styling */
+.inputTrailing {
+	composes: trailing from './text-input.m.css';
+}
+
 .root .inputTrailing {
 	background: none;
 	padding-bottom: 0;
