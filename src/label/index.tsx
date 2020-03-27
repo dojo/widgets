@@ -1,12 +1,11 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v } from '@dojo/framework/core/vdom';
-import { formatAriaProperties } from '../common/util';
-import * as css from '../theme/default/label.m.css';
-import * as baseCss from '../common/styles/base.m.css';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-export interface LabelProperties extends ThemedProperties {
+import * as baseCss from '../common/styles/base.m.css';
+import theme from '../middleware/theme';
+import * as css from '../theme/default/label.m.css';
+import { formatAriaProperties } from '../common/util';
+
+export interface LabelProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** If the label should be disabled */
@@ -31,40 +30,46 @@ export interface LabelProperties extends ThemedProperties {
 	active?: boolean;
 }
 
-@theme(css)
-export class Label extends ThemedMixin(WidgetBase)<LabelProperties> {
-	protected getRootClasses(): (string | null)[] {
-		const { disabled, focused, valid, readOnly, required, secondary, active } = this.properties;
-		return [
-			css.root,
-			disabled ? css.disabled : null,
-			focused ? css.focused : null,
-			valid === true ? css.valid : null,
-			valid === false ? css.invalid : null,
-			readOnly ? css.readonly : null,
-			required ? css.required : null,
-			secondary ? css.secondary : null,
-			active ? css.active : null
-		];
-	}
+const factory = create({ theme }).properties<LabelProperties>();
 
-	render(): DNode {
-		const { aria = {}, forId, hidden, widgetId } = this.properties;
+export const Label = factory(function Label({ properties, id, children, middleware: { theme } }) {
+	const {
+		aria = {},
+		active,
+		disabled,
+		focused,
+		forId,
+		hidden,
+		readOnly,
+		required,
+		secondary,
+		valid,
+		widgetId = `label-${id}`
+	} = properties();
 
-		return v(
-			'label',
-			{
-				...formatAriaProperties(aria),
-				id: widgetId,
-				classes: [
-					...this.theme(this.getRootClasses()),
-					hidden ? baseCss.visuallyHidden : null
-				],
-				for: forId
-			},
-			this.children
-		);
-	}
-}
+	const themeCss = theme.classes(css);
+
+	return (
+		<label
+			{...formatAriaProperties(aria)}
+			id={widgetId}
+			classes={[
+				themeCss.root,
+				disabled ? themeCss.disabled : null,
+				focused ? themeCss.focused : null,
+				valid === true ? themeCss.valid : null,
+				valid === false ? themeCss.invalid : null,
+				readOnly ? themeCss.readonly : null,
+				required ? themeCss.required : null,
+				secondary ? themeCss.secondary : null,
+				active ? themeCss.active : null,
+				hidden ? baseCss.visuallyHidden : null
+			]}
+			for={forId}
+		>
+			{children()}
+		</label>
+	);
+});
 
 export default Label;
