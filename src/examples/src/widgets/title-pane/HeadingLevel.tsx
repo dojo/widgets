@@ -1,28 +1,21 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
 import TitlePane from '@dojo/widgets/title-pane';
-import icache from '@dojo/framework/core/middleware/icache';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function HeadingLevel({ middleware: { icache } }) {
-	const open = icache.getOrSet('open', true);
-
+export default factory(function Basic() {
 	return (
-		<TitlePane
-			title="Aria Heading level 2"
-			headingLevel={2}
-			open={open}
-			onRequestOpen={() => {
-				icache.set('open', true);
+		<TitlePane headingLevel={2}>
+			{{
+				title: () => 'Aria Heading Level 2',
+				content: () => (
+					<div>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus
+						ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia
+						felis tempor in.
+					</div>
+				)
 			}}
-			onRequestClose={() => {
-				icache.set('open', false);
-			}}
-		>
-			<div>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum.
-				Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia felis tempor in.
-			</div>
 		</TitlePane>
 	);
 });

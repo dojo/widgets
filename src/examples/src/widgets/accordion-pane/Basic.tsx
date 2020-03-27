@@ -1,55 +1,70 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
-
 import AccordionPane from '@dojo/widgets/accordion-pane';
 import TitlePane from '@dojo/widgets/title-pane';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Basic({ middleware: { icache } }) {
-	let openKeys = icache.getOrSet<string[]>('open', []);
+export default factory(function Basic() {
 	return (
-		<AccordionPane
-			onRequestClose={(key) => {
-				const idx = openKeys.findIndex((k) => k === key);
-				if (idx !== -1) {
-					openKeys.splice(idx, 1);
-				}
-				icache.set('open', [...openKeys]);
+		<AccordionPane>
+			{(onOpen, onClose, initialOpen, theme) => {
+				return [
+					<TitlePane
+						key="foo"
+						onOpen={onOpen('foo')}
+						onClose={onClose('foo')}
+						initialOpen={initialOpen('foo')}
+						theme={theme}
+					>
+						{{
+							title: () => 'Pane 1',
+							content: () => (
+								<div>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
+									augue, sed lacinia felis tempor in.
+								</div>
+							)
+						}}
+					</TitlePane>,
+					<TitlePane
+						key="bar"
+						onOpen={onOpen('bar')}
+						onClose={onClose('bar')}
+						initialOpen={initialOpen('bar')}
+						theme={theme}
+					>
+						{{
+							title: () => 'Pane 2',
+							content: () => (
+								<div>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
+									augue, sed lacinia felis tempor in.
+								</div>
+							)
+						}}
+					</TitlePane>,
+					<TitlePane
+						key="baz"
+						onOpen={onOpen('baz')}
+						onClose={onClose('baz')}
+						initialOpen={initialOpen('baz')}
+						theme={theme}
+					>
+						{{
+							title: () => 'Pane 3',
+							content: () => (
+								<div>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
+									augue, sed lacinia felis tempor in.
+								</div>
+							)
+						}}
+					</TitlePane>
+				];
 			}}
-			onRequestOpen={(key) => {
-				const idx = openKeys.findIndex((k) => k === key);
-				if (idx === -1) {
-					openKeys = [...openKeys, key];
-				}
-				icache.set('open', openKeys);
-			}}
-			openKeys={openKeys}
-		>
-			<TitlePane key="foo" title="Pane 1">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ante sed
-				massa finibus, at euismod ex molestie. Donec sagittis ligula at lorem blandit
-				imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis
-				dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.
-			</TitlePane>
-			<TitlePane key="la" title="Pane 2">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ante sed
-				massa finibus, at euismod ex molestie. Donec sagittis ligula at lorem blandit
-				imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis
-				dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.
-			</TitlePane>
-			<TitlePane key="dee" title="Pane 3">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales ante sed
-				massa finibus, at euismod ex molestie. Donec sagittis ligula at lorem blandit
-				imperdiet. Aenean sapien justo, blandit at aliquet a, tincidunt ac nulla. Donec quis
-				dapibus est. Donec id massa eu nisl cursus ornare quis sit amet velit.
-			</TitlePane>
-			<TitlePane key="bar" title="Pane 4">
-				Ut non lectus vitae eros hendrerit pellentesque. In rhoncus ut lectus id tempus.
-				Cras eget mauris scelerisque, condimentum ante sed, vehicula tellus. Donec congue
-				ligula felis, a porta felis aliquet nec. Nulla mi lorem, efficitur nec lectus
-				vehicula, vehicula varius eros.
-			</TitlePane>
 		</AccordionPane>
 	);
 });
