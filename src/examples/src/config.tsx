@@ -8,7 +8,6 @@ import AvatarSize from './widgets/avatar/Size';
 import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
-import BasicBreadcrumb from './widgets/breadcrumb/Basic';
 import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
 import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
@@ -261,15 +260,6 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicAvatar
-				}
-			}
-		},
-		breadcrumb: {
-			filename: 'index',
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicBreadcrumb
 				}
 			}
 		},

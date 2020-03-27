@@ -1,6 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Breadcrumb from '@dojo/widgets/breadcrumb';
-import BreadcrumbGroup from '@dojo/widgets/breadcrumb-group';
+import BreadcrumbGroup, { Breadcrumb, BreadcrumbSeparator } from '@dojo/widgets/breadcrumb-group';
 import Icon from '@dojo/widgets/icon';
 
 import * as css from './CustomRenderer.m.css';
@@ -17,43 +16,37 @@ const App = factory(function() {
 
 	return (
 		<BreadcrumbGroup label="breadcrumb" items={items}>
-			{(items) => (
-				<ol classes={css.breadcrumb}>
-					{items.map((item, i) => (
-						<virtual>
-							{i !== 0 && (
-								<li
-									classes={css.crumb}
-									key={`${item.key}-separator`}
-									aria-hidden="true"
-								>
-									<Icon type="rightIcon" />
-								</li>
-							)}
-							<li classes={css.crumb} key={item.key}>
-								{item.completed && (
-									<Icon
-										classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
-										type="checkIcon"
-									/>
-								)}
+			{(items) =>
+				items.map((item, i) => (
+					<virtual>
+						{i !== 0 && (
+							<BreadcrumbSeparator key={`${item.key}-separator`}>
+								<Icon type="rightIcon" />
+							</BreadcrumbSeparator>
+						)}
 
-								<Breadcrumb
-									classes={{
-										'@dojo/widgets/breadcrumb': {
-											root: [item.current ? css.current : undefined]
-										}
-									}}
-									current={item.current ? 'step' : undefined}
-									href={item.href}
-									label={item.label}
-									title={item.title}
+						<Breadcrumb
+							key={`${item.key}`}
+							classes={{
+								'@dojo/widgets/breadcrumb-group': {
+									breadcrumb: [item.current ? css.current : undefined]
+								}
+							}}
+							current={item.current ? 'step' : undefined}
+							href={item.href}
+							title={item.title}
+						>
+							{item.completed && (
+								<Icon
+									classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
+									type="checkIcon"
 								/>
-							</li>
-						</virtual>
-					))}
-				</ol>
-			)}
+							)}
+							<span>{item.label}</span>
+						</Breadcrumb>
+					</virtual>
+				))
+			}
 		</BreadcrumbGroup>
 	);
 });

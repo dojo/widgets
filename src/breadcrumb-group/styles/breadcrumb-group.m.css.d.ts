@@ -1,2 +1,3 @@
 export const listFixed: string;
-export const listItemFixed: string;
+export const breadcrumbFixed: string;
+export const separatorFixed: string;

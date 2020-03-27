@@ -2,7 +2,6 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
-import { Breadcrumb } from '../breadcrumb';
 import * as css from '../theme/default/breadcrumb-group.m.css';
 import * as fixedCss from './styles/breadcrumb-group.m.css';
 
@@ -14,6 +13,12 @@ export interface BreadcrumbItem {
 	title?: string;
 }
 
+export interface BreadcrumbProperties {
+	current?: 'page' | 'step';
+	href?: string;
+	title?: string;
+}
+
 export interface BreadcrumbGroupProperties {
 	items: BreadcrumbItem[];
 	label: string;
@@ -22,6 +27,53 @@ export interface BreadcrumbGroupProperties {
 export interface BreadcrumbGroupChildren {
 	(items: BreadcrumbItem[]): RenderResult;
 }
+
+const separatorFactory = create({ theme });
+
+export const Separator = separatorFactory(function Separator({ children, middleware: { theme } }) {
+	const themeCss = theme.classes(css);
+
+	return (
+		<li aria-hidden="true" classes={themeCss.listItem}>
+			<span classes={[fixedCss.separatorFixed, themeCss.separator]}>{children()}</span>
+		</li>
+	);
+});
+
+export { Separator as BreadcrumbSeparator };
+
+const breadcrumbFactory = create({ theme }).properties<BreadcrumbProperties>();
+
+export const Breadcrumb = breadcrumbFactory(function Breadcrumb({
+	children,
+	middleware: { theme },
+	properties
+}) {
+	const { current, href, title } = properties();
+	const themeCss = theme.classes(css);
+
+	return (
+		<li classes={[themeCss.listItem, current ? themeCss.current : undefined]}>
+			{href ? (
+				<a
+					aria-current={current || undefined}
+					classes={[fixedCss.breadcrumbFixed, themeCss.breadcrumb]}
+					href={href}
+					title={title}
+				>
+					{children()}
+				</a>
+			) : (
+				<span
+					aria-current={current || undefined}
+					classes={[fixedCss.breadcrumbFixed, themeCss.breadcrumb]}
+				>
+					{children()}
+				</span>
+			)}
+		</li>
+	);
+});
 
 const factory = create({ theme })
 	.properties<BreadcrumbGroupProperties>()
@@ -38,44 +90,25 @@ export const BreadcrumbGroup = factory(function BreadcrumbGroup({
 	const defaultRenderer: BreadcrumbGroupChildren = (items: BreadcrumbItem[]) => {
 		const lastIndex = items.length - 1;
 
-		return (
-			<ol classes={[fixedCss.listFixed, themeCss.list]}>
-				{items.map((item, index) => (
-					<virtual>
-						{index !== 0 && (
-							<li
-								aria-hidden="true"
-								classes={[fixedCss.listItemFixed, themeCss.listItem]}
-								key={`breadcrumb-${index}-separator`}
-							>
-								<span classes={css.separator}>/</span>
-							</li>
-						)}
-						<li
-							classes={[
-								fixedCss.listItemFixed,
-								themeCss.listItem,
-								index === lastIndex ? themeCss.current : undefined
-							]}
-							key={`breadcrumb-${index}`}
-						>
-							<Breadcrumb
-								current={index === lastIndex ? 'page' : undefined}
-								href={item.href}
-								label={item.label}
-								title={item.title}
-							/>
-						</li>
-					</virtual>
-				))}
-			</ol>
-		);
+		return items.map((item, index) => (
+			<virtual>
+				{index !== 0 && <Separator key={`breadcrumb-${index}-separator`}>/</Separator>}
+				<Breadcrumb
+					key={`breadcrumb-${index}`}
+					current={index === lastIndex ? 'page' : undefined}
+					href={item.href}
+					title={item.title}
+				>
+					{item.label}
+				</Breadcrumb>
+			</virtual>
+		));
 	};
 	const [renderer = defaultRenderer] = children();
 
 	return (
 		<nav classes={themeCss.root} aria-label={label}>
-			{renderer(items)}
+			<ol classes={[fixedCss.listFixed, themeCss.list]}>{renderer(items)}</ol>
 		</nav>
 	);
 });

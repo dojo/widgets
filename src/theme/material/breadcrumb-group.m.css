@@ -5,9 +5,6 @@
 	composes: mdc-typography mdc-typography--body1 from '@material/typography/dist/mdc.typography.css';
 }
 
-.list {
-}
-
 .listItem,
 .listItem::before {
 	margin-right: var(--mdc-grid-base);

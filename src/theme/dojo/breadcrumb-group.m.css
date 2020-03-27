@@ -1,18 +1,9 @@
 @import './variables.css';
 
-.root {
-}
-
-.list {
-}
-
 .listItem,
 .listItem::before {
 	margin-right: var(--grid-base);
 }
 .listItem::last-child {
 	margin-right: 0;
-}
-
-.current {
 }
