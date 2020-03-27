@@ -31,15 +31,15 @@ describe('AccordionPane', () => {
 	it('renders closed panes', () => {
 		const h = harness(() => (
 			<AccordionPane>
-				{() => {
+				{(onOpen, onClose) => {
 					return [
-						<TitlePane key="foo">
+						<TitlePane key="foo" onOpen={onOpen('foo')} onClose={onClose('foo')}>
 							{{
 								title: () => 'foo title',
 								content: () => 'foo content'
 							}}
 						</TitlePane>,
-						<TitlePane key="bar">
+						<TitlePane key="bar" onOpen={onOpen('bar')} onClose={onClose('bar')}>
 							{{
 								title: () => 'bar title',
 								content: () => 'bar content'
@@ -49,7 +49,19 @@ describe('AccordionPane', () => {
 				}}
 			</AccordionPane>
 		));
-		h.expect(baseTemplate);
+
+		h.trigger('@foo', 'onOpen');
+		h.trigger('@bar', 'onOpen');
+		h.trigger('@foo', 'onClose');
+		h.trigger('@bar', 'onClose');
+
+		const testTemplate = baseTemplate
+			.setProperty('@foo', 'onOpen', noop)
+			.setProperty('@foo', 'onClose', noop)
+			.setProperty('@bar', 'onOpen', noop)
+			.setProperty('@bar', 'onClose', noop);
+
+		h.expect(testTemplate);
 	});
 
 	it('renders open panes', () => {
