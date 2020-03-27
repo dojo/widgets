@@ -1,38 +1,31 @@
-import { uuid } from '@dojo/framework/core/util';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { I18nMixin, I18nProperties } from '@dojo/framework/core/mixins/I18n';
-import { ThemedMixin, ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
-import { v, w } from '@dojo/framework/core/vdom';
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { formatAriaProperties } from '../common/util';
-import * as animations from '../common/styles/animations.m.css';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import theme from '../middleware/theme';
+import i18n from '@dojo/framework/core/middleware/i18n';
 import commonBundle from '../common/nls/common';
-import Icon from '../icon/index';
 import * as fixedCss from './styles/slide-pane.m.css';
 import * as css from '../theme/default/slide-pane.m.css';
-import diffProperty from '@dojo/framework/core/decorators/diffProperty';
+import { uuid } from '@dojo/framework/core/util';
+import { formatAriaProperties } from '../common/util';
+import Icon from '../icon';
+import * as animations from '../common/styles/animations.m.css';
 
 /**
  * Enum for left / right alignment
  */
-export enum Align {
-	bottom = 'bottom',
-	left = 'left',
-	right = 'right',
-	top = 'top'
-}
+export type Align = 'bottom' | 'left' | 'right' | 'top';
 
-export interface SlidePaneProperties extends ThemedProperties, I18nProperties {
+export interface SlidePaneProperties {
 	/** The position of the pane on the screen */
 	align?: Align;
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** Hidden text used by screen readers to display for the close button */
 	closeText?: string;
-	/** Called when the pane opens */
-	onOpen?(): void;
+
 	/** Called when the pane is swiped closed or the underlay is clicked or tapped */
 	onRequestClose?(): void;
+
 	/** Determines whether the pane is open or closed */
 	open?: boolean;
 	/** Title to display in the pane */
@@ -58,103 +51,155 @@ enum Slide {
 	out
 }
 
-@theme(css)
-export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePaneProperties> {
-	private _initialPosition = 0;
-	private _slide: Slide | undefined;
-	private _swiping: boolean | undefined;
-	private _titleId = uuid();
-	private _transform = 0;
-	private _hasMoved = false;
+export interface SlidePaneICache {
+	initialPosition: number;
+	slide: Slide | undefined;
+	swiping: boolean | undefined;
+	titleId: string;
+	transform: number;
+	hasMoved: boolean;
+	open: boolean;
+}
 
-	private get plane() {
-		const { align = Align.left } = this.properties;
-		return align === Align.left || align === Align.right ? Plane.x : Plane.y;
-	}
+const factory = create({
+	icache: createICacheMiddleware<SlidePaneICache>(),
+	theme,
+	i18n
+}).properties<SlidePaneProperties>();
 
-	@diffProperty('open')
-	protected _onOpenChange(
-		oldProperties: Partial<SlidePaneProperties>,
-		newProperties: Partial<SlidePaneProperties>
-	) {
-		const wasOpen = oldProperties.open;
-		const { open, onOpen } = newProperties;
+export const SlidePane = factory(function SlidePane({
+	middleware: { icache, theme, i18n },
+	properties,
+	children
+}) {
+	let {
+		aria = {},
+		closeText,
+		open = false,
+		title = '',
+		align = 'left',
+		width = DEFAULT_WIDTH,
+		underlay = false
+	} = properties();
+	const themeCss = theme.classes(css);
+
+	if (icache.get('open') !== open) {
+		const wasOpen = icache.get('open');
+		icache.set('open', open);
 
 		if (open && !wasOpen) {
-			this._slide = Slide.in;
-			onOpen && onOpen();
+			icache.set('slide', Slide.in);
 		} else if (!open && wasOpen) {
-			this._slide = Slide.out;
+			icache.set('slide', Slide.out);
 		}
 	}
 
-	private _getDelta(event: MouseEvent & TouchEvent, eventType: string) {
-		const { align = Align.left } = this.properties;
+	const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
 
-		if (this.plane === Plane.x) {
-			const currentX =
-				event.type === eventType ? event.changedTouches[0].screenX : event.pageX;
-			return align === Align.right
-				? currentX - this._initialPosition
-				: this._initialPosition - currentX;
+	let translate = '';
+	const translateAxis = plane === Plane.x ? 'X' : 'Y';
+
+	if (icache.get('swiping')) {
+		translate =
+			align === 'left' || align === 'top'
+				? `-${icache.getOrSet('transform', 0)}`
+				: `${icache.getOrSet('transform', 0)}`;
+	}
+
+	const contentStyles = {
+		transform: translate ? `translate${translateAxis}(${translate}%)` : undefined,
+		width: plane === Plane.x ? `${width}px` : undefined,
+		height: plane === Plane.y ? `${width}px` : undefined
+	};
+
+	const alignCss: { [key: string]: any } = themeCss;
+	const slide = icache.get('slide');
+
+	const contentClasses = [
+		alignCss[align],
+		open ? themeCss.open : null,
+		slide === Slide.in ? themeCss.slideIn : null,
+		slide === Slide.out ? themeCss.slideOut : null
+	];
+
+	const fixedAlignCss: { [key: string]: any } = fixedCss;
+
+	const fixedContentClasses = [
+		open ? fixedCss.openFixed : null,
+		fixedAlignCss[`${align}Fixed`],
+		slide === Slide.in ? fixedCss.slideInFixed : null,
+		slide === Slide.out ? fixedCss.slideOutFixed : null
+	];
+
+	if (!closeText) {
+		const { messages } = i18n.localize(commonBundle);
+		closeText = `${messages.close} ${title}`;
+	}
+
+	const getDelta = (event: PointerEvent, eventType: string) => {
+		const { align = 'left' } = properties();
+		const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
+
+		if (plane === Plane.x) {
+			const currentX = event.pageX;
+			return align === 'right'
+				? currentX - icache.getOrSet('initialPosition', 0)
+				: icache.getOrSet('initialPosition', 0) - currentX;
 		} else {
-			const currentY =
-				event.type === eventType ? event.changedTouches[0].screenY : event.pageY;
-			return align === Align.bottom
-				? currentY - this._initialPosition
-				: this._initialPosition - currentY;
+			const currentY = event.pageY;
+			return align === 'bottom'
+				? currentY - icache.getOrSet('initialPosition', 0)
+				: icache.getOrSet('initialPosition', 0) - currentY;
 		}
-	}
+	};
 
-	private _onCloseClick(event: MouseEvent) {
-		event.stopPropagation();
-		const { onRequestClose } = this.properties;
-		onRequestClose && onRequestClose();
-	}
+	const swipeStart = (event: PointerEvent) => {
+		const { align = 'left' } = properties();
 
-	private _onSwipeStart(event: MouseEvent & TouchEvent) {
+		const plane = align === 'left' || align === 'right' ? Plane.x : Plane.y;
+
 		event.stopPropagation();
-		this._swiping = true;
+		icache.set('swiping', true);
 		// Cache initial pointer position
-		if (this.plane === Plane.x) {
-			this._initialPosition =
-				event.type === 'touchstart' ? event.changedTouches[0].screenX : event.pageX;
+		if (plane === Plane.x) {
+			icache.set('initialPosition', event.pageX);
 		} else {
-			this._initialPosition =
-				event.type === 'touchstart' ? event.changedTouches[0].screenY : event.pageY;
+			icache.set('initialPosition', event.pageY);
 		}
 
 		// Clear out the last transform applied
-		this._transform = 0;
-	}
+		icache.set('transform', 0);
+	};
 
-	private _onSwipeMove(event: MouseEvent & TouchEvent) {
+	const swipeMove = (event: PointerEvent) => {
 		event.stopPropagation();
-		// Ignore mouse movement when not swiping
-		if (!this._swiping) {
+		// Ignore pointer movement when not swiping
+		if (!icache.get('swiping')) {
 			return;
 		}
-		this._hasMoved = true;
 
-		const { width = DEFAULT_WIDTH } = this.properties;
+		event.preventDefault();
+		icache.set('hasMoved', true);
 
-		const delta = this._getDelta(event, 'touchmove');
+		const { width = DEFAULT_WIDTH } = properties();
+
+		const delta = getDelta(event, 'touchmove');
 
 		// Prevent pane from sliding past screen edge
 		if (delta >= 0) {
-			this._transform = (100 * delta) / width;
-			this.invalidate();
+			icache.set('transform', (100 * delta) / width);
+			icache.set('slide', undefined);
 		}
-	}
+	};
 
-	private _onSwipeEnd(event: MouseEvent & TouchEvent) {
+	const swipeEnd = (event: PointerEvent) => {
 		event.stopPropagation();
-		this._swiping = false;
-		this._hasMoved = false;
+		icache.set('swiping', false);
+		icache.set('hasMoved', false);
 
-		const { onRequestClose, width = DEFAULT_WIDTH } = this.properties;
+		const { onRequestClose, width = DEFAULT_WIDTH } = properties();
 
-		const delta = this._getDelta(event, 'touchend');
+		const delta = getDelta(event, 'touchend');
 
 		// If the pane was swiped far enough to close
 		if (delta > width / 2) {
@@ -163,166 +208,69 @@ export class SlidePane extends I18nMixin(ThemedMixin(WidgetBase))<SlidePanePrope
 		// If pane was not swiped far enough to close
 		else if (delta > 0) {
 			// Animate the pane back open
-			this._slide = Slide.in;
-			this.invalidate();
+			icache.set('slide', Slide.in);
 		}
-	}
+	};
 
-	private _onUnderlayMouseUp(event: MouseEvent & TouchEvent) {
-		const { onRequestClose } = this.properties;
-		if (this._hasMoved === false) {
+	const onCloseClick = (event: MouseEvent) => {
+		event.stopPropagation();
+		const { onRequestClose } = properties();
+		onRequestClose && onRequestClose();
+	};
+
+	const onUnderlayMouseUp = () => {
+		const { onRequestClose } = properties();
+		if (icache.getOrSet('hasMoved', false) === false) {
 			onRequestClose && onRequestClose();
 		}
-	}
+	};
 
-	protected getContent(): DNode {
-		return v(
-			'div',
-			{ classes: [this.theme(css.content), fixedCss.contentFixed] },
-			this.children
-		);
-	}
+	const titleId = icache.getOrSet('titleId', uuid());
 
-	protected getStyles(): { [index: string]: string | undefined } {
-		const { align = Align.left, width = DEFAULT_WIDTH } = this.properties;
-
-		let translate = '';
-		const translateAxis = this.plane === Plane.x ? 'X' : 'Y';
-
-		if (this._swiping) {
-			translate =
-				align === Align.left || align === Align.top
-					? `-${this._transform}`
-					: `${this._transform}`;
-		}
-
-		return {
-			transform: translate ? `translate${translateAxis}(${translate}%)` : undefined,
-			width: this.plane === Plane.x ? `${width}px` : undefined,
-			height: this.plane === Plane.y ? `${width}px` : undefined
-		};
-	}
-
-	protected getFixedModifierClasses(): (string | null)[] {
-		const { align = Align.left, open = false } = this.properties;
-		const alignCss: { [key: string]: any } = fixedCss;
-
-		return [
-			open ? fixedCss.openFixed : null,
-			alignCss[`${align}Fixed`],
-			this._slide === Slide.in ? fixedCss.slideInFixed : null,
-			this._slide === Slide.out ? fixedCss.slideOutFixed : null
-		];
-	}
-
-	protected getModifierClasses(): (string | null)[] {
-		const { align = Align.left, open = false } = this.properties;
-		const alignCss: { [key: string]: any } = css;
-
-		return [
-			alignCss[align],
-			open ? css.open : null,
-			this._slide === Slide.in ? css.slideIn : null,
-			this._slide === Slide.out ? css.slideOut : null
-		];
-	}
-
-	protected renderTitle(): DNode {
-		const { title = '' } = this.properties;
-		return v('div', { id: this._titleId }, [title]);
-	}
-
-	protected renderUnderlay(): DNode {
-		const { underlay = false } = this.properties;
-		return v('div', {
-			classes: [this.theme(underlay ? css.underlayVisible : null), fixedCss.underlay],
-			enterAnimation: animations.fadeIn,
-			exitAnimation: animations.fadeOut,
-			onmouseup: this._onUnderlayMouseUp,
-			ontouchend: this._onUnderlayMouseUp,
-			key: 'underlay'
-		});
-	}
-
-	protected render(): DNode {
-		let { aria = {}, closeText, open = false, title = '', theme, classes } = this.properties;
-
-		const contentStyles = this.getStyles();
-		const contentClasses = this.getModifierClasses();
-		const fixedContentClasses = this.getFixedModifierClasses();
-
-		if (!closeText) {
-			const { messages } = this.localizeBundle(commonBundle);
-			closeText = `${messages.close} ${title}`;
-		}
-
-		// This is a side-effect of rendering, it clears the slide styles for the next render.
-		this._slide = undefined;
-
-		return v(
-			'div',
-			{
-				'aria-labelledby': this._titleId,
-				classes: this.theme(css.root),
-				onmousedown: this._onSwipeStart,
-				onmousemove: this._onSwipeMove,
-				onmouseup: this._onSwipeEnd,
-				ontouchend: this._onSwipeEnd,
-				ontouchmove: this._onSwipeMove,
-				ontouchstart: this._onSwipeStart
-			},
-			[
-				open ? this.renderUnderlay() : null,
-				v(
-					'div',
-					{
-						...formatAriaProperties(aria),
-						key: 'content',
-						classes: [
-							...this.theme([css.pane, ...contentClasses]),
-							fixedCss.paneFixed,
-							...fixedContentClasses
-						],
-						transitionend: this.invalidate,
-						styles: contentStyles
-					},
-					[
-						title
-							? v(
-									'div',
-									{
-										classes: this.theme(css.title),
-										key: 'title'
-									},
-									[
-										this.renderTitle(),
-										v(
-											'button',
-											{
-												classes: this.theme(css.close),
-												type: 'button',
-												onclick: this._onCloseClick
-											},
-											[
-												closeText,
-												v('span', { classes: this.theme(css.closeIcon) }, [
-													w(Icon, {
-														type: 'closeIcon',
-														theme,
-														classes
-													})
-												])
-											]
-										)
-									]
-							  )
-							: null,
-						this.getContent()
-					]
-				)
-			]
-		);
-	}
-}
+	return (
+		<div
+			aria-labelledby={titleId}
+			classes={themeCss.root}
+			onpointerdown={swipeStart}
+			onpointermove={swipeMove}
+			onpointerup={swipeEnd}
+			onpointercancel={swipeEnd}
+		>
+			{open ? (
+				<div
+					key="underlay"
+					classes={[underlay ? themeCss.underlayVisible : null, fixedCss.underlay]}
+					enterAnimation={animations.fadeIn}
+					exitAnimation={animations.fadeOut}
+					onpointerup={onUnderlayMouseUp}
+				/>
+			) : null}
+			<div
+				{...formatAriaProperties(aria)}
+				key="content"
+				classes={[
+					themeCss.pane,
+					...contentClasses,
+					fixedCss.paneFixed,
+					...fixedContentClasses
+				]}
+				styles={contentStyles}
+			>
+				{title ? (
+					<div classes={themeCss.title} key="title">
+						<div id={titleId}>{title}</div>
+						<button classes={themeCss.close} type="button" onclick={onCloseClick}>
+							{closeText}
+							<span classes={themeCss.closeIcon}>
+								<Icon type="closeIcon" />
+							</span>
+						</button>
+					</div>
+				) : null}
+				<div classes={[themeCss.content, fixedCss.contentFixed]}>{children()}</div>
+			</div>
+		</div>
+	);
+});
 
 export default SlidePane;
