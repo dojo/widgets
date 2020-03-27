@@ -55,7 +55,7 @@ export default factory(function FetchedResource({ middleware: { icache } }) {
 				}}
 				itemsInView={10}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>{' '}
+			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
 	);
 });

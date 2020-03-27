@@ -26,7 +26,7 @@ export default factory(function CustomTransformer({ middleware: { icache } }) {
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>{' '}
+			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
 	);
 });
