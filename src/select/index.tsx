@@ -18,7 +18,7 @@ import {
 import theme from '../middleware/theme';
 import { PopupPosition } from '../popup';
 import TriggerPopup from '../trigger-popup';
-import * as menuCss from '../theme/default/list.m.css';
+import * as listCss from '../theme/default/list.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
@@ -246,12 +246,11 @@ export const Select = factory(function Select({
 									initialValue={value}
 									itemsInView={itemsInView}
 									theme={theme.compose(
-										menuCss,
+										listCss,
 										css,
 										'menu'
 									)}
 									classes={classes}
-									menu
 									widgetId={menuId}
 								>
 									{itemRenderer}

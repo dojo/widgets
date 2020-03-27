@@ -86,7 +86,6 @@ const menuTemplate = assertionTemplate(() => (
 			itemsInView={6}
 			theme={{}}
 			classes={undefined}
-			menu
 			widgetId={'test'}
 		/>
 	</div>
