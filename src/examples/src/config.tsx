@@ -187,6 +187,7 @@ import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
+import BasicGlobalEvent from './widgets/global-event/Basic';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -625,6 +626,15 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicForm
+				}
+			}
+		},
+		'global-event': {
+			filename: 'index',
+			overview: {
+				example: {
+					module: BasicGlobalEvent,
+					filename: 'Basic'
 				}
 			}
 		},
