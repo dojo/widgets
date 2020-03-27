@@ -3,6 +3,7 @@ import coreTheme, {
 	ThemeProperties as CoreThemeProperties
 } from '@dojo/framework/core/middleware/theme';
 import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
+import { ThemeWithVariant } from '@dojo/framework/core/interfaces';
 
 const factory = create({ coreTheme });
 export const THEME_KEY = ' _key';
@@ -23,7 +24,7 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 			baseCss: B,
 			css: T,
 			prefix?: string
-		): Theme => {
+		): Theme | ThemeWithVariant => {
 			const theme = properties().theme || coreTheme.get();
 			const baseKey = baseCss[THEME_KEY];
 			const variantKey = css[THEME_KEY];
