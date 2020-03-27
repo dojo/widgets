@@ -8,6 +8,7 @@
 		"widgets": [
 			"src/accordion-pane",
 			"src/avatar",
+			"src/breadcrumb-group",
 			"src/button",
 			"src/calendar",
 			"src/card",

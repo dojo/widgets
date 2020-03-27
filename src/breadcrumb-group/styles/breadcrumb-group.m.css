@@ -1,0 +1,12 @@
+.listFixed,
+.breadcrumbFixed,
+.separatorFixed {
+	align-items: center;
+	display: flex;
+}
+
+.listFixed {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}

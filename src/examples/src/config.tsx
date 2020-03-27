@@ -8,6 +8,8 @@ import AvatarSize from './widgets/avatar/Size';
 import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
 import Exclusive from './widgets/accordion-pane/Exclusive';
+import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
+import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import ToggleButton from './widgets/button/ToggleButton';
@@ -258,6 +260,22 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicAvatar
+				}
+			}
+		},
+		'breadcrumb-group': {
+			examples: [
+				{
+					filename: 'CustomRenderer',
+					module: CustomRendererBreadcrumbGroup,
+					title: 'Custom Renderer'
+				}
+			],
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicBreadcrumbGroup
 				}
 			}
 		},
