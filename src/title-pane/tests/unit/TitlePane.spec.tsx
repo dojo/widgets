@@ -1,4 +1,6 @@
 const { describe, it } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
+
 import * as fixedCss from '../../styles/title-pane.m.css';
 import * as themeCss from '../../../theme/default/title-pane.m.css';
 import Icon from '../../../icon';
@@ -6,6 +8,7 @@ import TitlePane, { TitlePaneProperties } from '../../index';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
+import { stub } from 'sinon';
 
 const noop = () => {};
 
@@ -159,5 +162,37 @@ describe('TitlePane', () => {
 		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
 
 		h.expect(getTemplate().setProperty('@title-button', 'aria-expanded', 'false'));
+	});
+
+	it('calls onOpen', () => {
+		const onOpen = stub();
+
+		const h = harness(() => (
+			<TitlePane onOpen={onOpen}>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+
+		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
+		assert.isTrue(onOpen.called);
+	});
+
+	it('calls onClose', () => {
+		const onClose = stub();
+
+		const h = harness(() => (
+			<TitlePane initialOpen onClose={onClose}>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+
+		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
+		assert.isTrue(onClose.called);
 	});
 });
