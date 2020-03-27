@@ -1,6 +1,7 @@
 import global from '@dojo/framework/shim/global';
 import { create, destroy, diffProperty } from '@dojo/framework/core/vdom';
 import { shallow } from '@dojo/framework/core/diff';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 export interface ListenerObject {
 	[index: string]: (event?: any) => void;
@@ -18,16 +19,27 @@ export interface RegisteredListeners {
 	document: ListenerObject;
 }
 
+interface GlobalEventICache {
+	listeners: {
+		window: {};
+		document: {};
+	};
+}
+
 const factory = create({
 	destroy,
-	diffProperty
+	diffProperty,
+	icache: createICacheMiddleware<GlobalEventICache>()
 }).properties<GlobalEventProperties>();
 
-export const GlobalEvent = factory(function({ children, middleware: { destroy, diffProperty } }) {
-	const listeners: RegisteredListeners = {
+export const GlobalEvent = factory(function({
+	children,
+	middleware: { destroy, diffProperty, icache }
+}) {
+	const listeners: RegisteredListeners = icache.getOrSet('listeners', {
 		window: {},
 		document: {}
-	};
+	});
 
 	const registerListeners = (
 		type: 'window' | 'document',
@@ -60,6 +72,8 @@ export const GlobalEvent = factory(function({ children, middleware: { destroy, d
 				}
 			});
 		listeners[type] = registeredListeners;
+
+		icache.set('listeners', listeners);
 	};
 
 	const removeAllRegisteredListeners = (type: 'window' | 'document') => {
