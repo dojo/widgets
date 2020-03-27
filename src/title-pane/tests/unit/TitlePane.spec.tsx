@@ -124,4 +124,40 @@ describe('TitlePane', () => {
 			})
 		);
 	});
+
+	it('opens a closed pane', () => {
+		const h = harness(() => (
+			<TitlePane>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+
+		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
+
+		h.expect(
+			getTemplate({ initialOpen: true }).setProperty('@content', 'classes', [
+				themeCss.content,
+				null,
+				fixedCss.contentFixed
+			])
+		);
+	});
+
+	it('closes an open pane', () => {
+		const h = harness(() => (
+			<TitlePane initialOpen>
+				{{
+					title: () => 'title',
+					content: () => 'content'
+				}}
+			</TitlePane>
+		));
+
+		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
+
+		h.expect(getTemplate().setProperty('@title-button', 'aria-expanded', 'false'));
+	});
 });
