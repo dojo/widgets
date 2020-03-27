@@ -7,7 +7,6 @@ import { formatAriaProperties } from '../common/util';
 
 export interface LabelProperties {
 	/** Custom aria attributes */
-
 	aria?: { [key: string]: string | null };
 	/** If the label should be disabled */
 	disabled?: boolean;

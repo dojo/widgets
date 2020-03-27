@@ -25,14 +25,17 @@ registerSuite('Label', {
 		custom() {
 			const h = harness(() => (
 				<Label
+					active={true}
 					aria={{ describedBy: 'bar' }}
 					forId="foo"
 					disabled={true}
 					focused={true}
+					hidden={false}
 					readOnly={true}
 					required={true}
 					valid={false}
 					secondary={true}
+					widgetId="foo-id"
 				>
 					baz
 				</Label>
@@ -50,11 +53,11 @@ registerSuite('Label', {
 						css.readonly,
 						css.required,
 						css.secondary,
-						null,
+						css.active,
 						null
 					]}
 					for="foo"
-					id="label-test"
+					id="foo-id"
 				>
 					baz
 				</label>
