@@ -1,7 +1,7 @@
 import * as css from '../theme/default/accordion-pane.m.css';
 import * as titlePaneCss from '../theme/default/title-pane.m.css';
 import theme from '../middleware/theme';
-import { RenderResult, Theme } from '@dojo/framework/core/interfaces';
+import { RenderResult, Theme, ThemeWithVariant } from '@dojo/framework/core/interfaces';
 import { TitlePaneProperties } from '../title-pane';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -16,7 +16,7 @@ export interface AccordionPaneChildren {
 		onOpen: (key: string) => TitlePaneProperties['onOpen'],
 		onClose: (key: string) => TitlePaneProperties['onClose'],
 		initialOpen: (key: string) => TitlePaneProperties['initialOpen'],
-		theme: Theme
+		theme: Theme | ThemeWithVariant
 	): RenderResult;
 }
 
