@@ -1,9 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List from '@dojo/widgets/list';
+import List, { defaultTransform } from '@dojo/widgets/list';
 import Button from '@dojo/widgets/button';
 import TriggerPopup from '@dojo/widgets/trigger-popup';
+import { createMemoryTemplate } from '../list/memoryTemplate';
+import { createResource } from '@dojo/framework/core/resource';
 
 const factory = create();
+const memoryTemplate = createMemoryTemplate();
 
 export default factory(function MenuTriggerPopup() {
 	const options = [
@@ -18,7 +21,14 @@ export default factory(function MenuTriggerPopup() {
 				trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Menu Popup</Button>,
 				content: (onClose) => (
 					<div styles={{ border: '1px solid black' }}>
-						<List options={options} onValue={onClose} total={options.length} />
+						<List
+							resource={{
+								resource: () => createResource(memoryTemplate),
+								data: options
+							}}
+							transform={defaultTransform}
+							onValue={onClose}
+						/>
 					</div>
 				)
 			}}
