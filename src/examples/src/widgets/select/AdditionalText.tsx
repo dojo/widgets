@@ -1,23 +1,19 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Select, { defaultTransform } from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
-import { createResource } from '@dojo/framework/core/resource';
-import { createMemoryTemplate } from '../list/memoryTemplate';
+import { createMemoryResourceWithData } from '../list/memoryTemplate';
 
 const factory = create({ icache });
 const options = [{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }];
 
-const memoryTemplate = createMemoryTemplate();
+const resource = createMemoryResourceWithData(options);
 
 export default factory(function AdditionalText({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
 				label="Additional Text"
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: options
-				}}
+				resource={resource}
 				transform={defaultTransform}
 				onValue={(value) => {
 					icache.set('value', value);

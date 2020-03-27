@@ -2,20 +2,16 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List, { defaultTransform } from '@dojo/widgets/list';
 import states from './states';
 import icache from '@dojo/framework/core/middleware/icache';
-import { createMemoryTemplate } from './memoryTemplate';
-import { createResource } from '@dojo/framework/core/resource';
+import { createMemoryResourceWithData } from './memoryTemplate';
 
 const factory = create({ icache });
-const memoryTemplate = createMemoryTemplate();
+const resource = createMemoryResourceWithData(states);
 
 export default factory(function ItemRenderer({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<List
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: states
-				}}
+				resource={resource}
 				transform={defaultTransform}
 				onValue={(value) => {
 					icache.set('value', value);
