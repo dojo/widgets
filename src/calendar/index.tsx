@@ -3,7 +3,7 @@ import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
-import { monthInMin, monthInMax, isOutOfDateRange } from './date-utils';
+import { monthInMin, monthInMax, isOutOfDateRange, toDate } from './date-utils';
 import CalendarCell from './CalendarCell';
 import DatePicker, { Paging } from './DatePicker';
 import Icon from '../icon/index';
@@ -12,7 +12,7 @@ import * as css from '../theme/default/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 
 import theme from '../middleware/theme';
-import icache from '@dojo/framework/core/middleware/icache';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
 
@@ -37,24 +37,30 @@ export interface CalendarProperties {
 	maxDate?: Date;
 	/** Set the earliest date the calendar will display (it will show the whole month but not allow previous selections) */
 	minDate?: Date;
-	/** Set the currently displayed month, 0-based */
-	month?: number;
 	/** Customize or internationalize full month names and abbreviations */
 	monthNames?: { short: string; long: string }[];
-	/** Function called when the user selects a date */
-	onDateSelect?(date: Date): void;
 	/** Function called when the month changes */
 	onMonthChange?(month: number): void;
 	/** Function called when the year changes */
 	onYearChange?(year: number): void;
-	/** The currently selected date */
-	selectedDate?: Date;
 	/** Customize or internationalize weekday names and abbreviations */
 	weekdayNames?: { short: string; long: string }[];
-	/** Set the currently displayed year */
-	year?: number;
 	/** Configure the first day of the calendar week, defaults to 0 (sunday) */
 	firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+	/** The initial value */
+	initialValue?: Date;
+	/** Function called when the user selects a date */
+	onValue?: (value: Date) => void;
+}
+
+export interface CalendarIcache {
+	value?: Date;
+	initialValue?: Date;
+	callDateFocus?: boolean;
+	focusedDay: number;
+	monthLabelId: string;
+	popupOpen?: boolean;
+	selectedDate: Date;
 }
 
 export interface CalendarChildren {
@@ -94,35 +100,55 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 	{ short: 'satShort', long: 'saturday' }
 ];
 
-const factory = create({ icache, i18n, theme, focus })
+const factory = create({
+	icache: createICacheMiddleware<CalendarIcache>(),
+	i18n,
+	theme,
+	focus
+})
 	.properties<CalendarProperties>()
 	.children<CalendarChildren | undefined>();
 
 export const Calendar = factory(function Calendar({
 	middleware: { icache, i18n, theme, focus },
 	properties,
+	id,
 	children
 }) {
 	const themeCss = theme.classes(css);
 	const { messages: commonMessages } = i18n.localize(commonBundle);
-	const callDateFocus = icache.getOrSet('callDateFocus', false);
-	const defaultDate = icache.getOrSet('defaultDate', new Date());
-	const focusedDay = icache.getOrSet('focusedDay', 1);
-	const monthLabelId = icache.getOrSet('monthLabelId', uuid());
-	const popupOpen = icache.getOrSet('popupOpen', false);
-	const shouldFocus = focus.shouldFocus();
 
 	const {
 		labels = i18n.localize(calendarBundle).messages,
 		aria = {},
-		selectedDate,
 		minDate,
 		maxDate,
+		initialValue,
 		weekdayNames = getWeekdays(commonMessages),
 		firstDayOfWeek = 0
 	} = properties();
 
 	const { monthLabel, weekdayCell } = children()[0] || ({} as CalendarChildren);
+
+	const existingInitialValue = icache.getOrSet('initialValue', new Date());
+	const callDateFocus = icache.getOrSet('callDateFocus', false);
+	const focusedDay = icache.getOrSet('focusedDay', 1);
+	const monthLabelId = icache.getOrSet('monthLabelId', id);
+	const popupOpen = icache.getOrSet('popupOpen', false);
+	const shouldFocus = focus.shouldFocus();
+	let value = icache.get('value') || new Date();
+	let selectedDate = icache.getOrSet('selectedDate', value);
+	console.log('focusedDay', focusedDay);
+
+	if (initialValue !== existingInitialValue) {
+		value = toDate(initialValue);
+		selectedDate = toDate(value.getTime());
+		if (isOutOfDateRange(value, minDate, maxDate)) {
+			value = toDate(maxDate);
+		}
+		icache.set('initialValue', toDate(initialValue));
+		onValueChange(value);
+	}
 
 	const { year, month } = getMonthYear();
 
@@ -137,10 +163,18 @@ export const Calendar = factory(function Calendar({
 		</th>
 	));
 
+	function onValueChange(newValue: Date) {
+		const { onValue } = properties();
+		icache.set('value', newValue);
+		icache.set('selectedDate', toDate(newValue.getTime()));
+		onValue && onValue(newValue);
+	}
+
 	function getMonthLength(month: number, year: number) {
 		const lastDate = new Date(year, month + 1, 0);
 		return lastDate.getDate();
 	}
+
 	function getMonths(commonMessages: typeof commonBundle.messages) {
 		return DEFAULT_MONTHS.map((month) => ({
 			short: commonMessages[month.short],
@@ -149,11 +183,10 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function getMonthYear() {
-		const { month, selectedDate = defaultDate, year } = properties();
-
+		const value = icache.get('selectedDate') || new Date();
 		return {
-			month: typeof month === 'number' ? month : selectedDate.getMonth(),
-			year: typeof year === 'number' ? year : selectedDate.getFullYear()
+			month: value.getMonth(),
+			year: value.getFullYear()
 		};
 	}
 
@@ -184,7 +217,6 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function onDateClick(date: number, disabled: boolean) {
-		const { onDateSelect } = properties();
 		let { month, year } = getMonthYear();
 
 		if (disabled) {
@@ -192,7 +224,8 @@ export const Calendar = factory(function Calendar({
 			icache.set('callDateFocus', true);
 		}
 		icache.set('focusedDay', date);
-		onDateSelect && onDateSelect(new Date(year, month, date));
+		const dateValue = new Date(year, month, date);
+		onValueChange(dateValue);
 	}
 
 	function onDateFocusCalled() {
@@ -229,37 +262,30 @@ export const Calendar = factory(function Calendar({
 				break;
 			case Keys.Enter:
 			case Keys.Space:
-				const { onDateSelect } = properties();
-				onDateSelect && onDateSelect(new Date(year, month, focusedDay));
+				onValueChange(new Date(year, month, focusedDay));
 		}
 	}
 
 	function onMonthDecrement() {
-		const { month, year } = getMonthYear();
-		const { onMonthChange, onYearChange } = properties();
+		let { month, year } = getMonthYear();
 
-		if (month === 0) {
-			onMonthChange && onMonthChange(11);
-			onYearChange && onYearChange(year - 1);
-			return { month: 11, year: year - 1 };
-		}
-
-		onMonthChange && onMonthChange(month - 1);
-		return { month: month - 1, year: year };
+		year = month === 0 ? year - 1 : year;
+		month = month === 0 ? 11 : month - 1;
+		selectedDate.setMonth(month);
+		selectedDate.setFullYear(year);
+		icache.set('selectedDate', selectedDate);
+		return { month, year };
 	}
 
 	function onMonthIncrement() {
-		const { month, year } = getMonthYear();
-		const { onMonthChange, onYearChange } = properties();
+		let { month, year } = getMonthYear();
 
-		if (month === 11) {
-			onMonthChange && onMonthChange(0);
-			onYearChange && onYearChange(year + 1);
-			return { month: 0, year: year + 1 };
-		}
-
-		onMonthChange && onMonthChange(month + 1);
-		return { month: month + 1, year: year };
+		year = month === 11 ? year + 1 : year;
+		month = month === 11 ? 0 : month + 1;
+		selectedDate.setMonth(month);
+		selectedDate.setFullYear(year);
+		icache.set('selectedDate', selectedDate);
+		return { month, year };
 	}
 
 	function onMonthPageDown(event: MouseEvent) {
@@ -386,8 +412,6 @@ export const Calendar = factory(function Calendar({
 			monthNames = getMonths(commonMessages),
 			theme,
 			classes,
-			onMonthChange,
-			onYearChange,
 			minDate,
 			maxDate
 		} = properties();
@@ -410,10 +434,12 @@ export const Calendar = factory(function Calendar({
 					icache.set('popupOpen', open);
 				}}
 				onRequestMonthChange={(requestMonth: number) => {
-					onMonthChange && onMonthChange(requestMonth);
+					selectedDate.setMonth(requestMonth);
+					icache.set('selectedDate', selectedDate);
 				}}
 				onRequestYearChange={(requestYear: number) => {
-					onYearChange && onYearChange(requestYear);
+					selectedDate.setFullYear(requestYear);
+					icache.set('selectedDate', selectedDate);
 				}}
 			/>
 		);
@@ -457,7 +483,7 @@ export const Calendar = factory(function Calendar({
 				<thead>
 					<tr>{weekdays}</tr>
 				</thead>
-				<tbody>{renderDateGrid(selectedDate)}</tbody>
+				<tbody>{renderDateGrid(value)}</tbody>
 			</table>
 			<div classes={[themeCss.controls, popupOpen ? baseCss.visuallyHidden : null]}>
 				<button
