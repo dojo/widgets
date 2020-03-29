@@ -4,11 +4,11 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import Icon from '@dojo/widgets/icon';
-import Radio from '@dojo/widgets/radio';
-import RadioGroup from '@dojo/widgets/radio-group';
-import * as baseCss from '../common/styles/base.m.css';
+import Icon from '../icon';
+import Radio from '../radio';
+import RadioGroup from '../radio-group';
 import theme from '../middleware/theme';
+import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import * as radioCss from '../theme/default/radio.m.css';
 import * as radioGroupCss from '../theme/default/radio-group.m.css';
@@ -154,11 +154,13 @@ export const Rate = factory(function Rate({
 
 	return (
 		<div
+			key="radioGroupWrapper"
 			classes={[root, readOnly ? readOnlyClasses : null, disabled ? disabledClasses : null]}
 			onpointerenter={() => interaction && icache.set('hovering', true)}
 			onpointerleave={() => interaction && icache.set('hovering', false)}
 		>
 			<RadioGroup
+				key="radioGroup"
 				initialValue={initialValue}
 				label={label}
 				name={name}
@@ -213,7 +215,7 @@ export const Rate = factory(function Rate({
 									const styles: Partial<CSSStyleDeclaration> = {};
 									const classes: string[] = [];
 									const radioClasses: string[] = [];
-									if (stepsLength > 1) {
+									if (integer > 0 && stepsLength > 1) {
 										if (step > 1) {
 											classes.push(partialCharacter);
 											radioClasses.push(partialRadio);
@@ -247,6 +249,7 @@ export const Rate = factory(function Rate({
 										>
 											<Radio
 												widgetId={id}
+												key="radio"
 												name={name}
 												checked={checked()}
 												disabled={!interaction}
@@ -267,7 +270,10 @@ export const Rate = factory(function Rate({
 												}}
 												label={
 													<virtual>
-														<span classes={baseCss.visuallyHidden}>
+														<span
+															key="radioLabel"
+															classes={baseCss.visuallyHidden}
+														>
 															{format(
 																'starLabels',
 																mixedNumber(
