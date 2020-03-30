@@ -25,8 +25,6 @@ export interface RateProperties {
 	name: string;
 	/** The label to be displayed in the legend */
 	label?: string;
-	/** The id used for the radio input elements */
-	widgetId?: string;
 	/** The initial rating value */
 	initialValue?: number;
 	/** Callback fired when the rating value changes */
