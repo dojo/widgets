@@ -1,11 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
-import ContextMenu from '@dojo/widgets/context-menu';
+import ContextMenu, { defaultTransform } from '@dojo/widgets/context-menu';
+import { createMemoryResourceWithData } from '../list/memoryTemplate';
 
 const factory = create({ icache });
+const options = [{ value: 'print', label: 'Print' }, { value: 'delete', label: 'Delete' }];
+const resource = createMemoryResourceWithData(options);
 
 export default factory(function Basic({ middleware: { icache } }) {
-	const options = [{ value: 'print', label: 'Print' }, { value: 'delete', label: 'Delete' }];
 	const text = icache.getOrSet(
 		'text',
 		'This is some text that has a context menu. Right click to view the context menu and take an action on selected text'
@@ -15,7 +17,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<ContextMenu
-				options={options}
+				resource={resource}
+				transform={defaultTransform}
 				onSelect={(value) => {
 					const selection = window.getSelection() || '';
 					if (value === 'print') {

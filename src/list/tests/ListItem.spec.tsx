@@ -2,8 +2,8 @@ import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
-import * as css from '../../theme/default/list-box-item.m.css';
-import ListBoxItem from '../ListBoxItem';
+import * as css from '../../theme/default/list-item.m.css';
+import ListItem from '../Listitem';
 const { describe, it, after } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
@@ -33,18 +33,18 @@ describe('ListBoxItem', () => {
 
 	it('renders with a label', () => {
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" onRequestActive={noop} onSelect={noop}>
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		h.expect(template);
 	});
 
 	it('renders selected', () => {
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" selected onRequestActive={noop} onSelect={noop}>
+			<ListItem widgetId="test" selected onRequestActive={noop} onSelect={noop}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		const selectedTemplate = template
 			.setProperty('@root', 'classes', [css.root, css.selected, false, false])
@@ -54,9 +54,9 @@ describe('ListBoxItem', () => {
 
 	it('renders disabled', () => {
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" disabled onRequestActive={noop} onSelect={noop}>
+			<ListItem widgetId="test" disabled onRequestActive={noop} onSelect={noop}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		const disabledTemplate = template
 			.setProperty('@root', 'classes', [css.root, false, false, css.disabled])
@@ -66,9 +66,9 @@ describe('ListBoxItem', () => {
 
 	it('renders active', () => {
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" active onRequestActive={noop} onSelect={noop}>
+			<ListItem widgetId="test" active onRequestActive={noop} onSelect={noop}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		const activeTemplate = template.setProperty('@root', 'classes', [
 			css.root,
@@ -82,9 +82,9 @@ describe('ListBoxItem', () => {
 	it('requests active onpointermove', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" onRequestActive={onRequestActive} onSelect={noop}>
+			<ListItem widgetId="test" onRequestActive={onRequestActive} onSelect={noop}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		h.trigger('@root', 'onpointermove');
 		assert.isTrue(onRequestActive.calledOnce);
@@ -93,9 +93,9 @@ describe('ListBoxItem', () => {
 	it('does not request active onpointermove when disabled', () => {
 		const onRequestActive = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" disabled onRequestActive={onRequestActive} onSelect={noop}>
+			<ListItem widgetId="test" disabled onRequestActive={onRequestActive} onSelect={noop}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		h.trigger('@root', 'onpointermove');
 		assert.isTrue(onRequestActive.notCalled);
@@ -104,9 +104,9 @@ describe('ListBoxItem', () => {
 	it('calls onSelect onpointerdown', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" onRequestActive={noop} onSelect={onSelect}>
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={onSelect}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		h.trigger('@root', 'onpointerdown');
 		assert.isTrue(onSelect.calledOnce);
@@ -115,9 +115,9 @@ describe('ListBoxItem', () => {
 	it('does not call onSelect onpointerdown when disabled', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
-			<ListBoxItem widgetId="test" disabled onRequestActive={noop} onSelect={onSelect}>
+			<ListItem widgetId="test" disabled onRequestActive={noop} onSelect={onSelect}>
 				test
-			</ListBoxItem>
+			</ListItem>
 		));
 		h.trigger('@root', 'onpointerdown');
 		assert.isTrue(onSelect.notCalled);

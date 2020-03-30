@@ -2,17 +2,23 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
 import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../common/util';
 import HelperText from '../helper-text';
 import Icon from '../icon';
 import Label from '../label';
-import { ItemRendererProperties, Menu, MenuOption } from '../menu';
+import {
+	ItemRendererProperties,
+	List,
+	ListOption,
+	defaultTransform as listTransform
+} from '../list';
 import theme from '../middleware/theme';
 import { PopupPosition } from '../popup';
 import TriggerPopup from '../trigger-popup';
-import * as menuCss from '../theme/default/menu.m.css';
+import * as listCss from '../theme/default/list.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
@@ -24,8 +30,6 @@ export interface SelectProperties {
 	onValue(value: string): void;
 	/** The initial selected value */
 	initialValue?: string;
-	/** Options to display within the menu */
-	options: MenuOption[];
 	/** Property to determine how many items to render. Defaults to 6 */
 	itemsInView?: number;
 	/** placement of the select menu; 'above' or 'below' */
@@ -51,6 +55,8 @@ export interface SelectChildren {
 	(properties: ItemRendererProperties): RenderResult;
 }
 
+export const defaultTransform = listTransform;
+
 interface SelectICache {
 	dirty: boolean;
 	expanded: boolean;
@@ -64,14 +70,14 @@ interface SelectICache {
 
 const icache = createICacheMiddleware<SelectICache>();
 
-const factory = create({ icache, focus, theme, i18n })
+const factory = create({ icache, focus, theme, i18n, data: createDataMiddleware<ListOption>() })
 	.properties<SelectProperties>()
 	.children<SelectChildren | undefined>();
 
 export const Select = factory(function Select({
 	children,
 	properties,
-	middleware: { icache, focus, theme, i18n }
+	middleware: { icache, focus, theme, i18n, data }
 }) {
 	const {
 		classes,
@@ -82,11 +88,12 @@ export const Select = factory(function Select({
 		label,
 		onValidate,
 		onValue,
-		options,
 		placeholder = '',
 		position,
 		required,
-		name
+		name,
+		resource,
+		transform
 	} = properties();
 	const [itemRenderer] = children();
 
@@ -104,6 +111,7 @@ export const Select = factory(function Select({
 	let valid = icache.get('valid');
 	const dirty = icache.get('dirty');
 	const { messages } = i18n.localize(bundle);
+	const { get, getOptions } = data();
 
 	if (required && dirty) {
 		const isValid = value !== undefined;
@@ -164,7 +172,11 @@ export const Select = factory(function Select({
 							}
 						}
 
-						const valueOption = find(options, (option) => option.value === value);
+						let valueOption: ListOption | undefined;
+						const currentOptions = get(getOptions());
+						if (currentOptions && currentOptions.length) {
+							valueOption = find(currentOptions, (option) => option.value === value);
+						}
 
 						return (
 							<button
@@ -218,11 +230,11 @@ export const Select = factory(function Select({
 
 						return (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
-								<Menu
+								<List
 									key="menu"
 									focus={() => focusNode === 'menu' && shouldFocus}
-									options={options}
-									total={options.length}
+									resource={resource}
+									transform={transform}
 									onValue={(value: string) => {
 										focus.focus();
 										closeMenu();
@@ -234,16 +246,15 @@ export const Select = factory(function Select({
 									initialValue={value}
 									itemsInView={itemsInView}
 									theme={theme.compose(
-										menuCss,
+										listCss,
 										css,
 										'menu'
 									)}
 									classes={classes}
-									listBox
 									widgetId={menuId}
 								>
 									{itemRenderer}
-								</Menu>
+								</List>
 							</div>
 						);
 					}

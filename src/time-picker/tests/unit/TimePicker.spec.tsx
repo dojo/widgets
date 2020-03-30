@@ -1,4 +1,4 @@
-import { Menu, MenuOption } from '../../../menu';
+import { List, ListOption, defaultTransform as listTransform } from '../../../list';
 import * as sinon from 'sinon';
 
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -14,6 +14,8 @@ import select from '@dojo/framework/testing/support/selector';
 import { createHarness, compareTheme, stubEvent } from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
+import { createMemoryTemplate } from '../../../examples/src/widgets/list/memoryTemplate';
+import { createResource } from '@dojo/framework/core/resource';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
@@ -21,6 +23,8 @@ const harness = createHarness([compareTheme]);
 
 const { messages } = bundle;
 const noop = () => {};
+
+const memoryTemplate = createMemoryTemplate();
 
 function createFocusMock({
 	shouldFocus = false,
@@ -83,7 +87,7 @@ const buttonTemplate = assertionTemplate(() => {
 });
 
 function generateOptions(step: number, dateOptions: Intl.DateTimeFormatOptions = {}) {
-	const options: MenuOption[] = [];
+	const options: ListOption[] = [];
 
 	const dt = new Date(1970, 0, 1, 0, 0, 0, 0);
 	while (dt.getDate() === 1) {
@@ -114,16 +118,19 @@ const options30Minutes = generateOptions(1800, {
 const menuTemplate = assertionTemplate(() => {
 	return (
 		<div key="menu-wrapper" classes={css.menuWrapper}>
-			<Menu
+			<List
 				key="menu"
 				focus={() => false}
-				options={options30Minutes}
-				total={options30Minutes.length}
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: options30Minutes
+				}}
+				transform={listTransform}
 				onValue={noop}
 				onRequestClose={noop}
 				onBlur={noop}
 				initialValue={''}
-				listBox
+				menu
 			/>
 		</div>
 	);
@@ -373,11 +380,14 @@ describe('TimePicker', () => {
 		);
 
 		h.expect(
-			menuTemplate.setProperty(
-				'@menu',
-				'options',
-				generateOptions(60 * 30, { hour12: false, hour: 'numeric', minute: 'numeric' })
-			),
+			menuTemplate.setProperty('@menu', 'resource', {
+				resource: () => createResource(memoryTemplate),
+				data: generateOptions(60 * 30, {
+					hour12: false,
+					hour: 'numeric',
+					minute: 'numeric'
+				})
+			}),
 			() => contentResult
 		);
 	});

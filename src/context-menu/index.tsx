@@ -1,27 +1,30 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
-import Menu, { MenuOption } from '../menu/index';
-import * as menuCss from '../theme/default/menu.m.css';
+import List, { ListOption, defaultTransform as listTransform } from '../list/index';
+import * as menuCss from '../theme/default/list.m.css';
 import * as css from '../theme/default/context-menu.m.css';
 import ContextPopup from '../context-popup';
+import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
 
 export interface ContextMenuProperties {
-	/* Menu options for the context menu. Uses the same API as the menu widget */
-	options: MenuOption[];
 	/* A callback that will be called with the value of whatever item is selected */
 	onSelect(value: string): void;
 }
 
-const factory = create({ theme }).properties<ContextMenuProperties>();
+const factory = create({ theme, data: createDataMiddleware<ListOption>() }).properties<
+	ContextMenuProperties
+>();
+
+export const defaultTransform = listTransform;
 
 export const ContextMenu = factory(function({ properties, children, middleware: { theme } }) {
-	const { options, onSelect } = properties();
+	const { resource, transform, onSelect } = properties();
 	return (
 		<ContextPopup>
 			{{
 				trigger: () => children(),
 				content: ({ close, shouldFocus }) => (
-					<Menu
+					<List
 						key="menu"
 						focus={shouldFocus}
 						theme={theme.compose(
@@ -29,8 +32,9 @@ export const ContextMenu = factory(function({ properties, children, middleware: 
 							css,
 							'menu'
 						)}
-						options={options}
-						total={options.length}
+						menu
+						resource={resource}
+						transform={transform}
 						onBlur={close}
 						onRequestClose={close}
 						onValue={(value) => {

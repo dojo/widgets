@@ -3,9 +3,17 @@ import icache from '@dojo/framework/core/middleware/icache';
 
 import TabController, { Align } from '@dojo/widgets/tab-controller';
 import Tab from '@dojo/widgets/tab';
-import Select from '@dojo/widgets/select';
+import Select, { defaultTransform } from '@dojo/widgets/select';
+import { createMemoryResourceWithData } from '../list/memoryTemplate';
 
 const factory = create({ icache });
+const options = [
+	{ value: Align.top, label: 'Top' },
+	{ value: Align.left, label: 'Left' },
+	{ value: Align.right, label: 'Right' },
+	{ value: Align.bottom, label: 'Bottom' }
+];
+const resource = createMemoryResourceWithData(options);
 
 export default factory(function ButtonAlignment({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('active', 0);
@@ -14,12 +22,8 @@ export default factory(function ButtonAlignment({ middleware: { icache } }) {
 		<div>
 			<Select
 				initialValue={alignButtons}
-				options={[
-					{ value: Align.top, label: 'Top' },
-					{ value: Align.left, label: 'Left' },
-					{ value: Align.right, label: 'Right' },
-					{ value: Align.bottom, label: 'Bottom' }
-				]}
+				resource={resource}
+				transform={defaultTransform}
 				onValue={(value) => {
 					icache.set('align', value);
 				}}

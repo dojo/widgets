@@ -1,9 +1,9 @@
 import theme from '@dojo/framework/core/middleware/theme';
 import { throttle } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import * as css from '../theme/default/list-box-item.m.css';
+import * as css from '../theme/default/list-item.m.css';
 
-export interface ListBoxItemProperties {
+export interface ListItemProperties {
 	/** Callback used when the item is clicked */
 	onSelect(): void;
 	/** Property to set the selected state of the item */
@@ -18,13 +18,9 @@ export interface ListBoxItemProperties {
 	widgetId: string;
 }
 
-const factory = create({ theme }).properties<ListBoxItemProperties>();
+const factory = create({ theme }).properties<ListItemProperties>();
 
-export const ListBoxItem = factory(function ListBoxItem({
-	properties,
-	children,
-	middleware: { theme }
-}) {
+export const ListItem = factory(function ListItem({ properties, children, middleware: { theme } }) {
 	const {
 		onSelect,
 		active = false,
@@ -70,4 +66,4 @@ export const ListBoxItem = factory(function ListBoxItem({
 	);
 });
 
-export default ListBoxItem;
+export default ListItem;

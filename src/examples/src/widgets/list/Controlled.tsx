@@ -1,27 +1,21 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Menu from '@dojo/widgets/menu';
+import List, { defaultTransform } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
+import { createMemoryResourceWithData } from './memoryTemplate';
+import states from './states';
 
 const factory = create({ icache });
+const resource = createMemoryResourceWithData(states);
 
 export default factory(function Controlled({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
-
-	const options = [
-		{ value: 'Save' },
-		{ value: 'copy', label: 'Copy' },
-		{ value: 'Paste', disabled: true },
-		{ value: 'Print' },
-		{ value: 'Export' },
-		{ value: 'Share' }
-	];
 
 	return (
 		<virtual>
 			<button
 				type="button"
 				onclick={() => {
-					icache.set('activeIndex', (activeIndex - 1 + options.length) % options.length);
+					icache.set('activeIndex', (activeIndex - 1 + states.length) % states.length);
 				}}
 			>
 				UP
@@ -29,7 +23,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 			<button
 				type="button"
 				onclick={() => {
-					icache.set('activeIndex', (activeIndex + 1) % options.length);
+					icache.set('activeIndex', (activeIndex + 1) % states.length);
 				}}
 			>
 				DOWN
@@ -39,17 +33,18 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				onclick={() => {
 					const activeIndex = icache.get<number>('activeIndex');
 					if (activeIndex) {
-						const item = options[activeIndex];
-						!item.disabled && icache.set('value', options[activeIndex].value);
+						const item = states[activeIndex];
+						!item.disabled && icache.set('value', states[activeIndex].value);
 					}
 				}}
 			>
 				SELECT
 			</button>
-			<Menu
+			<List
 				focusable={false}
 				itemsInView={4}
-				options={options}
+				resource={resource}
+				transform={defaultTransform}
 				onActiveIndexChange={(index: number) => {
 					icache.set('activeIndex', index);
 				}}
@@ -57,9 +52,8 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-				total={options.length}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>{' '}
+			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
 		</virtual>
 	);
 });
