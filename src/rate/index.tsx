@@ -5,7 +5,7 @@ import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import Icon from '../icon';
 import Radio from '../radio';
-import RadioGroup from '../radio-group';
+import RadioGroup, { RadioGroupChildren } from '../radio-group';
 import theme from '../middleware/theme';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
@@ -64,6 +64,8 @@ function mixedNumber(integer: number, step: number, steps: number) {
 	}
 	return { quotient: integer, numerator: step, denominator: steps };
 }
+
+type RadioChecked = (checked?: boolean) => boolean | undefined;
 
 const factory = create({ focus, i18n, icache, theme })
 	.properties<RateProperties>()
@@ -138,6 +140,162 @@ export const Rate = factory(function Rate({
 		focus.focus();
 	};
 
+	const selected =
+		selectedInteger !== undefined && selectedStep !== undefined
+			? selectedInteger - 1 + selectedStep / stepsLength
+			: undefined;
+	const groupIsActive = shouldFocus && allowClear && selectedInteger === undefined;
+	const [hoverInteger, hoverStep] = icache
+		.getOrSet('hover', '0-0')
+		.split('-')
+		.map((num) => +num);
+	const hoverDecimal = hoverInteger - 1 + hoverStep / stepsLength;
+	const over = hovering && !shouldFocus ? hoverDecimal : undefined;
+	const activeInteger = shouldFocus || !hovering ? selectedInteger : hoverInteger;
+	const activeStep = shouldFocus || !hovering ? selectedStep : hoverStep;
+
+	const renderLabel = (integer: number, step: number, fill: boolean) => (
+		<virtual>
+			<span key="radioLabel" classes={baseCss.visuallyHidden}>
+				{format('starLabels', mixedNumber(integer, step, stepsLength))}
+			</span>
+			{character ? (
+				character(fill, integer, selected, over)
+			) : (
+				<Icon
+					theme={theme.compose(
+						iconCss,
+						css,
+						'icon'
+					)}
+					classes={{
+						'@dojo/widgets/icon': {
+							icon: [
+								fill ? themedCss.filled : null,
+								over && Math.ceil(over) === integer ? themedCss.over : null
+							]
+						}
+					}}
+					type="starIcon"
+				/>
+			)}
+		</virtual>
+	);
+
+	const renderRadio = (forId: string, checked: RadioChecked, classes: string[], label: DNode) => (
+		<Radio
+			widgetId={forId}
+			key="radio"
+			name={name}
+			checked={checked()}
+			disabled={!interaction}
+			onFocus={() => icache.set('focused', true)}
+			onBlur={() => icache.set('focused', false)}
+			onValue={checked}
+			theme={theme.compose(
+				radioCss,
+				css,
+				'radio'
+			)}
+			classes={{
+				'@dojo/widgets/radio': {
+					root: classes,
+					inputWrapper: [baseCss.visuallyHidden]
+				},
+				'@dojo/widgets/label': {
+					root: [themedCss.labelRoot]
+				}
+			}}
+			label={label}
+		/>
+	);
+
+	const renderStep = (
+		integer: number,
+		step: number,
+		key: string,
+		styles: Partial<CSSStyleDeclaration>,
+		classes: string[],
+		clear: RadioChecked,
+		radio: RenderResult
+	) => (
+		<div
+			key={key}
+			styles={styles}
+			classes={classes}
+			onpointerenter={() => interaction && icache.set('hover', key)}
+			onclick={() =>
+				interaction &&
+				allowClear &&
+				integer === selectedInteger &&
+				step === selectedStep &&
+				clear(true)
+			}
+		>
+			{radio}
+		</div>
+	);
+
+	const renderInteger = (integer: number, radios: RenderResult) => (
+		<div
+			key={integer}
+			classes={[
+				themedCss.characterWrapper,
+				integer === 0 ? baseCss.visuallyHidden : null,
+				shouldFocus &&
+				(integer === selectedInteger ||
+					(!allowClear && selectedInteger === undefined && integer === 1))
+					? themedCss.active
+					: null
+			]}
+		>
+			{radios}
+		</div>
+	);
+
+	const renderChildren: RadioGroupChildren = (name, middleware) => {
+		const radioIntegers: DNode[] = [];
+		for (const integer of integers) {
+			const radios: DNode[] = [];
+			for (const step of steps) {
+				if (integer === 0 && step !== stepsLength) {
+					continue;
+				}
+
+				const key = integer === 0 ? '' : `${integer}-${step}`;
+				const forId = `${id}-${name}-${key}`;
+				const { checked } = middleware(key);
+				const { checked: clear } = middleware('');
+
+				let fill = activeInteger !== undefined && integer <= activeInteger;
+				const styles: Partial<CSSStyleDeclaration> = {};
+				const classes: string[] = [];
+				const radioClasses: string[] = [];
+				if (integer > 0 && stepsLength > 1) {
+					if (step > 1) {
+						classes.push(themedCss.partialCharacter);
+						radioClasses.push(themedCss.partialRadio);
+						styles.width = `${((stepsLength - step + 1) / stepsLength) * 100}%`;
+						if (integer === activeInteger && activeStep !== undefined) {
+							fill = step <= activeStep;
+						}
+					}
+				}
+
+				const label = renderLabel(integer, step, fill);
+				const radio = renderRadio(forId, checked, radioClasses, label);
+				radios.push(renderStep(integer, step, key, styles, classes, clear, radio));
+			}
+			radioIntegers.push(renderInteger(integer, radios));
+		}
+
+		return (
+			<div classes={[themedCss.groupWrapper, groupIsActive ? themedCss.active : null]}>
+				{radioIntegers}
+			</div>
+		);
+	};
+
 	return (
 		<div
 			key="radioGroupWrapper"
@@ -162,173 +320,7 @@ export const Rate = factory(function Rate({
 					'radioGroup'
 				)}
 			>
-				{(name, middleware) => {
-					const [hoverInteger, hoverStep] = icache
-						.getOrSet('hover', '0-0')
-						.split('-')
-						.map((num) => +num);
-					const over =
-						hovering && !shouldFocus
-							? hoverInteger - 1 + hoverStep / stepsLength
-							: undefined;
-
-					return (
-						<div
-							classes={[
-								themedCss.groupWrapper,
-								shouldFocus && allowClear && selectedInteger === undefined
-									? themedCss.active
-									: null
-							]}
-						>
-							{integers.map((integer) => {
-								const selected =
-									selectedInteger !== undefined && selectedStep !== undefined
-										? selectedInteger - 1 + selectedStep / stepsLength
-										: undefined;
-
-								const radios: DNode[] = [];
-								steps.forEach((step) => {
-									if (integer === 0 && step !== stepsLength) {
-										return;
-									}
-
-									const key = integer === 0 ? '' : `${integer}-${step}`;
-									const forId = `${id}-${name}-${key}`;
-									const { checked } = middleware(key);
-									const activeInteger =
-										shouldFocus || !hovering ? selectedInteger : hoverInteger;
-									const activeStep =
-										shouldFocus || !hovering ? selectedStep : hoverStep;
-									let fill =
-										activeInteger !== undefined && integer <= activeInteger;
-									const styles: Partial<CSSStyleDeclaration> = {};
-									const classes: string[] = [];
-									const radioClasses: string[] = [];
-									if (integer > 0 && stepsLength > 1) {
-										if (step > 1) {
-											classes.push(themedCss.partialCharacter);
-											radioClasses.push(themedCss.partialRadio);
-											styles.width = `${((stepsLength - step + 1) /
-												stepsLength) *
-												100}%`;
-											if (
-												integer === activeInteger &&
-												activeStep !== undefined
-											) {
-												fill = step <= activeStep;
-											}
-										}
-									}
-
-									radios.push(
-										<div
-											key={key}
-											styles={styles}
-											classes={classes}
-											onpointerenter={() =>
-												interaction && icache.set('hover', key)
-											}
-											onclick={() =>
-												interaction &&
-												allowClear &&
-												integer === selectedInteger &&
-												step === selectedStep &&
-												middleware('').checked(true)
-											}
-										>
-											<Radio
-												widgetId={forId}
-												key="radio"
-												name={name}
-												checked={checked()}
-												disabled={!interaction}
-												onFocus={() => icache.set('focused', true)}
-												onBlur={() => icache.set('focused', false)}
-												onValue={checked}
-												theme={theme.compose(
-													radioCss,
-													css,
-													'radio'
-												)}
-												classes={{
-													'@dojo/widgets/radio': {
-														root: radioClasses,
-														inputWrapper: [baseCss.visuallyHidden]
-													},
-													'@dojo/widgets/label': {
-														root: [themedCss.labelRoot]
-													}
-												}}
-												label={
-													<virtual>
-														<span
-															key="radioLabel"
-															classes={baseCss.visuallyHidden}
-														>
-															{format(
-																'starLabels',
-																mixedNumber(
-																	integer,
-																	step,
-																	stepsLength
-																)
-															)}
-														</span>
-														{character ? (
-															character(fill, integer, selected, over)
-														) : (
-															<Icon
-																theme={theme.compose(
-																	iconCss,
-																	css,
-																	'icon'
-																)}
-																classes={{
-																	'@dojo/widgets/icon': {
-																		icon: [
-																			fill
-																				? themedCss.filled
-																				: null,
-																			over &&
-																			Math.ceil(over) ===
-																				integer
-																				? themedCss.over
-																				: null
-																		]
-																	}
-																}}
-																type="starIcon"
-															/>
-														)}
-													</virtual>
-												}
-											/>
-										</div>
-									);
-								});
-								return (
-									<div
-										key={integer}
-										classes={[
-											themedCss.characterWrapper,
-											integer === 0 ? baseCss.visuallyHidden : null,
-											shouldFocus &&
-											(integer === selectedInteger ||
-												(!allowClear &&
-													selectedInteger === undefined &&
-													integer === 1))
-												? themedCss.active
-												: null
-										]}
-									>
-										{radios}
-									</div>
-								);
-							})}
-						</div>
-					);
-				}}
+				{renderChildren}
 			</RadioGroup>
 		</div>
 	);
