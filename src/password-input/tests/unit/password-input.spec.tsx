@@ -3,7 +3,6 @@ import * as textInputCss from '../../../theme/default/text-input.m.css';
 import Button from '../../../button';
 import Icon from '../../../icon';
 import ConstrainedInput from '../../../constrained-input';
-import * as css from '../../../theme/default/password-input.m.css';
 import PasswordInput from '../..';
 
 import { tsx } from '@dojo/framework/core/vdom';
