@@ -15,6 +15,7 @@ import * as css from '../theme/default/rate.m.css';
 import bundle from './nls/Rate';
 
 export interface MixedNumber {
+	value: number;
 	quotient: number;
 	numerator: number;
 	denominator: number;
@@ -28,7 +29,7 @@ export interface RateProperties {
 	/** The initial rating value */
 	initialValue?: number;
 	/** Callback fired when the rating value changes */
-	onValue?: (value?: number, mixedValue?: MixedNumber) => void;
+	onValue?: (mixedValue?: MixedNumber) => void;
 	/** The number of times each star is divided */
 	steps?: number;
 	/** The highest rating for this rating group */
@@ -62,7 +63,12 @@ function mixedNumber(integer: number, step: number, steps: number) {
 	} else {
 		integer -= 1;
 	}
-	return { quotient: integer, numerator: step, denominator: steps };
+	return {
+		value: integer + step / steps,
+		quotient: integer,
+		numerator: step,
+		denominator: steps
+	};
 }
 
 type RadioChecked = (checked?: boolean) => boolean | undefined;
@@ -135,7 +141,7 @@ export const Rate = factory(function Rate({
 			const mixed = mixedNumber(integer, step, stepsLength);
 			icache.set('selectedInteger', integer);
 			icache.set('selectedStep', step);
-			onValue && onValue(mixed.quotient + mixed.numerator / mixed.denominator, mixed);
+			onValue && onValue(mixed);
 		}
 		focus.focus();
 	};
