@@ -1,22 +1,20 @@
-import harness from '@dojo/framework/testing/harness';
-import { compareTheme } from '../../../common/tests/support/test-helpers';
+import { createHarness, compareTheme } from '../../../common/tests/support/test-helpers';
 import * as textInputCss from '../../../theme/default/text-input.m.css';
 import Button from '../../../button';
 import Icon from '../../../icon';
 import ConstrainedInput from '../../../constrained-input';
-import * as css from '../../../theme/default/password-input.m.css';
 import PasswordInput from '../..';
 
 import { tsx } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input';
 
 const { describe, it } = intern.getInterface('bdd');
-
+const harness = createHarness([compareTheme]);
 const rules = { length: { min: 1 } };
 
 describe('PasswordInput', () => {
 	it('renders with default properties', () => {
-		const h = harness(() => <PasswordInput rules={rules} />, [compareTheme]);
+		const h = harness(() => <PasswordInput rules={rules} />);
 		h.expect(() => (
 			<ConstrainedInput
 				rules={rules}
@@ -29,7 +27,7 @@ describe('PasswordInput', () => {
 	});
 
 	it('renders a textinput when no rules are passed', () => {
-		const h = harness(() => <PasswordInput />, [compareTheme]);
+		const h = harness(() => <PasswordInput />);
 		h.expect(() => (
 			<TextInput
 				key="root"
@@ -43,7 +41,7 @@ describe('PasswordInput', () => {
 	});
 
 	it('handles required validation when no rules are passed', () => {
-		const h = harness(() => <PasswordInput required />, [compareTheme]);
+		const h = harness(() => <PasswordInput required />);
 		h.trigger('@root', 'onValidate', false, 'this is required');
 		h.expect(() => (
 			<TextInput
@@ -59,7 +57,7 @@ describe('PasswordInput', () => {
 	});
 
 	it('renders as a text input after click', () => {
-		const h = harness(() => <PasswordInput rules={rules} />, [compareTheme]);
+		const h = harness(() => <PasswordInput rules={rules} />);
 		h.expect(() => (
 			<ConstrainedInput
 				rules={rules}
@@ -73,10 +71,7 @@ describe('PasswordInput', () => {
 		const eyeRender = h.trigger('@root', 'trailing');
 		h.expect(
 			() => (
-				<Button
-					onClick={() => {}}
-					classes={{ '@dojo/widgets/button': { root: [css.togglePasswordButton] } }}
-				>
+				<Button onClick={() => {}} theme={{}}>
 					<Icon type="eyeIcon" />
 				</Button>
 			),
@@ -98,10 +93,7 @@ describe('PasswordInput', () => {
 		const slashRender = h.trigger('@root', 'trailing');
 		h.expect(
 			() => (
-				<Button
-					onClick={() => {}}
-					classes={{ '@dojo/widgets/button': { root: [css.togglePasswordButton] } }}
-				>
+				<Button onClick={() => {}} theme={{}}>
 					<Icon type="eyeSlashIcon" />
 				</Button>
 			),
