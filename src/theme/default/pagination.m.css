@@ -1,0 +1,38 @@
+.root {
+}
+
+/* Added to all page-changing links */
+.link {
+}
+
+/* Added only to the "Previous" link */
+.prev {
+}
+
+/* Added to the previous link's label */
+.prev .label {
+}
+
+/* Added to the icon for both next and previous links */
+.icon {
+}
+
+/* Added to the label for both next and previous links */
+.label {
+}
+
+/* Added only to the "Next" link */
+.next {
+}
+
+/* Added to the current page display */
+.currentPage {
+}
+
+/* Added to all numbered page links (not including next and prev) */
+.numberedLink {
+}
+
+/* Added to the page size selector's container */
+.selectWrapper {
+}

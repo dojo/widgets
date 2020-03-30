@@ -191,6 +191,8 @@ import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
 import BasicGlobalEvent from './widgets/global-event/Basic';
+import Pagination from './widgets/pagination/Basic';
+import PaginationPageSizeSelector from './widgets/pagination/PageSizeSelector';
 import BasicTypeahead from './widgets/typeahead/Basic';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
 import CustomFilterTypeahead from './widgets/typeahead/CustomFilter';
@@ -956,6 +958,21 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicOutlinedButton
+				}
+			}
+		},
+		pagination: {
+			examples: [
+				{
+					filename: 'PageSizeSelector',
+					module: PaginationPageSizeSelector,
+					title: 'Page Size Selection'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: Pagination
 				}
 			}
 		},
