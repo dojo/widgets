@@ -39,10 +39,6 @@ export interface CalendarProperties {
 	minDate?: Date;
 	/** Customize or internationalize full month names and abbreviations */
 	monthNames?: { short: string; long: string }[];
-	/** Function called when the month changes */
-	onMonthChange?(month: number): void;
-	/** Function called when the year changes */
-	onYearChange?(year: number): void;
 	/** Customize or internationalize weekday names and abbreviations */
 	weekdayNames?: { short: string; long: string }[];
 	/** Configure the first day of the calendar week, defaults to 0 (sunday) */
