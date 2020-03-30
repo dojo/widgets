@@ -32,10 +32,15 @@ export interface RateProperties {
 	initialValue?: number;
 	/** Callback fired when the rating value changes */
 	onValue?: (value?: number, mixedValue?: MixedNumber) => void;
+	/** The number of times each star is divided */
 	steps?: number;
+	/** The highest rating for this rating group */
 	max?: number;
+	/** Allow undefined to be chosen with repeat click or with arrows */
 	allowClear?: boolean;
+	/** Prevent interaction with a visual indication */
 	disabled?: boolean;
+	/** Prevent interaction */
 	readOnly?: boolean;
 }
 
