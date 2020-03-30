@@ -149,7 +149,6 @@ import ErrorSnackbar from './widgets/snackbar/Error';
 import LeadingSnackbar from './widgets/snackbar/Leading';
 import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
-import BasicSplitPane from './widgets/split-pane/Basic';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabController from './widgets/tab-controller/Basic';
@@ -1221,14 +1220,6 @@ export const config = {
 					size: 'small'
 				}
 			]
-		},
-		'split-pane': {
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicSplitPane
-				}
-			}
 		},
 		switch: {
 			examples: [
