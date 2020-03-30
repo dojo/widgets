@@ -1,5 +1,4 @@
 import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
-import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
@@ -73,25 +72,13 @@ const factory = create({ focus, i18n, icache, theme })
 	.children<RateChildren | undefined>();
 
 export const Rate = factory(function Rate({
+	id,
 	children,
 	properties,
 	middleware: { focus, i18n, icache, theme }
 }) {
 	const { format } = i18n.localize(bundle);
-	const {
-		root,
-		groupWrapper,
-		active,
-		disabled: disabledClasses,
-		readOnly: readOnlyClasses,
-		over: overClasses,
-		labelRoot,
-		characterWrapper,
-		filled,
-		partialCharacter,
-		partialRadio
-	} = theme.classes(css);
-	const _uuid = icache.getOrSet('uuid', uuid());
+	const themedCss = theme.classes(css);
 	const {
 		name,
 		label,
@@ -99,7 +86,6 @@ export const Rate = factory(function Rate({
 		onValue,
 		max = 5,
 		steps: stepsLength = 1,
-		widgetId = _uuid,
 		allowClear = false,
 		disabled = false,
 		readOnly = false
@@ -139,9 +125,6 @@ export const Rate = factory(function Rate({
 		}
 	}
 
-	const onFocus = () => icache.set('focused', true);
-	const onBlur = () => icache.set('focused', false);
-
 	const _onValue = (value?: string) => {
 		if (!value) {
 			icache.set('selectedInteger', undefined);
@@ -160,7 +143,11 @@ export const Rate = factory(function Rate({
 	return (
 		<div
 			key="radioGroupWrapper"
-			classes={[root, readOnly ? readOnlyClasses : null, disabled ? disabledClasses : null]}
+			classes={[
+				themedCss.root,
+				readOnly ? themedCss.readOnly : null,
+				disabled ? themedCss.disabled : null
+			]}
 			onpointerenter={() => interaction && icache.set('hovering', true)}
 			onpointerleave={() => interaction && icache.set('hovering', false)}
 		>
@@ -190,9 +177,9 @@ export const Rate = factory(function Rate({
 					return (
 						<div
 							classes={[
-								groupWrapper,
+								themedCss.groupWrapper,
 								shouldFocus && allowClear && selectedInteger === undefined
-									? active
+									? themedCss.active
 									: null
 							]}
 						>
@@ -209,7 +196,7 @@ export const Rate = factory(function Rate({
 									}
 
 									const key = integer === 0 ? '' : `${integer}-${step}`;
-									const id = `${widgetId}-${name}-${key}`;
+									const forId = `${id}-${name}-${key}`;
 									const { checked } = middleware(key);
 									const activeInteger =
 										shouldFocus || !hovering ? selectedInteger : hoverInteger;
@@ -222,8 +209,8 @@ export const Rate = factory(function Rate({
 									const radioClasses: string[] = [];
 									if (integer > 0 && stepsLength > 1) {
 										if (step > 1) {
-											classes.push(partialCharacter);
-											radioClasses.push(partialRadio);
+											classes.push(themedCss.partialCharacter);
+											radioClasses.push(themedCss.partialRadio);
 											styles.width = `${((stepsLength - step + 1) /
 												stepsLength) *
 												100}%`;
@@ -253,13 +240,13 @@ export const Rate = factory(function Rate({
 											}
 										>
 											<Radio
-												widgetId={id}
+												widgetId={forId}
 												key="radio"
 												name={name}
 												checked={checked()}
 												disabled={!interaction}
-												onFocus={onFocus}
-												onBlur={onBlur}
+												onFocus={() => icache.set('focused', true)}
+												onBlur={() => icache.set('focused', false)}
 												onValue={checked}
 												theme={theme.compose(
 													radioCss,
@@ -271,7 +258,9 @@ export const Rate = factory(function Rate({
 														root: radioClasses,
 														inputWrapper: [baseCss.visuallyHidden]
 													},
-													'@dojo/widgets/label': { root: [labelRoot] }
+													'@dojo/widgets/label': {
+														root: [themedCss.labelRoot]
+													}
 												}}
 												label={
 													<virtual>
@@ -300,11 +289,13 @@ export const Rate = factory(function Rate({
 																classes={{
 																	'@dojo/widgets/icon': {
 																		icon: [
-																			fill ? filled : null,
+																			fill
+																				? themedCss.filled
+																				: null,
 																			over &&
 																			Math.ceil(over) ===
 																				integer
-																				? overClasses
+																				? themedCss.over
 																				: null
 																		]
 																	}
@@ -322,14 +313,14 @@ export const Rate = factory(function Rate({
 									<div
 										key={integer}
 										classes={[
-											characterWrapper,
+											themedCss.characterWrapper,
 											integer === 0 ? baseCss.visuallyHidden : null,
 											shouldFocus &&
 											(integer === selectedInteger ||
 												(!allowClear &&
 													selectedInteger === undefined &&
 													integer === 1))
-												? active
+												? themedCss.active
 												: null
 										]}
 									>
