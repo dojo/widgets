@@ -18,7 +18,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
+    - run: npm install
     - run: npm run build:lib
 
   build-lib-legecy:
@@ -32,7 +32,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
+    - run: npm install
     - run: npm run build:lib:legacy
 
   build-ce:
@@ -46,7 +46,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
+    - run: npm install
     - run: npm run build:ce
 
   build-themes:
@@ -60,7 +60,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
+    - run: npm install
     - run: npm run build:themes
 
   tests:
@@ -74,7 +74,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm ci
+    - run: npm install
     - run: npm run build:test
     - run: npm run test:headless
     - name: Upload coverage
