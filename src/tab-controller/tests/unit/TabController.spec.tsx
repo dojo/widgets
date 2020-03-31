@@ -207,7 +207,7 @@ registerSuite('TabController', {
 			];
 
 			const h = harness(() => (
-				<TabController initialIndex={2} tabs={tabs}>
+				<TabController initialId="tab2" tabs={tabs}>
 					{tabChildren(tabs)}
 				</TabController>
 			));
@@ -230,7 +230,7 @@ registerSuite('TabController', {
 				{ closeable: true, id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
-				<TabController initialIndex={2} tabs={tabs}>
+				<TabController initialId="tab2" tabs={tabs}>
 					{tabChildren(tabs)}
 				</TabController>
 			));
@@ -248,7 +248,7 @@ registerSuite('TabController', {
 				.split('')
 				.map((n) => ({ id: `tab${n}`, label: `Tab ${n + 1}` }));
 			const h = harness(() => (
-				<TabController initialIndex={2} tabs={tabs}>
+				<TabController initialId="tab2" tabs={tabs}>
 					{tabChildren(tabs)}
 				</TabController>
 			));
@@ -273,13 +273,13 @@ registerSuite('TabController', {
 				{ id: 'tab1', label: 'Tab 2' },
 				{ id: 'tab2', label: 'Tab 3' }
 			];
-			let properties: any = { initialIndex: 0, tabs };
+			let properties: any = { initialId: 'tab0', tabs };
 			const h = harness(() => (
 				<TabController {...properties}>{tabChildren(tabs)}</TabController>
 			));
 			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Left));
 			h.expect(() => expected([expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)]));
-			properties = { initialIndex: 2, tabs };
+			properties = { initialId: 'tab2', tabs };
 			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
 			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
 		},
@@ -348,14 +348,14 @@ registerSuite('TabController', {
 			);
 		},
 
-		'Should default to last tab if invalid initialIndex passed'() {
+		'Should default to last tab if invalid initialId passed'() {
 			const tabs = [
 				{ id: 'tab0', label: 'Tab 1' },
 				{ id: 'tab1', label: 'Tab 2' },
 				{ id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
-				<TabController initialIndex={3} tabs={tabs}>
+				<TabController initialId="tab3" tabs={tabs}>
 					{tabChildren(tabs)}
 				</TabController>
 			));
@@ -364,14 +364,14 @@ registerSuite('TabController', {
 			h.expect(() => expected([tabButtons, tabContent]));
 		},
 
-		'Should skip tab if initialIndex is disabled'() {
+		'Should skip tab if initialId tab is disabled'() {
 			const tabs = [
 				{ id: 'tab0', label: 'Tab 1' },
 				{ disabled: true, id: 'tab1', label: 'Tab 2' },
 				{ id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
-				<TabController initialIndex={1} tabs={tabs}>
+				<TabController initialId="tab1" tabs={tabs}>
 					{tabChildren(tabs)}
 				</TabController>
 			));

@@ -33,8 +33,8 @@ export interface TabControllerProperties {
 	alignButtons?: Align;
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/** Index of the initial active tab. Defaults to 0. */
-	initialIndex?: number;
+	/** initial active tab ID. Defaults to the first tab's ID. */
+	initialId?: string;
 	/** Tabs config used to display tab buttons */
 	tabs: TabItem[];
 }
@@ -218,12 +218,13 @@ export const TabController = factory(function TabController({
 		}
 	};
 
-	const { alignButtons, aria = {}, initialIndex, tabs } = properties();
+	const { alignButtons, aria = {}, initialId, tabs } = properties();
 	const themeCss = theme.classes(css);
 	const { messages } = i18n.localize(commonBundle);
 
 	const closedIds = icache.getOrSet('closedIds', new Set<string>());
-	const validIndex = validateIndex(initialIndex || 0);
+	const initialIndex = initialId == null ? 0 : findTabIndex(tabs, initialId);
+	const validIndex = validateIndex(initialIndex === -1 ? tabs.length - 1 : initialIndex);
 	const activeId = icache.getOrSet(
 		'activeId',
 		validIndex != null ? tabs[validIndex].id : undefined
