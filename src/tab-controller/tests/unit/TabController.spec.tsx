@@ -123,7 +123,7 @@ const expectedTabContent = function(index = 0): DNode {
 const expected = function(
 	children: DNode[] = [],
 	describedby = '',
-	classes = [null, css.root],
+	classes = [undefined, null, css.root],
 	vertical = false
 ) {
 	const overrides = describedby
@@ -178,7 +178,9 @@ registerSuite('TabController', {
 
 			let tabButtons = expectedTabButtons();
 			let tabContent = expectedTabContent();
-			h.expect(() => expected([tabContent, tabButtons], '', [css.alignBottom, css.root]));
+			h.expect(() =>
+				expected([tabContent, tabButtons], '', [undefined, css.alignBottom, css.root])
+			);
 
 			properties = {
 				activeIndex: 0,
@@ -188,14 +190,16 @@ registerSuite('TabController', {
 			tabButtons = expectedTabButtons();
 			tabContent = expectedTabContent();
 			h.expect(() =>
-				expected([tabContent, tabButtons], '', [css.alignRight, css.root], true)
+				expected([tabContent, tabButtons], '', [undefined, css.alignRight, css.root], true)
 			);
 
 			properties = {
 				activeIndex: 0,
 				alignButtons: Align.left
 			};
-			h.expect(() => expected([tabButtons, tabContent], '', [css.alignLeft, css.root], true));
+			h.expect(() =>
+				expected([tabButtons, tabContent], '', [undefined, css.alignLeft, css.root], true)
+			);
 		},
 
 		'Clicking tab should change activeIndex'() {

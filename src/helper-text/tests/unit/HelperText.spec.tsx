@@ -7,7 +7,7 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const baseTemplate = assertationTemplate(() => {
-	return <div key="root" classes={[css.root, null, null]} />;
+	return <div key="root" classes={[undefined, css.root, null, null]} />;
 });
 
 const textTemplate = baseTemplate.setChildren('@root', [
@@ -28,6 +28,7 @@ registerSuite('HelperText', {
 		},
 		valid() {
 			const validTemplate = textTemplate.setProperty('@root', 'classes', [
+				undefined,
 				css.root,
 				css.valid,
 				null
@@ -37,6 +38,7 @@ registerSuite('HelperText', {
 		},
 		invalid() {
 			const invalidTemplate = textTemplate.setProperty('@root', 'classes', [
+				undefined,
 				css.root,
 				null,
 				css.invalid

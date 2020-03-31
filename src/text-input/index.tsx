@@ -228,7 +228,7 @@ export const TextInput = factory(function TextInput({
 	const inputFocused = focus.isFocused('input');
 
 	return (
-		<div key="root" classes={themeCss.root} role="presentation">
+		<div key="root" classes={[theme.variant(), themeCss.root]} role="presentation">
 			<div
 				key="wrapper"
 				classes={[

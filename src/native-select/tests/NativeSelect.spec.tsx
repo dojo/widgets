@@ -21,7 +21,7 @@ const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
 const harness = createHarness([compareTheme]);
 
 const baseTemplate = assertionTemplate(() => (
-	<div classes={[css.root, undefined, undefined]} key="root">
+	<div classes={[undefined, css.root, undefined, undefined]} key="root">
 		<Label
 			assertion-key="label"
 			theme={{}}
@@ -100,7 +100,7 @@ describe('Native Select', () => {
 			.setProperty('@native-select', 'size', 3)
 			.setProperty('@helperText', 'text', 'Pick a pet type')
 			.setProperty('@option-1', 'selected', true)
-			.setProperty('@root', 'classes', [css.root, css.disabled, css.required])
+			.setProperty('@root', 'classes', [undefined, css.root, css.disabled, css.required])
 			.setProperty('~label', 'disabled', true)
 			.setProperty('~label', 'required', true)
 			.setProperty('~label', 'active', true)

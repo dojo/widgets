@@ -125,6 +125,7 @@ export const Select = factory(function Select({
 	return (
 		<div
 			classes={[
+				theme.variant(),
 				themedCss.root,
 				disabled && themedCss.disabled,
 				valid === true && themedCss.valid,

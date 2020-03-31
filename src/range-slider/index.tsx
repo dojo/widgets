@@ -204,6 +204,7 @@ export const RangeSlider = factory(function RangeSlider({
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				disabled ? themeCss.disabled : null,
 				focus.isFocused('root') ? themeCss.focused : null,

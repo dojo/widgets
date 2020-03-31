@@ -36,7 +36,7 @@ describe('List', () => {
 	const template = assertionTemplate(() => (
 		<div
 			key="root"
-			classes={[css.root, fixedCss.root]}
+			classes={[undefined, css.root, fixedCss.root]}
 			tabIndex={0}
 			onkeydown={noop}
 			focus={noop}
@@ -307,7 +307,7 @@ describe('List - Menu', () => {
 	const template = assertionTemplate(() => (
 		<div
 			key="root"
-			classes={[css.root, fixedCss.root]}
+			classes={[undefined, css.root, fixedCss.root]}
 			tabIndex={0}
 			onkeydown={noop}
 			focus={noop}

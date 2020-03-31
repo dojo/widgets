@@ -13,7 +13,10 @@ const noop = () => {};
 describe('RangeSlider', () => {
 	const template = assertationTemplate(() => {
 		return (
-			<div key="root" classes={[themeCss.root, null, null, null, null, null, null]}>
+			<div
+				key="root"
+				classes={[undefined, themeCss.root, null, null, null, null, null, null]}
+			>
 				<div
 					classes={[themeCss.inputWrapper, fixedCss.inputWrapperFixed]}
 					onpointerenter={noop}
@@ -151,6 +154,7 @@ describe('RangeSlider', () => {
 		const h = harness(() => <RangeSlider showOutput />);
 		const testTemplate = template
 			.setProperty('@root', 'classes', [
+				undefined,
 				themeCss.root,
 				null,
 				null,
@@ -176,6 +180,7 @@ describe('RangeSlider', () => {
 		const h = harness(() => <RangeSlider showOutput outputIsTooltip />);
 		const testTemplate = template
 			.setProperty('@root', 'classes', [
+				undefined,
 				themeCss.root,
 				null,
 				null,

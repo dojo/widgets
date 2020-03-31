@@ -13,7 +13,7 @@ describe('Avatar', () => {
 			role={undefined}
 			aria-label={undefined}
 			styles={{}}
-			classes={[css.root, css.avatarColor, css.medium, css.circle]}
+			classes={[undefined, css.root, css.avatarColor, css.medium, css.circle]}
 		>
 			D
 		</div>
@@ -28,6 +28,7 @@ describe('Avatar', () => {
 		const h = harness(() => <Avatar secondary>D</Avatar>);
 		h.expect(
 			template.setProperty('@root', 'classes', [
+				undefined,
 				css.root,
 				css.avatarColorSecondary,
 				css.medium,
@@ -41,6 +42,7 @@ describe('Avatar', () => {
 			const h = harness(() => <Avatar variant="circle">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
+					undefined,
 					css.root,
 					css.avatarColor,
 					css.medium,
@@ -53,6 +55,7 @@ describe('Avatar', () => {
 			const h = harness(() => <Avatar variant="square">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
+					undefined,
 					css.root,
 					css.avatarColor,
 					css.medium,
@@ -65,6 +68,7 @@ describe('Avatar', () => {
 			const h = harness(() => <Avatar variant="rounded">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
+					undefined,
 					css.root,
 					css.avatarColor,
 					css.medium,
@@ -79,6 +83,7 @@ describe('Avatar', () => {
 			const h = harness(() => <Avatar size="small">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
+					undefined,
 					css.root,
 					css.avatarColor,
 					css.small,
@@ -91,6 +96,7 @@ describe('Avatar', () => {
 			const h = harness(() => <Avatar size="medium">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
+					undefined,
 					css.root,
 					css.avatarColor,
 					css.medium,
@@ -103,6 +109,7 @@ describe('Avatar', () => {
 			const h = harness(() => <Avatar size="large">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
+					undefined,
 					css.root,
 					css.avatarColor,
 					css.large,

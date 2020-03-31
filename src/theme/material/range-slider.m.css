@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	composes: mdc-slider from '@material/slider/dist/mdc.slider.css';
 }

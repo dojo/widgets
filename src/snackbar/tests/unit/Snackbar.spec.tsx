@@ -10,7 +10,7 @@ import Button from '../../../button/index';
 describe('Snackbar', () => {
 	const template = assertationTemplate(() => {
 		return (
-			<div key="root" classes={[css.root, css.open, null, null, null]}>
+			<div key="root" classes={[undefined, css.root, css.open, null, null, null]}>
 				<div key="content" classes={css.content}>
 					<div
 						key="label"
@@ -51,6 +51,7 @@ describe('Snackbar', () => {
 	it('renders closed', () => {
 		const h = harness(() => <Snackbar messageRenderer={() => 'test'} open={false} />);
 		const openTemplate = template.setProperty('@root', 'classes', [
+			undefined,
 			css.root,
 			null,
 			null,
@@ -65,6 +66,7 @@ describe('Snackbar', () => {
 			<Snackbar type="success" messageRenderer={() => 'test'} open={true} />
 		));
 		const successTemplate = template.setProperty('@root', 'classes', [
+			undefined,
 			css.root,
 			css.open,
 			css.success,
@@ -77,6 +79,7 @@ describe('Snackbar', () => {
 	it('renders leading', () => {
 		const h = harness(() => <Snackbar leading messageRenderer={() => 'test'} open={true} />);
 		const successTemplate = template.setProperty('@root', 'classes', [
+			undefined,
 			css.root,
 			css.open,
 			null,
@@ -89,6 +92,7 @@ describe('Snackbar', () => {
 	it('renders stacked', () => {
 		const h = harness(() => <Snackbar stacked messageRenderer={() => 'test'} open={true} />);
 		const successTemplate = template.setProperty('@root', 'classes', [
+			undefined,
 			css.root,
 			css.open,
 			null,
@@ -103,6 +107,7 @@ describe('Snackbar', () => {
 			<Snackbar messageRenderer={() => 'test'} type="error" open={true} />
 		));
 		const errorTemplate = template.setProperty('@root', 'classes', [
+			undefined,
 			css.root,
 			css.open,
 			css.error,

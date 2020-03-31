@@ -1,5 +1,3 @@
-@import './variables.css';
-
 /* The root class of the grid's Body */
 .root {
 	background: var(--component-background);

@@ -48,6 +48,7 @@ export const ListItem = factory(function ListItem({ properties, children, middle
 				requestActive();
 			}, 500)}
 			classes={[
+				theme.variant(),
 				classes.root,
 				selected && classes.selected,
 				active && classes.active,

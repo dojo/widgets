@@ -14,7 +14,7 @@ describe('MenuItem', () => {
 		<div
 			key="root"
 			onpointermove={noop}
-			classes={[css.root, false, false]}
+			classes={[undefined, css.root, false, false]}
 			onpointerdown={noop}
 			role="menuitem"
 			aria-disabled={false}
@@ -46,7 +46,7 @@ describe('MenuItem', () => {
 			</MenuItem>
 		));
 		const disabledTemplate = template
-			.setProperty('@root', 'classes', [css.root, false, css.disabled])
+			.setProperty('@root', 'classes', [undefined, css.root, false, css.disabled])
 			.setProperty('@root', 'aria-disabled', true);
 		h.expect(disabledTemplate);
 	});
@@ -58,6 +58,7 @@ describe('MenuItem', () => {
 			</MenuItem>
 		));
 		const activeTemplate = template.setProperty('@root', 'classes', [
+			undefined,
 			css.root,
 			css.active,
 			false

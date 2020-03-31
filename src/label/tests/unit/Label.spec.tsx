@@ -13,7 +13,19 @@ registerSuite('Label', {
 			const h = harness(() => <Label>baz</Label>);
 			h.expect(() => (
 				<label
-					classes={[css.root, null, null, null, null, null, null, null, null, null]}
+					classes={[
+						undefined,
+						css.root,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					]}
 					for="undefined"
 					id="label-test"
 				>
@@ -45,6 +57,7 @@ registerSuite('Label', {
 				<label
 					aria-describedby="bar"
 					classes={[
+						undefined,
 						css.root,
 						css.disabled,
 						css.focused,
@@ -70,6 +83,7 @@ registerSuite('Label', {
 			h.expect(() => (
 				<label
 					classes={[
+						undefined,
 						css.root,
 						null,
 						null,

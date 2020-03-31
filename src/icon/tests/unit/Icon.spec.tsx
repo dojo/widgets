@@ -16,7 +16,7 @@ const harness = createHarness([compareAria, compareAriaControls]);
 const expected = function(icon: keyof typeof css = 'downIcon', overrides = {}, altText?: string) {
 	const children = [
 		v('i', {
-			classes: [css.icon, css[icon]],
+			classes: [undefined, css.icon, css[icon]],
 			'aria-hidden': 'true',
 			...overrides
 		})

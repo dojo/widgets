@@ -66,7 +66,7 @@ describe('Breadcrumb', () => {
 
 describe('BreadcrumbGroup', () => {
 	const baseTemplate = assertionTemplate(() => (
-		<nav classes={css.root} aria-label="breadcrumb">
+		<nav classes={[undefined, css.root]} aria-label="breadcrumb">
 			<ol assertion-key="list" classes={[fixedCss.listFixed, css.list]}>
 				<virtual>
 					<Breadcrumb

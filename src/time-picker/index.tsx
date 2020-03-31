@@ -333,7 +333,7 @@ export const TimePicker = factory(function TimePicker({
 	const options = generateOptions();
 
 	return (
-		<div classes={classes.root}>
+		<div classes={[theme.variant(), classes.root]}>
 			<input
 				type="hidden"
 				name={name}

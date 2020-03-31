@@ -59,7 +59,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': null
 				},
@@ -161,7 +161,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': '100'
 				},
@@ -258,7 +258,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': null
 				},
@@ -344,7 +344,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': null
 				},
@@ -428,7 +428,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': null
 				},
@@ -509,7 +509,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': null
 				},
@@ -611,7 +611,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': null
 				},
@@ -736,7 +736,7 @@ describe('Grid', () => {
 				'div',
 				{
 					key: 'root',
-					classes: [css.root, fixedCss.rootFixed],
+					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
 					'aria-rowcount': null
 				},

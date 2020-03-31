@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	composes: root from './grid-row.m.css';
 	border: 1px solid #ccc;

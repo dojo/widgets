@@ -1,5 +1,3 @@
-@import './variables.css';
-
 /* The wrapper around a header */
 .header {
 	display: flex;

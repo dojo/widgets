@@ -7,7 +7,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 describe('Progress', () => {
 	const template = assertionTemplate(() => (
-		<div key="root" classes={css.root}>
+		<div key="root" classes={[undefined, css.root]}>
 			<div
 				assertion-key="progressbar"
 				classes={css.bar}

@@ -61,7 +61,7 @@ const expected = function(
 	const overrides = describedby ? { 'aria-describedby': describedby } : {};
 	let dateIndex = 0;
 	return (
-		<div classes={css.root} {...overrides}>
+		<div classes={[undefined, css.root]} {...overrides}>
 			<DatePicker
 				key="date-picker"
 				labelId=""
@@ -193,7 +193,7 @@ const expected = function(
 const baseTemplate = assertionTemplate(() => {
 	let dateIndex = 0;
 	return (
-		<div classes={css.root}>
+		<div classes={[undefined, css.root]}>
 			<DatePicker
 				key="date-picker"
 				labelId=""

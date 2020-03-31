@@ -29,7 +29,7 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 	const { header, content, actionButtons, actionIcons } = children()[0] || ({} as CardChildren);
 
 	return (
-		<div key="root" classes={themeCss.root}>
+		<div key="root" classes={[theme.variant(), themeCss.root]}>
 			{header && (
 				<div key="header" classes={themeCss.header}>
 					{header()}

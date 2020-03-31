@@ -230,7 +230,7 @@ export const SlidePane = factory(function SlidePane({
 	return (
 		<div
 			aria-labelledby={titleId}
-			classes={themeCss.root}
+			classes={[theme.variant(), themeCss.root]}
 			onpointerdown={swipeStart}
 			onpointermove={swipeMove}
 			onpointerup={swipeEnd}

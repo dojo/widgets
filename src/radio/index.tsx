@@ -73,6 +73,7 @@ export const Radio = factory(function Radio({ properties, id, middleware: { focu
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				checked ? themeCss.checked : null,
 				disabled ? themeCss.disabled : null,

@@ -30,7 +30,7 @@ export const Header = factory(function Header({ children, properties, middleware
 	const actionElements = actions && actions();
 
 	return (
-		<header key="header" classes={sticky ? classes.spacer : undefined}>
+		<header key="header" classes={[theme.variant(), sticky ? classes.spacer : undefined]}>
 			<div classes={[classes.root, sticky && classes.sticky]} key="root">
 				<div classes={classes.row}>
 					<div classes={classes.primary} key="primary">

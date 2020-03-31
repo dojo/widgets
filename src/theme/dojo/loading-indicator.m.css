@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	background-color: var(--color-background-faded);
 	height: calc(var(--grid-base) / 2);

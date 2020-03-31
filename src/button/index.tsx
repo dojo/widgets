@@ -67,6 +67,7 @@ export const Button = factory(function Button({
 	return (
 		<button
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				disabled ? themeCss.disabled : null,
 				pressed ? themeCss.pressed : null

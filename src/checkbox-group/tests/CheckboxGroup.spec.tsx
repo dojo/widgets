@@ -10,7 +10,7 @@ function noop() {}
 
 describe('CheckboxGroup', () => {
 	const template = assertionTemplate(() => (
-		<fieldset key="root" classes={css.root} name="test" />
+		<fieldset key="root" classes={[undefined, css.root]} name="test" />
 	));
 
 	it('renders with options', () => {

@@ -42,6 +42,7 @@ const expected = ({
 		<div
 			key="root"
 			classes={[
+				undefined,
 				css.root,
 				value ? css.checked : null,
 				disabled ? css.disabled : null,

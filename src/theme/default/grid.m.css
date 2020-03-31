@@ -1,5 +1,3 @@
-@import './variables.css';
-
 /* The root class of the Grid */
 .root {
 	border-top: 1px solid var(--component-color);

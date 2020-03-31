@@ -433,7 +433,7 @@ export const List = factory(function List({
 	return (
 		<div
 			key="root"
-			classes={[themedCss.root, fixedCss.root]}
+			classes={[theme.variant(), themedCss.root, fixedCss.root]}
 			tabIndex={focusable ? 0 : -1}
 			onkeydown={(e) => {
 				onKeyDown(e, total);

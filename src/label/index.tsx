@@ -54,6 +54,7 @@ export const Label = factory(function Label({ properties, id, children, middlewa
 			{...formatAriaProperties(aria)}
 			id={widgetId}
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				disabled ? themeCss.disabled : null,
 				focused ? themeCss.focused : null,

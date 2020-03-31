@@ -77,6 +77,7 @@ export const NativeSelect = factory(function NativeSelect({
 	return (
 		<div
 			classes={[
+				theme.variant(),
 				themedCss.root,
 				disabled && themedCss.disabled,
 				required && themedCss.required

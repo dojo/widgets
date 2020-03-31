@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	align-items: center;
 	background-color: var(--color-background-inverted);

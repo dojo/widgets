@@ -25,7 +25,7 @@ interface Fields {
 describe('Form', () => {
 	const noop = () => {};
 	const baseAssertion = assertionTemplate(() => (
-		<form name="formName" classes={css.root} onsubmit={noop}>
+		<form name="formName" classes={[undefined, css.root]} onsubmit={noop}>
 			<TextInput
 				key="firstName"
 				label="First Name"
@@ -512,7 +512,7 @@ describe('Form', () => {
 			</Form>
 		));
 		const actionTemplate = assertionTemplate(() => (
-			<form name={undefined} classes={css.root} action="test-url" method="get">
+			<form name={undefined} classes={[undefined, css.root]} action="test-url" method="get">
 				<div />
 			</form>
 		));
@@ -522,7 +522,7 @@ describe('Form', () => {
 	it('defaults method to post when using an action', () => {
 		const h = harness(() => <Form action="test-url">{() => <div />}</Form>);
 		const actionTemplate = assertionTemplate(() => (
-			<form name={undefined} classes={css.root} action="test-url" method="post">
+			<form name={undefined} classes={[undefined, css.root]} action="test-url" method="post">
 				<div />
 			</form>
 		));

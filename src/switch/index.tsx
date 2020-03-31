@@ -73,6 +73,7 @@ export default factory(function Switch({ properties, id, middleware: { theme, fo
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				themedCss.root,
 				value ? themedCss.checked : null,
 				disabled ? themedCss.disabled : null,

@@ -26,7 +26,7 @@ function createMockFocusMiddleware({
 
 const template = assertionTemplate(() => (
 	<button
-		classes={[css.root, null, null]}
+		classes={[undefined, css.root, null, null]}
 		disabled={undefined}
 		id="button-test"
 		focus={false}

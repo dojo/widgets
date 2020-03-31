@@ -6,7 +6,7 @@ import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const baseTemplate = assertionTemplate(() => (
-	<div classes={classes.root} role="progressbar">
+	<div classes={[undefined, classes.root]} role="progressbar">
 		<div classes={classes.buffer} />
 		<div classes={[classes.bar, classes.primary]}>
 			<span classes={classes.inner} />

@@ -25,7 +25,7 @@ const GREEKING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 const closedTemplate = assertionTemplate(() => (
 	<div
 		aria-labelledby=""
-		classes={css.root}
+		classes={[undefined, css.root]}
 		onpointerup={noop}
 		onpointerdown={noop}
 		onpointermove={noop}
@@ -117,7 +117,7 @@ registerSuite('SlidePane', {
 			h.expect(() => (
 				<div
 					aria-labelledby=""
-					classes={css.root}
+					classes={[undefined, css.root]}
 					onpointerup={noop}
 					onpointerdown={noop}
 					onpointermove={noop}
@@ -178,7 +178,7 @@ registerSuite('SlidePane', {
 						onpointerdown: noop,
 						onpointermove: noop,
 						onpointercancel: noop,
-						classes: css.root
+						classes: [undefined, css.root]
 					},
 					[
 						v('div', {
@@ -235,7 +235,7 @@ registerSuite('SlidePane', {
 						onpointerdown: noop,
 						onpointermove: noop,
 						onpointercancel: noop,
-						classes: css.root
+						classes: [undefined, css.root]
 					},
 					[
 						null,

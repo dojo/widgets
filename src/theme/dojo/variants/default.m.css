@@ -1,4 +1,4 @@
-:root {
+.root {
 	/* Spacing */
 	--grid-base: 8px;
 	--spacing-regular: var(--grid-base);
