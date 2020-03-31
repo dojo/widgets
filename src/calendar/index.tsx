@@ -153,7 +153,7 @@ export const Calendar = factory(function Calendar({
 	let value = icache.get('value') || new Date();
 
 	if (!initialValue && !existingInitialValue) {
-		let value = toDate(defaultDate);
+		value = toDate(defaultDate);
 
 		if (isOutOfDateRange(value, minDate, maxDate)) {
 			value = toDate(maxDate);
