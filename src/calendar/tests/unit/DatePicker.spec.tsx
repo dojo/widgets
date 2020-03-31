@@ -146,28 +146,33 @@ const expectedYearPopup = function(
 				<legend classes={[baseCss.visuallyHidden]}>{DEFAULT_LABELS.chooseYear}</legend>
 				{...yearRadios(open, yearStart, yearEnd, undefined, minYear, maxYear)}
 			</fieldset>
-			<div classes={css.controls}>
-				<button
-					classes={css.previous}
-					tabIndex={open ? 0 : -1}
-					type="button"
-					disabled={false}
-					onclick={noop}
-				>
-					<Icon type="leftIcon" theme={undefined} classes={undefined} />
-					<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.previousYears}</span>
-				</button>
-				<button
-					classes={css.next}
-					tabIndex={open ? 0 : -1}
-					type="button"
-					disabled={false}
-					onclick={noop}
-				>
-					<Icon type="rightIcon" theme={undefined} classes={undefined} />
-					<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
-				</button>
-			</div>
+		</div>
+	);
+};
+
+const expectedControls = function(open: boolean) {
+	return (
+		<div classes={css.controls}>
+			<button
+				classes={css.previous}
+				tabindex={open ? 0 : -1}
+				type="button"
+				disabled={false}
+				onclick={noop}
+			>
+				<Icon type="leftIcon" theme={undefined} classes={undefined} />
+				<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.previousYears}</span>
+			</button>
+			<button
+				classes={css.next}
+				tabindex={open ? 0 : -1}
+				type="button"
+				disabled={false}
+				onclick={noop}
+			>
+				<Icon type="rightIcon" theme={undefined} classes={undefined} />
+				<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
+			</button>
 		</div>
 	);
 };
@@ -243,6 +248,7 @@ const expected = function(monthOpen = false, yearOpen = false, options: Expected
 				minDate && minDate.getFullYear(),
 				maxDate && maxDate.getFullYear()
 			)}
+			{expectedControls(yearOpen)}
 		</div>
 	);
 };
@@ -418,32 +424,30 @@ registerSuite('Calendar DatePicker', {
 							</legend>
 							{...yearRadios(false, 1980, 2000, 1997)}
 						</fieldset>
-						<div classes={css.controls}>
-							<button
-								classes={css.previous}
-								disabled={false}
-								tabIndex={-1}
-								type="button"
-								onclick={noop}
-							>
-								<Icon type="leftIcon" theme={undefined} classes={undefined} />
-								<span classes={baseCss.visuallyHidden}>
-									{DEFAULT_LABELS.previousYears}
-								</span>
-							</button>
-							<button
-								classes={css.next}
-								disabled={false}
-								tabIndex={-1}
-								type="button"
-								onclick={noop}
-							>
-								<Icon type="rightIcon" theme={undefined} classes={undefined} />
-								<span classes={baseCss.visuallyHidden}>
-									{DEFAULT_LABELS.nextYears}
-								</span>
-							</button>
-						</div>
+					</div>
+					<div classes={css.controls}>
+						<button
+							classes={css.previous}
+							disabled={false}
+							tabindex={-1}
+							type="button"
+							onclick={noop}
+						>
+							<Icon type="leftIcon" theme={undefined} classes={undefined} />
+							<span classes={baseCss.visuallyHidden}>
+								{DEFAULT_LABELS.previousYears}
+							</span>
+						</button>
+						<button
+							classes={css.next}
+							disabled={false}
+							tabindex={-1}
+							type="button"
+							onclick={noop}
+						>
+							<Icon type="rightIcon" theme={undefined} classes={undefined} />
+							<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
+						</button>
 					</div>
 				</div>
 			));
