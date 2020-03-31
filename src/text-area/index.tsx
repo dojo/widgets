@@ -165,8 +165,7 @@ export const TextArea = factory(function TextArea({
 		classes,
 		labelHidden,
 		helperText,
-		onValidate,
-		onValue
+		onValidate
 	} = properties();
 
 	let value = icache.get('value');
@@ -176,8 +175,6 @@ export const TextArea = factory(function TextArea({
 		icache.set('value', initialValue);
 		icache.set('initialValue', initialValue);
 		value = initialValue;
-
-		onValue && onValue(initialValue);
 	}
 
 	onValidate && validate();
