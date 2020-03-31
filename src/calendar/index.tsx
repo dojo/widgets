@@ -1,6 +1,5 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
-import { uuid } from '@dojo/framework/core/util';
 import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
 import { monthInMin, monthInMax, isOutOfDateRange, toDate } from './date-utils';
@@ -142,7 +141,7 @@ export const Calendar = factory(function Calendar({
 		initialMonth = defaultDate.getMonth()
 	} = properties();
 
-	const existingInitialValue = icache.getOrSet('initialValue', new Date());
+	const existingInitialValue = icache.get('initialValue');
 	const existingInitialMonth = icache.get('initialMonth');
 	const existingInitialYear = icache.get('initialYear');
 	const callDateFocus = icache.getOrSet('callDateFocus', false);
