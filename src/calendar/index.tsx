@@ -223,7 +223,7 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function getMonthYear() {
-		const selectedDate = icache.get('value') || new Date();
+		const selectedDate = icache.getOrSet('value', new Date());
 		const month = icache.get('month');
 		const year = icache.get('year');
 		return {
