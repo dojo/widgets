@@ -344,17 +344,20 @@ registerSuite('Calendar', {
 				monthNames: DEFAULT_MONTHS,
 				selectedDate: new Date('June 1 2017'),
 				weekdayNames: DEFAULT_WEEKDAYS,
-				year: testDate.getFullYear(),
-				renderMonthLabel: () => 'Foo',
-				renderWeekdayCell: () => 'Bar'
+				year: testDate.getFullYear()
 			};
-			const h = harness(() => <Calendar {...properties} />);
+			let children: any = {
+				monthLabel: () => 'Foo',
+				weekdayCell: () => 'Bar'
+			};
+			const h = harness(() => <Calendar {...properties}>{children}</Calendar>);
 
 			h.expect(() => expected(false, 4, 'Bar', true, 'foo'));
 			properties = {
 				month: testDate.getMonth(),
 				year: testDate.getFullYear()
 			};
+			children = {};
 			h.expect(expected);
 		},
 

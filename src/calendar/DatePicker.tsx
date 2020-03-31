@@ -1,4 +1,5 @@
 import theme from '../middleware/theme';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import icache from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -46,7 +47,7 @@ export interface DatePickerProperties {
 	/** Handles when a year should change */
 	onRequestYearChange?(year: number): void;
 	/** Formats the displayed current month and year */
-	renderMonthLabel?(month: number, year: number): string;
+	renderMonthLabel?(month: number, year: number): RenderResult;
 	/** Currently displayed year */
 	year: number;
 	/** Number of years to display in a single page of the year popup */

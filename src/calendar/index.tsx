@@ -1,5 +1,5 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
-import { DNode } from '@dojo/framework/core/interfaces';
+import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
@@ -47,10 +47,6 @@ export interface CalendarProperties {
 	onMonthChange?(month: number): void;
 	/** Function called when the year changes */
 	onYearChange?(year: number): void;
-	/** Format the displayed current month and year */
-	renderMonthLabel?(month: number, year: number): string;
-	/** Format the weekday column headers */
-	renderWeekdayCell?(day: { short: string; long: string }): DNode;
 	/** The currently selected date */
 	selectedDate?: Date;
 	/** Customize or internationalize weekday names and abbreviations */
@@ -59,6 +55,13 @@ export interface CalendarProperties {
 	year?: number;
 	/** Configure the first day of the calendar week, defaults to 0 (sunday) */
 	firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+export interface CalendarChildren {
+	/** Format the displayed current month and year */
+	monthLabel?: (month: number, year: number) => RenderResult;
+	/** Format the weekday column headers */
+	weekdayCell?: (day: { short: string; long: string }) => RenderResult;
 }
 
 interface ShortLong<T> {
@@ -91,11 +94,14 @@ const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
 	{ short: 'satShort', long: 'saturday' }
 ];
 
-const factory = create({ icache, i18n, theme, focus }).properties<CalendarProperties>();
+const factory = create({ icache, i18n, theme, focus })
+	.properties<CalendarProperties>()
+	.children<CalendarChildren | undefined>();
 
 export const Calendar = factory(function Calendar({
 	middleware: { icache, i18n, theme, focus },
-	properties
+	properties,
+	children
 }) {
 	const themeCss = theme.classes(css);
 	const { messages: commonMessages } = i18n.localize(commonBundle);
@@ -115,6 +121,9 @@ export const Calendar = factory(function Calendar({
 		weekdayNames = getWeekdays(commonMessages),
 		firstDayOfWeek = 0
 	} = properties();
+
+	const { monthLabel, weekdayCell } = children()[0] || ({} as CalendarChildren);
+
 	const { year, month } = getMonthYear();
 
 	let weekdayOrder: number[] = [];
@@ -375,7 +384,6 @@ export const Calendar = factory(function Calendar({
 	) {
 		const {
 			monthNames = getMonths(commonMessages),
-			renderMonthLabel,
 			theme,
 			classes,
 			onMonthChange,
@@ -393,7 +401,7 @@ export const Calendar = factory(function Calendar({
 				labels={labels}
 				month={month}
 				monthNames={monthNames}
-				renderMonthLabel={renderMonthLabel}
+				renderMonthLabel={monthLabel}
 				theme={theme}
 				year={year}
 				minDate={minDate}
@@ -427,9 +435,8 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function renderWeekdayCell(day: { short: string; long: string }) {
-		const { renderWeekdayCell } = properties();
-		return renderWeekdayCell ? (
-			renderWeekdayCell(day)
+		return weekdayCell ? (
+			weekdayCell(day)
 		) : (
 			<abbr classes={themeCss.abbr} title={day.long}>
 				{day.short}
