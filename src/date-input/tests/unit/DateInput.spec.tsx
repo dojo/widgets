@@ -88,12 +88,8 @@ const calendarTemplate = assertionTemplate(() => {
 				focus={() => false}
 				maxDate={undefined}
 				minDate={undefined}
-				month={today.getMonth()}
-				onDateSelect={noop}
-				onMonthChange={noop}
-				onYearChange={noop}
-				selectedDate={today}
-				year={today.getFullYear()}
+				onValue={noop}
+				initialValue={today}
 			/>
 		</div>
 	);
@@ -234,7 +230,7 @@ describe('DateInput', () => {
 		// Find the calendar widget and trigger a date selected
 		const [calendar] = select('@calendar', contentResult);
 		onValue.resetHistory();
-		calendar.properties.onDateSelect(expected);
+		calendar.properties.onValue(expected);
 
 		// Find the input; it should contain the new value
 		h.expect(baseTemplate(expected));

@@ -36,10 +36,6 @@ interface DateInputICache {
 	inputValue: string;
 	/** The last valid Date of value */
 	value: Date;
-	/** Month of the popup calendar */
-	month: number;
-	/** Year of the popup calendar */
-	year: number;
 	/** Should validate the input value on the next cycle */
 	shouldValidate: boolean;
 	/** Message for current validation state */
@@ -85,8 +81,6 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 					validationMessages.push(messages.tooLate);
 				} else {
 					icache.set('value', newDate);
-					icache.set('month', newDate.getMonth());
-					icache.set('year', newDate.getFullYear());
 					icache.set('inputValue', formatDate(newDate));
 					if (onValue) {
 						onValue(formatDateISO(newDate));
@@ -177,16 +171,12 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 									focus={() => shouldFocus && focusNode === 'calendar'}
 									maxDate={max}
 									minDate={min}
-									month={icache.get('month')}
-									onDateSelect={(date) => {
+									initialValue={icache.get('value')}
+									onValue={(date) => {
 										icache.set('inputValue', formatDate(date));
 										icache.set('shouldValidate', true);
 										closeCalendar();
 									}}
-									onMonthChange={(month) => icache.set('month', month)}
-									onYearChange={(year) => icache.set('year', year)}
-									selectedDate={icache.get('value')}
-									year={icache.get('year')}
 								/>
 							</div>
 						);

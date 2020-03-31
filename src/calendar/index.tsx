@@ -130,15 +130,16 @@ export const Calendar = factory(function Calendar({
 		aria = {},
 		minDate,
 		maxDate,
-		initialValue = new Date(),
+		initialValue,
 		weekdayNames = getWeekdays(commonMessages),
 		firstDayOfWeek = 0
 	} = properties();
 
 	const { monthLabel, weekdayCell } = children()[0] || ({} as CalendarChildren);
+	const defaultDate = initialValue || new Date();
 	const {
-		initialYear = initialValue.getFullYear(),
-		initialMonth = initialValue.getMonth()
+		initialYear = defaultDate.getFullYear(),
+		initialMonth = defaultDate.getMonth()
 	} = properties();
 
 	const existingInitialValue = icache.getOrSet('initialValue', new Date());
@@ -150,30 +151,33 @@ export const Calendar = factory(function Calendar({
 	const popupOpen = icache.getOrSet('popupOpen', false);
 	const shouldFocus = focus.shouldFocus();
 	let value = icache.get('value') || new Date();
-	console.log('focusedDay', focusedDay);
 
-	if (initialValue !== existingInitialValue) {
-		value = toDate(initialValue);
+	if (!initialValue && !existingInitialValue) {
+		let value = toDate(defaultDate);
 
-		if (
-			typeof properties().initialValue === 'undefined' &&
-			isOutOfDateRange(value, minDate, maxDate)
-		) {
+		if (isOutOfDateRange(value, minDate, maxDate)) {
 			value = toDate(maxDate);
 		}
 
+		icache.set('initialValue', value);
+		icache.set('value', value);
+	}
+
+	if (initialValue && initialValue !== existingInitialValue) {
+		value = toDate(initialValue);
+
 		icache.set('initialValue', toDate(initialValue));
-		onValueChange(value);
+		icache.set('value', value);
 	}
 
 	if (initialMonth !== existingInitialMonth) {
 		icache.set('initialMonth', initialMonth);
-		onMonthChange(initialMonth);
+		icache.set('month', initialMonth);
 	}
 
 	if (initialYear !== existingInitialYear) {
 		icache.set('initialYear', initialYear);
-		onYearChange(initialYear);
+		icache.set('year', initialYear);
 	}
 
 	const { month, year } = getMonthYear();
@@ -251,8 +255,6 @@ export const Calendar = factory(function Calendar({
 			day -= currentMonthLength;
 		}
 
-		const { month: newMonth, year: newYear } = getMonthYear();
-		console.log(`Go to ${day} ${newMonth} ${newYear}`);
 		icache.set('focusedDay', day);
 		icache.set('callDateFocus', true);
 	}
