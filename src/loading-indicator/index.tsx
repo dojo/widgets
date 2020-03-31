@@ -11,7 +11,7 @@ export const LoadingIndicator = factory(function LoadingIndicator({ middleware: 
 	const classes = theme.classes(css);
 
 	return (
-		<div classes={classes.root} role="progressbar">
+		<div classes={[theme.variant(), classes.root]} role="progressbar">
 			<div classes={classes.buffer} />
 			<div classes={[classes.bar, classes.primary]}>
 				<span classes={classes.inner} />

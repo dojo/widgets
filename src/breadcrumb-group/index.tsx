@@ -107,7 +107,7 @@ export const BreadcrumbGroup = factory(function BreadcrumbGroup({
 	const [renderer = defaultRenderer] = children();
 
 	return (
-		<nav classes={themeCss.root} aria-label={label}>
+		<nav classes={[theme.variant(), themeCss.root]} aria-label={label}>
 			<ol classes={[fixedCss.listFixed, themeCss.list]}>{renderer(items)}</ol>
 		</nav>
 	);

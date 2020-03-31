@@ -70,7 +70,14 @@ export const TitlePane = factory(function TitlePane({
 	}
 
 	return (
-		<div classes={[themeCss.root, open ? themeCss.open : null, fixedCss.rootFixed]}>
+		<div
+			classes={[
+				theme.variant(),
+				themeCss.root,
+				open ? themeCss.open : null,
+				fixedCss.rootFixed
+			]}
+		>
 			<div
 				aria-level={headingLevel ? `${headingLevel}` : null}
 				classes={[

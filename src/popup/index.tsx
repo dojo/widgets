@@ -96,10 +96,18 @@ export const Popup = factory(function({
 			<body>
 				<div
 					key="underlay"
-					classes={[fixedCss.underlay, underlayVisible && classes.underlayVisible]}
+					classes={[
+						theme.variant(),
+						fixedCss.underlay,
+						underlayVisible && classes.underlayVisible
+					]}
 					onclick={onClose}
 				/>
-				<div key="wrapper" classes={fixedCss.root} styles={wrapperStyles}>
+				<div
+					key="wrapper"
+					classes={[theme.variant(), fixedCss.root]}
+					styles={wrapperStyles}
+				>
 					{content()}
 				</div>
 			</body>

@@ -187,7 +187,7 @@ export const TextArea = factory(function TextArea({
 	const inputFocused = focus.isFocused('input');
 
 	return (
-		<div key="root" classes={themeCss.root}>
+		<div key="root" classes={[theme.variant(), themeCss.root]}>
 			<div
 				key="wrapper"
 				classes={[

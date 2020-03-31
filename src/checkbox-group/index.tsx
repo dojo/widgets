@@ -63,7 +63,7 @@ export const CheckboxGroup = factory(function({
 	}
 
 	return (
-		<fieldset key="root" classes={root} name={name}>
+		<fieldset key="root" classes={[theme.variant(), root]} name={name}>
 			{label && <legend classes={legend}>{label}</legend>}
 			{renderCheckboxes()}
 		</fieldset>

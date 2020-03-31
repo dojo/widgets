@@ -438,7 +438,7 @@ export const Calendar = factory(function Calendar({
 	}
 
 	return (
-		<div classes={themeCss.root} {...formatAriaProperties(aria)}>
+		<div classes={[theme.variant(), themeCss.root]} {...formatAriaProperties(aria)}>
 			{renderDatePicker(commonMessages, labels)}
 			<table
 				cellspacing="0"

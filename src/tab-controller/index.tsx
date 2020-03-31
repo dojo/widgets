@@ -212,7 +212,7 @@ export const TabController = factory(function TabController({
 		<div
 			{...formatAriaProperties(aria)}
 			aria-orientation={orientation}
-			classes={[alignClass || null, themeCss.root]}
+			classes={[theme.variant(), alignClass || null, themeCss.root]}
 			role="tablist"
 		>
 			{...content}

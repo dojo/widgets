@@ -21,6 +21,7 @@ export const Avatar = factory(function Avatar({ middleware: { theme }, propertie
 			role={src && 'image'}
 			aria-label={alt}
 			classes={[
+				theme.variant(),
 				themeCss.root,
 				secondary ? themeCss.avatarColorSecondary : themeCss.avatarColor,
 				themeCss[size],

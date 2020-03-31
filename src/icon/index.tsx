@@ -30,7 +30,10 @@ export const Icon = factory(function Icon({ properties, middleware: { theme } })
 
 	return (
 		<virtual>
-			<i classes={[classes.icon, classes[type]]} {...formatAriaProperties(aria)} />
+			<i
+				classes={[theme.variant(), classes.icon, classes[type]]}
+				{...formatAriaProperties(aria)}
+			/>
 			{altText ? <span classes={baseCss.visuallyHidden}>{altText}</span> : null}
 		</virtual>
 	);

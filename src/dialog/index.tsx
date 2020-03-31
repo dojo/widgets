@@ -121,7 +121,10 @@ export const Dialog = factory(function Dialog({
 
 	return (
 		<body>
-			<div key="dialog" classes={[themeCss.root, open ? themeCss.open : null]}>
+			<div
+				key="dialog"
+				classes={[theme.variant(), themeCss.root, open ? themeCss.open : null]}
+			>
 				{open && (
 					<virtual>
 						<GlobalEvent key="global" document={{ keyup }} />

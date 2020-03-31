@@ -62,7 +62,7 @@ export const RadioGroup = factory(function({
 	}
 
 	return (
-		<fieldset key="root" classes={root} name={name}>
+		<fieldset key="root" classes={[theme.variant(), root]} name={name}>
 			{label && <legend classes={legend}>{label}</legend>}
 			{renderRadios()}
 		</fieldset>

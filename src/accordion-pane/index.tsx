@@ -69,7 +69,7 @@ export const AccordionPane = factory(function LoadingIndicator({
 	};
 
 	return (
-		<div classes={classes.root}>
+		<div classes={[classes.root, theme.variant()]}>
 			{renderer(
 				onOpen,
 				onClose,

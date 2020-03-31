@@ -53,7 +53,7 @@ export const Progress = factory(function Progress({
 	const output = _output(value, percent);
 
 	return (
-		<div key="root" classes={themeCss.root}>
+		<div key="root" classes={[theme.variant(), themeCss.root]}>
 			<div
 				classes={themeCss.bar}
 				role="progressbar"
