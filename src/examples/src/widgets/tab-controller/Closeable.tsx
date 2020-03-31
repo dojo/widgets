@@ -7,25 +7,25 @@ const factory = create();
 
 export default factory(function Closeable() {
 	const tabs = [
-		{ closeable: true, label: 'Tab One' },
-		{ label: 'Tab Two' },
-		{ label: 'Tab Three' },
-		{ label: 'Tab Four' }
+		{ closeable: true, id: 'tab0', label: 'Tab One' },
+		{ id: 'tab1', label: 'Tab Two' },
+		{ id: 'tab2', label: 'Tab Three' },
+		{ id: 'tab3', label: 'Tab Four' }
 	];
 
 	return (
 		<TabController tabs={tabs}>
 			{(_tabs, isActive, isClosed) => [
-				<TabContent key="tab0" active={isActive(0)} closed={isClosed(0)}>
+				<TabContent key="tab0" active={isActive('tab0')} closed={isClosed('tab0')}>
 					Hello Tab One
 				</TabContent>,
-				<TabContent key="tab1" active={isActive(1)} closed={isClosed(1)}>
+				<TabContent key="tab1" active={isActive('tab1')} closed={isClosed('tab1')}>
 					Hello Tab Two
 				</TabContent>,
-				<TabContent key="tab2" active={isActive(2)} closed={isClosed(2)}>
+				<TabContent key="tab2" active={isActive('tab2')} closed={isClosed('tab2')}>
 					Hello Tab Three
 				</TabContent>,
-				<TabContent key="tab3" active={isActive(3)} closed={isClosed(3)}>
+				<TabContent key="tab3" active={isActive('tab3')} closed={isClosed('tab3')}>
 					Hello Tab Four
 				</TabContent>
 			]}

@@ -35,11 +35,14 @@ const createMockKeydownEvent = (which: number) => {
 
 const tabChildren = (tabs: TabItem[]): TabControllerChildren => {
 	return (_, active, closed) =>
-		tabs.map((_tab, i) => (
-			<TabContent key={`tab${i}`} active={active(i)} closed={closed(i)}>
-				{`tab content ${i + 1}`}
-			</TabContent>
-		));
+		tabs.map((_tab, i) => {
+			const key = `tab${i}`;
+			return (
+				<TabContent key={key} active={active(key)} closed={closed(key)}>
+					{`tab content ${i + 1}`}
+				</TabContent>
+			);
+		});
 };
 
 const expectedTabButtons = (tabs: TabItem[], activeIndex = 0, closedIndex = -1): DNode => {
@@ -198,9 +201,9 @@ registerSuite('TabController', {
 
 		'Clicking tab should change the active tab'() {
 			const tabs = [
-				{ label: 'Tab 1' },
-				{ disabled: true, label: 'Tab 2' },
-				{ label: 'Tab 3' }
+				{ id: 'tab0', label: 'Tab 1' },
+				{ disabled: true, id: 'tab1', label: 'Tab 2' },
+				{ id: 'tab2', label: 'Tab 3' }
 			];
 
 			const h = harness(() => (
@@ -222,9 +225,9 @@ registerSuite('TabController', {
 
 		'Closing a tab should change tabs'() {
 			const tabs = [
-				{ label: 'Tab 1' },
-				{ label: 'Tab 2' },
-				{ closeable: true, label: 'Tab 3' }
+				{ id: 'tab0', label: 'Tab 1' },
+				{ id: 'tab1', label: 'Tab 2' },
+				{ closeable: true, id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
 				<TabController initialIndex={2} tabs={tabs}>
@@ -241,7 +244,9 @@ registerSuite('TabController', {
 		},
 
 		'Basic keyboard navigation'() {
-			const tabs: TabItem[] = '01234'.split('').map((n) => ({ label: `Tab ${n + 1}` }));
+			const tabs: TabItem[] = '01234'
+				.split('')
+				.map((n) => ({ id: `tab${n}`, label: `Tab ${n + 1}` }));
 			const h = harness(() => (
 				<TabController initialIndex={2} tabs={tabs}>
 					{tabChildren(tabs)}
@@ -263,7 +268,11 @@ registerSuite('TabController', {
 		},
 
 		'Arrow keys wrap to first and last tab'() {
-			const tabs = [{ label: 'Tab 1' }, { label: 'Tab 2' }, { label: 'Tab 3' }];
+			const tabs = [
+				{ id: 'tab0', label: 'Tab 1' },
+				{ id: 'tab1', label: 'Tab 2' },
+				{ id: 'tab2', label: 'Tab 3' }
+			];
 			let properties: any = { initialIndex: 0, tabs };
 			const h = harness(() => (
 				<TabController {...properties}>{tabChildren(tabs)}</TabController>
@@ -278,7 +287,7 @@ registerSuite('TabController', {
 		'Arrow keys on vertical tabs'() {
 			const tabs: TabItem[] = '01234'
 				.split('')
-				.map((n) => ({ disabled: n === '1', label: `Tab ${n + 1}` }));
+				.map((n) => ({ disabled: n === '1', id: `tab${n}`, label: `Tab ${n + 1}` }));
 			let properties: any = {
 				alignButtons: Align.right,
 				tabs
@@ -340,7 +349,11 @@ registerSuite('TabController', {
 		},
 
 		'Should default to last tab if invalid initialIndex passed'() {
-			const tabs = [{ label: 'Tab 1' }, { label: 'Tab 2' }, { label: 'Tab 3' }];
+			const tabs = [
+				{ id: 'tab0', label: 'Tab 1' },
+				{ id: 'tab1', label: 'Tab 2' },
+				{ id: 'tab2', label: 'Tab 3' }
+			];
 			const h = harness(() => (
 				<TabController initialIndex={3} tabs={tabs}>
 					{tabChildren(tabs)}
@@ -353,9 +366,9 @@ registerSuite('TabController', {
 
 		'Should skip tab if initialIndex is disabled'() {
 			const tabs = [
-				{ label: 'Tab 1' },
-				{ disabled: true, label: 'Tab 2' },
-				{ label: 'Tab 3' }
+				{ id: 'tab0', label: 'Tab 1' },
+				{ disabled: true, id: 'tab1', label: 'Tab 2' },
+				{ id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
 				<TabController initialIndex={1} tabs={tabs}>
@@ -368,7 +381,7 @@ registerSuite('TabController', {
 		},
 
 		'Calls focus when arrowing through tabs'() {
-			const tabs = [{ label: 'Tab 1' }, { label: 'Tab 2' }];
+			const tabs = [{ id: 'tab0', label: 'Tab 1' }, { id: 'tab1', label: 'Tab 2' }];
 			const h = harness(
 				() => <TabController tabs={tabs}>{tabChildren(tabs)}</TabController>,
 				[
@@ -386,7 +399,10 @@ registerSuite('TabController', {
 		},
 
 		'Calls focus when closing a tab'() {
-			const tabs = [{ closeable: true, label: 'Tab 1' }, { label: 'Tab 2' }];
+			const tabs = [
+				{ closeable: true, id: 'tab0', label: 'Tab 1' },
+				{ id: 'tab1', label: 'Tab 2' }
+			];
 			const h = harness(
 				() => <TabController tabs={tabs}>{tabChildren(tabs)}</TabController>,
 				[
