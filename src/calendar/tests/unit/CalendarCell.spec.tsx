@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
-import CalendarCell from '../../CalendarCell';
+import { CalendarCell } from '../../index';
 import * as css from '../../../theme/default/calendar.m.css';
 import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
