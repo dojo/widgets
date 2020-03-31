@@ -160,33 +160,25 @@ export const TabController = factory(function TabController({
 			return;
 		}
 
-		// Accessibility
 		switch (event.which) {
-			// Escape
 			case Keys.Escape:
 				closeable && closeIndex(index);
 				break;
-			// Left arrow
 			case Keys.Left:
 				onLeftArrowPress();
 				break;
-			// Right arrow
 			case Keys.Right:
 				onRightArrowPress();
 				break;
-			// Up arrow
 			case Keys.Up:
 				onUpArrowPress();
 				break;
-			// Down arrow
 			case Keys.Down:
 				onDownArrowPress();
 				break;
-			// Home
 			case Keys.Home:
 				selectFirstIndex();
 				break;
-			// End
 			case Keys.End:
 				selectLastIndex();
 				break;
@@ -242,6 +234,7 @@ export const TabController = factory(function TabController({
 					{label}
 					{closeable ? (
 						<button
+							disabled={disabled}
 							tabIndex={active ? 0 : -1}
 							classes={themeCss.close}
 							key={`${index}-tabbutton-close`}
