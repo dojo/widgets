@@ -183,8 +183,6 @@ export const TextInput = factory(function TextInput({
 		icache.set('value', initialValue);
 		icache.set('initialValue', initialValue);
 		value = initialValue;
-
-		onValue && onValue(initialValue);
 	}
 
 	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;
