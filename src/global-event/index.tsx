@@ -1,8 +1,7 @@
 import global from '@dojo/framework/shim/global';
-import WidgetBase from '@dojo/framework/core/WidgetBase';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { diffProperty } from '@dojo/framework/core/decorators/diffProperty';
+import { create, destroy, diffProperty } from '@dojo/framework/core/vdom';
 import { shallow } from '@dojo/framework/core/diff';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 export interface ListenerObject {
 	[index: string]: (event?: any) => void;
@@ -20,25 +19,37 @@ export interface RegisteredListeners {
 	document: ListenerObject;
 }
 
-export class GlobalEvent extends WidgetBase<GlobalEventProperties> {
-	private _listeners: RegisteredListeners = {
-		window: {},
-		document: {}
-	};
+interface GlobalEventICache {
+	listeners: RegisteredListeners;
+}
 
-	private _registerListeners(
+const factory = create({
+	destroy,
+	diffProperty,
+	icache: createICacheMiddleware<GlobalEventICache>()
+}).properties<GlobalEventProperties>();
+
+export const GlobalEvent = factory(function({
+	children,
+	middleware: { destroy, diffProperty, icache }
+}) {
+	const registerListeners = (
 		type: 'window' | 'document',
 		previousListeners: RegisteredListeners,
 		newListeners: RegisteredListeners
-	) {
+	) => {
+		const currentListeners = icache.getOrSet('listeners', {
+			window: {},
+			document: {}
+		});
 		const registeredListeners: ListenerObject = {};
 		previousListeners[type] &&
 			Object.keys(previousListeners[type]).forEach((eventName) => {
 				const newListener = newListeners[type][eventName];
 				if (newListener === undefined) {
-					global[type].removeEventListener(eventName, this._listeners[type][eventName]);
+					global[type].removeEventListener(eventName, currentListeners[type][eventName]);
 				} else if (previousListeners[type][eventName] !== newListener) {
-					global[type].removeEventListener(eventName, this._listeners[type][eventName]);
+					global[type].removeEventListener(eventName, currentListeners[type][eventName]);
 					global[type].addEventListener(eventName, newListener);
 					registeredListeners[eventName] = newListener;
 				} else {
@@ -56,42 +67,39 @@ export class GlobalEvent extends WidgetBase<GlobalEventProperties> {
 					registeredListeners[eventName] = newListeners[type][eventName];
 				}
 			});
-		this._listeners[type] = registeredListeners;
-	}
+		currentListeners[type] = registeredListeners;
 
-	private _removeAllRegisteredListeners(type: 'window' | 'document') {
-		Object.keys(this._listeners[type]).forEach((eventName) => {
-			global[type].removeEventListener(eventName, this._listeners[type][eventName]);
+		icache.set('listeners', currentListeners);
+	};
+
+	diffProperty('window', (previous: RegisteredListeners, next: RegisteredListeners) => {
+		const { changed } = shallow(previous, next);
+		changed && registerListeners('window', previous, next);
+	});
+	diffProperty('document', (previous: RegisteredListeners, next: RegisteredListeners) => {
+		const { changed } = shallow(previous, next);
+		changed && registerListeners('document', previous, next);
+	});
+
+	const removeAllRegisteredListeners = (type: 'window' | 'document') => {
+		const currentListeners = icache.getOrSet('listeners', {
+			window: {},
+			document: {}
 		});
-	}
+		Object.keys(currentListeners[type]).forEach((eventName) => {
+			global[type].removeEventListener(eventName, currentListeners[type][eventName]);
+		});
+	};
 
-	@diffProperty('window', shallow)
-	protected onWindowListenersChange(
-		previousListeners: RegisteredListeners,
-		newListeners: RegisteredListeners
-	) {
-		this._registerListeners('window', previousListeners, newListeners);
-	}
+	destroy(() => {
+		removeAllRegisteredListeners('window');
+		removeAllRegisteredListeners('document');
+	});
 
-	@diffProperty('document', shallow)
-	protected onDocumentListenersChange(
-		previousListeners: RegisteredListeners,
-		newListeners: RegisteredListeners
-	) {
-		this._registerListeners('document', previousListeners, newListeners);
+	if (children().length > 0) {
+		return children();
 	}
-
-	protected onDetach() {
-		this._removeAllRegisteredListeners('window');
-		this._removeAllRegisteredListeners('document');
-	}
-
-	protected render(): DNode | DNode[] {
-		if (this.children.length > 0) {
-			return this.children;
-		}
-		return null;
-	}
-}
+	return null;
+});
 
 export default GlobalEvent;
