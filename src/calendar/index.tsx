@@ -57,7 +57,7 @@ export interface CalendarProperties {
 }
 
 export interface CalendarIcache {
-	value?: Date;
+	value: Date;
 	initialValue: Date;
 	initialMonth: number;
 	month: number;
