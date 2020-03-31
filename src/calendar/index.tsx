@@ -7,6 +7,7 @@ import Icon from '../icon/index';
 import calendarBundle from './nls/Calendar';
 import * as css from '../theme/default/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
+import * as iconCss from '../theme/default/icon.m.css';
 
 import theme from '../middleware/theme';
 import icache, { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -450,12 +451,20 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 		}
 
 		function renderPagingButtonContent(type: Paging) {
-			const { labels, theme, classes } = properties();
+			const { labels, classes } = properties();
 			const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 			const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
 
 			return [
-				<Icon type={iconType} theme={theme} classes={classes} />,
+				<Icon
+					type={iconType}
+					theme={theme.compose(
+						iconCss,
+						css,
+						'datePickerPaging'
+					)}
+					classes={classes}
+				/>,
 				<span classes={baseCss.visuallyHidden}>{labelText}</span>
 			];
 		}
@@ -949,15 +958,19 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function renderPagingButtonContent(type: Paging, labels: CalendarMessages) {
-		const { theme, classes } = properties();
+		const { classes } = properties();
 		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
 		return [
 			<Icon
 				type={iconType}
-				theme={theme}
-				classes={{ ...classes, '@dojo/widgets/icon': { icon: [themeCss.icon] } }}
+				theme={theme.compose(
+					iconCss,
+					css,
+					'calendarPaging'
+				)}
+				classes={classes}
 			/>,
 			<span classes={[baseCss.visuallyHidden]}>{labelText}</span>
 		];

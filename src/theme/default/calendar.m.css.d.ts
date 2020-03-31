@@ -6,7 +6,7 @@ export const todayDate: string;
 export const date: string;
 export const dateGrid: string;
 export const abbr: string;
-export const icon: string;
+export const calendarPagingIcon: string;
 export const weekday: string;
 export const datePicker: string;
 export const topMatter: string;

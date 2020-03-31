@@ -13,7 +13,7 @@ export const previous: string;
 export const next: string;
 export const monthTriggerActive: string;
 export const yearTriggerActive: string;
-export const icon: string;
+export const calendarPagingIcon: string;
 export const monthGrid: string;
 export const yearGrid: string;
 export const monthFields: string;
