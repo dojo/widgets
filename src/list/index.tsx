@@ -222,12 +222,12 @@ export const List = factory(function List({
 				const index = i + startNode;
 				const page = Math.floor(index / count) + 1;
 				if (!pages[page]) {
-					setOptions({
+					const pageOptions = {
 						...getOptions(),
 						pageNumber: page
-					});
-					pages[page] = getOrRead(getOptions()) || [];
-					loading[page] = isLoading(getOptions());
+					};
+					pages[page] = getOrRead(pageOptions) || [];
+					loading[page] = isLoading(pageOptions);
 				}
 				const indexWithinPage = index - (page - 1) * count;
 				const menuOption = pages[page][indexWithinPage];
