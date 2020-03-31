@@ -38,10 +38,10 @@ export const GlobalEvent = factory(function({
 		previousListeners: RegisteredListeners,
 		newListeners: RegisteredListeners
 	) => {
-		const currentListeners = icache.get('listeners') || {
+		const currentListeners = icache.getOrSet('listeners', {
 			window: {},
 			document: {}
-		};
+		});
 		const registeredListeners: ListenerObject = {};
 		previousListeners[type] &&
 			Object.keys(previousListeners[type]).forEach((eventName) => {
@@ -82,10 +82,10 @@ export const GlobalEvent = factory(function({
 	});
 
 	const removeAllRegisteredListeners = (type: 'window' | 'document') => {
-		const currentListeners = icache.get('listeners') || {
+		const currentListeners = icache.getOrSet('listeners', {
 			window: {},
 			document: {}
-		};
+		});
 		Object.keys(currentListeners[type]).forEach((eventName) => {
 			global[type].removeEventListener(eventName, currentListeners[type][eventName]);
 		});
