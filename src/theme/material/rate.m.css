@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .iconIcon {
 	composes: icon from './icon.m.css';
 }

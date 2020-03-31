@@ -137,8 +137,9 @@ describe('Rate', () => {
 	const baseTemplate = (properties: Partial<RateProperties> = {}) =>
 		assertionTemplate(() => (
 			<div
-				key="radioGroupWrapper"
+				key="root"
 				classes={[
+					undefined,
 					css.root,
 					properties.readOnly ? css.readOnly : null,
 					properties.disabled ? css.disabled : null
@@ -181,7 +182,7 @@ describe('Rate', () => {
 	});
 
 	it('renders with max', () => {
-		const h = harness(() => <Rate widgetId="fooRate" name="rate" max={2} />, {
+		const h = harness(() => <Rate name="rate" max={2} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
 		h.expect(baseTemplate());
@@ -433,7 +434,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate">{renderCharacter}</Rate>, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.trigger('@radioGroupWrapper', 'onpointerenter');
+		h.trigger('@root', 'onpointerenter');
 		h.expect(baseTemplate());
 
 		const radios = selectRadio(h);
@@ -446,7 +447,7 @@ describe('Rate', () => {
 		sinon.assert.callCount(renderCharacter, 5);
 		sinon.assert.calledWithExactly(renderCharacter, true, 5, undefined, 5);
 
-		h.trigger('@radioGroupWrapper', 'onpointerleave');
+		h.trigger('@root', 'onpointerleave');
 		renderCharacter.reset();
 		selectRadio(h);
 		sinon.assert.callCount(renderCharacter, 5);

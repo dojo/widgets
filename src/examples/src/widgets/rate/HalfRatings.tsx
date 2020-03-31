@@ -15,7 +15,7 @@ const App = factory(function({ properties, middleware: { i18n, icache } }) {
 			<Rate
 				name="half"
 				steps={2}
-				onValue={(value, mixed) => {
+				onValue={(mixed) => {
 					set('half', format('starLabels', mixed));
 				}}
 			/>

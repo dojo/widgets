@@ -304,8 +304,9 @@ export const Rate = factory(function Rate({
 
 	return (
 		<div
-			key="radioGroupWrapper"
+			key="root"
 			classes={[
+				theme.variant(),
 				themedCss.root,
 				readOnly ? themedCss.readOnly : null,
 				disabled ? themedCss.disabled : null
