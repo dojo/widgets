@@ -30,7 +30,7 @@ const memoryTemplate = createMemoryTemplate();
 const harness = createHarness([compareTheme]);
 
 const baseTemplate = assertionTemplate(() => (
-	<div classes={[css.root, undefined, false, false]} key="root">
+	<div classes={[undefined, css.root, undefined, false, false]} key="root">
 		<TriggerPopup key="popup" onClose={() => {}} onOpen={() => {}} position={undefined}>
 			{{ trigger: () => <button />, content: () => <div /> }}
 		</TriggerPopup>

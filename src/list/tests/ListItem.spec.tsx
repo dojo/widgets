@@ -14,7 +14,7 @@ describe('ListBoxItem', () => {
 		<div
 			key="root"
 			onpointermove={noop}
-			classes={[css.root, false, false, false]}
+			classes={[undefined, css.root, false, false, false]}
 			onpointerdown={noop}
 			role="option"
 			aria-selected={false}
@@ -47,7 +47,7 @@ describe('ListBoxItem', () => {
 			</ListItem>
 		));
 		const selectedTemplate = template
-			.setProperty('@root', 'classes', [css.root, css.selected, false, false])
+			.setProperty('@root', 'classes', [undefined, css.root, css.selected, false, false])
 			.setProperty('@root', 'aria-selected', true);
 		h.expect(selectedTemplate);
 	});
@@ -59,7 +59,7 @@ describe('ListBoxItem', () => {
 			</ListItem>
 		));
 		const disabledTemplate = template
-			.setProperty('@root', 'classes', [css.root, false, false, css.disabled])
+			.setProperty('@root', 'classes', [undefined, css.root, false, false, css.disabled])
 			.setProperty('@root', 'aria-disabled', true);
 		h.expect(disabledTemplate);
 	});
@@ -71,6 +71,7 @@ describe('ListBoxItem', () => {
 			</ListItem>
 		));
 		const activeTemplate = template.setProperty('@root', 'classes', [
+			undefined,
 			css.root,
 			false,
 			css.active,

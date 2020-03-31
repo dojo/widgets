@@ -20,7 +20,14 @@ describe('TitlePane', () => {
 	}: TitlePaneProperties = {}) {
 		return assertationTemplate(() => {
 			return (
-				<div classes={[themeCss.root, open ? themeCss.open : null, fixedCss.rootFixed]}>
+				<div
+					classes={[
+						undefined,
+						themeCss.root,
+						open ? themeCss.open : null,
+						fixedCss.rootFixed
+					]}
+				>
 					<div
 						aria-level={headingLevel ? `${headingLevel}` : null}
 						classes={[

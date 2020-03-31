@@ -11,8 +11,8 @@ import { stub } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
 	<body>
-		<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />
-		<div key="wrapper" classes={fixedCss.root} styles={{ opacity: '0' }}>
+		<div key="underlay" classes={[undefined, fixedCss.underlay, false]} onclick={() => {}} />
+		<div key="wrapper" classes={[undefined, fixedCss.root]} styles={{ opacity: '0' }}>
 			hello world
 		</div>
 	</body>
@@ -93,10 +93,14 @@ describe('Popup', () => {
 			{ middleware: [[node, mockNode]] }
 		);
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
-			<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />,
+			<div
+				key="underlay"
+				classes={[undefined, fixedCss.underlay, false]}
+				onclick={() => {}}
+			/>,
 			<div
 				key="wrapper"
-				classes={fixedCss.root}
+				classes={[undefined, fixedCss.root]}
 				styles={{ left: '50px', opacity: '1', top: '100px' }}
 			>
 				hello world
@@ -130,10 +134,14 @@ describe('Popup', () => {
 			{ middleware: [[node, mockNode]] }
 		);
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
-			<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />,
+			<div
+				key="underlay"
+				classes={[undefined, fixedCss.underlay, false]}
+				onclick={() => {}}
+			/>,
 			<div
 				key="wrapper"
-				classes={fixedCss.root}
+				classes={[undefined, fixedCss.root]}
 				styles={{ left: '50px', opacity: '1', top: '200px' }}
 			>
 				hello world
@@ -168,10 +176,14 @@ describe('Popup', () => {
 			{ middleware: [[node, mockNode]] }
 		);
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
-			<div key="underlay" classes={[fixedCss.underlay, false]} onclick={() => {}} />,
+			<div
+				key="underlay"
+				classes={[undefined, fixedCss.underlay, false]}
+				onclick={() => {}}
+			/>,
 			<div
 				key="wrapper"
-				classes={fixedCss.root}
+				classes={[undefined, fixedCss.root]}
 				styles={{ left: '50px', opacity: '1', top: '300px' }}
 			>
 				hello world
@@ -192,6 +204,7 @@ describe('Popup', () => {
 
 		h.expect(
 			baseTemplate.setProperty('@underlay', 'classes', [
+				undefined,
 				fixedCss.underlay,
 				css.underlayVisible
 			])

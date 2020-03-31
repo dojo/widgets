@@ -12,7 +12,7 @@ import { spy } from 'sinon';
 const noop = () => {};
 describe('Card', () => {
 	const template = assertionTemplate(() => (
-		<div key="root" classes={css.root}>
+		<div key="root" classes={[undefined, css.root]}>
 			<div key="content" classes={[css.content, null]} onClick={noop} />
 		</div>
 	));

@@ -23,12 +23,12 @@ const harness = createHarness([compareId, compareAriaLabelledBy]);
 describe('Dialog', () => {
 	const closedAssertion = assertionTemplate(() => (
 		<body>
-			<div key="dialog" classes={[themeCss.root, null]} />
+			<div key="dialog" classes={[undefined, themeCss.root, null]} />
 		</body>
 	));
 	const openAssertion = assertionTemplate(() => (
 		<body>
-			<div key="dialog" classes={[themeCss.root, themeCss.open]}>
+			<div key="dialog" classes={[undefined, themeCss.root, themeCss.open]}>
 				<virtual>
 					<GlobalEvent key="global" document={{ keyup: () => {} }} />
 					<div

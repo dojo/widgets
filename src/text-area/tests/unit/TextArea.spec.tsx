@@ -51,7 +51,7 @@ const expected = function(
 	const helperTextValue = (valid === false && message) || helperText;
 
 	return (
-		<div key="root" classes={css.root}>
+		<div key="root" classes={[undefined, css.root]}>
 			<div
 				key="wrapper"
 				classes={[
@@ -122,7 +122,7 @@ const expected = function(
 };
 
 const baseAssertion = assertionTemplate(() => (
-	<div key="root" classes={css.root}>
+	<div key="root" classes={[undefined, css.root]}>
 		<div key="wrapper" classes={[css.wrapper, null, null, null, null, null, null]}>
 			{textarea()}
 		</div>

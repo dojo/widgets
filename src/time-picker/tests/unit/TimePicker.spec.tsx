@@ -45,7 +45,7 @@ function createFocusMock({
 const baseTemplate = (date?: Date) =>
 	assertionTemplate(() => {
 		return (
-			<div classes={css.root}>
+			<div classes={[undefined, css.root]}>
 				<input
 					type="hidden"
 					name="timeInput"

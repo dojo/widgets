@@ -12,7 +12,7 @@ registerSuite('Tooltip', {
 		'should construct Tooltip'() {
 			const h = harness(() => <Tooltip content="" />);
 			h.expect(() => (
-				<div classes={[css.right, fixedCss.rootFixed, fixedCss.rightFixed]}>
+				<div classes={[undefined, css.right, fixedCss.rootFixed, fixedCss.rightFixed]}>
 					<div key="target" />
 				</div>
 			));
@@ -22,7 +22,7 @@ registerSuite('Tooltip', {
 			const h = harness(() => <Tooltip content="foobar" open />);
 
 			h.expect(() => (
-				<div classes={[css.right, fixedCss.rootFixed, fixedCss.rightFixed]}>
+				<div classes={[undefined, css.right, fixedCss.rootFixed, fixedCss.rightFixed]}>
 					<div key="target">
 						<div key="content" classes={[css.content, fixedCss.contentFixed]}>
 							foobar
@@ -38,7 +38,7 @@ registerSuite('Tooltip', {
 			));
 
 			h.expect(() => (
-				<div classes={[css.bottom, fixedCss.rootFixed, fixedCss.bottomFixed]}>
+				<div classes={[undefined, css.bottom, fixedCss.rootFixed, fixedCss.bottomFixed]}>
 					<div key="target" />
 				</div>
 			));
@@ -48,7 +48,7 @@ registerSuite('Tooltip', {
 			const h = harness(() => <Tooltip content="bar" open aria={{ describedBy: 'foo' }} />);
 
 			h.expect(() => (
-				<div classes={[css.right, fixedCss.rootFixed, fixedCss.rightFixed]}>
+				<div classes={[undefined, css.right, fixedCss.rootFixed, fixedCss.rightFixed]}>
 					<div key="target">
 						<div
 							key="content"

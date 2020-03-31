@@ -11,7 +11,7 @@ const noop = () => {};
 describe('AccordionPane', () => {
 	const baseTemplate = assertationTemplate(() => {
 		return (
-			<div classes={themeCss.root}>
+			<div classes={[undefined, themeCss.root]}>
 				<TitlePane key="foo">
 					{{
 						title: () => 'foo title',

@@ -17,7 +17,7 @@ describe('Chip', () => {
 	const template = assertionTemplate(() => (
 		<div
 			key="root"
-			classes={[css.root, undefined, undefined]}
+			classes={[undefined, css.root, undefined, undefined]}
 			role={undefined}
 			onclick={noop}
 			tabIndex={undefined}
@@ -141,7 +141,7 @@ describe('Chip', () => {
 
 		h.expect(
 			template
-				.setProperty(':root', 'classes', [css.root, undefined, css.clickable])
+				.setProperty(':root', 'classes', [undefined, css.root, undefined, css.clickable])
 				.setProperty(':root', 'role', 'button')
 				.setProperty(':root', 'tabIndex', 0)
 		);
@@ -150,7 +150,9 @@ describe('Chip', () => {
 	it('should add disabled class, and remove clickable class and button attributes if disabled', () => {
 		const h = harness(() => <Chip label={label} onClick={noop} disabled />);
 
-		h.expect(template.setProperty(':root', 'classes', [css.root, css.disabled, false]));
+		h.expect(
+			template.setProperty(':root', 'classes', [undefined, css.root, css.disabled, false])
+		);
 	});
 
 	it('calls appropriate callbacks when clicked', () => {
@@ -167,7 +169,7 @@ describe('Chip', () => {
 
 		h.expect(
 			template
-				.setProperty(':root', 'classes', [css.root, undefined, css.clickable])
+				.setProperty(':root', 'classes', [undefined, css.root, undefined, css.clickable])
 				.setProperty(':root', 'role', 'button')
 				.setProperty(':root', 'tabIndex', 0)
 				.append(':root', () => [
@@ -219,7 +221,7 @@ describe('Chip', () => {
 
 		h.expect(
 			template
-				.setProperty(':root', 'classes', [css.root, undefined, css.clickable])
+				.setProperty(':root', 'classes', [undefined, css.root, undefined, css.clickable])
 				.setProperty(':root', 'role', 'button')
 				.setProperty(':root', 'tabIndex', 0)
 				.append(':root', () => [

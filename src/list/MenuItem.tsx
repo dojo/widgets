@@ -38,7 +38,12 @@ export const MenuItem = factory(function MenuItem({ properties, children, middle
 			onpointermove={throttle(() => {
 				requestActive();
 			}, 500)}
-			classes={[themedCss.root, active && themedCss.active, disabled && themedCss.disabled]}
+			classes={[
+				theme.variant(),
+				themedCss.root,
+				active && themedCss.active,
+				disabled && themedCss.disabled
+			]}
 			onpointerdown={() => {
 				requestActive();
 				select();

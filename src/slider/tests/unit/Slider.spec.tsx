@@ -39,6 +39,7 @@ const expected = function(
 		<div
 			key="root"
 			classes={[
+				undefined,
 				css.root,
 				null,
 				focused ? css.focused : null,
@@ -263,6 +264,7 @@ registerSuite('Slider', {
 			h.expect(
 				expected()
 					.setProperty('@root', 'classes', [
+						undefined,
 						css.root,
 						css.disabled,
 						null,
@@ -289,6 +291,7 @@ registerSuite('Slider', {
 			h.expect(
 				expected()
 					.setProperty('@root', 'classes', [
+						undefined,
 						css.root,
 						null,
 						null,
